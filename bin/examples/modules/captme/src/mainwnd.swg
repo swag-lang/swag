@@ -196,11 +196,11 @@ impl IWnd for MainWnd
             evt.setFlags |= .Name
             switch captureDelay
             {
-            case 0:  evt.name = "Delay"
-            case 1:  evt.name = "Delay (1 second)"
-            case 2:  evt.name = "Delay (2 seconds)"
-            case 5:  evt.name = "Delay (5 seconds)"
-            case 10: evt.name = "Delay (10 seconds)"
+            case 0: evt.name = "Delay Before Capture"
+            case 1: evt.name = "Delay Before Capture (1 second)"
+            case 2: evt.name = "Delay Before Capture (2 seconds)"
+            case 5: evt.name = "Delay Before Capture (5 seconds)"
+            case 9: evt.name = "Delay Before Capture (9 seconds)"
             }
             evt.accepted = true
 
@@ -224,10 +224,10 @@ impl IWnd for MainWnd
             evt.name = "5 seconds"
             evt.checked = captureDelay == 5
             evt.accepted = true
-        case CmdIdCaptureDelay10:
+        case CmdIdCaptureDelay9:
             evt.setFlags |= .Name | .Checked
-            evt.name = "10 seconds"
-            evt.checked = captureDelay == 10
+            evt.name = "9 seconds"
+            evt.checked = captureDelay == 9
             evt.accepted = true
 
         case CmdIdShowEditor:
@@ -686,8 +686,8 @@ impl IWnd for MainWnd
             captureDelay = 2
         case CmdIdCaptureDelay5:
             captureDelay = 5
-        case CmdIdCaptureDelay10:
-            captureDelay = 10
+        case CmdIdCaptureDelay9:
+            captureDelay = 9
 
         case CmdIdShowEditor:
             surface.show()
@@ -1307,7 +1307,7 @@ impl MainWnd
                 .addItem(CmdIdCaptureDelay1)
                 .addItem(CmdIdCaptureDelay2)
                 .addItem(CmdIdCaptureDelay5)
-                .addItem(CmdIdCaptureDelay10)
+                .addItem(CmdIdCaptureDelay9)
                 captureMenu.addPopup(delayMenu, CmdIdCaptureDelay)
             }
 

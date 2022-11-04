@@ -215,6 +215,10 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
             SelectObject(hDC, acast g_PenRect)
             SelectObject(hDC, GetStockObject(NULL_BRUSH))
             Rectangle(hDC, x1, y1, x2-1, y2-1)
+
+            str := Format.toString("%x%", x2 - x1, y2 - y1)
+            SetTextColor(hDC, RGB(255, 255, 255))
+            TextOutA(hDC, x1 + 4, y1 + 4, @dataof(str), acast @countof(str))
         }
 
         EndPaint( hWnd, &ps )

@@ -658,7 +658,7 @@ public impl MenuCtrl
     // Add a new popup item
     mtd addPopup(popup: *MenuCtrl, id: WndId)
     {
-        addPopup(null, popup, id: #self.id)
+        self.addPopup(null, popup, id: #self.id)
     }
 
     // Add a new popup item

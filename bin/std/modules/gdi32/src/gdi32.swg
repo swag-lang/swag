@@ -301,6 +301,9 @@ func RGB(r,g,b: s32)->COLORREF
     func Rectangle(hdc: HDC, left, top, right, bottom: s32)->BOOL;
     func SetBkMode(hdc: HDC, mode: s32)->s32;
     func SetBkColor(hdc: HDC, color: COLORREF)->COLORREF;
+    func SetTextColor(hdc: HDC, color: COLORREF)->COLORREF;
+    func TextOutA(hdc: HDC, x: s32, y: s32, lpString: LPCSTR, c: s32)->BOOL;
+    func TextOutW(hdc: HDC, x: s32, y: s32, lpString: LPCWSTR, c: s32)->BOOL;
 }
 
 namespace Gdi32Priv
