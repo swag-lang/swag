@@ -357,7 +357,7 @@ impl IWnd for MainWnd
         case CmdIdCaptureLastArea:
             evt.setFlags |= .Name | .Icon
             evt.name = "Capture Last Area"
-            evt.icon = Icon.from(&icons24, 7)
+            evt.icon = Icon.from(&icons24, 15)
             evt.accepted = true
         case CmdIdCaptureFullScreen:
             evt.setFlags |= .Name | .Icon
