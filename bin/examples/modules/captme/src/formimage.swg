@@ -208,6 +208,16 @@ impl IForm for FormImage
                 icon := Icon.from(&g_Main.icons48, 13)
                 icon.paint(painter, pp.horzCenter() - icon.sizeX*0.5, pp.vertCenter() - icon.sizeY*0.5, Argb.White)
             }
+            elif kind == .Image
+            {
+                pp1 := pp
+                pp1.x = pp.horzCenter() - texture.width / 2
+                pp1.y = pp.vertCenter() - texture.height / 2
+                pp1.width = texture.width
+                pp1.height = texture.height
+                painter.drawTexture(pp1, texture)
+                //painter.drawTexture(pp, texture)
+            }
             else
             {
                 painter.drawTexture(pp, texture)
