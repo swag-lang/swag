@@ -439,10 +439,7 @@ private impl Application
         }
 
         if surface
-        {
-            surface.destroy()
             modalSurfaces.removeBack()
-        }
 
         if modalSurfaces.count
         {
@@ -461,6 +458,9 @@ private impl Application
                 }
             }
         }
+
+        if surface
+            surface.destroy()
 
         endModal = false
         return endModalExit

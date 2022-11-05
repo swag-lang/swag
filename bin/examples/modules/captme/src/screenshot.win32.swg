@@ -28,6 +28,9 @@ var g_REndGrabY:        f32
 var g_MouseX:           s32
 var g_MouseY:           s32
 
+var g_ScreenWidth:       s32
+var g_ScreenHeight:      s32
+
 var g_StartGrab:    bool
 var g_TryStartGrab: bool
 var g_AutoGrab:     bool
@@ -38,8 +41,12 @@ var g_BlackBrush:   HBRUSH
 var g_RedBrush:     HBRUSH
 var g_PenRect:      HPEN
 
-var g_MemDC:        HDC
-var g_MemBitmap:    HBITMAP
+var g_MemDC:             HDC
+var g_MemBitmap:         HBITMAP
+var g_MemDesktopDC:      HDC
+var g_MemDesktopBitmap:  HBITMAP
+var g_MemDesktop1DC:     HDC
+var g_MemDesktop1Bitmap: HBITMAP
 
 func getGrabRect()->{x1: s32, y1: s32, x2: s32, y2: s32}
 {
@@ -176,8 +183,8 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
         var rc, rc1: RECT
         GetClientRect(hWnd, &rc1)
 
-        nScreenWidth  := GetSystemMetrics(SM_CXMAXTRACK)
-        nScreenHeight := GetSystemMetrics(SM_CYMAXTRACK)
+        // Blit the "disabled" desktop
+        catch BitBlt(g_MemDC, 0, 0, g_ScreenWidth, g_ScreenHeight, g_MemDesktop1DC, 0, 0, SRCCOPY | CAPTUREBLT)
 
         (x1, y1, x2, y2) := getGrabRect()
 
@@ -198,40 +205,38 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
             x1 = xx1; x2 = xx2; y1 = yy1; y2 = yy2
         }
 
-        // Transparency
-        FillRect(g_MemDC, rc1, g_BlackBrush)
+        // Blit the real desktop inside the selected area
+        catch BitBlt(g_MemDC, x1, y1, x2-x1, y2-y1, g_MemDesktopDC, x1, y1, SRCCOPY | CAPTUREBLT)
 
         if g_StartGrab or g_AutoGrab
         {
-            // Clear background (no alpha)
-            rc = RECT{x1, y1, x2, y2}
-            FillRect(g_MemDC, rc, g_RedBrush)
-
             // Border
-            SetBkMode(g_MemDC, OPAQUE)
-            SetBkColor(g_MemDC, RGB(0, 0, 0))
+            SetBkMode(g_MemDC, TRANSPARENT)
             SelectObject(g_MemDC, acast g_PenRect)
             SelectObject(g_MemDC, GetStockObject(NULL_BRUSH))
             Rectangle(g_MemDC, x1, y1, x2, y2)
 
-            Rectangle(g_MemDC, g_MouseX, 0, g_MouseX+1, nScreenHeight)
-            Rectangle(g_MemDC, 0, g_MouseY, nScreenWidth, g_MouseY+1)
+            // Mouse cross
+            Rectangle(g_MemDC, g_MouseX, 0, g_MouseX+1, g_ScreenHeight)
+            Rectangle(g_MemDC, 0, g_MouseY, g_ScreenWidth, g_MouseY+1)
 
             // Capture size
             str := Format.toString("% x %", x2 - x1, y2 - y1)
+            SetBkMode(g_MemDC, OPAQUE)
             SetBkColor(g_MemDC, RGB(0, 0, 0))
             SetTextColor(g_MemDC, RGB(255, 255, 255))
             xx := x1
             yy := y1 - 20
             if xx < 0 or yy < 0
             {
-                xx = x1 + 4
-                yy = y1 + 4
+                xx = x1 + 5
+                yy = y1 + 5
             }
             TextOutA(g_MemDC, xx, yy, @dataof(str), acast @countof(str))
         }
 
-        catch BitBlt(hDC, 0, 0, nScreenWidth, nScreenHeight, g_MemDC, 0, 0, SRCCOPY | CAPTUREBLT)
+        // Blit result to window dc
+        catch BitBlt(hDC, 0, 0, g_ScreenWidth, g_ScreenHeight, g_MemDC, 0, 0, SRCCOPY | CAPTUREBLT)
 
         EndPaint(hWnd, &ps)
         return 0
@@ -254,7 +259,7 @@ func createNative(w, h: s32)->HWND throw
     catch RegisterClassW(wc)
 
     hWnd := cast(const *void) CreateWindowExW(
-        WS_EX_TOPMOST | WS_EX_LAYERED | WS_EX_TOOLWINDOW,
+        WS_EX_TOPMOST | WS_EX_TOOLWINDOW,
         className,
         null,
         WS_POPUP | WS_VISIBLE,
@@ -268,7 +273,6 @@ func createNative(w, h: s32)->HWND throw
         null
     )
 
-    SetLayeredWindowAttributes(hWnd, RGB(255, 0, 0), 192, LWA_ALPHA | LWA_COLORKEY)
     UpdateWindow(hWnd)
     InvalidateRect(hWnd, null, FALSE)
     return hWnd
@@ -287,21 +291,25 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
         g_PenRect    = CreatePen(PS_DOT, 1, RGB(255,255,0))
     }
 
-    g_StartGrab  = false
-    g_GrabDone   = false
+    g_StartGrab    = false
+    g_GrabDone     = false
+    g_ScreenWidth  = GetSystemMetrics(SM_CXMAXTRACK)
+    g_ScreenHeight = GetSystemMetrics(SM_CYMAXTRACK)
 
     hDesktopWnd := GetDesktopWindow()
     hDesktopDC  := GetDC(hDesktopWnd)
 
-    // Capture with mouse
-    nScreenWidth  := GetSystemMetrics(SM_CXMAXTRACK)
-    nScreenHeight := GetSystemMetrics(SM_CYMAXTRACK)
+    // Make a copy of the desktop
+    g_MemDesktopDC = CreateCompatibleDC(hDesktopDC)
+    g_MemDesktopBitmap = CreateCompatibleBitmap(hDesktopDC, g_ScreenWidth, g_ScreenHeight)
+    SelectObject(g_MemDesktopDC, acast g_MemDesktopBitmap)
+    BitBlt(g_MemDesktopDC, 0, 0, g_ScreenWidth, g_ScreenHeight, hDesktopDC, 0, 0, SRCCOPY | CAPTUREBLT)
 
     if captureMode == .FullScreen
     {
         g_StartGrabX, g_StartGrabY = 0
-        g_EndGrabX = nScreenWidth
-        g_EndGrabY = nScreenHeight
+        g_EndGrabX = g_ScreenWidth
+        g_EndGrabY = g_ScreenHeight
     }
     elif captureMode == .ActiveWindow
     {
@@ -328,8 +336,20 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
     }
     else
     {
+        // Make a grayscale copy of the desktop
+        g_MemDesktop1DC = CreateCompatibleDC(hDesktopDC)
+        g_MemDesktop1Bitmap = CreateCompatibleBitmap(hDesktopDC, g_ScreenWidth, g_ScreenHeight)
+        SelectObject(g_MemDesktop1DC, acast g_MemDesktop1Bitmap)
+        BitBlt(g_MemDesktop1DC, 0, 0, g_ScreenWidth, g_ScreenHeight, g_MemDesktopDC, 0, 0, SRCCOPY | CAPTUREBLT)
+        img := Image.from(g_MemDesktop1Bitmap)
+        img.grayScale()
+        img.fade(Argb.Black, 0.6)
+        img.flip()
+        SetBitmapBits(g_MemDesktop1Bitmap, acast img.size, img.pixels.buffer)
+
+        // Create a working memdc
         g_MemDC = CreateCompatibleDC(hDesktopDC)
-        g_MemBitmap = CreateCompatibleBitmap(hDesktopDC, nScreenWidth, nScreenHeight)
+        g_MemBitmap = CreateCompatibleBitmap(hDesktopDC, g_ScreenWidth, g_ScreenHeight)
         SelectObject(g_MemDC, acast g_MemBitmap)
 
         g_RStartGrabX = 0
@@ -338,7 +358,7 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
         g_REndGrabY = 0
 
         main.getApp().runFrame()
-        hWnd := createNative(nScreenWidth, nScreenHeight)
+        hWnd := createNative(g_ScreenWidth, g_ScreenHeight)
 
         var msg: MSG
         while GetMessageW(&msg, null, 0, 0) != 0
@@ -359,14 +379,15 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
     wGrab := Math.max(x2 - x1, 8)
     hGrab := Math.max(y2 - y1, 8)
 
+    // Copy the portion of the screen we want
     hCaptureDC     := CreateCompatibleDC(hDesktopDC)
     hCaptureBitmap := CreateCompatibleBitmap(hDesktopDC, wGrab, hGrab)
     SelectObject(hCaptureDC, acast hCaptureBitmap)
-    BitBlt(hCaptureDC, 0, 0, wGrab, hGrab, hDesktopDC, x1, y1, SRCCOPY | CAPTUREBLT)
+    BitBlt(hCaptureDC, 0, 0, wGrab, hGrab, g_MemDesktopDC, x1, y1, SRCCOPY | CAPTUREBLT)
 
+    // Transform that to an image
     var bmp: BITMAP
     GetObjectA(acast hCaptureBitmap, cast(s32) @sizeof(BITMAP), &bmp)
-
     result = Image.create(bmp.bmWidth, bmp.bmHeight, .BGRA8)
     GetBitmapBits(hCaptureBitmap, bmp.bmWidth * bmp.bmHeight * 4, result.pixels.buffer)
     result.flip()
@@ -374,6 +395,8 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
     ReleaseDC(hDesktopWnd, hDesktopDC)
     DeleteDC(hCaptureDC)
     DeleteObject(acast hCaptureBitmap)
+    DeleteDC(g_MemDesktopDC)
+    DeleteObject(acast g_MemDesktopBitmap)
 
     return result
 }

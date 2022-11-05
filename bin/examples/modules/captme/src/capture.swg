@@ -992,6 +992,10 @@ impl Capture
                     form := Memory.new'FormShape()
                     dref form = editView.main.mdlFormShape
                     itf = cast(IForm) form
+                case Image:
+                    form := Memory.new'FormImage()
+                    dref form = editView.main.mdlFormImage
+                    itf = cast(IForm) form
                 case Step:
                     form := Memory.new'FormStep()
                     dref form = editView.main.mdlFormStep
@@ -1096,8 +1100,10 @@ impl Capture
             #[Swag.Complete]
             switch t
             {
-            case FormShape, FormImage:
+            case FormShape:
                 main.mdlFavorite = main.mdlFormShape
+            case FormImage:
+                main.mdlFavorite = main.mdlFormImage
             case FormStep:
                 main.mdlFavorite = main.mdlFormStep
             case FormArrow:
@@ -1117,10 +1123,10 @@ impl Capture
             #[Swag.Complete]
             switch t
             {
-            case FormImage:
-                main.editMode = .Shape
             case FormShape:
                 main.editMode = .Shape
+            case FormImage:
+                main.editMode = .Image
             case FormStep:
                 main.editMode = .Step
             case FormArrow:
@@ -1152,6 +1158,10 @@ impl Capture
             b := cast(*FormShape) @dataof(f)
             editView.main.mdlFormShape = dref b
 
+        case FormImage:
+            b := cast(*FormImage) @dataof(f)
+            editView.main.mdlFormImage = dref b
+
         case FormStep:
             b := cast(*FormStep) @dataof(f)
             editView.main.mdlFormStep = dref b
@@ -1177,9 +1187,6 @@ impl Capture
         case FormDraw:
             b := cast(*FormDraw) @dataof(f)
             editView.main.mdlFormDraw = dref b
-
-        case FormImage:
-            break
         }
     }
 

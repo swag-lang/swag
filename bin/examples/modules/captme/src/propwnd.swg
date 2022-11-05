@@ -40,6 +40,8 @@ impl PropWnd
                 return cast(*BaseForm) &main.mdlFormLine
             case Shape:
                 return cast(*BaseForm) &main.mdlFormShape
+            case Image:
+                return cast(*BaseForm) &main.mdlFormImage
             case Step:
                 return cast(*BaseForm) &main.mdlFormStep
             case Polygon:
@@ -72,6 +74,8 @@ impl PropWnd
                 return FormLine
             case Shape:
                 return FormShape
+            case Image:
+                return FormImage
             case Step:
                 return FormStep
             case Polygon:
@@ -474,7 +478,10 @@ impl PropWnd
     mtd propBackColor(stack: *Wnd)
     {
         curSelType := getSelectedFormType()
-        if curSelType == FormLine or curSelType == FormArrow or curSelType == FormDraw
+        if curSelType == FormLine or
+           curSelType == FormArrow or
+           curSelType == FormDraw or
+           curSelType == FormImage
             return
 
         btn := createArrowButton(stack, BtnColorWidth, BtnColorHeight)
@@ -940,6 +947,43 @@ impl PropWnd
         }
     }
 
+    mtd propImageKind()
+    {
+        curSelType := getSelectedFormType()
+        if curSelType != FormImage
+            return
+
+        curSel := cast(*FormImage) getSelectedBaseForm()
+        with combo := ComboBox.create(mainLayout)
+        {
+            visit v: @typeof(FormImageKind).values
+                .addItem(v.name)
+            .selectItem(cast(u32) curSel.kind)
+            .sigChanged += @|self|(combo, val) {
+                self.pushTypedValue(val, @typeof(FormImage), @nameof(FormImage.kind), true)
+                self.selectionHasChanged()
+            }
+        }
+    }
+
+    mtd propStrength()
+    {
+        curSelType := getSelectedFormType()
+        if curSelType != FormImage
+            return
+        curSel := cast(*FormImage) getSelectedBaseForm()
+        if curSel.kind == .Image
+            return
+
+        ctrl := createSlider("Strength", 0, 100, acast curSel.strength)
+        ctrl.slider.sigStartChange += @|self|(slider) {
+            self.pushTypedValue(cast(u32) slider.getValue(), @typeof(FormImage), @nameof(FormImage.strength), true)
+        }
+        ctrl.slider.sigChanged += @|self|(slider) {
+            self.pushTypedValue(cast(u32) slider.getValue(), @typeof(FormImage), @nameof(FormImage.strength), false)
+        }
+    }
+
     mtd propShadow()
     {
         curSel := getSelectedBaseForm()
@@ -977,9 +1021,11 @@ impl PropWnd
         if stack1.childs.count == 0
             stack1.destroyNow()
 
+        propBorderSize()
+        propImageKind()
+        propStrength()
         propNextStep()
         propText()
-        propBorderSize()
         propFontSize()
         propBoldSize()
         propStartSize()
