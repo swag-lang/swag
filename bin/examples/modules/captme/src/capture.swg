@@ -184,8 +184,25 @@ impl Capture
     mtd copy()
     {
         var arr: Array'IForm
+
+        imgDone := false
         visit s: selection
-            arr.add(forms[s])
+        {
+            itf := forms[s]
+
+            // Add real image
+            if !imgDone and @kindof(itf) == FormImage
+            {
+                fimg := cast(*FormImage) @dataof(itf)
+                if fimg.kind == .Image and fimg.image.isValid()
+                {
+                    imgDone = true
+                    Clipboard.addImage(fimg.image)
+                }
+            }
+
+            arr.add(itf)
+        }
 
         var buf:    ConcatBuffer
         var encode: Encoder'Write.TagBin
@@ -202,6 +219,18 @@ impl Capture
 
         buf.makeLinear()
         Clipboard.addData(editView.main.clipFmt, buf.toSlice())
+    }
+
+    mtd pasteImage()
+    {
+        img := Clipboard.getImage()
+        if !img.isValid()
+            return
+
+        undo := newUndo(.SetImage)
+        undo.oldImg = img
+        pushUndo(undo)
+        selectionHasChanged()
     }
 
     mtd paste()
@@ -703,6 +732,8 @@ impl Capture
 
         menu.addItem(CmdIdCopy)
         menu.addItem(CmdIdPaste)
+        menu.addSeparator()
+        menu.addItem(CmdIdPasteImage)
         menu.addSeparator()
         menu.addItem(CmdIdDeleteSelection)
         menu.addSeparator()

@@ -14,6 +14,7 @@ struct FormImage
 
     #[Serialization.NoSerialize]
     {
+        dirty:          bool
         stc:            s32
         xc, yc:         s32
         wc, hc:         s32
@@ -148,21 +149,24 @@ impl IForm for FormImage
             switch kind
             {
             case Image:
-                if (!texture.isValid() or textureKind != kind) and image.isValid()
+                if (!texture.isValid() or textureKind != kind or dirty) and image.isValid()
                 {
+                    dirty = false
                     textureKind = kind
                     renderer.removeTexture(&texture)
                     texture = renderer.addImage(image)
                 }
 
             case Blur, Pixelate:
-                if !texture.isValid() or
-                xc != x or yc != y or wc != w or hc != h or
-                textureKind != kind or
-                stc != strength
+                if  !texture.isValid() or
+                    xc != x or yc != y or wc != w or hc != h or
+                    textureKind != kind or
+                    dirty or
+                    stc != strength
                 {
                     if w > 1 and h > 1
                     {
+                        dirty = false
                         textureKind = kind
                         stc = strength
                         xc = x; yc = y; wc = w; hc = h

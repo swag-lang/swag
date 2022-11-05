@@ -471,6 +471,27 @@ impl IWnd for MainWnd
             evt.name = "Paste"
             evt.accepted = true
 
+        case CmdIdPasteImage:
+            evt.setFlags |= .Disabled | .Name | .Hidden
+            evt.disabled = true
+            if capture and hasSel and Clipboard.hasImage()
+            {
+                visit it: capture.selection
+                {
+                    itf := capture.forms[it]
+                    if @kindof(itf) != FormImage
+                        continue
+                    b := cast(*FormImage) @dataof(itf)
+                    if b.kind != .Image
+                        continue
+                    evt.disabled = false
+                    break
+                }
+            }
+            evt.hidden = evt.disabled
+            evt.name = "Paste Image Inside"
+            evt.accepted = true
+
         case CmdIdCopyAsImage:
             evt.setFlags |= .Disabled | .Name
             evt.disabled = capture == null
@@ -830,6 +851,8 @@ impl IWnd for MainWnd
             capture.copy()
         case CmdIdPaste:
             capture.paste()
+        case CmdIdPasteImage:
+            capture.pasteImage()
 
         case CmdIdCopyAsImage:
             capture.copyAll()

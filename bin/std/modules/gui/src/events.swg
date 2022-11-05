@@ -85,6 +85,7 @@ struct CommandUIEvent
         Name
         LongName
         ToolTip
+        Hidden
     }
 
     using base: Event{kind: EventKind.CommandUI}
@@ -99,6 +100,7 @@ struct CommandUIEvent
     setFlags:   SetFlags = Zero
     disabled:   bool
     checked:    bool
+    hidden:     bool
 }
 
 struct TimerEvent
