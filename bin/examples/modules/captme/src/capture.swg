@@ -995,6 +995,7 @@ impl Capture
                 case Image:
                     form := Memory.new'FormImage()
                     dref form = editView.main.mdlFormImage
+                    form.image.release()
                     itf = cast(IForm) form
                 case Step:
                     form := Memory.new'FormStep()

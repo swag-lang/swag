@@ -148,7 +148,7 @@ impl IForm for FormImage
             switch kind
             {
             case Image:
-                if !texture.isValid() or textureKind != kind
+                if (!texture.isValid() or textureKind != kind) and image.isValid()
                 {
                     textureKind = kind
                     renderer.removeTexture(&texture)
@@ -197,6 +197,11 @@ impl IForm for FormImage
                 }
 
                 icon.sizeX, icon.sizeY = 32
+                icon.paint(painter, pp.horzCenter() - icon.sizeX*0.5, pp.vertCenter() - icon.sizeY*0.5, Argb.White)
+            }
+            elif kind == .Image and !image.isValid()
+            {
+                icon := Icon.from(&g_Main.icons48, 13)
                 icon.paint(painter, pp.horzCenter() - icon.sizeX*0.5, pp.vertCenter() - icon.sizeY*0.5, Argb.White)
             }
             else
