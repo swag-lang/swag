@@ -10,6 +10,7 @@ enum EditMode
     Highlight
     Selection
     Step
+    Image
 }
 
 enum BottomSize
@@ -544,6 +545,14 @@ impl IWnd for MainWnd
             evt.checked = editMode == .Step
             evt.accepted = true
 
+        case CmdIdModeImage:
+            evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
+            evt.icon = Icon.from(&icons48, 13)
+            evt.name = "Image"
+            evt.toolTip = "Add some images/effects"
+            evt.checked = editMode == .Image
+            evt.accepted = true
+
         case CmdIdModeFavorites:
             evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
             evt.icon = Icon.from(&icons48, 5)
@@ -864,6 +873,11 @@ impl IWnd for MainWnd
 
         case CmdIdModeStep:
             editMode = .Step
+            evt.accepted = true
+            updateState()
+
+        case CmdIdModeImage:
+            editMode = .Image
             evt.accepted = true
             updateState()
 
@@ -1376,6 +1390,7 @@ impl MainWnd
         createBtn(CmdIdModeDraw)
         createBtn(CmdIdModeHighlight)
         createBtn(CmdIdModeStep)
+        createBtn(CmdIdModeImage)
         editToolBar.updateCommandState()
     }
 

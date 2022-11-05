@@ -40,6 +40,8 @@ impl PropWnd
                 return cast(*BaseForm) &main.mdlFormLine
             case Shape:
                 return cast(*BaseForm) &main.mdlFormShape
+            case Image:
+                return cast(*BaseForm) &main.mdlFormImage
             case Step:
                 return cast(*BaseForm) &main.mdlFormStep
             case Polygon:
@@ -72,6 +74,8 @@ impl PropWnd
                 return FormLine
             case Shape:
                 return FormShape
+            case Image:
+                return FormImage
             case Step:
                 return FormStep
             case Polygon:

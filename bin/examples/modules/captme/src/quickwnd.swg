@@ -39,6 +39,7 @@ struct QuickWnd
 
     qsArrow:        QuickStyle
     qsShape:        QuickStyle
+    qsImage:        QuickStyle
     qsStep:         QuickStyle
     qsLine:         QuickStyle
     qsPolygon:      QuickStyle
@@ -90,6 +91,7 @@ impl QuickWnd
     {
         if qsArrow.forms.isEmpty()      defaultQuickStyleArrow()
         if qsShape.forms.isEmpty()      defaultQuickStyleShape()
+        if qsImage.forms.isEmpty()      defaultQuickStyleImage()
         if qsStep.forms.isEmpty()       defaultQuickStyleStep()
         if qsLine.forms.isEmpty()       defaultQuickStyleLine()
         if qsPolygon.forms.isEmpty()    defaultQuickStylePolygon()
@@ -191,6 +193,10 @@ impl QuickWnd
         add(BorderSize, .Rectangle, Argb.Black, Argb.Zero)
         add(0, .Rectangle, Argb.Zero, Argb.White)
         add(0, .Rectangle, Argb.Zero, Argb.Black)
+    }
+
+    mtd defaultQuickStyleImage()
+    {
     }
 
     mtd defaultQuickStyleStep()
@@ -425,6 +431,7 @@ impl QuickWnd
         {
         case Arrow:     defaultQuickStyleArrow()
         case Shape:     defaultQuickStyleShape()
+        case Image:     defaultQuickStyleImage()
         case Step:      defaultQuickStyleStep()
         case Line:      defaultQuickStyleLine()
         case Polygon:   defaultQuickStylePolygon()
@@ -480,6 +487,8 @@ impl QuickWnd
             currentStyle = &qsArrow
         case Shape:
             currentStyle = &qsShape
+        case Image:
+            currentStyle = &qsImage
         case Step:
             currentStyle = &qsStep
         case Line:
@@ -642,6 +651,8 @@ impl QuickWnd
             btn.formItf = cast(IForm) main.mdlFormArrow
         case Shape:
             btn.formItf = cast(IForm) main.mdlFormShape
+        case Image:
+            btn.formItf = cast(IForm) main.mdlFormImage
         case Step:
             btn.formItf = cast(IForm) main.mdlFormStep
         case Line:
@@ -691,6 +702,10 @@ impl QuickWnd
             case Shape:
                 mdl := Memory.new'FormShape()
                 mdl.IForm.copy(mdl, &main.mdlFormShape)
+                self.currentStyle.forms.add(mdl)
+            case Image:
+                mdl := Memory.new'FormImage()
+                mdl.IForm.copy(mdl, &main.mdlFormImage)
                 self.currentStyle.forms.add(mdl)
             case Step:
                 mdl := Memory.new'FormStep()
