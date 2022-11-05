@@ -23,6 +23,14 @@ struct FormImage
     }
 }
 
+impl FormImage
+{
+    mtd opPostCopy()
+    {
+        @init(&texture)
+    }
+}
+
 impl IForm for FormImage
 {
     mtd isSame(ptr: *BaseForm)->bool
@@ -134,34 +142,40 @@ impl IForm for FormImage
         pp    := Math.Rectangle{0, 0, paintPos.width, paintPos.height}
         pen   := Pen.createSolid(borderColor, bSize)
 
-        renderer := app.getRenderer()
-        switch kind
+        if !quickMode
         {
-        case Image:
-            if !texture.isValid() or textureKind != kind
+            renderer := app.getRenderer()
+            switch kind
             {
-                textureKind = kind
-                renderer.removeTexture(&texture)
-                texture = renderer.addImage(image)
-            }
+            case Image:
+                if !texture.isValid() or textureKind != kind
+                {
+                    textureKind = kind
+                    renderer.removeTexture(&texture)
+                    texture = renderer.addImage(image)
+                }
 
-        case Blur, Pixelate:
-            if !texture.isValid() or
-               xc != x or yc != y or wc != w or hc != h or
-               textureKind != kind or
-               stc != strength
-            {
-                textureKind = kind
-                stc = strength
-                xc = x; yc = y; wc = w; hc = h
-                renderer.removeTexture(&texture)
-                img := capture.backImg.toCrop(x, y, w, h)
-                st := Math.map(cast(f32) strength, 0, 100, 1, 16)
-                nw := Math.max(cast(s32) (img.width / st), 4)
-                nh := Math.max(cast(s32) (img.height / st), 4)
-                img.resize(nw, nh, .Quadratic)
-                img.resize(w, h, kind == .Pixelate ? .Raw : .Quadratic)
-                texture = app.getRenderer().addImage(img)
+            case Blur, Pixelate:
+                if !texture.isValid() or
+                xc != x or yc != y or wc != w or hc != h or
+                textureKind != kind or
+                stc != strength
+                {
+                    if w > 1 and h > 1
+                    {
+                        textureKind = kind
+                        stc = strength
+                        xc = x; yc = y; wc = w; hc = h
+                        renderer.removeTexture(&texture)
+                        img := capture.backImg.toCrop(x, y, w, h)
+                        st := Math.map(cast(f32) strength, 0, 100, 1, 16)
+                        nw := Math.max(cast(s32) (img.width / st), 4)
+                        nh := Math.max(cast(s32) (img.height / st), 4)
+                        img.resize(nw, nh, .Quadratic)
+                        img.resize(w, h, kind == .Pixelate ? .Raw : .Quadratic)
+                        texture = app.getRenderer().addImage(img)
+                    }
+                }
             }
         }
 
@@ -169,7 +183,28 @@ impl IForm for FormImage
             painter.fillRect(pp, borderColor)
         else
         {
-            painter.drawTexture(pp, texture)
+            if quickMode
+            {
+                var icon: Icon
+                switch kind
+                {
+                case Image:
+                    icon = Icon.from(&g_Main.icons48, 13)
+                case Blur:
+                    icon = Icon.from(&g_Main.icons48, 14)
+                case Pixelate:
+                    icon = Icon.from(&g_Main.icons48, 15)
+                }
+
+                painter.fillRect(pp, Argb.White)
+                icon.sizeX, icon.sizeY = 32
+                icon.paint(painter, pp.horzCenter() - icon.sizeX*0.5, pp.vertCenter() - icon.sizeY*0.5, Argb.Red)
+            }
+            else
+            {
+                painter.drawTexture(pp, texture)
+            }
+
             pp.inflate(-bSize * 0.5)
             painter.drawRect(pp, pen)
         }

@@ -1,3 +1,5 @@
+var g_Main: *MainWnd
+
 enum EditMode
 {
     Shape
@@ -1513,6 +1515,7 @@ impl MainWnd
             .libWnd.hide()
         }
 
+        g_Main = res
         return res
     }
 }

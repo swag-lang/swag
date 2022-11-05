@@ -73,6 +73,7 @@ impl IWnd for QuickWnd
             {
                 .serialize("QuickWnd.qsArrow",     &qsArrow)
                 .serialize("QuickWnd.qsShape",     &qsShape)
+                .serialize("QuickWnd.qsImage",     &qsImage)
                 .serialize("QuickWnd.qsStep",      &qsStep)
                 .serialize("QuickWnd.qsLine",      &qsLine)
                 .serialize("QuickWnd.qsPolygon",   &qsPolygon)
@@ -391,6 +392,8 @@ impl QuickWnd
                 btn.isChecked = mode == .Arrow and it.isSame(&main.mdlFormArrow)
             case FormShape:
                 btn.isChecked = mode == .Shape and it.isSame(&main.mdlFormShape)
+            case FormImage:
+                btn.isChecked = mode == .Image and it.isSame(&main.mdlFormImage)
             case FormStep:
                 btn.isChecked = mode == .Step and it.isSame(&main.mdlFormStep)
             case FormLine:
@@ -587,6 +590,10 @@ impl QuickWnd
                     case FormShape:
                         b := cast(*FormShape) @dataof(it)
                         mdlValue = Memory.new'FormShape()
+                        it.copy(mdlValue, b)
+                    case FormImage:
+                        b := cast(*FormImage) @dataof(it)
+                        mdlValue = Memory.new'FormImage()
                         it.copy(mdlValue, b)
                     case FormStep:
                         b := cast(*FormStep) @dataof(it)
