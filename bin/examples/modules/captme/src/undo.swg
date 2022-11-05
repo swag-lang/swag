@@ -71,10 +71,12 @@ impl Undo
         case Flatten:
             selection = capture.selection
             oldImg = capture.backImg
+            oldImagePos = capture.backImagePos
             oldForms = capture.forms
 
         case FlattenAll:
             oldImg = capture.backImg
+            oldImagePos = capture.backImagePos
             oldForms = capture.forms
 
         case SetImageInside:
@@ -218,14 +220,19 @@ impl Undo
             }
 
         case Flatten:
-            capture.backImg = capture.toImage(onlySel: true)
-            capture.dirtyBackImg = true
+            with capture
+            {
+                .backImg = .toImage(onlySel: true)
+                .backImagePos.clear()
+                .dirtyBackImg = true
+            }
             removeSelection()
 
         case FlattenAll:
             with capture
             {
                 .backImg = capture.toImage()
+                .backImagePos.clear()
                 .selection.clear()
                 .forms.clear()
                 .dirtyBackImg = true
@@ -456,7 +463,8 @@ impl Undo
             with capture
             {
                 .backImg = oldImg
-                .forms   = oldForms
+                .backImagePos = oldImagePos
+                .forms = oldForms
                 .selection.clear()
                 .dirtyBackImg = true
                 .selectionHasChanged()

@@ -159,6 +159,9 @@ impl IForm for FormImage
         if !quickMode
         {
             renderer := app.getRenderer()
+            x1 := cast(s32) (x - capture.backImagePos.x)
+            y1 := cast(s32) (y - capture.backImagePos.y)
+
             switch kind
             {
             case Image:
@@ -186,7 +189,7 @@ impl IForm for FormImage
                         stc = strength
                         xc = x; yc = y; wc = w; hc = h
                         renderer.removeTexture(&texture)
-                        img := capture.backImg.toCrop(x, y, w, h)
+                        img := capture.backImg.toCrop(x1, y1, w, h)
                         st := Math.map(cast(f32) strength, 0, 100, 1, 16)
                         nw := Math.max(cast(s32) (img.width / st), 4)
                         nh := Math.max(cast(s32) (img.height / st), 4)
@@ -215,7 +218,7 @@ impl IForm for FormImage
                         const ZoomFactor = 2.5
                         stw := cast(s32) Math.map(cast(f32) strength, 1, 100, 1, w / ZoomFactor)
                         sth := cast(s32) Math.map(cast(f32) strength, 1, 100, 1, h / ZoomFactor)
-                        img := capture.backImg.toCrop(x+stw, y+sth, w-stw*2, h-sth*2)
+                        img := capture.backImg.toCrop(x1+stw, y1+sth, w-stw*2, h-sth*2)
                         img.resize(w, h, .Raw)
                         texture = app.getRenderer().addImage(img)
                     }
