@@ -1,4 +1,4 @@
-<style>code br {display: none;}</style><?php include('html_start.php'); ?><?php include('header.php'); ?><div class="lg:m-auto lg:w-[70rem] pt-2 lg:pt-10 overflow-hidden p-5"><div class="mb-10"><div class="text-2xl mb-5 border-b">introduction</div><code style="white-space: break-spaces;">/*
+<style>code br {display: none;}</style><?php include('html_start.php'); ?><?php include('header.php'); ?><div class="lg:m-auto lg:w-[70rem] pt-2 lg:pt-10 overflow-hidden p-5 flex"><div class="lg:w-3/4"><div class="" id="introduction"></div><div><div class="text-2xl mb-5 border-b" id="">introduction</div><code style="white-space: break-spaces;">/*
 
 This 'swag/bin/reference/language' module is a short explanation of the Swag language, the basic syntax and usage.
 It will only describe the language itself, without the need of the Swag standard libraries (Std).
@@ -8,7 +8,7 @@ you won't find them in the examples to come.
 
 As 'reference/language' is written as a test module, you can run it with 'swag run -w:/reference'
 
-*/</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">source</div><code style="white-space: break-spaces;">/*
+*/</code></div><div class="pt-16" id="source"></div><div><div class="text-2xl mb-5 border-b" id="">source</div><code style="white-space: break-spaces;">/*
 
 All swag source files have the '.swg' extension.
 They must be encoded in UTF8.
@@ -23,7 +23,7 @@ A module is a dll (windows) or an executable.
 A workspace can contain as many executables as you want, and as many modules as you want.
 You will typically compile the full workspace.
 
-*/</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">comments</div><code style="white-space: break-spaces;">// One line comment
+*/</code></div><div class="pt-16" id="comments"></div><div><div class="text-2xl mb-5 border-b" id="">comments</div><code style="white-space: break-spaces;">// One line comment
 
 /*
     Multi lines comment
@@ -35,7 +35,7 @@ You will typically compile the full workspace.
 
 const A = 0 // One line comment
 
-const B = /* Comment */ true</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">identifiers</div><code style="white-space: break-spaces;">// User identifiers start with '_' or an ascii letter.
+const B = /* Comment */ true</code></div><div class="pt-16" id="identifiers"></div><div><div class="text-2xl mb-5 border-b" id="">identifiers</div><code style="white-space: break-spaces;">// User identifiers start with '_' or an ascii letter.
 // Identifiers can contain '_', an ascii letter or a digit number.
 
 const thisIsAValidIdentifier0       = 0
@@ -61,7 +61,7 @@ Some identifiers start with '@'. This indicates an intrinsic function.
 @sqrt()
 ...
 
-*/</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">keywords</div><code style="white-space: break-spaces;">#global skip // At the beginning of a file, this tells Swag to NOT take care of the rest.
+*/</code></div><div class="pt-16" id="keywords"></div><div><div class="text-2xl mb-5 border-b" id="">keywords</div><code style="white-space: break-spaces;">#global skip // At the beginning of a file, this tells Swag to NOT take care of the rest.
 
 // This is the list of all keywords:
 
@@ -291,7 +291,7 @@ u64
 u8
 uint
 void
-</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">semicolon</div><code style="white-space: break-spaces;">#test
+</code></div><div class="pt-16" id="semicolon"></div><div><div class="text-2xl mb-5 border-b" id="">semicolon</div><code style="white-space: break-spaces;">#test
 {
     // No need for ';' to end a statement like in C/C++
     // Most of the time a end of line is enough.
@@ -316,7 +316,7 @@ void
         x += 1; y += 1
         @assert(x == 1); @assert(y == 1)
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">order</div><code style="white-space: break-spaces;">// Order of top level declarations does not matter
+}</code></div><div class="pt-16" id="order"></div><div><div class="text-2xl mb-5 border-b" id="">order</div><code style="white-space: break-spaces;">// Order of top level declarations does not matter
 const A = B
 const B = C
 const C = 1 // C could also be defined in another file.
@@ -326,7 +326,7 @@ const C = 1 // C could also be defined in another file.
     funcDeclaredLater()
 }
 
-func funcDeclaredLater() {}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">types</div><code style="white-space: break-spaces;">#test
+func funcDeclaredLater() {}</code></div><div class="pt-16" id="types"></div><div><div class="text-2xl mb-5 border-b" id="">types</div><code style="white-space: break-spaces;">#test
 {
     // This are all signed integers types
     {
@@ -430,7 +430,7 @@ func funcDeclaredLater() {}</code></div><div class="mb-10"><div class="text-2xl 
         @assert(x == s32)
         @assert(x.name == "s32")
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">literals</div><code style="white-space: break-spaces;">#test
+}</code></div><div class="pt-16" id="literals"></div><div><div class="text-2xl mb-5 border-b" id="">literals</div><code style="white-space: break-spaces;">#test
 {
     // Integers in decimal, hexadecimal or binary forms
     {
@@ -516,7 +516,7 @@ func funcDeclaredLater() {}</code></div><div class="mb-10"><div class="text-2xl 
         c := 1'u32
         #assert @typeof(c) == u32
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">string</div><code style="white-space: break-spaces;">#test
+}</code></div><div class="pt-16" id="string"></div><div><div class="text-2xl mb-5 border-b" id="">string</div><code style="white-space: break-spaces;">#test
 {
     // Strings are UTF8, and can be compared
     {
@@ -693,7 +693,7 @@ func funcDeclaredLater() {}</code></div><div class="mb-10"><div class="text-2xl 
         const X = 1
         #assert @nameof(X) == "X"
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">variables</div><code style="white-space: break-spaces;">#test
+}</code></div><div class="pt-16" id="variables"></div><div><div class="text-2xl mb-5 border-b" id="">variables</div><code style="white-space: break-spaces;">#test
 {
     // To declare a variable, use the 'var' keyword, followed by ':' and then the type
     {
@@ -781,7 +781,7 @@ func funcDeclaredLater() {}</code></div><div class="mb-10"><div class="text-2xl 
         @assert(c == 1.5)
         #assert @typeof(c) == f64
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">const</div><code style="white-space: break-spaces;">#test
+}</code></div><div class="pt-16" id="const"></div><div><div class="text-2xl mb-5 border-b" id="">const</div><code style="white-space: break-spaces;">#test
 {
     // If you use 'const' instead of 'var', the value must be known by the compiler
     // There's no memory footprint if the type is a value or a string
@@ -818,7 +818,7 @@ func funcDeclaredLater() {}</code></div><div class="mb-10"><div class="text-2xl 
             @[0, 0, 0, 1]
         ]
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">cast</div><code style="white-space: break-spaces;">#test
+}</code></div><div class="pt-16" id="cast"></div><div><div class="text-2xl mb-5 border-b" id="">cast</div><code style="white-space: break-spaces;">#test
 {
     // use 'cast(type)' to cast from one type to another
     {
@@ -877,7 +877,7 @@ func funcDeclaredLater() {}</code></div><div class="mb-10"><div class="text-2xl 
         // affect to a 's8' value. Swag will panic at runtime if the conversion is invalid.
         var x: s8 = 1's8 + 2's8
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">operators</div><code style="white-space: break-spaces;">#test
+}</code></div><div class="pt-16" id="operators"></div><div><div class="text-2xl mb-5 border-b" id="">operators</div><code style="white-space: break-spaces;">#test
 {
     // Basic binary operators
     {
@@ -1007,7 +1007,7 @@ func funcDeclaredLater() {}</code></div><div class="mb-10"><div class="text-2xl 
         @assert(x >= 5)
         @assert(x > 0)
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">overflow</div><code style="white-space: break-spaces;">#test
+}</code></div><div class="pt-16" id="overflow"></div><div><div class="text-2xl mb-5 border-b" id="">overflow</div><code style="white-space: break-spaces;">#test
 {
     {
         // By default, swag will panic if some operators overflow (it depends on the build configuration)
@@ -1047,7 +1047,7 @@ func funcDeclaredLater() {}</code></div><div class="mb-10"><div class="text-2xl 
     // Note that safety checks can be changed for a specific build configuration (--cfg:configuration).
     // Swag comes with four predefined configurations : 'debug', 'fast-debug', 'fast-compile' and 'release'
     // Safety checks are disabled in 'release'.
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">array</div><code style="white-space: break-spaces;">// Remember that dynamic arrays are part of the 'Std.Core' module.
+}</code></div><div class="pt-16" id="array"></div><div><div class="text-2xl mb-5 border-b" id="">array</div><code style="white-space: break-spaces;">// Remember that dynamic arrays are part of the 'Std.Core' module.
 // Here we are only talking about native static arrays.
 
 #test
@@ -1148,7 +1148,7 @@ func funcDeclaredLater() {}</code></div><div class="mb-10"><div class="text-2xl 
         #assert @typeof(arr) == [4] f64
         @assert(arr[3] == 4.0)
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">slice</div><code style="white-space: break-spaces;">#test
+}</code></div><div class="pt-16" id="slice"></div><div><div class="text-2xl mb-5 border-b" id="">slice</div><code style="white-space: break-spaces;">#test
 {
     // A slice is a pointer on a buffer of datas, and a 'uint' to count the number of elements
     // It is declared with [..]
@@ -1247,7 +1247,7 @@ func funcDeclaredLater() {}</code></div><div class="mb-10"><div class="text-2xl 
         @assert(slice2[0] == 30)
         @assert(slice2[1] == 40)
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">pointer</div><code style="white-space: break-spaces;">#test
+}</code></div><div class="pt-16" id="pointer"></div><div><div class="text-2xl mb-5 border-b" id="">pointer</div><code style="white-space: break-spaces;">#test
 {
     // A pointer is declared with '*'
     {
@@ -1320,7 +1320,7 @@ func funcDeclaredLater() {}</code></div><div class="mb-10"><div class="text-2xl 
         @assert(value == 1)
         #assert @typeof(value) == s32
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">any</div><code style="white-space: break-spaces;">#test
+}</code></div><div class="pt-16" id="any"></div><div><div class="text-2xl mb-5 border-b" id="">any</div><code style="white-space: break-spaces;">#test
 {
     // 'any' is a specific type that can store every other types
     {
@@ -1385,7 +1385,7 @@ func funcDeclaredLater() {}</code></div><div class="mb-10"><div class="text-2xl 
         x = null
         @assert(x == null)
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">tuple</div><code style="white-space: break-spaces;">#test
+}</code></div><div class="pt-16" id="tuple"></div><div><div class="text-2xl mb-5 border-b" id="">tuple</div><code style="white-space: break-spaces;">#test
 {
     // A tuple is an anonymous structure, aka a struct literal
     // Syntax is @{}
@@ -1470,7 +1470,7 @@ func funcDeclaredLater() {}</code></div><div class="mb-10"><div class="text-2xl 
         #assert @typeof(x) != @typeof(y)
     }
 }
-</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">enum</div><code style="white-space: break-spaces;">#test
+</code></div><div class="pt-16" id="enum"></div><div><div class="text-2xl mb-5 border-b" id="">enum</div><code style="white-space: break-spaces;">#test
 {
     // Enums values, unlike C/C++, must end with ';' or an <eol> (like a normal Swag declaration)
     {
@@ -1752,7 +1752,7 @@ func funcDeclaredLater() {}</code></div><div class="mb-10"><div class="text-2xl 
             }
         }
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">impl</div><code style="white-space: break-spaces;">// 'impl' can be used to declare some stuff in the scope of an enum
+}</code></div><div class="pt-16" id="impl"></div><div><div class="text-2xl mb-5 border-b" id="">impl</div><code style="white-space: break-spaces;">// 'impl' can be used to declare some stuff in the scope of an enum
 // The keyword 'self' represents the enum value
 
 enum RGB { R; G; B; }
@@ -1776,7 +1776,7 @@ impl enum RGB
     // A first look at 'ufcs' (uniform function call syntax)
     @assert(R.isRedOrBlue())
     @assert(!RGB.G.isRedOrBlue())
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">namespace</div><code style="white-space: break-spaces;">// You can create a global scope with a namespace
+}</code></div><div class="pt-16" id="namespace"></div><div><div class="text-2xl mb-5 border-b" id="">namespace</div><code style="white-space: break-spaces;">// You can create a global scope with a namespace
 // All symbols inside the namespace will be in the corresponding global scope.
 namespace A
 {
@@ -1817,7 +1817,7 @@ const D = OtherSymbol
 
 // All symbols from a Swag source file are exported to other files of the same module.
 // So using 'scopefile' can protect from name conflicts.
-</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">if</div><code style="white-space: break-spaces;">#test
+</code></div><div class="pt-16" id="if"></div><div><div class="text-2xl mb-5 border-b" id="">if</div><code style="white-space: break-spaces;">#test
 {
     // A basic test with 'if'. Curlies are optional.
     // The expression doesn't need to be enclosed with () unlike C/C++
@@ -1853,7 +1853,7 @@ const D = OtherSymbol
         @assert(false)
     if a == 0 or a == 1
         @assert(true)
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">loop</div><code style="white-space: break-spaces;">#test
+}</code></div><div class="pt-16" id="loop"></div><div><div class="text-2xl mb-5 border-b" id="">loop</div><code style="white-space: break-spaces;">#test
 {
     // loop are used to iterate a given amount of time
     // The loop expression value is evaluated *once*.
@@ -1989,7 +1989,7 @@ const D = OtherSymbol
             break
     }
 }
-</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">visit</div><code style="white-space: break-spaces;">#test
+</code></div><div class="pt-16" id="visit"></div><div><div class="text-2xl mb-5 border-b" id="">visit</div><code style="white-space: break-spaces;">#test
 {
     // 'visit' is used to visit all the elements of a collection
     {
@@ -2077,7 +2077,7 @@ const D = OtherSymbol
         @assert(array[1, 1] == 555)
     }
 }
-</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">for</div><code style="white-space: break-spaces;">#test
+</code></div><div class="pt-16" id="for"></div><div><div class="text-2xl mb-5 border-b" id="">for</div><code style="white-space: break-spaces;">#test
 {
     // 'for' accepts a start statement, an expression to test, and an ending statement
     // This is the same as the C/C++ 'for'
@@ -2126,7 +2126,7 @@ const D = OtherSymbol
             cpt1 += @index
         @assert(cpt1 == 0+1+2+3+4)
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">while</div><code style="white-space: break-spaces;">#test
+}</code></div><div class="pt-16" id="while"></div><div><div class="text-2xl mb-5 border-b" id="">while</div><code style="white-space: break-spaces;">#test
 {
     // While is a loop that runs until the expression is false
     {
@@ -2149,7 +2149,7 @@ const D = OtherSymbol
         @assert(i == 5)
     }
 }
-</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">switch</div><code style="white-space: break-spaces;">#test
+</code></div><div class="pt-16" id="switch"></div><div><div class="text-2xl mb-5 border-b" id="">switch</div><code style="white-space: break-spaces;">#test
 {
     // 'switch' works like in C/C++, except that no 'break' is necessary (except if the 'case' is empty)
     // That means that there's no automatic 'fallthrough' from one case to another
@@ -2328,7 +2328,7 @@ const D = OtherSymbol
             @assert(true)
         }
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">break</div><code style="white-space: break-spaces;">#test
+}</code></div><div class="pt-16" id="break"></div><div><div class="text-2xl mb-5 border-b" id="">break</div><code style="white-space: break-spaces;">#test
 {
     // 'break' is used to exit a loop, while, for, switch
     {
@@ -2429,7 +2429,7 @@ const D = OtherSymbol
             @assert(false)
         }
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">struct</div><code style="white-space: break-spaces;">#test
+}</code></div><div class="pt-16" id="struct"></div><div><div class="text-2xl mb-5 border-b" id="">struct</div><code style="white-space: break-spaces;">#test
 {
     // This is a struct declaration. 'var' is not necessary for the fields.
     {
@@ -2559,7 +2559,7 @@ func titi(v: Struct3)
 
     // You can also name the fields, and omit some of them
     titi(@{x: 5, z: 5}) // Here y will stay to the default value, which is 666
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">impl</div><code style="white-space: break-spaces;">// Like for an enum, 'impl' is used to declare some stuff in the scope of a struct
+}</code></div><div class="pt-16" id="impl"></div><div><div class="text-2xl mb-5 border-b" id="">impl</div><code style="white-space: break-spaces;">// Like for an enum, 'impl' is used to declare some stuff in the scope of a struct
 
 #[Swag.ExportType("methods")]   // See later, used to export 'methods' in type reflection
 struct MyStruct
@@ -2648,7 +2648,7 @@ impl MyStruct
     @assert(fnX(v) == 5)
     @assert(fnY(v) == 10)
     @assert(fnZ(v) == 20)
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">opspec</div><code style="white-space: break-spaces;">// A struct can have special operations in the 'impl' block.
+}</code></div><div class="pt-16" id="opspec"></div><div><div class="text-2xl mb-5 border-b" id="">opspec</div><code style="white-space: break-spaces;">// A struct can have special operations in the 'impl' block.
 // This operations are predefined, and known by the compiler.
 // This is the way to go to overload operators for example.
 
@@ -2756,7 +2756,7 @@ impl Struct
         func(ptr: bool) opVisitWhatever(using self, stmt: code) {}
         func(ptr: bool) opVisitAnother(using self, stmt: code) {}
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">opaffect</div><code style="white-space: break-spaces;">struct Struct
+}</code></div><div class="pt-16" id="opaffect"></div><div><div class="text-2xl mb-5 border-b" id="">opaffect</div><code style="white-space: break-spaces;">struct Struct
 {
     x, y, z: s32 = 666
 }
@@ -2854,7 +2854,7 @@ impl Vector2
 
 const One: Vector2 = 1.0    // This will call opAffect(1.0) at compile time
 #assert One.x == 1.0
-#assert One.y == 1.0</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">opcount</div><code style="white-space: break-spaces;">struct MyStruct
+#assert One.y == 1.0</code></div><div class="pt-16" id="opcount"></div><div><div class="text-2xl mb-5 border-b" id="">opcount</div><code style="white-space: break-spaces;">struct MyStruct
 {
 }
 
@@ -2876,7 +2876,7 @@ impl MyStruct
         cpt += 1
 
     @assert(cpt == 4)
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">oppost</div><code style="white-space: break-spaces;">// Swag accepts copy and move semantics for structures.
+}</code></div><div class="pt-16" id="oppost"></div><div><div class="text-2xl mb-5 border-b" id="">oppost</div><code style="white-space: break-spaces;">// Swag accepts copy and move semantics for structures.
 
 struct Vector3
 {
@@ -2941,7 +2941,7 @@ impl Vector3
     a =,moveraw b
     a =,nodrop,moveraw b
 }
-</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">opvisit</div><code style="white-space: break-spaces;">// You can visit a struct value if a macro 'opVisit' has been defined
+</code></div><div class="pt-16" id="opvisit"></div><div><div class="text-2xl mb-5 border-b" id="">opvisit</div><code style="white-space: break-spaces;">// You can visit a struct value if a macro 'opVisit' has been defined
 // This is the equivalent of an 'iterator'
 
 struct MyStruct
@@ -3056,7 +3056,7 @@ impl MyStruct
     }
 
     @assert(cpt == 3)
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">offset</div><code style="white-space: break-spaces;">#test
+}</code></div><div class="pt-16" id="offset"></div><div><div class="text-2xl mb-5 border-b" id="">offset</div><code style="white-space: break-spaces;">#test
 {
     // You can force the layout of a field with the 'Swag.Offset' attribute
     {
@@ -3094,7 +3094,7 @@ impl MyStruct
         @assert(v.idx[2] == v.z)
     }
 }
-</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">pack</div><code style="white-space: break-spaces;">// You can also control the struct layout with two attributes: #[Swag.Pack] and #[Swag.Align]
+</code></div><div class="pt-16" id="pack"></div><div><div class="text-2xl mb-5 border-b" id="">pack</div><code style="white-space: break-spaces;">// You can also control the struct layout with two attributes: #[Swag.Pack] and #[Swag.Align]
 
 #test
 {
@@ -3211,7 +3211,7 @@ impl MyStruct
         #assert @sizeof(MyStruct2) == 8
     }
 }
-</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">union</div><code style="white-space: break-spaces;">#test
+</code></div><div class="pt-16" id="union"></div><div><div class="text-2xl mb-5 border-b" id="">union</div><code style="white-space: break-spaces;">#test
 {
     // An union is just a struct where all fields are located at offset 0
     {
@@ -3225,7 +3225,7 @@ impl MyStruct
         @assert(v.z == 666)
     }
 }
-</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">interface</div><code style="white-space: break-spaces;">// Interfaces are 'virtual tables' (a list of function pointers) that can be associated to a struct.
+</code></div><div class="pt-16" id="interface"></div><div><div class="text-2xl mb-5 border-b" id="">interface</div><code style="white-space: break-spaces;">// Interfaces are 'virtual tables' (a list of function pointers) that can be associated to a struct.
 // Unlike c++, the virtual table is not embedded with the struct. It is a separate
 // object.
 // You can then 'implement' an interface for a given struct without changing the struct
@@ -3328,7 +3328,7 @@ impl IReset for Point3
     @assert(@dataof(itf) == &pt2)
     itf = cast(IReset) pt3
     @assert(@dataof(itf) == &pt3)
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">function</div><code style="white-space: break-spaces;">// A function starts with the 'func' keyword
+}</code></div><div class="pt-16" id="function"></div><div><div class="text-2xl mb-5 border-b" id="">function</div><code style="white-space: break-spaces;">// A function starts with the 'func' keyword
 func toto()
 {
 }
@@ -3446,7 +3446,7 @@ func toto(x: s32, y = Values.A)
     (x, y) := returns2()
     @assert(x == 1)
     @assert(y == 2)
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">lambda</div><code style="white-space: break-spaces;">#test
+}</code></div><div class="pt-16" id="lambda"></div><div><div class="text-2xl mb-5 border-b" id="">lambda</div><code style="white-space: break-spaces;">#test
 {
     // A lambda is just a pointer to a function
     {
@@ -3517,7 +3517,7 @@ func toto(x: s32, y = Values.A)
         fct = @(x, y) { return x != y; }
         @assert(fct(20, 120))
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">mixin</div><code style="white-space: break-spaces;">#test
+}</code></div><div class="pt-16" id="mixin"></div><div><div class="text-2xl mb-5 border-b" id="">mixin</div><code style="white-space: break-spaces;">#test
 {
     // A mixin is declared like a function, with the attribute #[Swag.Mixin]
     {
@@ -3643,7 +3643,7 @@ func toto(x: s32, y = Values.A)
 
         @assert(total == 3)
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">macro</div><code style="white-space: break-spaces;">#test
+}</code></div><div class="pt-16" id="macro"></div><div><div class="text-2xl mb-5 border-b" id="">macro</div><code style="white-space: break-spaces;">#test
 {
     // A macro, like a mixin, is declared like a function, but with the attribute 'Swag.Macro'
     {
@@ -3815,7 +3815,7 @@ func toto(x: s32, y = Values.A)
             @assert(y == 40)   // y is @alias1
         }
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">ufcs</div><code style="white-space: break-spaces;">#test
+}</code></div><div class="pt-16" id="ufcs"></div><div><div class="text-2xl mb-5 border-b" id="">ufcs</div><code style="white-space: break-spaces;">#test
 {
     // ufcs stands for "uniform function call syntax"
     // It allows every functions to be called with a 'param.func()' form when the
@@ -3843,7 +3843,7 @@ func toto(x: s32, y = Values.A)
         set(&pt, 20)
         @assert(pt.x == 20 and pt.y == 20)
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">variadic</div><code style="white-space: break-spaces;">#test
+}</code></div><div class="pt-16" id="variadic"></div><div><div class="text-2xl mb-5 border-b" id="">variadic</div><code style="white-space: break-spaces;">#test
 {
     // A function can take a variable number of arguments with '...'
     {
@@ -3931,7 +3931,7 @@ func toto(x: s32, y = Values.A)
         res1 := sum(@spread(arr[1..2])) // is equivalent to sum(2, 3)
         @assert(res1 == 2+3)
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">constexpr</div><code style="white-space: break-spaces;">// A function marked with 'Swag.ConstExpr' can be executed by the compiler if it can
+}</code></div><div class="pt-16" id="constexpr"></div><div><div class="text-2xl mb-5 border-b" id="">constexpr</div><code style="white-space: break-spaces;">// A function marked with 'Swag.ConstExpr' can be executed by the compiler if it can
 #[Swag.ConstExpr]
 func sum(x, y: f32) => x + y
 
@@ -3942,7 +3942,7 @@ const G = sum(1, 2)
 // If a function is not 'ConstExpr', you can force the compile time call with #run
 func mul(x, y: f32) => x * y
 const G1 = #run mul(3, 6)
-#assert G1 == 18</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">overload</div><code style="white-space: break-spaces;">// Functions can have the same names as long as parameters are different
+#assert G1 == 18</code></div><div class="pt-16" id="overload"></div><div><div class="text-2xl mb-5 border-b" id="">overload</div><code style="white-space: break-spaces;">// Functions can have the same names as long as parameters are different
 #[Swag.ConstExpr]
 {
     func sum(x, y: s32) => x + y
@@ -3967,7 +3967,7 @@ const G1 = #run mul(3, 6)
     res1 := over(1's64, 2's64)
     @assert(res1 == 2)
 }
-</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">discard</div><code style="white-space: break-spaces;">#test
+</code></div><div class="pt-16" id="discard"></div><div><div class="text-2xl mb-5 border-b" id="">discard</div><code style="white-space: break-spaces;">#test
 {
     // By default, you must always use the returned value of a function,
     // otherwise the compiler will generate an error
@@ -3987,7 +3987,7 @@ const G1 = #run mul(3, 6)
 
     // This is fine to ignore the return value of 'mul' (even if strange)
     mul(2, 4)
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">retval</div><code style="white-space: break-spaces;">#test
+}</code></div><div class="pt-16" id="retval"></div><div><div class="text-2xl mb-5 border-b" id="">retval</div><code style="white-space: break-spaces;">#test
 {
     // Inside a function, you can use the 'retval' type which is an alias
     // to the function return type
@@ -4043,7 +4043,7 @@ const G1 = #run mul(3, 6)
         @assert(arr[100] == 100)
         @assert(arr[254] == 254)
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">closure</div><code style="white-space: break-spaces;">// Swag supports a limited set of the 'closure' concept
+}</code></div><div class="pt-16" id="closure"></div><div><div class="text-2xl mb-5 border-b" id="">closure</div><code style="white-space: break-spaces;">// Swag supports a limited set of the 'closure' concept
 // Only a given amount of bytes of capture are possible (for now 48 bytes)
 // That way there's never an hidden allocation
 // Another limitation is that you can only capture 'simple' variables (no struct with 'opDrop', 'opPostCopy', 'opPostMove' for example)
@@ -4129,7 +4129,7 @@ const G1 = #run mul(3, 6)
         @assert(fct() == 12)
         @assert(fct() == 13)
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">foreign</div><code style="white-space: break-spaces;">// Swag can interop with external "modules" (dlls under windows), which
+}</code></div><div class="pt-16" id="foreign"></div><div><div class="text-2xl mb-5 border-b" id="">foreign</div><code style="white-space: break-spaces;">// Swag can interop with external "modules" (dlls under windows), which
 // contain exported C functions
 
 alias DWORD = u32
@@ -4155,7 +4155,7 @@ func ExitProcess(uExitCode: UINT);
 // imported library too
 #foreignlib "kernel32"
 
-// #foreignlib is here to force a link to the given library (when generating executables)</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">intrinsic</div><code style="white-space: break-spaces;">#global skip
+// #foreignlib is here to force a link to the given library (when generating executables)</code></div><div class="pt-16" id="intrinsic"></div><div><div class="text-2xl mb-5 border-b" id="">intrinsic</div><code style="white-space: break-spaces;">#global skip
 
 // This is the list of all compiler intrinsics
 // All intrinsics start with '@', which is reserved for them
@@ -4360,7 +4360,7 @@ func @bitcountlz(value: u64)->u64;
 
 func @byteswap(value: u16)->u16;
 func @byteswap(value: u32)->u32;
-func @byteswap(value: u64)->u64;</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">init</div><code style="white-space: break-spaces;">// @init can be used to reinitialize a variable/array to the default value
+func @byteswap(value: u64)->u64;</code></div><div class="pt-16" id="init"></div><div><div class="text-2xl mb-5 border-b" id="">init</div><code style="white-space: break-spaces;">// @init can be used to reinitialize a variable/array to the default value
 
 #test
 {
@@ -4444,7 +4444,7 @@ func @byteswap(value: u64)->u64;</code></div><div class="mb-10"><div class="text
         @assert(rgb[3].g == 6)
         @assert(rgb[3].b == 7)
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">generic</div><code style="white-space: break-spaces;">#test
+}</code></div><div class="pt-16" id="generic"></div><div><div class="text-2xl mb-5 border-b" id="">generic</div><code style="white-space: break-spaces;">#test
 {
     {
         // A function can be generic by specifying parameters after 'func'
@@ -4515,7 +4515,7 @@ func @byteswap(value: u64)->u64;</code></div><div class="mb-10"><div class="text
         var x: Struct'(bool, 10)
         @assert(@typeof(x.val) == [10] bool)
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">selectif</div><code style="white-space: break-spaces;">#test
+}</code></div><div class="pt-16" id="selectif"></div><div><div class="text-2xl mb-5 border-b" id="">selectif</div><code style="white-space: break-spaces;">#test
 {
     // On a function, you can use '#selectif' to constrain the usage of the function.
     // If the #selectif expression returns false, then the function will not be considered for the call match.
@@ -4643,7 +4643,7 @@ func @byteswap(value: u64)->u64;</code></div><div class="mb-10"><div class="text
         var a: s32
         @assert(first(a) == 666)
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">defer</div><code style="white-space: break-spaces;">#test
+}</code></div><div class="pt-16" id="defer"></div><div><div class="text-2xl mb-5 border-b" id="">defer</div><code style="white-space: break-spaces;">#test
 {
     // 'defer' is used to call an expression when the current scope is left.
     // It's purely compile time, so it does not evaluate until the block is left
@@ -4712,7 +4712,7 @@ func @byteswap(value: u64)->u64;</code></div><div class="mb-10"><div class="text
 
         @assert(!resource.isResourceCreated())
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">using</div><code style="white-space: break-spaces;">#test
+}</code></div><div class="pt-16" id="using"></div><div><div class="text-2xl mb-5 border-b" id="">using</div><code style="white-space: break-spaces;">#test
 {
     // using brings the scope of a namespace, struct or enum in the current one
     {
@@ -4803,7 +4803,7 @@ func @byteswap(value: u64)->u64;</code></div><div class="mb-10"><div class="text
         @assert(value.base.x == 1)
         @assert(value.base.y == 1)
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">with</div><code style="white-space: break-spaces;">struct Point { x, y: s32; }
+}</code></div><div class="pt-16" id="with"></div><div><div class="text-2xl mb-5 border-b" id="">with</div><code style="white-space: break-spaces;">struct Point { x, y: s32; }
 
 impl Point
 {
@@ -4912,7 +4912,7 @@ namespace NameSpace
 {
     func inside0() {}
     func inside1() {}
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">alias</div><code style="white-space: break-spaces;">#test
+}</code></div><div class="pt-16" id="alias"></div><div><div class="text-2xl mb-5 border-b" id="">alias</div><code style="white-space: break-spaces;">#test
 {
     // 'alias' is used to make a shortcut to another name or type
     {
@@ -4957,7 +4957,7 @@ namespace NameSpace
         short += 2
         @assert(myLongVariableName == 2)
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">inline</div><code style="white-space: break-spaces;">#test
+}</code></div><div class="pt-16" id="inline"></div><div><div class="text-2xl mb-5 border-b" id="">inline</div><code style="white-space: break-spaces;">#test
 {
     // #inline is used to create an inlined separated scope
     {
@@ -4993,7 +4993,7 @@ namespace NameSpace
 
         @assert(myVar == 3)
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">var</div><code style="white-space: break-spaces;">// A global variable can be tagged with #[Swag.Tls] to store it
+}</code></div><div class="pt-16" id="var"></div><div><div class="text-2xl mb-5 border-b" id="">var</div><code style="white-space: break-spaces;">// A global variable can be tagged with #[Swag.Tls] to store it
 // in the thread local storage (one copy per thread)
 #[Swag.Tls]
 var G = 0
@@ -5027,7 +5027,7 @@ var G2 = 0
 #run
 {
     G2 += 5
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">error</div><code style="white-space: break-spaces;">// swag contains a *very* simple error system used to deal with function returning errors
+}</code></div><div class="pt-16" id="error"></div><div><div class="text-2xl mb-5 border-b" id="">error</div><code style="white-space: break-spaces;">// swag contains a *very* simple error system used to deal with function returning errors
 // Will probably be changed/improved at some point
 // This are *not* exceptions !
 
@@ -5154,7 +5154,7 @@ func testDefer(err: bool) throw
     g_Defer = 0
     catch testDefer(false)
     @assert(g_Defer == 5)   // Will call only defer(noerr) and the normal defer
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">compiler</div><code style="white-space: break-spaces;">// #assert is a static assert (at compile time)
+}</code></div><div class="pt-16" id="compiler"></div><div><div class="text-2xl mb-5 border-b" id="">compiler</div><code style="white-space: break-spaces;">// #assert is a static assert (at compile time)
 #assert true
 #assert(true, "message")
 
@@ -5195,7 +5195,7 @@ func factorial(x: s32)->s32
     return x * factorial(x - 1)
 }
 
-#assert factorial(4) == 24 // Evaluated at compile time</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">functions</div><code style="white-space: break-spaces;">// #test is a special function than can be used in the 'tests/' folder of the workspace.
+#assert factorial(4) == 24 // Evaluated at compile time</code></div><div class="pt-16" id="functions"></div><div><div class="text-2xl mb-5 border-b" id="">functions</div><code style="white-space: break-spaces;">// #test is a special function than can be used in the 'tests/' folder of the workspace.
 // They will be executed only if swag is running in test mode.
 #test
 {
@@ -5225,7 +5225,7 @@ func factorial(x: s32)->s32
 // but before the #main function is called
 #premain
 {
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">run</div><code style="white-space: break-spaces;">// #run is a special function that will be called at compile time
+}</code></div><div class="pt-16" id="run"></div><div><div class="text-2xl mb-5 border-b" id="">run</div><code style="white-space: break-spaces;">// #run is a special function that will be called at compile time
 // It can be used to precompute some global values for example.
 var G: [5] f32 = ?
 
@@ -5271,7 +5271,7 @@ const Value = #run {
         result += 1
     return result   // 'Value' will be of type 'f32'
 }
-#assert Value == 10.0</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">global</div><code style="white-space: break-spaces;">#global skip
+#assert Value == 10.0</code></div><div class="pt-16" id="global"></div><div><div class="text-2xl mb-5 border-b" id="">global</div><code style="white-space: break-spaces;">#global skip
 
 // A bunch of #global can start a source file
 
@@ -5298,7 +5298,7 @@ const Value = #run {
 
 // Link with a given external library
 #foreignlib "windows.lib"
-</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">attribute</div><code style="white-space: break-spaces;">using Swag
+</code></div><div class="pt-16" id="attribute"></div><div><div class="text-2xl mb-5 border-b" id="">attribute</div><code style="white-space: break-spaces;">using Swag
 
 // Attributes are tags associated with functions, structures etc...
 // They are declared like functions, with 'attr' before instead of 'func'
@@ -5341,7 +5341,7 @@ struct struct1
         type := @typeof(function2)
         @assert(@countof(type.attributes) == 1)
     }
-}</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">attrlist</div><code style="white-space: break-spaces;">#global skip
+}</code></div><div class="pt-16" id="attrlist"></div><div><div class="text-2xl mb-5 border-b" id="">attrlist</div><code style="white-space: break-spaces;">#global skip
 
 // This is the list of predefined attributes
 // All are located in the reserved 'Swag' namespace
@@ -5421,7 +5421,7 @@ attr SelectIf(value: bool)
 
 #[AttrUsage(AttributeUsage.Function|AttributeUsage.File)]
 attr Optim(what: string, value: bool)
-</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">reflection</div><code style="white-space: break-spaces;">#test
+</code></div><div class="pt-16" id="reflection"></div><div><div class="text-2xl mb-5 border-b" id="">reflection</div><code style="white-space: break-spaces;">#test
 {
     // You can get the type of an expression with '@typeof' or just with the type itself
     // (in Swag types are values)
@@ -5461,7 +5461,7 @@ attr Optim(what: string, value: bool)
         @assert(ptr.sizeof == @sizeof(f64))
     }
 }
-</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">ast</div><code style="white-space: break-spaces;">#test
+</code></div><div class="pt-16" id="ast"></div><div><div class="text-2xl mb-5 border-b" id="">ast</div><code style="white-space: break-spaces;">#test
 {
     // '#ast' is executed at compile time and returns a string that will be compiled inplace
     {
@@ -5559,7 +5559,7 @@ attr Optim(what: string, value: bool)
 
 // Here the #assert will wait for the symbol 'myGeneratedConst' to be replaced with its
 // real content.
-#assert myGeneratedConst == 666</code></div><div class="mb-10"><div class="text-2xl mb-5 border-b">message</div><code style="white-space: break-spaces;">// '#message' is a special function that will be called by the compiler
+#assert myGeneratedConst == 666</code></div><div class="pt-16" id="message"></div><div><div class="text-2xl mb-5 border-b" id="">message</div><code style="white-space: break-spaces;">// '#message' is a special function that will be called by the compiler
 // The parameter is a mask that tells the compiler when to call the function.
 
 // Here the function will be called each time a function of the module has been typed
@@ -5604,4 +5604,4 @@ func XXTestFunc3() {}
 {
     itf := @compiler()
     msg := itf.getMessage()
-}</code></div></div><?php include('html_end.php'); ?>
+}</code></div></div><div class="hidden lg:block w-1/4 border ml-5 p-3"><ul><li><a href="#introduction" class="text-blue-700">introduction</a></li><li><a href="#source" class="text-blue-700">source</a></li><li><a href="#comments" class="text-blue-700">comments</a></li><li><a href="#identifiers" class="text-blue-700">identifiers</a></li><li><a href="#keywords" class="text-blue-700">keywords</a></li><li><a href="#semicolon" class="text-blue-700">semicolon</a></li><li><a href="#order" class="text-blue-700">order</a></li><li><a href="#types" class="text-blue-700">types</a></li><li><a href="#literals" class="text-blue-700">literals</a></li><li><a href="#string" class="text-blue-700">string</a></li><li><a href="#variables" class="text-blue-700">variables</a></li><li><a href="#const" class="text-blue-700">const</a></li><li><a href="#cast" class="text-blue-700">cast</a></li><li><a href="#operators" class="text-blue-700">operators</a></li><li><a href="#overflow" class="text-blue-700">overflow</a></li><li><a href="#array" class="text-blue-700">array</a></li><li><a href="#slice" class="text-blue-700">slice</a></li><li><a href="#pointer" class="text-blue-700">pointer</a></li><li><a href="#any" class="text-blue-700">any</a></li><li><a href="#tuple" class="text-blue-700">tuple</a></li><li><a href="#enum" class="text-blue-700">enum</a></li><li><a href="#impl" class="text-blue-700">impl</a></li><li><a href="#namespace" class="text-blue-700">namespace</a></li><li><a href="#if" class="text-blue-700">if</a></li><li><a href="#loop" class="text-blue-700">loop</a></li><li><a href="#visit" class="text-blue-700">visit</a></li><li><a href="#for" class="text-blue-700">for</a></li><li><a href="#while" class="text-blue-700">while</a></li><li><a href="#switch" class="text-blue-700">switch</a></li><li><a href="#break" class="text-blue-700">break</a></li><li><a href="#struct" class="text-blue-700">struct</a></li><li><a href="#impl" class="text-blue-700">impl</a></li><li><a href="#opspec" class="text-blue-700">opspec</a></li><li><a href="#opaffect" class="text-blue-700">opaffect</a></li><li><a href="#opcount" class="text-blue-700">opcount</a></li><li><a href="#oppost" class="text-blue-700">oppost</a></li><li><a href="#opvisit" class="text-blue-700">opvisit</a></li><li><a href="#offset" class="text-blue-700">offset</a></li><li><a href="#pack" class="text-blue-700">pack</a></li><li><a href="#union" class="text-blue-700">union</a></li><li><a href="#interface" class="text-blue-700">interface</a></li><li><a href="#function" class="text-blue-700">function</a></li><li><a href="#lambda" class="text-blue-700">lambda</a></li><li><a href="#mixin" class="text-blue-700">mixin</a></li><li><a href="#macro" class="text-blue-700">macro</a></li><li><a href="#ufcs" class="text-blue-700">ufcs</a></li><li><a href="#variadic" class="text-blue-700">variadic</a></li><li><a href="#constexpr" class="text-blue-700">constexpr</a></li><li><a href="#overload" class="text-blue-700">overload</a></li><li><a href="#discard" class="text-blue-700">discard</a></li><li><a href="#retval" class="text-blue-700">retval</a></li><li><a href="#closure" class="text-blue-700">closure</a></li><li><a href="#foreign" class="text-blue-700">foreign</a></li><li><a href="#intrinsic" class="text-blue-700">intrinsic</a></li><li><a href="#init" class="text-blue-700">init</a></li><li><a href="#generic" class="text-blue-700">generic</a></li><li><a href="#selectif" class="text-blue-700">selectif</a></li><li><a href="#defer" class="text-blue-700">defer</a></li><li><a href="#using" class="text-blue-700">using</a></li><li><a href="#with" class="text-blue-700">with</a></li><li><a href="#alias" class="text-blue-700">alias</a></li><li><a href="#inline" class="text-blue-700">inline</a></li><li><a href="#var" class="text-blue-700">var</a></li><li><a href="#error" class="text-blue-700">error</a></li><li><a href="#compiler" class="text-blue-700">compiler</a></li><li><a href="#functions" class="text-blue-700">functions</a></li><li><a href="#run" class="text-blue-700">run</a></li><li><a href="#global" class="text-blue-700">global</a></li><li><a href="#attribute" class="text-blue-700">attribute</a></li><li><a href="#attrlist" class="text-blue-700">attrlist</a></li><li><a href="#reflection" class="text-blue-700">reflection</a></li><li><a href="#ast" class="text-blue-700">ast</a></li><li><a href="#message" class="text-blue-700">message</a></li></ul></div></div><?php include('html_end.php'); ?>
