@@ -6,12 +6,19 @@ enum FormImageKind
     Zoom
 }
 
+enum FormImagePlacement
+{
+    Frame
+    Center
+}
+
 struct FormImage
 {
     using base: BaseForm
     image:      Image
     kind:       FormImageKind = .Image
     strength:   s32 = 50
+    place:      FormImagePlacement = .Center
 
     #[Serialization.NoSerialize]
     {
@@ -243,14 +250,18 @@ impl IForm for FormImage
             elif kind == .Image
             {
                 painter.fillRect(pp, backColor)
-
-                pp1 := pp
-                pp1.x = pp.horzCenter() - texture.width / 2
-                pp1.y = pp.vertCenter() - texture.height / 2
-                pp1.width = texture.width
-                pp1.height = texture.height
-                painter.drawTexture(pp1, texture)
-                //painter.drawTexture(pp, texture)
+                switch place
+                {
+                case Frame:
+                    painter.drawTexture(pp, texture)
+                case Center:
+                    pp1 := pp
+                    pp1.x = pp.horzCenter() - texture.width / 2
+                    pp1.y = pp.vertCenter() - texture.height / 2
+                    pp1.width = texture.width
+                    pp1.height = texture.height
+                    painter.drawTexture(pp1, texture)
+                }
             }
             else
             {

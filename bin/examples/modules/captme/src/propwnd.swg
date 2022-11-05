@@ -960,6 +960,7 @@ impl PropWnd
             return
 
         curSel := cast(*FormImage) getSelectedBaseForm()
+
         ctrl := ComboCtrl.create(mainLayout, "Kind")
         ctrl.comboSize = 210
         with ctrl.combo
@@ -970,6 +971,18 @@ impl PropWnd
             .sigChanged += @|self|(combo, val) {
                 self.pushTypedValue(val, @typeof(FormImage), @nameof(FormImage.kind), true)
                 self.selectionHasChanged()
+            }
+        }
+
+        ctrl1 := ComboCtrl.create(mainLayout, "Place")
+        ctrl1.comboSize = 210
+        with ctrl1.combo
+        {
+            visit v: @typeof(FormImagePlacement).values
+                .addItem(v.name)
+            .selectItem(cast(u32) curSel.place)
+            .sigChanged += @|self|(combo, val) {
+                self.pushTypedValue(val, @typeof(FormImage), @nameof(FormImage.place), true)
             }
         }
     }
