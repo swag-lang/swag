@@ -1,0 +1,10 @@
+<header class="sticky top-0 z-50">
+    <div class="lg:m-auto w-full lg:w-[70rem] flex justify-between items-center p-2">
+        <a href="/"><img src="imgs/swag-logo.jpg" alt="SWAG" class="w-24 lg:w-50" /></a>
+        <ul class="text-white flex text-md">
+            <li class="mr-5"><a href="/" class="hover:underline">Home</a></li>
+            <li class="mr-5"><a href="doc.php" class="hover:underline">Documentation</a></li>
+            <li><a href="https://github.com/swag-lang/swag" target="_blank" class="hover:underline">Github</a></li>
+        </ul>
+    </div>
+</header>
