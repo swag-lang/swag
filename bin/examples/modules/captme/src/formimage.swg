@@ -199,9 +199,9 @@ impl IForm for FormImage
 
             if kind == .Image and place == .Free and editInside
             {
-                gizmo.rect.offset(freePos.x, freePos.y)
-                gizmo.rect.width = freePos.width
-                gizmo.rect.height = freePos.height
+                gizmo.rect.offset(freePos.x*z, freePos.y*z)
+                gizmo.rect.width = freePos.width*z
+                gizmo.rect.height = freePos.height*z
             }
 
             gizmo.paint(painter, flags & .Selected ? false : true)
@@ -342,9 +342,9 @@ impl IForm for FormImage
                     painter.drawTexture(pp1, texture)
                 case Free:
                     pp1 := pp
-                    pp1.offset(freePos.x, freePos.y)
-                    pp1.width = freePos.width
-                    pp1.height = freePos.height
+                    pp1.offset(freePos.x*z, freePos.y*z)
+                    pp1.width = freePos.width*z
+                    pp1.height = freePos.height*z
                     painter.drawTexture(pp1, texture)
                 }
             }
