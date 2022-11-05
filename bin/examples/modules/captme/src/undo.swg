@@ -24,7 +24,7 @@ enum UndoKind
     Flatten
     FlattenAll
     RestoreOrg
-    SetImage
+    SetImageInside
 }
 
 struct Undo
@@ -77,7 +77,7 @@ impl Undo
             oldImg = capture.backImg
             oldForms = capture.forms
 
-        case SetImage:
+        case SetImageInside:
             selection = capture.selection
             visit s: selection
             {
@@ -232,7 +232,7 @@ impl Undo
                 .selectionHasChanged()
             }
 
-        case SetImage:
+        case SetImageInside:
             visit s, i: selection
             {
                 f := capture.forms[s]
@@ -462,7 +462,7 @@ impl Undo
                 .selectionHasChanged()
             }
 
-        case SetImage:
+        case SetImageInside:
             visit s, i: selection
             {
                 f := capture.forms[s]

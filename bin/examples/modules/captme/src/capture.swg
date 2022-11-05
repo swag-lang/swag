@@ -221,14 +221,21 @@ impl Capture
         Clipboard.addData(editView.main.clipFmt, buf.toSlice())
     }
 
-    mtd pasteImage()
+    mtd pasteImageInside()
     {
         img := Clipboard.getImage()
         if !img.isValid()
             return
 
-        undo := newUndo(.SetImage)
+        undo := newUndo(.SetImageInside)
         undo.oldImg = img
+        pushUndo(undo)
+        selectionHasChanged()
+    }
+
+    mtd clearImageInside()
+    {
+        undo := newUndo(.SetImageInside)
         pushUndo(undo)
         selectionHasChanged()
     }
@@ -733,7 +740,8 @@ impl Capture
         menu.addItem(CmdIdCopy)
         menu.addItem(CmdIdPaste)
         menu.addSeparator()
-        menu.addItem(CmdIdPasteImage)
+        menu.addItem(CmdIdPasteImageInside)
+        menu.addItem(CmdIdClearImageInside)
         menu.addSeparator()
         menu.addItem(CmdIdDeleteSelection)
         menu.addSeparator()

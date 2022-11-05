@@ -471,10 +471,14 @@ impl IWnd for MainWnd
             evt.name = "Paste"
             evt.accepted = true
 
-        case CmdIdPasteImage:
+        case CmdIdPasteImageInside:
             evt.setFlags |= .Disabled | .Name | .Hidden
-            evt.disabled = true
-            if capture and hasSel and Clipboard.hasImage()
+            evt.disabled, evt.hidden = true
+            evt.name = "Paste Inside Image"
+            evt.accepted = true
+
+            hasImg := Clipboard.hasImage()
+            if capture and hasSel
             {
                 visit it: capture.selection
                 {
@@ -484,13 +488,39 @@ impl IWnd for MainWnd
                     b := cast(*FormImage) @dataof(itf)
                     if b.kind != .Image
                         continue
-                    evt.disabled = false
-                    break
+                    evt.hidden = false
+                    if hasImg
+                    {
+                        evt.disabled = false
+                        break
+                    }
                 }
             }
-            evt.hidden = evt.disabled
-            evt.name = "Paste Image Inside"
+
+        case CmdIdClearImageInside:
+            evt.setFlags |= .Disabled | .Name | .Hidden
+            evt.disabled, evt.hidden = true
+            evt.name = "Clear Inside Image"
             evt.accepted = true
+
+            if capture and hasSel
+            {
+                visit it: capture.selection
+                {
+                    itf := capture.forms[it]
+                    if @kindof(itf) != FormImage
+                        continue
+                    b := cast(*FormImage) @dataof(itf)
+                    if b.kind != .Image
+                        continue
+                    evt.hidden = false
+                    if b.image.isValid()
+                    {
+                        evt.disabled = false
+                        break
+                    }
+                }
+            }
 
         case CmdIdCopyAsImage:
             evt.setFlags |= .Disabled | .Name
@@ -851,8 +881,10 @@ impl IWnd for MainWnd
             capture.copy()
         case CmdIdPaste:
             capture.paste()
-        case CmdIdPasteImage:
-            capture.pasteImage()
+        case CmdIdPasteImageInside:
+            capture.pasteImageInside()
+        case CmdIdClearImageInside:
+            capture.clearImageInside()
 
         case CmdIdCopyAsImage:
             capture.copyAll()
