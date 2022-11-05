@@ -542,11 +542,7 @@ impl Undo
             baseForm.movePoint(pointIdx, -newPosX, -newPosY)
 
         case MoveBaseForm:
-            b := cast(*BaseForm) @dataof(baseForm)
-            b.x -= newPosX
-            b.y -= newPosY
-            b.w -= newSizeX
-            b.h -= newSizeY
+            baseForm.moveBaseForm(-newPosX, -newPosY, -newSizeX, -newSizeY)
 
         case MoveCapture:
             capture.backImagePos.x += -newPosX

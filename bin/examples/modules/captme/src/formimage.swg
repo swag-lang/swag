@@ -10,6 +10,7 @@ enum FormImagePlacement
 {
     Frame
     Center
+    Free
 }
 
 struct FormImage
@@ -19,9 +20,11 @@ struct FormImage
     kind:       FormImageKind = .Image
     strength:   s32 = 50
     place:      FormImagePlacement = .Center
+    freePos:    Math.Rectangle
 
     #[Serialization.NoSerialize]
     {
+        editInside:     bool
         dirty:          bool
         serial:         u32
         stc:            s32
@@ -85,41 +88,86 @@ impl IForm for FormImage
 
     mtd moveBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
-        x += newPosX
-        y += newPosY
-        w += newSizeX
-        h += newSizeY
+        if kind == .Image and place == .Free and editInside
+        {
+            freePos.x += newPosX
+            freePos.y += newPosY
+            freePos.width += newSizeX
+            freePos.height += newSizeY
+        }
+        else
+        {
+            x += newPosX
+            y += newPosY
+            w += newSizeX
+            h += newSizeY
+        }
     }
 
     mtd setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
-        if newSizeX < 0
+        if kind == .Image and place == .Free and editInside
         {
-            x = newPosX + newSizeX
-            w = -newSizeX
-        }
-        else
-        {
-            x = newPosX
-            w = newSizeX
-        }
+            if newSizeX < 0
+            {
+                freePos.x = newPosX + newSizeX
+                freePos.width = -newSizeX
+            }
+            else
+            {
+                freePos.x = newPosX
+                freePos.width = newSizeX
+            }
 
-        if newSizeY < 0
-        {
-            y = newPosY + newSizeY
-            h = -newSizeY
+            if newSizeY < 0
+            {
+                freePos.y = newPosY + newSizeY
+                freePos.height = -newSizeY
+            }
+            else
+            {
+                freePos.y = newPosY
+                freePos.height = newSizeY
+            }
         }
         else
         {
-            y = newPosY
-            h = newSizeY
+            if newSizeX < 0
+            {
+                x = newPosX + newSizeX
+                w = -newSizeX
+            }
+            else
+            {
+                x = newPosX
+                w = newSizeX
+            }
+
+            if newSizeY < 0
+            {
+                y = newPosY + newSizeY
+                h = -newSizeY
+            }
+            else
+            {
+                y = newPosY
+                h = newSizeY
+            }
         }
     }
 
     mtd moveForm(newPosX, newPosY: s32)
     {
-        x += newPosX
-        y += newPosY
+        if kind == .Image and place == .Free and editInside
+        {
+            freePos.x += newPosX
+            freePos.y += newPosY
+        }
+        else
+        {
+            x += newPosX
+            y += newPosY
+        }
     }
 
     mtd movePoint(pt: u32, newPosX, newPosY: s32)
@@ -133,6 +181,13 @@ impl IForm for FormImage
 
     mtd mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
     {
+        if kind == .Image and place == .Free and evt.kind == .MouseDoubleClick and evt.button == .Left
+        {
+            evt.accepted = true
+            editInside = !editInside
+            return true
+        }
+
         return gizmo.mouse(view, pos, evt)
     }
 
@@ -141,7 +196,19 @@ impl IForm for FormImage
         if flags & (.Hot | .Selected)
         {
             gizmo.rect = paintPos
+
+            if kind == .Image and place == .Free and editInside
+            {
+                gizmo.rect.offset(freePos.x, freePos.y)
+                gizmo.rect.width = freePos.width
+                gizmo.rect.height = freePos.height
+            }
+
             gizmo.paint(painter, flags & .Selected ? false : true)
+        }
+        else
+        {
+            editInside = false
         }
     }
 
@@ -171,6 +238,10 @@ impl IForm for FormImage
                     textureKind = kind
                     renderer.removeTexture(&texture)
                     texture = renderer.addImage(image)
+                    if !freePos.width
+                        freePos.width = image.width
+                    if !freePos.height
+                        freePos.height = image.height
                 }
 
             case Blur, Pixelate:
@@ -268,6 +339,12 @@ impl IForm for FormImage
                     pp1.y = pp.vertCenter() - texture.height / 2
                     pp1.width = texture.width
                     pp1.height = texture.height
+                    painter.drawTexture(pp1, texture)
+                case Free:
+                    pp1 := pp
+                    pp1.offset(freePos.x, freePos.y)
+                    pp1.width = freePos.width
+                    pp1.height = freePos.height
                     painter.drawTexture(pp1, texture)
                 }
             }
