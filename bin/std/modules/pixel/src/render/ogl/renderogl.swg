@@ -44,6 +44,7 @@ struct RenderOgl
     stackRT:            Array'*RenderTarget
     curRT:              *RenderTarget
     curShader:          *ShaderBase
+    overlapMode         = false
 }
 
 private impl RenderOgl
@@ -321,7 +322,7 @@ impl RenderOgl
     }
 
     // Set the current render target
-    mtd bindRenderTarget(rt: *RenderTarget, paintAlpha = false, vp: *Math.Rectangle = null)
+    mtd bindRenderTarget(rt: *RenderTarget, vp: *Math.Rectangle = null)
     {
         Debug.assert(rt != null)
         if !rt.colorBuffer.valid
@@ -329,9 +330,7 @@ impl RenderOgl
         if curRT
             stackRT.add(curRT)
         curRT = rt
-        curRT.paintAlpha = paintAlpha
-        curRT.alphaPassTris.clear()
-        curRT.alphaPassModel.clear()
+        curRT.paintAlpha = false
         glBindFramebuffer(GL_FRAMEBUFFER, cast(GLuint) curRT.handle)
         if vp
             glViewport(acast vp.x, acast vp.y, acast vp.width, acast vp.height)
@@ -544,6 +543,232 @@ impl RenderOgl
         glUniformMatrix4fv(cast(GLint) mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
     }
 
+    private mtd executeCommand(dc: *Painter, cmd: Pixel.Command, cmdIdx: uint, width, height: s32)
+    {
+        switch cmd.id
+        {
+        case SetBlendingMode:
+            params := &cmd.blendingMode
+            setBlendingMode(params.mode)
+
+        case Clear:
+            params := &cmd.clear
+            (a, r, g, b) := params.color.toArgbf()
+            glClearColor(r, g, b, a)
+            glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
+
+        case ColorMask:
+            params := &cmd.colorMask
+            glColorMask(params.r ? GL_TRUE : GL_FALSE,
+                        params.g ? GL_TRUE : GL_FALSE,
+                        params.b ? GL_TRUE : GL_FALSE,
+                        params.a ? GL_TRUE : GL_FALSE)
+
+        case Transform:
+            params := &cmd.transform
+            buidModelMatrix(params.tr)
+            glUniformMatrix4fv(cast(GLint) curShader.mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
+
+        case StartClippingRegion:
+            glEnable(GL_STENCIL_TEST)
+            glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE)
+            glStencilFunc(GL_ALWAYS, 1, 0xFF)
+            fallthrough
+
+        case SetClippingRegionMode:
+            params := &cmd.clippingRegion
+            mode := params.mode == .Set ? GL_REPLACE : cast(GLenum) GL_ZERO
+            glStencilOp(mode, mode, mode)
+
+        case EndClippingRegion:
+            glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_FALSE)
+            glStencilFunc(GL_EQUAL, 1, 0xFF)
+            glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP)
+
+        case ResetClippingRegion:
+            glDisable(GL_STENCIL_TEST)
+
+        case SetClippingRect:
+            params := &cmd.clippingRect
+            glEnable(GL_SCISSOR_TEST)
+            glScissor(cast(GLint) params.rect.x, cast(GLint) (height - params.rect.y - params.rect.height), cast(GLint) params.rect.width, cast(GLint) params.rect.height)
+
+        case ResetClippingRect:
+            glDisable(GL_SCISSOR_TEST)
+
+        case StartNoOverlap:
+            overlapMode = true
+
+        case StopNoOverlap:
+            overlapMode = false
+            setBlendingMode(blendingMode)
+
+        case DrawTriangles:
+            params := &cmd.drawTriangles
+            if !overlapMode
+            {
+                glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
+            }
+            else
+            {
+                // First we mark the alpha buffer with the 'maximum' alpha to paint.
+                // If a pixel is drawn twice because of overlapping, we will have the 'most opaque'
+                glEnable(GL_BLEND)
+                glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_TRUE)
+                glClearColor(0, 0, 0, 0)
+                glClear(GL_COLOR_BUFFER_BIT)
+                glBlendFunc(GL_SRC_ALPHA, GL_ZERO)
+                glBlendEquation(GL_MAX)
+                glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
+
+                // Then we use the stored alpha as the blend factor.
+                // When a pixel is drawn once, the alpha value is set to 0, so this means that
+                // the second pixel will not be written.
+                glBlendFuncSeparate(GL_DST_ALPHA, GL_ONE_MINUS_DST_ALPHA, GL_ZERO, GL_ZERO)
+                glBlendEquation(GL_FUNC_ADD)
+                glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE)
+                glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
+                glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_FALSE)
+            }
+
+        case UpdateFont:
+            font := cmd.font.fontRef
+            font.dirty = false
+            glActiveTexture(GL_TEXTURE1)
+            visit &atlas: font.atlases
+            {
+                if !atlas.dirty continue
+                atlas.dirty = false
+                if cast(u32) atlas.texture.handle == 0
+                    glGenTextures(1, cast(*GLuint) &atlas.texture.handle)
+                atlas.texture.width = atlas.width / atlas.bpp
+                atlas.texture.height = atlas.height
+                atlas.texture.pf = atlas.bpp == 1 ? .RGBA8 : .RGB8
+                glBindTexture(GL_TEXTURE_2D, cast(GLuint) atlas.texture.handle)
+                glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
+                fmt := atlas.bpp == 1 ? GL_RED : GL_RGB
+                glTexImage2D(GL_TEXTURE_2D, 0, fmt, cast(GLsizei) atlas.texture.width, cast(GLsizei) atlas.texture.height, 0, fmt, GL_UNSIGNED_BYTE, atlas.datas.buffer)
+            }
+
+        case ResetTexture0:
+            glActiveTexture(GL_TEXTURE0)
+            glBindTexture(GL_TEXTURE_2D, whiteTexture)
+
+        case BindTexture0:
+            params := &cmd.texture0
+            glUniform4fv(cast(GLint) curShader.boundRect, 1, &params.boundRect.x)
+            glUniform4fv(cast(GLint) curShader.textureRect, 1, &params.textureRect.x)
+            glUniform1f(cast(GLint) curShader.uvMode, cast(GLfloat) params.uvMode)
+            glUniform1i(cast(GLint) curShader.copyMode, cast(GLint) (blendingMode == .Copy))
+            glActiveTexture(GL_TEXTURE0)
+
+            #[Swag.Complete]
+            switch params.type
+            {
+            case SolidColor:
+                glBindTexture(GL_TEXTURE_2D, whiteTexture)
+            case Texture:
+                glBindTexture(GL_TEXTURE_2D, cast(GLuint) params.texture.handle)
+                glUniform1f(cast(GLint) curShader.textureW, cast(GLfloat) params.texture.width)
+                glUniform1f(cast(GLint) curShader.textureH, cast(GLfloat) params.texture.height)
+            case Hatch:
+                glBindTexture(GL_TEXTURE_2D, hatchTextures[params.hatch])
+            }
+
+            #[Swag.Complete]
+            switch params.uvMode
+            {
+            case Fill, FillSubRect:
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
+            case Tile:
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
+            }
+
+            #[Swag.Complete]
+            switch params.interpolationMode
+            {
+            case Pixel:
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+            case Linear:
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
+            }
+
+        case BindTextureFont:
+            params := &cmd.textureFont
+            glActiveTexture(GL_TEXTURE1)
+            texture := params.font.atlases[params.atlasIndex].texture.handle
+            glBindTexture(GL_TEXTURE_2D, cast(GLuint) texture)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+
+        case ResetTextureFont:
+            glActiveTexture(GL_TEXTURE1)
+            glBindTexture(GL_TEXTURE_2D, whiteTexture)
+
+        case BindRenderTarget:
+            bindRenderTarget(cmd.renderTgt.tgt)
+            curRT.paintAlpha = cmd.renderTgt.paintAlpha
+            curRT.paintAlphaIdx = cmdIdx
+            computeMatrices(curShader.mvp, curShader.mdl)
+
+        case UnbindRenderTarget:
+            Debug.assert(curRT != null)
+
+            if curRT.paintAlpha
+            {
+                glEnable(GL_BLEND)
+                glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_TRUE)
+                glClearColor(0, 0, 0, 0)
+                glClear(GL_COLOR_BUFFER_BIT)
+                glBlendFunc(GL_SRC_ALPHA, GL_ZERO)
+                glBlendEquation(GL_MAX)
+
+                for i := curRT.paintAlphaIdx; i < cmdIdx; i += 1
+                {
+                    cmd1 := dc.commandBuffer[i]
+                    switch cmd1.id
+                    {
+                    case Transform,
+                         ResetTexture0,
+                         BindTexture0,
+                         ResetTextureFont,
+                         BindTextureFont,
+                         DrawTriangles:
+                        executeCommand(dc, cmd1, cast(uint) i, width, height)
+                    }
+                }
+            }
+
+            unbindRenderTarget()
+            computeMatrices(curShader.mvp, curShader.mdl)
+
+        case ReleaseRenderTarget:
+            releaseRenderTarget(cmd.renderTgt.tgt)
+
+        case SetShader:
+            params := &cmd.shader
+            setShader(params.shader)
+
+        case SetShaderParam:
+            params := &cmd.shaderParam
+            switch params.type
+            {
+            case s32:
+                glUniform1i(cast(GLint) params.param, params._s32)
+            case f32:
+                glUniform1f(cast(GLint) params.param, params._f32)
+            default:
+                Debug.assert(false)
+            }
+        }
+    }
+
     // Draw the given painter
     mtd draw(dc: *Painter)
     {
@@ -573,233 +798,16 @@ impl RenderOgl
         setBlendingMode(BlendingMode.Alpha)
         glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_FALSE)
 
-        loop i: 10 glEnableVertexAttribArray(cast(GLuint) i)
+        loop i: 10
+            glEnableVertexAttribArray(cast(GLuint) i)
 
-        overlapMode := false
-        visit cmd: dc.commandBuffer
+        visit cmd, cmdIdx: dc.commandBuffer
         {
-            switch cmd.id
-            {
-            case SetBlendingMode:
-                params := &cmd.blendingMode
-                setBlendingMode(params.mode)
-
-            case Clear:
-                params := &cmd.clear
-                (a, r, g, b) := params.color.toArgbf()
-                glClearColor(r, g, b, a)
-                glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
-
-            case ColorMask:
-                params := &cmd.colorMask
-                glColorMask(params.r ? GL_TRUE : GL_FALSE,
-                            params.g ? GL_TRUE : GL_FALSE,
-                            params.b ? GL_TRUE : GL_FALSE,
-                            params.a ? GL_TRUE : GL_FALSE)
-
-            case Transform:
-                params := &cmd.transform
-                buidModelMatrix(params.tr)
-                glUniformMatrix4fv(cast(GLint) curShader.mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
-
-            case StartClippingRegion:
-                glEnable(GL_STENCIL_TEST)
-                glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE)
-                glStencilFunc(GL_ALWAYS, 1, 0xFF)
-                fallthrough
-
-            case SetClippingRegionMode:
-                params := &cmd.clippingRegion
-                mode := params.mode == .Set ? GL_REPLACE : cast(GLenum) GL_ZERO
-                glStencilOp(mode, mode, mode)
-
-            case EndClippingRegion:
-                glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_FALSE)
-                glStencilFunc(GL_EQUAL, 1, 0xFF)
-                glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP)
-
-            case ResetClippingRegion:
-                glDisable(GL_STENCIL_TEST)
-
-            case SetClippingRect:
-                params := &cmd.clippingRect
-                glEnable(GL_SCISSOR_TEST)
-                glScissor(cast(GLint) params.rect.x, cast(GLint) (height - params.rect.y - params.rect.height), cast(GLint) params.rect.width, cast(GLint) params.rect.height)
-
-            case ResetClippingRect:
-                glDisable(GL_SCISSOR_TEST)
-
-            case StartNoOverlap:
-                overlapMode = true
-
-            case StopNoOverlap:
-                overlapMode = false
-                setBlendingMode(blendingMode)
-
-            case DrawTriangles:
-                params := &cmd.drawTriangles
-
-                // Remember triangles in case we want a second full pass for the alpha channel
-                if curRT and curRT.paintAlpha
-                {
-                    curRT.alphaPassModel.add(modelMatrix)
-                    curRT.alphaPassTris.add(@{params.start, params.count})
-                }
-
-                if !overlapMode
-                {
-                    glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
-                }
-                else
-                {
-                    // First we mark the alpha buffer with the 'maximum' alpha to paint.
-                    // If a pixel is drawn twice because of overlapping, we will have the 'most opaque'
-                    glEnable(GL_BLEND)
-                    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_TRUE)
-                    glClearColor(0, 0, 0, 0)
-                    glClear(GL_COLOR_BUFFER_BIT)
-                    glBlendFunc(GL_SRC_ALPHA, GL_ZERO)
-                    glBlendEquation(GL_MAX)
-                    glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
-
-                    // Then we use the stored alpha as the blend factor.
-                    // When a pixel is drawn once, the alpha value is set to 0, so this means that
-                    // the second pixel will not be written.
-                    glBlendFuncSeparate(GL_DST_ALPHA, GL_ONE_MINUS_DST_ALPHA, GL_ZERO, GL_ZERO)
-                    glBlendEquation(GL_FUNC_ADD)
-                    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE)
-                    glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
-                    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_FALSE)
-                }
-
-            case UpdateFont:
-                font := cmd.font.fontRef
-                font.dirty = false
-                glActiveTexture(GL_TEXTURE1)
-                visit &atlas: font.atlases
-                {
-                    if !atlas.dirty continue
-                    atlas.dirty = false
-                    if cast(u32) atlas.texture.handle == 0
-                        glGenTextures(1, cast(*GLuint) &atlas.texture.handle)
-                    atlas.texture.width = atlas.width / atlas.bpp
-                    atlas.texture.height = atlas.height
-                    atlas.texture.pf = atlas.bpp == 1 ? .RGBA8 : .RGB8
-                    glBindTexture(GL_TEXTURE_2D, cast(GLuint) atlas.texture.handle)
-                    glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
-                    fmt := atlas.bpp == 1 ? GL_RED : GL_RGB
-                    glTexImage2D(GL_TEXTURE_2D, 0, fmt, cast(GLsizei) atlas.texture.width, cast(GLsizei) atlas.texture.height, 0, fmt, GL_UNSIGNED_BYTE, atlas.datas.buffer)
-                }
-
-            case ResetTexture0:
-                glActiveTexture(GL_TEXTURE0)
-                glBindTexture(GL_TEXTURE_2D, whiteTexture)
-
-            case BindTexture0:
-                params := &cmd.texture0
-                glUniform4fv(cast(GLint) curShader.boundRect, 1, &params.boundRect.x)
-                glUniform4fv(cast(GLint) curShader.textureRect, 1, &params.textureRect.x)
-                glUniform1f(cast(GLint) curShader.uvMode, cast(GLfloat) params.uvMode)
-                glUniform1i(cast(GLint) curShader.copyMode, cast(GLint) (blendingMode == .Copy))
-                glActiveTexture(GL_TEXTURE0)
-
-                #[Swag.Complete]
-                switch params.type
-                {
-                case SolidColor:
-                    glBindTexture(GL_TEXTURE_2D, whiteTexture)
-                case Texture:
-                    glBindTexture(GL_TEXTURE_2D, cast(GLuint) params.texture.handle)
-                    glUniform1f(cast(GLint) curShader.textureW, cast(GLfloat) params.texture.width)
-                    glUniform1f(cast(GLint) curShader.textureH, cast(GLfloat) params.texture.height)
-                case Hatch:
-                    glBindTexture(GL_TEXTURE_2D, hatchTextures[params.hatch])
-                }
-
-                #[Swag.Complete]
-                switch params.uvMode
-                {
-                case Fill, FillSubRect:
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
-                case Tile:
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
-                }
-
-                #[Swag.Complete]
-                switch params.interpolationMode
-                {
-                case Pixel:
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
-                case Linear:
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
-                }
-
-            case BindTextureFont:
-                params := &cmd.textureFont
-                glActiveTexture(GL_TEXTURE1)
-                texture := params.font.atlases[params.atlasIndex].texture.handle
-                glBindTexture(GL_TEXTURE_2D, cast(GLuint) texture)
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
-
-            case ResetTextureFont:
-                glActiveTexture(GL_TEXTURE1)
-                glBindTexture(GL_TEXTURE_2D, whiteTexture)
-
-            case BindRenderTarget:
-                bindRenderTarget(cmd.renderTgt.tgt, cmd.renderTgt.paintAlpha)
-                computeMatrices(curShader.mvp, curShader.mdl)
-
-            case UnbindRenderTarget:
-                Debug.assert(curRT != null)
-
-                if curRT.alphaPassTris.count
-                {
-                    glEnable(GL_BLEND)
-                    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_TRUE)
-                    glClearColor(0, 0, 0, 0)
-                    glClear(GL_COLOR_BUFFER_BIT)
-                    glBlendFunc(GL_SRC_ALPHA, GL_ZERO)
-                    glBlendEquation(GL_MAX)
-                    visit &c, idx: curRT.alphaPassTris
-                    {
-                        mdl := curRT.alphaPassModel[idx]
-                        glUniformMatrix4fv(cast(GLint) curShader.mdl, 1, GL_FALSE, &mdl.m[0, 0])
-                        glDrawArrays(GL_TRIANGLES, cast(GLint) c.item0, cast(GLsizei) c.item1)
-                    }
-                }
-
-                unbindRenderTarget()
-                computeMatrices(curShader.mvp, curShader.mdl)
-
-            case ReleaseRenderTarget:
-                releaseRenderTarget(cmd.renderTgt.tgt)
-
-            case SetShader:
-                params := &cmd.shader
-                setShader(params.shader)
-
-            case SetShaderParam:
-                params := &cmd.shaderParam
-                switch params.type
-                {
-                case s32:
-                    glUniform1i(cast(GLint) params.param, params._s32)
-                case f32:
-                    glUniform1f(cast(GLint) params.param, params._f32)
-                default:
-                    Debug.assert(false)
-                }
-            }
+            executeCommand(dc, cmd, cmdIdx, width, height)
         }
 
-        loop i: 10 glDisableVertexAttribArray(cast(GLuint) i)
+        loop i: 10
+            glDisableVertexAttribArray(cast(GLuint) i)
     }
 
     // Set the current shader

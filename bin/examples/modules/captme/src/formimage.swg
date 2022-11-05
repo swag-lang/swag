@@ -196,9 +196,8 @@ impl IForm for FormImage
                     icon = Icon.from(&g_Main.icons48, 15)
                 }
 
-                painter.fillRect(pp, Argb.White)
                 icon.sizeX, icon.sizeY = 32
-                icon.paint(painter, pp.horzCenter() - icon.sizeX*0.5, pp.vertCenter() - icon.sizeY*0.5, Argb.Red)
+                icon.paint(painter, pp.horzCenter() - icon.sizeX*0.5, pp.vertCenter() - icon.sizeY*0.5, Argb.White)
             }
             else
             {
