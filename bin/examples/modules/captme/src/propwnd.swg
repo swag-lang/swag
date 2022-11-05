@@ -480,9 +480,15 @@ impl PropWnd
         curSelType := getSelectedFormType()
         if curSelType == FormLine or
            curSelType == FormArrow or
-           curSelType == FormDraw or
-           curSelType == FormImage
+           curSelType == FormDraw
             return
+
+        if curSelType == FormImage
+        {
+            curSel := cast(*FormImage) getSelectedBaseForm()
+            if curSel.kind != .Image
+                return
+        }
 
         btn := createArrowButton(stack, BtnColorWidth, BtnColorHeight)
         btn.name = "Fill"

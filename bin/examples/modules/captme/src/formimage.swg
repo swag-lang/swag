@@ -193,6 +193,7 @@ impl IForm for FormImage
                 switch kind
                 {
                 case Image:
+                    painter.fillRect(pp, backColor)
                     icon = Icon.from(&g_Main.icons48, 13)
                 case Blur:
                     icon = Icon.from(&g_Main.icons48, 14)
@@ -205,11 +206,14 @@ impl IForm for FormImage
             }
             elif kind == .Image and !image.isValid()
             {
+                painter.fillRect(pp, backColor)
                 icon := Icon.from(&g_Main.icons48, 13)
                 icon.paint(painter, pp.horzCenter() - icon.sizeX*0.5, pp.vertCenter() - icon.sizeY*0.5, Argb.White)
             }
             elif kind == .Image
             {
+                painter.fillRect(pp, backColor)
+
                 pp1 := pp
                 pp1.x = pp.horzCenter() - texture.width / 2
                 pp1.y = pp.vertCenter() - texture.height / 2
