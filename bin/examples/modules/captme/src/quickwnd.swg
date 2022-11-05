@@ -204,6 +204,7 @@ impl QuickWnd
             form := Memory.new'FormImage()
             form.borderSize = borderSize
             form.borderColor = color
+            form.backColor = Argb.Gray
             form.kind = kind
             if borderSize == 0
                 form.paintShadow = false
@@ -213,6 +214,7 @@ impl QuickWnd
         }
 
         add(2, .Image, Argb.White)
+        add(2, .Zoom, Argb.White)
         add(0, .Blur, Argb.Zero)
         add(0, .Pixelate, Argb.Zero)
     }

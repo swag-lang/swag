@@ -3,6 +3,7 @@ enum FormImageKind
     Image
     Blur
     Pixelate
+    Zoom
 }
 
 struct FormImage
@@ -37,6 +38,8 @@ impl IForm for FormImage
     mtd isSame(ptr: *BaseForm)->bool
     {
         other := cast(*FormImage) ptr
+        if kind == .Image and backColor != other.backColor
+            return false
         return  borderColor == other.borderColor and
                 borderSize  == other.borderSize and
                 alpha       == other.alpha and
@@ -51,11 +54,13 @@ impl IForm for FormImage
         srcf := cast(*FormImage) src
         dstf.borderColor = srcf.borderColor
         dstf.borderSize  = srcf.borderSize
+        dstf.backColor   = srcf.backColor
         dstf.alpha       = srcf.alpha
         dstf.kind        = srcf.kind
-        dstf.image       = srcf.image
         dstf.paintShadow = srcf.paintShadow
         dstf.strength    = srcf.strength
+        if srcf.image.isValid()
+            dstf.image = srcf.image
     }
 
     mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
@@ -180,6 +185,29 @@ impl IForm for FormImage
                         texture = app.getRenderer().addImage(img)
                     }
                 }
+
+            case Zoom:
+                if  !texture.isValid() or
+                    xc != x or yc != y or wc != w or hc != h or
+                    textureKind != kind or
+                    dirty or
+                    stc != strength
+                {
+                    if w > 1 and h > 1
+                    {
+                        dirty = false
+                        textureKind = kind
+                        stc = strength
+                        xc = x; yc = y; wc = w; hc = h
+                        renderer.removeTexture(&texture)
+                        const ZoomFactor = 2.5
+                        stw := cast(s32) Math.map(cast(f32) strength, 1, 100, 1, w / ZoomFactor)
+                        sth := cast(s32) Math.map(cast(f32) strength, 1, 100, 1, h / ZoomFactor)
+                        img := capture.backImg.toCrop(x+stw, y+sth, w-stw*2, h-sth*2)
+                        img.resize(w, h, .Raw)
+                        texture = app.getRenderer().addImage(img)
+                    }
+                }
             }
         }
 
@@ -199,6 +227,8 @@ impl IForm for FormImage
                     icon = Icon.from(&g_Main.icons48, 14)
                 case Pixelate:
                     icon = Icon.from(&g_Main.icons48, 15)
+                case Zoom:
+                    icon = Icon.from(&g_Main.icons48, 16)
                 }
 
                 icon.sizeX, icon.sizeY = 32
