@@ -178,11 +178,11 @@ impl GizmoRect
         return false
     }
 
-    mtd paint(painter: *Painter, hot: bool)
+    mtd paint(painter: *Painter, hot: bool, col: Color = Argb.White)
     {
         anchorSize2 := anchorSize * 0.5
 
-        color := Color.getBlend(Argb.Black, Argb.White, hot ? 0.8 : 1)
+        color := Color.getBlend(Argb.Black, col, hot ? 0.8 : 1)
 
         if moving and !trackChange
             painter.drawRect(movingRect, Pen.createDash(.Dot, color, 2))
@@ -196,10 +196,10 @@ impl GizmoRect
                 painter.drawRect(rect, Argb.DarkGray, 4)
                 rect1 := rect
                 rect1.inflate(2)
-                painter.drawRect(rect1, Argb.White, 1)
+                painter.drawRect(rect1, col, 1)
                 rect2 := rect
                 rect2.inflate(-2)
-                painter.drawRect(rect2, Argb.White, 1)
+                painter.drawRect(rect2, col, 1)
             }
         }
 

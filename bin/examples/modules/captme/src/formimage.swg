@@ -183,9 +183,13 @@ impl IForm for FormImage
     {
         if kind == .Image and place == .Free and evt.kind == .MouseDoubleClick and evt.button == .Left
         {
-            evt.accepted = true
             editInside = !editInside
             return true
+        }
+
+        if kind == .Image and place == .Free and editInside
+        {
+            evt.modifiers ^= .Shift
         }
 
         return gizmo.mouse(view, pos, evt)
@@ -202,9 +206,12 @@ impl IForm for FormImage
                 gizmo.rect.offset(freePos.x*z, freePos.y*z)
                 gizmo.rect.width = freePos.width*z
                 gizmo.rect.height = freePos.height*z
+                gizmo.paint(painter, flags & .Selected ? false : true, Argb.Yellow)
             }
-
-            gizmo.paint(painter, flags & .Selected ? false : true)
+            else
+            {
+                gizmo.paint(painter, flags & .Selected ? false : true)
+            }
         }
         else
         {
