@@ -44,6 +44,7 @@ struct Capture
         snapX:       f32 = -1
         snapY:       f32 = -1
 
+        serialBackTexture:  u32
         movingStart:        Math.Point
         movingEnd:          Math.Point
         firstMouseMove:     bool
@@ -448,22 +449,20 @@ impl Capture
 
         // Background image
         if !backTexture.isValid() and backImg.width > 0
+        {
             backTexture = renderer.addImage(backImg)
+            serialBackTexture += 1
+        }
 
         if backTexture.isValid()
         {
             // Background image has been changed
             if dirtyBackImg
             {
-                if backTexture.pf != backImg.pf
-                {
-                    renderer.removeTexture(&backTexture)
-                    backTexture = renderer.addImage(backImg)
-                }
-                else
-                    renderer.updateTexture(&backTexture, backImg.pixels.buffer)
-
+                renderer.removeTexture(&backTexture)
+                backTexture = renderer.addImage(backImg)
                 dirtyBackImg = false
+                serialBackTexture += 1
             }
 
             var backRect: Math.Rectangle

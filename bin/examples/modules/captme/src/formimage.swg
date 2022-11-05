@@ -23,6 +23,7 @@ struct FormImage
     #[Serialization.NoSerialize]
     {
         dirty:          bool
+        serial:         u32
         stc:            s32
         xc, yc:         s32
         wc, hc:         s32
@@ -174,11 +175,13 @@ impl IForm for FormImage
                     xc != x or yc != y or wc != w or hc != h or
                     textureKind != kind or
                     dirty or
-                    stc != strength
+                    stc != strength or
+                    serial != capture.serialBackTexture
                 {
                     if w > 1 and h > 1
                     {
                         dirty = false
+                        serial = capture.serialBackTexture
                         textureKind = kind
                         stc = strength
                         xc = x; yc = y; wc = w; hc = h
@@ -198,11 +201,13 @@ impl IForm for FormImage
                     xc != x or yc != y or wc != w or hc != h or
                     textureKind != kind or
                     dirty or
-                    stc != strength
+                    stc != strength or
+                    serial != capture.serialBackTexture
                 {
                     if w > 1 and h > 1
                     {
                         dirty = false
+                        serial = capture.serialBackTexture
                         textureKind = kind
                         stc = strength
                         xc = x; yc = y; wc = w; hc = h
