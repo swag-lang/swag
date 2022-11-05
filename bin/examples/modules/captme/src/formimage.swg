@@ -3,6 +3,7 @@ enum FormImageKind
     Image
     Blur
     Pixelate
+    Zoom
 }
 
 struct FormImage
@@ -14,6 +15,7 @@ struct FormImage
 
     #[Serialization.NoSerialize]
     {
+        dirty:          bool
         stc:            s32
         xc, yc:         s32
         wc, hc:         s32
@@ -36,6 +38,8 @@ impl IForm for FormImage
     mtd isSame(ptr: *BaseForm)->bool
     {
         other := cast(*FormImage) ptr
+        if kind == .Image and backColor != other.backColor
+            return false
         return  borderColor == other.borderColor and
                 borderSize  == other.borderSize and
                 alpha       == other.alpha and
@@ -50,11 +54,13 @@ impl IForm for FormImage
         srcf := cast(*FormImage) src
         dstf.borderColor = srcf.borderColor
         dstf.borderSize  = srcf.borderSize
+        dstf.backColor   = srcf.backColor
         dstf.alpha       = srcf.alpha
         dstf.kind        = srcf.kind
-        dstf.image       = srcf.image
         dstf.paintShadow = srcf.paintShadow
         dstf.strength    = srcf.strength
+        if srcf.image.isValid()
+            dstf.image = srcf.image
     }
 
     mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
@@ -148,21 +154,24 @@ impl IForm for FormImage
             switch kind
             {
             case Image:
-                if !texture.isValid() or textureKind != kind
+                if (!texture.isValid() or textureKind != kind or dirty) and image.isValid()
                 {
+                    dirty = false
                     textureKind = kind
                     renderer.removeTexture(&texture)
                     texture = renderer.addImage(image)
                 }
 
             case Blur, Pixelate:
-                if !texture.isValid() or
-                xc != x or yc != y or wc != w or hc != h or
-                textureKind != kind or
-                stc != strength
+                if  !texture.isValid() or
+                    xc != x or yc != y or wc != w or hc != h or
+                    textureKind != kind or
+                    dirty or
+                    stc != strength
                 {
                     if w > 1 and h > 1
                     {
+                        dirty = false
                         textureKind = kind
                         stc = strength
                         xc = x; yc = y; wc = w; hc = h
@@ -173,6 +182,29 @@ impl IForm for FormImage
                         nh := Math.max(cast(s32) (img.height / st), 4)
                         img.resize(nw, nh, .Quadratic)
                         img.resize(w, h, kind == .Pixelate ? .Raw : .Quadratic)
+                        texture = app.getRenderer().addImage(img)
+                    }
+                }
+
+            case Zoom:
+                if  !texture.isValid() or
+                    xc != x or yc != y or wc != w or hc != h or
+                    textureKind != kind or
+                    dirty or
+                    stc != strength
+                {
+                    if w > 1 and h > 1
+                    {
+                        dirty = false
+                        textureKind = kind
+                        stc = strength
+                        xc = x; yc = y; wc = w; hc = h
+                        renderer.removeTexture(&texture)
+                        const ZoomFactor = 2.5
+                        stw := cast(s32) Math.map(cast(f32) strength, 1, 100, 1, w / ZoomFactor)
+                        sth := cast(s32) Math.map(cast(f32) strength, 1, 100, 1, h / ZoomFactor)
+                        img := capture.backImg.toCrop(x+stw, y+sth, w-stw*2, h-sth*2)
+                        img.resize(w, h, .Raw)
                         texture = app.getRenderer().addImage(img)
                     }
                 }
@@ -189,15 +221,36 @@ impl IForm for FormImage
                 switch kind
                 {
                 case Image:
+                    painter.fillRect(pp, backColor)
                     icon = Icon.from(&g_Main.icons48, 13)
                 case Blur:
                     icon = Icon.from(&g_Main.icons48, 14)
                 case Pixelate:
                     icon = Icon.from(&g_Main.icons48, 15)
+                case Zoom:
+                    icon = Icon.from(&g_Main.icons48, 16)
                 }
 
                 icon.sizeX, icon.sizeY = 32
                 icon.paint(painter, pp.horzCenter() - icon.sizeX*0.5, pp.vertCenter() - icon.sizeY*0.5, Argb.White)
+            }
+            elif kind == .Image and !image.isValid()
+            {
+                painter.fillRect(pp, backColor)
+                icon := Icon.from(&g_Main.icons48, 13)
+                icon.paint(painter, pp.horzCenter() - icon.sizeX*0.5, pp.vertCenter() - icon.sizeY*0.5, Argb.White)
+            }
+            elif kind == .Image
+            {
+                painter.fillRect(pp, backColor)
+
+                pp1 := pp
+                pp1.x = pp.horzCenter() - texture.width / 2
+                pp1.y = pp.vertCenter() - texture.height / 2
+                pp1.width = texture.width
+                pp1.height = texture.height
+                painter.drawTexture(pp1, texture)
+                //painter.drawTexture(pp, texture)
             }
             else
             {

@@ -198,6 +198,25 @@ impl QuickWnd
 
     mtd defaultQuickStyleImage()
     {
+        #[Swag.Macro]
+        func add(borderSize: f32, kind: FormImageKind, color: Color)
+        {
+            form := Memory.new'FormImage()
+            form.borderSize = borderSize
+            form.borderColor = color
+            form.backColor = Argb.Gray
+            form.kind = kind
+            if borderSize == 0
+                form.paintShadow = false
+            it := cast(IForm) form
+            it.setup(null)
+            `qsImage.forms.add(it)
+        }
+
+        add(2, .Image, Argb.White)
+        add(2, .Zoom, Argb.White)
+        add(0, .Blur, Argb.Zero)
+        add(0, .Pixelate, Argb.Zero)
     }
 
     mtd defaultQuickStyleStep()

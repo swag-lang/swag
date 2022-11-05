@@ -24,6 +24,7 @@ public struct PopupMenuItem
     separator:  bool
     disabled:   bool
     checked:    bool
+    hidden:     bool
 }
 
 public struct MenuCtrl
@@ -75,6 +76,8 @@ public impl IWnd for MenuCtrl
 
         visit i, idx: items
         {
+            if i.hidden
+                continue
             if i.separator
                 continue
 
@@ -148,13 +151,20 @@ public impl IWnd for MenuCtrl
         var colorText: Color
         var colorRightText: Color
 
+        lastIsSeparator := false
         visit i, idx: items
         {
+            if i.hidden
+                continue
+            if i.separator and lastIsSeparator
+                continue
+
             labelPos.x = clientRect.x
             labelPos.y = i.pos
             labelPos.width = clientRect.width
             labelPos.height = i.size
 
+            lastIsSeparator = i.separator
             if i.separator
             {
                 painter.drawLine(labelPos.x, labelPos.vertCenter(), labelPos.right(), labelPos.vertCenter(), Pen.createSolid(colors.menuPopup_Separator))
@@ -374,6 +384,8 @@ impl MenuCtrl
             evt := sendCommandUIEvent(i.id)
             if evt.setFlags & .Disabled
                 i.disabled = evt.disabled
+            if evt.setFlags & .Hidden
+                i.hidden = evt.hidden
             if evt.setFlags & .Icon
                 i.icon = evt.icon
             if evt.setFlags & .LongName
@@ -528,6 +540,8 @@ impl MenuCtrl
 
         visit i, idx: items
         {
+            if i.hidden
+                continue
             if onComputeItem
                 onComputeItem(self, i)
             i.pos = x + metrics.menuBar_SpaceBetween * 0.5
@@ -556,14 +570,21 @@ impl MenuCtrl
         var rsf:  Pixel.RichStringFormat
         rsf.font = theme.res.fontDefault
 
+        lastIsSeparator := false
         visit i, idx: items
         {
+            if i.hidden
+                continue
+            if i.separator and lastIsSeparator
+                continue
+
             if onComputeItem
                 onComputeItem(self, i)
             if idx
                 position.height += metrics.menuPopup_SpaceLines
             i.pos = position.height
 
+            lastIsSeparator = i.separator
             if i.separator
             {
                 i.size = metrics.menuPopup_SeparatorHeight

@@ -480,9 +480,15 @@ impl PropWnd
         curSelType := getSelectedFormType()
         if curSelType == FormLine or
            curSelType == FormArrow or
-           curSelType == FormDraw or
-           curSelType == FormImage
+           curSelType == FormDraw
             return
+
+        if curSelType == FormImage
+        {
+            curSel := cast(*FormImage) getSelectedBaseForm()
+            if curSel.kind != .Image
+                return
+        }
 
         btn := createArrowButton(stack, BtnColorWidth, BtnColorHeight)
         btn.name = "Fill"
@@ -954,7 +960,9 @@ impl PropWnd
             return
 
         curSel := cast(*FormImage) getSelectedBaseForm()
-        with combo := ComboBox.create(mainLayout)
+        ctrl := ComboCtrl.create(mainLayout, "Kind")
+        ctrl.comboSize = 210
+        with ctrl.combo
         {
             visit v: @typeof(FormImageKind).values
                 .addItem(v.name)
@@ -987,13 +995,15 @@ impl PropWnd
     mtd propShadow()
     {
         curSel := getSelectedBaseForm()
-        with combo := ComboBox.create(mainLayout)
+        ctrl := ComboCtrl.create(mainLayout, "Shadow")
+        ctrl.comboSize = 210
+        with ctrl.combo
         {
-            .addItem("Small Shadow")
             .addItem("No Shadow")
-            .selectItem(curSel.paintShadow ? 0 : 1)
+            .addItem("Small")
+            .selectItem(curSel.paintShadow ? 1 : 0)
             .sigChanged += @|self|(combo, val) {
-                b := val == 0 ? true : false
+                b := val == 1 ? true : false
                 self.pushTypedValue(acast b, @typeof(BaseForm), @nameof(BaseForm.paintShadow), true)
             }
         }
@@ -1021,13 +1031,13 @@ impl PropWnd
         if stack1.childs.count == 0
             stack1.destroyNow()
 
-        propBorderSize()
         propImageKind()
         propStrength()
         propNextStep()
         propText()
         propFontSize()
         propBoldSize()
+        propBorderSize()
         propStartSize()
         propEndSize()
         propOpacity()

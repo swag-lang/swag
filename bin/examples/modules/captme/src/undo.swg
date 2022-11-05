@@ -24,6 +24,7 @@ enum UndoKind
     Flatten
     FlattenAll
     RestoreOrg
+    SetImageInside
 }
 
 struct Undo
@@ -51,6 +52,7 @@ struct Undo
     mdlValue:       *BaseForm
     oldForm:        Array'*BaseForm
     oldText:        Array'String
+    oldImage:       Array'Image
     oldImg:         Image
     oldImagePos:    Math.Point
 }
@@ -74,6 +76,19 @@ impl Undo
         case FlattenAll:
             oldImg = capture.backImg
             oldForms = capture.forms
+
+        case SetImageInside:
+            selection = capture.selection
+            visit s: selection
+            {
+                f := capture.forms[s]
+                if @kindof(f) != FormImage
+                    continue
+                b := cast(*FormImage) @dataof(f)
+                if b.kind != .Image
+                    continue
+                oldImage.add(b.image)
+            }
 
         case SetText:
             selection = capture.selection
@@ -215,6 +230,19 @@ impl Undo
                 .forms.clear()
                 .dirtyBackImg = true
                 .selectionHasChanged()
+            }
+
+        case SetImageInside:
+            visit s, i: selection
+            {
+                f := capture.forms[s]
+                if @kindof(f) != FormImage
+                    continue
+                b := cast(*FormImage) @dataof(f)
+                if b.kind != .Image
+                    continue
+                b.image = oldImg
+                b.dirty = true
             }
 
         case SetText:
@@ -432,6 +460,19 @@ impl Undo
                 .selection.clear()
                 .dirtyBackImg = true
                 .selectionHasChanged()
+            }
+
+        case SetImageInside:
+            visit s, i: selection
+            {
+                f := capture.forms[s]
+                if @kindof(f) != FormImage
+                    continue
+                b := cast(*FormImage) @dataof(f)
+                if b.kind != .Image
+                    continue
+                b.image = dref oldImage[i]
+                b.dirty = true
             }
 
         case SetText:
