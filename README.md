@@ -7,6 +7,7 @@
 Swag is a native and/or interpreted programming language made for fun because, let's be honest, **C++** is now an **horrible and ugly beast** ! This is my third compiler (the other ones were developed for AAA game engines), but that one is by far the most advanced.
 
 Website: [https://swag-lang.org/](https://swag-lang.org/)
+
 If you want to take a look at the language, this is [here](https://www.swag-lang.org/doc.php).
 
 Note that a `visual studio code` extension (Swag) exists for syntax coloration.
