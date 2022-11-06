@@ -183,7 +183,11 @@ impl IForm for FormImage
 
     mtd mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
     {
-        if kind == .Image and place == .Free and evt.kind == .MouseDoubleClick and evt.button == .Left
+        if kind == .Image and
+           place == .Free and
+           evt.kind == .MouseDoubleClick and
+           evt.button == .Left and
+           image.isValid()
         {
             editInside = !editInside
             return true
