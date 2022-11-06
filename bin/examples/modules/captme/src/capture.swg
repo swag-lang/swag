@@ -377,7 +377,7 @@ impl Capture
             painter.setShaderParam(render.shaderBlur.axis, 0's32)
             painter.setShaderParam(render.shaderBlur.radius, blurRadius)
             painter.setBlendingMode(.Copy)
-            painter.setColorMask(true, true, true, true);
+            painter.setColorMask(true, true, true, true)
             painter.clear(Argb.Zero)
             dstRect = Math.Rectangle{0, 0, wt, ht}
             painter.drawTexture(dstRect, dstRect, rt1.colorBuffer)
@@ -390,7 +390,7 @@ impl Capture
             painter.setShaderParam(render.shaderBlur.axis, 1's32)
             painter.setShaderParam(render.shaderBlur.radius, blurRadius)
             painter.setBlendingMode(.Copy)
-            painter.setColorMask(true, true, true, true);
+            painter.setColorMask(true, true, true, true)
             dstRect = Math.Rectangle{0, 0, wt, ht}
             painter.drawTexture(dstRect, dstRect, rt2.colorBuffer, Color.fromArgb(150, Argb.Black))
 
@@ -423,6 +423,11 @@ impl Capture
             paintShadowRect.x = base.paintPos.x - Margin
             paintShadowRect.y = base.paintPos.y - Margin
             paintShadowRect.offset(base.shadowOffset.x, base.shadowOffset.y)
+            painter.setColorMask(true, true, true, false)
+            painter.drawTexture(paintShadowRect, dstRect, rt1.colorBuffer, colForm)
+
+            painter.setBlendingMode(.Max)
+            painter.setColorMask(false, false, false, true)
             painter.drawTexture(paintShadowRect, dstRect, rt1.colorBuffer, colForm)
         }
         else
@@ -430,9 +435,16 @@ impl Capture
             paintShadowRect := dstRect
             paintShadowRect.x = base.paintPos.x
             paintShadowRect.y = base.paintPos.y
+            painter.setColorMask(true, true, true, false)
+            painter.drawTexture(paintShadowRect, dstRect, rt.colorBuffer, colForm)
+
+            painter.setBlendingMode(.Max)
+            painter.setColorMask(false, false, false, true)
             painter.drawTexture(paintShadowRect, dstRect, rt.colorBuffer, colForm)
         }
 
+        painter.setColorMask(true, true, true, false)
+        painter.setBlendingMode(.Alpha)
         painter.popClippingRect()
 
         painter.releaseRenderTarget(rt)
