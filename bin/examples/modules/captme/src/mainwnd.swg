@@ -261,6 +261,12 @@ impl IWnd for MainWnd
             evt.checked = captureToClipboard
             evt.accepted = true
 
+        case CmdIdTrimCanevas:
+            evt.setFlags |= .Name | .Disabled
+            evt.name = "Adjust Canevas To Image"
+            evt.disabled = !capture
+            evt.accepted = true
+
         case CmdIdSaveAsImage:
             evt.setFlags |= .Name | .Disabled
             evt.name = "Save As Image..."
@@ -766,6 +772,9 @@ impl IWnd for MainWnd
         case CmdIdCaptureToClipboard:
             captureToClipboard = !captureToClipboard
 
+        case CmdIdTrimCanevas:
+            trimCanevas()
+
         case CmdIdSaveAsImage:
             saveAsImage()
         case CmdIdSaveAsLinkedImage:
@@ -1091,6 +1100,98 @@ impl MainWnd
             newCapture(img, dlg.getSelectedName())
     }
 
+    mtd trimCanevas()
+    {
+        capture := getCapture()
+
+        minX := Swag.F32.Max
+        minY := Swag.F32.Max
+        maxX := 0'f32
+        maxY := 0'f32
+
+        visit f: capture.forms
+        {
+            r := f.boundRect(false)
+            if r.x > 0
+                minX = Math.min(minX, r.x)
+            if r.y > 0
+                minY = Math.min(minY, r.y)
+            if r.right() < capture.width
+                maxX = Math.max(maxX, r.right())
+            if r.bottom() < capture.height
+                maxY = Math.max(maxY, r.bottom())
+        }
+
+        scope Left loop x: capture.backImg.width
+        {
+            if x + capture.backImagePos.x < 0
+                continue
+            loop y: capture.backImg.height
+            {
+                col := capture.backImg.getPixelColor(x, y)
+                if col.a
+                {
+                    minX = Math.min(minX, x + capture.backImagePos.x)
+                    break Left
+                }
+            }
+        }
+
+        scope Right loop x: capture.backImg.width-1..0
+        {
+            if x + capture.backImagePos.x >= capture.width
+                continue
+            loop y: capture.backImg.height
+            {
+                col := capture.backImg.getPixelColor(x, y)
+                if col.a
+                {
+                    maxX = Math.max(maxX, x + capture.backImagePos.x)
+                    break Right
+                }
+            }
+        }
+
+        scope Up loop y: capture.backImg.height
+        {
+            if y + capture.backImagePos.y < 0
+                continue
+            loop x: capture.backImg.width
+            {
+                col := capture.backImg.getPixelColor(x, y)
+                if col.a
+                {
+                    minY = Math.min(minY, y + capture.backImagePos.y)
+                    break Up
+                }
+            }
+        }
+
+        scope Down loop y: capture.backImg.height-1..0
+        {
+            if y + capture.backImagePos.y >= capture.height
+                continue
+            loop x: capture.backImg.width
+            {
+                col := capture.backImg.getPixelColor(x, y)
+                if col.a
+                {
+                    maxY = Math.max(maxY, y + capture.backImagePos.y)
+                    break Down
+                }
+            }
+        }
+
+        undo := capture.newUndo(.MoveCapture)
+        undo.newPosX -= cast(s32) minX
+        undo.newSizeX -= cast(s32) minX
+        undo.newPosY -= cast(s32) minY
+        undo.newSizeY -= cast(s32) minY
+        undo.newSizeX -= cast(s32) (capture.width - maxX)
+        undo.newSizeY -= cast(s32) (capture.height - maxY)
+        capture.pushUndo(undo)
+    }
+
     mtd saveAsImage(linked = false)
     {
         var opt: FileDlgOptions
@@ -1405,6 +1506,12 @@ impl MainWnd
             .addItem(CmdIdDeSelectAll)
             .addItem(CmdIdInvertSelection)
             topMenu.addPopup("Edit", editMenu)
+        }
+
+        with imageMenu := MenuCtrl.createPopup(parent, owner: self)
+        {
+            .addItem(CmdIdTrimCanevas)
+            topMenu.addPopup("Image", imageMenu)
         }
 
         with viewMenu := MenuCtrl.createPopup(parent, owner: self)
