@@ -296,8 +296,20 @@ impl RecentWnd
         {
             if it.file == file
             {
+                idxSel := i
+
+                if front and i
+                {
+                    recentView.items.removeAt(i)
+                    recentView.items.insertAt(0, it)
+                    idxSel = 0
+                }
+
                 if sel
-                    recentView.select(i)
+                {
+                    recentView.select(idxSel)
+                }
+
                 return
             }
         }
