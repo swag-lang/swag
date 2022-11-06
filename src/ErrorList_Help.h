@@ -24,6 +24,7 @@ SWAG_ERROR(Hlp0022, "this kind of constant does not have an associated memory st
 SWAG_ERROR(Hlp0023, "valid modes are `defer(err)` and `defer(noerr)`")
 SWAG_ERROR(Hlp0024, "to declare a multi dimensional array, syntax is [N1, N2, ...] and not [N1[N2][...]")
 SWAG_ERROR(Hlp0025, "you cannot declare a slice or a static array of another slice or array")
+SWAG_ERROR(Hlp0026, "a public struct should export all its special functions")
 
 
 

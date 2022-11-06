@@ -17,7 +17,7 @@ struct ThemeStyle
 
 impl ThemeStyle
 {
-    private mtd opDrop()
+    mtd opDrop()
     {
         release()
     }

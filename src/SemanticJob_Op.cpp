@@ -132,6 +132,13 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
         return context->report(diag, &note);
     }
 
+    if (node->ownerScope->owner->attributeFlags & ATTRIBUTE_PUBLIC && node->attributeFlags & ATTRIBUTE_PRIVATE)
+    {
+        Diagnostic note{Hlp(Hlp0026), DiagnosticLevel::Help};
+        Diagnostic diag{node, node->tokenName, Fmt(Err(Err0503), node->token.ctext())};
+        return context->report(diag, &note);
+    }
+
     PushErrContext ec(context, nullptr, getSpecialOpSignature(node), nullptr, DiagnosticLevel::Help);
 
     auto      parameters = node->parameters;
