@@ -1,0 +1,17 @@
+#global testerror
+struct A {}
+interface I
+{
+    mtd x()
+}
+
+impl I for A
+{
+    mtd opDrop(){}
+    mtd x(){}
+}
+
+#test
+{
+    var x: A
+}

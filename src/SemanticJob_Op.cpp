@@ -125,6 +125,13 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
         return context->report(diag, &note);
     }
 
+    if (node->ownerScope->kind == ScopeKind::Impl)
+    {
+        Diagnostic note{Hlp(Hlp0015), DiagnosticLevel::Help};
+        Diagnostic diag{node, node->tokenName, Fmt(Err(Err0494), node->token.ctext())};
+        return context->report(diag, &note);
+    }
+
     PushErrContext ec(context, nullptr, getSpecialOpSignature(node), nullptr, DiagnosticLevel::Help);
 
     auto      parameters = node->parameters;

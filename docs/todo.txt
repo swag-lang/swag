@@ -72,8 +72,6 @@ TODO
 -------------------------------------
 erreur si opDrop est privé et la struct publique (on doit exporter)
 -------------------------------------
-erreur si fonctions speciales definies dans block impl d'interface plutôt quand dans impl simple
--------------------------------------
 on doit exporter les implementation d'interface pour un truc public ?
 -------------------------------------
 lambda short form in declaration var x: func(s32) = @(x) {}

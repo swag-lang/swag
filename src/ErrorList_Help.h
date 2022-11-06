@@ -13,7 +13,7 @@ SWAG_ERROR(Hlp0011, "`Swag.Safety` valid values are `boundcheck`, `overflow`, `m
 SWAG_ERROR(Hlp0012, "`Swag.Optim` valid values are `bytecode` and `backend`")
 SWAG_ERROR(Hlp0013, "`Swag.ExportType` valid values are `methods` and `nozero`")
 SWAG_ERROR(Hlp0014, "a function name starting with `op` and followed by a letter in upper case is reserved for struct special functions")
-SWAG_ERROR(Hlp0015, "a struct special function should be defined in a `impl` scope")
+SWAG_ERROR(Hlp0015, "a struct special function should be defined in a corresponding `impl` scope")
 SWAG_ERROR(Hlp0016, "all function arguments are immutable and cannot be changed")
 SWAG_ERROR(Hlp0017, "a closure can only be defined in a function")
 SWAG_ERROR(Hlp0018, "a lambda with its parameters deduced must deduce its return type too")
