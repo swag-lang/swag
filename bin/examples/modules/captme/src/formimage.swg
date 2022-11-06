@@ -357,10 +357,10 @@ impl IForm for FormImage
                     painter.drawTexture(pp, texture)
                 case Center:
                     pp1 := pp
-                    pp1.x = pp.horzCenter() - texture.width / 2
-                    pp1.y = pp.vertCenter() - texture.height / 2
-                    pp1.width = texture.width
-                    pp1.height = texture.height
+                    pp1.x = pp.horzCenter() - (texture.width / 2)*z
+                    pp1.y = pp.vertCenter() - (texture.height / 2)*z
+                    pp1.width = texture.width*z
+                    pp1.height = texture.height*z
                     painter.drawTexture(pp1, texture)
                 case Free:
                     pp1 := pp
