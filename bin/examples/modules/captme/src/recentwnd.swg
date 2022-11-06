@@ -92,13 +92,16 @@ impl IWnd for RecentView
                 select(hotItem)
                 if evt.button == .Right
                 {
-                    menu := MenuCtrl.createPopup(self)
-                    menu.addItem(CmdIdDupCapture)
-                    menu.addItem(CmdIdDeleteCapture)
-                    menu.addSeparator()
-                    menu.addItem(CmdIdCopyAsImage)
-                    menu.addSeparator()
-                    menu.addItem(CmdIdFileLocation)
+                    with menu := MenuCtrl.createPopup(self)
+                    {
+                        .addItem(CmdIdDupCapture)
+                        .addItem(CmdIdDeleteCapture)
+                        .addSeparator()
+                        .addItem(CmdIdCopyAsImage)
+                        .addSeparator()
+                        .addItem(CmdIdFileLocation)
+                    }
+
                     res := menu.doModal(evt.surfacePos, autoDestroy: true)
                 }
             }
@@ -190,17 +193,19 @@ impl RecentWnd
 {
     func create(parent: *Wnd, main: *MainWnd)->*RecentWnd
     {
-        recent := Wnd.create'RecentWnd(parent, @{0, 0, 0, PreviewHeight + RecentPadding*2})
-        recent.scrollWndFlags |= .SmallBar | .ForceHorizontal
-        recent.backgroundStyle = .Window
-        recent.main = main
-        recent.style.addStyleSheetColors("scrollBar_Bk $view_Bk")
+        with recent := Wnd.create'RecentWnd(parent, @{0, 0, 0, PreviewHeight + RecentPadding*2})
+        {
+            .scrollWndFlags |= .SmallBar | .ForceHorizontal
+            .backgroundStyle = .Window
+            .main = main
+            .style.addStyleSheetColors("scrollBar_Bk $view_Bk")
 
-        recent.recentView = recent.createView'RecentView()
-        recent.recentView.padding = RecentPadding
-        recent.recentView.main = main
-        recent.recentView.recentWnd = recent
-        recent.view.backgroundStyle = .View
+            .recentView = recent.createView'RecentView()
+            .recentView.padding = RecentPadding
+            .recentView.main = main
+            .recentView.recentWnd = recent
+            .view.backgroundStyle = .View
+        }
 
         g_Library.fill()
         if @err return recent
