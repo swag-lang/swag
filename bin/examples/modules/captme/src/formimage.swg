@@ -86,9 +86,11 @@ impl IForm for FormImage
         return true
     }
 
+    mtd mustEditInside() => kind == .Image and place == .Free and editInside
+
     mtd moveBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
-        if kind == .Image and place == .Free and editInside
+        if mustEditInside()
         {
             freePos.x += newPosX
             freePos.y += newPosY
@@ -106,7 +108,7 @@ impl IForm for FormImage
 
     mtd setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
-        if kind == .Image and place == .Free and editInside
+        if mustEditInside()
         {
             if newSizeX < 0
             {
@@ -158,7 +160,7 @@ impl IForm for FormImage
 
     mtd moveForm(newPosX, newPosY: s32)
     {
-        if kind == .Image and place == .Free and editInside
+        if mustEditInside()
         {
             freePos.x += newPosX
             freePos.y += newPosY
@@ -187,7 +189,7 @@ impl IForm for FormImage
             return true
         }
 
-        if kind == .Image and place == .Free and editInside
+        if mustEditInside()
         {
             evt.modifiers ^= .Shift
         }
@@ -201,7 +203,7 @@ impl IForm for FormImage
         {
             gizmo.rect = paintPos
 
-            if kind == .Image and place == .Free and editInside
+            if mustEditInside()
             {
                 gizmo.rect.offset(freePos.x*z, freePos.y*z)
                 gizmo.rect.width = freePos.width*z
@@ -221,6 +223,15 @@ impl IForm for FormImage
 
     mtd hitTest(pt: Math.Point, z: f32)->bool
     {
+        if mustEditInside()
+        {
+            pp := Math.Rectangle{paintPos.x, paintPos.y, paintPos.width, paintPos.height}
+            pp.offset(freePos.x*z, freePos.y*z)
+            pp.width = freePos.width*z
+            pp.height = freePos.height*z
+            return pp.contains(pt)
+        }
+
         return true
     }
 
