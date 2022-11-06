@@ -95,7 +95,7 @@ public struct RegExp
 
 impl RegExp
 {
-    mtd opDrop()
+    public mtd opDrop()
     {
         clear()
     }

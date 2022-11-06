@@ -481,12 +481,12 @@ public struct Tesselate
 
 impl Tesselate
 {
-    mtd opDrop()
+    public mtd opDrop()
     {
         clear()
     }
 
-    mtd clear()
+    public mtd clear()
     {
         Memory.delete(head)
         Memory.delete(tail)

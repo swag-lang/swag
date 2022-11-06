@@ -34,7 +34,7 @@ public struct IntPoint
 
 impl IntPoint
 {
-    mtd opEquals(other: Self)->bool
+    public mtd opEquals(other: Self)->bool
     {
         return x == other.x and y == other.y
     }
