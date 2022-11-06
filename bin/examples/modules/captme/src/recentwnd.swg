@@ -251,7 +251,11 @@ impl RecentWnd
 
         catch File.delete(item.file)
         if @err
+        {
+            MessageDlg.error(surface, @err, "Failed to delete capture file !")
             return
+        }
+
         g_Library.removeFile(item.file)
 
         // Be sure there's no pending save
