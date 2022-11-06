@@ -164,6 +164,7 @@ impl IWnd for MainWnd
 
         if evt.ser.isReading()
         {
+            quickStyleBar.sendResizeEvent()
             setBottomSize(bottomSize)
             updateState()
         }
