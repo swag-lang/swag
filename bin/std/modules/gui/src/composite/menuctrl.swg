@@ -33,8 +33,8 @@ public struct MenuCtrl
     onValidateResult:   func(self, WndId)
     onComputeItem:      func(self, *PopupMenuItem)
     menuCtrlFlags:      MenuCtrlFlags = None
-    paddingSelX:        f32 = 4
 
+    paddingSel:     f32 = 4
     items:          ArrayPtr'PopupMenuItem
     hotIdx:         u32 = Swag.U32.Max
     selectedIdx:    u32 = Swag.U32.Max
@@ -181,7 +181,7 @@ public impl IWnd for MenuCtrl
                 backPos := labelPos
                 backPos.y -= metrics.menuPopup_SpaceLines * 0.5
                 backPos.height += metrics.menuPopup_SpaceLines
-                backPos.inflate(paddingSelX, 0)
+                backPos.inflate(paddingSel, 0)
                 theme.drawSubRect(painter, backPos, &rects.menuPopup_HotBk, colors.popupItem_HotBk)
                 colorText = colors.popupItem_HotText
                 colorRightText = colors.popupItem_HotRightText
@@ -747,6 +747,7 @@ public impl MenuCtrl
             setFrameFlags(.Borders | .SmallShadow)
             setFrameForm(.Round)
             padding.y += 14
+            paddingSel = 0
 
         case AnchorBottomCenter:
             pt.y -= getThemeMetrics().menuPopup_ShadowSize
@@ -755,6 +756,7 @@ public impl MenuCtrl
             anchorPos = position.width * 0.5
             setFrameFlags(.Borders | .SmallShadow)
             setFrameForm(.Round)
+            paddingSel = 0
         }
 
         fitPosInParent(simX: true, simY: true)

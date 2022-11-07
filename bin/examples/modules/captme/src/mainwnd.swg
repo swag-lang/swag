@@ -1747,7 +1747,6 @@ impl MainWnd
                 pos  := btn.getSurfaceRect()
                 menu := MenuCtrl.createPopup(res)
                 menu.menuCtrlFlags |= .NoKeyShortcuts
-                menu.paddingSelX = 0
                 menu.addItem(CmdIdZoom1)
                 menu.addItem(CmdIdZoomFit)
                 discard menu.doModal(@{pos.horzCenter(), pos.y}, .AnchorBottomCenter, autoDestroy: true)
@@ -1763,7 +1762,6 @@ impl MainWnd
                 pos  := btn.getSurfaceRect()
                 menu := MenuCtrl.createPopup(res)
                 menu.menuCtrlFlags |= .NoKeyShortcuts
-                menu.paddingSelX = 0
                 menu.addItem(CmdIdResizeImage)
                 menu.addItem(CmdIdResizeCapture)
                 discard menu.doModal(@{pos.horzCenter(), pos.y}, .AnchorBottomCenter, autoDestroy: true)

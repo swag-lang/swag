@@ -395,6 +395,12 @@ impl IWnd for IconButton
         {
             sigPaintIcon(self, bc, pos)
         }
+        elif name.raw.isEmpty()
+        {
+            pos.x = pos.horzCenter() - icon.sizeX * 0.5
+            pos.y = pos.vertCenter() - icon.sizeY * 0.5
+            icon.paint(bc.painter, pos.x, pos.y, colorIcon)
+        }
         else
         {
             switch textPos
