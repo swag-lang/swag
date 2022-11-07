@@ -1551,6 +1551,8 @@ impl MainWnd
             .addItem(CmdIdSelectAll)
             .addItem(CmdIdDeSelectAll)
             .addItem(CmdIdInvertSelection)
+            .addSeparator()
+            .addItem(CmdIdSnap)
             topMenu.addPopup("Edit", editMenu)
         }
 
@@ -1559,6 +1561,7 @@ impl MainWnd
             .addItem(CmdIdRestoreOrg)
             .addSeparator()
             .addItem(CmdIdTrimCanevas)
+            .addItem(CmdIdFlattenAll)
             topMenu.addPopup("Image", imageMenu)
         }
 
