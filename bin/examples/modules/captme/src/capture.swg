@@ -44,6 +44,7 @@ struct Capture
         snapX:       f32 = -1
         snapY:       f32 = -1
 
+        serialUndo:         u32
         serialBackTexture:  u32
         movingStart:        Math.Point
         movingEnd:          Math.Point
@@ -1252,10 +1253,18 @@ impl Capture
     // UNDO
     //////////////////////////////
 
-    mtd newUndo(kind: UndoKind)->*Undo
+    mtd newUndo(kind: UndoKind, serial: u32 = 0)->*Undo
     {
         ptr := undos.newPtr()
         ptr.kind = kind
+        if serial
+            ptr.serial = serial
+        else
+        {
+            serialUndo += 1
+            ptr.serial = serialUndo
+        }
+
         return ptr
     }
 
@@ -1271,17 +1280,31 @@ impl Capture
 
     mtd undo()
     {
-        if !canUndo() return
-        nextUndo -= 1
-        undos[nextUndo].undo()
+        if !canUndo()
+            return
+
+        serial := undos[nextUndo-1].serial
+        while nextUndo and undos[nextUndo-1].serial == serial
+        {
+            nextUndo -= 1
+            undos[nextUndo].undo()
+        }
+
         editView.invalidate()
     }
 
     mtd redo()
     {
-        if !canRedo() return
-        undos[nextUndo].do()
-        nextUndo += 1
+        if !canRedo()
+            return
+
+        serial := undos[nextUndo].serial
+        while nextUndo != undos.count and undos[nextUndo].serial == serial
+        {
+            undos[nextUndo].do()
+            nextUndo += 1
+        }
+
         editView.invalidate()
     }
 

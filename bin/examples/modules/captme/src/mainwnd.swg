@@ -263,7 +263,7 @@ impl IWnd for MainWnd
 
         case CmdIdTrimCanevas:
             evt.setFlags |= .Name | .Disabled
-            evt.name = "Adjust Canevas To Image"
+            evt.name = "Trim"
             evt.disabled = !capture
             evt.accepted = true
 
@@ -1103,13 +1103,14 @@ impl MainWnd
     mtd trimCanevas()
     {
         capture := getCapture()
+        capture.selection.clear()
 
         minX := Swag.F32.Max
         minY := Swag.F32.Max
         maxX := 0'f32
         maxY := 0'f32
 
-        visit f: capture.forms
+        visit f, idx: capture.forms
         {
             r := f.boundRect(false)
             if r.x > 0
@@ -1120,6 +1121,15 @@ impl MainWnd
                 maxX = Math.max(maxX, r.right())
             if r.bottom() < capture.height
                 maxY = Math.max(maxY, r.bottom())
+
+            // Select forms outside capture
+            if r.right() < 0 or
+               r.bottom() < 0 or
+               r.x >= capture.width or
+               r.y >= capture.height
+            {
+                capture.selection.add(idx)
+            }
         }
 
         scope Left loop x: capture.backImg.width
@@ -1182,14 +1192,30 @@ impl MainWnd
             }
         }
 
-        undo := capture.newUndo(.MoveCapture)
-        undo.newPosX -= cast(s32) minX
-        undo.newSizeX -= cast(s32) minX
-        undo.newPosY -= cast(s32) minY
-        undo.newSizeY -= cast(s32) minY
-        undo.newSizeX -= cast(s32) (capture.width - maxX)
-        undo.newSizeY -= cast(s32) (capture.height - maxY)
-        capture.pushUndo(undo)
+        capture.serialUndo += 1
+        serial := capture.serialUndo
+
+        // Resize capture
+        if minX or minY or maxX != capture.width or maxY != capture.height
+        {
+            undo := capture.newUndo(.MoveCapture, serial)
+            undo.newPosX -= cast(s32) minX
+            undo.newSizeX -= cast(s32) minX
+            undo.newPosY -= cast(s32) minY
+            undo.newSizeY -= cast(s32) minY
+            undo.newSizeX -= cast(s32) (capture.width - maxX)
+            undo.newSizeY -= cast(s32) (capture.height - maxY)
+            capture.pushUndo(undo)
+        }
+
+        // Remove forms outside the cavenas
+        if capture.selection.count
+        {
+            undo1 := capture.newUndo(.DeleteSelection, serial)
+            capture.pushUndo(undo1)
+        }
+
+        capture.selectionHasChanged()
     }
 
     mtd saveAsImage(linked = false)
