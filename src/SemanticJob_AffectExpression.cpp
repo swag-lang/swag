@@ -33,19 +33,19 @@ bool SemanticJob::resolveAfterAffectLeft(SemanticContext* context)
     if (typeInfo->kind == TypeInfoKind::Lambda || typeInfo->kind == TypeInfoKind::Struct)
     {
         auto op = CastAst<AstOp>(node->parent, AstNodeKind::AffectOp);
-        if (op->dependentNode)
+        if (op->dependentLambda)
         {
             // Cannot cast from closure to lambda
-            if (node->typeInfo->isLambda() && op->dependentNode->typeInfo->isClosure())
+            if (node->typeInfo->isLambda() && op->dependentLambda->typeInfo->isClosure())
             {
                 PushErrContext ec(context, node->parent, JobContext::ErrorContextType::Node);
                 Diagnostic     diag{op->childs.back(), Err(Err0185)};
                 return context->report(diag);
             }
 
-            ScopedLock lk(op->dependentNode->mutex);
-            op->dependentNode->flags &= ~AST_SPEC_SEMANTIC2;
-            launchResolveSubDecl(context, op->dependentNode);
+            ScopedLock lk(op->dependentLambda->mutex);
+            op->dependentLambda->flags &= ~AST_SPEC_SEMANTIC2;
+            launchResolveSubDecl(context, op->dependentLambda);
         }
     }
 

@@ -1002,8 +1002,8 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
     // :DeduceLambdaType
     if (exprNode->parent->kind == AstNodeKind::AffectOp && acceptMissingType && hasMissingType)
     {
-        auto op           = CastAst<AstOp>(exprNode->parent, AstNodeKind::AffectOp);
-        op->dependentNode = lambda;
+        auto op             = CastAst<AstOp>(exprNode->parent, AstNodeKind::AffectOp);
+        op->dependentLambda = lambda;
 
         auto lambdaFunc               = CastAst<AstFuncDecl>(lambda, AstNodeKind::FuncDecl);
         lambdaFunc->makePointerLambda = exprNode;

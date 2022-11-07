@@ -165,13 +165,19 @@ enum class AstNodeKind : uint8_t
 static const uint32_t CLONE_RAW             = 0x00000001;
 static const uint32_t CLONE_FORCE_OWNER_FCT = 0x00000002;
 
+struct CloneUpdateRef
+{
+    AstNode*  node;
+    AstNode** ref;
+};
+
 struct CloneContext
 {
-    map<Utf8, TypeInfo*>    replaceTypes;
-    map<TokenId, AstNode*>  replaceTokens;
-    map<Utf8, Utf8>         replaceNames;
-    set<Utf8>               usedReplaceNames;
-    VectorNative<AstNode**> nodeRefsToUpdate;
+    map<Utf8, TypeInfo*>         replaceTypes;
+    map<TokenId, AstNode*>       replaceTokens;
+    map<Utf8, Utf8>              replaceNames;
+    set<Utf8>                    usedReplaceNames;
+    VectorNative<CloneUpdateRef> nodeRefsToUpdate;
 
     AstInline*          ownerInline            = nullptr;
     AstBreakable*       replaceTokensBreakable = nullptr;
@@ -857,7 +863,7 @@ struct AstOp : public AstNode
 {
     AstNode* clone(CloneContext& context);
 
-    AstNode*          dependentNode     = nullptr;
+    AstNode*          dependentLambda   = nullptr;
     TypeInfoFuncAttr* deducedLambdaType = nullptr;
     TypeInfoFuncAttr* tryLambdaType     = nullptr;
 };

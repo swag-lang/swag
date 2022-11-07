@@ -42,11 +42,11 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     }
 
     // Update direct node references
-    for (auto p : context.nodeRefsToUpdate)
+    for (const auto& p : context.nodeRefsToUpdate)
     {
-        if (*p == from)
+        if (*p.ref == from)
         {
-            *p = this;
+            *p.ref = this;
         }
     }
 
@@ -471,11 +471,27 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     if (newNode->captureParameters)
         newNode->childs.pop_back();
 
-    newNode->genericParameters      = genericParameters ? genericParameters->clone(cloneContext) : nullptr;
-    newNode->parameters             = parameters ? parameters->clone(cloneContext) : nullptr;
-    newNode->selectIf               = selectIf ? selectIf->clone(cloneContext) : nullptr;
-    newNode->nodeCounts             = nodeCounts;
-    newNode->makePointerLambda      = newNode->makePointerLambda;
+    newNode->genericParameters = genericParameters ? genericParameters->clone(cloneContext) : nullptr;
+    newNode->parameters        = parameters ? parameters->clone(cloneContext) : nullptr;
+    newNode->selectIf          = selectIf ? selectIf->clone(cloneContext) : nullptr;
+    newNode->nodeCounts        = nodeCounts;
+    newNode->makePointerLambda = makePointerLambda;
+
+    if (makePointerLambda)
+    {
+        for (const auto& p : context.nodeRefsToUpdate)
+        {
+            if (p.node->kind == AstNodeKind::AffectOp)
+            {
+                auto affOp = CastAst<AstOp>(p.node, AstNodeKind::AffectOp);
+                if (affOp->dependentLambda == newNode)
+                {
+                    newNode->makePointerLambda = CastAst<AstMakePointer>(affOp->childs.back(), AstNodeKind::MakePointerLambda);
+                }
+            }
+        }
+    }
+
     newNode->needRegisterGetContext = needRegisterGetContext;
     newNode->hasSpecMixin           = hasSpecMixin;
 
@@ -1226,7 +1242,7 @@ AstNode* AstMakePointer::clone(CloneContext& context)
         }
 
         newNode->lambda = lambda;
-        context.nodeRefsToUpdate.push_back((AstNode**) &newNode->lambda);
+        context.nodeRefsToUpdate.push_back({newNode, (AstNode**) &newNode->lambda});
     }
 
     return newNode;
@@ -1236,7 +1252,13 @@ AstNode* AstOp::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstOp>();
     newNode->copyFrom(context, this);
-    newNode->dependentNode = dependentNode;
+
+    if (dependentLambda)
+    {
+        newNode->dependentLambda = dependentLambda;
+        context.nodeRefsToUpdate.push_back({newNode, &newNode->dependentLambda});
+    }
+
     return newNode;
 }
 

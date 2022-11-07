@@ -554,7 +554,7 @@ bool SemanticJob::deduceLambdaTypeAffect(SemanticContext* context, AstVarDecl* n
 
     TypeInfoFuncAttr* typeLambda = nullptr;
     auto              op         = CastAst<AstOp>(node->ownerFct->makePointerLambda->parent, AstNodeKind::AffectOp);
-    if (!op->dependentNode)
+    if (!op->dependentLambda)
         return true;
 
     auto front = op->childs.front();
