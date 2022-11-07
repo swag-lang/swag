@@ -89,6 +89,6 @@ const CmdIdMoveSelBottom1       = "CmdIdMoveSelBottom1"
 const CmdIdShowEditor           = "CmdIdShowEditor"
 const CmdIdTrimCanevas          = "CmdIdTrimCanevas"
 const CmdIdResizeImage          = "CmdIdResizeImage"
-const CmdIdResizeCapture        = "CmdIdResizeCapture"
+const CmdIdResizeCanevas        = "CmdIdResizeCanevas"
 
 const ClipboardFormat = "Swag.CaptMe"

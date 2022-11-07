@@ -268,7 +268,7 @@ impl IWnd for MainWnd
             evt.disabled = !capture
             evt.accepted = true
 
-        case CmdIdResizeCapture:
+        case CmdIdResizeCanevas:
             evt.setFlags |= .Name | .Disabled
             evt.name = "Resize Capture..."
             evt.disabled = !capture
@@ -785,6 +785,10 @@ impl IWnd for MainWnd
         case CmdIdCaptureToClipboard:
             captureToClipboard = !captureToClipboard
 
+        case CmdIdResizeImage:
+            resizeImage()
+        case CmdIdResizeCanevas:
+            resizeCanevas()
         case CmdIdTrimCanevas:
             trimCanevas()
 
@@ -1111,6 +1115,54 @@ impl MainWnd
             MessageDlg.error(surface, @err, "Failed to load image !")
         else
             newCapture(img, dlg.getSelectedName())
+    }
+
+    mtd resizeImage()
+    {
+    }
+
+    mtd resizeCanevas()
+    {
+        capture := getCapture()
+        dlg := Dialog.createDialog(surface, 350, 335, title: "Resize Canevas")
+        dlg.addButton("Resize", Dialog.BtnOk, true)
+        dlg.addButton("Cancel", Dialog.BtnCancel)
+        edit0 := EditCtrl.create(dlg, "Width", Format.toString("%", capture.width), @{90, 12}, flags: .RightAlign)
+        edit1 := EditCtrl.create(dlg, "Height", Format.toString("%", capture.height), @{90, 47}, flags: .RightAlign)
+        edit0.edit.setInputU64(16, 4096)
+        edit1.edit.setInputU64(16, 4096)
+
+        const X = 90
+        const Y = 90
+        const S = 20
+
+        #[Swag.Macro]
+        func createBtn(dlg: *Wnd, pos: Math.Rectangle)
+        {
+            btn := CheckButton.create(dlg, " ", pos)
+            /*btn.sigChanged += @(btn) {
+                @print("X")
+            }*/
+        }
+
+        createBtn(dlg, @{X, Y, S, S})
+        createBtn(dlg, @{X+S+4, Y, S, S})
+        createBtn(dlg, @{X+S+4+S+4, Y, S, S})
+        createBtn(dlg, @{X, Y+S+4, S, S})
+        createBtn(dlg, @{X+S+4, Y+S+4, S, S})
+        createBtn(dlg, @{X+S+4+S+4, Y+S+4, S, S})
+        createBtn(dlg, @{X, Y+S+4+S+4, S, S})
+        createBtn(dlg, @{X+S+4, Y+S+4+S+4, S, S})
+        createBtn(dlg, @{X+S+4+S+4, Y+S+4+S+4, S, S})
+        if dlg.doModal() != Dialog.BtnOk
+            return
+
+        (w, ?, ?) := catch StrConv.parseS32(edit0.edit.text)
+        (h, ?, ?) := catch StrConv.parseS32(edit1.edit.text)
+        undo := capture.newUndo(.MoveCapture)
+        undo.newSizeX = w - capture.width
+        undo.newSizeY = h - capture.height
+        capture.pushUndo(undo)
     }
 
     mtd trimCanevas()
@@ -1589,7 +1641,7 @@ impl MainWnd
             .addItem(CmdIdRestoreOrg)
             .addSeparator()
             .addItem(CmdIdResizeImage)
-            .addItem(CmdIdResizeCapture)
+            .addItem(CmdIdResizeCanevas)
             .addItem(CmdIdTrimCanevas)
             .addSeparator()
             .addItem(CmdIdFlattenAll)
@@ -1763,7 +1815,7 @@ impl MainWnd
                 menu := MenuCtrl.createPopup(res)
                 menu.menuCtrlFlags |= .NoKeyShortcuts
                 menu.addItem(CmdIdResizeImage)
-                menu.addItem(CmdIdResizeCapture)
+                menu.addItem(CmdIdResizeCanevas)
                 discard menu.doModal(@{pos.horzCenter(), pos.y}, .AnchorBottomCenter, autoDestroy: true)
             }
         }
