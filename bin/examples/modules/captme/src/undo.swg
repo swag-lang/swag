@@ -24,6 +24,7 @@ enum UndoKind
     Flatten
     FlattenAll
     RestoreOrg
+    SetImage
     SetImageInside
 }
 
@@ -34,28 +35,31 @@ struct Undo
     baseForm:   IForm
     serial:     u32
 
-    newSizeX:   s32
-    newSizeY:   s32
-    newPosX:    s32
-    newPosY:    s32
-
     selection:      Array'uint
     oldForms:       Array'IForm
-    minP:           s32
-    maxP:           s32
-    pointIdx:       u32
-    valU32:         u32
     oldS32:         Array's32
     oldU32:         Array'u32
-    valRef:         const *Swag.TypeValue
-    mdlType:        typeinfo
-    text:           String
-    mdlValue:       *BaseForm
     oldForm:        Array'*BaseForm
     oldText:        Array'String
     oldImage:       Array'Image
     oldImg:         Image
     oldImagePos:    Math.Point
+
+    newSizeX:       s32
+    newSizeY:       s32
+    newPosX:        s32
+    newPosY:        s32
+    newImg:         Image
+    newImagePos:    Math.Point
+
+    minP:       s32
+    maxP:       s32
+    pointIdx:   u32
+    valU32:     u32
+    valRef:     const *Swag.TypeValue
+    mdlType:    typeinfo
+    mdlValue:   *BaseForm
+    text:       String
 }
 
 impl Undo
@@ -79,6 +83,10 @@ impl Undo
             oldImg = capture.backImg
             oldImagePos = capture.backImagePos
             oldForms = capture.forms
+
+        case SetImage:
+            oldImg = capture.backImg
+            oldImagePos = capture.backImagePos
 
         case SetImageInside:
             selection = capture.selection
@@ -239,6 +247,11 @@ impl Undo
                 .dirtyBackImg = true
                 .selectionHasChanged()
             }
+
+        case SetImage:
+            capture.backImg = newImg
+            capture.backImagePos = newImagePos
+            capture.dirtyBackImg = true
 
         case SetImageInside:
             visit s, i: selection
@@ -470,6 +483,11 @@ impl Undo
                 .dirtyBackImg = true
                 .selectionHasChanged()
             }
+
+        case SetImage:
+            capture.backImg = oldImg
+            capture.backImagePos = oldImagePos
+            capture.dirtyBackImg = true
 
         case SetImageInside:
             visit s, i: selection

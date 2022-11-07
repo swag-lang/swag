@@ -1156,7 +1156,7 @@ impl MainWnd
                 col := capture.backImg.getPixelColor(x, y)
                 if col.a
                 {
-                    maxX = Math.max(maxX, x + capture.backImagePos.x)
+                    maxX = Math.max(maxX, x + capture.backImagePos.x + 1)
                     break Right
                 }
             }
@@ -1186,7 +1186,7 @@ impl MainWnd
                 col := capture.backImg.getPixelColor(x, y)
                 if col.a
                 {
-                    maxY = Math.max(maxY, y + capture.backImagePos.y)
+                    maxY = Math.max(maxY, y + capture.backImagePos.y + 1)
                     break Down
                 }
             }
@@ -1211,8 +1211,29 @@ impl MainWnd
         // Remove forms outside the cavenas
         if capture.selection.count
         {
-            undo1 := capture.newUndo(.DeleteSelection, serial)
-            capture.pushUndo(undo1)
+            undo := capture.newUndo(.DeleteSelection, serial)
+            capture.pushUndo(undo)
+        }
+
+        // Crop image
+        if capture.backImagePos.x < 0 or
+           capture.backImagePos.y < 0 or
+           capture.backImagePos.x + capture.backImg.width > capture.width or
+           capture.backImagePos.y + capture.backImg.height > capture.height
+        {
+            cropRect := Math.Rectangle{0, 0, capture.backImg.width, capture.backImg.height}
+            if capture.backImagePos.x < 0
+                cropRect.moveLeft(-capture.backImagePos.x)
+            if capture.backImagePos.y < 0
+                cropRect.moveTop(-capture.backImagePos.y)
+            if capture.backImagePos.x + capture.backImg.width > capture.width
+                cropRect.width -= (capture.backImagePos.x + capture.backImg.width) - capture.width
+            if capture.backImagePos.y + capture.backImg.height > capture.height
+                cropRect.height -= (capture.backImagePos.y + capture.backImg.height) - capture.height
+
+            undo := capture.newUndo(.SetImage, serial)
+            undo.newImg = capture.backImg.toCrop(cropRect)
+            capture.pushUndo(undo)
         }
 
         capture.selectionHasChanged()

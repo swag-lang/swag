@@ -28,6 +28,11 @@ impl Image
         applyWorkingBuffer()
     }
 
+    public mtd crop(cropRect: Math.Rectangle)
+    {
+        return crop(acast cropRect.x, acast cropRect.y, acast cropRect.width, acast cropRect.height)
+    }
+
     // Crop image
     public mtd toCrop(x, y, w, h: s32)->Image
     {
@@ -40,5 +45,10 @@ impl Image
         var result: retval = create(cw, ch, pf)
         doCrop(&result, cx, cy, cw, ch)
         return result
+    }
+
+    public mtd toCrop(cropRect: Math.Rectangle)->Image
+    {
+        return toCrop(acast cropRect.x, acast cropRect.y, acast cropRect.width, acast cropRect.height)
     }
 }
