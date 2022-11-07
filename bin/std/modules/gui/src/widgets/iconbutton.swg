@@ -15,6 +15,7 @@ enum IconButtonFlags
     Checkable
     CheckableToggle
     Popup
+    Center
 }
 
 enum IconButtonArrowPos
@@ -193,6 +194,49 @@ impl IWnd for IconButton
         pos := getClientRectPadding()
         hasIcon := icon.isValid() or sigPaintIcon != null
 
+        // Center everything
+        marginArrow := metrics.btnIcon_MarginArrow
+        if iconBtnFlags & .Center
+        {
+            nw, nh := 0'f32
+            marginArrow = 0
+
+            #[Swag.Complete]
+            switch arrowPos
+            {
+            case Left, Right, RightUp, RightDown:
+                nw += metrics.btnIcon_WidthArrow + metrics.btnIcon_SpacingArrowH
+            case Top, Bottom:
+                nh += metrics.btnIcon_HeightArrow + metrics.btnIcon_SpacingArrowV
+            case None:
+                break
+            }
+
+            font := theme.res.fontDefault.regular
+            sm := Painter.measureString(name.raw.toString(), font)
+            nw += sm.width
+            nh += theme.res.fontDefault.regular.height
+
+            if hasIcon
+            {
+                #[Swag.Complete]
+                switch textPos
+                {
+                case Left, Right:
+                    nw += metrics.btnIcon_SpacingTextH
+                    nw += icon.sizeX
+                case Top, Bottom:
+                    nh += metrics.btnIcon_SpacingTextV
+                    nh += icon.sizeY
+                }
+            }
+
+            pos.x = pos.horzCenter() - nw * 0.5
+            pos.y = pos.vertCenter() - nh * 0.5
+            pos.width = nw
+            pos.height = nh
+        }
+
         // Arrow
         if arrowPos != .None
         {
@@ -206,25 +250,25 @@ impl IWnd for IconButton
                 subRectBk = &rects.btnIcon_ArrowLeft
                 posArrow.width = h
                 posArrow.height = w
-                posArrow.x = pos.x + metrics.btnIcon_MarginArrow
+                posArrow.x = pos.x + marginArrow
                 posArrow.y = pos.vertCenter() - w * 0.5
                 theme.drawSubRect(bc.painter, posArrow, subRectBk, colorIcon)
-                pos.moveLeft(metrics.btnIcon_MarginArrow + w + metrics.btnIcon_SpacingArrowH)
+                pos.moveLeft(marginArrow + w + metrics.btnIcon_SpacingArrowH)
 
             case Top:
                 subRectBk = &rects.btnIcon_ArrowUp
                 posArrow.width = w
                 posArrow.height = h
                 posArrow.x = pos.horzCenter() - w * 0.5
-                posArrow.y = pos.y + metrics.btnIcon_MarginArrow
+                posArrow.y = pos.y + marginArrow
                 theme.drawSubRect(bc.painter, posArrow, subRectBk, colorIcon)
-                pos.moveTop(metrics.btnIcon_MarginArrow + h + metrics.btnIcon_SpacingArrowV)
+                pos.moveTop(marginArrow + h + metrics.btnIcon_SpacingArrowV)
 
             case Right:
                 subRectBk = &rects.btnIcon_ArrowRight
                 posArrow.width = h
                 posArrow.height = w
-                posArrow.x = pos.right() - w - metrics.btnIcon_MarginArrow
+                posArrow.x = pos.right() - w - marginArrow
                 posArrow.y = pos.vertCenter() - h * 0.5
                 theme.drawSubRect(bc.painter, posArrow, subRectBk, colorIcon)
                 pos.setRight(posArrow.x - metrics.btnIcon_SpacingArrowH)
@@ -233,7 +277,7 @@ impl IWnd for IconButton
                 subRectBk = &rects.btnIcon_ArrowUp
                 posArrow.width = w
                 posArrow.height = h
-                posArrow.x = pos.right() - w - metrics.btnIcon_MarginArrow
+                posArrow.x = pos.right() - w - marginArrow
                 posArrow.y = pos.vertCenter() - h * 0.5
                 theme.drawSubRect(bc.painter, posArrow, subRectBk, colorIcon)
                 pos.setRight(posArrow.x - metrics.btnIcon_SpacingArrowH)
@@ -242,7 +286,7 @@ impl IWnd for IconButton
                 subRectBk = &rects.btnIcon_ArrowDown
                 posArrow.width = w
                 posArrow.height = h
-                posArrow.x = pos.right() - w - metrics.btnIcon_MarginArrow
+                posArrow.x = pos.right() - w - marginArrow
                 posArrow.y = pos.vertCenter() - h * 0.5
                 theme.drawSubRect(bc.painter, posArrow, subRectBk, colorIcon)
                 pos.setRight(posArrow.x - metrics.btnIcon_SpacingArrowH)
@@ -252,7 +296,7 @@ impl IWnd for IconButton
                 posArrow.width = w
                 posArrow.height = h
                 posArrow.x = pos.horzCenter() - w * 0.5
-                posArrow.y = pos.bottom() - h - metrics.btnIcon_MarginArrow
+                posArrow.y = pos.bottom() - h - marginArrow
                 theme.drawSubRect(bc.painter, posArrow, subRectBk, colorIcon)
                 pos.setBottom(posArrow.y - metrics.btnIcon_SpacingArrowV)
             }
@@ -273,7 +317,7 @@ impl IWnd for IconButton
                 if !hasIcon and (arrowPos == .Top or arrowPos == .Bottom)
                     sf.horzAlignment = .Center
                 bc.painter.drawRichString(pos, &name, sf)
-                pos.moveLeft(name.boundRect.width + metrics.btnIcon_SpacingText)
+                pos.moveLeft(name.boundRect.width + metrics.btnIcon_SpacingTextH)
 
                 if !icon.isValid()
                     icon.sizeX = pos.width
@@ -294,7 +338,7 @@ impl IWnd for IconButton
                 if !hasIcon and (arrowPos == .Top or arrowPos == .Bottom)
                     sf.horzAlignment = .Center
                 bc.painter.drawRichString(pos, &name, sf)
-                pos.width -= name.boundRect.width + metrics.btnIcon_SpacingText
+                pos.width -= name.boundRect.width + metrics.btnIcon_SpacingTextH
 
                 if !icon.isValid()
                     icon.sizeX = pos.width
@@ -312,7 +356,7 @@ impl IWnd for IconButton
             case Top:
                 sf.vertAlignment = .Top
                 bc.painter.drawRichString(pos, &name, sf)
-                pos.moveTop(sf.font.regular.height + metrics.btnIcon_SpacingText)
+                pos.moveTop(sf.font.regular.height + metrics.btnIcon_SpacingTextV)
 
                 if !icon.isValid()
                     icon.sizeY = pos.height
@@ -332,7 +376,7 @@ impl IWnd for IconButton
                 sf.vertAlignment = .Bottom
                 bc.painter.drawRichString(pos, &name, sf)
 
-                pos.height -= sf.font.regular.height + metrics.btnIcon_SpacingText
+                pos.height -= sf.font.regular.height + metrics.btnIcon_SpacingTextV
                 if !icon.isValid()
                     icon.sizeY = pos.height
                 if pos.height < icon.sizeY

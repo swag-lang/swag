@@ -1721,8 +1721,10 @@ impl MainWnd
             .backgroundStyle = .Window
         }
 
-        with res.zoomBtn = IconButton.create(res.editZoomBar, res.getTheme().getIcon24(ThemeIcons24.Search), @{0, 0, 120, 32})
+        ic := res.getTheme().getIcon24(ThemeIcons24.Search, 20)
+        with res.zoomBtn = IconButton.create(res.editZoomBar, ic, @{0, 0, 120, 32})
         {
+            .iconBtnFlags |= .Center
             .textPos = .Right
             .arrowPos = .RightUp
             .sigPressed += @|res|(btn) {
@@ -1737,6 +1739,7 @@ impl MainWnd
 
         with res.sizeBtn = IconButton.create(res.editZoomBar, @{}, @{0, 0, 120, 32})
         {
+            .iconBtnFlags |= .Center
             .textPos = .Right
             .arrowPos = .RightUp
             .sigPressed += @|res|(btn) {
