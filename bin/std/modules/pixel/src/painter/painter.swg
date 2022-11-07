@@ -678,8 +678,12 @@ impl Painter
         cmd.colorMask.g = g
         cmd.colorMask.b = b
         cmd.colorMask.a = a
-        curState.colorMask = cmd.colorMask;
+        curState.colorMask = cmd.colorMask
     }
+
+    mtd setColorMaskColor() = setColorMask(true, true, true, false)
+    mtd setColorMaskFull() = setColorMask(true, true, true, true)
+    mtd setColorMaskAlpha() = setColorMask(false, false, false, true)
 
     // Bind a render target
     mtd bindRenderTarget(tgt: *RenderTarget, paintAlpha = false)
