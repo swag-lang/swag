@@ -820,30 +820,21 @@ impl PropWnd
 
             .sigCheckChanged += @|self|(btn) {
                 capture := self.main.getCapture()
-                var undo: *Undo
                 switch btn.id
                 {
                 case CmdIdTextHLeft:
-                    undo = capture.newUndo(.SetTextHorzAlign)
-                    undo.valU32 = acast FormTextAlign.LeftTop
+                    self.pushTypedValue(cast(u32) FormTextAlign.LeftTop, @typeof(FormText), @nameof(FormText.alignHorz), true)
                 case CmdIdTextHCenter:
-                    undo = capture.newUndo(.SetTextHorzAlign)
-                    undo.valU32 = acast FormTextAlign.Center
+                    self.pushTypedValue(cast(u32) FormTextAlign.Center, @typeof(FormText), @nameof(FormText.alignHorz), true)
                 case CmdIdTextHRight:
-                    undo = capture.newUndo(.SetTextHorzAlign)
-                    undo.valU32 = acast FormTextAlign.RightBottom
+                    self.pushTypedValue(cast(u32) FormTextAlign.RightBottom, @typeof(FormText), @nameof(FormText.alignHorz), true)
                 case CmdIdTextVTop:
-                    undo = capture.newUndo(.SetTextVertAlign)
-                    undo.valU32 = acast FormTextAlign.LeftTop
+                    self.pushTypedValue(cast(u32) FormTextAlign.LeftTop, @typeof(FormText), @nameof(FormText.alignVert), true)
                 case CmdIdTextVCenter:
-                    undo = capture.newUndo(.SetTextVertAlign)
-                    undo.valU32 = acast FormTextAlign.Center
+                    self.pushTypedValue(cast(u32) FormTextAlign.Center, @typeof(FormText), @nameof(FormText.alignVert), true)
                 case CmdIdTextVBottom:
-                    undo = capture.newUndo(.SetTextVertAlign)
-                    undo.valU32 = acast FormTextAlign.RightBottom
+                    self.pushTypedValue(cast(u32) FormTextAlign.RightBottom, @typeof(FormText), @nameof(FormText.alignVert), true)
                 }
-
-                capture.pushUndo(undo)
             }
 
             bar.updateCommandState()
