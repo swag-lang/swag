@@ -1543,7 +1543,6 @@ impl MainWnd
         {
             .addItem(CmdIdUndo)
             .addItem(CmdIdRedo)
-            .addItem(CmdIdRestoreOrg)
             .addSeparator()
             .addItem(CmdIdCopy)
             .addItem(CmdIdPaste)
@@ -1557,6 +1556,8 @@ impl MainWnd
 
         with imageMenu := MenuCtrl.createPopup(parent, owner: self)
         {
+            .addItem(CmdIdRestoreOrg)
+            .addSeparator()
             .addItem(CmdIdTrimCanevas)
             topMenu.addPopup("Image", imageMenu)
         }
