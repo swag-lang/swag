@@ -802,18 +802,6 @@ impl Capture
 
         if mouseMode == .None
         {
-            if evt.kind == .MousePressed and evt.button == .Right
-            {
-                if movingCursorSet
-                {
-                    movingCursorSet = false
-                    app.popCursor()
-                }
-
-                popupMenu(view, evt.surfacePos)
-                return true
-            }
-
             // Resize capture
             snapX, snapY = -1
             if gizmo.mouse(view, localPos, evt)
@@ -834,6 +822,19 @@ impl Capture
                     if evt.kind != .MouseLeave
                         return true
                 }
+            }
+
+            // Popup
+            if evt.kind == .MousePressed and evt.button == .Right
+            {
+                if movingCursorSet
+                {
+                    movingCursorSet = false
+                    app.popCursor()
+                }
+
+                popupMenu(view, evt.surfacePos)
+                return true
             }
 
             if evt.kind == .MouseLeave

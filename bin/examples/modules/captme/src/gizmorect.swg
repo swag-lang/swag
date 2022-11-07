@@ -29,6 +29,8 @@ impl GizmoRect
         switch evt.kind
         {
         case MousePressed:
+            if moving
+                return true
             if evt.button != .Left or hotAnchor == Swag.U32.Max
                 break
             moving, firstMoving = true
@@ -41,12 +43,16 @@ impl GizmoRect
         case MouseReleased:
             if moving
             {
-                moving, firstMoving = false
-                hotAnchor = Swag.U32.Max
-                view.getApp().popCursor()
-                view.releaseMouse()
-                if !trackChange and sigChanged
-                    sigChanged(self, false, 0)
+                if evt.button == .Left
+                {
+                    moving, firstMoving = false
+                    hotAnchor = Swag.U32.Max
+                    view.getApp().popCursor()
+                    view.releaseMouse()
+                    if !trackChange and sigChanged
+                        sigChanged(self, false, 0)
+                }
+
                 return true
             }
 
