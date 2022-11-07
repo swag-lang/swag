@@ -33,6 +33,7 @@ public struct MenuCtrl
     onValidateResult:   func(self, WndId)
     onComputeItem:      func(self, *PopupMenuItem)
     menuCtrlFlags:      MenuCtrlFlags = None
+    paddingSelX:        f32 = 4
 
     items:          ArrayPtr'PopupMenuItem
     hotIdx:         u32 = Swag.U32.Max
@@ -180,7 +181,7 @@ public impl IWnd for MenuCtrl
                 backPos := labelPos
                 backPos.y -= metrics.menuPopup_SpaceLines * 0.5
                 backPos.height += metrics.menuPopup_SpaceLines
-                backPos.inflate(4, 0)
+                backPos.inflate(paddingSelX, 0)
                 theme.drawSubRect(painter, backPos, &rects.menuPopup_HotBk, colors.popupItem_HotBk)
                 colorText = colors.popupItem_HotText
                 colorRightText = colors.popupItem_HotRightText

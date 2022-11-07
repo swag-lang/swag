@@ -262,6 +262,18 @@ impl IWnd for MainWnd
             evt.checked = captureToClipboard
             evt.accepted = true
 
+        case CmdIdResizeImage:
+            evt.setFlags |= .Name | .Disabled
+            evt.name = "Resize Image..."
+            evt.disabled = !capture
+            evt.accepted = true
+
+        case CmdIdResizeCapture:
+            evt.setFlags |= .Name | .Disabled
+            evt.name = "Resize Capture..."
+            evt.disabled = !capture
+            evt.accepted = true
+
         case CmdIdTrimCanevas:
             evt.setFlags |= .Name | .Disabled
             evt.name = "Trim"
@@ -1576,7 +1588,10 @@ impl MainWnd
         {
             .addItem(CmdIdRestoreOrg)
             .addSeparator()
+            .addItem(CmdIdResizeImage)
+            .addItem(CmdIdResizeCapture)
             .addItem(CmdIdTrimCanevas)
+            .addSeparator()
             .addItem(CmdIdFlattenAll)
             topMenu.addPopup("Image", imageMenu)
         }
@@ -1585,6 +1600,7 @@ impl MainWnd
         {
             .addItem(CmdIdZoomIn)
             .addItem(CmdIdZoomOut)
+            .addSeparator()
             .addItem(CmdIdZoom1)
             .addItem(CmdIdZoomFit)
             topMenu.addPopup("View", viewMenu)
@@ -1731,6 +1747,7 @@ impl MainWnd
                 pos  := btn.getSurfaceRect()
                 menu := MenuCtrl.createPopup(res)
                 menu.menuCtrlFlags |= .NoKeyShortcuts
+                menu.paddingSelX = 0
                 menu.addItem(CmdIdZoom1)
                 menu.addItem(CmdIdZoomFit)
                 discard menu.doModal(@{pos.horzCenter(), pos.y}, .AnchorBottomCenter, autoDestroy: true)
@@ -1746,8 +1763,9 @@ impl MainWnd
                 pos  := btn.getSurfaceRect()
                 menu := MenuCtrl.createPopup(res)
                 menu.menuCtrlFlags |= .NoKeyShortcuts
-                menu.addItem(CmdIdZoom1)
-                menu.addItem(CmdIdZoomFit)
+                menu.paddingSelX = 0
+                menu.addItem(CmdIdResizeImage)
+                menu.addItem(CmdIdResizeCapture)
                 discard menu.doModal(@{pos.horzCenter(), pos.y}, .AnchorBottomCenter, autoDestroy: true)
             }
         }
