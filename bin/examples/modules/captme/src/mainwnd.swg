@@ -37,6 +37,7 @@ struct MainWnd
     captureBtn:     *IconButton
     libraryBtn:     *IconButton
     zoomBtn:        *IconButton
+    sizeBtn:        *IconButton
     recentWnd:      *RecentWnd
     recentBar:      *Wnd
     recentSizeBar:  *IconBar
@@ -1314,6 +1315,11 @@ impl MainWnd
         applyLayout()
     }
 
+    mtd captureHasChanged()
+    {
+        updateSizeDisplay()
+    }
+
     mtd updateState()
     {
         captureBtn.updateCommandState()
@@ -1326,6 +1332,7 @@ impl MainWnd
 
     mtd getCapture()->*Capture
     {
+        if !editWnd return null
         return editWnd.editView.capture
     }
 
@@ -1414,6 +1421,15 @@ impl MainWnd
         z := cast(s32) (editWnd.editView.zoom * 100)
         zoomBtn.name = Format.toString("% %%", z)
         zoomBtn.invalidate()
+    }
+
+    mtd updateSizeDisplay()
+    {
+        capture := getCapture()
+        if !capture or !sizeBtn
+            return
+        sizeBtn.name = Format.toString("% x %", capture.width, capture.height)
+        sizeBtn.invalidate()
     }
 
     mtd registerShortcuts()
@@ -1705,7 +1721,21 @@ impl MainWnd
             .backgroundStyle = .Window
         }
 
-        with res.zoomBtn = IconButton.create(res.editZoomBar, res.getTheme().getIcon24(ThemeIcons24.Search), @{0, 0, 110, 32})
+        with res.zoomBtn = IconButton.create(res.editZoomBar, res.getTheme().getIcon24(ThemeIcons24.Search), @{0, 0, 120, 32})
+        {
+            .textPos = .Right
+            .arrowPos = .RightUp
+            .sigPressed += @|res|(btn) {
+                pos  := btn.getSurfaceRect()
+                menu := MenuCtrl.createPopup(res)
+                menu.menuCtrlFlags |= .NoKeyShortcuts
+                menu.addItem(CmdIdZoom1)
+                menu.addItem(CmdIdZoomFit)
+                discard menu.doModal(@{pos.horzCenter(), pos.y}, .AnchorBottomCenter, autoDestroy: true)
+            }
+        }
+
+        with res.sizeBtn = IconButton.create(res.editZoomBar, @{}, @{0, 0, 120, 32})
         {
             .textPos = .Right
             .arrowPos = .RightUp
@@ -1723,6 +1753,7 @@ impl MainWnd
         {
             .registerShortcuts()
             .updateZoomDisplay()
+            .updateSizeDisplay()
             .setBottomSize(.Medium)
             .updateState()
             .libWnd = LibraryWnd.create(res)

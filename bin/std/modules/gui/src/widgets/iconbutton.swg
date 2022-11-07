@@ -191,6 +191,7 @@ impl IWnd for IconButton
         }
 
         pos := getClientRectPadding()
+        hasIcon := icon.isValid() or sigPaintIcon != null
 
         // Arrow
         if arrowPos != .None
@@ -208,7 +209,7 @@ impl IWnd for IconButton
                 posArrow.x = pos.x + metrics.btnIcon_MarginArrow
                 posArrow.y = pos.vertCenter() - w * 0.5
                 theme.drawSubRect(bc.painter, posArrow, subRectBk, colorIcon)
-                pos.moveLeft(metrics.btnIcon_MarginArrow + w + metrics.btnIcon_SpacingArrow)
+                pos.moveLeft(metrics.btnIcon_MarginArrow + w + metrics.btnIcon_SpacingArrowH)
 
             case Top:
                 subRectBk = &rects.btnIcon_ArrowUp
@@ -217,16 +218,16 @@ impl IWnd for IconButton
                 posArrow.x = pos.horzCenter() - w * 0.5
                 posArrow.y = pos.y + metrics.btnIcon_MarginArrow
                 theme.drawSubRect(bc.painter, posArrow, subRectBk, colorIcon)
-                pos.moveTop(metrics.btnIcon_MarginArrow + h + metrics.btnIcon_SpacingArrow)
+                pos.moveTop(metrics.btnIcon_MarginArrow + h + metrics.btnIcon_SpacingArrowV)
 
             case Right:
                 subRectBk = &rects.btnIcon_ArrowRight
                 posArrow.width = h
                 posArrow.height = w
-                posArrow.x = pos.right() - h - metrics.btnIcon_MarginArrow
-                posArrow.y = pos.vertCenter() - w * 0.5
+                posArrow.x = pos.right() - w - metrics.btnIcon_MarginArrow
+                posArrow.y = pos.vertCenter() - h * 0.5
                 theme.drawSubRect(bc.painter, posArrow, subRectBk, colorIcon)
-                pos.setRight(posArrow.x - metrics.btnIcon_SpacingArrow)
+                pos.setRight(posArrow.x - metrics.btnIcon_SpacingArrowH)
 
             case RightUp:
                 subRectBk = &rects.btnIcon_ArrowUp
@@ -235,7 +236,7 @@ impl IWnd for IconButton
                 posArrow.x = pos.right() - w - metrics.btnIcon_MarginArrow
                 posArrow.y = pos.vertCenter() - h * 0.5
                 theme.drawSubRect(bc.painter, posArrow, subRectBk, colorIcon)
-                pos.setRight(posArrow.x - metrics.btnIcon_SpacingArrow)
+                pos.setRight(posArrow.x - metrics.btnIcon_SpacingArrowH)
 
             case RightDown:
                 subRectBk = &rects.btnIcon_ArrowDown
@@ -244,7 +245,7 @@ impl IWnd for IconButton
                 posArrow.x = pos.right() - w - metrics.btnIcon_MarginArrow
                 posArrow.y = pos.vertCenter() - h * 0.5
                 theme.drawSubRect(bc.painter, posArrow, subRectBk, colorIcon)
-                pos.setRight(posArrow.x - metrics.btnIcon_SpacingArrow)
+                pos.setRight(posArrow.x - metrics.btnIcon_SpacingArrowH)
 
             case Bottom:
                 subRectBk = &rects.btnIcon_ArrowDown
@@ -253,7 +254,7 @@ impl IWnd for IconButton
                 posArrow.x = pos.horzCenter() - w * 0.5
                 posArrow.y = pos.bottom() - h - metrics.btnIcon_MarginArrow
                 theme.drawSubRect(bc.painter, posArrow, subRectBk, colorIcon)
-                pos.setBottom(posArrow.y - metrics.btnIcon_SpacingArrow)
+                pos.setBottom(posArrow.y - metrics.btnIcon_SpacingArrowV)
             }
         }
 
@@ -263,33 +264,85 @@ impl IWnd for IconButton
             var sf: RichStringFormat
             theme.setTextColors(&sf, colorText)
             sf.font = theme.res.fontDefault
+            sf.horzAlignment = .Center
+            sf.vertAlignment = .Center
             switch textPos
             {
             case Left:
                 sf.horzAlignment = .Left
-                sf.vertAlignment = .Center
+                if !hasIcon and (arrowPos == .Top or arrowPos == .Bottom)
+                    sf.horzAlignment = .Center
                 bc.painter.drawRichString(pos, &name, sf)
                 pos.moveLeft(name.boundRect.width + metrics.btnIcon_SpacingText)
 
+                if !icon.isValid()
+                    icon.sizeX = pos.width
+                if pos.width < icon.sizeX
+                {
+                    ratio := icon.sizeX / icon.sizeY
+                    icon.sizeX = pos.width * ratio
+                    icon.sizeY = pos.width
+                }
+                else
+                {
+                    pos.x = pos.right() - icon.sizeX
+                    pos.width = icon.sizeX
+                }
+
+            case Right:
+                sf.horzAlignment = .Right
+                if !hasIcon and (arrowPos == .Top or arrowPos == .Bottom)
+                    sf.horzAlignment = .Center
+                bc.painter.drawRichString(pos, &name, sf)
+                pos.width -= name.boundRect.width + metrics.btnIcon_SpacingText
+
+                if !icon.isValid()
+                    icon.sizeX = pos.width
+                if pos.width < icon.sizeX
+                {
+                    ratio := icon.sizeX / icon.sizeY
+                    icon.sizeX = pos.width * ratio
+                    icon.sizeY = pos.width
+                }
+                else
+                {
+                    pos.width = icon.sizeX
+                }
+
             case Top:
-                sf.horzAlignment = .Center
                 sf.vertAlignment = .Top
                 bc.painter.drawRichString(pos, &name, sf)
                 pos.moveTop(sf.font.regular.height + metrics.btnIcon_SpacingText)
 
-            case Right:
-                sf.horzAlignment = .Center
-                sf.vertAlignment = .Center
-                pos1 := pos
-                pos1.moveLeft(icon.sizeX + metrics.btnIcon_SpacingIcon)
-                bc.painter.drawRichString(pos1, &name, sf)
-                pos.setRight(pos1.x)
+                if !icon.isValid()
+                    icon.sizeY = pos.height
+                if pos.height < icon.sizeY
+                {
+                    ratio := icon.sizeX / icon.sizeY
+                    icon.sizeX = pos.height * ratio
+                    icon.sizeY = pos.height
+                }
+                else
+                {
+                    pos.y = pos.bottom() - icon.sizeY
+                    pos.height = icon.sizeY
+                }
 
             case Bottom:
-                sf.horzAlignment = .Center
                 sf.vertAlignment = .Bottom
                 bc.painter.drawRichString(pos, &name, sf)
-                pos.height -= (sf.font.regular.height + metrics.btnIcon_SpacingText)
+
+                pos.height -= sf.font.regular.height + metrics.btnIcon_SpacingText
+                if !icon.isValid()
+                    icon.sizeY = pos.height
+                if pos.height < icon.sizeY
+                {
+                    ratio := icon.sizeX / icon.sizeY
+                    icon.sizeX = pos.height * ratio
+                    icon.sizeY = pos.height
+                }
+                else
+                    pos.height = icon.sizeY
             }
         }
 
@@ -300,9 +353,23 @@ impl IWnd for IconButton
         }
         else
         {
-            pos.x = pos.horzCenter() - icon.sizeX * 0.5
-            pos.y = pos.vertCenter() - icon.sizeY * 0.5
-            icon.paint(bc.painter, pos.x, pos.y, colorIcon)
+            switch textPos
+            {
+            case Left:
+                pos.x = pos.right() - icon.sizeX
+                pos.y = pos.vertCenter() - icon.sizeY * 0.5
+                icon.paint(bc.painter, pos.x, pos.y, colorIcon)
+            case Right:
+                pos.y = pos.vertCenter() - icon.sizeY * 0.5
+                icon.paint(bc.painter, pos.x, pos.y, colorIcon)
+            case Top:
+                pos.x = pos.horzCenter() - icon.sizeX * 0.5
+                pos.y = pos.bottom() - icon.sizeY
+                icon.paint(bc.painter, pos.x, pos.y, colorIcon)
+            case Bottom:
+                pos.x = pos.horzCenter() - icon.sizeX * 0.5
+                icon.paint(bc.painter, pos.x, pos.y, colorIcon)
+            }
         }
     }
 

@@ -163,6 +163,8 @@ impl EditView
         capture = c
         if capture
             capture.setup(self)
+        if main
+            main.captureHasChanged()
         invalidate()
     }
 }
