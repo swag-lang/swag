@@ -70,6 +70,8 @@ impl Undo
             oldImagePos = capture.backImagePos
             oldImg = capture.backImg
             oldForms = capture.forms
+            oldS32.add(capture.width)
+            oldS32.add(capture.height)
 
         case Flatten:
             selection = capture.selection
@@ -425,6 +427,8 @@ impl Undo
         case RestoreOrg:
             with capture
             {
+                .width = oldS32[0]
+                .height = oldS32[1]
                 .backImg = oldImg
                 .forms   = oldForms
                 .selection.clear()
