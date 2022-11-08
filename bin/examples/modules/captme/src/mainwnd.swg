@@ -1226,27 +1226,17 @@ impl MainWnd
 
         switch g_ResizeMode
         {
-        case 1:
-            break
-        case 2:
+        case 2, 5, 8:
             undo.newPosX = nw / 2
-        case 3:
+        case 3, 6, 9:
             undo.newPosX = nw
-        case 4:
+        }
+
+        switch g_ResizeMode
+        {
+        case 4, 5, 6:
             undo.newPosY = nh / 2
-        case 5:
-            undo.newPosX = nw / 2
-            undo.newPosY = nh / 2
-        case 6:
-            undo.newPosX = nw
-            undo.newPosY = nh / 2
-        case 7:
-            undo.newPosY = nh
-        case 8:
-            undo.newPosX = nw / 2
-            undo.newPosY = nh
-        case 9:
-            undo.newPosX = nw
+        case 7, 8, 9:
             undo.newPosY = nh
         }
 
