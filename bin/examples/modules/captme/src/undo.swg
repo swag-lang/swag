@@ -330,6 +330,8 @@ impl Undo
                 f.moveForm(newPosX, newPosY)
             capture.width  += newSizeX
             capture.height += newSizeY
+            capture.width = Math.clamp(capture.width, Capture.MinSize, Capture.MaxSize)
+            capture.height = Math.clamp(capture.height, Capture.MinSize, Capture.MaxSize)
 
         case OffsetSelection:
             visit s: selection
