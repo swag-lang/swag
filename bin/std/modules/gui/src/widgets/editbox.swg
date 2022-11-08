@@ -614,6 +614,10 @@ private impl EditBox
             else
                 result.x += posSelEnd
         }
+        elif editBoxFlags & .RightAlign
+        {
+            result.x = clientRect.right() - posSelEnd - 2
+        }
 
         font := getTheme().res.fontDefault.regular
         result.height = font.height
