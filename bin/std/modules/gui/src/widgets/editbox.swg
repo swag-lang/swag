@@ -828,6 +828,14 @@ impl EditBox
         invalidate()
     }
 
+    // Set the editbox content, but do not notify change
+    mtd setTextSilent(str: string)
+    {
+        sigChanged.disable()
+        setText(str)
+        sigChanged.enable()
+    }
+
     // Set the editbox content
     mtd setText(str: string)
     {

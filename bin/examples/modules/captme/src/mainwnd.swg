@@ -1140,9 +1140,7 @@ impl MainWnd
             {
                 (w, ?, ?) := catch StrConv.parseS32(edt.text)
                 h := Math.max(1, cast(s32) (w / ratio))
-                edit1.edit.sigChanged.disable()
-                edit1.edit.setText(Format.toString("%", h))
-                edit1.edit.sigChanged.enable()
+                edit1.edit.setTextSilent(Format.toString("%", h))
             }
         }
         edit1.edit.sigChanged += @|ratio, btnRatio, edit0|(edt) {
@@ -1150,9 +1148,7 @@ impl MainWnd
             {
                 (h, ?, ?) := catch StrConv.parseS32(edt.text)
                 w := Math.max(1, cast(s32) (h * ratio))
-                edit0.edit.sigChanged.disable()
-                edit0.edit.setText(Format.toString("%", w))
-                edit0.edit.sigChanged.enable()
+                edit0.edit.setTextSilent(Format.toString("%", w))
             }
         }
 
@@ -1216,9 +1212,7 @@ impl MainWnd
             {
                 (w, ?, ?) := catch StrConv.parseS32(edt.text)
                 h := Math.max(1, cast(s32) (w / ratio))
-                edit1.edit.sigChanged.disable()
-                edit1.edit.setText(Format.toString("%", h))
-                edit1.edit.sigChanged.enable()
+                edit1.edit.setTextSilent(Format.toString("%", h))
             }
         }
         edit1.edit.sigChanged += @|ratio, btnRatio, edit0|(edt) {
@@ -1226,9 +1220,7 @@ impl MainWnd
             {
                 (h, ?, ?) := catch StrConv.parseS32(edt.text)
                 w := Math.max(1, cast(s32) (h * ratio))
-                edit0.edit.sigChanged.disable()
-                edit0.edit.setText(Format.toString("%", w))
-                edit0.edit.sigChanged.enable()
+                edit0.edit.setTextSilent(Format.toString("%", w))
             }
         }
 
