@@ -23,6 +23,12 @@ enum FormFlags
     Selected
 }
 
+enum FormSubKind
+{
+    None
+    Highlight
+}
+
 struct BaseForm
 {
     x, y: s32 = 0
@@ -35,7 +41,8 @@ struct BaseForm
     backColor:          Color = Argb.Red
     dashStyle:          DashStyle = None
     quickModeOpaque:    bool
-    paintShadow:        bool = true
+    paintShadow         = true
+    subKind:            FormSubKind = None
 
     #[Serialization.NoSerialize]
     {

@@ -416,7 +416,7 @@ impl Capture
         painter.setShader()
 
         var colForm: Color
-        if quickMode and (@kindof(f) == FormShape or @kindof(f) == FormDraw)
+        if quickMode and base.subKind == .Highlight
             colForm = Argb.White
         else
             colForm = Color.fromArgb(cast(u8) Math.map(cast(f32) base.alpha, 0, 100, 0, 255), Argb.White)
@@ -1151,6 +1151,7 @@ impl Capture
 
         f := forms[selection.back()]
         t := @kindof(f)
+        form := cast(*BaseForm) @dataof(f)
 
         if main.editMode == .Favorites
         {
@@ -1174,6 +1175,10 @@ impl Capture
             case FormDraw:
                 main.mdlFavorite = main.mdlFormDraw
             }
+        }
+        elif form.subKind == .Highlight
+        {
+            main.editMode = .Highlight
         }
         else
         {
@@ -1207,6 +1212,9 @@ impl Capture
 
         f := forms[selection.back()]
         t := @kindof(f)
+        form := cast(*BaseForm) @dataof(f)
+        if form.subKind == .Highlight
+            editView.main.mdlHighlight = f
 
         #[Swag.Complete]
         switch t

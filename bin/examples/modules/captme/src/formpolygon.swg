@@ -222,13 +222,20 @@ impl IForm for FormPolygon
         bSize := adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
         computePaintCoords(z)
 
+        backBrush := Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
+        bk := backColor
+        if quickMode and alpha != 100 and subKind == .Highlight
+            bk.a = cast(u8) Math.map(cast(f32) alpha, 0, 100, 0, 255)
+
         var pl: LinePath
         pl.start(paintPoints[0].x - paintPos.x, paintPoints[0].y - paintPos.y)
         loop i: 1..paintPoints.count-1
             pl.lineTo(paintPoints[i].x - paintPos.x, paintPoints[i].y - paintPos.y)
         pl.close()
 
-        painter.fillPath(&pl, backColor)
+        if quickMode and alpha != 100 and subKind == .Highlight
+            painter.fillPath(&pl, backBrush)
+        painter.fillPath(&pl, bk)
         painter.drawPath(&pl, borderColor, bSize)
     }
 

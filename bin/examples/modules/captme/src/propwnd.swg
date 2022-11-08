@@ -437,6 +437,10 @@ impl PropWnd
 
     mtd propBorderColor(stack: *Wnd)
     {
+        curSel := cast(*FormText) getSelectedBaseForm()
+        if curSel.subKind == .Highlight
+            return
+
         btn := createArrowButton(stack, BtnColorWidth, BtnColorHeight)
 
         curSelType := getSelectedFormType()
@@ -653,6 +657,10 @@ impl PropWnd
     {
         curSelType := getSelectedFormType()
         if curSelType != FormShape and curSelType != FormLine and curSelType != FormArrow
+            return
+
+        curSel := cast(*FormText) getSelectedBaseForm()
+        if curSel.subKind == .Highlight
             return
 
         btn := createArrowButton(stack, BtnStyleWidth, BtnStyleHeight)

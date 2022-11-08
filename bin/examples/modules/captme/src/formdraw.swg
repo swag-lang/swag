@@ -208,7 +208,7 @@ impl IForm for FormDraw
         pen := Pen.createSolid(borderColor, bSize)
         pen.joinStyle = .Round
 
-        if quickMode and alpha != 100
+        if quickMode and alpha != 100 and subKind == .Highlight
         {
             pen1 := pen
             pen1.brush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)

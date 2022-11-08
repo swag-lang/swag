@@ -353,35 +353,56 @@ impl QuickWnd
             form.borderSize = borderSize
             form.borderColor = color
             form.alpha = 30
+            form.subKind = .Highlight
             it := cast(IForm) form
             it.setup(null)
             `qsHighlight.forms.add(it)
         }
 
         #[Swag.Macro]
-        func addShape(kind: FormShapeKind, color: Color, backColor: Color)
+        func addShape(kind: FormShapeKind, backColor: Color)
         {
             form := Memory.new'FormShape()
             form.borderSize = 0
-            form.borderColor = color
+            form.borderColor = Argb.Zero
             form.backColor = backColor
             form.alpha = 30
             form.kind = kind
+            form.subKind = .Highlight
             it := cast(IForm) form
             it.setup(null)
             `qsHighlight.forms.add(it)
         }
 
-        addShape(.Rectangle, Argb.Zero, Argb.Red)
-        addShape(.Rectangle, Argb.Zero, Argb.Blue)
-        addShape(.Rectangle, Argb.Zero, Argb.Green)
-        addShape(.Rectangle, Argb.Zero, Argb.Yellow)
+        #[Swag.Macro]
+        func addPoly(backColor: Color)
+        {
+            form := Memory.new'FormPolygon()
+            form.borderSize = 0
+            form.borderColor = Argb.Zero
+            form.backColor = backColor
+            form.alpha = 30
+            form.subKind = .Highlight
+            it := cast(IForm) form
+            it.setup(null)
+            `qsHighlight.forms.add(it)
+        }
+
+        addShape(.Rectangle, Argb.Red)
+        addShape(.Rectangle, Argb.Blue)
+        addShape(.Rectangle, Argb.Green)
+        addShape(.Rectangle, Argb.Yellow)
 
         const BorderSize = 20.0
         addDraw(BorderSize, Argb.Red)
         addDraw(BorderSize, Argb.Blue)
         addDraw(BorderSize, Argb.Green)
         addDraw(BorderSize, Argb.Yellow)
+
+        addPoly(Argb.Red)
+        addPoly(Argb.Blue)
+        addPoly(Argb.Green)
+        addPoly(Argb.Yellow)
     }
 
     mtd updateSelection()

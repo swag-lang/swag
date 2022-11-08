@@ -169,7 +169,7 @@ impl IForm for FormShape
         backBrush := Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
 
         bk := backColor
-        if quickMode and alpha != 100
+        if quickMode and alpha != 100 and subKind == .Highlight
             bk.a = cast(u8) Math.map(cast(f32) alpha, 0, 100, 0, 255)
 
         #[Swag.Complete]
@@ -178,9 +178,9 @@ impl IForm for FormShape
         case Ellipse:
             sizeX := pp.width * 0.5
             sizeY := pp.height * 0.5
-            if quickMode and alpha != 100
+            if quickMode and alpha != 100 and subKind == .Highlight
                 painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, backBrush)
-            painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, backColor)
+            painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, bk)
             if bSize >= 1
                 painter.drawEllipse(pp.x + sizeX, pp.y + sizeY, sizeX - bSize * 0.5, sizeY - bSize * 0.5, pen)
 
@@ -189,7 +189,7 @@ impl IForm for FormShape
                 painter.fillRect(pp, borderColor)
             else
             {
-                if quickMode and alpha != 100
+                if quickMode and alpha != 100 and subKind == .Highlight
                     painter.fillRect(pp, backBrush)
                 painter.fillRect(pp, bk)
                 pp.inflate(-bSize * 0.5)
@@ -199,9 +199,9 @@ impl IForm for FormShape
         case RoundRectangle:
             pp.inflate(-bSize * 0.5)
             round := Math.max(bSize, 10)
-            if quickMode and alpha != 100
+            if quickMode and alpha != 100 and subKind == .Highlight
                 painter.fillRoundRect(pp, round, round, backBrush)
-            painter.fillRoundRect(pp, round, round, backColor)
+            painter.fillRoundRect(pp, round, round, bk)
             if bSize >= 1
                 painter.drawRoundRect(pp, round, round, pen)
         }
