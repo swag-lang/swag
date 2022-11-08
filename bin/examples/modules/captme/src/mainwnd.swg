@@ -1124,44 +1124,101 @@ impl MainWnd
     mtd resizeCanevas()
     {
         capture := getCapture()
-        dlg := Dialog.createDialog(surface, 350, 335, title: "Resize Canevas")
+        dlg := Dialog.createDialog(surface, 350, 235, title: "Resize Canevas")
         dlg.addButton("Resize", Dialog.BtnOk, true)
         dlg.addButton("Cancel", Dialog.BtnCancel)
-        edit0 := EditCtrl.create(dlg, "Width", Format.toString("%", capture.width), @{90, 12}, flags: .RightAlign)
-        edit1 := EditCtrl.create(dlg, "Height", Format.toString("%", capture.height), @{90, 47}, flags: .RightAlign)
+        edit0 := EditCtrl.create(dlg, "Width", Format.toString("%", capture.width), @{30, 15}, flags: .RightAlign)
+        edit1 := EditCtrl.create(dlg, "Height", Format.toString("%", capture.height), @{30, 50}, flags: .RightAlign)
         edit0.edit.setInputU64(16, 4096)
         edit1.edit.setInputU64(16, 4096)
 
-        const X = 90
-        const Y = 90
-        const S = 20
-
         #[Swag.Macro]
-        func createBtn(dlg: *Wnd, pos: Math.Rectangle)
+        func createBtn(dlg: *Wnd, pos: Math.Rectangle, id: uint, mustCheck = false)
         {
             btn := CheckButton.create(dlg, " ", pos)
-            /*btn.sigChanged += @(btn) {
-                @print("X")
-            }*/
+            btn.checked = mustCheck ? .Undefined : .UnChecked
+            btn.userData = cast(*void) id
+            btn.sigChanged += @(btn) {
+                visit c: btn.parent.childs
+                {
+                    if c.userData
+                    {
+                        btnc := cast(*CheckButton) c
+                        btnc.checked = c != btn ? .UnChecked : .Undefined
+                        btnc.invalidate()
+                    }
+                }
+            }
         }
 
-        createBtn(dlg, @{X, Y, S, S})
-        createBtn(dlg, @{X+S+4, Y, S, S})
-        createBtn(dlg, @{X+S+4+S+4, Y, S, S})
-        createBtn(dlg, @{X, Y+S+4, S, S})
-        createBtn(dlg, @{X+S+4, Y+S+4, S, S})
-        createBtn(dlg, @{X+S+4+S+4, Y+S+4, S, S})
-        createBtn(dlg, @{X, Y+S+4+S+4, S, S})
-        createBtn(dlg, @{X+S+4, Y+S+4+S+4, S, S})
-        createBtn(dlg, @{X+S+4+S+4, Y+S+4+S+4, S, S})
+        const X = 175
+        const Y = 15
+        const S = 20
+        const O = 4
+        createBtn(dlg, @{X, Y, S, S}, 1)
+        createBtn(dlg, @{X+S+O, Y, S, S}, 2)
+        createBtn(dlg, @{X+S+O+S+O, Y, S, S}, 3)
+        createBtn(dlg, @{X, Y+S+O, S, S}, 4)
+        createBtn(dlg, @{X+S+O, Y+S+O, S, S}, 5, true)
+        createBtn(dlg, @{X+S+O+S+O, Y+S+O, S, S}, 6)
+        createBtn(dlg, @{X, Y+S+O+S+O, S, S}, 7)
+        createBtn(dlg, @{X+S+O, Y+S+O+S+O, S, S}, 8)
+        createBtn(dlg, @{X+S+O+S+O, Y+S+O+S+O, S, S}, 9)
+
         if dlg.doModal() != Dialog.BtnOk
             return
 
+        resizeMode := 5'uint
+        visit c: dlg.childs
+        {
+            if c.userData
+            {
+                btnc := cast(*CheckButton) c
+                if btnc.checked != .UnChecked
+                {
+                    resizeMode = cast(uint) btnc.userData
+                    break
+                }
+            }
+        }
+
         (w, ?, ?) := catch StrConv.parseS32(edit0.edit.text)
         (h, ?, ?) := catch StrConv.parseS32(edit1.edit.text)
+        nw := w - capture.width
+        nh := h - capture.height
+        if !nw and !nh
+            return
+
         undo := capture.newUndo(.MoveCapture)
-        undo.newSizeX = w - capture.width
-        undo.newSizeY = h - capture.height
+        undo.newSizeX = nw
+        undo.newSizeY = nh
+
+        switch resizeMode
+        {
+        case 1:
+            undo.newPosX = nw
+            undo.newPosY = nh
+        case 2:
+            undo.newPosX = nw / 2
+            undo.newPosY = nh
+        case 3:
+            undo.newPosY = nh
+        case 4:
+            undo.newPosX = nw
+            undo.newPosY = nh / 2
+        case 5:
+            undo.newPosX = nw / 2
+            undo.newPosY = nh / 2
+        case 6:
+            undo.newPosY = nh / 2
+        case 7:
+            undo.newPosX = nw
+        case 8:
+            undo.newPosX = nw / 2
+        case 9:
+            break
+        }
+
         capture.pushUndo(undo)
     }
 

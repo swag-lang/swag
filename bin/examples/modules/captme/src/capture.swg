@@ -143,6 +143,7 @@ impl Capture
     {
         changed = true
         editView.main.recentWnd.updateRecent(self)
+        editView.main.updateSizeDisplay()
     }
 
     mtd save() throw
