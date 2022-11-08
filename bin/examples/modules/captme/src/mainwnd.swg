@@ -1119,6 +1119,76 @@ impl MainWnd
 
     mtd resizeImage()
     {
+        #[Swag.Global]
+        var g_KeepRatio: bool = true
+
+        capture := getCapture()
+        ratio := cast(f32) capture.width / capture.height
+
+        dlg := Dialog.createDialog(surface, 350, 265, title: "Resize Image")
+        dlg.addButton("Resize", Dialog.BtnOk, true)
+        dlg.addButton("Cancel", Dialog.BtnCancel)
+        edit0 := EditCtrl.create(dlg, "Width", Format.toString("%", capture.width), @{80, 15}, flags: .RightAlign)
+        edit1 := EditCtrl.create(dlg, "Height", Format.toString("%", capture.height), @{80, 50}, flags: .RightAlign)
+        edit0.edit.setInputU64(acast Capture.MinSize, acast Capture.MaxSize)
+        edit1.edit.setInputU64(acast Capture.MinSize, acast Capture.MaxSize)
+        btnRatio := CheckButton.create(dlg, "Keep Ratio", @{120, 85})
+        btnRatio.checked = g_KeepRatio ? .Checked : .UnChecked
+
+        edit0.edit.sigChanged += @|ratio, btnRatio, edit1|(edt) {
+            if btnRatio.checked == .Checked
+            {
+                (w, ?, ?) := catch StrConv.parseS32(edt.text)
+                h := Math.max(1, cast(s32) (w / ratio))
+                edit1.edit.sigChanged.disable()
+                edit1.edit.setText(Format.toString("%", h))
+                edit1.edit.sigChanged.enable()
+            }
+        }
+        edit1.edit.sigChanged += @|ratio, btnRatio, edit0|(edt) {
+            if btnRatio.checked == .Checked
+            {
+                (h, ?, ?) := catch StrConv.parseS32(edt.text)
+                w := Math.max(1, cast(s32) (h * ratio))
+                edit0.edit.sigChanged.disable()
+                edit0.edit.setText(Format.toString("%", w))
+                edit0.edit.sigChanged.enable()
+            }
+        }
+
+        res := dlg.doModal()
+        g_KeepRatio = btnRatio.checked == .Checked
+        if res != Dialog.BtnOk
+            return
+
+        (w, ?, ?) := catch StrConv.parseS32(edit0.edit.text)
+        (h, ?, ?) := catch StrConv.parseS32(edit1.edit.text)
+        if w < Capture.MinSize or w > Capture.MaxSize or h < Capture.MinSize or h > Capture.MaxSize
+            return
+        if w == capture.width and h == capture.height
+            return
+
+        if capture.forms.count > 0
+        {
+            if MessageDlg.confirm(surface, "The capture needs to be flatten first.") != Dialog.BtnYes
+                return
+        }
+
+        capture.serialUndo += 1
+        serial := capture.serialUndo
+
+        undo0 := capture.newUndo(.FlattenAll, serial)
+        capture.pushUndo(undo0)
+        img := capture.backImg
+        img.resize(w, h, .Bilinear)
+        undo1 := capture.newUndo(.SetImage, serial)
+        undo1.newImg = img
+        capture.pushUndo(undo1)
+        undo2 := capture.newUndo(.MoveCapture, serial)
+        undo2.newImg = img
+        undo2.newSizeX = w - capture.width
+        undo2.newSizeY = h - capture.height
+        capture.pushUndo(undo2)
     }
 
     mtd resizeCanevas()
@@ -1215,10 +1285,10 @@ impl MainWnd
         (h, ?, ?) := catch StrConv.parseS32(edit1.edit.text)
         if w < Capture.MinSize or w > Capture.MaxSize or h < Capture.MinSize or h > Capture.MaxSize
             return
+        if w == capture.width and h == capture.height
+            return
         nw := w - capture.width
         nh := h - capture.height
-        if !nw and !nh
-            return
 
         undo := capture.newUndo(.MoveCapture)
         undo.newSizeX = nw
