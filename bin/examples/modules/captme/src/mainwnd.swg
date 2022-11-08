@@ -1123,6 +1123,11 @@ impl MainWnd
 
     mtd resizeCanevas()
     {
+        #[Swag.Global]
+        var g_KeepRatio: bool = true
+        #[Swag.Global]
+        var g_ResizeMode: uint = 5
+
         capture := getCapture()
         ratio := cast(f32) capture.width / capture.height
 
@@ -1134,7 +1139,7 @@ impl MainWnd
         edit0.edit.setInputU64(acast Capture.MinSize, acast Capture.MaxSize)
         edit1.edit.setInputU64(acast Capture.MinSize, acast Capture.MaxSize)
         btnRatio := CheckButton.create(dlg, "Keep Ratio", @{70, 85})
-        btnRatio.checked = .Checked
+        btnRatio.checked = g_KeepRatio ? .Checked : .UnChecked
 
         edit0.edit.sigChanged += @|ratio, btnRatio, edit1|(edt) {
             if btnRatio.checked == .Checked
@@ -1158,10 +1163,10 @@ impl MainWnd
         }
 
         #[Swag.Macro]
-        func createBtn(dlg: *Wnd, pos: Math.Rectangle, id: uint, mustCheck = false)
+        func createBtn(dlg: *Wnd, pos: Math.Rectangle, id: uint)
         {
             btn := CheckButton.create(dlg, " ", pos)
-            btn.checked = mustCheck ? .Undefined : .UnChecked
+            btn.checked = `g_ResizeMode == id ? .Undefined : .UnChecked
             btn.userData = cast(*void) id
             btn.sigChanged += @(btn) {
                 visit c: btn.parent.childs
@@ -1176,24 +1181,20 @@ impl MainWnd
             }
         }
 
-        const X = 175
-        const Y = 15
-        const S = 20
-        const O = 4
+        const X = 175; const Y = 15; const S = 20; const O = 4
         createBtn(dlg, @{X, Y, S, S}, 1)
         createBtn(dlg, @{X+S+O, Y, S, S}, 2)
         createBtn(dlg, @{X+S+O+S+O, Y, S, S}, 3)
         createBtn(dlg, @{X, Y+S+O, S, S}, 4)
-        createBtn(dlg, @{X+S+O, Y+S+O, S, S}, 5, true)
+        createBtn(dlg, @{X+S+O, Y+S+O, S, S}, 5)
         createBtn(dlg, @{X+S+O+S+O, Y+S+O, S, S}, 6)
         createBtn(dlg, @{X, Y+S+O+S+O, S, S}, 7)
         createBtn(dlg, @{X+S+O, Y+S+O+S+O, S, S}, 8)
         createBtn(dlg, @{X+S+O+S+O, Y+S+O+S+O, S, S}, 9)
 
-        if dlg.doModal() != Dialog.BtnOk
-            return
+        res := dlg.doModal()
 
-        resizeMode := 5'uint
+        g_KeepRatio = btnRatio.checked == .Checked
         visit c: dlg.childs
         {
             if c.userData
@@ -1201,11 +1202,14 @@ impl MainWnd
                 btnc := cast(*CheckButton) c
                 if btnc.checked != .UnChecked
                 {
-                    resizeMode = cast(uint) btnc.userData
+                    g_ResizeMode = cast(uint) btnc.userData
                     break
                 }
             }
         }
+
+        if res != Dialog.BtnOk
+            return
 
         (w, ?, ?) := catch StrConv.parseS32(edit0.edit.text)
         (h, ?, ?) := catch StrConv.parseS32(edit1.edit.text)
@@ -1220,7 +1224,7 @@ impl MainWnd
         undo.newSizeX = nw
         undo.newSizeY = nh
 
-        switch resizeMode
+        switch g_ResizeMode
         {
         case 1:
             break
