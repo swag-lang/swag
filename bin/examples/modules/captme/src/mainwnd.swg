@@ -1124,13 +1124,38 @@ impl MainWnd
     mtd resizeCanevas()
     {
         capture := getCapture()
-        dlg := Dialog.createDialog(surface, 350, 235, title: "Resize Canevas")
+        ratio := cast(f32) capture.width / capture.height
+
+        dlg := Dialog.createDialog(surface, 350, 265, title: "Resize Canevas")
         dlg.addButton("Resize", Dialog.BtnOk, true)
         dlg.addButton("Cancel", Dialog.BtnCancel)
         edit0 := EditCtrl.create(dlg, "Width", Format.toString("%", capture.width), @{30, 15}, flags: .RightAlign)
         edit1 := EditCtrl.create(dlg, "Height", Format.toString("%", capture.height), @{30, 50}, flags: .RightAlign)
-        edit0.edit.setInputU64(16, 4096)
-        edit1.edit.setInputU64(16, 4096)
+        edit0.edit.setInputU64(acast Capture.MinSize, acast Capture.MaxSize)
+        edit1.edit.setInputU64(acast Capture.MinSize, acast Capture.MaxSize)
+        btnRatio := CheckButton.create(dlg, "Keep Ratio", @{70, 85})
+        btnRatio.checked = .Checked
+
+        edit0.edit.sigChanged += @|ratio, btnRatio, edit1|(edt) {
+            if btnRatio.checked == .Checked
+            {
+                (w, ?, ?) := catch StrConv.parseS32(edt.text)
+                h := Math.max(1, cast(s32) (w / ratio))
+                edit1.edit.sigChanged.disable()
+                edit1.edit.setText(Format.toString("%", h))
+                edit1.edit.sigChanged.enable()
+            }
+        }
+        edit1.edit.sigChanged += @|ratio, btnRatio, edit0|(edt) {
+            if btnRatio.checked == .Checked
+            {
+                (h, ?, ?) := catch StrConv.parseS32(edt.text)
+                w := Math.max(1, cast(s32) (h * ratio))
+                edit0.edit.sigChanged.disable()
+                edit0.edit.setText(Format.toString("%", w))
+                edit0.edit.sigChanged.enable()
+            }
+        }
 
         #[Swag.Macro]
         func createBtn(dlg: *Wnd, pos: Math.Rectangle, id: uint, mustCheck = false)
@@ -1184,6 +1209,8 @@ impl MainWnd
 
         (w, ?, ?) := catch StrConv.parseS32(edit0.edit.text)
         (h, ?, ?) := catch StrConv.parseS32(edit1.edit.text)
+        if w < Capture.MinSize or w > Capture.MaxSize or h < Capture.MinSize or h > Capture.MaxSize
+            return
         nw := w - capture.width
         nh := h - capture.height
         if !nw and !nh
@@ -1196,27 +1223,27 @@ impl MainWnd
         switch resizeMode
         {
         case 1:
-            undo.newPosX = nw
-            undo.newPosY = nh
+            break
         case 2:
             undo.newPosX = nw / 2
-            undo.newPosY = nh
         case 3:
-            undo.newPosY = nh
-        case 4:
             undo.newPosX = nw
+        case 4:
             undo.newPosY = nh / 2
         case 5:
             undo.newPosX = nw / 2
             undo.newPosY = nh / 2
         case 6:
+            undo.newPosX = nw
             undo.newPosY = nh / 2
         case 7:
-            undo.newPosX = nw
+            undo.newPosY = nh
         case 8:
             undo.newPosX = nw / 2
+            undo.newPosY = nh
         case 9:
-            break
+            undo.newPosX = nw
+            undo.newPosY = nh
         }
 
         capture.pushUndo(undo)

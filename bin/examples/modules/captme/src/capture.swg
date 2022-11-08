@@ -13,6 +13,9 @@ enum MouseMode
 
 struct Capture
 {
+    const MinSize = 16
+    const MaxSize = 4096
+
     // To save
     width, height:          s32
     backImg:                Image
