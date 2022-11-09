@@ -1,4 +1,4 @@
-// swag contains a *very* simple error system used to deal with function returning errors
+// Swag contains a *very* simple error system used to deal with function returning errors
 // Will probably be changed/improved at some point
 // This are *not* exceptions !
 
@@ -8,19 +8,22 @@
 // depending on the return type.
 func count(name: string)->uint throw
 {
-    // This function will return 0 in case of an error.
     if name == null
+    {
+        // This function will return 0 in case of an error, because this is the default
+        // value for 'uint'.
         throw "null pointer"
+    }
 
     return @countof(name)
 }
 
-// The caller will then have to deal with the error
+// The caller will then have to deal with the error in some way.
 // It can 'catch' it, and test (or not) its value with the '@err' intrinsic
 // Execution will continue at the call site.
 func myFunc()
 {
-    // Dismiss the eventual error with 'catch'
+    // Dismiss the eventual error with 'catch' and continue execution
     cpt := catch count("fileName")
 
     // And test it with @err, which returns the 'throw' corresponding string
@@ -30,6 +33,10 @@ func myFunc()
         @print(@err)
         return
     }
+
+    // You can also use 'trycatch', which will return the current function in case
+    // an error has been raised (returning the default value if necessary)
+    cpt1 := trycatch count("fileName")
 }
 
 // The caller can stop the execution with 'try', and return to its own caller with the same error raised.
@@ -52,7 +59,7 @@ func myFunc2()
 // Note that you can use a block instead of one single statement (this does not create a scope)
 func myFunc3() throw
 {
-    // This is not really necessary, see below, but this is just de show 'try' with a block
+    // This is not really necessary, see below, but this is just to show 'try' with a block
     // instead of one single call
     try
     {
@@ -73,6 +80,14 @@ func myFunc3() throw
         cpt4 := count("filename")
         cpt5 := count("other filename")
     }
+
+    // Works also for 'trycatch' if you do not want to deal with the error message
+    // and you want to return as soon as an error is raised.
+    trycatch
+    {
+        cpt6 := count("filename")
+        cpt7 := count("other filename")
+    }
 }
 
 // When a function is marked with "throw", the "try" for a function call is automatic
@@ -90,7 +105,7 @@ func myFunc3() throw
         // In fact there's no need to add a 'try' before the call because 'mySubFunc1' is
         // marked with 'throw'
         // This is less verbose when you do not want to do something special in case
-        // of errors (with 'assume' or 'catch')
+        // of errors (with 'assume', 'catch' or 'trycatch')
         mySubFunc2()
     }
 

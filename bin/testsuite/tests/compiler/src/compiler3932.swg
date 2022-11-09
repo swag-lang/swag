@@ -1,12 +1,12 @@
-func toto() throw
+func toto()->s32 throw
 {
     throw "err"
+    return 666
 }
 
-//#[Swag.PrintBc]
 func titi()->s32
 {
-    trycatch toto()
+    discard trycatch toto()
     @assert(false)
     return 666
 }
