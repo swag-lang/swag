@@ -186,10 +186,20 @@ impl IForm for FormDraw
 
         if subKind == .PixSel
         {
-            p0 := Math.Vector2{paintPoints[0].x, paintPoints[0].y}
-            p1 := Math.Vector2{paintPoints[paintPoints.count - 1].x, paintPoints[paintPoints.count - 1].y}
-            if v.distanceToSegment(p0, p1) < bSize
-                return true
+            // Content
+            count := 0
+            loop i: paintPoints
+            {
+                p0 := Math.Vector2{paintPoints[i].x, paintPoints[i].y}
+                ni := (i + 1) % paintPoints.count
+                p1 := Math.Vector2{paintPoints[ni].x, paintPoints[ni].y}
+
+                res := Math.Vector2.segSegIntersect(@{0, 0}, v, p0, p1)
+                if res.yes
+                    count += 1
+            }
+
+            return count & 1 ? true : false
         }
 
         loop i: 0..paintPoints.count-2
