@@ -184,6 +184,14 @@ impl IForm for FormDraw
         computePaintCoords(z)
         v := Math.Vector2{pt.x, pt.y}
 
+        if subKind == .PixSel
+        {
+            p0 := Math.Vector2{paintPoints[0].x, paintPoints[0].y}
+            p1 := Math.Vector2{paintPoints[paintPoints.count - 1].x, paintPoints[paintPoints.count - 1].y}
+            if v.distanceToSegment(p0, p1) < bSize
+                return true
+        }
+
         loop i: 0..paintPoints.count-2
         {
             p0 := Math.Vector2{paintPoints[i].x, paintPoints[i].y}
@@ -207,6 +215,7 @@ impl IForm for FormDraw
 
         if subKind == .PixSel
         {
+            pl.close()
             bSize = 2
             dashStyle = .Dash
             painter.removeParams(.Antialiased)

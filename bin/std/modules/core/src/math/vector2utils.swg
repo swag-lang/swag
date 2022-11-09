@@ -47,14 +47,24 @@ impl Vector2
     // Returns the distance of the point to the given segment
     mtdc distanceToSegment(a, b: Vector2)->f32
     {
-        l2 := distanceSquared(a, b)
-        if l2 == 0
-            return distance(a)
-        vp := a - dref self
-        wp := b - dref self
-        t := Math.max(0, Math.min(1, vp.dot(wp) / l2))
-        projection := dref self + t * (b - a)
-        return distance(projection)
+        ab := b - a
+        be := dref self - b
+        ae := dref self - a
+
+        abbe := ab.dot(be)
+        if abbe > 0
+            return be.length()
+
+        abae := ab.dot(ae)
+        if abae < 0
+            return ae.length()
+
+        x1 := ab.x
+        y1 := ab.y
+        x2 := ae.x
+        y2 := ae.y
+        mod := Math.sqrt(x1 * x1 + y1 * y1)
+        return Math.abs(x1 * y2 - y1 * x2) / mod
     }
 
     private func getLineLineIntersectCoefs(start0, end0, start1, end1: Vector2, epsilon: f32)->{yes: bool, d0: f32, d1: f32}
