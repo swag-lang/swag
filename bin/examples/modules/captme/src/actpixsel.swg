@@ -30,24 +30,20 @@ impl MainWnd
         visit f: forms
             boundRects.add(f.boundRect(false))
 
-        loop x: capture.backImg.width
+        params := @{capture, buf: boundRects.buffer}
+        undo.newImg.visitPixels(&params)
         {
-            loop y: capture.backImg.height
+            p := cast(*@typeof(params)) userData
+            visit f, idx: p.capture.forms
             {
-                visit f, idx: forms
+                pt := Math.Point{cast(f32) x, cast(f32) p.capture.backImg.height - y}
+                pt.x += p.capture.backImagePos.x
+                pt.y += p.capture.backImagePos.y
+                if !p.buf[idx].contains(pt)
+                    continue
+                if f.isInside(pt)
                 {
-                    pt := Math.Point{cast(f32) x, cast(f32) y}
-                    pt.x += capture.backImagePos.x
-                    pt.y += capture.backImagePos.y
-                    if !boundRects[idx].contains(pt)
-                        continue
-                    if f.isInside(pt)
-                    {
-                        ptr := undo.newImg.pixels.buffer
-                        ptr += x * undo.newImg.bpp8
-                        ptr += (undo.newImg.height - y) * undo.newImg.bpp8 * undo.newImg.width
-                        dref cast(*u32) ptr = 0
-                    }
+                    pix[0], pix[1], pix[2], pix[3] = 0
                 }
             }
         }

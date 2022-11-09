@@ -5,6 +5,7 @@ struct FormDraw
 
     #[Serialization.NoSerialize]
     {
+        boundCache:  Math.Rectangle
         paintPoints: Array'Math.Point
     }
 }
@@ -140,6 +141,8 @@ impl IForm for FormDraw
         result.y = y0
         result.width = x1 - x0
         result.height = y1 - y0
+        boundCache = result
+
         return result
     }
 
@@ -189,9 +192,22 @@ impl IForm for FormDraw
             p0 := Math.Vector2{points.buffer[i].x, points.buffer[i].y}
             p1 := Math.Vector2{points.buffer[ni].x, points.buffer[ni].y}
 
-            res := Math.Vector2.segSegIntersect(@{0, 0}, v, p0, p1)
+            res := Math.Vector2.segSegIntersect(@{boundCache.x, boundCache.y}, v, p0, p1)
             if res.yes
-                count += 1
+            {
+                if res.pos == p0
+                {
+                    if p1.y > v.y
+                        count += 1
+                }
+                elif res.pos == p1
+                {
+                    if p0.y < v.y
+                        count += 1
+                }
+                else
+                    count += 1
+            }
         }
 
         return count & 1 ? true : false
