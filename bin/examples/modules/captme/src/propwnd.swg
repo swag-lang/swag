@@ -534,6 +534,9 @@ impl PropWnd
         curSelType := getSelectedFormType()
         if curSelType != FormShape
             return
+        curSel := getSelectedBaseForm()
+        if curSel.subKind == .PixSel
+            return
 
         btn := createArrowButton(stack, BtnColorWidth, BtnColorHeight)
         btn.name = "Shape"

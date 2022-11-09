@@ -324,6 +324,7 @@ impl Capture
     // PAINT
     //////////////////////////////
 
+    #[Swag.Optim("", false)]
     func paintForm(app: *Application, painter: *Painter, rect: Math.Rectangle, f: IForm, zoom: f32, quickMode = false, snapMode = false)
     {
         render := &app.renderer
@@ -337,7 +338,12 @@ impl Capture
         base.paintPos.width  = boundRect.width * zoom
         base.paintPos.height = boundRect.height * zoom
 
-        rt := render.getRenderTarget(cast(s32) base.paintPos.width, cast(s32) base.paintPos.height)
+        wt2 := cast(s32) Math.round(base.paintPos.width)
+        ht2 := cast(s32) Math.round(base.paintPos.height)
+        wt  := wt2
+        ht  := ht2
+
+        rt := render.getRenderTarget(wt2, ht2)
         painter.bindRenderTarget(rt, true)
         painter.setParams(.Antialiased)
         painter.clear(Argb.Zero)
@@ -347,10 +353,6 @@ impl Capture
         painter.unbindRenderTarget()
 
         const Margin = 8
-        wt2 := cast(s32) base.paintPos.width
-        ht2 := cast(s32) base.paintPos.height
-        wt  := wt2
-        ht  := ht2
 
         var rt1, rt2: *RenderTarget
         if base.paintShadow
@@ -441,11 +443,13 @@ impl Capture
             paintShadowRect.x = base.paintPos.x
             paintShadowRect.y = base.paintPos.y
             painter.setColorMaskColor()
+            painter.setInterpolationMode(.Pixel)
             painter.drawTexture(paintShadowRect, dstRect, rt.colorBuffer, colForm)
 
             painter.setBlendingMode(.Max)
             painter.setColorMaskAlpha()
             painter.drawTexture(paintShadowRect, dstRect, rt.colorBuffer, colForm)
+            painter.setInterpolationMode(.Linear)
         }
 
         painter.setColorMaskColor()

@@ -229,9 +229,10 @@ impl IForm for FormPolygon
 
         if subKind == .PixSel
         {
-            bSize = 3
+            bSize = 2
             bk.a = 0
-            dashStyle = .Dot
+            dashStyle = .Dash
+            painter.removeParams(.Antialiased)
         }
 
         pen := Pen.createDash(dashStyle, borderColor, bSize)

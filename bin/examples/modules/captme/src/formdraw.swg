@@ -207,8 +207,9 @@ impl IForm for FormDraw
 
         if subKind == .PixSel
         {
-            bSize = 3
-            dashStyle = .Dot
+            bSize = 2
+            dashStyle = .Dash
+            painter.removeParams(.Antialiased)
         }
 
         pen := Pen.createDash(dashStyle, borderColor, bSize)

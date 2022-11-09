@@ -466,6 +466,16 @@ impl Painter
         curState.paintParams &= ~remove
     }
 
+    mtd addParams(add: PaintParams)
+    {
+        curState.paintParams |= add
+    }
+
+    mtd removeParams(remove: PaintParams)
+    {
+        curState.paintParams &= ~remove
+    }
+
     #[Swag.Inline]
     mtd getParams()  => curState.paintParams
     #[Swag.Inline]

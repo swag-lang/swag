@@ -166,9 +166,10 @@ impl IForm for FormShape
 
         if subKind == .PixSel
         {
-            bSize = 3
-            dashStyle = .Dot
+            bSize = 2
+            dashStyle = .Dash
             borderColor = Argb.White
+            painter.removeParams(.Antialiased)
         }
 
         pp        := Math.Rectangle{0, 0, paintPos.width, paintPos.height}
