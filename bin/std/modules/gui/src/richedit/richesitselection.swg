@@ -261,7 +261,6 @@ impl RichEditCtrl
     private mtd registerClipboardFormat()
     {
         clipFormat = catch Clipboard.registerFormat("std.richedit.style")
-        if @err return
     }
 
     mtd copyToClipboard()

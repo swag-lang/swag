@@ -449,3 +449,83 @@ func parseString(str: string) -> {value: String, eat: u32} throw
     result.eat = cpt
     return result
 }
+
+func toS8(str: string)->s8 throw
+{
+    (v, eat, ovf) := parseS8(str)
+    if ovf throw ParseErrorOverflow
+    if eat != @countof(str) throw ParseErrorInvalid
+    return v
+}
+
+func toS16(str: string)->s16 throw
+{
+    (v, eat, ovf) := parseS16(str)
+    if ovf throw ParseErrorOverflow
+    if eat != @countof(str) throw ParseErrorInvalid
+    return v
+}
+
+func toS32(str: string)->s32 throw
+{
+    (v, eat, ovf) := parseS32(str)
+    if ovf throw ParseErrorOverflow
+    if eat != @countof(str) throw ParseErrorInvalid
+    return v
+}
+
+func toS64(str: string)->s64 throw
+{
+    (v, eat, ovf) := parseS64(str)
+    if ovf throw ParseErrorOverflow
+    if eat != @countof(str) throw ParseErrorInvalid
+    return v
+}
+
+func toU8(str: string)->u8 throw
+{
+    (v, eat, ovf) := parseU8(str)
+    if ovf throw ParseErrorOverflow
+    if eat != @countof(str) throw ParseErrorInvalid
+    return v
+}
+
+func toU16(str: string)->u16 throw
+{
+    (v, eat, ovf) := parseU16(str)
+    if ovf throw ParseErrorOverflow
+    if eat != @countof(str) throw ParseErrorInvalid
+    return v
+}
+
+func toU32(str: string)->u32 throw
+{
+    (v, eat, ovf) := parseU32(str)
+    if ovf throw ParseErrorOverflow
+    if eat != @countof(str) throw ParseErrorInvalid
+    return v
+}
+
+func toU64(str: string)->u64 throw
+{
+    (v, eat, ovf) := parseU64(str)
+    if ovf throw ParseErrorOverflow
+    if eat != @countof(str) throw ParseErrorInvalid
+    return v
+}
+
+func toF32(str: string)->f32 throw
+{
+    (v, eat, ovf) := parseF32(str)
+    if ovf throw ParseErrorOverflow
+    if eat != @countof(str) throw ParseErrorInvalid
+    return v
+}
+
+func toF64(str: string)->f64 throw
+{
+    (v, eat, ovf) := parseF64(str)
+    if ovf throw ParseErrorOverflow
+    if eat != @countof(str) throw ParseErrorInvalid
+    return v
+}

@@ -1138,7 +1138,8 @@ impl MainWnd
         edit0.edit.sigChanged += @|ratio, btnRatio, edit1|(edt) {
             if btnRatio.checked == .Checked
             {
-                (w, ?, ?) := catch StrConv.parseS32(edt.text)
+                w := catch StrConv.toS32(edt.text)
+                if @err return
                 h := Math.max(1, cast(s32) (w / ratio))
                 edit1.edit.setTextSilent(Format.toString("%", h))
             }
@@ -1146,7 +1147,8 @@ impl MainWnd
         edit1.edit.sigChanged += @|ratio, btnRatio, edit0|(edt) {
             if btnRatio.checked == .Checked
             {
-                (h, ?, ?) := catch StrConv.parseS32(edt.text)
+                h := catch StrConv.toS32(edt.text)
+                if @err return
                 w := Math.max(1, cast(s32) (h * ratio))
                 edit0.edit.setTextSilent(Format.toString("%", w))
             }
@@ -1157,9 +1159,11 @@ impl MainWnd
         if res != Dialog.BtnOk
             return
 
-        (w, ?, ?) := catch StrConv.parseS32(edit0.edit.text)
-        (h, ?, ?) := catch StrConv.parseS32(edit1.edit.text)
-        if w < Capture.MinSize or w > Capture.MaxSize or h < Capture.MinSize or h > Capture.MaxSize
+        w := catch StrConv.toS32(edit0.edit.text)
+        if @err or w < Capture.MinSize or w > Capture.MaxSize
+            return
+        h := catch StrConv.toS32(edit1.edit.text)
+        if @err or h < Capture.MinSize or h > Capture.MaxSize
             return
         if w == capture.width and h == capture.height
             return
@@ -1210,7 +1214,8 @@ impl MainWnd
         edit0.edit.sigChanged += @|ratio, btnRatio, edit1|(edt) {
             if btnRatio.checked == .Checked
             {
-                (w, ?, ?) := catch StrConv.parseS32(edt.text)
+                w := catch StrConv.toS32(edt.text)
+                if @err return
                 h := Math.max(1, cast(s32) (w / ratio))
                 edit1.edit.setTextSilent(Format.toString("%", h))
             }
@@ -1218,7 +1223,8 @@ impl MainWnd
         edit1.edit.sigChanged += @|ratio, btnRatio, edit0|(edt) {
             if btnRatio.checked == .Checked
             {
-                (h, ?, ?) := catch StrConv.parseS32(edt.text)
+                h := catch StrConv.toS32(edt.text)
+                if @err return
                 w := Math.max(1, cast(s32) (h * ratio))
                 edit0.edit.setTextSilent(Format.toString("%", w))
             }
@@ -1273,12 +1279,15 @@ impl MainWnd
         if res != Dialog.BtnOk
             return
 
-        (w, ?, ?) := catch StrConv.parseS32(edit0.edit.text)
-        (h, ?, ?) := catch StrConv.parseS32(edit1.edit.text)
-        if w < Capture.MinSize or w > Capture.MaxSize or h < Capture.MinSize or h > Capture.MaxSize
+        w := catch StrConv.toS32(edit0.edit.text)
+        if @err or w < Capture.MinSize or w > Capture.MaxSize
+            return
+        h := catch StrConv.toS32(edit1.edit.text)
+        if @err or h < Capture.MinSize or h > Capture.MaxSize
             return
         if w == capture.width and h == capture.height
             return
+
         nw := w - capture.width
         nh := h - capture.height
 

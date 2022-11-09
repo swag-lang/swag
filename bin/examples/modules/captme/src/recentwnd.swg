@@ -208,7 +208,6 @@ impl RecentWnd
         }
 
         g_Library.fill()
-        if @err return recent
 
         res := g_Library.files
         res.sort(@(a, b) {
