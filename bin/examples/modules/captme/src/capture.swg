@@ -108,13 +108,21 @@ impl Capture
             visit sel: selection
             {
                 f := forms[sel]
+                b := cast(*BaseForm) @dataof(f)
+                if b.subKind == .PixSel
+                    continue
                 paintForm(app, &painter, rect, f, zoom, snapMode: true)
             }
         }
         else
         {
             visit f: forms
+            {
+                b := cast(*BaseForm) @dataof(f)
+                if b.subKind == .PixSel
+                    continue
                 paintForm(app, &painter, rect, f, zoom, snapMode: true)
+            }
         }
 
         painter.end()
@@ -757,6 +765,8 @@ impl Capture
     {
         menu := MenuCtrl.createPopup(view)
 
+        menu.addItem(CmdIdPixSelClear)
+        menu.addSeparator()
         menu.addItem(CmdIdCopy)
         menu.addItem(CmdIdPaste)
         menu.addSeparator()

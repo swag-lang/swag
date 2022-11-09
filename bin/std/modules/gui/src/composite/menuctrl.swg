@@ -152,7 +152,7 @@ public impl IWnd for MenuCtrl
         var colorText: Color
         var colorRightText: Color
 
-        lastIsSeparator := false
+        lastIsSeparator := true
         visit i, idx: items
         {
             if i.hidden
@@ -571,7 +571,7 @@ impl MenuCtrl
         var rsf:  Pixel.RichStringFormat
         rsf.font = theme.res.fontDefault
 
-        lastIsSeparator := false
+        lastIsSeparator := true
         visit i, idx: items
         {
             if i.hidden

@@ -189,8 +189,27 @@ impl IWnd for MainWnd
         hasSel       := capture and capture.selection.count
         hasSingleSel := capture and capture.selection.count == 1
 
+        hasPixSel := false
+        if capture
+        {
+            visit s: capture.selection
+            {
+                f := capture.forms[s]
+                b := cast(*BaseForm) @dataof(f)
+                hasPixSel = b.subKind == .PixSel
+                if hasPixSel break
+            }
+        }
+
         switch evt.id
         {
+        case CmdIdPixSelClear:
+            evt.setFlags |= .Name | .Disabled | .Hidden
+            evt.name = "PixSel Clear"
+            evt.disabled = !capture or !hasPixSel
+            evt.hidden = evt.disabled
+            evt.accepted = true
+
         case CmdIdMoveSelLeft, CmdIdMoveSelTop, CmdIdMoveSelRight, CmdIdMoveSelBottom:
             evt.setFlags |= .Disabled
             evt.disabled = !hasSel
@@ -738,6 +757,9 @@ impl IWnd for MainWnd
         var undo: *Undo
         switch evt.id
         {
+        case CmdIdPixSelClear:
+            pixSelClear()
+
         case CmdIdMoveSelLeft1:
             undo = capture.newUndo(.OffsetSelection)
             undo.newPosX = -1
@@ -1114,408 +1136,6 @@ impl MainWnd
         return editMode
     }
 
-    mtd openImage()
-    {
-        var opt: FileDlgOptions
-        with opt
-        {
-            .state = &fileDlgState
-            .mode = .SelectOneFile
-            .title = "Load Image"
-            .btnOkName = "Load"
-            .shortcuts.add(@{Env.SpecialDirectory.Desktop, "Desktop"})
-            .shortcuts.add(@{Env.SpecialDirectory.UserPictures, "My Images"})
-            .shortcuts.add(@{Env.SpecialDirectory.CommonPictures, "Images"})
-            .filters.add(@{"PNG - Portable Network Graphics (*.png)", ".png"})
-            .filters.add(@{"JPG - JPEG Image (*.jpg)", ".jpg"})
-            .filters.add(@{"BMP - Windows Bitmap (*.bmp)", ".bmp"})
-            .filters.add(@{"TGA - Truevision Targa (*.tga)", ".tga"})
-        }
-
-        dlg := FileDlg.create(surface, opt)
-        if dlg.doModal() != Dialog.BtnOk
-            return
-
-        img := catch Image.load(dlg.getSelectedName())
-        if @err
-            MessageDlg.error(surface, @err, "Failed to load image !")
-        else
-            newCapture(img, dlg.getSelectedName())
-    }
-
-    mtd resizeImage()
-    {
-        #[Swag.Global]
-        var g_KeepRatio: bool = true
-
-        capture := getCapture()
-        ratio := cast(f32) capture.width / capture.height
-
-        dlg := Dialog.createDialog(surface, 350, 265, title: "Resize Image")
-        dlg.addButton("Resize", Dialog.BtnOk, true)
-        dlg.addButton("Cancel", Dialog.BtnCancel)
-        edit0 := EditCtrl.create(dlg, "Width", Format.toString("%", capture.width), @{80, 15}, flags: .RightAlign)
-        edit1 := EditCtrl.create(dlg, "Height", Format.toString("%", capture.height), @{80, 50}, flags: .RightAlign)
-        edit0.edit.setInputU64(acast Capture.MinSize, acast Capture.MaxSize)
-        edit1.edit.setInputU64(acast Capture.MinSize, acast Capture.MaxSize)
-        btnRatio := CheckButton.create(dlg, "Keep Ratio", @{120, 85})
-        btnRatio.checked = g_KeepRatio ? .Checked : .UnChecked
-
-        edit0.edit.sigChanged += @|ratio, btnRatio, edit1|(edt) {
-            if btnRatio.checked == .Checked
-            {
-                w := trycatch StrConv.toS32(edt.text)
-                h := Math.max(1, cast(s32) (w / ratio))
-                edit1.edit.setTextSilent(Format.toString("%", h))
-            }
-        }
-        edit1.edit.sigChanged += @|ratio, btnRatio, edit0|(edt) {
-            if btnRatio.checked == .Checked
-            {
-                h := trycatch StrConv.toS32(edt.text)
-                w := Math.max(1, cast(s32) (h * ratio))
-                edit0.edit.setTextSilent(Format.toString("%", w))
-            }
-        }
-
-        res := dlg.doModal()
-        g_KeepRatio = btnRatio.checked == .Checked
-        if res != Dialog.BtnOk
-            return
-
-        w := trycatch StrConv.toS32(edit0.edit.text)
-        if w < Capture.MinSize or w > Capture.MaxSize
-            return
-        h := trycatch StrConv.toS32(edit1.edit.text)
-        if h < Capture.MinSize or h > Capture.MaxSize
-            return
-        if w == capture.width and h == capture.height
-            return
-
-        if capture.forms.count > 0
-        {
-            if MessageDlg.confirm(surface, "The capture must be flattened first.") != Dialog.BtnYes
-                return
-        }
-
-        capture.serialUndo += 1
-        serial := capture.serialUndo
-
-        undo0 := capture.newUndo(.FlattenAll, serial)
-        capture.pushUndo(undo0)
-        img := capture.backImg
-        img.resize(w, h, .Bilinear)
-        undo1 := capture.newUndo(.SetImage, serial)
-        undo1.newImg = img
-        capture.pushUndo(undo1)
-        undo2 := capture.newUndo(.MoveCapture, serial)
-        undo2.newImg = img
-        undo2.newSizeX = w - capture.width
-        undo2.newSizeY = h - capture.height
-        capture.pushUndo(undo2)
-    }
-
-    mtd resizeCanevas()
-    {
-        #[Swag.Global]
-        var g_KeepRatio: bool = true
-        #[Swag.Global]
-        var g_ResizeMode: uint = 5
-
-        capture := getCapture()
-        ratio := cast(f32) capture.width / capture.height
-
-        dlg := Dialog.createDialog(surface, 350, 265, title: "Resize Canevas")
-        dlg.addButton("Resize", Dialog.BtnOk, true)
-        dlg.addButton("Cancel", Dialog.BtnCancel)
-        edit0 := EditCtrl.create(dlg, "Width", Format.toString("%", capture.width), @{30, 15}, flags: .RightAlign)
-        edit1 := EditCtrl.create(dlg, "Height", Format.toString("%", capture.height), @{30, 50}, flags: .RightAlign)
-        edit0.edit.setInputU64(acast Capture.MinSize, acast Capture.MaxSize)
-        edit1.edit.setInputU64(acast Capture.MinSize, acast Capture.MaxSize)
-        btnRatio := CheckButton.create(dlg, "Keep Ratio", @{70, 85})
-        btnRatio.checked = g_KeepRatio ? .Checked : .UnChecked
-
-        edit0.edit.sigChanged += @|ratio, btnRatio, edit1|(edt) {
-            if btnRatio.checked == .Checked
-            {
-                w := trycatch StrConv.toS32(edt.text)
-                h := Math.max(1, cast(s32) (w / ratio))
-                edit1.edit.setTextSilent(Format.toString("%", h))
-            }
-        }
-        edit1.edit.sigChanged += @|ratio, btnRatio, edit0|(edt) {
-            if btnRatio.checked == .Checked
-            {
-                h := trycatch StrConv.toS32(edt.text)
-                w := Math.max(1, cast(s32) (h * ratio))
-                edit0.edit.setTextSilent(Format.toString("%", w))
-            }
-        }
-
-        #[Swag.Macro]
-        func createBtn(dlg: *Wnd, pos: Math.Rectangle, id: uint)
-        {
-            btn := CheckButton.create(dlg, " ", pos)
-            btn.checked = `g_ResizeMode == id ? .Undefined : .UnChecked
-            btn.userData = cast(*void) id
-            btn.sigChanged += @(btn) {
-                visit c: btn.parent.childs
-                {
-                    if c.userData
-                    {
-                        btnc := cast(*CheckButton) c
-                        btnc.checked = c != btn ? .UnChecked : .Undefined
-                        btnc.invalidate()
-                    }
-                }
-            }
-        }
-
-        const X = 175; const Y = 15; const S = 20; const O = 4
-        createBtn(dlg, @{X, Y, S, S}, 1)
-        createBtn(dlg, @{X+S+O, Y, S, S}, 2)
-        createBtn(dlg, @{X+S+O+S+O, Y, S, S}, 3)
-        createBtn(dlg, @{X, Y+S+O, S, S}, 4)
-        createBtn(dlg, @{X+S+O, Y+S+O, S, S}, 5)
-        createBtn(dlg, @{X+S+O+S+O, Y+S+O, S, S}, 6)
-        createBtn(dlg, @{X, Y+S+O+S+O, S, S}, 7)
-        createBtn(dlg, @{X+S+O, Y+S+O+S+O, S, S}, 8)
-        createBtn(dlg, @{X+S+O+S+O, Y+S+O+S+O, S, S}, 9)
-
-        res := dlg.doModal()
-
-        g_KeepRatio = btnRatio.checked == .Checked
-        visit c: dlg.childs
-        {
-            if c.userData
-            {
-                btnc := cast(*CheckButton) c
-                if btnc.checked != .UnChecked
-                {
-                    g_ResizeMode = cast(uint) btnc.userData
-                    break
-                }
-            }
-        }
-
-        if res != Dialog.BtnOk
-            return
-
-        w := trycatch StrConv.toS32(edit0.edit.text)
-        if w < Capture.MinSize or w > Capture.MaxSize
-            return
-        h := trycatch StrConv.toS32(edit1.edit.text)
-        if h < Capture.MinSize or h > Capture.MaxSize
-            return
-        if w == capture.width and h == capture.height
-            return
-
-        nw := w - capture.width
-        nh := h - capture.height
-
-        undo := capture.newUndo(.MoveCapture)
-        undo.newSizeX = nw
-        undo.newSizeY = nh
-
-        switch g_ResizeMode
-        {
-        case 2, 5, 8:
-            undo.newPosX = nw / 2
-        case 3, 6, 9:
-            undo.newPosX = nw
-        }
-
-        switch g_ResizeMode
-        {
-        case 4, 5, 6:
-            undo.newPosY = nh / 2
-        case 7, 8, 9:
-            undo.newPosY = nh
-        }
-
-        capture.pushUndo(undo)
-    }
-
-    mtd trimCanevas()
-    {
-        capture := getCapture()
-        capture.selection.clear()
-
-        minX := Swag.F32.Max
-        minY := Swag.F32.Max
-        maxX := 0'f32
-        maxY := 0'f32
-
-        visit f, idx: capture.forms
-        {
-            r := f.boundRect(false)
-            if r.x > 0
-                minX = Math.min(minX, r.x)
-            if r.y > 0
-                minY = Math.min(minY, r.y)
-            if r.right() < capture.width
-                maxX = Math.max(maxX, r.right())
-            if r.bottom() < capture.height
-                maxY = Math.max(maxY, r.bottom())
-
-            // Select forms outside capture
-            if r.right() < 0 or
-               r.bottom() < 0 or
-               r.x >= capture.width or
-               r.y >= capture.height
-            {
-                capture.selection.add(idx)
-            }
-        }
-
-        scope Left loop x: capture.backImg.width
-        {
-            if x + capture.backImagePos.x < 0
-                continue
-            loop y: capture.backImg.height
-            {
-                col := capture.backImg.getPixelColor(x, y)
-                if col.a
-                {
-                    minX = Math.min(minX, x + capture.backImagePos.x)
-                    break Left
-                }
-            }
-        }
-
-        scope Right loop x: capture.backImg.width-1..0
-        {
-            if x + capture.backImagePos.x >= capture.width
-                continue
-            loop y: capture.backImg.height
-            {
-                col := capture.backImg.getPixelColor(x, y)
-                if col.a
-                {
-                    maxX = Math.max(maxX, x + capture.backImagePos.x + 1)
-                    break Right
-                }
-            }
-        }
-
-        scope Up loop y: capture.backImg.height
-        {
-            if y + capture.backImagePos.y < 0
-                continue
-            loop x: capture.backImg.width
-            {
-                col := capture.backImg.getPixelColor(x, y)
-                if col.a
-                {
-                    minY = Math.min(minY, y + capture.backImagePos.y)
-                    break Up
-                }
-            }
-        }
-
-        scope Down loop y: capture.backImg.height-1..0
-        {
-            if y + capture.backImagePos.y >= capture.height
-                continue
-            loop x: capture.backImg.width
-            {
-                col := capture.backImg.getPixelColor(x, y)
-                if col.a
-                {
-                    maxY = Math.max(maxY, y + capture.backImagePos.y + 1)
-                    break Down
-                }
-            }
-        }
-
-        capture.serialUndo += 1
-        serial := capture.serialUndo
-
-        // Resize capture
-        if minX or minY or maxX != capture.width or maxY != capture.height
-        {
-            undo := capture.newUndo(.MoveCapture, serial)
-            undo.newPosX -= cast(s32) minX
-            undo.newSizeX -= cast(s32) minX
-            undo.newPosY -= cast(s32) minY
-            undo.newSizeY -= cast(s32) minY
-            undo.newSizeX -= cast(s32) (capture.width - maxX)
-            undo.newSizeY -= cast(s32) (capture.height - maxY)
-            capture.pushUndo(undo)
-        }
-
-        // Remove forms outside the cavenas
-        if capture.selection.count
-        {
-            undo := capture.newUndo(.DeleteSelection, serial)
-            capture.pushUndo(undo)
-        }
-
-        // Crop image
-        if capture.backImagePos.x < 0 or
-           capture.backImagePos.y < 0 or
-           capture.backImagePos.x + capture.backImg.width > capture.width or
-           capture.backImagePos.y + capture.backImg.height > capture.height
-        {
-            cropRect := Math.Rectangle{0, 0, capture.backImg.width, capture.backImg.height}
-            if capture.backImagePos.x < 0
-                cropRect.moveLeft(-capture.backImagePos.x)
-            if capture.backImagePos.y < 0
-                cropRect.moveTop(-capture.backImagePos.y)
-            if capture.backImagePos.x + capture.backImg.width > capture.width
-                cropRect.width -= (capture.backImagePos.x + capture.backImg.width) - capture.width
-            if capture.backImagePos.y + capture.backImg.height > capture.height
-                cropRect.height -= (capture.backImagePos.y + capture.backImg.height) - capture.height
-
-            undo := capture.newUndo(.SetImage, serial)
-            undo.newImg = capture.backImg.toCrop(cropRect)
-            capture.pushUndo(undo)
-        }
-
-        capture.selectionHasChanged()
-    }
-
-    mtd saveAsImage(linked = false)
-    {
-        var opt: FileDlgOptions
-        with opt
-        {
-            .state = &fileDlgState
-            .mode = .CreateFile
-            .title = "Save As Image"
-            .btnOkName = "Save"
-            .shortcuts.add(@{Env.SpecialDirectory.Desktop, "Desktop"})
-            .shortcuts.add(@{Env.SpecialDirectory.UserPictures, "My Images"})
-            .shortcuts.add(@{Env.SpecialDirectory.CommonPictures, "Images"})
-            .editName = Path.getFileNameWithoutExtension(getCapture().file)
-            .filters.add(@{"PNG - Portable Network Graphics (*.png)", ".png"})
-            .filters.add(@{"JPG - JPEG Image (*.jpg)", ".jpg"})
-            .filters.add(@{"BMP - Windows Bitmap (*.bmp)", ".bmp"})
-            .filters.add(@{"TGA - Truevision Targa (*.tga)", ".tga"})
-        }
-
-        dlg := FileDlg.create(surface, opt)
-        if dlg.doModal() != Dialog.BtnOk
-            return
-
-        Cursor.wait()
-        capture := getCapture()
-        img := capture.toImage()
-        catch img.save(dlg.getSelectedName())
-        if @err
-        {
-            MessageDlg.error(surface, @err, "Failed to save file !")
-            return
-        }
-
-        if linked
-        {
-            capture.linkedImage = dlg.getSelectedName()
-            capture.changed = true
-            catch capture.save()
-        }
-    }
-
     mtd setBottomSize(bottomSize: BottomSize)
     {
         self.bottomSize = #self.bottomSize
@@ -1550,11 +1170,6 @@ impl MainWnd
         applyLayout()
     }
 
-    mtd captureHasChanged()
-    {
-        updateSizeDisplay()
-    }
-
     mtd updateState()
     {
         captureBtn.updateCommandState()
@@ -1565,90 +1180,15 @@ impl MainWnd
         quickWnd.updateQuickStyles()
     }
 
+    mtd captureHasChanged()
+    {
+        updateSizeDisplay()
+    }
+
     mtd getCapture()->*Capture
     {
         if !editWnd return null
         return editWnd.editView.capture
-    }
-
-    mtd newImage()
-    {
-        dlg := Dialog.createDialog(surface, 350, 235, title: "New Image")
-        dlg.addButton("Create", Dialog.BtnOk, true)
-        dlg.addButton("Cancel", Dialog.BtnCancel)
-        edit0 := EditCtrl.create(dlg, "Width", "512", @{90, 12}, flags: .RightAlign)
-        edit1 := EditCtrl.create(dlg, "Height", "512", @{90, 47}, flags: .RightAlign)
-        edit0.edit.setInputU64(16, 4096)
-        edit1.edit.setInputU64(16, 4096)
-        if dlg.doModal() != Dialog.BtnOk
-            return
-
-        (w, ?, ?) := catch StrConv.parseS32(edit0.edit.text)
-        (h, ?, ?) := catch StrConv.parseS32(edit1.edit.text)
-        img := Image.create(w orelse 512, h orelse 512, .RGB8)
-        img.fill(Argb.White)
-        newCapture(img)
-    }
-
-    mtd newCapture(img: Image, linked: string = null)
-    {
-        if !img.isValid()
-            return
-
-        with capture := Memory.new'Capture()
-        {
-            .changed = true
-            .width, .widthOrg = img.width
-            .height, .heightOrg = img.height
-            .backImg, .backImgOrg = img
-            .linkedImage = linked
-            .file = Library.newFileName()
-        }
-
-        editWnd.editView.setCapture(capture)
-        editWnd.editView.zoomToFit(false)
-
-        capture.computePreview()
-        recentWnd.addRecent(capture.file, capture.preview)
-        recentWnd.recentView.selected = 0
-        catch capture.save()
-        g_Library.addFile(capture.file)
-
-        // Force edition mode
-        if libraryMode
-        {
-            swapLibraryMode()
-            updateState()
-        }
-    }
-
-    mtd captureScreen(mode: CaptureMode)
-    {
-        wasHidden := surface.isHidden
-        if captureHideEditor and !surface.isHidden and !surface.isMinimized
-            surface.hide()
-
-        if captureDelay
-            Threading.sleep(captureDelay * 1000)
-
-        img := catch screenShot(mode)
-        isValid := !@err and img.width > 0 and img.height > 0
-
-        if (isValid and captureShowEditor) or !wasHidden
-        {
-            if surface.isMinimized
-                surface.showNormal()
-            else
-                surface.show()
-        }
-
-        if !isValid
-            return
-
-        if captureToEditor
-            newCapture(img)
-        if captureToClipboard
-            Clipboard.addImage(img)
     }
 
     mtd updateZoomDisplay()

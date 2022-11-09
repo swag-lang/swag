@@ -735,16 +735,49 @@ impl QuickWnd
 
         // The button with the current model
         mode := main.getEditMode()
+
+        var formItf: IForm
+        #[Swag.Complete]
+        switch mode
+        {
+        case Arrow:
+            formItf = cast(IForm) main.mdlFormArrow
+        case Shape:
+            formItf = cast(IForm) main.mdlFormShape
+        case Image:
+            formItf = cast(IForm) main.mdlFormImage
+        case Step:
+            formItf = cast(IForm) main.mdlFormStep
+        case Line:
+            formItf = cast(IForm) main.mdlFormLine
+        case Polygon:
+            formItf = cast(IForm) main.mdlFormPolygon
+        case Text:
+            formItf = cast(IForm) main.mdlFormText
+        case Draw:
+            formItf = cast(IForm) main.mdlFormDraw
+        case Favorites:
+            formItf = main.mdlFavorite
+        case Highlight:
+            formItf = main.mdlHighlight
+        case PixSel:
+            formItf = main.mdlPixSel
+        case Selection:
+            break
+        }
+
+        baseForm := cast(*BaseForm) @dataof(formItf)
         canAddModel := true
         if main.editMode == .Highlight
         {
-            baseForm := cast(*BaseForm) @dataof(main.mdlHighlight)
             if baseForm.subKind != .Highlight
-            {
                 canAddModel = false
-            }
         }
         elif main.editMode == .PixSel
+        {
+            canAddModel = false
+        }
+        elif baseForm.subKind == .Highlight or baseForm.subKind == .PixSel
         {
             canAddModel = false
         }
@@ -753,40 +786,12 @@ impl QuickWnd
         {
             btn := Wnd.create'QuickButton(layout, null, @{0, 0, 64, 64})
             btn.userData = cast(*void) 1'uint // This is the model button
+            btn.formItf = formItf
             btn.setForm(.RoundSquare)
             btn.style.addStyleSheetColors("btnIcon_Bk          0x0")
             btn.style.addStyleSheetColors("btnIcon_HotBk       0x0")
             btn.style.addStyleSheetColors("btnIcon_PressedBk   0x0")
             layout.sendResizeEvent()
-
-            #[Swag.Complete]
-            switch mode
-            {
-            case Arrow:
-                btn.formItf = cast(IForm) main.mdlFormArrow
-            case Shape:
-                btn.formItf = cast(IForm) main.mdlFormShape
-            case Image:
-                btn.formItf = cast(IForm) main.mdlFormImage
-            case Step:
-                btn.formItf = cast(IForm) main.mdlFormStep
-            case Line:
-                btn.formItf = cast(IForm) main.mdlFormLine
-            case Polygon:
-                btn.formItf = cast(IForm) main.mdlFormPolygon
-            case Text:
-                btn.formItf = cast(IForm) main.mdlFormText
-            case Draw:
-                btn.formItf = cast(IForm) main.mdlFormDraw
-            case Favorites:
-                btn.formItf = main.mdlFavorite
-            case Highlight:
-                btn.formItf = main.mdlHighlight
-            case PixSel:
-                btn.formItf = main.mdlPixSel
-            case Selection:
-                break
-            }
 
             btn.sigPaintIcon = @(btn, bc, pos) {
                 paintForm(bc.painter, cast(*QuickButton) btn)

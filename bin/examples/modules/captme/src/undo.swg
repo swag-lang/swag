@@ -263,6 +263,9 @@ impl Undo
                 f := capture.forms[s]
                 if @kindof(f) != mdlType
                     continue
+                bf := cast(*BaseForm) @dataof(f)
+                if bf.subKind != mdlValue.subKind
+                    continue
                 f.copy(cast(*BaseForm) @dataof(f), mdlValue)
             }
 
@@ -482,6 +485,9 @@ impl Undo
             {
                 f := capture.forms[s]
                 if @kindof(f) != mdlType
+                    continue
+                bf := cast(*BaseForm) @dataof(f)
+                if bf.subKind != mdlValue.subKind
                     continue
                 f.copy(cast(*BaseForm) @dataof(f), oldForm[i])
             }
