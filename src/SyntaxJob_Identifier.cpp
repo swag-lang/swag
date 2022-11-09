@@ -222,6 +222,7 @@ bool SyntaxJob::doDiscard(AstNode* parent, AstNode** result)
         break;
     case TokenId::KwdTry:
     case TokenId::KwdCatch:
+    case TokenId::KwdTryCatch:
     case TokenId::KwdAssume:
         SWAG_CHECK(doTryCatchAssume(parent, &idRef, true));
         break;
@@ -269,6 +270,11 @@ bool SyntaxJob::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDi
     {
         node              = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Catch, sourceFile, parent);
         node->semanticFct = SemanticJob::resolveCatch;
+    }
+    else if (token.id == TokenId::KwdTryCatch)
+    {
+        node = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::TryCatch, sourceFile, parent);
+        node->semanticFct = SemanticJob::resolveTryCatch;
     }
     else if (token.id == TokenId::KwdAssume)
     {

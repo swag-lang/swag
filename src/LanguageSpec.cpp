@@ -304,6 +304,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("code", TokenId::KwdCode);
     keywords.add("scope", TokenId::KwdScope);
     keywords.add("try", TokenId::KwdTry);
+    keywords.add("trycatch", TokenId::KwdTryCatch);
     keywords.add("catch", TokenId::KwdCatch);
     keywords.add("assume", TokenId::KwdAssume);
     keywords.add("throw", TokenId::KwdThrow);

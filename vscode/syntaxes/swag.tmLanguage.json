@@ -76,7 +76,7 @@
       "patterns": [
         {
           "name": "keyword",
-          "match": "\\b(using|with|cast|acast|bitcast|dref|retval|try|catch|assume|throw|discard)\\b"
+          "match": "\\b(using|with|cast|acast|bitcast|dref|retval|try|catch|trycatch|assume|throw|discard)\\b"
         }
       ]
     },

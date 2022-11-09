@@ -545,6 +545,7 @@ bool SyntaxJob::doLeftInstruction(AstNode* parent, AstNode** result, AstWith* wi
         break;
     case TokenId::KwdTry:
     case TokenId::KwdCatch:
+    case TokenId::KwdTryCatch:
     case TokenId::KwdAssume:
         SWAG_CHECK(doTryCatchAssume(parent, result));
         break;
@@ -616,8 +617,9 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::KwdLoop:
     case TokenId::KwdVisit:
     case TokenId::KwdTry:
-    case TokenId::KwdAssume:
     case TokenId::KwdCatch:
+    case TokenId::KwdTryCatch:
+    case TokenId::KwdAssume:
     case TokenId::KwdThrow:
     case TokenId::KwdDiscard:
     case TokenId::KwdDeRef:

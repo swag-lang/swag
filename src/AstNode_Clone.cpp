@@ -241,6 +241,7 @@ AstNode* AstNode::clone(CloneContext& context)
         return ((AstNameSpace*) this)->clone(context);
     case AstNodeKind::Try:
     case AstNodeKind::Catch:
+    case AstNodeKind::TryCatch:
     case AstNodeKind::Assume:
     case AstNodeKind::Throw:
         return ((AstTryCatchAssume*) this)->clone(context);

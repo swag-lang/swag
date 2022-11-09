@@ -252,6 +252,7 @@ struct ByteCodeGenJob : public Job
     static bool emitReturn(ByteCodeGenContext* context);
     static bool emitIdentifierRef(ByteCodeGenContext* context);
     static bool emitTry(ByteCodeGenContext* context);
+    static bool emitTryCatch(ByteCodeGenContext* context);
     static bool emitAssume(ByteCodeGenContext* context);
     static bool emitInitStackTrace(ByteCodeGenContext* context);
     static bool emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNode);

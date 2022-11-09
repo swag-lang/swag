@@ -638,8 +638,14 @@ static bool isStatementIdentifier(AstIdentifier* identifier)
         return false;
 
     auto checkParent = identifier->identifierRef->parent;
-    if (checkParent->kind == AstNodeKind::Try || checkParent->kind == AstNodeKind::Catch || checkParent->kind == AstNodeKind::Assume)
+    if (checkParent->kind == AstNodeKind::Try ||
+        checkParent->kind == AstNodeKind::Catch ||
+        checkParent->kind == AstNodeKind::TryCatch ||
+        checkParent->kind == AstNodeKind::Assume)
+    {
         checkParent = checkParent->parent;
+    }
+
     if (checkParent->kind == AstNodeKind::Statement ||
         checkParent->kind == AstNodeKind::StatementNoScope ||
         checkParent->kind == AstNodeKind::Defer ||
@@ -1314,6 +1320,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             {
             case AstNodeKind::Try:
                 extension->byteCodeAfterFct = ByteCodeGenJob::emitTry;
+                break;
+            case AstNodeKind::TryCatch:
+                extension->byteCodeAfterFct = ByteCodeGenJob::emitTryCatch;
                 break;
             case AstNodeKind::Assume:
                 extension->byteCodeAfterFct = ByteCodeGenJob::emitAssume;
@@ -4233,7 +4242,7 @@ bool SemanticJob::checkCanThrow(SemanticContext* context)
 
 bool SemanticJob::checkCanCatch(SemanticContext* context)
 {
-    auto node          = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Try, AstNodeKind::Catch, AstNodeKind::Assume);
+    auto node          = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Try, AstNodeKind::Catch, AstNodeKind::TryCatch, AstNodeKind::Assume);
     auto identifierRef = CastAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
 
     for (auto c : identifierRef->childs)
@@ -4271,6 +4280,27 @@ bool SemanticJob::resolveTry(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveTryCatch(SemanticContext* context)
+{
+    auto node          = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::TryCatch);
+    auto identifierRef = CastAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
+    auto lastChild     = identifierRef->childs.back();
+
+    SWAG_CHECK(checkCanCatch(context));
+    SWAG_ASSERT(node->ownerFct);
+    node->ownerFct->needRegisterGetContext = true;
+
+    node->allocateExtension();
+    node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitInitStackTrace;
+    node->byteCodeFct                  = ByteCodeGenJob::emitPassThrough;
+
+    node->typeInfo = lastChild->typeInfo;
+    node->flags |= identifierRef->flags;
+    node->inheritComputedValue(identifierRef);
+
+    return true;
+}
+
 bool SemanticJob::resolveCatch(SemanticContext* context)
 {
     auto node          = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Catch);
@@ -4284,7 +4314,8 @@ bool SemanticJob::resolveCatch(SemanticContext* context)
     node->allocateExtension();
     node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitInitStackTrace;
     node->byteCodeFct                  = ByteCodeGenJob::emitPassThrough;
-    node->typeInfo                     = lastChild->typeInfo;
+
+    node->typeInfo = lastChild->typeInfo;
     node->flags |= identifierRef->flags;
     node->flags &= ~AST_DISCARD;
     node->inheritComputedValue(identifierRef);

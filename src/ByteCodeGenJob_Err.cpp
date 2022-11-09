@@ -26,7 +26,7 @@ bool ByteCodeGenJob::emitInitStackTrace(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNode)
 {
-    auto node = CastAst<AstTryCatchAssume>(fromNode, AstNodeKind::Try, AstNodeKind::Throw);
+    auto node = CastAst<AstTryCatchAssume>(fromNode, AstNodeKind::Try, AstNodeKind::TryCatch, AstNodeKind::Throw);
 
     // Push current error context in case the leave scope triggers some errors too
     if (!(context->node->doneFlags & AST_DONE_STACK_TRACE))
@@ -242,6 +242,31 @@ bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
         parentFct = node->ownerFct;
     if (parentFct->attributeFlags & ATTRIBUTE_SHARP_FUNC)
         return emitAssume(context);
+
+    if (!(node->doneFlags & AST_DONE_TRY_1))
+    {
+        SWAG_ASSERT(node->ownerFct->registerGetContext != UINT32_MAX);
+        auto r0 = reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::InternalHasErr, r0, node->ownerFct->registerGetContext);
+        tryNode->seekInsideJump = context->bc->numInstructions;
+        emitInstruction(context, ByteCodeOp::JumpIfZero32, r0);
+        freeRegisterRC(context, r0);
+        node->doneFlags |= AST_DONE_TRY_1;
+    }
+
+    SWAG_CHECK(emitTryThrowExit(context, tryNode));
+    if (context->result != ContextResult::Done)
+        return true;
+
+    context->bc->out[tryNode->seekInsideJump].b.s32 = context->bc->numInstructions - tryNode->seekInsideJump - 1;
+    SWAG_ASSERT(context->bc->out[tryNode->seekInsideJump].b.s32);
+    return true;
+}
+
+bool ByteCodeGenJob::emitTryCatch(ByteCodeGenContext* context)
+{
+    auto node    = context->node;
+    auto tryNode = CastAst<AstTryCatchAssume>(node->extension->ownerTryCatchAssume, AstNodeKind::TryCatch);
 
     if (!(node->doneFlags & AST_DONE_TRY_1))
     {

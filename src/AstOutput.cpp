@@ -996,6 +996,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     }
 
     case AstNodeKind::Catch:
+    case AstNodeKind::TryCatch:
         if (node->flags & AST_DISCARD)
             CONCAT_FIXED_STR(concat, "discard ");
         concat.addString(node->token.text);

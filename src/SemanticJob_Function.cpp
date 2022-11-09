@@ -1467,6 +1467,9 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
         case AstNodeKind::Try:
             extension->byteCodeAfterFct = ByteCodeGenJob::emitTry;
             break;
+        case AstNodeKind::TryCatch:
+            extension->byteCodeAfterFct = ByteCodeGenJob::emitTryCatch;
+            break;
         case AstNodeKind::Assume:
             extension->byteCodeAfterFct = ByteCodeGenJob::emitAssume;
             break;
@@ -1477,6 +1480,8 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
         {
             extension = identifier->extension;
             if (extension->byteCodeAfterFct == ByteCodeGenJob::emitTry)
+                extension->byteCodeAfterFct = nullptr;
+            else if (extension->byteCodeAfterFct == ByteCodeGenJob::emitTryCatch)
                 extension->byteCodeAfterFct = nullptr;
             else if (extension->byteCodeAfterFct == ByteCodeGenJob::emitAssume)
                 extension->byteCodeAfterFct = nullptr;
@@ -1595,7 +1600,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
             newContent->extension->byteCodeAfterFct = nullptr; // Do not release the scope, as there's no specific scope
     }
 
-    if (newContent->kind == AstNodeKind::Try || newContent->kind == AstNodeKind::Assume)
+    if (newContent->kind == AstNodeKind::Try || newContent->kind == AstNodeKind::TryCatch || newContent->kind == AstNodeKind::Assume)
     {
         if (funcDecl->attributeFlags & ATTRIBUTE_MIXIN && newContent->childs.front()->extension)
             newContent->childs.front()->extension->byteCodeAfterFct = nullptr; // Do not release the scope, as there's no specific scope

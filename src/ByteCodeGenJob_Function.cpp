@@ -74,7 +74,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     {
         auto returnExpression = node->childs.front();
         auto backExpression   = node->childs.back();
-        if (backExpression->kind == AstNodeKind::Try || backExpression->kind == AstNodeKind::Catch)
+        if (backExpression->kind == AstNodeKind::Try || backExpression->kind == AstNodeKind::Catch || backExpression->kind == AstNodeKind::TryCatch)
             backExpression = backExpression->childs.back();
         auto exprType = TypeManager::concreteReference(returnExpression->typeInfo);
 
@@ -1230,6 +1230,7 @@ bool ByteCodeGenJob::checkCatchError(ByteCodeGenContext* context, AstNode* srcNo
     {
         if (parent->kind == AstNodeKind::Try ||
             parent->kind == AstNodeKind::Catch ||
+            parent->kind == AstNodeKind::TryCatch ||
             parent->kind == AstNodeKind::Assume)
         {
             if (!srcNode)

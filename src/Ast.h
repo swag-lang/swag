@@ -91,4 +91,12 @@ inline T* CastAst(AstNode* ptr, AstNodeKind kind1, AstNodeKind kind2, AstNodeKin
     return casted;
 }
 
+template<typename T>
+inline T* CastAst(AstNode* ptr, AstNodeKind kind1, AstNodeKind kind2, AstNodeKind kind3, AstNodeKind kind4)
+{
+    T* casted = static_cast<T*>(ptr);
+    SWAG_ASSERT(casted && (casted->kind == kind1 || casted->kind == kind2 || casted->kind == kind3 || casted->kind == kind4));
+    return casted;
+}
+
 extern atomic<int> g_UniqueID;
