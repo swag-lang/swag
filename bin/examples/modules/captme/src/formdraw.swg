@@ -185,9 +185,9 @@ impl IForm for FormDraw
         count := 0
         loop i: points
         {
-            p0 := Math.Vector2{points[i].x, points[i].y}
             ni := (i + 1) % points.count
-            p1 := Math.Vector2{points[ni].x, points[ni].y}
+            p0 := Math.Vector2{points.buffer[i].x, points.buffer[i].y}
+            p1 := Math.Vector2{points.buffer[ni].x, points.buffer[ni].y}
 
             res := Math.Vector2.segSegIntersect(@{0, 0}, v, p0, p1)
             if res.yes

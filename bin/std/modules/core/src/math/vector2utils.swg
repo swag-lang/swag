@@ -94,7 +94,8 @@ impl Vector2
         var result: retval
 
         (yes, d0, d1) := getLineLineIntersectCoefs(start0, end0, start1, end1, epsilon)
-        if !yes return result
+        if !yes
+            return result
 
         result.yes = true
         result.pos.x = start0.x + d0 * (end0.x - start0.x)
@@ -108,7 +109,8 @@ impl Vector2
         var result: retval
 
         (yes, d0, d1) := getLineLineIntersectCoefs(start0, end0, start1, end1, epsilon)
-        if !yes return result
+        if !yes
+            return result
 
         if d0 < -epsilon or d0 > 1 + epsilon or d1 < -epsilon or d1 > 1 + epsilon
             return result
