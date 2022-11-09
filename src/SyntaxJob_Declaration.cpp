@@ -544,11 +544,9 @@ bool SyntaxJob::doLeftInstruction(AstNode* parent, AstNode** result, AstWith* wi
         SWAG_CHECK(doVisit(parent, result));
         break;
     case TokenId::KwdTry:
-    case TokenId::KwdAssume:
-        SWAG_CHECK(doTryAssume(parent, result));
-        break;
     case TokenId::KwdCatch:
-        SWAG_CHECK(doCatch(parent, result));
+    case TokenId::KwdAssume:
+        SWAG_CHECK(doTryCatchAssume(parent, result));
         break;
     case TokenId::KwdThrow:
         SWAG_CHECK(doThrow(parent, result));

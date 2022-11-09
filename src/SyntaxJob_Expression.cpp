@@ -194,11 +194,9 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
         break;
 
     case TokenId::KwdTry:
-    case TokenId::KwdAssume:
-        SWAG_CHECK(doTryAssume(parent, result));
-        break;
     case TokenId::KwdCatch:
-        SWAG_CHECK(doCatch(parent, result));
+    case TokenId::KwdAssume:
+        SWAG_CHECK(doTryCatchAssume(parent, result));
         break;
     case TokenId::SymBackTick:
     case TokenId::Identifier:
@@ -1219,14 +1217,12 @@ bool SyntaxJob::doLeftExpressionAffect(AstNode* parent, AstNode** result, AstWit
         return true;
 
     case TokenId::KwdTry:
+    case TokenId::KwdCatch:
     case TokenId::KwdAssume:
-        SWAG_CHECK(doTryAssume(parent, result));
+        SWAG_CHECK(doTryCatchAssume(parent, result));
         return true;
     case TokenId::KwdThrow:
         SWAG_CHECK(doThrow(parent, result));
-        return true;
-    case TokenId::KwdCatch:
-        SWAG_CHECK(doCatch(parent, result));
         return true;
 
     case TokenId::KwdDeRef:

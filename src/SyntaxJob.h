@@ -130,8 +130,7 @@ struct SyntaxJob : public Job
     bool doIdentifier(AstNode* parent, uint32_t identifierFlags = 0);
     bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr, uint32_t identifierFlags = 0);
     bool doDiscard(AstNode* parent, AstNode** result = nullptr);
-    bool doTryAssume(AstNode* parent, AstNode** result = nullptr, bool afterDiscard = false);
-    bool doCatch(AstNode* parent, AstNode** result = nullptr, bool afterDiscard = false);
+    bool doTryCatchAssume(AstNode* parent, AstNode** result = nullptr, bool afterDiscard = false);
     bool doThrow(AstNode* parent, AstNode** result = nullptr);
     bool doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool forGlobal);
     bool doNamespace(AstNode* parent, AstNode** result = nullptr);
