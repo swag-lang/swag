@@ -682,103 +682,115 @@ impl QuickWnd
         }
 
         // The button with the current model
-        btn := Wnd.create'QuickButton(layout, null, @{0, 0, 64, 64})
-        btn.setForm(.RoundSquare)
-        btn.style.addStyleSheetColors("btnIcon_Bk          0x0")
-        btn.style.addStyleSheetColors("btnIcon_HotBk       0x0")
-        btn.style.addStyleSheetColors("btnIcon_PressedBk   0x0")
-        layout.sendResizeEvent()
-
         mode := main.getEditMode()
-
-        #[Swag.Complete]
-        switch mode
+        canAddModel := true
+        if main.editMode == .Highlight
         {
-        case Arrow:
-            btn.formItf = cast(IForm) main.mdlFormArrow
-        case Shape:
-            btn.formItf = cast(IForm) main.mdlFormShape
-        case Image:
-            btn.formItf = cast(IForm) main.mdlFormImage
-        case Step:
-            btn.formItf = cast(IForm) main.mdlFormStep
-        case Line:
-            btn.formItf = cast(IForm) main.mdlFormLine
-        case Polygon:
-            btn.formItf = cast(IForm) main.mdlFormPolygon
-        case Text:
-            btn.formItf = cast(IForm) main.mdlFormText
-        case Draw:
-            btn.formItf = cast(IForm) main.mdlFormDraw
-        case Favorites:
-            btn.formItf = main.mdlFavorite
-        case Highlight:
-            btn.formItf = main.mdlHighlight
-        case Selection:
-            break
+            baseForm := cast(*BaseForm) @dataof(main.mdlHighlight)
+            if baseForm.subKind != .Highlight
+            {
+                canAddModel = false
+            }
         }
 
-        btn.sigPaintIcon = @(btn, bc, pos) {
-            paintForm(bc.painter, cast(*QuickButton) btn)
-            rect := btn.getClientRect()
-            rect.inflate(-2, -2)
-            bc.painter.setParams(.Antialiased)
-            bc.painter.drawRoundRect(rect, 5, 5, Pen.createDash(.Dash, Argb.White, 2))
-        }
+        if canAddModel
+        {
+            btn := Wnd.create'QuickButton(layout, null, @{0, 0, 64, 64})
+            btn.setForm(.RoundSquare)
+            btn.style.addStyleSheetColors("btnIcon_Bk          0x0")
+            btn.style.addStyleSheetColors("btnIcon_HotBk       0x0")
+            btn.style.addStyleSheetColors("btnIcon_PressedBk   0x0")
+            layout.sendResizeEvent()
 
-        // Button to add a new style
-        ico  := getTheme().getIcon24(ThemeIcons24.Plus)
-        btn1 := IconButton.create(btn, ico, @{64 - 26, 2, 24, 24})
-        btn1.style.addStyleSheetColors("btnIcon_Bk          $hilight")
-        btn1.style.addStyleSheetColors("btnIcon_HotBk       $hilightLight")
-        btn1.style.addStyleSheetColors("btnIcon_PressedBk   $hilightDark")
-        btn1.setForm(.Round)
-
-        layout.sendResizeEvent()
-        setScrollSize(0, layout.resultHeight)
-
-        btn1.sigPressed += @|self, main|(btn) {
-            mode := main.getEditMode()
             #[Swag.Complete]
             switch mode
             {
             case Arrow:
-                mdl := Memory.new'FormArrow()
-                mdl.IForm.copy(mdl, &main.mdlFormArrow)
-                self.currentStyle.forms.add(mdl)
+                btn.formItf = cast(IForm) main.mdlFormArrow
             case Shape:
-                mdl := Memory.new'FormShape()
-                mdl.IForm.copy(mdl, &main.mdlFormShape)
-                self.currentStyle.forms.add(mdl)
+                btn.formItf = cast(IForm) main.mdlFormShape
             case Image:
-                mdl := Memory.new'FormImage()
-                mdl.IForm.copy(mdl, &main.mdlFormImage)
-                self.currentStyle.forms.add(mdl)
+                btn.formItf = cast(IForm) main.mdlFormImage
             case Step:
-                mdl := Memory.new'FormStep()
-                mdl.IForm.copy(mdl, &main.mdlFormStep)
-                self.currentStyle.forms.add(mdl)
+                btn.formItf = cast(IForm) main.mdlFormStep
             case Line:
-                mdl := Memory.new'FormLine()
-                mdl.IForm.copy(mdl, &main.mdlFormLine)
-                self.currentStyle.forms.add(mdl)
+                btn.formItf = cast(IForm) main.mdlFormLine
             case Polygon:
-                mdl := Memory.new'FormPolygon()
-                mdl.IForm.copy(mdl, &main.mdlFormPolygon)
-                self.currentStyle.forms.add(mdl)
+                btn.formItf = cast(IForm) main.mdlFormPolygon
             case Text:
-                mdl := Memory.new'FormText()
-                mdl.IForm.copy(mdl, &main.mdlFormText)
-                self.currentStyle.forms.add(mdl)
+                btn.formItf = cast(IForm) main.mdlFormText
             case Draw:
-                mdl := Memory.new'FormDraw()
-                mdl.IForm.copy(mdl, &main.mdlFormDraw)
-                self.currentStyle.forms.add(mdl)
-            case Favorites, Highlight, Selection:
+                btn.formItf = cast(IForm) main.mdlFormDraw
+            case Favorites:
+                btn.formItf = main.mdlFavorite
+            case Highlight:
+                btn.formItf = main.mdlHighlight
+            case Selection:
                 break
             }
 
-            self.updateQuickStyles()
+            btn.sigPaintIcon = @(btn, bc, pos) {
+                paintForm(bc.painter, cast(*QuickButton) btn)
+                rect := btn.getClientRect()
+                rect.inflate(-2, -2)
+                bc.painter.setParams(.Antialiased)
+                bc.painter.drawRoundRect(rect, 5, 5, Pen.createDash(.Dash, Argb.White, 2))
+            }
+
+            // Button to add a new style
+            ico  := getTheme().getIcon24(ThemeIcons24.Plus)
+            btn1 := IconButton.create(btn, ico, @{64 - 26, 2, 24, 24})
+            btn1.style.addStyleSheetColors("btnIcon_Bk          $hilight")
+            btn1.style.addStyleSheetColors("btnIcon_HotBk       $hilightLight")
+            btn1.style.addStyleSheetColors("btnIcon_PressedBk   $hilightDark")
+            btn1.setForm(.Round)
+
+            layout.sendResizeEvent()
+            setScrollSize(0, layout.resultHeight)
+
+            btn1.sigPressed += @|self, main|(btn) {
+                mode := main.getEditMode()
+                #[Swag.Complete]
+                switch mode
+                {
+                case Arrow:
+                    mdl := Memory.new'FormArrow()
+                    mdl.IForm.copy(mdl, &main.mdlFormArrow)
+                    self.currentStyle.forms.add(mdl)
+                case Shape:
+                    mdl := Memory.new'FormShape()
+                    mdl.IForm.copy(mdl, &main.mdlFormShape)
+                    self.currentStyle.forms.add(mdl)
+                case Image:
+                    mdl := Memory.new'FormImage()
+                    mdl.IForm.copy(mdl, &main.mdlFormImage)
+                    self.currentStyle.forms.add(mdl)
+                case Step:
+                    mdl := Memory.new'FormStep()
+                    mdl.IForm.copy(mdl, &main.mdlFormStep)
+                    self.currentStyle.forms.add(mdl)
+                case Line:
+                    mdl := Memory.new'FormLine()
+                    mdl.IForm.copy(mdl, &main.mdlFormLine)
+                    self.currentStyle.forms.add(mdl)
+                case Polygon:
+                    mdl := Memory.new'FormPolygon()
+                    mdl.IForm.copy(mdl, &main.mdlFormPolygon)
+                    self.currentStyle.forms.add(mdl)
+                case Text:
+                    mdl := Memory.new'FormText()
+                    mdl.IForm.copy(mdl, &main.mdlFormText)
+                    self.currentStyle.forms.add(mdl)
+                case Draw:
+                    mdl := Memory.new'FormDraw()
+                    mdl.IForm.copy(mdl, &main.mdlFormDraw)
+                    self.currentStyle.forms.add(mdl)
+                case Favorites, Highlight, Selection:
+                    break
+                }
+
+                self.updateQuickStyles()
+            }
         }
 
         updateSelection()

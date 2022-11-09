@@ -268,10 +268,9 @@ impl Wnd
     // Destroy the window
     mtd destroy()
     {
+        wndFlags |= .Hidden
         if isPendingDestroy
             return
-
-        wndFlags |= .Hidden
         isPendingDestroy = true
         visit c: childs
             c.destroy()
