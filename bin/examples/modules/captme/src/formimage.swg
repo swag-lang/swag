@@ -225,6 +225,12 @@ impl IForm for FormImage
         }
     }
 
+    mtd isInside(pt: Math.Point)->bool
+    {
+        br := boundRect(false)
+        return br.contains(pt)
+    }
+
     mtd hitTest(pt: Math.Point, z: f32)->bool
     {
         if mustEditInside()

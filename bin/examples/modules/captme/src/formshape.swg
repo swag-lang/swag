@@ -139,6 +139,11 @@ impl IForm for FormShape
         }
     }
 
+    mtd isInside(pt: Math.Point)->bool
+    {
+        return true
+    }
+
     mtd hitTest(pt: Math.Point, z: f32)->bool
     {
         switch kind

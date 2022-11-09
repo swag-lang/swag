@@ -141,6 +141,11 @@ impl IForm for FormStep
         }
     }
 
+    mtd isInside(pt: Math.Point)->bool
+    {
+        return false
+    }
+
     mtd hitTest(pt: Math.Point, z: f32)->bool
     {
         switch kind

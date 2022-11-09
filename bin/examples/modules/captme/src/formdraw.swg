@@ -179,6 +179,24 @@ impl IForm for FormDraw
         }
     }
 
+    mtd isInside(pt: Math.Point)->bool
+    {
+        v := Math.Vector2{pt.x, pt.y}
+        count := 0
+        loop i: points
+        {
+            p0 := Math.Vector2{points[i].x, points[i].y}
+            ni := (i + 1) % points.count
+            p1 := Math.Vector2{points[ni].x, points[ni].y}
+
+            res := Math.Vector2.segSegIntersect(@{0, 0}, v, p0, p1)
+            if res.yes
+                count += 1
+        }
+
+        return count & 1 ? true : false
+    }
+
     mtd hitTest(pt: Math.Point, z: f32)->bool
     {
         bSize := borderSize * z * 0.5

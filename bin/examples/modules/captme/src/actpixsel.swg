@@ -26,27 +26,27 @@ impl MainWnd
         undo.newImagePos = capture.backImagePos
         undo.newImg = capture.backImg
 
+        var boundRects: Array'Math.Rectangle
+        visit f: forms
+            boundRects.add(f.boundRect(false))
+
         loop x: capture.backImg.width
         {
             loop y: capture.backImg.height
             {
-                visit f: forms
+                visit f, idx: forms
                 {
                     pt := Math.Point{cast(f32) x, cast(f32) y}
                     pt.x += capture.backImagePos.x
                     pt.y += capture.backImagePos.y
-                    br := f.boundRect(false)
-                    if br.contains(pt)
+                    if !boundRects[idx].contains(pt)
+                        continue
+                    if f.isInside(pt)
                     {
-                        pt.x += capture.paintRect.x
-                        pt.y += capture.paintRect.y
-                        if f.hitTest(pt, 1)
-                        {
-                            ptr := undo.newImg.pixels.buffer
-                            ptr += x * undo.newImg.bpp8
-                            ptr += (undo.newImg.height - y) * undo.newImg.bpp8 * undo.newImg.width
-                            dref cast(*u32) ptr = 0
-                        }
+                        ptr := undo.newImg.pixels.buffer
+                        ptr += x * undo.newImg.bpp8
+                        ptr += (undo.newImg.height - y) * undo.newImg.bpp8 * undo.newImg.width
+                        dref cast(*u32) ptr = 0
                     }
                 }
             }

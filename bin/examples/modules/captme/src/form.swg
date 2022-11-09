@@ -3,6 +3,7 @@ interface IForm
     mtd paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
     mtd paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
     mtd mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
+    mtd isInside(pt: Math.Point)->bool
     mtd hitTest(pt: Math.Point, z: f32)->bool
     mtd boundRect(raw: bool)->Math.Rectangle
     mtd moveForm(newPosX, newPosY: s32)

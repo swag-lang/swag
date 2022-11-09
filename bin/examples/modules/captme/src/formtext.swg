@@ -130,6 +130,11 @@ impl IForm for FormText
         }
     }
 
+    mtd isInside(pt: Math.Point)->bool
+    {
+        return false
+    }
+
     mtd hitTest(pt: Math.Point, z: f32)->bool
     {
         rect := paintPos
