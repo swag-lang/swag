@@ -176,7 +176,8 @@ impl IForm for FormPolygon
             gizmo.anchors.clear()
             visit pt: paintPoints
                 gizmo.anchors.add(dref pt)
-            gizmo.paint(null, painter, flags & .Selected ? false : true)
+            col := subKind == .PixSel ? Argb.Yellow : Argb.White
+            gizmo.paint(null, painter, flags & .Selected ? false : true, col)
         }
     }
 

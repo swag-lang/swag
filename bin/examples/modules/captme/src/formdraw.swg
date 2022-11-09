@@ -167,7 +167,8 @@ impl IForm for FormDraw
         {
             const anchorSize = 8
             anchorSize2 := anchorSize * 0.5
-            color := Color.getBlend(Argb.Black, Argb.White, (flags & .Hot) ? 0.8 : 1)
+            col := subKind == .PixSel ? Argb.Yellow : Argb.White
+            color := Color.getBlend(Argb.Black, col, (flags & .Hot) ? 0.8 : 1)
 
             start := paintPoints[0]
             painter.fillCircle(start.x, start.y, anchorSize2, color)

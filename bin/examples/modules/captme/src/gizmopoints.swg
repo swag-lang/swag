@@ -75,10 +75,10 @@ impl GizmoPoints
         return false
     }
 
-    mtd paint(app: *Application, painter: *Painter, hot: bool)
+    mtd paint(app: *Application, painter: *Painter, hot: bool, col: Color = Argb.White)
     {
         anchorSize2 := anchorSize * 0.5
-        color := Color.getBlend(Argb.Black, Argb.White, hot ? 0.8 : 1)
+        color := Color.getBlend(Argb.Black, col, hot ? 0.8 : 1)
         visit c: anchors
         {
             painter.fillCircle(c.x, c.y, anchorSize2, color)

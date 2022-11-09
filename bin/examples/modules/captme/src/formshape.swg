@@ -134,7 +134,8 @@ impl IForm for FormShape
         if flags & (.Hot | .Selected)
         {
             gizmo.rect = paintPos
-            gizmo.paint(painter, flags & .Selected ? false : true)
+            col := subKind == .PixSel ? Argb.Yellow : Argb.White
+            gizmo.paint(painter, flags & .Selected ? false : true, col)
         }
     }
 
