@@ -273,7 +273,7 @@ bool SyntaxJob::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDi
     }
     else if (token.id == TokenId::KwdTryCatch)
     {
-        node = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::TryCatch, sourceFile, parent);
+        node              = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::TryCatch, sourceFile, parent);
         node->semanticFct = SemanticJob::resolveTryCatch;
     }
     else if (token.id == TokenId::KwdAssume)
@@ -294,8 +294,16 @@ bool SyntaxJob::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDi
         node->specFlags |= AST_SPEC_TCA_BLOCK;
         SWAG_VERIFY(!afterDiscard, error(token, Err(Err0847)));
         SWAG_CHECK(doCurlyStatement(node));
+
         if (node->semanticFct == SemanticJob::resolveTry)
+        {
             node->semanticFct = SemanticJob::resolveTryBlock;
+        }
+        else if (node->semanticFct == SemanticJob::resolveTryCatch)
+        {
+            node->ownerFct->needRegisterGetContext = true;
+            node->semanticFct                      = nullptr;
+        }
         else
             node->semanticFct = nullptr;
     }

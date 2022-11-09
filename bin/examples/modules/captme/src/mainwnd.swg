@@ -845,10 +845,8 @@ impl IWnd for MainWnd
 
         case CmdIdDupCapture:
             file := Library.newFileName()
-            catch File.duplicate(file, capture.file)
-            if @err break
-            dupCapture := catch recentWnd.addRecent(file)
-            if @err break
+            trycatch File.duplicate(file, capture.file)
+            dupCapture := trycatch recentWnd.addRecent(file)
             Memory.delete(dupCapture)
             recentWnd.recentView.select(0)
             g_Library.addFile(file)
@@ -1138,8 +1136,7 @@ impl MainWnd
         edit0.edit.sigChanged += @|ratio, btnRatio, edit1|(edt) {
             if btnRatio.checked == .Checked
             {
-                w := catch StrConv.toS32(edt.text)
-                if @err return
+                w := trycatch StrConv.toS32(edt.text)
                 h := Math.max(1, cast(s32) (w / ratio))
                 edit1.edit.setTextSilent(Format.toString("%", h))
             }
@@ -1147,8 +1144,7 @@ impl MainWnd
         edit1.edit.sigChanged += @|ratio, btnRatio, edit0|(edt) {
             if btnRatio.checked == .Checked
             {
-                h := catch StrConv.toS32(edt.text)
-                if @err return
+                h := trycatch StrConv.toS32(edt.text)
                 w := Math.max(1, cast(s32) (h * ratio))
                 edit0.edit.setTextSilent(Format.toString("%", w))
             }
@@ -1159,18 +1155,18 @@ impl MainWnd
         if res != Dialog.BtnOk
             return
 
-        w := catch StrConv.toS32(edit0.edit.text)
-        if @err or w < Capture.MinSize or w > Capture.MaxSize
+        w := trycatch StrConv.toS32(edit0.edit.text)
+        if w < Capture.MinSize or w > Capture.MaxSize
             return
-        h := catch StrConv.toS32(edit1.edit.text)
-        if @err or h < Capture.MinSize or h > Capture.MaxSize
+        h := trycatch StrConv.toS32(edit1.edit.text)
+        if h < Capture.MinSize or h > Capture.MaxSize
             return
         if w == capture.width and h == capture.height
             return
 
         if capture.forms.count > 0
         {
-            if MessageDlg.confirm(surface, "The capture needs to be flatten first.") != Dialog.BtnYes
+            if MessageDlg.confirm(surface, "The capture must be flattened first.") != Dialog.BtnYes
                 return
         }
 
@@ -1214,8 +1210,7 @@ impl MainWnd
         edit0.edit.sigChanged += @|ratio, btnRatio, edit1|(edt) {
             if btnRatio.checked == .Checked
             {
-                w := catch StrConv.toS32(edt.text)
-                if @err return
+                w := trycatch StrConv.toS32(edt.text)
                 h := Math.max(1, cast(s32) (w / ratio))
                 edit1.edit.setTextSilent(Format.toString("%", h))
             }
@@ -1223,8 +1218,7 @@ impl MainWnd
         edit1.edit.sigChanged += @|ratio, btnRatio, edit0|(edt) {
             if btnRatio.checked == .Checked
             {
-                h := catch StrConv.toS32(edt.text)
-                if @err return
+                h := trycatch StrConv.toS32(edt.text)
                 w := Math.max(1, cast(s32) (h * ratio))
                 edit0.edit.setTextSilent(Format.toString("%", w))
             }
@@ -1279,11 +1273,11 @@ impl MainWnd
         if res != Dialog.BtnOk
             return
 
-        w := catch StrConv.toS32(edit0.edit.text)
-        if @err or w < Capture.MinSize or w > Capture.MaxSize
+        w := trycatch StrConv.toS32(edit0.edit.text)
+        if w < Capture.MinSize or w > Capture.MaxSize
             return
-        h := catch StrConv.toS32(edit1.edit.text)
-        if @err or h < Capture.MinSize or h > Capture.MaxSize
+        h := trycatch StrConv.toS32(edit1.edit.text)
+        if h < Capture.MinSize or h > Capture.MaxSize
             return
         if w == capture.width and h == capture.height
             return

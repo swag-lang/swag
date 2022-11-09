@@ -213,14 +213,11 @@ impl Capture
         var buf:    ConcatBuffer
         var encode: Encoder'Write.TagBin
 
-        catch
+        trycatch
         {
             encode.start(&buf)
-            if @err return
             encode.writeValue(&arr, @typeof(arr))
-            if @err return
             encode.end()
-            if @err return
         }
 
         buf.makeLinear()
@@ -254,12 +251,13 @@ impl Capture
         arr := Clipboard.getData(editView.main.clipFmt)
         if arr.count
         {
-            catch decode.start(arr.toSlice())
-            if @err return
-            catch decode.readValue(&res, Array'IForm)
-            if @err or !res.count return
-            catch decode.end()
-            if @err return
+            trycatch
+            {
+                decode.start(arr.toSlice())
+                decode.readValue(&res, Array'IForm)
+                if !res.count return
+                decode.end()
+            }
         }
         else
         {
