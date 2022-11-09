@@ -52,6 +52,8 @@ impl PropWnd
                 return cast(*BaseForm) &main.mdlFormDraw
             case Highlight:
                 return @dataof(main.mdlHighlight)
+            case PixSel:
+                return @dataof(main.mdlPixSel)
             case Favorites, Selection:
                 return @dataof(main.mdlFavorite)
             }
@@ -86,6 +88,8 @@ impl PropWnd
                 return FormDraw
             case Highlight:
                 return @kindof(main.mdlHighlight)
+            case PixSel:
+                return @kindof(main.mdlPixSel)
             case Favorites, Selection:
                 return @kindof(main.mdlFavorite)
             }
@@ -438,7 +442,7 @@ impl PropWnd
     mtd propBorderColor(stack: *Wnd)
     {
         curSel := cast(*FormText) getSelectedBaseForm()
-        if curSel.subKind == .Highlight
+        if curSel.subKind == .Highlight or curSel.subKind == .PixSel
             return
 
         btn := createArrowButton(stack, BtnColorWidth, BtnColorHeight)
@@ -487,12 +491,16 @@ impl PropWnd
            curSelType == FormDraw
             return
 
+        curSel := getSelectedBaseForm()
         if curSelType == FormImage
         {
-            curSel := cast(*FormImage) getSelectedBaseForm()
-            if curSel.kind != .Image
+            imgSel := cast(*FormImage) curSel
+            if imgSel.kind != .Image
                 return
         }
+
+        if curSel.subKind == .PixSel
+            return
 
         btn := createArrowButton(stack, BtnColorWidth, BtnColorHeight)
         btn.name = "Fill"
@@ -656,11 +664,11 @@ impl PropWnd
     mtd propDashStyle(stack: *Wnd)
     {
         curSelType := getSelectedFormType()
-        if curSelType != FormShape and curSelType != FormLine and curSelType != FormArrow
+        if curSelType != FormShape and curSelType != FormLine and curSelType != FormArrow and curSelType != FormPolygon
             return
 
         curSel := cast(*FormText) getSelectedBaseForm()
-        if curSel.subKind == .Highlight
+        if curSel.subKind == .Highlight or curSel.subKind == .PixSel
             return
 
         btn := createArrowButton(stack, BtnStyleWidth, BtnStyleHeight)
@@ -888,6 +896,8 @@ impl PropWnd
             return
 
         curSel := getSelectedBaseForm()
+        if curSel.subKind == .PixSel
+            return
 
         minS := MinBorderSize
         maxS := MaxBorderSize
@@ -943,6 +953,9 @@ impl PropWnd
     mtd propOpacity()
     {
         curSel := getSelectedBaseForm()
+        if curSel.subKind == .PixSel
+            return
+
         ctrl := createSlider("Opacity", 0, 100, acast curSel.alpha)
         ctrl.slider.sigStartChange += @|self|(slider) {
             self.pushTypedValue(cast(u32) slider.getValue(), @typeof(BaseForm), @nameof(BaseForm.alpha), true)
@@ -1007,6 +1020,9 @@ impl PropWnd
     mtd propShadow()
     {
         curSel := getSelectedBaseForm()
+        if curSel.subKind == .PixSel
+            return
+
         ctrl := ComboCtrl.create(mainLayout, "Shadow")
         ctrl.comboSize = 210
         with ctrl.combo
@@ -1056,7 +1072,10 @@ impl PropWnd
         propShadow()
 
         mainLayout.computeLayout()
-        setScrollSize(0, mainLayout.childs.back().position.bottom() + 16)
+        if mainLayout.childs.count
+            setScrollSize(0, mainLayout.childs.back().position.bottom() + 16)
+        else
+            setScrollSize(0, 0)
 
         capture := main.getCapture()
         if capture

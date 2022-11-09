@@ -416,6 +416,8 @@ impl Capture
         var colForm: Color
         if quickMode and base.subKind == .Highlight
             colForm = Argb.White
+        elif quickMode and base.subKind == .PixSel
+            colForm = Argb.White
         else
             colForm = Color.fromArgb(cast(u8) Math.map(cast(f32) base.alpha, 0, 100, 0, 255), Argb.White)
 
@@ -1077,7 +1079,7 @@ impl Capture
                     dref form = editView.main.mdlFormDraw
                     form.points.clear()
                     itf = cast(IForm) form
-                case Favorites, Highlight, Selection:
+                case Favorites, Highlight, Selection, PixSel:
                     break
                 }
 
@@ -1178,6 +1180,10 @@ impl Capture
         {
             main.editMode = .Highlight
         }
+        elif form.subKind == .PixSel
+        {
+            main.editMode = .PixSel
+        }
         else
         {
             #[Swag.Complete]
@@ -1213,6 +1219,8 @@ impl Capture
         form := cast(*BaseForm) @dataof(f)
         if form.subKind == .Highlight
             editView.main.mdlHighlight = f
+        elif form.subKind == .PixSel
+            editView.main.mdlPixSel = f
 
         #[Swag.Complete]
         switch t

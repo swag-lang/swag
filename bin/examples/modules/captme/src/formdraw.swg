@@ -205,7 +205,13 @@ impl IForm for FormDraw
         loop i: 1..paintPoints.count-1
             pl.lineTo(paintPoints[i].x - paintPos.x, paintPoints[i].y - paintPos.y)
 
-        pen := Pen.createSolid(borderColor, bSize)
+        if subKind == .PixSel
+        {
+            bSize = 3
+            dashStyle = .Dot
+        }
+
+        pen := Pen.createDash(dashStyle, borderColor, bSize)
         pen.joinStyle = .Round
 
         if quickMode and alpha != 100 and subKind == .Highlight

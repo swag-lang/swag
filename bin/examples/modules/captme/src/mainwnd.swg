@@ -13,6 +13,7 @@ enum EditMode
     Selection
     Step
     Image
+    PixSel
 }
 
 enum BottomSize
@@ -67,6 +68,7 @@ struct MainWnd
     mdlFormText:    FormText
     mdlFormDraw:    FormDraw
     mdlHighlight:   IForm
+    mdlPixSel:      IForm
     mdlFavorite:    IForm
 }
 
@@ -626,6 +628,14 @@ impl IWnd for MainWnd
             evt.checked = editMode == .Image
             evt.accepted = true
 
+        case CmdIdModePixSel:
+            evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
+            evt.icon = Icon.from(&icons48, 17)
+            evt.name = "PixSel"
+            evt.toolTip = "Pixel selecton"
+            evt.checked = editMode == .PixSel
+            evt.accepted = true
+
         case CmdIdModeFavorites:
             evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
             evt.icon = Icon.from(&icons48, 5)
@@ -963,6 +973,11 @@ impl IWnd for MainWnd
             evt.accepted = true
             updateState()
 
+        case CmdIdModePixSel:
+            editMode = .PixSel
+            evt.accepted = true
+            updateState()
+
         case CmdIdModeFavorites:
             editMode = .Favorites
             evt.accepted = true
@@ -1073,6 +1088,19 @@ impl MainWnd
         {
             #[Swag.Complete]
             switch @kindof(mdlHighlight)
+            {
+            case FormShape:     return EditMode.Shape
+            case FormArrow:     return EditMode.Arrow
+            case FormLine:      return EditMode.Line
+            case FormPolygon:   return EditMode.Polygon
+            case FormText:      return EditMode.Text
+            case FormDraw:      return EditMode.Draw
+            }
+        }
+        elif editMode == .PixSel
+        {
+            #[Swag.Complete]
+            switch @kindof(mdlPixSel)
             {
             case FormShape:     return EditMode.Shape
             case FormArrow:     return EditMode.Arrow
@@ -1834,6 +1862,7 @@ impl MainWnd
         createBtn(CmdIdModeHighlight)
         createBtn(CmdIdModeStep)
         createBtn(CmdIdModeImage)
+        createBtn(CmdIdModePixSel)
         editToolBar.updateCommandState()
     }
 
@@ -1853,6 +1882,7 @@ impl MainWnd
             .backgroundStyle = .Window
             .mdlFavorite  = &res.mdlFormShape
             .mdlHighlight = &res.mdlFormShape
+            .mdlPixSel    = &res.mdlFormShape
             .monitors = Env.getMonitors()
         }
 

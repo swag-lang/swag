@@ -27,6 +27,7 @@ enum FormSubKind
 {
     None
     Highlight
+    PixSel
 }
 
 struct BaseForm

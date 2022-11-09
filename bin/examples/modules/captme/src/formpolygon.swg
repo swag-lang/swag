@@ -227,6 +227,15 @@ impl IForm for FormPolygon
         if quickMode and alpha != 100 and subKind == .Highlight
             bk.a = cast(u8) Math.map(cast(f32) alpha, 0, 100, 0, 255)
 
+        if subKind == .PixSel
+        {
+            bSize = 3
+            bk.a = 0
+            dashStyle = .Dot
+        }
+
+        pen := Pen.createDash(dashStyle, borderColor, bSize)
+
         var pl: LinePath
         pl.start(paintPoints[0].x - paintPos.x, paintPoints[0].y - paintPos.y)
         loop i: 1..paintPoints.count-1
@@ -236,7 +245,7 @@ impl IForm for FormPolygon
         if quickMode and alpha != 100 and subKind == .Highlight
             painter.fillPath(&pl, backBrush)
         painter.fillPath(&pl, bk)
-        painter.drawPath(&pl, borderColor, bSize)
+        painter.drawPath(&pl, pen)
     }
 
     mtd setup(capt: *Capture)
