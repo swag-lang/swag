@@ -6,7 +6,7 @@ struct FormDraw
     #[Serialization.NoSerialize]
     {
         boundCache:  Math.Rectangle
-        paintPoints: Array'Math.Point
+        paintPoints: Array'Math.Vector2
     }
 }
 
@@ -191,31 +191,16 @@ impl IForm for FormDraw
     {
         bSize := borderSize * z * 0.5
         computePaintCoords(z)
-        v := Math.Vector2{pt.x, pt.y}
 
         if subKind == .PixSel
-        {
-            // Content
-            count := 0
-            loop i: paintPoints
-            {
-                p0 := Math.Vector2{paintPoints[i].x, paintPoints[i].y}
-                ni := (i + 1) % paintPoints.count
-                p1 := Math.Vector2{paintPoints[ni].x, paintPoints[ni].y}
+            return Math.Vector2.polyContains(paintPoints, @{pt.x, pt.y}, @{0, 0})
 
-                res := Math.Vector2.segSegIntersect(@{0, 0}, v, p0, p1)
-                if res.yes
-                    count += 1
-            }
-
-            return count & 1 ? true : false
-        }
-
+        v := Math.Vector2{pt.x, pt.y}
         loop i: 0..paintPoints.count-2
         {
             p0 := Math.Vector2{paintPoints[i].x, paintPoints[i].y}
             p1 := Math.Vector2{paintPoints[i+1].x, paintPoints[i+1].y}
-            if v.distanceToSegment(p0, p1) < bSize
+            if v.distanceToSegment(p0, p1) <= bSize
                 return true
         }
 

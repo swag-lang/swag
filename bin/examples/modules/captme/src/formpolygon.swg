@@ -7,7 +7,7 @@ struct FormPolygon
     {
         boundCache:     Math.Rectangle
         gizmo:          GizmoPoints
-        paintPoints:    Array'Math.Point
+        paintPoints:    Array'Math.Vector2
     }
 }
 
@@ -178,7 +178,7 @@ impl IForm for FormPolygon
             computePaintCoords(z)
             gizmo.anchors.clear()
             visit pt: paintPoints
-                gizmo.anchors.add(dref pt)
+                gizmo.anchors.add(@{pt.x, pt.y})
             col := subKind == .PixSel ? Argb.Yellow : Argb.White
             gizmo.paint(null, painter, flags & .Selected ? false : true, col)
         }
@@ -193,17 +193,17 @@ impl IForm for FormPolygon
     {
         bSize := borderSize * z * 0.5
         computePaintCoords(z)
-        v := Math.Vector2{pt.x, pt.y}
 
         // Just the outline
         if backColor.a == 0
         {
+            v := Math.Vector2{pt.x, pt.y}
             loop i: paintPoints
             {
-                p0 := Math.Vector2{paintPoints[i].x, paintPoints[i].y}
                 ni := (i + 1) % paintPoints.count
+                p0 := Math.Vector2{paintPoints[i].x, paintPoints[i].y}
                 p1 := Math.Vector2{paintPoints[ni].x, paintPoints[ni].y}
-                if v.distanceToSegment(p0, p1) < bSize
+                if v.distanceToSegment(p0, p1) <= bSize
                     return true
             }
 
@@ -211,19 +211,7 @@ impl IForm for FormPolygon
         }
 
         // Content
-        count := 0
-        loop i: paintPoints
-        {
-            p0 := Math.Vector2{paintPoints[i].x, paintPoints[i].y}
-            ni := (i + 1) % paintPoints.count
-            p1 := Math.Vector2{paintPoints[ni].x, paintPoints[ni].y}
-
-            res := Math.Vector2.segSegIntersect(@{0, 0}, v, p0, p1)
-            if res.yes
-                count += 1
-        }
-
-        return count & 1 ? true : false
+        return Math.Vector2.polyContains(paintPoints, @{pt.x, pt.y}, @{0, 0})
     }
 
     mtd paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
