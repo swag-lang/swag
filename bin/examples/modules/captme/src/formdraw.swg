@@ -5,7 +5,6 @@ struct FormDraw
 
     #[Serialization.NoSerialize]
     {
-        boundCache:  Math.Rectangle
         paintPoints: Array'Math.Vector2
     }
 }
@@ -141,8 +140,6 @@ impl IForm for FormDraw
         result.y = y0
         result.width = x1 - x0
         result.height = y1 - y0
-        boundCache = result
-
         return result
     }
 
@@ -184,7 +181,7 @@ impl IForm for FormDraw
 
     mtd isInside(pt: Math.Point)->bool
     {
-        return Math.Vector2.polyContains(points, @{pt.x, pt.y}, @{boundCache.x, boundCache.y})
+        return Math.Vector2.polyContains(points, @{pt.x, pt.y})
     }
 
     mtd hitTest(pt: Math.Point, z: f32)->bool
@@ -193,7 +190,7 @@ impl IForm for FormDraw
         computePaintCoords(z)
 
         if subKind == .PixSel
-            return Math.Vector2.polyContains(paintPoints, @{pt.x, pt.y}, @{0, 0})
+            return Math.Vector2.polyContains(paintPoints, @{pt.x, pt.y})
 
         v := Math.Vector2{pt.x, pt.y}
         loop i: 0..paintPoints.count-2

@@ -122,32 +122,26 @@ impl Vector2
     }
 
     // Returns true if the given point is inside the polygon
-    func polyContains(poly: Array'Math.Vector2, pt: Math.Vector2, origin: Math.Vector2 = @{0, 0})->bool
+    // PNPoly by W. Randolph Franklin
+    func polyContains(poly: Array'Math.Vector2, pt: Math.Vector2)->bool
     {
-        count := 0
-        loop i: poly
+        i := 0
+        j := cast(s32) poly.count - 1
+        c := false
+        verti := poly.buffer + i
+        vertj := poly.buffer + j
+        loop poly.count
         {
-            ni := (i + 1) % poly.count
-            p0 := poly.buffer + i
-            p1 := poly.buffer + ni
-            res := Math.Vector2.segSegIntersect(origin, pt, dref p0, dref p1)
-            if res.yes
+            if ((verti.y > pt.y) != (vertj.y > pt.y)) and
+               (pt.x < (vertj.x - verti.x) * (pt.y - verti.y) / (vertj.y - verti.y) + verti.x)
             {
-                if res.pos == dref p0
-                {
-                    if p1.y > pt.y or (p1.y == pt.y and p1.x > pt.x)
-                        count += 1
-                }
-                elif res.pos == dref p1
-                {
-                    if p0.y < pt.y or (p0.y == pt.y and p0.x < pt.x)
-                        count += 1
-                }
-                else
-                    count += 1
+                c = !c
             }
+
+            vertj = verti
+            verti += 1
         }
 
-        return count & 1 ? true : false
+        return c
     }
 }
