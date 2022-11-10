@@ -170,7 +170,7 @@ impl Decoder
 
             // Generic struct load
             treated := serializer.beginStruct(structType, data)
-            defer(noerr) serializer.endStruct()
+            defer serializer.endStruct()
             if treated
                 return
 
@@ -183,13 +183,17 @@ impl Decoder
 
                 if !itf or !itf.readElement(dref field, data + field.offset, idecoder)
                 {
-                    if serializer.beginElement(field)
-                    {
-                        catch readValue(data + field.offset, field.pointedType)
-                        if @err and !(flags & .IgnoreStructFieldError)
-                            throw @err
-                        serializer.endElement()
-                    }
+                    doIt := catch serializer.beginElement(field)
+                    defer serializer.endElement()
+
+                    if @err and !(flags & .IgnoreStructFieldError)
+                        throw @err
+                    if !doIt
+                        continue
+
+                    catch readValue(data + field.offset, field.pointedType)
+                    if @err and !(flags & .IgnoreStructFieldError)
+                        throw @err
                 }
             }
 
