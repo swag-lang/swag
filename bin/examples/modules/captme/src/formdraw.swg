@@ -197,12 +197,12 @@ impl IForm for FormDraw
             {
                 if res.pos == p0
                 {
-                    if p1.y > v.y
+                    if p1.y > v.y or (p1.y == v.y and p1.x > v.x)
                         count += 1
                 }
                 elif res.pos == p1
                 {
-                    if p0.y < v.y
+                    if p0.y < v.y or (p0.y == v.y and p0.x < v.x)
                         count += 1
                 }
                 else
