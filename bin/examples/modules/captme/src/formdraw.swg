@@ -1,7 +1,7 @@
 struct FormDraw
 {
     using base:     BaseForm
-    points:         Array'Math.Point
+    points:         Array'Math.Vector2
 
     #[Serialization.NoSerialize]
     {
@@ -184,33 +184,7 @@ impl IForm for FormDraw
 
     mtd isInside(pt: Math.Point)->bool
     {
-        v := Math.Vector2{pt.x, pt.y}
-        count := 0
-        loop i: points
-        {
-            ni := (i + 1) % points.count
-            p0 := Math.Vector2{points.buffer[i].x, points.buffer[i].y}
-            p1 := Math.Vector2{points.buffer[ni].x, points.buffer[ni].y}
-
-            res := Math.Vector2.segSegIntersect(@{boundCache.x, boundCache.y}, v, p0, p1)
-            if res.yes
-            {
-                if res.pos == p0
-                {
-                    if p1.y > v.y or (p1.y == v.y and p1.x > v.x)
-                        count += 1
-                }
-                elif res.pos == p1
-                {
-                    if p0.y < v.y or (p0.y == v.y and p0.x < v.x)
-                        count += 1
-                }
-                else
-                    count += 1
-            }
-        }
-
-        return count & 1 ? true : false
+        return Math.Vector2.polyContains(points, @{pt.x, pt.y}, @{boundCache.x, boundCache.y})
     }
 
     mtd hitTest(pt: Math.Point, z: f32)->bool

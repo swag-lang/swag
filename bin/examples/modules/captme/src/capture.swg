@@ -576,9 +576,8 @@ impl Capture
         if selection.count == 1 and type == FormPolygon
         {
             poly := cast(*FormPolygon) @dataof(form)
-            result = dref poly.points[idxPt]
-            result.x += nx
-            result.y += ny
+            result.x = poly.points[idxPt].x + nx
+            result.y = poly.points[idxPt].y + ny
         }
         elif (selection.count == 1 or editForm) and (type == FormLine or type == FormArrow)
         {

@@ -120,4 +120,34 @@ impl Vector2
         result.pos.y = start0.y + d0 * (end0.y - start0.y)
         return result
     }
+
+    // Returns true if the given point is inside the polygon
+    func polyContains(poly: Array'Math.Vector2, pt: Math.Vector2, origin: Math.Vector2 = @{0, 0})->bool
+    {
+        count := 0
+        loop i: poly
+        {
+            ni := (i + 1) % poly.count
+            p0 := poly.buffer + i
+            p1 := poly.buffer + ni
+            res := Math.Vector2.segSegIntersect(origin, pt, dref p0, dref p1)
+            if res.yes
+            {
+                if res.pos == dref p0
+                {
+                    if p1.y > pt.y or (p1.y == pt.y and p1.x > pt.x)
+                        count += 1
+                }
+                elif res.pos == dref p1
+                {
+                    if p0.y < pt.y or (p0.y == pt.y and p0.x < pt.x)
+                        count += 1
+                }
+                else
+                    count += 1
+            }
+        }
+
+        return count & 1 ? true : false
+    }
 }
