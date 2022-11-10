@@ -87,6 +87,14 @@ private impl TagBin
         if to == from
             return true
 
+        var fromStruct: const *Swag.TypeInfoStruct
+        var toStruct:   const *Swag.TypeInfoStruct
+
+        if Reflection.isStruct(from)
+            fromStruct = cast(const *Swag.TypeInfoStruct) from
+        if Reflection.isStruct(to)
+            toStruct = cast(const *Swag.TypeInfoStruct) to
+
         // int/float/bool/rune to int/float/bool/rune
         if Reflection.isSimpleNative(to) and Reflection.isSimpleNative(from)
         {
@@ -106,10 +114,8 @@ private impl TagBin
                     return true
             }
 
-            elif Reflection.isStruct(to)
+            elif toStruct
             {
-                toStruct := cast(const *Swag.TypeInfoStruct) to
-
                 // Static array to dynamic array
                 if toStruct.fromGeneric == @typeof(Array)
                 {
@@ -132,9 +138,9 @@ private impl TagBin
                 return true
             }
         }
-        elif Reflection.isStruct(from)
+        elif fromStruct
         {
-            fromStruct := cast(const *Swag.TypeInfoStruct) from
+            // Dynamic array to something...
             if fromStruct.fromGeneric == @typeof(Array)
             {
                 // Dynamic array to Static array
@@ -142,6 +148,13 @@ private impl TagBin
                 {
                     toArr := cast(const *Swag.TypeInfoArray) to
                     if canConvertType(toArr.pointedType, fromStruct.generics[0].pointedType)
+                        return true
+                }
+
+                // Dynamic array to dynamic array
+                elif toStruct and toStruct.fromGeneric == @typeof(Array)
+                {
+                    if canConvertType(toStruct.generics[0].pointedType, fromStruct.generics[0].pointedType)
                         return true
                 }
 
@@ -165,15 +178,27 @@ private impl TagBin
                 return true
             }
         }
-        elif Reflection.isStruct(to)
+        elif toStruct
         {
-            toStruct := cast(const *Swag.TypeInfoStruct) to
+            // To dynamic array...
             if toStruct.fromGeneric == @typeof(Array)
             {
                 // Conversion from simple value to Core.Array
-                if canConvertType(from, toStruct.generics[0].pointedType)
+                if (!fromStruct or fromStruct.fromGeneric != @typeof(Array)) and canConvertType(from, toStruct.generics[0].pointedType)
                 {
                     convertValToArray = true
+                    return true
+                }
+            }
+
+            // Struct to struct...
+            elif fromStruct and fromStruct.fromGeneric != @typeof(Array)
+            {
+                // 2 pod structs with the same size
+                if Reflection.hasAttribute(to, Serialization.PodFinal) and 
+                   Reflection.hasAttribute(from, Serialization.PodFinal) and
+                   to.sizeof == from.sizeof
+                {
                     return true
                 }
             }
@@ -356,6 +381,7 @@ impl TagBin
         // Type from the stream does not exists anymore
         if !streamType
             throw ErrorBadType
+
         // Type cannot be converted
         if !canConvertType(val.pointedType, streamType)
             throw ErrorBadType
