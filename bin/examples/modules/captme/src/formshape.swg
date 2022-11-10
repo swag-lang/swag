@@ -141,7 +141,16 @@ impl IForm for FormShape
 
     mtd isInside(pt: Math.Point)->bool
     {
-        return true
+        switch kind
+        {
+        case Ellipse:
+            br := boundRect(false)
+            pos := Math.Vector2{pt.x, pt.y}
+            cen := Math.Vector2{br.horzCenter(), br.vertCenter()}
+            return pos.isInEllipse(cen, br.width * 0.5, br.height * 0.5)
+        default:
+            return true
+        }
     }
 
     mtd hitTest(pt: Math.Point, z: f32)->bool
