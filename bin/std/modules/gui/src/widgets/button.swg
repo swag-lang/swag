@@ -31,6 +31,12 @@ impl IWnd for Button
             name = evt.name
             invalidate()
         }
+
+        if evt.setFlags & .Disabled
+        {
+            evt.accepted = true
+            enable(!evt.disabled)
+        }
     }
 }
 

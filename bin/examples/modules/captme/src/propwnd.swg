@@ -1040,6 +1040,16 @@ impl PropWnd
         }
     }
 
+    mtd propPixSel()
+    {
+        curSel := getSelectedBaseForm()
+        if curSel.subKind != .PixSel
+            return
+
+        btn := PushButton.create(mainLayout, "", id: CmdIdPixSelClear)
+        btn.updateCommandState()
+    }
+
     mtd selectionHasChanged()
     {
         while mainLayout.childs.count
@@ -1073,6 +1083,7 @@ impl PropWnd
         propEndSize()
         propOpacity()
         propShadow()
+        propPixSel()
 
         mainLayout.computeLayout()
         if mainLayout.childs.count

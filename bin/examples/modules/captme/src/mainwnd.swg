@@ -205,7 +205,7 @@ impl IWnd for MainWnd
         {
         case CmdIdPixSelClear:
             evt.setFlags |= .Name | .Disabled | .Hidden
-            evt.name = "PixSel Clear"
+            evt.name = "Clear"
             evt.disabled = !capture or !hasPixSel
             evt.hidden = evt.disabled
             evt.accepted = true

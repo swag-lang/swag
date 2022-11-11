@@ -766,8 +766,6 @@ impl Capture
     {
         menu := MenuCtrl.createPopup(view)
 
-        menu.addItem(CmdIdPixSelClear)
-        menu.addSeparator()
         menu.addItem(CmdIdCopy)
         menu.addItem(CmdIdPaste)
         menu.addSeparator()
