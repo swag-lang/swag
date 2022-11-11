@@ -515,6 +515,7 @@ impl Capture
 
         // Background image
         painter.pushClippingRect(rect)
+        painter.setAntialiased(false)
         paintBackImage(painter, rect.x, rect.y, zoom)
         painter.popClippingRect()
 

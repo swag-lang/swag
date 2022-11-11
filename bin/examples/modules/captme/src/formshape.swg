@@ -184,11 +184,12 @@ impl IForm for FormShape
             bSize = 2
             dashStyle = .Dash
             borderColor = Argb.White
-            painter.removeParams(.Antialiased)
+            painter.setAntialiased(false)
         }
 
-        pp        := Math.Rectangle{0, 0, paintPos.width, paintPos.height}
-        pen       := Pen.createDash(dashStyle, borderColor, bSize)
+        pp  := Math.Rectangle{0, 0, paintPos.width, paintPos.height}
+        pen := Pen.createDash(dashStyle, borderColor, bSize)
+        pen.borderPos = .Inside
         backBrush := Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
 
         bk := backColor
@@ -203,14 +204,12 @@ impl IForm for FormShape
             case Ellipse:
                 sizeX := pp.width * 0.5
                 sizeY := pp.height * 0.5
-                painter.drawEllipse(pp.x + sizeX, pp.y + sizeY, sizeX - bSize * 0.5, sizeY - bSize * 0.5, pen)
+                painter.drawEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, pen)
 
             case Rectangle:
-                pp.inflate(-bSize * 0.5)
                 painter.drawRect(pp, pen)
 
             case RoundRectangle:
-                pp.inflate(-bSize * 0.5)
                 round := Math.max(bSize, 10)
                 painter.drawRoundRect(pp, round, round, pen)
             }
@@ -227,7 +226,7 @@ impl IForm for FormShape
                     painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, backBrush)
                 painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, bk)
                 if bSize >= 1
-                    painter.drawEllipse(pp.x + sizeX, pp.y + sizeY, sizeX - bSize * 0.5, sizeY - bSize * 0.5, pen)
+                    painter.drawEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, pen)
 
             case Rectangle:
                 if borderColor.a and (pp.width <= 2*bSize or pp.height < 2*bSize)
@@ -237,12 +236,10 @@ impl IForm for FormShape
                     if quickMode and alpha != 100 and subKind == .Highlight
                         painter.fillRect(pp, backBrush)
                     painter.fillRect(pp, bk)
-                    pp.inflate(-bSize * 0.5)
                     painter.drawRect(pp, pen)
                 }
 
             case RoundRectangle:
-                pp.inflate(-bSize * 0.5)
                 round := Math.max(bSize, 10)
                 if quickMode and alpha != 100 and subKind == .Highlight
                     painter.fillRoundRect(pp, round, round, backBrush)

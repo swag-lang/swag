@@ -600,11 +600,7 @@ impl Painter
         if pen.size < 1 or path.polygon.points.count == 0
             return
 
-        // AA will reduce visually the size. Compensate
         penSize = pen.size
-        if curState.paintParams & .Antialiased
-            penSize += 0.5
-
         cxt.offsetPath = pen.plotOffset
 
         penSize2    = penSize * 0.5

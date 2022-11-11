@@ -37,6 +37,12 @@ enum DashStyle
     DashDot
 }
 
+enum BorderPos
+{
+    None
+    Inside
+}
+
 struct Pen
 {
     size:       f32 = 1
@@ -45,6 +51,7 @@ struct Pen
     pattern:            Array'f32
     dashBeginCapStyle:  DashCapStyle = None
     dashEndCapStyle:    DashCapStyle = None
+    borderPos:          BorderPos = None
 
     capStartScaleX: f32 = 2
     capStartScaleY: f32 = 2

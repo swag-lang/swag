@@ -45,10 +45,7 @@ impl Painter
 
     func drawCircle(using self, centerX, centerY: f32, radius: f32, pen: Pen)
     {
-        if radius == 0 or pen.brush.color.a == 0
-            return
-        sharedLinePath.setEllipse(centerX, centerY, radius, radius)
-        drawPath(&sharedLinePath, pen)
+        drawEllipse(centerX, centerY, radius, radius, pen)
     }
 
     // Draw a solid circle
@@ -85,7 +82,24 @@ impl Painter
     {
         if radiusX == 0 or radiusY == 0 or pen.brush.color.a == 0
             return
-        sharedLinePath.setEllipse(centerX, centerY, radiusX, radiusY)
+
+        cX := Math.round(centerX)
+        cY := Math.round(centerY)
+
+        var rX, rY: f32 = ?
+
+        #[Swag.Complete]
+        switch pen.borderPos
+        {
+        case None:
+            rX = Math.round(radiusX)
+            rY = Math.round(radiusY)
+        case Inside:
+            rX = Math.round(radiusX - pen.size * 0.5)
+            rY = Math.round(radiusY - pen.size * 0.5)
+        }
+
+        sharedLinePath.setEllipseRaw(cX, cY, rX, rY)
         drawPath(&sharedLinePath, pen)
     }
 
@@ -94,7 +108,13 @@ impl Painter
     {
         if radiusX == 0 or radiusY == 0 or brush.color.a == 0
             return
-        sharedLinePath.setEllipse(centerX, centerY, radiusX, radiusY)
+
+        cX := Math.round(centerX)
+        cY := Math.round(centerY)
+        rX := Math.round(radiusX)
+        rY := Math.round(radiusY)
+
+        sharedLinePath.setEllipseRaw(cX, cY, rX, rY)
         fillPath(&sharedLinePath, brush)
     }
 

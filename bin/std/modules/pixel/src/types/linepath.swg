@@ -179,14 +179,8 @@ public impl LinePath
         isClosed = true
     }
 
-    // Initialize the path with a rectangle
-    mtd setRect(left, top, width, height: f32)
+    private mtd setRectRaw(l, t, w, h: f32)
     {
-        l := Math.round(left)
-        t := Math.round(top)
-        w := Math.round(width)
-        h := Math.round(height)
-
         r := l + w
         b := t + h
 
@@ -196,6 +190,17 @@ public impl LinePath
         lineTo(l, b)
         lineTo(l, t)
         close()
+    }
+
+    // Initialize the path with a rectangle
+    mtd setRect(left, top, width, height: f32)
+    {
+        l := Math.round(left)
+        t := Math.round(top)
+        w := Math.round(width)
+        h := Math.round(height)
+
+        setRectRaw(l, t, w, h)
     }
 
     // Initialize the path with a round rectangle
@@ -225,6 +230,16 @@ public impl LinePath
         close()
     }
 
+    private mtd setEllipseRaw(cX, cY: f32, rX, rY: f32)
+    {
+        start(cX, cY - rY)
+        arcTo(cX, cY, rX, rY, 0'deg, 90'deg)
+        arcTo(cX, cY, rX, rY, 90'deg, 180'deg)
+        arcTo(cX, cY, rX, rY, 180'deg, 270'deg)
+        arcTo(cX, cY, rX, rY, 270'deg, 360'deg)
+        close()
+    }
+
     // Initialize the path with an ellipse
     mtd setEllipse(centerX, centerY: f32, radiusX, radiusY: f32)
     {
@@ -233,12 +248,7 @@ public impl LinePath
         rX := Math.round(radiusX)
         rY := Math.round(radiusY)
 
-        start(cX, cY - rY)
-        arcTo(cX, cY, rX, rY, 0'deg, 90'deg)
-        arcTo(cX, cY, rX, rY, 90'deg, 180'deg)
-        arcTo(cX, cY, rX, rY, 180'deg, 270'deg)
-        arcTo(cX, cY, rX, rY, 270'deg, 360'deg)
-        close()
+        setEllipseRaw(cX, cY, rX, rY)
     }
 
     // Initialize the path with a circle
