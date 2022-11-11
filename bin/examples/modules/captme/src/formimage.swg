@@ -4,6 +4,7 @@ enum FormImageKind
     Blur
     Pixelate
     Zoom
+    Capture
 }
 
 enum FormImagePlacement
@@ -24,8 +25,10 @@ struct FormImage
 
     #[Serialization.NoSerialize]
     {
-        editInside:     bool
-        dirty:          bool
+        editInside:         bool
+        dirty:              bool
+        isReadyToCapture:   bool
+
         serial:         u32
         stc:            s32
         xc, yc:         s32
@@ -82,7 +85,11 @@ impl IForm for FormImage
         yb := cast(s32) ((localPos.y - paintRect.y) / zoom)
         setBaseForm(xa, ya, xb - xa, yb - ya)
         if evt.kind == .MouseReleased and evt.button == .Left
+        {
+            isReadyToCapture = true
             return false
+        }
+
         return true
     }
 
@@ -272,6 +279,25 @@ impl IForm for FormImage
                         freePos.height = image.height
                 }
 
+            case Capture:
+                if  !texture.isValid() or
+                    textureKind != kind
+                {
+                    if w > 1 and h > 1 and isReadyToCapture
+                    {
+                        isReadyToCapture = false
+                        dirty = false
+                        textureKind = kind
+                        renderer.removeTexture(&texture)
+                        image = capture.backImg.toCrop(x1, y1, w, h)
+                        texture = app.getRenderer().addImage(image)
+                    }
+                    elif image.isValid()
+                    {
+                        texture = app.getRenderer().addImage(image)
+                    }
+                }
+
             case Blur, Pixelate:
                 if  !texture.isValid() or
                     xc != x or yc != y or wc != w or hc != h or
@@ -315,8 +341,8 @@ impl IForm for FormImage
                         xc = x; yc = y; wc = w; hc = h
                         renderer.removeTexture(&texture)
                         const ZoomFactor = 2.5
-                        stw := cast(s32) Math.map(cast(f32) strength, 1, 100, 1, w / ZoomFactor)
-                        sth := cast(s32) Math.map(cast(f32) strength, 1, 100, 1, h / ZoomFactor)
+                        stw := cast(s32) Math.map(cast(f32) strength, 0, 100, 1, w / ZoomFactor)
+                        sth := cast(s32) Math.map(cast(f32) strength, 0, 100, 1, h / ZoomFactor)
                         img := capture.backImg.toCrop(x1+stw, y1+sth, w-stw*2, h-sth*2)
                         img.resize(w, h, .Raw)
                         texture = app.getRenderer().addImage(img)
@@ -331,7 +357,10 @@ impl IForm for FormImage
         {
             if quickMode
             {
+                pp.height -= 10
+
                 var icon: Icon
+                var title: string
                 switch kind
                 {
                 case Image:
@@ -343,16 +372,26 @@ impl IForm for FormImage
                     icon = Icon.from(&g_Main.icons48, 15)
                 case Zoom:
                     icon = Icon.from(&g_Main.icons48, 16)
+                case Capture:
+                    icon = Icon.from(&g_Main.icons48, 18)
                 }
 
                 icon.sizeX, icon.sizeY = 32
                 icon.paint(painter, pp.horzCenter() - icon.sizeX*0.5, pp.vertCenter() - icon.sizeY*0.5, Argb.White)
+                pp.inflate(-bSize * 0.5)
+                painter.drawRect(pp, pen)
+            }
+            elif kind == .Capture and !texture.isValid()
+            {
+                painter.drawRect(pp, Argb.White, 4)
             }
             elif kind == .Image and !image.isValid()
             {
                 painter.fillRect(pp, backColor)
                 icon := Icon.from(&g_Main.icons48, 13)
                 icon.paint(painter, pp.horzCenter() - icon.sizeX*0.5, pp.vertCenter() - icon.sizeY*0.5, Argb.White)
+                pp.inflate(-bSize * 0.5)
+                painter.drawRect(pp, pen)
             }
             elif kind == .Image
             {
@@ -375,14 +414,16 @@ impl IForm for FormImage
                     pp1.height = freePos.height*z
                     painter.drawTexture(pp1, texture)
                 }
+
+                pp.inflate(-bSize * 0.5)
+                painter.drawRect(pp, pen)
             }
             else
             {
                 painter.drawTexture(pp, texture)
+                pp.inflate(-bSize * 0.5)
+                painter.drawRect(pp, pen)
             }
-
-            pp.inflate(-bSize * 0.5)
-            painter.drawRect(pp, pen)
         }
     }
 

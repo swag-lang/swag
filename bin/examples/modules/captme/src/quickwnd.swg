@@ -220,6 +220,7 @@ impl QuickWnd
         add(2, .Zoom, Argb.White)
         add(0, .Blur, Argb.Zero)
         add(0, .Pixelate, Argb.Zero)
+        add(0, .Capture, Argb.Zero)
     }
 
     mtd defaultQuickStyleStep()
@@ -546,6 +547,8 @@ impl QuickWnd
             s    := cast(s32) BaseForm.adaptSize(sel.borderSize / 2, MinBorderSize, MaxBorderSize, 1, true)
             rect := Math.Rectangle{8 + s, 8 + s, 48 - 2*s, 48 - 2*s}
 
+            title := ""
+
             switch @kindof(btnp.formItf)
             {
             case FormPolygon:
@@ -565,10 +568,23 @@ impl QuickWnd
                 rect.moveTop(xo)
                 rect.moveRight(-yo)
                 rect.moveBottom(-yo)
+            case FormImage:
+                img := cast(*FormImage) @dataof(btnp.formItf)
+                switch img.kind
+                {
+                case Image:     title = "image"
+                case Blur:      title = "blur"
+                case Pixelate:  title = "pixelate"
+                case Zoom:      title = "zoom"
+                case Capture:   title = "capture"
+                }
             }
 
             btnp.formItf.setBaseForm(acast rect.x, acast rect.y, acast rect.width, acast rect.height)
             Capture.paintForm(btnp.getApp(), painter, @{0, 0, 64, 64}, btnp.formItf, zoom: 1, quickMode: true)
+
+            if @countof(title)
+                painter.drawStringCenter(rect.horzCenter(), rect.bottom(), title, btnp.getTheme().res.fontDefault.regular, Argb.White)
         }
 
         edMode := main.editMode == .Selection ? main.getEditMode() : main.editMode

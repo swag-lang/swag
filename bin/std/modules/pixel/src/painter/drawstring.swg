@@ -209,6 +209,8 @@ impl Painter
 
             x += ref.advanceX
         }
+
+        resetTextureFont()
     }
 
     // Recompute the layout for a given rectangle

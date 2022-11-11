@@ -631,6 +631,20 @@ impl RenderOgl
                 glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_FALSE)
             }
 
+        case BindTextureFont:
+            params := &cmd.textureFont
+            glActiveTexture(GL_TEXTURE1)
+            texture := params.font.atlases[params.atlasIndex].texture.handle
+            glBindTexture(GL_TEXTURE_2D, cast(GLuint) texture)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+
+        case ResetTextureFont:
+            glActiveTexture(GL_TEXTURE1)
+            glBindTexture(GL_TEXTURE_2D, whiteTexture)
+
         case UpdateFont:
             font := cmd.font.fontRef
             font.dirty = false
@@ -696,20 +710,6 @@ impl RenderOgl
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
             }
-
-        case BindTextureFont:
-            params := &cmd.textureFont
-            glActiveTexture(GL_TEXTURE1)
-            texture := params.font.atlases[params.atlasIndex].texture.handle
-            glBindTexture(GL_TEXTURE_2D, cast(GLuint) texture)
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
-
-        case ResetTextureFont:
-            glActiveTexture(GL_TEXTURE1)
-            glBindTexture(GL_TEXTURE_2D, whiteTexture)
 
         case BindRenderTarget:
             bindRenderTarget(cmd.renderTgt.tgt)
