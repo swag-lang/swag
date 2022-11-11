@@ -476,6 +476,15 @@ impl Painter
         curState.paintParams &= ~remove
     }
 
+    // Set antialiased mode on/off
+    mtd setAntialiased(aa = true)
+    {
+        if aa
+            curState.paintParams |= .Antialiased
+        else
+            curState.paintParams &= ~.Antialiased
+    }
+
     #[Swag.Inline]
     mtd getParams()  => curState.paintParams
     #[Swag.Inline]

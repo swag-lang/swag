@@ -353,7 +353,7 @@ impl Capture
 
         rt := render.getRenderTarget(wt2, ht2)
         painter.bindRenderTarget(rt, true)
-        painter.setParams(.Antialiased)
+        painter.setAntialiased()
         painter.clear(Argb.Zero)
         painter.setColorMaskColor()
         painter.setBlendingMode(.Alpha)
@@ -422,6 +422,7 @@ impl Capture
         // Paint resulting image
         painter.pushClippingRect(rect)
         painter.setShader()
+        painter.setAntialiased(false)
 
         var colForm: Color
         if quickMode and base.subKind == .Highlight
