@@ -175,6 +175,9 @@ impl PushButton
             pos.height = parent.getThemeMetrics().btnPush_Height
         if pos.width == 0
             pos.width = parent.getThemeMetrics().btnPush_Width
-        return Wnd.create'PushButton(parent, name, pos, id)
+        res := Wnd.create'PushButton(parent, name, pos, id)
+        if id != null
+            res.updateCommandState()
+        return res
     }
 }

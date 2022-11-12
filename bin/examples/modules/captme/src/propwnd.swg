@@ -205,7 +205,7 @@ impl PropWnd
 
         loop i: @countof(FormShapeKind)
         {
-            btn0 := IconButton.create(frame.view)
+            btn0 := IconButton.create(frame.view, @{})
             btn0.userData = cast(*void) i
             btn0.setForm(.RoundSquare)
             me := self
@@ -250,7 +250,7 @@ impl PropWnd
 
         loop i: @countof(FormStepKind)
         {
-            btn0 := IconButton.create(frame.view)
+            btn0 := IconButton.create(frame.view, @{})
             btn0.userData = cast(*void) i
             btn0.setForm(.RoundSquare)
             me := self
@@ -485,22 +485,22 @@ impl PropWnd
 
     mtd propBackColor(stack: *Wnd)
     {
-        curSelType := getSelectedFormType()
-        if curSelType == FormLine or
-           curSelType == FormArrow or
-           curSelType == FormDraw
-            return
-
         curSel := getSelectedBaseForm()
-        if curSelType == FormImage
+        if curSel.subKind != .PixSel
         {
-            imgSel := cast(*FormImage) curSel
-            if imgSel.kind != .Image
+            curSelType := getSelectedFormType()
+            if curSelType == FormLine or
+            curSelType == FormArrow or
+            curSelType == FormDraw
                 return
-        }
 
-        if curSel.subKind == .PixSel
-            return
+            if curSelType == FormImage
+            {
+                imgSel := cast(*FormImage) curSel
+                if imgSel.kind != .Image
+                    return
+            }
+        }
 
         btn := createArrowButton(stack, BtnColorWidth, BtnColorHeight)
         btn.name = "Fill"
@@ -513,18 +513,30 @@ impl PropWnd
             rect.x = rect.horzCenter() - 21
             rect.y = rect.vertCenter() - 21
             rect.width, rect.height = 42
-            if !curSel.backColor.isOpaque()
+            backCol := curSel.subKind == .PixSel ? g_Main.pixSelFillCol : curSel.backColor
+            if !backCol.isOpaque()
                 bc.painter.fillRoundRect(rect, 10, 10, Brush.createHatch(.CheckBoardLarge, Argb.DarkGray))
-            bc.painter.fillRoundRect(rect, 10, 10, curSel.backColor)
+            bc.painter.fillRoundRect(rect, 10, 10, backCol)
         }
 
         btn.sigShowPopup += @|me|(btn) {
             curSel := me.getSelectedBaseForm()
-            picker := createColorPicker(btn, curSel.backColor)
-            me.pushTypedValue(curSel.backColor.argb, @typeof(BaseForm), @nameof(BaseForm.backColor), true)
-            picker.sigChanged += @|me, btn|(pk) {
-                me.pushTypedValue(pk.getColor().argb, @typeof(BaseForm), @nameof(BaseForm.backColor), false)
-                btn.invalidate()
+            backCol := curSel.subKind == .PixSel ? g_Main.pixSelFillCol : curSel.backColor
+            picker := createColorPicker(btn, backCol)
+            if curSel.subKind == .PixSel
+            {
+                picker.sigChanged += @|me, btn|(pk) {
+                    g_Main.pixSelFillCol = pk.getColor()
+                    btn.invalidate()
+                }
+            }
+            else
+            {
+                me.pushTypedValue(curSel.backColor.argb, @typeof(BaseForm), @nameof(BaseForm.backColor), true)
+                picker.sigChanged += @|me, btn|(pk) {
+                    me.pushTypedValue(pk.getColor().argb, @typeof(BaseForm), @nameof(BaseForm.backColor), false)
+                    btn.invalidate()
+                }
             }
         }
     }
@@ -1046,8 +1058,8 @@ impl PropWnd
         if curSel.subKind != .PixSel
             return
 
-        btn := PushButton.create(mainLayout, "", id: CmdIdPixSelClear)
-        btn.updateCommandState()
+        discard PushButton.create(mainLayout, "", id: CmdIdPixSelFill)
+        discard PushButton.create(mainLayout, "", id: CmdIdPixSelClear)
     }
 
     mtd selectionHasChanged()

@@ -45,6 +45,7 @@ struct MainWnd
     quickStyleBar:  *SplitterCtrl
     editZoomBar:    *StackLayoutCtrl
     monitors:       Array'Env.Monitor
+    pixSelFillCol:  Color = Argb.White
 
     editMode:       EditMode = .Shape
     lastEditMode:   EditMode = .Shape
@@ -206,6 +207,13 @@ impl IWnd for MainWnd
         case CmdIdPixSelClear:
             evt.setFlags |= .Name | .Disabled | .Hidden
             evt.name = "Clear"
+            evt.disabled = !capture or !hasPixSel
+            evt.hidden = evt.disabled
+            evt.accepted = true
+
+        case CmdIdPixSelFill:
+            evt.setFlags |= .Name | .Disabled | .Hidden
+            evt.name = "Fill"
             evt.disabled = !capture or !hasPixSel
             evt.hidden = evt.disabled
             evt.accepted = true
@@ -759,6 +767,8 @@ impl IWnd for MainWnd
         {
         case CmdIdPixSelClear:
             pixSelClear()
+        case CmdIdPixSelFill:
+            pixSelFill()
 
         case CmdIdMoveSelLeft1:
             undo = capture.newUndo(.OffsetSelection)
@@ -1374,7 +1384,7 @@ impl MainWnd
     {
         mtd createBtn(id: WndId)
         {
-            with b := IconButton.create(editToolBar, position: @{0, 0, 60, 64})
+            with b := IconButton.create(editToolBar, @{}, position: @{0, 0, 60, 64})
             {
                 .id = #self.id
                 .style.addStyleSheetColors("btnIcon_CheckedBk    $btnIcon_HotBk")

@@ -468,12 +468,19 @@ impl IWnd for IconButton
 impl IconButton
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, icon: Icon = @{}, position: Math.Rectangle = @{}, id: WndId = null)->*IconButton
+    func create(parent: *Wnd, icon: Icon, position: Math.Rectangle = @{}, id: WndId = null)->*IconButton
     {
         Debug.assert(parent != null)
-        res := Wnd.create'IconButton(parent, null, position, id)
+        pos := position
+        if pos.height == 0
+            pos.height = parent.getThemeMetrics().btnPush_Height
+        if pos.width == 0
+            pos.width = parent.getThemeMetrics().btnPush_Width
+        res := Wnd.create'IconButton(parent, null, pos, id)
         res.icon = icon
         res.padding = res.getThemeMetrics().btnIcon_Padding
+        if id != null
+            res.updateCommandState()
         return res
     }
 
