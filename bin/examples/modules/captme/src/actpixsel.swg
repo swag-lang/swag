@@ -91,7 +91,7 @@ impl MainWnd
         capture.pushUndo(undo)
     }
 
-    mtd pixSelSmartFill(serial: u32 = 0)
+    mtd pixSelSmartFill(serial: u32 = 0, masks: *Array'Image = null)
     {
         forms := getPixSels()
         if forms.count == 0
@@ -117,6 +117,13 @@ impl MainWnd
             br := f.boundRect(false)
             i.boundRect = br
 
+            if masks
+            {
+                img := Image.create(1 + cast(s32) br.width, 1 + cast(s32) br.height, .RGBA8)
+                masks.emplace(&img)
+            }
+
+            // Compute colors at the start and at the end of the column, to interpolate
             loop x: undo.newImg.width
             {
                 var col1, col2: Color
@@ -125,7 +132,6 @@ impl MainWnd
                 y1 = undo.newImg.height - y1
                 loop i: undo.newImg.height
                 {
-                    y1 += 1
                     pt.y = cast(f32) (capture.backImg.height - y1) + capture.backImagePos.y
                     if br.contains(pt) and f.isInside(pt)
                     {
@@ -134,13 +140,13 @@ impl MainWnd
                         col1.argb = dref cast(*u32) pix32
                         break
                     }
+                    y1 += 1
                 }
 
                 y2 := cast(s32) (br.y - capture.backImagePos.y)
                 y2 = undo.newImg.height - y2
                 loop i: undo.newImg.height
                 {
-                    y2 -= 1
                     pt.y = cast(f32) (capture.backImg.height - y2) + capture.backImagePos.y
                     if br.contains(pt) and f.isInside(pt)
                     {
@@ -149,6 +155,7 @@ impl MainWnd
                         col2.argb = dref cast(*u32) pix32
                         break
                     }
+                    y2 -= 1
                 }
 
                 i.boundCols.add(@{y1, y2, col1, col2})
@@ -157,7 +164,7 @@ impl MainWnd
             infos.emplace(&i)
         }
 
-        params := @{capture, infos: infos.buffer, forms: &forms}
+        params := @{capture, infos: infos.buffer, forms: &forms, masks}
         undo.newImg.visitPixels(&params)
         {
             p := cast(*@typeof(params)) userData
@@ -176,12 +183,28 @@ impl MainWnd
                     col2 := p1.col2
                     y1   := p1.y1
                     y2   := p1.y2
+                    if y2 != y1
+                    {
+                        // Store pixel mask
+                        if p.masks
+                        {
+                            xx := cast(s32) (pt.x - p.infos[idx].boundRect.x)
+                            yy := cast(s32) (pt.y - p.infos[idx].boundRect.y)
+                            yy = p.masks.buffer[idx].height - yy
+                            if xx < p.masks.buffer[idx].width and yy < p.masks.buffer[idx].height
+                            {
+                                pix1 := p.masks.buffer[idx].pixels.buffer + xx * 4
+                                pix1 += yy * p.masks.buffer[idx].width * 4
+                                dref cast(*u32) pix1 = 0xFFFFFFFF
+                            }
+                        }
 
-                    fVert := (y - y1) / cast(f32) (y2 - y1)
-                    fVert = Math.clamp(fVert, 0, 1)
-                    col := Color.getBlend(col1, col2, fVert)
+                        fVert := (y - y1) / cast(f32) (y2 - y1)
+                        fVert = Math.clamp(fVert, 0, 1)
+                        col := Color.getBlend(col1, col2, fVert)
+                        dref cast(*u32) pix = col.argb
+                    }
 
-                    dref cast(*u32) pix = col.argb
                     break
                 }
             }
@@ -206,14 +229,15 @@ impl MainWnd
         startCount := capture.forms.count - forms.count
         visit f: forms
         {
-            b := cast(*BaseForm) @dataof(f)
+            b  := cast(*BaseForm) @dataof(f)
+            br := f.boundRect(false)
 
             nf := Memory.new'FormImage()
             nf.kind = .Capture
-            nf.x = b.x
-            nf.y = b.y
-            nf.w = b.w
-            nf.h = b.h
+            nf.x = cast(s32) br.x
+            nf.y = cast(s32) br.y
+            nf.w = cast(s32) br.width
+            nf.h = cast(s32) br.height
             nf.borderColor = Argb.Zero
             nf.borderSize = 0
             nf.paintShadow = false
@@ -224,7 +248,16 @@ impl MainWnd
         }
 
         capture.pushUndo(undo)
-        pixSelSmartFill(serial)
+
+        var masks: Array'Image
+        pixSelSmartFill(serial, &masks)
+
+        visit f, idx: undo.oldForms
+        {
+            nf := cast(*FormImage) f
+            nf.IForm.backCaptureMask(getApp(), masks.buffer + idx)
+        }
+
         undo = capture.newUndo(.DeleteSelection, serial)
         capture.pushUndo(undo)
 

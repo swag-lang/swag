@@ -252,6 +252,23 @@ impl IForm for FormImage
         return true
     }
 
+    mtd backCaptureMask(app: *Application, mask: *Image)
+    {
+        renderer := app.getRenderer()
+
+        image.visitPixels(mask)
+        {
+            maskImg := cast(*Image) userData
+            pix1 := maskImg.pixels.buffer + x * 4
+            pix1 += maskImg.width * y * 4
+            if !pix1[0]
+                dref cast(*u32) pix = 0
+        }
+
+        renderer.removeTexture(&texture)
+        texture = app.getRenderer().addImage(image)
+    }
+
     mtd backCapture(app: *Application)
     {
         renderer := app.getRenderer()
