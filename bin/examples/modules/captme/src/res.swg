@@ -93,5 +93,6 @@ const CmdIdResizeImage          = "CmdIdResizeImage"
 const CmdIdResizeCanevas        = "CmdIdResizeCanevas"
 const CmdIdPixSelClear          = "CmdIdPixSelClear"
 const CmdIdPixSelFill           = "CmdIdPixSelFill"
+const CmdIdPixSelSmartFill      = "CmdIdPixSelSmartFill"
 
 const ClipboardFormat = "Swag.CaptMe"

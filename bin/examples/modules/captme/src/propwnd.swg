@@ -1059,6 +1059,7 @@ impl PropWnd
             return
 
         discard PushButton.create(mainLayout, "", id: CmdIdPixSelFill)
+        discard PushButton.create(mainLayout, "", id: CmdIdPixSelSmartFill)
         discard PushButton.create(mainLayout, "", id: CmdIdPixSelClear)
     }
 

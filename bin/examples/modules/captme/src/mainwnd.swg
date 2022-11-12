@@ -218,6 +218,13 @@ impl IWnd for MainWnd
             evt.hidden = evt.disabled
             evt.accepted = true
 
+        case CmdIdPixSelSmartFill:
+            evt.setFlags |= .Name | .Disabled | .Hidden
+            evt.name = "Smart Fill"
+            evt.disabled = !capture or !hasPixSel
+            evt.hidden = evt.disabled
+            evt.accepted = true
+
         case CmdIdMoveSelLeft, CmdIdMoveSelTop, CmdIdMoveSelRight, CmdIdMoveSelBottom:
             evt.setFlags |= .Disabled
             evt.disabled = !hasSel
@@ -769,6 +776,8 @@ impl IWnd for MainWnd
             pixSelClear()
         case CmdIdPixSelFill:
             pixSelFill()
+        case CmdIdPixSelSmartFill:
+            pixSelSmartFill()
 
         case CmdIdMoveSelLeft1:
             undo = capture.newUndo(.OffsetSelection)
