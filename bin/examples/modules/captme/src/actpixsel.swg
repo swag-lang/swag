@@ -102,13 +102,20 @@ impl MainWnd
         undo.newImagePos = capture.backImagePos
         undo.newImg = capture.backImg
 
-        var boundRects: Array'Math.Rectangle
-        var boundCols:  Array'{y1: s32, y2: s32, col1: Color, col2: Color}
+        struct Info
+        {
+            boundRect: Math.Rectangle
+            boundCols: Array'{y1: s32, y2: s32, col1: Color, col2: Color}
+        }
+
+        var infos: Array'Info
 
         visit f: forms
         {
+            var i: Info
+
             br := f.boundRect(false)
-            boundRects.add(br)
+            i.boundRect = br
 
             loop x: undo.newImg.width
             {
@@ -144,11 +151,13 @@ impl MainWnd
                     }
                 }
 
-                boundCols.add(@{y1, y2, col1, col2})
+                i.boundCols.add(@{y1, y2, col1, col2})
             }
+
+            infos.emplace(&i)
         }
 
-        params := @{capture, boundRects: boundRects.buffer, boundCols: boundCols.buffer, forms: &forms}
+        params := @{capture, infos: infos.buffer, forms: &forms}
         undo.newImg.visitPixels(&params)
         {
             p := cast(*@typeof(params)) userData
@@ -157,12 +166,12 @@ impl MainWnd
                 pt := Math.Point{cast(f32) x, cast(f32) p.capture.backImg.height - y}
                 pt.x += p.capture.backImagePos.x
                 pt.y += p.capture.backImagePos.y
-                if !p.boundRects[idx].contains(pt)
+                if !p.infos[idx].boundRect.contains(pt)
                     continue
 
                 if f.isInside(pt)
                 {
-                    p1   := p.boundCols[x]
+                    p1   := p.infos[idx].boundCols.buffer[x]
                     col1 := p1.col1
                     col2 := p1.col2
                     y1   := p1.y1
