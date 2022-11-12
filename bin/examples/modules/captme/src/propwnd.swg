@@ -1061,6 +1061,7 @@ impl PropWnd
         discard PushButton.create(mainLayout, "", id: CmdIdPixSelFill)
         discard PushButton.create(mainLayout, "", id: CmdIdPixSelSmartFill)
         discard PushButton.create(mainLayout, "", id: CmdIdPixSelClear)
+        discard PushButton.create(mainLayout, "", id: CmdIdPixSelSmartMove)
     }
 
     mtd selectionHasChanged()

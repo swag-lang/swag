@@ -91,14 +91,14 @@ impl MainWnd
         capture.pushUndo(undo)
     }
 
-    mtd pixSelSmartFill()
+    mtd pixSelSmartFill(serial: u32 = 0)
     {
         forms := getPixSels()
         if forms.count == 0
             return
 
         capture := getCapture()
-        undo := capture.newUndo(.SetImage)
+        undo := capture.newUndo(.SetImage, serial)
         undo.newImagePos = capture.backImagePos
         undo.newImg = capture.backImg
 
@@ -188,5 +188,49 @@ impl MainWnd
         }
 
         capture.pushUndo(undo)
+    }
+
+    mtd pixSelSmartMove()
+    {
+        forms := getPixSels()
+        if forms.count == 0
+            return
+
+        capture := getCapture()
+
+        capture.serialUndo += 1
+        serial := capture.serialUndo
+
+        undo := capture.newUndo(.CreateForm, serial)
+
+        startCount := capture.forms.count - forms.count
+        visit f: forms
+        {
+            b := cast(*BaseForm) @dataof(f)
+
+            nf := Memory.new'FormImage()
+            nf.kind = .Capture
+            nf.x = b.x
+            nf.y = b.y
+            nf.w = b.w
+            nf.h = b.h
+            nf.borderColor = Argb.Zero
+            nf.borderSize = 0
+            nf.paintShadow = false
+            nf.isReadyToCapture = true
+            nf.IForm.setup(capture)
+            nf.IForm.backCapture(getApp())
+            undo.oldForms.add(cast(IForm) nf)
+        }
+
+        capture.pushUndo(undo)
+        pixSelSmartFill(serial)
+        undo = capture.newUndo(.DeleteSelection, serial)
+        capture.pushUndo(undo)
+
+        capture.selection.clear()
+        for i := startCount; i < capture.forms.count; i += 1
+            capture.selection.add(i)
+        capture.selectionHasChanged()
     }
 }

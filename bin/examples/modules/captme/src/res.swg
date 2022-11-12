@@ -94,5 +94,6 @@ const CmdIdResizeCanevas        = "CmdIdResizeCanevas"
 const CmdIdPixSelClear          = "CmdIdPixSelClear"
 const CmdIdPixSelFill           = "CmdIdPixSelFill"
 const CmdIdPixSelSmartFill      = "CmdIdPixSelSmartFill"
+const CmdIdPixSelSmartMove      = "CmdIdPixSelSmartMove"
 
 const ClipboardFormat = "Swag.CaptMe"

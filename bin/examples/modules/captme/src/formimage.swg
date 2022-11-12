@@ -252,6 +252,27 @@ impl IForm for FormImage
         return true
     }
 
+    mtd backCapture(app: *Application)
+    {
+        renderer := app.getRenderer()
+        x1 := cast(s32) (x - capture.backImagePos.x)
+        y1 := cast(s32) (y - capture.backImagePos.y)
+
+        if w > 1 and h > 1 and isReadyToCapture
+        {
+            isReadyToCapture = false
+            dirty = false
+            textureKind = kind
+            renderer.removeTexture(&texture)
+            image = capture.backImg.toCrop(x1, y1, w, h)
+            texture = app.getRenderer().addImage(image)
+        }
+        elif image.isValid()
+        {
+            texture = app.getRenderer().addImage(image)
+        }
+    }
+
     mtd paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
     {
         bSize := adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
@@ -283,19 +304,7 @@ impl IForm for FormImage
                 if  !texture.isValid() or
                     textureKind != kind
                 {
-                    if w > 1 and h > 1 and isReadyToCapture
-                    {
-                        isReadyToCapture = false
-                        dirty = false
-                        textureKind = kind
-                        renderer.removeTexture(&texture)
-                        image = capture.backImg.toCrop(x1, y1, w, h)
-                        texture = app.getRenderer().addImage(image)
-                    }
-                    elif image.isValid()
-                    {
-                        texture = app.getRenderer().addImage(image)
-                    }
+                    backCapture(app)
                 }
 
             case Blur, Pixelate:
