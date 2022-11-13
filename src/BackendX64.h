@@ -72,7 +72,7 @@ struct BackendX64 : public Backend
     void         dbgEmitSecRel(X64Gen& pp, Concat& concat, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset = 0);
     void         dbgEmitTruncatedString(Concat& concat, const Utf8& str);
     DbgTypeIndex dbgGetSimpleType(TypeInfo* typeInfo);
-    DbgTypeIndex dbgGetOrCreatePointerToType(X64Gen& pp, TypeInfo* typeInfo);
+    DbgTypeIndex dbgGetOrCreatePointerToType(X64Gen& pp, TypeInfo* typeInfo, bool asRef);
     DbgTypeIndex dbgGetOrCreatePointerPointerToType(X64Gen& pp, TypeInfo* typeInfo);
     void         dbgRecordFields(X64Gen& pp, DbgTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset);
     DbgTypeIndex dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo);

@@ -544,7 +544,7 @@ DbgTypeIndex BackendX64::dbgGetSimpleType(TypeInfo* typeInfo)
     return SimpleTypeKind::None;
 }
 
-DbgTypeIndex BackendX64::dbgGetOrCreatePointerToType(X64Gen& pp, TypeInfo* typeInfo)
+DbgTypeIndex BackendX64::dbgGetOrCreatePointerToType(X64Gen& pp, TypeInfo* typeInfo, bool asRef)
 {
     auto simpleType = dbgGetSimpleType(typeInfo);
     if (simpleType != SimpleTypeKind::None)
@@ -561,7 +561,8 @@ DbgTypeIndex BackendX64::dbgGetOrCreatePointerToType(X64Gen& pp, TypeInfo* typeI
     DbgTypeRecord* tr          = new DbgTypeRecord;
     tr->kind                   = LF_POINTER;
     tr->LF_Pointer.pointeeType = dbgGetOrCreateType(pp, typeInfo);
-    // tr->LF_Pointer.asRef       = true;
+    if (asRef)
+        tr->LF_Pointer.asRef = true;
     dbgAddTypeRecord(pp, tr);
     pp.dbgMapPtrTypes[typeInfo->scopedNameExport] = tr->index;
     return tr->index;
@@ -576,13 +577,12 @@ DbgTypeIndex BackendX64::dbgGetOrCreatePointerPointerToType(X64Gen& pp, TypeInfo
     if (it != pp.dbgMapPtrPtrTypes.end())
         return it->second;
 
-    auto typeIdx = dbgGetOrCreatePointerToType(pp, typeInfo);
+    auto typeIdx = dbgGetOrCreatePointerToType(pp, typeInfo, false);
 
     // Pointer to something complex
     DbgTypeRecord* tr          = new DbgTypeRecord;
     tr->kind                   = LF_POINTER;
     tr->LF_Pointer.pointeeType = typeIdx;
-    // tr->LF_Pointer.asRef       = true;
     dbgAddTypeRecord(pp, tr);
     pp.dbgMapPtrPtrTypes[typeInfo->scopedNameExport] = tr->index;
     return tr->index;
@@ -594,7 +594,7 @@ DbgTypeIndex BackendX64::dbgEmitTypeSlice(X64Gen& pp, TypeInfo* typeInfo, TypeIn
     DbgTypeField   field;
     tr0->kind           = LF_FIELDLIST;
     field.kind          = LF_MEMBER;
-    field.type          = dbgGetOrCreatePointerToType(pp, pointedType);
+    field.type          = dbgGetOrCreatePointerToType(pp, pointedType, false);
     field.value.reg.u32 = 0;
     field.name          = "data";
     tr0->LF_FieldList.fields.push_back(field);
@@ -657,7 +657,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo)
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
         auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        return dbgGetOrCreatePointerToType(pp, typePtr->pointedType);
+        return dbgGetOrCreatePointerToType(pp, typePtr->pointedType, !(typePtr->flags & TYPEINFO_POINTER_ARITHMETIC));
     }
 
     // Reference
@@ -665,7 +665,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo)
     if (typeInfo->kind == TypeInfoKind::Reference)
     {
         auto typePtr = CastTypeInfo<TypeInfoReference>(typeInfo, TypeInfoKind::Reference);
-        return dbgGetOrCreatePointerToType(pp, typePtr->pointedType);
+        return dbgGetOrCreatePointerToType(pp, typePtr->pointedType, true);
     }
 
     // In the cache
@@ -788,7 +788,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo)
         tr0->LF_FieldList.fields.push_back(field);
 
         field.kind          = LF_MEMBER;
-        field.type          = dbgGetOrCreatePointerToType(pp, g_Workspace->swagScope.regTypeInfo);
+        field.type          = dbgGetOrCreatePointerToType(pp, g_Workspace->swagScope.regTypeInfo, false);
         field.value.reg.u32 = sizeof(void*);
         field.name          = "typeinfo";
         tr0->LF_FieldList.fields.push_back(field);
@@ -1141,7 +1141,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                     switch (typeParam->kind)
                     {
                     case TypeInfoKind::Array:
-                        typeIdx = dbgGetOrCreatePointerToType(pp, typeParam);
+                        typeIdx = dbgGetOrCreatePointerToType(pp, typeParam, false);
                         break;
                     default:
                         typeIdx = dbgGetOrCreateType(pp, typeParam);
@@ -1192,7 +1192,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                     }
 
                     case TypeInfoKind::Array:
-                        typeIdx = dbgGetOrCreatePointerToType(pp, typeParam);
+                        typeIdx = dbgGetOrCreatePointerToType(pp, typeParam, false);
                         break;
                     default:
                         typeIdx = dbgGetOrCreateType(pp, typeParam);
@@ -1431,7 +1431,7 @@ bool BackendX64::dbgEmitScope(X64Gen& pp, Concat& concat, CoffFunction& f, Scope
         //////////
         dbgStartRecord(pp, concat, S_LOCAL);
         if (overload->flags & OVERLOAD_RETVAL)
-            concat.addU32(dbgGetOrCreatePointerToType(pp, typeInfo)); // Type
+            concat.addU32(dbgGetOrCreatePointerToType(pp, typeInfo, true)); // Type
         else
             concat.addU32(dbgGetOrCreateType(pp, typeInfo)); // Type
         concat.addU16(0);                                    // CV_LVARFLAGS
