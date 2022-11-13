@@ -1,0 +1,15 @@
+#global testerror
+
+func toto(x: &s32)
+{
+    @assert(x == 2)
+    dref x = 3
+}
+
+//#[Swag.PrintBc]
+#test
+{
+    a := 2
+    toto(&a)
+    @assert(a == 3)
+}
