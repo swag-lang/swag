@@ -448,7 +448,8 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             token.id != TokenId::SymComma &&
             token.id != TokenId::SymLeftCurly &&
             token.id != TokenId::SymAsterisk &&
-            token.id != TokenId::SymCircumflex)
+            token.id != TokenId::SymCircumflex &&
+            token.id != TokenId::SymAmpersand)
         {
             if (inTypeVarDecl)
                 return sourceFile->report({sourceFile, token, Fmt(Err(Err0343), token.ctext())});
@@ -497,22 +498,24 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     }
 
     // Pointers
-    if (token.id == TokenId::SymAsterisk || token.id == TokenId::SymCircumflex)
+    if (token.id == TokenId::SymAsterisk || token.id == TokenId::SymCircumflex || token.id == TokenId::SymAmpersand)
     {
-        while (token.id == TokenId::SymAsterisk || token.id == TokenId::SymCircumflex)
+        while (token.id == TokenId::SymAsterisk || token.id == TokenId::SymCircumflex || token.id == TokenId::SymAmpersand)
         {
             if (node->ptrCount == AstTypeExpression::MAX_PTR_COUNT)
                 return error(token, Fmt(Err(Err0340), AstTypeExpression::MAX_PTR_COUNT));
             node->ptrFlags[node->ptrCount] = isPtrConst ? AstTypeExpression::PTR_CONST : 0;
             if (token.id == TokenId::SymCircumflex)
                 node->ptrFlags[node->ptrCount] |= AstTypeExpression::PTR_ARITMETIC;
+            else if (token.id == TokenId::SymAmpersand)
+                node->ptrFlags[node->ptrCount] |= AstTypeExpression::PTR_REF;
             SWAG_CHECK(eatToken());
             isPtrConst = false;
 
             if (token.id == TokenId::KwdConst)
             {
                 SWAG_CHECK(eatToken());
-                SWAG_VERIFY(token.id == TokenId::SymAsterisk || token.id == TokenId::SymCircumflex, error(token, Err(Err0339)));
+                SWAG_VERIFY(token.id == TokenId::SymAsterisk || token.id == TokenId::SymCircumflex || token.id == TokenId::SymAmpersand, error(token, Err(Err0339)));
                 isPtrConst = true;
             }
 

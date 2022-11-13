@@ -1,4 +1,4 @@
-#global testerror
+/*#global testerror
 
 struct A
 {
@@ -17,4 +17,4 @@ impl A
     var t: A
     var r: const&A = t
     r.trim()
-}
+}*/

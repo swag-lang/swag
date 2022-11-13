@@ -199,7 +199,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     else if (typeInfo->kind == TypeInfoKind::Slice)
     {
         auto ptrSlice  = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
-        node->typeInfo = g_TypeMgr->makePointerTo(ptrSlice->pointedType, ptrSlice->isConst(), true);
+        node->typeInfo = g_TypeMgr->makePointerTo(ptrSlice->pointedType, ptrSlice->isConst(), true, false, 0);
         node->typeInfo = g_TypeMgr->asPointerArithmetic(node->typeInfo);
         node->typeInfo->forceComputeName();
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
@@ -207,7 +207,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     else if (typeInfo->kind == TypeInfoKind::Array)
     {
         auto ptrArray  = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        node->typeInfo = g_TypeMgr->makePointerTo(ptrArray->pointedType, ptrArray->isConst(), true);
+        node->typeInfo = g_TypeMgr->makePointerTo(ptrArray->pointedType, ptrArray->isConst(), true, false, 0);
         node->typeInfo = g_TypeMgr->asPointerArithmetic(node->typeInfo);
         node->typeInfo->forceComputeName();
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;

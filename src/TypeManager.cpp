@@ -489,9 +489,28 @@ TypeInfo* TypeManager::concreteReference(TypeInfo* typeInfo)
 {
     if (!typeInfo)
         return nullptr;
-    if (typeInfo->kind != TypeInfoKind::Reference)
-        return typeInfo;
-    return CastTypeInfo<TypeInfoReference>(typeInfo, TypeInfoKind::Reference)->pointedType;
+    if (typeInfo->kind == TypeInfoKind::Reference)
+        return CastTypeInfo<TypeInfoReference>(typeInfo, TypeInfoKind::Reference)->pointedType;
+    return typeInfo;
+}
+
+TypeInfo* TypeManager::concretePtrRefType(TypeInfo* typeInfo, uint32_t flags)
+{
+    if (!typeInfo)
+        return nullptr;
+    typeInfo = concretePtrRef(typeInfo);
+    typeInfo = concreteReferenceType(typeInfo, flags);
+    typeInfo = concretePtrRef(typeInfo);
+    return typeInfo;
+}
+
+TypeInfo* TypeManager::concretePtrRef(TypeInfo* typeInfo)
+{
+    if (!typeInfo)
+        return nullptr;
+    if (typeInfo->flags & TYPEINFO_POINTER_REF)
+        return CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer)->pointedType;
+    return typeInfo;
 }
 
 TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, uint32_t flags)
@@ -742,13 +761,13 @@ uint32_t TypeManager::alignOf(TypeInfo* typeInfo)
 
 void TypeManager::registerTypeType()
 {
-    typeInfoTypeType                                = makePointerTo(g_Workspace->swagScope.regTypeInfo, true, false);
+    typeInfoTypeType                                = makePointerTo(g_Workspace->swagScope.regTypeInfo, true, false, false, 0);
     g_LiteralTypeToType[(int) LiteralType::TT_TYPE] = typeInfoTypeType;
 }
 
-TypeInfoPointer* TypeManager::makePointerTo(TypeInfo* toType, bool isConst, bool isAritmetic, uint64_t ptrFlags)
+TypeInfoPointer* TypeManager::makePointerTo(TypeInfo* toType, bool isConst, bool isAritmetic, bool isRef, uint64_t ptrFlags)
 {
-    if (toType->kind == TypeInfoKind::Native && ptrFlags == 0)
+    if (toType->kind == TypeInfoKind::Native && !isRef && ptrFlags == 0)
     {
         TypeInfoPointer* result;
         if (isConst && !isAritmetic)
@@ -769,6 +788,7 @@ TypeInfoPointer* TypeManager::makePointerTo(TypeInfo* toType, bool isConst, bool
     ptrType->flags       = ptrFlags;
     ptrType->flags |= isConst ? TYPEINFO_CONST : 0;
     ptrType->flags |= isAritmetic ? TYPEINFO_POINTER_ARITHMETIC : 0;
+    ptrType->flags |= isRef ? TYPEINFO_POINTER_REF : 0;
     ptrType->computeName();
     return ptrType;
 }

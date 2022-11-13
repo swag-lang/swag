@@ -112,6 +112,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     // Variable from the tls segment
     if (resolved->flags & OVERLOAD_VAR_TLS)
     {
+        if (node->semFlags & AST_SEM_FROM_REF)
+            return context->internalError("unsupported identifier reference type");
+
         node->resultRegisterRC = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::InternalGetTlsPtr, node->resultRegisterRC);
 
@@ -142,6 +145,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     // Reference inside a struct
     if (resolved->flags & OVERLOAD_VAR_STRUCT)
     {
+        if (node->semFlags & AST_SEM_FROM_REF)
+            return context->internalError("unsupported identifier reference type");
+
         SWAG_ASSERT(!(resolved->flags & OVERLOAD_VAR_INLINE));
         node->resultRegisterRC = identifier->identifierRef->resultRegisterRC;
         SWAG_VERIFY(node->resultRegisterRC.size() > 0, context->internalError(Fmt("emitIdentifier, cannot reference identifier `%s`", identifier->token.ctext()).c_str()));
@@ -200,6 +206,17 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         {
             emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->parent->resultRegisterRC);
             freeRegisterRC(context, node->parent);
+        }
+        else if (node->semFlags & AST_SEM_FROM_REF)
+        {
+            auto inst   = emitInstruction(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
+            inst->b.u64 = resolved->computedValue.storageOffset;
+            if (!node->forceTakeAddress())
+            {
+                auto ptrPointer = CastTypeInfo<TypeInfoPointer>(node->typeInfo, TypeInfoKind::Pointer);
+                SWAG_ASSERT(ptrPointer->flags & TYPEINFO_POINTER_REF);
+                SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRC, ptrPointer->pointedType));
+            }
         }
         else if (node->forceTakeAddress() && typeInfo->kind != TypeInfoKind::Lambda && typeInfo->kind != TypeInfoKind::Array)
         {
@@ -286,11 +303,16 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     if (resolved->flags & OVERLOAD_VAR_GLOBAL)
     {
         node->resultRegisterRC = reserveRegisterRC(context);
+
         // :SilentCall
         if (node->token.text.empty())
         {
             emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->parent->resultRegisterRC);
             freeRegisterRC(context, node->parent);
+        }
+        else if (node->semFlags & AST_SEM_FROM_REF)
+        {
+            return context->internalError("unsupported identifier reference type");
         }
         else if (typeInfo->kind == TypeInfoKind::Array ||
                  typeInfo->kind == TypeInfoKind::TypeListTuple ||
@@ -356,6 +378,13 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         {
             emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->parent->resultRegisterRC);
             freeRegisterRC(context, node->parent);
+        }
+        else if (node->semFlags & AST_SEM_FROM_REF)
+        {
+            auto inst   = emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC);
+            inst->b.u64 = resolved->computedValue.storageOffset;
+            if (!node->forceTakeAddress())
+                SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRC, node->typeInfo));
         }
         else if (resolved->typeInfo->kind == TypeInfoKind::Reference)
         {

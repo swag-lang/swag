@@ -256,7 +256,7 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, TypeInfo* toType, TypeI
 
         msg = Fmt(Err(Err0176), fromTypeCpy->getDisplayNameC(), toType->getDisplayNameC());
     }
-    else if (toType->kind == TypeInfoKind::Pointer && (fromType->isNativeIntegerOrRune() || fromType->isNativeFloat() || fromType->isNative(NativeTypeKind::Bool)))
+    else if (!toType->isPointerRef() && toType->kind == TypeInfoKind::Pointer && (fromType->isNativeIntegerOrRune() || fromType->isNativeFloat() || fromType->isNative(NativeTypeKind::Bool)))
     {
         hint = Hnt(Hnt0005);
         msg  = Fmt(Err(Err0907), fromType->getDisplayNameC());
@@ -2531,8 +2531,7 @@ bool TypeManager::castToReference(SemanticContext* context, TypeInfo* toType, Ty
 
 bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
-    auto toTypePointer = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
-
+    // To "cstring"
     if (toType->isCString())
     {
         if (fromType->isNative(NativeTypeKind::String))
@@ -2546,6 +2545,8 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
             return true;
         }
     }
+
+    auto toTypePointer = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
 
     // Pointer to struct to pointer to struct. Take care of using
     if (fromType->kind == TypeInfoKind::Pointer && toTypePointer->pointedType->kind == TypeInfoKind::Struct)
@@ -2599,6 +2600,19 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
     // Pointer to pointer
     if (fromType->kind == TypeInfoKind::Pointer)
     {
+        // Assign ref
+        if (toType->flags & TYPEINFO_POINTER_REF)
+        {
+            if (fromType->kind != TypeInfoKind::Pointer)
+                return castError(context, toType, fromType, fromNode, castFlags);
+            if (fromType->flags & TYPEINFO_POINTER_REF)
+                return castError(context, toType, fromType, fromNode, castFlags);
+
+            auto fromTypePointer = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
+            if (toTypePointer->pointedType->isSame(fromTypePointer->pointedType, ISSAME_CAST))
+                return true;
+        }
+
         if (castFlags & CASTFLAG_EXPLICIT)
             return true;
 

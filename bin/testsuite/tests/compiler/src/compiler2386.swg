@@ -1,4 +1,4 @@
-#global testerror
+/*#global testerror
 
 func toto()->const& s32
 {
@@ -11,4 +11,4 @@ func toto()->const& s32
     var v1: const &s32
     v1 = v
     @print(@typeof(v1).name)
-}
+}*/

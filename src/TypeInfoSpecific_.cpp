@@ -160,10 +160,14 @@ void TypeInfoPointer::computeWhateverName(Utf8& resName, uint32_t nameType)
 
     if (flags & TYPEINFO_CONST)
         resName += "const ";
+
     if (flags & TYPEINFO_POINTER_ARITHMETIC)
         resName += "^";
+    else if (flags & TYPEINFO_POINTER_REF)
+        resName += "&";
     else
         resName += "*";
+
     resName += pointedType->computeWhateverName(nameType);
 }
 
@@ -200,6 +204,8 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
         if (other->pointedType == g_TypeMgr->typeInfoVoid && !(isSameFlags & ISSAME_FOR_GENERIC))
             return true;
         if ((to->flags & TYPEINFO_POINTER_ARITHMETIC) && !(flags & TYPEINFO_POINTER_ARITHMETIC))
+            return false;
+        if ((to->flags & TYPEINFO_POINTER_REF) || (flags & TYPEINFO_POINTER_REF))
             return false;
     }
 

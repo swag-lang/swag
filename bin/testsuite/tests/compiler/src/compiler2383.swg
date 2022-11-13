@@ -1,4 +1,4 @@
-#global testerror
+/*#global testerror
 
 //#[Swag.ConstExpr]
 func isStruct(t: typeinfo) => t.kind == Swag.TypeInfoKind.Struct
@@ -14,4 +14,4 @@ func(T) toto()
 #test
 {
     toto's32()
-}
+}*/

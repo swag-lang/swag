@@ -115,6 +115,8 @@ struct TypeManager
     static void      promoteUntypedInteger(AstNode* left, AstNode* right);
     static TypeInfo* concreteReferenceType(TypeInfo* typeInfo, uint32_t flags = CONCRETE_ALL);
     static TypeInfo* concreteReference(TypeInfo* typeInfo);
+    static TypeInfo* concretePtrRefType(TypeInfo* typeInfo, uint32_t flags = CONCRETE_ALL);
+    static TypeInfo* concretePtrRef(TypeInfo* typeInfo);
     static TypeInfo* concreteType(TypeInfo* typeInfo, uint32_t flags = CONCRETE_ALL);
     static TypeInfo* makeConst(TypeInfo* typeInfo);
     static uint64_t  align(uint64_t value, uint32_t align);
@@ -124,7 +126,7 @@ struct TypeManager
     static void      convertStructParamToRef(AstNode* node, TypeInfo* typeInfo);
 
     void             registerTypeType();
-    TypeInfoPointer* makePointerTo(TypeInfo* toType, bool isConst, bool isAritmetic, uint64_t ptrFlags = 0);
+    TypeInfoPointer* makePointerTo(TypeInfo* toType, bool isConst, bool isAritmetic, bool isRef, uint64_t ptrFlags);
     TypeInfoParam*   makeParam();
 
     TypeInfoNative* typeInfoS8        = nullptr;

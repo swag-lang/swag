@@ -69,7 +69,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
     // Check that left type is mutable
     // If not, try to find the culprit type
-    if ((left->flags & AST_IS_CONST) || !(left->flags & AST_L_VALUE))
+    if ((left->flags & AST_IS_CONST) || !(left->flags & AST_L_VALUE) || (left->typeInfo->isPointerRef() && left->typeInfo->isConst()))
     {
         Utf8 hint;
         if (left->typeInfo->isConst())
@@ -126,10 +126,16 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         return context->report(left, Err(Err0565));
     }
 
+    // Dereference
+    if (left->typeInfo->isPointerRef())
+        left->childs.back()->semFlags |= AST_SEM_FROM_REF;
+    if (right->typeInfo->isPointerRef())
+        right->childs.back()->semFlags |= AST_SEM_FROM_REF;
+
     // Special case for enum : nothing is possible, except for flags
     bool forEnumFlags  = false;
-    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo, CONCRETE_ALIAS);
-    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo, CONCRETE_ALIAS);
+    auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo, CONCRETE_ALIAS);
+    auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo, CONCRETE_ALIAS);
     if (node->token.id != TokenId::SymEqual)
     {
         if (leftTypeInfo->kind == TypeInfoKind::Enum || rightTypeInfo->kind == TypeInfoKind::Enum)
@@ -146,7 +152,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         }
     }
 
-    rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
+    rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
 
     SWAG_VERIFY(!rightTypeInfo->isNative(NativeTypeKind::Void), context->report(right, Err(Err0569)));
 

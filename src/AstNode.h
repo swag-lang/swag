@@ -640,6 +640,7 @@ struct AstTypeExpression : public AstNode
     static const int     MAX_PTR_COUNT = 4;
     static const uint8_t PTR_CONST     = 0x01;
     static const uint8_t PTR_ARITMETIC = 0x02;
+    static const uint8_t PTR_REF       = 0x04;
 
     AstNode* clone(CloneContext& context);
 
