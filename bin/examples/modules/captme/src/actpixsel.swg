@@ -178,7 +178,7 @@ impl MainWnd
 
                 if f.isInside(pt)
                 {
-                    p1   := p.infos[idx].boundCols.buffer[x]
+                    p1   := p.infos[idx].boundCols[x]
                     col1 := p1.col1
                     col2 := p1.col2
                     y1   := p1.y1
@@ -190,11 +190,12 @@ impl MainWnd
                         {
                             xx := cast(s32) (pt.x - p.infos[idx].boundRect.x)
                             yy := cast(s32) (pt.y - p.infos[idx].boundRect.y)
-                            yy = p.masks.buffer[idx].height - yy
-                            if xx < p.masks.buffer[idx].width and yy < p.masks.buffer[idx].height
+                            pmask := p.masks.buffer + idx
+                            yy = pmask.height - yy
+                            if xx < pmask.width and yy < pmask.height
                             {
-                                pix1 := p.masks.buffer[idx].pixels.buffer + xx * 4
-                                pix1 += yy * p.masks.buffer[idx].width * 4
+                                pix1 := pmask.pixels.buffer + xx * pmask.bpp8
+                                pix1 += yy * pmask.width * pmask.bpp8
                                 dref cast(*u32) pix1 = 0xFFFFFFFF
                             }
                         }
@@ -232,18 +233,21 @@ impl MainWnd
             b  := cast(*BaseForm) @dataof(f)
             br := f.boundRect(false)
 
-            nf := Memory.new'FormImage()
-            nf.kind = .Capture
-            nf.x = cast(s32) br.x
-            nf.y = cast(s32) br.y
-            nf.w = cast(s32) br.width
-            nf.h = cast(s32) br.height
-            nf.borderColor = Argb.Zero
-            nf.borderSize = 0
-            nf.paintShadow = false
-            nf.isReadyToCapture = true
-            nf.IForm.setup(capture)
-            nf.IForm.backCapture(getApp())
+            with nf := Memory.new'FormImage()
+            {
+                .kind = .Capture
+                .x = cast(s32) br.x
+                .y = cast(s32) br.y
+                .w = cast(s32) br.width
+                .h = cast(s32) br.height
+                .borderColor = Argb.Zero
+                .borderSize = 0
+                .paintShadow = false
+                .isReadyToCapture = true
+                .IForm.setup(capture)
+                .IForm.backCapture(getApp())
+            }
+
             undo.oldForms.add(cast(IForm) nf)
         }
 
@@ -264,6 +268,5 @@ impl MainWnd
         capture.selection.clear()
         for i := startCount; i < capture.forms.count; i += 1
             capture.selection.add(i)
-        capture.selectionHasChanged()
     }
 }
