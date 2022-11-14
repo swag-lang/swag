@@ -549,7 +549,10 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
         if (justCheck)
             return false;
 
-        auto note = new Diagnostic{leftType->declNode, Fmt(Nte(Nte0027), leftType->getDisplayNameC()), DiagnosticLevel::Note};
+        Diagnostic* note = nullptr;
+        if (leftType->declNode)
+            note = new Diagnostic{leftType->declNode, Fmt(Nte(Nte0027), leftType->getDisplayNameC()), DiagnosticLevel::Note};
+
         if (!opConst)
         {
             Diagnostic diag{left->parent->sourceFile, left->parent->token, Fmt(Err(Err0079), name.c_str(), leftType->getDisplayNameC())};

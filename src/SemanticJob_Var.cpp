@@ -833,8 +833,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
         auto      leftConcreteType = node->type->typeInfo;
         TypeInfo* rightConcreteType;
-        if (leftConcreteType->kind != TypeInfoKind::Reference)
-            rightConcreteType = TypeManager::concreteReferenceType(node->assignment->typeInfo);
+        if (!leftConcreteType->isPointerRef())
+            rightConcreteType = TypeManager::concretePtrRefType(node->assignment->typeInfo);
         else
             rightConcreteType = TypeManager::concreteType(node->assignment->typeInfo);
 
