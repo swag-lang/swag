@@ -652,6 +652,9 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
             if (context->result == ContextResult::Pending)
                 return true;
 
+            if (params[i]->typeInfo->isPointerRef() && !toType->isPointerRef())
+                params[i]->semFlags |= AST_SEM_FROM_REF;
+
             auto makePtrL = params[i];
 
             // If passing a closure

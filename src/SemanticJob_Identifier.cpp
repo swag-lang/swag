@@ -395,6 +395,8 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
             SWAG_CHECK(TypeManager::makeCompatibles(context, toType, nullptr, nodeCall, castFlags));
             if (context->result != ContextResult::Done)
                 return true;
+            if (nodeCall->typeInfo->isPointerRef() && !toType->isPointerRef())
+                nodeCall->semFlags |= AST_SEM_FROM_REF;
         }
         else if (oneMatch.solvedParameters.size() && oneMatch.solvedParameters.back() && oneMatch.solvedParameters.back()->typeInfo->kind == TypeInfoKind::TypedVariadic)
         {
