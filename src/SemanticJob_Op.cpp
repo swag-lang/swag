@@ -542,7 +542,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
     SWAG_CHECK(waitUserOp(context, name, left, &symbol));
 
     bool justCheck = ropFlags & ROP_JUST_CHECK;
-    auto leftType  = TypeManager::concreteType(left->typeInfo);
+    auto leftType  = TypeManager::concretePtrRefType(left->typeInfo);
 
     if (!symbol)
     {
