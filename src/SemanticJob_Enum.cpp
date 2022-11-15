@@ -106,6 +106,7 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
     {
     case TypeInfoKind::Generic:
         return true;
+
     case TypeInfoKind::Array:
     {
         auto front     = typeNode->childs.front();
@@ -115,6 +116,7 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
         SWAG_VERIFY(rawTypeInfo->isConst(), context->report(hint, {front, Fmt(Err(Err0700), rawTypeInfo->getDisplayNameC())}));
         return true;
     }
+
     case TypeInfoKind::Slice:
     {
         auto front = typeNode->childs.front();
@@ -124,10 +126,13 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
     }
 
     case TypeInfoKind::Native:
-        if (rawTypeInfo->nativeType != NativeTypeKind::Any)
-            return true;
-        break;
+        if (rawTypeInfo->nativeType == NativeTypeKind::Any)
+            return context->report(typeNode->childs.front(), Fmt(Err(Err0705), rawTypeInfo->getDisplayNameC()));
+        return true;
     }
+
+    if (rawTypeInfo->isCString())
+        return context->report(typeNode->childs.front(), Err(Err0704));
 
     if (!typeNode->childs.empty())
         typeNode = typeNode->childs.front();
