@@ -25,40 +25,45 @@ using Swag
 
         func isSimpleNative(t: typeinfo)->bool
         {
-            if t.kind != .Native
+            if !isNative(t)
                 return false
+
             tt := cast(const *TypeInfoNative) t
             return tt.nativeKind != .Any and tt.nativeKind != .String
         }
 
         func isRune(t: typeinfo)->bool
         {
-            if t.kind != .Native
+            if !isNative(t)
                 return false
+
             tt := cast(const *TypeInfoNative) t
             return tt.nativeKind == .Rune
         }
 
         func isAny(t: typeinfo)->bool
         {
-            if t.kind != .Native
+            if !isNative(t)
                 return false
+
             tt := cast(const *TypeInfoNative) t
             return tt.nativeKind == .Any
         }
 
         func isBool(t: typeinfo)->bool
         {
-            if t.kind != .Native
+            if !isNative(t)
                 return false
+
             tt := cast(const *TypeInfoNative) t
             return tt.nativeKind == .Bool
         }
 
         func isString(t: typeinfo)->bool
         {
-            if t.kind != .Native
+            if !isNative(t)
                 return false
+
             tt := cast(const *TypeInfoNative) t
             return tt.nativeKind == .String
         }
@@ -67,7 +72,7 @@ using Swag
     // Returns true if this is a struct of the given name
     func isStructOfName(type: typeinfo, name: string)->bool
     {
-        if !Reflection.isStruct(type)
+        if !isStruct(type)
             return false
 
         typeStruct := cast(const* TypeInfoStruct) type
@@ -78,7 +83,7 @@ using Swag
     func makeConcreteAlias(type: typeinfo)->typeinfo
     {
         result := type
-        while Reflection.isTypeAlias(result)
+        while isTypeAlias(result)
         {
             typeAlias := cast(const *TypeInfoAlias) result
             result = typeAlias.rawType
@@ -90,7 +95,7 @@ using Swag
     // Transform an enum type to its underling real native type
     func makeConcreteEnum(type: typeinfo)->typeinfo
     {
-        if !Reflection.isEnum(type)
+        if !isEnum(type)
             return type
 
         enumType := cast(const *TypeInfoEnum) type
@@ -101,7 +106,7 @@ using Swag
     // Returns null if the mtd does not exist
     func getMethod(type: typeinfo, name: string)->const* TypeValue
     {
-        if !Reflection.isStruct(type)
+        if !isStruct(type)
             return null
 
         typeStruct := cast(const* TypeInfoStruct) type
@@ -118,7 +123,7 @@ using Swag
     // Returns null if the field does not exist
     func getField(type: typeinfo, name: string)->const* TypeValue
     {
-        if !Reflection.isStruct(type)
+        if !isStruct(type)
             return null
 
         typeStruct := cast(const* TypeInfoStruct) type
@@ -195,10 +200,10 @@ using Swag
     // Returns true if the interface 'itf' is implemented in the given structure type
     func hasInterface(type: typeinfo, itf: typeinfo)->bool
     {
-        if type.kind != TypeInfoKind.Struct
+        if !isStruct(type)
             return false
-        typeStruct := cast(const* TypeInfoStruct) type
 
+        typeStruct := cast(const* TypeInfoStruct) type
         visit it: typeStruct.interfaces
         {
             if it.name == itf.fullname
@@ -275,7 +280,7 @@ using Swag
         var result: retval
         switch type.kind
         {
-        case TypeInfoKind.Func:
+        case Func:
             typeFunc := cast(const *TypeInfoFunc) type
             visit it: typeFunc.attributes
             {
@@ -283,7 +288,7 @@ using Swag
                     result.add(it)
             }
 
-        case TypeInfoKind.Struct:
+        case Struct:
             typeStruct := cast(const *TypeInfoStruct) type
             visit it: typeStruct.attributes
             {
@@ -291,7 +296,7 @@ using Swag
                     result.add(it)
             }
 
-        case TypeInfoKind.Enum:
+        case Enum:
             typeEnum := cast(const *TypeInfoEnum) type
             visit it: typeEnum.attributes
             {
@@ -308,7 +313,7 @@ using Swag
     {
         switch type.kind
         {
-        case TypeInfoKind.Func:
+        case Func:
             typeFunc := cast(const *TypeInfoFunc) type
             visit it: typeFunc.attributes
             {
@@ -316,7 +321,7 @@ using Swag
                     return it
             }
 
-        case TypeInfoKind.Struct:
+        case Struct:
             typeStruct := cast(const *TypeInfoStruct) type
             visit it: typeStruct.attributes
             {
@@ -324,7 +329,7 @@ using Swag
                     return it
             }
 
-        case TypeInfoKind.Enum:
+        case Enum:
             typeEnum := cast(const *TypeInfoEnum) type
             visit it: typeEnum.attributes
             {
@@ -346,14 +351,14 @@ using Swag
     // Returns null if the value does not exist
     func getEnumValue(type: typeinfo, name: string)->const* TypeValue
     {
-        if type.kind == TypeInfoKind.Enum
+        if !isEnum(type)
+            return null
+
+        typeEnum := cast(const* TypeInfoEnum) type
+        visit it: typeEnum.values
         {
-            typeEnum := cast(const* TypeInfoEnum) type
-            visit it: typeEnum.values
-            {
-                if it.name == name
-                    return it
-            }
+            if it.name == name
+                return it
         }
 
         return null
@@ -364,7 +369,7 @@ using Swag
     func getEnumName(type: typeinfo, valueAddr: const* void, fullname = true)->String
     {
         var result: String
-        if type.kind != TypeInfoKind.Enum
+        if !isEnum(type)
             return result
         typeEnum := cast(const *TypeInfoEnum) type
         isFlags := hasAttribute(type, EnumFlags)
@@ -467,7 +472,7 @@ func roomInArray(addr: *void, type: const *TypeInfoStruct, valueType: typeinfo)-
     sizeValue := valueType.sizeof
 
     var valueTypeStruct: const *TypeInfoStruct
-    if Reflection.isStruct(valueType)
+    if isStruct(valueType)
         valueTypeStruct = acast valueType
 
     // If we need to reallocate the buffer, we will also have to deal with
@@ -481,7 +486,7 @@ func roomInArray(addr: *void, type: const *TypeInfoStruct, valueType: typeinfo)-
 
         // Move old values to the new buffer
         Memory.copy(newBuffer, arr.buffer, arr.count * sizeValue)
-        if Reflection.hasPostMove(valueType)
+        if hasPostMove(valueType)
         {
             buf := newBuffer
             loop arr.count
