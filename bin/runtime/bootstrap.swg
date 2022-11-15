@@ -343,19 +343,21 @@ namespace Swag
     #[Swag.EnumFlags]
     enum TypeInfoFlags: u32
     {
-        None        = 0x00000000
-        TypeInfoPtr = 0x00000001
-        Integer     = 0x00000002
-        Float       = 0x00000004
-        Unsigned    = 0x00000008
-        HasPostCopy = 0x00000010
-        HasPostMove = 0x00000020
-        HasDrop     = 0x00000040
-        Strict      = 0x00000080
-        CanCopy     = 0x00000100
-        Tuple       = 0x00000200
-        CString     = 0x00000400
-        Generic     = 0x00000800
+        None              = 0x00000000
+        PointerTypeInfo   = 0x00000001
+        Integer           = 0x00000002
+        Float             = 0x00000004
+        Unsigned          = 0x00000008
+        HasPostCopy       = 0x00000010
+        HasPostMove       = 0x00000020
+        HasDrop           = 0x00000040
+        Strict            = 0x00000080
+        CanCopy           = 0x00000100
+        Tuple             = 0x00000200
+        CString           = 0x00000400
+        Generic           = 0x00000800
+        PointerRef        = 0x00001000
+        PointerArithmetic = 0x00002000
     }
 
     struct Interface

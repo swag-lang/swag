@@ -174,7 +174,7 @@ func @print(params: ...)
     {
         ko := @kindof(v)
 
-        if ko.flags & TypeInfoFlags.TypeInfoPtr
+        if ko.flags & TypeInfoFlags.PointerTypeInfo
         {
             #[Safety("castany", false)]
             ptr := cast(const *TypeInfo) v

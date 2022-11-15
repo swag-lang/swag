@@ -6,6 +6,7 @@ using Swag
 {
     #[Inline]
     {
+        func isNative(t: typeinfo)      => t.kind == .Native
         func isPointer(t: typeinfo)     => t.kind == .Pointer
         func isEnum(t: typeinfo)        => t.kind == .Enum
         func isStruct(t: typeinfo)      => t.kind == .Struct
@@ -14,11 +15,13 @@ using Swag
         func isTypeAlias(t: typeinfo)   => t.kind == .Alias
         func isInterface(t: typeinfo)   => t.kind == .Interface
 
-        func isInteger(t: typeinfo)     => t.flags & .Integer
-        func isFloat(t: typeinfo)       => t.flags & .Float
-        func isType(t: typeinfo)        => t.flags & .TypeInfoPtr
-        func isGeneric(t: typeinfo)     => t.flags & .Generic
-        func isTuple(t: typeinfo)       => t.flags & .Tuple
+        func isInteger(t: typeinfo)            => t.flags & .Integer
+        func isFloat(t: typeinfo)              => t.flags & .Float
+        func isGeneric(t: typeinfo)            => t.flags & .Generic
+        func isTuple(t: typeinfo)              => t.flags & .Tuple
+        func isType(t: typeinfo)               => t.flags & .PointerTypeInfo
+        func isPointerRef(t: typeinfo)         => t.flags & .PointerRef
+        func isPointerArithmetic(t: typeinfo)  => t.flags & .PointerArithmetic
 
         func isSimpleNative(t: typeinfo)->bool
         {
@@ -64,8 +67,9 @@ using Swag
     // Returns true if this is a struct of the given name
     func isStructOfName(type: typeinfo, name: string)->bool
     {
-        if type.kind != TypeInfoKind.Struct
+        if !Reflection.isStruct(type)
             return false
+
         typeStruct := cast(const* TypeInfoStruct) type
         return typeStruct.structName == name
     }
@@ -88,6 +92,7 @@ using Swag
     {
         if !Reflection.isEnum(type)
             return type
+
         enumType := cast(const *TypeInfoEnum) type
         return enumType.rawType
     }
@@ -96,10 +101,10 @@ using Swag
     // Returns null if the mtd does not exist
     func getMethod(type: typeinfo, name: string)->const* TypeValue
     {
-        if type.kind != TypeInfoKind.Struct
+        if !Reflection.isStruct(type)
             return null
-        typeStruct := cast(const* TypeInfoStruct) type
 
+        typeStruct := cast(const* TypeInfoStruct) type
         visit it: typeStruct.methods
         {
             if it.name == name
@@ -113,14 +118,14 @@ using Swag
     // Returns null if the field does not exist
     func getField(type: typeinfo, name: string)->const* TypeValue
     {
-        if type.kind == TypeInfoKind.Struct
+        if !Reflection.isStruct(type)
+            return null
+
+        typeStruct := cast(const* TypeInfoStruct) type
+        visit it: typeStruct.fields
         {
-            typeStruct := cast(const* TypeInfoStruct) type
-            visit it: typeStruct.fields
-            {
-                if it.name == name
-                    return it
-            }
+            if it.name == name
+                return it
         }
 
         return null

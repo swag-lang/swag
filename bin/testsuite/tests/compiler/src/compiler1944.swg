@@ -1,6 +1,6 @@
 func foozle(x: any)
 {
-    isType := @kindof(x).flags & Swag.TypeInfoFlags.TypeInfoPtr
+    isType := @kindof(x).flags & Swag.TypeInfoFlags.PointerTypeInfo
     @assert(isType ? true : false)
 
     ptr := cast(const *Swag.TypeInfo) @dataof(x)

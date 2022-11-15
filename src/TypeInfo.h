@@ -236,6 +236,7 @@ struct TypeInfo
     bool isInterface()                      { return kind == TypeInfoKind::Interface; }
     bool isTuple()                          { return (flags & TYPEINFO_STRUCT_IS_TUPLE); }
     bool isPointerRef()                     { return (flags & TYPEINFO_POINTER_REF); }
+    bool isPointerArithmetic()              { return (flags & TYPEINFO_POINTER_ARITHMETIC); }
     // clang-format on
 
     virtual bool        isSame(TypeInfo* from, uint32_t isSameFlags);
