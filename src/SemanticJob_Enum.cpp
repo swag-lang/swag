@@ -181,9 +181,14 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
             assignNode->setFlagsValueIsComputed();
             storageSegment = getConstantSegFromContext(assignNode);
             SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, assignNode->computedValue, assignNode->typeInfo, assignNode));
-            auto typeList = CastTypeInfo<TypeInfoList>(assignNode->typeInfo, TypeInfoKind::TypeListArray);
+
             // :SliceLiteral
-            enumNode->computedValue->reg.u64        = typeList->subTypes.size();
+            if (assignNode->typeInfo->kind == TypeInfoKind::TypeListArray)
+            {
+                auto typeList                    = CastTypeInfo<TypeInfoList>(assignNode->typeInfo, TypeInfoKind::TypeListArray);
+                enumNode->computedValue->reg.u64 = typeList->subTypes.size();
+            }
+
             enumNode->computedValue->storageOffset  = storageOffset;
             enumNode->computedValue->storageSegment = storageSegment;
         }

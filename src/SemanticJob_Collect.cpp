@@ -56,7 +56,12 @@ bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegmen
 
     if (typeInfo->kind == TypeInfoKind::Slice)
     {
-        if (assignment)
+        if (assignment && assignment->kind == AstNodeKind::Literal)
+        {
+            *(void**) ptrDest                      = nullptr;
+            *(uint64_t*) (ptrDest + sizeof(void*)) = 0;
+        }
+        else if (assignment)
         {
             SWAG_VERIFY(assignment->kind == AstNodeKind::ExpressionList, context->report(assignment, Err(Err0798)));
             SWAG_CHECK(checkIsConstExpr(context, assignment));

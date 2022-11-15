@@ -774,6 +774,20 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                     }
                 }
             }
+            else if (typeEnum->rawType->kind == TypeInfoKind::Slice)
+            {
+                ok = false;
+                for (auto p : typeEnum->values)
+                {
+                    SWAG_ASSERT(p->value->storageSegment);
+                    auto ptrDest = (SwagSlice*) p->value->storageSegment->address(p->value->storageOffset);
+                    if (!ptrDest->buffer && !ptrDest->count)
+                    {
+                        ok = true;
+                        break;
+                    }
+                }
+            }
 
             if (!ok)
             {
