@@ -415,8 +415,6 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
             diag            = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
                                   Fmt(Err(Err0050),
-                                      getTheNiceParameterRank(badParamIdx).c_str(),
-                                      refNiceName.c_str(),
                                       bi.badSignatureRequestedType->getDisplayNameC(),
                                       typeStruct->fields[badParamIdx - 1]->namedParam.c_str(),
                                       bi.badSignatureGivenType->getDisplayNameC())};
@@ -441,8 +439,6 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         {
             diag = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
                                   Fmt(Err(Err0053),
-                                      getTheNiceParameterRank(badParamIdx).c_str(),
-                                      refNiceName.c_str(),
                                       bi.badSignatureRequestedType->getDisplayNameC(),
                                       bi.badSignatureGivenType->getDisplayNameC())};
         }
@@ -495,8 +491,6 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         SWAG_ASSERT(callParameters);
         diag       = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
                               Fmt(Err(Err0047),
-                                  getTheNiceParameterRank(badParamIdx).c_str(),
-                                  refNiceName.c_str(),
                                   bi.badGenMatch.c_str(),
                                   bi.badSignatureRequestedType->getDisplayNameC(),
                                   bi.badSignatureGivenType->getDisplayNameC())};
@@ -1117,7 +1111,7 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
         }
         else
         {
-            Utf8 displayName;
+            Utf8           displayName;
             AstIdentifier* prevIdentifier = nullptr;
             if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier)
                 prevIdentifier = CastAst<AstIdentifier>(identifierRef->previousResolvedNode, AstNodeKind::Identifier);
@@ -1134,7 +1128,7 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
                     diag = new Diagnostic{node, Fmt(Err(Err0821), varDecl->token.ctext(), displayName.c_str())};
                 else if (prevIdentifier && prevIdentifier->alternateEnum)
                 {
-                    diag = new Diagnostic{node, Fmt(Err(Err0492), node->token.ctext(), prevIdentifier->alternateEnum->getDisplayNameC(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())};
+                    diag      = new Diagnostic{node, Fmt(Err(Err0492), node->token.ctext(), prevIdentifier->alternateEnum->getDisplayNameC(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())};
                     auto note = new Diagnostic{prevIdentifier->alternateEnum->declNode, Fmt(Nte(Nte0029), prevIdentifier->alternateEnum->getDisplayNameC()), DiagnosticLevel::Note};
                     notes.push_back(note);
                 }
