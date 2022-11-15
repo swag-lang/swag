@@ -727,16 +727,20 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     // This is ok to not have an initialization for structs, as they are initialized by default
     if (!node->type || concreteNodeType->kind != TypeInfoKind::Struct)
     {
+        // A constant must be initialized
         if (isCompilerConstant && !node->assignment && !(node->flags & AST_VALUE_COMPUTED))
             return context->report(node, Err(Err0298));
+        // A constant variable must be initiliazed
         if ((symbolFlags & OVERLOAD_CONST_ASSIGN) && !node->assignment && node->kind != AstNodeKind::FuncDeclParam)
             return context->report(node, Err(Err0299));
 
-        if (node->type && node->type->typeInfo->kind == TypeInfoKind::Reference && node->kind != AstNodeKind::FuncDeclParam)
-        {
-            if (!node->assignment && !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
-                return context->report(node, Err(Err0300));
-        }
+        // A reference must be initialized
+        if (node->type &&
+            node->type->typeInfo->isPointerRef() &&
+            node->kind != AstNodeKind::FuncDeclParam &&
+            !node->assignment &&
+            !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
+            return context->report(node, Err(Err0300));
     }
 
     // If this is a reference, be sure we can take address of it
