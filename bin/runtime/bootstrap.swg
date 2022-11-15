@@ -343,7 +343,7 @@ namespace Swag
     #[Swag.EnumFlags]
     enum TypeInfoFlags: u32
     {
-        None              = 0x00000000
+        Zero              = 0x00000000
         PointerTypeInfo   = 0x00000001
         Integer           = 0x00000002
         Float             = 0x00000004
@@ -394,8 +394,8 @@ namespace Swag
         name:       string
         sizeof:     uint
         crc32:      u32
-        flags:      TypeInfoFlags
-        kind: 	    TypeInfoKind
+        flags       = TypeInfoFlags.Zero
+        kind 	    = TypeInfoKind.Invalid
         padding:    [3] u8
     }
 

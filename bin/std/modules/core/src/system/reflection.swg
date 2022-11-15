@@ -446,7 +446,7 @@ using Swag
     // Make an union of flags of all types
     func orFlags(v: const [..] typeinfo)->Swag.TypeInfoFlags
     {
-        var res: Swag.TypeInfoFlags = None
+        var res: Swag.TypeInfoFlags = Zero
         visit p: v
             res |= p.flags
         return res

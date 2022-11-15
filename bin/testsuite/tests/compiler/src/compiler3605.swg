@@ -9,6 +9,7 @@ struct(K, V) A
 {
     enum E: string
     {
+        N = null
         R = "toto"
     }
 

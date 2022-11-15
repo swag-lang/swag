@@ -651,7 +651,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     bool isCompilerConstant = node->kind == AstNodeKind::ConstDecl ? true : false;
     bool isLocalConstant    = false;
 
-    // Check @mixon
+    // Check @mixin
     if (!(node->flags & AST_GENERATED) && !(node->ownerInline) && node->token.text[0] == '@' && node->token.text.find(g_LangSpec->name_atmixin) == 0)
     {
         auto ownerFct = node->ownerFct;
@@ -725,22 +725,62 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
     // Check for missing initialization
     // This is ok to not have an initialization for structs, as they are initialized by default
-    if (!node->type || concreteNodeType->kind != TypeInfoKind::Struct)
+    if (!node->assignment and (!node->type || concreteNodeType->kind != TypeInfoKind::Struct))
     {
         // A constant must be initialized
-        if (isCompilerConstant && !node->assignment && !(node->flags & AST_VALUE_COMPUTED))
+        if (isCompilerConstant && !(node->flags & AST_VALUE_COMPUTED))
             return context->report(node, Err(Err0298));
         // A constant variable must be initiliazed
-        if ((symbolFlags & OVERLOAD_CONST_ASSIGN) && !node->assignment && node->kind != AstNodeKind::FuncDeclParam)
+        if ((symbolFlags & OVERLOAD_CONST_ASSIGN) && node->kind != AstNodeKind::FuncDeclParam)
             return context->report(node, Err(Err0299));
 
         // A reference must be initialized
-        if (node->type &&
-            node->type->typeInfo->isPointerRef() &&
+        if (concreteNodeType &&
+            concreteNodeType->isPointerRef() &&
             node->kind != AstNodeKind::FuncDeclParam &&
-            !node->assignment &&
             !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
             return context->report(node, Err(Err0300));
+
+        // Check an enum variable without initialization
+        if (concreteNodeType &&
+            concreteNodeType->kind == TypeInfoKind::Enum &&
+            node->kind != AstNodeKind::FuncDeclParam &&
+            !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
+        {
+            auto typeEnum = CastTypeInfo<TypeInfoEnum>(concreteNodeType, TypeInfoKind::Enum);
+
+            bool ok = true;
+            if (typeEnum->rawType->isNativeFloat() || typeEnum->rawType->isNativeIntegerOrRune() || typeEnum->rawType->isNative(NativeTypeKind::Bool))
+            {
+                ok = false;
+                for (auto p : typeEnum->values)
+                {
+                    if (!p->value->reg.u64)
+                    {
+                        ok = true;
+                        break;
+                    }
+                }
+            }
+            else if (typeEnum->rawType->isNative(NativeTypeKind::String))
+            {
+                ok = false;
+                for (auto p : typeEnum->values)
+                {
+                    if (!p->value->text.buffer)
+                    {
+                        ok = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!ok)
+            {
+                Diagnostic note{concreteNodeType->declNode, Fmt(Nte(Nte0027), concreteNodeType->getDisplayNameC()), DiagnosticLevel::Note};
+                return context->report({node, Fmt(Err(Err0848), node->token.ctext(), typeEnum->getDisplayNameC())}, &note);
+            }
+        }
     }
 
     // If this is a reference, be sure we can take address of it

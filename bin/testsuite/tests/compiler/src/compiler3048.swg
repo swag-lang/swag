@@ -5,13 +5,13 @@
 //#[Swag.ConstExpr]
 func orFlags()->Swag.TypeInfoFlags
 {
-    var res: Swag.TypeInfoFlags = None
+    var res: Swag.TypeInfoFlags = Zero
     return res
 }
 
 #test
 {
-    if orFlags() & .None
+    if orFlags() & .Zero
     {
     }
 }

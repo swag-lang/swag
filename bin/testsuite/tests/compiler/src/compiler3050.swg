@@ -17,7 +17,7 @@ impl Variant
     #[Swag.ConstExpr]
     func orFlags()->Swag.TypeInfoFlags
     {
-        var res: Swag.TypeInfoFlags = None
+        var res: Swag.TypeInfoFlags = Zero
         visit p: T
             res |= p.flags
         return res
