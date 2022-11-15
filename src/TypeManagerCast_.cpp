@@ -3588,6 +3588,21 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
             result = true;
     }
 
+    if (fromType->isPointerRef())
+    {
+        auto fromTypeRef = TypeManager::concretePtrRef(fromType);
+        if (fromTypeRef == toType)
+        {
+            castFlags |= CASTFLAG_FORCE_UNCONST;
+            result = true;
+        }
+        else if (fromTypeRef->isSame(toType, ISSAME_CAST))
+        {
+            castFlags |= CASTFLAG_FORCE_UNCONST;
+            result = true;
+        }
+    }
+
     if (!result)
     {
         auto isSameFlags = ISSAME_CAST;

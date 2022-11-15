@@ -889,12 +889,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         SWAG_ASSERT(node->type->typeInfo);
 
-        auto      leftConcreteType = node->type->typeInfo;
-        TypeInfo* rightConcreteType;
-        if (!leftConcreteType->isPointerRef())
-            rightConcreteType = TypeManager::concretePtrRefType(node->assignment->typeInfo);
-        else
-            rightConcreteType = TypeManager::concreteType(node->assignment->typeInfo);
+        auto leftConcreteType  = node->type->typeInfo;
+        auto rightConcreteType = TypeManager::concretePtrRefType(node->assignment->typeInfo);
 
         // Do not cast for structs, as we can have special assignment with different types
         // Except if this is an initializer list {...}
@@ -911,6 +907,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             SWAG_CHECK(TypeManager::makeCompatibles(context, node->type->typeInfo, nullptr, node->assignment, CASTFLAG_TRY_COERCE | CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST));
             if (context->result == ContextResult::Pending)
                 return true;
+
+            if (!leftConcreteType->isPointerRef() && TypeManager::concreteType(node->assignment->typeInfo)->isPointerRef())
+                node->assignment->childs.back()->semFlags |= AST_SEM_FROM_REF;
         }
         else
         {

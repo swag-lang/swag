@@ -1825,10 +1825,18 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 if (numRegs == 1)
                 {
                     emitInstruction(context, ByteCodeOp::CopyRTtoRC, node->resultRegisterRC[0]);
+
+                    if (node->semFlags & AST_SEM_FROM_REF)
+                    {
+                        auto ptrPointer = CastTypeInfo<TypeInfoPointer>(typeInfoFunc->returnType, TypeInfoKind::Pointer);
+                        SWAG_ASSERT(ptrPointer->flags & TYPEINFO_POINTER_REF);
+                        SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRC, ptrPointer->pointedType));
+                    }
                 }
                 else
                 {
                     SWAG_ASSERT(numRegs == 2);
+                    SWAG_ASSERT(!(node->semFlags & AST_SEM_FROM_REF));
                     emitInstruction(context, ByteCodeOp::CopyRTtoRC2, node->resultRegisterRC[0], node->resultRegisterRC[1]);
                 }
             }
