@@ -25,8 +25,6 @@ bool TypeTableJob::computeStruct()
             concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasPostMove;
         if (realType->opDrop || realType->opUserDropFct)
             concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasDrop;
-        if (realType->flags & TYPEINFO_STRUCT_IS_TUPLE)
-            concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::Tuple;
     }
 
     // Special functions lambdas
@@ -53,7 +51,7 @@ bool TypeTableJob::computeStruct()
             if (realType->opInit->node)
             {
                 auto funcNode = CastAst<AstFuncDecl>(realType->opInit->node, AstNodeKind::FuncDecl);
-                callName = funcNode->getCallName();
+                callName      = funcNode->getCallName();
             }
             else
                 callName = realType->opInit->getCallName();
@@ -76,7 +74,7 @@ bool TypeTableJob::computeStruct()
             if (realType->opDrop->node)
             {
                 auto funcNode = CastAst<AstFuncDecl>(realType->opDrop->node, AstNodeKind::FuncDecl);
-                callName = funcNode->getCallName();
+                callName      = funcNode->getCallName();
             }
             else
                 callName = realType->opDrop->getCallName();
@@ -99,7 +97,7 @@ bool TypeTableJob::computeStruct()
             if (realType->opPostCopy->node)
             {
                 auto funcNode = CastAst<AstFuncDecl>(realType->opPostCopy->node, AstNodeKind::FuncDecl);
-                callName = funcNode->getCallName();
+                callName      = funcNode->getCallName();
             }
             else
                 callName = realType->opPostCopy->getCallName();
@@ -122,7 +120,7 @@ bool TypeTableJob::computeStruct()
             if (realType->opPostMove->node)
             {
                 auto funcNode = CastAst<AstFuncDecl>(realType->opPostMove->node, AstNodeKind::FuncDecl);
-                callName = funcNode->getCallName();
+                callName      = funcNode->getCallName();
             }
             else
                 callName = realType->opPostMove->getCallName();

@@ -243,22 +243,21 @@ enum class NativeTypeKind : uint8_t
     Count,
 };
 
-enum class TypeInfoFlags : uint16_t
+enum class TypeInfoFlags : uint32_t
 {
-    None        = 0x0000,
-    TypeInfoPtr = 0x0001,
-    Integer     = 0x0002,
-    Float       = 0x0004,
-    Unsigned    = 0x0008,
-    HasPostCopy = 0x0010,
-    HasPostMove = 0x0020,
-    HasDrop     = 0x0040,
-    Strict      = 0x0080,
-    CanCopy     = 0x0100,
-    Tuple       = 0x0200,
-    CString     = 0x0400,
-    Generic     = 0x0800,
-    Anonymous   = 0x1000,
+    None        = 0x00000000,
+    TypeInfoPtr = 0x00000001,
+    Integer     = 0x00000002,
+    Float       = 0x00000004,
+    Unsigned    = 0x00000008,
+    HasPostCopy = 0x00000010,
+    HasPostMove = 0x00000020,
+    HasDrop     = 0x00000040,
+    Strict      = 0x00000080,
+    CanCopy     = 0x00000100,
+    Tuple       = 0x00000200,
+    CString     = 0x00000400,
+    Generic     = 0x00000800,
 };
 
 struct ConcreteTypeInfo
@@ -267,8 +266,9 @@ struct ConcreteTypeInfo
     SwagSlice    name;
     uint64_t     sizeOf;
     uint32_t     crc32;
-    uint16_t     flags;
+    uint32_t     flags;
     TypeInfoKind kind;
+    uint8_t      padding[3];
 };
 
 struct ConcreteAny

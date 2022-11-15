@@ -141,7 +141,7 @@ impl Encoder
 
         if Reflection.isStruct(type)
         {
-            if Reflection.isAnonymous(type)
+            if Reflection.isTuple(type)
             {
                 if errorIfUnknown
                     throw "cannot serialize an anonymous struct"

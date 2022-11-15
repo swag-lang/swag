@@ -6,9 +6,6 @@ using Swag
 {
     #[Inline]
     {
-        func isInteger(t: typeinfo)     => t.flags & .Integer
-        func isFloat(t: typeinfo)       => t.flags & .Float
-        func isType(t: typeinfo)        => t.flags & .TypeInfoPtr
         func isPointer(t: typeinfo)     => t.kind == .Pointer
         func isEnum(t: typeinfo)        => t.kind == .Enum
         func isStruct(t: typeinfo)      => t.kind == .Struct
@@ -16,8 +13,12 @@ using Swag
         func isSlice(t: typeinfo)       => t.kind == .Slice
         func isTypeAlias(t: typeinfo)   => t.kind == .Alias
         func isInterface(t: typeinfo)   => t.kind == .Interface
+
+        func isInteger(t: typeinfo)     => t.flags & .Integer
+        func isFloat(t: typeinfo)       => t.flags & .Float
+        func isType(t: typeinfo)        => t.flags & .TypeInfoPtr
         func isGeneric(t: typeinfo)     => t.flags & .Generic
-        func isAnonymous(t: typeinfo)   => t.flags & .Anonymous
+        func isTuple(t: typeinfo)       => t.flags & .Tuple
 
         func isSimpleNative(t: typeinfo)->bool
         {
