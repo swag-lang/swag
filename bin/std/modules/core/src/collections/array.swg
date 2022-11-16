@@ -65,7 +65,7 @@ impl Array
     {
         Debug.safetyBoundCheck(lower <= upper, "lower bound greater than upper bound")
         Debug.safetyBoundCheck(lower < count, "lower bound out of range")
-        Debug.safetyBoundCheck(upper < count, "lower bound out of range")
+        Debug.safetyBoundCheck(upper < count, "upper bound out of range")
         return @mkslice(buffer + lower, (upper + 1) - lower)
     }
 
