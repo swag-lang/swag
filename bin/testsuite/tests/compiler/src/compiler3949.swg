@@ -1,5 +1,5 @@
 #global testerror
 #test
 {
-    var x: &s32
+    var x: ref s32
 }

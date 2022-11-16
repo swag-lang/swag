@@ -333,7 +333,7 @@ SWAG_ERROR(Err0335, "`#import` has a specific revision (`%d`) but undefined majo
 SWAG_ERROR(Err0336, "`#import` has a specific build number (`%d`) but undefined revision (`?`)")
 SWAG_ERROR(Err0337, "cannot use a range in a switch with an expression")
 SWAG_ERROR(Err0338, "too many array dimensions (maximum is `254`)")
-SWAG_ERROR(Err0339, "expected a pointer declaration `*`, `^` or `&` after `const`")
+SWAG_ERROR(Err0339, "expected a pointer declaration `*` or `^` after `const`")
 SWAG_ERROR(Err0340, "too many pointer dimensions (maximim is `%u`)")
 SWAG_ERROR(Err0341, "literal number `%I64u` is not in the range of `u8`")
 SWAG_ERROR(Err0342, "cannot use the operator `orelse` on a struct")

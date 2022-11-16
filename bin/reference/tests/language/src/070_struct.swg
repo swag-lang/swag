@@ -96,7 +96,7 @@
 }
 
 // A function can take an argument of type struct.
-// No copy is done (this is equivalent to a const ref in C++)
+// No copy is done (this is equivalent to a const reference in C++)
 struct Struct3
 {
     x, y, z: s32 = 666

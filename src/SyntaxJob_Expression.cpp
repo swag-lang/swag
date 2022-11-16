@@ -306,10 +306,10 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
     case TokenId::KwdClosure:
     case TokenId::KwdStruct:
     case TokenId::KwdUnion:
+    case TokenId::KwdRef:
     case TokenId::NativeType:
     case TokenId::SymAsterisk:
     case TokenId::SymCircumflex:
-    case TokenId::SymAmpersand:
     case TokenId::SymLeftSquare:
     case TokenId::SymLeftCurly:
     {

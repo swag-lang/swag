@@ -9,7 +9,7 @@ struct ThemeStyleRef
 
 struct ThemeStyle
 {
-    ref:                *ThemeStyleRef
+    refr:               *ThemeStyleRef
     dirty:              bool
     styleSheetMetrics:  String
     styleSheetColors:   String
@@ -24,22 +24,22 @@ impl ThemeStyle
 
     private mtd release()
     {
-        if !ref
+        if !refr
             return
-        ref.count -= 1
-        if ref.count == 0
+        refr.count -= 1
+        if refr.count == 0
         {
-            Memory.delete(ref.theme)
-            Memory.delete(ref)
-            ref = null
+            Memory.delete(refr.theme)
+            Memory.delete(refr)
+            refr = null
         }
     }
 
     private mtd set(theme: *Theme)
     {
-        ref = Memory.new'ThemeStyleRef()
-        ref.theme = theme
-        ref.count = 1
+        refr = Memory.new'ThemeStyleRef()
+        refr.theme = theme
+        refr.count = 1
     }
 
     // Create a specific style based on the parent
@@ -47,17 +47,17 @@ impl ThemeStyle
     {
         release()
         theme := Memory.new'Theme()
-        dref theme = dref parent.ref.theme
+        dref theme = dref parent.refr.theme
         set(theme)
     }
 
     private mtd compute(owner: *Wnd, parent: *ThemeStyle)
     {
         // First time, initialize to parent
-        if !ref
+        if !refr
         {
-            ref = parent.ref
-            ref.count += 1
+            refr = parent.refr
+            refr.count += 1
             dirty = true
         }
 
@@ -69,8 +69,8 @@ impl ThemeStyle
 
         // By default, same as the parent
         release()
-        ref = parent.ref
-        ref.count += 1
+        refr = parent.refr
+        refr.count += 1
 
         // Ask user
         evt := SetThemeEvent{}
@@ -84,21 +84,21 @@ impl ThemeStyle
             return
 
         // Make a new tweak as a copy of the parent
-        if ref == parent.ref
+        if refr == parent.refr
             create(parent)
 
         // Then tweak it with the stylesheet
         if styleSheetColors.length
         {
             var tf: File.TweakFile
-            tf.registerFolder'ThemeColors(&ref.theme.colors)
+            tf.registerFolder'ThemeColors(&refr.theme.colors)
             catch tf.parse(styleSheetColors)
         }
 
         if styleSheetMetrics.length
         {
             var tf: File.TweakFile
-            tf.registerFolder'ThemeMetrics(&ref.theme.metrics)
+            tf.registerFolder'ThemeMetrics(&refr.theme.metrics)
             catch tf.parse(styleSheetMetrics)
         }
     }

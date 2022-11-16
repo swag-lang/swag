@@ -210,10 +210,10 @@ impl Wnd
         mtd getApp()            => surface.app
         mtd getTopView()        => surface.wnd.view
         mtd getTopWnd()         => surface.wnd
-        mtd getTheme()          => style.ref.theme
-        mtd getThemeMetrics()   => &style.ref.theme.metrics
-        mtd getThemeColors()    => &style.ref.theme.colors
-        mtd getThemeRects()     => &style.ref.theme.rects
+        mtd getTheme()          => style.refr.theme
+        mtd getThemeMetrics()   => &style.refr.theme.metrics
+        mtd getThemeColors()    => &style.refr.theme.colors
+        mtd getThemeRects()     => &style.refr.theme.rects
         mtd getTiming()         => &surface.app.timing
     }
 

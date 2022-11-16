@@ -1,6 +1,6 @@
 #global testerror
 
-func toto(x: const &s32)
+func toto(x: const ref s32)
 {
     @assert(x == 2)
 }

@@ -34,7 +34,7 @@
     func glIsShader(shader: GLuint)->GLboolean;
     func glLinkProgram(program: GLuint);
     func glShaderSource(shader: GLuint, count: GLsizei, str: *const *GLchar, length: const *GLint);
-    func glStencilFuncSeparate(frontfunc: GLenum, backfunc: GLenum, ref: GLint, mask: GLuint);
+    func glStencilFuncSeparate(frontfunc: GLenum, backfunc: GLenum, refr: GLint, mask: GLuint);
     func glStencilMaskSeparate(face: GLenum, mask: GLuint);
     func glStencilOpSeparate(face: GLenum, sfail: GLenum, dpfail: GLenum, dppass: GLenum);
     func glUniform1f(location: GLint, v0: GLfloat);

@@ -761,13 +761,13 @@ uint32_t TypeManager::alignOf(TypeInfo* typeInfo)
 
 void TypeManager::registerTypeType()
 {
-    typeInfoTypeType                                = makePointerTo(g_Workspace->swagScope.regTypeInfo, true, false, false, 0);
+    typeInfoTypeType                                = makePointerTo(g_Workspace->swagScope.regTypeInfo, true, false, 0);
     g_LiteralTypeToType[(int) LiteralType::TT_TYPE] = typeInfoTypeType;
 }
 
-TypeInfoPointer* TypeManager::makePointerTo(TypeInfo* toType, bool isConst, bool isAritmetic, bool isRef, uint64_t ptrFlags)
+TypeInfoPointer* TypeManager::makePointerTo(TypeInfo* toType, bool isConst, bool isAritmetic, uint64_t ptrFlags)
 {
-    if (toType->kind == TypeInfoKind::Native && !isRef && ptrFlags == 0)
+    if (toType->kind == TypeInfoKind::Native && ptrFlags == 0)
     {
         TypeInfoPointer* result;
         if (isConst && !isAritmetic)
@@ -788,7 +788,6 @@ TypeInfoPointer* TypeManager::makePointerTo(TypeInfo* toType, bool isConst, bool
     ptrType->flags       = ptrFlags;
     ptrType->flags |= isConst ? TYPEINFO_CONST : 0;
     ptrType->flags |= isAritmetic ? TYPEINFO_POINTER_ARITHMETIC : 0;
-    ptrType->flags |= isRef ? TYPEINFO_POINTER_REF : 0;
     ptrType->computeName();
     return ptrType;
 }

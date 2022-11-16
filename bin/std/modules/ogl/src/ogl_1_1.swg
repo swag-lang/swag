@@ -721,7 +721,7 @@ const GL_TEXTURE_COMPONENTS = GL_TEXTURE_INTERNAL_FORMAT
 #[Swag.Foreign("opengl32")]
 {
     func glAccum(op: GLenum, value: GLfloat);
-    func glAlphaFunc(fc: GLenum, ref: GLclampf);
+    func glAlphaFunc(fc: GLenum, refr: GLclampf);
     func glAreTexturesResident(n: GLsizei, textures: const *GLuint, residences: *GLboolean)->GLboolean;
     func glArrayElement(i: GLint);
     func glBegin(mode: GLenum);
@@ -974,7 +974,7 @@ const GL_TEXTURE_COMPONENTS = GL_TEXTURE_INTERNAL_FORMAT
     func glScissor(x: GLint, y: GLint, width: GLsizei, height: GLsizei);
     func glSelectBuffer(size: GLsizei, buffer: *GLuint);
     func glShadeModel(mode: GLenum);
-    func glStencilFunc(fc: GLenum , ref: GLint, mask: GLuint);
+    func glStencilFunc(fc: GLenum , refr: GLint, mask: GLuint);
     func glStencilMask(mask: GLuint);
     func glStencilOp(fail: GLenum, zfail: GLenum, zpass: GLenum);
     func glTexCoord1d(s: GLdouble);

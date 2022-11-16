@@ -15,7 +15,7 @@ impl V
 #test
 {
     var x: V
-    var y: &V = &x
+    var y: ref V = &x
     y[0] = 1
     @assert(y.x == 1)
     @assert(y.y == 1)

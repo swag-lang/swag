@@ -1,6 +1,6 @@
 //#global testerror
 
-func toto(x: &s32)
+func toto(x: ref s32)
 {
     @assert(x == 2)
 }

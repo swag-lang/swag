@@ -13,7 +13,7 @@ impl V
     }
 }
 
-func toto()->&V
+func toto()->ref V
 {
     return &G
 }

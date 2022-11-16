@@ -351,7 +351,6 @@ bool SemanticJob::resolveType(SemanticContext* context)
         {
             bool isConst      = false;
             bool isArithmetic = false;
-            bool isRef        = false;
 
             if (typeNode->ptrFlags[i] & AstTypeExpression::PTR_CONST)
                 isConst = true;
@@ -359,8 +358,6 @@ bool SemanticJob::resolveType(SemanticContext* context)
                 isConst = true;
             if (typeNode->ptrFlags[i] & AstTypeExpression::PTR_ARITMETIC)
                 isArithmetic = true;
-            else if (typeNode->ptrFlags[i] & AstTypeExpression::PTR_REF)
-                isRef = true;
 
             auto ptrFlags = (firstType->flags & TYPEINFO_GENERIC);
             if (typeNode->typeFlags & TYPEFLAG_IS_SELF)
@@ -370,7 +367,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
             if (ptrFlags & TYPEINFO_GENERIC)
                 typeNode->flags |= AST_IS_GENERIC;
 
-            auto ptrPointer1 = g_TypeMgr->makePointerTo(firstType, isConst, isArithmetic, isRef, ptrFlags);
+            auto ptrPointer1 = g_TypeMgr->makePointerTo(firstType, isConst, isArithmetic, ptrFlags);
 
             if (ptrPointer)
             {
@@ -491,6 +488,14 @@ bool SemanticJob::resolveType(SemanticContext* context)
         ptrSlice->flags |= (ptrSlice->pointedType->flags & TYPEINFO_GENERIC);
         typeNode->typeInfo = ptrSlice;
         ptrSlice->computeName();
+    }
+
+    // In fact this is a reference
+    if (typeNode->typeFlags & TYPEFLAG_IS_REF)
+    {
+        auto typeRef       = g_TypeMgr->makePointerTo(typeNode->typeInfo, typeNode->typeFlags & TYPEFLAG_IS_CONST, false, TYPEINFO_POINTER_REF);
+        typeNode->typeInfo = typeRef;
+        typeRef->computeName();
     }
 
     typeNode->allocateComputedValue();

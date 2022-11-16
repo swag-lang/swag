@@ -126,7 +126,7 @@ struct TypeManager
     static void      convertStructParamToRef(AstNode* node, TypeInfo* typeInfo);
 
     void             registerTypeType();
-    TypeInfoPointer* makePointerTo(TypeInfo* toType, bool isConst, bool isAritmetic, bool isRef, uint64_t ptrFlags);
+    TypeInfoPointer* makePointerTo(TypeInfo* toType, bool isConst, bool isAritmetic, uint64_t ptrFlags);
     TypeInfoParam*   makeParam();
 
     TypeInfoNative* typeInfoS8        = nullptr;

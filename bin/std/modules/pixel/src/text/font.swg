@@ -163,37 +163,37 @@ public impl Font
         }
 
         // Setup GlyphDesc
-        var ref: *GlyphDesc
+        var refr: *GlyphDesc
         if c < 128
-            ref = &asciiRef[cast(u32) c]
+            refr = &asciiRef[cast(u32) c]
         else
         {
-            ref = Memory.new'GlyphDesc()
-            unicodeRef.add(c, ref)
+            refr = Memory.new'GlyphDesc()
+            unicodeRef.add(c, refr)
         }
 
-        ref.width  = bmp.width
-        ref.height = bmp.rows
+        refr.width  = bmp.width
+        refr.height = bmp.rows
 
         glyph := typeFace.face.glyph
-        ref.advanceX = glyph.advance.x / 64.0
-        ref.advanceY = glyph.advance.y / 64.0
-        ref.shiftX   = glyph.bitmap_left
-        ref.shiftY   = glyph.bitmap_top
+        refr.advanceX = glyph.advance.x / 64.0
+        refr.advanceY = glyph.advance.y / 64.0
+        refr.shiftX   = glyph.bitmap_left
+        refr.shiftY   = glyph.bitmap_top
 
         widthf := cast(f32) atlas.width
         heightf := cast(f32) atlas.height
-        ref.uv.x = x / widthf
-        ref.uv.y = y / heightf
-        ref.uv.width = ref.width / widthf
-        ref.uv.height = ref.height / heightf
-        ref.width /= atlas.bpp
+        refr.uv.x = x / widthf
+        refr.uv.y = y / heightf
+        refr.uv.width = refr.width / widthf
+        refr.uv.height = refr.height / heightf
+        refr.width /= atlas.bpp
 
-        ref.atlasIndex = cast(u32) (atlases.count - 1)
+        refr.atlasIndex = cast(u32) (atlases.count - 1)
 
         dirty = true
         atlas.dirty = true
 
-        return ref
+        return refr
     }
 }

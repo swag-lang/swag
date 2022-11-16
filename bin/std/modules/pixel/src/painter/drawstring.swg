@@ -113,12 +113,12 @@ impl Painter
         result.y = y
         bottom := top
 
-        visit ref: text
+        visit refr: text
         {
-            result.y = Math.min(result.y, y - ref.shiftY)
-            bottom = Math.max(bottom, y - ref.shiftY + ref.height)
-            result.baseLine = Math.max(result.baseLine, ref.shiftY)
-            result.width += ref.advanceX
+            result.y = Math.min(result.y, y - refr.shiftY)
+            bottom = Math.max(bottom, y - refr.shiftY + refr.height)
+            result.baseLine = Math.max(result.baseLine, refr.shiftY)
+            result.width += refr.advanceX
         }
 
         result.height = bottom - result.y
@@ -187,27 +187,27 @@ impl Painter
         }
 
         updateFont(font)
-        visit ref: arr
+        visit refr: arr
         {
-            setTextureFont(font, ref.atlasIndex)
+            setTextureFont(font, refr.atlasIndex)
 
-            x1  := x + ref.shiftX
-            y1  := y - ref.shiftY
+            x1  := x + refr.shiftX
+            y1  := y - refr.shiftY
 
             p1  := Vector2{x1, y1}
-            p2  := Vector2{x1 + ref.width, y1}
-            p3  := Vector2{x1, y1 + ref.height}
-            p4  := Vector2{x1 + ref.width, y1 + ref.height}
+            p2  := Vector2{x1 + refr.width, y1}
+            p3  := Vector2{x1, y1 + refr.height}
+            p4  := Vector2{x1 + refr.width, y1 + refr.height}
 
-            uv1 := Vector2{ref.uv.x, ref.uv.y}
-            uv2 := Vector2{ref.uv.x + ref.uv.width, ref.uv.y}
-            uv3 := Vector2{ref.uv.x, ref.uv.y + ref.uv.height}
-            uv4 := Vector2{ref.uv.x + ref.uv.width, ref.uv.y + ref.uv.height}
+            uv1 := Vector2{refr.uv.x, refr.uv.y}
+            uv2 := Vector2{refr.uv.x + refr.uv.width, refr.uv.y}
+            uv3 := Vector2{refr.uv.x, refr.uv.y + refr.uv.height}
+            uv4 := Vector2{refr.uv.x + refr.uv.width, refr.uv.y + refr.uv.height}
 
             discard pushTriangle(p1, p2, p3, uv1, uv2, uv3, brush.color)
             discard pushTriangle(p3, p2, p4, uv3, uv2, uv4, brush.color)
 
-            x += ref.advanceX
+            x += refr.advanceX
         }
 
         resetTextureFont()

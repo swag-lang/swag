@@ -634,13 +634,13 @@ const uint16_t TYPEFLAG_IS_SELF        = 0x0020;
 const uint16_t TYPEFLAG_RETVAL         = 0x0040;
 const uint16_t TYPEFLAG_USING          = 0x0080;
 const uint16_t TYPEFLAG_IS_CONST_SLICE = 0x0100;
+const uint16_t TYPEFLAG_IS_REF         = 0x0200;
 
 struct AstTypeExpression : public AstNode
 {
     static const int     MAX_PTR_COUNT = 4;
     static const uint8_t PTR_CONST     = 0x01;
     static const uint8_t PTR_ARITMETIC = 0x02;
-    static const uint8_t PTR_REF       = 0x04;
 
     AstNode* clone(CloneContext& context);
 

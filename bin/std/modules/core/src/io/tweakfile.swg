@@ -105,8 +105,8 @@ impl TweakFile
                     throw Format.toString("line %: reference '%' not found in folder '%'", idx + 1, one, currentFolder.type.name)
                 if field.pointedType != otherField.pointedType
                     throw Format.toString("line %: reference '%' type mismatch", idx + 1, one)
-                var ref: Ref{currentFolder, otherField, field}
-                refs.add(ref)
+                var refr: Ref{currentFolder, otherField, field}
+                refs.add(refr)
                 continue
             }
 
@@ -127,7 +127,7 @@ impl TweakFile
         while refs.count
         {
             toDo := 0'uint
-            ref := refs[toDo]
+            refr := refs[toDo]
 
             loop
             {
@@ -137,12 +137,12 @@ impl TweakFile
                     if j == toDo
                         continue
                     ref1 := refs[j]
-                    if ref.src.name == ref1.dst.name
+                    if refr.src.name == ref1.dst.name
                     {
                         if j == 0
                             throw "tweakfile cycle between '$' references !"
                         toDo = j
-                        ref = refs[toDo]
+                        refr = refs[toDo]
                         restart = true
                         break
                     }
@@ -152,9 +152,9 @@ impl TweakFile
                     break
             }
 
-            ptrDst := cast(^u8) ref.folder.data + ref.dst.offset
-            ptrSrc := cast(^u8) ref.folder.data + ref.src.offset
-            Reflection.copy(ptrDst, ptrSrc, ref.dst.pointedType)
+            ptrDst := cast(^u8) refr.folder.data + refr.dst.offset
+            ptrSrc := cast(^u8) refr.folder.data + refr.src.offset
+            Reflection.copy(ptrDst, ptrSrc, refr.dst.pointedType)
 
             refs.removeAt(toDo)
         }

@@ -305,19 +305,19 @@ func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
     type1 := __concreteAlias(typeA)
     type2 := __concreteAlias(typeB)
 
-    // Fine to convert from concrete to ref, or the other way
+    // Fine to convert from concrete to reference, or the other way
     if cmpFlags & .CastAny
     {
         if type1.kind == .Reference and type2.kind != .Reference
         {
-            ref := cast(const *TypeInfoReference) type1
-            return @typecmp(ref.pointedType, type2, cmpFlags)
+            refr := cast(const *TypeInfoReference) type1
+            return @typecmp(refr.pointedType, type2, cmpFlags)
         }
 
         if type1.kind != .Reference and type2.kind == .Reference
         {
-            ref := cast(const *TypeInfoReference) type2
-            return @typecmp(type1, ref.pointedType, cmpFlags)
+            refr := cast(const *TypeInfoReference) type2
+            return @typecmp(type1, refr.pointedType, cmpFlags)
         }
     }
 
