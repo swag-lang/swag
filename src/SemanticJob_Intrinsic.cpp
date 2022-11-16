@@ -14,14 +14,57 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
     auto node = context->node;
     switch (node->token.id)
     {
+    case TokenId::IntrinsicSafety:
+    {
+        auto front = node->childs.front();
+        SWAG_CHECK(evaluateConstExpression(context, front));
+        if (context->result == ContextResult::Pending)
+            return true;
+        SWAG_CHECK(checkIsConstExpr(context, front->flags & AST_VALUE_COMPUTED, front, Fmt(Err(Err0248), node->token.ctext())));
+        SWAG_VERIFY(front->typeInfo->isNative(NativeTypeKind::String), context->report(front, Fmt(Err(Err0249), node->token.ctext(), front->typeInfo->getDisplayNameC())));
+        node->typeInfo = g_TypeMgr->typeInfoBool;
+        node->setFlagsValueIsComputed();
+
+        const auto& w      = front->computedValue->text;
+        auto        module = node->sourceFile->module;
+
+        if (w == g_LangSpec->name_boundcheck)
+        {
+            node->computedValue->reg.b = module->mustEmitSafety(node, ATTRIBUTE_SAFETY_BOUNDCHECK_ON, ATTRIBUTE_SAFETY_BOUNDCHECK_OFF);
+        }
+        else if (w == g_LangSpec->name_overflow)
+        {
+            node->computedValue->reg.b = module->mustEmitSafety(node, ATTRIBUTE_SAFETY_OVERFLOW_ON, ATTRIBUTE_SAFETY_OVERFLOW_OFF);
+        }
+        else if (w == g_LangSpec->name_switch)
+        {
+            node->computedValue->reg.b = module->mustEmitSafety(node, ATTRIBUTE_SAFETY_SWITCH_ON, ATTRIBUTE_SAFETY_SWITCH_OFF);
+        }
+        else if (w == g_LangSpec->name_math)
+        {
+            node->computedValue->reg.b = module->mustEmitSafety(node, ATTRIBUTE_SAFETY_MATH_ON, ATTRIBUTE_SAFETY_MATH_OFF);
+        }
+        else if (w == g_LangSpec->name_cast)
+        {
+            node->computedValue->reg.b = module->mustEmitSafety(node, ATTRIBUTE_SAFETY_CAST_ON, ATTRIBUTE_SAFETY_CAST_OFF);
+        }
+        else
+        {
+            Diagnostic note{Hlp(Hlp0011), DiagnosticLevel::Help};
+            return context->report({front, front->token, Fmt(Err(Err0593), w.c_str())}, &note);
+        }
+
+        return true;
+    }
+
     case TokenId::IntrinsicHasTag:
     {
         auto front = node->childs.front();
         SWAG_CHECK(evaluateConstExpression(context, front));
         if (context->result == ContextResult::Pending)
             return true;
-        SWAG_CHECK(checkIsConstExpr(context, front->flags & AST_VALUE_COMPUTED, front, Err(Err0248)));
-        SWAG_VERIFY(front->typeInfo->isNative(NativeTypeKind::String), context->report(front, Fmt(Err(Err0249), front->typeInfo->getDisplayNameC())));
+        SWAG_CHECK(checkIsConstExpr(context, front->flags & AST_VALUE_COMPUTED, front, Fmt(Err(Err0248), node->token.ctext())));
+        SWAG_VERIFY(front->typeInfo->isNative(NativeTypeKind::String), context->report(front, Fmt(Err(Err0249), node->token.ctext(), front->typeInfo->getDisplayNameC())));
         auto tag       = g_Workspace->hasTag(front->computedValue->text);
         node->typeInfo = g_TypeMgr->typeInfoBool;
         node->setFlagsValueIsComputed();
@@ -41,9 +84,9 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
         if (context->result == ContextResult::Pending)
             return true;
 
-        SWAG_CHECK(checkIsConstExpr(context, nameNode->flags & AST_VALUE_COMPUTED, nameNode, Err(Err0250)));
+        SWAG_CHECK(checkIsConstExpr(context, nameNode->flags & AST_VALUE_COMPUTED, nameNode, Fmt(Err(Err0248), node->token.ctext())));
         SWAG_VERIFY(!(nameNode->flags & AST_VALUE_IS_TYPEINFO), context->report(nameNode, Err(Err0245)));
-        SWAG_VERIFY(nameNode->typeInfo->isNative(NativeTypeKind::String), context->report(nameNode, Fmt(Err(Err0251), nameNode->typeInfo->getDisplayNameC())));
+        SWAG_VERIFY(nameNode->typeInfo->isNative(NativeTypeKind::String), context->report(nameNode, Fmt(Err(Err0249), node->token.ctext(), nameNode->typeInfo->getDisplayNameC())));
         SWAG_VERIFY(!(defaultVal->flags & AST_VALUE_IS_TYPEINFO), context->report(defaultVal, Err(Err0283)));
         SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, defaultVal->typeInfo, nullptr, defaultVal, CASTFLAG_DEFAULT));
 

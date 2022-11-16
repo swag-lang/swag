@@ -137,6 +137,7 @@
 @postcopy
 @postmove
 @print
+@safety
 @setcontext
 @sizeof
 @spread

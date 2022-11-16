@@ -224,6 +224,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
 
     case TokenId::IntrinsicHasTag:
     case TokenId::IntrinsicGetTag:
+    case TokenId::IntrinsicSafety:
         SWAG_CHECK(doIntrinsicTag(parent, result));
         break;
 

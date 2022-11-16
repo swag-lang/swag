@@ -181,7 +181,7 @@ void SemanticJob::inheritAttributesFromOwnerFunc(AstNode* child)
     child->attributeFlags |= attributeFlags & ATTRIBUTE_PRINT_BC;
 
     INHERIT(child, ATTRIBUTE_SAFETY_BOUNDCHECK_ON | ATTRIBUTE_SAFETY_BOUNDCHECK_OFF);
-    INHERIT(child, ATTRIBUTE_SAFETY_CASTANY_ON | ATTRIBUTE_SAFETY_CASTANY_OFF);
+    INHERIT(child, ATTRIBUTE_SAFETY_CAST_ON | ATTRIBUTE_SAFETY_CAST_OFF);
     INHERIT(child, ATTRIBUTE_SAFETY_MATH_ON | ATTRIBUTE_SAFETY_MATH_OFF);
     INHERIT(child, ATTRIBUTE_SAFETY_OVERFLOW_ON | ATTRIBUTE_SAFETY_OVERFLOW_OFF);
 
@@ -222,7 +222,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
 
         // Inherit with condition
         INHERIT(forNode, ATTRIBUTE_SAFETY_BOUNDCHECK_ON | ATTRIBUTE_SAFETY_BOUNDCHECK_OFF);
-        INHERIT(forNode, ATTRIBUTE_SAFETY_CASTANY_ON | ATTRIBUTE_SAFETY_CASTANY_OFF);
+        INHERIT(forNode, ATTRIBUTE_SAFETY_CAST_ON | ATTRIBUTE_SAFETY_CAST_OFF);
         INHERIT(forNode, ATTRIBUTE_SAFETY_MATH_ON | ATTRIBUTE_SAFETY_MATH_OFF);
         INHERIT(forNode, ATTRIBUTE_SAFETY_OVERFLOW_ON | ATTRIBUTE_SAFETY_OVERFLOW_OFF);
         INHERIT(forNode, ATTRIBUTE_SAFETY_SWITCH_ON | ATTRIBUTE_SAFETY_SWITCH_OFF);
@@ -390,7 +390,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                     flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_BOUNDCHECK_ON : ATTRIBUTE_SAFETY_BOUNDCHECK_OFF;
                     flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_OVERFLOW_ON : ATTRIBUTE_SAFETY_OVERFLOW_OFF;
                     flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_MATH_ON : ATTRIBUTE_SAFETY_MATH_OFF;
-                    flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_CASTANY_ON : ATTRIBUTE_SAFETY_CASTANY_OFF;
+                    flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_CAST_ON : ATTRIBUTE_SAFETY_CAST_OFF;
                     flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_SWITCH_ON : ATTRIBUTE_SAFETY_SWITCH_OFF;
                 }
 
@@ -417,10 +417,10 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                         flags &= ~(ATTRIBUTE_SAFETY_MATH_ON | ATTRIBUTE_SAFETY_MATH_OFF);
                         flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_MATH_ON : ATTRIBUTE_SAFETY_MATH_OFF;
                     }
-                    else if (w == g_LangSpec->name_castany)
+                    else if (w == g_LangSpec->name_cast)
                     {
-                        flags &= ~(ATTRIBUTE_SAFETY_CASTANY_ON | ATTRIBUTE_SAFETY_CASTANY_OFF);
-                        flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_CASTANY_ON : ATTRIBUTE_SAFETY_CASTANY_OFF;
+                        flags &= ~(ATTRIBUTE_SAFETY_CAST_ON | ATTRIBUTE_SAFETY_CAST_OFF);
+                        flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_CAST_ON : ATTRIBUTE_SAFETY_CAST_OFF;
                     }
                     else
                     {

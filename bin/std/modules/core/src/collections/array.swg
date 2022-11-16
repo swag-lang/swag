@@ -63,7 +63,9 @@ impl Array
     #[Inline]
     mtd opSlice(lower, upper: uint)->[..] T
     {
-        Debug.assert(lower <= upper and lower < count and upper < count)
+        Debug.safetyBoundCheck(lower <= upper, "lower bound greater than upper bound")
+        Debug.safetyBoundCheck(lower < count, "lower bound out of range")
+        Debug.safetyBoundCheck(upper < count, "lower bound out of range")
         return @mkslice(buffer + lower, (upper + 1) - lower)
     }
 
@@ -71,7 +73,7 @@ impl Array
     mtd opIndex(index: uint)->*T
         #selectif Reflection.isStruct(T)
     {
-        Debug.assert(index < count, "index out of range")
+        Debug.safetyBoundCheck(index < count, "index out of range")
         return buffer + index
     }
 
@@ -79,7 +81,7 @@ impl Array
     mtd opIndex(index: uint)->T
         #selectif !Reflection.isStruct(T)
     {
-        Debug.assert(index < count, "index out of range")
+        Debug.safetyBoundCheck(index < count, "index out of range")
         return buffer[index]
     }
 
@@ -87,14 +89,14 @@ impl Array
     mtd opIndexAffect(index: uint, value: T)
         #selectif Reflection.canCopy(T)
     {
-        Debug.assert(index < count, "index out of range")
+        Debug.safetyBoundCheck(index < count, "index out of range")
         buffer[index] = value
     }
 
     #[Inline]
     mtd(op: string) opIndexAssign(index: uint, value: T)
     {
-        Debug.assert(index < count, "index out of range")
+        Debug.safetyBoundCheck(index < count, "index out of range")
         #ast "buffer[index] " ++ op ++ " value"
     }
 

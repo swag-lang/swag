@@ -9,7 +9,7 @@ SWAG_ERROR(Hlp0007, "methods (`mtd` and `mtdc`) are reserved for structs and int
 SWAG_ERROR(Hlp0008, "a function name starting with `@` is reserved for intrinsics")
 SWAG_ERROR(Hlp0009, "a struct member name starting with `item` is reserved by the language")
 SWAG_ERROR(Hlp0010, "`@alias` should only be used inside a `Swag.Macro` or a `Swag.Mixin` function")
-SWAG_ERROR(Hlp0011, "`Swag.Safety` valid values are `boundcheck`, `overflow`, `math` and `castany`")
+SWAG_ERROR(Hlp0011, "valid safety values are `boundcheck`, `overflow`, `math`, `switch` and `cast`")
 SWAG_ERROR(Hlp0012, "`Swag.Optim` valid values are `bytecode` and `backend`")
 SWAG_ERROR(Hlp0013, "`Swag.ExportType` valid values are `methods` and `nozero`")
 SWAG_ERROR(Hlp0014, "a function name starting with `op` and followed by a letter in upper case is reserved for struct special functions")
@@ -26,7 +26,3 @@ SWAG_ERROR(Hlp0024, "to declare a multi dimensional array, syntax is [N1, N2, ..
 SWAG_ERROR(Hlp0025, "you cannot declare a slice or a static array of another slice or array")
 SWAG_ERROR(Hlp0026, "a public struct should export all its special functions")
 SWAG_ERROR(Hlp0027, "a private struct should not export its special functions")
-
-
-
-

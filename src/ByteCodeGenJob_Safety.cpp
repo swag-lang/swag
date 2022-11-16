@@ -520,7 +520,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint
 
 void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exprNode, bool isExplicit)
 {
-    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_CASTANY_ON, ATTRIBUTE_SAFETY_CASTANY_OFF))
+    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_CAST_ON, ATTRIBUTE_SAFETY_CAST_OFF))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);

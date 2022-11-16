@@ -140,7 +140,7 @@ void LanguageSpec::setupNames()
     name_overflow   = "overflow";
     name_switch     = "switch";
     name_math       = "math";
-    name_castany    = "castany";
+    name_cast       = "cast";
     name_bytecode   = "bytecode";
     name_usage      = "usage";
     name_what       = "what";
@@ -318,6 +318,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("@defined", TokenId::IntrinsicDefined);
     keywords.add("@hastag", TokenId::IntrinsicHasTag);
     keywords.add("@gettag", TokenId::IntrinsicGetTag);
+    keywords.add("@safety", TokenId::IntrinsicSafety);
     keywords.add("@spread", TokenId::IntrinsicSpread);
     keywords.add("@init", TokenId::IntrinsicInit);
     keywords.add("@drop", TokenId::IntrinsicDrop);
