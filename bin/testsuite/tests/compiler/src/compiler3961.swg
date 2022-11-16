@@ -1,0 +1,15 @@
+#global testerror
+var G: s32 = 0
+
+func toto()->const ref s32
+{
+    return &G
+}
+
+//#[Swag.PrintBc]
+#test
+{
+    @assert(G == 0)
+    toto() = 4
+    @assert(G == 4)
+}
