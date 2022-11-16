@@ -1,0 +1,28 @@
+var G: VV
+var PC: bool
+
+struct VV
+{
+    x, y, z: f32
+}
+
+impl VV
+{
+    mtd opPostCopy()
+    {
+        PC = true
+    }
+}
+
+func toto()->const ref VV
+{
+    return &G
+}
+
+//#[Swag.PrintBc]
+#test
+{
+    var x: const ref VV = toto()
+    @assert(@typeof(x) == const ref VV)
+    @assert(PC == false)
+}

@@ -979,6 +979,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         // Convert from initialization list to array
         if (node->typeInfo->kind == TypeInfoKind::TypeListArray)
             SWAG_CHECK(convertTypeListToArray(context, node, isCompilerConstant, symbolFlags));
+
+        // Unref
+        if (node->typeInfo->isPointerRef())
+        {
+            auto typePointer = CastTypeInfo<TypeInfoPointer>(node->typeInfo, TypeInfoKind::Pointer);
+            node->typeInfo   = typePointer->pointedType;
+            node->assignment->childs.back()->semFlags |= AST_SEM_FROM_REF;
+        }
     }
 
     // Only type is specified, this is it...
