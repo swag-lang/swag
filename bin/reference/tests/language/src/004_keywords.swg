@@ -168,6 +168,7 @@ catch
 closure
 const
 discard
+dref
 enum
 false
 func
@@ -177,6 +178,7 @@ namespace
 null
 private
 public
+ref
 retval
 struct
 throw
