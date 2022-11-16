@@ -1331,7 +1331,8 @@ bool ByteCodeGenJob::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNod
 
 bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, AstFuncDecl* funcNode, AstVarDecl* varNode, RegisterList& varNodeRegisters, bool foreign, bool lambda, bool freeRegistersParams)
 {
-    AstNode*          node         = context->node;
+    AstNode* node = context->node;
+
     TypeInfoFuncAttr* typeInfoFunc = nullptr;
     if (funcNode)
     {

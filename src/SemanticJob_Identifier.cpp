@@ -1199,12 +1199,15 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             }
         }
 
-        // This is for a lambda
         if (identifier->forceTakeAddress())
         {
-            // The makePointer will deal with the real make lambda thing
-            identifier->flags |= AST_NO_BYTECODE;
-            break;
+            // This is for a lambda
+            if (identifier->parent->parent->kind == AstNodeKind::MakePointer || identifier->parent->parent->kind == AstNodeKind::MakePointerLambda)
+            {
+                // The makePointer will deal with the real make lambda thing
+                identifier->flags |= AST_NO_BYTECODE;
+                break;
+            }
         }
 
         // The function call is constexpr if the function is, and all parameters are

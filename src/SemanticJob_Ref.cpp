@@ -298,6 +298,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
 bool SemanticJob::resolveArrayPointerIndex(SemanticContext* context)
 {
     auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
+
     if (node->forceTakeAddress())
         SWAG_CHECK(resolveArrayPointerRef(context));
     else
@@ -356,7 +357,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, arrayNode->access));
     arrayNode->flags |= AST_R_VALUE;
 
-    auto arrayType = TypeManager::concretePtrRefType(arrayNode->array->typeInfo, CONCRETE_ALIAS);
+    auto arrayType = TypeManager::concretePtrRefType(arrayNode->array->typeInfo, CONCRETE_ALIAS | CONCRETE_FUNC);
 
     // When we are building a pointer, this is fine to be const, because in fact we do no generate an address to modify the content
     // (or it will be done later on a pointer, and it will be const too)

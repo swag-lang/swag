@@ -65,7 +65,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         return true;
 
     SWAG_VERIFY(left->resolvedSymbolName && left->resolvedSymbolOverload, context->report(left, Err(Err0566)));
-    SWAG_VERIFY(left->resolvedSymbolName->kind == SymbolKind::Variable, context->report(left, Err(Err0567)));
+    //SWAG_VERIFY(left->resolvedSymbolName->kind == SymbolKind::Variable, context->report(left, Err(Err0567)));
 
     // Check that left type is mutable
     // If not, try to find the culprit type
