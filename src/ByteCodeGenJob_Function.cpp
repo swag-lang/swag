@@ -1827,7 +1827,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 {
                     emitInstruction(context, ByteCodeOp::CopyRTtoRC, node->resultRegisterRC[0]);
 
-                    if (node->semFlags & AST_SEM_FROM_REF)
+                    if (node->semFlags & AST_SEM_FROM_REF && !node->forceTakeAddress())
                     {
                         auto ptrPointer = CastTypeInfo<TypeInfoPointer>(typeInfoFunc->returnType, TypeInfoKind::Pointer);
                         SWAG_ASSERT(ptrPointer->flags & TYPEINFO_POINTER_REF);
