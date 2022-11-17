@@ -1,0 +1,16 @@
+var G: s32
+
+func toto(v: ref s32)
+{
+    ptr := &v
+    @assert(@typeof(ptr) == *s32)
+    @assert(ptr == &G)
+    v = 55
+}
+
+//#[Swag.PrintBc, Swag.Optim("", false)]
+#test
+{
+    toto(&G)
+    @assert(G == 55)
+}

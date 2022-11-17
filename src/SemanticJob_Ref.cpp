@@ -181,7 +181,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
         ptrType->setConst();
 
     // Type is constant if we take address of a readonly variable
-    if (child->resolvedSymbolOverload)
+    if (child->resolvedSymbolOverload && !child->typeInfo->isPointerRef())
     {
         auto typeResolved = TypeManager::concreteType(child->resolvedSymbolOverload->typeInfo, CONCRETE_ALIAS);
 
