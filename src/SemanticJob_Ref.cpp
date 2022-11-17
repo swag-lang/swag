@@ -126,7 +126,8 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     node->byteCodeFct        = ByteCodeGenJob::emitMakePointer;
 
     // A new pointer
-    TypeInfoPointer* ptrType = allocType<TypeInfoPointer>();
+    bool             forceConst = false;
+    TypeInfoPointer* ptrType    = allocType<TypeInfoPointer>();
 
     // If this is a reference (struct as parameter), then pointer is just a const pointer
     // to the original type, and we do not have to generate specific bytecode.
@@ -141,7 +142,8 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     // Transform a reference pointer to a pointer to the pointed value
     else if (typeInfo->isPointerRef())
     {
-        typeInfo = TypeManager::concretePtrRef(typeInfo);
+        forceConst = typeInfo->isConst();
+        typeInfo   = TypeManager::concretePtrRef(typeInfo);
         child->semFlags |= AST_SEM_FORCE_NO_TAKE_ADDRESS;
         child->childs.back()->semFlags |= AST_SEM_FORCE_NO_TAKE_ADDRESS;
         node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
@@ -175,7 +177,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     ptrType->computeName();
 
     // Taking the address of a const is const
-    if (child->flags & AST_IS_CONST)
+    if (child->flags & AST_IS_CONST || forceConst)
         ptrType->setConst();
 
     // Type is constant if we take address of a readonly variable
