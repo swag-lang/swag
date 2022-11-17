@@ -656,7 +656,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
                 return true;
 
             if (params[i]->typeInfo->isPointerRef() && !toType->isPointerRef())
-                params[i]->semFlags |= AST_SEM_FROM_REF;
+                setUnRef(params[i]);
 
             auto makePtrL = params[i];
 

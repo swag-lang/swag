@@ -909,7 +909,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 return true;
 
             if (!leftConcreteType->isPointerRef() && TypeManager::concreteType(node->assignment->typeInfo)->isPointerRef())
-                node->assignment->childs.back()->semFlags |= AST_SEM_FROM_REF;
+                setUnRef(node->assignment);
         }
         else
         {
@@ -983,9 +983,11 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         // Unref
         if (node->typeInfo->isPointerRef())
         {
-            auto typePointer = CastTypeInfo<TypeInfoPointer>(node->typeInfo, TypeInfoKind::Pointer);
-            node->typeInfo   = typePointer->pointedType;
-            node->assignment->childs.back()->semFlags |= AST_SEM_FROM_REF;
+            if (setUnRef(node->assignment))
+            {
+                auto typePointer = CastTypeInfo<TypeInfoPointer>(node->typeInfo, TypeInfoKind::Pointer);
+                node->typeInfo   = typePointer->pointedType;
+            }
         }
     }
 

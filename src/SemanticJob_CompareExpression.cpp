@@ -354,9 +354,9 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     TypeManager::promote3264(left, right);
 
     if (left->typeInfo->isPointerRef())
-        left->childs.back()->semFlags |= AST_SEM_FROM_REF;
+        setUnRef(left);
     if (right->typeInfo->isPointerRef())
-        right->childs.back()->semFlags |= AST_SEM_FROM_REF;
+        setUnRef(right);
     left->typeInfo  = TypeManager::concretePtrRefType(left->typeInfo, CONCRETE_FUNC | CONCRETE_ENUM);
     right->typeInfo = TypeManager::concretePtrRefType(right->typeInfo, CONCRETE_FUNC | CONCRETE_ENUM);
 

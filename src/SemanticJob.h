@@ -356,6 +356,7 @@ struct SemanticJob : public Job
     static bool           deduceLambdaTypeAffect(SemanticContext* context, AstVarDecl* node, bool& lambdaExpr, bool& genericType);
     static bool           preResolveIdentifierRef(SemanticContext* context);
     static AstFuncDecl*   getFunctionForReturn(AstNode* node);
+    static bool           setUnRef(AstNode* node);
     static AstIdentifier* createTmpId(SemanticContext* context, AstNode* node, const Utf8& name);
 
     static bool resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);
@@ -491,6 +492,7 @@ struct SemanticJob : public Job
     static bool resolveScopedStmtBefore(SemanticContext* context);
     static bool resolveArrayPointerDeRef(SemanticContext* context);
     static bool resolveArrayPointerSlicing(SemanticContext* context);
+    static bool resolveRef(SemanticContext* context);
     static bool resolveArrayPointerIndex(SemanticContext* context);
     static bool resolveArrayPointerRef(SemanticContext* context);
     static bool resolveTypeList(SemanticContext* context);

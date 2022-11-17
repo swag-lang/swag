@@ -65,7 +65,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         return true;
 
     SWAG_VERIFY(left->resolvedSymbolName && left->resolvedSymbolOverload, context->report(left, Err(Err0566)));
-    //SWAG_VERIFY(left->resolvedSymbolName->kind == SymbolKind::Variable, context->report(left, Err(Err0567)));
+    // SWAG_VERIFY(left->resolvedSymbolName->kind == SymbolKind::Variable, context->report(left, Err(Err0567)));
 
     // Check that left type is mutable
     // If not, try to find the culprit type
@@ -128,9 +128,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
     // Dereference
     if (left->typeInfo->isPointerRef())
-        left->childs.back()->semFlags |= AST_SEM_FROM_REF;
+        setUnRef(left);
     if (right->typeInfo->isPointerRef())
-        right->childs.back()->semFlags |= AST_SEM_FROM_REF;
+        setUnRef(right);
 
     // Special case for enum : nothing is possible, except for flags
     bool forEnumFlags  = false;

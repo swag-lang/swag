@@ -10,6 +10,19 @@
 #include "Timer.h"
 #include "Allocator.h"
 
+bool SemanticJob::setUnRef(AstNode* node)
+{
+    if (node->kind == AstNodeKind::Ref)
+        return false;
+
+    if (node->kind == AstNodeKind::IdentifierRef)
+        node->childs.back()->semFlags |= AST_SEM_FROM_REF;
+    else
+        node->semFlags |= AST_SEM_FROM_REF;
+
+    return true;
+}
+
 AstIdentifier* SemanticJob::createTmpId(SemanticContext* context, AstNode* node, const Utf8& name)
 {
     auto job = context->job;

@@ -13,7 +13,7 @@ impl Arr
 }
 
 var G = 0
-func ref()->CB
+func ref1()->CB
 {
     v := 2
     return @|v|()
@@ -27,6 +27,6 @@ alias CB = closure()
 #test
 {
     var arr: Arr
-    arr.add(ref())
+    arr.add(ref1())
     @assert(G == 2)
 }

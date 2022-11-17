@@ -295,6 +295,16 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveRef(SemanticContext* context)
+{
+    auto node  = context->node;
+    auto front = node->childs.front();
+    node->inheritAndFlag1(AST_CONST_EXPR);
+    node->typeInfo    = front->typeInfo;
+    node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
+    return true;
+}
+
 bool SemanticJob::resolveArrayPointerIndex(SemanticContext* context)
 {
     auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);

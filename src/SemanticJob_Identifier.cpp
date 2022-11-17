@@ -396,7 +396,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
             if (context->result != ContextResult::Done)
                 return true;
             if (nodeCall->typeInfo->isPointerRef() && !toType->isPointerRef())
-                nodeCall->semFlags |= AST_SEM_FROM_REF;
+                setUnRef(nodeCall);
         }
         else if (oneMatch.solvedParameters.size() && oneMatch.solvedParameters.back() && oneMatch.solvedParameters.back()->typeInfo->kind == TypeInfoKind::TypedVariadic)
         {
