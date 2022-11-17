@@ -134,22 +134,20 @@ void ModuleBuildJob::publishFilesToTarget()
 
 bool ModuleBuildJob::loadDependency(ModuleDependency* dep)
 {
-    auto depModule = dep->module;
     if (dep->importDone)
         return true;
 
     // Some dependencies can have been added by this stage
+    auto depModule = dep->module;
     if (!depModule)
     {
         depModule = g_Workspace->getModuleByName(dep->name);
         SWAG_ASSERT(depModule);
-        depModule->allocateBackend();
         dep->module = depModule;
     }
 
     dep->importDone = true;
-
-    SWAG_ASSERT(depModule->backend);
+    depModule->allocateBackend();
     return loadDependency(depModule);
 }
 

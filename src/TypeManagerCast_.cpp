@@ -2603,9 +2603,6 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         // Assign ref
         if (toType->flags & TYPEINFO_POINTER_REF)
         {
-            if (fromType->kind != TypeInfoKind::Pointer)
-                return castError(context, toType, fromType, fromNode, castFlags);
-
             // Convert from pointer to ref : only if authorized
             if (!(fromType->flags & TYPEINFO_POINTER_REF) && !(castFlags & CASTFLAG_EXPLICIT) && !(castFlags & CASTFLAG_PTR_REF))
                 return castError(context, toType, fromType, fromNode, castFlags);
@@ -3430,6 +3427,15 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
                 convert = true;
             }
         }
+        if (toType->isPointerRef() && toType->isConst())
+        {
+            auto ptrRef = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
+            if (ptrRef->pointedType->kind == TypeInfoKind::Struct)
+            {
+                toType = ptrRef->pointedType;
+                convert = true;
+            }
+        }
 
         if (fromNode->parent->kind == AstNodeKind::FuncDeclParam)
             convert = false;
@@ -3511,6 +3517,13 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         if (realToType->kind == TypeInfoKind::Reference && realToType->isConst())
         {
             auto ptrRef = CastTypeInfo<TypeInfoReference>(realToType, TypeInfoKind::Reference);
+            if (ptrRef->pointedType->kind == TypeInfoKind::Struct)
+                return true;
+        }
+
+        if (realToType->isPointerRef() && realToType->isConst())
+        {
+            auto ptrRef = CastTypeInfo<TypeInfoPointer>(realToType, TypeInfoKind::Pointer);
             if (ptrRef->pointedType->kind == TypeInfoKind::Struct)
                 return true;
         }
