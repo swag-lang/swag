@@ -138,6 +138,15 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
         node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
     }
 
+    // Transform a reference pointer to a pointer to the pointed value
+    else if (typeInfo->isPointerRef())
+    {
+        typeInfo = TypeManager::concretePtrRef(typeInfo);
+        child->semFlags |= AST_SEM_FORCE_NO_TAKE_ADDRESS;
+        child->childs.back()->semFlags |= AST_SEM_FORCE_NO_TAKE_ADDRESS;
+        node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
+    }
+
     // If this is an array, then this is legit, the pointer will address the first
     // element : need to find it's type
     else if (typeInfo->kind == TypeInfoKind::Array)
