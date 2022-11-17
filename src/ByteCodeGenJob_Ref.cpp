@@ -212,7 +212,7 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
     }
 
     typeInfo = TypeManager::concreteReference(typeInfo);
-    typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
+    typeInfo = TypeManager::concretePtrRefType(typeInfo, CONCRETE_ALIAS);
 
     if (typeInfo->numRegisters() == 2)
     {
