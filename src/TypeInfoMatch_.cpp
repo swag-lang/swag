@@ -86,7 +86,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             castFlags |= CASTFLAG_UFCS;
         if (callParameter->semFlags & AST_SEM_LITERAL_SUFFIX)
             castFlags |= CASTFLAG_LITERAL_SUFFIX;
-        castFlags |= forceCastFlags | CASTFLAG_PARAMS;
+        castFlags |= forceCastFlags | CASTFLAG_PARAMS | CASTFLAG_PTR_REF;
 
         context.semContext->castFlagsResult   = 0;
         context.semContext->castErrorToType   = nullptr;

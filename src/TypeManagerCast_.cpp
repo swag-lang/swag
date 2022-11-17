@@ -2605,6 +2605,11 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         {
             if (fromType->kind != TypeInfoKind::Pointer)
                 return castError(context, toType, fromType, fromNode, castFlags);
+
+            // Convert from pointer to ref : only if authorized
+            if (!(fromType->flags & TYPEINFO_POINTER_REF) && !(castFlags & CASTFLAG_EXPLICIT) && !(castFlags & CASTFLAG_PTR_REF))
+                return castError(context, toType, fromType, fromNode, castFlags);
+
             auto fromTypePointer = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
             if (toTypePointer->pointedType->isSame(fromTypePointer->pointedType, ISSAME_CAST))
                 return true;
