@@ -152,7 +152,7 @@ struct SyntaxJob : public Job
     bool doIntrinsicProp(AstNode* parent, AstNode** result = nullptr);
     bool doGetErr(AstNode* parent, AstNode** result = nullptr);
     bool doIndex(AstNode* parent, AstNode** result = nullptr);
-    bool doRef(AstNode* parent, AstNode** result = nullptr);
+    bool doKeepRef(AstNode* parent, AstNode** result = nullptr);
     bool doDeRef(AstNode* parent, AstNode** result = nullptr);
     bool doOperatorPrecedence(AstNode** result);
     bool doModifiers(Token& forNode, uint32_t& mdfFlags);

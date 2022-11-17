@@ -12,7 +12,6 @@ void SyntaxJob::relaxIdentifier(Token& token)
     case TokenId::KwdAnd:
     case TokenId::KwdOr:
     case TokenId::KwdOrElse:
-    case TokenId::KwdRef:
         token.id = TokenId::Identifier;
         return;
     }

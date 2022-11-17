@@ -12,7 +12,7 @@
 
 bool SemanticJob::setUnRef(AstNode* node)
 {
-    if (node->kind == AstNodeKind::Ref)
+    if (node->kind == AstNodeKind::KeepRef)
         return false;
 
     if (node->kind == AstNodeKind::IdentifierRef)
