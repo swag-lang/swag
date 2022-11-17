@@ -295,7 +295,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveRef(SemanticContext* context)
+bool SemanticJob::resolveKeepRef(SemanticContext* context)
 {
     auto node  = context->node;
     auto front = node->childs.front();

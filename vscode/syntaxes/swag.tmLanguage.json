@@ -76,7 +76,7 @@
       "patterns": [
         {
           "name": "keyword",
-          "match": "\\b(using|with|cast|acast|bitcast|dref|kref|retval|try|catch|trycatch|assume|throw|discard)\\b"
+          "match": "\\b(using|with|cast|acast|bitcast|dref|kref|ref|retval|try|catch|trycatch|assume|throw|discard)\\b"
         }
       ]
     },
@@ -216,7 +216,7 @@
       "patterns": [
         {
           "name": "storage.type",
-          "match": "\\b(ref|code|Self|self|any|void|rune|f32|f64|s8|s16|s32|s64|u8|u16|u32|u64|bool|string|cstring|cvarargs|typeinfo|uint|int)\\b"
+          "match": "\\b(code|Self|self|any|void|rune|f32|f64|s8|s16|s32|s64|u8|u16|u32|u64|bool|string|cstring|cvarargs|typeinfo|uint|int)\\b"
         }
       ]
     },

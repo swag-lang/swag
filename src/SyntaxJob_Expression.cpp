@@ -357,7 +357,7 @@ bool SyntaxJob::doKeepRef(AstNode* parent, AstNode** result)
     auto refNode = Ast::newNode<AstNode>(this, AstNodeKind::KeepRef, sourceFile, parent, 2);
     if (result)
         *result = refNode;
-    refNode->semanticFct = SemanticJob::resolveRef;
+    refNode->semanticFct = SemanticJob::resolveKeepRef;
     SWAG_CHECK(eatToken());
     SWAG_CHECK(doUnaryExpression(refNode, EXPR_FLAG_SIMPLE));
     return true;

@@ -127,10 +127,18 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     }
 
     // Dereference
-    if (left->typeInfo->isPointerRef())
-        setUnRef(left);
     if (right->typeInfo->isPointerRef())
-        setUnRef(right);
+    {
+        if (setUnRef(right))
+        {
+            if (left->typeInfo->isPointerRef())
+                setUnRef(left);
+        }
+    }
+    else if (left->typeInfo->isPointerRef())
+    {
+        setUnRef(left);
+    }
 
     // Special case for enum : nothing is possible, except for flags
     bool forEnumFlags  = false;
