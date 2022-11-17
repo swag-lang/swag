@@ -300,6 +300,11 @@ bool SemanticJob::resolveRef(SemanticContext* context)
     auto node  = context->node;
     auto front = node->childs.front();
     node->inheritAndFlag1(AST_CONST_EXPR);
+
+    auto typeInfo = TypeManager::concreteType(front->typeInfo);
+    if (!typeInfo->isPointerRef())
+        return context->report(node, Fmt(Err(Err0517), typeInfo->getDisplayNameC()));
+
     node->typeInfo    = front->typeInfo;
     node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
     return true;
