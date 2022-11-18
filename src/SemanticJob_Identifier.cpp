@@ -406,8 +406,38 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                      nodeCall->typeInfo->kind != TypeInfoKind::TypeListTuple)
             {
                 auto front = nodeCall->childs.front();
+
+                // We have a value, and we need a reference.
+                // Force the keep the address
                 if (front->kind == AstNodeKind::IdentifierRef)
+                {
                     front->childs.back()->semFlags |= AST_SEM_FORCE_TAKE_ADDRESS;
+                }
+
+                // We have a compile time value (like a literal), and we want a const ref, i.e. a pointer
+                // We need to create a temporary variable to store the value, in order to have an address.
+                else if (front->flags & AST_VALUE_COMPUTED)
+                {
+                    auto varNode = Ast::newVarDecl(sourceFile, Fmt("__7tmp_%d", g_UniqueID.fetch_add(1)), nodeCall);
+                    varNode->inheritTokenLocation(nodeCall);
+                    varNode->flags |= AST_GENERATED;
+                    Ast::removeFromParent(front);
+                    Ast::addChildBack(varNode, front);
+                    varNode->assignment = front;
+
+                    auto idNode = Ast::newIdentifierRef(sourceFile, varNode->token.text, nodeCall);
+                    idNode->inheritTokenLocation(nodeCall);
+                    idNode->flags |= AST_GENERATED;
+                    Ast::removeFromParent(idNode);
+                    Ast::addChildFront(nodeCall, idNode);
+
+                    context->job->nodes.push_back(idNode);
+                    context->job->nodes.push_back(varNode);
+                    nodeCall->flags &= ~AST_VALUE_COMPUTED;
+
+                    context->result = ContextResult::NewChilds;
+                    return true;
+                }
                 else
                     return context->internalError("cannot deal with value to pointer ref conversion", nodeCall);
             }
