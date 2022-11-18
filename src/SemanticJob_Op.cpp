@@ -639,7 +639,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
         context->result = ContextResult::Done;
     }
 
-    uint32_t castFlags = CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_UFCS | CASTFLAG_ACCEPT_PENDING;
+    uint32_t castFlags = CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_UFCS | CASTFLAG_ACCEPT_PENDING | CASTFLAG_PARAMS;
     if (justCheck)
         castFlags |= CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR;
     if (job->cacheMatches.empty())
