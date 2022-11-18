@@ -92,10 +92,18 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
 bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
     auto structType = toType;
+
     if (castFlags & CASTFLAG_UFCS && structType->isPointerTo(TypeInfoKind::Struct))
     {
         auto typePtr = CastTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
         structType   = typePtr->pointedType;
+    }
+
+    if (toType->isPointerRef() && toType->isConst() && castFlags & CASTFLAG_PARAMS)
+    {
+        auto typePtr = CastTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
+        structType   = typePtr->pointedType;
+        toType       = structType;
     }
 
     if (structType->kind == TypeInfoKind::Struct && (castFlags & (CASTFLAG_EXPLICIT | CASTFLAG_AUTO_OPCAST)))
@@ -3777,11 +3785,18 @@ void TypeManager::convertStructParamToRef(AstNode* node, TypeInfo* typeInfo)
             if (typeInfo->flags & TYPEINFO_FAKE_ALIAS)
                 typeInfo = ((TypeInfoAlias*) typeInfo)->rawType;
 
-            auto typeRef         = allocType<TypeInfoReference>();
+            auto typeRef = allocType<TypeInfoReference>();
             typeRef->flags       = typeInfo->flags | TYPEINFO_CONST;
             typeRef->pointedType = typeInfo;
             typeRef->computeName();
             node->typeInfo = typeRef;
+
+            /*auto typeRef = allocType<TypeInfoPointer>();
+            typeRef->flags       = typeInfo->flags | TYPEINFO_CONST | TYPEINFO_POINTER_REF;
+            typeRef->pointedType = typeInfo;
+            typeRef->sizeOf      = sizeof(void*);
+            typeRef->computeName();
+            node->typeInfo = typeRef;*/
         }
     }
 }

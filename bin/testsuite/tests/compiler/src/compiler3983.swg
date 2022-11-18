@@ -1,0 +1,30 @@
+struct Vec2
+{
+    buffer: [2] f32
+}
+
+impl Vec2
+{
+    mtdc opIndex(idx: uint)->f32
+    {
+        return buffer[idx]
+    }
+}
+
+//#[Swag.PrintBc]
+func dot(x: const ref Vec2)
+{
+    var y: f32
+    y = x[0]
+    @assert(y == 1.5)
+    @assert(x[1] == 2.0)
+}
+
+
+//#[Swag.PrintBc]
+#test
+{
+    var x = Vec2{@[1.5, 2]}
+    //@print(x[0], " ", x[1], "\n")
+    dot(x)
+}

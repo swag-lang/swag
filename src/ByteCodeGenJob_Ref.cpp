@@ -262,7 +262,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
 {
     auto job      = context->job;
     auto node     = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
-    auto typeInfo = TypeManager::concreteReferenceType(node->array->typeInfo);
+    auto typeInfo = TypeManager::concretePtrRefType(node->array->typeInfo);
     auto castInfo = node->array->castedTypeInfo ? node->array->castedTypeInfo : nullptr;
 
     if (!(node->access->doneFlags & AST_DONE_CAST3))

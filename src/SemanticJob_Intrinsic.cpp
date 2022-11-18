@@ -395,7 +395,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
         return true;
     }
 
-    typeInfo = TypeManager::concreteReferenceType(typeInfo);
+    typeInfo = TypeManager::concretePtrRefType(typeInfo);
     if (typeInfo->isNative(NativeTypeKind::String))
     {
         node->typeInfo = g_TypeMgr->typeInfoUInt;

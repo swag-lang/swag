@@ -126,24 +126,34 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         return context->report(left, Err(Err0565));
     }
 
+    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo, CONCRETE_ALIAS);
+    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo, CONCRETE_ALIAS);
+
     // Dereference
-    if (right->typeInfo->isPointerRef())
+    if (rightTypeInfo->isPointerRef())
     {
         if (setUnRef(right))
         {
-            if (left->typeInfo->isPointerRef())
-                setUnRef(left);
+            rightTypeInfo = TypeManager::concretePtrRef(rightTypeInfo);
+            if (leftTypeInfo->isPointerRef())
+            {
+                if (setUnRef(left))
+                {
+                    leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
+                }
+            }
         }
     }
-    else if (left->typeInfo->isPointerRef())
+    else if (leftTypeInfo->isPointerRef())
     {
-        setUnRef(left);
+        if (setUnRef(left))
+        {
+            leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
+        }
     }
 
     // Special case for enum : nothing is possible, except for flags
-    bool forEnumFlags  = false;
-    auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo, CONCRETE_ALIAS);
-    auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo, CONCRETE_ALIAS);
+    bool forEnumFlags = false;
     if (node->token.id != TokenId::SymEqual)
     {
         if (leftTypeInfo->kind == TypeInfoKind::Enum || rightTypeInfo->kind == TypeInfoKind::Enum)
