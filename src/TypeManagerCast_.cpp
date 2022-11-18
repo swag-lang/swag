@@ -3784,19 +3784,20 @@ void TypeManager::convertStructParamToRef(AstNode* node, TypeInfo* typeInfo)
             // type to make the reference
             if (typeInfo->flags & TYPEINFO_FAKE_ALIAS)
                 typeInfo = ((TypeInfoAlias*) typeInfo)->rawType;
-
+            
             auto typeRef = allocType<TypeInfoReference>();
             typeRef->flags       = typeInfo->flags | TYPEINFO_CONST;
             typeRef->pointedType = typeInfo;
             typeRef->computeName();
             node->typeInfo = typeRef;
-
-            /*auto typeRef = allocType<TypeInfoPointer>();
+            /*
+            auto typeRef = allocType<TypeInfoPointer>();
             typeRef->flags       = typeInfo->flags | TYPEINFO_CONST | TYPEINFO_POINTER_REF;
             typeRef->pointedType = typeInfo;
             typeRef->sizeOf      = sizeof(void*);
             typeRef->computeName();
-            node->typeInfo = typeRef;*/
+            node->typeInfo = typeRef;
+            */
         }
     }
 }

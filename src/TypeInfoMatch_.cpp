@@ -529,7 +529,7 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
                 context.result = MatchResult::BadSignature;
             }
 
-            uint32_t castFlags = CASTFLAG_NO_ERROR;
+            uint32_t castFlags = CASTFLAG_NO_ERROR | CASTFLAG_PARAMS;
             castFlags |= forceCastFlags;
             bool same = TypeManager::makeCompatibles(context.semContext, wantedParameter->typeInfo, callTypeInfo, nullptr, nullptr, castFlags);
             if (!same)

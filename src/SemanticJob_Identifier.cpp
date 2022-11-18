@@ -611,6 +611,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
             }
 
             auto typeParam = TypeManager::concreteReference(funcParam->typeInfo);
+            typeParam      = TypeManager::concretePtrRef(typeParam);
             if (typeParam->kind != TypeInfoKind::Struct &&
                 typeParam->kind != TypeInfoKind::TypeListTuple &&
                 typeParam->kind != TypeInfoKind::TypeListArray &&
@@ -645,7 +646,17 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 cloneContext.removeFlags   = AST_IN_FUNC_DECL_PARAMS;
 
                 if (funcParam->type)
+                {
                     varNode->type = funcParam->type->clone(cloneContext);
+
+                    // Need to have the real type for the variable
+                    if (funcParam->type->typeInfo->isPointerRef())
+                    {
+                        SWAG_ASSERT(varNode->type->kind == AstNodeKind::TypeExpression);
+                        auto typeNode = CastAst<AstTypeExpression>(varNode->type, AstNodeKind::TypeExpression);
+                        typeNode->typeFlags &= ~TYPEFLAG_IS_REF;
+                    }
+                }
 
                 // Need to test sizeof because assignement can be @{}. In that case, we just reference
                 // the temporary variable
