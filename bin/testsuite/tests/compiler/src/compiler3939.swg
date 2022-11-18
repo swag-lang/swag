@@ -1,11 +1,9 @@
-#global testerror
-
 func toto(x: const ref s32)
 {
     @assert(x == 2)
 }
 
-//#[Swag.PrintBc]
+//#[Swag.PrintBc, Swag.Optim("", false)]
 #test
 {
     a := 2

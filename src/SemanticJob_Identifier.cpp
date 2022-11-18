@@ -395,8 +395,22 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
             SWAG_CHECK(TypeManager::makeCompatibles(context, toType, nullptr, nodeCall, castFlags));
             if (context->result != ContextResult::Done)
                 return true;
-            if (nodeCall->typeInfo->isPointerRef() && !toType->isPointerRef())
+
+            if (!toType->isPointerRef() && nodeCall->typeInfo->isPointerRef())
+            {
                 setUnRef(nodeCall);
+            }
+            else if (toType->isPointerRef() && toType->isConst() &&
+                     nodeCall->typeInfo->kind != TypeInfoKind::Pointer &&
+                     nodeCall->typeInfo->kind != TypeInfoKind::Struct &&
+                     nodeCall->typeInfo->kind != TypeInfoKind::TypeListTuple)
+            {
+                auto front = nodeCall->childs.front();
+                if (front->kind == AstNodeKind::IdentifierRef)
+                    front->childs.back()->semFlags |= AST_SEM_FORCE_TAKE_ADDRESS;
+                else
+                    return context->internalError("cannot deal with value to pointer ref conversion", nodeCall);
+            }
         }
         else if (oneMatch.solvedParameters.size() && oneMatch.solvedParameters.back() && oneMatch.solvedParameters.back()->typeInfo->kind == TypeInfoKind::TypedVariadic)
         {

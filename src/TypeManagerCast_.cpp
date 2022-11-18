@@ -2544,6 +2544,12 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
         if (toTypePointer->pointedType->isSame(fromTypePointer->pointedType, ISSAME_CAST))
             return true;
     }
+    else if (toType->isConst())
+    {
+        // Compare pointed types
+        if ((castFlags & CASTFLAG_PARAMS) && toTypePointer->pointedType->isSame(fromType, ISSAME_CAST))
+            return true;
+    }
 
     return castError(context, toType, fromType, fromNode, castFlags);
 }
