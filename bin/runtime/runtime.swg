@@ -174,6 +174,14 @@ func @print(params: ...)
     {
         ko := @kindof(v)
 
+        if ko.flags & TypeInfoFlags.PointerRef
+        {
+            ptr := cast(const *TypeInfoPointer) ko
+            ko = acast ptr.pointedType
+            val := cast(**uint) @dataof(v)
+            v = @mkany(dref val, ko)
+        }
+
         if ko.flags & TypeInfoFlags.PointerTypeInfo
         {
             #[Safety("cast", false)]
