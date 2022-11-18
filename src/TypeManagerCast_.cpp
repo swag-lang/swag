@@ -2529,6 +2529,25 @@ bool TypeManager::castToReference(SemanticContext* context, TypeInfo* toType, Ty
     return castError(context, toType, fromType, fromNode, castFlags);
 }
 
+bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+{
+    auto toTypePointer = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
+
+    if (fromType->kind == TypeInfoKind::Pointer)
+    {
+        // Convert from pointer to ref : only if authorized
+        if (!(fromType->flags & TYPEINFO_POINTER_REF) && !(castFlags & CASTFLAG_EXPLICIT) && !(castFlags & CASTFLAG_PTR_REF))
+            return castError(context, toType, fromType, fromNode, castFlags);
+
+        // Compare pointed types
+        auto fromTypePointer = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
+        if (toTypePointer->pointedType->isSame(fromTypePointer->pointedType, ISSAME_CAST))
+            return true;
+    }
+
+    return castError(context, toType, fromType, fromNode, castFlags);
+}
+
 bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
     // To "cstring"
@@ -2600,18 +2619,6 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
     // Pointer to pointer
     if (fromType->kind == TypeInfoKind::Pointer)
     {
-        // Assign ref
-        if (toType->flags & TYPEINFO_POINTER_REF)
-        {
-            // Convert from pointer to ref : only if authorized
-            if (!(fromType->flags & TYPEINFO_POINTER_REF) && !(castFlags & CASTFLAG_EXPLICIT) && !(castFlags & CASTFLAG_PTR_REF))
-                return castError(context, toType, fromType, fromNode, castFlags);
-
-            auto fromTypePointer = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
-            if (toTypePointer->pointedType->isSame(fromTypePointer->pointedType, ISSAME_CAST))
-                return true;
-        }
-
         if (castFlags & CASTFLAG_EXPLICIT)
             return true;
 
@@ -3432,7 +3439,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
             auto ptrRef = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
             if (ptrRef->pointedType->kind == TypeInfoKind::Struct)
             {
-                toType = ptrRef->pointedType;
+                toType  = ptrRef->pointedType;
                 convert = true;
             }
         }
@@ -3647,7 +3654,10 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
             // Cast to pointer
         case TypeInfoKind::Pointer:
-            SWAG_CHECK(castToPointer(context, toType, fromType, fromNode, castFlags));
+            if (toType->isPointerRef())
+                SWAG_CHECK(castToPointerRef(context, toType, fromType, fromNode, castFlags));
+            else
+                SWAG_CHECK(castToPointer(context, toType, fromType, fromNode, castFlags));
             break;
 
             // Cast to native type
