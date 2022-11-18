@@ -73,6 +73,8 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
     }
 
     typeInfo = TypeManager::concreteReferenceType(typeInfo);
+    if (node->childs.front()->semFlags & AST_SEM_FROM_REF)
+        typeInfo = TypeManager::concretePtrRef(typeInfo);
 
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
@@ -259,8 +261,13 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
 bool ByteCodeGenJob::emitAffectPlusEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
-    AstNode* node         = context->node;
-    auto     leftTypeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
+    AstNode* node = context->node;
+
+    auto front        = node->childs.front();
+    auto leftTypeInfo = TypeManager::concreteType(front->typeInfo);
+    if (front->semFlags & AST_SEM_FROM_REF)
+        leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
+
     if (leftTypeInfo->kind == TypeInfoKind::Native)
     {
         switch (leftTypeInfo->nativeType)
@@ -317,8 +324,13 @@ bool ByteCodeGenJob::emitAffectPlusEqual(ByteCodeGenContext* context, uint32_t r
 
 bool ByteCodeGenJob::emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
-    AstNode* node         = context->node;
-    auto     leftTypeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
+    AstNode* node = context->node;
+
+    auto front        = node->childs.front();
+    auto leftTypeInfo = TypeManager::concreteType(front->typeInfo);
+    if (front->semFlags & AST_SEM_FROM_REF)
+        leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
+
     if (leftTypeInfo->kind == TypeInfoKind::Native)
     {
         switch (leftTypeInfo->nativeType)
@@ -375,12 +387,17 @@ bool ByteCodeGenJob::emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t 
 
 bool ByteCodeGenJob::emitAffectMulEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
-    AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
-    if (typeInfo->kind != TypeInfoKind::Native)
+    AstNode* node = context->node;
+
+    auto front        = node->childs.front();
+    auto leftTypeInfo = TypeManager::concreteType(front->typeInfo);
+    if (front->semFlags & AST_SEM_FROM_REF)
+        leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
+
+    if (leftTypeInfo->kind != TypeInfoKind::Native)
         return context->internalError("emitAffectMulEqual, type not native");
 
-    switch (typeInfo->nativeType)
+    switch (leftTypeInfo->nativeType)
     {
     case NativeTypeKind::S8:
         emitInstruction(context, ByteCodeOp::AffectOpMulEqS8, r0, r1);
@@ -422,12 +439,17 @@ bool ByteCodeGenJob::emitAffectMulEqual(ByteCodeGenContext* context, uint32_t r0
 
 bool ByteCodeGenJob::emitAffectAndEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
-    AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
-    if (typeInfo->kind != TypeInfoKind::Native)
+    AstNode* node = context->node;
+
+    auto front        = node->childs.front();
+    auto leftTypeInfo = TypeManager::concreteType(front->typeInfo);
+    if (front->semFlags & AST_SEM_FROM_REF)
+        leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
+
+    if (leftTypeInfo->kind != TypeInfoKind::Native)
         return context->internalError("emitAffectAndEqual, type not native");
 
-    switch (typeInfo->nativeType)
+    switch (leftTypeInfo->nativeType)
     {
     case NativeTypeKind::S8:
     case NativeTypeKind::U8:
@@ -456,12 +478,17 @@ bool ByteCodeGenJob::emitAffectAndEqual(ByteCodeGenContext* context, uint32_t r0
 
 bool ByteCodeGenJob::emitAffectOrEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
-    AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
-    if (typeInfo->kind != TypeInfoKind::Native)
+    AstNode* node = context->node;
+
+    auto front        = node->childs.front();
+    auto leftTypeInfo = TypeManager::concreteType(front->typeInfo);
+    if (front->semFlags & AST_SEM_FROM_REF)
+        leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
+
+    if (leftTypeInfo->kind != TypeInfoKind::Native)
         return context->internalError("emitAffectOrEqual, type not native");
 
-    switch (typeInfo->nativeType)
+    switch (leftTypeInfo->nativeType)
     {
     case NativeTypeKind::S8:
     case NativeTypeKind::U8:
@@ -490,12 +517,17 @@ bool ByteCodeGenJob::emitAffectOrEqual(ByteCodeGenContext* context, uint32_t r0,
 
 bool ByteCodeGenJob::emitAffectXorEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
-    AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
-    if (typeInfo->kind != TypeInfoKind::Native)
+    AstNode* node = context->node;
+
+    auto front        = node->childs.front();
+    auto leftTypeInfo = TypeManager::concreteType(front->typeInfo);
+    if (front->semFlags & AST_SEM_FROM_REF)
+        leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
+
+    if (leftTypeInfo->kind != TypeInfoKind::Native)
         return context->internalError("emitAffectXorEqual, type not native");
 
-    switch (typeInfo->nativeType)
+    switch (leftTypeInfo->nativeType)
     {
     case NativeTypeKind::S8:
     case NativeTypeKind::U8:
@@ -524,19 +556,24 @@ bool ByteCodeGenJob::emitAffectXorEqual(ByteCodeGenContext* context, uint32_t r0
 
 bool ByteCodeGenJob::emitAffectShiftLeftEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
-    AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
-    if (typeInfo->kind != TypeInfoKind::Native)
+    AstNode* node = context->node;
+
+    auto front        = node->childs.front();
+    auto leftTypeInfo = TypeManager::concreteType(front->typeInfo);
+    if (front->semFlags & AST_SEM_FROM_REF)
+        leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
+
+    if (leftTypeInfo->kind != TypeInfoKind::Native)
         return context->internalError("emitAffectShiftLeftEqual, type not native");
 
-    emitSafetyLeftShiftEq(context, r0, r1, typeInfo);
+    emitSafetyLeftShiftEq(context, r0, r1, leftTypeInfo);
 
     auto     opNode     = CastAst<AstOp>(context->node, AstNodeKind::AffectOp);
     uint16_t shiftFlags = 0;
     if (opNode->specFlags & AST_SPEC_OP_SMALL)
         shiftFlags |= BCI_SHIFT_SMALL;
 
-    switch (typeInfo->nativeType)
+    switch (leftTypeInfo->nativeType)
     {
     case NativeTypeKind::S8:
         emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqU8, r0, r1)->flags |= shiftFlags;
@@ -573,19 +610,24 @@ bool ByteCodeGenJob::emitAffectShiftLeftEqual(ByteCodeGenContext* context, uint3
 
 bool ByteCodeGenJob::emitAffectShiftRightEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
-    AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
-    if (typeInfo->kind != TypeInfoKind::Native)
+    AstNode* node = context->node;
+
+    auto front        = node->childs.front();
+    auto leftTypeInfo = TypeManager::concreteType(front->typeInfo);
+    if (front->semFlags & AST_SEM_FROM_REF)
+        leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
+
+    if (leftTypeInfo->kind != TypeInfoKind::Native)
         return context->internalError("emitAffectShiftRightEqual, type not native");
 
-    emitSafetyRightShiftEq(context, r0, r1, typeInfo);
+    emitSafetyRightShiftEq(context, r0, r1, leftTypeInfo);
 
     auto     opNode     = CastAst<AstOp>(context->node, AstNodeKind::AffectOp);
     uint16_t shiftFlags = 0;
     if (opNode->specFlags & AST_SPEC_OP_SMALL)
         shiftFlags |= BCI_SHIFT_SMALL;
 
-    switch (typeInfo->nativeType)
+    switch (leftTypeInfo->nativeType)
     {
     case NativeTypeKind::S8:
         emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqS8, r0, r1)->flags |= shiftFlags;
@@ -622,12 +664,17 @@ bool ByteCodeGenJob::emitAffectShiftRightEqual(ByteCodeGenContext* context, uint
 
 bool ByteCodeGenJob::emitAffectPercentEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
-    AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
-    if (typeInfo->kind != TypeInfoKind::Native)
+    AstNode* node = context->node;
+
+    auto front        = node->childs.front();
+    auto leftTypeInfo = TypeManager::concreteType(front->typeInfo);
+    if (front->semFlags & AST_SEM_FROM_REF)
+        leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
+
+    if (leftTypeInfo->kind != TypeInfoKind::Native)
         return context->internalError("emitAffectPercentEqual, type not native");
 
-    switch (typeInfo->nativeType)
+    switch (leftTypeInfo->nativeType)
     {
     case NativeTypeKind::S8:
         emitSafetyDivZero(context, r1, 8);
@@ -671,12 +718,17 @@ bool ByteCodeGenJob::emitAffectPercentEqual(ByteCodeGenContext* context, uint32_
 
 bool ByteCodeGenJob::emitAffectDivEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
-    AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
-    if (typeInfo->kind != TypeInfoKind::Native)
+    AstNode* node = context->node;
+
+    auto front        = node->childs.front();
+    auto leftTypeInfo = TypeManager::concreteType(front->typeInfo);
+    if (front->semFlags & AST_SEM_FROM_REF)
+        leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
+
+    if (leftTypeInfo->kind != TypeInfoKind::Native)
         return context->internalError("emitAffectDivEqual, type not native");
 
-    switch (typeInfo->nativeType)
+    switch (leftTypeInfo->nativeType)
     {
     case NativeTypeKind::S8:
         emitSafetyDivZero(context, r1, 8);

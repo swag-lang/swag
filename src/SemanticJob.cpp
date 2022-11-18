@@ -17,10 +17,9 @@ bool SemanticJob::setUnRef(AstNode* node)
     if (node->kind == AstNodeKind::Cast)
         return false;
 
+    node->semFlags |= AST_SEM_FROM_REF;
     if (node->kind == AstNodeKind::IdentifierRef)
         node->childs.back()->semFlags |= AST_SEM_FROM_REF;
-    else
-        node->semFlags |= AST_SEM_FROM_REF;
 
     return true;
 }
