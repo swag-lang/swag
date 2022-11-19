@@ -77,6 +77,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         if (backExpression->kind == AstNodeKind::Try || backExpression->kind == AstNodeKind::Catch || backExpression->kind == AstNodeKind::TryCatch)
             backExpression = backExpression->childs.back();
         auto exprType = TypeManager::concreteReference(returnExpression->typeInfo);
+        exprType = TypeManager::concretePtrRef(exprType);
 
         // Implicit cast
         if (!(returnExpression->doneFlags & AST_DONE_CAST1))
