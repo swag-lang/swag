@@ -2186,6 +2186,8 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
     }
     else if (fromType->isNative(NativeTypeKind::Any))
     {
+        toType = TypeManager::concretePtrRef(toType);
+
         if (!(castFlags & CASTFLAG_EXPLICIT))
         {
             // Ambigous. Do we check for a bool, or do we check for null
