@@ -180,6 +180,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                     // When we have a reference, we match with the real type, as we do not want a generic function/struct to have a
                     // reference as a concrete type
                     callTypeInfo = TypeManager::concreteReference(typeInfos.back());
+                    callTypeInfo = TypeManager::concretePtrRef(callTypeInfo);
 
                     symbolTypeInfos.pop_back();
                     typeInfos.pop_back();

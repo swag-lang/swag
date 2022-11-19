@@ -493,7 +493,8 @@ bool SemanticJob::resolveType(SemanticContext* context)
     // In fact this is a reference
     if (typeNode->typeFlags & TYPEFLAG_IS_REF)
     {
-        auto typeRef       = g_TypeMgr->makePointerTo(typeNode->typeInfo, typeNode->typeFlags & TYPEFLAG_IS_CONST, false, TYPEINFO_POINTER_REF);
+        auto typeRef = g_TypeMgr->makePointerTo(typeNode->typeInfo, typeNode->typeFlags & TYPEFLAG_IS_CONST, false, TYPEINFO_POINTER_REF);
+        typeRef->flags |= (typeRef->pointedType->flags & TYPEINFO_GENERIC);
         typeNode->typeInfo = typeRef;
         typeRef->computeName();
     }
