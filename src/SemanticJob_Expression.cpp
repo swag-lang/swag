@@ -38,6 +38,7 @@ bool SemanticJob::computeExpressionListTupleType(SemanticContext* context, AstNo
 
         auto typeParam      = g_TypeMgr->makeParam();
         typeParam->typeInfo = TypeManager::concreteReference(child->typeInfo);
+        typeParam->typeInfo = TypeManager::concretePtrRef(typeParam->typeInfo);
         typeInfo->subTypes.push_back(typeParam);
 
         // Value has been named
