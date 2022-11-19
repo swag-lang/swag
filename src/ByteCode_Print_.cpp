@@ -80,7 +80,7 @@ void ByteCode::printPrettyInstruction(ByteCodeInstruction* ip)
         str.replace("_rcu8_", Fmt("%u", ip->c.u8));
         str.replace("_rcu16_", Fmt("%u", ip->c.u16));
         str.replace("_rcu32_", Fmt("%u", ip->c.u32));
-        str.replace("_rcu64_", Fmt("%llu", ip->c.u32));
+        str.replace("_rcu64_", Fmt("%llu", ip->c.u64));
         str.replace("_rcs8_", Fmt("%d", ip->c.s8));
         str.replace("_rcs16_", Fmt("%d", ip->c.s16));
         str.replace("_rcs32_", Fmt("%d", ip->c.s32));
@@ -96,7 +96,7 @@ void ByteCode::printPrettyInstruction(ByteCodeInstruction* ip)
         str.replace("_rdu8_", Fmt("%u", ip->d.u8));
         str.replace("_rdu16_", Fmt("%u", ip->d.u16));
         str.replace("_rdu32_", Fmt("%u", ip->d.u32));
-        str.replace("_rdu64_", Fmt("%llu", ip->d.u32));
+        str.replace("_rdu64_", Fmt("%llu", ip->d.u64));
         str.replace("_rds8_", Fmt("%d", ip->d.s8));
         str.replace("_rds16_", Fmt("%d", ip->d.s16));
         str.replace("_rds32_", Fmt("%d", ip->d.s32));

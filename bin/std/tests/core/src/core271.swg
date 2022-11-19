@@ -1,5 +1,6 @@
 using Core.Math
 
+//#[Swag.PrintBc]
 #test
 {
     var x: Vector2{1, 1}

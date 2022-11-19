@@ -12,7 +12,7 @@ bool ByteCodeGenJob::emitInRange(ByteCodeGenContext* context, AstNode* left, Ast
     bool excludeLow = false;
     bool excludeUp  = rangeNode->specFlags & AST_SPEC_RANGE_EXCLUDE_UP;
 
-    auto typeInfo = TypeManager::concreteReferenceType(low->typeInfo);
+    auto typeInfo = TypeManager::concretePtrRefType(low->typeInfo);
     if (!typeInfo->isNativeIntegerOrRune() && !typeInfo->isNativeFloat())
         return context->internalError("emitInRange, type not supported");
 
@@ -181,8 +181,8 @@ bool ByteCodeGenJob::emitCompareOpPostSpecialFunc(ByteCodeGenContext* context, T
 
 bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r1, RegisterList& r2)
 {
-    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
+    auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
 
     if (leftTypeInfo->kind == TypeInfoKind::Native)
     {
@@ -294,8 +294,8 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
 
 bool ByteCodeGenJob::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r1, RegisterList& r2)
 {
-    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
+    auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
 
     if (leftTypeInfo->kind == TypeInfoKind::Native)
     {
@@ -467,7 +467,7 @@ bool ByteCodeGenJob::emitCompareOp3Way(ByteCodeGenContext* context, uint32_t r0,
 
 bool ByteCodeGenJob::emitCompareOpLower(ByteCodeGenContext* context, AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    auto typeInfo = TypeManager::concreteReferenceType(left->typeInfo);
+    auto typeInfo = TypeManager::concretePtrRefType(left->typeInfo);
     if (typeInfo->kind == TypeInfoKind::Native)
     {
         switch (typeInfo->nativeType)
@@ -520,7 +520,7 @@ bool ByteCodeGenJob::emitCompareOpLower(ByteCodeGenContext* context, uint32_t r0
 
 bool ByteCodeGenJob::emitCompareOpLowerEq(ByteCodeGenContext* context, AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    auto typeInfo = TypeManager::concreteReferenceType(left->typeInfo);
+    auto typeInfo = TypeManager::concretePtrRefType(left->typeInfo);
     if (typeInfo->kind == TypeInfoKind::Native)
     {
         switch (typeInfo->nativeType)
@@ -573,7 +573,7 @@ bool ByteCodeGenJob::emitCompareOpLowerEq(ByteCodeGenContext* context, uint32_t 
 
 bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    auto typeInfo = TypeManager::concreteReferenceType(left->typeInfo);
+    auto typeInfo = TypeManager::concretePtrRefType(left->typeInfo);
     if (typeInfo->kind == TypeInfoKind::Native)
     {
         switch (typeInfo->nativeType)
@@ -626,7 +626,7 @@ bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, uint32_t 
 
 bool ByteCodeGenJob::emitCompareOpGreaterEq(ByteCodeGenContext* context, AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    auto typeInfo = TypeManager::concreteReferenceType(left->typeInfo);
+    auto typeInfo = TypeManager::concretePtrRefType(left->typeInfo);
     if (typeInfo->kind == TypeInfoKind::Native)
     {
         switch (typeInfo->nativeType)
