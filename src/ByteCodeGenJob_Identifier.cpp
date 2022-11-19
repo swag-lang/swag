@@ -211,6 +211,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         {
             auto inst   = emitInstruction(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
             inst->b.u64 = resolved->computedValue.storageOffset;
+            inst->c.u64 = resolved->storageIndex;
             if (!node->forceTakeAddress())
             {
                 auto ptrPointer = CastTypeInfo<TypeInfoPointer>(node->typeInfo, TypeInfoKind::Pointer);
