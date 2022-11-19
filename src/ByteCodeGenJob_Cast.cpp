@@ -740,7 +740,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
 
     auto job     = context->job;
     typeInfo     = TypeManager::concreteType(typeInfo, CONCRETE_ENUM | CONCRETE_FORCEALIAS);
-    fromTypeInfo = TypeManager::concreteReferenceType(fromTypeInfo, CONCRETE_ENUM | CONCRETE_FUNC | CONCRETE_FORCEALIAS);
+    fromTypeInfo = TypeManager::concretePtrRefType(fromTypeInfo, CONCRETE_ENUM | CONCRETE_FUNC | CONCRETE_FORCEALIAS);
 
     // opCast
     if (exprNode->semFlags & AST_SEM_USER_CAST)
@@ -799,7 +799,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
 
         // Dereference the any content, except for a reference, where we want to keep the pointer
         // (pointer that comes from the data is already in the correct register)
-        if (typeInfo->kind != TypeInfoKind::Reference)
+        if (typeInfo->kind != TypeInfoKind::Reference && !typeInfo->isPointerRef())
         {
             SWAG_CHECK(emitTypeDeRef(context, exprNode->resultRegisterRC, typeInfo));
         }

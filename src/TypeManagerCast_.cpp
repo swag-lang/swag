@@ -2121,6 +2121,8 @@ bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeI
 
 bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint32_t castFlags)
 {
+    fromType = TypeManager::concretePtrRef(fromType);
+
     if (toType->isNative(NativeTypeKind::Any))
     {
         if (fromType == g_TypeMgr->typeInfoNull)
