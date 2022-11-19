@@ -391,7 +391,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
     }
 
     // A struct function parameter is const
-    else
+    else if(!(typeNode->typeFlags & TYPEFLAG_IS_REF))
     {
         forceConstType(context, typeNode);
     }
