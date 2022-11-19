@@ -391,7 +391,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
     }
 
     // A struct function parameter is const
-    else if(!(typeNode->typeFlags & TYPEFLAG_IS_REF))
+    else if (!(typeNode->typeFlags & TYPEFLAG_IS_REF))
     {
         forceConstType(context, typeNode);
     }
@@ -697,6 +697,7 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
     // When we cast from a structure to an interface, we need to be sure that every interfaces are
     // registered in the structure type, otherwise the cast can fail depending on the compile order
     auto exprTypeInfo = TypeManager::concreteReference(exprNode->typeInfo);
+    exprTypeInfo      = TypeManager::concretePtrRef(exprTypeInfo);
     if (typeNode->typeInfo->kind == TypeInfoKind::Interface && exprTypeInfo->kind == TypeInfoKind::Struct)
     {
         context->job->waitAllStructInterfaces(exprTypeInfo);
