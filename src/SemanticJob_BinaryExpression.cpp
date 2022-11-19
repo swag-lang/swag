@@ -14,8 +14,8 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
 {
     auto node          = context->node;
     auto sourceFile    = context->sourceFile;
-    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
+    auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
     auto module        = sourceFile->module;
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
@@ -49,7 +49,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
 
     SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->report(right, Fmt(Err(Err0142), rightTypeInfo->getDisplayNameC())));
     SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
-    leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
+    leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
 
     switch (leftTypeInfo->nativeType)
     {
@@ -130,8 +130,8 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
 {
     auto node          = context->node;
     auto sourceFile    = context->sourceFile;
-    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
+    auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
     auto module        = sourceFile->module;
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
@@ -163,7 +163,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
 
     SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->report(right, Fmt(Err(Err0146), rightTypeInfo->getDisplayNameC())));
     SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
-    leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
+    leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
 
     switch (leftTypeInfo->nativeType)
     {
@@ -238,8 +238,8 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
 {
     auto node          = context->node;
     auto sourceFile    = context->sourceFile;
-    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
+    auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
     auto module        = sourceFile->module;
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
@@ -336,8 +336,8 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
 bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node          = context->node;
-    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
+    auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
@@ -419,8 +419,8 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
 bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node          = context->node;
-    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
+    auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
@@ -490,7 +490,7 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
 bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node         = context->node;
-    auto leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
+    auto leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
     auto module       = node->sourceFile->module;
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
@@ -598,7 +598,7 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
 bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node         = context->node;
-    auto leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
+    auto leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
     auto module       = node->sourceFile->module;
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
@@ -719,7 +719,7 @@ bool SemanticJob::resolveAppend(SemanticContext* context, AstNode* left, AstNode
 bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node         = context->node;
-    auto leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
+    auto leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
@@ -806,8 +806,8 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
 
     // Special case for enum : nothing is possible, except for flags
     bool isEnumFlags   = false;
-    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo, CONCRETE_ALIAS | CONCRETE_FUNC);
-    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo, CONCRETE_ALIAS | CONCRETE_FUNC);
+    auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo, CONCRETE_ALIAS | CONCRETE_FUNC);
+    auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo, CONCRETE_ALIAS | CONCRETE_FUNC);
     if (leftTypeInfo->kind == TypeInfoKind::Enum || rightTypeInfo->kind == TypeInfoKind::Enum)
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
@@ -828,8 +828,8 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         isEnumFlags = true;
     }
 
-    leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
-    rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
+    leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
+    rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
 
     // Keep it generic if it's generic on one side
     if (leftTypeInfo->kind == TypeInfoKind::Generic)
@@ -880,8 +880,8 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
             right->typeInfo       = saveRightTypeInfo;
             left->castedTypeInfo  = saveCastedLeftTypeInfo;
             right->castedTypeInfo = saveCastedRightTypeInfo;
-            leftTypeInfo          = TypeManager::concreteReferenceType(left->typeInfo);
-            rightTypeInfo         = TypeManager::concreteReferenceType(right->typeInfo);
+            leftTypeInfo          = TypeManager::concretePtrRefType(left->typeInfo);
+            rightTypeInfo         = TypeManager::concretePtrRefType(right->typeInfo);
         }
 
         TypeManager::promote3264(left, right);
@@ -967,7 +967,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
 bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node         = CastAst<AstOp>(context->node, AstNodeKind::FactorOp);
-    auto leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
+    auto leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
@@ -977,7 +977,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
     }
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU32, nullptr, right, CASTFLAG_TRY_COERCE));
-    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
+    auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
     auto module        = node->sourceFile->module;
 
     if (!leftTypeInfo->isNativeIntegerOrRune())
@@ -1105,7 +1105,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
 bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node         = CastAst<AstOp>(context->node, AstNodeKind::FactorOp);
-    auto leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
+    auto leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
@@ -1115,7 +1115,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
     }
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU32, nullptr, right, CASTFLAG_TRY_COERCE));
-    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
+    auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
     auto module        = node->sourceFile->module;
 
     if (!leftTypeInfo->isNativeIntegerOrRune())
@@ -1245,8 +1245,8 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
-    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
+    auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
 
     // Keep it generic if it's generic on one side
     if (leftTypeInfo->kind == TypeInfoKind::Generic)
@@ -1306,8 +1306,8 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
-    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
+    auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
 
     // Keep it generic if it's generic on one side
     if (leftTypeInfo->kind == TypeInfoKind::Generic)

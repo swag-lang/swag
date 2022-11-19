@@ -330,8 +330,8 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
 bool SemanticJob::resolveUserOpCommutative(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right)
 {
     auto node          = context->node;
-    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
+    auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
 
     // Simple case
     if (leftTypeInfo->kind == TypeInfoKind::Struct && rightTypeInfo->kind != TypeInfoKind::Struct)
