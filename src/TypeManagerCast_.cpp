@@ -2559,6 +2559,54 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
             return true;
     }
 
+    // Structure to interface reference
+    if (fromType->kind == TypeInfoKind::Struct && toTypePointer->pointedType->kind == TypeInfoKind::Interface)
+    {
+        auto toTypeItf = CastTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Interface);
+        auto fromTypeStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
+        if (!fromTypeStruct->hasInterface(toTypeItf))
+            return castError(context, toType, fromType, fromNode, castFlags);
+
+        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+        {
+            fromNode->castedTypeInfo = fromType;
+            fromNode->typeInfo = toTypeItf;
+        }
+
+        return true;
+    }
+
+    // Struct to struct
+    if (fromType->kind == TypeInfoKind::Struct && toTypePointer->pointedType->kind == TypeInfoKind::Struct)
+    {
+        auto fromStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
+        auto toStruct = CastTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Struct);
+        bool ok = false;
+        SWAG_CHECK(castStructToStruct(context, toStruct, fromStruct, toType, fromType, fromNode, castFlags, ok));
+        if (ok || context->result == ContextResult::Pending)
+        {
+            if (fromStruct != toStruct)
+                context->castFlagsResult |= CASTFLAG_RESULT_STRUCT_CONVERT;
+            return true;
+        }
+    }
+
+    // Struct to struct pointer
+    if (fromType->isPointerTo(TypeInfoKind::Struct) && toTypePointer->pointedType->kind == TypeInfoKind::Struct)
+    {
+        auto fromPtr = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
+        auto fromStruct = CastTypeInfo<TypeInfoStruct>(fromPtr->pointedType, TypeInfoKind::Struct);
+        auto toStruct = CastTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Struct);
+        bool ok = false;
+        SWAG_CHECK(castStructToStruct(context, toStruct, fromStruct, toType, fromType, fromNode, castFlags, ok));
+        if (ok || context->result == ContextResult::Pending)
+        {
+            if (fromStruct != toStruct)
+                context->castFlagsResult |= CASTFLAG_RESULT_STRUCT_CONVERT;
+            return true;
+        }
+    }
+
     return castError(context, toType, fromType, fromNode, castFlags);
 }
 
@@ -3785,19 +3833,20 @@ void TypeManager::convertStructParamToRef(AstNode* node, TypeInfo* typeInfo)
             if (typeInfo->flags & TYPEINFO_FAKE_ALIAS)
                 typeInfo = ((TypeInfoAlias*) typeInfo)->rawType;
             
+#if true
             auto typeRef = allocType<TypeInfoReference>();
-            typeRef->flags       = typeInfo->flags | TYPEINFO_CONST;
+            typeRef->flags = typeInfo->flags | TYPEINFO_CONST;
             typeRef->pointedType = typeInfo;
             typeRef->computeName();
             node->typeInfo = typeRef;
-            /*
+#else
             auto typeRef = allocType<TypeInfoPointer>();
-            typeRef->flags       = typeInfo->flags | TYPEINFO_CONST | TYPEINFO_POINTER_REF;
+            typeRef->flags = typeInfo->flags | TYPEINFO_CONST | TYPEINFO_POINTER_REF;
             typeRef->pointedType = typeInfo;
-            typeRef->sizeOf      = sizeof(void*);
+            typeRef->sizeOf = sizeof(void*);
             typeRef->computeName();
             node->typeInfo = typeRef;
-            */
+#endif            
         }
     }
 }

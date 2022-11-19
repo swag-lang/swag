@@ -561,7 +561,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     auto sourceFile = context->sourceFile;
     auto node       = CastAst<AstVisit>(context->node, AstNodeKind::Visit);
 
-    auto typeInfo = TypeManager::concreteReferenceType(node->expression->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
+    auto typeInfo = TypeManager::concretePtrRefType(node->expression->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
     if (typeInfo->kind != TypeInfoKind::Enum)
         SWAG_CHECK(checkIsConcrete(context, node->expression));
 
