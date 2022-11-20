@@ -3,7 +3,7 @@ struct A {}
 func toto(x: any)
 {
     k := @kindof(x)
-    @assert(k.kind == .Struct)
+    @assert(k.kind == .Pointer)
 }
 
 //#[Swag.PrintBc]
