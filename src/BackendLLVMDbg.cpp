@@ -229,8 +229,12 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
     }
     case TypeInfoKind::Pointer:
     {
-        auto typeInfoPtr   = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        auto result        = getPointerToType(typeInfoPtr->pointedType, file);
+        auto          typeInfoPtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+        llvm::DIType* result      = nullptr;
+        if (typeInfoPtr->flags & TYPEINFO_POINTER_ARITHMETIC)
+            result = getPointerToType(typeInfoPtr->pointedType, file);
+        else
+            result = getReferenceToType(typeInfoPtr->pointedType, file);
         mapTypes[typeInfo] = result;
         return result;
     }
@@ -456,10 +460,6 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
             auto        scope     = SP;
             auto        location  = debugLocGet(loc.line + 1, loc.column, scope);
 
-            llvm::DINode::DIFlags flags = llvm::DINode::FlagZero;
-            if (typeParam->flags & TYPEINFO_SELF)
-                flags |= llvm::DINode::FlagObjectPointer;
-
             // If parameters are passed with two registers, make a local variable instead of a reference to
             // the parameters
             if (typeParam->isNative(NativeTypeKind::String) || typeParam->kind == TypeInfoKind::Slice)
@@ -492,7 +492,7 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
                     break;
                 }
 
-                llvm::DILocalVariable* var   = dbgBuilder->createParameterVariable(scope, child->token.ctext(), idxParam + 1, file, loc.line + 1, type, !isOptimized, flags);
+                llvm::DILocalVariable* var   = dbgBuilder->createParameterVariable(scope, child->token.ctext(), idxParam + 1, file, loc.line + 1, type, !isOptimized, llvm::DINode::FlagZero);
                 llvm::Value*           value = func->getArg(idxParam);
 
                 // :OptimizedAwayDebugCrap
@@ -510,6 +510,12 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
                 }
 
                 dbgBuilder->insertDeclare(value, var, dbgBuilder->createExpression(), location, pp.builder->GetInsertBlock());
+
+                if (typeParam->flags & TYPEINFO_SELF && child->token.text == "self")
+                {
+                    var = dbgBuilder->createParameterVariable(scope, "this", idxParam + 1, file, loc.line + 1, type, !isOptimized, llvm::DINode::FlagObjectPointer);
+                    dbgBuilder->insertDeclare(value, var, dbgBuilder->createExpression(), location, pp.builder->GetInsertBlock());
+                }
             }
 
             idxParam += typeParam->numRegisters();

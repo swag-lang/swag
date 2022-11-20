@@ -2,12 +2,12 @@
 #foreignlib "kernel32"
 using Swag
 
-alias HANDLE = 			const *void
+alias ATOM =		    const ^void
+alias HANDLE = 			const ^void
 alias HGLOBAL = 		HANDLE
 alias HLOCAL = 			HANDLE
-alias HINSTANCE =		const *void
-alias HMODULE =		    const *void
-alias ATOM =		    const *void
+alias HINSTANCE =		HANDLE
+alias HMODULE =		    HANDLE
 alias LRESULT =		    s64
 alias WORD = 			u16
 alias DWORD =           u32
@@ -16,26 +16,26 @@ alias BYTE = 			u8
 alias LPBYTE = 			*BYTE
 alias LONG = 			s32
 alias ULONG =           u32
-alias LPVOID =			*void
-alias LPCVOID =			const *void
-alias LPCSTR =			const *u8
-alias LPCWSTR =			const *u16
-alias LPCTSTR =			const *u16
-alias LPDWORD =			*DWORD
-alias LPOVERLAPPED =	*DWORD
+alias LPVOID =			^void
+alias LPCVOID =			const ^void
+alias LPCSTR =			const ^u8
+alias LPCWSTR =			const ^u16
+alias LPCTSTR =			const ^u16
+alias LPDWORD =			^DWORD
+alias LPOVERLAPPED =	^DWORD
 alias DWORD_PTR =		uint
 alias UINT =			u32
 alias SHORT =			s16
 alias LARGE_INTEGER =	s64
-alias PLONG =           *LONG
+alias PLONG =           ^LONG
 alias CHAR =            u8
 alias WCHAR =           u16
-alias LPSTR =           *CHAR
-alias LPWSTR =          *WCHAR
-alias LPCH =            *CHAR
-alias LPWCH =           *WCHAR
+alias LPSTR =           ^CHAR
+alias LPWSTR =          ^WCHAR
+alias LPCH =            ^CHAR
+alias LPWCH =           ^WCHAR
 alias SIZE_T =          uint
-alias va_list =         *u8
+alias va_list =         ^u8
 
 alias LPTHREAD_START_ROUTINE = func(*void)->DWORD
 alias WAITORTIMERCALLBACK    = func(*void, BOOL)
