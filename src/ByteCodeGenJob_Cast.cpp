@@ -738,9 +738,10 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         return true;
     SWAG_ASSERT(typeInfo);
 
-    auto job     = context->job;
-    typeInfo     = TypeManager::concreteType(typeInfo, CONCRETE_ENUM | CONCRETE_FORCEALIAS);
-    fromTypeInfo = TypeManager::concretePtrRefType(fromTypeInfo, CONCRETE_ENUM | CONCRETE_FUNC | CONCRETE_FORCEALIAS);
+    auto job             = context->job;
+    typeInfo             = TypeManager::concreteType(typeInfo, CONCRETE_ENUM | CONCRETE_FORCEALIAS);
+    auto fromTypeInfoOrg = TypeManager::concreteReferenceType(fromTypeInfo, CONCRETE_ENUM | CONCRETE_FUNC | CONCRETE_FORCEALIAS);
+    fromTypeInfo         = TypeManager::concreteReference(fromTypeInfoOrg);
 
     // opCast
     if (exprNode->semFlags & AST_SEM_USER_CAST)
@@ -982,6 +983,8 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         SWAG_CHECK(emitCastToNativeString(context, exprNode, fromTypeInfo));
         break;
     case NativeTypeKind::Any:
+        if (fromTypeInfoOrg->isPointerRef())
+            fromTypeInfo = fromTypeInfoOrg;
         SWAG_CHECK(emitCastToNativeAny(context, exprNode, fromTypeInfo));
         break;
     default:

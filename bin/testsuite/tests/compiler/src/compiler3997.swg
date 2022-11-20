@@ -1,4 +1,4 @@
-struct A {}
+struct A { a, b, c, d: s32; }
 
 var G: *void
 
@@ -10,10 +10,15 @@ func toto(x: any)
     @assert(k.kind == .Pointer)
 }
 
+func tata(x: ...)
+{
+    toto(x[0])
+}
+
 //#[Swag.PrintBc]
 func titi(a: const ref A)
 {
-    toto(a)
+    tata(a)
 }
 
 #test

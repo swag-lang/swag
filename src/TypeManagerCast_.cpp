@@ -3847,8 +3847,9 @@ void TypeManager::convertStructParamToRef(AstNode* node, TypeInfo* typeInfo)
             typeRef->computeName();
             node->typeInfo = typeRef;
 #else
-            auto typeRef         = allocType<TypeInfoPointer>();
-            typeRef->flags       = typeInfo->flags | TYPEINFO_CONST | TYPEINFO_POINTER_REF;
+            auto typeRef   = allocType<TypeInfoPointer>();
+            typeRef->flags = typeInfo->flags | TYPEINFO_CONST | TYPEINFO_POINTER_REF;
+            typeRef->flags &= ~TYPEINFO_RETURN_BY_COPY;
             typeRef->pointedType = typeInfo;
             typeRef->sizeOf      = sizeof(void*);
             typeRef->computeName();

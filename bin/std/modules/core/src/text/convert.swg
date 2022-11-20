@@ -151,6 +151,15 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
 {
     valueData     := @dataof(value)
     type          := Reflection.makeConcreteAlias(@kindof(value))
+
+    // A reference
+    if Reflection.isPointerRef(type)
+    {
+        ptrType := cast(const *TypeInfoPointer) type
+        valueData = dref cast(**void) valueData
+        type = ptrType.pointedType
+    }
+
     concreteValue := @mkany(valueData, type)
 
     // This is a type
