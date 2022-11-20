@@ -81,7 +81,7 @@ impl IWnd for MainWnd
     mtd popupBar()
     {
         sf := catch surface.app.createSurface(500, 400, 300, 300, .Secondary | .TopMost)
-        with menu := Wnd.create'MenuCtrl(sf.wnd.view, null)
+        with menu := Wnd.create'MenuCtrl(sf.wnd.view, cast(WndId) null)
         {
             .addItem(CmdIdShowEditor)
             .addSeparator()
