@@ -3778,7 +3778,6 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
                     diff = !toType->isConst() && fromType->isConst();
                 if (diff)
                 {
-
                     if (!(castFlags & CASTFLAG_UNCONST))
                         return castError(context, toType, fromType, fromNode, castFlags | CASTFLAG_CONST_ERR);
 
@@ -3841,8 +3840,9 @@ void TypeManager::convertStructParamToRef(AstNode* node, TypeInfo* typeInfo)
                 typeInfo = ((TypeInfoAlias*) typeInfo)->rawType;
 
 #if true
-            auto typeRef         = allocType<TypeInfoReference>();
-            typeRef->flags       = typeInfo->flags | TYPEINFO_CONST;
+            auto typeRef   = allocType<TypeInfoReference>();
+            typeRef->flags = typeInfo->flags | TYPEINFO_CONST;
+            typeRef->flags &= ~TYPEINFO_RETURN_BY_COPY;
             typeRef->pointedType = typeInfo;
             typeRef->computeName();
             node->typeInfo = typeRef;

@@ -48,7 +48,7 @@ impl Vector2
         #else               #assert(false, "unsupported assign operation '" ++ op ++ "'")
     }
 
-    mtd(op: string) opBinary(other: Self)->Self
+    mtdc(op: string) opBinary(other: Self)->Self
     {
         #if   op == "+" return Self{x + other.x, y + other.y}
         #elif op == "-" return Self{x - other.x, y - other.y}
@@ -57,7 +57,7 @@ impl Vector2
         #else           #assert(false, "unsupported binary operation '" ++ op ++ "'")
     }
 
-    mtd(op: string) opBinary(value: f32)->Self
+    mtdc(op: string) opBinary(value: f32)->Self
     {
         #if   op == "+" return Self{x + value, y + value}
         #elif op == "-" return Self{x - value, y - value}
@@ -66,7 +66,7 @@ impl Vector2
         #else           #assert(false, "unsupported binary operation '" ++ op ++ "'")
     }
 
-    mtd(op: string) opUnary()->Self
+    mtdc(op: string) opUnary()->Self
     {
         #if   op == "-" return Self{-x, -y}
         #else #assert(false, "unsupported unary operation '" ++ op ++ "'")
