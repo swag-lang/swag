@@ -65,6 +65,8 @@ llvm::FunctionType* BackendLLVM::getOrCreateFuncType(const BuildParameters& buil
         for (int i = idxFirst; i < numParams; i++)
         {
             auto param = TypeManager::concreteReferenceType(typeFunc->parameters[i]->typeInfo);
+            if (param->isAutoConstPointerRef())
+                param = TypeManager::concretePtrRef(param);
 
             if (cc.structByRegister && param->kind == TypeInfoKind::Struct && param->sizeOf <= sizeof(void*))
             {
@@ -121,7 +123,10 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
     auto&       builder         = *pp.builder;
 
     auto param = typeFunc->registerIdxToType(idx);
-    auto arg   = func->getArg(idx);
+    if (param->isAutoConstPointerRef())
+        param = TypeManager::concretePtrRef(param);
+
+    auto arg = func->getArg(idx);
 
     // First two parameters are occupied by the variadic slice
     if (typeFunc->isVariadic())
@@ -309,7 +314,10 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
     for (int idxCall = idxFirst; idxCall < numCallParams; idxCall++)
     {
         auto typeParam = TypeManager::concreteReferenceType(typeFuncBC->parameters[idxCall]->typeInfo);
-        auto index     = pushParams[idxParam--];
+        if (typeParam->isAutoConstPointerRef())
+            typeParam = TypeManager::concretePtrRef(typeParam);
+
+        auto index = pushParams[idxParam--];
 
         if (index == UINT32_MAX)
         {
@@ -578,6 +586,9 @@ void BackendLLVM::emitByteCodeCallParameters(const BuildParameters&      buildPa
     {
         auto typeParam = typeFuncBC->parameters[idxCall]->typeInfo;
         typeParam      = TypeManager::concreteReferenceType(typeParam);
+        if (typeParam->isAutoConstPointerRef())
+            typeParam = TypeManager::concretePtrRef(typeParam);
+
         for (int j = 0; j < typeParam->numRegisters(); j++)
         {
             auto index = pushRAParams[popRAidx--];

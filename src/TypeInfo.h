@@ -75,6 +75,7 @@ static const uint64_t TYPEINFO_CAN_PROMOTE_816          = 0x00000200'00000000;
 static const uint64_t TYPEINFO_POINTER_ARITHMETIC       = 0x00000400'00000000;
 static const uint64_t TYPEINFO_LISTARRAY_ARRAY          = 0x00000800'00000000;
 static const uint64_t TYPEINFO_POINTER_REF              = 0x00001000'00000000;
+static const uint64_t TYPEINFO_POINTER_AUTO_REF         = 0x00002000'00000000;
 
 static const uint32_t ISSAME_EXACT       = 0x00000001;
 static const uint32_t ISSAME_CAST        = 0x00000002;
@@ -236,6 +237,8 @@ struct TypeInfo
     bool isInterface()                      { return kind == TypeInfoKind::Interface; }
     bool isTuple()                          { return (flags & TYPEINFO_STRUCT_IS_TUPLE); }
     bool isPointerRef()                     { return (flags & TYPEINFO_POINTER_REF); }
+    bool isConstPointerRef()                { return (flags & TYPEINFO_POINTER_REF) && (flags & TYPEINFO_CONST); }
+    bool isAutoConstPointerRef()            { return (flags & TYPEINFO_POINTER_REF) && (flags & TYPEINFO_CONST) && (flags & TYPEINFO_POINTER_AUTO_REF); }
     bool isPointerArithmetic()              { return (flags & TYPEINFO_POINTER_ARITHMETIC); }
     // clang-format on
 

@@ -921,6 +921,12 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstNode* node
         typeInfo     = typeRef->pointedType;
     }
 
+    if (typeInfo->isAutoConstPointerRef())
+    {
+        auto typeRef = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+        typeInfo     = typeRef->pointedType;
+    }
+
     if (typeInfo->flags & TYPEINFO_SELF)
     {
         if (typeInfo->flags & TYPEINFO_CONST)

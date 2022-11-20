@@ -1463,6 +1463,9 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
         auto type = paramsTypes[i];
         auto reg  = (uint32_t) paramsRegisters[i].reg;
 
+        if (type->isAutoConstPointerRef())
+            type = TypeManager::concretePtrRef(type);
+
         // This is a return register
         if (type == g_TypeMgr->typeInfoUndefined)
         {
@@ -1568,6 +1571,10 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
     uint32_t offsetStack = min(callConvRegisters, maxParamsPerRegister) * sizeof(uint64_t);
     for (; i < (int) paramsRegisters.size(); i++)
     {
+        auto type = paramsTypes[i];
+        if (type->isAutoConstPointerRef())
+            type = TypeManager::concretePtrRef(type);
+
         auto reg = (uint32_t) paramsRegisters[i].reg;
         SWAG_ASSERT(paramsRegisters[i].type == X64PushParamType::Reg);
 
@@ -1579,7 +1586,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
         }
 
         // This is for a return value
-        else if (paramsTypes[i] == g_TypeMgr->typeInfoUndefined)
+        else if (type == g_TypeMgr->typeInfoUndefined)
         {
             // r is an address to registerRR, for FFI
             if (retCopy)
@@ -1594,10 +1601,10 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
         // This is for a normal parameter
         else
         {
-            auto sizeOf = paramsTypes[i]->sizeOf;
+            auto sizeOf = type->sizeOf;
 
             // Struct by copy. Will be a pointer to the stack
-            if (paramsTypes[i]->kind == TypeInfoKind::Struct)
+            if (type->kind == TypeInfoKind::Struct)
             {
                 emit_Load64_Indirect(regOffset(reg), RAX, RDI);
 
@@ -1701,6 +1708,8 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
     for (int i = 0; i < (int) numCallParams; i++)
     {
         auto typeParam = TypeManager::concreteReferenceType(typeFunc->parameters[i]->typeInfo);
+        if (typeParam->isAutoConstPointerRef())
+            typeParam = TypeManager::concretePtrRef(typeParam);
 
         auto index = pushParams[indexParam--];
 

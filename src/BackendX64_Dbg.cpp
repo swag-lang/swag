@@ -1181,6 +1181,24 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                     DbgTypeIndex typeIdx;
                     switch (typeParam->kind)
                     {
+                    case TypeInfoKind::Pointer:
+                    {
+                        if (typeParam->isAutoConstPointerRef())
+                        {
+                            auto typeRef = TypeManager::concretePtrRefType(typeParam);
+                            if (cc.structByRegister && typeRef->sizeOf <= sizeof(void*))
+                                typeIdx = dbgGetOrCreateType(pp, typeRef);
+                            else
+                                typeIdx = dbgGetOrCreateType(pp, typeParam);
+                        }
+                        else
+                        {
+                            typeIdx = dbgGetOrCreateType(pp, typeParam);
+                        }
+
+                        break;
+                    }
+
                     case TypeInfoKind::Reference:
                     {
                         auto typeRef = TypeManager::concreteReferenceType(typeParam);
@@ -1194,6 +1212,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                     case TypeInfoKind::Array:
                         typeIdx = dbgGetOrCreatePointerToType(pp, typeParam, false);
                         break;
+
                     default:
                         typeIdx = dbgGetOrCreateType(pp, typeParam);
                         break;

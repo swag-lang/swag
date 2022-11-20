@@ -50,6 +50,8 @@ void BackendX64::emitGetParam(X64Gen& pp, TypeInfoFuncAttr* typeFunc, int reg, i
 
     paramIdx       = typeFunc->registerIdxToParamIdx(paramIdx);
     auto typeParam = TypeManager::concreteReferenceType(typeFunc->parameters[paramIdx]->typeInfo);
+    if (typeParam->isAutoConstPointerRef())
+        typeParam = TypeManager::concretePtrRefType(typeParam);
 
     if (cc.structByRegister && typeParam->kind == TypeInfoKind::Struct && typeParam->sizeOf <= sizeof(void*))
         pp.emit_LoadAddress_Indirect(stackOffset, RAX, RDI);
@@ -166,7 +168,7 @@ void BackendX64::emitInternalCall(X64Gen& pp, Module* moduleToGen, const Utf8& f
 
 void BackendX64::emitInternalCallExt(X64Gen& pp, Module* moduleToGen, const Utf8& funcName, const VectorNative<X64PushParam>& pushParams, uint32_t offsetRT, TypeInfoFuncAttr* typeFunc)
 {
-    if(!typeFunc)
+    if (!typeFunc)
         typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);
     SWAG_ASSERT(typeFunc);
 
