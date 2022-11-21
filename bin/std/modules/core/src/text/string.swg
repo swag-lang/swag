@@ -81,9 +81,9 @@ impl String
         return Memory.compare(buffer, @dataof(other), length) == 0
     }
 
-    mtdc opCmp(other: Self)->s32
+    mtdc opCmp(other: string)->s32
     {
-        return Utf8.compare(toString(), other.toString(), Utf8.ComparisonType.Latin1)
+        return Utf8.compare(toString(), other, Utf8.ComparisonType.Latin1)
     }
 
     mtd(op: string) opIndexAssign(index: uint, value: u8)
