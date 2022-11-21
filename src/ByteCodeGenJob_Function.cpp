@@ -77,7 +77,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         if (backExpression->kind == AstNodeKind::Try || backExpression->kind == AstNodeKind::Catch || backExpression->kind == AstNodeKind::TryCatch)
             backExpression = backExpression->childs.back();
         auto exprType = TypeManager::concreteReference(returnExpression->typeInfo);
-        exprType = TypeManager::concretePtrRef(exprType);
+        exprType      = TypeManager::concretePtrRef(exprType);
 
         // Implicit cast
         if (!(returnExpression->doneFlags & AST_DONE_CAST1))
@@ -1451,7 +1451,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
             // For a big data, or a reference, we directly set the data pointer in the 'any' instead
             // of pushing it to the stack.
-            if ((typeParam->flags & TYPEINFO_RETURN_BY_COPY) || typeParam->kind == TypeInfoKind::Reference)
+            if ((typeParam->flags & TYPEINFO_RETURN_BY_COPY) || typeParam->kind == TypeInfoKind::Reference || typeParam->isAutoConstPointerRef())
             {
                 emitInstruction(context, ByteCodeOp::PushRAParam, child->resultRegisterRC[0]);
                 maxCallParams++;

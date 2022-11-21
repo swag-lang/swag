@@ -158,15 +158,17 @@ void TypeInfoPointer::computeWhateverName(Utf8& resName, uint32_t nameType)
         return;
     }
 
-    if (flags & TYPEINFO_CONST)
-        resName += "const ";
-
-    if (flags & TYPEINFO_POINTER_REF)
-        resName += "ref ";
-    else if (flags & TYPEINFO_POINTER_ARITHMETIC)
-        resName += "^";
-    else
-        resName += "*";
+    if (!(flags & TYPEINFO_POINTER_AUTO_REF))
+    {
+        if (flags & TYPEINFO_CONST)
+            resName += "const ";
+        if (flags & TYPEINFO_POINTER_REF)
+            resName += "ref ";
+        else if (flags & TYPEINFO_POINTER_ARITHMETIC)
+            resName += "^";
+        else
+            resName += "*";
+    }
 
     resName += pointedType->computeWhateverName(nameType);
 }
