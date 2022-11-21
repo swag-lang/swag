@@ -87,7 +87,6 @@ void LanguageSpec::setupNames()
     name_TypeInfo          = "TypeInfo";
     name_TypeInfoNative    = "TypeInfoNative";
     name_TypeInfoPointer   = "TypeInfoPointer";
-    name_TypeInfoReference = "TypeInfoReference";
     name_TypeInfoStruct    = "TypeInfoStruct";
     name_TypeInfoParam     = "TypeInfoParam";
     name_TypeInfoFunc      = "TypeInfoFunc";

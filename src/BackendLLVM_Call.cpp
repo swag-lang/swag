@@ -64,7 +64,7 @@ llvm::FunctionType* BackendLLVM::getOrCreateFuncType(const BuildParameters& buil
 
         for (int i = idxFirst; i < numParams; i++)
         {
-            auto param = TypeManager::concreteReferenceType(typeFunc->parameters[i]->typeInfo);
+            auto param = TypeManager::concreteType(typeFunc->parameters[i]->typeInfo);
             if (param->isAutoConstPointerRef())
                 param = TypeManager::concretePtrRef(param);
 
@@ -313,7 +313,7 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
     // All parameters
     for (int idxCall = idxFirst; idxCall < numCallParams; idxCall++)
     {
-        auto typeParam = TypeManager::concreteReferenceType(typeFuncBC->parameters[idxCall]->typeInfo);
+        auto typeParam = TypeManager::concreteType(typeFuncBC->parameters[idxCall]->typeInfo);
         if (typeParam->isAutoConstPointerRef())
             typeParam = TypeManager::concretePtrRef(typeParam);
 
@@ -384,7 +384,7 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
     }
 
     // Return by parameter
-    auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
+    auto returnType = TypeManager::concreteType(typeFuncBC->returnType);
     if (returnType->kind == TypeInfoKind::Slice ||
         returnType->kind == TypeInfoKind::Interface ||
         returnType->isNative(NativeTypeKind::Any) ||
@@ -423,7 +423,7 @@ bool BackendLLVM::emitCallReturnValue(const BuildParameters& buildParameters,
     auto& context         = *pp.context;
     auto& builder         = *pp.builder;
 
-    auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
+    auto returnType = TypeManager::concreteType(typeFuncBC->returnType);
     if (returnType != g_TypeMgr->typeInfoVoid)
     {
         if ((returnType->kind == TypeInfoKind::Slice) ||
@@ -585,7 +585,7 @@ void BackendLLVM::emitByteCodeCallParameters(const BuildParameters&      buildPa
     for (int idxCall = idxFirst; idxCall < numCallParams; idxCall++)
     {
         auto typeParam = typeFuncBC->parameters[idxCall]->typeInfo;
-        typeParam      = TypeManager::concreteReferenceType(typeParam);
+        typeParam      = TypeManager::concreteType(typeParam);
         if (typeParam->isAutoConstPointerRef())
             typeParam = TypeManager::concretePtrRef(typeParam);
 

@@ -763,7 +763,6 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
 
 bool AstOutput::outputTypeTuple(OutputContext& context, Concat& concat, TypeInfo* typeInfo)
 {
-    typeInfo = TypeManager::concreteReference(typeInfo);
     typeInfo = TypeManager::concretePtrRef(typeInfo);
     SWAG_ASSERT(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE);
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
@@ -915,12 +914,6 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstNode* node
     /////////////////////////////////
 
     // When this is a reference, take the original (struct) type instead
-    if (typeInfo->kind == TypeInfoKind::Reference)
-    {
-        auto typeRef = CastTypeInfo<TypeInfoReference>(typeInfo, TypeInfoKind::Reference);
-        typeInfo     = typeRef->pointedType;
-    }
-
     if (typeInfo->isAutoConstPointerRef())
     {
         auto typeRef = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);

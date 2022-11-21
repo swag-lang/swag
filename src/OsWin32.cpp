@@ -948,7 +948,7 @@ namespace OS
     void ffi(ByteCodeRunContext* context, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc, const VectorNative<uint32_t>& pushRAParam, void* retCopyAddr)
     {
         const auto& cc         = g_CallConv[typeInfoFunc->callConv];
-        auto        returnType = TypeManager::concreteReferenceType(typeInfoFunc->returnType);
+        auto        returnType = TypeManager::concreteType(typeInfoFunc->returnType);
 
         // Special case when rising an exception (__raiseException666 in windows runtime)
         // Do it by hand, because i don't know how to deal with the JIT below and exceptions.

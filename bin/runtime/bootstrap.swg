@@ -301,7 +301,6 @@ namespace Swag
         Func
         Lambda
         Pointer
-        Reference
         Array
         Slice
         TypeListTuple
@@ -406,12 +405,6 @@ namespace Swag
     }
 
     struct TypeInfoPointer
-    {
-        using base: 	TypeInfo
-        pointedType:	const *TypeInfo
-    }
-
-    struct TypeInfoReference
     {
         using base: 	TypeInfo
         pointedType:	const *TypeInfo

@@ -203,7 +203,6 @@ enum class TypeInfoKind : uint8_t
     FuncAttr,
     Lambda,
     Pointer,
-    Reference,
     Array,
     Slice,
     TypeListTuple,
@@ -309,12 +308,6 @@ struct ConcreteTypeInfoNative
 };
 
 struct ConcreteTypeInfoPointer
-{
-    ConcreteTypeInfo  base;
-    ConcreteTypeInfo* pointedType;
-};
-
-struct ConcreteTypeInfoReference
 {
     ConcreteTypeInfo  base;
     ConcreteTypeInfo* pointedType;

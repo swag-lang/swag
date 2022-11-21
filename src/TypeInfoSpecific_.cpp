@@ -107,35 +107,6 @@ bool TypeInfoAlias::isSame(TypeInfo* to, uint32_t isSameFlags)
     return rawType->isSame(to, isSameFlags);
 }
 
-TypeInfo* TypeInfoReference::clone()
-{
-    auto newType         = allocType<TypeInfoReference>();
-    newType->pointedType = pointedType;
-    newType->copyFrom(this);
-    return newType;
-}
-
-void TypeInfoReference::computeWhateverName(Utf8& resName, uint32_t nameType)
-{
-    if (flags & TYPEINFO_CONST)
-        resName += "const ";
-    if (nameType != COMPUTE_DISPLAY_NAME && nameType != COMPUTE_SCOPED_NAME_EXPORT)
-        resName += "&";
-    resName += pointedType->computeWhateverName(nameType);
-}
-
-bool TypeInfoReference::isSame(TypeInfo* to, uint32_t isSameFlags)
-{
-    if (this == to)
-        return true;
-
-    if (!TypeInfo::isSame(to, isSameFlags))
-        return false;
-
-    auto other = static_cast<TypeInfoReference*>(to);
-    return pointedType->isSame(other->pointedType, isSameFlags);
-}
-
 TypeInfo* TypeInfoPointer::clone()
 {
     auto newType         = allocType<TypeInfoPointer>();
@@ -713,10 +684,8 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
                 continue;
             if (other->capture[i]->typeInfo->isNative(NativeTypeKind::Undefined))
                 continue;
-            auto type1 = TypeManager::concreteReference(capture[i]->typeInfo);
-            type1      = TypeManager::concretePtrRef(type1);
-            auto type2 = TypeManager::concreteReference(other->capture[i]->typeInfo);
-            type2      = TypeManager::concretePtrRef(type2);
+            auto type1 = TypeManager::concretePtrRef(capture[i]->typeInfo);
+            auto type2 = TypeManager::concretePtrRef(other->capture[i]->typeInfo);
             if (!type1->isSame(type2, isSameFlags))
                 return false;
         }
@@ -732,10 +701,8 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
             continue;
         if (other->parameters[i + firstParam]->typeInfo->isNative(NativeTypeKind::Undefined))
             continue;
-        auto type1 = TypeManager::concreteReference(parameters[i]->typeInfo);
-        type1      = TypeManager::concretePtrRef(type1);
-        auto type2 = TypeManager::concreteReference(other->parameters[i + firstParam]->typeInfo);
-        type2      = TypeManager::concretePtrRef(type2);
+        auto type1 = TypeManager::concretePtrRef(parameters[i]->typeInfo);
+        auto type2 = TypeManager::concretePtrRef(other->parameters[i + firstParam]->typeInfo);
         if (!type1->isSame(type2, isSameFlags))
             return false;
     }
@@ -824,7 +791,7 @@ TypeInfo* TypeInfoFuncAttr::concreteReturnType()
 {
     if (!returnType)
         return g_TypeMgr->typeInfoVoid;
-    return TypeManager::concreteReferenceType(returnType);
+    return TypeManager::concreteType(returnType);
 }
 
 // argIdx is the argument index of a function, starting after the return arguments
@@ -846,7 +813,7 @@ uint32_t TypeInfoFuncAttr::registerIdxToParamIdx(int argIdx)
             return (uint32_t) parameters.size() - 1;
         }
 
-        auto typeParam = TypeManager::concreteReferenceType(parameters[argNo]->typeInfo);
+        auto typeParam = TypeManager::concreteType(parameters[argNo]->typeInfo);
         auto n         = typeParam->numRegisters();
         if (argIdx < n)
             return argNo;
@@ -862,7 +829,7 @@ TypeInfo* TypeInfoFuncAttr::registerIdxToType(int argIdx)
     auto argNo = registerIdxToParamIdx(argIdx);
     if (argNo >= parameters.size())
         return nullptr;
-    return TypeManager::concreteReferenceType(parameters[argNo]->typeInfo);
+    return TypeManager::concreteType(parameters[argNo]->typeInfo);
 }
 
 int TypeInfoFuncAttr::numParamsRegisters()
@@ -870,7 +837,7 @@ int TypeInfoFuncAttr::numParamsRegisters()
     int total = 0;
     for (auto param : parameters)
     {
-        auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
+        auto typeParam = TypeManager::concreteType(param->typeInfo);
         total += typeParam->numRegisters();
     }
 

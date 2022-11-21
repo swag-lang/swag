@@ -416,21 +416,6 @@ struct TypeInfoPointer : public TypeInfo
     TypeInfo* pointedType = nullptr;
 };
 
-struct TypeInfoReference : public TypeInfo
-{
-    TypeInfoReference()
-        : TypeInfo{TypeInfoKind::Reference}
-    {
-        sizeOf = sizeof(void*);
-    }
-
-    void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
-    bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
-    TypeInfo* clone() override;
-
-    TypeInfo* pointedType = nullptr;
-};
-
 struct TypeInfoArray : public TypeInfo
 {
     TypeInfoArray()

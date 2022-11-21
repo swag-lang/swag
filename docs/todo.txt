@@ -57,8 +57,6 @@ PENIBLE
 -------------------------------------
 PB du cross compile avec le full compile time exec. BIG BIG BIG !!!
 -------------------------------------
-PB des references
--------------------------------------
 Erreur affichées dans les fichiers d'export plutot que dans le code source d'origine
 -------------------------------------
 

@@ -122,7 +122,7 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
 bool SemanticJob::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode* node)
 {
     auto first     = node->childs.front();
-    auto typeFirst = TypeManager::concreteReferenceType(first->typeInfo);
+    auto typeFirst = TypeManager::concreteType(first->typeInfo);
 
     // Check first parameter
     if (typeFirst->kind != TypeInfoKind::Lambda)
@@ -218,10 +218,10 @@ bool SemanticJob::resolveIntrinsicMakeInterface(SemanticContext* context)
     if (context->result != ContextResult::Done)
         return true;
 
-    auto firstTypeInfo = TypeManager::concreteReferenceType(first->typeInfo, CONCRETE_ALIAS);
+    auto firstTypeInfo = TypeManager::concreteType(first->typeInfo, CONCRETE_ALIAS);
     SWAG_VERIFY(firstTypeInfo->kind == TypeInfoKind::Pointer || firstTypeInfo->kind == TypeInfoKind::Struct, context->report(first, Err(Err0793)));
     SWAG_VERIFY(second->typeInfo->isPointerToTypeInfo(), context->report(second, Err(Err0794)));
-    auto thirdTypeInfo = TypeManager::concreteReferenceType(third->typeInfo, CONCRETE_ALIAS);
+    auto thirdTypeInfo = TypeManager::concreteType(third->typeInfo, CONCRETE_ALIAS);
     SWAG_VERIFY(thirdTypeInfo->kind == TypeInfoKind::Interface, context->report(third, Err(Err0795)));
 
     node->typeInfo = third->typeInfo;
@@ -233,7 +233,7 @@ bool SemanticJob::resolveIntrinsicMakeInterface(SemanticContext* context)
 
 bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, AstNode* expression)
 {
-    auto typeInfo = TypeManager::concreteReferenceType(expression->typeInfo);
+    auto typeInfo = TypeManager::concreteType(expression->typeInfo);
     if (typeInfo->isNative(NativeTypeKind::String))
     {
         node->typeInfo    = g_TypeMgr->typeInfoConstArithPointers[(int) NativeTypeKind::U8];
@@ -494,7 +494,7 @@ bool SemanticJob::resolveIntrinsicSpread(SemanticContext* context)
 {
     auto node         = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto expr         = node->childs.front();
-    auto typeInfo     = TypeManager::concreteReferenceType(expr->typeInfo);
+    auto typeInfo     = TypeManager::concreteType(expr->typeInfo);
     node->byteCodeFct = ByteCodeGenJob::emitIntrinsicSpread;
 
     SWAG_VERIFY(node->parent && node->parent->parent && node->parent->parent->kind == AstNodeKind::FuncCallParam, context->report(node, Err(Err0806)));

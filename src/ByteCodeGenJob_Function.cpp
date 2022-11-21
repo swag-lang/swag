@@ -76,8 +76,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         auto backExpression   = node->childs.back();
         if (backExpression->kind == AstNodeKind::Try || backExpression->kind == AstNodeKind::Catch || backExpression->kind == AstNodeKind::TryCatch)
             backExpression = backExpression->childs.back();
-        auto exprType = TypeManager::concreteReference(returnExpression->typeInfo);
-        exprType      = TypeManager::concretePtrRef(exprType);
+        auto exprType = TypeManager::concretePtrRef(returnExpression->typeInfo);
 
         // Implicit cast
         if (!(returnExpression->doneFlags & AST_DONE_CAST1))
@@ -330,7 +329,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     switch (node->token.id)
     {
     case TokenId::IntrinsicAbs:
-        emitSafetyNeg(context, callParams->childs[0]->resultRegisterRC, TypeManager::concreteReferenceType(callParams->childs[0]->typeInfo), true);
+        emitSafetyNeg(context, callParams->childs[0]->resultRegisterRC, TypeManager::concreteType(callParams->childs[0]->typeInfo), true);
         break;
     }
 
@@ -552,7 +551,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         node->resultRegisterRC = reserveRegisterRC(context);
         auto child0            = callParams->childs[0];
         auto child1            = callParams->childs[1];
-        auto typeInfo          = TypeManager::concreteReferenceType(child1->typeInfo);
+        auto typeInfo          = TypeManager::concreteType(child1->typeInfo);
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S8:
@@ -585,7 +584,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         node->resultRegisterRC = reserveRegisterRC(context);
         auto child0            = callParams->childs[0];
         auto child1            = callParams->childs[1];
-        auto typeInfo          = TypeManager::concreteReferenceType(child1->typeInfo);
+        auto typeInfo          = TypeManager::concreteType(child1->typeInfo);
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S8:
@@ -618,7 +617,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         node->resultRegisterRC = reserveRegisterRC(context);
         auto child0            = callParams->childs[0];
         auto child1            = callParams->childs[1];
-        auto typeInfo          = TypeManager::concreteReferenceType(child1->typeInfo);
+        auto typeInfo          = TypeManager::concreteType(child1->typeInfo);
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S8:
@@ -651,7 +650,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         node->resultRegisterRC = reserveRegisterRC(context);
         auto child0            = callParams->childs[0];
         auto child1            = callParams->childs[1];
-        auto typeInfo          = TypeManager::concreteReferenceType(child1->typeInfo);
+        auto typeInfo          = TypeManager::concreteType(child1->typeInfo);
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S8:
@@ -685,7 +684,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         node->resultRegisterRC = reserveRegisterRC(context);
         auto child0            = callParams->childs[0];
         auto child1            = callParams->childs[1];
-        auto typeInfo          = TypeManager::concreteReferenceType(child1->typeInfo);
+        auto typeInfo          = TypeManager::concreteType(child1->typeInfo);
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S8:
@@ -720,7 +719,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto child0            = callParams->childs[0];
         auto child1            = callParams->childs[1];
         auto child2            = callParams->childs[2];
-        auto typeInfo          = TypeManager::concreteReferenceType(child1->typeInfo);
+        auto typeInfo          = TypeManager::concreteType(child1->typeInfo);
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S8:
@@ -758,7 +757,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         node->parent->resultRegisterRC        = node->resultRegisterRC;
         auto child0                           = callParams->childs[0];
         auto child1                           = callParams->childs[1];
-        auto typeInfo                         = TypeManager::concreteReferenceType(child0->typeInfo);
+        auto typeInfo                         = TypeManager::concreteType(child0->typeInfo);
         SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
         ByteCodeOp op = ByteCodeOp::End;
         switch (typeInfo->nativeType)
@@ -788,7 +787,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         node->identifierRef->resultRegisterRC = node->resultRegisterRC;
         node->parent->resultRegisterRC        = node->resultRegisterRC;
         auto child                            = callParams->childs[0];
-        auto typeInfo                         = TypeManager::concreteReferenceType(child->typeInfo);
+        auto typeInfo                         = TypeManager::concreteType(child->typeInfo);
         SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
         ByteCodeOp op = ByteCodeOp::End;
         switch (typeInfo->nativeType)
@@ -821,7 +820,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         node->identifierRef->resultRegisterRC = node->resultRegisterRC;
         node->parent->resultRegisterRC        = node->resultRegisterRC;
         auto child                            = callParams->childs[0];
-        auto typeInfo                         = TypeManager::concreteReferenceType(child->typeInfo);
+        auto typeInfo                         = TypeManager::concreteType(child->typeInfo);
         SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
         ByteCodeOp op = ByteCodeOp::End;
         switch (typeInfo->nativeType)
@@ -853,7 +852,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         node->parent->resultRegisterRC        = node->resultRegisterRC;
         auto child0                           = callParams->childs[0];
         auto child1                           = callParams->childs[1];
-        auto typeInfo                         = TypeManager::concreteReferenceType(child0->typeInfo);
+        auto typeInfo                         = TypeManager::concreteType(child0->typeInfo);
         SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
         ByteCodeOp op = ByteCodeOp::End;
         switch (typeInfo->nativeType)
@@ -926,7 +925,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         node->identifierRef->resultRegisterRC = node->resultRegisterRC;
         node->parent->resultRegisterRC        = node->resultRegisterRC;
         auto child                            = callParams->childs[0];
-        auto typeInfo                         = TypeManager::concreteReferenceType(child->typeInfo);
+        auto typeInfo                         = TypeManager::concreteType(child->typeInfo);
         SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
         ByteCodeOp op = ByteCodeOp::End;
         switch (typeInfo->nativeType)
@@ -1266,12 +1265,12 @@ bool ByteCodeGenJob::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNod
         {
             if (node->ownerInline)
             {
-                SWAG_ASSERT(TypeManager::concreteReferenceType(node->ownerInline->func->typeInfo)->flags & TYPEINFO_RETURN_BY_COPY);
+                SWAG_ASSERT(TypeManager::concreteType(node->ownerInline->func->typeInfo)->flags & TYPEINFO_RETURN_BY_COPY);
                 emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->ownerInline->resultRegisterRC);
             }
             else
             {
-                SWAG_ASSERT(TypeManager::concreteReferenceType(node->ownerFct->typeInfo)->flags & TYPEINFO_RETURN_BY_COPY);
+                SWAG_ASSERT(TypeManager::concreteType(node->ownerFct->typeInfo)->flags & TYPEINFO_RETURN_BY_COPY);
                 emitInstruction(context, ByteCodeOp::CopyRRtoRC, node->resultRegisterRC);
                 emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->resultRegisterRC);
             }
@@ -1434,24 +1433,14 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             SWAG_ASSERT(child->computedValue->storageSegment);
             SWAG_ASSERT(child->computedValue->storageOffset != UINT32_MAX);
             auto constSegment = child->computedValue->storageSegment;
-            if (typeParam->kind == TypeInfoKind::Reference)
-            {
-                SWAG_ASSERT(constSegment);
-                auto typeRef   = (ConcreteTypeInfoReference*) constSegment->address(child->computedValue->storageOffset);
-                auto offsetRef = constSegment->offset((uint8_t*) typeRef->pointedType);
-                emitMakeSegPointer(context, constSegment, offsetRef, r0);
-            }
-            else
-            {
-                emitMakeSegPointer(context, constSegment, child->computedValue->storageOffset, r0);
-            }
+            emitMakeSegPointer(context, constSegment, child->computedValue->storageOffset, r0);
 
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
             maxCallParams++;
 
             // For a big data, or a reference, we directly set the data pointer in the 'any' instead
             // of pushing it to the stack.
-            if ((typeParam->flags & TYPEINFO_RETURN_BY_COPY) || typeParam->kind == TypeInfoKind::Reference || typeParam->isAutoConstPointerRef())
+            if ((typeParam->flags & TYPEINFO_RETURN_BY_COPY) || typeParam->isAutoConstPointerRef())
             {
                 emitInstruction(context, ByteCodeOp::PushRAParam, child->resultRegisterRC[0]);
                 maxCallParams++;

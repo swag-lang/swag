@@ -173,10 +173,6 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     Diagnostic* diag = nullptr;
     Diagnostic* note = nullptr;
 
-    // We do not want the reference type syntax to appear in messages. Instead, we just want to see
-    // the struct.
-    bi.badSignatureRequestedType = TypeManager::concreteReference(bi.badSignatureRequestedType);
-
     // In case it's generic, and we have real types
     bi.badSignatureRequestedType = Generic::doTypeSubstitution(oneTry.symMatchContext.genericReplaceTypes, bi.badSignatureRequestedType);
 
@@ -188,9 +184,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     case MatchResult::BadSignature:
     case MatchResult::BadGenericSignature:
         if (bi.badSignatureRequestedType->kind == TypeInfoKind::Pointer ||
-            bi.badSignatureRequestedType->kind == TypeInfoKind::Reference ||
-            bi.badSignatureGivenType->kind == TypeInfoKind::Pointer ||
-            bi.badSignatureGivenType->kind == TypeInfoKind::Reference)
+            bi.badSignatureGivenType->kind == TypeInfoKind::Pointer)
             break;
 
         if (bi.badSignatureRequestedType->kind == TypeInfoKind::Native)
@@ -1099,7 +1093,7 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
     // Error in scope context
     if (identifierRef->startScope)
     {
-        auto typeRef = TypeManager::concreteReferenceType(identifierRef->typeInfo);
+        auto typeRef = TypeManager::concreteType(identifierRef->typeInfo);
         if (typeRef && typeRef->kind == TypeInfoKind::Pointer)
             typeRef = CastTypeInfo<TypeInfoPointer>(typeRef, TypeInfoKind::Pointer)->pointedType;
 

@@ -154,7 +154,7 @@ static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, Eva
         return false;
     }
 
-    res.type       = TypeManager::concreteReferenceType(child->typeInfo, CONCRETE_FUNC);
+    res.type       = TypeManager::concreteType(child->typeInfo, CONCRETE_FUNC);
     res.storage[0] = runContext.registersRR[0].pointer;
     res.storage[1] = runContext.registersRR[1].pointer;
     if (res.type->flags & TYPEINFO_RETURN_BY_COPY)

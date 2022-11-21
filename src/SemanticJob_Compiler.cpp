@@ -71,7 +71,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
     ExecuteNodeParams execParams;
     if (!(node->semFlags & AST_SEM_EXEC_RET_STACK))
     {
-        auto realType = TypeManager::concreteReferenceType(node->typeInfo);
+        auto realType = TypeManager::concreteType(node->typeInfo);
         if (realType && realType->flags & TYPEINFO_RETURN_BY_COPY)
         {
             switch (realType->kind)

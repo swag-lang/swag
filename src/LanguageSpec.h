@@ -109,7 +109,6 @@ struct LanguageSpec
     Utf8 name_TypeInfo;
     Utf8 name_TypeInfoNative;
     Utf8 name_TypeInfoPointer;
-    Utf8 name_TypeInfoReference;
     Utf8 name_TypeInfoStruct;
     Utf8 name_TypeInfoParam;
     Utf8 name_TypeInfoFunc;

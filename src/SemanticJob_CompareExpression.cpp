@@ -12,8 +12,8 @@
 bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node          = context->node;
-    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
+    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
 
     // Compile time compare of two types
     if ((left->flags & AST_VALUE_IS_TYPEINFO) && (right->flags & AST_VALUE_IS_TYPEINFO))
@@ -286,8 +286,8 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
-    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
+    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
     SWAG_ASSERT(leftTypeInfo);
     SWAG_ASSERT(rightTypeInfo);
 
@@ -353,8 +353,8 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
         node->typeInfo = g_TypeMgr->typeInfoBool;
     TypeManager::promote3264(left, right);
 
-    left->typeInfo  = TypeManager::concreteReferenceType(left->typeInfo, CONCRETE_FUNC | CONCRETE_ENUM);
-    right->typeInfo = TypeManager::concreteReferenceType(right->typeInfo, CONCRETE_FUNC | CONCRETE_ENUM);
+    left->typeInfo  = TypeManager::concreteType(left->typeInfo, CONCRETE_FUNC | CONCRETE_ENUM);
+    right->typeInfo = TypeManager::concreteType(right->typeInfo, CONCRETE_FUNC | CONCRETE_ENUM);
 
     if (left->typeInfo->isPointerRef())
     {

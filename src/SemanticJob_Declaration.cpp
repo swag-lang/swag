@@ -16,7 +16,6 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
 
     uint32_t altFlags = node->flags & AST_STRUCT_MEMBER ? ALTSCOPE_USING : 0;
 
-    typeInfoVar = TypeManager::concreteReference(typeInfoVar);
     typeInfoVar = TypeManager::concretePtrRef(typeInfoVar);
     if (typeInfoVar->kind == TypeInfoKind::Struct)
     {

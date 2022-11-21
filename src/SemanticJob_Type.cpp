@@ -449,7 +449,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
                     count = (uint32_t) child->computedValue->reg.u32;
                 }
 
-                auto childType = TypeManager::concreteReferenceType(child->typeInfo);
+                auto childType = TypeManager::concreteType(child->typeInfo);
                 SWAG_VERIFY(childType->isNativeInteger(), context->report(child, Fmt(Err(Err0022), child->typeInfo->getDisplayNameC())));
                 SWAG_CHECK(context->checkSizeOverflow("array", count * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
                 SWAG_VERIFY(!child->isConstant0(), context->report(child, Err(Err0023)));
@@ -696,8 +696,7 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
 
     // When we cast from a structure to an interface, we need to be sure that every interfaces are
     // registered in the structure type, otherwise the cast can fail depending on the compile order
-    auto exprTypeInfo = TypeManager::concreteReference(exprNode->typeInfo);
-    exprTypeInfo      = TypeManager::concretePtrRef(exprTypeInfo);
+    auto exprTypeInfo = TypeManager::concretePtrRef(exprNode->typeInfo);
     if (typeNode->typeInfo->kind == TypeInfoKind::Interface && exprTypeInfo->kind == TypeInfoKind::Struct)
     {
         context->job->waitAllStructInterfaces(exprTypeInfo);

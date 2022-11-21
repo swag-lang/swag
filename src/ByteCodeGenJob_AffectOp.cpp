@@ -66,13 +66,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
     auto      typeInfo     = forcedTypeInfo ? forcedTypeInfo : node->childs.front()->typeInfo;
     TypeInfo* fromTypeInfo = from ? from->typeInfo : typeInfo;
 
-    if (typeInfo->kind == TypeInfoKind::Reference)
-    {
-        emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
-        return true;
-    }
-
-    typeInfo = TypeManager::concreteReferenceType(typeInfo);
+    typeInfo = TypeManager::concreteType(typeInfo);
     if (node->childs.front()->semFlags & AST_SEM_FROM_REF)
         typeInfo = TypeManager::concretePtrRef(typeInfo);
 
@@ -113,7 +107,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         return true;
     }
 
-    auto aliasFrom = TypeManager::concreteReferenceType(fromTypeInfo);
+    auto aliasFrom = TypeManager::concreteType(fromTypeInfo);
     if (typeInfo->isClosure() && aliasFrom->isLambda())
     {
         emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);

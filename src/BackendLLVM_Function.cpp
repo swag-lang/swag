@@ -24,7 +24,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     auto& builder         = *pp.builder;
     auto& modu            = *pp.module;
     auto  typeFunc        = bc->getCallType();
-    auto  returnType      = TypeManager::concreteReferenceType(typeFunc->returnType);
+    auto  returnType      = TypeManager::concreteType(typeFunc->returnType);
     bool  ok              = true;
 
     // Get function name
@@ -4869,8 +4869,7 @@ llvm::Type* BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParamete
         typeInfo->kind == TypeInfoKind::Interface ||
         typeInfo->kind == TypeInfoKind::Lambda ||
         typeInfo->isNative(NativeTypeKind::Any) ||
-        typeInfo->isNative(NativeTypeKind::String) ||
-        typeInfo->kind == TypeInfoKind::Reference)
+        typeInfo->isNative(NativeTypeKind::String))
     {
         return llvm::Type::getInt8PtrTy(context);
     }

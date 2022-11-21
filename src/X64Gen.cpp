@@ -1450,7 +1450,7 @@ void X64Gen::emit_ClearX(uint32_t count, uint32_t offset, uint8_t reg)
 void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64PushParam>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopy)
 {
     const auto& cc           = g_CallConv[typeFuncBC->callConv];
-    auto        returnType   = TypeManager::concreteReferenceType(typeFuncBC->returnType);
+    auto        returnType   = TypeManager::concreteType(typeFuncBC->returnType);
     bool        returnByCopy = returnType->flags & TYPEINFO_RETURN_BY_COPY;
 
     int callConvRegisters    = cc.byRegisterCount;
@@ -1707,7 +1707,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
     // All parameters
     for (int i = 0; i < (int) numCallParams; i++)
     {
-        auto typeParam = TypeManager::concreteReferenceType(typeFunc->parameters[i]->typeInfo);
+        auto typeParam = TypeManager::concreteType(typeFunc->parameters[i]->typeInfo);
         if (typeParam->isAutoConstPointerRef())
             typeParam = TypeManager::concretePtrRef(typeParam);
 
@@ -1816,7 +1816,7 @@ void X64Gen::emit_Call_Result(TypeInfoFuncAttr* typeFunc, uint32_t offsetRT)
         return;
 
     const auto& cc         = g_CallConv[typeFunc->callConv];
-    auto        returnType = TypeManager::concreteReferenceType(typeFunc->returnType);
+    auto        returnType = TypeManager::concreteType(typeFunc->returnType);
 
     if (cc.useReturnByRegisterFloat && returnType->isNativeFloat())
         emit_StoreF64_Indirect(offsetRT, cc.returnByRegisterFloat, RDI);

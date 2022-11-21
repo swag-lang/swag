@@ -237,7 +237,7 @@ bool SemanticJob::resolveSwitchAfterExpr(SemanticContext* context)
 {
     auto node       = context->node;
     auto switchNode = CastAst<AstSwitch>(node->parent, AstNodeKind::Switch);
-    auto typeInfo   = TypeManager::concreteReferenceType(node->typeInfo, CONCRETE_FUNC);
+    auto typeInfo   = TypeManager::concreteType(node->typeInfo, CONCRETE_FUNC);
 
     // For a switch on an enum, force a 'using' for each case
     if (typeInfo->kind == TypeInfoKind::Enum)

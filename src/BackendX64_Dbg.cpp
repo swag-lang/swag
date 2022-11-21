@@ -660,14 +660,6 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo)
         return dbgGetOrCreatePointerToType(pp, typePtr->pointedType, !(typePtr->flags & TYPEINFO_POINTER_ARITHMETIC));
     }
 
-    // Reference
-    /////////////////////////////////
-    if (typeInfo->kind == TypeInfoKind::Reference)
-    {
-        auto typePtr = CastTypeInfo<TypeInfoReference>(typeInfo, TypeInfoKind::Reference);
-        return dbgGetOrCreatePointerToType(pp, typePtr->pointedType, true);
-    }
-
     // In the cache
     /////////////////////////////////
     auto it = pp.dbgMapTypes.find(typeInfo);
@@ -1196,16 +1188,6 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                             typeIdx = dbgGetOrCreateType(pp, typeParam);
                         }
 
-                        break;
-                    }
-
-                    case TypeInfoKind::Reference:
-                    {
-                        auto typeRef = TypeManager::concreteReferenceType(typeParam);
-                        if (cc.structByRegister && typeRef->sizeOf <= sizeof(void*))
-                            typeIdx = dbgGetOrCreateType(pp, typeRef);
-                        else
-                            typeIdx = dbgGetOrCreateType(pp, typeParam);
                         break;
                     }
 

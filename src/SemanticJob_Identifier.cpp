@@ -82,8 +82,6 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
     // If type of previous one was const, then we force this node to be const (cannot change it)
     if (node->parent->typeInfo && node->parent->typeInfo->isConst())
         node->flags |= AST_IS_CONST;
-    if (node->typeInfo->kind == TypeInfoKind::Reference && node->typeInfo->isConst())
-        node->flags |= AST_IS_CONST;
     auto overload = node->resolvedSymbolOverload;
     if (overload && overload->flags & OVERLOAD_CONST_ASSIGN)
         node->semFlags |= AST_SEM_IS_CONST_ASSIGN;
@@ -112,22 +110,10 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
 
     switch (typeInfo->kind)
     {
-    case TypeInfoKind::Reference:
-    {
-        auto typeReference = CastTypeInfo<TypeInfoReference>(typeInfo, TypeInfoKind::Reference);
-        auto subType       = TypeManager::concreteReferenceType(typeReference->pointedType);
-        if (subType->kind == TypeInfoKind::Struct)
-            identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
-        else if (subType->kind == TypeInfoKind::Interface)
-            identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(subType, subType->kind)->itable->scope;
-        node->typeInfo = typeInfo;
-        break;
-    }
-
     case TypeInfoKind::Pointer:
     {
         auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        auto subType     = TypeManager::concreteReferenceType(typePointer->pointedType);
+        auto subType     = TypeManager::concreteType(typePointer->pointedType);
         if (subType->kind == TypeInfoKind::Struct || subType->kind == TypeInfoKind::Interface)
             identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
         node->typeInfo = typeInfo;
@@ -149,7 +135,7 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
     case TypeInfoKind::Array:
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        auto subType   = TypeManager::concreteReferenceType(typeArray->finalType);
+        auto subType   = TypeManager::concreteType(typeArray->finalType);
         if (subType->kind == TypeInfoKind::Struct)
             identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
         node->typeInfo = typeInfo;
@@ -159,7 +145,7 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
     case TypeInfoKind::Slice:
     {
         auto typeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
-        auto subType   = TypeManager::concreteReferenceType(typeSlice->pointedType);
+        auto subType   = TypeManager::concreteType(typeSlice->pointedType);
         if (subType->kind == TypeInfoKind::Struct)
             identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
         node->typeInfo = typeInfo;
@@ -214,7 +200,7 @@ void SemanticJob::resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatc
     auto funcDecl = CastAst<AstFuncDecl>(nodeCall->typeInfo->declNode, AstNodeKind::FuncDecl);
     SWAG_ASSERT(!(funcDecl->flags & AST_IS_GENERIC));
     auto typeUndefinedFct = CastTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr);
-    auto concreteType     = TypeManager::concreteReferenceType(oneMatch->solvedParameters[i]->typeInfo);
+    auto concreteType     = TypeManager::concreteType(oneMatch->solvedParameters[i]->typeInfo);
     auto typeDefinedFct   = CastTypeInfo<TypeInfoFuncAttr>(concreteType, TypeInfoKind::Lambda);
 
     // Replace every parameters types
@@ -610,8 +596,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 continue;
             }
 
-            auto typeParam = TypeManager::concreteReference(funcParam->typeInfo);
-            typeParam      = TypeManager::concretePtrRef(typeParam);
+            auto typeParam = TypeManager::concretePtrRef(funcParam->typeInfo);
             if (typeParam->kind != TypeInfoKind::Struct &&
                 typeParam->kind != TypeInfoKind::TypeListTuple &&
                 typeParam->kind != TypeInfoKind::TypeListArray &&
@@ -1278,7 +1263,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             if (identifier->flags & AST_CONST_EXPR)
             {
                 auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr);
-                auto returnType = TypeManager::concreteReferenceType(typeFunc->returnType);
+                auto returnType = TypeManager::concreteType(typeFunc->returnType);
 
                 // :CheckConstExprFuncReturnType
                 if (returnType &&
@@ -1665,7 +1650,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         else if (rawTypeInfo->kind == TypeInfoKind::Array)
         {
             auto typeArr   = CastTypeInfo<TypeInfoArray>(rawTypeInfo, TypeInfoKind::Array);
-            auto typeFinal = TypeManager::concreteReferenceType(typeArr->finalType);
+            auto typeFinal = TypeManager::concreteType(typeArr->finalType);
             auto typeInfo  = CastTypeInfo<TypeInfoFuncAttr>(typeFinal, TypeInfoKind::Lambda);
             typeInfo->match(oneOverload.symMatchContext);
         }
@@ -2253,7 +2238,7 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
 
 TypeInfoEnum* SemanticJob::findEnumTypeInContext(SemanticContext* context, TypeInfo* typeInfo)
 {
-    typeInfo = TypeManager::concreteReferenceType(typeInfo, CONCRETE_FUNC);
+    typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_FUNC);
     if (!typeInfo || typeInfo->kind != TypeInfoKind::Enum)
         return nullptr;
     return CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
@@ -2379,7 +2364,7 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
             auto funcNode = getFunctionForReturn(fctReturn);
             if (funcNode->returnType)
             {
-                auto typeInfo = TypeManager::concreteReferenceType(funcNode->returnType->typeInfo, CONCRETE_FUNC);
+                auto typeInfo = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_FUNC);
                 if (typeInfo->kind == TypeInfoKind::Enum)
                 {
                     *res = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);

@@ -903,8 +903,7 @@ void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t 
                     emitInstruction(context, ByteCodeOp::IncPointer64, r0, regOffset, r0);
 
                 child->flags |= AST_NO_LEFT_DROP;
-                auto noRef = TypeManager::concreteReference(child->typeInfo);
-                noRef      = TypeManager::concretePtrRef(noRef);
+                auto noRef = TypeManager::concretePtrRef(child->typeInfo);
                 emitAffectEqual(context, r0, child->resultRegisterRC, noRef, child);
                 SWAG_ASSERT(context->result == ContextResult::Done);
                 freeRegisterRC(context, child);

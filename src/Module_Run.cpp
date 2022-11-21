@@ -40,8 +40,8 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
     if (!node->resultRegisterRC.size())
         return true;
 
-    auto realType  = TypeManager::concreteReferenceType(node->typeInfo);
-    node->typeInfo = TypeManager::concreteReferenceType(node->typeInfo, CONCRETE_FUNC);
+    auto realType  = TypeManager::concreteType(node->typeInfo);
+    node->typeInfo = TypeManager::concreteType(node->typeInfo, CONCRETE_FUNC);
     node->setFlagsValueIsComputed();
 
     runContext->registersRR[0].u64 = runContext->registers.buffer[node->resultRegisterRC[0]].u64;

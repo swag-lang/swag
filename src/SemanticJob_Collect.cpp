@@ -271,7 +271,7 @@ bool SemanticJob::collectLiteralsToSegment(JobContext* context, DataSegment* sto
 
 bool SemanticJob::collectAssignment(SemanticContext* context, DataSegment* storageSegment, uint32_t& storageOffset, AstVarDecl* node)
 {
-    auto typeInfo = TypeManager::concreteReferenceType(node->typeInfo);
+    auto typeInfo = TypeManager::concreteType(node->typeInfo);
     if (typeInfo->sizeOf == 0)
         return true;
 

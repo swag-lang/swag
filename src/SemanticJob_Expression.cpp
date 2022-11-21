@@ -37,8 +37,7 @@ bool SemanticJob::computeExpressionListTupleType(SemanticContext* context, AstNo
             typeInfo->name += ", ";
 
         auto typeParam      = g_TypeMgr->makeParam();
-        typeParam->typeInfo = TypeManager::concreteReference(child->typeInfo);
-        typeParam->typeInfo = TypeManager::concretePtrRef(typeParam->typeInfo);
+        typeParam->typeInfo = TypeManager::concretePtrRef(child->typeInfo);
         typeInfo->subTypes.push_back(typeParam);
 
         // Value has been named
@@ -262,7 +261,7 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
-    auto typeInfo = TypeManager::concreteReferenceType(expression->typeInfo);
+    auto typeInfo = TypeManager::concreteType(expression->typeInfo);
 
     if (expression->flags & AST_VALUE_COMPUTED)
     {
@@ -341,7 +340,7 @@ bool SemanticJob::resolveRange(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, node->expressionLow));
     SWAG_CHECK(checkIsConcrete(context, node->expressionUp));
 
-    auto typeInfo = TypeManager::concreteReferenceType(node->expressionLow->typeInfo);
+    auto typeInfo = TypeManager::concreteType(node->expressionLow->typeInfo);
     if (!typeInfo->isNativeIntegerOrRune() && !typeInfo->isNativeFloat())
         return context->report(Hint::isType(typeInfo), {node->expressionLow, Fmt(Err(Err0002), node->expressionLow->typeInfo->getDisplayNameC())});
 

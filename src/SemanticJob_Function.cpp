@@ -456,19 +456,6 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         }
     }
 
-    // If the function returns a reference, then transform it to a normal return type if
-    // this is not a reference to a "by copy" type
-    // const &u32 => u32 etc...
-    if (typeNode->typeInfo->kind == TypeInfoKind::Reference)
-    {
-        auto typeRef = CastTypeInfo<TypeInfoReference>(typeNode->typeInfo, TypeInfoKind::Reference);
-        SWAG_ASSERT(typeRef->pointedType->kind != TypeInfoKind::Reference); // Can happen ?
-        if (!(typeRef->pointedType->flags & TYPEINFO_RETURN_BY_COPY))
-        {
-            typeNode->typeInfo = typeRef->pointedType;
-        }
-    }
-
     // Collect function attributes
     auto       typeInfo = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
     ScopedLock lkT(typeInfo->mutex);
@@ -608,7 +595,6 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         typeInfo->returnType->kind != TypeInfoKind::Slice &&
         typeInfo->returnType->kind != TypeInfoKind::Enum &&
         typeInfo->returnType->kind != TypeInfoKind::Interface &&
-        typeInfo->returnType->kind != TypeInfoKind::Reference &&
         typeInfo->returnType->kind != TypeInfoKind::Array &&
         typeInfo->returnType->kind != TypeInfoKind::Pointer)
         return context->report(typeNode->childs.front(), Fmt(Err(Err0764), typeInfo->returnType->getDisplayNameC()));

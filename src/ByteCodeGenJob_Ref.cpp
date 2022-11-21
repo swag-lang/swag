@@ -205,13 +205,6 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
 {
     ensureCanBeChangedRC(context, r0);
 
-    if (typeInfo->kind == TypeInfoKind::Reference)
-    {
-        emitInstruction(context, ByteCodeOp::DeRef64, r0, r0);
-        return true;
-    }
-
-    typeInfo = TypeManager::concreteReference(typeInfo);
     typeInfo = TypeManager::concretePtrRefType(typeInfo, CONCRETE_ALIAS);
 
     if (typeInfo->numRegisters() == 2)
@@ -507,7 +500,7 @@ bool ByteCodeGenJob::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
 {
     auto job     = context->job;
     auto node    = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
-    auto typeVar = TypeManager::concreteReferenceType(node->array->typeInfo);
+    auto typeVar = TypeManager::concreteType(node->array->typeInfo);
 
     if (!(node->lowerBound->doneFlags & AST_DONE_CAST1))
     {

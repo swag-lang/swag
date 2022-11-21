@@ -129,18 +129,8 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     bool             forceConst = false;
     TypeInfoPointer* ptrType    = allocType<TypeInfoPointer>();
 
-    // If this is a reference (struct as parameter), then pointer is just a const pointer
-    // to the original type, and we do not have to generate specific bytecode.
-    if (typeInfo->kind == TypeInfoKind::Reference)
-    {
-        typeInfo = TypeManager::concreteReference(typeInfo);
-        child->semFlags |= AST_SEM_FORCE_NO_TAKE_ADDRESS;
-        child->childs.back()->semFlags |= AST_SEM_FORCE_NO_TAKE_ADDRESS;
-        node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
-    }
-
     // Transform a reference pointer to a pointer to the pointed value
-    else if (typeInfo->isPointerRef())
+    if (typeInfo->isPointerRef())
     {
         forceConst = typeInfo->isConst();
         typeInfo   = TypeManager::concretePtrRef(typeInfo);
@@ -206,7 +196,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
 bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
 {
     auto     node     = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
-    auto     typeVar  = TypeManager::concreteReferenceType(node->array->typeInfo);
+    auto     typeVar  = TypeManager::concreteType(node->array->typeInfo);
     uint64_t maxBound = 0;
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, nullptr, node->lowerBound, CASTFLAG_TRY_COERCE));
@@ -399,7 +389,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
             arrayNode->parent->parent->flags |= AST_IS_CONST;
     }
 
-    auto accessType = TypeManager::concreteReferenceType(arrayNode->access->typeInfo);
+    auto accessType = TypeManager::concreteType(arrayNode->access->typeInfo);
     if (!(accessType->isNativeInteger()) && !(accessType->flags & TYPEINFO_ENUM_INDEX))
         return context->report(arrayNode->access, Fmt(Err(Err0485), arrayNode->access->typeInfo->getDisplayNameC()));
 
@@ -520,7 +510,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 bool SemanticJob::getConstantArrayPtr(SemanticContext* context, uint32_t* storageOffset, DataSegment** storageSegment)
 {
     auto arrayNode = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
-    auto arrayType = TypeManager::concreteReferenceType(arrayNode->array->typeInfo);
+    auto arrayType = TypeManager::concreteType(arrayNode->array->typeInfo);
     auto typePtr   = CastTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
 
     if (arrayNode->typeInfo->kind != TypeInfoKind::Array && arrayNode->access->flags & AST_VALUE_COMPUTED)
@@ -586,7 +576,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
     arrayNode->flags |= AST_R_VALUE;
 
-    auto accessType = TypeManager::concreteReferenceType(arrayNode->access->typeInfo);
+    auto accessType = TypeManager::concreteType(arrayNode->access->typeInfo);
     if (!(accessType->isNativeInteger()) && !(accessType->flags & TYPEINFO_ENUM_INDEX))
         return context->report(arrayNode->access, Fmt(Err(Err0485), arrayNode->access->typeInfo->getDisplayNameC()));
 

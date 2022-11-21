@@ -475,31 +475,12 @@ void TypeManager::setup()
     promoteMatrix816[(int) NativeTypeKind::F64][(int) NativeTypeKind::F64]  = typeInfoF64;
 }
 
-TypeInfo* TypeManager::concreteReferenceType(TypeInfo* typeInfo, uint32_t flags)
-{
-    if (!typeInfo)
-        return nullptr;
-    typeInfo = concreteReference(typeInfo);
-    typeInfo = concreteType(typeInfo, flags);
-    typeInfo = concreteReference(typeInfo);
-    return typeInfo;
-}
-
-TypeInfo* TypeManager::concreteReference(TypeInfo* typeInfo)
-{
-    if (!typeInfo)
-        return nullptr;
-    if (typeInfo->kind == TypeInfoKind::Reference)
-        return CastTypeInfo<TypeInfoReference>(typeInfo, TypeInfoKind::Reference)->pointedType;
-    return typeInfo;
-}
-
 TypeInfo* TypeManager::concretePtrRefType(TypeInfo* typeInfo, uint32_t flags)
 {
     if (!typeInfo)
         return nullptr;
     typeInfo = concretePtrRef(typeInfo);
-    typeInfo = concreteReferenceType(typeInfo, flags);
+    typeInfo = concreteType(typeInfo, flags);
     typeInfo = concretePtrRef(typeInfo);
     return typeInfo;
 }
@@ -749,7 +730,6 @@ uint32_t TypeManager::alignOf(TypeInfo* typeInfo)
     }
     else if (typeInfo->kind == TypeInfoKind::Slice ||
              typeInfo->kind == TypeInfoKind::Interface ||
-             typeInfo->kind == TypeInfoKind::Reference ||
              typeInfo->isNative(NativeTypeKind::Any) ||
              typeInfo->isNative(NativeTypeKind::String))
     {

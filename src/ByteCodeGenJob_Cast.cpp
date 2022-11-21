@@ -677,7 +677,7 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
     if (fromTypeInfo->kind == TypeInfoKind::TypedVariadic)
     {
         auto typeVariadic = CastTypeInfo<TypeInfoVariadic>(fromTypeInfo, TypeInfoKind::TypedVariadic);
-        fromTypeInfo      = TypeManager::concreteReferenceType(typeVariadic->rawType);
+        fromTypeInfo      = TypeManager::concreteType(typeVariadic->rawType);
     }
 
     if (fromTypeInfo == g_TypeMgr->typeInfoNull || fromTypeInfo->isNative(NativeTypeKind::String))
@@ -738,10 +738,9 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         return true;
     SWAG_ASSERT(typeInfo);
 
-    auto job             = context->job;
-    typeInfo             = TypeManager::concreteType(typeInfo, CONCRETE_ENUM | CONCRETE_FORCEALIAS);
-    auto fromTypeInfoOrg = TypeManager::concreteReferenceType(fromTypeInfo, CONCRETE_ENUM | CONCRETE_FUNC | CONCRETE_FORCEALIAS);
-    fromTypeInfo         = TypeManager::concreteReference(fromTypeInfoOrg);
+    auto job     = context->job;
+    typeInfo     = TypeManager::concreteType(typeInfo, CONCRETE_ENUM | CONCRETE_FORCEALIAS);
+    fromTypeInfo = TypeManager::concreteType(fromTypeInfo, CONCRETE_ENUM | CONCRETE_FUNC | CONCRETE_FORCEALIAS);
 
     // opCast
     if (exprNode->semFlags & AST_SEM_USER_CAST)
@@ -800,7 +799,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
 
         // Dereference the any content, except for a reference, where we want to keep the pointer
         // (pointer that comes from the data is already in the correct register)
-        if (typeInfo->kind != TypeInfoKind::Reference && !typeInfo->isPointerRef())
+        if (!typeInfo->isPointerRef())
         {
             SWAG_CHECK(emitTypeDeRef(context, exprNode->resultRegisterRC, typeInfo));
         }
@@ -874,7 +873,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         }
     }
 
-    if (typeInfo->kind == TypeInfoKind::Pointer || typeInfo->kind == TypeInfoKind::Reference)
+    if (typeInfo->kind == TypeInfoKind::Pointer)
     {
         ensureCanBeChangedRC(context, exprNode->resultRegisterRC);
 
@@ -899,7 +898,6 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
             fromTypeInfo->kind == TypeInfoKind::Struct ||
             fromTypeInfo->kind == TypeInfoKind::Interface ||
             fromTypeInfo->kind == TypeInfoKind::Slice ||
-            fromTypeInfo->kind == TypeInfoKind::Reference ||
             fromTypeInfo->kind == TypeInfoKind::Lambda ||
             fromTypeInfo->numRegisters() == 1)
         {
@@ -983,8 +981,6 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         SWAG_CHECK(emitCastToNativeString(context, exprNode, fromTypeInfo));
         break;
     case NativeTypeKind::Any:
-        if (fromTypeInfoOrg->isPointerRef())
-            fromTypeInfo = fromTypeInfoOrg;
         SWAG_CHECK(emitCastToNativeAny(context, exprNode, fromTypeInfo));
         break;
     default:

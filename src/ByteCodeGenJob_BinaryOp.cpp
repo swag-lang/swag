@@ -9,7 +9,7 @@
 
 bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    auto typeInfo = TypeManager::concreteReferenceType(typeInfoExpr);
+    auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
     if (typeInfo->kind == TypeInfoKind::Native)
     {
@@ -78,7 +78,7 @@ bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context, TypeInfo* typ
 bool ByteCodeGenJob::emitBinaryOpMinus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteReferenceType(typeInfoExpr);
+    auto     typeInfo = TypeManager::concreteType(typeInfoExpr);
 
     // This is the substract of two pointers if we have a s64 on the left, and a pointer on the right
     if (typeInfo->isNative(NativeTypeKind::Int))
@@ -149,7 +149,7 @@ bool ByteCodeGenJob::emitBinaryOpMinus(ByteCodeGenContext* context, TypeInfo* ty
 
 bool ByteCodeGenJob::emitBinaryOpMul(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    auto typeInfo = TypeManager::concreteReferenceType(typeInfoExpr);
+    auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
     if (typeInfo->kind != TypeInfoKind::Native)
         return context->internalError("emitBinaryOpMul, type not native");
@@ -184,7 +184,7 @@ bool ByteCodeGenJob::emitBinaryOpMul(ByteCodeGenContext* context, TypeInfo* type
 
 bool ByteCodeGenJob::emitBinaryOpDiv(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    auto typeInfo = TypeManager::concreteReferenceType(typeInfoExpr);
+    auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
     if (typeInfo->kind != TypeInfoKind::Native)
         return context->internalError("emitBinaryOpDiv, type not native");
@@ -225,7 +225,7 @@ bool ByteCodeGenJob::emitBinaryOpDiv(ByteCodeGenContext* context, TypeInfo* type
 
 bool ByteCodeGenJob::emitBinaryOpModulo(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    auto typeInfo = TypeManager::concreteReferenceType(typeInfoExpr);
+    auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
     if (typeInfo->kind != TypeInfoKind::Native)
         return context->internalError("emitBinaryOpModulo, type not native");
@@ -259,7 +259,7 @@ bool ByteCodeGenJob::emitBinaryOpModulo(ByteCodeGenContext* context, TypeInfo* t
 bool ByteCodeGenJob::emitBitmaskAnd(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteReferenceType(node->childs[0]->typeInfo);
+    auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
 
     if (typeInfo->kind != TypeInfoKind::Native)
         return context->internalError("emitBitmaskAnd, type not native");
@@ -293,7 +293,7 @@ bool ByteCodeGenJob::emitBitmaskAnd(ByteCodeGenContext* context, TypeInfo* typeI
 
 bool ByteCodeGenJob::emitBitmaskOr(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    auto typeInfo = TypeManager::concreteReferenceType(typeInfoExpr);
+    auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
     if (typeInfo->kind != TypeInfoKind::Native)
         return context->internalError("emitBitmaskOr, type not native");
@@ -327,7 +327,7 @@ bool ByteCodeGenJob::emitBitmaskOr(ByteCodeGenContext* context, TypeInfo* typeIn
 
 bool ByteCodeGenJob::emitShiftLeft(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    auto typeInfo = TypeManager::concreteReferenceType(typeInfoExpr);
+    auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
     if (typeInfo->kind != TypeInfoKind::Native)
         return context->internalError("emitShiftLeft, type not native");
@@ -377,7 +377,7 @@ bool ByteCodeGenJob::emitShiftLeft(ByteCodeGenContext* context, TypeInfo* typeIn
 
 bool ByteCodeGenJob::emitShiftRight(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    auto typeInfo = TypeManager::concreteReferenceType(typeInfoExpr);
+    auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
     if (typeInfo->kind != TypeInfoKind::Native)
         return context->internalError("emitShiftRight, type not native");
@@ -426,7 +426,7 @@ bool ByteCodeGenJob::emitShiftRight(ByteCodeGenContext* context, TypeInfo* typeI
 
 bool ByteCodeGenJob::emitXor(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    auto typeInfo = TypeManager::concreteReferenceType(typeInfoExpr);
+    auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
     if (typeInfo->kind != TypeInfoKind::Native)
         return context->internalError("emitXor, type not native");

@@ -28,8 +28,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
 
     auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
     auto resolved   = node->resolvedSymbolOverload;
-    auto typeInfo   = TypeManager::concreteReference(resolved->typeInfo);
-    typeInfo        = TypeManager::concreteType(typeInfo);
+    auto typeInfo   = TypeManager::concreteType(resolved->typeInfo);
     SWAG_VERIFY(typeInfo->kind != TypeInfoKind::Generic, context->internalError("emitIdentifier, type is generic"));
 
     // If this is a retval, then just copy the return pointer register to a computing register
@@ -386,16 +385,6 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->b.u64 = resolved->computedValue.storageOffset;
             if (!node->forceTakeAddress())
                 SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRC, node->typeInfo));
-        }
-        else if (resolved->typeInfo->kind == TypeInfoKind::Reference)
-        {
-            if (node->forceTakeAddress())
-                emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC)->b.u64 = resolved->computedValue.storageOffset;
-            else
-            {
-                auto inst   = emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC);
-                inst->b.u64 = resolved->computedValue.storageOffset;
-            }
         }
         else if (typeInfo->kind == TypeInfoKind::Array ||
                  typeInfo->kind == TypeInfoKind::TypeListTuple ||

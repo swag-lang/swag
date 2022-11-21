@@ -238,13 +238,6 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
         mapTypes[typeInfo] = result;
         return result;
     }
-    case TypeInfoKind::Reference:
-    {
-        auto typeInfoPtr   = CastTypeInfo<TypeInfoReference>(typeInfo, TypeInfoKind::Reference);
-        auto result        = getPointerToType(typeInfoPtr->pointedType, file);
-        mapTypes[typeInfo] = result;
-        return result;
-    }
     case TypeInfoKind::Slice:
     {
         auto typeInfoPtr = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);

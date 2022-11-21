@@ -7,7 +7,7 @@
 
 bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* child)
 {
-    auto typeInfo = TypeManager::concreteReferenceType(child->typeInfo);
+    auto typeInfo = TypeManager::concreteType(child->typeInfo);
 
     switch (typeInfo->nativeType)
     {
@@ -81,7 +81,7 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* child)
 
 bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* child)
 {
-    auto typeInfo = TypeManager::concreteReferenceType(child->typeInfo, CONCRETE_ALIAS);
+    auto typeInfo = TypeManager::concreteType(child->typeInfo, CONCRETE_ALIAS);
     typeInfo      = TypeManager::concreteType(typeInfo);
     if (typeInfo->kind == TypeInfoKind::Lambda || typeInfo->kind == TypeInfoKind::Pointer || typeInfo->kind == TypeInfoKind::Interface || typeInfo->kind == TypeInfoKind::Slice)
     {
@@ -127,7 +127,7 @@ bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* child)
 
 bool SemanticJob::resolveUnaryOpInvert(SemanticContext* context, AstNode* child)
 {
-    auto typeInfo = TypeManager::concreteReferenceType(child->typeInfo);
+    auto typeInfo = TypeManager::concreteType(child->typeInfo);
 
     switch (typeInfo->nativeType)
     {
@@ -194,14 +194,14 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
     op->flags |= AST_R_VALUE;
 
     // Special case for enum : nothing is possible, except for flags
-    auto typeInfo = TypeManager::concreteReferenceType(child->typeInfo, CONCRETE_ALIAS);
+    auto typeInfo = TypeManager::concreteType(child->typeInfo, CONCRETE_ALIAS);
     if (typeInfo->kind == TypeInfoKind::Enum)
     {
         if (!(typeInfo->flags & TYPEINFO_ENUM_FLAGS))
             return notAllowed(context, op, typeInfo, "because the enum is not marked with `Swag.EnumFlags`");
     }
 
-    typeInfo = TypeManager::concreteReferenceType(child->typeInfo);
+    typeInfo = TypeManager::concreteType(child->typeInfo);
 
     if (typeInfo->kind == TypeInfoKind::Struct)
     {

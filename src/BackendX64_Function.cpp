@@ -24,7 +24,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     auto&                      pp              = *perThread[ct][precompileIndex];
     auto&                      concat          = pp.concat;
     auto                       typeFunc        = bc->getCallType();
-    auto                       returnType      = TypeManager::concreteReferenceType(typeFunc->returnType);
+    auto                       returnType      = TypeManager::concreteType(typeFunc->returnType);
     bool                       ok              = true;
     bool                       debug           = buildParameters.buildCfg->backendDebugInformations;
     const auto&                cc              = g_CallConv[typeFunc->callConv];

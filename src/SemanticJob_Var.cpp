@@ -561,7 +561,7 @@ bool SemanticJob::deduceLambdaTypeAffect(SemanticContext* context, AstVarDecl* n
     auto back  = op->childs.back();
     SWAG_ASSERT(front->typeInfo);
 
-    auto frontType = TypeManager::concreteReferenceType(front->typeInfo);
+    auto frontType = TypeManager::concreteType(front->typeInfo);
     if (frontType->kind == TypeInfoKind::Struct)
     {
         if (op->deducedLambdaType)
@@ -797,16 +797,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
-    // If this is a reference, be sure we can take address of it
-    if (node->type && node->type->typeInfo->kind == TypeInfoKind::Reference)
-    {
-        if (node->assignment)
-        {
-            SWAG_CHECK(checkCanTakeAddress(context, node->assignment));
-            SyntaxJob::forceTakeAddress(node->assignment);
-        }
-    }
-
     bool genericType = !node->type && !node->assignment;
     bool isGeneric   = false;
     if (node->flags & AST_STRUCT_MEMBER)
@@ -949,7 +939,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     // Only assignement is specified, need to deduce type
     else if (node->assignment && !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
     {
-        node->typeInfo = TypeManager::concreteReferenceType(node->assignment->typeInfo, CONCRETE_FUNC);
+        node->typeInfo = TypeManager::concreteType(node->assignment->typeInfo, CONCRETE_FUNC);
         SWAG_ASSERT(node->typeInfo);
 
         // When affect is from a const struct, remove the const

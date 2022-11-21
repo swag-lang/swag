@@ -100,7 +100,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
     for (int i = 0; i < numParameters; i++)
     {
         auto typeParam = ((TypeInfoParam*) typeInfoFunc->parameters[i])->typeInfo;
-        typeParam      = TypeManager::concreteReferenceType(typeParam);
+        typeParam      = TypeManager::concreteType(typeParam);
 
         if (typeParam->isSlice() ||
             typeParam->isInterface() ||

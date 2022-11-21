@@ -29,7 +29,7 @@ bool SemanticJob::resolveAfterAffectLeft(SemanticContext* context)
 {
     // :DeduceLambdaType
     auto node     = context->node;
-    auto typeInfo = TypeManager::concreteReferenceType(node->typeInfo);
+    auto typeInfo = TypeManager::concreteType(node->typeInfo);
     if (typeInfo->kind == TypeInfoKind::Lambda || typeInfo->kind == TypeInfoKind::Struct)
     {
         auto op = CastAst<AstOp>(node->parent, AstNodeKind::AffectOp);
@@ -126,8 +126,8 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         return context->report(left, Err(Err0565));
     }
 
-    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo, CONCRETE_ALIAS);
-    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo, CONCRETE_ALIAS);
+    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo, CONCRETE_ALIAS);
+    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo, CONCRETE_ALIAS);
 
     // Dereference
     if (rightTypeInfo->isPointerRef())
@@ -230,7 +230,6 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     case TokenId::SymEqual:
         if (leftTypeInfo->kind != TypeInfoKind::Native &&
             leftTypeInfo->kind != TypeInfoKind::Pointer &&
-            leftTypeInfo->kind != TypeInfoKind::Reference &&
             leftTypeInfo->kind != TypeInfoKind::Slice &&
             leftTypeInfo->kind != TypeInfoKind::Lambda &&
             leftTypeInfo->kind != TypeInfoKind::TypeListTuple &&
@@ -243,7 +242,6 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             return context->report(left, Fmt(Err(Err0571), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->getDisplayNameC()));
         if (rightTypeInfo->kind != TypeInfoKind::Native &&
             rightTypeInfo->kind != TypeInfoKind::Pointer &&
-            rightTypeInfo->kind != TypeInfoKind::Reference &&
             rightTypeInfo->kind != TypeInfoKind::Slice &&
             rightTypeInfo->kind != TypeInfoKind::Lambda &&
             rightTypeInfo->kind != TypeInfoKind::TypeListTuple &&
@@ -411,7 +409,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         {
             SWAG_VERIFY(leftTypeInfo->flags & TYPEINFO_POINTER_ARITHMETIC, context->report(Hint::isType(leftTypeInfo), {node, Err(Err0192)}));
             SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report(left, Err(Err0144)));
-            rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
+            rightTypeInfo = TypeManager::concreteType(right->typeInfo);
             SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report(right, Fmt(Err(Err0579), rightTypeInfo->getDisplayNameC())));
             SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, left, right, CASTFLAG_TRY_COERCE));
             break;

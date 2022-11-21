@@ -49,7 +49,7 @@ void BackendX64::emitGetParam(X64Gen& pp, TypeInfoFuncAttr* typeFunc, int reg, i
     }
 
     paramIdx       = typeFunc->registerIdxToParamIdx(paramIdx);
-    auto typeParam = TypeManager::concreteReferenceType(typeFunc->parameters[paramIdx]->typeInfo);
+    auto typeParam = TypeManager::concreteType(typeFunc->parameters[paramIdx]->typeInfo);
     if (typeParam->isAutoConstPointerRef())
         typeParam = TypeManager::concretePtrRefType(typeParam);
 

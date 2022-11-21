@@ -168,22 +168,6 @@ TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeIn
         break;
     }
 
-    case TypeInfoKind::Reference:
-    {
-        auto typeRef = CastTypeInfo<TypeInfoReference>(typeInfo, TypeInfoKind::Reference);
-        auto newType = doTypeSubstitution(replaceTypes, typeRef->pointedType);
-        if (newType != typeRef->pointedType)
-        {
-            typeRef              = CastTypeInfo<TypeInfoReference>(typeRef->clone(), TypeInfoKind::Reference);
-            typeRef->pointedType = newType;
-            typeRef->removeGenericFlag();
-            typeRef->forceComputeName();
-            return typeRef;
-        }
-
-        break;
-    }
-
     case TypeInfoKind::Pointer:
     {
         auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
