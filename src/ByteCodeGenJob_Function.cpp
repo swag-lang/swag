@@ -175,7 +175,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 returnExpression->flags |= AST_NO_LEFT_DROP;
                 RegisterList r0 = reserveRegisterRC(context);
                 emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0);
-                SWAG_CHECK(emitCopyStruct(context, r0, returnExpression->resultRegisterRC, exprType, returnExpression));
+                SWAG_CHECK(emitCopyStruct(context, r0, returnExpression->resultRegisterRC, returnType, returnExpression));
                 freeRegisterRC(context, r0);
                 freeRegisterRC(context, returnExpression->resultRegisterRC);
             }
