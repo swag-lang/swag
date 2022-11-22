@@ -241,9 +241,11 @@ impl IForm for FormShape
 
             case RoundRectangle:
                 round := Math.max(bSize, 10)
+                pp1 := pp
+                pp1.inflate(-bSize*0.5)
                 if quickMode and alpha != 100 and subKind == .Highlight
-                    painter.fillRoundRect(pp, round, round, backBrush)
-                painter.fillRoundRect(pp, round, round, bk)
+                    painter.fillRoundRect(pp1, round, round, backBrush)
+                painter.fillRoundRect(pp1, round, round, bk)
                 if bSize >= 1
                     painter.drawRoundRect(pp, round, round, pen)
             }
