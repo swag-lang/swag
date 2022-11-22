@@ -904,6 +904,25 @@ impl PropWnd
         }
     }
 
+    mtd propRoundSize()
+    {
+        curSelType := getSelectedFormType()
+        if curSelType != FormShape
+            return
+
+        curSel := cast(*FormShape) getSelectedBaseForm()
+        if curSel.kind != .RoundRectangle
+            return
+
+        ctrl := createSlider("Round", acast MinRoundSize, acast MaxRoundSize, curSel.roundSize)
+        ctrl.slider.sigStartChange += @|self|(slider) {
+            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormShape), @nameof(FormShape.roundSize), true)
+        }
+        ctrl.slider.sigChanged += @|self|(slider) {
+            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormShape), @nameof(FormShape.roundSize), false)
+        }
+    }
+
     mtd propBorderSize()
     {
         curSelType := getSelectedFormType()
@@ -1095,6 +1114,7 @@ impl PropWnd
         propBorderSize()
         propStartSize()
         propEndSize()
+        propRoundSize()
         propOpacity()
         propShadow()
         propPixSel()

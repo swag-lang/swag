@@ -5,10 +5,14 @@ enum FormShapeKind
     RoundRectangle
 }
 
+const MinRoundSize = 10.0
+const MaxRoundSize = 50.0
+
 struct FormShape
 {
     using base: BaseForm
-    kind:   FormShapeKind = Ellipse
+    kind:       FormShapeKind = Ellipse
+    roundSize:  f32 = 10
 
     #[Serialization.NoSerialize]
     {
@@ -178,6 +182,7 @@ impl IForm for FormShape
     mtd paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
     {
         bSize := adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
+        rSize := adaptSize(roundSize, MinRoundSize, MaxRoundSize, z, quickMode)
 
         if subKind == .PixSel
         {
@@ -210,8 +215,7 @@ impl IForm for FormShape
                 painter.drawRect(pp, pen)
 
             case RoundRectangle:
-                round := Math.max(bSize, 10)
-                painter.drawRoundRect(pp, round, round, pen)
+                painter.drawRoundRect(pp, rSize, rSize, pen)
             }
         }
         else
@@ -240,14 +244,13 @@ impl IForm for FormShape
                 }
 
             case RoundRectangle:
-                round := Math.max(bSize, 10)
                 pp1 := pp
                 pp1.inflate(-bSize*0.5)
                 if quickMode and alpha != 100 and subKind == .Highlight
-                    painter.fillRoundRect(pp1, round, round, backBrush)
-                painter.fillRoundRect(pp1, round, round, bk)
+                    painter.fillRoundRect(pp1, rSize, rSize, backBrush)
+                painter.fillRoundRect(pp1, rSize, rSize, bk)
                 if bSize >= 1
-                    painter.drawRoundRect(pp, round, round, pen)
+                    painter.drawRoundRect(pp, rSize, rSize, pen)
             }
         }
     }
