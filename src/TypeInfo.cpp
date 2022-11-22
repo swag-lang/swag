@@ -138,6 +138,10 @@ const char* TypeInfo::getArticleKindName(TypeInfo* typeInfo)
     case TypeInfoKind::Slice:
         return "a slice";
     case TypeInfoKind::Pointer:
+        if (typeInfo->isPointerRef())
+            return "a reference";
+        if (typeInfo->isAutoConstPointerRef())
+            return "a struct";
         return "a pointer";
     case TypeInfoKind::FuncAttr:
         return "a function";
@@ -181,6 +185,10 @@ const char* TypeInfo::getNakedKindName(TypeInfo* typeInfo)
     case TypeInfoKind::Slice:
         return "slice";
     case TypeInfoKind::Pointer:
+        if (typeInfo->isPointerRef())
+            return "reference";
+        if (typeInfo->isAutoConstPointerRef())
+            return "struct";
         return "pointer";
     case TypeInfoKind::FuncAttr:
         return "function";

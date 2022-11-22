@@ -14,7 +14,7 @@ func findFirstLine(what: string)
         idx := line.indexOf(what)
         if idx == Swag.UInt.Max continue
         #if LOG Console.printf("line: %\n", line)
-        toProcess.add(dref line)
+        toProcess.add(line)
         idxFirst = @index + 1
         break
     }
@@ -133,7 +133,7 @@ func swapParams(what: string)->String
     findFirstLine(fctExtension)
     visit line11: toProcess
     {
-        line1 := cast(string) dref line11
+        line1 := cast(string) line11
         idxN := line1.indexOf(" ", 9)
         funcName := line1[8..idxN - 1]
 

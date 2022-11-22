@@ -139,9 +139,9 @@ impl Array
             #macro
             {
                 #if `ptr
-                    var @alias0 = `scan
+                    var @alias0 = cast(*T) `scan
                 #elif Reflection.isStruct(T)
-                    var @alias0 = cast(const *T) `scan
+                    var @alias0 = cast(ref T) `scan
                 #else
                     var @alias0 = `scan[0]
                 var @alias1 = @index

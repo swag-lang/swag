@@ -157,7 +157,7 @@ impl LibraryView
                (filterMonth == 0 or fi.lastWriteTime.month == filterMonth) and
                (filterDay == 0 or fi.lastWriteTime.day == filterDay)
             {
-                res.add(dref fi)
+                res.add(fi)
             }
         }
 
@@ -178,7 +178,7 @@ impl LibraryView
         visit fi: res
         {
             var item: LibraryItem
-            item.fi = dref fi
+            item.fi = fi
             items.add(item)
         }
 

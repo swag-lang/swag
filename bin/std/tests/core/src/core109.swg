@@ -13,7 +13,7 @@ using Core
     @assert(total == 10)
 
     visit &v: x
-        v[0] = 5
+        dref v = 5
 
     total = 0
     visit v: x

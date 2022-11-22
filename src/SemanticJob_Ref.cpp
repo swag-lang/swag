@@ -757,7 +757,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     default:
     {
         PushErrHint errh(Hnt(Hnt0021));
-        return context->report(arrayNode->array, Fmt(Err(Err0488), TypeInfo::getNakedKindName(arrayType), arrayType->getDisplayNameC()));
+        return context->report(arrayNode->array, Fmt(Err(Err0488), TypeInfo::getArticleKindName(arrayNode->array->typeInfo), arrayNode->array->typeInfo->getDisplayNameC()));
     }
     }
 

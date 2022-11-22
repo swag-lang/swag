@@ -130,13 +130,12 @@ private impl FileDlg
         volumes := catch Directory.getDrives()
         visit v: volumes
         {
-            v1 := dref v
-            v1.removeBack()
-            ic := getApp().getDirectoryIcon(v1, true)
+            v.removeBack()
+            ic := getApp().getDirectoryIcon(v, true)
             l = treeCtrl.createLine(v.toString(), icon: ic)
             l.userData0 = cast(*void) treePathStr.count
             l.leftTextMargin = 10
-            treePathStr.add(dref v)
+            treePathStr.add(v)
         }
 
         treeCtrl.sigSelChanged += @|self|(list) {
