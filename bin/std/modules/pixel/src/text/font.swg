@@ -117,7 +117,7 @@ public impl Font
         bmp := &typeFace.face.glyph.bitmap
 
         // Creates a new atlas if this is the first time, or if the last atlas is full
-        atlas := atlases.count ? atlases[atlases.count - 1] : null
+        atlas := atlases.count ? &atlases.buffer[atlases.count - 1] : null
         if atlas
         {
             if atlas.curX + bmp.width > atlas.width
@@ -143,7 +143,7 @@ public impl Font
             newAtlas.datas.resize(cast(uint) newAtlas.width * newAtlas.height)
             Memory.clear(newAtlas.datas.buffer, newAtlas.datas.count)
             atlases.add(newAtlas)
-            atlas = atlases[atlases.count - 1]
+            atlas = &atlases.buffer[atlases.count - 1]
         }
 
         x := atlas.curX

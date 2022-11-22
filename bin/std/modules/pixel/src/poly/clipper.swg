@@ -2081,7 +2081,7 @@ impl Transform
         }
     }
 
-    mtd popLocalMinima(y: CInt, locMin: **LocalMinimum)->bool
+    mtd popLocalMinima(y: CInt, locMin: * const *LocalMinimum)->bool
     {
         if currentLM == minimaList.count or minimaList[currentLM].y != y
             return false
@@ -2925,7 +2925,7 @@ impl Transform
 
     mtd insertLocalMinimaIntoAEL(botY: CInt)
     {
-        var lm: *LocalMinimum
+        var lm: const *LocalMinimum
         while popLocalMinima(botY, &lm)
         {
             lb := lm.leftBound

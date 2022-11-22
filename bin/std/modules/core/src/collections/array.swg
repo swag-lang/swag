@@ -70,7 +70,7 @@ impl Array
     }
 
     #[Inline]
-    mtdc opIndex(index: uint)->*T
+    mtdc opIndex(index: uint)->ref T
         #selectif Reflection.isStruct(T)
     {
         Debug.safetyBoundCheck(index < count, "index out of range")

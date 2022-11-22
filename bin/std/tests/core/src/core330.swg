@@ -10,5 +10,5 @@ using Core
     arr.add(String.from("d"))
     arr.remove(1, 2)
     @assert(arr.count == 2)
-    @assert(dref arr[1] == "d")
+    @assert(arr[1] == "d")
 }

@@ -54,7 +54,7 @@ private impl Movie
         case Gif:
             if frameIndex < cacheFrames.count
             {
-                frame = dref cacheFrames[frameIndex]
+                frame = cacheFrames[frameIndex]
             }
             elif assume gif.nextFrame(&frame) == false
             {
@@ -151,7 +151,7 @@ impl Movie
             frameIndex = Math.min(idx, numFrames)
             if frameIndex < cacheFrames.count
             {
-                frame = dref cacheFrames[frameIndex]
+                frame = cacheFrames[frameIndex]
                 dirtyFrame = true
             }
 

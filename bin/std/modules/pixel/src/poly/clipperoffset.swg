@@ -156,7 +156,7 @@ impl Offset
         }
     }
 
-    func getUnitNormal(pt1, pt2: *IntPoint)->DoublePoint
+    func getUnitNormal(pt1, pt2: const ref IntPoint)->DoublePoint
     {
         var result: retval
         if pt2.x == pt1.x and pt2.y == pt1.y
@@ -302,7 +302,7 @@ impl Offset
             r1 := cround(jP.x + kN.x * deltaVal)
             r2 := cround(jP.y + kN.y * deltaVal)
             destPoly.add(IntPoint{r1, r2})
-            destPoly.add(dref jP)
+            destPoly.add(jP)
             r1 = cround(jP.x + jN.x * deltaVal)
             r2 = cround(jP.y + jN.y * deltaVal)
             destPoly.add(IntPoint{r1, r2})

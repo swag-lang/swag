@@ -27,7 +27,7 @@ func findFirstLine(what: string)
         while !lines[idxFirst].isEmpty()
         {
             //Console.printf("line: %\n", lines[idxFirst])
-            toProcess.add(dref lines[idxFirst])
+            toProcess.add(lines[idxFirst])
             idxFirst += 1
         }
     }

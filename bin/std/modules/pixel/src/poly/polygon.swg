@@ -67,7 +67,7 @@ impl Polygon
         while i < (closed ? points.count : points.count - 1)
         {
             defer i += 1
-            v := dref points[(i + 1) % points.count] - dref points[i]
+            v := points[(i + 1) % points.count] - points[i]
             d := v.length()
             divide := cast(s32) (d / dist)
             if divide > 0
@@ -75,7 +75,7 @@ impl Polygon
                 v /= cast(f32) (divide + 1)
                 while divide > 0
                 {
-                    np := dref points[i] + v
+                    np := points[i] + v
                     points.insertAt(i + 1, np)
                     divide -= 1
                     i += 1

@@ -26,7 +26,7 @@ func entry(th: Thread)
     {
         if !Image.canLoad(f.fullname)
             continue
-        th := ths[validImgs]
+        th := &ths[validImgs]
         th.filename = f.fullname
         try Thread.init(th, &entry)
         try th.start()

@@ -465,7 +465,7 @@ impl Undo
                 b := cast(*FormImage) @dataof(f)
                 if b.kind != .Image
                     continue
-                b.image = dref oldImage[i]
+                b.image = oldImage[i]
                 b.dirty = true
             }
 
@@ -476,7 +476,7 @@ impl Undo
                 if @kindof(f) != FormText
                     continue
                 b := cast(*FormText) @dataof(f)
-                b.text = dref oldText[i]
+                b.text = oldText[i]
                 b.isDirty = true
             }
 

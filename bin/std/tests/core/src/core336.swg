@@ -8,8 +8,8 @@ using Core
     arr.add(String.from("2"))
 
     arr.insertAt(1, String.from("3"))
-    @assert(dref arr[0] == "0")
-    @assert(dref arr[1] == "3")
-    @assert(dref arr[2] == "1")
-    @assert(dref arr[3] == "2")
+    @assert(arr[0] == "0")
+    @assert(arr[1] == "3")
+    @assert(arr[2] == "1")
+    @assert(arr[3] == "2")
 }

@@ -392,7 +392,7 @@ impl FileDlg
         {
             .dockStyle = .Center
             .sigChanged += @|dlg|(combo, idx) {
-                dlg.setCurFolder(dref dlg.comboPathStr[idx])
+                dlg.setCurFolder(dlg.comboPathStr[idx])
             }
         }
 

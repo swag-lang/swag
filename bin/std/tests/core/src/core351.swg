@@ -25,9 +25,9 @@ struct Toto
     defer Memory.delete(v)
 
     @assert(v.arr.count == 3)
-    @assert(dref v.arr[0] == "toto")
-    @assert(dref v.arr[1] == "titi")
-    @assert(dref v.arr[2] == "tata")
+    @assert(v.arr[0] == "toto")
+    @assert(v.arr[1] == "titi")
+    @assert(v.arr[2] == "tata")
 
     //Console.print(dref v, "\n")
 }

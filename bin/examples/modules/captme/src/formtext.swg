@@ -185,8 +185,8 @@ impl IForm for FormText
             totalY = 0
             visit t, idx: tokens
             {
-                pathl  := paths[idx * 2]
-                pathl1 := paths[(idx * 2) + 1]
+                pathl  := &paths[idx * 2]
+                pathl1 := &paths[(idx * 2) + 1]
 
                 assume face.getStringOutline(pathl, t, acast fSize)
                 pathl.flatten(painter.curState.paintQuality)
@@ -227,8 +227,8 @@ impl IForm for FormText
 
         for i := 0; i < paths.count; i += 2
         {
-            pathl  := paths[i]
-            pathl1 := paths[i + 1]
+            pathl  := &paths[i]
+            pathl1 := &paths[i + 1]
 
             wt := (pathl1.bvMax.x - pathl1.bvMin.x) * z
             ht := (pathl1.bvMax.y - pathl1.bvMin.y) * z

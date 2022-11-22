@@ -11,7 +11,7 @@ using Core
     var x: TT
     discard try CommandLine.parse(&x, @["-val0", @""a""@, @""b and c""@, "cc and dd"])
     @assert(x.val0.count == 3)
-    @assert(dref x.val0[0] == "a")
-    @assert(dref x.val0[1] == "b and c")
-    @assert(dref x.val0[2] == "cc and dd")
+    @assert(x.val0[0] == "a")
+    @assert(x.val0[1] == "b and c")
+    @assert(x.val0[2] == "cc and dd")
 }

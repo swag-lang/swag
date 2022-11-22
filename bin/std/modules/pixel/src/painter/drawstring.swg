@@ -383,7 +383,7 @@ impl Painter
 
             loop idx: l.start..<l.end
             {
-                c := text.chunks[idx]
+                c := &text.chunks[idx]
                 c.pos.x = x1
                 if c.isSpace and format.horzAlignment == .Justify and idxLine != lines.count - 1 and !l.hasEol
                     x1 += (pos.width - l.width) / l.countSpaces

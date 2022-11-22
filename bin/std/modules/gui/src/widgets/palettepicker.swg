@@ -87,7 +87,7 @@ impl IWnd for PalettePicker
         case MousePressed:
             if evt.button == .Left and hotIdx != Swag.S32.Max
             {
-                selectedColor = dref pal[hotIdx]
+                selectedColor = pal[hotIdx]
                 sigChanged.call(self)
                 evt.accepted = true
             }
