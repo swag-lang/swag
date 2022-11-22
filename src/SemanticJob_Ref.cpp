@@ -117,7 +117,18 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
 
     SWAG_ASSERT(child->resolvedSymbolName);
     if (child->resolvedSymbolName->kind == SymbolKind::Function)
-        return resolveMakePointerLambda(context);
+    {
+        // For a function, if no parameters, then this is for a lambda
+        auto back = child->childs.back();
+        if (back->kind != AstNodeKind::FuncCall)
+            return resolveMakePointerLambda(context);
+
+        // Otherwise we want to take the address of the return value
+        // Only for a reference
+        typeInfo = TypeManager::concreteType(typeInfo);
+        if (!typeInfo->isPointerRef())
+            return context->report(node, Fmt(Err(Err0114), typeInfo->getDisplayNameC()));
+    }
 
     SWAG_CHECK(checkCanTakeAddress(context, child));
     SWAG_CHECK(checkIsConcrete(context, child));

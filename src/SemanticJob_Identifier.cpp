@@ -1244,9 +1244,12 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             // This is for a lambda
             if (identifier->parent->parent->kind == AstNodeKind::MakePointer || identifier->parent->parent->kind == AstNodeKind::MakePointerLambda)
             {
-                // The makePointer will deal with the real make lambda thing
-                identifier->flags |= AST_NO_BYTECODE;
-                break;
+                if (!identifier->callParameters)
+                {
+                    // The makePointer will deal with the real make lambda thing
+                    identifier->flags |= AST_NO_BYTECODE;
+                    break;
+                }
             }
         }
 
@@ -1672,8 +1675,6 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         {
             if (isFunctionButNotACall(context, node, symbol))
             {
-                if (callParameters)
-                    return context->report(callParameters, Err(Err0114));
                 oneOverload.symMatchContext.result = MatchResult::Ok;
                 forcedFine                         = true;
             }
