@@ -479,18 +479,21 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
         if (arrayType->flags & TYPEINFO_STRUCT_IS_TUPLE)
             return context->report(arrayNode->access, Err(Err0482));
+
+        arrayNode->typeInfo = arrayType;
+
+        // In fact we are taking the address of an operator [] call result
         if (arrayNode->parent->parent->kind == AstNodeKind::MakePointer)
-            return context->report(arrayNode->parent->parent, Err(Err0480));
+        {
+            SWAG_CHECK(resolveArrayPointerDeRef(context));
+            if (context->result != ContextResult::Done)
+                return true;
+            arrayNode->typeInfo = TypeManager::concreteType(arrayNode->typeInfo);
+        }
 
         // Only the top level ArrayPointerIndex node will deal with the call
-        if (arrayNode->parent->kind == AstNodeKind::ArrayPointerIndex)
+        if (arrayNode->parent->kind != AstNodeKind::ArrayPointerIndex)
         {
-            arrayNode->typeInfo = arrayType;
-        }
-        else
-        {
-            arrayNode->typeInfo = arrayType;
-
             // Flatten all indices. self and value will be set before the call later
             // Can be already done, so do not overwrite
             // :StructFlatParamsDone
