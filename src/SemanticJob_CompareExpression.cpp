@@ -291,6 +291,11 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     SWAG_ASSERT(leftTypeInfo);
     SWAG_ASSERT(rightTypeInfo);
 
+    if (leftTypeInfo->isPointerRef() && setUnRef(left))
+        leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
+    if (rightTypeInfo->isPointerRef() && setUnRef(right))
+        rightTypeInfo = TypeManager::concretePtrRef(rightTypeInfo);
+
     // Keep it generic if it's generic on one side
     if (leftTypeInfo->kind == TypeInfoKind::Generic)
     {

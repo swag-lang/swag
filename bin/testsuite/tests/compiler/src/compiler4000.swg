@@ -1,15 +1,15 @@
-#global skip
-// YOUOU 4000 !!!
+// YOUHOU 4000 !!!
 struct B
 {
     x: s32 = 666
 }
 
+var G = 0
 impl B
 {
     mtd opEquals(v: s32)->bool
     {
-        @print("XX")
+        G = 1
         return v == x
     }
 }
@@ -27,9 +27,10 @@ impl A
     }
 }
 
-#[Swag.PrintBc]
+//#[Swag.PrintBc]
 #test
 {
     var a: A
     @assert(a[0] == 666)
+    @assert(G == 1)
 }
