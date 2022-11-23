@@ -266,19 +266,35 @@ impl RenderOgl
         offset += @sizeof(Vector2)
         glVertexAttribPointer(2, 4, GL_UNSIGNED_BYTE, GL_TRUE, @sizeof(VertexLayout), offset)
         offset += @sizeof(u32)
-        glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+
+        // aa
+        glVertexAttribPointer(3,  4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector4)
-        glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        glVertexAttribPointer(4,  4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector4)
-        glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        glVertexAttribPointer(5,  4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector4)
-        glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        glVertexAttribPointer(6,  4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector4)
-        glVertexAttribPointer(7, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        glVertexAttribPointer(7,  4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector4)
-        glVertexAttribPointer(8, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        glVertexAttribPointer(8,  4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
         offset += @sizeof(Vector4)
-        glVertexAttribPointer(9, 1, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        glVertexAttribPointer(9,  4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        offset += @sizeof(Vector4)
+        glVertexAttribPointer(10, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        offset += @sizeof(Vector4)
+        glVertexAttribPointer(11, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        offset += @sizeof(Vector4)
+        glVertexAttribPointer(12, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        offset += @sizeof(Vector4)
+        glVertexAttribPointer(13, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        offset += @sizeof(Vector4)
+        glVertexAttribPointer(14, 4, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
+        offset += @sizeof(Vector4)
+
+        // aanum
+        glVertexAttribPointer(15, 1, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
 
         // Generate predefined textures
         whiteTexture = generateTexture(@[1], 1, 1)
@@ -798,15 +814,11 @@ impl RenderOgl
         setBlendingMode(BlendingMode.Alpha)
         glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_FALSE)
 
-        loop i: 10
+        loop i: 16
             glEnableVertexAttribArray(cast(GLuint) i)
-
         visit cmd, cmdIdx: dc.commandBuffer
-        {
             executeCommand(dc, cmd, cmdIdx, width, height)
-        }
-
-        loop i: 10
+        loop i: 16
             glDisableVertexAttribArray(cast(GLuint) i)
     }
 

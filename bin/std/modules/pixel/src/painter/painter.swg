@@ -7,13 +7,15 @@ enum DefaultShaderId
     Blur
 }
 
+const MaxAAEdge = 12
+
 #[Swag.Pack(1)]
 struct VertexLayout
 {
     pos:    Vector2
     uv:     Vector2
     color:  u32
-    aa:     [6] Vector4
+    aa:     [MaxAAEdge] Vector4
     aanum:  f32
 }
 
@@ -326,7 +328,7 @@ impl Painter
                     }
                 }
 
-                if idx != 6
+                if idx != MaxAAEdge
                 {
                     ptr.aa[idx].x = start.x
                     ptr.aa[idx].y = start.y

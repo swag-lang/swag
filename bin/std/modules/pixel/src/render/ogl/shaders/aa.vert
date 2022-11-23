@@ -1,16 +1,22 @@
 #version 330 core
 #include base
 
-out vec4        vcolor;
-out vec2        vuv0;
-out vec2        vuv1;
-out vec4        vaa0;
-out vec4        vaa1;
-out vec4        vaa2;
-out vec4        vaa3;
-out vec4        vaa4;
-out vec4        vaa5;
-out float       vaanum;
+out vec4  vcolor;
+out vec2  vuv0;
+out vec2  vuv1;
+out vec4  vaa0;
+out vec4  vaa1;
+out vec4  vaa2;
+out vec4  vaa3;
+out vec4  vaa4;
+out vec4  vaa5;
+out vec4  vaa6;
+out vec4  vaa7;
+out vec4  vaa8;
+out vec4  vaa9;
+out vec4  vaa10;
+out vec4  vaa11;
+out float vaanum;
 
 vec4 computeTransformAA(vec4 aa)
 {
@@ -34,6 +40,18 @@ void transformAA()
     vaa4 = computeTransformAA(aa4);
     if(vaanum < 5.5) return;
     vaa5 = computeTransformAA(aa5);
+    if(vaanum < 6.5) return;
+    vaa6 = computeTransformAA(aa6);
+    if(vaanum < 7.5) return;
+    vaa7 = computeTransformAA(aa7);
+    if(vaanum < 8.5) return;
+    vaa8 = computeTransformAA(aa8);
+    if(vaanum < 9.5) return;
+    vaa9 = computeTransformAA(aa9);
+    if(vaanum < 10.5) return;
+    vaa10 = computeTransformAA(aa10);
+    if(vaanum < 11.5) return;
+    vaa11 = computeTransformAA(aa11);
 }
 
 void main()

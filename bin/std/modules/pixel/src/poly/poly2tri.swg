@@ -57,11 +57,12 @@ impl Edge
 
 public struct Triangle
 {
-    constrainedEdge:   [3] bool
-    delaunayEdge:      [3] bool
-    points:            [3] *Point
-    neighbors:         [3] *Triangle
-    interior:          bool
+    constrainedEdge:    [3] bool
+    delaunayEdge:       [3] bool
+    points:             [3] *Point
+    neighbors:          [3] *Triangle
+    interior:           bool
+    aaEdges:            Array'{Math.Vector2, Math.Vector2}
 }
 
 impl Triangle

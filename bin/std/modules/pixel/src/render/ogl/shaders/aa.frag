@@ -10,6 +10,12 @@ in vec4     vaa2;
 in vec4     vaa3;
 in vec4     vaa4;
 in vec4     vaa5;
+in vec4     vaa6;
+in vec4     vaa7;
+in vec4     vaa8;
+in vec4     vaa9;
+in vec4     vaa10;
+in vec4     vaa11;
 in float    vaanum;
 in float    bcopymode;
 
@@ -65,6 +71,18 @@ float computeAlphaEdgesAA()
     norm = min(norm, computeAlphaAA(vaa4));
     if(vaanum < 5.5) return norm;
     return min(norm, computeAlphaAA(vaa5));
+    if(vaanum < 6.5) return norm;
+    return min(norm, computeAlphaAA(vaa6));
+    if(vaanum < 7.5) return norm;
+    return min(norm, computeAlphaAA(vaa7));
+    if(vaanum < 8.5) return norm;
+    return min(norm, computeAlphaAA(vaa8));
+    if(vaanum < 9.5) return norm;
+    return min(norm, computeAlphaAA(vaa9));
+    if(vaanum < 10.5) return norm;
+    return min(norm, computeAlphaAA(vaa10));
+    if(vaanum < 11.5) return norm;
+    return min(norm, computeAlphaAA(vaa11));
 }
 
 void main()

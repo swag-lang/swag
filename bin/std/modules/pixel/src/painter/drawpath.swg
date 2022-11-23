@@ -756,6 +756,7 @@ impl Painter
         setTexture0(bvMin, bvMax, brush)
         resetTextureFont()
 
+        dirtyAA := false
         if p.triangles.count == 0
         {
             t.triangulate()
@@ -775,6 +776,7 @@ impl Painter
 
             t.points.clear()
             t.map.clear()
+            dirtyAA = true
         }
 
         t.clear()
@@ -783,10 +785,11 @@ impl Painter
         var done:       HashSet'*Poly2Tri.Triangle
         toProcess.reserve(p.triangles.count)
 
+        // Compute the border of the polygon
         var border: Array'{Math.Vector2, Math.Vector2}
-        if curState.paintParams & .Antialiased
+        if (curState.paintParams & .Antialiased) and dirtyAA
         {
-            /*visit tri: p.triangles
+            visit tri: p.triangles
             {
                 loop e: 3
                 {
@@ -806,7 +809,7 @@ impl Painter
                         }
                     }
                 }
-            }*/
+            }
         }
 
         visit tri, ii: p.triangles
@@ -819,56 +822,71 @@ impl Painter
 
             if curState.paintParams & .Antialiased
             {
-                primPtr := vertexBuffer.buffer + prim
-
-                /*const D = 1.0
-                visit e1: border
+                // Just use stored edges
+                if !dirtyAA
                 {
-                    if e1.item0.distanceSquared(v0) < D or e1.item0.distanceSquared(v1) < D or e1.item0.distanceSquared(v2) < D or 
-                       e1.item1.distanceSquared(v0) < D or e1.item1.distanceSquared(v1) < D or e1.item1.distanceSquared(v2) < D
-                    {
-                        addEdgeAA(prim, e1.item0, e1.item1)
-                        if primPtr.aanum == 6
-                            break
-                    }
-                }*/
+                    visit e: tri.aaEdges
+                        addEdgeAA(prim, e.item0, e.item1)
+                }
 
-                done.clear()
-                toProcess.clear()
-
-                toProcess.add(tri)
-                done.add(tri)
-
-                for i := 0; i < toProcess.count and primPtr.aanum < 6; i += 1
+                // Compute aa edges
+                else
                 {
-                    tri0 := toProcess[i]
+                    primPtr := vertexBuffer.buffer + prim
 
-                    v0 = Vector2{cast(f32) tri0.points[0].x, cast(f32) tri0.points[0].y}
-                    v1 = Vector2{cast(f32) tri0.points[1].x, cast(f32) tri0.points[1].y}
-                    v2 = Vector2{cast(f32) tri0.points[2].x, cast(f32) tri0.points[2].y}
-
-                    loop e: 3
+                    const D = 4.000
+                    visit e1: border
                     {
-                        neighbor := tri0.neighbors[e]
-                        if neighbor
+                        if e1.item0.distanceSquared(v0) <= D or e1.item0.distanceSquared(v1) <= D or e1.item0.distanceSquared(v2) <= D or
+                           e1.item1.distanceSquared(v0) <= D or e1.item1.distanceSquared(v1) <= D or e1.item1.distanceSquared(v2) <= D
                         {
-                            if !done.contains(neighbor)
-                            {
-                                toProcess.add(neighbor)
-                                done.add(neighbor)
-                            }
+                            addEdgeAA(prim, e1.item0, e1.item1)
+                            tri.aaEdges.add(@{e1.item0, e1.item1})
+                            if primPtr.aanum == MaxAAEdge
+                                break
                         }
+                    }
 
-                        if tri0.constrainedEdge[e]
+                    done.clear()
+                    toProcess.clear()
+
+                    toProcess.add(tri)
+                    done.add(tri)
+
+                    for i := 0; i < toProcess.count and primPtr.aanum < MaxAAEdge; i += 1
+                    {
+                        tri0 := toProcess[i]
+
+                        v0 = Vector2{cast(f32) tri0.points[0].x, cast(f32) tri0.points[0].y}
+                        v1 = Vector2{cast(f32) tri0.points[1].x, cast(f32) tri0.points[1].y}
+                        v2 = Vector2{cast(f32) tri0.points[2].x, cast(f32) tri0.points[2].y}
+
+                        loop e: 3
                         {
-                            switch e
+                            neighbor := tri0.neighbors[e]
+                            if neighbor
                             {
-                            case 0:
-                                addEdgeAA(prim, v1, v2)
-                            case 1:
-                                addEdgeAA(prim, v0, v2)
-                            case 2:
-                                addEdgeAA(prim, v0, v1)
+                                if !done.contains(neighbor)
+                                {
+                                    toProcess.add(neighbor)
+                                    done.add(neighbor)
+                                }
+                            }
+
+                            if tri0.constrainedEdge[e]
+                            {
+                                switch e
+                                {
+                                case 0:
+                                    addEdgeAA(prim, v1, v2)
+                                    tri.aaEdges.add(@{v1, v2})
+                                case 1:
+                                    addEdgeAA(prim, v0, v2)
+                                    tri.aaEdges.add(@{v0, v2})
+                                case 2:
+                                    addEdgeAA(prim, v0, v1)
+                                    tri.aaEdges.add(@{v0, v1})
+                                }
                             }
                         }
                     }
