@@ -783,7 +783,33 @@ impl Painter
         var done:       HashSet'*Poly2Tri.Triangle
         toProcess.reserve(p.triangles.count)
 
-        visit tri: p.triangles
+        var border: Array'{Math.Vector2, Math.Vector2}
+        if curState.paintParams & .Antialiased
+        {
+            /*visit tri: p.triangles
+            {
+                loop e: 3
+                {
+                    v0 := Vector2{cast(f32) tri.points[0].x, cast(f32) tri.points[0].y}
+                    v1 := Vector2{cast(f32) tri.points[1].x, cast(f32) tri.points[1].y}
+                    v2 := Vector2{cast(f32) tri.points[2].x, cast(f32) tri.points[2].y}
+                    if tri.constrainedEdge[e]
+                    {
+                        switch e
+                        {
+                        case 0:
+                            border.add(@{v1, v2})
+                        case 1:
+                            border.add(@{v0, v2})
+                        case 2:
+                            border.add(@{v0, v1})
+                        }
+                    }
+                }
+            }*/
+        }
+
+        visit tri, ii: p.triangles
         {
             Debug.assert(tri.interior)
             v0 := Vector2{cast(f32) tri.points[0].x, cast(f32) tri.points[0].y}
@@ -793,13 +819,26 @@ impl Painter
 
             if curState.paintParams & .Antialiased
             {
+                primPtr := vertexBuffer.buffer + prim
+
+                /*const D = 1.0
+                visit e1: border
+                {
+                    if e1.item0.distanceSquared(v0) < D or e1.item0.distanceSquared(v1) < D or e1.item0.distanceSquared(v2) < D or 
+                       e1.item1.distanceSquared(v0) < D or e1.item1.distanceSquared(v1) < D or e1.item1.distanceSquared(v2) < D
+                    {
+                        addEdgeAA(prim, e1.item0, e1.item1)
+                        if primPtr.aanum == 6
+                            break
+                    }
+                }*/
+
                 done.clear()
                 toProcess.clear()
 
                 toProcess.add(tri)
                 done.add(tri)
 
-                primPtr := vertexBuffer.buffer + prim
                 for i := 0; i < toProcess.count and primPtr.aanum < 6; i += 1
                 {
                     tri0 := toProcess[i]
