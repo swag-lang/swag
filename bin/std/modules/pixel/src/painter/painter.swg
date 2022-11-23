@@ -308,36 +308,45 @@ impl Painter
         return vertexBuffer.count - 3
     }
 
-    private mtd addEdgeAA(tri: uint, start, end: Vector2)
+    #[Swag.Discardable]
+    private mtd addEdgeAA(tri: uint, start, end: Vector2)->bool
     {
-        loop i: 3
+        ptr := vertexBuffer.buffer + tri
+        if ptr.aanum == MaxAAEdge
+            return false
+
+        idx := cast(s32) ptr.aanum
+        loop i: idx
         {
-            ptr := vertexBuffer.buffer + tri + i
-            idx := cast(s32) ptr.aanum
-
-            scope here
+            if Math.isEqualEpsilon(ptr.aa[i].x, start.x) and
+               Math.isEqualEpsilon(ptr.aa[i].y, start.y) and
+               Math.isEqualEpsilon(ptr.aa[i].z, end.x) and
+               Math.isEqualEpsilon(ptr.aa[i].w, end.y)
             {
-                loop j: cast(s32) ptr.aanum
-                {
-                    if  Math.isEqualEpsilon(ptr.aa[j].x, start.x) and
-                        Math.isEqualEpsilon(ptr.aa[j].y, start.y) and
-                        Math.isEqualEpsilon(ptr.aa[j].z, end.x) and
-                        Math.isEqualEpsilon(ptr.aa[j].w, end.y)
-                    {
-                        break here
-                    }
-                }
-
-                if idx != MaxAAEdge
-                {
-                    ptr.aa[idx].x = start.x
-                    ptr.aa[idx].y = start.y
-                    ptr.aa[idx].z = end.x
-                    ptr.aa[idx].w = end.y
-                    ptr.aanum += 1
-                }
+                return false
             }
         }
+
+        ptr.aa[idx].x = start.x
+        ptr.aa[idx].y = start.y
+        ptr.aa[idx].z = end.x
+        ptr.aa[idx].w = end.y
+        ptr.aanum += 1
+
+        ptr += 1
+        ptr.aa[idx].x = start.x
+        ptr.aa[idx].y = start.y
+        ptr.aa[idx].z = end.x
+        ptr.aa[idx].w = end.y
+        ptr.aanum += 1
+
+        ptr += 1
+        ptr.aa[idx].x = start.x
+        ptr.aa[idx].y = start.y
+        ptr.aa[idx].z = end.x
+        ptr.aa[idx].w = end.y
+        ptr.aanum += 1
+        return true
     }
 
     #[Swag.Inline]

@@ -840,8 +840,8 @@ impl Painter
                         if e1.item0.distanceSquared(v0) <= D or e1.item0.distanceSquared(v1) <= D or e1.item0.distanceSquared(v2) <= D or
                            e1.item1.distanceSquared(v0) <= D or e1.item1.distanceSquared(v1) <= D or e1.item1.distanceSquared(v2) <= D
                         {
-                            addEdgeAA(prim, e1.item0, e1.item1)
-                            tri.aaEdges.add(@{e1.item0, e1.item1})
+                            if addEdgeAA(prim, e1.item0, e1.item1)
+                                tri.aaEdges.add(@{e1.item0, e1.item1})
                             if primPtr.aanum == MaxAAEdge
                                 break
                         }
@@ -878,14 +878,14 @@ impl Painter
                                 switch e
                                 {
                                 case 0:
-                                    addEdgeAA(prim, v1, v2)
-                                    tri.aaEdges.add(@{v1, v2})
+                                    if addEdgeAA(prim, v1, v2)
+                                        tri.aaEdges.add(@{v1, v2})
                                 case 1:
-                                    addEdgeAA(prim, v0, v2)
-                                    tri.aaEdges.add(@{v0, v2})
+                                    if addEdgeAA(prim, v0, v2)
+                                        tri.aaEdges.add(@{v0, v2})
                                 case 2:
-                                    addEdgeAA(prim, v0, v1)
-                                    tri.aaEdges.add(@{v0, v1})
+                                    if addEdgeAA(prim, v0, v1)
+                                        tri.aaEdges.add(@{v0, v1})
                                 }
                             }
                         }
