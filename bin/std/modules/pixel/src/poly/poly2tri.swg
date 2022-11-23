@@ -17,7 +17,7 @@ enum Orientation
 
 public struct Point
 {
-    x, y:       f64
+    x, y:      f64
     edgeList:  Array'*Edge
 }
 
