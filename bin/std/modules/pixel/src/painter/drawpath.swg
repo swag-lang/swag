@@ -781,9 +781,9 @@ impl Painter
 
         t.clear()
 
-        var toProcess:  Array'*Poly2Tri.Triangle
+        /*var toProcess:  Array'*Poly2Tri.Triangle
         var done:       HashSet'*Poly2Tri.Triangle
-        toProcess.reserve(p.triangles.count)
+        toProcess.reserve(p.triangles.count)*/
 
         // Compute the border of the polygon
         var border: Array'{Math.Vector2, Math.Vector2}
@@ -847,7 +847,7 @@ impl Painter
                         }
                     }
 
-                    done.clear()
+/*                    done.clear()
                     toProcess.clear()
 
                     toProcess.add(tri)
@@ -889,7 +889,7 @@ impl Painter
                                 }
                             }
                         }
-                    }
+                    }*/
                 }
             }
         }
