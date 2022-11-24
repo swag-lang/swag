@@ -245,11 +245,11 @@ impl IForm for FormText
             painter.scaleTransform(z, z)
             painter.translateTransform(x0, y0 - (pathl1.bvMin.y * z))
             painter.fillPath(pathl1, borderColor)
-            if borderColor.a and !quickMode
-                painter.drawPathList(pathl1, borderColor, 4)
+            //if borderColor.a and !quickMode
+            //    painter.drawPathList(pathl1, borderColor, 4)
             painter.fillPath(pathl, backColor)
-            if backColor.a and !quickMode
-                painter.drawPathList(pathl, backColor, 4)
+            //if backColor.a and !quickMode
+            //    painter.drawPathList(pathl, backColor, 4)
             painter.popState()
 
             y0 += ht + (lineSpacing * z)

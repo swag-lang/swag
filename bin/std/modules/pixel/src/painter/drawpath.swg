@@ -1113,27 +1113,77 @@ public impl Painter
         var t:      Poly2Tri.Tesselate
         var flush:  *LinePath
 
+        // Everything in the cache ?
         serial := 0
+        dirty := false
         visit p: pathList.paths
         {
             if (p.polygon.isClockwise or serial != p.serial) and flush
             {
+                if !flush.triangles.count
+                {
+                    dirty = true
+                    break
+                }
                 serial = p.serial
-                triangulate(&t, flush, pathList.bvMin, pathList.bvMax, brush)
                 flush = null
             }
 
             if p.polygon.points.count >= 3
             {
                 flush = p
-                t.startPolyLine()
-                loop i: 0..p.polygon.points.count-2
+            }
+        }
+
+        if flush and !flush.triangles.count
+            dirty = true
+
+        serial = 0
+        flush = null
+
+        // If everything has been computed, then just paint them (no need to generate polylines as 'triangulate' will not use them)
+        if !dirty
+        {
+            visit p: pathList.paths
+            {
+                if (p.polygon.isClockwise or serial != p.serial) and flush
                 {
-                    pt := p.polygon.getPoint(i)
-                    t.addPoint(cast(f64) pt.x, cast(f64) pt.y)
+                    serial = p.serial
+                    triangulate(&t, flush, pathList.bvMin, pathList.bvMax, brush)
+                    flush = null
                 }
 
-                t.endPolyLine()
+                if p.polygon.points.count >= 3
+                {
+                    flush = p
+                }
+            }
+        }
+
+        // Full compute (triangulation)
+        else
+        {
+            visit p: pathList.paths
+            {
+                if (p.polygon.isClockwise or serial != p.serial) and flush
+                {
+                    serial = p.serial
+                    triangulate(&t, flush, pathList.bvMin, pathList.bvMax, brush)
+                    flush = null
+                }
+
+                if p.polygon.points.count >= 3
+                {
+                    flush = p
+                    t.startPolyLine()
+                    loop i: 0..p.polygon.points.count-2
+                    {
+                        pt := p.polygon.getPoint(i)
+                        t.addPoint(cast(f64) pt.x, cast(f64) pt.y)
+                    }
+
+                    t.endPolyLine()
+                }
             }
         }
 
