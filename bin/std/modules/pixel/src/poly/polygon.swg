@@ -189,20 +189,18 @@ impl Polygon
         var result: retval
         if !points.count
             return result
-        Memory.pushTempAllocator()
-        {
-            var trf: Clipper.Transform
-            trf.strictSimple = true
 
-            // Register path
-            var path: Clipper.ClipperPath
-            visit pt: points
-                path.add(Clipper.IntPoint{cast(s64) (pt.x * ClipperScaleCoords), cast(s64) (pt.y * ClipperScaleCoords)})
-            trf.addPath(&path, Clipper.PolyType.Subject)
+        var trf: Clipper.Transform
+        trf.strictSimple = true
 
-            // Compute
-            trf.execute(Clipper.ClipType.Union, &result, Clipper.PolyFillType.NonZero, Clipper.PolyFillType.NonZero)
-        }
+        // Register path
+        var path: Clipper.ClipperPath
+        visit pt: points
+            path.add(Clipper.IntPoint{cast(s64) (pt.x * ClipperScaleCoords), cast(s64) (pt.y * ClipperScaleCoords)})
+        trf.addPath(&path, Clipper.PolyType.Subject)
+
+        // Compute
+        trf.execute(Clipper.ClipType.Union, &result, Clipper.PolyFillType.NonZero, Clipper.PolyFillType.NonZero)
 
         return result
     }

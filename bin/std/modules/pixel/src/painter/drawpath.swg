@@ -787,28 +787,22 @@ impl Painter
 
         // Compute the border of the polygon
         var border: Array'{Math.Vector2, Math.Vector2}
+        border.reserve(p.triangles.count)
         if (curState.paintParams & .Antialiased) and dirtyAA
         {
             visit tri: p.triangles
             {
-                loop e: 3
-                {
-                    v0 := Vector2{cast(f32) tri.points[0].x, cast(f32) tri.points[0].y}
-                    v1 := Vector2{cast(f32) tri.points[1].x, cast(f32) tri.points[1].y}
-                    v2 := Vector2{cast(f32) tri.points[2].x, cast(f32) tri.points[2].y}
-                    if tri.constrainedEdge[e]
-                    {
-                        switch e
-                        {
-                        case 0:
-                            border.add(@{v1, v2})
-                        case 1:
-                            border.add(@{v0, v2})
-                        case 2:
-                            border.add(@{v0, v1})
-                        }
-                    }
-                }
+                if !tri.constrainedEdge[0] and !tri.constrainedEdge[1] and !tri.constrainedEdge[2]
+                    continue
+                v0 := Vector2{cast(f32) tri.points[0].x, cast(f32) tri.points[0].y}
+                v1 := Vector2{cast(f32) tri.points[1].x, cast(f32) tri.points[1].y}
+                v2 := Vector2{cast(f32) tri.points[2].x, cast(f32) tri.points[2].y}
+                if tri.constrainedEdge[0]
+                    border.add(@{v1, v2})
+                if tri.constrainedEdge[1]
+                    border.add(@{v0, v2})
+                if tri.constrainedEdge[2]
+                    border.add(@{v0, v1})
             }
         }
 
