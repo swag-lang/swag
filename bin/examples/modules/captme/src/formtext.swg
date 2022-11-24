@@ -146,7 +146,7 @@ impl IForm for FormText
 
     mtd paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
     {
-        bSize := adaptSize(borderSize, MinTextBorderSize, MaxTextBorderSize, 1, quickMode, 2, 5)
+        bSize := adaptSize(borderSize, MinTextBorderSize, MaxTextBorderSize, 1, quickMode, 2, 4)
         fSize := adaptSize(fontSize, MinFontSize, MaxFontSize, 1, quickMode, 24, 48)
         sSize := adaptSize(boldSize, MinBoldSize, MaxBoldSize, 1, quickMode, 1, 2)
 
@@ -245,7 +245,11 @@ impl IForm for FormText
             painter.scaleTransform(z, z)
             painter.translateTransform(x0, y0 - (pathl1.bvMin.y * z))
             painter.fillPath(pathl1, borderColor)
+            if borderColor.a and !quickMode
+                painter.drawPathList(pathl1, borderColor, 4)
             painter.fillPath(pathl, backColor)
+            if backColor.a and !quickMode
+                painter.drawPathList(pathl, backColor, 4)
             painter.popState()
 
             y0 += ht + (lineSpacing * z)
