@@ -35,15 +35,18 @@ public impl EditDlg
     }
 
     // Creates the message box
-    func createMultiLine(from: *Surface, heightEdit = 100)->*EditDlg
+    func createMultiLine(from: *Surface, heightEdit = 150)->*EditDlg
     {
         dlg := Wnd.create'EditDlg()
         metrics := from.wnd.getThemeMetrics()
-        srf := dlg.createSurface(from, 0, 0, 450, 180 + heightEdit)
+        srf := dlg.createSurface(from, 0, 0, 500, 180 + heightEdit, .Sizeable)
+        srf.minSize.x = 500
+        srf.minSize.y = 180 + heightEdit
 
         dlg.richEdit = RichEditCtrl.create(srf.getView(), @{0, 0, 0, heightEdit})
         with dlg.richEdit
         {
+            .anchorStyle = .Height
             .dockStyle = .Bottom
             .margin = metrics.dialog_Padding
             .richEdFlags |= .AutoLoseFocus
@@ -97,7 +100,11 @@ public impl EditDlg
                 richEdit.margin.y = 0
             pos := surface.position
             pos.height += height
+            surface.minSize.y += height
+
+            richEdit.anchorStyle = .None
             surface.setPosition(pos)
+            richEdit.anchorStyle = .Height
         }
         else
         {
