@@ -98,6 +98,36 @@ public impl TypeFace
         return tf
     }
 
+    // Convert a rune to its outline, at a given size
+    #[Swag.Discardable]
+    mtd getRuneOutline(pathList: *LinePathList, c: rune, size: u32, embolden: u32 = 0)->f32 throw
+    {
+        var itf: FT_Outline_Funcs
+
+        pathList.clear()
+        itf.move_to  = cast(*void) @mkcallback(&moveTo)
+        itf.line_to  = cast(*void) @mkcallback(&lineTo)
+        itf.conic_to = cast(*void) @mkcallback(&conicTo)
+        itf.cubic_to = cast(*void) @mkcallback(&bezierTo)
+
+        try FT_Set_Pixel_Sizes(face, 0, size)
+
+        try FT_Load_Char(face, cast(FT_ULong) c, FT_LOAD_NO_BITMAP)
+        if embolden
+            try FT_Outline_Embolden(&face.glyph.outline, cast(FT_Pos) embolden * 64)
+
+        prevIdx := pathList.paths.count
+        try FT_Outline_Decompose(&face.glyph.outline, &itf, pathList)
+
+        if prevIdx != pathList.paths.count
+        {
+            loop i: prevIdx..pathList.paths.count-1
+                pathList.paths[i].isClosed = true
+        }
+
+        return face.glyph.advance.x / 64.0
+    }
+
     // Convert a string to its outline, at a given size
     mtd getStringOutline(pathList: *LinePathList, text: string, size: u32, embolden: u32 = 0) throw
     {

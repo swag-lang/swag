@@ -34,6 +34,22 @@ impl HashTable
         free()
     }
 
+    mtd opPostCopy()
+    {
+        if table
+        {
+            oldTable := table
+            oldCapacity := capacity
+
+            table = null
+            capacity = 0
+            reserve(oldCapacity)
+
+            loop i: capacity
+                table[i] = oldTable[i]
+        }
+    }
+
     #[Macro]
     mtdc(ptr: bool) opVisit(stmt: code)
     {
@@ -88,7 +104,7 @@ impl HashTable
         {
             loop i: capacity
             {
-                if table[i].hash >= HASH_FIRST
+                if table[i].hash >= HASH_DELETED
                 {
                     @drop(&table[i].key)
                     @drop(&table[i].value)
@@ -133,9 +149,11 @@ impl HashTable
         capacity = reqCapacity
         loop i: oldCapacity
         {
-            if oldTable[i].hash >= HASH_FIRST
-            {
+            h := oldTable[i].hash
+            if h >= HASH_FIRST
                 add(self, oldTable[i].key, oldTable[i].value)
+            if h >= HASH_DELETED
+            {
                 @drop(&oldTable[i].key)
                 @drop(&oldTable[i].value)
             }
@@ -166,11 +184,20 @@ impl HashTable
             index = (index + 1) % capacity
         }
 
-        if table[index].hash == HASH_DELETED
-            deleted -= 1
+        if table[index].hash == HASH_FREE
+        {
+            table[index].key =,nodrop key
+            table[index].value =,nodrop value
+        }
+        else
+        {
+            if table[index].hash == HASH_DELETED
+                deleted -= 1
+            table[index].key = key
+            table[index].value = value
+        }
+
         table[index].hash = hashVal
-        table[index].key = key
-        table[index].value = value
         count += 1
         return table + index
     }
@@ -241,23 +268,21 @@ impl HashTable
         // Drop the key and the value if necessary
         if count or deleted
         {
-            loop capacity
+            loop i: capacity
             {
-                hashval := table[@index].hash
-                #if Reflection.hasDrop(@typeof(K)) or Reflection.hasDrop(@typeof(V))
+                hashval := table[i].hash
+
+                if hashval >= HASH_DELETED
                 {
-                    if hashval >= HASH_FIRST
-                    {
-                        @drop(&table[@index].key)
-                        @drop(&table[@index].value)
-                    }
+                    @drop(&table[i].key)
+                    @drop(&table[i].value)
                 }
 
                 if hashval == HASH_DELETED
                     deleted -= 1
                 elif hashval >= HASH_FIRST
                     count -= 1
-                table[@index].hash = HASH_FREE
+                table[i].hash = HASH_FREE
 
                 // We are done if there's no more valid value, and no more deleted value
                 if !count and !deleted
