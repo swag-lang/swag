@@ -854,6 +854,8 @@ public impl Painter
     // Draw the line path
     mtd drawPathList(pathList: *LinePathList, pen: Pen, mode: DrawPathListMode = .Separate)
     {
+        if !pathList.paths.count
+            return
         if mode == .Separate
         {
             visit p: pathList.paths
@@ -888,6 +890,8 @@ public impl Painter
     // Draw the line path
     mtd drawPathList(pathList: *LinePathList, color: Color, penSize: f32, mode: DrawPathListMode = .Separate)
     {
+        if !pathList.paths.count
+            return
         sharedSolidPen.brush.type = .SolidColor
         sharedSolidPen.brush.color = color
         sharedSolidPen.size = penSize
@@ -897,6 +901,8 @@ public impl Painter
     // Fill the line path
     mtd fillPath(pathList: *LinePathList, color: Color)
     {
+        if !pathList.paths.count
+            return
         sharedSolidBrush.type = .SolidColor
         sharedSolidBrush.color = color
         fillPath(pathList, sharedSolidBrush)

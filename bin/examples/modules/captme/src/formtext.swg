@@ -26,6 +26,7 @@ struct FormText
         cachefSize: f32
         totalY:     f32
         paths:      Array'LinePathList
+        cacheBorderColorA: u8
     }
 }
 
@@ -165,7 +166,8 @@ impl IForm for FormText
         if  face  != cacheFace or
             bSize != cachebSize or
             fSize != cachefSize or
-            sSize != cachesSize
+            sSize != cachesSize or
+            cacheBorderColorA != borderColor.a
         {
             isDirty = true
         }
@@ -177,6 +179,7 @@ impl IForm for FormText
             cachesSize = sSize
             cachebSize = bSize
             cachefSize = fSize
+            cacheBorderColorA = borderColor.a
 
             tokens := Tokenize.split(text, "\n"'rune)
             paths.clear()
@@ -188,6 +191,7 @@ impl IForm for FormText
                 pathl  := &paths[idx * 2]
                 pathl1 := &paths[(idx * 2) + 1]
 
+                // Back
                 assume face.getStringOutline(pathl, t, acast fSize)
                 pathl.flatten(painter.curState.paintQuality)
                 if !Math.isZeroEpsilon(sSize)
@@ -196,11 +200,18 @@ impl IForm for FormText
                     pathl.clean()
                 }
 
-                if !Math.isZeroEpsilon(bSize)
+                // Border
+                if !Math.isZeroEpsilon(bSize) and borderColor.a
                 {
-                    dref pathl1 = dref pathl
-                    pathl1.offset(bSize, JoinStyle.Round, 0.5)
+                    assume face.getStringOutline(pathl1, t, acast fSize)
+                    pathl1.flatten(painter.curState.paintQuality)
+                    pathl1.offset(sSize + bSize, JoinStyle.Round, 0.5)
                     pathl1.clean()
+                }
+                else
+                {
+                    pathl1.bvMin = pathl.bvMin
+                    pathl1.bvMax = pathl.bvMax
                 }
 
                 totalY += (pathl.bvMax.y - pathl.bvMin.y)
