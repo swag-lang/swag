@@ -471,6 +471,7 @@ public struct Tesselate
     edgeList:   Array'*Edge
     points:     Array'*Point
     nodes:      Array'*Node
+    borders:    Array'{Math.Vector2, Math.Vector2}
     front:      AdvancingFront
     head:       *Point
     tail:       *Point
@@ -1236,6 +1237,8 @@ impl Tesselate
         stack.add(triangle)
 
         triangles.clear()
+        borders.clear()
+
         while stack.count
         {
             t := stack.popBack()
@@ -1244,11 +1247,21 @@ impl Tesselate
 
             t.interior = true
             triangles.add(t)
-            loop i: 3
-            {
-                if !t.constrainedEdge[i]
-                    stack.add(t.neighbors[i])
-            }
+
+            if !t.constrainedEdge[0]
+                stack.add(t.neighbors[0])
+            else
+                borders.add(@{{acast t.points[1].x, acast t.points[1].y}, {acast t.points[2].x, acast t.points[2].y}})
+
+            if !t.constrainedEdge[1]
+                stack.add(t.neighbors[1])
+            else
+                borders.add(@{{acast t.points[0].x, acast t.points[0].y}, {acast t.points[2].x, acast t.points[2].y}})
+
+            if !t.constrainedEdge[2]
+                stack.add(t.neighbors[2])
+            else
+                borders.add(@{{acast t.points[0].x, acast t.points[0].y}, {acast t.points[1].x, acast t.points[1].y}})
         }
 
         // Remove neighbors which are not part of the mesh

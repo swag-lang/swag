@@ -34,6 +34,7 @@ public struct LinePath
     polygon:        Polygon
     points:         Array'*Poly2Tri.Point
     triangles:      Array'*Poly2Tri.Triangle
+    borders:        Array'{Math.Vector2, Math.Vector2}
 }
 
 public impl LinePath

@@ -765,8 +765,9 @@ impl Painter
             // t.triangles only contains 'interior' triangles, so we need to delete all other
             // allocated triangles to avoid a leak
 
-            p.points    = t.points
-            p.triangles = t.triangles
+            p.points    =,move t.points
+            p.triangles =,move t.triangles
+            p.borders   =,move t.borders
 
             visit tri: t.map
             {
@@ -774,7 +775,6 @@ impl Painter
                     Memory.delete(tri)
             }
 
-            t.points.clear()
             t.map.clear()
             dirtyAA = true
         }
@@ -784,27 +784,6 @@ impl Painter
         /*var toProcess:  Array'*Poly2Tri.Triangle
         var done:       HashSet'*Poly2Tri.Triangle
         toProcess.reserve(p.triangles.count)*/
-
-        // Compute the border of the polygon
-        var border: Array'{Math.Vector2, Math.Vector2}
-        border.reserve(p.triangles.count)
-        if (curState.paintParams & .Antialiased) and dirtyAA
-        {
-            visit tri: p.triangles
-            {
-                if !tri.constrainedEdge[0] and !tri.constrainedEdge[1] and !tri.constrainedEdge[2]
-                    continue
-                v0 := Vector2{cast(f32) tri.points[0].x, cast(f32) tri.points[0].y}
-                v1 := Vector2{cast(f32) tri.points[1].x, cast(f32) tri.points[1].y}
-                v2 := Vector2{cast(f32) tri.points[2].x, cast(f32) tri.points[2].y}
-                if tri.constrainedEdge[0]
-                    border.add(@{v1, v2})
-                if tri.constrainedEdge[1]
-                    border.add(@{v0, v2})
-                if tri.constrainedEdge[2]
-                    border.add(@{v0, v1})
-            }
-        }
 
         visit tri, ii: p.triangles
         {
@@ -829,7 +808,7 @@ impl Painter
                     primPtr := vertexBuffer.buffer + prim
 
                     const D = 4.000
-                    visit e1: border
+                    visit e1: p.borders
                     {
                         if e1.item0.distanceSquared(v0) <= D or e1.item0.distanceSquared(v1) <= D or e1.item0.distanceSquared(v2) <= D or
                            e1.item1.distanceSquared(v0) <= D or e1.item1.distanceSquared(v1) <= D or e1.item1.distanceSquared(v2) <= D
