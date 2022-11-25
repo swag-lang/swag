@@ -1186,6 +1186,13 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                     DbgTypeIndex typeIdx;
                     switch (typeParam->kind)
                     {
+                    case TypeInfoKind::Struct:
+                        if (cc.structByRegister && typeParam->sizeOf <= sizeof(void*))
+                            typeIdx = dbgGetOrCreateType(pp, typeParam);
+                        else
+                            typeIdx = dbgGetOrCreatePointerToType(pp, typeParam, true);
+                        break;
+
                     case TypeInfoKind::Pointer:
                     {
                         if (typeParam->isAutoConstPointerRef())
