@@ -196,11 +196,10 @@ impl IForm for FormText
                     pathl.clean()
                 }
 
-                assume face.getStringOutline(pathl1, t, acast fSize)
-                pathl1.flatten(painter.curState.paintQuality)
-                if !Math.isZeroEpsilon(bSize + sSize)
+                if !Math.isZeroEpsilon(bSize)
                 {
-                    pathl1.offset(bSize + sSize, JoinStyle.Round, 0.5)
+                    dref pathl1 = dref pathl
+                    pathl1.offset(bSize, JoinStyle.Round, 0.5)
                     pathl1.clean()
                 }
 
