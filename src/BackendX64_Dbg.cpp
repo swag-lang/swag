@@ -709,7 +709,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
         auto           typeArr   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         DbgTypeRecord* tr        = new DbgTypeRecord;
         tr->kind                 = LF_ARRAY;
-        tr->LF_Array.elementType = dbgGetOrCreateType(pp, typeArr->pointedType);
+        tr->LF_Array.elementType = dbgGetOrCreateType(pp, typeArr->pointedType, true);
         tr->LF_Array.indexType   = SimpleTypeKind::UInt64;
         tr->LF_Array.sizeOf      = typeArr->sizeOf;
         dbgAddTypeRecord(pp, tr);
