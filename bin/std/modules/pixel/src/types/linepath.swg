@@ -48,15 +48,21 @@ public impl LinePath
     {
         points.clear()
         triangles.clear()
+        edgeList.clear()
     }
 
     // Clear internal cache
     mtd clearCache()
     {
-        visit t: points     Memory.delete(t)
-        visit t: triangles  Memory.delete(t)
+        visit t: points
+            Memory.delete(t)
+        visit t: triangles
+            Memory.delete(t)
+        visit t: edgeList
+            Memory.delete(t)
         points.clear()
         triangles.clear()
+        edgeList.clear()
         polygon.clear()
     }
 

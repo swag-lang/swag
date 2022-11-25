@@ -760,14 +760,15 @@ impl Painter
         {
             t.triangulate()
 
-            // "Eat" points and triangles
-            // t.triangles only contains 'interior' triangles, so we need to delete all other
-            // allocated triangles to avoid a leak
-
-            p.points    =,move t.points
+            // "Eat" points, triangles and edges
+            p.points =,move t.points
+            p.points.add(t.head); t.head = null
+            p.points.add(t.tail); t.tail = null
             p.triangles =,move t.triangles
             p.edgeList  =,move t.edgeList
 
+            // t.triangles only contains 'interior' triangles, so we need to delete all other
+            // allocated triangles to avoid a leak
             visit tri: t.map
             {
                 if !tri.interior
@@ -778,10 +779,6 @@ impl Painter
         }
 
         t.clear()
-
-        var toProcess:  Array'*Poly2Tri.Triangle
-        var done:       HashSet'*Poly2Tri.Triangle
-        toProcess.reserve(p.triangles.count)
 
         visit tri, ii: p.triangles
         {
