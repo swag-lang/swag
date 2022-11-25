@@ -5,6 +5,14 @@ enum FormTextAlign
     Center
 }
 
+struct FormTextRune
+{
+    advanceBack:    f32
+    advanceBorder:  f32
+    back:           LinePathList
+    border:         LinePathList
+}
+
 struct FormText
 {
     using base: BaseForm
@@ -25,6 +33,7 @@ struct FormText
         cachesSize: f32
         cachefSize: f32
         totalY:     f32
+        runes:      HashTable'(rune, FormTextRune)
         paths:      Array'LinePathList
         cacheBorderColorA: u8
     }
@@ -172,6 +181,7 @@ impl IForm for FormText
             isDirty = true
         }
 
+        tokens := Tokenize.split(text, "\n"'rune)
         if isDirty
         {
             isDirty = false
@@ -181,9 +191,9 @@ impl IForm for FormText
             cachefSize = fSize
             cacheBorderColorA = borderColor.a
 
-            tokens := Tokenize.split(text, "\n"'rune)
             paths.clear()
             paths.resize(tokens.count * 2)
+            runes.clear()
 
             totalY = 0
             visit t, idx: tokens
@@ -191,27 +201,55 @@ impl IForm for FormText
                 pathl  := &paths[idx * 2]
                 pathl1 := &paths[(idx * 2) + 1]
 
-                // Back
-                assume face.getStringOutline(pathl, t, acast fSize)
-                pathl.flatten(painter.curState.paintQuality)
-                if !Math.isZeroEpsilon(sSize)
+                Utf8.visitRunes(|c| t)
                 {
-                    pathl.offset(sSize, JoinStyle.Round, 0.5)
-                    pathl.clean()
-                }
+                    it := runes.find(c)
+                    if !it
+                    {
+                        var ftr: FormTextRune
 
-                // Border
-                if !Math.isZeroEpsilon(bSize) and borderColor.a
-                {
-                    assume face.getStringOutline(pathl1, t, acast fSize)
-                    pathl1.flatten(painter.curState.paintQuality)
-                    pathl1.offset(sSize + bSize, JoinStyle.Round, 0.5)
-                    pathl1.clean()
-                }
-                else
-                {
-                    pathl1.bvMin = pathl.bvMin
-                    pathl1.bvMax = pathl.bvMax
+                        // Back
+                        ftr.advanceBack = assume face.getRuneOutline(&ftr.back, c, acast fSize)
+                        if ftr.back.paths.count
+                        {
+                            ftr.back.flatten(painter.curState.paintQuality)
+                            if !Math.isZeroEpsilon(sSize)
+                            {
+                                ftr.back.offset(sSize, JoinStyle.Round, 0.5)
+                                ftr.back.clean()
+                            }
+                        }
+
+                        // Border
+                        if !Math.isZeroEpsilon(bSize) and borderColor.a
+                        {
+                            ftr.advanceBorder = assume face.getRuneOutline(&ftr.border, c, acast fSize)
+                            if ftr.border.paths.count
+                            {
+                                ftr.border.flatten(painter.curState.paintQuality)
+                                ftr.border.offset(sSize + bSize, JoinStyle.Round, 0.5)
+                                ftr.border.clean()
+                            }
+                        }
+
+                        it = runes.add(c, ftr)
+                    }
+
+                    pathl.bvMax.x += it.value.advanceBack
+                    pathl.bvMin.y = Math.min(pathl.bvMin.y, it.value.back.bvMin.y)
+                    pathl.bvMax.y = Math.max(pathl.bvMax.y, it.value.back.bvMax.y)
+
+                    if it.value.border.paths.count
+                    {
+                        pathl1.bvMax.x += it.value.advanceBorder
+                        pathl1.bvMin.y = Math.min(pathl1.bvMin.y, it.value.border.bvMin.y)
+                        pathl1.bvMax.y = Math.max(pathl1.bvMax.y, it.value.border.bvMax.y)
+                    }
+                    else
+                    {
+                        pathl1.bvMin = pathl.bvMin
+                        pathl1.bvMax = pathl.bvMax
+                    }
                 }
 
                 totalY += (pathl.bvMax.y - pathl.bvMin.y)
@@ -251,15 +289,32 @@ impl IForm for FormText
             case RightBottom:   x0 = pp.right() - (wt + addSize)
             }
 
+            var pl: LinePathList
+
             painter.pushState()
             painter.scaleTransform(z, z)
             painter.translateTransform(x0, y0 - (pathl1.bvMin.y * z))
-            painter.fillPath(pathl1, borderColor)
-            //if borderColor.a and !quickMode
-            //    painter.drawPathList(pathl1, borderColor, 4)
-            painter.fillPath(pathl, backColor)
-            //if backColor.a and !quickMode
-            //    painter.drawPathList(pathl, backColor, 4)
+            Utf8.visitRunes(|c| tokens[i / 2])
+            {
+                it := runes.find(c)
+                pl.paths.add(it.value.border.paths.toSlice())
+                painter.fillPath(&pl, borderColor)
+                pl.paths.count = 0
+                painter.translateTransform(cast(f32) it.value.advanceBorder*z, 0)
+            }
+            painter.popState()
+
+            painter.pushState()
+            painter.scaleTransform(z, z)
+            painter.translateTransform(x0, y0 - (pathl1.bvMin.y * z))
+            Utf8.visitRunes(|c| tokens[i / 2])
+            {
+                it := runes.find(c)
+                pl.paths.add(it.value.back.paths.toSlice())
+                painter.fillPath(&pl, backColor)
+                pl.paths.count = 0
+                painter.translateTransform(cast(f32) it.value.advanceBack*z, 0)
+            }
             painter.popState()
 
             y0 += ht + (lineSpacing * z)
