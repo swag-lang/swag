@@ -19,14 +19,13 @@ public struct Point
 {
     x, y:           f64
     edgeList:       Array'*Edge
-    edgeFullList:   Array'*Edge
+    border:         [2] *Edge
 }
 
 public struct Edge
 {
-    p:      *Point
-    q:      *Point
-    border: bool
+    p: *Point
+    q: *Point
 }
 
 impl Edge
@@ -54,8 +53,10 @@ impl Edge
         }
 
         q.edgeList.add(self)
-        p.edgeFullList.add(self)
-        q.edgeFullList.add(self)
+        if p.border[0] p.border[1] = self
+        else           p.border[0] = self
+        if q.border[0] q.border[1] = self
+        else           q.border[0] = self
     }
 }
 
@@ -536,7 +537,6 @@ impl Tesselate
                 nexti := (i + 1) % @countof(polyline)
                 edge := Memory.new'Edge()
                 edge.set(polyline[i], polyline[nexti])
-                edge.border = true
                 edgeList.add(edge)
             }
         }

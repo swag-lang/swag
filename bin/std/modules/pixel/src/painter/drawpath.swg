@@ -795,13 +795,17 @@ impl Painter
             {
                 loop pt: 3
                 {
-                    @print(tri.points[pt].edgeFullList.count, " ")
-                    visit e: tri.points[pt].edgeFullList
+                    e := tri.points[pt].border[0]
+                    if e
                     {
-                        if e.border
+                        vv0 := Math.Vector2{acast e.p.x, acast e.p.y}
+                        vv1 := Math.Vector2{acast e.q.x, acast e.q.y}
+                        addEdgeAA(prim, vv0, vv1)
+                        e = tri.points[pt].border[1]
+                        if e
                         {
-                            vv0 := Math.Vector2{acast e.p.x, acast e.p.y}
-                            vv1 := Math.Vector2{acast e.q.x, acast e.q.y}
+                            vv0 = Math.Vector2{acast e.p.x, acast e.p.y}
+                            vv1 = Math.Vector2{acast e.q.x, acast e.q.y}
                             addEdgeAA(prim, vv0, vv1)
                         }
                     }
