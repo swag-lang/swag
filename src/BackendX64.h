@@ -75,7 +75,7 @@ struct BackendX64 : public Backend
     DbgTypeIndex dbgGetOrCreatePointerToType(X64Gen& pp, TypeInfo* typeInfo, bool asRef);
     DbgTypeIndex dbgGetOrCreatePointerPointerToType(X64Gen& pp, TypeInfo* typeInfo);
     void         dbgRecordFields(X64Gen& pp, DbgTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset);
-    DbgTypeIndex dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo);
+    DbgTypeIndex dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool forceUnRef = false);
     void         dbgAddTypeRecord(X64Gen& pp, DbgTypeRecord* tr);
     Utf8         dbgGetScopedName(AstNode* node);
     void         dbgSetLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset);

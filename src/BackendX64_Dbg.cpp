@@ -553,18 +553,31 @@ DbgTypeIndex BackendX64::dbgGetOrCreatePointerToType(X64Gen& pp, TypeInfo* typeI
     typeInfo->computeScopedNameExport();
 
     // In the cache of pointers
-    auto it = pp.dbgMapPtrTypes.find(typeInfo->scopedNameExport);
-    if (it != pp.dbgMapPtrTypes.end())
-        return it->second;
+    if (asRef)
+    {
+        auto it = pp.dbgMapRefTypes.find(typeInfo->scopedNameExport);
+        if (it != pp.dbgMapRefTypes.end())
+            return it->second;
+    }
+    else
+    {
+        auto it = pp.dbgMapPtrTypes.find(typeInfo->scopedNameExport);
+        if (it != pp.dbgMapPtrTypes.end())
+            return it->second;
+    }
 
     // Pointer to something complex
     DbgTypeRecord* tr          = new DbgTypeRecord;
     tr->kind                   = LF_POINTER;
-    tr->LF_Pointer.pointeeType = dbgGetOrCreateType(pp, typeInfo);
-    if (asRef)
-        tr->LF_Pointer.asRef = true;
+    tr->LF_Pointer.pointeeType = dbgGetOrCreateType(pp, typeInfo, !asRef);
+    tr->LF_Pointer.asRef       = asRef;
     dbgAddTypeRecord(pp, tr);
-    pp.dbgMapPtrTypes[typeInfo->scopedNameExport] = tr->index;
+
+    if (asRef)
+        pp.dbgMapRefTypes[typeInfo->scopedNameExport] = tr->index;
+    else
+        pp.dbgMapPtrTypes[typeInfo->scopedNameExport] = tr->index;
+
     return tr->index;
 }
 
@@ -643,7 +656,7 @@ void BackendX64::dbgRecordFields(X64Gen& pp, DbgTypeRecord* tr, TypeInfoStruct* 
     }
 }
 
-DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo)
+DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool forceUnRef)
 {
     typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
 
@@ -657,7 +670,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo)
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
         auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        return dbgGetOrCreatePointerToType(pp, typePtr->pointedType, !(typePtr->flags & TYPEINFO_POINTER_ARITHMETIC));
+        return dbgGetOrCreatePointerToType(pp, typePtr->pointedType, !(typePtr->flags & TYPEINFO_POINTER_ARITHMETIC) && !forceUnRef);
     }
 
     // In the cache

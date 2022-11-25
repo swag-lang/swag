@@ -371,6 +371,7 @@ struct X64Gen
     VectorNative<DbgTypeRecord*> dbgTypeRecords;
     map<TypeInfo*, DbgTypeIndex> dbgMapTypes;
     map<Utf8, DbgTypeIndex>      dbgMapPtrTypes;
+    map<Utf8, DbgTypeIndex>      dbgMapRefTypes;
     map<Utf8, DbgTypeIndex>      dbgMapPtrPtrTypes;
     map<Utf8, DbgTypeIndex>      dbgMapTypesNames;
 
