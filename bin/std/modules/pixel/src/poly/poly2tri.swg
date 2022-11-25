@@ -17,14 +17,16 @@ enum Orientation
 
 public struct Point
 {
-    x, y:      f64
-    edgeList:  Array'*Edge
+    x, y:           f64
+    edgeList:       Array'*Edge
+    edgeFullList:   Array'*Edge
 }
 
 public struct Edge
 {
-    p: *Point
-    q: *Point
+    p:      *Point
+    q:      *Point
+    border: bool
 }
 
 impl Edge
@@ -52,6 +54,8 @@ impl Edge
         }
 
         q.edgeList.add(self)
+        p.edgeFullList.add(self)
+        q.edgeFullList.add(self)
     }
 }
 
@@ -62,7 +66,6 @@ public struct Triangle
     points:             [3] *Point
     neighbors:          [3] *Triangle
     interior:           bool
-    aaEdges:            Array'{Math.Vector2, Math.Vector2}
 }
 
 impl Triangle
@@ -471,7 +474,6 @@ public struct Tesselate
     edgeList:   Array'*Edge
     points:     Array'*Point
     nodes:      Array'*Node
-    borders:    Array'{Math.Vector2, Math.Vector2}
     front:      AdvancingFront
     head:       *Point
     tail:       *Point
@@ -534,6 +536,7 @@ impl Tesselate
                 nexti := (i + 1) % @countof(polyline)
                 edge := Memory.new'Edge()
                 edge.set(polyline[i], polyline[nexti])
+                edge.border = true
                 edgeList.add(edge)
             }
         }
@@ -1237,7 +1240,6 @@ impl Tesselate
         stack.add(triangle)
 
         triangles.clear()
-        borders.clear()
 
         while stack.count
         {
@@ -1250,18 +1252,10 @@ impl Tesselate
 
             if !t.constrainedEdge[0]
                 stack.add(t.neighbors[0])
-            else
-                borders.add(@{{acast t.points[1].x, acast t.points[1].y}, {acast t.points[2].x, acast t.points[2].y}})
-
             if !t.constrainedEdge[1]
                 stack.add(t.neighbors[1])
-            else
-                borders.add(@{{acast t.points[0].x, acast t.points[0].y}, {acast t.points[2].x, acast t.points[2].y}})
-
             if !t.constrainedEdge[2]
                 stack.add(t.neighbors[2])
-            else
-                borders.add(@{{acast t.points[0].x, acast t.points[0].y}, {acast t.points[1].x, acast t.points[1].y}})
         }
 
         // Remove neighbors which are not part of the mesh

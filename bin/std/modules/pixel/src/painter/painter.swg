@@ -308,12 +308,12 @@ impl Painter
         return vertexBuffer.count - 3
     }
 
-    #[Swag.Discardable, Swag.Safety("", false)]
-    private mtd addEdgeAA(tri: uint, start, end: Vector2)->bool
+    #[Swag.Safety("", false)]
+    private mtd addEdgeAA(tri: uint, start, end: Vector2)
     {
         ptr := vertexBuffer.buffer + tri
         if ptr.aanum == MaxAAEdge
-            return false
+            return
 
         idx := cast(u32) ptr.aanum
         /*loop i: idx
@@ -323,7 +323,7 @@ impl Painter
                Math.isEqualEpsilon(ptr.aa[i].z, end.x) and
                Math.isEqualEpsilon(ptr.aa[i].w, end.y)
             {
-                return false
+                return
             }
         }*/
 
@@ -349,8 +349,6 @@ impl Painter
         ptr1.z = end.x
         ptr1.w = end.y
         ptr.aanum += 1
-
-        return true
     }
 
     #[Swag.Inline]

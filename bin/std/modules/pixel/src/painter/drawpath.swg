@@ -756,7 +756,6 @@ impl Painter
         setTexture0(bvMin, bvMax, brush)
         resetTextureFont()
 
-        dirtyAA := false
         if p.triangles.count == 0
         {
             t.triangulate()
@@ -767,7 +766,7 @@ impl Painter
 
             p.points    =,move t.points
             p.triangles =,move t.triangles
-            p.borders   =,move t.borders
+            p.edgeList  =,move t.edgeList
 
             visit tri: t.map
             {
@@ -776,14 +775,13 @@ impl Painter
             }
 
             t.map.clear()
-            dirtyAA = true
         }
 
         t.clear()
 
-        /*var toProcess:  Array'*Poly2Tri.Triangle
+        var toProcess:  Array'*Poly2Tri.Triangle
         var done:       HashSet'*Poly2Tri.Triangle
-        toProcess.reserve(p.triangles.count)*/
+        toProcess.reserve(p.triangles.count)
 
         visit tri, ii: p.triangles
         {
@@ -795,74 +793,18 @@ impl Painter
 
             if curState.paintParams & .Antialiased
             {
-                // Just use stored edges
-                if !dirtyAA
+                loop pt: 3
                 {
-                    visit e: tri.aaEdges
-                        addEdgeAA(prim, e.item0, e.item1)
-                }
-
-                // Compute aa edges
-                else
-                {
-                    primPtr := vertexBuffer.buffer + prim
-
-                    const D = 4.000
-                    visit e1: p.borders
+                    @print(tri.points[pt].edgeFullList.count, " ")
+                    visit e: tri.points[pt].edgeFullList
                     {
-                        if e1.item0.distanceSquared(v0) <= D or e1.item0.distanceSquared(v1) <= D or e1.item0.distanceSquared(v2) <= D or
-                           e1.item1.distanceSquared(v0) <= D or e1.item1.distanceSquared(v1) <= D or e1.item1.distanceSquared(v2) <= D
+                        if e.border
                         {
-                            if addEdgeAA(prim, e1.item0, e1.item1)
-                                tri.aaEdges.add(@{e1.item0, e1.item1})
-                            if primPtr.aanum == MaxAAEdge
-                                break
+                            vv0 := Math.Vector2{acast e.p.x, acast e.p.y}
+                            vv1 := Math.Vector2{acast e.q.x, acast e.q.y}
+                            addEdgeAA(prim, vv0, vv1)
                         }
                     }
-
-/*                    done.clear()
-                    toProcess.clear()
-
-                    toProcess.add(tri)
-                    done.add(tri)
-
-                    for i := 0; i < toProcess.count and primPtr.aanum < MaxAAEdge; i += 1
-                    {
-                        tri0 := toProcess[i]
-
-                        v0 = Vector2{cast(f32) tri0.points[0].x, cast(f32) tri0.points[0].y}
-                        v1 = Vector2{cast(f32) tri0.points[1].x, cast(f32) tri0.points[1].y}
-                        v2 = Vector2{cast(f32) tri0.points[2].x, cast(f32) tri0.points[2].y}
-
-                        loop e: 3
-                        {
-                            neighbor := tri0.neighbors[e]
-                            if neighbor
-                            {
-                                if !done.contains(neighbor)
-                                {
-                                    toProcess.add(neighbor)
-                                    done.add(neighbor)
-                                }
-                            }
-
-                            if tri0.constrainedEdge[e]
-                            {
-                                switch e
-                                {
-                                case 0:
-                                    if addEdgeAA(prim, v1, v2)
-                                        tri.aaEdges.add(@{v1, v2})
-                                case 1:
-                                    if addEdgeAA(prim, v0, v2)
-                                        tri.aaEdges.add(@{v0, v2})
-                                case 2:
-                                    if addEdgeAA(prim, v0, v1)
-                                        tri.aaEdges.add(@{v0, v1})
-                                }
-                            }
-                        }
-                    }*/
                 }
             }
         }
