@@ -291,6 +291,7 @@ impl IForm for FormText
 
             var pl: LinePathList
 
+            // Border
             painter.pushState()
             painter.scaleTransform(z, z)
             painter.translateTransform(x0, y0 - (pathl1.bvMin.y * z))
@@ -304,6 +305,7 @@ impl IForm for FormText
             }
             painter.popState()
 
+            // Back
             painter.pushState()
             painter.scaleTransform(z, z)
             painter.translateTransform(x0, y0 - (pathl1.bvMin.y * z))
@@ -317,6 +319,7 @@ impl IForm for FormText
             }
             painter.popState()
 
+            // Next line
             y0 += ht + (lineSpacing * z)
         }
     }
