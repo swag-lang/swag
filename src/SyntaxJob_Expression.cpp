@@ -657,8 +657,8 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
                 return error(token, Fmt(Err(Err0266), forNode.ctext()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_NOLEFTDROP), error(token, Fmt(Err(Err0265), token.ctext())));
-            mdfFlags |= MODIFIER_NOLEFTDROP;
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_NO_LEFT_DROP), error(token, Fmt(Err(Err0265), token.ctext())));
+            mdfFlags |= MODIFIER_NO_LEFT_DROP;
             SWAG_CHECK(eatToken());
             continue;
         }
@@ -691,8 +691,8 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
                 return error(token, Fmt(Err(Err0266), forNode.ctext()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_NORIGHTDROP), error(token, Fmt(Err(Err0265), token.ctext())));
-            mdfFlags |= MODIFIER_MOVE | MODIFIER_NORIGHTDROP;
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_NO_RIGHT_DROP), error(token, Fmt(Err(Err0265), token.ctext())));
+            mdfFlags |= MODIFIER_MOVE | MODIFIER_NO_RIGHT_DROP;
             SWAG_CHECK(eatToken());
             continue;
         }
@@ -827,7 +827,7 @@ bool SyntaxJob::doMoveExpression(Token& forToken, AstNode* parent, AstNode** res
     SWAG_CHECK(doModifiers(forToken, mdfFlags));
 
     // nodrop left
-    if (mdfFlags & MODIFIER_NOLEFTDROP)
+    if (mdfFlags & MODIFIER_NO_LEFT_DROP)
     {
         auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::NoDrop, sourceFile, parent);
         if (result)
@@ -850,7 +850,7 @@ bool SyntaxJob::doMoveExpression(Token& forToken, AstNode* parent, AstNode** res
         result = nullptr;
 
         // nodrop right
-        if (mdfFlags & MODIFIER_NORIGHTDROP)
+        if (mdfFlags & MODIFIER_NO_RIGHT_DROP)
         {
             exprNode = Ast::newNode<AstNode>(this, AstNodeKind::NoDrop, sourceFile, parent);
             if (result)

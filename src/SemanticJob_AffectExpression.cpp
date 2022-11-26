@@ -65,7 +65,6 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         return true;
 
     SWAG_VERIFY(left->resolvedSymbolName && left->resolvedSymbolOverload, context->report(left, Err(Err0566)));
-    // SWAG_VERIFY(left->resolvedSymbolName->kind == SymbolKind::Variable, context->report(left, Err(Err0567)));
 
     // Check that left type is mutable
     // If not, try to find the culprit type
@@ -173,6 +172,18 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
 
     SWAG_VERIFY(!rightTypeInfo->isNative(NativeTypeKind::Void), context->report(right, Err(Err0569)));
+
+    // Be sure modifiers are relevant
+    if (right->kind == AstNodeKind::NoDrop || right->kind == AstNodeKind::Move)
+    {
+        auto leftConcrete = TypeManager::concreteType(leftTypeInfo);
+        if (right->flags & AST_NO_LEFT_DROP)
+            SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, ISSAME_CAST), context->report(node, Fmt(Err(Err0568), g_LangSpec->name_nodrop.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())));
+        if (right->flags & AST_NO_RIGHT_DROP)
+            SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, ISSAME_CAST), context->report(node, Fmt(Err(Err0568), g_LangSpec->name_moveraw.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())));
+        if (right->flags & AST_FORCE_MOVE)
+            SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, ISSAME_CAST), context->report(node, Fmt(Err(Err0568), g_LangSpec->name_move.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())));
+    }
 
     // No direct operations on any, except affect any to any
     if (leftTypeInfo->isNative(NativeTypeKind::Any) && node->token.id != TokenId::SymEqual)
