@@ -191,9 +191,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
             (typeResolved->kind != TypeInfoKind::Slice))
             ptrType->setConst();
 
-        if (typeResolved->isNative(NativeTypeKind::String))
-            ptrType->setConst();
-        else if (typeResolved->isConst() && typeResolved->kind == TypeInfoKind::Slice)
+        if (typeResolved->isConst() && typeResolved->kind == TypeInfoKind::Slice)
             ptrType->setConst();
         else if (node->flags & AST_IS_CONST)
             ptrType->setConst();
