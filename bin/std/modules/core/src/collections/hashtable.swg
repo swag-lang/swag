@@ -37,18 +37,25 @@ impl HashTable
 
     mtd opPostCopy()
     {
-        if table
+        if !table
+            return
+
+        newTable := cast(^HashTableEntry) Memory.alloc(capacity * @sizeof(HashTableEntry), allocator)
+        #if Reflection.hasPostCopy(K) or Reflection.hasPostCopy(V)
         {
-            oldTable := table
-            oldCapacity := capacity
-
-            table = null
-            capacity = 0
-            reserve(oldCapacity)
-
             loop i: capacity
-                table[i] = oldTable[i]
+            {
+                newTable[i].hash  = table[i].hash
+                newTable[i].key   =,nodrop table[i].key
+                newTable[i].value =,nodrop table[i].value
+            }
         }
+        #else
+        {
+            Memory.copy(newTable, table, capacity * @sizeof(HashTableEntry))
+        }
+
+        table = newTable
     }
 
     // alias0 is the key, and alias1 is the value
