@@ -692,6 +692,7 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
             }
 
             SWAG_VERIFY(!(mdfFlags & MODIFIER_NO_RIGHT_DROP), error(token, Fmt(Err(Err0265), token.ctext())));
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_MOVE), error(token, Fmt(Err(Err0265), g_LangSpec->name_move.c_str())));
             mdfFlags |= MODIFIER_MOVE | MODIFIER_NO_RIGHT_DROP;
             SWAG_CHECK(eatToken());
             continue;
