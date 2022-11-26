@@ -71,9 +71,13 @@ impl HashSet
             scope Down
             #macro
             {
-                #if `ptr or Reflection.isStruct(K)
+                #if `ptr
                 {
                     var @alias0 = &`table[@index].key
+                }
+                #elif Reflection.isStruct(K)
+                {
+                    var @alias0 = cast(const ref K) &`table[@index].key
                 }
                 #else
                 {

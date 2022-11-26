@@ -50,6 +50,7 @@ impl HashTable
         }
     }
 
+    // alias0 is the key, and alias1 is the value
     #[Macro]
     mtdc(ptr: bool) opVisit(stmt: code)
     {
@@ -72,8 +73,8 @@ impl HashTable
                 }
                 #else
                 {
-                    var @alias0 = Reflection.isStruct(K) ? cast(const *K) &`table[@index].key : `table[@index].key
-                    var @alias1 = Reflection.isStruct(V) ? cast(const *V) &`table[@index].value : `table[@index].value
+                    var @alias0 = Reflection.isStruct(K) ? cast(const ref K) &`table[@index].key : `table[@index].key
+                    var @alias1 = Reflection.isStruct(V) ? cast(const ref V) &`table[@index].value : `table[@index].value
                 }
 
                 #mixin `stmt { break = break Up; continue = break Down; }
