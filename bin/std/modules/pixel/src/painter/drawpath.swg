@@ -790,23 +790,26 @@ impl Painter
 
             if curState.paintParams & .Antialiased
             {
-                loop pt: 3
-                {
-                    e := tri.points[pt].border[0]
-                    if e
-                    {
-                        vv0 := Math.Vector2{acast e.p.x, acast e.p.y}
-                        vv1 := Math.Vector2{acast e.q.x, acast e.q.y}
-                        addEdgeAA(prim, vv0, vv1)
-                        e = tri.points[pt].border[1]
-                        if e
-                        {
-                            vv0 = Math.Vector2{acast e.p.x, acast e.p.y}
-                            vv1 = Math.Vector2{acast e.q.x, acast e.q.y}
-                            addEdgeAA(prim, vv0, vv1)
-                        }
-                    }
-                }
+                e := tri.points[0].border[0]
+                if e
+                    addEdgeAA(prim, acast e.p.x, acast e.p.y, acast e.q.x, acast e.q.y)
+                e = tri.points[0].border[1]
+                if e
+                    addEdgeAA(prim, acast e.p.x, acast e.p.y, acast e.q.x, acast e.q.y)
+
+                e = tri.points[1].border[0]
+                if e
+                    addEdgeAA(prim, acast e.p.x, acast e.p.y, acast e.q.x, acast e.q.y)
+                e = tri.points[1].border[1]
+                if e
+                    addEdgeAA(prim, acast e.p.x, acast e.p.y, acast e.q.x, acast e.q.y)
+
+                e = tri.points[2].border[0]
+                if e
+                    addEdgeAA(prim, acast e.p.x, acast e.p.y, acast e.q.x, acast e.q.y)
+                e = tri.points[2].border[1]
+                if e
+                    addEdgeAA(prim, acast e.p.x, acast e.p.y, acast e.q.x, acast e.q.y)
             }
         }
     }

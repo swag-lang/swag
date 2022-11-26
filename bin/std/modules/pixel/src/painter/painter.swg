@@ -309,46 +309,42 @@ impl Painter
     }
 
     #[Swag.Safety("", false)]
-    private mtd addEdgeAA(tri: uint, start, end: Vector2)
+    private mtd addEdgeAA(tri: uint, startx, starty, endx, endy: f32)
     {
         ptr := vertexBuffer.buffer + tri
         if ptr.aanum == MaxAAEdge
             return
 
         idx := cast(u32) ptr.aanum
-        /*loop i: idx
-        {
-            if Math.isEqualEpsilon(ptr.aa[i].x, start.x) and
-               Math.isEqualEpsilon(ptr.aa[i].y, start.y) and
-               Math.isEqualEpsilon(ptr.aa[i].z, end.x) and
-               Math.isEqualEpsilon(ptr.aa[i].w, end.y)
-            {
-                return
-            }
-        }*/
 
         ptr1 := &ptr.aa[0] + idx
-        ptr1.x = start.x
-        ptr1.y = start.y
-        ptr1.z = end.x
-        ptr1.w = end.y
+        ptr1.x = startx
+        ptr1.y = starty
+        ptr1.z = endx
+        ptr1.w = endy
         ptr.aanum += 1
 
         ptr += 1
         ptr1 = &ptr.aa[0] + idx
-        ptr1.x = start.x
-        ptr1.y = start.y
-        ptr1.z = end.x
-        ptr1.w = end.y
+        ptr1.x = startx
+        ptr1.y = starty
+        ptr1.z = endx
+        ptr1.w = endy
         ptr.aanum += 1
 
         ptr += 1
         ptr1 = &ptr.aa[0] + idx
-        ptr1.x = start.x
-        ptr1.y = start.y
-        ptr1.z = end.x
-        ptr1.w = end.y
+        ptr1.x = startx
+        ptr1.y = starty
+        ptr1.z = endx
+        ptr1.w = endy
         ptr.aanum += 1
+    }
+
+    #[Swag.Inline]
+    private mtd addEdgeAA(tri: uint, start, end: Vector2)
+    {
+        addEdgeAA(tri, start.x, start.y, end.x, end.y)
     }
 
     #[Swag.Inline]
