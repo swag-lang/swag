@@ -10,9 +10,10 @@ struct(K, V) HashTableEntry
 
 struct(K, V) HashTable
 {
-    const HASH_FREE = 0'u32
+    const HASH_FREE    = 0'u32
     const HASH_DELETED = 1'u32
-    const HASH_FIRST = 2'u32
+    const HASH_FIRST   = 2'u32
+    const HASH_MASK    = 2'u32
 
     allocator:  IAllocator
     table:      ^HashTableEntry
@@ -89,10 +90,7 @@ impl HashTable
     #[Inline]
     func hashKey(key: K)->u32
     {
-        hashVal := Hash.hash32(key)
-        if hashVal < HASH_FIRST
-            hashVal += HASH_FIRST
-        return hashVal
+        return Hash.hash32(key) | HASH_MASK
     }
 
     mtd free()
