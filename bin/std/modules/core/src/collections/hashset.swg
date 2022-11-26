@@ -108,10 +108,8 @@ impl HashSet
         {
             loop i: capacity
             {
-                if table[i].hash >= HASH_FIRST
-                {
+                if table[i].hash >= HASH_DELETED
                     @drop(&table[i].key)
-                }
             }
         }
 
@@ -152,9 +150,13 @@ impl HashSet
         capacity = reqCapacity
         loop i: oldCapacity
         {
-            if oldTable[i].hash >= HASH_FIRST
+            h := oldTable[i].hash
+            if h >= HASH_FIRST
             {
-                add(self, oldTable[i].key)
+                emplaceInternal(self, &oldTable[i].key)
+            }
+            elif h == HASH_DELETED
+            {
                 @drop(&oldTable[i].key)
             }
         }
@@ -179,12 +181,85 @@ impl HashSet
             index = (index + 1) % capacity
         }
 
-        if table[index].hash == HASH_DELETED
-            deleted -= 1
-        table[index].hash = hashVal
-        table[index].key = key
-        count += 1
+        if table[index].hash == HASH_FREE
+        {
+            table[index].key =,nodrop key
+        }
+        else
+        {
+            if table[index].hash == HASH_DELETED
+                deleted -= 1
+            table[index].key = key
+        }
 
+        table[index].hash = hashVal
+        count += 1
+        return table + index
+    }
+
+    // Add a new key.
+    #[Discardable]
+    mtd emplaceInternal(key: *K)->*HashSetEntry
+        #selectif Reflection.canCopy(@typeof(K))
+    {
+        grow()
+
+        hashVal := hashKey(dref key)
+        index := hashVal % capacity
+
+        while table[index].hash >= HASH_FIRST
+        {
+            if table[index].hash == hashVal and table[index].key == dref key
+                return table + index
+            index = (index + 1) % capacity
+        }
+
+        if table[index].hash == HASH_FREE
+        {
+            table[index].key =,nodrop,moveraw dref key
+        }
+        else
+        {
+            if table[index].hash == HASH_DELETED
+                deleted -= 1
+            table[index].key =,moveraw dref key
+        }
+
+        table[index].hash = hashVal
+        count += 1
+        return table + index
+    }
+
+    // Add a new key.
+    #[Discardable]
+    mtd emplace(key: *K)->*HashSetEntry
+        #selectif Reflection.canCopy(@typeof(K))
+    {
+        grow()
+
+        hashVal := hashKey(dref key)
+        index := hashVal % capacity
+
+        while table[index].hash >= HASH_FIRST
+        {
+            if table[index].hash == hashVal and table[index].key == dref key
+                return table + index
+            index = (index + 1) % capacity
+        }
+
+        if table[index].hash == HASH_FREE
+        {
+            table[index].key =,nodrop,move dref key
+        }
+        else
+        {
+            if table[index].hash == HASH_DELETED
+                deleted -= 1
+            table[index].key =,move dref key
+        }
+
+        table[index].hash = hashVal
+        count += 1
         return table + index
     }
 
@@ -234,22 +309,17 @@ impl HashSet
         // Drop the key and the value if necessary
         if count or deleted
         {
-            loop capacity
+            loop i: capacity
             {
-                hashval := table[@index].hash
-                #if Reflection.hasDrop(@typeof(K))
-                {
-                    if hashval >= HASH_FIRST
-                    {
-                        @drop(&table[@index].key)
-                    }
-                }
+                hashval := table[i].hash
+                if hashval >= HASH_DELETED
+                    @drop(&table[i].key)
 
                 if hashval == HASH_DELETED
                     deleted -= 1
                 elif hashval >= HASH_FIRST
                     count -= 1
-                table[@index].hash = HASH_FREE
+                table[i].hash = HASH_FREE
 
                 // We are done if there's no more valid value, and no more deleted value
                 if !count and !deleted
