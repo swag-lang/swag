@@ -1051,6 +1051,29 @@ impl PropWnd
         }
     }
 
+    mtd propTextStyle()
+    {
+        curSelType := getSelectedFormType()
+        if curSelType != FormText
+            return
+        curSel := cast(*FormText) getSelectedBaseForm()
+
+        ctrl := ComboCtrl.create(mainLayout, "Style")
+        ctrl.comboSize = 210
+        with ctrl.combo
+        {
+            .addItem("Bevel")
+            .addItem("Round")
+            .addItem("Miter")
+            .addItem("MiterBevel")
+            .selectItem(cast(u32) curSel.joinStyle - 1)
+            .sigChanged += @|self|(combo, val) {
+                v := val + 1
+                self.pushTypedValue(acast v, @typeof(FormText), @nameof(FormText.joinStyle), true)
+            }
+        }
+    }
+
     mtd propShadow()
     {
         curSel := getSelectedBaseForm()
@@ -1116,6 +1139,7 @@ impl PropWnd
         propEndSize()
         propRoundSize()
         propOpacity()
+        propTextStyle()
         propShadow()
         propPixSel()
 

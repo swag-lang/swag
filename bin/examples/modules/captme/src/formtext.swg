@@ -22,6 +22,7 @@ struct FormText
     alignHorz   = FormTextAlign.Center
     alignVert   = FormTextAlign.Center
     lineSpacing = 14.0
+    joinStyle   = JoinStyle.Round
 
     #[Serialization.NoSerialize]
     {
@@ -32,6 +33,7 @@ struct FormText
         cachebSize: f32
         cachesSize: f32
         cachefSize: f32
+        cacheStyle: JoinStyle
         totalY:     f32
         runes:      HashTable'(rune, FormTextRune)
         paths:      Array'LinePathList
@@ -50,7 +52,8 @@ impl IForm for FormText
                 alpha       == other.alpha and
                 fontSize    == other.fontSize and
                 boldSize    == other.boldSize and
-                paintShadow == other.paintShadow
+                paintShadow == other.paintShadow and
+                joinStyle   == other.joinStyle
     }
 
     mtd copy(dst, src: *BaseForm)
@@ -64,6 +67,7 @@ impl IForm for FormText
         dstf.fontSize    = srcf.fontSize
         dstf.boldSize    = srcf.boldSize
         dstf.paintShadow = srcf.paintShadow
+        dstf.joinStyle   = srcf.joinStyle
     }
 
     mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
@@ -176,6 +180,7 @@ impl IForm for FormText
             bSize != cachebSize or
             fSize != cachefSize or
             sSize != cachesSize or
+            joinStyle != cacheStyle or
             cacheBorderColorA != borderColor.a
         {
             isDirty = true
@@ -189,6 +194,7 @@ impl IForm for FormText
             cachesSize = sSize
             cachebSize = bSize
             cachefSize = fSize
+            cacheStyle = joinStyle
             cacheBorderColorA = borderColor.a
 
             paths.clear()
@@ -215,7 +221,7 @@ impl IForm for FormText
                             ftr.back.flatten(painter.curState.paintQuality)
                             if !Math.isZeroEpsilon(sSize)
                             {
-                                ftr.back.offset(sSize, JoinStyle.Round, 0.5)
+                                ftr.back.offset(sSize, joinStyle, 0.5)
                                 ftr.back.clean()
                             }
                         }
@@ -227,7 +233,7 @@ impl IForm for FormText
                             if ftr.border.paths.count
                             {
                                 ftr.border.flatten(painter.curState.paintQuality)
-                                ftr.border.offset(sSize + bSize, JoinStyle.Round, 0.5)
+                                ftr.border.offset(sSize + bSize, joinStyle, 0.5)
                                 ftr.border.clean()
                             }
                         }

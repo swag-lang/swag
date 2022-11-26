@@ -156,7 +156,6 @@ impl Polygon
             return
 
         joinType := Clipper.JoinType.Square
-
         switch joinStyle
         {
         case Round: joinType = .Round
