@@ -19,7 +19,8 @@ bool SemanticJob::resolveMove(SemanticContext* context)
 
     if (node->flags & AST_FORCE_MOVE)
     {
-        SWAG_VERIFY(!right->typeInfo->isConst(), context->report(right, Fmt(Err(Err0559), right->typeInfo->getDisplayNameC())));
+        if ((right->typeInfo->kind == TypeInfoKind::Struct && right->typeInfo->isConst()) || right->typeInfo->isConstPointerRef())
+            return context->report(right, Fmt(Err(Err0559), right->typeInfo->getDisplayNameC()));
     }
 
     return true;
