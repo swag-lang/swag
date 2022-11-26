@@ -151,8 +151,10 @@ impl HashTable
         {
             h := oldTable[i].hash
             if h >= HASH_FIRST
-                add(self, oldTable[i].key, oldTable[i].value)
-            if h >= HASH_DELETED
+            {
+                emplaceInternal(self, &oldTable[i].key, &oldTable[i].value)
+            }
+            elif h == HASH_DELETED
             {
                 @drop(&oldTable[i].key)
                 @drop(&oldTable[i].value)
@@ -195,6 +197,86 @@ impl HashTable
                 deleted -= 1
             table[index].key = key
             table[index].value = value
+        }
+
+        table[index].hash = hashVal
+        count += 1
+        return table + index
+    }
+
+    // Use with care !
+    #[Discardable]
+    mtd emplaceInternal(key: *K, value: *V)->*HashTableEntry
+        #selectif Reflection.canCopy(@typeof(K)) and
+                  Reflection.canCopy(@typeof(V))
+    {
+        grow()
+
+        hashVal := hashKey(dref key)
+        index := hashVal % capacity
+
+        while table[index].hash >= HASH_FIRST
+        {
+            if table[index].hash == hashVal and table[index].key == dref key
+            {
+                table[index].value =,moveraw dref value
+                return table + index
+            }
+
+            index = (index + 1) % capacity
+        }
+
+        if table[index].hash == HASH_FREE
+        {
+            table[index].key =,nodrop,moveraw dref key
+            table[index].value =,nodrop,moveraw dref value
+        }
+        else
+        {
+            if table[index].hash == HASH_DELETED
+                deleted -= 1
+            table[index].key =,moveraw dref key
+            table[index].value =,moveraw dref value
+        }
+
+        table[index].hash = hashVal
+        count += 1
+        return table + index
+    }
+
+    // Add a new key value pair. If the key already exists, then the value will be replaced
+    #[Discardable]
+    mtd emplace(key: K, value: *V)->*HashTableEntry
+        #selectif Reflection.canCopy(@typeof(K)) and
+                  Reflection.canCopy(@typeof(V))
+    {
+        grow()
+
+        hashVal := hashKey(key)
+        index := hashVal % capacity
+
+        while table[index].hash >= HASH_FIRST
+        {
+            if table[index].hash == hashVal and table[index].key == key
+            {
+                table[index].value =,move dref value
+                return table + index
+            }
+
+            index = (index + 1) % capacity
+        }
+
+        if table[index].hash == HASH_FREE
+        {
+            table[index].key =,nodrop key
+            table[index].value =,nodrop,move dref value
+        }
+        else
+        {
+            if table[index].hash == HASH_DELETED
+                deleted -= 1
+            table[index].key = key
+            table[index].value =,move dref value
         }
 
         table[index].hash = hashVal
