@@ -252,7 +252,7 @@ impl IForm for FormText
                             assume face.getRuneOutline(&ftr.border, c, acast fSize, acast sSize)
                             ftr.border.flatten(painter.curState.paintQuality)
                             ftr.border.offset(bSize, joinStyle, 0.5)
-                            ftr.border.clean()
+                            //ftr.border.clean()
                         }
 
                         it = runes.add(c, ftr)

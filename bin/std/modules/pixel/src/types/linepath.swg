@@ -27,6 +27,7 @@ public struct LinePath
 
     // Flatten infos
     flattenQuality: PaintQuality = ?
+    isPolyOnly:     bool
     isFlatten:      bool
     bvMin:          Vector2
     bvMax:          Vector2
@@ -322,6 +323,8 @@ public impl LinePath
     mtd flatten(quality = PaintQuality.Normal)
     {
         // Already done ?
+        if isPolyOnly
+            return
         if !isDirty and flattenQuality == quality and isFlatten
             return
 

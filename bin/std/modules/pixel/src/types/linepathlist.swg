@@ -65,8 +65,11 @@ impl LinePathList
         if Math.isZeroEpsilon(value)
             return
 
-        visit p: paths
-            p.polygon.offset(value)
+        visit p: paths 
+        {
+            v := p.polygon.isClockwise ? value : -value
+            p.polygon.offset(v)
+        }
     }
 
     // Call quality offset on all paths
@@ -76,11 +79,27 @@ impl LinePathList
         if Math.isZeroEpsilon(value)
             return
 
+        var newList: LinePathList
+
         visit p: paths
         {
             v := p.polygon.isClockwise ? value : -value
-            p.polygon.offset(v, joinStyle, toler)
+
+            res := p.polygon.getOffset(v, joinStyle, toler)
+            loop i: res.paths
+            {
+                pl := res.paths[i]
+                pl.isPolyOnly = true
+                pl.bvMin = p.bvMin
+                pl.bvMax = p.bvMax
+                newList.paths.add(pl)
+            }
+
+            res.paths.count = 0
         }
+
+        paths =,move newList.paths
+        clean()
     }
 
     // Clean all paths

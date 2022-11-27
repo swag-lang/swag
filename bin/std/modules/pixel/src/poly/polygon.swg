@@ -148,7 +148,7 @@ impl Polygon
     }
 
     // Slow but quality offset with a joinStyle
-    mtd offset(value: f32, joinStyle: JoinStyle, toler: f32 = 0.5)
+    private mtd offset(res: *Clipper.ClipperPaths, value: f32, joinStyle: JoinStyle, toler: f32)
     {
         if Math.isZeroEpsilon(value)
             return
@@ -163,7 +163,6 @@ impl Polygon
         case Miter: joinType = .Miter
         }
 
-        var res: Clipper.ClipperPaths
         var off: Clipper.Offset
         off.arcTolerance = toler * ClipperScaleCoords
 
@@ -174,13 +173,35 @@ impl Polygon
         off.addPath(path, joinType)
 
         // Compute
-        off.execute(&res, cast(f64) (value * ClipperScaleCoords))
+        off.execute(res, cast(f64) (value * ClipperScaleCoords))
+    }
 
-        // Get result
+    // Slow but quality offset with a joinStyle
+    mtd offset(value: f32, joinStyle: JoinStyle, toler: f32 = 0.5)
+    {
+        var res: Clipper.ClipperPaths
+
+        offset(&res, value, joinStyle, toler)
+        clear()
         if res.count
             storeClipperResult(res[0], false)
-        else
-            clear()
+    }
+
+    // Slow but quality offset with a joinStyle
+    mtd getOffset(value: f32, joinStyle: JoinStyle, toler: f32 = 0.5)->LinePathList
+    {
+        var result: retval
+
+        var res: Clipper.ClipperPaths
+        offset(&res, value, joinStyle, toler)
+
+        visit p: res
+        {
+            np := result.newPath()
+            np.polygon.storeClipperResult(p, false)
+        }
+
+        return result
     }
 
     mtd getCleanedPaths()->Clipper.ClipperPaths
@@ -196,10 +217,10 @@ impl Polygon
         var path: Clipper.ClipperPath
         visit pt: points
             path.add(Clipper.IntPoint{cast(s64) (pt.x * ClipperScaleCoords), cast(s64) (pt.y * ClipperScaleCoords)})
-        trf.addPath(&path, Clipper.PolyType.Subject)
+        trf.addPath(&path, .Subject)
 
         // Compute
-        trf.execute(Clipper.ClipType.Union, &result, Clipper.PolyFillType.NonZero, Clipper.PolyFillType.NonZero)
+        trf.execute(.Union, &result, .NonZero, .NonZero)
 
         return result
     }
