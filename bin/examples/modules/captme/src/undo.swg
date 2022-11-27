@@ -19,6 +19,7 @@ enum UndoKind
     SetTypedValue
     SetFormFromModel
     SetText
+    SetFont
     Flatten
     FlattenAll
     RestoreOrg
@@ -34,6 +35,7 @@ struct Undo
     serial:     u32
 
     selection:      Array'uint
+
     oldForms:       Array'IForm
     oldS32:         Array's32
     oldU32:         Array'u32
@@ -58,6 +60,7 @@ struct Undo
     mdlType:    typeinfo
     mdlValue:   *BaseForm
     text:       String
+    fontStyle:  FontFamilyStyle
 }
 
 impl Undo
@@ -110,6 +113,18 @@ impl Undo
                     continue
                 b := cast(*FormText) @dataof(f)
                 oldText.add(b.text)
+            }
+
+        case SetFont:
+            selection = capture.selection
+            visit s: selection
+            {
+                f := capture.forms[s]
+                if @kindof(f) != FormText
+                    continue
+                b := cast(*FormText) @dataof(f)
+                oldText.add(b.fontName)
+                oldU32.add(cast(u32) b.fontStyle)
             }
 
         case SetFormFromModel:
@@ -255,6 +270,18 @@ impl Undo
                 b := cast(*FormText) @dataof(f)
                 b.text = text
                 b.isDirty = true
+            }
+
+        case SetFont:
+            visit s, i: selection
+            {
+                f := capture.forms[s]
+                if @kindof(f) != FormText
+                    continue
+                b := cast(*FormText) @dataof(f)
+                b.fontName  = text
+                b.fontStyle = fontStyle
+                b.isDirtyFont = true
             }
 
         case SetFormFromModel:
@@ -478,6 +505,18 @@ impl Undo
                 b := cast(*FormText) @dataof(f)
                 b.text = oldText[i]
                 b.isDirty = true
+            }
+
+        case SetFont:
+            visit s, i: selection
+            {
+                f := capture.forms[s]
+                if @kindof(f) != FormText
+                    continue
+                b := cast(*FormText) @dataof(f)
+                b.fontName = oldText[i]
+                b.fontStyle = acast oldU32[i]
+                b.isDirtyFont = true
             }
 
         case SetFormFromModel:

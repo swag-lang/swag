@@ -759,30 +759,27 @@ impl PropWnd
         visit &fnt: sysFonts
         {
             combo.addItem(fnt.name, userData0: fnt)
-            if curSel.typeFace and curSel.typeFace.getFaceName() == fnt.name
+            if curSel.fontName == fnt.name
                 combo.selectedIdx = cast(u32) combo.items.count - 1
         }
 
-        combo.sigChanged += @|curSel|(combo, idx)
+        combo.sigChanged += @|self, curSel|(combo, idx)
         {
             if idx == Swag.U32.Max
                 return
 
+            capture := self.main.getCapture()
+            undo := capture.newUndo(.SetFont)
+
             sel := combo.items[idx]
-            if !sel.userData0
+            if sel.userData0
             {
-                curSel.typeFace = null
-                curSel.isDirty = true
-                return
+                p := cast(*FontFamilyEnumerate) sel.userData0
+                undo.text = p.name
             }
 
-            p  := cast(*FontFamilyEnumerate) sel.userData0
-            tf := catch FontFamily.createTypeFace(p, .Regular)
-            if tf
-            {
-                curSel.typeFace = tf
-                curSel.isDirty = true
-            }
+            undo.fontStyle = .Regular
+            capture.pushUndo(undo)
         }
 
         // Text

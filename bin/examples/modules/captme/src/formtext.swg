@@ -23,21 +23,28 @@ struct FormText
     alignVert   = FormTextAlign.Center
     lineSpacing = 14.0
     joinStyle   = JoinStyle.Round
+    fontStyle   = FontFamilyStyle.Regular
+    fontName:   String
 
     #[Serialization.NoSerialize]
     {
-        gizmo:      GizmoRect
-        isDirty:    bool
-        typeFace:   *TypeFace
-        cacheFace:  *TypeFace
-        cachebSize: f32
-        cachesSize: f32
-        cachefSize: f32
-        cacheStyle: JoinStyle
+        gizmo:          GizmoRect
+        isDirty:        bool
+        isDirtyFont:    bool
+        typeFace:       *TypeFace
+
+        cacheFace:      *TypeFace
+        cachebSize:     f32
+        cachesSize:     f32
+        cachefSize:     f32
+        cacheStyle:     JoinStyle
+        cacheFontN:     String
+        cacheFontS:     FontFamilyStyle
+        cacheBColorA:   u8
+
         totalY:     f32
         runes:      HashTable'(rune, FormTextRune)
         paths:      Array'LinePathList
-        cacheBorderColorA: u8
     }
 }
 
@@ -53,6 +60,8 @@ impl IForm for FormText
                 fontSize    == other.fontSize and
                 boldSize    == other.boldSize and
                 paintShadow == other.paintShadow and
+                fontName    == other.fontName and
+                fontStyle   == other.fontStyle and
                 joinStyle   == other.joinStyle
     }
 
@@ -68,6 +77,8 @@ impl IForm for FormText
         dstf.boldSize    = srcf.boldSize
         dstf.paintShadow = srcf.paintShadow
         dstf.joinStyle   = srcf.joinStyle
+        dstf.fontName    = srcf.fontName
+        dstf.fontStyle   = srcf.fontStyle
     }
 
     mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
@@ -174,14 +185,29 @@ impl IForm for FormText
             isDirty = true
         }
 
+        // Font
+        if !typeFace or isDirtyFont
+        {
+            isDirtyFont = false
+            if !fontName.length
+                typeFace = null
+            else
+            {
+                en := FontFamily.getFromOs(fontName)
+                typeFace = catch FontFamily.createTypeFace(en, .Italic)//fontStyle)
+            }
+        }
+
         face := typeFace orelse g_App.theme.res.defaultTypeFaceR
 
-        if  face  != cacheFace or
-            bSize != cachebSize or
-            fSize != cachefSize or
-            sSize != cachesSize or
-            joinStyle != cacheStyle or
-            cacheBorderColorA != borderColor.a
+        if face  != cacheFace or
+           bSize != cachebSize or
+           fSize != cachefSize or
+           sSize != cachesSize or
+           joinStyle != cacheStyle or
+           fontName != cacheFontN or
+           fontStyle != cacheFontS or
+           cacheBColorA != borderColor.a
         {
             isDirty = true
         }
@@ -195,7 +221,9 @@ impl IForm for FormText
             cachebSize = bSize
             cachefSize = fSize
             cacheStyle = joinStyle
-            cacheBorderColorA = borderColor.a
+            cacheFontN = fontName
+            cacheFontS = fontStyle
+            cacheBColorA = borderColor.a
 
             paths.clear()
             paths.resize(tokens.count * 2)

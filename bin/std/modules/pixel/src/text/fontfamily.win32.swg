@@ -82,21 +82,57 @@ impl FontFamily
         return result
     }
 
+    // Get a FontFamilyEnumerate from a font family name
+    public func getFromOs(fontFamily: string)->FontFamilyEnumerate
+    {
+        hdc := GetDC(null)
+        defer ReleaseDC(null, hdc)
+
+        var arr: Array'FontFamilyEnumerate
+        v := Utf16.toZeroTerminated(fontFamily)
+        EnumFontFamiliesW(hdc, v.buffer, @mkcallback(&enumFamily), cast(LPARAM) cast(uint) &arr)
+
+        return arr[0]
+    }
+
+    // Creates a typeface from a FontFamilyEnumerate and FontFamilyStyle
     public func createTypeFace(enumerate: FontFamilyEnumerate, style: FontFamilyStyle)->*TypeFace throw
     {
-        face := &enumerate.faces[cast(uint) style]
+        logFont := enumerate.faces[cast(uint) style]
 
-        st := style
-        if st == .BoldItalic and face.face.lfWidth == 0
-            st = .Italic
-        if face.face.lfWidth == 0
-            st = .Regular
-        if face.face.lfWidth == 0
-            return null
+        if logFont.face.lfWidth == 0
+        {
+            loop i: @countof(FontFamilyStyle)
+            {
+                logFont = enumerate.faces[i]
+                if logFont.face.lfWidth != 0
+                    break
+            }
 
-        hf := try CreateFontIndirectW(face.face)
+            if logFont.face.lfWidth == 0
+                return null
+
+            switch style
+            {
+            case Regular:
+                logFont.face.lfWeight = FW_REGULAR
+                logFont.face.lfItalic = FALSE
+            case Bold:
+                logFont.face.lfWeight = FW_BOLD
+                logFont.face.lfItalic = FALSE
+            case Italic:
+                logFont.face.lfWeight = FW_REGULAR
+                logFont.face.lfItalic = TRUE
+            case BoldItalic:
+                logFont.face.lfWeight = FW_BOLD
+                logFont.face.lfItalic = TRUE
+            }
+        }
+
+        hf := try CreateFontIndirectW(logFont.face)
         defer catch DeleteObject(acast hf)
 
-        return try TypeFace.createFromHFONT(face.name, hf)
+        fontName := Format.toString("%_%", logFont.name, cast(u32) style)
+        return try TypeFace.createFromHFONT(fontName, hf)
     }
 }
