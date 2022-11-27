@@ -7,10 +7,9 @@ enum FormTextAlign
 
 struct FormTextRune
 {
-    advanceBack:    f32
-    advanceBorder:  f32
     back:           LinePathList
     border:         LinePathList
+    advance:        f32
 }
 
 struct FormText
@@ -243,40 +242,29 @@ impl IForm for FormText
                         var ftr: FormTextRune
 
                         // Back
-                        ftr.advanceBack = assume face.getRuneOutline(&ftr.back, c, acast fSize, acast sSize)
-                        if ftr.back.paths.count
-                        {
-                            ftr.back.flatten(painter.curState.paintQuality)
-                            ftr.back.clean()
-                            /*if !Math.isZeroEpsilon(sSize)
-                            {
-                                ftr.back.offset(sSize, joinStyle, 0.5)
-                                ftr.back.clean()
-                            }*/
-                        }
+                        ftr.advance = assume face.getRuneOutline(&ftr.back, c, acast fSize, acast sSize)
+                        ftr.back.flatten(painter.curState.paintQuality)
+                        ftr.back.clean()
 
                         // Border
                         if !Math.isZeroEpsilon(bSize) and borderColor.a
                         {
-                            ftr.advanceBorder = assume face.getRuneOutline(&ftr.border, c, acast fSize, acast sSize)
-                            if ftr.border.paths.count
-                            {
-                                ftr.border.flatten(painter.curState.paintQuality)
-                                ftr.border.offset(bSize, joinStyle, 0.5)
-                                ftr.border.clean()
-                            }
+                            assume face.getRuneOutline(&ftr.border, c, acast fSize, acast sSize)
+                            ftr.border.flatten(painter.curState.paintQuality)
+                            ftr.border.offset(bSize, joinStyle, 0.5)
+                            ftr.border.clean()
                         }
 
                         it = runes.add(c, ftr)
                     }
 
-                    pathl.bvMax.x += it.value.advanceBack
+                    pathl.bvMax.x += it.value.advance
                     pathl.bvMin.y = Math.min(pathl.bvMin.y, it.value.back.bvMin.y)
                     pathl.bvMax.y = Math.max(pathl.bvMax.y, it.value.back.bvMax.y)
 
                     if it.value.border.paths.count
                     {
-                        pathl1.bvMax.x += it.value.advanceBorder
+                        pathl1.bvMax.x += it.value.advance
                         pathl1.bvMin.y = Math.min(pathl1.bvMin.y, it.value.border.bvMin.y)
                         pathl1.bvMax.y = Math.max(pathl1.bvMax.y, it.value.border.bvMax.y)
                     }
@@ -336,7 +324,7 @@ impl IForm for FormText
                 pl.paths.add(it.value.border.paths.toSlice())
                 painter.fillPath(&pl, borderColor)
                 pl.paths.count = 0
-                painter.translateTransform(cast(f32) it.value.advanceBorder*z, 0)
+                painter.translateTransform(cast(f32) it.value.advance*z, 0)
             }
             painter.popState()
 
@@ -350,7 +338,7 @@ impl IForm for FormText
                 pl.paths.add(it.value.back.paths.toSlice())
                 painter.fillPath(&pl, backColor)
                 pl.paths.count = 0
-                painter.translateTransform(cast(f32) it.value.advanceBack*z, 0)
+                painter.translateTransform(cast(f32) it.value.advance*z, 0)
             }
             painter.popState()
 
