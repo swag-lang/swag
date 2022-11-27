@@ -20,6 +20,7 @@ enum UndoKind
     SetFormFromModel
     SetText
     SetFont
+    SetFontStyle
     Flatten
     FlattenAll
     RestoreOrg
@@ -124,6 +125,17 @@ impl Undo
                     continue
                 b := cast(*FormText) @dataof(f)
                 oldText.add(b.fontName)
+                oldU32.add(cast(u32) b.fontStyle)
+            }
+
+        case SetFontStyle:
+            selection = capture.selection
+            visit s: selection
+            {
+                f := capture.forms[s]
+                if @kindof(f) != FormText
+                    continue
+                b := cast(*FormText) @dataof(f)
                 oldU32.add(cast(u32) b.fontStyle)
             }
 
@@ -280,6 +292,17 @@ impl Undo
                     continue
                 b := cast(*FormText) @dataof(f)
                 b.fontName  = text
+                b.fontStyle = fontStyle
+                b.isDirtyFont = true
+            }
+
+        case SetFontStyle:
+            visit s, i: selection
+            {
+                f := capture.forms[s]
+                if @kindof(f) != FormText
+                    continue
+                b := cast(*FormText) @dataof(f)
                 b.fontStyle = fontStyle
                 b.isDirtyFont = true
             }
@@ -515,6 +538,17 @@ impl Undo
                     continue
                 b := cast(*FormText) @dataof(f)
                 b.fontName = oldText[i]
+                b.fontStyle = acast oldU32[i]
+                b.isDirtyFont = true
+            }
+
+        case SetFontStyle:
+            visit s, i: selection
+            {
+                f := capture.forms[s]
+                if @kindof(f) != FormText
+                    continue
+                b := cast(*FormText) @dataof(f)
                 b.fontStyle = acast oldU32[i]
                 b.isDirtyFont = true
             }

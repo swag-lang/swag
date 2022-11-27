@@ -100,39 +100,33 @@ impl FontFamily
     {
         logFont := enumerate.faces[cast(uint) style]
 
+        forceItalic := false
         if logFont.face.lfWidth == 0
         {
             loop i: @countof(FontFamilyStyle)
             {
                 logFont = enumerate.faces[i]
                 if logFont.face.lfWidth != 0
+                {
+                    ns := cast(FontFamilyStyle) i
+                    if (style == .Italic or style == .BoldItalic) and (ns != .Italic and ns != .BoldItalic)
+                        forceItalic = true
                     break
+                }
             }
 
             if logFont.face.lfWidth == 0
                 return null
-
-            switch style
-            {
-            case Regular:
-                logFont.face.lfWeight = FW_REGULAR
-                logFont.face.lfItalic = FALSE
-            case Bold:
-                logFont.face.lfWeight = FW_BOLD
-                logFont.face.lfItalic = FALSE
-            case Italic:
-                logFont.face.lfWeight = FW_REGULAR
-                logFont.face.lfItalic = TRUE
-            case BoldItalic:
-                logFont.face.lfWeight = FW_BOLD
-                logFont.face.lfItalic = TRUE
-            }
         }
 
         hf := try CreateFontIndirectW(logFont.face)
         defer catch DeleteObject(acast hf)
 
         fontName := Format.toString("%_%", logFont.name, cast(u32) style)
-        return try TypeFace.createFromHFONT(fontName, hf)
+        typeFace := try TypeFace.createFromHFONT(fontName, hf)
+
+        typeFace.forceItalic = forceItalic
+
+        return typeFace
     }
 }

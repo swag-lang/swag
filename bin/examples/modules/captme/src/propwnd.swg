@@ -744,7 +744,7 @@ impl PropWnd
             return
         curSel := cast(*FormText) getSelectedBaseForm()
 
-        stack := StackLayoutCtrl.create(mainLayout, .Top, @{0, 0, 0, 120})
+        stack := StackLayoutCtrl.create(mainLayout, .Top, @{0, 0, 0, 160})
         stack.padding = 8
 
         // Font
@@ -817,6 +817,60 @@ impl PropWnd
                 undo.text = edit.text
                 capture.pushUndo(undo)
             }
+        }
+
+        // Bold/Italic
+        stack2 := StackLayoutCtrl.create(stack, .HorzCenter, @{0, 0, 0, 30})
+        with bar2 := IconBar.create(stack2, 24)
+        {
+            .addCheckableToggleItem(Icon.from(&main.icons24, 8), CmdIdTextBold)
+            .addCheckableToggleItem(Icon.from(&main.icons24, 9), CmdIdTextItalic)
+
+            .sigUpdateUI += @|self|(evt) {
+                curSel := cast(*FormText) self.getSelectedBaseForm()
+                evt.setFlags |= .Checked
+                evt.accepted = true
+
+                switch evt.id
+                {
+                case CmdIdTextBold:    evt.checked = curSel.fontStyle == .Bold or curSel.fontStyle == .BoldItalic
+                case CmdIdTextItalic:  evt.checked = curSel.fontStyle == .Italic or curSel.fontStyle == .BoldItalic
+                }
+            }
+
+            .sigCheckChanged += @|self|(btn) {
+                capture := self.main.getCapture()
+                curSel  := cast(*FormText) self.getSelectedBaseForm()
+                style := curSel.fontStyle
+                switch btn.id
+                {
+                case CmdIdTextBold:
+                    if btn.isChecked and style == .Regular
+                        style = .Bold
+                    elif btn.isChecked and style == .Italic
+                        style = .BoldItalic
+                    elif !btn.isChecked and style == .Bold
+                        style = .Regular
+                    elif !btn.isChecked and style == .BoldItalic
+                        style = .Italic
+
+                case CmdIdTextItalic:
+                    if btn.isChecked and style == .Regular
+                        style = .Italic
+                    elif btn.isChecked and style == .Bold
+                        style = .BoldItalic
+                    elif !btn.isChecked and style == .Italic
+                        style = .Regular
+                    elif !btn.isChecked and style == .BoldItalic
+                        style = .Bold
+                }
+
+                undo := capture.newUndo(.SetFontStyle)
+                undo.fontStyle = style
+                capture.pushUndo(undo)
+            }
+
+            bar2.updateCommandState()
         }
 
         // Align

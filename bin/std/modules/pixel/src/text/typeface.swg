@@ -8,9 +8,10 @@ var g_FT: FT_Library
 
 public struct TypeFace
 {
-    fullname:   string
-    buffer:     Array'u8
-    face:       FT_Face
+    fullname:       string
+    buffer:         Array'u8
+    face:           FT_Face
+    forceItalic:   bool
 }
 
 impl TypeFace
@@ -115,6 +116,8 @@ public impl TypeFace
         try FT_Load_Char(face, cast(FT_ULong) c, FT_LOAD_NO_BITMAP)
         if embolden
             try FT_Outline_Embolden(&face.glyph.outline, cast(FT_Pos) embolden * 64)
+        if forceItalic
+            FT_GlyphSlot_Oblique(face.glyph)
 
         prevIdx := pathList.paths.count
         try FT_Outline_Decompose(&face.glyph.outline, &itf, pathList)
@@ -149,6 +152,9 @@ public impl TypeFace
             try FT_Load_Char(face, cast(FT_ULong) c, FT_LOAD_NO_BITMAP)
             if embolden
                 try FT_Outline_Embolden(&face.glyph.outline, cast(FT_Pos) embolden * 64)
+            if forceItalic
+                FT_GlyphSlot_Oblique(face.glyph)
+
             FT_Outline_Translate(face.glyph.outline, x, 0)
 
             prevIdx := pathList.paths.count

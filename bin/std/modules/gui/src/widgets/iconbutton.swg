@@ -56,10 +56,11 @@ struct IconButton
     checkedForm     = IconButtonCheckedForm.Full
     arrowPos        = IconButtonArrowPos.None
     textPos         = IconButtonTextPos.Bottom
+
     sigHidePopup:       SigArray'closure(*Self)
     sigShowPopup:       SigArray'closure(*Self)
     sigCheckChanged:    SigArray'closure(*Self)
-    sigPaintIcon:   closure(*Self, *PaintContext, Math.Rectangle)
+    sigPaintIcon:       closure(*Self, *PaintContext, Math.Rectangle)
 
     isChecked: bool
     popup:     *Wnd

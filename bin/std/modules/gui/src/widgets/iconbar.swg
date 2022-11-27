@@ -74,7 +74,7 @@ impl IconBar
         b.dockStyle = .Left
         computeLayout()
 
-        if iconBtnFlags & .Checkable
+        if iconBtnFlags & (.Checkable | .CheckableToggle)
         {
             b.sigCheckChanged += @|self|(btn) {
                 self.sigCheckChanged.call(btn)
@@ -90,6 +90,13 @@ impl IconBar
     mtd addCheckableItem(icon: Icon, btnId: WndId = null)->*IconButton
     {
         return addItem(icon, btnId, .Checkable)
+    }
+
+    // Add a new checkable button
+    #[Swag.Discardable]
+    mtd addCheckableToggleItem(icon: Icon, btnId: WndId = null)->*IconButton
+    {
+        return addItem(icon, btnId, .CheckableToggle)
     }
 
     // Change bar flags

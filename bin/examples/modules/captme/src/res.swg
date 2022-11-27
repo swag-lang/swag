@@ -95,5 +95,7 @@ const CmdIdPixSelClear          = "CmdIdPixSelClear"
 const CmdIdPixSelFill           = "CmdIdPixSelFill"
 const CmdIdPixSelSmartFill      = "CmdIdPixSelSmartFill"
 const CmdIdPixSelSmartMove      = "CmdIdPixSelSmartMove"
+const CmdIdTextBold             = "CmdIdTextBold"
+const CmdIdTextItalic           = "CmdIdTextItalic"
 
 const ClipboardFormat = "Swag.CaptMe"

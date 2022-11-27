@@ -405,6 +405,7 @@ var Errors: [0xFF] string = ?
     func FT_Get_Char_Index(face: FT_Face, charcode: FT_ULong)->FT_UInt;
     func FT_Outline_Transform(outline: const *FT_Outline, matrix: const *FT_Matrix);
     func FT_Outline_Translate(outline: const *FT_Outline, xOffset, yOffset: FT_Pos);
+    func FT_GlyphSlot_Oblique(slot: FT_GlyphSlot);
 }
 
 namespace FreeTypePriv
