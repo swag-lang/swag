@@ -823,8 +823,8 @@ impl PropWnd
         stack2 := StackLayoutCtrl.create(stack, .HorzCenter, @{0, 0, 0, 30})
         with bar2 := IconBar.create(stack2, 24)
         {
-            .addCheckableToggleItem(Icon.from(&main.icons24, 8), CmdIdTextBold)
-            .addCheckableToggleItem(Icon.from(&main.icons24, 9), CmdIdTextItalic)
+            .addCheckableToggleItem(Icon.from(&main.icons24, 16), CmdIdTextBold)
+            .addCheckableToggleItem(Icon.from(&main.icons24, 17), CmdIdTextItalic)
 
             .sigUpdateUI += @|self|(evt) {
                 curSel := cast(*FormText) self.getSelectedBaseForm()
