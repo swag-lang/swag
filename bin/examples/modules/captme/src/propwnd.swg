@@ -7,7 +7,7 @@ const MaxCapSize        = 8.0
 const MinFontSize       = 10.0
 const MaxFontSize       = 150.0
 const MinBoldSize       = 0.0
-const MaxBoldSize       = 4.0
+const MaxBoldSize       = 10.0
 
 const CapSize         = 8.0
 const DashSize        = 8.0
