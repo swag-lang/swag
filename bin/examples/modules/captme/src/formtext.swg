@@ -194,7 +194,7 @@ impl IForm for FormText
             else
             {
                 en := FontFamily.getFromOs(fontName)
-                typeFace = catch FontFamily.createTypeFace(en, .Italic)//fontStyle)
+                typeFace = catch FontFamily.createTypeFace(en, fontStyle)
             }
         }
 
