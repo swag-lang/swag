@@ -4,11 +4,12 @@ using Core
 struct RichChunk
 {
     // From 'set'
-    slice:      string
-    fontStyle:  FontFamilyStyle = Regular
-    isSpace:    bool
-    isEol:      bool
-    colorIdx:   s32
+    slice:          string
+    fontStyle:      FontFamilyStyle = Regular
+    hasFontStyle:   bool
+    isSpace:        bool
+    isEol:          bool
+    colorIdx:       s32
 
     // From 'computeLayout'
     boundRect:  Math.Rectangle
@@ -45,18 +46,28 @@ impl RichString
     {
         if idx - startChunk == 0
             return
-        chunk.isSpace = space
-        chunk.isEol   = eol
-        chunk.colorIdx = colorFg
-        chunk.under    = under
+        chunk.isSpace       = space
+        chunk.isEol         = eol
+        chunk.colorIdx      = colorFg
+        chunk.under         = under
+        chunk.hasFontStyle  = false
+
         if isBold and isItalic
+        {
+            chunk.hasFontStyle = true
             chunk.fontStyle = .BoldItalic
+        }
         elif isBold
+        {
+            chunk.hasFontStyle = true
             chunk.fontStyle = .Bold
+        }
         elif isItalic
+        {
+            chunk.hasFontStyle = true
             chunk.fontStyle = .Italic
-        else
-            chunk.fontStyle = .Default
+        }
+
         chunk.slice = @mkstring(raw.buffer + startChunk, idx - startChunk)
         chunks.add(chunk)
         startChunk = idx

@@ -10,7 +10,6 @@ struct FontFamily
 
 enum FontFamilyStyle
 {
-    Default
     Regular
     Bold
     Italic
@@ -25,7 +24,7 @@ impl FontFamily
     {
         switch style
         {
-        case Regular, Default:
+        case Regular:
             if regular return regular
 
         case Bold:

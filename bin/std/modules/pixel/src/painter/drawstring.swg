@@ -241,20 +241,8 @@ impl Painter
         visit &c, idx: text.chunks
         {
             // Attributes
-            fs := c.fontStyle
-            if fs == .Default
-                fs = format.fontStyle
-            switch fs
-            {
-            case Regular, Default:
-                c.font = format.font.regular
-            case Bold:
-                c.font = format.font.bold
-            case Italic:
-                c.font = format.font.italic
-            case BoldItalic:
-                c.font = format.font.boldItalic
-            }
+            fs := c.hasFontStyle ? c.fontStyle : format.fontStyle
+            c.font = format.font.getFont(fs)
 
             // Measure
             c.boundRect = measureString(c.slice, c.font).rect
