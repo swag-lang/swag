@@ -226,15 +226,15 @@ impl Surface
         // Draw shadow around surface
         subRect := &app.theme.rects.surfaceWnd_Shadow
         painter.pushClippingRect(clipRect)
-        painter.setColorMask(true, true, true, true)
+        painter.setColorMaskFull()
         myRect := Math.Rectangle{0, 0, position.width, position.height}
         app.theme.drawSubRect(&painter, myRect, subRect, app.theme.colors.wnd_Shadow, false)
-        painter.setColorMask(true, true, true, false)
 
         // Hierarchy paint
         painter.pushClippingRect(wnd.getSurfaceRect())
+        painter.setColorMaskColor()
         wnd.paint(&cxt)
-        painter.setColorMask(false, false, false, true)
+        painter.setColorMaskAlpha()
         painter.clear(Argb.Black)
         painter.end()
 
@@ -247,7 +247,7 @@ impl Surface
 
         // Paint render target to screen
         painter.begin()
-        painter.setColorMask(true, true, true, true)
+        painter.setColorMaskFull()
         painter.setInterpolationMode(.Pixel)
         painter.setBlendingMode(.Copy)
 
@@ -269,8 +269,8 @@ impl Surface
         dstRect := Math.Rectangle{0, 0, cast(f32) rc.width, cast(f32) rc.height}
         painter.drawTexture(dstRect, dstRect, rt.colorBuffer, color)
         painter.end()
-        cxt.renderer.draw(&painter)
 
+        cxt.renderer.draw(&painter)
         cxt.renderer.end()
     }
 

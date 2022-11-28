@@ -627,19 +627,22 @@ impl RenderOgl
             }
             else
             {
-                // First we mark the alpha buffer with the 'maximum' alpha to paint.
-                // If a pixel is drawn twice because of overlapping, we will have the 'most opaque'
-                glEnable(GL_BLEND)
+                // Fresh start on alpha. Clear all
+                glDisable(GL_BLEND)
                 glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_TRUE)
                 glClearColor(0, 0, 0, 0)
                 glClear(GL_COLOR_BUFFER_BIT)
+
+                // First we mark the alpha buffer with the 'maximum' alpha to paint.
+                // If a pixel is drawn twice because of overlapping, we will have the 'most opaque'
+                glEnable(GL_BLEND)
                 glBlendFunc(GL_SRC_ALPHA, GL_ZERO)
                 glBlendEquation(GL_MAX)
                 glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
 
                 // Then we use the stored alpha as the blend factor.
-                // When a pixel is drawn once, the alpha value is set to 0, so this means that
-                // the second pixel will not be written.
+                // When a pixel is drawn once, the alpha value will be reset to 0, so this means that
+                // the second overlapping pixel (if there's one) will not be written.
                 glBlendFuncSeparate(GL_DST_ALPHA, GL_ONE_MINUS_DST_ALPHA, GL_ZERO, GL_ZERO)
                 glBlendEquation(GL_FUNC_ADD)
                 glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE)
