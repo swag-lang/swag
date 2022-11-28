@@ -229,8 +229,7 @@ impl IForm for FormShape
                 if quickMode and alpha != 100 and subKind == .Highlight
                     painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, backBrush)
                 painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, bk)
-                if bSize >= 1
-                    painter.drawEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, pen)
+                painter.drawEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, pen)
 
             case Rectangle:
                 if borderColor.a and (pp.width <= 2*bSize or pp.height < 2*bSize)
@@ -249,8 +248,7 @@ impl IForm for FormShape
                 if quickMode and alpha != 100 and subKind == .Highlight
                     painter.fillRoundRect(pp1, rSize, rSize, backBrush)
                 painter.fillRoundRect(pp1, rSize, rSize, bk)
-                if bSize >= 1
-                    painter.drawRoundRect(pp, rSize, rSize, pen)
+                painter.drawRoundRect(pp, rSize, rSize, pen)
             }
         }
     }
