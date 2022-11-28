@@ -1109,9 +1109,16 @@ public impl Painter
     mtd fillPolygon(path: *LinePath, brush: Brush)
     {
         path.flatten(curState.paintQuality)
-        path.polygon.isClockwise = true
-        res := path.polygon.getClean()
-        visit p: res.paths
-            fillPath(p, brush)
+        if path.polygon.isConvex
+        {
+            fillPath(path, brush)
+        }
+        else
+        {
+            path.polygon.isClockwise = true
+            res := path.polygon.getClean()
+            visit p: res.paths
+                fillPath(p, brush)
+        }
     }
 }
