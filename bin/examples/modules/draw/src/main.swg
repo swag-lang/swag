@@ -269,10 +269,10 @@ func displayPage3(painter: *Pixel.Painter)
     trs := painter.getTransform()
 
     brush := Brush.createHatch(.SolidDiamond, Argb.Black)
-    painter.setClippingRect(0, 0, 100, 100)
+    painter.pushClippingRect(@{0, 0, 100, 100})
     painter.fillCircle(100, 100, 100, brush)
     painter.drawCircle(100, 100, 100, Argb.Red, 4)
-    painter.resetClippingRect()
+    painter.popClippingRect()
 
     painter.startClippingRegion(.Set)
     painter.fillRoundRect(150, 0, 100, 100, 20, 20, Argb.Green)
@@ -623,8 +623,7 @@ impl IWnd for MyView
         painter := event.bc.painter
         painter.setParams(g_ModeAA ? .Antialiased : .Default)
         painter.setQuality(g_PaintQuality)
-
-        //painter.clear(Color.fromArgb(0xFFEEEEEE))
+        painter.pushState()
         painter.fillRect(getClientRect(), Color.fromArgb(0xFFEEEEEE))
 
         switch g_Page
@@ -639,9 +638,9 @@ impl IWnd for MyView
         case 7: displayPage7(event.bc.renderer, painter)
         }
 
-        painter.resetState()
-        painter.translateTransform(40, 960)
-        painter.drawString(0, 00, "F1: AA on/off F2: Quality F3: Pattern F4: Change page", Res.font20, Argb.Black)
+        painter.popState()
+        painter.translateTransform(10, 920)
+        painter.drawString(0, 0, "F1: AA on/off F2: Quality F3: Pattern F4: Change page", Res.font20, Argb.Black)
     }
 
     mtd onKeyEvent(evt: *KeyEvent)
