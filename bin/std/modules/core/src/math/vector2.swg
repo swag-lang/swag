@@ -227,6 +227,27 @@ impl Vector2
         return result
     }
 
+    // Math.floor
+    mtd floor()
+    {
+        x = Math.floor(x)
+        y = Math.floor(y)
+    }
+
+    // Math.ceil
+    mtd ceil()
+    {
+        x = Math.ceil(x)
+        y = Math.ceil(y)
+    }
+
+    // Math.round
+    mtd round()
+    {
+        x = Math.round(x)
+        y = Math.round(y)
+    }
+
     // Rotate the vector by a given angle
     mtd rotate(angle: Math.Angle)
     {
