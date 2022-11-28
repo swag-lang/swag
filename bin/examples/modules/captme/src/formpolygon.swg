@@ -7,6 +7,7 @@ struct FormPolygon
     {
         gizmo:          GizmoPoints
         paintPoints:    Array'Math.Vector2
+        linePath:       LinePath
     }
 }
 
@@ -231,22 +232,21 @@ impl IForm for FormPolygon
 
         pen := Pen.createDash(dashStyle, borderColor, bSize)
 
-        var pl: LinePath
-        pl.start(paintPoints[0].x - paintPos.x, paintPoints[0].y - paintPos.y)
+        linePath.start(paintPoints[0].x - paintPos.x, paintPoints[0].y - paintPos.y)
         loop i: 1..paintPoints.count-1
-            pl.lineTo(paintPoints[i].x - paintPos.x, paintPoints[i].y - paintPos.y)
-        pl.close()
+            linePath.lineTo(paintPoints[i].x - paintPos.x, paintPoints[i].y - paintPos.y)
+        linePath.close()
 
         if quickMode
         {
             if alpha != 100 and subKind == .Highlight
-                painter.fillPath(&pl, backBrush)
-            painter.fillPath(&pl, bk)
+                painter.fillPath(&linePath, backBrush)
+            painter.fillPath(&linePath, bk)
         }
         else
-            painter.fillPolygon(&pl, bk)
+            painter.fillPolygon(&linePath, bk)
 
-        painter.drawPath(&pl, pen)
+        painter.drawPath(&linePath, pen)
     }
 
     mtd setup(capt: *Capture)

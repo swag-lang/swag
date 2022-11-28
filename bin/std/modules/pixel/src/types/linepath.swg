@@ -73,6 +73,7 @@ public impl LinePath
         elements.clear()
         isClosed = false
         isDirty = true
+        isPolyOnly = false
         startPoint = Vector2{startX, startY}
         endPoint = startPoint
     }
