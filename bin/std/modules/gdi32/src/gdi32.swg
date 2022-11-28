@@ -175,6 +175,27 @@ const DEVICE_DEFAULT_FONT = 14
 const DEFAULT_PALETTE     = 15
 const SYSTEM_FIXED_FONT   = 16
 
+const ANSI_CHARSET        = 0
+const DEFAULT_CHARSET     = 1
+const SYMBOL_CHARSET      = 2
+const SHIFTJIS_CHARSET    = 128
+const HANGEUL_CHARSET     = 129
+const HANGUL_CHARSET      = 129
+const GB2312_CHARSET      = 134
+const CHINESEBIG5_CHARSET = 136
+const OEM_CHARSET         = 255
+const JOHAB_CHARSET       = 130
+const HEBREW_CHARSET      = 177
+const ARABIC_CHARSET      = 178
+const GREEK_CHARSET       = 161
+const TURKISH_CHARSET     = 162
+const VIETNAMESE_CHARSET  = 163
+const THAI_CHARSET        = 222
+const EASTEUROPE_CHARSET  = 238
+const RUSSIAN_CHARSET     = 204
+const MAC_CHARSET         = 77
+const BALTIC_CHARSET      = 186
+
 const PS_SOLID            = 0
 const PS_DASH             = 1 /* -------  */
 const PS_DOT              = 2 /* .......  */

@@ -53,7 +53,14 @@ impl FontFamily
             if x[0] == "@"'u8
                 return TRUE
 
+            // Already here ?
             ret := cast(*Array'FontFamilyEnumerate) cast(uint) lParam
+            visit here: dref ret
+            {
+                if here.name == x
+                    return TRUE
+            }
+
             var v: FontFamilyEnumerate
             v.name = x
 
@@ -74,7 +81,10 @@ impl FontFamily
 
         hdc := GetDC(null)
         defer ReleaseDC(null, hdc)
-        EnumFontFamiliesW(hdc, null, @mkcallback(&enumFamily), cast(LPARAM) cast(uint) &result)
+
+        var logFont: LOGFONTW
+        logFont.lfCharSet = DEFAULT_CHARSET
+        EnumFontFamiliesExW(hdc, &logFont, @mkcallback(&enumFamily), cast(LPARAM) cast(uint) &result, 0)
 
         result.sort(@(a, b) {
             return a.name <=> b.name
