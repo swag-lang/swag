@@ -1003,17 +1003,12 @@ public impl Painter
             result := triangulate(path)
             if result.isEmpty()
             {
-                res := path.polygon.getCleanedPaths()
-                if !res.count
-                    return
-                savePoly := path.polygon
-                visit &r: res
+                res := path.polygon.getClean()
+                visit r: res.paths
                 {
-                    path.polygon.storeClipperResult(dref r, false)
-                    result = triangulate(path)
-                    self.storeResult(&path.polygon, result, brush)
+                    result = triangulate(r)
+                    self.storeResult(&r.polygon, result, brush)
                 }
-                path.polygon = savePoly
             }
             else
                 self.storeResult(&path.polygon, result, brush)

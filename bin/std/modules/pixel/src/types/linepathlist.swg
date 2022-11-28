@@ -65,7 +65,7 @@ impl LinePathList
         if Math.isZeroEpsilon(value)
             return
 
-        visit p: paths 
+        visit p: paths
         {
             v := p.polygon.isClockwise ? value : -value
             p.polygon.offset(v)
@@ -106,7 +106,23 @@ impl LinePathList
     // They must before be flattened
     mtd clean()
     {
+        var newList: LinePathList
+
         visit p: paths
-            p.polygon.clean()
+        {
+            res := p.polygon.getClean()
+            loop i: res.paths
+            {
+                pl := res.paths[i]
+                pl.isPolyOnly = true
+                pl.bvMin = p.bvMin
+                pl.bvMax = p.bvMax
+                newList.paths.add(pl)
+            }
+
+            res.paths.count = 0
+        }
+
+        paths =,move newList.paths
     }
 }

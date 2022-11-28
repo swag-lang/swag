@@ -117,27 +117,16 @@ impl Polygon
         points =,move copy
     }
 
-    private mtd storeClipperResult(res: Clipper.ClipperPath, revert: bool)
+    private mtd storeClipperResult(res: Clipper.ClipperPath)
     {
         clear()
         if !res.count
             return
 
-        if revert
+        visit pt: res
         {
-            visit(Back) pt: res
-            {
-                vec := Math.Vector2{cast(f32) (pt.x / ClipperScaleCoords), cast(f32) (pt.y / ClipperScaleCoords)}
-                add(vec)
-            }
-        }
-        else
-        {
-            visit pt: res
-            {
-                vec := Math.Vector2{cast(f32) (pt.x / ClipperScaleCoords), cast(f32) (pt.y / ClipperScaleCoords)}
-                add(vec)
-            }
+            vec := Math.Vector2{cast(f32) (pt.x / ClipperScaleCoords), cast(f32) (pt.y / ClipperScaleCoords)}
+            add(vec)
         }
 
         // Closed path needs last point to be the same as the first one
@@ -147,7 +136,6 @@ impl Polygon
         compute()
     }
 
-    // Slow but quality offset with a joinStyle
     private mtd offset(res: *Clipper.ClipperPaths, value: f32, joinStyle: JoinStyle, toler: f32)
     {
         if Math.isZeroEpsilon(value)
@@ -184,7 +172,7 @@ impl Polygon
         offset(&res, value, joinStyle, toler)
         clear()
         if res.count
-            storeClipperResult(res[0], false)
+            storeClipperResult(res[0])
     }
 
     // Slow but quality offset with a joinStyle
@@ -198,20 +186,20 @@ impl Polygon
         visit p: res
         {
             np := result.newPath()
-            np.polygon.storeClipperResult(p, false)
+            np.polygon.storeClipperResult(p)
         }
 
         return result
     }
 
-    mtd getCleanedPaths()->Clipper.ClipperPaths
+    private mtd clean(res: *Clipper.ClipperPaths)
     {
-        var result: retval
         if !points.count
-            return result
+            return
 
         var trf: Clipper.Transform
         trf.strictSimple = true
+        trf.reverseOutput = !isClockwise
 
         // Register path
         var path: Clipper.ClipperPath
@@ -220,19 +208,36 @@ impl Polygon
         trf.addPath(&path, .Subject)
 
         // Compute
-        trf.execute(.Union, &result, .NonZero, .NonZero)
-
-        return result
+        trf.execute(.Union, res, .NonZero, .NonZero)
     }
 
     // Clean polygon by removing bad/unecessary points
     mtd clean()
     {
-        res := getCleanedPaths()
+        var res: Clipper.ClipperPaths
+
+        clean(&res)
+        clear()
         if res.count
-            storeClipperResult(res[0], !isClockwise)
-        else
-            clear()
+            storeClipperResult(res[0])
+    }
+
+    // Clean polygon by removing bad/unecessary points
+    mtd getClean()->LinePathList
+    {
+        var result: retval
+
+        var res: Clipper.ClipperPaths
+        clean(&res)
+
+        visit p: res
+        {
+            np := result.newPath()
+            np.polygon.storeClipperResult(p)
+            if !isClockwise break
+        }
+
+        return result
     }
 
     // Compute internal values, like convex/clockwise
