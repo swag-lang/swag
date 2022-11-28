@@ -86,12 +86,7 @@ impl LinePathList
             v := p.polygon.isClockwise ? value : -value
 
             res := p.polygon.getOffset(v, joinStyle, toler)
-            loop i: res.paths
-            {
-                pl := res.paths[i]
-                newList.paths.add(pl)
-            }
-
+            newList.paths.add(res.paths.toSlice())
             res.paths.count = 0
         }
 
@@ -108,12 +103,7 @@ impl LinePathList
         visit p: paths
         {
             res := p.polygon.getClean()
-            loop i: res.paths
-            {
-                pl := res.paths[i]
-                newList.paths.add(pl)
-            }
-
+            newList.paths.add(res.paths.toSlice())
             res.paths.count = 0
         }
 
