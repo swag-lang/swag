@@ -83,23 +83,20 @@ impl Painter
         if radiusX == 0 or radiusY == 0 or pen.brush.color.a == 0
             return
 
-        cX := Math.round(centerX)
-        cY := Math.round(centerY)
-
-        var rX, rY: f32 = ?
+        rX := radiusX
+        rY := radiusY
 
         #[Swag.Complete]
         switch pen.borderPos
         {
         case None:
-            rX = Math.round(radiusX)
-            rY = Math.round(radiusY)
+            break
         case Inside:
-            rX = Math.round(radiusX - pen.size * 0.5)
-            rY = Math.round(radiusY - pen.size * 0.5)
+            rX -= pen.size*0.5
+            rY -= pen.size*0.5
         }
 
-        sharedLinePath.setEllipseRaw(cX, cY, rX, rY)
+        sharedLinePath.setEllipseRaw(centerX, centerY, rX, rY)
         drawPath(&sharedLinePath, pen)
     }
 
@@ -108,13 +105,7 @@ impl Painter
     {
         if radiusX == 0 or radiusY == 0 or brush.color.a == 0
             return
-
-        cX := Math.round(centerX)
-        cY := Math.round(centerY)
-        rX := Math.round(radiusX)
-        rY := Math.round(radiusY)
-
-        sharedLinePath.setEllipseRaw(cX, cY, rX, rY)
+        sharedLinePath.setEllipseRaw(centerX, centerY, radiusX, radiusY)
         fillPath(&sharedLinePath, brush)
     }
 

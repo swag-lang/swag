@@ -254,8 +254,8 @@ public impl LinePath
     {
         cX := Math.round(centerX)
         cY := Math.round(centerY)
-        rX := Math.round(radiusX)
-        rY := Math.round(radiusY)
+        rX := 0.5*Math.round(radiusX*2)
+        rY := 0.5*Math.round(radiusY*2)
 
         setEllipseRaw(cX, cY, rX, rY)
     }
@@ -265,7 +265,7 @@ public impl LinePath
     {
         cX := Math.round(centerX)
         cY := Math.round(centerY)
-        r  := Math.round(radius)
+        r  := 0.5*Math.round(radius*2)
 
         start(cX, cY - r)
         arcTo(cX, cY, r, r, 0'deg, 90'deg)
