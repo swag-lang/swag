@@ -89,9 +89,6 @@ impl LinePathList
             loop i: res.paths
             {
                 pl := res.paths[i]
-                pl.isPolyOnly = true
-                pl.bvMin = p.bvMin
-                pl.bvMax = p.bvMax
                 newList.paths.add(pl)
             }
 
@@ -114,9 +111,6 @@ impl LinePathList
             loop i: res.paths
             {
                 pl := res.paths[i]
-                pl.isPolyOnly = true
-                pl.bvMin = p.bvMin
-                pl.bvMax = p.bvMax
                 newList.paths.add(pl)
             }
 

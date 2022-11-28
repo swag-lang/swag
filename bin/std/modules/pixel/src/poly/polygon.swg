@@ -12,6 +12,8 @@ struct Polygon
     isConvex:       bool
     area:           f32
     totalLen:       f32
+    bvMin:          Math.Vector2
+    bvMax:          Math.Vector2
 }
 
 impl Polygon
@@ -179,6 +181,8 @@ impl Polygon
     mtd getOffset(value: f32, joinStyle: JoinStyle, toler: f32 = 0.5)->LinePathList
     {
         var result: retval
+        result.bvMin = bvMin
+        result.bvMax = bvMax
 
         var res: Clipper.ClipperPaths
         offset(&res, value, joinStyle, toler)
@@ -186,7 +190,10 @@ impl Polygon
         visit p: res
         {
             np := result.newPath()
+            np.isPolyOnly = true
             np.polygon.storeClipperResult(p)
+            np.bvMin = np.polygon.bvMin
+            np.bvMax = np.polygon.bvMax
         }
 
         return result
@@ -226,6 +233,8 @@ impl Polygon
     mtd getClean()->LinePathList
     {
         var result: retval
+        result.bvMin = bvMin
+        result.bvMax = bvMax
 
         var res: Clipper.ClipperPaths
         clean(&res)
@@ -233,7 +242,10 @@ impl Polygon
         visit p: res
         {
             np := result.newPath()
+            np.isPolyOnly = true
             np.polygon.storeClipperResult(p)
+            np.bvMin = np.polygon.bvMin
+            np.bvMax = np.polygon.bvMax
             if !isClockwise break
         }
 
@@ -260,6 +272,9 @@ impl Polygon
         q := 0
         p := n - 1
 
+        bvMin = points[0]
+        bvMax = points[0]
+
         first := true
         lastC := 0'f32
         while q < n
@@ -277,6 +292,9 @@ impl Polygon
             {
                 isConvex = false
             }
+
+            bvMin = Vector2.min(bvMin, points[p])
+            bvMax = Vector2.max(bvMax, points[p])
 
             // Area
             area += points[p].x * points[q].y - points[q].x * points[p].y
