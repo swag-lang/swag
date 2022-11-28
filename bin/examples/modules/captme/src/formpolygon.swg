@@ -237,15 +237,14 @@ impl IForm for FormPolygon
             pl.lineTo(paintPoints[i].x - paintPos.x, paintPoints[i].y - paintPos.y)
         pl.close()
 
-        pl.flatten(painter.curState.paintQuality)
-        pl.polygon.isClockwise = true
-        res := pl.polygon.getClean()
-        visit p: res.paths
+        if quickMode
         {
-            if quickMode and alpha != 100 and subKind == .Highlight
-                painter.fillPath(p, backBrush)
-            painter.fillPath(p, bk)
+            if alpha != 100 and subKind == .Highlight
+                painter.fillPath(&pl, backBrush)
+            painter.fillPath(&pl, bk)
         }
+        else
+            painter.fillPolygon(&pl, bk)
 
         painter.drawPath(&pl, pen)
     }

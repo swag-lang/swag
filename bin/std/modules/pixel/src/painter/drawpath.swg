@@ -1096,4 +1096,22 @@ public impl Painter
         if flush
             triangulate(&t, flush, pathList.bvMin, pathList.bvMax, brush)
     }
+
+    // Fill the polygon with the given color
+    mtd fillPolygon(path: *LinePath, color: Color)
+    {
+        sharedSolidBrush.type = .SolidColor
+        sharedSolidBrush.color = color
+        fillPolygon(path, sharedSolidBrush)
+    }
+
+    // Fill the polygon with the given 'brush'
+    mtd fillPolygon(path: *LinePath, brush: Brush)
+    {
+        path.flatten(curState.paintQuality)
+        path.polygon.isClockwise = true
+        res := path.polygon.getClean()
+        visit p: res.paths
+            fillPath(p, brush)
+    }
 }

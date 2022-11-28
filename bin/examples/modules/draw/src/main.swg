@@ -595,7 +595,7 @@ func displayPage7(renderer: *Pixel.RenderOgl, painter: *Pixel.Painter)
         p.lineTo(250, 250)
         p.lineTo(250, 150)
         p.close()
-        painter.fillPath(&p, Argb.Red)
+        painter.fillPolygon(&p, Argb.Red)
         painter.drawPath(&p, Argb.Blue, 2)
     }
 
@@ -606,7 +606,7 @@ func displayPage7(renderer: *Pixel.RenderOgl, painter: *Pixel.Painter)
         p.lineTo(600, 400)
         p.lineTo(100, 400)
         p.close()
-        painter.fillPath(&p, Argb.Red)
+        painter.fillPolygon(&p, Argb.Red)
         painter.drawPath(&p, Argb.Blue, 2)
     }
 }
