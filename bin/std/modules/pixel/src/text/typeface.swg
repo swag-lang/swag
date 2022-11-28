@@ -128,7 +128,7 @@ public impl TypeFace
                 pathList.paths[i].isClosed = true
         }
 
-        return face.glyph.advance.x / 64.0
+        return embolden + (face.glyph.advance.x / 64.0)
     }
 
     // Convert a string to its outline, at a given size
