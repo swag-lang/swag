@@ -215,6 +215,30 @@ void SourceFile::reportNotes(const vector<const Diagnostic*>& notes, bool verbos
     }
 }
 
+static void cleanNotes(const Diagnostic& diag, const vector<const Diagnostic*>& notes)
+{
+    // No need to repeat the same source file line reference
+    for (auto n : notes)
+    {
+        auto note = const_cast<Diagnostic*>(n);
+        if (note->startLocation.line == diag.startLocation.line && note->endLocation.line == diag.endLocation.line && note->sourceFile == diag.sourceFile)
+            note->showFileName = false;
+    }
+
+    for (auto n : notes)
+    {
+        auto note = const_cast<Diagnostic*>(n);
+        for (auto n1 : notes)
+        {
+            if (n == n1)
+                continue;
+            auto note1 = const_cast<Diagnostic*>(n1);
+            if (note->startLocation.line == note1->startLocation.line && note->endLocation.line == note1->endLocation.line && note->sourceFile == note1->sourceFile)
+                note1->showFileName = false;
+        }
+    }
+}
+
 bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>& notes)
 {
     if (silent > 0 && !diag.exceptionError)
@@ -224,6 +248,8 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
     }
 
     ScopedLock lock(g_Log.mutexAccess);
+
+    cleanNotes(diag, notes);
 
     // Warning to error option ?
     auto errorLevel = diag.errorLevel;

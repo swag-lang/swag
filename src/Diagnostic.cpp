@@ -382,7 +382,7 @@ void Diagnostic::report(bool verboseMode) const
     }
 
     // Source file and location on their own line
-    if (g_CommandLine->errorSourceOut && hasFile && !sourceFile->path.empty())
+    if (g_CommandLine->errorSourceOut && hasFile && !sourceFile->path.empty() && showFileName)
     {
         printMargin(codeColor);
         g_Log.setColor(sourceFileColor);
