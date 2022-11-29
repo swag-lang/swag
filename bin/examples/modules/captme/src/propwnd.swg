@@ -750,7 +750,7 @@ impl PropWnd
         // Font
         combo := ComboBox.create(stack)
 
-        combo.addItem(g_App.theme.res.defaultTypeFaceR.getFaceName())
+        combo.addItem(g_App.theme.res.defaultTypeFaceR.getFamilyName())
         if !curSel.typeFace
             combo.selectedIdx = 0
         combo.addSeparator()

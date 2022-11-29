@@ -51,7 +51,7 @@ impl TypeFace
 public impl TypeFace
 {
     // Returns the underlying font name
-    mtdc getFaceName()->string
+    mtdc getFamilyName()->string
     {
         defname := @mkstring(face.family_name, @strlen(face.family_name))
         return defname
