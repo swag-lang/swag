@@ -215,7 +215,10 @@ void Diagnostic::report(bool verboseMode) const
                 const char* pz = lines[i].c_str();
                 if (*pz && *pz != '\n' && *pz != '\r')
                 {
-                    printMargin(codeColor);
+                    if (!showRange && errorLevel == DiagnosticLevel::Note)
+                        printMargin(hilightCodeColor);
+                    else
+                        printMargin(codeColor);
                     if (hilightCodeRange && i == lines.size() - 1)
                         break;
                     g_Log.print(lines[i].c_str() + minBlanks);

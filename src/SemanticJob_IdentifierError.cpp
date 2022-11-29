@@ -443,7 +443,9 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         diag->hint = explicitCastHint;
         if (paramNode && paramNode->specFlags & AST_SPEC_DECLPARAM_GENERATED_SELF)
         {
-            note = new Diagnostic{destFuncDecl, destFuncDecl->token, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
+            note                        = new Diagnostic{destFuncDecl, destFuncDecl->token, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
+            note->showRange             = false;
+            note->showMultipleCodeLines = false;
         }
         else if (destFuncDecl && bi.badSignatureParameterIdx < destFuncDecl->parameters->childs.size())
         {

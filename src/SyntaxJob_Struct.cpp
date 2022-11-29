@@ -240,7 +240,7 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
             }
             else
             {
-                Diagnostic diag{structNode, Fmt(Err(Err0885), structNode->token.ctext(), Scope::getArticleKindName(newScope->kind))};
+                Diagnostic diag{structNode->sourceFile, token, Fmt(Err(Err0885), structNode->token.ctext(), Scope::getArticleKindName(newScope->kind))};
                 Diagnostic note{newScope->owner, Nte(Nte0036), DiagnosticLevel::Note};
                 return sourceFile->report(diag, &note);
             }

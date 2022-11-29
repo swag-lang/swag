@@ -217,10 +217,18 @@ void SourceFile::reportNotes(const vector<const Diagnostic*>& notes, bool verbos
 
 static void cleanNotes(const Diagnostic& diag, const vector<const Diagnostic*>& notes)
 {
-    // No need to repeat the same source file line reference
     for (auto n : notes)
     {
         auto note = const_cast<Diagnostic*>(n);
+
+        // No multiline range... a test, to reduce verbosity
+        if (note->endLocation.line > note->startLocation.line)
+        {
+            note->showRange             = false;
+            note->showMultipleCodeLines = false;
+        }
+
+        // No need to repeat the same source file line reference
         if (note->startLocation.line == diag.startLocation.line && note->endLocation.line == diag.endLocation.line && note->sourceFile == diag.sourceFile)
             note->showFileName = false;
     }
@@ -233,6 +241,8 @@ static void cleanNotes(const Diagnostic& diag, const vector<const Diagnostic*>& 
             if (n == n1)
                 continue;
             auto note1 = const_cast<Diagnostic*>(n1);
+
+            // No need to repeat the same source file line reference
             if (note->startLocation.line == note1->startLocation.line && note->endLocation.line == note1->endLocation.line && note->sourceFile == note1->sourceFile)
                 note1->showFileName = false;
         }
