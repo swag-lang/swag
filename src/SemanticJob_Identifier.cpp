@@ -2791,7 +2791,12 @@ bool SemanticJob::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFun
         return false;
 
     // Compare first function parameter with ufcsNode type.
-    bool cmpFirstParam = TypeManager::makeCompatibles(context, typeFunc->parameters[0]->typeInfo, ufcsNode->typeInfo, nullptr, ufcsNode, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR | CASTFLAG_UFCS);
+    bool cmpFirstParam = TypeManager::makeCompatibles(context,
+                                                      typeFunc->parameters[0]->typeInfo,
+                                                      ufcsNode->typeInfo,
+                                                      nullptr,
+                                                      ufcsNode,
+                                                      CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR | CASTFLAG_UFCS | CASTFLAG_FORCE_UNCONST);
     if (context->result == ContextResult::Pending)
         return false;
 

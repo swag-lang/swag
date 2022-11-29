@@ -404,10 +404,11 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         }
 
         SWAG_ASSERT(callParameters);
+        auto diagNode = match.parameters[bi.badSignatureParameterIdx];
         if (overload->typeInfo->kind == TypeInfoKind::Struct)
         {
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
-            diag            = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
+            diag            = new Diagnostic{diagNode,
                                   Fmt(Err(Err0050),
                                       bi.badSignatureRequestedType->getDisplayNameC(),
                                       typeStruct->fields[badParamIdx - 1]->namedParam.c_str(),
@@ -415,7 +416,9 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         }
         else if (paramNode && paramNode->typeInfo->flags & TYPEINFO_SELF && bi.badSignatureParameterIdx == 0)
         {
-            diag = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
+            if (diagNode->kind == AstNodeKind::FuncDeclParam)
+                diagNode = node;
+            diag = new Diagnostic{diagNode,
                                   Fmt(Err(Err0106),
                                       refNiceName.c_str(),
                                       bi.badSignatureRequestedType->getDisplayNameC(),
@@ -423,7 +426,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         }
         else if (oneTry.ufcs && bi.badSignatureParameterIdx == 0)
         {
-            diag = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
+            diag = new Diagnostic{diagNode,
                                   Fmt(Err(Err0095),
                                       refNiceName.c_str(),
                                       bi.badSignatureRequestedType->getDisplayNameC(),
@@ -431,7 +434,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         }
         else
         {
-            diag = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
+            diag = new Diagnostic{diagNode,
                                   Fmt(Err(Err0053),
                                       bi.badSignatureRequestedType->getDisplayNameC(),
                                       bi.badSignatureGivenType->getDisplayNameC())};
