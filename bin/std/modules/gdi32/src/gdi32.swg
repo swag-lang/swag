@@ -247,6 +247,23 @@ struct LOGFONTW
     lfFaceName:         [LF_FACESIZE] WCHAR
 }
 
+const LF_FULLFACESIZE = 64
+struct ENUMLOGFONTEXA
+{
+    elfLogFont:     LOGFONTA
+    elfFullName:    [LF_FULLFACESIZE] BYTE
+    elfStyle:       [LF_FACESIZE] BYTE
+    elfScript:      [LF_FACESIZE] BYTE
+}
+
+struct ENUMLOGFONTEXW
+{
+    elfLogFont:     LOGFONTW
+    elfFullName:    [LF_FULLFACESIZE] WCHAR
+    elfStyle:       [LF_FACESIZE] WCHAR
+    elfScript:      [LF_FACESIZE] WCHAR
+}
+
 struct TEXTMETRICA
 {
     tmHeight:           LONG
@@ -269,7 +286,7 @@ struct TEXTMETRICA
     tmStruckOut:        BYTE
     tmPitchAndFamily:   BYTE
     tmCharSet:          BYTE
-};
+}
 
 struct TEXTMETRICW
 {
@@ -293,7 +310,63 @@ struct TEXTMETRICW
     tmStruckOut:        BYTE
     tmPitchAndFamily:   BYTE
     tmCharSet:          BYTE
-};
+}
+
+struct NEWTEXTMETRICA
+{
+    tmHeight:           LONG
+    tmAscent:           LONG
+    tmDescent:          LONG
+    tmInternalLeading:  LONG
+    tmExternalLeading:  LONG
+    tmAveCharWidth:     LONG
+    tmMaxCharWidth:     LONG
+    tmWeight:           LONG
+    tmOverhang:         LONG
+    tmDigitizedAspectX: LONG
+    tmDigitizedAspectY: LONG
+    tmFirstChar:        BYTE
+    tmLastChar:         BYTE
+    tmDefaultChar:      BYTE
+    tmBreakChar:        BYTE
+    tmItalic:           BYTE
+    tmUnderlined:       BYTE
+    tmStruckOut:        BYTE
+    tmPitchAndFamily:   BYTE
+    tmCharSet:          BYTE
+    ntmFlags:           DWORD
+    ntmSizeEM:          UINT
+    ntmCellHeight:      UINT
+    ntmAvgWidth:        UINT
+}
+
+struct NEWTEXTMETRICW
+{
+    tmHeight:           LONG
+    tmAscent:           LONG
+    tmDescent:          LONG
+    tmInternalLeading:  LONG
+    tmExternalLeading:  LONG
+    tmAveCharWidth:     LONG
+    tmMaxCharWidth:     LONG
+    tmWeight:           LONG
+    tmOverhang:         LONG
+    tmDigitizedAspectX: LONG
+    tmDigitizedAspectY: LONG
+    tmFirstChar:        WCHAR
+    tmLastChar:         WCHAR
+    tmDefaultChar:      WCHAR
+    tmBreakChar:        WCHAR
+    tmItalic:           BYTE
+    tmUnderlined:       BYTE
+    tmStruckOut:        BYTE
+    tmPitchAndFamily:   BYTE
+    tmCharSet:          BYTE
+    ntmFlags:           DWORD
+    ntmSizeEM:          UINT
+    ntmCellHeight:      UINT
+    ntmAvgWidth:        UINT
+}
 
 alias FONTENUMPROCA = func(const *LOGFONTA, const *TEXTMETRICA, DWORD, LPARAM)->BOOL;
 alias FONTENUMPROCW = func(const *LOGFONTW, const *TEXTMETRICW, DWORD, LPARAM)->BOOL;
