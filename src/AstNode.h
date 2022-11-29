@@ -495,7 +495,7 @@ struct AstBreakContinue : public AstNode
 {
     AstNode* clone(CloneContext& context);
 
-    Utf8 label;
+    Token label;
 
     AstSwitchCase* switchCase = nullptr;
 

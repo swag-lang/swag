@@ -397,7 +397,7 @@ bool SyntaxJob::doBreak(AstNode* parent, AstNode** result)
     if (token.id != TokenId::SymSemiColon)
     {
         SWAG_CHECK(verifyError(token, token.id == TokenId::Identifier, Err(Err0876)));
-        node->label = token.text;
+        node->label = token;
         SWAG_CHECK(eatToken());
     }
 
@@ -427,7 +427,7 @@ bool SyntaxJob::doContinue(AstNode* parent, AstNode** result)
     if (token.id != TokenId::SymSemiColon)
     {
         SWAG_CHECK(verifyError(token, token.id == TokenId::Identifier, Err(Err0877)));
-        node->label = token.text;
+        node->label = token;
         SWAG_CHECK(eatToken());
     }
 

@@ -1183,7 +1183,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     {
         auto nodeBreak = CastAst<AstBreakContinue>(node, AstNodeKind::Break);
         CONCAT_FIXED_STR(concat, "break ");
-        concat.addString(nodeBreak->label);
+        concat.addString(nodeBreak->label.text);
         break;
     }
 
@@ -1191,7 +1191,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     {
         auto nodeContinue = CastAst<AstBreakContinue>(node, AstNodeKind::Continue);
         CONCAT_FIXED_STR(concat, "continue ");
-        concat.addString(nodeContinue->label);
+        concat.addString(nodeContinue->label.text);
         break;
     }
 

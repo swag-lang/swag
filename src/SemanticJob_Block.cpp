@@ -898,12 +898,12 @@ bool SemanticJob::resolveBreak(SemanticContext* context)
     auto node = CastAst<AstBreakContinue>(context->node, AstNodeKind::Break);
 
     // Label has been defined : search the corresponding ScopeBreakable node
-    if (!node->label.empty())
+    if (!node->label.text.empty())
     {
         auto breakable = node->ownerBreakable;
-        while (breakable && (breakable->kind != AstNodeKind::ScopeBreakable || breakable->token.text != node->label))
+        while (breakable && (breakable->kind != AstNodeKind::ScopeBreakable || breakable->token.text != node->label.text))
             breakable = breakable->ownerBreakable;
-        SWAG_VERIFY(breakable, context->report(node, Fmt(Err(Err0631), node->label.c_str())));
+        SWAG_VERIFY(breakable, context->report({node->sourceFile, node->label, Fmt(Err(Err0631), node->label.text.c_str())}));
         node->ownerBreakable = breakable;
     }
 
@@ -944,17 +944,17 @@ bool SemanticJob::resolveContinue(SemanticContext* context)
 
     // Label has been defined : search the corresponding ScopeBreakable node
     AstBreakable* lastBreakable = nullptr;
-    if (!node->label.empty())
+    if (!node->label.text.empty())
     {
         auto breakable = node->ownerBreakable;
-        while (breakable && (breakable->kind != AstNodeKind::ScopeBreakable || breakable->token.text != node->label))
+        while (breakable && (breakable->kind != AstNodeKind::ScopeBreakable || breakable->token.text != node->label.text))
         {
             if (breakable->kind != AstNodeKind::ScopeBreakable)
                 lastBreakable = breakable;
             breakable = breakable->ownerBreakable;
         }
 
-        SWAG_VERIFY(breakable, context->report(node, Fmt(Err(Err0631), node->label.c_str())));
+        SWAG_VERIFY(breakable, context->report({node->sourceFile, node->label, Fmt(Err(Err0631), node->label.text.c_str())}));
         node->ownerBreakable = lastBreakable;
     }
 
