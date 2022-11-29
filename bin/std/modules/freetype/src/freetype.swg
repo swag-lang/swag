@@ -51,6 +51,9 @@ const FT_LOAD_COLOR                         = 1 << 20
 const FT_LOAD_COMPUTE_METRICS               = 1 << 21
 const FT_LOAD_BITMAP_METRICS_ONLY           = 1 << 22
 
+const FT_STYLE_FLAG_ITALIC = 1 << 0
+const FT_STYLE_FLAG_BOLD   = 1 << 1
+
 #[Swag.ConstExpr]
 func FT_LOAD_TARGET(x: FT_Int32) => (cast(FT_Int32) (x & 15) << 16)
 const FT_LOAD_TARGET_NORMAL  = FT_LOAD_TARGET(cast(FT_Int32) FT_Render_Mode.FT_RENDER_MODE_NORMAL)

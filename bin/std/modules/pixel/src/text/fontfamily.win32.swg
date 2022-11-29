@@ -109,20 +109,42 @@ impl FontFamily
     public func createTypeFace(enumerate: FontFamilyEnumerate, style: FontFamilyStyle)->*TypeFace throw
     {
         logFont := enumerate.faces[cast(uint) style]
+        if style == .Regular
+        {
+            if logFont.face.lfWidth == 0
+                logFont = enumerate.faces[cast(uint) FontFamilyStyle.Bold]
+        }
+        elif style == .Bold
+        {
+            if logFont.face.lfWidth == 0
+                logFont = enumerate.faces[cast(uint) FontFamilyStyle.Regular]
+        }
+        elif style == .Italic
+        {
+            if logFont.face.lfWidth == 0
+                logFont = enumerate.faces[cast(uint) FontFamilyStyle.BoldItalic]
+            if logFont.face.lfWidth == 0
+                logFont = enumerate.faces[cast(uint) FontFamilyStyle.Regular]
+            if logFont.face.lfWidth == 0
+                logFont = enumerate.faces[cast(uint) FontFamilyStyle.Bold]
+        }
+        elif style == .BoldItalic
+        {
+            if logFont.face.lfWidth == 0
+                logFont = enumerate.faces[cast(uint) FontFamilyStyle.Italic]
+            if logFont.face.lfWidth == 0
+                logFont = enumerate.faces[cast(uint) FontFamilyStyle.Bold]
+            if logFont.face.lfWidth == 0
+                logFont = enumerate.faces[cast(uint) FontFamilyStyle.Regular]
+        }
 
-        forceItalic := false
         if logFont.face.lfWidth == 0
         {
             loop i: @countof(FontFamilyStyle)
             {
                 logFont = enumerate.faces[i]
                 if logFont.face.lfWidth != 0
-                {
-                    ns := cast(FontFamilyStyle) i
-                    if (style == .Italic or style == .BoldItalic) and (ns != .Italic and ns != .BoldItalic)
-                        forceItalic = true
                     break
-                }
             }
 
             if logFont.face.lfWidth == 0
@@ -135,7 +157,10 @@ impl FontFamily
         fontName := Format.toString("%_%", logFont.name, cast(u32) style)
         typeFace := try TypeFace.createFromHFONT(fontName, hf)
 
-        typeFace.forceItalic = forceItalic
+        if (style == .Italic or style == .BoldItalic) and !typeFace.isItalic()
+            typeFace.forceItalic = true
+        if (style == .Bold or style == .BoldItalic) and !typeFace.isBold()
+            typeFace.forceBold = true
 
         return typeFace
     }

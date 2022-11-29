@@ -11,7 +11,8 @@ public struct TypeFace
     fullname:       string
     buffer:         Array'u8
     face:           FT_Face
-    forceItalic:   bool
+    forceItalic:    bool
+    forceBold:      bool
 }
 
 impl TypeFace
@@ -50,7 +51,19 @@ impl TypeFace
 
 public impl TypeFace
 {
-    // Returns the underlying font name
+    // Returns true if the typeface is bold
+    mtdc isBold()->bool
+    {
+        return cast(bool) (face.style_flags & FT_STYLE_FLAG_BOLD)
+    }
+
+    // Returns true if the typeface is italic
+    mtdc isItalic()->bool
+    {
+        return cast(bool) (face.style_flags & FT_STYLE_FLAG_ITALIC)
+    }
+
+    // Returns the underlying font family name
     mtdc getFamilyName()->string
     {
         defname := @mkstring(face.family_name, @strlen(face.family_name))
@@ -99,6 +112,26 @@ public impl TypeFace
         return tf
     }
 
+    private mtd transform(embolden: u32 = 0) throw
+    {
+        emb := forceBold ? 2 : 0
+        emb += embolden
+        if emb
+            FT_Outline_Embolden(&face.glyph.outline, cast(FT_Pos) emb * 64)
+        if forceItalic
+            FT_GlyphSlot_Oblique(face.glyph)
+    }
+
+    // Render one glyph
+    mtd renderGlyph(c: rune, size: u32)->const *FT_Bitmap throw
+    {
+        FT_Set_Pixel_Sizes(face, 0, size)
+        FT_Load_Char(face, cast(FT_ULong) c, FT_LOAD_DEFAULT)
+        transform()
+        FT_Render_Glyph(face.glyph, .FT_RENDER_MODE_NORMAL)
+        return &face.glyph.bitmap
+    }
+
     // Convert a rune to its outline, at a given size
     #[Swag.Discardable]
     mtd getRuneOutline(pathList: *LinePathList, c: rune, size: u32, embolden: u32 = 0)->f32 throw
@@ -111,16 +144,12 @@ public impl TypeFace
         itf.conic_to = cast(*void) @mkcallback(&conicTo)
         itf.cubic_to = cast(*void) @mkcallback(&bezierTo)
 
-        try FT_Set_Pixel_Sizes(face, 0, size)
-
-        try FT_Load_Char(face, cast(FT_ULong) c, FT_LOAD_NO_BITMAP)
-        if embolden
-            try FT_Outline_Embolden(&face.glyph.outline, cast(FT_Pos) embolden * 64)
-        if forceItalic
-            FT_GlyphSlot_Oblique(face.glyph)
+        FT_Set_Pixel_Sizes(face, 0, size)
+        FT_Load_Char(face, cast(FT_ULong) c, FT_LOAD_NO_BITMAP)
+        transform(embolden)
 
         prevIdx := pathList.paths.count
-        try FT_Outline_Decompose(&face.glyph.outline, &itf, pathList)
+        FT_Outline_Decompose(&face.glyph.outline, &itf, pathList)
 
         if prevIdx != pathList.paths.count
         {
@@ -150,10 +179,7 @@ public impl TypeFace
         Utf8.visitRunes(|c| text)
         {
             try FT_Load_Char(face, cast(FT_ULong) c, FT_LOAD_NO_BITMAP)
-            if embolden
-                try FT_Outline_Embolden(&face.glyph.outline, cast(FT_Pos) embolden * 64)
-            if forceItalic
-                FT_GlyphSlot_Oblique(face.glyph)
+            transform(embolden)
 
             FT_Outline_Translate(face.glyph.outline, x, 0)
 

@@ -33,7 +33,7 @@ public struct Font
     underlinePos:   f32
     underlineSize:  f32
 
-    typeFace:   const *TypeFace
+    typeFace:   *TypeFace
     size:       u32
     atlases:    Array'GlyphAtlas
     asciiRef:   [128] GlyphDesc
@@ -53,7 +53,7 @@ public impl Font
     }
 
     // Creates a new Font of the given typeface and size
-    func create(typeFace: const *TypeFace, size: u32)->*Font
+    func create(typeFace: *TypeFace, size: u32)->*Font
     {
         Debug.assert(typeFace != null)
         Debug.assert(size > 0)
@@ -108,13 +108,7 @@ public impl Font
         }
 
         // Render the glyph
-        assume FT_Set_Pixel_Sizes(typeFace.face, 0, size)
-
-        bpp := 1
-        assume FT_Load_Char(typeFace.face, cast(FT_ULong) c, FT_LOAD_DEFAULT)
-        assume FT_Render_Glyph(typeFace.face.glyph, FT_Render_Mode.FT_RENDER_MODE_NORMAL)
-
-        bmp := &typeFace.face.glyph.bitmap
+        bmp := assume typeFace.renderGlyph(c, size)
 
         // Creates a new atlas if this is the first time, or if the last atlas is full
         atlas := atlases.count ? &atlases.buffer[atlases.count - 1] : null
@@ -137,7 +131,7 @@ public impl Font
         if !atlas
         {
             var newAtlas: GlyphAtlas
-            newAtlas.bpp = bpp
+            newAtlas.bpp = 1
             newAtlas.width =  Math.roundUpToPowerOf2(size * 4) * newAtlas.bpp
             newAtlas.height = Math.roundUpToPowerOf2(size * 4)
             newAtlas.datas.resize(cast(uint) newAtlas.width * newAtlas.height)
