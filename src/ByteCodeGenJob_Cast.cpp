@@ -1034,6 +1034,9 @@ bool ByteCodeGenJob::emitExplicitAutoCast(ByteCodeGenContext* context)
     auto typeInfo     = TypeManager::concreteType(node->typeInfo);
     auto fromTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
     SWAG_CHECK(emitCast(context, exprNode, typeInfo, fromTypeInfo));
-    node->castedTypeInfo = typeInfo;
+    if (context->result != ContextResult::Done)
+        return true;
+    node->castedTypeInfo = nullptr;
+
     return true;
 }
