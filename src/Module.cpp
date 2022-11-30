@@ -135,7 +135,7 @@ void Module::computePublicPath()
             error_code errorCode;
             if (!fs::create_directories(publicPath.c_str(), errorCode))
             {
-                g_Log.errorOS(Fmt(Err(Err0543), publicPath.c_str()));
+                Report::errorOS(Fmt(Err(Err0543), publicPath.c_str()));
                 OS::exit(-1);
             }
         }
@@ -151,7 +151,7 @@ void Module::computePublicPath()
             error_code errorCode;
             if (!fs::create_directories(publicPath.c_str(), errorCode))
             {
-                g_Log.errorOS(Fmt(Err(Err0543), publicPath.c_str()));
+                Report::errorOS(Fmt(Err(Err0543), publicPath.c_str()));
                 OS::exit(-1);
             }
         }

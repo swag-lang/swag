@@ -153,7 +153,7 @@ namespace OS
                                 &si,
                                 &pi))
             {
-                g_Log.errorOS(Fmt(Err(Err0046), cmdline.c_str()));
+                Report::errorOS(Fmt(Err(Err0046), cmdline.c_str()));
                 return false;
             }
         }
@@ -367,7 +367,7 @@ namespace OS
                                 &si,
                                 &pi))
             {
-                g_Log.errorOS(Fmt(Err(Err0046), cmdline.c_str()));
+                Report::errorOS(Fmt(Err(Err0046), cmdline.c_str()));
                 return;
             }
         }

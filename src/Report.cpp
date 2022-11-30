@@ -241,6 +241,24 @@ namespace Report
         return false;
     }
 
+    void errorOS(const Utf8& message)
+    {
+        auto str = OS::getLastErrorAsString();
+        g_Log.lock();
+        g_Log.setColor(LogColor::Red);
+        SWAG_ASSERT(message.back() != '\n');
+        g_Log.print(message);
+        if (!str.empty())
+        {
+            g_Log.print(" : ");
+            g_Log.print(str);
+        }
+
+        g_Log.eol();
+        g_Log.setDefaultColor();
+        g_Log.unlock();
+    }
+
     bool internalError(AstNode* node, const char* msg)
     {
         Diagnostic diag{node, Fmt("[compiler internal] %s", msg)};

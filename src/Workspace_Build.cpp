@@ -245,7 +245,7 @@ void Workspace::setupTarget()
     error_code errorCode;
     if (!fs::exists(targetPath) && !fs::create_directories(targetPath, errorCode))
     {
-        g_Log.errorOS(Fmt(Err(Err0545), targetPath.string().c_str()));
+        Report::errorOS(Fmt(Err(Err0545), targetPath.string().c_str()));
         OS::exit(-1);
     }
 
@@ -255,7 +255,7 @@ void Workspace::setupTarget()
     setupCachePath();
     if (!fs::exists(cachePath))
     {
-        g_Log.errorOS(Fmt(Err(Err0546), cachePath.string().c_str()));
+        Report::errorOS(Fmt(Err(Err0546), cachePath.string().c_str()));
         OS::exit(-1);
     }
 
@@ -263,7 +263,7 @@ void Workspace::setupTarget()
     cachePath.append(SWAG_CACHE_FOLDER);
     if (!fs::exists(cachePath) && !fs::create_directories(cachePath, errorCode))
     {
-        g_Log.errorOS(Fmt(Err(Err0547), cachePath.string().c_str()));
+        Report::errorOS(Fmt(Err(Err0547), cachePath.string().c_str()));
         OS::exit(-1);
     }
 
@@ -271,7 +271,7 @@ void Workspace::setupTarget()
     cachePath.append(workspacePath.filename().string() + "-" + targetFullName.c_str());
     if (!fs::exists(cachePath) && !fs::create_directories(cachePath, errorCode))
     {
-        g_Log.errorOS(Fmt(Err(Err0547), cachePath.string().c_str()));
+        Report::errorOS(Fmt(Err(Err0547), cachePath.string().c_str()));
         OS::exit(-1);
     }
 

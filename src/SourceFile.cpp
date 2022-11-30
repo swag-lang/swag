@@ -92,7 +92,7 @@ bool SourceFile::load()
         g_Allocator.free(buffer, allocBufferSize);
         buffer = nullptr;
         closeFile(&handle);
-        g_Log.errorOS(Fmt(Err(Err0153), path.c_str()));
+        Report::errorOS(Fmt(Err(Err0153), path.c_str()));
         return false;
     }
 

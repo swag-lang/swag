@@ -2,6 +2,7 @@
 #include "Workspace.h"
 #include "Os.h"
 #include "ErrorIds.h"
+#include "Report.h"
 #include "Diagnostic.h"
 
 void Workspace::setScriptWorkspace(const Utf8& name)
@@ -16,7 +17,7 @@ void Workspace::setScriptWorkspace(const Utf8& name)
     error_code errorCode;
     if (!fs::exists(cacheWorkspace) && !fs::create_directories(cacheWorkspace, errorCode))
     {
-        g_Log.errorOS(Fmt(Err(Err0547), cacheWorkspace.c_str()));
+        Report::errorOS(Fmt(Err(Err0547), cacheWorkspace.c_str()));
         OS::exit(-1);
     }
 
@@ -24,7 +25,7 @@ void Workspace::setScriptWorkspace(const Utf8& name)
     cacheWorkspace.append(name.c_str());
     if (!fs::exists(cacheWorkspace) && !fs::create_directories(cacheWorkspace, errorCode))
     {
-        g_Log.errorOS(Fmt(Err(Err0547), cacheWorkspace.c_str()));
+        Report::errorOS(Fmt(Err(Err0547), cacheWorkspace.c_str()));
         OS::exit(-1);
     }
 

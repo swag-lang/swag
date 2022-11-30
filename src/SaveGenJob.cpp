@@ -3,6 +3,7 @@
 #include "Module.h"
 #include "Diagnostic.h"
 #include "ErrorIds.h"
+#include "Report.h"
 
 JobResult SaveGenJob::execute()
 {
@@ -22,7 +23,7 @@ JobResult SaveGenJob::execute()
         if (!h)
         {
             module->numErrors++;
-            g_Log.errorOS(Fmt(Err(Err0524), publicPath.c_str()));
+            Report::errorOS(Fmt(Err(Err0524), publicPath.c_str()));
             return JobResult::ReleaseJob;
         }
 

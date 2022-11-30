@@ -3,6 +3,7 @@
 #include "Diagnostic.h"
 #include "File.h"
 #include "ErrorIds.h"
+#include "Report.h"
 #include "Log.h"
 
 bool openFile(FILE** fileHandle, const char* path, const char* mode)
@@ -11,7 +12,7 @@ bool openFile(FILE** fileHandle, const char* path, const char* mode)
     fopen_s(fileHandle, path, mode);
     if (*fileHandle == nullptr)
     {
-        g_Log.errorOS(Fmt(Err(Err0502), path));
+        Report::errorOS(Fmt(Err(Err0502), path));
         return false;
     }
 
