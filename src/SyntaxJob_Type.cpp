@@ -51,15 +51,13 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result)
 
     if (token.id == TokenId::KwdMethod)
     {
-        PushErrHint eh(Hnt(Hnt0049));
-        SWAG_VERIFY(currentStructScope, error(token, Err(Err0894)));
+        SWAG_VERIFY(currentStructScope, error(token, Err(Err0894), nullptr, Hnt(Hnt0049)));
         isMethod = true;
         kind     = AstNodeKind::TypeLambda;
     }
     else if (token.id == TokenId::KwdConstMethod)
     {
-        PushErrHint eh(Hnt(Hnt0050));
-        SWAG_VERIFY(currentStructScope, error(token, Err(Err0894)));
+        SWAG_VERIFY(currentStructScope, error(token, Err(Err0894), nullptr, Hnt(Hnt0050)));
         isMethodC = true;
         kind      = AstNodeKind::TypeLambda;
     }

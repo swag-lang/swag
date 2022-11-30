@@ -433,22 +433,13 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     if (isMethod || isConstMethod)
     {
         if (!funcNode->ownerStructScope)
-        {
-            PushErrHint eh(Hnt(Hnt0042));
-            return error(token, Err(Err0407));
-        }
+            return error(token, Err(Err0407), nullptr, Hnt(Hnt0042));
 
         if (funcNode->ownerStructScope->kind == ScopeKind::Enum)
-        {
-            PushErrHint eh(Hnt(Hnt0042));
-            return error(token, Err(Err0452), Hlp(Hlp0007));
-        }
+            return error(token, Err(Err0452), Hlp(Hlp0007), Hnt(Hnt0042));
 
         if (funcNode->ownerStructScope->kind != ScopeKind::Struct)
-        {
-            PushErrHint eh(Hnt(Hnt0042));
-            return error(token, Err(Err0407), Hlp(Hlp0007));
-        }
+            return error(token, Err(Err0407), Hlp(Hlp0007), Hnt(Hnt0042));
     }
 
     if (typeFuncId == TokenId::Invalid)

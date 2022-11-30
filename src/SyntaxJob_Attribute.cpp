@@ -114,10 +114,7 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool 
             break;
 
         case TokenId::SymAttrStart:
-        {
-            PushErrHint eh(Fmt(Hnt(Hnt0043), tokenAttr.ctext()));
-            return error(token, Fmt(Err(Err0354), token.ctext(), tokenAttr.ctext()));
-        }
+            return error(token, Fmt(Err(Err0354), token.ctext(), tokenAttr.ctext()), nullptr, Fmt(Hnt(Hnt0043), tokenAttr.ctext()));
 
         default:
             return error(token, Fmt(Err(Err0353), token.ctext(), tokenAttr.ctext()));

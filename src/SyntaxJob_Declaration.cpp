@@ -781,11 +781,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 
     default:
         if (Tokenizer::isIntrinsicReturn(token.id))
-        {
-            PushErrHint eh(Hnt(Hnt0008));
-            return error(token, Fmt(Err(Err0892), token.ctext()));
-        }
-
+            return error(token, Fmt(Err(Err0892), token.ctext()), nullptr, Hnt(Hnt0008));
         return invalidTokenError(InvalidTokenError::EmbeddedInstruction);
     }
 

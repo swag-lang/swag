@@ -67,14 +67,12 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     auto newScope = Ast::newScope(implNode, structName, scopeKind, currentScope, true);
     if (scopeKind != newScope->kind)
     {
-        Utf8 hint;
+        Diagnostic diag{implNode, Fmt(Err(Err0441), Scope::getNakedKindName(scopeKind), implNode->token.ctext(), Scope::getNakedKindName(newScope->kind))};
         if (newScope->kind == ScopeKind::Enum)
-            hint = Fmt(Hnt(Hnt0019), implNode->token.ctext());
+            diag.hint = Fmt(Hnt(Hnt0019), implNode->token.ctext());
         else if (newScope->kind == ScopeKind::Struct)
-            hint = Fmt(Hnt(Hnt0020), implNode->token.ctext());
-        PushErrHint errh(hint);
-        Diagnostic  diag{implNode, Fmt(Err(Err0441), Scope::getNakedKindName(scopeKind), implNode->token.ctext(), Scope::getNakedKindName(newScope->kind))};
-        Diagnostic  note{newScope->owner, Fmt(Nte(Nte0027), implNode->token.ctext()), DiagnosticLevel::Note};
+            diag.hint = Fmt(Hnt(Hnt0020), implNode->token.ctext());
+        Diagnostic note{newScope->owner, Fmt(Nte(Nte0027), implNode->token.ctext()), DiagnosticLevel::Note};
         return Report::report(diag, &note);
     }
 
@@ -486,8 +484,9 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
 
     case TokenId::KwdVar:
     {
-        PushErrHint errh(Hnt(Hnt0026));
-        return Report::report({parent, token, Err(Err0453)});
+        Diagnostic diag{parent, token, Err(Err0453)};
+        diag.hint = Hnt(Hnt0026);
+        return Report::report(diag);
     }
 
     case TokenId::KwdMethod:

@@ -229,11 +229,7 @@ bool SyntaxJob::doDiscard(AstNode* parent, AstNode** result)
         break;
     default:
         if (Tokenizer::isIntrinsicReturn(token.id))
-        {
-            PushErrHint eh(Hnt(Hnt0008));
-            return error(token, Fmt(Err(Err0888), token.ctext()));
-        }
-
+            return error(token, Fmt(Err(Err0888), token.ctext()), nullptr, Hnt(Hnt0008));
         return error(token, Fmt(Err(Err0841), token.ctext()));
     }
 

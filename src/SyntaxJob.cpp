@@ -101,16 +101,17 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
         break;
     }
 
-    PushErrHint errh(hint);
-    return error(token, msg);
+    return error(token, msg, nullptr, hint);
 }
 
-bool SyntaxJob::error(AstNode* node, const Utf8& msg, const char* help)
+bool SyntaxJob::error(AstNode* node, const Utf8& msg, const char* help, const char* hint)
 {
     Diagnostic  diag{node, msg.c_str()};
     Diagnostic* note = nullptr;
     if (help)
         note = new Diagnostic{help, DiagnosticLevel::Help};
+    if (hint)
+        diag.hint = hint;
     Report::report(diag, note);
     return false;
 }
@@ -172,8 +173,7 @@ bool SyntaxJob::eatSemiCol(const char* msg)
         }
         else
         {
-            PushErrHint errh(Hnt(Hnt0013));
-            SWAG_CHECK(error(token, Fmt(Err(Err0331), token.ctext(), msg)));
+            SWAG_CHECK(error(token, Fmt(Err(Err0331), token.ctext(), msg), nullptr, Hnt(Hnt0013)));
         }
     }
 

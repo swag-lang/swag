@@ -29,10 +29,10 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         {
             if (newScope->owner->kind == AstNodeKind::Impl)
             {
-                auto        implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
-                PushErrHint errh(Fmt(Hnt(Hnt0019), implNode->token.ctext()));
-                Diagnostic  diag{implNode->identifier, Fmt(Err(Err0441), Scope::getNakedKindName(newScope->kind), implNode->token.ctext(), Scope::getNakedKindName(ScopeKind::Enum))};
-                Diagnostic  note{enumNode, Fmt(Nte(Nte0027), implNode->token.ctext()), DiagnosticLevel::Note};
+                auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
+                Diagnostic diag{implNode->identifier, Fmt(Err(Err0441), Scope::getNakedKindName(newScope->kind), implNode->token.ctext(), Scope::getNakedKindName(ScopeKind::Enum))};
+                diag.hint = Fmt(Hnt(Hnt0019), implNode->token.ctext());
+                Diagnostic note{enumNode, Fmt(Nte(Nte0027), implNode->token.ctext()), DiagnosticLevel::Note};
                 return Report::report(diag, &note);
             }
             else
