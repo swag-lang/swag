@@ -766,7 +766,6 @@ string Utf8::normalizePath(const fs::path& path)
                 continue;
             lastIsSlash = true;
             str += '/';
-            continue;
         }
         else if (c <= 0x7F && c > 32)
         {
