@@ -7,6 +7,7 @@
 #include "Report.h"
 #include "Diagnostic.h"
 #include "Profiler.h"
+#include "CommandLine.h"
 
 bool g_Exiting = false;
 

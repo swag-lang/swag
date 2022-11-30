@@ -1,6 +1,5 @@
 #pragma once
 #include "Utf8.h"
-#include "CommandLine.h"
 #include "Mutex.h"
 
 enum class LogColor

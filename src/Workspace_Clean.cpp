@@ -4,6 +4,7 @@
 #include "ErrorIds.h"
 #include "Report.h"
 #include "Diagnostic.h"
+#include "CommandLine.h"
 
 void Workspace::cleanFolderContent(const fs::path& path)
 {
