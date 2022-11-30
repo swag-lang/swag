@@ -1,17 +1,12 @@
 #include "pch.h"
 #include "SourceFile.h"
-#include "Diagnostic.h"
-#include "Workspace.h"
 #include "Module.h"
 #include "Timer.h"
-#include "ByteCodeStack.h"
-#include "Context.h"
 #include "Ast.h"
+#include "Diagnostic.h"
 #include "ErrorIds.h"
 #include "Report.h"
 #include "File.h"
-
-const auto BUF_SIZE = 2048;
 
 bool SourceFile::checkFormat()
 {
@@ -85,18 +80,19 @@ bool SourceFile::load()
     allocBufferSize = (unsigned) Allocator::alignSize(bufferSize + 4);
     buffer          = (char*) g_Allocator.alloc(allocBufferSize);
 
-    if (fread(buffer, 1, bufferSize, handle) != bufferSize)
+    auto result = fread(buffer, 1, bufferSize, handle);
+    closeFile(&handle);
+
+    if (result != bufferSize)
     {
         numErrors++;
         module->numErrors++;
         g_Allocator.free(buffer, allocBufferSize);
         buffer = nullptr;
-        closeFile(&handle);
+
         Report::errorOS(Fmt(Err(Err0153), path.c_str()));
         return false;
     }
-
-    closeFile(&handle);
 
     buffer[bufferSize]     = 0;
     buffer[bufferSize + 1] = 0;
