@@ -3,6 +3,7 @@
 #include "TypeManager.h"
 #include "ByteCode.h"
 #include "Ast.h"
+#include "Report.h"
 
 bool ByteCodeGenJob::emitInRange(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r2)
 {
@@ -14,7 +15,7 @@ bool ByteCodeGenJob::emitInRange(ByteCodeGenContext* context, AstNode* left, Ast
 
     auto typeInfo = TypeManager::concretePtrRefType(low->typeInfo);
     if (!typeInfo->isNativeIntegerOrRune() && !typeInfo->isNativeFloat())
-        return context->internalError("emitInRange, type not supported");
+        return Report::internalError(context->node, "emitInRange, type not supported");
 
     // Invert test if lower bound is greater than upper bound
     bool orderIsDefined = false;
@@ -43,7 +44,7 @@ bool ByteCodeGenJob::emitInRange(ByteCodeGenContext* context, AstNode* left, Ast
 
     if (!orderIsDefined)
     {
-        return context->internalError("emitInRange, order undefined");
+        return Report::internalError(context->node, "emitInRange, order undefined");
     }
 
     RegisterList ra, rb;
@@ -228,7 +229,7 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
                 return true;
             }
         default:
-            return context->internalError("emitCompareOpEqual, type not supported");
+            return Report::internalError(context->node, "emitCompareOpEqual, type not supported");
         }
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Pointer)
@@ -286,7 +287,7 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
     }
     else
     {
-        return context->internalError("emitCompareOpEqual, invalid type");
+        return Report::internalError(context->node, "emitCompareOpEqual, invalid type");
     }
 
     return true;
@@ -344,7 +345,7 @@ bool ByteCodeGenJob::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode*
                 return true;
             }
         default:
-            return context->internalError("emitCompareOpNotEqual, type not supported");
+            return Report::internalError(context->node, "emitCompareOpNotEqual, type not supported");
         }
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Pointer)
@@ -396,7 +397,7 @@ bool ByteCodeGenJob::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode*
     }
     else
     {
-        return context->internalError("emitCompareOpNotEqual, invalid type");
+        return Report::internalError(context->node, "emitCompareOpNotEqual, invalid type");
     }
 
     return true;
@@ -450,7 +451,7 @@ bool ByteCodeGenJob::emitCompareOp3Way(ByteCodeGenContext* context, uint32_t r0,
             emitInstruction(context, ByteCodeOp::CompareOp3WayF64, r0, r1, r2);
             return true;
         default:
-            return context->internalError("emitCompareOp3Way, type not supported");
+            return Report::internalError(context->node, "emitCompareOp3Way, type not supported");
         }
     }
     else if (typeInfo->kind == TypeInfoKind::Pointer)
@@ -459,7 +460,7 @@ bool ByteCodeGenJob::emitCompareOp3Way(ByteCodeGenContext* context, uint32_t r0,
     }
     else
     {
-        return context->internalError("emitCompareOp3Way, type not native");
+        return Report::internalError(context->node, "emitCompareOp3Way, type not native");
     }
 
     return true;
@@ -494,7 +495,7 @@ bool ByteCodeGenJob::emitCompareOpLower(ByteCodeGenContext* context, AstNode* le
             emitInstruction(context, ByteCodeOp::CompareOpLowerF64, r0, r1, r2);
             return true;
         default:
-            return context->internalError("emitCompareOpLower, type not supported");
+            return Report::internalError(context->node, "emitCompareOpLower, type not supported");
         }
     }
     else if (typeInfo->kind == TypeInfoKind::Pointer)
@@ -503,7 +504,7 @@ bool ByteCodeGenJob::emitCompareOpLower(ByteCodeGenContext* context, AstNode* le
     }
     else
     {
-        return context->internalError("emitCompareOpLower, type not native");
+        return Report::internalError(context->node, "emitCompareOpLower, type not native");
     }
 
     return true;
@@ -547,7 +548,7 @@ bool ByteCodeGenJob::emitCompareOpLowerEq(ByteCodeGenContext* context, AstNode* 
             emitInstruction(context, ByteCodeOp::CompareOpLowerEqF64, r0, r1, r2);
             return true;
         default:
-            return context->internalError("emitCompareOpLowerEq, type not supported");
+            return Report::internalError(context->node, "emitCompareOpLowerEq, type not supported");
         }
     }
     else if (typeInfo->kind == TypeInfoKind::Pointer)
@@ -556,7 +557,7 @@ bool ByteCodeGenJob::emitCompareOpLowerEq(ByteCodeGenContext* context, AstNode* 
     }
     else
     {
-        return context->internalError("emitCompareOpLowerEq, type not native");
+        return Report::internalError(context->node, "emitCompareOpLowerEq, type not native");
     }
 
     return true;
@@ -600,7 +601,7 @@ bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, AstNode* 
             emitInstruction(context, ByteCodeOp::CompareOpGreaterF64, r0, r1, r2);
             return true;
         default:
-            return context->internalError("emitCompareOpGreater, type not supported");
+            return Report::internalError(context->node, "emitCompareOpGreater, type not supported");
         }
     }
     else if (typeInfo->kind == TypeInfoKind::Pointer)
@@ -609,7 +610,7 @@ bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, AstNode* 
     }
     else
     {
-        return context->internalError("emitCompareOpGreater, type not native");
+        return Report::internalError(context->node, "emitCompareOpGreater, type not native");
     }
 
     return true;
@@ -653,7 +654,7 @@ bool ByteCodeGenJob::emitCompareOpGreaterEq(ByteCodeGenContext* context, AstNode
             emitInstruction(context, ByteCodeOp::CompareOpGreaterEqF64, r0, r1, r2);
             return true;
         default:
-            return context->internalError("emitCompareOpGreaterEq, type not supported");
+            return Report::internalError(context->node, "emitCompareOpGreaterEq, type not supported");
         }
     }
     else if (typeInfo->kind == TypeInfoKind::Pointer)
@@ -662,7 +663,7 @@ bool ByteCodeGenJob::emitCompareOpGreaterEq(ByteCodeGenContext* context, AstNode
     }
     else
     {
-        return context->internalError("emitCompareOpEqGreater, type not native");
+        return Report::internalError(context->node, "emitCompareOpEqGreater, type not native");
     }
 
     return true;
@@ -737,7 +738,7 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
             SWAG_CHECK(emitCompareOpGreaterEq(context, r0, r1, r2));
             break;
         default:
-            return context->internalError("emitCompareOpGreater, invalid token op");
+            return Report::internalError(context->node, "emitCompareOpGreater, invalid token op");
         }
 
         freeRegisterRC(context, r0);

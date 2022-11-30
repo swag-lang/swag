@@ -5,6 +5,7 @@
 #include "Module.h"
 #include "TypeManager.h"
 #include "ErrorIds.h"
+#include "Report.h"
 #include "SemanticJob.h"
 #include "LanguageSpec.h"
 #include "ModuleManager.h"
@@ -253,7 +254,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                     emitInstruction(&cxt, ByteCodeOp::SetAtPointer64, 0, 1);
                     break;
                 default:
-                    return context->internalError("generateStructInit, invalid native type sizeof", varDecl);
+                    return Report::internalError(varDecl, "generateStructInit, invalid native type sizeof");
                 }
             }
 

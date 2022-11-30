@@ -3,8 +3,9 @@
 #include "ByteCode.h"
 #include "TypeManager.h"
 #include "Ast.h"
-#include "Diagnostic.h"
 #include "ErrorIds.h"
+#include "Report.h"
+#include "Diagnostic.h"
 
 bool ByteCodeGenJob::emitIdentifierRef(ByteCodeGenContext* context)
 {
@@ -29,7 +30,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
     auto resolved   = node->resolvedSymbolOverload;
     auto typeInfo   = TypeManager::concreteType(resolved->typeInfo);
-    SWAG_VERIFY(typeInfo->kind != TypeInfoKind::Generic, context->internalError("emitIdentifier, type is generic"));
+    SWAG_VERIFY(typeInfo->kind != TypeInfoKind::Generic, Report::internalError(context->node, "emitIdentifier, type is generic"));
 
     // If this is a retval, then just copy the return pointer register to a computing register
     if (resolved->flags & OVERLOAD_RETVAL)
@@ -112,7 +113,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     if (resolved->flags & OVERLOAD_VAR_TLS)
     {
         if (node->semFlags & AST_SEM_FROM_REF)
-            return context->internalError("unsupported identifier reference type");
+            return Report::internalError(context->node, "unsupported identifier reference type");
 
         node->resultRegisterRC = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::InternalGetTlsPtr, node->resultRegisterRC);
@@ -145,11 +146,11 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     if (resolved->flags & OVERLOAD_VAR_STRUCT)
     {
         if (node->semFlags & AST_SEM_FROM_REF)
-            return context->internalError("unsupported identifier reference type");
+            return Report::internalError(context->node, "unsupported identifier reference type");
 
         SWAG_ASSERT(!(resolved->flags & OVERLOAD_VAR_INLINE));
         node->resultRegisterRC = identifier->identifierRef->resultRegisterRC;
-        SWAG_VERIFY(node->resultRegisterRC.size() > 0, context->internalError(Fmt("emitIdentifier, cannot reference identifier `%s`", identifier->token.ctext()).c_str()));
+        SWAG_VERIFY(node->resultRegisterRC.size() > 0, Report::internalError(context->node, Fmt("emitIdentifier, cannot reference identifier `%s`", identifier->token.ctext()).c_str()));
 
         if (node->resolvedSymbolOverload->computedValue.storageOffset > 0)
         {
@@ -312,7 +313,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (node->semFlags & AST_SEM_FROM_REF)
         {
-            return context->internalError("unsupported identifier reference type");
+            return Report::internalError(context->node, "unsupported identifier reference type");
         }
         else if (typeInfo->kind == TypeInfoKind::Array ||
                  typeInfo->kind == TypeInfoKind::TypeListTuple ||
@@ -465,7 +466,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
 
         // We need to copy register, and not use it directly, because the register can be changed by
         // some code after (like when dereferencing something)
-        SWAG_VERIFY(resolved->registers.size() > 0, context->internalError(Fmt("emitIdentifier, identifier not generated `%s`", identifier->token.ctext()).c_str()));
+        SWAG_VERIFY(resolved->registers.size() > 0, Report::internalError(context->node, Fmt("emitIdentifier, identifier not generated `%s`", identifier->token.ctext()).c_str()));
 
         reserveRegisterRC(context, node->resultRegisterRC, resolved->registers.size());
         for (int i = 0; i < node->resultRegisterRC.size(); i++)
@@ -476,5 +477,5 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         return true;
     }
 
-    return context->internalError("emitIdentifier");
+    return Report::internalError(context->node, "emitIdentifier");
 }

@@ -574,7 +574,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicAddS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         default:
-            return context->internalError("emitIntrinsic, IntrinsicAtomicAdd invalid type");
+            return Report::internalError(context->node, "emitIntrinsic, IntrinsicAtomicAdd invalid type");
         }
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
@@ -607,7 +607,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicAndS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         default:
-            return context->internalError("emitIntrinsic, IntrinsicAtomicAnd invalid type");
+            return Report::internalError(context->node, "emitIntrinsic, IntrinsicAtomicAnd invalid type");
         }
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
@@ -640,7 +640,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicOrS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         default:
-            return context->internalError("emitIntrinsic, IntrinsicAtomicOr invalid type");
+            return Report::internalError(context->node, "emitIntrinsic, IntrinsicAtomicOr invalid type");
         }
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
@@ -673,7 +673,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicXorS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         default:
-            return context->internalError("emitIntrinsic, IntrinsicAtomicXor invalid type");
+            return Report::internalError(context->node, "emitIntrinsic, IntrinsicAtomicXor invalid type");
         }
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
@@ -707,7 +707,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicXchgS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         default:
-            return context->internalError("emitIntrinsic, IntrinsicAtomicXchg invalid type");
+            return Report::internalError(context->node, "emitIntrinsic, IntrinsicAtomicXchg invalid type");
         }
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
@@ -742,7 +742,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicCmpXchgS64, child0->resultRegisterRC, child1->resultRegisterRC, child2->resultRegisterRC, node->resultRegisterRC);
             break;
         default:
-            return context->internalError("emitIntrinsic, IntrinsicAtomicCmpXchg invalid type");
+            return Report::internalError(context->node, "emitIntrinsic, IntrinsicAtomicCmpXchg invalid type");
         }
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
@@ -770,7 +770,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             op = ByteCodeOp::IntrinsicF64x2;
             break;
         default:
-            return context->internalError("emitIntrinsic, IntrinsicPow invalid type");
+            return Report::internalError(context->node, "emitIntrinsic, IntrinsicPow invalid type");
         }
 
         auto inst   = emitInstruction(context, op, node->resultRegisterRC, child0->resultRegisterRC, child1->resultRegisterRC);
@@ -806,7 +806,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             op = ByteCodeOp::IntrinsicS64x1;
             break;
         default:
-            return context->internalError("emitIntrinsic, IntrinsicBitCount invalid type");
+            return Report::internalError(context->node, "emitIntrinsic, IntrinsicBitCount invalid type");
         }
 
         auto inst   = emitInstruction(context, op, node->resultRegisterRC, child->resultRegisterRC);
@@ -836,7 +836,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             op = ByteCodeOp::IntrinsicS64x1;
             break;
         default:
-            return context->internalError("emitIntrinsic, IntrinsicByteSwap invalid type");
+            return Report::internalError(context->node, "emitIntrinsic, IntrinsicByteSwap invalid type");
         }
 
         auto inst   = emitInstruction(context, op, node->resultRegisterRC, child->resultRegisterRC);
@@ -891,7 +891,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             op = ByteCodeOp::IntrinsicF64x2;
             break;
         default:
-            return context->internalError("emitIntrinsic, IntrinsicMin/Max invalid type");
+            return Report::internalError(context->node, "emitIntrinsic, IntrinsicMin/Max invalid type");
         }
 
         auto inst   = emitInstruction(context, op, node->resultRegisterRC, child0->resultRegisterRC, child1->resultRegisterRC);
@@ -951,7 +951,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             op = ByteCodeOp::IntrinsicF64x1;
             break;
         default:
-            return context->internalError("emitIntrinsic, math intrinsic invalid type");
+            return Report::internalError(context->node, "emitIntrinsic, math intrinsic invalid type");
         }
 
         auto inst   = emitInstruction(context, op, node->resultRegisterRC, child->resultRegisterRC);
@@ -961,7 +961,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     }
 
     default:
-        return context->internalError("emitIntrinsic, unknown intrinsic");
+        return Report::internalError(context->node, "emitIntrinsic, unknown intrinsic");
     }
 
     if (node->flags & AST_DISCARD)
@@ -1142,7 +1142,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
             break;
         }
         default:
-            return context->internalError("emitDefaultParamValue, invalid compiler function", defaultParam->assignment);
+            return Report::internalError(defaultParam->assignment, "emitDefaultParamValue, invalid compiler function");
         }
 
         return true;

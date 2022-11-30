@@ -8,6 +8,7 @@
 #include "Module.h"
 #include "Math.h"
 #include "ErrorIds.h"
+#include "Report.h"
 #include "LanguageSpec.h"
 
 bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right)
@@ -104,7 +105,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
             node->computedValue->reg.f64 = left->computedValue->reg.f64 + right->computedValue->reg.f64;
             break;
         default:
-            return context->internalError("resolveBinaryOpPlus, type not supported");
+            return Report::internalError(context->node, "resolveBinaryOpPlus, type not supported");
         }
     }
     else if (module->mustOptimizeBC(node))
@@ -218,7 +219,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
             node->computedValue->reg.f64 = left->computedValue->reg.f64 - right->computedValue->reg.f64;
             break;
         default:
-            return context->internalError("resolveBinaryOpMinus, type not supported");
+            return Report::internalError(context->node, "resolveBinaryOpMinus, type not supported");
         }
     }
     else if (module->mustOptimizeBC(node))
@@ -305,7 +306,7 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
             node->computedValue->reg.f64 = left->computedValue->reg.f64 * right->computedValue->reg.f64;
             break;
         default:
-            return context->internalError("resolveBinaryOpMul, type not supported");
+            return Report::internalError(context->node, "resolveBinaryOpMul, type not supported");
         }
     }
     else if (module->mustOptimizeBC(node))
@@ -407,7 +408,7 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
             node->computedValue->reg.f64 = left->computedValue->reg.f64 / right->computedValue->reg.f64;
             break;
         default:
-            return context->internalError("resolveBinaryOpDiv, type not supported");
+            return Report::internalError(context->node, "resolveBinaryOpDiv, type not supported");
         }
     }
     else if (right->isConstant0())
@@ -478,7 +479,7 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
             node->computedValue->reg.u64 = left->computedValue->reg.u64 % right->computedValue->reg.u64;
             break;
         default:
-            return context->internalError("resolveBinaryOpModulo, type not supported");
+            return Report::internalError(context->node, "resolveBinaryOpModulo, type not supported");
         }
     }
     else if (right->isConstant0())
@@ -549,7 +550,7 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
             node->computedValue->reg.u64 = left->computedValue->reg.u64 | right->computedValue->reg.u64;
             break;
         default:
-            return context->internalError("resolveBitmaskOr, type not supported");
+            return Report::internalError(context->node, "resolveBitmaskOr, type not supported");
         }
     }
     else if (module->mustOptimizeBC(node))
@@ -657,7 +658,7 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
             node->computedValue->reg.u64 = left->computedValue->reg.u64 & right->computedValue->reg.u64;
             break;
         default:
-            return context->internalError("resolveBitmaskAnd, type not supported");
+            return Report::internalError(context->node, "resolveBitmaskAnd, type not supported");
         }
     }
     else if (module->mustOptimizeBC(node))
@@ -774,7 +775,7 @@ bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* r
             node->computedValue->reg.s64 = left->computedValue->reg.s64 ^ right->computedValue->reg.s64;
             break;
         default:
-            return context->internalError("resolveXor, type not supported");
+            return Report::internalError(context->node, "resolveXor, type not supported");
         }
     }
 
@@ -945,7 +946,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         break;
 
     default:
-        return context->internalError("resolveFactorExpression, token not supported");
+        return Report::internalError(context->node, "resolveFactorExpression, token not supported");
     }
 
     // :SpecFuncConstExpr
@@ -1080,7 +1081,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
             }
             break;
         default:
-            return context->internalError("resolveShiftLeft, type not supported");
+            return Report::internalError(context->node, "resolveShiftLeft, type not supported");
         }
     }
     else if (module->mustOptimizeBC(node))
@@ -1210,7 +1211,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
             }
             break;
         default:
-            return context->internalError("resolveShiftRight, type not supported");
+            return Report::internalError(context->node, "resolveShiftRight, type not supported");
         }
     }
     else if (module->mustOptimizeBC(node))
@@ -1279,7 +1280,7 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
         SWAG_CHECK(resolveShiftRight(context, left, right));
         break;
     default:
-        return context->internalError("resolveShiftExpression, token not supported");
+        return Report::internalError(context->node, "resolveShiftExpression, token not supported");
     }
 
     // :SpecFuncConstExpr
@@ -1356,7 +1357,7 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
             node->computedValue->reg.b = left->computedValue->reg.b || right->computedValue->reg.b;
             break;
         default:
-            return context->internalError("resolveBoolExpression, token not supported");
+            return Report::internalError(context->node, "resolveBoolExpression, token not supported");
         }
     }
 

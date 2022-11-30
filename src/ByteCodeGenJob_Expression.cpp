@@ -9,6 +9,7 @@
 #include "SemanticJob.h"
 #include "Diagnostic.h"
 #include "ErrorIds.h"
+#include "Report.h"
 
 bool ByteCodeGenJob::emitNullConditionalOp(ByteCodeGenContext* context)
 {
@@ -299,7 +300,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         }
         else
         {
-            return context->internalError(Fmt("emitLiteral, unsupported ptr type `%s`", typeInfo->getDisplayNameC()).c_str());
+            return Report::internalError(context->node, Fmt("emitLiteral, unsupported ptr type `%s`", typeInfo->getDisplayNameC()).c_str());
         }
     }
 
@@ -385,7 +386,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
             return true;
         }
         default:
-            return context->internalError("emitLiteral, type not supported");
+            return Report::internalError(context->node, "emitLiteral, type not supported");
         }
     }
     else if (typeInfo == g_TypeMgr->typeInfoNull)
@@ -445,7 +446,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     }
     else
     {
-        return context->internalError(Fmt("emitLiteral, unsupported type `%s`", typeInfo->getDisplayNameC()).c_str());
+        return Report::internalError(context->node, Fmt("emitLiteral, unsupported type `%s`", typeInfo->getDisplayNameC()).c_str());
     }
 
     return true;

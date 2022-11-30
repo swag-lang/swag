@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "TypeManager.h"
 #include "ErrorIds.h"
+#include "Report.h"
 #include "Version.h"
 #include "LanguageSpec.h"
 #include "Ast.h"
@@ -383,7 +384,7 @@ bool SemanticJob::resolveLiteralSuffix(SemanticContext* context)
         return true;
     }
 
-    return context->internalError("resolveLiteralSuffix, invalid token");
+    return Report::internalError(context->node, "resolveLiteralSuffix, invalid token");
 }
 
 bool SemanticJob::resolveLiteral(SemanticContext* context)

@@ -206,30 +206,6 @@ void Job::setPending(SymbolName* symbolToWait, JobWaitKind waitKind, AstNode* no
     baseContext->result = ContextResult::Pending;
 }
 
-bool JobContext::report(const char* hint, const Diagnostic& diag, const Diagnostic* note, const Diagnostic* note1)
-{
-    PushErrHint errh(hint);
-    return report(diag, note, note1);
-}
-
-bool JobContext::report(AstNode* fromNode, const Utf8& msg)
-{
-    Diagnostic diag{fromNode, msg};
-    return report(diag);
-}
-
-bool JobContext::report(const Diagnostic& diag, const Diagnostic* note, const Diagnostic* note1)
-{
-    vector<const Diagnostic*> notes;
-    if (note)
-        notes.push_back(note);
-    if (note1)
-        notes.push_back(note1);
-    if (!sourceFile)
-        sourceFile = diag.sourceFile;
-    return report(diag, notes);
-}
-
 void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic*>& notes)
 {
     if (diag.errorLevel == DiagnosticLevel::Error)
@@ -382,6 +358,30 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
     }
 }
 
+bool JobContext::report(const char* hint, const Diagnostic& diag, const Diagnostic* note, const Diagnostic* note1)
+{
+    PushErrHint errh(hint);
+    return report(diag, note, note1);
+}
+
+bool JobContext::report(AstNode* fromNode, const Utf8& msg)
+{
+    Diagnostic diag{fromNode, msg};
+    return report(diag);
+}
+
+bool JobContext::report(const Diagnostic& diag, const Diagnostic* note, const Diagnostic* note1)
+{
+    vector<const Diagnostic*> notes;
+    if (note)
+        notes.push_back(note);
+    if (note1)
+        notes.push_back(note1);
+    if (!sourceFile)
+        sourceFile = diag.sourceFile;
+    return report(diag, notes);
+}
+
 bool JobContext::report(const char* hint, const Diagnostic& diag, const vector<const Diagnostic*>& notes)
 {
     PushErrHint errh(hint);
@@ -406,11 +406,4 @@ bool JobContext::checkSizeOverflow(const char* typeOverflow, uint64_t value, uin
     if (value <= maxValue)
         return true;
     return report({node, Fmt(Err(Err0505), typeOverflow, maxValue)});
-}
-
-bool JobContext::internalError(const char* msg, AstNode* specNode)
-{
-    if (!specNode)
-        specNode = node;
-    return Report::internalError(specNode, msg);
 }

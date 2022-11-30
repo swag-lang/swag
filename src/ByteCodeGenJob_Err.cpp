@@ -4,6 +4,7 @@
 #include "TypeManager.h"
 #include "Ast.h"
 #include "Module.h"
+#include "Report.h"
 
 bool ByteCodeGenJob::emitGetErr(ByteCodeGenContext* context)
 {
@@ -160,7 +161,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
         }
         else
         {
-            context->internalError("emitTry, unsupported return type");
+            Report::internalError(context->node, "emitTry, unsupported return type");
         }
     }
 

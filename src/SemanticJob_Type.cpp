@@ -5,6 +5,7 @@
 #include "Module.h"
 #include "TypeManager.h"
 #include "ErrorIds.h"
+#include "Report.h"
 
 bool SemanticJob::sendCompilerMsgTypeDecl(SemanticContext* context)
 {
@@ -294,7 +295,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
     }
 
     // Otherwise, this is strange, we should have a type
-    SWAG_VERIFY(typeNode->typeInfo, context->internalError("resolveType, null type !"));
+    SWAG_VERIFY(typeNode->typeInfo, Report::internalError(context->node, "resolveType, null type !"));
 
     // If type comes from an identifier, be sure it's a type
     if (typeNode->identifier)

@@ -8,6 +8,7 @@
 #include "ByteCode.h"
 #include "Backend.h"
 #include "ErrorIds.h"
+#include "Report.h"
 #include "LanguageSpec.h"
 #include "Os.h"
 
@@ -837,6 +838,6 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         return true;
 
     default:
-        return context->internalError("resolveCompilerFunction, unknown token");
+        return Report::internalError(context->node, "resolveCompilerFunction, unknown token");
     }
 }

@@ -7,6 +7,7 @@
 #include "TypeTable.h"
 #include "Runtime.h"
 #include "ErrorIds.h"
+#include "Report.h"
 #include "LanguageSpec.h"
 
 bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right)
@@ -421,7 +422,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
             node->computedValue->reg.b = !node->computedValue->reg.b;
         break;
     default:
-        return context->internalError("resolveCompareExpression, token not supported");
+        return Report::internalError(context->node, "resolveCompareExpression, token not supported");
     }
 
     return true;

@@ -4,6 +4,7 @@
 #include "Ast.h"
 #include "TypeManager.h"
 #include "ErrorIds.h"
+#include "Report.h"
 
 bool SemanticJob::reserveAndStoreToSegment(JobContext* context, DataSegment* storageSegment, uint32_t& storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
 {
@@ -32,7 +33,7 @@ bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegmen
     if (typeInfo->isNative(NativeTypeKind::Any))
     {
         if (!assignment->castedTypeInfo)
-            return context->internalError("storeToSegment, cannot resolve any");
+            return Report::internalError(context->node, "storeToSegment, cannot resolve any");
 
         // Store value in constant storageSegment
         auto     constSegment = SemanticJob::getConstantSegFromContext(context->node, storageSegment->kind == SegmentKind::Compiler);
@@ -184,7 +185,7 @@ bool SemanticJob::collectStructLiterals(JobContext* context, DataSegment* storag
                     *(uint64_t*) ptrDest = value ? value->reg.u64 : 0;
                     break;
                 default:
-                    return context->internalError("collectStructLiterals, invalid native type sizeof");
+                    return Report::internalError(context->node, "collectStructLiterals, invalid native type sizeof");
                 }
 
                 SWAG_ASSERT(typeInfo->sizeOf);

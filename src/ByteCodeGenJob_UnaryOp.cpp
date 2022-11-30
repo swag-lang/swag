@@ -4,12 +4,13 @@
 #include "TypeManager.h"
 #include "ByteCodeOp.h"
 #include "SourceFile.h"
+#include "Report.h"
 
 bool ByteCodeGenJob::emitUnaryOpMinus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0)
 {
     auto typeInfo = TypeManager::concreteType(typeInfoExpr);
     if (typeInfo->kind != TypeInfoKind::Native)
-        return context->internalError("emitUnaryOpMinus, type not native");
+        return Report::internalError(context->node, "emitUnaryOpMinus, type not native");
 
     emitSafetyNeg(context, r0, typeInfoExpr);
     switch (typeInfo->nativeType)
@@ -30,7 +31,7 @@ bool ByteCodeGenJob::emitUnaryOpMinus(ByteCodeGenContext* context, TypeInfo* typ
         emitInstruction(context, ByteCodeOp::NegF64, r0);
         return true;
     default:
-        return context->internalError("emitUnaryOpMinus, type not supported");
+        return Report::internalError(context->node, "emitUnaryOpMinus, type not supported");
     }
 }
 
@@ -38,7 +39,7 @@ bool ByteCodeGenJob::emitUnaryOpInvert(ByteCodeGenContext* context, TypeInfo* ty
 {
     auto typeInfo = TypeManager::concreteType(typeInfoExpr);
     if (typeInfo->kind != TypeInfoKind::Native)
-        return context->internalError("emitUnaryOpInvert, type not native");
+        return Report::internalError(context->node, "emitUnaryOpInvert, type not native");
 
     switch (typeInfo->nativeType)
     {
@@ -61,7 +62,7 @@ bool ByteCodeGenJob::emitUnaryOpInvert(ByteCodeGenContext* context, TypeInfo* ty
         emitInstruction(context, ByteCodeOp::InvertU64, r0);
         return true;
     default:
-        return context->internalError("emitUnaryOpInvert, type not supported");
+        return Report::internalError(context->node, "emitUnaryOpInvert, type not supported");
     }
 }
 
@@ -109,7 +110,7 @@ bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
                 break;
 
             default:
-                return context->internalError("emitUnaryOp, invalid token op");
+                return Report::internalError(context->node, "emitUnaryOp, invalid token op");
             }
 
             node->doneFlags |= AST_DONE_EMIT_OP;

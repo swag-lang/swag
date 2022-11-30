@@ -8,6 +8,7 @@
 #include "ThreadManager.h"
 #include "Module.h"
 #include "ErrorIds.h"
+#include "Report.h"
 #include "LanguageSpec.h"
 
 bool SemanticJob::preResolveIdentifierRef(SemanticContext* context)
@@ -425,7 +426,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                     return true;
                 }
                 else
-                    return context->internalError("cannot deal with value to pointer ref conversion", nodeCall);
+                    return Report::internalError(nodeCall, "cannot deal with value to pointer ref conversion");
             }
         }
         else if (oneMatch.solvedParameters.size() && oneMatch.solvedParameters.back() && oneMatch.solvedParameters.back()->typeInfo->kind == TypeInfoKind::TypedVariadic)

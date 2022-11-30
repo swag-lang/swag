@@ -5,6 +5,7 @@
 #include "TypeManager.h"
 #include "Ast.h"
 #include "ErrorIds.h"
+#include "Report.h"
 #include "SemanticJob.h"
 
 bool ByteCodeGenJob::emitIntrinsicMakeAny(ByteCodeGenContext* context)
@@ -94,7 +95,7 @@ bool ByteCodeGenJob::emitIntrinsicSpread(ByteCodeGenContext* context)
     }
     else
     {
-        return context->internalError( "emitIntrinsicSpread, type not supported");
+        return Report::internalError(context->node,  "emitIntrinsicSpread, type not supported");
     }
 
     return true;
@@ -175,7 +176,7 @@ bool ByteCodeGenJob::emitIntrinsicCountOf(ByteCodeGenContext* context)
         return true;
     }
 
-    return context->internalError( "emitCountProperty, type not supported");
+    return Report::internalError(context->node,  "emitCountProperty, type not supported");
 }
 
 bool ByteCodeGenJob::emitIntrinsicDataOf(ByteCodeGenContext* context)
@@ -205,5 +206,5 @@ bool ByteCodeGenJob::emitIntrinsicDataOf(ByteCodeGenContext* context)
         return true;
     }
 
-    return context->internalError( "emitDataProperty, type not supported");
+    return Report::internalError(context->node,  "emitDataProperty, type not supported");
 }

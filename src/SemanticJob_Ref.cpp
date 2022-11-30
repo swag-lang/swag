@@ -5,6 +5,7 @@
 #include "Module.h"
 #include "TypeManager.h"
 #include "ErrorIds.h"
+#include "Report.h"
 #include "LanguageSpec.h"
 
 bool SemanticJob::boundCheck(SemanticContext* context, AstNode* arrayAccess, uint64_t maxCount)
@@ -828,7 +829,7 @@ bool SemanticJob::resolveInit(SemanticContext* context)
         }
         else
         {
-            return context->internalError("resolveInit, invalid type");
+            return Report::internalError(context->node, "resolveInit, invalid type");
         }
     }
 

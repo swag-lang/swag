@@ -5,6 +5,7 @@
 #include "ByteCodeGenJob.h"
 #include "Module.h"
 #include "ErrorIds.h"
+#include "Report.h"
 #include "ThreadManager.h"
 #include "LanguageSpec.h"
 
@@ -481,7 +482,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         break;
 
     default:
-        return context->internalError("resolveAffect, invalid token");
+        return Report::internalError(context->node, "resolveAffect, invalid token");
     }
 
     node->byteCodeFct = ByteCodeGenJob::emitAffect;
