@@ -4,6 +4,7 @@
 #include "Version.h"
 #include "Os.h"
 #include "ErrorIds.h"
+#include "Report.h"
 #include "Diagnostic.h"
 #include "Profiler.h"
 
@@ -50,7 +51,7 @@ int main(int argc, const char* argv[])
         command != "version" &&
         command != "script")
     {
-        g_Log.error(Fmt(Err(Err0000), argv[1]));
+        Report::error(Fmt(Err(Err0000), argv[1]));
         OS::exit(-1);
     }
 

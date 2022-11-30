@@ -62,7 +62,7 @@ void ModuleCfgManager::registerCfgFile(SourceFile* file)
     // Register it
     if (getCfgModule(moduleName))
     {
-        g_Log.error(Fmt(Err(Err0169), moduleName.c_str(), moduleFolder.c_str()));
+        Report::error(Fmt(Err(Err0169), moduleName.c_str(), moduleFolder.c_str()));
         OS::exit(-1);
     }
 

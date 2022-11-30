@@ -241,13 +241,24 @@ namespace Report
         return false;
     }
 
-    void errorOS(const Utf8& message)
+    void error(const Utf8& msg)
+    {
+        g_Log.lock();
+        g_Log.setColor(LogColor::Red);
+        g_Log.print(msg);
+        if (msg.back() != '\n')
+            g_Log.eol();
+        g_Log.setDefaultColor();
+        g_Log.unlock();
+    }
+
+    void errorOS(const Utf8& msg)
     {
         auto str = OS::getLastErrorAsString();
         g_Log.lock();
         g_Log.setColor(LogColor::Red);
-        SWAG_ASSERT(message.back() != '\n');
-        g_Log.print(message);
+        SWAG_ASSERT(msg.back() != '\n');
+        g_Log.print(msg);
         if (!str.empty())
         {
             g_Log.print(" : ");

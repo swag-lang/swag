@@ -38,7 +38,6 @@ struct Log
     void setColor(LogColor color);
     void setDefaultColor();
 
-    void error(const Utf8& message);
     void message(const Utf8& message);
     void messageHeaderCentered(const Utf8& header, const Utf8& message, LogColor headerColor = LogColor::Green, LogColor msgColor = LogColor::White);
     void messageHeaderDot(const Utf8& header, const Utf8& message, LogColor headerColor = LogColor::Cyan, LogColor msgColor = LogColor::Cyan, const char* dot = ".", bool mustLock = true);

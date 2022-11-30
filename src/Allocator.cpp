@@ -3,9 +3,10 @@
 #include "CommandLine.h"
 #include "Os.h"
 #include "Log.h"
-#include "ErrorIds.h"
 #include "Mutex.h"
 #include "Timer.h"
+#include "ErrorIds.h"
+#include "Report.h"
 #include "Diagnostic.h"
 
 const uint64_t ALLOCATOR_BUCKET_SIZE = 1024 * 1024;
@@ -215,7 +216,7 @@ void* AllocatorImpl::alloc(size_t size)
         lastBucket = (AllocatorBucket*) malloc(sizeof(AllocatorBucket) + max(size, ALLOCATOR_BUCKET_SIZE));
         if (!lastBucket)
         {
-            g_Log.error(Err(Err0014));
+            Report::error(Err(Err0014));
             OS::exit(-1);
             return nullptr;
         }
@@ -315,7 +316,7 @@ Allocator::Allocator()
             g_SharedAllocator = (Allocator*) malloc(sizeof(Allocator));
             if (!g_SharedAllocator)
             {
-                g_Log.error(Err(Err0014));
+                Report::error(Err(Err0014));
                 OS::exit(-1);
                 return;
             }

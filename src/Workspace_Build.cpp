@@ -28,7 +28,7 @@ void Workspace::computeModuleName(const fs::path& path, Utf8& moduleName, Utf8& 
     {
         errorStr = "fatal error: " + errorStr;
         errorStr += Fmt(" (path is `%s`)", path.string().c_str());
-        g_Log.error(errorStr);
+        Report::error(errorStr);
         OS::exit(-1);
     }
 
@@ -625,7 +625,7 @@ bool Workspace::buildRTModule(Module* module)
 
     if (module->numErrors)
     {
-        g_Log.error(module->kind == ModuleKind::BootStrap ? Err(Err0552) : Err(Err0554));
+        Report::error(module->kind == ModuleKind::BootStrap ? Err(Err0552) : Err(Err0554));
         return false;
     }
 
@@ -643,7 +643,7 @@ bool Workspace::buildRTModule(Module* module)
     // Errors !!!
     if (module->numErrors)
     {
-        g_Log.error(module->kind == ModuleKind::BootStrap ? Err(Err0552) : Err(Err0554));
+        Report::error(module->kind == ModuleKind::BootStrap ? Err(Err0552) : Err(Err0554));
         return false;
     }
 
@@ -719,7 +719,7 @@ bool Workspace::buildTarget()
     {
         if (!filteredModule)
         {
-            g_Log.error(Fmt(Err(Err0556), g_CommandLine->moduleName.c_str()));
+            Report::error(Fmt(Err(Err0556), g_CommandLine->moduleName.c_str()));
             return false;
         }
 
@@ -734,7 +734,7 @@ bool Workspace::buildTarget()
                 auto       it = g_Workspace->mapModulesNames.find(dep->name);
                 if (it == g_Workspace->mapModulesNames.end())
                 {
-                    g_Log.error(Fmt(Err(Err0557), dep->name.c_str()));
+                    Report::error(Fmt(Err(Err0557), dep->name.c_str()));
                     return false;
                 }
 

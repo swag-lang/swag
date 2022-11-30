@@ -3,6 +3,7 @@
 #include "CommandLineParser.h"
 #include "Log.h"
 #include "ErrorIds.h"
+#include "Report.h"
 #include "Diagnostic.h"
 
 void CommandLineParser::setup(CommandLine* cmdLine)
@@ -269,7 +270,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
             it = shortNameArgs.find(command);
             if (it == shortNameArgs.end())
             {
-                g_Log.error(Fmt(Err(Err0720), command.c_str()));
+                Report::error(Fmt(Err(Err0720), command.c_str()));
                 result = false;
                 continue;
             }
@@ -280,7 +281,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
         // Be sure the argument is valid for the swag command
         if (!isArgValidFor(swagCmd, arg))
         {
-            g_Log.error(Fmt(Err(Err0720), command.c_str()));
+            Report::error(Fmt(Err(Err0720), command.c_str()));
             result = false;
             continue;
         }
@@ -306,7 +307,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
 
             if (index == tokens.size())
             {
-                g_Log.error(Fmt(Err(Err0722), it->first.c_str(), arg->param));
+                Report::error(Fmt(Err(Err0722), it->first.c_str(), arg->param));
                 result = false;
                 continue;
             }
@@ -332,7 +333,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
 
             if (index == tokens.size())
             {
-                g_Log.error(Fmt(Err(Err0722), it->first.c_str(), arg->param));
+                Report::error(Fmt(Err(Err0722), it->first.c_str(), arg->param));
                 result = false;
                 continue;
             }
@@ -346,7 +347,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
                 *(bool*) arg->buffer = false;
             else
             {
-                g_Log.error(Fmt(Err(Err0724), it->first.c_str(), argument.c_str()));
+                Report::error(Fmt(Err(Err0724), it->first.c_str(), argument.c_str()));
                 result = false;
                 continue;
             }
@@ -356,7 +357,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
         {
             if (argument.empty())
             {
-                g_Log.error(Fmt(Err(Err0725), it->first.c_str(), argument.c_str()));
+                Report::error(Fmt(Err(Err0725), it->first.c_str(), argument.c_str()));
                 result = false;
                 continue;
             }
@@ -369,7 +370,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
         {
             if (argument.empty())
             {
-                g_Log.error(Fmt(Err(Err0725), it->first.c_str(), argument.c_str()));
+                Report::error(Fmt(Err(Err0725), it->first.c_str(), argument.c_str()));
                 result = false;
                 continue;
             }
@@ -397,9 +398,9 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
             if (!thisIsAnInt)
             {
                 if (argument.empty())
-                    g_Log.error(Fmt(Err(Err0727), it->first.c_str()));
+                    Report::error(Fmt(Err(Err0727), it->first.c_str()));
                 else
-                    g_Log.error(Fmt(Err(Err0728), it->first.c_str(), argument.c_str()));
+                    Report::error(Fmt(Err(Err0728), it->first.c_str(), argument.c_str()));
                 result = false;
                 continue;
             }

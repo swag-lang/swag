@@ -7,8 +7,11 @@ namespace Report
 {
     bool report(const Diagnostic& diag, const vector<const Diagnostic*>& notes);
     bool report(const Diagnostic& diag, const Diagnostic* note = nullptr, const Diagnostic* note1 = nullptr);
+
+    void error(const Utf8& msg);
+    void errorOS(const Utf8& msg);
     bool error(Module* module, const Utf8& msg);
-    void errorOS(const Utf8& message);
+
     bool internalError(AstNode* node, const char* msg);
     bool internalError(Module* module, const char* msg);
 }; // namespace Report

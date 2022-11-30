@@ -129,7 +129,7 @@ namespace OS
         saAttr.lpSecurityDescriptor = nullptr;
         if (!CreatePipe(&hChildStdoutRd, &hChildStdoutWr, &saAttr, 0))
         {
-            g_Log.error(Fmt(Err(Err0045), cmdline.c_str()));
+            Report::error(Fmt(Err(Err0045), cmdline.c_str()));
             return false;
         }
 

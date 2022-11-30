@@ -66,17 +66,6 @@ void Log::messageHeaderDot(const Utf8& header, const Utf8& message, LogColor hea
         unlock();
 }
 
-void Log::error(const Utf8& message)
-{
-    lock();
-    setColor(LogColor::Red);
-    print(message);
-    if (message.back() != '\n')
-        eol();
-    setDefaultColor();
-    unlock();
-}
-
 void Log::message(const Utf8& message)
 {
     if (g_CommandLine->silent)

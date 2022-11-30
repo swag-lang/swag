@@ -138,7 +138,7 @@ void Workspace::newCommand()
 
     if (workspacePath.empty())
     {
-        g_Log.error(Err(Err0540));
+        Report::error(Err(Err0540));
         OS::exit(-1);
     }
 
@@ -149,7 +149,7 @@ void Workspace::newCommand()
     {
         if (fs::exists(workspacePath))
         {
-            g_Log.error(Fmt(Err(Err0817), workspacePath.string().c_str()));
+            Report::error(Fmt(Err(Err0817), workspacePath.string().c_str()));
             OS::exit(-1);
         }
 
@@ -193,7 +193,7 @@ void Workspace::newCommand()
     {
         if (!fs::exists(workspacePath))
         {
-            g_Log.error(Fmt(Err(Err0541), workspacePath.string().c_str()));
+            Report::error(Fmt(Err(Err0541), workspacePath.string().c_str()));
             OS::exit(-1);
         }
 
