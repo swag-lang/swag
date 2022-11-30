@@ -691,7 +691,7 @@ const char* Utf8::decodeUtf8(const char* pz, uint32_t& wc, unsigned& offset)
     return pz;
 }
 
-Utf8 Fmt(const char* format, ...)
+Utf8 Utf8::format(const char* format, ...)
 {
     va_list args;
     va_start(args, format);
