@@ -134,21 +134,6 @@ struct Diagnostic
     bool showFileName          = true;
 };
 
-extern thread_local Utf8 g_ErrorHint;
-
-struct PushErrHint
-{
-    PushErrHint(const char* msg)
-    {
-        g_ErrorHint = msg;
-    }
-
-    ~PushErrHint()
-    {
-        g_ErrorHint = nullptr;
-    }
-};
-
 struct PushErrContext
 {
     PushErrContext(JobContext* context, AstNode* node, JobContext::ErrorContextType type)

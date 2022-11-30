@@ -6,9 +6,6 @@
 #include "TypeInfo.h"
 #include "ErrorIds.h"
 
-thread_local Utf8 g_ErrorHint;
-static int        HEADER_SIZE = 0;
-
 Utf8 Hint::isType(TypeInfo* typeInfo)
 {
     return Fmt(Hnt(Hnt0011), typeInfo->getDisplayNameC());
@@ -50,6 +47,7 @@ void Diagnostic::printSourceLine() const
 
 void Diagnostic::printMargin(LogColor color, bool eol) const
 {
+    static int HEADER_SIZE = 0;
     g_Log.setColor(color);
     for (int i = 0; i < HEADER_SIZE; i++)
         g_Log.print(" ");
@@ -358,12 +356,6 @@ void Diagnostic::report(bool verboseMode) const
                         g_Log.setColor(remarkColor);
                         g_Log.print(hint);
                     }
-                    else if (!g_ErrorHint.empty())
-                    {
-                        g_Log.print(" ");
-                        g_Log.setColor(remarkColor);
-                        g_Log.print(g_ErrorHint);
-                    }
 
                     g_Log.eol();
                     printMargin(codeColor, true);
@@ -414,5 +406,4 @@ void Diagnostic::report(bool verboseMode) const
     }
 
     g_Log.setDefaultColor();
-    g_ErrorHint.clear();
 }

@@ -41,9 +41,9 @@ bool SemanticJob::checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl*
 
     if (msg)
     {
-        PushErrHint errh(msg1);
-        Diagnostic  diag{node, msg};
-        Diagnostic  note{funcNode, Fmt(Nte(Nte0029), funcNode->token.ctext()), DiagnosticLevel::Note};
+        Diagnostic diag{node, msg};
+        diag.hint = msg1;
+        Diagnostic note{funcNode, Fmt(Nte(Nte0029), funcNode->token.ctext()), DiagnosticLevel::Note};
         return context->report(diag, &note);
     }
 
@@ -755,8 +755,9 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
     default:
     {
-        PushErrHint errh(Hnt(Hnt0021));
-        return context->report({arrayNode->array, Fmt(Err(Err0488), TypeInfo::getArticleKindName(arrayNode->array->typeInfo), arrayNode->array->typeInfo->getDisplayNameC())});
+        Diagnostic diag{arrayNode->array, Fmt(Err(Err0488), TypeInfo::getArticleKindName(arrayNode->array->typeInfo), arrayNode->array->typeInfo->getDisplayNameC())};
+        diag.hint = Hnt(Hnt0021);
+        return context->report(diag);
     }
     }
 

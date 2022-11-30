@@ -1638,8 +1638,9 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
                     {
                         if (alias.text == r.second)
                         {
-                            PushErrHint errh(Hnt(Hnt0026));
-                            return context->report({id, alias, Fmt(Err(Err0780), alias.ctext())});
+                            Diagnostic diag{id, alias, Fmt(Err(Err0780), alias.ctext())};
+                            diag.hint = Hnt(Hnt0026);
+                            return context->report(diag);
                         }
                     }
 
@@ -1647,8 +1648,9 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
                     {
                         if (alias.text == r.second)
                         {
-                            PushErrHint errh(Hnt(Hnt0026));
-                            return context->report({id, alias, Fmt(Err(Err0780), alias.ctext())});
+                            Diagnostic diag{id, alias, Fmt(Err(Err0780), alias.ctext())};
+                            diag.hint = Hnt(Hnt0026);
+                            return context->report(diag);
                         }
                     }
                 }

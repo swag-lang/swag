@@ -916,8 +916,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                     SWAG_ASSERT(node->extension && node->extension->resolvedUserOpSymbolOverload);
                     if (!(node->extension->resolvedUserOpSymbolOverload->node->attributeFlags & ATTRIBUTE_CONSTEXPR))
                     {
-                        PushErrHint errh(Fmt(Hnt(Hnt0002), leftConcreteType->getDisplayNameC()));
-                        return context->report({node->assignment, Err(Err0906)});
+                        Diagnostic diag{node->assignment, Err(Err0906)};
+                        diag.hint = Fmt(Hnt(Hnt0002), leftConcreteType->getDisplayNameC());
+                        return context->report(diag);
                     }
                 }
             }
@@ -953,10 +954,10 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         {
             if (node->assignment->typeInfo->kind == TypeInfoKind::FuncAttr && node->assignment->resolvedSymbolOverload)
             {
-                auto        over = node->assignment->resolvedSymbolOverload;
-                PushErrHint errh(Hnt(Hnt0034));
-                Diagnostic  diag{node->assignment, Err(Err0307)};
-                Diagnostic  note{over->node, Fmt(Nte(Nte0008), SymTable::getNakedKindName(over->symbol->kind)), DiagnosticLevel::Note};
+                auto       over = node->assignment->resolvedSymbolOverload;
+                Diagnostic diag{node->assignment, Err(Err0307)};
+                diag.hint = Hnt(Hnt0034);
+                Diagnostic note{over->node, Fmt(Nte(Nte0008), SymTable::getNakedKindName(over->symbol->kind)), DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }
 
