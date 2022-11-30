@@ -319,18 +319,15 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         {
             if (TypeManager::makeCompatibles(context, toType, fromType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             {
-                PushErrHint errh(Fmt(Hnt(Hnt0032), fromType->getDisplayNameC(), toType->getDisplayNameC()));
-                Diagnostic  diag{fromNode, Fmt(Err(Err0175), fromType->getDisplayNameC(), toType->getDisplayNameC())};
+                Diagnostic diag{fromNode, Fmt(Err(Err0175), fromType->getDisplayNameC(), toType->getDisplayNameC())};
+                diag.hint = Fmt(Hnt(Hnt0032), fromType->getDisplayNameC(), toType->getDisplayNameC());
                 return context->report(diag);
             }
         }
 
         // A specific error message ?
         if (!msg.empty())
-        {
-            PushErrHint errh(hint);
             return context->report(hint, {fromNode, msg});
-        }
 
         // General cast error
         return context->report({fromNode, Fmt(Err(Err0177), fromType->getDisplayNameC(), toType->getDisplayNameC())});

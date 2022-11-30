@@ -124,9 +124,11 @@ bool Tokenizer::doMultiLineComment(Token& token)
         {
             location = token.startLocation;
             location.column += 2;
-            PushErrHint eh(Hnt(Hnt0041));
-            error(token, Err(Err0080));
-            return false;
+            token.endLocation = location;
+
+            Diagnostic diag{sourceFile, token, Err(Err0080)};
+            diag.hint = Hnt(Hnt0041);
+            return Report::report(diag);
         }
 
         if (nc == '*')
