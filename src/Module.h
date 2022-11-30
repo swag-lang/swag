@@ -125,9 +125,6 @@ struct Module
     SourceFile* findFile(const Utf8& fileName);
     ByteCode*   findBc(const Utf8& bcName);
 
-    bool error(const Utf8& msg);
-    bool internalError(const Utf8& msg);
-    bool internalError(AstNode* node, Token& token, const Utf8& msg);
     void printStartBuilding(const BuildParameters& bp);
     void printBC();
 

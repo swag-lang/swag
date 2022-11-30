@@ -6,6 +6,7 @@
 #include "Context.h"
 #include "Workspace.h"
 #include "ErrorIds.h"
+#include "Report.h"
 #include "LanguageSpec.h"
 #include "Diagnostic.h"
 #include "TypeManager.h"
@@ -29,7 +30,7 @@ bool BackendX64::emitOS(const BuildParameters& buildParameters)
     }
     else
     {
-        module->error(Fmt(Err(Err0056), Backend::GetOsName(g_CommandLine->target)));
+        Report::error(module, Fmt(Err(Err0056), Backend::GetOsName(g_CommandLine->target)));
         return false;
     }
 }
@@ -52,7 +53,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         entryPoint = "mainCRTStartup";
         break;
     default:
-        module->error(Fmt(Err(Err0056), Backend::GetOsName(g_CommandLine->target)));
+        Report::error(module, Fmt(Err(Err0056), Backend::GetOsName(g_CommandLine->target)));
         return false;
     }
 

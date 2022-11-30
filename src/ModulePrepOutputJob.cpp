@@ -6,6 +6,7 @@
 #include "Module.h"
 #include "Stats.h"
 #include "ErrorIds.h"
+#include "Report.h"
 #include "Diagnostic.h"
 
 JobResult ModulePrepOutputStage1Job::execute()
@@ -19,7 +20,7 @@ JobResult ModulePrepOutputStage1Job::execute()
     {
         if (!module->mainIsDefined)
         {
-            module->error(Err(Err0269));
+            Report::error(module, Err(Err0269));
             return JobResult::ReleaseJob;
         }
     }
@@ -38,7 +39,7 @@ JobResult ModulePrepOutputStage2Job::execute()
     {
         if (!module->mainIsDefined)
         {
-            module->error(Err(Err0269));
+            Report::error(module, Err(Err0269));
             return JobResult::ReleaseJob;
         }
     }

@@ -812,45 +812,6 @@ uint32_t Module::getHasBeenBuilt()
     return hasBeenBuilt;
 }
 
-bool Module::error(const Utf8& msg)
-{
-    g_Log.lock();
-    g_Log.setColor(LogColor::Red);
-    g_Log.print("error: ");
-    g_Log.print(Fmt("module %s: ", name.c_str()));
-    g_Log.print(msg);
-    g_Log.eol();
-    g_Log.setDefaultColor();
-    g_Log.unlock();
-
-    g_Workspace->numErrors++;
-    numErrors++;
-    return false;
-}
-
-bool Module::internalError(const Utf8& msg)
-{
-    g_Log.lock();
-    g_Log.setColor(LogColor::Red);
-    g_Log.print("error: ");
-    g_Log.print(Fmt("module %s: [compiler internal] ", name.c_str()));
-    g_Log.print(msg);
-    g_Log.eol();
-    g_Log.setDefaultColor();
-    g_Log.unlock();
-
-    g_Workspace->numErrors++;
-    numErrors++;
-    return false;
-}
-
-bool Module::internalError(AstNode* node, Token& token, const Utf8& msg)
-{
-    Utf8 msg1 = "[compiler internal] ";
-    msg1 += msg;
-    return Report::report({node, msg1});
-}
-
 void Module::printStartBuilding(const BuildParameters& bp)
 {
     if (!backend->mustCompile)

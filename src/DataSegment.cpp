@@ -3,6 +3,7 @@
 #include "Module.h"
 #include "TypeManager.h"
 #include "ErrorIds.h"
+#include "Report.h"
 #include "AstNode.h"
 #include "ByteCode.h"
 #include "Diagnostic.h"
@@ -165,7 +166,7 @@ uint32_t DataSegment::reserveNoLock(uint32_t size, uint8_t** resultPtr)
         if (!overflow)
         {
             overflow = true;
-            module->error(Fmt(Err(Err0834), name));
+            Report::error(module, Fmt(Err(Err0834), name));
         }
     }
 

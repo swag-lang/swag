@@ -7,6 +7,7 @@
 #include "TypeManager.h"
 #include "LanguageSpec.h"
 #include "Workspace.h"
+#include "Report.h"
 
 llvm::FunctionType* BackendLLVM::getOrCreateFuncType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, bool closureToLambda)
 {
@@ -379,7 +380,7 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
         }
         else
         {
-            return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitCall, invalid param type");
+            return Report::internalError(typeFuncBC->declNode, "emitCall, invalid param type");
         }
     }
 
@@ -442,12 +443,12 @@ bool BackendLLVM::emitCallReturnValue(const BuildParameters& buildParameters,
         {
             auto r = TO_PTR_NATIVE(allocRR, returnType->nativeType);
             if (!r)
-                return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitCall, invalid return type");
+                return Report::internalError(typeFuncBC->declNode, "emitCall, invalid return type");
             builder.CreateStore(callResult, r);
         }
         else
         {
-            return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitCall, invalid return type");
+            return Report::internalError(typeFuncBC->declNode, "emitCall, invalid return type");
         }
     }
 

@@ -320,20 +320,17 @@
     <ClCompile Include="../src/DataSegment.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="../src/Allocator.cpp">
-      <Filter>Main\Global</Filter>
-    </ClCompile>
     <ClCompile Include="../src/Assert.cpp">
-      <Filter>Main\Global</Filter>
+      <Filter>Main\Report</Filter>
     </ClCompile>
     <ClCompile Include="../src/Diagnostic.cpp">
-      <Filter>Main\Global</Filter>
+      <Filter>Main\Report</Filter>
     </ClCompile>
     <ClCompile Include="../src/Log.cpp">
-      <Filter>Main\Global</Filter>
+      <Filter>Main\Report</Filter>
     </ClCompile>
     <ClCompile Include="../src/Stats.cpp">
-      <Filter>Main\Global</Filter>
+      <Filter>Main\Report</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Help.cpp">
       <Filter>Main</Filter>
@@ -450,7 +447,7 @@
       <Filter>Main\Jobs</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ErrorIds.cpp">
-      <Filter>Main\Global</Filter>
+      <Filter>Main\Report</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeGenJob_Err.cpp">
       <Filter>Backend\ByteCode\Gen</Filter>
@@ -495,7 +492,10 @@
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Report.cpp">
-      <Filter>Main\Global</Filter>
+      <Filter>Main\Report</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/Allocator.cpp">
+      <Filter>Main\Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -698,26 +698,23 @@
     <ClInclude Include="../src/DataSegment.h">
       <Filter>Semantic</Filter>
     </ClInclude>
-    <ClInclude Include="../src/Allocator.h">
-      <Filter>Main\Global</Filter>
-    </ClInclude>
     <ClInclude Include="../src/Assert.h">
-      <Filter>Main\Global</Filter>
+      <Filter>Main\Report</Filter>
     </ClInclude>
     <ClInclude Include="../src/Diagnostic.h">
-      <Filter>Main\Global</Filter>
+      <Filter>Main\Report</Filter>
     </ClInclude>
     <ClInclude Include="../src/Log.h">
-      <Filter>Main\Global</Filter>
+      <Filter>Main\Report</Filter>
     </ClInclude>
     <ClInclude Include="../src/Stats.h">
-      <Filter>Main\Global</Filter>
+      <Filter>Main\Report</Filter>
     </ClInclude>
     <ClInclude Include="../src/Os.h">
       <Filter>Main\Os</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ErrorIds.h">
-      <Filter>Main\Global</Filter>
+      <Filter>Main\Report</Filter>
     </ClInclude>
     <ClInclude Include="../src/ModuleManager.h">
       <Filter>Main\Wmf</Filter>
@@ -774,19 +771,19 @@
       <Filter>Main\Jobs</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ErrorList_Err.h">
-      <Filter>Main\Global</Filter>
+      <Filter>Main\Report</Filter>
     </ClInclude>
     <ClInclude Include="..\src\AstOutput.h">
       <Filter>Lexer</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ErrorList_Note.h">
-      <Filter>Main\Global</Filter>
+      <Filter>Main\Report</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ErrorList_Hint.h">
-      <Filter>Main\Global</Filter>
+      <Filter>Main\Report</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ErrorList_Help.h">
-      <Filter>Main\Global</Filter>
+      <Filter>Main\Report</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Array.h">
       <Filter>Main\Core</Filter>
@@ -813,7 +810,10 @@
       <Filter>Backend\ByteCode</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Report.h">
-      <Filter>Main\Global</Filter>
+      <Filter>Main\Report</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/Allocator.h">
+      <Filter>Main\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -859,9 +859,6 @@
     <Filter Include="Main\Wmf">
       <UniqueIdentifier>{68a1bb4f-01bc-4d77-9593-917fdde3fe6d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Main\Global">
-      <UniqueIdentifier>{70f7c54c-e50c-4523-895c-c808e6cb62b9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Main\Os">
       <UniqueIdentifier>{31fa90c8-f664-40b5-8bc5-d3606d6e2ffa}</UniqueIdentifier>
     </Filter>
@@ -879,6 +876,9 @@
     </Filter>
     <Filter Include="Backend\ByteCode\Gen">
       <UniqueIdentifier>{6af8e653-2a30-49e1-a10c-e6fd51ae7787}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\Report">
+      <UniqueIdentifier>{70f7c54c-e50c-4523-895c-c808e6cb62b9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -225,9 +225,42 @@ namespace Report
         return report(diag, notes);
     }
 
+    bool error(Module* module, const Utf8& msg)
+    {
+        g_Log.lock();
+        g_Log.setColor(LogColor::Red);
+        g_Log.print("error: ");
+        g_Log.print(Fmt("module %s: ", module->name.c_str()));
+        g_Log.print(msg);
+        g_Log.eol();
+        g_Log.setDefaultColor();
+        g_Log.unlock();
+
+        g_Workspace->numErrors++;
+        module->numErrors++;
+        return false;
+    }
+
     bool internalError(AstNode* node, const char* msg)
     {
-        report({node, Fmt("[compiler internal] %s", msg)});
+        Diagnostic diag{node, Fmt("[compiler internal] %s", msg)};
+        report(diag);
+        return false;
+    }
+
+    bool internalError(Module* module, const char* msg)
+    {
+        g_Log.lock();
+        g_Log.setColor(LogColor::Red);
+        g_Log.print("error: ");
+        g_Log.print(Fmt("module %s: [compiler internal] ", module->name.c_str()));
+        g_Log.print(msg);
+        g_Log.eol();
+        g_Log.setDefaultColor();
+        g_Log.unlock();
+
+        g_Workspace->numErrors++;
+        module->numErrors++;
         return false;
     }
 

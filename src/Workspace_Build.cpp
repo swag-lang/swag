@@ -386,8 +386,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
         if (pendingJob->flags & JOB_NO_PENDING_REPORT)
             continue;
 
-        auto node       = it.node;
-        auto sourceFile = pendingJob->sourceFile;
+        auto node = it.node;
 
         if (node->kind == AstNodeKind::FuncDeclType)
             node = node->parent;
@@ -486,7 +485,6 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
         {
             auto       node       = it.node;
             auto       pendingJob = it.pendingJob;
-            auto       sourceFile = pendingJob->sourceFile;
             Diagnostic diag{node, Fmt(Err(Err0549), pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), node->token.ctext())};
             Report::report(diag);
         }

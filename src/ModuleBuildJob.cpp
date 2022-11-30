@@ -257,7 +257,7 @@ JobResult ModuleBuildJob::execute()
             auto depModule = g_Workspace->getModuleByName(dep->name);
             if (!depModule)
             {
-                module->error(Fmt(Err(Err0499), dep->name.c_str()));
+                Report::error(module, Fmt(Err(Err0499), dep->name.c_str()));
                 return JobResult::ReleaseJob;
             }
 
