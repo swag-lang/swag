@@ -369,7 +369,6 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
-        PushErrHint errh(Hnt(Hnt0033));
         node->setFlagsValueIsComputed();
 
         switch (leftTypeInfo->nativeType)
@@ -450,32 +449,31 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
-        PushErrHint errh(Hnt(Hnt0033));
         node->setFlagsValueIsComputed();
 
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S32:
             if (right->computedValue->reg.s32 == 0)
-                return context->report({right, Err(Err0150)});
+                return context->report(Hnt(Hnt0033), {right, Err(Err0150)});
             node->computedValue->reg.s64 = left->computedValue->reg.s32 % right->computedValue->reg.s32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
             if (right->computedValue->reg.s64 == 0)
-                return context->report({right, Err(Err0150)});
+                return context->report(Hnt(Hnt0033), {right, Err(Err0150)});
             node->computedValue->reg.s64 = left->computedValue->reg.s64 % right->computedValue->reg.s64;
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
             if (right->computedValue->reg.u32 == 0)
-                return context->report({right, Err(Err0150)});
+                return context->report(Hnt(Hnt0033), {right, Err(Err0150)});
             node->computedValue->reg.u64 = left->computedValue->reg.u32 % right->computedValue->reg.u32;
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
             if (right->computedValue->reg.u64 == 0)
-                return context->report({right, Err(Err0150)});
+                return context->report(Hnt(Hnt0033), {right, Err(Err0150)});
             node->computedValue->reg.u64 = left->computedValue->reg.u64 % right->computedValue->reg.u64;
             break;
         default:

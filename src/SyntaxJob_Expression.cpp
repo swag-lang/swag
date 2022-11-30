@@ -372,7 +372,6 @@ bool SyntaxJob::doDeRef(AstNode* parent, AstNode** result)
     Token savedToken       = token;
     SWAG_CHECK(eatToken());
 
-    PushErrHint errh(Hnt(Hnt0030));
     SWAG_CHECK(doUnaryExpression(arrayNode, EXPR_FLAG_SIMPLE, &arrayNode->array));
 
     auto literal = Ast::newNode<AstNode>(this, AstNodeKind::Literal, sourceFile, arrayNode);
@@ -1525,7 +1524,6 @@ bool SyntaxJob::doRange(AstNode* parent, AstNode* expression, AstNode** result)
         rangeNode->specFlags |= AST_SPEC_RANGE_EXCLUDE_UP;
 
     SWAG_CHECK(eatToken());
-    PushErrHint errh(Hnt(Hnt0031));
     SWAG_CHECK(doExpression(rangeNode, EXPR_FLAG_SIMPLE, &rangeNode->expressionUp));
     return true;
 }

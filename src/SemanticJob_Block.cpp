@@ -772,18 +772,15 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
                 typePtr->pointedType->kind == TypeInfoKind::Struct ||
                 typePtr->pointedType->isNative(NativeTypeKind::String))
             {
-                PushErrHint errh(Hnt(Hnt0037));
-                return context->report({node->expression, Fmt(Err(Err0628), typeInfo->getDisplayNameC())});
+                return context->report(Hnt(Hnt0037), {node->expression, Fmt(Err(Err0628), typeInfo->getDisplayNameC())});
             }
             else
             {
-                PushErrHint errh(Hnt(Hnt0036));
-                return context->report({node->expression, Fmt(Err(Err0628), typeInfo->getDisplayNameC())});
+                return context->report(Hnt(Hnt0036), {node->expression, Fmt(Err(Err0628), typeInfo->getDisplayNameC())});
             }
         }
 
-        PushErrHint errh(Hnt(Hnt0006));
-        return context->report({node->expression, Fmt(Err(Err0629), typeInfo->getDisplayNameC())});
+        return context->report(Hnt(Hnt0006), {node->expression, Fmt(Err(Err0629), typeInfo->getDisplayNameC())});
     }
 
     node->expression->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;

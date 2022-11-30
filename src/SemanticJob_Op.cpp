@@ -383,7 +383,7 @@ bool SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfo
             notes.push_back(note);
         }
 
-        PushErrHint errh(Fmt(Hnt(Hnt0047), name.c_str()));
+        diag.hint = Fmt(Hnt(Hnt0047), name.c_str());
         return context->report(diag, notes);
     }
 
