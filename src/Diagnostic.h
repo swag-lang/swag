@@ -134,21 +134,7 @@ struct Diagnostic
     bool showFileName          = true;
 };
 
-extern thread_local Utf8        g_ErrorHint;
-extern thread_local Diagnostic* g_ErrorNote;
-
-struct PushErrNote
-{
-    PushErrNote(Diagnostic* note)
-    {
-        g_ErrorNote = note;
-    }
-
-    ~PushErrNote()
-    {
-        g_ErrorNote = nullptr;
-    }
-};
+extern thread_local Utf8 g_ErrorHint;
 
 struct PushErrHint
 {

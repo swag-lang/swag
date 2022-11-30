@@ -377,8 +377,6 @@ bool JobContext::report(const Diagnostic& diag, const Diagnostic* note, const Di
         notes.push_back(note);
     if (note1)
         notes.push_back(note1);
-    if (!sourceFile)
-        sourceFile = diag.sourceFile;
     return report(diag, notes);
 }
 
@@ -394,10 +392,7 @@ bool JobContext::report(const Diagnostic& diag, const vector<const Diagnostic*>&
         return false;
 
     auto copyNotes = notes;
-    if (g_ErrorNote)
-        copyNotes.push_back(g_ErrorNote);
     setErrorContext(diag, copyNotes);
-    SWAG_ASSERT(sourceFile);
     return Report::report(diag, copyNotes);
 }
 

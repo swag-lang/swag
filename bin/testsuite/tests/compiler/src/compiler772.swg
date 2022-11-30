@@ -1,5 +1,4 @@
-#global testerror
-#global testerror
+#global testerrors
 
 struct Point
 {

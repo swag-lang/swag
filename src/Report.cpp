@@ -219,9 +219,6 @@ namespace Report
             notes.push_back(note);
         if (note1)
             notes.push_back(note1);
-        if (g_ErrorNote)
-            notes.push_back(g_ErrorNote);
-
         return report(diag, notes);
     }
 

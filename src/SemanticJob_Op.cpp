@@ -487,10 +487,6 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
             return context->report(Fmt(Hnt(Hnt0047), g_LangSpec->name_opAffectSuffix.c_str()), diag, note0, note1);
         }
 
-        PushErrContext ec(context,
-                          context->node,
-                          Fmt(Nte(Nte0058), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC(), g_LangSpec->name_opAffectSuffix.c_str()),
-                          Fmt(Hnt(Hnt0047), g_LangSpec->name_opAffectSuffix.c_str()));
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffectSuffix, suffix, nullptr, left, right));
         if (varDecl)
             varDecl->token = savedToken;
@@ -514,10 +510,6 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
             return context->report(Fmt(Hnt(Hnt0047), g_LangSpec->name_opAffect.c_str()), diag, note);
         }
 
-        PushErrContext ec(context,
-                          context->node,
-                          Fmt(Nte(Nte0058), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC(), g_LangSpec->name_opAffect.c_str()),
-                          Fmt(Hnt(Hnt0047), g_LangSpec->name_opAffect.c_str()));
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffect, nullptr, nullptr, left, right));
         if (varDecl)
             varDecl->token = savedToken;
@@ -627,8 +619,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
         }
 
         {
-            Diagnostic  diag{left->parent->sourceFile, left->parent->token, Fmt(Err(Nte0051), name.c_str(), leftType->getDisplayNameC()), DiagnosticLevel::Note};
-            PushErrNote pen(&diag);
+            PushErrContext ec(context, context->node, Fmt(Err(Nte0051), name.c_str(), leftType->getDisplayNameC()), "");
             SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, nullptr, justCheck ? MIP_JUST_CHECK : 0));
         }
 
