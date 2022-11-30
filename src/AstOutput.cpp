@@ -6,6 +6,7 @@
 #include "LanguageSpec.h"
 #include "AstOutput.h"
 #include "Module.h"
+#include "Report.h"
 
 bool AstOutput::checkIsPublic(OutputContext& context, AstNode* testNode, AstNode* usedNode)
 {
@@ -1535,7 +1536,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             CONCAT_FIXED_STR(concat, "#cfg");
             break;
         default:
-            return node->sourceFile->internalError(node, "Ast::outputNode, unknown compiler function");
+            Report::internalError(node, "Ast::outputNode, unknown compiler function");
         }
         break;
     }
@@ -1934,7 +1935,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     }
 
     default:
-        return node->sourceFile->internalError(node, "Ast::outputNode, unknown node");
+        return Report::internalError(node, "Ast::outputNode, unknown node");
     }
 
     return true;

@@ -6,6 +6,7 @@
 #include "ByteCodeGenJob.h"
 #include "Module.h"
 #include "ErrorIds.h"
+#include "Report.h"
 #include "LanguageSpec.h"
 
 bool SyntaxJob::doGenericFuncCallParameters(AstNode* parent, AstNode** result)
@@ -114,7 +115,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result
             if (token.id == TokenId::SymColon)
             {
                 if (paramExpression->kind != AstNodeKind::IdentifierRef || paramExpression->childs.size() != 1)
-                    return sourceFile->report({paramExpression, Fmt(Err(Err0403), token.ctext())});
+                    return Report::report({paramExpression, Fmt(Err(Err0403), token.ctext())});
                 param->namedParamNode = paramExpression->childs.front();
                 param->namedParam     = param->namedParamNode->token.text;
                 SWAG_CHECK(eatToken());
@@ -139,7 +140,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result
                 break;
 
             if (token.id == closeToken)
-                return sourceFile->report({callParams, tokenComma, Err(Err0856)});
+                return Report::report({callParams, tokenComma, Err(Err0856)});
         }
     }
 
@@ -369,7 +370,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acc
             auto tokenComma = token;
             SWAG_CHECK(eatToken(TokenId::SymComma));
             if (token.id == TokenId::SymRightParen)
-                return sourceFile->report({allParams, tokenComma, Err(Err0855)});
+                return Report::report({allParams, tokenComma, Err(Err0855)});
 
             SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdUsing, error(token, Fmt(Err(Err0410), token.ctext())));
         }

@@ -3,6 +3,7 @@
 #include "Scoped.h"
 #include "SemanticJob.h"
 #include "ErrorIds.h"
+#include "Report.h"
 #include "Mutex.h"
 
 bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
@@ -32,13 +33,13 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
                 PushErrHint errh(Fmt(Hnt(Hnt0019), implNode->token.ctext()));
                 Diagnostic  diag{implNode->identifier, Fmt(Err(Err0441), Scope::getNakedKindName(newScope->kind), implNode->token.ctext(), Scope::getNakedKindName(ScopeKind::Enum))};
                 Diagnostic  note{enumNode, Fmt(Nte(Nte0027), implNode->token.ctext()), DiagnosticLevel::Note};
-                return sourceFile->report(diag, &note);
+                return Report::report(diag, &note);
             }
             else
             {
                 Diagnostic diag{enumNode->sourceFile, token, Fmt(Err(Err0885), enumNode->token.ctext(), Scope::getArticleKindName(newScope->kind))};
                 Diagnostic note{newScope->owner, Nte(Nte0036), DiagnosticLevel::Note};
-                return sourceFile->report(diag, &note);
+                return Report::report(diag, &note);
             }
         }
 

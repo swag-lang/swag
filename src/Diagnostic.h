@@ -117,8 +117,9 @@ struct Diagnostic
     Utf8            noteHeader;
     DiagnosticLevel errorLevel;
 
-    SourceFile* sourceFile = nullptr;
-    AstNode*    sourceNode = nullptr;
+    SourceFile* contextFile = nullptr;
+    SourceFile* sourceFile  = nullptr;
+    AstNode*    sourceNode  = nullptr;
 
     uint32_t stackLevel = 0;
 

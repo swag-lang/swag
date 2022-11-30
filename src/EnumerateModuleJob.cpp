@@ -10,6 +10,7 @@
 #include "AstNode.h"
 #include "Diagnostic.h"
 #include "ErrorIds.h"
+#include "Report.h"
 
 SourceFile* EnumerateModuleJob::addFileToModule(Module* theModule, vector<SourceFile*>& allFiles, string dirName, string fileName, uint64_t writeTime, SourceFile* prePass, Module* imported)
 {
@@ -84,7 +85,7 @@ bool EnumerateModuleJob::dealWithIncludes(Module* theModule)
             if (!fs::exists(filePath))
             {
                 Diagnostic diag{n->sourceFile, n->token, Fmt(Err(Err0304), n->token.text.c_str())};
-                n->sourceFile->report(diag);
+                Report::report(diag);
                 return false;
             }
         }

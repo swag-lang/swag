@@ -8,6 +8,7 @@
 #include "TypeManager.h"
 #include "BackendX64.h"
 #include "Context.h"
+#include "Report.h"
 
 namespace OS
 {
@@ -247,7 +248,7 @@ namespace OS
                                     auto           msg    = tokens.back();
                                     msg                   = "runtime execution, " + msg;
                                     Diagnostic diag{sourceFile, startLoc, endLoc, msg};
-                                    sourceFile->report(diag);
+                                    Report::report(diag);
                                 }
                                 else
                                 {

@@ -10,6 +10,7 @@
 #include "SemanticJob.h"
 #include "TypeTable.h"
 #include "ErrorIds.h"
+#include "Report.h"
 #include "Os.h"
 #include "Hash.h"
 #include "ModuleManager.h"
@@ -1952,7 +1953,7 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     SWAG_ASSERT(!(funcNode->stackSize & 7));
 
     if (funcNode->stackSize > g_CommandLine->stackSizeRT)
-        context->sourceFile->report({funcNode, Fmt(Err(Err0536), Utf8::toNiceSize(g_CommandLine->stackSizeRT).c_str())});
+        Report::report({funcNode, Fmt(Err(Err0536), Utf8::toNiceSize(g_CommandLine->stackSizeRT).c_str())});
 
     if (funcNode->stackSize == 0)
         emitInstruction(context, ByteCodeOp::SetBP);

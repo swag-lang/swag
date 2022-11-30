@@ -9,6 +9,7 @@
 #include "TypeManager.h"
 #include "LanguageSpec.h"
 #include "ErrorIds.h"
+#include "Report.h"
 #include "Diagnostic.h"
 
 bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
@@ -568,7 +569,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
         case ByteCodeOp::MakeCompilerSegPointer:
-            return ip->node->sourceFile->report({ip->node, Err(Err0060)});
+            return Report::report({ip->node, Err(Err0060)});
 
         case ByteCodeOp::MakeStackPointer:
         {

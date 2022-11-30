@@ -6,6 +6,7 @@
 #include "ByteCodeGenJob.h"
 #include "Module.h"
 #include "ErrorIds.h"
+#include "Report.h"
 #include "LanguageSpec.h"
 #include "Array.h"
 
@@ -580,7 +581,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
         SWAG_VERIFY(!(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report(Hint::isType(typeInfo), {node->expression, Err(Err0624)}));
-        SWAG_VERIFY(node->expression->kind == AstNodeKind::IdentifierRef, sourceFile->internalError(node->expression, "resolveVisit expression, should be an identifier"));
+        SWAG_VERIFY(node->expression->kind == AstNodeKind::IdentifierRef, Report::internalError(node->expression, "resolveVisit expression, should be an identifier"));
 
         auto identifierRef    = (AstIdentifierRef*) Ast::clone(node->expression, node);
         auto callVisit        = Ast::newIdentifier(sourceFile, Fmt("opVisit%s", node->extraNameToken.ctext()), identifierRef, identifierRef);

@@ -11,6 +11,7 @@
 #include "ByteCodeOptimizerJob.h"
 #include "Diagnostic.h"
 #include "ErrorIds.h"
+#include "Report.h"
 
 void ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num)
 {
@@ -733,13 +734,13 @@ JobResult ByteCodeGenJob::execute()
             // Be sure that every used registers have been released
             if (context.bc->maxReservedRegisterRC > context.bc->availableRegistersRC.size())
             {
-                context.sourceFile->internalError(funcNode, Fmt("function `%s` does not release all registers !", funcNode->token.ctext()));
+                Report::internalError(funcNode, Fmt("function `%s` does not release all registers !", funcNode->token.ctext()));
                 if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC)
                     context.bc->print();
             }
             else if (context.bc->maxReservedRegisterRC < context.bc->availableRegistersRC.size())
             {
-                context.sourceFile->internalError(funcNode, Fmt("function `%s` releases too many registers !", funcNode->token.ctext()));
+                Report::internalError(funcNode, Fmt("function `%s` releases too many registers !", funcNode->token.ctext()));
                 if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC)
                     context.bc->print();
             }

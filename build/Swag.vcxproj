@@ -263,6 +263,7 @@
     <ClInclude Include="..\src\RaceCondition.h" />
     <ClInclude Include="..\src\Mutex.h" />
     <ClInclude Include="..\src\Array.h" />
+    <ClInclude Include="..\src\Report.h" />
     <ClInclude Include="..\src\SaveGenJob.h" />
     <ClInclude Include="..\src\X64Gen.h" />
   </ItemGroup>
@@ -366,6 +367,7 @@
     <ClCompile Include="../src/Scope.cpp" />
     <ClCompile Include="..\src\PrepCompilerMsgJob.cpp" />
     <ClCompile Include="..\src\Profiler.cpp" />
+    <ClCompile Include="..\src\Report.cpp" />
     <ClCompile Include="..\src\SaveGenJob.cpp" />
     <ClCompile Include="..\src\SemanticJob_AffectExpression.cpp" />
     <ClCompile Include="..\src\SemanticJob_Attribute.cpp" />

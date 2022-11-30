@@ -10,6 +10,7 @@
 #include "TypeManager.h"
 #include "Math.h"
 #include "ErrorIds.h"
+#include "Report.h"
 #include "LanguageSpec.h"
 #include "SemanticJob.h"
 #include "Module.h"
@@ -3624,7 +3625,9 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
                 {
                     runContext->ip--;
                     g_ByteCodeStackTrace->currentContext = runContext;
-                    firstSrcFile->report(diag, notes);
+                    diag.contextFile                     = firstSrcFile;
+                    Report::report(diag, notes);
+                    diag.contextFile                     = nullptr;
                     g_ByteCodeStackTrace->currentContext = nullptr;
                     runContext->ip++;
                     return SWAG_EXCEPTION_EXECUTE_HANDLER;
@@ -3642,9 +3645,12 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
 
         runContext->ip--;
         g_ByteCodeStackTrace->currentContext = runContext;
-        sourceFile->report(diag, notes);
+        diag.contextFile                     = sourceFile;
+        Report::report(diag, notes);
+        diag.contextFile                     = nullptr;
         g_ByteCodeStackTrace->currentContext = nullptr;
         runContext->ip++;
+
         return SWAG_EXCEPTION_EXECUTE_HANDLER;
     }
 
@@ -3660,7 +3666,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
     Diagnostic note2{Nte(Nte0009), DiagnosticLevel::Note};
     diag.exceptionError                  = true;
     g_ByteCodeStackTrace->currentContext = runContext;
-    runContext->bc->sourceFile->report(diag, &note1, &note2);
+    Report::report(diag, &note1, &note2);
     g_ByteCodeStackTrace->currentContext = nullptr;
     runContext->ip++;
 #ifdef SWAG_DEV_MODE

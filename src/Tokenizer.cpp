@@ -3,6 +3,7 @@
 #include "Diagnostic.h"
 #include "SourceFile.h"
 #include "ErrorIds.h"
+#include "Report.h"
 #include "Timer.h"
 #include "LanguageSpec.h"
 
@@ -106,7 +107,7 @@ uint32_t Tokenizer::getCharNoSeek(unsigned& offset)
 bool Tokenizer::error(Token& token, const Utf8& msg)
 {
     token.endLocation = location;
-    sourceFile->report({sourceFile, token, msg});
+    Report::report({sourceFile, token, msg});
     return false;
 }
 

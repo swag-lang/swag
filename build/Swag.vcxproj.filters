@@ -494,6 +494,9 @@
     <ClCompile Include="..\src\Profiler.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Report.cpp">
+      <Filter>Main\Global</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">
@@ -808,6 +811,9 @@
     </ClInclude>
     <ClInclude Include="..\src\Profiler.h">
       <Filter>Backend\ByteCode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Report.h">
+      <Filter>Main\Global</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

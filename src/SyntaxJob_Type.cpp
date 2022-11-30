@@ -4,6 +4,7 @@
 #include "Scoped.h"
 #include "TypeManager.h"
 #include "ErrorIds.h"
+#include "Report.h"
 #include "LanguageSpec.h"
 
 bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
@@ -414,10 +415,10 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             if (contextFlags & CONTEXT_FLAG_EXPRESSION)
             {
                 if (inTypeVarDecl)
-                    return sourceFile->report({sourceFile, rightSquareToken, Err(Err0561)});
+                    return Report::report({sourceFile, rightSquareToken, Err(Err0561)});
                 Diagnostic diag{sourceFile, rightSquareToken, Err(Err0561)};
                 Diagnostic note{sourceFile, leftSquareToken, Hlp(Hlp0002), DiagnosticLevel::Help};
-                return sourceFile->report(diag, &note);
+                return Report::report(diag, &note);
             }
             else
             {
@@ -431,7 +432,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             {
                 Diagnostic diag{sourceFile, token, Fmt(Err(Err0527), token.ctext())};
                 Diagnostic note{sourceFile, leftSquareToken, Hlp(Hlp0025), DiagnosticLevel::Help};
-                return sourceFile->report(diag, &note);
+                return Report::report(diag, &note);
             }
             else
             {
@@ -446,7 +447,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
                 {
                     Diagnostic diag{sourceFile, token, Fmt(Err(Err0526), token.ctext())};
                     Diagnostic note{sourceFile, leftSquareToken, Hlp(Hlp0024), DiagnosticLevel::Help};
-                    return sourceFile->report(diag, &note);
+                    return Report::report(diag, &note);
                 }
             }
         }
@@ -458,11 +459,11 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             token.id != TokenId::SymCircumflex)
         {
             if (inTypeVarDecl)
-                return sourceFile->report({sourceFile, token, Fmt(Err(Err0343), token.ctext())});
+                return Report::report({sourceFile, token, Fmt(Err(Err0343), token.ctext())});
 
             Diagnostic diag{sourceFile, token, Fmt(Err(Err0343), token.ctext())};
             Diagnostic note{sourceFile, leftSquareToken, Hlp(Hlp0002), DiagnosticLevel::Help};
-            return sourceFile->report(diag, &note);
+            return Report::report(diag, &note);
         }
 
         if (token.id == TokenId::SymComma)
@@ -473,7 +474,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             {
                 Diagnostic diag{sourceFile, token, Fmt(Err(Err0171), token.ctext())};
                 Diagnostic note{sourceFile, leftSquareToken, Hlp(Hlp0002), DiagnosticLevel::Help};
-                return sourceFile->report(diag, &note);
+                return Report::report(diag, &note);
             }
             else
             {
@@ -595,14 +596,14 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     {
         Diagnostic diag{sourceFile, token, Fmt(Err(Err0202), token.ctext())};
         Diagnostic note{sourceFile, parent->token, Hlp(Hlp0003), DiagnosticLevel::Help};
-        return sourceFile->report(diag, &note);
+        return Report::report(diag, &note);
     }
 
     if (token.id == TokenId::SymLeftParen)
     {
         Diagnostic diag{sourceFile, token, Fmt(Err(Err0343), token.ctext())};
         Diagnostic note{sourceFile, token, Hlp(Hlp0004), DiagnosticLevel::Help};
-        return sourceFile->report(diag, &note);
+        return Report::report(diag, &note);
     }
 
     if (Tokenizer::isSymbol(token.id))

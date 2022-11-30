@@ -12,6 +12,7 @@
 #include "ByteCodeOptimizer.h"
 #include "ModuleCfgManager.h"
 #include "ErrorIds.h"
+#include "Report.h"
 #include "ModuleManager.h"
 #include "SymTable.h"
 #include "TypeTableJob.h"
@@ -445,7 +446,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
             }
 
             Diagnostic diag{pendingJob->originalNode, Fmt(Err(Err0419), AstNode::getKindName(pendingJob->originalNode).c_str(), pendingJob->originalNode->token.ctext())};
-            sourceFile->report(diag, notes);
+            Report::report(diag, notes);
             doneOne = true;
             continue;
         }
@@ -473,7 +474,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
         if (!note)
             continue;
         note->errorLevel = DiagnosticLevel::Error;
-        sourceFile->report(*note);
+        Report::report(*note);
         doneOne = true;
     }
 
@@ -487,7 +488,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
             auto       pendingJob = it.pendingJob;
             auto       sourceFile = pendingJob->sourceFile;
             Diagnostic diag{node, Fmt(Err(Err0549), pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), node->token.ctext())};
-            sourceFile->report(diag);
+            Report::report(diag);
         }
     }
 }

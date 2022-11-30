@@ -4,6 +4,7 @@
 #include "LanguageSpec.h"
 #include "Scoped.h"
 #include "ErrorIds.h"
+#include "Report.h"
 
 void SyntaxJob::relaxIdentifier(Token& token)
 {
@@ -97,7 +98,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
     // Replace "Self" with the corresponding struct name
     if (identifier->token.text == g_LangSpec->name_Self)
     {
-        SWAG_VERIFY(parent->ownerStructScope, sourceFile->report({identifier, Err(Err0838)}));
+        SWAG_VERIFY(parent->ownerStructScope, Report::report({identifier, Err(Err0838)}));
         if (currentSelfStructScope)
             identifier->token.text = currentSelfStructScope->name;
         else
@@ -121,7 +122,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         if (token.id == TokenId::SymLeftParen)
         {
             if (identifierFlags & IDENTIFIER_TYPE_DECL)
-                return sourceFile->report({identifier, token, Fmt(Err(Err0082), identifier->token.ctext())});
+                return Report::report({identifier, token, Fmt(Err(Err0082), identifier->token.ctext())});
 
             SWAG_CHECK(eatToken(TokenId::SymLeftParen));
             SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, TokenId::SymRightParen));
@@ -140,7 +141,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         if (!(identifierFlags & IDENTIFIER_NO_PARAMS))
         {
             if (identifierFlags & IDENTIFIER_TYPE_DECL)
-                return sourceFile->report({identifier, token, Err(Err0840)});
+                return Report::report({identifier, token, Err(Err0840)});
             Ast::removeFromParent(identifier);
             SWAG_CHECK(doArrayPointerIndex((AstNode**) &identifier));
             Ast::addChildBack(parent, identifier);

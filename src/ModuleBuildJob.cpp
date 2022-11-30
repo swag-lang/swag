@@ -13,6 +13,7 @@
 #include "ModuleManager.h"
 #include "ThreadManager.h"
 #include "ErrorIds.h"
+#include "Report.h"
 #include "LanguageSpec.h"
 #include "LoadSourceFileJob.h"
 #include "Mutex.h"
@@ -203,7 +204,7 @@ void ModuleBuildJob::checkMissingErrors()
                 {
                     auto nb             = file->numTestErrors.load();
                     file->numTestErrors = 0;
-                    file->report({file, Fmt(Err(Err0500), nb, file->numErrors)});
+                    Report::report({file, Fmt(Err(Err0500), nb, file->numErrors)});
                 }
             }
 
@@ -213,7 +214,7 @@ void ModuleBuildJob::checkMissingErrors()
                 {
                     auto nb               = file->numTestWarnings.load();
                     file->numTestWarnings = 0;
-                    file->report({file, Fmt(Err(Err0501), nb, file->numWarnings)});
+                    Report::report({file, Fmt(Err(Err0501), nb, file->numWarnings)});
                 }
             }
         }

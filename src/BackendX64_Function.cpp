@@ -3,6 +3,7 @@
 #include "BackendX64_Macros.h"
 #include "ByteCodeGenJob.h"
 #include "ErrorIds.h"
+#include "Report.h"
 #include "TypeManager.h"
 #include "LanguageSpec.h"
 #include "Diagnostic.h"
@@ -2302,7 +2303,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::MakeCompilerSegPointer:
-            return ip->node->sourceFile->report({ip->node, Err(Err0060)});
+            return Report::report({ip->node, Err(Err0060)});
 
         case ByteCodeOp::IncPointer64:
             if (ip->flags & BCI_IMM_B && ip->b.u64 <= 0x7FFFFFFF)

@@ -5,6 +5,7 @@
 #include "Scoped.h"
 #include "Module.h"
 #include "ErrorIds.h"
+#include "Report.h"
 #include "LanguageSpec.h"
 
 bool SyntaxJob::doIntrinsicTag(AstNode* parent, AstNode** result)
@@ -326,9 +327,9 @@ bool SyntaxJob::doCompilerSemError(AstNode* parent, AstNode** result, bool embed
     node->token = token;
     SWAG_CHECK(eatToken());
 
-    SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, sourceFile->report({sourceFile, token, Err(Err0367)}));
+    SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, Report::report({sourceFile, token, Err(Err0367)}));
     SWAG_ASSERT(g_CommandLine->test);
-    SWAG_VERIFY(!currentCompilerIfBlock, sourceFile->report({sourceFile, token, Err(Err0368)}));
+    SWAG_VERIFY(!currentCompilerIfBlock, Report::report({sourceFile, token, Err(Err0368)}));
 
     if (embedded)
         SWAG_CHECK(doEmbeddedInstruction(node));
@@ -476,7 +477,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         }
         else
         {
-            sourceFile->report({sourceFile, token, Fmt(Err(Err0373), token.ctext())});
+            Report::report({sourceFile, token, Fmt(Err(Err0373), token.ctext())});
             return false;
         }
 
@@ -508,7 +509,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
             module = newModule;
         }
 
-        SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, sourceFile->report({sourceFile, token, Err(Err0374)}));
+        SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, Report::report({sourceFile, token, Err(Err0374)}));
         SWAG_ASSERT(g_CommandLine->test);
 
         if (token.text == g_LangSpec->name_testerrors)
@@ -540,7 +541,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
             module = newModule;
         }
 
-        SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, sourceFile->report({sourceFile, token, Err(Err0375)}));
+        SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, Report::report({sourceFile, token, Err(Err0375)}));
         SWAG_ASSERT(g_CommandLine->test);
 
         if (token.text == g_LangSpec->name_testwarnings)
@@ -592,7 +593,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
     /////////////////////////////////
     else if (token.id == TokenId::KwdUsing)
     {
-        SWAG_VERIFY(sourceFile->isCfgFile, sourceFile->report({sourceFile, token, Err(Err0372)}));
+        SWAG_VERIFY(sourceFile->isCfgFile, Report::report({sourceFile, token, Err(Err0372)}));
 
         int prevCount = parent->childs.count;
         SWAG_CHECK(doUsing(parent));
@@ -606,7 +607,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
     /////////////////////////////////
     else
     {
-        return sourceFile->report({sourceFile, token, Fmt(Err(Err0376), token.ctext())});
+        return Report::report({sourceFile, token, Fmt(Err(Err0376), token.ctext())});
     }
 
     return true;
@@ -660,8 +661,8 @@ bool SyntaxJob::doIntrinsicDefined(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCompilerDependencies(AstNode* parent)
 {
-    SWAG_VERIFY(sourceFile->isCfgFile || sourceFile->isScriptFile, sourceFile->report({sourceFile, token, Err(Err0232)}));
-    SWAG_VERIFY(parent->kind == AstNodeKind::File, sourceFile->report({sourceFile, token, Err(Err0268)}));
+    SWAG_VERIFY(sourceFile->isCfgFile || sourceFile->isScriptFile, Report::report({sourceFile, token, Err(Err0232)}));
+    SWAG_VERIFY(parent->kind == AstNodeKind::File, Report::report({sourceFile, token, Err(Err0268)}));
 
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerDependencies, sourceFile, parent);
     SWAG_CHECK(eatToken());
@@ -695,8 +696,8 @@ bool SyntaxJob::doCompilerInclude(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCompilerLoad(AstNode* parent)
 {
-    SWAG_VERIFY(sourceFile->isCfgFile || sourceFile->isScriptFile, sourceFile->report({sourceFile, token, Err(Err0461)}));
-    SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, Err(Err0363)}));
+    SWAG_VERIFY(sourceFile->isCfgFile || sourceFile->isScriptFile, Report::report({sourceFile, token, Err(Err0461)}));
+    SWAG_VERIFY(currentScope->isTopLevel(), Report::report({sourceFile, token, Err(Err0363)}));
 
     // Be sure this is in a '#dependencies' block
     if (sourceFile->module->kind == ModuleKind::Config)
@@ -708,12 +709,12 @@ bool SyntaxJob::doCompilerLoad(AstNode* parent)
                 break;
             scan = scan->parent;
         }
-        SWAG_VERIFY(scan, sourceFile->report({sourceFile, token, Err(Err0247)}));
+        SWAG_VERIFY(scan, Report::report({sourceFile, token, Err(Err0247)}));
     }
 
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerInclude, sourceFile, parent);
     SWAG_CHECK(eatToken());
-    SWAG_VERIFY(token.id == TokenId::LiteralString, sourceFile->report({sourceFile, token, Err(Err0479)}));
+    SWAG_VERIFY(token.id == TokenId::LiteralString, Report::report({sourceFile, token, Err(Err0479)}));
     node->inheritTokenName(token);
     node->inheritTokenLocation(token);
     SWAG_CHECK(eatToken());
@@ -731,8 +732,8 @@ bool SyntaxJob::doCompilerLoad(AstNode* parent)
 
 bool SyntaxJob::doCompilerImport(AstNode* parent)
 {
-    SWAG_VERIFY(sourceFile->isGenerated || sourceFile->isCfgFile || sourceFile->isScriptFile, sourceFile->report({sourceFile, token, Err(Err0377)}));
-    SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, Err(Err0378)}));
+    SWAG_VERIFY(sourceFile->isGenerated || sourceFile->isCfgFile || sourceFile->isScriptFile, Report::report({sourceFile, token, Err(Err0377)}));
+    SWAG_VERIFY(currentScope->isTopLevel(), Report::report({sourceFile, token, Err(Err0378)}));
 
     // Be sure this is in a '#dependencies' block
     if (sourceFile->module->kind == ModuleKind::Config)
@@ -744,12 +745,12 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
                 break;
             scan = scan->parent;
         }
-        SWAG_VERIFY(scan, sourceFile->report({sourceFile, token, Err(Err0235)}));
+        SWAG_VERIFY(scan, Report::report({sourceFile, token, Err(Err0235)}));
     }
 
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerImport, sourceFile, parent);
     SWAG_CHECK(eatToken());
-    SWAG_VERIFY(token.id == TokenId::LiteralString, sourceFile->report({sourceFile, token, Err(Err0379)}));
+    SWAG_VERIFY(token.id == TokenId::LiteralString, Report::report({sourceFile, token, Err(Err0379)}));
     node->inheritTokenName(token);
     node->inheritTokenLocation(token);
     SWAG_CHECK(eatToken());
@@ -799,11 +800,11 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
 
 bool SyntaxJob::doCompilerPlaceHolder(AstNode* parent)
 {
-    SWAG_VERIFY(currentScope->isGlobalOrImpl(), sourceFile->report({sourceFile, token, Err(Err0384)}));
+    SWAG_VERIFY(currentScope->isGlobalOrImpl(), Report::report({sourceFile, token, Err(Err0384)}));
 
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerPlaceHolder, sourceFile, parent);
     SWAG_CHECK(eatToken());
-    SWAG_VERIFY(token.id == TokenId::Identifier, sourceFile->report({sourceFile, token, Err(Err0385)}));
+    SWAG_VERIFY(token.id == TokenId::Identifier, Report::report({sourceFile, token, Err(Err0385)}));
     node->inheritTokenName(token);
     node->inheritTokenLocation(token);
     SWAG_CHECK(eatToken());

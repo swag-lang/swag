@@ -6,6 +6,7 @@
 #include "Module.h"
 #include "ByteCodeGenJob.h"
 #include "ErrorIds.h"
+#include "Report.h"
 #include "LanguageSpec.h"
 
 bool SyntaxJob::doWith(AstNode* parent, AstNode** result)
@@ -131,7 +132,7 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
                 {
                     Diagnostic diag{node, Err(Err0386)};
                     Diagnostic note{child, Nte(Nte0024), DiagnosticLevel::Note};
-                    return sourceFile->report(diag, &note);
+                    return Report::report(diag, &note);
                 }
                 }
             }
@@ -225,7 +226,7 @@ bool SyntaxJob::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlo
                 Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
                 Utf8       note = Nte(Nte0036);
                 Diagnostic diagNote{symbol->nodes.front(), note, DiagnosticLevel::Note};
-                return sourceFile->report(diag, &diagNote);
+                return Report::report(diag, &diagNote);
             }
             else
                 newScope = CastTypeInfo<TypeInfoNamespace>(symbol->overloads[0]->typeInfo, TypeInfoKind::Namespace)->scope;

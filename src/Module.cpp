@@ -9,6 +9,7 @@
 #include "SemanticJob.h"
 #include "ModuleManager.h"
 #include "ErrorIds.h"
+#include "Report.h"
 #include "CommandLine.h"
 #include "LanguageSpec.h"
 #include "SaveGenJob.h"
@@ -611,14 +612,14 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
             {
                 Diagnostic diag{importNode, tokenLocation, Fmt(Err(Err0284), dep->location.c_str())};
                 Diagnostic note{dep->node, Nte(Nte0037), DiagnosticLevel::Note};
-                return importNode->sourceFile->report(diag, &note);
+                return Report::report(diag, &note);
             }
 
             if (dep->version != tokenVersion.text && !tokenVersion.text.empty() && !dep->version.empty())
             {
                 Diagnostic diag{importNode, tokenVersion, Fmt(Err(Err0286), dep->version.c_str())};
                 Diagnostic note{dep->node, Nte(Nte0037), DiagnosticLevel::Note};
-                return importNode->sourceFile->report(diag, &note);
+                return Report::report(diag, &note);
             }
 
             return true;
@@ -642,7 +643,7 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
     {
         Diagnostic diag{importNode, tokenVersion, Err(Err0288)};
         Diagnostic note{dep->node, Err(Err0289), DiagnosticLevel::Note};
-        return importNode->sourceFile->report(diag, &note);
+        return Report::report(diag, &note);
     }
 
     int* setVer = nullptr;
@@ -674,7 +675,7 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
             {
                 Diagnostic diag{importNode, tokenVersion, Err(Err0288)};
                 Diagnostic note{dep->node, Err(Err0289), DiagnosticLevel::Note};
-                return importNode->sourceFile->report(diag, &note);
+                return Report::report(diag, &note);
             }
         }
 
@@ -683,16 +684,16 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         {
             Diagnostic diag{importNode, tokenVersion, Err(Err0288)};
             Diagnostic note{dep->node, Err(Err0289), DiagnosticLevel::Note};
-            return importNode->sourceFile->report(diag, &note);
+            return Report::report(diag, &note);
         }
 
         switch (i)
         {
         case 1:
-            SWAG_VERIFY(dep->verNum != -1, importNode->sourceFile->report({importNode, tokenVersion, Fmt(Err(Err0335), dep->revNum)}));
+            SWAG_VERIFY(dep->verNum != -1, Report::report({importNode, tokenVersion, Fmt(Err(Err0335), dep->revNum)}));
             break;
         case 2:
-            SWAG_VERIFY(dep->revNum != -1, importNode->sourceFile->report({importNode, tokenVersion, Fmt(Err(Err0336), dep->buildNum)}));
+            SWAG_VERIFY(dep->revNum != -1, Report::report({importNode, tokenVersion, Fmt(Err(Err0336), dep->buildNum)}));
             break;
         }
     }
@@ -847,7 +848,7 @@ bool Module::internalError(AstNode* node, Token& token, const Utf8& msg)
 {
     Utf8 msg1 = "[compiler internal] ";
     msg1 += msg;
-    return node->sourceFile->report({node, msg1});
+    return Report::report({node, msg1});
 }
 
 void Module::printStartBuilding(const BuildParameters& bp)
@@ -985,7 +986,7 @@ bool Module::compileString(const Utf8& text)
     // Is it still possible to generate some code ?
     if (!acceptsCompileString)
     {
-        g_RunContext->ip->node->sourceFile->report({g_RunContext->ip->node, Err(Err0859)});
+        Report::report({g_RunContext->ip->node, Err(Err0859)});
         return false;
     }
 

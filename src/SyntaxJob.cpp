@@ -2,6 +2,7 @@
 #include "Ast.h"
 #include "Module.h"
 #include "SyntaxJob.h"
+#include "Report.h"
 #include "Diagnostic.h"
 #include "LanguageSpec.h"
 #include "Scoped.h"
@@ -110,7 +111,7 @@ bool SyntaxJob::error(AstNode* node, const Utf8& msg, const char* help)
     Diagnostic* note = nullptr;
     if (help)
         note = new Diagnostic{help, DiagnosticLevel::Help};
-    sourceFile->report(diag, note);
+    Report::report(diag, note);
     return false;
 }
 
@@ -122,7 +123,7 @@ bool SyntaxJob::error(const Token& tk, const Utf8& msg, const char* help, const 
         note = new Diagnostic{help, DiagnosticLevel::Help};
     if (hint)
         diag.hint = hint;
-    sourceFile->report(diag, note);
+    Report::report(diag, note);
     return false;
 }
 
@@ -132,7 +133,7 @@ bool SyntaxJob::error(const SourceLocation& startLocation, const SourceLocation&
     Diagnostic* note = nullptr;
     if (help)
         note = new Diagnostic{help, DiagnosticLevel::Help};
-    sourceFile->report(diag, note);
+    Report::report(diag, note);
     return false;
 }
 

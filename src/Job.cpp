@@ -5,6 +5,7 @@
 #include "Ast.h"
 #include "TypeManager.h"
 #include "ErrorIds.h"
+#include "Report.h"
 
 void Job::addDependentJob(Job* job)
 {
@@ -397,7 +398,7 @@ bool JobContext::report(const Diagnostic& diag, const vector<const Diagnostic*>&
         copyNotes.push_back(g_ErrorNote);
     setErrorContext(diag, copyNotes);
     SWAG_ASSERT(sourceFile);
-    return sourceFile->report(diag, copyNotes);
+    return Report::report(diag, copyNotes);
 }
 
 bool JobContext::checkSizeOverflow(const char* typeOverflow, uint64_t value, uint64_t maxValue)
@@ -411,5 +412,5 @@ bool JobContext::internalError(const char* msg, AstNode* specNode)
 {
     if (!specNode)
         specNode = node;
-    return sourceFile->internalError(specNode, msg);
+    return Report::internalError(specNode, msg);
 }

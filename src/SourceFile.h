@@ -13,19 +13,13 @@ struct Scope;
 
 struct SourceFile
 {
+    bool     checkFormat();
     bool     load();
     uint32_t getChar(unsigned& offset);
     Utf8     getLine(long lineNo, bool* eof = nullptr);
-
-    void reportNotes(const vector<const Diagnostic*>& notes, bool verbose = false);
-    bool report(const Diagnostic& diag, const Diagnostic* note = nullptr, const Diagnostic* note1 = nullptr);
-    bool report(const Diagnostic& diag, const vector<const Diagnostic*>& notes);
-    bool internalError(AstNode* node, const char* msg);
-
-    bool checkFormat();
-    void setExternalBuffer(char* buf, uint32_t size);
-    void computeFileScopeName();
-    void addGlobalUsing(Scope* scope);
+    void     setExternalBuffer(char* buf, uint32_t size);
+    void     computeFileScopeName();
+    void     addGlobalUsing(Scope* scope);
 
     SharedMutex            mutex;
     vector<string>         allLines;
