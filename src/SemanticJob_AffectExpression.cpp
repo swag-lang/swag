@@ -117,13 +117,13 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         }
 
         if (left->flags & AST_L_VALUE)
-            return context->report(hint, {left, Err(Err0564)});
+            return context->report({left, Err(Err0564), hint});
     }
 
     if (!(left->flags & AST_L_VALUE))
     {
         if (left->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE)
-            return context->report(Hnt(Hnt0018), {left, Err(Err0564)});
+            return context->report({left, Err(Err0564), Hnt(Hnt0018)});
         return context->report({left, Err(Err0565)});
     }
 
@@ -420,7 +420,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         // :PointerArithmetic
         if (leftTypeInfo->kind == TypeInfoKind::Pointer)
         {
-            SWAG_VERIFY(leftTypeInfo->flags & TYPEINFO_POINTER_ARITHMETIC, context->report(Hint::isType(leftTypeInfo), {node, Err(Err0192)}));
+            SWAG_VERIFY(leftTypeInfo->flags & TYPEINFO_POINTER_ARITHMETIC, context->report({node, Err(Err0192), Hint::isType(leftTypeInfo)}));
             SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, Err(Err0144)}));
             rightTypeInfo = TypeManager::concreteType(right->typeInfo);
             SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, Fmt(Err(Err0579), rightTypeInfo->getDisplayNameC())}));

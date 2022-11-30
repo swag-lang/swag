@@ -83,7 +83,7 @@ bool Generic::updateGenericParameters(SemanticContext* context, bool doType, boo
                     }
                 }
 
-                return context->report(hint, {errNode, Utf8::format(g_E[Err0808], SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())});
+                return context->report({errNode, Utf8::format(g_E[Err0808], SymTable::getNakedKindName(symbol->kind), symbol->name.c_str()), hint});
             }
         }
 

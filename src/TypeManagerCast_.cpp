@@ -327,7 +327,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
 
         // A specific error message ?
         if (!msg.empty())
-            return context->report(hint, {fromNode, msg});
+            return context->report({fromNode, msg, hint});
 
         // General cast error
         return context->report({fromNode, Fmt(Err(Err0177), fromType->getDisplayNameC(), toType->getDisplayNameC())});

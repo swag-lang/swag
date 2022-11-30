@@ -113,7 +113,7 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
         auto hint      = Fmt(Hnt(Hnt0004), rawTypeInfo->getDisplayNameC());
         auto typeArray = CastTypeInfo<TypeInfoArray>(rawTypeInfo, TypeInfoKind::Array);
         SWAG_VERIFY(typeArray->count != UINT32_MAX, context->report({front, Fmt(Err(Err0699), rawTypeInfo->getDisplayNameC())}));
-        SWAG_VERIFY(rawTypeInfo->isConst(), context->report(hint, {front, Fmt(Err(Err0700), rawTypeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(rawTypeInfo->isConst(), context->report({front, Fmt(Err(Err0700), rawTypeInfo->getDisplayNameC()), hint}));
         return true;
     }
 
@@ -121,7 +121,7 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
     {
         auto front = typeNode->childs.front();
         auto hint  = Fmt(Hnt(Hnt0004), rawTypeInfo->getDisplayNameC());
-        SWAG_VERIFY(rawTypeInfo->isConst(), context->report(hint, {front, Fmt(Err(Err0701), rawTypeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(rawTypeInfo->isConst(), context->report({front, Fmt(Err(Err0701), rawTypeInfo->getDisplayNameC()), hint}));
         return true;
     }
 

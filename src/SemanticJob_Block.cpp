@@ -580,7 +580,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     AstNode* newExpression = nullptr;
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_VERIFY(!(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report(Hint::isType(typeInfo), {node->expression, Err(Err0624)}));
+        SWAG_VERIFY(!(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report({node->expression, Err(Err0624), Hint::isType(typeInfo)}));
         SWAG_VERIFY(node->expression->kind == AstNodeKind::IdentifierRef, Report::internalError(node->expression, "resolveVisit expression, should be an identifier"));
 
         auto identifierRef    = (AstIdentifierRef*) Ast::clone(node->expression, node);
@@ -772,15 +772,15 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
                 typePtr->pointedType->kind == TypeInfoKind::Struct ||
                 typePtr->pointedType->isNative(NativeTypeKind::String))
             {
-                return context->report(Hnt(Hnt0037), {node->expression, Fmt(Err(Err0628), typeInfo->getDisplayNameC())});
+                return context->report({node->expression, Fmt(Err(Err0628), typeInfo->getDisplayNameC()), Hnt(Hnt0037)});
             }
             else
             {
-                return context->report(Hnt(Hnt0036), {node->expression, Fmt(Err(Err0628), typeInfo->getDisplayNameC())});
+                return context->report({node->expression, Fmt(Err(Err0628), typeInfo->getDisplayNameC()), Hnt(Hnt0036)});
             }
         }
 
-        return context->report(Hnt(Hnt0006), {node->expression, Fmt(Err(Err0629), typeInfo->getDisplayNameC())});
+        return context->report({node->expression, Fmt(Err(Err0629), typeInfo->getDisplayNameC()), Hnt(Hnt0006)});
     }
 
     node->expression->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;

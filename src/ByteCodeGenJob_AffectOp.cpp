@@ -20,7 +20,7 @@ bool ByteCodeGenJob::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeIn
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct);
     if (typeStruct->flags & TYPEINFO_STRUCT_NO_COPY)
     {
-        return context->report(Hint::isType(typeArray), {from, Fmt(Err(Err0231), typeStruct->getDisplayNameC())});
+        return context->report({from, Fmt(Err(Err0231), typeStruct->getDisplayNameC()), Hint::isType(typeArray)});
     }
 
     if ((from->flags & AST_NO_LEFT_DROP) || (!typeStruct->opDrop && !typeStruct->opUserDropFct))

@@ -358,13 +358,6 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
     }
 }
 
-bool JobContext::report(const char* hint, const Diagnostic& diag, const Diagnostic* note, const Diagnostic* note1)
-{
-    Diagnostic copy{diag};
-    copy.hint = hint;
-    return report(copy, note, note1);
-}
-
 bool JobContext::report(const Diagnostic& diag, const Diagnostic* note, const Diagnostic* note1)
 {
     vector<const Diagnostic*> notes;

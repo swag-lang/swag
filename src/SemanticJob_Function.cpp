@@ -430,8 +430,12 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     {
         auto front         = typeNode->childs.front();
         typeNode->typeInfo = front->typeInfo;
-        Diagnostic diag{typeNode->sourceFile, typeNode->token.startLocation, front->token.endLocation, Err(Err0732)};
-        SWAG_VERIFY(!typeNode->typeInfo->isNative(NativeTypeKind::Void), context->report(Hnt(Hnt0026), diag));
+        if (typeNode->typeInfo->isNative(NativeTypeKind::Void))
+        {
+            Diagnostic diag{typeNode->sourceFile, typeNode->token.startLocation, front->token.endLocation, Err(Err0732)};
+            diag.hint = Hnt(Hnt0026);
+            return context->report(diag);
+        }
     }
     else
     {
@@ -889,13 +893,13 @@ bool SemanticJob::resolveCaptureFuncCallParams(SemanticContext* context)
                 return true;
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeField, TypeInfoKind::Struct);
             if (!typeStruct->isPlainOldData())
-                return context->report(Hint::isType(c->typeInfo), {c, Fmt(Err(Err0884), c->token.text.c_str())});
+                return context->report({c, Fmt(Err(Err0884), c->token.text.c_str()), Hint::isType(c->typeInfo)});
             continue;
         }
 
         if (typeField->isClosure())
-            return context->report(Hint::isType(c->typeInfo), {c, Fmt(Err(Err0875), c->token.text.c_str())});
-        return context->report(Hint::isType(c->typeInfo), {c, Fmt(Err(Err0887), c->token.text.c_str(), typeField->getDisplayNameC())});
+            return context->report({c, Fmt(Err(Err0875), c->token.text.c_str()), Hint::isType(c->typeInfo)});
+        return context->report({c, Fmt(Err(Err0887), c->token.text.c_str(), typeField->getDisplayNameC()), Hint::isType(c->typeInfo)});
     }
 
     // As this is the capture block resolved in the right context, we can now evaluate the corresponding slosure
@@ -1289,7 +1293,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
                                         ATTRIBUTE_TEST_FUNC))
         {
             if (funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC)
-                return context->report(Hnt(Hnt0026), {child, Fmt(Err(Err0052), funcNode->getDisplayNameC())});
+                return context->report({child, Fmt(Err(Err0052), funcNode->getDisplayNameC()), Hnt(Hnt0026)});
         }
     }
 

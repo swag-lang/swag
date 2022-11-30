@@ -385,7 +385,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         {
         case TokenId::IntrinsicSqrt:
             if (rb.f32 < 0)
-                return context->report(Hnt(Hnt0001), {ip->node, Fmt(Err(Err0425), rb.f32)});
+                return context->report({ip->node, Fmt(Err(Err0425), rb.f32), Hnt(Hnt0001)});
             ra.f32 = sqrtf(rb.f32);
             if (isnan(ra.f32))
                 return context->report({ip->node, Fmt(Err(Err0425), rb.f32)});
@@ -470,7 +470,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         {
         case TokenId::IntrinsicSqrt:
             if (rb.f64 < 0)
-                return context->report(Hnt(Hnt0001), {ip->node, Fmt(Err(Err0425), rb.f64)});
+                return context->report({ip->node, Fmt(Err(Err0425), rb.f64), Hnt(Hnt0001)});
             ra.f64 = sqrt(rb.f64);
             if (isnan(ra.f64))
                 return context->report({ip->node, Fmt(Err(Err0425), rb.f64)});

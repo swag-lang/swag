@@ -69,7 +69,7 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
             hint = Fmt(Hnt(Hnt0003), node->resolvedSymbolOverload->symbol->ownerTable->scope->name.c_str());
         }
 
-        Diagnostic  diag{node, Fmt(Err(Err0013), name.c_str(), node->resolvedSymbolName->name.c_str())};
+        Diagnostic  diag{node, Fmt(Err(Err0013), name.c_str(), node->resolvedSymbolName->name.c_str()), hint};
         Diagnostic* note = nullptr;
 
         // Missing self ?
@@ -81,7 +81,7 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
             }
         }
 
-        return context->report(hint, diag, note);
+        return context->report(diag, note);
     }
 
     return true;
@@ -320,10 +320,14 @@ bool SemanticJob::resolveType(SemanticContext* context)
                         if (symOver->typeInfo->kind == TypeInfoKind::Pointer)
                         {
                             Diagnostic note1{Fmt(Hlp(Hlp0005), symName->name.c_str(), symName->name.c_str()), DiagnosticLevel::Help};
-                            return context->report(Hnt(Hnt0024), diag, &note1, &note);
+                            diag.hint = Hnt(Hnt0024);
+                            return context->report(diag, &note1, &note);
                         }
                         else
-                            return context->report(Hnt(Hnt0024), diag, &note);
+                        {
+                            diag.hint = Hnt(Hnt0024);
+                            return context->report(diag, &note);
+                        }
                     }
 
                     if (symName->kind == SymbolKind::Variable)
@@ -508,7 +512,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
     // Is this a const pointer to a typeinfo ?
     if (typeNode->typeInfo->isPointerToTypeInfo())
     {
-        SWAG_VERIFY(typeNode->typeInfo->isConst(), context->report(Hnt(Hnt0053), {typeNode, Err(Err0024)}));
+        SWAG_VERIFY(typeNode->typeInfo->isConst(), context->report({typeNode, Err(Err0024), Hnt(Hnt0053)}));
     }
 
     return true;

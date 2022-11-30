@@ -321,7 +321,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
              leftTypeInfo->kind != TypeInfoKind::Slice &&
              leftTypeInfo->kind != TypeInfoKind::Interface)
     {
-        return context->report(Hint::isType(leftTypeInfo), {left, Fmt(Err(Err0809), node->token.ctext(), TypeInfo::getArticleKindName(leftTypeInfo))});
+        return context->report({left, Fmt(Err(Err0809), node->token.ctext(), TypeInfo::getArticleKindName(leftTypeInfo)), Hint::isType(leftTypeInfo)});
     }
     else if (rightTypeInfo->kind != TypeInfoKind::Native &&
              rightTypeInfo->kind != TypeInfoKind::Pointer &&
@@ -329,7 +329,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
              rightTypeInfo->kind != TypeInfoKind::Interface)
     {
 
-        return context->report(Hint::isType(rightTypeInfo), {right, Fmt(Err(Err0778), node->token.ctext(), TypeInfo::getArticleKindName(rightTypeInfo))});
+        return context->report({right, Fmt(Err(Err0778), node->token.ctext(), TypeInfo::getArticleKindName(rightTypeInfo)), Hint::isType(rightTypeInfo)});
     }
 
     // Cannot compare tuples

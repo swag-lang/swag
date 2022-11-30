@@ -50,7 +50,7 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
     if (typeVar->kind != TypeInfoKind::Struct)
     {
         if (varDecl->assignment)
-            return context->report(Hint::isType(TypeManager::concreteType(varDecl->assignment->typeInfo)), {varDecl->assignment, Fmt(Err(Err0291), typeVar->getDisplayNameC())});
+            return context->report({varDecl->assignment, Fmt(Err(Err0291), typeVar->getDisplayNameC()), Hint::isType(TypeManager::concreteType(varDecl->assignment->typeInfo))});
         return context->report({varDecl, Fmt(Err(Err0291), typeVar->getDisplayNameC())});
     }
 

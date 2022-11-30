@@ -239,7 +239,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     // Slicing of a pointer
     else if (typeVar->kind == TypeInfoKind::Pointer)
     {
-        SWAG_VERIFY(typeVar->flags & TYPEINFO_POINTER_ARITHMETIC, context->report(Hint::isType(typeVar), {node, Err(Err0193)}));
+        SWAG_VERIFY(typeVar->flags & TYPEINFO_POINTER_ARITHMETIC, context->report({node, Err(Err0193), Hint::isType(typeVar)}));
         auto typeInfoPointer  = CastTypeInfo<TypeInfoPointer>(node->array->typeInfo, TypeInfoKind::Pointer);
         auto ptrSlice         = allocType<TypeInfoSlice>();
         ptrSlice->pointedType = typeInfoPointer->pointedType;
@@ -276,7 +276,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
                 return true;
 
             Utf8 msg = Fmt(Err(Err0320), node->array->token.ctext(), typeInfo->getDisplayNameC());
-            return context->report(Fmt(Hnt(Hnt0047), g_LangSpec->name_opSlice.c_str()), {node, msg});
+            return context->report({node, msg, Fmt(Hnt(Hnt0047), g_LangSpec->name_opSlice.c_str())});
         }
 
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opSlice, nullptr, nullptr, node->array, node->structFlatParams));
@@ -390,7 +390,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     if (arrayNode->parent->parent->kind != AstNodeKind::MakePointer)
     {
         if (arrayType->isConst())
-            return context->report(Hint::isType(arrayType), {arrayNode, Fmt(Err(Err0564), arrayType->getDisplayNameC())});
+            return context->report({arrayNode, Fmt(Err(Err0564), arrayType->getDisplayNameC()), Hint::isType(arrayType)});
     }
     else
     {
@@ -407,7 +407,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     {
     case TypeInfoKind::Pointer:
     {
-        SWAG_VERIFY(arrayType->flags & TYPEINFO_POINTER_ARITHMETIC || arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF, context->report(Hint::isType(arrayType), {arrayNode, Err(Err0194)}));
+        SWAG_VERIFY(arrayType->flags & TYPEINFO_POINTER_ARITHMETIC || arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF, context->report({arrayNode, Err(Err0194), Hint::isType(arrayType)}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
         SWAG_VERIFY(typePtr->pointedType != g_TypeMgr->typeInfoVoid, context->report({arrayNode->access, Err(Err0486)}));
@@ -620,7 +620,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     {
     case TypeInfoKind::Pointer:
     {
-        SWAG_VERIFY(arrayType->flags & TYPEINFO_POINTER_ARITHMETIC || arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF, context->report(Hint::isType(arrayType), {arrayNode, Err(Err0194)}));
+        SWAG_VERIFY(arrayType->flags & TYPEINFO_POINTER_ARITHMETIC || arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF, context->report({arrayNode, Err(Err0194), Hint::isType(arrayType)}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
         SWAG_VERIFY(typePtr->pointedType != g_TypeMgr->typeInfoVoid, context->report({arrayNode->access, Err(Err0486)}));
@@ -740,12 +740,12 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
             if (arrayNode->array->token.text.empty())
             {
                 Utf8 msg = Fmt(Err(Err0226), arrayType->getDisplayNameC());
-                return context->report(Fmt(Hnt(Hnt0047), g_LangSpec->name_opIndex.c_str()), {arrayNode->access, msg});
+                return context->report({arrayNode->access, msg, Fmt(Hnt(Hnt0047), g_LangSpec->name_opIndex.c_str())});
             }
             else
             {
                 Utf8 msg = Fmt(Err(Err0227), arrayNode->array->token.ctext(), arrayType->getDisplayNameC());
-                return context->report(Fmt(Hnt(Hnt0047), g_LangSpec->name_opIndex.c_str()), {arrayNode->access, msg});
+                return context->report({arrayNode->access, msg, Fmt(Hnt(Hnt0047), g_LangSpec->name_opIndex.c_str())});
             }
         }
 

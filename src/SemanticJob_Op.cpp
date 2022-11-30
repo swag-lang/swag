@@ -320,8 +320,9 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
         Utf8 appendMsg = findClosestMatchesMsg(context, best);
 
         Diagnostic diag{node, node->tokenName, Fmt(Err(Err0078), name.c_str())};
+        diag.hint = appendMsg;
         Diagnostic note{Hlp(Hlp0014), DiagnosticLevel::Help};
-        return context->report(appendMsg, diag, &note);
+        return context->report(diag, &note);
     }
 
     return true;
@@ -485,7 +486,8 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
             Diagnostic diag{context->node, Fmt(Err(Err0889), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
             auto       note0 = new Diagnostic{right->childs.front(), Fmt(Nte(Nte0057), suffix.c_str()), DiagnosticLevel::Note};
             auto       note1 = new Diagnostic{leftTypeInfo->declNode, Fmt(Nte(Nte0027), leftTypeInfo->getDisplayNameC()), DiagnosticLevel::Note};
-            return context->report(Fmt(Hnt(Hnt0047), g_LangSpec->name_opAffectSuffix.c_str()), diag, note0, note1);
+            diag.hint        = Fmt(Hnt(Hnt0047), g_LangSpec->name_opAffectSuffix.c_str());
+            return context->report(diag, note0, note1);
         }
 
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffectSuffix, suffix, nullptr, left, right));
@@ -508,7 +510,8 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
 
             auto       note = new Diagnostic{leftTypeInfo->declNode, Fmt(Nte(Nte0027), leftTypeInfo->getDisplayNameC()), DiagnosticLevel::Note};
             Diagnostic diag{context->node, Fmt(Err(Err0908), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
-            return context->report(Fmt(Hnt(Hnt0047), g_LangSpec->name_opAffect.c_str()), diag, note);
+            diag.hint = Fmt(Hnt(Hnt0047), g_LangSpec->name_opAffect.c_str());
+            return context->report(diag, note);
         }
 
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffect, nullptr, nullptr, left, right));
@@ -549,12 +552,14 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
         if (!opConst)
         {
             Diagnostic diag{left->parent->sourceFile, left->parent->token, Fmt(Err(Err0079), name.c_str(), leftType->getDisplayNameC())};
-            return context->report(Fmt(Hnt(Hnt0047), name.c_str()), diag, note);
+            diag.hint = Fmt(Hnt(Hnt0047), name.c_str());
+            return context->report(diag, note);
         }
         else
         {
             Diagnostic diag{left->parent->sourceFile, left->parent->token, Fmt(Err(Err0186), name.c_str(), leftType->getDisplayNameC(), opConst)};
-            return context->report(Fmt(Hnt(Hnt0047), name.c_str()), diag, note);
+            diag.hint = Fmt(Hnt(Hnt0047), name.c_str());
+            return context->report(diag, note);
         }
     }
 

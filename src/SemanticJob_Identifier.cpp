@@ -757,7 +757,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         identifier->parent == parent &&
         parent->childs.back() != identifier)
     {
-        return context->report(Hint::isType(identifier->typeInfo), {identifier, Fmt(Err(Err0187), symbol->name.c_str())});
+        return context->report({identifier, Fmt(Err(Err0187), symbol->name.c_str()), Hint::isType(identifier->typeInfo)});
     }
 
     // Reapply back the values of the match to the call parameter node
@@ -1118,9 +1118,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             }
             else if (typeInfoRet->isNative(NativeTypeKind::Void) && (identifier->flags & AST_DISCARD))
             {
-                Diagnostic diag{identifier, Err(Err0094)};
+                Diagnostic diag{identifier, Err(Err0094), Hint::isType(typeInfo)};
                 Diagnostic note{overload->node, Nte(Nte0039), DiagnosticLevel::Note};
-                return context->report(Hint::isType(typeInfo), diag, &note);
+                return context->report(diag, &note);
             }
 
             // From now this is considered as a function, not a lambda
@@ -1165,7 +1165,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             auto prev = identifier->identifierRef->childs[identifier->childParentIdx - 1];
             if (prev->resolvedSymbolName && prev->resolvedSymbolName->kind == SymbolKind::Variable && !(prev->flags & AST_FROM_UFCS))
             {
-                return context->report(Hnt(Hnt0026), {prev, Fmt(Err(Err0097), AstNode::getKindName(prev->resolvedSymbolOverload->node).c_str(), prev->token.ctext(), identifier->token.ctext())});
+                return context->report({prev, Fmt(Err(Err0097), AstNode::getKindName(prev->resolvedSymbolOverload->node).c_str(), prev->token.ctext(), identifier->token.ctext()), Hnt(Hnt0026)});
             }
         }
 
@@ -1305,9 +1305,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
         else if (returnType->isNative(NativeTypeKind::Void) && (identifier->flags & AST_DISCARD))
         {
-            Diagnostic diag{identifier, Err(Err0094)};
+            Diagnostic diag{identifier, Err(Err0094), Hint::isType(identifier->typeInfo)};
             Diagnostic note{overload->node, Nte(Nte0033), DiagnosticLevel::Note};
-            return context->report(Hint::isType(identifier->typeInfo), diag, &note);
+            return context->report(diag, &note);
         }
 
         if (overload->node->mustInline() && !(identifier->specFlags & AST_SPEC_IDENTIFIER_NO_INLINE))
@@ -2875,7 +2875,7 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
                     return true;
                 if (canTry)
                     *ufcsFirstParam = identifierRef->previousResolvedNode;
-                SWAG_VERIFY(node->callParameters, context->report(Hnt(Hnt0044), {node, Fmt(Err(Err0189), typeFunc->getDisplayNameC())}));
+                SWAG_VERIFY(node->callParameters, context->report({node, Fmt(Err(Err0189), typeFunc->getDisplayNameC()), Hnt(Hnt0044)}));
             }
         }
     }
