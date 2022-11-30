@@ -77,25 +77,25 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         auto paramType     = nodeParam->typeInfo;
         auto paramNodeType = nodeParam->type ? nodeParam->type : nodeParam;
         if (paramType->kind == TypeInfoKind::Code)
-            SWAG_VERIFY(funcNode->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN), context->report(paramNodeType, Err(Err0729)));
+            SWAG_VERIFY(funcNode->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN), context->report({paramNodeType, Err(Err0729)}));
 
         // Not everything is possible for types for attributes
         if (param->ownerScope->kind == ScopeKind::Attribute)
         {
-            SWAG_VERIFY(!funcParam->typeInfo->isNative(NativeTypeKind::Any), context->report(nodeParam, Fmt(Err(Err0731), funcParam->typeInfo->getDisplayNameC())));
+            SWAG_VERIFY(!funcParam->typeInfo->isNative(NativeTypeKind::Any), context->report({nodeParam, Fmt(Err(Err0731), funcParam->typeInfo->getDisplayNameC())}));
 
             if (funcParam->typeInfo->kind != TypeInfoKind::Native &&
                 funcParam->typeInfo->kind != TypeInfoKind::Enum &&
                 !funcParam->typeInfo->isPointerToTypeInfo() &&
                 funcParam->typeInfo->kind != TypeInfoKind::TypedVariadic)
             {
-                return context->report(nodeParam, Fmt(Err(Err0731), funcParam->typeInfo->getDisplayNameC()));
+                return context->report({nodeParam, Fmt(Err(Err0731), funcParam->typeInfo->getDisplayNameC())});
             }
 
             if (funcParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
             {
                 auto typeVar = CastTypeInfo<TypeInfoVariadic>(funcParam->typeInfo, TypeInfoKind::TypedVariadic);
-                SWAG_VERIFY(!typeVar->isNative(NativeTypeKind::Any), context->report(paramNodeType, Fmt(Err(Err0731), funcParam->typeInfo->getDisplayNameC())));
+                SWAG_VERIFY(!typeVar->isNative(NativeTypeKind::Any), context->report({paramNodeType, Fmt(Err(Err0731), funcParam->typeInfo->getDisplayNameC())}));
             }
         }
 
@@ -107,21 +107,21 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
             SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, Err(Err0733)}));
             typeInfo->flags |= TYPEINFO_VARIADIC;
             if (index != parameters->childs.size())
-                return context->report(nodeParam, Err(Err0734));
+                return context->report({nodeParam, Err(Err0734)});
         }
         else if (paramType->kind == TypeInfoKind::TypedVariadic)
         {
             SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, Err(Err0733)}));
             typeInfo->flags |= TYPEINFO_TYPED_VARIADIC;
             if (index != parameters->childs.size())
-                return context->report(nodeParam, Err(Err0734));
+                return context->report({nodeParam, Err(Err0734)});
         }
         else if (paramType->kind == TypeInfoKind::CVariadic)
         {
             SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, Err(Err0733)}));
             typeInfo->flags |= TYPEINFO_C_VARIADIC;
             if (index != parameters->childs.size())
-                return context->report(nodeParam, Err(Err0734));
+                return context->report({nodeParam, Err(Err0734)});
         }
 
         // Default parameter value
@@ -147,7 +147,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
                     break;
 
                 default:
-                    context->report(nodeParam->assignment, Fmt(Err(Err0737), nodeParam->assignment->token.ctext()));
+                    context->report({nodeParam->assignment, Fmt(Err(Err0737), nodeParam->assignment->token.ctext())});
                     break;
                 }
             }
@@ -155,7 +155,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         else if (nodeParam->typeInfo->kind != TypeInfoKind::Code)
         {
             auto name = SemanticJob::getTheNiceArgumentRank(index);
-            SWAG_VERIFY(!defaultValueDone, context->report(nodeParam, Fmt(Err(Err0738), name.c_str())));
+            SWAG_VERIFY(!defaultValueDone, context->report({nodeParam, Fmt(Err(Err0738), name.c_str())}));
         }
 
         if (forGenerics)
@@ -262,7 +262,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         for (uint32_t n = 0; n < 32 - maxN; n++)
         {
             if ((mask & 1) == 0)
-                return context->report(node, Fmt(Err(Err0741), node->token.ctext(), n));
+                return context->report({node, Fmt(Err(Err0741), node->token.ctext(), n)});
             mask >>= 1;
         }
     }
@@ -284,25 +284,25 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 
     // Check attributes
     if ((node->attributeFlags & ATTRIBUTE_FOREIGN) && node->content)
-        return context->report(node, Err(Err0742));
+        return context->report({node, Err(Err0742)});
 
     if (!(node->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
     {
         if (node->attributeFlags & ATTRIBUTE_SHARP_FUNC)
         {
-            SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_INLINE), context->report(node, Err(Err0743)));
+            SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_INLINE), context->report({node, Err(Err0743)}));
         }
 
         if (node->attributeFlags & ATTRIBUTE_TEST_FUNC)
         {
-            SWAG_VERIFY(module->kind == ModuleKind::Test, context->report(node, Err(Err0744)));
-            SWAG_VERIFY(node->returnType->typeInfo == g_TypeMgr->typeInfoVoid, context->report(node->returnType, Err(Err0745)));
-            SWAG_VERIFY(!node->parameters || node->parameters->childs.size() == 0, context->report(node->parameters, Err(Err0746)));
+            SWAG_VERIFY(module->kind == ModuleKind::Test, context->report({node, Err(Err0744)}));
+            SWAG_VERIFY(node->returnType->typeInfo == g_TypeMgr->typeInfoVoid, context->report({node->returnType, Err(Err0745)}));
+            SWAG_VERIFY(!node->parameters || node->parameters->childs.size() == 0, context->report({node->parameters, Err(Err0746)}));
         }
 
         if (node->attributeFlags & ATTRIBUTE_PUBLIC)
         {
-            SWAG_VERIFY(node->ownerScope->isGlobalOrImpl(), context->report(node, Fmt(Err(Err0747), node->getDisplayNameC())));
+            SWAG_VERIFY(node->ownerScope->isGlobalOrImpl(), context->report({node, Fmt(Err(Err0747), node->getDisplayNameC())}));
         }
     }
 
@@ -321,10 +321,10 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
             if (!(node->semFlags & AST_SEM_SCOPE_HAS_RETURN))
             {
                 if (node->semFlags & AST_SEM_FCT_HAS_RETURN)
-                    return context->report(node, Fmt(Err(Err0748), node->getDisplayNameC()));
+                    return context->report({node, Fmt(Err(Err0748), node->getDisplayNameC())});
                 if (!node->returnType->childs.empty())
-                    return context->report(node->returnType->childs.front(), Fmt(Err(Err0749), node->getDisplayNameC(), node->returnType->typeInfo->getDisplayNameC()));
-                return context->report(node, Fmt(Err(Err0749), node->getDisplayNameC(), node->returnType->typeInfo->getDisplayNameC()));
+                    return context->report({node->returnType->childs.front(), Fmt(Err(Err0749), node->getDisplayNameC(), node->returnType->typeInfo->getDisplayNameC())});
+                return context->report({node, Fmt(Err(Err0749), node->getDisplayNameC(), node->returnType->typeInfo->getDisplayNameC())});
             }
         }
     }
@@ -416,9 +416,9 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     {
         auto parameters = funcNode->parameters;
         auto paramType  = TypeManager::concreteType(parameters->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
-        SWAG_VERIFY(paramType->kind == TypeInfoKind::Enum, context->report(parameters, Fmt(Err(Err0804), paramType->getDisplayNameC())));
+        SWAG_VERIFY(paramType->kind == TypeInfoKind::Enum, context->report({parameters, Fmt(Err(Err0804), paramType->getDisplayNameC())}));
         paramType->computeScopedName();
-        SWAG_VERIFY(paramType->scopedName == g_LangSpec->name_Swag_CompilerMsgMask, context->report(parameters, Fmt(Err(Err0804), paramType->getDisplayNameC())));
+        SWAG_VERIFY(paramType->scopedName == g_LangSpec->name_Swag_CompilerMsgMask, context->report({parameters, Fmt(Err(Err0804), paramType->getDisplayNameC())}));
         SWAG_CHECK(evaluateConstExpression(context, parameters));
         if (context->result != ContextResult::Done)
             return true;
@@ -476,32 +476,32 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
         if (funcNode->attributeFlags & ATTRIBUTE_MACRO)
         {
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report(funcNode, Fmt(Err(Err0757), funcNode->getDisplayNameC())));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MIXIN), context->report(funcNode, Fmt(Err(Err0758), funcNode->getDisplayNameC())));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, Fmt(Err(Err0757), funcNode->getDisplayNameC())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MIXIN), context->report({funcNode, Fmt(Err(Err0758), funcNode->getDisplayNameC())}));
             funcNode->attributeFlags |= ATTRIBUTE_INLINE;
         }
 
         if (funcNode->attributeFlags & ATTRIBUTE_MIXIN)
         {
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report(funcNode, Fmt(Err(Err0759), funcNode->getDisplayNameC())));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report(funcNode, Fmt(Err(Err0760), funcNode->getDisplayNameC())));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, Fmt(Err(Err0759), funcNode->getDisplayNameC())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report({funcNode, Fmt(Err(Err0760), funcNode->getDisplayNameC())}));
             funcNode->attributeFlags |= ATTRIBUTE_INLINE;
             funcNode->attributeFlags |= ATTRIBUTE_MACRO;
         }
 
         if (funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC)
         {
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report(funcNode, Fmt(Err(Err0761), funcNode->getDisplayNameC())));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MIXIN), context->report(funcNode, Fmt(Err(Err0762), funcNode->getDisplayNameC())));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report(funcNode, Fmt(Err(Err0763), funcNode->getDisplayNameC())));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC), context->report(funcNode, Fmt(Err(Err0860), funcNode->getDisplayNameC())));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NO_RETURN), context->report(funcNode, Fmt(Err(Err0512), funcNode->getDisplayNameC())));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report({funcNode, Fmt(Err(Err0761), funcNode->getDisplayNameC())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MIXIN), context->report({funcNode, Fmt(Err(Err0762), funcNode->getDisplayNameC())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, Fmt(Err(Err0763), funcNode->getDisplayNameC())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC), context->report({funcNode, Fmt(Err(Err0860), funcNode->getDisplayNameC())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NO_RETURN), context->report({funcNode, Fmt(Err(Err0512), funcNode->getDisplayNameC())}));
         }
     }
 
-    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_COMPLETE) || funcNode->token.text == g_LangSpec->name_opAffect || funcNode->token.text == g_LangSpec->name_opAffectSuffix, context->report(funcNode, Fmt(Err(Err0753), funcNode->token.ctext())));
-    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_IMPLICIT) || funcNode->token.text == g_LangSpec->name_opAffect || funcNode->token.text == g_LangSpec->name_opAffectSuffix || funcNode->token.text == g_LangSpec->name_opCast, context->report(funcNode, Fmt(Err(Err0754), funcNode->token.ctext())));
-    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NO_RETURN) || (funcNode->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO)), context->report(funcNode, Fmt(Err(Err0755), funcNode->getDisplayNameC())));
+    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_COMPLETE) || funcNode->token.text == g_LangSpec->name_opAffect || funcNode->token.text == g_LangSpec->name_opAffectSuffix, context->report({funcNode, Fmt(Err(Err0753), funcNode->token.ctext())}));
+    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_IMPLICIT) || funcNode->token.text == g_LangSpec->name_opAffect || funcNode->token.text == g_LangSpec->name_opAffectSuffix || funcNode->token.text == g_LangSpec->name_opCast, context->report({funcNode, Fmt(Err(Err0754), funcNode->token.ctext())}));
+    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NO_RETURN) || (funcNode->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO)), context->report({funcNode, Fmt(Err(Err0755), funcNode->getDisplayNameC())}));
 
     // Implicit attribute cannot be used on a generic function
     // This is because "extra" generic parameters must be specified and not deduced, and this is not possible for an implicit cast
@@ -513,7 +513,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         if (funcNode->token.text == g_LangSpec->name_opAffect && !funcNode->genericParameters)
             ok = true;
         if (!ok)
-            return context->report(funcNode, Fmt(Err(Err0756), funcNode->getDisplayNameC()));
+            return context->report({funcNode, Fmt(Err(Err0756), funcNode->getDisplayNameC())});
     }
 
     if (!(funcNode->flags & AST_FROM_GENERIC))
@@ -529,7 +529,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
         if (funcNode->genericParameters)
         {
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC), context->report(funcNode->genericParameters, Fmt(Err(Err0752), funcNode->token.ctext())));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC), context->report({funcNode->genericParameters, Fmt(Err(Err0752), funcNode->token.ctext())}));
             funcNode->flags |= AST_IS_GENERIC;
         }
 
@@ -537,7 +537,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             typeInfo->flags |= TYPEINFO_GENERIC;
 
         if ((funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC) && funcNode->flags & AST_IS_GENERIC)
-            return context->report(funcNode, Fmt(Err(Err0751), funcNode->token.ctext()));
+            return context->report({funcNode, Fmt(Err(Err0751), funcNode->token.ctext())});
 
         SWAG_CHECK(setupFuncDeclParams(context, typeInfo, funcNode, funcNode->genericParameters, true));
         if (context->result != ContextResult::Done)
@@ -597,7 +597,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         typeInfo->returnType->kind != TypeInfoKind::Interface &&
         typeInfo->returnType->kind != TypeInfoKind::Array &&
         typeInfo->returnType->kind != TypeInfoKind::Pointer)
-        return context->report(typeNode->childs.front(), Fmt(Err(Err0764), typeInfo->returnType->getDisplayNameC()));
+        return context->report({typeNode->childs.front(), Fmt(Err(Err0764), typeInfo->returnType->getDisplayNameC())});
 
     typeInfo->name.clear();
     typeInfo->displayName.clear();
@@ -619,7 +619,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             auto       typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserDropFct = funcNode;
-            SWAG_VERIFY(!(typeStruct->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR), context->report(funcNode, Fmt(Err(Err0199), typeStruct->getDisplayNameC())));
+            SWAG_VERIFY(!(typeStruct->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR), context->report({funcNode, Fmt(Err(Err0199), typeStruct->getDisplayNameC())}));
         }
         else if (funcNode->token.text == g_LangSpec->name_opPostCopy)
         {
@@ -627,7 +627,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             auto       typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserPostCopyFct = funcNode;
-            SWAG_VERIFY(!(typeStruct->flags & TYPEINFO_STRUCT_NO_COPY), context->report(funcNode, Fmt(Err(Err0765), typeStruct->name.c_str())));
+            SWAG_VERIFY(!(typeStruct->flags & TYPEINFO_STRUCT_NO_COPY), context->report({funcNode, Fmt(Err(Err0765), typeStruct->name.c_str())}));
         }
         else if (funcNode->token.text == g_LangSpec->name_opPostMove)
         {
@@ -744,10 +744,10 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
 
         // The function wants to return something, but has the 'Swag.NoReturn' attribute
         if (!funcNode->returnType->typeInfo->isNative(NativeTypeKind::Void) && (funcNode->attributeFlags & ATTRIBUTE_NO_RETURN))
-            return context->report(funcNode->returnType->childs.front(), Err(Err0766));
+            return context->report({funcNode->returnType->childs.front(), Err(Err0766)});
         // The function returns nothing but has the 'Swag.Discardable' attribute
         if (funcNode->returnType->typeInfo->isNative(NativeTypeKind::Void) && funcNode->attributeFlags & ATTRIBUTE_DISCARDABLE)
-            return context->report(funcNode, Fmt(Err(Err0767), funcNode->token.ctext()));
+            return context->report({funcNode, Fmt(Err(Err0767), funcNode->token.ctext())});
     }
 
     if (funcNode->flags & AST_IS_GENERIC)
@@ -956,7 +956,7 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     auto child     = node->childs.front();
     node->typeInfo = child->typeInfo;
 
-    SWAG_VERIFY(node->typeInfo->kind != TypeInfoKind::CVariadic, context->report(node, Err(Err0446)));
+    SWAG_VERIFY(node->typeInfo->kind != TypeInfoKind::CVariadic, context->report({node, Err(Err0446)}));
 
     // Force const if necessary
     // func([.., ...]) must be const
@@ -1048,12 +1048,12 @@ bool SemanticJob::resolveRetVal(SemanticContext* context)
     auto node    = context->node;
     auto fctDecl = node->ownerInline ? node->ownerInline->func : node->ownerFct;
 
-    SWAG_VERIFY(fctDecl, context->report(node, Err(Err0769)));
-    SWAG_VERIFY(node->ownerScope && node->ownerScope->kind != ScopeKind::Function, context->report(node, Err(Err0769)));
+    SWAG_VERIFY(fctDecl, context->report({node, Err(Err0769)}));
+    SWAG_VERIFY(node->ownerScope && node->ownerScope->kind != ScopeKind::Function, context->report({node, Err(Err0769)}));
 
     auto fct     = CastAst<AstFuncDecl>(fctDecl, AstNodeKind::FuncDecl);
     auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(fct->typeInfo, TypeInfoKind::FuncAttr);
-    SWAG_VERIFY(typeFct->returnType && !typeFct->returnType->isNative(NativeTypeKind::Void), context->report(node, Err(Err0771)));
+    SWAG_VERIFY(typeFct->returnType && !typeFct->returnType->isNative(NativeTypeKind::Void), context->report({node, Err(Err0771)}));
 
     // If this is a simple return type, remove the retval stuff.
     // Variable will behaves normally, in the stack
@@ -1418,7 +1418,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     while (ownerInline)
     {
         if (ownerInline->func == funcDecl)
-            return context->report(identifier, Fmt(Err(Err0775), identifier->token.ctext()));
+            return context->report({identifier, Fmt(Err(Err0775), identifier->token.ctext())});
         ownerInline = ownerInline->ownerInline;
     }
 
@@ -1598,7 +1598,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     if (!funcDecl->subDecls.empty())
     {
         PushErrContext ec(context, identifier, JobContext::ErrorContextType::Inline);
-        SWAG_VERIFY(inlineNode->ownerFct, context->report(funcDecl, Fmt(Err(Err0781), identifier->token.ctext())));
+        SWAG_VERIFY(inlineNode->ownerFct, context->report({funcDecl, Fmt(Err(Err0781), identifier->token.ctext())}));
 
         // Authorize a sub function to access inline parameters, if possible
         // This will work for compile time values, otherwise we will have an out of stack frame when generating the code

@@ -188,7 +188,7 @@ bool ByteCodeGenJob::skipNodes(ByteCodeGenContext* context, AstNode* node)
                               if (n->kind != AstNodeKind::Literal)
                                   return true;
                               if (n->semFlags & AST_SEM_LITERAL_SUFFIX)
-                                  return cxt->report(n->childs.front(), Fmt(Err(Err0532), n->childs.front()->token.ctext()));
+                                  return cxt->report({ n->childs.front(), Fmt(Err(Err0532), n->childs.front()->token.ctext() ) });
                               return true; });
 
     return res;

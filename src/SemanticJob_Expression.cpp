@@ -310,7 +310,7 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
                  !(typeInfo->isNativeFloat()) &&
                  typeInfo->kind != TypeInfoKind::Lambda)
         {
-            return context->report(expression, Fmt(Err(Err0332), typeInfo->getDisplayNameC()));
+            return context->report({expression, Fmt(Err(Err0332), typeInfo->getDisplayNameC())});
         }
 
         SWAG_CHECK(TypeManager::makeCompatibles(context, expression, ifZero, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));

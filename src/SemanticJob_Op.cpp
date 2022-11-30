@@ -67,13 +67,13 @@ bool SemanticJob::checkFuncPrototypeOpNumParams(SemanticContext* context, AstFun
     if (exact && (numCur != numWanted))
     {
         if (numCur > numWanted)
-            return context->report(parameters->childs[numWanted], Fmt(Err(Err0043), node->token.ctext(), numWanted, numCur));
-        return context->report(parameters, Fmt(Err(Err0061), node->token.ctext(), numWanted, numCur));
+            return context->report({parameters->childs[numWanted], Fmt(Err(Err0043), node->token.ctext(), numWanted, numCur)});
+        return context->report({parameters, Fmt(Err(Err0061), node->token.ctext(), numWanted, numCur)});
     }
 
     if (!exact && (numCur < numWanted))
     {
-        return context->report(parameters, Fmt(Err(Err0062), node->token.ctext(), numWanted, numCur));
+        return context->report({parameters, Fmt(Err(Err0062), node->token.ctext(), numWanted, numCur)});
     }
 
     return true;
@@ -87,15 +87,15 @@ bool SemanticJob::checkFuncPrototypeOpReturnType(SemanticContext* context, AstFu
     if (wanted == nullptr)
     {
         if (returnType == g_TypeMgr->typeInfoVoid)
-            return context->report(node, Fmt(Err(Err0063), node->token.ctext()));
+            return context->report({node, Fmt(Err(Err0063), node->token.ctext())});
         return true;
     }
 
     if (wanted != g_TypeMgr->typeInfoVoid && returnType == g_TypeMgr->typeInfoVoid)
-        return context->report(node, Fmt(Err(Err0064), node->token.ctext(), wanted->getDisplayNameC()));
+        return context->report({node, Fmt(Err(Err0064), node->token.ctext(), wanted->getDisplayNameC())});
 
     if (!returnType->isSame(wanted, ISSAME_CAST))
-        return context->report(node->returnType->childs.front(), Fmt(Err(Err0065), node->token.ctext(), wanted->name.c_str(), returnType->getDisplayNameC()));
+        return context->report({node->returnType->childs.front(), Fmt(Err(Err0065), node->token.ctext(), wanted->name.c_str(), returnType->getDisplayNameC())});
 
     return true;
 }
@@ -104,7 +104,7 @@ bool SemanticJob::checkFuncPrototypeOpParam(SemanticContext* context, AstFuncDec
 {
     auto typeParam = TypeManager::concreteType(parameters->childs[index]->typeInfo, CONCRETE_ALIAS);
     if (!typeParam->isSame(wanted, ISSAME_CAST))
-        return context->report(parameters->childs[index], Fmt(Err(Err0066), wanted->getDisplayNameC(), typeParam->getDisplayNameC()));
+        return context->report({parameters->childs[index], Fmt(Err(Err0066), wanted->getDisplayNameC(), typeParam->getDisplayNameC())});
     return true;
 }
 
@@ -160,11 +160,11 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
             return true;
 
         // First parameter must be be struct
-        SWAG_VERIFY(node->parameters, context->report(node, Fmt(Err(Err0068), name.c_str())));
+        SWAG_VERIFY(node->parameters, context->report({node, Fmt(Err(Err0068), name.c_str())}));
         auto firstType = node->parameters->childs.front()->typeInfo;
-        SWAG_VERIFY(firstType->kind == TypeInfoKind::Pointer, context->report(node->parameters->childs.front(), Fmt(Err(Err0069), name.c_str(), typeStruct->getDisplayNameC(), firstType->getDisplayNameC())));
+        SWAG_VERIFY(firstType->kind == TypeInfoKind::Pointer, context->report({node->parameters->childs.front(), Fmt(Err(Err0069), name.c_str(), typeStruct->getDisplayNameC(), firstType->getDisplayNameC())}));
         auto firstTypePtr = CastTypeInfo<TypeInfoPointer>(firstType, firstType->kind);
-        SWAG_VERIFY(firstTypePtr->pointedType->isSame(typeStruct, ISSAME_CAST), context->report(node->parameters->childs.front(), Fmt(Err(Err0069), name.c_str(), typeStruct->getDisplayNameC(), firstType->getDisplayNameC())));
+        SWAG_VERIFY(firstTypePtr->pointedType->isSame(typeStruct, ISSAME_CAST), context->report({node->parameters->childs.front(), Fmt(Err(Err0069), name.c_str(), typeStruct->getDisplayNameC(), firstType->getDisplayNameC())}));
     }
 
     // Generic operator must have one generic parameter of type string
@@ -174,24 +174,24 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
         name == g_LangSpec->name_opIndexAssign ||
         name == g_LangSpec->name_opAffectSuffix)
     {
-        SWAG_VERIFY(node->genericParameters && node->genericParameters->childs.size() <= 2, context->report(node, Fmt(Err(Err0071), name.c_str())));
+        SWAG_VERIFY(node->genericParameters && node->genericParameters->childs.size() <= 2, context->report({node, Fmt(Err(Err0071), name.c_str())}));
         auto firstGen = node->genericParameters->childs.front();
-        SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr->typeInfoString, ISSAME_CAST), context->report(firstGen, Fmt(Err(Err0072), name.c_str(), firstGen->typeInfo->getDisplayNameC())));
+        SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr->typeInfoString, ISSAME_CAST), context->report({firstGen, Fmt(Err(Err0072), name.c_str(), firstGen->typeInfo->getDisplayNameC())}));
     }
     else if (isOpVisit)
     {
-        SWAG_VERIFY(node->genericParameters && node->genericParameters->childs.size() <= 2, context->report(node, Fmt(Err(Err0073), name.c_str())));
+        SWAG_VERIFY(node->genericParameters && node->genericParameters->childs.size() <= 2, context->report({node, Fmt(Err(Err0073), name.c_str())}));
         auto firstGen = node->genericParameters->childs.front();
-        SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr->typeInfoBool, ISSAME_CAST), context->report(firstGen, Fmt(Err(Err0074), name.c_str(), firstGen->typeInfo->getDisplayNameC())));
-        SWAG_VERIFY(node->attributeFlags & ATTRIBUTE_MACRO, context->report(node, Err(Err0075)));
+        SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr->typeInfoBool, ISSAME_CAST), context->report({firstGen, Fmt(Err(Err0074), name.c_str(), firstGen->typeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(node->attributeFlags & ATTRIBUTE_MACRO, context->report({node, Err(Err0075)}));
     }
     else if (name == g_LangSpec->name_opCast)
     {
-        SWAG_VERIFY(!node->genericParameters, context->report(node, Fmt(Err(Err0478), name.c_str())));
+        SWAG_VERIFY(!node->genericParameters, context->report({node, Fmt(Err(Err0478), name.c_str())}));
     }
     else
     {
-        SWAG_VERIFY(!node->genericParameters || node->genericParameters->childs.size() == 1, context->report(node, Fmt(Err(Err0450), name.c_str())));
+        SWAG_VERIFY(!node->genericParameters || node->genericParameters->childs.size() == 1, context->report({node, Fmt(Err(Err0450), name.c_str())}));
     }
 
     // Check each function
@@ -250,13 +250,13 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 2));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoVoid));
-        SWAG_VERIFY(!parameters->childs[1]->typeInfo->isSame(typeStruct, ISSAME_CAST | ISSAME_EXACT), context->report(parameters->childs[1], Fmt(Err(Err0077), name.c_str(), typeStruct->name.c_str())));
+        SWAG_VERIFY(!parameters->childs[1]->typeInfo->isSame(typeStruct, ISSAME_CAST | ISSAME_EXACT), context->report({parameters->childs[1], Fmt(Err(Err0077), name.c_str(), typeStruct->name.c_str())}));
     }
     else if (name == g_LangSpec->name_opAffectSuffix)
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 2));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoVoid));
-        SWAG_VERIFY(!parameters->childs[1]->typeInfo->isSame(typeStruct, ISSAME_CAST | ISSAME_EXACT), context->report(parameters->childs[1], Fmt(Err(Err0077), name.c_str(), typeStruct->name.c_str())));
+        SWAG_VERIFY(!parameters->childs[1]->typeInfo->isSame(typeStruct, ISSAME_CAST | ISSAME_EXACT), context->report({parameters->childs[1], Fmt(Err(Err0077), name.c_str(), typeStruct->name.c_str())}));
     }
     else if (name == g_LangSpec->name_opSlice)
     {
@@ -264,7 +264,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, nullptr));
         auto returnType = TypeManager::concreteType(node->returnType->typeInfo, CONCRETE_ALIAS);
         if (!returnType->isNative(NativeTypeKind::String) && returnType->kind != TypeInfoKind::Slice)
-            return context->report(node, Fmt(Err(Err0126), node->returnType->typeInfo->getDisplayNameC()));
+            return context->report({node, Fmt(Err(Err0126), node->returnType->typeInfo->getDisplayNameC())});
         SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, 1, g_TypeMgr->typeInfoUInt));
         SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, 2, g_TypeMgr->typeInfoUInt));
     }

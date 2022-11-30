@@ -37,7 +37,6 @@ enum class ContextResult
 struct JobContext
 {
     void setErrorContext(const Diagnostic& diag, vector<const Diagnostic*>& notes);
-    bool report(AstNode* fromNode, const Utf8& msg);
     bool report(const char* hint, const Diagnostic& diag, const Diagnostic* note = nullptr, const Diagnostic* note1 = nullptr);
     bool report(const Diagnostic& diag, const Diagnostic* note = nullptr, const Diagnostic* note1 = nullptr);
     bool report(const char* hint, const Diagnostic& diag, const vector<const Diagnostic*>& notes);

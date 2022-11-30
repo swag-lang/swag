@@ -33,7 +33,7 @@ bool SemanticJob::resolveImplForAfterFor(SemanticContext* context)
     auto node = CastAst<AstImpl>(context->node->parent, AstNodeKind::Impl);
 
     if (id->resolvedSymbolName->kind != SymbolKind::Struct)
-        return context->report(id->childs.back(), Fmt(Err(Err0290), id->resolvedSymbolName->name.c_str(), SymTable::getArticleKindName(id->resolvedSymbolName->kind)));
+        return context->report({id->childs.back(), Fmt(Err(Err0290), id->resolvedSymbolName->name.c_str(), SymTable::getArticleKindName(id->resolvedSymbolName->kind))});
 
     auto structDecl = CastAst<AstStruct>(id->resolvedSymbolOverload->node, AstNodeKind::StructDecl);
 
@@ -259,11 +259,11 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         }
 
         // First parameter in the impl block must be a pointer to the struct
-        SWAG_VERIFY(typeFunc->parameters.size(), context->report(child, Fmt(Err(Err0654), child->token.ctext())));
+        SWAG_VERIFY(typeFunc->parameters.size(), context->report({child, Fmt(Err(Err0654), child->token.ctext())}));
         auto firstParamType = typeFunc->parameters[0]->typeInfo;
-        SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report(typeFunc->parameters[0]->declNode, Fmt(Err(Err0655), firstParamType->getDisplayNameC())));
+        SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report({typeFunc->parameters[0]->declNode, Fmt(Err(Err0655), firstParamType->getDisplayNameC())}));
         auto firstParamPtr = CastTypeInfo<TypeInfoPointer>(firstParamType, TypeInfoKind::Pointer);
-        SWAG_VERIFY(firstParamPtr->pointedType == typeStruct, context->report(typeFunc->parameters[0]->declNode, Fmt(Err(Err0655), firstParamType->getDisplayNameC())));
+        SWAG_VERIFY(firstParamPtr->pointedType == typeStruct, context->report({typeFunc->parameters[0]->declNode, Fmt(Err(Err0655), firstParamType->getDisplayNameC())}));
 
         // use resolvedUserOpSymbolOverload to store the match
         mapItToFunc[symbolName]           = child;
@@ -447,13 +447,13 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
 
             // Verify signature
             typeParam->typeInfo = TypeManager::concreteType(child->typeInfo, CONCRETE_ALIAS);
-            SWAG_VERIFY(typeParam->typeInfo->kind == TypeInfoKind::Lambda, context->report(varDecl->type, Fmt(Err(Err0676), child->typeInfo->getDisplayNameC())));
+            SWAG_VERIFY(typeParam->typeInfo->kind == TypeInfoKind::Lambda, context->report({varDecl->type, Fmt(Err(Err0676), child->typeInfo->getDisplayNameC())}));
             auto typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeParam->typeInfo, TypeInfoKind::Lambda);
-            SWAG_VERIFY(typeLambda->parameters.size() >= 1, context->report(varDecl->type, Fmt(Err(Err0677), child->token.ctext())));
+            SWAG_VERIFY(typeLambda->parameters.size() >= 1, context->report({varDecl->type, Fmt(Err(Err0677), child->token.ctext())}));
             auto firstParamType = typeLambda->parameters[0]->typeInfo;
-            SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report(typeLambda->parameters[0]->declNode, Fmt(Err(Err0679), firstParamType->getDisplayNameC())));
+            SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report({typeLambda->parameters[0]->declNode, Fmt(Err(Err0679), firstParamType->getDisplayNameC())}));
             auto firstParamPtr = CastTypeInfo<TypeInfoPointer>(firstParamType, TypeInfoKind::Pointer);
-            SWAG_VERIFY(firstParamPtr->pointedType == typeInterface, context->report(typeLambda->parameters[0]->declNode, Fmt(Err(Err0679), firstParamType->getDisplayNameC())));
+            SWAG_VERIFY(firstParamPtr->pointedType == typeInterface, context->report({typeLambda->parameters[0]->declNode, Fmt(Err(Err0679), firstParamType->getDisplayNameC())}));
         }
 
         typeParam           = typeITable->fields[storageIndex];
@@ -461,18 +461,18 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         typeParam->declNode = child;
         typeParam->index    = storageIndex;
 
-        SWAG_VERIFY(!varDecl->assignment, context->report(varDecl->assignment, Err(Err0680)));
+        SWAG_VERIFY(!varDecl->assignment, context->report({varDecl->assignment, Err(Err0680)}));
 
         if (!(node->flags & AST_IS_GENERIC))
         {
-            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report(child, Fmt(Err(Err0681), child->typeInfo->getDisplayNameC())));
+            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, Fmt(Err(Err0681), child->typeInfo->getDisplayNameC())}));
         }
 
         if (typeParam->attributes.hasAttribute(g_LangSpec->name_Swag_Offset))
         {
             auto attr = typeParam->attributes.getAttribute(g_LangSpec->name_Swag_Offset);
             SWAG_ASSERT(attr);
-            return context->report(attr->node, Err(Err0682));
+            return context->report({attr->node, Err(Err0682)});
         }
 
         typeParam->offset                                          = storageOffset;
@@ -491,7 +491,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         storageIndex++;
     }
 
-    SWAG_VERIFY(!typeITable->fields.empty(), context->report(node, Fmt(Err(Err0683), node->token.ctext())));
+    SWAG_VERIFY(!typeITable->fields.empty(), context->report({node, Fmt(Err(Err0683), node->token.ctext())}));
     typeInterface->itable = typeITable;
 
     // Struct interface, with one pointer for the data, and one pointer for itable
@@ -517,7 +517,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     if (node->attributeFlags & ATTRIBUTE_PUBLIC)
     {
         if (!node->ownerScope->isGlobal())
-            return context->report(node, Fmt(Err(Err0684), node->token.ctext()));
+            return context->report({node, Fmt(Err(Err0684), node->token.ctext())});
 
         if (!(node->flags & AST_FROM_GENERIC))
             node->ownerScope->addPublicNode(node);
@@ -809,8 +809,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     {
         if (node->attributeFlags & ATTRIBUTE_OPAQUE)
         {
-            SWAG_VERIFY(node->isPublic(), context->report(node, Err(Err0666)));
-            SWAG_VERIFY(!sourceFile->forceExport, context->report(node, Err(Err0667)));
+            SWAG_VERIFY(node->isPublic(), context->report({node, Err(Err0666)}));
+            SWAG_VERIFY(!sourceFile->forceExport, context->report({node, Err(Err0667)}));
         }
     }
 
@@ -866,9 +866,9 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
         // Using can only be used on a structure
         if (child->flags & AST_DECL_USING && child->kind == AstNodeKind::ConstDecl)
-            return context->report(child, Err(Err0668));
+            return context->report({child, Err(Err0668)});
         if (child->flags & AST_DECL_USING && child->typeInfo->kind != TypeInfoKind::Struct && !child->typeInfo->isPointerTo(TypeInfoKind::Struct))
-            return context->report(child, Fmt(Err(Err0669), child->typeInfo->getDisplayNameC()));
+            return context->report({child, Fmt(Err(Err0669), child->typeInfo->getDisplayNameC())});
 
         TypeInfoParam* typeParam = nullptr;
         if (!(node->flags & AST_FROM_GENERIC) || !(child->semFlags & AST_SEM_STRUCT_REGISTERED))
@@ -994,8 +994,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                 if (varDecl->type)
                     child = varDecl->type;
                 if (!node->genericParameters)
-                    return context->report(child, Fmt(Err(Err0671), child->typeInfo->getDisplayNameC(), node->token.ctext()));
-                return context->report(child, Fmt(Err(Err0672), node->token.ctext(), child->typeInfo->getDisplayNameC()));
+                    return context->report({child, Fmt(Err(Err0671), child->typeInfo->getDisplayNameC(), node->token.ctext())});
+                return context->report({child, Fmt(Err(Err0672), node->token.ctext(), child->typeInfo->getDisplayNameC())});
             }
         }
 
@@ -1022,7 +1022,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                 {
                     auto attr = typeParam->attributes.getAttribute(g_LangSpec->name_Swag_Offset);
                     SWAG_ASSERT(attr);
-                    return context->report(attr->node, Fmt(Err(Err0673), forceOffset->text.c_str()));
+                    return context->report({attr->node, Fmt(Err(Err0673), forceOffset->text.c_str())});
                 }
             }
         }
@@ -1142,7 +1142,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && !(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE))
     {
         if (!node->ownerScope->isGlobalOrImpl())
-            return context->report(node, Fmt(Err(Err0675), node->token.ctext()));
+            return context->report({node, Fmt(Err(Err0675), node->token.ctext())});
         if (!(node->flags & AST_FROM_GENERIC))
             node->ownerScope->addPublicNode(node);
     }

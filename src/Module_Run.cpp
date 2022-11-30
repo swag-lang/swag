@@ -188,7 +188,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         }
     }
 
-    return callerContext->report(node, Fmt(Err(Err0058), realType->getDisplayNameC()));
+    return callerContext->report({node, Fmt(Err(Err0058), realType->getDisplayNameC())});
 }
 
 bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext, ExecuteNodeParams* params)

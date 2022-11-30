@@ -11,15 +11,15 @@
 bool TypeManager::errorOutOfRange(SemanticContext* context, AstNode* fromNode, TypeInfo* fromType, TypeInfo* toType, bool isNeg)
 {
     if (isNeg)
-        return context->report(fromNode, Fmt(Err(Err0180), fromNode->computedValue->reg.s64, toType->getDisplayNameC()));
+        return context->report({fromNode, Fmt(Err(Err0180), fromNode->computedValue->reg.s64, toType->getDisplayNameC())});
 
     if (fromNode->kind == AstNodeKind::Literal && fromNode->token.text.length() > 2)
     {
         if (std::tolower(fromNode->token.text[1]) == 'x' || std::tolower(fromNode->token.text[1]) == 'b')
-            return context->report(fromNode, Fmt(Err(Err0183), fromNode->token.ctext(), fromNode->computedValue->reg.u64, toType->getDisplayNameC()));
+            return context->report({fromNode, Fmt(Err(Err0183), fromNode->token.ctext(), fromNode->computedValue->reg.u64, toType->getDisplayNameC())});
     }
 
-    return context->report(fromNode, Fmt(Err(Err0181), fromNode->computedValue->reg.u64, toType->getDisplayNameC()));
+    return context->report({fromNode, Fmt(Err(Err0181), fromNode->computedValue->reg.u64, toType->getDisplayNameC())});
 }
 
 bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
@@ -38,50 +38,50 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
 
     // Negative value to unsigned type
     if (fromType->isNativeIntegerSigned() && toType->isNativeIntegerUnsignedOrRune() && fromNode->computedValue->reg.s64 < 0)
-        return context->report(fromNode ? fromNode : context->node, msg1);
+        return context->report({fromNode ? fromNode : context->node, msg1});
 
     switch (toType->nativeType)
     {
     case NativeTypeKind::U8:
         if (fromNode->computedValue->reg.u64 > UINT8_MAX)
-            return context->report(fromNode ? fromNode : context->node, msg);
+            return context->report({fromNode ? fromNode : context->node, msg});
         break;
     case NativeTypeKind::U16:
         if (fromNode->computedValue->reg.u64 > UINT16_MAX)
-            return context->report(fromNode ? fromNode : context->node, msg);
+            return context->report({fromNode ? fromNode : context->node, msg});
         break;
     case NativeTypeKind::U32:
     case NativeTypeKind::Rune:
         if (fromNode->computedValue->reg.u64 > UINT32_MAX)
-            return context->report(fromNode ? fromNode : context->node, msg);
+            return context->report({fromNode ? fromNode : context->node, msg});
         break;
     case NativeTypeKind::U64:
     case NativeTypeKind::UInt:
         if (fromType->isNativeIntegerSigned())
         {
             if (fromNode->computedValue->reg.u64 > INT64_MAX)
-                return context->report(fromNode ? fromNode : context->node, msg);
+                return context->report({fromNode ? fromNode : context->node, msg});
         }
         break;
 
     case NativeTypeKind::S8:
         if (fromNode->computedValue->reg.s64 < INT8_MIN || fromNode->computedValue->reg.s64 > INT8_MAX)
-            return context->report(fromNode ? fromNode : context->node, msg);
+            return context->report({fromNode ? fromNode : context->node, msg});
         break;
     case NativeTypeKind::S16:
         if (fromNode->computedValue->reg.s64 < INT16_MIN || fromNode->computedValue->reg.s64 > INT16_MAX)
-            return context->report(fromNode ? fromNode : context->node, msg);
+            return context->report({fromNode ? fromNode : context->node, msg});
         break;
     case NativeTypeKind::S32:
         if (fromNode->computedValue->reg.s64 < INT32_MIN || fromNode->computedValue->reg.s64 > INT32_MAX)
-            return context->report(fromNode ? fromNode : context->node, msg);
+            return context->report({fromNode ? fromNode : context->node, msg});
         break;
     case NativeTypeKind::S64:
     case NativeTypeKind::Int:
         if (!fromType->isNativeIntegerSigned())
         {
             if (fromNode->computedValue->reg.u64 > INT64_MAX)
-                return context->report(fromNode ? fromNode : context->node, msg);
+                return context->report({fromNode ? fromNode : context->node, msg});
         }
         break;
     }
@@ -333,7 +333,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         }
 
         // General cast error
-        return context->report(fromNode, Fmt(Err(Err0177), fromType->getDisplayNameC(), toType->getDisplayNameC()));
+        return context->report({fromNode, Fmt(Err(Err0177), fromType->getDisplayNameC(), toType->getDisplayNameC())});
     }
 
     return false;
@@ -1987,9 +1987,9 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
             bool hasChanged   = false;
 
             if (toTypeStruct->fields.size() > child->childs.size())
-                return context->report(child, Fmt(Err(Err0196), toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size()));
+                return context->report({child, Fmt(Err(Err0196), toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size())});
             if (toTypeStruct->fields.size() < child->childs.size())
-                return context->report(child, Fmt(Err(Err0197), toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size()));
+                return context->report({child, Fmt(Err(Err0197), toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size())});
 
             auto count = toTypeStruct->fields.size();
             for (int j = 0; j < count; j++)
@@ -2791,9 +2791,9 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
             if (!(castFlags & CASTFLAG_NO_ERROR))
             {
                 if (toTypeArray->count > fromTypeList->subTypes.size())
-                    context->report(fromNode, Fmt(Err(Err0203), toTypeArray->count, fromTypeList->subTypes.size()));
+                    context->report({fromNode, Fmt(Err(Err0203), toTypeArray->count, fromTypeList->subTypes.size())});
                 else
-                    context->report(fromNode, Fmt(Err(Err0204), toTypeArray->count, fromTypeList->subTypes.size()));
+                    context->report({fromNode, Fmt(Err(Err0204), toTypeArray->count, fromTypeList->subTypes.size())});
             }
 
             return false;
@@ -3251,9 +3251,9 @@ bool TypeManager::convertLiteralTupleToStructVar(SemanticContext* context, TypeI
     {
         int maxCount = (int) typeStruct->fields.size();
         if (countParams > maxCount)
-            return context->report(fromNode->childs[maxCount], Fmt(Err(Err0195), maxCount, countParams));
+            return context->report({fromNode->childs[maxCount], Fmt(Err(Err0195), maxCount, countParams)});
         if (countParams < maxCount)
-            return context->report(fromNode->childs.back(), Fmt(Err(Err0205), maxCount, countParams));
+            return context->report({fromNode->childs.back(), Fmt(Err(Err0205), maxCount, countParams)});
     }
 
     fromNode->typeInfo = toType;
@@ -3334,9 +3334,9 @@ bool TypeManager::convertLiteralTupleToStructType(SemanticContext* context, Type
     int countParams = (int) typeList->subTypes.size();
     int maxCount    = (int) toType->fields.size();
     if (countParams > maxCount)
-        return context->report(fromNode->childs.front()->childs[maxCount], Fmt(Err(Err0195), maxCount, countParams));
+        return context->report({fromNode->childs.front()->childs[maxCount], Fmt(Err(Err0195), maxCount, countParams)});
     if (countParams < maxCount)
-        return context->report(fromNode->childs.front()->childs.back(), Fmt(Err(Err0205), maxCount, countParams));
+        return context->report({fromNode->childs.front()->childs.back(), Fmt(Err(Err0205), maxCount, countParams)});
 
     // Each field of the toType struct must have a type given by the tuple.
     // But as that tuple can have named parameters, we need to find the correct type depending
@@ -3365,7 +3365,7 @@ bool TypeManager::convertLiteralTupleToStructType(SemanticContext* context, Type
             if (typeField->kind == TypeInfoKind::TypeListArray)
                 typeField = TypeManager::convertTypeListToArray(context, (TypeInfoList*) typeField, false);
             if (typeField->kind == TypeInfoKind::TypeListTuple)
-                return context->report(fromNode, Err(Err0119));
+                return context->report({fromNode, Err(Err0119)});
 
             // This is used for generic automatic deduction. We can use typeInfo->genericParameters, or we would
             // have to construct a struct AST with generic parameters too, and this is not possible as the struct

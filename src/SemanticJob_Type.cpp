@@ -52,10 +52,10 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
         return true;
 
     if (node->kind == AstNodeKind::TypeExpression || node->kind == AstNodeKind::TypeLambda)
-        return context->report(node, Err(Err0012));
+        return context->report({node, Err(Err0012)});
 
     if (node->flags & AST_FROM_GENERIC_REPLACE)
-        return context->report(node, Err(Err0012));
+        return context->report({node, Err(Err0012)});
 
     if (node->resolvedSymbolName)
     {
@@ -151,19 +151,19 @@ bool SemanticJob::resolveTypeLambdaClosure(SemanticContext* context)
             {
                 typeInfo->flags |= TYPEINFO_VARIADIC;
                 if (index != node->parameters->childs.size() - 1)
-                    return context->report(param, Err(Err0734));
+                    return context->report({param, Err(Err0734)});
             }
             else if (typeParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
             {
                 typeInfo->flags |= TYPEINFO_TYPED_VARIADIC;
                 if (index != node->parameters->childs.size() - 1)
-                    return context->report(param, Err(Err0734));
+                    return context->report({param, Err(Err0734)});
             }
             else if (typeParam->typeInfo->kind == TypeInfoKind::CVariadic)
             {
                 typeInfo->flags |= TYPEINFO_C_VARIADIC;
                 if (index != node->parameters->childs.size() - 1)
-                    return context->report(param, Err(Err0734));
+                    return context->report({param, Err(Err0734)});
             }
 
             typeInfo->parameters.push_back(typeParam);
@@ -246,7 +246,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
     if (typeNode->typeFlags & TYPEFLAG_IS_CODE)
     {
         auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
-        SWAG_VERIFY(typeP && typeNode->ownerFct, context->report(typeNode, Err(Err0736)));
+        SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, Err(Err0736)}));
         typeNode->typeInfo = g_TypeMgr->typeInfoCode;
         return true;
     }
@@ -255,7 +255,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
     if (typeNode->typeFromLiteral && typeNode->typeFromLiteral->flags & TYPEINFO_C_VARIADIC)
     {
         auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
-        SWAG_VERIFY(typeP && typeNode->ownerFct, context->report(typeNode, Err(Err0735)));
+        SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, Err(Err0735)}));
         typeNode->typeInfo = g_TypeMgr->typeInfoCVariadic;
         return true;
     }
@@ -451,9 +451,9 @@ bool SemanticJob::resolveType(SemanticContext* context)
                 }
 
                 auto childType = TypeManager::concreteType(child->typeInfo);
-                SWAG_VERIFY(childType->isNativeInteger(), context->report(child, Fmt(Err(Err0022), child->typeInfo->getDisplayNameC())));
+                SWAG_VERIFY(childType->isNativeInteger(), context->report({child, Fmt(Err(Err0022), child->typeInfo->getDisplayNameC())}));
                 SWAG_CHECK(context->checkSizeOverflow("array", count * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
-                SWAG_VERIFY(!child->isConstant0(), context->report(child, Err(Err0023)));
+                SWAG_VERIFY(!child->isConstant0(), context->report({child, Err(Err0023)}));
 
                 auto ptrArray   = allocType<TypeInfoArray>();
                 ptrArray->count = count;
@@ -559,8 +559,8 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
         }
     }
 
-    SWAG_VERIFY(back->kind != AstNodeKind::ArrayPointerIndex, context->report(back, Err(Err0819)));
-    SWAG_VERIFY(overload, context->report(back, Err(Err0027)));
+    SWAG_VERIFY(back->kind != AstNodeKind::ArrayPointerIndex, context->report({back, Err(Err0819)}));
+    SWAG_VERIFY(overload, context->report({back, Err(Err0027)}));
     auto symbol       = overload->symbol;
     auto typeResolved = overload->typeInfo;
 
@@ -574,7 +574,7 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
 
     // Collect all attributes for the variable
     SWAG_CHECK(collectAttributes(context, node, nullptr));
-    SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_STRICT), context->report(node, Err(Err0028)));
+    SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_STRICT), context->report({node, Err(Err0028)}));
 
     node->flags |= AST_NO_BYTECODE;
 
@@ -589,7 +589,7 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
             {
                 if (c->resolvedSymbolName && c->resolvedSymbolName->kind == SymbolKind::Variable)
                 {
-                    SWAG_VERIFY(cptVar == 0, context->report(back, Err(Err0029)));
+                    SWAG_VERIFY(cptVar == 0, context->report({back, Err(Err0029)}));
                     cptVar++;
                 }
             }
@@ -605,7 +605,7 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
     case SymbolKind::TypeAlias:
         break;
     default:
-        return context->report(back, Fmt(Err(Err0030), SymTable::getArticleKindName(symbol->kind)));
+        return context->report({back, Fmt(Err(Err0030), SymTable::getArticleKindName(symbol->kind))});
     }
 
     SWAG_ASSERT(overload);
@@ -668,14 +668,14 @@ bool SemanticJob::resolveExplicitBitCast(SemanticContext* context)
 
     if (!(typeInfo->flags & (TYPEINFO_INTEGER | TYPEINFO_FLOAT)) &&
         (!typeInfo->isNative(NativeTypeKind::Rune)))
-        return context->report(typeNode, Fmt(Err(Err0031), typeInfo->getDisplayNameC()));
+        return context->report({typeNode, Fmt(Err(Err0031), typeInfo->getDisplayNameC())});
 
     if (!(exprTypeInfo->flags & (TYPEINFO_INTEGER | TYPEINFO_FLOAT)) &&
         (!exprTypeInfo->isNative(NativeTypeKind::Rune)) &&
         (exprTypeInfo->kind != TypeInfoKind::Pointer))
-        return context->report(exprNode, Fmt(Err(Err0032), exprTypeInfo->getDisplayNameC()));
+        return context->report({exprNode, Fmt(Err(Err0032), exprTypeInfo->getDisplayNameC())});
 
-    SWAG_VERIFY(typeInfo->sizeOf <= exprTypeInfo->sizeOf, context->report(exprNode, Fmt(Err(Err0033), typeInfo->getDisplayNameC(), exprTypeInfo->getDisplayNameC())));
+    SWAG_VERIFY(typeInfo->sizeOf <= exprTypeInfo->sizeOf, context->report({exprNode, Fmt(Err(Err0033), typeInfo->getDisplayNameC(), exprTypeInfo->getDisplayNameC())}));
 
     node->typeInfo = typeNode->typeInfo;
     node->setPassThrough();
