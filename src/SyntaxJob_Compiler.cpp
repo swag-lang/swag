@@ -584,7 +584,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         auto attrUse = (AstAttrUse*) resultNode;
         attrUse->specFlags |= AST_SPEC_ATTRUSE_GLOBAL;
         attrUse->allocateExtension(ExtensionKind::Owner);
-        attrUse->extension->misc->ownerAttrUse = sourceFile->astAttrUse;
+        attrUse->extension->owner->ownerAttrUse = sourceFile->astAttrUse;
         attrUse->flags |= AST_GLOBAL_NODE;
         sourceFile->astAttrUse = attrUse;
         SWAG_CHECK(eatSemiCol("`#global attribute`"));

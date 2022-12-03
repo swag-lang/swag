@@ -307,6 +307,12 @@ struct AstNode
         SemanticFct semanticAfterFct  = nullptr;
     };
 
+    struct ExtensionOwner
+    {
+        AstAttrUse*        ownerAttrUse        = nullptr;
+        AstTryCatchAssume* ownerTryCatchAssume = nullptr;
+    };
+
     struct ExtensionMisc
     {
         SharedMutex                       mutexAltScopes;
@@ -315,14 +321,12 @@ struct AstNode
         VectorNative<uint32_t>            registersToRelease;
         RegisterList                      additionalRegisterRC;
 
-        SymbolOverload*    resolvedUserOpSymbolOverload = nullptr;
-        TypeInfo*          collectTypeInfo              = nullptr;
-        AstNode*           alternativeNode              = nullptr;
-        AstNode*           exportNode                   = nullptr;
-        DataSegment*       anyTypeSegment               = nullptr;
-        AstAttrUse*        ownerAttrUse                 = nullptr;
-        AstTryCatchAssume* ownerTryCatchAssume          = nullptr;
-        TypeInfoParam*     castItf                      = nullptr;
+        SymbolOverload* resolvedUserOpSymbolOverload = nullptr;
+        TypeInfo*       collectTypeInfo              = nullptr;
+        AstNode*        alternativeNode              = nullptr;
+        AstNode*        exportNode                   = nullptr;
+        DataSegment*    anyTypeSegment               = nullptr;
+        TypeInfoParam*  castItf                      = nullptr;
 
         uint32_t castOffset    = 0;
         uint32_t stackOffset   = 0;
@@ -334,6 +338,7 @@ struct AstNode
     {
         ExtensionByteCode* bytecode = nullptr;
         ExtensionSemantic* semantic = nullptr;
+        ExtensionOwner*    owner    = nullptr;
         ExtensionMisc*     misc     = nullptr;
     };
 

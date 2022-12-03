@@ -1367,13 +1367,13 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
         // Try/Assume
         if (identifier->extension &&
-            identifier->extension->misc &&
-            identifier->extension->misc->ownerTryCatchAssume &&
+            identifier->extension->owner &&
+            identifier->extension->owner->ownerTryCatchAssume &&
             (identifier->typeInfo->flags & TYPEINFO_CAN_THROW))
         {
             identifier->allocateExtension(ExtensionKind::ByteCode);
             auto extension = identifier->extension;
-            switch (identifier->extension->misc->ownerTryCatchAssume->kind)
+            switch (identifier->extension->owner->ownerTryCatchAssume->kind)
             {
             case AstNodeKind::Try:
                 extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitTry;

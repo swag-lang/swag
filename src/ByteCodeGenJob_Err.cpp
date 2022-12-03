@@ -234,7 +234,7 @@ bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
 
     // try in a top level function is equivalent to assume
     auto node    = context->node;
-    auto tryNode = CastAst<AstTryCatchAssume>(node->extension->misc->ownerTryCatchAssume, AstNodeKind::Try);
+    auto tryNode = CastAst<AstTryCatchAssume>(node->extension->owner->ownerTryCatchAssume, AstNodeKind::Try);
 
     AstFuncDecl* parentFct = nullptr;
     if (node->ownerInline && (tryNode->semFlags & AST_SEM_EMBEDDED_RETURN))
@@ -267,7 +267,7 @@ bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitTryCatch(ByteCodeGenContext* context)
 {
     auto node    = context->node;
-    auto tryNode = CastAst<AstTryCatchAssume>(node->extension->misc->ownerTryCatchAssume, AstNodeKind::TryCatch);
+    auto tryNode = CastAst<AstTryCatchAssume>(node->extension->owner->ownerTryCatchAssume, AstNodeKind::TryCatch);
 
     if (!(node->doneFlags & AST_DONE_TRY_1))
     {
@@ -296,7 +296,7 @@ bool ByteCodeGenJob::emitAssume(ByteCodeGenContext* context)
 
     PushICFlags ic(context, BCI_TRYCATCH);
 
-    auto assumeNode = CastAst<AstTryCatchAssume>(context->node->extension->misc->ownerTryCatchAssume, AstNodeKind::Try, AstNodeKind::Assume);
+    auto assumeNode = CastAst<AstTryCatchAssume>(context->node->extension->owner->ownerTryCatchAssume, AstNodeKind::Try, AstNodeKind::Assume);
 
     RegisterList r0;
     reserveRegisterRC(context, r0, 2);

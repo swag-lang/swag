@@ -1210,7 +1210,7 @@ void ByteCodeGenJob::emitPushRAParams(ByteCodeGenContext* context, VectorNative<
 bool ByteCodeGenJob::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode, AstNode* callNode, AstNode* funcNode, AstNode* parent, TypeInfo* typeInfoFunc)
 {
     bool raiseErrors = typeInfoFunc->flags & TYPEINFO_CAN_THROW;
-    if (raiseErrors && (!callNode->extension || !callNode->extension->misc->ownerTryCatchAssume))
+    if (raiseErrors && (!callNode->extension || !callNode->extension->owner || !callNode->extension->owner->ownerTryCatchAssume))
     {
         if (!srcNode)
             srcNode = typeInfoFunc->declNode;
@@ -1485,7 +1485,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 auto param = CastAst<AstFuncCallParam>(allParams->childs[j], AstNodeKind::FuncCallParam);
                 if (param->indexParam == i)
                 {
-                    if (param->extension && !param->extension->misc->additionalRegisterRC.cannotFree)
+                    if (param->extension && param->extension->misc && !param->extension->misc->additionalRegisterRC.cannotFree)
                     {
                         for (int r = 0; freeRegistersParams && r < param->extension->misc->additionalRegisterRC.size(); r++)
                             toFree.push_back(param->extension->misc->additionalRegisterRC[r]);

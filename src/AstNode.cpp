@@ -122,11 +122,11 @@ void AstNode::inheritOwnersAndFlags(SyntaxJob* job)
     if (job->currentTryCatchAssume)
     {
         allocateExtension(ExtensionKind::Owner);
-        extension->misc->ownerTryCatchAssume = job->currentTryCatchAssume;
+        extension->owner->ownerTryCatchAssume = job->currentTryCatchAssume;
     }
-    else if (extension)
+    else if (extension && extension->owner)
     {
-        extension->misc->ownerTryCatchAssume = nullptr;
+        extension->owner->ownerTryCatchAssume = nullptr;
     }
 
     flags |= job->currentFlags;
@@ -279,6 +279,14 @@ void AstNode::allocateExtension(ExtensionKind extensionKind)
         extension->semantic = g_Allocator.alloc<ExtensionSemantic>();
         if (g_CommandLine->stats)
             g_Stats.memNodesExt += Allocator::alignSize(sizeof(ExtensionSemantic));
+        break;
+
+    case ExtensionKind::Owner:
+        if (extension->owner)
+            return;
+        extension->owner = g_Allocator.alloc<ExtensionOwner>();
+        if (g_CommandLine->stats)
+            g_Stats.memNodesExt += Allocator::alignSize(sizeof(ExtensionOwner));
         break;
 
     default:
@@ -790,7 +798,7 @@ void AstNode::setOwnerAttrUse(AstAttrUse* attrUse)
 
     default:
         allocateExtension(ExtensionKind::Owner);
-        extension->misc->ownerAttrUse = attrUse;
+        extension->owner->ownerAttrUse = attrUse;
         break;
     }
 }

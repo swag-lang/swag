@@ -1432,15 +1432,15 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     inlineNode->func           = funcDecl;
     inlineNode->scope          = identifier->ownerScope;
 
-    if (identifier->extension && identifier->extension->misc->ownerTryCatchAssume)
+    if (identifier->extension && identifier->extension->owner && identifier->extension->owner->ownerTryCatchAssume)
     {
         inlineNode->allocateExtension(ExtensionKind::Owner);
-        inlineNode->extension->misc->ownerTryCatchAssume = identifier->extension->misc->ownerTryCatchAssume;
+        inlineNode->extension->owner->ownerTryCatchAssume = identifier->extension->owner->ownerTryCatchAssume;
     }
 
     inlineNode->allocateExtension(ExtensionKind::AltScopes);
 
-    if (funcDecl->extension)
+    if (funcDecl->extension && funcDecl->extension->misc)
     {
         ScopedLock lk(inlineNode->extension->misc->mutexAltScopes);
         SharedLock lk1(funcDecl->extension->misc->mutexAltScopes);
@@ -1450,13 +1450,13 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
 
     // Try/Assume
     if (inlineNode->extension &&
-        inlineNode->extension->misc &&
-        inlineNode->extension->misc->ownerTryCatchAssume &&
+        inlineNode->extension->owner &&
+        inlineNode->extension->owner->ownerTryCatchAssume &&
         (inlineNode->func->typeInfo->flags & TYPEINFO_CAN_THROW))
     {
         inlineNode->allocateExtension(ExtensionKind::ByteCode);
         auto extension = inlineNode->extension->bytecode;
-        switch (inlineNode->extension->misc->ownerTryCatchAssume->kind)
+        switch (inlineNode->extension->owner->ownerTryCatchAssume->kind)
         {
         case AstNodeKind::Try:
             extension->byteCodeAfterFct = ByteCodeGenJob::emitTry;
@@ -1494,7 +1494,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     AstNode* parentNode = funcDecl;
     while (parentNode)
     {
-        if (parentNode->extension && !parentNode->extension->misc->alternativeScopes.empty())
+        if (parentNode->extension && parentNode->extension->misc && !parentNode->extension->misc->alternativeScopes.empty())
             inlineNode->addAlternativeScopes(parentNode->extension->misc->alternativeScopes);
         parentNode = parentNode->parent;
     }
