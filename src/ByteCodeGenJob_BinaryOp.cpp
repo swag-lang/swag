@@ -474,8 +474,8 @@ bool ByteCodeGenJob::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
     // (the jump offset will be updated later). That way, we do not evaluate B in 'A && B' if A is false.
     // left->additionalRegisterRC will be used as the result register for the '&&' operation in 'emitBinaryOp'
     ensureCanBeChangedRC(context, left->resultRegisterRC);
-    left->allocateExtension();
-    left->extension->additionalRegisterRC = left->resultRegisterRC;
+    left->allocateExtension(ExtensionKind::AdditionalRegs);
+    left->extension->misc->additionalRegisterRC = left->resultRegisterRC;
     left->resultRegisterRC.cannotFree     = true;
     binNode->seekJumpExpression           = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::JumpIfFalse, left->resultRegisterRC);
@@ -511,8 +511,8 @@ bool ByteCodeGenJob::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
     // (the jump offset will be updated later). That way, we do not evaluate B in 'A || B' if B is true.
     // left->additionalRegisterRC will be used as the result register for the '||' operation in 'emitBinaryOp'
     ensureCanBeChangedRC(context, left->resultRegisterRC);
-    left->allocateExtension();
-    left->extension->additionalRegisterRC = left->resultRegisterRC;
+    left->allocateExtension(ExtensionKind::AdditionalRegs);
+    left->extension->misc->additionalRegisterRC = left->resultRegisterRC;
     left->resultRegisterRC.cannotFree     = true;
     binNode->seekJumpExpression           = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::JumpIfTrue, left->resultRegisterRC);
@@ -575,9 +575,9 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
             if (node->token.id == TokenId::KwdAnd || node->token.id == TokenId::KwdOr)
             {
                 auto front = node->childs[0];
-                SWAG_ASSERT(front->extension && !front->extension->additionalRegisterRC.cannotFree);
-                r2 = front->extension->additionalRegisterRC;
-                front->extension->additionalRegisterRC.clear();
+                SWAG_ASSERT(front->extension && !front->extension->misc->additionalRegisterRC.cannotFree);
+                r2 = front->extension->misc->additionalRegisterRC;
+                front->extension->misc->additionalRegisterRC.clear();
             }
             else
                 r2 = reserveRegisterRC(context);
@@ -649,7 +649,7 @@ bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context, AstNode* allParams,
 {
     AstNode* node = forNode ? forNode : context->node;
     SWAG_ASSERT(node->extension);
-    auto symbolOverload = node->extension->resolvedUserOpSymbolOverload;
+    auto symbolOverload = node->extension->misc->resolvedUserOpSymbolOverload;
     SWAG_ASSERT(symbolOverload);
     auto funcDecl = CastAst<AstFuncDecl>(symbolOverload->node, AstNodeKind::FuncDecl);
 

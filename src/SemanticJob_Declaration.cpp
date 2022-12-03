@@ -20,7 +20,7 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     if (typeInfoVar->kind == TypeInfoKind::Struct)
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfoVar, TypeInfoKind::Struct);
-        regNode->allocateExtension();
+        regNode->allocateExtension(ExtensionKind::AltScopes);
         regNode->addAlternativeScope(typeStruct->scope, altFlags);
         regNode->addAlternativeScopeVar(typeStruct->scope, varNode, altFlags);
     }
@@ -154,17 +154,17 @@ bool SemanticJob::resolveScopedStmtBefore(SemanticContext* context)
 {
     auto node                        = context->node;
     node->ownerScope->startStackSize = node->ownerScope->parentScope->startStackSize;
-    node->allocateExtension();
+    node->allocateExtension(ExtensionKind::ByteCode);
 
     // Can already been set in some cases... So be sure to not overwrite it.
-    auto afterFct = node->extension->byteCodeAfterFct;
+    auto afterFct = node->extension->bytecode->byteCodeAfterFct;
     if (afterFct != ByteCodeGenJob::emitIfAfterIf &&
         afterFct != ByteCodeGenJob::emitSwitchCaseAfterBlock &&
         afterFct != ByteCodeGenJob::emitLoopAfterBlock &&
         afterFct != ByteCodeGenJob::emitLeaveScope)
     {
         SWAG_ASSERT(!afterFct);
-        node->extension->byteCodeAfterFct = ByteCodeGenJob::emitLeaveScope;
+        node->extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitLeaveScope;
     }
 
     return true;

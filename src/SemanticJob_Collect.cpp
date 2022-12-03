@@ -48,10 +48,10 @@ bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegmen
 
         // :AnyTypeSegment
         SWAG_ASSERT(assignment->extension);
-        SWAG_ASSERT(assignment->extension->anyTypeSegment);
-        constSegment                        = assignment->extension->anyTypeSegment;
-        *(void**) (ptrDest + sizeof(void*)) = constSegment->address(assignment->extension->anyTypeOffset);
-        storageSegment->addInitPtr(storageOffset + 8, assignment->extension->anyTypeOffset, constSegment->kind);
+        SWAG_ASSERT(assignment->extension->misc->anyTypeSegment);
+        constSegment                        = assignment->extension->misc->anyTypeSegment;
+        *(void**) (ptrDest + sizeof(void*)) = constSegment->address(assignment->extension->misc->anyTypeOffset);
+        storageSegment->addInitPtr(storageOffset + 8, assignment->extension->misc->anyTypeOffset, constSegment->kind);
         return true;
     }
 
@@ -219,8 +219,8 @@ bool SemanticJob::collectLiteralsToSegment(JobContext* context, DataSegment* sto
         auto typeInfo = child->typeInfo;
 
         // Special type when collecting (like an array collected to a slice)
-        if (child->extension && child->extension->collectTypeInfo)
-            typeInfo = child->extension->collectTypeInfo;
+        if (child->extension && child->extension->misc && child->extension->misc->collectTypeInfo)
+            typeInfo = child->extension->misc->collectTypeInfo;
 
         // In case of a struct to field match
         auto assignment = child;
@@ -261,8 +261,8 @@ bool SemanticJob::collectLiteralsToSegment(JobContext* context, DataSegment* sto
         SWAG_CHECK(storeToSegment(context, storageSegment, offset, child->computedValue, typeInfo, assignment));
 
         // castOffset can store the padding between one field and one other, in case we collect for a struct
-        if (child->extension && child->extension->castOffset)
-            offset += child->extension->castOffset;
+        if (child->extension && child->extension->misc && child->extension->misc->castOffset)
+            offset += child->extension->misc->castOffset;
         else
             offset += child->typeInfo->sizeOf;
     }

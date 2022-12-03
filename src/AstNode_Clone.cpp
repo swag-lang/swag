@@ -50,10 +50,10 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         }
     }
 
-    if (context.ownerTryCatchAssume || (from->extension && from->extension->ownerTryCatchAssume))
+    if (context.ownerTryCatchAssume || (from->extension && from->extension->misc && from->extension->misc->ownerTryCatchAssume))
     {
-        allocateExtension();
-        extension->ownerTryCatchAssume = context.ownerTryCatchAssume ? context.ownerTryCatchAssume : from->extension->ownerTryCatchAssume;
+        allocateExtension(ExtensionKind::Owner);
+        extension->misc->ownerTryCatchAssume = context.ownerTryCatchAssume ? context.ownerTryCatchAssume : from->extension->misc->ownerTryCatchAssume;
     }
 
     // Replace a type by another one during generic instantiation
@@ -81,20 +81,28 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     byteCodeFct = from->byteCodeFct;
     if (from->extension)
     {
-        allocateExtension();
-        extension->semanticBeforeFct            = from->extension->semanticBeforeFct;
-        extension->semanticAfterFct             = from->extension->semanticAfterFct;
-        extension->byteCodeBeforeFct            = from->extension->byteCodeBeforeFct;
-        extension->byteCodeAfterFct             = from->extension->byteCodeAfterFct;
-        extension->resolvedUserOpSymbolOverload = from->extension->resolvedUserOpSymbolOverload;
-        extension->collectTypeInfo              = from->extension->collectTypeInfo;
-        extension->exportNode                   = from->extension->exportNode;
-        extension->castOffset                   = from->extension->castOffset;
-        extension->castItf                      = from->extension->castItf;
-        extension->stackOffset                  = from->extension->stackOffset;
-        extension->anyTypeSegment               = from->extension->anyTypeSegment;
-        extension->anyTypeOffset                = from->extension->anyTypeOffset;
-        extension->alternativeScopes            = from->extension->alternativeScopes;
+        if (from->extension->misc)
+        {
+            allocateExtension(ExtensionKind::Misc);
+            extension->misc->semanticBeforeFct            = from->extension->misc->semanticBeforeFct;
+            extension->misc->semanticAfterFct             = from->extension->misc->semanticAfterFct;
+            extension->misc->resolvedUserOpSymbolOverload = from->extension->misc->resolvedUserOpSymbolOverload;
+            extension->misc->collectTypeInfo              = from->extension->misc->collectTypeInfo;
+            extension->misc->exportNode                   = from->extension->misc->exportNode;
+            extension->misc->castOffset                   = from->extension->misc->castOffset;
+            extension->misc->castItf                      = from->extension->misc->castItf;
+            extension->misc->stackOffset                  = from->extension->misc->stackOffset;
+            extension->misc->anyTypeSegment               = from->extension->misc->anyTypeSegment;
+            extension->misc->anyTypeOffset                = from->extension->misc->anyTypeOffset;
+            extension->misc->alternativeScopes            = from->extension->misc->alternativeScopes;
+        }
+
+        if (from->extension->bytecode)
+        {
+            allocateExtension(ExtensionKind::ByteCode);
+            extension->bytecode->byteCodeBeforeFct = from->extension->bytecode->byteCodeBeforeFct;
+            extension->bytecode->byteCodeAfterFct  = from->extension->bytecode->byteCodeAfterFct;
+        }
     }
 
     if (from->computedValue)
@@ -615,8 +623,8 @@ AstNode* AstBreakContinue::clone(CloneContext& context)
         if (it != context.replaceTokens.end())
         {
             auto newNode = Ast::newNode<AstSubstBreakContinue>(nullptr, AstNodeKind::SubstBreakContinue, sourceFile, context.parent);
-            newNode->allocateExtension();
-            newNode->extension->semanticBeforeFct = SemanticJob::preResolveSubstBreakContinue;
+            newNode->allocateExtension(ExtensionKind::Semantic);
+            newNode->extension->misc->semanticBeforeFct = SemanticJob::preResolveSubstBreakContinue;
 
             CloneContext cloneContext = context;
             cloneContext.replaceTokens.clear();

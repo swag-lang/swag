@@ -724,10 +724,10 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
 
     // In case case has triggered a special function call, need to get it
     // (usage of opAffect)
-    if (exprNode->extension && exprNode->extension->resolvedUserOpSymbolOverload)
+    if (exprNode->extension && exprNode->extension->misc && exprNode->extension->misc->resolvedUserOpSymbolOverload)
     {
-        node->allocateExtension();
-        node->extension->resolvedUserOpSymbolOverload = exprNode->extension->resolvedUserOpSymbolOverload;
+        node->allocateExtension(ExtensionKind::Resolve);
+        node->extension->misc->resolvedUserOpSymbolOverload = exprNode->extension->misc->resolvedUserOpSymbolOverload;
     }
 
     // Revert the implicit cast informations

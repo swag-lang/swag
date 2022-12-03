@@ -347,8 +347,8 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
 
     // Generated code
     auto sourceNode = diag.sourceNode;
-    if (sourceNode && sourceNode->extension && sourceNode->extension->exportNode)
-        sourceNode = diag.sourceNode->extension->exportNode;
+    if (sourceNode && sourceNode->extension && sourceNode->extension->misc && sourceNode->extension->misc->exportNode)
+        sourceNode = diag.sourceNode->extension->misc->exportNode;
 
     if (sourceNode && sourceNode->sourceFile && sourceNode->sourceFile->sourceNode && !sourceNode->sourceFile->fileForSourceLocation)
     {

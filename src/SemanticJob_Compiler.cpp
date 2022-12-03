@@ -94,7 +94,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                 if (node->hasSpecialFuncCall())
                 {
                     Diagnostic diag{node, Fmt(Err(Err0281), realType->getDisplayNameC())};
-                    diag.hint = Fmt(Hnt(Hnt0047), node->extension->resolvedUserOpSymbolOverload->symbol->name.c_str());
+                    diag.hint = Fmt(Hnt(Hnt0047), node->extension->misc->resolvedUserOpSymbolOverload->symbol->name.c_str());
                     return context->report(diag);
                 }
 
@@ -108,7 +108,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                     return context->report({node, Fmt(Err(Err0281), realType->getDisplayNameC())});
 
                 VectorNative<AstNode*> params;
-                SWAG_ASSERT(!context->node->extension || !context->node->extension->resolvedUserOpSymbolOverload);
+                SWAG_ASSERT(!context->node->extension || !context->node->extension->misc->resolvedUserOpSymbolOverload);
 
                 // opCount
                 params.push_back(node);
@@ -116,7 +116,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                 if (context->result != ContextResult::Done)
                     return true;
 
-                auto extension                          = context->node->extension;
+                auto extension                          = context->node->extension->misc;
                 execParams.specReturnOpCount            = extension->resolvedUserOpSymbolOverload;
                 extension->resolvedUserOpSymbolOverload = nullptr;
                 SWAG_ASSERT(execParams.specReturnOpCount);
@@ -210,7 +210,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
 
     // Before executing the node, we need to be sure that our dependencies have generated their dll
     // In case there's a foreign call somewhere...
-    if (node->extension->bc->hasForeignFunctionCalls)
+    if (node->extension->bytecode->bc->hasForeignFunctionCalls)
     {
         if (!module->waitForDependenciesDone(context->job))
         {
@@ -219,9 +219,9 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
             return true;
         }
     }
-    else if (!node->extension->bc->hasForeignFunctionCallsModules.empty())
+    else if (!node->extension->bytecode->bc->hasForeignFunctionCallsModules.empty())
     {
-        if (!module->waitForDependenciesDone(context->job, node->extension->bc->hasForeignFunctionCallsModules))
+        if (!module->waitForDependenciesDone(context->job, node->extension->bytecode->bc->hasForeignFunctionCallsModules))
         {
             context->job->waitingKind = JobWaitKind::WaitDepDoneExec;
             context->result           = ContextResult::Pending;
@@ -374,8 +374,8 @@ bool SemanticJob::resolveCompilerMacro(SemanticContext* context)
     auto scope            = node->childs.back()->ownerScope;
     scope->startStackSize = node->ownerScope->startStackSize;
 
-    node->allocateExtension();
-    node->extension->byteCodeAfterFct = ByteCodeGenJob::emitLeaveScope;
+    node->allocateExtension(ExtensionKind::ByteCode);
+    node->extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitLeaveScope;
 
     // Be sure #macro is used inside a macro
     if (!node->ownerInline || (node->ownerInline->attributeFlags & ATTRIBUTE_MIXIN) || !(node->ownerInline->attributeFlags & ATTRIBUTE_MACRO))
@@ -390,8 +390,8 @@ bool SemanticJob::resolveCompilerInline(SemanticContext* context)
     auto scope            = node->childs.back()->ownerScope;
     scope->startStackSize = node->ownerScope->startStackSize;
 
-    node->allocateExtension();
-    node->extension->byteCodeAfterFct = ByteCodeGenJob::emitLeaveScope;
+    node->allocateExtension(ExtensionKind::ByteCode);
+    node->extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitLeaveScope;
 
     return true;
 }
@@ -411,8 +411,8 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
     auto expr = node->childs[0];
     SWAG_VERIFY(expr->typeInfo->kind == TypeInfoKind::Code, context->report({expr, Fmt(Err(Err0240), expr->typeInfo->getDisplayNameC())}));
 
-    node->allocateExtension();
-    node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitDebugNop;
+    node->allocateExtension(ExtensionKind::ByteCode);
+    node->extension->bytecode->byteCodeBeforeFct = ByteCodeGenJob::emitDebugNop;
     node->byteCodeFct                  = ByteCodeGenJob::emitDebugNop;
     expr->flags |= AST_NO_BYTECODE;
 
@@ -429,8 +429,8 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
     cloneContext.forceFlags             = AST_IN_MIXIN;
     cloneContext.ownerFct               = node->ownerFct;
     auto cloneContent                   = typeCode->content->clone(cloneContext);
-    cloneContent->allocateExtension();
-    cloneContent->extension->alternativeNode = typeCode->content->parent;
+    cloneContent->allocateExtension(ExtensionKind::AltScopes);
+    cloneContent->extension->misc->alternativeNode = typeCode->content->parent;
     cloneContent->addAlternativeScope(typeCode->content->parent->ownerScope);
     cloneContent->flags &= ~AST_NO_SEMANTIC;
     node->typeInfo = cloneContent->typeInfo;

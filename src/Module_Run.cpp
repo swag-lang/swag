@@ -208,7 +208,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     bool                foreignCall = false;
 
     // Direct call to a foreign function ?
-    if (!node->extension || !node->extension->bc)
+    if (!node->extension || !node->extension->bytecode || !node->extension->bytecode->bc)
     {
         SWAG_ASSERT(node->attributeFlags & ATTRIBUTE_FOREIGN);
         bc                  = &bcTmp;
@@ -222,8 +222,8 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     }
     else
     {
-        SWAG_ASSERT(node->extension->bc->out);
-        bc = node->extension->bc;
+        SWAG_ASSERT(node->extension->bytecode->bc->out);
+        bc = node->extension->bytecode->bc;
     }
 
     // Setup flags before running

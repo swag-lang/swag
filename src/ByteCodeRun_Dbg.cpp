@@ -92,10 +92,10 @@ static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, Eva
     genJob.sourceFile = sourceFile;
     genJob.module     = sourceFile->module;
     genJob.nodes.push_back(child);
-    child->allocateExtension();
-    child->extension->bc             = g_Allocator.alloc<ByteCode>();
-    child->extension->bc->node       = child;
-    child->extension->bc->sourceFile = sourceFile;
+    child->allocateExtension(ExtensionKind::ByteCode);
+    child->extension->bytecode->bc             = g_Allocator.alloc<ByteCode>();
+    child->extension->bytecode->bc->node       = child;
+    child->extension->bytecode->bc->sourceFile = sourceFile;
 
     g_ThreadMgr.doJobCount = true;
     while (true)
@@ -138,7 +138,7 @@ static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, Eva
 
     auto resExec = sourceFile->module->executeNode(sourceFile, child, &callerContext, &execParams);
 
-    child->extension->bc->releaseOut();
+    child->extension->bytecode->bc->releaseOut();
     sourceFile->silent--;
     g_RunContext         = &g_RunContextVal;
     g_ByteCodeStackTrace = &g_ByteCodeStackTraceVal;

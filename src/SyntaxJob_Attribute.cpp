@@ -8,8 +8,8 @@
 bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
 {
     auto attrNode = Ast::newNode<AstAttrDecl>(this, AstNodeKind::AttrDecl, sourceFile, parent);
-    attrNode->allocateExtension();
-    attrNode->extension->semanticBeforeFct = SemanticJob::preResolveAttrDecl;
+    attrNode->allocateExtension(ExtensionKind::Semantic);
+    attrNode->extension->misc->semanticBeforeFct = SemanticJob::preResolveAttrDecl;
     attrNode->semanticFct                  = SemanticJob::resolveAttrDecl;
     if (result)
         *result = attrNode;
@@ -174,9 +174,9 @@ bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result, bool single)
     // :AttrUseLastChild
     SWAG_VERIFY(!attrBlockNode->childs.empty(), error(attrBlockNode, Err(Err0356)));
     auto back = attrBlockNode->childs.back();
-    back->allocateExtension();
-    SWAG_ASSERT(!back->extension->semanticAfterFct);
-    back->extension->semanticAfterFct = SemanticJob::resolveAttrUse;
+    back->allocateExtension(ExtensionKind::Semantic);
+    SWAG_ASSERT(!back->extension->misc->semanticAfterFct);
+    back->extension->misc->semanticAfterFct = SemanticJob::resolveAttrUse;
 
     return true;
 }

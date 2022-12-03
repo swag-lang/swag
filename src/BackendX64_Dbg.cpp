@@ -1440,9 +1440,9 @@ bool BackendX64::dbgEmitScope(X64Gen& pp, Concat& concat, CoffFunction& f, Scope
 
     // Local variables
     /////////////////////////////////
-    for (int i = 0; i < (int) f.node->extension->bc->localVars.size(); i++)
+    for (int i = 0; i < (int) f.node->extension->bytecode->bc->localVars.size(); i++)
     {
-        auto localVar = f.node->extension->bc->localVars[i];
+        auto localVar = f.node->extension->bytecode->bc->localVars[i];
         if (localVar->ownerScope != scope)
             continue;
 

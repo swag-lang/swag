@@ -279,8 +279,8 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, boo
             // Used to automatically solve enums
             if (paramNode->assignment && paramNode->type)
             {
-                paramNode->type->allocateExtension();
-                paramNode->type->extension->semanticAfterFct = SemanticJob::resolveVarDeclAfterType;
+                paramNode->type->allocateExtension(ExtensionKind::Semantic);
+                paramNode->type->extension->misc->semanticAfterFct = SemanticJob::resolveVarDeclAfterType;
             }
         }
 
@@ -423,8 +423,8 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
 {
     auto funcNode         = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent, 4);
     funcNode->semanticFct = SemanticJob::resolveFuncDecl;
-    funcNode->allocateExtension();
-    funcNode->extension->semanticAfterFct = SemanticJob::sendCompilerMsgFuncDecl;
+    funcNode->allocateExtension(ExtensionKind::Semantic);
+    funcNode->extension->misc->semanticAfterFct = SemanticJob::sendCompilerMsgFuncDecl;
     if (result)
         *result = funcNode;
 
@@ -741,8 +741,8 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         }
 
         newScope->owner = resStmt;
-        resStmt->allocateExtension();
-        resStmt->extension->byteCodeAfterFct = &ByteCodeGenJob::emitLeaveScope;
+        resStmt->allocateExtension(ExtensionKind::ByteCode);
+        resStmt->extension->bytecode->byteCodeAfterFct = &ByteCodeGenJob::emitLeaveScope;
     }
 
     return true;
@@ -899,9 +899,9 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
             funcNode->content->token = token;
         }
 
-        funcNode->content->allocateExtension();
-        funcNode->content->extension->byteCodeAfterFct = &ByteCodeGenJob::emitLeaveScope;
-        newScope->owner                                = funcNode->content;
+        funcNode->content->allocateExtension(ExtensionKind::ByteCode);
+        funcNode->content->extension->bytecode->byteCodeAfterFct = &ByteCodeGenJob::emitLeaveScope;
+        newScope->owner                                          = funcNode->content;
     }
 
     return true;

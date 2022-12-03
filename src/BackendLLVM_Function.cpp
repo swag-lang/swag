@@ -3281,7 +3281,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicErrorMsg:
         {
-            auto bcF = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extension->bc;
+            auto bcF = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extension->bytecode->bc;
             emitCall(buildParameters, moduleToGen, bcF->getCallName().c_str(), allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
             break;
         }

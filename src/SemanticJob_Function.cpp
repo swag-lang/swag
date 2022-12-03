@@ -309,8 +309,8 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     // Can be null for intrinsics etc...
     if (node->content)
     {
-        node->content->allocateExtension();
-        node->content->extension->byteCodeBeforeFct = ByteCodeGenJob::emitBeforeFuncDeclContent;
+        node->content->allocateExtension(ExtensionKind::ByteCode);
+        node->content->extension->bytecode->byteCodeBeforeFct = ByteCodeGenJob::emitBeforeFuncDeclContent;
     }
 
     // Do we have a return value
@@ -1006,10 +1006,10 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     node->resolvedSymbolName     = child->resolvedSymbolName;
     node->resolvedSymbolOverload = child->resolvedSymbolOverload;
 
-    if (child->extension && child->extension->resolvedUserOpSymbolOverload)
+    if (child->extension && child->extension->misc && child->extension->misc->resolvedUserOpSymbolOverload)
     {
-        node->allocateExtension();
-        node->extension->resolvedUserOpSymbolOverload = child->extension->resolvedUserOpSymbolOverload;
+        node->allocateExtension(ExtensionKind::Resolve);
+        node->extension->misc->resolvedUserOpSymbolOverload = child->extension->misc->resolvedUserOpSymbolOverload;
     }
 
     // If the call has been generated because of a 'return tuple', then we force a move
@@ -1382,8 +1382,8 @@ uint32_t SemanticJob::getMaxStackSize(AstNode* node)
             p = p->parent;
         SWAG_ASSERT(p);
         ScopedLock mk(p->mutex);
-        p->allocateExtension();
-        decSP = max(decSP, p->extension->stackSize);
+        p->allocateExtension(ExtensionKind::StackSize);
+        decSP = max(decSP, p->extension->misc->stackSize);
         return decSP;
     }
 
@@ -1404,8 +1404,8 @@ void SemanticJob::setOwnerMaxStackSize(AstNode* node, uint32_t size)
             p = p->parent;
         SWAG_ASSERT(p);
         ScopedLock mk(p->mutex);
-        p->allocateExtension();
-        p->extension->stackSize = max(p->extension->stackSize, size);
+        p->allocateExtension(ExtensionKind::StackSize);
+        p->extension->misc->stackSize = max(p->extension->misc->stackSize, size);
     }
     else if (node->ownerFct)
     {
@@ -1432,27 +1432,31 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     inlineNode->func           = funcDecl;
     inlineNode->scope          = identifier->ownerScope;
 
-    if (identifier->extension && identifier->extension->ownerTryCatchAssume)
+    if (identifier->extension && identifier->extension->misc->ownerTryCatchAssume)
     {
-        inlineNode->allocateExtension();
-        inlineNode->extension->ownerTryCatchAssume = identifier->extension->ownerTryCatchAssume;
+        inlineNode->allocateExtension(ExtensionKind::Owner);
+        inlineNode->extension->misc->ownerTryCatchAssume = identifier->extension->misc->ownerTryCatchAssume;
     }
 
-    inlineNode->allocateExtension();
+    inlineNode->allocateExtension(ExtensionKind::AltScopes);
 
     if (funcDecl->extension)
     {
-        ScopedLock lk(inlineNode->extension->mutexAltScopes);
-        SharedLock lk1(funcDecl->extension->mutexAltScopes);
-        inlineNode->extension->alternativeScopes     = funcDecl->extension->alternativeScopes;
-        inlineNode->extension->alternativeScopesVars = funcDecl->extension->alternativeScopesVars;
+        ScopedLock lk(inlineNode->extension->misc->mutexAltScopes);
+        SharedLock lk1(funcDecl->extension->misc->mutexAltScopes);
+        inlineNode->extension->misc->alternativeScopes     = funcDecl->extension->misc->alternativeScopes;
+        inlineNode->extension->misc->alternativeScopesVars = funcDecl->extension->misc->alternativeScopesVars;
     }
 
     // Try/Assume
-    if (inlineNode->extension && inlineNode->extension->ownerTryCatchAssume && (inlineNode->func->typeInfo->flags & TYPEINFO_CAN_THROW))
+    if (inlineNode->extension &&
+        inlineNode->extension->misc &&
+        inlineNode->extension->misc->ownerTryCatchAssume &&
+        (inlineNode->func->typeInfo->flags & TYPEINFO_CAN_THROW))
     {
-        auto extension = inlineNode->extension;
-        switch (extension->ownerTryCatchAssume->kind)
+        inlineNode->allocateExtension(ExtensionKind::ByteCode);
+        auto extension = inlineNode->extension->bytecode;
+        switch (inlineNode->extension->misc->ownerTryCatchAssume->kind)
         {
         case AstNodeKind::Try:
             extension->byteCodeAfterFct = ByteCodeGenJob::emitTry;
@@ -1466,9 +1470,9 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
         }
 
         // Reset emit from the modifier if it exists, as the inline block will deal with that
-        if (identifier->extension)
+        if (identifier->extension && identifier->extension->bytecode)
         {
-            extension = identifier->extension;
+            extension = identifier->extension->bytecode;
             if (extension->byteCodeAfterFct == ByteCodeGenJob::emitTry)
                 extension->byteCodeAfterFct = nullptr;
             else if (extension->byteCodeAfterFct == ByteCodeGenJob::emitTryCatch)
@@ -1490,8 +1494,8 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     AstNode* parentNode = funcDecl;
     while (parentNode)
     {
-        if (parentNode->extension && !parentNode->extension->alternativeScopes.empty())
-            inlineNode->addAlternativeScopes(parentNode->extension->alternativeScopes);
+        if (parentNode->extension && !parentNode->extension->misc->alternativeScopes.empty())
+            inlineNode->addAlternativeScopes(parentNode->extension->misc->alternativeScopes);
         parentNode = parentNode->parent;
     }
 
@@ -1583,17 +1587,21 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     // Clone !
     auto newContent = funcDecl->content->clone(cloneContext);
 
-    if (newContent->extension)
+    if (newContent->extension && newContent->extension->bytecode)
     {
-        newContent->extension->byteCodeBeforeFct = nullptr;
+        newContent->extension->bytecode->byteCodeBeforeFct = nullptr;
         if (funcDecl->attributeFlags & ATTRIBUTE_MIXIN)
-            newContent->extension->byteCodeAfterFct = nullptr; // Do not release the scope, as there's no specific scope
+            newContent->extension->bytecode->byteCodeAfterFct = nullptr; // Do not release the scope, as there's no specific scope
     }
 
     if (newContent->kind == AstNodeKind::Try || newContent->kind == AstNodeKind::TryCatch || newContent->kind == AstNodeKind::Assume)
     {
         if (funcDecl->attributeFlags & ATTRIBUTE_MIXIN && newContent->childs.front()->extension)
-            newContent->childs.front()->extension->byteCodeAfterFct = nullptr; // Do not release the scope, as there's no specific scope
+        {
+            auto front = newContent->childs.front();
+            if (front->extension && front->extension->bytecode)
+                front->extension->bytecode->byteCodeAfterFct = nullptr; // Do not release the scope, as there's no specific scope
+        }
     }
 
     newContent->flags &= ~AST_NO_SEMANTIC;

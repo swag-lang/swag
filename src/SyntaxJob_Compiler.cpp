@@ -49,8 +49,8 @@ bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind k
         SWAG_CHECK(eatToken());
         SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly && token.id != TokenId::SymSemiColon, Err(Err0878)));
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
-        node->boolExpression->allocateExtension();
-        node->boolExpression->extension->semanticAfterFct = SemanticJob::resolveCompilerIf;
+        node->boolExpression->allocateExtension(ExtensionKind::Semantic);
+        node->boolExpression->extension->misc->semanticAfterFct = SemanticJob::resolveCompilerIf;
     }
 
     // Block
@@ -131,8 +131,8 @@ bool SyntaxJob::doCompilerMacro(AstNode* parent, AstNode** result)
     auto node = Ast::newNode<AstCompilerMacro>(this, AstNodeKind::CompilerMacro, sourceFile, parent);
     if (result)
         *result = node;
-    node->allocateExtension();
-    node->extension->semanticBeforeFct = SemanticJob::resolveCompilerMacro;
+    node->allocateExtension(ExtensionKind::Semantic);
+    node->extension->misc->semanticBeforeFct = SemanticJob::resolveCompilerMacro;
 
     SWAG_CHECK(eatToken());
     auto newScope = Ast::newScope(node, "", ScopeKind::Macro, node->ownerScope);
@@ -148,8 +148,8 @@ bool SyntaxJob::doCompilerInline(AstNode* parent, AstNode** result)
     auto node = Ast::newNode<AstCompilerInline>(this, AstNodeKind::CompilerInline, sourceFile, parent);
     if (result)
         *result = node;
-    node->allocateExtension();
-    node->extension->semanticBeforeFct = SemanticJob::resolveCompilerInline;
+    node->allocateExtension(ExtensionKind::Semantic);
+    node->extension->misc->semanticBeforeFct = SemanticJob::resolveCompilerInline;
 
     SWAG_CHECK(eatToken());
     auto newScope = Ast::newScope(node, "", ScopeKind::Inline, node->ownerScope);
@@ -166,8 +166,8 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
-    node->allocateExtension();
-    node->extension->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
+    node->allocateExtension(ExtensionKind::Semantic);
+    node->extension->misc->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
     node->semanticFct                  = SemanticJob::resolveCompilerAssert;
     node->token                        = token;
 
@@ -200,8 +200,8 @@ bool SyntaxJob::doCompilerSelectIf(AstNode* parent, AstNode** result)
     auto tokenId = token.id;
     if (tokenId == TokenId::CompilerCheckIf)
         node->kind = AstNodeKind::CompilerCheckIf;
-    node->allocateExtension();
-    node->extension->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
+    node->allocateExtension(ExtensionKind::Semantic);
+    node->extension->misc->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
     node->semanticFct                  = SemanticJob::resolveCompilerSelectIfExpression;
     SWAG_CHECK(eatToken());
     parent->flags |= AST_HAS_SELECT_IF;
@@ -235,8 +235,8 @@ bool SyntaxJob::doCompilerAst(AstNode* parent, AstNode** result)
     auto node = Ast::newNode<AstCompilerSpecFunc>(this, AstNodeKind::CompilerAst, sourceFile, parent);
     if (result)
         *result = node;
-    node->allocateExtension();
-    node->extension->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
+    node->allocateExtension(ExtensionKind::Semantic);
+    node->extension->misc->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
     node->semanticFct                  = SemanticJob::resolveCompilerAstExpression;
     SWAG_CHECK(eatToken());
 
@@ -288,8 +288,8 @@ bool SyntaxJob::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
-    node->allocateExtension();
-    node->extension->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
+    node->allocateExtension(ExtensionKind::Semantic);
+    node->extension->misc->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
     node->semanticFct                  = SemanticJob::resolveCompilerRun;
     node->token                        = token;
     SWAG_CHECK(eatToken());
@@ -345,8 +345,8 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
-    node->allocateExtension();
-    node->extension->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
+    node->allocateExtension(ExtensionKind::Semantic);
+    node->extension->misc->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
     node->semanticFct                  = SemanticJob::resolveCompilerPrint;
     node->token                        = token;
     SWAG_CHECK(eatToken());
@@ -416,8 +416,8 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken());
         SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly && token.id != TokenId::SymSemiColon, Err(Err0879)));
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
-        node->boolExpression->allocateExtension();
-        node->boolExpression->extension->semanticAfterFct = SemanticJob::resolveCompilerIf;
+        node->boolExpression->allocateExtension(ExtensionKind::Semantic);
+        node->boolExpression->extension->misc->semanticAfterFct = SemanticJob::resolveCompilerIf;
 
         auto block    = Ast::newNode<AstCompilerIfBlock>(this, AstNodeKind::CompilerIfBlock, sourceFile, node);
         node->ifBlock = block;
@@ -583,8 +583,8 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
 
         auto attrUse = (AstAttrUse*) resultNode;
         attrUse->specFlags |= AST_SPEC_ATTRUSE_GLOBAL;
-        attrUse->allocateExtension();
-        attrUse->extension->ownerAttrUse = sourceFile->astAttrUse;
+        attrUse->allocateExtension(ExtensionKind::Owner);
+        attrUse->extension->misc->ownerAttrUse = sourceFile->astAttrUse;
         attrUse->flags |= AST_GLOBAL_NODE;
         sourceFile->astAttrUse = attrUse;
         SWAG_CHECK(eatSemiCol("`#global attribute`"));

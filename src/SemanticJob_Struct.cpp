@@ -238,14 +238,15 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         if (!(child->attributeFlags & ATTRIBUTE_FOREIGN))
         {
             ScopedLock lk(child->mutex);
-            if (!child->extension->bc)
+            if (!child->extension || !child->extension->bytecode || !child->extension->bytecode->bc)
             {
-                child->extension->bc             = g_Allocator.alloc<ByteCode>();
-                child->extension->bc->node       = child;
-                child->extension->bc->sourceFile = child->sourceFile;
+                child->allocateExtension(ExtensionKind::ByteCode);
+                child->extension->bytecode->bc             = g_Allocator.alloc<ByteCode>();
+                child->extension->bytecode->bc->node       = child;
+                child->extension->bytecode->bc->sourceFile = child->sourceFile;
             }
 
-            child->extension->bc->forceEmit = true;
+            child->extension->bytecode->bc->forceEmit = true;
         }
 
         // Match function signature
@@ -380,9 +381,9 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         }
         else
         {
-            funcChild->extension->bc->isUsed = true;
+            funcChild->extension->bytecode->bc->isUsed = true;
 
-            *ptrITable = ByteCode::doByteCodeLambda(funcChild->extension->bc);
+            *ptrITable = ByteCode::doByteCodeLambda(funcChild->extension->bytecode->bc);
             constSegment->addInitPtrFunc(offset, funcChild->getCallName());
         }
 
@@ -1173,9 +1174,9 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         node->flags &= ~AST_NO_BYTECODE;
         node->flags |= AST_NO_BYTECODE_CHILDS;
 
-        SWAG_ASSERT(!node->extension || !node->extension->byteCodeJob);
-        node->allocateExtension();
-        auto extension                       = node->extension;
+        SWAG_ASSERT(!node->extension || !node->extension->bytecode || !node->extension->bytecode->byteCodeJob);
+        node->allocateExtension(ExtensionKind::ByteCode);
+        auto extension                       = node->extension->bytecode;
         extension->byteCodeJob               = g_Allocator.alloc<ByteCodeGenJob>();
         extension->byteCodeJob->sourceFile   = sourceFile;
         extension->byteCodeJob->module       = sourceFile->module;

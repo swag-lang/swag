@@ -176,8 +176,8 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         // Must be done after 'setVarDeclResolve', because 'semanticAfterFct' is already affected
         orgVarNode->token.startLocation = leftNode->childs.front()->token.startLocation;
         orgVarNode->token.endLocation   = leftNode->childs.back()->token.endLocation;
-        orgVarNode->allocateExtension();
-        orgVarNode->extension->semanticAfterFct = SemanticJob::resolveTupleUnpackBeforeVar;
+        orgVarNode->allocateExtension(ExtensionKind::Semantic);
+        orgVarNode->extension->misc->semanticAfterFct = SemanticJob::resolveTupleUnpackBeforeVar;
 
         if (currentScope->isGlobalOrImpl())
             SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, orgVarNode, SymbolKind::Variable));

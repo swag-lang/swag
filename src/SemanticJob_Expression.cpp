@@ -50,8 +50,8 @@ bool SemanticJob::computeExpressionListTupleType(SemanticContext* context, AstNo
 
         typeInfo->name += typeParam->typeInfo->name;
 
-        if (child->extension && child->extension->castOffset)
-            typeInfo->sizeOf += child->extension->castOffset;
+        if (child->extension && child->extension->misc && child->extension->misc->castOffset)
+            typeInfo->sizeOf += child->extension->misc->castOffset;
         else
             typeInfo->sizeOf += typeParam->typeInfo->sizeOf;
 
@@ -73,9 +73,9 @@ bool SemanticJob::resolveExpressionListTuple(SemanticContext* context)
     auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
     SWAG_CHECK(computeExpressionListTupleType(context, node));
 
-    node->allocateExtension();
-    node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitExpressionListBefore;
-    node->byteCodeFct                  = ByteCodeGenJob::emitExpressionList;
+    node->allocateExtension(ExtensionKind::ByteCode);
+    node->extension->bytecode->byteCodeBeforeFct = ByteCodeGenJob::emitExpressionListBefore;
+    node->byteCodeFct                            = ByteCodeGenJob::emitExpressionList;
 
     // If the literal tuple is not constant, then we need to reserve some space in the
     // stack in order to store it.
@@ -120,10 +120,10 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
     }
 
     typeInfo->forceComputeName();
-    node->allocateExtension();
-    node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitExpressionListBefore;
-    node->byteCodeFct                  = ByteCodeGenJob::emitExpressionList;
-    node->typeInfo                     = typeInfo;
+    node->allocateExtension(ExtensionKind::ByteCode);
+    node->extension->bytecode->byteCodeBeforeFct = ByteCodeGenJob::emitExpressionListBefore;
+    node->byteCodeFct                            = ByteCodeGenJob::emitExpressionList;
+    node->typeInfo                               = typeInfo;
 
     // If the literal array is not constant, then we need to reserve some space in the
     // stack in order to store it.
@@ -239,11 +239,11 @@ bool SemanticJob::resolveConditionalOp(SemanticContext* context)
     else
         node->typeInfo = ifTrue->typeInfo;
 
-    expression->allocateExtension();
-    expression->extension->byteCodeAfterFct = ByteCodeGenJob::emitConditionalOpAfterExpr;
-    ifTrue->allocateExtension();
-    ifTrue->extension->byteCodeAfterFct = ByteCodeGenJob::emitConditionalOpAfterIfTrue;
-    node->byteCodeFct                   = ByteCodeGenJob::emitConditionalOp;
+    expression->allocateExtension(ExtensionKind::ByteCode);
+    expression->extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitConditionalOpAfterExpr;
+    ifTrue->allocateExtension(ExtensionKind::ByteCode);
+    ifTrue->extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitConditionalOpAfterIfTrue;
+    node->byteCodeFct                             = ByteCodeGenJob::emitConditionalOp;
     return true;
 }
 

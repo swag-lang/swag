@@ -126,8 +126,8 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
         structNode->packing = 1;
 
     auto contentNode = Ast::newNode(sourceFile, AstNodeKind::TupleContent, structNode);
-    contentNode->allocateExtension();
-    contentNode->extension->semanticBeforeFct = SemanticJob::preResolveStructContent;
+    contentNode->allocateExtension(ExtensionKind::Semantic);
+    contentNode->extension->misc->semanticBeforeFct = SemanticJob::preResolveStructContent;
     contentNode->addAlternativeScope(assignment->ownerScope);
     structNode->content = contentNode;
 
@@ -239,20 +239,20 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
 
 void SemanticJob::setVarDeclResolve(AstVarDecl* varNode)
 {
-    varNode->allocateExtension();
-    varNode->extension->semanticBeforeFct = SemanticJob::resolveVarDeclBefore;
-    varNode->extension->semanticAfterFct  = SemanticJob::resolveVarDeclAfter;
+    varNode->allocateExtension(ExtensionKind::Semantic);
+    varNode->extension->misc->semanticBeforeFct = SemanticJob::resolveVarDeclBefore;
+    varNode->extension->misc->semanticAfterFct  = SemanticJob::resolveVarDeclAfter;
 
     if (varNode->assignment)
     {
-        varNode->assignment->allocateExtension();
-        varNode->assignment->extension->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
+        varNode->assignment->allocateExtension(ExtensionKind::Semantic);
+        varNode->assignment->extension->misc->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
     }
 
     if (varNode->assignment && varNode->type)
     {
-        varNode->type->allocateExtension();
-        varNode->type->extension->semanticAfterFct = SemanticJob::resolveVarDeclAfterType;
+        varNode->type->allocateExtension(ExtensionKind::Semantic);
+        varNode->type->extension->misc->semanticAfterFct = SemanticJob::resolveVarDeclAfterType;
     }
 }
 
@@ -913,8 +913,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 if (symbolFlags & (OVERLOAD_VAR_STRUCT | OVERLOAD_VAR_GLOBAL | OVERLOAD_CONSTANT))
                 {
                     symbolFlags |= OVERLOAD_INCOMPLETE | OVERLOAD_STRUCT_AFFECT;
-                    SWAG_ASSERT(node->extension && node->extension->resolvedUserOpSymbolOverload);
-                    if (!(node->extension->resolvedUserOpSymbolOverload->node->attributeFlags & ATTRIBUTE_CONSTEXPR))
+                    SWAG_ASSERT(node->extension && node->extension->misc->resolvedUserOpSymbolOverload);
+                    if (!(node->extension->misc->resolvedUserOpSymbolOverload->node->attributeFlags & ATTRIBUTE_CONSTEXPR))
                     {
                         Diagnostic diag{node->assignment, Err(Err0906)};
                         diag.hint = Fmt(Hnt(Hnt0002), leftConcreteType->getDisplayNameC());
@@ -1100,7 +1100,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->report({node, Fmt(Err(Err0311), node->typeInfo->getDisplayNameC())}));
 
             storageSegment = getSegmentForVar(context, node);
-            if (node->extension && node->extension->resolvedUserOpSymbolOverload)
+            if (node->extension && node->extension->misc->resolvedUserOpSymbolOverload)
             {
                 storageOffset = 0;
                 symbolFlags |= OVERLOAD_INCOMPLETE;
@@ -1172,7 +1172,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             break;
         }
 
-        if (node->extension && node->extension->resolvedUserOpSymbolOverload)
+        if (node->extension && node->extension->misc->resolvedUserOpSymbolOverload)
         {
             storageOffset = 0;
             symbolFlags |= OVERLOAD_INCOMPLETE;
@@ -1248,9 +1248,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             SemanticJob::setOwnerMaxStackSize(node, node->ownerScope->startStackSize);
         }
 
-        node->allocateExtension();
-        node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitLocalVarDeclBefore;
-        node->byteCodeFct                  = ByteCodeGenJob::emitLocalVarDecl;
+        node->allocateExtension(ExtensionKind::ByteCode);
+        node->extension->bytecode->byteCodeBeforeFct = ByteCodeGenJob::emitLocalVarDeclBefore;
+        node->byteCodeFct                            = ByteCodeGenJob::emitLocalVarDecl;
         node->flags |= AST_R_VALUE;
     }
     else if (symbolFlags & OVERLOAD_VAR_FUNC_PARAM)

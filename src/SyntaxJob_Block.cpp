@@ -61,8 +61,8 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
     if (token.id != TokenId::SymLeftCurly)
     {
         SWAG_CHECK(doExpression(switchNode, EXPR_FLAG_NONE, &switchNode->expression));
-        switchNode->expression->allocateExtension();
-        switchNode->expression->extension->semanticAfterFct = SemanticJob::resolveSwitchAfterExpr;
+        switchNode->expression->allocateExtension(ExtensionKind::Semantic);
+        switchNode->expression->extension->misc->semanticAfterFct = SemanticJob::resolveSwitchAfterExpr;
     }
 
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
@@ -120,8 +120,8 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
             Scoped scoped(this, newScope);
 
             auto statement = Ast::newNode<AstSwitchCaseBlock>(this, AstNodeKind::SwitchCaseBlock, sourceFile, caseNode);
-            statement->allocateExtension();
-            statement->extension->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
+            statement->allocateExtension(ExtensionKind::Semantic);
+            statement->extension->misc->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
             statement->ownerCase                    = caseNode;
             caseNode->block                         = statement;
             if (isDefault)
@@ -157,8 +157,8 @@ bool SyntaxJob::doFor(AstNode* parent, AstNode** result)
     Scoped scoped(this, newScope);
 
     auto node = Ast::newNode<AstFor>(this, AstNodeKind::For, sourceFile, parent, 4);
-    node->allocateExtension();
-    node->extension->semanticBeforeFct = SemanticJob::resolveForBefore;
+    node->allocateExtension(ExtensionKind::Semantic);
+    node->extension->misc->semanticBeforeFct = SemanticJob::resolveForBefore;
     node->semanticFct                  = SemanticJob::resolveFor;
     if (result)
         *result = node;
@@ -265,8 +265,8 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
     Scoped scoped(this, newScope);
 
     auto node = Ast::newNode<AstLoop>(this, AstNodeKind::Loop, sourceFile, parent, 2);
-    node->allocateExtension();
-    node->extension->semanticBeforeFct = SemanticJob::resolveLoopBefore;
+    node->allocateExtension(ExtensionKind::Semantic);
+    node->extension->misc->semanticBeforeFct = SemanticJob::resolveLoopBefore;
     node->semanticFct                  = SemanticJob::resolveLoop;
     if (result)
         *result = node;

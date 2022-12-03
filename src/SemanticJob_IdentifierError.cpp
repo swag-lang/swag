@@ -609,10 +609,10 @@ void SemanticJob::symbolErrorNotes(SemanticContext* context, VectorNative<OneTry
             auto prev = identifier->identifierRef->childs[identifier->childParentIdx - 1];
             if (prev->resolvedSymbolName)
             {
-                if (prev->extension && prev->extension->resolvedUserOpSymbolOverload)
+                if (prev->extension && prev->extension->misc->resolvedUserOpSymbolOverload)
                 {
-                    auto typeInfo = TypeManager::concreteType(prev->extension->resolvedUserOpSymbolOverload->typeInfo);
-                    auto note     = new Diagnostic{prev, Fmt(Nte(Nte0018), prev->extension->resolvedUserOpSymbolOverload->symbol->name.c_str(), typeInfo->getDisplayNameC()), DiagnosticLevel::Note};
+                    auto typeInfo = TypeManager::concreteType(prev->extension->misc->resolvedUserOpSymbolOverload->typeInfo);
+                    auto note     = new Diagnostic{prev, Fmt(Nte(Nte0018), prev->extension->misc->resolvedUserOpSymbolOverload->symbol->name.c_str(), typeInfo->getDisplayNameC()), DiagnosticLevel::Note};
                     note->hint    = Hint::isType(typeInfo);
                     notes.push_back(note);
                     return;

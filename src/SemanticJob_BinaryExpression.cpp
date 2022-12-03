@@ -1331,12 +1331,12 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
     switch (node->token.id)
     {
     case TokenId::KwdAnd:
-        left->allocateExtension();
-        left->extension->byteCodeAfterFct = ByteCodeGenJob::emitLogicalAndAfterLeft;
+        left->allocateExtension(ExtensionKind::ByteCode);
+        left->extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitLogicalAndAfterLeft;
         break;
     case TokenId::KwdOr:
-        left->allocateExtension();
-        left->extension->byteCodeAfterFct = ByteCodeGenJob::emitLogicalOrAfterLeft;
+        left->allocateExtension(ExtensionKind::ByteCode);
+        left->extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitLogicalOrAfterLeft;
         break;
     }
 

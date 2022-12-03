@@ -278,7 +278,7 @@ bool SemanticJob::createTmpVarStruct(SemanticContext* context, AstIdentifier* id
 
     // Inherit alternative scopes.
     if (identifier->parent->extension)
-        varNode->addAlternativeScopes(identifier->parent->extension->alternativeScopes);
+        varNode->addAlternativeScopes(identifier->parent->extension->misc->alternativeScopes);
 
     // If we are in a const declaration, that temporary variable should be a const too...
     if (identifier->parent->parent->kind == AstNodeKind::ConstDecl)
@@ -494,8 +494,8 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 varNode->type->flags |= AST_NO_SEMANTIC;
 
                 auto idRef = Ast::newIdentifierRef(sourceFile, varNode->token.text, nodeCall);
-                idRef->allocateExtension();
-                idRef->extension->exportNode = makePtrL;
+                idRef->allocateExtension(ExtensionKind::ExportNode);
+                idRef->extension->misc->exportNode = makePtrL;
 
                 // Add the 2 nodes to the semantic
                 context->job->nodes.push_back(idRef);
@@ -517,15 +517,15 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
     {
         auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
 
-        if (nodeCall->extension && nodeCall->extension->resolvedUserOpSymbolOverload)
+        if (nodeCall->extension && nodeCall->extension->misc && nodeCall->extension->misc->resolvedUserOpSymbolOverload)
         {
-            auto overload = nodeCall->extension->resolvedUserOpSymbolOverload;
+            auto overload = nodeCall->extension->misc->resolvedUserOpSymbolOverload;
             if (overload->symbol->name == g_LangSpec->name_opAffect || overload->symbol->name == g_LangSpec->name_opAffectSuffix)
             {
-                SWAG_ASSERT(nodeCall->extension->resolvedUserOpSymbolOverload);
+                SWAG_ASSERT(nodeCall->extension->misc->resolvedUserOpSymbolOverload);
                 SWAG_ASSERT(nodeCall->castedTypeInfo);
-                nodeCall->extension->resolvedUserOpSymbolOverload = nullptr;
-                nodeCall->castedTypeInfo                          = nullptr;
+                nodeCall->extension->misc->resolvedUserOpSymbolOverload = nullptr;
+                nodeCall->castedTypeInfo                                = nullptr;
 
                 auto varNode = Ast::newVarDecl(sourceFile, Fmt("__2tmp_%d", g_UniqueID.fetch_add(1)), identifier);
                 varNode->inheritTokenLocation(nodeCall);
@@ -557,8 +557,8 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 Ast::newIdentifierRef(sourceFile, varNode->token.text, newParam);
 
                 // We want to export the original parameter, not the temporary variable reference
-                newParam->allocateExtension();
-                newParam->extension->exportNode = nodeCall;
+                newParam->allocateExtension(ExtensionKind::ExportNode);
+                newParam->extension->misc->exportNode = nodeCall;
 
                 // Add the 2 nodes to the semantic
                 context->job->nodes.push_back(newParam);
@@ -1366,20 +1366,23 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             identifier->byteCodeFct = ByteCodeGenJob::emitCall;
 
         // Try/Assume
-        if (identifier->extension && identifier->extension->ownerTryCatchAssume && (identifier->typeInfo->flags & TYPEINFO_CAN_THROW))
+        if (identifier->extension &&
+            identifier->extension->misc &&
+            identifier->extension->misc->ownerTryCatchAssume &&
+            (identifier->typeInfo->flags & TYPEINFO_CAN_THROW))
         {
-            identifier->allocateExtension();
+            identifier->allocateExtension(ExtensionKind::ByteCode);
             auto extension = identifier->extension;
-            switch (extension->ownerTryCatchAssume->kind)
+            switch (identifier->extension->misc->ownerTryCatchAssume->kind)
             {
             case AstNodeKind::Try:
-                extension->byteCodeAfterFct = ByteCodeGenJob::emitTry;
+                extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitTry;
                 break;
             case AstNodeKind::TryCatch:
-                extension->byteCodeAfterFct = ByteCodeGenJob::emitTryCatch;
+                extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitTryCatch;
                 break;
             case AstNodeKind::Assume:
-                extension->byteCodeAfterFct = ByteCodeGenJob::emitAssume;
+                extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitAssume;
                 break;
             }
         }
@@ -3525,9 +3528,9 @@ bool SemanticJob::solveSelectIf(SemanticContext* context, OneMatch* oneMatch, As
 
         // To avoid a race condition with the job that is currently dealing with the funcDecl,
         // we will reevaluate it with a semanticAfterFct trick
-        funcDecl->content->allocateExtension();
-        SWAG_ASSERT(!funcDecl->content->extension->semanticAfterFct || funcDecl->content->extension->semanticAfterFct == SemanticJob::resolveFuncDeclAfterSI);
-        funcDecl->content->extension->semanticAfterFct = SemanticJob::resolveFuncDeclAfterSI;
+        funcDecl->content->allocateExtension(ExtensionKind::Semantic);
+        SWAG_ASSERT(!funcDecl->content->extension->misc->semanticAfterFct || funcDecl->content->extension->misc->semanticAfterFct == SemanticJob::resolveFuncDeclAfterSI);
+        funcDecl->content->extension->misc->semanticAfterFct = SemanticJob::resolveFuncDeclAfterSI;
 
         g_ThreadMgr.addJob(job);
     }
@@ -3972,8 +3975,8 @@ void SemanticJob::collectAlternativeScopes(AstNode* startNode, VectorNative<Alte
     VectorNative<Scope*>           done;
 
     {
-        SharedLock lk(startNode->extension->mutexAltScopes);
-        toAdd.append(startNode->extension->alternativeScopes);
+        SharedLock lk(startNode->extension->misc->mutexAltScopes);
+        toAdd.append(startNode->extension->misc->alternativeScopes);
     }
 
     while (!toAdd.empty())
@@ -3991,8 +3994,8 @@ void SemanticJob::collectAlternativeScopes(AstNode* startNode, VectorNative<Alte
                 // We register the sub scope with the original "node" (top level), because the original node will in the end
                 // become the dependentVar node, and will be converted by cast to the correct type.
                 {
-                    SharedLock lk(it0.scope->owner->extension->mutexAltScopes);
-                    for (auto& it1 : it0.scope->owner->extension->alternativeScopes)
+                    SharedLock lk(it0.scope->owner->extension->misc->mutexAltScopes);
+                    for (auto& it1 : it0.scope->owner->extension->misc->alternativeScopes)
                         toAdd.push_back({it1.scope, it1.flags});
                 }
             }
@@ -4008,8 +4011,8 @@ void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<A
     VectorNative<Scope*>              done;
 
     {
-        SharedLock lk(startNode->extension->mutexAltScopes);
-        toAdd.append(startNode->extension->alternativeScopesVars);
+        SharedLock lk(startNode->extension->misc->mutexAltScopes);
+        toAdd.append(startNode->extension->misc->alternativeScopesVars);
     }
 
     while (!toAdd.empty())
@@ -4028,8 +4031,8 @@ void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<A
                 // We register the sub scope with the original "node" (top level), because the original node will in the end
                 // become the dependentVar node, and will be converted by cast to the correct type.
                 {
-                    SharedLock lk(it0.scope->owner->extension->mutexAltScopes);
-                    for (auto& it1 : it0.scope->owner->extension->alternativeScopesVars)
+                    SharedLock lk(it0.scope->owner->extension->misc->mutexAltScopes);
+                    for (auto& it1 : it0.scope->owner->extension->misc->alternativeScopesVars)
                         toAdd.push_back({it0.node, it1.node, it1.scope, it1.flags});
                 }
 
@@ -4076,11 +4079,11 @@ void SemanticJob::addAlternativeScope(VectorNative<AlternativeScope>& scopes, Sc
 void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, uint32_t flags)
 {
     // Add registered alternative scopes of the current node
-    if (startNode->extension && !startNode->extension->alternativeScopes.empty())
+    if (startNode->extension && startNode->extension->misc && !startNode->extension->misc->alternativeScopes.empty())
     {
         auto  job       = context->job;
         auto& toProcess = job->scopesToProcess;
-        for (auto& as : startNode->extension->alternativeScopes)
+        for (auto& as : startNode->extension->misc->alternativeScopes)
         {
             if (!hasAlternativeScope(scopes, as.scope))
             {
@@ -4156,14 +4159,17 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
     if (!startNode)
         return;
 
-    if (startNode->extension && startNode->extension->alternativeNode)
-        collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode->extension->alternativeNode, flags);
+    if (startNode->extension && startNode->extension->misc && startNode->extension->misc->alternativeNode)
+        collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode->extension->misc->alternativeNode, flags);
     else if (startNode->parent)
         collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode->parent, flags);
 
     // Mixin block, collect alternative scopes from the original source tree (with the user code, before
     // making the inline)
-    if (startNode->extension && startNode->extension->alternativeNode && startNode->parent->kind == AstNodeKind::CompilerMixin)
+    if (startNode->extension &&
+        startNode->extension->misc &&
+        startNode->extension->misc->alternativeNode &&
+        startNode->parent->kind == AstNodeKind::CompilerMixin)
     {
         // We authorize mixin code to access the parameters of the Swag.mixin function, except if there's a #macro block
         // in the way.
@@ -4347,9 +4353,9 @@ bool SemanticJob::resolveTryCatch(SemanticContext* context)
     SWAG_ASSERT(node->ownerFct);
     node->ownerFct->needRegisterGetContext = true;
 
-    node->allocateExtension();
-    node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitInitStackTrace;
-    node->byteCodeFct                  = ByteCodeGenJob::emitPassThrough;
+    node->allocateExtension(ExtensionKind::ByteCode);
+    node->extension->bytecode->byteCodeBeforeFct = ByteCodeGenJob::emitInitStackTrace;
+    node->byteCodeFct                            = ByteCodeGenJob::emitPassThrough;
 
     node->typeInfo = lastChild->typeInfo;
     node->flags |= identifierRef->flags;
@@ -4368,9 +4374,9 @@ bool SemanticJob::resolveCatch(SemanticContext* context)
     SWAG_ASSERT(node->ownerFct);
     node->ownerFct->needRegisterGetContext = true;
 
-    node->allocateExtension();
-    node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitInitStackTrace;
-    node->byteCodeFct                  = ByteCodeGenJob::emitPassThrough;
+    node->allocateExtension(ExtensionKind::ByteCode);
+    node->extension->bytecode->byteCodeBeforeFct = ByteCodeGenJob::emitInitStackTrace;
+    node->byteCodeFct                            = ByteCodeGenJob::emitPassThrough;
 
     node->typeInfo = lastChild->typeInfo;
     node->flags |= identifierRef->flags;
@@ -4388,9 +4394,9 @@ bool SemanticJob::resolveAssume(SemanticContext* context)
 
     SWAG_CHECK(checkCanCatch(context));
 
-    node->allocateExtension();
-    node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitInitStackTrace;
-    node->typeInfo                     = lastChild->typeInfo;
+    node->allocateExtension(ExtensionKind::ByteCode);
+    node->extension->bytecode->byteCodeBeforeFct = ByteCodeGenJob::emitInitStackTrace;
+    node->typeInfo                               = lastChild->typeInfo;
     node->flags |= identifierRef->flags;
     node->inheritComputedValue(identifierRef);
     node->byteCodeFct = ByteCodeGenJob::emitPassThrough;

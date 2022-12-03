@@ -612,8 +612,8 @@ llvm::DIScope* BackendLLVMDbg::getOrCreateScope(llvm::DIFile* file, Scope* scope
         {
             SWAG_ASSERT(scanScope->parentScope->kind == ScopeKind::Function);
             auto decl = CastAst<AstFuncDecl>(scanScope->parentScope->owner, AstNodeKind::FuncDecl);
-            SWAG_ASSERT(decl->extension);
-            parent = startFunction(decl->extension->bc);
+            SWAG_ASSERT(decl->extension && decl->extension->bytecode);
+            parent = startFunction(decl->extension->bytecode->bc);
             break;
         }
 

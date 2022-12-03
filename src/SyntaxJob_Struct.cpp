@@ -40,11 +40,11 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         SWAG_VERIFY(scopeKind != ScopeKind::Enum, Report::report({implNode, token, Err(Err0438)}));
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifierFor, IDENTIFIER_NO_FCT_PARAMS));
-        implNode->identifierFor->allocateExtension();
-        implNode->identifierFor->extension->semanticAfterFct = SemanticJob::resolveImplForAfterFor;
+        implNode->identifierFor->allocateExtension(ExtensionKind::Semantic);
+        implNode->identifierFor->extension->misc->semanticAfterFct = SemanticJob::resolveImplForAfterFor;
         implNode->semanticFct                                = SemanticJob::resolveImplFor;
-        implNode->allocateExtension();
-        implNode->extension->semanticAfterFct = SemanticJob::resolveImplForType;
+        implNode->allocateExtension(ExtensionKind::Semantic);
+        implNode->extension->misc->semanticAfterFct = SemanticJob::resolveImplForType;
         identifierStruct                      = implNode->identifierFor;
         implInterface                         = true;
 
@@ -171,8 +171,8 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
 {
     auto structNode         = Ast::newNode<AstStruct>(this, AstNodeKind::StructDecl, sourceFile, parent);
     structNode->semanticFct = SemanticJob::resolveStruct;
-    structNode->allocateExtension();
-    structNode->extension->semanticAfterFct = SemanticJob::sendCompilerMsgTypeDecl;
+    structNode->allocateExtension(ExtensionKind::Semantic);
+    structNode->extension->misc->semanticAfterFct = SemanticJob::sendCompilerMsgTypeDecl;
     if (result)
         *result = structNode;
 
@@ -303,8 +303,8 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
 
         auto contentNode    = Ast::newNode<AstNode>(this, AstNodeKind::StructContent, sourceFile, structNode);
         structNode->content = contentNode;
-        contentNode->allocateExtension();
-        contentNode->extension->semanticBeforeFct = SemanticJob::preResolveStructContent;
+        contentNode->allocateExtension(ExtensionKind::Semantic);
+        contentNode->extension->misc->semanticBeforeFct = SemanticJob::preResolveStructContent;
 
         if (structType == SyntaxStructType::Tuple)
             SWAG_CHECK(doStructBodyTuple(contentNode, true));

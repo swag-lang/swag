@@ -121,12 +121,12 @@ void AstNode::inheritOwnersAndFlags(SyntaxJob* job)
 
     if (job->currentTryCatchAssume)
     {
-        allocateExtension();
-        extension->ownerTryCatchAssume = job->currentTryCatchAssume;
+        allocateExtension(ExtensionKind::Owner);
+        extension->misc->ownerTryCatchAssume = job->currentTryCatchAssume;
     }
     else if (extension)
     {
-        extension->ownerTryCatchAssume = nullptr;
+        extension->misc->ownerTryCatchAssume = nullptr;
     }
 
     flags |= job->currentFlags;
@@ -202,16 +202,18 @@ void AstNode::swap2Childs()
 bool AstNode::hasSpecialFuncCall()
 {
     return extension &&
-           extension->resolvedUserOpSymbolOverload &&
-           extension->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function;
+           extension->misc &&
+           extension->misc->resolvedUserOpSymbolOverload &&
+           extension->misc->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function;
 }
 
 bool AstNode::hasSpecialFuncCall(const Utf8& name)
 {
     return extension &&
-           extension->resolvedUserOpSymbolOverload &&
-           extension->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function &&
-           extension->resolvedUserOpSymbolOverload->symbol->name == name;
+           extension->misc &&
+           extension->misc->resolvedUserOpSymbolOverload &&
+           extension->misc->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function &&
+           extension->misc->resolvedUserOpSymbolOverload->symbol->name == name;
 }
 
 AstNode* AstNode::inSimpleReturn()
@@ -230,7 +232,7 @@ AstNode* AstNode::inSimpleReturn()
 
 bool AstNode::isSpecialFunctionGenerated()
 {
-    if (!extension || !extension->bc || !extension->bc->isCompilerGenerated)
+    if (!extension || !extension->bytecode || !extension->bytecode->bc || !extension->bytecode->bc->isCompilerGenerated)
         return false;
     return true;
 }
@@ -249,13 +251,36 @@ bool AstNode::isSpecialFunctionName()
     return true;
 }
 
-void AstNode::allocateExtension()
+atomic<int> gg[20];
+
+void AstNode::allocateExtension(ExtensionKind extensionKind)
 {
-    if (extension)
-        return;
-    extension = g_Allocator.alloc<Extension>();
-    if (g_CommandLine->stats)
-        g_Stats.memNodesExt += Allocator::alignSize(sizeof(Extension));
+    if (!extension)
+    {
+        extension = g_Allocator.alloc<Extension>();
+        if (g_CommandLine->stats)
+            g_Stats.memNodesExt += Allocator::alignSize(sizeof(Extension));
+    }
+
+    gg[(int) extensionKind]++;
+    switch (extensionKind)
+    {
+    case ExtensionKind::ByteCode:
+        if (extension->bytecode)
+            return;
+        extension->bytecode = g_Allocator.alloc<ExtensionByteCode>();
+        if (g_CommandLine->stats)
+            g_Stats.memNodesExt += Allocator::alignSize(sizeof(ExtensionByteCode));
+        break;
+
+    default:
+        if (extension->misc)
+            return;
+        extension->misc = g_Allocator.alloc<ExtensionMisc>();
+        if (g_CommandLine->stats)
+            g_Stats.memNodesExt += Allocator::alignSize(sizeof(ExtensionMisc));
+        break;
+    }
 }
 
 bool AstNode::mustInline()
@@ -332,10 +357,17 @@ void AstNode::setPassThrough()
     byteCodeFct = ByteCodeGenJob::emitPassThrough;
     if (extension)
     {
-        extension->semanticAfterFct  = nullptr;
-        extension->semanticBeforeFct = nullptr;
-        extension->byteCodeAfterFct  = nullptr;
-        extension->byteCodeBeforeFct = nullptr;
+        if (extension->misc)
+        {
+            extension->misc->semanticAfterFct  = nullptr;
+            extension->misc->semanticBeforeFct = nullptr;
+        }
+
+        if (extension->bytecode)
+        {
+            extension->bytecode->byteCodeAfterFct  = nullptr;
+            extension->bytecode->byteCodeBeforeFct = nullptr;
+        }
     }
 }
 
@@ -392,9 +424,9 @@ void AstNode::addAlternativeScope(Scope* scope, uint32_t altFlags)
     sv.scope = scope;
     sv.flags = altFlags;
 
-    allocateExtension();
-    ScopedLock(extension->mutexAltScopes);
-    extension->alternativeScopes.push_back(sv);
+    allocateExtension(ExtensionKind::AltScopes);
+    ScopedLock(extension->misc->mutexAltScopes);
+    extension->misc->alternativeScopes.push_back(sv);
 }
 
 void AstNode::addAlternativeScopeVar(Scope* scope, AstNode* varNode, uint32_t altFlags)
@@ -405,16 +437,16 @@ void AstNode::addAlternativeScopeVar(Scope* scope, AstNode* varNode, uint32_t al
     sv.leafNode = varNode;
     sv.flags    = altFlags;
 
-    allocateExtension();
-    ScopedLock(extension->mutexAltScopes);
-    extension->alternativeScopesVars.push_back(sv);
+    allocateExtension(ExtensionKind::AltScopes);
+    ScopedLock(extension->misc->mutexAltScopes);
+    extension->misc->alternativeScopesVars.push_back(sv);
 }
 
 void AstNode::addAlternativeScopes(const VectorNative<AlternativeScope>& scopes)
 {
-    allocateExtension();
-    ScopedLock(extension->mutexAltScopes);
-    extension->alternativeScopes.append(scopes);
+    allocateExtension(ExtensionKind::AltScopes);
+    ScopedLock(extension->misc->mutexAltScopes);
+    extension->misc->alternativeScopes.append(scopes);
 }
 
 void AstNode::computeEndLocation()
@@ -599,8 +631,8 @@ Utf8 AstFuncDecl::getCallName()
         }
     }
 
-    SWAG_ASSERT(extension && extension->bc);
-    return extension->bc->getCallName();
+    SWAG_ASSERT(extension && extension->bytecode && extension->bytecode->bc);
+    return extension->bytecode->bc->getCallName();
 }
 
 Utf8 AstFuncDecl::getNameForUserCompiler()
@@ -749,8 +781,8 @@ void AstNode::setOwnerAttrUse(AstAttrUse* attrUse)
         break;
 
     default:
-        allocateExtension();
-        extension->ownerAttrUse = attrUse;
+        allocateExtension(ExtensionKind::Owner);
+        extension->misc->ownerAttrUse = attrUse;
         break;
     }
 }

@@ -820,7 +820,7 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstTypeExpres
     {
         // Identifier can have an export node, so in that case we need to export by node, not by type, in
         // order to export the real node (for example for an array of lambdas/closures)
-        if (!node->identifier || !node->identifier->extension || !node->identifier->extension->exportNode)
+        if (!node->identifier || !node->identifier->extension || !node->identifier->extension->misc->exportNode)
         {
             SWAG_CHECK(outputType(context, concat, node, node->typeInfo));
 
@@ -949,8 +949,8 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 {
     if (!node)
         return true;
-    if (node->extension && node->extension->exportNode)
-        node = node->extension->exportNode;
+    if (node->extension && node->extension->misc && node->extension->misc->exportNode)
+        node = node->extension->misc->exportNode;
     if (node->flags & AST_GENERATED && !(node->flags & AST_GENERATED_USER))
         return true;
 

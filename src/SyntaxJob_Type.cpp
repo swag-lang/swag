@@ -29,8 +29,8 @@ bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
     // This is a type alias
     if (expr->kind == AstNodeKind::TypeExpression || expr->kind == AstNodeKind::TypeLambda || expr->kind == AstNodeKind::TypeClosure)
     {
-        node->allocateExtension();
-        node->extension->semanticBeforeFct = SemanticJob::resolveTypeAliasBefore;
+        node->allocateExtension(ExtensionKind::Semantic);
+        node->extension->misc->semanticBeforeFct = SemanticJob::resolveTypeAliasBefore;
         node->semanticFct                  = SemanticJob::resolveTypeAlias;
         node->resolvedSymbolName           = currentScope->symTable.registerSymbolName(&context, node, SymbolKind::TypeAlias);
     }
@@ -209,8 +209,8 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
     auto structNode = Ast::newStructDecl(sourceFile, parent, this);
     structNode->flags |= AST_PRIVATE;
     structNode->originalParent = parent;
-    structNode->allocateExtension();
-    structNode->extension->semanticBeforeFct = SemanticJob::preResolveGeneratedStruct;
+    structNode->allocateExtension(ExtensionKind::Semantic);
+    structNode->extension->misc->semanticBeforeFct = SemanticJob::preResolveGeneratedStruct;
 
     if (anonymousStruct)
         structNode->structFlags |= STRUCTFLAG_ANONYMOUS;
@@ -219,8 +219,8 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
 
     auto contentNode    = Ast::newNode(sourceFile, AstNodeKind::TupleContent, structNode, this);
     structNode->content = contentNode;
-    contentNode->allocateExtension();
-    contentNode->extension->semanticBeforeFct = SemanticJob::preResolveStructContent;
+    contentNode->allocateExtension(ExtensionKind::Semantic);
+    contentNode->extension->misc->semanticBeforeFct = SemanticJob::preResolveStructContent;
 
     // Name
     Utf8 name = sourceFile->scopeFile->name + "_tuple_";
@@ -241,10 +241,10 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
         rootScope = sourceFile->scopeFile;
     else
         rootScope = newParent->ownerScope;
-    structNode->allocateExtension();
+    structNode->allocateExtension(ExtensionKind::AltScopes);
     structNode->addAlternativeScope(currentScope);
     SWAG_ASSERT(parent);
-    structNode->extension->alternativeNode = parent;
+    structNode->extension->misc->alternativeNode = parent;
 
     auto newScope     = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, rootScope, true);
     structNode->scope = newScope;
@@ -577,15 +577,15 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         Utf8 name          = sourceFile->scopeFile->name + "_alias_";
         name += Fmt("%d", g_UniqueID.fetch_add(1));
         alias->token.text = move(name);
-        alias->allocateExtension();
-        alias->extension->semanticBeforeFct = SemanticJob::resolveTypeAliasBefore;
+        alias->allocateExtension(ExtensionKind::Semantic);
+        alias->extension->misc->semanticBeforeFct = SemanticJob::resolveTypeAliasBefore;
         alias->semanticFct                  = SemanticJob::resolveTypeAlias;
         alias->resolvedSymbolName           = currentScope->symTable.registerSymbolName(&context, alias, SymbolKind::TypeAlias);
         node->identifier                    = Ast::newIdentifierRef(sourceFile, alias->token.text, node, this);
         SWAG_CHECK(doTypeExpressionLambdaClosure(alias));
 
-        node->identifier->allocateExtension();
-        node->identifier->extension->exportNode = alias->childs.front();
+        node->identifier->allocateExtension(ExtensionKind::ExportNode);
+        node->identifier->extension->misc->exportNode = alias->childs.front();
         return true;
     }
 

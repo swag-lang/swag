@@ -46,8 +46,8 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
     else
     {
         auto inst = emitInstruction(context, ByteCodeOp::LocalCall);
-        SWAG_ASSERT(bc || (funcDecl && funcDecl->extension && funcDecl->extension->bc));
-        auto bcReal     = bc ? bc : funcDecl->extension->bc;
+        SWAG_ASSERT(bc || (funcDecl && funcDecl->extension && funcDecl->extension->bytecode && funcDecl->extension->bytecode->bc));
+        auto bcReal     = bc ? bc : funcDecl->extension->bytecode->bc;
         bcReal->isUsed  = true;
         inst->a.pointer = (uint8_t*) bcReal;
         SWAG_ASSERT(numParams <= 2);
@@ -132,9 +132,9 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
             funcNode->attributeFlags |= structNode->attributeFlags & ATTRIBUTE_PUBLIC;
         if (typeInfoStruct->opUserInitFct)
             typeInfoStruct->opUserInitFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
-        funcNode->allocateExtension();
-        funcNode->extension->bc = opInit;
-        opInit->node            = funcNode;
+        funcNode->allocateExtension(ExtensionKind::ByteCode);
+        funcNode->extension->bytecode->bc = opInit;
+        opInit->node                      = funcNode;
     }
 
     sourceFile->module->addByteCodeFunc(opInit);
@@ -413,9 +413,9 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         funcNode->attributeFlags |= ATTRIBUTE_PUBLIC;
         if (typeInfoStruct->opUserDropFct)
             typeInfoStruct->opUserDropFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
-        funcNode->allocateExtension();
-        funcNode->extension->bc = opDrop;
-        opDrop->node            = funcNode;
+        funcNode->allocateExtension(ExtensionKind::ByteCode);
+        funcNode->extension->bytecode->bc = opDrop;
+        opDrop->node                      = funcNode;
     }
 
     ByteCodeGenContext cxt{*context};
@@ -534,9 +534,9 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         funcNode->attributeFlags |= ATTRIBUTE_PUBLIC;
         if (typeInfoStruct->opUserPostMoveFct)
             typeInfoStruct->opUserPostMoveFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
-        funcNode->allocateExtension();
-        funcNode->extension->bc = opPostMove;
-        opPostMove->node        = funcNode;
+        funcNode->allocateExtension(ExtensionKind::ByteCode);
+        funcNode->extension->bytecode->bc = opPostMove;
+        opPostMove->node                  = funcNode;
     }
 
     ByteCodeGenContext cxt{*context};
@@ -655,9 +655,9 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         funcNode->attributeFlags |= ATTRIBUTE_PUBLIC;
         if (typeInfoStruct->opUserPostCopyFct)
             typeInfoStruct->opUserPostCopyFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
-        funcNode->allocateExtension();
-        funcNode->extension->bc = opPostCopy;
-        opPostCopy->node        = funcNode;
+        funcNode->allocateExtension(ExtensionKind::ByteCode);
+        funcNode->extension->bytecode->bc = opPostCopy;
+        opPostCopy->node                  = funcNode;
     }
 
     ByteCodeGenContext cxt{*context};

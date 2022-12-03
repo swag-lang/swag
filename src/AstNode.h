@@ -221,6 +221,21 @@ struct AlternativeScopeVar
     uint32_t flags;
 };
 
+enum class ExtensionKind
+{
+    ByteCode,
+    Owner,
+    AltScopes,
+    AdditionalRegs,
+    Resolve,
+    StackSize,
+    Semantic,
+    ExportNode,
+    Collect,
+    Any,
+    Misc,
+};
+
 struct AstNode
 {
     AstNode* clone(CloneContext& context);
@@ -265,7 +280,7 @@ struct AstNode
     AstNode*    findParent(AstNodeKind parentKind1, AstNodeKind parentKind2);
     Utf8        getScopedName();
     void        setOwnerAttrUse(AstAttrUse* attrUse);
-    void        allocateExtension();
+    void        allocateExtension(ExtensionKind extensionKind);
     void        swap2Childs();
     bool        hasSpecialFuncCall();
     bool        hasSpecialFuncCall(const Utf8& name);
@@ -277,21 +292,25 @@ struct AstNode
     void        addAlternativeScopeVar(Scope* scope, AstNode* varNode, uint32_t altFlags = 0);
     void        addAlternativeScopes(const VectorNative<AlternativeScope>& scopes);
 
-    struct Extension
+    struct ExtensionByteCode
+    {
+        ByteCodeNotifyFct      byteCodeBeforeFct = nullptr;
+        ByteCodeNotifyFct      byteCodeAfterFct  = nullptr;
+        ByteCodeGenJob*        byteCodeJob       = nullptr;
+        ByteCode*              bc                = nullptr;
+        VectorNative<AstNode*> dependentNodes;
+    };
+
+    struct ExtensionMisc
     {
         SharedMutex                       mutexAltScopes;
         VectorNative<AlternativeScope>    alternativeScopes;
         VectorNative<AlternativeScopeVar> alternativeScopesVars;
         VectorNative<uint32_t>            registersToRelease;
-        VectorNative<AstNode*>            dependentNodes;
         RegisterList                      additionalRegisterRC;
 
         SemanticFct        semanticBeforeFct            = nullptr;
         SemanticFct        semanticAfterFct             = nullptr;
-        ByteCodeNotifyFct  byteCodeBeforeFct            = nullptr;
-        ByteCodeNotifyFct  byteCodeAfterFct             = nullptr;
-        ByteCodeGenJob*    byteCodeJob                  = nullptr;
-        ByteCode*          bc                           = nullptr;
         SymbolOverload*    resolvedUserOpSymbolOverload = nullptr;
         TypeInfo*          collectTypeInfo              = nullptr;
         AstNode*           alternativeNode              = nullptr;
@@ -305,6 +324,12 @@ struct AstNode
         uint32_t stackOffset   = 0;
         uint32_t anyTypeOffset = 0;
         uint32_t stackSize     = 0;
+    };
+
+    struct Extension
+    {
+        ExtensionByteCode* bytecode = nullptr;
+        ExtensionMisc*     misc     = nullptr;
     };
 
     AstNodeKind         kind           = (AstNodeKind) 0;

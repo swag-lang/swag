@@ -130,9 +130,9 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                         if (!overload->registers.cannotFree)
                         {
                             overload->registers.cannotFree = true;
-                            node->allocateExtension();
+                            node->allocateExtension(ExtensionKind::AdditionalRegs);
                             for (int r = 0; r < overload->registers.size(); r++)
-                                node->extension->registersToRelease.push_back(overload->registers[r]);
+                                node->extension->misc->registersToRelease.push_back(overload->registers[r]);
                         }
                         break;
                     }
@@ -167,9 +167,9 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                                 if (!overload->registers.cannotFree)
                                 {
                                     overload->registers.cannotFree = true;
-                                    node->allocateExtension();
+                                    node->allocateExtension(ExtensionKind::AdditionalRegs);
                                     for (int r = 0; r < overload->registers.size(); r++)
-                                        node->extension->registersToRelease.push_back(overload->registers[r]);
+                                        node->extension->misc->registersToRelease.push_back(overload->registers[r]);
                                 }
                                 covered = true;
                                 break;
@@ -194,9 +194,9 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                         {
                             SWAG_CHECK(emitDefaultParamValue(context, defaultParam, overload->registers));
                             overload->registers.cannotFree = true;
-                            node->allocateExtension();
+                            node->allocateExtension(ExtensionKind::AdditionalRegs);
                             for (int r = 0; r < overload->registers.size(); r++)
-                                node->extension->registersToRelease.push_back(overload->registers[r]);
+                                node->extension->misc->registersToRelease.push_back(overload->registers[r]);
                             break;
                         }
                     }
@@ -218,22 +218,22 @@ bool ByteCodeGenJob::emitInline(ByteCodeGenContext* context)
 
     // Release persistent list of registers (except if mixin, because in that
     // case, the inline node does not own the scope)
-    if (node->extension && !node->extension->registersToRelease.empty())
+    if (node->extension && !node->extension->misc->registersToRelease.empty())
     {
         if (!(node->attributeFlags & ATTRIBUTE_MIXIN))
         {
-            for (auto r : node->extension->registersToRelease)
+            for (auto r : node->extension->misc->registersToRelease)
                 freeRegisterRC(context, r);
         }
         else
         {
             // Transfert registers to release to the parent scope owner
-            node->ownerScope->owner->allocateExtension();
-            for (auto r : node->extension->registersToRelease)
-                node->ownerScope->owner->extension->registersToRelease.push_back(r);
+            node->ownerScope->owner->allocateExtension(ExtensionKind::AdditionalRegs);
+            for (auto r : node->extension->misc->registersToRelease)
+                node->ownerScope->owner->extension->misc->registersToRelease.push_back(r);
         }
 
-        node->extension->registersToRelease.clear();
+        node->extension->misc->registersToRelease.clear();
     }
 
     // Be sure this is done only once
@@ -992,7 +992,7 @@ bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context, Scope* 
             // one try block in case a throw is raised
             if (forError)
             {
-                auto newTry                      = context->node->extension->ownerTryCatchAssume->clone(cloneContext);
+                auto newTry                      = context->node->extension->misc->ownerTryCatchAssume->clone(cloneContext);
                 cloneContext.ownerTryCatchAssume = CastAst<AstTryCatchAssume>(newTry, newTry->kind);
             }
 
@@ -1054,11 +1054,11 @@ bool ByteCodeGenJob::computeLeaveScope(ByteCodeGenContext* context, Scope* scope
     }
 
     // Free some registers
-    if (context->node->extension)
+    if (context->node->extension && context->node->extension->misc)
     {
-        for (auto r : context->node->extension->registersToRelease)
+        for (auto r : context->node->extension->misc->registersToRelease)
             freeRegisterRC(context, r);
-        context->node->extension->registersToRelease.clear();
+        context->node->extension->misc->registersToRelease.clear();
     }
 
     return true;

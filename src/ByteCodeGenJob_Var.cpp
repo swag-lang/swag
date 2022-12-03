@@ -67,9 +67,10 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
         // Generate initialization
         // Do not generate if we have a user define affectation, and the operator is marked as 'complete'
         if (!node->extension ||
-            !node->extension->resolvedUserOpSymbolOverload ||
-            node->extension->resolvedUserOpSymbolOverload->symbol->kind != SymbolKind::Function ||
-            !(node->extension->resolvedUserOpSymbolOverload->node->attributeFlags & ATTRIBUTE_COMPLETE))
+            !node->extension->misc ||
+            !node->extension->misc->resolvedUserOpSymbolOverload ||
+            node->extension->misc->resolvedUserOpSymbolOverload->symbol->kind != SymbolKind::Function ||
+            !(node->extension->misc->resolvedUserOpSymbolOverload->node->attributeFlags & ATTRIBUTE_COMPLETE))
         {
             if (!(node->doneFlags & AST_DONE_VARDECL_STRUCT_PARAMETERS))
             {
@@ -113,9 +114,9 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
     {
         if (!(node->doneFlags & AST_DONE_PRE_CAST))
         {
-            node->allocateExtension();
-            node->extension->additionalRegisterRC = reserveRegisterRC(context);
-            emitRetValRef(context, node->extension->additionalRegisterRC, retVal, resolved->computedValue.storageOffset);
+            node->allocateExtension(ExtensionKind::AdditionalRegs);
+            node->extension->misc->additionalRegisterRC = reserveRegisterRC(context);
+            emitRetValRef(context, node->extension->misc->additionalRegisterRC, retVal, resolved->computedValue.storageOffset);
             node->resultRegisterRC = node->assignment->resultRegisterRC;
             node->doneFlags |= AST_DONE_PRE_CAST;
         }
@@ -126,8 +127,8 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
 
         if (!mustDropLeft)
             node->assignment->flags |= AST_NO_LEFT_DROP;
-        node->allocateExtension();
-        emitAffectEqual(context, node->extension->additionalRegisterRC, node->resultRegisterRC, node->typeInfo, node->assignment);
+        node->allocateExtension(ExtensionKind::AdditionalRegs);
+        emitAffectEqual(context, node->extension->misc->additionalRegisterRC, node->resultRegisterRC, node->typeInfo, node->assignment);
         if (context->result != ContextResult::Done)
             return true;
 

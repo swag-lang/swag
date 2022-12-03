@@ -110,7 +110,7 @@ bool SemanticJob::checkIsConstExpr(JobContext* context, bool test, AstNode* expr
     if (expression->hasSpecialFuncCall())
     {
         Diagnostic diag{expression, Fmt(Err(Err0281), expression->typeInfo->getDisplayNameC())};
-        diag.hint = Fmt(Hnt(Hnt0047), expression->extension->resolvedUserOpSymbolOverload->symbol->name.c_str());
+        diag.hint = Fmt(Hnt(Hnt0047), expression->extension->misc->resolvedUserOpSymbolOverload->symbol->name.c_str());
         return context->report(diag, computeNonConstExprNote(expression));
     }
 
@@ -350,8 +350,13 @@ JobResult SemanticJob::execute()
             node->semanticState = AstNodeResolveState::ProcessingChilds;
             context.result      = ContextResult::Done;
 
-            if (node->extension && node->extension->semanticBeforeFct && !node->extension->semanticBeforeFct(&context))
+            if (node->extension &&
+                node->extension->misc &&
+                node->extension->misc->semanticBeforeFct &&
+                !node->extension->misc->semanticBeforeFct(&context))
+            {
                 return JobResult::ReleaseJob;
+            }
 
             if (!canDoSem)
             {
@@ -422,10 +427,10 @@ JobResult SemanticJob::execute()
             node->semanticState = AstNodeResolveState::PostChilds;
 
         case AstNodeResolveState::PostChilds:
-            if (node->extension && node->extension->semanticAfterFct)
+            if (node->extension && node->extension->misc && node->extension->misc->semanticAfterFct)
             {
                 context.result = ContextResult::Done;
-                if (!node->extension->semanticAfterFct(&context))
+                if (!node->extension->misc->semanticAfterFct(&context))
                     return JobResult::ReleaseJob;
                 if (context.result == ContextResult::Pending)
                     return JobResult::KeepJobAlive;
