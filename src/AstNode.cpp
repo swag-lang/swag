@@ -251,8 +251,6 @@ bool AstNode::isSpecialFunctionName()
     return true;
 }
 
-atomic<int> gg[20];
-
 void AstNode::allocateExtension(ExtensionKind extensionKind)
 {
     if (!extension)
@@ -262,7 +260,6 @@ void AstNode::allocateExtension(ExtensionKind extensionKind)
             g_Stats.memNodesExt += Allocator::alignSize(sizeof(Extension));
     }
 
-    gg[(int) extensionKind]++;
     switch (extensionKind)
     {
     case ExtensionKind::ByteCode:
