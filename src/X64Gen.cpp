@@ -1673,28 +1673,29 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
 void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, void* retCopy)
 {
     VectorNative<X64PushParam> p;
+    p.reserve((uint32_t) pushRAParams.size());
     for (auto r : pushRAParams)
         p.push_back({X64PushParamType::Reg, r});
     emit_Call_Parameters(typeFunc, p, offsetRT, retCopy);
 }
 
-void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<X64PushParam>& pushParams, uint32_t offsetRT, void* retCopy)
+void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<X64PushParam>& pushRAParams, uint32_t offsetRT, void* retCopy)
 {
     int numCallParams = (int) typeFunc->parameters.size();
 
     VectorNative<X64PushParam> paramsRegisters;
     VectorNative<TypeInfo*>    paramsTypes;
 
-    int indexParam = (int) pushParams.size() - 1;
+    int indexParam = (int) pushRAParams.size() - 1;
 
     // Variadic are first
     if (typeFunc->isVariadic())
     {
-        auto index = pushParams[indexParam--];
+        auto index = pushRAParams[indexParam--];
         paramsRegisters.push_back(index);
         paramsTypes.push_back(g_TypeMgr->typeInfoU64);
 
-        index = pushParams[indexParam--];
+        index = pushRAParams[indexParam--];
         paramsRegisters.push_back(index);
         paramsTypes.push_back(g_TypeMgr->typeInfoU64);
         numCallParams--;
@@ -1711,7 +1712,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
         if (typeParam->isAutoConstPointerRef())
             typeParam = TypeManager::concretePtrRef(typeParam);
 
-        auto index = pushParams[indexParam--];
+        auto index = pushRAParams[indexParam--];
 
         if (typeParam->kind == TypeInfoKind::Pointer ||
             typeParam->kind == TypeInfoKind::Lambda ||
@@ -1730,7 +1731,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
         {
             paramsRegisters.push_back(index);
             paramsTypes.push_back(g_TypeMgr->typeInfoU64);
-            index = pushParams[indexParam--];
+            index = pushRAParams[indexParam--];
             paramsRegisters.push_back(index);
             paramsTypes.push_back(g_TypeMgr->typeInfoU64);
         }
@@ -1739,7 +1740,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
         {
             paramsRegisters.push_back(index);
             paramsTypes.push_back(g_TypeMgr->typeInfoU64);
-            index = pushParams[indexParam--];
+            index = pushRAParams[indexParam--];
             paramsRegisters.push_back(index);
             paramsTypes.push_back(g_TypeMgr->typeInfoU64);
         }
@@ -1761,9 +1762,9 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
     // Add all C variadic parameters
     if (typeFunc->isCVariadic())
     {
-        for (int i = typeFunc->numParamsRegisters(); i < pushParams.size(); i++)
+        for (int i = typeFunc->numParamsRegisters(); i < pushRAParams.size(); i++)
         {
-            auto index = pushParams[indexParam--];
+            auto index = pushRAParams[indexParam--];
             paramsRegisters.push_back(index);
             paramsTypes.push_back(g_TypeMgr->typeInfoU64);
         }

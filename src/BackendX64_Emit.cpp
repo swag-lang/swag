@@ -294,17 +294,16 @@ void BackendX64::emitOverflowUnsigned(X64Gen& pp, AstNode* node, const char* msg
 
 void BackendX64::emitInternalPanic(X64Gen& pp, AstNode* node, const char* msg)
 {
-    VectorNative<X64PushParam> pushParams;
-
     auto np = Utf8::normalizePath(node->sourceFile->path);
-    pushParams.push_back({X64PushParamType::GlobalString, (uint64_t) np.c_str()});
-    pushParams.push_back({X64PushParamType::Imm, node->token.startLocation.line});
-    pushParams.push_back({X64PushParamType::Imm, node->token.startLocation.column});
+    pp.pushParams.clear();
+    pp.pushParams.push_back({X64PushParamType::GlobalString, (uint64_t) np.c_str()});
+    pp.pushParams.push_back({X64PushParamType::Imm, node->token.startLocation.line});
+    pp.pushParams.push_back({X64PushParamType::Imm, node->token.startLocation.column});
     if (msg)
-        pushParams.push_back({X64PushParamType::GlobalString, (uint64_t) msg});
+        pp.pushParams.push_back({X64PushParamType::GlobalString, (uint64_t) msg});
     else
-        pushParams.push_back({X64PushParamType::Imm, 0});
-    emitInternalCallExt(pp, module, g_LangSpec->name__panic, pushParams);
+        pp.pushParams.push_back({X64PushParamType::Imm, 0});
+    emitInternalCallExt(pp, module, g_LangSpec->name__panic, pp.pushParams);
 }
 
 void BackendX64::emitSymbolRelocation(X64Gen& pp, const Utf8& name)

@@ -252,6 +252,7 @@ struct X64Gen
     Concat postConcat;
 
     VectorNative<const Utf8*>  stringTable;
+    VectorNative<X64PushParam> pushParams;
     CoffRelocationTable        relocTableTextSection;
     CoffRelocationTable        relocTableCSSection;
     CoffRelocationTable        relocTableMSSection;
@@ -383,7 +384,7 @@ struct X64Gen
     void emit_Add64_Immediate(uint64_t value, uint8_t reg);
     void emit_Call_Indirect(uint8_t reg);
     void emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, VectorNative<X64PushParam>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopy = nullptr);
-    void emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<X64PushParam>& pushParams, uint32_t offsetRT, void* retCopy = nullptr);
+    void emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<X64PushParam>& pushRAParams, uint32_t offsetRT, void* retCopy = nullptr);
     void emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, void* retCopy = nullptr);
     void emit_Call_Result(TypeInfoFuncAttr* typeFunc, uint32_t offsetRT);
     void emit_GlobalString(const Utf8& str, uint8_t reg);

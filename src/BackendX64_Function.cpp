@@ -20,16 +20,15 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     if (bc->node && (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC) && (buildParameters.compileType != BackendCompileType::Test))
         return true;
 
-    int                        ct              = buildParameters.compileType;
-    int                        precompileIndex = buildParameters.precompileIndex;
-    auto&                      pp              = *perThread[ct][precompileIndex];
-    auto&                      concat          = pp.concat;
-    auto                       typeFunc        = bc->getCallType();
-    auto                       returnType      = TypeManager::concreteType(typeFunc->returnType);
-    bool                       ok              = true;
-    bool                       debug           = buildParameters.buildCfg->backendDebugInformations;
-    const auto&                cc              = g_CallConv[typeFunc->callConv];
-    VectorNative<X64PushParam> pushParams;
+    int         ct              = buildParameters.compileType;
+    int         precompileIndex = buildParameters.precompileIndex;
+    auto&       pp              = *perThread[ct][precompileIndex];
+    auto&       concat          = pp.concat;
+    auto        typeFunc        = bc->getCallType();
+    auto        returnType      = TypeManager::concreteType(typeFunc->returnType);
+    bool        ok              = true;
+    bool        debug           = buildParameters.buildCfg->backendDebugInformations;
+    const auto& cc              = g_CallConv[typeFunc->callConv];
 
     concat.align(16);
     uint32_t startAddress = concat.totalCount();
@@ -2068,19 +2067,19 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             else
             {
-                pushParams.clear();
-                pushParams.push_back({X64PushParamType::RegAdd, ip->a.u32, ip->c.u64});
-                pushParams.push_back({X64PushParamType::Imm, 0});
-                pushParams.push_back({X64PushParamType::Imm, ip->b.u64});
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memset, pushParams);
+                pp.pushParams.clear();
+                pp.pushParams.push_back({X64PushParamType::RegAdd, ip->a.u32, ip->c.u64});
+                pp.pushParams.push_back({X64PushParamType::Imm, 0});
+                pp.pushParams.push_back({X64PushParamType::Imm, ip->b.u64});
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memset, pp.pushParams);
             }
             break;
         case ByteCodeOp::SetZeroAtPointerXRB:
-            pushParams.clear();
-            pushParams.push_back({X64PushParamType::Reg, ip->a.u32});
-            pushParams.push_back({X64PushParamType::Imm, 0});
-            pushParams.push_back({X64PushParamType::RegMul, ip->b.u32, ip->c.u64});
-            emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memset, pushParams);
+            pp.pushParams.clear();
+            pp.pushParams.push_back({X64PushParamType::Reg, ip->a.u32});
+            pp.pushParams.push_back({X64PushParamType::Imm, 0});
+            pp.pushParams.push_back({X64PushParamType::RegMul, ip->b.u32, ip->c.u64});
+            emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memset, pp.pushParams);
             break;
 
         case ByteCodeOp::SetZeroStack8:
@@ -2100,11 +2099,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 pp.emit_ClearX(ip->b.u32, offsetStack + ip->a.u32, RDI);
             else
             {
-                pushParams.clear();
-                pushParams.push_back({X64PushParamType::Addr, offsetStack + ip->a.u32});
-                pushParams.push_back({X64PushParamType::Imm, 0});
-                pushParams.push_back({X64PushParamType::Imm, ip->b.u32});
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memset, pushParams);
+                pp.pushParams.clear();
+                pp.pushParams.push_back({X64PushParamType::Addr, offsetStack + ip->a.u32});
+                pp.pushParams.push_back({X64PushParamType::Imm, 0});
+                pp.pushParams.push_back({X64PushParamType::Imm, ip->b.u32});
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memset, pp.pushParams);
             }
             break;
 
@@ -2405,14 +2404,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             else
             {
-                pushParams.clear();
-                pushParams.push_back({X64PushParamType::Reg, ip->a.u32});
-                pushParams.push_back({X64PushParamType::Reg, ip->b.u32});
+                pp.pushParams.clear();
+                pp.pushParams.push_back({X64PushParamType::Reg, ip->a.u32});
+                pp.pushParams.push_back({X64PushParamType::Reg, ip->b.u32});
                 if (ip->flags & BCI_IMM_C)
-                    pushParams.push_back({X64PushParamType::Imm, ip->c.u64});
+                    pp.pushParams.push_back({X64PushParamType::Imm, ip->c.u64});
                 else
-                    pushParams.push_back({X64PushParamType::Reg, ip->c.u32});
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memcpy, pushParams);
+                    pp.pushParams.push_back({X64PushParamType::Reg, ip->c.u32});
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memcpy, pp.pushParams);
             }
             break;
         case ByteCodeOp::IntrinsicMemSet:
@@ -2423,38 +2422,38 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             else
             {
-                pushParams.clear();
-                pushParams.push_back({X64PushParamType::Reg, ip->a.u32});
+                pp.pushParams.clear();
+                pp.pushParams.push_back({X64PushParamType::Reg, ip->a.u32});
                 if (ip->flags & BCI_IMM_B)
-                    pushParams.push_back({X64PushParamType::Imm, ip->b.u8});
+                    pp.pushParams.push_back({X64PushParamType::Imm, ip->b.u8});
                 else
-                    pushParams.push_back({X64PushParamType::Reg, ip->b.u32});
+                    pp.pushParams.push_back({X64PushParamType::Reg, ip->b.u32});
                 if (ip->flags & BCI_IMM_C)
-                    pushParams.push_back({X64PushParamType::Imm, ip->c.u64});
+                    pp.pushParams.push_back({X64PushParamType::Imm, ip->c.u64});
                 else
-                    pushParams.push_back({X64PushParamType::Reg, ip->c.u32});
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memset, pushParams);
+                    pp.pushParams.push_back({X64PushParamType::Reg, ip->c.u32});
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memset, pp.pushParams);
             }
             break;
         case ByteCodeOp::IntrinsicMemMove:
-            pushParams.clear();
-            pushParams.push_back({X64PushParamType::Reg, ip->a.u32});
-            pushParams.push_back({X64PushParamType::Reg, ip->b.u32});
+            pp.pushParams.clear();
+            pp.pushParams.push_back({X64PushParamType::Reg, ip->a.u32});
+            pp.pushParams.push_back({X64PushParamType::Reg, ip->b.u32});
             if (ip->flags & BCI_IMM_C)
-                pushParams.push_back({X64PushParamType::Imm, ip->c.u64});
+                pp.pushParams.push_back({X64PushParamType::Imm, ip->c.u64});
             else
-                pushParams.push_back({X64PushParamType::Reg, ip->c.u32});
-            emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memmove, pushParams);
+                pp.pushParams.push_back({X64PushParamType::Reg, ip->c.u32});
+            emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memmove, pp.pushParams);
             break;
         case ByteCodeOp::IntrinsicMemCmp:
-            pushParams.clear();
-            pushParams.push_back({X64PushParamType::Reg, ip->b.u32});
-            pushParams.push_back({X64PushParamType::Reg, ip->c.u32});
+            pp.pushParams.clear();
+            pp.pushParams.push_back({X64PushParamType::Reg, ip->b.u32});
+            pp.pushParams.push_back({X64PushParamType::Reg, ip->c.u32});
             if (ip->flags & BCI_IMM_D)
-                pushParams.push_back({X64PushParamType::Imm, ip->d.u64});
+                pp.pushParams.push_back({X64PushParamType::Imm, ip->d.u64});
             else
-                pushParams.push_back({X64PushParamType::Reg, ip->d.u32});
-            emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memcmp, pushParams, regOffset(ip->a.u32));
+                pp.pushParams.push_back({X64PushParamType::Reg, ip->d.u32});
+            emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memcmp, pp.pushParams, regOffset(ip->a.u32));
             break;
 
         case ByteCodeOp::IntrinsicStrLen:
@@ -2485,22 +2484,22 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::InternalGetTlsPtr:
-            pushParams.clear();
-            pushParams.push_back({X64PushParamType::RelocV, pp.symTls_threadLocalId});
-            pushParams.push_back({X64PushParamType::Imm64, module->tlsSegment.totalCount});
-            pushParams.push_back({X64PushParamType::RelocAddr, pp.symTLSIndex});
-            emitInternalCallExt(pp, moduleToGen, g_LangSpec->name__tlsGetPtr, pushParams, regOffset(ip->a.u32));
+            pp.pushParams.clear();
+            pp.pushParams.push_back({X64PushParamType::RelocV, pp.symTls_threadLocalId});
+            pp.pushParams.push_back({X64PushParamType::Imm64, module->tlsSegment.totalCount});
+            pp.pushParams.push_back({X64PushParamType::RelocAddr, pp.symTLSIndex});
+            emitInternalCallExt(pp, moduleToGen, g_LangSpec->name__tlsGetPtr, pp.pushParams, regOffset(ip->a.u32));
             break;
         case ByteCodeOp::IntrinsicGetContext:
-            pushParams.clear();
-            pushParams.push_back({X64PushParamType::RelocV, pp.symPI_contextTlsId});
-            emitInternalCallExt(pp, moduleToGen, g_LangSpec->name__tlsGetValue, pushParams, regOffset(ip->a.u32));
+            pp.pushParams.clear();
+            pp.pushParams.push_back({X64PushParamType::RelocV, pp.symPI_contextTlsId});
+            emitInternalCallExt(pp, moduleToGen, g_LangSpec->name__tlsGetValue, pp.pushParams, regOffset(ip->a.u32));
             break;
         case ByteCodeOp::IntrinsicSetContext:
-            pushParams.clear();
-            pushParams.push_back({X64PushParamType::RelocV, pp.symPI_contextTlsId});
-            pushParams.push_back({X64PushParamType::Reg, ip->a.u32});
-            emitInternalCallExt(pp, moduleToGen, g_LangSpec->name__tlsSetValue, pushParams);
+            pp.pushParams.clear();
+            pp.pushParams.push_back({X64PushParamType::RelocV, pp.symPI_contextTlsId});
+            pp.pushParams.push_back({X64PushParamType::Reg, ip->a.u32});
+            emitInternalCallExt(pp, moduleToGen, g_LangSpec->name__tlsSetValue, pp.pushParams);
             break;
 
         case ByteCodeOp::IntrinsicGetProcessInfos:
@@ -3506,15 +3505,15 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IntrinsicF32x2:
         {
-            pushParams.clear();
+            pp.pushParams.clear();
             if (ip->flags & BCI_IMM_B)
-                pushParams.push_back({X64PushParamType::Imm, ip->b.u32});
+                pp.pushParams.push_back({X64PushParamType::Imm, ip->b.u32});
             else
-                pushParams.push_back({X64PushParamType::Reg, ip->b.u32});
+                pp.pushParams.push_back({X64PushParamType::Reg, ip->b.u32});
             if (ip->flags & BCI_IMM_C)
-                pushParams.push_back({X64PushParamType::Imm, ip->c.u32});
+                pp.pushParams.push_back({X64PushParamType::Imm, ip->c.u32});
             else
-                pushParams.push_back({X64PushParamType::Reg, ip->c.u32});
+                pp.pushParams.push_back({X64PushParamType::Reg, ip->c.u32});
 
             switch ((TokenId) ip->d.u32)
             {
@@ -3532,10 +3531,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
 
             case TokenId::IntrinsicPow:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_powf, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_powf, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicATan2:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_atan2f, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_atan2f, pp.pushParams, regOffset(ip->a.u32));
                 break;
             default:
                 ok = false;
@@ -3546,15 +3545,15 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         }
         case ByteCodeOp::IntrinsicF64x2:
         {
-            pushParams.clear();
+            pp.pushParams.clear();
             if (ip->flags & BCI_IMM_B)
-                pushParams.push_back({X64PushParamType::Imm, ip->b.u64});
+                pp.pushParams.push_back({X64PushParamType::Imm, ip->b.u64});
             else
-                pushParams.push_back({X64PushParamType::Reg, ip->b.u32});
+                pp.pushParams.push_back({X64PushParamType::Reg, ip->b.u32});
             if (ip->flags & BCI_IMM_C)
-                pushParams.push_back({X64PushParamType::Imm, ip->c.u64});
+                pp.pushParams.push_back({X64PushParamType::Imm, ip->c.u64});
             else
-                pushParams.push_back({X64PushParamType::Reg, ip->c.u32});
+                pp.pushParams.push_back({X64PushParamType::Reg, ip->c.u32});
 
             switch ((TokenId) ip->d.u32)
             {
@@ -3572,10 +3571,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
 
             case TokenId::IntrinsicPow:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_pow, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_pow, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicATan2:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_atan2, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_atan2, pp.pushParams, regOffset(ip->a.u32));
                 break;
             default:
                 ok = false;
@@ -3587,11 +3586,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IntrinsicF32x1:
         {
-            pushParams.clear();
+            pp.pushParams.clear();
             if (ip->flags & BCI_IMM_B)
-                pushParams.push_back({X64PushParamType::Imm, ip->b.u32});
+                pp.pushParams.push_back({X64PushParamType::Imm, ip->b.u32});
             else
-                pushParams.push_back({X64PushParamType::Reg, ip->b.u32});
+                pp.pushParams.push_back({X64PushParamType::Reg, ip->b.u32});
 
             switch ((TokenId) ip->d.u32)
             {
@@ -3609,58 +3608,58 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
 
             case TokenId::IntrinsicSin:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_sinf, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_sinf, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicCos:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_cosf, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_cosf, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicTan:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_tanf, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_tanf, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicSinh:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_sinhf, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_sinhf, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicCosh:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_coshf, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_coshf, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicTanh:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_tanhf, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_tanhf, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicASin:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_asinf, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_asinf, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicACos:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_acosf, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_acosf, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicATan:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_atanf, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_atanf, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicLog:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_logf, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_logf, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicLog2:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_log2f, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_log2f, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicLog10:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_log10f, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_log10f, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicFloor:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_floorf, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_floorf, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicCeil:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_ceilf, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_ceilf, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicTrunc:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_truncf, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_truncf, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicRound:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_roundf, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_roundf, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicExp:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_expf, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_expf, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicExp2:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_exp2f, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_exp2f, pp.pushParams, regOffset(ip->a.u32));
                 break;
             default:
                 ok = false;
@@ -3673,11 +3672,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IntrinsicF64x1:
         {
-            pushParams.clear();
+            pp.pushParams.clear();
             if (ip->flags & BCI_IMM_B)
-                pushParams.push_back({X64PushParamType::Imm, ip->b.u64});
+                pp.pushParams.push_back({X64PushParamType::Imm, ip->b.u64});
             else
-                pushParams.push_back({X64PushParamType::Reg, ip->b.u32});
+                pp.pushParams.push_back({X64PushParamType::Reg, ip->b.u32});
 
             switch ((TokenId) ip->d.u32)
             {
@@ -3695,58 +3694,58 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
 
             case TokenId::IntrinsicSin:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_sin, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_sin, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicCos:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_cos, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_cos, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicTan:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_tan, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_tan, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicSinh:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_sinh, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_sinh, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicCosh:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_cosh, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_cosh, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicTanh:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_tanh, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_tanh, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicASin:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_asin, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_asin, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicACos:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_acos, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_acos, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicATan:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_atan, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_atan, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicLog:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_log, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_log, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicLog2:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_log2, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_log2, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicLog10:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_log10, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_log10, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicFloor:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_floor, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_floor, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicCeil:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_ceil, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_ceil, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicTrunc:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_trunc, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_trunc, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicRound:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_round, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_round, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicExp:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_exp, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_exp, pp.pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicExp2:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_exp2, pushParams, regOffset(ip->a.u32));
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_exp2, pp.pushParams, regOffset(ip->a.u32));
                 break;
             default:
                 ok = false;

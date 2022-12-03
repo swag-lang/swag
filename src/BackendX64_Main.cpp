@@ -37,11 +37,10 @@ bool BackendX64::emitOS(const BuildParameters& buildParameters)
 
 bool BackendX64::emitMain(const BuildParameters& buildParameters)
 {
-    int                        ct              = buildParameters.compileType;
-    int                        precompileIndex = buildParameters.precompileIndex;
-    auto&                      pp              = *perThread[ct][precompileIndex];
-    auto&                      concat          = pp.concat;
-    VectorNative<X64PushParam> pushParams;
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = *perThread[ct][precompileIndex];
+    auto& concat          = pp.concat;
 
     concat.align(16);
     auto startAddress = concat.totalCount();
@@ -112,10 +111,10 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     pp.emit_Store32_Immediate(0, (uint32_t) SwagBackendGenType::X64, RCX);
 
     // Set default context in TLS
-    pushParams.clear();
-    pushParams.push_back({X64PushParamType::RelocV, pp.symPI_contextTlsId});
-    pushParams.push_back({X64PushParamType::RelocV, pp.symPI_defaultContext});
-    emitInternalCallExt(pp, module, g_LangSpec->name__tlsSetValue, pushParams);
+    pp.pushParams.clear();
+    pp.pushParams.push_back({X64PushParamType::RelocV, pp.symPI_contextTlsId});
+    pp.pushParams.push_back({X64PushParamType::RelocV, pp.symPI_defaultContext});
+    emitInternalCallExt(pp, module, g_LangSpec->name__tlsSetValue, pp.pushParams);
 
     // Setup runtime
     emitCall(pp, g_LangSpec->name__setupRuntime);
@@ -131,14 +130,14 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         auto nameLib = nameDown;
         nameLib += Backend::getOutputFileExtension(g_CommandLine->target, BuildCfgBackendKind::DynamicLib);
 
-        pushParams.clear();
-        pushParams.push_back({X64PushParamType::GlobalString, (uint64_t) nameLib.c_str()});
-        pushParams.push_back({X64PushParamType::Imm, (uint64_t) nameLib.length()});
-        emitInternalCallExt(pp, module, g_LangSpec->name__loaddll, pushParams);
+        pp.pushParams.clear();
+        pp.pushParams.push_back({X64PushParamType::GlobalString, (uint64_t) nameLib.c_str()});
+        pp.pushParams.push_back({X64PushParamType::Imm, (uint64_t) nameLib.length()});
+        emitInternalCallExt(pp, module, g_LangSpec->name__loaddll, pp.pushParams);
     }
 
-    pushParams.clear();
-    pushParams.push_back({X64PushParamType::RelocAddr, pp.symPI_processInfos});
+    pp.pushParams.clear();
+    pp.pushParams.push_back({X64PushParamType::RelocAddr, pp.symPI_processInfos});
 
     // Call to global init of all dependencies
     for (int i = 0; i < moduleDependencies.size(); i++)
@@ -148,12 +147,12 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         if (!dep->module->isSwag)
             continue;
         auto nameFct = dep->module->getGlobalPrivFct(g_LangSpec->name_globalInit);
-        emitInternalCallExt(pp, module, nameFct, pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
+        emitInternalCallExt(pp, module, nameFct, pp.pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
     }
 
     // Call to global init of this module
     auto thisInit = module->getGlobalPrivFct(g_LangSpec->name_globalInit);
-    emitInternalCallExt(pp, module, thisInit, pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
+    emitInternalCallExt(pp, module, thisInit, pp.pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
 
     // Call to global premain of all dependencies
     for (int i = 0; i < moduleDependencies.size(); i++)
@@ -164,12 +163,12 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
             continue;
 
         auto nameFct = dep->module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
-        emitInternalCallExt(pp, module, nameFct, pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
+        emitInternalCallExt(pp, module, nameFct, pp.pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
     }
 
     // Call to global premain of this module
     thisInit = module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
-    emitInternalCallExt(pp, module, thisInit, pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
+    emitInternalCallExt(pp, module, thisInit, pp.pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
 
     // Call to test functions
     if (buildParameters.compileType == BackendCompileType::Test && !module->byteCodeTestFunc.empty())
@@ -253,12 +252,11 @@ bool BackendX64::emitGetTypeTable(const BuildParameters& buildParameters)
 
 bool BackendX64::emitGlobalPreMain(const BuildParameters& buildParameters)
 {
-    int                        ct              = buildParameters.compileType;
-    int                        precompileIndex = buildParameters.precompileIndex;
-    auto&                      pp              = *perThread[ct][precompileIndex];
-    auto&                      concat          = pp.concat;
-    const auto&                cc              = g_CallConv[g_TypeMgr->typeInfoModuleCall->callConv];
-    VectorNative<X64PushParam> pushParams;
+    int         ct              = buildParameters.compileType;
+    int         precompileIndex = buildParameters.precompileIndex;
+    auto&       pp              = *perThread[ct][precompileIndex];
+    auto&       concat          = pp.concat;
+    const auto& cc              = g_CallConv[g_TypeMgr->typeInfoModuleCall->callConv];
 
     concat.align(16);
     auto startAddress = concat.totalCount();
@@ -283,11 +281,11 @@ bool BackendX64::emitGlobalPreMain(const BuildParameters& buildParameters)
     pp.emit_Store64_Indirect(0, cc.byRegisterInteger[0], RDI);
 
     // Copy process infos passed as a parameter to the process info struct of this module
-    pushParams.clear();
-    pushParams.push_back({X64PushParamType::RelocAddr, pp.symPI_processInfos});
-    pushParams.push_back({X64PushParamType::Reg, 0});
-    pushParams.push_back({X64PushParamType::Imm, sizeof(SwagProcessInfos)});
-    emitInternalCallExt(pp, module, g_LangSpec->name_memcpy, pushParams);
+    pp.pushParams.clear();
+    pp.pushParams.push_back({X64PushParamType::RelocAddr, pp.symPI_processInfos});
+    pp.pushParams.push_back({X64PushParamType::Reg, 0});
+    pp.pushParams.push_back({X64PushParamType::Imm, sizeof(SwagProcessInfos)});
+    emitInternalCallExt(pp, module, g_LangSpec->name_memcpy, pp.pushParams);
 
     // Call to #premain functions
     for (auto bc : module->byteCodePreMainFunc)
@@ -309,12 +307,11 @@ bool BackendX64::emitGlobalPreMain(const BuildParameters& buildParameters)
 
 bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
 {
-    int                        ct              = buildParameters.compileType;
-    int                        precompileIndex = buildParameters.precompileIndex;
-    auto&                      pp              = *perThread[ct][precompileIndex];
-    auto&                      concat          = pp.concat;
-    const auto&                cc              = g_CallConv[g_TypeMgr->typeInfoModuleCall->callConv];
-    VectorNative<X64PushParam> pushParams;
+    int         ct              = buildParameters.compileType;
+    int         precompileIndex = buildParameters.precompileIndex;
+    auto&       pp              = *perThread[ct][precompileIndex];
+    auto&       concat          = pp.concat;
+    const auto& cc              = g_CallConv[g_TypeMgr->typeInfoModuleCall->callConv];
 
     concat.align(16);
     auto startAddress = concat.totalCount();
@@ -339,11 +336,11 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     pp.emit_Store64_Indirect(0, cc.byRegisterInteger[0], RDI);
 
     // Copy process infos passed as a parameter to the process info struct of this module
-    pushParams.clear();
-    pushParams.push_back({X64PushParamType::RelocAddr, pp.symPI_processInfos});
-    pushParams.push_back({X64PushParamType::Reg, 0});
-    pushParams.push_back({X64PushParamType::Imm, sizeof(SwagProcessInfos)});
-    emitInternalCallExt(pp, module, g_LangSpec->name_memcpy, pushParams);
+    pp.pushParams.clear();
+    pp.pushParams.push_back({X64PushParamType::RelocAddr, pp.symPI_processInfos});
+    pp.pushParams.push_back({X64PushParamType::Reg, 0});
+    pp.pushParams.push_back({X64PushParamType::Imm, sizeof(SwagProcessInfos)});
+    emitInternalCallExt(pp, module, g_LangSpec->name_memcpy, pp.pushParams);
 
     // Thread local storage
     pp.emit_Symbol_RelocationAddr(RDI, pp.symTls_threadLocalId, 0);
