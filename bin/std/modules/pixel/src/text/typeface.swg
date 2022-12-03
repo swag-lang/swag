@@ -114,7 +114,7 @@ public impl TypeFace
 
     private mtd transform(embolden: u32 = 0) throw
     {
-        emb := forceBold ? 2 : 0
+        emb := forceBold ? 4 : 0
         emb += embolden
         if emb
             FT_Outline_Embolden(&face.glyph.outline, cast(FT_Pos) emb * 64)

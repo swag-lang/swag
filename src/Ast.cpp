@@ -614,17 +614,38 @@ namespace Ast
         Utf8 result;
         for (int i = 0; i < (int) params.size(); i++)
         {
-            if (i)
-                result += ", ";
             auto param = params[i];
-            if (param->namedParam != param->typeInfo->name)
-            {
-                if (result.empty())
-                    result = "with ";
-                result += param->namedParam;
-                result += " = ";
-                result += param->typeInfo->name;
-            }
+            if (param->namedParam == param->typeInfo->name)
+                continue;
+
+            if (result.empty())
+                result = "with ";
+            else
+                result += ", ";
+            result += param->namedParam;
+            result += " = ";
+            result += param->typeInfo->name;
+        }
+
+        return result;
+    }
+
+    vector<Utf8> computeGenericParametersReplacement(map<Utf8, TypeInfo*>& replace)
+    {
+        if (!replace.size())
+            return {};
+
+        vector<Utf8> result;
+        Utf8         remark;
+        for (auto p : replace)
+        {
+            // Can occur in case of constants (like string for example)
+            if (p.first == p.second->getDisplayName())
+                continue;
+
+            remark = "with ";
+            remark += Fmt("%s = %s", p.first.c_str(), p.second->getDisplayNameC());
+            result.push_back(remark);
         }
 
         return result;

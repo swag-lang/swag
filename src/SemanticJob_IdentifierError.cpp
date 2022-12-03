@@ -458,24 +458,9 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         result0.push_back(diag);
 
         // Generic types
-        if (match.genericReplaceTypes.size())
-        {
-            Utf8 remark = "with ";
-            bool first  = true;
-            for (auto p : match.genericReplaceTypes)
-            {
-                // Can arrive in case of constants (like string for example)
-                if (p.first == p.second->getDisplayName())
-                    continue;
-
-                if (!first)
-                    remark += ", ";
-                first = false;
-                remark += Fmt("%s = %s", p.first.c_str(), p.second->getDisplayNameC());
-            }
-
-            note->remarks.push_back(remark);
-        }
+        auto remark = Ast::computeGenericParametersReplacement(match.genericReplaceTypes);
+        if (!remark.empty())
+            note->remarks.insert(note->remarks.end(), remark.begin(), remark.end());
 
         // A more specific message ?
         Utf8 castMsg, castHint;

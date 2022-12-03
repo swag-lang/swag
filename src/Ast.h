@@ -18,15 +18,16 @@ namespace Ast
     void addChildFront(AstNode* parent, AstNode* child);
     int  findChildIndex(AstNode* parent, AstNode* child);
 
-    void     visit(AstNode* root, const function<void(AstNode*)>& fctor);
-    bool     visit(JobContext* context, AstNode* root, const function<bool(JobContext*, AstNode*)>& fctor);
-    void     setForceConstType(AstNode* node);
-    Utf8     enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg, bool scoped = true);
-    Utf8     literalToString(TypeInfo* typeInfo, const ComputedValue& value);
-    void     normalizeIdentifierName(Utf8& name);
-    AstNode* cloneRaw(AstNode* source, AstNode* parent, uint64_t forceFlags = 0, uint64_t removeFlags = 0);
-    AstNode* clone(AstNode* source, AstNode* parent, uint64_t forceFlags = 0, uint64_t removeFlags = 0);
-    Utf8     computeGenericParametersReplacement(VectorNative<TypeInfoParam*>& params);
+    void         visit(AstNode* root, const function<void(AstNode*)>& fctor);
+    bool         visit(JobContext* context, AstNode* root, const function<bool(JobContext*, AstNode*)>& fctor);
+    void         setForceConstType(AstNode* node);
+    Utf8         enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg, bool scoped = true);
+    Utf8         literalToString(TypeInfo* typeInfo, const ComputedValue& value);
+    void         normalizeIdentifierName(Utf8& name);
+    AstNode*     cloneRaw(AstNode* source, AstNode* parent, uint64_t forceFlags = 0, uint64_t removeFlags = 0);
+    AstNode*     clone(AstNode* source, AstNode* parent, uint64_t forceFlags = 0, uint64_t removeFlags = 0);
+    Utf8         computeGenericParametersReplacement(VectorNative<TypeInfoParam*>& params);
+    vector<Utf8> computeGenericParametersReplacement(map<Utf8, TypeInfo*>& replace);
 
     Scope*             newScope(AstNode* owner, const Utf8& name, ScopeKind kind, Scope* parentScope, bool matchName = false);
     AstNode*           newNode(SourceFile* sourceFile, AstNodeKind kind, AstNode* parent, SyntaxJob* syntaxJob = nullptr);

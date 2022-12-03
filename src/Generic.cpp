@@ -288,7 +288,7 @@ TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeIn
     return typeInfo;
 }
 
-Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNode* newNode, bool waitSymbol)
+Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNode* newNode, bool waitSymbol, map<Utf8, TypeInfo*>& replaceTypes)
 {
     // Need to wait for the struct/function to be semantic resolved
     symbol->cptOverloads++;
@@ -307,7 +307,8 @@ Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNod
 
     // New context
     JobContext::ErrorContext expNode;
-    expNode.node = context->node;
+    expNode.node         = context->node;
+    expNode.replaceTypes = replaceTypes;
     if (expNode.node->extension && expNode.node->extension->misc && expNode.node->extension->misc->exportNode)
         expNode.node = expNode.node->extension->misc->exportNode;
     expNode.type = JobContext::ErrorContextType::Generic;
@@ -403,7 +404,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     // Replace generic values in the struct generic parameters
     SWAG_CHECK(updateGenericParameters(context, false, true, newType->genericParameters, structNode->genericParameters->childs, genericParameters, match));
 
-    auto structJob = end(context, context->job, sourceSymbol, structNode, true);
+    auto structJob = end(context, context->job, sourceSymbol, structNode, true, cloneContext.replaceTypes);
 
     instantiateSpecialFunc(context, structJob, cloneContext, &newType->opUserDropFct);
     instantiateSpecialFunc(context, structJob, cloneContext, &newType->opUserPostCopyFct);
@@ -485,7 +486,7 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, C
     newTypeFunc->forceComputeName();
 
     ScopedLock lk(newFunc->resolvedSymbolName->mutex);
-    auto       newJob = end(context, context->job, newFunc->resolvedSymbolName, newFunc, false);
+    auto       newJob = end(context, context->job, newFunc->resolvedSymbolName, newFunc, false, cloneContext.replaceTypes);
     structJob->dependentJobs.add(newJob);
 }
 
@@ -624,7 +625,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     SWAG_CHECK(updateGenericParameters(context, true, true, newTypeFunc->genericParameters, newFunc->genericParameters->childs, genericParameters, match));
     newTypeFunc->forceComputeName();
 
-    auto job = end(context, context->job, match.symbolName, newFunc, true);
+    auto job = end(context, context->job, match.symbolName, newFunc, true, cloneContext.replaceTypes);
     context->job->jobsToAdd.push_back(job);
 
     return true;

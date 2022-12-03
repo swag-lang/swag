@@ -259,7 +259,7 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
                     break;
                 if (first)
                 {
-                    auto note  = new Diagnostic{first, exp.msg, exp.level};
+                    auto note  = new Diagnostic{first, first->token, exp.msg, exp.level};
                     note->hint = exp.hint;
                     notes.push_back(note);
                 }
@@ -338,8 +338,13 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
                     msg = Fmt(Nte(Nte0002), kindName, kindArticle, name.c_str());
                 else
                     msg = Fmt(Nte(Nte0003), kindName);
-                auto note  = new Diagnostic{first, msg, DiagnosticLevel::Note};
+                auto note  = new Diagnostic{first, first->token, msg, DiagnosticLevel::Note};
                 note->hint = hint;
+
+                auto remark = Ast::computeGenericParametersReplacement(exp.replaceTypes);
+                if (!remark.empty())
+                    note->remarks.insert(note->remarks.end(), remark.begin(), remark.end());
+
                 notes.push_back(note);
             }
         }

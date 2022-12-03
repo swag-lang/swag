@@ -66,12 +66,13 @@ struct JobContext
 
     struct ErrorContext
     {
-        AstNode*         node = nullptr;
-        ErrorContextType type = ErrorContextType::Node;
-        DiagnosticLevel  level;
-        Utf8             msg  = "";
-        Utf8             hint = "";
-        bool             hide = false;
+        AstNode*             node = nullptr;
+        ErrorContextType     type = ErrorContextType::Node;
+        DiagnosticLevel      level;
+        Utf8                 msg  = "";
+        Utf8                 hint = "";
+        map<Utf8, TypeInfo*> replaceTypes;
+        bool                 hide = false;
     };
 
     vector<ErrorContext> errorContextStack;
