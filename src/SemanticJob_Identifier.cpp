@@ -277,7 +277,7 @@ bool SemanticJob::createTmpVarStruct(SemanticContext* context, AstIdentifier* id
     auto varNode = Ast::newVarDecl(sourceFile, Fmt("__1tmp_%d", g_UniqueID.fetch_add(1)), varParent);
 
     // Inherit alternative scopes.
-    if (identifier->parent->extension)
+    if (identifier->parent->extension && identifier->parent->extension->misc)
         varNode->addAlternativeScopes(identifier->parent->extension->misc->alternativeScopes);
 
     // If we are in a const declaration, that temporary variable should be a const too...
@@ -3529,8 +3529,8 @@ bool SemanticJob::solveSelectIf(SemanticContext* context, OneMatch* oneMatch, As
         // To avoid a race condition with the job that is currently dealing with the funcDecl,
         // we will reevaluate it with a semanticAfterFct trick
         funcDecl->content->allocateExtension(ExtensionKind::Semantic);
-        SWAG_ASSERT(!funcDecl->content->extension->misc->semanticAfterFct || funcDecl->content->extension->misc->semanticAfterFct == SemanticJob::resolveFuncDeclAfterSI);
-        funcDecl->content->extension->misc->semanticAfterFct = SemanticJob::resolveFuncDeclAfterSI;
+        SWAG_ASSERT(!funcDecl->content->extension->semantic->semanticAfterFct || funcDecl->content->extension->semantic->semanticAfterFct == SemanticJob::resolveFuncDeclAfterSI);
+        funcDecl->content->extension->semantic->semanticAfterFct = SemanticJob::resolveFuncDeclAfterSI;
 
         g_ThreadMgr.addJob(job);
     }
@@ -3974,6 +3974,7 @@ void SemanticJob::collectAlternativeScopes(AstNode* startNode, VectorNative<Alte
     VectorNative<AlternativeScope> toAdd;
     VectorNative<Scope*>           done;
 
+    if (startNode->extension && startNode->extension->misc)
     {
         SharedLock lk(startNode->extension->misc->mutexAltScopes);
         toAdd.append(startNode->extension->misc->alternativeScopes);
@@ -3989,7 +3990,10 @@ void SemanticJob::collectAlternativeScopes(AstNode* startNode, VectorNative<Alte
             done.push_back(it0.scope);
             addAlternativeScopeOnce(scopes, it0.scope, it0.flags);
 
-            if (it0.scope && it0.scope->kind == ScopeKind::Struct && it0.scope->owner->extension)
+            if (it0.scope &&
+                it0.scope->kind == ScopeKind::Struct &&
+                it0.scope->owner->extension &&
+                it0.scope->owner->extension->misc)
             {
                 // We register the sub scope with the original "node" (top level), because the original node will in the end
                 // become the dependentVar node, and will be converted by cast to the correct type.
@@ -4010,6 +4014,7 @@ void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<A
     VectorNative<AlternativeScopeVar> toAdd;
     VectorNative<Scope*>              done;
 
+    if(startNode->extension && startNode->extension->misc)
     {
         SharedLock lk(startNode->extension->misc->mutexAltScopes);
         toAdd.append(startNode->extension->misc->alternativeScopesVars);
@@ -4026,7 +4031,7 @@ void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<A
             addAlternativeScopeOnce(scopes, it0.scope, it0.flags);
             scopesVars.push_back(it0);
 
-            if (it0.scope && it0.scope->kind == ScopeKind::Struct && it0.scope->owner->extension)
+            if (it0.scope && it0.scope->kind == ScopeKind::Struct && it0.scope->owner->extension && it0.scope->owner->extension->misc)
             {
                 // We register the sub scope with the original "node" (top level), because the original node will in the end
                 // become the dependentVar node, and will be converted by cast to the correct type.

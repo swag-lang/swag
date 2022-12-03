@@ -886,7 +886,7 @@ bool SyntaxJob::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** resu
 
             node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
             node->allocateExtension(ExtensionKind::Semantic);
-            node->extension->misc->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
+            node->extension->semantic->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
 
             AstNode* funcNode;
             SWAG_CHECK(doFuncDecl(node, &funcNode, TokenId::CompilerGeneratedRunExp));
@@ -1384,7 +1384,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result, AstWith* w
             varNode->token.startLocation = leftNode->childs.front()->token.startLocation;
             varNode->token.endLocation   = leftNode->childs.back()->token.endLocation;
             varNode->allocateExtension(ExtensionKind::Semantic);
-            varNode->extension->misc->semanticAfterFct = SemanticJob::resolveTupleUnpackBefore;
+            varNode->extension->semantic->semanticAfterFct = SemanticJob::resolveTupleUnpackBefore;
 
             // And reference that variable, in the form value = __tmp_0.item?
             int idx = 0;
@@ -1426,7 +1426,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result, AstWith* w
 
             auto front = affectNode->childs.front();
             front->allocateExtension(ExtensionKind::Semantic);
-            front->extension->misc->semanticAfterFct = SemanticJob::resolveAfterAffectLeft;
+            front->extension->semantic->semanticAfterFct = SemanticJob::resolveAfterAffectLeft;
 
             if (affectNode->token.id == TokenId::SymEqual)
                 SWAG_CHECK(doMoveExpression(affectNode->token, affectNode));

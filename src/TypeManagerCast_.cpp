@@ -2253,8 +2253,8 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
                     {
                         fromNode->allocateExtension(ExtensionKind::Collect);
                         fromNode->extension->misc->castOffset = it.offset;
-                        fromNode->castedTypeInfo        = fromNode->typeInfo;
-                        fromNode->typeInfo              = toType;
+                        fromNode->castedTypeInfo              = fromNode->typeInfo;
+                        fromNode->typeInfo                    = toType;
                     }
 
                     continue;
@@ -2267,8 +2267,8 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
 
                 fromNode->allocateExtension(ExtensionKind::Collect);
                 fromNode->extension->misc->castOffset = it.offset;
-                fromNode->castedTypeInfo        = fromNode->typeInfo;
-                fromNode->typeInfo              = toType;
+                fromNode->castedTypeInfo              = fromNode->typeInfo;
+                fromNode->typeInfo                    = toType;
                 continue;
             }
         }
@@ -2469,8 +2469,8 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
                 fromNode->allocateExtension(ExtensionKind::Collect);
                 fromNode->extension->misc->castOffset = itfRef.fieldOffset;
                 fromNode->extension->misc->castItf    = itfRef.itf;
-                fromNode->castedTypeInfo        = fromType;
-                fromNode->typeInfo              = toTypeItf;
+                fromNode->castedTypeInfo              = fromType;
+                fromNode->typeInfo                    = toTypeItf;
             }
 
             return true;
@@ -3295,12 +3295,12 @@ bool TypeManager::convertLiteralTupleToStructType(SemanticContext* context, Type
     Ast::addChildBack(newParent, structNode);
     structNode->originalParent = newParent;
     structNode->allocateExtension(ExtensionKind::Semantic);
-    structNode->extension->misc->semanticBeforeFct = SemanticJob::preResolveGeneratedStruct;
+    structNode->extension->semantic->semanticBeforeFct = SemanticJob::preResolveGeneratedStruct;
 
     auto contentNode    = Ast::newNode(sourceFile, AstNodeKind::TupleContent, structNode, nullptr);
     structNode->content = contentNode;
     contentNode->allocateExtension(ExtensionKind::Semantic);
-    contentNode->extension->misc->semanticBeforeFct = SemanticJob::preResolveStructContent;
+    contentNode->extension->semantic->semanticBeforeFct = SemanticJob::preResolveStructContent;
 
     Utf8 name = sourceFile->scopeFile->name + "_tuple_";
     name += Fmt("%d", g_UniqueID.fetch_add(1));

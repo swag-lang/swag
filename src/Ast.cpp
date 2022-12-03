@@ -464,8 +464,8 @@ namespace Ast
     {
         auto node = Ast::newNode<AstInline>(syntaxJob, AstNodeKind::Inline, sourceFile, parent);
         node->allocateExtension(ExtensionKind::Semantic);
-        node->extension->misc->semanticAfterFct  = SemanticJob::resolveInlineAfter;
-        node->extension->misc->semanticBeforeFct = SemanticJob::resolveInlineBefore;
+        node->extension->semantic->semanticAfterFct  = SemanticJob::resolveInlineAfter;
+        node->extension->semantic->semanticBeforeFct = SemanticJob::resolveInlineBefore;
         node->allocateExtension(ExtensionKind::ByteCode);
         node->extension->bytecode->byteCodeBeforeFct = ByteCodeGenJob::emitInlineBefore;
         node->byteCodeFct                            = ByteCodeGenJob::emitInline;
@@ -555,9 +555,9 @@ namespace Ast
     {
         auto node = Ast::newNode<AstIdentifierRef>(syntaxJob, AstNodeKind::IdentifierRef, sourceFile, parent);
         node->allocateExtension(ExtensionKind::Semantic);
-        node->extension->misc->semanticBeforeFct = SemanticJob::preResolveIdentifierRef;
-        node->semanticFct                        = SemanticJob::resolveIdentifierRef;
-        node->byteCodeFct                        = ByteCodeGenJob::emitIdentifierRef;
+        node->extension->semantic->semanticBeforeFct = SemanticJob::preResolveIdentifierRef;
+        node->semanticFct                            = SemanticJob::resolveIdentifierRef;
+        node->byteCodeFct                            = ByteCodeGenJob::emitIdentifierRef;
         return node;
     }
 

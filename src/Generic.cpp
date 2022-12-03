@@ -308,7 +308,7 @@ Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNod
     // New context
     JobContext::ErrorContext expNode;
     expNode.node = context->node;
-    if (expNode.node->extension && expNode.node->extension->misc->exportNode)
+    if (expNode.node->extension && expNode.node->extension->misc && expNode.node->extension->misc->exportNode)
         expNode.node = expNode.node->extension->misc->exportNode;
     expNode.type = JobContext::ErrorContextType::Generic;
     destCxt->errorContextStack.push_back(expNode);
@@ -588,12 +588,22 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
 
     // If we are in a function, inherit also the scopes from the function.
     // Be carreful that if the call is inside a #macro, we do not want to inherit the function (3550)
-    if (node->ownerFct && node->ownerFct->extension && node->ownerFct->extension->misc->alternativeScopes.size() && !node->findParent(AstNodeKind::CompilerMacro))
+    if (node->ownerFct &&
+        node->ownerFct->extension &&
+        node->ownerFct->extension->misc &&
+        node->ownerFct->extension->misc->alternativeScopes.size() &&
+        !node->findParent(AstNodeKind::CompilerMacro))
+    {
         newFunc->addAlternativeScopes(node->ownerFct->extension->misc->alternativeScopes);
+    }
 
     // Inherit alternative scopes from the generic function
-    if (funcNode->extension && funcNode->extension->misc->alternativeScopes.size())
+    if (funcNode->extension &&
+        funcNode->extension->misc &&
+        funcNode->extension->misc->alternativeScopes.size())
+    {
         newFunc->addAlternativeScopes(funcNode->extension->misc->alternativeScopes);
+    }
 
     // Generate and initialize a new type if the type is still generic
     // The type is still generic if the doTypeSubstitution didn't find any type to change

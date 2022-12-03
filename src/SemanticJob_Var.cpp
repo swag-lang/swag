@@ -127,7 +127,7 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
 
     auto contentNode = Ast::newNode(sourceFile, AstNodeKind::TupleContent, structNode);
     contentNode->allocateExtension(ExtensionKind::Semantic);
-    contentNode->extension->misc->semanticBeforeFct = SemanticJob::preResolveStructContent;
+    contentNode->extension->semantic->semanticBeforeFct = SemanticJob::preResolveStructContent;
     contentNode->addAlternativeScope(assignment->ownerScope);
     structNode->content = contentNode;
 
@@ -240,19 +240,19 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
 void SemanticJob::setVarDeclResolve(AstVarDecl* varNode)
 {
     varNode->allocateExtension(ExtensionKind::Semantic);
-    varNode->extension->misc->semanticBeforeFct = SemanticJob::resolveVarDeclBefore;
-    varNode->extension->misc->semanticAfterFct  = SemanticJob::resolveVarDeclAfter;
+    varNode->extension->semantic->semanticBeforeFct = SemanticJob::resolveVarDeclBefore;
+    varNode->extension->semantic->semanticAfterFct  = SemanticJob::resolveVarDeclAfter;
 
     if (varNode->assignment)
     {
         varNode->assignment->allocateExtension(ExtensionKind::Semantic);
-        varNode->assignment->extension->misc->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
+        varNode->assignment->extension->semantic->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
     }
 
     if (varNode->assignment && varNode->type)
     {
         varNode->type->allocateExtension(ExtensionKind::Semantic);
-        varNode->type->extension->misc->semanticAfterFct = SemanticJob::resolveVarDeclAfterType;
+        varNode->type->extension->semantic->semanticAfterFct = SemanticJob::resolveVarDeclAfterType;
     }
 }
 
@@ -913,7 +913,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 if (symbolFlags & (OVERLOAD_VAR_STRUCT | OVERLOAD_VAR_GLOBAL | OVERLOAD_CONSTANT))
                 {
                     symbolFlags |= OVERLOAD_INCOMPLETE | OVERLOAD_STRUCT_AFFECT;
-                    SWAG_ASSERT(node->extension && node->extension->misc->resolvedUserOpSymbolOverload);
+                    SWAG_ASSERT(node->extension && node->extension->misc && node->extension->misc->resolvedUserOpSymbolOverload);
                     if (!(node->extension->misc->resolvedUserOpSymbolOverload->node->attributeFlags & ATTRIBUTE_CONSTEXPR))
                     {
                         Diagnostic diag{node->assignment, Err(Err0906)};
@@ -1100,7 +1100,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->report({node, Fmt(Err(Err0311), node->typeInfo->getDisplayNameC())}));
 
             storageSegment = getSegmentForVar(context, node);
-            if (node->extension && node->extension->misc->resolvedUserOpSymbolOverload)
+            if (node->extension && node->extension->misc && node->extension->misc->resolvedUserOpSymbolOverload)
             {
                 storageOffset = 0;
                 symbolFlags |= OVERLOAD_INCOMPLETE;
@@ -1172,7 +1172,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             break;
         }
 
-        if (node->extension && node->extension->misc->resolvedUserOpSymbolOverload)
+        if (node->extension && node->extension->misc && node->extension->misc->resolvedUserOpSymbolOverload)
         {
             storageOffset = 0;
             symbolFlags |= OVERLOAD_INCOMPLETE;

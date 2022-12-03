@@ -191,7 +191,7 @@ void SemanticJob::inheritAttributesFromOwnerFunc(AstNode* child)
 
 bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result)
 {
-    auto attrUse = forNode->extension ? forNode->extension->misc->ownerAttrUse : nullptr;
+    auto attrUse = forNode->extension && forNode->extension->misc ? forNode->extension->misc->ownerAttrUse : nullptr;
     SWAG_CHECK(collectAttributes(context, forNode, result, attrUse));
     return true;
 }

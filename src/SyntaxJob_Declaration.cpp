@@ -21,8 +21,8 @@ bool SyntaxJob::doWith(AstNode* parent, AstNode** result)
     {
         SWAG_CHECK(doVarDecl(node, &id));
         SWAG_VERIFY(id->kind == AstNodeKind::VarDecl, error(id->childs.front(), Err(Err0487)));
-        SWAG_ASSERT(id->extension->misc->semanticAfterFct == SemanticJob::resolveVarDeclAfter);
-        id->extension->misc->semanticAfterFct = SemanticJob::resolveWithVarDeclAfter;
+        SWAG_ASSERT(id->extension->semantic->semanticAfterFct == SemanticJob::resolveVarDeclAfter);
+        id->extension->semantic->semanticAfterFct = SemanticJob::resolveWithVarDeclAfter;
         node->id.push_back(id->token.text);
     }
     else
@@ -38,22 +38,22 @@ bool SyntaxJob::doWith(AstNode* parent, AstNode** result)
         id->allocateExtension(ExtensionKind::Semantic);
         if (id->kind == AstNodeKind::IdentifierRef)
         {
-            SWAG_ASSERT(!id->extension->misc->semanticAfterFct);
-            id->extension->misc->semanticAfterFct = SemanticJob::resolveWith;
+            SWAG_ASSERT(!id->extension->semantic->semanticAfterFct);
+            id->extension->semantic->semanticAfterFct = SemanticJob::resolveWith;
             for (int i = 0; i < id->childs.size(); i++)
                 node->id.push_back(id->childs[i]->token.text);
         }
         else if (id->kind == AstNodeKind::VarDecl)
         {
-            SWAG_ASSERT(id->extension->misc->semanticAfterFct == SemanticJob::resolveVarDeclAfter);
-            id->extension->misc->semanticAfterFct = SemanticJob::resolveWithVarDeclAfter;
+            SWAG_ASSERT(id->extension->semantic->semanticAfterFct == SemanticJob::resolveVarDeclAfter);
+            id->extension->semantic->semanticAfterFct = SemanticJob::resolveWithVarDeclAfter;
             node->id.push_back(id->token.text);
         }
         else if (id->kind == AstNodeKind::AffectOp)
         {
             id = id->childs.front();
-            SWAG_ASSERT(id->extension->misc->semanticAfterFct == SemanticJob::resolveAfterAffectLeft);
-            id->extension->misc->semanticAfterFct = SemanticJob::resolveWithAfterAffectLeft;
+            SWAG_ASSERT(id->extension->semantic->semanticAfterFct == SemanticJob::resolveAfterAffectLeft);
+            id->extension->semantic->semanticAfterFct = SemanticJob::resolveWithAfterAffectLeft;
             for (int i = 0; i < id->childs.size(); i++)
                 node->id.push_back(id->childs[i]->token.text);
         }
@@ -345,7 +345,7 @@ bool SyntaxJob::doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeK
         statement->flags |= AST_NEED_SCOPE;
         statement->byteCodeFct = ByteCodeGenJob::emitDebugNop;
         statement->allocateExtension(ExtensionKind::Semantic);
-        statement->extension->misc->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
+        statement->extension->semantic->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
     }
 
     if (result)
@@ -375,7 +375,7 @@ bool SyntaxJob::doEmbeddedStatement(AstNode* parent, AstNode** result)
     if (result)
         *result = statement;
     statement->allocateExtension(ExtensionKind::Semantic);
-    statement->extension->misc->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
+    statement->extension->semantic->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
     statement->flags |= AST_NEED_SCOPE;
     newScope->owner = statement;
     SWAG_CHECK(doEmbeddedInstruction(statement));
@@ -457,8 +457,8 @@ void SyntaxJob::registerSubDecl(AstNode* subDecl)
                 // Only the last attribute of the block needs to have a semanticAfterFct, so
                 // we rest it, and we will set it later for the last child
                 // :AttrUseLastChild
-                if (child->extension)
-                    child->extension->misc->semanticAfterFct = nullptr;
+                if (child->extension && child->extension->semantic)
+                    child->extension->semantic->semanticAfterFct = nullptr;
 
                 // Need to add attributes in the correct order (top level first)
                 Ast::removeFromParent(child);
@@ -484,8 +484,8 @@ void SyntaxJob::registerSubDecl(AstNode* subDecl)
         // :AttrUseLastChild
         auto back = newAttrUse->childs.back();
         back->allocateExtension(ExtensionKind::Semantic);
-        SWAG_ASSERT(!back->extension->misc->semanticAfterFct);
-        back->extension->misc->semanticAfterFct = SemanticJob::resolveAttrUse;
+        SWAG_ASSERT(!back->extension->semantic->semanticAfterFct);
+        back->extension->semantic->semanticAfterFct = SemanticJob::resolveAttrUse;
 
         Ast::removeFromParent(newAttrUse);
         Ast::addChildBack(newParent, newAttrUse);

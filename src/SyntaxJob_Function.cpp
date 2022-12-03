@@ -280,7 +280,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, boo
             if (paramNode->assignment && paramNode->type)
             {
                 paramNode->type->allocateExtension(ExtensionKind::Semantic);
-                paramNode->type->extension->misc->semanticAfterFct = SemanticJob::resolveVarDeclAfterType;
+                paramNode->type->extension->semantic->semanticAfterFct = SemanticJob::resolveVarDeclAfterType;
             }
         }
 
@@ -424,7 +424,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     auto funcNode         = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent, 4);
     funcNode->semanticFct = SemanticJob::resolveFuncDecl;
     funcNode->allocateExtension(ExtensionKind::Semantic);
-    funcNode->extension->misc->semanticAfterFct = SemanticJob::sendCompilerMsgFuncDecl;
+    funcNode->extension->semantic->semanticAfterFct = SemanticJob::sendCompilerMsgFuncDecl;
     if (result)
         *result = funcNode;
 

@@ -108,7 +108,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                     return context->report({node, Fmt(Err(Err0281), realType->getDisplayNameC())});
 
                 VectorNative<AstNode*> params;
-                SWAG_ASSERT(!context->node->extension || !context->node->extension->misc->resolvedUserOpSymbolOverload);
+                SWAG_ASSERT(!context->node->extension || !context->node->extension->misc || !context->node->extension->misc->resolvedUserOpSymbolOverload);
 
                 // opCount
                 params.push_back(node);

@@ -351,9 +351,9 @@ JobResult SemanticJob::execute()
             context.result      = ContextResult::Done;
 
             if (node->extension &&
-                node->extension->misc &&
-                node->extension->misc->semanticBeforeFct &&
-                !node->extension->misc->semanticBeforeFct(&context))
+                node->extension->semantic &&
+                node->extension->semantic->semanticBeforeFct &&
+                !node->extension->semantic->semanticBeforeFct(&context))
             {
                 return JobResult::ReleaseJob;
             }
@@ -427,10 +427,10 @@ JobResult SemanticJob::execute()
             node->semanticState = AstNodeResolveState::PostChilds;
 
         case AstNodeResolveState::PostChilds:
-            if (node->extension && node->extension->misc && node->extension->misc->semanticAfterFct)
+            if (node->extension && node->extension->semantic && node->extension->semantic->semanticAfterFct)
             {
                 context.result = ContextResult::Done;
-                if (!node->extension->misc->semanticAfterFct(&context))
+                if (!node->extension->semantic->semanticAfterFct(&context))
                     return JobResult::ReleaseJob;
                 if (context.result == ContextResult::Pending)
                     return JobResult::KeepJobAlive;

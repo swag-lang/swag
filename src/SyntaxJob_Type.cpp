@@ -30,9 +30,9 @@ bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
     if (expr->kind == AstNodeKind::TypeExpression || expr->kind == AstNodeKind::TypeLambda || expr->kind == AstNodeKind::TypeClosure)
     {
         node->allocateExtension(ExtensionKind::Semantic);
-        node->extension->misc->semanticBeforeFct = SemanticJob::resolveTypeAliasBefore;
-        node->semanticFct                  = SemanticJob::resolveTypeAlias;
-        node->resolvedSymbolName           = currentScope->symTable.registerSymbolName(&context, node, SymbolKind::TypeAlias);
+        node->extension->semantic->semanticBeforeFct = SemanticJob::resolveTypeAliasBefore;
+        node->semanticFct                            = SemanticJob::resolveTypeAlias;
+        node->resolvedSymbolName                     = currentScope->symTable.registerSymbolName(&context, node, SymbolKind::TypeAlias);
     }
     else
     {
@@ -210,7 +210,7 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
     structNode->flags |= AST_PRIVATE;
     structNode->originalParent = parent;
     structNode->allocateExtension(ExtensionKind::Semantic);
-    structNode->extension->misc->semanticBeforeFct = SemanticJob::preResolveGeneratedStruct;
+    structNode->extension->semantic->semanticBeforeFct = SemanticJob::preResolveGeneratedStruct;
 
     if (anonymousStruct)
         structNode->structFlags |= STRUCTFLAG_ANONYMOUS;
@@ -220,7 +220,7 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
     auto contentNode    = Ast::newNode(sourceFile, AstNodeKind::TupleContent, structNode, this);
     structNode->content = contentNode;
     contentNode->allocateExtension(ExtensionKind::Semantic);
-    contentNode->extension->misc->semanticBeforeFct = SemanticJob::preResolveStructContent;
+    contentNode->extension->semantic->semanticBeforeFct = SemanticJob::preResolveStructContent;
 
     // Name
     Utf8 name = sourceFile->scopeFile->name + "_tuple_";
@@ -578,10 +578,10 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         name += Fmt("%d", g_UniqueID.fetch_add(1));
         alias->token.text = move(name);
         alias->allocateExtension(ExtensionKind::Semantic);
-        alias->extension->misc->semanticBeforeFct = SemanticJob::resolveTypeAliasBefore;
-        alias->semanticFct                  = SemanticJob::resolveTypeAlias;
-        alias->resolvedSymbolName           = currentScope->symTable.registerSymbolName(&context, alias, SymbolKind::TypeAlias);
-        node->identifier                    = Ast::newIdentifierRef(sourceFile, alias->token.text, node, this);
+        alias->extension->semantic->semanticBeforeFct = SemanticJob::resolveTypeAliasBefore;
+        alias->semanticFct                            = SemanticJob::resolveTypeAlias;
+        alias->resolvedSymbolName                     = currentScope->symTable.registerSymbolName(&context, alias, SymbolKind::TypeAlias);
+        node->identifier                              = Ast::newIdentifierRef(sourceFile, alias->token.text, node, this);
         SWAG_CHECK(doTypeExpressionLambdaClosure(alias));
 
         node->identifier->allocateExtension(ExtensionKind::ExportNode);

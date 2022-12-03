@@ -11,7 +11,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
     auto enumNode         = Ast::newNode<AstEnum>(this, AstNodeKind::EnumDecl, sourceFile, parent);
     enumNode->semanticFct = SemanticJob::resolveEnum;
     enumNode->allocateExtension(ExtensionKind::Semantic);
-    enumNode->extension->misc->semanticAfterFct = SemanticJob::sendCompilerMsgTypeDecl;
+    enumNode->extension->semantic->semanticAfterFct = SemanticJob::sendCompilerMsgTypeDecl;
     if (result)
         *result = enumNode;
 

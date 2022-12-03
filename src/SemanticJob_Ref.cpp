@@ -348,7 +348,7 @@ bool SemanticJob::resolveArrayPointerIndex(SemanticContext* context)
             auto typeReturn = node->array->typeInfo;
 
             // There's a 'opIndex' function
-            if (node->extension && node->extension->misc->resolvedUserOpSymbolOverload)
+            if (node->extension && node->extension->misc && node->extension->misc->resolvedUserOpSymbolOverload)
                 typeReturn = TypeManager::concretePtrRefType(node->extension->misc->resolvedUserOpSymbolOverload->typeInfo);
 
             // Get the pointed type if we have a pointer

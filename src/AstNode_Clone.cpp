@@ -84,8 +84,6 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         if (from->extension->misc)
         {
             allocateExtension(ExtensionKind::Misc);
-            extension->misc->semanticBeforeFct            = from->extension->misc->semanticBeforeFct;
-            extension->misc->semanticAfterFct             = from->extension->misc->semanticAfterFct;
             extension->misc->resolvedUserOpSymbolOverload = from->extension->misc->resolvedUserOpSymbolOverload;
             extension->misc->collectTypeInfo              = from->extension->misc->collectTypeInfo;
             extension->misc->exportNode                   = from->extension->misc->exportNode;
@@ -95,6 +93,13 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
             extension->misc->anyTypeSegment               = from->extension->misc->anyTypeSegment;
             extension->misc->anyTypeOffset                = from->extension->misc->anyTypeOffset;
             extension->misc->alternativeScopes            = from->extension->misc->alternativeScopes;
+        }
+
+        if (from->extension->semantic)
+        {
+            allocateExtension(ExtensionKind::Semantic);
+            extension->semantic->semanticBeforeFct = from->extension->semantic->semanticBeforeFct;
+            extension->semantic->semanticAfterFct  = from->extension->semantic->semanticAfterFct;
         }
 
         if (from->extension->bytecode)
@@ -624,7 +629,7 @@ AstNode* AstBreakContinue::clone(CloneContext& context)
         {
             auto newNode = Ast::newNode<AstSubstBreakContinue>(nullptr, AstNodeKind::SubstBreakContinue, sourceFile, context.parent);
             newNode->allocateExtension(ExtensionKind::Semantic);
-            newNode->extension->misc->semanticBeforeFct = SemanticJob::preResolveSubstBreakContinue;
+            newNode->extension->semantic->semanticBeforeFct = SemanticJob::preResolveSubstBreakContinue;
 
             CloneContext cloneContext = context;
             cloneContext.replaceTokens.clear();

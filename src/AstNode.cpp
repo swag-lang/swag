@@ -273,6 +273,14 @@ void AstNode::allocateExtension(ExtensionKind extensionKind)
             g_Stats.memNodesExt += Allocator::alignSize(sizeof(ExtensionByteCode));
         break;
 
+    case ExtensionKind::Semantic:
+        if (extension->semantic)
+            return;
+        extension->semantic = g_Allocator.alloc<ExtensionSemantic>();
+        if (g_CommandLine->stats)
+            g_Stats.memNodesExt += Allocator::alignSize(sizeof(ExtensionSemantic));
+        break;
+
     default:
         if (extension->misc)
             return;
@@ -357,10 +365,10 @@ void AstNode::setPassThrough()
     byteCodeFct = ByteCodeGenJob::emitPassThrough;
     if (extension)
     {
-        if (extension->misc)
+        if (extension->semantic)
         {
-            extension->misc->semanticAfterFct  = nullptr;
-            extension->misc->semanticBeforeFct = nullptr;
+            extension->semantic->semanticAfterFct  = nullptr;
+            extension->semantic->semanticBeforeFct = nullptr;
         }
 
         if (extension->bytecode)

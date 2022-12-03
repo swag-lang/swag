@@ -224,12 +224,12 @@ struct AlternativeScopeVar
 enum class ExtensionKind
 {
     ByteCode,
+    Semantic,
     Owner,
     AltScopes,
     AdditionalRegs,
     Resolve,
     StackSize,
-    Semantic,
     ExportNode,
     Collect,
     Any,
@@ -301,6 +301,12 @@ struct AstNode
         VectorNative<AstNode*> dependentNodes;
     };
 
+    struct ExtensionSemantic
+    {
+        SemanticFct semanticBeforeFct = nullptr;
+        SemanticFct semanticAfterFct  = nullptr;
+    };
+
     struct ExtensionMisc
     {
         SharedMutex                       mutexAltScopes;
@@ -309,8 +315,6 @@ struct AstNode
         VectorNative<uint32_t>            registersToRelease;
         RegisterList                      additionalRegisterRC;
 
-        SemanticFct        semanticBeforeFct            = nullptr;
-        SemanticFct        semanticAfterFct             = nullptr;
         SymbolOverload*    resolvedUserOpSymbolOverload = nullptr;
         TypeInfo*          collectTypeInfo              = nullptr;
         AstNode*           alternativeNode              = nullptr;
@@ -329,6 +333,7 @@ struct AstNode
     struct Extension
     {
         ExtensionByteCode* bytecode = nullptr;
+        ExtensionSemantic* semantic = nullptr;
         ExtensionMisc*     misc     = nullptr;
     };
 

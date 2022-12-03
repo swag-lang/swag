@@ -41,12 +41,12 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifierFor, IDENTIFIER_NO_FCT_PARAMS));
         implNode->identifierFor->allocateExtension(ExtensionKind::Semantic);
-        implNode->identifierFor->extension->misc->semanticAfterFct = SemanticJob::resolveImplForAfterFor;
-        implNode->semanticFct                                = SemanticJob::resolveImplFor;
+        implNode->identifierFor->extension->semantic->semanticAfterFct = SemanticJob::resolveImplForAfterFor;
+        implNode->semanticFct                                          = SemanticJob::resolveImplFor;
         implNode->allocateExtension(ExtensionKind::Semantic);
-        implNode->extension->misc->semanticAfterFct = SemanticJob::resolveImplForType;
-        identifierStruct                      = implNode->identifierFor;
-        implInterface                         = true;
+        implNode->extension->semantic->semanticAfterFct = SemanticJob::resolveImplForType;
+        identifierStruct                                = implNode->identifierFor;
+        implInterface                                   = true;
 
         auto last = CastAst<AstIdentifier>(identifierStruct->childs.back(), AstNodeKind::Identifier);
         SWAG_VERIFY(!last->genericParameters, Report::report({last->genericParameters, Err(Err0440)}));
@@ -172,7 +172,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
     auto structNode         = Ast::newNode<AstStruct>(this, AstNodeKind::StructDecl, sourceFile, parent);
     structNode->semanticFct = SemanticJob::resolveStruct;
     structNode->allocateExtension(ExtensionKind::Semantic);
-    structNode->extension->misc->semanticAfterFct = SemanticJob::sendCompilerMsgTypeDecl;
+    structNode->extension->semantic->semanticAfterFct = SemanticJob::sendCompilerMsgTypeDecl;
     if (result)
         *result = structNode;
 
@@ -304,7 +304,7 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
         auto contentNode    = Ast::newNode<AstNode>(this, AstNodeKind::StructContent, sourceFile, structNode);
         structNode->content = contentNode;
         contentNode->allocateExtension(ExtensionKind::Semantic);
-        contentNode->extension->misc->semanticBeforeFct = SemanticJob::preResolveStructContent;
+        contentNode->extension->semantic->semanticBeforeFct = SemanticJob::preResolveStructContent;
 
         if (structType == SyntaxStructType::Tuple)
             SWAG_CHECK(doStructBodyTuple(contentNode, true));

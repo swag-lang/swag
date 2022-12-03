@@ -884,7 +884,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
             node->resultRegisterRC   = exprNode->resultRegisterRC;
             exprNode->castedTypeInfo = nullptr;
 
-            if (exprNode->extension && exprNode->extension->misc->castOffset)
+            if (exprNode->extension && exprNode->extension->misc && exprNode->extension->misc->castOffset)
             {
                 auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
                 inst->b.u64 = exprNode->extension->misc->castOffset;
