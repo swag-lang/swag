@@ -284,6 +284,7 @@ struct AstNode
         VectorNative<AlternativeScopeVar> alternativeScopesVars;
         VectorNative<uint32_t>            registersToRelease;
         VectorNative<AstNode*>            dependentNodes;
+        RegisterList                      additionalRegisterRC;
 
         SemanticFct        semanticBeforeFct            = nullptr;
         SemanticFct        semanticAfterFct             = nullptr;
@@ -341,7 +342,6 @@ struct AstNode
     uint64_t attributeFlags = 0;
 
     RegisterList resultRegisterRC;
-    RegisterList additionalRegisterRC;
 
     uint32_t doneFlags = 0;
     uint32_t semFlags  = 0;

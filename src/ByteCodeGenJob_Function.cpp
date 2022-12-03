@@ -976,8 +976,9 @@ bool ByteCodeGenJob::emitLambdaCall(ByteCodeGenContext* context)
     auto     overload = node->resolvedSymbolOverload;
 
     SWAG_CHECK(emitIdentifier(context));
-    node->additionalRegisterRC = node->resultRegisterRC;
-    auto allParams             = node->childs.empty() ? nullptr : node->childs.back();
+    node->allocateExtension();
+    node->extension->additionalRegisterRC = node->resultRegisterRC;
+    auto allParams                        = node->childs.empty() ? nullptr : node->childs.back();
     SWAG_ASSERT(!allParams || allParams->kind == AstNodeKind::FuncCallParams);
 
     // A closure is the pointer to the variable, not the function address
@@ -987,19 +988,19 @@ bool ByteCodeGenJob::emitLambdaCall(ByteCodeGenContext* context)
     if (typeRef->isClosure())
     {
         // Deref capture context. If 0, no context.
-        node->additionalRegisterRC += reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::DeRef64, node->additionalRegisterRC[1], node->additionalRegisterRC[0])->c.u64 = 8;
+        node->extension->additionalRegisterRC += reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::DeRef64, node->extension->additionalRegisterRC[1], node->extension->additionalRegisterRC[0])->c.u64 = 8;
 
         // If 0, keep it 0, otherwhise compte the capture context context by adding that offset to the address of the closure storage
-        emitInstruction(context, ByteCodeOp::MulAddVC64, node->additionalRegisterRC[1], node->additionalRegisterRC[0])->c.u64 = 16;
+        emitInstruction(context, ByteCodeOp::MulAddVC64, node->extension->additionalRegisterRC[1], node->extension->additionalRegisterRC[0])->c.u64 = 16;
 
         // Deref function pointer
-        emitInstruction(context, ByteCodeOp::DeRef64, node->additionalRegisterRC[0], node->additionalRegisterRC[0]);
+        emitInstruction(context, ByteCodeOp::DeRef64, node->extension->additionalRegisterRC[0], node->extension->additionalRegisterRC[0]);
     }
 
-    SWAG_CHECK(emitCall(context, allParams, nullptr, (AstVarDecl*) overload->node, node->additionalRegisterRC, false, true, true));
+    SWAG_CHECK(emitCall(context, allParams, nullptr, (AstVarDecl*) overload->node, node->extension->additionalRegisterRC, false, true, true));
     SWAG_ASSERT(context->result == ContextResult::Done);
-    freeRegisterRC(context, node->additionalRegisterRC);
+    freeRegisterRC(context, node->extension->additionalRegisterRC);
     return true;
 }
 
@@ -1163,7 +1164,8 @@ void ByteCodeGenJob::emitPushRAParams(ByteCodeGenContext* context, VectorNative<
     {
         // The first argument of the function needs to be the capture context, which is stored in
         // node->additionalRegisterRC as the second register.
-        accParams[(int) accParams.size() - 1] = node->additionalRegisterRC[1];
+        SWAG_ASSERT(node->extension);
+        accParams[(int) accParams.size() - 1] = node->extension->additionalRegisterRC[1];
 
         // The last pushParam needs to be treated in a different way in case of closure, because
         // if in fact we call a lambda, it does not exists (the closure context)
@@ -1483,10 +1485,10 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 auto param = CastAst<AstFuncCallParam>(allParams->childs[j], AstNodeKind::FuncCallParam);
                 if (param->indexParam == i)
                 {
-                    if (!param->additionalRegisterRC.cannotFree)
+                    if (param->extension && !param->extension->additionalRegisterRC.cannotFree)
                     {
-                        for (int r = 0; freeRegistersParams && r < param->additionalRegisterRC.size(); r++)
-                            toFree.push_back(param->additionalRegisterRC[r]);
+                        for (int r = 0; freeRegistersParams && r < param->extension->additionalRegisterRC.size(); r++)
+                            toFree.push_back(param->extension->additionalRegisterRC[r]);
                     }
 
                     if (param->typeInfo->kind == TypeInfoKind::Array || param->typeInfo->flags & TYPEINFO_LISTARRAY_ARRAY)
@@ -1616,10 +1618,10 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                     if (typeRawVariadic->kind == TypeInfoKind::Native && typeRawVariadic->sizeOf < sizeof(Register))
                     {
                         done = true;
-                        if (!param->additionalRegisterRC.cannotFree)
+                        if (param->extension && !param->extension->additionalRegisterRC.cannotFree)
                         {
-                            for (int r = 0; freeRegistersParams && r < param->additionalRegisterRC.size(); r++)
-                                toFree.push_back(param->additionalRegisterRC[r]);
+                            for (int r = 0; freeRegistersParams && r < param->extension->additionalRegisterRC.size(); r++)
+                                toFree.push_back(param->extension->additionalRegisterRC[r]);
                         }
 
                         for (int r = param->resultRegisterRC.size() - 1; r >= 0;)
@@ -1637,10 +1639,10 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
                 if (!done)
                 {
-                    if (!param->additionalRegisterRC.cannotFree)
+                    if (param->extension && !param->extension->additionalRegisterRC.cannotFree)
                     {
-                        for (int r = 0; freeRegistersParams && r < param->additionalRegisterRC.size(); r++)
-                            toFree.push_back(param->additionalRegisterRC[r]);
+                        for (int r = 0; freeRegistersParams && r < param->extension->additionalRegisterRC.size(); r++)
+                            toFree.push_back(param->extension->additionalRegisterRC[r]);
                     }
 
                     for (int r = param->resultRegisterRC.size() - 1; r >= 0;)
@@ -1717,7 +1719,8 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         // So we add sizeof(Register) to the CopySP pointer
         if (node->typeInfo && node->typeInfo->isClosure())
         {
-            inst = emitInstruction(context, ByteCodeOp::JumpIfZero64, node->additionalRegisterRC[1]);
+            SWAG_ASSERT(node->extension);
+            inst = emitInstruction(context, ByteCodeOp::JumpIfZero64, node->extension->additionalRegisterRC[1]);
             inst->flags |= BCI_NO_BACKEND;
             inst->b.s64 = 1;
             inst        = emitInstruction(context, ByteCodeOp::Add64byVB64, r0[0]);
@@ -1756,7 +1759,8 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         // So we add sizeof(Register) to the CopySP pointer
         if (node->typeInfo && node->typeInfo->isClosure())
         {
-            inst = emitInstruction(context, ByteCodeOp::JumpIfZero64, node->additionalRegisterRC[1]);
+            SWAG_ASSERT(node->extension);
+            inst = emitInstruction(context, ByteCodeOp::JumpIfZero64, node->extension->additionalRegisterRC[1]);
             inst->flags |= BCI_NO_BACKEND;
             inst->b.s64 = 1;
             inst        = emitInstruction(context, ByteCodeOp::Add64byVB64, r0[0]);
@@ -1843,7 +1847,8 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     {
         if (node->typeInfo && node->typeInfo->isClosure())
         {
-            emitInstruction(context, ByteCodeOp::IncSPPostCallCond, node->additionalRegisterRC[1], sizeof(void*));
+            SWAG_ASSERT(node->extension);
+            emitInstruction(context, ByteCodeOp::IncSPPostCallCond, node->extension->additionalRegisterRC[1], sizeof(void*));
             if (precallStack - sizeof(void*))
                 emitInstruction(context, ByteCodeOp::IncSPPostCall, precallStack - sizeof(void*));
         }

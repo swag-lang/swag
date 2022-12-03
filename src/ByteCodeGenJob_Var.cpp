@@ -113,8 +113,9 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
     {
         if (!(node->doneFlags & AST_DONE_PRE_CAST))
         {
-            node->additionalRegisterRC = reserveRegisterRC(context);
-            emitRetValRef(context, node->additionalRegisterRC, retVal, resolved->computedValue.storageOffset);
+            node->allocateExtension();
+            node->extension->additionalRegisterRC = reserveRegisterRC(context);
+            emitRetValRef(context, node->extension->additionalRegisterRC, retVal, resolved->computedValue.storageOffset);
             node->resultRegisterRC = node->assignment->resultRegisterRC;
             node->doneFlags |= AST_DONE_PRE_CAST;
         }
@@ -125,7 +126,8 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
 
         if (!mustDropLeft)
             node->assignment->flags |= AST_NO_LEFT_DROP;
-        emitAffectEqual(context, node->additionalRegisterRC, node->resultRegisterRC, node->typeInfo, node->assignment);
+        node->allocateExtension();
+        emitAffectEqual(context, node->extension->additionalRegisterRC, node->resultRegisterRC, node->typeInfo, node->assignment);
         if (context->result != ContextResult::Done)
             return true;
 
