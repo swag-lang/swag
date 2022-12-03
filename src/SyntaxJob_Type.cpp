@@ -621,7 +621,7 @@ bool SyntaxJob::doCast(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
     SWAG_CHECK(eatToken(TokenId::SymLeftParen, "after 'cast'"));
     SWAG_CHECK(doTypeExpression(node));
-    SWAG_CHECK(eatToken(TokenId::SymRightParen, "after type expression"));
+    SWAG_CHECK(eatToken(TokenId::SymRightParen, "after the type expression"));
 
     SWAG_CHECK(doUnaryExpression(node, EXPR_FLAG_NONE));
     return true;
@@ -637,7 +637,7 @@ bool SyntaxJob::doBitCast(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
     SWAG_CHECK(eatToken(TokenId::SymLeftParen, "after 'bitcast'"));
     SWAG_CHECK(doTypeExpression(node));
-    SWAG_CHECK(eatToken(TokenId::SymRightParen, "after type expression"));
+    SWAG_CHECK(eatToken(TokenId::SymRightParen, "after the type expression"));
 
     SWAG_CHECK(doUnaryExpression(node, EXPR_FLAG_NONE));
     return true;

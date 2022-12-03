@@ -284,7 +284,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             diag = new Diagnostic{callParameters, Fmt(Err(Err0016), refNiceName.c_str())};
         }
 
-        if (destFuncDecl)
+        if (destFuncDecl && callParameters)
             note = new Diagnostic{destFuncDecl->parameters->childs[match.cptResolved], Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
         else
             note = new Diagnostic{overload->node, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
@@ -456,6 +456,26 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             note = new Diagnostic{overload->node, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
 
         result0.push_back(diag);
+
+        // Generic types
+        if (match.genericReplaceTypes.size())
+        {
+            Utf8 remark = "with ";
+            bool first  = true;
+            for (auto p : match.genericReplaceTypes)
+            {
+                // Can arrive in case of constants (like string for example)
+                if (p.first == p.second->getDisplayName())
+                    continue;
+
+                if (!first)
+                    remark += ", ";
+                first = false;
+                remark += Fmt("%s = %s", p.first.c_str(), p.second->getDisplayNameC());
+            }
+
+            note->remarks.push_back(remark);
+        }
 
         // A more specific message ?
         Utf8 castMsg, castHint;

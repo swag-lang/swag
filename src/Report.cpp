@@ -12,7 +12,7 @@
 
 namespace Report
 {
-    void reportNotes(const vector<const Diagnostic*>& notes, bool verbose = false)
+    void reportNotes(vector<Diagnostic*>& notes, bool verbose = false)
     {
         if (g_CommandLine->errorNoteOut)
         {
@@ -33,7 +33,7 @@ namespace Report
         }
     }
 
-    void cleanNotes(const Diagnostic& diag, const vector<const Diagnostic*>& notes)
+    void cleanNotes(const Diagnostic& diag, vector<Diagnostic*>& notes)
     {
         for (auto n : notes)
         {
@@ -67,7 +67,7 @@ namespace Report
         }
     }
 
-    bool report(const Diagnostic& diag, const vector<const Diagnostic*>& notes)
+    bool report(const Diagnostic& diag, const vector<const Diagnostic*>& inNotes)
     {
         SWAG_ASSERT(diag.sourceFile || diag.contextFile);
         auto sourceFile = diag.contextFile ? diag.contextFile : diag.sourceFile;
@@ -79,6 +79,14 @@ namespace Report
         }
 
         ScopedLock lock(g_Log.mutexAccess);
+
+        // Make a copy, because we could have to change some 'Diagnostic' content.
+        vector<Diagnostic*> notes;
+        for (auto d : inNotes)
+        {
+            auto n = new Diagnostic{*d};
+            notes.push_back(n);
+        }
 
         cleanNotes(diag, notes);
 

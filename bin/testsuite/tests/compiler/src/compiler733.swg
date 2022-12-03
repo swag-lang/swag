@@ -3,9 +3,9 @@
 //#[Swag.PrintBc]
 func(T) toto(x: T)
 {
-	var c: const *T;
+	var c: const *T
 	c = &x
-	@assert(c[0] == "toto")
+	@assert(dref c == "toto")
 }
 
 #test

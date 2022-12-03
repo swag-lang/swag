@@ -18,7 +18,7 @@ void SyntaxJob::relaxIdentifier(Token& token)
     }
 }
 
-bool SyntaxJob::checkIsValidUserName(AstNode* node)
+bool SyntaxJob::checkIsValidUserName(AstNode* node, Token* loc)
 {
     if (node->parent && (node->parent->flags & AST_GENERATED))
         return true;
@@ -29,7 +29,7 @@ bool SyntaxJob::checkIsValidUserName(AstNode* node)
     if (!sourceFile->isGenerated && !sourceFile->isBootstrapFile && !sourceFile->isRuntimeFile)
     {
         if (node->token.text.length() > 1 && node->token.text[0] == '_' && node->token.text[1] == '_')
-            return error(node->token, Fmt(Err(Err0272), node->token.ctext()));
+            return error(loc ? *loc : node->token, Fmt(Err(Err0272), node->token.ctext()));
     }
 
     return true;

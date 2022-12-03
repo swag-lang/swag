@@ -53,7 +53,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     }
     else
     {
-        SWAG_CHECK(checkIsSingleIdentifier(implNode->identifier, "as 'impl' name"));
+        SWAG_CHECK(checkIsSingleIdentifier(implNode->identifier, "as an 'impl' block name"));
     }
 
     // Content of impl block
@@ -216,7 +216,7 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
 {
     SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Err0444), token.ctext())));
     structNode->inheritTokenName(token);
-    SWAG_CHECK(checkIsValidUserName(structNode));
+    SWAG_CHECK(checkIsValidUserName(structNode, &token));
 
     // If name starts with "__", then this is generated, as a user identifier cannot start with those
     // two characters
@@ -355,7 +355,7 @@ bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty)
         if (token.id == TokenId::SymColon)
         {
             typeExpression = CastAst<AstTypeExpression>(expression, AstNodeKind::TypeExpression);
-            SWAG_VERIFY(prevToken.id == TokenId::Identifier, error(prevToken, Err(Err0448)));
+            SWAG_VERIFY(prevToken.id == TokenId::Identifier, error(prevToken.startLocation, token.startLocation, Fmt(Err(Err0480), prevToken.ctext())));
             SWAG_ASSERT(typeExpression->identifier);
             SWAG_CHECK(checkIsSingleIdentifier(typeExpression->identifier, "as a tuple field name"));
             SWAG_CHECK(checkIsValidVarName(typeExpression->identifier->childs.back()));

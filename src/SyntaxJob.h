@@ -86,7 +86,7 @@ struct SyntaxJob : public Job
     bool checkIsSingleIdentifier(AstNode* node, const char* msg);
 
     bool        convertExpressionListToTuple(AstNode* parent, AstNode** result, bool isConst, bool anonymousStruct, bool anonymousUnion);
-    bool        checkIsValidUserName(AstNode* node);
+    bool        checkIsValidUserName(AstNode* node, Token* loc = nullptr);
     bool        checkIsValidVarName(AstNode* node);
     void        registerSubDecl(AstNode* subDecl);
     static void relaxIdentifier(Token& token);
