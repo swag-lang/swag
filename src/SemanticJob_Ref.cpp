@@ -407,7 +407,8 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     {
     case TypeInfoKind::Pointer:
     {
-        SWAG_VERIFY(arrayType->flags & TYPEINFO_POINTER_ARITHMETIC || arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF, context->report({arrayNode, Err(Err0194), Hint::isType(arrayType)}));
+        if (!(arrayType->flags & TYPEINFO_POINTER_ARITHMETIC) && !(arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF))
+            return context->report({arrayNode, Fmt(Err(Err0194), arrayNode->resolvedSymbolName->name.c_str()), Hint::isType(arrayType)});
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
         SWAG_VERIFY(typePtr->pointedType != g_TypeMgr->typeInfoVoid, context->report({arrayNode->access, Err(Err0486)}));
@@ -620,7 +621,8 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     {
     case TypeInfoKind::Pointer:
     {
-        SWAG_VERIFY(arrayType->flags & TYPEINFO_POINTER_ARITHMETIC || arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF, context->report({arrayNode, Err(Err0194), Hint::isType(arrayType)}));
+        if (!(arrayType->flags & TYPEINFO_POINTER_ARITHMETIC) && !(arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF))
+            return context->report({arrayNode, Fmt(Err(Err0194), arrayNode->resolvedSymbolName->name.c_str()), Hint::isType(arrayType)});
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
         SWAG_VERIFY(typePtr->pointedType != g_TypeMgr->typeInfoVoid, context->report({arrayNode->access, Err(Err0486)}));
