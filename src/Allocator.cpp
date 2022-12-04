@@ -182,6 +182,8 @@ void* AllocatorImpl::alloc(size_t size)
         return result;
     }
 
+    bool hasStats = g_CommandLine && g_CommandLine->stats;
+
     // Do we need to allocate a new data block ?
     if (!lastBucket || lastBucket->maxUsed + size > lastBucket->allocated)
     {
@@ -193,7 +195,7 @@ void* AllocatorImpl::alloc(size_t size)
             if (remain)
             {
                 SWAG_ASSERT(!(remain & 7));
-                if (g_CommandLine && g_CommandLine->stats)
+                if (hasStats)
                     g_Stats.wastedMemory += remain;
 
                 bucket = remain / 8;
@@ -213,7 +215,8 @@ void* AllocatorImpl::alloc(size_t size)
             }
         }
 
-        lastBucket = (AllocatorBucket*) malloc(sizeof(AllocatorBucket) + max(size, ALLOCATOR_BUCKET_SIZE));
+        auto allocated = max(size, ALLOCATOR_BUCKET_SIZE);
+        lastBucket     = (AllocatorBucket*) malloc(sizeof(AllocatorBucket) + allocated);
         if (!lastBucket)
         {
             Report::error(Err(Err0014));
@@ -222,28 +225,28 @@ void* AllocatorImpl::alloc(size_t size)
         }
 
         lastBucket->maxUsed   = 0;
-        lastBucket->allocated = max(size, ALLOCATOR_BUCKET_SIZE);
+        lastBucket->allocated = allocated;
         lastBucket->data      = (uint8_t*) (lastBucket + 1);
 
         currentData = lastBucket->data;
 
-        if (g_CommandLine && g_CommandLine->stats)
+        if (hasStats)
         {
-            g_Stats.allocatorMemory += sizeof(AllocatorBucket);
-            g_Stats.allocatorMemory += lastBucket->allocated;
+            g_Stats.allocatorMemory += sizeof(AllocatorBucket) + lastBucket->allocated;
             g_Stats.wastedMemory += lastBucket->allocated;
         }
     }
 
-    auto returnData = currentData;
 #ifdef SWAG_DEV_MODE
     memset(currentData, 0xAA, size);
 #endif
+
     currentData += size;
     lastBucket->maxUsed += size;
-    if (g_CommandLine && g_CommandLine->stats)
+    if (hasStats)
         g_Stats.wastedMemory -= size;
-    return returnData;
+
+    return currentData - size;
 }
 
 void AllocatorImpl::free(void* ptr, size_t size)
