@@ -337,6 +337,9 @@ impl Capture
         render := &app.renderer
 
         boundRect := f.boundRect(false)
+        if boundRect.width <= 0 or boundRect.height <= 0
+            return
+
         base := cast(*BaseForm) @dataof(f)
 
         savePaintPos := base.paintPos
@@ -768,16 +771,17 @@ impl Capture
 
     mtd popupMenu(view: *EditView, pos: Math.Point)
     {
-        menu := MenuCtrl.createPopup(view)
-
-        menu.addItem(CmdIdCopy)
-        menu.addItem(CmdIdPaste)
-        menu.addSeparator()
-        menu.addItem(CmdIdPasteImageInside)
-        menu.addItem(CmdIdClearImageInside)
-        menu.addSeparator()
-        menu.addItem(CmdIdDeleteSelection)
-        menu.addSeparator()
+        with menu := MenuCtrl.createPopup(view)
+        {
+            .addItem(CmdIdCopy)
+            .addItem(CmdIdPaste)
+            .addSeparator()
+            .addItem(CmdIdPasteImageInside)
+            .addItem(CmdIdClearImageInside)
+            .addSeparator()
+            .addItem(CmdIdDeleteSelection)
+            .addSeparator()
+        }
 
         with popup0 := MenuCtrl.createPopup(view)
         {
@@ -800,15 +804,18 @@ impl Capture
             menu.addPopup("Arrange", popup1)
         }
 
-        menu.addSeparator()
-        menu.addItem(CmdIdCopyAsImage)
-        menu.addItem(CmdIdSelectAll)
-        menu.addItem(CmdIdDeSelectAll)
-        menu.addSeparator()
-        menu.addItem(CmdIdFlatten)
-        menu.addItem(CmdIdFlattenAll)
-        menu.addSeparator()
-        menu.addItem(CmdIdSnap)
+        with menu
+        {
+            .addSeparator()
+            .addItem(CmdIdCopyAsImage)
+            .addItem(CmdIdSelectAll)
+            .addItem(CmdIdDeSelectAll)
+            .addSeparator()
+            .addItem(CmdIdFlatten)
+            .addItem(CmdIdFlattenAll)
+            .addSeparator()
+            .addItem(CmdIdSnap)
+        }
 
         discard menu.doModal(pos)
         view.setFocus()
