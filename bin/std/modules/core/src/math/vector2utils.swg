@@ -67,6 +67,163 @@ impl Vector2
         return Math.abs(x1 * y2 - y1 * x2) / mod
     }
 
+    // Returns the minimal segment between two segments (and the minimal distance)
+    // David Eberly, Geometric Tools, Redmond WA 98052
+    // Copyright (c) 1998-2022
+    // Distributed under the Boost Software License, Version 1.0.
+    // https://www.boost.org/LICENSE_1_0.txt
+    // https://www.geometrictools.com/License/Boost/LICENSE_1_0.txt
+    // https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h
+    func nearestPointsSegSeg(p0, p1, q0, q1: Math.Vector2)->{a: Math.Vector2, b: Math.Vector2, dist: f32}
+    {
+        p1p0 := p1 - p0
+        q1q0 := q1 - q0
+        p0q0 := p0 - q0
+        a := p1p0.dot(p1p0)
+        b := p1p0.dot(q1q0)
+        c := q1q0.dot(q1q0)
+        d := p1p0.dot(p0q0)
+        e := q1q0.dot(p0q0)
+        det := a * c - b * b
+
+        var s, t: f32 = ?
+        if det > 0
+        {
+            bte := b * e
+            ctd := c * d
+            if bte <= ctd
+            {
+                s = 0
+                if e <= 0
+                {
+                    t = 0
+                    nd := -d
+                    if nd >= a
+                        s = 1
+                    elif nd > 0
+                        s = nd / a
+                }
+                elif e < c
+                {
+                    t = e / c
+                }
+                else
+                {
+                    t = 1
+                    bmd := b - d
+                    if bmd >= a
+                        s = 1
+                    elif bmd > 0
+                        s = bmd / a
+                }
+            }
+            else
+            {
+                s = bte - ctd
+                if s >= det
+                {
+                    s = 1
+                    bpe := b + e
+                    if bpe <= 0
+                    {
+                        t = 0
+                        nd := -d
+                        if nd <= 0
+                            s = 0
+                        elif nd < a
+                            s = nd / a
+                    }
+                    elif bpe < c
+                    {
+                        t = bpe / c
+                    }
+                    else
+                    {
+                        t = 1
+                        bmd := b - d
+                        if bmd <= 0
+                            s = 0
+                        elif bmd < a
+                            s = bmd / a
+                    }
+                }
+                else
+                {
+                    ate := a * e
+                    btd := b * d
+                    if ate <= btd
+                    {
+                        t = 0
+                        nd := -d
+                        if nd <= 0
+                            s =0
+                        elif nd >= a
+                            s = 1
+                        else
+                            s = nd / a
+                    }
+                    else
+                    {
+                        t = ate - btd;
+                        if t >= det
+                        {
+                            t = 1
+                            bmd := b - d
+                            if bmd <= 0
+                                s = 0
+                            elif bmd >= a
+                                s = 1
+                            else
+                                s = bmd / a
+                        }
+                        else
+                        {
+                            s /= det
+                            t /= det
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            if e <= 0
+            {
+                t = 0
+                nd := -d
+                if nd <= 0
+                    s = 0
+                elif nd >= a
+                    s = 1
+                else
+                    s = nd / a
+            }
+            elif e >= c
+            {
+                t = 1
+                bmd := b - d
+                if bmd <= 0
+                    s = 0
+                elif bmd >= a
+                    s = 1
+                else
+                    s = bmd / a
+            }
+            else
+            {
+                s = 0
+                t = e / c
+            }
+        }
+
+        var result: retval
+        result.a = p0 + s * p1p0
+        result.b = q0 + t * q1q0
+        diff := result.a - result.b
+        result.dist = diff.length()
+        return result
+    }
+
     private func getLineLineIntersectCoefs(start0, end0, start1, end1: Vector2, epsilon: f32)->{yes: bool, d0: f32, d1: f32}
     {
         var result: retval
