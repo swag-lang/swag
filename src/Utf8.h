@@ -14,10 +14,10 @@
 
 struct Utf8
 {
-    char*       buffer    = nullptr;
-    int         count     = 0;
-    int         allocated = 0;
-    SharedMutex mutex;
+    char*              buffer    = nullptr;
+    int                count     = 0;
+    int                allocated = 0;
+    static SharedMutex mutexCStr;
 
     Utf8();
     Utf8(const char* from);
