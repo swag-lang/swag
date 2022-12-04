@@ -275,13 +275,12 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
 
         // Evaluate the first number of instructions for a given function.
         // We take the number of ast nodes in the function as a metric.
-        // 0.7f is kind of magical, based on various measures.
         // This is to mitigate the number of reallocations, without wasting too much memory.
         if (!bc->maxInstructions && bc->node && bc->node->kind == AstNodeKind::FuncDecl)
         {
             auto funcDecl = CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl);
-            if (funcDecl->nodeCounts)
-                bc->maxInstructions = (int) (funcDecl->nodeCounts * 0.8f);
+            // 0.8f is kind of magical, based on various measures.
+            bc->maxInstructions = (int) (funcDecl->nodeCounts * 0.8f);
         }
 
         bc->maxInstructions = max(bc->maxInstructions, 8);
@@ -299,15 +298,20 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
 
     SWAG_ASSERT(bc->out);
     ByteCodeInstruction& ins = bc->out[bc->numInstructions++];
-    ins.op                   = op;
-    ins.a.u64                = r0;
-    ins.b.u64                = r1;
-    ins.c.u64                = r2;
-    ins.d.u64                = r3;
-    ins.flags                = context->instructionsFlags;
+
+    ins.op = op;
+
+    ins.a.u64 = r0;
+    ins.b.u64 = r1;
+    ins.c.u64 = r2;
+    ins.d.u64 = r3;
+
+    ins.flags = context->instructionsFlags;
     if (context->tryCatchScope)
         ins.flags |= BCI_TRYCATCH;
+
     ins.node = context->forceNode ? context->forceNode : node;
+
 #if defined SWAG_DEV_MODE
     ins.sourceFile            = location.file_name();
     ins.sourceLine            = location.line();
