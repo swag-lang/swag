@@ -76,7 +76,7 @@ public impl TypeFace
         tf := Memory.new'TypeFace()
         tf.fullname = fullname
         tf.buffer = bytes
-        try FT_New_Memory_Face(g_FT, tf.buffer.buffer, cast(FT_Long) tf.buffer.count, 0, &tf.face)
+        FT_New_Memory_Face(g_FT, tf.buffer.buffer, cast(FT_Long) tf.buffer.count, 0, &tf.face)
         return tf
     }
 
@@ -99,14 +99,14 @@ public impl TypeFace
             p := Env.getSpecialDirectory(.Font)
             p += "/"
             p += fullname
-            tf.buffer = try File.readAllBytes(p)
+            tf.buffer = File.readAllBytes(p)
         }
         else
         {
-            tf.buffer = try File.readAllBytes(fullname)
+            tf.buffer = File.readAllBytes(fullname)
         }
 
-        try FT_New_Memory_Face(g_FT, tf.buffer.buffer, cast(FT_Long) tf.buffer.count, 0, &tf.face)
+        FT_New_Memory_Face(g_FT, tf.buffer.buffer, cast(FT_Long) tf.buffer.count, 0, &tf.face)
 
         hashTypeFace.add(str, tf)
         return tf
@@ -178,13 +178,13 @@ public impl TypeFace
 
         Utf8.visitRunes(|c| text)
         {
-            try FT_Load_Char(face, cast(FT_ULong) c, FT_LOAD_NO_BITMAP)
+            FT_Load_Char(face, cast(FT_ULong) c, FT_LOAD_NO_BITMAP)
             transform(embolden)
 
             FT_Outline_Translate(face.glyph.outline, x, 0)
 
             prevIdx := pathList.paths.count
-            try FT_Outline_Decompose(&face.glyph.outline, &itf, pathList)
+            FT_Outline_Decompose(&face.glyph.outline, &itf, pathList)
 
             if prevIdx != pathList.paths.count
             {
