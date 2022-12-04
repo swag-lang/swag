@@ -335,18 +335,18 @@ func displayPage3(painter: *Pixel.Painter)
         pen := Pen.createSolid(Color.fromArgb(0x51, Argb.Green), 50)
         painter.setTransform(trs)
         painter.translateTransform(700, 200)
-        painter.drawPathList(&lp1, pen, DrawPathListMode.Separate)
+        painter.drawPath(&lp1, pen, .Separate)
 
         painter.translateTransform(0, 150)
-        painter.drawPathList(&lp1, pen, DrawPathListMode.Merge)
+        painter.drawPath(&lp1, pen, .Merge)
         painter.translateTransform(150, 0)
         pen.brush = Brush.createTexture(Res.image1)
-        painter.drawPathList(&lp1, pen, DrawPathListMode.Merge)
+        painter.drawPath(&lp1, pen, .Merge)
 
         painter.translateTransform(0, 150)
         pen = Pen.createSolid(Color.fromArgb(0x51, Argb.Green), 15)
         pen.dashStyle = .Dash
-        painter.drawPathList(&lp1, pen, DrawPathListMode.Merge)
+        painter.drawPath(&lp1, pen, .Merge)
     }
 
     {
@@ -440,7 +440,7 @@ func displayPage4(painter: *Pixel.Painter)
         pen.plotOffset = 2
 
         assume Res.typeface.getStringOutline(&pathl, str, 70)
-        painter.drawPathList(&pathl, pen)
+        painter.drawPath(&pathl, pen)
         painter.fillPath(&pathl, Argb.Black)
 
         painter.setTransform(trs)
@@ -454,7 +454,7 @@ func displayPage4(painter: *Pixel.Painter)
         p.offset(4, JoinStyle.Round)
         p.clean()
         painter.fillPath(&p, Argb.Blue)
-        painter.drawPathList(&p, Argb.Red, 2)
+        painter.drawPath(&p, Argb.Red, 2)
 
         painter.setTransform(trs)
     }
@@ -467,7 +467,7 @@ func displayPage4(painter: *Pixel.Painter)
         p.offset(4, JoinStyle.Round)
         p.clean()
         painter.fillPath(&p, Argb.Red)
-        painter.drawPathList(&p, Argb.Black, 2)
+        painter.drawPath(&p, Argb.Black, 2)
 
         painter.setTransform(trs)
     }

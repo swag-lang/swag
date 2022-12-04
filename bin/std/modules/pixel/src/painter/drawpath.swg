@@ -852,7 +852,7 @@ public impl Painter
     }
 
     // Draw the line path
-    mtd drawPathList(pathList: *LinePathList, pen: Pen, mode: DrawPathListMode = .Separate)
+    mtd drawPath(pathList: *LinePathList, pen: Pen, mode: DrawPathListMode = .Separate)
     {
         if !pathList.paths.count
             return
@@ -888,14 +888,14 @@ public impl Painter
     }
 
     // Draw the line path
-    mtd drawPathList(pathList: *LinePathList, color: Color, penSize: f32, mode: DrawPathListMode = .Separate)
+    mtd drawPath(pathList: *LinePathList, color: Color, penSize: f32, mode: DrawPathListMode = .Separate)
     {
         if !pathList.paths.count
             return
         sharedSolidPen.brush.type = .SolidColor
         sharedSolidPen.brush.color = color
         sharedSolidPen.size = penSize
-        drawPathList(pathList, sharedSolidPen, mode)
+        drawPath(pathList, sharedSolidPen, mode)
     }
 
     // Fill the line path
