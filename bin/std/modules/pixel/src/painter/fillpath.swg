@@ -87,20 +87,56 @@ public impl Painter
         if polygon.isConvex
         {
             count := path.polygon.points.count - 1
-            center := Vector2{path.bvMin.x + (path.bvMax.x - path.bvMin.x) * 0.5, path.bvMin.y + (path.bvMax.y - path.bvMin.y) * 0.5}
-            loop i: count
+            if count == 3
             {
-                v0 := polygon.getPoint(i)
-                v1 := polygon.getPoint((i + 1) % count)
-                prim := pushTriangle(center, v0, v1, brush.color)
-
+                v0 := polygon.getPoint(0)
+                v1 := polygon.getPoint(1)
+                v2 := polygon.getPoint(2)
+                prim := pushTriangle(v0, v1, v2, brush.color)
                 if curState.paintParams & .Antialiased
                 {
-                    v2 := polygon.getPoint((i + 2) % count)
-                    vp := polygon.getPoint((i + count - 1) % count)
                     addEdgeAA(prim, v0, v1)
                     addEdgeAA(prim, v1, v2)
-                    addEdgeAA(prim, vp, v0)
+                    addEdgeAA(prim, v2, v0)
+                }
+            }
+            else if count == 4
+            {
+                v0 := polygon.getPoint(0)
+                v1 := polygon.getPoint(1)
+                v2 := polygon.getPoint(2)
+                v3 := polygon.getPoint(3)
+                prim0 := pushTriangle(v0, v1, v2, brush.color)
+                prim1 := pushTriangle(v0, v2, v3, brush.color)
+                if curState.paintParams & .Antialiased
+                {
+                    addEdgeAA(prim0, v0, v1)
+                    addEdgeAA(prim0, v1, v2)
+                    addEdgeAA(prim0, v2, v3)
+                    addEdgeAA(prim0, v3, v0)
+                    addEdgeAA(prim1, v0, v1)
+                    addEdgeAA(prim1, v1, v2)
+                    addEdgeAA(prim1, v2, v3)
+                    addEdgeAA(prim1, v3, v0)
+                }
+            }
+            else
+            {
+                center := Vector2{path.bvMin.x + (path.bvMax.x - path.bvMin.x) * 0.5, path.bvMin.y + (path.bvMax.y - path.bvMin.y) * 0.5}
+                loop i: count
+                {
+                    v0 := polygon.getPoint(i)
+                    v1 := polygon.getPoint((i + 1) % count)
+                    prim := pushTriangle(center, v0, v1, brush.color)
+
+                    if curState.paintParams & .Antialiased
+                    {
+                        v2 := polygon.getPoint((i + 2) % count)
+                        vp := polygon.getPoint((i + count - 1) % count)
+                        addEdgeAA(prim, v0, v1)
+                        addEdgeAA(prim, v1, v2)
+                        addEdgeAA(prim, vp, v0)
+                    }
                 }
             }
         }
