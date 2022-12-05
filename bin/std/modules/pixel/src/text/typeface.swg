@@ -23,28 +23,28 @@ impl TypeFace
     func moveTo(to: const *FT_Vector, pathList: *LinePathList)->s32
     {
         path := pathList.newPath()
-        path.start(cast(f32) to.x / 64.0, cast(f32) -to.y / 64.0)
+        path.start(to.x / 64.0, -to.y / 64.0)
         return 0
     }
 
     func lineTo(to: const *FT_Vector, pathList: *LinePathList)->s32
     {
         path := pathList.paths[pathList.paths.count - 1]
-        path.lineTo(cast(f32) to.x / 64.0, cast(f32) -to.y / 64.0)
+        path.lineTo(to.x / 64.0, -to.y / 64.0)
         return 0
     }
 
     func conicTo(ctrl, to: const *FT_Vector, pathList: *LinePathList)->s32
     {
         path := pathList.paths[pathList.paths.count - 1]
-        path.bezierTo(cast(f32) to.x / 64.0, cast(f32) -to.y / 64.0, cast(f32) ctrl.x / 64.0, cast(f32) -ctrl.y / 64.0)
+        path.bezierTo(to.x / 64.0, -to.y / 64.0, ctrl.x / 64.0, -ctrl.y / 64.0)
         return 0
     }
 
     func bezierTo(ctrl1, ctrl2, to: const *FT_Vector, pathList: *LinePathList)->s32
     {
         path := pathList.paths[pathList.paths.count - 1]
-        path.bezierTo(cast(f32) to.x / 64.0, cast(f32) -to.y / 64.0, cast(f32) ctrl1.x / 64.0, cast(f32) -ctrl1.y / 64.0, cast(f32) ctrl2.x / 64.0, cast(f32) -ctrl2.y / 64.0)
+        path.bezierTo(to.x / 64.0, -to.y / 64.0, ctrl1.x / 64.0, -ctrl1.y / 64.0, ctrl2.x / 64.0, -ctrl2.y / 64.0)
         return 0
     }
 }
