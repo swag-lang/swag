@@ -310,32 +310,38 @@ impl IForm for FormText
             var pl: LinePathList
 
             // Border
-            painter.pushState()
-            painter.scaleTransform(z, z)
-            painter.translateTransform(x0, y0 - (pathl1.bvMin.y * z))
-            Utf8.visitRunes(|c| tokens[i / 2])
+            if !Math.isZeroEpsilon(bSize) and borderColor.a
             {
-                it := runes.find(c)
-                pl.paths.add(it.value.border.paths.toSlice())
-                painter.fillPath(&pl, borderColor)
-                pl.paths.count = 0
-                painter.translateTransform(cast(f32) it.value.advance*z, 0)
+                painter.pushState()
+                painter.scaleTransform(z, z)
+                painter.translateTransform(x0, y0 - (pathl1.bvMin.y * z))
+                Utf8.visitRunes(|c| tokens[i / 2])
+                {
+                    it := runes.find(c)
+                    pl.paths.add(it.value.border.paths.toSlice())
+                    painter.fillPath(&pl, borderColor)
+                    pl.paths.count = 0
+                    painter.translateTransform(cast(f32) it.value.advance*z, 0)
+                }
+                painter.popState()
             }
-            painter.popState()
 
             // Back
-            painter.pushState()
-            painter.scaleTransform(z, z)
-            painter.translateTransform(x0, y0 - (pathl1.bvMin.y * z))
-            Utf8.visitRunes(|c| tokens[i / 2])
+            if backColor.a
             {
-                it := runes.find(c)
-                pl.paths.add(it.value.back.paths.toSlice())
-                painter.fillPath(&pl, backColor)
-                pl.paths.count = 0
-                painter.translateTransform(cast(f32) it.value.advance*z, 0)
+                painter.pushState()
+                painter.scaleTransform(z, z)
+                painter.translateTransform(x0, y0 - (pathl1.bvMin.y * z))
+                Utf8.visitRunes(|c| tokens[i / 2])
+                {
+                    it := runes.find(c)
+                    pl.paths.add(it.value.back.paths.toSlice())
+                    painter.fillPath(&pl, backColor)
+                    pl.paths.count = 0
+                    painter.translateTransform(cast(f32) it.value.advance*z, 0)
+                }
+                painter.popState()
             }
-            painter.popState()
 
             // Next line
             y0 += ht + (lineSpacing * z)
