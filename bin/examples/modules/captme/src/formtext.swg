@@ -161,10 +161,6 @@ impl IForm for FormText
 
     mtd hitTest(pt: Math.Point, z: f32)->bool
     {
-        rect := paintPos
-        rect.inflate(-2*borderSize)
-        if backColor.a == 0 and rect.contains(pt)
-            return false
         return true
     }
 
