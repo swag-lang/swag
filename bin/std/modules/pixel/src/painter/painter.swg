@@ -143,6 +143,7 @@ struct Painter
     sharedSolidPen:     Pen
     sharedSolidBrush:   Brush
     sharedLinePath:     LinePath
+    sharedLinePathList: LinePathList
 
     curState:           PaintState
     stackState:         Array'PaintState

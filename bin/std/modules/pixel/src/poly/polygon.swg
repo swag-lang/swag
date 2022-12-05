@@ -265,7 +265,7 @@ impl Polygon
             return
 
         n := points.count - 1
-        isClosed := points[0].isEqualEpsilon(points.back())
+        isClosed := points[0].distanceSquared(points.back()) < 0.5*0.5
         if isClosed
             points.count -= 1
 

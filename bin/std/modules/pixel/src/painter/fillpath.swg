@@ -2,6 +2,63 @@ using Core, Math
 
 public impl Painter
 {
+    private mtd fillPath(t: *Poly2Tri.Tesselate, p: *LinePath, bvMin, bvMax: Vector2, brush: Brush)
+    {
+        setTexture0(bvMin, bvMax, brush)
+        resetTextureFont()
+
+        if p.triangles.count == 0
+        {
+            t.triangulate()
+
+            // "Eat" points, triangles and edges
+            p.points =,move t.points
+            p.points.add(t.head); t.head = null
+            p.points.add(t.tail); t.tail = null
+            p.triangles =,move t.triangles
+            p.edgeList  =,move t.edgeList
+
+            // t.triangles only contains 'interior' triangles, so we need to delete all other
+            // allocated triangles to avoid a leak
+            visit tri: t.map
+            {
+                if !tri.interior
+                    Memory.delete(tri)
+            }
+
+            t.map.clear()
+        }
+
+        t.clear()
+
+        visit tri, ii: p.triangles
+        {
+            Debug.assert(tri.interior)
+            v0 := Vector2{cast(f32) tri.points[0].x, cast(f32) tri.points[0].y}
+            v1 := Vector2{cast(f32) tri.points[1].x, cast(f32) tri.points[1].y}
+            v2 := Vector2{cast(f32) tri.points[2].x, cast(f32) tri.points[2].y}
+            prim := pushTriangle(v0, v1, v2, brush.color)
+
+            if curState.paintParams & .Antialiased
+            {
+                e := tri.points[0].border[0]
+                if e addEdgeAA(prim, acast e.p.x, acast e.p.y, acast e.q.x, acast e.q.y)
+                e = tri.points[0].border[1]
+                if e addEdgeAA(prim, acast e.p.x, acast e.p.y, acast e.q.x, acast e.q.y)
+
+                e = tri.points[1].border[0]
+                if e addEdgeAA(prim, acast e.p.x, acast e.p.y, acast e.q.x, acast e.q.y)
+                e = tri.points[1].border[1]
+                if e addEdgeAA(prim, acast e.p.x, acast e.p.y, acast e.q.x, acast e.q.y)
+
+                e = tri.points[2].border[0]
+                if e addEdgeAA(prim, acast e.p.x, acast e.p.y, acast e.q.x, acast e.q.y)
+                e = tri.points[2].border[1]
+                if e addEdgeAA(prim, acast e.p.x, acast e.p.y, acast e.q.x, acast e.q.y)
+            }
+        }
+    }
+
     // Fill the line path
     mtd fillPath(pathList: *LinePathList, color: Color)
     {
@@ -50,58 +107,9 @@ public impl Painter
         // Non convex shape: triangulate
         else
         {
-            result := triangulate(path)
-
-            pidx := result.buffer
-            firstPrim := vertexBuffer.count
-            loop result.count / 3
-            {
-                v0 := polygon.getPoint(cast(uint) pidx[0] + 1)
-                v1 := polygon.getPoint(cast(uint) pidx[1] + 1)
-                v2 := polygon.getPoint(cast(uint) pidx[2] + 1)
-                prim := pushTriangle(v0, v1, v2, brush.color)
-                pidx += 3
-            }
-
-            // Generate all AA edges : for each vertex of the triangle, add the previous and
-            // next edge (even if not in the triangle)
-            if curState.paintParams & .Antialiased
-            {
-                cpt := cast(s32) polygon.points.count - 1
-                psrc := result.buffer
-                for i := 0; i < result.count; i += 3
-                {
-                    index  := psrc[0]
-                    indexn := (index + 1) % cpt
-                    indexp := index ? index - 1 : cpt - 1
-                    v  := polygon.getPoint(cast(uint) index + 1)
-                    vp := polygon.getPoint(cast(uint) indexp + 1)
-                    vn := polygon.getPoint(cast(uint) indexn + 1)
-                    addEdgeAA(firstPrim, v, vp)
-                    addEdgeAA(firstPrim, v, vn)
-
-                    index  = psrc[1]
-                    indexn = (index + 1) % cpt
-                    indexp = index ? index - 1 : cpt - 1
-                    v  = polygon.getPoint(cast(uint) index + 1)
-                    vp = polygon.getPoint(cast(uint) indexp + 1)
-                    vn = polygon.getPoint(cast(uint) indexn + 1)
-                    addEdgeAA(firstPrim, v, vp)
-                    addEdgeAA(firstPrim, v, vn)
-
-                    index  = psrc[2]
-                    indexn = (index + 1) % cpt
-                    indexp = index ? index - 1 : cpt - 1
-                    v  = polygon.getPoint(cast(uint) index + 1)
-                    vp = polygon.getPoint(cast(uint) indexp + 1)
-                    vn = polygon.getPoint(cast(uint) indexn + 1)
-                    addEdgeAA(firstPrim, v, vp)
-                    addEdgeAA(firstPrim, v, vn)
-
-                    psrc += 3
-                    firstPrim += 3
-                }
-            }
+            sharedLinePathList.paths.add(path)
+            fillPath(&sharedLinePathList, brush)
+            sharedLinePathList.paths.count = 0
         }
     }
 
@@ -135,6 +143,7 @@ public impl Painter
                     dirty = true
                     break
                 }
+
                 serial = p.serial
                 flush = null
             }
@@ -159,7 +168,7 @@ public impl Painter
                 if (p.polygon.isClockwise or serial != p.serial) and flush
                 {
                     serial = p.serial
-                    triangulate(&t, flush, pathList.bvMin, pathList.bvMax, brush)
+                    fillPath(&t, flush, pathList.bvMin, pathList.bvMax, brush)
                     flush = null
                 }
 
@@ -178,7 +187,7 @@ public impl Painter
                 if (p.polygon.isClockwise or serial != p.serial) and flush
                 {
                     serial = p.serial
-                    triangulate(&t, flush, pathList.bvMin, pathList.bvMax, brush)
+                    fillPath(&t, flush, pathList.bvMin, pathList.bvMax, brush)
                     flush = null
                 }
 
@@ -198,7 +207,7 @@ public impl Painter
         }
 
         if flush
-            triangulate(&t, flush, pathList.bvMin, pathList.bvMax, brush)
+            fillPath(&t, flush, pathList.bvMin, pathList.bvMax, brush)
     }
 
     // Fill the polygon with the given color
