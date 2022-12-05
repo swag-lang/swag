@@ -77,16 +77,17 @@ public impl Painter
         if Math.isZeroEpsilon(path.polygon.totalLen)
             return
 
-        // Setup texture
-        setTexture0(path.bvMin, path.bvMax, brush)
-        resetTextureFont()
-
-        // Convex shape: just add a triangle from the center of the shape to each pair of
-        // vertices
         polygon := &path.polygon
+
+        // Convex shape : faster
         if polygon.isConvex
         {
+            setTexture0(path.bvMin, path.bvMax, brush)
+            resetTextureFont()
+
             count := path.polygon.points.count - 1
+
+            // Convex shape : 1 triangle
             if count == 3
             {
                 v0 := polygon.getPoint(0)
@@ -100,6 +101,8 @@ public impl Painter
                     addEdgeAA(prim, v2, v0)
                 }
             }
+
+            // Convex shape : 2 triangles
             else if count == 4
             {
                 v0 := polygon.getPoint(0)
@@ -120,6 +123,9 @@ public impl Painter
                     addEdgeAA(prim1, v3, v0)
                 }
             }
+
+            // Convex shape: add a triangle from the center of the shape to each pair of
+            // vertices
             else
             {
                 center := Vector2{path.bvMin.x + (path.bvMax.x - path.bvMin.x) * 0.5, path.bvMin.y + (path.bvMax.y - path.bvMin.y) * 0.5}
@@ -141,7 +147,7 @@ public impl Painter
             }
         }
 
-        // Non convex shape: triangulate
+        // Non convex shape: complex painting (triangulation)
         else
         {
             sharedLinePathList.paths.add(path)
