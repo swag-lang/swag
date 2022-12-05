@@ -7,6 +7,7 @@ public impl Painter
         setTexture0(bvMin, bvMax, brush)
         resetTextureFont()
 
+        // Triangulation
         if p.triangles.count == 0
         {
             t.triangulate()
@@ -27,10 +28,10 @@ public impl Painter
             }
 
             t.map.clear()
+            t.clear()
         }
 
-        t.clear()
-
+        // Paint
         visit tri, ii: p.triangles
         {
             Debug.assert(tri.interior)
@@ -128,8 +129,7 @@ public impl Painter
         // Flatten all paths
         pathList.flatten(curState.paintQuality)
 
-        var t:      Poly2Tri.Tesselate
-        var flush:  *LinePath
+        var flush: *LinePath
 
         // Everything in the cache ?
         serial := 0
@@ -168,7 +168,7 @@ public impl Painter
                 if (p.polygon.isClockwise or serial != p.serial) and flush
                 {
                     serial = p.serial
-                    fillPath(&t, flush, pathList.bvMin, pathList.bvMax, brush)
+                    fillPath(null, flush, pathList.bvMin, pathList.bvMax, brush)
                     flush = null
                 }
 
@@ -177,11 +177,15 @@ public impl Painter
                     flush = p
                 }
             }
+
+            if flush
+                fillPath(null, flush, pathList.bvMin, pathList.bvMax, brush)
         }
 
         // Full compute (triangulation)
         else
         {
+            var t: Poly2Tri.Tesselate
             visit p: pathList.paths
             {
                 if (p.polygon.isClockwise or serial != p.serial) and flush
@@ -204,10 +208,10 @@ public impl Painter
                     t.endPolyLine()
                 }
             }
-        }
 
-        if flush
-            fillPath(&t, flush, pathList.bvMin, pathList.bvMax, brush)
+            if flush
+                fillPath(&t, flush, pathList.bvMin, pathList.bvMax, brush)
+        }
     }
 
     // Fill the polygon with the given color
