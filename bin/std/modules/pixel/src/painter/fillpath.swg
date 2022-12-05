@@ -34,28 +34,23 @@ public impl Painter
         // Paint
         visit tri, ii: p.triangles
         {
-            Debug.assert(tri.interior)
-            v0 := Vector2{cast(f32) tri.points[0].x, cast(f32) tri.points[0].y}
-            v1 := Vector2{cast(f32) tri.points[1].x, cast(f32) tri.points[1].y}
-            v2 := Vector2{cast(f32) tri.points[2].x, cast(f32) tri.points[2].y}
-            prim := pushTriangle(v0, v1, v2, brush.color)
-
+            prim := pushTriangle(tri.points[0].v, tri.points[1].v, tri.points[2].v, brush.color)
             if curState.paintParams & .Antialiased
             {
                 e := tri.points[0].border[0]
-                if e addEdgeAA(prim, acast e.p.x, acast e.p.y, acast e.q.x, acast e.q.y)
+                if e addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
                 e = tri.points[0].border[1]
-                if e addEdgeAA(prim, acast e.p.x, acast e.p.y, acast e.q.x, acast e.q.y)
+                if e addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
 
                 e = tri.points[1].border[0]
-                if e addEdgeAA(prim, acast e.p.x, acast e.p.y, acast e.q.x, acast e.q.y)
+                if e addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
                 e = tri.points[1].border[1]
-                if e addEdgeAA(prim, acast e.p.x, acast e.p.y, acast e.q.x, acast e.q.y)
+                if e addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
 
                 e = tri.points[2].border[0]
-                if e addEdgeAA(prim, acast e.p.x, acast e.p.y, acast e.q.x, acast e.q.y)
+                if e addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
                 e = tri.points[2].border[1]
-                if e addEdgeAA(prim, acast e.p.x, acast e.p.y, acast e.q.x, acast e.q.y)
+                if e addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
             }
         }
     }
@@ -244,7 +239,7 @@ public impl Painter
                     loop i: 0..p.polygon.points.count-2
                     {
                         pt := p.polygon.getPoint(i)
-                        t.addPoint(cast(f64) pt.x, cast(f64) pt.y)
+                        t.addPoint(pt.x, pt.y)
                     }
 
                     t.endPolyLine()

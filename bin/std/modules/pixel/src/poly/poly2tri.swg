@@ -17,7 +17,7 @@ enum Orientation
 
 public struct Point
 {
-    x, y:           f64
+    using v:        Math.Vector2
     edgeList:       Array'*Edge
     border:         [2] *Edge
 }
@@ -429,7 +429,7 @@ impl AdvancingFront
         return node
     }
 
-    mtd locateNode(x: f64)->*Node
+    mtd locateNode(x: f32)->*Node
     {
         node := searchNode
         if x < node.value
@@ -519,7 +519,7 @@ impl Tesselate
     }
 
     // Register a new point
-    public mtd addPoint(x, y: f64)
+    public mtd addPoint(x, y: f32)
     {
         p := Memory.new'Point()
         p.x = x
@@ -1282,7 +1282,7 @@ impl Tesselate
             ymin = Math.min(ymin, p.y)
         }
 
-        const KAlpha = 0.3'f64
+        const KAlpha = 0.3'f32
         dx := KAlpha * (xmax - xmin)
         dy := KAlpha * (ymax - ymin)
         head = Memory.new'Point()
