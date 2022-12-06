@@ -957,6 +957,9 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     if (node->flags & AST_GENERATED && !(node->flags & AST_GENERATED_USER))
         return true;
 
+    if (node->flags & AST_FORCE_TYPE)
+        concat.addString("#type ");
+
     switch (node->kind)
     {
     case AstNodeKind::With:

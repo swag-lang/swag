@@ -67,6 +67,6 @@
         }
 
         var x: Struct'(bool, 10)
-        @assert(@typeof(x.val) == [10] bool)
+        @assert(@typeof(x.val) == #type [10] bool)
     }
 }

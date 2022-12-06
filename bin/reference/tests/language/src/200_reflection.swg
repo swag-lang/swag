@@ -26,7 +26,7 @@
         ptr := bool
         @assert(@typeof(ptr) == @typeof(const *Swag.TypeInfoNative))
 
-        ptr1 := [2] s32
+        ptr1 := #type [2] s32
         @assert(@typeof(ptr1) == @typeof(const *Swag.TypeInfoArray))
         @assert(ptr1.name == "[2] s32")
     }

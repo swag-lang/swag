@@ -1,4 +1,4 @@
-alias T = func()->void
+alias T = #type func()->void
 
 var GG: bool
 

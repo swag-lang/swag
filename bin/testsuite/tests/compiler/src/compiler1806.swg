@@ -1,4 +1,4 @@
 #test
 {
-    ptr := @typeof(func()->s32)
+    ptr := @typeof(#type func()->s32)
 }

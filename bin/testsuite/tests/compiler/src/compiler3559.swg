@@ -1,1 +1,1 @@
-alias CB = closure(s32)
+alias CB = #type closure(s32)

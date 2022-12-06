@@ -258,6 +258,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("#import", TokenId::CompilerImport);
     keywords.add("#include", TokenId::CompilerInclude);
     keywords.add("#load", TokenId::CompilerLoad);
+    keywords.add("#type", TokenId::CompilerType);
 
     keywords.add("var", TokenId::KwdVar);
     keywords.add("const", TokenId::KwdConst);

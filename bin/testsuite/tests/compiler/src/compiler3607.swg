@@ -1,4 +1,4 @@
-alias Hook = func(*Wnd)
+alias Hook = #type func(*Wnd)
 struct Wnd
 {
     h: Hook

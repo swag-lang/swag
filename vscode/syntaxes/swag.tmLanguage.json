@@ -200,7 +200,7 @@
       "patterns": [
         {
           "name": "constant.character.escape",
-          "match": "(#)\\b(tokenpos|file|line|cfg|arch|os|module|backend|self|location|callerlocation|callerfunction|swagversion|swagrevision|swagbuildnum|swagos|code|semerror)"
+          "match": "(#)\\b(tokenpos|type|file|line|cfg|arch|os|module|backend|self|location|callerlocation|callerfunction|swagversion|swagrevision|swagbuildnum|swagos|code|semerror)"
         }
       ]
     },

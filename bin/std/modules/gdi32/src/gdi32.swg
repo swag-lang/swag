@@ -368,8 +368,8 @@ struct NEWTEXTMETRICW
     ntmAvgWidth:        UINT
 }
 
-alias FONTENUMPROCA = func(const *LOGFONTA, const *TEXTMETRICA, DWORD, LPARAM)->BOOL;
-alias FONTENUMPROCW = func(const *LOGFONTW, const *TEXTMETRICW, DWORD, LPARAM)->BOOL;
+alias FONTENUMPROCA = #type func(const *LOGFONTA, const *TEXTMETRICA, DWORD, LPARAM)->BOOL;
+alias FONTENUMPROCW = #type func(const *LOGFONTW, const *TEXTMETRICW, DWORD, LPARAM)->BOOL;
 
 #[Swag.Inline]
 func RGB(r,g,b: s32)->COLORREF

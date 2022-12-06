@@ -413,7 +413,7 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
 
     node->allocateExtension(ExtensionKind::ByteCode);
     node->extension->bytecode->byteCodeBeforeFct = ByteCodeGenJob::emitDebugNop;
-    node->byteCodeFct                  = ByteCodeGenJob::emitDebugNop;
+    node->byteCodeFct                            = ByteCodeGenJob::emitDebugNop;
     expr->flags |= AST_NO_BYTECODE;
 
     auto typeCode = CastTypeInfo<TypeInfoCode>(expr->typeInfo, TypeInfoKind::Code);

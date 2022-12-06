@@ -300,18 +300,28 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
 
+    case TokenId::CompilerType:
+    {
+        eatToken();
+        PushSyntaxContextFlags cf(this, CONTEXT_FLAG_EXPRESSION);
+        if (exprFlags & EXPR_FLAG_SIMPLE)
+            return invalidTokenError(InvalidTokenError::PrimaryExpression);
+        AstNode* resNode;
+        SWAG_CHECK(doTypeExpression(parent, &resNode));
+        if (result)
+            *result = resNode;
+        resNode->flags |= AST_FORCE_TYPE;
+        break;
+    }
+
     case TokenId::KwdConst:
     case TokenId::KwdCode:
-    case TokenId::KwdFunc:
-    case TokenId::KwdClosure:
     case TokenId::KwdStruct:
     case TokenId::KwdUnion:
     case TokenId::KwdRef:
     case TokenId::NativeType:
     case TokenId::SymAsterisk:
     case TokenId::SymCircumflex:
-    case TokenId::SymLeftSquare:
-    case TokenId::SymLeftCurly:
     {
         PushSyntaxContextFlags cf(this, CONTEXT_FLAG_EXPRESSION);
         if (exprFlags & EXPR_FLAG_SIMPLE)
@@ -320,6 +330,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
         break;
     }
 
+    case TokenId::SymLeftCurly:
     case TokenId::SymLiteralCurly:
         if (exprFlags & EXPR_FLAG_SIMPLE)
             return invalidTokenError(InvalidTokenError::PrimaryExpression);
@@ -327,6 +338,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
         SWAG_CHECK(doExpressionListTuple(parent, result));
         break;
 
+    case TokenId::SymLeftSquare:
     case TokenId::SymLiteralBracket:
         if (exprFlags & EXPR_FLAG_SIMPLE)
             return invalidTokenError(InvalidTokenError::PrimaryExpression);
@@ -334,6 +346,8 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
         SWAG_CHECK(doExpressionListArray(parent, result));
         break;
 
+    case TokenId::KwdFunc:
+    case TokenId::KwdClosure:
     case TokenId::SymLiteralParen:
     case TokenId::SymLiteralVertical:
         if (exprFlags & EXPR_FLAG_SIMPLE)

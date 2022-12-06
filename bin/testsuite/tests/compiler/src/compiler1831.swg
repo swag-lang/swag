@@ -1,5 +1,5 @@
 #test
 {
-    x := func()->s32
+    x := #type func()->s32
     @assert(x.fullname == "func()->s32")
 }

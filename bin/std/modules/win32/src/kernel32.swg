@@ -37,8 +37,8 @@ alias LPWCH =           ^WCHAR
 alias SIZE_T =          uint
 alias va_list =         ^u8
 
-alias LPTHREAD_START_ROUTINE = func(*void)->DWORD
-alias WAITORTIMERCALLBACK    = func(*void, BOOL)
+alias LPTHREAD_START_ROUTINE = #type func(*void)->DWORD
+alias WAITORTIMERCALLBACK    = #type func(*void, BOOL)
 
 const STD_INPUT_HANDLE 	= bitcast(DWORD) -10
 const STD_OUTPUT_HANDLE = bitcast(DWORD) -11

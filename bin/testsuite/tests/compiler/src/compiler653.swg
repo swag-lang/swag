@@ -4,5 +4,5 @@
 //#global testerror
 #test
 {
-	pair := {s32}
+	pair := #type {s32}
 }

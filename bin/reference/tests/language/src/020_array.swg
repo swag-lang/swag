@@ -35,7 +35,7 @@
     {
         arr := @[1, 2, 3, 4]
         #assert @countof(arr) == 4
-        #assert @typeof(arr) == [4] s32
+        #assert @typeof(arr) == #type [4] s32
     }
 
     // The size of the array can be deduced from the initialisation expression
@@ -96,7 +96,7 @@
         arr := @[1'f64, 2, 3, 4]    // Every values are forced to be 'f64'
 
         #assert @countof(arr) == 4
-        #assert @typeof(arr) == [4] f64
+        #assert @typeof(arr) == #type [4] f64
         @assert(arr[3] == 4.0)
     }
 }
