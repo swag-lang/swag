@@ -2,7 +2,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    var arr: [4] s32 = @[10, 20, 30, 40]
+    var arr: [4] s32 = [10, 20, 30, 40]
     var ptr: *~16 s32 = &arr[0]
 
     @assert(@sizeof(ptr) == 2)

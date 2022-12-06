@@ -7,6 +7,6 @@ func(T) toto(x: [..] T)
 //#[Swag.PrintBc]
 #test
 {
-	var cpt: [1] s32 = @[10]
+	var cpt: [1] s32 = [10]
 	toto(cast([..] s32) cpt)
 }

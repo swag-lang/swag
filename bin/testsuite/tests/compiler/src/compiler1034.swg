@@ -3,7 +3,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	x := @["10", "20", "30"]
+	x := ["10", "20", "30"]
 	count := 2
 	@init(&x, count)
 	@assert(x[0] == null)

@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    arr := @[0'u8, 1, 2, 3]
+    arr := [0'u8, 1, 2, 3]
     var arr1: [..] u8 = arr
 
     c := arr1[1]

@@ -9,7 +9,7 @@ struct AA
 //#[Swag.PrintBc]
 #test
 {
-    v := @[10, 20]
+    v := [10, 20]
     var st: AA
     st.x = v
 

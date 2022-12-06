@@ -13,5 +13,5 @@ alias E = EE
     @assert(@countof(C.length) == 4)
     @assert(@countof(EE) == 2)
     @assert(@countof(E) == 2)
-    @assert(@countof(@[1, 2, 3]) == 3)
+    @assert(@countof([1, 2, 3]) == 3)
 }

@@ -12,6 +12,6 @@ func(T) toto(x: const [..] T)
 
 #test
 {
-	var cpt: const [..] s32 = @[1,2,3,4]
+	var cpt: const [..] s32 = [1,2,3,4]
 	toto(cpt)
 }

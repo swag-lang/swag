@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    const t = @[10, 10, 10]
+    const t = [10, 10, 10]
 
     x := 0'f32
     loop i: 3

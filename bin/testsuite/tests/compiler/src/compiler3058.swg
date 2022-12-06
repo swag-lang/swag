@@ -1,5 +1,5 @@
 #[Swag.Compiler]
-const X = @[10, 10, 20, 40]
+const X = [10, 10, 20, 40]
 
 #[Swag.Compiler]
 func toto()

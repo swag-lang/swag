@@ -1,7 +1,7 @@
 #[Swag.Inline]
 func toto1()->[2] s32
 {
-    result := @[1, 2]
+    result := [1, 2]
     return result
 }
 

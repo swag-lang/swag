@@ -8,7 +8,7 @@ struct(T: const [..] typeinfo) AA
 
 #test
 {
-    var v: AA'(@[s32, bool])
+    var v: AA'([s32, bool])
     @assert(@typeof(v.x) == s32)
     @assert(@typeof(v.y) == bool)
 }

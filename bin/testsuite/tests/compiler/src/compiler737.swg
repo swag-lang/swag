@@ -11,6 +11,6 @@ func(T) toto(x: [4] T)
 
 #test
 {
-	var cpt: [4] s32 = @[1,2,3,4]
+	var cpt: [4] s32 = [1,2,3,4]
 	toto(cpt)
 }

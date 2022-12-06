@@ -4,7 +4,7 @@ using Swag
 func toto()->[2] s32 throw
 {
     throw "coucou"
-    return @[1, 2]
+    return [1, 2]
 }
 
 //#[PrintBc]

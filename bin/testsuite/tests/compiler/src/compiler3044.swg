@@ -15,7 +15,7 @@ impl AA
 
 #test
 {
-    var v: AA'(@[s32, bool])
+    var v: AA'([s32, bool])
     @assert(v.isIn(s32))
     @assert(v.isIn(bool))
     @assert(!v.isIn(f64))

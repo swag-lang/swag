@@ -9,5 +9,5 @@ func test1(a: const [3] s32)
 #test
 {
 	c := 666;
-	test1(@[1, c, 2]);
+	test1([1, c, 2]);
 }

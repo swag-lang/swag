@@ -24,7 +24,7 @@ func dot(x: const ref Vec2)
 //#[Swag.PrintBc]
 #test
 {
-    var x = Vec2{@[1.5, 2]}
+    var x = Vec2{[1.5, 2]}
     //@print(x[0], " ", x[1], "\n")
     dot(x)
 }

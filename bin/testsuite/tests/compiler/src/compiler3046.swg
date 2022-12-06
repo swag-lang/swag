@@ -41,7 +41,7 @@ impl AA
 
 #test
 {
-    var v: AA'(@[s32, string])
+    var v: AA'([s32, string])
 
     v.set's32(666)
     x := v.get's32()

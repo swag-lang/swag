@@ -5,7 +5,7 @@ struct AA { x: s32; }
 
 func toto()->[1] AA
 {
-    return @[{1}]
+    return [{1}]
 }
 
 //#[Swag.PrintBc]

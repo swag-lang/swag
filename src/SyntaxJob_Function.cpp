@@ -55,11 +55,6 @@ bool SyntaxJob::doGenericFuncCallParameters(AstNode* parent, AstNode** result)
             SWAG_CHECK(doExpressionListArray(param));
             break;
 
-        case TokenId::SymLiteralBracket:
-            SWAG_CHECK(eatToken(TokenId::SymLiteralBracket));
-            SWAG_CHECK(doExpressionListArray(param));
-            break;
-
         case TokenId::CompilerType:
         {
             SWAG_CHECK(eatToken(TokenId::CompilerType));

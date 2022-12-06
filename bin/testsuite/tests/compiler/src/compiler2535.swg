@@ -7,7 +7,7 @@ func toto() throw
 func titi()->[2] s32 throw
 {
     try toto()
-    return @[10, 20]
+    return [10, 20]
 }
 
 //#[Swag.PrintBc]

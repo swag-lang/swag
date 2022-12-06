@@ -29,8 +29,8 @@ func toto2(v1: AA)
 	var v: AA
     v.x = 1
     v.y = 2
-	toto(&v, 3.14, "string", @[10, 20], @[1.1, 2.2], "toto", "titi")
-	toto1(&v, 3.14, "string", @[10, 20], @[1.1, 2.2], 10, 20)
+	toto(&v, 3.14, "string", [10, 20], [1.1, 2.2], "toto", "titi")
+	toto1(&v, 3.14, "string", [10, 20], [1.1, 2.2], 10, 20)
 	v.x = 555
 	v.y = 666
 	toto2(v)

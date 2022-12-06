@@ -1,4 +1,4 @@
-func toto(x: const [..] s32 = @[1, 2, 3])
+func toto(x: const [..] s32 = [1, 2, 3])
 {
     @assert(x[0] == 10)
     @assert(x[1] == 20)
@@ -9,5 +9,5 @@ func toto(x: const [..] s32 = @[1, 2, 3])
 //#[Swag.PrintBc]
 #test
 {
-    toto(@[10, 20, 30])
+    toto([10, 20, 30])
 }

@@ -11,7 +11,7 @@ impl AA
 
     mtd opSlice(a, b: uint)->const [..] string
     {
-        return @["1", "2", "3" , "4"]
+        return ["1", "2", "3" , "4"]
     }
 }
 

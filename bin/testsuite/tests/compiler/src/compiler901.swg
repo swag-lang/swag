@@ -7,5 +7,5 @@ func arithmeticMean(numbers: const [..] string)
 //#[Swag.PrintBc]
 #test
 {
-	arithmeticMean(@["10"])
+	arithmeticMean(["10"])
 }

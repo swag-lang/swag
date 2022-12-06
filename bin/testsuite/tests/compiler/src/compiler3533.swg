@@ -10,6 +10,6 @@ func(N: uint) norm(a: const [N] f32)
 //#[Swag.PrintBc]
 #test
 {
-    const X = @[1.5, 2]
+    const X = [1.5, 2]
     norm(X)
 }

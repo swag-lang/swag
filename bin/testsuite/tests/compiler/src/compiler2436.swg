@@ -9,7 +9,7 @@ func append(v: const [..] s32)
 
 #test
 {
-    append(@[10, 10, 10])
-    x := @[10, 10, 10]
+    append([10, 10, 10])
+    x := [10, 10, 10]
     append(x)
 }

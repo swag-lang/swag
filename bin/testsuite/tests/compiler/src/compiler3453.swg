@@ -1,7 +1,7 @@
 //#[Swag.PrintBc, Swag.Optim("", false)]
 #test
 {
-    var x: const [..] s32 = @[1, 2]
+    var x: const [..] s32 = [1, 2]
 
     v := @|x|()
     {

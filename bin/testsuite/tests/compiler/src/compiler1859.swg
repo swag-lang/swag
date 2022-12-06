@@ -35,7 +35,7 @@ func tt4()->string
 //#[Swag.PrintBc]
 func tt5()->[..] s64
 {
-    return @[10, 20, 30, 40]
+    return [10, 20, 30, 40]
 }
 
 struct A
@@ -158,15 +158,15 @@ func aaa(ptr: ^s64)
         }
 
         {
-            x := @[1, 2, 3]
-            y := @[1, 3, 3]
+            x := [1, 2, 3]
+            y := [1, 3, 3]
             @print(cast(s64) @memcmp(&x[0], &y[0], 3'uint * 4))
-            z := @[1, 2, 3]
+            z := [1, 2, 3]
             @print(cast(s64) @memcmp(&x[0], &z[0], 3'uint * 4))
         }
 
         {
-            x := @[1, 2, 3]
+            x := [1, 2, 3]
             @print(cast(s64) x[0])
             @print(cast(s64) x[1])
             @print(cast(s64) x[2])
@@ -177,8 +177,8 @@ func aaa(ptr: ^s64)
         }
 
         {
-            x := @[1, 2, 3]
-            y := @[10, 20, 30]
+            x := [1, 2, 3]
+            y := [10, 20, 30]
             @memcpy(&x[0], &y[0], cast(uint) 3 * @sizeof(u32))
             @print(cast(s64) x[0])
             @print(cast(s64) x[1])
@@ -190,7 +190,7 @@ func aaa(ptr: ^s64)
         }
 
         {
-            x := @[0, 0]
+            x := [0, 0]
             @init(&x[0], 2)(1)
             @print(cast(s64) x[0])
             @print(cast(s64) x[1])
@@ -400,7 +400,7 @@ func aaa(ptr: ^s64)
         variadic(10's64,10's64)
 
         {
-            x := @[1's64, 2, 3]
+            x := [1's64, 2, 3]
             ptr := &x[2]
             ptr = ptr - 1
             @print(dref ptr)
@@ -452,7 +452,7 @@ func aaa(ptr: ^s64)
         }
 
         {
-            x := @[1's64, 2]
+            x := [1's64, 2]
             ptr := &x[0]
             @print(ptr[1])
             ptr[1] = 33
@@ -460,7 +460,7 @@ func aaa(ptr: ^s64)
         }
 
         {
-            x := @[1's64]
+            x := [1's64]
             ptr := &x[0]
             @print(ptr[0])
             ptr[0] = 10
@@ -1132,14 +1132,14 @@ func aaa(ptr: ^s64)
         }
 
         {
-            x := @[1'u8]
+            x := [1'u8]
             ptr := &x[0]
             y := ptr[0]
             @print(cast(s64) y)
         }
 
         {
-            x := @[5'u16]
+            x := [5'u16]
             ptr := &x[0]
             y := ptr[0]
             @print(cast(s64) y)
@@ -1180,14 +1180,14 @@ func aaa(ptr: ^s64)
             }
         }
         {
-            x := @[1's64, 2, 3]
+            x := [1's64, 2, 3]
             ptr := &x[0]
             @print(ptr[0])
             @print(ptr[1])
         }
 
         {
-            x := @[1's64, 2, 3]
+            x := [1's64, 2, 3]
             @print(x[0])
             @print(x[1])
             @print(x[2])

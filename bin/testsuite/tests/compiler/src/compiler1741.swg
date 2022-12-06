@@ -2,7 +2,7 @@
 #test
 {
     {
-        const array: [2] s32 = @[1, 2]
+        const array: [2] s32 = [1, 2]
         ptr := @dataof(array)
         @assert(ptr[0] == 1)
         @assert(ptr[1] == 2)

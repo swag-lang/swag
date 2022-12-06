@@ -14,6 +14,6 @@ func(T, N: uint) norm(a: const [N] T)->T
 //#[Swag.PrintBc]
 #test
 {
-    const X = @[1.5, 2]
+    const X = [1.5, 2]
     @assert(norm(X) == 2.5)
 }

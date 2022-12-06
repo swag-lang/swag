@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	x := @["10", "20", "30"]
+	x := ["10", "20", "30"]
 	count := 1
     count -= 1
 	@init(&x, count)("666")

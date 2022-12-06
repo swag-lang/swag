@@ -1250,7 +1250,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         if (exprNode->specFlags & AST_SPEC_EXPRLIST_FOR_TUPLE)
             concat.addString2("@{");
         else
-            concat.addString2("@[");
+            concat.addChar('[');
 
         int idx = 0;
         for (auto child : exprNode->childs)

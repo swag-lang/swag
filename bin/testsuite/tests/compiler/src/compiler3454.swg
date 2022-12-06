@@ -1,7 +1,7 @@
 //#[Swag.PrintBc, Swag.Optim("", false)]
 #test
 {
-    a := @[1, 2, 3, 4]
+    a := [1, 2, 3, 4]
     b := @{a}
     @assert(b.item0[0] == 1)
     @assert(b.item0[1] == 2)

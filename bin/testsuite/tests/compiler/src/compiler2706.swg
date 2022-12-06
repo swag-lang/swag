@@ -1,6 +1,6 @@
 #global testerror
 
-func toto(x = @[1, 2])
+func toto(x = [1, 2])
 {
     @assert(x[0] == 1)
     @assert(x[1] == 2)
@@ -10,5 +10,5 @@ func toto(x = @[1, 2])
 #test
 {
     toto()
-    toto(@[1, 2])
+    toto([1, 2])
 }

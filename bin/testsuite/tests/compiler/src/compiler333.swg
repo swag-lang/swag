@@ -1,7 +1,7 @@
 ;
 ;
 
-var a: [2] s32 = @[50, 60];
+var a: [2] s32 = [50, 60];
 
 //#[Swag.PrintBc]
 #test

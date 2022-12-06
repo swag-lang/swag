@@ -9,5 +9,5 @@ func append(v: ...)
 
 #test
 {
-    append(@spread(@[10, 20]))
+    append(@spread([10, 20]))
 }

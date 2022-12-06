@@ -50,6 +50,6 @@ impl Variant
 
 #test
 {
-    var v: Variant'(@[XX])
-    var v1: Variant'(@[string])
+    var v: Variant'([XX])
+    var v1: Variant'([string])
 }

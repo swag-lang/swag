@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    a := @[1's64, 2, 4]
+    a := [1's64, 2, 4]
     c := a[0..2]
     //@print(@typeof(c).name)
     @assert(c[0] == 1)

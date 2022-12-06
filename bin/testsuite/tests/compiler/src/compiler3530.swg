@@ -27,6 +27,6 @@ func(T) norm(a: T)->f32
 //#[Swag.PrintBc]
 #test
 {
-    const x = Vec2{@[1.5, 2]}
+    const x = Vec2{[1.5, 2]}
     @assert(norm(x) == 2.5)
 }

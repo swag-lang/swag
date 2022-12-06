@@ -8,7 +8,7 @@ var g = 0
 {
 	g = 0
 
-	var array = @[1,2,3]
+	var array = [1,2,3]
 	F(cast([..]s32) array, &T)
 	@assert(g == 6)
 }

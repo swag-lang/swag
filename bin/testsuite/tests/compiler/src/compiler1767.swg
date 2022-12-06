@@ -10,5 +10,5 @@ func toto(x: [2] s32)
 //#[Swag.PrintBc]
 #test
 {
-    toto(@[1, 2])
+    toto([1, 2])
 }

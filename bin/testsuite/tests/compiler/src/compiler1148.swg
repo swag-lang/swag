@@ -5,7 +5,7 @@
 }
 
 const MAX_SLICE: u32 = 16
-const s_Crc32Lookup: [MAX_SLICE, 256] u32 = @[
+const s_Crc32Lookup: [MAX_SLICE, 256] u32 = [
     [
         // note: the first number of every second row corresponds to the half-byte look-up table !
         0x00000000, 0x77073096, 0xEE0E612C, 0x990951BA, 0x076DC419, 0x706AF48F, 0xE963A535, 0x9E6495A3, 0x0EDB8832,

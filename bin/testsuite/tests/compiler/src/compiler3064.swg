@@ -15,7 +15,7 @@ impl AA
     mtd opSlice(a, b: uint)->const [..] s32
     {
         @assert(false)
-        return @[1, 2, 3 ,4]
+        return [1, 2, 3 ,4]
     }
 }
 

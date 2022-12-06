@@ -17,5 +17,5 @@ impl A
 {
     //var a: [2] [..] s32
     var a: A'(s32)
-    a.toto(@[1, 2])
+    a.toto([1, 2])
 }

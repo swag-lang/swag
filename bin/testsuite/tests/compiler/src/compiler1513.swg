@@ -14,7 +14,7 @@ impl A
 //#[Swag.PrintBc]
 #test
 {
-    var x: A = @[true]
+    var x: A = [true]
     //var y: A
     //y = [true]
 }

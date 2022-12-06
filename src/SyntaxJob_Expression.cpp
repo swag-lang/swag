@@ -344,13 +344,6 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
         SWAG_CHECK(doExpressionListArray(parent, result));
         break;
 
-    case TokenId::SymLiteralBracket:
-        if (exprFlags & EXPR_FLAG_SIMPLE)
-            return invalidTokenError(InvalidTokenError::PrimaryExpression);
-        SWAG_CHECK(eatToken(TokenId::SymLiteralBracket));
-        SWAG_CHECK(doExpressionListArray(parent, result));
-        break;
-
     case TokenId::KwdFunc:
     case TokenId::KwdClosure:
     case TokenId::SymLiteralParen:

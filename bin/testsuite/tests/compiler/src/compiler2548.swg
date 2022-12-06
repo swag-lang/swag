@@ -38,7 +38,7 @@ func titi()->[1] AA
     /*@print("ptr ")
     @print(cast(s64) cast(uint) ptrptr)
     @print("\n")*/
-    return @[{ptrptr}]
+    return [{ptrptr}]
 }
 
 //#[Swag.PrintBc]

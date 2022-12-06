@@ -15,5 +15,5 @@ impl A
 #test
 {
     var x: A
-    x = @[true]
+    x = [true]
 }

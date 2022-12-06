@@ -3,7 +3,7 @@
 
 var t: [] struct {
     in:  const [..] rune
-} = @[{[1'rune,2,3,4]}]
+} = [{[1'rune,2,3,4]}]
 
 #test
 {

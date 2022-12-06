@@ -1,6 +1,6 @@
 #test
 {
-    const X = @[1, 2, 3]
+    const X = [1, 2, 3]
 
     cpt := 0
     visit x: X

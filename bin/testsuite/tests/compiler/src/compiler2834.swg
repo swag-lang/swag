@@ -136,7 +136,7 @@ func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat
 
 func atoF64Exact(neg: bool, mantissa: u64, exponent: s32) -> {f: f64, ok: bool}
 {
-    const f64Pow10: [] f64 = @[
+    const f64Pow10: [] f64 = [
         1e0, 1e1, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9,
         1e10, 1e11, 1e12, 1e13, 1e14, 1e15, 1e16, 1e17, 1e18, 1e19,
         1e20, 1e21, 1e22,
@@ -242,7 +242,7 @@ func atoF64(s: string)-> { value: f64, eat: u32 } throw
     return result
 }
 
-var PowersOfTen: [696,2] u64 = @[
+var PowersOfTen: [696,2] u64 = [
 	[0x1732C869CD60E453, 0xFA8FD5A0081C0288], // 1e-348
 	[0x0E7FBD42205C8EB4, 0x9C99E58405118195], // 1e-347
 	[0x521FAC92A873B261, 0xC3C05EE50655E1FA], // 1e-346

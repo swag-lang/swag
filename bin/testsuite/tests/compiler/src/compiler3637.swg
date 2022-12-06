@@ -14,6 +14,6 @@ func(T) toto(x: [..] T)
 {
     var a: s32
     toto(&a)
-    toto(cast([..] s32) @[1, 2])
+    toto(cast([..] s32) [1, 2])
     @assert(G == 3)
 }

@@ -8,6 +8,6 @@ func toto(x: [..] s32)
 
 #test
 {
-    x := @[1]
+    x := [1]
     toto(x)
 }

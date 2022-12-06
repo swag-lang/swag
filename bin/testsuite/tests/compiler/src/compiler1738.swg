@@ -4,7 +4,7 @@
 #test
 {
     {
-        const array: [2] s32 = @[1, 2]
+        const array: [2] s32 = [1, 2]
         ptr := @dataof(array)
         ptr[0] = 0
 

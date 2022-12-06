@@ -10,7 +10,7 @@ enum OT
 //#global testerror
 #test
 {
-	var pt: [2] OT = @[OT.A, OT.B]
+	var pt: [2] OT = [OT.A, OT.B]
 	@assert(pt[0] == OT.A)
 	@assert(pt[1] == OT.B)
 }

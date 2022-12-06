@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 func toto1()->[2] s32
 {
-    var result: retval = @[1, 2]
+    var result: retval = [1, 2]
     return result
 }
 

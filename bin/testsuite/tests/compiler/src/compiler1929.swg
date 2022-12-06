@@ -2,7 +2,7 @@
 //#global testerror
 
 alias A = #type [2] s32
-var x: A = @[5, 10]
+var x: A = [5, 10]
 
 #test
 {

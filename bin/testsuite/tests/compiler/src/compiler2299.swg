@@ -7,7 +7,7 @@ struct Range16
 }
 
 const _White_Space: [] Range16 =
-@[
+[
     {0x0009, 0x000d, 1, 1},
     {0x0020, 0x0085, 101},
     {0x00a0, 0x1680, 5600},

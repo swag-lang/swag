@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	x := @[1, 2, 3]
+	x := [1, 2, 3]
 	ptr := &x
 	count := 3
 	@init(ptr, count)

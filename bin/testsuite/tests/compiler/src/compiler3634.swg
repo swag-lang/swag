@@ -8,5 +8,5 @@ func toto(x: const [..] s32)
 
 #test
 {
-    toto(cast(const [..] s32) @[1, 2, 3])
+    toto(cast(const [..] s32) [1, 2, 3])
 }

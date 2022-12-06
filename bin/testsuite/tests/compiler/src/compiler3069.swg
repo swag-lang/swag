@@ -11,7 +11,7 @@ impl AA
 
     mtd opSlice(a, b: uint)->const [..] s32
     {
-        return @[1]
+        return [1]
     }
 }
 

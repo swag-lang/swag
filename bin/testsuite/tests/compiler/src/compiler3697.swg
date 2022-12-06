@@ -8,7 +8,7 @@ func write_chunk(chunk_type: TT, buf: const *u8, length: uint)
 }
 
 alias TT = const [4] u8
-const type_ihdr: TT = @[ 73, 72, 68, 82 ]
+const type_ihdr: TT = [ 73, 72, 68, 82 ]
 
 #test
 {

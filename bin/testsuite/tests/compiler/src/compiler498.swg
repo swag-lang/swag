@@ -11,5 +11,5 @@ func T(a: const [..] s32)
 //#[Swag.PrintBc]
 #test
 {
-	T(@[0, 1])
+	T([0, 1])
 }

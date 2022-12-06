@@ -7,8 +7,8 @@ struct(T: const [..] typeinfo) AA
 
 #test
 {
-    var x: AA'(@[s32, bool])
-    var y: AA'(@[s32, bool])
-    var z: AA'(@[bool, bool])
+    var x: AA'([s32, bool])
+    var y: AA'([s32, bool])
+    var z: AA'([bool, bool])
     @assert(CPT == 2)
 }

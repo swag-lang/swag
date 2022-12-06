@@ -10,7 +10,7 @@ struct AA
 //#[Swag.PrintBc, Swag.Optim("bc", false)]
 #test
 {
-    v := @[10, 20]
+    v := [10, 20]
 
     var s: AA
     s.x[0] = &v[0]

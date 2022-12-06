@@ -2,8 +2,8 @@
 
 enum AA: const [2] s32
 {
-    A = @[1, 2]
-    B = @[10, 20]
+    A = [1, 2]
+    B = [10, 20]
 }
 
 #test
@@ -11,6 +11,6 @@ enum AA: const [2] s32
     x := AA.A
     switch x
     {
-    case @[1, 2]: break
+    case [1, 2]: break
     }
 }

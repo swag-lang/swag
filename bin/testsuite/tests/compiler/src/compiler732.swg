@@ -15,7 +15,7 @@
 
 #test
 {
-	arr := @["toto", "titi"]
+	arr := ["toto", "titi"]
 	var ptr: ^string = &arr
 	@assert(ptr[0] == "toto")
 	@assert(ptr[1] == "titi")

@@ -32,6 +32,6 @@ impl G
 #test
 {
     var a: A
-    var g: G'I = @[cast(I) a]
+    var g: G'I = [cast(I) a]
     @assert(GG == 1)
 }

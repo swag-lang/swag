@@ -65,7 +65,7 @@ struct GameInfo
 {
     gameStatus:String
     whiteTurn = true
-    castle:[2,2] bool = @[ @[true, true], @[true, true]]
+    castle:[2,2] bool = [[true, true], [true, true]]
     priseEnPassant:s8=-1
     possibleMoves: Array'MoveInfo
     selectedCell = -1's8
@@ -109,7 +109,7 @@ func initCells()
         }
     }
 
-    firstLine := @[PiecesEnum.Rook, .Knight, .Bishop, .Queen, .King, .Bishop, .Knight, .Rook]
+    firstLine := [PiecesEnum.Rook, .Knight, .Bishop, .Queen, .King, .Bishop, .Knight, .Rook]
 
     loop x : 8
     {
@@ -277,21 +277,21 @@ func getPieceMove( board:^Cell, from:s8, offset:s8, moves:*Array's8 ) -> bool
     return board[target].content == .Empty
 }
 
-const KnightMovesDeltas = @[10's8,23,25,14,-10,-23,-25,-14]
+const KnightMovesDeltas = [10's8,23,25,14,-10,-23,-25,-14]
 func getKnightMoves(board:^Cell, from:s8, moves:*Array's8)
 {
     visit delta: KnightMovesDeltas
         discard getPieceMove(board, from, delta, moves)
 }
 
-const KingMovesDeltas = @[11's8,12,13,1,-11,-12,-13,-1]
+const KingMovesDeltas = [11's8,12,13,1,-11,-12,-13,-1]
 func getKingMoves(board:^Cell, from:s8, moves:*Array's8)
 {
     visit delta: KingMovesDeltas
         discard getPieceMove(board, from, delta, moves)
 }
 
-const BishopMovesDeltas = @[11's8,13,-11,-13]
+const BishopMovesDeltas = [11's8,13,-11,-13]
 func getBishopMoves( board:^Cell, from:s8, moves:*Array's8)
 {
     visit delta: BishopMovesDeltas
@@ -302,7 +302,7 @@ func getBishopMoves( board:^Cell, from:s8, moves:*Array's8)
     }
 }
 
-const RookMovesDeltas = @[12's8,1,-12,-1]
+const RookMovesDeltas = [12's8,1,-12,-1]
 func getRookMoves( board:^Cell, from:s8, moves:*Array's8)
 {
     visit delta: RookMovesDeltas

@@ -5,7 +5,7 @@
 #test
 {
     var x: [..]~32 s32
-    v := @[10, 20]
+    v := [10, 20]
     x = v
     @assert(@countof(x) == 2)
     @assert(x[0] == 10)

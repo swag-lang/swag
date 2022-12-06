@@ -8,6 +8,6 @@ struct(T: const [..] typeinfo) AA
 
 #test
 {
-    var v: AA'(@[s32, bool])
+    var v: AA'([s32, bool])
     //@print(@typeof(v.x).name)
 }

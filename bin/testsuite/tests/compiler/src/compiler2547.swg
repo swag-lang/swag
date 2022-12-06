@@ -15,7 +15,7 @@ impl AA
 func titi()->[1] AA
 {
     var ptrptr: *u8
-    return @[{ptrptr}]
+    return [{ptrptr}]
 }
 
 //#[Swag.PrintBc]

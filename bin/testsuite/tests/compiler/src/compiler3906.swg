@@ -14,5 +14,5 @@ impl A
 #test
 {
     var a: A'([2] s32)
-    a.toto(@[1, 2])
+    a.toto([1, 2])
 }

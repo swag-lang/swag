@@ -3,7 +3,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	var c: const [..] u32 = @[0x01_02_03_04];
+	var c: const [..] u32 = [0x01_02_03_04];
 	var d = cast(const [..] u8) c;
 	@assert(@countof(d) == 4);
 	@assert(d[0] == 0x04);

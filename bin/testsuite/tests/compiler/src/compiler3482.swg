@@ -12,7 +12,7 @@ func(T) insertionSort(values: [..] T, cb: closure(T, T)->s32)
 
 #test
 {
-    x := @[1,2]
+    x := [1,2]
 
     func toto(x, y: s32)->s32
     {

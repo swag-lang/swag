@@ -3,7 +3,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	var x: [2] any = @[6, "6"]
+	var x: [2] any = [6, "6"]
 
 	t := x[0]
 	type := @kindof(t)
