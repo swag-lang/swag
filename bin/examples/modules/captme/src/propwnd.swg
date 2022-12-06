@@ -1,4 +1,4 @@
-const MinBorderSize     = 1.0
+const MinBorderSize     = 0.0
 const MaxBorderSize     = 50.0
 const MinTextBorderSize = 0.0
 const MaxTextBorderSize = 10.0
@@ -1102,14 +1102,14 @@ impl PropWnd
         }
     }
 
-    mtd propTextStyle()
+    mtd propJoinStyle()
     {
         curSelType := getSelectedFormType()
-        if curSelType != FormText
+        if curSelType != FormText and curSelType != FormPolygon
             return
-        curSel := cast(*FormText) getSelectedBaseForm()
+        curSel := getSelectedBaseForm()
 
-        ctrl := ComboCtrl.create(mainLayout, "Style")
+        ctrl := ComboCtrl.create(mainLayout, "Joins")
         ctrl.comboSize = 210
         with ctrl.combo
         {
@@ -1120,7 +1120,7 @@ impl PropWnd
             .selectItem(cast(u32) curSel.joinStyle - 1)
             .sigChanged += @|self|(combo, val) {
                 v := val + 1
-                self.pushTypedValue(acast v, @typeof(FormText), @nameof(FormText.joinStyle), true)
+                self.pushTypedValue(acast v, @typeof(BaseForm), @nameof(BaseForm.joinStyle), true)
             }
         }
     }
@@ -1190,7 +1190,7 @@ impl PropWnd
         propEndSize()
         propRoundSize()
         propOpacity()
-        propTextStyle()
+        propJoinStyle()
         propShadow()
         propPixSel()
 

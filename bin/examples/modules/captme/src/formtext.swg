@@ -21,7 +21,6 @@ struct FormText
     alignHorz   = FormTextAlign.Center
     alignVert   = FormTextAlign.Center
     lineSpacing = 14.0
-    joinStyle   = JoinStyle.Round
     fontStyle   = FontFamilyStyle.Regular
     fontName:   String
 

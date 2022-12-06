@@ -45,6 +45,7 @@ struct BaseForm
     quickModeOpaque:    bool
     paintShadow         = true
     subKind:            FormSubKind = None
+    joinStyle           = JoinStyle.Round
 
     #[Serialization.NoSerialize]
     {

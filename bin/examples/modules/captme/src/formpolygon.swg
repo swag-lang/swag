@@ -246,6 +246,7 @@ impl IForm for FormPolygon
         else
             painter.fillPolygon(&linePath, bk)
 
+        pen.joinStyle = joinStyle
         painter.drawPath(&linePath, pen)
     }
 
