@@ -259,8 +259,8 @@ impl PropWnd
             }
 
             btn0.sigPressed += closure|me, layout|(btn) {
-                kind := cast(u32) cast(FormShapeKind) cast(uint) btn.userData
-                me.pushTypedValue(kind, @typeof(FormShape), @nameof(FormShape.kind), true)
+                kind := cast(uint) btn.userData
+                me.pushTypedValue(acast kind, @typeof(FormShape), @nameof(FormShape.kind), true)
                 me.updateBtnState(layout)
             }
         }
@@ -305,8 +305,8 @@ impl PropWnd
             }
 
             btn0.sigPressed += closure|me|(btn) {
-                kind := cast(u32) cast(FormStepKind) cast(uint) btn.userData
-                me.pushTypedValue(kind, @typeof(FormStep), @nameof(FormStep.kind), true)
+                kind := cast(uint) btn.userData
+                me.pushTypedValue(acast kind, @typeof(FormStep), @nameof(FormStep.kind), true)
             }
         }
 
@@ -356,8 +356,8 @@ impl PropWnd
             }
 
             btn0.sigPressed += closure|me, layout|(btn) {
-                kind := cast(u32) cast(LineCapStyle) cast(uint) btn.userData
-                me.pushTypedValue(kind, @typeof(FormLine), @nameof(FormLine.beginCap), true)
+                kind := cast(uint) btn.userData
+                me.pushTypedValue(acast kind, @typeof(FormLine), @nameof(FormLine.beginCap), true)
                 me.updateBtnState(layout)
             }
         }
@@ -407,8 +407,8 @@ impl PropWnd
             }
 
             btn0.sigPressed += closure|me, layout|(btn) {
-                kind := cast(u32) cast(LineCapStyle) cast(uint) btn.userData
-                me.pushTypedValue(kind, @typeof(FormLine), @nameof(FormLine.endCap), true)
+                kind := cast(uint) btn.userData
+                me.pushTypedValue(acast kind, @typeof(FormLine), @nameof(FormLine.endCap), true)
                 me.updateBtnState(layout)
             }
         }
@@ -457,8 +457,8 @@ impl PropWnd
             }
 
             btn0.sigPressed += closure|me, layout|(btn) {
-                kind := cast(u32) cast(DashStyle) cast(uint) btn.userData
-                me.pushTypedValue(kind, @typeof(BaseForm), @nameof(BaseForm.dashStyle), true)
+                kind := cast(uint) btn.userData
+                me.pushTypedValue(acast kind, @typeof(BaseForm), @nameof(BaseForm.dashStyle), true)
                 me.updateBtnState(layout)
             }
         }

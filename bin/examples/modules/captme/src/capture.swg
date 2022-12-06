@@ -894,14 +894,15 @@ impl Capture
             }
         }
 
+        shiftPressed := Input.Keyboard.isKeyPressed(.Shift) or Input.Keyboard.isKeyPressed(.RShift)
+        ctrlPressed  := Input.Keyboard.isKeyPressed(.Control) or Input.Keyboard.isKeyPressed(.RControl)
+
         // Start of mode
         ///////////////////////
         if mouseMode == .None and evt.button == .Left
         {
             if evt.kind == .MousePressed or evt.kind == .MouseDoubleClick
             {
-                shiftPressed := Input.Keyboard.isKeyPressed(.Shift) or Input.Keyboard.isKeyPressed(.RShift)
-                ctrlPressed  := Input.Keyboard.isKeyPressed(.Control) or Input.Keyboard.isKeyPressed(.RControl)
                 if (shiftPressed and ctrlPressed) or view.main.editMode == .Selection
                 {
                     mouseMode = .Selecting
@@ -986,7 +987,8 @@ impl Capture
         case Selecting:
             var r: Math.Rectangle
 
-            selection.clear()
+            if !ctrlPressed
+                selection.clear()
             movingEnd = localPos
 
             r.set(movingStart, movingEnd)
@@ -994,10 +996,8 @@ impl Capture
             visit f, idx: forms
             {
                 b := cast(*BaseForm) @dataof(f)
-                if b.paintPos.intersectWith(r)
-                {
+                if b.paintPos.intersectWith(r) and !selection.contains(idx)
                     selection.add(idx)
-                }
             }
 
             firstMouseMove = false
