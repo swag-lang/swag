@@ -47,27 +47,26 @@ impl IForm for FormDraw
         if evt.kind == .MouseReleased and evt.button == .Left
             return false
 
-        x0 := cast(s32) ((localPos.x - paintRect.x) / zoom)
-        y0 := cast(s32) ((localPos.y - paintRect.y) / zoom)
+        x0 := (localPos.x - paintRect.x) / zoom
+        y0 := (localPos.y - paintRect.y) / zoom
 
         if points.count < 2
         {
-            xs := cast(s32) ((movingStart.x - paintRect.x) / zoom)
-            ys := cast(s32) ((movingStart.y - paintRect.y) / zoom)
+            xs := (movingStart.x - paintRect.x) / zoom
+            ys := (movingStart.y - paintRect.y) / zoom
             points.add({xs, ys})
             points.add({x0, y0})
         }
         elif evt.kind == .MouseMove
         {
-            xs := cast(s32) Math.abs(x0 - points.back().x)
-            ys := cast(s32) Math.abs(y0 - points.back().y)
+            xs := Math.abs(x0 - points.back().x)
+            ys := Math.abs(y0 - points.back().y)
             if xs > 5 or ys > 5
                 points.add({x0, y0})
         }
         else
         {
-            points[points.count - 1].x = x0
-            points[points.count - 1].y = y0
+            points[points.count - 1] = {x0, y0}
         }
 
         return true
@@ -187,6 +186,8 @@ impl IForm for FormDraw
     mtd hitTest(pt: Math.Point, z: f32)->bool
     {
         bSize := borderSize * z * 0.5
+        bSize = Math.max(bSize, 2)
+
         computePaintCoords(z)
 
         if subKind == .PixSel
@@ -195,9 +196,7 @@ impl IForm for FormDraw
         v := Math.Vector2{pt.x, pt.y}
         loop i: 0..paintPoints.count-2
         {
-            p0 := Math.Vector2{paintPoints[i].x, paintPoints[i].y}
-            p1 := Math.Vector2{paintPoints[i+1].x, paintPoints[i+1].y}
-            if v.distanceToSegment(p0, p1) <= bSize
+            if v.distanceToSegment(paintPoints[i], paintPoints[i+1]) <= bSize
                 return true
         }
 
@@ -207,6 +206,7 @@ impl IForm for FormDraw
     mtd paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
     {
         bSize := adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
+        bSize = Math.max(bSize, 2)
         computePaintCoords(z)
 
         var pl: LinePath

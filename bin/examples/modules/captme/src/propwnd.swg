@@ -1014,11 +1014,15 @@ impl PropWnd
         minS := MinBorderSize
         maxS := MaxBorderSize
         labl := "Tickness"
-        if getSelectedFormType() == FormText
+        if curSelType == FormText
         {
             minS = MinTextBorderSize
             maxS = MaxTextBorderSize
             labl = "Outline"
+        }
+        elif curSelType == FormDraw
+        {
+            minS = Math.max(minS, 1)
         }
 
         ctrl := createSlider(labl, acast minS, acast maxS, curSel.borderSize)
