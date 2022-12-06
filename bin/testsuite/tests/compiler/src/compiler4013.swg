@@ -9,3 +9,8 @@ func test()->{s32, s32}
     @assert(v.item1 == 2)
     return v
 }
+
+#test
+{
+    x := test()
+}
