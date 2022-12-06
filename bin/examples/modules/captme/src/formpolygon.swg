@@ -148,6 +148,10 @@ impl IForm for FormPolygon
         result.y = y0
         result.width = x1 - x0
         result.height = y1 - y0
+
+        if joinStyle == .Miter or joinStyle == .MiterBevel
+            result.inflate(borderSize * 3) // Magic number !
+
         return result
     }
 

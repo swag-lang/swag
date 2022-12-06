@@ -258,4 +258,21 @@ impl Vector2
         x = (c * tx) - (s * ty)
         y = (s * tx) + (c * ty)
     }
+
+    // Returns the cosine angle with another vector
+    mtdc cosAngle(other: Self)->f32
+    {
+        vec1 := toNormalize()
+        vec2 := other.toNormalize()
+        return vec1.dot(vec2)
+    }
+
+    // Returns the angle with another vector
+    mtdc angle(other: Self)->f32
+    {
+        angle := Math.acos(cosAngle(other))
+        //sign  := (x * other.y) - (y * other.x)
+        //if sign < 0 angle = -angle;
+        return angle
+    }
 }
