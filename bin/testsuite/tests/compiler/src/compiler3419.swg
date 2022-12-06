@@ -3,7 +3,7 @@
 func toto()->closure(s32)
 {
     a := 666
-    var v: closure(s32) = @|a|(x: s32)
+    var v: closure(s32) = closure|a|(x: s32)
     {
         @assert(a == 666)
         @assert(x == 5)

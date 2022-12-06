@@ -56,14 +56,14 @@ func createView7(tabView: *Tab, view: *Wnd)
     {
         ed := EditBox.create(view, "", {0, 0, 200})
         ed.setNote("Search")
-        ed.sigChanged += @|lt|(ed) {
+        ed.sigChanged += closure|lt|(ed) {
             lt.setStringFilter(ed.text)
         }
     }
 
     {
         ed := EditBox.create(view, "", {700, 0})
-        ed.sigLoseFocus += @|lt|(ed) {
+        ed.sigLoseFocus += closure|lt|(ed) {
             aa.xf32 = 666
             aa.value = .Second
             aa.str = "toto"

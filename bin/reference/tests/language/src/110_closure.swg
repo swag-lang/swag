@@ -11,7 +11,7 @@
         b := 521
 
         // Capture 'a' and 'b'
-        var fct: closure() = @|a, b|()
+        var fct: closure() = closure|a, b|()
         {
             @assert(a == 125)
             @assert(b == 521)
@@ -25,7 +25,7 @@
         a := 125
 
         // Capture 'a' by pointer
-        var fct: closure() = @|&a|()
+        var fct: closure() = closure|&a|()
         {
             // We can change the value of the local variable 'a'
             dref a += 1
@@ -53,7 +53,7 @@
         var fct: closure(s32)->s32
 
         // Capture the array 'x' by making a copy
-        fct = @|x|(toAdd)
+        fct = closure|x|(toAdd)
         {
             res := 0
             visit v: x
@@ -73,7 +73,7 @@
         {
             x := 10
 
-            return @|x|()->s32 {
+            return closure|x|()->s32 {
                 x += 1
                 return x
             }

@@ -9,7 +9,7 @@ func createView3(tabView: *Tab, view: *Wnd)
 
         sb1 := ColorPicker.create(view, {240, 10, 20, 200})
         sb1.setMode(.HueVert)
-        sb1.sigChanged += @|sb0|(t) {
+        sb1.sigChanged += closure|sb0|(t) {
             sb0.change(h: t.hue)
         }
         sb1.setColor(Argb.Green)
@@ -22,7 +22,7 @@ func createView3(tabView: *Tab, view: *Wnd)
         sb.addSatColors(8, Argb.Green)
         sb.addColor(Argb.Black)
         sb.addColor(Argb.White)
-        sb.sigChanged += @|sb0|(t) {
+        sb.sigChanged += closure|sb0|(t) {
             sb0.setColor(t.selectedColor)
         }
     }

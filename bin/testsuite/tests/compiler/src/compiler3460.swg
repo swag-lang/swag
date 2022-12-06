@@ -2,6 +2,6 @@
 func toto()
 {
     var x: closure()
-    v := @|x|() {
+    v := closure|x|() {
     }
 }

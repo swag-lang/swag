@@ -281,7 +281,7 @@ private impl Tab
         visit item: views
             popup.addItem(item.name.raw, item.id, item.icon, item.userData0)
 
-        popup.sigSelected = @|self|(list, idx) {
+        popup.sigSelected = closure|self|(list, idx) {
             if idx != Swag.U32.Max
                 self.select(idx)
             self.hidePopup()
@@ -387,7 +387,7 @@ private impl Tab
             {
                 buttonPopup = IconButton.create(self, getTheme().getIcon24(ThemeIcons24.SortArrowDown), {})
                 buttonPopup.form = .Round
-                buttonPopup.sigPressed += @|self|(btn)
+                buttonPopup.sigPressed += closure|self|(btn)
                 {
                     rect := btn.getSurfaceRect()
                     self.showPopup(rect.x, rect.y + btn.position.height)

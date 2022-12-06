@@ -3,7 +3,7 @@
 {
     x := {a: 2, b: 3}
 
-    v := @|x|()
+    v := closure|x|()
     {
         @assert(x.item0 == 2)
         @assert(x.item1 == 3)

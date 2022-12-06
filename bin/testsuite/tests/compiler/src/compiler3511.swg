@@ -7,7 +7,7 @@
         x := 10
         y := 20
         z := 30
-        fct := @|x|()->s32 {
+        fct := closure|x|()->s32 {
             return x
         }
 

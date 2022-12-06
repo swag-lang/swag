@@ -826,11 +826,11 @@ impl ListCtrl
             .header = Header.create(fwnd, {})
             .header.dockStyle = .Top
             .header.form = .Round
-            .header.sigLayoutChanged = @|list|(header) {
+            .header.sigLayoutChanged = closure|list|(header) {
                 list.computeLayout()
             }
 
-            .header.sigClicked = @|list|(header, col) {
+            .header.sigClicked = closure|list|(header, col) {
                 list.sort(col, header.sortMark <= 0 ? false : true, true)
             }
 
@@ -840,7 +840,7 @@ impl ListCtrl
             .scrollWnd.focusStrategy = .None
             .scrollWnd.backgroundStyle = .Transparent
             .scrollWnd.setAllPaddings(.getThemeMetrics().list_Padding)
-            .scrollWnd.sigScrollPosChanged += @|list.header|(scrollWnd, op, np) {
+            .scrollWnd.sigScrollPosChanged += closure|list.header|(scrollWnd, op, np) {
                 header.scrollPos.x = np.x
                 header.invalidate()
             }
@@ -1130,7 +1130,7 @@ impl ListCtrl
             return res
         }
 
-        cb := @|self, column, descentOrder|(a, b: *ListLine)->s32
+        cb := closure|self, column, descentOrder|(a, b: *ListLine)->s32
         {
             if self.sigSort
                 return self.sigSort(a, b, column, descentOrder)

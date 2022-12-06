@@ -1,7 +1,7 @@
 func toto()->closure()->s32
 {
     counter := 0
-    f := @|counter|()->s32 {
+    f := closure|counter|()->s32 {
         counter += 1
         return counter
     }

@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    var x: closure(...) = @||(x: ...)
+    var x: closure(...) = closure||(x: ...)
     {
         @assert(@countof(x) == 2)
         @assert(cast(s32) x[0] == 4)

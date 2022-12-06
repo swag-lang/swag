@@ -266,7 +266,7 @@ impl IForm for FormShape
             .paintBigBorder = true
         }
 
-        gizmo.sigChanged = @|self|(g, first, hitMove) {
+        gizmo.sigChanged = closure|self|(g, first, hitMove) {
             g.apply(self, first, hitMove)
         }
     }

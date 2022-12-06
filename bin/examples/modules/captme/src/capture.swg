@@ -63,7 +63,7 @@ impl Capture
     mtd setup(view: *EditView)
     {
         editView = view
-        gizmo.sigChanged = @|self|(g, first, hitMove) {
+        gizmo.sigChanged = closure|self|(g, first, hitMove) {
             undo := self.newUndo(.MoveCapture)
             undo.newPosX  = cast(s32) ((g.rect.x - g.movingRect.x) / self.editView.zoom)
             undo.newPosY  = cast(s32) ((g.rect.y - g.movingRect.y) / self.editView.zoom)

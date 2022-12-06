@@ -258,7 +258,7 @@ impl RichEditCtrl
             .scrollWnd.dockStyle = .Center
             .scrollWnd.focusStrategy = .None
             .scrollWnd.setAllPaddings(.getThemeMetrics().richEdit_Padding)
-            .scrollWnd.sigScrollPosChanged += @|ed|(scrollWnd, op, np) {
+            .scrollWnd.sigScrollPosChanged += closure|ed|(scrollWnd, op, np) {
                 if op.y != np.y
                     ed.dirtyFirstLineView = true
             }

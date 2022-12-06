@@ -1470,7 +1470,7 @@ impl MainWnd
         with res.editWnd = EditWnd.create(res, res)
         {
             .dockStyle = .Center
-            .sigScrollSizeChanged += @|res|(scroll, old, new) {
+            .sigScrollSizeChanged += closure|res|(scroll, old, new) {
                 res.updateZoomDisplay()
             }
         }
@@ -1536,7 +1536,7 @@ impl MainWnd
             .iconBtnFlags |= .Center
             .textPos = .Right
             .arrowPos = .RightUp
-            .sigPressed += @|res|(btn) {
+            .sigPressed += closure|res|(btn) {
                 pos  := btn.getSurfaceRect()
                 menu := MenuCtrl.createPopup(res)
                 menu.menuCtrlFlags |= .NoKeyShortcuts
@@ -1551,7 +1551,7 @@ impl MainWnd
             .iconBtnFlags |= .Center
             .textPos = .Right
             .arrowPos = .RightUp
-            .sigPressed += @|res|(btn) {
+            .sigPressed += closure|res|(btn) {
                 pos  := btn.getSurfaceRect()
                 menu := MenuCtrl.createPopup(res)
                 menu.menuCtrlFlags |= .NoKeyShortcuts

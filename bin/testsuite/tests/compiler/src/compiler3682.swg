@@ -17,7 +17,7 @@ var G: s32
     toto()
     {
         {
-            fn := @|a|(){
+            fn := closure|a|(){
                 G += a
             }
             fn()

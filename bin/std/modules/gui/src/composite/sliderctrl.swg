@@ -47,7 +47,7 @@ impl SliderCtrl
             .label.horzAlignmentText = .Right
 
             .slider = Slider.create(ctrl, {})
-            .slider.sigChanged += @|ctrl|(wnd)
+            .slider.sigChanged += closure|ctrl|(wnd)
             {
                 var val: String
                 switch ctrl.edit.inputMode
@@ -66,7 +66,7 @@ impl SliderCtrl
             .edit = EditBox.create(ctrl, "", {})
             .edit.setForm(.Transparent)
             .edit.editBoxFlags |= .RightAlign
-            .edit.sigLoseFocus += @|ctrl|(edit)
+            .edit.sigLoseFocus += closure|ctrl|(edit)
             {
                 switch edit.inputMode
                 {

@@ -1,6 +1,6 @@
 #test
 {
-    var v: closure()->s32 = @||()->s32
+    var v: closure()->s32 = closure||()->s32
     {
         return 66
     }

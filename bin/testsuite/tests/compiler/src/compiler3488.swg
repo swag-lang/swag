@@ -8,5 +8,5 @@ struct A
 #test
 {
     var v: A
-    v.fct = @||(s) {}
+    v.fct = closure||(s) {}
 }

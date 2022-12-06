@@ -76,7 +76,7 @@ impl IconBar
 
         if iconBtnFlags & (.Checkable | .CheckableToggle)
         {
-            b.sigCheckChanged += @|self|(btn) {
+            b.sigCheckChanged += closure|self|(btn) {
                 self.sigCheckChanged.call(btn)
             }
         }

@@ -188,7 +188,7 @@ impl LibraryView
         // Launch thread to read all captures
         try
         {
-            thread.init(@|self|(th: Thread) {
+            thread.init(closure|self|(th: Thread) {
                 visit &it: self.items
                 {
                     capture := catch Capture.load(it.fi.fullname)
@@ -362,7 +362,7 @@ impl LibraryWnd
             .backgroundStyle = .Window
             .listFlags |= .ForceMarginExpandMark
             .dockStyle = .Center
-            .sigSelChanged += @|view|(list) {
+            .sigSelChanged += closure|view|(list) {
                 sel := list.getSelectedLine()
                 if !sel return
                 view.filterYear = cast(uint) sel.userData0

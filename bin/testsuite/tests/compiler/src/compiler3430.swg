@@ -2,7 +2,7 @@
 {
     a := 10
     b := 20
-    var v: closure(s32)->s32 = @|a,b|(v: s32)->s32
+    var v: closure(s32)->s32 = closure|a,b|(v: s32)->s32
     {
         return a + b + v
     }

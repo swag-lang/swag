@@ -1,7 +1,7 @@
 #test
 {
     counter := 0
-    var f = @|counter|()->s32 {
+    var f = closure|counter|()->s32 {
         counter += 1
         return counter
     }

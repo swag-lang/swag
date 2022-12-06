@@ -110,7 +110,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         g_FontCell = wnd.getTheme().createDefaultFont(20)
 
         btn := PushButton.create(wnd, "Again!", {CellSize, (CellSize * 2) + GridSize * CellSize})
-        btn.sigPressed += @|wnd|(btn) { setup(); wnd.invalidate(); }
+        btn.sigPressed += closure|wnd|(btn) { setup(); wnd.invalidate(); }
 
         sli := SliderCtrl.create(wnd, "Density", {CellSize + 120, (CellSize * 2) + GridSize * CellSize, 250})
         sli.slider.setMinMax(1, 10)

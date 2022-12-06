@@ -160,7 +160,7 @@ private impl ComboBox
                 popup.addItem(item.name.raw, item.id, item.icon, item.userData0, item.userData1)
         }
 
-        popup.sigSelected = @|self|(list, idx) {
+        popup.sigSelected = closure|self|(list, idx) {
             if idx != Swag.U32.Max
                 self.selectItem(idx)
             self.hidePopup()

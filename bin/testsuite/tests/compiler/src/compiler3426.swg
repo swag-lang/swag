@@ -1,7 +1,7 @@
 #test
 {
     str := "10"
-    var v: closure() = @|str|()
+    var v: closure() = closure|str|()
     {
         @assert(str == "10")
     }

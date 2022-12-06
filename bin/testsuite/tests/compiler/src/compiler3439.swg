@@ -5,7 +5,7 @@ var G = 0
 #test
 {
     a := 10
-    C = @|a|(x: s32) { G = x + a; }
+    C = closure|a|(x: s32) { G = x + a; }
     v := C
     v(5)
     @assert(G == 15)

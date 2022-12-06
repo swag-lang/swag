@@ -19,6 +19,6 @@ impl A
 #test
 {
     var xxxx: A
-    xxxx += @||(a, b) { }
+    xxxx += closure||(a, b) { }
     @assert(G == 1)
 }

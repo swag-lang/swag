@@ -633,12 +633,12 @@ impl QuickWnd
                 paintForm(bc.painter, cast(*QuickButton) btn)
             }
 
-            btn.sigRightPressed += @|self|(btn) {
+            btn.sigRightPressed += closure|self|(btn) {
                 rect := btn.getSurfaceRect()
                 self.btnPopup(btn, rect.center())
             }
 
-            btn.sigCheckChanged += @|self, it|(btn) {
+            btn.sigCheckChanged += closure|self, it|(btn) {
                 if !btn.isChecked
                     return
 
@@ -828,7 +828,7 @@ impl QuickWnd
             layout.sendResizeEvent()
             setScrollSize(0, layout.resultHeight)
 
-            btn1.sigPressed += @|self, main|(btn) {
+            btn1.sigPressed += closure|self, main|(btn) {
                 mode := main.getEditMode()
                 #[Swag.Complete]
                 switch mode

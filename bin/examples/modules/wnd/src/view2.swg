@@ -89,7 +89,7 @@ func createView2(tabView: *Tab, view: *Wnd)
         tree.selectionMode = .Single
         tree.setPosition({5, 5, 250, 300})
         btn := PushButton.create(view, "collapse", {5, 310})
-        btn.sigPressed += @|tree|(btn) {
+        btn.sigPressed += closure|tree|(btn) {
             tree.collapseAll()
         }
     }

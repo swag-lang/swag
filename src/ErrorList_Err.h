@@ -135,7 +135,7 @@ SWAG_ERROR(Err0137, "`%s` should not be used inside a struct special function (`
 SWAG_ERROR(Err0138, "`%s` should only be used inside a function marked with `throw`, and `%s` is not")
 SWAG_ERROR(Err0139, "`%s` should only be used before a function call, and `%s` is %s")
 SWAG_ERROR(Err0140, "use of an unknown compiler instruction `%s`")
-SWAG_ERROR(Err0141, "expected `[`, `{`, `(`, `\"` or an intrinsic name, found character `%c`")
+SWAG_ERROR(Err0141, "expected `\"` or an intrinsic name, found character `%c`")
 SWAG_ERROR(Err0142, "operator `+` does not accept operand type `%s`")
 SWAG_ERROR(Err0143, "operator `+` does not accept type `%s`")
 SWAG_ERROR(Err0144, "pointer arithmetic is not allowed on `typeinfo`")

@@ -138,7 +138,7 @@ private impl FileDlg
             treePathStr.add(v)
         }
 
-        treeCtrl.sigSelChanged += @|self|(list) {
+        treeCtrl.sigSelChanged += closure|self|(list) {
             line := list.getSelectedLine()
             if !line
                 return
@@ -232,7 +232,7 @@ impl FileDlg
         dlg.backgroundStyle = .Window
         srf.setSurfaceFlags(remove: .CloseBtn)
 
-        dlg.sigPressedButton = @|dlg|(bdlg, id) {
+        dlg.sigPressedButton = closure|dlg|(bdlg, id) {
             if id == Dialog.BtnOk
             {
                 selName := dlg.getSelectedName()
@@ -286,7 +286,7 @@ impl FileDlg
             .header.style.addStyleSheetColors("headerItem_Separator $lighterMedium")
             .scrollWnd.style.addStyleSheetColors("scrollBar_Bk $view_Bk")
 
-            .sigKeyPressed += @|dlg|(list, evt) {
+            .sigKeyPressed += closure|dlg|(list, evt) {
                 switch evt.key
                 {
                 case Back:
@@ -308,7 +308,7 @@ impl FileDlg
                 }
             }
 
-            .sigLeftDoubleClick += @|dlg|(list, pt) {
+            .sigLeftDoubleClick += closure|dlg|(list, pt) {
                 l := list.getSelectedLine()
                 if !l return
                 fi := cast(const *FileInfo) l.userData0
@@ -323,7 +323,7 @@ impl FileDlg
                 }
             }
 
-            .sigSelChanged += @|dlg|(list) {
+            .sigSelChanged += closure|dlg|(list) {
                 sel := list.getSelectedLines()
                 var txt: String
                 visit l: sel
@@ -383,14 +383,14 @@ impl FileDlg
             {
                 .dockStyle = .Right
                 .margin.x = 10
-                .sigPressed += @|dlg|(btn) { dlg.onNewFolder(); }
+                .sigPressed += closure|dlg|(btn) { dlg.onNewFolder(); }
             }
         }
 
         with dlg.comboPath = ComboBox.create(viewTop)
         {
             .dockStyle = .Center
-            .sigChanged += @|dlg|(combo, idx) {
+            .sigChanged += closure|dlg|(combo, idx) {
                 dlg.setCurFolder(dlg.comboPathStr[idx])
             }
         }
@@ -416,7 +416,7 @@ impl FileDlg
                 .addItem(f.item0, userData0: cast(*void) idx)
 
             .selectItem(0)
-            .sigChanged += @|dlg|(c, idx) {
+            .sigChanged += closure|dlg|(c, idx) {
                 dlg.fillList()
             }
         }
@@ -528,7 +528,7 @@ impl FileDlg
             .surface.center(surface)
         }
 
-        dlg.sigPressedButton = @|self, dlg|(fdlg, id) {
+        dlg.sigPressedButton = closure|self, dlg|(fdlg, id) {
             if id != Dialog.BtnOk
                 return true
 

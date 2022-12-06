@@ -1,8 +1,8 @@
 #test
 {
     a := 666
-    cb := @|a|() {
-        cb1 := @|a|() {
+    cb := closure|a|() {
+        cb1 := closure|a|() {
             a = 0
         }
     }

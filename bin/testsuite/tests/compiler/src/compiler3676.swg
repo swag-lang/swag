@@ -3,7 +3,7 @@ interface I
     toto: func(self)
 }
 
-struct A 
+struct A
 {
     xx: s32 = 666
 }
@@ -15,7 +15,7 @@ impl I for A
     {
         G = xx
     }
-} 
+}
 
 //#[Swag.PrintBc]
 #test
@@ -24,7 +24,7 @@ impl I for A
     var itf: I = cast(I) x
 
     //var ptr: closure()
-    ptr := @|itf|()
+    ptr := closure|itf|()
     {
         itf.toto()
     }

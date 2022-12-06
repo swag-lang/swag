@@ -6,6 +6,6 @@ public func toto34()
 
     }
 
-    titi(@||(x: s32) {
+    titi(closure||(x: s32) {
     })
 }

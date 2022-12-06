@@ -1,5 +1,5 @@
 #global testerror
 #test
 {
-    var v: closure(s32) = @|c|(x: s32) { }
+    var v: closure(s32) = closure|c|(x: s32) { }
 }

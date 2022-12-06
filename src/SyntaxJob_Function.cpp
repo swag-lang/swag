@@ -792,7 +792,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
     currentScope->symTable.registerSymbolName(&context, funcNode, SymbolKind::Function);
 
     // Closure capture arguments
-    if (token.id == TokenId::SymLiteralVertical || token.id == TokenId::KwdClosure)
+    if (token.id == TokenId::KwdClosure)
     {
         // captureParameters will be solved with capture block, that's why we do NOT put it as a child
         // of the function.
@@ -803,34 +803,42 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
         funcNode->captureParameters = capture;
 
         SWAG_CHECK(eatToken());
-
-        while (token.id != TokenId::SymVertical)
+        if (token.id == TokenId::SymVerticalVertical)
         {
-            auto parentId = (AstNode*) capture;
-            auto byRef    = false;
-            if (token.id == TokenId::SymAmpersand)
+            SWAG_CHECK(eatToken());
+        }
+        else
+        {
+            SWAG_CHECK(eatToken(TokenId::SymVertical, "to start capture block"));
+            while (token.id != TokenId::SymVertical)
             {
-                parentId              = Ast::newNode<AstMakePointer>(this, AstNodeKind::MakePointer, sourceFile, capture);
-                parentId->semanticFct = SemanticJob::resolveMakePointer;
-                eatToken();
-                byRef = true;
+                auto parentId = (AstNode*) capture;
+                auto byRef    = false;
+                if (token.id == TokenId::SymAmpersand)
+                {
+                    parentId              = Ast::newNode<AstMakePointer>(this, AstNodeKind::MakePointer, sourceFile, capture);
+                    parentId->semanticFct = SemanticJob::resolveMakePointer;
+                    eatToken();
+                    byRef = true;
+                }
+
+                AstNode* idRef = nullptr;
+                SWAG_CHECK(doIdentifierRef(parentId, &idRef, IDENTIFIER_NO_PARAMS));
+
+                if (byRef)
+                    forceTakeAddress(idRef);
+
+                if (token.id == TokenId::SymVertical)
+                    break;
+
+                SWAG_CHECK(eatToken(TokenId::SymComma, "in capture block"));
+                SWAG_VERIFY(token.id != TokenId::SymVertical, error(token, Err(Err0120)));
             }
 
-            AstNode* idRef = nullptr;
-            SWAG_CHECK(doIdentifierRef(parentId, &idRef, IDENTIFIER_NO_PARAMS));
-
-            if (byRef)
-                forceTakeAddress(idRef);
-
-            if (token.id == TokenId::SymVertical)
-                break;
-
-            SWAG_CHECK(eatToken(TokenId::SymComma, "in capture block"));
-            SWAG_VERIFY(token.id != TokenId::SymVertical, error(token, Err(Err0120)));
+            capture->token.endLocation = token.endLocation;
+            SWAG_CHECK(eatToken(TokenId::SymVertical));
         }
 
-        capture->token.endLocation = token.endLocation;
-        SWAG_CHECK(eatToken(TokenId::SymVertical));
         SWAG_VERIFY(token.id == TokenId::SymLeftParen, error(token, Err(Err0456)));
         typeInfo->flags |= TYPEINFO_CLOSURE;
     }

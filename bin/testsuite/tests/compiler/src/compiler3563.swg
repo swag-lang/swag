@@ -16,7 +16,7 @@ var G = 0
 func ref1()->CB
 {
     v := 2
-    return @|v|()
+    return closure|v|()
     {
         G = v
     }

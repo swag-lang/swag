@@ -14,7 +14,7 @@ impl Vector
 {
     x := Vector{1, 2}
 
-    v := @|x|()
+    v := closure|x|()
     {
         @assert(x.x == 1)
         @assert(x.y == 2)

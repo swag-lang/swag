@@ -1,2 +1,2 @@
 #global testerror
-var v: closure(s32) = @||(x: s32) { }
+var v: closure(s32) = closure||(x: s32) { }

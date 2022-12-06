@@ -545,12 +545,11 @@ bool AstOutput::outputLiteral(OutputContext& context, Concat& concat, AstNode* n
 bool AstOutput::outputLambdaExpression(OutputContext& context, Concat& concat, AstNode* node)
 {
     AstFuncDecl* funcDecl = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
-    concat.addChar('@');
 
     // Closure capture parameters
     if (funcDecl->captureParameters)
     {
-        concat.addChar('|');
+        CONCAT_FIXED_STR(concat, "closure|");
 
         bool first = true;
         for (auto p : funcDecl->captureParameters->childs)
@@ -571,6 +570,10 @@ bool AstOutput::outputLambdaExpression(OutputContext& context, Concat& concat, A
         }
 
         concat.addChar('|');
+    }
+    else
+    {
+        CONCAT_FIXED_STR(concat, "func");
     }
 
     // Parameters
