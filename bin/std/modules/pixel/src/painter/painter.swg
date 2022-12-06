@@ -144,6 +144,7 @@ struct Painter
     sharedSolidBrush:   Brush
     sharedLinePath:     LinePath
     sharedLinePathList: LinePathList
+    sharedRoundTmp:     Array'{factor: f32, pos: Math.Vector2}
 
     curState:           PaintState
     stackState:         Array'PaintState

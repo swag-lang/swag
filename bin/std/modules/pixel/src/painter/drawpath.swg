@@ -225,30 +225,30 @@ impl Painter
 
         minDist := LinePath.getFlattenDistance(curState.paintQuality)
 
-        // We divide a segment by half until the computed point on the curve is close to the corresponding segment
-        var tmp: Array'{factor: f32, pos: Vector2}
-        tmp.add(@{angle0, startPos})
-        tmp.add(@{angle1, endPos})
+        // We divide a segment by half until the computed point on the curve is
+        // close to the corresponding segment
+        sharedRoundTmp.clear()
+        sharedRoundTmp.add(@{angle0, startPos})
+        sharedRoundTmp.add(@{angle1, endPos})
 
-        for i := 0; i < tmp.count - 1; i += 1
+        var point: Math.Vector2 = ?
+        for i := 0; i < sharedRoundTmp.count - 1; i += 1
         {
-            angle := (tmp[i].factor + tmp[i + 1].factor) * 0.5
-            point := center
-            point.x += (Math.cos(angle) * radius)
-            point.y += (Math.sin(angle) * radius)
-
-            dist := point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
+            angle := (sharedRoundTmp[i].factor + sharedRoundTmp[i + 1].factor) * 0.5
+            point.x = center.x + (Math.cos(angle) * radius)
+            point.y = center.y + (Math.sin(angle) * radius)
+            dist := point.distanceToLine(sharedRoundTmp[i].pos, sharedRoundTmp[i + 1].pos)
             if dist < minDist
                 continue
 
-            tmp.insertAt(cast(uint) i + 1, @{angle, point})
+            sharedRoundTmp.insertAt(cast(uint) i + 1, @{angle, point})
             i -= 1
         }
 
         v1 := startPos
-        loop i: 1..tmp.count-1
+        loop i: 1..sharedRoundTmp.count-1
         {
-            v2 := tmp[i].pos
+            v2 := sharedRoundTmp[i].pos
             prim1 := pushTriangle(center, v1, v2, pen.brush.color)
             if curState.paintParams & .Antialiased
                 addEdgeAA(prim1, v1, v2)
@@ -297,10 +297,7 @@ impl Painter
             if justMiter
                 m2 = pen.joinMiterLimit
             else
-            {
-                drawJoinBevel(p, d1, d2, pen)
-                return
-            }
+                return drawJoinBevel(p, d1, d2, pen)
         }
 
         a.x = a.x / l * m2 * w
