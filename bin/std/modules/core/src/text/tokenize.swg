@@ -67,7 +67,7 @@ func splitLines(src: string) -> Array'string
 // All strings will be invalid if 'src' is destroyed
 func split(src: string, separator: rune, maxSplit: u32 = 0) -> Array'string
 {
-    return split(src, @[separator], maxSplit)
+    return split(src, [separator], maxSplit)
 }
 
 // Split string into sub strings, given an array of rune separators

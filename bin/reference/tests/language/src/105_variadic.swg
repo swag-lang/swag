@@ -79,7 +79,7 @@
             return total
         }
 
-        arr := @[1, 2, 3, 4]
+        arr := [1, 2, 3, 4]
         res := sum(@spread(arr)) // is equivalent to sum(1, 2, 3, 4)
         @assert(res == 1+2+3+4)
 

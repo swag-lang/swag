@@ -170,8 +170,8 @@
     {
         enum Value: const [2] s32
         {
-            A = @[1, 2]
-            B = @[10, 20]
+            A = [1, 2]
+            B = [10, 20]
         }
 
         #assert Value.A[0] == 1
@@ -184,8 +184,8 @@
     {
         enum Value: const [..] s32
         {
-            A = @[1, 2]
-            B = @[10, 20, 30, 40]
+            A = [1, 2]
+            B = [10, 20, 30, 40]
         }
 
         #assert @countof(Value.A) == 2

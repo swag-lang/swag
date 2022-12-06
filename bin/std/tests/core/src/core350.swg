@@ -20,7 +20,7 @@ struct Toto
     toto.z = 3.14
     toto.arr[5] = 666
     toto.str = "my string"
-    toto.arr2.add(@[1, 2, 3])
+    toto.arr2.add([1, 2, 3])
 
     try wri.writeAll(&buf, toto)
 

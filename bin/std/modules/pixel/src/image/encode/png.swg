@@ -10,10 +10,10 @@ using Core
 
 scopefile {
 
-const Adam7StartX: [7] u32 = @[ 0, 4, 0, 2, 0, 1, 0 ]
-const Adam7StartY: [7] u32 = @[ 0, 0, 4, 0, 2, 0, 1 ]
-const Adam7DeltaX: [7] u32 = @[ 8, 8, 4, 4, 2, 2, 1 ]
-const Adam7DeltaY: [7] u32 = @[ 8, 8, 8, 4, 4, 2, 2 ]
+const Adam7StartX: [7] u32 = [ 0, 4, 0, 2, 0, 1, 0 ]
+const Adam7StartY: [7] u32 = [ 0, 0, 4, 0, 2, 0, 1 ]
+const Adam7DeltaX: [7] u32 = [ 8, 8, 4, 4, 2, 2, 1 ]
+const Adam7DeltaY: [7] u32 = [ 8, 8, 8, 4, 4, 2, 2 ]
 
 struct RowInfo
 {
@@ -63,10 +63,10 @@ enum FilterChoice
     All      = (8|16|32|64|128)
 }
 
-const PngSignature:   [8] u8 = @[ 137, 80, 78, 71, 13, 10, 26, 10 ]
-const TypeIHdr:       [4] u8 = @[ 73, 72, 68, 82 ]
-const TypeIDat:       [4] u8 = @[ 73, 68, 65, 84 ]
-const TypeIEnd:       [4] u8 = @[ 73, 69, 78, 68 ]
+const PngSignature:   [8] u8 = [ 137, 80, 78, 71, 13, 10, 26, 10 ]
+const TypeIHdr:       [4] u8 = [ 73, 72, 68, 82 ]
+const TypeIDat:       [4] u8 = [ 73, 68, 65, 84 ]
+const TypeIEnd:       [4] u8 = [ 73, 69, 78, 68 ]
 
 struct SubImage
 {
@@ -369,7 +369,7 @@ impl Encoder
 
         bestFilter   := 0
         bestScore    := Swag.S32.Max
-        filterScores := @[ Swag.S32.Max, Swag.S32.Max, Swag.S32.Max, Swag.S32.Max, Swag.S32.Max ]
+        filterScores := [ Swag.S32.Max, Swag.S32.Max, Swag.S32.Max, Swag.S32.Max, Swag.S32.Max ]
 
         var sum: s32
         loop i: 5

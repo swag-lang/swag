@@ -24,7 +24,7 @@ struct FloatExt
 const firstPowerOfTen = -348
 const stepPowerOfTen  = 8
 
-var SmallPowersOfTen: [] FloatExt = @[
+var SmallPowersOfTen: [] FloatExt = [
 	{1'u64 << 63, -63, false},        // 1
 	{0xa'u64 << 60, -60, false},      // 1e1
 	{0x64'u64 << 57, -57, false},     // 1e2
@@ -35,7 +35,7 @@ var SmallPowersOfTen: [] FloatExt = @[
 	{0x989680'u64 << 40, -40, false}, // 1e7
 ]
 
-var powersOfTen: [] FloatExt = @[
+var powersOfTen: [] FloatExt = [
 	{0xfa8fd5a0081c0288, -1220, false}, // 10^-348
 	{0xbaaee17fa23ebf76, -1193, false}, // 10^-340
 	{0x8b16fb203055ac76, -1166, false}, // 10^-332
@@ -177,7 +177,7 @@ impl FloatExt
         exp = exp + g.exp + 64
     }
 
-    const uint64pow10: [] u64 = @[
+    const uint64pow10: [] u64 = [
         1,
         10,
         100,

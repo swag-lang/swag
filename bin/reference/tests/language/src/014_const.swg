@@ -14,7 +14,7 @@
     // In that case, there's a memory footprint, because the constant is stored in the data segment.
     // That means that you can take the address of such a constant at runtime
     {
-        const a: [3] s32 = @[0, 1, 2]   // static array of size 3, type s32
+        const a: [3] s32 = [0, 1, 2]   // static array of size 3, type s32
 
         ptr := &a[0] // Take the address of the first element
         @assert(ptr[0] == 0)
@@ -28,11 +28,11 @@
 
     // A multidimensional array as a constant
     {
-        const M4x4: [4, 4] f32 = @[
-            @[1, 0, 0, 0],
-            @[0, 1, 0, 0],
-            @[0, 0, 1, 0],
-            @[0, 0, 0, 1]
+        const M4x4: [4, 4] f32 = [
+            [1, 0, 0, 0],
+            [0, 1, 0, 0],
+            [0, 0, 1, 0],
+            [0, 0, 0, 1]
         ]
     }
 }

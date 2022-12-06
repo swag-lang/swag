@@ -9,8 +9,8 @@ using Core
     }
 
     var x: TT
-    discard try CommandLine.parse(&x, @["-val0:G"])
+    discard try CommandLine.parse(&x, ["-val0:G"])
     @assert(x.val0 == .G)
-    discard try CommandLine.parse(&x, @["-val0:B"])
+    discard try CommandLine.parse(&x, ["-val0:B"])
     @assert(x.val0 == .B)
 }

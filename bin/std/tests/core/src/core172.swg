@@ -12,7 +12,7 @@ using Core
     }
 
     {
-        var arr: Array'u32 = @[1, 2, 3, 4, 5, 6]
+        var arr: Array'u32 = [1, 2, 3, 4, 5, 6]
         res := arr[3..5]
         @assert(res[0] == 4)
         @assert(res[1] == 5)

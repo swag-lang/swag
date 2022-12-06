@@ -7,7 +7,7 @@ struct RuneCountTest
 	out: uint
 }
 
-const runecounttests: [] RuneCountTest = @[
+const runecounttests: [] RuneCountTest = [
 	{"abcd", 4},
 	{"☺☻☹", 3},
 	{"1,2,3,4", 7},

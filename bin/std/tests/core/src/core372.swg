@@ -3,9 +3,9 @@ using Core, Serialization, Math
 struct Toto1
 {
     a: s32 = 266
-    b: [4] s32 = @[1, 2, 3, 4]
-    c: [4] f32 = @[0, 1, 0, 1]
-    d: [4] s8  = @[-1, 0, 0, 0]
+    b: [4] s32 = [1, 2, 3, 4]
+    c: [4] f32 = [0, 1, 0, 1]
+    d: [4] s8  = [-1, 0, 0, 0]
 }
 
 struct Toto2

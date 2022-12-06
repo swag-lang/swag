@@ -9,6 +9,6 @@ using Core, CommandLine
     }
 
     var x: TT
-    discard try parse(&x, @["-f:1"])
+    discard try parse(&x, ["-f:1"])
     @assert(x.val0 == 1)
 }

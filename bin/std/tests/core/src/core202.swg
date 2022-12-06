@@ -1,7 +1,7 @@
 ﻿
 using Core.Utf8
 
-const invalidSequenceTests: [] string = @[
+const invalidSequenceTests: [] string = [
 	"\xed\xa0\x80\x80", // surrogate min
 	"\xed\xbf\xbf\x80", // surrogate max
 

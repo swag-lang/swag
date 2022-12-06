@@ -3,7 +3,7 @@ using Core, Math
 //#[Swag.PrintBc]
 #test
 {
-    var v, v1: Variant'(@[String])
+    var v, v1: Variant'([String])
     v.set(String.from("this is a long text"))
     v2 := v.get'String()
     @assert(v2 == "this is a long text")

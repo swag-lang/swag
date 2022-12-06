@@ -8,10 +8,10 @@ using Core
     }
 
     var x: TT
-    discard try CommandLine.parse(&x, @["-count"])
+    discard try CommandLine.parse(&x, ["-count"])
     @assert(x.count)
-    discard try CommandLine.parse(&x, @["-count:true"])
+    discard try CommandLine.parse(&x, ["-count:true"])
     @assert(x.count)
-    discard try CommandLine.parse(&x, @["-count=false"])
+    discard try CommandLine.parse(&x, ["-count=false"])
     @assert(!x.count)
 }

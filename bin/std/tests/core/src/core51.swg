@@ -4,7 +4,7 @@ using Core
 //#[Swag.PrintBc]
 #test
 {
-    var x: BitArray = @[true, false, true, false]
+    var x: BitArray = [true, false, true, false]
     @assert(x[0] == true)
     @assert(x[1] == false)
     @assert(x[2] == true)

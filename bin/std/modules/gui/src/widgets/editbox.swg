@@ -497,7 +497,7 @@ private impl EditBox
 
         // Convert rune to utf8
         var utf8: [5] u8
-        cpt := Utf8.fromUnicode(utf8, @[r])
+        cpt := Utf8.fromUnicode(utf8, [r])
         if !cpt return
         utf8[cpt] = 0
 

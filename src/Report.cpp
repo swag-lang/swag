@@ -70,7 +70,11 @@ namespace Report
     bool report(const Diagnostic& diag, const vector<const Diagnostic*>& inNotes)
     {
         SWAG_ASSERT(diag.sourceFile || diag.contextFile);
-        auto sourceFile = diag.contextFile ? diag.contextFile : diag.sourceFile;
+        SourceFile* sourceFile = diag.contextFile;
+        if (!diag.contextFile)
+            sourceFile = diag.sourceFile;
+        if (diag.sourceNode && diag.sourceNode->sourceFile == diag.sourceFile && diag.sourceNode->ownerInline)
+            sourceFile = diag.sourceNode->ownerInline->sourceFile;
 
         if (sourceFile->silent > 0 && !diag.exceptionError)
         {

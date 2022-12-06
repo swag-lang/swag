@@ -8,7 +8,7 @@
 #global namespace Unicode
 
 const TableWhiteSpace: [] Range =
-@[
+[
     {0x0009, 0x000d, 1},
     {0x0020, 0x0085, 101},
     {0x00a0, 0x1680, 5600},
@@ -19,7 +19,7 @@ const TableWhiteSpace: [] Range =
 ]
 
 const TableLetter: [] Range =
-@[
+[
     {0x0041, 0x005a, 1},
     {0x0061, 0x007a, 1},
     {0x00aa, 0x00b5, 11},
@@ -598,7 +598,7 @@ const TableLetter: [] Range =
     {0x2f800, 0x2fa1d, 1},
 ]
 
-const TableDigit: [] Range = @[
+const TableDigit: [] Range = [
     {0x0030, 0x0039, 1},
     {0x0660, 0x0669, 1},
     {0x06f0, 0x06f9, 1},
@@ -661,7 +661,7 @@ const TableDigit: [] Range = @[
     {0x1e950, 0x1e959, 1},
 ]
 
-const TableNumber: [] Range = @[
+const TableNumber: [] Range = [
     {0x0030, 0x0039, 1},
     {0x00b2, 0x00b3, 1},
     {0x00b9, 0x00bc, 3},
@@ -793,7 +793,7 @@ const TableNumber: [] Range = @[
     {0x1f100, 0x1f10c, 1},
 ]
 
-const TableSymbol: [] Range = @[
+const TableSymbol: [] Range = [
     {0x0024, 0x002b, 7},
     {0x003c, 0x003e, 1},
     {0x005e, 0x0060, 2},
@@ -993,7 +993,7 @@ const TableSymbol: [] Range = @[
     {0x1fa90, 0x1fa95, 1},
 ]
 
-const TableSymbolMath : [] Range = @[
+const TableSymbolMath : [] Range = [
     {0x002b, 0x003c, 17},
     {0x003d, 0x003e, 1},
     {0x007c, 0x007e, 2},
@@ -1046,7 +1046,7 @@ const TableSymbolMath : [] Range = @[
     {0x1eef0, 0x1eef1, 1},
 ]
 
-const TableLower: [] Range = @[
+const TableLower: [] Range = [
     {0x0061, 0x007a, 1},
     {0x00b5, 0x00df, 42},
     {0x00e0, 0x00f6, 1},
@@ -1204,7 +1204,7 @@ const TableLower: [] Range = @[
     {0x1e923, 0x1e943, 1},
 ]
 
-const TableUpper: [] Range = @[
+const TableUpper: [] Range = [
     {0x0041, 0x005a, 1},
     {0x00c0, 0x00d6, 1},
     {0x00d8, 0x00de, 1},
@@ -1351,7 +1351,7 @@ const TableUpper: [] Range = @[
     {0x1e901, 0x1e921, 1},
 ]
 
-const TableTitle: [] Range = @[
+const TableTitle: [] Range = [
     {0x01c5, 0x01cb, 3},
     {0x01f2, 0x1f88, 7574},
     {0x1f89, 0x1f8f, 1},
@@ -1361,7 +1361,7 @@ const TableTitle: [] Range = @[
     {0x1ffc, 0x1ffc, 1},
 ]
 
-const TableCaseRanges: [] CaseRange = @[
+const TableCaseRanges: [] CaseRange = [
     {0x0041, 0x005A, [0, 32, 0]},
     {0x0061, 0x007A, [-32, 0, -32]},
     {0x00B5, 0x00B5, [743, 0, 743]},
@@ -1681,7 +1681,7 @@ const TableCaseRanges: [] CaseRange = @[
     {0x1E922, 0x1E943, [-34, 0, -34]},
 ]
 
-const TableSpecialCaseRanges: [] CaseRange = @[
+const TableSpecialCaseRanges: [] CaseRange = [
 	{0x0049, 0x0049, [0, cast(s32) 0x131 - cast(s32) 0x49, 0]},
 	{0x0069, 0x0069, [cast(s32) 0x130 - cast(s32) 0x69, 0, cast(s32) 0x130 - cast(s32) 0x69]},
 	{0x0130, 0x0130, [0, cast(s32) 0x69 - cast(s32) 0x130, 0]},

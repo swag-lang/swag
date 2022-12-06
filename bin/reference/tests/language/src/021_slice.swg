@@ -9,13 +9,13 @@
 
     // You can initialize a slice like an array
     {
-        var a: const [..] u32 = @[10, 20, 30, 40, 50]
+        var a: const [..] u32 = [10, 20, 30, 40, 50]
         @assert(@countof(a) == 5)
         @assert(a[0] == 10)
         @assert(a[4] == 50)
 
         // But as this is a slice and not a static array, you can change the value at runtime
-        a = @[1, 2]
+        a = [1, 2]
         @assert(@countof(a) == 2)
         @assert(a[0] == 1)
         @assert(a[1] == 2)
@@ -23,20 +23,20 @@
 
     // At runtime, '@dataof' will return the address of the values, '@countof' the number of elements
     {
-        var a: const [..] u32 = @[10, 20, 30, 40, 50]
+        var a: const [..] u32 = [10, 20, 30, 40, 50]
         count := @countof(a)
         addr  := @dataof(a)
         @assert(count == 5)
         @assert(addr[0] == 10)
         @assert(addr[4] == 50)
 
-        a = @[1, 2]
+        a = [1, 2]
         @assert(@countof(a) == 2)
     }
 
     // You can create a slice with your own pointer and count using '@mkslice'
     {
-        var array: [4]  u32 = @[10, 20, 30, 40]
+        var array: [4]  u32 = [10, 20, 30, 40]
 
         // Creates a slice of 'array' (a view, or subpart) starting at index 2, with 2 elements
         var slice: [..] u32 = @mkslice(&array[0] + 2, 2)
@@ -68,7 +68,7 @@
 
     // You can slice an array
     {
-        arr := @[10, 20, 30, 40]
+        arr := [10, 20, 30, 40]
         slice := arr[2..3]
         @assert(slice[0] == 30)
         @assert(slice[1] == 40)
@@ -77,7 +77,7 @@
 
     // You can slice a pointer
     {
-        arr := @[10, 20, 30, 40]
+        arr := [10, 20, 30, 40]
         ptr := &arr[2]
         slice := ptr[0..1]
         @assert(slice[0] == 30)
@@ -87,7 +87,7 @@
 
     // You can slice another slice
     {
-        arr := @[10, 20, 30, 40]
+        arr := [10, 20, 30, 40]
         slice1 := arr[1..3]
         @assert(slice1[0] == 20)
         @assert(slice1[1] == 30)

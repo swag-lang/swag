@@ -1,7 +1,4 @@
-
 #global testerror
-
-
 using Core
 
 //#[Swag.PrintBc]

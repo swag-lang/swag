@@ -46,7 +46,7 @@
 
     // You can visit arrays or slices
     {
-        array := @[10, 20, 30]
+        array := [10, 20, 30]
 
         result := 0
         visit it: array
@@ -57,7 +57,7 @@
 
     // Works also for multi dimensional arrays
     {
-        var array: [2, 2] s32 = @[[10, 20], [30, 40]]
+        var array: [2, 2] s32 = [[10, 20], [30, 40]]
 
         result := 0
         visit it: array
@@ -69,7 +69,7 @@
     // You can visit with a pointer to the value, and not the value itself, by
     // adding '&' before the value name
     {
-        var array: [2, 2] s32 = @[[1, 2], [3, 4]]
+        var array: [2, 2] s32 = [[1, 2], [3, 4]]
 
         result := 0
         visit &it: array

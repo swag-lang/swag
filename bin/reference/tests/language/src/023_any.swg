@@ -38,7 +38,7 @@
 
     // You can declare an array with multiple types, with 'any'
     {
-        var array: [] any = @[true, 2, 3.0, "4"]
+        var array: [] any = [true, 2, 3.0, "4"]
         @assert(@kindof(array[0]) == bool)
         @assert(@kindof(array[1]) == s32)
         @assert(@kindof(array[2]) == f32)

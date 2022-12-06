@@ -12,7 +12,7 @@
     // Work also for an array, as you can specify the number of elements
     // you want to initialize
     {
-        x := @[1, 2]
+        x := [1, 2]
         @init(&x, 2)    // Initialize 2 elements
         @assert(x[0] == 0)
         @assert(x[1] == 0)
@@ -27,7 +27,7 @@
 
     // Same for an array
     {
-        x := @[1, 2]
+        x := [1, 2]
         @init(&x, 2)(555)
         @assert(x[0] == 555)
         @assert(x[1] == 555)

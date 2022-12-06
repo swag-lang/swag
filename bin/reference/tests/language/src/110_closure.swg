@@ -48,7 +48,7 @@
     // You can capture arrays, structs, slices etc... as long as it fits in the
     // maximum storage of 'n' bytes (and as long as the struct is a pod)
     {
-        x := @[1, 2, 3]
+        x := [1, 2, 3]
 
         var fct: closure(s32)->s32
 

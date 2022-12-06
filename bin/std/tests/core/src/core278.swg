@@ -2,7 +2,7 @@ using Core, Math
 
 #test
 {
-    var v: Variant'(@[s32, bool, string])
+    var v: Variant'([s32, bool, string])
     v.set(true)
     @assert(v.get'bool() == true)
     v.set(666's32)

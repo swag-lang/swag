@@ -1,7 +1,7 @@
 ﻿
 using Core
 
-var upperTest: []rune = @[
+var upperTest: []rune = [
 	0x41,
 	0xc0,
 	0xd8,
@@ -26,7 +26,7 @@ var upperTest: []rune = @[
 	0x1d7ca,
 ]
 
-var notupperTest: []rune = @[
+var notupperTest: []rune = [
 	0x40,
 	0x5b,
 	0x61,

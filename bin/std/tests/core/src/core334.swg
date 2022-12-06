@@ -7,7 +7,7 @@ using Core
     arr.add(1's32)
     arr.add(2's32)
 
-    arr.insertAt(1, cast(const [..] s32) @[3, 4, 5])
+    arr.insertAt(1, cast(const [..] s32) [3, 4, 5])
     @assert(arr[0] == 0)
     @assert(arr[1] == 3)
     @assert(arr[2] == 4)

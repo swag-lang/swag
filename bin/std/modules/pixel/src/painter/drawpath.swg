@@ -459,15 +459,15 @@ impl Painter
             if patternCount == 0
                 fallthrough
         case Dot:
-            const P = @[1.0, 1.0]
+            const P = [1.0, 1.0]
             pattern = @dataof(P)
             patternCount = 2
         case Dash:
-            const P = @[2.0, 1.0]
+            const P = [2.0, 1.0]
             pattern = @dataof(P)
             patternCount = 2
         case DashDot:
-            const P = @[2.0, 1.0, 1.0, 1.0]
+            const P = [2.0, 1.0, 1.0, 1.0]
             pattern = @dataof(P)
             patternCount = 4
         }

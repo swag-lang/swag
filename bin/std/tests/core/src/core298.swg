@@ -36,6 +36,6 @@ func parse(st: *TT, args: const [..] string)->Defined
 #run
 {
     var x: TT
-    params := @["_f32", "3.14"]
+    params := ["_f32", "3.14"]
     a := parse(&x, params)
 }

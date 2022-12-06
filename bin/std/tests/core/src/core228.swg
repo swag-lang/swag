@@ -4,7 +4,7 @@ using Core.Utf16
 var t: [] struct {
     r: [2] u16
     w: rune
-} = @[
+} = [
     {[0xd800, 0xdc00], 0x10000},
     {[0xd800, 0xdc01], 0x10001},
     {[0xd808, 0xdf45], 0x12345},

@@ -41,7 +41,7 @@ public enum HatchStyle
 
 namespace Hatch
 {
-    const Dot: [64] u8 = @[
+    const Dot: [64] u8 = [
         1, 0, 1, 0, 1, 0, 1, 0,
         0, 1, 0, 1, 0, 1, 0, 1,
         1, 0, 1, 0, 1, 0, 1, 0,
@@ -52,7 +52,7 @@ namespace Hatch
         0, 1, 0, 1, 0, 1, 0, 1,
     ]
 
-    const Horizontal: [64] u8 = @[
+    const Horizontal: [64] u8 = [
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0,
@@ -63,7 +63,7 @@ namespace Hatch
         0, 0, 0, 0, 0, 0, 0, 0,
     ]
 
-    const HorizontalLight: [64] u8 = @[
+    const HorizontalLight: [64] u8 = [
         1, 1, 1, 1, 1, 1, 1, 1,
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0,
@@ -74,7 +74,7 @@ namespace Hatch
         0, 0, 0, 0, 0, 0, 0, 0,
     ]
 
-    const HorizontalNarrow: [64] u8 = @[
+    const HorizontalNarrow: [64] u8 = [
         1, 1, 1, 1, 1, 1, 1, 1,
         0, 0, 0, 0, 0, 0, 0, 0,
         1, 1, 1, 1, 1, 1, 1, 1,
@@ -85,7 +85,7 @@ namespace Hatch
         0, 0, 0, 0, 0, 0, 0, 0,
     ]
 
-    const Vertical: [64] u8 = @[
+    const Vertical: [64] u8 = [
         0, 0, 0, 1, 0, 0, 0, 0,
         0, 0, 0, 1, 0, 0, 0, 0,
         0, 0, 0, 1, 0, 0, 0, 0,
@@ -96,7 +96,7 @@ namespace Hatch
         0, 0, 0, 1, 0, 0, 0, 0,
     ]
 
-    const VerticalLight: [64] u8 = @[
+    const VerticalLight: [64] u8 = [
         1, 0, 0, 0, 1, 0, 0, 0,
         1, 0, 0, 0, 1, 0, 0, 0,
         1, 0, 0, 0, 1, 0, 0, 0,
@@ -107,7 +107,7 @@ namespace Hatch
         1, 0, 0, 0, 1, 0, 0, 0,
     ]
 
-    const VerticalNarrow: [64] u8 = @[
+    const VerticalNarrow: [64] u8 = [
         1, 0, 1, 0, 1, 0, 1, 0,
         1, 0, 1, 0, 1, 0, 1, 0,
         1, 0, 1, 0, 1, 0, 1, 0,
@@ -118,7 +118,7 @@ namespace Hatch
         1, 0, 1, 0, 1, 0, 1, 0,
     ]
 
-    const SolidDiamond: [64] u8 = @[
+    const SolidDiamond: [64] u8 = [
         1, 1, 1, 0, 0, 1, 1, 1,
         1, 1, 0, 0, 0, 0, 1, 1,
         1, 0, 0, 0, 0, 0, 0, 1,
@@ -129,7 +129,7 @@ namespace Hatch
         1, 1, 1, 0, 0, 1, 1, 1,
     ]
 
-    const OutlinedDiamond: [64] u8 = @[
+    const OutlinedDiamond: [64] u8 = [
         0, 0, 1, 0, 0, 1, 0, 0,
         0, 1, 0, 0, 0, 0, 1, 0,
         1, 0, 0, 0, 0, 0, 0, 1,
@@ -140,7 +140,7 @@ namespace Hatch
         0, 0, 1, 0, 0, 1, 0, 0,
     ]
 
-    const HorizontalDark: [64] u8 = @[
+    const HorizontalDark: [64] u8 = [
         1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1,
         0, 0, 0, 0, 0, 0, 0, 0,
@@ -151,7 +151,7 @@ namespace Hatch
         0, 0, 0, 0, 0, 0, 0, 0,
     ]
 
-    const VerticalDark: [64] u8 = @[
+    const VerticalDark: [64] u8 = [
         1, 1, 0, 0, 1, 1, 0, 0,
         1, 1, 0, 0, 1, 1, 0, 0,
         1, 1, 0, 0, 1, 1, 0, 0,
@@ -162,7 +162,7 @@ namespace Hatch
         1, 1, 0, 0, 1, 1, 0, 0,
     ]
 
-    const Grid: [64] u8 = @[
+    const Grid: [64] u8 = [
         0, 1, 0, 0, 0, 1, 0, 0,
         1, 1, 1, 1, 1, 1, 1, 1,
         0, 1, 0, 0, 0, 1, 0, 0,
@@ -173,7 +173,7 @@ namespace Hatch
         0, 1, 0, 0, 0, 1, 0, 0,
     ]
 
-    const GridLarge: [64] u8 = @[
+    const GridLarge: [64] u8 = [
         1, 1, 1, 1, 1, 1, 1, 1,
         1, 0, 0, 0, 0, 0, 0, 0,
         1, 0, 0, 0, 0, 0, 0, 0,
@@ -184,7 +184,7 @@ namespace Hatch
         1, 0, 0, 0, 0, 0, 0, 0,
     ]
 
-    const GridDotted: [64] u8 = @[
+    const GridDotted: [64] u8 = [
         1, 0, 1, 0, 1, 0, 1, 0,
         0, 0, 0, 0, 0, 0, 0, 0,
         1, 0, 0, 0, 0, 0, 0, 0,
@@ -195,7 +195,7 @@ namespace Hatch
         0, 0, 0, 0, 0, 0, 0, 0,
     ]
 
-    const Cross: [64] u8 = @[
+    const Cross: [64] u8 = [
         0, 1, 0, 0, 0, 1, 0, 0,
         1, 1, 1, 0, 1, 1, 1, 0,
         0, 1, 0, 0, 0, 1, 0, 0,
@@ -206,7 +206,7 @@ namespace Hatch
         0, 0, 0, 0, 0, 0, 0, 0,
     ]
 
-    const CrossLarge: [64] u8 = @[
+    const CrossLarge: [64] u8 = [
         0, 0, 1, 0, 0, 0, 0, 0,
         0, 0, 1, 0, 0, 0, 0, 0,
         1, 1, 1, 1, 1, 0, 0, 0,
@@ -217,7 +217,7 @@ namespace Hatch
         0, 0, 0, 0, 0, 0, 0, 0,
     ]
 
-    const Percent5: [64] u8 = @[
+    const Percent5: [64] u8 = [
         0, 0, 0, 0, 1, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0,
@@ -228,7 +228,7 @@ namespace Hatch
         0, 0, 0, 0, 0, 0, 0, 0,
     ]
 
-    const Percent10: [64] u8 = @[
+    const Percent10: [64] u8 = [
         1, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 1, 0, 0, 0,
@@ -239,7 +239,7 @@ namespace Hatch
         0, 0, 0, 0, 0, 0, 0, 0,
     ]
 
-    const Percent20: [64] u8 = @[
+    const Percent20: [64] u8 = [
         1, 0, 0, 0, 1, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 1, 0, 0, 0, 1, 0,
@@ -250,7 +250,7 @@ namespace Hatch
         0, 0, 0, 0, 0, 0, 0, 0,
     ]
 
-    const Percent25: [64] u8 = @[
+    const Percent25: [64] u8 = [
         0, 0, 1, 0, 0, 0, 1, 0,
         1, 0, 0, 0, 1, 0, 0, 0,
         0, 0, 1, 0, 0, 0, 1, 0,
@@ -261,7 +261,7 @@ namespace Hatch
         1, 0, 0, 0, 1, 0, 0, 0,
     ]
 
-    const Percent30: [64] u8 = @[
+    const Percent30: [64] u8 = [
         1, 0, 1, 0, 1, 0, 1, 0,
         0, 0, 0, 1, 0, 0, 0, 1,
         1, 0, 1, 0, 1, 0, 1, 0,
@@ -272,7 +272,7 @@ namespace Hatch
         0, 1, 0, 0, 0, 1, 0, 0,
     ]
 
-    const Percent40: [64] u8 = @[
+    const Percent40: [64] u8 = [
         0, 0, 0, 1, 0, 1, 0, 1,
         1, 0, 1, 0, 1, 0, 1, 0,
         0, 1, 0, 1, 0, 1, 0, 1,
@@ -283,7 +283,7 @@ namespace Hatch
         1, 0, 1, 0, 1, 0, 1, 0,
     ]
 
-    const Percent50: [64] u8 = @[
+    const Percent50: [64] u8 = [
         1, 0, 1, 0, 1, 0, 1, 0,
         0, 1, 0, 1, 0, 1, 0, 1,
         1, 0, 1, 0, 1, 0, 1, 0,
@@ -294,7 +294,7 @@ namespace Hatch
         0, 1, 0, 1, 0, 1, 0, 1,
     ]
 
-    const Percent60: [64] u8 = @[
+    const Percent60: [64] u8 = [
         0, 1, 0, 1, 0, 1, 0, 1,
         1, 0, 1, 1, 1, 0, 1, 1,
         0, 1, 0, 1, 0, 1, 0, 1,
@@ -305,7 +305,7 @@ namespace Hatch
         1, 1, 1, 0, 1, 1, 1, 0,
     ]
 
-    const Percent70: [64] u8 = @[
+    const Percent70: [64] u8 = [
         0, 1, 1, 1, 0, 1, 1, 1,
         1, 1, 0, 1, 1, 1, 0, 1,
         0, 1, 1, 1, 0, 1, 1, 1,
@@ -316,7 +316,7 @@ namespace Hatch
         1, 1, 0, 1, 1, 1, 0, 1,
     ]
 
-    const Percent75: [64] u8 = @[
+    const Percent75: [64] u8 = [
         1, 1, 1, 1, 1, 1, 1, 1,
         0, 1, 1, 1, 0, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1,
@@ -327,7 +327,7 @@ namespace Hatch
         1, 1, 0, 1, 1, 1, 0, 1,
     ]
 
-    const Percent80: [64] u8 = @[
+    const Percent80: [64] u8 = [
         1, 1, 0, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 0, 1,
@@ -338,7 +338,7 @@ namespace Hatch
         1, 1, 1, 1, 1, 1, 1, 1,
     ]
 
-    const Percent90: [64] u8 = @[
+    const Percent90: [64] u8 = [
         1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1,
@@ -349,7 +349,7 @@ namespace Hatch
         1, 1, 1, 1, 0, 1, 1, 1,
     ]
 
-    const CheckBoard: [64] u8 = @[
+    const CheckBoard: [64] u8 = [
         1, 1, 0, 0, 1, 1, 0, 0,
         0, 0, 1, 1, 0, 0, 1, 1,
         0, 0, 1, 1, 0, 0, 1, 1,
@@ -360,7 +360,7 @@ namespace Hatch
         1, 1, 0, 0, 1, 1, 0, 0,
     ]
 
-    const CheckBoardLarge: [64] u8 = @[
+    const CheckBoardLarge: [64] u8 = [
         1, 0, 0, 0, 0, 1, 1, 1,
         1, 0, 0, 0, 0, 1, 1, 1,
         1, 0, 0, 0, 0, 1, 1, 1,
@@ -371,7 +371,7 @@ namespace Hatch
         1, 0, 0, 0, 0, 1, 1, 1,
     ]
 
-    const Weave: [64] u8 = @[
+    const Weave: [64] u8 = [
         0, 1, 0, 0, 0, 1, 0, 0,
         1, 0, 1, 0, 0, 0, 1, 0,
         0, 0, 0, 1, 0, 0, 0, 1,
@@ -382,7 +382,7 @@ namespace Hatch
         1, 0, 0, 0, 1, 0, 1, 0,
     ]
 
-    const DiagonalForward: [64] u8 = @[
+    const DiagonalForward: [64] u8 = [
         0, 0, 0, 0, 0, 0, 0, 1,
         0, 0, 0, 0, 0, 0, 1, 0,
         0, 0, 0, 0, 0, 1, 0, 0,
@@ -393,7 +393,7 @@ namespace Hatch
         1, 0, 0, 0, 0, 0, 0, 0,
     ]
 
-    const DiagonalForwardLight: [64] u8 = @[
+    const DiagonalForwardLight: [64] u8 = [
         0, 0, 0, 1, 0, 0, 0, 1,
         0, 0, 1, 0, 0, 0, 1, 0,
         0, 1, 0, 0, 0, 1, 0, 0,
@@ -404,7 +404,7 @@ namespace Hatch
         1, 0, 0, 0, 1, 0, 0, 0,
     ]
 
-    const DiagonalBackward: [64] u8 = @[
+    const DiagonalBackward: [64] u8 = [
         1, 0, 0, 0, 0, 0, 0, 0,
         0, 1, 0, 0, 0, 0, 0, 0,
         0, 0, 1, 0, 0, 0, 0, 0,
@@ -415,7 +415,7 @@ namespace Hatch
         0, 0, 0, 0, 0, 0, 0, 1,
     ]
 
-    const DiagonalBackwardLight: [64] u8 = @[
+    const DiagonalBackwardLight: [64] u8 = [
         1, 0, 0, 0, 1, 0, 0, 0,
         0, 1, 0, 0, 0, 1, 0, 0,
         0, 0, 1, 0, 0, 0, 1, 0,
@@ -426,7 +426,7 @@ namespace Hatch
         0, 0, 0, 1, 0, 0, 0, 1,
     ]
 
-    const DiagonalCross: [64] u8 = @[
+    const DiagonalCross: [64] u8 = [
         1, 0, 0, 0, 0, 0, 0, 1,
         0, 1, 0, 0, 0, 0, 1, 0,
         0, 0, 1, 0, 0, 1, 0, 0,

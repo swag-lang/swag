@@ -3,7 +3,7 @@ using Core
 
 #test
 {
-    var x: BitArray = @[true, false, true, false]
+    var x: BitArray = [true, false, true, false]
 
     x.not()
     @assert(x[0] == false)

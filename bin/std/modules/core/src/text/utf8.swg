@@ -39,7 +39,7 @@ private
 	const S7 = 0x44 // accept 4, size 4
 
     // first is information about the first byte in a UTF-8 sequence.
-    const First: [256] u8 = @[
+    const First: [256] u8 = [
         //   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
         AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, // 0x00-0x0F
         AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, // 0x10-0x1F
@@ -66,7 +66,7 @@ private
         hi: u8
     }
 
-    const AcceptRanges: [] AcceptRange = @[
+    const AcceptRanges: [] AcceptRange = [
         {LoCB, HiCB},
         {0xA0, HiCB},
         {LoCB, 0x9F},
@@ -451,7 +451,7 @@ func countRunes(buffer: const [..] u8)->uint
 // Returns Swag.UInt.Max if not found
 func indexOf(src: const [..] u8, what: rune, startByteIndex = 0'uint)->uint
 {
-    return indexOf(src, @[what], startByteIndex)
+    return indexOf(src, [what], startByteIndex)
 }
 
 // Find one of the runes in 'what', and returns the byte index of it
@@ -522,7 +522,7 @@ func indexOf(src: const [..] u8, what: string, startByteIndex = 0'uint, comparis
 // Returns Swag.UInt.Max if not found
 func lastIndexOf(src: const [..] u8, what: rune)->uint
 {
-    return lastIndexOf(src, @[what])
+    return lastIndexOf(src, [what])
 }
 
 // Returns the last index (in bytes) of a rune

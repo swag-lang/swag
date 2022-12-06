@@ -14,7 +14,7 @@
 
     // You can take the address of something with '&'
     {
-        arr := @[1, 2, 3, 4]
+        arr := [1, 2, 3, 4]
         ptr := &arr[0]
         @assert(ptr[0] == 1)
         @assert(@dataof(arr) == ptr)
@@ -57,7 +57,7 @@
     }
 
     {
-        arr := @[1, 2, 3, 4]
+        arr := [1, 2, 3, 4]
         ptr := &arr[0]
         @assert(@typeof(ptr) == ^s32)
 

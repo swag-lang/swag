@@ -51,7 +51,7 @@ impl AA
 
 #test
 {
-    var v: AA'(@[s32, String])
+    var v: AA'([s32, String])
 
     var str: String = "5555 5555 5555 5555 5555 5555 5555 5555 5555 5555 5555 5555 "
     v.set'String(str)

@@ -11,7 +11,7 @@ func fromCapa(capa: uint)->BitArray
 
 #test
 {
-    var x: BitArray = @[true, false, true, false]
+    var x: BitArray = [true, false, true, false]
     var y: BitArray = fromCapa(4)
 
     visit val, idx: x

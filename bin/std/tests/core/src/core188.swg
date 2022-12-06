@@ -1,7 +1,7 @@
 ﻿
 using Core
 
-var spaceTest: []rune = @[
+var spaceTest: []rune = [
 	0x09,
 	0x0a,
 	0x0b,
@@ -14,7 +14,7 @@ var spaceTest: []rune = @[
 	0x3000,
 ]
 
-var letterTest: []rune = @[
+var letterTest: []rune = [
 	0x41,
 	0x61,
 	0xaa,
@@ -49,7 +49,7 @@ var letterTest: []rune = @[
 	0x2fa1d,
 ]
 
-var notletterTest: []rune = @[
+var notletterTest: []rune = [
 	0x20,
 	0x35,
 	0x375,

@@ -51,10 +51,23 @@ bool SyntaxJob::doGenericFuncCallParameters(AstNode* parent, AstNode** result)
             SWAG_CHECK(doCompilerLocation(param));
             break;
 
+        case TokenId::SymLeftSquare:
+            SWAG_CHECK(doExpressionListArray(param));
+            break;
+
         case TokenId::SymLiteralBracket:
             SWAG_CHECK(eatToken(TokenId::SymLiteralBracket));
             SWAG_CHECK(doExpressionListArray(param));
             break;
+
+        case TokenId::CompilerType:
+        {
+            SWAG_CHECK(eatToken(TokenId::CompilerType));
+            AstNode* resNode;
+            SWAG_CHECK(doTypeExpression(param, &resNode));
+            resNode->flags |= AST_FORCE_TYPE;
+            break;
+        }
 
         default:
             SWAG_CHECK(doTypeExpression(param));

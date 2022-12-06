@@ -1,7 +1,7 @@
 ﻿
 using Core
 
-var testDigit: []rune = @[
+var testDigit: []rune = [
 	0x0030,
 	0x0039,
 	0x0661,

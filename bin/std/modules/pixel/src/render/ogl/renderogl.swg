@@ -297,7 +297,7 @@ impl RenderOgl
         glVertexAttribPointer(15, 1, GL_FLOAT, GL_FALSE, @sizeof(VertexLayout), offset)
 
         // Generate predefined textures
-        whiteTexture = generateTexture(@[1], 1, 1)
+        whiteTexture = generateTexture([1], 1, 1)
         using HatchStyle
         hatchTextures[Dot] = generateTexture(Hatch.Dot, 8, 8)
         hatchTextures[Horizontal] = generateTexture(Hatch.Horizontal, 8, 8)

@@ -7,7 +7,7 @@ struct ValidTest
 	out: bool
 }
 
-const validTests: [] ValidTest = @[
+const validTests: [] ValidTest = [
 	{"", true},
 	{"a", true},
 	{"abc", true},

@@ -11,7 +11,7 @@ using Globalization
 
 func exact(neg: bool, mantissa: u64, exponent: s64) -> {f: f64, ok: bool}
 {
-    const Pow10: [] f64 = @[
+    const Pow10: [] f64 = [
         1e0'f64, 1e1'f64, 1e2'f64, 1e3'f64, 1e4'f64, 1e5'f64, 1e6'f64, 1e7'f64, 1e8'f64, 1e9'f64,
         1e10'f64, 1e11'f64, 1e12'f64, 1e13'f64, 1e14'f64, 1e15'f64, 1e16'f64, 1e17'f64, 1e18'f64, 1e19'f64,
         1e20'f64, 1e21'f64, 1e22'f64,
@@ -63,7 +63,7 @@ func exact(neg: bool, mantissa: u64, exponent: s64) -> {f: f64, ok: bool}
     return result
 }
 
-var PowersOfTen: [696,2] u64 = @[
+var PowersOfTen: [696,2] u64 = [
 	[0x1732C869CD60E453, 0xFA8FD5A0081C0288], // 1e-348
 	[0x0E7FBD42205C8EB4, 0x9C99E58405118195], // 1e-347
 	[0x521FAC92A873B261, 0xC3C05EE50655E1FA], // 1e-346

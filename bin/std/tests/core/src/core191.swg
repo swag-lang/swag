@@ -11,7 +11,7 @@ const UpperCase = 1
 const LowerCase = 2
 const TitleCase = 3
 
-var caseTest: [] CaseT = @[
+var caseTest: [] CaseT = [
 	// ASCII (special-cased so test carefully)
 	{UpperCase, "\n"'rune, "\n"'rune},
 	{UpperCase, "a"'rune, "A"'rune},

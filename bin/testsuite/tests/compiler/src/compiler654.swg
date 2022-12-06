@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-#global testerror
+//#global testerror
 #test
 {
 	pair := [s32]

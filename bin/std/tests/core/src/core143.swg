@@ -3,7 +3,7 @@ using Core
 
 #test
 {
-    x := @[[1, 2], [3, 4]]
+    x := [[1, 2], [3, 4]]
 
     var buf: ConcatBuffer
     StrConv.convertAny(&buf, x, null)
