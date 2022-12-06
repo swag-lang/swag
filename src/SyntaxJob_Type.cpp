@@ -334,7 +334,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         // So we create an identifier, that will be matched with the type alias automatically
         // created in the function.
         SWAG_CHECK(eatToken());
-        if (token.id == TokenId::SymLeftCurly)
+        if (!token.lastTokenIsEOL && token.id == TokenId::SymLeftCurly)
         {
             node->identifier = Ast::newIdentifierRef(sourceFile, g_LangSpec->name_retval, node, this);
             auto id          = CastAst<AstIdentifier>(node->identifier->childs.back(), AstNodeKind::Identifier);
