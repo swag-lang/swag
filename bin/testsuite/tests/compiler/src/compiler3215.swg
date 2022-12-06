@@ -14,5 +14,5 @@ struct B
 #test
 {
     var v: B
-    v.x = @{0}
+    v.x = {0}
 }

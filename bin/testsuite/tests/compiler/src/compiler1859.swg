@@ -72,7 +72,7 @@ func variadic2(z: s32, x: ...)
 //#[Swag.PrintBc]
 func retS()->B
 {
-    var x: B = @{666,777}
+    var x: B = {666,777}
     return x
 }
 

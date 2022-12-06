@@ -77,13 +77,13 @@ impl Struct
     // Binary operator. 'op' generic argument contains the operator string
     // Generic function, can be overloaded
     // Called by '+', '-', '*', '/', '%', '|', '&', '^', '<<', '>>'
-    func(op: string) opBinary(using self, other: OneType)->Self     { return @{1, 2}; }
-    func(op: string) opBinary(using self, other: AnotherType)->Self { return @{1, 2}; }
+    func(op: string) opBinary(using self, other: OneType)->Self     { return {1, 2}; }
+    func(op: string) opBinary(using self, other: AnotherType)->Self { return {1, 2}; }
 
     // Unary operator. 'op' generic argument contains the operator string (see below)
     // Generic function
     // Called by '!', '-', '~'
-    func(op: string) opUnary(using self)->Self { return @{1, 2}; }
+    func(op: string) opUnary(using self)->Self { return {1, 2}; }
 
     // Affect operator. 'op' generic argument contains the operator string (see below)
     // Generic function, can be overloaded

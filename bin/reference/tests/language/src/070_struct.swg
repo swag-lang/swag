@@ -63,7 +63,7 @@
         @assert(v2.y == 20)
 
         // With a tuple
-        var v3: MyStruct = @{10, 20}
+        var v3: MyStruct = {10, 20}
         @assert(v3.x == 10)
         @assert(v3.y == 20)
     }
@@ -120,12 +120,12 @@ func titi(v: Struct3)
     toto(Struct3{5, 5, 666})
 
     // Type can be deduced from the argument
-    toto(@{5, 5, 666})
+    toto({5, 5, 666})
 
     // You can also just specify some parts of the struct, in the declaration order of the fields
-    titi(@{5})      // Initialize x, which is the first field
-    titi(@{5, 666}) // Initialize x and y
+    titi({5})      // Initialize x, which is the first field
+    titi({5, 666}) // Initialize x and y
 
     // You can also name the fields, and omit some of them
-    titi(@{x: 5, z: 5}) // Here y will stay to the default value, which is 666
+    titi({x: 5, z: 5}) // Here y will stay to the default value, which is 666
 }

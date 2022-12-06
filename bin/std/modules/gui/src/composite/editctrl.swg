@@ -32,7 +32,7 @@ impl EditCtrl
     func create(parent:   *Wnd,
                 name:     string,
                 text:     string,
-                position: Math.Rectangle = @{},
+                position: Math.Rectangle = {},
                 id:       WndId = null,
                 flags:    EditBoxFlags = None)->*EditCtrl
     {
@@ -45,10 +45,10 @@ impl EditCtrl
 
         with ctrl := Wnd.create'EditCtrl(parent, pos, id)
         {
-            .label = Label.create(ctrl, #self.name, @{})
+            .label = Label.create(ctrl, #self.name, {})
             .label.horzAlignmentText = .Right
 
-            .edit = EditBox.create(ctrl, text, @{})
+            .edit = EditBox.create(ctrl, text, {})
             .edit.editBoxFlags = flags
 
             .sendResizeEvent()

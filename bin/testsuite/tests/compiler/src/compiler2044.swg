@@ -1,7 +1,7 @@
 #[Swag.Inline]
 func titi()->{a: f32, b: string}
 {
-    return @{666, "yes"}
+    return {666, "yes"}
 }
 
 //#[Swag.PrintBc]

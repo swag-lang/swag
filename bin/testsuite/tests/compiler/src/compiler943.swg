@@ -2,5 +2,5 @@
 #global testerror
 #test
 {
-	var x: {s32} = @{1, 1}
+	var x: {s32} = {1, 1}
 }

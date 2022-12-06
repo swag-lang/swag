@@ -2,7 +2,7 @@
 #test
 {
     a := [1, 2, 3, 4]
-    b := @{a}
+    b := {a}
     @assert(b.item0[0] == 1)
     @assert(b.item0[1] == 2)
     @assert(b.item0[2] == 3)

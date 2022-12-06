@@ -12,6 +12,6 @@ impl Image
 
     func fill(using self, x: AA)
     {
-        f := @{x, self}
+        f := {x, self}
     }
 }

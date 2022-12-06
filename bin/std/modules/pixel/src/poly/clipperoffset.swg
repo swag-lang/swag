@@ -29,7 +29,7 @@ struct Offset
     cosVal:         f64
     miterLim:       f64
     stepsPerRad:    f64
-    lowest:         IntPoint = @{-1, 0}
+    lowest:         IntPoint = {-1, 0}
     polyNodes:      PolyNode
 }
 

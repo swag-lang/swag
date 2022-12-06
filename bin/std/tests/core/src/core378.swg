@@ -17,7 +17,7 @@ struct Toto2
 
     var x: Toto1
     var buf: ConcatBuffer
-    x.x.add(@{0, 0, 1.5})
+    x.x.add({0, 0, 1.5})
     try enc.writeAll(&buf, x)
     buf.makeLinear()
 

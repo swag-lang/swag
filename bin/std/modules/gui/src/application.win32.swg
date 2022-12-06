@@ -194,7 +194,7 @@ impl Application
 
         catch SHGetStockIconInfo(whatWin, SHGSI_ICON | (small ? SHGSI_SMALLICON : SHGSI_LARGEICON), &sgi)
         if !sgi.hIcon
-            return @{}
+            return {}
         return addIconToImageList(name, sgi.hIcon, small)
     }
 

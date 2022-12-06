@@ -231,8 +231,8 @@ impl RenderOgl
     mtd getTargetSize()->{s32, s32}
     {
         if curRT
-            return @{curRT.colorBuffer.width, curRT.colorBuffer.height}
-        return @{curRC.width, curRC.height}
+            return {curRT.colorBuffer.width, curRT.colorBuffer.height}
+        return {curRC.width, curRC.height}
     }
 
     // Force the scissor
@@ -437,7 +437,7 @@ impl RenderOgl
     // Register an image for rendering
     mtd addImage(image: Image)->Texture
     {
-        if !image.isValid() return @{}
+        if !image.isValid() return {}
         var fmt: GLenum = 0
         internal := GL_RGB
 

@@ -6,7 +6,7 @@ struct V
 
 func toto()->V
 {
-    return @{1, 2, 3}
+    return {1, 2, 3}
 }
 
 const C = #run toto()

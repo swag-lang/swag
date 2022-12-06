@@ -64,7 +64,7 @@ impl Image
             }
         }
 
-        f := @{topLeft, topRight, bottomLeft, bottomRight}
+        f := {topLeft, topRight, bottomLeft, bottomRight}
         switch pf
         {
         case BGR8:  doIt'BGR8()

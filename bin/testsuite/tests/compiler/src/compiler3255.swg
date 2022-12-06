@@ -3,7 +3,7 @@ struct Rectangle{ x: s32; }
 
 func(T) create(parent: *void = null, id: string = null)
 {
-    create(parent, "", @{})
+    create(parent, "", {})
 }
 
 func(T) create(parent: *void, name: string, position: Rectangle, id: string = null)

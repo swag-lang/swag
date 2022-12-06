@@ -4,7 +4,7 @@ struct AA {}
 #[Swag.Inline]
 func create1()
 {
-    create(@{})
+    create({})
 }
 
 func create(x: AA)

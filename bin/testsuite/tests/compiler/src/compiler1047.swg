@@ -1,6 +1,6 @@
 #global testerror
 
-func new() => @{1}
+func new() => {1}
 
 //#[Swag.PrintBc]
 #test

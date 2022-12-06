@@ -6,7 +6,7 @@ impl AA
 {
     func toto(using self)->{T}
     {
-        return @{5}
+        return {5}
     }
 }
 

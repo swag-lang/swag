@@ -1,6 +1,6 @@
 func toto()->{u32, u32}
 {
-    return @{5, 10}
+    return {5, 10}
 }
 
 struct A

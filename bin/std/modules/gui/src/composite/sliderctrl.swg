@@ -32,7 +32,7 @@ impl IWnd for SliderCtrl
 impl SliderCtrl
 {
     // Create the popup list, but do not display it
-    func create(parent: *Wnd, name: string, position: Math.Rectangle = @{}, id: WndId = null)->*SliderCtrl
+    func create(parent: *Wnd, name: string, position: Math.Rectangle = {}, id: WndId = null)->*SliderCtrl
     {
         metrics := parent.getThemeMetrics()
         pos := position
@@ -43,10 +43,10 @@ impl SliderCtrl
 
         with ctrl := Wnd.create'SliderCtrl(parent, pos, id)
         {
-            .label = Label.create(ctrl, #self.name, @{})
+            .label = Label.create(ctrl, #self.name, {})
             .label.horzAlignmentText = .Right
 
-            .slider = Slider.create(ctrl, @{})
+            .slider = Slider.create(ctrl, {})
             .slider.sigChanged += @|ctrl|(wnd)
             {
                 var val: String
@@ -63,7 +63,7 @@ impl SliderCtrl
                 ctrl.edit.setText(val)
             }
 
-            .edit = EditBox.create(ctrl, "", @{})
+            .edit = EditBox.create(ctrl, "", {})
             .edit.setForm(.Transparent)
             .edit.editBoxFlags |= .RightAlign
             .edit.sigLoseFocus += @|ctrl|(edit)

@@ -10,5 +10,5 @@ func toto(v: const ref V)
 //#[Swag.PrintBc]
 #test
 {
-    toto(@{2.0,3.0,4})
+    toto({2.0,3.0,4})
 }

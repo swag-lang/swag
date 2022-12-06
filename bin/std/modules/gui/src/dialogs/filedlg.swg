@@ -203,13 +203,13 @@ private impl FileDlg
 impl FileDlg
 {
     // Creates the message box
-    func create(from: *Surface, opt: FileDlgOptions = @{})->*FileDlg
+    func create(from: *Surface, opt: FileDlgOptions = {})->*FileDlg
     {
         dlg := Wnd.create'FileDlg()
         with srf := dlg.createSurface(from, 100, 100, 700, 500)
         {
             .setSurfaceFlags(add: .Sizeable)
-            .minSize = @{400, 400}
+            .minSize = {400, 400}
 
             if opt.title
                 .setTitle(opt.title)
@@ -261,7 +261,7 @@ impl FileDlg
 
         if opt.drivePane
         {
-            with dlg.treeCtrl = ListCtrl.createSimple(view, @{0, 0, 170})
+            with dlg.treeCtrl = ListCtrl.createSimple(view, {0, 0, 170})
             {
                 .dockStyle = .Left
                 .listFlags |= .HotTrack
@@ -367,7 +367,7 @@ impl FileDlg
 
         // Top
         ////////////////////////
-        viewTop := Wnd.create'Wnd(view, @{0, 0, 0, 50})
+        viewTop := Wnd.create'Wnd(view, {0, 0, 0, 50})
         viewTop.dockStyle = .Top
         viewTop.backgroundStyle = .Window
         viewTop.padding.x = 10
@@ -378,7 +378,7 @@ impl FileDlg
 
         if opt.mode == .CreateFile or opt.mode == .SelectFolder
         {
-            btn := PushButton.create(viewTop, "New Folder", @{0, 0, 90})
+            btn := PushButton.create(viewTop, "New Folder", {0, 0, 90})
             with btn
             {
                 .dockStyle = .Right
@@ -397,17 +397,17 @@ impl FileDlg
 
         // Bottom
         ////////////////////////
-        viewBottom := Wnd.create'Wnd(view, @{0, 0, 0, 90})
+        viewBottom := Wnd.create'Wnd(view, {0, 0, 0, 90})
         viewBottom.dockStyle = .Bottom
         viewBottom.backgroundStyle = .Window
         dlg.applyLayout()
 
-        with dlg.editFile = EditBox.create(viewBottom, "", @{105, 10, viewBottom.position.width - (105 + 15)})
+        with dlg.editFile = EditBox.create(viewBottom, "", {105, 10, viewBottom.position.width - (105 + 15)})
         {
             .anchorStyle = .Width
         }
 
-        with dlg.comboType = ComboBox.create(viewBottom, @{105, 45, viewBottom.position.width - (105 + 15)})
+        with dlg.comboType = ComboBox.create(viewBottom, {105, 45, viewBottom.position.width - (105 + 15)})
         {
             .anchorStyle = .Width
             if opt.mode == .SelectFolder
@@ -422,10 +422,10 @@ impl FileDlg
         }
 
         nameLbl0 := opt.mode == .SelectFolder ? "Folder Name" : "File Name"
-        label0 := Label.create(viewBottom, nameLbl0, @{5, 10, 80, dlg.editFile.position.height})
+        label0 := Label.create(viewBottom, nameLbl0, {5, 10, 80, dlg.editFile.position.height})
         label0.horzAlignmentText = .Right
         label0.vertAlignmentText = .Center
-        label1 := Label.create(viewBottom, "Type", @{5, 45, 80, dlg.comboType.position.height})
+        label1 := Label.create(viewBottom, "Type", {5, 45, 80, dlg.comboType.position.height})
         label1.horzAlignmentText = .Right
         label1.vertAlignmentText = .Center
 

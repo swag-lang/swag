@@ -126,7 +126,7 @@ impl ListLine
 
     // Initialize a given column item
     #[Swag.Discardable]
-    mtd setItem(column: u32, name: string, icon: Icon = @{})->*ListItem
+    mtd setItem(column: u32, name: string, icon: Icon = {})->*ListItem
     {
         visit item: items
         {
@@ -766,7 +766,7 @@ private impl ListView
 impl ListCtrl
 {
     #[Swag.Discardable]
-    func createSimple(parent: *Wnd, position: Math.Rectangle = @{}, id: WndId = null)->*ListCtrl
+    func createSimple(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*ListCtrl
     {
         with list := Wnd.create'ListCtrl(parent, "", position, id)
         {
@@ -784,7 +784,7 @@ impl ListCtrl
     }
 
     #[Swag.Discardable]
-    func createMultiColumns(parent: *Wnd, position: Math.Rectangle = @{}, id: WndId = null)->*ListCtrl
+    func createMultiColumns(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*ListCtrl
     {
         list := Wnd.create'ListCtrl(parent, "", position, id)
 
@@ -823,7 +823,7 @@ impl ListCtrl
         {
             // Header
             // Need to recompute layout when header size has changed
-            .header = Header.create(fwnd, @{})
+            .header = Header.create(fwnd, {})
             .header.dockStyle = .Top
             .header.form = .Round
             .header.sigLayoutChanged = @|list|(header) {
@@ -835,7 +835,7 @@ impl ListCtrl
             }
 
             // Scroll that contains the list view
-            .scrollWnd = Wnd.create'ScrollWnd(fwnd, @{})
+            .scrollWnd = Wnd.create'ScrollWnd(fwnd, {})
             .scrollWnd.dockStyle = .Center
             .scrollWnd.focusStrategy = .None
             .scrollWnd.backgroundStyle = .Transparent
@@ -972,7 +972,7 @@ impl ListCtrl
 
     // Add one line, and set first column
     #[Swag.Discardable]
-    mtd createLine(name: string, icon: Icon = @{}, parentLine: *ListLine = null)->*ListLine
+    mtd createLine(name: string, icon: Icon = {}, parentLine: *ListLine = null)->*ListLine
     {
         line := createLine(parentLine)
         line.setItem(0, #self.name, #self.icon)
@@ -991,7 +991,7 @@ impl ListCtrl
     }
 
     // Add one column in a multi columns list
-    mtd addColumn(name: string, width: f32 = 100, icon: Icon = @{})
+    mtd addColumn(name: string, width: f32 = 100, icon: Icon = {})
     {
         Debug.assert(header != null)
         header.addItem(#self.name, width, #self.icon)

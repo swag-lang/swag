@@ -12,5 +12,5 @@ struct AA
     var v1: const&AA = v
     v2 := &v1
     v3 := &v2
-    vv := @{v1, v3}
+    vv := {v1, v3}
 }

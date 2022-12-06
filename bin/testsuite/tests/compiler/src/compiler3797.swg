@@ -11,5 +11,5 @@ func toto(ptr: *void, p0, p1, p2, p3: V)
 
 #test
 {
-    toto(null, @{1, 1}, @{2, 2}, @{3, 3}, @{4, 4})
+    toto(null, {1, 1}, {2, 2}, {3, 3}, {4, 4})
 }

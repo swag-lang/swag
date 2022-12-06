@@ -53,7 +53,7 @@ private impl PropertyList
             dispName = cast(string) attrName
         else
             dispName = Format.toString("<b>%<b>", f.name)
-        label := Label.create(line, dispName, @{0, 0, position.width, nameHeight})
+        label := Label.create(line, dispName, {0, 0, position.width, nameHeight})
         label.labelFlags |= .WordWrap | .AutoHeight
         label.horzAlignmentText = .Justify
         label.margin.y = nameMarginBefore
@@ -68,7 +68,7 @@ private impl PropertyList
             item.filter += cast(string) dispDesc
             if canDesc
             {
-                labelDesc := Label.create(line, "", @{0, 0, position.width, 0})
+                labelDesc := Label.create(line, "", {0, 0, position.width, 0})
                 labelDesc.labelFlags |= .WordWrap | .AutoHeight
                 labelDesc.horzAlignmentText = .Justify
                 labelDesc.setText(dispDesc)
@@ -151,10 +151,10 @@ private impl PropertyList
                 dispDesc := Reflection.getAttributeValue(v, PropertyList.Description, "desc")
                 line1 := Wnd.create'Wnd(edView)
 
-                ed := CheckButton.create(line1, "", @{0, 0, 30, 0})
+                ed := CheckButton.create(line1, "", {0, 0, 30, 0})
                 ed.dockStyle = .Left
 
-                label1 := Label.create(line1, "", @{30, 0, position.width - 30})
+                label1 := Label.create(line1, "", {30, 0, position.width - 30})
                 label1.dockStyle = .Center
                 label1.labelFlags |= .WordWrap | .AutoHeight
                 label1.horzAlignmentText = .Justify
@@ -233,10 +233,10 @@ private impl PropertyList
         dispDesc := Reflection.getAttributeValue(f, PropertyList.Description, "desc")
         line1 := Wnd.create'Wnd(item.line)
 
-        ed := CheckButton.create(line1, "", @{0, 0, 30, 0})
+        ed := CheckButton.create(line1, "", {0, 0, 30, 0})
         ed.dockStyle = .Left
 
-        label1 := Label.create(line1, "", @{30, 0, position.width - 30})
+        label1 := Label.create(line1, "", {30, 0, position.width - 30})
         label1.dockStyle = .Center
         label1.labelFlags |= .WordWrap | .AutoHeight
         label1.horzAlignmentText = .Justify
@@ -369,7 +369,7 @@ private impl PropertyList
 impl PropertyList
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle = @{}, id: WndId = null)->*PropertyList
+    func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*PropertyList
     {
         ed := Wnd.create'PropertyList(parent, "", position, id)
 

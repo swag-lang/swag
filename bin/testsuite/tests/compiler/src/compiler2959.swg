@@ -6,9 +6,9 @@ struct V
 
 func toto(x, y: V)->V
 {
-    return @{x.x + y.x, x.y + y.y}
+    return {x.x + y.x, x.y + y.y}
 }
 
-const C = #run toto(@{1, 2}, @{10, 20})
+const C = #run toto({1, 2}, {10, 20})
 #assert C.x == 11
 #assert C.y == 22

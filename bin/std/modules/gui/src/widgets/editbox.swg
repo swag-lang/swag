@@ -53,9 +53,9 @@ struct EditBox
     sigCheckContent:    closure(*Self)->EditBoxCheckResult
 
     using minMax: union{
-        minMaxS64: {min: s64, max: s64} = @{Swag.S64.Min, Swag.S64.Max}
-        minMaxU64: {min: u64, max: u64} = @{0, Swag.U64.Max}
-        minMaxF64: {min: f64, max: f64} = @{-Swag.F64.Max, Swag.F64.Max}
+        minMaxS64: {min: s64, max: s64} = {Swag.S64.Min, Swag.S64.Max}
+        minMaxU64: {min: u64, max: u64} = {0, Swag.U64.Max}
+        minMaxF64: {min: f64, max: f64} = {-Swag.F64.Max, Swag.F64.Max}
     }
 
     isInvalid:          bool
@@ -166,7 +166,7 @@ impl IWnd for EditBox
             format.vertAlignment = .Center
             format.flags = .Clip
             format.font = theme.res.fontDefault
-            Theme.drawIconText(bc.painter, clientRect, @{}, &name, format, metrics.iconText_Margin)
+            Theme.drawIconText(bc.painter, clientRect, {}, &name, format, metrics.iconText_Margin)
         }
 
         // Compute scroll position
@@ -583,7 +583,7 @@ private impl EditBox
             break
         }
 
-        return @{}
+        return {}
     }
 
     mtd forceVisibleCaret()
@@ -785,7 +785,7 @@ private impl EditBox
 impl EditBox
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, content: string, position: Math.Rectangle = @{}, id: WndId = null)->*EditBox
+    func create(parent: *Wnd, content: string, position: Math.Rectangle = {}, id: WndId = null)->*EditBox
     {
         Debug.assert(parent != null)
         pos := position

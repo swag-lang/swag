@@ -12,7 +12,7 @@ impl Argb2036
         _r := self.r / 255.0'f32
         _g := self.g / 255.0'f32
         _b := self.b / 255.0'f32
-        return @{_a, _r, _g, _b}
+        return {_a, _r, _g, _b}
     }
 }
 

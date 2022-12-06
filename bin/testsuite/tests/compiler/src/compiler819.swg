@@ -7,6 +7,6 @@ func toto(x: {s32, s32})
 //#[Swag.PrintBc]
 #test
 {
-	var aa = @{10,20}
+	var aa = {10,20}
 	toto(aa)
 }

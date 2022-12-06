@@ -318,7 +318,7 @@ namespace ResizeTools
         dh := cast(int) imgDst.height
         contrib := calcContributions(dh, sh, cast(f64) dh / sh, rmode)
 
-        f := @{imgDst, imgSrc, contrib: &contrib}
+        f := {imgDst, imgSrc, contrib: &contrib}
         Jobs.parallelFor(|index, data| cast(u32) imgDst.width, &f)
         {
             params := cast(*@typeof(f)) data
@@ -332,7 +332,7 @@ namespace ResizeTools
         dw := cast(int) imgDst.width
         contrib := calcContributions(dw, sw, cast(f64) dw / sw, rmode)
 
-        f := @{imgDst, imgSrc, contrib: &contrib}
+        f := {imgDst, imgSrc, contrib: &contrib}
         Jobs.parallelFor(|index, data| cast(u32) imgDst.height, &f)
         {
             params := cast(*@typeof(f)) data
@@ -351,7 +351,7 @@ namespace ResizeTools
     {
         xscale := srcImage.width / cast(f32) dstImage.width
         yscale := srcImage.height / cast(f32) dstImage.height
-        f := @{xscale, yscale, srcImage}
+        f := {xscale, yscale, srcImage}
 
         #[Swag.Mixin]
         func(BPP: u8) doIt()

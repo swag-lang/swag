@@ -15,6 +15,6 @@ impl A
 #test
 {
     var a: A
-    a[0] = @{664}
+    a[0] = {664}
     @assert(a.x[0].item0 == 664)
 }

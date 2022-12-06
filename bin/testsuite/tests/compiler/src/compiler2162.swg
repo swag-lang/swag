@@ -29,7 +29,7 @@ func toto() -> {A, bool}
 {
     var x: A
     x.x = 555
-    return @{x, false}
+    return {x, false}
 }
 
 //#[Swag.PrintBc, Swag.nooptim]

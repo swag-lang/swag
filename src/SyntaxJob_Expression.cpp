@@ -331,10 +331,8 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
     }
 
     case TokenId::SymLeftCurly:
-    case TokenId::SymLiteralCurly:
         if (exprFlags & EXPR_FLAG_SIMPLE)
             return invalidTokenError(InvalidTokenError::PrimaryExpression);
-        SWAG_CHECK(eatToken(TokenId::SymLiteralCurly));
         SWAG_CHECK(doExpressionListTuple(parent, result));
         break;
 

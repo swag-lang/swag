@@ -3467,7 +3467,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
                 {
                     exprList->doneFlags |= AST_DONE_EXPRLIST_CST;
 
-                    // Test sizeof because @{} is legit to initialize a struct (for default values in function arguments)
+                    // Test sizeof because {} is legit to initialize a struct (for default values in function arguments)
                     if (fromNode->typeInfo->sizeOf)
                     {
                         auto constSegment = SemanticJob::getConstantSegFromContext(exprList);

@@ -6,5 +6,5 @@ struct A
 
 #test
 {
-    var a: A = @{string}
+    var a: A = {string}
 }

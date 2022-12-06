@@ -17,7 +17,7 @@ impl AA
 
     func from()->AA
     {
-        return @{666}
+        return {666}
     }
 }
 

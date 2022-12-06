@@ -12,7 +12,7 @@ func toto(x: A)
 {
 }
 
-func titi(x: A = @{})
+func titi(x: A = {})
 {
-    toto(x.isValid() ? x : @{})
+    toto(x.isValid() ? x : {})
 }

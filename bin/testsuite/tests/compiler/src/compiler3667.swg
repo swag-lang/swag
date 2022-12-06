@@ -11,5 +11,5 @@ func toto(x: string, y: T, z: ...)
 
 #test
 {
-    toto("toto", @{100, 200}, 10, 20)
+    toto("toto", {100, 200}, 10, 20)
 }

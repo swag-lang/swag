@@ -84,7 +84,7 @@ impl IWnd for GridLayoutCtrl
 impl GridLayoutCtrl
 {
     // Create a layout control
-    func create(parent: *Wnd, numColumns, numRows: s32, position: Math.Rectangle = @{})->*GridLayoutCtrl
+    func create(parent: *Wnd, numColumns, numRows: s32, position: Math.Rectangle = {})->*GridLayoutCtrl
     {
         Debug.assert(numColumns > 0 and numRows > 0)
 

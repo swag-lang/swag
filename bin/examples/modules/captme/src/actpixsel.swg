@@ -30,7 +30,7 @@ impl MainWnd
         visit f: forms
             boundRects.add(f.boundRect(false))
 
-        params := @{capture, boundRects: boundRects.buffer, forms: &forms}
+        params := {capture, boundRects: boundRects.buffer, forms: &forms}
         undo.newImg.visitPixels(&params)
         {
             p := cast(*@typeof(params)) userData
@@ -68,7 +68,7 @@ impl MainWnd
         visit f: forms
             boundRects.add(f.boundRect(false))
 
-        params := @{capture, boundRects: boundRects.buffer, forms: &forms}
+        params := {capture, boundRects: boundRects.buffer, forms: &forms}
         undo.newImg.visitPixels(&params)
         {
             p := cast(*@typeof(params)) userData
@@ -158,13 +158,13 @@ impl MainWnd
                     y2 -= 1
                 }
 
-                i.boundCols.add(@{y1, y2, col1, col2})
+                i.boundCols.add({y1, y2, col1, col2})
             }
 
             infos.emplace(&i)
         }
 
-        params := @{capture, infos: infos.buffer, forms: &forms, masks}
+        params := {capture, infos: infos.buffer, forms: &forms, masks}
         undo.newImg.visitPixels(&params)
         {
             p := cast(*@typeof(params)) userData

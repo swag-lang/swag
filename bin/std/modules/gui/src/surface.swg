@@ -22,7 +22,7 @@ struct Surface
     maxSize:        Math.Point
 
     flags:          SurfaceFlags = Zero
-    dirtyRect:      Math.Rectangle = @{Swag.F32.Max, Swag.F32.Max, 0, 0}
+    dirtyRect:      Math.Rectangle = {Swag.F32.Max, Swag.F32.Max, 0, 0}
     colorDisabled:  Color
 
     isDirty:        bool
@@ -109,7 +109,7 @@ impl Surface
         app := surface.app
         try createNative(app, surface, x, y, width, height, flags, mainSurface)
 
-        surface.minSize = @{128, 128}
+        surface.minSize = {128, 128}
         w := cast(f32) Math.max(surface.minSize.x, cast(f32) width)
         h := cast(f32) Math.max(surface.minSize.y, cast(f32) height)
         surface.sendResizeEvent(w, h)
@@ -142,7 +142,7 @@ impl Surface
     // Invalidate the full surface to be painted
     mtd invalidate()
     {
-        invalidateRect(@{0, 0, position.width, position.height})
+        invalidateRect({0, 0, position.width, position.height})
     }
 
     // Invalidate one part of the surface to be painted
@@ -214,7 +214,7 @@ impl Surface
         if !isDirty
             return
         clipRect := dirtyRect
-        dirtyRect = @{Swag.F32.Max, Swag.F32.Max, 0, 0}
+        dirtyRect = {Swag.F32.Max, Swag.F32.Max, 0, 0}
         isDirty   = false
 
         var cxt: PaintContext
@@ -282,7 +282,7 @@ impl Surface
         position.height = height
 
         sdw := app.theme.metrics.surfaceWnd_ShadowSize
-        wnd.setPosition(@{sdw, sdw, width - 2 * sdw, height - 2 * sdw})
+        wnd.setPosition({sdw, sdw, width - 2 * sdw, height - 2 * sdw})
     }
 
     mtd setView(view: *Wnd)

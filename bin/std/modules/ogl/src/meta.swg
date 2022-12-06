@@ -18,7 +18,7 @@ var g_Functions: Array'OneFunc
     msg := itf.getMessage()
     if !Reflection.hasAttribute(msg.type, Extension)
         return
-    g_Functions.add(@{msg.type, msg.name})
+    g_Functions.add({msg.type, msg.name})
 }
 
 #placeholder glInitExtensions

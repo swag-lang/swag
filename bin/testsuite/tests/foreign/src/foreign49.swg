@@ -15,5 +15,5 @@ public func foufou49(a: string, b: s32, x: cvarargs)->TT49
     @assert(@cvaarg(&valist, f64) == 30)
     @cvaend(&valist)
 
-    return @{444, 555}
+    return {444, 555}
 }

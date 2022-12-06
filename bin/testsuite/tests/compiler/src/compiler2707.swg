@@ -1,4 +1,4 @@
-func toto(x = @{1's64, b: 2's64})
+func toto(x = {1's64, b: 2's64})
 {
     @assert(x.item0 == 1)
     @assert(x.item1 == 2)
@@ -9,5 +9,5 @@ func toto(x = @{1's64, b: 2's64})
 #test
 {
     toto()
-    toto(@{1, 2})
+    toto({1, 2})
 }

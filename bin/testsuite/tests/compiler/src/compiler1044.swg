@@ -1,4 +1,4 @@
-func new() => @{1, 2}
+func new() => {1, 2}
 
 //#[Swag.PrintBc]
 #test

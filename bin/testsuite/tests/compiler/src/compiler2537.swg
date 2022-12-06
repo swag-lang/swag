@@ -7,7 +7,7 @@ struct AA
 func toto()->AA throw
 {
     throw "toto"
-    return @{1}
+    return {1}
 }
 
 //#[Swag.PrintBc]

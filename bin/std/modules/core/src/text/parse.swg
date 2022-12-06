@@ -100,7 +100,7 @@ func parseU8(str: string) -> {value: u8, eat: u32, ovf: bool} throw
         ovf = true
     }
 
-    return @{cast(u8) res, eat, ovf}
+    return {cast(u8) res, eat, ovf}
 }
 
 func parseU16(str: string) -> {value: u16, eat: u32, ovf: bool} throw
@@ -112,7 +112,7 @@ func parseU16(str: string) -> {value: u16, eat: u32, ovf: bool} throw
         ovf = true
     }
 
-    return @{cast(u16) res, eat, ovf}
+    return {cast(u16) res, eat, ovf}
 }
 
 func parseU32(str: string) -> {value: u32, eat: u32, ovf: bool} throw
@@ -124,7 +124,7 @@ func parseU32(str: string) -> {value: u32, eat: u32, ovf: bool} throw
         ovf = true
     }
 
-    return @{cast(u32) res, eat, ovf}
+    return {cast(u32) res, eat, ovf}
 }
 
 func parseU64(str: string) -> {value: u64, eat: u32, ovf: bool} throw
@@ -210,7 +210,7 @@ func parseS8(str: string) -> {value: s8, eat: u32, ovf: bool} throw
         ovf = true
     }
 
-    return @{cast(s8) res, eat, ovf}
+    return {cast(s8) res, eat, ovf}
 }
 
 func parseS16(str: string) -> {value: s16, eat: u32, ovf: bool} throw
@@ -227,7 +227,7 @@ func parseS16(str: string) -> {value: s16, eat: u32, ovf: bool} throw
         ovf = true
     }
 
-    return @{cast(s16) res, eat, ovf}
+    return {cast(s16) res, eat, ovf}
 }
 
 func parseS32(str: string) -> {value: s32, eat: u32, ovf: bool} throw
@@ -244,7 +244,7 @@ func parseS32(str: string) -> {value: s32, eat: u32, ovf: bool} throw
         ovf = true
     }
 
-    return @{cast(s32) res, eat, ovf}
+    return {cast(s32) res, eat, ovf}
 }
 
 func parseS64(str: string) -> {value: s64, eat: u32, ovf: bool} throw
@@ -341,7 +341,7 @@ func parseF32(str: string) -> {value: f32, eat: u32, ovf: bool} throw
         ovf = true
     }
 
-    return @{cast(f32) res, eat, ovf}
+    return {cast(f32) res, eat, ovf}
 }
 
 func parseF64(str: string) -> {value: f64, eat: u32, ovf: bool} throw

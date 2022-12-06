@@ -10,5 +10,5 @@ func(A, B) toto(x: {a: A, b: B})
 
 #test
 {
-    toto(@{1's32, true})
+    toto({1's32, true})
 }

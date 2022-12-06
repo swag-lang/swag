@@ -6,7 +6,7 @@ struct BB
 struct AA
 {
     x: u32 = 444
-    y: BB = @{555, 666}
+    y: BB = {555, 666}
 }
 
 //#[Swag.PrintBc]
@@ -17,6 +17,6 @@ struct AA
     @assert(tt.y.x == 555)
     @assert(tt.y.y == 666)
 
-    //zz := @{1, 2}
+    //zz := {1, 2}
     //zz.a = 0
 }

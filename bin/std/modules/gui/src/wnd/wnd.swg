@@ -220,7 +220,7 @@ impl Wnd
     #[Swag.Inline]
     func(T) create(parent: *Wnd = null, id: WndId = null, hook: HookEvent = null)->*T
     {
-        return create(parent, "", @{}, id: id, hook: hook)
+        return create(parent, "", {}, id: id, hook: hook)
     }
 
     #[Swag.Inline]
@@ -522,7 +522,7 @@ impl Wnd
     {
         rect := getSurfaceRect()
         rect.applyPadding(invalidatePadding)
-        rect.applyPadding(@{-32, -32, -32, -32})
+        rect.applyPadding({-32, -32, -32, -32})
         if surface
             surface.invalidateRect(rect)
     }
@@ -564,34 +564,34 @@ impl Wnd
     // Convert a screen coordinate to a surface coordinate (relative to my surface)
     mtd screenToSurface(pos: Math.Point)->Math.Point
     {
-        return @{pos.x - surface.position.x, pos.y - surface.position.y}
+        return {pos.x - surface.position.x, pos.y - surface.position.y}
     }
 
     // Convert a surface coordinate to a local coordinate (relative to me)
     mtd surfaceToLocal(pos: Math.Point)->Math.Point
     {
         r := getSurfaceRect()
-        return @{pos.x - r.x, pos.y - r.y}
+        return {pos.x - r.x, pos.y - r.y}
     }
 
     // Convert a local coordinate to a surface coordinate
     mtd localToSurface(pos: Math.Point)->Math.Point
     {
         r := getSurfaceRect()
-        return @{pos.x + r.x, pos.y + r.y}
+        return {pos.x + r.x, pos.y + r.y}
     }
 
     // Convert a local coordinate to a surface coordinate
     mtd localToSurface(pos: Math.Rectangle)->Math.Rectangle
     {
         r := getSurfaceRect()
-        return @{pos.x + r.x, pos.y + r.y, pos.width, pos.height}
+        return {pos.x + r.x, pos.y + r.y, pos.width, pos.height}
     }
 
     // Returns the client area
     mtd getClientRect()->Math.Rectangle
     {
-        return @{0, 0, position.width, position.height}
+        return {0, 0, position.width, position.height}
     }
 
     // Returns the client area, with 'padding' applied
@@ -722,7 +722,7 @@ impl Wnd
         if position.x == x and position.y == y
             return
         evt := MoveEvent{}
-        evt.oldPos = @{position.x, position.y}
+        evt.oldPos = {position.x, position.y}
         position.x = Math.round(x)
         position.y = Math.round(y)
         sendEvent(&evt)
@@ -747,7 +747,7 @@ impl Wnd
             return
 
         evt := ResizeEvent{}
-        evt.oldSize = @{position.width, position.height}
+        evt.oldSize = {position.width, position.height}
         position.width = Math.round(width)
         position.height = Math.round(height)
         clampSize(&position)
@@ -761,7 +761,7 @@ impl Wnd
     // Apply the current layout (childs constraints)
     mtd applyLayout()
     {
-        applyLayout(@{position.width, position.height})
+        applyLayout({position.width, position.height})
     }
 
     mtd applyLayout(oldSize: Math.Point)
@@ -805,7 +805,7 @@ impl Wnd
 
         visit c: childs
         {
-            oldSizes.add(@{c.position.width, c.position.height})
+            oldSizes.add({c.position.width, c.position.height})
             if !c.isVisibleState()
                 continue
             switch c.dockStyle
@@ -1017,7 +1017,7 @@ impl Wnd
             }
         }
 
-        keyShortcuts.add(@{mdf, key, wndId})
+        keyShortcuts.add({mdf, key, wndId})
     }
 
     // Get the id associated with a shortcut. null if none

@@ -36,7 +36,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         cy = 50
         start()
 
-        panel := StackLayoutCtrl.create(wnd, .Top, @{0, 0, 360})
+        panel := StackLayoutCtrl.create(wnd, .Top, {0, 0, 360})
         panel.padding = 10
         panel.spacing = 5
         panel.dockStyle = .Right
@@ -103,7 +103,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         painter.translateTransform(cx, cy)
 
         // Generate trail
-        linePath.add(@{x2, y2})
+        linePath.add({x2, y2})
         if linePath.count > 500
             linePath.removeAtOrdered(0)
 

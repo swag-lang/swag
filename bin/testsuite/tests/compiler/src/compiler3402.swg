@@ -8,5 +8,5 @@ func(A) toto(x: {A})
 
 #test
 {
-    toto(@{[1, 2]})
+    toto({[1, 2]})
 }

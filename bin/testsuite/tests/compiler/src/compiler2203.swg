@@ -17,5 +17,5 @@ func toto(x: Pt)
     x := 10's32
     y := 20's32
     z := 30's32
-    toto(@{x, y, z})
+    toto({x, y, z})
 }

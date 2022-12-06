@@ -6,7 +6,7 @@ impl Color
 {
     mtd toHsl()->{h: f32, s: f32, l: f32}
     {
-        return @{1, 2, 3}
+        return {1, 2, 3}
     }
 }
 

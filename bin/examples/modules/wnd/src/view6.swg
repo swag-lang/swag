@@ -3,7 +3,7 @@ using Core, Gui, Pixel
 func createView6(tabView: *Tab, view: *Wnd)
 {
     {
-        lt := StackLayoutCtrl.create(view, .Top, @{5, 5, 200, 200})
+        lt := StackLayoutCtrl.create(view, .Top, {5, 5, 200, 200})
         lt.backgroundStyle = .Dialog
         lt.padding = 5
         PushButton.create(lt, "toto1")
@@ -13,7 +13,7 @@ func createView6(tabView: *Tab, view: *Wnd)
     }
 
     {
-        lt := StackLayoutCtrl.create(view, .Bottom, @{210, 5, 200, 200})
+        lt := StackLayoutCtrl.create(view, .Bottom, {210, 5, 200, 200})
         lt.backgroundStyle = .Dialog
         lt.padding = 5
         PushButton.create(lt, "toto10")
@@ -23,7 +23,7 @@ func createView6(tabView: *Tab, view: *Wnd)
     }
 
     {
-        lt := StackLayoutCtrl.create(view, .Left, @{420, 5, 400, 40})
+        lt := StackLayoutCtrl.create(view, .Left, {420, 5, 400, 40})
         lt.backgroundStyle = .Dialog
         lt.padding = 5
         PushButton.create(lt, "toto10")
@@ -33,7 +33,7 @@ func createView6(tabView: *Tab, view: *Wnd)
     }
 
     {
-        lt := StackLayoutCtrl.create(view, .Right, @{420, 50, 400, 40})
+        lt := StackLayoutCtrl.create(view, .Right, {420, 50, 400, 40})
         lt.backgroundStyle = .Dialog
         lt.padding = 5
         PushButton.create(lt, "toto10")
@@ -43,7 +43,7 @@ func createView6(tabView: *Tab, view: *Wnd)
     }
 
     {
-        lt := StackLayoutCtrl.create(view, .TopAutoSize, @{5, 240, 200, 200})
+        lt := StackLayoutCtrl.create(view, .TopAutoSize, {5, 240, 200, 200})
         lt.padding = 15
         lt.spacing = 15
         lt.backgroundStyle = .Window
@@ -69,7 +69,7 @@ func createView6(tabView: *Tab, view: *Wnd)
     }
 
     {
-        lt := GridLayoutCtrl.create(view, 3, 3, @{220, 240, 400, 300})
+        lt := GridLayoutCtrl.create(view, 3, 3, {220, 240, 400, 300})
         lt.backgroundStyle = .Dialog
         lt.padding = 5
         lt.autoSize = true

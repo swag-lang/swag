@@ -10,7 +10,7 @@ impl AA
     {
         _a := cast(f32) x / 10
         _b := cast(f32) y / 10
-        return @{_a, _b}
+        return {_a, _b}
     }
 }
 

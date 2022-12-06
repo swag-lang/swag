@@ -7,7 +7,7 @@ struct AA
 func toto(x, y: typeinfo)->AA
 {
     b := x == y
-    return @{b}
+    return {b}
 }
 
 #test

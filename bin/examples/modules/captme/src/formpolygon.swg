@@ -16,9 +16,9 @@ impl FormPolygon
     mtd setDefaultShape()
     {
         points.clear()
-        points.add(@{0, 0})
-        points.add(@{48, 0})
-        points.add(@{24, 48})
+        points.add({0, 0})
+        points.add({48, 0})
+        points.add({24, 48})
     }
 }
 
@@ -61,12 +61,12 @@ impl IForm for FormPolygon
         {
             xs := cast(s32) ((movingStart.x - paintRect.x) / zoom)
             ys := cast(s32) ((movingStart.y - paintRect.y) / zoom)
-            points.add(@{xs, ys})
-            points.add(@{x0, y0})
+            points.add({xs, ys})
+            points.add({x0, y0})
         }
         elif evt.kind == .MouseReleased and evt.button == .Left
         {
-            points.add(@{x0, y0})
+            points.add({x0, y0})
         }
         else
         {
@@ -124,9 +124,9 @@ impl IForm for FormPolygon
     {
         if !points.count
         {
-            points.add(@{0, 0})
-            points.add(@{48, 0})
-            points.add(@{24, 48})
+            points.add({0, 0})
+            points.add({48, 0})
+            points.add({24, 48})
         }
 
         var result: retval
@@ -164,7 +164,7 @@ impl IForm for FormPolygon
         {
             x0 := (pt.x * z) - (rect.x * z) + paintPos.x
             x1 := (pt.y * z) - (rect.y * z) + paintPos.y
-            paintPoints.add(@{x0, x1})
+            paintPoints.add({x0, x1})
         }
     }
 
@@ -180,7 +180,7 @@ impl IForm for FormPolygon
             computePaintCoords(z)
             gizmo.anchors.clear()
             visit pt: paintPoints
-                gizmo.anchors.add(@{pt.x, pt.y})
+                gizmo.anchors.add({pt.x, pt.y})
             col := subKind == .PixSel ? Argb.Yellow : Argb.White
             gizmo.paint(null, painter, flags & .Selected ? false : true, col)
         }
@@ -188,7 +188,7 @@ impl IForm for FormPolygon
 
     mtd isInside(pt: Math.Point)->bool
     {
-        return Math.Vector2.polyContains(points, @{pt.x, pt.y})
+        return Math.Vector2.polyContains(points, {pt.x, pt.y})
     }
 
     mtd hitTest(pt: Math.Point, z: f32)->bool
@@ -213,7 +213,7 @@ impl IForm for FormPolygon
         }
 
         // Content
-        return Math.Vector2.polyContains(paintPoints, @{pt.x, pt.y})
+        return Math.Vector2.polyContains(paintPoints, {pt.x, pt.y})
     }
 
     mtd paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)

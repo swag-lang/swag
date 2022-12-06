@@ -22,7 +22,7 @@ impl AA
 
 func toto()->AA
 {
-    return @{}
+    return {}
 }
 
 #test

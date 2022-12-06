@@ -14,5 +14,5 @@ func toto(x: Pt)
 //#[Swag.PrintBc]
 #test
 {
-    toto(@{true})
+    toto({true})
 }

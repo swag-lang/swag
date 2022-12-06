@@ -38,7 +38,7 @@ impl Image
             }
         }
 
-        f := @{&convArr[0, 0], st}
+        f := {&convArr[0, 0], st}
         visitPixels(&f)
         {
             params := cast(*@typeof(f)) userData

@@ -9,5 +9,5 @@ func(A, B) toto(x: {a: A, b: B})
 
 #test
 {
-    toto'(s32, s32)(@{1, 2, 3})
+    toto'(s32, s32)({1, 2, 3})
 }

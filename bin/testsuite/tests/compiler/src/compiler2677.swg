@@ -8,7 +8,7 @@ impl AA
     #[Swag.Inline]
     func from(x: s64)->AA
     {
-        return @{x}
+        return {x}
     }
 }
 

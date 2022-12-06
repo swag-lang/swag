@@ -228,8 +228,8 @@ impl Painter
         // We divide a segment by half until the computed point on the curve is
         // close to the corresponding segment
         sharedRoundTmp.clear()
-        sharedRoundTmp.add(@{angle0, startPos})
-        sharedRoundTmp.add(@{angle1, endPos})
+        sharedRoundTmp.add({angle0, startPos})
+        sharedRoundTmp.add({angle1, endPos})
 
         var point: Math.Vector2 = ?
         for i := 0; i < sharedRoundTmp.count - 1; i += 1
@@ -241,7 +241,7 @@ impl Painter
             if dist < minDist
                 continue
 
-            sharedRoundTmp.insertAt(cast(uint) i + 1, @{angle, point})
+            sharedRoundTmp.insertAt(cast(uint) i + 1, {angle, point})
             i -= 1
         }
 

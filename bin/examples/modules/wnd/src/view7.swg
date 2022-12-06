@@ -49,12 +49,12 @@ var aa: AA
 
 func createView7(tabView: *Tab, view: *Wnd)
 {
-    lt := PropertyList.create(view, @{5, 55, 400, 600})
+    lt := PropertyList.create(view, {5, 55, 400, 600})
     aa.str = "String content"
     lt.addItem(aa)
 
     {
-        ed := EditBox.create(view, "", @{0, 0, 200})
+        ed := EditBox.create(view, "", {0, 0, 200})
         ed.setNote("Search")
         ed.sigChanged += @|lt|(ed) {
             lt.setStringFilter(ed.text)
@@ -62,7 +62,7 @@ func createView7(tabView: *Tab, view: *Wnd)
     }
 
     {
-        ed := EditBox.create(view, "", @{700, 0})
+        ed := EditBox.create(view, "", {700, 0})
         ed.sigLoseFocus += @|lt|(ed) {
             aa.xf32 = 666
             aa.value = .Second

@@ -11,7 +11,7 @@ impl AA
     {
         _a := x / 10
         _b := y / 10
-        return @{_a, _b}
+        return {_a, _b}
     }
 }
 

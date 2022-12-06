@@ -22,7 +22,7 @@ impl Thing
 
     mtd(op: string) opBinary(other: Self)->Self
     {
-        return @{number + other.number}
+        return {number + other.number}
     }
 }
 

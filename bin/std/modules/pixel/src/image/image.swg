@@ -137,7 +137,7 @@ impl Image
     {
         Debug.assert(stride > 0)
 
-        p := @{self, userData}
+        p := {self, userData}
         Jobs.parallelVisit(|buffer, data| pixels.toSlice(), cast(u32) bpp8 * stride, &p)
         {
             p := cast(*@typeof(p)) data

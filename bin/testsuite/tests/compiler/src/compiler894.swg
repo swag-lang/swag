@@ -6,5 +6,5 @@ func toto(x: {f32})
 //#[Swag.PrintBc]
 #test
 {
-	toto(@{1.0})
+	toto({1.0})
 }

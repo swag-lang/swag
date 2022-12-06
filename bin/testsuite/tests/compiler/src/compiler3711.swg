@@ -7,5 +7,5 @@ func toto(x: any)
 
 #test
 {
-    toto(@{1, 2})
+    toto({1, 2})
 }

@@ -667,9 +667,9 @@ bool AstOutput::outputVar(OutputContext& context, Concat& concat, AstVarDecl* no
             SWAG_ASSERT(typeExpr->identifier);
             SWAG_ASSERT(node->type->typeInfo && (node->type->typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE));
             auto id = CastAst<AstIdentifier>(typeExpr->identifier->childs.back(), AstNodeKind::Identifier);
-            CONCAT_FIXED_STR(concat, "@{");
+            concat.addChar('{');
             SWAG_CHECK(outputNode(context, concat, id->callParameters));
-            CONCAT_FIXED_STR(concat, "}");
+            concat.addChar('}');
         }
     }
 
@@ -834,7 +834,7 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstTypeExpres
                 {
                     if (id->flags & AST_GENERATED)
                     {
-                        CONCAT_FIXED_STR(concat, " = @{");
+                        CONCAT_FIXED_STR(concat, " = {");
                         SWAG_CHECK(outputNode(context, concat, id->callParameters));
                         concat.addChar('}');
                     }
@@ -1248,7 +1248,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     {
         auto exprNode = CastAst<AstExpressionList>(node, AstNodeKind::ExpressionList);
         if (exprNode->specFlags & AST_SPEC_EXPRLIST_FOR_TUPLE)
-            concat.addString2("@{");
+            concat.addChar('{');
         else
             concat.addChar('[');
 

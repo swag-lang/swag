@@ -9,5 +9,5 @@ impl A
 func toto()->{s32}
 {
     var x666: A
-    return @{x666.titi()}
+    return {x666.titi()}
 }

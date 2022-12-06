@@ -5,7 +5,7 @@ struct A
 
 func toto()->A
 {
-    return @{}
+    return {}
 }
 
 func aa()

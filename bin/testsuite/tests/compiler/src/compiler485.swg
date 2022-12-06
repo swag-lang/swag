@@ -10,5 +10,5 @@
 //#[Swag.PrintBc]
 func T()-> {s64,s64,s64}
 {
-	return @{1's64,2's64,3's64}
+	return {1's64,2's64,3's64}
 }

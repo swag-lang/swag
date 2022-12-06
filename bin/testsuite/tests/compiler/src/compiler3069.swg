@@ -18,7 +18,7 @@ impl AA
 #[Swag.ConstExpr]
 func toto()->AA
 {
-    return @{}
+    return {}
 }
 
 //#[Swag.PrintBc]

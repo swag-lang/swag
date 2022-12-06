@@ -419,7 +419,7 @@ impl RichEditView
 
                 // Background color for tabulations
                 if visible and oldStyle.colBk.a
-                    bc.painter.fillRect(@{x1, y, x - x1, size.y}, oldStyle.colBk)
+                    bc.painter.fillRect({x1, y, x - x1, size.y}, oldStyle.colBk)
             }
             else
             {

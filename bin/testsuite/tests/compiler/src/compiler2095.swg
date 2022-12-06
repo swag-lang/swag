@@ -1,6 +1,6 @@
 func(T) RR()->{T}
 {
-    return @{5}
+    return {5}
 }
 
 #test

@@ -71,7 +71,7 @@ func simulate(dt: f32)
     {
         visit &v: g_Objs
         {
-            v.accelerate(@{0, 4000})
+            v.accelerate({0, 4000})
             v.applyConstraint()
         }
 

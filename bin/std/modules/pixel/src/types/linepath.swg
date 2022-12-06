@@ -437,8 +437,8 @@ impl LinePath
 
         // We divide a segment by half until the computed point on the curve is close to the corresponding segment
         var tmp: Array'{factor: f32, pos: Vector2}
-        tmp.add(@{0, endPosBuffer})
-        tmp.add(@{1, pos})
+        tmp.add({0, endPosBuffer})
+        tmp.add({1, pos})
 
         for i := 0; i < tmp.count - 1; i += 1
         {
@@ -455,7 +455,7 @@ impl LinePath
             dist := point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
             if dist < minDist continue
 
-            tmp.insertAt(cast(uint) i + 1, @{t, point})
+            tmp.insertAt(cast(uint) i + 1, {t, point})
             i -= 1
         }
 
@@ -471,8 +471,8 @@ impl LinePath
 
         // We divide a segment by half until the computed point on the curve is close to the corresponding segment
         var tmp: Array'{factor: f32, pos: Vector2}
-        tmp.add(@{0, endPosBuffer})
-        tmp.add(@{1, pos})
+        tmp.add({0, endPosBuffer})
+        tmp.add({1, pos})
 
         for i := 0; i < tmp.count - 1; i += 1
         {
@@ -490,7 +490,7 @@ impl LinePath
             dist := point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
             if dist < minDist continue
 
-            tmp.insertAt(cast(uint) i + 1, @{t, point})
+            tmp.insertAt(cast(uint) i + 1, {t, point})
             i -= 1
         }
 
@@ -505,8 +505,8 @@ impl LinePath
 
         // We divide a segment by half until the computed point on the curve is close to the corresponding segment
         var tmp: Array'{factor: f32, pos: Vector2}
-        tmp.add(@{0, endPosBuffer})
-        tmp.add(@{1, p0 + p1 + p2 + p3})
+        tmp.add({0, endPosBuffer})
+        tmp.add({1, p0 + p1 + p2 + p3})
 
         for i := 0; i < tmp.count - 1; i += 1
         {
@@ -521,7 +521,7 @@ impl LinePath
             dist := point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
             if dist < minDist continue
 
-            tmp.insertAt(cast(uint) i + 1, @{t, point})
+            tmp.insertAt(cast(uint) i + 1, {t, point})
             i -= 1
         }
 
@@ -539,8 +539,8 @@ impl LinePath
 
         // We divide a segment by half until the computed point on the curve is close to the corresponding segment
         var tmp: Array'{angle: f32, pos: Vector2}
-        tmp.add(@{p1.x, endPosBuffer})
-        tmp.add(@{p1.y, endPos})
+        tmp.add({p1.x, endPosBuffer})
+        tmp.add({p1.y, endPos})
 
         for i := 0; i < tmp.count - 1; i += 1
         {
@@ -552,7 +552,7 @@ impl LinePath
             dist := point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
             if dist < minDist continue
 
-            tmp.insertAt(cast(uint) i + 1, @{angle, point})
+            tmp.insertAt(cast(uint) i + 1, {angle, point})
             i -= 1
         }
 

@@ -644,7 +644,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                     }
                 }
 
-                // Need to test sizeof because assignement can be @{}. In that case, we just reference
+                // Need to test sizeof because assignement can be {}. In that case, we just reference
                 // the temporary variable
                 if (funcParam->assignment->typeInfo->sizeOf && funcParam->assignment->typeInfo != g_TypeMgr->typeInfoNull)
                 {

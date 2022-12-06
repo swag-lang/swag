@@ -279,8 +279,8 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                             auto num      = min(symbolStruct->genericParameters.size(), typeList->subTypes.size());
                             for (int idx = 0; idx < num; idx++)
                             {
-                                // A tuple typelist like @{a: 1, b: 2} can have named parameters, which means that the order of
-                                // fields is irrelevant, as we can write @{b: 2, a: 1} too.
+                                // A tuple typelist like {a: 1, b: 2} can have named parameters, which means that the order of
+                                // fields is irrelevant, as we can write {b: 2, a: 1} too.
                                 //
                                 // We have a generic parameter. We search in the struct the field that correspond to that type, in
                                 // order to get the corresponding field name. Then we will search for the name in the typelist (if

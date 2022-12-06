@@ -134,7 +134,7 @@ public impl IWnd for MenuCtrl
         if !paintByFrame
         {
             subRect := &theme.rects.menuPopup_Shadow
-            theme.drawSubRect(painter, @{0, 0, position.width, position.height}, subRect, colors.menuPopup_Shadow)
+            theme.drawSubRect(painter, {0, 0, position.width, position.height}, subRect, colors.menuPopup_Shadow)
         }
 
         // Back
@@ -405,7 +405,7 @@ impl MenuCtrl
         with subVisible
         {
             pt := .parent.surfaceToLocal(ptSurface)
-            .setPosition(@{pt.x, pt.y, .position.width, .position.height})
+            .setPosition({pt.x, pt.y, .position.width, .position.height})
             .bringToTop()
             .show()
             .captureMouse()
@@ -435,7 +435,7 @@ impl MenuCtrl
         subVisible.updateState()
         subVisible.computeLayoutPopup()
         topView := getTopView()
-        pt := topView.surfaceToLocal(@{pos.x, pos.y})
+        pt := topView.surfaceToLocal({pos.x, pos.y})
         subPos := subVisible.position
         if pt.x + subPos.width > topView.position.width
             pt.x = topView.position.width - subPos.width
@@ -463,7 +463,7 @@ impl MenuCtrl
         subVisible.updateState()
         subVisible.computeLayoutPopup()
         topView := getTopView()
-        pt := topView.surfaceToLocal(@{pos.x, pos.y})
+        pt := topView.surfaceToLocal({pos.x, pos.y})
         pt -= sdw
         subPos := subVisible.position
         if pt.x + subPos.width > topView.position.width
@@ -546,7 +546,7 @@ impl MenuCtrl
             if onComputeItem
                 onComputeItem(self, i)
             i.pos = x + metrics.menuBar_SpaceBetween * 0.5
-            fake.drawRichString(@{0, 0, 512, 0}, &i.name, rsf)
+            fake.drawRichString({0, 0, 512, 0}, &i.name, rsf)
             i.size = i.name.boundRect.width
             x = i.pos + i.size + metrics.menuBar_SpaceBetween * 0.5
         }
@@ -595,12 +595,12 @@ impl MenuCtrl
 
             i.size = rsf.font.regular.height
 
-            fake.drawRichString(@{0, 0, 512, 0}, &i.name, rsf)
+            fake.drawRichString({0, 0, 512, 0}, &i.name, rsf)
             w := i.name.boundRect.width
 
             if !(menuCtrlFlags & .NoKeyShortcuts) and !i.rightName.isEmpty()
             {
-                fake.drawRichString(@{0, 0, 512, 0}, &i.rightName, rsf)
+                fake.drawRichString({0, 0, 512, 0}, &i.rightName, rsf)
                 w += i.rightName.boundRect.width + rsf.font.regular.height
             }
 
@@ -628,7 +628,7 @@ public impl MenuCtrl
     #[Swag.Discardable]
     func createPopup(parent: *Wnd, id: WndId = null, owner: *Wnd = null)->*MenuCtrl
     {
-        with res := Wnd.create'MenuCtrl(parent.getTopView(), null, @{}, id)
+        with res := Wnd.create'MenuCtrl(parent.getTopView(), null, {}, id)
         {
             .owner = owner orelse #self.parent
             .setAllPaddings(.getThemeMetrics().menuPopup_Padding)
@@ -639,7 +639,7 @@ public impl MenuCtrl
     }
 
     #[Swag.Discardable]
-    func createBar(parent: *Wnd, pos: Math.Rectangle = @{}, id: WndId = null, owner: *Wnd = null)->*MenuCtrl
+    func createBar(parent: *Wnd, pos: Math.Rectangle = {}, id: WndId = null, owner: *Wnd = null)->*MenuCtrl
     {
         with res := Wnd.create'MenuCtrl(parent, null, pos, id)
         {
@@ -661,7 +661,7 @@ public impl MenuCtrl
     }
 
     // Add a new item
-    mtd addItem(name: string, id: WndId, icon: Icon = @{}, rightName: string = null, disabled = false, checked = false)
+    mtd addItem(name: string, id: WndId, icon: Icon = {}, rightName: string = null, disabled = false, checked = false)
     {
         with mitem := items.newPtr()
         {
@@ -684,7 +684,7 @@ public impl MenuCtrl
     }
 
     // Add a new popup item
-    mtd addPopup(name: string, popup: *MenuCtrl, icon: Icon = @{}, id: WndId = null)
+    mtd addPopup(name: string, popup: *MenuCtrl, icon: Icon = {}, id: WndId = null)
     {
         with mitem := items.newPtr()
         {
@@ -737,11 +737,11 @@ public impl MenuCtrl
         {
         case TopLeft:
             pt -= getThemeMetrics().menuPopup_ShadowSize
-            setPosition(@{pt.x, pt.y, position.width, position.height})
+            setPosition({pt.x, pt.y, position.width, position.height})
 
         case AnchorTopCenter:
             pt.y += getThemeMetrics().menuPopup_ShadowSize
-            setPosition(@{pt.x - position.width * 0.5, pt.y, position.width, position.height})
+            setPosition({pt.x - position.width * 0.5, pt.y, position.width, position.height})
             anchor = .Top
             anchorPos = position.width * 0.5
             setFrameFlags(.Borders | .SmallShadow)
@@ -751,7 +751,7 @@ public impl MenuCtrl
 
         case AnchorBottomCenter:
             pt.y -= getThemeMetrics().menuPopup_ShadowSize
-            setPosition(@{pt.x - position.width * 0.5, pt.y - position.height, position.width, position.height})
+            setPosition({pt.x - position.width * 0.5, pt.y - position.height, position.width, position.height})
             anchor = .Bottom
             anchorPos = position.width * 0.5
             setFrameFlags(.Borders | .SmallShadow)

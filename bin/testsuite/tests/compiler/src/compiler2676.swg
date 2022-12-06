@@ -1,6 +1,6 @@
 #test
 {
-    ptr := @{&toto}
+    ptr := {&toto}
     //@assert(ptr.item0() == 666)
 }
 

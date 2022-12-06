@@ -2,7 +2,7 @@ using Core, Gui, Pixel
 
 func createListSimple(view: *Wnd, maxItems = 50)->*ListCtrl
 {
-    list := ListCtrl.createSimple(view, @{5, 5, 250, 300})
+    list := ListCtrl.createSimple(view, {5, 5, 250, 300})
     list.setFrameForm(FrameWndForm.Round)
     list.selectionMode = .Multi
     list.iconSize = 16
@@ -22,7 +22,7 @@ func createListSimple(view: *Wnd, maxItems = 50)->*ListCtrl
 
 func createListMulti(view: *Wnd, checkable: bool = false)->*ListCtrl
 {
-    list := ListCtrl.createMultiColumns(view, @{5, 5, 250, 300})
+    list := ListCtrl.createMultiColumns(view, {5, 5, 250, 300})
     list.addColumn("column 0")
     list.addColumn("column 1")
     list.addColumn("column 2")
@@ -53,24 +53,24 @@ func createView1(tabView: *Tab, view: *Wnd)
         list := createListSimple(view, 10)
         list.frameFlags |= .FocusBorder
         list.selectionMode = .Single
-        list.setPosition(@{5, 5, 250, 300})
+        list.setPosition({5, 5, 250, 300})
     }
 
     {
         list := createListSimple(view)
         list.setFrameForm(FrameWndForm.Square)
         list.selectionMode = .None
-        list.setPosition(@{280, 5, 250, 300})
+        list.setPosition({280, 5, 250, 300})
     }
 
     {
         list := createListSimple(view)
         list.disable()
-        list.setPosition(@{560, 5, 250, 300})
+        list.setPosition({560, 5, 250, 300})
     }
 
     {
-        list := ListCtrl.createSimple(view, @{830, 5, 250, 300})
+        list := ListCtrl.createSimple(view, {830, 5, 250, 300})
         list.setFrameForm(FrameWndForm.Round)
         list.frameFlags ^= .Borders
         list.selectionMode = .Multi
@@ -85,7 +85,7 @@ func createView1(tabView: *Tab, view: *Wnd)
     }
 
     {
-        header := Header.create(view, @{5, 320, 500})
+        header := Header.create(view, {5, 320, 500})
         header.form = .Round
         item := header.addItem("header1")
         item.minWidth = 20
@@ -98,7 +98,7 @@ func createView1(tabView: *Tab, view: *Wnd)
         list := createListMulti(view, checkable: true)
         list.frameFlags |= .FocusBorder
         list.header.headerFlags ^= .Clickable
-        list.setPosition(@{5, 400, 400, 300})
+        list.setPosition({5, 400, 400, 300})
         list.ensureVisibleLine(list.getLineCount() - 1)
         list.setColumnWidth(0, 150)
 
@@ -124,7 +124,7 @@ func createView1(tabView: *Tab, view: *Wnd)
         list.frameFlags |= .FocusBorder
         list.listFlags |= .AlternateLines | .HorzLines | .VertLines
         list.setFrameForm(FrameWndForm.Square)
-        list.setPosition(@{420, 400, 400, 300})
+        list.setPosition({420, 400, 400, 300})
 
         line0 := list.getLine(0)
         line0.colorBk = Color.getDarker(Argb.Red, 0.5)

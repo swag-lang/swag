@@ -203,7 +203,7 @@ private impl Surface
 
         // Extend frame inside client area. This will also activate composition.
         var vm: s32 = cast(s32) app.theme.metrics.surfaceWnd_ShadowSize
-        var m:  MARGINS = @{vm,vm,vm,vm}
+        var m:  MARGINS = {vm,vm,vm,vm}
         DwmExtendFrameIntoClientArea(result.hWnd, &m)
 
         result.rc = try app.renderer.native.createContext(result.hWnd, width, height, mainSurface ? mainSurface.rc.hRC : null)
@@ -268,7 +268,7 @@ impl Surface
         isHidden = false
         invalidate()
 
-        wnd.applyLayout(@{position.width, position.height})
+        wnd.applyLayout({position.width, position.height})
         ShowWindow(hWnd, SW_SHOW)
 
         curFocus := wnd.view.getFocus()

@@ -66,6 +66,6 @@ impl Icon
             painter.setInterpolationMode(InterpolationMode.Pixel)
         else
             painter.setInterpolationMode(InterpolationMode.Linear)
-        painter.drawTexture(@{x, y, sizeX, sizeY}, @{srcX, srcY, imageList.frameSizeX, imageList.frameSizeY}, imageList.texture, color)
+        painter.drawTexture({x, y, sizeX, sizeY}, {srcX, srcY, imageList.frameSizeX, imageList.frameSizeY}, imageList.texture, color)
     }
 }

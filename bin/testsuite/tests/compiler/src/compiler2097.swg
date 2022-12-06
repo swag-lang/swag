@@ -5,7 +5,7 @@ struct(T) Point
 
 func(T) RR()->{Point, err: bool}
 {
-    return @{{1, 2}, true}
+    return {{1, 2}, true}
 }
 
 #test

@@ -18,6 +18,6 @@ impl Vector2
     b := Vector2{2, 2}
     c := Vector2{3, 3}
 
-    e := @{a + b + c}
+    e := {a + b + c}
     @assert(e.item0.x == 6)
 }

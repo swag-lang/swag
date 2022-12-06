@@ -43,7 +43,7 @@ public impl EditDlg
         srf.minSize.x = 500
         srf.minSize.y = 180 + heightEdit
 
-        dlg.richEdit = RichEditCtrl.create(srf.getView(), @{0, 0, 0, heightEdit})
+        dlg.richEdit = RichEditCtrl.create(srf.getView(), {0, 0, 0, heightEdit})
         with dlg.richEdit
         {
             .anchorStyle = .Height
@@ -86,7 +86,7 @@ public impl EditDlg
         if !label
         {
             metrics := getThemeMetrics()
-            label = Label.create(surface.getView(), message, @{0, 0, 0, height})
+            label = Label.create(surface.getView(), message, {0, 0, 0, height})
             with label
             {
                 .dockStyle = .Center

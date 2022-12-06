@@ -2,7 +2,7 @@
 
 #test
 {
-	var x, y = @{1,2,3}
+	var x, y = {1,2,3}
 
 	@assert(x.item0 == 1)
 	@assert(x.item1 == 2)

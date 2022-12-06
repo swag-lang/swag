@@ -5,7 +5,7 @@ struct Point
 	x: s32
 }
 
-func new()->Point { return @{1}; }
+func new()->Point { return {1}; }
 
 //#[Swag.PrintBc]
 #test

@@ -476,7 +476,7 @@ impl Slider
     }
 
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle = @{}, id: WndId = null, range = false, vertical = false)->*Slider
+    func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null, range = false, vertical = false)->*Slider
     {
         Debug.assert(parent != null)
         pos := position

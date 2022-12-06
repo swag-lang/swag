@@ -7,5 +7,5 @@ func(A, B) toto(x: {A, B})
 
 #test
 {
-    toto'(s32, s32)(@{1, 2})
+    toto'(s32, s32)({1, 2})
 }

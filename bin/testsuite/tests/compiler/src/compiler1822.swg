@@ -26,7 +26,7 @@ impl IPrintable for Point
     {
         /*if(itf.pointedType == IPrintable)
         {
-            //var call: IPrintable = @{&pt, &pt}
+            //var call: IPrintable = {&pt, &pt}
         }*/
     }
 }

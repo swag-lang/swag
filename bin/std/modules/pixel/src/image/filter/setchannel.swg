@@ -42,7 +42,7 @@ impl Image
             if rmode == 0 or value == .Alpha return
         }
 
-        f := @{rmode, value, color}
+        f := {rmode, value, color}
         visitPixels(&f)
         {
             params := cast(*@typeof(f)) userData

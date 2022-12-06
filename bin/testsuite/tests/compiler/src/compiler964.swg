@@ -10,7 +10,7 @@ struct Point
 #test
 {
 	var pt: Point
-	pt = @{100, "1"}
+	pt = {100, "1"}
 	@assert(pt.rank == 100)
 	@assert(pt.value == "1")
 }

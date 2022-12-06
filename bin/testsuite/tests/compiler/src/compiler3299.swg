@@ -2,5 +2,5 @@
 
 func toto() -> {x, y: s32}
 {
-    return @{1, 2}
+    return {1, 2}
 }

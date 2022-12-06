@@ -9,7 +9,7 @@ impl B
     //#[Swag.Inline]
     mtd opData()->const *u8 => null
 
-    mtd titi()->B => @{}
+    mtd titi()->B => {}
 }
 
 //#[Swag.PrintBc]

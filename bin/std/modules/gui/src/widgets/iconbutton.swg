@@ -469,7 +469,7 @@ impl IWnd for IconButton
 impl IconButton
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, icon: Icon, position: Math.Rectangle = @{}, id: WndId = null)->*IconButton
+    func create(parent: *Wnd, icon: Icon, position: Math.Rectangle = {}, id: WndId = null)->*IconButton
     {
         Debug.assert(parent != null)
         pos := position

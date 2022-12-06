@@ -15,7 +15,7 @@ func compute()
 {
     using Math
 
-    data := @{minS: g_Slider.getValueLeft(), maxS: g_Slider.getValueRight()}
+    data := {minS: g_Slider.getValueLeft(), maxS: g_Slider.getValueRight()}
     g_Image.visitPixels(&data)
     {
         params := cast(*@typeof(data)) userData
@@ -59,7 +59,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     switch evt.kind
     {
     case Create:
-        g_Slider = Slider.create(wnd, @{0, 0, 200}, range: true)
+        g_Slider = Slider.create(wnd, {0, 0, 200}, range: true)
         g_Slider.setMinMax(-2.5, 2.5)
         g_Slider.setRangeValues(-2.5, 2.5)
         g_Slider.sigChanged += @|wnd|(s)

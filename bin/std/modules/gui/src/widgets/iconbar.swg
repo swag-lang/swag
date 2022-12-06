@@ -50,7 +50,7 @@ impl IconBar
     }
 
     #[Swag.Discardable]
-    func create(parent: *Wnd, iconSize: f32, position: Math.Rectangle = @{}, id: WndId = null)->*IconBar
+    func create(parent: *Wnd, iconSize: f32, position: Math.Rectangle = {}, id: WndId = null)->*IconBar
     {
         Debug.assert(parent != null)
         pos := position
@@ -68,7 +68,7 @@ impl IconBar
         iconT := icon
         iconT.sizeX, iconT.sizeY = iconSize
         size := iconSize + 2*iconPadding
-        b := IconButton.create(self, iconT, @{0, 0, size, size})
+        b := IconButton.create(self, iconT, {0, 0, size, size})
         b.iconBtnFlags = iconBtnFlags
         b.id = btnId
         b.dockStyle = .Left

@@ -2,7 +2,7 @@ alias ret = #type {s32, s32}
 
 func toto()->ret
 {
-	return @{1, 2}
+	return {1, 2}
 }
 
 #test

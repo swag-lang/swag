@@ -266,21 +266,21 @@ private impl Header
         visit item, idx: items
         {
             if pos.x >= x and pos.x < x + item.width
-                return @{cast(u32) idx, false}
+                return {cast(u32) idx, false}
             x += item.width
             if pos.x >= x and pos.x <= x + metrics.header_Separator and item.sizeable
-                return @{cast(u32) idx, true}
+                return {cast(u32) idx, true}
             x += metrics.header_Separator
         }
 
-        return @{Swag.U32.Max, false}
+        return {Swag.U32.Max, false}
     }
 }
 
 impl Header
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle = @{}, id: WndId = null)->*Header
+    func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*Header
     {
         Debug.assert(parent != null)
 
@@ -296,7 +296,7 @@ impl Header
 
     // Add a new view
     #[Swag.Discardable]
-    mtd addItem(tabName: string, width = 100'f32, icon: Icon = @{})->*HeaderItem
+    mtd addItem(tabName: string, width = 100'f32, icon: Icon = {})->*HeaderItem
     {
         item := items.newPtr()
         item.name = tabName

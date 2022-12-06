@@ -46,7 +46,7 @@ impl IWnd for WrapLayoutCtrl
 impl WrapLayoutCtrl
 {
     // Create a layout control
-    func create(parent: *Wnd, position: Math.Rectangle = @{})->*WrapLayoutCtrl
+    func create(parent: *Wnd, position: Math.Rectangle = {})->*WrapLayoutCtrl
     {
         res := Wnd.create'WrapLayoutCtrl(parent, position)
         return res

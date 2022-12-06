@@ -15,7 +15,7 @@ impl String
 #[Swag.Compiler, Swag.ConstExpr]
 func GEN()->String
 {
-    return @{}
+    return {}
 }
 
 #ast cast(string) GEN()

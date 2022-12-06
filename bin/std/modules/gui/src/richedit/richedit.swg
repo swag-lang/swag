@@ -242,7 +242,7 @@ private impl RichEditCtrl
 impl RichEditCtrl
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle = @{}, id: WndId = null)->*RichEditCtrl
+    func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*RichEditCtrl
     {
         pos := position
         if pos.height == 0

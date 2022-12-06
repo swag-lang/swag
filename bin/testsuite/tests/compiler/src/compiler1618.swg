@@ -1,13 +1,13 @@
 func toto1()->{s32, s32}
 {
-    return @{0, 1}
+    return {0, 1}
 }
 
 //#[Swag.PrintBc]
 func toto()->{s32, s32}
 {
     result := toto1()
-    return @{result.item0, result.item1}
+    return {result.item0, result.item1}
 }
 
 #test

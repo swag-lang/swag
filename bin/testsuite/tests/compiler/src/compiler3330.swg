@@ -3,5 +3,5 @@
 {
     struct V { x: s32; }
     func toto(v: V) {}
-    toto(@{4})
+    toto({4})
 }

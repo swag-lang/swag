@@ -259,9 +259,9 @@ func displayPage2(painter: *Pixel.Painter)
     pen := Pen.createHatch(.SolidDiamond, Argb.Black, 20)
     painter.drawRoundRect(400, 700, 200, 200, 10, 10, pen)
 
-    painter.drawTexture(50, 500, 150, 150, @{228, 103, 206, 167}, Res.image1)
-    painter.drawTexture(220, 500, 150, 150, @{228, 103, 206, 167}, Res.image2)
-    painter.drawTexture(50, 700, @{228, 103, 206, 167}, Res.image1)
+    painter.drawTexture(50, 500, 150, 150, {228, 103, 206, 167}, Res.image1)
+    painter.drawTexture(220, 500, 150, 150, {228, 103, 206, 167}, Res.image2)
+    painter.drawTexture(50, 700, {228, 103, 206, 167}, Res.image1)
 }
 
 func displayPage3(painter: *Pixel.Painter)
@@ -269,7 +269,7 @@ func displayPage3(painter: *Pixel.Painter)
     trs := painter.getTransform()
 
     brush := Brush.createHatch(.SolidDiamond, Argb.Black)
-    painter.pushClippingRect(@{0, 0, 100, 100})
+    painter.pushClippingRect({0, 0, 100, 100})
     painter.fillCircle(100, 100, 100, brush)
     painter.drawCircle(100, 100, 100, Argb.Red, 4)
     painter.popClippingRect()
@@ -552,27 +552,27 @@ func displayPage6(painter: *Pixel.Painter)
     format.palette[2] = Argb.Green
 
     str = "<u>normal<u> <i>italic<b>bold<b><i> another <p1>one<p1> <p2><u>two<u><p2>"
-    painter.drawRichString(@{10, 10, 100, 100}, &str, format)
+    painter.drawRichString({10, 10, 100, 100}, &str, format)
 
     str = "this is\na\ntext"
     painter.translateTransform(0, 100)
-    painter.fillRect(@{10, 10, 100, 100}, Argb.Gray)
-    painter.drawRichString(@{10, 10, 100, 100}, &str, format)
+    painter.fillRect({10, 10, 100, 100}, Argb.Gray)
+    painter.drawRichString({10, 10, 100, 100}, &str, format)
 
     format.horzAlignment = .Center
-    painter.fillRect(@{110, 10, 100, 100}, Argb.Gray)
-    painter.drawRichString(@{110, 10, 100, 100}, &str, format)
+    painter.fillRect({110, 10, 100, 100}, Argb.Gray)
+    painter.drawRichString({110, 10, 100, 100}, &str, format)
 
     str = "Lorem ipsum dolor sit amet, <b>consectetur<b> adipiscing elit. Sed non risus.\n<p1>Suspendisse<p1> lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, <u>dolor<u>."
     format.horzAlignment = .Center
     format.flags = .WordWrap
-    painter.fillRect(@{10, 200, 200, 200}, Argb.Gray)
-    painter.drawRichString(@{10, 200, 200, 100}, &str, format)
+    painter.fillRect({10, 200, 200, 200}, Argb.Gray)
+    painter.drawRichString({10, 200, 200, 100}, &str, format)
 
     format.horzAlignment = .Justify
     format.flags = .WordWrap
-    painter.fillRect(@{220, 200, 200, 200}, Argb.Gray)
-    painter.drawRichString(@{220, 200, 200, 100}, &str, format, true)
+    painter.fillRect({220, 200, 200, 200}, Argb.Gray)
+    painter.drawRichString({220, 200, 200, 100}, &str, format, true)
 }
 
 func displayPage7(renderer: *Pixel.RenderOgl, painter: *Pixel.Painter)

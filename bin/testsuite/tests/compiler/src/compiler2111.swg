@@ -2,6 +2,6 @@
 
 #test
 {
-    x := @{"toto", true}
+    x := {"toto", true}
     (name, 0) := x
 }

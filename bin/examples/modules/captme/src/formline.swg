@@ -130,8 +130,8 @@ impl IForm for FormLine
         if flags & (.Hot | .Selected)
         {
             computePaintCoords(z)
-            gizmo.anchors[0] = @{x0, y0}
-            gizmo.anchors[1] = @{x1, y1}
+            gizmo.anchors[0] = {x0, y0}
+            gizmo.anchors[1] = {x1, y1}
             gizmo.paint(null, painter, flags & .Selected ? false : true)
         }
     }

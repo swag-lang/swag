@@ -425,7 +425,7 @@ impl ConcatBuffer
             Memory.free(firstBucket, @sizeof(ConcatBufferBucket), allocator)
         firstBucket = null
 
-        return @{rdata, rcount, rcapacity}
+        return {rdata, rcount, rcapacity}
     }
 
     // linearize all buckets in one single big bucket

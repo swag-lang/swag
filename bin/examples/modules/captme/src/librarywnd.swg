@@ -329,7 +329,7 @@ impl LibraryWnd
             .backgroundStyle = .View
         }
 
-        with rightBar := Wnd.create'Wnd(res, @{0, 0, 300, 0})
+        with rightBar := Wnd.create'Wnd(res, {0, 0, 300, 0})
         {
             .dockStyle = .Right
         }

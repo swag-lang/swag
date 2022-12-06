@@ -8,7 +8,7 @@ impl Argb
     #[Swag.Inline]
     func extract(self) -> {s64,s64}
     {
-        return @{666,555}
+        return {666,555}
     }
 }
 

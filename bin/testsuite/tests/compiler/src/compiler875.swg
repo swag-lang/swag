@@ -10,7 +10,7 @@ func minMax(array: const [..] s32) -> {min: s32, max: s32}
             currentMax = value
     }
 
-    return @{currentMin, currentMax}
+    return {currentMin, currentMax}
 }
 
 //#[Swag.PrintBc]

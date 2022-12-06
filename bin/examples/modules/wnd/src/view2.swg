@@ -4,7 +4,7 @@ func createTreeSimple(view: *Wnd, maxItems = 50)->*ListCtrl
 {
     var rng: Random.DefaultRng
 
-    tree := ListCtrl.createSimple(view, @{5, 5, 250, 300})
+    tree := ListCtrl.createSimple(view, {5, 5, 250, 300})
     tree.setFrameForm(FrameWndForm.Round)
     tree.selectionMode = .Multi
     tree.iconSize = 16
@@ -36,7 +36,7 @@ func createTreeSimple(view: *Wnd, maxItems = 50)->*ListCtrl
 
 func createTreeMulti(view: *Wnd)->*ListCtrl
 {
-    tree := ListCtrl.createMultiColumns(view, @{5, 5, 250, 300})
+    tree := ListCtrl.createMultiColumns(view, {5, 5, 250, 300})
     tree.addColumn("column 0")
     tree.addColumn("column 1")
     tree.addColumn("column 2")
@@ -87,8 +87,8 @@ func createView2(tabView: *Tab, view: *Wnd)
         tree := createTreeSimple(view, 10)
         tree.frameFlags |= .FocusBorder
         tree.selectionMode = .Single
-        tree.setPosition(@{5, 5, 250, 300})
-        btn := PushButton.create(view, "collapse", @{5, 310})
+        tree.setPosition({5, 5, 250, 300})
+        btn := PushButton.create(view, "collapse", {5, 310})
         btn.sigPressed += @|tree|(btn) {
             tree.collapseAll()
         }
@@ -99,7 +99,7 @@ func createView2(tabView: *Tab, view: *Wnd)
         tree.frameFlags |= .FocusBorder
         tree.listFlags |= .AlternateLines | .HorzLines | .VertLines
         tree.setFrameForm(FrameWndForm.Square)
-        tree.setPosition(@{420, 5, 600, 300})
+        tree.setPosition({420, 5, 600, 300})
         tree.setColumnWidth(0, 200)
 
         tree.sigSelChanged += @(tree) {

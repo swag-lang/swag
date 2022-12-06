@@ -235,7 +235,7 @@ bool SemanticJob::collectLiteralsToSegment(JobContext* context, DataSegment* sto
 
             assignment = child->childs.front();
 
-            // If we have an expression list in a call parameter, like = @{{1}}, then we check if the expression
+            // If we have an expression list in a call parameter, like = {{1}}, then we check if the expression
             // list has been converted to a variable. If that's the case, then we should have type parameters to
             // that var, and we must take them instead of the expression list, because cast has been done
             if (assignment->kind == AstNodeKind::ExpressionList &&

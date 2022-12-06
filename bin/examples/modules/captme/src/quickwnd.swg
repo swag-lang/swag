@@ -123,7 +123,7 @@ impl QuickWnd
 
     func create(parent: *Wnd)->*QuickWnd
     {
-        with quick := Wnd.create'QuickWnd(parent, @{0, 0, 0, 300})
+        with quick := Wnd.create'QuickWnd(parent, {0, 0, 0, 300})
         {
             .backgroundStyle = .Window
             .scrollWndFlags |= .ForceVertical | .SmallBar | .TransparentBar
@@ -581,7 +581,7 @@ impl QuickWnd
             }
 
             btnp.formItf.setBaseForm(acast rect.x, acast rect.y, acast rect.width, acast rect.height)
-            Capture.paintForm(btnp.getApp(), painter, @{0, 0, 64, 64}, btnp.formItf, zoom: 1, quickMode: true)
+            Capture.paintForm(btnp.getApp(), painter, {0, 0, 64, 64}, btnp.formItf, zoom: 1, quickMode: true)
 
             if @countof(title)
                 painter.drawStringCenter(rect.horzCenter(), rect.bottom(), title, btnp.getTheme().res.fontDefault.regular, Argb.White)
@@ -624,7 +624,7 @@ impl QuickWnd
 
         visit it: currentStyle.forms
         {
-            btn := Wnd.create'QuickButton(layout, null, @{0, 0, 64, 64})
+            btn := Wnd.create'QuickButton(layout, null, {0, 0, 64, 64})
             btn.iconBtnFlags |= .Checkable
             btn.setForm(.RoundSquare)
             btn.formItf = it
@@ -800,7 +800,7 @@ impl QuickWnd
 
         if canAddModel
         {
-            btn := Wnd.create'QuickButton(layout, null, @{0, 0, 64, 64})
+            btn := Wnd.create'QuickButton(layout, null, {0, 0, 64, 64})
             btn.userData = cast(*void) 1'uint // This is the model button
             btn.formItf = formItf
             btn.setForm(.RoundSquare)
@@ -819,7 +819,7 @@ impl QuickWnd
 
             // Button to add a new style
             ico  := getTheme().getIcon24(ThemeIcons24.Plus)
-            btn1 := IconButton.create(btn, ico, @{64 - 26, 2, 24, 24})
+            btn1 := IconButton.create(btn, ico, {64 - 26, 2, 24, 24})
             btn1.style.addStyleSheetColors("btnIcon_Bk          $hilight")
             btn1.style.addStyleSheetColors("btnIcon_HotBk       $hilightLight")
             btn1.style.addStyleSheetColors("btnIcon_PressedBk   $hilightDark")

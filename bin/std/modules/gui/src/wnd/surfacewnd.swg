@@ -298,7 +298,7 @@ impl SurfaceWnd
         {
             if !minimizeBtn
             {
-                with minimizeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndMinimize), @{0,0,0,0})
+                with minimizeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndMinimize), {0,0,0,0})
                 {
                     .sigPressed += &onMinimize
                 }
@@ -314,7 +314,7 @@ impl SurfaceWnd
         {
             if !maximizeBtn
             {
-                with maximizeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndMaximize), @{0,0,0,0})
+                with maximizeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndMaximize), {0,0,0,0})
                 {
                     .sigPressed += &onMaximize
                 }
@@ -330,7 +330,7 @@ impl SurfaceWnd
         {
             if !closeBtn
             {
-                with closeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndClose), @{0,0,0,0})
+                with closeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndClose), {0,0,0,0})
                 {
                     .sigPressed += &onClose
                     .style.addStyleSheetColors(@nameof(ThemeColors.btnIcon_HotBk)     ++" $" ++ @nameof(ThemeColors.wnd_BtnCloseBk))

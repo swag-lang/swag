@@ -1,6 +1,6 @@
 func toto() -> {a: f32, b: bool}
 {
-	return @{666, true}
+	return {666, true}
 }
 
 //#[Swag.PrintBc]

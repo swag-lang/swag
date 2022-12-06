@@ -296,7 +296,7 @@ private impl Application
                 pevt.source.updateCommandState()
             }
 
-            toDelete.add(@{evt, evt.type})
+            toDelete.add({evt, evt.type})
         }
     }
 
@@ -498,7 +498,7 @@ impl Application
     {
         surface := Memory.new'Surface()
         surface.app = self
-        surface.position = @{x, y, width, height}
+        surface.position = {x, y, width, height}
 
         if !mainSurface
         {
@@ -608,7 +608,7 @@ impl Application
 
         if wnd.isAllocated
         {
-            toDelete.add(@{wnd, wnd.type})
+            toDelete.add({wnd, wnd.type})
         }
     }
 
@@ -767,7 +767,7 @@ impl Application
             }
         }
 
-        hotKeys.add(@{mdf, key, wndId, target})
+        hotKeys.add({mdf, key, wndId, target})
         registerHotKey(mdf, key)
     }
 
@@ -777,10 +777,10 @@ impl Application
         visit c: hotKeys
         {
             if c.mdf == mdf and c.key == key
-                return @{c.id, c.target}
+                return {c.id, c.target}
         }
 
-        return @{null, null}
+        return {null, null}
     }
 
     // Get the name associated with a given id shortcut

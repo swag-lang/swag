@@ -41,7 +41,7 @@ impl Image
     }
 
     // Decode the given image buffer with the given decoder
-    func decode(decoder: *ImageDecoder, bytes: const [..] u8, options: DecodeOptions = @{})->Image throw
+    func decode(decoder: *ImageDecoder, bytes: const [..] u8, options: DecodeOptions = {})->Image throw
     {
         // Create a decoder instance
         ptrDecoder := Memory.new(decoder.type)
@@ -86,7 +86,7 @@ public impl Image
     }
 
     // Decode the given image buffer
-    func decode(fileName: string, bytes: const [..] u8, options: DecodeOptions = @{})->Image throw
+    func decode(fileName: string, bytes: const [..] u8, options: DecodeOptions = {})->Image throw
     {
         found := getDecoder(fileName)
         if !found
@@ -95,7 +95,7 @@ public impl Image
     }
 
     // Load the given image file
-    func load(fileName: string, options: DecodeOptions = @{})->Image throw
+    func load(fileName: string, options: DecodeOptions = {})->Image throw
     {
         found := getDecoder(fileName)
         if !found

@@ -182,7 +182,7 @@ private impl ComboBox
 impl ComboBox
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle = @{}, id: WndId = null, kind = ComboBoxKind.Select)->*ComboBox
+    func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null, kind = ComboBoxKind.Select)->*ComboBox
     {
         Debug.assert(parent != null)
         pos := position
@@ -195,7 +195,7 @@ impl ComboBox
         res.kind = kind
         if res.kind == .Edit
         {
-            res.editBox = EditBox.create(res, null, @{})
+            res.editBox = EditBox.create(res, null, {})
             res.editBox.setForm(EditBoxForm.Transparent)
         }
 
@@ -213,7 +213,7 @@ impl ComboBox
 
     // Add a new item
     #[Swag.Discardable]
-    mtd addItem(name: string, id: WndId = null, icon: Icon = @{}, userData0: *void = null, userData1: *void = null)->*ComboBoxItem
+    mtd addItem(name: string, id: WndId = null, icon: Icon = {}, userData0: *void = null, userData1: *void = null)->*ComboBoxItem
     {
         item := items.newPtr()
         with item

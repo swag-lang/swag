@@ -572,7 +572,7 @@ impl Decoder
             key := chunkTRNS.datas[1]
             scale := header.bitDepth == 1 ? 255'u8 : header.bitDepth == 2 ? 85'u8 : 17'u8
             key *= scale
-            pm := @{dstPixels, key}
+            pm := {dstPixels, key}
             result.visitPixels(&pm)
             {
                 params := cast(*@typeof(pm)) userData
@@ -606,7 +606,7 @@ impl Decoder
             key0 := key[1]
             key1 := key[3]
             key2 := key[5]
-            pm := @{dstPixels, key0, key1, key2}
+            pm := {dstPixels, key0, key1, key2}
             result.visitPixels(&pm)
             {
                 params := cast(*@typeof(pm)) userData

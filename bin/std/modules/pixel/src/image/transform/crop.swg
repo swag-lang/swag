@@ -4,7 +4,7 @@ impl Image
 {
     mtd doCrop(dstImage: *Image, x, y, w, h: s32)
     {
-        f := @{x, y: height - y - h, self}
+        f := {x, y: height - y - h, self}
         dstImage.visitPixels(&f, stride: w)
         {
             params := cast(*@typeof(f)) userData

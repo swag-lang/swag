@@ -25,7 +25,7 @@ var g: Array'OneFunc
     if msg.type.kind != TypeInfoKind.Func return
     if !Reflection.hasAttribute(msg.type, Extension) return
 
-    g.add(@{msg.type, msg.name})
+    g.add({msg.type, msg.name})
 }
 
 #message(CompilerMsgMask.PassAfterSemantic)

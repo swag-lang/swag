@@ -6,7 +6,7 @@ struct Point
 
 func toto()->Point
 {
-	return @{1, 2}
+	return {1, 2}
 }
 
 //#[Swag.PrintBc]

@@ -106,7 +106,7 @@ impl Dialog
         metrics := getThemeMetrics()
         h := metrics.btnPush_Height
         h += 2 * metrics.dialog_Padding
-        with wndBottom = Wnd.create'StackLayoutCtrl(srf.wnd.view, "", @{0, 0, 0, h})
+        with wndBottom = Wnd.create'StackLayoutCtrl(srf.wnd.view, "", {0, 0, 0, h})
         {
             .spacing = 10
             .layoutKind = .HorzCenterVertCenter
@@ -133,7 +133,7 @@ impl Dialog
     mtd addButton(str: string, id: WndId, isDefault: bool = false)->*PushButton
     {
         metrics := getThemeMetrics()
-        with btn := PushButton.create(wndBottom, str, @{}, #self.id)
+        with btn := PushButton.create(wndBottom, str, {}, #self.id)
         {
             .form = isDefault ? .Default : .Strong
 

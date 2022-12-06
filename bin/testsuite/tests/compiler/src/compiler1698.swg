@@ -6,7 +6,7 @@ var justOverOneMillion = 1_000_000.000_000_1
 var orangesAreOrange = true
 var turnipsAreDelicious = false
 
-var http404Error = @{404, "Not Found"}
+var http404Error = {404, "Not Found"}
 #test
 {
     var (statusCode, statusMessage) = http404Error

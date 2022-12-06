@@ -209,14 +209,14 @@ impl GizmoRect
             }
         }
 
-        anchors[0] = @{rect.x - anchorSize2, rect.y - anchorSize2, anchorSize, anchorSize}
-        anchors[1] = @{rect.horzCenter() - anchorSize2, rect.y - anchorSize2, anchorSize, anchorSize}
-        anchors[2] = @{rect.right() - anchorSize2, rect.y - anchorSize2, anchorSize, anchorSize}
-        anchors[3] = @{rect.x - anchorSize2, rect.vertCenter() - anchorSize2, anchorSize, anchorSize}
-        anchors[4] = @{rect.right() - anchorSize2, rect.vertCenter() - anchorSize2, anchorSize, anchorSize}
-        anchors[5] = @{rect.x - anchorSize2, rect.bottom() - anchorSize2, anchorSize, anchorSize}
-        anchors[6] = @{rect.horzCenter() - anchorSize2, rect.bottom() - anchorSize2, anchorSize, anchorSize}
-        anchors[7] = @{rect.right() - anchorSize2, rect.bottom() - anchorSize2, anchorSize, anchorSize}
+        anchors[0] = {rect.x - anchorSize2, rect.y - anchorSize2, anchorSize, anchorSize}
+        anchors[1] = {rect.horzCenter() - anchorSize2, rect.y - anchorSize2, anchorSize, anchorSize}
+        anchors[2] = {rect.right() - anchorSize2, rect.y - anchorSize2, anchorSize, anchorSize}
+        anchors[3] = {rect.x - anchorSize2, rect.vertCenter() - anchorSize2, anchorSize, anchorSize}
+        anchors[4] = {rect.right() - anchorSize2, rect.vertCenter() - anchorSize2, anchorSize, anchorSize}
+        anchors[5] = {rect.x - anchorSize2, rect.bottom() - anchorSize2, anchorSize, anchorSize}
+        anchors[6] = {rect.horzCenter() - anchorSize2, rect.bottom() - anchorSize2, anchorSize, anchorSize}
+        anchors[7] = {rect.right() - anchorSize2, rect.bottom() - anchorSize2, anchorSize, anchorSize}
 
         visit c, i: anchors
         {

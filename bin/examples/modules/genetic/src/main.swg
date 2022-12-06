@@ -27,12 +27,12 @@ impl IWnd for MyView
         painter := event.bc.painter
         painter.clear(Argb.White)
 
-        painter.drawTexture(@{20, 20, 256, 256}, g_Texture0)
-        painter.drawTexture(@{296, 296, 256, 256}, g_Texture1)
+        painter.drawTexture({20, 20, 256, 256}, g_Texture0)
+        painter.drawTexture({296, 296, 256, 256}, g_Texture1)
 
         best := genGo()
         if best surface.app.getRenderer().updateTexture(g_Texture2, best)
-        painter.drawTexture(@{20, 296, 256, 256}, g_Texture2)
+        painter.drawTexture({20, 296, 256, 256}, g_Texture2)
 
         invalidate()
     }

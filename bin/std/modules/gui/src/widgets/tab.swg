@@ -385,7 +385,7 @@ private impl Tab
             // Create a button if there are too many items for the given size
             if !buttonPopup
             {
-                buttonPopup = IconButton.create(self, getTheme().getIcon24(ThemeIcons24.SortArrowDown), @{})
+                buttonPopup = IconButton.create(self, getTheme().getIcon24(ThemeIcons24.SortArrowDown), {})
                 buttonPopup.form = .Round
                 buttonPopup.sigPressed += @|self|(btn)
                 {
@@ -395,7 +395,7 @@ private impl Tab
             }
 
             x := barRect.right() - 32
-            buttonPopup.setPosition(@{x, (barHeight * 0.5) - 12, 24, 24})
+            buttonPopup.setPosition({x, (barHeight * 0.5) - 12, 24, 24})
         }
         else if buttonPopup
         {
@@ -429,7 +429,7 @@ private impl Tab
 impl Tab
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle = @{}, id: WndId = null)->*Tab
+    func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*Tab
     {
         Debug.assert(parent != null)
         res := Wnd.create'Tab(parent, null, position, id)

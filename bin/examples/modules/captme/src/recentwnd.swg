@@ -193,7 +193,7 @@ impl RecentWnd
 {
     func create(parent: *Wnd, main: *MainWnd)->*RecentWnd
     {
-        with recent := Wnd.create'RecentWnd(parent, @{0, 0, 0, PreviewHeight + RecentPadding*2})
+        with recent := Wnd.create'RecentWnd(parent, {0, 0, 0, PreviewHeight + RecentPadding*2})
         {
             .scrollWndFlags |= .SmallBar | .ForceHorizontal
             .backgroundStyle = .Window

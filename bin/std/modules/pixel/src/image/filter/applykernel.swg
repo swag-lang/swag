@@ -42,7 +42,7 @@ impl Image
         if pf.channels() < 3 or pf.bitDepth() != 8
             return
 
-        f := @{kernel, dstImage}
+        f := {kernel, dstImage}
         visitPixels(&f)
         {
             params := cast(*@typeof(f)) userData

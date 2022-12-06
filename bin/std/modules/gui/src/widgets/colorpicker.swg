@@ -346,13 +346,13 @@ impl IWnd for ColorPicker
 impl ColorPicker
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle = @{}, id: WndId = null)->*ColorPicker
+    func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*ColorPicker
     {
         Debug.assert(parent != null)
         ret := Wnd.create'ColorPicker(parent, null, position, id)
         ret.wndFlags |= .PostChildsPaint
         ret.setColor(Argb.Red)
-        ret.invalidatePadding = @{-32, -32, -32, -32}
+        ret.invalidatePadding = {-32, -32, -32, -32}
         return ret
     }
 

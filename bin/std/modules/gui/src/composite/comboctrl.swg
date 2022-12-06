@@ -30,7 +30,7 @@ impl ComboCtrl
 {
     func create(parent:   *Wnd,
                 name:     string,
-                position: Math.Rectangle = @{},
+                position: Math.Rectangle = {},
                 id:       WndId = null)->*ComboCtrl
     {
         metrics := parent.getThemeMetrics()

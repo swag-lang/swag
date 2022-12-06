@@ -74,7 +74,7 @@ func toto(x: s32, y = Values.A)
     {
         func myFunction() -> {f32, f32}
         {
-            return @{1.0, 2.0}
+            return {1.0, 2.0}
         }
 
         result := myFunction()
@@ -95,7 +95,7 @@ func toto(x: s32, y = Values.A)
     {
         // You can return a tuple literal as long as the types match
         if false
-            return @{1, 2}
+            return {1, 2}
 
         // Or use the specifal type 'retval' which is an alias to the
         // function return type (but not only, we'll see later)

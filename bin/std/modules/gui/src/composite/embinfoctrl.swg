@@ -21,10 +21,10 @@ impl EmbInfoCtrl
         theme  := parent.getTheme()
         colors := parent.getThemeColors()
 
-        with ctrl := Wnd.create'EmbInfoCtrl(parent, @{0, 0, 0, height})
+        with ctrl := Wnd.create'EmbInfoCtrl(parent, {0, 0, 0, height})
         {
             .dockStyle = top ? .Top : .Bottom
-            .label = Label.create(ctrl, #self.name, @{})
+            .label = Label.create(ctrl, #self.name, {})
         }
 
         with ctrl.label
@@ -48,7 +48,7 @@ impl EmbInfoCtrl
             .dockStyle = .Center
         }
 
-        with btn := IconButton.create(ctrl.label, theme.getIcon24(.WndClose, 18), @{0, 0, 32, 32})
+        with btn := IconButton.create(ctrl.label, theme.getIcon24(.WndClose, 18), {0, 0, 32, 32})
         {
             .margin = 5
             .dockStyle = .Right

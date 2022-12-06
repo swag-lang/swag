@@ -461,7 +461,7 @@ public impl ScrollWnd
             return
 
         oldScrollSize := scrollSize
-        scrollSize = @{x, y}
+        scrollSize = {x, y}
         setScrollPos(view.scrollPos.x, view.scrollPos.y)
         sigScrollSizeChanged.call(self, oldScrollSize, scrollSize)
         sendResizeEvent()

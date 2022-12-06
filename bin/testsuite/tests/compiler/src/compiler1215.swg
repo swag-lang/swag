@@ -4,7 +4,7 @@ struct Vector2
 	y: f32
 }
 
-const XAxis: Vector2 = @{1}
+const XAxis: Vector2 = {1}
 
 //#[Swag.PrintBc]
 #test

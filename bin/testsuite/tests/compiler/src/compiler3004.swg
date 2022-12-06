@@ -20,5 +20,5 @@ func toto(x: R)
 #test
 {
     var v: R
-    toto(@{v.Y()})
+    toto({v.Y()})
 }

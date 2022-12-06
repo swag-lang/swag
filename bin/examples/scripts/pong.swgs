@@ -151,8 +151,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         sp.color(Argb.White)
         sp.horzAlign(.Center)
         sp.vertAlign(.Center)
-        sp.draw(painter, @{0, 0, 200, 40}, Format.toString("%", g_ScoreLeft))
-        sp.draw(painter, @{g_Rect.right() - 200, 0, 200, 40}, Format.toString("%", g_ScoreRight))
+        sp.draw(painter, {0, 0, 200, 40}, Format.toString("%", g_ScoreLeft))
+        sp.draw(painter, {g_Rect.right() - 200, 0, 200, 40}, Format.toString("%", g_ScoreRight))
 
         wnd.invalidate()
     }

@@ -518,8 +518,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         initGame()
         initCells()
 
-        x:=  BoardWithBorderSize + 12
-        btn := PushButton.create(wnd, "Restart !", @{x, 12})
+        x := BoardWithBorderSize + 12
+        btn := PushButton.create(wnd, "Restart !", {x, 12})
         btn.sigPressed += @|wnd|(btn) {
             initGame()
             initCells()

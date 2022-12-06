@@ -1,6 +1,6 @@
 
 
-func new()->Point => @{1, 2}
+func new()->Point => {1, 2}
 
 struct Point
 {

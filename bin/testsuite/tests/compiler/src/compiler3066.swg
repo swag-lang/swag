@@ -7,7 +7,7 @@ struct AA
 #[Swag.ConstExpr]
 func toto()->{AA, s32}
 {
-    return @{{2}, 4}
+    return {{2}, 4}
 }
 
 const X = toto()

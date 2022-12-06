@@ -93,7 +93,7 @@ impl Vector2
     // 'axis' will give the sign of the result
     mtdc cross(axis: f32)->Self
     {
-        return @{y * axis, -x * axis}
+        return {y * axis, -x * axis}
     }
 
     // Returns the Z signed length of the perpendicular vector

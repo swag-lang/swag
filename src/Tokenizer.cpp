@@ -295,13 +295,6 @@ bool Tokenizer::getToken(Token& token)
                 return true;
             }
 
-            if (nc == '{')
-            {
-                token.text = "@{";
-                token.id   = TokenId::SymLiteralCurly;
-                return true;
-            }
-
             if (nc == '(')
             {
                 token.text = "@(";

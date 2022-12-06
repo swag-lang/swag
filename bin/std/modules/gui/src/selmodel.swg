@@ -58,7 +58,7 @@ impl SelModel
             }
 
             // Need to make a new range
-            selection.add(@{idx, idx})
+            selection.add({idx, idx})
         }
         else
         {
@@ -73,7 +73,7 @@ impl SelModel
             {
                 end := range.end
                 range.end = idx - 1
-                selection.add(@{idx + 1, end})
+                selection.add({idx + 1, end})
             }
         }
     }

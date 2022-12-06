@@ -9,4 +9,4 @@ struct AA
     bb: BB
 }
 
-const APP0info = AA{@{0}}
+const APP0info = AA{{0}}

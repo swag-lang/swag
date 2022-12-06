@@ -196,7 +196,7 @@ impl Decoder
         table.nentries = (1 << keySize) + 2
         table.entries.resize(acast table.bulk)
         loop key: 1 << keySize
-            table.entries[key] = @{1, 0xFFF, cast(u8) key}
+            table.entries[key] = {1, 0xFFF, cast(u8) key}
     }
 
     mtd getKey(keySize: s32, subLen, shift, byte: *u8)->u16 throw
@@ -238,7 +238,7 @@ impl Decoder
             table.entries.resize(cast(uint) table.bulk)
         }
 
-        table.entries[table.nentries] = @{length, prefix, suffix}
+        table.entries[table.nentries] = {length, prefix, suffix}
         table.nentries += 1
         if (table.nentries & (table.nentries - 1)) == 0
             return 1

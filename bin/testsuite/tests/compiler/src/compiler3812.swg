@@ -24,6 +24,6 @@ func toto(x: S)
     var x: B
     with x
     {
-        toto(@{B.a.x})
+        toto({B.a.x})
     }
 }

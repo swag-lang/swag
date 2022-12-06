@@ -13,7 +13,7 @@ struct Toto1
 
     var x: Toto1
     loop 1000
-        x.x.add(@{1, 2, 3, 4})
+        x.x.add({1, 2, 3, 4})
     var buf: ConcatBuffer
     try enc.writeAll(&buf, x)
     buf.makeLinear()

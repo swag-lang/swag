@@ -141,7 +141,7 @@ impl PropWnd
 
     func createArrowButton(stack: *Wnd, w, h: f32)->*IconButton
     {
-        with btn := IconButton.create(stack, @{}, @{0, 0, w, h})
+        with btn := IconButton.create(stack, {}, {0, 0, w, h})
         {
             .setForm(.RoundSquare)
             .style.addStyleSheetColors("btnIcon_Bk        $lighterMedium")
@@ -160,10 +160,10 @@ impl PropWnd
     {
         pos     := btn.getSurfaceRect()
         topView := btn.getTopView()
-        pt      := topView.surfaceToLocal(@{pos.x, pos.bottom()})
+        pt      := topView.surfaceToLocal({pos.x, pos.bottom()})
         pt.y += btn.getThemeMetrics().frameWnd_AnchorHeight
 
-        frame := Wnd.create'FrameWnd(topView, @{pt.x, pt.y, w, h})
+        frame := Wnd.create'FrameWnd(topView, {pt.x, pt.y, w, h})
         frame.setFrameForm(.Round)
         frame.setFrameFlags(FrameWndFlags.SmallShadow)
         frame.style.addStyleSheetColors("frameWnd_Border $frameWnd_PopupBorder")
@@ -181,10 +181,10 @@ impl PropWnd
     {
         frame := createPopup(btn, 356, 382)
 
-        picker := ColorPickerCtrl.create(frame, @{8, 54})
+        picker := ColorPickerCtrl.create(frame, {8, 54})
         picker.setColor(color)
 
-        palette := PalettePicker.create(frame, @{16, 16, 340, 48})
+        palette := PalettePicker.create(frame, {16, 16, 340, 48})
         palette.addColor(Argb.White)
         palette.addColor(Argb.Gray)
         palette.addColor(Argb.Black)
@@ -225,7 +225,7 @@ impl PropWnd
 
         loop i: @countof(FormShapeKind)
         {
-            btn0 := IconButton.create(frame.view, @{})
+            btn0 := IconButton.create(frame.view, {})
             btn0.userData = cast(*void) i
             btn0.setForm(.RoundSquare)
             if curSel.kind == i btn0.isChecked = true
@@ -273,7 +273,7 @@ impl PropWnd
 
         loop i: @countof(FormStepKind)
         {
-            btn0 := IconButton.create(frame.view, @{})
+            btn0 := IconButton.create(frame.view, {})
             btn0.userData = cast(*void) i
             btn0.setForm(.RoundSquare)
             me := self
@@ -331,7 +331,7 @@ impl PropWnd
         curSel := cast(*FormLine) getSelectedBaseForm()
         visit i: LineCapStyle
         {
-            btn0 := IconButton.create(layout, @{}, @{0, 0, 0, 40})
+            btn0 := IconButton.create(layout, {}, {0, 0, 0, 40})
             btn0.userData = cast(*void) cast(uint) i
             btn0.setForm(.RoundSquare)
             btn0.isChecked = curSel.beginCap == i
@@ -382,7 +382,7 @@ impl PropWnd
         curSel := cast(*FormLine) getSelectedBaseForm()
         visit i: LineCapStyle
         {
-            btn0 := IconButton.create(layout, @{}, @{0, 0, 0, 40})
+            btn0 := IconButton.create(layout, {}, {0, 0, 0, 40})
             btn0.userData = cast(*void) cast(uint) i
             btn0.setForm(.RoundSquare)
             btn0.isChecked = curSel.endCap == i
@@ -435,7 +435,7 @@ impl PropWnd
         {
             if i == .Pattern continue
 
-            btn0 := IconButton.create(layout, @{}, @{0, 0, 0, 32})
+            btn0 := IconButton.create(layout, {}, {0, 0, 0, 32})
             btn0.userData = cast(*void) cast(uint) i
             btn0.setForm(.RoundSquare)
             btn0.isChecked = curSel.dashStyle == i
@@ -734,7 +734,7 @@ impl PropWnd
         if curSelType != FormStep
             return
 
-        stack := Wnd.create'Wnd(mainLayout, @{0, 0, 0, getThemeMetrics().comboBox_Height})
+        stack := Wnd.create'Wnd(mainLayout, {0, 0, 0, getThemeMetrics().comboBox_Height})
 
         curSel := cast(*FormStep) getSelectedBaseForm()
         with combo := ComboBox.create(stack)
@@ -749,7 +749,7 @@ impl PropWnd
             }
         }
 
-        with btn := PushButton.create(stack, "Reset", @{0, 0, 60})
+        with btn := PushButton.create(stack, "Reset", {0, 0, 60})
         {
             .margin.x = 5
             .dockStyle = .Right
@@ -767,7 +767,7 @@ impl PropWnd
             return
         curSel := cast(*FormText) getSelectedBaseForm()
 
-        stack := StackLayoutCtrl.create(mainLayout, .Top, @{0, 0, 0, 160})
+        stack := StackLayoutCtrl.create(mainLayout, .Top, {0, 0, 0, 160})
         stack.padding = 8
 
         // Font
@@ -808,7 +808,7 @@ impl PropWnd
         // Text
         edt := EditBox.create(stack, curSel.text)
         edt.rightMargin = 24
-        with btnedt := IconButton.create(edt, getTheme().getIcon24(.More, 20), @{0, 0, 20, 20})
+        with btnedt := IconButton.create(edt, getTheme().getIcon24(.More, 20), {0, 0, 20, 20})
         {
             .dockStyle = .Right
             .sigPressed += @|self, edt|(btn) {
@@ -843,7 +843,7 @@ impl PropWnd
         }
 
         // Bold/Italic
-        stack2 := StackLayoutCtrl.create(stack, .HorzCenter, @{0, 0, 0, 30})
+        stack2 := StackLayoutCtrl.create(stack, .HorzCenter, {0, 0, 0, 30})
         with bar2 := IconBar.create(stack2, 24)
         {
             .addCheckableToggleItem(Icon.from(&main.icons24, 16), CmdIdTextBold)
@@ -897,7 +897,7 @@ impl PropWnd
         }
 
         // Align
-        stack1 := StackLayoutCtrl.create(stack, .HorzCenter, @{0, 0, 0, 40})
+        stack1 := StackLayoutCtrl.create(stack, .HorzCenter, {0, 0, 0, 40})
         with bar := IconBar.create(stack1, 24)
         {
             .addCheckableItem(Icon.from(&main.icons24, 8),  CmdIdTextHLeft)
@@ -1187,7 +1187,7 @@ impl PropWnd
         if !getSelectedBaseForm()
             return
 
-        stack0 := StackLayoutCtrl.create(mainLayout, .HorzCenter, @{0, 0, 0, BtnColorHeight + 12})
+        stack0 := StackLayoutCtrl.create(mainLayout, .HorzCenter, {0, 0, 0, BtnColorHeight + 12})
         propBackColor(stack0)
         propBorderColor(stack0)
         propShape(stack0)
@@ -1195,7 +1195,7 @@ impl PropWnd
         if stack0.childs.count == 0
             stack0.destroyNow()
 
-        stack1 := StackLayoutCtrl.create(mainLayout, .HorzCenter, @{0, 0, 0, BtnStyleHeight + 12})
+        stack1 := StackLayoutCtrl.create(mainLayout, .HorzCenter, {0, 0, 0, BtnStyleHeight + 12})
         propStartCapStyle(stack1)
         propDashStyle(stack1)
         propEndCapStyle(stack1)
@@ -1230,7 +1230,7 @@ impl PropWnd
 
     func create(parent: *Wnd)->*PropWnd
     {
-        with prop := Wnd.create'PropWnd(parent, @{0, 0, 0, 300})
+        with prop := Wnd.create'PropWnd(parent, {0, 0, 0, 300})
         {
             .backgroundStyle = .Window
             .scrollWndFlags |= .ForceVertical | .SmallBar | .TransparentBar

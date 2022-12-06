@@ -124,36 +124,36 @@ impl ColorPickerCtrl
 
         with v
         {
-            .pickBox   = ColorPicker.create(v, @{10, 10, 260, 185})
-            .pickBar   = ColorPicker.create(v, @{10, 215, 220, 16})
-            .pickAlpha = ColorPicker.create(v, @{10, 240, 220, 16})
+            .pickBox   = ColorPicker.create(v, {10, 10, 260, 185})
+            .pickBar   = ColorPicker.create(v, {10, 215, 220, 16})
+            .pickAlpha = ColorPicker.create(v, {10, 240, 220, 16})
 
-            .staticRes = Wnd.create'Wnd(v, "", @{245, 215, 40, 40})
-            picker := IconButton.create(v, v.getTheme().getIcon24(.Picker), @{245, 215, 40, 40})
+            .staticRes = Wnd.create'Wnd(v, "", {245, 215, 40, 40})
+            picker := IconButton.create(v, v.getTheme().getIcon24(.Picker), {245, 215, 40, 40})
 
-            .editR = EditBox.create(v, "", @{10, 265, 50})
-            .editG = EditBox.create(v, "", @{65, 265, 50})
-            .editB = EditBox.create(v, "", @{120, 265, 50})
-            .editA = EditBox.create(v, "", @{185, 265, 50})
-            .editH = EditBox.create(v, "", @{240, 265, 90})
+            .editR = EditBox.create(v, "", {10, 265, 50})
+            .editG = EditBox.create(v, "", {65, 265, 50})
+            .editB = EditBox.create(v, "", {120, 265, 50})
+            .editA = EditBox.create(v, "", {185, 265, 50})
+            .editH = EditBox.create(v, "", {240, 265, 90})
 
-            l := Label.create(v, "R", @{.editR.position.x, .editR.position.bottom() + 0, .editR.position.width})
+            l := Label.create(v, "R", {.editR.position.x, .editR.position.bottom() + 0, .editR.position.width})
             l.labelFlags |= .LightText
-            l = Label.create(v, "G", @{.editG.position.x, .editG.position.bottom() + 0, .editG.position.width})
+            l = Label.create(v, "G", {.editG.position.x, .editG.position.bottom() + 0, .editG.position.width})
             l.labelFlags |= .LightText
-            l = Label.create(v, "B", @{.editB.position.x, .editB.position.bottom() + 0, .editB.position.width})
+            l = Label.create(v, "B", {.editB.position.x, .editB.position.bottom() + 0, .editB.position.width})
             l.labelFlags |= .LightText
-            l = Label.create(v, "A", @{.editA.position.x, .editA.position.bottom() + 0, .editA.position.width})
+            l = Label.create(v, "A", {.editA.position.x, .editA.position.bottom() + 0, .editA.position.width})
             l.labelFlags |= .LightText
-            l = Label.create(v, "HEX", @{.editH.position.x, .editH.position.bottom() + 0, .editH.position.width})
+            l = Label.create(v, "HEX", {.editH.position.x, .editH.position.bottom() + 0, .editH.position.width})
             l.labelFlags |= .LightText
 
-            .radioH = RadioButton.create(v, "H", @{280, 10, 40})
-            .radioS = RadioButton.create(v, "S", @{280, 40, 40})
-            .radioL = RadioButton.create(v, "L", @{280, 70, 40})
-            .radioR = RadioButton.create(v, "R", @{280, 100, 40})
-            .radioG = RadioButton.create(v, "G", @{280, 130, 40})
-            .radioB = RadioButton.create(v, "B", @{280, 160, 40})
+            .radioH = RadioButton.create(v, "H", {280, 10, 40})
+            .radioS = RadioButton.create(v, "S", {280, 40, 40})
+            .radioL = RadioButton.create(v, "L", {280, 70, 40})
+            .radioR = RadioButton.create(v, "R", {280, 100, 40})
+            .radioG = RadioButton.create(v, "G", {280, 130, 40})
+            .radioB = RadioButton.create(v, "B", {280, 160, 40})
 
             picker.sigPressed += @|v|(cb) {
                 app := cb.getApp()

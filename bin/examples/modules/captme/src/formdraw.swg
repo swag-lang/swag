@@ -14,10 +14,10 @@ impl FormDraw
     mtd setDefaultShape()
     {
         points.clear()
-        points.add(@{48, 0})
-        points.add(@{0, 12})
-        points.add(@{34, 28})
-        points.add(@{0, 48})
+        points.add({48, 0})
+        points.add({0, 12})
+        points.add({34, 28})
+        points.add({0, 48})
     }
 }
 
@@ -54,15 +54,15 @@ impl IForm for FormDraw
         {
             xs := cast(s32) ((movingStart.x - paintRect.x) / zoom)
             ys := cast(s32) ((movingStart.y - paintRect.y) / zoom)
-            points.add(@{xs, ys})
-            points.add(@{x0, y0})
+            points.add({xs, ys})
+            points.add({x0, y0})
         }
         elif evt.kind == .MouseMove
         {
             xs := cast(s32) Math.abs(x0 - points.back().x)
             ys := cast(s32) Math.abs(y0 - points.back().y)
             if xs > 5 or ys > 5
-                points.add(@{x0, y0})
+                points.add({x0, y0})
         }
         else
         {
@@ -152,7 +152,7 @@ impl IForm for FormDraw
         {
             x0 := (pt.x * z) - (rect.x * z) + paintPos.x
             x1 := (pt.y * z) - (rect.y * z) + paintPos.y
-            paintPoints.add(@{x0, x1})
+            paintPoints.add({x0, x1})
         }
     }
 
@@ -181,7 +181,7 @@ impl IForm for FormDraw
 
     mtd isInside(pt: Math.Point)->bool
     {
-        return Math.Vector2.polyContains(points, @{pt.x, pt.y})
+        return Math.Vector2.polyContains(points, {pt.x, pt.y})
     }
 
     mtd hitTest(pt: Math.Point, z: f32)->bool
@@ -190,7 +190,7 @@ impl IForm for FormDraw
         computePaintCoords(z)
 
         if subKind == .PixSel
-            return Math.Vector2.polyContains(paintPoints, @{pt.x, pt.y})
+            return Math.Vector2.polyContains(paintPoints, {pt.x, pt.y})
 
         v := Math.Vector2{pt.x, pt.y}
         loop i: 0..paintPoints.count-2

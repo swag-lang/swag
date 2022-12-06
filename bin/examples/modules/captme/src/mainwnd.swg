@@ -105,7 +105,7 @@ impl IWnd for MainWnd
         pt := Input.getMousePos()
         menu.position.width += 2 * getThemeMetrics().surfaceWnd_ShadowSize
         menu.position.height += 2 * getThemeMetrics().surfaceWnd_ShadowSize
-        sf.setPosition(@{pt.x, pt.y, menu.position.width, menu.position.height})
+        sf.setPosition({pt.x, pt.y, menu.position.width, menu.position.height})
         sf.constaintToScreen()
         sf.wnd.view.backgroundStyle = .Window
         sf.show()
@@ -1177,7 +1177,7 @@ impl MainWnd
             recentBar.resize(0, 224)
         }
 
-        applyLayout(@{position.width, position.height})
+        applyLayout({position.width, position.height})
     }
 
     mtd swapLibraryMode()
@@ -1402,7 +1402,7 @@ impl MainWnd
     {
         mtd createBtn(id: WndId)
         {
-            with b := IconButton.create(editToolBar, @{}, position: @{0, 0, 60, 64})
+            with b := IconButton.create(editToolBar, {}, position: {0, 0, 60, 64})
             {
                 .id = #self.id
                 .style.addStyleSheetColors("btnIcon_CheckedBk    $btnIcon_HotBk")
@@ -1412,7 +1412,7 @@ impl MainWnd
             }
         }
 
-        with editToolBar = StackLayoutCtrl.create(topBar, .HorzCenter, @{0, 0, 64, 64})
+        with editToolBar = StackLayoutCtrl.create(topBar, .HorzCenter, {0, 0, 64, 64})
         {
             .dockStyle = .Top
             .backgroundStyle = .Window
@@ -1436,7 +1436,7 @@ impl MainWnd
 
     func create(parent: *Wnd)->*MainWnd
     {
-        parent.surface.minSize = @{1024, 512}
+        parent.surface.minSize = {1024, 512}
 
         img24 := assume Image.decode(".png", Icons24)
         img48 := assume Image.decode(".png", Icons48)
@@ -1454,7 +1454,7 @@ impl MainWnd
             .monitors = Env.getMonitors()
         }
 
-        with topBar := Wnd.create'Wnd(res, @{0, 0, 64, 68})
+        with topBar := Wnd.create'Wnd(res, {0, 0, 64, 68})
         {
             .dockStyle = .Top
             .backgroundStyle = .Window
@@ -1463,8 +1463,8 @@ impl MainWnd
 
         res.createToolbar(topBar)
 
-        res.captureBtn = IconButton.create(topBar, Icon.from(&res.icons48, 6), @{0, 0, 64, 64}, id: CmdIdCapture)
-        res.libraryBtn = IconButton.create(topBar, Icon.from(&res.icons48, 8), @{64, 0, 64, 64}, id: CmdIdLibrary)
+        res.captureBtn = IconButton.create(topBar, Icon.from(&res.icons48, 6), {0, 0, 64, 64}, id: CmdIdCapture)
+        res.libraryBtn = IconButton.create(topBar, Icon.from(&res.icons48, 8), {64, 0, 64, 64}, id: CmdIdLibrary)
 
         // Main edit area
         with res.editWnd = EditWnd.create(res, res)
@@ -1475,7 +1475,7 @@ impl MainWnd
             }
         }
 
-        with res.recentBar = Wnd.create'Wnd(res, @{0, 0, 0, 128})
+        with res.recentBar = Wnd.create'Wnd(res, {0, 0, 0, 128})
         {
             .dockStyle = .Bottom
         }
@@ -1498,7 +1498,7 @@ impl MainWnd
         }
 
         // Right bar
-        with res.quickStyleBar = SplitterCtrl.create(res, @{0, 0, 300, 600}, vertical: true)
+        with res.quickStyleBar = SplitterCtrl.create(res, {0, 0, 300, 600}, vertical: true)
         {
             .dockStyle = .Right
             .splitterFlags |= .HideBars
@@ -1524,14 +1524,14 @@ impl MainWnd
         res.quickStyleBar.setPaneSize(0, 300)
 
         // Bottom bar
-        with res.editZoomBar = StackLayoutCtrl.create(res, .HorzCenter, @{0, 0, 300, 32})
+        with res.editZoomBar = StackLayoutCtrl.create(res, .HorzCenter, {0, 0, 300, 32})
         {
             .dockStyle = .Bottom
             .backgroundStyle = .Window
         }
 
         ic := res.getTheme().getIcon24(ThemeIcons24.Search, 20)
-        with res.zoomBtn = IconButton.create(res.editZoomBar, ic, @{0, 0, 120, 32})
+        with res.zoomBtn = IconButton.create(res.editZoomBar, ic, {0, 0, 120, 32})
         {
             .iconBtnFlags |= .Center
             .textPos = .Right
@@ -1542,11 +1542,11 @@ impl MainWnd
                 menu.menuCtrlFlags |= .NoKeyShortcuts
                 menu.addItem(CmdIdZoom1)
                 menu.addItem(CmdIdZoomFit)
-                discard menu.doModal(@{pos.horzCenter(), pos.y}, .AnchorBottomCenter, autoDestroy: true)
+                discard menu.doModal({pos.horzCenter(), pos.y}, .AnchorBottomCenter, autoDestroy: true)
             }
         }
 
-        with res.sizeBtn = IconButton.create(res.editZoomBar, @{}, @{0, 0, 120, 32})
+        with res.sizeBtn = IconButton.create(res.editZoomBar, {}, {0, 0, 120, 32})
         {
             .iconBtnFlags |= .Center
             .textPos = .Right
@@ -1557,7 +1557,7 @@ impl MainWnd
                 menu.menuCtrlFlags |= .NoKeyShortcuts
                 menu.addItem(CmdIdResizeImage)
                 menu.addItem(CmdIdResizeCanevas)
-                discard menu.doModal(@{pos.horzCenter(), pos.y}, .AnchorBottomCenter, autoDestroy: true)
+                discard menu.doModal({pos.horzCenter(), pos.y}, .AnchorBottomCenter, autoDestroy: true)
             }
         }
 

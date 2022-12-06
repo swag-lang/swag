@@ -2,7 +2,7 @@ using Swag
 
 public func tcf_tuple()->{s32, s32}
 {
-    return @{0, 0}
+    return {0, 0}
 }
 
 public func tcf_toto()
@@ -93,19 +93,19 @@ public impl tcf_Point
 //#[Swag.PrintBc]
 public func tcf_toto10()->tcf_Point
 {
-    return @{10, 20}
+    return {10, 20}
 }
 
 public func tcf_toto11(x: s32)->tcf_Point
 {
     @assert(x == 666)
-    return @{10, 20}
+    return {10, 20}
 }
 
 public func tcf_toto12(a, b, c, d, e, f: s32)->tcf_Point
 {
     @assert(a+b+c+d+e+f == 21)
-    return @{10, 20}
+    return {10, 20}
 }
 
 public func tcf_toto13(xx: s32, x: string)->string
@@ -428,7 +428,7 @@ public func tcf_toto25(x, y: s32, v: AA25)
 
 public func tcf_toto26(a: string)->{x: u8, y: u32}
 {
-    return @{1, 2}
+    return {1, 2}
 }
 
 public struct Vector2
@@ -467,7 +467,7 @@ public func tcf_toto28(a, b, c, d: Vector2, e: f32 = 0)->{s32}
     @assert(b.x == 2.0)
     @assert(c.x == 3.0)
     @assert(d.x == 4.0)
-    return @{666}
+    return {666}
 }
 
 func getLineLineIntersectCoefs1(start0, end0, start1, end1: Vector2f)->{d0: f32, d1: f32}
@@ -475,7 +475,7 @@ func getLineLineIntersectCoefs1(start0, end0, start1, end1: Vector2f)->{d0: f32,
     ua := (end1.x - start1.x) * (start0.y - start1.y)
     ub := (end0.x - start0.x) * (start0.y - start1.y)
     d  := (end1.y - start1.y) * (end0.x - start0.x) + (end1.x - start1.x) * (end0.y - start0.y)
-    return @{ua / d, ub / d}
+    return {ua / d, ub / d}
 }
 
 //#[Swag.PrintBc]
@@ -487,7 +487,7 @@ public func lineLineIntersect1(start0, end0, start1, end1: Vector2f)->f32
 
 public struct AZE
 {
-    x: {s32} = @{0}
+    x: {s32} = {0}
 }
 
 #premain

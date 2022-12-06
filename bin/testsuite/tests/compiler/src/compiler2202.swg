@@ -12,5 +12,5 @@ func toto(x: Pt)
 //#[Swag.PrintBc, Swag.nooptim]
 #test
 {
-    toto(@{10, 20})
+    toto({10, 20})
 }

@@ -28,9 +28,9 @@ struct ThemeMetrics
     dialog_Padding:             f32 = 20
     dialog_BtnPadding:          f32 = 5
 
-    editBox_SquarePadding:      Math.Vector4 = @{10, 5, 10, 5}
-    editBox_RoundPadding:       Math.Vector4 = @{12, 5, 12, 5}
-    editBox_FlatPadding:        Math.Vector4 = @{12, 0, 12, 5}
+    editBox_SquarePadding:      Math.Vector4 = {10, 5, 10, 5}
+    editBox_RoundPadding:       Math.Vector4 = {12, 5, 12, 5}
+    editBox_FlatPadding:        Math.Vector4 = {12, 0, 12, 5}
     editBox_Width:              f32 = 100
     editBox_Height:             f32 = 32
 
@@ -92,7 +92,7 @@ struct ThemeMetrics
     list_ExpandSize:            f32 = 18
 
     header_Height:              f32 = 35
-    header_Padding:             Math.Vector4 = @{10, 5, 10, 5}
+    header_Padding:             Math.Vector4 = {10, 5, 10, 5}
     header_Separator:           f32 = 5
 
     splitView_BarSize:          f32 = 8

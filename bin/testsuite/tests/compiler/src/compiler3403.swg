@@ -7,5 +7,5 @@ func(A) toto(x: {bool, A})
 #test
 {
     x := 0'f32
-    toto(@{true, &x})
+    toto({true, &x})
 }

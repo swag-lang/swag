@@ -3,6 +3,6 @@
 #test
 {
     var str = "string"
-    var tuple = @{@dataof(str), 2}
+    var tuple = {@dataof(str), 2}
     ptr := @countof(tuple)
 }

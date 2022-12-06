@@ -9,12 +9,12 @@ func toto()->{rune, u32}
     p0 := cast(rune) dref dataof
 
 	b1 := dataof[1]
-	return @{(p0 & mask2) << 6 | (b1 & maskx), 2}
+	return {(p0 & mask2) << 6 | (b1 & maskx), 2}
 
 	//b2 := cast(rune) dataof[2]
-	//return @{(p0 & mask3) << 12 | (b1 & maskx) << 6 | (b2 & maskx), 3}
+	//return {(p0 & mask3) << 12 | (b1 & maskx) << 6 | (b2 & maskx), 3}
 
 	/*ùb3 := dataof[3]
-	if !(locb <= b3 <= hicb) return @{RuneError, 1}
-	return @{(p0 & mask4) << 18 | (b1 & maskx) << 12 | (b2 & maskx) << 6 | (b3 & maskx), 4}*/
+	if !(locb <= b3 <= hicb) return {RuneError, 1}
+	return {(p0 & mask4) << 18 | (b1 & maskx) << 12 | (b2 & maskx) << 6 | (b3 & maskx), 4}*/
 }

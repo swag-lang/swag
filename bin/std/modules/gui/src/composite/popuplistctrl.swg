@@ -228,7 +228,7 @@ impl PopupListCtrl
 
         scrollWnd.setScrollSize(0, cast(f32) items.count * heightItem)
 
-        pt := parent.surfaceToLocal(@{x, y})
+        pt := parent.surfaceToLocal({x, y})
         pos := Math.Rectangle{pt.x, pt.y, 0, 0}
         pos.width = Math.max(width, minWidthPopup)
         pos.height = Math.min(scrollWnd.scrollSize.y, maxHeightPopup)
@@ -240,7 +240,7 @@ impl PopupListCtrl
     }
 
     // Add a new item in the list
-    mtd addItem(name: string, id: WndId = null, icon: Icon = @{}, userData0: *void = null, userData1: *void = null)
+    mtd addItem(name: string, id: WndId = null, icon: Icon = {}, userData0: *void = null, userData1: *void = null)
     {
         item := items.newPtr()
         with item

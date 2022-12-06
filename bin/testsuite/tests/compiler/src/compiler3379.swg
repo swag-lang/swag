@@ -8,7 +8,7 @@ func toto()->{idx: s32, sep: bool}
 {
     titi()
     {
-        return @{10, false}
+        return {10, false}
     }
 }
 

@@ -21,7 +21,7 @@ impl AA
 
 func toto()->AA
 {
-    return @{}
+    return {}
 }
 
 const X = #run toto()

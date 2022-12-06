@@ -10,8 +10,8 @@ struct AA
 func toto()->Array'AA
 {
     var result: retval
-    result.add(@{1, 2})
-    result.add(@{3, 4})
+    result.add({1, 2})
+    result.add({3, 4})
     return result
 }
 

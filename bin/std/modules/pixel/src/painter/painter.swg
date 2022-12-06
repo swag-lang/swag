@@ -578,7 +578,7 @@ impl Painter
     // Set the current clipping rectangle
     mtd setClippingRect(x, y, width, height: f32)
     {
-        setClippingRect(@{x, y, width, height})
+        setClippingRect({x, y, width, height})
     }
 
     // Set the current clipping rectangle
@@ -649,7 +649,7 @@ impl Painter
     {
         if curState.clippingRectOn
             return curState.clippingRect
-        return @{0, 0, Swag.F32.Max, Swag.F32.Max}
+        return {0, 0, Swag.F32.Max, Swag.F32.Max}
     }
 
     // Returns true if the current clipping rectangle is empty (no drawing !)

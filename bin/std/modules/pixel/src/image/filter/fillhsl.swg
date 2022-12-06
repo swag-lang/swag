@@ -59,7 +59,7 @@ impl Image
             }
 
         case SaturationVert:
-            pms := @{hsl, swapRB}
+            pms := {hsl, swapRB}
             visitPixels(&pms)
             {
                 params := dref cast(*@typeof(pms)) userData
@@ -89,7 +89,7 @@ impl Image
             }
 
         case LightnessVert:
-            pms := @{hsl, swapRB}
+            pms := {hsl, swapRB}
             visitPixels(&pms)
             {
                 params := dref cast(*@typeof(pms)) userData
@@ -119,7 +119,7 @@ impl Image
             }
 
         case HueSaturation:
-            pms := @{hsl, swapRB}
+            pms := {hsl, swapRB}
             visitPixels(&pms)
             {
                 params := dref cast(*@typeof(pms)) userData
@@ -132,7 +132,7 @@ impl Image
             }
 
         case HueLightness:
-            pms := @{hsl, swapRB}
+            pms := {hsl, swapRB}
             visitPixels(&pms)
             {
                 params := dref cast(*@typeof(pms)) userData
@@ -145,7 +145,7 @@ impl Image
             }
 
         case SaturationLightness:
-            pms := @{hsl, swapRB}
+            pms := {hsl, swapRB}
             visitPixels(&pms)
             {
                 params := dref cast(*@typeof(pms)) userData
@@ -160,7 +160,7 @@ impl Image
             }
 
         case GreenBlue:
-            pms := @{color.r / 255.0, swapRB}
+            pms := {color.r / 255.0, swapRB}
             visitPixels(&pms)
             {
                 params := dref cast(*@typeof(pms)) userData
@@ -173,7 +173,7 @@ impl Image
             }
 
         case RedBlue:
-            pms := @{color.g / 255.0, swapRB}
+            pms := {color.g / 255.0, swapRB}
             visitPixels(&pms)
             {
                 params := dref cast(*@typeof(pms)) userData
@@ -186,7 +186,7 @@ impl Image
             }
 
         case RedGreen:
-            pms := @{color.b / 255.0, swapRB}
+            pms := {color.b / 255.0, swapRB}
             visitPixels(&pms)
             {
                 params := dref cast(*@typeof(pms)) userData

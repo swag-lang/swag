@@ -1,7 +1,7 @@
 #global testerror
 
 var c = 666
-var d = @{c}
+var d = {c}
 
 //#[Swag.PrintBc]
 #test

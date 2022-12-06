@@ -156,7 +156,7 @@ func getImage()->Image
             pz := cast(^u8) GlobalLock(hglob)
             defer discard GlobalUnlock(pz)
             var png: Png.Decoder
-            return catch png.IImageDecoder.decode(@mkslice(pz, size), @{})
+            return catch png.IImageDecoder.decode(@mkslice(pz, size), {})
         }
     }
 
@@ -173,7 +173,7 @@ func getImage()->Image
             size := @sizeof(Bmp.Header) + (header.biWidth * header.biHeight * header.biBitCount)
 
             var bmp: Bmp.Decoder
-            return catch bmp.IImageDecoder.decode(@mkslice(pz, size), @{})
+            return catch bmp.IImageDecoder.decode(@mkslice(pz, size), {})
         }
     }
 

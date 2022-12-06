@@ -9,13 +9,13 @@ impl MainWnd
             .mode = .SelectOneFile
             .title = "Load Image"
             .btnOkName = "Load"
-            .shortcuts.add(@{Env.SpecialDirectory.Desktop, "Desktop"})
-            .shortcuts.add(@{Env.SpecialDirectory.UserPictures, "My Images"})
-            .shortcuts.add(@{Env.SpecialDirectory.CommonPictures, "Images"})
-            .filters.add(@{"PNG - Portable Network Graphics (*.png)", ".png"})
-            .filters.add(@{"JPG - JPEG Image (*.jpg)", ".jpg"})
-            .filters.add(@{"BMP - Windows Bitmap (*.bmp)", ".bmp"})
-            .filters.add(@{"TGA - Truevision Targa (*.tga)", ".tga"})
+            .shortcuts.add({Env.SpecialDirectory.Desktop, "Desktop"})
+            .shortcuts.add({Env.SpecialDirectory.UserPictures, "My Images"})
+            .shortcuts.add({Env.SpecialDirectory.CommonPictures, "Images"})
+            .filters.add({"PNG - Portable Network Graphics (*.png)", ".png"})
+            .filters.add({"JPG - JPEG Image (*.jpg)", ".jpg"})
+            .filters.add({"BMP - Windows Bitmap (*.bmp)", ".bmp"})
+            .filters.add({"TGA - Truevision Targa (*.tga)", ".tga"})
         }
 
         dlg := FileDlg.create(surface, opt)
@@ -40,11 +40,11 @@ impl MainWnd
         dlg := Dialog.createDialog(surface, 350, 265, title: "Resize Image")
         dlg.addButton("Resize", Dialog.BtnOk, true)
         dlg.addButton("Cancel", Dialog.BtnCancel)
-        edit0 := EditCtrl.create(dlg, "Width", Format.toString("%", capture.width), @{80, 15}, flags: .RightAlign)
-        edit1 := EditCtrl.create(dlg, "Height", Format.toString("%", capture.height), @{80, 50}, flags: .RightAlign)
+        edit0 := EditCtrl.create(dlg, "Width", Format.toString("%", capture.width), {80, 15}, flags: .RightAlign)
+        edit1 := EditCtrl.create(dlg, "Height", Format.toString("%", capture.height), {80, 50}, flags: .RightAlign)
         edit0.edit.setInputU64(acast Capture.MinSize, acast Capture.MaxSize)
         edit1.edit.setInputU64(acast Capture.MinSize, acast Capture.MaxSize)
-        btnRatio := CheckButton.create(dlg, "Keep Ratio", @{120, 85})
+        btnRatio := CheckButton.create(dlg, "Keep Ratio", {120, 85})
         btnRatio.checked = g_KeepRatio ? .Checked : .UnChecked
 
         edit0.edit.sigChanged += @|ratio, btnRatio, edit1|(edt) {
@@ -114,11 +114,11 @@ impl MainWnd
         dlg := Dialog.createDialog(surface, 350, 265, title: "Resize Canevas")
         dlg.addButton("Resize", Dialog.BtnOk, true)
         dlg.addButton("Cancel", Dialog.BtnCancel)
-        edit0 := EditCtrl.create(dlg, "Width", Format.toString("%", capture.width), @{30, 15}, flags: .RightAlign)
-        edit1 := EditCtrl.create(dlg, "Height", Format.toString("%", capture.height), @{30, 50}, flags: .RightAlign)
+        edit0 := EditCtrl.create(dlg, "Width", Format.toString("%", capture.width), {30, 15}, flags: .RightAlign)
+        edit1 := EditCtrl.create(dlg, "Height", Format.toString("%", capture.height), {30, 50}, flags: .RightAlign)
         edit0.edit.setInputU64(acast Capture.MinSize, acast Capture.MaxSize)
         edit1.edit.setInputU64(acast Capture.MinSize, acast Capture.MaxSize)
-        btnRatio := CheckButton.create(dlg, "Keep Ratio", @{70, 85})
+        btnRatio := CheckButton.create(dlg, "Keep Ratio", {70, 85})
         btnRatio.checked = g_KeepRatio ? .Checked : .UnChecked
 
         edit0.edit.sigChanged += @|ratio, btnRatio, edit1|(edt) {
@@ -158,15 +158,15 @@ impl MainWnd
         }
 
         const X = 175; const Y = 15; const S = 20; const O = 4
-        createBtn(dlg, @{X, Y, S, S}, 1)
-        createBtn(dlg, @{X+S+O, Y, S, S}, 2)
-        createBtn(dlg, @{X+S+O+S+O, Y, S, S}, 3)
-        createBtn(dlg, @{X, Y+S+O, S, S}, 4)
-        createBtn(dlg, @{X+S+O, Y+S+O, S, S}, 5)
-        createBtn(dlg, @{X+S+O+S+O, Y+S+O, S, S}, 6)
-        createBtn(dlg, @{X, Y+S+O+S+O, S, S}, 7)
-        createBtn(dlg, @{X+S+O, Y+S+O+S+O, S, S}, 8)
-        createBtn(dlg, @{X+S+O+S+O, Y+S+O+S+O, S, S}, 9)
+        createBtn(dlg, {X, Y, S, S}, 1)
+        createBtn(dlg, {X+S+O, Y, S, S}, 2)
+        createBtn(dlg, {X+S+O+S+O, Y, S, S}, 3)
+        createBtn(dlg, {X, Y+S+O, S, S}, 4)
+        createBtn(dlg, {X+S+O, Y+S+O, S, S}, 5)
+        createBtn(dlg, {X+S+O+S+O, Y+S+O, S, S}, 6)
+        createBtn(dlg, {X, Y+S+O+S+O, S, S}, 7)
+        createBtn(dlg, {X+S+O, Y+S+O+S+O, S, S}, 8)
+        createBtn(dlg, {X+S+O+S+O, Y+S+O+S+O, S, S}, 9)
 
         res := dlg.doModal()
 
@@ -370,14 +370,14 @@ impl MainWnd
             .mode = .CreateFile
             .title = "Save As Image"
             .btnOkName = "Save"
-            .shortcuts.add(@{Env.SpecialDirectory.Desktop, "Desktop"})
-            .shortcuts.add(@{Env.SpecialDirectory.UserPictures, "My Images"})
-            .shortcuts.add(@{Env.SpecialDirectory.CommonPictures, "Images"})
+            .shortcuts.add({Env.SpecialDirectory.Desktop, "Desktop"})
+            .shortcuts.add({Env.SpecialDirectory.UserPictures, "My Images"})
+            .shortcuts.add({Env.SpecialDirectory.CommonPictures, "Images"})
             .editName = Path.getFileNameWithoutExtension(getCapture().file)
-            .filters.add(@{"PNG - Portable Network Graphics (*.png)", ".png"})
-            .filters.add(@{"JPG - JPEG Image (*.jpg)", ".jpg"})
-            .filters.add(@{"BMP - Windows Bitmap (*.bmp)", ".bmp"})
-            .filters.add(@{"TGA - Truevision Targa (*.tga)", ".tga"})
+            .filters.add({"PNG - Portable Network Graphics (*.png)", ".png"})
+            .filters.add({"JPG - JPEG Image (*.jpg)", ".jpg"})
+            .filters.add({"BMP - Windows Bitmap (*.bmp)", ".bmp"})
+            .filters.add({"TGA - Truevision Targa (*.tga)", ".tga"})
         }
 
         dlg := FileDlg.create(surface, opt)
@@ -407,8 +407,8 @@ impl MainWnd
         dlg := Dialog.createDialog(surface, 350, 235, title: "New Image")
         dlg.addButton("Create", Dialog.BtnOk, true)
         dlg.addButton("Cancel", Dialog.BtnCancel)
-        edit0 := EditCtrl.create(dlg, "Width", "512", @{90, 12}, flags: .RightAlign)
-        edit1 := EditCtrl.create(dlg, "Height", "512", @{90, 47}, flags: .RightAlign)
+        edit0 := EditCtrl.create(dlg, "Width", "512", {90, 12}, flags: .RightAlign)
+        edit1 := EditCtrl.create(dlg, "Height", "512", {90, 47}, flags: .RightAlign)
         edit0.edit.setInputU64(16, 4096)
         edit1.edit.setInputU64(16, 4096)
         if dlg.doModal() != Dialog.BtnOk

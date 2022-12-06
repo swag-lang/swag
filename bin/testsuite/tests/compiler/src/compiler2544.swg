@@ -9,7 +9,7 @@ struct AA
 func toto()->AA throw
 {
     throw "coucou"
-    return @{1, 2}
+    return {1, 2}
 }
 
 //#[PrintBc]

@@ -12,7 +12,7 @@ struct AA
 func titi()->AA throw
 {
     try toto()
-    return @{10, 20}
+    return {10, 20}
 }
 
 //#[Swag.PrintBc]

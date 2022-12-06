@@ -10,14 +10,14 @@ public struct MessageDlg
 public impl MessageDlg
 {
     // Creates the message box
-    func create(from: *Surface, message: string, icon: Icon = @{})->*MessageDlg
+    func create(from: *Surface, message: string, icon: Icon = {})->*MessageDlg
     {
         dlg := Wnd.create'MessageDlg()
         srf := dlg.createSurface(from, 0, 0, 500, 300)
 
         metrics := from.wnd.getThemeMetrics()
 
-        dlg.label = Label.create(srf.getView(), message, @{})
+        dlg.label = Label.create(srf.getView(), message, {})
         with dlg.label
         {
             .dockStyle = .Center
@@ -49,7 +49,7 @@ public impl MessageDlg
         var rsf:  RichStringFormat
         rsf.font = surface.app.theme.res.fontDefault
         rsf.flags |= .WordWrap
-        fake.drawRichString(@{0, 0, 512, 0}, &label.name, rsf)
+        fake.drawRichString({0, 0, 512, 0}, &label.name, rsf)
         label.name.invalidate()
 
         // Width
@@ -99,7 +99,7 @@ public impl MessageDlg
             return
 
         if !labelIcon
-            labelIcon = Label.create(surface.wnd.view, "", @{0,0,0,icon.sizeX + icon.sizeX * 0.5})
+            labelIcon = Label.create(surface.wnd.view, "", {0,0,0,icon.sizeX + icon.sizeX * 0.5})
 
         with labelIcon
         {
@@ -113,7 +113,7 @@ public impl MessageDlg
     }
 
     // Message box with a 'ok'
-    func ok(from: *Surface, message: string, icon: Icon = @{})
+    func ok(from: *Surface, message: string, icon: Icon = {})
     {
         with dlg := create(from, message, icon)
         {
@@ -124,7 +124,7 @@ public impl MessageDlg
     }
 
     // Message box with a 'ok' and 'cancel' button
-    func okCancel(from: *Surface, message: string, defaultId = Dialog.BtnCancel, icon: Icon = @{})->WndId
+    func okCancel(from: *Surface, message: string, defaultId = Dialog.BtnCancel, icon: Icon = {})->WndId
     {
         with dlg := create(from, message, icon)
         {
@@ -136,7 +136,7 @@ public impl MessageDlg
     }
 
     // Message box with a 'yes' and 'no' button
-    func yesNo(from: *Surface, message: string, title: string = null, defaultId = Dialog.BtnNo, icon: Icon = @{})->WndId
+    func yesNo(from: *Surface, message: string, title: string = null, defaultId = Dialog.BtnNo, icon: Icon = {})->WndId
     {
         ic := icon.isValid() ? icon : from.app.theme.getIcon64(ThemeIcons64.Question)
         with dlg := create(from, message, ic)
@@ -150,7 +150,7 @@ public impl MessageDlg
     }
 
     // Message box with a 'yes' and 'no' button
-    func yesNoCancel(from: *Surface, message: string, defaultId = Dialog.BtnCancel, icon: Icon = @{})->WndId
+    func yesNoCancel(from: *Surface, message: string, defaultId = Dialog.BtnCancel, icon: Icon = {})->WndId
     {
         with dlg := create(from, message, icon.isValid() ? icon : from.app.theme.getIcon64(ThemeIcons64.Question))
         {

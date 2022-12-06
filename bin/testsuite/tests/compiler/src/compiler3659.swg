@@ -4,13 +4,13 @@ impl A
 {
     mtd(op: string) opUnary()->Self
     {
-        return @{2}
+        return {2}
     }
 }
 
 #test
 {
-    const C: A = @{1}
+    const C: A = {1}
     const D: s32 = 2
     v := -C
     @assert(v.x == 2)

@@ -399,8 +399,8 @@ public impl RichEditCtrl
             freeLines.add(l)
         lines.clear()
         countVisibleLines = 0
-        cursorPos = @{}
-        selBeg = @{}
+        cursorPos = {}
+        selBeg = {}
         dirtyFirstLineView = true
         firstVisibleLineView = 0
         lastVisibleLineView = 0
@@ -498,7 +498,7 @@ public impl RichEditCtrl
         if cp.charPosInLine > len
             return result
         if cp.charPosInLine == len
-            return @{"\n"'rune, 0};
+            return {"\n"'rune, 0};
         result.char = lines[cp.lineIndex].chars[cp.charPosInLine]
         result.style = lines[cp.lineIndex].styles[cp.charPosInLine]
         return result

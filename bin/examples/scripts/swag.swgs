@@ -67,7 +67,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             visit &el: path.polygon.points
             {
                 var c: C
-                c.pos, c.target = @{el.x + 160, el.y + 260}
+                c.pos, c.target = {el.x + 160, el.y + 260}
                 c.pos.x += g_Rng.nextF32(-100, 100)
                 c.pos.y += g_Rng.nextF32(-100, 100)
                 g_Points.add(c)

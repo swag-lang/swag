@@ -3,12 +3,12 @@ func getChar(buffer: const ^u8)->{const ^u8, rune}
 	ptr := buffer
 	c := cast(rune) dref ptr
 	if c == 0
-		return @{ptr, acast 0}
+		return {ptr, acast 0}
 
 	ptr += 1
 	if ((c & 0x80) == 0)
 	{
-		return @{ptr, acast c}
+		return {ptr, acast c}
 	}
 
 	var wc: rune = ?
@@ -18,7 +18,7 @@ func getChar(buffer: const ^u8)->{const ^u8, rune}
 		c = cast(rune) dref ptr
 		ptr += 1
 		wc |= (c & 0x3F);
-		return @{ptr, wc}
+		return {ptr, wc}
 	}
 
 	if ((c & 0xF0) == 0xE0)
@@ -27,7 +27,7 @@ func getChar(buffer: const ^u8)->{const ^u8, rune}
 		wc |= cast(rune) (ptr[0] & 0x3F) << 6;
 		wc |= cast(rune) (ptr[1] & 0x3F);
 		ptr += 2;
-		return @{ptr, wc}
+		return {ptr, wc}
 	}
 
 	if ((c & 0xF8) == 0xF0)
@@ -37,7 +37,7 @@ func getChar(buffer: const ^u8)->{const ^u8, rune}
 		wc |= cast(rune) (ptr[1] & 0x3F) << 6;
 		wc |= cast(rune) (ptr[2] & 0x3F);
 		ptr += 3;
-		return @{ptr, wc}
+		return {ptr, wc}
 	}
 
 	if ((c & 0xFC) == 0xF8)
@@ -47,7 +47,7 @@ func getChar(buffer: const ^u8)->{const ^u8, rune}
 		wc |= (c & 0x3F) << 12;
 		wc |= (c & 0x3F) << 6;
 		wc |= (c & 0x3F);
-		return @{ptr, wc}
+		return {ptr, wc}
 	}
 
 	if ((c & 0xFE) == 0xFC)
@@ -58,10 +58,10 @@ func getChar(buffer: const ^u8)->{const ^u8, rune}
 		wc |= (c & 0x3F) << 12;
 		wc |= (c & 0x3F) << 6;
 		wc |= (c & 0x3F);
-		return @{ptr, wc}
+		return {ptr, wc}
 	}
 
-	return @{ptr, acast 0}
+	return {ptr, acast 0}
 }
 
 #test

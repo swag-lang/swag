@@ -4,7 +4,7 @@ struct Point
 }
 
 #[Swag.Tls]
-var pt: Point = @{1, 2, 3}
+var pt: Point = {1, 2, 3}
 
 #test
 {

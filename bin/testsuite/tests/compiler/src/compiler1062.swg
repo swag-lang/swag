@@ -26,6 +26,6 @@ struct Point
 	var pt: Point
 	var arr: Array'Point
 	arr.buffer = &pt
-	arr.add(@{1})
+	arr.add({1})
 	@assert(arr.buffer[0].x == 1)
 }

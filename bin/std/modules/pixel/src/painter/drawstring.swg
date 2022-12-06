@@ -161,7 +161,7 @@ impl Painter
 
         // Set brush main texture
         if brush.type != .SolidColor
-            setTexture0(@{x, y - boundRect.baseLine}, @{x + boundRect.width, y + boundRect.height}, brush)
+            setTexture0({x, y - boundRect.baseLine}, {x + boundRect.width, y + boundRect.height}, brush)
         else
             resetTexture0()
 
