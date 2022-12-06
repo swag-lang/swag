@@ -335,8 +335,7 @@ bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty)
         }
 
         Diagnostic diag{sourceFile, token, Fmt(Err(Err0447), token.ctext())};
-        Diagnostic note{sourceFile, curly, Hlp(Hlp0003), DiagnosticLevel::Help};
-        return Report::report(diag, &note);
+        return Report::report(diag);
     }
 
     int idx = 0;

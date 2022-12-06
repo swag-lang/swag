@@ -330,16 +330,6 @@ bool SemanticJob::resolveType(SemanticContext* context)
                         }
                     }
 
-                    if (symName->kind == SymbolKind::Variable)
-                    {
-                        auto tupleParent = child->findParent(AstNodeKind::TupleContent);
-                        if (tupleParent)
-                        {
-                            Diagnostic note1{tupleParent->sourceFile, tupleParent->token, Hlp(Hlp0003), DiagnosticLevel::Help};
-                            return context->report(diag, &note, &note1);
-                        }
-                    }
-
                     return context->report(diag, &note);
                 }
             }

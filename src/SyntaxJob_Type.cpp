@@ -415,8 +415,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
                 if (inTypeVarDecl)
                     return Report::report({sourceFile, rightSquareToken, Err(Err0561)});
                 Diagnostic diag{sourceFile, rightSquareToken, Err(Err0561)};
-                Diagnostic note{sourceFile, leftSquareToken, Hlp(Hlp0002), DiagnosticLevel::Help};
-                return Report::report(diag, &note);
+                return Report::report(diag);
             }
             else
             {
@@ -460,8 +459,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
                 return Report::report({sourceFile, token, Fmt(Err(Err0343), token.ctext())});
 
             Diagnostic diag{sourceFile, token, Fmt(Err(Err0343), token.ctext())};
-            Diagnostic note{sourceFile, leftSquareToken, Hlp(Hlp0002), DiagnosticLevel::Help};
-            return Report::report(diag, &note);
+            return Report::report(diag);
         }
 
         if (token.id == TokenId::SymComma)
@@ -471,8 +469,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             if (callParam)
             {
                 Diagnostic diag{sourceFile, token, Fmt(Err(Err0171), token.ctext())};
-                Diagnostic note{sourceFile, leftSquareToken, Hlp(Hlp0002), DiagnosticLevel::Help};
-                return Report::report(diag, &note);
+                return Report::report(diag);
             }
             else
             {
@@ -593,8 +590,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     if (parent && parent->kind == AstNodeKind::TupleContent)
     {
         Diagnostic diag{sourceFile, token, Fmt(Err(Err0202), token.ctext())};
-        Diagnostic note{sourceFile, parent->token, Hlp(Hlp0003), DiagnosticLevel::Help};
-        return Report::report(diag, &note);
+        return Report::report(diag);
     }
 
     if (token.id == TokenId::SymLeftParen)
