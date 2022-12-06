@@ -128,25 +128,31 @@ impl PropWnd
 
     mtd createSlider(name: string, minv, maxv: s64, val: f32)->*SliderCtrl
     {
-        ctrl := SliderCtrl.create(mainLayout, #self.name)
-        ctrl.edit.setForm(.Square)
-        ctrl.setMinMaxS64(minv, maxv)
-        ctrl.dockStyle = .Top
-        ctrl.setValue(val)
+        with ctrl := SliderCtrl.create(mainLayout, #self.name)
+        {
+            .edit.setForm(.Square)
+            .setMinMaxS64(minv, maxv)
+            .dockStyle = .Top
+            .setValue(val)
+        }
+
         return ctrl
     }
 
     func createArrowButton(stack: *Wnd, w, h: f32)->*IconButton
     {
-        btn := IconButton.create(stack, @{}, @{0, 0, w, h})
-        btn.setForm(.RoundSquare)
-        btn.style.addStyleSheetColors("btnIcon_Bk        $lighterMedium")
-        btn.style.addStyleSheetColors("btnIcon_HotBk     $lighterBig")
-        btn.style.addStyleSheetColors("btnIcon_PressedBk $lighterVeryBig")
-        btn.iconBtnFlags = .Popup | .CheckableToggle
-        btn.arrowPos = .Bottom
-        btn.textPos = .Top
-        btn.checkedForm = .None
+        with btn := IconButton.create(stack, @{}, @{0, 0, w, h})
+        {
+            .setForm(.RoundSquare)
+            .style.addStyleSheetColors("btnIcon_Bk        $lighterMedium")
+            .style.addStyleSheetColors("btnIcon_HotBk     $lighterBig")
+            .style.addStyleSheetColors("btnIcon_PressedBk $lighterVeryBig")
+            .iconBtnFlags = .Popup | .CheckableToggle
+            .arrowPos = .Bottom
+            .textPos = .Top
+            .checkedForm = .None
+        }
+
         return btn
     }
 
@@ -203,11 +209,27 @@ impl PropWnd
         layout.wrapWidth, layout.wrapHeight = 48
         layout.padding = 4
 
+        mtd updateBtnState(layout: *Wnd)
+        {
+            curSel := cast(*FormShape) getSelectedBaseForm()
+            visit c: layout.childs
+            {
+                btn := cast(*IconButton) c
+                kind := cast(FormShapeKind) cast(uint) btn.userData
+                btn.isChecked = curSel.kind == kind
+                btn.invalidate()
+            }
+        }
+
+        curSel := cast(*FormShape) getSelectedBaseForm()
+
         loop i: @countof(FormShapeKind)
         {
             btn0 := IconButton.create(frame.view, @{})
             btn0.userData = cast(*void) i
             btn0.setForm(.RoundSquare)
+            if curSel.kind == i btn0.isChecked = true
+
             me := self
             btn0.sigPaintIcon = @|me|(btn, bc, pos)
             {
@@ -232,9 +254,10 @@ impl PropWnd
                 }
             }
 
-            btn0.sigPressed += @|me|(btn) {
+            btn0.sigPressed += @|me, layout|(btn) {
                 kind := cast(u32) cast(FormShapeKind) cast(uint) btn.userData
                 me.pushTypedValue(kind, @typeof(FormShape), @nameof(FormShape.kind), true)
+                me.updateBtnState(layout)
             }
         }
 
