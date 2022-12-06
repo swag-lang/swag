@@ -87,5 +87,5 @@ func quick(values: [..] s32, cb: func(s32, s32)->s32)
 {
     var arr: [12] s32
     loop @countof(arr) arr[@index] = cast(s32) @index
-    quick(arr, @(x, y) => y <=> x)
+    quick(arr, func(x, y) => y <=> x)
 }

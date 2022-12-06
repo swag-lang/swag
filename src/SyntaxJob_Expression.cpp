@@ -344,7 +344,6 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
 
     case TokenId::KwdFunc:
     case TokenId::KwdClosure:
-    case TokenId::SymLiteralParen:
     case TokenId::SymLiteralVertical:
         if (exprFlags & EXPR_FLAG_SIMPLE)
             return invalidTokenError(InvalidTokenError::PrimaryExpression);

@@ -16,7 +16,7 @@ var G: s32 = 0
 	}
 
 	G = 0
-	myFunc(10, @(x: s32) { G = x; });
+	myFunc(10, func(x: s32) { G = x; });
 	@assert(G == 10)
 
 	G = 0

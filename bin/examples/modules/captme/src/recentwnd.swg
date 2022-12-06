@@ -210,7 +210,7 @@ impl RecentWnd
         g_Library.fill()
 
         res := g_Library.files
-        res.sort(@(a, b) {
+        res.sort(func(a, b) {
             return b.lastWriteTime <=> a.lastWriteTime
         })
 

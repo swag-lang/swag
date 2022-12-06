@@ -6,7 +6,7 @@ func toto(x: closure(s32...))
 
 #test
 {
-    toto(@(x: s32...)
+    toto(func(x: s32...)
     {
         @assert(@countof(x) == 4)
         @assert(cast(s32) x[0] == 40)

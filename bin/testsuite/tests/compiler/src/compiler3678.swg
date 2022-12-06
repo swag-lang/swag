@@ -11,7 +11,7 @@ var G: s32
 {
     toto()
     {
-        fn := @(){
+        fn := func(){
             G = 1
         }
         fn()

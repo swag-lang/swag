@@ -619,13 +619,13 @@ impl Array
     // Sort array
     mtd sort()
     {
-        Slice.sort(@mkslice(buffer, count), @(x, y: T)->s32 => x <=> y)
+        Slice.sort(@mkslice(buffer, count), func(x, y: T)->s32 => x <=> y)
     }
 
     // Sort array in reverse order (from biggest to lowest value)
     mtd sortReverse()
     {
-        Slice.sort(@mkslice(buffer, count), @(x, y: T)->s32 => y <=> x)
+        Slice.sort(@mkslice(buffer, count), func(x, y: T)->s32 => y <=> x)
     }
 
     // Sort array

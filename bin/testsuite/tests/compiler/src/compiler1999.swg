@@ -66,14 +66,14 @@ func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
 #test
 {
     x := [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
-    sortQuick(cast([..] s32) x, @(x, y) => x <=> y)
+    sortQuick(cast([..] s32) x, func(x, y) => x <=> y)
     loop i: x
     {
         if i != @countof(x) - 1
             @assert(x[i] <= x[i + 1])
     }
 
-    sortQuick(cast([..] s32) x, @(x, y) => y <=> x)
+    sortQuick(cast([..] s32) x, func(x, y) => y <=> x)
     loop i: x
     {
         if i != @countof(x) - 1

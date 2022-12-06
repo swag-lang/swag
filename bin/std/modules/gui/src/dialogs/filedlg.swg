@@ -348,7 +348,7 @@ impl FileDlg
                 dlg.editFile.setText(txt)
             }
 
-            .sigSort = @(l1, l2, col, down) {
+            .sigSort = func(l1, l2, col, down) {
                 fi1 := cast(*FileInfo) l1.userData0
                 fi2 := cast(*FileInfo) l2.userData0
                 if fi1.isDirectory() and !fi2.isDirectory() return -1

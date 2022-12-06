@@ -5,7 +5,7 @@ var g: closure(s32)
     #[Swag.Mixin]
     func toto()
     {
-        g = @(btn)
+        g = func(btn)
         {
         }
     }

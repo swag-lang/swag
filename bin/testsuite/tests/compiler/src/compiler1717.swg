@@ -5,5 +5,5 @@
         return x(4)*4
     }
 
-    @assert(toto(@(x) { return x*x; }) == 64)
+    @assert(toto(func(x) { return x*x; }) == 64)
 }

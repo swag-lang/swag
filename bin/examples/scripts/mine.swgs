@@ -116,7 +116,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         sli.slider.setMinMax(1, 10)
         sli.edit.setInputU64(1, 10)
         sli.slider.setValue(acast g_Density)
-        sli.slider.sigChanged += @(sli) { g_Density = cast(s32) sli.getValue(); }
+        sli.slider.sigChanged += func(sli) { g_Density = cast(s32) sli.getValue(); }
 
         setup()
 

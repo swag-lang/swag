@@ -8,6 +8,6 @@ func do(fn: func())
 {
     loop 2
     {
-        do(@() { break; })
+        do(func() { break; })
     }
 }

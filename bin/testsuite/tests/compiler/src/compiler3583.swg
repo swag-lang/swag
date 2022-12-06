@@ -20,7 +20,7 @@ var G = 0
 #test
 {
     var x: A
-    x = @() {
+    x = func() {
         G = 1
     }
     x.x()

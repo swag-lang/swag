@@ -40,8 +40,8 @@ var G = 0
 #test
 {
     var x: AA'func(s32, s32)
-    x += @(x, y: s32) { G += x+y; }
-    x += @(x, y: s32) { G += x*y; }
+    x += func(x, y: s32) { G += x+y; }
+    x += func(x, y: s32) { G += x*y; }
     x.call(2, 4)
     @assert(G == 14)
 }

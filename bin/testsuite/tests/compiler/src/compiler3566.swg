@@ -13,7 +13,7 @@ impl A
 #test
 {
     var xxxx: A
-    xxxx = @(a, b)->s32 { return 0; }
+    xxxx = func(a, b)->s32 { return 0; }
     //var y: func(s32, s32)
-    //y = @(a, b) {}
+    //y = func(a, b) {}
 }

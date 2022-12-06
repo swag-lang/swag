@@ -1,7 +1,7 @@
 #global testerror
 #test
 {
-    var x: closure(bool, ...) = @(x: bool, y: ...)
+    var x: closure(bool, ...) = func(x: bool, y: ...)
     {
         @assert(x == true)
         @assert(cast(s32) y[0] == 4)

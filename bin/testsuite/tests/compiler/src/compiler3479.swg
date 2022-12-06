@@ -5,7 +5,7 @@ func(T) toto(cb: closure(T, T))
 
 #test
 {
-    toto's32(@(x, y)
+    toto's32(func(x, y)
     {
         @assert(x == 10)
         @assert(y == 20)

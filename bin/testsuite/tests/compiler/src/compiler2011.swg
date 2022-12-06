@@ -8,7 +8,7 @@ func(T) toto(y: func(T)->T)
 
 func(T) toto1()
 {
-    toto'T(@(x) => x)
+    toto'T(func(x) => x)
 }
 
 #test

@@ -792,7 +792,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
     currentScope->symTable.registerSymbolName(&context, funcNode, SymbolKind::Function);
 
     // Closure capture arguments
-    if (token.id == TokenId::SymLiteralVertical)
+    if (token.id == TokenId::SymLiteralVertical || token.id == TokenId::KwdClosure)
     {
         // captureParameters will be solved with capture block, that's why we do NOT put it as a child
         // of the function.

@@ -161,7 +161,7 @@ impl LibraryView
             }
         }
 
-        res.sort(@(a, b) {
+        res.sort(func(a, b) {
             return b.lastWriteTime <=> a.lastWriteTime
         })
 
@@ -232,7 +232,7 @@ impl LibraryWnd
         item := line.setItem(1, Format.toString("% ", g_Library.files.count))
         item.horzAlign = .Right
 
-        g_Library.files.sort(@(a, b) {
+        g_Library.files.sort(func(a, b) {
             return b.lastWriteTime <=> a.lastWriteTime
         })
 

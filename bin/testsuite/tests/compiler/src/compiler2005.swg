@@ -2,5 +2,5 @@
 
 func toto()
 {
-    cb1 := @(x, y) => x <=> y
+    cb1 := func(x, y) => x <=> y
 }

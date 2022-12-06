@@ -5,7 +5,7 @@ using Core
 {
     var arr: Array'u32
     loop 100 arr.add(cast(u32) @index)
-    arr.sort(@(x, y) => y <=> x)
+    arr.sort(func(x, y) => y <=> x)
 
     loop i: arr
     {

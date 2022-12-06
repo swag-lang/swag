@@ -5,5 +5,5 @@
         x(true,"64")
     }
 
-    toto(@(x,y) { @assert(y == "64"); })
+    toto(func(x,y) { @assert(y == "64"); })
 }

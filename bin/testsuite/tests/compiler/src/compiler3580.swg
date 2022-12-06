@@ -12,5 +12,5 @@ impl A
 #test
 {
     var xxxx: A'closure(s32)
-    xxxx += @(a) { }
+    xxxx += func(a) { }
 }

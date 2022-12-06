@@ -6,7 +6,7 @@ alias CB = #type closure()
 #test
 {
     var arr: Array'CB
-    x := @() {
+    x := func() {
     }
 
     arr.add(x)

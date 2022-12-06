@@ -8,5 +8,5 @@ func lambda(x: s32) => x
 #test
 {
     titi(10's32, &lambda)
-    titi(10's32, @(x: s32) => x)
+    titi(10's32, func(x: s32) => x)
 }

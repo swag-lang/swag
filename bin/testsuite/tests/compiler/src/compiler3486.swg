@@ -6,5 +6,5 @@ struct A
 #test
 {
     var v: A
-    v.fct = @(s) {}
+    v.fct = func(s) {}
 }

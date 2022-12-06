@@ -86,7 +86,7 @@ impl FontFamily
         logFont.lfCharSet = DEFAULT_CHARSET
         EnumFontFamiliesExW(hdc, &logFont, @mkcallback(&enumFamily), cast(LPARAM) cast(uint) &result, 0)
 
-        result.sort(@(a, b) {
+        result.sort(func(a, b) {
             return a.name <=> b.name
         })
         return result

@@ -5,6 +5,6 @@ public func toto3463()
 	{
 	}
 
-    titi(@(x: s32) {
+    titi(func(x: s32) {
     })
 }

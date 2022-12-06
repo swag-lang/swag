@@ -17,5 +17,5 @@ impl A
 #test
 {
     var x: A
-    x = @() {}
+    x = func() {}
 }

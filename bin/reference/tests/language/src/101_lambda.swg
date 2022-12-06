@@ -32,9 +32,9 @@
 
     // You can also create anonymous functions with '@' (functions as literals)
     {
-        cb := @(x: s32)->s32 => x * x
+        cb := func(x: s32)->s32 => x * x
         @assert(cb(4) == 16)
-        cb = @(x: s32)->s32 => x * x * x
+        cb = func(x: s32)->s32 => x * x * x
         @assert(cb(4) == 64)
     }
 
@@ -43,9 +43,9 @@
         alias callback = #type func(s32)->s32
         func toDo(value: s32, ptr: callback)->s32 => ptr(value)
 
-        @assert(toDo(4, @(x: s32) => x * x) == 16)
-        @assert(toDo(4, @(x: s32) => x + x) == 8)
-        @assert(toDo(4, @(x: s32)->s32 { return x - x; }) == 0)
+        @assert(toDo(4, func(x: s32) => x * x) == 16)
+        @assert(toDo(4, func(x: s32) => x + x) == 8)
+        @assert(toDo(4, func(x: s32)->s32 { return x - x; }) == 0)
     }
 
     // Types of parameters can be deduced
@@ -53,9 +53,9 @@
         alias callback = #type func(s32)->s32
         func toDo(value: s32, ptr: callback)->s32 => ptr(value)
 
-        @assert(toDo(4, @(x) => x * x) == 16)
-        @assert(toDo(4, @(x) => x + x) == 8)
-        @assert(toDo(4, @(x) { return x - x; }) == 0)
+        @assert(toDo(4, func(x) => x * x) == 16)
+        @assert(toDo(4, func(x) => x + x) == 8)
+        @assert(toDo(4, func(x) { return x - x; }) == 0)
     }
 
     // When you affect a lambda to a variable, the type of parameters and the return type can also be
@@ -63,10 +63,10 @@
     {
         var fct: func(s32, s32)->bool
 
-        fct = @(x, y) => x == y
+        fct = func(x, y) => x == y
         @assert(fct(10, 10))
 
-        fct = @(x, y) { return x != y; }
+        fct = func(x, y) { return x != y; }
         @assert(fct(20, 120))
     }
 }

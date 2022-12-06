@@ -41,7 +41,7 @@
     {
         var fct: closure(s32, s32)->s32
 
-        fct = @(x, y) => x + y
+        fct = func(x, y) => x + y
         @assert(fct(1, 2) == 3)
     }
 

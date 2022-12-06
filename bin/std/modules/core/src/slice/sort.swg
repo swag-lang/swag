@@ -87,7 +87,7 @@ func(T) quickSort(values: [..] T, cb: closure(T, T)->s32)
 // number of elements
 func(T) sort(values: [..] T)
 {
-    sort(values, @(x, y: T)->s32 => x <=> y)
+    sort(values, func(x, y: T)->s32 => x <=> y)
 }
 
 // Sort the slice, by picking the right algorithm depending on the type and the
@@ -104,7 +104,7 @@ func(T) sort(values: [..] T, cb: closure(T, T)->s32)
 // Returns true if the slice is sorted
 func(T) isSorted(values: const [..] T)->bool
 {
-    return isSorted(values, @(x, y: T)->s32 => x <=> y)
+    return isSorted(values, func(x, y: T)->s32 => x <=> y)
 }
 
 // Returns true if the slice is sorted

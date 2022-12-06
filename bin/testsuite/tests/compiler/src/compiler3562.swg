@@ -16,6 +16,6 @@ alias CB = #type closure()
 #test
 {
     var arr: Arr
-    x := @(){}
+    x := func(){}
     arr.add(x)
 }

@@ -1,6 +1,6 @@
 #test
 {
-    var x: func(bool, ...) = @(x: bool, y: ...)
+    var x: func(bool, ...) = func(x: bool, y: ...)
     {
         @assert(x == true)
         @assert(cast(s32) y[0] == 4)

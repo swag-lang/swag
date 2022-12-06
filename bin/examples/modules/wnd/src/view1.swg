@@ -78,7 +78,7 @@ func createView1(tabView: *Tab, view: *Wnd)
         list.horizontalExtent = 500
 
         list.setVirtualCount(1_000_000)
-        list.sigVirtualFill = @(list, line, idx) {
+        list.sigVirtualFill = func(list, line, idx) {
             str := Format.toString("virtual %", idx)
             line.setItem(0, str)
         }
@@ -102,17 +102,17 @@ func createView1(tabView: *Tab, view: *Wnd)
         list.ensureVisibleLine(list.getLineCount() - 1)
         list.setColumnWidth(0, 150)
 
-        list.sigSelChanged += @(list) {
+        list.sigSelChanged += func(list) {
             sl := list.getSelectedLine()
             if sl
                 Console.printf("selected: %\n", sl.getItem(0).name.raw)
         }
-        list.sigCheckChanged += @(list) {
+        list.sigCheckChanged += func(list) {
             sl := list.getCheckedLines()
             visit l: sl
                 Console.printf("checked: %\n", l.getItem(0).name.raw)
         }
-        list.sigRightClick += @(list, pt) {
+        list.sigRightClick += func(list, pt) {
             sel := list.getSelectedLines()
             visit l: sel
                 Console.printf("%\n", l.getItem(0).name.raw)
@@ -135,7 +135,7 @@ func createView1(tabView: *Tab, view: *Wnd)
         list.header.getItem(0).sizeable = false
         list.header.getItem(0).clickable = false
 
-        list.sigSelChanged += @(list) {
+        list.sigSelChanged += func(list) {
             sel := list.getSelectedLines()
             visit l: sel
                 Console.printf("%\n", l.getItem(0).name.raw)

@@ -144,7 +144,7 @@ impl MainWnd
             btn := CheckButton.create(dlg, " ", pos)
             btn.checked = `g_ResizeMode == id ? .Undefined : .UnChecked
             btn.userData = cast(*void) id
-            btn.sigChanged += @(btn) {
+            btn.sigChanged += func(btn) {
                 visit c: btn.parent.childs
                 {
                     if c.userData

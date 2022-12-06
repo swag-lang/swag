@@ -11,7 +11,7 @@ impl A
 #test
 {
     var xxxx: A
-    xxxx = @(a, b) {}
+    xxxx = func(a, b) {}
     //var y: func(s32, s32)
-    //y = @(a, b) {}
+    //y = func(a, b) {}
 }

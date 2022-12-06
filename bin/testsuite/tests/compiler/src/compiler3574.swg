@@ -17,6 +17,6 @@ impl A
 #test
 {
     var xxxx: A
-    xxxx += @(a, b) { }
+    xxxx += func(a, b) { }
     @assert(G == 1)
 }

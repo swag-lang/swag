@@ -629,7 +629,7 @@ impl QuickWnd
             btn.setForm(.RoundSquare)
             btn.formItf = it
 
-            btn.sigPaintIcon = @(btn, bc, pos) {
+            btn.sigPaintIcon = func(btn, bc, pos) {
                 paintForm(bc.painter, cast(*QuickButton) btn)
             }
 
@@ -809,7 +809,7 @@ impl QuickWnd
             btn.style.addStyleSheetColors("btnIcon_PressedBk   0x0")
             layout.sendResizeEvent()
 
-            btn.sigPaintIcon = @(btn, bc, pos) {
+            btn.sigPaintIcon = func(btn, bc, pos) {
                 paintForm(bc.painter, cast(*QuickButton) btn)
                 rect := btn.getClientRect()
                 rect.inflate(-2, -2)

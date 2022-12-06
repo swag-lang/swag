@@ -9,6 +9,6 @@ impl A
     var x: A'closure(s32)
     var y: A'closure(f32)
 
-    x = @(t) {}
-    y = @(t) {}
+    x = func(t) {}
+    y = func(t) {}
 }

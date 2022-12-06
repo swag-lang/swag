@@ -45,24 +45,24 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             slider := SliderCtrl.create(panel, "r1")
             slider.setMinMaxU64(50, 200)
             slider.setValue(r1)
-            slider.slider.sigChanged += @(slider) { r1 = slider.getValue(); }
+            slider.slider.sigChanged += func(slider) { r1 = slider.getValue(); }
         }
         {
             slider := SliderCtrl.create(panel, "r2")
             slider.setMinMaxU64(50, 200)
             slider.setValue(r2)
-            slider.slider.sigChanged += @(slider) { r2 = slider.getValue(); }
+            slider.slider.sigChanged += func(slider) { r2 = slider.getValue(); }
         }
         {
             slider := SliderCtrl.create(panel, "friction")
             slider.setMinMaxU64(0, 100)
             slider.setValue(0)
-            slider.slider.sigChanged += @(slider) { friction = 1 - (slider.getValue() * 0.0001); }
+            slider.slider.sigChanged += func(slider) { friction = 1 - (slider.getValue() * 0.0001); }
         }
         {
             btn := PushButton.create(panel, "restart")
             btn.maxSize = 100
-            btn.sigPressed += @(btn) { start(); }
+            btn.sigPressed += func(btn) { start(); }
         }
 
     case Paint:

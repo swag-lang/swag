@@ -7,5 +7,5 @@ struct Wnd
 #test
 {
     var l: Wnd
-    l.h = @(w) {}
+    l.h = func(w) {}
 }

@@ -10,7 +10,7 @@ using Core
     loop 10
         arr.add(rand.nextS32(0, 100))
 
-    arr.sort(@(x, y) => y <=> x)
+    arr.sort(func(x, y) => y <=> x)
     @assert(!Slice.isSorted(@mkslice(arr.buffer, cast(uint) arr.count)))
     arr.sort()
     @assert(Slice.isSorted(@mkslice(arr.buffer, cast(uint) arr.count)))

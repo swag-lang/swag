@@ -1,5 +1,5 @@
 #global testerror
-//var fn = @(x, y: s32) => x + y
+//var fn = func(x, y: s32) => x + y
 
 var G = 0
 

@@ -102,7 +102,7 @@ func createView2(tabView: *Tab, view: *Wnd)
         tree.setPosition({420, 5, 600, 300})
         tree.setColumnWidth(0, 200)
 
-        tree.sigSelChanged += @(tree) {
+        tree.sigSelChanged += func(tree) {
             sel := tree.getSelectedLines()
             visit l: sel
                 Console.printf("%\n", l.getItem(0).name.raw)
