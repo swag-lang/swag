@@ -1249,6 +1249,17 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         break;
 
     case ByteCodeOp::SetZeroStack8:
+        if (ip[1].op == ByteCodeOp::SetAtStackPointer8 &&
+            ip[0].a.u32 + 1 == ip[1].a.u32 &&
+            (ip[1].flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip[1].a.u32 -= 1;
+            ip[1].b.u64 <<= 8;
+            SET_OP(ip + 1, ByteCodeOp::SetAtStackPointer16);
+            break;
+        }
+
         if ((ip[1].op == ByteCodeOp::SetAtStackPointer8 ||
              ip[1].op == ByteCodeOp::SetAtStackPointer16 ||
              ip[1].op == ByteCodeOp::SetAtStackPointer32 ||
@@ -1274,6 +1285,17 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         break;
 
     case ByteCodeOp::SetZeroStack16:
+        if (ip[1].op == ByteCodeOp::SetAtStackPointer16 &&
+            ip[0].a.u32 + 2 == ip[1].a.u32 &&
+            (ip[1].flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip[1].a.u32 -= 2;
+            ip[1].b.u64 <<= 16;
+            SET_OP(ip + 1, ByteCodeOp::SetAtStackPointer32);
+            break;
+        }
+
         if ((ip[1].op == ByteCodeOp::SetAtStackPointer16 ||
              ip[1].op == ByteCodeOp::SetAtStackPointer32 ||
              ip[1].op == ByteCodeOp::SetAtStackPointer64) &&
@@ -1297,6 +1319,17 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         break;
 
     case ByteCodeOp::SetZeroStack32:
+        if (ip[1].op == ByteCodeOp::SetAtStackPointer32 &&
+            ip[0].a.u32 + 4 == ip[1].a.u32 &&
+            (ip[1].flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip[1].a.u32 -= 4;
+            ip[1].b.u64 <<= 32;
+            SET_OP(ip + 1, ByteCodeOp::SetAtStackPointer64);
+            break;
+        }
+
         if ((ip[1].op == ByteCodeOp::SetAtStackPointer32 ||
              ip[1].op == ByteCodeOp::SetAtStackPointer64) &&
             ip[0].a.u32 == ip[1].a.u32 &&
