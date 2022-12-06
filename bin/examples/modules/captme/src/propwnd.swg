@@ -163,15 +163,17 @@ impl PropWnd
         pt      := topView.surfaceToLocal({pos.x, pos.bottom()})
         pt.y += btn.getThemeMetrics().frameWnd_AnchorHeight
 
-        frame := Wnd.create'FrameWnd(topView, {pt.x, pt.y, w, h})
-        frame.setFrameForm(.Round)
-        frame.setFrameFlags(FrameWndFlags.SmallShadow)
-        frame.style.addStyleSheetColors("frameWnd_Border $frameWnd_PopupBorder")
-
         sdw := btn.getThemeMetrics().frameWnd_SmallShadowSize
-        frame.fitPosInParent(sdw.z, sdw.w)
-        frame.anchor = .Top
-        frame.anchorPos = pos.horzCenter() - frame.getSurfaceRect().x
+
+        with frame := Wnd.create'FrameWnd(topView, {pt.x, pt.y, w, h})
+        {
+            .setFrameForm(.Round)
+            .setFrameFlags(FrameWndFlags.SmallShadow)
+            .style.addStyleSheetColors("frameWnd_Border $frameWnd_PopupBorder")
+            .fitPosInParent(sdw.z, sdw.w)
+            .anchor = .Top
+            .anchorPos = pos.horzCenter() - frame.getSurfaceRect().x
+        }
 
         btn.popup = frame
         return frame
@@ -184,19 +186,21 @@ impl PropWnd
         picker := ColorPickerCtrl.create(frame, {8, 54})
         picker.setColor(color)
 
-        palette := PalettePicker.create(frame, {16, 16, 340, 48})
-        palette.addColor(Argb.White)
-        palette.addColor(Argb.Gray)
-        palette.addColor(Argb.Black)
-        palette.addColor(Argb.Red)
-        palette.addColor(Argb.Green)
-        palette.addColor(Argb.Blue)
-        palette.addColor(Argb.Yellow)
-        palette.addColor(Argb.Purple)
-        palette.addColor(Color.fromArgb(0))
-        palette.boxSize = 32
-        palette.sigChanged += closure|picker|(pal) {
-            picker.setColor(pal.selectedColor)
+        with palette := PalettePicker.create(frame, {16, 16, 340, 48})
+        {
+            .addColor(Argb.White)
+            .addColor(Argb.Gray)
+            .addColor(Argb.Black)
+            .addColor(Argb.Red)
+            .addColor(Argb.Green)
+            .addColor(Argb.Blue)
+            .addColor(Argb.Yellow)
+            .addColor(Argb.Purple)
+            .addColor(Color.fromArgb(0))
+            .boxSize = 32
+            .sigChanged += closure|picker|(pal) {
+                picker.setColor(pal.selectedColor)
+            }
         }
 
         return picker
