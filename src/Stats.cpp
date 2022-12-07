@@ -84,6 +84,7 @@ void Stats::print()
         g_Log.messageHeaderDot("mem symname", Fmt("%s", Utf8::toNiceSize(memSymName.load()).c_str()));
         g_Log.messageHeaderDot("mem symover", Fmt("%s", Utf8::toNiceSize(memSymOver.load()).c_str()));
         g_Log.messageHeaderDot("mem utf8", Fmt("%s", Utf8::toNiceSize(memUtf8.load()).c_str()));
+        g_Log.messageHeaderDot("mem utf8 cstr", Fmt("%s", Utf8::toNiceSize(memUtf8CStr.load()).c_str()));
         g_Log.messageHeaderDot("mem new", Fmt("%s", Utf8::toNiceSize(memNew.load()).c_str()));
 
         if (g_CommandLine->backendGenType == BackendGenType::X64)

@@ -14,10 +14,9 @@
 
 struct Utf8
 {
-    char*              buffer    = nullptr;
-    int                count     = 0;
-    int                allocated = 0;
-    static SharedMutex mutexCStr;
+    char* buffer    = nullptr;
+    int   count     = 0;
+    int   allocated = 0;
 
     Utf8();
     Utf8(const char* from);
@@ -54,7 +53,7 @@ struct Utf8
     void        trimRight();
     void        trim();
     void        pop_back();
-    int         find(const char* str, int startpos = 0) const;
+    int         find(const Utf8& str, int startpos = 0) const;
     void        remove(int index, int len);
     void        insert(int index, const char* str);
     void        insert(int index, char c);

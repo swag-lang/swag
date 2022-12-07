@@ -122,31 +122,22 @@ int Utf8::length() const
     return count;
 }
 
-SharedMutex Utf8::mutexCStr;
 const char* Utf8::c_str() const
 {
-    static const char* nullString = "";
+    if (!buffer)
+        return "";
+    if (!buffer[count])
+        return buffer;
 
-    // This is not a good idea to put the mutex in the Utf8 struct, even if it should be, because
-    // it take 8 bytes per Utf8. So make a static one, and hope there won't be too much contention.
-    // :CStrMutex
-    ScopedLock lk(Utf8::mutexCStr);
-
-    if (buffer && buffer[count])
-    {
-        SWAG_ASSERT(allocated == 0); // Should be a sllice
-
-        auto t       = const_cast<Utf8*>(this);
-        t->allocated = (int) Allocator::alignSize(count + 1);
-        auto buf     = (char*) g_Allocator.alloc(allocated);
-        memcpy(buf, buffer, count);
-        t->buffer     = buf;
-        buffer[count] = 0;
-        if (g_CommandLine->stats)
-            g_Stats.memUtf8 += allocated;
-    }
-
-    return count ? buffer : nullString;
+    // Big huge leak... not so huge in fact
+    // Should limit the call to c_str() as much as possible in a normal run (no errors)
+    auto size = (int) Allocator::alignSize(count + 1);
+    auto buf  = (char*) g_Allocator.alloc(size);
+    memcpy(buf, buffer, count);
+    buf[count] = 0;
+    if (g_CommandLine->stats)
+        g_Stats.memUtf8CStr += size;
+    return buf;
 }
 
 void Utf8::clear()
@@ -401,12 +392,12 @@ void Utf8::pop_back()
     buffer[count] = 0;
 }
 
-int Utf8::find(const char* str, int startpos) const
+int Utf8::find(const Utf8& str, int startpos) const
 {
     if (!count)
         return -1;
 
-    auto pz = std::search(buffer, buffer + count, str, str + strlen(str));
+    auto pz = std::search(buffer, buffer + count, str.buffer, str.buffer + str.count);
     if (pz == buffer + count)
         return -1;
     return (int) (pz - buffer);

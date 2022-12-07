@@ -53,6 +53,7 @@ struct Stats
     atomic<size_t> memSymOver      = 0;
     atomic<size_t> memSymTable     = 0;
     atomic<size_t> memUtf8         = 0;
+    atomic<size_t> memUtf8CStr     = 0;
     atomic<size_t> memNew          = 0;
 
     atomic<size_t> sizeBackendDbg = 0;
