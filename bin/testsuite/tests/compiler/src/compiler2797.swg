@@ -1,18 +1,7 @@
-#[Swag.Safety("", true)]
-#test
-{
-    #semerror x := 10'u32 >> 32
-    #semerror x := 10'u64 >> 64
-    #semerror x := 10'u32 << 32
-    #semerror x := 10'u64 << 64
-}
+#global #[Swag.Safety("overflow", true)]
+#global testerrors
 
-#[Swag.Safety("", true)]
-#test
-{
-    x := 1
-    x >>=,safe 32
-    #semerror x >>= 32
-    x <<=,safe 32
-    #semerror x <<= 32
-}
+const x1 = 10'u32 >> 32
+const x2 = 10'u64 >> 64
+const x3 = 10'u32 << 32
+const x4 = 10'u64 << 64

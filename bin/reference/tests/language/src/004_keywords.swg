@@ -17,11 +17,11 @@
 #module
 #os
 #self
-#semerror
 #swagbuildnum
 #swagos
 #swagrevision
 #swagversion
+#type
 
 #assert
 #checkif

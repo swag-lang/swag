@@ -1,14 +1,10 @@
-using Swag
+#global #[Swag.Safety("overflow", true)]
+#global testerrors
 
-#[Safety("overflow", true)]
-//#[PrintBc]
-#test
-{
-    #semerror x0 := 1'u8 << 8
-    #semerror x1 := 1'u32 << 32
-    #semerror x2 := 1'u64 << 64
-    #semerror x3 := Swag.U32.Max << 1
-    #semerror x4 := Swag.U64.Max << 1
-    #semerror x5 := 1'u32 >> 1
-    #semerror x6 := 1'u64 >> 1
-}
+const x0 = 1'u8 << 8
+const x1 = 1'u32 << 32
+const x2 = 1'u64 << 64
+const x3 = Swag.U32.Max << 1
+const x4 = Swag.U64.Max << 1
+const x5 = 1'u32 >> 1
+const x6 = 1'u64 >> 1

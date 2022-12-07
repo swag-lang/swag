@@ -1,9 +1,5 @@
-using Swag
+#global #[Swag.Safety("overflow", true)]
+#global testerrors
 
-#[Safety("overflow", true)]
-//#[PrintBc]
-#test
-{
-    #semerror var x0: u8 = cast(u8) 256.0
-    #semerror var x1: u8 = cast(u8) -1.0
-}
+var x0: u8 = cast(u8) 256.0
+var x1: u8 = cast(u8) -1.0

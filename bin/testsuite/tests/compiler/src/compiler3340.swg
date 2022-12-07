@@ -1,5 +1,8 @@
-#semerror const G: u8 = -10
-#semerror const G: u16 = -10
-#semerror const G: u32 = -10
-#semerror const G: u64 = -10
-#semerror const G: uint = -10
+#global #[Swag.Safety("overflow", true)]
+#global testerrors
+
+const G: u8 = -10
+const G: u16 = -10
+const G: u32 = -10
+const G: u64 = -10
+const G: uint = -10
