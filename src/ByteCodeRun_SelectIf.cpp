@@ -101,7 +101,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
     auto solved = (SymbolOverload*) ip->d.pointer;
     if (!executeIsConstExprSI(context, ip))
     {
-        context->raiseError(Fmt(Err(Err0089), solved->symbol->name.c_str()));        
+        context->raiseError(Fmt(Err(Err0089), solved->symbol->name.c_str()));
         return;
     }
 
@@ -162,7 +162,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
         switch (solved->typeInfo->nativeType)
         {
         case NativeTypeKind::String:
-            registersRC[ip->a.u32].pointer = (uint8_t*) child->computedValue->text.c_str();
+            registersRC[ip->a.u32].pointer = (uint8_t*) child->computedValue->text.buffer;
             registersRC[ip->b.u32].u64     = child->computedValue->text.length();
             return;
 

@@ -379,7 +379,7 @@ bool SemanticJob::sendCompilerMsgGlobalVar(SemanticContext* context)
 
     CompilerMessage msg      = {0};
     msg.concrete.kind        = CompilerMsgKind::SemGlobals;
-    msg.concrete.name.buffer = (void*) node->token.ctext();
+    msg.concrete.name.buffer = node->token.text.buffer;
     msg.concrete.name.count  = node->token.text.length();
     msg.typeInfo             = node->typeInfo;
     SWAG_CHECK(module->postCompilerMessage(context, msg));

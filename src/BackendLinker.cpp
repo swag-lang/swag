@@ -28,7 +28,7 @@ namespace BackendLinker
             if (strstr(ptr, "\n"))
             {
                 vector<Utf8> subNames;
-                Utf8::tokenize(errMsg.c_str(), '\n', subNames);
+                Utf8::tokenize(errMsg, '\n', subNames);
 
                 g_Log.lock();
                 for (auto& l : subNames)

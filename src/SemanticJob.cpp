@@ -102,7 +102,7 @@ bool SemanticJob::valueEqualsTo(const ComputedValue* value1, const ComputedValue
     return *value1 == *value2;
 }
 
-bool SemanticJob::checkIsConstExpr(JobContext* context, bool test, AstNode* expression, const char* errMsg)
+bool SemanticJob::checkIsConstExpr(JobContext* context, bool test, AstNode* expression, const Utf8& errMsg, const Utf8& errParam)
 {
     if (test)
         return true;
@@ -114,7 +114,13 @@ bool SemanticJob::checkIsConstExpr(JobContext* context, bool test, AstNode* expr
         return context->report(diag, computeNonConstExprNote(expression));
     }
 
-    Diagnostic diag{expression, errMsg ? errMsg : Err(Err0798)};
+    if (errMsg.length() && errParam.length())
+    {
+        Diagnostic diag{ expression, Fmt(errMsg.c_str(), errParam.c_str())};
+        return context->report(diag, computeNonConstExprNote(expression));
+    }
+
+    Diagnostic diag{expression, errMsg.length() ? errMsg : Err(Err0798)};
     return context->report(diag, computeNonConstExprNote(expression));
 }
 

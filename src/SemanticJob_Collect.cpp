@@ -20,11 +20,12 @@ bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegmen
     {
         if (!value->text.empty())
         {
-            *(const char**) ptrDest                = value->text.c_str();
-            *(uint64_t*) (ptrDest + sizeof(void*)) = value->text.length();
-            auto constSeg                          = getConstantSegFromContext(context->node, storageSegment->kind == SegmentKind::Compiler);
-            auto offset                            = constSeg->addString(value->text);
+            auto     constSeg = getConstantSegFromContext(context->node, storageSegment->kind == SegmentKind::Compiler);
+            uint8_t* resultPtr;
+            auto     offset = constSeg->addString(value->text, &resultPtr);
             storageSegment->addInitPtr(storageOffset, offset, constSeg->kind);
+            *(const char**) ptrDest                = (const char*) resultPtr;
+            *(uint64_t*) (ptrDest + sizeof(void*)) = value->text.length();
         }
 
         return true;
@@ -162,7 +163,7 @@ bool SemanticJob::collectStructLiterals(JobContext* context, DataSegment* storag
             {
                 SWAG_ASSERT(value);
                 Register* storedV  = (Register*) ptrDest;
-                storedV[0].pointer = (uint8_t*) value->text.c_str();
+                storedV[0].pointer = (uint8_t*) value->text.buffer;
                 storedV[1].u64     = value->text.length();
                 auto constSegment  = SemanticJob::getConstantSegFromContext(varDecl->assignment, storageSegment->kind == SegmentKind::Compiler);
                 auto strOffset     = constSegment->addString(value->text);

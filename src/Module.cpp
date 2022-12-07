@@ -637,7 +637,7 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
 
     // Check version
     vector<Utf8> splits;
-    Utf8::tokenize(dep->version.c_str(), '.', splits);
+    Utf8::tokenize(dep->version, '.', splits);
 
     if (splits.size() != 3 || splits[0].empty() || splits[1].empty() || splits[2].empty())
     {

@@ -840,10 +840,10 @@ bool Workspace::build()
     oneArg.second             = (void*) g_CommandLine->exePathStr.size();
     g_CommandLine->userArgumentsStr.push_back(oneArg);
 
-    Utf8::tokenizeBlanks(g_CommandLine->userArguments.c_str(), g_CommandLine->userArgumentsVec);
+    Utf8::tokenizeBlanks(g_CommandLine->userArguments, g_CommandLine->userArgumentsVec);
     for (auto& arg : g_CommandLine->userArgumentsVec)
     {
-        oneArg.first  = (void*) arg.c_str();
+        oneArg.first  = (void*) arg.buffer;
         oneArg.second = (void*) (size_t) arg.length();
         g_CommandLine->userArgumentsStr.push_back(oneArg);
     }

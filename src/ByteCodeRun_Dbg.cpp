@@ -414,7 +414,7 @@ static void appendLiteralValue(ByteCodeRunContext* context, Utf8& result, const 
 static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
 {
     vector<Utf8> cmds;
-    Utf8::tokenize(arg.c_str(), ' ', cmds);
+    Utf8::tokenize(arg, ' ', cmds);
 
     ValueFormat fmt;
     int         startIdx = 0;
@@ -1097,7 +1097,7 @@ static void printContextInstruction(ByteCodeRunContext* context)
 static Utf8 completion(ByteCodeRunContext* context, const Utf8& line, Utf8& toComplete)
 {
     vector<Utf8> tokens;
-    Utf8::tokenize(line.c_str(), ' ', tokens);
+    Utf8::tokenize(line, ' ', tokens);
     if (tokens.empty())
         return "";
 

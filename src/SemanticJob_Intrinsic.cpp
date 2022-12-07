@@ -20,7 +20,7 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
         SWAG_CHECK(evaluateConstExpression(context, front));
         if (context->result == ContextResult::Pending)
             return true;
-        SWAG_CHECK(checkIsConstExpr(context, front->flags & AST_VALUE_COMPUTED, front, Fmt(Err(Err0248), node->token.ctext())));
+        SWAG_CHECK(checkIsConstExpr(context, front->flags & AST_VALUE_COMPUTED, front, Err(Err0248), node->token.text));
         SWAG_VERIFY(front->typeInfo->isNative(NativeTypeKind::String), context->report({front, Fmt(Err(Err0249), node->token.ctext(), front->typeInfo->getDisplayNameC())}));
         node->typeInfo = g_TypeMgr->typeInfoBool;
         node->setFlagsValueIsComputed();
@@ -63,7 +63,7 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
         SWAG_CHECK(evaluateConstExpression(context, front));
         if (context->result == ContextResult::Pending)
             return true;
-        SWAG_CHECK(checkIsConstExpr(context, front->flags & AST_VALUE_COMPUTED, front, Fmt(Err(Err0248), node->token.ctext())));
+        SWAG_CHECK(checkIsConstExpr(context, front->flags & AST_VALUE_COMPUTED, front, Err(Err0248), node->token.text));
         SWAG_VERIFY(front->typeInfo->isNative(NativeTypeKind::String), context->report({front, Fmt(Err(Err0249), node->token.ctext(), front->typeInfo->getDisplayNameC())}));
         auto tag       = g_Workspace->hasTag(front->computedValue->text);
         node->typeInfo = g_TypeMgr->typeInfoBool;
@@ -84,7 +84,7 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
         if (context->result == ContextResult::Pending)
             return true;
 
-        SWAG_CHECK(checkIsConstExpr(context, nameNode->flags & AST_VALUE_COMPUTED, nameNode, Fmt(Err(Err0248), node->token.ctext())));
+        SWAG_CHECK(checkIsConstExpr(context, nameNode->flags & AST_VALUE_COMPUTED, nameNode, Err(Err0248), node->token.text));
         SWAG_VERIFY(!(nameNode->flags & AST_VALUE_IS_TYPEINFO), context->report({nameNode, Err(Err0245)}));
         SWAG_VERIFY(nameNode->typeInfo->isNative(NativeTypeKind::String), context->report({nameNode, Fmt(Err(Err0249), node->token.ctext(), nameNode->typeInfo->getDisplayNameC())}));
         SWAG_VERIFY(!(defaultVal->flags & AST_VALUE_IS_TYPEINFO), context->report({defaultVal, Err(Err0283)}));
@@ -358,7 +358,7 @@ bool SemanticJob::resolveIntrinsicRunes(SemanticContext* context)
 
     // Convert
     vector<uint32_t> runes;
-    const char*      pz  = expr->computedValue->text.c_str();
+    const char*      pz  = expr->computedValue->text.buffer;
     int              cpt = 0;
     while (cpt < expr->computedValue->text.count)
     {

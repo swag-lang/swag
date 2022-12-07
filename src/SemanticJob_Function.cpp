@@ -197,7 +197,7 @@ bool SemanticJob::sendCompilerMsgFuncDecl(SemanticContext* context)
 
     CompilerMessage msg      = {0};
     msg.concrete.kind        = CompilerMsgKind::SemFunctions;
-    msg.concrete.name.buffer = (void*) node->token.ctext();
+    msg.concrete.name.buffer = node->token.text.buffer;
     msg.concrete.name.count  = node->token.text.length();
     msg.typeInfo             = typeInfo;
     SWAG_CHECK(module->postCompilerMessage(context, msg));

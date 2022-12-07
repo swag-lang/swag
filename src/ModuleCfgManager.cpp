@@ -241,7 +241,7 @@ bool ModuleCfgManager::fetchModuleCfg(ModuleDependency* dep, Utf8& cfgFilePath, 
         return Report::report({dep->node, Fmt(Err(Err0513), dep->name.c_str())});
 
     vector<Utf8> tokens;
-    Utf8::tokenize(dep->location.c_str(), '@', tokens);
+    Utf8::tokenize(dep->location, '@', tokens);
     if (tokens.size() != 2)
     {
         if (dep->isLocalToWorkspace)

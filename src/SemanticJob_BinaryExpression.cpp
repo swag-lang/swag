@@ -710,8 +710,9 @@ bool SemanticJob::resolveAppend(SemanticContext* context, AstNode* left, AstNode
         right->computedValue->text = Ast::literalToString(right->typeInfo, *right->computedValue);
 
     node->setFlagsValueIsComputed();
-    node->computedValue->text = left->computedValue->text + right->computedValue->text.c_str();
-    node->typeInfo            = g_TypeMgr->typeInfoString;
+    node->computedValue->text = left->computedValue->text;
+    node->computedValue->text += right->computedValue->text;
+    node->typeInfo = g_TypeMgr->typeInfoString;
     return true;
 }
 

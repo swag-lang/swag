@@ -701,44 +701,57 @@ Utf8 Utf8::format(const char* format, ...)
     return vec;
 }
 
-void Utf8::tokenize(const char* str, char c, vector<Utf8>& tokens)
+void Utf8::tokenize(const Utf8& str, char c, vector<Utf8>& tokens)
 {
     tokens.clear();
 
-    auto pz = str;
+    auto pz = str.buffer;
     if (!pz)
         return;
 
-    while (*pz)
+    auto i = str.count;
+    while (i)
     {
         Utf8 one;
-        while (*pz && *pz != c)
+        while (i && *pz != c)
+        {
             one += *pz++;
-        while (*pz && *pz == c)
+            i--;
+        }
+
+        while (i && *pz == c)
+        {
             pz++;
+            i--;
+        }
+
         if (!one.empty())
             tokens.push_back(one);
     }
 }
 
-void Utf8::tokenizeBlanks(const char* str, vector<Utf8>& tokens)
+void Utf8::tokenizeBlanks(const Utf8& str, vector<Utf8>& tokens)
 {
     tokens.clear();
 
-    auto pz = str;
+    auto pz = str.buffer;
     if (!pz)
         return;
 
-    while (*pz)
+    auto i = str.count;
+    while (i)
     {
         Utf8 one;
-        while (*pz && !SWAG_IS_BLANK(*pz))
-            one += *pz++;
-
-        if (*pz)
+        while (i && !SWAG_IS_BLANK(*pz))
         {
-            while (*pz && SWAG_IS_BLANK(*pz))
-                pz++;
+            one += *pz++;
+            i--;
+        }
+
+        while (i && SWAG_IS_BLANK(*pz))
+        {
+            pz++;
+            i--;
         }
 
         if (!one.empty())

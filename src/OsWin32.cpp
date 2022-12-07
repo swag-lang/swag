@@ -180,7 +180,7 @@ namespace OS
 
                 // Process result
                 vector<Utf8> lines;
-                Utf8::tokenize(strout.c_str(), '\n', lines);
+                Utf8::tokenize(strout, '\n', lines);
                 for (auto oneLine : lines)
                 {
                     if (oneLine.back() == '\r')
