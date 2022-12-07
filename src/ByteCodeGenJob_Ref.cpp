@@ -133,10 +133,9 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
+bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context, TypeInfo* typeInfo)
 {
-    auto node     = context->node;
-    auto typeInfo = node->typeInfo;
+    auto node = context->node;
 
     ensureCanBeChangedRC(context, node->resultRegisterRC);
 

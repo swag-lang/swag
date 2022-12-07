@@ -110,14 +110,24 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     }
 
     // Variable from the tls segment
+    bool forStruct = false;
     if (resolved->flags & OVERLOAD_VAR_TLS)
     {
-        if (node->semFlags & AST_SEM_FROM_REF)
-            return Report::internalError(context->node, "unsupported identifier reference type");
-
         node->resultRegisterRC = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::InternalGetTlsPtr, node->resultRegisterRC);
+        forStruct = true;
+    }
 
+    // Variable from a struct
+    else if (resolved->flags & OVERLOAD_VAR_STRUCT)
+    {
+        node->resultRegisterRC = identifier->identifierRef->resultRegisterRC;
+        SWAG_VERIFY(node->resultRegisterRC.size() > 0, Report::internalError(context->node, Fmt("emitIdentifier, cannot reference identifier `%s`", identifier->token.ctext()).c_str()));
+        forStruct = true;
+    }
+
+    if (forStruct)
+    {
         SWAG_ASSERT(!(resolved->flags & OVERLOAD_VAR_INLINE));
         if (node->resolvedSymbolOverload->computedValue.storageOffset > 0)
         {
@@ -128,43 +138,23 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->flags |= BCI_IMM_B;
         }
 
+        auto typeField = node->typeInfo;
+        if (node->semFlags & AST_SEM_FROM_REF)
+        {
+            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
+            auto ptrPointer = CastTypeInfo<TypeInfoPointer>(typeField, TypeInfoKind::Pointer);
+            SWAG_ASSERT(ptrPointer->flags & TYPEINFO_POINTER_REF);
+            typeField = ptrPointer->pointedType;
+        }
+
         if (!node->forceTakeAddress())
-            emitStructDeRef(context);
+            emitStructDeRef(context, typeField);
         else if (node->parent->flags & AST_ARRAY_POINTER_REF)
             emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
 
         // :SilentCall
-        if (node->token.text.empty())
+        if ((resolved->flags & OVERLOAD_VAR_TLS) && node->token.text.empty())
             freeRegisterRC(context, node->parent);
-
-        identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
-        node->parent->resultRegisterRC              = node->resultRegisterRC;
-        return true;
-    }
-
-    // Reference inside a struct
-    if (resolved->flags & OVERLOAD_VAR_STRUCT)
-    {
-        if (node->semFlags & AST_SEM_FROM_REF)
-            return Report::internalError(context->node, "unsupported identifier reference type");
-
-        SWAG_ASSERT(!(resolved->flags & OVERLOAD_VAR_INLINE));
-        node->resultRegisterRC = identifier->identifierRef->resultRegisterRC;
-        SWAG_VERIFY(node->resultRegisterRC.size() > 0, Report::internalError(context->node, Fmt("emitIdentifier, cannot reference identifier `%s`", identifier->token.ctext()).c_str()));
-
-        if (node->resolvedSymbolOverload->computedValue.storageOffset > 0)
-        {
-            ensureCanBeChangedRC(context, node->resultRegisterRC);
-            auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
-            SWAG_ASSERT(node->resolvedSymbolOverload->computedValue.storageOffset != UINT32_MAX);
-            inst->b.u64 = node->resolvedSymbolOverload->computedValue.storageOffset;
-            inst->flags |= BCI_IMM_B;
-        }
-
-        if (!node->forceTakeAddress())
-            emitStructDeRef(context);
-        else if (node->parent->flags & AST_ARRAY_POINTER_REF)
-            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
 
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
         node->parent->resultRegisterRC              = node->resultRegisterRC;

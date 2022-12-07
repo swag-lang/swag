@@ -972,7 +972,16 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
                 int  idx      = nodeCall->indexParam;
                 if (idx < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[idx])
-                    SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters[idx]->typeInfo, nullptr, nodeCall, CASTFLAG_TRY_COERCE | CASTFLAG_FORCE_UNCONST));
+                {
+                    if (!TypeManager::makeCompatibles(context,
+                                                      oneMatch.solvedParameters[idx]->typeInfo,
+                                                      nullptr,
+                                                      nodeCall,
+                                                      CASTFLAG_TRY_COERCE | CASTFLAG_FORCE_UNCONST | CASTFLAG_PTR_REF))
+                    {
+                        return false;
+                    }
+                }
             }
         }
 
@@ -4014,7 +4023,7 @@ void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<A
     VectorNative<AlternativeScopeVar> toAdd;
     VectorNative<Scope*>              done;
 
-    if(startNode->extension && startNode->extension->misc)
+    if (startNode->extension && startNode->extension->misc)
     {
         SharedLock lk(startNode->extension->misc->mutexAltScopes);
         toAdd.append(startNode->extension->misc->alternativeScopesVars);

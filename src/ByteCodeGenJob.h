@@ -338,7 +338,7 @@ struct ByteCodeGenJob : public Job
     static bool emitMakeLambda(ByteCodeGenContext* context);
     static bool emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0, TypeInfo* typeInfo);
     static bool emitPointerDeRef(ByteCodeGenContext* context);
-    static bool emitStructDeRef(ByteCodeGenContext* context);
+    static bool emitStructDeRef(ByteCodeGenContext* context, TypeInfo* typeInfo);
     static bool emitPointerRef(ByteCodeGenContext* context);
     static bool emitArrayRef(ByteCodeGenContext* context);
     static bool emitStringRef(ByteCodeGenContext* context);
