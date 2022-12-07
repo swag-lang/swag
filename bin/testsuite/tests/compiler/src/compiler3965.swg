@@ -22,7 +22,7 @@ func toto()->const ref VV
 //#[Swag.PrintBc]
 #test
 {
-    x := kref toto()
+    x := ref toto()
     @assert(@typeof(x) == const ref VV)
     @assert(PC == false)
 }

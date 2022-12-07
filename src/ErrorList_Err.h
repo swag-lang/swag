@@ -509,7 +509,7 @@ SWAG_ERROR(Err0513, "cannot resolve the module dependency `%s` (`location` is em
 SWAG_ERROR(Err0514, "invalid `location` format; should have the form `location=\"mode@accesspath\"`")
 SWAG_ERROR(Err0515, "invalid `location` mode; should be `swag` or `disk`, not `%s`")
 SWAG_ERROR(Err0516, "cannot resolve the dependency to module `%s` because of two different major versions (`%d` and `%d`)")
-SWAG_ERROR(Err0517, "unexpected `kref` because the right expression type is not a reference or a pointer (type is `%s`)")
+SWAG_ERROR(Err0517, "unexpected `ref` because the right expression type is not a reference or a pointer (type is `%s`)")
 SWAG_ERROR(Err0518, "cannot resolve the dependency to module `%s`, version `%s` cannot be found at location `%s`")
 SWAG_ERROR(Err0519, "command line error: invalid --stack-size value (%s), valid range is [%s, %s]")
 SWAG_ERROR(Err0520, nullptr)

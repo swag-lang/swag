@@ -35,7 +35,7 @@ and not the reference itself.
 }
 
 /**
-If you want to change the reference and not the pointed value, you can use 'kref'
+If you want to change the reference and not the pointed value, you can use 'ref'.
 */
 
 #test
@@ -46,6 +46,8 @@ If you want to change the reference and not the pointed value, you can use 'kref
     var myRef: const ref s32 = &x
     @assert(myRef == 1)
 
-    myRef = kref &y
+    // Here we force 'myRef' to point to 'y' and not to 'x' anymore.
+    // We do *NOT* change the value of 'x'.
+    myRef = ref &y
     @assert(myRef == 1000)
 }

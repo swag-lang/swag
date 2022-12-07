@@ -8,10 +8,10 @@ func toto()->ref s32
 //#[Swag.PrintBc, Swag.Optim("", false)]
 #test
 {
-    x := kref toto()
-    y := kref x
-    @assert(@typeof(x) == ref s32)
-    @assert(@typeof(y) == ref s32)
+    x := ref toto()
+    y := ref x
+    @assert(@typeof(x) == #type ref s32)
+    @assert(@typeof(y) == #type ref s32)
 
     y = 5
     @assert(G == 5)

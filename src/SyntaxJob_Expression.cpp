@@ -437,7 +437,7 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode
         SWAG_CHECK(doDeRef(parent, &exprNode));
     }
     // Force ref pointer
-    else if (token.id == TokenId::KwdKeepRef)
+    else if (token.id == TokenId::KwdRef)
     {
         SWAG_CHECK(doKeepRef(parent, &exprNode));
     }

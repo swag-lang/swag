@@ -15,7 +15,7 @@ func toto1()->const ref s32
 #test
 {
     @assert(toto() == toto1())
-    @assert(kref toto() != kref toto1())
-    @assert(cast(const *s32) kref toto() == &G)
-    @assert(cast(const *s32) kref toto1() == &G1)
+    @assert(ref toto() != ref toto1())
+    @assert(cast(const *s32) ref toto() == &G)
+    @assert(cast(const *s32) ref toto1() == &G1)
 }
