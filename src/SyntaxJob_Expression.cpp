@@ -126,6 +126,10 @@ bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
     }
 
     // One single parameter
+    else if (node->token.id == TokenId::IntrinsicTypeOf || node->token.id == TokenId::IntrinsicKindOf)
+    {
+        SWAG_CHECK(doExpression(node, EXPR_FLAG_TYPEOF));
+    }
     else
     {
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
@@ -344,9 +348,19 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
 
     case TokenId::KwdFunc:
     case TokenId::KwdClosure:
-        if (exprFlags & EXPR_FLAG_SIMPLE)
-            return invalidTokenError(InvalidTokenError::PrimaryExpression);
-        SWAG_CHECK(doLambdaExpression(parent, result));
+        if (exprFlags & (EXPR_FLAG_ALIAS | EXPR_FLAG_TYPEOF))
+        {
+            PushSyntaxContextFlags cf(this, CONTEXT_FLAG_EXPRESSION);
+            if (exprFlags & EXPR_FLAG_SIMPLE)
+                return invalidTokenError(InvalidTokenError::PrimaryExpression);
+            SWAG_CHECK(doTypeExpression(parent, result));
+        }
+        else
+        {
+            if (exprFlags & EXPR_FLAG_SIMPLE)
+                return invalidTokenError(InvalidTokenError::PrimaryExpression);
+            SWAG_CHECK(doLambdaExpression(parent, result));
+        }
         break;
 
     case TokenId::KwdCast:

@@ -62,7 +62,7 @@ impl MyStruct
 #test
 {
     // Creates a type alias named 'Lambda'
-    alias Lambda = #type func(MyStruct)->s32
+    alias Lambda = func(MyStruct)->s32
 
     var fnX: Lambda
     var fnY: Lambda

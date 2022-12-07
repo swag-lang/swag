@@ -23,7 +23,7 @@ bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymEqual));
 
     AstNode* expr;
-    SWAG_CHECK(doPrimaryExpression(node, EXPR_FLAG_NONE, &expr));
+    SWAG_CHECK(doPrimaryExpression(node, EXPR_FLAG_ALIAS, &expr));
     SWAG_CHECK(eatSemiCol("`alias` expression"));
 
     // This is a type alias

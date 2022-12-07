@@ -23,7 +23,7 @@
 
     // You can use a lambda as a function parameter type
     {
-        alias callback = #type func(s32)->s32
+        alias callback = func(s32)->s32
         func toDo(value: s32, ptr: callback)->s32 => ptr(value)
 
         func square(x: s32) => x * x
@@ -40,7 +40,7 @@
 
     // Anonymous functions can be passed as parameters to another function
     {
-        alias callback = #type func(s32)->s32
+        alias callback = func(s32)->s32
         func toDo(value: s32, ptr: callback)->s32 => ptr(value)
 
         @assert(toDo(4, func(x: s32) => x * x) == 16)
@@ -50,7 +50,7 @@
 
     // Types of parameters can be deduced
     {
-        alias callback = #type func(s32)->s32
+        alias callback = func(s32)->s32
         func toDo(value: s32, ptr: callback)->s32 => ptr(value)
 
         @assert(toDo(4, func(x) => x * x) == 16)

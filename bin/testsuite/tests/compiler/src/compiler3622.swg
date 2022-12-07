@@ -5,7 +5,7 @@ func toto(x, y: s32)->s32
     return 3
 }
 
-alias T = #type func(s32, s32)->s32
+alias T = func(s32, s32)->s32
 
 //#[Swag.PrintBc]
 func call(t: [2] T)
