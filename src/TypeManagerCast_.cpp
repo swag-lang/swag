@@ -3558,9 +3558,10 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     bool result = false;
 
     // From a reference
-    if (fromType->isPointerRef())
+    if (fromType->isPointerRef() ||
+        (fromNode && fromNode->kind == AstNodeKind::KeepRef && fromType->kind == TypeInfoKind::Pointer))
     {
-        auto fromTypeRef = TypeManager::concretePtrRef(fromType);
+        auto fromTypeRef = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer)->pointedType;
         if (fromTypeRef == toType)
         {
             castFlags |= CASTFLAG_FORCE_UNCONST;

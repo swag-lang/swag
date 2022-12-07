@@ -313,10 +313,16 @@ bool SemanticJob::resolveKeepRef(SemanticContext* context)
     node->inheritAndFlag1(AST_CONST_EXPR);
 
     auto typeInfo = TypeManager::concreteType(front->typeInfo);
-    if (!typeInfo->isPointerRef())
+    if (!typeInfo->isPointerRef() && typeInfo->kind != TypeInfoKind::Pointer)
         return context->report({node, Fmt(Err(Err0517), typeInfo->getDisplayNameC())});
 
-    node->typeInfo    = front->typeInfo;
+    if (!typeInfo->isPointerRef())
+    {
+        typeInfo = typeInfo->clone();
+        typeInfo->flags |= TYPEINFO_POINTER_REF;
+    }
+
+    node->typeInfo    = typeInfo;
     node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
     return true;
 }

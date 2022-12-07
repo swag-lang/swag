@@ -70,7 +70,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
     // Check that left type is mutable
     // If not, try to find the culprit type
-    if ((left->flags & AST_IS_CONST) || !(left->flags & AST_L_VALUE) || (left->typeInfo->isPointerRef() && left->typeInfo->isConst()))
+    if ((left->flags & AST_IS_CONST) ||
+        !(left->flags & AST_L_VALUE) ||
+        (left->typeInfo->isConstPointerRef() && right->kind != AstNodeKind::KeepRef))
     {
         Utf8 hint;
         if (left->typeInfo->isConst())
