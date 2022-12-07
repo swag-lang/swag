@@ -61,7 +61,7 @@ In that case, taking the address is not necessary
 
 #test
 {
-    // We can pass a literal as the parameter 'x' of 'toto' is 'const ref' and not just 'ref'.
+    // We can pass a literal because the parameter 'x' of 'toto' is 'const ref' and not just 'ref'.
     toto(4)
 }
 
