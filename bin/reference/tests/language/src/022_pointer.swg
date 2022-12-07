@@ -1,9 +1,9 @@
 #test
 {
-    // A pointer is declared with '*'
+    // A pointer to a single element is declared with '*'
     {
-        var ptr1: *u8
-        var ptr2: **u8
+        var ptr1: *u8   // This is a pointer to one single 'u8'
+        var ptr2: **u8  // This is a pointer to one other pointer to one single 'u8'
     }
 
     // A pointer can be null (i know some of you will collapse here)
@@ -14,10 +14,9 @@
 
     // You can take the address of something with '&'
     {
-        arr := [1, 2, 3, 4]
-        ptr := &arr[0]
-        @assert(ptr[0] == 1)
-        @assert(@dataof(arr) == ptr)
+        arr := 1
+        ptr := &arr // Take the address of the variable 'arr'
+        @assert(@typeof(ptr) == *s32)
     }
 
     // Pointers can be 'const'
@@ -34,11 +33,22 @@
         var ptr2: const **u8        // Const pointer to a normal pointer
     }
 
-    // If you want to enable pointer arithmetic, declare your pointer
-    // with ^ instead of *
+    // You can get the pointed value with 'dref'
+    {
+        arr := 42
+        ptr := &arr
+        @assert(dref ptr == 42)
+    }
+}
+
+#test
+{
+    // '*' is for a pointer to a single value.
+    // But if you want to enable pointer arithmetic, and make a pointer to
+    // multiple values, declare your pointer with ^ instead of *
     {
         var ptr: ^u8
-        ptr = ptr - 1
+        ptr = ptr - 1   // Pointer arithmetic is now possible
     }
 
     // Taking the address of an array element enables pointer arithmetic
@@ -46,16 +56,10 @@
         var x: [4] s32
         ptr := &x[1]
         ptr = ptr - 1
+        #assert @typeof(ptr) == ^s32
     }
 
-    // You can dereference a pointer by index if pointer arithmetic is possible, or with 'dref'
-    {
-        v    := 1
-        ptr := &v
-        @assert(@typeof(ptr) == *s32)
-        @assert(dref ptr == 1)
-    }
-
+    // As pointer arithmetic is enabled, you can dereference that kind of pointer by index
     {
         arr := [1, 2, 3, 4]
         ptr := &arr[0]
@@ -66,7 +70,11 @@
         @assert(value1 == 1)
         #assert @typeof(value1) == s32
 
-        // 'deref' still works for the first element
+        value2 := ptr[1]
+        @assert(value2 == 2)
+        #assert @typeof(value2) == s32
+
+        // But 'dref' still works for the first element
         value := dref ptr
         @assert(value == 1)
         #assert @typeof(value) == s32
