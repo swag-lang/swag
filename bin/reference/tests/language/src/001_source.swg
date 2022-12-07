@@ -1,5 +1,4 @@
-/*
-
+/**
 All swag source files have the '.swg' extension.
 They must be encoded in UTF8.
 
@@ -12,5 +11,4 @@ A module is a dll (windows) or an executable.
 
 A workspace can contain as many executables as you want, and as many modules as you want.
 You will typically compile the full workspace.
-
 */

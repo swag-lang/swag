@@ -9,5 +9,4 @@
 */
 
 const A = 0 // One line comment
-
 const B = /* Comment */ true

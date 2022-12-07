@@ -1,6 +1,8 @@
-#global skip // At the beginning of a file, this tells Swag to NOT take care of the rest.
+/**
+This is the list of all keywords:
+*/
 
-// This is the list of all keywords:
+#global skip // At the beginning of a file, this tells Swag to NOT take care of the rest.
 
 // Compiler keywords
 // -----------------
