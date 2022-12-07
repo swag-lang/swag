@@ -99,46 +99,23 @@ namespace Report
         if (g_CommandLine->warningsAsErrors)
             errorLevel = DiagnosticLevel::Error;
 
-        // Are we in the #semerror block.
-        // If so, we do not count the error, as we want to continue
-        bool inSemError = false;
-        bool isSemError = false;
-        if (diag.sourceNode)
-        {
-            // If we have raised an error for AstNodeKind::CompilerSemError, then this is a real error
-            if (diag.sourceNode->kind == AstNodeKind::CompilerSemError)
-                isSemError = true;
-            else
-            {
-                auto parent = diag.sourceNode->parent;
-                while (parent && parent->kind != AstNodeKind::CompilerSemError)
-                    parent = parent->parent;
-                if (parent)
-                    inSemError = true;
-            }
-        }
-
         if (diag.exceptionError)
         {
             errorLevel = DiagnosticLevel::Error;
-            inSemError = false;
             sourceFile->module->criticalErrors++;
         }
 
         if (errorLevel == DiagnosticLevel::Error)
         {
-            if (!inSemError)
-            {
-                sourceFile->numErrors++;
-                sourceFile->module->numErrors++;
-            }
+            sourceFile->numErrors++;
+            sourceFile->module->numErrors++;
 
             // Do not raise an error if we are waiting for one, during tests
-            if ((sourceFile->numTestErrors || inSemError || sourceFile->multipleTestErrors) && !diag.exceptionError && !isSemError)
+            if ((sourceFile->numTestErrors || sourceFile->multipleTestErrors) && !diag.exceptionError)
             {
                 if (sourceFile->multipleTestErrors)
                     sourceFile->numTestErrors = 0;
-                else if (!inSemError)
+                else
                     sourceFile->numTestErrors--;
                 if (g_CommandLine->verboseTestErrors)
                 {
@@ -152,18 +129,15 @@ namespace Report
 
         if (errorLevel == DiagnosticLevel::Warning)
         {
-            if (!inSemError)
-            {
-                sourceFile->numWarnings++;
-                sourceFile->module->numWarnings++;
-            }
+            sourceFile->numWarnings++;
+            sourceFile->module->numWarnings++;
 
             // Do not raise a warning if we are waiting for one, during tests
             if (sourceFile->numTestWarnings || sourceFile->multipleTestWarnings)
             {
                 if (sourceFile->multipleTestWarnings)
                     sourceFile->numTestWarnings = 0;
-                else if (!inSemError)
+                else
                     sourceFile->numTestWarnings--;
                 if (g_CommandLine->verboseTestErrors)
                 {

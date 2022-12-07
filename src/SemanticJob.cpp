@@ -155,22 +155,6 @@ bool SemanticJob::error(SemanticContext* context, const Utf8& msg)
     return false;
 }
 
-AstNode* SemanticJob::backToSemError()
-{
-    for (int i = (int) nodes.size() - 1; i >= 0; i--)
-    {
-        auto node = nodes[i];
-        if (node->kind == AstNodeKind::CompilerSemError)
-        {
-            while (nodes.size() != i + 1)
-                nodes.pop_back();
-            return node;
-        }
-    }
-
-    return nullptr;
-}
-
 SemanticJob* SemanticJob::newJob(Job* dependentJob, SourceFile* sourceFile, AstNode* rootNode, bool run)
 {
     auto job          = g_Allocator.alloc<SemanticJob>();
@@ -324,7 +308,6 @@ JobResult SemanticJob::execute()
                 case AstNodeKind::Alias:
                 case AstNodeKind::EnumDecl:
                 case AstNodeKind::CompilerAssert:
-                case AstNodeKind::CompilerSemError:
                 case AstNodeKind::CompilerPrint:
                 case AstNodeKind::CompilerRun:
                 case AstNodeKind::AttrDecl:
@@ -413,11 +396,7 @@ JobResult SemanticJob::execute()
 
                 context.result = ContextResult::Done;
                 if (!node->semanticFct(&context))
-                {
-                    node = backToSemError();
-                    if (!node)
-                        return JobResult::ReleaseJob;
-                }
+                    return JobResult::ReleaseJob;
                 else if (context.result == ContextResult::Pending)
                     return JobResult::KeepJobAlive;
                 else if (context.result == ContextResult::NewChilds)

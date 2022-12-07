@@ -1365,11 +1365,6 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         SWAG_CHECK(outputNode(context, concat, node->childs.front()));
         break;
 
-    case AstNodeKind::CompilerSemError:
-        CONCAT_FIXED_STR(concat, "#semerror ");
-        SWAG_CHECK(outputNode(context, concat, node->childs.front()));
-        break;
-
     case AstNodeKind::CompilerAssert:
         CONCAT_FIXED_STR(concat, "#assert(");
         SWAG_CHECK(outputNode(context, concat, node->childs[0]));

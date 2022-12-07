@@ -219,7 +219,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("#global", TokenId::CompilerGlobal);
     keywords.add("#foreignlib", TokenId::CompilerForeignLib);
     keywords.add("#assert", TokenId::CompilerAssert);
-    keywords.add("#semerror", TokenId::CompilerSemError);
     keywords.add("#print", TokenId::CompilerPrint);
     keywords.add("#run", TokenId::CompilerRun);
     keywords.add("#ast", TokenId::CompilerAst);

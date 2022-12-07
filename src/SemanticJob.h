@@ -346,7 +346,6 @@ struct SemanticJob : public Job
     static bool           preResolveAttrDecl(SemanticContext* context);
     static bool           registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNode, uint32_t symbolFlags = 0);
     static void           resolveSubDecls(JobContext* context, AstFuncDecl* funcNode);
-    AstNode*              backToSemError();
     static Utf8           getCompilerFunctionString(AstNode* node, TokenId id);
     static bool           preResolveSubstBreakContinue(SemanticContext* context);
     static bool           sendCompilerMsgFuncDecl(SemanticContext* context);
@@ -412,7 +411,6 @@ struct SemanticJob : public Job
     static bool resolveCompilerMixin(SemanticContext* context);
     static bool resolveCompilerAssert(SemanticContext* context);
     static bool resolveCompilerPrint(SemanticContext* context);
-    static bool resolveCompilerTestError(SemanticContext* context);
     static bool resolveCompilerForeignLib(SemanticContext* context);
     static bool resolveCompilerRun(SemanticContext* context);
     static bool resolveCompilerSelectIfExpression(SemanticContext* context);

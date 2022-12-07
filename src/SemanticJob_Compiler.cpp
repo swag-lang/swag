@@ -482,12 +482,6 @@ bool SemanticJob::preResolveCompilerInstruction(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveCompilerTestError(SemanticContext* context)
-{
-    // Should never be reached
-    return context->report({context->node, Err(Err0241)});
-}
-
 bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
 {
     auto node = context->node;

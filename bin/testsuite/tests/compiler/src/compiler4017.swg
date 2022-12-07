@@ -1,9 +1,9 @@
 #global #[Swag.Safety("overflow", true)]
-//#global testerror
+#global testerror
 
 #test
 {
     x := 1
     x <<=,safe 32
-    #semerror x <<= 32
+    x <<= 32
 }

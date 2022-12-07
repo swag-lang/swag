@@ -317,28 +317,6 @@ bool SyntaxJob::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCompilerSemError(AstNode* parent, AstNode** result, bool embedded)
-{
-    auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerSemError, sourceFile, parent);
-    if (result)
-        *result = node;
-    node->semanticFct = SemanticJob::resolveCompilerTestError;
-    node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
-    node->token = token;
-    SWAG_CHECK(eatToken());
-
-    SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, Report::report({sourceFile, token, Err(Err0367)}));
-    SWAG_ASSERT(g_CommandLine->test);
-    SWAG_VERIFY(!currentCompilerIfBlock, Report::report({sourceFile, token, Err(Err0368)}));
-
-    if (embedded)
-        SWAG_CHECK(doEmbeddedInstruction(node));
-    else
-        SWAG_CHECK(doTopLevelInstruction(node));
-
-    return true;
-}
-
 bool SyntaxJob::doCompilerPrint(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerPrint, sourceFile, parent);
