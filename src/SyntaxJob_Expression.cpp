@@ -337,28 +337,47 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
     case TokenId::SymLeftCurly:
         if (exprFlags & EXPR_FLAG_SIMPLE)
             return invalidTokenError(InvalidTokenError::PrimaryExpression);
-        SWAG_CHECK(doExpressionListTuple(parent, result));
+
+        if (exprFlags & EXPR_FLAG_ALIAS)
+        {
+            PushSyntaxContextFlags cf(this, CONTEXT_FLAG_EXPRESSION);
+            SWAG_CHECK(doTypeExpression(parent, result));
+        }
+        else
+        {
+            SWAG_CHECK(doExpressionListTuple(parent, result));
+        }
+
         break;
 
     case TokenId::SymLeftSquare:
         if (exprFlags & EXPR_FLAG_SIMPLE)
             return invalidTokenError(InvalidTokenError::PrimaryExpression);
-        SWAG_CHECK(doExpressionListArray(parent, result));
-        break;
 
-    case TokenId::KwdFunc:
-    case TokenId::KwdClosure:
-        if (exprFlags & (EXPR_FLAG_ALIAS | EXPR_FLAG_TYPEOF))
+        if (exprFlags & EXPR_FLAG_ALIAS)
         {
             PushSyntaxContextFlags cf(this, CONTEXT_FLAG_EXPRESSION);
-            if (exprFlags & EXPR_FLAG_SIMPLE)
-                return invalidTokenError(InvalidTokenError::PrimaryExpression);
             SWAG_CHECK(doTypeExpression(parent, result));
         }
         else
         {
-            if (exprFlags & EXPR_FLAG_SIMPLE)
-                return invalidTokenError(InvalidTokenError::PrimaryExpression);
+            SWAG_CHECK(doExpressionListArray(parent, result));
+        }
+
+        break;
+
+    case TokenId::KwdFunc:
+    case TokenId::KwdClosure:
+        if (exprFlags & EXPR_FLAG_SIMPLE)
+            return invalidTokenError(InvalidTokenError::PrimaryExpression);
+
+        if (exprFlags & (EXPR_FLAG_ALIAS | EXPR_FLAG_TYPEOF))
+        {
+            PushSyntaxContextFlags cf(this, CONTEXT_FLAG_EXPRESSION);
+            SWAG_CHECK(doTypeExpression(parent, result));
+        }
+        else
+        {
             SWAG_CHECK(doLambdaExpression(parent, result));
         }
         break;
