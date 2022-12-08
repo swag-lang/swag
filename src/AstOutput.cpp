@@ -248,7 +248,7 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
 
     // Content, normal function
     concat.addEolIndent(context.indent);
-    CONCAT_FIXED_STR(concat, "{");
+    concat.addChar('{');
     context.indent++;
     concat.addEol();
 
@@ -282,7 +282,7 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
     removeLastBlankLine(concat);
     context.indent--;
     concat.addIndent(context.indent);
-    CONCAT_FIXED_STR(concat, "}");
+    concat.addChar('}');
     concat.addEol();
     return true;
 }
@@ -303,7 +303,7 @@ bool AstOutput::outputEnum(OutputContext& context, Concat& concat, AstEnum* node
     }
 
     concat.addEolIndent(context.indent);
-    CONCAT_FIXED_STR(concat, "{");
+    concat.addChar('{');
     concat.addEol();
 
     for (auto c : node->childs)
@@ -323,7 +323,7 @@ bool AstOutput::outputEnum(OutputContext& context, Concat& concat, AstEnum* node
     }
 
     concat.addIndent(context.indent);
-    CONCAT_FIXED_STR(concat, "}");
+    concat.addChar('}');
     concat.addEol();
     return true;
 }
@@ -731,7 +731,7 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
     // Opaque export. Just simulate structure with the correct size.
     if (node->attributeFlags & ATTRIBUTE_OPAQUE)
     {
-        CONCAT_FIXED_STR(concat, "{");
+        concat.addChar('{');
         concat.addEol();
 
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
@@ -755,7 +755,7 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
         }
 
         concat.addIndent(context.indent);
-        CONCAT_FIXED_STR(concat, "}");
+        concat.addChar('}');
     }
     else
     {
@@ -1072,7 +1072,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
         context.indent--;
         concat.addIndent(context.indent);
-        CONCAT_FIXED_STR(concat, "}");
+        concat.addChar('}');
         concat.addEol();
         break;
 
@@ -2043,7 +2043,7 @@ bool AstOutput::outputScope(OutputContext& context, Concat& concat, Module* modu
             concat.addString(scope->name);
             concat.addEol();
             concat.addIndent(context.indent);
-            CONCAT_FIXED_STR(concat, "{");
+            concat.addChar('{');
             concat.addEol();
             context.indent++;
         }
@@ -2057,7 +2057,7 @@ bool AstOutput::outputScope(OutputContext& context, Concat& concat, Module* modu
             context.indent--;
             removeLastBlankLine(concat);
             concat.addIndent(context.indent);
-            CONCAT_FIXED_STR(concat, "}");
+            concat.addChar('}');
             concat.addEol();
             concat.addEol();
         }
@@ -2071,7 +2071,8 @@ bool AstOutput::outputScope(OutputContext& context, Concat& concat, Module* modu
         {
             auto nodeImpl = CastAst<AstImpl>(scope->owner, AstNodeKind::Impl);
             auto symbol   = nodeImpl->identifier->resolvedSymbolOverload;
-            concat.addStringFormat("impl %s for %s", symbol->node->getScopedName().c_str(), scope->parentScope->name.c_str());
+            concat.addStringFormat("impl %s for ", symbol->node->getScopedName().c_str());
+            concat.addString(scope->parentScope->name);
             concat.addEol();
         }
         else if (scope->kind == ScopeKind::Enum)
@@ -2088,7 +2089,7 @@ bool AstOutput::outputScope(OutputContext& context, Concat& concat, Module* modu
         }
 
         concat.addIndent(context.indent);
-        CONCAT_FIXED_STR(concat, "{");
+        concat.addChar('{');
         concat.addEol();
 
         context.indent++;
@@ -2103,7 +2104,7 @@ bool AstOutput::outputScope(OutputContext& context, Concat& concat, Module* modu
         context.indent--;
         removeLastBlankLine(concat);
         concat.addIndent(context.indent);
-        CONCAT_FIXED_STR(concat, "}");
+        concat.addChar('}');
         concat.addEol();
         concat.addEol();
 
@@ -2119,7 +2120,7 @@ bool AstOutput::outputScope(OutputContext& context, Concat& concat, Module* modu
     else if (!scope->name.empty())
     {
         concat.addIndent(context.indent);
-        CONCAT_FIXED_STR(concat, "{");
+        concat.addChar('{');
         concat.addEol();
 
         context.indent++;
@@ -2130,7 +2131,7 @@ bool AstOutput::outputScope(OutputContext& context, Concat& concat, Module* modu
 
         removeLastBlankLine(concat);
         concat.addIndent(context.indent);
-        CONCAT_FIXED_STR(concat, "}");
+        concat.addChar('}');
         concat.addEol();
         concat.addEol();
     }
