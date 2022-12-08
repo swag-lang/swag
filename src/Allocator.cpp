@@ -213,8 +213,6 @@ void* AllocatorImpl::alloc(size_t size)
             if (remain)
             {
                 SWAG_ASSERT(!(remain & 7));
-                if (hasStats)
-                    g_Stats.wastedMemory += remain;
 
                 bucket = remain / 8;
                 if (bucket < MAX_FREE_BUCKETS)
