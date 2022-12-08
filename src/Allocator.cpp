@@ -58,6 +58,24 @@ void* AllocatorImpl::tryFreeBlock(uint32_t maxCount, size_t size)
 
     while (tryBlock && cpt++ < maxCount)
     {
+        // :SimpleDefrag
+        while (tryBlock->next && (uint8_t*) tryBlock + tryBlock->size == (uint8_t*) tryBlock->next)
+        {
+            tryBlock->size += tryBlock->next->size;
+            tryBlock->next = tryBlock->next->next;
+        }
+
+        // :SimpleDefrag
+        while (tryBlock->next && (uint8_t*) tryBlock->next + tryBlock->next->size == (uint8_t*) tryBlock)
+        {
+            tryBlock->next->size += tryBlock->size;
+            if (prevBlock)
+                prevBlock->next = tryBlock->next;
+            else
+                firstFreeBlock = tryBlock->next;
+            tryBlock = tryBlock->next;
+        }
+
         if (size <= tryBlock->size)
         {
             auto remainSize = tryBlock->size - size;
