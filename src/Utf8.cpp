@@ -844,8 +844,13 @@ uint32_t Utf8::fuzzyCompare(const Utf8& str1, const Utf8& str2)
 
 Utf8 Utf8::getExtension(const Utf8& name)
 {
-    auto pz = strrchr(name.c_str(), '.');
-    if (!pz)
+    if (!name.buffer)
+        return "";
+
+    auto pz = name.buffer + name.count - 1;
+    while (pz != name.buffer && *pz != '.')
+        pz--;
+    if (*pz != '.')
         return "";
 
     Utf8 result = pz;
