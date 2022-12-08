@@ -369,7 +369,8 @@ struct X64Gen
     uint16_t                     dbgRecordIdx = 0;
     uint16_t*                    dbgStartRecordPtr[MAX_RECORD];
     uint32_t                     dbgStartRecordOffset[MAX_RECORD];
-    VectorNative<DbgTypeRecord*> dbgTypeRecords;
+    uint32_t                     dbgTypeRecordsCount = 0;
+    Concat                       dbgTypeRecords;
     map<TypeInfo*, DbgTypeIndex> dbgMapTypes;
     map<Utf8, DbgTypeIndex>      dbgMapPtrTypes;
     map<Utf8, DbgTypeIndex>      dbgMapRefTypes;

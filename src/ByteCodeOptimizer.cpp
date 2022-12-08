@@ -387,18 +387,6 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
         }
         else
         {
-            // :MemFree
-            // We can make the excess memory available, as the number of instructions will not change anymore.
-            for (int i = 0; i < module->byteCodeFunc.size(); i++)
-            {
-                auto bc     = module->byteCodeFunc[i];
-                auto remain = bc->maxInstructions - bc->numInstructions;
-                g_Allocator.forceFree(bc->out + bc->numInstructions, remain * sizeof(ByteCodeInstruction));
-                bc->maxInstructions = bc->numInstructions;
-                if (g_CommandLine->stats)
-                    g_Stats.memInstructions -= remain * sizeof(ByteCodeInstruction);
-            }
-
             done = true;
             return true;
         }

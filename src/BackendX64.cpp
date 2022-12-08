@@ -838,6 +838,7 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
     pp.postConcat.release();
     pp.globalSegment.release();
     pp.stringSegment.release();
+    pp.dbgTypeRecords.release();
 
     pp.relocTableTextSection.table.clear();
     pp.relocTableTextSection.table.shrink_to_fit();
@@ -859,7 +860,6 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
     pp.functions.shrink_to_fit();
 
     pp.stringTable.release();
-    pp.dbgTypeRecords.release();
 
     pp.directives.reset();
 

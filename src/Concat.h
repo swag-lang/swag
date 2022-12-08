@@ -55,6 +55,16 @@ struct Concat
     void      addU32Str(uint32_t value);
     void      addS32Str8(int value);
 
+    template<typename T>
+    T* addObj()
+    {
+        ensureSpace(sizeof(T));
+        ::new (currentSP) T;
+        auto result = (T*)currentSP;
+        currentSP += sizeof(T);
+        return result;
+    }
+
     bool flushToFile(const string& path);
 
     uint8_t* getSeekPtr()

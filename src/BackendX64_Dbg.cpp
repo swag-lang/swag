@@ -375,7 +375,11 @@ bool BackendX64::dbgEmitDataDebugT(const BuildParameters& buildParameters)
     auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    for (auto& f : pp.dbgTypeRecords)
+    auto bucket = pp.dbgTypeRecords.firstBucket;
+    auto f      = (DbgTypeRecord*) bucket->datas;
+    int  cpt    = 0;
+
+    while (true)
     {
         dbgStartRecord(pp, concat, f->kind);
         switch (f->kind)
@@ -493,15 +497,29 @@ bool BackendX64::dbgEmitDataDebugT(const BuildParameters& buildParameters)
         }
 
         dbgEndRecord(pp, concat, false);
+
+        cpt += sizeof(DbgTypeRecord);
+        f += 1;
+
+        if (cpt >= (int) pp.dbgTypeRecords.bucketCount(bucket))
+        {
+            bucket = bucket->nextBucket;
+            if (!bucket)
+                break;
+            cpt = 0;
+            f   = (DbgTypeRecord*) bucket->datas;
+        }
     }
 
     return true;
 }
 
-void BackendX64::dbgAddTypeRecord(X64Gen& pp, DbgTypeRecord* tr)
+DbgTypeRecord* BackendX64::dbgAddTypeRecord(X64Gen& pp)
 {
-    tr->index = (DbgTypeIndex) pp.dbgTypeRecords.size() + 0x1000;
-    pp.dbgTypeRecords.push_back(tr);
+    auto tr   = pp.dbgTypeRecords.addObj<DbgTypeRecord>();
+    tr->index = (DbgTypeIndex) pp.dbgTypeRecordsCount + 0x1000;
+    pp.dbgTypeRecordsCount++;
+    return tr;
 }
 
 DbgTypeIndex BackendX64::dbgGetSimpleType(TypeInfo* typeInfo)
@@ -567,11 +585,10 @@ DbgTypeIndex BackendX64::dbgGetOrCreatePointerToType(X64Gen& pp, TypeInfo* typeI
     }
 
     // Pointer to something complex
-    DbgTypeRecord* tr          = g_Allocator.alloc<DbgTypeRecord>();
+    auto tr                    = dbgAddTypeRecord(pp);
     tr->kind                   = LF_POINTER;
     tr->LF_Pointer.pointeeType = dbgGetOrCreateType(pp, typeInfo, !asRef);
     tr->LF_Pointer.asRef       = asRef;
-    dbgAddTypeRecord(pp, tr);
 
     if (asRef)
         pp.dbgMapRefTypes[typeInfo->scopedNameExport] = tr->index;
@@ -593,23 +610,23 @@ DbgTypeIndex BackendX64::dbgGetOrCreatePointerPointerToType(X64Gen& pp, TypeInfo
     auto typeIdx = dbgGetOrCreatePointerToType(pp, typeInfo, false);
 
     // Pointer to something complex
-    DbgTypeRecord* tr          = new DbgTypeRecord;
-    tr->kind                   = LF_POINTER;
-    tr->LF_Pointer.pointeeType = typeIdx;
-    dbgAddTypeRecord(pp, tr);
+    auto tr                                          = dbgAddTypeRecord(pp);
+    tr->kind                                         = LF_POINTER;
+    tr->LF_Pointer.pointeeType                       = typeIdx;
     pp.dbgMapPtrPtrTypes[typeInfo->scopedNameExport] = tr->index;
     return tr->index;
 }
 
 DbgTypeIndex BackendX64::dbgEmitTypeSlice(X64Gen& pp, TypeInfo* typeInfo, TypeInfo* pointedType)
 {
-    DbgTypeRecord* tr0 = new DbgTypeRecord;
-    DbgTypeField   field;
+    auto         tr0 = dbgAddTypeRecord(pp);
+    DbgTypeField field;
     tr0->kind           = LF_FIELDLIST;
     field.kind          = LF_MEMBER;
     field.type          = dbgGetOrCreatePointerToType(pp, pointedType, false);
     field.value.reg.u32 = 0;
     field.name          = "data";
+    tr0->LF_FieldList.fields.reserve(2);
     tr0->LF_FieldList.fields.push_back(field);
 
     field.kind          = LF_MEMBER;
@@ -617,9 +634,8 @@ DbgTypeIndex BackendX64::dbgEmitTypeSlice(X64Gen& pp, TypeInfo* typeInfo, TypeIn
     field.value.reg.u32 = sizeof(void*);
     field.name          = "count";
     tr0->LF_FieldList.fields.push_back(field);
-    dbgAddTypeRecord(pp, tr0);
 
-    DbgTypeRecord* tr1            = new DbgTypeRecord;
+    auto tr1                      = dbgAddTypeRecord(pp);
     tr1->kind                     = LF_STRUCTURE;
     tr1->LF_Structure.memberCount = 2;
     tr1->LF_Structure.sizeOf      = 2 * sizeof(void*);
@@ -632,13 +648,13 @@ DbgTypeIndex BackendX64::dbgEmitTypeSlice(X64Gen& pp, TypeInfo* typeInfo, TypeIn
     else
         tr1->name = typeInfo->name;
 
-    dbgAddTypeRecord(pp, tr1);
     pp.dbgMapTypes[typeInfo] = tr1->index;
     return tr1->index;
 }
 
 void BackendX64::dbgRecordFields(X64Gen& pp, DbgTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset)
 {
+    tr->LF_FieldList.fields.reserve(typeStruct->fields.count);
     for (auto& p : typeStruct->fields)
     {
         DbgTypeField field;
@@ -706,13 +722,12 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
     /////////////////////////////////
     if (typeInfo->kind == TypeInfoKind::Array)
     {
-        auto           typeArr   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        DbgTypeRecord* tr        = new DbgTypeRecord;
+        auto typeArr             = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        auto tr                  = dbgAddTypeRecord(pp);
         tr->kind                 = LF_ARRAY;
         tr->LF_Array.elementType = dbgGetOrCreateType(pp, typeArr->pointedType, true);
         tr->LF_Array.indexType   = SimpleTypeKind::UInt64;
         tr->LF_Array.sizeOf      = typeArr->sizeOf;
-        dbgAddTypeRecord(pp, tr);
         pp.dbgMapTypes[typeInfo] = tr->index;
         return tr->index;
     }
@@ -721,13 +736,14 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
     /////////////////////////////////
     if (typeInfo->isNative(NativeTypeKind::String))
     {
-        DbgTypeRecord* tr0 = new DbgTypeRecord;
-        DbgTypeField   field;
+        auto         tr0 = dbgAddTypeRecord(pp);
+        DbgTypeField field;
         tr0->kind           = LF_FIELDLIST;
         field.kind          = LF_MEMBER;
         field.type          = (DbgTypeIndex) (SimpleTypeKind::UnsignedCharacter | (NearPointer64 << 8));
         field.value.reg.u32 = 0;
         field.name          = "data";
+        tr0->LF_FieldList.fields.reserve(2);
         tr0->LF_FieldList.fields.push_back(field);
 
         field.kind          = LF_MEMBER;
@@ -735,15 +751,14 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
         field.value.reg.u32 = sizeof(void*);
         field.name          = "sizeof";
         tr0->LF_FieldList.fields.push_back(field);
-        dbgAddTypeRecord(pp, tr0);
 
-        DbgTypeRecord* tr1            = new DbgTypeRecord;
+        auto tr1                      = dbgAddTypeRecord(pp);
         tr1->kind                     = LF_STRUCTURE;
         tr1->LF_Structure.memberCount = 2;
         tr1->LF_Structure.sizeOf      = 2 * sizeof(void*);
         tr1->LF_Structure.fieldList   = tr0->index;
         tr1->name                     = "string";
-        dbgAddTypeRecord(pp, tr1);
+
         pp.dbgMapTypes[typeInfo] = tr1->index;
         return tr1->index;
     }
@@ -752,13 +767,14 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
     /////////////////////////////////
     if (typeInfo->kind == TypeInfoKind::Interface)
     {
-        DbgTypeRecord* tr0 = new DbgTypeRecord;
-        DbgTypeField   field;
+        auto         tr0 = dbgAddTypeRecord(pp);
+        DbgTypeField field;
         tr0->kind           = LF_FIELDLIST;
         field.kind          = LF_MEMBER;
         field.type          = (DbgTypeIndex) (SimpleTypeKind::UnsignedCharacter | (NearPointer64 << 8));
         field.value.reg.u32 = 0;
         field.name          = "data";
+        tr0->LF_FieldList.fields.reserve(2);
         tr0->LF_FieldList.fields.push_back(field);
 
         field.kind          = LF_MEMBER;
@@ -766,15 +782,14 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
         field.value.reg.u32 = sizeof(void*);
         field.name          = "itable";
         tr0->LF_FieldList.fields.push_back(field);
-        dbgAddTypeRecord(pp, tr0);
 
-        DbgTypeRecord* tr1            = new DbgTypeRecord;
+        auto tr1                      = dbgAddTypeRecord(pp);
         tr1->kind                     = LF_STRUCTURE;
         tr1->LF_Structure.memberCount = 2;
         tr1->LF_Structure.sizeOf      = 2 * sizeof(void*);
         tr1->LF_Structure.fieldList   = tr0->index;
         tr1->name                     = "interface";
-        dbgAddTypeRecord(pp, tr1);
+
         pp.dbgMapTypes[typeInfo] = tr1->index;
         return tr1->index;
     }
@@ -783,13 +798,14 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
     /////////////////////////////////
     if (typeInfo->isNative(NativeTypeKind::Any))
     {
-        DbgTypeRecord* tr0 = new DbgTypeRecord;
-        DbgTypeField   field;
+        auto         tr0 = dbgAddTypeRecord(pp);
+        DbgTypeField field;
         tr0->kind           = LF_FIELDLIST;
         field.kind          = LF_MEMBER;
         field.type          = (DbgTypeIndex) (SimpleTypeKind::UnsignedCharacter | (NearPointer64 << 8));
         field.value.reg.u32 = 0;
         field.name          = "ptrvalue";
+        tr0->LF_FieldList.fields.reserve(2);
         tr0->LF_FieldList.fields.push_back(field);
 
         field.kind          = LF_MEMBER;
@@ -797,15 +813,14 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
         field.value.reg.u32 = sizeof(void*);
         field.name          = "typeinfo";
         tr0->LF_FieldList.fields.push_back(field);
-        dbgAddTypeRecord(pp, tr0);
 
-        DbgTypeRecord* tr1            = new DbgTypeRecord;
+        auto tr1                      = dbgAddTypeRecord(pp);
         tr1->kind                     = LF_STRUCTURE;
         tr1->LF_Structure.memberCount = 2;
         tr1->LF_Structure.sizeOf      = 2 * sizeof(void*);
         tr1->LF_Structure.fieldList   = tr0->index;
         tr1->name                     = "any";
-        dbgAddTypeRecord(pp, tr1);
+
         pp.dbgMapTypes[typeInfo] = tr1->index;
         return tr1->index;
     }
@@ -825,18 +840,19 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
         }
 
         // Create a forward reference, in case a field points to the struct itself
-        DbgTypeRecord* tr2        = new DbgTypeRecord;
+        auto tr2                  = dbgAddTypeRecord(pp);
         tr2->kind                 = LF_STRUCTURE;
         tr2->LF_Structure.forward = true;
         tr2->name                 = sname;
-        dbgAddTypeRecord(pp, tr2);
+
         pp.dbgMapTypes[typeInfo] = tr2->index;
 
         // List of fields, after the forward ref
-        DbgTypeRecord* tr0 = new DbgTypeRecord;
-        tr0->kind          = LF_FIELDLIST;
+        auto tr0  = dbgAddTypeRecord(pp);
+        tr0->kind = LF_FIELDLIST;
         dbgRecordFields(pp, tr0, typeStruct, 0);
 
+        tr0->LF_FieldList.fields.reserve(typeStruct->methods.count);
         for (auto& p : typeStruct->methods)
         {
             DbgTypeField field;
@@ -847,16 +863,13 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
             tr0->LF_FieldList.fields.push_back(field);
         }
 
-        dbgAddTypeRecord(pp, tr0);
-
         // Struct itself, pointing to the field list
-        DbgTypeRecord* tr1            = new DbgTypeRecord;
+        auto tr1                      = dbgAddTypeRecord(pp);
         tr1->kind                     = LF_STRUCTURE;
         tr1->LF_Structure.memberCount = (uint16_t) typeStruct->fields.size();
         tr1->LF_Structure.sizeOf      = (uint16_t) typeStruct->sizeOf;
         tr1->LF_Structure.fieldList   = tr0->index;
         tr1->name                     = sname;
-        dbgAddTypeRecord(pp, tr1);
 
         pp.dbgMapTypes[typeInfo] = tr1->index;
         return tr1->index;
@@ -872,8 +885,9 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
         // List of values
         if (typeEnum->rawType->isNativeInteger())
         {
-            DbgTypeRecord* tr0 = new DbgTypeRecord;
-            tr0->kind          = LF_FIELDLIST;
+            auto tr0  = dbgAddTypeRecord(pp);
+            tr0->kind = LF_FIELDLIST;
+            tr0->LF_FieldList.fields.reserve(typeEnum->values.count);
             for (auto& p : typeEnum->values)
             {
                 DbgTypeField field;
@@ -884,16 +898,15 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
                 field.value     = *p->value;
                 tr0->LF_FieldList.fields.push_back(field);
             }
-            dbgAddTypeRecord(pp, tr0);
 
             // Enum itself, pointing to the field list
-            DbgTypeRecord* tr1          = new DbgTypeRecord;
+            auto tr1                    = dbgAddTypeRecord(pp);
             tr1->kind                   = LF_ENUM;
             tr1->LF_Enum.count          = (uint16_t) typeEnum->values.size();
             tr1->LF_Enum.fieldList      = tr0->index;
             tr1->LF_Enum.underlyingType = dbgGetOrCreateType(pp, typeEnum->rawType);
             tr1->name                   = sname;
-            dbgAddTypeRecord(pp, tr1);
+
             pp.dbgMapTypes[typeInfo] = tr1->index;
             return tr1->index;
         }
@@ -909,7 +922,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
     if (typeInfo->kind == TypeInfoKind::FuncAttr)
     {
         TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
-        DbgTypeRecord*    tr0      = new DbgTypeRecord;
+        auto              tr0      = dbgAddTypeRecord(pp);
 
         // Get the arg list type. We construct a string with all parameters to be able to
         // store something in the cache
@@ -926,7 +939,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
         auto         itn = pp.dbgMapTypesNames.find(args);
         if (itn == pp.dbgMapTypesNames.end())
         {
-            DbgTypeRecord* tr1    = new DbgTypeRecord;
+            auto tr1              = dbgAddTypeRecord(pp);
             tr1->kind             = LF_ARGLIST;
             tr1->LF_ArgList.count = numArgs;
             for (int i = 0; i < typeFunc->parameters.size(); i++)
@@ -937,7 +950,6 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
                 tr1->LF_ArgList.args.push_back(dbgGetOrCreateType(pp, p->typeInfo));
             }
 
-            dbgAddTypeRecord(pp, tr1);
             pp.dbgMapTypesNames[args] = tr1->index;
             argsTypeIndex             = tr1->index;
         }
@@ -962,7 +974,6 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
             tr0->LF_Procedure.argsType   = argsTypeIndex;
         }
 
-        dbgAddTypeRecord(pp, tr0);
         return tr0->index;
     }
 
@@ -1074,8 +1085,8 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
 
         // Add a func id type record
         /////////////////////////////////
-        DbgTypeRecord* tr = new DbgTypeRecord;
-        tr->node          = f.node;
+        auto tr  = dbgAddTypeRecord(pp);
+        tr->node = f.node;
         if (typeFunc->isMethod())
         {
             tr->kind                  = LF_MFUNC_ID;
@@ -1088,8 +1099,6 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
             tr->kind           = LF_FUNC_ID;
             tr->LF_FuncId.type = dbgGetOrCreateType(pp, typeFunc);
         }
-
-        dbgAddTypeRecord(pp, tr);
 
         // Symbol
         /////////////////////////////////
@@ -1513,6 +1522,7 @@ bool BackendX64::emitDebug(const BuildParameters& buildParameters)
     concat.addU32(DEBUG_SECTION_MAGIC);
     if (buildParameters.buildCfg->backendDebugInformations)
     {
+        pp.dbgTypeRecords.init(100 * 1024);
         dbgEmitCompilerFlagsDebugS(concat);
         dbgEmitGlobalDebugS(pp, concat, module->globalVarsMutable, pp.symMSIndex);
         dbgEmitGlobalDebugS(pp, concat, module->globalVarsBss, pp.symBSIndex);

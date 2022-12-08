@@ -408,7 +408,7 @@ void Allocator::forceFree(void* ptr, size_t size)
         return;
 
     Timer timer(&g_Stats.freeTime);
-    SWAG_ASSERT(shared && impl);
+    SWAG_ASSERT(!shared && impl);
     impl->free(ptr, size);
 }
 
