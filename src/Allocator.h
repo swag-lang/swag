@@ -58,6 +58,7 @@ struct Allocator
 #endif
 
     void  free(void*, size_t size);
+    void  forceFree(void* ptr, size_t size);
     void* alloc(size_t size);
 
     AllocatorImpl* impl = nullptr;

@@ -402,6 +402,16 @@ void Allocator::checkBlock(void* ptr)
 }
 #endif
 
+void Allocator::forceFree(void* ptr, size_t size)
+{
+    if (!ptr || !size)
+        return;
+
+    Timer timer(&g_Stats.freeTime);
+    SWAG_ASSERT(shared && impl);
+    impl->free(ptr, size);
+}
+
 void Allocator::free(void* ptr, size_t size)
 {
     if (!ptr || !size)
