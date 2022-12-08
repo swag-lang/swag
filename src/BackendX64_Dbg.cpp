@@ -567,7 +567,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreatePointerToType(X64Gen& pp, TypeInfo* typeI
     }
 
     // Pointer to something complex
-    DbgTypeRecord* tr          = new DbgTypeRecord;
+    DbgTypeRecord* tr          = g_Allocator.alloc<DbgTypeRecord>();
     tr->kind                   = LF_POINTER;
     tr->LF_Pointer.pointeeType = dbgGetOrCreateType(pp, typeInfo, !asRef);
     tr->LF_Pointer.asRef       = asRef;

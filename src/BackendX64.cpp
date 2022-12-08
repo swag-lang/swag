@@ -833,6 +833,7 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
     destFile->close();
     OS::freeOutputFile(destFile);
 
+    // :MemFree
     pp.concat.release();
     pp.postConcat.release();
     pp.globalSegment.release();
@@ -856,7 +857,9 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
     pp.allSymbols.shrink_to_fit();
     pp.functions.clear();
     pp.functions.shrink_to_fit();
-    pp.dbgTypeRecords.clear();
+
+    pp.stringTable.release();
+    pp.dbgTypeRecords.release();
 
     pp.directives.reset();
 
@@ -864,7 +867,9 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
     pp.globalStrings.clear();
     pp.dbgMapTypes.clear();
     pp.dbgMapPtrTypes.clear();
+    pp.dbgMapRefTypes.clear();
     pp.dbgMapPtrPtrTypes.clear();
+    pp.dbgMapTypesNames.clear();
 
     return true;
 }

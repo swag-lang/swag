@@ -35,8 +35,17 @@ struct VectorNative
 
     ~VectorNative()
     {
-        if (buffer)
-            g_Allocator.free(buffer, Allocator::alignSize(allocated * sizeof(T)));
+        release();
+    }
+
+    void release()
+    {
+        if (!buffer)
+            return;
+        g_Allocator.free(buffer, Allocator::alignSize(allocated * sizeof(T)));
+        buffer    = nullptr;
+        count     = 0;
+        allocated = 0;
     }
 
     void reserve(int newcapacity, bool copy = true)
