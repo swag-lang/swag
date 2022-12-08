@@ -10,9 +10,9 @@
 void Tokenizer::trimMultilineString(Utf8& text)
 {
     // Count the blanks before the end
-    const char* pz    = text.c_str() + text.length() - 1;
+    const char* pz    = text.buffer + text.length() - 1;
     int         count = 0;
-    while (pz != text.c_str() && SWAG_IS_BLANK(*pz))
+    while (pz != text.buffer && SWAG_IS_BLANK(*pz))
     {
         count++;
         pz--;
@@ -26,23 +26,29 @@ void Tokenizer::trimMultilineString(Utf8& text)
     copyText.reserve(text.length());
     auto endPz = pz;
 
-    pz = text.c_str();
-    while (*pz && pz != endPz)
+    pz     = text.buffer;
+    auto i = text.count;
+    while (i && pz != endPz)
     {
         auto toRemove = count;
-        while (SWAG_IS_BLANK(*pz) && toRemove)
+        while (i && SWAG_IS_BLANK(*pz) && toRemove)
         {
             pz++;
             toRemove--;
+            i--;
         }
 
-        while (*pz != '\n' && *pz)
+        while (i && *pz != '\n')
         {
             copyText += *pz++;
+            i--;
         }
 
         if (*pz == '\n')
+        {
             copyText += *pz++;
+            i--;
+        }
     }
 
     text = copyText;

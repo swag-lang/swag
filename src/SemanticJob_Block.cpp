@@ -657,8 +657,9 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         }
         else
             content += Fmt("var %s = __addr%u[@index]; ", alias0Name.c_str(), id);
-        content += Fmt("var %s = @index; ", alias1Name.c_str());
-        content += "}} ";
+        content += "var ";
+        content += alias1Name;
+        content += " = @index;}}";
     }
 
     // One dimensional array
@@ -676,16 +677,28 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         content += "{ ";
         content += Fmt("loop %u { ", typeArray->totalCount);
         if (node->specFlags & AST_SPEC_VISIT_WANTPOINTER)
-            content += Fmt("var %s = __addr%u + @index; ", alias0Name.c_str(), id);
+        {
+            content += "var ";
+            content += alias0Name;
+            content += Fmt(" = __addr%u + @index; ", id);
+        }
         else if (pointedType->kind == TypeInfoKind::Struct)
         {
             pointedType->computeScopedName();
-            content += Fmt("var %s = cast(const *%s) __addr%u[@index]; ", alias0Name.c_str(), pointedType->scopedName.c_str(), id);
+            content += "var ";
+            content += alias0Name;
+            content += Fmt(" = cast(const *%s) __addr%u[@index]; ", pointedType->scopedName.c_str(), id);
         }
         else
-            content += Fmt("var %s = __addr%u[@index]; ", alias0Name.c_str(), id);
-        content += Fmt("var %s = @index; ", alias1Name.c_str());
-        content += "}} ";
+        {
+            content += "var ";
+            content += alias0Name;
+            content += Fmt(" = __addr%u[@index]; ", id);
+        }
+
+        content += "var ";
+        content += alias1Name;
+        content += " = @index;}}";
     }
 
     // Slice
@@ -703,16 +716,28 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         content += Fmt("var __addr%u = @dataof(__tmp%u); ", id, id);
         content += Fmt("loop __tmp%u { ", id);
         if (node->specFlags & AST_SPEC_VISIT_WANTPOINTER)
-            content += Fmt("var %s = __addr%u + @index; ", alias0Name.c_str(), id);
+        {
+            content += "var ";
+            content += alias0Name;
+            content += Fmt(" = __addr%u + @index; ", id);
+        }
         else if (pointedType->kind == TypeInfoKind::Struct)
         {
             pointedType->computeScopedName();
-            content += Fmt("var %s = cast(const *%s) __addr%u[@index]; ", alias0Name.c_str(), pointedType->scopedName.c_str(), id);
+            content += "var ";
+            content += alias0Name;
+            content += Fmt(" = cast(const *%s) __addr%u[@index]; ", pointedType->scopedName.c_str(), id);
         }
         else
-            content += Fmt("var %s = __addr%u[@index]; ", alias0Name.c_str(), id);
-        content += Fmt("var %s = @index; ", alias1Name.c_str());
-        content += "}} ";
+        {
+            content += "var ";
+            content += alias0Name;
+            content += Fmt(" = __addr%u[@index]; ", id);
+        }
+
+        content += "var ";
+        content += alias1Name;
+        content += " = @index;}}";
     }
 
     // String
@@ -727,11 +752,20 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         content += Fmt("var __addr%u = @dataof(__tmp%u); ", id, id);
         content += Fmt("loop __tmp%u { ", id);
         if (node->specFlags & AST_SPEC_VISIT_WANTPOINTER)
-            content += Fmt("var %s = __addr%u + @index; ", alias0Name.c_str(), id);
+        {
+            content += "var ";
+            content += alias0Name;
+            content += Fmt(" = __addr%u + @index; ", id);
+        }
         else
-            content += Fmt("var %s = __addr%u[@index]; ", alias0Name.c_str(), id);
-        content += Fmt("var %s = @index; ", alias1Name.c_str());
-        content += "}} ";
+        {
+            content += "var ";
+            content += alias0Name;
+            content += Fmt(" = __addr%u[@index]; ", id);
+        }
+        content += "var ";
+        content += alias1Name;
+        content += " = @index;}}";
     }
 
     // Variadic
@@ -740,9 +774,12 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         SWAG_VERIFY(!(node->specFlags & AST_SPEC_VISIT_WANTPOINTER), context->report({node, Err(Err0627)}));
         content += Fmt("{ loop %s { ", (const char*) concat.firstBucket->datas);
         firstAliasVar = 0;
-        content += Fmt("var %s = %s[@index]; ", alias0Name.c_str(), (const char*) concat.firstBucket->datas);
-        content += Fmt("var %s = @index; ", alias1Name.c_str());
-        content += "}} ";
+        content += "var ";
+        content += alias0Name;
+        content += Fmt(" = %s[@index]; ", (const char*) concat.firstBucket->datas);
+        content += "var ";
+        content += alias1Name;
+        content += " = @index;}}";
     }
 
     // Enum
@@ -753,9 +790,14 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         content += Fmt("{ var __addr%u = @typeof(%s); ", id, (const char*) concat.firstBucket->datas);
         content += Fmt("loop %d { ", typeEnum->values.size());
         firstAliasVar = 1;
-        content += Fmt("var %s = dref cast(const *%s) __addr%u.values[@index].value; ", alias0Name.c_str(), typeInfo->name.c_str(), id);
-        content += Fmt("var %s = @index; ", alias1Name.c_str());
-        content += "}} ";
+        content += "var ";
+        content += alias0Name;
+        content += " = dref cast(const* ";
+        content += typeInfo->name;
+        content += Fmt(") __addr%u.values[@index].value; ", id);
+        content += "var ";
+        content += alias1Name;
+        content += " = @index;}}";
     }
 
     else
