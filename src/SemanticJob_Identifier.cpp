@@ -3999,17 +3999,18 @@ void SemanticJob::collectAlternativeScopes(AstNode* startNode, VectorNative<Alte
             done.push_back(it0.scope);
             addAlternativeScopeOnce(scopes, it0.scope, it0.flags);
 
-            if (it0.scope &&
-                it0.scope->kind == ScopeKind::Struct &&
-                it0.scope->owner->extension &&
-                it0.scope->owner->extension->misc)
+            if (it0.scope && it0.scope->kind == ScopeKind::Struct)
             {
-                // We register the sub scope with the original "node" (top level), because the original node will in the end
-                // become the dependentVar node, and will be converted by cast to the correct type.
+                SharedLock lk(it0.scope->owner->mutex);
+                if (it0.scope->owner->extension && it0.scope->owner->extension->misc)
                 {
-                    SharedLock lk(it0.scope->owner->extension->misc->mutexAltScopes);
-                    for (auto& it1 : it0.scope->owner->extension->misc->alternativeScopes)
-                        toAdd.push_back({it1.scope, it1.flags});
+                    // We register the sub scope with the original "node" (top level), because the original node will in the end
+                    // become the dependentVar node, and will be converted by cast to the correct type.
+                    {
+                        SharedLock lk1(it0.scope->owner->extension->misc->mutexAltScopes);
+                        for (auto& it1 : it0.scope->owner->extension->misc->alternativeScopes)
+                            toAdd.push_back({it1.scope, it1.flags});
+                    }
                 }
             }
         }
@@ -4040,24 +4041,28 @@ void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<A
             addAlternativeScopeOnce(scopes, it0.scope, it0.flags);
             scopesVars.push_back(it0);
 
-            if (it0.scope && it0.scope->kind == ScopeKind::Struct && it0.scope->owner->extension && it0.scope->owner->extension->misc)
+            if (it0.scope && it0.scope->kind == ScopeKind::Struct)
             {
-                // We register the sub scope with the original "node" (top level), because the original node will in the end
-                // become the dependentVar node, and will be converted by cast to the correct type.
+                SharedLock lk(it0.scope->owner->mutex);
+                if (it0.scope->owner->extension && it0.scope->owner->extension->misc)
                 {
-                    SharedLock lk(it0.scope->owner->extension->misc->mutexAltScopes);
-                    for (auto& it1 : it0.scope->owner->extension->misc->alternativeScopesVars)
-                        toAdd.push_back({it0.node, it1.node, it1.scope, it1.flags});
-                }
+                    // We register the sub scope with the original "node" (top level), because the original node will in the end
+                    // become the dependentVar node, and will be converted by cast to the correct type.
+                    {
+                        SharedLock lk1(it0.scope->owner->extension->misc->mutexAltScopes);
+                        for (auto& it1 : it0.scope->owner->extension->misc->alternativeScopesVars)
+                            toAdd.push_back({it0.node, it1.node, it1.scope, it1.flags});
+                    }
 
-                // If this is a struct that comes from a generic, we need to also register the generic scope in order
-                // to be able to find generic functions to instantiate
-                SWAG_ASSERT(it0.scope->owner->typeInfo->kind == TypeInfoKind::Struct);
-                auto typeStruct = CastTypeInfo<TypeInfoStruct>(it0.scope->owner->typeInfo, TypeInfoKind::Struct);
-                if (typeStruct->fromGeneric)
-                {
-                    auto structDecl = CastAst<AstStruct>(typeStruct->fromGeneric->declNode, AstNodeKind::StructDecl);
-                    addAlternativeScopeOnce(scopes, structDecl->scope, 0);
+                    // If this is a struct that comes from a generic, we need to also register the generic scope in order
+                    // to be able to find generic functions to instantiate
+                    SWAG_ASSERT(it0.scope->owner->typeInfo->kind == TypeInfoKind::Struct);
+                    auto typeStruct = CastTypeInfo<TypeInfoStruct>(it0.scope->owner->typeInfo, TypeInfoKind::Struct);
+                    if (typeStruct->fromGeneric)
+                    {
+                        auto structDecl = CastAst<AstStruct>(typeStruct->fromGeneric->declNode, AstNodeKind::StructDecl);
+                        addAlternativeScopeOnce(scopes, structDecl->scope, 0);
+                    }
                 }
             }
         }

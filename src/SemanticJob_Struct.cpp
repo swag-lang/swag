@@ -240,7 +240,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
             ScopedLock lk(child->mutex);
             if (!child->extension || !child->extension->bytecode || !child->extension->bytecode->bc)
             {
-                child->allocateExtension(ExtensionKind::ByteCode);
+                child->allocateExtensionNoLock(ExtensionKind::ByteCode);
                 child->extension->bytecode->bc             = g_Allocator.alloc<ByteCode>();
                 child->extension->bytecode->bc->node       = child;
                 child->extension->bytecode->bc->sourceFile = child->sourceFile;

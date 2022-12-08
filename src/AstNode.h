@@ -280,6 +280,7 @@ struct AstNode
     Utf8        getScopedName();
     void        setOwnerAttrUse(AstAttrUse* attrUse);
     void        allocateExtension(ExtensionKind extensionKind);
+    void        allocateExtensionNoLock(ExtensionKind extensionKind);
     void        swap2Childs();
     bool        hasSpecialFuncCall();
     bool        hasSpecialFuncCall(const Utf8& name);

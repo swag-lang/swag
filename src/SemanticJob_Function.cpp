@@ -1382,7 +1382,7 @@ uint32_t SemanticJob::getMaxStackSize(AstNode* node)
             p = p->parent;
         SWAG_ASSERT(p);
         ScopedLock mk(p->mutex);
-        p->allocateExtension(ExtensionKind::StackSize);
+        p->allocateExtensionNoLock(ExtensionKind::StackSize);
         decSP = max(decSP, p->extension->misc->stackSize);
         return decSP;
     }
@@ -1404,7 +1404,7 @@ void SemanticJob::setOwnerMaxStackSize(AstNode* node, uint32_t size)
             p = p->parent;
         SWAG_ASSERT(p);
         ScopedLock mk(p->mutex);
-        p->allocateExtension(ExtensionKind::StackSize);
+        p->allocateExtensionNoLock(ExtensionKind::StackSize);
         p->extension->misc->stackSize = max(p->extension->misc->stackSize, size);
     }
     else if (node->ownerFct)
@@ -1438,14 +1438,16 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
         inlineNode->extension->owner->ownerTryCatchAssume = identifier->extension->owner->ownerTryCatchAssume;
     }
 
-    inlineNode->allocateExtension(ExtensionKind::AltScopes);
-
     if (funcDecl->extension && funcDecl->extension->misc)
     {
-        ScopedLock lk(inlineNode->extension->misc->mutexAltScopes);
         SharedLock lk1(funcDecl->extension->misc->mutexAltScopes);
-        inlineNode->extension->misc->alternativeScopes     = funcDecl->extension->misc->alternativeScopes;
-        inlineNode->extension->misc->alternativeScopesVars = funcDecl->extension->misc->alternativeScopesVars;
+        if (funcDecl->extension->misc->alternativeScopes.size() || funcDecl->extension->misc->alternativeScopesVars.size())
+        {
+            inlineNode->allocateExtension(ExtensionKind::AltScopes);
+            ScopedLock lk(inlineNode->extension->misc->mutexAltScopes);
+            inlineNode->extension->misc->alternativeScopes     = funcDecl->extension->misc->alternativeScopes;
+            inlineNode->extension->misc->alternativeScopesVars = funcDecl->extension->misc->alternativeScopesVars;
+        }
     }
 
     // Try/Assume

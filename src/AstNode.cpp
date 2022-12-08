@@ -253,6 +253,12 @@ bool AstNode::isSpecialFunctionName()
 
 void AstNode::allocateExtension(ExtensionKind extensionKind)
 {
+    ScopedLock lk(mutex);
+    allocateExtensionNoLock(extensionKind);
+}
+
+void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
+{
     if (!extension)
     {
         extension = g_Allocator.alloc<Extension>();

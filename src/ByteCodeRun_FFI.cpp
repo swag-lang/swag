@@ -38,13 +38,29 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
         g_ModuleMgr->resetFailedModule(moduleName);
         if (!g_ModuleMgr->loadModule(moduleName))
         {
+            // Not sure why. Probably an hidden bug somewhere.
+            // Give this other tries.
+            bool lastChance = false;
+            for (int i = 0; i < 10; i++)
+            {
+                this_thread::sleep_for(100ms);
+                if (g_ModuleMgr->loadModule(moduleName))
+                {
+                    lastChance = true;
+                    break;
+                }
+            }
+
+            if (!lastChance)
+            {
 #ifdef SWAG_DEV_MODE
-            SWAG_ASSERT(false);
+                SWAG_ASSERT(false);
 #endif
-            Diagnostic diag{nodeFunc, Fmt(Err(Err0257), moduleName.c_str(), funcName.c_str(), g_ModuleMgr->loadModuleError.c_str())};
-            diag.showSource = false;
-            context->report(diag);
-            return nullptr;
+                Diagnostic diag{nodeFunc, Fmt(Err(Err0257), moduleName.c_str(), funcName.c_str(), g_ModuleMgr->loadModuleError.c_str())};
+                diag.showSource = false;
+                context->report(diag);
+                return nullptr;
+            }
         }
     }
 
