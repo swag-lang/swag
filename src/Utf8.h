@@ -33,6 +33,7 @@ struct Utf8
     void        resize(int newSize);
     bool        empty() const;
     int         length() const;
+    Utf8        toZeroTerminated() const;
     const char* c_str() const;
     void        clear();
     int         capacity() const;

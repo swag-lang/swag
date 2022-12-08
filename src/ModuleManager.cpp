@@ -98,7 +98,11 @@ void* ModuleManager::getFnPointer(const Utf8& moduleName, const Utf8& funcName)
     SharedLock lk(mutexLoaded);
     auto       here = loadedModules.find(moduleName);
     if (here != loadedModules.end())
-        return OS::getProcAddress(here->second, funcName.c_str());
+    {
+        auto name = funcName.toZeroTerminated();
+        return OS::getProcAddress(here->second, name.c_str());
+    }
+
     return nullptr;
 }
 
@@ -158,7 +162,8 @@ bool ModuleManager::applyPatches(const Utf8& moduleName, void* moduleHandle)
         SWAG_ASSERT(*(uint64_t*) one.patchAddress == SWAG_PATCH_MARKER);
 #endif
 
-        auto fnPtr = OS::getProcAddress(moduleHandle, one.funcDecl->fullnameForeign.c_str());
+        auto foreign = one.funcDecl->fullnameForeign.toZeroTerminated();
+        auto fnPtr   = OS::getProcAddress(moduleHandle, foreign.c_str());
         if (!fnPtr)
         {
             loadModuleError = OS::getLastErrorAsString();

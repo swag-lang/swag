@@ -122,6 +122,19 @@ int Utf8::length() const
     return count;
 }
 
+Utf8 Utf8::toZeroTerminated() const
+{
+    if (!buffer || !buffer[count])
+        return *this;
+
+    Utf8 res;
+    res.reserve(count + 1);
+    memcpy(res.buffer, buffer, count);
+    res.buffer[count] = 0;
+    res.count         = count;
+    return res;
+}
+
 const char* Utf8::c_str() const
 {
     if (!buffer)
