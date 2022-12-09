@@ -185,9 +185,12 @@ void SourceFile::computeFileScopeName()
     scopeName = "__" + name;
 
     char* pz = strrchr(scopeName.buffer, '.');
-    SWAG_ASSERT(pz);
-    *pz             = 0;
-    scopeName.count = (int) (pz - scopeName.c_str());
+    if (pz)
+    {
+        *pz             = 0;
+        scopeName.count = (int) (pz - scopeName.c_str());
+    }
+
     Ast::normalizeIdentifierName(scopeName);
 }
 

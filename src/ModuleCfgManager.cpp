@@ -41,7 +41,7 @@ void ModuleCfgManager::registerCfgFile(SourceFile* file)
     auto parentFolder = fs::path(file->path).parent_path();
     if (file->isScriptFile)
     {
-        moduleName   = file->name;
+        moduleName   = fs::path(file->name.c_str()).replace_extension().string();
         moduleFolder = parentFolder.string();
     }
     else
