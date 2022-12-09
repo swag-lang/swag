@@ -2381,7 +2381,7 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
         {
             if (!(field->flags & TYPEINFO_HAS_USING))
                 continue;
-            if (field->typeInfo->kind != TypeInfoKind::Struct)
+            if (!field->typeInfo->isStruct())
                 continue;
 
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(field->typeInfo, TypeInfoKind::Struct);
@@ -3550,9 +3550,9 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         return castToFromAny(context, toType, fromType, toNode, fromNode, castFlags);
 
     // Variadic
-    if (fromType->kind == TypeInfoKind::TypedVariadic)
+    if (fromType->isTypedVariadic())
         fromType = ((TypeInfoVariadic*) fromType)->rawType;
-    if (toType->kind == TypeInfoKind::TypedVariadic)
+    if (toType->isTypedVariadic())
         toType = ((TypeInfoVariadic*) toType)->rawType;
 
     bool result = false;

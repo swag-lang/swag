@@ -166,8 +166,8 @@ bool ByteCodeGenJob::emitIntrinsicCountOf(ByteCodeGenContext* context)
 
     if (typeInfo->isString() ||
         typeInfo->isSlice() ||
-        typeInfo->kind == TypeInfoKind::Variadic ||
-        typeInfo->kind == TypeInfoKind::TypedVariadic)
+        typeInfo->isVariadic() ||
+        typeInfo->isTypedVariadic())
     {
         ensureCanBeChangedRC(context, expr->resultRegisterRC);
         node->resultRegisterRC = expr->resultRegisterRC[1];

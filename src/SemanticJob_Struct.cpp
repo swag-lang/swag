@@ -148,7 +148,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
 
     // Be sure the second identifier is a struct
     typeInfo = node->identifierFor->typeInfo;
-    if (typeInfo->kind != TypeInfoKind::Struct)
+    if (!typeInfo->isStruct())
     {
         Diagnostic diag{node->identifierFor, Fmt(Err(Err0648), node->identifierFor->token.ctext(), TypeInfo::getArticleKindName(typeInfo))};
         Diagnostic note{node->identifierFor->resolvedSymbolOverload->node, Fmt(Nte(Nte0029), node->identifier->token.ctext()), DiagnosticLevel::Note};
@@ -604,7 +604,7 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
 
     // Be sure this is a struct
     auto typeInfo = node->identifier->typeInfo;
-    if (typeInfo->kind != TypeInfoKind::Struct && typeInfo->kind != TypeInfoKind::Enum)
+    if (!typeInfo->isStruct() && typeInfo->kind != TypeInfoKind::Enum)
     {
         Diagnostic diag{node->identifier, Fmt(Err(Err0662), node->identifier->token.ctext(), TypeInfo::getArticleKindName(typeInfo))};
         Diagnostic note{node->identifier->resolvedSymbolOverload->node, Fmt(Nte(Nte0029), node->identifier->token.ctext()), DiagnosticLevel::Note};
@@ -868,7 +868,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         // Using can only be used on a structure
         if (child->flags & AST_DECL_USING && child->kind == AstNodeKind::ConstDecl)
             return context->report({child, Err(Err0668)});
-        if (child->flags & AST_DECL_USING && child->typeInfo->kind != TypeInfoKind::Struct && !child->typeInfo->isPointerTo(TypeInfoKind::Struct))
+        if (child->flags & AST_DECL_USING && !child->typeInfo->isStruct() && !child->typeInfo->isPointerTo(TypeInfoKind::Struct))
             return context->report({child, Fmt(Err(Err0669), child->typeInfo->getDisplayNameC())});
 
         TypeInfoParam* typeParam = nullptr;

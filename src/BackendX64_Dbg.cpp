@@ -705,14 +705,14 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
 
     // TypedVariadic
     /////////////////////////////////
-    if (typeInfo->kind == TypeInfoKind::Variadic)
+    if (typeInfo->isVariadic())
     {
         return dbgEmitTypeSlice(pp, typeInfo, g_TypeMgr->typeInfoAny);
     }
 
     // TypedVariadic
     /////////////////////////////////
-    if (typeInfo->kind == TypeInfoKind::TypedVariadic)
+    if (typeInfo->isTypedVariadic())
     {
         auto typeInfoPtr = CastTypeInfo<TypeInfoVariadic>(typeInfo, TypeInfoKind::TypedVariadic);
         return dbgEmitTypeSlice(pp, typeInfo, typeInfoPtr->rawType);

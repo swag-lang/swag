@@ -280,7 +280,7 @@ bool ByteCodeGenJob::emitIntrinsicCVaStart(ByteCodeGenContext* context)
     SWAG_ASSERT(node->ownerFct->parameters);
     SWAG_ASSERT(!node->ownerFct->parameters->childs.empty());
     auto param = node->ownerFct->parameters->childs.back();
-    SWAG_ASSERT(param->typeInfo->kind == TypeInfoKind::CVariadic);
+    SWAG_ASSERT(param->typeInfo->isCVariadic());
     auto storageOffset = param->resolvedSymbolOverload->computedValue.storageOffset;
     SWAG_ASSERT(storageOffset != UINT32_MAX);
     inst->b.u64   = storageOffset;
@@ -1553,17 +1553,17 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         // Get the last variadic real type
         TypeInfo* typeRawVariadic = nullptr;
         bool      forVariadic     = false;
-        if (typeInfoFunc->parameters.back()->typeInfo->kind == TypeInfoKind::TypedVariadic)
+        if (typeInfoFunc->parameters.back()->typeInfo->isTypedVariadic())
         {
             auto typeVariadic = CastTypeInfo<TypeInfoVariadic>(typeInfoFunc->parameters.back()->typeInfo, TypeInfoKind::TypedVariadic);
             typeRawVariadic   = typeVariadic->rawType;
             forVariadic       = true;
         }
-        else if (typeInfoFunc->parameters.back()->typeInfo->kind == TypeInfoKind::Variadic)
+        else if (typeInfoFunc->parameters.back()->typeInfo->isVariadic())
         {
             forVariadic = true;
         }
-        else if (typeInfoFunc->parameters.back()->typeInfo->kind == TypeInfoKind::CVariadic)
+        else if (typeInfoFunc->parameters.back()->typeInfo->isCVariadic())
         {
             forVariadic = true;
         }
@@ -1664,7 +1664,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     // Pass a variadic parameter to another function
     auto numVariadic = (uint32_t) (numCallParams - numTypeParams) + 1;
     auto lastParam   = allParams && !allParams->childs.empty() ? allParams->childs.back() : nullptr;
-    if (lastParam && lastParam->typeInfo && lastParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
+    if (lastParam && lastParam->typeInfo && lastParam->typeInfo->isTypedVariadic())
     {
         precallStack += 2 * sizeof(Register);
         emitInstruction(context, ByteCodeOp::PushRAParam2, lastParam->resultRegisterRC[1], lastParam->resultRegisterRC[0]);
@@ -1674,7 +1674,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     }
 
     // Pass a variadic parameter to another function
-    else if (lastParam && lastParam->typeInfo && lastParam->typeInfo->kind == TypeInfoKind::Variadic)
+    else if (lastParam && lastParam->typeInfo && lastParam->typeInfo->isVariadic())
     {
         precallStack += 2 * sizeof(Register);
         emitInstruction(context, ByteCodeOp::PushRAParam2, lastParam->resultRegisterRC[1], lastParam->resultRegisterRC[0]);

@@ -769,7 +769,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     }
 
     // Variadic
-    else if (typeInfo->kind == TypeInfoKind::Variadic || typeInfo->kind == TypeInfoKind::TypedVariadic)
+    else if (typeInfo->isVariadic() || typeInfo->isTypedVariadic())
     {
         SWAG_VERIFY(!(node->specFlags & AST_SPEC_VISIT_WANTPOINTER), context->report({node, Err(Err0627)}));
         content += Fmt("{ loop %s { ", (const char*) concat.firstBucket->datas);
@@ -807,8 +807,8 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         {
             auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
             if (typePtr->pointedType->isEnum() ||
-                typePtr->pointedType->kind == TypeInfoKind::Variadic ||
-                typePtr->pointedType->kind == TypeInfoKind::TypedVariadic ||
+                typePtr->pointedType->isVariadic() ||
+                typePtr->pointedType->isTypedVariadic() ||
                 typePtr->pointedType->isSlice() ||
                 typePtr->pointedType->isArray() ||
                 typePtr->pointedType->isStruct() ||

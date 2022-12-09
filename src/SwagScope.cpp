@@ -5,7 +5,7 @@
 
 void SwagScope::registerType(TypeInfo* typeInfo)
 {
-    if (typeInfo->kind != TypeInfoKind::Struct && typeInfo->kind != TypeInfoKind::Enum)
+    if (!typeInfo->isStruct() && typeInfo->kind != TypeInfoKind::Enum)
         return;
 
     if (typeInfo->name == g_LangSpec->name_TypeInfo)

@@ -17,7 +17,7 @@ bool ByteCodeGenJob::emitLocalVarDeclBefore(ByteCodeGenContext* context)
         {
             // Keep structs, because of opDrop
             auto typeInfo = TypeManager::concreteType(node->resolvedSymbolOverload->typeInfo);
-            if (typeInfo->kind != TypeInfoKind::Struct && !typeInfo->isArrayOfStruct())
+            if (!typeInfo->isStruct() && !typeInfo->isArrayOfStruct())
             {
                 if (!node->assignment)
                 {

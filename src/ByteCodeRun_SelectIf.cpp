@@ -65,7 +65,7 @@ bool ByteCodeRun::executeIsConstExprSI(ByteCodeRunContext* context, ByteCodeInst
 
     // Variadic
     /////////////////////////////////////////
-    if (solved->typeInfo->kind == TypeInfoKind::Variadic || solved->typeInfo->kind == TypeInfoKind::TypedVariadic)
+    if (solved->typeInfo->isVariadic() || solved->typeInfo->isTypedVariadic())
         return getVariadicSI(context, ip, nullptr, nullptr);
 
     uint32_t paramIdx   = ip->c.u32;
@@ -118,7 +118,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
 
     // Variadic
     /////////////////////////////////////////
-    if (solved->typeInfo->kind == TypeInfoKind::Variadic || solved->typeInfo->kind == TypeInfoKind::TypedVariadic)
+    if (solved->typeInfo->isVariadic() || solved->typeInfo->isTypedVariadic())
     {
         if (!getVariadicSI(context, ip, &registersRC[ip->a.u32], &registersRC[ip->b.u32]))
         {

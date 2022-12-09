@@ -387,10 +387,10 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
             {
                 setUnRef(nodeCall);
             }
-            else if (toType->isPointerRef() && toType->isConst() &&
-                     nodeCall->typeInfo->kind != TypeInfoKind::Pointer &&
-                     nodeCall->typeInfo->kind != TypeInfoKind::Struct &&
-                     nodeCall->typeInfo->kind != TypeInfoKind::TypeListTuple)
+            else if (toType->isConstPointerRef() &&
+                     !nodeCall->typeInfo->isPointer() &&
+                     !nodeCall->typeInfo->isStruct() &&
+                     !nodeCall->typeInfo->isListTuple())
             {
                 auto front = nodeCall->childs.front();
 
@@ -429,7 +429,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                     return Report::internalError(nodeCall, "cannot deal with value to pointer ref conversion");
             }
         }
-        else if (oneMatch.solvedParameters.size() && oneMatch.solvedParameters.back() && oneMatch.solvedParameters.back()->typeInfo->kind == TypeInfoKind::TypedVariadic)
+        else if (oneMatch.solvedParameters.size() && oneMatch.solvedParameters.back() && oneMatch.solvedParameters.back()->typeInfo->isTypedVariadic())
         {
             toType = oneMatch.solvedParameters.back()->typeInfo;
             SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters.back()->typeInfo, nullptr, nodeCall));
@@ -728,7 +728,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         parent->previousResolvedNode &&
         !identifier->token.text.empty() && // :SilentCall
         !parent->previousResolvedNode->typeInfo->isPointerTo(TypeInfoKind::Struct) &&
-        parent->previousResolvedNode->typeInfo->kind != TypeInfoKind::Struct)
+        !parent->previousResolvedNode->typeInfo->isStruct())
     {
         return context->report({parent->previousResolvedNode, Fmt(Err(Err0085), parent->previousResolvedNode->token.ctext(), parent->previousResolvedNode->typeInfo->getDisplayNameC())});
     }
@@ -3023,9 +3023,9 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
             // Variadic parameter must be the last one
             if (i != childCount - 1)
             {
-                if (oneParam->typeInfo->kind == TypeInfoKind::Variadic ||
-                    oneParam->typeInfo->kind == TypeInfoKind::TypedVariadic ||
-                    oneParam->typeInfo->kind == TypeInfoKind::CVariadic)
+                if (oneParam->typeInfo->isVariadic() ||
+                    oneParam->typeInfo->isTypedVariadic() ||
+                    oneParam->typeInfo->isCVariadic())
                 {
                     return context->report({oneParam, Err(Err0734)});
                 }

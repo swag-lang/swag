@@ -52,7 +52,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         auto wantedParameter = isAfterVariadic ? parameters.back() : parameters[i];
         auto wantedTypeInfo  = wantedParameter->typeInfo;
 
-        if (wantedTypeInfo->kind == TypeInfoKind::Variadic || wantedTypeInfo->kind == TypeInfoKind::CVariadic)
+        if (wantedTypeInfo->isVariadic() || wantedTypeInfo->isCVariadic())
         {
             context.cptResolved = (int) context.parameters.size();
             return;
@@ -62,7 +62,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
 
         // For a typed variadic, cast against the underlying type
         // In case of a spread, match the underlying type too
-        if (wantedTypeInfo->kind == TypeInfoKind::TypedVariadic)
+        if (wantedTypeInfo->isTypedVariadic())
         {
             if (callTypeInfo->kind != TypeInfoKind::TypedVariadic && !(callTypeInfo->flags & TYPEINFO_SPREAD))
                 wantedTypeInfo = ((TypeInfoVariadic*) wantedTypeInfo)->rawType;
@@ -513,7 +513,7 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
 
             // For a typed variadic, cast against the underlying type
             // In case of a spread, match the underlying type too
-            if (wantedTypeInfo->kind == TypeInfoKind::TypedVariadic)
+            if (wantedTypeInfo->isTypedVariadic())
             {
                 if (callTypeInfo->kind != TypeInfoKind::TypedVariadic && !(callTypeInfo->flags & TYPEINFO_SPREAD))
                     wantedTypeInfo = ((TypeInfoVariadic*) wantedTypeInfo)->rawType;

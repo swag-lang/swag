@@ -394,7 +394,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     }
 
     // Dereference a variadic parameter
-    else if (typeInfo->kind == TypeInfoKind::Variadic)
+    else if (typeInfo->isVariadic())
     {
         emitSafetyBoundCheckSlice(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
 
@@ -414,7 +414,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     }
 
     // Dereference a typed variadic parameter
-    else if (typeInfo->kind == TypeInfoKind::TypedVariadic)
+    else if (typeInfo->isTypedVariadic())
     {
         emitSafetyBoundCheckSlice(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
 

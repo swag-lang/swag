@@ -23,7 +23,7 @@ void Job::waitAllStructInterfacesReg(TypeInfo* typeInfo)
 {
     if (typeInfo->isPointerTo(TypeInfoKind::Struct))
         typeInfo = ((TypeInfoPointer*) typeInfo)->pointedType;
-    if (typeInfo->kind != TypeInfoKind::Struct)
+    if (!typeInfo->isStruct())
         return;
 
     auto       typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
@@ -48,7 +48,7 @@ void Job::waitAllStructInterfaces(TypeInfo* typeInfo)
 {
     if (typeInfo->isPointerTo(TypeInfoKind::Struct))
         typeInfo = ((TypeInfoPointer*) typeInfo)->pointedType;
-    if (typeInfo->kind != TypeInfoKind::Struct)
+    if (!typeInfo->isStruct())
         return;
 
     auto       typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
@@ -73,7 +73,7 @@ void Job::waitAllStructSpecialMethods(TypeInfo* typeInfo)
 {
     if (typeInfo->isPointerTo(TypeInfoKind::Struct))
         typeInfo = ((TypeInfoPointer*) typeInfo)->pointedType;
-    if (typeInfo->kind != TypeInfoKind::Struct)
+    if (!typeInfo->isStruct())
         return;
 
     auto       typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
@@ -91,7 +91,7 @@ void Job::waitAllStructMethods(TypeInfo* typeInfo)
 {
     if (typeInfo->isPointerTo(TypeInfoKind::Struct))
         typeInfo = ((TypeInfoPointer*) typeInfo)->pointedType;
-    if (typeInfo->kind != TypeInfoKind::Struct)
+    if (!typeInfo->isStruct())
         return;
 
     auto       typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
@@ -111,7 +111,7 @@ void Job::waitStructGenerated(TypeInfo* typeInfo)
         typeInfo = ((TypeInfoArray*) typeInfo)->finalType;
     if (typeInfo->isPointerTo(TypeInfoKind::Struct))
         typeInfo = ((TypeInfoPointer*) typeInfo)->pointedType;
-    if (typeInfo->kind != TypeInfoKind::Struct)
+    if (!typeInfo->isStruct())
         return;
     if (typeInfo->flags & TYPEINFO_GENERIC)
         return;
@@ -171,7 +171,7 @@ void Job::waitTypeCompleted(TypeInfo* typeInfo)
     if (typeInfo->isArray())
         typeInfo = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array)->finalType;
     typeInfo = TypeManager::concreteType(typeInfo);
-    if (typeInfo->kind != TypeInfoKind::Struct && typeInfo->kind != TypeInfoKind::Interface)
+    if (!typeInfo->isStruct() && typeInfo->kind != TypeInfoKind::Interface)
         return;
     if (!typeInfo->declNode)
         return;

@@ -810,7 +810,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (node->assignment &&
         node->assignment->kind != AstNodeKind::ExpressionList &&
         node->assignment->kind != AstNodeKind::ExplicitNoInit &&
-        (node->assignment->typeInfo->kind != TypeInfoKind::Struct || !(node->assignment->flags & AST_IN_FUNC_DECL_PARAMS)) &&
+        (!node->assignment->typeInfo->isStruct() || !(node->assignment->flags & AST_IN_FUNC_DECL_PARAMS)) &&
         !isGeneric)
     {
         // A generic type with a default value is a generic type

@@ -147,19 +147,19 @@ bool SemanticJob::resolveTypeLambdaClosure(SemanticContext* context)
                 typeInfo->flags |= TYPEINFO_GENERIC;
 
             // Variadic must be the last one
-            if (typeParam->typeInfo->kind == TypeInfoKind::Variadic)
+            if (typeParam->typeInfo->isVariadic())
             {
                 typeInfo->flags |= TYPEINFO_VARIADIC;
                 if (index != node->parameters->childs.size() - 1)
                     return context->report({param, Err(Err0734)});
             }
-            else if (typeParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
+            else if (typeParam->typeInfo->isTypedVariadic())
             {
                 typeInfo->flags |= TYPEINFO_TYPED_VARIADIC;
                 if (index != node->parameters->childs.size() - 1)
                     return context->report({param, Err(Err0734)});
             }
-            else if (typeParam->typeInfo->kind == TypeInfoKind::CVariadic)
+            else if (typeParam->typeInfo->isCVariadic())
             {
                 typeInfo->flags |= TYPEINFO_C_VARIADIC;
                 if (index != node->parameters->childs.size() - 1)
@@ -272,7 +272,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
         typeNode->typeInfo = typeNode->typeFromLiteral;
 
         // Typed variadic ?
-        if (typeNode->typeInfo->kind == TypeInfoKind::Variadic && !typeNode->childs.empty())
+        if (typeNode->typeInfo->isVariadic() && !typeNode->childs.empty())
         {
             auto typeVariadic     = (TypeInfoVariadic*) typeNode->typeInfo->clone();
             typeVariadic->kind    = TypeInfoKind::TypedVariadic;

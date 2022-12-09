@@ -945,7 +945,8 @@ namespace OS
         return _byteswap_uint64(value);
     }
 
-    void ffi(ByteCodeRunContext* context, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc, const VectorNative<uint32_t>& pushRAParam, void* retCopyAddr)
+    thread_local X64Gen g_FfiX64Gen;
+    void                ffi(ByteCodeRunContext* context, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc, const VectorNative<uint32_t>& pushRAParam, void* retCopyAddr)
     {
         const auto& cc         = g_CallConv[typeInfoFunc->callConv];
         auto        returnType = TypeManager::concreteType(typeInfoFunc->returnType);
@@ -965,7 +966,7 @@ namespace OS
                            (ULONG_PTR*) context->curRegistersRC[pushRAParam[0]].pointer);
         }
 
-        auto& gen = context->ffiX64Gen;
+        auto& gen = g_FfiX64Gen;
         if (!gen.concat.firstBucket)
         {
             auto& concat = gen.concat;

@@ -747,7 +747,7 @@ bool TypeInfoFuncAttr::isVariadic()
     if (parameters.empty())
         return false;
     auto typeParam = ((TypeInfoParam*) parameters.back())->typeInfo;
-    if (typeParam->kind == TypeInfoKind::Variadic || typeParam->kind == TypeInfoKind::TypedVariadic)
+    if (typeParam->isVariadic() || typeParam->isTypedVariadic())
         return true;
     return false;
 }
@@ -757,7 +757,7 @@ bool TypeInfoFuncAttr::isCVariadic()
     if (parameters.empty())
         return false;
     auto typeParam = ((TypeInfoParam*) parameters.back())->typeInfo;
-    if (typeParam->kind == TypeInfoKind::CVariadic)
+    if (typeParam->isCVariadic())
         return true;
     return false;
 }

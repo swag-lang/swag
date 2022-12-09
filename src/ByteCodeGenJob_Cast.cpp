@@ -675,7 +675,7 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
     auto node        = context->node;
     auto toTypeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
 
-    if (fromTypeInfo->kind == TypeInfoKind::TypedVariadic)
+    if (fromTypeInfo->isTypedVariadic())
     {
         auto typeVariadic = CastTypeInfo<TypeInfoVariadic>(fromTypeInfo, TypeInfoKind::TypedVariadic);
         fromTypeInfo      = TypeManager::concreteType(typeVariadic->rawType);
