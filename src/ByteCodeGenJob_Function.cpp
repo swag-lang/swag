@@ -1346,12 +1346,12 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         // :SilentCall
         auto typeArr = CastTypeInfo<TypeInfoArray>(varNode->typeInfo, TypeInfoKind::Array);
         auto typeVar = TypeManager::concreteType(typeArr->finalType, CONCRETE_ALIAS);
-        typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(typeVar, TypeInfoKind::Lambda);
+        typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(typeVar, TypeInfoKind::LambdaClosure);
     }
     else
     {
         auto typeVar = TypeManager::concreteType(varNode->typeInfo, CONCRETE_ALIAS);
-        typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(typeVar, TypeInfoKind::Lambda);
+        typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(typeVar, TypeInfoKind::LambdaClosure);
     }
 
     // Be sure referenced function has bytecode

@@ -95,7 +95,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
         typeStruct = swagScope.regTypeInfoStruct;
         break;
     case TypeInfoKind::FuncAttr:
-    case TypeInfoKind::Lambda:
+    case TypeInfoKind::LambdaClosure:
         typeStruct = swagScope.regTypeInfoFunc;
         break;
     case TypeInfoKind::Enum:
@@ -229,7 +229,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
         break;
     }
 
-    case TypeInfoKind::Lambda:
+    case TypeInfoKind::LambdaClosure:
     case TypeInfoKind::FuncAttr:
     {
         auto concreteType = (ConcreteTypeInfoFunc*) concreteTypeInfoValue;

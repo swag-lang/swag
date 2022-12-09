@@ -87,7 +87,7 @@ bool SemanticJob::resolveMakePointerLambda(SemanticContext* context)
     SWAG_CHECK(checkCanMakeFuncPointer(context, (AstFuncDecl*) funcNode, child));
 
     auto lambdaType  = child->typeInfo->clone();
-    lambdaType->kind = TypeInfoKind::Lambda;
+    lambdaType->kind = TypeInfoKind::LambdaClosure;
     if (child->typeInfo->isClosure())
     {
         lambdaType->flags |= TYPEINFO_RETURN_BY_COPY;

@@ -66,9 +66,9 @@ AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstN
     auto sourceFile = context->sourceFile;
 
     // Tuple item is a lambda
-    if (childType->kind == TypeInfoKind::Lambda)
+    if (childType->kind == TypeInfoKind::LambdaClosure)
     {
-        auto typeLambda             = CastTypeInfo<TypeInfoFuncAttr>(childType, TypeInfoKind::Lambda);
+        auto typeLambda             = CastTypeInfo<TypeInfoFuncAttr>(childType, TypeInfoKind::LambdaClosure);
         auto typeExprLambda         = Ast::newNode<AstTypeLambda>(nullptr, AstNodeKind::TypeLambda, sourceFile, parent);
         typeExprLambda->semanticFct = SemanticJob::resolveTypeLambdaClosure;
         if (childType->flags & TYPEINFO_CAN_THROW)
@@ -572,7 +572,7 @@ bool SemanticJob::deduceLambdaTypeAffect(SemanticContext* context, AstVarDecl* n
             if (!op->tryLambdaType)
             {
                 auto tryType  = allocType<TypeInfoFuncAttr>();
-                tryType->kind = TypeInfoKind::Lambda;
+                tryType->kind = TypeInfoKind::LambdaClosure;
                 if (node->ownerFct->captureParameters)
                     tryType->flags |= TYPEINFO_CLOSURE;
 
@@ -606,18 +606,18 @@ bool SemanticJob::deduceLambdaTypeAffect(SemanticContext* context, AstVarDecl* n
                 return true;
 
             auto typeOverload = CastTypeInfo<TypeInfoFuncAttr>(context->job->cacheMatches[0]->oneOverload->overload->typeInfo, TypeInfoKind::FuncAttr);
-            if (typeOverload->parameters[1]->typeInfo->kind != TypeInfoKind::Lambda)
+            if (typeOverload->parameters[1]->typeInfo->kind != TypeInfoKind::LambdaClosure)
                 return true;
 
-            typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeOverload->parameters[1]->typeInfo, TypeInfoKind::Lambda);
+            typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeOverload->parameters[1]->typeInfo, TypeInfoKind::LambdaClosure);
             if (!typeLambda)
                 return true;
         }
     }
     else
     {
-        SWAG_ASSERT(frontType->kind == TypeInfoKind::Lambda);
-        typeLambda = CastTypeInfo<TypeInfoFuncAttr>(frontType, TypeInfoKind::Lambda);
+        SWAG_ASSERT(frontType->kind == TypeInfoKind::LambdaClosure);
+        typeLambda = CastTypeInfo<TypeInfoFuncAttr>(frontType, TypeInfoKind::LambdaClosure);
     }
 
     auto paramIdx = node->childParentIdx;
@@ -720,7 +720,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             node->ownerScope->addPublicNode(node);
     }
 
-    if (node->attributeFlags & ATTRIBUTE_DISCARDABLE && concreteNodeType->kind != TypeInfoKind::Lambda)
+    if (node->attributeFlags & ATTRIBUTE_DISCARDABLE && concreteNodeType->kind != TypeInfoKind::LambdaClosure)
         return context->report({node, Fmt(Err(Err0297), concreteNodeType->getDisplayNameC())});
 
     // Check for missing initialization
@@ -840,7 +840,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         if (!isGeneric && node->assignment && (isCompilerConstant || (symbolFlags & OVERLOAD_VAR_GLOBAL)))
         {
-            if (node->assignment->typeInfo->kind == TypeInfoKind::Lambda)
+            if (node->assignment->typeInfo->kind == TypeInfoKind::LambdaClosure)
             {
                 SWAG_VERIFY(!isCompilerConstant, context->report({node->assignment, Err(Err0160)}));
                 auto funcNode = CastAst<AstFuncDecl>(node->assignment->typeInfo->declNode, AstNodeKind::FuncDecl, AstNodeKind::TypeLambda);

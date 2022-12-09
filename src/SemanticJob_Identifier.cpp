@@ -202,7 +202,7 @@ void SemanticJob::resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatc
     SWAG_ASSERT(!(funcDecl->flags & AST_IS_GENERIC));
     auto typeUndefinedFct = CastTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr);
     auto concreteType     = TypeManager::concreteType(oneMatch->solvedParameters[i]->typeInfo);
-    auto typeDefinedFct   = CastTypeInfo<TypeInfoFuncAttr>(concreteType, TypeInfoKind::Lambda);
+    auto typeDefinedFct   = CastTypeInfo<TypeInfoFuncAttr>(concreteType, TypeInfoKind::LambdaClosure);
 
     // Replace every parameters types
     for (int paramIdx = 0; paramIdx < typeUndefinedFct->parameters.size(); paramIdx++)
@@ -368,7 +368,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
             i = nodeCall->indexParam;
 
         // This is a lambda that was waiting for a match to have its types, and to continue solving its content
-        if (nodeCall->typeInfo->kind == TypeInfoKind::Lambda && (nodeCall->typeInfo->declNode->semFlags & AST_SEM_PENDING_LAMBDA_TYPING))
+        if (nodeCall->typeInfo->kind == TypeInfoKind::LambdaClosure && (nodeCall->typeInfo->declNode->semFlags & AST_SEM_PENDING_LAMBDA_TYPING))
             resolvePendingLambdaTyping(nodeCall, &oneMatch, i);
 
         uint32_t castFlags = CASTFLAG_AUTO_OPCAST | CASTFLAG_ACCEPT_PENDING | CASTFLAG_PARAMS | CASTFLAG_PTR_REF;
@@ -723,7 +723,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     // no error was raised before
     if (symbol &&
         symbol->kind == SymbolKind::Variable &&
-        overload->typeInfo->kind != TypeInfoKind::Lambda &&
+        overload->typeInfo->kind != TypeInfoKind::LambdaClosure &&
         !parent->startScope &&
         parent->previousResolvedNode &&
         !identifier->token.text.empty() && // :SilentCall
@@ -1103,9 +1103,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             identifier->flags |= AST_NO_BYTECODE;
 
         // Lambda call
-        if (typeInfo->kind == TypeInfoKind::Lambda && identifier->callParameters)
+        if (typeInfo->kind == TypeInfoKind::LambdaClosure && identifier->callParameters)
         {
-            auto typeInfoRet = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::Lambda)->returnType;
+            auto typeInfoRet = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::LambdaClosure)->returnType;
 
             // Check return value
             if (!typeInfoRet->isNative(NativeTypeKind::Void))
@@ -1570,7 +1570,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 symbolKind != SymbolKind::Function &&
                 symbolKind != SymbolKind::Struct &&
                 symbolKind != SymbolKind::Interface &&
-                overload->typeInfo->kind != TypeInfoKind::Lambda)
+                overload->typeInfo->kind != TypeInfoKind::LambdaClosure)
             {
                 auto match              = job->getOneMatch();
                 match->symbolOverload   = overload;
@@ -1654,9 +1654,9 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(rawTypeInfo, TypeInfoKind::FuncAttr);
             typeInfo->match(oneOverload.symMatchContext);
         }
-        else if (rawTypeInfo->kind == TypeInfoKind::Lambda)
+        else if (rawTypeInfo->kind == TypeInfoKind::LambdaClosure)
         {
-            auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(rawTypeInfo, TypeInfoKind::Lambda);
+            auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(rawTypeInfo, TypeInfoKind::LambdaClosure);
             typeInfo->match(oneOverload.symMatchContext);
         }
         else if (rawTypeInfo->kind == TypeInfoKind::Generic)
@@ -1667,7 +1667,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         {
             auto typeArr   = CastTypeInfo<TypeInfoArray>(rawTypeInfo, TypeInfoKind::Array);
             auto typeFinal = TypeManager::concreteType(typeArr->finalType);
-            auto typeInfo  = CastTypeInfo<TypeInfoFuncAttr>(typeFinal, TypeInfoKind::Lambda);
+            auto typeInfo  = CastTypeInfo<TypeInfoFuncAttr>(typeFinal, TypeInfoKind::LambdaClosure);
             typeInfo->match(oneOverload.symMatchContext);
         }
         else
@@ -2001,7 +2001,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 {
                     if (overload->typeInfo->flags & TYPEINFO_FROM_GENERIC)
                     {
-                        auto         typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
+                        auto         typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
                         AstFuncDecl* funcNode = CastAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
                         auto         orgNode  = funcNode->originalGeneric ? funcNode->originalGeneric : overload->typeInfo->declNode;
                         auto         couldBe  = Fmt(Nte(Nte0045), orgNode->typeInfo->getDisplayNameC());
@@ -2297,10 +2297,10 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
             VectorNative<TypeInfoEnum*> result;
             for (auto& overload : symbol->overloads)
             {
-                if (overload->typeInfo->kind != TypeInfoKind::FuncAttr && overload->typeInfo->kind != TypeInfoKind::Lambda)
+                if (overload->typeInfo->kind != TypeInfoKind::FuncAttr && overload->typeInfo->kind != TypeInfoKind::LambdaClosure)
                     continue;
 
-                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
+                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
 
                 // If there's only one corresponding type in the function, then take it
                 // If it's not the correct parameter, the match will not be done, so we do not really care here
@@ -2835,7 +2835,7 @@ bool SemanticJob::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFun
 
     // As we have a variable on the left (or equivalent), force it, except when calling a lambda with the
     // right number of arguments (not sure all of thoses tests are bullet proof)
-    if (typeFunc->kind == TypeInfoKind::Lambda)
+    if (typeFunc->kind == TypeInfoKind::LambdaClosure)
         return false;
 
     return nodeIsExplicit;
@@ -2848,7 +2848,7 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
     bool canDoUfcs = false;
     if (symbol->kind == SymbolKind::Function)
         canDoUfcs = true;
-    if (symbol->kind == SymbolKind::Variable && overload->typeInfo->kind == TypeInfoKind::Lambda)
+    if (symbol->kind == SymbolKind::Variable && overload->typeInfo->kind == TypeInfoKind::LambdaClosure)
         canDoUfcs = node->callParameters;
     if (isFunctionButNotACall(context, node, symbol))
         canDoUfcs = false;
@@ -2881,7 +2881,7 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
             if (canTry)
             {
                 SWAG_ASSERT(identifierRef->previousResolvedNode);
-                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
+                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
                 canTry        = canTryUfcs(context, typeFunc, node->callParameters, identifierRef->previousResolvedNode, true);
                 if (context->result == ContextResult::Pending)
                     return true;
@@ -2975,7 +2975,7 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
             symbolKind != SymbolKind::TypeAlias &&
             !node->token.text.empty() && // :SilentCall
             symbol->overloads[0]->typeInfo->kind != TypeInfoKind::Generic &&
-            TypeManager::concreteType(symbol->overloads[0]->typeInfo, CONCRETE_ALIAS)->kind != TypeInfoKind::Lambda)
+            TypeManager::concreteType(symbol->overloads[0]->typeInfo, CONCRETE_ALIAS)->kind != TypeInfoKind::LambdaClosure)
         {
             auto firstNode = symbol->nodes.front();
             if (symbolKind == SymbolKind::Variable)
@@ -3212,7 +3212,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         }
 
         // Priority to lambda call in a parameter over a function outside the actual function
-        if (over->typeInfo->kind == TypeInfoKind::Lambda)
+        if (over->typeInfo->kind == TypeInfoKind::LambdaClosure)
         {
             auto callParams = over->node->findParent(AstNodeKind::FuncCallParams);
             if (callParams)
@@ -4331,7 +4331,7 @@ bool SemanticJob::checkCanCatch(SemanticContext* context)
     {
         if (!c->resolvedSymbolOverload)
             continue;
-        if (c->resolvedSymbolOverload->symbol->kind == SymbolKind::Function || c->resolvedSymbolOverload->typeInfo->kind == TypeInfoKind::Lambda)
+        if (c->resolvedSymbolOverload->symbol->kind == SymbolKind::Function || c->resolvedSymbolOverload->typeInfo->kind == TypeInfoKind::LambdaClosure)
             return true;
     }
 

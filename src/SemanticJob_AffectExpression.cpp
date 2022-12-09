@@ -32,7 +32,7 @@ bool SemanticJob::resolveAfterAffectLeft(SemanticContext* context)
     // :DeduceLambdaType
     auto node     = context->node;
     auto typeInfo = TypeManager::concreteType(node->typeInfo);
-    if (typeInfo->kind == TypeInfoKind::Lambda || typeInfo->isStruct())
+    if (typeInfo->kind == TypeInfoKind::LambdaClosure || typeInfo->isStruct())
     {
         auto op = CastAst<AstOp>(node->parent, AstNodeKind::AffectOp);
         if (op->dependentLambda)
@@ -246,7 +246,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         if (leftTypeInfo->kind != TypeInfoKind::Native &&
             leftTypeInfo->kind != TypeInfoKind::Pointer &&
             leftTypeInfo->kind != TypeInfoKind::Slice &&
-            leftTypeInfo->kind != TypeInfoKind::Lambda &&
+            leftTypeInfo->kind != TypeInfoKind::LambdaClosure &&
             leftTypeInfo->kind != TypeInfoKind::TypeListTuple &&
             leftTypeInfo->kind != TypeInfoKind::TypeListArray &&
             leftTypeInfo->kind != TypeInfoKind::Struct &&
@@ -258,7 +258,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         if (rightTypeInfo->kind != TypeInfoKind::Native &&
             rightTypeInfo->kind != TypeInfoKind::Pointer &&
             rightTypeInfo->kind != TypeInfoKind::Slice &&
-            rightTypeInfo->kind != TypeInfoKind::Lambda &&
+            rightTypeInfo->kind != TypeInfoKind::LambdaClosure &&
             rightTypeInfo->kind != TypeInfoKind::TypeListTuple &&
             rightTypeInfo->kind != TypeInfoKind::TypeListArray &&
             rightTypeInfo->kind != TypeInfoKind::Struct &&

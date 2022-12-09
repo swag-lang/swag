@@ -451,9 +451,9 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             {
                 auto front = op->childs.front();
                 SWAG_ASSERT(front->typeInfo);
-                if (front->typeInfo->kind == TypeInfoKind::Lambda)
+                if (front->typeInfo->kind == TypeInfoKind::LambdaClosure)
                 {
-                    auto typeFct       = CastTypeInfo<TypeInfoFuncAttr>(front->typeInfo, TypeInfoKind::Lambda);
+                    auto typeFct       = CastTypeInfo<TypeInfoFuncAttr>(front->typeInfo, TypeInfoKind::LambdaClosure);
                     typeNode->typeInfo = typeFct->returnType;
                 }
             }
@@ -595,7 +595,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         typeInfo->returnType->kind != TypeInfoKind::Struct &&
         typeInfo->returnType->kind != TypeInfoKind::Generic &&
         typeInfo->returnType->kind != TypeInfoKind::Alias &&
-        typeInfo->returnType->kind != TypeInfoKind::Lambda &&
+        typeInfo->returnType->kind != TypeInfoKind::LambdaClosure &&
         typeInfo->returnType->kind != TypeInfoKind::Slice &&
         typeInfo->returnType->kind != TypeInfoKind::Enum &&
         typeInfo->returnType->kind != TypeInfoKind::Interface &&

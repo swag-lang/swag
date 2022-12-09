@@ -241,7 +241,7 @@ struct TypeInfo
     bool isBool()                           { return isNative(NativeTypeKind::Bool); }
     bool isRune()                           { return isNative(NativeTypeKind::Rune); }
     bool isCString()                        { return (kind == TypeInfoKind::Pointer) && (flags & TYPEINFO_C_STRING); }
-    bool isLambda()                         { return (kind == TypeInfoKind::Lambda) && !isClosure(); }
+    bool isLambda()                         { return (kind == TypeInfoKind::LambdaClosure) && !isClosure(); }
     bool isClosure()                        { return (flags & TYPEINFO_CLOSURE); }
     bool isNativeInteger()                  { return (flags & TYPEINFO_INTEGER); }
     bool isNativeIntegerUnsignedOrRune()    { return ((flags & TYPEINFO_INTEGER) && (flags & TYPEINFO_UNSIGNED)) || isRune(); }

@@ -348,7 +348,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
     fromType = TypeManager::concreteType(fromType);
 
     if (fromType->isPointer() ||
-        fromType->kind == TypeInfoKind::Lambda ||
+        fromType->kind == TypeInfoKind::LambdaClosure ||
         fromType->isInterface() ||
         fromType->isSlice())
     {
@@ -1087,7 +1087,7 @@ bool TypeManager::castToNativeUInt(SemanticContext* context, TypeInfo* fromType,
     if (fromType->nativeType == NativeTypeKind::U64 || fromType->nativeType == NativeTypeKind::UInt)
         return true;
 
-    if (fromType->isPointer() || fromType->kind == TypeInfoKind::Lambda)
+    if (fromType->isPointer() || fromType->kind == TypeInfoKind::LambdaClosure)
     {
         if (castFlags & CASTFLAG_EXPLICIT)
         {
@@ -2608,7 +2608,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
     }
 
     // Lambda to *void
-    if (fromType->kind == TypeInfoKind::Lambda)
+    if (fromType->kind == TypeInfoKind::LambdaClosure)
     {
         if ((castFlags & CASTFLAG_EXPLICIT) && toType->isPointerVoid())
         {
@@ -2825,7 +2825,7 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
 
 bool TypeManager::castToLambda(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
-    TypeInfoFuncAttr* toTypeLambda = CastTypeInfo<TypeInfoFuncAttr>(toType, TypeInfoKind::Lambda);
+    TypeInfoFuncAttr* toTypeLambda = CastTypeInfo<TypeInfoFuncAttr>(toType, TypeInfoKind::LambdaClosure);
     if (castFlags & CASTFLAG_EXPLICIT)
     {
         if (fromType == g_TypeMgr->typeInfoNull || fromType->isPointerConstVoid())
@@ -2845,7 +2845,7 @@ bool TypeManager::castToLambda(SemanticContext* context, TypeInfo* toType, TypeI
 
 bool TypeManager::castToClosure(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
-    TypeInfoFuncAttr* toTypeLambda = CastTypeInfo<TypeInfoFuncAttr>(toType, TypeInfoKind::Lambda);
+    TypeInfoFuncAttr* toTypeLambda = CastTypeInfo<TypeInfoFuncAttr>(toType, TypeInfoKind::LambdaClosure);
     if (castFlags & CASTFLAG_EXPLICIT)
     {
         if (fromType == g_TypeMgr->typeInfoNull)
@@ -3515,7 +3515,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         toType = TypeManager::concreteType(toType, CONCRETE_FUNC);
     if (fromType->isFuncAttr())
         fromType = TypeManager::concreteType(fromType, CONCRETE_FUNC);
-    if (toType->kind != TypeInfoKind::Lambda && fromType->kind == TypeInfoKind::Lambda)
+    if (toType->kind != TypeInfoKind::LambdaClosure && fromType->kind == TypeInfoKind::LambdaClosure)
         fromType = TypeManager::concreteType(fromType, CONCRETE_FUNC);
 
     // Transform typealias to related type
@@ -3625,7 +3625,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
             break;
 
             // Cast to lambda
-        case TypeInfoKind::Lambda:
+        case TypeInfoKind::LambdaClosure:
             if (toType->isClosure())
                 SWAG_CHECK(castToClosure(context, toType, fromType, fromNode, castFlags));
             else
@@ -3638,7 +3638,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     }
 
     // Const mismatch
-    if (toType->kind != TypeInfoKind::Generic && toType->kind != TypeInfoKind::Lambda && !(castFlags & CASTFLAG_FORCE_UNCONST))
+    if (toType->kind != TypeInfoKind::Generic && toType->kind != TypeInfoKind::LambdaClosure && !(castFlags & CASTFLAG_FORCE_UNCONST))
     {
         if (!(castFlags & CASTFLAG_PARAMS) || !toType->isStruct())
         {

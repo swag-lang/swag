@@ -154,7 +154,7 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
     {
         if (to->kind == TypeInfoKind::Generic)
             return true;
-        if (this == g_TypeMgr->typeInfoNull && to->kind == TypeInfoKind::Lambda)
+        if (this == g_TypeMgr->typeInfoNull && to->kind == TypeInfoKind::LambdaClosure)
             return true;
     }
 
@@ -549,7 +549,7 @@ static void computeNameGenericParameters(VectorNative<TypeInfoParam*>& genericPa
 void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
     bool addedName = false;
-    if (kind != TypeInfoKind::Lambda)
+    if (kind != TypeInfoKind::LambdaClosure)
     {
         if (nameType == COMPUTE_SCOPED_NAME || nameType == COMPUTE_SCOPED_NAME_EXPORT)
         {
@@ -717,7 +717,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint32_t isSameFlags)
 
     if (isSameFlags & ISSAME_CAST)
     {
-        if (kind == TypeInfoKind::Lambda && to == g_TypeMgr->typeInfoNull)
+        if (kind == TypeInfoKind::LambdaClosure && to == g_TypeMgr->typeInfoNull)
             return true;
     }
 
@@ -725,11 +725,11 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint32_t isSameFlags)
         return false;
 
     auto other = static_cast<TypeInfoFuncAttr*>(to);
-    SWAG_ASSERT(to->isFuncAttr() || to->kind == TypeInfoKind::Lambda);
+    SWAG_ASSERT(to->isFuncAttr() || to->kind == TypeInfoKind::LambdaClosure);
     if (!isSame(other, isSameFlags))
         return false;
 
-    if ((isSameFlags & ISSAME_EXACT) || (to->kind == TypeInfoKind::Lambda))
+    if ((isSameFlags & ISSAME_EXACT) || (to->kind == TypeInfoKind::LambdaClosure))
     {
         if (returnType && returnType != g_TypeMgr->typeInfoVoid && !other->returnType)
             return false;

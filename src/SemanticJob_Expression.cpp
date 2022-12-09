@@ -308,7 +308,7 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
                  typeInfo->kind != TypeInfoKind::Interface &&
                  !(typeInfo->isNativeInteger()) &&
                  !(typeInfo->isNativeFloat()) &&
-                 typeInfo->kind != TypeInfoKind::Lambda)
+                 typeInfo->kind != TypeInfoKind::LambdaClosure)
         {
             return context->report({expression, Fmt(Err(Err0332), typeInfo->getDisplayNameC())});
         }

@@ -250,7 +250,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         }
 
         // Match function signature
-        auto typeLambda = CastTypeInfo<TypeInfoFuncAttr>(symbolName->typeInfo, TypeInfoKind::Lambda);
+        auto typeLambda = CastTypeInfo<TypeInfoFuncAttr>(symbolName->typeInfo, TypeInfoKind::LambdaClosure);
         auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
         if (!typeLambda->isSame(typeFunc, ISSAME_EXACT | ISSAME_INTERFACE))
         {
@@ -310,7 +310,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         content += missingNode->namedParam;
 
         content += "(using self";
-        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(missingNode->typeInfo, TypeInfoKind::Lambda);
+        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(missingNode->typeInfo, TypeInfoKind::LambdaClosure);
         for (int i = 1; i < typeFunc->parameters.size(); i++)
         {
             content += ", ";
@@ -448,8 +448,8 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
 
             // Verify signature
             typeParam->typeInfo = TypeManager::concreteType(child->typeInfo, CONCRETE_ALIAS);
-            SWAG_VERIFY(typeParam->typeInfo->kind == TypeInfoKind::Lambda, context->report({varDecl->type, Fmt(Err(Err0676), child->typeInfo->getDisplayNameC())}));
-            auto typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeParam->typeInfo, TypeInfoKind::Lambda);
+            SWAG_VERIFY(typeParam->typeInfo->kind == TypeInfoKind::LambdaClosure, context->report({varDecl->type, Fmt(Err(Err0676), child->typeInfo->getDisplayNameC())}));
+            auto typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeParam->typeInfo, TypeInfoKind::LambdaClosure);
             SWAG_VERIFY(typeLambda->parameters.size() >= 1, context->report({varDecl->type, Fmt(Err(Err0677), child->token.ctext())}));
             auto firstParamType = typeLambda->parameters[0]->typeInfo;
             SWAG_VERIFY(firstParamType->isPointer(), context->report({typeLambda->parameters[0]->declNode, Fmt(Err(Err0679), firstParamType->getDisplayNameC())}));

@@ -143,7 +143,7 @@ const char* TypeInfo::getArticleKindName(TypeInfo* typeInfo)
         return "a pointer";
     case TypeInfoKind::FuncAttr:
         return "a function";
-    case TypeInfoKind::Lambda:
+    case TypeInfoKind::LambdaClosure:
         if (typeInfo->isClosure())
             return "a closure";
         return "a lambda";
@@ -190,7 +190,7 @@ const char* TypeInfo::getNakedKindName(TypeInfo* typeInfo)
         return "pointer";
     case TypeInfoKind::FuncAttr:
         return "function";
-    case TypeInfoKind::Lambda:
+    case TypeInfoKind::LambdaClosure:
         if (typeInfo->isClosure())
             return "closure";
         return "lambda";

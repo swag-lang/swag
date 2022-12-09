@@ -444,10 +444,10 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                         break;
                     }
 
-                    case TypeInfoKind::Lambda:
+                    case TypeInfoKind::LambdaClosure:
                     {
-                        auto symbolLambda = CastTypeInfo<TypeInfoFuncAttr>(wantedTypeInfo, TypeInfoKind::Lambda);
-                        auto typeLambda   = CastTypeInfo<TypeInfoFuncAttr>(callTypeInfo, TypeInfoKind::Lambda);
+                        auto symbolLambda = CastTypeInfo<TypeInfoFuncAttr>(wantedTypeInfo, TypeInfoKind::LambdaClosure);
+                        auto typeLambda   = CastTypeInfo<TypeInfoFuncAttr>(callTypeInfo, TypeInfoKind::LambdaClosure);
                         if (symbolLambda->returnType && (symbolLambda->returnType->flags & TYPEINFO_GENERIC))
                         {
                             symbolTypeInfos.push_back(symbolLambda->returnType);

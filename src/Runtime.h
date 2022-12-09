@@ -201,7 +201,7 @@ enum class TypeInfoKind : uint8_t
     Namespace,
     Enum,
     FuncAttr,
-    Lambda,
+    LambdaClosure,
     Pointer,
     Array,
     Slice,

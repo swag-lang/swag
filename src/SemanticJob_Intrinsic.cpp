@@ -125,10 +125,10 @@ bool SemanticJob::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode
     auto typeFirst = TypeManager::concreteType(first->typeInfo);
 
     // Check first parameter
-    if (typeFirst->kind != TypeInfoKind::Lambda)
+    if (typeFirst->kind != TypeInfoKind::LambdaClosure)
         return context->report({node, Err(Err0784)});
 
-    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeFirst, TypeInfoKind::Lambda);
+    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeFirst, TypeInfoKind::LambdaClosure);
     if (typeFunc->parameters.size() > SWAG_LIMIT_CB_MAX_PARAMS)
         return context->report({first, Fmt(Err(Err0785), SWAG_LIMIT_CB_MAX_PARAMS, typeFunc->parameters.size()), Hint::isType(typeFunc)});
     if (typeFunc->numReturnRegisters() > 1)
@@ -619,7 +619,7 @@ bool SemanticJob::makeIntrinsicTypeOf(SemanticContext* context)
         if (typeInfo->isFuncAttr() && !(typeInfo->flags & TYPEINFO_FUNC_IS_ATTR))
         {
             typeInfo         = typeInfo->clone();
-            typeInfo->kind   = TypeInfoKind::Lambda;
+            typeInfo->kind   = TypeInfoKind::LambdaClosure;
             typeInfo->sizeOf = sizeof(void*);
         }
 

@@ -109,7 +109,7 @@ bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegmen
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Lambda)
+    if (typeInfo->kind == TypeInfoKind::LambdaClosure)
     {
         *(uint64_t*) ptrDest = 0;
         auto funcDecl        = CastAst<AstFuncDecl>(typeInfo->declNode, AstNodeKind::FuncDecl, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);

@@ -389,10 +389,10 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         auto paramNode = destFuncDecl ? destFuncDecl->parameters->childs[bi.badSignatureParameterIdx] : nullptr;
 
         // In case of lambda, replace undefined with the corresponding match, if possible
-        if (bi.badSignatureRequestedType->kind == TypeInfoKind::Lambda && bi.badSignatureGivenType->kind == TypeInfoKind::Lambda)
+        if (bi.badSignatureRequestedType->kind == TypeInfoKind::LambdaClosure && bi.badSignatureGivenType->kind == TypeInfoKind::LambdaClosure)
         {
-            auto type1 = CastTypeInfo<TypeInfoFuncAttr>(bi.badSignatureRequestedType, TypeInfoKind::Lambda);
-            auto type2 = CastTypeInfo<TypeInfoFuncAttr>(bi.badSignatureGivenType, TypeInfoKind::Lambda);
+            auto type1 = CastTypeInfo<TypeInfoFuncAttr>(bi.badSignatureRequestedType, TypeInfoKind::LambdaClosure);
+            auto type2 = CastTypeInfo<TypeInfoFuncAttr>(bi.badSignatureGivenType, TypeInfoKind::LambdaClosure);
             for (int i = 0; i < min(type1->parameters.count, type2->parameters.count); i++)
             {
                 if (type2->parameters[i]->typeInfo->isNative(NativeTypeKind::Undefined))

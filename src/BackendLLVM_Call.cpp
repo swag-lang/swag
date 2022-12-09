@@ -345,7 +345,7 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
             params.push_back(builder.CreateLoad(TO_PTR_IX(v0, typeParam->sizeOf * 8)));
         }
         else if (typeParam->isStruct() ||
-                 typeParam->kind == TypeInfoKind::Lambda ||
+                 typeParam->kind == TypeInfoKind::LambdaClosure ||
                  typeParam->isArray())
         {
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));

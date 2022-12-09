@@ -117,7 +117,7 @@ bool SemanticJob::checkIsConcreteOrType(SemanticContext* context, AstNode* node)
 bool SemanticJob::resolveTypeLambdaClosure(SemanticContext* context)
 {
     auto node          = CastAst<AstTypeLambda>(context->node, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
-    auto typeInfo      = allocType<TypeInfoFuncAttr>(TypeInfoKind::Lambda);
+    auto typeInfo      = allocType<TypeInfoFuncAttr>(TypeInfoKind::LambdaClosure);
     typeInfo->declNode = node;
 
     if (node->specFlags & AST_SPEC_TYPELAMBDA_CANTHROW)

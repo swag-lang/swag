@@ -3261,7 +3261,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                         break;
                     }
                 }
-                else if (returnType->isPointer() || returnType->kind == TypeInfoKind::Lambda)
+                else if (returnType->isPointer() || returnType->kind == TypeInfoKind::LambdaClosure)
                 {
                     auto llvmType = swagTypeToLLVMType(buildParameters, moduleToGen, returnType);
                     auto ptr = builder.CreatePointerCast(allocResult, llvmType->getPointerTo());
@@ -4065,7 +4065,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             {
                 // All of this is complicated. But ip->b.u32 has been reduced by one register in case of closure, and
                 // we have a dynamic test for bytecode execution. But for runtime, be put it back.
-                auto typeFuncCall = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->d.pointer, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
+                auto typeFuncCall = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->d.pointer, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
                 auto sizeB        = ip->b.u32;
                 if (typeFuncCall->isClosure())
                     sizeB += sizeof(Register);
@@ -4868,7 +4868,7 @@ llvm::Type* BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParamete
         typeInfo->isArray() ||
         typeInfo->isStruct() ||
         typeInfo->isInterface() ||
-        typeInfo->kind == TypeInfoKind::Lambda ||
+        typeInfo->kind == TypeInfoKind::LambdaClosure ||
         typeInfo->isAny() ||
         typeInfo->isString())
     {
@@ -5234,7 +5234,7 @@ void BackendLLVM::getReturnResult(llvm::LLVMContext&     context,
             break;
         }
     }
-    else if (returnType->isPointer() || returnType->kind == TypeInfoKind::Lambda)
+    else if (returnType->isPointer() || returnType->kind == TypeInfoKind::LambdaClosure)
     {
         auto llvmType = swagTypeToLLVMType(buildParameters, moduleToGen, returnType);
         if (imm)
