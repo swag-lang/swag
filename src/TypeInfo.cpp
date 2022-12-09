@@ -297,13 +297,6 @@ bool TypeInfo::isPointerToTypeInfo()
     return ptr->pointedType->flags & TYPEINFO_STRUCT_TYPEINFO;
 }
 
-bool TypeInfo::isCString()
-{
-    if (kind != TypeInfoKind::Pointer)
-        return false;
-    return flags & TYPEINFO_C_STRING;
-}
-
 bool TypeInfo::isInitializerList()
 {
     if (kind != TypeInfoKind::TypeListTuple)
@@ -325,16 +318,6 @@ bool TypeInfo::isArrayOfEnum()
         return false;
     auto ptr = (TypeInfoArray*) this;
     return ptr->finalType->kind == TypeInfoKind::Enum;
-}
-
-bool TypeInfo::isClosure()
-{
-    return flags & TYPEINFO_CLOSURE;
-}
-
-bool TypeInfo::isLambda()
-{
-    return (kind == TypeInfoKind::Lambda) && !(isClosure());
 }
 
 bool TypeInfo::isMethod()

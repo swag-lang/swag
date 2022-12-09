@@ -213,17 +213,25 @@ struct TypeInfo
     bool            isPointerVoid();
     bool            isPointerConstVoid();
     bool            isPointerToTypeInfo();
-    bool            isCString();
     bool            isInitializerList();
     bool            isArrayOfStruct();
     bool            isArrayOfEnum();
     bool            isMethod();
-    bool            isClosure();
-    bool            isLambda();
     TypeInfoStruct* getStructOrPointedStruct();
 
     // clang-format off
+    bool isSlice()                          { return kind == TypeInfoKind::Slice; }
+    bool isInterface()                      { return kind == TypeInfoKind::Interface; }
+    bool isStruct()                         { return kind == TypeInfoKind::Struct; }
+    bool isPointer()                        { return kind == TypeInfoKind::Pointer; }
+    bool isNative()                         { return kind == TypeInfoKind::Native; }
     bool isNative(NativeTypeKind native)    { return (kind == TypeInfoKind::Native) && (nativeType == native); }
+    bool isAny()                            { return isNative(NativeTypeKind::Any); }
+    bool isString()                         { return isNative(NativeTypeKind::String); }
+    bool isBool()                           { return isNative(NativeTypeKind::Bool); }
+    bool isCString()                        { return (kind == TypeInfoKind::Pointer) && (flags & TYPEINFO_C_STRING); }
+    bool isLambda()                         { return (kind == TypeInfoKind::Lambda) && !isClosure(); }
+    bool isClosure()                        { return (flags & TYPEINFO_CLOSURE); }
     bool isNativeInteger()                  { return (flags & TYPEINFO_INTEGER); }
     bool isNativeIntegerUnsignedOrRune()    { return ((flags & TYPEINFO_INTEGER) && (flags & TYPEINFO_UNSIGNED)) || isNative(NativeTypeKind::Rune); }
     bool isNativeIntegerUnsigned()          { return (flags & TYPEINFO_INTEGER) && (flags & TYPEINFO_UNSIGNED); }
@@ -233,9 +241,6 @@ struct TypeInfo
     bool isConst()                          { return (flags & TYPEINFO_CONST); }
     bool isStrict()                         { return (flags & TYPEINFO_STRICT); }
     bool isGeneric()                        { return (flags & TYPEINFO_GENERIC); }
-    bool isSlice()                          { return kind == TypeInfoKind::Slice; }
-    bool isInterface()                      { return kind == TypeInfoKind::Interface; }
-    bool isStruct()                         { return kind == TypeInfoKind::Struct; }
     bool isTuple()                          { return (flags & TYPEINFO_STRUCT_IS_TUPLE); }
     bool isPointerRef()                     { return (flags & TYPEINFO_POINTER_REF); }
     bool isConstPointerRef()                { return (flags & TYPEINFO_POINTER_REF) && (flags & TYPEINFO_CONST); }
