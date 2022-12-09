@@ -209,7 +209,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
                 SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRC, ptrPointer->pointedType));
             }
         }
-        else if (node->forceTakeAddress() && typeInfo->kind != TypeInfoKind::LambdaClosure && typeInfo->kind != TypeInfoKind::Array)
+        else if (node->forceTakeAddress() && !typeInfo->isLambdaClosure() && !typeInfo->isArray())
         {
             if (node->parent->flags & AST_ARRAY_POINTER_REF)
             {

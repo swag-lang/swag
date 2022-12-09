@@ -600,7 +600,7 @@ void ByteCodeGenJob::emitSafetyCast(ByteCodeGenContext* context, TypeInfo* typeI
         return;
     if (!typeInfo->isNative())
         return;
-    if (fromTypeInfo->kind != TypeInfoKind::Native)
+    if (!fromTypeInfo->isNative())
         return;
 
     PushLocation lc(context, &exprNode->token.startLocation);

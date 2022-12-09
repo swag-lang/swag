@@ -11,7 +11,7 @@
 bool ByteCodeGenJob::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeInfo, RegisterList& dstReg, RegisterList& srcReg, AstNode* from)
 {
     auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-    if (typeArray->finalType->kind != TypeInfoKind::Struct)
+    if (!typeArray->finalType->isStruct())
     {
         emitMemCpy(context, dstReg, srcReg, typeArray->sizeOf);
         return true;

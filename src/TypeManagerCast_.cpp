@@ -3006,7 +3006,7 @@ void TypeManager::promoteUntypedInteger(AstNode* left, AstNode* right)
 bool TypeManager::promoteOne(SemanticContext* context, AstNode* right)
 {
     TypeInfo* rightTypeInfo = TypeManager::concreteType(right->typeInfo);
-    if (rightTypeInfo->kind != TypeInfoKind::Native)
+    if (!rightTypeInfo->isNative())
         return true;
     switch (rightTypeInfo->nativeType)
     {

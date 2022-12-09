@@ -95,7 +95,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
         else if (returnType->isArray())
         {
             auto typeArr = CastTypeInfo<TypeInfoArray>(returnType, TypeInfoKind::Array);
-            if (typeArr->finalType->kind != TypeInfoKind::Struct)
+            if (!typeArr->finalType->isStruct())
             {
                 if (node->ownerInline)
                 {

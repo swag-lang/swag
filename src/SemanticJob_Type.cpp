@@ -660,13 +660,15 @@ bool SemanticJob::resolveExplicitBitCast(SemanticContext* context)
     auto typeInfo     = TypeManager::concreteType(typeNode->typeInfo);
     auto exprTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
 
-    if (!(typeInfo->flags & (TYPEINFO_INTEGER | TYPEINFO_FLOAT)) &&
-        (!typeInfo->isRune()))
+    if (!typeInfo->isNativeInteger() &&
+        !typeInfo->isNativeFloat() &&
+        !typeInfo->isRune())
         return context->report({typeNode, Fmt(Err(Err0031), typeInfo->getDisplayNameC())});
 
-    if (!(exprTypeInfo->flags & (TYPEINFO_INTEGER | TYPEINFO_FLOAT)) &&
-        (!exprTypeInfo->isRune()) &&
-        (exprTypeInfo->kind != TypeInfoKind::Pointer))
+    if (!exprTypeInfo->isNativeInteger() &&
+        !exprTypeInfo->isNativeFloat() &&
+        !exprTypeInfo->isRune() &&
+        !exprTypeInfo->isPointer())
         return context->report({exprNode, Fmt(Err(Err0032), exprTypeInfo->getDisplayNameC())});
 
     SWAG_VERIFY(typeInfo->sizeOf <= exprTypeInfo->sizeOf, context->report({exprNode, Fmt(Err(Err0033), typeInfo->getDisplayNameC(), exprTypeInfo->getDisplayNameC())}));

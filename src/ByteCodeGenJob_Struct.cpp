@@ -96,7 +96,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
         if (typeVar->isArray())
             typeVar = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
-        if (typeVar->kind != TypeInfoKind::Struct)
+        if (!typeVar->isStruct())
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         context->job->waitStructGenerated(typeStructVar);
@@ -370,7 +370,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
         if (typeVar->isArray())
             typeVar = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
-        if (typeVar->kind != TypeInfoKind::Struct)
+        if (!typeVar->isStruct())
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         context->job->waitStructGenerated(typeStructVar);
@@ -429,7 +429,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     for (auto typeParam : typeInfoStruct->fields)
     {
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
-        if (typeVar->kind != TypeInfoKind::Struct)
+        if (!typeVar->isStruct())
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         emitOpCallUser(&cxt, typeStructVar->opUserDropFct, typeStructVar->opDrop, true, typeParam->offset);
@@ -491,7 +491,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
         if (typeVar->isArray())
             typeVar = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
-        if (typeVar->kind != TypeInfoKind::Struct)
+        if (!typeVar->isStruct())
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         context->job->waitStructGenerated(typeStructVar);
@@ -547,7 +547,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     for (auto typeParam : typeInfoStruct->fields)
     {
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
-        if (typeVar->kind != TypeInfoKind::Struct)
+        if (!typeVar->isStruct())
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         emitOpCallUser(&cxt, typeStructVar->opUserPostMoveFct, typeStructVar->opPostMove, true, typeParam->offset);
@@ -612,7 +612,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
         if (typeVar->isArray())
             typeVar = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
-        if (typeVar->kind != TypeInfoKind::Struct)
+        if (!typeVar->isStruct())
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         context->job->waitStructGenerated(typeStructVar);
@@ -668,7 +668,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     for (auto typeParam : typeInfoStruct->fields)
     {
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
-        if (typeVar->kind != TypeInfoKind::Struct)
+        if (!typeVar->isStruct())
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         emitOpCallUser(&cxt, typeStructVar->opUserPostCopyFct, typeStructVar->opPostCopy, true, typeParam->offset);
@@ -1153,7 +1153,7 @@ bool ByteCodeGenJob::emitDropCopyMove(ByteCodeGenContext* context)
     auto node           = CastAst<AstDropCopyMove>(context->node, AstNodeKind::Drop, AstNodeKind::PostCopy, AstNodeKind::PostMove);
     auto typeExpression = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->expression->typeInfo), TypeInfoKind::Pointer);
 
-    if (typeExpression->pointedType->kind != TypeInfoKind::Struct)
+    if (!typeExpression->pointedType->isStruct())
     {
         freeRegisterRC(context, node->expression);
         freeRegisterRC(context, node->count);

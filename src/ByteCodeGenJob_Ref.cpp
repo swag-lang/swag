@@ -385,7 +385,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoArray->pointedType));
         else if (typeInfoArray->pointedType->isPointer())
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoArray->pointedType));
-        else if (!node->forceTakeAddress() && typeInfoArray->pointedType->kind != TypeInfoKind::Array)
+        else if (!node->forceTakeAddress() && !typeInfoArray->pointedType->isArray())
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoArray->pointedType));
 
         node->resultRegisterRC         = node->array->resultRegisterRC;

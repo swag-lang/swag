@@ -1522,9 +1522,9 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
                 // Empty variadic parameter
                 auto defaultParam = CastAst<AstVarDecl>(funcDescription->parameters->childs[i], AstNodeKind::FuncDeclParam);
-                if (defaultParam->typeInfo->kind != TypeInfoKind::Variadic &&
-                    defaultParam->typeInfo->kind != TypeInfoKind::TypedVariadic &&
-                    defaultParam->typeInfo->kind != TypeInfoKind::CVariadic)
+                if (!defaultParam->typeInfo->isVariadic() &&
+                    !defaultParam->typeInfo->isTypedVariadic() &&
+                    !defaultParam->typeInfo->isCVariadic())
                 {
                     SWAG_ASSERT(defaultParam->assignment);
 
@@ -1580,7 +1580,9 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             if (param->typeInfo->isArray() || param->typeInfo->flags & TYPEINFO_LISTARRAY_ARRAY)
                 truncRegisterRC(context, param->resultRegisterRC, 1);
 
-            if (param->typeInfo->kind != TypeInfoKind::Variadic && param->typeInfo->kind != TypeInfoKind::TypedVariadic && !(param->typeInfo->flags & TYPEINFO_SPREAD))
+            if (!param->typeInfo->isVariadic() &&
+                !param->typeInfo->isTypedVariadic() &&
+                !(param->typeInfo->flags & TYPEINFO_SPREAD))
             {
                 bool done = false;
 
