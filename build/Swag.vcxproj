@@ -213,6 +213,7 @@
     <ClInclude Include="../src/ModuleOutputJob.h" />
     <ClInclude Include="..\src\ByteCodeInstruction.h" />
     <ClInclude Include="..\src\CallConv.h" />
+    <ClInclude Include="..\src\ErrorContext.h" />
     <ClInclude Include="..\src\Hash.h" />
     <ClInclude Include="..\src\ErrorList_Err.h" />
     <ClInclude Include="..\src\ErrorList_Help.h" />
@@ -358,6 +359,7 @@
     <ClCompile Include="..\src\ByteCodeRun_Math.cpp" />
     <ClCompile Include="..\src\ByteCodeRun_SelectIf.cpp" />
     <ClCompile Include="..\src\CallConv.cpp" />
+    <ClCompile Include="..\src\ErrorContext.cpp" />
     <ClCompile Include="..\src\ErrorIds.cpp" />
     <ClCompile Include="..\src\JobGroup.cpp" />
     <ClCompile Include="..\src\LoadSourceFileJob.cpp" />

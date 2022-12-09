@@ -146,7 +146,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
         return context->report(diag, &note);
     }
 
-    PushErrContext ec(context, nullptr, getSpecialOpSignature(node), nullptr, DiagnosticLevel::Help);
+    PushErrContext ec(context, nullptr, getSpecialOpSignature(node), nullptr, ErrorContextKind::Help);
 
     auto      parameters = node->parameters;
     TypeInfo* typeStruct = nullptr;

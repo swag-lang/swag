@@ -3614,7 +3614,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         vector<const Diagnostic*> notes;
         if (runContext->callerContext)
         {
-            runContext->callerContext->setErrorContext(diag, notes);
+            ErrorContext::fillContext(runContext->callerContext, diag, notes);
 
             // If we have an expansion, and the first expansion requests test error, then raise
             // in its context to dismiss the error (like an error during a #selectif for example)

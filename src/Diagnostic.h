@@ -150,37 +150,6 @@ struct Diagnostic
     bool showFileName          = true;
 };
 
-struct PushErrContext
-{
-    PushErrContext(JobContext* context, AstNode* node, JobContext::ErrorContextType type)
-        : cxt{context}
-    {
-        JobContext::ErrorContext expNode;
-        expNode.type = type;
-        expNode.node = node;
-        context->errorContextStack.push_back(expNode);
-    }
-
-    PushErrContext(JobContext* context, AstNode* node, const Utf8& msg, const Utf8& hint, DiagnosticLevel level = DiagnosticLevel::Note)
-        : cxt{context}
-    {
-        JobContext::ErrorContext expNode;
-        expNode.node  = node;
-        expNode.type  = JobContext::ErrorContextType::Message;
-        expNode.level = level;
-        expNode.msg   = msg;
-        expNode.hint  = hint;
-        context->errorContextStack.push_back(expNode);
-    }
-
-    ~PushErrContext()
-    {
-        cxt->errorContextStack.pop_back();
-    }
-
-    JobContext* cxt;
-};
-
 namespace Hint
 {
     Utf8 isType(TypeInfo* typeInfo);

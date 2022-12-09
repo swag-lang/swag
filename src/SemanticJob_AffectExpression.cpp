@@ -40,7 +40,7 @@ bool SemanticJob::resolveAfterAffectLeft(SemanticContext* context)
             // Cannot cast from closure to lambda
             if (node->typeInfo->isLambda() && op->dependentLambda->typeInfo->isClosure())
             {
-                PushErrContext ec(context, node->parent, JobContext::ErrorContextType::Node);
+                PushErrContext ec(context, node->parent, ErrorContextKind::Node);
                 Diagnostic     diag{op->childs.back(), Err(Err0185)};
                 return context->report(diag);
             }

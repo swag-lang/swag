@@ -3,6 +3,7 @@
 #include "VectorNative.h"
 #include "Utf8.h"
 #include "Mutex.h"
+#include "ErrorContext.h"
 struct JobThread;
 struct AstNode;
 struct SymbolName;
@@ -36,7 +37,6 @@ enum class ContextResult
 
 struct JobContext
 {
-    void setErrorContext(const Diagnostic& diag, vector<const Diagnostic*>& notes);
     bool report(const Diagnostic& diag, const Diagnostic* note = nullptr, const Diagnostic* note1 = nullptr);
     bool report(const Diagnostic& diag, const vector<const Diagnostic*>& notes);
     bool checkSizeOverflow(const char* typeOverflow, uint64_t value, uint64_t maxValue);
@@ -52,28 +52,6 @@ struct JobContext
         silentError        = 0;
         errorContextStack.clear();
     }
-
-    enum class ErrorContextType
-    {
-        Generic,
-        Inline,
-        SelectIf,
-        CheckIf,
-        Node,
-        Export,
-        Message,
-    };
-
-    struct ErrorContext
-    {
-        AstNode*             node = nullptr;
-        ErrorContextType     type = ErrorContextType::Node;
-        DiagnosticLevel      level;
-        Utf8                 msg  = "";
-        Utf8                 hint = "";
-        map<Utf8, TypeInfo*> replaceTypes;
-        bool                 hide = false;
-    };
 
     vector<ErrorContext> errorContextStack;
 

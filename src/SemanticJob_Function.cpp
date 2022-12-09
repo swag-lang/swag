@@ -1613,7 +1613,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     // Sub declarations in the inline block, like sub functions
     if (!funcDecl->subDecls.empty())
     {
-        PushErrContext ec(context, identifier, JobContext::ErrorContextType::Inline);
+        PushErrContext ec(context, identifier, ErrorContextKind::Inline);
         SWAG_VERIFY(inlineNode->ownerFct, context->report({funcDecl, Fmt(Err(Err0781), identifier->token.ctext())}));
 
         // Authorize a sub function to access inline parameters, if possible
@@ -1649,7 +1649,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
                 auto it = cloneContext.usedReplaceNames.find(r.second);
                 if (it == cloneContext.usedReplaceNames.end())
                 {
-                    context->errorContextStack.push_back({identifier, JobContext::ErrorContextType::Inline});
+                    context->errorContextStack.push_back({identifier, ErrorContextKind::Inline});
                     for (auto& alias : id->aliasNames)
                     {
                         if (alias.text == r.second)

@@ -497,6 +497,9 @@
     <ClCompile Include="../src/Allocator.cpp">
       <Filter>Main\Core</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\ErrorContext.cpp">
+      <Filter>Main\Report</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">
@@ -814,6 +817,9 @@
     </ClInclude>
     <ClInclude Include="../src/Allocator.h">
       <Filter>Main\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ErrorContext.h">
+      <Filter>Main\Report</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

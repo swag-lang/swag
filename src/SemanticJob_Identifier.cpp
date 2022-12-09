@@ -3497,11 +3497,11 @@ bool SemanticJob::solveSelectIf(SemanticContext* context, OneMatch* oneMatch, As
         auto node                   = context->node;
         context->selectIfParameters = oneMatch->oneOverload->callParameters;
 
-        JobContext::ErrorContextType type;
+        ErrorContextKind type;
         if (funcDecl->selectIf->kind == AstNodeKind::CompilerCheckIf)
-            type = JobContext::ErrorContextType::CheckIf;
+            type = ErrorContextKind::CheckIf;
         else
-            type = JobContext::ErrorContextType::SelectIf;
+            type = ErrorContextKind::SelectIf;
 
         PushErrContext ec(context, node, type);
         auto           result       = executeCompilerNode(context, expr, false);

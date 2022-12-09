@@ -306,12 +306,12 @@ Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNod
     destCxt->errorContextStack.insert(destCxt->errorContextStack.end(), srcCxt->errorContextStack.begin(), srcCxt->errorContextStack.end());
 
     // New context
-    JobContext::ErrorContext expNode;
+    ErrorContext expNode;
     expNode.node         = context->node;
     expNode.replaceTypes = replaceTypes;
     if (expNode.node->extension && expNode.node->extension->misc && expNode.node->extension->misc->exportNode)
         expNode.node = expNode.node->extension->misc->exportNode;
-    expNode.type = JobContext::ErrorContextType::Generic;
+    expNode.type = ErrorContextKind::Generic;
     destCxt->errorContextStack.push_back(expNode);
 
     return newJob;
