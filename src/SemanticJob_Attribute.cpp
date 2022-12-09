@@ -27,7 +27,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     }
 
     SWAG_ASSERT(oneAttribute->typeInfo);
-    if (oneAttribute->typeInfo->kind != TypeInfoKind::FuncAttr)
+    if (!oneAttribute->typeInfo->isFuncAttr())
         return context->report({oneAttribute, Fmt(Err(Err0582), oneAttribute->typeInfo->getDisplayNameC(), TypeInfo::getArticleKindName(oneAttribute->typeInfo))});
 
     auto kind     = checkNode->kind;
@@ -239,7 +239,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
         {
             if (child == curAttr->content)
                 continue;
-            if (!child->typeInfo || child->typeInfo->kind != TypeInfoKind::FuncAttr)
+            if (!child->typeInfo || !child->typeInfo->isFuncAttr())
                 continue;
 
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);

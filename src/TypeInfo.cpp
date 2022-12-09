@@ -328,7 +328,7 @@ bool TypeInfo::isMethod()
     if (ptr->parameters.size() == 0)
         return false;
     auto param = ptr->parameters[0];
-    if (param->typeInfo->kind != TypeInfoKind::Pointer)
+    if (!param->typeInfo->isPointer())
         return false;
     if (!(param->typeInfo->flags & TYPEINFO_SELF))
         return false;

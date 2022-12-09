@@ -145,7 +145,7 @@ bool SemanticJob::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* n
     auto second = node->childs.back();
 
     // Must start with a pointer of the same type as the slice
-    if (first->typeInfo->kind != TypeInfoKind::Pointer)
+    if (!first->typeInfo->isPointer())
         return context->report({first, Fmt(Err(Err0787), name), Hint::isType(first->typeInfo)});
 
     auto ptrPointer = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
@@ -173,7 +173,7 @@ bool SemanticJob::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* nod
     auto second = node->childs.back();
 
     // Check first parameter
-    if (first->typeInfo->kind != TypeInfoKind::Pointer)
+    if (!first->typeInfo->isPointer())
         return context->report({first, Err(Err0789)});
 
     auto ptrPointer = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
@@ -190,7 +190,7 @@ bool SemanticJob::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* nod
     SWAG_CHECK(checkIsConcreteOrType(context, second));
     if (context->result != ContextResult::Done)
         return true;
-    if (!(second->typeInfo->isPointerToTypeInfo()))
+    if (!second->typeInfo->isPointerToTypeInfo())
         return context->report({node, Fmt(Err(Err0792), second->typeInfo->getDisplayNameC())});
 
     node->typeInfo    = g_TypeMgr->typeInfoAny;

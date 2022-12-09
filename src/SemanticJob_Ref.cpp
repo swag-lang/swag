@@ -313,7 +313,7 @@ bool SemanticJob::resolveKeepRef(SemanticContext* context)
     node->inheritAndFlag1(AST_CONST_EXPR);
 
     auto typeInfo = TypeManager::concreteType(front->typeInfo);
-    if (!typeInfo->isPointerRef() && typeInfo->kind != TypeInfoKind::Pointer)
+    if (!typeInfo->isPointerRef() && !typeInfo->isPointer())
         return context->report({node, Fmt(Err(Err0517), typeInfo->getDisplayNameC())});
 
     if (!typeInfo->isPointerRef())

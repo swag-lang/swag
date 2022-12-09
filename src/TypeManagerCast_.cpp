@@ -3695,7 +3695,7 @@ bool TypeManager::compareConcreteType(const ConcreteTypeInfo* type1, const Concr
 
 TypeInfo* TypeManager::asPointerArithmetic(TypeInfo* typeInfo)
 {
-    if (typeInfo->kind != TypeInfoKind::Pointer)
+    if (!typeInfo->isPointer())
         return typeInfo;
     typeInfo = typeInfo->clone();
     typeInfo->flags |= TYPEINFO_POINTER_ARITHMETIC;

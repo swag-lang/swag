@@ -244,27 +244,27 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     {
     case TokenId::SymEqual:
         if (!leftTypeInfo->isNative() &&
-            leftTypeInfo->kind != TypeInfoKind::Pointer &&
-            leftTypeInfo->kind != TypeInfoKind::Slice &&
-            leftTypeInfo->kind != TypeInfoKind::LambdaClosure &&
-            leftTypeInfo->kind != TypeInfoKind::TypeListTuple &&
-            leftTypeInfo->kind != TypeInfoKind::TypeListArray &&
-            leftTypeInfo->kind != TypeInfoKind::Struct &&
-            leftTypeInfo->kind != TypeInfoKind::Interface &&
-            leftTypeInfo->kind != TypeInfoKind::Array &&
-            leftTypeInfo->kind != TypeInfoKind::Alias &&
-            leftTypeInfo->kind != TypeInfoKind::Enum)
+            !leftTypeInfo->isPointer() &&
+            !leftTypeInfo->isSlice() &&
+            !leftTypeInfo->isLambdaClosure() &&
+            !leftTypeInfo->isListTuple() &&
+            !leftTypeInfo->isListArray() &&
+            !leftTypeInfo->isStruct() &&
+            !leftTypeInfo->isInterface() &&
+            !leftTypeInfo->isArray() &&
+            !leftTypeInfo->isAlias() &&
+            !leftTypeInfo->isEnum())
             return context->report({left, Fmt(Err(Err0571), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->getDisplayNameC())});
-        if (rightTypeInfo->kind != TypeInfoKind::Native &&
-            rightTypeInfo->kind != TypeInfoKind::Pointer &&
-            rightTypeInfo->kind != TypeInfoKind::Slice &&
-            rightTypeInfo->kind != TypeInfoKind::LambdaClosure &&
-            rightTypeInfo->kind != TypeInfoKind::TypeListTuple &&
-            rightTypeInfo->kind != TypeInfoKind::TypeListArray &&
-            rightTypeInfo->kind != TypeInfoKind::Struct &&
-            rightTypeInfo->kind != TypeInfoKind::Interface &&
-            rightTypeInfo->kind != TypeInfoKind::Array &&
-            rightTypeInfo->kind != TypeInfoKind::Alias)
+        if (!rightTypeInfo->isNative() &&
+            !rightTypeInfo->isPointer() &&
+            !rightTypeInfo->isSlice() &&
+            !rightTypeInfo->isLambdaClosure() &&
+            !rightTypeInfo->isListTuple() &&
+            !rightTypeInfo->isListArray() &&
+            !rightTypeInfo->isStruct() &&
+            !rightTypeInfo->isInterface() &&
+            !rightTypeInfo->isArray() &&
+            !rightTypeInfo->isAlias())
             return context->report({right, Fmt(Err(Err0572), rightTypeInfo->getDisplayNameC(), TypeInfo::getArticleKindName(rightTypeInfo))});
 
         if (forStruct)
