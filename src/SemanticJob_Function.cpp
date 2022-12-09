@@ -430,7 +430,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     {
         auto front         = typeNode->childs.front();
         typeNode->typeInfo = front->typeInfo;
-        if (typeNode->typeInfo->isNative(NativeTypeKind::Void))
+        if (typeNode->typeInfo->isVoid())
         {
             Diagnostic diag{typeNode->sourceFile, typeNode->token.startLocation, front->token.endLocation, Err(Err0732)};
             diag.hint = Hnt(Hnt0026);
@@ -747,10 +747,10 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
         SWAG_CHECK(checkFuncPrototype(context, funcNode));
 
         // The function wants to return something, but has the 'Swag.NoReturn' attribute
-        if (!funcNode->returnType->typeInfo->isNative(NativeTypeKind::Void) && (funcNode->attributeFlags & ATTRIBUTE_NO_RETURN))
+        if (!funcNode->returnType->typeInfo->isVoid() && (funcNode->attributeFlags & ATTRIBUTE_NO_RETURN))
             return context->report({funcNode->returnType->childs.front(), Err(Err0766)});
         // The function returns nothing but has the 'Swag.Discardable' attribute
-        if (funcNode->returnType->typeInfo->isNative(NativeTypeKind::Void) && funcNode->attributeFlags & ATTRIBUTE_DISCARDABLE)
+        if (funcNode->returnType->typeInfo->isVoid() && funcNode->attributeFlags & ATTRIBUTE_DISCARDABLE)
             return context->report({funcNode, Fmt(Err(Err0767), funcNode->token.ctext())});
     }
 
@@ -1057,7 +1057,7 @@ bool SemanticJob::resolveRetVal(SemanticContext* context)
 
     auto fct     = CastAst<AstFuncDecl>(fctDecl, AstNodeKind::FuncDecl);
     auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(fct->typeInfo, TypeInfoKind::FuncAttr);
-    SWAG_VERIFY(typeFct->returnType && !typeFct->returnType->isNative(NativeTypeKind::Void), context->report({node, Err(Err0771)}));
+    SWAG_VERIFY(typeFct->returnType && !typeFct->returnType->isVoid(), context->report({node, Err(Err0771)}));
 
     // If this is a simple return type, remove the retval stuff.
     // Variable will behaves normally, in the stack
@@ -1282,7 +1282,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     auto concreteType = TypeManager::concreteType(child->typeInfo);
 
     // No return value in a #run block
-    if (!concreteType->isNative(NativeTypeKind::Void))
+    if (!concreteType->isVoid())
     {
         if (funcNode->attributeFlags & (ATTRIBUTE_RUN_FUNC |
                                         ATTRIBUTE_RUN_GENERATED_FUNC |
@@ -1299,7 +1299,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
 
     // Be sure we do not specify a return value, and the function does not have a return type
     // (better error message than just letting the makeCompatibles do its job)
-    if (returnType->isNative(NativeTypeKind::Void) && !concreteType->isNative(NativeTypeKind::Void))
+    if (returnType->isVoid() && !concreteType->isVoid())
     {
         Diagnostic diag{child, Fmt(Err(Err0774), concreteType->getDisplayNameC(), funcNode->getDisplayNameC())};
         diag.hint = Hnt(Hnt0026);

@@ -661,11 +661,11 @@ bool SemanticJob::resolveExplicitBitCast(SemanticContext* context)
     auto exprTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
 
     if (!(typeInfo->flags & (TYPEINFO_INTEGER | TYPEINFO_FLOAT)) &&
-        (!typeInfo->isNative(NativeTypeKind::Rune)))
+        (!typeInfo->isRune()))
         return context->report({typeNode, Fmt(Err(Err0031), typeInfo->getDisplayNameC())});
 
     if (!(exprTypeInfo->flags & (TYPEINFO_INTEGER | TYPEINFO_FLOAT)) &&
-        (!exprTypeInfo->isNative(NativeTypeKind::Rune)) &&
+        (!exprTypeInfo->isRune()) &&
         (exprTypeInfo->kind != TypeInfoKind::Pointer))
         return context->report({exprNode, Fmt(Err(Err0032), exprTypeInfo->getDisplayNameC())});
 

@@ -1108,7 +1108,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             auto typeInfoRet = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::LambdaClosure)->returnType;
 
             // Check return value
-            if (!typeInfoRet->isNative(NativeTypeKind::Void))
+            if (!typeInfoRet->isVoid())
             {
                 if (isStatementIdentifier(identifier))
                 {
@@ -1125,7 +1125,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                     }
                 }
             }
-            else if (typeInfoRet->isNative(NativeTypeKind::Void) && (identifier->flags & AST_DISCARD))
+            else if (typeInfoRet->isVoid() && (identifier->flags & AST_DISCARD))
             {
                 Diagnostic diag{identifier, Err(Err0094), Hint::isType(typeInfo)};
                 Diagnostic note{overload->node, Nte(Nte0039), DiagnosticLevel::Note};
@@ -1295,7 +1295,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         auto returnType = TypeManager::concreteType(identifier->typeInfo, CONCRETE_ALL & ~CONCRETE_FORCEALIAS);
 
         // Check return value
-        if (!returnType->isNative(NativeTypeKind::Void))
+        if (!returnType->isVoid())
         {
             if (isStatementIdentifier(identifier))
             {
@@ -1312,7 +1312,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 }
             }
         }
-        else if (returnType->isNative(NativeTypeKind::Void) && (identifier->flags & AST_DISCARD))
+        else if (returnType->isVoid() && (identifier->flags & AST_DISCARD))
         {
             Diagnostic diag{identifier, Err(Err0094), Hint::isType(identifier->typeInfo)};
             Diagnostic note{overload->node, Nte(Nte0033), DiagnosticLevel::Note};

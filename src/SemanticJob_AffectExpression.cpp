@@ -175,7 +175,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
     rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
 
-    SWAG_VERIFY(!rightTypeInfo->isNative(NativeTypeKind::Void), context->report({right, Err(Err0569)}));
+    SWAG_VERIFY(!rightTypeInfo->isVoid(), context->report({right, Err(Err0569)}));
 
     // Be sure modifiers are relevant
     if (right->kind == AstNodeKind::NoDrop || right->kind == AstNodeKind::Move)

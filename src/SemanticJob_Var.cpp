@@ -85,7 +85,7 @@ AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstN
         }
 
         // Return type
-        if (typeLambda->returnType && !typeLambda->returnType->isNative(NativeTypeKind::Void))
+        if (typeLambda->returnType && !typeLambda->returnType->isVoid())
         {
             typeExprLambda->returnType = convertTypeToTypeExpression(context, typeExprLambda, assignment, typeLambda->returnType, raiseErrors);
             if (!typeExprLambda->returnType)

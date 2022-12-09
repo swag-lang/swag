@@ -70,7 +70,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
         returnType = TypeManager::concreteType(node->ownerFct->returnType->typeInfo, CONCRETE_ALIAS);
 
     // Set default value
-    if (!returnType->isNative(NativeTypeKind::Void))
+    if (!returnType->isVoid())
     {
         if (returnType->isStruct())
         {

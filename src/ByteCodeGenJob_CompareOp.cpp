@@ -32,7 +32,7 @@ bool ByteCodeGenJob::emitInRange(ByteCodeGenContext* context, AstNode* left, Ast
             swap = true;
         else if (typeInfo->isNative(NativeTypeKind::F64) && low->computedValue->reg.f64 > up->computedValue->reg.f64)
             swap = true;
-        else if (typeInfo->isNative(NativeTypeKind::Rune) && low->computedValue->reg.u32 > up->computedValue->reg.u32)
+        else if (typeInfo->isRune() && low->computedValue->reg.u32 > up->computedValue->reg.u32)
             swap = true;
 
         if (swap)

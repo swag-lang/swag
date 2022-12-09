@@ -1509,7 +1509,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 EvaluateResult res;
                 if (evalExpression(context, cmdExpr, res))
                 {
-                    if (!res.type->isNative(NativeTypeKind::Void))
+                    if (!res.type->isVoid())
                     {
                         Utf8 str;
                         if (hasFormat)
@@ -2250,7 +2250,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             EvaluateResult res;
             if (evalExpression(context, line, res, true))
             {
-                if (!res.type->isNative(NativeTypeKind::Void))
+                if (!res.type->isVoid())
                 {
                     Utf8 str = Fmt("%s: ", res.type->getDisplayNameC());
                     appendValue(str, res);

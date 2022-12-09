@@ -4858,7 +4858,7 @@ llvm::Type* BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParamete
     {
         auto typeInfoPointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
         auto pointedType     = TypeManager::concreteType(typeInfoPointer->pointedType);
-        if (pointedType->isNative(NativeTypeKind::Void))
+        if (pointedType->isVoid())
             return llvm::Type::getInt8PtrTy(context);
         else
             return swagTypeToLLVMType(buildParameters, moduleToGen, pointedType)->getPointerTo();

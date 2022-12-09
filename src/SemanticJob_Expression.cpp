@@ -143,9 +143,9 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
 bool SemanticJob::evaluateConstExpression(SemanticContext* context, AstNode* node)
 {
     if ((node->flags & AST_CONST_EXPR) &&
-        node->typeInfo->kind != TypeInfoKind::TypeListArray &&
-        node->typeInfo->kind != TypeInfoKind::TypeListTuple &&
-        node->typeInfo->kind != TypeInfoKind::Slice)
+        !node->typeInfo->isListArray() &&
+        !node->typeInfo->isListTuple() &&
+        !node->typeInfo->isSlice())
     {
         SWAG_CHECK(checkIsConcrete(context, node));
         SWAG_CHECK(executeCompilerNode(context, node, true));
@@ -303,12 +303,12 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
             return context->report({expression, Err(Err0342), Hint::isType(typeInfo)});
         }
         else if (!typeInfo->isString() &&
-                 !typeInfo->isNative(NativeTypeKind::Rune) &&
-                 typeInfo->kind != TypeInfoKind::Pointer &&
-                 typeInfo->kind != TypeInfoKind::Interface &&
-                 !(typeInfo->isNativeInteger()) &&
-                 !(typeInfo->isNativeFloat()) &&
-                 typeInfo->kind != TypeInfoKind::LambdaClosure)
+                 !typeInfo->isRune() &&
+                 !typeInfo->isPointer() &&
+                 !typeInfo->isInterface() &&
+                 !typeInfo->isNativeInteger() &&
+                 !typeInfo->isNativeFloat() &&
+                 !typeInfo->isLambdaClosure())
         {
             return context->report({expression, Fmt(Err(Err0332), typeInfo->getDisplayNameC())});
         }

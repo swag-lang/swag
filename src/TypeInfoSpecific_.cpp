@@ -590,7 +590,7 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
     resName += ")";
 
     // Return type
-    if (returnType && !returnType->isNative(NativeTypeKind::Void))
+    if (returnType && !returnType->isVoid())
     {
         resName += "->";
         resName += returnType->computeWhateverName(nameType);
@@ -634,9 +634,9 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
 
     if (isSameFlags & ISSAME_EXACT)
     {
-        if (!returnType && other->returnType && !other->returnType->isNative(NativeTypeKind::Void))
+        if (!returnType && other->returnType && !other->returnType->isVoid())
             return false;
-        if (returnType && !returnType->isNative(NativeTypeKind::Void) && !other->returnType)
+        if (returnType && !returnType->isVoid() && !other->returnType)
             return false;
         if (returnType && other->returnType && !returnType->isNative(NativeTypeKind::Undefined) && !returnType->isSame(other->returnType, isSameFlags))
             return false;
