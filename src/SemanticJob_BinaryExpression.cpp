@@ -892,7 +892,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         node->flags |= AST_TRANSIENT;
 
     // Must invert if commutative operation
-    if (leftTypeInfo->kind != TypeInfoKind::Struct && rightTypeInfo->isStruct())
+    if (!leftTypeInfo->isStruct() && rightTypeInfo->isStruct())
     {
         switch (node->token.id)
         {
@@ -929,7 +929,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     case TokenId::SymVertical:
     case TokenId::SymAmpersand:
     case TokenId::SymCircumflex:
-        if (leftTypeInfo->kind != TypeInfoKind::Struct)
+        if (!leftTypeInfo->isStruct())
         {
             SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
             SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));

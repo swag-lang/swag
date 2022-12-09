@@ -125,7 +125,7 @@ bool SemanticJob::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode
     auto typeFirst = TypeManager::concreteType(first->typeInfo);
 
     // Check first parameter
-    if (typeFirst->kind != TypeInfoKind::LambdaClosure)
+    if (!typeFirst->isLambdaClosure())
         return context->report({node, Err(Err0784)});
 
     auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeFirst, TypeInfoKind::LambdaClosure);
@@ -743,8 +743,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     case TokenId::IntrinsicCountOf:
     {
         auto expr = node->childs.front();
-        if (expr->typeInfo->kind != TypeInfoKind::Enum &&
-            expr->typeInfo->kind != TypeInfoKind::Array)
+        if (!expr->typeInfo->isEnum() && !expr->typeInfo->isArray())
             SWAG_CHECK(checkIsConcrete(context, expr));
         node->inheritComputedValue(expr);
         SWAG_CHECK(resolveIntrinsicCountOf(context, node, expr));

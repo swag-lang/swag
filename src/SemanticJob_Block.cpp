@@ -506,7 +506,7 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
         // No range
         if (node->expression->kind != AstNodeKind::Range)
         {
-            if (node->expression->typeInfo->kind != TypeInfoKind::Enum)
+            if (!node->expression->typeInfo->isEnum())
                 SWAG_CHECK(checkIsConcrete(context, node->expression));
 
             SWAG_CHECK(resolveIntrinsicCountOf(context, node->expression, node->expression));
@@ -563,7 +563,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     auto node       = CastAst<AstVisit>(context->node, AstNodeKind::Visit);
 
     auto typeInfo = TypeManager::concretePtrRefType(node->expression->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
-    if (typeInfo->kind != TypeInfoKind::Enum)
+    if (!typeInfo->isEnum())
         SWAG_CHECK(checkIsConcrete(context, node->expression));
 
     // Be sure that aliases are not defined elsewhere

@@ -156,7 +156,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
 
         // No need to raise an error, the semantic pass on the impl node will fail
         typeStruct = implNode->identifier->typeInfo;
-        if (typeStruct->kind != TypeInfoKind::Struct)
+        if (!typeStruct->isStruct())
             return true;
 
         // First parameter must be be struct
@@ -263,7 +263,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 3));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, nullptr));
         auto returnType = TypeManager::concreteType(node->returnType->typeInfo, CONCRETE_ALIAS);
-        if (!returnType->isString() && returnType->kind != TypeInfoKind::Slice)
+        if (!returnType->isString() && !returnType->isSlice())
             return context->report({node, Fmt(Err(Err0126), node->returnType->typeInfo->getDisplayNameC())});
         SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, 1, g_TypeMgr->typeInfoUInt));
         SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, 2, g_TypeMgr->typeInfoUInt));
@@ -335,7 +335,7 @@ bool SemanticJob::resolveUserOpCommutative(SemanticContext* context, const Utf8&
     auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
 
     // Simple case
-    if (leftTypeInfo->isStruct() && rightTypeInfo->kind != TypeInfoKind::Struct)
+    if (leftTypeInfo->isStruct() && !rightTypeInfo->isStruct())
         return resolveUserOp(context, name, opConst, opType, left, right);
 
     bool okLeft  = false;

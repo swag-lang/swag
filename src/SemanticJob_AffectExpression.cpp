@@ -201,7 +201,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     {
         arrayNode      = CastAst<AstArrayPointerIndex>(left->childs.back(), AstNodeKind::ArrayPointerIndex);
         auto arrayType = TypeManager::concretePtrRefType(arrayNode->array->typeInfo);
-        if (arrayType->kind != TypeInfoKind::Struct)
+        if (!arrayType->isStruct())
             arrayNode = nullptr;
 
         // Add self and value in list of parameters

@@ -376,13 +376,13 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
 
     // Must not make types compatible for a struct, as we can compare a struct with whatever other type in
     // a opEquals function
-    if (leftTypeInfo->kind != TypeInfoKind::Struct && rightTypeInfo->kind != TypeInfoKind::Struct)
+    if (!leftTypeInfo->isStruct() && !rightTypeInfo->isStruct())
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COMMUTATIVE | CASTFLAG_FORCE_UNCONST | CASTFLAG_COMPARE | CASTFLAG_TRY_COERCE));
     }
 
     // Struct is on the right, so we need to inverse the test
-    else if (leftTypeInfo->kind != TypeInfoKind::Struct)
+    else if (!leftTypeInfo->isStruct())
     {
         swap(left, right);
         node->semFlags |= AST_SEM_INVERSE_PARAMS;

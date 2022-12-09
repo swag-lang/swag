@@ -171,7 +171,7 @@ void Job::waitTypeCompleted(TypeInfo* typeInfo)
     if (typeInfo->isArray())
         typeInfo = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array)->finalType;
     typeInfo = TypeManager::concreteType(typeInfo);
-    if (!typeInfo->isStruct() && typeInfo->kind != TypeInfoKind::Interface)
+    if (!typeInfo->isStruct() && !typeInfo->isInterface())
         return;
     if (!typeInfo->declNode)
         return;
