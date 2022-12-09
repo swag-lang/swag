@@ -17,7 +17,7 @@ bool TypeInfoNative::isSame(TypeInfo* to, uint32_t isSameFlags)
 
     if (isSameFlags & ISSAME_CAST)
     {
-        if (to->kind == TypeInfoKind::Generic)
+        if (to->isKindGeneric())
             return true;
         if (nativeType == NativeTypeKind::Undefined)
             return true;
@@ -152,7 +152,7 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
     to = TypeManager::concreteType(to);
     if (isSameFlags & ISSAME_CAST)
     {
-        if (to->kind == TypeInfoKind::Generic)
+        if (to->isKindGeneric())
             return true;
         if (this == g_TypeMgr->typeInfoNull && to->isLambdaClosure())
             return true;
@@ -201,7 +201,7 @@ bool TypeInfoArray::isSame(TypeInfo* to, uint32_t isSameFlags)
 {
     if (this == to)
         return true;
-    if (to->kind == TypeInfoKind::Generic)
+    if (to->isKindGeneric())
         return true;
     if (!TypeInfo::isSame(to, isSameFlags))
         return false;
@@ -458,7 +458,7 @@ bool TypeInfoEnum::isSame(TypeInfo* to, uint32_t isSameFlags)
         return true;
     if (isSameFlags & ISSAME_CAST)
     {
-        if (to->kind == TypeInfoKind::Generic)
+        if (to->isKindGeneric())
             return true;
     }
 
@@ -924,7 +924,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
 
     if (isSameFlags & ISSAME_CAST)
     {
-        if (to->kind == TypeInfoKind::Generic)
+        if (to->isKindGeneric())
             return true;
     }
 
@@ -964,7 +964,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
             auto otherGenParam = other->genericParameters[i];
             if (isSameFlags & ISSAME_CAST)
             {
-                if (otherGenParam->typeInfo->kind == TypeInfoKind::Generic)
+                if (otherGenParam->typeInfo->isKindGeneric())
                     continue;
             }
 

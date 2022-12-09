@@ -3588,7 +3588,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     // Always match against a generic
     if (!result)
     {
-        if (toType->kind == TypeInfoKind::Generic)
+        if (toType->isKindGeneric())
             result = true;
     }
 

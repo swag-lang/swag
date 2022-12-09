@@ -1659,7 +1659,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(rawTypeInfo, TypeInfoKind::LambdaClosure);
             typeInfo->match(oneOverload.symMatchContext);
         }
-        else if (rawTypeInfo->kind == TypeInfoKind::Generic)
+        else if (rawTypeInfo->isKindGeneric())
         {
             oneOverload.symMatchContext.result = MatchResult::Ok;
         }
@@ -3708,7 +3708,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
     }
 
     // If previous identifier was generic, then stop evaluation
-    if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->typeInfo->kind == TypeInfoKind::Generic)
+    if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->typeInfo->isKindGeneric())
     {
         // Just take the generic type for now
         node->typeInfo          = g_TypeMgr->typeInfoUndefined;

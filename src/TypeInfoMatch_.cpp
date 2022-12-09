@@ -636,7 +636,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
 
                     // If we try to match a generic type, and there's a contextual generic type replacement,
                     // then match with the replacement
-                    if (genType->kind == TypeInfoKind::Generic)
+                    if (genType->isKindGeneric())
                     {
                         auto it = context.genericReplaceTypes.find(genType->name);
                         if (it != context.genericReplaceTypes.end())
@@ -775,7 +775,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                     }
                 }
 
-                if ((symbolParameter->typeInfo->kind == TypeInfoKind::Generic) && isValue)
+                if ((symbolParameter->typeInfo->isKindGeneric()) && isValue)
                 {
                     context.badSignatureInfos.badSignatureParameterIdx  = i;
                     context.badSignatureInfos.badSignatureRequestedType = symbolParameter->typeInfo;

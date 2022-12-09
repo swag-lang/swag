@@ -298,12 +298,12 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
         rightTypeInfo = TypeManager::concretePtrRef(rightTypeInfo);
 
     // Keep it generic if it's generic on one side
-    if (leftTypeInfo->kind == TypeInfoKind::Generic)
+    if (leftTypeInfo->isKindGeneric())
     {
         node->typeInfo = leftTypeInfo;
         return true;
     }
-    if (rightTypeInfo->kind == TypeInfoKind::Generic)
+    if (rightTypeInfo->isKindGeneric())
     {
         node->typeInfo = rightTypeInfo;
         return true;

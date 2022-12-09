@@ -58,7 +58,7 @@ bool Generic::updateGenericParameters(SemanticContext* context, bool doType, boo
 
         // We should not instantiate with unresolved types
         auto genGen = match.genericParametersGenTypes[i];
-        if (genGen->kind == TypeInfoKind::Generic)
+        if (genGen->isKindGeneric())
         {
             if (param->typeInfo->flags & (TYPEINFO_UNTYPED_INTEGER | TYPEINFO_UNTYPED_FLOAT))
             {
@@ -129,7 +129,7 @@ TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeIn
         // Do not substitute with unconverted TypeList
         if (!it->second->isListArray())
             return it->second;
-        else if (typeInfo->kind == TypeInfoKind::Generic)
+        else if (typeInfo->isKindGeneric())
             return TypeManager::convertTypeListToArray(nullptr, (TypeInfoList*) it->second, true);
     }
 

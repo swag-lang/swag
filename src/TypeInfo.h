@@ -236,6 +236,7 @@ struct TypeInfo
     bool isCVariadic()                      { return kind == TypeInfoKind::CVariadic; }
     bool isCode()                           { return kind == TypeInfoKind::Code; }
     bool isLambdaClosure()                  { return kind == TypeInfoKind::LambdaClosure; }
+    bool isKindGeneric()                    { return kind == TypeInfoKind::Generic; }
     bool isNative(NativeTypeKind native)    { return (kind == TypeInfoKind::Native) && (nativeType == native); }
     bool isAny()                            { return isNative(NativeTypeKind::Any); }
     bool isString()                         { return isNative(NativeTypeKind::String); }

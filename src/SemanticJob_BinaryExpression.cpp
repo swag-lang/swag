@@ -832,12 +832,12 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
 
     // Keep it generic if it's generic on one side
-    if (leftTypeInfo->kind == TypeInfoKind::Generic)
+    if (leftTypeInfo->isKindGeneric())
     {
         node->typeInfo = leftTypeInfo;
         return true;
     }
-    if (rightTypeInfo->kind == TypeInfoKind::Generic)
+    if (rightTypeInfo->isKindGeneric())
     {
         node->typeInfo = rightTypeInfo;
         return true;
@@ -1249,12 +1249,12 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
     auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
 
     // Keep it generic if it's generic on one side
-    if (leftTypeInfo->kind == TypeInfoKind::Generic)
+    if (leftTypeInfo->isKindGeneric())
     {
         node->typeInfo = leftTypeInfo;
         return true;
     }
-    if (rightTypeInfo->kind == TypeInfoKind::Generic)
+    if (rightTypeInfo->isKindGeneric())
     {
         node->typeInfo = rightTypeInfo;
         return true;
@@ -1310,12 +1310,12 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
     auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
 
     // Keep it generic if it's generic on one side
-    if (leftTypeInfo->kind == TypeInfoKind::Generic)
+    if (leftTypeInfo->isKindGeneric())
     {
         node->typeInfo = leftTypeInfo;
         return true;
     }
-    if (rightTypeInfo->kind == TypeInfoKind::Generic)
+    if (rightTypeInfo->isKindGeneric())
     {
         node->typeInfo = rightTypeInfo;
         return true;
