@@ -63,8 +63,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         inst->c.u64 = 0;
 
         if (typeInfo->isArray() ||
-            typeInfo->kind == TypeInfoKind::TypeListTuple ||
-            typeInfo->kind == TypeInfoKind::TypeListArray ||
+            typeInfo->isListTuple() ||
+            typeInfo->isListArray() ||
             typeInfo->isStruct())
         {
             emitInstruction(context, ByteCodeOp::Add64byVB64, node->resultRegisterRC[0])->b.u64 = resolved->computedValue.storageOffset;
@@ -306,8 +306,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             return Report::internalError(context->node, "unsupported identifier reference type");
         }
         else if (typeInfo->isArray() ||
-                 typeInfo->kind == TypeInfoKind::TypeListTuple ||
-                 typeInfo->kind == TypeInfoKind::TypeListArray ||
+                 typeInfo->isListTuple() ||
+                 typeInfo->isListArray() ||
                  typeInfo->isStruct())
         {
             ByteCodeInstruction* inst = emitMakeSegPointer(context, resolved->computedValue.storageSegment, resolved->computedValue.storageOffset, node->resultRegisterRC);
@@ -378,8 +378,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
                 SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRC, node->typeInfo));
         }
         else if (typeInfo->isArray() ||
-                 typeInfo->kind == TypeInfoKind::TypeListTuple ||
-                 typeInfo->kind == TypeInfoKind::TypeListArray ||
+                 typeInfo->isListTuple() ||
+                 typeInfo->isListArray() ||
                  typeInfo->isStruct())
         {
             auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);

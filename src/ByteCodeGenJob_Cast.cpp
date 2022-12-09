@@ -653,7 +653,7 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
         return true;
     }
 
-    if (fromTypeInfo->kind == TypeInfoKind::TypeListTuple)
+    if (fromTypeInfo->isListTuple())
     {
 #ifdef SWAG_HAS_ASSERT
         auto typeList = CastTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeListTuple);
@@ -694,7 +694,7 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
         inst->b.u64            = diff;
         node->resultRegisterRC = exprNode->resultRegisterRC;
     }
-    else if (fromTypeInfo->kind == TypeInfoKind::TypeListTuple)
+    else if (fromTypeInfo->isListTuple())
     {
         auto fromTypeList = CastTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeListTuple);
         auto diff         = fromTypeList->subTypes.front()->typeInfo->sizeOf / toTypeSlice->pointedType->sizeOf;
@@ -703,7 +703,7 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
         inst->b.u64            = diff;
         node->resultRegisterRC = exprNode->resultRegisterRC;
     }
-    else if (fromTypeInfo->kind == TypeInfoKind::TypeListArray)
+    else if (fromTypeInfo->isListArray())
     {
         auto fromTypeList = CastTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeListArray);
         transformResultToLinear2(context, exprNode);
@@ -784,7 +784,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
 
     // Cast from any to something real
     auto node = context->node;
-    if (fromTypeInfo->isNative(NativeTypeKind::Any))
+    if (fromTypeInfo->isAny())
     {
         ensureCanBeChangedRC(context, exprNode->resultRegisterRC);
 
@@ -909,7 +909,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         }
 
         if (fromTypeInfo->isString() ||
-            fromTypeInfo->isNative(NativeTypeKind::Any))
+            fromTypeInfo->isAny())
         {
             truncRegisterRC(context, exprNode->resultRegisterRC, 1);
             node->resultRegisterRC   = exprNode->resultRegisterRC;

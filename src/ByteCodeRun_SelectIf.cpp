@@ -40,7 +40,7 @@ bool ByteCodeRun::getVariadicSI(ByteCodeRunContext* context, ByteCodeInstruction
     SWAG_ASSERT(child->kind == AstNodeKind::IntrinsicProp);
     child = child->childs.front();
 
-    if (child->typeInfo->kind == TypeInfoKind::TypeListArray)
+    if (child->typeInfo->isListArray())
     {
         auto typeList = CastTypeInfo<TypeInfoList>(child->typeInfo, TypeInfoKind::TypeListArray);
         if (regCount)
@@ -83,7 +83,7 @@ bool ByteCodeRun::executeIsConstExprSI(ByteCodeRunContext* context, ByteCodeInst
     {
         if (child->typeInfo->isArray())
             return true;
-        if (child->typeInfo->kind == TypeInfoKind::TypeListArray)
+        if (child->typeInfo->isListArray())
             return true;
     }
 
@@ -142,7 +142,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
             return;
         }
 
-        if (child->typeInfo->kind == TypeInfoKind::TypeListArray)
+        if (child->typeInfo->isListArray())
         {
             auto typeList                  = CastTypeInfo<TypeInfoList>(child->typeInfo, TypeInfoKind::TypeListArray);
             registersRC[ip->a.u32].pointer = nullptr;

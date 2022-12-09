@@ -190,7 +190,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     }
 
     // No direct operations on any, except affect any to any
-    if (leftTypeInfo->isNative(NativeTypeKind::Any) && node->token.id != TokenId::SymEqual)
+    if (leftTypeInfo->isAny() && node->token.id != TokenId::SymEqual)
     {
         return context->report({node, Fmt(Err(Err0570), node->token.ctext())});
     }

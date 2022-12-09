@@ -119,7 +119,7 @@ TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeIn
     {
         // We can have a match on a lambda for a function attribute, when function has been generated
         // In that case, we want to be sure that the kind is function
-        if (typeInfo->kind == TypeInfoKind::FuncAttr && it->second->kind == TypeInfoKind::Lambda)
+        if (typeInfo->isFuncAttr() && it->second->kind == TypeInfoKind::Lambda)
         {
             auto t  = it->second->clone();
             t->kind = TypeInfoKind::FuncAttr;
@@ -527,7 +527,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
 
     for (auto& v : match.genericReplaceTypes)
     {
-        if (v.second->kind == TypeInfoKind::TypeListTuple)
+        if (v.second->isListTuple())
         {
             auto tpt = CastTypeInfo<TypeInfoList>(v.second, TypeInfoKind::TypeListTuple);
             int  idx = 0;

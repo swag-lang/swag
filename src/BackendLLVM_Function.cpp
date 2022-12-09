@@ -4869,7 +4869,7 @@ llvm::Type* BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParamete
         typeInfo->isStruct() ||
         typeInfo->isInterface() ||
         typeInfo->kind == TypeInfoKind::Lambda ||
-        typeInfo->isNative(NativeTypeKind::Any) ||
+        typeInfo->isAny() ||
         typeInfo->isString())
     {
         return llvm::Type::getInt8PtrTy(context);

@@ -36,7 +36,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         if (!nodeParam->type)
         {
             nodeParam->semFlags |= AST_SEM_TUPLE_CONVERT;
-            SWAG_ASSERT(nodeParam->typeInfo->kind == TypeInfoKind::TypeListTuple);
+            SWAG_ASSERT(nodeParam->typeInfo->isListTuple());
             SWAG_CHECK(convertLiteralTupleToStructDecl(context, nodeParam, nodeParam->assignment, &nodeParam->type));
             context->result = ContextResult::NewChilds;
             context->job->nodes.push_back(nodeParam->type);
@@ -82,7 +82,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         // Not everything is possible for types for attributes
         if (param->ownerScope->kind == ScopeKind::Attribute)
         {
-            SWAG_VERIFY(!funcParam->typeInfo->isNative(NativeTypeKind::Any), context->report({nodeParam, Fmt(Err(Err0731), funcParam->typeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(!funcParam->typeInfo->isAny(), context->report({nodeParam, Fmt(Err(Err0731), funcParam->typeInfo->getDisplayNameC())}));
 
             if (funcParam->typeInfo->kind != TypeInfoKind::Native &&
                 funcParam->typeInfo->kind != TypeInfoKind::Enum &&
@@ -95,7 +95,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
             if (funcParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
             {
                 auto typeVar = CastTypeInfo<TypeInfoVariadic>(funcParam->typeInfo, TypeInfoKind::TypedVariadic);
-                SWAG_VERIFY(!typeVar->isNative(NativeTypeKind::Any), context->report({paramNodeType, Fmt(Err(Err0731), funcParam->typeInfo->getDisplayNameC())}));
+                SWAG_VERIFY(!typeVar->isAny(), context->report({paramNodeType, Fmt(Err(Err0731), funcParam->typeInfo->getDisplayNameC())}));
             }
         }
 
@@ -967,7 +967,7 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     if (child->kind == AstNodeKind::ExpressionList)
     {
         auto typeList = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
-        if (typeList->kind == TypeInfoKind::TypeListArray)
+        if (typeList->isListArray())
             node->typeInfo->setConst();
     }
 
@@ -1247,7 +1247,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
             typeInfoFunc->returnType = TypeManager::concreteType(node->childs.front()->typeInfo, CONCRETE_FUNC);
             typeInfoFunc->returnType = TypeManager::promoteUntyped(typeInfoFunc->returnType);
             auto concreteReturn      = TypeManager::concreteType(typeInfoFunc->returnType);
-            if (concreteReturn->kind == TypeInfoKind::TypeListTuple)
+            if (concreteReturn->isListTuple())
             {
                 SWAG_CHECK(convertLiteralTupleToStructDecl(context, funcNode->content, node->childs.front(), &funcNode->returnType));
                 funcNode->returnType->flags |= AST_FORCE_FUNC_LATE_REGISTER;

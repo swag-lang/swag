@@ -255,7 +255,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
         node->typeInfo->forceComputeName();
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
     }
-    else if (typeInfo->isNative(NativeTypeKind::Any) || typeInfo->isInterface())
+    else if (typeInfo->isAny() || typeInfo->isInterface())
     {
         node->typeInfo    = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
@@ -431,7 +431,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
             node->typeInfo    = g_TypeMgr->typeInfoUInt;
         }
     }
-    else if (typeInfo->kind == TypeInfoKind::TypeListTuple || typeInfo->kind == TypeInfoKind::TypeListArray)
+    else if (typeInfo->isListTuple() || typeInfo->isListArray())
     {
         auto typeList = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
         node->setFlagsValueIsComputed();
@@ -509,7 +509,7 @@ bool SemanticJob::resolveIntrinsicSpread(SemanticContext* context)
         auto typeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
         node->typeInfo = typeSlice->pointedType;
     }
-    else if (typeInfo->kind == TypeInfoKind::TypeListArray)
+    else if (typeInfo->isListArray())
     {
         auto typeList  = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListArray);
         node->typeInfo = typeList->subTypes[0]->typeInfo;
@@ -551,7 +551,7 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
     SWAG_CHECK(checkIsConstExpr(context, expr->typeInfo, expr));
 
     // Will be runtime for an 'any' type
-    if (expr->typeInfo->isNative(NativeTypeKind::Any) || expr->typeInfo->isInterface())
+    if (expr->typeInfo->isAny() || expr->typeInfo->isInterface())
     {
         SWAG_CHECK(checkIsConcrete(context, expr));
         node->allocateComputedValue();
@@ -566,7 +566,7 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
     }
 
     // For a function, this is the unscoped type
-    if (expr->typeInfo->kind == TypeInfoKind::FuncAttr)
+    if (expr->typeInfo->isFuncAttr())
     {
         SWAG_CHECK(resolveTypeAsExpression(context, expr, &node->typeInfo, MAKE_CONCRETE_FORCE_NO_SCOPE));
         if (context->result != ContextResult::Done)
@@ -616,7 +616,7 @@ bool SemanticJob::makeIntrinsicTypeOf(SemanticContext* context)
         }
 
         // Should be a lambda
-        if (typeInfo->kind == TypeInfoKind::FuncAttr && !(typeInfo->flags & TYPEINFO_FUNC_IS_ATTR))
+        if (typeInfo->isFuncAttr() && !(typeInfo->flags & TYPEINFO_FUNC_IS_ATTR))
         {
             typeInfo         = typeInfo->clone();
             typeInfo->kind   = TypeInfoKind::Lambda;

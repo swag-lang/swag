@@ -89,7 +89,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::TypeListTuple || typeInfo->kind == TypeInfoKind::TypeListArray)
+    if (typeInfo->isListTuple() || typeInfo->isListArray())
     {
         emitMemCpy(context, r0, r1, typeInfo->sizeOf);
         return true;
@@ -788,7 +788,7 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
         node->doneFlags |= AST_DONE_CAST1;
     }
 
-    if (leftNode->typeInfo->isNative(NativeTypeKind::Any))
+    if (leftNode->typeInfo->isAny())
     {
         leftNode->typeInfo = rightNode->typeInfo;
     }

@@ -601,7 +601,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
             if (typeParam->kind != TypeInfoKind::Struct &&
                 typeParam->kind != TypeInfoKind::TypeListTuple &&
                 typeParam->kind != TypeInfoKind::TypeListArray &&
-                !typeParam->isNative(NativeTypeKind::Any) &&
+                !typeParam->isAny() &&
                 !typeParam->isClosure() &&
                 (funcParam->assignment->flags & AST_VALUE_COMPUTED))
                 continue;
@@ -1447,7 +1447,7 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
         toCheck.push_back(node->ownerFct);
 
     // Except for a second try
-    if (node->ownerFct && symOverload->typeInfo->kind == TypeInfoKind::FuncAttr && flags & MIP_SECOND_GENERIC_TRY)
+    if (node->ownerFct && symOverload->typeInfo->isFuncAttr() && flags & MIP_SECOND_GENERIC_TRY)
         toCheck.push_back(node->ownerFct);
 
     // With A.B form, we try to get generic parameters from A if they exist
@@ -1609,7 +1609,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
 
         // If this is a type alias that already has a generic instance, accept to not have generic
         // parameters on the source symbol
-        if (rawTypeInfo->kind == TypeInfoKind::Alias)
+        if (rawTypeInfo->isAlias())
         {
             rawTypeInfo = TypeManager::concreteType(rawTypeInfo, CONCRETE_ALIAS);
             if (rawTypeInfo->isStruct())
@@ -1649,7 +1649,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             auto typeInfo = CastTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Interface);
             typeInfo->match(oneOverload.symMatchContext);
         }
-        else if (rawTypeInfo->kind == TypeInfoKind::FuncAttr)
+        else if (rawTypeInfo->isFuncAttr())
         {
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(rawTypeInfo, TypeInfoKind::FuncAttr);
             typeInfo->match(oneOverload.symMatchContext);
@@ -1997,7 +1997,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 auto        overload = match->symbolOverload;
                 Diagnostic* note     = nullptr;
 
-                if (overload->typeInfo->kind == TypeInfoKind::FuncAttr)
+                if (overload->typeInfo->isFuncAttr())
                 {
                     if (overload->typeInfo->flags & TYPEINFO_FROM_GENERIC)
                     {
@@ -3127,7 +3127,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         }
 
         // Priority to a local var/parameter versus a function
-        if (over->typeInfo->kind == TypeInfoKind::FuncAttr)
+        if (over->typeInfo->isFuncAttr())
         {
             for (int j = 0; j < countMatches; j++)
             {
@@ -3279,14 +3279,14 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         }
 
         // If we didn't match with ufcs, then priority to a match that do not start with 'self'
-        if (!curMatch->ufcs && over->typeInfo->kind == TypeInfoKind::FuncAttr)
+        if (!curMatch->ufcs && over->typeInfo->isFuncAttr())
         {
             auto typeFunc0 = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
             if (!typeFunc0->parameters.empty() && typeFunc0->parameters[0]->typeInfo->flags & TYPEINFO_SELF)
             {
                 for (int j = 0; j < countMatches; j++)
                 {
-                    if (matches[j]->symbolOverload->typeInfo->kind == TypeInfoKind::FuncAttr)
+                    if (matches[j]->symbolOverload->typeInfo->isFuncAttr())
                     {
                         auto typeFunc1 = CastTypeInfo<TypeInfoFuncAttr>(matches[j]->symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
                         if (typeFunc1->parameters.empty() || !(typeFunc1->parameters[0]->typeInfo->flags & TYPEINFO_SELF))
@@ -3300,14 +3300,14 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         }
 
         // If we did match with ufcs, then priority to a match that starts with 'self'
-        if (curMatch->ufcs && over->typeInfo->kind == TypeInfoKind::FuncAttr)
+        if (curMatch->ufcs && over->typeInfo->isFuncAttr())
         {
             auto typeFunc0 = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
             if (typeFunc0->parameters.empty() || !(typeFunc0->parameters[0]->typeInfo->flags & TYPEINFO_SELF))
             {
                 for (int j = 0; j < countMatches; j++)
                 {
-                    if (matches[j]->symbolOverload->typeInfo->kind == TypeInfoKind::FuncAttr)
+                    if (matches[j]->symbolOverload->typeInfo->isFuncAttr())
                     {
                         auto typeFunc1 = CastTypeInfo<TypeInfoFuncAttr>(matches[j]->symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
                         if (!typeFunc1->parameters.empty() && (typeFunc1->parameters[0]->typeInfo->flags & TYPEINFO_SELF))

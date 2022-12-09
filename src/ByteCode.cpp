@@ -90,7 +90,7 @@ TypeInfoFuncAttr* ByteCode::getCallType()
     if (alias)
         return alias->getCallType();
 
-    if (node && node->typeInfo->kind == TypeInfoKind::FuncAttr)
+    if (node && node->typeInfo->isFuncAttr())
         return CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
     return typeInfoFunc;
 }

@@ -378,7 +378,7 @@ bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode
                 continue;
             if (typeInfo->isInterface() && one.typeFunc && !(one.typeFunc->attributeUsage & (AttributeUsage::All | AttributeUsage::Struct)))
                 continue;
-            if (typeInfo->kind == TypeInfoKind::FuncAttr && one.typeFunc && !(one.typeFunc->attributeUsage & (AttributeUsage::All | AttributeUsage::Function)))
+            if (typeInfo->isFuncAttr() && one.typeFunc && !(one.typeFunc->attributeUsage & (AttributeUsage::All | AttributeUsage::Function)))
                 continue;
             if (typeInfo->isEnum() && one.typeFunc && !(one.typeFunc->attributeUsage & (AttributeUsage::All | AttributeUsage::Enum)))
                 continue;
@@ -509,7 +509,7 @@ bool AstOutput::outputLiteral(OutputContext& context, Concat& concat, AstNode* n
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::TypeListTuple || typeInfo->kind == TypeInfoKind::TypeListArray)
+    if (typeInfo->isListTuple() || typeInfo->isListArray())
     {
         SWAG_CHECK(outputNode(context, concat, node));
         return true;

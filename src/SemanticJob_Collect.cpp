@@ -31,7 +31,7 @@ bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegmen
         return true;
     }
 
-    if (typeInfo->isNative(NativeTypeKind::Any))
+    if (typeInfo->isAny())
     {
         if (!assignment->castedTypeInfo)
             return Report::internalError(context->node, "storeToSegment, cannot resolve any");

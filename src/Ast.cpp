@@ -193,7 +193,7 @@ namespace Ast
         Utf8 result;
         result.reserve(value.text.capacity());
 
-        if (typeInfo->isStruct() || typeInfo->kind == TypeInfoKind::TypeListArray)
+        if (typeInfo->isStruct() || typeInfo->isListArray())
         {
             result = Fmt("%u", value.storageOffset);
             return result;

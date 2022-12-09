@@ -1969,7 +1969,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
         fromNode->flags |= AST_CONST_EXPR;
 
     TypeInfoList* toTypeList = nullptr;
-    if (toType->kind == TypeInfoKind::TypeListTuple || toType->kind == TypeInfoKind::TypeListArray)
+    if (toType->isListTuple() || toType->isListArray())
         toTypeList = CastTypeInfo<TypeInfoList>(toType, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
 
     for (int i = 0; i < fromSize; i++)
@@ -1998,7 +1998,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
                     hasChanged = true;
 
                 // Collect array to slice : will need special treatment when collecting constants
-                if (childJ->typeInfo->kind == TypeInfoKind::TypeListArray && toTypeStruct->fields[j]->typeInfo->isSlice())
+                if (childJ->typeInfo->isListArray() && toTypeStruct->fields[j]->typeInfo->isSlice())
                 {
                     childJ->allocateExtension(ExtensionKind::Collect);
                     childJ->extension->misc->collectTypeInfo = toTypeStruct->fields[j]->typeInfo;
@@ -2118,7 +2118,7 @@ bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeI
 
 bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint32_t castFlags)
 {
-    if (toType->isNative(NativeTypeKind::Any))
+    if (toType->isAny())
     {
         if (fromType == g_TypeMgr->typeInfoNull)
         {
@@ -2184,7 +2184,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromNode->castedTypeInfo, fromNode->extension->misc->anyTypeSegment, &fromNode->extension->misc->anyTypeOffset));
         }
     }
-    else if (fromType->isNative(NativeTypeKind::Any))
+    else if (fromType->isAny())
     {
         toType = TypeManager::concretePtrRef(toType);
 
@@ -2779,7 +2779,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
     TypeInfoArray* toTypeArray = CastTypeInfo<TypeInfoArray>(toType, TypeInfoKind::Array);
-    if (fromType->kind == TypeInfoKind::TypeListArray)
+    if (fromType->isListArray())
     {
         TypeInfoList* fromTypeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeListArray);
         auto          fromSize     = fromTypeList->subTypes.size();
@@ -2867,7 +2867,7 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
 {
     TypeInfoSlice* toTypeSlice = CastTypeInfo<TypeInfoSlice>(toType, TypeInfoKind::Slice);
 
-    if (fromType->kind == TypeInfoKind::TypeListArray)
+    if (fromType->isListArray())
     {
         TypeInfoList* fromTypeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeListArray);
         SWAG_CHECK(castExpressionList(context, fromTypeList, toTypeSlice->pointedType, fromNode, castFlags));
@@ -3359,9 +3359,9 @@ bool TypeManager::convertLiteralTupleToStructType(SemanticContext* context, Type
                 nameVar = Fmt("item%d", i);
             i++;
 
-            if (typeField->kind == TypeInfoKind::TypeListArray)
+            if (typeField->isListArray())
                 typeField = TypeManager::convertTypeListToArray(context, (TypeInfoList*) typeField, false);
-            if (typeField->kind == TypeInfoKind::TypeListTuple)
+            if (typeField->isListTuple())
                 return context->report({fromNode, Err(Err0119)});
 
             // This is used for generic automatic deduction. We can use typeInfo->genericParameters, or we would
@@ -3401,7 +3401,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
     // convert {...} expression list to a structure : this will create a variable, with parameters
     SWAG_ASSERT(fromNode->typeInfo);
     auto fromType = concreteType(fromNode->typeInfo, CONCRETE_ALIAS);
-    if (fromType->kind == TypeInfoKind::TypeListTuple)
+    if (fromType->isListTuple())
     {
         bool convert = false;
         if (toType->isStruct())
@@ -3451,7 +3451,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
     // Store constant expression in the constant segment
     if (!(castFlags & CASTFLAG_NO_COLLECT))
     {
-        if (fromNode->typeInfo->kind == TypeInfoKind::TypeListTuple || fromNode->typeInfo->kind == TypeInfoKind::TypeListArray)
+        if (fromNode->typeInfo->isListTuple() || fromNode->typeInfo->isListArray())
         {
             while (fromNode && fromNode->kind != AstNodeKind::ExpressionList)
                 fromNode = fromNode->childs.empty() ? nullptr : fromNode->childs.front();
@@ -3489,7 +3489,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     auto realFromType = concreteType(fromType, CONCRETE_ALIAS);
     auto realToType   = concreteType(toType, CONCRETE_ALIAS);
     SWAG_ASSERT(realFromType && realToType);
-    if (realFromType->kind == TypeInfoKind::TypeListTuple)
+    if (realFromType->isListTuple())
     {
         if (realToType->isStruct())
             return true;
@@ -3511,17 +3511,17 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     if (toType->flags & TYPEINFO_FROM_GENERIC)
         castFlags |= CASTFLAG_NO_IMPLICIT;
 
-    if (toType->kind == TypeInfoKind::FuncAttr)
+    if (toType->isFuncAttr())
         toType = TypeManager::concreteType(toType, CONCRETE_FUNC);
-    if (fromType->kind == TypeInfoKind::FuncAttr)
+    if (fromType->isFuncAttr())
         fromType = TypeManager::concreteType(fromType, CONCRETE_FUNC);
     if (toType->kind != TypeInfoKind::Lambda && fromType->kind == TypeInfoKind::Lambda)
         fromType = TypeManager::concreteType(fromType, CONCRETE_FUNC);
 
     // Transform typealias to related type
-    if (toType->kind == TypeInfoKind::Alias)
+    if (toType->isAlias())
         toType = TypeManager::concreteType(toType, CONCRETE_ALIAS | (castFlags & CASTFLAG_EXPLICIT ? CONCRETE_FORCEALIAS : 0));
-    if (fromType->kind == TypeInfoKind::Alias)
+    if (fromType->isAlias())
         fromType = TypeManager::concreteType(fromType, CONCRETE_ALIAS | (castFlags & CASTFLAG_EXPLICIT ? CONCRETE_FORCEALIAS : 0));
 
     // Transform enum to underlying type
@@ -3537,16 +3537,16 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     }
 
     // Transform typealias to related type again, because an enum can have a type alias as an underlying type
-    if (toType->kind == TypeInfoKind::Alias)
+    if (toType->isAlias())
         toType = TypeManager::concreteType(toType, CONCRETE_ALIAS | (castFlags & CASTFLAG_EXPLICIT ? CONCRETE_FORCEALIAS : 0));
-    if (fromType->kind == TypeInfoKind::Alias)
+    if (fromType->isAlias())
         fromType = TypeManager::concreteType(fromType, CONCRETE_ALIAS | (castFlags & CASTFLAG_EXPLICIT ? CONCRETE_FORCEALIAS : 0));
 
     if (fromType == toType)
         return true;
 
     // Everything can be casted to or from type 'any'
-    if (toType->isNative(NativeTypeKind::Any) || fromType->isNative(NativeTypeKind::Any))
+    if (toType->isAny() || fromType->isAny())
         return castToFromAny(context, toType, fromType, toNode, fromNode, castFlags);
 
     // Variadic

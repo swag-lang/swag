@@ -395,7 +395,7 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
             Diagnostic diag{node, msg};
             Utf8       note = Nte(Nte0036);
             Diagnostic diagNote{firstOverload->node, note, DiagnosticLevel::Note};
-            if (typeInfo->kind == TypeInfoKind::FuncAttr)
+            if (typeInfo->isFuncAttr())
                 diagNote.remarks.push_back(Ast::computeGenericParametersReplacement(((TypeInfoFuncAttr*) typeInfo)->genericParameters));
             context->report(diag, &diagNote);
             return false;

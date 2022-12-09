@@ -23,7 +23,7 @@ bool TypeInfoNative::isSame(TypeInfo* to, uint32_t isSameFlags)
             return true;
     }
 
-    if (to->kind == TypeInfoKind::Alias)
+    if (to->isAlias())
         to = TypeManager::concreteType(to, CONCRETE_ALIAS);
 
     if (to->kind != TypeInfoKind::Native)
@@ -97,7 +97,7 @@ bool TypeInfoAlias::isSame(TypeInfo* to, uint32_t isSameFlags)
         return false;
     }
 
-    if (to->kind == TypeInfoKind::Alias)
+    if (to->isAlias())
     {
         auto other = static_cast<TypeInfoAlias*>(to);
         return rawType->isSame(other->rawType, isSameFlags);
@@ -725,7 +725,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint32_t isSameFlags)
         return false;
 
     auto other = static_cast<TypeInfoFuncAttr*>(to);
-    SWAG_ASSERT(to->kind == TypeInfoKind::FuncAttr || to->kind == TypeInfoKind::Lambda);
+    SWAG_ASSERT(to->isFuncAttr() || to->kind == TypeInfoKind::Lambda);
     if (!isSame(other, isSameFlags))
         return false;
 
@@ -770,7 +770,7 @@ bool TypeInfoFuncAttr::returnByCopy()
     auto type = concreteReturnType();
     if (type->isSlice() ||
         type->isInterface() ||
-        type->isNative(NativeTypeKind::Any) ||
+        type->isAny() ||
         type->isString() ||
         type->flags & TYPEINFO_RETURN_BY_COPY)
     {

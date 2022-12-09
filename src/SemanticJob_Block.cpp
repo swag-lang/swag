@@ -254,7 +254,7 @@ bool SemanticJob::resolveSwitchAfterExpr(SemanticContext* context)
     // Automatic convert to 'kindOf'
     // This has no sens to do a switch on an 'any'. So instead of raising an error,
     // we implies the usage of '@kindof'. That way we have a switch on the underlying type.
-    if (node->typeInfo->isNative(NativeTypeKind::Any))
+    if (node->typeInfo->isAny())
     {
         switchNode->beforeAutoCastType = node->typeInfo;
         node->byteCodeFct              = ByteCodeGenJob::emitImplicitKindOf;
@@ -295,7 +295,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     auto typeSwitch = TypeManager::concreteType(node->typeInfo);
 
     // Verify switch expression type is valid
-    SWAG_VERIFY(!typeSwitch->isNative(NativeTypeKind::Any), context->report({node->expression, Err(Err0608)}));
+    SWAG_VERIFY(!typeSwitch->isAny(), context->report({node->expression, Err(Err0608)}));
     switch (typeSwitch->kind)
     {
     case TypeInfoKind::Slice:

@@ -273,7 +273,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                                 }
                             }
                         }
-                        else if (callTypeInfo->kind == TypeInfoKind::TypeListTuple)
+                        else if (callTypeInfo->isListTuple())
                         {
                             auto typeList = CastTypeInfo<TypeInfoList>(callTypeInfo, TypeInfoKind::TypeListTuple);
                             auto num      = min(symbolStruct->genericParameters.size(), typeList->subTypes.size());
@@ -376,7 +376,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                         }
                         else
                         {
-                            SWAG_ASSERT(callTypeInfo->kind == TypeInfoKind::TypeListArray);
+                            SWAG_ASSERT(callTypeInfo->isListArray());
                             auto typeArray = CastTypeInfo<TypeInfoList>(callTypeInfo, TypeInfoKind::TypeListArray);
                             typeInfos.push_back(typeArray->subTypes[0]->typeInfo);
                             count = typeArray->subTypes.count;
@@ -823,7 +823,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
         bool same = false;
 
         // Any can only match to any or to a generic
-        if (typeInfo->isNative(NativeTypeKind::Any) && !symbolParameter->typeInfo->isGeneric() && !symbolParameter->typeInfo->isNative(NativeTypeKind::Any))
+        if (typeInfo->isAny() && !symbolParameter->typeInfo->isGeneric() && !symbolParameter->typeInfo->isAny())
             same = false;
         else
             same = TypeManager::makeCompatibles(context.semContext, symbolParameter->typeInfo, typeInfo, nullptr, nullptr, CASTFLAG_FOR_GENERIC | CASTFLAG_NO_ERROR | CASTFLAG_ACCEPT_PENDING);
@@ -842,7 +842,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
         // for tuples
         else if ((myTypeInfo->flags & TYPEINFO_GENERIC) ||
                  symbolParameter->typeInfo->isStruct() ||
-                 callParameter->typeInfo->kind == TypeInfoKind::Alias ||
+                 callParameter->typeInfo->isAlias() ||
                  !(symbolParameter->flags & TYPEINFO_DEFINED_VALUE) ||
                  (SemanticJob::valueEqualsTo(symbolParameter->value, callParameter)))
         {

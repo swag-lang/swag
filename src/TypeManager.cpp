@@ -730,7 +730,7 @@ uint32_t TypeManager::alignOf(TypeInfo* typeInfo)
     }
     else if (typeInfo->isSlice() ||
              typeInfo->isInterface() ||
-             typeInfo->isNative(NativeTypeKind::Any) ||
+             typeInfo->isAny() ||
              typeInfo->isString())
     {
         return sizeof(void*);

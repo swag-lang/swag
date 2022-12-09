@@ -227,6 +227,14 @@ struct TypeInfo
     bool isNative()                         { return kind == TypeInfoKind::Native; }
     bool isArray()                          { return kind == TypeInfoKind::Array; }
     bool isEnum()                           { return kind == TypeInfoKind::Enum; }
+    bool isAlias()                          { return kind == TypeInfoKind::Alias; }
+    bool isFuncAttr()                       { return kind == TypeInfoKind::FuncAttr; }
+    bool isListArray()                      { return kind == TypeInfoKind::TypeListArray; }
+    bool isListTuple()                      { return kind == TypeInfoKind::TypeListTuple; }
+    bool isVariadic()                       { return kind == TypeInfoKind::Variadic; }
+    bool isTypedVariadic()                  { return kind == TypeInfoKind::TypedVariadic; }
+    bool isCVariadic()                      { return kind == TypeInfoKind::CVariadic; }
+    bool isCode()                           { return kind == TypeInfoKind::Code; }
     bool isNative(NativeTypeKind native)    { return (kind == TypeInfoKind::Native) && (nativeType == native); }
     bool isAny()                            { return isNative(NativeTypeKind::Any); }
     bool isString()                         { return isNative(NativeTypeKind::String); }

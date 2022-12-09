@@ -305,7 +305,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     }
 
     // If we need a cast to an any, then first resolve literal with its real type
-    if (typeInfo->isNative(NativeTypeKind::Any))
+    if (typeInfo->isAny())
     {
         SWAG_ASSERT(node->castedTypeInfo);
         typeInfo = node->castedTypeInfo;
@@ -409,7 +409,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         emitMakeSegPointer(context, node->computedValue->storageSegment, node->computedValue->storageOffset, regList[0]);
         emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64 = typeArray->count;
     }
-    else if (typeInfo->isStruct() || typeInfo->kind == TypeInfoKind::TypeListTuple || typeInfo->kind == TypeInfoKind::TypeListArray)
+    else if (typeInfo->isStruct() || typeInfo->isListTuple() || typeInfo->isListArray())
     {
         emitMakeSegPointer(context, node->computedValue->storageSegment, node->computedValue->storageOffset, regList[0]);
     }

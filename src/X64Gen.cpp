@@ -1738,7 +1738,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
             pushParams3.push_back(index);
             pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);
         }
-        else if (typeParam->isNative(NativeTypeKind::Any) ||
+        else if (typeParam->isAny() ||
                  typeParam->isInterface())
         {
             pushParams3.push_back(index);

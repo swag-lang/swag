@@ -79,7 +79,7 @@ llvm::FunctionType* BackendLLVM::getOrCreateFuncType(const BuildParameters& buil
                 params.push_back(cType);
                 params.push_back(builder.getInt64Ty());
             }
-            else if (param->isNative(NativeTypeKind::Any) || param->isInterface())
+            else if (param->isAny() || param->isInterface())
             {
                 auto cType = swagTypeToLLVMType(buildParameters, moduleToGen, param);
                 params.push_back(cType);
@@ -361,7 +361,7 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
             auto r1 = GEP_I32(allocR, index);
             params.push_back(builder.CreateLoad(r1));
         }
-        else if (typeParam->isNative(NativeTypeKind::Any) ||
+        else if (typeParam->isAny() ||
                  typeParam->isInterface())
         {
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
@@ -388,7 +388,7 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
     auto returnType = TypeManager::concreteType(typeFuncBC->returnType);
     if (returnType->isSlice() ||
         returnType->isInterface() ||
-        returnType->isNative(NativeTypeKind::Any) ||
+        returnType->isAny() ||
         returnType->isString())
     {
         params.push_back(TO_PTR_I8(allocRR));
@@ -429,7 +429,7 @@ bool BackendLLVM::emitCallReturnValue(const BuildParameters& buildParameters,
     {
         if ((returnType->isSlice()) ||
             (returnType->isInterface()) ||
-            (returnType->isNative(NativeTypeKind::Any)) ||
+            (returnType->isAny()) ||
             (returnType->isString()) ||
             (returnType->flags & TYPEINFO_RETURN_BY_COPY))
         {

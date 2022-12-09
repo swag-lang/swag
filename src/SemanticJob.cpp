@@ -72,7 +72,7 @@ bool SemanticJob::valueEqualsTo(const ComputedValue* value1, const ComputedValue
             return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::TypeListArray)
+    if (typeInfo->isListArray())
     {
         if (!value1)
             return false;

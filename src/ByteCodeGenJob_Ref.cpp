@@ -183,7 +183,7 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context, TypeInfo* type
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::FuncAttr)
+    if (typeInfo->isFuncAttr())
     {
         truncRegisterRC(context, node->resultRegisterRC, 1);
         emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
@@ -214,8 +214,8 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::TypeListTuple ||
-        typeInfo->kind == TypeInfoKind::TypeListArray ||
+    if (typeInfo->isListTuple() ||
+        typeInfo->isListArray() ||
         typeInfo->isStruct() ||
         typeInfo->isArray() ||
         typeInfo->isClosure())

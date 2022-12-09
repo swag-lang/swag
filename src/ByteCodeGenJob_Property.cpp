@@ -89,7 +89,7 @@ bool ByteCodeGenJob::emitIntrinsicSpread(ByteCodeGenContext* context)
         auto inst              = emitInstruction(context, ByteCodeOp::SetImmediate64, expr->resultRegisterRC[1]);
         inst->b.u64            = typeArr->count;
     }
-    else if (typeInfo->kind == TypeInfoKind::TypeListArray || typeInfo->isSlice())
+    else if (typeInfo->isListArray() || typeInfo->isSlice())
     {
         node->resultRegisterRC = expr->resultRegisterRC;
     }
@@ -194,7 +194,7 @@ bool ByteCodeGenJob::emitIntrinsicDataOf(ByteCodeGenContext* context)
     }
 
     if (typeInfo->isString() ||
-        typeInfo->isNative(NativeTypeKind::Any) ||
+        typeInfo->isAny() ||
         typeInfo->isSlice() ||
         typeInfo->isInterface() ||
         typeInfo->isArray())

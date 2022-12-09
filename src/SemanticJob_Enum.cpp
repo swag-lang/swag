@@ -183,7 +183,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
             SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, assignNode->computedValue, assignNode->typeInfo, assignNode));
 
             // :SliceLiteral
-            if (assignNode->typeInfo->kind == TypeInfoKind::TypeListArray)
+            if (assignNode->typeInfo->isListArray())
             {
                 auto typeList                    = CastTypeInfo<TypeInfoList>(assignNode->typeInfo, TypeInfoKind::TypeListArray);
                 enumNode->computedValue->reg.u64 = typeList->subTypes.size();

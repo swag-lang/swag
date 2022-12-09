@@ -31,7 +31,7 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
     auto varDecl   = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl);
 
     auto typeVar = TypeManager::concreteType(varDecl->typeInfo);
-    if (typeVar->kind == TypeInfoKind::TypeListTuple && !varDecl->type)
+    if (typeVar->isListTuple() && !varDecl->type)
     {
         varDecl->semFlags |= AST_SEM_TUPLE_CONVERT;
         SWAG_CHECK(convertLiteralTupleToStructDecl(context, varDecl, varDecl->assignment, &varDecl->type));
@@ -100,7 +100,7 @@ AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstN
     if (childType->isConst())
         typeExpression->typeFlags |= TYPEFLAG_IS_CONST;
 
-    if (childType->kind == TypeInfoKind::TypeListTuple)
+    if (childType->isListTuple())
     {
         AstStruct* inStructNode;
         if (!convertLiteralTupleToStructDecl(context, assignment, &inStructNode))
@@ -931,7 +931,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         node->typeInfo = node->type->typeInfo;
 
         // A slice initialized with an expression list must be immutable
-        if (leftConcreteType->isSlice() && rightConcreteType->kind == TypeInfoKind::TypeListArray && (node->assignment->flags & AST_CONST_EXPR))
+        if (leftConcreteType->isSlice() && rightConcreteType->isListArray() && (node->assignment->flags & AST_CONST_EXPR))
         {
             SWAG_VERIFY(leftConcreteType->isConst(), context->report({node->type, Err(Err0306)}));
         }
@@ -952,7 +952,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
         if (node->typeInfo == g_TypeMgr->typeInfoVoid)
         {
-            if (node->assignment->typeInfo->kind == TypeInfoKind::FuncAttr && node->assignment->resolvedSymbolOverload)
+            if (node->assignment->typeInfo->isFuncAttr() && node->assignment->resolvedSymbolOverload)
             {
                 auto       over = node->assignment->resolvedSymbolOverload;
                 Diagnostic diag{node->assignment, Err(Err0307)};
@@ -968,7 +968,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         node->typeInfo = TypeManager::solidifyUntyped(node->typeInfo);
 
         // Convert from initialization list to array
-        if (node->typeInfo->kind == TypeInfoKind::TypeListArray)
+        if (node->typeInfo->isListArray())
             SWAG_CHECK(convertTypeListToArray(context, node, isCompilerConstant, symbolFlags));
 
         // Unref

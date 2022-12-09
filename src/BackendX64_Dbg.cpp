@@ -796,7 +796,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
 
     // Any
     /////////////////////////////////
-    if (typeInfo->isNative(NativeTypeKind::Any))
+    if (typeInfo->isAny())
     {
         auto         tr0 = dbgAddTypeRecord(pp);
         DbgTypeField field;
@@ -919,7 +919,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
 
     // Function
     /////////////////////////////////
-    if (typeInfo->kind == TypeInfoKind::FuncAttr)
+    if (typeInfo->isFuncAttr())
     {
         TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
         auto              tr0      = dbgAddTypeRecord(pp);
