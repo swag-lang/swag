@@ -299,7 +299,7 @@ bool SemanticJob::resolveIntrinsicStringOf(SemanticContext* context)
         else
             return context->report({expr, Err(Err0799)});
     }
-    else if (expr->typeInfo->kind == TypeInfoKind::Code)
+    else if (expr->typeInfo->isCode())
     {
         Concat concat;
         concat.init(4 * 1024);

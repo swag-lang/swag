@@ -409,7 +409,7 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
     node->doneFlags |= AST_DONE_COMPILER_INSERT;
 
     auto expr = node->childs[0];
-    SWAG_VERIFY(expr->typeInfo->kind == TypeInfoKind::Code, context->report({expr, Fmt(Err(Err0240), expr->typeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(expr->typeInfo->isCode(), context->report({expr, Fmt(Err(Err0240), expr->typeInfo->getDisplayNameC())}));
 
     node->allocateExtension(ExtensionKind::ByteCode);
     node->extension->bytecode->byteCodeBeforeFct = ByteCodeGenJob::emitDebugNop;

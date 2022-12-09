@@ -1099,7 +1099,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
         // If this is a 'code' variable, when passing code from one macro to another, then do not generate bytecode
         // for it, as this is not really a variable
-        if (typeInfo->kind == TypeInfoKind::Code)
+        if (typeInfo->isCode())
             identifier->flags |= AST_NO_BYTECODE;
 
         // Lambda call
@@ -2913,7 +2913,7 @@ bool SemanticJob::appendLastCodeStatement(SemanticContext* context, AstIdentifie
 
         // If last parameter is of type code, and the call last parameter is not, then take the next statement
         auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
-        if (!typeFunc->parameters.empty() && typeFunc->parameters.back()->typeInfo->kind == TypeInfoKind::Code)
+        if (!typeFunc->parameters.empty() && typeFunc->parameters.back()->typeInfo->isCode())
         {
             if (node->callParameters && node->callParameters->childs.size() < typeFunc->parameters.size())
             {

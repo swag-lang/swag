@@ -76,7 +76,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         // Code is only valid for a macro or mixin
         auto paramType     = nodeParam->typeInfo;
         auto paramNodeType = nodeParam->type ? nodeParam->type : nodeParam;
-        if (paramType->kind == TypeInfoKind::Code)
+        if (paramType->isCode())
             SWAG_VERIFY(funcNode->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN), context->report({paramNodeType, Err(Err0729)}));
 
         // Not everything is possible for types for attributes
@@ -1579,7 +1579,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
                 continue;
 
             // Transmit code type
-            if (param->typeInfo->kind == TypeInfoKind::Code)
+            if (param->typeInfo->isCode())
             {
                 inlineNode->parametersScope->symTable.addSymbolTypeInfo(context, param, param->typeInfo, SymbolKind::Variable, nullptr, 0, nullptr, 0, nullptr, &param->resolvedParameter->namedParam);
             }
