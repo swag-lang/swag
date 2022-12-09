@@ -414,7 +414,7 @@ bool TypeInfoGeneric::isSame(TypeInfo* to, uint32_t isSameFlags)
 {
     if (this == to)
         return true;
-    if (!(isSameFlags & ISSAME_EXACT) && to->kind != TypeInfoKind::Generic)
+    if (!(isSameFlags & ISSAME_EXACT) && !to->isKindGeneric())
         return true;
     if (to->kind == kind)
         return name == to->name;

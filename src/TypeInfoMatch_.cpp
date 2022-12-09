@@ -788,7 +788,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                 if (firstChild->flags & AST_VALUE_COMPUTED && !(firstChild->flags & AST_VALUE_IS_TYPEINFO))
                     isValue = true;
 
-                if ((symbolParameter->typeInfo->kind != TypeInfoKind::Generic) && !isValue)
+                if (!symbolParameter->typeInfo->isKindGeneric() && !isValue)
                 {
                     context.badSignatureInfos.badSignatureParameterIdx  = i;
                     context.badSignatureInfos.badSignatureRequestedType = symbolParameter->typeInfo;

@@ -2974,8 +2974,8 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
             symbolKind != SymbolKind::Interface &&
             symbolKind != SymbolKind::TypeAlias &&
             !node->token.text.empty() && // :SilentCall
-            symbol->overloads[0]->typeInfo->kind != TypeInfoKind::Generic &&
-            TypeManager::concreteType(symbol->overloads[0]->typeInfo, CONCRETE_ALIAS)->kind != TypeInfoKind::LambdaClosure)
+            !symbol->overloads[0]->typeInfo->isKindGeneric() &&
+            !TypeManager::concreteType(symbol->overloads[0]->typeInfo, CONCRETE_ALIAS)->isLambdaClosure())
         {
             auto firstNode = symbol->nodes.front();
             if (symbolKind == SymbolKind::Variable)

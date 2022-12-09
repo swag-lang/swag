@@ -223,7 +223,7 @@ bool TypeInfo::isPointerVoid()
         return false;
     auto ptr   = (TypeInfoPointer*) this;
     auto unref = TypeManager::concreteType(ptr->pointedType, CONCRETE_ALIAS);
-    if (unref->kind != TypeInfoKind::Native)
+    if (!unref->isNative())
         return false;
     if (unref->nativeType != NativeTypeKind::Void)
         return false;

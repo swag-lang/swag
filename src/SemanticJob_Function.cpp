@@ -962,7 +962,7 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     auto child     = node->childs.front();
     node->typeInfo = child->typeInfo;
 
-    SWAG_VERIFY(node->typeInfo->kind != TypeInfoKind::CVariadic, context->report({node, Err(Err0446)}));
+    SWAG_VERIFY(!node->typeInfo->isCVariadic(), context->report({node, Err(Err0446)}));
 
     // Force const if necessary
     // func([.., ...]) must be const

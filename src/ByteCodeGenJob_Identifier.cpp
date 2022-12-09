@@ -30,7 +30,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
     auto resolved   = node->resolvedSymbolOverload;
     auto typeInfo   = TypeManager::concreteType(resolved->typeInfo);
-    SWAG_VERIFY(typeInfo->kind != TypeInfoKind::Generic, Report::internalError(context->node, "emitIdentifier, type is generic"));
+    SWAG_VERIFY(!typeInfo->isKindGeneric(), Report::internalError(context->node, "emitIdentifier, type is generic"));
 
     // If this is a retval, then just copy the return pointer register to a computing register
     if (resolved->flags & OVERLOAD_RETVAL)

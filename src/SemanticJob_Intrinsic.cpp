@@ -645,7 +645,7 @@ bool SemanticJob::resolveIntrinsicTypeOf(SemanticContext* context)
     auto expr = node->childs.front();
 
     SWAG_CHECK(checkIsConstExpr(context, expr->typeInfo, expr));
-    SWAG_VERIFY(expr->typeInfo->kind != TypeInfoKind::Generic, context->report({expr, Err(Err0810)}));
+    SWAG_VERIFY(!expr->typeInfo->isKindGeneric(), context->report({expr, Err(Err0810)}));
 
     expr->flags |= AST_NO_BYTECODE;
     SWAG_CHECK(makeIntrinsicTypeOf(context));
@@ -684,7 +684,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     {
         auto expr = node->childs.front();
         SWAG_CHECK(checkIsConstExpr(context, expr->typeInfo, expr));
-        SWAG_VERIFY(expr->typeInfo->kind != TypeInfoKind::Generic, context->report({expr, Err(Err0812)}));
+        SWAG_VERIFY(!expr->typeInfo->isKindGeneric(), context->report({expr, Err(Err0812)}));
         node->setFlagsValueIsComputed();
         node->computedValue->reg.u64 = expr->typeInfo->sizeOf;
         if (node->computedValue->reg.u64 > 0xFFFFFFFF)
@@ -698,7 +698,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     {
         auto expr = node->childs.front();
         SWAG_CHECK(checkIsConstExpr(context, expr->typeInfo, expr));
-        SWAG_VERIFY(expr->typeInfo->kind != TypeInfoKind::Generic, context->report({expr, Err(Err0814)}));
+        SWAG_VERIFY(!expr->typeInfo->isKindGeneric(), context->report({expr, Err(Err0814)}));
         node->setFlagsValueIsComputed();
         node->computedValue->reg.u64 = TypeManager::alignOf(expr->typeInfo);
         if (node->computedValue->reg.u64 > 0xFFFFFFFF)

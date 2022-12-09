@@ -3638,7 +3638,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     }
 
     // Const mismatch
-    if (toType->kind != TypeInfoKind::Generic && !toType->isLambdaClosure() && !(castFlags & CASTFLAG_FORCE_UNCONST))
+    if (!toType->isKindGeneric() && !toType->isLambdaClosure() && !(castFlags & CASTFLAG_FORCE_UNCONST))
     {
         if (!(castFlags & CASTFLAG_PARAMS) || !toType->isStruct())
         {
