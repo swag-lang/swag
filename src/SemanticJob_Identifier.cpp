@@ -1570,7 +1570,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 symbolKind != SymbolKind::Function &&
                 symbolKind != SymbolKind::Struct &&
                 symbolKind != SymbolKind::Interface &&
-                overload->typeInfo->kind != TypeInfoKind::LambdaClosure)
+                !overload->typeInfo->isLambdaClosure())
             {
                 auto match              = job->getOneMatch();
                 match->symbolOverload   = overload;

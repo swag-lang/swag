@@ -725,7 +725,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
     // Check for missing initialization
     // This is ok to not have an initialization for structs, as they are initialized by default
-    if (!node->assignment && (!node->type || concreteNodeType->kind != TypeInfoKind::Struct))
+    if (!node->assignment && (!node->type || !concreteNodeType->isStruct()))
     {
         // A constant must be initialized
         if (isCompilerConstant && !(node->flags & AST_VALUE_COMPUTED))

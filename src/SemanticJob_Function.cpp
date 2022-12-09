@@ -589,19 +589,21 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     typeInfo->returnType = typeNode->typeInfo;
 
     // Be sure this is a valid return type
-    if (typeInfo->returnType->kind != TypeInfoKind::Native &&
-        typeInfo->returnType->kind != TypeInfoKind::TypeListTuple &&
-        typeInfo->returnType->kind != TypeInfoKind::TypeListArray &&
-        typeInfo->returnType->kind != TypeInfoKind::Struct &&
-        typeInfo->returnType->kind != TypeInfoKind::Generic &&
-        typeInfo->returnType->kind != TypeInfoKind::Alias &&
-        typeInfo->returnType->kind != TypeInfoKind::LambdaClosure &&
-        typeInfo->returnType->kind != TypeInfoKind::Slice &&
-        typeInfo->returnType->kind != TypeInfoKind::Enum &&
-        typeInfo->returnType->kind != TypeInfoKind::Interface &&
-        typeInfo->returnType->kind != TypeInfoKind::Array &&
-        typeInfo->returnType->kind != TypeInfoKind::Pointer)
+    if (!typeInfo->returnType->isNative() &&
+        !typeInfo->returnType->isListTuple() &&
+        !typeInfo->returnType->isListArray() &&
+        !typeInfo->returnType->isStruct() &&
+        !typeInfo->returnType->isGeneric() &&
+        !typeInfo->returnType->isAlias() &&
+        !typeInfo->returnType->isLambdaClosure() &&
+        !typeInfo->returnType->isSlice() &&
+        !typeInfo->returnType->isEnum() &&
+        !typeInfo->returnType->isInterface() &&
+        !typeInfo->returnType->isArray() &&
+        !typeInfo->returnType->isPointer())
+    {
         return context->report({typeNode->childs.front(), Fmt(Err(Err0764), typeInfo->returnType->getDisplayNameC())});
+    }
 
     typeInfo->name.clear();
     typeInfo->displayName.clear();

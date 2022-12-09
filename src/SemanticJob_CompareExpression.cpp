@@ -343,7 +343,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
         return context->report({left, Err(Err0009)});
 
     // Interface can only be compared to null ar to another interface
-    if (leftTypeInfo->isInterface() && rightTypeInfo != g_TypeMgr->typeInfoNull && rightTypeInfo->kind != TypeInfoKind::Interface)
+    if (leftTypeInfo->isInterface() && rightTypeInfo != g_TypeMgr->typeInfoNull && !rightTypeInfo->isInterface())
         return context->report({left, Err(Err0010)});
 
     // Some types can only be compared for equality
