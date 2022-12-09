@@ -315,18 +315,18 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     {
         // This is fine to compare two lambdas
     }
-    else if (leftTypeInfo->kind != TypeInfoKind::Native &&
-             leftTypeInfo->kind != TypeInfoKind::Pointer &&
-             leftTypeInfo->kind != TypeInfoKind::Struct &&
-             leftTypeInfo->kind != TypeInfoKind::Slice &&
-             leftTypeInfo->kind != TypeInfoKind::Interface)
+    else if (!leftTypeInfo->isNative() &&
+             !leftTypeInfo->isPointer() &&
+             !leftTypeInfo->isStruct() &&
+             !leftTypeInfo->isSlice() &&
+             !leftTypeInfo->isInterface())
     {
         return context->report({left, Fmt(Err(Err0809), node->token.ctext(), TypeInfo::getArticleKindName(leftTypeInfo)), Hint::isType(leftTypeInfo)});
     }
-    else if (rightTypeInfo->kind != TypeInfoKind::Native &&
-             rightTypeInfo->kind != TypeInfoKind::Pointer &&
-             rightTypeInfo->kind != TypeInfoKind::Struct &&
-             rightTypeInfo->kind != TypeInfoKind::Interface)
+    else if (!rightTypeInfo->isNative() &&
+             !rightTypeInfo->isPointer() &&
+             !rightTypeInfo->isStruct() &&
+             !rightTypeInfo->isInterface())
     {
 
         return context->report({right, Fmt(Err(Err0778), node->token.ctext(), TypeInfo::getArticleKindName(rightTypeInfo)), Hint::isType(rightTypeInfo)});

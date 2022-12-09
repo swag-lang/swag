@@ -152,7 +152,7 @@ bool ByteCodeGenJob::emitBinaryOpMul(ByteCodeGenContext* context, TypeInfo* type
 {
     auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
-    if (typeInfo->kind != TypeInfoKind::Native)
+    if (!typeInfo->isNative())
         return Report::internalError(context->node, "emitBinaryOpMul, type not native");
 
     switch (typeInfo->nativeType)
@@ -187,7 +187,7 @@ bool ByteCodeGenJob::emitBinaryOpDiv(ByteCodeGenContext* context, TypeInfo* type
 {
     auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
-    if (typeInfo->kind != TypeInfoKind::Native)
+    if (!typeInfo->isNative())
         return Report::internalError(context->node, "emitBinaryOpDiv, type not native");
 
     switch (typeInfo->nativeType)
@@ -228,7 +228,7 @@ bool ByteCodeGenJob::emitBinaryOpModulo(ByteCodeGenContext* context, TypeInfo* t
 {
     auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
-    if (typeInfo->kind != TypeInfoKind::Native)
+    if (!typeInfo->isNative())
         return Report::internalError(context->node, "emitBinaryOpModulo, type not native");
 
     switch (typeInfo->nativeType)
@@ -262,7 +262,7 @@ bool ByteCodeGenJob::emitBitmaskAnd(ByteCodeGenContext* context, TypeInfo* typeI
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
 
-    if (typeInfo->kind != TypeInfoKind::Native)
+    if (!typeInfo->isNative())
         return Report::internalError(context->node, "emitBitmaskAnd, type not native");
 
     switch (typeInfo->nativeType)
@@ -296,7 +296,7 @@ bool ByteCodeGenJob::emitBitmaskOr(ByteCodeGenContext* context, TypeInfo* typeIn
 {
     auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
-    if (typeInfo->kind != TypeInfoKind::Native)
+    if (!typeInfo->isNative())
         return Report::internalError(context->node, "emitBitmaskOr, type not native");
 
     switch (typeInfo->nativeType)
@@ -330,7 +330,7 @@ bool ByteCodeGenJob::emitShiftLeft(ByteCodeGenContext* context, TypeInfo* typeIn
 {
     auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
-    if (typeInfo->kind != TypeInfoKind::Native)
+    if (!typeInfo->isNative())
         return Report::internalError(context->node, "emitShiftLeft, type not native");
 
     emitSafetyLeftShift(context, r0, r1, typeInfo);
@@ -380,7 +380,7 @@ bool ByteCodeGenJob::emitShiftRight(ByteCodeGenContext* context, TypeInfo* typeI
 {
     auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
-    if (typeInfo->kind != TypeInfoKind::Native)
+    if (!typeInfo->isNative())
         return Report::internalError(context->node, "emitShiftRight, type not native");
 
     emitSafetyRightShift(context, r0, r1, typeInfo);
@@ -429,7 +429,7 @@ bool ByteCodeGenJob::emitXor(ByteCodeGenContext* context, TypeInfo* typeInfoExpr
 {
     auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
-    if (typeInfo->kind != TypeInfoKind::Native)
+    if (!typeInfo->isNative())
         return Report::internalError(context->node, "emitXor, type not native");
 
     switch (typeInfo->nativeType)

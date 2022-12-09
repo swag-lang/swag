@@ -222,7 +222,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     node->typeInfo = g_TypeMgr->typeInfoBool;
 
     bool forStruct = leftTypeInfo->isStruct();
-    bool forTuple  = leftTypeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE;
+    bool forTuple  = leftTypeInfo->isTuple();
 
     SWAG_CHECK(evaluateConstExpression(context, right));
     if (context->result == ContextResult::Pending)
@@ -243,7 +243,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     switch (tokenId)
     {
     case TokenId::SymEqual:
-        if (leftTypeInfo->kind != TypeInfoKind::Native &&
+        if (!leftTypeInfo->isNative() &&
             leftTypeInfo->kind != TypeInfoKind::Pointer &&
             leftTypeInfo->kind != TypeInfoKind::Slice &&
             leftTypeInfo->kind != TypeInfoKind::LambdaClosure &&

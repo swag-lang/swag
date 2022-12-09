@@ -316,7 +316,7 @@ bool AstNode::mustInline()
 bool AstNode::isConstant0()
 {
     SWAG_ASSERT(typeInfo);
-    if (typeInfo->kind != TypeInfoKind::Native)
+    if (!typeInfo->isNative())
         return false;
     if (!(flags & AST_VALUE_COMPUTED))
         return false;
@@ -339,7 +339,7 @@ bool AstNode::isConstant0()
 bool AstNode::isConstant1()
 {
     SWAG_ASSERT(typeInfo);
-    if (typeInfo->kind != TypeInfoKind::Native)
+    if (!typeInfo->isNative())
         return false;
     if (!(flags & AST_VALUE_COMPUTED))
         return false;

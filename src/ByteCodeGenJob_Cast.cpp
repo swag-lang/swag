@@ -144,7 +144,7 @@ bool ByteCodeGenJob::emitCastToNativeBool(ByteCodeGenContext* context, AstNode* 
     }
     else
     {
-        if (typeInfo->kind != TypeInfoKind::Native)
+        if (!typeInfo->isNative())
             return Report::internalError(exprNode, "emitCast, expression type not native");
 
         switch (typeInfo->nativeType)
@@ -187,7 +187,7 @@ bool ByteCodeGenJob::emitCastToNativeBool(ByteCodeGenContext* context, AstNode* 
 
 bool ByteCodeGenJob::emitCastToNativeU8(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
-    if (typeInfo->kind != TypeInfoKind::Native)
+    if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
 
     switch (typeInfo->nativeType)
@@ -222,7 +222,7 @@ bool ByteCodeGenJob::emitCastToNativeU8(ByteCodeGenContext* context, AstNode* ex
 
 bool ByteCodeGenJob::emitCastToNativeU16(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
-    if (typeInfo->kind != TypeInfoKind::Native)
+    if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
 
     switch (typeInfo->nativeType)
@@ -262,7 +262,7 @@ bool ByteCodeGenJob::emitCastToNativeU16(ByteCodeGenContext* context, AstNode* e
 
 bool ByteCodeGenJob::emitCastToNativeU32(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
-    if (typeInfo->kind != TypeInfoKind::Native)
+    if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
 
     switch (typeInfo->nativeType)
@@ -309,7 +309,7 @@ bool ByteCodeGenJob::emitCastToNativeU64(ByteCodeGenContext* context, AstNode* e
     if (typeInfo->isPointer())
         return true;
 
-    if (typeInfo->kind != TypeInfoKind::Native)
+    if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
 
     switch (typeInfo->nativeType)
@@ -356,7 +356,7 @@ bool ByteCodeGenJob::emitCastToNativeU64(ByteCodeGenContext* context, AstNode* e
 }
 bool ByteCodeGenJob::emitCastToNativeS8(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
-    if (typeInfo->kind != TypeInfoKind::Native)
+    if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
 
     switch (typeInfo->nativeType)
@@ -391,7 +391,7 @@ bool ByteCodeGenJob::emitCastToNativeS8(ByteCodeGenContext* context, AstNode* ex
 
 bool ByteCodeGenJob::emitCastToNativeS16(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
-    if (typeInfo->kind != TypeInfoKind::Native)
+    if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
 
     switch (typeInfo->nativeType)
@@ -431,7 +431,7 @@ bool ByteCodeGenJob::emitCastToNativeS16(ByteCodeGenContext* context, AstNode* e
 
 bool ByteCodeGenJob::emitCastToNativeS32(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
-    if (typeInfo->kind != TypeInfoKind::Native)
+    if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
 
     switch (typeInfo->nativeType)
@@ -475,7 +475,7 @@ bool ByteCodeGenJob::emitCastToNativeS32(ByteCodeGenContext* context, AstNode* e
 
 bool ByteCodeGenJob::emitCastToNativeS64(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
-    if (typeInfo->kind != TypeInfoKind::Native)
+    if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
 
     switch (typeInfo->nativeType)
@@ -524,7 +524,7 @@ bool ByteCodeGenJob::emitCastToNativeS64(ByteCodeGenContext* context, AstNode* e
 
 bool ByteCodeGenJob::emitCastToNativeF32(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
-    if (typeInfo->kind != TypeInfoKind::Native)
+    if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
 
     switch (typeInfo->nativeType)
@@ -573,7 +573,7 @@ bool ByteCodeGenJob::emitCastToNativeF32(ByteCodeGenContext* context, AstNode* e
 
 bool ByteCodeGenJob::emitCastToNativeF64(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
-    if (typeInfo->kind != TypeInfoKind::Native)
+    if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
 
     switch (typeInfo->nativeType)
@@ -934,7 +934,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         return true;
     }
 
-    if (typeInfo->kind != TypeInfoKind::Native)
+    if (!typeInfo->isNative())
         return Report::internalError(context->node, "emitCast, cast type not native");
 
     emitSafetyCast(context, typeInfo, fromTypeInfo, exprNode);

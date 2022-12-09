@@ -207,7 +207,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         return true;
     }
 
-    if (typeInfo->kind != TypeInfoKind::Native)
+    if (!typeInfo->isNative())
         return Report::internalError(context->node, "emitAffectEqual, type not native");
 
     switch (typeInfo->nativeType)
@@ -389,7 +389,7 @@ bool ByteCodeGenJob::emitAffectMulEqual(ByteCodeGenContext* context, uint32_t r0
     if (front->semFlags & AST_SEM_FROM_REF)
         leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
 
-    if (leftTypeInfo->kind != TypeInfoKind::Native)
+    if (!leftTypeInfo->isNative())
         return Report::internalError(context->node, "emitAffectMulEqual, type not native");
 
     switch (leftTypeInfo->nativeType)
@@ -441,7 +441,7 @@ bool ByteCodeGenJob::emitAffectAndEqual(ByteCodeGenContext* context, uint32_t r0
     if (front->semFlags & AST_SEM_FROM_REF)
         leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
 
-    if (leftTypeInfo->kind != TypeInfoKind::Native)
+    if (!leftTypeInfo->isNative())
         return Report::internalError(context->node, "emitAffectAndEqual, type not native");
 
     switch (leftTypeInfo->nativeType)
@@ -480,7 +480,7 @@ bool ByteCodeGenJob::emitAffectOrEqual(ByteCodeGenContext* context, uint32_t r0,
     if (front->semFlags & AST_SEM_FROM_REF)
         leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
 
-    if (leftTypeInfo->kind != TypeInfoKind::Native)
+    if (!leftTypeInfo->isNative())
         return Report::internalError(context->node, "emitAffectOrEqual, type not native");
 
     switch (leftTypeInfo->nativeType)
@@ -519,7 +519,7 @@ bool ByteCodeGenJob::emitAffectXorEqual(ByteCodeGenContext* context, uint32_t r0
     if (front->semFlags & AST_SEM_FROM_REF)
         leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
 
-    if (leftTypeInfo->kind != TypeInfoKind::Native)
+    if (!leftTypeInfo->isNative())
         return Report::internalError(context->node, "emitAffectXorEqual, type not native");
 
     switch (leftTypeInfo->nativeType)
@@ -558,7 +558,7 @@ bool ByteCodeGenJob::emitAffectShiftLeftEqual(ByteCodeGenContext* context, uint3
     if (front->semFlags & AST_SEM_FROM_REF)
         leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
 
-    if (leftTypeInfo->kind != TypeInfoKind::Native)
+    if (!leftTypeInfo->isNative())
         return Report::internalError(context->node, "emitAffectShiftLeftEqual, type not native");
 
     emitSafetyLeftShiftEq(context, r0, r1, leftTypeInfo);
@@ -612,7 +612,7 @@ bool ByteCodeGenJob::emitAffectShiftRightEqual(ByteCodeGenContext* context, uint
     if (front->semFlags & AST_SEM_FROM_REF)
         leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
 
-    if (leftTypeInfo->kind != TypeInfoKind::Native)
+    if (!leftTypeInfo->isNative())
         return Report::internalError(context->node, "emitAffectShiftRightEqual, type not native");
 
     emitSafetyRightShiftEq(context, r0, r1, leftTypeInfo);
@@ -666,7 +666,7 @@ bool ByteCodeGenJob::emitAffectPercentEqual(ByteCodeGenContext* context, uint32_
     if (front->semFlags & AST_SEM_FROM_REF)
         leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
 
-    if (leftTypeInfo->kind != TypeInfoKind::Native)
+    if (!leftTypeInfo->isNative())
         return Report::internalError(context->node, "emitAffectPercentEqual, type not native");
 
     switch (leftTypeInfo->nativeType)
@@ -720,7 +720,7 @@ bool ByteCodeGenJob::emitAffectDivEqual(ByteCodeGenContext* context, uint32_t r0
     if (front->semFlags & AST_SEM_FROM_REF)
         leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
 
-    if (leftTypeInfo->kind != TypeInfoKind::Native)
+    if (!leftTypeInfo->isNative())
         return Report::internalError(context->node, "emitAffectDivEqual, type not native");
 
     switch (leftTypeInfo->nativeType)

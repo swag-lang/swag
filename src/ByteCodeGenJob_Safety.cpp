@@ -598,7 +598,7 @@ void ByteCodeGenJob::emitSafetyCast(ByteCodeGenContext* context, TypeInfo* typeI
 {
     if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_OVERFLOW_ON, ATTRIBUTE_SAFETY_OVERFLOW_OFF))
         return;
-    if (typeInfo->kind != TypeInfoKind::Native)
+    if (!typeInfo->isNative())
         return;
     if (fromTypeInfo->kind != TypeInfoKind::Native)
         return;

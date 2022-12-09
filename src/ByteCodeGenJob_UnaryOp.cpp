@@ -9,7 +9,7 @@
 bool ByteCodeGenJob::emitUnaryOpMinus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0)
 {
     auto typeInfo = TypeManager::concreteType(typeInfoExpr);
-    if (typeInfo->kind != TypeInfoKind::Native)
+    if (!typeInfo->isNative())
         return Report::internalError(context->node, "emitUnaryOpMinus, type not native");
 
     emitSafetyNeg(context, r0, typeInfoExpr);
@@ -38,7 +38,7 @@ bool ByteCodeGenJob::emitUnaryOpMinus(ByteCodeGenContext* context, TypeInfo* typ
 bool ByteCodeGenJob::emitUnaryOpInvert(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0)
 {
     auto typeInfo = TypeManager::concreteType(typeInfoExpr);
-    if (typeInfo->kind != TypeInfoKind::Native)
+    if (!typeInfo->isNative())
         return Report::internalError(context->node, "emitUnaryOpInvert, type not native");
 
     switch (typeInfo->nativeType)

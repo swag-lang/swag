@@ -84,10 +84,10 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         {
             SWAG_VERIFY(!funcParam->typeInfo->isAny(), context->report({nodeParam, Fmt(Err(Err0731), funcParam->typeInfo->getDisplayNameC())}));
 
-            if (funcParam->typeInfo->kind != TypeInfoKind::Native &&
-                funcParam->typeInfo->kind != TypeInfoKind::Enum &&
+            if (!funcParam->typeInfo->isNative() &&
+                !funcParam->typeInfo->isEnum() &&
                 !funcParam->typeInfo->isPointerToTypeInfo() &&
-                funcParam->typeInfo->kind != TypeInfoKind::TypedVariadic)
+                !funcParam->typeInfo->isTypedVariadic())
             {
                 return context->report({nodeParam, Fmt(Err(Err0731), funcParam->typeInfo->getDisplayNameC())});
             }
@@ -152,7 +152,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
                 }
             }
         }
-        else if (nodeParam->typeInfo->kind != TypeInfoKind::Code)
+        else if (!nodeParam->typeInfo->isCode())
         {
             auto name = SemanticJob::getTheNiceArgumentRank(index);
             SWAG_VERIFY(!defaultValueDone, context->report({nodeParam, Fmt(Err(Err0738), name.c_str())}));

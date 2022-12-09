@@ -940,15 +940,16 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
 
     if (!TypeInfo::isSame(to, isSameFlags))
         return false;
-    if (isTuple() != to->isTuple())
+
+    bool forTuple = isTuple();
+    if (forTuple != to->isTuple())
         return false;
 
     auto other = CastTypeInfo<TypeInfoStruct>(to, to->kind);
 
     // Do not compare names for tuples
-    bool isTuple  = flags & TYPEINFO_STRUCT_IS_TUPLE;
     bool sameName = declNode->ownerScope == to->declNode->ownerScope && structName == other->structName;
-    if (!isTuple && !sameName)
+    if (!forTuple && !sameName)
         return false;
 
     // Compare generic parameters
@@ -982,7 +983,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
     }
 
     // Compare field by field
-    if (!(isSameFlags & ISSAME_CAST) && !isTuple)
+    if (!(isSameFlags & ISSAME_CAST) && !forTuple)
     {
         if ((flags & TYPEINFO_GENERIC) != (other->flags & TYPEINFO_GENERIC))
             return false;
@@ -998,7 +999,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
                 return false;
         }
     }
-    else if (isTuple && !sameName)
+    else if (forTuple && !sameName)
     {
         if (!(flags & TYPEINFO_GENERATED_TUPLE) && !(other->flags & TYPEINFO_GENERATED_TUPLE))
         {
@@ -1036,7 +1037,7 @@ bool TypeInfoStruct::canRawCopy()
 
 bool TypeInfoStruct::isPlainOldData()
 {
-    return canRawCopy() && !opDrop & !opUserDropFct;
+    return canRawCopy() && !opDrop && !opUserDropFct;
 }
 
 const char* TypeInfoStruct::getDisplayNameC()
@@ -1047,7 +1048,7 @@ const char* TypeInfoStruct::getDisplayNameC()
 
 Utf8 TypeInfoStruct::getDisplayName()
 {
-    if (flags & TYPEINFO_STRUCT_IS_TUPLE)
+    if (isTuple())
         return "tuple";
     if (declNode && declNode->kind == AstNodeKind::InterfaceDecl)
         return Fmt("interface %s", name.c_str());
@@ -1062,7 +1063,7 @@ Utf8 TypeInfoStruct::getDisplayName()
 void TypeInfoStruct::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
     // For a tuple, we use the tuple syntax when this is an export
-    if (((nameType == COMPUTE_SCOPED_NAME_EXPORT) || nameType == COMPUTE_DISPLAY_NAME) && (flags & TYPEINFO_STRUCT_IS_TUPLE))
+    if (((nameType == COMPUTE_SCOPED_NAME_EXPORT) || nameType == COMPUTE_DISPLAY_NAME) && isTuple())
     {
         resName += "{";
         for (int i = 0; i < fields.size(); i++)
@@ -1086,7 +1087,7 @@ void TypeInfoStruct::computeWhateverName(Utf8& resName, uint32_t nameType)
     if (nameType != COMPUTE_NAME && nameType != COMPUTE_DISPLAY_NAME)
         getScopedName(resName);
 
-    if (!(flags & TYPEINFO_STRUCT_IS_TUPLE) || nameType != COMPUTE_DISPLAY_NAME)
+    if (!isTuple() || nameType != COMPUTE_DISPLAY_NAME)
         resName += structName;
 
     computeNameGenericParameters(genericParameters, resName, nameType);

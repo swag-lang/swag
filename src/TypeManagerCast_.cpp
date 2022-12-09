@@ -3027,7 +3027,7 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right, bool is3264)
 {
     TypeInfo* leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
     TypeInfo* rightTypeInfo = TypeManager::concreteType(right->typeInfo);
-    if ((leftTypeInfo->kind != TypeInfoKind::Native) || (rightTypeInfo->kind != TypeInfoKind::Native))
+    if (!leftTypeInfo->isNative() || !rightTypeInfo->isNative())
         return;
 
     if ((leftTypeInfo->flags & TYPEINFO_UNTYPED_INTEGER) && !(rightTypeInfo->flags & TYPEINFO_UNTYPED_INTEGER))
