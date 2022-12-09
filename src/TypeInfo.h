@@ -235,6 +235,7 @@ struct TypeInfo
     bool isGeneric()                        { return (flags & TYPEINFO_GENERIC); }
     bool isSlice()                          { return kind == TypeInfoKind::Slice; }
     bool isInterface()                      { return kind == TypeInfoKind::Interface; }
+    bool isStruct()                         { return kind == TypeInfoKind::Struct; }
     bool isTuple()                          { return (flags & TYPEINFO_STRUCT_IS_TUPLE); }
     bool isPointerRef()                     { return (flags & TYPEINFO_POINTER_REF); }
     bool isConstPointerRef()                { return (flags & TYPEINFO_POINTER_REF) && (flags & TYPEINFO_CONST); }

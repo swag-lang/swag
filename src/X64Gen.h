@@ -253,6 +253,9 @@ struct X64Gen
 
     VectorNative<const Utf8*>  stringTable;
     VectorNative<X64PushParam> pushParams;
+    VectorNative<X64PushParam> pushParams2;
+    VectorNative<X64PushParam> pushParams3;
+    VectorNative<TypeInfo*>    pushParamsTypes;
     CoffRelocationTable        relocTableTextSection;
     CoffRelocationTable        relocTableCSSection;
     CoffRelocationTable        relocTableMSSection;

@@ -12,10 +12,9 @@
 
 namespace OS
 {
-    static thread_local X64Gen g_X64Gen;
-    static BackendTarget       nativeTarget;
-    static HANDLE              consoleHandle     = NULL;
-    static WORD                defaultAttributes = 0;
+    static BackendTarget nativeTarget;
+    static HANDLE        consoleHandle     = NULL;
+    static WORD          defaultAttributes = 0;
 
     void setup()
     {
@@ -966,42 +965,43 @@ namespace OS
                            (ULONG_PTR*) context->curRegistersRC[pushRAParam[0]].pointer);
         }
 
-        if (!g_X64Gen.concat.firstBucket)
+        auto& gen = context->ffiX64Gen;
+        if (!gen.concat.firstBucket)
         {
-            auto& concat = g_X64Gen.concat;
+            auto& concat = gen.concat;
             concat.init(0);
             concat.firstBucket->capacity = 16 * 1024;
-            concat.firstBucket->datas    = (uint8_t*) VirtualAlloc(nullptr, g_X64Gen.concat.firstBucket->capacity, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
-            concat.currentSP             = g_X64Gen.concat.firstBucket->datas;
+            concat.firstBucket->datas    = (uint8_t*) VirtualAlloc(nullptr, gen.concat.firstBucket->capacity, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+            concat.currentSP             = gen.concat.firstBucket->datas;
         }
 
         uint32_t stackSize = (uint32_t) max(cc.byRegisterCount, pushRAParam.size()) * sizeof(void*);
         stackSize += sizeof(void*);
         MK_ALIGN16(stackSize);
 
-        auto startOffset = g_X64Gen.concat.currentSP - g_X64Gen.concat.firstBucket->datas;
-        g_X64Gen.emit_Push(RDI);
-        g_X64Gen.emit_Sub32_RSP(stackSize);
-        g_X64Gen.emit_Load64_Immediate((uint64_t) context->sp, RDI, true);
-        g_X64Gen.emit_Call_Parameters(typeInfoFunc, pushRAParam, 0, retCopyAddr);
-        g_X64Gen.emit_Load64_Immediate((uint64_t) foreignPtr, RAX, true);
-        g_X64Gen.emit_Call_Indirect(RAX);
+        auto startOffset = gen.concat.currentSP - gen.concat.firstBucket->datas;
+        gen.emit_Push(RDI);
+        gen.emit_Sub32_RSP(stackSize);
+        gen.emit_Load64_Immediate((uint64_t) context->sp, RDI, true);
+        gen.emit_Call_Parameters(typeInfoFunc, pushRAParam, 0, retCopyAddr);
+        gen.emit_Load64_Immediate((uint64_t) foreignPtr, RAX, true);
+        gen.emit_Call_Indirect(RAX);
 
         if (returnType != g_TypeMgr->typeInfoVoid && !retCopyAddr)
         {
-            g_X64Gen.emit_Load64_Immediate((uint64_t) context->registersRR, RDI, true);
-            g_X64Gen.emit_Call_Result(typeInfoFunc, 0);
+            gen.emit_Load64_Immediate((uint64_t) context->registersRR, RDI, true);
+            gen.emit_Call_Result(typeInfoFunc, 0);
         }
 
-        g_X64Gen.emit_Add32_RSP(stackSize);
-        g_X64Gen.emit_Pop(RDI);
-        g_X64Gen.emit_Ret();
+        gen.emit_Add32_RSP(stackSize);
+        gen.emit_Pop(RDI);
+        gen.emit_Ret();
 
         typedef void (*funcPtr)();
-        auto ptr = (funcPtr) (g_X64Gen.concat.firstBucket->datas + startOffset);
+        auto ptr = (funcPtr) (gen.concat.firstBucket->datas + startOffset);
         ptr();
 
-        g_X64Gen.concat.currentSP = (uint8_t*) ptr;
+        gen.concat.currentSP = (uint8_t*) ptr;
     }
 
     Key promptChar(int& c, bool& ctrl, bool& shift)

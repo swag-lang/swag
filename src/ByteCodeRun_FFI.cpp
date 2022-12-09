@@ -86,26 +86,29 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
 void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
     if (OS::atomicTestNull((void**) &ip->d.pointer))
+    {
         OS::atomicSetIfNotNull((void**) &ip->d.pointer, (uint8_t*) ffiGetFuncAddress(&context->jc, ip));
-    if (OS::atomicTestNull((void**) &ip->d.pointer))
-        return;
+        if (OS::atomicTestNull((void**) &ip->d.pointer))
+            return;
+    }
+
     auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::FuncAttr);
     ffiCall(context, (void*) ip->d.pointer, typeInfoFunc, ip->numVariadicParams);
 }
 
 void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc, int numCVariadicParams)
 {
-    VectorNative<uint32_t> pushRAParam;
-    uint32_t               cptParam = 0;
+    uint32_t cptParam = 0;
 
     // Function call parameters
+    context->ffiPushRAParam.clear();
     int numParameters = (int) typeInfoFunc->parameters.size();
 
     // Variadic parameters are first on the stack, so need to treat them before
     if (typeInfoFunc->isVariadic())
     {
-        pushRAParam.push_front(cptParam++);
-        pushRAParam.push_front(cptParam++);
+        context->ffiPushRAParam.push_front(cptParam++);
+        context->ffiPushRAParam.push_front(cptParam++);
         numParameters--;
     }
     else if (typeInfoFunc->isCVariadic())
@@ -123,12 +126,12 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
             typeParam->isNative(NativeTypeKind::Any) ||
             typeParam->isNative(NativeTypeKind::String))
         {
-            pushRAParam.push_front(cptParam++);
-            pushRAParam.push_front(cptParam++);
+            context->ffiPushRAParam.push_front(cptParam++);
+            context->ffiPushRAParam.push_front(cptParam++);
         }
         else
         {
-            pushRAParam.push_front(cptParam++);
+            context->ffiPushRAParam.push_front(cptParam++);
         }
     }
 
@@ -154,9 +157,9 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
     {
         for (int i = 0; i < numCVariadicParams; i++)
         {
-            pushRAParam.push_front(cptParam++);
+            context->ffiPushRAParam.push_front(cptParam++);
         }
     }
 
-    OS::ffi(context, foreignPtr, typeInfoFunc, pushRAParam, retCopyAddr);
+    OS::ffi(context, foreignPtr, typeInfoFunc, context->ffiPushRAParam, retCopyAddr);
 }

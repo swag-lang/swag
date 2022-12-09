@@ -1482,7 +1482,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
         else
         {
             // Pass struct in a register if small enough
-            if (cc.structByRegister && type->kind == TypeInfoKind::Struct && type->sizeOf <= sizeof(void*))
+            if (cc.structByRegister && type->isStruct() && type->sizeOf <= sizeof(void*))
             {
                 SWAG_ASSERT(paramsRegisters[i].type == X64PushParamType::Reg);
                 emit_Load64_Indirect(regOffset(reg), RAX, RDI);
@@ -1531,37 +1531,42 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
             }
             else
             {
-                if (paramsRegisters[i].type == X64PushParamType::Imm && paramsRegisters[i].reg == 0)
-                    emit_Clear64(cc.byRegisterInteger[i]);
-                else if (paramsRegisters[i].type == X64PushParamType::Imm)
-                    emit_Load64_Immediate(paramsRegisters[i].reg, cc.byRegisterInteger[i]);
-                else if (paramsRegisters[i].type == X64PushParamType::Imm64)
-                    emit_Load64_Immediate(paramsRegisters[i].reg, cc.byRegisterInteger[i], true);
-                else if (paramsRegisters[i].type == X64PushParamType::RelocV)
-                    emit_Symbol_RelocationValue(cc.byRegisterInteger[i], (uint32_t) paramsRegisters[i].reg, 0);
-                else if (paramsRegisters[i].type == X64PushParamType::RelocAddr)
-                    emit_Symbol_RelocationAddr(cc.byRegisterInteger[i], (uint32_t) paramsRegisters[i].reg, 0);
-                else if (paramsRegisters[i].type == X64PushParamType::Addr)
-                    emit_LoadAddress_Indirect((uint32_t) paramsRegisters[i].reg, cc.byRegisterInteger[i], RDI);
-                else if (paramsRegisters[i].type == X64PushParamType::RegAdd)
+                switch (paramsRegisters[i].type)
                 {
+                case X64PushParamType::Imm:
+                    if(paramsRegisters[i].reg == 0)
+                        emit_Clear64(cc.byRegisterInteger[i]);
+                    else
+                        emit_Load64_Immediate(paramsRegisters[i].reg, cc.byRegisterInteger[i]);
+                    break;
+                case X64PushParamType::Imm64:
+                    emit_Load64_Immediate(paramsRegisters[i].reg, cc.byRegisterInteger[i], true);
+                    break;
+                case X64PushParamType::RelocV:
+                    emit_Symbol_RelocationValue(cc.byRegisterInteger[i], (uint32_t)paramsRegisters[i].reg, 0);
+                    break;
+                case X64PushParamType::RelocAddr:
+                    emit_Symbol_RelocationAddr(cc.byRegisterInteger[i], (uint32_t)paramsRegisters[i].reg, 0);
+                    break;
+                case X64PushParamType::Addr:
+                    emit_LoadAddress_Indirect((uint32_t)paramsRegisters[i].reg, cc.byRegisterInteger[i], RDI);
+                    break;
+                case X64PushParamType::RegAdd:
                     emit_Load64_Indirect(regOffset(reg), cc.byRegisterInteger[i], RDI);
                     emit_Add64_Immediate(paramsRegisters[i].val, cc.byRegisterInteger[i]);
-                }
-                else if (paramsRegisters[i].type == X64PushParamType::RegMul)
-                {
+                    break;
+                case X64PushParamType::RegMul:
                     emit_Load64_Indirect(regOffset(reg), RAX, RDI);
                     emit_Mul64_RAX(paramsRegisters[i].val);
                     emit_Copy64(RAX, cc.byRegisterInteger[i]);
-                }
-                else if (paramsRegisters[i].type == X64PushParamType::GlobalString)
-                {
-                    emit_GlobalString((const char*) paramsRegisters[i].reg, cc.byRegisterInteger[i]);
-                }
-                else
-                {
+                    break;
+                case X64PushParamType::GlobalString:
+                    emit_GlobalString((const char*)paramsRegisters[i].reg, cc.byRegisterInteger[i]);
+                    break;
+                default:
                     SWAG_ASSERT(paramsRegisters[i].type == X64PushParamType::Reg);
                     emit_Load64_Indirect(regOffset(reg), cc.byRegisterInteger[i], RDI);
+                    break;
                 }
             }
         }
@@ -1604,7 +1609,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
             auto sizeOf = type->sizeOf;
 
             // Struct by copy. Will be a pointer to the stack
-            if (type->kind == TypeInfoKind::Struct)
+            if (type->isStruct())
             {
                 emit_Load64_Indirect(regOffset(reg), RAX, RDI);
 
@@ -1672,19 +1677,17 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
 
 void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, void* retCopy)
 {
-    VectorNative<X64PushParam> p;
-    p.reserve((uint32_t) pushRAParams.size());
+    pushParams2.clear();
     for (auto r : pushRAParams)
-        p.push_back({X64PushParamType::Reg, r});
-    emit_Call_Parameters(typeFunc, p, offsetRT, retCopy);
+        pushParams2.push_back({X64PushParamType::Reg, r});
+    emit_Call_Parameters(typeFunc, pushParams2, offsetRT, retCopy);
 }
 
 void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<X64PushParam>& pushRAParams, uint32_t offsetRT, void* retCopy)
 {
     int numCallParams = (int) typeFunc->parameters.size();
-
-    VectorNative<X64PushParam> paramsRegisters;
-    VectorNative<TypeInfo*>    paramsTypes;
+    pushParams3.clear();
+    pushParamsTypes.clear();
 
     int indexParam = (int) pushRAParams.size() - 1;
 
@@ -1692,12 +1695,12 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
     if (typeFunc->isVariadic())
     {
         auto index = pushRAParams[indexParam--];
-        paramsRegisters.push_back(index);
-        paramsTypes.push_back(g_TypeMgr->typeInfoU64);
+        pushParams3.push_back(index);
+        pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);
 
         index = pushRAParams[indexParam--];
-        paramsRegisters.push_back(index);
-        paramsTypes.push_back(g_TypeMgr->typeInfoU64);
+        pushParams3.push_back(index);
+        pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);
         numCallParams--;
     }
     else if (typeFunc->isCVariadic())
@@ -1718,45 +1721,45 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
             typeParam->kind == TypeInfoKind::Lambda ||
             typeParam->kind == TypeInfoKind::Array)
         {
-            paramsRegisters.push_back(index);
-            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
+            pushParams3.push_back(index);
+            pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);
         }
         else if (typeParam->kind == TypeInfoKind::Struct)
         {
-            paramsRegisters.push_back(index);
-            paramsTypes.push_back(typeParam);
+            pushParams3.push_back(index);
+            pushParamsTypes.push_back(typeParam);
         }
         else if (typeParam->kind == TypeInfoKind::Slice ||
                  typeParam->isNative(NativeTypeKind::String))
         {
-            paramsRegisters.push_back(index);
-            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
+            pushParams3.push_back(index);
+            pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);
             index = pushRAParams[indexParam--];
-            paramsRegisters.push_back(index);
-            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
+            pushParams3.push_back(index);
+            pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);
         }
         else if (typeParam->isNative(NativeTypeKind::Any) ||
                  typeParam->kind == TypeInfoKind::Interface)
         {
-            paramsRegisters.push_back(index);
-            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
+            pushParams3.push_back(index);
+            pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);
             index = pushRAParams[indexParam--];
-            paramsRegisters.push_back(index);
-            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
+            pushParams3.push_back(index);
+            pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);
         }
         else
         {
             SWAG_ASSERT(typeParam->sizeOf <= sizeof(void*));
-            paramsRegisters.push_back(index);
-            paramsTypes.push_back(typeParam);
+            pushParams3.push_back(index);
+            pushParamsTypes.push_back(typeParam);
         }
     }
 
     // Return by parameter
     if (typeFunc->returnByCopy())
     {
-        paramsRegisters.push_back({X64PushParamType::Reg, offsetRT});
-        paramsTypes.push_back(g_TypeMgr->typeInfoUndefined);
+        pushParams3.push_back({X64PushParamType::Reg, offsetRT});
+        pushParamsTypes.push_back(g_TypeMgr->typeInfoUndefined);
     }
 
     // Add all C variadic parameters
@@ -1765,8 +1768,8 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
         for (int i = typeFunc->numParamsRegisters(); i < pushRAParams.size(); i++)
         {
             auto index = pushRAParams[indexParam--];
-            paramsRegisters.push_back(index);
-            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
+            pushParams3.push_back(index);
+            pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);
         }
     }
 
@@ -1776,8 +1779,8 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
     // one for the lambda (omit first parameter)
     if (typeFunc->isClosure())
     {
-        SWAG_ASSERT(paramsRegisters[0].type == X64PushParamType::Reg);
-        auto reg = (uint32_t) paramsRegisters[0].reg;
+        SWAG_ASSERT(pushParams3[0].type == X64PushParamType::Reg);
+        auto reg = (uint32_t) pushParams3[0].reg;
 
         emit_Load64_Indirect(regOffset(reg), RAX, RDI);
         emit_Test64(RAX, RAX);
@@ -1788,7 +1791,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
         auto seekPtrClosure = concat.getSeekPtr() - 4;
         auto seekJmpClosure = concat.totalCount();
 
-        emit_Call_Parameters(typeFunc, paramsRegisters, paramsTypes, retCopy);
+        emit_Call_Parameters(typeFunc, pushParams3, pushParamsTypes, retCopy);
 
         // Jump to after closure call
         emit_LongJumpOp(JUMP);
@@ -1799,15 +1802,15 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
         // Update jump to closure call
         *seekPtrClosure = (uint8_t) (concat.totalCount() - seekJmpClosure);
 
-        paramsRegisters.erase(0);
-        paramsTypes.erase(0);
-        emit_Call_Parameters(typeFunc, paramsRegisters, paramsTypes, retCopy);
+        pushParams3.erase(0);
+        pushParamsTypes.erase(0);
+        emit_Call_Parameters(typeFunc, pushParams3, pushParamsTypes, retCopy);
 
         *seekPtrAfterClosure = (uint8_t) (concat.totalCount() - seekJmpAfterClosure);
     }
     else
     {
-        emit_Call_Parameters(typeFunc, paramsRegisters, paramsTypes, retCopy);
+        emit_Call_Parameters(typeFunc, pushParams3, pushParamsTypes, retCopy);
     }
 }
 

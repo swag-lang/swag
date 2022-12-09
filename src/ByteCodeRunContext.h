@@ -3,6 +3,7 @@
 #include "Log.h"
 #include "SourceFile.h"
 #include "Job.h"
+#include "X64Gen.h"
 struct SemanticContext;
 struct AstNode;
 struct ByteCodeRunContext;
@@ -112,6 +113,9 @@ struct ByteCodeRunContext
     Utf8                   errorMsg;
     VectorNative<int>      registersRC;
     VectorNative<Register> registers;
+
+    X64Gen                 ffiX64Gen;
+    VectorNative<uint32_t> ffiPushRAParam;
 
     SwagCompilerSourceLocation* errorLoc      = nullptr;
     JobContext*                 callerContext = nullptr;
