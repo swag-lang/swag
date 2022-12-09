@@ -185,7 +185,7 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
     auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
 
-    if (leftTypeInfo->kind == TypeInfoKind::Native)
+    if (leftTypeInfo->isNative())
     {
         switch (leftTypeInfo->nativeType)
         {
@@ -232,7 +232,7 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
             return Report::internalError(context->node, "emitCompareOpEqual, type not supported");
         }
     }
-    else if (leftTypeInfo->kind == TypeInfoKind::Pointer)
+    else if (leftTypeInfo->isPointer())
     {
         // Special case for typeinfos, as this is not safe to just compare pointers.
         // The same typeinfo can be different if defined in two different modules, so we need
@@ -268,19 +268,19 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
     {
         emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
     }
-    else if (leftTypeInfo->kind == TypeInfoKind::Interface)
+    else if (leftTypeInfo->isInterface())
     {
         if (rightTypeInfo == g_TypeMgr->typeInfoNull || right->semFlags & AST_SEM_FROM_NULL)
             emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0[1], r1[1], r2);
         else
         {
-            SWAG_ASSERT(rightTypeInfo->kind == TypeInfoKind::Interface);
+            SWAG_ASSERT(rightTypeInfo->isInterface());
             emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0[0], r1[0], r2);
             emitInstruction(context, ByteCodeOp::JumpIfFalse, r2)->b.u64 = 1;
             emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0[1], r1[1], r2);
         }
     }
-    else if (leftTypeInfo->kind == TypeInfoKind::Slice)
+    else if (leftTypeInfo->isSlice())
     {
         // Just compare pointers. This is enough for now, as we can only compare a slice to 'null'
         emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0[1], r1[1], r2);
@@ -298,7 +298,7 @@ bool ByteCodeGenJob::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode*
     auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
 
-    if (leftTypeInfo->kind == TypeInfoKind::Native)
+    if (leftTypeInfo->isNative())
     {
         switch (leftTypeInfo->nativeType)
         {
@@ -348,7 +348,7 @@ bool ByteCodeGenJob::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode*
             return Report::internalError(context->node, "emitCompareOpNotEqual, type not supported");
         }
     }
-    else if (leftTypeInfo->kind == TypeInfoKind::Pointer)
+    else if (leftTypeInfo->isPointer())
     {
         // Special case for typeinfos, as this is not safe to just compare pointers.
         // The same typeinfo can be different if defined in two different modules, so we need
@@ -378,19 +378,19 @@ bool ByteCodeGenJob::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode*
     {
         emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0, r1, r2);
     }
-    else if (leftTypeInfo->kind == TypeInfoKind::Interface)
+    else if (leftTypeInfo->isInterface())
     {
         if (rightTypeInfo == g_TypeMgr->typeInfoNull || right->semFlags & AST_SEM_FROM_NULL)
             emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0[1], r1[1], r2);
         else
         {
-            SWAG_ASSERT(rightTypeInfo->kind == TypeInfoKind::Interface);
+            SWAG_ASSERT(rightTypeInfo->isInterface());
             emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0[0], r1[0], r2);
             emitInstruction(context, ByteCodeOp::JumpIfTrue, r2)->b.u64 = 1;
             emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0[1], r1[1], r2);
         }
     }
-    else if (leftTypeInfo->kind == TypeInfoKind::Slice)
+    else if (leftTypeInfo->isSlice())
     {
         // Just compare pointers. This is enough for now, as we can only compare a slice to 'null'
         emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0[1], r1[1], r2);
@@ -425,7 +425,7 @@ bool ByteCodeGenJob::emitCompareOp3Way(ByteCodeGenContext* context, uint32_t r0,
 {
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
-    if (typeInfo->kind == TypeInfoKind::Native)
+    if (typeInfo->isNative())
     {
         switch (typeInfo->nativeType)
         {
@@ -454,7 +454,7 @@ bool ByteCodeGenJob::emitCompareOp3Way(ByteCodeGenContext* context, uint32_t r0,
             return Report::internalError(context->node, "emitCompareOp3Way, type not supported");
         }
     }
-    else if (typeInfo->kind == TypeInfoKind::Pointer)
+    else if (typeInfo->isPointer())
     {
         emitInstruction(context, ByteCodeOp::CompareOp3WayU64, r0, r1, r2);
     }
@@ -469,7 +469,7 @@ bool ByteCodeGenJob::emitCompareOp3Way(ByteCodeGenContext* context, uint32_t r0,
 bool ByteCodeGenJob::emitCompareOpLower(ByteCodeGenContext* context, AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     auto typeInfo = TypeManager::concretePtrRefType(left->typeInfo);
-    if (typeInfo->kind == TypeInfoKind::Native)
+    if (typeInfo->isNative())
     {
         switch (typeInfo->nativeType)
         {
@@ -498,7 +498,7 @@ bool ByteCodeGenJob::emitCompareOpLower(ByteCodeGenContext* context, AstNode* le
             return Report::internalError(context->node, "emitCompareOpLower, type not supported");
         }
     }
-    else if (typeInfo->kind == TypeInfoKind::Pointer)
+    else if (typeInfo->isPointer())
     {
         emitInstruction(context, ByteCodeOp::CompareOpLowerU64, r0, r1, r2);
     }
@@ -522,7 +522,7 @@ bool ByteCodeGenJob::emitCompareOpLower(ByteCodeGenContext* context, uint32_t r0
 bool ByteCodeGenJob::emitCompareOpLowerEq(ByteCodeGenContext* context, AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     auto typeInfo = TypeManager::concretePtrRefType(left->typeInfo);
-    if (typeInfo->kind == TypeInfoKind::Native)
+    if (typeInfo->isNative())
     {
         switch (typeInfo->nativeType)
         {
@@ -551,7 +551,7 @@ bool ByteCodeGenJob::emitCompareOpLowerEq(ByteCodeGenContext* context, AstNode* 
             return Report::internalError(context->node, "emitCompareOpLowerEq, type not supported");
         }
     }
-    else if (typeInfo->kind == TypeInfoKind::Pointer)
+    else if (typeInfo->isPointer())
     {
         emitInstruction(context, ByteCodeOp::CompareOpLowerEqU64, r0, r1, r2);
     }
@@ -575,7 +575,7 @@ bool ByteCodeGenJob::emitCompareOpLowerEq(ByteCodeGenContext* context, uint32_t 
 bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     auto typeInfo = TypeManager::concretePtrRefType(left->typeInfo);
-    if (typeInfo->kind == TypeInfoKind::Native)
+    if (typeInfo->isNative())
     {
         switch (typeInfo->nativeType)
         {
@@ -604,7 +604,7 @@ bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, AstNode* 
             return Report::internalError(context->node, "emitCompareOpGreater, type not supported");
         }
     }
-    else if (typeInfo->kind == TypeInfoKind::Pointer)
+    else if (typeInfo->isPointer())
     {
         emitInstruction(context, ByteCodeOp::CompareOpGreaterU64, r0, r1, r2);
     }
@@ -628,7 +628,7 @@ bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, uint32_t 
 bool ByteCodeGenJob::emitCompareOpGreaterEq(ByteCodeGenContext* context, AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     auto typeInfo = TypeManager::concretePtrRefType(left->typeInfo);
-    if (typeInfo->kind == TypeInfoKind::Native)
+    if (typeInfo->isNative())
     {
         switch (typeInfo->nativeType)
         {
@@ -657,7 +657,7 @@ bool ByteCodeGenJob::emitCompareOpGreaterEq(ByteCodeGenContext* context, AstNode
             return Report::internalError(context->node, "emitCompareOpGreaterEq, type not supported");
         }
     }
-    else if (typeInfo->kind == TypeInfoKind::Pointer)
+    else if (typeInfo->isPointer())
     {
         emitInstruction(context, ByteCodeOp::CompareOpGreaterEqU64, r0, r1, r2);
     }

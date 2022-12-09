@@ -398,7 +398,7 @@ void* TypeTable::makeConcreteSlice(JobContext* context, uint32_t sizeOf, DataSeg
 bool TypeTable::makeConcreteAny(JobContext* context, ConcreteAny* ptrAny, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue& computedValue, TypeInfo* typeInfo, uint32_t cflags)
 {
     auto sourceFile = context->sourceFile;
-    if (typeInfo->kind == TypeInfoKind::Native)
+    if (typeInfo->isNative())
     {
         auto storageOffsetValue = storageSegment->addComputedValue(sourceFile, typeInfo, computedValue, (uint8_t**) &ptrAny->value);
         storageSegment->addInitPtr(storageOffset, storageOffsetValue);
@@ -434,7 +434,7 @@ bool TypeTable::makeConcreteTypeValue(JobContext* context, void* concreteTypeInf
             concreteType->value = realType->value->storageSegment->address(realType->value->storageOffset);
             storageSegment->addInitPtr(OFFSETOF(concreteType->value), realType->value->storageOffset, SegmentKind::Constant);
         }
-        else if (realType->typeInfo->kind == TypeInfoKind::Slice)
+        else if (realType->typeInfo->isSlice())
         {
             SWAG_ASSERT(realType->value);
             SWAG_ASSERT(realType->value->storageOffset != UINT32_MAX);

@@ -464,7 +464,7 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
         return true;
     }
 
-    SWAG_VERIFY(suffix->typeInfo->kind == TypeInfoKind::Native, context->report({suffix, Fmt(Err(Err0437), suffix->typeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(suffix->typeInfo->isNative(), context->report({suffix, Fmt(Err(Err0437), suffix->typeInfo->getDisplayNameC())}));
 
     switch (suffix->typeInfo->nativeType)
     {

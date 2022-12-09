@@ -89,7 +89,7 @@ bool ByteCodeGenJob::emitIntrinsicSpread(ByteCodeGenContext* context)
         auto inst              = emitInstruction(context, ByteCodeOp::SetImmediate64, expr->resultRegisterRC[1]);
         inst->b.u64            = typeArr->count;
     }
-    else if (typeInfo->kind == TypeInfoKind::TypeListArray || typeInfo->kind == TypeInfoKind::Slice)
+    else if (typeInfo->kind == TypeInfoKind::TypeListArray || typeInfo->isSlice())
     {
         node->resultRegisterRC = expr->resultRegisterRC;
     }
@@ -138,7 +138,7 @@ bool ByteCodeGenJob::emitIntrinsicKindOf(ByteCodeGenContext* context)
     freeRegisterRC(context, front->resultRegisterRC[0]);
 
     // Deref the type from the itable
-    if (front->typeInfo->kind == TypeInfoKind::Interface)
+    if (front->typeInfo->isInterface())
     {
         auto inst   = emitInstruction(context, ByteCodeOp::DecPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
         inst->b.u64 = sizeof(void*);
@@ -164,8 +164,8 @@ bool ByteCodeGenJob::emitIntrinsicCountOf(ByteCodeGenContext* context)
         return true;
     }
 
-    if (typeInfo->isNative(NativeTypeKind::String) ||
-        typeInfo->kind == TypeInfoKind::Slice ||
+    if (typeInfo->isString() ||
+        typeInfo->isSlice() ||
         typeInfo->kind == TypeInfoKind::Variadic ||
         typeInfo->kind == TypeInfoKind::TypedVariadic)
     {
@@ -193,10 +193,10 @@ bool ByteCodeGenJob::emitIntrinsicDataOf(ByteCodeGenContext* context)
         return true;
     }
 
-    if (typeInfo->isNative(NativeTypeKind::String) ||
+    if (typeInfo->isString() ||
         typeInfo->isNative(NativeTypeKind::Any) ||
-        typeInfo->kind == TypeInfoKind::Slice ||
-        typeInfo->kind == TypeInfoKind::Interface ||
+        typeInfo->isSlice() ||
+        typeInfo->isInterface() ||
         typeInfo->kind == TypeInfoKind::Array)
     {
         ensureCanBeChangedRC(context, front->resultRegisterRC);

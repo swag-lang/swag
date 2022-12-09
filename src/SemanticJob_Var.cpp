@@ -532,14 +532,14 @@ DataSegment* SemanticJob::getSegmentForVar(SemanticContext* context, AstVarDecl*
             return &module->mutableSegment;
     }
 
-    if (!node->assignment && (typeInfo->kind == TypeInfoKind::Native || typeInfo->kind == TypeInfoKind::Array))
+    if (!node->assignment && (typeInfo->isNative() || typeInfo->kind == TypeInfoKind::Array))
         return &module->bssSegment;
-    if (node->assignment && typeInfo->kind == TypeInfoKind::Native && typeInfo->sizeOf <= 8 && node->assignment->isConstant0())
+    if (node->assignment && typeInfo->isNative() && typeInfo->sizeOf <= 8 && node->assignment->isConstant0())
         return &module->bssSegment;
     if (!node->assignment &&
         !(node->flags & AST_HAS_STRUCT_PARAMETERS) &&
         !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS) &&
-        (node->typeInfo->kind == TypeInfoKind::Struct || node->typeInfo->kind == TypeInfoKind::Interface) &&
+        (node->typeInfo->isStruct() || node->typeInfo->isInterface()) &&
         !(node->typeInfo->flags & (TYPEINFO_STRUCT_HAS_INIT_VALUES)))
         return &module->bssSegment;
 
@@ -562,7 +562,7 @@ bool SemanticJob::deduceLambdaTypeAffect(SemanticContext* context, AstVarDecl* n
     SWAG_ASSERT(front->typeInfo);
 
     auto frontType = TypeManager::concreteType(front->typeInfo);
-    if (frontType->kind == TypeInfoKind::Struct)
+    if (frontType->isStruct())
     {
         if (op->deducedLambdaType)
             typeLambda = op->deducedLambdaType;
@@ -750,7 +750,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             auto typeEnum = CastTypeInfo<TypeInfoEnum>(concreteNodeType, TypeInfoKind::Enum);
 
             bool ok = true;
-            if (typeEnum->rawType->isNativeFloat() || typeEnum->rawType->isNativeIntegerOrRune() || typeEnum->rawType->isNative(NativeTypeKind::Bool))
+            if (typeEnum->rawType->isNativeFloat() || typeEnum->rawType->isNativeIntegerOrRune() || typeEnum->rawType->isBool())
             {
                 ok = false;
                 for (auto p : typeEnum->values)
@@ -762,7 +762,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                     }
                 }
             }
-            else if (typeEnum->rawType->isNative(NativeTypeKind::String))
+            else if (typeEnum->rawType->isString())
             {
                 ok = false;
                 for (auto p : typeEnum->values)
@@ -774,7 +774,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                     }
                 }
             }
-            else if (typeEnum->rawType->kind == TypeInfoKind::Slice)
+            else if (typeEnum->rawType->isSlice())
             {
                 ok = false;
                 for (auto p : typeEnum->values)
@@ -887,7 +887,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (leftConcreteType->kind != TypeInfoKind::Struct || rightConcreteType->isInitializerList())
         {
             // Cast from struct to interface : need to wait for all interfaces to be registered
-            if (leftConcreteType->kind == TypeInfoKind::Interface && rightConcreteType->kind == TypeInfoKind::Struct)
+            if (leftConcreteType->isInterface() && rightConcreteType->isStruct())
             {
                 context->job->waitAllStructInterfaces(rightConcreteType);
                 if (context->result == ContextResult::Pending)
@@ -931,7 +931,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         node->typeInfo = node->type->typeInfo;
 
         // A slice initialized with an expression list must be immutable
-        if (leftConcreteType->kind == TypeInfoKind::Slice && rightConcreteType->kind == TypeInfoKind::TypeListArray && (node->assignment->flags & AST_CONST_EXPR))
+        if (leftConcreteType->isSlice() && rightConcreteType->kind == TypeInfoKind::TypeListArray && (node->assignment->flags & AST_CONST_EXPR))
         {
             SWAG_VERIFY(leftConcreteType->isConst(), context->report({node->type, Err(Err0306)}));
         }
@@ -944,7 +944,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         SWAG_ASSERT(node->typeInfo);
 
         // When affect is from a const struct, remove the const
-        if (node->typeInfo->kind == TypeInfoKind::Struct && node->typeInfo->isConst())
+        if (node->typeInfo->isStruct() && node->typeInfo->isConst())
         {
             if (node->typeInfo->flags & TYPEINFO_FAKE_ALIAS && node->assignment->kind != AstNodeKind::Cast)
                 node->typeInfo = ((TypeInfoAlias*) node->typeInfo)->rawType;
@@ -1046,7 +1046,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         auto identifier     = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
 
         TypeInfoStruct* typeStruct = nullptr;
-        if (node->typeInfo->kind == TypeInfoKind::Struct)
+        if (node->typeInfo->isStruct())
             typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
         else if (node->typeInfo->kind == TypeInfoKind::Array)
         {
@@ -1105,7 +1105,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 storageOffset = 0;
                 symbolFlags |= OVERLOAD_INCOMPLETE;
             }
-            else if (typeInfo->kind == TypeInfoKind::Array || typeInfo->kind == TypeInfoKind::Struct)
+            else if (typeInfo->kind == TypeInfoKind::Array || typeInfo->isStruct())
             {
                 if (node->assignment && node->assignment->flags & AST_VALUE_COMPUTED)
                 {
@@ -1123,7 +1123,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                     SWAG_CHECK(collectAssignment(context, storageSegment, storageOffset, node));
                 }
             }
-            else if (typeInfo->kind == TypeInfoKind::Slice)
+            else if (typeInfo->isSlice())
             {
                 if (!(node->flags & AST_VALUE_COMPUTED))
                 {
@@ -1199,7 +1199,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     else if (symbolFlags & OVERLOAD_VAR_LOCAL)
     {
         // For a struct, need to wait for special functions to be found
-        if (typeInfo->kind == TypeInfoKind::Struct || typeInfo->isArrayOfStruct())
+        if (typeInfo->isStruct() || typeInfo->isArrayOfStruct())
         {
             SWAG_CHECK(waitForStructUserOps(context, node));
             if (context->result == ContextResult::Pending)

@@ -243,7 +243,7 @@ TypeInfoStruct* TypeInfo::getStructOrPointedStruct()
     if (kind == TypeInfoKind::Pointer)
     {
         auto typePointer = CastTypeInfo<TypeInfoPointer>(this, TypeInfoKind::Pointer);
-        if (typePointer->pointedType->kind == TypeInfoKind::Struct)
+        if (typePointer->pointedType->isStruct())
             CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
     }
 
@@ -309,7 +309,7 @@ bool TypeInfo::isArrayOfStruct()
     if (kind != TypeInfoKind::Array)
         return false;
     auto ptr = (TypeInfoArray*) this;
-    return ptr->finalType->kind == TypeInfoKind::Struct;
+    return ptr->finalType->isStruct();
 }
 
 bool TypeInfo::isArrayOfEnum()

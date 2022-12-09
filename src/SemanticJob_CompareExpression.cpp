@@ -78,7 +78,7 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
             return context->report({context->node, Fmt(Err(Err0001), node->token.text.c_str(), leftTypeInfo->getDisplayNameC())});
         }
     }
-    else if (leftTypeInfo->kind == TypeInfoKind::Struct || rightTypeInfo->kind == TypeInfoKind::Struct)
+    else if (leftTypeInfo->isStruct() || rightTypeInfo->isStruct())
     {
         SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opEquals, nullptr, nullptr, left, right));
         node->typeInfo = g_TypeMgr->typeInfoBool;
@@ -141,7 +141,7 @@ bool SemanticJob::resolveCompOp3Way(SemanticContext* context, AstNode* left, Ast
             return context->report({context->node, Fmt(Err(Err0001), node->token.text.c_str(), leftTypeInfo->getDisplayNameC())});
         }
     }
-    else if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    else if (leftTypeInfo->isStruct())
     {
         SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opCmp, nullptr, nullptr, left, right));
         node->typeInfo = g_TypeMgr->typeInfoS32;
@@ -201,7 +201,7 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
             return context->report({context->node, Fmt(Err(Err0001), node->token.text.c_str(), leftTypeInfo->getDisplayNameC())});
         }
     }
-    else if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    else if (leftTypeInfo->isStruct())
     {
         SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opCmp, nullptr, nullptr, left, right));
         node->typeInfo = g_TypeMgr->typeInfoBool;
@@ -261,7 +261,7 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
             return context->report({context->node, Fmt(Err(Err0001), node->token.text.c_str(), leftTypeInfo->getDisplayNameC())});
         }
     }
-    else if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    else if (leftTypeInfo->isStruct())
     {
         SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opCmp, nullptr, nullptr, left, right));
         node->typeInfo = g_TypeMgr->typeInfoBool;
@@ -339,15 +339,15 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
         return context->report({right, Err(Err0007)});
 
     // Slice can only be compared to null
-    if (leftTypeInfo->kind == TypeInfoKind::Slice && rightTypeInfo != g_TypeMgr->typeInfoNull)
+    if (leftTypeInfo->isSlice() && rightTypeInfo != g_TypeMgr->typeInfoNull)
         return context->report({left, Err(Err0009)});
 
     // Interface can only be compared to null ar to another interface
-    if (leftTypeInfo->kind == TypeInfoKind::Interface && rightTypeInfo != g_TypeMgr->typeInfoNull && rightTypeInfo->kind != TypeInfoKind::Interface)
+    if (leftTypeInfo->isInterface() && rightTypeInfo != g_TypeMgr->typeInfoNull && rightTypeInfo->kind != TypeInfoKind::Interface)
         return context->report({left, Err(Err0010)});
 
     // Some types can only be compared for equality
-    if (leftTypeInfo->kind == TypeInfoKind::Slice || leftTypeInfo->kind == TypeInfoKind::Interface)
+    if (leftTypeInfo->isSlice() || leftTypeInfo->isInterface())
     {
         if (node->token.id != TokenId::SymEqualEqual && node->token.id != TokenId::SymExclamEqual)
             return context->report({left, Fmt(Err(Err0005), node->token.ctext(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->getDisplayNameC())});

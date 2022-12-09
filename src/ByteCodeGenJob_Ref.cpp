@@ -139,7 +139,7 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context, TypeInfo* type
 
     ensureCanBeChangedRC(context, node->resultRegisterRC);
 
-    if (typeInfo->kind == TypeInfoKind::Interface && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !(node->flags & AST_UFCS_FCT))
+    if (typeInfo->isInterface() && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !(node->flags & AST_UFCS_FCT))
     {
         if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
             emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC)->c.u64 = sizeof(void*);
@@ -158,21 +158,21 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context, TypeInfo* type
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Slice)
+    if (typeInfo->isSlice())
     {
         transformResultToLinear2(context, node);
         emitInstruction(context, ByteCodeOp::DeRefStringSlice, node->resultRegisterRC[0], node->resultRegisterRC[1]);
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Interface)
+    if (typeInfo->isInterface())
     {
         transformResultToLinear2(context, node);
         emitInstruction(context, ByteCodeOp::DeRefStringSlice, node->resultRegisterRC[0], node->resultRegisterRC[1]);
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Struct || typeInfo->kind == TypeInfoKind::Array)
+    if (typeInfo->isStruct() || typeInfo->kind == TypeInfoKind::Array)
     {
         return true;
     }
@@ -190,7 +190,7 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context, TypeInfo* type
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Pointer)
+    if (typeInfo->isPointer())
     {
         truncRegisterRC(context, node->resultRegisterRC, 1);
         emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
@@ -216,7 +216,7 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
 
     if (typeInfo->kind == TypeInfoKind::TypeListTuple ||
         typeInfo->kind == TypeInfoKind::TypeListArray ||
-        typeInfo->kind == TypeInfoKind::Struct ||
+        typeInfo->isStruct() ||
         typeInfo->kind == TypeInfoKind::Array ||
         typeInfo->isClosure())
     {
@@ -267,7 +267,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     }
 
     // Dereference of a string constant
-    if (typeInfo->isNative(NativeTypeKind::String))
+    if (typeInfo->isString())
     {
         emitSafetyBoundCheckString(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
 
@@ -281,7 +281,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     }
 
     // Dereference of a slice
-    else if (typeInfo->kind == TypeInfoKind::Slice)
+    else if (typeInfo->isSlice())
     {
         emitSafetyBoundCheckSlice(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
 
@@ -301,9 +301,9 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
 
-        if (typeInfoSlice->pointedType->isNative(NativeTypeKind::String))
+        if (typeInfoSlice->pointedType->isString())
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoSlice->pointedType));
-        else if (!(node->forceTakeAddress()) || typeInfoSlice->pointedType->kind == TypeInfoKind::Pointer)
+        else if (!(node->forceTakeAddress()) || typeInfoSlice->pointedType->isPointer())
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoSlice->pointedType));
 
         node->resultRegisterRC         = node->array->resultRegisterRC;
@@ -312,8 +312,8 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     }
 
     // Dereference a struct
-    else if (typeInfo->kind == TypeInfoKind::Struct ||
-             (typeInfo->isPointerTo(TypeInfoKind::Struct) && castInfo && castInfo->kind == TypeInfoKind::Struct) ||
+    else if (typeInfo->isStruct() ||
+             (typeInfo->isPointerTo(TypeInfoKind::Struct) && castInfo && castInfo->isStruct()) ||
              node->doneFlags & AST_DONE_FORCE_CAST_PTR_STRUCT)
     {
         // User special function
@@ -332,7 +332,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     }
 
     // Dereference of a pointer
-    else if (typeInfo->kind == TypeInfoKind::Pointer)
+    else if (typeInfo->isPointer())
     {
         auto typeInfoPointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
 
@@ -349,7 +349,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
 
-        if (typeInfoPointer->pointedType->isNative(NativeTypeKind::String))
+        if (typeInfoPointer->pointedType->isString())
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoPointer->pointedType));
         else if (!(node->forceTakeAddress()))
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoPointer->pointedType));
@@ -381,9 +381,9 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
 
-        if (typeInfoArray->pointedType->isNative(NativeTypeKind::String))
+        if (typeInfoArray->pointedType->isString())
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoArray->pointedType));
-        else if (typeInfoArray->pointedType->kind == TypeInfoKind::Pointer)
+        else if (typeInfoArray->pointedType->isPointer())
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoArray->pointedType));
         else if (!node->forceTakeAddress() && typeInfoArray->pointedType->kind != TypeInfoKind::Array)
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoArray->pointedType));
@@ -424,7 +424,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         if (!node->access->isConstant0())
         {
             ensureCanBeChangedRC(context, node->access->resultRegisterRC);
-            if (rawType->kind == TypeInfoKind::Native && rawType->sizeOf < sizeof(Register))
+            if (rawType->isNative() && rawType->sizeOf < sizeof(Register))
                 emitInstruction(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRC)->b.u64 = rawType->sizeOf;
             else
                 emitInstruction(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRC)->b.u64 = rawType->numRegisters() * sizeof(Register);
@@ -519,7 +519,7 @@ bool ByteCodeGenJob::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
     }
 
     // Slicing of a structure, with a special function
-    if (typeVar->kind == TypeInfoKind::Struct)
+    if (typeVar->isStruct())
     {
         // User special function
         if (node->hasSpecialFuncCall())
@@ -539,11 +539,11 @@ bool ByteCodeGenJob::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
     uint64_t sizeOf = 1;
     if (typeVar->kind == TypeInfoKind::Array)
         sizeOf = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->finalType->sizeOf;
-    else if (typeVar->isNative(NativeTypeKind::String))
+    else if (typeVar->isString())
         sizeOf = 1;
-    else if (typeVar->kind == TypeInfoKind::Slice)
+    else if (typeVar->isSlice())
         sizeOf = CastTypeInfo<TypeInfoSlice>(typeVar, TypeInfoKind::Slice)->pointedType->sizeOf;
-    else if (typeVar->kind == TypeInfoKind::Pointer)
+    else if (typeVar->isPointer())
         sizeOf = CastTypeInfo<TypeInfoPointer>(typeVar, TypeInfoKind::Pointer)->pointedType->sizeOf;
     else
         return Report::internalError(context->node, "emitMakeArrayPointerSlicing, type not supported");

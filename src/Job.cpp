@@ -166,7 +166,7 @@ void Job::waitTypeCompleted(TypeInfo* typeInfo)
         return;
     auto orgTypeInfo = typeInfo;
     typeInfo         = TypeManager::concreteType(typeInfo);
-    if (typeInfo->kind == TypeInfoKind::Slice)
+    if (typeInfo->isSlice())
         typeInfo = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice)->pointedType;
     if (typeInfo->kind == TypeInfoKind::Array)
         typeInfo = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array)->finalType;

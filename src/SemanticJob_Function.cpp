@@ -764,7 +764,7 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
     // If the function returns a struct, register a type alias "retval". This way we can resolve an identifier
     // named retval for "var result: retval{xx, xxx}" syntax
     auto returnType = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_ALIAS);
-    if (returnType->kind == TypeInfoKind::Struct)
+    if (returnType->isStruct())
     {
         Utf8 retVal = g_LangSpec->name_retval;
         funcNode->scope->symTable.addSymbolTypeInfo(context, funcNode->returnType, returnType, SymbolKind::TypeAlias, nullptr, symbolFlags | OVERLOAD_RETVAL, nullptr, 0, nullptr, &retVal);
@@ -798,7 +798,7 @@ bool SemanticJob::isMethod(AstFuncDecl* funcNode)
         !(funcNode->flags & AST_FROM_GENERIC) &&
         !(funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC) &&
         (funcNode->ownerScope->kind == ScopeKind::Struct) &&
-        (funcNode->ownerStructScope->owner->typeInfo->kind == TypeInfoKind::Struct))
+        (funcNode->ownerStructScope->owner->typeInfo->isStruct()))
     {
         return true;
     }
@@ -875,18 +875,18 @@ bool SemanticJob::resolveCaptureFuncCallParams(SemanticContext* context)
             typeField      = typeArray->finalType;
         }
 
-        if (typeField->kind == TypeInfoKind::Pointer)
+        if (typeField->isPointer())
             continue;
-        if (typeField->kind == TypeInfoKind::Native)
+        if (typeField->isNative())
             continue;
-        if (typeField->kind == TypeInfoKind::Slice)
+        if (typeField->isSlice())
             continue;
-        if (typeField->kind == TypeInfoKind::Interface)
+        if (typeField->isInterface())
             continue;
         if (typeField->isLambda())
             continue;
 
-        if (typeField->kind == TypeInfoKind::Struct)
+        if (typeField->isStruct())
         {
             SWAG_CHECK(waitForStructUserOps(context, c));
             if (context->result == ContextResult::Pending)
@@ -1321,7 +1321,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     else
     {
         // If we are returning an interface, be sure they are defined before casting
-        if (returnType && returnType->kind == TypeInfoKind::Interface)
+        if (returnType && returnType->isInterface())
         {
             context->job->waitAllStructInterfaces(child->typeInfo);
             if (context->result != ContextResult::Done)
@@ -1337,7 +1337,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     }
 
     // When returning a struct, we need to know if postcopy or postmove are here, and wait for them to resolve
-    if (returnType && (returnType->kind == TypeInfoKind::Struct || returnType->isArrayOfStruct()))
+    if (returnType && (returnType->isStruct() || returnType->isArrayOfStruct()))
     {
         SWAG_CHECK(waitForStructUserOps(context, funcNode->returnType));
         if (context->result == ContextResult::Pending)

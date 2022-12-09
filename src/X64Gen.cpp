@@ -1717,20 +1717,20 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
 
         auto index = pushRAParams[indexParam--];
 
-        if (typeParam->kind == TypeInfoKind::Pointer ||
+        if (typeParam->isPointer() ||
             typeParam->kind == TypeInfoKind::Lambda ||
             typeParam->kind == TypeInfoKind::Array)
         {
             pushParams3.push_back(index);
             pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);
         }
-        else if (typeParam->kind == TypeInfoKind::Struct)
+        else if (typeParam->isStruct())
         {
             pushParams3.push_back(index);
             pushParamsTypes.push_back(typeParam);
         }
-        else if (typeParam->kind == TypeInfoKind::Slice ||
-                 typeParam->isNative(NativeTypeKind::String))
+        else if (typeParam->isSlice() ||
+                 typeParam->isString())
         {
             pushParams3.push_back(index);
             pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);
@@ -1739,7 +1739,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
             pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);
         }
         else if (typeParam->isNative(NativeTypeKind::Any) ||
-                 typeParam->kind == TypeInfoKind::Interface)
+                 typeParam->isInterface())
         {
             pushParams3.push_back(index);
             pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);

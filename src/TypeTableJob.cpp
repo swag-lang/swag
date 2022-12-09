@@ -266,7 +266,7 @@ JobResult TypeTableJob::execute()
     context.node       = nodes.front();
     baseContext        = &context;
 
-    SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Struct || typeInfo->kind == TypeInfoKind::Interface);
+    SWAG_ASSERT(typeInfo->isStruct() || typeInfo->isInterface());
     auto realType = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
 
     waitTypeCompleted(typeInfo);

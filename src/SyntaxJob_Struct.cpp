@@ -260,7 +260,7 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
             typeInfo = CastTypeInfo<TypeInfoStruct>(newScope->owner->typeInfo, newScope->owner->typeInfo->kind);
         }
 
-        SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Struct);
+        SWAG_ASSERT(typeInfo->isStruct());
         structNode->typeInfo = newScope->owner->typeInfo;
         typeInfo->declNode   = structNode;
         newScope->owner      = structNode;

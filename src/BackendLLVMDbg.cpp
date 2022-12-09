@@ -455,7 +455,7 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
 
             // If parameters are passed with two registers, make a local variable instead of a reference to
             // the parameters
-            if (typeParam->isNative(NativeTypeKind::String) || typeParam->kind == TypeInfoKind::Slice)
+            if (typeParam->isString() || typeParam->isSlice())
             {
                 auto type = getType(typeParam, file);
 

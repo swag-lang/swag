@@ -124,7 +124,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
         if (typeParam->isSlice() ||
             typeParam->isInterface() ||
             typeParam->isNative(NativeTypeKind::Any) ||
-            typeParam->isNative(NativeTypeKind::String))
+            typeParam->isString())
         {
             context->ffiPushRAParam.push_front(cptParam++);
             context->ffiPushRAParam.push_front(cptParam++);
@@ -143,7 +143,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
         if (returnType->isSlice() ||
             returnType->isInterface() ||
             returnType->isNative(NativeTypeKind::Any) ||
-            returnType->isNative(NativeTypeKind::String))
+            returnType->isString())
         {
             retCopyAddr = context->registersRR;
         }

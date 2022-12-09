@@ -69,17 +69,17 @@ llvm::FunctionType* BackendLLVM::getOrCreateFuncType(const BuildParameters& buil
             if (param->isAutoConstPointerRef())
                 param = TypeManager::concretePtrRef(param);
 
-            if (cc.structByRegister && param->kind == TypeInfoKind::Struct && param->sizeOf <= sizeof(void*))
+            if (cc.structByRegister && param->isStruct() && param->sizeOf <= sizeof(void*))
             {
                 params.push_back(builder.getIntNTy(param->sizeOf * 8));
             }
-            else if (param->isNative(NativeTypeKind::String) || param->kind == TypeInfoKind::Slice)
+            else if (param->isString() || param->isSlice())
             {
                 auto cType = swagTypeToLLVMType(buildParameters, moduleToGen, param);
                 params.push_back(cType);
                 params.push_back(builder.getInt64Ty());
             }
-            else if (param->isNative(NativeTypeKind::Any) || param->kind == TypeInfoKind::Interface)
+            else if (param->isNative(NativeTypeKind::Any) || param->isInterface())
             {
                 auto cType = swagTypeToLLVMType(buildParameters, moduleToGen, param);
                 params.push_back(cType);
@@ -137,7 +137,7 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
     {
         llvm::Value* ra = nullptr;
 
-        if (cc.structByRegister && param->kind == TypeInfoKind::Struct && param->sizeOf <= sizeof(void*))
+        if (cc.structByRegister && param->isStruct() && param->sizeOf <= sizeof(void*))
         {
             ra = builder.CreateIntCast(arg, builder.getInt64Ty(), false);
 
@@ -230,7 +230,7 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
             builder.CreateStore(builder.CreateIntCast(arg, builder.getInt64Ty(), false), r0);
 
         // Struct by copy
-        else if (cc.structByRegister && param->kind == TypeInfoKind::Struct && param->sizeOf <= sizeof(void*))
+        else if (cc.structByRegister && param->isStruct() && param->sizeOf <= sizeof(void*))
         {
             // Make a copy of the value on the stack, and return the address
             auto allocR = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt32(1));
@@ -329,7 +329,7 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
                 params.push_back(values[idxParam + 1]);
             }
         }
-        else if (typeParam->kind == TypeInfoKind::Pointer)
+        else if (typeParam->isPointer())
         {
             auto typePtr  = CastTypeInfo<TypeInfoPointer>(typeParam, TypeInfoKind::Pointer);
             auto llvmType = swagTypeToLLVMType(buildParameters, moduleToGen, typePtr);
@@ -338,21 +338,21 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
             auto r        = builder.CreatePointerCast(r0, llvmType);
             params.push_back(builder.CreateLoad(r));
         }
-        else if (cc.structByRegister && typeParam->kind == TypeInfoKind::Struct && typeParam->sizeOf <= sizeof(void*))
+        else if (cc.structByRegister && typeParam->isStruct() && typeParam->sizeOf <= sizeof(void*))
         {
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
             auto v0 = builder.CreateLoad(r0);
             params.push_back(builder.CreateLoad(TO_PTR_IX(v0, typeParam->sizeOf * 8)));
         }
-        else if (typeParam->kind == TypeInfoKind::Struct ||
+        else if (typeParam->isStruct() ||
                  typeParam->kind == TypeInfoKind::Lambda ||
                  typeParam->kind == TypeInfoKind::Array)
         {
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
             params.push_back(builder.CreateLoad(r0));
         }
-        else if (typeParam->isNative(NativeTypeKind::String) ||
-                 typeParam->kind == TypeInfoKind::Slice)
+        else if (typeParam->isString() ||
+                 typeParam->isSlice())
         {
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
             params.push_back(builder.CreateLoad(r0));
@@ -362,7 +362,7 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
             params.push_back(builder.CreateLoad(r1));
         }
         else if (typeParam->isNative(NativeTypeKind::Any) ||
-                 typeParam->kind == TypeInfoKind::Interface)
+                 typeParam->isInterface())
         {
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
             params.push_back(builder.CreateLoad(r0));
@@ -371,7 +371,7 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
             auto r1 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
             params.push_back(builder.CreateLoad(r1));
         }
-        else if (typeParam->kind == TypeInfoKind::Native)
+        else if (typeParam->isNative())
         {
             auto r0 = GEP_I32(allocR, index);
             auto r  = TO_PTR_NATIVE(r0, typeParam->nativeType);
@@ -386,10 +386,10 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
 
     // Return by parameter
     auto returnType = TypeManager::concreteType(typeFuncBC->returnType);
-    if (returnType->kind == TypeInfoKind::Slice ||
-        returnType->kind == TypeInfoKind::Interface ||
+    if (returnType->isSlice() ||
+        returnType->isInterface() ||
         returnType->isNative(NativeTypeKind::Any) ||
-        returnType->isNative(NativeTypeKind::String))
+        returnType->isString())
     {
         params.push_back(TO_PTR_I8(allocRR));
     }
@@ -427,19 +427,19 @@ bool BackendLLVM::emitCallReturnValue(const BuildParameters& buildParameters,
     auto returnType = TypeManager::concreteType(typeFuncBC->returnType);
     if (returnType != g_TypeMgr->typeInfoVoid)
     {
-        if ((returnType->kind == TypeInfoKind::Slice) ||
-            (returnType->kind == TypeInfoKind::Interface) ||
+        if ((returnType->isSlice()) ||
+            (returnType->isInterface()) ||
             (returnType->isNative(NativeTypeKind::Any)) ||
-            (returnType->isNative(NativeTypeKind::String)) ||
+            (returnType->isString()) ||
             (returnType->flags & TYPEINFO_RETURN_BY_COPY))
         {
             // Return by parameter
         }
-        else if (returnType->kind == TypeInfoKind::Pointer)
+        else if (returnType->isPointer())
         {
             builder.CreateStore(TO_PTR_I8(callResult), TO_PTR_PTR_I8(allocRR));
         }
-        else if (returnType->kind == TypeInfoKind::Native)
+        else if (returnType->isNative())
         {
             auto r = TO_PTR_NATIVE(allocRR, returnType->nativeType);
             if (!r)

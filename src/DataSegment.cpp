@@ -221,7 +221,7 @@ uint8_t* DataSegment::addressNoLock(uint32_t location)
 
 uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, TypeInfo* typeInfo, ComputedValue& computedValue, uint8_t** resultPtr)
 {
-    SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
+    SWAG_ASSERT(typeInfo->isNative());
     SWAG_ASSERT(typeInfo->nativeType != NativeTypeKind::Any);
 
     if (typeInfo->nativeType == NativeTypeKind::String)

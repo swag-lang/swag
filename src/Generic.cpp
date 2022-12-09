@@ -329,7 +329,7 @@ void Generic::waitForGenericParameters(SemanticContext* context, OneGenericMatch
             continue;
         if (declNode->resolvedSymbolOverload->symbol == match.symbolName)
             continue;
-        if (typeInfo->kind == TypeInfoKind::Struct)
+        if (typeInfo->isStruct())
         {
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
             if (typeStruct->fromGeneric)
@@ -503,7 +503,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
         if (identifier->identifierRef->resolvedSymbolOverload)
         {
             auto concreteType = TypeManager::concreteType(identifier->identifierRef->resolvedSymbolOverload->typeInfo);
-            if (concreteType->kind == TypeInfoKind::Struct)
+            if (concreteType->isStruct())
             {
                 contextualNode   = identifier->identifierRef->previousResolvedNode;
                 contextualStruct = CastAst<AstStruct>(concreteType->declNode, AstNodeKind::StructDecl);
@@ -633,7 +633,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
 
 bool Generic::instantiateDefaultGeneric(SemanticContext* context, AstVarDecl* node)
 {
-    if (node->typeInfo->kind == TypeInfoKind::Struct && node->type && node->type->kind == AstNodeKind::TypeExpression)
+    if (node->typeInfo->isStruct() && node->type && node->type->kind == AstNodeKind::TypeExpression)
     {
         auto typeExpr = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
         if (typeExpr->identifier)

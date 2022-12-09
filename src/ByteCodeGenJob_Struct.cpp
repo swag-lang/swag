@@ -209,7 +209,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 emitMakeSegPointer(&cxt, exprList->computedValue->storageSegment, exprList->computedValue->storageOffset, 1);
                 emitMemCpy(&cxt, 0, 1, typeVar->sizeOf);
             }
-            else if (typeVar->isNative(NativeTypeKind::String))
+            else if (typeVar->isString())
             {
                 auto storageSegment = SemanticJob::getConstantSegFromContext(varDecl);
                 auto storageOffset  = storageSegment->addString(varDecl->assignment->computedValue->text);
@@ -220,7 +220,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 emitInstruction(&cxt, ByteCodeOp::SetAtPointer64, 0, 2)->c.u32 = 8;
             }
             // :opAffectConstExpr
-            else if (typeVar->kind == TypeInfoKind::Struct &&
+            else if (typeVar->isStruct() &&
                      varDecl->resolvedSymbolOverload &&
                      varDecl->resolvedSymbolOverload->flags & OVERLOAD_STRUCT_AFFECT &&
                      varDecl->computedValue &&
@@ -266,7 +266,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         {
             auto typeArray = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
             auto typeInVar = typeArray->pointedType;
-            if (typeInVar->kind == TypeInfoKind::Struct && (typeInVar->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
+            if (typeInVar->isStruct() && (typeInVar->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
             {
                 auto typeInVarStruct = CastTypeInfo<TypeInfoStruct>(typeInVar, TypeInfoKind::Struct);
                 if (typeArray->totalCount == 1)
@@ -301,7 +301,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 emitSetZeroAtPointer(&cxt, typeVar->sizeOf, 0);
             }
         }
-        else if (typeVar->kind == TypeInfoKind::Struct && (typeVar->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
+        else if (typeVar->isStruct() && (typeVar->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
         {
             auto typeVarStruct = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
             SWAG_ASSERT(typeVarStruct->opInit || typeVarStruct->opUserInitFct);
@@ -989,7 +989,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
     }
 
     TypeInfoStruct* typeStruct = nullptr;
-    if (typeExpression->pointedType->kind == TypeInfoKind::Struct)
+    if (typeExpression->pointedType->isStruct())
     {
         typeStruct = CastTypeInfo<TypeInfoStruct>(typeExpression->pointedType, TypeInfoKind::Struct);
         context->job->waitStructGenerated(typeStruct);

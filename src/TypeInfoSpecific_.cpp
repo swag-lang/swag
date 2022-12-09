@@ -342,7 +342,7 @@ bool TypeInfoList::isSame(TypeInfo* to, uint32_t isSameFlags)
     // The real check will be done later
     if (isSameFlags & ISSAME_CAST)
     {
-        if (to->kind == TypeInfoKind::Struct && kind == TypeInfoKind::TypeListTuple)
+        if (to->isStruct() && kind == TypeInfoKind::TypeListTuple)
             return true;
     }
 
@@ -771,7 +771,7 @@ bool TypeInfoFuncAttr::returnByCopy()
     if (type->isSlice() ||
         type->isInterface() ||
         type->isNative(NativeTypeKind::Any) ||
-        type->isNative(NativeTypeKind::String) ||
+        type->isString() ||
         type->flags & TYPEINFO_RETURN_BY_COPY)
     {
         return true;
@@ -930,7 +930,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
 
     if (isSameFlags & ISSAME_INTERFACE)
     {
-        if (kind == TypeInfoKind::Interface && to->kind == TypeInfoKind::Struct)
+        if (kind == TypeInfoKind::Interface && to->isStruct())
         {
             auto other = CastTypeInfo<TypeInfoStruct>(to, to->kind);
             if (other->hasInterface(this))

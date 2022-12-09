@@ -311,7 +311,7 @@ void BackendX64::dbgEmitSecRel(X64Gen& pp, Concat& concat, uint32_t symbolIndex,
 
 void BackendX64::dbgEmitEmbeddedValue(Concat& concat, TypeInfo* valueType, ComputedValue& val)
 {
-    SWAG_ASSERT(valueType->kind == TypeInfoKind::Native);
+    SWAG_ASSERT(valueType->isNative());
     switch (valueType->nativeType)
     {
     case NativeTypeKind::Bool:
@@ -524,7 +524,7 @@ DbgTypeRecord* BackendX64::dbgAddTypeRecord(X64Gen& pp)
 
 DbgTypeIndex BackendX64::dbgGetSimpleType(TypeInfo* typeInfo)
 {
-    if (typeInfo->kind == TypeInfoKind::Native)
+    if (typeInfo->isNative())
     {
         switch (typeInfo->nativeType)
         {
@@ -640,7 +640,7 @@ DbgTypeIndex BackendX64::dbgEmitTypeSlice(X64Gen& pp, TypeInfo* typeInfo, TypeIn
     tr1->LF_Structure.memberCount = 2;
     tr1->LF_Structure.sizeOf      = 2 * sizeof(void*);
     tr1->LF_Structure.fieldList   = tr0->index;
-    if (typeInfo->kind == TypeInfoKind::Slice)
+    if (typeInfo->isSlice())
     {
         tr1->name = "[..] ";
         tr1->name += pointedType->name; // debugger doesn't like 'const' before a slice name
@@ -664,7 +664,7 @@ void BackendX64::dbgRecordFields(X64Gen& pp, DbgTypeRecord* tr, TypeInfoStruct* 
         field.value.reg.u32 = p->offset;
         tr->LF_FieldList.fields.push_back(field);
 
-        if (p->flags & TYPEINFO_HAS_USING && p->typeInfo->kind == TypeInfoKind::Struct)
+        if (p->flags & TYPEINFO_HAS_USING && p->typeInfo->isStruct())
         {
             auto typeStructField = CastTypeInfo<TypeInfoStruct>(p->typeInfo, TypeInfoKind::Struct);
             dbgRecordFields(pp, tr, typeStructField, p->offset);
@@ -683,7 +683,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
 
     // Pointer
     /////////////////////////////////
-    if (typeInfo->kind == TypeInfoKind::Pointer)
+    if (typeInfo->isPointer())
     {
         auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
         return dbgGetOrCreatePointerToType(pp, typePtr->pointedType, !(typePtr->flags & TYPEINFO_POINTER_ARITHMETIC) && !forceUnRef);
@@ -697,7 +697,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
 
     // Slice
     /////////////////////////////////
-    if (typeInfo->kind == TypeInfoKind::Slice)
+    if (typeInfo->isSlice())
     {
         auto typeInfoPtr = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
         return dbgEmitTypeSlice(pp, typeInfo, typeInfoPtr->pointedType);
@@ -734,7 +734,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
 
     // Native string
     /////////////////////////////////
-    if (typeInfo->isNative(NativeTypeKind::String))
+    if (typeInfo->isString())
     {
         auto         tr0 = dbgAddTypeRecord(pp);
         DbgTypeField field;
@@ -765,7 +765,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
 
     // Interface
     /////////////////////////////////
-    if (typeInfo->kind == TypeInfoKind::Interface)
+    if (typeInfo->isInterface())
     {
         auto         tr0 = dbgAddTypeRecord(pp);
         DbgTypeField field;
@@ -827,7 +827,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
 
     // Structure
     /////////////////////////////////
-    if (typeInfo->kind == TypeInfoKind::Struct)
+    if (typeInfo->isStruct())
     {
         TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         auto            sname      = dbgGetScopedName(typeStruct->declNode);
@@ -982,7 +982,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
 
 void BackendX64::dbgEmitConstant(X64Gen& pp, Concat& concat, AstNode* node, const Utf8& name)
 {
-    if (node->typeInfo->kind == TypeInfoKind::Native && node->typeInfo->sizeOf <= 8)
+    if (node->typeInfo->isNative() && node->typeInfo->sizeOf <= 8)
     {
         dbgStartRecord(pp, concat, S_CONSTANT);
         concat.addU32(dbgGetOrCreateType(pp, node->typeInfo));

@@ -79,7 +79,7 @@ bool ByteCodeRun::executeIsConstExprSI(ByteCodeRunContext* context, ByteCodeInst
 
     // Slice
     /////////////////////////////////////////
-    if (solved->typeInfo->kind == TypeInfoKind::Slice)
+    if (solved->typeInfo->isSlice())
     {
         if (child->typeInfo->kind == TypeInfoKind::Array)
             return true;
@@ -132,7 +132,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
 
     // Slice
     /////////////////////////////////////////
-    if (solved->typeInfo->kind == TypeInfoKind::Slice)
+    if (solved->typeInfo->isSlice())
     {
         if (child->typeInfo->kind == TypeInfoKind::Array)
         {
@@ -157,7 +157,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
     // Native
     /////////////////////////////////////////
     SWAG_ASSERT(paramIdx < callParams->childs.size());
-    if (solved->typeInfo->kind == TypeInfoKind::Native)
+    if (solved->typeInfo->isNative())
     {
         switch (solved->typeInfo->nativeType)
         {

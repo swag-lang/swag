@@ -17,18 +17,18 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     uint32_t altFlags = node->flags & AST_STRUCT_MEMBER ? ALTSCOPE_USING : 0;
 
     typeInfoVar = TypeManager::concretePtrRef(typeInfoVar);
-    if (typeInfoVar->kind == TypeInfoKind::Struct)
+    if (typeInfoVar->isStruct())
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfoVar, TypeInfoKind::Struct);
         regNode->allocateExtension(ExtensionKind::AltScopes);
         regNode->addAlternativeScope(typeStruct->scope, altFlags);
         regNode->addAlternativeScopeVar(typeStruct->scope, varNode, altFlags);
     }
-    else if (typeInfoVar->kind == TypeInfoKind::Pointer)
+    else if (typeInfoVar->isPointer())
     {
         auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfoVar, TypeInfoKind::Pointer);
         SWAG_VERIFY(typePointer->pointedType->kind != TypeInfoKind::Enum, context->report({node, Err(Err0691)}));
-        SWAG_VERIFY(typePointer->pointedType->kind == TypeInfoKind::Struct, context->report({node, Fmt(Err(Err0822), typeInfoVar->getDisplayNameC())}));
+        SWAG_VERIFY(typePointer->pointedType->isStruct(), context->report({node, Fmt(Err(Err0822), typeInfoVar->getDisplayNameC())}));
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
         regNode->addAlternativeScope(typeStruct->scope, altFlags);
         regNode->addAlternativeScopeVar(typeStruct->scope, varNode, altFlags);

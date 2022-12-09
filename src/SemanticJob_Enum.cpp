@@ -173,7 +173,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
             enumNode->computedValue->storageOffset  = storageOffset;
             enumNode->computedValue->storageSegment = storageSegment;
         }
-        else if (rawTypeInfo->kind == TypeInfoKind::Slice)
+        else if (rawTypeInfo->isSlice())
         {
             SWAG_CHECK(checkIsConstExpr(context, assignNode));
             SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CASTFLAG_CONCRETE_ENUM));
@@ -220,7 +220,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
         }
     }
 
-    if (rawTypeInfo->kind == TypeInfoKind::Native)
+    if (rawTypeInfo->isNative())
     {
         auto rawType = CastTypeInfo<TypeInfoNative>(rawTypeInfo, TypeInfoKind::Native);
 

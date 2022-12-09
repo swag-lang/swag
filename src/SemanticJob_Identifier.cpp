@@ -115,7 +115,7 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
     {
         auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
         auto subType     = TypeManager::concreteType(typePointer->pointedType);
-        if (subType->kind == TypeInfoKind::Struct || subType->kind == TypeInfoKind::Interface)
+        if (subType->isStruct() || subType->isInterface())
             identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
         node->typeInfo = typeInfo;
         break;
@@ -137,7 +137,7 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         auto subType   = TypeManager::concreteType(typeArray->finalType);
-        if (subType->kind == TypeInfoKind::Struct)
+        if (subType->isStruct())
             identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
         node->typeInfo = typeInfo;
         break;
@@ -147,7 +147,7 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
     {
         auto typeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
         auto subType   = TypeManager::concreteType(typeSlice->pointedType);
-        if (subType->kind == TypeInfoKind::Struct)
+        if (subType->isStruct())
             identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
         node->typeInfo = typeInfo;
         break;
@@ -784,7 +784,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     // Direct reference to a constexpr structure
     if (parent->previousResolvedNode &&
         (parent->previousResolvedNode->flags & AST_VALUE_COMPUTED) &&
-        parent->previousResolvedNode->typeInfo->kind == TypeInfoKind::Struct &&
+        parent->previousResolvedNode->typeInfo->isStruct() &&
         symbol->kind == SymbolKind::Variable)
     {
         if (derefLiteralStruct(context, parent, overload))
@@ -801,7 +801,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     // Direct reference of a struct field inside a const array
     if (parent->previousResolvedNode &&
         parent->previousResolvedNode->kind == AstNodeKind::ArrayPointerIndex &&
-        parent->previousResolvedNode->typeInfo->kind == TypeInfoKind::Struct &&
+        parent->previousResolvedNode->typeInfo->isStruct() &&
         symbol->kind == SymbolKind::Variable)
     {
         auto arrayNode = CastAst<AstArrayPointerIndex>(parent->previousResolvedNode, AstNodeKind::ArrayPointerIndex);
@@ -912,7 +912,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     if (symbol->kind == SymbolKind::TypeAlias)
     {
         typeAlias = TypeManager::concreteType(identifier->typeInfo, CONCRETE_ALIAS);
-        if (typeAlias->kind == TypeInfoKind::Struct)
+        if (typeAlias->isStruct())
             symbolKind = SymbolKind::Struct;
     }
 
@@ -1280,10 +1280,10 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
                 // :CheckConstExprFuncReturnType
                 if (returnType &&
-                    !returnType->isNative(NativeTypeKind::String) &&
+                    !returnType->isString() &&
                     !returnType->isNativeIntegerOrRune() &&
                     !returnType->isNativeFloat() &&
-                    !returnType->isNative(NativeTypeKind::Bool) &&
+                    !returnType->isBool() &&
                     !(returnType->flags & TYPEINFO_RETURN_BY_COPY) && // Treated later (as errors)
                     !(identifier->semFlags & AST_SEM_EXEC_RET_STACK))
                 {
@@ -1397,7 +1397,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
 
         // Setup parent if necessary
-        if (returnType->kind == TypeInfoKind::Struct)
+        if (returnType->isStruct())
         {
             identifier->semFlags |= AST_SEM_IS_CONST_ASSIGN_INHERIT;
             identifier->semFlags |= AST_SEM_IS_CONST_ASSIGN;
@@ -1463,7 +1463,7 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
     // What a mess...
     if (oneTryMatch.dependentVarLeaf)
     {
-        if (oneTryMatch.dependentVarLeaf->typeInfo && oneTryMatch.dependentVarLeaf->typeInfo->kind == TypeInfoKind::Struct)
+        if (oneTryMatch.dependentVarLeaf->typeInfo && oneTryMatch.dependentVarLeaf->typeInfo->isStruct())
         {
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(oneTryMatch.dependentVarLeaf->typeInfo, TypeInfoKind::Struct);
             toCheck.push_back(typeStruct->declNode);
@@ -1612,7 +1612,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         if (rawTypeInfo->kind == TypeInfoKind::Alias)
         {
             rawTypeInfo = TypeManager::concreteType(rawTypeInfo, CONCRETE_ALIAS);
-            if (rawTypeInfo->kind == TypeInfoKind::Struct)
+            if (rawTypeInfo->isStruct())
             {
                 auto typeInfo = CastTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Struct);
                 if (!(typeInfo->flags & TYPEINFO_GENERIC))
@@ -1635,7 +1635,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         setupContextualGenericTypeReplacement(context, oneOverload, overload, flags);
 
         oneOverload.symMatchContext.semContext = context;
-        if (rawTypeInfo->kind == TypeInfoKind::Struct)
+        if (rawTypeInfo->isStruct())
         {
             forStruct     = true;
             auto typeInfo = CastTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Struct);
@@ -1643,7 +1643,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             if (context->result == ContextResult::Pending)
                 return true;
         }
-        else if (rawTypeInfo->kind == TypeInfoKind::Interface)
+        else if (rawTypeInfo->isInterface())
         {
             forStruct     = true;
             auto typeInfo = CastTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Interface);
@@ -2015,7 +2015,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                         note         = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
                     }
                 }
-                else if (overload->typeInfo->kind == TypeInfoKind::Struct)
+                else if (overload->typeInfo->isStruct())
                 {
                     auto couldBe    = Fmt(Nte(Nte0049), overload->typeInfo->getDisplayNameC());
                     note            = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
@@ -2446,7 +2446,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
         auto fctDecl = node->ownerInline ? node->ownerInline->func : node->ownerFct;
         SWAG_ASSERT(fctDecl);
         auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(fctDecl->typeInfo, TypeInfoKind::FuncAttr);
-        SWAG_ASSERT(typeFct->returnType->kind == TypeInfoKind::Struct);
+        SWAG_ASSERT(typeFct->returnType->isStruct());
         addDependentSymbol(dependentSymbols, typeFct->returnType->declNode->resolvedSymbolName, nullptr, 0);
         return true;
     }
@@ -3005,7 +3005,7 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
             // a function
             // :WaitInterfaceReg
             TypeInfoStruct* typeStruct = nullptr;
-            if (oneParam->typeInfo->kind == TypeInfoKind::Struct)
+            if (oneParam->typeInfo->isStruct())
                 typeStruct = CastTypeInfo<TypeInfoStruct>(oneParam->typeInfo, TypeInfoKind::Struct);
             else if (oneParam->typeInfo->isPointerTo(TypeInfoKind::Struct))
             {
@@ -4056,7 +4056,7 @@ void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<A
 
                     // If this is a struct that comes from a generic, we need to also register the generic scope in order
                     // to be able to find generic functions to instantiate
-                    SWAG_ASSERT(it0.scope->owner->typeInfo->kind == TypeInfoKind::Struct);
+                    SWAG_ASSERT(it0.scope->owner->typeInfo->isStruct());
                     auto typeStruct = CastTypeInfo<TypeInfoStruct>(it0.scope->owner->typeInfo, TypeInfoKind::Struct);
                     if (typeStruct->fromGeneric)
                     {

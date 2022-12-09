@@ -183,11 +183,11 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     case MatchResult::BadGenericMatch:
     case MatchResult::BadSignature:
     case MatchResult::BadGenericSignature:
-        if (bi.badSignatureRequestedType->kind == TypeInfoKind::Pointer ||
-            bi.badSignatureGivenType->kind == TypeInfoKind::Pointer)
+        if (bi.badSignatureRequestedType->isPointer() ||
+            bi.badSignatureGivenType->isPointer())
             break;
 
-        if (bi.badSignatureRequestedType->kind == TypeInfoKind::Native)
+        if (bi.badSignatureRequestedType->isNative())
         {
             if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_TRY_COERCE | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             {
@@ -196,7 +196,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             }
         }
 
-        if (bi.badSignatureRequestedType->kind == TypeInfoKind::Struct)
+        if (bi.badSignatureRequestedType->isStruct())
         {
             if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             {
@@ -405,7 +405,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
         SWAG_ASSERT(callParameters);
         auto diagNode = match.parameters[bi.badSignatureParameterIdx];
-        if (overload->typeInfo->kind == TypeInfoKind::Struct)
+        if (overload->typeInfo->isStruct())
         {
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
             diag            = new Diagnostic{diagNode,
@@ -1104,7 +1104,7 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
     if (identifierRef->startScope)
     {
         auto typeRef = TypeManager::concreteType(identifierRef->typeInfo);
-        if (typeRef && typeRef->kind == TypeInfoKind::Pointer)
+        if (typeRef && typeRef->isPointer())
             typeRef = CastTypeInfo<TypeInfoPointer>(typeRef, TypeInfoKind::Pointer)->pointedType;
 
         if (typeRef && typeRef->flags & TYPEINFO_STRUCT_IS_TUPLE)

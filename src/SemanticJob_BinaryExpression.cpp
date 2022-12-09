@@ -19,7 +19,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
     auto module        = sourceFile->module;
 
-    if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    if (leftTypeInfo->isStruct())
     {
         SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opBinary, "+", nullptr, left, right));
         node->typeInfo = leftTypeInfo;
@@ -27,7 +27,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     }
 
     // :PointerArithmetic
-    if (leftTypeInfo->kind == TypeInfoKind::Pointer)
+    if (leftTypeInfo->isPointer())
     {
         node->typeInfo = leftTypeInfo;
         SWAG_VERIFY(leftTypeInfo->flags & TYPEINFO_POINTER_ARITHMETIC, context->report({left, Err(Err0192), Hint::isType(leftTypeInfo)}));
@@ -38,7 +38,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     }
 
     // :PointerArithmetic
-    if (rightTypeInfo->kind == TypeInfoKind::Pointer)
+    if (rightTypeInfo->isPointer())
     {
         node->typeInfo = rightTypeInfo;
         SWAG_VERIFY(rightTypeInfo->flags & TYPEINFO_POINTER_ARITHMETIC, context->report({right, Err(Err0192), Hint::isType(rightTypeInfo)}));
@@ -48,7 +48,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         return true;
     }
 
-    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->report({right, Fmt(Err(Err0142), rightTypeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(rightTypeInfo->isNative(), context->report({right, Fmt(Err(Err0142), rightTypeInfo->getDisplayNameC())}));
     SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
     leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
 
@@ -135,7 +135,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
     auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
     auto module        = sourceFile->module;
 
-    if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    if (leftTypeInfo->isStruct())
     {
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opBinary, "-", nullptr, left, right));
         node->typeInfo = leftTypeInfo;
@@ -143,12 +143,12 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
     }
 
     // :PointerArithmetic
-    if (leftTypeInfo->kind == TypeInfoKind::Pointer)
+    if (leftTypeInfo->isPointer())
     {
         node->typeInfo = leftTypeInfo;
 
         // Substract two pointers
-        if (rightTypeInfo->kind == TypeInfoKind::Pointer)
+        if (rightTypeInfo->isPointer())
         {
             SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
             node->typeInfo = g_TypeMgr->typeInfoInt;
@@ -162,7 +162,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
         return true;
     }
 
-    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->report({right, Fmt(Err(Err0146), rightTypeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(rightTypeInfo->isNative(), context->report({right, Fmt(Err(Err0146), rightTypeInfo->getDisplayNameC())}));
     SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
     leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
 
@@ -243,7 +243,7 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
     auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
     auto module        = sourceFile->module;
 
-    if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    if (leftTypeInfo->isStruct())
     {
         SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opBinary, "*", nullptr, left, right));
         node->typeInfo = leftTypeInfo;
@@ -340,7 +340,7 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
     auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
 
-    if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    if (leftTypeInfo->isStruct())
     {
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opBinary, "/", nullptr, left, right));
         node->typeInfo = leftTypeInfo;
@@ -422,7 +422,7 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
     auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
 
-    if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    if (leftTypeInfo->isStruct())
     {
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opBinary, "%", nullptr, left, right));
         node->typeInfo = leftTypeInfo;
@@ -492,7 +492,7 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
     auto leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
     auto module       = node->sourceFile->module;
 
-    if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    if (leftTypeInfo->isStruct())
     {
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opBinary, "|", nullptr, left, right));
         node->typeInfo = leftTypeInfo;
@@ -600,7 +600,7 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
     auto leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
     auto module       = node->sourceFile->module;
 
-    if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    if (leftTypeInfo->isStruct())
     {
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opBinary, "&", nullptr, left, right));
         node->typeInfo = leftTypeInfo;
@@ -704,9 +704,9 @@ bool SemanticJob::resolveAppend(SemanticContext* context, AstNode* left, AstNode
     auto node = context->node;
     SWAG_CHECK(checkIsConstExpr(context, left->flags & AST_VALUE_COMPUTED, left));
 
-    if (!left->typeInfo->isNative(NativeTypeKind::String))
+    if (!left->typeInfo->isString())
         left->computedValue->text = Ast::literalToString(left->typeInfo, *left->computedValue);
-    if (!right->typeInfo->isNative(NativeTypeKind::String))
+    if (!right->typeInfo->isString())
         right->computedValue->text = Ast::literalToString(right->typeInfo, *right->computedValue);
 
     node->setFlagsValueIsComputed();
@@ -721,7 +721,7 @@ bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* r
     auto node         = context->node;
     auto leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
 
-    if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    if (leftTypeInfo->isStruct())
     {
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opBinary, "^", nullptr, left, right));
         node->typeInfo = leftTypeInfo;
@@ -888,11 +888,11 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     }
 
     // Must do move and not copy
-    if (leftTypeInfo->kind == TypeInfoKind::Struct || rightTypeInfo->kind == TypeInfoKind::Struct)
+    if (leftTypeInfo->isStruct() || rightTypeInfo->isStruct())
         node->flags |= AST_TRANSIENT;
 
     // Must invert if commutative operation
-    if (leftTypeInfo->kind != TypeInfoKind::Struct && rightTypeInfo->kind == TypeInfoKind::Struct)
+    if (leftTypeInfo->kind != TypeInfoKind::Struct && rightTypeInfo->isStruct())
     {
         switch (node->token.id)
         {
@@ -951,7 +951,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     // :SpecFuncConstExpr
     if (node->hasSpecialFuncCall() && (node->flags & AST_CONST_EXPR))
     {
-        if (leftTypeInfo->kind == TypeInfoKind::Struct && !(leftTypeInfo->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
+        if (leftTypeInfo->isStruct() && !(leftTypeInfo->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
             node->flags &= ~AST_CONST_EXPR;
     }
 
@@ -969,7 +969,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
     auto node         = CastAst<AstOp>(context->node, AstNodeKind::FactorOp);
     auto leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
 
-    if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    if (leftTypeInfo->isStruct())
     {
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opBinary, "<<", nullptr, left, right));
         node->typeInfo = leftTypeInfo;
@@ -1107,7 +1107,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
     auto node         = CastAst<AstOp>(context->node, AstNodeKind::FactorOp);
     auto leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
 
-    if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    if (leftTypeInfo->isStruct())
     {
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opBinary, ">>", nullptr, left, right));
         node->typeInfo = leftTypeInfo;
@@ -1260,7 +1260,7 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
         return true;
     }
 
-    if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    if (leftTypeInfo->isStruct())
         SWAG_CHECK(checkTypeIsNative(context, right, rightTypeInfo));
     else
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
@@ -1285,7 +1285,7 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
     // :SpecFuncConstExpr
     if (node->hasSpecialFuncCall() && (node->flags & AST_CONST_EXPR))
     {
-        if (leftTypeInfo->kind == TypeInfoKind::Struct && !(leftTypeInfo->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
+        if (leftTypeInfo->isStruct() && !(leftTypeInfo->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
             node->flags &= ~AST_CONST_EXPR;
     }
 

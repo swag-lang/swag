@@ -42,7 +42,7 @@ bool ByteCodeGenJob::emitNullConditionalOp(ByteCodeGenContext* context)
         reserveRegisterRC(context, node->resultRegisterRC, child0->resultRegisterRC.size());
 
         // For an interface, check the itable pointer
-        if (child0->typeInfo->kind == TypeInfoKind::Interface)
+        if (child0->typeInfo->isInterface())
             regIdx = 1;
 
         ByteCodeInstruction* inst = nullptr;
@@ -190,7 +190,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         for (auto child : job->collectChilds)
         {
             auto typeChild = TypeManager::concreteType(child->typeInfo);
-            if (typeChild->kind == TypeInfoKind::Struct)
+            if (typeChild->isStruct())
             {
                 context->job->waitStructGenerated(typeChild);
                 if (context->result == ContextResult::Pending)
@@ -316,8 +316,8 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     {
         // We want a string or a slice
         if (node->typeInfo->nativeType == NativeTypeKind::String ||
-            node->typeInfo->kind == TypeInfoKind::Slice ||
-            node->typeInfo->kind == TypeInfoKind::Interface)
+            node->typeInfo->isSlice() ||
+            node->typeInfo->isInterface())
         {
             reserveLinearRegisterRC2(context, regList);
             emitInstruction(context, ByteCodeOp::ClearRA, regList[0]);
@@ -333,7 +333,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         emitMakeSegPointer(context, node->computedValue->storageSegment, node->computedValue->storageOffset, regList[0]);
         node->parent->resultRegisterRC = node->resultRegisterRC;
     }
-    else if (typeInfo->kind == TypeInfoKind::Native)
+    else if (typeInfo->isNative())
     {
         switch (typeInfo->nativeType)
         {
@@ -391,7 +391,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     }
     else if (typeInfo == g_TypeMgr->typeInfoNull)
     {
-        if (toType && (toType->kind == TypeInfoKind::Slice || toType->isNative(NativeTypeKind::String)))
+        if (toType && (toType->isSlice() || toType->isString()))
         {
             reserveLinearRegisterRC2(context, regList);
             emitInstruction(context, ByteCodeOp::ClearRA, regList[0]);
@@ -409,18 +409,18 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         emitMakeSegPointer(context, node->computedValue->storageSegment, node->computedValue->storageOffset, regList[0]);
         emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64 = typeArray->count;
     }
-    else if (typeInfo->kind == TypeInfoKind::Struct || typeInfo->kind == TypeInfoKind::TypeListTuple || typeInfo->kind == TypeInfoKind::TypeListArray)
+    else if (typeInfo->isStruct() || typeInfo->kind == TypeInfoKind::TypeListTuple || typeInfo->kind == TypeInfoKind::TypeListArray)
     {
         emitMakeSegPointer(context, node->computedValue->storageSegment, node->computedValue->storageOffset, regList[0]);
     }
-    else if (typeInfo->kind == TypeInfoKind::Pointer && node->castedTypeInfo && node->castedTypeInfo->isNative(NativeTypeKind::String))
+    else if (typeInfo->isPointer() && node->castedTypeInfo && node->castedTypeInfo->isString())
     {
         auto storageSegment = SemanticJob::getConstantSegFromContext(node);
         auto storageOffset  = storageSegment->addString(node->computedValue->text);
         SWAG_ASSERT(storageOffset != UINT32_MAX);
         emitMakeSegPointer(context, storageSegment, storageOffset, regList[0]);
     }
-    else if (typeInfo->kind == TypeInfoKind::Slice && node->castedTypeInfo && node->castedTypeInfo->isNative(NativeTypeKind::String))
+    else if (typeInfo->isSlice() && node->castedTypeInfo && node->castedTypeInfo->isString())
     {
         reserveLinearRegisterRC2(context, regList);
         auto storageSegment = SemanticJob::getConstantSegFromContext(node);
@@ -429,7 +429,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         emitMakeSegPointer(context, storageSegment, storageOffset, regList[0]);
         emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64 = node->computedValue->text.length();
     }
-    else if (typeInfo->kind == TypeInfoKind::Slice)
+    else if (typeInfo->isSlice())
     {
         // :SliceLiteral
         reserveLinearRegisterRC2(context, regList);
@@ -440,7 +440,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         emitMakeSegPointer(context, node->computedValue->storageSegment, node->computedValue->storageOffset, regList[0]);
         emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64 = node->computedValue->reg.u64;
     }
-    else if (typeInfo->kind == TypeInfoKind::Pointer)
+    else if (typeInfo->isPointer())
     {
         emitInstruction(context, ByteCodeOp::SetImmediate64, regList)->b.u64 = node->computedValue->reg.u64;
     }

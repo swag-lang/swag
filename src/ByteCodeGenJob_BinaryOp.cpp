@@ -12,7 +12,7 @@ bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context, TypeInfo* typ
 {
     auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
-    if (typeInfo->kind == TypeInfoKind::Native)
+    if (typeInfo->isNative())
     {
         switch (typeInfo->nativeType)
         {
@@ -41,7 +41,7 @@ bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context, TypeInfo* typ
             return Report::internalError(context->node, "emitBinaryOpPlus, type not supported");
         }
     }
-    else if (typeInfo->kind == TypeInfoKind::Pointer)
+    else if (typeInfo->isPointer())
     {
         auto typePtr = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(typeInfo), TypeInfoKind::Pointer);
         auto sizeOf  = typePtr->pointedType->sizeOf;
@@ -50,7 +50,7 @@ bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context, TypeInfo* typ
             auto rt = reserveRegisterRC(context);
 
             // Be sure that the pointer is on the left side, because ptr = 1 + ptr is possible
-            if (context->node->childs[0]->typeInfo->kind == TypeInfoKind::Pointer)
+            if (context->node->childs[0]->typeInfo->isPointer())
             {
                 emitInstruction(context, ByteCodeOp::CopyRBtoRA64, rt, r1);
                 emitInstruction(context, ByteCodeOp::Mul64byVB64, rt)->b.u64 = sizeOf;
@@ -85,7 +85,7 @@ bool ByteCodeGenJob::emitBinaryOpMinus(ByteCodeGenContext* context, TypeInfo* ty
     if (typeInfo->isNative(NativeTypeKind::Int))
     {
         auto rightTypeInfo = TypeManager::concreteType(node->childs[1]->typeInfo);
-        if (rightTypeInfo->kind == TypeInfoKind::Pointer)
+        if (rightTypeInfo->isPointer())
         {
             auto rightTypePointer = CastTypeInfo<TypeInfoPointer>(rightTypeInfo, TypeInfoKind::Pointer);
             emitInstruction(context, ByteCodeOp::BinOpMinusS64, r0, r1, r2);
@@ -96,7 +96,7 @@ bool ByteCodeGenJob::emitBinaryOpMinus(ByteCodeGenContext* context, TypeInfo* ty
         }
     }
 
-    if (typeInfo->kind == TypeInfoKind::Native)
+    if (typeInfo->isNative())
     {
         switch (typeInfo->nativeType)
         {
@@ -125,7 +125,7 @@ bool ByteCodeGenJob::emitBinaryOpMinus(ByteCodeGenContext* context, TypeInfo* ty
             return Report::internalError(context->node, "emitBinaryOpMinus, type not supported");
         }
     }
-    else if (typeInfo->kind == TypeInfoKind::Pointer)
+    else if (typeInfo->isPointer())
     {
         auto typePtr = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(typeInfo), TypeInfoKind::Pointer);
         auto sizeOf  = typePtr->pointedType->sizeOf;

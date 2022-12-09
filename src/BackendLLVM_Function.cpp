@@ -3226,7 +3226,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             // Emit result
             if (returnType != g_TypeMgr->typeInfoVoid && !typeFunc->returnByCopy())
             {
-                if (returnType->kind == TypeInfoKind::Native)
+                if (returnType->isNative())
                 {
                     switch (returnType->nativeType)
                     {
@@ -3261,7 +3261,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                         break;
                     }
                 }
-                else if (returnType->kind == TypeInfoKind::Pointer || returnType->kind == TypeInfoKind::Lambda)
+                else if (returnType->isPointer() || returnType->kind == TypeInfoKind::Lambda)
                 {
                     auto llvmType = swagTypeToLLVMType(buildParameters, moduleToGen, returnType);
                     auto ptr = builder.CreatePointerCast(allocResult, llvmType->getPointerTo());
@@ -4854,7 +4854,7 @@ llvm::Type* BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParamete
         return swagTypeToLLVMType(buildParameters, moduleToGen, typeInfoEnum->rawType);
     }
 
-    if (typeInfo->kind == TypeInfoKind::Pointer)
+    if (typeInfo->isPointer())
     {
         auto typeInfoPointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
         auto pointedType     = TypeManager::concreteType(typeInfoPointer->pointedType);
@@ -4864,18 +4864,18 @@ llvm::Type* BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParamete
             return swagTypeToLLVMType(buildParameters, moduleToGen, pointedType)->getPointerTo();
     }
 
-    if (typeInfo->kind == TypeInfoKind::Slice ||
+    if (typeInfo->isSlice() ||
         typeInfo->kind == TypeInfoKind::Array ||
-        typeInfo->kind == TypeInfoKind::Struct ||
-        typeInfo->kind == TypeInfoKind::Interface ||
+        typeInfo->isStruct() ||
+        typeInfo->isInterface() ||
         typeInfo->kind == TypeInfoKind::Lambda ||
         typeInfo->isNative(NativeTypeKind::Any) ||
-        typeInfo->isNative(NativeTypeKind::String))
+        typeInfo->isString())
     {
         return llvm::Type::getInt8PtrTy(context);
     }
 
-    if (typeInfo->kind == TypeInfoKind::Native)
+    if (typeInfo->isNative())
     {
         switch (typeInfo->nativeType)
         {
@@ -5175,7 +5175,7 @@ void BackendLLVM::getReturnResult(llvm::LLVMContext&     context,
     auto& builder         = *pp.builder;
 
     llvm::Value* returnResult = nullptr;
-    if (returnType->kind == TypeInfoKind::Native)
+    if (returnType->isNative())
     {
         switch (returnType->nativeType)
         {
@@ -5234,7 +5234,7 @@ void BackendLLVM::getReturnResult(llvm::LLVMContext&     context,
             break;
         }
     }
-    else if (returnType->kind == TypeInfoKind::Pointer || returnType->kind == TypeInfoKind::Lambda)
+    else if (returnType->isPointer() || returnType->kind == TypeInfoKind::Lambda)
     {
         auto llvmType = swagTypeToLLVMType(buildParameters, moduleToGen, returnType);
         if (imm)

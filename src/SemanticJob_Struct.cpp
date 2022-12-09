@@ -262,7 +262,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         // First parameter in the impl block must be a pointer to the struct
         SWAG_VERIFY(typeFunc->parameters.size(), context->report({child, Fmt(Err(Err0654), child->token.ctext())}));
         auto firstParamType = typeFunc->parameters[0]->typeInfo;
-        SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report({typeFunc->parameters[0]->declNode, Fmt(Err(Err0655), firstParamType->getDisplayNameC())}));
+        SWAG_VERIFY(firstParamType->isPointer(), context->report({typeFunc->parameters[0]->declNode, Fmt(Err(Err0655), firstParamType->getDisplayNameC())}));
         auto firstParamPtr = CastTypeInfo<TypeInfoPointer>(firstParamType, TypeInfoKind::Pointer);
         SWAG_VERIFY(firstParamPtr->pointedType == typeStruct, context->report({typeFunc->parameters[0]->declNode, Fmt(Err(Err0655), firstParamType->getDisplayNameC())}));
 
@@ -452,7 +452,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
             auto typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeParam->typeInfo, TypeInfoKind::Lambda);
             SWAG_VERIFY(typeLambda->parameters.size() >= 1, context->report({varDecl->type, Fmt(Err(Err0677), child->token.ctext())}));
             auto firstParamType = typeLambda->parameters[0]->typeInfo;
-            SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report({typeLambda->parameters[0]->declNode, Fmt(Err(Err0679), firstParamType->getDisplayNameC())}));
+            SWAG_VERIFY(firstParamType->isPointer(), context->report({typeLambda->parameters[0]->declNode, Fmt(Err(Err0679), firstParamType->getDisplayNameC())}));
             auto firstParamPtr = CastTypeInfo<TypeInfoPointer>(firstParamType, TypeInfoKind::Pointer);
             SWAG_VERIFY(firstParamPtr->pointedType == typeInterface, context->report({typeLambda->parameters[0]->declNode, Fmt(Err(Err0679), firstParamType->getDisplayNameC())}));
         }
@@ -911,11 +911,11 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             structFlags |= TYPEINFO_STRUCT_NO_COPY;
 
         // Remove attribute constexpr if necessary
-        if (child->typeInfo->kind == TypeInfoKind::Struct && !(child->typeInfo->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
+        if (child->typeInfo->isStruct() && !(child->typeInfo->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
             node->attributeFlags &= ~ATTRIBUTE_CONSTEXPR;
 
         // Var is a struct
-        if (varDecl->typeInfo->kind == TypeInfoKind::Struct)
+        if (varDecl->typeInfo->isStruct())
         {
             if (varDecl->typeInfo->declNode->attributeFlags & ATTRIBUTE_EXPORT_TYPE_NOZERO)
                 structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
@@ -949,7 +949,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         else if (varDecl->typeInfo->kind == TypeInfoKind::Array && !varDecl->assignment)
         {
             auto varTypeArray = CastTypeInfo<TypeInfoArray>(varDecl->typeInfo, TypeInfoKind::Array);
-            if (varTypeArray->pointedType->kind == TypeInfoKind::Struct)
+            if (varTypeArray->pointedType->isStruct())
             {
                 structFlags |= varTypeArray->pointedType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES;
                 if (!(varTypeArray->pointedType->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED))
@@ -965,7 +965,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             auto typeInfoAssignment = TypeManager::concreteType(varDecl->assignment->typeInfo, CONCRETE_ALIAS);
             typeInfoAssignment      = TypeManager::concreteType(varDecl->assignment->typeInfo, CONCRETE_ENUM);
 
-            if (typeInfoAssignment->isNative(NativeTypeKind::String))
+            if (typeInfoAssignment->isString())
             {
                 structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
                 if (typeParam)

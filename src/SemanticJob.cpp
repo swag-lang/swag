@@ -96,7 +96,7 @@ bool SemanticJob::valueEqualsTo(const ComputedValue* value1, const ComputedValue
         return value1->reg.f32 == value2->reg.f32;
     if (typeInfo->isNative(NativeTypeKind::F64))
         return value1->reg.f32 == value2->reg.f32;
-    if (typeInfo->isNative(NativeTypeKind::String))
+    if (typeInfo->isString())
         return value1->text == value2->text;
 
     return *value1 == *value2;
@@ -131,7 +131,7 @@ bool SemanticJob::checkIsConstExpr(JobContext* context, AstNode* expression)
 
 bool SemanticJob::checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo)
 {
-    if (leftTypeInfo->kind == TypeInfoKind::Native && rightTypeInfo->kind == TypeInfoKind::Native)
+    if (leftTypeInfo->isNative() && rightTypeInfo->isNative())
         return true;
     auto node = context->node;
     return context->report({node, Fmt(Err(Err0504), node->token.ctext(), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC())});
@@ -139,7 +139,7 @@ bool SemanticJob::checkTypeIsNative(SemanticContext* context, TypeInfo* leftType
 
 bool SemanticJob::checkTypeIsNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
-    SWAG_VERIFY(typeInfo->kind == TypeInfoKind::Native, notAllowed(context, node, typeInfo));
+    SWAG_VERIFY(typeInfo->isNative(), notAllowed(context, node, typeInfo));
     return true;
 }
 

@@ -61,7 +61,7 @@ void Workspace::setupUserTags()
                 oneTag.type = TypeManager::literalTypeToType(literalType);
 
             // If type is already specified as string, just take the value part without any conversion
-            if (oneTag.type && oneTag.type->isNative(NativeTypeKind::String))
+            if (oneTag.type && oneTag.type->isString())
             {
                 oneTag.value.text = tokenVal;
             }

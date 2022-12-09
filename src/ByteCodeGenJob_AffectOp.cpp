@@ -71,7 +71,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
     if (node->childs.front()->semFlags & AST_SEM_FROM_REF)
         typeInfo = TypeManager::concretePtrRef(typeInfo);
 
-    if (typeInfo->kind == TypeInfoKind::Struct)
+    if (typeInfo->isStruct())
     {
         context->job->waitStructGenerated(typeInfo);
         if (context->result == ContextResult::Pending)
@@ -95,7 +95,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Pointer)
+    if (typeInfo->isPointer())
     {
         emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
         return true;
@@ -147,7 +147,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Interface)
+    if (typeInfo->isInterface())
     {
         if (fromTypeInfo == g_TypeMgr->typeInfoNull)
         {
@@ -163,7 +163,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Slice)
+    if (typeInfo->isSlice())
     {
         if (fromTypeInfo == g_TypeMgr->typeInfoNull)
         {
@@ -191,7 +191,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         return true;
     }
 
-    if (typeInfo->isNative(NativeTypeKind::String))
+    if (typeInfo->isString())
     {
         if (fromTypeInfo == g_TypeMgr->typeInfoNull)
         {
@@ -263,7 +263,7 @@ bool ByteCodeGenJob::emitAffectPlusEqual(ByteCodeGenContext* context, uint32_t r
     if (front->semFlags & AST_SEM_FROM_REF)
         leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
 
-    if (leftTypeInfo->kind == TypeInfoKind::Native)
+    if (leftTypeInfo->isNative())
     {
         switch (leftTypeInfo->nativeType)
         {
@@ -304,7 +304,7 @@ bool ByteCodeGenJob::emitAffectPlusEqual(ByteCodeGenContext* context, uint32_t r
             return Report::internalError(context->node, "emitAffectPlusEqual, type not supported");
         }
     }
-    else if (leftTypeInfo->kind == TypeInfoKind::Pointer)
+    else if (leftTypeInfo->isPointer())
     {
         auto typePtr = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(leftTypeInfo), TypeInfoKind::Pointer);
         auto sizeOf  = typePtr->pointedType->sizeOf;
@@ -326,7 +326,7 @@ bool ByteCodeGenJob::emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t 
     if (front->semFlags & AST_SEM_FROM_REF)
         leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
 
-    if (leftTypeInfo->kind == TypeInfoKind::Native)
+    if (leftTypeInfo->isNative())
     {
         switch (leftTypeInfo->nativeType)
         {
@@ -367,7 +367,7 @@ bool ByteCodeGenJob::emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t 
             return Report::internalError(context->node, "emitAffectMinusEqual, type not supported");
         }
     }
-    else if (leftTypeInfo->kind == TypeInfoKind::Pointer)
+    else if (leftTypeInfo->isPointer())
     {
         auto typePtr = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(leftTypeInfo), TypeInfoKind::Pointer);
         auto sizeOf  = typePtr->pointedType->sizeOf;

@@ -49,7 +49,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         runContext->registersRR[1].u64 = runContext->registers.buffer[node->resultRegisterRC[1]].u64;
 
     // String
-    if (realType->isNative(NativeTypeKind::String))
+    if (realType->isString())
     {
         SWAG_ASSERT(node->resultRegisterRC.size() == 2);
         const char* pz  = (const char*) runContext->registersRR[0].pointer;
@@ -75,7 +75,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
     }
 
     // Struct return
-    if (realType->kind == TypeInfoKind::Struct)
+    if (realType->isStruct())
     {
         // If struct is makred as constexpr, then we can raw copy the slice content
         if (realType->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
@@ -120,7 +120,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         uint32_t  sizeSlice    = 0;
         TypeInfo* sliceType    = nullptr;
 
-        if (concreteType->isNative(NativeTypeKind::String))
+        if (concreteType->isString())
         {
             sizeSlice = (uint32_t) runContext->registersRR[1].u64;
             sliceType = g_TypeMgr->typeInfoU8;
@@ -169,7 +169,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
     // Default
     if (realType->isNativeIntegerOrRune() ||
         realType->isNativeFloat() ||
-        realType->isNative(NativeTypeKind::Bool))
+        realType->isBool())
     {
         switch (realType->sizeOf)
         {

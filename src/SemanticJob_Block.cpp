@@ -317,7 +317,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
             if (expr->flags & AST_VALUE_COMPUTED)
             {
                 auto typeExpr = TypeManager::concreteType(expr->typeInfo);
-                if (typeExpr->isNative(NativeTypeKind::String))
+                if (typeExpr->isString())
                 {
                     int idx = valText.find(expr->computedValue->text);
                     if (idx != -1)
@@ -369,7 +369,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
         if (node->typeInfo->kind == TypeInfoKind::Enum && !node->beforeAutoCastType)
         {
             auto typeEnum = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
-            if (typeSwitch->isNative(NativeTypeKind::String))
+            if (typeSwitch->isString())
             {
                 if (valText.size() != typeEnum->values.size())
                 {
@@ -426,7 +426,7 @@ bool SemanticJob::resolveCase(SemanticContext* context)
             if (node->ownerSwitch->expression)
             {
                 auto typeInfo = TypeManager::concreteType(node->ownerSwitch->expression->typeInfo);
-                if (typeInfo->kind == TypeInfoKind::Struct)
+                if (typeInfo->isStruct())
                 {
                     SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opCmp, nullptr, nullptr, node->ownerSwitch->expression, rangeNode->expressionLow));
                     if (context->result != ContextResult::Done)
@@ -461,7 +461,7 @@ bool SemanticJob::resolveCase(SemanticContext* context)
             if (node->ownerSwitch->expression)
             {
                 auto typeInfo = TypeManager::concreteType(node->ownerSwitch->expression->typeInfo);
-                if (typeInfo->kind == TypeInfoKind::Struct)
+                if (typeInfo->isStruct())
                 {
                     SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opEquals, nullptr, nullptr, node->ownerSwitch->expression, oneExpression));
                     if (context->result != ContextResult::Done)
@@ -578,7 +578,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
 
     // Struct type : convert to a opVisit call
     AstNode* newExpression = nullptr;
-    if (typeInfo->kind == TypeInfoKind::Struct)
+    if (typeInfo->isStruct())
     {
         SWAG_VERIFY(!(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report({node->expression, Err(Err0624), Hint::isType(typeInfo)}));
         SWAG_VERIFY(node->expression->kind == AstNodeKind::IdentifierRef, Report::internalError(node->expression, "resolveVisit expression, should be an identifier"));
@@ -650,7 +650,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         {
             content += Fmt("var %s = __addr%u + @index; ", alias0Name.c_str(), id);
         }
-        else if (pointedType->kind == TypeInfoKind::Struct)
+        else if (pointedType->isStruct())
         {
             pointedType->computeScopedName();
             content += Fmt("var %s = cast(const *%s) __addr%u[@index]; ", alias0Name.c_str(), pointedType->scopedName.c_str(), id);
@@ -682,7 +682,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
             content += alias0Name;
             content += Fmt(" = __addr%u + @index; ", id);
         }
-        else if (pointedType->kind == TypeInfoKind::Struct)
+        else if (pointedType->isStruct())
         {
             pointedType->computeScopedName();
             content += "var ";
@@ -702,7 +702,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     }
 
     // Slice
-    else if (typeInfo->kind == TypeInfoKind::Slice)
+    else if (typeInfo->isSlice())
     {
         auto typeSlice   = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
         auto pointedType = typeSlice->pointedType;
@@ -721,7 +721,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
             content += alias0Name;
             content += Fmt(" = __addr%u + @index; ", id);
         }
-        else if (pointedType->kind == TypeInfoKind::Struct)
+        else if (pointedType->isStruct())
         {
             pointedType->computeScopedName();
             content += "var ";
@@ -741,7 +741,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     }
 
     // String
-    else if (typeInfo->isNative(NativeTypeKind::String))
+    else if (typeInfo->isString())
     {
         auto varDecl        = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node);
         varDecl->assignment = Ast::clone(node->expression, varDecl);
@@ -803,16 +803,16 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     else
     {
         // Special error in case of a pointer
-        if (typeInfo->kind == TypeInfoKind::Pointer)
+        if (typeInfo->isPointer())
         {
             auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
             if (typePtr->pointedType->kind == TypeInfoKind::Enum ||
                 typePtr->pointedType->kind == TypeInfoKind::Variadic ||
                 typePtr->pointedType->kind == TypeInfoKind::TypedVariadic ||
-                typePtr->pointedType->kind == TypeInfoKind::Slice ||
+                typePtr->pointedType->isSlice() ||
                 typePtr->pointedType->kind == TypeInfoKind::Array ||
-                typePtr->pointedType->kind == TypeInfoKind::Struct ||
-                typePtr->pointedType->isNative(NativeTypeKind::String))
+                typePtr->pointedType->isStruct() ||
+                typePtr->pointedType->isString())
             {
                 return context->report({node->expression, Fmt(Err(Err0628), typeInfo->getDisplayNameC()), Hnt(Hnt0037)});
             }

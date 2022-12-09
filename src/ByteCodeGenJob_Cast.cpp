@@ -88,7 +88,7 @@ bool ByteCodeGenJob::emitCastToInterface(ByteCodeGenContext* context, AstNode* e
 
     TypeInfoStruct* fromTypeStruct = nullptr;
     bool            fromPointer    = false;
-    if (fromTypeInfo->kind == TypeInfoKind::Struct)
+    if (fromTypeInfo->isStruct())
     {
         fromTypeStruct = CastTypeInfo<TypeInfoStruct>(fromTypeInfo, TypeInfoKind::Struct);
     }
@@ -134,11 +134,11 @@ bool ByteCodeGenJob::emitCastToNativeBool(ByteCodeGenContext* context, AstNode* 
         emitInstruction(context, ByteCodeOp::DeRef64, r0, exprNode->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::CastBool64, r0, r0);
     }
-    else if (typeInfo->kind == TypeInfoKind::Pointer || typeInfo->kind == TypeInfoKind::Lambda)
+    else if (typeInfo->isPointer() || typeInfo->kind == TypeInfoKind::Lambda)
     {
         emitInstruction(context, ByteCodeOp::CastBool64, r0, exprNode->resultRegisterRC);
     }
-    else if (typeInfo->kind == TypeInfoKind::Interface || typeInfo->kind == TypeInfoKind::Slice)
+    else if (typeInfo->isInterface() || typeInfo->isSlice())
     {
         emitInstruction(context, ByteCodeOp::CastBool64, r0, exprNode->resultRegisterRC[1]);
     }
@@ -306,7 +306,7 @@ bool ByteCodeGenJob::emitCastToNativeU32(ByteCodeGenContext* context, AstNode* e
 
 bool ByteCodeGenJob::emitCastToNativeU64(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
-    if (typeInfo->kind == TypeInfoKind::Pointer)
+    if (typeInfo->isPointer())
         return true;
 
     if (typeInfo->kind != TypeInfoKind::Native)
@@ -624,7 +624,7 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
 {
     auto node = context->node;
 
-    if (fromTypeInfo->isNative(NativeTypeKind::String))
+    if (fromTypeInfo->isString())
     {
         return true;
     }
@@ -639,7 +639,7 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
         return true;
     }
 
-    if (fromTypeInfo->kind == TypeInfoKind::Slice)
+    if (fromTypeInfo->isSlice())
     {
         return true;
     }
@@ -658,8 +658,8 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
 #ifdef SWAG_HAS_ASSERT
         auto typeList = CastTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeListTuple);
         SWAG_ASSERT(typeList->subTypes.size() == 2);
-        SWAG_ASSERT(typeList->subTypes[0]->typeInfo->kind == TypeInfoKind::Pointer || typeList->subTypes[0]->typeInfo->kind == TypeInfoKind::Array);
-        SWAG_ASSERT(typeList->subTypes[1]->typeInfo->kind == TypeInfoKind::Native);
+        SWAG_ASSERT(typeList->subTypes[0]->typeInfo->isPointer() || typeList->subTypes[0]->typeInfo->kind == TypeInfoKind::Array);
+        SWAG_ASSERT(typeList->subTypes[1]->typeInfo->isNative());
 #endif
         transformResultToLinear2(context, exprNode);
         node->resultRegisterRC = exprNode->resultRegisterRC;
@@ -681,11 +681,11 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
         fromTypeInfo      = TypeManager::concreteType(typeVariadic->rawType);
     }
 
-    if (fromTypeInfo == g_TypeMgr->typeInfoNull || fromTypeInfo->isNative(NativeTypeKind::String))
+    if (fromTypeInfo == g_TypeMgr->typeInfoNull || fromTypeInfo->isString())
     {
         node->resultRegisterRC = exprNode->resultRegisterRC;
     }
-    else if (fromTypeInfo->kind == TypeInfoKind::Slice)
+    else if (fromTypeInfo->isSlice())
     {
         auto fromTypeSlice = CastTypeInfo<TypeInfoSlice>(fromTypeInfo, TypeInfoKind::Slice);
         auto diff          = fromTypeSlice->pointedType->sizeOf / toTypeSlice->pointedType->sizeOf;
@@ -719,7 +719,7 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
         auto inst              = emitInstruction(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1]);
         inst->b.u64            = fromTypeArray->count;
     }
-    else if (fromTypeInfo->kind == TypeInfoKind::Pointer)
+    else if (fromTypeInfo->isPointer())
     {
         transformResultToLinear2(context, exprNode);
         node->resultRegisterRC = exprNode->resultRegisterRC;
@@ -857,7 +857,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
 
     if (typeInfo->kind == TypeInfoKind::Array)
     {
-        if (fromTypeInfo->kind == TypeInfoKind::Pointer)
+        if (fromTypeInfo->isPointer())
         {
             truncRegisterRC(context, exprNode->resultRegisterRC, 1);
             node->resultRegisterRC   = exprNode->resultRegisterRC;
@@ -874,11 +874,11 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         }
     }
 
-    if (typeInfo->kind == TypeInfoKind::Pointer)
+    if (typeInfo->isPointer())
     {
         ensureCanBeChangedRC(context, exprNode->resultRegisterRC);
 
-        if (fromTypeInfo->kind == TypeInfoKind::Struct)
+        if (fromTypeInfo->isStruct())
         {
             truncRegisterRC(context, exprNode->resultRegisterRC, 1);
             node->resultRegisterRC   = exprNode->resultRegisterRC;
@@ -895,10 +895,10 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         }
 
         if (fromTypeInfo->kind == TypeInfoKind::Array ||
-            fromTypeInfo->kind == TypeInfoKind::Pointer ||
-            fromTypeInfo->kind == TypeInfoKind::Struct ||
-            fromTypeInfo->kind == TypeInfoKind::Interface ||
-            fromTypeInfo->kind == TypeInfoKind::Slice ||
+            fromTypeInfo->isPointer() ||
+            fromTypeInfo->isStruct() ||
+            fromTypeInfo->isInterface() ||
+            fromTypeInfo->isSlice() ||
             fromTypeInfo->kind == TypeInfoKind::Lambda ||
             fromTypeInfo->numRegisters() == 1)
         {
@@ -908,7 +908,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
             return true;
         }
 
-        if (fromTypeInfo->isNative(NativeTypeKind::String) ||
+        if (fromTypeInfo->isString() ||
             fromTypeInfo->isNative(NativeTypeKind::Any))
         {
             truncRegisterRC(context, exprNode->resultRegisterRC, 1);
@@ -918,7 +918,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         }
     }
 
-    if (typeInfo->kind == TypeInfoKind::Slice)
+    if (typeInfo->isSlice())
     {
         ensureCanBeChangedRC(context, exprNode->resultRegisterRC);
         SWAG_CHECK(emitCastToSlice(context, exprNode, typeInfo, fromTypeInfo));
@@ -926,7 +926,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Interface)
+    if (typeInfo->isInterface())
     {
         ensureCanBeChangedRC(context, exprNode->resultRegisterRC);
         SWAG_CHECK(emitCastToInterface(context, exprNode, typeInfo, fromTypeInfo));

@@ -456,7 +456,7 @@ static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
         res.addr = res.value->reg.pointer;
         addrVal  = (uint64_t) res.addr;
     }
-    else if (res.type->kind == TypeInfoKind::Pointer)
+    else if (res.type->isPointer())
         addrVal = *(uint64_t*) res.addr;
     else
         addrVal = (uint64_t) res.addr;
@@ -661,7 +661,7 @@ static void appendValueProtected(Utf8& str, const EvaluateResult& res, int inden
         return;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Pointer || typeInfo->kind == TypeInfoKind::Lambda)
+    if (typeInfo->isPointer() || typeInfo->kind == TypeInfoKind::Lambda)
     {
         auto ptr = ((uint8_t**) addr)[0];
         if (ptr == nullptr)
@@ -671,7 +671,7 @@ static void appendValueProtected(Utf8& str, const EvaluateResult& res, int inden
         return;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Struct)
+    if (typeInfo->isStruct())
     {
         if (res.value)
             addr = res.value->reg.pointer;
@@ -716,7 +716,7 @@ static void appendValueProtected(Utf8& str, const EvaluateResult& res, int inden
         return;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Slice)
+    if (typeInfo->isSlice())
     {
         auto typeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
         auto ptr       = ((uint8_t**) addr)[0];
@@ -744,7 +744,7 @@ static void appendValueProtected(Utf8& str, const EvaluateResult& res, int inden
         return;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Interface)
+    if (typeInfo->isInterface())
     {
         auto ptr = ((uint8_t**) addr)[0];
         if (ptr == nullptr)
@@ -757,7 +757,7 @@ static void appendValueProtected(Utf8& str, const EvaluateResult& res, int inden
         return;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Native)
+    if (typeInfo->isNative())
     {
         switch (typeInfo->nativeType)
         {

@@ -682,7 +682,7 @@ TypeInfo* TypeManager::makeConst(TypeInfo* typeInfo)
         return typeInfo;
 
     TypeInfo* typeConst;
-    if (typeInfo->kind == TypeInfoKind::Struct)
+    if (typeInfo->isStruct())
     {
         auto typeAlias = allocType<TypeInfoAlias>();
         typeAlias->copyFrom(typeInfo);
@@ -712,7 +712,7 @@ uint64_t TypeManager::align(uint64_t value, uint32_t align)
 
 uint32_t TypeManager::alignOf(TypeInfo* typeInfo)
 {
-    if (typeInfo->kind == TypeInfoKind::Struct)
+    if (typeInfo->isStruct())
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         SWAG_ASSERT(typeStruct->sizeOf);
@@ -724,14 +724,14 @@ uint32_t TypeManager::alignOf(TypeInfo* typeInfo)
         auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         return alignOf(typeArray->finalType);
     }
-    else if (typeInfo->kind == TypeInfoKind::Pointer)
+    else if (typeInfo->isPointer())
     {
         return typeInfo->sizeOf;
     }
-    else if (typeInfo->kind == TypeInfoKind::Slice ||
-             typeInfo->kind == TypeInfoKind::Interface ||
+    else if (typeInfo->isSlice() ||
+             typeInfo->isInterface() ||
              typeInfo->isNative(NativeTypeKind::Any) ||
-             typeInfo->isNative(NativeTypeKind::String))
+             typeInfo->isString())
     {
         return sizeof(void*);
     }
@@ -747,7 +747,7 @@ void TypeManager::registerTypeType()
 
 TypeInfoPointer* TypeManager::makePointerTo(TypeInfo* toType, bool isConst, bool isAritmetic, uint64_t ptrFlags)
 {
-    if (toType->kind == TypeInfoKind::Native && ptrFlags == 0)
+    if (toType->isNative() && ptrFlags == 0)
     {
         TypeInfoPointer* result;
         if (isConst && !isAritmetic)

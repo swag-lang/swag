@@ -83,7 +83,7 @@ bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* child)
 {
     auto typeInfo = TypeManager::concreteType(child->typeInfo, CONCRETE_ALIAS);
     typeInfo      = TypeManager::concreteType(typeInfo);
-    if (typeInfo->kind == TypeInfoKind::Lambda || typeInfo->kind == TypeInfoKind::Pointer || typeInfo->kind == TypeInfoKind::Interface || typeInfo->kind == TypeInfoKind::Slice)
+    if (typeInfo->kind == TypeInfoKind::Lambda || typeInfo->isPointer() || typeInfo->isInterface() || typeInfo->isSlice())
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, child, CASTFLAG_AUTO_BOOL));
         return true;
@@ -203,7 +203,7 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
 
     typeInfo = TypeManager::concreteType(child->typeInfo);
 
-    if (typeInfo->kind == TypeInfoKind::Struct)
+    if (typeInfo->isStruct())
     {
         switch (op->token.id)
         {

@@ -298,11 +298,11 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
     }
     else
     {
-        if (typeInfo->kind == TypeInfoKind::Struct)
+        if (typeInfo->isStruct())
         {
             return context->report({expression, Err(Err0342), Hint::isType(typeInfo)});
         }
-        else if (!typeInfo->isNative(NativeTypeKind::String) &&
+        else if (!typeInfo->isString() &&
                  !typeInfo->isNative(NativeTypeKind::Rune) &&
                  typeInfo->kind != TypeInfoKind::Pointer &&
                  typeInfo->kind != TypeInfoKind::Interface &&

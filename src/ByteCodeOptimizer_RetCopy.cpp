@@ -212,7 +212,7 @@ void ByteCodeOptimizer::registerMakeAddr(ByteCodeOptContext* context, ByteCodeIn
         if (context->bc->typeInfoFunc)
         {
             auto param = context->bc->typeInfoFunc->registerIdxToType(ip->c.u32);
-            if(param->isNativeIntegerOrRune() || param->isNativeFloat() || param->isNative(NativeTypeKind::Bool))
+            if(param->isNativeIntegerOrRune() || param->isNativeFloat() || param->isBool())
                 break;
         }
 

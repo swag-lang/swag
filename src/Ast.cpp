@@ -73,7 +73,7 @@ namespace Ast
 
         if (typeEnum->declNode->attributeFlags & ATTRIBUTE_ENUM_FLAGS)
         {
-            SWAG_ASSERT(typeEnum->rawType->kind == TypeInfoKind::Native);
+            SWAG_ASSERT(typeEnum->rawType->isNative());
             for (int i = 0; i < typeEnum->values.size(); i++)
             {
                 auto value = typeEnum->values[i];
@@ -138,7 +138,7 @@ namespace Ast
                 auto value = typeEnum->values[i];
                 bool ok    = false;
                 SWAG_ASSERT(value->value);
-                if (typeEnum->rawType->kind == TypeInfoKind::Native)
+                if (typeEnum->rawType->isNative())
                 {
                     switch (typeEnum->rawType->nativeType)
                     {
@@ -193,7 +193,7 @@ namespace Ast
         Utf8 result;
         result.reserve(value.text.capacity());
 
-        if (typeInfo->kind == TypeInfoKind::Struct || typeInfo->kind == TypeInfoKind::TypeListArray)
+        if (typeInfo->isStruct() || typeInfo->kind == TypeInfoKind::TypeListArray)
         {
             result = Fmt("%u", value.storageOffset);
             return result;
@@ -201,7 +201,7 @@ namespace Ast
 
         auto& reg = value.reg;
         typeInfo  = TypeManager::concreteType(typeInfo, CONCRETE_ENUM);
-        SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
+        SWAG_ASSERT(typeInfo->isNative());
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::U8:

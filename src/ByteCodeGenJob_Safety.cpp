@@ -561,11 +561,11 @@ void ByteCodeGenJob::emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, 
         inst->b.u64     = typeArray->count;
         freeMaxBoundReg = true;
     }
-    else if (typeVar->isNative(NativeTypeKind::String))
+    else if (typeVar->isString())
     {
         maxBoundReg = node->array->resultRegisterRC[1];
     }
-    else if (typeVar->kind == TypeInfoKind::Slice)
+    else if (typeVar->isSlice())
     {
         maxBoundReg = node->array->resultRegisterRC[1];
     }

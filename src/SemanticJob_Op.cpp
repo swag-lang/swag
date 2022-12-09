@@ -162,7 +162,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
         // First parameter must be be struct
         SWAG_VERIFY(node->parameters, context->report({node, Fmt(Err(Err0068), name.c_str())}));
         auto firstType = node->parameters->childs.front()->typeInfo;
-        SWAG_VERIFY(firstType->kind == TypeInfoKind::Pointer, context->report({node->parameters->childs.front(), Fmt(Err(Err0069), name.c_str(), typeStruct->getDisplayNameC(), firstType->getDisplayNameC())}));
+        SWAG_VERIFY(firstType->isPointer(), context->report({node->parameters->childs.front(), Fmt(Err(Err0069), name.c_str(), typeStruct->getDisplayNameC(), firstType->getDisplayNameC())}));
         auto firstTypePtr = CastTypeInfo<TypeInfoPointer>(firstType, firstType->kind);
         SWAG_VERIFY(firstTypePtr->pointedType->isSame(typeStruct, ISSAME_CAST), context->report({node->parameters->childs.front(), Fmt(Err(Err0069), name.c_str(), typeStruct->getDisplayNameC(), firstType->getDisplayNameC())}));
     }
@@ -263,7 +263,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 3));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, nullptr));
         auto returnType = TypeManager::concreteType(node->returnType->typeInfo, CONCRETE_ALIAS);
-        if (!returnType->isNative(NativeTypeKind::String) && returnType->kind != TypeInfoKind::Slice)
+        if (!returnType->isString() && returnType->kind != TypeInfoKind::Slice)
             return context->report({node, Fmt(Err(Err0126), node->returnType->typeInfo->getDisplayNameC())});
         SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, 1, g_TypeMgr->typeInfoUInt));
         SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, 2, g_TypeMgr->typeInfoUInt));
@@ -335,26 +335,26 @@ bool SemanticJob::resolveUserOpCommutative(SemanticContext* context, const Utf8&
     auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
 
     // Simple case
-    if (leftTypeInfo->kind == TypeInfoKind::Struct && rightTypeInfo->kind != TypeInfoKind::Struct)
+    if (leftTypeInfo->isStruct() && rightTypeInfo->kind != TypeInfoKind::Struct)
         return resolveUserOp(context, name, opConst, opType, left, right);
 
     bool okLeft  = false;
     bool okRight = false;
-    if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    if (leftTypeInfo->isStruct())
     {
         okLeft = resolveUserOp(context, name, opConst, opType, left, right, ROP_JUST_CHECK);
         if (context->result != ContextResult::Done)
             return true;
     }
 
-    if (rightTypeInfo->kind == TypeInfoKind::Struct)
+    if (rightTypeInfo->isStruct())
     {
         okRight = resolveUserOp(context, name, opConst, opType, right, left, ROP_JUST_CHECK);
         if (context->result != ContextResult::Done)
             return true;
     }
 
-    if (okLeft || (!okRight && leftTypeInfo->kind == TypeInfoKind::Struct))
+    if (okLeft || (!okRight && leftTypeInfo->isStruct()))
         return resolveUserOp(context, name, opConst, opType, left, right);
 
     node->semFlags |= AST_SEM_INVERSE_PARAMS;
@@ -432,7 +432,7 @@ bool SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, AstNode*
     auto leftType = TypeManager::concreteType(left->typeInfo);
     if (leftType->kind == TypeInfoKind::Array)
         leftType = CastTypeInfo<TypeInfoArray>(leftType, TypeInfoKind::Array)->finalType;
-    else if (leftType->kind == TypeInfoKind::Pointer)
+    else if (leftType->isPointer())
         leftType = CastTypeInfo<TypeInfoPointer>(leftType, TypeInfoKind::Pointer)->pointedType;
     auto leftStruct = CastTypeInfo<TypeInfoStruct>(leftType, TypeInfoKind::Struct);
     return hasUserOp(context, name, leftStruct, result);

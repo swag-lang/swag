@@ -44,7 +44,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     }
 
     // Will be done in the variable declaration
-    if (typeInfo->kind == TypeInfoKind::Struct)
+    if (typeInfo->isStruct())
     {
         if (node->flags & AST_IN_TYPE_VAR_DECLARATION)
             return true;
@@ -65,13 +65,13 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         if (typeInfo->kind == TypeInfoKind::Array ||
             typeInfo->kind == TypeInfoKind::TypeListTuple ||
             typeInfo->kind == TypeInfoKind::TypeListArray ||
-            typeInfo->kind == TypeInfoKind::Struct)
+            typeInfo->isStruct())
         {
             emitInstruction(context, ByteCodeOp::Add64byVB64, node->resultRegisterRC[0])->b.u64 = resolved->computedValue.storageOffset;
             return true;
         }
 
-        if (node->forceTakeAddress() && (!typeInfo->isNative(NativeTypeKind::String) || node->parent->kind != AstNodeKind::ArrayPointerIndex))
+        if (node->forceTakeAddress() && (!typeInfo->isString() || node->parent->kind != AstNodeKind::ArrayPointerIndex))
         {
             emitInstruction(context, ByteCodeOp::Add64byVB64, node->resultRegisterRC[0])->b.u64 = resolved->computedValue.storageOffset;
             if (node->parent->flags & AST_ARRAY_POINTER_REF)
@@ -79,7 +79,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             return true;
         }
 
-        if (typeInfo->kind == TypeInfoKind::Interface && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !(node->flags & AST_UFCS_FCT))
+        if (typeInfo->isInterface() && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !(node->flags & AST_UFCS_FCT))
         {
             // Get the ITable pointer
             if (node->flags & AST_FROM_UFCS)
@@ -217,7 +217,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
                 inst->b.u64 = resolved->computedValue.storageOffset;
                 inst->c.u64 = resolved->storageIndex;
             }
-            else if (typeInfo->kind == TypeInfoKind::Slice)
+            else if (typeInfo->isSlice())
             {
                 reserveLinearRegisterRC2(context, node->resultRegisterRC);
 
@@ -244,7 +244,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             else // Get the structure pointer
                 emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
         }
-        else if (typeInfo->kind == TypeInfoKind::Interface && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !(node->flags & AST_UFCS_FCT))
+        else if (typeInfo->isInterface() && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !(node->flags & AST_UFCS_FCT))
         {
             // Get the ITable pointer
             if (node->flags & AST_FROM_UFCS)
@@ -308,13 +308,13 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         else if (typeInfo->kind == TypeInfoKind::Array ||
                  typeInfo->kind == TypeInfoKind::TypeListTuple ||
                  typeInfo->kind == TypeInfoKind::TypeListArray ||
-                 typeInfo->kind == TypeInfoKind::Struct)
+                 typeInfo->isStruct())
         {
             ByteCodeInstruction* inst = emitMakeSegPointer(context, resolved->computedValue.storageSegment, resolved->computedValue.storageOffset, node->resultRegisterRC);
             if (node->forceTakeAddress())
                 inst->c.pointer = (uint8_t*) resolved;
         }
-        else if (node->forceTakeAddress() && (!typeInfo->isNative(NativeTypeKind::String) || node->parent->kind != AstNodeKind::ArrayPointerIndex))
+        else if (node->forceTakeAddress() && (!typeInfo->isString() || node->parent->kind != AstNodeKind::ArrayPointerIndex))
         {
             ByteCodeInstruction* inst = emitMakeSegPointer(context, resolved->computedValue.storageSegment, resolved->computedValue.storageOffset, node->resultRegisterRC);
             inst->c.pointer           = (uint8_t*) resolved;
@@ -329,7 +329,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             else if (node->flags & AST_TO_UFCS) // Get the struct pointer
                 emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
         }
-        else if (typeInfo->kind == TypeInfoKind::Interface && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !(node->flags & AST_UFCS_FCT))
+        else if (typeInfo->isInterface() && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !(node->flags & AST_UFCS_FCT))
         {
             emitMakeSegPointer(context, resolved->computedValue.storageSegment, resolved->computedValue.storageOffset, node->resultRegisterRC);
             if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
@@ -380,12 +380,12 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         else if (typeInfo->kind == TypeInfoKind::Array ||
                  typeInfo->kind == TypeInfoKind::TypeListTuple ||
                  typeInfo->kind == TypeInfoKind::TypeListArray ||
-                 typeInfo->kind == TypeInfoKind::Struct)
+                 typeInfo->isStruct())
         {
             auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
             inst->b.u64 = resolved->computedValue.storageOffset;
         }
-        else if (node->forceTakeAddress() && (!typeInfo->isNative(NativeTypeKind::String) || node->parent->kind != AstNodeKind::ArrayPointerIndex))
+        else if (node->forceTakeAddress() && (!typeInfo->isString() || node->parent->kind != AstNodeKind::ArrayPointerIndex))
         {
             auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
             inst->b.u64 = resolved->computedValue.storageOffset;
@@ -400,7 +400,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             else if (node->flags & AST_TO_UFCS) // Get the structure pointer
                 emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
         }
-        else if (typeInfo->kind == TypeInfoKind::Interface && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !(node->flags & AST_UFCS_FCT))
+        else if (typeInfo->isInterface() && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !(node->flags & AST_UFCS_FCT))
         {
             emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC)->b.u64 = resolved->computedValue.storageOffset;
             if (node->flags & AST_FROM_UFCS) // Get the ITable pointer

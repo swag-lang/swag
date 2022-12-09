@@ -53,7 +53,7 @@ void BackendX64::emitGetParam(X64Gen& pp, TypeInfoFuncAttr* typeFunc, int reg, i
     if (typeParam->isAutoConstPointerRef())
         typeParam = TypeManager::concretePtrRefType(typeParam);
 
-    if (cc.structByRegister && typeParam->kind == TypeInfoKind::Struct && typeParam->sizeOf <= sizeof(void*))
+    if (cc.structByRegister && typeParam->isStruct() && typeParam->sizeOf <= sizeof(void*))
         pp.emit_LoadAddress_Indirect(stackOffset, RAX, RDI);
     else
         pp.emit_Load64_Indirect(stackOffset, RAX, RDI);

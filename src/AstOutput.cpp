@@ -374,9 +374,9 @@ bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode
             auto& one = attr->allAttributes[j];
 
             // Be sure usage is valid
-            if (typeInfo->kind == TypeInfoKind::Struct && one.typeFunc && !(one.typeFunc->attributeUsage & (AttributeUsage::All | AttributeUsage::Struct)))
+            if (typeInfo->isStruct() && one.typeFunc && !(one.typeFunc->attributeUsage & (AttributeUsage::All | AttributeUsage::Struct)))
                 continue;
-            if (typeInfo->kind == TypeInfoKind::Interface && one.typeFunc && !(one.typeFunc->attributeUsage & (AttributeUsage::All | AttributeUsage::Struct)))
+            if (typeInfo->isInterface() && one.typeFunc && !(one.typeFunc->attributeUsage & (AttributeUsage::All | AttributeUsage::Struct)))
                 continue;
             if (typeInfo->kind == TypeInfoKind::FuncAttr && one.typeFunc && !(one.typeFunc->attributeUsage & (AttributeUsage::All | AttributeUsage::Function)))
                 continue;
@@ -515,7 +515,7 @@ bool AstOutput::outputLiteral(OutputContext& context, Concat& concat, AstNode* n
         return true;
     }
 
-    SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
+    SWAG_ASSERT(typeInfo->isNative());
     auto str = Ast::literalToString(typeInfo, value);
     switch (typeInfo->nativeType)
     {
@@ -940,7 +940,7 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstNode* node
     auto typeExport = typeInfo;
     if (typeExport->kind == TypeInfoKind::Array)
         typeExport = ((TypeInfoArray*) typeExport)->finalType;
-    while (typeExport->kind == TypeInfoKind::Pointer)
+    while (typeExport->isPointer())
         typeExport = ((TypeInfoPointer*) typeExport)->pointedType;
     SWAG_CHECK(checkIsPublic(context, typeExport->declNode, node));
 

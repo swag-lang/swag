@@ -229,14 +229,15 @@ struct TypeInfo
     bool isAny()                            { return isNative(NativeTypeKind::Any); }
     bool isString()                         { return isNative(NativeTypeKind::String); }
     bool isBool()                           { return isNative(NativeTypeKind::Bool); }
+    bool isRune()                           { return isNative(NativeTypeKind::Rune); }
     bool isCString()                        { return (kind == TypeInfoKind::Pointer) && (flags & TYPEINFO_C_STRING); }
     bool isLambda()                         { return (kind == TypeInfoKind::Lambda) && !isClosure(); }
     bool isClosure()                        { return (flags & TYPEINFO_CLOSURE); }
     bool isNativeInteger()                  { return (flags & TYPEINFO_INTEGER); }
-    bool isNativeIntegerUnsignedOrRune()    { return ((flags & TYPEINFO_INTEGER) && (flags & TYPEINFO_UNSIGNED)) || isNative(NativeTypeKind::Rune); }
+    bool isNativeIntegerUnsignedOrRune()    { return ((flags & TYPEINFO_INTEGER) && (flags & TYPEINFO_UNSIGNED)) || isRune(); }
     bool isNativeIntegerUnsigned()          { return (flags & TYPEINFO_INTEGER) && (flags & TYPEINFO_UNSIGNED); }
     bool isNativeIntegerSigned()            { return (flags & TYPEINFO_INTEGER) && !(flags & TYPEINFO_UNSIGNED); }
-    bool isNativeIntegerOrRune()            { return (flags & TYPEINFO_INTEGER) || isNative(NativeTypeKind::Rune); }
+    bool isNativeIntegerOrRune()            { return (flags & TYPEINFO_INTEGER) || isRune(); }
     bool isNativeFloat()                    { return (flags & TYPEINFO_FLOAT); }
     bool isConst()                          { return (flags & TYPEINFO_CONST); }
     bool isStrict()                         { return (flags & TYPEINFO_STRICT); }

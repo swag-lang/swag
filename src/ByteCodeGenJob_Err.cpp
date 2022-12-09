@@ -72,7 +72,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
     // Set default value
     if (!returnType->isNative(NativeTypeKind::Void))
     {
-        if (returnType->kind == TypeInfoKind::Struct)
+        if (returnType->isStruct())
         {
             if (node->ownerInline)
                 node->regInit = node->ownerInline->resultRegisterRC;

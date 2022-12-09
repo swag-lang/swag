@@ -20,7 +20,7 @@ bool SemanticJob::resolveMove(SemanticContext* context)
 
     if (node->flags & AST_FORCE_MOVE)
     {
-        if ((right->typeInfo->kind == TypeInfoKind::Struct && right->typeInfo->isConst()) || right->typeInfo->isConstPointerRef())
+        if ((right->typeInfo->isStruct() && right->typeInfo->isConst()) || right->typeInfo->isConstPointerRef())
             return context->report({right, Fmt(Err(Err0559), right->typeInfo->getDisplayNameC())});
     }
 
@@ -32,7 +32,7 @@ bool SemanticJob::resolveAfterAffectLeft(SemanticContext* context)
     // :DeduceLambdaType
     auto node     = context->node;
     auto typeInfo = TypeManager::concreteType(node->typeInfo);
-    if (typeInfo->kind == TypeInfoKind::Lambda || typeInfo->kind == TypeInfoKind::Struct)
+    if (typeInfo->kind == TypeInfoKind::Lambda || typeInfo->isStruct())
     {
         auto op = CastAst<AstOp>(node->parent, AstNodeKind::AffectOp);
         if (op->dependentLambda)
@@ -101,7 +101,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 if (left->childs[i]->kind == AstNodeKind::ArrayPointerIndex)
                 {
                     auto arr = CastAst<AstArrayPointerIndex>(left->childs[i], AstNodeKind::ArrayPointerIndex);
-                    if (arr->array->typeInfo->isNative(NativeTypeKind::String))
+                    if (arr->array->typeInfo->isString())
                     {
                         left = arr->array;
                         hint = Hint::isType(left->typeInfo);
@@ -109,7 +109,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                     }
                 }
 
-                if (left->childs[i]->kind == AstNodeKind::FuncCall && left->childs[i]->typeInfo->kind == TypeInfoKind::Struct)
+                if (left->childs[i]->kind == AstNodeKind::FuncCall && left->childs[i]->typeInfo->isStruct())
                 {
                     left = left->childs[i];
                     hint = Fmt(Hnt(Hnt0039), left->typeInfo->getDisplayNameC());
@@ -221,7 +221,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
     node->typeInfo = g_TypeMgr->typeInfoBool;
 
-    bool forStruct = leftTypeInfo->kind == TypeInfoKind::Struct;
+    bool forStruct = leftTypeInfo->isStruct();
     bool forTuple  = leftTypeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE;
 
     SWAG_CHECK(evaluateConstExpression(context, right));
@@ -231,7 +231,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     // Cast from struct to interface : need to wait for all interfaces to be registered
     if (tokenId == TokenId::SymEqual)
     {
-        if (leftTypeInfo->kind == TypeInfoKind::Interface && rightTypeInfo->kind == TypeInfoKind::Struct)
+        if (leftTypeInfo->isInterface() && rightTypeInfo->isStruct())
         {
             context->job->waitAllStructInterfaces(rightTypeInfo);
             if (context->result == ContextResult::Pending)
@@ -420,7 +420,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         }
 
         // :PointerArithmetic
-        if (leftTypeInfo->kind == TypeInfoKind::Pointer)
+        if (leftTypeInfo->isPointer())
         {
             SWAG_VERIFY(leftTypeInfo->flags & TYPEINFO_POINTER_ARITHMETIC, context->report({node, Err(Err0192), Hint::isType(leftTypeInfo)}));
             SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, Err(Err0144)}));

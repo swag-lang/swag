@@ -60,7 +60,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
 
     // Struct initialization
     bool mustDropLeft = false;
-    if (typeInfo->kind == TypeInfoKind::Struct)
+    if (typeInfo->isStruct())
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
 
@@ -137,7 +137,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
     }
 
     // No default init for structures, it has been done before
-    if (typeInfo->kind == TypeInfoKind::Struct)
+    if (typeInfo->isStruct())
         return true;
 
     if (typeInfo->isArrayOfStruct())

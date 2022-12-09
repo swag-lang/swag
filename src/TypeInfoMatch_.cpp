@@ -105,7 +105,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                 concreteTypeInfo = Generic::doTypeSubstitution(context.genericReplaceTypes, wantedTypeInfo);
                 auto typeSlice   = CastTypeInfo<TypeInfoSlice>(concreteTypeInfo, TypeInfoKind::Slice);
                 if (typeSlice->pointedType->kind == TypeInfoKind::Array ||
-                    typeSlice->pointedType->kind == TypeInfoKind::Slice)
+                    typeSlice->pointedType->isSlice())
                 {
                     invalidType = true;
                 }
@@ -116,7 +116,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             {
                 concreteTypeInfo = Generic::doTypeSubstitution(context.genericReplaceTypes, wantedTypeInfo);
                 auto typeArry    = CastTypeInfo<TypeInfoArray>(concreteTypeInfo, TypeInfoKind::Array);
-                if (typeArry->pointedType->kind == TypeInfoKind::Slice)
+                if (typeArry->pointedType->isSlice())
                 {
                     invalidType = true;
                 }
@@ -209,9 +209,9 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                     else
                     {
                         bool canReg = true;
-                        if (wantedTypeInfo->kind == TypeInfoKind::Pointer)
+                        if (wantedTypeInfo->isPointer())
                             canReg = false;
-                        else if (wantedTypeInfo->kind == TypeInfoKind::Struct && callTypeInfo->kind == TypeInfoKind::Struct)
+                        else if (wantedTypeInfo->isStruct() && callTypeInfo->isStruct())
                             canReg = wantedTypeInfo->isSame(callTypeInfo, ISSAME_CAST);
 
                         // Do not register type replacement if the concrete type is a pending lambda typing (we do not know
@@ -247,7 +247,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                     case TypeInfoKind::Struct:
                     {
                         auto symbolStruct = CastTypeInfo<TypeInfoStruct>(wantedTypeInfo, TypeInfoKind::Struct);
-                        if (callTypeInfo->kind == TypeInfoKind::Struct)
+                        if (callTypeInfo->isStruct())
                         {
                             auto typeStruct = CastTypeInfo<TypeInfoStruct>(callTypeInfo, TypeInfoKind::Struct);
                             if (!typeStruct->genericParameters.empty())
@@ -321,7 +321,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                     case TypeInfoKind::Pointer:
                     {
                         auto symbolPtr = CastTypeInfo<TypeInfoPointer>(wantedTypeInfo, TypeInfoKind::Pointer);
-                        if (callTypeInfo->kind == TypeInfoKind::Pointer)
+                        if (callTypeInfo->isPointer())
                         {
                             auto typePtr = CastTypeInfo<TypeInfoPointer>(callTypeInfo, TypeInfoKind::Pointer);
                             if (symbolPtr->isPointerTo(TypeInfoKind::Struct) && typePtr->isPointerTo(TypeInfoKind::Struct))
@@ -342,7 +342,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                                 typeInfos.push_back(typePtr->pointedType);
                             }
                         }
-                        else if (callTypeInfo->kind == TypeInfoKind::Struct)
+                        else if (callTypeInfo->isStruct())
                         {
                             // Because of using var cast, we can have here *A and *B with a match.
                             // But we do not want A and B to match in generic replacement.
@@ -424,7 +424,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                     case TypeInfoKind::Slice:
                     {
                         auto symbolSlice = CastTypeInfo<TypeInfoSlice>(wantedTypeInfo, TypeInfoKind::Slice);
-                        if (callTypeInfo->kind == TypeInfoKind::Slice)
+                        if (callTypeInfo->isSlice())
                         {
                             auto typeSlice = CastTypeInfo<TypeInfoSlice>(callTypeInfo, TypeInfoKind::Slice);
                             symbolTypeInfos.push_back(symbolSlice->pointedType);
@@ -550,7 +550,7 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
         }
 
         // Search inside a sub structure marked with 'using'
-        if (parameters[j]->typeInfo->kind == TypeInfoKind::Struct && parameters[j]->declNode->flags & AST_DECL_USING)
+        if (parameters[j]->typeInfo->isStruct() && parameters[j]->declNode->flags & AST_DECL_USING)
         {
             auto subStruct = CastTypeInfo<TypeInfoStruct>(parameters[j]->typeInfo, TypeInfoKind::Struct);
             matchNamedParameter(context, callParameter, parameterIndex, subStruct->fields, forceCastFlags);
@@ -673,7 +673,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
         }
     }
 
-    if (myTypeInfo->kind == TypeInfoKind::Struct && userGenericParams < wantedNumGenericParams)
+    if (myTypeInfo->isStruct() && userGenericParams < wantedNumGenericParams)
     {
         // In that case, we want to match the generic version of the type
         if (!userGenericParams && wantedNumGenericParams && (context.flags & SymbolMatchContext::MATCH_DO_NOT_ACCEPT_NO_GENERIC))
@@ -841,7 +841,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
         // We do not test computedValue for a struct, because it will contain the 'typeinfo', which can be different
         // for tuples
         else if ((myTypeInfo->flags & TYPEINFO_GENERIC) ||
-                 symbolParameter->typeInfo->kind == TypeInfoKind::Struct ||
+                 symbolParameter->typeInfo->isStruct() ||
                  callParameter->typeInfo->kind == TypeInfoKind::Alias ||
                  !(symbolParameter->flags & TYPEINFO_DEFINED_VALUE) ||
                  (SemanticJob::valueEqualsTo(symbolParameter->value, callParameter)))

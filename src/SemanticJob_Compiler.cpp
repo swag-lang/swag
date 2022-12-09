@@ -152,18 +152,18 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                 // Is the type of the slice supported ?
                 bool ok           = false;
                 auto concreteType = TypeManager::concreteType(execParams.specReturnOpSlice->typeInfo);
-                if (concreteType->isNative(NativeTypeKind::String))
+                if (concreteType->isString())
                     ok = true;
-                else if (concreteType->kind == TypeInfoKind::Slice)
+                else if (concreteType->isSlice())
                 {
                     auto typeSlice        = CastTypeInfo<TypeInfoSlice>(concreteType, TypeInfoKind::Slice);
                     auto typeSliceContent = TypeManager::concreteType(typeSlice->pointedType);
-                    if (typeSliceContent->isNative(NativeTypeKind::String) ||
-                        typeSliceContent->isNative(NativeTypeKind::Bool) ||
+                    if (typeSliceContent->isString() ||
+                        typeSliceContent->isBool() ||
                         typeSliceContent->isNativeIntegerOrRune() ||
                         typeSliceContent->isNativeFloat())
                         ok = true;
-                    if (typeSliceContent->kind == TypeInfoKind::Struct && (typeSliceContent->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
+                    if (typeSliceContent->isStruct() && (typeSliceContent->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
                         ok = true;
                     if (!ok)
                         return context->report({node, Fmt(Err(Err0059), typeSliceContent->getDisplayNameC())});
@@ -273,7 +273,7 @@ bool SemanticJob::resolveCompilerSelectIfExpression(SemanticContext* context)
 
     auto expression = context->node->childs.back();
     auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
-    SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::Bool), context->report({expression, Fmt(Err(Err0233), expression->typeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(typeInfo->isBool(), context->report({expression, Fmt(Err(Err0233), expression->typeInfo->getDisplayNameC())}));
 
     return true;
 }
@@ -290,7 +290,7 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
     auto job        = context->job;
     auto expression = context->node->childs.back();
     auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
-    SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::String), context->report({expression, Fmt(Err(Err0234), expression->typeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(typeInfo->isString(), context->report({expression, Fmt(Err(Err0234), expression->typeInfo->getDisplayNameC())}));
 
     SWAG_CHECK(executeCompilerNode(context, expression, true));
     if (context->result != ContextResult::Done)
@@ -338,7 +338,7 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
     {
         auto msg     = node->childs[1];
         auto typeMsg = TypeManager::concreteType(msg->typeInfo, CONCRETE_FUNC);
-        SWAG_VERIFY(typeMsg->isNative(NativeTypeKind::String), context->report({msg, Fmt(Err(Err0236), msg->typeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(typeMsg->isString(), context->report({msg, Fmt(Err(Err0236), msg->typeInfo->getDisplayNameC())}));
         SWAG_CHECK(evaluateConstExpression(context, msg));
         if (context->result != ContextResult::Done)
             return true;
@@ -495,7 +495,7 @@ bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
 
     g_Log.lock();
     TypeInfo* typeInfo = TypeManager::concreteType(expr->typeInfo);
-    if (typeInfo->kind == TypeInfoKind::Native)
+    if (typeInfo->isNative())
     {
         switch (typeInfo->nativeType)
         {

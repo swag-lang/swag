@@ -107,7 +107,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         //
         else if (node->ownerInline && (node->semFlags & AST_SEM_EMBEDDED_RETURN))
         {
-            if (returnType->kind == TypeInfoKind::Struct)
+            if (returnType->isStruct())
             {
                 // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
                 returnExpression->flags |= AST_NO_LEFT_DROP;
@@ -170,7 +170,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         //
         else
         {
-            if (returnType->kind == TypeInfoKind::Struct)
+            if (returnType->isStruct())
             {
                 // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
                 returnExpression->flags |= AST_NO_LEFT_DROP;
@@ -190,7 +190,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 freeRegisterRC(context, r1);
                 freeRegisterRC(context, returnExpression->resultRegisterRC);
             }
-            else if (returnType->isNative(NativeTypeKind::String))
+            else if (returnType->isString())
             {
                 auto child = node->childs.front();
                 if (funcNode->attributeFlags & ATTRIBUTE_AST_FUNC)
@@ -759,7 +759,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto child0                           = callParams->childs[0];
         auto child1                           = callParams->childs[1];
         auto typeInfo                         = TypeManager::concreteType(child0->typeInfo);
-        SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
+        SWAG_ASSERT(typeInfo->isNative());
         ByteCodeOp op = ByteCodeOp::End;
         switch (typeInfo->nativeType)
         {
@@ -789,7 +789,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         node->parent->resultRegisterRC        = node->resultRegisterRC;
         auto child                            = callParams->childs[0];
         auto typeInfo                         = TypeManager::concreteType(child->typeInfo);
-        SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
+        SWAG_ASSERT(typeInfo->isNative());
         ByteCodeOp op = ByteCodeOp::End;
         switch (typeInfo->nativeType)
         {
@@ -822,7 +822,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         node->parent->resultRegisterRC        = node->resultRegisterRC;
         auto child                            = callParams->childs[0];
         auto typeInfo                         = TypeManager::concreteType(child->typeInfo);
-        SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
+        SWAG_ASSERT(typeInfo->isNative());
         ByteCodeOp op = ByteCodeOp::End;
         switch (typeInfo->nativeType)
         {
@@ -854,7 +854,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto child0                           = callParams->childs[0];
         auto child1                           = callParams->childs[1];
         auto typeInfo                         = TypeManager::concreteType(child0->typeInfo);
-        SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
+        SWAG_ASSERT(typeInfo->isNative());
         ByteCodeOp op = ByteCodeOp::End;
         switch (typeInfo->nativeType)
         {
@@ -927,7 +927,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         node->parent->resultRegisterRC        = node->resultRegisterRC;
         auto child                            = callParams->childs[0];
         auto typeInfo                         = TypeManager::concreteType(child->typeInfo);
-        SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
+        SWAG_ASSERT(typeInfo->isNative());
         ByteCodeOp op = ByteCodeOp::End;
         switch (typeInfo->nativeType)
         {
@@ -1293,7 +1293,7 @@ bool ByteCodeGenJob::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNod
 
     if (testReturn->parent->kind == AstNodeKind::FuncCallParam &&
         testReturn->parent->parent->parent->kind == AstNodeKind::Identifier &&
-        testReturn->parent->parent->parent->typeInfo->kind == TypeInfoKind::Struct &&
+        testReturn->parent->parent->parent->typeInfo->isStruct() &&
         testReturn->parent->parent->parent->parent->parent->kind == AstNodeKind::TypeExpression &&
         testReturn->parent->parent->parent->parent->parent->flags & AST_HAS_STRUCT_PARAMETERS &&
         testReturn->parent->parent->parent->parent->parent->parent->kind == AstNodeKind::VarDecl)
@@ -1587,7 +1587,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 // If this is a variadic parameter of a cvarargs, we need to promote the value
                 if ((typeInfoFunc->isCVariadic()) &&
                     i >= numTypeParams - 1 &&
-                    param->typeInfo->kind == TypeInfoKind::Native &&
+                    param->typeInfo->isNative() &&
                     param->typeInfo->sizeOf < sizeof(Register))
                 {
                     switch (param->typeInfo->nativeType)
@@ -1615,7 +1615,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 // is less than a register, because we want the typed variadic to be a real slice (not always a slice of registers)
                 if (typeRawVariadic && i >= numTypeParams - 1)
                 {
-                    if (typeRawVariadic->kind == TypeInfoKind::Native && typeRawVariadic->sizeOf < sizeof(Register))
+                    if (typeRawVariadic->isNative() && typeRawVariadic->sizeOf < sizeof(Register))
                     {
                         done = true;
                         if (param->extension && !param->extension->misc->additionalRegisterRC.cannotFree)

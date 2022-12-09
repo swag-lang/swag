@@ -191,8 +191,8 @@ bool SemanticJob::resolveTypeLambdaClosure(SemanticContext* context)
 void SemanticJob::forceConstType(SemanticContext* context, AstTypeExpression* node)
 {
     if (node->typeInfo->flags & TYPEINFO_RETURN_BY_COPY ||
-        node->typeInfo->kind == TypeInfoKind::Pointer ||
-        node->typeInfo->kind == TypeInfoKind::Slice)
+        node->typeInfo->isPointer() ||
+        node->typeInfo->isSlice())
     {
         if (node->typeFlags & TYPEFLAG_FORCE_CONST)
             node->typeFlags |= TYPEFLAG_IS_CONST;
@@ -317,7 +317,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
                     Diagnostic note{symOver->node, Fmt(Nte(Nte0029), symName->name.c_str()), DiagnosticLevel::Note};
                     if (typeNode->ptrCount && symName->kind == SymbolKind::Variable)
                     {
-                        if (symOver->typeInfo->kind == TypeInfoKind::Pointer)
+                        if (symOver->typeInfo->isPointer())
                         {
                             Diagnostic note1{Fmt(Hlp(Hlp0005), symName->name.c_str(), symName->name.c_str()), DiagnosticLevel::Help};
                             diag.hint = Hnt(Hnt0024);
@@ -558,7 +558,7 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
     auto symbol       = overload->symbol;
     auto typeResolved = overload->typeInfo;
 
-    if (typeResolved->kind == TypeInfoKind::Struct || typeResolved->kind == TypeInfoKind::Interface)
+    if (typeResolved->isStruct() || typeResolved->isInterface())
     {
         node->resolvedSymbolName->kind = SymbolKind::TypeAlias;
         SWAG_CHECK(resolveTypeAliasBefore(context));
@@ -692,7 +692,7 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
     // When we cast from a structure to an interface, we need to be sure that every interfaces are
     // registered in the structure type, otherwise the cast can fail depending on the compile order
     auto exprTypeInfo = TypeManager::concretePtrRef(exprNode->typeInfo);
-    if (typeNode->typeInfo->kind == TypeInfoKind::Interface && exprTypeInfo->kind == TypeInfoKind::Struct)
+    if (typeNode->typeInfo->isInterface() && exprTypeInfo->isStruct())
     {
         context->job->waitAllStructInterfaces(exprTypeInfo);
         if (context->result == ContextResult::Pending)

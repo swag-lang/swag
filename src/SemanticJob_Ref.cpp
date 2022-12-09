@@ -192,7 +192,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
             (typeResolved->kind != TypeInfoKind::Slice))
             ptrType->setConst();
 
-        if (typeResolved->isConst() && typeResolved->kind == TypeInfoKind::Slice)
+        if (typeResolved->isConst() && typeResolved->isSlice())
             ptrType->setConst();
         else if (node->flags & AST_IS_CONST)
             ptrType->setConst();
@@ -229,7 +229,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     }
 
     // Slicing of a string
-    else if (typeVar->isNative(NativeTypeKind::String))
+    else if (typeVar->isString())
     {
         node->typeInfo = typeVar;
         if (node->array->flags & AST_VALUE_COMPUTED)
@@ -237,7 +237,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     }
 
     // Slicing of a pointer
-    else if (typeVar->kind == TypeInfoKind::Pointer)
+    else if (typeVar->isPointer())
     {
         SWAG_VERIFY(typeVar->flags & TYPEINFO_POINTER_ARITHMETIC, context->report({node, Err(Err0193), Hint::isType(typeVar)}));
         auto typeInfoPointer  = CastTypeInfo<TypeInfoPointer>(node->array->typeInfo, TypeInfoKind::Pointer);
@@ -250,13 +250,13 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     }
 
     // Slicing of a... slice
-    else if (typeVar->kind == TypeInfoKind::Slice)
+    else if (typeVar->isSlice())
     {
         node->typeInfo = typeVar;
     }
 
     // Slicing of a struct with a special function
-    else if (typeVar->kind == TypeInfoKind::Struct)
+    else if (typeVar->isStruct())
     {
         // Flatten all operator parameters : self, then all indices
         node->structFlatParams.clear();
@@ -358,14 +358,14 @@ bool SemanticJob::resolveArrayPointerIndex(SemanticContext* context)
                 typeReturn = TypeManager::concretePtrRefType(node->extension->misc->resolvedUserOpSymbolOverload->typeInfo);
 
             // Get the pointed type if we have a pointer
-            if (typeReturn->kind == TypeInfoKind::Pointer)
+            if (typeReturn->isPointer())
             {
                 auto typePointer = CastTypeInfo<TypeInfoPointer>(typeReturn, TypeInfoKind::Pointer);
                 typeReturn       = typePointer->pointedType;
             }
 
             // And if this is a struct or an interface, we fill the startScope
-            if (typeReturn->kind == TypeInfoKind::Struct || typeReturn->kind == TypeInfoKind::Interface)
+            if (typeReturn->isStruct() || typeReturn->isInterface())
             {
                 auto typeStruct    = CastTypeInfo<TypeInfoStruct>(typeReturn, TypeInfoKind::Struct, TypeInfoKind::Interface);
                 parent->startScope = typeStruct->scope;
@@ -604,7 +604,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     arrayNode->resolvedSymbolName = arrayNode->array->resolvedSymbolName;
 
     // Can we dereference at compile time ?
-    if (arrayType->isNative(NativeTypeKind::String))
+    if (arrayType->isString())
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         if (arrayNode->access->flags & AST_VALUE_COMPUTED)
@@ -653,7 +653,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
             auto ptr = storageSegment->address(storageOffset);
             if (derefConstantValue(context, arrayNode, typePtr->finalType, storageSegment, ptr))
                 arrayNode->setFlagsValueIsComputed();
-            else if (typePtr->finalType->kind == TypeInfoKind::Struct)
+            else if (typePtr->finalType->isStruct())
             {
                 arrayNode->setFlagsValueIsComputed();
                 arrayNode->computedValue->storageSegment = storageSegment;
@@ -778,7 +778,7 @@ bool SemanticJob::resolveInit(SemanticContext* context)
     auto node               = CastAst<AstInit>(context->node, AstNodeKind::Init);
     auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
-    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression, Fmt(Err(Err0489), expressionTypeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(expressionTypeInfo->isPointer(), context->report({node->expression, Fmt(Err(Err0489), expressionTypeInfo->getDisplayNameC())}));
 
     if (node->count)
     {
@@ -792,13 +792,13 @@ bool SemanticJob::resolveInit(SemanticContext* context)
         auto typeinfoPointer = CastTypeInfo<TypeInfoPointer>(expressionTypeInfo, TypeInfoKind::Pointer);
         auto pointedType     = typeinfoPointer->pointedType;
 
-        if (pointedType->kind == TypeInfoKind::Native || pointedType->kind == TypeInfoKind::Pointer)
+        if (pointedType->isNative() || pointedType->isPointer())
         {
             SWAG_VERIFY(node->parameters->childs.size() == 1, context->report({node->count, Fmt(Err(Err0491), pointedType->getDisplayNameC())}));
             auto child = node->parameters->childs.front();
             SWAG_CHECK(TypeManager::makeCompatibles(context, pointedType, child->typeInfo, nullptr, child));
         }
-        else if (pointedType->kind == TypeInfoKind::Struct)
+        else if (pointedType->isStruct())
         {
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(pointedType, TypeInfoKind::Struct);
 
@@ -851,7 +851,7 @@ bool SemanticJob::resolveDropCopyMove(SemanticContext* context)
     auto node               = CastAst<AstDropCopyMove>(context->node, AstNodeKind::Drop, AstNodeKind::PostCopy, AstNodeKind::PostMove);
     auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
-    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression, Fmt(Err(Err0495), node->token.ctext(), expressionTypeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(expressionTypeInfo->isPointer(), context->report({node->expression, Fmt(Err(Err0495), node->token.ctext(), expressionTypeInfo->getDisplayNameC())}));
 
     // Be sure struct if not marked as nocopy
     if (node->kind == AstNodeKind::PostCopy)
@@ -998,7 +998,7 @@ bool SemanticJob::derefLiteralStruct(SemanticContext* context, uint8_t* ptr, Sym
     node->typeInfo = overload->typeInfo;
 
     auto concreteType = TypeManager::concreteType(overload->typeInfo);
-    if (concreteType->kind == TypeInfoKind::Pointer)
+    if (concreteType->isPointer())
     {
         // :BackPtrOffset
         node->allocateComputedValue();
@@ -1014,7 +1014,7 @@ bool SemanticJob::derefLiteralStruct(SemanticContext* context, uint8_t* ptr, Sym
         node->computedValue->storageSegment = storageSegment;
         node->typeInfo                      = concreteType;
     }
-    else if (concreteType->kind == TypeInfoKind::Slice)
+    else if (concreteType->isSlice())
     {
         // Convert slice to a static constant array
         auto typeSlice = CastTypeInfo<TypeInfoSlice>(concreteType, TypeInfoKind::Slice);
@@ -1032,7 +1032,7 @@ bool SemanticJob::derefLiteralStruct(SemanticContext* context, uint8_t* ptr, Sym
         typeArray->computeName();
         node->typeInfo = typeArray;
     }
-    else if (concreteType->kind == TypeInfoKind::Struct)
+    else if (concreteType->isStruct())
     {
         node->allocateComputedValue();
         node->computedValue->storageOffset  = storageSegment->offset(ptr);

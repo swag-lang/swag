@@ -16,7 +16,7 @@ bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegmen
 {
     uint8_t* ptrDest = storageSegment->address(storageOffset);
 
-    if (typeInfo->isNative(NativeTypeKind::String))
+    if (typeInfo->isString())
     {
         if (!value->text.empty())
         {
@@ -56,7 +56,7 @@ bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegmen
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Slice)
+    if (typeInfo->isSlice())
     {
         if (assignment && assignment->kind == AstNodeKind::Literal)
         {
@@ -101,7 +101,7 @@ bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegmen
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Struct)
+    if (typeInfo->isStruct())
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         auto result     = collectStructLiterals(context, storageSegment, storageOffset, typeStruct->declNode);
@@ -159,7 +159,7 @@ bool SemanticJob::collectStructLiterals(JobContext* context, DataSegment* storag
         if (varDecl->assignment)
         {
             auto value = varDecl->assignment->computedValue;
-            if (typeInfo->isNative(NativeTypeKind::String))
+            if (typeInfo->isString())
             {
                 SWAG_ASSERT(value);
                 Register* storedV  = (Register*) ptrDest;
@@ -192,7 +192,7 @@ bool SemanticJob::collectStructLiterals(JobContext* context, DataSegment* storag
                 SWAG_ASSERT(typeInfo->sizeOf);
             }
         }
-        else if (typeInfo->kind == TypeInfoKind::Struct)
+        else if (typeInfo->isStruct())
         {
             auto typeSub = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
             SWAG_CHECK(collectStructLiterals(context, storageSegment, offsetStruct + field->offset, typeSub->declNode));
@@ -314,7 +314,7 @@ bool SemanticJob::collectAssignment(SemanticContext* context, DataSegment* stora
         if (!node->assignment)
         {
             auto typeArr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-            if (typeArr->finalType->kind == TypeInfoKind::Struct && typeArr->finalType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
+            if (typeArr->finalType->isStruct() && typeArr->finalType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
             {
                 storageOffset = storageSegment->reserve(typeInfo->sizeOf, nullptr);
 
@@ -330,7 +330,7 @@ bool SemanticJob::collectAssignment(SemanticContext* context, DataSegment* stora
         }
     }
 
-    if (typeInfo->kind == TypeInfoKind::Struct)
+    if (typeInfo->isStruct())
     {
         if (node->assignment && node->assignment->kind == AstNodeKind::IdentifierRef && node->assignment->resolvedSymbolOverload)
         {
