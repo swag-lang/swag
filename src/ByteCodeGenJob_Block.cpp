@@ -909,7 +909,7 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
         if (one.overload && !(one.overload->flags & OVERLOAD_EMITTED))
             continue;
 
-        if (one.typeInfo->kind == TypeInfoKind::Array)
+        if (one.typeInfo->isArray())
         {
             auto typeArray = CastTypeInfo<TypeInfoArray>(one.typeInfo, TypeInfoKind::Array);
             if (typeArray->totalCount == 1)

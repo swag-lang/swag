@@ -938,7 +938,7 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstNode* node
 
     // Check is public
     auto typeExport = typeInfo;
-    if (typeExport->kind == TypeInfoKind::Array)
+    if (typeExport->isArray())
         typeExport = ((TypeInfoArray*) typeExport)->finalType;
     while (typeExport->isPointer())
         typeExport = ((TypeInfoPointer*) typeExport)->pointedType;

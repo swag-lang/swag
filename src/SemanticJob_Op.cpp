@@ -430,7 +430,7 @@ bool SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfo
 bool SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, AstNode* left, SymbolName** result)
 {
     auto leftType = TypeManager::concreteType(left->typeInfo);
-    if (leftType->kind == TypeInfoKind::Array)
+    if (leftType->isArray())
         leftType = CastTypeInfo<TypeInfoArray>(leftType, TypeInfoKind::Array)->finalType;
     else if (leftType->isPointer())
         leftType = CastTypeInfo<TypeInfoPointer>(leftType, TypeInfoKind::Pointer)->pointedType;

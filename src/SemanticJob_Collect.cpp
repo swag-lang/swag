@@ -289,7 +289,7 @@ bool SemanticJob::collectAssignment(SemanticContext* context, DataSegment* stora
         value = node->computedValue;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Array)
+    if (typeInfo->isArray())
     {
         // Already computed in the constant storageSegment for an array
         if (node->assignment && node->assignment->flags & AST_VALUE_COMPUTED)

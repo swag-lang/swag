@@ -172,7 +172,7 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context, TypeInfo* type
         return true;
     }
 
-    if (typeInfo->isStruct() || typeInfo->kind == TypeInfoKind::Array)
+    if (typeInfo->isStruct() || typeInfo->isArray())
     {
         return true;
     }
@@ -217,7 +217,7 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
     if (typeInfo->kind == TypeInfoKind::TypeListTuple ||
         typeInfo->kind == TypeInfoKind::TypeListArray ||
         typeInfo->isStruct() ||
-        typeInfo->kind == TypeInfoKind::Array ||
+        typeInfo->isArray() ||
         typeInfo->isClosure())
     {
         return true;
@@ -360,7 +360,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     }
 
     // Dereference of an array
-    else if (typeInfo->kind == TypeInfoKind::Array)
+    else if (typeInfo->isArray())
     {
         auto typeInfoArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
 
@@ -537,7 +537,7 @@ bool ByteCodeGenJob::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
     }
 
     uint64_t sizeOf = 1;
-    if (typeVar->kind == TypeInfoKind::Array)
+    if (typeVar->isArray())
         sizeOf = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->finalType->sizeOf;
     else if (typeVar->isString())
         sizeOf = 1;

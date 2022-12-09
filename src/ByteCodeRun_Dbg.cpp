@@ -696,7 +696,7 @@ static void appendValueProtected(Utf8& str, const EvaluateResult& res, int inden
         return;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Array)
+    if (typeInfo->isArray())
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         str += Fmt("0x%016llx\n", addr);

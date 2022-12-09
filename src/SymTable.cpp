@@ -236,7 +236,7 @@ void SymTable::addVarToDrop(SymbolOverload* overload, TypeInfo* typeInfo, uint32
         st.typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
 
     // An array of structs
-    else if (typeInfo->kind == TypeInfoKind::Array)
+    else if (typeInfo->isArray())
     {
         auto typeArr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         if (typeArr->finalType->isStruct())

@@ -402,7 +402,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
             emitInstruction(context, ByteCodeOp::ClearRA, regList);
         }
     }
-    else if (typeInfo->kind == TypeInfoKind::Array)
+    else if (typeInfo->isArray())
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         reserveLinearRegisterRC2(context, regList);

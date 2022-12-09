@@ -153,9 +153,9 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
 
     // If this is an array, then this is legit, the pointer will address the first
     // element : need to find it's type
-    else if (typeInfo->kind == TypeInfoKind::Array)
+    else if (typeInfo->isArray())
     {
-        while (typeInfo->kind == TypeInfoKind::Array)
+        while (typeInfo->isArray())
         {
             auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
             typeInfo       = typeArray->pointedType;
@@ -213,7 +213,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, nullptr, node->upperBound, CASTFLAG_TRY_COERCE));
 
     // Slicing of an array
-    if (typeVar->kind == TypeInfoKind::Array)
+    if (typeVar->isArray())
     {
         auto typeInfoArray = CastTypeInfo<TypeInfoArray>(node->array->typeInfo, TypeInfoKind::Array);
         if (typeInfoArray->totalCount != typeInfoArray->count)
@@ -1007,7 +1007,7 @@ bool SemanticJob::derefLiteralStruct(SemanticContext* context, uint8_t* ptr, Sym
         node->computedValue->reg.pointer    = (uint8_t*) overload->typeInfo;
         node->flags |= AST_VALUE_IS_TYPEINFO;
     }
-    else if (concreteType->kind == TypeInfoKind::Array)
+    else if (concreteType->isArray())
     {
         node->allocateComputedValue();
         node->computedValue->storageOffset  = storageSegment->offset(ptr);

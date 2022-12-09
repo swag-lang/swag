@@ -275,7 +275,7 @@ bool SemanticJob::resolveVarDeclAfterType(SemanticContext* context)
         auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
         varDecl->assignment->addAlternativeScope(typeEnum->scope);
     }
-    else if (typeInfo->kind == TypeInfoKind::Array)
+    else if (typeInfo->isArray())
     {
         auto typeArr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         if (typeArr->finalType->kind == TypeInfoKind::Enum)
@@ -532,7 +532,7 @@ DataSegment* SemanticJob::getSegmentForVar(SemanticContext* context, AstVarDecl*
             return &module->mutableSegment;
     }
 
-    if (!node->assignment && (typeInfo->isNative() || typeInfo->kind == TypeInfoKind::Array))
+    if (!node->assignment && (typeInfo->isNative() || typeInfo->isArray()))
         return &module->bssSegment;
     if (node->assignment && typeInfo->isNative() && typeInfo->sizeOf <= 8 && node->assignment->isConstant0())
         return &module->bssSegment;
@@ -854,7 +854,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     // Be sure that an array without a size has an initializer, to deduce its size
-    if (concreteNodeType && concreteNodeType->kind == TypeInfoKind::Array)
+    if (concreteNodeType && concreteNodeType->isArray())
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(concreteNodeType, TypeInfoKind::Array);
         SWAG_VERIFY(typeArray->count != UINT32_MAX || node->assignment, context->report({node, Err(Err0303)}));
@@ -1048,10 +1048,10 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         TypeInfoStruct* typeStruct = nullptr;
         if (node->typeInfo->isStruct())
             typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-        else if (node->typeInfo->kind == TypeInfoKind::Array)
+        else if (node->typeInfo->isArray())
         {
             auto typeArray = CastTypeInfo<TypeInfoArray>(node->typeInfo, TypeInfoKind::Array);
-            while (typeArray->pointedType->kind == TypeInfoKind::Array)
+            while (typeArray->pointedType->isArray())
                 typeArray = CastTypeInfo<TypeInfoArray>(typeArray->pointedType, TypeInfoKind::Array);
             typeStruct = CastTypeInfo<TypeInfoStruct>(typeArray->pointedType, TypeInfoKind::Struct);
         }
@@ -1105,7 +1105,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 storageOffset = 0;
                 symbolFlags |= OVERLOAD_INCOMPLETE;
             }
-            else if (typeInfo->kind == TypeInfoKind::Array || typeInfo->isStruct())
+            else if (typeInfo->isArray() || typeInfo->isStruct())
             {
                 if (node->assignment && node->assignment->flags & AST_VALUE_COMPUTED)
                 {

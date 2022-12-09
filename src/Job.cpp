@@ -168,7 +168,7 @@ void Job::waitTypeCompleted(TypeInfo* typeInfo)
     typeInfo         = TypeManager::concreteType(typeInfo);
     if (typeInfo->isSlice())
         typeInfo = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice)->pointedType;
-    if (typeInfo->kind == TypeInfoKind::Array)
+    if (typeInfo->isArray())
         typeInfo = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array)->finalType;
     typeInfo = TypeManager::concreteType(typeInfo);
     if (typeInfo->kind != TypeInfoKind::Struct && typeInfo->kind != TypeInfoKind::Interface)
@@ -185,7 +185,7 @@ void Job::waitTypeCompleted(TypeInfo* typeInfo)
     // raw type has been completed because of //
 
     orgTypeInfo = TypeManager::concreteType(orgTypeInfo);
-    if (orgTypeInfo->kind == TypeInfoKind::Array)
+    if (orgTypeInfo->isArray())
         orgTypeInfo->sizeOf = ((TypeInfoArray*) orgTypeInfo)->finalType->sizeOf * ((TypeInfoArray*) orgTypeInfo)->totalCount;
     if (orgTypeInfo->flags & TYPEINFO_FAKE_ALIAS)
         orgTypeInfo->sizeOf = ((TypeInfoAlias*) orgTypeInfo)->rawType->sizeOf;

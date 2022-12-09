@@ -720,7 +720,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
 
     // Static array
     /////////////////////////////////
-    if (typeInfo->kind == TypeInfoKind::Array)
+    if (typeInfo->isArray())
     {
         auto typeArr             = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         auto tr                  = dbgAddTypeRecord(pp);

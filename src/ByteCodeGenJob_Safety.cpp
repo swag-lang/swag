@@ -553,7 +553,7 @@ void ByteCodeGenJob::emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, 
 
     // Check type, and safety check
     auto typeVar = node->array->typeInfo;
-    if (typeVar->kind == TypeInfoKind::Array)
+    if (typeVar->isArray())
     {
         auto typeArray  = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
         maxBoundReg     = reserveRegisterRC(context);

@@ -644,7 +644,7 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
         return true;
     }
 
-    if (fromTypeInfo->kind == TypeInfoKind::Array)
+    if (fromTypeInfo->isArray())
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(fromTypeInfo, TypeInfoKind::Array);
         transformResultToLinear2(context, exprNode);
@@ -658,7 +658,7 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
 #ifdef SWAG_HAS_ASSERT
         auto typeList = CastTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeListTuple);
         SWAG_ASSERT(typeList->subTypes.size() == 2);
-        SWAG_ASSERT(typeList->subTypes[0]->typeInfo->isPointer() || typeList->subTypes[0]->typeInfo->kind == TypeInfoKind::Array);
+        SWAG_ASSERT(typeList->subTypes[0]->typeInfo->isPointer() || typeList->subTypes[0]->typeInfo->isArray());
         SWAG_ASSERT(typeList->subTypes[1]->typeInfo->isNative());
 #endif
         transformResultToLinear2(context, exprNode);
@@ -711,7 +711,7 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
         auto inst              = emitInstruction(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1]);
         inst->b.u64            = fromTypeList->subTypes.count;
     }
-    else if (fromTypeInfo->kind == TypeInfoKind::Array)
+    else if (fromTypeInfo->isArray())
     {
         auto fromTypeArray = CastTypeInfo<TypeInfoArray>(fromTypeInfo, TypeInfoKind::Array);
         transformResultToLinear2(context, exprNode);
@@ -855,7 +855,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Array)
+    if (typeInfo->isArray())
     {
         if (fromTypeInfo->isPointer())
         {
@@ -865,7 +865,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
             return true;
         }
 
-        if (fromTypeInfo->kind == TypeInfoKind::Array)
+        if (fromTypeInfo->isArray())
         {
             truncRegisterRC(context, exprNode->resultRegisterRC, 1);
             node->resultRegisterRC   = exprNode->resultRegisterRC;
@@ -894,7 +894,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
             return true;
         }
 
-        if (fromTypeInfo->kind == TypeInfoKind::Array ||
+        if (fromTypeInfo->isArray() ||
             fromTypeInfo->isPointer() ||
             fromTypeInfo->isStruct() ||
             fromTypeInfo->isInterface() ||

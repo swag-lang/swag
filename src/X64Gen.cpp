@@ -1719,7 +1719,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
 
         if (typeParam->isPointer() ||
             typeParam->kind == TypeInfoKind::Lambda ||
-            typeParam->kind == TypeInfoKind::Array)
+            typeParam->isArray())
         {
             pushParams3.push_back(index);
             pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);

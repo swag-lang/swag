@@ -426,7 +426,7 @@ bool TypeTable::makeConcreteTypeValue(JobContext* context, void* concreteTypeInf
     // Value
     if (realType->flags & TYPEINFO_DEFINED_VALUE)
     {
-        if (realType->typeInfo->kind == TypeInfoKind::Array || realType->typeInfo->kind == TypeInfoKind::TypeListArray)
+        if (realType->typeInfo->isArray() || realType->typeInfo->kind == TypeInfoKind::TypeListArray)
         {
             SWAG_ASSERT(realType->value);
             SWAG_ASSERT(realType->value->storageOffset != UINT32_MAX);

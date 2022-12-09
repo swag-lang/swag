@@ -346,7 +346,7 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
         }
         else if (typeParam->isStruct() ||
                  typeParam->kind == TypeInfoKind::Lambda ||
-                 typeParam->kind == TypeInfoKind::Array)
+                 typeParam->isArray())
         {
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
             params.push_back(builder.CreateLoad(r0));

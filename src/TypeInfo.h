@@ -225,6 +225,7 @@ struct TypeInfo
     bool isStruct()                         { return kind == TypeInfoKind::Struct; }
     bool isPointer()                        { return kind == TypeInfoKind::Pointer; }
     bool isNative()                         { return kind == TypeInfoKind::Native; }
+    bool isArray()                          { return kind == TypeInfoKind::Array; }
     bool isNative(NativeTypeKind native)    { return (kind == TypeInfoKind::Native) && (nativeType == native); }
     bool isAny()                            { return isNative(NativeTypeKind::Any); }
     bool isString()                         { return isNative(NativeTypeKind::String); }

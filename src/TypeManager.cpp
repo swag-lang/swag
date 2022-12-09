@@ -719,7 +719,7 @@ uint32_t TypeManager::alignOf(TypeInfo* typeInfo)
         SWAG_ASSERT(typeStruct->alignOf);
         return typeStruct->alignOf;
     }
-    else if (typeInfo->kind == TypeInfoKind::Array)
+    else if (typeInfo->isArray())
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         return alignOf(typeArray->finalType);

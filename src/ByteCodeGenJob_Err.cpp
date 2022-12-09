@@ -92,7 +92,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
             if (!node->ownerInline)
                 freeRegisterRC(context, node->regInit);
         }
-        else if (returnType->kind == TypeInfoKind::Array)
+        else if (returnType->isArray())
         {
             auto typeArr = CastTypeInfo<TypeInfoArray>(returnType, TypeInfoKind::Array);
             if (typeArr->finalType->kind != TypeInfoKind::Struct)

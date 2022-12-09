@@ -62,7 +62,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
     }
 
     // Static array
-    if (realType->kind == TypeInfoKind::Array)
+    if (realType->isArray())
     {
         auto     storageSegment             = SemanticJob::getConstantSegFromContext(node);
         uint8_t* addrDst                    = nullptr;

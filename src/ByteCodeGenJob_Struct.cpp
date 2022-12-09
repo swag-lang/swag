@@ -94,7 +94,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     for (auto typeParam : typeInfoStruct->fields)
     {
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
-        if (typeVar->kind == TypeInfoKind::Array)
+        if (typeVar->isArray())
             typeVar = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
         if (typeVar->kind != TypeInfoKind::Struct)
             continue;
@@ -201,7 +201,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         // User initialization
         if (varDecl->assignment && varDecl->assignment->kind != AstNodeKind::ExplicitNoInit)
         {
-            if (typeVar->kind == TypeInfoKind::Array)
+            if (typeVar->isArray())
             {
                 auto exprList = CastAst<AstExpressionList>(varDecl->assignment, AstNodeKind::ExpressionList);
                 SWAG_ASSERT(exprList->computedValue->storageSegment);
@@ -262,7 +262,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         }
 
         // Default initialization
-        if (typeVar->kind == TypeInfoKind::Array)
+        if (typeVar->isArray())
         {
             auto typeArray = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
             auto typeInVar = typeArray->pointedType;
@@ -368,7 +368,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     for (auto typeParam : typeInfoStruct->fields)
     {
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
-        if (typeVar->kind == TypeInfoKind::Array)
+        if (typeVar->isArray())
             typeVar = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
         if (typeVar->kind != TypeInfoKind::Struct)
             continue;
@@ -489,7 +489,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     for (auto typeParam : typeInfoStruct->fields)
     {
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
-        if (typeVar->kind == TypeInfoKind::Array)
+        if (typeVar->isArray())
             typeVar = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
         if (typeVar->kind != TypeInfoKind::Struct)
             continue;
@@ -610,7 +610,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     for (auto typeParam : typeInfoStruct->fields)
     {
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
-        if (typeVar->kind == TypeInfoKind::Array)
+        if (typeVar->isArray())
             typeVar = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
         if (typeVar->kind != TypeInfoKind::Struct)
             continue;

@@ -247,7 +247,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
         node->typeInfo->forceComputeName();
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
     }
-    else if (typeInfo->kind == TypeInfoKind::Array)
+    else if (typeInfo->isArray())
     {
         auto ptrArray  = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         node->typeInfo = g_TypeMgr->makePointerTo(ptrArray->pointedType, ptrArray->isConst(), true, 0);
@@ -409,7 +409,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
             node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCountOf;
         }
     }
-    else if (typeInfo->kind == TypeInfoKind::Array)
+    else if (typeInfo->isArray())
     {
         node->setFlagsValueIsComputed();
         auto typeArray               = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
@@ -499,7 +499,7 @@ bool SemanticJob::resolveIntrinsicSpread(SemanticContext* context)
 
     SWAG_VERIFY(node->parent && node->parent->parent && node->parent->parent->kind == AstNodeKind::FuncCallParam, context->report({node, Err(Err0806)}));
 
-    if (typeInfo->kind == TypeInfoKind::Array)
+    if (typeInfo->isArray())
     {
         auto typeArr   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         node->typeInfo = typeArr->pointedType;

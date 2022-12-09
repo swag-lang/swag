@@ -114,7 +114,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 SWAG_CHECK(emitCopyStruct(context, node->ownerInline->resultRegisterRC, returnExpression->resultRegisterRC, exprType, returnExpression));
                 freeRegisterRC(context, returnExpression);
             }
-            else if (returnType->kind == TypeInfoKind::Array)
+            else if (returnType->isArray())
             {
                 // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
                 returnExpression->flags |= AST_NO_LEFT_DROP;
@@ -180,7 +180,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 freeRegisterRC(context, r0);
                 freeRegisterRC(context, returnExpression->resultRegisterRC);
             }
-            else if (returnType->kind == TypeInfoKind::Array)
+            else if (returnType->isArray())
             {
                 // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
                 returnExpression->flags |= AST_NO_LEFT_DROP;
@@ -1341,7 +1341,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     {
         typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
     }
-    else if (varNode->typeInfo->kind == TypeInfoKind::Array)
+    else if (varNode->typeInfo->isArray())
     {
         // :SilentCall
         auto typeArr = CastTypeInfo<TypeInfoArray>(varNode->typeInfo, TypeInfoKind::Array);
@@ -1491,7 +1491,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                             toFree.push_back(param->extension->misc->additionalRegisterRC[r]);
                     }
 
-                    if (param->typeInfo->kind == TypeInfoKind::Array || param->typeInfo->flags & TYPEINFO_LISTARRAY_ARRAY)
+                    if (param->typeInfo->isArray() || param->typeInfo->flags & TYPEINFO_LISTARRAY_ARRAY)
                         truncRegisterRC(context, param->resultRegisterRC, 1);
 
                     for (int r = param->resultRegisterRC.size() - 1; r >= 0; r--)
@@ -1577,7 +1577,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             if (!param->typeInfo)
                 continue;
 
-            if (param->typeInfo->kind == TypeInfoKind::Array || param->typeInfo->flags & TYPEINFO_LISTARRAY_ARRAY)
+            if (param->typeInfo->isArray() || param->typeInfo->flags & TYPEINFO_LISTARRAY_ARRAY)
                 truncRegisterRC(context, param->resultRegisterRC, 1);
 
             if (param->typeInfo->kind != TypeInfoKind::Variadic && param->typeInfo->kind != TypeInfoKind::TypedVariadic && !(param->typeInfo->flags & TYPEINFO_SPREAD))

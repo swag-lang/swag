@@ -80,7 +80,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Array)
+    if (typeInfo->isArray())
     {
         context->job->waitStructGenerated(typeInfo);
         if (context->result == ContextResult::Pending)
@@ -170,7 +170,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
             emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
             emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
         }
-        else if (node->childs.size() > 1 && node->childs[1]->typeInfo->kind == TypeInfoKind::Array)
+        else if (node->childs.size() > 1 && node->childs[1]->typeInfo->isArray())
         {
             emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
 

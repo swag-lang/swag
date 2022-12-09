@@ -81,7 +81,7 @@ bool ByteCodeGenJob::emitIntrinsicSpread(ByteCodeGenContext* context)
     auto expr     = node->childs.back();
     auto typeInfo = TypeManager::concreteType(expr->typeInfo);
 
-    if (typeInfo->kind == TypeInfoKind::Array)
+    if (typeInfo->isArray())
     {
         transformResultToLinear2(context, expr);
         node->resultRegisterRC = expr->resultRegisterRC;
@@ -197,7 +197,7 @@ bool ByteCodeGenJob::emitIntrinsicDataOf(ByteCodeGenContext* context)
         typeInfo->isNative(NativeTypeKind::Any) ||
         typeInfo->isSlice() ||
         typeInfo->isInterface() ||
-        typeInfo->kind == TypeInfoKind::Array)
+        typeInfo->isArray())
     {
         ensureCanBeChangedRC(context, front->resultRegisterRC);
         truncRegisterRC(context, front->resultRegisterRC, 1);

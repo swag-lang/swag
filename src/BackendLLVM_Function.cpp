@@ -4865,7 +4865,7 @@ llvm::Type* BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParamete
     }
 
     if (typeInfo->isSlice() ||
-        typeInfo->kind == TypeInfoKind::Array ||
+        typeInfo->isArray() ||
         typeInfo->isStruct() ||
         typeInfo->isInterface() ||
         typeInfo->kind == TypeInfoKind::Lambda ||

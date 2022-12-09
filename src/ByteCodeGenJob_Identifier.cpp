@@ -62,7 +62,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         inst->b.u64 = node->ownerFct->parameters->childs.front()->resolvedSymbolOverload->computedValue.storageOffset;
         inst->c.u64 = 0;
 
-        if (typeInfo->kind == TypeInfoKind::Array ||
+        if (typeInfo->isArray() ||
             typeInfo->kind == TypeInfoKind::TypeListTuple ||
             typeInfo->kind == TypeInfoKind::TypeListArray ||
             typeInfo->isStruct())
@@ -305,7 +305,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         {
             return Report::internalError(context->node, "unsupported identifier reference type");
         }
-        else if (typeInfo->kind == TypeInfoKind::Array ||
+        else if (typeInfo->isArray() ||
                  typeInfo->kind == TypeInfoKind::TypeListTuple ||
                  typeInfo->kind == TypeInfoKind::TypeListArray ||
                  typeInfo->isStruct())
@@ -377,7 +377,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             if (!node->forceTakeAddress())
                 SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRC, node->typeInfo));
         }
-        else if (typeInfo->kind == TypeInfoKind::Array ||
+        else if (typeInfo->isArray() ||
                  typeInfo->kind == TypeInfoKind::TypeListTuple ||
                  typeInfo->kind == TypeInfoKind::TypeListArray ||
                  typeInfo->isStruct())

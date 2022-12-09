@@ -2097,7 +2097,7 @@ bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeI
         }
 
         // [] u8 to string, this is possible !
-        if (fromType->kind == TypeInfoKind::Array)
+        if (fromType->isArray())
         {
             auto fromTypeArray = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
             if (fromTypeArray->pointedType == g_TypeMgr->typeInfoU8)
@@ -2196,7 +2196,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 
             // To convert a simple any to something more complexe, need an explicit cast
             if (toType->isSlice() ||
-                toType->kind == TypeInfoKind::Array ||
+                toType->isArray() ||
                 toType->isPointer())
                 return castError(context, toType, fromType, fromNode, castFlags);
         }
@@ -2658,7 +2658,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
     }
 
     // Array to pointer of the same type
-    if (fromType->kind == TypeInfoKind::Array)
+    if (fromType->isArray())
     {
         auto fromTypeArray = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
         if ((!(castFlags & CASTFLAG_NO_IMPLICIT) && toTypePointer->pointedType->isNative(NativeTypeKind::Void)) ||
@@ -2873,7 +2873,7 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
         SWAG_CHECK(castExpressionList(context, fromTypeList, toTypeSlice->pointedType, fromNode, castFlags));
         return true;
     }
-    else if (fromType->kind == TypeInfoKind::Array)
+    else if (fromType->isArray())
     {
         TypeInfoArray* fromTypeArray = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
         if ((!(castFlags & CASTFLAG_NO_IMPLICIT) && toTypeSlice->pointedType->isSame(fromTypeArray->pointedType, ISSAME_CAST)) ||

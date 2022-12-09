@@ -104,7 +104,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             {
                 concreteTypeInfo = Generic::doTypeSubstitution(context.genericReplaceTypes, wantedTypeInfo);
                 auto typeSlice   = CastTypeInfo<TypeInfoSlice>(concreteTypeInfo, TypeInfoKind::Slice);
-                if (typeSlice->pointedType->kind == TypeInfoKind::Array ||
+                if (typeSlice->pointedType->isArray() ||
                     typeSlice->pointedType->isSlice())
                 {
                     invalidType = true;
@@ -368,7 +368,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                         symbolTypeInfos.push_back(symbolArray->finalType);
 
                         uint32_t count = 0;
-                        if (callTypeInfo->kind == TypeInfoKind::Array)
+                        if (callTypeInfo->isArray())
                         {
                             auto typeArray = CastTypeInfo<TypeInfoArray>(callTypeInfo, TypeInfoKind::Array);
                             typeInfos.push_back(typeArray->finalType);
@@ -430,7 +430,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                             symbolTypeInfos.push_back(symbolSlice->pointedType);
                             typeInfos.push_back(typeSlice->pointedType);
                         }
-                        else if (callTypeInfo->kind == TypeInfoKind::Array)
+                        else if (callTypeInfo->isArray())
                         {
                             auto typeArray = CastTypeInfo<TypeInfoArray>(callTypeInfo, TypeInfoKind::Array);
                             symbolTypeInfos.push_back(symbolSlice->pointedType);

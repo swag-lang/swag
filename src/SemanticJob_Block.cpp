@@ -632,7 +632,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     int      id            = g_UniqueID.fetch_add(1);
 
     // Multi dimensional array
-    if (typeInfo->kind == TypeInfoKind::Array && ((TypeInfoArray*) typeInfo)->pointedType->kind == TypeInfoKind::Array)
+    if (typeInfo->isArray() && ((TypeInfoArray*) typeInfo)->pointedType->isArray())
     {
         auto typeArray   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         auto pointedType = typeArray->finalType;
@@ -663,7 +663,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     }
 
     // One dimensional array
-    else if (typeInfo->kind == TypeInfoKind::Array)
+    else if (typeInfo->isArray())
     {
         auto typeArray   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         auto pointedType = typeArray->pointedType;
@@ -810,7 +810,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
                 typePtr->pointedType->kind == TypeInfoKind::Variadic ||
                 typePtr->pointedType->kind == TypeInfoKind::TypedVariadic ||
                 typePtr->pointedType->isSlice() ||
-                typePtr->pointedType->kind == TypeInfoKind::Array ||
+                typePtr->pointedType->isArray() ||
                 typePtr->pointedType->isStruct() ||
                 typePtr->pointedType->isString())
             {

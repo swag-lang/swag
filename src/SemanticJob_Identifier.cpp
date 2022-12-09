@@ -752,7 +752,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     // A.X and A is an array : missing index
     if (symbol &&
         symbol->kind == SymbolKind::Variable &&
-        identifier->typeInfo->kind == TypeInfoKind::Array &&
+        identifier->typeInfo->isArray() &&
         identifier->parent->kind != AstNodeKind::ArrayPointerIndex &&
         identifier->parent == parent &&
         parent->childs.back() != identifier)
@@ -1663,7 +1663,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         {
             oneOverload.symMatchContext.result = MatchResult::Ok;
         }
-        else if (rawTypeInfo->kind == TypeInfoKind::Array)
+        else if (rawTypeInfo->isArray())
         {
             auto typeArr   = CastTypeInfo<TypeInfoArray>(rawTypeInfo, TypeInfoKind::Array);
             auto typeFinal = TypeManager::concreteType(typeArr->finalType);

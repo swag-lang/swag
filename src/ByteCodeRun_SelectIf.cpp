@@ -48,7 +48,7 @@ bool ByteCodeRun::getVariadicSI(ByteCodeRunContext* context, ByteCodeInstruction
         return true;
     }
 
-    if (child->typeInfo->kind == TypeInfoKind::Array)
+    if (child->typeInfo->isArray())
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(child->typeInfo, TypeInfoKind::Array);
         if (regCount)
@@ -81,7 +81,7 @@ bool ByteCodeRun::executeIsConstExprSI(ByteCodeRunContext* context, ByteCodeInst
     /////////////////////////////////////////
     if (solved->typeInfo->isSlice())
     {
-        if (child->typeInfo->kind == TypeInfoKind::Array)
+        if (child->typeInfo->isArray())
             return true;
         if (child->typeInfo->kind == TypeInfoKind::TypeListArray)
             return true;
@@ -134,7 +134,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
     /////////////////////////////////////////
     if (solved->typeInfo->isSlice())
     {
-        if (child->typeInfo->kind == TypeInfoKind::Array)
+        if (child->typeInfo->isArray())
         {
             auto typeArray                 = CastTypeInfo<TypeInfoArray>(child->typeInfo, TypeInfoKind::Array);
             registersRC[ip->a.u32].pointer = nullptr;

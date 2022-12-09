@@ -946,7 +946,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         }
 
         // Var is an array of structs
-        else if (varDecl->typeInfo->kind == TypeInfoKind::Array && !varDecl->assignment)
+        else if (varDecl->typeInfo->isArray() && !varDecl->assignment)
         {
             auto varTypeArray = CastTypeInfo<TypeInfoArray>(varDecl->typeInfo, TypeInfoKind::Array);
             if (varTypeArray->pointedType->isStruct())
