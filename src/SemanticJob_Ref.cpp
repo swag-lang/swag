@@ -535,7 +535,7 @@ bool SemanticJob::getConstantArrayPtr(SemanticContext* context, uint32_t* storag
     auto arrayType = TypeManager::concreteType(arrayNode->array->typeInfo);
     auto typePtr   = CastTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
 
-    if (arrayNode->typeInfo->kind != TypeInfoKind::Array && arrayNode->access->flags & AST_VALUE_COMPUTED)
+    if (!arrayNode->typeInfo->isArray() && arrayNode->access->flags & AST_VALUE_COMPUTED)
     {
         bool     isConstAccess = true;
         uint64_t offsetAccess  = arrayNode->access->computedValue->reg.u64 * typePtr->finalType->sizeOf;

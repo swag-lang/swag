@@ -64,7 +64,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         // In case of a spread, match the underlying type too
         if (wantedTypeInfo->isTypedVariadic())
         {
-            if (callTypeInfo->kind != TypeInfoKind::TypedVariadic && !(callTypeInfo->flags & TYPEINFO_SPREAD))
+            if (!callTypeInfo->isTypedVariadic() && !(callTypeInfo->flags & TYPEINFO_SPREAD))
                 wantedTypeInfo = ((TypeInfoVariadic*) wantedTypeInfo)->rawType;
             isAfterVariadic = true;
         }
@@ -436,7 +436,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                             symbolTypeInfos.push_back(symbolSlice->pointedType);
                             typeInfos.push_back(typeArray->pointedType);
                         }
-                        else if (callTypeInfo->kind != TypeInfoKind::TypeListArray)
+                        else if (!callTypeInfo->isListArray())
                         {
                             symbolTypeInfos.push_back(symbolSlice->pointedType);
                             typeInfos.push_back(callTypeInfo);
@@ -515,7 +515,7 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
             // In case of a spread, match the underlying type too
             if (wantedTypeInfo->isTypedVariadic())
             {
-                if (callTypeInfo->kind != TypeInfoKind::TypedVariadic && !(callTypeInfo->flags & TYPEINFO_SPREAD))
+                if (!callTypeInfo->isTypedVariadic() && !(callTypeInfo->flags & TYPEINFO_SPREAD))
                     wantedTypeInfo = ((TypeInfoVariadic*) wantedTypeInfo)->rawType;
             }
 
@@ -686,7 +686,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
         return;
     }
 
-    if (myTypeInfo->kind != TypeInfoKind::Struct)
+    if (!myTypeInfo->isStruct())
     {
         if (!userGenericParams && wantedNumGenericParams)
         {
@@ -947,7 +947,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     if (context.cptResolved < firstDefault && parameters.size() && (context.result == MatchResult::Ok || context.result == MatchResult::BadSignature))
     {
         auto back = parameters.back()->typeInfo;
-        if (back->kind != TypeInfoKind::Variadic && back->kind != TypeInfoKind::TypedVariadic && back->kind != TypeInfoKind::CVariadic)
+        if (!back->isVariadic() && !back->isTypedVariadic() && !back->isCVariadic())
         {
             if (context.result == MatchResult::Ok)
                 context.result = MatchResult::MissingSomeParameters;

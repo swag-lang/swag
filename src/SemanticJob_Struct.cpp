@@ -139,7 +139,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
 
     // Be sure the first identifier is an interface
     auto typeInfo = node->identifier->typeInfo;
-    if (typeInfo->kind != TypeInfoKind::Interface)
+    if (!typeInfo->isInterface())
     {
         Diagnostic diag{node->identifier, Fmt(Err(Err0646), node->identifier->token.ctext(), TypeInfo::getArticleKindName(typeInfo))};
         Diagnostic note{node->identifier->resolvedSymbolOverload->node, Fmt(Nte(Nte0029), node->identifier->token.ctext()), DiagnosticLevel::Note};
@@ -604,7 +604,7 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
 
     // Be sure this is a struct
     auto typeInfo = node->identifier->typeInfo;
-    if (!typeInfo->isStruct() && typeInfo->kind != TypeInfoKind::Enum)
+    if (!typeInfo->isStruct() && !typeInfo->isEnum())
     {
         Diagnostic diag{node->identifier, Fmt(Err(Err0662), node->identifier->token.ctext(), TypeInfo::getArticleKindName(typeInfo))};
         Diagnostic note{node->identifier->resolvedSymbolOverload->node, Fmt(Nte(Nte0029), node->identifier->token.ctext()), DiagnosticLevel::Note};
@@ -612,7 +612,7 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
     }
 
     auto typeIdentifier = node->identifier->resolvedSymbolOverload->typeInfo;
-    SWAG_VERIFY(typeIdentifier->kind != TypeInfoKind::Alias, context->report({node->identifier, Err(Err0664), Hnt(Hnt0035)}));
+    SWAG_VERIFY(!typeIdentifier->isAlias(), context->report({node->identifier, Err(Err0664), Hnt(Hnt0035)}));
 
     switch (typeInfo->kind)
     {
@@ -974,7 +974,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                     typeParam->value->reg = varDecl->assignment->computedValue->reg;
                 }
             }
-            else if (typeInfoAssignment->kind != TypeInfoKind::Native || varDecl->assignment->computedValue->reg.u64)
+            else if (!typeInfoAssignment->isNative() || varDecl->assignment->computedValue->reg.u64)
             {
                 structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
                 if (typeParam)

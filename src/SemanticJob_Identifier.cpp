@@ -723,10 +723,10 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     // no error was raised before
     if (symbol &&
         symbol->kind == SymbolKind::Variable &&
-        overload->typeInfo->kind != TypeInfoKind::LambdaClosure &&
+        !overload->typeInfo->isLambdaClosure() &&
         !parent->startScope &&
-        parent->previousResolvedNode &&
         !identifier->token.text.empty() && // :SilentCall
+        parent->previousResolvedNode &&
         !parent->previousResolvedNode->typeInfo->isPointerTo(TypeInfoKind::Struct) &&
         !parent->previousResolvedNode->typeInfo->isStruct())
     {
@@ -1443,7 +1443,7 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
 
     // We do not want function to deduce their generic type from context, as the generic type can be deduced from the
     // parameters
-    if (node->ownerFct && symOverload->typeInfo->kind != TypeInfoKind::FuncAttr)
+    if (node->ownerFct && !symOverload->typeInfo->isFuncAttr())
         toCheck.push_back(node->ownerFct);
 
     // Except for a second try
@@ -2253,7 +2253,7 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
 TypeInfoEnum* SemanticJob::findEnumTypeInContext(SemanticContext* context, TypeInfo* typeInfo)
 {
     typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_FUNC);
-    if (!typeInfo || typeInfo->kind != TypeInfoKind::Enum)
+    if (!typeInfo || !typeInfo->isEnum())
         return nullptr;
     return CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
 }
@@ -2297,7 +2297,7 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
             VectorNative<TypeInfoEnum*> result;
             for (auto& overload : symbol->overloads)
             {
-                if (overload->typeInfo->kind != TypeInfoKind::FuncAttr && overload->typeInfo->kind != TypeInfoKind::LambdaClosure)
+                if (!overload->typeInfo->isFuncAttr() && !overload->typeInfo->isLambdaClosure())
                     continue;
 
                 auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);

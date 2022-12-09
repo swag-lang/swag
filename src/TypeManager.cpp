@@ -558,7 +558,7 @@ TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfo
         typeArray->totalCount  = typeArray->count;
         if (isCompilerConstant)
             typeArray->flags |= TYPEINFO_CONST;
-        if (typeArray->pointedType->kind != TypeInfoKind::TypeListArray)
+        if (!typeArray->pointedType->isListArray())
             break;
         typeList               = CastTypeInfo<TypeInfoList>(typeArray->pointedType, TypeInfoKind::TypeListArray);
         typeArray->pointedType = allocType<TypeInfoArray>();
@@ -571,7 +571,7 @@ TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfo
     {
         typeArray->finalType = finalType;
         typeArray->computeName();
-        if (typeArray->pointedType->kind != TypeInfoKind::Array)
+        if (!typeArray->pointedType->isArray())
             break;
         typeArray = CastTypeInfo<TypeInfoArray>(typeArray->pointedType, TypeInfoKind::Array);
     }

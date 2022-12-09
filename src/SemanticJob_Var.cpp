@@ -606,7 +606,7 @@ bool SemanticJob::deduceLambdaTypeAffect(SemanticContext* context, AstVarDecl* n
                 return true;
 
             auto typeOverload = CastTypeInfo<TypeInfoFuncAttr>(context->job->cacheMatches[0]->oneOverload->overload->typeInfo, TypeInfoKind::FuncAttr);
-            if (typeOverload->parameters[1]->typeInfo->kind != TypeInfoKind::LambdaClosure)
+            if (!typeOverload->parameters[1]->typeInfo->isLambdaClosure())
                 return true;
 
             typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeOverload->parameters[1]->typeInfo, TypeInfoKind::LambdaClosure);
@@ -720,12 +720,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             node->ownerScope->addPublicNode(node);
     }
 
-    if (node->attributeFlags & ATTRIBUTE_DISCARDABLE && concreteNodeType->kind != TypeInfoKind::LambdaClosure)
+    if (node->attributeFlags & ATTRIBUTE_DISCARDABLE && !concreteNodeType->isLambdaClosure())
         return context->report({node, Fmt(Err(Err0297), concreteNodeType->getDisplayNameC())});
 
     // Check for missing initialization
     // This is ok to not have an initialization for structs, as they are initialized by default
-    if (!node->assignment and (!node->type || concreteNodeType->kind != TypeInfoKind::Struct))
+    if (!node->assignment && (!node->type || concreteNodeType->kind != TypeInfoKind::Struct))
     {
         // A constant must be initialized
         if (isCompilerConstant && !(node->flags & AST_VALUE_COMPUTED))
@@ -884,7 +884,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
         // Do not cast for structs, as we can have special assignment with different types
         // Except if this is an initializer list {...}
-        if (leftConcreteType->kind != TypeInfoKind::Struct || rightConcreteType->isInitializerList())
+        if (!leftConcreteType->isStruct() || rightConcreteType->isInitializerList())
         {
             // Cast from struct to interface : need to wait for all interfaces to be registered
             if (leftConcreteType->isInterface() && rightConcreteType->isStruct())

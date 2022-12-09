@@ -3515,7 +3515,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         toType = TypeManager::concreteType(toType, CONCRETE_FUNC);
     if (fromType->isFuncAttr())
         fromType = TypeManager::concreteType(fromType, CONCRETE_FUNC);
-    if (toType->kind != TypeInfoKind::LambdaClosure && fromType->isLambdaClosure())
+    if (!toType->isLambdaClosure() && fromType->isLambdaClosure())
         fromType = TypeManager::concreteType(fromType, CONCRETE_FUNC);
 
     // Transform typealias to related type
@@ -3638,7 +3638,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     }
 
     // Const mismatch
-    if (toType->kind != TypeInfoKind::Generic && toType->kind != TypeInfoKind::LambdaClosure && !(castFlags & CASTFLAG_FORCE_UNCONST))
+    if (toType->kind != TypeInfoKind::Generic && !toType->isLambdaClosure() && !(castFlags & CASTFLAG_FORCE_UNCONST))
     {
         if (!(castFlags & CASTFLAG_PARAMS) || !toType->isStruct())
         {
