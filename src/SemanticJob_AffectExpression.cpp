@@ -32,7 +32,7 @@ bool SemanticJob::resolveAfterAffectLeft(SemanticContext* context)
     // :DeduceLambdaType
     auto node     = context->node;
     auto typeInfo = TypeManager::concreteType(node->typeInfo);
-    if (typeInfo->kind == TypeInfoKind::LambdaClosure || typeInfo->isStruct())
+    if (typeInfo->isLambdaClosure() || typeInfo->isStruct())
     {
         auto op = CastAst<AstOp>(node->parent, AstNodeKind::AffectOp);
         if (op->dependentLambda)

@@ -389,7 +389,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         auto paramNode = destFuncDecl ? destFuncDecl->parameters->childs[bi.badSignatureParameterIdx] : nullptr;
 
         // In case of lambda, replace undefined with the corresponding match, if possible
-        if (bi.badSignatureRequestedType->kind == TypeInfoKind::LambdaClosure && bi.badSignatureGivenType->kind == TypeInfoKind::LambdaClosure)
+        if (bi.badSignatureRequestedType->isLambdaClosure() && bi.badSignatureGivenType->isLambdaClosure())
         {
             auto type1 = CastTypeInfo<TypeInfoFuncAttr>(bi.badSignatureRequestedType, TypeInfoKind::LambdaClosure);
             auto type2 = CastTypeInfo<TypeInfoFuncAttr>(bi.badSignatureGivenType, TypeInfoKind::LambdaClosure);

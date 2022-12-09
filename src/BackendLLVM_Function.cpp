@@ -3261,7 +3261,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                         break;
                     }
                 }
-                else if (returnType->isPointer() || returnType->kind == TypeInfoKind::LambdaClosure)
+                else if (returnType->isPointer() || returnType->isLambdaClosure())
                 {
                     auto llvmType = swagTypeToLLVMType(buildParameters, moduleToGen, returnType);
                     auto ptr = builder.CreatePointerCast(allocResult, llvmType->getPointerTo());
@@ -4868,7 +4868,7 @@ llvm::Type* BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParamete
         typeInfo->isArray() ||
         typeInfo->isStruct() ||
         typeInfo->isInterface() ||
-        typeInfo->kind == TypeInfoKind::LambdaClosure ||
+        typeInfo->isLambdaClosure() ||
         typeInfo->isAny() ||
         typeInfo->isString())
     {
@@ -5234,7 +5234,7 @@ void BackendLLVM::getReturnResult(llvm::LLVMContext&     context,
             break;
         }
     }
-    else if (returnType->isPointer() || returnType->kind == TypeInfoKind::LambdaClosure)
+    else if (returnType->isPointer() || returnType->isLambdaClosure())
     {
         auto llvmType = swagTypeToLLVMType(buildParameters, moduleToGen, returnType);
         if (imm)

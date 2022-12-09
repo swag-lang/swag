@@ -154,7 +154,7 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
     {
         if (to->kind == TypeInfoKind::Generic)
             return true;
-        if (this == g_TypeMgr->typeInfoNull && to->kind == TypeInfoKind::LambdaClosure)
+        if (this == g_TypeMgr->typeInfoNull && to->isLambdaClosure())
             return true;
     }
 
@@ -725,11 +725,11 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint32_t isSameFlags)
         return false;
 
     auto other = static_cast<TypeInfoFuncAttr*>(to);
-    SWAG_ASSERT(to->isFuncAttr() || to->kind == TypeInfoKind::LambdaClosure);
+    SWAG_ASSERT(to->isFuncAttr() || to->isLambdaClosure());
     if (!isSame(other, isSameFlags))
         return false;
 
-    if ((isSameFlags & ISSAME_EXACT) || (to->kind == TypeInfoKind::LambdaClosure))
+    if ((isSameFlags & ISSAME_EXACT) || (to->isLambdaClosure()))
     {
         if (returnType && returnType != g_TypeMgr->typeInfoVoid && !other->returnType)
             return false;

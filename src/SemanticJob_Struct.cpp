@@ -448,7 +448,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
 
             // Verify signature
             typeParam->typeInfo = TypeManager::concreteType(child->typeInfo, CONCRETE_ALIAS);
-            SWAG_VERIFY(typeParam->typeInfo->kind == TypeInfoKind::LambdaClosure, context->report({varDecl->type, Fmt(Err(Err0676), child->typeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(typeParam->typeInfo->isLambdaClosure(), context->report({varDecl->type, Fmt(Err(Err0676), child->typeInfo->getDisplayNameC())}));
             auto typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeParam->typeInfo, TypeInfoKind::LambdaClosure);
             SWAG_VERIFY(typeLambda->parameters.size() >= 1, context->report({varDecl->type, Fmt(Err(Err0677), child->token.ctext())}));
             auto firstParamType = typeLambda->parameters[0]->typeInfo;

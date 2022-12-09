@@ -1718,7 +1718,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
         auto index = pushRAParams[indexParam--];
 
         if (typeParam->isPointer() ||
-            typeParam->kind == TypeInfoKind::LambdaClosure ||
+            typeParam->isLambdaClosure() ||
             typeParam->isArray())
         {
             pushParams3.push_back(index);

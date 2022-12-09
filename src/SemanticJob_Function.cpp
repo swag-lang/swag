@@ -451,7 +451,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             {
                 auto front = op->childs.front();
                 SWAG_ASSERT(front->typeInfo);
-                if (front->typeInfo->kind == TypeInfoKind::LambdaClosure)
+                if (front->typeInfo->isLambdaClosure())
                 {
                     auto typeFct       = CastTypeInfo<TypeInfoFuncAttr>(front->typeInfo, TypeInfoKind::LambdaClosure);
                     typeNode->typeInfo = typeFct->returnType;

@@ -134,7 +134,7 @@ bool ByteCodeGenJob::emitCastToNativeBool(ByteCodeGenContext* context, AstNode* 
         emitInstruction(context, ByteCodeOp::DeRef64, r0, exprNode->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::CastBool64, r0, r0);
     }
-    else if (typeInfo->isPointer() || typeInfo->kind == TypeInfoKind::LambdaClosure)
+    else if (typeInfo->isPointer() || typeInfo->isLambdaClosure())
     {
         emitInstruction(context, ByteCodeOp::CastBool64, r0, exprNode->resultRegisterRC);
     }
@@ -846,7 +846,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::LambdaClosure)
+    if (typeInfo->isLambdaClosure())
     {
         ensureCanBeChangedRC(context, exprNode->resultRegisterRC);
         truncRegisterRC(context, exprNode->resultRegisterRC, 1);
@@ -899,7 +899,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
             fromTypeInfo->isStruct() ||
             fromTypeInfo->isInterface() ||
             fromTypeInfo->isSlice() ||
-            fromTypeInfo->kind == TypeInfoKind::LambdaClosure ||
+            fromTypeInfo->isLambdaClosure() ||
             fromTypeInfo->numRegisters() == 1)
         {
             truncRegisterRC(context, exprNode->resultRegisterRC, 1);

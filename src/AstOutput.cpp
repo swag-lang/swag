@@ -902,7 +902,7 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstNode* node
 {
     // Lambda
     /////////////////////////////////
-    if (typeInfo->kind == TypeInfoKind::LambdaClosure)
+    if (typeInfo->isLambdaClosure())
     {
         SWAG_ASSERT(typeInfo->declNode && typeInfo->declNode->kind == AstNodeKind::TypeLambda);
         SWAG_CHECK(outputNode(context, concat, typeInfo->declNode));

@@ -661,7 +661,7 @@ static void appendValueProtected(Utf8& str, const EvaluateResult& res, int inden
         return;
     }
 
-    if (typeInfo->isPointer() || typeInfo->kind == TypeInfoKind::LambdaClosure)
+    if (typeInfo->isPointer() || typeInfo->isLambdaClosure())
     {
         auto ptr = ((uint8_t**) addr)[0];
         if (ptr == nullptr)

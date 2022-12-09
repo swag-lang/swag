@@ -119,7 +119,7 @@ TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeIn
     {
         // We can have a match on a lambda for a function attribute, when function has been generated
         // In that case, we want to be sure that the kind is function
-        if (typeInfo->isFuncAttr() && it->second->kind == TypeInfoKind::LambdaClosure)
+        if (typeInfo->isFuncAttr() && it->second->isLambdaClosure())
         {
             auto t  = it->second->clone();
             t->kind = TypeInfoKind::FuncAttr;

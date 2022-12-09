@@ -348,7 +348,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
     fromType = TypeManager::concreteType(fromType);
 
     if (fromType->isPointer() ||
-        fromType->kind == TypeInfoKind::LambdaClosure ||
+        fromType->isLambdaClosure() ||
         fromType->isInterface() ||
         fromType->isSlice())
     {
@@ -1087,7 +1087,7 @@ bool TypeManager::castToNativeUInt(SemanticContext* context, TypeInfo* fromType,
     if (fromType->nativeType == NativeTypeKind::U64 || fromType->nativeType == NativeTypeKind::UInt)
         return true;
 
-    if (fromType->isPointer() || fromType->kind == TypeInfoKind::LambdaClosure)
+    if (fromType->isPointer() || fromType->isLambdaClosure())
     {
         if (castFlags & CASTFLAG_EXPLICIT)
         {
@@ -2608,7 +2608,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
     }
 
     // Lambda to *void
-    if (fromType->kind == TypeInfoKind::LambdaClosure)
+    if (fromType->isLambdaClosure())
     {
         if ((castFlags & CASTFLAG_EXPLICIT) && toType->isPointerVoid())
         {
@@ -3515,7 +3515,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         toType = TypeManager::concreteType(toType, CONCRETE_FUNC);
     if (fromType->isFuncAttr())
         fromType = TypeManager::concreteType(fromType, CONCRETE_FUNC);
-    if (toType->kind != TypeInfoKind::LambdaClosure && fromType->kind == TypeInfoKind::LambdaClosure)
+    if (toType->kind != TypeInfoKind::LambdaClosure && fromType->isLambdaClosure())
         fromType = TypeManager::concreteType(fromType, CONCRETE_FUNC);
 
     // Transform typealias to related type

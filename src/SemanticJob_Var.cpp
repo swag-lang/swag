@@ -66,7 +66,7 @@ AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstN
     auto sourceFile = context->sourceFile;
 
     // Tuple item is a lambda
-    if (childType->kind == TypeInfoKind::LambdaClosure)
+    if (childType->isLambdaClosure())
     {
         auto typeLambda             = CastTypeInfo<TypeInfoFuncAttr>(childType, TypeInfoKind::LambdaClosure);
         auto typeExprLambda         = Ast::newNode<AstTypeLambda>(nullptr, AstNodeKind::TypeLambda, sourceFile, parent);
@@ -616,7 +616,7 @@ bool SemanticJob::deduceLambdaTypeAffect(SemanticContext* context, AstVarDecl* n
     }
     else
     {
-        SWAG_ASSERT(frontType->kind == TypeInfoKind::LambdaClosure);
+        SWAG_ASSERT(frontType->isLambdaClosure());
         typeLambda = CastTypeInfo<TypeInfoFuncAttr>(frontType, TypeInfoKind::LambdaClosure);
     }
 
@@ -840,7 +840,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         if (!isGeneric && node->assignment && (isCompilerConstant || (symbolFlags & OVERLOAD_VAR_GLOBAL)))
         {
-            if (node->assignment->typeInfo->kind == TypeInfoKind::LambdaClosure)
+            if (node->assignment->typeInfo->isLambdaClosure())
             {
                 SWAG_VERIFY(!isCompilerConstant, context->report({node->assignment, Err(Err0160)}));
                 auto funcNode = CastAst<AstFuncDecl>(node->assignment->typeInfo->declNode, AstNodeKind::FuncDecl, AstNodeKind::TypeLambda);

@@ -368,7 +368,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
             i = nodeCall->indexParam;
 
         // This is a lambda that was waiting for a match to have its types, and to continue solving its content
-        if (nodeCall->typeInfo->kind == TypeInfoKind::LambdaClosure && (nodeCall->typeInfo->declNode->semFlags & AST_SEM_PENDING_LAMBDA_TYPING))
+        if (nodeCall->typeInfo->isLambdaClosure() && (nodeCall->typeInfo->declNode->semFlags & AST_SEM_PENDING_LAMBDA_TYPING))
             resolvePendingLambdaTyping(nodeCall, &oneMatch, i);
 
         uint32_t castFlags = CASTFLAG_AUTO_OPCAST | CASTFLAG_ACCEPT_PENDING | CASTFLAG_PARAMS | CASTFLAG_PTR_REF;
@@ -1103,7 +1103,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             identifier->flags |= AST_NO_BYTECODE;
 
         // Lambda call
-        if (typeInfo->kind == TypeInfoKind::LambdaClosure && identifier->callParameters)
+        if (typeInfo->isLambdaClosure() && identifier->callParameters)
         {
             auto typeInfoRet = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::LambdaClosure)->returnType;
 
@@ -1654,7 +1654,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(rawTypeInfo, TypeInfoKind::FuncAttr);
             typeInfo->match(oneOverload.symMatchContext);
         }
-        else if (rawTypeInfo->kind == TypeInfoKind::LambdaClosure)
+        else if (rawTypeInfo->isLambdaClosure())
         {
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(rawTypeInfo, TypeInfoKind::LambdaClosure);
             typeInfo->match(oneOverload.symMatchContext);
@@ -2835,7 +2835,7 @@ bool SemanticJob::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFun
 
     // As we have a variable on the left (or equivalent), force it, except when calling a lambda with the
     // right number of arguments (not sure all of thoses tests are bullet proof)
-    if (typeFunc->kind == TypeInfoKind::LambdaClosure)
+    if (typeFunc->isLambdaClosure())
         return false;
 
     return nodeIsExplicit;
@@ -2848,7 +2848,7 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
     bool canDoUfcs = false;
     if (symbol->kind == SymbolKind::Function)
         canDoUfcs = true;
-    if (symbol->kind == SymbolKind::Variable && overload->typeInfo->kind == TypeInfoKind::LambdaClosure)
+    if (symbol->kind == SymbolKind::Variable && overload->typeInfo->isLambdaClosure())
         canDoUfcs = node->callParameters;
     if (isFunctionButNotACall(context, node, symbol))
         canDoUfcs = false;
@@ -3212,7 +3212,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         }
 
         // Priority to lambda call in a parameter over a function outside the actual function
-        if (over->typeInfo->kind == TypeInfoKind::LambdaClosure)
+        if (over->typeInfo->isLambdaClosure())
         {
             auto callParams = over->node->findParent(AstNodeKind::FuncCallParams);
             if (callParams)
@@ -4331,7 +4331,7 @@ bool SemanticJob::checkCanCatch(SemanticContext* context)
     {
         if (!c->resolvedSymbolOverload)
             continue;
-        if (c->resolvedSymbolOverload->symbol->kind == SymbolKind::Function || c->resolvedSymbolOverload->typeInfo->kind == TypeInfoKind::LambdaClosure)
+        if (c->resolvedSymbolOverload->symbol->kind == SymbolKind::Function || c->resolvedSymbolOverload->typeInfo->isLambdaClosure())
             return true;
     }
 
