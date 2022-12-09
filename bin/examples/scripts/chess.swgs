@@ -102,10 +102,9 @@ func initCells()
         else
         {
             xinfo := x - 2
-            g_BoardInfo[i].odd = (xinfo + y)%2 == 1
-            g_BoardInfo[i].rect = Math.Rectangle{ BorderSize + xinfo * CellSize,
-                BorderSize + (7 - y) * CellSize, CellSize, CellSize }
-            g_Board[i].content = (y < 2) ? .White : ((y > 5) ? .Black : .Empty)
+            g_BoardInfo[i].odd  = (xinfo + y)%2 == 1
+            g_BoardInfo[i].rect = { BorderSize + xinfo * CellSize, BorderSize + (7 - y) * CellSize, CellSize, CellSize }
+            g_Board[i].content  = (y < 2) ? .White : ((y > 5) ? .Black : .Empty)
         }
     }
 
@@ -132,7 +131,7 @@ func getCellWithOffset(board:^Cell, source, offset:s8) -> s8
 
 func getKingCell(board:^Cell, color:ContentEnum)->s8
 {
-    loop i:96's8
+    loop i: 96's8
         if board[i].content == color and board[i].piece == PiecesEnum.King
             return i
     return -1
@@ -206,7 +205,7 @@ func computeMoves()
     }
 
     // castle special case
-    var ki:s8 = g_Game.whiteTurn ? 6 : 90;
+    var ki:s8 = g_Game.whiteTurn ? 6 : 90
     littleCastle := g_Game.castle[ cast(s8)contentToTreat, 0 ]
     bigCastle := g_Game.castle[ cast(s8)contentToTreat, 1 ]
 
@@ -239,13 +238,13 @@ func getPawnMoves(board:^Cell, from:s8, moves:*Array's8)
 {
     var isWhite: bool = board[from].content == .White
     var offset: s8 = isWhite ? 12 : -12
-    target := getCellWithOffset(board, from, offset);
+    target := getCellWithOffset(board, from, offset)
     if (target != -1 and board[target].content == .Empty)
         moves.add(target)
     // double move when pawn is in its original row
     if ( cast(s8)(from/12) == (isWhite ? 1 : 6))
     {
-        target = getCellWithOffset(board, from, cast(s8)(2*offset));
+        target = getCellWithOffset(board, from, cast(s8)(2*offset))
         if (target != -1 and board[target].content == .Empty)
             moves.add(target)
     }
@@ -357,7 +356,7 @@ func doMove( board:^Cell, from:s8, to:s8)-> [96] Cell
 {
     var result: [96] Cell
 
-    loop i:96's8
+    loop i: 96's8
         result[i] = board[i]
 
     result[to].piece = result[from].piece
@@ -373,7 +372,7 @@ func paintCell(painter: *Pixel.Painter, index:s8)
     if (cell.content == .Invalid)
         return
     cellInfo := &g_BoardInfo[index]
-    painter.fillRect(cellInfo.rect, cellInfo.odd ? ColorOdd : ColorEven );
+    painter.fillRect(cellInfo.rect, cellInfo.odd ? ColorOdd : ColorEven )
     if (cell.piece == .None)
         return
 
@@ -395,10 +394,10 @@ func paintBoard( evt: *Event)
     s := BoardSize
     b := BorderSize
 
-    painter.fillRect( Math.Rectangle{ 0, 0, b + s + b, b}, ColorBorder)
-    painter.fillRect( Math.Rectangle{ 0, b + s, b + s + b, b}, ColorBorder)
-    painter.fillRect( Math.Rectangle{ 0, b, b, s}, ColorBorder)
-    painter.fillRect( Math.Rectangle{ b + s, b, b, s}, ColorBorder)
+    painter.fillRect({0, 0, b + s + b, b}, ColorBorder)
+    painter.fillRect({0, b + s, b + s + b, b}, ColorBorder)
+    painter.fillRect({0, b, b, s}, ColorBorder)
+    painter.fillRect({b + s, b, b, s}, ColorBorder)
 
     var rs:  RichString
     var rsf: RichStringFormat
@@ -427,7 +426,7 @@ func paintBoard( evt: *Event)
         rect.y += CellSize
     }
 
-    loop i:96's8
+    loop i: 96's8
         paintCell(painter, i)
 
     if (g_Game.selectedCell != -1)
@@ -494,18 +493,18 @@ func paintStates(evt: *Event)
 
 }
 
-func pickCell(pos:Math.Point)->s8
+func pickCell(pos: Math.Point)->s8
 {
     xpix := pos.x - BorderSize
-    if (xpix < 0 or xpix >= BoardSize)
+    if xpix < 0 or xpix >= BoardSize
         return -1
     ypix := pos.y - BorderSize
-    if (ypix < 0 or ypix >= BoardSize)
+    if ypix < 0 or ypix >= BoardSize
         return -1
 
     x := cast(s32) (xpix / CellSize)
     y := 7 - cast(s32) (ypix / CellSize)
-    return cast(s8)(y * 12 + x + 2)
+    return cast(s8) (y * 12 + x + 2)
 }
 
 func onEvent(wnd: *Wnd, evt: *Event)->bool
@@ -523,7 +522,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         btn.sigPressed += closure|wnd|(btn) {
             initGame()
             initCells()
-            wnd.invalidate();
+            wnd.invalidate()
         }
 
     case MousePressed:
