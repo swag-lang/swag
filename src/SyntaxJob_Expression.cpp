@@ -1563,8 +1563,8 @@ bool SyntaxJob::doRange(AstNode* parent, AstNode* expression, AstNode** result)
 
     if (token.id == TokenId::SymDotDotLess)
         rangeNode->specFlags |= AST_SPEC_RANGE_EXCLUDE_UP;
-
     SWAG_CHECK(eatToken());
+
     SWAG_CHECK(doExpression(rangeNode, EXPR_FLAG_SIMPLE, &rangeNode->expressionUp));
     return true;
 }
