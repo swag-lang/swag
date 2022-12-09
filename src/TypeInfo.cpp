@@ -317,7 +317,7 @@ bool TypeInfo::isArrayOfEnum()
     if (kind != TypeInfoKind::Array)
         return false;
     auto ptr = (TypeInfoArray*) this;
-    return ptr->finalType->kind == TypeInfoKind::Enum;
+    return ptr->finalType->isEnum();
 }
 
 bool TypeInfo::isMethod()

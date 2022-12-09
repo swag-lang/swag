@@ -364,7 +364,7 @@ bool SemanticJob::resolveUserOpCommutative(SemanticContext* context, const Utf8&
 bool SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStruct* leftStruct, SymbolName** result)
 {
     *result = nullptr;
-    if (leftStruct->flags & TYPEINFO_STRUCT_IS_TUPLE)
+    if (leftStruct->isTuple())
         return true;
 
     VectorNative<FindUserOp> results;

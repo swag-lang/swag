@@ -156,7 +156,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
     // Nice name to reference it
     Utf8 refNiceName;
-    if (overload->typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
+    if (overload->typeInfo->isTuple())
         refNiceName = "the tuple";
     else if (overload->typeInfo->isLambda())
         refNiceName = Fmt("the lambda `%s`", symbol->name.c_str());
@@ -1107,7 +1107,7 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
         if (typeRef && typeRef->isPointer())
             typeRef = CastTypeInfo<TypeInfoPointer>(typeRef, TypeInfoKind::Pointer)->pointedType;
 
-        if (typeRef && typeRef->flags & TYPEINFO_STRUCT_IS_TUPLE)
+        if (typeRef && typeRef->isTuple())
         {
             diag      = new Diagnostic{node, Fmt(Err(Err0093), node->token.ctext())};
             auto note = new Diagnostic{identifierRef->startScope->owner, Nte(Nte0030), DiagnosticLevel::Note};

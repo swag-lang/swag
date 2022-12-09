@@ -195,7 +195,7 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
 
     // Special case for enum : nothing is possible, except for flags
     auto typeInfo = TypeManager::concreteType(child->typeInfo, CONCRETE_ALIAS);
-    if (typeInfo->kind == TypeInfoKind::Enum)
+    if (typeInfo->isEnum())
     {
         if (!(typeInfo->flags & TYPEINFO_ENUM_FLAGS))
             return notAllowed(context, op, typeInfo, "because the enum is not marked with `Swag.EnumFlags`");

@@ -4848,7 +4848,7 @@ llvm::Type* BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParamete
 
     typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS | CONCRETE_FORCEALIAS);
 
-    if (typeInfo->kind == TypeInfoKind::Enum)
+    if (typeInfo->isEnum())
     {
         auto typeInfoEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
         return swagTypeToLLVMType(buildParameters, moduleToGen, typeInfoEnum->rawType);

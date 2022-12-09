@@ -106,7 +106,7 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
     identifierRef->startScope           = nullptr;
 
     // Before making the type concrete
-    if (node->typeInfo->kind == TypeInfoKind::Enum)
+    if (node->typeInfo->isEnum())
         identifierRef->startScope = CastTypeInfo<TypeInfoEnum>(node->typeInfo, node->typeInfo->kind)->scope;
 
     switch (typeInfo->kind)
@@ -2328,7 +2328,7 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
                         auto child = fctCallParam->parent->childs[i];
                         if (child == fctCallParam)
                             break;
-                        if (child->typeInfo && child->typeInfo->kind == TypeInfoKind::Enum)
+                        if (child->typeInfo && child->typeInfo->isEnum())
                             enumIdx++;
                         else if (child->kind == AstNodeKind::IdentifierRef && child->specFlags & AST_SPEC_IDENTIFIERREF_AUTO_SCOPE)
                             enumIdx++;
@@ -2336,7 +2336,7 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
 
                     for (auto p : typeFunc->parameters)
                     {
-                        if (p->typeInfo->kind == TypeInfoKind::Enum)
+                        if (p->typeInfo->isEnum())
                         {
                             if (!enumIdx)
                             {
@@ -2379,7 +2379,7 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
             if (funcNode->returnType)
             {
                 auto typeInfo = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_FUNC);
-                if (typeInfo->kind == TypeInfoKind::Enum)
+                if (typeInfo->isEnum())
                 {
                     *res = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
                     return true;

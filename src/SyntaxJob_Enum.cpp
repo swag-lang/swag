@@ -54,7 +54,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
             newScope->owner->typeInfo = typeInfo;
         }
 
-        SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Enum);
+        SWAG_ASSERT(typeInfo->isEnum());
         typeInfo->declNode = enumNode;
         typeInfo->name     = enumNode->token.text;
         typeInfo->scope    = newScope;

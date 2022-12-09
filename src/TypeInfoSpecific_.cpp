@@ -940,7 +940,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
 
     if (!TypeInfo::isSame(to, isSameFlags))
         return false;
-    if ((flags & TYPEINFO_STRUCT_IS_TUPLE) != (to->flags & TYPEINFO_STRUCT_IS_TUPLE))
+    if (isTuple() != to->isTuple())
         return false;
 
     auto other = CastTypeInfo<TypeInfoStruct>(to, to->kind);

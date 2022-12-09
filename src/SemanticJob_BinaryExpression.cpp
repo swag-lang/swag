@@ -808,7 +808,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     bool isEnumFlags   = false;
     auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo, CONCRETE_ALIAS | CONCRETE_FUNC);
     auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo, CONCRETE_ALIAS | CONCRETE_FUNC);
-    if (leftTypeInfo->kind == TypeInfoKind::Enum || rightTypeInfo->kind == TypeInfoKind::Enum)
+    if (leftTypeInfo->isEnum() || rightTypeInfo->isEnum())
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
 
@@ -817,12 +817,12 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
             node->token.id != TokenId::SymCircumflex)
             return notAllowed(context, node, leftTypeInfo);
 
-        if (leftTypeInfo->kind == TypeInfoKind::Enum && !(leftTypeInfo->flags & TYPEINFO_ENUM_FLAGS) && rightTypeInfo == leftTypeInfo)
+        if (leftTypeInfo->isEnum() && !(leftTypeInfo->flags & TYPEINFO_ENUM_FLAGS) && rightTypeInfo == leftTypeInfo)
             return notAllowed(context, node, leftTypeInfo, "because the enum is not marked with `Swag.EnumFlags`");
 
-        if (leftTypeInfo->kind == TypeInfoKind::Enum && !(leftTypeInfo->flags & TYPEINFO_ENUM_FLAGS))
+        if (leftTypeInfo->isEnum() && !(leftTypeInfo->flags & TYPEINFO_ENUM_FLAGS))
             return context->report({node, Fmt(Err(Err0037), node->token.ctext(), leftTypeInfo->getDisplayNameC())});
-        if (rightTypeInfo->kind == TypeInfoKind::Enum && !(rightTypeInfo->flags & TYPEINFO_ENUM_FLAGS))
+        if (rightTypeInfo->isEnum() && !(rightTypeInfo->flags & TYPEINFO_ENUM_FLAGS))
             return context->report({node, Fmt(Err(Err0037), node->token.ctext(), rightTypeInfo->getDisplayNameC())});
 
         isEnumFlags = true;
@@ -844,9 +844,9 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     }
 
     // Cannot compare tuples
-    if (leftTypeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
+    if (leftTypeInfo->isTuple())
         return context->report({left, Fmt(Err(Err0168), node->token.ctext())});
-    if (rightTypeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
+    if (rightTypeInfo->isTuple())
         return context->report({right, Fmt(Err(Err0168), node->token.ctext())});
 
     node->byteCodeFct = ByteCodeGenJob::emitBinaryOp;

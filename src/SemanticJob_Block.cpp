@@ -241,7 +241,7 @@ bool SemanticJob::resolveSwitchAfterExpr(SemanticContext* context)
     auto typeInfo   = TypeManager::concreteType(node->typeInfo, CONCRETE_FUNC);
 
     // For a switch on an enum, force a 'using' for each case
-    if (typeInfo->kind == TypeInfoKind::Enum)
+    if (typeInfo->isEnum())
     {
         // :AutoScope
         auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
@@ -341,7 +341,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                         Diagnostic note{valDef[idx], Nte(Nte0014), DiagnosticLevel::Note};
                         if (expr->flags & AST_VALUE_IS_TYPEINFO)
                             return context->report({expr, Fmt(Err(Err0611), expr->token.ctext())}, &note);
-                        if (expr->typeInfo->kind == TypeInfoKind::Enum)
+                        if (expr->typeInfo->isEnum())
                             return context->report({expr, Fmt(Err(Err0612), expr->token.ctext())}, &note);
                         if (typeExpr->isNativeInteger())
                             return context->report({expr, Fmt(Err(Err0613), expr->computedValue->reg.u64)}, &note);
@@ -366,7 +366,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
         auto back = node->cases.back();
         SWAG_VERIFY(!back->expressions.empty(), context->report({back, Err(Err0616)}));
 
-        if (node->typeInfo->kind == TypeInfoKind::Enum && !node->beforeAutoCastType)
+        if (node->typeInfo->isEnum() && !node->beforeAutoCastType)
         {
             auto typeEnum = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
             if (typeSwitch->isString())
@@ -580,7 +580,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     AstNode* newExpression = nullptr;
     if (typeInfo->isStruct())
     {
-        SWAG_VERIFY(!(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report({node->expression, Err(Err0624), Hint::isType(typeInfo)}));
+        SWAG_VERIFY(!(typeInfo->isTuple()), context->report({node->expression, Err(Err0624), Hint::isType(typeInfo)}));
         SWAG_VERIFY(node->expression->kind == AstNodeKind::IdentifierRef, Report::internalError(node->expression, "resolveVisit expression, should be an identifier"));
 
         auto identifierRef    = (AstIdentifierRef*) Ast::clone(node->expression, node);
@@ -783,7 +783,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     }
 
     // Enum
-    else if (typeInfo->kind == TypeInfoKind::Enum)
+    else if (typeInfo->isEnum())
     {
         auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
         SWAG_VERIFY(!(node->specFlags & AST_SPEC_VISIT_WANTPOINTER), context->report({node, Err(Err0636)}));
@@ -806,7 +806,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         if (typeInfo->isPointer())
         {
             auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-            if (typePtr->pointedType->kind == TypeInfoKind::Enum ||
+            if (typePtr->pointedType->isEnum() ||
                 typePtr->pointedType->kind == TypeInfoKind::Variadic ||
                 typePtr->pointedType->kind == TypeInfoKind::TypedVariadic ||
                 typePtr->pointedType->isSlice() ||

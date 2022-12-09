@@ -637,7 +637,7 @@ static void appendValueProtected(Utf8& str, const EvaluateResult& res, int inden
     if (!addr && res.value)
         addr = &res.value->reg;
 
-    if (typeInfo->kind == TypeInfoKind::Enum)
+    if (typeInfo->isEnum())
     {
         Register reg;
         auto     ptr = ((uint8_t**) addr)[0];

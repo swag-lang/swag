@@ -262,7 +262,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     }
     else if (typeInfo->isStruct())
     {
-        SWAG_VERIFY(!(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report({expression, Err(Err0796), Hint::isType(typeInfo)}));
+        SWAG_VERIFY(!(typeInfo->isTuple()), context->report({expression, Err(Err0796), Hint::isType(typeInfo)}));
         node->typeInfo = typeInfo;
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opData, nullptr, nullptr, node, nullptr));
         if (context->result == ContextResult::Pending)
@@ -294,7 +294,7 @@ bool SemanticJob::resolveIntrinsicStringOf(SemanticContext* context)
             node->computedValue->text = expr->computedValue->text;
         else if (typeInfo->isNative())
             node->computedValue->text = Ast::literalToString(typeInfo, *expr->computedValue);
-        else if (typeInfo->kind == TypeInfoKind::Enum)
+        else if (typeInfo->isEnum())
             node->computedValue->text = Ast::enumToString(typeInfo, expr->computedValue->text, expr->computedValue->reg);
         else
             return context->report({expr, Err(Err0799)});
@@ -386,7 +386,7 @@ bool SemanticJob::resolveIntrinsicRunes(SemanticContext* context)
 bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, AstNode* expression)
 {
     auto typeInfo = expression->typeInfo;
-    if (typeInfo->kind == TypeInfoKind::Enum)
+    if (typeInfo->isEnum())
     {
         auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
         node->setFlagsValueIsComputed();
@@ -445,7 +445,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     }
     else if (typeInfo->isStruct())
     {
-        SWAG_VERIFY(!(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report({expression, Err(Err0800), Hint::isType(typeInfo)}));
+        SWAG_VERIFY(!(typeInfo->isTuple()), context->report({expression, Err(Err0800), Hint::isType(typeInfo)}));
         node->typeInfo = typeInfo;
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opCount, nullptr, nullptr, node, nullptr));
         if (context->result == ContextResult::Pending)
@@ -577,7 +577,7 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
     }
 
     // For an enum, this is the raw type
-    if (expr->typeInfo->kind == TypeInfoKind::Enum)
+    if (expr->typeInfo->isEnum())
     {
         auto typeEnum = CastTypeInfo<TypeInfoEnum>(expr->typeInfo, TypeInfoKind::Enum);
         SWAG_CHECK(resolveTypeAsExpression(context, expr, typeEnum->rawType, &node->typeInfo));

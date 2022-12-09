@@ -483,7 +483,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     case TypeInfoKind::Struct:
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
 
-        if (arrayType->flags & TYPEINFO_STRUCT_IS_TUPLE)
+        if (arrayType->isTuple())
             return context->report({arrayNode->access, Err(Err0482)});
 
         arrayNode->typeInfo = arrayType;
@@ -591,7 +591,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, arrayNode->array));
     SWAG_CHECK(checkIsConcrete(context, arrayNode->access));
 
-    if (arrayType->flags & TYPEINFO_STRUCT_IS_TUPLE)
+    if (arrayType->isTuple())
         return context->report({arrayAccess, Err(Err0482)});
 
     arrayNode->flags |= AST_R_VALUE;

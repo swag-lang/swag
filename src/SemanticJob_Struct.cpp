@@ -817,7 +817,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
     // Be default, a tuple is 'constexpr'
     // If one of the childs is not, then the attribute will be removed
-    if (typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
+    if (typeInfo->isTuple())
         node->attributeFlags |= ATTRIBUTE_CONSTEXPR;
 
     uint32_t storageOffset     = 0;
@@ -1140,7 +1140,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         typeInfo->sizeOf = (uint32_t) TypeManager::align(typeInfo->sizeOf, typeInfo->alignOf);
 
     // Check public
-    if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && !(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE))
+    if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && !(typeInfo->isTuple()))
     {
         if (!node->ownerScope->isGlobalOrImpl())
             return context->report({node, Fmt(Err(Err0675), node->token.ctext())});

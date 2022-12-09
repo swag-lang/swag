@@ -270,7 +270,7 @@ bool SemanticJob::resolveVarDeclAfterType(SemanticContext* context)
     // Resolution of an affectation to an enum, without having to specify the enum name before
     // 'using', but just for affectation
     auto typeInfo = TypeManager::concreteType(varDecl->type->typeInfo, CONCRETE_ALIAS);
-    if (typeInfo->kind == TypeInfoKind::Enum)
+    if (typeInfo->isEnum())
     {
         auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
         varDecl->assignment->addAlternativeScope(typeEnum->scope);
@@ -278,7 +278,7 @@ bool SemanticJob::resolveVarDeclAfterType(SemanticContext* context)
     else if (typeInfo->isArray())
     {
         auto typeArr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        if (typeArr->finalType->kind == TypeInfoKind::Enum)
+        if (typeArr->finalType->isEnum())
         {
             auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeArr->finalType, TypeInfoKind::Enum);
             varDecl->assignment->addAlternativeScope(typeEnum->scope);
@@ -743,7 +743,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
         // Check an enum variable without initialization
         if (concreteNodeType &&
-            concreteNodeType->kind == TypeInfoKind::Enum &&
+            concreteNodeType->isEnum() &&
             node->kind != AstNodeKind::FuncDeclParam &&
             !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
         {

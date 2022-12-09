@@ -380,7 +380,7 @@ bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode
                 continue;
             if (typeInfo->kind == TypeInfoKind::FuncAttr && one.typeFunc && !(one.typeFunc->attributeUsage & (AttributeUsage::All | AttributeUsage::Function)))
                 continue;
-            if (typeInfo->kind == TypeInfoKind::Enum && one.typeFunc && !(one.typeFunc->attributeUsage & (AttributeUsage::All | AttributeUsage::Enum)))
+            if (typeInfo->isEnum() && one.typeFunc && !(one.typeFunc->attributeUsage & (AttributeUsage::All | AttributeUsage::Enum)))
                 continue;
 
             if (!first)
@@ -668,7 +668,7 @@ bool AstOutput::outputVar(OutputContext& context, Concat& concat, AstVarDecl* no
             auto typeExpr = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
             SWAG_ASSERT(!node->assignment);
             SWAG_ASSERT(typeExpr->identifier);
-            SWAG_ASSERT(node->type->typeInfo && (node->type->typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE));
+            SWAG_ASSERT(node->type->typeInfo && (node->type->typeInfo->isTuple()));
             auto id = CastAst<AstIdentifier>(typeExpr->identifier->childs.back(), AstNodeKind::Identifier);
             concat.addChar('{');
             SWAG_CHECK(outputNode(context, concat, id->callParameters));
@@ -768,7 +768,7 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
 bool AstOutput::outputTypeTuple(OutputContext& context, Concat& concat, TypeInfo* typeInfo)
 {
     typeInfo = TypeManager::concretePtrRef(typeInfo);
-    SWAG_ASSERT(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE);
+    SWAG_ASSERT(typeInfo->isTuple());
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     auto nodeStruct = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
 
@@ -911,7 +911,7 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstNode* node
 
     // Tuple
     /////////////////////////////////
-    if (typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
+    if (typeInfo->isTuple())
     {
         SWAG_CHECK(outputTypeTuple(context, concat, typeInfo));
         return true;

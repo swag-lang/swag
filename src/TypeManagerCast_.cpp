@@ -3239,12 +3239,12 @@ bool TypeManager::convertLiteralTupleToStructVar(SemanticContext* context, TypeI
             oneParam->namedParam = oneChild->token.text;
 
         // If this is for a return, remember it, in order to make a move or a copy
-        if ((typeStruct->flags & TYPEINFO_STRUCT_IS_TUPLE) && fromNode->parent->kind == AstNodeKind::Return)
+        if ((typeStruct->isTuple()) && fromNode->parent->kind == AstNodeKind::Return)
             oneParam->autoTupleReturn = CastAst<AstReturn>(fromNode->parent, AstNodeKind::Return);
     }
 
     // For a tuple initialization, every parameters must be covered
-    if (!fromType && (typeStruct->flags & TYPEINFO_STRUCT_IS_TUPLE))
+    if (!fromType && (typeStruct->isTuple()))
     {
         int maxCount = (int) typeStruct->fields.size();
         if (countParams > maxCount)

@@ -159,7 +159,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     bool forEnumFlags = false;
     if (node->token.id != TokenId::SymEqual)
     {
-        if (leftTypeInfo->kind == TypeInfoKind::Enum || rightTypeInfo->kind == TypeInfoKind::Enum)
+        if (leftTypeInfo->isEnum() || rightTypeInfo->isEnum())
         {
             SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
 
@@ -313,7 +313,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 }
                 else
                 {
-                    if (leftTypeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
+                    if (leftTypeInfo->isTuple())
                         return context->report({node, Err(Err0574)});
                     SWAG_CHECK(resolveUserOpAffect(context, leftTypeInfo, rightTypeInfo, left, right));
                     if (context->result != ContextResult::Done)

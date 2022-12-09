@@ -333,9 +333,9 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     }
 
     // Cannot compare tuples
-    if (leftTypeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
+    if (leftTypeInfo->isTuple())
         return context->report({left, Err(Err0007)});
-    if (rightTypeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
+    if (rightTypeInfo->isTuple())
         return context->report({right, Err(Err0007)});
 
     // Slice can only be compared to null

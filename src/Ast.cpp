@@ -64,7 +64,7 @@ namespace Ast
 
     Utf8 enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg, bool scoped)
     {
-        SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Enum);
+        SWAG_ASSERT(typeInfo->isEnum());
 
         Utf8 result;
 
