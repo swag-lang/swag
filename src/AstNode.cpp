@@ -474,6 +474,10 @@ void AstNode::computeEndLocation()
     {
         if (p->kind == AstNodeKind::Statement)
             break;
+        if (p->flags & AST_GENERATED)
+            continue;
+        if (p->kind == AstNodeKind::FuncDeclType && p->childs.empty())
+            continue;
         p->computeEndLocation();
 
         if (p->token.startLocation.line < token.startLocation.line ||

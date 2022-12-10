@@ -101,7 +101,7 @@ void ErrorContext::fillContext(JobContext* context, const Diagnostic& diag, vect
 
             Diagnostic* note = nullptr;
             if (exp.node)
-                note = new Diagnostic{exp.node, exp.node->token, msg, level};
+                note = new Diagnostic{exp.node, msg, level};
             else
                 note = new Diagnostic{msg, level};
 
