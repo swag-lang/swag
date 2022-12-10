@@ -9,6 +9,7 @@
 #include "Module.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
+#include "AstOutput.h"
 
 void SemanticJob::checkDeprecated(SemanticContext* context, AstNode* identifier)
 {
@@ -804,11 +805,12 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
     symbolErrorRemarks(context, overloads, node, &diag);
 
     vector<const Diagnostic*> notes;
-    int                       overIdx = 1;
 
     int  badParamIdx, bestBadParamIdx;
     int  badGenParamIdx, bestBadGenParamIdx;
     bool sameBadParamIdx, sameBadGenParamIdx;
+    bool sameBadResult = true;
+    auto badResult     = MatchResult::Ok;
 
     for (int pass = 0; pass < 2; pass++)
     {
@@ -821,9 +823,14 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
 
         for (auto& one : overloads)
         {
+            if (badResult != MatchResult::Ok && badResult != one->symMatchContext.result)
+                sameBadResult = false;
+            badResult = one->symMatchContext.result;
+
             // If this is the same parameter that fails for every overloads, remember it
             if (one->symMatchContext.result == MatchResult::BadSignature)
             {
+                sameBadResult      = false;
                 sameBadGenParamIdx = false;
                 auto ep            = getBadParamIdx(*one, callParameters);
                 if (badParamIdx == -1)
@@ -842,6 +849,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
 
             if (one->symMatchContext.result == MatchResult::BadGenericSignature)
             {
+                sameBadResult   = false;
                 sameBadParamIdx = false;
                 auto ep         = one->symMatchContext.badSignatureInfos.badSignatureParameterIdx;
                 if (badGenParamIdx == -1)
@@ -862,8 +870,52 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
             break;
 
         // If all fail on the same parameter, we do not display the list of overloads
-        if (sameBadParamIdx || sameBadGenParamIdx)
+        if (sameBadParamIdx || sameBadGenParamIdx || sameBadResult)
         {
+            static const int MAX_OVERLOADS = 5;
+            Diagnostic*      diagRemarks   = &diag;
+
+            switch (badResult)
+            {
+            case MatchResult::TooManyParameters:
+                diagRemarks = new Diagnostic(Fmt("too many parameters"), DiagnosticLevel::Note);
+                notes.push_back(diagRemarks);
+                break;
+            case MatchResult::TooManyGenericParameters:
+                diagRemarks = new Diagnostic(Fmt("too many generic parameters"), DiagnosticLevel::Note);
+                notes.push_back(diagRemarks);
+                break;
+            case MatchResult::NotEnoughParameters:
+                diagRemarks = new Diagnostic(Fmt("not enough parameters"), DiagnosticLevel::Note);
+                notes.push_back(diagRemarks);
+                break;
+            case MatchResult::NotEnoughGenericParameters:
+                diagRemarks = new Diagnostic(Fmt("not enough generic parameters"), DiagnosticLevel::Note);
+                notes.push_back(diagRemarks);
+                break;
+            }
+
+            Concat                   concat;
+            AstOutput::OutputContext outCxt;
+            concat.init(10 * 1024);
+
+            for (int i = 0; i < min(overloads.size(), MAX_OVERLOADS); i++)
+            {
+                auto funcNode = CastAst<AstFuncDecl>(overloads[i]->overload->node, AstNodeKind::FuncDecl);
+                AstOutput::outputFuncSignature(outCxt, concat, funcNode, funcNode->parameters, nullptr);
+                Utf8 n = Utf8{(const char*) concat.firstBucket->datas, concat.bucketCount(concat.firstBucket)};
+                if (n.back() == '\n')
+                    n.count--;
+                if (n.back() == ';')
+                    n.count--;
+                Utf8 fn = Fmt("%d: %s", i + 1, n.c_str());
+                diagRemarks->remarks.push_back(fn);
+                concat.clear();
+            }
+
+            if (overloads.size() >= MAX_OVERLOADS)
+                diagRemarks->remarks.push_back("...");
+
             overloads.clear();
             break;
         }
@@ -897,14 +949,17 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
         }
     }
 
+    int overIdx = 1;
     for (auto& one : overloads)
     {
         vector<const Diagnostic*> errs0, errs1;
         getDiagnosticForMatch(context, *one, errs0, errs1);
 
         SWAG_ASSERT(!errs0.empty());
-        auto note                   = const_cast<Diagnostic*>(errs0[0]);
-        note->noteHeader            = Fmt("overload %d", overIdx++);
+        auto note = const_cast<Diagnostic*>(errs0[0]);
+        if (overloads.size() > 1)
+            note->noteHeader = Fmt("overload %d", overIdx++);
+        note->showFileName          = false;
         note->showMultipleCodeLines = false;
 
         switch (one->symMatchContext.result)

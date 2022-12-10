@@ -398,14 +398,21 @@ void Diagnostic::report(bool verboseMode) const
         g_Log.eol();
         printMargin(codeColor, true);
     }
+    else if (mustPrintCode() && !showRange)
+    {
+        printMargin(codeColor, true);
+    }
 
     // Code remarks
     if (g_CommandLine->errorSourceOut && g_CommandLine->errorNoteOut)
     {
         if (!remarks.empty())
         {
+            if (!mustPrintCode())
+                printMargin(codeColor, true);
+
             g_Log.setColor(remarkColor);
-            for (auto& r : remarks)
+            for (auto r : remarks)
             {
                 if (r.empty())
                     continue;
