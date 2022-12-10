@@ -7,16 +7,7 @@
 #include "SourceFile.h"
 #include "TypeInfo.h"
 
-PushErrContext::PushErrContext(JobContext* context, AstNode* node, ErrorContextKind type)
-    : cxt{context}
-{
-    ErrorContext expNode;
-    expNode.type = type;
-    expNode.node = node;
-    context->errorContextStack.push_back(expNode);
-}
-
-PushErrContext::PushErrContext(JobContext* context, AstNode* node, const Utf8& msg, const Utf8& hint, ErrorContextKind kind)
+PushErrContext::PushErrContext(JobContext* context, AstNode* node, ErrorContextKind kind, const Utf8& msg, const Utf8& hint)
     : cxt{context}
 {
     ErrorContext expNode;
@@ -63,7 +54,7 @@ void ErrorContext::fillContext(JobContext* context, const Diagnostic& diag, vect
                 doneInline = true;
                 break;
 
-            case ErrorContextKind::Message:
+            case ErrorContextKind::Note:
             case ErrorContextKind::Help:
                 exp.hide = exp.msg.empty();
                 break;
@@ -76,123 +67,47 @@ void ErrorContext::fillContext(JobContext* context, const Diagnostic& diag, vect
             if (exp.hide)
                 continue;
 
-            auto        first       = exp.node;
-            const char* kindName    = nullptr;
-            const char* kindArticle = "";
-            bool        showContext = true;
-            Utf8        hint        = exp.hint;
+            DiagnosticLevel level = DiagnosticLevel::Note;
+
+            Utf8 name, msg;
+            if (exp.node)
+                name = exp.node->resolvedSymbolName ? exp.node->resolvedSymbolName->name : exp.node->token.text;
+
             switch (exp.type)
             {
-            case ErrorContextKind::Message:
-            {
-                showContext = false;
-                if (first)
-                {
-                    auto note  = new Diagnostic{first, first->token, exp.msg, DiagnosticLevel::Note};
-                    note->hint = exp.hint;
-                    notes.push_back(note);
-                }
-                else
-                {
-                    auto note  = new Diagnostic{exp.msg, DiagnosticLevel::Note};
-                    note->hint = exp.hint;
-                    notes.push_back(note);
-                }
-                break;
-            }
             case ErrorContextKind::Help:
-            {
-                showContext = false;
-                if (first)
-                {
-                    auto note  = new Diagnostic{first, first->token, exp.msg, DiagnosticLevel::Help};
-                    note->hint = exp.hint;
-                    notes.push_back(note);
-                }
-                else
-                {
-                    auto note  = new Diagnostic{exp.msg, DiagnosticLevel::Help};
-                    note->hint = exp.hint;
-                    notes.push_back(note);
-                }
+                level = DiagnosticLevel::Help;
                 break;
-            }
             case ErrorContextKind::Export:
-                kindName    = Err(Err0111);
-                kindArticle = "of ";
+                msg = Fmt(Err(Err0111), name.c_str());
                 break;
             case ErrorContextKind::Generic:
-                kindName    = Err(Err0112);
-                kindArticle = "of ";
+                msg = Fmt(Err(Err0112), name.c_str());
                 break;
             case ErrorContextKind::Inline:
-                kindName    = Err(Err0118);
-                kindArticle = "of ";
+                msg = Fmt(Err(Err0118), name.c_str());
                 break;
             case ErrorContextKind::SelectIf:
-                kindName    = Err(Err0128);
-                kindArticle = "to ";
+                msg = Fmt(Err(Err0128), name.c_str());
                 break;
             case ErrorContextKind::CheckIf:
-                kindName    = Err(Err0129);
-                kindArticle = "to ";
-                break;
-            case ErrorContextKind::Node:
-                kindName    = "when solving";
-                kindArticle = "";
-                switch (first->kind)
-                {
-                case AstNodeKind::AffectOp:
-                    kindName    = "when solving affectation";
-                    kindArticle = "to ";
-                    first       = first->childs.front();
-                    hint        = Hint::isType(first->typeInfo);
-                    break;
-                case AstNodeKind::Return:
-                {
-                    auto returnNode = CastAst<AstReturn>(first, AstNodeKind::Return);
-                    if (returnNode->resolvedFuncDecl)
-                    {
-                        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(returnNode->resolvedFuncDecl->typeInfo, TypeInfoKind::FuncAttr);
-                        first         = returnNode->resolvedFuncDecl->returnType;
-                        if (!first->childs.empty())
-                            first = first->childs.front();
-                        auto note = new Diagnostic{first, Fmt(Nte(Nte0067), typeFunc->returnType->getDisplayNameC()), DiagnosticLevel::Note};
-                        notes.push_back(note);
-                        showContext = false;
-                    }
-                    else
-                        showContext = false;
-                }
-                break;
-                default:
-                    showContext = false;
-                    break;
-                }
-
+                msg = Fmt(Err(Err0129), name.c_str());
                 break;
             }
 
-            if (showContext)
-            {
-                auto name = first->resolvedSymbolName ? first->resolvedSymbolName->name : first->token.text;
-                if (name.empty())
-                    name = first->token.text;
+            Diagnostic* note = nullptr;
+            if (exp.node)
+                note = new Diagnostic{exp.node, exp.node->token, msg, level};
+            else
+                note = new Diagnostic{msg, level};
 
-                Utf8 msg;
-                if (!name.empty())
-                    msg = Fmt(Nte(Nte0002), kindName, kindArticle, name.c_str());
-                else
-                    msg = Fmt(Nte(Nte0003), kindName);
-                auto note  = new Diagnostic{first, first->token, msg, DiagnosticLevel::Note};
-                note->hint = hint;
+            note->hint = exp.hint;
 
-                auto remark = Ast::computeGenericParametersReplacement(exp.replaceTypes);
-                if (!remark.empty())
-                    note->remarks.insert(note->remarks.end(), remark.begin(), remark.end());
+            auto remark = Ast::computeGenericParametersReplacement(exp.replaceTypes);
+            if (!remark.empty())
+                note->remarks.insert(note->remarks.end(), remark.begin(), remark.end());
 
-                notes.push_back(note);
-            }
+            notes.push_back(note);
         }
     }
 

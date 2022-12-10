@@ -311,8 +311,6 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         getCastErrorMsg(msg, hint, toType, fromType, castFlags);
 
         SWAG_ASSERT(fromNode);
-        if (fromNode != context->node)
-            context->errorContextStack.push_back({context->node, ErrorContextKind::Node});
 
         // Is there an explicit cast possible ?
         if (!(castFlags & CASTFLAG_EXPLICIT))

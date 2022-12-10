@@ -8,20 +8,19 @@ struct Diagnostic;
 
 enum class ErrorContextKind
 {
+    Note,
+    Help,
     Generic,
     Inline,
     SelectIf,
     CheckIf,
-    Node,
     Export,
-    Message,
-    Help,
 };
 
 struct ErrorContext
 {
     AstNode*             node = nullptr;
-    ErrorContextKind     type = ErrorContextKind::Node;
+    ErrorContextKind     type = ErrorContextKind::Note;
     Utf8                 msg  = "";
     Utf8                 hint = "";
     map<Utf8, TypeInfo*> replaceTypes;
@@ -32,8 +31,7 @@ struct ErrorContext
 
 struct PushErrContext
 {
-    PushErrContext(JobContext* context, AstNode* node, ErrorContextKind type);
-    PushErrContext(JobContext* context, AstNode* node, const Utf8& msg, const Utf8& hint, ErrorContextKind kind = ErrorContextKind::Message);
+    PushErrContext(JobContext* context, AstNode* node, ErrorContextKind kind, const Utf8& msg = "", const Utf8& hint = "");
     ~PushErrContext();
     JobContext* cxt;
 };

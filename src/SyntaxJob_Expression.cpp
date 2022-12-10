@@ -17,7 +17,7 @@ bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymQuote)
     {
         SWAG_CHECK(eatToken());
-
+        SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::NativeType, error(token, Err(Err0241)));
         auto identifierRef = Ast::newIdentifierRef(sourceFile, node, this);
         SWAG_CHECK(doIdentifier(identifierRef, IDENTIFIER_NO_PARAMS | IDENTIFIER_TYPE_DECL));
         identifierRef->childs.back()->semanticFct = SemanticJob::resolveLiteralSuffix;

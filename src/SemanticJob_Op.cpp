@@ -146,7 +146,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
         return context->report(diag, &note);
     }
 
-    PushErrContext ec(context, nullptr, getSpecialOpSignature(node), nullptr, ErrorContextKind::Help);
+    PushErrContext ec(context, nullptr, ErrorContextKind::Help, getSpecialOpSignature(node));
 
     auto      parameters = node->parameters;
     TypeInfo* typeStruct = nullptr;
@@ -625,7 +625,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
         }
 
         {
-            PushErrContext ec(context, context->node, Fmt(Err(Nte0051), name.c_str(), leftType->getDisplayNameC()), "");
+            PushErrContext ec(context, context->node, ErrorContextKind::Note, Fmt(Err(Nte0051), name.c_str(), leftType->getDisplayNameC()));
             SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, nullptr, justCheck ? MIP_JUST_CHECK : 0));
         }
 

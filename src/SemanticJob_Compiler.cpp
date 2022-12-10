@@ -61,7 +61,6 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
 
     // Request to generate the corresponding bytecode
     {
-        PushErrContext ec(context, node, ErrorContextKind::Node);
         ByteCodeGenJob::askForByteCode(context->job, node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED);
         if (context->result != ContextResult::Done)
             return true;
@@ -122,7 +121,6 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                 SWAG_ASSERT(execParams.specReturnOpCount);
 
                 {
-                    PushErrContext ec(context, node, ErrorContextKind::Node);
                     ByteCodeGenJob::askForByteCode(context->job, execParams.specReturnOpCount->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
                     if (context->result != ContextResult::Done)
                         return true;
@@ -143,7 +141,6 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                 SWAG_ASSERT(execParams.specReturnOpSlice);
 
                 {
-                    PushErrContext ec(context, node, ErrorContextKind::Node);
                     ByteCodeGenJob::askForByteCode(context->job, execParams.specReturnOpSlice->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
                     if (context->result != ContextResult::Done)
                         return true;
@@ -189,7 +186,6 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                     SWAG_ASSERT(execParams.specReturnOpDrop);
 
                     {
-                        PushErrContext ec(context, node, ErrorContextKind::Node);
                         ByteCodeGenJob::askForByteCode(context->job, execParams.specReturnOpDrop->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
                         if (context->result != ContextResult::Done)
                             return true;
@@ -229,7 +225,6 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
         }
     }
 
-    PushErrContext ec(context, node, ErrorContextKind::Node);
     SWAG_CHECK(module->executeNode(sourceFile, node, context, &execParams));
     return true;
 }

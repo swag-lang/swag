@@ -229,7 +229,7 @@ bool SemanticJob::resolveConditionalOp(SemanticContext* context)
         swap(leftT, rightT);
 
     {
-        PushErrContext ec(context, rightT, Nte(Nte0055), Fmt(Hnt(Hnt0011), rightT->typeInfo->getDisplayNameC()));
+        PushErrContext ec(context, rightT, ErrorContextKind::Note, Nte(Nte0055), Fmt(Hnt(Hnt0011), rightT->typeInfo->getDisplayNameC()));
         SWAG_CHECK(TypeManager::makeCompatibles(context, rightT, leftT, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));
     }
 
