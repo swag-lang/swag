@@ -71,6 +71,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     // If not, try to find the culprit type
     if ((left->flags & AST_IS_CONST) ||
         !(left->flags & AST_L_VALUE) ||
+        ((left->typeInfo->flags & TYPEINFO_FAKE_ALIAS) && left->typeInfo->isConst()) ||
         (left->typeInfo->isConstPointerRef() && right->kind != AstNodeKind::KeepRef))
     {
         Utf8 hint;

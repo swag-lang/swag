@@ -1,5 +1,5 @@
-SWAG_ERROR(Hlp0000, "an attribute declaration, unlike function, should not have a return value starting with `->`")
-SWAG_ERROR(Hlp0001, "an attribute declaration, unlike function, cannot be marked with `throw`")
+SWAG_ERROR(Hlp0000, "an attribute declaration should not have a return value starting with `->`")
+SWAG_ERROR(Hlp0001, "an attribute declaration cannot be marked with `throw`")
 SWAG_ERROR(Hlp0002, nullptr)
 SWAG_ERROR(Hlp0003, nullptr)
 SWAG_ERROR(Hlp0004, "if you want to declare a lambda, you should use `func(` or `closure(`")

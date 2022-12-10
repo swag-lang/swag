@@ -9,6 +9,6 @@ struct Point
 //#[Swag.PrintBc]
 #test
 {
-	let pt: Point(1, 2)
-	pt = Point(1, 1)
+	const pt: Point{1, 2}
+	pt = Point{1, 1}
 }

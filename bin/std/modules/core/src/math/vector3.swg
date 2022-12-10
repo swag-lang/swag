@@ -150,7 +150,7 @@ impl Vector3
         norm = 1 / norm
         x *= norm
         y *= norm
-        Zero *= norm
+        z *= norm
     }
 
     // Returns this vector normalized

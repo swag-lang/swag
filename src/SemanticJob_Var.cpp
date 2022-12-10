@@ -870,7 +870,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
     if (node->flags & AST_EXPLICITLY_NOT_INITIALIZED)
     {
-        SWAG_VERIFY(!isCompilerConstant, context->report({node, Err(Err0305)}));
+        SWAG_VERIFY(!isCompilerConstant, context->report({node->assignment, Err(Err0305)}));
     }
 
     // Types and assignements are specified

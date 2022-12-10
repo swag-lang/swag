@@ -1,8 +1,6 @@
-
-
 #global testerror
 #test
 {
-	let a = 0
+	const a = 0
 	a = 1
 }

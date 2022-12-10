@@ -4,6 +4,6 @@
 #test
 {
     {
-        let array: s32 = ?
+        const array: s32 = ?
     }
 }
