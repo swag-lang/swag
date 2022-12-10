@@ -94,7 +94,7 @@ bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(eatToken());
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
-    SWAG_CHECK(verifyError(token, token.id != TokenId::SymRightParen, Err(Err0861)));
+    SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, Err(Err0861)));
 
     // Three parameters
     if (node->token.id == TokenId::IntrinsicMakeInterface)
@@ -640,7 +640,7 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
     auto opId = forNode.id;
 
     mdfFlags = 0;
-    while (token.id == TokenId::SymComma)
+    while (token.id == TokenId::SymComma && !token.lastTokenIsBlank && !token.lastTokenIsEOL)
     {
         SWAG_CHECK(eatToken());
         if (token.text == g_LangSpec->name_safe)

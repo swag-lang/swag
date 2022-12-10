@@ -318,7 +318,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, boo
 
 bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acceptMissingType, bool* hasMissingType, bool isMethod, bool isConstMethod, bool isItfMethod)
 {
-    SWAG_CHECK(verifyError(token, token.id != TokenId::SymLeftCurly, Err(Err0883)));
+    SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(token, Err(Err0883)));
 
     // To avoid calling 'format' in case we know this is fine, otherwise it will be called each time, even when ok
     if (token.id != TokenId::SymLeftParen && parent->kind == AstNodeKind::AttrDecl)

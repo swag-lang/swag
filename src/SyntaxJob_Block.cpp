@@ -12,7 +12,7 @@ bool SyntaxJob::doIf(AstNode* parent, AstNode** result)
         *result = node;
 
     SWAG_CHECK(eatToken());
-    SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly, Err(Err0863)));
+    SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(node->token, Err(Err0863)));
 
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
     SWAG_CHECK(doEmbeddedStatement(node, (AstNode**) &node->ifBlock));
@@ -41,7 +41,7 @@ bool SyntaxJob::doWhile(AstNode* parent, AstNode** result)
 
     {
         ScopedBreakable scoped(this, node);
-        SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly, Err(Err0864)));
+        SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(node->token, Err(Err0864)));
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
         SWAG_CHECK(doEmbeddedStatement(node, &node->block));
     }
@@ -73,9 +73,9 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
     bool                hasDefault       = false;
     while (token.id != TokenId::SymRightCurly && token.id != TokenId::EndOfFile)
     {
-        SWAG_CHECK(verifyError(token, token.id == TokenId::KwdCase || token.id == TokenId::KwdDefault, Err(Err0865)));
+        SWAG_VERIFY(token.id == TokenId::KwdCase || token.id == TokenId::KwdDefault, error(token, Err(Err0865)));
         bool isDefault = token.id == TokenId::KwdDefault;
-        SWAG_CHECK(verifyError(token, !isDefault || !hasDefault, Err(Err0866)));
+        SWAG_VERIFY(!isDefault || !hasDefault, error(token, Err(Err0866)));
         if (isDefault)
             hasDefault = true;
 
@@ -95,8 +95,8 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
         // Case expressions
         if (!isDefault)
         {
-            SWAG_CHECK(verifyError(token, token.id != TokenId::SymColon, Err(Err0867)));
-            SWAG_CHECK(verifyError(token, token.id != TokenId::KwdBreak, Err(Err0868)));
+            SWAG_VERIFY(token.id != TokenId::SymColon, error(token, Err(Err0867)));
+            SWAG_VERIFY(token.id != TokenId::KwdBreak, error(token, Err(Err0868)));
             while (token.id != TokenId::SymColon)
             {
                 AstNode* expression;
@@ -208,7 +208,7 @@ bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymLeftParen)
     {
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(verifyError(token, token.id == TokenId::Identifier, Err(Err0870)));
+        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Err(Err0870)));
         node->extraNameToken = token;
         SWAG_CHECK(eatToken());
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
@@ -222,7 +222,7 @@ bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
     }
 
     // Variable to visit
-    SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly, Err(Err0871)));
+    SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(node->token, Err(Err0871)));
     SWAG_CHECK(doExpression(nullptr, EXPR_FLAG_SIMPLE, &node->expression));
 
     if (token.id == TokenId::SymColon || token.id == TokenId::SymComma)
@@ -234,7 +234,7 @@ bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
         {
             auto prevToken = token;
             SWAG_CHECK(eatToken(TokenId::SymComma));
-            SWAG_CHECK(verifyError(prevToken, token.id != TokenId::SymColon, Err(Err0872)));
+            SWAG_VERIFY(token.id != TokenId::SymColon, error(prevToken, Err(Err0872)));
             SWAG_CHECK(doIdentifierRef(nullptr, &node->expression));
             SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a 'visit' variable name"));
             SWAG_CHECK(checkIsValidVarName(node->expression->childs.back()));
@@ -242,7 +242,7 @@ bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
         }
 
         SWAG_CHECK(eatToken(TokenId::SymColon));
-        SWAG_CHECK(verifyError(token, token.id != TokenId::SymLeftCurly, Err(Err0871)));
+        SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(token, Err(Err0871)));
         SWAG_CHECK(doExpression(node, EXPR_FLAG_SIMPLE, &node->expression));
     }
     else
@@ -297,7 +297,7 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
                 SWAG_CHECK(checkIsValidVarName(node->expression->childs.back()));
                 name = node->expression->childs.back()->token.text;
                 SWAG_CHECK(eatToken());
-                SWAG_CHECK(verifyError(token, token.id != TokenId::SymLeftCurly, Err(Err0874)));
+                SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(token, Err(Err0874)));
                 SWAG_CHECK(doExpression(node, EXPR_FLAG_SIMPLE, &node->expression));
             }
             else
@@ -373,7 +373,7 @@ bool SyntaxJob::doBreak(AstNode* parent, AstNode** result)
 
     if (token.id != TokenId::SymSemiColon)
     {
-        SWAG_CHECK(verifyError(token, token.id == TokenId::Identifier, Err(Err0876)));
+        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Err(Err0876)));
         node->label = token;
         SWAG_CHECK(eatToken());
     }
@@ -403,7 +403,7 @@ bool SyntaxJob::doContinue(AstNode* parent, AstNode** result)
 
     if (token.id != TokenId::SymSemiColon)
     {
-        SWAG_CHECK(verifyError(token, token.id == TokenId::Identifier, Err(Err0877)));
+        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Err(Err0877)));
         node->label = token;
         SWAG_CHECK(eatToken());
     }

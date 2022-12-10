@@ -12,13 +12,6 @@
 #include "LoadSourceFileJob.h"
 #include "JobThread.h"
 
-bool SyntaxJob::verifyError(const Token& tk, bool expr, const Utf8& msg)
-{
-    if (!expr)
-        return error(tk, msg);
-    return true;
-}
-
 bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
 {
     switch (token.id)
@@ -112,8 +105,7 @@ bool SyntaxJob::error(AstNode* node, const Utf8& msg, const char* help, const ch
         note = new Diagnostic{help, DiagnosticLevel::Help};
     if (hint)
         diag.hint = hint;
-    Report::report(diag, note);
-    return false;
+    return context.report(diag, note);
 }
 
 bool SyntaxJob::error(const Token& tk, const Utf8& msg, const char* help, const char* hint)
@@ -124,7 +116,7 @@ bool SyntaxJob::error(const Token& tk, const Utf8& msg, const char* help, const 
         note = new Diagnostic{help, DiagnosticLevel::Help};
     if (hint)
         diag.hint = hint;
-    return Report::report(diag, note);
+    return context.report(diag, note);
 }
 
 bool SyntaxJob::error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg, const char* help)
@@ -133,7 +125,7 @@ bool SyntaxJob::error(const SourceLocation& startLocation, const SourceLocation&
     Diagnostic* note = nullptr;
     if (help)
         note = new Diagnostic{help, DiagnosticLevel::Help};
-    return Report::report(diag, note);
+    return context.report(diag, note);
 }
 
 bool SyntaxJob::eatToken()

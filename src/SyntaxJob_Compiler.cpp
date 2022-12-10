@@ -47,7 +47,7 @@ bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind k
     {
         ScopedFlags scopedFlags(this, AST_NO_BACKEND);
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly && token.id != TokenId::SymSemiColon, Err(Err0878)));
+        SWAG_VERIFY(token.id != TokenId::SymLeftCurly && token.id != TokenId::SymSemiColon, error(node->token, Err(Err0878)));
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
         node->boolExpression->allocateExtension(ExtensionKind::Semantic);
         node->boolExpression->extension->semantic->semanticAfterFct = SemanticJob::resolveCompilerIf;
@@ -393,7 +393,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         node->flags |= AST_GLOBAL_NODE;
 
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly && token.id != TokenId::SymSemiColon, Err(Err0879)));
+        SWAG_VERIFY(token.id != TokenId::SymLeftCurly && token.id != TokenId::SymSemiColon, error(node->token, Err(Err0879)));
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
         node->boolExpression->allocateExtension(ExtensionKind::Semantic);
         node->boolExpression->extension->semantic->semanticAfterFct = SemanticJob::resolveCompilerIf;
