@@ -172,8 +172,9 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
 
     case TokenId::SymLeftParen:
     {
+        auto startLoc = token.startLocation;
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(verifyError(token, token.id != TokenId::SymRightParen, Err(Err0862)));
+        SWAG_VERIFY(token.id != TokenId::SymRightParen, error(startLoc, token.endLocation, Err(Err0862)));
         AstNode* expr;
         SWAG_CHECK(doExpression(parent, exprFlags, &expr));
         expr->flags |= AST_IN_ATOMIC_EXPR;
