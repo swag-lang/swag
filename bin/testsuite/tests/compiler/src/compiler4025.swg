@@ -13,6 +13,6 @@ impl A
 
 #test
 {
-    var a: A'(#type [2] s32)
+    var a: A'([2] s32)
     a.toto([1, 2])
 }

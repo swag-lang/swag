@@ -41,7 +41,8 @@ bool SemanticJob::resolveAfterAffectLeft(SemanticContext* context)
             if (node->typeInfo->isLambda() && op->dependentLambda->typeInfo->isClosure())
             {
                 Diagnostic diag{op->childs.back(), Err(Err0185)};
-                return context->report(diag);
+                Diagnostic help{Err(Hlp0003), DiagnosticLevel::Help};
+                return context->report(diag, &help);
             }
 
             ScopedLock lk(op->dependentLambda->mutex);

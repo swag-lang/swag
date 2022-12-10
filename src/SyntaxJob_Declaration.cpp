@@ -20,7 +20,7 @@ bool SyntaxJob::doWith(AstNode* parent, AstNode** result)
     if (token.id == TokenId::KwdVar)
     {
         SWAG_CHECK(doVarDecl(node, &id));
-        SWAG_VERIFY(id->kind == AstNodeKind::VarDecl, error(id->childs.front(), Err(Err0487)));
+        SWAG_VERIFY(id->kind == AstNodeKind::VarDecl, error(id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Err0487)));
         SWAG_ASSERT(id->extension->semantic->semanticAfterFct == SemanticJob::resolveVarDeclAfter);
         id->extension->semantic->semanticAfterFct = SemanticJob::resolveWithVarDeclAfter;
         node->id.push_back(id->token.text);
@@ -29,7 +29,7 @@ bool SyntaxJob::doWith(AstNode* parent, AstNode** result)
     {
         SWAG_CHECK(doAffectExpression(node, &id));
 
-        SWAG_VERIFY(id->kind != AstNodeKind::StatementNoScope, error(id->childs.front(), Err(Err0487)));
+        SWAG_VERIFY(id->kind != AstNodeKind::StatementNoScope, error(id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Err0487)));
         if (id->kind != AstNodeKind::IdentifierRef &&
             id->kind != AstNodeKind::VarDecl &&
             id->kind != AstNodeKind::AffectOp)

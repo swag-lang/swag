@@ -444,7 +444,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
                 else
                 {
                     Diagnostic diag{sourceFile, token, Fmt(Err(Err0526), token.ctext())};
-                    Diagnostic note{sourceFile, leftSquareToken, Hlp(Hlp0024), DiagnosticLevel::Help};
+                    Diagnostic note{Hlp(Hlp0024), DiagnosticLevel::Help};
                     return Report::report(diag, &note);
                 }
             }

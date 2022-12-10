@@ -75,7 +75,11 @@ void ErrorContext::fillContext(JobContext* context, const Diagnostic& diag, vect
 
             switch (exp.type)
             {
+            case ErrorContextKind::Note:
+                msg = exp.msg;
+                break;
             case ErrorContextKind::Help:
+                msg = exp.msg;
                 level = DiagnosticLevel::Help;
                 break;
             case ErrorContextKind::Export:
