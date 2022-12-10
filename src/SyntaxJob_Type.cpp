@@ -257,10 +257,11 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
         // Content
         if (anonymousStruct)
         {
+            auto startLoc = token.startLocation;
             SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
             while (token.id != TokenId::SymRightCurly && (token.id != TokenId::EndOfFile))
                 SWAG_CHECK(doStructBody(contentNode, SyntaxStructType::Struct));
-            SWAG_CHECK(eatToken(TokenId::SymRightCurly));
+            SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, nullptr));
         }
         else
         {

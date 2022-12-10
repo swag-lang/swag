@@ -6,6 +6,23 @@
 #include "TypeInfo.h"
 #include "ErrorIds.h"
 
+void Diagnostic::setup()
+{
+    switch (errorLevel)
+    {
+    case DiagnosticLevel::CallStack:
+    case DiagnosticLevel::CallStackInlined:
+    case DiagnosticLevel::Note:
+    case DiagnosticLevel::Help:
+    case DiagnosticLevel::TraceError:
+        showMultipleCodeLines = false;
+        break;
+    default:
+        showMultipleCodeLines = true;
+        break;
+    }
+}
+
 Utf8 Hint::isType(TypeInfo* typeInfo)
 {
     return Fmt(Hnt(Hnt0011), typeInfo->getDisplayNameC());
@@ -152,18 +169,15 @@ void Diagnostic::report(bool verboseMode) const
         location1.line -= sourceFile->getLineOffset;
 
         // Get all lines of code
-        if (showMultipleCodeLines &&
-            errorLevel != DiagnosticLevel::CallStack &&
-            errorLevel != DiagnosticLevel::CallStackInlined &&
-            errorLevel != DiagnosticLevel::Note &&
-            errorLevel != DiagnosticLevel::Help &&
-            errorLevel != DiagnosticLevel::TraceError)
+        if (showMultipleCodeLines)
         {
             for (int i = -2; i <= 0; i++)
             {
                 if (location0.line + i < 0)
                     continue;
-                lines.push_back(sourceFile->getLine(location0.line + i));
+                bool eof     = false;
+                auto oneLine = sourceFile->getLine(location0.line + i, &eof);
+                lines.push_back(eof ? Utf8(" ") : oneLine);
             }
         }
         else

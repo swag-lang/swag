@@ -101,6 +101,7 @@ bool SyntaxJob::doCompilerMixin(AstNode* parent, AstNode** result)
     // Replacement parameters
     if (token.id == TokenId::SymLeftCurly)
     {
+        auto startLoc = token.startLocation;
         SWAG_VERIFY(node->ownerBreakable, error(token, Err(Err0364)));
         SWAG_CHECK(eatToken());
         if (token.id != TokenId::KwdBreak && token.id != TokenId::KwdContinue)
@@ -119,7 +120,7 @@ bool SyntaxJob::doCompilerMixin(AstNode* parent, AstNode** result)
                 SWAG_CHECK(eatSemiCol("`#mixin` replacement statement"));
         }
 
-        SWAG_CHECK(eatToken(TokenId::SymRightCurly));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the #mixin replacement statement"));
     }
 
     SWAG_CHECK(eatSemiCol("`#mixin` expression"));

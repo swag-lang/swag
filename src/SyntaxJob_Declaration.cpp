@@ -272,6 +272,7 @@ bool SyntaxJob::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlo
     }
     else
     {
+        auto startLoc = token.startLocation;
         SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the namespace body"));
 
         // Content of namespace is toplevel
@@ -281,8 +282,7 @@ bool SyntaxJob::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlo
             SWAG_CHECK(doTopLevelInstruction(namespaceNode));
         }
 
-        SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, Err(Err0880)));
-        SWAG_CHECK(eatToken(TokenId::SymRightCurly, "to close the namespace body"));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the namespace body"));
     }
 
     return true;
@@ -294,14 +294,11 @@ bool SyntaxJob::doGlobalCurlyStatement(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
 
-    auto openCurly = token;
+    auto startLoc = token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
-
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
         SWAG_CHECK(doTopLevelInstruction(node));
-
-    SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, Err(Err0880)));
-    SWAG_CHECK(eatToken(TokenId::SymRightCurly));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, nullptr));
     return true;
 }
 
@@ -311,8 +308,8 @@ bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
 
-    bool isGlobal  = currentScope->isGlobalOrImpl();
-    auto openCurly = token;
+    bool isGlobal = currentScope->isGlobalOrImpl();
+    auto startLoc = token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
@@ -327,9 +324,8 @@ bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
         }
     }
 
-    SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, Err(Err0880)));
     node->token.endLocation = token.startLocation;
-    SWAG_CHECK(eatToken(TokenId::SymRightCurly));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, nullptr));
     return true;
 }
 

@@ -210,6 +210,7 @@ bool Tokenizer::getToken(Token& token)
         if (c == 0)
         {
             token.id = TokenId::EndOfFile;
+            token.endLocation = token.startLocation;
             return true;
         }
 

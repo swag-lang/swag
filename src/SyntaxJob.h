@@ -83,6 +83,7 @@ struct SyntaxJob : public Job
     bool verifyError(const Token& tk, bool expr, const Utf8& msg);
 
     bool eatToken();
+    bool eatCloseToken(TokenId id, const SourceLocation& start, const char* msg);
     bool eatToken(TokenId id, const char* msg = nullptr);
     bool eatSemiCol(const char* msg = nullptr);
     bool checkIsSingleIdentifier(AstNode* node, const char* msg);

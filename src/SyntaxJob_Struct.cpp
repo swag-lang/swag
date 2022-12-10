@@ -53,12 +53,12 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     }
     else
     {
-        SWAG_CHECK(checkIsSingleIdentifier(implNode->identifier, "as an 'impl' block name"));
+        SWAG_CHECK(checkIsSingleIdentifier(implNode->identifier, "as an `impl` block name"));
     }
 
     // Content of impl block
-    auto curly = token;
-    SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+    auto startLoc = token.startLocation;
+    SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the `impl` body"));
 
     // Get existing scope or create a new one
     auto& structName     = identifierStruct->childs.back()->token.text;
@@ -161,9 +161,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         }
     }
 
-    SWAG_VERIFY(token.id == TokenId::SymRightCurly, error(curly, Err(Err0880)));
-    SWAG_CHECK(eatToken());
-
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the `impl` body"));
     return true;
 }
 
@@ -310,10 +308,11 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
             SWAG_CHECK(doStructBodyTuple(contentNode, true));
         else
         {
-            SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+            auto startLoc = token.startLocation;
+            SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the struct body"));
             while (token.id != TokenId::SymRightCurly && (token.id != TokenId::EndOfFile))
                 SWAG_CHECK(doStructBody(contentNode, structType));
-            SWAG_CHECK(eatToken(TokenId::SymRightCurly));
+            SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the struct body"));
         }
     }
 
@@ -322,15 +321,15 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
 
 bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty)
 {
-    auto curly = token;
-    SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+    auto startLoc = token.startLocation;
+    SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the tuple body"));
 
     // Tuple without a content
     if (token.id == TokenId::SymRightCurly)
     {
         if (acceptEmpty)
         {
-            SWAG_CHECK(eatToken(TokenId::SymRightCurly));
+            SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, nullptr));
             return true;
         }
 
@@ -385,12 +384,13 @@ bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty)
         SWAG_CHECK(eatToken());
     }
 
-    SWAG_CHECK(eatToken(TokenId::SymRightCurly, "after tuple type expression"));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the tuple body"));
     return true;
 }
 
 bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode** result)
 {
+    auto startLoc = token.startLocation;
     if (token.id == TokenId::SymLeftCurly)
     {
         auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
@@ -399,7 +399,7 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
         SWAG_CHECK(eatToken());
         while (token.id != TokenId::SymRightCurly && (token.id != TokenId::EndOfFile))
             SWAG_CHECK(doStructBody(stmt, structType));
-        SWAG_CHECK(eatToken(TokenId::SymRightCurly));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the struct body"));
         parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;
         return true;
     }

@@ -77,10 +77,11 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
 
     // Content of enum
     Scoped scoped(this, newScope);
-    SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+    auto   startLoc = token.startLocation;
+    SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the enum body"));
     while (token.id != TokenId::SymRightCurly && token.id != TokenId::EndOfFile)
         SWAG_CHECK(doEnumContent(enumNode));
-    SWAG_CHECK(eatToken(TokenId::SymRightCurly));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the enum body"));
     return true;
 }
 
@@ -88,13 +89,14 @@ bool SyntaxJob::doEnumContent(AstNode* parent, AstNode** result)
 {
     if (token.id == TokenId::SymLeftCurly)
     {
+        auto startLoc = token.startLocation;
         auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
         if (result)
             *result = stmt;
         SWAG_CHECK(eatToken());
         while (token.id != TokenId::SymRightCurly && token.id != TokenId::EndOfFile)
             SWAG_CHECK(doEnumContent(stmt));
-        SWAG_CHECK(eatToken(TokenId::SymRightCurly));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, nullptr));
         return true;
     }
 

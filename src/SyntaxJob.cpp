@@ -124,8 +124,7 @@ bool SyntaxJob::error(const Token& tk, const Utf8& msg, const char* help, const 
         note = new Diagnostic{help, DiagnosticLevel::Help};
     if (hint)
         diag.hint = hint;
-    Report::report(diag, note);
-    return false;
+    return Report::report(diag, note);
 }
 
 bool SyntaxJob::error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg, const char* help)
@@ -134,13 +133,38 @@ bool SyntaxJob::error(const SourceLocation& startLocation, const SourceLocation&
     Diagnostic* note = nullptr;
     if (help)
         note = new Diagnostic{help, DiagnosticLevel::Help};
-    Report::report(diag, note);
-    return false;
+    return Report::report(diag, note);
 }
 
 bool SyntaxJob::eatToken()
 {
     SWAG_CHECK(tokenizer.getToken(token));
+    return true;
+}
+
+bool SyntaxJob::eatCloseToken(TokenId id, const SourceLocation& start, const char* msg)
+{
+    if (token.id != id)
+    {
+        if (!msg)
+            msg = "";
+        if (token.id == TokenId::EndOfFile)
+        {
+            Diagnostic diag{sourceFile, token, Fmt(Err(Err0723), g_LangSpec->tokenToName(id).c_str(), msg)};
+            Diagnostic note{sourceFile, start, start, Err(Nte0020), DiagnosticLevel::Note};
+            note.showMultipleCodeLines = token.startLocation.line != start.line;
+            return Report::report(diag, &note);
+        }
+        else
+        {
+            Diagnostic diag{sourceFile, token, Fmt(Err(Err0330), g_LangSpec->tokenToName(id).c_str(), token.ctext(), msg)};
+            Diagnostic note{sourceFile, start, start, Err(Nte0020), DiagnosticLevel::Note};
+            note.showMultipleCodeLines = token.startLocation.line != start.line;
+            return Report::report(diag, &note);
+        }
+    }
+
+    SWAG_CHECK(eatToken());
     return true;
 }
 
@@ -166,15 +190,10 @@ bool SyntaxJob::eatSemiCol(const char* msg)
     {
         if (!msg)
             msg = "";
-
         if (Tokenizer::isSymbol(token.id))
-        {
             SWAG_CHECK(error(token, Fmt(Err(Err0837), token.ctext(), msg)));
-        }
         else
-        {
             SWAG_CHECK(error(token, Fmt(Err(Err0331), token.ctext(), msg), nullptr, Hnt(Hnt0013)));
-        }
     }
 
     if (token.id == TokenId::SymSemiColon)

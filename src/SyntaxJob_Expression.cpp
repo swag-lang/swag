@@ -1033,6 +1033,7 @@ bool SyntaxJob::doExpressionListTuple(AstNode* parent, AstNode** result)
     auto initNode         = Ast::newNode<AstExpressionList>(this, AstNodeKind::ExpressionList, sourceFile, parent);
     initNode->semanticFct = SemanticJob::resolveExpressionListTuple;
     initNode->specFlags |= AST_SPEC_EXPRLIST_FOR_TUPLE;
+    auto startLoc = token.startLocation;
     SWAG_CHECK(eatToken());
 
     if (result)
@@ -1077,7 +1078,7 @@ bool SyntaxJob::doExpressionListTuple(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken(TokenId::SymComma));
     }
 
-    SWAG_CHECK(eatToken(TokenId::SymRightCurly));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the tuple body"));
     return true;
 }
 

@@ -65,7 +65,8 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
         switchNode->expression->extension->semantic->semanticAfterFct = SemanticJob::resolveSwitchAfterExpr;
     }
 
-    SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+    auto startLoc = token.startLocation;
+    SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the switch body"));
 
     AstSwitchCase*      defaultCase      = nullptr;
     AstSwitchCaseBlock* defaultStatement = nullptr;
@@ -146,7 +147,7 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
         switchNode->cases.push_back(defaultCase);
     }
 
-    SWAG_CHECK(eatToken(TokenId::SymRightCurly));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the switch body"));
 
     return true;
 }

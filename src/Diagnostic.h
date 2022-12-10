@@ -30,6 +30,7 @@ struct Diagnostic
         , hasRangeLocation{true}
         , showSource{true}
     {
+        setup();
     }
 
     Diagnostic(SourceFile* file, const SourceLocation& start, const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
@@ -42,6 +43,7 @@ struct Diagnostic
         , hasRangeLocation{false}
         , showSource{true}
     {
+        setup();
     }
 
     Diagnostic(SourceFile* file, const Token& token, const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
@@ -55,6 +57,7 @@ struct Diagnostic
         , hasRangeLocation{true}
         , showSource{true}
     {
+        setup();
     }
 
     Diagnostic(AstNode* node, const Token& token, const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
@@ -69,6 +72,7 @@ struct Diagnostic
         , hasRangeLocation{true}
         , showSource{true}
     {
+        setup();
     }
 
     Diagnostic(AstNode* node, const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
@@ -84,6 +88,7 @@ struct Diagnostic
         node->computeEndLocation();
         startLocation = node->token.startLocation;
         endLocation   = node->token.endLocation;
+        setup();
     }
 
     Diagnostic(AstNode* node, const Utf8& msg, const Utf8& hint, DiagnosticLevel level = DiagnosticLevel::Error)
@@ -100,6 +105,7 @@ struct Diagnostic
         node->computeEndLocation();
         startLocation = node->token.startLocation;
         endLocation   = node->token.endLocation;
+        setup();
     }
 
     Diagnostic(SourceFile* file, const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
@@ -109,6 +115,7 @@ struct Diagnostic
         , hasFile{true}
         , hasLocation{false}
     {
+        setup();
     }
 
     Diagnostic(const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
@@ -118,8 +125,10 @@ struct Diagnostic
         , hasFile{false}
         , hasLocation{false}
     {
+        setup();
     }
 
+    void setup();
     bool mustPrintCode() const;
     void printSourceLine() const;
     void printMargin(LogColor color, bool eol = false) const;
