@@ -133,12 +133,18 @@ struct Diagnostic
     void printSourceLine() const;
     void printMargin(LogColor color, bool eol = false) const;
     void report(bool verboseMode = false) const;
+    void setRange2(const SourceLocation& start, const SourceLocation& end, const Utf8& h);
 
-    SourceLocation  startLocation;
-    SourceLocation  endLocation;
+    SourceLocation startLocation;
+    SourceLocation endLocation;
+    Utf8           hint;
+
+    SourceLocation startLocation2;
+    SourceLocation endLocation2;
+    Utf8           hint2;
+
     Utf8            textMsg;
     vector<Utf8>    remarks;
-    Utf8            hint;
     Utf8            noteHeader;
     DiagnosticLevel errorLevel;
 
@@ -152,6 +158,7 @@ struct Diagnostic
     bool hasFile               = false;
     bool hasLocation           = false;
     bool hasRangeLocation      = false;
+    bool hasRangeLocation2     = false;
     bool exceptionError        = false;
     bool showSource            = false;
     bool showRange             = true;

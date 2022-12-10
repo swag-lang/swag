@@ -378,6 +378,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     // a opEquals function
     if (!leftTypeInfo->isStruct() && !rightTypeInfo->isStruct())
     {
+        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Hint::isType(leftTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COMMUTATIVE | CASTFLAG_FORCE_UNCONST | CASTFLAG_COMPARE | CASTFLAG_TRY_COERCE));
     }
 

@@ -37,6 +37,17 @@ void ErrorContext::fillContext(JobContext* context, const Diagnostic& diag, vect
         {
             switch (exp.type)
             {
+            case ErrorContextKind::Hint2:
+                exp.hide = true;
+                if (exp.node)
+                {
+                    auto dd = const_cast<Diagnostic*>(&diag);
+                    exp.node->computeEndLocation();
+                    dd->setRange2(exp.node->token.startLocation, exp.node->token.endLocation, exp.hint);
+                }
+
+                break;
+
             case ErrorContextKind::Generic:
                 if (exp.node && exp.node->kind == AstNodeKind::VarDecl) // Can happen with automatic call of opIndexSuffix
                 {
@@ -79,7 +90,7 @@ void ErrorContext::fillContext(JobContext* context, const Diagnostic& diag, vect
                 msg = exp.msg;
                 break;
             case ErrorContextKind::Help:
-                msg = exp.msg;
+                msg   = exp.msg;
                 level = DiagnosticLevel::Help;
                 break;
             case ErrorContextKind::Export:

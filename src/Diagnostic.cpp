@@ -6,6 +6,11 @@
 #include "TypeInfo.h"
 #include "ErrorIds.h"
 
+Utf8 Hint::isType(TypeInfo* typeInfo)
+{
+    return Fmt(Hnt(Hnt0011), typeInfo->getDisplayNameC());
+}
+
 void Diagnostic::setup()
 {
     switch (errorLevel)
@@ -23,9 +28,12 @@ void Diagnostic::setup()
     }
 }
 
-Utf8 Hint::isType(TypeInfo* typeInfo)
+void Diagnostic::setRange2(const SourceLocation& start, const SourceLocation& end, const Utf8& h)
 {
-    return Fmt(Hnt(Hnt0011), typeInfo->getDisplayNameC());
+    hasRangeLocation2 = true;
+    startLocation2    = start;
+    endLocation2      = end;
+    hint2             = h;
 }
 
 bool Diagnostic::mustPrintCode() const
@@ -241,27 +249,38 @@ void Diagnostic::report(bool verboseMode) const
         // Show "^^^^^^^"
         if (reportRange)
         {
-            for (int lastLine = 0; lastLine < 2; lastLine++)
+            struct RangeHint
             {
-                if (!hilightCodeRange && lastLine == 0)
-                    continue;
+                SourceLocation startLocation;
+                SourceLocation endLocation;
+                Utf8           hint;
+                const char*    c     = "^";
+                int            range = 0;
+            };
+            vector<RangeHint> ranges;
 
-                auto startIndex = minBlanks;
-                auto backLine   = lines.back();
+            if (hasRangeLocation2)
+                ranges.push_back({startLocation2, endLocation2, hint2, "-"});
+            ranges.push_back({startLocation, endLocation, hint});
 
-                int range = 1;
+            // Preprocess ranges
+            for (auto& r : ranges)
+            {
+                const auto& backLine = lines.back();
+
+                r.range = 1;
                 if (!hasRangeLocation)
-                    range = 1;
-                else if (location1.line == location0.line)
-                    range = endLocation.column - startLocation.column;
+                    r.range = 1;
+                else if (r.endLocation.line == r.startLocation.line)
+                    r.range = r.endLocation.column - r.startLocation.column;
                 else
-                    range = (int) backLine.length() - startLocation.column;
-                range = max(1, range);
+                    r.range = (int) backLine.length() - r.startLocation.column;
+                r.range = max(1, r.range);
 
                 // Special case for a range == 1.
-                if (range == 1 && (int) startLocation.column < backLine.count)
+                if (r.range == 1 && (int) r.startLocation.column < backLine.count)
                 {
-                    int decal = startLocation.column;
+                    int decal = r.startLocation.column;
 
                     // If this is a word, than take the whole word
                     if ((backLine[decal] & 0x80) == 0)
@@ -272,7 +291,7 @@ void Diagnostic::report(bool verboseMode) const
                             while (SWAG_IS_ALNUM(backLine[decal + 1]) || backLine[decal + 1] == '_')
                             {
                                 decal += 1;
-                                range += 1;
+                                r.range += 1;
                             }
                         }
 
@@ -283,97 +302,165 @@ void Diagnostic::report(bool verboseMode) const
                             while (ISOP(backLine[decal + 1]))
                             {
                                 decal += 1;
-                                range += 1;
+                                r.range += 1;
                             }
                         }
                     }
                 }
+            }
+
+            for (int lastLine = 0; lastLine < 2; lastLine++)
+            {
+                if (!hilightCodeRange && lastLine == 0)
+                    continue;
+
+                const auto& backLine = lines.back();
 
                 // Display line with error in color
+                ///////////////////////////
                 if (lastLine == 0)
                 {
                     Utf8 errorMsg;
-                    while (startIndex < (int) startLocation.column && startIndex < (uint32_t) backLine.length())
+                    auto startIndex = minBlanks;
+                    for (auto& r : ranges)
                     {
-                        if (backLine[startIndex] >= 32 || backLine[startIndex] == '\t')
-                            errorMsg += backLine[startIndex];
-                        else
-                            errorMsg += " ";
-                        startIndex++;
-                    }
+                        // Print before hilighted code
+                        errorMsg.clear();
+                        while (startIndex < (int) r.startLocation.column && startIndex < (uint32_t) backLine.length())
+                        {
+                            if (backLine[startIndex] >= 32 || backLine[startIndex] == '\t')
+                                errorMsg += backLine[startIndex];
+                            else
+                                errorMsg += " ";
+                            startIndex++;
+                        }
 
-                    g_Log.print(errorMsg);
-                    errorMsg.clear();
+                        g_Log.print(errorMsg);
+                        if (startIndex >= (uint32_t) backLine.count)
+                            break;
 
-                    if (startIndex < (uint32_t) backLine.count)
-                    {
-                        for (uint32_t i = 0; i < (uint32_t) range && i < (uint32_t) backLine.length(); i++)
+                        // Print hilighted code
+                        errorMsg.clear();
+                        for (uint32_t i = 0; i < (uint32_t) r.range && i < (uint32_t) backLine.length(); i++)
                         {
                             if (backLine[startIndex] >= 32 || backLine[startIndex] == '\t')
                                 errorMsg += backLine[startIndex];
                             startIndex++;
                         }
 
-                        // Print hilighted code
                         g_Log.setColor(hilightCodeColor);
                         g_Log.print(errorMsg);
+                    }
 
-                        // Print the remaining part
-                        if (startIndex < (uint32_t) backLine.count)
-                        {
-                            g_Log.setColor(codeColor);
-                            g_Log.print(backLine.c_str() + startIndex);
-                        }
-
-                        // Error on multiple lines
-                        if ((endLocation.line != startLocation.line) && hasRangeLocation)
-                            g_Log.print(" ...");
+                    // Print the remaining part
+                    if (startIndex < (uint32_t) backLine.count)
+                    {
+                        g_Log.setColor(codeColor);
+                        g_Log.print(backLine.c_str() + startIndex);
                     }
 
                     g_Log.eol();
                 }
 
                 // Display markers
+                ///////////////////////////
                 else
                 {
                     printMargin(codeColor, false);
 
-                    for (uint32_t i = minBlanks; i < startLocation.column && i < (uint32_t) backLine.length(); i++)
+                    auto startIndex = minBlanks;
+                    for (auto& r : ranges)
                     {
-                        if (backLine[i] == '\t')
-                            g_Log.print("\t");
-                        else
-                            g_Log.print(" ");
+                        while (startIndex < (int) r.startLocation.column && startIndex < (uint32_t) backLine.length())
+                        {
+                            if (backLine[startIndex] == '\t')
+                                g_Log.print("\t");
+                            else
+                                g_Log.print(" ");
+                            startIndex++;
+                        }
+
+                        switch (errorLevel)
+                        {
+                        case DiagnosticLevel::Error:
+                            g_Log.setColor(errorColor);
+                            break;
+                        case DiagnosticLevel::Note:
+                        case DiagnosticLevel::Help:
+                            g_Log.setColor(rangeNoteColor);
+                            break;
+                        }
+
+                        for (uint32_t i = 0; i < (uint32_t) r.range && i < (uint32_t) backLine.length(); i++)
+                        {
+                            startIndex++;
+                            g_Log.print(r.c);
+                        }
                     }
 
-                    switch (errorLevel)
-                    {
-                    case DiagnosticLevel::Error:
-                        g_Log.setColor(errorColor);
-                        break;
-                    case DiagnosticLevel::Note:
-                    case DiagnosticLevel::Help:
-                        g_Log.setColor(rangeNoteColor);
-                        break;
-                    }
-
-                    // Error on multiple lines
-                    if ((endLocation.line != startLocation.line) && hasRangeLocation)
-                        range += 4; // for the added " ..."
-
-                    for (int i = 0; i < range; i++)
-                        g_Log.print("^");
-
-                    if (!hint.empty())
+                    // Last hint on the same line
+                    if (!ranges.back().hint.empty())
                     {
                         g_Log.print(" ");
                         g_Log.setColor(remarkColor);
-                        g_Log.print(hint);
+                        g_Log.print(ranges.back().hint);
                     }
 
-                    g_Log.eol();
-                    printMargin(codeColor, true);
+                    if (ranges.size() > 1 && !ranges[0].hint.empty())
+                    {
+                        g_Log.eol();
+                        printMargin(codeColor, false);
+
+                        startIndex = minBlanks;
+                        for (int ri = 0; ri < ranges.size() - 1; ri++)
+                        {
+                            const auto& r = ranges[ri];
+                            while (startIndex < (int) r.startLocation.column && startIndex < (uint32_t) backLine.length())
+                            {
+                                if (backLine[startIndex] == '\t')
+                                    g_Log.print("\t");
+                                else
+                                    g_Log.print(" ");
+                                startIndex++;
+                            }
+
+                            switch (errorLevel)
+                            {
+                            case DiagnosticLevel::Error:
+                                g_Log.setColor(errorColor);
+                                break;
+                            case DiagnosticLevel::Note:
+                            case DiagnosticLevel::Help:
+                                g_Log.setColor(rangeNoteColor);
+                                break;
+                            }
+
+                            g_Log.print("|");
+                        }
+
+                        g_Log.eol();
+                        printMargin(codeColor, false);
+
+                        startIndex = minBlanks;
+                        for (int ri = 0; ri < ranges.size() - 1; ri++)
+                        {
+                            const auto& r = ranges[ri];
+                            while (startIndex < (int) r.startLocation.column && startIndex < (uint32_t) backLine.length())
+                            {
+                                if (backLine[startIndex] == '\t')
+                                    g_Log.print("\t");
+                                else
+                                    g_Log.print(" ");
+                                startIndex++;
+                            }
+
+                            g_Log.print(r.hint);
+                        }
+                    }
                 }
+
+                g_Log.eol();
+                printMargin(codeColor, true);
             }
         }
         else if (lines.size())

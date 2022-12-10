@@ -244,6 +244,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     switch (tokenId)
     {
     case TokenId::SymEqual:
+    {
         if (!leftTypeInfo->isNative() &&
             !leftTypeInfo->isPointer() &&
             !leftTypeInfo->isSlice() &&
@@ -325,13 +326,16 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             break;
         }
 
+        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Hint::isType(leftTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, nullptr, right, CASTFLAG_AUTO_BOOL | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT | CASTFLAG_ACCEPT_PENDING));
         if (context->result == ContextResult::Pending)
             return true;
         break;
+    }
 
     case TokenId::SymLowerLowerEqual:
     case TokenId::SymGreaterGreaterEqual:
+    {
         if (forTuple)
             return context->report({node, Err(Err0573)});
         else if (forStruct)
@@ -344,7 +348,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             break;
         }
 
+        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Hint::isType(leftTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU32, left, right, CASTFLAG_TRY_COERCE));
+
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
             leftTypeInfo->nativeType == NativeTypeKind::String ||
@@ -376,10 +382,12 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         }
 
         break;
+    }
 
     case TokenId::SymAmpersandEqual:
     case TokenId::SymVerticalEqual:
     case TokenId::SymCircumflexEqual:
+    {
         if (forTuple)
             return context->report({node, Err(Err0573)});
         else if (forStruct)
@@ -397,7 +405,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         }
 
         SWAG_CHECK(forEnumFlags || checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
+        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Hint::isType(leftTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
+
         if (leftTypeInfo->nativeType == NativeTypeKind::String ||
             leftTypeInfo->nativeType == NativeTypeKind::F32 ||
             leftTypeInfo->nativeType == NativeTypeKind::F64)
@@ -405,9 +415,11 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             return notAllowed(context, node, leftTypeInfo);
         }
         break;
+    }
 
     case TokenId::SymPlusEqual:
     case TokenId::SymMinusEqual:
+    {
         if (forTuple)
             return context->report({node, Err(Err0573)});
         else if (forStruct)
@@ -432,6 +444,8 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         }
 
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
+
+        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Hint::isType(leftTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
             leftTypeInfo->nativeType == NativeTypeKind::String)
@@ -439,8 +453,10 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             return notAllowed(context, node, leftTypeInfo);
         }
         break;
+    }
 
     case TokenId::SymSlashEqual:
+    {
         if (forTuple)
             return context->report({node, Err(Err0573)});
         else if (forStruct)
@@ -453,6 +469,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         }
 
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
+        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Hint::isType(leftTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
             leftTypeInfo->nativeType == NativeTypeKind::String)
@@ -460,9 +477,11 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             return notAllowed(context, node, leftTypeInfo);
         }
         break;
+    }
 
     case TokenId::SymPercentEqual:
     case TokenId::SymAsteriskEqual:
+    {
         if (forTuple)
             return context->report({node, Err(Err0573)});
         else if (forStruct)
@@ -476,6 +495,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         }
 
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
+        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Hint::isType(leftTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
             leftTypeInfo->nativeType == NativeTypeKind::String)
@@ -483,6 +503,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             return notAllowed(context, node, leftTypeInfo);
         }
         break;
+    }
 
     default:
         return Report::internalError(context->node, "resolveAffect, invalid token");

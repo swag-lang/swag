@@ -15,6 +15,7 @@ enum class ErrorContextKind
     SelectIf,
     CheckIf,
     Export,
+    Hint2,
 };
 
 struct ErrorContext

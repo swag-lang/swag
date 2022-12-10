@@ -325,10 +325,15 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
 
         // A specific error message ?
         if (!msg.empty())
-            return context->report({fromNode, msg, hint});
+        {
+            Diagnostic diag{fromNode, msg, hint};
+            return context->report(diag);
+        }
 
         // General cast error
-        return context->report({fromNode, Fmt(Err(Err0177), fromType->getDisplayNameC(), toType->getDisplayNameC())});
+        Diagnostic diag{fromNode, Fmt(Err(Err0177), fromType->getDisplayNameC(), toType->getDisplayNameC())};
+        diag.hint = Hint::isType(fromType);
+        return context->report(diag);
     }
 
     return false;
