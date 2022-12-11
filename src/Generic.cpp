@@ -654,7 +654,9 @@ bool Generic::instantiateDefaultGeneric(SemanticContext* context, AstVarDecl* no
                     {
                         auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
                         if (!param->assignment)
-                            return context->report({node, Fmt(Err(Err0312), node->typeInfo->getDisplayNameC())});
+                        {
+                            return context->report({node->type, Fmt(Err(Err0312), node->typeInfo->getDisplayNameC())});
+                        }
 
                         auto child          = Ast::newFuncCallParam(context->sourceFile, identifier->genericParameters);
                         cloneContext.parent = child;

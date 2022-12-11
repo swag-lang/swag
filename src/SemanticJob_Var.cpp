@@ -894,12 +894,23 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             if (leftConcreteType->isInterface() && rightConcreteType->isStruct())
             {
                 context->job->waitAllStructInterfaces(rightConcreteType);
-                if (context->result == ContextResult::Pending)
+                if (context->result != ContextResult::Done)
                     return true;
             }
 
-            SWAG_CHECK(TypeManager::makeCompatibles(context, node->type->typeInfo, nullptr, node->assignment, CASTFLAG_TRY_COERCE | CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_PTR_REF));
-            if (context->result == ContextResult::Pending)
+            auto castFlags = CASTFLAG_TRY_COERCE | CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_PTR_REF;
+
+            if (node->type->flags & AST_FROM_GENERIC_REPLACE || (node->type->childs.count && node->type->childs.back()->flags & AST_FROM_GENERIC_REPLACE))
+            {
+                PushErrContext ec{context, node->type, ErrorContextKind::Hint2, "", Diagnostic::isType(node->type->typeInfo)};
+                SWAG_CHECK(TypeManager::makeCompatibles(context, node->type->typeInfo, nullptr, node->assignment, castFlags));
+            }
+            else
+            {
+                SWAG_CHECK(TypeManager::makeCompatibles(context, node->type->typeInfo, nullptr, node->assignment, castFlags));
+            }
+
+            if (context->result != ContextResult::Done)
                 return true;
 
             if (!leftConcreteType->isPointerRef() && TypeManager::concreteType(node->assignment->typeInfo)->isPointerRef())
@@ -1160,7 +1171,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
     else if (symbolFlags & OVERLOAD_VAR_GLOBAL)
     {
-        SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->report({node, Fmt(Err(Err0312), node->typeInfo->getDisplayNameC())}));
+        // Variable is still generic. Try to find default generic parameters to instantiate it
+        if (node->typeInfo->flags & TYPEINFO_GENERIC)
+        {
+            SWAG_CHECK(Generic::instantiateDefaultGeneric(context, node));
+            if (context->result != ContextResult::Done)
+                return true;
+        }
+
         SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_PUBLIC), context->report({node, Err(Err0313)}));
 
         node->flags |= AST_R_VALUE;
@@ -1205,10 +1223,11 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (typeInfo->isStruct() || typeInfo->isArrayOfStruct())
         {
             SWAG_CHECK(waitForStructUserOps(context, node));
-            if (context->result == ContextResult::Pending)
+            if (context->result != ContextResult::Done)
                 return true;
         }
 
+        // Variable is still generic. Try to find default generic parameters to instantiate it
         if (node->typeInfo->flags & TYPEINFO_GENERIC)
         {
             SWAG_CHECK(Generic::instantiateDefaultGeneric(context, node));

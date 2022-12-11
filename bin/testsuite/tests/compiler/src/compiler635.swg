@@ -1,6 +1,3 @@
-
-
-
 #global testerror
 struct(T) Point
 {
