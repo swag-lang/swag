@@ -5,8 +5,8 @@ alias toto = s32
 //#[Swag.PrintBc]
 #test
 {
-	a := 0
-	if(a == toto)
+	aaa := 0
+	if aaa == toto
 	{
 	}
 }

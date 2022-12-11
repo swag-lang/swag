@@ -2032,7 +2032,10 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
                 hasChanged = true;
 
             if (hasChanged)
+            {
                 SemanticJob::computeExpressionListTupleType(context, child);
+                SWAG_ASSERT(context->result == ContextResult::Done);
+            }
         }
 
         SWAG_CHECK(TypeManager::makeCompatibles(context, convertTo, fromTypeList->subTypes[i]->typeInfo, nullptr, child, castFlags | CASTFLAG_TRY_COERCE));

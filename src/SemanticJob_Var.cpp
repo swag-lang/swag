@@ -468,10 +468,7 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
         auto param = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
         Ast::removeFromParent(child);
         Ast::addChildBack(param, child);
-
-        // Already solved
         child->semFlags |= AST_SEM_TYPE_SOLVED;
-
         param->inheritTokenLocation(child);
     }
 

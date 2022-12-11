@@ -17,19 +17,29 @@ bool SemanticJob::preResolveIdentifierRef(SemanticContext* context)
 
     // When duplicating an identifier ref, and solve it again, we need to be sure that all that
     // stuff is reset
-    node->typeInfo             = nullptr;
-    node->previousResolvedNode = nullptr;
-    node->startScope           = nullptr;
+    if (!(node->semFlags & AST_SEM_TYPE_SOLVED))
+    {
+        node->typeInfo             = nullptr;
+        node->previousResolvedNode = nullptr;
+        node->startScope           = nullptr;
+    }
+
     return true;
 }
 
 bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 {
-    auto node                    = static_cast<AstIdentifierRef*>(context->node);
-    auto childBack               = node->childs.back();
-    node->resolvedSymbolName     = childBack->resolvedSymbolName;
-    node->resolvedSymbolOverload = childBack->resolvedSymbolOverload;
-    node->typeInfo               = childBack->typeInfo;
+    auto node      = static_cast<AstIdentifierRef*>(context->node);
+    auto childBack = node->childs.back();
+
+    // Keep resolution
+    if (!node->typeInfo || !(node->semFlags & AST_SEM_TYPE_SOLVED))
+    {
+        node->resolvedSymbolName     = childBack->resolvedSymbolName;
+        node->resolvedSymbolOverload = childBack->resolvedSymbolOverload;
+        node->typeInfo               = childBack->typeInfo;
+    }
+
     if (!(node->flags & AST_IS_NAMED))
         node->token.text = childBack->token.text;
     node->byteCodeFct = ByteCodeGenJob::emitIdentifierRef;
@@ -100,8 +110,9 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
         node->semFlags |= AST_SEM_IS_CONST_ASSIGN_INHERIT;
     }
 
-    typeInfo                            = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
-    identifierRef->typeInfo             = typeInfo;
+    typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
+    if (!(identifierRef->semFlags & AST_SEM_TYPE_SOLVED))
+        identifierRef->typeInfo = typeInfo;
     identifierRef->previousResolvedNode = node;
     identifierRef->startScope           = nullptr;
 

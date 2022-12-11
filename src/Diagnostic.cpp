@@ -313,20 +313,22 @@ void Diagnostic::report(bool verboseMode) const
                 // Fix
                 int decal = r.startLocation.column;
 
-                if (backLine[decal] == '{' && backLine[decal + r.range - 1] != '}' && backLine[decal + r.range] == '}')
-                    r.range++;
+                if (decal + r.range < backLine.length())
+                {
+                    if (backLine[decal] == '{' && backLine[decal + r.range - 1] != '}' && backLine[decal + r.range] == '}')
+                        r.range++;
+                    if (backLine[decal] == '(' && backLine[decal + r.range - 1] != ')' && backLine[decal + r.range] == ')')
+                        r.range++;
+                    if (backLine[decal] != '(' && (!decal || backLine[decal - 1] != '(') && backLine[decal + r.range] == ')')
+                        r.range++;
+                    if (backLine[decal] != '[' && (!decal || backLine[decal - 1] != '[') && backLine[decal + r.range] == ']')
+                        r.range++;
+                }
+
                 if (backLine[decal] != '{' && backLine[decal + r.range - 1] == '}')
                     r.range--;
-
-                if (backLine[decal] == '(' && backLine[decal + r.range - 1] != ')' && backLine[decal + r.range] == ')')
-                    r.range++;
                 if (backLine[decal] != '(' && backLine[decal + r.range - 1] == ')')
                     r.range--;
-                if (backLine[decal] != '(' && (!decal || backLine[decal - 1] != '(') && backLine[decal + r.range] == ')')
-                    r.range++;
-
-                if (backLine[decal] != '[' && (!decal || backLine[decal - 1] != '[') && backLine[decal + r.range] == ']')
-                    r.range++;
             }
 
             for (int lastLine = 0; lastLine < 2; lastLine++)
@@ -568,6 +570,9 @@ Utf8 Diagnostic::isType(TypeInfo* typeInfo)
 
 Diagnostic* Diagnostic::hereIs(SymbolOverload* overload)
 {
+    if (overload->node && overload->node->flags & AST_GENERATED)
+        return nullptr;
+
     auto refNiceName = SymTable::getArticleKindName(overload);
 
     auto showRange = false;

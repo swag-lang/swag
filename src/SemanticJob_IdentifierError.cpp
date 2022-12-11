@@ -205,7 +205,10 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         diag = new Diagnostic{failedParam->namedParamNode ? failedParam->namedParamNode : failedParam, Fmt(Err(Err0008), failedParam->namedParam.c_str())};
         result0.push_back(diag);
         if (!(overload->node->flags & AST_GENERATED))
-            result1.push_back(Diagnostic::hereIs(overload));
+        {
+            note = Diagnostic::hereIs(overload);
+            result1.push_back(note);
+        }
         return;
     }
 
@@ -221,9 +224,11 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     {
         diag       = new Diagnostic{callParameters ? callParameters : node, Fmt(Err(Err0020), refNiceName.c_str())};
         diag->hint = Hnt(Hnt0044);
-        note       = Diagnostic::hereIs(overload);
         result0.push_back(diag);
-        result1.push_back(note);
+
+        note = Diagnostic::hereIs(overload);
+        if (note)
+            result1.push_back(note);
         return;
     }
 
@@ -253,7 +258,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             note = Diagnostic::hereIs(overload);
 
         result0.push_back(diag);
-        result1.push_back(note);
+        if (node)
+            result1.push_back(note);
         return;
     }
 
@@ -267,7 +273,9 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         else
             diag = new Diagnostic{callParameters, Fmt(Err(Err0016), refNiceName.c_str())};
         result0.push_back(diag);
-        result1.push_back(Diagnostic::hereIs(overload));
+        note = Diagnostic::hereIs(overload);
+        if (note)
+            result1.push_back(note);
         return;
     }
 
@@ -285,7 +293,9 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         else
             diag = new Diagnostic{errNode, Fmt(Err(Err0049), refNiceName.c_str())};
         result0.push_back(diag);
-        result1.push_back(Diagnostic::hereIs(overload));
+        note = Diagnostic::hereIs(overload);
+        if (note)
+            result1.push_back(note);
         return;
     }
 
@@ -303,7 +313,9 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         if (failedParam)
             diag->hint = Hnt(Hnt0026);
         result0.push_back(diag);
-        result1.push_back(Diagnostic::hereIs(overload));
+        note = Diagnostic::hereIs(overload);
+        if (note)
+            result1.push_back(note);
         return;
     }
 
@@ -331,7 +343,9 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         }
 
         result0.push_back(diag);
-        result1.push_back(Diagnostic::hereIs(overload));
+        note = Diagnostic::hereIs(overload);
+        if (note)
+            result1.push_back(note);
         return;
     }
 
@@ -434,7 +448,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             result1.push_back(note1);
         }
 
-        result1.push_back(note);
+        if (note)
+            result1.push_back(note);
         return;
     }
 
@@ -471,7 +486,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             note = Diagnostic::hereIs(overload);
 
         result0.push_back(diag);
-        result1.push_back(note);
+        if (note)
+            result1.push_back(note);
         return;
     }
 
@@ -514,7 +530,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         else
             note = Diagnostic::hereIs(overload);
         result0.push_back(diag);
-        result1.push_back(note);
+        if (note)
+            result1.push_back(note);
         return;
     }
     }

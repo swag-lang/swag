@@ -20,7 +20,7 @@ bool SemanticJob::computeExpressionListTupleType(SemanticContext* context, AstNo
     for (auto child : node->childs)
     {
         SWAG_CHECK(checkIsConcreteOrType(context, child));
-        if (context->result == ContextResult::Pending)
+        if (context->result != ContextResult::Done)
             return true;
     }
 
@@ -72,6 +72,8 @@ bool SemanticJob::resolveExpressionListTuple(SemanticContext* context)
 {
     auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
     SWAG_CHECK(computeExpressionListTupleType(context, node));
+    if (context->result != ContextResult::Done)
+        return true;
 
     node->allocateExtension(ExtensionKind::ByteCode);
     node->extension->bytecode->byteCodeBeforeFct = ByteCodeGenJob::emitExpressionListBefore;
