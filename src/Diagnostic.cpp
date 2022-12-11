@@ -71,10 +71,12 @@ void Diagnostic::printSourceLine() const
         g_Log.print(": ");
 }
 
-void Diagnostic::printMargin(LogColor color, bool eol) const
+void Diagnostic::printMargin(bool verboseMode, bool eol)
 {
-    static int HEADER_SIZE = 0;
-    g_Log.setColor(color);
+    static int HEADER_SIZE  = 0;
+    auto       verboseColor = LogColor::DarkCyan;
+    auto       codeColor    = verboseMode ? verboseColor : LogColor::Gray;
+    g_Log.setColor(codeColor);
     for (int i = 0; i < HEADER_SIZE; i++)
         g_Log.print(" ");
     g_Log.print(" |  ");
@@ -227,7 +229,7 @@ void Diagnostic::report(bool verboseMode) const
                 errorLevel != DiagnosticLevel::CallStackInlined &&
                 errorLevel != DiagnosticLevel::TraceError)
             {
-                printMargin(codeColor, true);
+                printMargin(verboseMode, true);
             }
 
             for (int i = 0; i < lines.size(); i++)
@@ -235,12 +237,11 @@ void Diagnostic::report(bool verboseMode) const
                 const char* pz = lines[i].c_str();
                 if (*pz && *pz != '\n' && *pz != '\r')
                 {
-                    if (!showRange && errorLevel == DiagnosticLevel::Note)
-                        printMargin(hilightCodeColor);
-                    else
-                        printMargin(codeColor);
+                    printMargin(verboseMode);
                     if (hilightCodeRange && i == lines.size() - 1)
                         break;
+                    if (!showRange && errorLevel == DiagnosticLevel::Note)
+                        g_Log.setColor(hilightCodeColor);
                     g_Log.print(lines[i].c_str() + minBlanks);
                     g_Log.eol();
                 }
@@ -374,7 +375,7 @@ void Diagnostic::report(bool verboseMode) const
                 ///////////////////////////
                 else
                 {
-                    printMargin(codeColor, false);
+                    printMargin(verboseMode, false);
 
                     auto startIndex = minBlanks;
                     for (auto& r : ranges)
@@ -417,7 +418,7 @@ void Diagnostic::report(bool verboseMode) const
                     if (ranges.size() > 1 && !ranges[0].hint.empty())
                     {
                         g_Log.eol();
-                        printMargin(codeColor, false);
+                        printMargin(verboseMode, false);
 
                         startIndex = minBlanks;
                         for (int ri = 0; ri < ranges.size() - 1; ri++)
@@ -447,7 +448,7 @@ void Diagnostic::report(bool verboseMode) const
                         }
 
                         g_Log.eol();
-                        printMargin(codeColor, false);
+                        printMargin(verboseMode, false);
 
                         startIndex = minBlanks;
                         for (int ri = 0; ri < ranges.size() - 1; ri++)
@@ -465,10 +466,10 @@ void Diagnostic::report(bool verboseMode) const
                             g_Log.print(r.hint);
                         }
                     }
-                }
 
-                g_Log.eol();
-                printMargin(codeColor, true);
+                    g_Log.eol();
+                    printMargin(verboseMode, true);
+                }
             }
         }
         else if (lines.size())
@@ -479,7 +480,7 @@ void Diagnostic::report(bool verboseMode) const
                 errorLevel != DiagnosticLevel::TraceError &&
                 showMultipleCodeLines)
             {
-                printMargin(codeColor, true);
+                printMargin(verboseMode, true);
             }
         }
     }
@@ -487,15 +488,15 @@ void Diagnostic::report(bool verboseMode) const
     // Source file and location on their own line
     if (g_CommandLine->errorSourceOut && hasFile && !sourceFile->path.empty() && showFileName)
     {
-        printMargin(codeColor);
+        printMargin(verboseMode);
         g_Log.setColor(sourceFileColor);
         printSourceLine();
         g_Log.eol();
-        printMargin(codeColor, true);
+        printMargin(verboseMode, true);
     }
     else if (mustPrintCode() && !showRange)
     {
-        printMargin(codeColor, true);
+        printMargin(verboseMode, true);
     }
 
     // Code remarks
@@ -504,20 +505,20 @@ void Diagnostic::report(bool verboseMode) const
         if (!remarks.empty())
         {
             if (!mustPrintCode())
-                printMargin(codeColor, true);
+                printMargin(verboseMode, true);
 
             g_Log.setColor(remarkColor);
             for (auto r : remarks)
             {
                 if (r.empty())
                     continue;
-                printMargin(codeColor);
+                printMargin(verboseMode);
                 g_Log.setColor(remarkColor);
                 g_Log.print(r);
                 g_Log.eol();
             }
 
-            printMargin(codeColor, true);
+            printMargin(verboseMode, true);
         }
     }
 
@@ -526,6 +527,8 @@ void Diagnostic::report(bool verboseMode) const
 
 Utf8 Diagnostic::isType(TypeInfo* typeInfo)
 {
+    if (!typeInfo)
+        return "";
     if (typeInfo->isTuple())
         return Hnt(Hnt0010);
     return Fmt(Hnt(Hnt0011), typeInfo->getDisplayNameC());

@@ -129,13 +129,13 @@ struct Diagnostic
         setup();
     }
 
-    void setup();
-    bool mustPrintCode() const;
-    void printSourceLine() const;
-    void printMargin(LogColor color, bool eol = false) const;
-    void report(bool verboseMode = false) const;
-    void setRange2(const SourceLocation& start, const SourceLocation& end, const Utf8& h);
-    void setRange2(AstNode* node, const Utf8& h);
+    void        setup();
+    bool        mustPrintCode() const;
+    void        printSourceLine() const;
+    static void printMargin(bool verboseMode, bool eol = false);
+    void        report(bool verboseMode = false) const;
+    void        setRange2(const SourceLocation& start, const SourceLocation& end, const Utf8& h);
+    void        setRange2(AstNode* node, const Utf8& h);
 
     static Utf8        isType(TypeInfo* typeInfo);
     static Diagnostic* hereIs(SymbolOverload* overload);

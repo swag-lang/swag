@@ -875,10 +875,12 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                     auto idNode = Ast::newIdentifier(dependentVar->sourceFile, child->token.text, idRef, nullptr);
                     idNode->inheritOrFlag(idRef, AST_IN_MIXIN);
                     idNode->inheritTokenLocation(idRef);
+                    idNode->fromAlternateVar = child;
                     Ast::addChildFront(idRef, idNode);
                     context->job->nodes.push_back(idNode);
                     if (i == 0)
                         idNode->specFlags |= identifier->specFlags & AST_SPEC_IDENTIFIER_BACKTICK;
+                    idNode->specFlags |= AST_SPEC_IDENTIFIER_FROM_USING;
                 }
             }
             else
@@ -896,6 +898,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                     newParent = newParent->parent;
 
                 idNode->specFlags |= identifier->specFlags & AST_SPEC_IDENTIFIER_BACKTICK;
+                idNode->specFlags |= AST_SPEC_IDENTIFIER_FROM_USING;
+                idNode->fromAlternateVar = dependentVar;
+
                 Ast::insertChild(idRef, idNode, newParent->childParentIdx);
                 context->job->nodes.push_back(idNode);
             }
@@ -2540,7 +2545,8 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
                         auto id = Ast::newIdentifier(context->sourceFile, withNode->id[wi], identifierRef, identifierRef);
                         id->flags |= AST_GENERATED;
                         id->specFlags |= AST_SPEC_IDENTIFIER_FROM_WITH;
-                        id->alternateEnum = hasEnum;
+                        id->alternateEnum    = hasEnum;
+                        id->fromAlternateVar = withNode->childs.front();
                         id->inheritTokenLocation(identifierRef);
                         identifierRef->childs.pop_back();
                         Ast::addChildFront(identifierRef, id);

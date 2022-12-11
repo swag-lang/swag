@@ -132,6 +132,7 @@ static const uint8_t AST_SPEC_IDENTIFIERREF_AUTO_SCOPE = 0x01;
 static const uint8_t AST_SPEC_IDENTIFIER_BACKTICK      = 0x01;
 static const uint8_t AST_SPEC_IDENTIFIER_NO_INLINE     = 0x02;
 static const uint8_t AST_SPEC_IDENTIFIER_FROM_WITH     = 0x04;
+static const uint8_t AST_SPEC_IDENTIFIER_FROM_USING    = 0x08;
 static const uint8_t AST_SPEC_RANGE_EXCLUDE_UP         = 0x01;
 static const uint8_t AST_SPEC_OP_SAFE                  = 0x01;
 static const uint8_t AST_SPEC_OP_SMALL                 = 0x02;

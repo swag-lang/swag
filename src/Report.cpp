@@ -22,10 +22,7 @@ namespace Report
                 // Separator if we have a bunch of notes without source code, and one that comes after, but with source code
                 auto hasSourceCode = note->mustPrintCode();
                 if (hasSourceCode && !prevHasSourceCode)
-                {
-                    g_Log.print(" |");
-                    g_Log.eol();
-                }
+                    Diagnostic::printMargin(verbose, true);
                 prevHasSourceCode = hasSourceCode;
 
                 note->report(verbose);

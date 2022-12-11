@@ -75,19 +75,11 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         ((left->typeInfo->flags & TYPEINFO_FAKE_ALIAS) && left->typeInfo->isConst()) ||
         (left->typeInfo->isConstPointerRef() && right->kind != AstNodeKind::KeepRef))
     {
-        Utf8 hint;
-        if (left->typeInfo->isConst())
-        {
-            if (left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
-            {
-                Diagnostic note{Hlp(Hlp0016), DiagnosticLevel::Help};
-                Diagnostic diag{left, Fmt(Err(Err0740), left->resolvedSymbolName->name.c_str())};
-                return context->report(diag, &note);
-            }
+        Utf8        hint;
+        Diagnostic* note    = nullptr;
+        auto        orgLeft = left;
 
-            hint = Diagnostic::isType(left->typeInfo);
-        }
-        else if (left->kind == AstNodeKind::IdentifierRef)
+        if (left->kind == AstNodeKind::IdentifierRef)
         {
             for (int i = left->childs.count - 1; i >= 0; i--)
             {
@@ -117,10 +109,47 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                     break;
                 }
             }
+
+            if (left->kind == AstNodeKind::Identifier && left->specFlags & (AST_SPEC_IDENTIFIER_FROM_USING | AST_SPEC_IDENTIFIER_FROM_WITH))
+            {
+                auto leftId = CastAst<AstIdentifier>(left, AstNodeKind::Identifier);
+                hint        = "this is equivalent to `";
+                for (int ic = 0; ic < orgLeft->childs.size(); ic++)
+                {
+                    auto c = orgLeft->childs[ic];
+                    if (ic)
+                        hint += ".";
+                    hint += c->token.text;
+                }
+
+                if (left->specFlags & AST_SPEC_IDENTIFIER_FROM_USING)
+                    hint += "` because of a `using`";
+                else
+                    hint += "` because of a `with`";
+
+                note = new Diagnostic{leftId->fromAlternateVar, Nte(Nte0023), Diagnostic::isType(left->typeInfo), DiagnosticLevel::Note};
+            }
+        }
+
+        if (left->typeInfo->isConst())
+        {
+            if (left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
+            {
+                Diagnostic note1{Hlp(Hlp0016), DiagnosticLevel::Help};
+                Diagnostic diag{left, Fmt(Err(Err0740), left->resolvedSymbolName->name.c_str()), hint};
+                return context->report(diag, &note1, note);
+            }
+            else if (hint.empty())
+            {
+                hint = Diagnostic::isType(left->typeInfo);
+            }
         }
 
         if (left->flags & AST_L_VALUE)
-            return context->report({left, Err(Err0564), hint});
+        {
+            Diagnostic diag{left, Err(Err0564), hint};
+            return context->report(diag, note);
+        }
     }
 
     if (!(left->flags & AST_L_VALUE))
