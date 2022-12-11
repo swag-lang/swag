@@ -793,8 +793,10 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
             if (!ok)
             {
+                Diagnostic diag{node, Fmt(Err(Err0848), node->token.ctext(), typeEnum->getDisplayNameC())};
+                diag.hint = Hnt(Hnt0055);
                 Diagnostic note{concreteNodeType->declNode, Fmt(Nte(Nte0027), concreteNodeType->getDisplayNameC()), DiagnosticLevel::Note};
-                return context->report({node, Fmt(Err(Err0848), node->token.ctext(), typeEnum->getDisplayNameC())}, &note);
+                return context->report(diag, &note);
             }
         }
     }
