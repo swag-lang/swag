@@ -510,7 +510,7 @@ impl Painter
         // True when we are "drawing" blanks
         blankPatternIdx := patternIndex & 1 ? true : false
 
-        while true
+        loop
         {
             lengthInPattern := remainingPatternLen
 

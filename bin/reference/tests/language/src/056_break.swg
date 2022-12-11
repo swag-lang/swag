@@ -6,7 +6,7 @@
             break
         for i := 0; i < 10; i += 1
             break
-        while true
+        while false
             break
     }
 

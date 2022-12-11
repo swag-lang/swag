@@ -1,4 +1,4 @@
-#global testerror
+#global testerrors
 
 struct Utf8
 {

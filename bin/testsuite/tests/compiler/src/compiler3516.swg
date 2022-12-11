@@ -1,7 +1,7 @@
 func toto()->s32
 {
     a := 0
-    while true
+    loop
     {
         //if a
             return 1

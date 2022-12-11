@@ -871,7 +871,7 @@ SWAG_ERROR(Err0876, "invalid label name, you should add `;` or put a valid label
 SWAG_ERROR(Err0877, "invalid label name, identifier expected")
 SWAG_ERROR(Err0878, "expected the `#if` expression")
 SWAG_ERROR(Err0879, "expected the `#global if` expression")
-SWAG_ERROR(Err0880, nullptr)
+SWAG_ERROR(Err0880, "the while expression is always true")
 SWAG_ERROR(Err0881, "the identifier `%s` is preceeded with `.` but no corresponding enum or `with` can be deduced")
 SWAG_ERROR(Err0882, "capture size overflow (total size is `%u` bytes but maximum authorized is `%u`)")
 SWAG_ERROR(Err0883, "expected the function parameters before `{`")
