@@ -84,6 +84,41 @@ void Diagnostic::printMargin(bool verboseMode, bool eol)
         g_Log.eol();
 }
 
+static void fixRange(const Utf8& backLine, SourceLocation& startLocation, int& range, char c1, char c2)
+{
+    if (range == 1) 
+        return;
+
+    int decal = startLocation.column;
+    int cpt   = 0;
+    for (int i = decal; i < backLine.length() && i < decal + range; i++)
+    {
+        if (backLine[i] == c1)
+            cpt++;
+        else if (backLine[i] == c2)
+            cpt--;
+    }
+
+    if (cpt > 0 && decal + range < backLine.length() && backLine[decal + range] == c2)
+    {
+        range++;
+    }
+    else if (cpt > 0 && backLine[decal] == c1)
+    {
+        startLocation.column++;
+        range--;
+    }
+    else if (cpt < 0 && decal && backLine[decal - 1] == c1)
+    {
+        startLocation.column--;
+        range++;
+    }
+    else if (cpt < 0 && backLine[decal + range - 1] == c2)
+    {
+        range--;
+    }
+}
+
 void Diagnostic::report(bool verboseMode) const
 {
     auto verboseColor     = LogColor::DarkCyan;
@@ -311,24 +346,9 @@ void Diagnostic::report(bool verboseMode) const
                 }
 
                 // Fix
-                int decal = r.startLocation.column;
-
-                if (decal + r.range < backLine.length())
-                {
-                    if (backLine[decal] == '{' && backLine[decal + r.range - 1] != '}' && backLine[decal + r.range] == '}')
-                        r.range++;
-                    if (backLine[decal] == '(' && backLine[decal + r.range - 1] != ')' && backLine[decal + r.range] == ')')
-                        r.range++;
-                    if (backLine[decal] != '(' && (!decal || backLine[decal - 1] != '(') && backLine[decal + r.range] == ')')
-                        r.range++;
-                    if (backLine[decal] != '[' && (!decal || backLine[decal - 1] != '[') && backLine[decal + r.range] == ']')
-                        r.range++;
-                }
-
-                if (backLine[decal] != '{' && backLine[decal + r.range - 1] == '}')
-                    r.range--;
-                if (backLine[decal] != '(' && backLine[decal + r.range - 1] == ')')
-                    r.range--;
+                fixRange(backLine, r.startLocation, r.range, '{', '}');
+                fixRange(backLine, r.startLocation, r.range, '(', ')');
+                fixRange(backLine, r.startLocation, r.range, '[', ']');
             }
 
             for (int lastLine = 0; lastLine < 2; lastLine++)
