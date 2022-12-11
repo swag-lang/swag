@@ -655,7 +655,8 @@ bool Generic::instantiateDefaultGeneric(SemanticContext* context, AstVarDecl* no
                         auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
                         if (!param->assignment)
                         {
-                            return context->report({node->type, Fmt(Err(Err0312), node->typeInfo->getDisplayNameC())});
+                            Diagnostic diag{node->type, Fmt(Err(Err0721), typeExpr->identifier->resolvedSymbolName->name.c_str()), Hnt(Hnt0056)};
+                            return context->report(diag, Diagnostic::hereIs(typeExpr->identifier->resolvedSymbolOverload));
                         }
 
                         auto child          = Ast::newFuncCallParam(context->sourceFile, identifier->genericParameters);

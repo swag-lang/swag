@@ -54,3 +54,4 @@ SWAG_ERROR(Hnt0052, "this should be casted to a sized type like `s32`, `s64` etc
 SWAG_ERROR(Hnt0053, "this is not `const` but should be")
 SWAG_ERROR(Hnt0054, "this is a type and not a value")
 SWAG_ERROR(Hnt0055, "this should be explicitly initialized")
+SWAG_ERROR(Hnt0056, "this should be followed by generic arguments")
