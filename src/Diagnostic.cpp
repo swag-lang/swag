@@ -262,7 +262,7 @@ void Diagnostic::report(bool verboseMode) const
             vector<RangeHint> ranges;
 
             if (hasRangeLocation2 && startLocation2.line == startLocation.line && endLocation2.line == startLocation2.line)
-                ranges.push_back({startLocation2, endLocation2, hint2 });
+                ranges.push_back({startLocation2, endLocation2, hint2});
             ranges.push_back({startLocation, endLocation, hint});
 
             // Preprocess ranges
@@ -312,14 +312,21 @@ void Diagnostic::report(bool verboseMode) const
 
                 // Fix
                 int decal = r.startLocation.column;
+
                 if (backLine[decal] == '{' && backLine[decal + r.range - 1] != '}' && backLine[decal + r.range] == '}')
-                    r.range++;
-                if (backLine[decal] == '(' && backLine[decal + r.range - 1] != ')' && backLine[decal + r.range] == ')')
                     r.range++;
                 if (backLine[decal] != '{' && backLine[decal + r.range - 1] == '}')
                     r.range--;
+
+                if (backLine[decal] == '(' && backLine[decal + r.range - 1] != ')' && backLine[decal + r.range] == ')')
+                    r.range++;
                 if (backLine[decal] != '(' && backLine[decal + r.range - 1] == ')')
                     r.range--;
+                if (backLine[decal] != '(' && (!decal || backLine[decal - 1] != '(') && backLine[decal + r.range] == ')')
+                    r.range++;
+
+                if (backLine[decal] != '[' && (!decal || backLine[decal - 1] != '[') && backLine[decal + r.range] == ']')
+                    r.range++;
             }
 
             for (int lastLine = 0; lastLine < 2; lastLine++)
