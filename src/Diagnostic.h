@@ -136,6 +136,8 @@ struct Diagnostic
     void setRange2(const SourceLocation& start, const SourceLocation& end, const Utf8& h);
     void setRange2(AstNode* node, const Utf8& h);
 
+    static Utf8 isType(TypeInfo* typeInfo);
+
     SourceLocation startLocation;
     SourceLocation endLocation;
     Utf8           hint;
@@ -166,11 +168,6 @@ struct Diagnostic
     bool showMultipleCodeLines = true;
     bool showFileName          = true;
 };
-
-namespace Hint
-{
-    Utf8 isType(TypeInfo* typeInfo);
-} // namespace Hint
 
 #define Err(__num) g_E[__num]
 #define Nte(__num) g_E[__num]

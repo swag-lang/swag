@@ -30,7 +30,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     if (leftTypeInfo->isPointer())
     {
         node->typeInfo = leftTypeInfo;
-        SWAG_VERIFY(leftTypeInfo->flags & TYPEINFO_POINTER_ARITHMETIC, context->report({left, Err(Err0192), Hint::isType(leftTypeInfo)}));
+        SWAG_VERIFY(leftTypeInfo->flags & TYPEINFO_POINTER_ARITHMETIC, context->report({left, Err(Err0192), Diagnostic::isType(leftTypeInfo)}));
         SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, Err(Err0144)}));
         SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, Fmt(Err(Err0579), rightTypeInfo->getDisplayNameC())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, left, right, CASTFLAG_TRY_COERCE));
@@ -41,7 +41,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     if (rightTypeInfo->isPointer())
     {
         node->typeInfo = rightTypeInfo;
-        SWAG_VERIFY(rightTypeInfo->flags & TYPEINFO_POINTER_ARITHMETIC, context->report({right, Err(Err0192), Hint::isType(rightTypeInfo)}));
+        SWAG_VERIFY(rightTypeInfo->flags & TYPEINFO_POINTER_ARITHMETIC, context->report({right, Err(Err0192), Diagnostic::isType(rightTypeInfo)}));
         SWAG_VERIFY((rightTypeInfo->isPointerToTypeInfo()) == 0, context->report({right, Err(Err0144)}));
         SWAG_VERIFY(leftTypeInfo->isNativeInteger(), context->report({left, Fmt(Err(Err0579), leftTypeInfo->getDisplayNameC())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, right, left, CASTFLAG_TRY_COERCE));
@@ -155,7 +155,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
             return true;
         }
 
-        SWAG_VERIFY(leftTypeInfo->flags & TYPEINFO_POINTER_ARITHMETIC, context->report({left, Err(Err0192), Hint::isType(leftTypeInfo)}));
+        SWAG_VERIFY(leftTypeInfo->flags & TYPEINFO_POINTER_ARITHMETIC, context->report({left, Err(Err0192), Diagnostic::isType(leftTypeInfo)}));
         SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, Err(Err0144)}));
         SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, Fmt(Err(Err0579), rightTypeInfo->getDisplayNameC())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, left, right, CASTFLAG_TRY_COERCE));

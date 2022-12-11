@@ -604,7 +604,7 @@ void SemanticJob::symbolErrorNotes(SemanticContext* context, VectorNative<OneTry
                 {
                     auto typeInfo = TypeManager::concreteType(prev->extension->misc->resolvedUserOpSymbolOverload->typeInfo);
                     auto note     = new Diagnostic{prev, Fmt(Nte(Nte0018), prev->extension->misc->resolvedUserOpSymbolOverload->symbol->name.c_str(), typeInfo->getDisplayNameC()), DiagnosticLevel::Note};
-                    note->hint    = Hint::isType(typeInfo);
+                    note->hint    = Diagnostic::isType(typeInfo);
                     notes.push_back(note);
                     return;
                 }

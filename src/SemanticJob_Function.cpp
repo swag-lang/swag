@@ -895,13 +895,13 @@ bool SemanticJob::resolveCaptureFuncCallParams(SemanticContext* context)
                 return true;
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeField, TypeInfoKind::Struct);
             if (!typeStruct->isPlainOldData())
-                return context->report({c, Fmt(Err(Err0884), c->token.text.c_str()), Hint::isType(c->typeInfo)});
+                return context->report({c, Fmt(Err(Err0884), c->token.text.c_str()), Diagnostic::isType(c->typeInfo)});
             continue;
         }
 
         if (typeField->isClosure())
-            return context->report({c, Fmt(Err(Err0875), c->token.text.c_str()), Hint::isType(c->typeInfo)});
-        return context->report({c, Fmt(Err(Err0887), c->token.text.c_str(), typeField->getDisplayNameC()), Hint::isType(c->typeInfo)});
+            return context->report({c, Fmt(Err(Err0875), c->token.text.c_str()), Diagnostic::isType(c->typeInfo)});
+        return context->report({c, Fmt(Err(Err0887), c->token.text.c_str(), typeField->getDisplayNameC()), Diagnostic::isType(c->typeInfo)});
     }
 
     // As this is the capture block resolved in the right context, we can now evaluate the corresponding slosure

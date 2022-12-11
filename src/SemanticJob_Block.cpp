@@ -580,7 +580,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     AstNode* newExpression = nullptr;
     if (typeInfo->isStruct())
     {
-        SWAG_VERIFY(!(typeInfo->isTuple()), context->report({node->expression, Err(Err0624), Hint::isType(typeInfo)}));
+        SWAG_VERIFY(!(typeInfo->isTuple()), context->report({node->expression, Err(Err0624), Diagnostic::isType(typeInfo)}));
         SWAG_VERIFY(node->expression->kind == AstNodeKind::IdentifierRef, Report::internalError(node->expression, "resolveVisit expression, should be an identifier"));
 
         auto identifierRef    = (AstIdentifierRef*) Ast::clone(node->expression, node);

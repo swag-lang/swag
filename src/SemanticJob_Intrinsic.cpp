@@ -130,9 +130,9 @@ bool SemanticJob::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode
 
     auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeFirst, TypeInfoKind::LambdaClosure);
     if (typeFunc->parameters.size() > SWAG_LIMIT_CB_MAX_PARAMS)
-        return context->report({first, Fmt(Err(Err0785), SWAG_LIMIT_CB_MAX_PARAMS, typeFunc->parameters.size()), Hint::isType(typeFunc)});
+        return context->report({first, Fmt(Err(Err0785), SWAG_LIMIT_CB_MAX_PARAMS, typeFunc->parameters.size()), Diagnostic::isType(typeFunc)});
     if (typeFunc->numReturnRegisters() > 1)
-        return context->report({first, Fmt(Err(Err0786), typeFunc->returnType->getDisplayNameC()), Hint::isType(typeFunc)});
+        return context->report({first, Fmt(Err(Err0786), typeFunc->returnType->getDisplayNameC()), Diagnostic::isType(typeFunc)});
 
     node->typeInfo    = first->typeInfo;
     node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeCallback;
@@ -146,7 +146,7 @@ bool SemanticJob::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* n
 
     // Must start with a pointer of the same type as the slice
     if (!first->typeInfo->isPointer())
-        return context->report({first, Fmt(Err(Err0787), name), Hint::isType(first->typeInfo)});
+        return context->report({first, Fmt(Err(Err0787), name), Diagnostic::isType(first->typeInfo)});
 
     auto ptrPointer = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
     if (!ptrPointer->pointedType)
@@ -262,7 +262,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     }
     else if (typeInfo->isStruct())
     {
-        SWAG_VERIFY(!(typeInfo->isTuple()), context->report({expression, Err(Err0796), Hint::isType(typeInfo)}));
+        SWAG_VERIFY(!(typeInfo->isTuple()), context->report({expression, Err(Err0796), Diagnostic::isType(typeInfo)}));
         node->typeInfo = typeInfo;
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opData, nullptr, nullptr, node, nullptr));
         if (context->result == ContextResult::Pending)
@@ -445,7 +445,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     }
     else if (typeInfo->isStruct())
     {
-        SWAG_VERIFY(!(typeInfo->isTuple()), context->report({expression, Err(Err0800), Hint::isType(typeInfo)}));
+        SWAG_VERIFY(!(typeInfo->isTuple()), context->report({expression, Err(Err0800), Diagnostic::isType(typeInfo)}));
         node->typeInfo = typeInfo;
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opCount, nullptr, nullptr, node, nullptr));
         if (context->result == ContextResult::Pending)
@@ -779,7 +779,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         auto expr = node->childs.front();
         SWAG_CHECK(checkIsConcrete(context, expr));
         if (!expr->typeInfo->isPointerTo(NativeTypeKind::U8))
-            return context->report({expr, Err(Err0730), Hint::isType(expr->typeInfo)});
+            return context->report({expr, Err(Err0730), Diagnostic::isType(expr->typeInfo)});
         SWAG_CHECK(resolveIntrinsicMakeSlice(context, node, expr->typeInfo, "@mkstring"));
         node->typeInfo = g_TypeMgr->typeInfoString;
         break;

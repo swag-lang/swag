@@ -300,7 +300,7 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
     {
         if (typeInfo->isStruct())
         {
-            return context->report({expression, Err(Err0342), Hint::isType(typeInfo)});
+            return context->report({expression, Err(Err0342), Diagnostic::isType(typeInfo)});
         }
         else if (!typeInfo->isString() &&
                  !typeInfo->isRune() &&
@@ -342,7 +342,7 @@ bool SemanticJob::resolveRange(SemanticContext* context)
 
     auto typeInfo = TypeManager::concreteType(node->expressionLow->typeInfo);
     if (!typeInfo->isNativeIntegerOrRune() && !typeInfo->isNativeFloat())
-        return context->report({node->expressionLow, Fmt(Err(Err0002), node->expressionLow->typeInfo->getDisplayNameC()), Hint::isType(typeInfo)});
+        return context->report({node->expressionLow, Fmt(Err(Err0002), node->expressionLow->typeInfo->getDisplayNameC()), Diagnostic::isType(typeInfo)});
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, node->expressionLow, node->expressionUp, CASTFLAG_COMMUTATIVE));
 

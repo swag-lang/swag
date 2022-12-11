@@ -757,7 +757,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         identifier->parent == parent &&
         parent->childs.back() != identifier)
     {
-        return context->report({identifier, Fmt(Err(Err0187), symbol->name.c_str()), Hint::isType(identifier->typeInfo)});
+        return context->report({identifier, Fmt(Err(Err0187), symbol->name.c_str()), Diagnostic::isType(identifier->typeInfo)});
     }
 
     // Reapply back the values of the match to the call parameter node
@@ -1127,7 +1127,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             }
             else if (typeInfoRet->isVoid() && (identifier->flags & AST_DISCARD))
             {
-                Diagnostic diag{identifier, Err(Err0094), Hint::isType(typeInfo)};
+                Diagnostic diag{identifier, Err(Err0094), Diagnostic::isType(typeInfo)};
                 Diagnostic note{overload->node, Nte(Nte0039), DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }
@@ -1314,7 +1314,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
         else if (returnType->isVoid() && (identifier->flags & AST_DISCARD))
         {
-            Diagnostic diag{identifier, Err(Err0094), Hint::isType(identifier->typeInfo)};
+            Diagnostic diag{identifier, Err(Err0094), Diagnostic::isType(identifier->typeInfo)};
             Diagnostic note{overload->node, Nte(Nte0033), DiagnosticLevel::Note};
             return context->report(diag, &note);
         }

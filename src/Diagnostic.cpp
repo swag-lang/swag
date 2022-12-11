@@ -6,11 +6,6 @@
 #include "TypeInfo.h"
 #include "ErrorIds.h"
 
-Utf8 Hint::isType(TypeInfo* typeInfo)
-{
-    return Fmt(Hnt(Hnt0011), typeInfo->getDisplayNameC());
-}
-
 void Diagnostic::setup()
 {
     switch (errorLevel)
@@ -527,4 +522,9 @@ void Diagnostic::report(bool verboseMode) const
     }
 
     g_Log.setDefaultColor();
+}
+
+Utf8 Diagnostic::isType(TypeInfo* typeInfo)
+{
+    return Fmt(Hnt(Hnt0011), typeInfo->getDisplayNameC());
 }

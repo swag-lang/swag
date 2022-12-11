@@ -266,7 +266,7 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, TypeInfo* toType, TypeI
         auto fromTypeCpy = fromType;
         if (fromTypeCpy->isPointerTo(TypeInfoKind::Struct))
         {
-            hint        = Hint::isType(fromTypeCpy);
+            hint        = Diagnostic::isType(fromTypeCpy);
             fromTypeCpy = CastTypeInfo<TypeInfoPointer>(fromTypeCpy, TypeInfoKind::Pointer)->pointedType;
         }
 
@@ -332,7 +332,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
 
         // General cast error
         Diagnostic diag{fromNode, Fmt(Err(Err0177), fromType->getDisplayNameC(), toType->getDisplayNameC())};
-        diag.hint = Hint::isType(fromType);
+        diag.hint = Diagnostic::isType(fromType);
         return context->report(diag);
     }
 

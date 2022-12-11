@@ -85,7 +85,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 return context->report(diag, &note);
             }
 
-            hint = Hint::isType(left->typeInfo);
+            hint = Diagnostic::isType(left->typeInfo);
         }
         else if (left->kind == AstNodeKind::IdentifierRef)
         {
@@ -95,7 +95,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 if (typeChild && typeChild->isConst())
                 {
                     left = left->childs[i];
-                    hint = Hint::isType(left->typeInfo);
+                    hint = Diagnostic::isType(left->typeInfo);
                     break;
                 }
 
@@ -105,7 +105,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                     if (arr->array->typeInfo->isString())
                     {
                         left = arr->array;
-                        hint = Hint::isType(left->typeInfo);
+                        hint = Diagnostic::isType(left->typeInfo);
                         break;
                     }
                 }
@@ -326,7 +326,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             break;
         }
 
-        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Hint::isType(leftTypeInfo));
+        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Diagnostic::isType(leftTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, nullptr, right, CASTFLAG_AUTO_BOOL | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT | CASTFLAG_ACCEPT_PENDING));
         if (context->result == ContextResult::Pending)
             return true;
@@ -348,7 +348,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             break;
         }
 
-        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Hint::isType(leftTypeInfo));
+        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Diagnostic::isType(leftTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU32, left, right, CASTFLAG_TRY_COERCE));
 
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
@@ -405,7 +405,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         }
 
         SWAG_CHECK(forEnumFlags || checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
-        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Hint::isType(leftTypeInfo));
+        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Diagnostic::isType(leftTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
 
         if (leftTypeInfo->nativeType == NativeTypeKind::String ||
@@ -435,7 +435,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         // :PointerArithmetic
         if (leftTypeInfo->isPointer())
         {
-            SWAG_VERIFY(leftTypeInfo->flags & TYPEINFO_POINTER_ARITHMETIC, context->report({node, Err(Err0192), Hint::isType(leftTypeInfo)}));
+            SWAG_VERIFY(leftTypeInfo->flags & TYPEINFO_POINTER_ARITHMETIC, context->report({node, Err(Err0192), Diagnostic::isType(leftTypeInfo)}));
             SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, Err(Err0144)}));
             rightTypeInfo = TypeManager::concreteType(right->typeInfo);
             SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, Fmt(Err(Err0579), rightTypeInfo->getDisplayNameC())}));
@@ -445,7 +445,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
 
-        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Hint::isType(leftTypeInfo));
+        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Diagnostic::isType(leftTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
             leftTypeInfo->nativeType == NativeTypeKind::String)
@@ -469,7 +469,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         }
 
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
-        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Hint::isType(leftTypeInfo));
+        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Diagnostic::isType(leftTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
             leftTypeInfo->nativeType == NativeTypeKind::String)
@@ -495,7 +495,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         }
 
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
-        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Hint::isType(leftTypeInfo));
+        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Diagnostic::isType(leftTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
             leftTypeInfo->nativeType == NativeTypeKind::String)

@@ -241,7 +241,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     // Slicing of a pointer
     else if (typeVar->isPointer())
     {
-        SWAG_VERIFY(typeVar->flags & TYPEINFO_POINTER_ARITHMETIC, context->report({node, Err(Err0193), Hint::isType(typeVar)}));
+        SWAG_VERIFY(typeVar->flags & TYPEINFO_POINTER_ARITHMETIC, context->report({node, Err(Err0193), Diagnostic::isType(typeVar)}));
         auto typeInfoPointer  = CastTypeInfo<TypeInfoPointer>(node->array->typeInfo, TypeInfoKind::Pointer);
         auto ptrSlice         = allocType<TypeInfoSlice>();
         ptrSlice->pointedType = typeInfoPointer->pointedType;
@@ -398,7 +398,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     if (arrayNode->parent->parent->kind != AstNodeKind::MakePointer)
     {
         if (arrayType->isConst())
-            return context->report({arrayNode, Fmt(Err(Err0564), arrayType->getDisplayNameC()), Hint::isType(arrayType)});
+            return context->report({arrayNode, Fmt(Err(Err0564), arrayType->getDisplayNameC()), Diagnostic::isType(arrayType)});
     }
     else
     {
@@ -416,7 +416,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     case TypeInfoKind::Pointer:
     {
         if (!(arrayType->flags & TYPEINFO_POINTER_ARITHMETIC) && !(arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF))
-            return context->report({arrayNode, Fmt(Err(Err0194), arrayNode->resolvedSymbolName->name.c_str()), Hint::isType(arrayType)});
+            return context->report({arrayNode, Fmt(Err(Err0194), arrayNode->resolvedSymbolName->name.c_str()), Diagnostic::isType(arrayType)});
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
         SWAG_VERIFY(typePtr->pointedType != g_TypeMgr->typeInfoVoid, context->report({arrayNode->access, Err(Err0486)}));
@@ -630,7 +630,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     case TypeInfoKind::Pointer:
     {
         if (!(arrayType->flags & TYPEINFO_POINTER_ARITHMETIC) && !(arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF))
-            return context->report({arrayNode, Fmt(Err(Err0194), arrayNode->resolvedSymbolName->name.c_str()), Hint::isType(arrayType)});
+            return context->report({arrayNode, Fmt(Err(Err0194), arrayNode->resolvedSymbolName->name.c_str()), Diagnostic::isType(arrayType)});
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
         SWAG_VERIFY(typePtr->pointedType != g_TypeMgr->typeInfoVoid, context->report({arrayNode->access, Err(Err0486)}));

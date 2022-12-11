@@ -321,7 +321,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
              !leftTypeInfo->isSlice() &&
              !leftTypeInfo->isInterface())
     {
-        return context->report({left, Fmt(Err(Err0809), node->token.ctext(), TypeInfo::getArticleKindName(leftTypeInfo)), Hint::isType(leftTypeInfo)});
+        return context->report({left, Fmt(Err(Err0809), node->token.ctext(), TypeInfo::getArticleKindName(leftTypeInfo)), Diagnostic::isType(leftTypeInfo)});
     }
     else if (!rightTypeInfo->isNative() &&
              !rightTypeInfo->isPointer() &&
@@ -329,7 +329,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
              !rightTypeInfo->isInterface())
     {
 
-        return context->report({right, Fmt(Err(Err0778), node->token.ctext(), TypeInfo::getArticleKindName(rightTypeInfo)), Hint::isType(rightTypeInfo)});
+        return context->report({right, Fmt(Err(Err0778), node->token.ctext(), TypeInfo::getArticleKindName(rightTypeInfo)), Diagnostic::isType(rightTypeInfo)});
     }
 
     // Cannot compare tuples
@@ -378,7 +378,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     // a opEquals function
     if (!leftTypeInfo->isStruct() && !rightTypeInfo->isStruct())
     {
-        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Hint::isType(leftTypeInfo));
+        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Diagnostic::isType(leftTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COMMUTATIVE | CASTFLAG_FORCE_UNCONST | CASTFLAG_COMPARE | CASTFLAG_TRY_COERCE));
     }
 
