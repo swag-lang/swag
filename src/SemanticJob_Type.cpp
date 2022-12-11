@@ -70,7 +70,8 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
         }
 
         Diagnostic  diag{node, Fmt(Err(Err0013), name.c_str(), node->resolvedSymbolName->name.c_str()), hint};
-        Diagnostic* note = nullptr;
+        Diagnostic* note  = nullptr;
+        Diagnostic* note1 = nullptr;
 
         // Missing self ?
         if (node->childs.size() <= 1 &&
@@ -80,11 +81,21 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
         {
             if (node->ownerStructScope->symTable.find(node->resolvedSymbolName->name))
             {
-                note = new Diagnostic{Hlp(Hlp0002), DiagnosticLevel::Help};
+                auto nodeFct = CastAst<AstFuncDecl>(node->ownerFct, AstNodeKind::FuncDecl);
+                auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+                if (typeFct->parameters.size() == 0 || !(typeFct->parameters[0]->typeInfo->flags & TYPEINFO_SELF))
+                {
+                    note  = new Diagnostic{node->ownerFct, Hlp(Hlp0002), DiagnosticLevel::Help};
+                    note1 = new Diagnostic{Hlp(Hlp0029), DiagnosticLevel::Help};
+                }
+                else if (typeFct->parameters.size() && (typeFct->parameters[0]->typeInfo->flags & TYPEINFO_SELF) && !(typeFct->parameters[0]->typeInfo->flags & TYPEINFO_HAS_USING))
+                    note = new Diagnostic{nodeFct->parameters->childs.front(), Hlp(Hlp0028), DiagnosticLevel::Help};
+                else
+                    note = new Diagnostic{Hlp(Hlp0002), DiagnosticLevel::Help};
             }
         }
 
-        return context->report(diag, note);
+        return context->report(diag, note, note1);
     }
 
     return true;

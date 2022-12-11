@@ -510,6 +510,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                   Fmt(Err(Err0054),
                                       getNiceArgumentRank(badParamIdx).c_str(),
                                       refNiceName.c_str())};
+            diag->hint = Hnt(Hnt0028);
         }
         else if (match.flags & SymbolMatchContext::MATCH_ERROR_TYPE_VALUE)
         {
@@ -517,6 +518,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                   Fmt(Err(Err0057),
                                       getNiceArgumentRank(badParamIdx).c_str(),
                                       refNiceName.c_str())};
+            diag->hint = Hnt(Hnt0027);
         }
         else
         {

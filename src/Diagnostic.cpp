@@ -262,7 +262,7 @@ void Diagnostic::report(bool verboseMode) const
             vector<RangeHint> ranges;
 
             if (hasRangeLocation2 && startLocation2.line == startLocation.line && endLocation2.line == startLocation2.line)
-                ranges.push_back({startLocation2, endLocation2, hint2, "-"});
+                ranges.push_back({startLocation2, endLocation2, hint2 });
             ranges.push_back({startLocation, endLocation, hint});
 
             // Preprocess ranges
@@ -316,6 +316,10 @@ void Diagnostic::report(bool verboseMode) const
                     r.range++;
                 if (backLine[decal] == '(' && backLine[decal + r.range - 1] != ')' && backLine[decal + r.range] == ')')
                     r.range++;
+                if (backLine[decal] != '{' && backLine[decal + r.range - 1] == '}')
+                    r.range--;
+                if (backLine[decal] != '(' && backLine[decal + r.range - 1] == ')')
+                    r.range--;
             }
 
             for (int lastLine = 0; lastLine < 2; lastLine++)
@@ -344,6 +348,7 @@ void Diagnostic::report(bool verboseMode) const
                             startIndex++;
                         }
 
+                        g_Log.setColor(codeColor);
                         g_Log.print(errorMsg);
                         if (startIndex >= (uint32_t) backLine.count)
                             break;
@@ -463,6 +468,7 @@ void Diagnostic::report(bool verboseMode) const
                                 startIndex++;
                             }
 
+                            g_Log.setColor(remarkColor);
                             g_Log.print(r.hint);
                         }
                     }

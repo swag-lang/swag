@@ -87,7 +87,10 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 if (typeChild && typeChild->isConst())
                 {
                     left = left->childs[i];
-                    hint = Diagnostic::isType(left->typeInfo);
+                    if (left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
+                        hint = Hnt(Hnt0029);
+                    else
+                        hint = Diagnostic::isType(left->typeInfo);
                     break;
                 }
 
