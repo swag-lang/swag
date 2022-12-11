@@ -260,7 +260,7 @@ void Diagnostic::report(bool verboseMode) const
             };
             vector<RangeHint> ranges;
 
-            if (hasRangeLocation2)
+            if (hasRangeLocation2 && startLocation2.line == startLocation.line && endLocation2.line == startLocation2.line)
                 ranges.push_back({startLocation2, endLocation2, hint2, "-"});
             ranges.push_back({startLocation, endLocation, hint});
 
@@ -526,5 +526,23 @@ void Diagnostic::report(bool verboseMode) const
 
 Utf8 Diagnostic::isType(TypeInfo* typeInfo)
 {
+    if (typeInfo->isTuple())
+        return Hnt(Hnt0010);
     return Fmt(Hnt(Hnt0011), typeInfo->getDisplayNameC());
+}
+
+Diagnostic* Diagnostic::hereIs(SymbolOverload* overload)
+{
+    auto refNiceName = SymTable::getArticleKindName(overload);
+
+    auto showRange = false;
+    auto site      = overload->node;
+
+    if (site->typeInfo->isTuple())
+        showRange = true;
+
+    auto note       = new Diagnostic{site, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
+    note->showRange = showRange;
+
+    return note;
 }

@@ -1,4 +1,5 @@
 #pragma once
+#pragma once
 #include "Tokenizer.h"
 #include "AstNode.h"
 struct SourceFile;
@@ -136,7 +137,8 @@ struct Diagnostic
     void setRange2(const SourceLocation& start, const SourceLocation& end, const Utf8& h);
     void setRange2(AstNode* node, const Utf8& h);
 
-    static Utf8 isType(TypeInfo* typeInfo);
+    static Utf8        isType(TypeInfo* typeInfo);
+    static Diagnostic* hereIs(SymbolOverload* overload);
 
     SourceLocation startLocation;
     SourceLocation endLocation;

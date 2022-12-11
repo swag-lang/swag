@@ -207,7 +207,8 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
         }
     }
 
-    return doStructContent(structNode, structType);
+    SWAG_CHECK(doStructContent(structNode, structType));
+    return true;
 }
 
 bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structType)
@@ -384,6 +385,7 @@ bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty)
         SWAG_CHECK(eatToken());
     }
 
+    parent->token.endLocation = token.endLocation;
     SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the tuple body"));
     return true;
 }

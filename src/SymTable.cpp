@@ -454,6 +454,20 @@ bool SymTable::registerUsingAliasOverload(JobContext* context, AstNode* node, Sy
     return true;
 }
 
+Utf8 SymTable::getArticleKindName(SymbolOverload* overload)
+{
+    Utf8 refNiceName;
+    if (overload->typeInfo->isTuple())
+        refNiceName = "the tuple";
+    else if (overload->typeInfo->isLambda())
+        refNiceName = Fmt("the lambda `%s`", overload->symbol->name.c_str());
+    else if (overload->typeInfo->isClosure())
+        refNiceName = Fmt("the closure `%s`", overload->symbol->name.c_str());
+    else
+        refNiceName = Fmt("the %s `%s`", SymTable::getNakedKindName(overload->symbol->kind), overload->symbol->name.c_str());
+    return refNiceName;
+}
+
 const char* SymTable::getArticleKindName(SymbolKind kind)
 {
     switch (kind)

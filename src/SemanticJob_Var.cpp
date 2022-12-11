@@ -962,8 +962,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 auto       over = node->assignment->resolvedSymbolOverload;
                 Diagnostic diag{node->assignment, Err(Err0307)};
                 diag.hint = Hnt(Hnt0034);
-                Diagnostic note{over->node, Fmt(Nte(Nte0008), SymTable::getNakedKindName(over->symbol->kind)), DiagnosticLevel::Note};
-                return context->report(diag, &note);
+                return context->report(diag, Diagnostic::hereIs(over));
             }
 
             return context->report({node->assignment, Err(Err0307)});

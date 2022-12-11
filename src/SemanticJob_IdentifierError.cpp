@@ -156,15 +156,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     badParamIdx += 1;
 
     // Nice name to reference it
-    Utf8 refNiceName;
-    if (overload->typeInfo->isTuple())
-        refNiceName = "the tuple";
-    else if (overload->typeInfo->isLambda())
-        refNiceName = Fmt("the lambda `%s`", symbol->name.c_str());
-    else if (overload->typeInfo->isClosure())
-        refNiceName = Fmt("the closure `%s`", symbol->name.c_str());
-    else
-        refNiceName = Fmt("%s `%s`", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str());
+    auto refNiceName = SymTable::getArticleKindName(overload);
 
     // Get parameters of destination symbol
     AstFuncDecl* destFuncDecl = nullptr;
@@ -239,11 +231,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         diag = new Diagnostic{failedParam->namedParamNode ? failedParam->namedParamNode : failedParam, Fmt(Err(Err0008), failedParam->namedParam.c_str())};
         result0.push_back(diag);
         if (!(overload->node->flags & AST_GENERATED))
-        {
-            note = new Diagnostic{overload->node, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
-            result1.push_back(note);
-        }
-
+            result1.push_back(Diagnostic::hereIs(overload));
         return;
     }
 
@@ -257,10 +245,9 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
     case MatchResult::MissingParameters:
     {
-        diag            = new Diagnostic{callParameters ? callParameters : node, Fmt(Err(Err0020), refNiceName.c_str())};
-        diag->hint      = Hnt(Hnt0044);
-        note            = new Diagnostic{overload->node, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
-        note->showRange = false;
+        diag       = new Diagnostic{callParameters ? callParameters : node, Fmt(Err(Err0020), refNiceName.c_str())};
+        diag->hint = Hnt(Hnt0044);
+        note       = Diagnostic::hereIs(overload);
         result0.push_back(diag);
         result1.push_back(note);
         return;
@@ -289,10 +276,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         if (destFuncDecl && callParameters)
             note = new Diagnostic{destFuncDecl->parameters->childs[match.cptResolved], Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
         else
-        {
-            note            = new Diagnostic{overload->node, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
-            note->showRange = false;
-        }
+            note = Diagnostic::hereIs(overload);
 
         result0.push_back(diag);
         result1.push_back(note);
@@ -308,9 +292,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         }
         else
             diag = new Diagnostic{callParameters, Fmt(Err(Err0016), refNiceName.c_str())};
-        note = new Diagnostic{overload->node, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
-        result1.push_back(note);
+        result1.push_back(Diagnostic::hereIs(overload));
         return;
     }
 
@@ -327,9 +310,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             diag = new Diagnostic{errNode, Fmt(Err(Err0035), refNiceName.c_str())};
         else
             diag = new Diagnostic{errNode, Fmt(Err(Err0049), refNiceName.c_str())};
-        note = new Diagnostic{overload->node, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
-        result1.push_back(note);
+        result1.push_back(Diagnostic::hereIs(overload));
         return;
     }
 
@@ -344,9 +326,10 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                   refNiceName.c_str(),
                                   match.badSignatureInfos.badSignatureNum2,
                                   match.badSignatureInfos.badSignatureNum1)};
-        note = new Diagnostic{overload->node, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
+        if (failedParam)
+            diag->hint = Hnt(Hnt0026);
         result0.push_back(diag);
-        result1.push_back(note);
+        result1.push_back(Diagnostic::hereIs(overload));
         return;
     }
 
@@ -373,9 +356,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                       match.badSignatureInfos.badSignatureNum1)};
         }
 
-        note = new Diagnostic{overload->node, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
-        result1.push_back(note);
+        result1.push_back(Diagnostic::hereIs(overload));
         return;
     }
 
@@ -459,7 +441,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             note          = new Diagnostic{reqParam, Fmt(Nte(Nte0066), reqParam->token.ctext(), refNiceName.c_str()), DiagnosticLevel::Note};
         }
         else
-            note = new Diagnostic{overload->node, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
+            note = Diagnostic::hereIs(overload);
 
         result0.push_back(diag);
 
@@ -512,7 +494,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             note          = new Diagnostic{reqParam, Fmt(Nte(Nte0066), reqParam->token.ctext(), refNiceName.c_str()), DiagnosticLevel::Note};
         }
         else
-            note = new Diagnostic{overload->node, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
+            note = Diagnostic::hereIs(overload);
 
         result0.push_back(diag);
         result1.push_back(note);
@@ -554,7 +536,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             note          = new Diagnostic{reqParam, Fmt(Nte(Nte0068), reqParam->token.ctext(), refNiceName.c_str()), DiagnosticLevel::Note};
         }
         else
-            note = new Diagnostic{overload->node, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
+            note = Diagnostic::hereIs(overload);
         result0.push_back(diag);
         result1.push_back(note);
         return;

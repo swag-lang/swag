@@ -144,6 +144,7 @@ struct SymTable
     static void     decreaseOverloadNoLock(SymbolName* symbol);
     static void     disabledIfBlockOverloadNoLock(AstNode* node, SymbolName* symbol);
 
+    static Utf8        getArticleKindName(SymbolOverload* overload);
     static const char* getArticleKindName(SymbolKind kind);
     static const char* getNakedKindName(SymbolKind kind);
     static const char* getNakedKindName(SymbolOverload* overload);
