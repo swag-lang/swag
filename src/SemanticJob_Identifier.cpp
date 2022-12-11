@@ -4041,12 +4041,12 @@ void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<A
     {
         auto it0 = toAdd.back();
         toAdd.pop_back();
+        scopesVars.push_back(it0);
 
         if (!done.contains(it0.scope))
         {
             done.push_back(it0.scope);
             addAlternativeScopeOnce(scopes, it0.scope, it0.flags);
-            scopesVars.push_back(it0);
 
             if (it0.scope && it0.scope->kind == ScopeKind::Struct)
             {

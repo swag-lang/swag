@@ -35,7 +35,7 @@ func set1(monster: Monster)
     v.entity = &e
 
     using v
-    using entity
+    //using entity
     position[0] = 666
     @assert(e.position[0] == 666)
 }
