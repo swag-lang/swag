@@ -112,14 +112,22 @@ bool AstOutput::outputGenericParameters(OutputContext& context, Concat& concat, 
     return true;
 }
 
-bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstNode* node, AstNode* parameters, AstNode* selectIf)
+bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstNode* node, AstNode* genericParameters, AstNode* parameters, AstNode* selectIf)
 {
     ScopeExportNode sen(context, node);
 
     if (node->kind == AstNodeKind::AttrDecl)
-        CONCAT_FIXED_STR(concat, "attr ");
+        CONCAT_FIXED_STR(concat, "attr");
     else
-        CONCAT_FIXED_STR(concat, "func ");
+        CONCAT_FIXED_STR(concat, "func");
+
+    if (genericParameters)
+    {
+        concat.addChar('\'');
+        SWAG_CHECK(outputNode(context, concat, genericParameters));
+    }
+
+    concat.addChar(' ');
     concat.addString(node->token.text);
 
     // Parameters
@@ -2003,7 +2011,7 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
                 concat.addEol();
             }
             else
-                SWAG_CHECK(outputFuncSignature(context, concat, node, node->parameters, node->selectIf));
+                SWAG_CHECK(outputFuncSignature(context, concat, node, nullptr, node->parameters, node->selectIf));
         }
     }
 
@@ -2016,7 +2024,7 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
             TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
             SWAG_CHECK(outputAttributesUsage(context, concat, typeFunc));
             concat.addIndent(context.indent);
-            SWAG_CHECK(outputFuncSignature(context, concat, node, node->parameters, nullptr));
+            SWAG_CHECK(outputFuncSignature(context, concat, node, nullptr, node->parameters, nullptr));
         }
     }
 

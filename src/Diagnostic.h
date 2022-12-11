@@ -134,6 +134,7 @@ struct Diagnostic
     void printMargin(LogColor color, bool eol = false) const;
     void report(bool verboseMode = false) const;
     void setRange2(const SourceLocation& start, const SourceLocation& end, const Utf8& h);
+    void setRange2(AstNode* node, const Utf8& h);
 
     SourceLocation startLocation;
     SourceLocation endLocation;

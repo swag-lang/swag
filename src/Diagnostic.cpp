@@ -36,6 +36,12 @@ void Diagnostic::setRange2(const SourceLocation& start, const SourceLocation& en
     hint2             = h;
 }
 
+void Diagnostic::setRange2(AstNode* node, const Utf8& h)
+{
+    node->computeEndLocation();
+    setRange2(node->token.startLocation, node->token.endLocation, h);
+}
+
 bool Diagnostic::mustPrintCode() const
 {
     return hasFile && !sourceFile->path.empty() && hasLocation && showSource && g_CommandLine->errorSourceOut;
@@ -307,6 +313,13 @@ void Diagnostic::report(bool verboseMode) const
                         }
                     }
                 }
+
+                // Fix
+                int decal = r.startLocation.column;
+                if (backLine[decal] == '{' && backLine[decal + r.range - 1] != '}' && backLine[decal + r.range] == '}')
+                    r.range++;
+                if (backLine[decal] == '(' && backLine[decal + r.range - 1] != ')' && backLine[decal + r.range] == ')')
+                    r.range++;
             }
 
             for (int lastLine = 0; lastLine < 2; lastLine++)

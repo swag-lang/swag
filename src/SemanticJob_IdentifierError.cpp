@@ -902,7 +902,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
             for (int i = 0; i < min(overloads.size(), MAX_OVERLOADS); i++)
             {
                 auto funcNode = CastAst<AstFuncDecl>(overloads[i]->overload->node, AstNodeKind::FuncDecl);
-                AstOutput::outputFuncSignature(outCxt, concat, funcNode, funcNode->parameters, nullptr);
+                AstOutput::outputFuncSignature(outCxt, concat, funcNode, funcNode->genericParameters, funcNode->parameters, nullptr);
                 Utf8 n = Utf8{(const char*) concat.firstBucket->datas, concat.bucketCount(concat.firstBucket)};
                 if (n.back() == '\n')
                     n.count--;

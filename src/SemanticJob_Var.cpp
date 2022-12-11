@@ -450,7 +450,13 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
         return true;
 
     auto identifier = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
-    SWAG_VERIFY(!identifier->callParameters, context->report({assign, Err(Err0295)}));
+    if (identifier->callParameters)
+    {
+        Diagnostic diag{assign, Err(Err0295)};
+        diag.hint = Hnt(Hnt0009);
+        diag.setRange2(identifier->callParameters, Hnt(Hnt0007));
+        return context->report(diag);
+    }
 
     auto sourceFile            = context->sourceFile;
     identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier);
@@ -893,7 +899,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                     return true;
             }
 
-            PushErrContext ec(context, node->type, ErrorContextKind::Hint2, "", Hint::isType(node->type->typeInfo));
             SWAG_CHECK(TypeManager::makeCompatibles(context, node->type->typeInfo, nullptr, node->assignment, CASTFLAG_TRY_COERCE | CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_PTR_REF));
             if (context->result == ContextResult::Pending)
                 return true;
