@@ -390,6 +390,7 @@ void Diagnostic::report(bool verboseMode) const
                     printMargin(verboseMode, false);
 
                     auto startIndex = minBlanks;
+                    int  rangeIdx   = 0;
                     for (auto& r : ranges)
                     {
                         while (startIndex < (int) r.startLocation.column && startIndex < (uint32_t) backLine.length())
@@ -401,15 +402,31 @@ void Diagnostic::report(bool verboseMode) const
                             startIndex++;
                         }
 
-                        switch (errorLevel)
+                        if (rangeIdx != ranges.size() - 1)
                         {
-                        case DiagnosticLevel::Error:
-                            g_Log.setColor(errorColor);
-                            break;
-                        case DiagnosticLevel::Note:
-                        case DiagnosticLevel::Help:
-                            g_Log.setColor(rangeNoteColor);
-                            break;
+                            switch (errorLevel)
+                            {
+                            case DiagnosticLevel::Error:
+                                g_Log.setColor(rangeNoteColor);
+                                break;
+                            case DiagnosticLevel::Note:
+                            case DiagnosticLevel::Help:
+                                g_Log.setColor(hilightCodeColor);
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            switch (errorLevel)
+                            {
+                            case DiagnosticLevel::Error:
+                                g_Log.setColor(errorColor);
+                                break;
+                            case DiagnosticLevel::Note:
+                            case DiagnosticLevel::Help:
+                                g_Log.setColor(rangeNoteColor);
+                                break;
+                            }
                         }
 
                         for (uint32_t i = 0; i < (uint32_t) r.range && i < (uint32_t) backLine.length(); i++)
@@ -417,6 +434,8 @@ void Diagnostic::report(bool verboseMode) const
                             startIndex++;
                             g_Log.print(r.c);
                         }
+
+                        rangeIdx++;
                     }
 
                     // Last hint on the same line
@@ -448,11 +467,11 @@ void Diagnostic::report(bool verboseMode) const
                             switch (errorLevel)
                             {
                             case DiagnosticLevel::Error:
-                                g_Log.setColor(errorColor);
+                                g_Log.setColor(rangeNoteColor);
                                 break;
                             case DiagnosticLevel::Note:
                             case DiagnosticLevel::Help:
-                                g_Log.setColor(rangeNoteColor);
+                                g_Log.setColor(hilightCodeColor);
                                 break;
                             }
 

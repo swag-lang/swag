@@ -2019,6 +2019,9 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                         auto couldBe = Fmt(Nte(Nte0048), overload->typeInfo->getDisplayNameC());
                         note         = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
                     }
+
+                    if (!overload->typeInfo->isLambdaClosure())
+                        note->showRange = false;
                 }
                 else if (overload->typeInfo->isStruct())
                 {
@@ -2026,6 +2029,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                     note            = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
                     auto typeStruct = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
                     note->remarks.push_back(Ast::computeGenericParametersReplacement(typeStruct->genericParameters));
+                    note->showRange = false;
                 }
                 else
                 {
@@ -2034,7 +2038,6 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 }
 
                 note->noteHeader = "could be";
-                note->showRange  = false;
                 notes.push_back(note);
             }
 

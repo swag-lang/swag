@@ -364,7 +364,7 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
         Utf8       msg = Fmt(Err(Err0886), symbol->name.c_str());
         Diagnostic diag{node, token, msg};
         Utf8       note = Nte(Nte0036);
-        Diagnostic diagNote{firstOverload->node, note, DiagnosticLevel::Note};
+        Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
         context->report(diag, &diagNote);
         return false;
     }
@@ -375,7 +375,7 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
         Utf8       msg = Fmt(Err(Err0886), symbol->name.c_str());
         Diagnostic diag{node, token, msg};
         Utf8       note = Nte(Nte0036);
-        Diagnostic diagNote{symbol->nodes.front(), note, DiagnosticLevel::Note};
+        Diagnostic diagNote{symbol->nodes.front(), symbol->nodes.front()->token, note, DiagnosticLevel::Note};
         context->report(diag, &diagNote);
         return false;
     }
@@ -392,9 +392,9 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
         {
             auto       firstOverload = overload;
             Utf8       msg           = Fmt(Err(Err0886), symbol->name.c_str());
-            Diagnostic diag{node, msg};
+            Diagnostic diag{node, node->token, msg};
             Utf8       note = Nte(Nte0036);
-            Diagnostic diagNote{firstOverload->node, note, DiagnosticLevel::Note};
+            Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
             if (typeInfo->isFuncAttr())
                 diagNote.remarks.push_back(Ast::computeGenericParametersReplacement(((TypeInfoFuncAttr*) typeInfo)->genericParameters));
             context->report(diag, &diagNote);

@@ -89,33 +89,7 @@ Utf8 SemanticJob::getTheNiceArgumentRank(int idx)
     case 3:
         return "the " + getNiceArgumentRank(idx);
     }
-    return Fmt("parameter `%d`", idx);
-}
-
-Utf8 SemanticJob::getNiceParameterRank(int idx)
-{
-    switch (idx)
-    {
-    case 1:
-        return "first parameter";
-    case 2:
-        return "second parameter";
-    case 3:
-        return "third parameter";
-    }
-    return Fmt("parameter `%d`", idx);
-}
-
-Utf8 SemanticJob::getTheNiceParameterRank(int idx)
-{
-    switch (idx)
-    {
-    case 1:
-    case 2:
-    case 3:
-        return "the " + getNiceParameterRank(idx);
-    }
-    return Fmt("parameter `%d`", idx);
+    return Fmt("argument `%d`", idx);
 }
 
 static int getBadParamIdx(OneTryMatch& oneTry, AstNode* callParameters)
@@ -147,12 +121,10 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     auto&             match             = oneTry.symMatchContext;
     AstFuncCallParam* failedParam       = nullptr;
 
-    int badParamIdx = getBadParamIdx(oneTry, callParameters);
-
     // Get the call parameter that failed
+    int badParamIdx = getBadParamIdx(oneTry, callParameters);
     if (oneTry.callParameters && badParamIdx >= 0 && badParamIdx < callParameters->childs.size())
         failedParam = static_cast<AstFuncCallParam*>(callParameters->childs[badParamIdx]);
-
     badParamIdx += 1;
 
     // Nice name to reference it
@@ -220,7 +192,9 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     case MatchResult::MissingNamedParameter:
     {
         SWAG_ASSERT(failedParam);
-        diag = new Diagnostic{failedParam, Fmt(Err(Err0006), getTheNiceParameterRank(badParamIdx).c_str())};
+        SWAG_ASSERT(badParamIdx >= 2);
+        diag = new Diagnostic{failedParam, Fmt(Err(Err0006), getTheNiceArgumentRank(badParamIdx).c_str()), Hnt(Hnt0031)};
+        diag->setRange2(static_cast<AstFuncCallParam*>(callParameters->childs[badParamIdx - 2]), Hnt(Hnt0030));
         result0.push_back(diag);
         return;
     }
@@ -469,7 +443,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         SWAG_ASSERT(callParameters);
         diag = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
                               Fmt(Err(Err0777),
-                                  getTheNiceParameterRank(badParamIdx).c_str(),
+                                  getTheNiceArgumentRank(badParamIdx).c_str(),
                                   refNiceName.c_str(),
                                   bi.badSignatureGivenType->getDisplayNameC(),
                                   bi.badSignatureRequestedType->getDisplayNameC())};
@@ -506,7 +480,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         SWAG_ASSERT(genericParameters);
         if (match.flags & SymbolMatchContext::MATCH_ERROR_VALUE_TYPE)
         {
-            diag = new Diagnostic{match.genericParameters[bi.badSignatureParameterIdx],
+            diag       = new Diagnostic{match.genericParameters[bi.badSignatureParameterIdx],
                                   Fmt(Err(Err0054),
                                       getNiceArgumentRank(badParamIdx).c_str(),
                                       refNiceName.c_str())};
@@ -514,7 +488,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         }
         else if (match.flags & SymbolMatchContext::MATCH_ERROR_TYPE_VALUE)
         {
-            diag = new Diagnostic{match.genericParameters[bi.badSignatureParameterIdx],
+            diag       = new Diagnostic{match.genericParameters[bi.badSignatureParameterIdx],
                                   Fmt(Err(Err0057),
                                       getNiceArgumentRank(badParamIdx).c_str(),
                                       refNiceName.c_str())};

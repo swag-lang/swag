@@ -17,6 +17,7 @@ bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
 
     SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Err0333), token.ctext())));
     node->inheritTokenName(token);
+    node->inheritTokenLocation(token);
     SWAG_CHECK(checkIsValidUserName(node));
 
     SWAG_CHECK(eatToken());
