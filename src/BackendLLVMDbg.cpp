@@ -425,7 +425,7 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
             auto          scope     = SP;
             llvm::DIType* type      = getType(typeParam, file);
 
-            llvm::DILocalVariable* var0   = dbgBuilder->createAutoVariable(scope, child->token.text.c_str(), file, loc.line + 1, type, !isOptimized);
+            llvm::DILocalVariable* var0   = dbgBuilder->createAutoVariable(scope, child->token.ctext(), file, loc.line + 1, type, !isOptimized);
             auto                   allocA = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(2));
 
             auto v0   = builder.CreateInBoundsGEP(allocA, builder.getInt64(0));
@@ -459,7 +459,7 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
             {
                 auto type = getType(typeParam, file);
 
-                llvm::DILocalVariable* var0   = dbgBuilder->createAutoVariable(scope, child->token.text.c_str(), file, loc.line + 1, type, !isOptimized);
+                llvm::DILocalVariable* var0   = dbgBuilder->createAutoVariable(scope, child->token.ctext(), file, loc.line + 1, type, !isOptimized);
                 auto                   allocA = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(2));
 
                 auto v0   = builder.CreateInBoundsGEP(allocA, builder.getInt64(0));

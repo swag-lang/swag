@@ -2550,7 +2550,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
                 else
                 {
                     auto withNodeP = node->findParent(AstNodeKind::With);
-                    SWAG_VERIFY(withNodeP, context->report({identifierRef, Fmt(Err(Err0881), node->token.text.c_str())}));
+                    SWAG_VERIFY(withNodeP, context->report({identifierRef, Fmt(Err(Err0881), node->token.ctext())}));
                     auto withNode = CastAst<AstWith>(withNodeP, AstNodeKind::With);
 
                     // Prepend the 'with' identifier, and reevaluate

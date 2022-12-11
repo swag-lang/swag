@@ -69,7 +69,7 @@ bool EnumerateModuleJob::dealWithIncludes(Module* theModule)
     // Treat includes
     for (auto n : theModule->includes)
     {
-        fs::path orgFilePath = n->token.text.c_str();
+        fs::path orgFilePath = n->token.ctext();
 
         // Is this a simple file ?
         auto filePath = orgFilePath;
@@ -84,7 +84,7 @@ bool EnumerateModuleJob::dealWithIncludes(Module* theModule)
                 filePath = filePath1;
             if (!fs::exists(filePath))
             {
-                Diagnostic diag{n->sourceFile, n->token, Fmt(Err(Err0304), n->token.text.c_str())};
+                Diagnostic diag{n->sourceFile, n->token, Fmt(Err(Err0304), n->token.ctext())};
                 Report::report(diag);
                 return false;
             }

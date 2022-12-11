@@ -590,6 +590,8 @@ Utf8 Diagnostic::isType(TypeInfo* typeInfo)
 
 Diagnostic* Diagnostic::hereIs(SymbolOverload* overload)
 {
+    if (!overload)
+        return nullptr;
     if (overload->node && overload->node->flags & AST_GENERATED)
         return nullptr;
 

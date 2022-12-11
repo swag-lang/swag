@@ -75,7 +75,7 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
             break;
 
         default:
-            return context->report({context->node, Fmt(Err(Err0001), node->token.text.c_str(), leftTypeInfo->getDisplayNameC())});
+            return context->report({context->node, Fmt(Err(Err0001), node->token.ctext(), leftTypeInfo->getDisplayNameC())});
         }
     }
     else if (leftTypeInfo->isStruct() || rightTypeInfo->isStruct())
@@ -138,7 +138,7 @@ bool SemanticJob::resolveCompOp3Way(SemanticContext* context, AstNode* left, Ast
             break;
 
         default:
-            return context->report({context->node, Fmt(Err(Err0001), node->token.text.c_str(), leftTypeInfo->getDisplayNameC())});
+            return context->report({context->node, Fmt(Err(Err0001), node->token.ctext(), leftTypeInfo->getDisplayNameC())});
         }
     }
     else if (leftTypeInfo->isStruct())
@@ -198,7 +198,7 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
             break;
 
         default:
-            return context->report({context->node, Fmt(Err(Err0001), node->token.text.c_str(), leftTypeInfo->getDisplayNameC())});
+            return context->report({context->node, Fmt(Err(Err0001), node->token.ctext(), leftTypeInfo->getDisplayNameC())});
         }
     }
     else if (leftTypeInfo->isStruct())
@@ -258,7 +258,7 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
             break;
 
         default:
-            return context->report({context->node, Fmt(Err(Err0001), node->token.text.c_str(), leftTypeInfo->getDisplayNameC())});
+            return context->report({context->node, Fmt(Err(Err0001), node->token.ctext(), leftTypeInfo->getDisplayNameC())});
         }
     }
     else if (leftTypeInfo->isStruct())
