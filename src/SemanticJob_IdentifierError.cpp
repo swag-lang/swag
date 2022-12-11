@@ -257,9 +257,10 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
     case MatchResult::MissingParameters:
     {
-        diag       = new Diagnostic{callParameters ? callParameters : node, Fmt(Err(Err0020), refNiceName.c_str())};
-        diag->hint = Hnt(Hnt0044);
-        note       = new Diagnostic{overload->node, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
+        diag            = new Diagnostic{callParameters ? callParameters : node, Fmt(Err(Err0020), refNiceName.c_str())};
+        diag->hint      = Hnt(Hnt0044);
+        note            = new Diagnostic{overload->node, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
+        note->showRange = false;
         result0.push_back(diag);
         result1.push_back(note);
         return;
@@ -288,7 +289,11 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         if (destFuncDecl && callParameters)
             note = new Diagnostic{destFuncDecl->parameters->childs[match.cptResolved], Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
         else
-            note = new Diagnostic{overload->node, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
+        {
+            note            = new Diagnostic{overload->node, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
+            note->showRange = false;
+        }
+
         result0.push_back(diag);
         result1.push_back(note);
         return;

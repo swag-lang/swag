@@ -2029,6 +2029,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 }
 
                 note->noteHeader = "could be";
+                note->showRange  = false;
                 notes.push_back(note);
             }
 
