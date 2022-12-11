@@ -1,6 +1,6 @@
 SWAG_ERROR(Hlp0000, "an attribute declaration should not have a return value starting with `->`")
 SWAG_ERROR(Hlp0001, "an attribute declaration cannot be marked with `throw`")
-SWAG_ERROR(Hlp0002, nullptr)
+SWAG_ERROR(Hlp0002, "is there a missing `self` ?")
 SWAG_ERROR(Hlp0003, "you can affect a lambda to a closure type, but not the other way around")
 SWAG_ERROR(Hlp0004, "if you want to declare a lambda, you should use `func(` or `closure(`")
 SWAG_ERROR(Hlp0005, "if you want to dereference variable `%s` like in C, use `dref %s`")

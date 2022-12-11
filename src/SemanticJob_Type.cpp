@@ -73,11 +73,14 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
         Diagnostic* note = nullptr;
 
         // Missing self ?
-        if (node->childs.size() <= 1 && node->ownerStructScope && node->ownerStructScope == context->node->ownerStructScope && node->ownerFct)
+        if (node->childs.size() <= 1 &&
+            node->ownerStructScope &&
+            node->ownerStructScope == context->node->ownerStructScope &&
+            node->ownerFct)
         {
             if (node->ownerStructScope->symTable.find(node->resolvedSymbolName->name))
             {
-                note = new Diagnostic{Nte(Nte0005), DiagnosticLevel::Note};
+                note = new Diagnostic{Hlp(Hlp0002), DiagnosticLevel::Help};
             }
         }
 

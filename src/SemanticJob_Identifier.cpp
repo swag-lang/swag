@@ -2766,7 +2766,7 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
             else
             {
                 Diagnostic diag{dep.node, Fmt(Err(Err0117), dependentVar->typeInfo->getDisplayNameC())};
-                Diagnostic note{dependentVar, Nte(Nte0036), DiagnosticLevel::Note};
+                Diagnostic note{dependentVar, Nte(Nte0021), DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }
         }
