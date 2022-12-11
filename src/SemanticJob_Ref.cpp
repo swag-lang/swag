@@ -343,7 +343,9 @@ bool SemanticJob::resolveArrayPointerIndex(SemanticContext* context)
         SWAG_CHECK(resolveArrayPointerDeRef(context));
     if (context->result == ContextResult::Pending)
         return true;
-    node->inheritAndFlag1(AST_CONST_EXPR);
+
+    if (!(node->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF))
+        node->inheritAndFlag1(AST_CONST_EXPR);
 
     // If this is not the last child of the IdentifierRef, then this is a reference, and
     // we must take the address and not dereference that identifier
@@ -777,7 +779,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
     default:
     {
-        Diagnostic diag{arrayNode->array, Fmt(Err(Err0488), TypeInfo::getArticleKindName(arrayNode->array->typeInfo), arrayNode->array->typeInfo->getDisplayNameC())};
+        Diagnostic diag{arrayNode->array, Fmt(Err(Err0488), arrayNode->array->typeInfo->getDisplayNameC())};
         diag.hint = Hnt(Hnt0021);
         return context->report(diag);
     }
