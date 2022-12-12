@@ -65,7 +65,7 @@ bool SemanticJob::checkCanTakeAddress(SemanticContext* context, AstNode* node)
         }
 
         Diagnostic note{Hlp(Hlp0022), DiagnosticLevel::Help};
-        return context->report({node, Fmt(Err(Err0469), node->typeInfo->getDisplayNameC())}, &note);
+        return context->report({node, Fmt(Err(Err0469), node->typeInfo->getDisplayNameC()), Diagnostic::isType(node->typeInfo)}, &note);
     }
 
     return true;
@@ -610,7 +610,11 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
     auto accessType = TypeManager::concreteType(arrayNode->access->typeInfo);
     if (!(accessType->isNativeInteger()) && !(accessType->flags & TYPEINFO_ENUM_INDEX))
-        return context->report({arrayNode->access, Fmt(Err(Err0485), arrayNode->access->typeInfo->getDisplayNameC())});
+    {
+        Diagnostic diag{arrayNode->access, Fmt(Err(Err0485), arrayNode->access->typeInfo->getDisplayNameC())};
+        diag.hint = Hnt(Hnt0058);
+        return context->report(diag);
+    }
 
     // Do not set resolvedSymbolOverload !
     arrayNode->resolvedSymbolName = arrayNode->array->resolvedSymbolName;

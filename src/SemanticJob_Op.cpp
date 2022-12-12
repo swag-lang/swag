@@ -625,7 +625,12 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
         }
 
         {
-            PushErrContext ec(context, context->node, ErrorContextKind::Note, Fmt(Err(Nte0051), name.c_str(), leftType->getDisplayNameC()));
+            PushErrContext ec(context,
+                              context->node,
+                              ErrorContextKind::Note,
+                              Fmt(Err(Nte0051), name.c_str(), leftType->getDisplayNameC()),
+                              "",
+                              true);
             SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, nullptr, justCheck ? MIP_JUST_CHECK : 0));
         }
 

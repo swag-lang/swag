@@ -7,14 +7,15 @@
 #include "SourceFile.h"
 #include "TypeInfo.h"
 
-PushErrContext::PushErrContext(JobContext* context, AstNode* node, ErrorContextKind kind, const Utf8& msg, const Utf8& hint)
+PushErrContext::PushErrContext(JobContext* context, AstNode* node, ErrorContextKind kind, const Utf8& msg, const Utf8& hint, bool locIsToken)
     : cxt{context}
 {
     ErrorContext expNode;
-    expNode.node = node;
-    expNode.type = kind;
-    expNode.msg  = msg;
-    expNode.hint = hint;
+    expNode.node       = node;
+    expNode.type       = kind;
+    expNode.msg        = msg;
+    expNode.hint       = hint;
+    expNode.locIsToken = locIsToken;
     context->errorContextStack.push_back(expNode);
 }
 
@@ -97,10 +98,12 @@ void ErrorContext::fillContext(JobContext* context, const Diagnostic& diag, vect
                 msg = Fmt(Err(Err0111), name.c_str());
                 break;
             case ErrorContextKind::Generic:
-                msg = Fmt(Err(Err0112), name.c_str());
+                msg            = Fmt(Err(Err0112), name.c_str());
+                exp.locIsToken = true;
                 break;
             case ErrorContextKind::Inline:
-                msg = Fmt(Err(Err0118), name.c_str());
+                msg            = Fmt(Err(Err0118), name.c_str());
+                exp.locIsToken = true;
                 break;
             case ErrorContextKind::SelectIf:
                 msg = Fmt(Err(Err0128), name.c_str());
@@ -111,7 +114,9 @@ void ErrorContext::fillContext(JobContext* context, const Diagnostic& diag, vect
             }
 
             Diagnostic* note = nullptr;
-            if (exp.node)
+            if (exp.node && exp.locIsToken)
+                note = new Diagnostic{exp.node, exp.node->token, msg, level};
+            else if (exp.node)
                 note = new Diagnostic{exp.node, msg, level};
             else
                 note = new Diagnostic{msg, level};

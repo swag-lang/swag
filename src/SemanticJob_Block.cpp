@@ -476,6 +476,7 @@ bool SemanticJob::resolveCase(SemanticContext* context)
                 }
                 else
                 {
+                    PushErrContext ec(context, node->ownerSwitch->expression, ErrorContextKind::Note, Fmt(Nte(Nte0052), typeInfo->getDisplayNameC(), "the switch expression"), Diagnostic::isType(typeInfo));
                     SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, oneExpression, CASTFLAG_COMPARE));
                 }
             }

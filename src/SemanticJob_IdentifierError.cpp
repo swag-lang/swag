@@ -241,7 +241,11 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     case MatchResult::DuplicatedNamedParameter:
     {
         SWAG_ASSERT(failedParam);
-        diag = new Diagnostic{failedParam->namedParamNode ? failedParam->namedParamNode : failedParam, Fmt(Err(Err0011), failedParam->namedParam.c_str())};
+        diag       = new Diagnostic{failedParam->namedParamNode ? failedParam->namedParamNode : failedParam, Fmt(Err(Err0011), failedParam->namedParam.c_str())};
+        diag->hint = Hnt(Hnt0009);
+        int other  = oneTry.symMatchContext.badSignatureInfos.badSignatureNum1;
+        SWAG_ASSERT(other < callParameters->childs.size());
+        diag->setRange2(static_cast<AstFuncCallParam*>(callParameters->childs[other]), Hnt(Hnt0059));
         result0.push_back(diag);
         return;
     }

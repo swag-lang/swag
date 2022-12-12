@@ -504,6 +504,7 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
             if (context.doneParameters[j])
             {
                 context.badSignatureInfos.badSignatureParameterIdx = parameterIndex;
+                context.badSignatureInfos.badSignatureNum1         = j;
                 context.result                                     = MatchResult::DuplicatedNamedParameter;
                 return;
             }
