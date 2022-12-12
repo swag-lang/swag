@@ -42,7 +42,7 @@ bool SemanticJob::resolveAfterAffectLeft(SemanticContext* context)
             {
                 Diagnostic diag{op->childs.back(), Err(Err0185)};
                 diag.setRange2(node, Diagnostic::isType(node->typeInfo));
-                Diagnostic help{Err(Hlp0003), DiagnosticLevel::Help};
+                Diagnostic help{Hlp(Hlp0003), DiagnosticLevel::Help};
                 return context->report(diag, &help);
             }
 

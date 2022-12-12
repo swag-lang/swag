@@ -143,14 +143,14 @@ bool SyntaxJob::eatCloseToken(TokenId id, const SourceLocation& start, const cha
         if (token.id == TokenId::EndOfFile)
         {
             Diagnostic diag{sourceFile, token, Fmt(Err(Err0723), g_LangSpec->tokenToName(id).c_str(), msg)};
-            Diagnostic note{sourceFile, start, start, Err(Nte0020), DiagnosticLevel::Note};
+            Diagnostic note{sourceFile, start, start, Nte(Nte0020), DiagnosticLevel::Note};
             note.showMultipleCodeLines = token.startLocation.line != start.line;
             return Report::report(diag, &note);
         }
         else
         {
             Diagnostic diag{sourceFile, token, Fmt(Err(Err0330), g_LangSpec->tokenToName(id).c_str(), token.ctext(), msg)};
-            Diagnostic note{sourceFile, start, start, Err(Nte0020), DiagnosticLevel::Note};
+            Diagnostic note{sourceFile, start, start, Nte(Nte0020), DiagnosticLevel::Note};
             note.showMultipleCodeLines = token.startLocation.line != start.line;
             return Report::report(diag, &note);
         }

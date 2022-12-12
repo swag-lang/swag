@@ -553,12 +553,14 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
         {
             Diagnostic diag{left->parent->sourceFile, left->parent->token, Fmt(Err(Err0079), name.c_str(), leftType->getDisplayNameC())};
             diag.hint = Fmt(Hnt(Hnt0047), name.c_str());
+            diag.setRange2(left, Diagnostic::isType(leftType));
             return context->report(diag, note);
         }
         else
         {
             Diagnostic diag{left->parent->sourceFile, left->parent->token, Fmt(Err(Err0186), name.c_str(), leftType->getDisplayNameC(), opConst)};
             diag.hint = Fmt(Hnt(Hnt0047), name.c_str());
+            diag.setRange2(left, Diagnostic::isType(leftType));
             return context->report(diag, note);
         }
     }
@@ -626,9 +628,9 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
 
         {
             PushErrContext ec(context,
-                              context->node,
+                              left->parent,
                               ErrorContextKind::Note,
-                              Fmt(Err(Nte0051), name.c_str(), leftType->getDisplayNameC()),
+                              Fmt(Nte(Nte0051), name.c_str(), leftType->getDisplayNameC()),
                               "",
                               true);
             SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, nullptr, justCheck ? MIP_JUST_CHECK : 0));

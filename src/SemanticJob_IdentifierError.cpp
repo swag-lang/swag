@@ -211,6 +211,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         diag = new Diagnostic{node, Fmt(Err(Err0004), destFuncDecl->token.ctext(), destFuncDecl->selectIf->token.ctext())};
         result0.push_back(diag);
         note = new Diagnostic{destFuncDecl->selectIf, Fmt(Nte(Nte0007), destFuncDecl->selectIf->token.ctext()), DiagnosticLevel::Note};
+        note->showRange = false;
         result1.push_back(note);
         return;
     }

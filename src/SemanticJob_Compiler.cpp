@@ -333,7 +333,7 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
     {
         auto msg     = node->childs[1];
         auto typeMsg = TypeManager::concreteType(msg->typeInfo, CONCRETE_FUNC);
-        SWAG_VERIFY(typeMsg->isString(), context->report({msg, Fmt(Err(Err0236), msg->typeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(typeMsg->isString(), context->report({msg, Fmt(Err(Err0236), msg->typeInfo->getDisplayNameC()), Diagnostic::isType(msg->typeInfo).c_str()}));
         SWAG_CHECK(evaluateConstExpression(context, msg));
         if (context->result != ContextResult::Done)
             return true;

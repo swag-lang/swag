@@ -20,8 +20,8 @@ bool SemanticJob::boundCheck(SemanticContext* context, AstNode* arrayAccess, uin
 
 bool SemanticJob::checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl* funcNode, AstNode* node)
 {
-    const char* msg  = nullptr;
-    const char* msg1 = nullptr;
+    Utf8 msg;
+    Utf8 msg1;
 
     if (funcNode->attributeFlags & ATTRIBUTE_MACRO)
     {
@@ -39,7 +39,7 @@ bool SemanticJob::checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl*
         msg1 = Hnt(Hnt0017);
     }
 
-    if (msg)
+    if (!msg.empty())
     {
         Diagnostic diag{node, msg};
         diag.hint = msg1;
