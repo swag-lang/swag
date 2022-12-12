@@ -20,6 +20,9 @@ const char* ByteCodeGenJob::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo*
     {
         switch (msg)
         {
+        case SafetyMsg::SwitchComplete:
+            typedMsg[(int) SafetyMsg::SwitchComplete][0][0] = Err(Err0246);
+            break;
         case SafetyMsg::CastTruncated:
             SWAG_ASSERT(toType && fromType);
             typedMsg[m][i][j] = Fmt(Err(Err0207), fromType->name.c_str(), toType->name.c_str());
@@ -119,7 +122,7 @@ bool ByteCodeGenJob::emitSafetySwitchDefault(ByteCodeGenContext* context)
         return true;
     if (!context->sourceFile->module->mustEmitSafety(context->node->parent, ATTRIBUTE_SAFETY_SWITCH_ON, ATTRIBUTE_SAFETY_SWITCH_OFF))
         return true;
-    emitInstruction(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) Err(Err0246);
+    emitInstruction(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) ByteCodeGenJob::safetyMsg(SafetyMsg::SwitchComplete);
     return true;
 }
 

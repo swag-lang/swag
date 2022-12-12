@@ -1102,10 +1102,10 @@ enum ErrorID
     MAX_ERRORS,
 };
 
-extern const char* g_E[MAX_ERRORS];
+extern Utf8 g_E[MAX_ERRORS];
 
-extern void        initErrors();
-extern const char* Err(ErrorID idx);
-extern const char* Nte(ErrorID idx);
-extern const char* Hnt(ErrorID idx);
-extern const char* Hlp(ErrorID idx);
+extern void initErrors();
+extern Utf8 Err(ErrorID idx);
+extern Utf8 Nte(ErrorID idx);
+extern Utf8 Hnt(ErrorID idx);
+extern Utf8 Hlp(ErrorID idx);

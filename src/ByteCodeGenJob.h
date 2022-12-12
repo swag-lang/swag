@@ -47,6 +47,7 @@ enum class SafetyMsg
     ShiftRightOf,
     NegAbs,
     Neg,
+    SwitchComplete,
     Count,
 };
 
