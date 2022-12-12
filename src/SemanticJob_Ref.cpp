@@ -336,6 +336,7 @@ bool SemanticJob::resolveKeepRef(SemanticContext* context)
     {
         typeInfo = typeInfo->clone();
         typeInfo->flags |= TYPEINFO_POINTER_REF;
+        typeInfo->forceComputeName();
     }
 
     node->typeInfo    = typeInfo;
