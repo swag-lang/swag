@@ -1333,7 +1333,6 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result, AstWith* w
         uint64_t opAttrFlags = 0;
         auto     savedtoken  = token;
         SWAG_CHECK(eatToken());
-        savedtoken.startLocation = token.startLocation;
 
         // Modifiers
         uint32_t mdfFlags = 0;
@@ -1353,6 +1352,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result, AstWith* w
         // like in a, b, c = 0
         if (leftNode->kind == AstNodeKind::MultiIdentifier)
         {
+            savedtoken.startLocation = token.startLocation;
             auto parentNode = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
             if (result)
                 *result = parentNode;
@@ -1408,6 +1408,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result, AstWith* w
         // Tuple unpacking
         else if (leftNode->kind == AstNodeKind::MultiIdentifierTuple)
         {
+            savedtoken.startLocation = token.startLocation;
             auto parentNode = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
             if (result)
                 *result = parentNode;

@@ -48,6 +48,10 @@ enum class SafetyMsg
     NegAbs,
     Neg,
     SwitchComplete,
+    IndexRange,
+    BadSlicingUp,
+    BadSlicingDown,
+    NotZero,
     Count,
 };
 

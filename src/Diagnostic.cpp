@@ -31,6 +31,14 @@ void Diagnostic::setRange2(const SourceLocation& start, const SourceLocation& en
     hint2             = h;
 }
 
+void Diagnostic::setRange2(const Token& token, const Utf8& h)
+{
+    hasRangeLocation2 = true;
+    startLocation2    = token.startLocation;
+    endLocation2      = token.endLocation;
+    hint2             = h;
+}
+
 void Diagnostic::setRange2(AstNode* node, const Utf8& h)
 {
     node->computeEndLocation();
@@ -321,6 +329,9 @@ void Diagnostic::report(bool verboseMode) const
             for (auto& r : ranges)
             {
                 const auto& backLine = lines.back();
+
+                if (r.startLocation.line == r.endLocation.line && r.startLocation.column > r.endLocation.column)
+                    swap(r.startLocation.column, r.endLocation.column);
 
                 r.range = 1;
                 if (!hasRangeLocation)

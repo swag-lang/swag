@@ -389,6 +389,8 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         TypeInfo* toType = nullptr;
         if (i < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[i])
         {
+            PushErrContext ec(context, typeInfoFunc->declNode, ErrorContextKind::HereIs);
+
             toType = oneMatch.solvedParameters[i]->typeInfo;
             SWAG_CHECK(TypeManager::makeCompatibles(context, toType, nullptr, nodeCall, castFlags));
             if (context->result != ContextResult::Done)
@@ -406,7 +408,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 auto front = nodeCall->childs.front();
 
                 // We have a value, and we need a reference.
-                // Force the keep the address
+                // Force to keep the address
                 if (front->kind == AstNodeKind::IdentifierRef)
                 {
                     front->childs.back()->semFlags |= AST_SEM_FORCE_TAKE_ADDRESS;
@@ -741,7 +743,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         !parent->previousResolvedNode->typeInfo->isPointerTo(TypeInfoKind::Struct) &&
         !parent->previousResolvedNode->typeInfo->isStruct())
     {
-        return context->report({parent->previousResolvedNode, Fmt(Err(Err0085), parent->previousResolvedNode->token.ctext(), parent->previousResolvedNode->typeInfo->getDisplayNameC())});
+        Diagnostic diag{parent->previousResolvedNode, Fmt(Err(Err0085), parent->previousResolvedNode->token.ctext(), parent->previousResolvedNode->typeInfo->getDisplayNameC())};
+        diag.hint = Diagnostic::isType(parent->previousResolvedNode->typeInfo);
+        return context->report(diag);
     }
 
     // If a variable on the left has only been used for scoping, and not evaluated as an ufcs source, then this is an

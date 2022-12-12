@@ -136,6 +136,7 @@ struct Diagnostic
     void        report(bool verboseMode = false) const;
     void        setRange2(const SourceLocation& start, const SourceLocation& end, const Utf8& h);
     void        setRange2(AstNode* node, const Utf8& h);
+    void        setRange2(const Token& node, const Utf8& h);
 
     static Utf8        isType(TypeInfo* typeInfo);
     static Diagnostic* hereIs(SymbolOverload* overload);

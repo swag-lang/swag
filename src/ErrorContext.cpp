@@ -85,6 +85,7 @@ void ErrorContext::fillContext(JobContext* context, const Diagnostic& diag, vect
             if (exp.node)
                 name = exp.node->resolvedSymbolName ? exp.node->resolvedSymbolName->name : exp.node->token.text;
 
+            Diagnostic* note = nullptr;
             switch (exp.type)
             {
             case ErrorContextKind::Note:
@@ -111,15 +112,22 @@ void ErrorContext::fillContext(JobContext* context, const Diagnostic& diag, vect
             case ErrorContextKind::CheckIf:
                 msg = Fmt(Err(Err0129), name.c_str());
                 break;
+            case ErrorContextKind::HereIs:
+                note = Diagnostic::hereIs(exp.node->resolvedSymbolOverload);
+                if (!note)
+                    continue;
+                break;
             }
 
-            Diagnostic* note = nullptr;
-            if (exp.node && exp.locIsToken)
-                note = new Diagnostic{exp.node, exp.node->token, msg, level};
-            else if (exp.node)
-                note = new Diagnostic{exp.node, msg, level};
-            else
-                note = new Diagnostic{msg, level};
+            if (!note)
+            {
+                if (exp.node && exp.locIsToken)
+                    note = new Diagnostic{exp.node, exp.node->token, msg, level};
+                else if (exp.node)
+                    note = new Diagnostic{exp.node, msg, level};
+                else
+                    note = new Diagnostic{msg, level};
+            }
 
             note->hint = exp.hint;
 

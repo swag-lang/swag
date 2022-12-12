@@ -17,7 +17,7 @@ void initErrors()
     SWAG_ERROR(Err0001, "the comparison operation `%s` does not accept type `%s`");
     SWAG_ERROR(Err0002, "the type `%s` should not be used in a range expression");
     SWAG_ERROR(Err0004, "cannot use the function `%s` because `%s` has failed");
-    SWAG_ERROR(Err0005, "the operation `%s` is not allowed type `%s`");
+    SWAG_ERROR(Err0005, "the operation `%s` is not allowed on type `%s`");
     SWAG_ERROR(Err0006, "%s should be named because some arguments before are named");
     SWAG_ERROR(Err0007, "comparison operations are not (yet?) supported on tuples");
     SWAG_ERROR(Err0008, "use of an unknown named parameter `%s`");
@@ -1032,7 +1032,7 @@ void initErrors()
     SWAG_ERROR(Hnt0071, "this parameter is missing");
     SWAG_ERROR(Hnt0072, "this is an empty array");
     SWAG_ERROR(Hnt0073, "this function does not accept ufcs");
-    SWAG_ERROR(Hnt0074, nullptr);
+    SWAG_ERROR(Hnt0074, "this copy of an array of struct is disabled");
     SWAG_ERROR(Hnt0075, nullptr);
     SWAG_ERROR(Hnt0076, nullptr);
     SWAG_ERROR(Hnt0077, nullptr);

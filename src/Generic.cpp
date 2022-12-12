@@ -62,9 +62,9 @@ bool Generic::updateGenericParameters(SemanticContext* context, bool doType, boo
         {
             if (param->typeInfo->flags & (TYPEINFO_UNTYPED_INTEGER | TYPEINFO_UNTYPED_FLOAT))
             {
-                auto        symbol  = match.symbolName;
-                auto        errNode = context->node;
-                const char* hint    = nullptr;
+                auto symbol  = match.symbolName;
+                auto errNode = context->node;
+                Utf8 hint;
 
                 for (auto& v : match.genericReplaceTypesFrom)
                 {
@@ -83,7 +83,9 @@ bool Generic::updateGenericParameters(SemanticContext* context, bool doType, boo
                     }
                 }
 
-                return context->report({errNode, Utf8::format(Err(Err0808), SymTable::getNakedKindName(symbol->kind), symbol->name.c_str()), hint});
+                Diagnostic diag{errNode, Utf8::format(Err(Err0808), SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+                diag.hint = hint;
+                return context->report(diag);
             }
         }
 
@@ -512,6 +514,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
         }
     }
 
+    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(match.symbolOverload->node->typeInfo, TypeInfoKind::FuncAttr);
     for (auto& v : match.genericReplaceTypes)
     {
         if (v.second->isListTuple())
@@ -522,7 +525,8 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
             {
                 if (p->typeInfo == tpt)
                 {
-                    auto typeDest = CastTypeInfo<TypeInfoStruct>(match.solvedParameters[idx]->typeInfo, TypeInfoKind::Struct);
+                    PushErrContext ec(context, typeFunc->declNode, ErrorContextKind::HereIs);
+                    auto           typeDest = CastTypeInfo<TypeInfoStruct>(match.solvedParameters[idx]->typeInfo, TypeInfoKind::Struct);
                     SWAG_CHECK(TypeManager::convertLiteralTupleToStructType(context, typeDest, p));
                     SWAG_ASSERT(context->result != ContextResult::Done);
                     return true;
@@ -540,7 +544,6 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     // We replace all types and generic types with undefined for now
     if (noReplaceTypes)
     {
-        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(match.symbolOverload->node->typeInfo, TypeInfoKind::FuncAttr);
         for (auto p : typeFunc->genericParameters)
             cloneContext.replaceTypes[p->typeInfo->name] = g_TypeMgr->typeInfoUndefined;
         for (auto p : typeFunc->parameters)

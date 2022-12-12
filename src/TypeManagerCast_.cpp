@@ -3263,9 +3263,16 @@ bool TypeManager::convertLiteralTupleToStructVar(SemanticContext* context, TypeI
     {
         int maxCount = (int) typeStruct->fields.size();
         if (countParams > maxCount)
-            return context->report({fromNode->childs[maxCount], Fmt(Err(Err0195), maxCount, countParams)});
+        {
+            Diagnostic diag{fromNode->childs[maxCount], Fmt(Err(Err0195), maxCount, countParams)};
+            return context->report(diag);
+        }
+
         if (countParams < maxCount)
-            return context->report({fromNode->childs.back(), Fmt(Err(Err0205), maxCount, countParams)});
+        {
+            Diagnostic diag{fromNode->childs.back(), Fmt(Err(Err0205), maxCount, countParams)};
+            return context->report(diag);
+        }
     }
 
     fromNode->typeInfo = toType;
