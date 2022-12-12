@@ -214,6 +214,7 @@
     <ClInclude Include="..\src\ByteCodeInstruction.h" />
     <ClInclude Include="..\src\CallConv.h" />
     <ClInclude Include="..\src\ErrorContext.h" />
+    <ClInclude Include="..\src\ErrorList.h" />
     <ClInclude Include="..\src\Hash.h" />
     <ClInclude Include="..\src\JobGroup.h" />
     <ClInclude Include="..\src\LoadSourceFileJob.h" />

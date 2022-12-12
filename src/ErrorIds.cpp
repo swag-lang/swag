@@ -2,7 +2,14 @@
 #include "Utf8.h"
 #include "ErrorIds.h"
 
+#undef SWAG_ERROR
+#define SWAG_ERROR(__enum) #__enum
+const char* g_EI[] = {
+#include "ErrorList.h"
+};
+
 Utf8 g_E[MAX_ERRORS];
+#undef SWAG_ERROR
 #define SWAG_ERROR(__n, __msg) g_E[(int) __n] = __msg;
 void initErrors()
 {
@@ -1102,7 +1109,7 @@ void initErrors()
 
 Utf8 Err(ErrorID idx)
 {
-    return g_E[idx];
+    return Fmt("[%s] %s", g_EI[idx], g_E[idx].c_str());
 }
 
 Utf8 Nte(ErrorID idx)

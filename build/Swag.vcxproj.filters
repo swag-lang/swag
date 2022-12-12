@@ -809,6 +809,9 @@
     <ClInclude Include="..\src\ErrorContext.h">
       <Filter>Main\Report</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\ErrorList.h">
+      <Filter>Main\Report</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
