@@ -149,7 +149,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
     // Tuple dereference
     else if (leftNode->kind == AstNodeKind::MultiIdentifierTuple)
     {
-        SWAG_VERIFY(acceptDeref, error(leftNode->token, Fmt(Err(Err0279), Scope::getArticleKindName(currentScope->kind))));
+        SWAG_VERIFY(acceptDeref, error(leftNode, Fmt(Err(Err0279), Scope::getArticleKindName(currentScope->kind))));
 
         auto parentNode = Ast::newNode<AstNode>(this, AstNodeKind::StatementNoScope, sourceFile, parent);
         if (result)

@@ -2025,7 +2025,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         }
         else
         {
-            Diagnostic                diag{node, Fmt(Err(Err0116), symbol->name.c_str())};
+            Diagnostic                diag{node, node->token, Fmt(Err(Err0116), symbol->name.c_str())};
             vector<const Diagnostic*> notes;
             for (auto match : matches)
             {

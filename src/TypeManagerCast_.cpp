@@ -249,7 +249,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
     return false;
 }
 
-void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, TypeInfo* toType, TypeInfo* fromType, uint32_t castFlags)
+void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, TypeInfo* toType, TypeInfo* fromType, uint32_t castFlags, bool forNote)
 {
     msg.clear();
     hint.clear();
@@ -259,7 +259,7 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, TypeInfo* toType, TypeI
     if (castFlags & CASTFLAG_CONST_ERR)
     {
         hint = Hnt(Hnt0022);
-        msg  = Fmt(Err(Err0418), fromType->getDisplayNameC(), toType->getDisplayNameC());
+        msg  = Fmt(ErrNte(Err0418, forNote), fromType->getDisplayNameC(), toType->getDisplayNameC());
     }
     else if (toType->isInterface() && ((fromType->isStruct()) || (fromType->isPointerTo(TypeInfoKind::Struct))))
     {
@@ -270,21 +270,21 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, TypeInfo* toType, TypeI
             fromTypeCpy = CastTypeInfo<TypeInfoPointer>(fromTypeCpy, TypeInfoKind::Pointer)->pointedType;
         }
 
-        msg = Fmt(Err(Err0176), fromTypeCpy->getDisplayNameC(), toType->getDisplayNameC());
+        msg = Fmt(ErrNte(Err0176, forNote), fromTypeCpy->getDisplayNameC(), toType->getDisplayNameC());
     }
     else if (!toType->isPointerRef() && toType->isPointer() && (fromType->isNativeIntegerOrRune() || fromType->isNativeFloat() || fromType->isBool()))
     {
         hint = Hnt(Hnt0005);
-        msg  = Fmt(Err(Err0907), fromType->getDisplayNameC());
+        msg  = Fmt(ErrNte(Err0907, forNote), fromType->getDisplayNameC());
     }
     else if (fromType->isPointerToTypeInfo() && !toType->isPointerToTypeInfo())
     {
         hint = Hnt(Hnt0040);
-        msg  = Fmt(Err(Err0177), fromType->getDisplayNameC(), toType->getDisplayNameC());
+        msg  = Fmt(ErrNte(Err0177, forNote), fromType->getDisplayNameC(), toType->getDisplayNameC());
     }
     else if (fromType->isClosure() && toType->isLambda())
     {
-        msg = Fmt(Err(Err0178));
+        msg = Fmt(ErrNte(Err0178, forNote));
     }
 }
 

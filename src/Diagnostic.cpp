@@ -68,8 +68,7 @@ void Diagnostic::printSourceLine() const
             path = path1;
     }
 
-    if (errorLevel != DiagnosticLevel::CallStack && errorLevel != DiagnosticLevel::CallStackInlined)
-        g_Log.print("--> ");
+    g_Log.print("--> ");
     g_Log.print(Utf8::normalizePath(path).c_str());
     if (hasRangeLocation)
         g_Log.print(Fmt(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, endLocation.line + 1, endLocation.column + 1));
@@ -187,9 +186,9 @@ void Diagnostic::report(bool verboseMode) const
     {
         g_Log.setColor(stackColor);
         if (currentStackLevel)
-            g_Log.print(Fmt("--> callstack:%03u: ", stackLevel));
+            g_Log.print(Fmt("[callstack:%03u]: ", stackLevel));
         else
-            g_Log.print(Fmt("    callstack:%03u: ", stackLevel));
+            g_Log.print(Fmt("callstack:%03u: ", stackLevel));
         break;
     }
     case DiagnosticLevel::CallStackInlined:
@@ -283,8 +282,18 @@ void Diagnostic::report(bool verboseMode) const
                     printMargin(verboseMode);
                     if (hilightCodeRange && i == lines.size() - 1)
                         break;
+
                     if (!showRange && errorLevel == DiagnosticLevel::Note)
+                    {
                         g_Log.setColor(hilightCodeColor);
+                    }
+                    else if (errorLevel == DiagnosticLevel::CallStack ||
+                             errorLevel == DiagnosticLevel::CallStackInlined ||
+                             errorLevel == DiagnosticLevel::TraceError)
+                    {
+                        g_Log.setColor(hilightCodeColor);
+                    }
+
                     g_Log.print(lines[i].c_str() + minBlanks);
                     g_Log.eol();
                 }
@@ -571,10 +580,17 @@ void Diagnostic::report(bool verboseMode) const
     if (g_CommandLine->errorSourceOut && hasFile && !sourceFile->path.empty() && showFileName)
     {
         printMargin(verboseMode);
+
         g_Log.setColor(sourceFileColor);
         printSourceLine();
         g_Log.eol();
-        printMargin(verboseMode, true);
+
+        if (errorLevel != DiagnosticLevel::CallStack &&
+            errorLevel != DiagnosticLevel::CallStackInlined &&
+            errorLevel != DiagnosticLevel::TraceError)
+        {
+            printMargin(verboseMode, true);
+        }
     }
     else if (mustPrintCode() && !showRange)
     {

@@ -68,6 +68,12 @@ TODO
 ****************************************
 
 -------------------------------------
+DebugAllocator, double free detection
+-------------------------------------
+capture closure var par reference closure|ref x|(...)
+-------------------------------------
+closure/lambda, pouvoir zaper un paramètre avec ? => closure|&total|(?, depth) ()
+-------------------------------------
 on doit exporter les implementation d'interface pour un truc public ?
 -------------------------------------
 lambda short form in declaration var x: func(s32) = @(x) {}
@@ -83,6 +89,8 @@ llvm debug, pas à jour
 - variables local en #[Swag.global]
 - mettre les constants
 - mettre les enums (void CodeViewDebug::emitStaticConstMemberList())
+-------------------------------------
+call stack en runtime in case of panic
 -------------------------------------
 
 

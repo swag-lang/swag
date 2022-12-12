@@ -1120,6 +1120,13 @@ Utf8 Err(ErrorID idx)
     return Fmt("[%s] %s", g_EI[idx], g_E[idx].c_str());
 }
 
+Utf8 ErrNte(ErrorID idx, bool forNote)
+{
+    if (forNote)
+        return Nte(idx);
+    return Err(idx);
+}
+
 Utf8 Nte(ErrorID idx)
 {
     return g_E[idx];
