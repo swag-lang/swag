@@ -471,7 +471,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 convert = true;
             if (makePtrL->typeInfo && makePtrL->typeInfo->isLambda())
                 convert = true;
-            if (makePtrL->typeInfo == g_TypeMgr->typeInfoNull)
+            if (makePtrL->typeInfo->isPointerNull())
                 convert = true;
             if (convert)
             {
@@ -486,7 +486,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                     varNode->assignment = Ast::clone(makePtrL, varNode);
                     Ast::removeFromParent(makePtrL);
                 }
-                else if (makePtrL->typeInfo == g_TypeMgr->typeInfoNull)
+                else if (makePtrL->typeInfo->isPointerNull())
                 {
                     nodeCall->flags &= ~AST_VALUE_COMPUTED;
                     makePtrL->flags |= AST_NO_BYTECODE;
@@ -657,7 +657,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
 
                 // Need to test sizeof because assignement can be {}. In that case, we just reference
                 // the temporary variable
-                if (funcParam->assignment->typeInfo->sizeOf && funcParam->assignment->typeInfo != g_TypeMgr->typeInfoNull)
+                if (funcParam->assignment->typeInfo->sizeOf && !funcParam->assignment->typeInfo->isPointerNull())
                 {
                     varNode->assignment = funcParam->assignment->clone(cloneContext);
                     varNode->assignment->inheritOwners(identifier);

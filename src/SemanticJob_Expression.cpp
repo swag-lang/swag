@@ -236,7 +236,7 @@ bool SemanticJob::resolveConditionalOp(SemanticContext* context)
     }
 
     // Determin if we should take the type from the "false" expression, or from the "true"
-    if (ifTrue->typeInfo == g_TypeMgr->typeInfoNull)
+    if (ifTrue->typeInfo->isPointerNull())
         node->typeInfo = ifFalse->typeInfo;
     else
         node->typeInfo = ifTrue->typeInfo;

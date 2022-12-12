@@ -309,8 +309,8 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
         return true;
     }
 
-    if ((leftTypeInfo->isLambdaClosure() || leftTypeInfo == g_TypeMgr->typeInfoNull) &&
-        (rightTypeInfo->isLambdaClosure() || rightTypeInfo == g_TypeMgr->typeInfoNull) &&
+    if ((leftTypeInfo->isLambdaClosure() || leftTypeInfo->isPointerNull()) &&
+        (rightTypeInfo->isLambdaClosure() || rightTypeInfo->isPointerNull()) &&
         (node->token.id == TokenId::SymEqualEqual || node->token.id == TokenId::SymExclamEqual))
     {
         // This is fine to compare two lambdas
@@ -344,11 +344,11 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
         return context->report({right, Err(Err0007)});
 
     // Slice can only be compared to null
-    if (leftTypeInfo->isSlice() && rightTypeInfo != g_TypeMgr->typeInfoNull)
+    if (leftTypeInfo->isSlice() && !rightTypeInfo->isPointerNull())
         return context->report({left, Err(Err0009)});
 
     // Interface can only be compared to null ar to another interface
-    if (leftTypeInfo->isInterface() && rightTypeInfo != g_TypeMgr->typeInfoNull && !rightTypeInfo->isInterface())
+    if (leftTypeInfo->isInterface() && !rightTypeInfo->isPointerNull()  && !rightTypeInfo->isInterface())
         return context->report({left, Err(Err0010)});
 
     // Some types can only be compared for equality

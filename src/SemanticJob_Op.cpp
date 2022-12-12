@@ -674,7 +674,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
                         convert = true;
                     if (makePtrL->typeInfo && makePtrL->typeInfo->isLambda())
                         convert = true;
-                    if (makePtrL->typeInfo == g_TypeMgr->typeInfoNull)
+                    if (makePtrL->typeInfo->isPointerNull())
                         convert = true;
                     if (convert)
                     {
@@ -696,7 +696,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
                             varNode->assignment = Ast::clone(makePtrL, varNode);
                             Ast::removeFromParent(makePtrL);
                         }
-                        else if (makePtrL->typeInfo == g_TypeMgr->typeInfoNull)
+                        else if (makePtrL->typeInfo->isPointerNull())
                         {
                             nodeCall->flags &= ~AST_VALUE_COMPUTED;
                             makePtrL->flags |= AST_NO_BYTECODE;

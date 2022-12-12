@@ -210,6 +210,7 @@ struct TypeInfo
     bool            isPointerTo(NativeTypeKind pointerKind);
     bool            isPointerTo(TypeInfoKind pointerKind);
     bool            isPointerTo(TypeInfo* finalType);
+    bool            isPointerNull();
     bool            isPointerVoid();
     bool            isPointerConstVoid();
     bool            isPointerToTypeInfo();

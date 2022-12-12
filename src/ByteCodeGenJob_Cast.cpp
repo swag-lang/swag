@@ -14,7 +14,7 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
 {
     auto node = context->node;
 
-    if (fromTypeInfo == g_TypeMgr->typeInfoNull)
+    if (fromTypeInfo->isPointerNull())
     {
         transformResultToLinear2(context, exprNode);
         node->resultRegisterRC = exprNode->resultRegisterRC;
@@ -79,7 +79,7 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
 bool ByteCodeGenJob::emitCastToInterface(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo)
 {
     auto node = context->node;
-    if (fromTypeInfo == g_TypeMgr->typeInfoNull)
+    if (fromTypeInfo->isPointerNull())
     {
         node->semFlags |= AST_SEM_FROM_NULL;
         node->resultRegisterRC = exprNode->resultRegisterRC;
@@ -629,7 +629,7 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
         return true;
     }
 
-    if (fromTypeInfo == g_TypeMgr->typeInfoNull)
+    if (fromTypeInfo->isPointerNull())
     {
         transformResultToLinear2(context, exprNode);
         node->resultRegisterRC = exprNode->resultRegisterRC;
@@ -681,7 +681,7 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
         fromTypeInfo      = TypeManager::concreteType(typeVariadic->rawType);
     }
 
-    if (fromTypeInfo == g_TypeMgr->typeInfoNull || fromTypeInfo->isString())
+    if (fromTypeInfo->isPointerNull() || fromTypeInfo->isString())
     {
         node->resultRegisterRC = exprNode->resultRegisterRC;
     }

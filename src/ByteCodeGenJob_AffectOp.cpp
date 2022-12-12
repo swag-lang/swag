@@ -149,7 +149,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->isInterface())
     {
-        if (fromTypeInfo == g_TypeMgr->typeInfoNull)
+        if (fromTypeInfo->isPointerNull())
         {
             emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
             emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
@@ -165,7 +165,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->isSlice())
     {
-        if (fromTypeInfo == g_TypeMgr->typeInfoNull)
+        if (fromTypeInfo->isPointerNull())
         {
             emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
             emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
@@ -193,7 +193,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->isString())
     {
-        if (fromTypeInfo == g_TypeMgr->typeInfoNull)
+        if (fromTypeInfo->isPointerNull())
         {
             emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
             emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
@@ -236,7 +236,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         return true;
     case NativeTypeKind::Any:
     {
-        if (fromTypeInfo == g_TypeMgr->typeInfoNull)
+        if (fromTypeInfo->isPointerNull())
         {
             emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
             emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;

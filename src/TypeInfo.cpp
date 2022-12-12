@@ -297,6 +297,11 @@ bool TypeInfo::isPointerToTypeInfo()
     return ptr->pointedType->flags & TYPEINFO_STRUCT_TYPEINFO;
 }
 
+bool TypeInfo::isPointerNull()
+{
+    return this == g_TypeMgr->typeInfoNull;
+}
+
 bool TypeInfo::isInitializerList()
 {
     if (kind != TypeInfoKind::TypeListTuple)

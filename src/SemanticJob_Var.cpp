@@ -1047,7 +1047,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     // Type should be a correct one
-    SWAG_VERIFY(node->typeInfo != g_TypeMgr->typeInfoNull, context->report({node, Err(Err0308)}));
+    SWAG_VERIFY(!node->typeInfo->isPointerNull(), context->report({node, Err(Err0308)}));
 
     // We should have a type here !
     SWAG_VERIFY(node->typeInfo, context->report({node, Fmt(Err(Err0309), AstNode::getKindName(node).c_str(), node->token.ctext())}));

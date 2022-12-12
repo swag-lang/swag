@@ -2071,7 +2071,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
 
 bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
-    if (fromType == g_TypeMgr->typeInfoNull)
+    if (fromType->isPointerNull())
     {
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
         {
@@ -2126,7 +2126,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 {
     if (toType->isAny())
     {
-        if (fromType == g_TypeMgr->typeInfoNull)
+        if (fromType->isPointerNull())
         {
             if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
             {
@@ -2417,7 +2417,7 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
 
     auto toTypeItf = CastTypeInfo<TypeInfoStruct>(toType, TypeInfoKind::Interface);
 
-    if (fromType == g_TypeMgr->typeInfoNull)
+    if (fromType->isPointerNull())
     {
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
         {
@@ -2746,7 +2746,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
     // String to const *u8
     if (fromType->isString())
     {
-        if (toType == g_TypeMgr->typeInfoNull)
+        if (toType->isPointerNull())
             return true;
 
         if (castFlags & CASTFLAG_EXPLICIT)
@@ -2834,7 +2834,7 @@ bool TypeManager::castToLambda(SemanticContext* context, TypeInfo* toType, TypeI
     TypeInfoFuncAttr* toTypeLambda = CastTypeInfo<TypeInfoFuncAttr>(toType, TypeInfoKind::LambdaClosure);
     if (castFlags & CASTFLAG_EXPLICIT)
     {
-        if (fromType == g_TypeMgr->typeInfoNull || fromType->isPointerConstVoid())
+        if (fromType->isPointerNull() || fromType->isPointerConstVoid())
         {
             if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
             {
@@ -2854,7 +2854,7 @@ bool TypeManager::castToClosure(SemanticContext* context, TypeInfo* toType, Type
     TypeInfoFuncAttr* toTypeLambda = CastTypeInfo<TypeInfoFuncAttr>(toType, TypeInfoKind::LambdaClosure);
     if (castFlags & CASTFLAG_EXPLICIT)
     {
-        if (fromType == g_TypeMgr->typeInfoNull)
+        if (fromType->isPointerNull())
         {
             if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
             {
@@ -2907,7 +2907,7 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
             return true;
         }
     }
-    else if (fromType == g_TypeMgr->typeInfoNull)
+    else if (fromType->isPointerNull())
     {
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
         {
@@ -3648,7 +3648,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     {
         if (!(castFlags & CASTFLAG_PARAMS) || !toType->isStruct())
         {
-            if ((toType != g_TypeMgr->typeInfoNull) &&
+            if ((!toType->isPointerNull()) &&
                 (!toType->isString()) &&
                 (!toType->isInterface()) &&
                 (!toType->isBool() || !(castFlags & CASTFLAG_AUTO_BOOL)) &&

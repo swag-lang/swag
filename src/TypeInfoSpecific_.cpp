@@ -154,7 +154,7 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
     {
         if (to->isKindGeneric())
             return true;
-        if (this == g_TypeMgr->typeInfoNull && to->isLambdaClosure())
+        if (this->isPointerNull() && to->isLambdaClosure())
             return true;
     }
 
@@ -163,9 +163,9 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
 
     if (isSameFlags & ISSAME_CAST)
     {
-        if (this == g_TypeMgr->typeInfoNull)
+        if (this->isPointerNull())
             return true;
-        if (to == g_TypeMgr->typeInfoNull)
+        if (to->isPointerNull())
             return true;
     }
 
@@ -717,7 +717,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint32_t isSameFlags)
 
     if (isSameFlags & ISSAME_CAST)
     {
-        if (kind == TypeInfoKind::LambdaClosure && to == g_TypeMgr->typeInfoNull)
+        if (kind == TypeInfoKind::LambdaClosure && to->isPointerNull())
             return true;
     }
 

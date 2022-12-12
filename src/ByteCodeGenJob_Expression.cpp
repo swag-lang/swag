@@ -312,7 +312,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     }
 
     // We have null
-    if (node->castedTypeInfo && node->castedTypeInfo == g_TypeMgr->typeInfoNull)
+    if (node->castedTypeInfo && node->castedTypeInfo->isPointerNull())
     {
         // We want a string or a slice
         if (node->typeInfo->nativeType == NativeTypeKind::String ||
@@ -389,7 +389,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
             return Report::internalError(context->node, "emitLiteral, type not supported");
         }
     }
-    else if (typeInfo == g_TypeMgr->typeInfoNull)
+    else if (typeInfo->isPointerNull())
     {
         if (toType && (toType->isSlice() || toType->isString()))
         {

@@ -511,7 +511,7 @@ bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode
 
 bool AstOutput::outputLiteral(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo, const ComputedValue& value)
 {
-    if (typeInfo == g_TypeMgr->typeInfoNull)
+    if (typeInfo->isPointerNull())
     {
         CONCAT_FIXED_STR(concat, "null");
         return true;
