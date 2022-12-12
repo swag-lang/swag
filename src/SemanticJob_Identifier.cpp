@@ -745,7 +745,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     }
 
     // If a variable on the left has only been used for scoping, and not evaluated as an ufcs source, then this is an
-    // an error too, cause it's too strange.
+    // error too, cause it's too strange.
     // x.toto() with toto taking no argument for example, but toto is 'in' x scope.
     if (symbol &&
         symbol->kind == SymbolKind::Function &&
@@ -756,8 +756,15 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         !(parent->previousResolvedNode->flags & AST_FROM_UFCS))
     {
         if (parent->previousResolvedNode->kind == AstNodeKind::Identifier && parent->previousResolvedNode->specFlags & AST_SPEC_IDENTIFIER_FROM_WITH)
-            return context->report({parent->previousResolvedNode, Fmt(Err(Err0310), parent->previousResolvedNode->token.ctext(), symbol->name.c_str(), parent->startScope->name.c_str())});
-        return context->report({parent->previousResolvedNode, Fmt(Err(Err0086), parent->previousResolvedNode->token.ctext(), symbol->name.c_str(), parent->startScope->name.c_str())});
+        {
+            Diagnostic diag{parent->previousResolvedNode, Fmt(Err(Err0310), parent->previousResolvedNode->token.ctext(), symbol->name.c_str(), parent->startScope->name.c_str())};
+            diag.hint = Hnt(Hnt0073);
+            return context->report(diag);
+        }
+
+        Diagnostic diag{parent->previousResolvedNode, Fmt(Err(Err0086), parent->previousResolvedNode->token.ctext(), symbol->name.c_str(), parent->startScope->name.c_str())};
+        diag.hint = Hnt(Hnt0073);
+        return context->report(diag);
     }
 
     // A.X and A is an array : missing index

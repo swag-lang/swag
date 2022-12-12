@@ -1031,6 +1031,14 @@ void initErrors()
     SWAG_ERROR(Hnt0070, "this %s has the `Swag.Compiler` attribute");
     SWAG_ERROR(Hnt0071, "this parameter is missing");
     SWAG_ERROR(Hnt0072, "this is an empty array");
+    SWAG_ERROR(Hnt0073, "this function does not accept ufcs");
+    SWAG_ERROR(Hnt0074, nullptr);
+    SWAG_ERROR(Hnt0075, nullptr);
+    SWAG_ERROR(Hnt0076, nullptr);
+    SWAG_ERROR(Hnt0077, nullptr);
+    SWAG_ERROR(Hnt0078, nullptr);
+    SWAG_ERROR(Hnt0079, nullptr);
+    SWAG_ERROR(Hnt0080, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
