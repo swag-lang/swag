@@ -1174,7 +1174,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         // Variable is still generic. Try to find default generic parameters to instantiate it
         if (node->typeInfo->flags & TYPEINFO_GENERIC)
         {
-            SWAG_CHECK(Generic::instantiateDefaultGeneric(context, node));
+            SWAG_CHECK(Generic::instantiateDefaultGenericVar(context, node));
             if (context->result != ContextResult::Done)
                 return true;
         }
@@ -1230,7 +1230,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         // Variable is still generic. Try to find default generic parameters to instantiate it
         if (node->typeInfo->flags & TYPEINFO_GENERIC)
         {
-            SWAG_CHECK(Generic::instantiateDefaultGeneric(context, node));
+            SWAG_CHECK(Generic::instantiateDefaultGenericVar(context, node));
             if (context->result != ContextResult::Done)
                 return true;
         }

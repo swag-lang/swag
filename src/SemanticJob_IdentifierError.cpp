@@ -89,7 +89,33 @@ Utf8 SemanticJob::getTheNiceArgumentRank(int idx)
     case 3:
         return "the " + getNiceArgumentRank(idx);
     }
-    return Fmt("argument `%d`", idx);
+    return Fmt("the argument `%d`", idx);
+}
+
+Utf8 SemanticJob::getNiceParameterRank(int idx)
+{
+    switch (idx)
+    {
+    case 1:
+        return "first parameter";
+    case 2:
+        return "second parameter";
+    case 3:
+        return "third parameter";
+    }
+    return Fmt("parameter `%d`", idx);
+}
+
+Utf8 SemanticJob::getTheNiceParameterRank(int idx)
+{
+    switch (idx)
+    {
+    case 1:
+    case 2:
+    case 3:
+        return "the " + getNiceParameterRank(idx);
+    }
+    return Fmt("the parameter `%d`", idx);
 }
 
 static int getBadParamIdx(OneTryMatch& oneTry, AstNode* callParameters)

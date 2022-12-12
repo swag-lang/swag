@@ -154,7 +154,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         }
         else if (!nodeParam->typeInfo->isCode())
         {
-            auto name = SemanticJob::getTheNiceArgumentRank(index);
+            auto name = SemanticJob::getTheNiceParameterRank(index);
             SWAG_VERIFY(!defaultValueDone, context->report({nodeParam, Fmt(Err(Err0738), name.c_str())}));
         }
 

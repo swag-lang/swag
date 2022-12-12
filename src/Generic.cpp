@@ -492,24 +492,7 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, C
 
 bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool selectIf)
 {
-    auto       node             = context->node;
-    AstStruct* contextualStruct = nullptr;
-    AstNode*   contextualNode   = nullptr;
-
-    // Get the contextual structure call if it exists
-    if (context->node->kind == AstNodeKind::Identifier)
-    {
-        auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
-        if (identifier->identifierRef->resolvedSymbolOverload)
-        {
-            auto concreteType = TypeManager::concreteType(identifier->identifierRef->resolvedSymbolOverload->typeInfo);
-            if (concreteType->isStruct())
-            {
-                contextualNode   = identifier->identifierRef->previousResolvedNode;
-                contextualStruct = CastAst<AstStruct>(concreteType->declNode, AstNodeKind::StructDecl);
-            }
-        }
-    }
+    auto node = context->node;
 
     // We should have types to replace
     bool noReplaceTypes = match.genericReplaceTypes.empty();
@@ -519,9 +502,13 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
         // function call parameter
         if (!node->findParent(AstNodeKind::FuncCallParam))
         {
-            if (contextualNode)
-                return context->report({contextualNode, Fmt(Err(Err0041), node->token.ctext())});
-            return context->report({node, Fmt(Err(Err0042), node->token.ctext())});
+            node->resolvedSymbolName     = match.symbolName;
+            node->resolvedSymbolOverload = match.symbolOverload;
+            node->typeInfo               = match.symbolOverload->typeInfo;
+
+            SWAG_CHECK(instantiateDefaultGenericFunc(context));
+            if (context->result != ContextResult::Done)
+                return true;
         }
     }
 
@@ -582,10 +569,22 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
         p = p->parent;
     Ast::addChildBack(p, newFunc);
 
+    // :ContextCall
     // If we are calling the function in a struct context (struct.func), then add the struct as
     // an alternative scope
-    if (contextualStruct)
-        newFunc->addAlternativeScope(contextualStruct->scope);
+    if (context->node->kind == AstNodeKind::Identifier)
+    {
+        auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+        if (identifier->identifierRef->resolvedSymbolOverload)
+        {
+            auto concreteType = TypeManager::concreteType(identifier->identifierRef->resolvedSymbolOverload->typeInfo);
+            if (concreteType->isStruct())
+            {
+                auto contextualStruct = CastAst<AstStruct>(concreteType->declNode, AstNodeKind::StructDecl);
+                newFunc->addAlternativeScope(contextualStruct->scope);
+            }
+        }
+    }
 
     // If we are in a function, inherit also the scopes from the function.
     // Be carreful that if the call is inside a #macro, we do not want to inherit the function (3550)
@@ -631,7 +630,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     return true;
 }
 
-bool Generic::instantiateDefaultGeneric(SemanticContext* context, AstVarDecl* node)
+bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl* node)
 {
     if (node->typeInfo->isStruct() && node->type && node->type->kind == AstNodeKind::TypeExpression)
     {
@@ -655,7 +654,8 @@ bool Generic::instantiateDefaultGeneric(SemanticContext* context, AstVarDecl* no
                         auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
                         if (!param->assignment)
                         {
-                            Diagnostic diag{node->type, Fmt(Err(Err0721), typeExpr->identifier->resolvedSymbolName->name.c_str()), Hnt(Hnt0056)};
+                            Diagnostic diag{node->sourceFile, node->type->token, Fmt(Err(Err0721), typeExpr->identifier->resolvedSymbolName->name.c_str())};
+                            diag.hint = Hnt(Hnt0056);
                             return context->report(diag, Diagnostic::hereIs(typeExpr->identifier->resolvedSymbolOverload));
                         }
 
@@ -681,4 +681,77 @@ bool Generic::instantiateDefaultGeneric(SemanticContext* context, AstVarDecl* no
     }
 
     return context->report({node, Fmt(Err(Err0312), node->typeInfo->getDisplayNameC())});
+}
+
+bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
+{
+    auto node = context->node;
+
+    if (node->kind == AstNodeKind::Identifier)
+    {
+        auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+        if (!identifier->genericParameters)
+        {
+            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+            auto nodeFunc = CastAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
+            if (nodeFunc->genericParameters)
+            {
+                identifier->typeInfo          = nullptr;
+                identifier->genericParameters = Ast::newFuncCallGenParams(context->sourceFile, identifier);
+                identifier->genericParameters->flags |= AST_NO_BYTECODE;
+                Ast::removeFromParent(identifier->genericParameters);
+                Ast::addChildFront(identifier, identifier->genericParameters);
+
+                CloneContext cloneContext;
+                for (auto p : nodeFunc->genericParameters->childs)
+                {
+                    auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
+                    if (!param->assignment)
+                    {
+                        Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0715), identifier->resolvedSymbolName->name.c_str())};
+                        diag.hint = Hnt(Hnt0056);
+                        return context->report(diag, Diagnostic::hereIs(identifier->resolvedSymbolOverload));
+                    }
+
+                    auto child          = Ast::newFuncCallParam(context->sourceFile, identifier->genericParameters);
+                    cloneContext.parent = child;
+                    param->assignment->clone(cloneContext);
+                }
+
+                identifier->identifierRef->flags &= ~AST_IS_GENERIC;
+                identifier->flags &= ~AST_IS_GENERIC;
+
+                // Force the reevaluation of the identifier and its childs
+                context->result     = ContextResult::NewChilds1;
+                node->semanticState = AstNodeResolveState::Enter;
+                Ast::visit(node, [](AstNode* n)
+                           { n->semFlags &= ~AST_SEM_ONCE; });
+                return true;
+            }
+        }
+    }
+
+    // :ContextCall
+    // Get the contextual structure call if it exists
+    if (context->node->kind == AstNodeKind::Identifier)
+    {
+        auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+        if (identifier->identifierRef->resolvedSymbolOverload)
+        {
+            auto concreteType = TypeManager::concreteType(identifier->identifierRef->resolvedSymbolOverload->typeInfo);
+            if (concreteType->isStruct())
+            {
+                auto contextualNode = identifier->identifierRef->previousResolvedNode;
+                if (contextualNode)
+                {
+                    Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0041), node->token.ctext())};
+                    diag.hint = Hnt(Hnt0057);
+                    diag.setRange2(contextualNode, Hnt(Hnt0056));
+                    return context->report(diag);
+                }
+            }
+        }
+    }
+
+    return context->report({node->sourceFile, node->token, Fmt(Err(Err0042), node->token.ctext())});
 }
