@@ -170,8 +170,3 @@ struct Diagnostic
     bool showMultipleCodeLines = true;
     bool showFileName          = true;
 };
-
-#define Err(__num) g_E[__num]
-#define Nte(__num) g_E[__num]
-#define Hnt(__num) g_E[__num]
-#define Hlp(__num) g_E[__num]

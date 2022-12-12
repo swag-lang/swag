@@ -773,20 +773,8 @@
     <ClInclude Include="..\src\PrepCompilerMsgJob.h">
       <Filter>Main\Jobs</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\ErrorList_Err.h">
-      <Filter>Main\Report</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\AstOutput.h">
       <Filter>Lexer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ErrorList_Note.h">
-      <Filter>Main\Report</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ErrorList_Hint.h">
-      <Filter>Main\Report</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ErrorList_Help.h">
-      <Filter>Main\Report</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Array.h">
       <Filter>Main\Core</Filter>

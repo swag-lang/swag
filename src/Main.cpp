@@ -20,6 +20,7 @@ int main(int argc, const char* argv[])
     g_Workspace   = g_Allocator.alloc<Workspace>();
 
     OS::setup();
+    initErrors();
 
     // Arguments
     CommandLineParser cmdParser;
