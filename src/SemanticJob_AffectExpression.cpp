@@ -195,13 +195,12 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         if (leftTypeInfo->isEnum() || rightTypeInfo->isEnum())
         {
             SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
-
             if (node->token.id != TokenId::SymVerticalEqual &&
                 node->token.id != TokenId::SymAmpersandEqual &&
                 node->token.id != TokenId::SymCircumflexEqual)
-                return notAllowed(context, node, leftTypeInfo);
+                return notAllowed(context, node, leftTypeInfo, nullptr, left);
             if (!(leftTypeInfo->flags & TYPEINFO_ENUM_FLAGS) || !(rightTypeInfo->flags & TYPEINFO_ENUM_FLAGS))
-                return notAllowed(context, node, leftTypeInfo, "because the enum is not marked with `Swag.EnumFlags`");
+                return notAllowed(context, node, leftTypeInfo, "because the enum is not marked with `Swag.EnumFlags`", left);
             forEnumFlags = true;
         }
     }
@@ -383,7 +382,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Diagnostic::isType(leftTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU32, left, right, CASTFLAG_TRY_COERCE));
 
-        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
+        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
             leftTypeInfo->nativeType == NativeTypeKind::String ||
             leftTypeInfo->nativeType == NativeTypeKind::F32 ||
@@ -436,7 +435,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             break;
         }
 
-        SWAG_CHECK(forEnumFlags || checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
+        SWAG_CHECK(forEnumFlags || checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
         PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Diagnostic::isType(leftTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
 
@@ -475,7 +474,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             break;
         }
 
-        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
+        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
 
         PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Diagnostic::isType(leftTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
@@ -500,7 +499,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             break;
         }
 
-        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
+        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
         PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Diagnostic::isType(leftTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
@@ -526,7 +525,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             break;
         }
 
-        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
+        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
         PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Diagnostic::isType(leftTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||

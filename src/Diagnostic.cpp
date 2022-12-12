@@ -86,7 +86,7 @@ void Diagnostic::printMargin(bool verboseMode, bool eol)
 
 static void fixRange(const Utf8& backLine, SourceLocation& startLocation, int& range, char c1, char c2)
 {
-    if (range == 1) 
+    if (range == 1)
         return;
 
     int decal = startLocation.column;
@@ -296,9 +296,26 @@ void Diagnostic::report(bool verboseMode) const
             };
             vector<RangeHint> ranges;
 
-            if (hasRangeLocation2 && startLocation2.line == startLocation.line && endLocation2.line == startLocation2.line)
+            if (hasRangeLocation2 &&
+                startLocation2.line == startLocation.line &&
+                endLocation2.line == startLocation2.line &&
+                endLocation2.column < startLocation.column)
+            {
                 ranges.push_back({startLocation2, endLocation2, hint2});
-            ranges.push_back({startLocation, endLocation, hint});
+                ranges.push_back({startLocation, endLocation, hint});
+            }
+            else if (hasRangeLocation2 &&
+                     startLocation2.line == startLocation.line &&
+                     endLocation2.line == startLocation2.line &&
+                     startLocation2.column > endLocation.column)
+            {
+                ranges.push_back({startLocation, endLocation, hint});
+                ranges.push_back({startLocation2, endLocation2, hint2});
+            }
+            else
+            {
+                ranges.push_back({startLocation, endLocation, hint});
+            }
 
             // Preprocess ranges
             for (auto& r : ranges)

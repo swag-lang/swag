@@ -250,7 +250,7 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
         return true;
     }
 
-    SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
+    SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
     SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
     node->typeInfo = TypeManager::concreteType(left->typeInfo);
 
@@ -347,7 +347,7 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
         return true;
     }
 
-    SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
+    SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
     SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
     node->typeInfo = TypeManager::concreteType(left->typeInfo);
 
@@ -429,7 +429,7 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
         return true;
     }
 
-    SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
+    SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
     SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
     node->typeInfo = TypeManager::concreteType(left->typeInfo);
 
@@ -931,7 +931,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     case TokenId::SymCircumflex:
         if (!leftTypeInfo->isStruct())
         {
-            SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
+            SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
             SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
             node->typeInfo = left->typeInfo;
         }
@@ -1263,7 +1263,7 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
     if (leftTypeInfo->isStruct())
         SWAG_CHECK(checkTypeIsNative(context, right, rightTypeInfo));
     else
-        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
+        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
 
     node->typeInfo    = g_TypeMgr->promoteUntyped(left->typeInfo);
     node->byteCodeFct = ByteCodeGenJob::emitBinaryOp;

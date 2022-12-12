@@ -116,7 +116,7 @@ bool SemanticJob::checkIsConstExpr(JobContext* context, bool test, AstNode* expr
 
     if (errMsg.length() && errParam.length())
     {
-        Diagnostic diag{ expression, Fmt(errMsg.c_str(), errParam.c_str())};
+        Diagnostic diag{expression, Fmt(errMsg.c_str(), errParam.c_str())};
         return context->report(diag, computeNonConstExprNote(expression));
     }
 
@@ -129,12 +129,26 @@ bool SemanticJob::checkIsConstExpr(JobContext* context, AstNode* expression)
     return checkIsConstExpr(context, expression->flags & AST_CONST_EXPR, expression);
 }
 
-bool SemanticJob::checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo)
+bool SemanticJob::checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, AstNode* left, AstNode* right)
 {
     if (leftTypeInfo->isNative() && rightTypeInfo->isNative())
         return true;
     auto node = context->node;
-    return context->report({node, Fmt(Err(Err0504), node->token.ctext(), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC())});
+
+    if (!leftTypeInfo->isNative())
+    {
+        Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0005), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+        diag.hint = Hnt(Hnt0061);
+        diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+        return context->report(diag);
+    }
+    else
+    {
+        Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0005), node->token.ctext(), rightTypeInfo->getDisplayNameC())};
+        diag.hint = Hnt(Hnt0061);
+        diag.setRange2(right, Diagnostic::isType(rightTypeInfo));
+        return context->report(diag);
+    }
 }
 
 bool SemanticJob::checkTypeIsNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
@@ -143,16 +157,20 @@ bool SemanticJob::checkTypeIsNative(SemanticContext* context, AstNode* node, Typ
     return true;
 }
 
-bool SemanticJob::notAllowed(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg)
+bool SemanticJob::notAllowed(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg, AstNode* hintType)
 {
-    Utf8 text = Fmt(Err(Err0005), node->token.ctext(), TypeInfo::getNakedKindName(typeInfo), typeInfo->getDisplayNameC());
+    Utf8 text = Fmt(Err(Err0005), node->token.ctext(), typeInfo->getDisplayNameC());
     if (msg)
     {
         text += " ";
         text += msg;
     }
 
-    return context->report({node, text});
+    Diagnostic diag{node, node->token, text};
+    diag.hint = Hnt(Hnt0061);
+    if (hintType)
+        diag.setRange2(hintType, Diagnostic::isType(typeInfo));
+    return context->report(diag);
 }
 
 bool SemanticJob::error(SemanticContext* context, const Utf8& msg)

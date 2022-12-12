@@ -448,7 +448,10 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
         }
         else
         {
-            return context->report({arrayNode->array, Fmt(Err(Err0481), arrayType->getDisplayNameC())});
+            Diagnostic diag{arrayNode->array, Fmt(Err(Err0481), arrayType->getDisplayNameC()), Diagnostic::isType(arrayType)};
+            if (arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF)
+                diag.setRange2(arrayNode->token.startLocation, arrayNode->token.endLocation, Hnt(Hnt0060));
+            return context->report(diag);
         }
 
         break;

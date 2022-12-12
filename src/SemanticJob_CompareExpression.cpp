@@ -321,15 +321,20 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
              !leftTypeInfo->isSlice() &&
              !leftTypeInfo->isInterface())
     {
-        return context->report({left, Fmt(Err(Err0809), node->token.ctext(), TypeInfo::getArticleKindName(leftTypeInfo)), Diagnostic::isType(leftTypeInfo)});
+        Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0809), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+        diag.hint = Hnt(Hnt0061);
+        diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+        return context->report(diag);
     }
     else if (!rightTypeInfo->isNative() &&
              !rightTypeInfo->isPointer() &&
              !rightTypeInfo->isStruct() &&
              !rightTypeInfo->isInterface())
     {
-
-        return context->report({right, Fmt(Err(Err0778), node->token.ctext(), TypeInfo::getArticleKindName(rightTypeInfo)), Diagnostic::isType(rightTypeInfo)});
+        Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0778), node->token.ctext(), rightTypeInfo->getDisplayNameC())};
+        diag.hint = Hnt(Hnt0061);
+        diag.setRange2(right, Diagnostic::isType(rightTypeInfo));
+        return context->report(diag);
     }
 
     // Cannot compare tuples
@@ -350,7 +355,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     if (leftTypeInfo->isSlice() || leftTypeInfo->isInterface())
     {
         if (node->token.id != TokenId::SymEqualEqual && node->token.id != TokenId::SymExclamEqual)
-            return context->report({left, Fmt(Err(Err0005), node->token.ctext(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->getDisplayNameC())});
+            return context->report({left, Fmt(Err(Err0005), node->token.ctext(), leftTypeInfo->getDisplayNameC())});
     }
 
     if (node->token.id == TokenId::SymLowerEqualGreater)

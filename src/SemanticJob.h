@@ -207,7 +207,7 @@ struct SemanticJob : public Job
 
     static bool valueEqualsTo(const ComputedValue* value, AstNode* node);
     static bool valueEqualsTo(const ComputedValue* value1, const ComputedValue* value2, TypeInfo* typeInfo, uint64_t flags);
-    static bool checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo);
+    static bool checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, AstNode* left, AstNode* right);
     static bool checkTypeIsNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool checkFuncPrototype(SemanticContext* context, AstFuncDecl* node);
     static bool checkFuncPrototypeOpNumParams(SemanticContext* context, AstFuncDecl* node, AstNode* parameters, uint32_t num, bool exact = true);
@@ -230,7 +230,7 @@ struct SemanticJob : public Job
 
     static SemanticJob*   newJob(Job* dependentJob, SourceFile* sourceFile, AstNode* rootNode, bool run);
     static bool           error(SemanticContext* context, const Utf8& msg);
-    static bool           notAllowed(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg = nullptr);
+    static bool           notAllowed(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg = nullptr, AstNode* hintType = nullptr);
     static void           decreaseInterfaceRegCount(TypeInfoStruct* typeInfoStruct);
     static void           decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct);
     static void           decreaseMethodCount(AstFuncDecl* funcNode, TypeInfoStruct* typeInfoStruct);
