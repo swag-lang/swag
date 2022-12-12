@@ -36,14 +36,13 @@ bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
     // Slicing
     if (token.id == TokenId::SymDotDot)
     {
-        SWAG_CHECK(eatToken(TokenId::SymDotDot));
         auto arrayNode         = Ast::newNode<AstArrayPointerSlicing>(this, AstNodeKind::ArrayPointerSlicing, sourceFile, nullptr, 3);
-        arrayNode->token       = firstExpr->token;
         arrayNode->semanticFct = SemanticJob::resolveArrayPointerSlicing;
         arrayNode->array       = *exprNode;
         Ast::addChildBack(arrayNode, *exprNode);
         Ast::addChildBack(arrayNode, firstExpr);
         arrayNode->lowerBound = firstExpr;
+        SWAG_CHECK(eatToken(TokenId::SymDotDot));
         SWAG_CHECK(doExpression(arrayNode, EXPR_FLAG_NONE, &arrayNode->upperBound));
         *exprNode = arrayNode;
         SWAG_CHECK(eatToken(TokenId::SymRightSquare));
@@ -1006,12 +1005,12 @@ bool SyntaxJob::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** resu
     // A orelse B
     else if (token.id == TokenId::KwdOrElse)
     {
-        SWAG_CHECK(eatToken());
         auto triNode         = Ast::newNode<AstNode>(this, AstNodeKind::NullConditionalExpression, sourceFile, parent, 2);
         triNode->semanticFct = SemanticJob::resolveNullConditionalOp;
         if (result)
             *result = triNode;
         Ast::addChildBack(triNode, boolExpression);
+        SWAG_CHECK(eatToken());
         SWAG_CHECK(doExpression(triNode, exprFlags));
     }
     else

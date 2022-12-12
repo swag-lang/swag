@@ -2038,7 +2038,16 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
             }
         }
 
-        SWAG_CHECK(TypeManager::makeCompatibles(context, convertTo, fromTypeList->subTypes[i]->typeInfo, nullptr, child, castFlags | CASTFLAG_TRY_COERCE));
+        if (fromNode)
+        {
+            PushErrContext ec(context, fromNode->childs.front(), ErrorContextKind::Hint2, "", Fmt(Hnt(Hnt0062), convertTo->getDisplayNameC()));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, convertTo, fromTypeList->subTypes[i]->typeInfo, nullptr, child, castFlags | CASTFLAG_TRY_COERCE));
+        }
+        else
+        {
+            SWAG_CHECK(TypeManager::makeCompatibles(context, convertTo, fromTypeList->subTypes[i]->typeInfo, nullptr, child, castFlags | CASTFLAG_TRY_COERCE));
+        }
+
         if (child)
         {
             newSizeof += child->typeInfo->sizeOf;

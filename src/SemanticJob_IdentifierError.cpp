@@ -486,13 +486,13 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     case MatchResult::BadGenericType:
     {
         SWAG_ASSERT(callParameters);
-        diag = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
+        diag       = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
                               Fmt(Err(Err0777),
                                   getTheNiceArgumentRank(badParamIdx).c_str(),
                                   refNiceName.c_str(),
                                   bi.badSignatureGivenType->getDisplayNameC(),
                                   bi.badSignatureRequestedType->getDisplayNameC())};
-
+        diag->hint = Fmt(Hnt(Hnt0063), bi.badSignatureRequestedType->getDisplayNameC());
         result0.push_back(diag);
         return;
     }

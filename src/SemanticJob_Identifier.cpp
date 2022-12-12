@@ -1253,14 +1253,20 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
                 if (!(fctAttributes & ATTRIBUTE_COMPILER) && (overload->node->attributeFlags & ATTRIBUTE_COMPILER) && !(identifier->flags & AST_RUN_BLOCK))
                 {
+                    Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0107), overload->node->token.ctext(), ownerFct->getDisplayNameC())};
+                    diag.hint = Hnt(Hnt0064);
                     Diagnostic note{overload->node, Fmt(Nte(Nte0029), overload->node->token.ctext()), DiagnosticLevel::Note};
-                    return context->report({identifier, Fmt(Err(Err0107), overload->node->token.ctext(), ownerFct->getDisplayNameC())}, &note);
+                    note.showRange = false;
+                    return context->report(diag, &note);
                 }
 
                 if (!(fctAttributes & ATTRIBUTE_TEST_FUNC) && (overload->node->attributeFlags & ATTRIBUTE_TEST_FUNC))
                 {
+                    Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0108), overload->node->token.ctext(), ownerFct->getDisplayNameC())};
+                    diag.hint = Hnt(Hnt0065);
                     Diagnostic note{overload->node, Fmt(Nte(Nte0029), overload->node->token.ctext()), DiagnosticLevel::Note};
-                    return context->report({identifier, Fmt(Err(Err0108), overload->node->token.ctext(), ownerFct->getDisplayNameC())}, &note);
+                    note.showRange = false;
+                    return context->report(diag, &note);
                 }
             }
         }
@@ -1886,7 +1892,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             auto       symbol = overloads[0]->overload->symbol;
             auto       match  = matches[0];
             Diagnostic diag{node, Fmt(Err(Err0886), symbol->name.c_str())};
-            auto       note = new Diagnostic{match->symbolOverload->node, Nte(Nte0036), DiagnosticLevel::Note};
+            auto       note = new Diagnostic{match->symbolOverload->node, match->symbolOverload->node->token, Nte(Nte0036), DiagnosticLevel::Note};
             return context->report(diag, note);
         }
 
@@ -1990,13 +1996,13 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         auto symbol = overloads[0]->overload->symbol;
         if (flags & MIP_FOR_GHOSTING)
         {
-            Diagnostic  diag{node, Fmt(Err(Err0886), symbol->name.c_str())};
+            Diagnostic  diag{node, node->token, Fmt(Err(Err0886), symbol->name.c_str())};
             Diagnostic* note = nullptr;
             for (auto match : matches)
             {
                 if (match->symbolOverload->node != node && !match->symbolOverload->node->isParentOf(node))
                 {
-                    note = new Diagnostic{match->symbolOverload->node, Nte(Nte0036), DiagnosticLevel::Note};
+                    note = new Diagnostic{match->symbolOverload->node, match->symbolOverload->node->token, Nte(Nte0036), DiagnosticLevel::Note};
                     break;
                 }
             }

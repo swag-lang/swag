@@ -44,6 +44,7 @@ bool SemanticJob::checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl*
         Diagnostic diag{node, msg};
         diag.hint = msg1;
         Diagnostic note{funcNode, Fmt(Nte(Nte0029), funcNode->token.ctext()), DiagnosticLevel::Note};
+        note.showRange = false;
         return context->report(diag, &note);
     }
 
@@ -245,7 +246,14 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     // Slicing of a pointer
     else if (typeVar->isPointer())
     {
-        SWAG_VERIFY(typeVar->flags & TYPEINFO_POINTER_ARITHMETIC, context->report({node, Err(Err0193), Diagnostic::isType(typeVar)}));
+        if (!(typeVar->flags & TYPEINFO_POINTER_ARITHMETIC))
+        {
+            Diagnostic diag{node, node->token, Err(Err0193)};
+            diag.hint = Hnt(Hnt0061);
+            diag.setRange2(node->array, Diagnostic::isType(typeVar));
+            return context->report(diag);
+        }
+
         auto typeInfoPointer  = CastTypeInfo<TypeInfoPointer>(node->array->typeInfo, TypeInfoKind::Pointer);
         auto ptrSlice         = allocType<TypeInfoSlice>();
         ptrSlice->pointedType = typeInfoPointer->pointedType;
@@ -281,8 +289,10 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
             if (context->result != ContextResult::Done)
                 return true;
 
-            Utf8 msg = Fmt(Err(Err0320), node->array->token.ctext(), typeInfo->getDisplayNameC());
-            return context->report({node, msg, Fmt(Hnt(Hnt0047), g_LangSpec->name_opSlice.c_str())});
+            Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0320), node->array->token.ctext(), typeInfo->getDisplayNameC())};
+            diag.hint = Fmt(Hnt(Hnt0047), g_LangSpec->name_opSlice.c_str());
+            diag.setRange2(node->array, Diagnostic::isType(typeInfo));
+            return context->report(diag);
         }
 
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opSlice, nullptr, nullptr, node->array, node->structFlatParams));
@@ -793,6 +803,8 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     {
         Diagnostic diag{arrayNode->array, Fmt(Err(Err0488), arrayNode->array->typeInfo->getDisplayNameC())};
         diag.hint = Hnt(Hnt0021);
+        if (arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF)
+            diag.setRange2(arrayNode->token.startLocation, arrayNode->token.endLocation, Hnt(Hnt0060));
         return context->report(diag);
     }
     }

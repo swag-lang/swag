@@ -302,7 +302,10 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
     {
         if (typeInfo->isStruct())
         {
-            return context->report({expression, Err(Err0342), Diagnostic::isType(typeInfo)});
+            Diagnostic diag{node->sourceFile, node->token, Err(Err0342)};
+            diag.hint = Hnt(Hnt0061);
+            diag.setRange2(expression, Diagnostic::isType(typeInfo));
+            return context->report(diag);
         }
         else if (!typeInfo->isString() &&
                  !typeInfo->isRune() &&
@@ -312,9 +315,14 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
                  !typeInfo->isNativeFloat() &&
                  !typeInfo->isLambdaClosure())
         {
-            return context->report({expression, Fmt(Err(Err0332), typeInfo->getDisplayNameC())});
+            Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0332), typeInfo->getDisplayNameC())};
+            diag.hint = Hnt(Hnt0061);
+            diag.setRange2(expression, Diagnostic::isType(typeInfo));
+            return context->report(diag);
         }
 
+        PushErrContext ec(context, expression, ErrorContextKind::Hint2, "", Diagnostic::isType(expression->typeInfo));
+        PushErrContext ec1(context, nullptr, ErrorContextKind::Help, Hlp(Hlp0032));
         SWAG_CHECK(TypeManager::makeCompatibles(context, expression, ifZero, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));
 
         node->typeInfo    = expression->typeInfo;

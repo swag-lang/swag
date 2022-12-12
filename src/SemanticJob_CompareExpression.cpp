@@ -75,7 +75,12 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
             break;
 
         default:
-            return context->report({context->node, Fmt(Err(Err0001), node->token.ctext(), leftTypeInfo->getDisplayNameC())});
+        {
+            Diagnostic diag{context->node, context->node->token, Fmt(Err(Err0001), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+            diag.hint = Hnt(Hnt0061);
+            diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+            return context->report(diag);
+        }
         }
     }
     else if (leftTypeInfo->isStruct() || rightTypeInfo->isStruct())
@@ -138,7 +143,12 @@ bool SemanticJob::resolveCompOp3Way(SemanticContext* context, AstNode* left, Ast
             break;
 
         default:
-            return context->report({context->node, Fmt(Err(Err0001), node->token.ctext(), leftTypeInfo->getDisplayNameC())});
+        {
+            Diagnostic diag{context->node, context->node->token, Fmt(Err(Err0001), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+            diag.hint = Hnt(Hnt0061);
+            diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+            return context->report(diag);
+        }
         }
     }
     else if (leftTypeInfo->isStruct())
@@ -198,7 +208,12 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
             break;
 
         default:
-            return context->report({context->node, Fmt(Err(Err0001), node->token.ctext(), leftTypeInfo->getDisplayNameC())});
+        {
+            Diagnostic diag{context->node, context->node->token, Fmt(Err(Err0001), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+            diag.hint = Hnt(Hnt0061);
+            diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+            return context->report(diag);
+        }
         }
     }
     else if (leftTypeInfo->isStruct())
@@ -258,7 +273,12 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
             break;
 
         default:
-            return context->report({context->node, Fmt(Err(Err0001), node->token.ctext(), leftTypeInfo->getDisplayNameC())});
+        {
+            Diagnostic diag{context->node, context->node->token, Fmt(Err(Err0001), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+            diag.hint = Hnt(Hnt0061);
+            diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+            return context->report(diag);
+        }
         }
     }
     else if (leftTypeInfo->isStruct())
