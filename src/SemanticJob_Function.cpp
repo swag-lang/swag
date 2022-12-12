@@ -296,7 +296,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         if (node->attributeFlags & ATTRIBUTE_TEST_FUNC)
         {
             SWAG_VERIFY(module->kind == ModuleKind::Test, context->report({node, Err(Err0744)}));
-            SWAG_VERIFY(node->returnType->typeInfo == g_TypeMgr->typeInfoVoid, context->report({node->returnType, Err(Err0745)}));
+            SWAG_VERIFY(node->returnType->typeInfo == g_TypeMgr->typeInfoVoid, context->report({node->returnType, Err(Err0745), Hnt(Hnt0026)}));
             SWAG_VERIFY(!node->parameters || node->parameters->childs.size() == 0, context->report({node->parameters, Err(Err0746)}));
         }
 
@@ -321,10 +321,10 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
             if (!(node->semFlags & AST_SEM_SCOPE_HAS_RETURN))
             {
                 if (node->semFlags & AST_SEM_FCT_HAS_RETURN)
-                    return context->report({node, Fmt(Err(Err0748), node->getDisplayNameC())});
+                    return context->report({node, node->token, Fmt(Err(Err0748), node->getDisplayNameC())});
                 if (!node->returnType->childs.empty())
                     return context->report({node->returnType->childs.front(), Fmt(Err(Err0749), node->getDisplayNameC(), node->returnType->typeInfo->getDisplayNameC())});
-                return context->report({node, Fmt(Err(Err0749), node->getDisplayNameC(), node->returnType->typeInfo->getDisplayNameC())});
+                return context->report({node, node->token, Fmt(Err(Err0749), node->getDisplayNameC(), node->returnType->typeInfo->getDisplayNameC())});
             }
         }
     }

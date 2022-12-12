@@ -31,3 +31,4 @@ SWAG_ERROR(Hlp0029, "you can use `mtd` or `mtdc` instead of `func` to declare an
 SWAG_ERROR(Hlp0030, "if you want an infinite loop, use `loop { ... }` instead")
 SWAG_ERROR(Hlp0031, "you could also declare the interface member with `mtd` or `mtdc` instead of `func`")
 SWAG_ERROR(Hlp0032, "both sides of an `orelse` must have the same type")
+SWAG_ERROR(Hlp0033, "you can unpack a variable with `?` if you don't want to retreive it")

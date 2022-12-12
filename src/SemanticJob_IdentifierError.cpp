@@ -283,7 +283,10 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         }
 
         if (destFuncDecl && callParameters)
-            note = new Diagnostic{destFuncDecl->parameters->childs[match.cptResolved], Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
+        {
+            note       = new Diagnostic{destFuncDecl->parameters->childs[match.cptResolved], Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
+            note->hint = Hnt(Hnt0071);
+        }
         else
             note = Diagnostic::hereIs(overload);
 
@@ -1194,21 +1197,28 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
             {
                 auto varDecl = node->findParent(AstNodeKind::VarDecl);
                 if (node->identifierRef && node->identifierRef->flags & AST_TUPLE_UNPACK && varDecl)
+                {
                     diag = new Diagnostic{node, Fmt(Err(Err0821), varDecl->token.ctext(), displayName.c_str())};
+                }
                 else if (prevIdentifier && prevIdentifier->alternateEnum)
                 {
-                    diag      = new Diagnostic{node, Fmt(Err(Err0492), node->token.ctext(), prevIdentifier->alternateEnum->getDisplayNameC(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())};
-                    auto note = new Diagnostic{prevIdentifier->alternateEnum->declNode, Fmt(Nte(Nte0029), prevIdentifier->alternateEnum->getDisplayNameC()), DiagnosticLevel::Note};
+                    diag            = new Diagnostic{node, node->token, Fmt(Err(Err0492), node->token.ctext(), prevIdentifier->alternateEnum->getDisplayNameC(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())};
+                    auto note       = new Diagnostic{prevIdentifier->alternateEnum->declNode, Fmt(Nte(Nte0029), prevIdentifier->alternateEnum->getDisplayNameC()), DiagnosticLevel::Note};
+                    note->showRange = false;
                     notes.push_back(note);
                 }
                 else
-                    diag = new Diagnostic{node, Fmt(Err(Err0110), node->token.ctext(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())};
+                {
+                    diag = new Diagnostic{node, node->token, Fmt(Err(Err0110), node->token.ctext(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())};
+                }
+
                 switch (identifierRef->startScope->owner->kind)
                 {
                 case AstNodeKind::StructDecl:
                 case AstNodeKind::InterfaceDecl:
                 case AstNodeKind::EnumDecl:
-                    auto note = new Diagnostic{identifierRef->startScope->owner, Fmt(Nte(Nte0029), displayName.c_str()), DiagnosticLevel::Note};
+                    auto note       = new Diagnostic{identifierRef->startScope->owner, Fmt(Nte(Nte0029), displayName.c_str()), DiagnosticLevel::Note};
+                    note->showRange = false;
                     notes.push_back(note);
                     break;
                 }

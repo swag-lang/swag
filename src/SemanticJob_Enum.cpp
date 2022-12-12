@@ -23,13 +23,14 @@ bool SemanticJob::resolveEnum(SemanticContext* context)
     // Be sure we have only one enum node
     if (node->resolvedSymbolName && node->resolvedSymbolName->nodes.size() > 1)
     {
-        Diagnostic  diag({node, Fmt(Err(Err0820), node->resolvedSymbolName->name.c_str())});
+        Diagnostic  diag({node, node->token, Fmt(Err(Err0820), node->resolvedSymbolName->name.c_str())});
         Diagnostic* note = nullptr;
         for (auto p : node->resolvedSymbolName->nodes)
         {
             if (p != node)
             {
-                note = new Diagnostic{p, Nte(Nte0036), DiagnosticLevel::Note};
+                note            = new Diagnostic{p, Nte(Nte0036), DiagnosticLevel::Note};
+                note->showRange = false;
                 break;
             }
         }

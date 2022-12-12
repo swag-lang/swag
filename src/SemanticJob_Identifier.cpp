@@ -1068,7 +1068,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             auto fctAttributes = ownerFct->attributeFlags;
             if (!(fctAttributes & ATTRIBUTE_COMPILER) && (overload->node->attributeFlags & ATTRIBUTE_COMPILER) && !(ownerFct->flags & AST_RUN_BLOCK))
             {
-                return context->report({identifier, Fmt(Err(Err0091), AstNode::getKindName(overload->node).c_str(), overload->node->token.ctext(), ownerFct->getDisplayNameC())});
+                Diagnostic diag{identifier, Fmt(Err(Err0091), AstNode::getKindName(overload->node).c_str(), overload->node->token.ctext(), ownerFct->getDisplayNameC())};
+                diag.hint = Fmt(Hnt(Hnt0070), AstNode::getKindName(overload->node).c_str());
+                return context->report(diag);
             }
         }
 

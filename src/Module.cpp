@@ -947,7 +947,7 @@ bool Module::compileString(const Utf8& text)
     // Is it still possible to generate some code ?
     if (!acceptsCompileString)
     {
-        Report::report({g_RunContext->ip->node, Err(Err0859)});
+        Report::report({g_RunContext->ip->node, g_RunContext->ip->node->token, Err(Err0859)});
         return false;
     }
 

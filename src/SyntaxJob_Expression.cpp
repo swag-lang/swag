@@ -1078,6 +1078,7 @@ bool SyntaxJob::doExpressionListTuple(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken(TokenId::SymComma));
     }
 
+    initNode->token.endLocation = token.endLocation;
     SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the tuple body"));
     return true;
 }
@@ -1107,6 +1108,7 @@ bool SyntaxJob::doExpressionListArray(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken(TokenId::SymComma));
     }
 
+    initNode->token.endLocation = token.endLocation;
     SWAG_CHECK(eatToken(TokenId::SymRightSquare));
     return true;
 }
@@ -1331,6 +1333,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result, AstWith* w
         uint64_t opAttrFlags = 0;
         auto     savedtoken  = token;
         SWAG_CHECK(eatToken());
+        savedtoken.startLocation = token.startLocation;
 
         // Modifiers
         uint32_t mdfFlags = 0;
