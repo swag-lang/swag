@@ -520,12 +520,14 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
         ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
         auto        varNode = Ast::newVarDecl(sourceFile, funcNode->token.text, parent, this);
         varNode->inheritTokenLocation(funcNode->token);
+        varNode->specFlags |= AST_SPEC_VARDECL_GEN_ITF;
         SemanticJob::setVarDeclResolve(varNode);
         varNode->flags |= AST_R_VALUE;
 
         auto typeNode         = Ast::newNode<AstTypeLambda>(this, AstNodeKind::TypeLambda, sourceFile, varNode);
         typeNode->semanticFct = SemanticJob::resolveTypeLambdaClosure;
         varNode->type         = typeNode;
+        varNode->type->inheritTokenLocation(funcNode->token);
         Ast::removeFromParent(funcNode->parameters);
         Ast::addChildFront(typeNode, funcNode->parameters);
         typeNode->parameters = funcNode->parameters;

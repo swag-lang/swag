@@ -339,17 +339,38 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
 
     // Cannot compare tuples
     if (leftTypeInfo->isTuple())
-        return context->report({left, Err(Err0007)});
+    {
+        Diagnostic diag{node->sourceFile, node->token, Err(Err0007)};
+        diag.hint = Hnt(Hnt0061);
+        diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+        return context->report(diag);
+    }
+
     if (rightTypeInfo->isTuple())
-        return context->report({right, Err(Err0007)});
+    {
+        Diagnostic diag{node->sourceFile, node->token, Err(Err0007)};
+        diag.hint = Hnt(Hnt0061);
+        diag.setRange2(right, Diagnostic::isType(rightTypeInfo));
+        return context->report(diag);
+    }
 
     // Slice can only be compared to null
     if (leftTypeInfo->isSlice() && !rightTypeInfo->isPointerNull())
-        return context->report({left, Err(Err0009)});
+    {
+        Diagnostic diag{node->sourceFile, node->token, Err(Err0009)};
+        diag.hint = Hnt(Hnt0061);
+        diag.setRange2(right, Diagnostic::isType(rightTypeInfo));
+        return context->report(diag);
+    }
 
     // Interface can only be compared to null ar to another interface
-    if (leftTypeInfo->isInterface() && !rightTypeInfo->isPointerNull()  && !rightTypeInfo->isInterface())
-        return context->report({left, Err(Err0010)});
+    if (leftTypeInfo->isInterface() && !rightTypeInfo->isPointerNull() && !rightTypeInfo->isInterface())
+    {
+        Diagnostic diag{node->sourceFile, node->token, Err(Err0010)};
+        diag.hint = Hnt(Hnt0061);
+        diag.setRange2(right, Diagnostic::isType(rightTypeInfo));
+        return context->report(diag);
+    }
 
     // Some types can only be compared for equality
     if (leftTypeInfo->isSlice() || leftTypeInfo->isInterface())

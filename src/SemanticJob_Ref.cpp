@@ -499,7 +499,12 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
 
         if (arrayType->isTuple())
-            return context->report({arrayNode->access, Err(Err0482)});
+        {
+            Diagnostic diag{arrayNode->access, Err(Err0482), Diagnostic::isType(arrayType)};
+            if (arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF)
+                diag.setRange2(arrayNode->token.startLocation, arrayNode->token.endLocation, Hnt(Hnt0060));
+            return context->report(diag);
+        }
 
         arrayNode->typeInfo = arrayType;
 

@@ -450,7 +450,19 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
             typeParam->typeInfo = TypeManager::concreteType(child->typeInfo, CONCRETE_ALIAS);
             SWAG_VERIFY(typeParam->typeInfo->isLambdaClosure(), context->report({varDecl->type, Fmt(Err(Err0676), child->typeInfo->getDisplayNameC())}));
             auto typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeParam->typeInfo, TypeInfoKind::LambdaClosure);
-            SWAG_VERIFY(typeLambda->parameters.size() >= 1, context->report({varDecl->type, Fmt(Err(Err0677), child->token.ctext())}));
+
+            if (typeLambda->parameters.size() == 0)
+            {
+                Diagnostic diag{varDecl->type, Fmt(Err(Err0677), child->token.ctext())};
+                if (varDecl->specFlags & AST_SPEC_VARDECL_GEN_ITF)
+                {
+                    Diagnostic note{Hlp(Hlp0031), DiagnosticLevel::Help};
+                    return context->report(diag, &note);
+                }
+
+                return context->report(diag);
+            }
+
             auto firstParamType = typeLambda->parameters[0]->typeInfo;
             SWAG_VERIFY(firstParamType->isPointer(), context->report({typeLambda->parameters[0]->declNode, Fmt(Err(Err0679), firstParamType->getDisplayNameC())}));
             auto firstParamPtr = CastTypeInfo<TypeInfoPointer>(firstParamType, TypeInfoKind::Pointer);
