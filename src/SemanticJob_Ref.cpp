@@ -414,7 +414,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     if (arrayNode->parent->parent->kind != AstNodeKind::MakePointer)
     {
         if (arrayType->isConst())
-            return context->report({arrayNode, Fmt(Err(Err0564), arrayType->getDisplayNameC()), Diagnostic::isType(arrayType)});
+            return context->report({arrayNode->array, Fmt(Err(Err0564), arrayType->getDisplayNameC()), Diagnostic::isType(arrayType)});
     }
     else
     {
@@ -785,13 +785,17 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
             if (arrayNode->array->token.text.empty())
             {
-                Utf8 msg = Fmt(Err(Err0226), arrayType->getDisplayNameC());
-                return context->report({arrayNode->access, msg, Fmt(Hnt(Hnt0047), g_LangSpec->name_opIndex.c_str())});
+                Diagnostic diag{arrayNode->access, Fmt(Err(Err0226), arrayType->getDisplayNameC())};
+                diag.hint = Fmt(Hnt(Hnt0047), g_LangSpec->name_opIndex.c_str());
+                diag.setRange2(arrayNode->array, Diagnostic::isType(arrayType));
+                return context->report(diag);
             }
             else
             {
-                Utf8 msg = Fmt(Err(Err0227), arrayNode->array->token.ctext(), arrayType->getDisplayNameC());
-                return context->report({arrayNode->access, msg, Fmt(Hnt(Hnt0047), g_LangSpec->name_opIndex.c_str())});
+                Diagnostic diag{arrayNode->access, Fmt(Err(Err0227), arrayNode->array->token.ctext(), arrayType->getDisplayNameC())};
+                diag.hint = Fmt(Hnt(Hnt0047), g_LangSpec->name_opIndex.c_str());
+                diag.setRange2(arrayNode->array, Diagnostic::isType(arrayType));
+                return context->report(diag);
             }
         }
 
