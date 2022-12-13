@@ -66,28 +66,31 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
 
     auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
+    SymbolName* symbol;
+
     // Need to be sure that function has been solved
     {
         ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
-        auto       symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opInit);
+        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opInit);
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
             context->job->setPending(symbol, JobWaitKind::EmitInit, structNode, nullptr);
             return true;
         }
+    }
 
-        // For generic function, symbol is not registered in the scope of the instantiated struct, but in the
-        // generic struct
-        if (!symbol && typeInfoStruct->opUserInitFct)
+    // For generic function, symbol is not registered in the scope of the instantiated struct, but in the
+    // generic struct
+    if (!symbol && typeInfoStruct->opUserInitFct)
+    {
+        ScopedLock lockTable(typeInfoStruct->opUserInitFct->ownerScope->symTable.mutex);
+        symbol = typeInfoStruct->opUserInitFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opInit);
+        if (symbol && symbol->cptOverloads)
         {
-            symbol = typeInfoStruct->opUserInitFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opInit);
-            if (symbol && symbol->cptOverloads)
-            {
-                symbol->addDependentJob(context->job);
-                context->job->setPending(symbol, JobWaitKind::EmitInit, structNode, nullptr);
-                return true;
-            }
+            symbol->addDependentJob(context->job);
+            context->job->setPending(symbol, JobWaitKind::EmitInit, structNode, nullptr);
+            return true;
         }
     }
 
@@ -354,28 +357,31 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     auto sourceFile = context->sourceFile;
     auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
+    SymbolName* symbol = nullptr;
+
     // Need to be sure that function has been solved
     {
         ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
-        auto       symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opDrop);
+        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opDrop);
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
             context->job->setPending(symbol, JobWaitKind::EmitDrop, structNode, nullptr);
             return true;
         }
+    }
 
-        // For generic function, symbol is not registered in the scope of the instantiated struct, but in the
-        // generic struct
-        if (!symbol && typeInfoStruct->opUserDropFct)
+    // For generic function, symbol is not registered in the scope of the instantiated struct, but in the
+    // generic struct
+    if (!symbol && typeInfoStruct->opUserDropFct)
+    {
+        ScopedLock lockTable(typeInfoStruct->opUserDropFct->ownerScope->symTable.mutex);
+        symbol = typeInfoStruct->opUserDropFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opDrop);
+        if (symbol && symbol->cptOverloads)
         {
-            symbol = typeInfoStruct->opUserDropFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opDrop);
-            if (symbol && symbol->cptOverloads)
-            {
-                symbol->addDependentJob(context->job);
-                context->job->setPending(symbol, JobWaitKind::EmitDrop, structNode, nullptr);
-                return true;
-            }
+            symbol->addDependentJob(context->job);
+            context->job->setPending(symbol, JobWaitKind::EmitDrop, structNode, nullptr);
+            return true;
         }
     }
 
@@ -491,28 +497,31 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     auto sourceFile = context->sourceFile;
     auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
+    SymbolName* symbol = nullptr;
+
     // Need to be sure that function has been solved
     {
         ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
-        auto       symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opPostMove);
+        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opPostMove);
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
             context->job->setPending(symbol, JobWaitKind::EmitPostMove, structNode, nullptr);
             return true;
         }
+    }
 
-        // For generic function, symbol is not registered in the scope of the instantiated struct, but in the
-        // generic struct
-        if (!symbol && typeInfoStruct->opUserPostMoveFct)
+    // For generic function, symbol is not registered in the scope of the instantiated struct, but in the
+    // generic struct
+    if (!symbol && typeInfoStruct->opUserPostMoveFct)
+    {
+        ScopedLock lockTable(typeInfoStruct->opUserPostMoveFct->ownerScope->symTable.mutex);
+        symbol = typeInfoStruct->opUserPostMoveFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opPostMove);
+        if (symbol && symbol->cptOverloads)
         {
-            symbol = typeInfoStruct->opUserPostMoveFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opPostMove);
-            if (symbol && symbol->cptOverloads)
-            {
-                symbol->addDependentJob(context->job);
-                context->job->setPending(symbol, JobWaitKind::EmitPostMove, structNode, nullptr);
-                return true;
-            }
+            symbol->addDependentJob(context->job);
+            context->job->setPending(symbol, JobWaitKind::EmitPostMove, structNode, nullptr);
+            return true;
         }
     }
 
@@ -628,28 +637,31 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     auto sourceFile = context->sourceFile;
     auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
+    SymbolName* symbol = nullptr;
+
     // Need to be sure that function has been solved
     {
         ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
-        auto       symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opPostCopy);
+        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opPostCopy);
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
             context->job->setPending(symbol, JobWaitKind::EmitPostCopy, structNode, nullptr);
             return true;
         }
+    }
 
-        // For generic function, symbol is not registered in the scope of the instantiated struct, but in the
-        // generic struct
-        if (!symbol && typeInfoStruct->opUserPostCopyFct)
+    // For generic function, symbol is not registered in the scope of the instantiated struct, but in the
+    // generic struct
+    if (!symbol && typeInfoStruct->opUserPostCopyFct)
+    {
+        ScopedLock lockTable(typeInfoStruct->opUserPostCopyFct->ownerScope->symTable.mutex);
+        symbol = typeInfoStruct->opUserPostCopyFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opPostCopy);
+        if (symbol && symbol->cptOverloads)
         {
-            symbol = typeInfoStruct->opUserPostCopyFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opPostCopy);
-            if (symbol && symbol->cptOverloads)
-            {
-                symbol->addDependentJob(context->job);
-                context->job->setPending(symbol, JobWaitKind::EmitPostCopy, structNode, nullptr);
-                return true;
-            }
+            symbol->addDependentJob(context->job);
+            context->job->setPending(symbol, JobWaitKind::EmitPostCopy, structNode, nullptr);
+            return true;
         }
     }
 

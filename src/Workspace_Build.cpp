@@ -306,7 +306,12 @@ static Utf8 errorPendingJobsType(Job* pendingJob)
 Diagnostic* Workspace::errorPendingJob(Job* prevJob, Job* depJob)
 {
     AstNode* prevNodeLocal = prevJob->nodes.empty() ? prevJob->originalNode : prevJob->nodes.back();
-    AstNode* prevNode      = nullptr;
+
+    // :JobNodeIsFile
+    if (prevNodeLocal && prevNodeLocal->kind == AstNodeKind::File)
+        return nullptr;
+
+    AstNode* prevNode = nullptr;
     if (!prevJob->originalNode)
         prevNode = prevNodeLocal;
     else if (prevJob->originalNode->kind == AstNodeKind::VarDecl ||
@@ -448,6 +453,11 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
                 depJob->flags |= JOB_NO_PENDING_REPORT;
                 depJob = depJob->waitingJob;
 
+                if (prevJob && prevJob->waitingSymbolSolved)
+                    doneErrSymbols.insert(prevJob->waitingSymbolSolved);
+                if (pendingJob && pendingJob->waitingSymbolSolved)
+                    doneErrSymbols.insert(pendingJob->waitingSymbolSolved);
+
                 if (prevJob->nodes.size() > 1)
                 {
                     auto front = prevJob->nodes.front();
@@ -491,8 +501,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
         }
 
         // Job is not done, and we do not wait for a specific identifier
-        vector<const Diagnostic*> notes;
-        auto                      note = errorPendingJob(pendingJob, nullptr);
+        auto note = errorPendingJob(pendingJob, nullptr);
         if (!note)
             continue;
         note->errorLevel = DiagnosticLevel::Error;

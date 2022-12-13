@@ -84,7 +84,10 @@ bool Module::flushCompilerMessages(JobContext* context, uint32_t pass, Job* job)
     for (auto& msg : compilerMessages[pass])
     {
         SWAG_ASSERT(!byteCodeCompiler[(int) msg.concrete.kind].empty());
-        sendCompilerMessage(&msg.concrete, context->baseJob);
+
+        // If we have a type, then the concrete type should have been generated
+        if (!msg.typeInfo || msg.concrete.type)
+            sendCompilerMessage(&msg.concrete, context->baseJob);
 
         // Release symbol
         if (msg.concrete.kind == CompilerMsgKind::AttributeGen)
