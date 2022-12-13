@@ -1,7 +1,9 @@
-// Swag supports a limited set of the 'closure' concept
-// Only a given amount of bytes of capture are possible (for now 48 bytes)
-// That way there's never an hidden allocation
-// Another limitation is that you can only capture 'simple' variables (no struct with 'opDrop', 'opPostCopy', 'opPostMove' for example)
+/**
+Swag supports a limited set of the 'closure' concept.
+Only a given amount of bytes of capture are possible (for now 48 bytes).
+That way there's never an hidden allocation.
+Another limitation is that you can only capture 'simple' variables (no struct with 'opDrop', 'opPostCopy', 'opPostMove' for example).
+*/
 
 #test
 {
@@ -29,6 +31,23 @@
         {
             // We can change the value of the local variable 'a'
             dref a += 1
+        }
+
+        fct()
+        @assert(a == 126)
+        fct()
+        @assert(a == 127)
+    }
+
+    // You can also capture by reference with 'ref'
+    {
+        a := 125
+
+        // Capture 'a' by reference
+        fct := closure|ref a|()
+        {
+            // We can change the value of the local variable 'a'
+            a += 1
         }
 
         fct()

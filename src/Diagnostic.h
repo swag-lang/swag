@@ -139,7 +139,7 @@ struct Diagnostic
     void        setRange2(const Token& node, const Utf8& h);
 
     static Utf8        isType(TypeInfo* typeInfo);
-    static Diagnostic* hereIs(SymbolOverload* overload);
+    static Diagnostic* hereIs(SymbolOverload* overload, bool forceShowRange = false);
 
     SourceLocation startLocation;
     SourceLocation endLocation;

@@ -17,7 +17,11 @@ bool ByteCodeGenJob::emitIdentifierRef(ByteCodeGenContext* context)
 bool ByteCodeGenJob::sameStackFrame(ByteCodeGenContext* context, SymbolOverload* overload)
 {
     if (!context->node->isSameStackFrame(overload))
-        return context->report({context->node, Fmt(Err(Err0206), overload->symbol->name.c_str())});
+    {
+        Diagnostic diag{context->node, Fmt(Err(Err0206), overload->symbol->name.c_str())};
+        return context->report(diag, Diagnostic::hereIs(overload, true));
+    }
+
     return true;
 }
 
@@ -67,13 +71,23 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             typeInfo->isListArray() ||
             typeInfo->isStruct())
         {
-            emitInstruction(context, ByteCodeOp::Add64byVB64, node->resultRegisterRC[0])->b.u64 = resolved->computedValue.storageOffset;
+            if (resolved->computedValue.storageOffset)
+                emitInstruction(context, ByteCodeOp::Add64byVB64, node->resultRegisterRC[0])->b.u64 = resolved->computedValue.storageOffset;
+            return true;
+        }
+
+        if (node->semFlags & AST_SEM_FROM_REF)
+        {
+            if (resolved->computedValue.storageOffset)
+                emitInstruction(context, ByteCodeOp::Add64byVB64, node->resultRegisterRC[0])->b.u64 = resolved->computedValue.storageOffset;
+            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
             return true;
         }
 
         if (node->forceTakeAddress() && (!typeInfo->isString() || node->parent->kind != AstNodeKind::ArrayPointerIndex))
         {
-            emitInstruction(context, ByteCodeOp::Add64byVB64, node->resultRegisterRC[0])->b.u64 = resolved->computedValue.storageOffset;
+            if (resolved->computedValue.storageOffset)
+                emitInstruction(context, ByteCodeOp::Add64byVB64, node->resultRegisterRC[0])->b.u64 = resolved->computedValue.storageOffset;
             if (node->parent->flags & AST_ARRAY_POINTER_REF)
                 emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
             return true;

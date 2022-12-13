@@ -207,6 +207,13 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
 
     node->typeInfo = ptrType;
 
+    // Transform pointer to a reference
+    if (node->specFlags & AST_SPEC_MAKEPOINTER_TOREF)
+    {
+        ptrType->flags |= TYPEINFO_POINTER_REF;
+        ptrType->forceComputeName();
+    }
+
     return true;
 }
 

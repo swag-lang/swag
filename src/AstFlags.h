@@ -155,3 +155,4 @@ static const uint8_t AST_SPEC_FUNCTYPE_RETURN_DEFINED  = 0x01;
 static const uint8_t AST_SPEC_TCA_BLOCK                = 0x01;
 static const uint8_t AST_SPEC_TCA_GENERATED            = 0x02;
 static const uint8_t AST_SPEC_NAMESPACE_USING          = 0x01;
+static const uint8_t AST_SPEC_MAKEPOINTER_TOREF        = 0x01;

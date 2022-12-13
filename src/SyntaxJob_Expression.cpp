@@ -395,7 +395,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
 
 bool SyntaxJob::doKeepRef(AstNode* parent, AstNode** result)
 {
-    auto refNode = Ast::newNode<AstNode>(this, AstNodeKind::KeepRef, sourceFile, parent, 2);
+    auto refNode = Ast::newNode<AstNode>(this, AstNodeKind::KeepRef, sourceFile, parent);
     if (result)
         *result = refNode;
     refNode->semanticFct = SemanticJob::resolveKeepRef;

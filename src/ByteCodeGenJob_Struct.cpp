@@ -980,7 +980,12 @@ void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t 
                     emitInstruction(context, ByteCodeOp::IncPointer64, r0, regOffset, r0);
 
                 child->flags |= AST_NO_LEFT_DROP;
-                auto noRef = TypeManager::concretePtrRef(child->typeInfo);
+
+                // When generating parameters for a closure call, keep the reference if we want one !
+                auto noRef = child->typeInfo;
+                if (param->childs.front()->kind != AstNodeKind::MakePointer || !(param->childs.front()->specFlags & AST_SPEC_MAKEPOINTER_TOREF))
+                    noRef = TypeManager::concretePtrRef(noRef);
+
                 emitAffectEqual(context, r0, child->resultRegisterRC, noRef, child);
                 SWAG_ASSERT(context->result == ContextResult::Done);
                 freeRegisterRC(context, child);

@@ -821,6 +821,14 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
                     eatToken();
                     byRef = true;
                 }
+                else if (token.id == TokenId::KwdRef)
+                {
+                    parentId              = Ast::newNode<AstMakePointer>(this, AstNodeKind::MakePointer, sourceFile, parentId);
+                    parentId->semanticFct = SemanticJob::resolveMakePointer;
+                    parentId->specFlags |= AST_SPEC_MAKEPOINTER_TOREF;
+                    eatToken();
+                    byRef = true;
+                }
 
                 AstNode* idRef = nullptr;
                 SWAG_CHECK(doIdentifierRef(parentId, &idRef, IDENTIFIER_NO_PARAMS));

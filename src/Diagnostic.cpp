@@ -632,7 +632,7 @@ Utf8 Diagnostic::isType(TypeInfo* typeInfo)
     return Fmt(Hnt(Hnt0011), typeInfo->getDisplayNameC());
 }
 
-Diagnostic* Diagnostic::hereIs(SymbolOverload* overload)
+Diagnostic* Diagnostic::hereIs(SymbolOverload* overload, bool forceShowRange)
 {
     if (!overload)
         return nullptr;
@@ -647,8 +647,16 @@ Diagnostic* Diagnostic::hereIs(SymbolOverload* overload)
     if (site->typeInfo->isTuple())
         showRange = true;
 
-    auto note       = new Diagnostic{site, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
-    note->showRange = showRange;
+    Diagnostic* note;
+    if (forceShowRange)
+    {
+        note = new Diagnostic{site, site->token, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
+    }
+    else
+    {
+        note            = new Diagnostic{site, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
+        note->showRange = showRange;
+    }
 
     return note;
 }
