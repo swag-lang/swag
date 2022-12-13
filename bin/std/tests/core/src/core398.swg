@@ -1,3 +1,4 @@
+#global skip
 using Core
 
 struct Node
