@@ -76,6 +76,19 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
             context->job->setPending(symbol, JobWaitKind::EmitInit, structNode, nullptr);
             return true;
         }
+
+        // For generic function, symbol is not registered in the scope of the instantiated struct, but in the
+        // generic struct
+        if (!symbol && typeInfoStruct->opUserInitFct)
+        {
+            symbol = typeInfoStruct->opUserInitFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opInit);
+            if (symbol && symbol->cptOverloads)
+            {
+                symbol->addDependentJob(context->job);
+                context->job->setPending(symbol, JobWaitKind::EmitInit, structNode, nullptr);
+                return true;
+            }
+        }
     }
 
     // If user function is foreign, then this is the generated version with everything already done
@@ -85,6 +98,9 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     // Need to wait for user function full semantic resolve
     if (typeInfoStruct->opUserInitFct)
     {
+        // Content must have been solved ! #selectif pb
+        SWAG_ASSERT(!(typeInfoStruct->opUserInitFct->content->flags & AST_NO_SEMANTIC));
+
         askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserInitFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
         if (context->result == ContextResult::Pending)
             return true;
@@ -348,6 +364,19 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
             context->job->setPending(symbol, JobWaitKind::EmitDrop, structNode, nullptr);
             return true;
         }
+
+        // For generic function, symbol is not registered in the scope of the instantiated struct, but in the
+        // generic struct
+        if (!symbol && typeInfoStruct->opUserDropFct)
+        {
+            symbol = typeInfoStruct->opUserDropFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opDrop);
+            if (symbol && symbol->cptOverloads)
+            {
+                symbol->addDependentJob(context->job);
+                context->job->setPending(symbol, JobWaitKind::EmitDrop, structNode, nullptr);
+                return true;
+            }
+        }
     }
 
     // If user function is foreign, then this is the generated version with everything already done
@@ -358,6 +387,9 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     bool needDrop = false;
     if (typeInfoStruct->opUserDropFct)
     {
+        // Content must have been solved ! #selectif pb
+        SWAG_ASSERT(!(typeInfoStruct->opUserDropFct->content->flags & AST_NO_SEMANTIC));
+
         needDrop = true;
         askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserDropFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
         if (context->result == ContextResult::Pending)
@@ -469,6 +501,19 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
             context->job->setPending(symbol, JobWaitKind::EmitPostMove, structNode, nullptr);
             return true;
         }
+
+        // For generic function, symbol is not registered in the scope of the instantiated struct, but in the
+        // generic struct
+        if (!symbol && typeInfoStruct->opUserPostMoveFct)
+        {
+            symbol = typeInfoStruct->opUserPostMoveFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opPostMove);
+            if (symbol && symbol->cptOverloads)
+            {
+                symbol->addDependentJob(context->job);
+                context->job->setPending(symbol, JobWaitKind::EmitPostMove, structNode, nullptr);
+                return true;
+            }
+        }
     }
 
     // If user function is foreign, then this is the generated version with everything already done
@@ -479,6 +524,9 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     bool needPostMove = false;
     if (typeInfoStruct->opUserPostMoveFct)
     {
+        // Content must have been solved ! #selectif pb
+        SWAG_ASSERT(!(typeInfoStruct->opUserPostMoveFct->content->flags & AST_NO_SEMANTIC));
+
         needPostMove = true;
         askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserPostMoveFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
         if (context->result == ContextResult::Pending)
@@ -587,8 +635,21 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
-            context->job->setPending(symbol, JobWaitKind::EmitPostMove, structNode, nullptr);
+            context->job->setPending(symbol, JobWaitKind::EmitPostCopy, structNode, nullptr);
             return true;
+        }
+
+        // For generic function, symbol is not registered in the scope of the instantiated struct, but in the
+        // generic struct
+        if (!symbol && typeInfoStruct->opUserPostCopyFct)
+        {
+            symbol = typeInfoStruct->opUserPostCopyFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opPostCopy);
+            if (symbol && symbol->cptOverloads)
+            {
+                symbol->addDependentJob(context->job);
+                context->job->setPending(symbol, JobWaitKind::EmitPostCopy, structNode, nullptr);
+                return true;
+            }
         }
     }
 
@@ -600,6 +661,9 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     bool needPostCopy = false;
     if (typeInfoStruct->opUserPostCopyFct)
     {
+        // Content must have been solved ! #selectif pb
+        SWAG_ASSERT(!(typeInfoStruct->opUserPostCopyFct->content->flags & AST_NO_SEMANTIC));
+
         needPostCopy = true;
         askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserPostCopyFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
         if (context->result == ContextResult::Pending)

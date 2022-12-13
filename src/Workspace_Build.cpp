@@ -307,11 +307,13 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, Job* depJob)
 {
     AstNode* prevNodeLocal = prevJob->nodes.empty() ? prevJob->originalNode : prevJob->nodes.back();
     AstNode* prevNode      = nullptr;
-    if (prevJob->originalNode->kind == AstNodeKind::VarDecl ||
-        prevJob->originalNode->kind == AstNodeKind::ConstDecl ||
-        prevJob->originalNode->kind == AstNodeKind::Alias ||
-        prevJob->originalNode->kind == AstNodeKind::StructDecl ||
-        prevJob->originalNode->kind == AstNodeKind::EnumDecl)
+    if (!prevJob->originalNode)
+        prevNode = prevNodeLocal;
+    else if (prevJob->originalNode->kind == AstNodeKind::VarDecl ||
+             prevJob->originalNode->kind == AstNodeKind::ConstDecl ||
+             prevJob->originalNode->kind == AstNodeKind::Alias ||
+             prevJob->originalNode->kind == AstNodeKind::StructDecl ||
+             prevJob->originalNode->kind == AstNodeKind::EnumDecl)
         prevNode = prevJob->originalNode;
     else
         prevNode = prevNodeLocal;
@@ -322,8 +324,9 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, Job* depJob)
 
     SWAG_ASSERT(prevNode);
 
-    bool addRemarks = false;
     Utf8 msg;
+    bool addRemarks = false;
+
     if (depNode)
     {
         msg = Fmt(Nte(Nte0046),
@@ -332,11 +335,18 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, Job* depJob)
                   AstNode::getKindName(depNode).c_str(),
                   depNode->token.ctext());
     }
+    else if (prevNode && prevJob->waitingIdType)
+    {
+        msg = Fmt(Nte(Nte0053),
+                  AstNode::getKindName(prevNode).c_str(),
+                  prevNode->token.ctext(),
+                  prevJob->waitingIdType->getDisplayNameC());
+    }
     else if (prevJob->waitingIdType)
     {
         if (dynamic_cast<TypeTableJob*>(prevJob))
         {
-            msg      = Fmt(Err(Err0550), prevJob->waitingIdType->getDisplayNameC());
+            msg      = Fmt(Nte(Nte0058), prevJob->waitingIdType->getDisplayNameC());
             prevNode = prevJob->waitingIdType->declNode;
         }
         else
@@ -344,14 +354,13 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, Job* depJob)
             if (doneErrSymbols.find(prevJob->waitingIdType) != doneErrSymbols.end())
                 return nullptr;
             doneErrSymbols.insert(prevJob->waitingIdType);
-            msg = Fmt(Err(Err0550), prevJob->waitingIdType->getDisplayNameC());
+            msg = Fmt(Nte(Nte0058), prevJob->waitingIdType->getDisplayNameC());
         }
-
         addRemarks = true;
     }
     else
     {
-        msg        = Fmt(Err(Err0549), AstNode::getKindName(prevNode).c_str(), prevNode->token.ctext());
+        msg        = Fmt(Nte(Nte0065), AstNode::getKindName(prevNode).c_str(), prevNode->token.ctext());
         addRemarks = true;
     }
 
@@ -370,9 +379,15 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, Job* depJob)
     }
 
     prevNode  = prevNodeLocal;
-    auto note = new Diagnostic{prevNode, msg, DiagnosticLevel::Note};
+    auto note = new Diagnostic{prevNode, prevNode->token, msg, DiagnosticLevel::Note};
+
     if (addRemarks)
-        note->remarks.push_back(errorPendingJobsType(prevJob));
+    {
+        auto remark = errorPendingJobsType(prevJob);
+        if (!remark.empty())
+            note->remarks.push_back(remark);
+    }
+
     return note;
 }
 
@@ -427,24 +442,32 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
             {
                 auto note = errorPendingJob(prevJob, depJob);
                 if (note)
-                {
-                    note->errorLevel = DiagnosticLevel::Note;
                     notes.push_back(note);
-                }
 
                 prevJob = depJob;
                 depJob->flags |= JOB_NO_PENDING_REPORT;
                 depJob = depJob->waitingJob;
+
+                if (prevJob->nodes.size() > 1)
+                {
+                    auto front = prevJob->nodes.front();
+                    auto back  = prevJob->nodes.back();
+                    auto msg   = Fmt(Nte(Nte0046),
+                                   AstNode::getKindName(front).c_str(),
+                                   front->token.ctext(),
+                                   AstNode::getKindName(back).c_str(),
+                                   back->token.ctext());
+                    note       = new Diagnostic{back, back->token, msg, DiagnosticLevel::Note};
+                    notes.push_back(note);
+                }
             }
 
             auto note = errorPendingJob(prevJob, pendingJob);
             if (note)
-            {
-                note->errorLevel = DiagnosticLevel::Note;
                 notes.push_back(note);
-            }
 
-            Diagnostic diag{pendingJob->originalNode, Fmt(Err(Err0419), AstNode::getKindName(pendingJob->originalNode).c_str(), pendingJob->originalNode->token.ctext())};
+            auto       prevNodeLocal = pendingJob->originalNode ? pendingJob->originalNode : pendingJob->nodes.front();
+            Diagnostic diag{prevNodeLocal, Fmt(Err(Err0419), AstNode::getKindName(prevNodeLocal).c_str(), prevNodeLocal->token.ctext())};
             Report::report(diag, notes);
             doneOne = true;
             continue;
@@ -485,7 +508,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
         {
             auto       node       = it.node;
             auto       pendingJob = it.pendingJob;
-            Diagnostic diag{node, Fmt(Err(Err0549), pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), node->token.ctext())};
+            Diagnostic diag{node, node->token, Fmt(Err(Err0549), pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), node->token.ctext())};
             Report::report(diag);
         }
     }
