@@ -72,6 +72,8 @@ namespace Report
             sourceFile = diag.sourceFile;
         if (diag.sourceNode && diag.sourceNode->sourceFile == diag.sourceFile && diag.sourceNode->ownerInline)
             sourceFile = diag.sourceNode->ownerInline->sourceFile;
+        if (sourceFile->fileForSourceLocation)
+            sourceFile = sourceFile->fileForSourceLocation;
 
         if (sourceFile->silent > 0 && !diag.exceptionError)
         {
