@@ -313,6 +313,7 @@ void Diagnostic::report(bool verboseMode) const
             };
             vector<RangeHint> ranges;
 
+            bool invertError = false;
             if (hasRangeLocation2 &&
                 startLocation2.line == startLocation.line &&
                 endLocation2.line == startLocation2.line &&
@@ -328,6 +329,7 @@ void Diagnostic::report(bool verboseMode) const
             {
                 ranges.push_back({startLocation, endLocation, hint});
                 ranges.push_back({startLocation2, endLocation2, hint2});
+                invertError = true;
             }
             else
             {
@@ -466,11 +468,11 @@ void Diagnostic::report(bool verboseMode) const
                             switch (errorLevel)
                             {
                             case DiagnosticLevel::Error:
-                                g_Log.setColor(rangeNoteColor);
+                                g_Log.setColor(invertError ? errorColor : rangeNoteColor);
                                 break;
                             case DiagnosticLevel::Note:
                             case DiagnosticLevel::Help:
-                                g_Log.setColor(hilightCodeColor);
+                                g_Log.setColor(invertError ? rangeNoteColor : errorColor);
                                 break;
                             }
                         }
@@ -479,11 +481,11 @@ void Diagnostic::report(bool verboseMode) const
                             switch (errorLevel)
                             {
                             case DiagnosticLevel::Error:
-                                g_Log.setColor(errorColor);
+                                g_Log.setColor(invertError ? rangeNoteColor : errorColor);
                                 break;
                             case DiagnosticLevel::Note:
                             case DiagnosticLevel::Help:
-                                g_Log.setColor(rangeNoteColor);
+                                g_Log.setColor(invertError ? errorColor : rangeNoteColor);
                                 break;
                             }
                         }
@@ -526,11 +528,11 @@ void Diagnostic::report(bool verboseMode) const
                             switch (errorLevel)
                             {
                             case DiagnosticLevel::Error:
-                                g_Log.setColor(rangeNoteColor);
+                                g_Log.setColor(invertError ? errorColor : rangeNoteColor);
                                 break;
                             case DiagnosticLevel::Note:
                             case DiagnosticLevel::Help:
-                                g_Log.setColor(hilightCodeColor);
+                                g_Log.setColor(invertError ? rangeNoteColor : errorColor);
                                 break;
                             }
 

@@ -976,7 +976,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         // A slice initialized with an expression list must be immutable
         if (leftConcreteType->isSlice() && rightConcreteType->isListArray() && (node->assignment->flags & AST_CONST_EXPR))
         {
-            SWAG_VERIFY(leftConcreteType->isConst(), context->report({node->type, Err(Err0306)}));
+            if (!leftConcreteType->isConst())
+            {
+                Diagnostic diag{node->type, Err(Err0306), Fmt(Hnt(Hnt0004), leftConcreteType->getDisplayNameC())};
+                diag.setRange2(node->assignment, Diagnostic::isType(rightConcreteType));
+                return context->report(diag);
+            }
         }
     }
 
