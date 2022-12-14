@@ -201,9 +201,9 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
             return notAllowed(context, op, typeInfo, "because the enum is not marked with `Swag.EnumFlags`");
     }
 
-    typeInfo = TypeManager::concreteType(child->typeInfo);
-    //setUnRef(child);
-    //typeInfo = TypeManager::concretePtrRefCond(typeInfo, child);
+    // :ConcreteRef
+    child->typeInfo = getConcreteTypeUnRef(child, CONCRETE_ALL);
+    typeInfo        = child->typeInfo;
 
     if (typeInfo->isStruct())
     {

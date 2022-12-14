@@ -1,4 +1,3 @@
-#global skip
 #test
 {
     toto  := 0
