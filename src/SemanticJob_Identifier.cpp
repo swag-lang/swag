@@ -968,6 +968,13 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     case SymbolKind::Enum:
         parent->startScope = CastTypeInfo<TypeInfoEnum>(identifier->typeInfo, identifier->typeInfo->kind)->scope;
         identifier->flags |= AST_CONST_EXPR;
+
+        if (isStatementIdentifier(identifier))
+        {
+            Diagnostic diag{identifier, Fmt(Err(Err0096), SymTable::getNakedKindName(identifier->resolvedSymbolName->kind), identifier->token.ctext()), Hnt(Hnt0026)};
+            return context->report(diag);
+        }
+
         break;
 
     case SymbolKind::EnumValue:
@@ -975,6 +982,13 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         identifier->setFlagsValueIsComputed();
         identifier->flags |= AST_R_VALUE;
         *identifier->computedValue = identifier->resolvedSymbolOverload->computedValue;
+
+        if (isStatementIdentifier(identifier))
+        {
+            Diagnostic diag{identifier, Fmt(Err(Err0096), SymTable::getNakedKindName(identifier->resolvedSymbolName->kind), identifier->token.ctext()), Hnt(Hnt0026)};
+            return context->report(diag);
+        }
+
         break;
 
     case SymbolKind::Struct:
@@ -1186,7 +1200,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         {
             if (isStatementIdentifier(identifier))
             {
-                return context->report({identifier, Fmt(Err(Err0096), identifier->token.ctext())});
+                Diagnostic diag{identifier, Fmt(Err(Err0096), SymTable::getNakedKindName(identifier->resolvedSymbolName->kind), identifier->token.ctext()), Hnt(Hnt0026)};
+                return context->report(diag);
             }
         }
 

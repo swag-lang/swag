@@ -107,7 +107,7 @@ void initErrors()
     SWAG_ERROR(Err0093, "the identifier `%s` cannot be found in the tuple");
     SWAG_ERROR(Err0094, "cannot discard a function call that returns nothing");
     SWAG_ERROR(Err0095, "unexpected type of ufcs (first) parameter for %s (`%s` expected, `%s` provided)");
-    SWAG_ERROR(Err0096, "variable `%s` is used alone");
+    SWAG_ERROR(Err0096, "the %s `%s` is used alone as an expression");
     SWAG_ERROR(Err0097, "%s `%s` has not been used as the first parameter to call `%s`");
     SWAG_ERROR(Err0098, "the function `%s` should be called with `()` and not curlies (this is reserved for struct initialization)");
     SWAG_ERROR(Err0099, "unexpected aliased identifiers because the function `%s` is not a macro or a mixin");

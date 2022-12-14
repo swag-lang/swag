@@ -1,8 +1,8 @@
 #global testerror
-enum A { A; }
+enum A { B; }
 
 func toto()
 {
-    x := 0
-    x;
+    using A
+    B
 }
