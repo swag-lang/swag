@@ -909,7 +909,7 @@ void initErrors()
     SWAG_ERROR(Err0905, "unexpected end of line found in the string literal");
     SWAG_ERROR(Err0906, "the initialization value cannot be evaluated at compile time because `opAffect` is not `Swag.ConstExpr`");
     SWAG_ERROR(Err0907, "cannot cast from type `%s` to a pointer type (only type `uint` is accepted)");
-    SWAG_ERROR(Err0908, "cannot initialize a type `%s` with `%s` because no corresponding `opAffect` function can be found in `%s`");
+    SWAG_ERROR(Err0908, "cannot initialize a type `%s` with a type `%s` because no corresponding `opAffect` can be found");
     SWAG_ERROR(Err0909, "the type `%s` should not be used in an union because it contains `opPostCopy` (or one of its members does)");
     SWAG_ERROR(Err0910, "the type `%s` should not be used in an union because it contains `opPostMove` (or one of its members does)");
     SWAG_ERROR(Err0911, "the type `%s` should not be used in an union because it contains `opDrop` (or one of its members does)");

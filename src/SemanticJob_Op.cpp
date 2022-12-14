@@ -508,10 +508,12 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
             if (context->result != ContextResult::Done)
                 return true;
 
-            auto       note = new Diagnostic{leftTypeInfo->declNode, Fmt(Nte(Nte0027), leftTypeInfo->getDisplayNameC()), DiagnosticLevel::Note};
-            Diagnostic diag{context->node, Fmt(Err(Err0908), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
-            diag.hint = Fmt(Hnt(Hnt0047), g_LangSpec->name_opAffect.c_str());
-            return context->report(diag, note);
+            Diagnostic diag{right, Fmt(Err(Err0908), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC())};
+            diag.hint = Diagnostic::isType(rightTypeInfo);
+            diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+            auto note  = new Diagnostic{context->node, context->node->token, Fmt(Hnt(Hnt0047), g_LangSpec->name_opAffect.c_str()), DiagnosticLevel::Note};
+            auto note1 = Diagnostic::hereIs(leftTypeInfo->declNode->resolvedSymbolOverload);
+            return context->report(diag, note, note1);
         }
 
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffect, nullptr, nullptr, left, right));
