@@ -281,4 +281,5 @@ struct Module
     bool wasAddedDep          = false;
     bool acceptsCompileString = true;
     bool acceptsCompileImpl   = true;
+    bool hasCycleError        = false;
 };

@@ -44,8 +44,13 @@ namespace Report
             }
 
             // No need to repeat the same source file line reference
-            if (note->startLocation.line == diag.startLocation.line && note->endLocation.line == diag.endLocation.line && note->sourceFile == diag.sourceFile)
+            if (note->startLocation.line == diag.startLocation.line &&
+                note->endLocation.line == diag.endLocation.line &&
+                note->sourceFile == diag.sourceFile &&
+                !note->forceSourceFile)
+            {
                 note->showFileName = false;
+            }
         }
 
         for (auto n : notes)
@@ -58,13 +63,19 @@ namespace Report
                 auto note1 = const_cast<Diagnostic*>(n1);
 
                 // No need to repeat the same source file line reference
-                if (note->startLocation.line == note1->startLocation.line && note->endLocation.line == note1->endLocation.line && note->sourceFile == note1->sourceFile)
+                if (note->startLocation.line == note1->startLocation.line &&
+                    note->endLocation.line == note1->endLocation.line &&
+                    note->sourceFile == note1->sourceFile &&
+                    note->showFileName &&
+                    !note1->forceSourceFile)
+                {
                     note1->showFileName = false;
+                }
             }
         }
     }
 
-    bool report(const Diagnostic& diag, const vector<const Diagnostic*>& inNotes)
+    SourceFile* getDiagFile(const Diagnostic& diag)
     {
         SWAG_ASSERT(diag.sourceFile || diag.contextFile);
         SourceFile* sourceFile = diag.contextFile;
@@ -74,6 +85,12 @@ namespace Report
             sourceFile = diag.sourceNode->ownerInline->sourceFile;
         if (sourceFile->fileForSourceLocation)
             sourceFile = sourceFile->fileForSourceLocation;
+        return sourceFile;
+    }
+
+    bool report(const Diagnostic& diag, const vector<const Diagnostic*>& inNotes)
+    {
+        auto sourceFile = getDiagFile(diag);
 
         if (sourceFile->silent > 0 && !diag.exceptionError)
         {

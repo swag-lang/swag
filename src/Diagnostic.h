@@ -170,4 +170,5 @@ struct Diagnostic
     bool showRange             = true;
     bool showMultipleCodeLines = true;
     bool showFileName          = true;
+    bool forceSourceFile       = false;
 };

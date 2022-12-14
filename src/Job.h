@@ -23,9 +23,8 @@ static const uint32_t JOB_IS_PENDING_RUN       = 0x00000008;
 static const uint32_t JOB_COMPILER_PASS        = 0x00000010;
 static const uint32_t JOB_IS_IO                = 0x00000020;
 static const uint32_t JOB_IS_OPT               = 0x00000040;
-static const uint32_t JOB_NO_PENDING_REPORT    = 0x00000080;
-static const uint32_t JOB_PENDING_PLACE_HOLDER = 0x00000100;
-static const uint32_t JOB_ACCEPT_PENDING_COUNT = 0x00000200;
+static const uint32_t JOB_PENDING_PLACE_HOLDER = 0x00000080;
+static const uint32_t JOB_ACCEPT_PENDING_COUNT = 0x00000100;
 
 enum class ContextResult
 {
@@ -124,6 +123,7 @@ struct Job
     DependentJobs          dependentJobs;
     VectorNative<AstNode*> nodes;
     VectorNative<Job*>     jobsToAdd;
+    VectorNative<Job*>     waitingJobs;
 
     JobThread*  jobThread           = nullptr;
     AstNode*    originalNode        = nullptr;
@@ -136,7 +136,6 @@ struct Job
     AstNode*    waitingIdNode       = nullptr;
     AstNode*    waitingHintNode     = nullptr;
     TypeInfo*   waitingIdType       = nullptr;
-    Job*        waitingJob          = nullptr;
     JobGroup*   jobGroup            = nullptr;
 
     JobWaitKind waitingKind     = JobWaitKind::None;
