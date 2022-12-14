@@ -154,7 +154,7 @@ bool ByteCodeGenJob::emitIntrinsicCountOf(ByteCodeGenContext* context)
 {
     auto node     = context->node;
     auto expr     = node->childs.back();
-    auto typeInfo = TypeManager::concreteType(expr->typeInfo);
+    auto typeInfo = TypeManager::concretePtrRefType(expr->typeInfo);
 
     if (node->extension && node->extension->misc && node->extension->misc->resolvedUserOpSymbolOverload)
     {

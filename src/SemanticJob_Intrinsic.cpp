@@ -385,7 +385,8 @@ bool SemanticJob::resolveIntrinsicRunes(SemanticContext* context)
 
 bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, AstNode* expression)
 {
-    auto typeInfo = expression->typeInfo;
+    auto typeInfo = TypeManager::concretePtrRef(expression->typeInfo);
+
     if (typeInfo->isEnum())
     {
         auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
@@ -398,6 +399,9 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     typeInfo = TypeManager::concretePtrRefType(typeInfo);
     if (typeInfo->isString())
     {
+        // :ConcreteRef
+        expression->typeInfo = getConcreteTypeUnRef(expression, 0);
+
         node->typeInfo = g_TypeMgr->typeInfoUInt;
         if (node->flags & AST_VALUE_COMPUTED)
         {
@@ -411,6 +415,9 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     }
     else if (typeInfo->isArray())
     {
+        // :ConcreteRef
+        expression->typeInfo = getConcreteTypeUnRef(expression, 0);
+
         node->setFlagsValueIsComputed();
         auto typeArray               = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         node->computedValue->reg.u64 = typeArray->count;
@@ -418,6 +425,9 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     }
     else if (typeInfo->isSlice())
     {
+        // :ConcreteRef
+        expression->typeInfo = getConcreteTypeUnRef(expression, 0);
+
         // :SliceLiteral
         // Slice literal. This can happen for enum values
         if (node->flags & AST_VALUE_COMPUTED)
@@ -433,6 +443,9 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     }
     else if (typeInfo->isListTuple() || typeInfo->isListArray())
     {
+        // :ConcreteRef
+        expression->typeInfo = getConcreteTypeUnRef(expression, 0);
+
         auto typeList = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
         node->setFlagsValueIsComputed();
         node->computedValue->reg.u64 = typeList->subTypes.size();
@@ -456,7 +469,10 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     }
     else
     {
-        SWAG_VERIFY(typeInfo->isNativeInteger(), context->report({expression, Fmt(Err(Err0801), typeInfo->getDisplayNameC())}));
+        // :ConcreteRef
+        expression->typeInfo = getConcreteTypeUnRef(expression, 0);
+
+        SWAG_VERIFY(typeInfo->isNativeInteger(), context->report({expression, Fmt(Err(Err0801), typeInfo->getDisplayNameC()), Diagnostic::isType(typeInfo)}));
         if (node->flags & AST_VALUE_COMPUTED)
         {
             if (!(typeInfo->flags & TYPEINFO_UNSIGNED))

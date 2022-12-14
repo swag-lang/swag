@@ -807,7 +807,7 @@ void initErrors()
     SWAG_ERROR(Err0798, "the expression cannot be evaluated at compile time");
     SWAG_ERROR(Err0799, "unsupported `@stringof` expression");
     SWAG_ERROR(Err0800, "`@countof` should not be used on a tuple type");
-    SWAG_ERROR(Err0801, "`@countof` should not be used on type `%s`");
+    SWAG_ERROR(Err0801, "unexpected `@countof` expression type `%s` (should be integer)");
     SWAG_ERROR(Err0802, "constant value should be unsigned, but is `%d`");
     SWAG_ERROR(Err0803, "unsupported `@nameof` expression");
     SWAG_ERROR(Err0804, "a `#message` function should have a parameter of type `Swag.CompilerMsgMask` (`%s` provided)");
