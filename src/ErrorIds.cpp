@@ -93,7 +93,7 @@ void initErrors()
     SWAG_ERROR(Err0079, "cannot find special function `%s` in `%s`");
     SWAG_ERROR(Err0080, "unexpected end of file found in the comment");
     SWAG_ERROR(Err0081, "unexpected character `%s`");
-    SWAG_ERROR(Err0082, "the struct `%s` should be initialized in place with `{}` and not parenthesis (this is reserved for function calls)");
+    SWAG_ERROR(Err0082, "the struct `%s` should be initialized in place with `{}` and not parenthesis");
     SWAG_ERROR(Err0083, "the %s `%s` is deprecated (marked with `Swag.Deprecated`)");
     SWAG_ERROR(Err0084, "`@runes` should have a string as a parameter (`%s` provided)");
     SWAG_ERROR(Err0085, "the identifier `%s` cannot be dereferenced like a struct or a pointer (type is `%s`)");
@@ -172,8 +172,8 @@ void initErrors()
     SWAG_ERROR(Err0160, "cannot assign a function pointer to a constant");
     SWAG_ERROR(Err0161, "cannot transform the type `%s` to a constant array because `opCount` returns `0`");
     SWAG_ERROR(Err0162, "cannot transform the type `%s` to a constant array because `opSlice` returns an empty slice");
-    SWAG_ERROR(Err0163, "operator `|` does not accept type `%s`");
-    SWAG_ERROR(Err0164, "operator `&` does not accept type `%s`");
+    SWAG_ERROR(Err0163, "the operator `|` does not accept type `%s` as a left expression");
+    SWAG_ERROR(Err0164, "the operator `&` does not accept type `%s` as a left expression");
     SWAG_ERROR(Err0165, "use of undeclared type `%s`");
     SWAG_ERROR(Err0166, "fatal error: script file `%s` does not exist");
     SWAG_ERROR(Err0167, "operator `^` does not accept type `%s`");
@@ -250,7 +250,7 @@ void initErrors()
     SWAG_ERROR(Err0238, "compiler assertion failed");
     SWAG_ERROR(Err0239, "`#macro` should only be used inside a `Swag.Macro` function");
     SWAG_ERROR(Err0240, "the expression should be of type `code`, but is `%s`");
-    SWAG_ERROR(Err0241, "expected a literal type qualifier after '`'");
+    SWAG_ERROR(Err0241, "expected a literal type qualifier after ```");
     SWAG_ERROR(Err0242, "the filename cannot be evaluated at compile time");
     SWAG_ERROR(Err0243, "the `#load` parameter should be of type string (`%s` provided)");
     SWAG_ERROR(Err0244, "cannot find file `%s`");
@@ -449,10 +449,10 @@ void initErrors()
     SWAG_ERROR(Err0439, "unexpected literal suffix type (`%s`)");
     SWAG_ERROR(Err0440, "unexpected generic parameters, should be naked");
     SWAG_ERROR(Err0441, "the implementation block kind (%s) does not match the type of `%s` (%s)");
-    SWAG_ERROR(Err0442, "`@cvastart` intrinsic should only be used in a function with its last argument of type `cvarargs`");
-    SWAG_ERROR(Err0443, "`@cvaarg` unsupported type `%s`");
+    SWAG_ERROR(Err0442, "the `@cvastart` intrinsic should only be used in a function with a last parameter of type `cvarargs`");
+    SWAG_ERROR(Err0443, "unexpected `@cvaarg` type `%s`");
     SWAG_ERROR(Err0444, "expected a struct name, found `%s`");
-    SWAG_ERROR(Err0445, "`@cvaarg` unsupported type `%s` (type has been promoted to `%s` at the call site)");
+    SWAG_ERROR(Err0445, "unexpected `@cvaarg` type `%s` (type has been promoted to `%s` at the call site)");
     SWAG_ERROR(Err0446, "a parameter of type `cvarargs` cannot be passed from function to function");
     SWAG_ERROR(Err0447, "empty tuple definition");
     SWAG_ERROR(Err0448, "expected an identifier");
@@ -481,7 +481,7 @@ void initErrors()
     SWAG_ERROR(Err0471, "cannot take the address of a macro");
     SWAG_ERROR(Err0472, "cannot take the address of a mixin");
     SWAG_ERROR(Err0473, "cannot take the address of an inline function");
-    SWAG_ERROR(Err0474, "the slicing operator cannot be applied on an array with multiple dimensions (type is `%s`)");
+    SWAG_ERROR(Err0474, "the slicing operator cannot be applied on an array with multiple dimensions");
     SWAG_ERROR(Err0475, "the slicing operator cannot be applied on type `%s`");
     SWAG_ERROR(Err0476, "the lower bound `%I64u` of the slicing arguments is greater than the upper bound `%I64u`");
     SWAG_ERROR(Err0477, "the upper bound `%I64u` of the slicing arguments is out of range (maximum value is `%I64u`)");
@@ -954,7 +954,7 @@ void initErrors()
     SWAG_ERROR(Hlp0032, "both sides of an `orelse` must have the same type");
     SWAG_ERROR(Hlp0033, "you can unpack a variable with `?` if you don't want to retreive it");
     SWAG_ERROR(Hlp0034, "`#selectif` and `#checkif` cannot be used on `opDrop`, `opPostCopy` and `opPostMove`");
-    SWAG_ERROR(Hlp0035, nullptr);
+    SWAG_ERROR(Hlp0035, "this is reserved for function calls");
     SWAG_ERROR(Hlp0036, nullptr);
     SWAG_ERROR(Hlp0037, nullptr);
     SWAG_ERROR(Hlp0038, nullptr);
@@ -1040,9 +1040,9 @@ void initErrors()
     SWAG_ERROR(Hnt0072, "this is an empty array");
     SWAG_ERROR(Hnt0073, "this function does not accept ufcs");
     SWAG_ERROR(Hnt0074, "this copy of an array of struct is disabled");
-    SWAG_ERROR(Hnt0075, nullptr);
-    SWAG_ERROR(Hnt0076, nullptr);
-    SWAG_ERROR(Hnt0077, nullptr);
+    SWAG_ERROR(Hnt0075, "this is unexpected in an alias");
+    SWAG_ERROR(Hnt0076, "this should be lower");
+    SWAG_ERROR(Hnt0077, "...than this");
     SWAG_ERROR(Hnt0078, nullptr);
     SWAG_ERROR(Hnt0079, nullptr);
     SWAG_ERROR(Hnt0080, nullptr);

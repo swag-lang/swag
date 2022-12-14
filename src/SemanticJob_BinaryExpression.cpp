@@ -515,7 +515,11 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
     case NativeTypeKind::UInt:
         break;
     default:
-        return context->report({node, Fmt(Err(Err0163), leftTypeInfo->getDisplayNameC())});
+    {
+        Diagnostic diag{node, node->token, Fmt(Err(Err0163), leftTypeInfo->getDisplayNameC())};
+        diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+        return context->report(diag);
+    }
     }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
@@ -623,7 +627,11 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
     case NativeTypeKind::UInt:
         break;
     default:
-        return context->report({node, Fmt(Err(Err0164), leftTypeInfo->getDisplayNameC())});
+    {
+        Diagnostic diag{node, node->token, Fmt(Err(Err0164), leftTypeInfo->getDisplayNameC())};
+        diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+        return context->report(diag);
+    }
     }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))

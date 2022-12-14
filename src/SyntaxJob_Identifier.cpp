@@ -122,7 +122,11 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         if (token.id == TokenId::SymLeftParen)
         {
             if (identifierFlags & IDENTIFIER_TYPE_DECL)
-                return Report::report({identifier, token, Fmt(Err(Err0082), identifier->token.ctext())});
+            {
+                Diagnostic diag{identifier, token, Fmt(Err(Err0082), identifier->token.ctext())};
+                Diagnostic note(Hlp(Hlp0035), DiagnosticLevel::Help);
+                return Report::report(diag, &note);
+            }
 
             SWAG_CHECK(eatToken(TokenId::SymLeftParen));
             SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, TokenId::SymRightParen));

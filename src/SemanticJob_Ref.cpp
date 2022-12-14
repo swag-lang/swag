@@ -231,7 +231,12 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     {
         auto typeInfoArray = CastTypeInfo<TypeInfoArray>(node->array->typeInfo, TypeInfoKind::Array);
         if (typeInfoArray->totalCount != typeInfoArray->count)
-            return context->report({node, Fmt(Err(Err0474), node->array->typeInfo->getDisplayNameC())});
+        {
+            Diagnostic diag{node, node->token, Err(Err0474)};
+            diag.hint = Hnt(Hnt0061);
+            diag.setRange2(node->array, Diagnostic::isType(typeInfoArray));
+            return context->report(diag);
+        }
 
         auto ptrSlice         = allocType<TypeInfoSlice>();
         ptrSlice->pointedType = typeInfoArray->finalType;
@@ -314,7 +319,10 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     {
         if (node->lowerBound->computedValue->reg.u64 > node->upperBound->computedValue->reg.u64)
         {
-            return context->report({node->lowerBound, Fmt(Err(Err0476), node->lowerBound->computedValue->reg.u64, node->upperBound->computedValue->reg.u64)});
+            Diagnostic diag{node->lowerBound, Fmt(Err(Err0476), node->lowerBound->computedValue->reg.u64, node->upperBound->computedValue->reg.u64)};
+            diag.hint = Hnt(Hnt0076);
+            diag.setRange2(node->upperBound, Hnt(Hnt0077));
+            return context->report(diag);
         }
     }
 
@@ -322,7 +330,10 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     if (maxBound && (node->upperBound->flags & AST_VALUE_COMPUTED))
     {
         if (node->upperBound->computedValue->reg.u64 > maxBound)
-            return context->report({node->upperBound, Fmt(Err(Err0477), node->upperBound->computedValue->reg.u64, maxBound)});
+        {
+            Diagnostic diag{node->upperBound, Fmt(Err(Err0477), node->upperBound->computedValue->reg.u64, maxBound)};
+            return context->report(diag);
+        }
     }
 
     node->byteCodeFct = ByteCodeGenJob::emitMakeArrayPointerSlicing;
@@ -518,10 +529,18 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
         if (arrayType->isTuple())
         {
-            Diagnostic diag{arrayNode->access, Err(Err0482), Diagnostic::isType(arrayType)};
             if (arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF)
+            {
+                Diagnostic diag{arrayNode->access, Err(Err0482), Diagnostic::isType(arrayType)};
                 diag.setRange2(arrayNode->token.startLocation, arrayNode->token.endLocation, Hnt(Hnt0060));
-            return context->report(diag);
+                return context->report(diag);
+            }
+            else
+            {
+                Diagnostic diag{arrayNode->access, Err(Err0482), Hnt(Hnt0061)};
+                diag.setRange2(arrayNode->array, Diagnostic::isType(arrayType));
+                return context->report(diag);
+            }
         }
 
         arrayNode->typeInfo = arrayType;
@@ -630,7 +649,20 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, arrayNode->access));
 
     if (arrayType->isTuple())
-        return context->report({arrayAccess, Err(Err0482)});
+    {
+        if (arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF)
+        {
+            Diagnostic diag{arrayNode->access, Err(Err0482), Diagnostic::isType(arrayType)};
+            diag.setRange2(arrayNode->token.startLocation, arrayNode->token.endLocation, Hnt(Hnt0060));
+            return context->report(diag);
+        }
+        else
+        {
+            Diagnostic diag{arrayNode->access, Err(Err0482), Hnt(Hnt0061)};
+            diag.setRange2(arrayNode->array, Diagnostic::isType(arrayType));
+            return context->report(diag);
+        }
+    }
 
     arrayNode->flags |= AST_R_VALUE;
 

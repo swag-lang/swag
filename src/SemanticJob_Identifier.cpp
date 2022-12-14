@@ -997,7 +997,11 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
         // Be sure it's the NAME{} syntax
         if (identifier->callParameters && !(identifier->flags & AST_GENERATED) && !(identifier->callParameters->flags & AST_CALL_FOR_STRUCT))
-            return context->report({identifier, Fmt(Err(Err0082), identifier->typeInfo->name.c_str())});
+        {
+            Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0082), identifier->typeInfo->name.c_str())};
+            Diagnostic note(Hlp(Hlp0035), DiagnosticLevel::Help);
+            return context->report(diag, &note);
+        }
 
         // Need to make all types compatible, in case a cast is necessary
         if (identifier->callParameters)
