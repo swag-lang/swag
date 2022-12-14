@@ -1248,8 +1248,11 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
-    auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
+    // :ConcreteRef
+    left->typeInfo     = getConcreteTypeUnRef(left, CONCRETE_ALL);
+    right->typeInfo    = getConcreteTypeUnRef(right, CONCRETE_ALL);
+    auto leftTypeInfo  = left->typeInfo;
+    auto rightTypeInfo = right->typeInfo;
 
     // Keep it generic if it's generic on one side
     if (leftTypeInfo->isKindGeneric())
