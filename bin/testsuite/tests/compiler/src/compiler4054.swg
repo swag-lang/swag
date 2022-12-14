@@ -1,11 +1,12 @@
-#global skip
+#global testerror
 struct(T) Arr {}
 
 impl Arr
 {
-    mtd opPostCopy()
-    #selectif false//@typeof(T).flags == 0
+    mtd opDrop()
+    #selectif false
     {
+        return 0
     }
 }
 

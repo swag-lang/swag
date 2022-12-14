@@ -200,7 +200,7 @@ void initErrors()
     SWAG_ERROR(Err0188, "not enough parameters for %s (missing `%s` of type `%s`)");
     SWAG_ERROR(Err0189, "expected arguments `()` when calling %s");
     SWAG_ERROR(Err0190, "unexpected `throw` in attribute declaration");
-    SWAG_ERROR(Err0191, nullptr);
+    SWAG_ERROR(Err0191, "unexpected `#selectif` or `#checkif` on special function `%s`");
     SWAG_ERROR(Err0192, "pointer arithmetic is not allowed");
     SWAG_ERROR(Err0193, "cannot slice a pointer which does not allow pointer arithmetic");
     SWAG_ERROR(Err0194, "cannot dereference `%s` by index because its type does not allow pointer arithmetic");
@@ -953,6 +953,13 @@ void initErrors()
     SWAG_ERROR(Hlp0031, "you could also declare the interface member with `mtd` or `mtdc` instead of `func`");
     SWAG_ERROR(Hlp0032, "both sides of an `orelse` must have the same type");
     SWAG_ERROR(Hlp0033, "you can unpack a variable with `?` if you don't want to retreive it");
+    SWAG_ERROR(Hlp0034, "`#selectif` and `#checkif` cannot be used on `opDrop`, `opPostCopy` and `opPostMove`");
+    SWAG_ERROR(Hlp0035, nullptr);
+    SWAG_ERROR(Hlp0036, nullptr);
+    SWAG_ERROR(Hlp0037, nullptr);
+    SWAG_ERROR(Hlp0038, nullptr);
+    SWAG_ERROR(Hlp0039, nullptr);
+    SWAG_ERROR(Hlp0040, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

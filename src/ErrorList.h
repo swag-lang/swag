@@ -938,6 +938,13 @@ SWAG_ERROR(Hlp0030),
 SWAG_ERROR(Hlp0031),
 SWAG_ERROR(Hlp0032),
 SWAG_ERROR(Hlp0033),
+SWAG_ERROR(Hlp0034),
+SWAG_ERROR(Hlp0035),
+SWAG_ERROR(Hlp0036),
+SWAG_ERROR(Hlp0037),
+SWAG_ERROR(Hlp0038),
+SWAG_ERROR(Hlp0039),
+SWAG_ERROR(Hlp0040),
 
 /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////

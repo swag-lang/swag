@@ -645,14 +645,7 @@ bool SemanticJob::makeIntrinsicTypeOf(SemanticContext* context)
     // A @typeof to get a typeinfo
     else
     {
-        uint32_t flags = 0;
-
-        /*if (expr->flags & AST_IN_SELECTIF)
-        {
-            flags = MAKE_CONCRETE_TYPE_PARTIAL;
-        }*/
-
-        SWAG_CHECK(resolveTypeAsExpression(context, expr, &node->typeInfo, flags));
+        SWAG_CHECK(resolveTypeAsExpression(context, expr, &node->typeInfo));
         if (context->result != ContextResult::Done)
             return true;
         node->inheritComputedValue(expr);

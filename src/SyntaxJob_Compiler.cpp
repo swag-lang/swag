@@ -208,6 +208,14 @@ bool SyntaxJob::doCompilerSelectIf(AstNode* parent, AstNode** result)
     parent->flags |= AST_HAS_SELECT_IF;
     node->flags |= AST_NO_BYTECODE_CHILDS;
 
+    // Not for the 3 special special functions
+    if (parent->token.text == g_LangSpec->name_opDrop ||
+        parent->token.text == g_LangSpec->name_opPostCopy ||
+        parent->token.text == g_LangSpec->name_opPostMove)
+    {
+        return error(node, Fmt(Err(Err0191), parent->token.ctext()), Hlp(Hlp0034));
+    }
+
     ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND | AST_IN_SELECTIF);
     if (token.id == TokenId::SymLeftCurly)
     {
