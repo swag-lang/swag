@@ -14,9 +14,9 @@ struct DataSegment;
 struct Module;
 struct TypeTableJob;
 
-static uint32_t MAKE_CONCRETE_SHOULD_WAIT    = 0x00000001;
-static uint32_t MAKE_CONCRETE_FORCE_NO_SCOPE = 0x00000002;
-static uint32_t MAKE_CONCRETE_PARTIAL        = 0x00000004;
+static uint32_t MAKE_CONCRETE_TYPE_SHOULD_WAIT    = 0x00000001;
+static uint32_t MAKE_CONCRETE_TYPE_FORCE_NO_SCOPE = 0x00000002;
+static uint32_t MAKE_CONCRETE_TYPE_PARTIAL        = 0x00000004;
 
 struct TypeTable
 {

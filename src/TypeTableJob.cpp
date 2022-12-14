@@ -15,7 +15,7 @@ bool TypeTableJob::computeStruct()
     concreteType->base.sizeOf = realType->sizeOf;
 
     // Flags
-    if (!(cflags & MAKE_CONCRETE_PARTIAL))
+    if (!(cflags & MAKE_CONCRETE_TYPE_PARTIAL))
     {
         if (realType->flags & TYPEINFO_STRUCT_NO_COPY)
             concreteTypeInfoValue->flags &= ~(uint16_t) TypeInfoFlags::CanCopy;
@@ -33,7 +33,7 @@ bool TypeTableJob::computeStruct()
     concreteType->opPostCopy = nullptr;
     concreteType->opPostMove = nullptr;
 
-    if (!(cflags & MAKE_CONCRETE_PARTIAL))
+    if (!(cflags & MAKE_CONCRETE_TYPE_PARTIAL))
     {
         Utf8 callName;
         if (realType->opUserInitFct && realType->opUserInitFct->isForeign())
@@ -200,7 +200,7 @@ bool TypeTableJob::computeStruct()
     // Methods
     concreteType->methods.buffer = 0;
     concreteType->methods.count  = 0;
-    if (!(cflags & MAKE_CONCRETE_PARTIAL))
+    if (!(cflags & MAKE_CONCRETE_TYPE_PARTIAL))
     {
         if (attributes & ATTRIBUTE_EXPORT_TYPE_METHODS)
         {
@@ -229,7 +229,7 @@ bool TypeTableJob::computeStruct()
     // Interfaces
     concreteType->interfaces.buffer = 0;
     concreteType->interfaces.count  = 0;
-    if (!(cflags & MAKE_CONCRETE_PARTIAL))
+    if (!(cflags & MAKE_CONCRETE_TYPE_PARTIAL))
     {
         concreteType->interfaces.count = realType->interfaces.size();
         if (concreteType->interfaces.count)
@@ -273,7 +273,7 @@ JobResult TypeTableJob::execute()
     if (baseContext->result == ContextResult::Pending)
         return JobResult::KeepJobAlive;
 
-    if (!(cflags & MAKE_CONCRETE_PARTIAL))
+    if (!(cflags & MAKE_CONCRETE_TYPE_PARTIAL))
     {
         waitAllStructInterfaces(realType);
         if (baseContext->result == ContextResult::Pending)

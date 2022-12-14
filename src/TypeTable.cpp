@@ -29,15 +29,15 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
         break;
     }
 
-    if (!(cflags & MAKE_CONCRETE_FORCE_NO_SCOPE))
+    if (!(cflags & MAKE_CONCRETE_TYPE_FORCE_NO_SCOPE))
     {
         typeInfo->computeScopedName();
         SWAG_ASSERT(!typeInfo->scopedName.empty());
     }
 
-    auto typeName           = getTypeName(typeInfo, cflags & MAKE_CONCRETE_FORCE_NO_SCOPE);
+    auto typeName           = getTypeName(typeInfo, cflags & MAKE_CONCRETE_TYPE_FORCE_NO_SCOPE);
     auto nonPartialTypeName = typeName;
-    if (cflags & MAKE_CONCRETE_PARTIAL)
+    if (cflags & MAKE_CONCRETE_TYPE_PARTIAL)
         typeName += "__partial";
     SWAG_ASSERT(!typeName.empty());
 
@@ -54,7 +54,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
         *storage = it->second.storageOffset;
 
         // The registered type is the full version, so exit, and wait for the job to complete if necessary
-        if (cflags & MAKE_CONCRETE_SHOULD_WAIT)
+        if (cflags & MAKE_CONCRETE_TYPE_SHOULD_WAIT)
         {
             SWAG_ASSERT(context);
             if (context->baseJob->baseContext->result != ContextResult::Pending)
@@ -636,14 +636,14 @@ bool TypeTable::makeConcreteStruct(JobContext* context, const auto& typeName, Co
     job->storageOffset         = storageOffset;
     job->storageSegment        = storageSegment;
     job->affinity              = storageSegment->compilerThreadIdx;
-    job->cflags                = cflags & ~MAKE_CONCRETE_SHOULD_WAIT;
+    job->cflags                = cflags & ~MAKE_CONCRETE_TYPE_SHOULD_WAIT;
     job->typeName              = typeName;
     job->nodes.push_back(context->node);
     mapPerSeg.concreteTypesJob[typeName] = job;
     if (g_CommandLine->stats && storageSegment->kind != SegmentKind::Compiler)
         g_Stats.totalConcreteStructTypes++;
 
-    if (cflags & MAKE_CONCRETE_SHOULD_WAIT)
+    if (cflags & MAKE_CONCRETE_TYPE_SHOULD_WAIT)
     {
         SWAG_ASSERT(context->result == ContextResult::Done || context->baseJob->waitingKind == JobWaitKind::MakeConcrete1);
         job->dependentJob = context->baseJob;

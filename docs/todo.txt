@@ -38,6 +38,8 @@ v.add(#code @print(a))
 #mixin v[0]
 #mixin v[1]
 -------------------------------------
+closure/lambda, pouvoir zaper un paramètre avec ? => closure|&total|(?, depth) ()
+-------------------------------------
 
 
 
@@ -62,15 +64,12 @@ Erreur affichées dans les fichiers d'export plutot que dans le code source d'or
 
 
 
-
 ****************************************
 TODO
 ****************************************
 
 -------------------------------------
 DebugAllocator, double free detection
--------------------------------------
-closure/lambda, pouvoir zaper un paramètre avec ? => closure|&total|(?, depth) ()
 -------------------------------------
 call stack en runtime in case of panic
 -------------------------------------
@@ -94,6 +93,13 @@ llvm debug, pas à jour
 - mettre les constants
 - mettre les enums (void CodeViewDebug::emitStaticConstMemberList())
 
+
+
+****************************************
+CLEAN
+****************************************
+
+- InheritResolvedSymbols
 
 
 
