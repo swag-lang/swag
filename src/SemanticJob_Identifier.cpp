@@ -1252,9 +1252,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         // Be sure this is not a 'forward' decl
         if (overload->node->flags & AST_EMPTY_FCT && !(overload->node->attributeFlags & ATTRIBUTE_FOREIGN) && identifier->token.text[0] != '@')
         {
-            Diagnostic diag{identifier, Fmt(Err(Err0105), identifier->token.ctext())};
-            Diagnostic note{overload->node, Nte(Nte0033), DiagnosticLevel::Note};
-            return context->report(diag, &note);
+            Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0105), identifier->token.ctext())};
+            return context->report(diag, Diagnostic::hereIs(overload));
         }
 
         identifier->flags |= AST_L_VALUE | AST_R_VALUE;
@@ -1347,10 +1346,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             {
                 if (!(overload->node->attributeFlags & ATTRIBUTE_DISCARDABLE) && !(identifier->flags & AST_DISCARD))
                 {
-                    Diagnostic diag(identifier, Fmt(Err(Err0109), overload->node->token.ctext()));
+                    Diagnostic diag(identifier, identifier->token, Fmt(Err(Err0109), overload->node->token.ctext()));
                     diag.hint = Hnt(Hnt0023);
-                    Diagnostic note(overload->node, Nte(Nte0033), DiagnosticLevel::Note);
-                    return context->report(diag, &note);
+                    return context->report(diag, Diagnostic::hereIs(overload));
                 }
                 else
                 {
@@ -1360,9 +1358,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
         else if (returnType->isVoid() && (identifier->flags & AST_DISCARD))
         {
-            Diagnostic diag{identifier, Err(Err0094), Diagnostic::isType(identifier->typeInfo)};
-            Diagnostic note{overload->node, Nte(Nte0033), DiagnosticLevel::Note};
-            return context->report(diag, &note);
+            Diagnostic diag{identifier, identifier->token, Err(Err0094)};
+            diag.hint = Diagnostic::isType(identifier->typeInfo);
+            return context->report(diag, Diagnostic::hereIs(overload));
         }
 
         if (overload->node->mustInline() && !(identifier->specFlags & AST_SPEC_IDENTIFIER_NO_INLINE))

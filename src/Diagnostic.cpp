@@ -41,8 +41,9 @@ void Diagnostic::setRange2(const Token& token, const Utf8& h)
 
 void Diagnostic::setRange2(AstNode* node, const Utf8& h)
 {
-    node->computeEndLocation();
-    setRange2(node->token.startLocation, node->token.endLocation, h);
+    SourceLocation start, end;
+    node->computeLocation(start, end);
+    setRange2(start, end, h);
 }
 
 bool Diagnostic::mustPrintCode() const

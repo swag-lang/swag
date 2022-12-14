@@ -42,9 +42,10 @@ void ErrorContext::fillContext(JobContext* context, const Diagnostic& diag, vect
                 exp.hide = true;
                 if (exp.node)
                 {
-                    auto dd = const_cast<Diagnostic*>(&diag);
-                    exp.node->computeEndLocation();
-                    dd->setRange2(exp.node->token.startLocation, exp.node->token.endLocation, exp.hint);
+                    auto           dd = const_cast<Diagnostic*>(&diag);
+                    SourceLocation start, end;
+                    exp.node->computeLocation(start, end);
+                    dd->setRange2(start, end, exp.hint);
                 }
 
                 break;

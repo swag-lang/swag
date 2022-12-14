@@ -86,9 +86,7 @@ struct Diagnostic
         , hasRangeLocation{true}
         , showSource{true}
     {
-        node->computeEndLocation();
-        startLocation = node->token.startLocation;
-        endLocation   = node->token.endLocation;
+        node->computeLocation(startLocation, endLocation);
         setup();
     }
 
@@ -103,9 +101,7 @@ struct Diagnostic
         , hasRangeLocation{true}
         , showSource{true}
     {
-        node->computeEndLocation();
-        startLocation = node->token.startLocation;
-        endLocation   = node->token.endLocation;
+        node->computeLocation(startLocation, endLocation);
         setup();
     }
 

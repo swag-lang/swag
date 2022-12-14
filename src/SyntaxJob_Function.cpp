@@ -946,7 +946,11 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
         ScopedBreakable sb(this, nullptr);
         SWAG_CHECK(doLambdaFuncDecl(currentFct, &lambda, acceptMissingType, &hasMissingType));
         lambda->flags |= AST_IS_LAMBDA_EXPRESSION;
-        lambda->computeEndLocation();
+
+        SourceLocation start, end;
+        lambda->computeLocation(start, end);
+        lambda->token.startLocation = start;
+        lambda->token.endLocation   = end;
     }
 
     auto lambdaDecl = CastAst<AstFuncDecl>(lambda, AstNodeKind::FuncDecl);

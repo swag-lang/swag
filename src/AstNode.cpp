@@ -468,8 +468,10 @@ void AstNode::addAlternativeScopes(const VectorNative<AlternativeScope>& scopes)
     extension->misc->alternativeScopes.append(scopes);
 }
 
-void AstNode::computeEndLocation()
+void AstNode::computeLocation(SourceLocation& start, SourceLocation& end)
 {
+    start = token.startLocation;
+    end   = token.endLocation;
     for (auto p : childs)
     {
         if (p->kind == AstNodeKind::Statement)
@@ -478,14 +480,16 @@ void AstNode::computeEndLocation()
             continue;
         if (p->kind == AstNodeKind::FuncDeclType && p->childs.empty())
             continue;
-        p->computeEndLocation();
 
-        if (p->token.startLocation.line < token.startLocation.line ||
-            (p->token.startLocation.line == token.startLocation.line && p->token.startLocation.column < token.startLocation.column))
-            token.startLocation = p->token.startLocation;
-        if (p->token.endLocation.line > token.endLocation.line ||
-            (p->token.endLocation.line == token.endLocation.line && p->token.endLocation.column > token.endLocation.column))
-            token.endLocation = p->token.endLocation;
+        SourceLocation childStart, childEnd;
+        p->computeLocation(childStart, childEnd);
+
+        if (childStart.line < start.line ||
+            (childStart.line == start.line && childStart.column < start.column))
+            start = childStart;
+        if (childEnd.line > end.line ||
+            (childEnd.line == end.line && childEnd.column > end.column))
+            end = childEnd;
     }
 }
 

@@ -909,7 +909,7 @@ void initErrors()
     SWAG_ERROR(Err0905, "unexpected end of line found in the string literal");
     SWAG_ERROR(Err0906, "the initialization value cannot be evaluated at compile time because `opAffect` is not `Swag.ConstExpr`");
     SWAG_ERROR(Err0907, "cannot cast from type `%s` to a pointer type (only type `uint` is accepted)");
-    SWAG_ERROR(Err0908, "cannot initialize a type `%s` with a type `%s` because no corresponding `opAffect` can be found");
+    SWAG_ERROR(Err0908, "cannot initialize a type `%s` from a type `%s` because no corresponding `opAffect` can be found");
     SWAG_ERROR(Err0909, "the type `%s` should not be used in an union because it contains `opPostCopy` (or one of its members does)");
     SWAG_ERROR(Err0910, "the type `%s` should not be used in an union because it contains `opPostMove` (or one of its members does)");
     SWAG_ERROR(Err0911, "the type `%s` should not be used in an union because it contains `opDrop` (or one of its members does)");
@@ -1084,7 +1084,7 @@ void initErrors()
     SWAG_ERROR(Nte0030, "here is the definition of the tuple");
     SWAG_ERROR(Nte0031, "here is the deprecated definition");
     SWAG_ERROR(Nte0032, "here is the faulty attribute");
-    SWAG_ERROR(Nte0033, "here is the function");
+    SWAG_ERROR(Nte0033, nullptr);
     SWAG_ERROR(Nte0034, "here is the missing value");
     SWAG_ERROR(Nte0035, "here is the other `#import`");
     SWAG_ERROR(Nte0036, "here is the other definition");
