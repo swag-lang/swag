@@ -1312,8 +1312,11 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
-    auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
+    // :ConcreteRef
+    auto leftTypeInfo  = getConcreteTypeUnRef(left, CONCRETE_ALL);
+    auto rightTypeInfo = getConcreteTypeUnRef(right, CONCRETE_ALL);
+    leftTypeInfo       = left->typeInfo;
+    rightTypeInfo      = right->typeInfo;
 
     // Keep it generic if it's generic on one side
     if (leftTypeInfo->isKindGeneric())
