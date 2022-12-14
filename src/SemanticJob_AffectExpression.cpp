@@ -163,31 +163,15 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         return context->report({left, Err(Err0565)});
     }
 
-    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo, CONCRETE_ALIAS);
-    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo, CONCRETE_ALIAS);
-
-    // Dereference
-    if (rightTypeInfo->isPointerRef())
-    {
-        if (setUnRef(right))
-        {
-            rightTypeInfo = TypeManager::concretePtrRef(rightTypeInfo);
-            if (leftTypeInfo->isPointerRef())
-            {
-                if (setUnRef(left))
-                {
-                    leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
-                }
-            }
-        }
-    }
-    else if (leftTypeInfo->isPointerRef())
-    {
-        if (setUnRef(left))
-        {
-            leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
-        }
-    }
+    // :ConcreteRef
+    TypeInfo* leftTypeInfo  = TypeManager::concreteType(left->typeInfo, CONCRETE_ALIAS);
+    TypeInfo* rightTypeInfo = getConcreteTypeUnRef(right, CONCRETE_ALIAS);
+    if (right->semFlags & AST_SEM_FROM_REF)
+        leftTypeInfo = getConcreteTypeUnRef(left, CONCRETE_ALIAS);
+    else if (leftTypeInfo->isPointerRef() && !rightTypeInfo->isPointerRef())
+        leftTypeInfo = getConcreteTypeUnRef(left, CONCRETE_ALIAS);
+    SWAG_ASSERT(leftTypeInfo);
+    SWAG_ASSERT(rightTypeInfo);
 
     // Special case for enum : nothing is possible, except for flags
     bool forEnumFlags = false;

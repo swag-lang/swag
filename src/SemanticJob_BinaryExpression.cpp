@@ -828,8 +828,11 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         isEnumFlags = true;
     }
 
-    leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
-    rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
+    // :ConcreteRef
+    leftTypeInfo  = getConcreteTypeUnRef(left, CONCRETE_ALL);
+    rightTypeInfo = getConcreteTypeUnRef(right, CONCRETE_ALL);
+    SWAG_ASSERT(leftTypeInfo);
+    SWAG_ASSERT(rightTypeInfo);
 
     // Keep it generic if it's generic on one side
     if (leftTypeInfo->isKindGeneric())

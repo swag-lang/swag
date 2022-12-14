@@ -398,6 +398,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
 
             if (!toType->isPointerRef() && nodeCall->typeInfo->isPointerRef())
             {
+                // :ConcreteRef
                 setUnRef(nodeCall);
             }
             else if (toType->isConstPointerRef() &&

@@ -3596,6 +3596,12 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         }
     }
 
+    if (toNode && toNode->semFlags & AST_SEM_FROM_REF && toType->isPointerRef())
+        toType = concretePtrRef(toType);
+    if (fromNode && fromNode->semFlags & AST_SEM_FROM_REF && fromType->isPointerRef())
+        fromType = concretePtrRef(fromType);
+
+    // If not already ok, call 'same'
     if (!result)
     {
         auto isSameFlags = ISSAME_CAST;
@@ -3724,27 +3730,77 @@ TypeInfo* TypeManager::asPointerArithmetic(TypeInfo* typeInfo)
     return typeInfo;
 }
 
-void TypeManager::convertStructParamToRef(AstNode* node, TypeInfo* typeInfo)
+TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, uint32_t flags)
 {
-    SWAG_ASSERT(node->kind == AstNodeKind::FuncDeclParam);
+    if (!typeInfo)
+        return typeInfo;
 
-    // A struct/interface is forced to be a const reference
-    if (!(node->typeInfo->flags & TYPEINFO_GENERIC))
+    switch (typeInfo->kind)
     {
-        if (typeInfo->isStruct())
-        {
-            // If this has been transformed to an alias cause of const, take the original
-            // type to make the reference
-            if (typeInfo->flags & TYPEINFO_FAKE_ALIAS)
-                typeInfo = ((TypeInfoAlias*) typeInfo)->rawType;
+    case TypeInfoKind::Native:
+        return typeInfo;
 
-            auto typeRef   = allocType<TypeInfoPointer>();
-            typeRef->flags = typeInfo->flags | TYPEINFO_CONST | TYPEINFO_POINTER_REF | TYPEINFO_POINTER_AUTO_REF;
-            typeRef->flags &= ~TYPEINFO_RETURN_BY_COPY;
-            typeRef->pointedType = typeInfo;
-            typeRef->sizeOf      = sizeof(void*);
-            typeRef->computeName();
-            node->typeInfo = typeRef;
+    case TypeInfoKind::FuncAttr:
+        if (flags & CONCRETE_FUNC)
+        {
+            auto returnType = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr)->returnType;
+            if (!returnType)
+                return g_TypeMgr->typeInfoVoid;
+            return concreteType(returnType, flags);
         }
+        break;
+
+    case TypeInfoKind::Enum:
+        if (flags & CONCRETE_ENUM)
+            return concreteType(CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum)->rawType, flags);
+        break;
+
+    case TypeInfoKind::Alias:
+        if (flags & (CONCRETE_ALIAS | CONCRETE_FORCEALIAS))
+        {
+            auto typeAlias = CastTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias);
+            if (typeAlias->isStrict() && !(flags & CONCRETE_FORCEALIAS))
+                return typeAlias;
+            return concreteType(typeAlias->rawType, flags);
+        }
+        break;
+
+    case TypeInfoKind::Generic:
+        if (flags & CONCRETE_GENERIC)
+        {
+            auto typeGeneric = CastTypeInfo<TypeInfoGeneric>(typeInfo, TypeInfoKind::Generic);
+            if (!typeGeneric->rawType)
+                return typeGeneric;
+            return concreteType(typeGeneric->rawType, flags);
+        }
+        break;
     }
+
+    return typeInfo;
+}
+
+TypeInfo* TypeManager::concretePtrRefType(TypeInfo* typeInfo, uint32_t flags)
+{
+    if (!typeInfo)
+        return nullptr;
+    typeInfo = concretePtrRef(typeInfo);
+    typeInfo = concreteType(typeInfo, flags);
+    typeInfo = concretePtrRef(typeInfo);
+    return typeInfo;
+}
+
+TypeInfo* TypeManager::concretePtrRef(TypeInfo* typeInfo)
+{
+    if (!typeInfo)
+        return nullptr;
+    if (typeInfo->flags & TYPEINFO_POINTER_REF)
+        return CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer)->pointedType;
+    return typeInfo;
+}
+
+TypeInfo* TypeManager::concretePtrRefCond(TypeInfo* typeInfo, AstNode* node)
+{
+    if (node->semFlags & AST_SEM_FROM_REF)
+        return concretePtrRef(typeInfo);
+    return typeInfo;
 }

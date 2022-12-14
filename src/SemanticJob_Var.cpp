@@ -940,6 +940,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             if (context->result != ContextResult::Done)
                 return true;
 
+            // :ConcreteRef
             if (!leftConcreteType->isPointerRef() && TypeManager::concreteType(node->assignment->typeInfo)->isPointerRef())
                 setUnRef(node->assignment);
         }
@@ -1012,14 +1013,11 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (node->typeInfo->isListArray())
             SWAG_CHECK(convertTypeListToArray(context, node, isCompilerConstant, symbolFlags));
 
-        // Unref
-        if (node->typeInfo->isPointerRef())
+        // :ConcreteRef
+        if (node->typeInfo->isPointerRef() && setUnRef(node->assignment))
         {
-            if (setUnRef(node->assignment))
-            {
-                auto typePointer = CastTypeInfo<TypeInfoPointer>(node->typeInfo, TypeInfoKind::Pointer);
-                node->typeInfo   = typePointer->pointedType;
-            }
+            auto typePointer = CastTypeInfo<TypeInfoPointer>(node->typeInfo, TypeInfoKind::Pointer);
+            node->typeInfo   = typePointer->pointedType;
         }
     }
 

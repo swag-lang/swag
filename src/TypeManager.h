@@ -114,15 +114,16 @@ struct TypeManager
     static bool      promoteOne(SemanticContext* context, AstNode* right);
     static TypeInfo* promoteUntyped(TypeInfo* typeInfo);
     static void      promoteUntypedInteger(AstNode* left, AstNode* right);
-    static TypeInfo* concretePtrRefType(TypeInfo* typeInfo, uint32_t flags = CONCRETE_ALL);
-    static TypeInfo* concretePtrRef(TypeInfo* typeInfo);
-    static TypeInfo* concreteType(TypeInfo* typeInfo, uint32_t flags = CONCRETE_ALL);
     static TypeInfo* makeConst(TypeInfo* typeInfo);
     static uint64_t  align(uint64_t value, uint32_t align);
     static uint32_t  alignOf(TypeInfo* typeInfo);
     static bool      compareConcreteType(const ConcreteTypeInfo* type1, const ConcreteTypeInfo* type2);
     static TypeInfo* asPointerArithmetic(TypeInfo* typeInfo);
     static void      convertStructParamToRef(AstNode* node, TypeInfo* typeInfo);
+    static TypeInfo* concretePtrRefType(TypeInfo* typeInfo, uint32_t flags = CONCRETE_ALL);
+    static TypeInfo* concreteType(TypeInfo* typeInfo, uint32_t flags = CONCRETE_ALL);
+    static TypeInfo* concretePtrRef(TypeInfo* typeInfo);
+    static TypeInfo* concretePtrRefCond(TypeInfo* typeInfo, AstNode* node);
 
     void             registerTypeType();
     TypeInfoPointer* makePointerTo(TypeInfo* toType, bool isConst, bool isAritmetic, uint64_t ptrFlags);

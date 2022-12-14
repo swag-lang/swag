@@ -9,6 +9,7 @@
 #include "ErrorIds.h"
 #include "Timer.h"
 #include "Allocator.h"
+#include "TypeManager.h"
 
 bool SemanticJob::setUnRef(AstNode* node)
 {
@@ -22,6 +23,16 @@ bool SemanticJob::setUnRef(AstNode* node)
         node->childs.back()->semFlags |= AST_SEM_FROM_REF;
 
     return true;
+}
+
+TypeInfo* SemanticJob::getConcreteTypeUnRef(AstNode* node, uint32_t concreteFlags)
+{
+    auto typeInfo = TypeManager::concreteType(node->typeInfo, concreteFlags);
+    if (!typeInfo->isPointerRef())
+        return typeInfo;
+    if (setUnRef(node))
+        return TypeManager::concretePtrRef(typeInfo);
+    return typeInfo;
 }
 
 AstIdentifier* SemanticJob::createTmpId(SemanticContext* context, AstNode* node, const Utf8& name)

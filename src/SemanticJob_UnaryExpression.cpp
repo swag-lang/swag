@@ -202,6 +202,8 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
     }
 
     typeInfo = TypeManager::concreteType(child->typeInfo);
+    //setUnRef(child);
+    //typeInfo = TypeManager::concretePtrRefCond(typeInfo, child);
 
     if (typeInfo->isStruct())
     {

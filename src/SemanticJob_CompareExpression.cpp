@@ -307,15 +307,11 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
-    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    // :ConcreteRef
+    auto leftTypeInfo  = getConcreteTypeUnRef(left, CONCRETE_ALL);
+    auto rightTypeInfo = getConcreteTypeUnRef(right, CONCRETE_ALL);
     SWAG_ASSERT(leftTypeInfo);
     SWAG_ASSERT(rightTypeInfo);
-
-    if (leftTypeInfo->isPointerRef() && setUnRef(left))
-        leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
-    if (rightTypeInfo->isPointerRef() && setUnRef(right))
-        rightTypeInfo = TypeManager::concretePtrRef(rightTypeInfo);
 
     // Keep it generic if it's generic on one side
     if (leftTypeInfo->isKindGeneric())
@@ -405,20 +401,9 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
         node->typeInfo = g_TypeMgr->typeInfoBool;
     TypeManager::promote3264(left, right);
 
-    left->typeInfo  = TypeManager::concreteType(left->typeInfo, CONCRETE_FUNC | CONCRETE_ENUM);
-    right->typeInfo = TypeManager::concreteType(right->typeInfo, CONCRETE_FUNC | CONCRETE_ENUM);
-
-    if (left->typeInfo->isPointerRef())
-    {
-        if (setUnRef(left))
-            left->typeInfo = TypeManager::concretePtrRef(left->typeInfo);
-    }
-
-    if (right->typeInfo->isPointerRef())
-    {
-        if (setUnRef(right))
-            right->typeInfo = TypeManager::concretePtrRef(right->typeInfo);
-    }
+    // :ConcreteRef
+    left->typeInfo  = getConcreteTypeUnRef(left, CONCRETE_FUNC | CONCRETE_ENUM);
+    right->typeInfo = getConcreteTypeUnRef(right, CONCRETE_FUNC | CONCRETE_ENUM);
 
     // Must not make types compatible for a struct, as we can compare a struct with whatever other type in
     // a opEquals function

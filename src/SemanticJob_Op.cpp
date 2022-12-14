@@ -659,6 +659,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
             if (context->result == ContextResult::Pending)
                 return true;
 
+            // :ConcreteRef
             if (params[i]->typeInfo->isPointerRef() && !toType->isPointerRef())
                 setUnRef(params[i]);
 

@@ -356,6 +356,7 @@ struct SemanticJob : public Job
     static bool           preResolveIdentifierRef(SemanticContext* context);
     static AstFuncDecl*   getFunctionForReturn(AstNode* node);
     static bool           setUnRef(AstNode* node);
+    static TypeInfo*      getConcreteTypeUnRef(AstNode* node, uint32_t concreteFlags);
     static AstIdentifier* createTmpId(SemanticContext* context, AstNode* node, const Utf8& name);
 
     static bool resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);
