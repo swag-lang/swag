@@ -15,7 +15,7 @@ func free(buffer: ^void, size: uint, allocator: IAllocator = null, hint: string 
     req.hint        = hint
 
     talloc := allocator orelse @getcontext().allocator
-    talloc.alloc(&req)
+    talloc.req(&req)
 }
 
 // Free all allocated memory of the given allocator if possible
@@ -27,7 +27,7 @@ func freeAll(allocator: IAllocator, hint: string = null, loc = #callerlocation)
     req.hint        = hint
 
     talloc := allocator orelse @getcontext().allocator
-    talloc.alloc(&req)
+    talloc.req(&req)
 }
 
 // Reallocate/allocate a given amount of bytes
@@ -43,7 +43,7 @@ func realloc(buffer: ^void, newSize: uint, oldSize: uint, allocator: IAllocator 
     req.alignement  = alignement
 
     talloc := allocator orelse @getcontext().allocator
-    talloc.alloc(&req)
+    talloc.req(&req)
 
     return req.address
 }
@@ -59,7 +59,7 @@ func alloc(size: uint, allocator: IAllocator = null, alignement: u32 = 0, hint: 
     req.alignement  = alignement
 
     talloc := allocator orelse @getcontext().allocator
-    talloc.alloc(&req)
+    talloc.req(&req)
 
     return req.address
 }
@@ -73,7 +73,7 @@ func tempAlloc(size: uint, alignement: u32 = 0, hint: string = null, loc = #call
     req.mode        = AllocatorMode.Alloc
     req.size        = size
     req.alignement  = alignement
-    @getcontext().tempAllocator.IAllocator.alloc(&req)
+    @getcontext().tempAllocator.IAllocator.req(&req)
     return req.address
 }
 

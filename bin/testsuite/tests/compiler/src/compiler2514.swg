@@ -6,5 +6,5 @@ using Swag
 
     var req: AllocatorRequest
     req.size = 512
-    al.alloc(&req)
+    al.req(&req)
 }

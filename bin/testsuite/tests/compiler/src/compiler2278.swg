@@ -9,5 +9,5 @@ func toto()->Swag.IAllocator
     a := toto()
 
     var req: Swag.AllocatorRequest
-    a.alloc(&req)
+    a.req(&req)
 }

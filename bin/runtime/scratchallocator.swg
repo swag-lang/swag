@@ -23,7 +23,7 @@ impl ScratchAllocator
         req.mode = .Free
         req.address = addr
         req.size = size
-        allocator.alloc(&req)
+        allocator.req(&req)
     }
 
     mtd alloc(size: uint, alignement: u32 = 0)->*void
@@ -32,7 +32,7 @@ impl ScratchAllocator
         req.mode = .Alloc
         req.size = size
         req.alignement = alignement
-        allocator.alloc(&req)
+        allocator.req(&req)
         return req.address
     }
 
@@ -83,14 +83,14 @@ impl ScratchAllocator
         var req: AllocatorRequest
         req.mode = AllocatorMode.Alloc
         req.size = capacity
-        allocator.alloc(&req)
+        allocator.req(&req)
         block = req.address
     }
 }
 
 impl IAllocator for ScratchAllocator
 {
-    func alloc(using self, request: *AllocatorRequest)
+    func req(using self, request: *AllocatorRequest)
     {
         @assert(block != null)
         switch request.mode

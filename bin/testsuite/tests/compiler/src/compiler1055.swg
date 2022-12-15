@@ -22,14 +22,14 @@ impl Array
 
 		var request: AllocatorRequest
 		request.size = cast(uint) self.size * @sizeof(T)
-		context.allocator.alloc(&request)
+		context.allocator.req(&request)
 		newBuffer := request.address
 		if self.buffer
 			@memcpy(newBuffer, self.buffer, cast(uint) self.count * @sizeof(T))
 
 		request.mode = AllocatorMode.Free
 		request.address = self.buffer
-		context.allocator.alloc(&request)
+		context.allocator.req(&request)
 
 		self.buffer = acast newBuffer
 	}

@@ -238,7 +238,7 @@ namespace Swag
 
     interface IAllocator
     {
-        mtd alloc(request: *AllocatorRequest)
+        mtd req(request: *AllocatorRequest)
     }
 
     struct ScratchAllocator

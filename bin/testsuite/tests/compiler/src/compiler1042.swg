@@ -4,7 +4,7 @@ func(T) new()->*T
 	req.size = @sizeof(T)
 
 	context := @getcontext()
-	context.allocator.alloc(&req)
+	context.allocator.req(&req)
 
 	@init(cast(*T) req.address)
 	return acast req.address

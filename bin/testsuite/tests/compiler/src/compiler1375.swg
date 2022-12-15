@@ -10,7 +10,7 @@ struct MyAlloc
 
 impl IAllocator for MyAlloc
 {
-    func alloc(self, req: *AllocatorRequest)
+    func req(self, req: *AllocatorRequest)
     {
         GG = true
         @assert(req.size == 10)
@@ -22,7 +22,7 @@ func toto()
     cxt := @getcontext()
     var req: AllocatorRequest
     req.size = 10
-    cxt.allocator.alloc(&req)
+    cxt.allocator.req(&req)
 }
 
 #[Swag.Macro]

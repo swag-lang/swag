@@ -183,7 +183,7 @@ impl DebugAllocator
 
 impl IAllocator for DebugAllocator
 {
-    func alloc(using self, request: *AllocatorRequest)
+    func req(using self, request: *AllocatorRequest)
     {
         @assert(allocator != null)
 
@@ -229,10 +229,10 @@ impl IAllocator for DebugAllocator
             copyReq := dref request
             copyReq.address = freeAddr
             copyReq.size = freeSize
-            allocator.alloc(&copyReq)
+            allocator.req(&copyReq)
 
         case FreeAll:
-            allocator.alloc(request)
+            allocator.req(request)
             firstAlloc = null
             count = 0
             size = 0
@@ -273,7 +273,7 @@ impl IAllocator for DebugAllocator
 
             // Make the real allocation
             copyReq.size += toAddAlign + @sizeof(Footer)
-            allocator.alloc(&copyReq)
+            allocator.req(&copyReq)
 
             // This is the aligned returned user address
             userAddr := cast(^u8) copyReq.address

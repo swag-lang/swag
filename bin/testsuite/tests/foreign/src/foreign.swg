@@ -293,12 +293,12 @@ func all(itf: IAllocator)
     req.mode = AllocatorMode.Alloc
     req.size = 10
 
-    itf.alloc(&req)
+    itf.req(&req)
     @assert(req.address != null)
     req.mode = AllocatorMode.Realloc
-    itf.alloc(&req)
+    itf.req(&req)
     req.mode = AllocatorMode.Free
-    itf.alloc(&req)
+    itf.req(&req)
     @assert(req.address == null)
 }
 

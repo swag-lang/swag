@@ -8,19 +8,19 @@ using Swag
     var req: AllocatorRequest
     req.mode = .Alloc
     req.size = 100
-    itf.alloc(&req)
+    itf.req(&req)
     ptr1 := req.address
     @assert(@getcontext().tempAllocator.maxLeak == 100)
-    itf.alloc(&req)
+    itf.req(&req)
     ptr2 := req.address
     @assert(@getcontext().tempAllocator.maxLeak == 200)
 
     req.mode = .Free
     req.address = ptr1
     req.size = 100
-    itf.alloc(&req)
+    itf.req(&req)
     @assert(@getcontext().tempAllocator.totalLeak == 100)
     req.address = ptr2
-    itf.alloc(&req)
+    itf.req(&req)
     @assert(@getcontext().tempAllocator.totalLeak == 0)
 }
