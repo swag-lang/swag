@@ -4,7 +4,7 @@ var app: Application
 
 #main
 {
-    Memory.DebugAllocator.install(traceLeaks: false)
+    Swag.DebugAllocator.install()
 
     surface0 := try app.createSurface(100, 100, 1200, 1000, SurfaceFlags.OverlappedWindow)
     surface0.setTitle("Example 0")

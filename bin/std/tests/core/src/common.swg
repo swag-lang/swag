@@ -1,6 +1,6 @@
 using Core, Memory
 
-var g_dbg: DebugAllocator
+var g_dbg: Swag.DebugAllocator
 var g_cxt: Swag.Context
 
 private func dataPath()->String
@@ -18,5 +18,5 @@ private func filePath(name: string)->String
 #premain
 {
     try Jobs.setNumWorkers(4)
-    Memory.DebugAllocator.install()
+    Swag.DebugAllocator.install()
 }

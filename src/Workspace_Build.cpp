@@ -187,6 +187,7 @@ void Workspace::addRuntime()
     addRuntimeFile("runtime_windows.swg");
     addRuntimeFile("systemallocator.swg");
     addRuntimeFile("scratchallocator.swg");
+    addRuntimeFile("debugallocator.swg");
 }
 
 OneTag* Workspace::hasTag(const Utf8& name)

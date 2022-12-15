@@ -8,12 +8,14 @@ namespace __Win32RT
 {
     alias HANDLE = *void
     alias DWORD  = u32
+    alias SRWLOCK = *void
     const STD_OUTPUT_HANDLE     = bitcast(u32) -11
     const MB_CANCELTRYCONTINUE  = 0x00000006
     const MB_ICONERROR          = 0x00000010
     const IDCANCEL    = 2
     const IDTRYAGAIN  = 10
     const IDCONTINUE  = 11
+    const SRWLOCK_INIT = cast(SRWLOCK) null
 
     #[Swag.Foreign("kernel32")]
     {
@@ -31,11 +33,35 @@ namespace __Win32RT
         func TlsAlloc()->u32;
         func TlsSetValue(dwTlsIndex: u32, lpTlsValue: *void);
         func TlsGetValue(dwTlsIndex: u32)->*void;
+        func AcquireSRWLockExclusive(SRWLock: *SRWLOCK);
+        func ReleaseSRWLockExclusive(SRWLock: *SRWLOCK);
     }
 
     #[Swag.Foreign("user32")]
     {
         func MessageBoxA(hWnd: const *void, lpText: const *void, lpCaption: const *void, uType: u32)->s32;
+    }
+}
+
+////////////////////////////////////////////////////////////
+// MUTEX
+////////////////////////////////////////////////////////////
+
+struct MutexRW
+{
+    v: __Win32RT.SRWLOCK = __Win32RT.SRWLOCK_INIT
+}
+
+impl MutexRW
+{
+    func lock(using self)
+    {
+        __Win32RT.AcquireSRWLockExclusive(&v)
+    }
+
+    func unlock(using self)
+    {
+        __Win32RT.ReleaseSRWLockExclusive(&v)
     }
 }
 

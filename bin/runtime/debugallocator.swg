@@ -1,7 +1,6 @@
-#global namespace Memory
-using Swag, Sync
+#global namespace Swag
 
-public struct DebugAllocator
+struct DebugAllocator
 {
     allocator:  IAllocator
 
@@ -9,12 +8,11 @@ public struct DebugAllocator
     size:       uint    // Total user size, in bytes
     nextId:     u32
     count:      u32     // Number of allocated block
-    mutex:      Mutex
-    traceLeaks: bool
+    mutex:      MutexRW
 }
 
 // This will be address before and after each allocated block
-private impl DebugAllocator
+impl DebugAllocator
 {
     const MagicAlloc = 0xC0DEC0DE   // Before and after the user memory
     const AllocByte  = 0xAB         // Fill memory when allocated
@@ -42,21 +40,79 @@ private impl DebugAllocator
     }
 }
 
-public impl DebugAllocator
+impl DebugAllocator
+{
+    func __printDisplaySize(value: uint)
+    {
+        size := value
+        if size < 1024
+        {
+            @print(size, " bytes")
+            return
+        }
+
+        size /= 1024
+        if size < 1024
+        {
+            @print(size, " Kb")
+            return
+        }
+
+        size /= 1024
+        if size < 1024
+        {
+            @print(size, " Mb")
+            return
+        }
+
+        size /= 1024
+        if size < 1024
+        {
+            @print(size, " Gb")
+            return
+        }
+
+        size /= 1024
+        @print(size, " Tb")
+    }
+
+    func __memAlign(value: uint, alignement: u32)->uint
+    {
+        toAlign := alignement orelse @sizeof(*void)
+        result := value & ~(toAlign - 1)
+        if result < value result += toAlign
+        return result
+    }
+
+    mtd __checkOne(ptrHeader: ^Header)
+    {
+        ptrEnd := cast(^u8) (ptrHeader + 1)
+        ptrFooter := cast(*Footer) (ptrEnd + ptrHeader.userSize)
+
+        @assert(ptrHeader.magic == MagicAlloc)
+        @assert(ptrFooter.magic == MagicAlloc)
+        @assert(ptrHeader.allocId != 0)
+        @assert(ptrHeader.userSize != 0)
+        @assert(ptrHeader.prev or first == ptrHeader)
+        @assert(!ptrHeader.prev or ptrHeader.prev.next == ptrHeader)
+        @assert(!ptrHeader.next or ptrHeader.next.prev == ptrHeader)
+    }
+}
+
+impl DebugAllocator
 {
     // Create the allocator
-    func create(allocator: IAllocator = null, traceLeaks = true)->DebugAllocator
+    func create(allocator: IAllocator = null)->DebugAllocator
     {
         var result: retval
-        result.init(allocator, traceLeaks)
+        result.init(allocator)
         return result
     }
 
     // Initialize the allocator
-    mtd init(allocator: IAllocator = null, traceLeaks = true)
+    mtd init(allocator: IAllocator = null)
     {
         self.allocator = #self.allocator orelse @getcontext().allocator
-        self.traceLeaks = #self.traceLeaks
     }
 
     // Returns true if there are some remaining allocations
@@ -66,15 +122,31 @@ public impl DebugAllocator
     mtd printAllocated()
     {
         scan := cast(*Header) first
-        Console.printf("% block(s), %\n", count, StrConv.toDisplaySize(size))
-        Console.printf("\n")
+        @print(count, " block(s) for a total of ")
+        __printDisplaySize(size)
+        @print("\n")
+
         while scan
         {
-            Console.printf("id: % size: %\n", scan.allocId, StrConv.toDisplaySize(scan.userSize))
-            Console.printf("    hint: %\n", scan.hint)
-            Console.printf("    loc: %:%\n", scan.locFilename, scan.locLine)
+            @print(scan.locFilename, ":", scan.locLine, ": ")
+            @print("id: ", scan.allocId, " size: ")
+            __printDisplaySize(scan.userSize)
+            if scan.hint @print(" hint: ", scan.hint)
+            @print("\n")
+
             scan = scan.next
         }
+    }
+
+    // Output to the console the list of all allocated blocks (leaks)
+    mtd printLeaks()
+    {
+        if isEmpty()
+            return
+        @print("############################################\n")
+        @print("Swag.DebugAllocator: Memory leaks detected !\n")
+        @print("############################################\n")
+        printAllocated()
     }
 
     // This function will assert if the given address is not conform
@@ -85,21 +157,7 @@ public impl DebugAllocator
 
         orgAddr := cast(^u8) addr
         ptrHeader := cast(*Header) (orgAddr - @sizeof(Header))
-        checkOne(ptrHeader)
-    }
-
-    private mtd checkOne(ptrHeader: ^Header)
-    {
-        ptrEnd := cast(^u8) (ptrHeader + 1)
-        ptrFooter := cast(*Footer) (ptrEnd + ptrHeader.userSize)
-
-        Debug.assert(ptrHeader.magic == MagicAlloc)
-        Debug.assert(ptrFooter.magic == MagicAlloc)
-        Debug.assert(ptrHeader.allocId != 0)
-        Debug.assert(ptrHeader.userSize != 0)
-        Debug.assert(ptrHeader.prev or first == ptrHeader)
-        Debug.assert(!ptrHeader.prev or ptrHeader.prev.next == ptrHeader)
-        Debug.assert(!ptrHeader.next or ptrHeader.next.prev == ptrHeader)
+        __checkOne(ptrHeader)
     }
 
     // Check all allocated pointers
@@ -108,17 +166,17 @@ public impl DebugAllocator
         ptrHeader := cast(*Header) first
         while ptrHeader
         {
-            checkOne(ptrHeader)
+            __checkOne(ptrHeader)
             ptrHeader = ptrHeader.next
         }
     }
 
     // Install debug allocator as the default one
-    func install(traceLeaks = true)
+    func install()
     {
         #[Swag.Global]
         var dbg: DebugAllocator
-        dbg = create(traceLeaks: traceLeaks)
+        dbg = create()
         @getcontext().allocator = dbg
     }
 
@@ -127,19 +185,19 @@ public impl DebugAllocator
     {
         y := @getcontext().allocator
         x := @kindof(y)
-        if x == Memory.DebugAllocator
+        if x == Swag.DebugAllocator
         {
-            i := cast(*Memory.DebugAllocator) @dataof(@getcontext().allocator)
+            i := cast(*Swag.DebugAllocator) @dataof(@getcontext().allocator)
             i.checkAll()
         }
     }
 }
 
-public impl IAllocator for DebugAllocator
+impl IAllocator for DebugAllocator
 {
     func alloc(using self, request: *AllocatorRequest)
     {
-        Debug.assert(allocator != null, "not created")
+        @assert(allocator != null)
 
         mutex.lock()
         defer mutex.unlock()
@@ -154,7 +212,7 @@ public impl IAllocator for DebugAllocator
             ptrHeader := cast(*Header) (userAddr - @sizeof(Header))
             ptrFooter := cast(*Footer) (userAddr + ptrHeader.userSize)
 
-            Debug.assert(ptrHeader.userSize == request.size)
+            @assert(ptrHeader.userSize == request.size)
 
             // Unlink from allocated list
             if !ptrHeader.prev
@@ -165,9 +223,9 @@ public impl IAllocator for DebugAllocator
                 ptrHeader.next.prev = ptrHeader.prev
 
             // Stats
-            Debug.assert(self.count > 0)
+            @assert(self.count > 0)
             self.count -= 1
-            Debug.assert(self.size >= ptrHeader.userSize)
+            @assert(self.size >= ptrHeader.userSize)
             userSize := ptrHeader.userSize
             self.size -= userSize
 
@@ -175,9 +233,9 @@ public impl IAllocator for DebugAllocator
             freeSize := ptrHeader.allocSize
 
             // Fill the memory area with garbage
-            Memory.set(userAddr, FreeByte, userSize)
-            Memory.set(ptrHeader, FreeByte, @sizeof(Header))
-            Memory.set(ptrFooter, FreeByte, @sizeof(Footer))
+            @memset(userAddr, FreeByte, userSize)
+            @memset(ptrHeader, FreeByte, @sizeof(Header))
+            @memset(ptrFooter, FreeByte, @sizeof(Footer))
 
             // Really free the memory
             copyReq := dref request
@@ -225,7 +283,7 @@ public impl IAllocator for DebugAllocator
             // Adapt size to be able to store additional informations
             // Take care of alignement request, because we need to be sure
             // that the returned memory block is well aligned
-            toAddAlign := Memory.align(@sizeof(Header), request.alignement)
+            toAddAlign := __memAlign(@sizeof(Header), request.alignement)
 
             // Make the real allocation
             copyReq.size += toAddAlign + @sizeof(Footer)
@@ -251,9 +309,9 @@ public impl IAllocator for DebugAllocator
 
             // Fill with garbage
             if request.mode == AllocatorMode.Alloc or !request.address
-                Memory.set(userAddr, AllocByte, request.size)
+                @memset(userAddr, AllocByte, request.size)
             elif prevSize < request.size
-                Memory.set(userAddr + prevSize, AllocByte, request.size - prevSize)
+                @memset(userAddr + prevSize, AllocByte, request.size - prevSize)
 
             // Stats
             if !prevSize
@@ -273,7 +331,7 @@ public impl IAllocator for DebugAllocator
             var breakId: u32
             if header.allocId == breakId
             {
-                Debug.assert(false)
+                @assert(false)
             }
 
             // Link to list of allocated blocks
@@ -284,22 +342,6 @@ public impl IAllocator for DebugAllocator
             self.first = header
 
             //checkAll()
-        }
-    }
-}
-
-#drop
-{
-    if @kindof(@getcontext().allocator) == DebugAllocator
-    {
-        @getcontext().tempAllocator.release()
-        dbg := cast(*DebugAllocator) @dataof(@getcontext().allocator)
-        if dbg.traceLeaks and !dbg.isEmpty()
-        {
-            Console.print("#######################################\n")
-            Console.print("DebugAllocator: Memory leaks detected !\n")
-            Console.print("#######################################\n")
-            dbg.printAllocated()
         }
     }
 }
