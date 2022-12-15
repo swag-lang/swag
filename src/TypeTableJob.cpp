@@ -270,19 +270,19 @@ JobResult TypeTableJob::execute()
     auto realType = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
 
     waitTypeCompleted(typeInfo);
-    if (baseContext->result == ContextResult::Pending)
+    if (baseContext->result != ContextResult::Done)
         return JobResult::KeepJobAlive;
 
     if (!(cflags & MAKE_CONCRETE_TYPE_PARTIAL))
     {
         waitAllStructInterfaces(realType);
-        if (baseContext->result == ContextResult::Pending)
+        if (baseContext->result != ContextResult::Done)
             return JobResult::KeepJobAlive;
         waitAllStructMethods(realType);
-        if (baseContext->result == ContextResult::Pending)
+        if (baseContext->result != ContextResult::Done)
             return JobResult::KeepJobAlive;
-        waitStructGenerated(realType);
-        if (baseContext->result == ContextResult::Pending)
+        waitStructGeneratedAlloc(realType);
+        if (baseContext->result != ContextResult::Done)
             return JobResult::KeepJobAlive;
     }
 

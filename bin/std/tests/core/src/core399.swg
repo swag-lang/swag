@@ -1,4 +1,4 @@
-#global skip
+//#global skip
 using Core
 
 struct Node
@@ -21,15 +21,15 @@ func walk(tree: const ref Node, action: WalkAction, depth = 0)
 func print(tree: const ref Node)
 {
     walk(tree, func(node, depth) {
-        Console.printf("% %\n", 2 * depth, node)
+        //Console.printf("% %\n", 2 * depth, node)
     })
 }
 
 func calcTotalDepth(tree: const ref Node) -> s32
 {
     total := 0
-    walk(tree, closure|&total|(node, depth) {
-        dref total += depth
+    walk(tree, closure|ref total|(node, depth) {
+        total += depth
     })
 
     return total
@@ -38,17 +38,17 @@ func calcTotalDepth(tree: const ref Node) -> s32
 #[Swag.Discardable]
 func process(intro: ref Node) -> ref Node
 {
-    intro.kids.add({"root"})
+    intro.kids.add({String.from("root")})
 
     internalIntro := ref intro.kids[0]
     internalIntro.print()
-    tree.print()
+    intro.print()
 
     totalDepth := 0
     loop i: 200_000
         totalDepth += intro.calcTotalDepth()
 
-    Console.printf("Total depth: %", totalDepth)
+    //Console.printf("Total depth: %", totalDepth)
     return internalIntro
 }
 

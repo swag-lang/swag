@@ -112,6 +112,7 @@ struct Job
     void waitAllStructInterfaces(TypeInfo* typeInfo);
     void waitAllStructSpecialMethods(TypeInfo* typeInfo);
     void waitAllStructMethods(TypeInfo* typeInfo);
+    void waitStructGeneratedAlloc(TypeInfo* typeInfo);
     void waitStructGenerated(TypeInfo* typeInfo);
     void waitOverloadCompleted(SymbolOverload* overload);
     void waitFuncDeclFullResolve(AstFuncDecl* funcDecl);

@@ -58,10 +58,326 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
     emitInstruction(context, ByteCodeOp::IncSPPostCall, numParams * 8);
 }
 
+void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
+{
+    ScopedLock lk(typeInfoStruct->mutexGen);
+    auto       structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
+
+    if (typeInfoStruct->flags & TYPEINFO_SPECOP_GENERATED)
+        return;
+
+    for (int i = 0; i < 4; i++)
+    {
+        ByteCode**  resOp = nullptr;
+        Utf8        addName;
+        SymbolName* symbol = nullptr;
+
+        bool needDrop     = false;
+        bool needPostCopy = false;
+        bool needPostMove = false;
+
+        switch (i)
+        {
+        case 0:
+        {
+            if (typeInfoStruct->opInit)
+                continue;
+
+            // Need to be sure that function has been solved
+            {
+                ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
+                symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opInit);
+                if (symbol && symbol->cptOverloads)
+                {
+                    symbol->addDependentJob(context->job);
+                    context->job->setPending(symbol, JobWaitKind::EmitInit, structNode, nullptr);
+                    return;
+                }
+            }
+
+            // For generic function, symbol is not registered in the scope of the instantiated struct, but in the
+            // generic struct
+            if (!symbol && typeInfoStruct->opUserInitFct)
+            {
+                ScopedLock lockTable(typeInfoStruct->opUserInitFct->ownerScope->symTable.mutex);
+                symbol = typeInfoStruct->opUserInitFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opInit);
+                if (symbol && symbol->cptOverloads)
+                {
+                    symbol->addDependentJob(context->job);
+                    context->job->setPending(symbol, JobWaitKind::EmitInit, structNode, nullptr);
+                    return;
+                }
+            }
+
+            if (typeInfoStruct->opUserInitFct && typeInfoStruct->opUserInitFct->attributeFlags & ATTRIBUTE_FOREIGN)
+                continue;
+            resOp   = &typeInfoStruct->opInit;
+            addName = "_opInit";
+            break;
+        }
+        case 1:
+        {
+            if (typeInfoStruct->opDrop)
+                continue;
+
+            // Need to be sure that function has been solved
+            {
+                ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
+                symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opDrop);
+                if (symbol && symbol->cptOverloads)
+                {
+                    symbol->addDependentJob(context->job);
+                    context->job->setPending(symbol, JobWaitKind::EmitDrop, structNode, nullptr);
+                    return;
+                }
+            }
+
+            // For generic function, symbol is not registered in the scope of the instantiated struct, but in the
+            // generic struct
+            if (!symbol && typeInfoStruct->opUserDropFct)
+            {
+                ScopedLock lockTable(typeInfoStruct->opUserDropFct->ownerScope->symTable.mutex);
+                symbol = typeInfoStruct->opUserDropFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opDrop);
+                if (symbol && symbol->cptOverloads)
+                {
+                    symbol->addDependentJob(context->job);
+                    context->job->setPending(symbol, JobWaitKind::EmitDrop, structNode, nullptr);
+                    return;
+                }
+            }
+
+            if (typeInfoStruct->opUserDropFct && typeInfoStruct->opUserDropFct->attributeFlags & ATTRIBUTE_FOREIGN)
+                continue;
+            if (typeInfoStruct->opUserDropFct)
+                needDrop = true;
+            resOp   = &typeInfoStruct->opDrop;
+            addName = "_opDropGenerated";
+            break;
+        }
+        case 2:
+        {
+            if (typeInfoStruct->opPostCopy)
+                continue;
+            if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_COPY)
+                continue;
+
+            // Need to be sure that function has been solved
+            {
+                ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
+                symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opPostCopy);
+                if (symbol && symbol->cptOverloads)
+                {
+                    symbol->addDependentJob(context->job);
+                    context->job->setPending(symbol, JobWaitKind::EmitPostCopy, structNode, nullptr);
+                    return;
+                }
+            }
+
+            // For generic function, symbol is not registered in the scope of the instantiated struct, but in the
+            // generic struct
+            if (!symbol && typeInfoStruct->opUserPostCopyFct)
+            {
+                ScopedLock lockTable(typeInfoStruct->opUserPostCopyFct->ownerScope->symTable.mutex);
+                symbol = typeInfoStruct->opUserPostCopyFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opPostCopy);
+                if (symbol && symbol->cptOverloads)
+                {
+                    symbol->addDependentJob(context->job);
+                    context->job->setPending(symbol, JobWaitKind::EmitPostCopy, structNode, nullptr);
+                    return;
+                }
+            }
+
+            if (typeInfoStruct->opUserPostCopyFct && typeInfoStruct->opUserPostCopyFct->attributeFlags & ATTRIBUTE_FOREIGN)
+                continue;
+            if (typeInfoStruct->opUserPostCopyFct)
+                needPostCopy = true;
+            resOp   = &typeInfoStruct->opPostCopy;
+            addName = "_opPostCopyGenerated";
+            break;
+        }
+        case 3:
+        {
+            if (typeInfoStruct->opPostMove)
+                continue;
+
+            // Need to be sure that function has been solved
+            {
+                ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
+                symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opPostMove);
+                if (symbol && symbol->cptOverloads)
+                {
+                    symbol->addDependentJob(context->job);
+                    context->job->setPending(symbol, JobWaitKind::EmitPostMove, structNode, nullptr);
+                    return;
+                }
+            }
+
+            // For generic function, symbol is not registered in the scope of the instantiated struct, but in the
+            // generic struct
+            if (!symbol && typeInfoStruct->opUserPostMoveFct)
+            {
+                ScopedLock lockTable(typeInfoStruct->opUserPostMoveFct->ownerScope->symTable.mutex);
+                symbol = typeInfoStruct->opUserPostMoveFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opPostMove);
+                if (symbol && symbol->cptOverloads)
+                {
+                    symbol->addDependentJob(context->job);
+                    context->job->setPending(symbol, JobWaitKind::EmitPostMove, structNode, nullptr);
+                    return;
+                }
+            }
+
+            if (typeInfoStruct->opUserPostMoveFct && typeInfoStruct->opUserPostMoveFct->attributeFlags & ATTRIBUTE_FOREIGN)
+                continue;
+            if (typeInfoStruct->opUserPostMoveFct)
+                needPostMove = true;
+            resOp   = &typeInfoStruct->opPostMove;
+            addName = "_opPostMoveGenerated";
+            break;
+        }
+        }
+
+        // Be sure sub structs are generated too
+        for (auto typeParam : typeInfoStruct->fields)
+        {
+            auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
+            if (typeVar->isArray())
+                typeVar = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
+            if (!typeVar->isStruct())
+                continue;
+            auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+            generateStructAlloc(context, typeStructVar);
+            if (context->result != ContextResult::Done)
+                return;
+            if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
+                needDrop = true;
+            if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
+                needPostCopy = true;
+            if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
+                needPostMove = true;
+        }
+
+        switch (i)
+        {
+        case 1:
+            if (!needDrop)
+            {
+                typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_DROP;
+                continue;
+            }
+            break;
+        case 2:
+            if (!needPostCopy)
+            {
+                typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_COPY;
+                continue;
+            }
+            break;
+        case 3:
+            if (!needPostMove)
+            {
+                typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_MOVE;
+                continue;
+            }
+            break;
+        }
+
+        auto      sourceFile = context->sourceFile;
+        ByteCode* opInit     = g_Allocator.alloc<ByteCode>();
+        opInit->sourceFile   = sourceFile;
+        opInit->typeInfoFunc = g_TypeMgr->typeInfoOpCall;
+        opInit->name         = structNode->ownerScope->getFullName();
+        opInit->name += "_";
+        opInit->name += structNode->token.text;
+        opInit->name += addName;
+        opInit->name.replaceAll('.', '_');
+        opInit->maxReservedRegisterRC = 3;
+        opInit->isCompilerGenerated   = true;
+        *resOp                        = opInit;
+
+        switch (i)
+        {
+        case 0:
+            // Export generated function if necessary
+            if (!(structNode->flags & AST_FROM_GENERIC))
+            {
+                auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
+                funcNode->typeInfo   = opInit->typeInfoFunc;
+                funcNode->ownerScope = structNode->scope;
+                funcNode->token.text = g_LangSpec->name_opInitGenerated;
+                if (typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
+                    funcNode->attributeFlags |= structNode->attributeFlags & ATTRIBUTE_PUBLIC;
+                if (typeInfoStruct->opUserInitFct)
+                    typeInfoStruct->opUserInitFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
+                funcNode->allocateExtension(ExtensionKind::ByteCode);
+                funcNode->extension->bytecode->bc = opInit;
+                opInit->node                      = funcNode;
+            }
+            break;
+
+        case 1:
+            // Export generated function if necessary
+            if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))
+            {
+                auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
+                funcNode->typeInfo   = opInit->typeInfoFunc;
+                funcNode->ownerScope = structNode->scope;
+                funcNode->token.text = g_LangSpec->name_opDropGenerated;
+                funcNode->attributeFlags |= ATTRIBUTE_PUBLIC;
+                if (typeInfoStruct->opUserDropFct)
+                    typeInfoStruct->opUserDropFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
+                funcNode->allocateExtension(ExtensionKind::ByteCode);
+                funcNode->extension->bytecode->bc = opInit;
+                opInit->node                      = funcNode;
+            }
+            break;
+
+        case 2:
+            // Export generated function if necessary
+            if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))
+            {
+                auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
+                funcNode->typeInfo   = opInit->typeInfoFunc;
+                funcNode->ownerScope = structNode->scope;
+                funcNode->token.text = g_LangSpec->name_opPostCopyGenerated;
+                funcNode->attributeFlags |= ATTRIBUTE_PUBLIC;
+                if (typeInfoStruct->opUserPostCopyFct)
+                    typeInfoStruct->opUserPostCopyFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
+                funcNode->allocateExtension(ExtensionKind::ByteCode);
+                funcNode->extension->bytecode->bc = opInit;
+                opInit->node                      = funcNode;
+            }
+            break;
+
+        case 3:
+            // Export generated function if necessary
+            if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))
+            {
+                auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
+                funcNode->typeInfo   = opInit->typeInfoFunc;
+                funcNode->ownerScope = structNode->scope;
+                funcNode->token.text = g_LangSpec->name_opPostMoveGenerated;
+                funcNode->attributeFlags |= ATTRIBUTE_PUBLIC;
+                if (typeInfoStruct->opUserPostMoveFct)
+                    typeInfoStruct->opUserPostMoveFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
+                funcNode->allocateExtension(ExtensionKind::ByteCode);
+                funcNode->extension->bytecode->bc = opInit;
+                opInit->node                      = funcNode;
+            }
+            break;
+        }
+    }
+
+    typeInfoStruct->flags |= TYPEINFO_SPECOP_GENERATED;
+
+    ScopedLock lk1(structNode->mutex);
+    structNode->semFlags |= AST_SEM_STRUCT_OP_ALLOCATED;
+    structNode->dependentJobs.setRunning();
+}
+
 bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
     ScopedLock lk(typeInfoStruct->mutexGen);
-    if (typeInfoStruct->opInit)
+    if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_INIT)
         return true;
 
     auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
@@ -121,41 +437,17 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         context->job->waitStructGenerated(typeStructVar);
         if (context->result == ContextResult::Pending)
             return true;
+        SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPECOP_GENERATED);
         generateStruct_opInit(context, typeStructVar);
         if (context->result == ContextResult::Pending)
             return true;
     }
 
     auto sourceFile = context->sourceFile;
+    auto opInit     = typeInfoStruct->opInit;
 
-    ByteCode* opInit     = g_Allocator.alloc<ByteCode>();
-    opInit->sourceFile   = context->sourceFile;
-    opInit->typeInfoFunc = g_TypeMgr->typeInfoOpCall;
-    opInit->name         = structNode->ownerScope->getFullName();
-    opInit->name += "_";
-    opInit->name += structNode->token.text;
-    opInit->name += "_opInit";
-    opInit->name.replaceAll('.', '_');
-    opInit->maxReservedRegisterRC = 3;
-    opInit->isCompilerGenerated   = true;
-    typeInfoStruct->opInit        = opInit;
-
-    // Export generated function if necessary
-    if (!(structNode->flags & AST_FROM_GENERIC))
-    {
-        auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
-        funcNode->typeInfo   = opInit->typeInfoFunc;
-        funcNode->ownerScope = structNode->scope;
-        funcNode->token.text = g_LangSpec->name_opInitGenerated;
-        if (typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
-            funcNode->attributeFlags |= structNode->attributeFlags & ATTRIBUTE_PUBLIC;
-        if (typeInfoStruct->opUserInitFct)
-            typeInfoStruct->opUserInitFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
-        funcNode->allocateExtension(ExtensionKind::ByteCode);
-        funcNode->extension->bytecode->bc = opInit;
-        opInit->node                      = funcNode;
-    }
-
+    typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_INIT;
+    SWAG_ASSERT(typeInfoStruct->opInit);
     sourceFile->module->addByteCodeFunc(opInit);
 
     ByteCodeGenContext cxt{*context};
@@ -350,8 +642,6 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     ScopedLock lk(typeInfoStruct->mutexGen);
     if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_DROP)
         return true;
-    if (typeInfoStruct->opDrop)
-        return true;
 
     SWAG_ASSERT(typeInfoStruct->declNode);
     auto sourceFile = context->sourceFile;
@@ -414,6 +704,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         context->job->waitStructGenerated(typeStructVar);
         if (context->result == ContextResult::Pending)
             return true;
+        SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPECOP_GENERATED);
         generateStruct_opDrop(context, typeStructVar);
         if (context->result == ContextResult::Pending)
             return true;
@@ -423,38 +714,12 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
             SWAG_VERIFY(!(structNode->structFlags & STRUCTFLAG_UNION), context->report({typeParam->declNode, Fmt(Err(Err0911), typeStructVar->getDisplayNameC())}));
     }
 
+    typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_DROP;
     if (!needDrop)
-    {
-        typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_DROP;
         return true;
-    }
 
-    auto opDrop            = g_Allocator.alloc<ByteCode>();
-    opDrop->typeInfoFunc   = g_TypeMgr->typeInfoOpCall;
-    typeInfoStruct->opDrop = opDrop;
-    opDrop->sourceFile     = sourceFile;
-    opDrop->name           = structNode->ownerScope->getFullName();
-    opDrop->name += "_";
-    opDrop->name += structNode->token.text;
-    opDrop->name += "_opDropGenerated";
-    opDrop->name.replaceAll('.', '_');
-    opDrop->maxReservedRegisterRC = 3;
-    opDrop->isCompilerGenerated   = true;
-
-    // Export generated function if necessary
-    if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))
-    {
-        auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
-        funcNode->typeInfo   = opDrop->typeInfoFunc;
-        funcNode->ownerScope = structNode->scope;
-        funcNode->token.text = g_LangSpec->name_opDropGenerated;
-        funcNode->attributeFlags |= ATTRIBUTE_PUBLIC;
-        if (typeInfoStruct->opUserDropFct)
-            typeInfoStruct->opUserDropFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
-        funcNode->allocateExtension(ExtensionKind::ByteCode);
-        funcNode->extension->bytecode->bc = opDrop;
-        opDrop->node                      = funcNode;
-    }
+    auto opDrop = typeInfoStruct->opDrop;
+    SWAG_ASSERT(opDrop);
 
     ByteCodeGenContext cxt{*context};
     cxt.bc = opDrop;
@@ -490,8 +755,6 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
 {
     ScopedLock lk(typeInfoStruct->mutexGen);
     if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_POST_MOVE)
-        return true;
-    if (typeInfoStruct->opPostMove)
         return true;
 
     auto sourceFile = context->sourceFile;
@@ -554,6 +817,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         context->job->waitStructGenerated(typeStructVar);
         if (context->result == ContextResult::Pending)
             return true;
+        SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPECOP_GENERATED);
         generateStruct_opPostMove(context, typeStructVar);
         if (context->result == ContextResult::Pending)
             return true;
@@ -563,38 +827,12 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
             SWAG_VERIFY(!(structNode->structFlags & STRUCTFLAG_UNION), context->report({typeParam->declNode, Fmt(Err(Err0910), typeStructVar->getDisplayNameC())}));
     }
 
+    typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_MOVE;
     if (!needPostMove)
-    {
-        typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_MOVE;
         return true;
-    }
 
-    auto opPostMove            = g_Allocator.alloc<ByteCode>();
-    opPostMove->typeInfoFunc   = g_TypeMgr->typeInfoOpCall;
-    typeInfoStruct->opPostMove = opPostMove;
-    opPostMove->sourceFile     = sourceFile;
-    opPostMove->name           = structNode->ownerScope->getFullName();
-    opPostMove->name += "_";
-    opPostMove->name += structNode->token.text;
-    opPostMove->name += "_opPostMoveGenerated";
-    opPostMove->name.replaceAll('.', '_');
-    opPostMove->maxReservedRegisterRC = 3;
-    opPostMove->isCompilerGenerated   = true;
-
-    // Export generated function if necessary
-    if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))
-    {
-        auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
-        funcNode->typeInfo   = opPostMove->typeInfoFunc;
-        funcNode->ownerScope = structNode->scope;
-        funcNode->token.text = g_LangSpec->name_opPostMoveGenerated;
-        funcNode->attributeFlags |= ATTRIBUTE_PUBLIC;
-        if (typeInfoStruct->opUserPostMoveFct)
-            typeInfoStruct->opUserPostMoveFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
-        funcNode->allocateExtension(ExtensionKind::ByteCode);
-        funcNode->extension->bytecode->bc = opPostMove;
-        opPostMove->node                  = funcNode;
-    }
+    auto opPostMove = typeInfoStruct->opPostMove;
+    SWAG_ASSERT(opPostMove);
 
     ByteCodeGenContext cxt{*context};
     cxt.bc = opPostMove;
@@ -629,9 +867,9 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
 bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
     ScopedLock lk(typeInfoStruct->mutexGen);
-    if (typeInfoStruct->flags & (TYPEINFO_STRUCT_NO_POST_COPY | TYPEINFO_STRUCT_NO_COPY))
+    if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_POST_COPY)
         return true;
-    if (typeInfoStruct->opPostCopy)
+    if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_COPY)
         return true;
 
     auto sourceFile = context->sourceFile;
@@ -694,6 +932,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         context->job->waitStructGenerated(typeStructVar);
         if (context->result == ContextResult::Pending)
             return true;
+        SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPECOP_GENERATED);
         generateStruct_opPostCopy(context, typeStructVar);
         if (context->result == ContextResult::Pending)
             return true;
@@ -703,38 +942,12 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
             SWAG_VERIFY(!(structNode->structFlags & STRUCTFLAG_UNION), context->report({typeParam->declNode, Fmt(Err(Err0909), typeStructVar->getDisplayNameC())}));
     }
 
+    typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_COPY;
     if (!needPostCopy)
-    {
-        typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_COPY;
         return true;
-    }
 
-    auto opPostCopy            = g_Allocator.alloc<ByteCode>();
-    opPostCopy->typeInfoFunc   = g_TypeMgr->typeInfoOpCall;
-    typeInfoStruct->opPostCopy = opPostCopy;
-    opPostCopy->sourceFile     = sourceFile;
-    opPostCopy->name           = structNode->ownerScope->getFullName();
-    opPostCopy->name += "_";
-    opPostCopy->name += structNode->token.text;
-    opPostCopy->name += "_opPostCopyGenerated";
-    opPostCopy->name.replaceAll('.', '_');
-    opPostCopy->maxReservedRegisterRC = 3;
-    opPostCopy->isCompilerGenerated   = true;
-
-    // Export generated function if necessary
-    if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))
-    {
-        auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
-        funcNode->typeInfo   = opPostCopy->typeInfoFunc;
-        funcNode->ownerScope = structNode->scope;
-        funcNode->token.text = g_LangSpec->name_opPostCopyGenerated;
-        funcNode->attributeFlags |= ATTRIBUTE_PUBLIC;
-        if (typeInfoStruct->opUserPostCopyFct)
-            typeInfoStruct->opUserPostCopyFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
-        funcNode->allocateExtension(ExtensionKind::ByteCode);
-        funcNode->extension->bytecode->bc = opPostCopy;
-        opPostCopy->node                  = funcNode;
-    }
+    auto opPostCopy = typeInfoStruct->opPostCopy;
+    SWAG_ASSERT(opPostCopy);
 
     ByteCodeGenContext cxt{*context};
     cxt.bc = opPostCopy;
@@ -771,17 +984,21 @@ bool ByteCodeGenJob::emitStruct(ByteCodeGenContext* context)
     AstStruct*      node           = CastAst<AstStruct>(context->node, AstNodeKind::StructDecl);
     TypeInfoStruct* typeInfoStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
 
+    generateStructAlloc(context, typeInfoStruct);
+    if (context->result != ContextResult::Done)
+        return true;
+
     SWAG_CHECK(generateStruct_opInit(context, typeInfoStruct));
-    if (context->result == ContextResult::Pending)
+    if (context->result != ContextResult::Done)
         return true;
     SWAG_CHECK(generateStruct_opDrop(context, typeInfoStruct));
-    if (context->result == ContextResult::Pending)
+    if (context->result != ContextResult::Done)
         return true;
     SWAG_CHECK(generateStruct_opPostCopy(context, typeInfoStruct));
-    if (context->result == ContextResult::Pending)
+    if (context->result != ContextResult::Done)
         return true;
     SWAG_CHECK(generateStruct_opPostMove(context, typeInfoStruct));
-    if (context->result == ContextResult::Pending)
+    if (context->result != ContextResult::Done)
         return true;
 
     auto       structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
@@ -1103,8 +1320,10 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
         if (!(typeStruct->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED))
         {
             SWAG_ASSERT(typeStruct->opInit || typeStruct->opUserInitFct);
-            if (!generateStruct_opInit(context, typeStruct))
-                return false;
+            generateStructAlloc(context, typeStruct);
+            SWAG_ASSERT(context->result == ContextResult::Done);
+            SWAG_CHECK(generateStruct_opInit(context, typeStruct));
+            SWAG_ASSERT(context->result == ContextResult::Done);
 
             // Constant loop
             uint32_t regCount = 0;
@@ -1260,20 +1479,29 @@ bool ByteCodeGenJob::emitDropCopyMove(ByteCodeGenContext* context)
     switch (node->kind)
     {
     case AstNodeKind::Drop:
+        generateStructAlloc(context, typeStruct);
+        if (context->result != ContextResult::Done)
+            return true;
         generateStruct_opDrop(context, typeStruct);
-        if (context->result == ContextResult::Pending)
+        if (context->result != ContextResult::Done)
             return true;
         somethingToDo = typeStruct->opDrop || typeStruct->opUserDropFct;
         break;
     case AstNodeKind::PostCopy:
+        generateStructAlloc(context, typeStruct);
+        if (context->result != ContextResult::Done)
+            return true;
         generateStruct_opPostCopy(context, typeStruct);
-        if (context->result == ContextResult::Pending)
+        if (context->result != ContextResult::Done)
             return true;
         somethingToDo = typeStruct->opPostCopy || typeStruct->opUserPostCopyFct;
         break;
     case AstNodeKind::PostMove:
+        generateStructAlloc(context, typeStruct);
+        if (context->result != ContextResult::Done)
+            return true;
         generateStruct_opPostMove(context, typeStruct);
-        if (context->result == ContextResult::Pending)
+        if (context->result != ContextResult::Done)
             return true;
         somethingToDo = typeStruct->opPostMove || typeStruct->opUserPostMoveFct;
         break;

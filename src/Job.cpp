@@ -105,6 +105,33 @@ void Job::waitAllStructMethods(TypeInfo* typeInfo)
     setPending(nullptr, JobWaitKind::WaitMethods, nullptr, typeInfoStruct);
 }
 
+void Job::waitStructGeneratedAlloc(TypeInfo* typeInfo)
+{
+    if (typeInfo->isArrayOfStruct())
+        typeInfo = ((TypeInfoArray*) typeInfo)->finalType;
+    if (typeInfo->isPointerTo(TypeInfoKind::Struct))
+        typeInfo = ((TypeInfoPointer*) typeInfo)->pointedType;
+    if (!typeInfo->isStruct())
+        return;
+    if (typeInfo->flags & TYPEINFO_GENERIC)
+        return;
+
+    auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    if (!typeInfoStruct->declNode)
+        return;
+    if (typeInfoStruct->declNode->kind == AstNodeKind::InterfaceDecl)
+        return;
+
+    auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
+
+    ScopedLock lk(structNode->mutex);
+    if (!(structNode->semFlags & AST_SEM_STRUCT_OP_ALLOCATED))
+    {
+        structNode->dependentJobs.add(this);
+        setPending(structNode->resolvedSymbolName, JobWaitKind::SemByteCodeGenerated, structNode, nullptr);
+    }
+}
+
 void Job::waitStructGenerated(TypeInfo* typeInfo)
 {
     if (typeInfo->isArrayOfStruct())
