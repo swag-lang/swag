@@ -688,7 +688,7 @@ bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context, AstNode* allParams,
         }
     }
 
-    bool foreign = symbolOverload->node->attributeFlags & ATTRIBUTE_FOREIGN;
+    bool foreign = symbolOverload->node->isForeign();
 
     // We are less restrictive on type parameters for useop, as type are more in control.
     // Se we could have a needed cast now.

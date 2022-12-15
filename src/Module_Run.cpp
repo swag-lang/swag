@@ -210,7 +210,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     // Direct call to a foreign function ?
     if (!node->extension || !node->extension->bytecode || !node->extension->bytecode->bc)
     {
-        SWAG_ASSERT(node->attributeFlags & ATTRIBUTE_FOREIGN);
+        SWAG_ASSERT(node->isForeign());
         bc                  = &bcTmp;
         instTmp.op          = ByteCodeOp::ForeignCall;
         instTmp.a.pointer   = (uint8_t*) CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);

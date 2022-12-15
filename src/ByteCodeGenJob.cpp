@@ -357,7 +357,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags, Byt
         if (funcDecl->content && (funcDecl->content->flags & AST_NO_SEMANTIC))
             return;
 
-        if (funcDecl->attributeFlags & ATTRIBUTE_FOREIGN)
+        if (funcDecl->isForeign())
         {
             // Need to wait for function full semantic resolve
             if (flags & ASKBC_WAIT_SEMANTIC_RESOLVED)

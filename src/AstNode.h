@@ -270,6 +270,10 @@ struct AstNode
     bool isSpecialFunctionGenerated();
     bool isPublic();
 
+    // clang-format off
+    bool isForeign() { return attributeFlags & ATTRIBUTE_FOREIGN; }
+    // clang-format on
+
     void        setPassThrough();
     static Utf8 getArticleKindName(AstNode* node);
     static Utf8 getKindName(AstNode* node);
@@ -429,11 +433,6 @@ struct AstFuncDecl : public AstNode
     const char* getDisplayNameC();
     Utf8        getNameForUserCompiler();
     Utf8        getCallName();
-
-    bool isForeign()
-    {
-        return attributeFlags & ATTRIBUTE_FOREIGN;
-    }
 
     DependentJobs          dependentJobs;
     Utf8                   fullnameForeign;

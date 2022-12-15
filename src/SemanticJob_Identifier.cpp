@@ -1254,7 +1254,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             return context->report({identifier, Err(Err0104)});
 
         // Be sure this is not a 'forward' decl
-        if (overload->node->flags & AST_EMPTY_FCT && !(overload->node->attributeFlags & ATTRIBUTE_FOREIGN) && identifier->token.text[0] != '@')
+        if (overload->node->flags & AST_EMPTY_FCT && !(overload->node->isForeign()) && identifier->token.text[0] != '@')
         {
             Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0105), identifier->token.ctext())};
             return context->report(diag, Diagnostic::hereIs(overload));
@@ -1271,7 +1271,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
 
         // Be sure the call is valid
-        if ((identifier->token.text[0] != '@') && !(overload->node->attributeFlags & ATTRIBUTE_FOREIGN))
+        if ((identifier->token.text[0] != '@') && !overload->node->isForeign())
         {
             auto ownerFct = identifier->ownerFct;
             if (ownerFct)
@@ -1415,7 +1415,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             dealWithIntrinsic(context, identifier);
             identifier->byteCodeFct = ByteCodeGenJob::emitIntrinsic;
         }
-        else if (overload->node->attributeFlags & ATTRIBUTE_FOREIGN)
+        else if (overload->node->isForeign())
         {
             identifier->byteCodeFct = ByteCodeGenJob::emitForeignCall;
         }

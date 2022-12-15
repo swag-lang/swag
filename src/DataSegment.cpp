@@ -378,7 +378,7 @@ void DataSegment::doPatchMethods(JobContext* context)
         auto      funcNode  = it.first;
         void*     lambdaPtr = nullptr;
         ByteCode* bc        = nullptr;
-        if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
+        if (funcNode->isForeign())
         {
             funcNode->computeFullNameForeign(false);
             lambdaPtr = ByteCodeRun::makeLambda(context, funcNode, nullptr);

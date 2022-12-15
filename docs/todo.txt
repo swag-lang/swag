@@ -100,7 +100,6 @@ CLEAN
 ****************************************
 
 - InheritResolvedSymbols
-- isForeign
 
 
 

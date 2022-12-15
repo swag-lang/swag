@@ -530,7 +530,7 @@ void Module::addByteCodeFunc(ByteCode* bc)
 {
     ScopedLock lk(mutexByteCode);
 
-    SWAG_ASSERT(!bc->node || !(bc->node->attributeFlags & ATTRIBUTE_FOREIGN));
+    SWAG_ASSERT(!bc->node || !bc->node->isForeign());
     SWAG_ASSERT(!bc->isAddedToList);
 
     bc->isAddedToList = true;

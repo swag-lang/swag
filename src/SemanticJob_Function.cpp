@@ -283,7 +283,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     typeInfo->stackSize = node->stackSize;
 
     // Check attributes
-    if ((node->attributeFlags & ATTRIBUTE_FOREIGN) && node->content)
+    if ((node->isForeign()) && node->content)
         return context->report({node, Err(Err0742)});
 
     if (!(node->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
@@ -348,7 +348,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         genByteCode = false;
     if (node->token.text[0] == '@' && !(node->flags & AST_DEFINED_INTRINSIC))
         genByteCode = false;
-    if (node->attributeFlags & ATTRIBUTE_FOREIGN)
+    if (node->isForeign())
         genByteCode = false;
     if (node->flags & AST_IS_GENERIC)
         genByteCode = false;
@@ -714,7 +714,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // We should never reference an empty function
     // So consider this is a placeholder. This will generate an error in case the empty function is not replaced by a
     // real function at some point.
-    if (funcNode->flags & AST_EMPTY_FCT && !(funcNode->attributeFlags & ATTRIBUTE_FOREIGN) && funcNode->token.text[0] != '@')
+    if (funcNode->flags & AST_EMPTY_FCT && !(funcNode->isForeign()) && funcNode->token.text[0] != '@')
     {
         ScopedLock lk(funcNode->resolvedSymbolName->mutex);
 

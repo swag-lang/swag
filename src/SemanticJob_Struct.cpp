@@ -235,7 +235,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
             continue;
 
         // We need to be have a bytecode pointer to be able to reference it in the itable
-        if (!(child->attributeFlags & ATTRIBUTE_FOREIGN))
+        if (!child->isForeign())
         {
             ScopedLock lk(child->mutex);
             if (!child->extension || !child->extension->bytecode || !child->extension->bytecode->bc)
@@ -370,7 +370,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     for (uint32_t i = 0; i < numFctInterface; i++)
     {
         auto funcChild = mapItIdxToFunc[i];
-        if (funcChild->attributeFlags & ATTRIBUTE_FOREIGN)
+        if (funcChild->isForeign())
         {
             funcChild->computeFullNameForeign(true);
             constSegment->addInitPtrFunc(offset, funcChild->fullnameForeign);

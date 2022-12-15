@@ -457,7 +457,7 @@ bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
 
     auto funcNode = CastAst<AstFuncDecl>(front->resolvedSymbolOverload->node, AstNodeKind::FuncDecl);
 
-    if (!(funcNode->attributeFlags & ATTRIBUTE_FOREIGN))
+    if (!funcNode->isForeign())
     {
         // Need to generate bytecode, if not already done or running
         askForByteCode(context->job, funcNode, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
