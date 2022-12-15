@@ -1233,8 +1233,11 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         {
             if (!(overload->node->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN)))
             {
-                auto cp = identifier->callParameters;
-                return context->report({cp->sourceFile, cp->aliasNames.front().startLocation, cp->aliasNames.back().endLocation, Fmt(Err(Err0099), identifier->token.ctext())});
+                auto       cp = identifier->callParameters;
+                Diagnostic diag{cp->sourceFile, cp->aliasNames.front().startLocation, cp->aliasNames.back().endLocation, Fmt(Err(Err0099), identifier->token.ctext())};
+                diag.hint = Hnt(Hnt0026);
+                diag.setRange2(identifier->token, Hnt(Hnt0078));
+                return context->report(diag);
             }
         }
 

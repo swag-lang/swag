@@ -629,7 +629,13 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     }
 
     SWAG_VERIFY(node->extraNameToken.text.empty(), context->report({node, node->extraNameToken, Fmt(Err(Err0625), typeInfo->getDisplayNameC())}));
-    SWAG_VERIFY(node->aliasNames.size() <= 2, context->report({node, node->aliasNames[2], Fmt(Err(Err0626), node->aliasNames.size())}));
+
+    if (node->aliasNames.size() > 2)
+    {
+        Diagnostic diag{node, node->aliasNames[2], Fmt(Err(Err0626), node->aliasNames.size())};
+        diag.hint = Hnt(Hnt0026);
+        return context->report(diag);
+    }
 
     Utf8 alias0Name = node->aliasNames.empty() ? Utf8("@alias0") : node->aliasNames[0].text;
     Utf8 alias1Name = node->aliasNames.size() <= 1 ? Utf8("@alias1") : node->aliasNames[1].text;

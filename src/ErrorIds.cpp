@@ -1043,7 +1043,7 @@ void initErrors()
     SWAG_ERROR(Hnt0075, "this is unexpected in an alias");
     SWAG_ERROR(Hnt0076, "this should be lower");
     SWAG_ERROR(Hnt0077, "...than this");
-    SWAG_ERROR(Hnt0078, nullptr);
+    SWAG_ERROR(Hnt0078, "this function does not accept aliased names");
     SWAG_ERROR(Hnt0079, nullptr);
     SWAG_ERROR(Hnt0080, nullptr);
 
