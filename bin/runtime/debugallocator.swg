@@ -4,10 +4,10 @@ struct DebugAllocator
 {
     allocator:  IAllocator
 
-    first:      *void
+    firstAlloc: *void   // First allocated block
     size:       uint    // Total user size, in bytes
-    nextId:     u32
-    count:      u32     // Number of allocated block
+    nextId:     u32     // The next allocated id to assign
+    count:      u32     // Number of allocated blocks
     mutex:      MutexRW
 }
 
@@ -21,13 +21,13 @@ impl DebugAllocator
     // Will be put just before the returned address
     struct Header
     {
-        allocAddr:      *void
-        allocSize:       uint
+        allocAddr:      ^void
+        allocSize:      uint
+        userSize:       uint
         locFilename:    string
         hint:           string
         prev:           *Header
         next:           *Header
-        userSize:       uint
         magic:          u32
         allocId:        u32
         locLine:        u32
@@ -93,7 +93,7 @@ impl DebugAllocator
         @assert(ptrFooter.magic == MagicAlloc)
         @assert(ptrHeader.allocId != 0)
         @assert(ptrHeader.userSize != 0)
-        @assert(ptrHeader.prev or first == ptrHeader)
+        @assert(ptrHeader.prev or firstAlloc == ptrHeader)
         @assert(!ptrHeader.prev or ptrHeader.prev.next == ptrHeader)
         @assert(!ptrHeader.next or ptrHeader.next.prev == ptrHeader)
     }
@@ -101,7 +101,7 @@ impl DebugAllocator
 
 impl DebugAllocator
 {
-    // Create the allocator
+    // Create the allocator, passing the "real one" as parameter
     func create(allocator: IAllocator = null)->DebugAllocator
     {
         var result: retval
@@ -109,19 +109,19 @@ impl DebugAllocator
         return result
     }
 
-    // Initialize the allocator
+    // Initialize the allocator with the "real one" as parameter
     mtd init(allocator: IAllocator = null)
     {
         self.allocator = #self.allocator orelse @getcontext().allocator
     }
 
     // Returns true if there are some remaining allocations
-    mtd isEmpty() => first == null
+    mtd isEmpty() => firstAlloc == null
 
     // Output to the console the list of all allocated blocks (leaks)
     mtd printAllocated()
     {
-        scan := cast(*Header) first
+        scan := cast(*Header) firstAlloc
         @print(count, " block(s) for a total of ")
         __printDisplaySize(size)
         @print("\n")
@@ -163,7 +163,7 @@ impl DebugAllocator
     // Check all allocated pointers
     mtd checkAll()
     {
-        ptrHeader := cast(*Header) first
+        ptrHeader := cast(*Header) firstAlloc
         while ptrHeader
         {
             __checkOne(ptrHeader)
@@ -178,18 +178,6 @@ impl DebugAllocator
         var dbg: DebugAllocator
         dbg = create()
         @getcontext().allocator = dbg
-    }
-
-    // Check all allocated pointers taking the current contextual allocator
-    func cxtCheckAll()
-    {
-        y := @getcontext().allocator
-        x := @kindof(y)
-        if x == Swag.DebugAllocator
-        {
-            i := cast(*Swag.DebugAllocator) @dataof(@getcontext().allocator)
-            i.checkAll()
-        }
     }
 }
 
@@ -216,7 +204,7 @@ impl IAllocator for DebugAllocator
 
             // Unlink from allocated list
             if !ptrHeader.prev
-                self.first = ptrHeader.next
+                self.firstAlloc = ptrHeader.next
             else
                 ptrHeader.prev.next = ptrHeader.next
             if ptrHeader.next
@@ -243,11 +231,9 @@ impl IAllocator for DebugAllocator
             copyReq.size = freeSize
             allocator.alloc(&copyReq)
 
-            //checkAll()
-
         case FreeAll:
             allocator.alloc(request)
-            first = null
+            firstAlloc = null
             count = 0
             size = 0
 
@@ -272,7 +258,7 @@ impl IAllocator for DebugAllocator
                 if prevHeader
                 {
                     if !prevHeader.prev
-                        self.first = prevHeader.next
+                        self.firstAlloc = prevHeader.next
                     else
                         prevHeader.prev.next = prevHeader.next
                     if prevHeader.next
@@ -336,12 +322,10 @@ impl IAllocator for DebugAllocator
 
             // Link to list of allocated blocks
             header.prev = null
-            header.next = self.first
+            header.next = self.firstAlloc
             if header.next
                 header.next.prev = header
-            self.first = header
-
-            //checkAll()
+            self.firstAlloc = header
         }
     }
 }
