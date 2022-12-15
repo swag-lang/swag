@@ -54,7 +54,9 @@ void SemanticJob::checkDeprecated(SemanticContext* context, AstNode* identifier)
     }
 
     Diagnostic diag{identifier, Fmt(Err(Err0083), SymTable::getNakedKindName(symbol->kind), identifier->resolvedSymbolOverload->symbol->name.c_str()), DiagnosticLevel::Warning};
-    Diagnostic note1{node, Nte(Nte0031), DiagnosticLevel::Note};
+    Diagnostic note1{node, node->token, Nte(Nte0031), DiagnosticLevel::Note};
+    note1.showRange = false;
+
     if (v && v->text.empty())
     {
         context->report(diag, &note1);
@@ -210,7 +212,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         SWAG_ASSERT(destFuncDecl);
         diag = new Diagnostic{node, Fmt(Err(Err0004), destFuncDecl->token.ctext(), destFuncDecl->selectIf->token.ctext())};
         result0.push_back(diag);
-        note = new Diagnostic{destFuncDecl->selectIf, Fmt(Nte(Nte0007), destFuncDecl->selectIf->token.ctext()), DiagnosticLevel::Note};
+        note            = new Diagnostic{destFuncDecl->selectIf, Fmt(Nte(Nte0007), destFuncDecl->selectIf->token.ctext()), DiagnosticLevel::Note};
         note->showRange = false;
         result1.push_back(note);
         return;

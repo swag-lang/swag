@@ -1282,18 +1282,14 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 {
                     Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0107), overload->node->token.ctext(), ownerFct->getDisplayNameC())};
                     diag.hint = Hnt(Hnt0064);
-                    Diagnostic note{overload->node, Fmt(Nte(Nte0029), overload->node->token.ctext()), DiagnosticLevel::Note};
-                    note.showRange = false;
-                    return context->report(diag, &note);
+                    return context->report(diag, Diagnostic::hereIs(overload));
                 }
 
                 if (!(fctAttributes & ATTRIBUTE_TEST_FUNC) && (overload->node->attributeFlags & ATTRIBUTE_TEST_FUNC))
                 {
                     Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0108), overload->node->token.ctext(), ownerFct->getDisplayNameC())};
                     diag.hint = Hnt(Hnt0065);
-                    Diagnostic note{overload->node, Fmt(Nte(Nte0029), overload->node->token.ctext()), DiagnosticLevel::Note};
-                    note.showRange = false;
-                    return context->report(diag, &note);
+                    return context->report(diag, Diagnostic::hereIs(overload));
                 }
             }
         }

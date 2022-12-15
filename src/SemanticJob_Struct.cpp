@@ -142,8 +142,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     if (!typeInfo->isInterface())
     {
         Diagnostic diag{node->identifier, Fmt(Err(Err0646), node->identifier->token.ctext(), TypeInfo::getArticleKindName(typeInfo))};
-        Diagnostic note{node->identifier->resolvedSymbolOverload->node, Fmt(Nte(Nte0029), node->identifier->token.ctext()), DiagnosticLevel::Note};
-        return context->report(diag, &note);
+        return context->report(diag, Diagnostic::hereIs(node->identifier->resolvedSymbolOverload));
     }
 
     // Be sure the second identifier is a struct
@@ -151,8 +150,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     if (!typeInfo->isStruct())
     {
         Diagnostic diag{node->identifierFor, Fmt(Err(Err0648), node->identifierFor->token.ctext(), TypeInfo::getArticleKindName(typeInfo))};
-        Diagnostic note{node->identifierFor->resolvedSymbolOverload->node, Fmt(Nte(Nte0029), node->identifier->token.ctext()), DiagnosticLevel::Note};
-        return context->report(diag, &note);
+        return context->report(diag, Diagnostic::hereIs(node->identifierFor->resolvedSymbolOverload));
     }
 
     VectorNative<AstNode*>& childs = job->tmpNodes;
@@ -590,21 +588,21 @@ bool SemanticJob::checkImplScopes(SemanticContext* context, AstImpl* node, Scope
     // impl scope and corresponding identifier scope must be the same !
     if (scopeImpl != scope)
     {
-        Diagnostic note{node->identifier->resolvedSymbolOverload->node, Fmt(Nte(Nte0029), node->identifier->token.ctext()), DiagnosticLevel::Note};
+        Diagnostic* note = Diagnostic::hereIs(node->identifier->resolvedSymbolOverload);
         if ((scopeImpl->flags & SCOPE_FILE) && !(scope->flags & SCOPE_FILE))
         {
             Diagnostic diag{node->identifier, Fmt(Err(Err0659), node->identifier->token.ctext())};
-            return context->report(diag, &note);
+            return context->report(diag, note);
         }
 
         if ((scope->flags & SCOPE_FILE) && !(scopeImpl->flags & SCOPE_FILE))
         {
             Diagnostic diag{node->identifier, Fmt(Err(Err0660), node->identifier->token.ctext())};
-            return context->report(diag, &note);
+            return context->report(diag, note);
         }
 
         Diagnostic diag{node, Fmt(Err(Err0661), node->token.ctext(), scopeImpl->parentScope->getFullName().c_str(), node->token.ctext(), scope->parentScope->getFullName().c_str())};
-        return context->report(diag, &note);
+        return context->report(diag, note);
     }
 
     return true;
@@ -619,8 +617,7 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
     if (!typeInfo->isStruct() && !typeInfo->isEnum())
     {
         Diagnostic diag{node->identifier, Fmt(Err(Err0662), node->identifier->token.ctext(), TypeInfo::getArticleKindName(typeInfo))};
-        Diagnostic note{node->identifier->resolvedSymbolOverload->node, Fmt(Nte(Nte0029), node->identifier->token.ctext()), DiagnosticLevel::Note};
-        return context->report(diag, &note);
+        return context->report(diag, Diagnostic::hereIs(node->identifier->resolvedSymbolOverload));
     }
 
     auto typeIdentifier = node->identifier->resolvedSymbolOverload->typeInfo;

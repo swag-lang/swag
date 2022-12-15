@@ -577,7 +577,7 @@ void initErrors()
     SWAG_ERROR(Err0567, nullptr);
     SWAG_ERROR(Err0568, "unexpected affectation modifier `%s`, left and right types should be the same (`%s` and `%s` provided)");
     SWAG_ERROR(Err0569, "cannot affect an expression of type `void`");
-    SWAG_ERROR(Err0570, "`%s` operation is not allowed on type `any`");
+    SWAG_ERROR(Err0570, "unexpected operation `%s` on type `%s`");
     SWAG_ERROR(Err0571, "the affectation is not allowed on %s `%s`");
     SWAG_ERROR(Err0572, "the affectation is not allowed, `%s` is %s");
     SWAG_ERROR(Err0573, "unexpected operation on a tuple type");
@@ -715,7 +715,7 @@ void initErrors()
     SWAG_ERROR(Err0706, "the enum value `%s` of type `%s` should be explicitly initialized");
     SWAG_ERROR(Err0707, nullptr);
     SWAG_ERROR(Err0708, "the enum value `%s` is out of range of `u8`");
-    SWAG_ERROR(Err0709, "cannot deduce the flag value of `%s` because the previous value is not power of two");
+    SWAG_ERROR(Err0709, "cannot deduce the flag value of `%s` because the previous value is not a power of two");
     SWAG_ERROR(Err0710, "the enum value `%s` is out of range of `u16`");
     SWAG_ERROR(Err0711, nullptr);
     SWAG_ERROR(Err0712, "the enum value `%s` is out of range of `u32`");

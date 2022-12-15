@@ -326,24 +326,24 @@ bool SemanticJob::resolveType(SemanticContext* context)
                     symName->kind != SymbolKind::Struct &&
                     symName->kind != SymbolKind::Interface)
                 {
-                    Diagnostic diag{child->sourceFile, child->token, Fmt(Err(Err0017), child->token.ctext(), SymTable::getArticleKindName(symName->kind))};
-                    Diagnostic note{symOver->node, Fmt(Nte(Nte0029), symName->name.c_str()), DiagnosticLevel::Note};
+                    Diagnostic  diag{child->sourceFile, child->token, Fmt(Err(Err0017), child->token.ctext(), SymTable::getArticleKindName(symName->kind))};
+                    Diagnostic* note = Diagnostic::hereIs(symOver);
                     if (typeNode->ptrCount && symName->kind == SymbolKind::Variable)
                     {
                         if (symOver->typeInfo->isPointer())
                         {
                             Diagnostic note1{Fmt(Hlp(Hlp0005), symName->name.c_str(), symName->name.c_str()), DiagnosticLevel::Help};
                             diag.hint = Hnt(Hnt0024);
-                            return context->report(diag, &note1, &note);
+                            return context->report(diag, &note1, note);
                         }
                         else
                         {
                             diag.hint = Hnt(Hnt0024);
-                            return context->report(diag, &note);
+                            return context->report(diag, note);
                         }
                     }
 
-                    return context->report(diag, &note);
+                    return context->report(diag, note);
                 }
             }
         }
@@ -533,8 +533,7 @@ bool SemanticJob::checkPublicAlias(SemanticContext* context, AstNode* node)
             if (overload && !(overload->node->attributeFlags & ATTRIBUTE_PUBLIC) && !overload->node->sourceFile->isGenerated)
             {
                 Diagnostic diag{back, Fmt(Err(Err0025), back->token.ctext())};
-                Diagnostic note{overload->node, Fmt(Nte(Nte0029), node->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note};
-                return context->report(diag, &note);
+                return context->report(diag, Diagnostic::hereIs(overload));
             }
 
             node->ownerScope->addPublicNode(node);

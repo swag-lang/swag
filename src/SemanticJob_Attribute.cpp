@@ -136,8 +136,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
         auto       nakedName = AstNode::getKindName(checkNode);
         Diagnostic diag{oneAttribute, Fmt(Err(Err0583), oneAttribute->token.ctext(), specificMsg)};
         Diagnostic note1{checkNode, Fmt(Nte(Nte0019), nakedName.c_str()), DiagnosticLevel::Note};
-        Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, Fmt(Nte(Nte0025), oneAttribute->token.ctext()), DiagnosticLevel::Note};
-        return context->report(diag, &note1, &note2);
+        return context->report(diag, &note1, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload));
     }
     else
     {
@@ -145,16 +144,14 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
         if (nakedName == "<node>")
         {
             Diagnostic diag{oneAttribute, Fmt(Err(Err0586), oneAttribute->token.ctext())};
-            Diagnostic note1{oneAttribute->resolvedSymbolOverload->node, Fmt(Nte(Nte0025), oneAttribute->token.ctext()), DiagnosticLevel::Note};
-            return context->report(diag, &note1);
+            return context->report(diag, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload));
         }
         else
         {
             auto       nakedName1 = AstNode::getKindName(checkNode);
             Diagnostic diag{oneAttribute, Fmt(Err(Err0588), oneAttribute->token.ctext(), nakedName.c_str())};
             Diagnostic note1{checkNode, Fmt(Nte(Nte0026), nakedName1.c_str()), DiagnosticLevel::Note};
-            Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, Fmt(Nte(Nte0025), oneAttribute->token.ctext()), DiagnosticLevel::Note};
-            return context->report(diag, &note1, &note2);
+            return context->report(diag, &note1, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload));
         }
     }
 }
@@ -564,8 +561,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
         if (resolvedName->kind != SymbolKind::Attribute)
         {
             Diagnostic diag{identifier, Fmt(Err(Err0598), resolvedName->name.c_str())};
-            Diagnostic note{resolved->node, Fmt(Nte(Nte0029), resolvedName->name.c_str()), DiagnosticLevel::Note};
-            context->report(diag, &note);
+            context->report(diag, Diagnostic::hereIs(resolved));
             return false;
         }
 
@@ -576,8 +572,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
             if (!(typeInfo->attributeUsage & AttributeUsage::File))
             {
                 Diagnostic diag{identifier, Fmt(Err(Err0600), resolvedName->name.c_str())};
-                Diagnostic note{resolved->node, Fmt(Nte(Nte0029), resolvedName->name.c_str()), DiagnosticLevel::Note};
-                context->report(diag, &note);
+                context->report(diag, Diagnostic::hereIs(resolved));
                 return false;
             }
         }

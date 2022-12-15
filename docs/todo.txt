@@ -99,8 +99,6 @@ llvm debug, pas à jour
 CLEAN
 ****************************************
 
-- InheritResolvedSymbols
-
 
 
 ****************************************
