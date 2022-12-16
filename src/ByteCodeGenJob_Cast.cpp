@@ -110,10 +110,9 @@ bool ByteCodeGenJob::emitCastToInterface(ByteCodeGenContext* context, AstNode* e
     transformResultToLinear2(context, exprNode);
 
     // Need to make the pointer on the data
-    if (exprNode->extension->misc->castOffset)
+    if (exprNode->extension && exprNode->extension->misc && exprNode->extension->misc->castOffset)
     {
-        auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, exprNode->resultRegisterRC, 0, exprNode->resultRegisterRC);
-        SWAG_ASSERT(exprNode->extension && exprNode->extension->misc->castOffset != UINT32_MAX);
+        auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, exprNode->resultRegisterRC, 0, exprNode->resultRegisterRC);
         inst->b.u64 = exprNode->extension->misc->castOffset;
         inst->flags |= BCI_IMM_B;
     }
@@ -821,7 +820,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         return true;
     }
 
-    // Cast with to a pointer with an offset
+    // Cast to a pointer with an offset
     // When casting from one struct to another, with a 'using' on a field
     if (exprNode->semFlags & AST_SEM_USING)
     {
@@ -831,10 +830,9 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         node->resultRegisterRC   = exprNode->resultRegisterRC;
         exprNode->castedTypeInfo = nullptr;
 
-        if (exprNode->extension && exprNode->extension->misc->castOffset)
+        if (exprNode->extension && exprNode->extension->misc && exprNode->extension->misc->castOffset)
         {
-            auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
-            SWAG_ASSERT(exprNode->extension && exprNode->extension->misc->castOffset != 0xFFFFFFFF);
+            auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
             inst->b.u64 = exprNode->extension->misc->castOffset;
             inst->flags |= BCI_IMM_B;
         }

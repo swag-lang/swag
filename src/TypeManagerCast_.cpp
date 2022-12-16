@@ -1986,10 +1986,20 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
             auto toTypeStruct = CastTypeInfo<TypeInfoStruct>(convertTo, TypeInfoKind::Struct);
             bool hasChanged   = false;
 
+            // Not enough fields
             if (toTypeStruct->fields.size() > child->childs.size())
-                return context->report({child, Fmt(Err(Err0196), toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size())});
+            {
+                Diagnostic diag{child, Fmt(Err(Err0196), toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size())};
+                return context->report(diag);
+            }
+
+            // Too many fields
             if (toTypeStruct->fields.size() < child->childs.size())
-                return context->report({child, Fmt(Err(Err0197), toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size())});
+            {
+                Diagnostic diag{child->childs[toTypeStruct->fields.count], Fmt(Err(Err0197), toTypeStruct->getDisplayNameC(), toTypeStruct->fields.size(), child->childs.size())};
+                diag.hint = Hnt(Hnt0026);
+                return context->report(diag);
+            }
 
             auto count = toTypeStruct->fields.size();
             for (int j = 0; j < count; j++)
@@ -2009,7 +2019,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
 
                 // We use castOffset to store the offset between one field and one other, in order to collect later at
                 // the right position
-                childJ->allocateExtension(ExtensionKind::Collect);
+                childJ->allocateExtension(ExtensionKind::CastOffset);
                 childJ->extension->misc->castOffset = 0;
                 if (j)
                 {
@@ -2266,7 +2276,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
                 {
                     if (it.offset)
                     {
-                        fromNode->allocateExtension(ExtensionKind::Collect);
+                        fromNode->allocateExtension(ExtensionKind::CastOffset);
                         fromNode->extension->misc->castOffset = it.offset;
                         fromNode->castedTypeInfo              = fromNode->typeInfo;
                         fromNode->typeInfo                    = toType;
@@ -2280,7 +2290,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
                     fromNode->semFlags |= AST_SEM_DEREF_USING;
                 fromNode->semFlags |= AST_SEM_USING;
 
-                fromNode->allocateExtension(ExtensionKind::Collect);
+                fromNode->allocateExtension(ExtensionKind::CastOffset);
                 fromNode->extension->misc->castOffset = it.offset;
                 fromNode->castedTypeInfo              = fromNode->typeInfo;
                 fromNode->typeInfo                    = toType;
@@ -2430,13 +2440,13 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
     {
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
         {
-            // We will copy the value to the stack to be sure/ that the memory layout is correct, without relying on
+            // We will copy the value to the stack to be sure that the memory layout is correct, without relying on
             // registers being contiguous, and not being reallocated (by an optimize pass).
             // This is the same problem when casting to 'any'.
             // See ByteCodeGenJob::emitCastToNativeAny
             if (fromNode->ownerFct)
             {
-                fromNode->allocateExtension(ExtensionKind::Collect);
+                fromNode->allocateExtension(ExtensionKind::CastOffset);
                 fromNode->extension->misc->stackOffset = fromNode->ownerScope->startStackSize;
                 fromNode->ownerScope->startStackSize += 2 * sizeof(Register);
                 SemanticJob::setOwnerMaxStackSize(fromNode, fromNode->ownerScope->startStackSize);
@@ -2481,7 +2491,7 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
         {
             if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
             {
-                fromNode->allocateExtension(ExtensionKind::Collect);
+                fromNode->allocateExtension(ExtensionKind::CastOffset);
                 fromNode->extension->misc->castOffset = itfRef.fieldOffset;
                 fromNode->extension->misc->castItf    = itfRef.itf;
                 fromNode->castedTypeInfo              = fromType;

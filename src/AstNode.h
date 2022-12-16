@@ -231,6 +231,7 @@ enum class ExtensionKind
     StackSize,
     ExportNode,
     Collect,
+    CastOffset,
     Any,
     Misc,
 };
