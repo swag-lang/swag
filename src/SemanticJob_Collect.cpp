@@ -259,13 +259,14 @@ bool SemanticJob::collectLiteralsToSegment(JobContext* context, DataSegment* sto
             continue;
         }
 
+        // Offset has been forced
+        // Note that offset is +1 to be sure it has been initialized
+        if (child->extension && child->extension->misc && child->extension->misc->castOffset)
+            offset = baseOffset + child->extension->misc->castOffset - 1;
+
         SWAG_CHECK(storeToSegment(context, storageSegment, offset, child->computedValue, typeInfo, assignment));
 
-        // castOffset can store the padding between one field and one other, in case we collect for a struct
-        if (child->extension && child->extension->misc && child->extension->misc->castOffset)
-            offset += child->extension->misc->castOffset;
-        else
-            offset += child->typeInfo->sizeOf;
+        offset += child->typeInfo->sizeOf;
     }
 
     // If we are collecting a tuple, then take the size of it to compute the "next" offset.

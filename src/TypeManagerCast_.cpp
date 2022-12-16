@@ -2017,24 +2017,14 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
                     childJ->extension->misc->collectTypeInfo = toTypeStruct->fields[j]->typeInfo;
                 }
 
-                // We use castOffset to store the offset between one field and one other, in order to collect later at
-                // the right position
+                // We use castOffset to store the offset to the field, in order to collect later at the right position
+                // Note that offset is +1 to differentiate it from a "default" 0.
                 childJ->allocateExtension(ExtensionKind::CastOffset);
-                childJ->extension->misc->castOffset = 0;
-                if (j)
+                auto newOffset = (uint32_t) toTypeStruct->fields[j]->offset + 1;
+                if (childJ->extension->misc->castOffset != newOffset)
                 {
-                    child->childs[j - 1]->extension->misc->castOffset = toTypeStruct->fields[j]->offset - toTypeStruct->fields[j - 1]->offset;
-                    if (child->childs[j - 1]->extension->misc->castOffset != child->childs[j - 1]->typeInfo->sizeOf)
-                        hasChanged = true;
-                }
-
-                // For the last field, padding will be the difference between the field offset and the struct size
-                // (because struct sizeof is aligned too, and padding can be added at the end)
-                if (j == count - 1)
-                {
-                    childJ->extension->misc->castOffset = toTypeStruct->sizeOf - toTypeStruct->fields[j]->offset;
-                    if (childJ->extension->misc->castOffset != childJ->typeInfo->sizeOf)
-                        hasChanged = true;
+                    childJ->extension->misc->castOffset = newOffset;
+                    hasChanged                          = true;
                 }
             }
 
