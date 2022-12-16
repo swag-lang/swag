@@ -2006,8 +2006,32 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
             for (auto c : child->childs)
                 symContext.parameters.push_back(c);
             toTypeStruct->match(symContext);
-            if (symContext.result != MatchResult::Ok)
+            switch (symContext.result)
             {
+            case MatchResult::MissingNamedParameter:
+            {
+                auto       badParamIdx = symContext.badSignatureInfos.badSignatureParameterIdx;
+                auto       failedParam = child->childs[badParamIdx];
+                Diagnostic diag{failedParam, Fmt(Err(Err0006), SemanticJob::getTheNiceArgumentRank(badParamIdx + 1).c_str()), Hnt(Hnt0031)};
+                diag.setRange2(child->childs[badParamIdx - 1], Hnt(Hnt0030));
+                return context->report(diag);
+            }
+            case MatchResult::DuplicatedNamedParameter:
+            {
+                auto       failedParam = child->childs[symContext.badSignatureInfos.badSignatureParameterIdx];
+                Diagnostic diag{failedParam->extension->misc->isNamed, Fmt(Err(Err0011), failedParam->extension->misc->isNamed->token.ctext())};
+                diag.hint = Hnt(Hnt0009);
+                diag.setRange2(child->childs[symContext.badSignatureInfos.badSignatureNum1], Hnt(Hnt0059));
+                return context->report(diag);
+            }
+            case MatchResult::InvalidNamedParameter:
+            {
+                auto       failedParam = child->childs[symContext.badSignatureInfos.badSignatureParameterIdx];
+                Diagnostic diag{failedParam->extension->misc->isNamed, Fmt(Err(Err0008), failedParam->extension->misc->isNamed->token.ctext())};
+                if (toTypeStruct->declNode && !(toTypeStruct->declNode->flags & AST_GENERATED) && toTypeStruct->declNode->resolvedSymbolOverload)
+                    return context->report(diag, Diagnostic::hereIs(toTypeStruct->declNode->resolvedSymbolOverload));
+                return context->report(diag);
+            }
             }
 
             for (int j = 0; j < child->childs.size(); j++)

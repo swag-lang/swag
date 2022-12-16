@@ -223,7 +223,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         SWAG_ASSERT(failedParam);
         SWAG_ASSERT(badParamIdx >= 2);
         diag = new Diagnostic{failedParam, Fmt(Err(Err0006), getTheNiceArgumentRank(badParamIdx).c_str()), Hnt(Hnt0031)};
-        diag->setRange2(static_cast<AstFuncCallParam*>(callParameters->childs[badParamIdx - 2]), Hnt(Hnt0030));
+        diag->setRange2(callParameters->childs[badParamIdx - 2], Hnt(Hnt0030));
         result0.push_back(diag);
         return;
     }
@@ -236,7 +236,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         if (!(overload->node->flags & AST_GENERATED))
         {
             note = Diagnostic::hereIs(overload);
-            result1.push_back(note);
+            if (note)
+                result1.push_back(note);
         }
         return;
     }
@@ -248,7 +249,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         diag->hint = Hnt(Hnt0009);
         int other  = oneTry.symMatchContext.badSignatureInfos.badSignatureNum1;
         SWAG_ASSERT(other < callParameters->childs.size());
-        diag->setRange2(static_cast<AstFuncCallParam*>(callParameters->childs[other]), Hnt(Hnt0059));
+        diag->setRange2(callParameters->childs[other], Hnt(Hnt0059));
         result0.push_back(diag);
         return;
     }
