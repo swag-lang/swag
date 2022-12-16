@@ -711,7 +711,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (!ownerFct)
         {
             Diagnostic note{Hlp(Hlp0010), DiagnosticLevel::Help};
-            return context->report({node, Fmt(Err(Err0410), node->token.ctext())}, &note);
+            return context->report({node, node->token, Fmt(Err(Err0410), node->token.ctext())}, &note);
         }
     }
 

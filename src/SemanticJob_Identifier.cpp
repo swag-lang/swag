@@ -1930,8 +1930,9 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         if (justCheck)
             return false;
 
-        auto                      symbol = overloads[0]->overload->symbol;
-        Diagnostic                diag{node ? node : context->node, Fmt(Err(Err0115), SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+        auto                      symbol  = overloads[0]->overload->symbol;
+        auto                      errNode = node ? node : context->node;
+        Diagnostic                diag{errNode, errNode->token, Fmt(Err(Err0115), SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
         vector<const Diagnostic*> notes;
         for (auto match : genericMatches)
         {

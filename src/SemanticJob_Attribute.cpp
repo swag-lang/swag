@@ -560,7 +560,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
         auto resolved     = identifier->resolvedSymbolOverload;
         if (resolvedName->kind != SymbolKind::Attribute)
         {
-            Diagnostic diag{identifier, Fmt(Err(Err0598), resolvedName->name.c_str())};
+            Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0598), resolvedName->name.c_str())};
             context->report(diag, Diagnostic::hereIs(resolved));
             return false;
         }
@@ -571,7 +571,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
             if (!(typeInfo->attributeUsage & AttributeUsage::File))
             {
-                Diagnostic diag{identifier, Fmt(Err(Err0600), resolvedName->name.c_str())};
+                Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0600), resolvedName->name.c_str())};
                 context->report(diag, Diagnostic::hereIs(resolved));
                 return false;
             }

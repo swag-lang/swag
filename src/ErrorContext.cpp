@@ -97,21 +97,21 @@ void ErrorContext::fillContext(JobContext* context, const Diagnostic& diag, vect
                 level = DiagnosticLevel::Help;
                 break;
             case ErrorContextKind::Export:
-                msg = Fmt(Err(Err0111), name.c_str());
+                msg = Fmt(Nte(Nte0060), name.c_str());
                 break;
             case ErrorContextKind::Generic:
-                msg            = Fmt(Err(Err0112), name.c_str());
+                msg            = Fmt(Nte(Nte0061), name.c_str());
                 exp.locIsToken = true;
                 break;
             case ErrorContextKind::Inline:
-                msg            = Fmt(Err(Err0118), name.c_str());
+                msg            = Fmt(Nte(Nte0059), name.c_str());
                 exp.locIsToken = true;
                 break;
             case ErrorContextKind::SelectIf:
-                msg = Fmt(Err(Err0128), name.c_str());
+                msg = Fmt(Nte(Nte0054), name.c_str());
                 break;
             case ErrorContextKind::CheckIf:
-                msg = Fmt(Err(Err0129), name.c_str());
+                msg = Fmt(Nte(Nte0033), name.c_str());
                 break;
             case ErrorContextKind::HereIs:
                 note = Diagnostic::hereIs(exp.node->resolvedSymbolOverload);

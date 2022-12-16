@@ -1032,7 +1032,9 @@ bool ByteCodeGenJob::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r
     {
         if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_COPY)
         {
-            return context->report({from, Fmt(Err(Err0231), typeInfo->getDisplayNameC())});
+            Diagnostic diag{from, Fmt(Err(Err0231), typeInfo->getDisplayNameC())};
+            diag.hint = Diagnostic::isType(typeInfoStruct);
+            return context->report(diag);
         }
 
         PushICFlags sf(context, BCI_POST_COPYMOVE);
