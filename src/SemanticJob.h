@@ -555,11 +555,9 @@ struct SemanticJob : public Job
         return res;
     }
 
-    VectorNative<AstNode*>            tmpNodes;
     VectorNative<OneSymbolMatch>      cacheDependentSymbols;
     VectorNative<AlternativeScope>    cacheScopeHierarchy;
     VectorNative<AlternativeScopeVar> cacheScopeHierarchyVars;
-    VectorNative<AlternativeScope>    scopesToProcess;
     VectorNative<OneOverload>         cacheToSolveOverload;
     VectorNative<OneMatch*>           cacheMatches;
     VectorNative<OneMatch*>           cacheFreeMatches;
@@ -568,6 +566,8 @@ struct SemanticJob : public Job
     VectorNative<OneGenericMatch*>    cacheFreeGenericMatches;
     VectorNative<OneTryMatch*>        cacheListTryMatch;
     VectorNative<OneTryMatch*>        cacheFreeTryMatch;
+    VectorNative<AlternativeScope>    scopesToProcess;
+    VectorNative<AstNode*>            tmpNodes;
     SemanticContext                   context;
     Concat                            tmpConcat;
     AstIdentifierRef*                 tmpIdRef = nullptr;

@@ -10,6 +10,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
     // One boolean per used parameter
     context.doneParameters.set_size_clear((int) parameters.size());
     context.solvedParameters.set_size_clear((int) parameters.size());
+    context.solvedCallParameters.set_size_clear((int) parameters.size());
     context.resetTmp();
 
     // Solve unnamed parameters
@@ -19,15 +20,19 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
     {
         auto callParameter = context.parameters[i];
 
-        AstFuncCallParam* param = nullptr;
         if (callParameter->kind == AstNodeKind::FuncCallParam)
         {
-            param = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
+            auto param = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
             if (!param->namedParam.empty())
             {
                 context.hasNamedParameters = true;
                 break;
             }
+        }
+        else if (callParameter->extension && callParameter->extension->misc && !callParameter->extension->misc->isNamed.empty())
+        {
+            context.hasNamedParameters = true;
+            break;
         }
 
         if (i >= parameters.size() && !isAfterVariadic)
@@ -41,11 +46,13 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
 
         if (callParameter->semFlags & AST_SEM_AUTO_CODE_PARAM)
         {
-            context.cptResolved                         = (int) context.parameters.size();
-            param->resolvedParameter                    = parameters.back();
-            param->indexParam                           = (int) parameters.size() - 1;
-            context.doneParameters[param->indexParam]   = true;
-            context.solvedParameters[param->indexParam] = parameters.back();
+            context.cptResolved                             = (int) context.parameters.size();
+            auto param                                      = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
+            param->resolvedParameter                        = parameters.back();
+            param->indexParam                               = (int) parameters.size() - 1;
+            context.doneParameters[param->indexParam]       = true;
+            context.solvedParameters[param->indexParam]     = parameters.back();
+            context.solvedCallParameters[param->indexParam] = parameters.back();
             return;
         }
 
@@ -482,10 +489,14 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         }
 
         if (context.cptResolved < context.solvedParameters.size())
-            context.solvedParameters[context.cptResolved] = wantedParameter;
-
-        if (param)
         {
+            context.solvedParameters[context.cptResolved]     = wantedParameter;
+            context.solvedCallParameters[context.cptResolved] = wantedParameter;
+        }
+
+        if (callParameter->kind == AstNodeKind::FuncCallParam)
+        {
+            auto param               = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
             param->resolvedParameter = wantedParameter;
             param->indexParam        = context.cptResolved;
         }
@@ -542,10 +553,11 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
                 context.result = MatchResult::BadSignature;
             }
 
-            context.solvedParameters[j]      = wantedParameter;
-            callParameter->resolvedParameter = wantedParameter;
-            callParameter->indexParam        = j;
-            context.doneParameters[j]        = true;
+            context.solvedParameters[j]                  = wantedParameter;
+            context.solvedCallParameters[parameterIndex] = wantedParameter;
+            callParameter->resolvedParameter             = wantedParameter;
+            callParameter->indexParam                    = j;
+            context.doneParameters[j]                    = true;
             context.cptResolved++;
             return;
         }
@@ -571,12 +583,21 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
     auto callParameter = context.parameters[0];
     callParameter->parent->flags |= AST_MUST_SORT_CHILDS;
 
+    AstFuncCallParam fakeParam;
+    fakeParam.kind = AstNodeKind::FuncCallParam;
+
     auto startResolved = context.cptResolved;
     for (int i = startResolved; i < context.parameters.size(); i++)
     {
         callParameter = context.parameters[i];
+
         if (callParameter->kind != AstNodeKind::FuncCallParam)
-            continue;
+        {
+            fakeParam.typeInfo = callParameter->typeInfo;
+            SWAG_ASSERT(callParameter->extension && callParameter->extension->misc);
+            fakeParam.namedParam = callParameter->extension->misc->isNamed;
+            callParameter        = &fakeParam;
+        }
 
         auto param = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
 
@@ -584,10 +605,11 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
         // of the function
         if (param->semFlags & AST_SEM_AUTO_CODE_PARAM)
         {
-            context.cptResolved                         = (int) context.parameters.size();
-            param->resolvedParameter                    = parameters.back();
-            param->indexParam                           = (int) parameters.size() - 1;
-            context.solvedParameters[param->indexParam] = parameters.back();
+            context.cptResolved                             = (int) context.parameters.size();
+            param->resolvedParameter                        = parameters.back();
+            param->indexParam                               = (int) parameters.size() - 1;
+            context.solvedParameters[param->indexParam]     = parameters.back();
+            context.solvedCallParameters[param->indexParam] = parameters.back();
             break;
         }
 

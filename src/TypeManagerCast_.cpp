@@ -2001,26 +2001,36 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
                 return context->report(diag);
             }
 
-            auto count = toTypeStruct->fields.size();
-            for (int j = 0; j < count; j++)
+            SymbolMatchContext symContext;
+            symContext.semContext = context;
+            for (auto c : child->childs)
+                symContext.parameters.push_back(c);
+            toTypeStruct->match(symContext);
+            if (symContext.result != MatchResult::Ok)
             {
-                auto childJ  = child->childs[j];
+            }
+
+            for (int j = 0; j < child->childs.size(); j++)
+            {
+                auto           childJ = child->childs[j];
+                TypeInfoParam* fieldJ = symContext.solvedCallParameters[j];
+
                 auto oldType = childJ->typeInfo;
-                SWAG_CHECK(TypeManager::makeCompatibles(context, toTypeStruct->fields[j]->typeInfo, childJ->typeInfo, nullptr, childJ, castFlags | CASTFLAG_TRY_COERCE));
+                SWAG_CHECK(TypeManager::makeCompatibles(context, fieldJ->typeInfo, childJ->typeInfo, nullptr, childJ, castFlags | CASTFLAG_TRY_COERCE));
                 if (childJ->typeInfo != oldType)
                     hasChanged = true;
 
                 // Collect array to slice : will need special treatment when collecting constants
-                if (childJ->typeInfo->isListArray() && toTypeStruct->fields[j]->typeInfo->isSlice())
+                if (childJ->typeInfo->isListArray() && fieldJ->typeInfo->isSlice())
                 {
                     childJ->allocateExtension(ExtensionKind::Collect);
-                    childJ->extension->misc->collectTypeInfo = toTypeStruct->fields[j]->typeInfo;
+                    childJ->extension->misc->collectTypeInfo = fieldJ->typeInfo;
                 }
 
                 // We use castOffset to store the offset to the field, in order to collect later at the right position
                 // Note that offset is +1 to differentiate it from a "default" 0.
                 childJ->allocateExtension(ExtensionKind::CastOffset);
-                auto newOffset = (uint32_t) toTypeStruct->fields[j]->offset + 1;
+                auto newOffset = (uint32_t) fieldJ->offset + 1;
                 if (childJ->extension->misc->castOffset != newOffset)
                 {
                     childJ->extension->misc->castOffset = newOffset;
@@ -3251,8 +3261,8 @@ bool TypeManager::convertLiteralTupleToStructVar(SemanticContext* context, TypeI
         oneChild->flags |= AST_NO_BYTECODE | AST_NO_SEMANTIC;
         if (oneChild->kind == AstNodeKind::Identifier)
             oneChild->specFlags |= AST_SPEC_IDENTIFIER_NO_INLINE;
-        if (oneChild->flags & AST_IS_NAMED)
-            oneParam->namedParam = oneChild->token.text;
+        if (oneChild->extension && oneChild->extension->misc)
+            oneParam->namedParam = oneChild->extension->misc->isNamed;
 
         // If this is for a return, remember it, in order to make a move or a copy
         if ((typeStruct->isTuple()) && fromNode->parent->kind == AstNodeKind::Return)

@@ -1056,16 +1056,16 @@ bool SyntaxJob::doExpressionListTuple(AstNode* parent, AstNode** result)
                 SWAG_VERIFY(paramExpression->kind == AstNodeKind::IdentifierRef, error(paramExpression, Err(Err0448)));
                 SWAG_CHECK(checkIsSingleIdentifier(paramExpression, "as a tuple field name"));
                 SWAG_CHECK(checkIsValidVarName(paramExpression->childs.back()));
-                auto name            = paramExpression->childs.back()->token.text;
                 auto namedExpression = paramExpression->childs.back();
                 SWAG_CHECK(eatToken());
                 if (token.id == TokenId::SymLeftCurly)
                     SWAG_CHECK(doExpressionListTuple(initNode, &paramExpression));
                 else
                     SWAG_CHECK(doExpression(initNode, EXPR_FLAG_NONE, &paramExpression));
-                paramExpression->token.startLocation = namedExpression->token.startLocation;
-                paramExpression->token.text          = name;
-                paramExpression->flags |= AST_IS_NAMED;
+
+                paramExpression->allocateExtension(ExtensionKind::IsNamed);
+                paramExpression->extension->misc->isNamed = namedExpression->token.text;
+                paramExpression->token.startLocation      = namedExpression->token.startLocation;
             }
             else
             {
@@ -1353,7 +1353,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result, AstWith* w
         if (leftNode->kind == AstNodeKind::MultiIdentifier)
         {
             savedtoken.startLocation = token.startLocation;
-            auto parentNode = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
+            auto parentNode          = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
             if (result)
                 *result = parentNode;
 
@@ -1409,7 +1409,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result, AstWith* w
         else if (leftNode->kind == AstNodeKind::MultiIdentifierTuple)
         {
             savedtoken.startLocation = token.startLocation;
-            auto parentNode = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
+            auto parentNode          = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
             if (result)
                 *result = parentNode;
 

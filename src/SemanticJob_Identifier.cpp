@@ -40,8 +40,7 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
         node->typeInfo               = childBack->typeInfo;
     }
 
-    if (!(node->flags & AST_IS_NAMED))
-        node->token.text = childBack->token.text;
+    node->token.text  = childBack->token.text;
     node->byteCodeFct = ByteCodeGenJob::emitIdentifierRef;
 
     // Flag inheritance

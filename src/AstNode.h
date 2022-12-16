@@ -233,6 +233,7 @@ enum class ExtensionKind
     Collect,
     CastOffset,
     Any,
+    IsNamed,
     Misc,
 };
 
@@ -320,6 +321,7 @@ struct AstNode
 
     struct ExtensionMisc
     {
+        Utf8                              isNamed;
         SharedMutex                       mutexAltScopes;
         VectorNative<AlternativeScope>    alternativeScopes;
         VectorNative<AlternativeScopeVar> alternativeScopesVars;

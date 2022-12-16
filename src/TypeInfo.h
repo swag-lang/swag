@@ -160,6 +160,7 @@ struct SymbolMatchContext
         genericParameters.clear();
         parameters.clear();
         solvedParameters.clear();
+        solvedCallParameters.clear();
         doneParameters.clear();
         genericParametersCallTypes.clear();
         genericParametersGenTypes.clear();
@@ -183,6 +184,7 @@ struct SymbolMatchContext
     VectorNative<AstNode*>                     genericParameters;
     VectorNative<AstNode*>                     parameters;
     VectorNative<TypeInfoParam*>               solvedParameters;
+    VectorNative<TypeInfoParam*>               solvedCallParameters;
     VectorNative<bool>                         doneParameters;
     VectorNative<TypeInfo*>                    genericParametersCallTypes;
     VectorNative<TypeInfo*>                    genericParametersGenTypes;
