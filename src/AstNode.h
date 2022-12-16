@@ -321,7 +321,6 @@ struct AstNode
 
     struct ExtensionMisc
     {
-        Utf8                              isNamed;
         SharedMutex                       mutexAltScopes;
         VectorNative<AlternativeScope>    alternativeScopes;
         VectorNative<AlternativeScopeVar> alternativeScopesVars;
@@ -334,6 +333,7 @@ struct AstNode
         AstNode*        exportNode                   = nullptr;
         DataSegment*    anyTypeSegment               = nullptr;
         TypeInfoParam*  castItf                      = nullptr;
+        AstNode*        isNamed                      = nullptr;
 
         uint32_t castOffset    = 0;
         uint32_t stackOffset   = 0;

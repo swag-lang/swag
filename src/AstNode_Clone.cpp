@@ -93,6 +93,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
             extension->misc->anyTypeSegment               = from->extension->misc->anyTypeSegment;
             extension->misc->anyTypeOffset                = from->extension->misc->anyTypeOffset;
             extension->misc->alternativeScopes            = from->extension->misc->alternativeScopes;
+            extension->misc->isNamed                      = from->extension->misc->isNamed;
         }
 
         if (from->extension->semantic)

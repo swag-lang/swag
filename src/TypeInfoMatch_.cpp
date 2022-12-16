@@ -29,7 +29,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                 break;
             }
         }
-        else if (callParameter->extension && callParameter->extension->misc && !callParameter->extension->misc->isNamed.empty())
+        else if (callParameter->extension && callParameter->extension->misc && callParameter->extension->misc->isNamed)
         {
             context.hasNamedParameters = true;
             break;
@@ -595,7 +595,7 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
         {
             fakeParam.typeInfo = callParameter->typeInfo;
             SWAG_ASSERT(callParameter->extension && callParameter->extension->misc);
-            fakeParam.namedParam = callParameter->extension->misc->isNamed;
+            fakeParam.namedParam = callParameter->extension->misc->isNamed->token.text;
             callParameter        = &fakeParam;
         }
 
