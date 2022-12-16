@@ -268,6 +268,11 @@ bool SemanticJob::collectLiteralsToSegment(JobContext* context, DataSegment* sto
             offset += child->typeInfo->sizeOf;
     }
 
+    // If we are collecting a tuple, then take the size of it to compute the "next" offset.
+    // In case there's a padding here, because of the cast to struct.
+    if (node->typeInfo && node->typeInfo->kind == TypeInfoKind::TypeListTuple)
+        offset = baseOffset + node->typeInfo->sizeOf;
+
     return true;
 }
 

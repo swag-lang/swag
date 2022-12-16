@@ -2045,6 +2045,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
             {
                 SemanticJob::computeExpressionListTupleType(context, child);
                 SWAG_ASSERT(context->result == ContextResult::Done);
+                child->typeInfo->sizeOf = toTypeStruct->sizeOf;
             }
         }
 

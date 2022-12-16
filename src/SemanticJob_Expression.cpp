@@ -55,11 +55,7 @@ bool SemanticJob::computeExpressionListTupleType(SemanticContext* context, AstNo
         }
 
         typeInfo->name += typeParam->typeInfo->name;
-
-        if (child->extension && child->extension->misc && child->extension->misc->castOffset)
-            typeInfo->sizeOf += child->extension->misc->castOffset;
-        else
-            typeInfo->sizeOf += typeParam->typeInfo->sizeOf;
+        typeInfo->sizeOf += typeParam->typeInfo->sizeOf;
 
         if (!(child->flags & AST_CONST_EXPR))
             node->flags &= ~AST_CONST_EXPR;
