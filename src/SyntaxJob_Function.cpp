@@ -124,8 +124,8 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result
             {
                 if (paramExpression->kind != AstNodeKind::IdentifierRef || paramExpression->childs.size() != 1)
                     return Report::report({paramExpression, Fmt(Err(Err0403), token.ctext())});
-                param->namedParamNode = paramExpression->childs.front();
-                param->namedParam     = param->namedParamNode->token.text;
+                param->allocateExtension(ExtensionKind::IsNamed);
+                param->extension->misc->isNamed = paramExpression->childs.front();
                 SWAG_CHECK(eatToken());
                 SWAG_CHECK(doExpression(param, EXPR_FLAG_NONE));
             }

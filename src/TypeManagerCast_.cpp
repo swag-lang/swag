@@ -3261,8 +3261,12 @@ bool TypeManager::convertLiteralTupleToStructVar(SemanticContext* context, TypeI
         oneChild->flags |= AST_NO_BYTECODE | AST_NO_SEMANTIC;
         if (oneChild->kind == AstNodeKind::Identifier)
             oneChild->specFlags |= AST_SPEC_IDENTIFIER_NO_INLINE;
+
         if (oneChild->extension && oneChild->extension->misc && oneChild->extension->misc->isNamed)
-            oneParam->namedParam = oneChild->extension->misc->isNamed->token.text;
+        {
+            oneParam->allocateExtension(ExtensionKind::IsNamed);
+            oneParam->extension->misc->isNamed = oneChild->extension->misc->isNamed;
+        }
 
         // If this is for a return, remember it, in order to make a move or a copy
         if ((typeStruct->isTuple()) && fromNode->parent->kind == AstNodeKind::Return)

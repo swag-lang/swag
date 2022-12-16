@@ -20,16 +20,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
     {
         auto callParameter = context.parameters[i];
 
-        if (callParameter->kind == AstNodeKind::FuncCallParam)
-        {
-            auto param = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
-            if (!param->namedParam.empty())
-            {
-                context.hasNamedParameters = true;
-                break;
-            }
-        }
-        else if (callParameter->extension && callParameter->extension->misc && callParameter->extension->misc->isNamed)
+        if (callParameter->extension && callParameter->extension->misc && callParameter->extension->misc->isNamed)
         {
             context.hasNamedParameters = true;
             break;
@@ -510,7 +501,10 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
     for (int j = 0; j < parameters.size(); j++)
     {
         auto wantedParameter = parameters[j];
-        if (parameters[j]->namedParam == callParameter->namedParam)
+        if (callParameter->extension &&
+            callParameter->extension->misc &&
+            callParameter->extension->misc->isNamed &&
+            parameters[j]->namedParam == callParameter->extension->misc->isNamed->token.text)
         {
             if (context.doneParameters[j])
             {
@@ -593,10 +587,10 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
 
         if (callParameter->kind != AstNodeKind::FuncCallParam)
         {
-            fakeParam.typeInfo = callParameter->typeInfo;
             SWAG_ASSERT(callParameter->extension && callParameter->extension->misc);
-            fakeParam.namedParam = callParameter->extension->misc->isNamed->token.text;
-            callParameter        = &fakeParam;
+            fakeParam.typeInfo  = callParameter->typeInfo;
+            fakeParam.extension = callParameter->extension;
+            callParameter       = &fakeParam;
         }
 
         auto param = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
@@ -613,7 +607,7 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
             break;
         }
 
-        if (param->namedParam.empty())
+        if (!param->extension || !param->extension->misc || !param->extension->misc->isNamed)
         {
             context.badSignatureInfos.badSignatureParameterIdx = i;
             context.result                                     = MatchResult::MissingNamedParameter;

@@ -968,8 +968,17 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     if (node->flags & AST_GENERATED && !(node->flags & AST_GENERATED_USER))
         return true;
 
+    // Preprend some stuff
     if (node->flags & AST_FORCE_TYPE)
+    {
         concat.addString("#type ");
+    }
+
+    if (node->extension && node->extension->misc && node->extension->misc->isNamed)
+    {
+        concat.addString(node->extension->misc->isNamed->token.text);
+        concat.addChar(':');
+    }
 
     switch (node->kind)
     {
@@ -1766,14 +1775,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::FuncCallParam:
     {
-        auto funcParam = CastAst<AstFuncCallParam>(node, AstNodeKind::FuncCallParam);
-        if (!funcParam->namedParam.empty())
-        {
-            concat.addString(funcParam->namedParam);
-            concat.addChar(':');
-        }
-
-        SWAG_CHECK(outputNode(context, concat, funcParam->childs.front()));
+        SWAG_CHECK(outputNode(context, concat, node->childs.front()));
         break;
     }
 

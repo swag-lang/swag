@@ -230,8 +230,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
     case MatchResult::InvalidNamedParameter:
     {
-        SWAG_ASSERT(failedParam);
-        diag = new Diagnostic{failedParam->namedParamNode ? failedParam->namedParamNode : failedParam, Fmt(Err(Err0008), failedParam->namedParam.c_str())};
+        SWAG_ASSERT(failedParam && failedParam->extension && failedParam->extension->misc && failedParam->extension->misc->isNamed);
+        diag = new Diagnostic{failedParam->extension->misc->isNamed, Fmt(Err(Err0008), failedParam->extension->misc->isNamed->token.ctext())};
         result0.push_back(diag);
         if (!(overload->node->flags & AST_GENERATED))
         {
@@ -243,8 +243,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
     case MatchResult::DuplicatedNamedParameter:
     {
-        SWAG_ASSERT(failedParam);
-        diag       = new Diagnostic{failedParam->namedParamNode ? failedParam->namedParamNode : failedParam, Fmt(Err(Err0011), failedParam->namedParam.c_str())};
+        SWAG_ASSERT(failedParam && failedParam->extension && failedParam->extension->misc && failedParam->extension->misc->isNamed);
+        diag       = new Diagnostic{failedParam->extension->misc->isNamed, Fmt(Err(Err0011), failedParam->extension->misc->isNamed->token.ctext())};
         diag->hint = Hnt(Hnt0009);
         int other  = oneTry.symMatchContext.badSignatureInfos.badSignatureNum1;
         SWAG_ASSERT(other < callParameters->childs.size());

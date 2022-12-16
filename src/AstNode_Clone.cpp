@@ -572,8 +572,6 @@ AstNode* AstFuncCallParam::clone(CloneContext& context)
     // Order of childs is correct, so remove flag
     newNode->flags &= ~AST_REVERSE_SEMANTIC;
 
-    newNode->namedParam        = namedParam;
-    newNode->namedParamNode    = namedParamNode;
     newNode->resolvedParameter = resolvedParameter;
     newNode->indexParam        = indexParam;
     return newNode;

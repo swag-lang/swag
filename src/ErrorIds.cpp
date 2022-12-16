@@ -996,7 +996,7 @@ void initErrors()
     SWAG_ERROR(Hnt0028, "this is a literal and should be a type");
     SWAG_ERROR(Hnt0029, "this is a parameter");
     SWAG_ERROR(Hnt0030, "this argument is named");
-    SWAG_ERROR(Hnt0031, "this one should be");
+    SWAG_ERROR(Hnt0031, "this argument has a missing name");
     SWAG_ERROR(Hnt0032, "this type is `%s` (could be casted with `cast(%s)`)");
     SWAG_ERROR(Hnt0033, "this evaluates to 0");
     SWAG_ERROR(Hnt0034, "this returns nothing");

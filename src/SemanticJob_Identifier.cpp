@@ -669,7 +669,8 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
 
                 // Make it a named param, in case some other default "normal" parameters are before (because in that case
                 // we let the emitCall to deal with those default parameters)
-                newParam->namedParam = funcParam->token.text;
+                newParam->allocateExtension(ExtensionKind::IsNamed);
+                newParam->extension->misc->isNamed = funcParam;
 
                 newParam->indexParam = i;
                 newParam->flags |= AST_GENERATED;

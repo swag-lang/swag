@@ -494,10 +494,7 @@ struct AstFuncCallParam : public AstNode
 {
     AstNode* clone(CloneContext& context);
 
-    Utf8 namedParam;
-
     AstReturn*     autoTupleReturn   = nullptr;
-    AstNode*       namedParamNode    = nullptr;
     TypeInfoParam* resolvedParameter = nullptr;
 
     int indexParam = 0;
