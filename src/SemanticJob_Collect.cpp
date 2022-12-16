@@ -215,6 +215,17 @@ bool SemanticJob::collectStructLiterals(JobContext* context, DataSegment* storag
 
 bool SemanticJob::collectLiteralsToSegment(JobContext* context, DataSegment* storageSegment, uint32_t baseOffset, uint32_t& offset, AstNode* node)
 {
+    // If we are collecting an expression list for a struct, then we must first collect all struct default
+    // values if every fields are not covered
+    if (node->typeInfo && node->typeInfo->kind == TypeInfoKind::TypeListTuple)
+    {
+        auto exprNode = CastAst<AstExpressionList>(node, AstNodeKind::ExpressionList);
+        if (exprNode->castToStruct)
+        {
+            SWAG_CHECK(storeToSegment(context, storageSegment, baseOffset, nullptr, exprNode->castToStruct, nullptr));
+        }
+    }
+
     for (auto child : node->childs)
     {
         auto typeInfo = child->typeInfo;

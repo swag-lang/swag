@@ -1983,18 +1983,18 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
         // Expression list inside another expression list (like a struct inside an array)
         if (child && child->kind == AstNodeKind::ExpressionList && convertTo->isStruct())
         {
-            auto toTypeStruct = CastTypeInfo<TypeInfoStruct>(convertTo, TypeInfoKind::Struct);
-            bool hasChanged   = false;
+            auto exprNode          = CastAst<AstExpressionList>(child, AstNodeKind::ExpressionList);
+            auto toTypeStruct      = CastTypeInfo<TypeInfoStruct>(convertTo, TypeInfoKind::Struct);
+            exprNode->castToStruct = toTypeStruct;
+
+            bool hasChanged = false;
 
             // Not enough fields
             if (toTypeStruct->fields.size() > child->childs.size())
-            {
-                Diagnostic diag{child, Fmt(Err(Err0196), toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size())};
-                return context->report(diag);
-            }
+                exprNode->castToStruct = toTypeStruct;
 
             // Too many fields
-            if (toTypeStruct->fields.size() < child->childs.size())
+            else if (toTypeStruct->fields.size() < child->childs.size())
             {
                 Diagnostic diag{child->childs[toTypeStruct->fields.count], Fmt(Err(Err0197), toTypeStruct->getDisplayNameC(), toTypeStruct->fields.size(), child->childs.size())};
                 diag.hint = Hnt(Hnt0026);

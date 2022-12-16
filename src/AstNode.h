@@ -725,6 +725,7 @@ struct AstIntrinsicProp : public AstNode
 
 struct AstExpressionList : public AstNode
 {
+    TypeInfo* castToStruct = nullptr;
 };
 
 const uint32_t STRUCTFLAG_UNION     = 0x00000001;

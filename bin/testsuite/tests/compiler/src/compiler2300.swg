@@ -1,5 +1,4 @@
-
-#global testerror
+//#global testerror
 
 struct Range16
 {
