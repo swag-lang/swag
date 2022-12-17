@@ -90,6 +90,7 @@ struct CommandLine
     string buildCfgOptimSpeed  = "default";
     string buildCfgOptimSize   = "default";
     string buildCfgStackTrace  = "default";
+    string buildCfgDebugAlloc  = "default";
 
     BackendTarget target;
 

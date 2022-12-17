@@ -117,6 +117,8 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
         buildCfg.safetyGuards = g_CommandLine->buildCfgSafety == "true" ? 0xFFFFFFFF'FFFFFFFF : 0;
     if (g_CommandLine->buildCfgStackTrace != "default")
         buildCfg.stackTrace = g_CommandLine->buildCfgStackTrace == "true" ? true : false;
+    if (g_CommandLine->buildCfgDebugAlloc != "default")
+        buildCfg.debugAllocator = g_CommandLine->buildCfgDebugAlloc == "true" ? true : false;
 
     computePublicPath();
 }
