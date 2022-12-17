@@ -988,6 +988,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     case SymbolKind::Struct:
     case SymbolKind::Interface:
+    {
         if (!(overload->flags & OVERLOAD_IMPL_IN_STRUCT))
             SWAG_CHECK(setupIdentifierRef(context, identifier, identifier->typeInfo));
         parent->startScope = CastTypeInfo<TypeInfoStruct>(typeAlias, typeAlias->kind)->scope;
@@ -1003,6 +1004,25 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             return context->report(diag, &note);
         }
 
+        // Optim if we have var = Struct{}
+        // In that case, no need to generate a temporary variable. We just consider Struct{} as the type definition
+        // of 'var'
+        bool canOptimAffect = false;
+        if (identifier->callParameters && !(identifier->flags & AST_GENERATED))
+        {
+            if (!(identifier->flags & AST_IN_TYPE_VAR_DECLARATION) && !(identifier->flags & AST_IN_FUNC_DECL_PARAMS))
+            {
+                if (identifier->parent->parent->kind == AstNodeKind::VarDecl || identifier->parent->parent->kind == AstNodeKind::ConstDecl)
+                {
+                    auto varNode = CastAst<AstVarDecl>(identifier->parent->parent, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+                    if (varNode->assignment == identifier->parent && !varNode->type)
+                    {
+                        canOptimAffect = true;
+                    }
+                }
+            }
+        }
+
         // Need to make all types compatible, in case a cast is necessary
         if (identifier->callParameters)
         {
@@ -1014,14 +1034,10 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 int  idx      = nodeCall->indexParam;
                 if (idx < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[idx])
                 {
-                    if (!TypeManager::makeCompatibles(context,
-                                                      oneMatch.solvedParameters[idx]->typeInfo,
-                                                      nullptr,
-                                                      nodeCall,
-                                                      CASTFLAG_TRY_COERCE | CASTFLAG_FORCE_UNCONST | CASTFLAG_PTR_REF))
-                    {
-                        return false;
-                    }
+                    uint32_t castFlags = CASTFLAG_TRY_COERCE | CASTFLAG_FORCE_UNCONST | CASTFLAG_PTR_REF;
+                    if (canOptimAffect)
+                        castFlags |= CASTFLAG_NO_TUPLE_TO_STRUCT;
+                    SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters[idx]->typeInfo, nullptr, nodeCall, castFlags));
                 }
             }
         }
@@ -1033,9 +1049,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             {
                 if (identifier->parent->parent->kind == AstNodeKind::VarDecl || identifier->parent->parent->kind == AstNodeKind::ConstDecl)
                 {
-                    // Optim if we have var = Struct{}
-                    // In that case, no need to generate a temporary variable. We just consider Struct{} as the type definition
-                    // of 'var'
                     auto varNode = CastAst<AstVarDecl>(identifier->parent->parent, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
                     if (varNode->assignment == identifier->parent)
                     {
@@ -1058,7 +1071,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                         }
                     }
                 }
-                else if (identifier->parent->parent->kind == AstNodeKind::TypeExpression && identifier->parent->parent->specFlags & AST_SPEC_TYPEEXPRESSION_DONEGEN)
+                else if (identifier->parent->parent->kind == AstNodeKind::TypeExpression &&
+                         identifier->parent->parent->specFlags & AST_SPEC_TYPEEXPRESSION_DONEGEN)
                 {
                     return true;
                 }
@@ -1069,6 +1083,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
 
         break;
+    }
 
     case SymbolKind::Variable:
     {

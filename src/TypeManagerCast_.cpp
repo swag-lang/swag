@@ -3460,31 +3460,34 @@ bool TypeManager::makeCompatibles(SemanticContext* context, AstNode* leftNode, A
 bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, AstNode* toNode, AstNode* fromNode, uint32_t castFlags)
 {
     // convert {...} expression list to a structure : this will create a variable, with parameters
-    SWAG_ASSERT(fromNode->typeInfo);
-    auto fromType = concreteType(fromNode->typeInfo, CONCRETE_ALIAS);
-    if (fromType->isListTuple())
+    if (!(castFlags & CASTFLAG_NO_TUPLE_TO_STRUCT))
     {
-        bool convert = false;
-        if (toType->isStruct())
-            convert = true;
-
-        if (toType->isPointerRef() && toType->isConst())
+        SWAG_ASSERT(fromNode->typeInfo);
+        auto fromType = concreteType(fromNode->typeInfo, CONCRETE_ALIAS);
+        if (fromType->isListTuple())
         {
-            auto ptrRef = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
-            if (ptrRef->pointedType->isStruct())
-            {
-                toType  = ptrRef->pointedType;
+            bool convert = false;
+            if (toType->isStruct())
                 convert = true;
+
+            if (toType->isPointerRef() && toType->isConst())
+            {
+                auto ptrRef = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
+                if (ptrRef->pointedType->isStruct())
+                {
+                    toType  = ptrRef->pointedType;
+                    convert = true;
+                }
             }
-        }
 
-        if (fromNode->parent->kind == AstNodeKind::FuncDeclParam)
-            convert = false;
+            if (fromNode->parent->kind == AstNodeKind::FuncDeclParam)
+                convert = false;
 
-        if (convert)
-        {
-            SWAG_CHECK(convertLiteralTupleToStructVar(context, toType, fromNode));
-            return true;
+            if (convert)
+            {
+                SWAG_CHECK(convertLiteralTupleToStructVar(context, toType, fromNode));
+                return true;
+            }
         }
     }
 
