@@ -404,6 +404,11 @@ func __setupRuntime()
     @getcontext().tempAllocator.setup()
 }
 
+func __closeRuntime()
+{
+    __exit()
+}
+
 ////////////////////////////////////////////////////////////
 func __seterr(value: string)
 {

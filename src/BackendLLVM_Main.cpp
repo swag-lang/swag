@@ -260,7 +260,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     }
 
     // Call exit
-    emitCall(buildParameters, module, g_LangSpec->name__exit, nullptr, allocT, {}, {});
+    emitCall(buildParameters, module, g_LangSpec->name__closeRuntime, nullptr, allocT, {}, {});
 
     builder.CreateRetVoid();
     return true;

@@ -25,6 +25,7 @@ struct LanguageSpec
     Utf8 name_getTypeTable;
 
     Utf8 name__setupRuntime;
+    Utf8 name__closeRuntime;
     Utf8 name__panic;
     Utf8 name__pusherr;
     Utf8 name__poperr;
@@ -37,7 +38,6 @@ struct LanguageSpec
     Utf8 name__initStackTrace;
     Utf8 name__stackTrace;
     Utf8 name__loaddll;
-    Utf8 name__exit;
     Utf8 name__checkAny;
 
     Utf8 name_memcpy;

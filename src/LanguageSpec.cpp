@@ -12,6 +12,7 @@ void LanguageSpec::setupNames()
     name_getTypeTable  = "__%s_getTypeTable";
 
     name__setupRuntime   = "__setupRuntime";
+    name__closeRuntime   = "__closeRuntime";
     name__panic          = "__panic";
     name__pusherr        = "__pusherr";
     name__poperr         = "__poperr";
@@ -24,7 +25,6 @@ void LanguageSpec::setupNames()
     name__initStackTrace = "__initStackTrace";
     name__stackTrace     = "__stackTrace";
     name__loaddll        = "__loaddll";
-    name__exit           = "__exit";
     name__checkAny       = "__checkAny";
 
     name_swag = "swag";

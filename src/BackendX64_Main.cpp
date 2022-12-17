@@ -202,7 +202,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         emitCall(pp, nameFct);
     }
 
-    emitCall(pp, g_LangSpec->name__exit);
+    emitCall(pp, g_LangSpec->name__closeRuntime);
 
     pp.emit_Clear64(RAX);
     pp.emit_Add32_RSP(40);
