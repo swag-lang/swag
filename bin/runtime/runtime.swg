@@ -399,13 +399,30 @@ func @args()->const [..] string
 }
 
 ////////////////////////////////////////////////////////////
-func __setupRuntime()
+var __debugAlloc:   DebugAllocator
+var __runtimeFlags  = RuntimeFlags.Zero
+
+func __setupRuntime(flags: RuntimeFlags)
 {
     @getcontext().tempAllocator.setup()
+
+    __runtimeFlags = flags
+    if __runtimeFlags & .DebugAllocator
+    {
+        __debugAlloc.init()
+        @getcontext().allocator = __debugAlloc
+    }
 }
 
 func __closeRuntime()
 {
+    @getcontext().tempAllocator.release()
+
+    if __runtimeFlags & .DebugAllocator
+    {
+        //__debugAlloc.printLeaks()
+    }
+
     __exit()
 }
 

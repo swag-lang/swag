@@ -107,7 +107,10 @@ impl IAllocator for ScratchAllocator
 
             // If the pointer is in the buffer, then we are done. We cannot free.
             if request.address >= block and request.address < block + capacity
+            {
+                request.address = null
                 break
+            }
 
             // Otherwise we assume it's a leak. We unlink it, and free it with
             // the allocator
@@ -121,7 +124,7 @@ impl IAllocator for ScratchAllocator
                 leak.next.prev = leak.prev
             totalLeak -= leak.size - @sizeof(LeakHeader)
             free(leak, leak.size)
-            break
+            request.address = null
 
         case FreeAll:
             freeAll();

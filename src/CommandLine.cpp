@@ -41,13 +41,13 @@ bool CommandLine::check()
     {
         if (target.os != SwagTargetOs::Windows)
         {
-            Report::error(Fmt(Err(Err0522), Backend::GetOsName(target)));
+            Report::error(Fmt(Err(Err0522), Backend::getOsName(target)));
             return false;
         }
 
         if (target.arch != SwagTargetArch::X86_64)
         {
-            Report::error(Fmt(Err(Err0523), Backend::GetArchName(target)));
+            Report::error(Fmt(Err(Err0523), Backend::getArchName(target)));
             return false;
         }
     }

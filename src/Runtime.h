@@ -126,6 +126,12 @@ enum class SwagTargetOs : uint32_t
     MacOSX,
 };
 
+enum class SwagRuntimeFlags : uint64_t
+{
+    Zero           = 0x00000000,
+    DebugAllocator = 0x00000001,
+};
+
 typedef struct SwagProcessInfos
 {
     SwagSlice          modules;

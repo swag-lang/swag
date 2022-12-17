@@ -167,7 +167,8 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     }
 
     {
-        emitCall(buildParameters, module, g_LangSpec->name__setupRuntime, nullptr, allocT, {}, {});
+        auto rtFlags = builder.getInt64(Backend::getRuntimeFlags(module));
+        emitCall(buildParameters, module, g_LangSpec->name__setupRuntime, nullptr, allocT, {UINT32_MAX}, {rtFlags});
     }
 
     // Load all dependencies

@@ -485,6 +485,13 @@ namespace Swag
     // Build configuration
     // #########################################################
 
+    #[EnumFlags]
+    enum RuntimeFlags: u64
+    {
+        Zero = 0
+        DebugAllocator = 1
+    }
+
     enum TargetArch
     {
         X86_64

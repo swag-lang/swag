@@ -221,6 +221,7 @@ impl IAllocator for DebugAllocator
             copyReq.address = freeAddr
             copyReq.size = freeSize
             allocator.req(&copyReq)
+            request.address = null
 
         case FreeAll:
             allocator.req(request)

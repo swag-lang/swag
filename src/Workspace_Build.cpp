@@ -222,7 +222,7 @@ void Workspace::setupInternalTags()
 
 Utf8 Workspace::getTargetFullName(const string& buildCfg, const BackendTarget& target)
 {
-    return buildCfg + "-" + Backend::GetOsName(target) + "-" + Backend::GetArchName(target);
+    return buildCfg + "-" + Backend::getOsName(target) + "-" + Backend::getArchName(target);
 }
 
 fs::path Workspace::getTargetPath(const string& buildCfg, const BackendTarget& target)

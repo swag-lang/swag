@@ -30,7 +30,7 @@ bool BackendX64::emitOS(const BuildParameters& buildParameters)
     }
     else
     {
-        Report::error(module, Fmt(Err(Err0056), Backend::GetOsName(g_CommandLine->target)));
+        Report::error(module, Fmt(Err(Err0056), Backend::getOsName(g_CommandLine->target)));
         return false;
     }
 }
@@ -52,7 +52,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         entryPoint = "mainCRTStartup";
         break;
     default:
-        Report::error(module, Fmt(Err(Err0056), Backend::GetOsName(g_CommandLine->target)));
+        Report::error(module, Fmt(Err(Err0056), Backend::getOsName(g_CommandLine->target)));
         return false;
     }
 
@@ -117,7 +117,10 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     emitInternalCallExt(pp, module, g_LangSpec->name__tlsSetValue, pp.pushParams);
 
     // Setup runtime
-    emitCall(pp, g_LangSpec->name__setupRuntime);
+    auto rtFlags = Backend::getRuntimeFlags(module);
+    pp.pushParams.clear();
+    pp.pushParams.push_back({X64PushParamType::Imm64, rtFlags});
+    emitInternalCallExt(pp, module, g_LangSpec->name__setupRuntime, pp.pushParams);
 
     // Load all dependencies
     VectorNative<ModuleDependency*> moduleDependencies;

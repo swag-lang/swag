@@ -198,7 +198,7 @@ BackendObjType Backend::getObjType(const BackendTarget& target)
     }
 }
 
-const char* Backend::GetArchName(const BackendTarget& target)
+const char* Backend::getArchName(const BackendTarget& target)
 {
     switch (target.arch)
     {
@@ -209,7 +209,7 @@ const char* Backend::GetArchName(const BackendTarget& target)
     }
 }
 
-const char* Backend::GetOsName(const BackendTarget& target)
+const char* Backend::getOsName(const BackendTarget& target)
 {
     switch (target.os)
     {
@@ -222,6 +222,14 @@ const char* Backend::GetOsName(const BackendTarget& target)
     default:
         return "?";
     }
+}
+
+uint64_t Backend::getRuntimeFlags(Module* module)
+{
+    uint64_t flags = (uint64_t) SwagRuntimeFlags::Zero;
+    if (module->buildCfg.debugAllocator)
+        flags |= (uint64_t) SwagRuntimeFlags::DebugAllocator;
+    return flags;
 }
 
 bool Backend::setupExportFile(bool force)
