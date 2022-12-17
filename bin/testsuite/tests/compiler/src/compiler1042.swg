@@ -20,4 +20,10 @@ struct Point
 	ptr := new'Point()
 	@assert(ptr.x == "coucou")
 	@assert(ptr.y == "coucou")
+
+	var req : Swag.AllocatorRequest
+	req.address = ptr
+	req.mode = .Free
+	req.size = @sizeof(Point)
+	@getcontext().allocator.req(&req)
 }

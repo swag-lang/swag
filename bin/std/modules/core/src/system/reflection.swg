@@ -523,6 +523,12 @@ private var g_HashNameToType: HashTable'(string, typeinfo)
     }
 }
 
+#drop
+{
+    g_HashCrcToType.free()
+    g_HashNameToType.free()
+}
+
 // Convert a crc to a registered typeinfo
 func crcToType(crc: u32)->typeinfo
 {

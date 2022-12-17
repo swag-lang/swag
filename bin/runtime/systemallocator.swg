@@ -6,7 +6,16 @@ struct SystemAllocator
 
 impl IAllocator for SystemAllocator
 {
-    func req(self, request: *AllocatorRequest)
+    mtd free(request: *AllocatorRequest)
+    {
+        if !request.address
+            return
+        ptr := cast(^^void) request.address
+        @free(ptr[bitcast(uint) -1'int])
+        request.address = null
+    }
+
+    mtd req(request: *AllocatorRequest)
     {
         // We are considering that the default system heap alloc does not align
         // So we need to trick it to respect the user wanted alignement.
@@ -16,16 +25,22 @@ impl IAllocator for SystemAllocator
         switch request.mode
         {
         case Free:
-            if !request.address break
-            ptr := cast(^^void) request.address
-            @free(ptr[bitcast(uint) -1'int])
-            request.address = null
+            free(request)
 
         case Alloc:
             request.address = null
             fallthrough
 
         case Realloc:
+            // Special case
+            if request.size == 0
+            {
+                if request.mode == .Realloc
+                    free(request)
+                request.address = null
+                return
+            }
+
             size := request.size
             size += @sizeof(*void)
             alignement := request.alignement orelse @sizeof(*void)

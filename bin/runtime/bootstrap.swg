@@ -489,7 +489,8 @@ namespace Swag
     enum RuntimeFlags: u64
     {
         Zero = 0
-        DebugAllocator = 1
+        FromCompiler = 1
+        DebugAllocator
     }
 
     enum TargetArch

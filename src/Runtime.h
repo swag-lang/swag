@@ -128,8 +128,9 @@ enum class SwagTargetOs : uint32_t
 
 enum class SwagRuntimeFlags : uint64_t
 {
-    Zero           = 0x00000000,
-    DebugAllocator = 0x00000001,
+    Zero           = 0x00000000'00000000,
+    FromCompiler   = 0x00000000'00000001,
+    DebugAllocator = 0x00000000'00000002,
 };
 
 typedef struct SwagProcessInfos

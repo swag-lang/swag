@@ -601,7 +601,9 @@ JobResult ModuleBuildJob::execute()
         if (g_CommandLine->verboseStages)
             module->logStage(Fmt("__setupRuntime %s\n", setupFct->node->sourceFile->name.c_str()));
         ExecuteNodeParams execParams;
-        execParams.callParams.push_back(Backend::getRuntimeFlags(module));
+        auto              runtimeFlags = Backend::getRuntimeFlags(module);
+        runtimeFlags |= (uint64_t) SwagRuntimeFlags::FromCompiler;
+        execParams.callParams.push_back(runtimeFlags);
         module->executeNode(setupFct->node->sourceFile, setupFct->node, baseContext, &execParams);
 
         if (module->criticalErrors)

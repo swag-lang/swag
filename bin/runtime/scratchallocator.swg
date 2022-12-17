@@ -90,50 +90,68 @@ impl ScratchAllocator
 
 impl IAllocator for ScratchAllocator
 {
-    func req(using self, request: *AllocatorRequest)
+    mtd free(request: *AllocatorRequest)
+    {
+        if !request.address
+            return
+
+        // If this is the last allocated block in the buffer, we can free it
+        // by changing the allocated used size
+        ptr := (block + used) - request.size
+        if ptr == request.address
+        {
+            request.address = null
+            used -= request.size
+            return
+        }
+
+        // If the pointer is in the buffer, then we are done. We cannot free.
+        if request.address >= block and request.address < block + capacity
+        {
+            request.address = null
+            return
+        }
+
+        // Otherwise we assume it's a leak. We unlink it, and free it with
+        // the allocator
+        leak := cast(^LeakHeader) request.address
+        leak -= 1
+        if !leak.prev
+            firstLeak = leak.next
+        else
+            leak.prev.next = leak.next
+        if leak.next
+            leak.next.prev = leak.prev
+        totalLeak -= leak.size - @sizeof(LeakHeader)
+        free(leak, leak.size)
+        request.address = null
+    }
+
+    mtd req(request: *AllocatorRequest)
     {
         @assert(block != null)
         switch request.mode
         {
         case Free:
-            // If this is the last allocated block in the buffer, we can free it
-            // by changing the allocated used size
-            ptr := (block + used) - request.size
-            if ptr == request.address
-            {
-                used -= request.size
-                break
-            }
-
-            // If the pointer is in the buffer, then we are done. We cannot free.
-            if request.address >= block and request.address < block + capacity
-            {
-                request.address = null
-                break
-            }
-
-            // Otherwise we assume it's a leak. We unlink it, and free it with
-            // the allocator
-            leak := cast(^LeakHeader) request.address
-            leak -= 1
-            if !leak.prev
-                firstLeak = leak.next
-            else
-                leak.prev.next = leak.next
-            if leak.next
-                leak.next.prev = leak.prev
-            totalLeak -= leak.size - @sizeof(LeakHeader)
-            free(leak, leak.size)
-            request.address = null
+            free(request)
 
         case FreeAll:
-            freeAll();
+            freeAll()
 
         case Alloc:
             request.address = null
             fallthrough
 
         case Realloc:
+            // Special case
+            if request.size == 0
+            {
+                if request.mode == .Realloc
+                    free(request)
+                request.address = null
+                return
+            }
+
             // Allocate in the buffer if there is enough room
             usedAlign := align(used, request.alignement)
             if usedAlign + request.size <= capacity

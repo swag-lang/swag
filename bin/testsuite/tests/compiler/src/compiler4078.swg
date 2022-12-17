@@ -1,5 +1,5 @@
 #test
 {
-    dbg := Swag.DebugAllocator.create()
-    defer dbg.printLeaks()
+    var dbg: Swag.DebugAllocator
+    dbg.printLeaks()
 }

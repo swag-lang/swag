@@ -1,4 +1,4 @@
-
+using Swag
 
 struct(T) Array
 {
@@ -9,12 +9,19 @@ struct(T) Array
 
 impl Array
 {
+	mtd opDrop()
+	{
+		var request: AllocatorRequest
+		request.mode = AllocatorMode.Free
+		request.address = buffer
+		request.size = cast(uint) size * @sizeof(T)
+		@getcontext().allocator.req(&request)
+	}
+
 	func validateCount(using self, newCount: u32)
 	{
-		using Swag
-
-		if(newCount < size)
-			return;
+		if newCount < size
+			return
 
 		size = size * 2
 		if size < 8

@@ -36,7 +36,8 @@ public struct ForJob
 }
 
 var g_Allocator:            Swag.IAllocator
-var g_numWorkers:           u32
+var g_mustEnd:              bool
+var g_numWorkers:           s32
 var g_workers:              Array'Thread
 var g_pendingJobs:          Array'(*Job)
 var g_mutexPendingJobs:     Sync.Mutex
@@ -44,13 +45,31 @@ var g_eventPendingJobs:     Sync.Event
 var g_eventDone:            Sync.Event
 var g_totalJobs:            u32
 
+#drop
+{
+    if g_numWorkers
+    {
+        g_mustEnd = true
+        g_eventPendingJobs.signal()
+        while Atomic.get(&g_numWorkers) {}
+
+        visit th: g_workers
+            th.wait()
+        g_workers.free()
+        g_pendingJobs.free()
+    }
+}
+
 func workerEntry(th: Thread)
 {
-    loop
+    while !g_mustEnd
     {
         while peekExecJob() {}
         g_eventPendingJobs.wait()
     }
+
+    Atomic.add(&g_numWorkers, -1)
+    g_eventPendingJobs.signal()
 }
 
 func runJob(job: *Job)
@@ -103,7 +122,7 @@ func testState(job: *Job, state: JobState)  => Atomic.get(cast(*u32) &job.state)
 public func isSynchrone() => g_numWorkers == 0
 
 // Returns number of threads in the job system
-public func getNumWorkers() => g_numWorkers
+public func getNumWorkers() => cast(u32) g_numWorkers
 
 // Set the number of worker threads. Must be done once
 public func setNumWorkers(numWorkers: u32 = 0) throw

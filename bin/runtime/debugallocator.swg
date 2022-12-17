@@ -2,8 +2,6 @@
 
 struct DebugAllocator
 {
-    allocator:  IAllocator
-
     firstAlloc: *void   // First allocated block
     size:       uint    // Total user size, in bytes
     nextId:     u32     // The next allocated id to assign
@@ -101,20 +99,6 @@ impl DebugAllocator
 
 impl DebugAllocator
 {
-    // Create the allocator, passing the "real one" as parameter
-    func create(allocator: IAllocator = null)->DebugAllocator
-    {
-        var result: retval
-        result.init(allocator)
-        return result
-    }
-
-    // Initialize the allocator with the "real one" as parameter
-    mtd init(allocator: IAllocator = null)
-    {
-        self.allocator = #self.allocator orelse @getcontext().allocator
-    }
-
     // Returns true if there are some remaining allocations
     mtd isEmpty() => firstAlloc == null
 
@@ -174,66 +158,73 @@ impl DebugAllocator
 
 impl IAllocator for DebugAllocator
 {
-    func req(using self, request: *AllocatorRequest)
+    mtd free(request: *AllocatorRequest)
     {
-        @assert(allocator != null)
+        if !request.address
+            return
+        assertIsAllocated(request.address)
 
+        userAddr := cast(^u8) request.address
+        ptrHeader := cast(*Header) (userAddr - @sizeof(Header))
+        ptrFooter := cast(*Footer) (userAddr + ptrHeader.userSize)
+
+        @assert(ptrHeader.userSize == request.size)
+
+        // Unlink from allocated list
+        if !ptrHeader.prev
+            self.firstAlloc = ptrHeader.next
+        else
+            ptrHeader.prev.next = ptrHeader.next
+        if ptrHeader.next
+            ptrHeader.next.prev = ptrHeader.prev
+
+        // Stats
+        @assert(self.count > 0)
+        self.count -= 1
+        @assert(self.size >= ptrHeader.userSize)
+        userSize := ptrHeader.userSize
+        self.size -= userSize
+
+        freeAddr := ptrHeader.allocAddr
+        freeSize := ptrHeader.allocSize
+
+        // Fill the memory area with garbage
+        @memset(userAddr, FreeByte, userSize)
+        @memset(ptrHeader, FreeByte, @sizeof(Header))
+        @memset(ptrFooter, FreeByte, @sizeof(Footer))
+
+        // Really free the memory
+        @free(freeAddr)
+        request.address = null
+    }
+
+    mtd req(request: *AllocatorRequest)
+    {
         mutex.lock()
         defer mutex.unlock()
 
         switch request.mode
         {
         case Free:
-            if !request.address return
-            assertIsAllocated(request.address)
-
-            userAddr := cast(^u8) request.address
-            ptrHeader := cast(*Header) (userAddr - @sizeof(Header))
-            ptrFooter := cast(*Footer) (userAddr + ptrHeader.userSize)
-
-            @assert(ptrHeader.userSize == request.size)
-
-            // Unlink from allocated list
-            if !ptrHeader.prev
-                self.firstAlloc = ptrHeader.next
-            else
-                ptrHeader.prev.next = ptrHeader.next
-            if ptrHeader.next
-                ptrHeader.next.prev = ptrHeader.prev
-
-            // Stats
-            @assert(self.count > 0)
-            self.count -= 1
-            @assert(self.size >= ptrHeader.userSize)
-            userSize := ptrHeader.userSize
-            self.size -= userSize
-
-            freeAddr := ptrHeader.allocAddr
-            freeSize := ptrHeader.allocSize
-
-            // Fill the memory area with garbage
-            @memset(userAddr, FreeByte, userSize)
-            @memset(ptrHeader, FreeByte, @sizeof(Header))
-            @memset(ptrFooter, FreeByte, @sizeof(Footer))
-
-            // Really free the memory
-            copyReq := dref request
-            copyReq.address = freeAddr
-            copyReq.size = freeSize
-            allocator.req(&copyReq)
-            request.address = null
+            free(request)
 
         case FreeAll:
-            allocator.req(request)
-            firstAlloc = null
-            count = 0
-            size = 0
+            @assert(false)
 
         case Realloc:
             assertIsAllocated(request.address)
             fallthrough
 
         case Alloc:
+            // Special case
+            if request.size == 0
+            {
+                if request.mode == .Realloc
+                    free(request)
+                request.address = null
+                return
+            }
+
             // In case of a reallocation, get the previous allocated user size
             // This will be used to fill with garbage the difference
             copyReq := dref request
@@ -265,7 +256,10 @@ impl IAllocator for DebugAllocator
 
             // Make the real allocation
             copyReq.size += toAddAlign + @sizeof(Footer)
-            allocator.req(&copyReq)
+            if copyReq.mode == .Alloc
+                copyReq.address = @alloc(copyReq.size)
+            else
+                copyReq.address = @realloc(copyReq.address, copyReq.size)
 
             // This is the aligned returned user address
             userAddr := cast(^u8) copyReq.address

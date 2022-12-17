@@ -407,21 +407,16 @@ func __setupRuntime(flags: RuntimeFlags)
     @getcontext().tempAllocator.setup()
 
     __runtimeFlags = flags
-    if __runtimeFlags & .DebugAllocator
-    {
-        __debugAlloc.init()
+    if !(__runtimeFlags & .FromCompiler) and (__runtimeFlags & .DebugAllocator)
         @getcontext().allocator = __debugAlloc
-    }
 }
 
 func __closeRuntime()
 {
     @getcontext().tempAllocator.release()
 
-    if __runtimeFlags & .DebugAllocator
-    {
-        //__debugAlloc.printLeaks()
-    }
+    //if !(__runtimeFlags & .FromCompiler) and (__runtimeFlags & .DebugAllocator)
+    //    __debugAlloc.printLeaks()
 
     __exit()
 }
