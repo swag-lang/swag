@@ -66,8 +66,8 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     computeUnwindStack(40, sizeProlog, unwind);
 
     // Set default system allocator function
-    SWAG_ASSERT(g_DefaultContext.allocator.itable);
-    auto bcAlloc = (ByteCode*) ByteCode::undoByteCodeLambda(((void**) g_DefaultContext.allocator.itable)[0]);
+    SWAG_ASSERT(g_SystemAllocatorTable);
+    auto bcAlloc = (ByteCode*) ByteCode::undoByteCodeLambda(((void**) g_SystemAllocatorTable)[0]);
     SWAG_ASSERT(bcAlloc);
     pp.emit_Symbol_RelocationAddr(RAX, pp.symDefaultAllocTable, 0);
     concat.addString3("\x48\x8d\x0d"); // lea rcx, qword ptr ????????[rip]

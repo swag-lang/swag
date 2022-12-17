@@ -543,6 +543,7 @@ namespace Swag
         const SafetyAll = 0x000FF00000000000
         safetyGuards:   u64 = SafetyAll
         stackTrace      = true
+        debugAllocator  = true
 
         // Bytecode
         byteCodeOptimizeLevel   = 1

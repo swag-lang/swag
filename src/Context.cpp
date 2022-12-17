@@ -6,10 +6,12 @@
 #include "ByteCodeStack.h"
 #include "ModuleManager.h"
 
-uint64_t                         g_TlsContextId     = 0;
-uint64_t                         g_TlsThreadLocalId = 0;
-SwagContext                      g_DefaultContext   = {{0}};
-SwagProcessInfos                 g_ProcessInfos     = {{0}};
+uint64_t                         g_TlsContextId         = 0;
+uint64_t                         g_TlsThreadLocalId     = 0;
+SwagContext                      g_DefaultContext       = {{0}};
+void*                            g_SystemAllocatorTable = nullptr;
+void*                            g_DebugAllocatorTable  = nullptr;
+SwagProcessInfos                 g_ProcessInfos         = {{0}};
 thread_local ByteCodeRunContext  g_RunContextVal;
 thread_local ByteCodeRunContext* g_RunContext = &g_RunContextVal;
 static Mutex                     g_MakeCallbackMutex;

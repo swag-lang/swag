@@ -1,8 +1,5 @@
 using Core, Memory
 
-var g_dbg: Swag.DebugAllocator
-var g_cxt: Swag.Context
-
 private func dataPath()->String
 {
     dataPath := Path.getDirectoryName(#location.fileName)
@@ -18,5 +15,4 @@ private func filePath(name: string)->String
 #premain
 {
     try Jobs.setNumWorkers(4)
-    Swag.DebugAllocator.install()
 }

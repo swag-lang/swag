@@ -2,8 +2,6 @@ var g_App: Application
 
 #main
 {
-    Swag.DebugAllocator.install()
-
     try Jobs.setNumWorkers()
     try Library.init()
 

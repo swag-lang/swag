@@ -527,20 +527,42 @@ JobResult ByteCodeGenJob::execute()
     {
         SWAG_ASSERT(originalNode->extension);
 
-        // Register SystemAllocator interface to the default bytecode context
-        if (sourceFile->isRuntimeFile && (originalNode->token.text == g_LangSpec->name_SystemAllocator))
+        if (sourceFile->isRuntimeFile)
         {
-            auto typeStruct = CastTypeInfo<TypeInfoStruct>(originalNode->typeInfo, TypeInfoKind::Struct);
-            context.result  = ContextResult::Done;
-            waitAllStructInterfaces(typeStruct);
-            if (context.result == ContextResult::Pending)
-                return JobResult::KeepJobAlive;
-            SWAG_ASSERT(typeStruct->interfaces.size() == 1);
-            auto itable = sourceFile->module->constantSegment.address(typeStruct->interfaces[0]->offset);
-            SWAG_ASSERT(itable);
-            SWAG_ASSERT(((void**) itable)[0]);
-            g_DefaultContext.allocator.data   = nullptr;
-            g_DefaultContext.allocator.itable = (void*) itable;
+            // Register allocator interface to the default bytecode context
+            if (originalNode->token.text == g_LangSpec->name_SystemAllocator)
+            {
+                auto typeStruct = CastTypeInfo<TypeInfoStruct>(originalNode->typeInfo, TypeInfoKind::Struct);
+                context.result  = ContextResult::Done;
+                waitAllStructInterfaces(typeStruct);
+                if (context.result == ContextResult::Pending)
+                    return JobResult::KeepJobAlive;
+                SWAG_ASSERT(typeStruct->interfaces.size() == 1);
+                auto itable = sourceFile->module->constantSegment.address(typeStruct->interfaces[0]->offset);
+                SWAG_ASSERT(itable);
+                SWAG_ASSERT(((void**) itable)[0]);
+                g_SystemAllocatorTable = itable;
+            }
+
+            if (originalNode->token.text == g_LangSpec->name_DebugAllocator)
+            {
+                auto typeStruct = CastTypeInfo<TypeInfoStruct>(originalNode->typeInfo, TypeInfoKind::Struct);
+                context.result  = ContextResult::Done;
+                waitAllStructInterfaces(typeStruct);
+                if (context.result == ContextResult::Pending)
+                    return JobResult::KeepJobAlive;
+                SWAG_ASSERT(typeStruct->interfaces.size() == 1);
+                auto itable = sourceFile->module->constantSegment.address(typeStruct->interfaces[0]->offset);
+                SWAG_ASSERT(itable);
+                SWAG_ASSERT(((void**) itable)[0]);
+                g_DebugAllocatorTable = itable;
+            }
+
+            if (g_SystemAllocatorTable && g_DebugAllocatorTable)
+            {
+                g_DefaultContext.allocator.data   = nullptr;
+                g_DefaultContext.allocator.itable = g_SystemAllocatorTable;
+            }
         }
 
         while (!nodes.empty())

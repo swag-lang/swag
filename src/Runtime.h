@@ -169,13 +169,14 @@ struct BuildCfg
     bool      embbedImports = false;
 
     // Debug
-    static const auto SAFETY_BC    = ATTRIBUTE_SAFETY_BOUNDCHECK_ON;
-    static const auto SAFETY_OF    = ATTRIBUTE_SAFETY_OVERFLOW_ON;
-    static const auto SAFETY_MT    = ATTRIBUTE_SAFETY_MATH_ON;
-    static const auto SAFETY_CA    = ATTRIBUTE_SAFETY_CAST_ON;
-    static const auto SAFETY_SW    = ATTRIBUTE_SAFETY_SWITCH_ON;
-    uint64_t          safetyGuards = 0xFFFFFFFF'FFFFFFFF;
-    bool              stackTrace   = true;
+    static const auto SAFETY_BC      = ATTRIBUTE_SAFETY_BOUNDCHECK_ON;
+    static const auto SAFETY_OF      = ATTRIBUTE_SAFETY_OVERFLOW_ON;
+    static const auto SAFETY_MT      = ATTRIBUTE_SAFETY_MATH_ON;
+    static const auto SAFETY_CA      = ATTRIBUTE_SAFETY_CAST_ON;
+    static const auto SAFETY_SW      = ATTRIBUTE_SAFETY_SWITCH_ON;
+    uint64_t          safetyGuards   = 0xFFFFFFFF'FFFFFFFF;
+    bool              stackTrace     = true;
+    bool              debugAllocator = true;
 
     // Bytecode
     uint32_t byteCodeOptimizeLevel = 1;

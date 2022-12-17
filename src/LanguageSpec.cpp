@@ -99,6 +99,7 @@ void LanguageSpec::setupNames()
     name_TypeInfoNamespace = "TypeInfoNamespace";
 
     name_SystemAllocator        = "SystemAllocator";
+    name_DebugAllocator         = "DebugAllocator";
     name_CompilerSourceLocation = "CompilerSourceLocation";
     name_BuildCfg               = "BuildCfg";
     name_AttributeUsage         = "AttributeUsage";

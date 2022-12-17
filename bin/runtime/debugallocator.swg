@@ -170,15 +170,6 @@ impl DebugAllocator
             ptrHeader = ptrHeader.next
         }
     }
-
-    // Install debug allocator as the default one
-    func install()
-    {
-        #[Swag.Global]
-        var dbg: DebugAllocator
-        dbg = create()
-        @getcontext().allocator = dbg
-    }
 }
 
 impl IAllocator for DebugAllocator

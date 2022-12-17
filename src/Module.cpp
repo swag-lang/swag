@@ -57,6 +57,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
         buildCfg.byteCodeEmitAssume       = true;
         buildCfg.safetyGuards             = 0;
         buildCfg.stackTrace               = false;
+        buildCfg.debugAllocator           = true;
         buildCfg.backendOptimizeSpeed     = false;
         buildCfg.backendOptimizeSize      = false;
         buildCfg.backendDebugInformations = false;
@@ -69,6 +70,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
         buildCfg.byteCodeEmitAssume       = true;
         buildCfg.safetyGuards             = 0xFFFFFFFF'FFFFFFFF;
         buildCfg.stackTrace               = true;
+        buildCfg.debugAllocator           = true;
         buildCfg.backendOptimizeSpeed     = false;
         buildCfg.backendOptimizeSize      = false;
         buildCfg.backendDebugInformations = true;
@@ -81,6 +83,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
         buildCfg.byteCodeEmitAssume       = true;
         buildCfg.safetyGuards             = 0xFFFFFFFF'FFFFFFFF;
         buildCfg.stackTrace               = true;
+        buildCfg.debugAllocator           = true;
         buildCfg.backendOptimizeSpeed     = true;
         buildCfg.backendOptimizeSize      = false;
         buildCfg.backendDebugInformations = true;
@@ -93,6 +96,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
         buildCfg.byteCodeEmitAssume       = false;
         buildCfg.safetyGuards             = 0;
         buildCfg.stackTrace               = false;
+        buildCfg.debugAllocator           = false;
         buildCfg.backendOptimizeSpeed     = true;
         buildCfg.backendOptimizeSize      = false;
         buildCfg.backendDebugInformations = true;
