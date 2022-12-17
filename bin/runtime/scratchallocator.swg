@@ -63,27 +63,25 @@ impl ScratchAllocator
 
     // First initialize the allocator, by allocating the main block
     // Will call 'setCapacity'
-    mtd setup()
+    mtd setCapacity(allocator: IAllocator)
     {
         c := @gettag("Swag.TempAllocatorSize", uint, 4 * 1024 * 1024)
-        setCapacity(c)
+        setCapacity(c, #self.allocator)
     }
 
     // This will call 'release' prior to changing the capacity, so this must
     // be called at an early stage
-    mtd setCapacity(newCapacity: uint, alloc: IAllocator = null)
+    mtd setCapacity(newCapacity: uint, allocator: IAllocator)
     {
-        if capacity == newCapacity and block
-            return
+        @assert(#self.allocator != null)
         release()
-
-        allocator = alloc orelse @getcontext().allocator
+        self.allocator = #self.allocator
         capacity = newCapacity
 
         var req: AllocatorRequest
         req.mode = AllocatorMode.Alloc
         req.size = capacity
-        allocator.req(&req)
+        self.allocator.req(&req)
         block = req.address
     }
 }

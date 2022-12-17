@@ -1,5 +1,8 @@
 #global namespace Swag
 
+var __sysAlloc: SystemAllocator
+func systemAllocator()->IAllocator => cast(IAllocator) __sysAlloc
+
 struct SystemAllocator
 {
 }

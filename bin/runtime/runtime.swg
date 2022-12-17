@@ -404,11 +404,14 @@ var __runtimeFlags  = RuntimeFlags.Zero
 
 func __setupRuntime(flags: RuntimeFlags)
 {
-    @getcontext().tempAllocator.setup()
+    @getcontext().tempAllocator.setCapacity(@getcontext().allocator)
 
     __runtimeFlags = flags
     if !(__runtimeFlags & .FromCompiler) and (__runtimeFlags & .DebugAllocator)
+    {
+        __debugAlloc.setup(@getcontext().allocator)
         @getcontext().allocator = __debugAlloc
+    }
 }
 
 func __closeRuntime()

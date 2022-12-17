@@ -2,6 +2,7 @@
 
 struct DebugAllocator
 {
+    allocator:  IAllocator
     firstAlloc: *void   // First allocated block
     size:       uint    // Total user size, in bytes
     nextId:     u32     // The next allocated id to assign
@@ -40,7 +41,7 @@ impl DebugAllocator
 
 impl DebugAllocator
 {
-    func __printDisplaySize(value: uint)
+    func printDisplaySize(value: uint)
     {
         size := value
         if size < 1024
@@ -74,7 +75,7 @@ impl DebugAllocator
         @print(size, " Tb")
     }
 
-    func __memAlign(value: uint, alignement: u32)->uint
+    func memAlign(value: uint, alignement: u32)->uint
     {
         toAlign := alignement orelse @sizeof(*void)
         result := value & ~(toAlign - 1)
@@ -82,7 +83,7 @@ impl DebugAllocator
         return result
     }
 
-    mtd __checkOne(ptrHeader: ^Header)
+    mtd checkOne(ptrHeader: ^Header)
     {
         ptrEnd := cast(^u8) (ptrHeader + 1)
         ptrFooter := cast(*Footer) (ptrEnd + ptrHeader.userSize)
@@ -99,6 +100,13 @@ impl DebugAllocator
 
 impl DebugAllocator
 {
+    // Setup the allocator
+    mtd setup(allocator: IAllocator)
+    {
+        @assert(#self.allocator != null)
+        self.allocator = #self.allocator
+    }
+
     // Returns true if there are some remaining allocations
     mtd isEmpty() => firstAlloc == null
 
@@ -107,14 +115,14 @@ impl DebugAllocator
     {
         scan := cast(*Header) firstAlloc
         @print(count, " block(s) for a total of ")
-        __printDisplaySize(size)
+        printDisplaySize(size)
         @print("\n")
 
         while scan
         {
             @print(scan.locFilename, ":", scan.locLine, ": ")
             @print("id: ", scan.allocId, " size: ")
-            __printDisplaySize(scan.userSize)
+            printDisplaySize(scan.userSize)
             if scan.hint @print(" hint: ", scan.hint)
             @print("\n")
 
@@ -141,7 +149,7 @@ impl DebugAllocator
 
         orgAddr := cast(^u8) addr
         ptrHeader := cast(*Header) (orgAddr - @sizeof(Header))
-        __checkOne(ptrHeader)
+        checkOne(ptrHeader)
     }
 
     // Check all allocated pointers
@@ -150,7 +158,7 @@ impl DebugAllocator
         ptrHeader := cast(*Header) firstAlloc
         while ptrHeader
         {
-            __checkOne(ptrHeader)
+            checkOne(ptrHeader)
             ptrHeader = ptrHeader.next
         }
     }
@@ -194,12 +202,17 @@ impl IAllocator for DebugAllocator
         @memset(ptrFooter, FreeByte, @sizeof(Footer))
 
         // Really free the memory
-        @free(freeAddr)
+        var req: AllocatorRequest
+        req.mode = .Free
+        req.address = freeAddr
+        req.size = freeSize
+        allocator.req(&req)
         request.address = null
     }
 
     mtd req(request: *AllocatorRequest)
     {
+        @assert(allocator != null)
         mutex.lock()
         defer mutex.unlock()
 
@@ -209,7 +222,10 @@ impl IAllocator for DebugAllocator
             free(request)
 
         case FreeAll:
-            @assert(false)
+            allocator.req(request)
+            firstAlloc = null
+            count = 0
+            size = 0
 
         case Realloc:
             assertIsAllocated(request.address)
@@ -252,14 +268,11 @@ impl IAllocator for DebugAllocator
             // Adapt size to be able to store additional informations
             // Take care of alignement request, because we need to be sure
             // that the returned memory block is well aligned
-            toAddAlign := __memAlign(@sizeof(Header), request.alignement)
+            toAddAlign := memAlign(@sizeof(Header), request.alignement)
 
             // Make the real allocation
             copyReq.size += toAddAlign + @sizeof(Footer)
-            if copyReq.mode == .Alloc
-                copyReq.address = @alloc(copyReq.size)
-            else
-                copyReq.address = @realloc(copyReq.address, copyReq.size)
+            allocator.req(&copyReq)
 
             // This is the aligned returned user address
             userAddr := cast(^u8) copyReq.address

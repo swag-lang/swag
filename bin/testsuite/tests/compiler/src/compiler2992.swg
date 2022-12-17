@@ -2,25 +2,26 @@ using Swag
 
 #test
 {
-    @getcontext().tempAllocator.setCapacity(10)
-    itf := cast(IAllocator) @getcontext().tempAllocator
+    var alloc: Swag.ScratchAllocator
+    alloc.setCapacity(10, Swag.systemAllocator())
+    itf := cast(IAllocator) alloc
 
     var req: AllocatorRequest
     req.mode = .Alloc
     req.size = 100
     itf.req(&req)
     ptr1 := req.address
-    @assert(@getcontext().tempAllocator.maxLeak == 100)
+    @assert(alloc.maxLeak == 100)
     itf.req(&req)
     ptr2 := req.address
-    @assert(@getcontext().tempAllocator.maxLeak == 200)
+    @assert(alloc.maxLeak == 200)
 
     req.mode = .Free
     req.address = ptr1
     req.size = 100
     itf.req(&req)
-    @assert(@getcontext().tempAllocator.totalLeak == 100)
+    @assert(alloc.totalLeak == 100)
     req.address = ptr2
     itf.req(&req)
-    @assert(@getcontext().tempAllocator.totalLeak == 0)
+    @assert(alloc.totalLeak == 0)
 }

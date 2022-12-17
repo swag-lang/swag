@@ -63,9 +63,9 @@ impl Thread
         context = dref @getcontext()
         @init(&context.tempAllocator)
         if tempAllocSize < 0
-            context.tempAllocator.setup()
+            context.tempAllocator.setCapacity(context.allocator)
         elif tempAllocSize != 0
-            context.tempAllocator.setCapacity(cast(uint) tempAllocSize)
+            context.tempAllocator.setCapacity(cast(uint) tempAllocSize, context.allocator)
 
         handle = try CreateThread(null, 0, @mkcallback(&threadEntry), self, CREATE_SUSPENDED, &id)
         userLambda = lambda
