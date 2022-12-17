@@ -326,7 +326,7 @@ void initErrors()
     SWAG_ERROR(Err0314, "unexpected file format, should be ascii, utf-8 or utf-8-bom");
     SWAG_ERROR(Err0315, "expected a variable name, found `%s`");
     SWAG_ERROR(Err0316, "%s `%s` should be public because it is referenced in a public context");
-    SWAG_ERROR(Err0317, "cannot convert the floating point number `%Lf`");
+    SWAG_ERROR(Err0317, "unexpected floating point number suffix (type is `%s`)");
     SWAG_ERROR(Err0318, "fatal error: missing script file; use `--file:<filename>.swgs` to specify a script to run");
     SWAG_ERROR(Err0319, "fatal error: invalid script file extension; should be `.swgs` instead of `%s`");
     SWAG_ERROR(Err0320, "cannot slice `%s` because the special function `opSlice` has not been found in type `%s`");

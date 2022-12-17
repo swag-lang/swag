@@ -14,7 +14,7 @@ namespace Report
 {
     void reportNotes(vector<Diagnostic*>& notes, bool verbose = false)
     {
-        if (g_CommandLine->errorNoteOut)
+        if (!g_CommandLine->errorCompact)
         {
             bool prevHasSourceCode = true;
             for (auto note : notes)
@@ -210,7 +210,6 @@ namespace Report
         }
 #endif
 
-        g_Log.eol();
         return errorLevel == DiagnosticLevel::Error ? false : true;
     }
 

@@ -48,7 +48,7 @@ void Diagnostic::setRange2(AstNode* node, const Utf8& h)
 
 bool Diagnostic::mustPrintCode() const
 {
-    return hasFile && !sourceFile->path.empty() && hasLocation && showSource && g_CommandLine->errorSourceOut;
+    return hasFile && !sourceFile->path.empty() && hasLocation && showSource && !g_CommandLine->errorCompact;
 }
 
 void Diagnostic::printSourceLine() const
@@ -69,7 +69,8 @@ void Diagnostic::printSourceLine() const
             path = path1;
     }
 
-    g_Log.print("--> ");
+    if (!g_CommandLine->errorCompact)
+        g_Log.print("--> ");
     g_Log.print(Utf8::normalizePath(path).c_str());
     if (hasRangeLocation)
         g_Log.print(Fmt(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, endLocation.line + 1, endLocation.column + 1));
@@ -145,8 +146,6 @@ void Diagnostic::report(bool verboseMode) const
     switch (errorLevel)
     {
     case DiagnosticLevel::Error:
-        if (g_CommandLine->errorSourceOut)
-            g_Log.eol();
         g_Log.setColor(errorColor);
         if (sourceFile && sourceFile->duringSyntax)
             g_Log.print("syntax error: ");
@@ -154,8 +153,6 @@ void Diagnostic::report(bool verboseMode) const
             g_Log.print("error: ");
         break;
     case DiagnosticLevel::Warning:
-        if (g_CommandLine->errorSourceOut)
-            g_Log.eol();
         if (g_CommandLine->warningsAsErrors)
         {
             g_Log.setColor(errorColor);
@@ -203,7 +200,7 @@ void Diagnostic::report(bool verboseMode) const
     }
 
     // Source line right after the header
-    if (!g_CommandLine->errorSourceOut && hasFile && !sourceFile->path.empty() && showFileName)
+    if (g_CommandLine->errorCompact && hasFile && !sourceFile->path.empty() && showFileName)
     {
         printSourceLine();
     }
@@ -227,7 +224,7 @@ void Diagnostic::report(bool verboseMode) const
         {
             for (int i = -2; i <= 0; i++)
             {
-                if (location0.line + i < 0)
+                if ((int) location0.line + i < 0)
                     continue;
                 bool eof     = false;
                 auto oneLine = sourceFile->getLine(location0.line + i, &eof);
@@ -268,13 +265,6 @@ void Diagnostic::report(bool verboseMode) const
         // Print all lines
         if (lines.size())
         {
-            if (errorLevel != DiagnosticLevel::CallStack &&
-                errorLevel != DiagnosticLevel::CallStackInlined &&
-                errorLevel != DiagnosticLevel::TraceError)
-            {
-                printMargin(verboseMode, true);
-            }
-
             for (int i = 0; i < lines.size(); i++)
             {
                 const char* pz = lines[i].c_str();
@@ -295,6 +285,8 @@ void Diagnostic::report(bool verboseMode) const
                         g_Log.setColor(hilightCodeColor);
                     }
 
+                    if (lines[i].empty())
+                        continue;
                     g_Log.print(lines[i].c_str() + minBlanks);
                     g_Log.eol();
                 }
@@ -562,52 +554,26 @@ void Diagnostic::report(bool verboseMode) const
                     }
 
                     g_Log.eol();
-                    printMargin(verboseMode, true);
                 }
-            }
-        }
-        else if (lines.size())
-        {
-            // Empty line after code
-            if (errorLevel != DiagnosticLevel::CallStack &&
-                errorLevel != DiagnosticLevel::CallStackInlined &&
-                errorLevel != DiagnosticLevel::TraceError &&
-                showMultipleCodeLines)
-            {
-                printMargin(verboseMode, true);
             }
         }
     }
 
     // Source file and location on their own line
-    if (g_CommandLine->errorSourceOut && hasFile && !sourceFile->path.empty() && showFileName)
+    if (!g_CommandLine->errorCompact && hasFile && !sourceFile->path.empty() && showFileName)
     {
         printMargin(verboseMode);
 
         g_Log.setColor(sourceFileColor);
         printSourceLine();
         g_Log.eol();
-
-        if (errorLevel != DiagnosticLevel::CallStack &&
-            errorLevel != DiagnosticLevel::CallStackInlined &&
-            errorLevel != DiagnosticLevel::TraceError)
-        {
-            printMargin(verboseMode, true);
-        }
-    }
-    else if (mustPrintCode() && !showRange)
-    {
-        printMargin(verboseMode, true);
     }
 
     // Code remarks
-    if (g_CommandLine->errorSourceOut && g_CommandLine->errorNoteOut)
+    if (!g_CommandLine->errorCompact)
     {
         if (!remarks.empty())
         {
-            if (!mustPrintCode())
-                printMargin(verboseMode, true);
-
             g_Log.setColor(remarkColor);
             for (auto r : remarks)
             {
@@ -618,8 +584,6 @@ void Diagnostic::report(bool verboseMode) const
                 g_Log.print(r);
                 g_Log.eol();
             }
-
-            printMargin(verboseMode, true);
         }
     }
 

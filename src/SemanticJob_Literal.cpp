@@ -237,7 +237,7 @@ Utf8 SemanticJob::checkLiteralType(ComputedValue& computedValue, Token& token, T
                 computedValue.reg.f64 = -computedValue.reg.f64;
             break;
         default:
-            return Fmt(Err(Err0317), token.literalValue.f64);
+            return Fmt(Err(Err0317), typeSuffix->getDisplayNameC());
         }
         break;
 
