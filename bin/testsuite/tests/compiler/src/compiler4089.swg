@@ -1,4 +1,4 @@
-//#global skip
+#global skip
 using Swag
 
 func toto() throw
