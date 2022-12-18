@@ -2,13 +2,21 @@
 #foreignlib "kernel32"
 #foreignlib "user32"
 #foreignlib "ucrt"
+#foreignlib "dbghelp"
 
 ////////////////////////////////////////////////////////////
 namespace __Win32RT
 {
-    alias HANDLE = *void
-    alias DWORD  = u32
+    alias HANDLE  = *void
+    alias DWORD   = u32
     alias SRWLOCK = *void
+    alias USHORT  = u16
+    alias ULONG   = u32
+    alias ULONG64 = u64
+    alias CHAR    = u8
+    alias WCHAR   = u16
+    alias BOOL    = u8
+
     const STD_OUTPUT_HANDLE     = bitcast(u32) -11
     const MB_CANCELTRYCONTINUE  = 0x00000006
     const MB_ICONERROR          = 0x00000010
@@ -17,14 +25,83 @@ namespace __Win32RT
     const IDCONTINUE  = 11
     const SRWLOCK_INIT = cast(SRWLOCK) null
 
+    struct SYMBOL_INFO
+    {
+        SizeOfStruct:   ULONG
+        TypeIndex:      ULONG           // Type Index of symbol
+        Reserved:       [2] ULONG64
+        Index:          ULONG
+        Size:           ULONG
+        ModBase:        ULONG64         // Base Address of module comtaining this symbol
+        Flags:          ULONG
+        Value:          ULONG64         // Value of symbol, ValuePresent should be 1
+        Address:        ULONG64         // Address of symbol including base address of module
+        Register:       ULONG           // register holding value or pointer to value
+        Scope:          ULONG           // scope of the symbol
+        Tag:            ULONG           // pdb classification
+        NameLen:        ULONG           // Actual length of name
+        MaxNameLen:     ULONG
+        Name:           [1] CHAR        // Name of symbol
+    }
+
+    struct SYMBOL_INFOW
+    {
+        SizeOfStruct:   ULONG
+        TypeIndex:      ULONG           // Type Index of symbol
+        Reserved:       [2] ULONG64
+        Index:          ULONG
+        Size:           ULONG
+        ModBase:        ULONG64         // Base Address of module comtaining this symbol
+        Flags:          ULONG
+        Value:          ULONG64         // Value of symbol, ValuePresent should be 1
+        Address:        ULONG64         // Address of symbol including base address of module
+        Register:       ULONG           // register holding value or pointer to value
+        Scope:          ULONG           // scope of the symbol
+        Tag:            ULONG           // pdb classification
+        NameLen:        ULONG           // Actual length of name
+        MaxNameLen:     ULONG
+        Name:           [1] WCHAR        // Name of symbol
+    }
+
+    struct IMAGEHLP_LINE64
+    {
+        SizeOfStruct:   DWORD       // set to sizeof(IMAGEHLP_LINE64)
+        Key:            *void       // internal
+        LineNumber:     DWORD       // line number in file
+        FileName:       *CHAR       // full filename
+        Address:        ULONG64     // first instruction of line
+    }
+
+    struct IMAGEHLP_LINEW64
+    {
+        SizeOfStruct:   DWORD       // set to sizeof(IMAGEHLP_LINEW64)
+        Key:            *void       // internal
+        LineNumber:     DWORD       // line number in file
+        FileName:       *WCHAR      // full filename
+        Address:        ULONG64     // first instruction of line
+    }
+
+    #[Swag.Foreign("DbgHelp")]
+    {
+        func SymInitialize(hProcess: HANDLE, userSearchPath: *CHAR, fInvadeProcess: BOOL)->BOOL;
+        func SymCleanup(hProcess: HANDLE)->BOOL;
+        func SymFromAddr(hProcess: HANDLE, address: ULONG64, displacement: *ULONG64, symbol: *SYMBOL_INFO)->BOOL;
+        func SymFromAddrW(hProcess: HANDLE, address: ULONG64, displacement: *ULONG64, symbol: *SYMBOL_INFOW)->BOOL;
+        func SymGetLineFromAddr64(hProcess: HANDLE, dwAddr: ULONG64, pdwDisplacement: *DWORD, line: *IMAGEHLP_LINE64)->BOOL;
+        func SymGetLineFromAddrW64(hProcess: HANDLE, dwAddr: ULONG64, pdwDisplacement: *DWORD, line: *IMAGEHLP_LINEW64)->BOOL;
+    }
+
     #[Swag.Foreign("kernel32")]
     {
         func RtlCopyMemory(destination: *void, source: const *void, length: uint);
         func RtlMoveMemory(destination: *void, source: const *void, length: uint);
         func RtlCompareMemory(destination, source: const *void, length: uint)->uint;
         func RtlFillMemory(destination: *void, length: uint, fill: s32);
+        func RtlCaptureStackBackTrace(framesToSkip: ULONG, framesToCapture: ULONG, backTrace: **void, backTraceHash: *ULONG)->USHORT;
+
         func GetStdHandle(nStdHandle: u32)->HANDLE;
         func WriteFile(hFile: HANDLE, lpBuffer: const *void, nNumberOfBytesToWrite: u32, lpNumberOfBytesWritten: *u32, lpOverlapped: *void)->u32;
+        func GetCurrentProcess()->HANDLE;
         func ExitProcess(uExitCode: u32);
         func RaiseException(dwExceptionCode: u32, dwExceptionFlags: u32, nNumberOfArguments: u32, lpArguments: *const *void);
         func DebugBreak();

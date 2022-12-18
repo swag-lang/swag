@@ -19,14 +19,19 @@ alias ULONG =           u32
 alias LPVOID =			^void
 alias LPCVOID =			const ^void
 alias LPCSTR =			const ^u8
+alias PCSTR =			const ^u8
 alias LPCWSTR =			const ^u16
+alias PCWSTR =			const ^u16
 alias LPCTSTR =			const ^u16
 alias LPDWORD =			^DWORD
 alias LPOVERLAPPED =	^DWORD
 alias DWORD_PTR =		uint
 alias UINT =			u32
 alias SHORT =			s16
+alias USHORT =			u16
 alias LARGE_INTEGER =	s64
+alias DWORD64 =         u64
+alias ULONG64 =         u64
 alias PLONG =           ^LONG
 alias CHAR =            u8
 alias WCHAR =           u16
@@ -347,6 +352,7 @@ struct PROCESS_INFORMATION
     func DebugActiveProcess(procId: DWORD);
 
     func GetProcAddress(hModule: HMODULE, lpProcName: LPCSTR)->const *void;
+    func GetCurrentProcess()->HANDLE;
     func GetCurrentProcessId()->DWORD;
     func GetModuleHandleA(lpModuleName: LPCSTR)->HMODULE;
     func GetModuleHandleW(lpModuleName: LPCWSTR)->HMODULE;

@@ -3,7 +3,7 @@ using Core
 #test
 {
     x := @modules()
-    @assert(@countof(x) == 4)
+    @assert(@countof(x) >= 4)
     cpt := 0
     visit m: x
     {
