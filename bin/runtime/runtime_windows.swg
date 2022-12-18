@@ -23,6 +23,8 @@ namespace __Win32RT
     const IDCANCEL    = 2
     const IDTRYAGAIN  = 10
     const IDCONTINUE  = 11
+    const FALSE: BOOL = 0
+    const TRUE:  BOOL = 1
     const SRWLOCK_INIT = cast(SRWLOCK) null
 
     struct SYMBOL_INFO
@@ -282,5 +284,51 @@ func __panicBox(msg, title: string)
         DebugBreak();
     case IDCONTINUE:
         break
+    }
+}
+
+func __logStackTrace()
+{
+    using __Win32RT
+    var arr: [64] *void
+    nb := RtlCaptureStackBackTrace(0, 64, arr, null)
+
+    if !SymInitialize(GetCurrentProcess(), null, TRUE)
+        return
+
+    const SYM_LEN_NAME = 128
+    var sym: [@sizeof(SYMBOL_INFO) + SYM_LEN_NAME * @sizeof(CHAR)] u8
+    var displacement: ULONG64
+
+    psym := cast(*SYMBOL_INFO) sym
+    psym.SizeOfStruct = @sizeof(SYMBOL_INFO)
+    psym.MaxNameLen = SYM_LEN_NAME
+
+    var line: IMAGEHLP_LINE64
+    line.SizeOfStruct = @sizeof(IMAGEHLP_LINE64)
+
+    lastOne  := nb-4
+    loop i: lastOne..0
+    {
+        @print("\x1b[93m")
+        @print("callstack:")
+        @print(lastOne-i)
+        @print(": ")
+
+        if SymFromAddr(GetCurrentProcess(), cast(ULONG64) cast(uint) arr[i], &displacement, psym)
+        {
+            symName := @mkstring(cast(const *u8) psym.Name, @strlen(psym.Name))
+            @print(symName)
+        }
+
+        @print("\n")
+        @print("\x1b[97m")
+
+        if !SymGetLineFromAddr64(GetCurrentProcess(), cast(ULONG64) cast(uint) arr[i], acast &displacement, &line)
+            continue
+
+        @print(" |  --> ")
+        fileName := @mkstring(line.FileName, @strlen(line.FileName))
+        @print(fileName, ":", line.LineNumber-1, "\n")
     }
 }

@@ -71,8 +71,6 @@ TODO
 -------------------------------------
 DebugAllocator, double free detection
 -------------------------------------
-call stack en runtime in case of panic
--------------------------------------
 safety, sanitize access to stack/memory
 -------------------------------------
 safety, exit stackframe (return local value)

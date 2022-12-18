@@ -245,54 +245,6 @@ func @stringcmp(str1: string, str2: string)->bool
 }
 
 ////////////////////////////////////////////////////////////
-func @errormsg(message: string, loc: Swag.CompilerSourceLocation)
-{
-    cxt := @getcontext()
-    contextFlags := cxt.flags
-    if contextFlags & Swag.ContextFlags.ByteCode
-    {
-        __raiseException666(message, loc)
-        return
-    }
-
-    // Construct error message, to print it in one instruction
-    var msg: [1024] u8
-    ptr := &msg[0]
-
-    @memcpy(ptr, @dataof("error: "), 7)
-    ptr += 7
-
-    @memcpy(ptr, @dataof(loc.fileName), @countof(loc.fileName))
-    ptr += @countof(loc.fileName)
-
-    ptr[0] = ":"'u8
-    ptr += 1
-    ptr = __itoa(ptr, cast(s64) loc.lineStart + 1)
-    ptr[0] = ":"'u8
-    ptr += 1
-    ptr = __itoa(ptr, cast(s64) loc.colStart + 1)
-    ptr[0] = ":"'u8
-    ptr[1] = " "'u8
-    ptr += 2
-
-    lenMsg := @countof(message)
-    if lenMsg > 512 lenMsg = 512
-    if lenMsg
-    {
-        @memcpy(ptr, @dataof(message), lenMsg)
-        ptr += lenMsg
-    }
-
-    ptr[0] = "\n"'u8
-    ptr[1] = 0
-    ptr += 1
-
-    lenTotal := ptr - @dataof(msg)
-    @assert(lenTotal < @countof(msg))
-    @print(@mkstring(&msg[0], lenTotal))
-}
-
-////////////////////////////////////////////////////////////
 func __concreteAlias(type1: typeinfo)->typeinfo
 {
     if type1.kind != TypeInfoKind.Alias or type1.flags & TypeInfoFlags.Strict
@@ -524,6 +476,24 @@ func __stackTrace(loc: CompilerSourceLocation)
 
 
 ////////////////////////////////////////////////////////////
+func @errormsg(message: string, loc: Swag.CompilerSourceLocation)
+{
+    // If the compiler is around, just let it deal with the message
+    cxt := @getcontext()
+    contextFlags := cxt.flags
+    if contextFlags & Swag.ContextFlags.ByteCode
+    {
+        __raiseException666(message, loc)
+        return
+    }
+
+    @print("\x1b[91m")
+    @print("error: ", message, "\n")
+    @print("\x1b[97m")
+    @print(" |  --> ")
+    @print(loc.fileName, ":", loc.lineStart + 1, "\n")
+}
+
 #[Swag.Safety("", false)]
 func @panic(message: string, loc: CompilerSourceLocation)
 {
@@ -536,19 +506,25 @@ func @panic(message: string, loc: CompilerSourceLocation)
         return
     }
 
-    contextFlags := cxt.flags
-
+    // Print the message first
     @errormsg(message, loc)
 
     // If we are running bytecode, then just let the runner deal with the assertion,
     // we will have more usefull information
+    contextFlags := cxt.flags
     if contextFlags & ContextFlags.ByteCode
         return
 
-    // Stack trace if available
+    // Print the calling stack trace
+    __logStackTrace()
+
+    // Print the error stack trace if available
     for i := cast(s32) cxt.traceIndex - 1; i >= 0; i -= 1
     {
-        @print("trace error: ");
+        @print("\x1b[93m")
+        @print("trace error:\n");
+        @print("\x1b[97m")
+        @print(" |  --> ")
         @print(cxt.trace[i].fileName)
         @print(":");
         @print(cast(s64) cxt.trace[i].lineStart + 1);
@@ -602,7 +578,6 @@ func @panic(message: string, loc: CompilerSourceLocation)
     __panicBox(cast(string) str, title)
 }
 
-////////////////////////////////////////////////////////////
 func __panic(file: const *u8, line: u32, col: u32, message: const *u8)
 {
     var loc: CompilerSourceLocation
