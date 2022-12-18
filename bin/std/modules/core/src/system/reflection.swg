@@ -480,7 +480,7 @@ func roomInArray(addr: *void, type: const *TypeInfoStruct, valueType: typeinfo)-
     if arr.count >= arr.capacity
     {
         newCapacity := Math.max(arr.count + 1, arr.capacity * 2)
-        newBuffer := Memory.alloc(newCapacity * sizeValue, arr.allocator)
+        newBuffer := cast(^u8) Memory.alloc(newCapacity * sizeValue, arr.allocator)
         Memory.clear(newBuffer, newCapacity * sizeValue)
         arr.capacity = newCapacity
 

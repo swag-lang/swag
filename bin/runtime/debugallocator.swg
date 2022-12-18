@@ -1,78 +1,76 @@
 #global namespace Swag
 
+// Will be put just before the returned address
+struct DebugAllocatorHeader
+{
+    loc:            CompilerSourceLocation
+    allocAddr:      ^void
+    allocSize:      uint
+    userSize:       uint
+    hint:           string
+    prev:           *DebugAllocatorHeader
+    next:           *DebugAllocatorHeader
+    magic:          u32
+    allocId:        u32
+}
+
+// Will be put just after the returned address
+struct DebugAllocatorFooter
+{
+    magic:  u32
+}
+
 struct DebugAllocator
 {
     allocator:  IAllocator
-    firstAlloc: *void   // First allocated block
-    size:       uint    // Total user size, in bytes
-    nextId:     u32     // The next allocated id to assign
-    count:      u32     // Number of allocated blocks
     mutex:      MutexRW
+    firstAlloc: *DebugAllocatorHeader   // First allocated block
+    firstFree:  *DebugAllocatorHeader   // First freed block
+    lastFree:   *DebugAllocatorHeader   // Last freed block
+    sizeAlloc:  uint    // Total user sizeAlloc, in bytes
+    countAlloc: u32     // Number of allocated blocks
+    nextId:     u32     // The next allocated id to assign
 }
 
-// This will be address before and after each allocated block
 impl DebugAllocator
 {
     const MagicAlloc = 0xC0DEC0DE   // Before and after the user memory
+    const MagicFree  = 0xCAFECAFE   // Before and after the user memory
     const AllocByte  = 0xAB         // Fill memory when allocated
     const FreeByte   = 0xFB         // Fill memory when deleted
 
-    // Will be put just before the returned address
-    struct Header
-    {
-        allocAddr:      ^void
-        allocSize:      uint
-        userSize:       uint
-        locFilename:    string
-        hint:           string
-        prev:           *Header
-        next:           *Header
-        magic:          u32
-        allocId:        u32
-        locLine:        u32
-    }
-
-    // Will be put just after the returned address
-    struct Footer
-    {
-        magic:  u32
-    }
-}
-
-impl DebugAllocator
-{
     func printDisplaySize(value: uint)
     {
-        size := value
-        if size < 1024
+        sizeAlloc := value
+        if sizeAlloc < 1024
         {
-            @print(size, " bytes")
+            @print(sizeAlloc, " bytes")
             return
         }
 
-        size /= 1024
-        if size < 1024
+        sizeAlloc /= 1024
+        if sizeAlloc < 1024
         {
-            @print(size, " Kb")
+            @print(sizeAlloc, " Kb")
             return
         }
 
-        size /= 1024
-        if size < 1024
+        sizeAlloc /= 1024
+        if sizeAlloc < 1024
         {
-            @print(size, " Mb")
+            @print(sizeAlloc, " Mb")
             return
         }
 
-        size /= 1024
-        if size < 1024
+        sizeAlloc /= 1024
+        if sizeAlloc < 1024
         {
-            @print(size, " Gb")
+            @print(sizeAlloc, " Gb")
             return
         }
 
-        size /= 1024
-        @print(size, " Tb")
+        sizeAlloc /= 1024
+        @print(sizeAlloc, " Tb")
     }
 
     func memAlign(value: uint, alignement: u32)->uint
@@ -83,18 +81,32 @@ impl DebugAllocator
         return result
     }
 
-    mtd checkOne(ptrHeader: ^Header)
+    mtd checkIsAllocated(ptrHeader: ^DebugAllocatorHeader)
     {
         ptrEnd := cast(^u8) (ptrHeader + 1)
-        ptrFooter := cast(*Footer) (ptrEnd + ptrHeader.userSize)
+        ptrFooter := cast(*DebugAllocatorFooter) (ptrEnd + ptrHeader.userSize)
 
-        @assert(ptrHeader.magic == MagicAlloc)
-        @assert(ptrFooter.magic == MagicAlloc)
-        @assert(ptrHeader.allocId != 0)
-        @assert(ptrHeader.userSize != 0)
-        @assert(ptrHeader.prev or firstAlloc == ptrHeader)
-        @assert(!ptrHeader.prev or ptrHeader.prev.next == ptrHeader)
-        @assert(!ptrHeader.next or ptrHeader.next.prev == ptrHeader)
+        if (ptrHeader.magic != MagicAlloc and ptrHeader.magic != MagicFree) or
+           (ptrFooter.magic != MagicAlloc and ptrFooter.magic != MagicFree)
+        {
+            @panic("block is corrupt", #location)
+        }
+
+        if ptrHeader.allocId == 0 or
+           ptrHeader.userSize == 0 or
+           (ptrHeader.magic == MagicAlloc and !ptrHeader.prev and firstAlloc != ptrHeader) or
+           (ptrHeader.magic == MagicFree and !ptrHeader.prev and firstFree != ptrHeader) or
+           (ptrHeader.prev and ptrHeader.prev.next != ptrHeader) or
+           (ptrHeader.next and ptrHeader.next.prev != ptrHeader)
+        {
+            @panic("block is corrupt", #location)
+        }
+
+        if (ptrHeader.magic == MagicFree and ptrHeader.magic == MagicFree)
+        {
+            loc := ptrHeader.loc.fileName ? ptrHeader.loc : #location
+            @panic("double free", loc)
+        }
     }
 }
 
@@ -107,21 +119,18 @@ impl DebugAllocator
         self.allocator = #self.allocator
     }
 
-    // Returns true if there are some remaining allocations
-    mtd isEmpty() => firstAlloc == null
-
     // Output to the console the list of all allocated blocks (leaks)
     mtd printAllocated()
     {
-        scan := cast(*Header) firstAlloc
-        @print(count, " block(s) for a total of ")
-        printDisplaySize(size)
+        scan := cast(*DebugAllocatorHeader) firstAlloc
+        @print(countAlloc, " block(s) for a total of ")
+        printDisplaySize(sizeAlloc)
         @print("\n")
 
         while scan
         {
-            @print(scan.locFilename, ":", scan.locLine, ": ")
-            @print("id: ", scan.allocId, " size: ")
+            @print(scan.loc.fileName, ":", scan.loc.lineStart, ": ")
+            @print("id: ", scan.allocId, " sizeAlloc: ")
             printDisplaySize(scan.userSize)
             if scan.hint @print(" hint: ", scan.hint)
             @print("\n")
@@ -133,7 +142,7 @@ impl DebugAllocator
     // Output to the console the list of all allocated blocks (leaks)
     mtd printLeaks()
     {
-        if isEmpty()
+        if countAlloc == 0
             return
         @print("############################################\n")
         @print("Swag.DebugAllocator: Memory leaks detected !\n")
@@ -141,25 +150,23 @@ impl DebugAllocator
         printAllocated()
     }
 
-    // This function will assert if the given address is not conform
+    // This function will assert if the given user address is not conform
     // to an allocated block
-    //#[Swag.PrintBc]
     mtd assertIsAllocated(addr: *void)
     {
-        if !addr return
-
-        orgAddr := cast(^u8) addr
-        ptrHeader := cast(*Header) (orgAddr - @sizeof(Header))
-        checkOne(ptrHeader)
+        if !addr
+            return
+        ptrHeader := cast(*DebugAllocatorHeader) (cast(^u8) addr - @sizeof(DebugAllocatorHeader))
+        checkIsAllocated(ptrHeader)
     }
 
     // Check all allocated pointers
-    mtd checkAll()
+    mtd checkAllAllocated()
     {
-        ptrHeader := cast(*Header) firstAlloc
+        ptrHeader := cast(*DebugAllocatorHeader) firstAlloc
         while ptrHeader
         {
-            checkOne(ptrHeader)
+            checkIsAllocated(ptrHeader)
             ptrHeader = ptrHeader.next
         }
     }
@@ -171,11 +178,12 @@ impl IAllocator for DebugAllocator
     {
         if !request.address
             return
+
         assertIsAllocated(request.address)
 
         userAddr := cast(^u8) request.address
-        ptrHeader := cast(*Header) (userAddr - @sizeof(Header))
-        ptrFooter := cast(*Footer) (userAddr + ptrHeader.userSize)
+        ptrHeader := cast(*DebugAllocatorHeader) (userAddr - @sizeof(DebugAllocatorHeader))
+        ptrFooter := cast(*DebugAllocatorFooter) (userAddr + ptrHeader.userSize)
 
         @assert(ptrHeader.userSize == request.size)
 
@@ -187,20 +195,62 @@ impl IAllocator for DebugAllocator
         if ptrHeader.next
             ptrHeader.next.prev = ptrHeader.prev
 
+        // Link to free list
+        ptrHeader.prev = null
+        ptrHeader.next = firstFree
+        if firstFree
+            firstFree.prev = ptrHeader
+        firstFree = ptrHeader
+        if !lastFree
+            lastFree = firstFree
+
         // Stats
-        @assert(self.count > 0)
-        self.count -= 1
-        @assert(self.size >= ptrHeader.userSize)
+        @assert(self.countAlloc > 0)
+        self.countAlloc -= 1
+        @assert(self.sizeAlloc >= ptrHeader.userSize)
         userSize := ptrHeader.userSize
-        self.size -= userSize
+        self.sizeAlloc -= userSize
+
+        // Fill the user memory area with garbage
+        @memset(userAddr, FreeByte, userSize)
+
+        // Change header/footer
+        ptrHeader.magic = MagicFree
+        ptrFooter.magic = MagicFree
+        ptrHeader.loc = request.callerLoc
+
+        // This is the norm...
+        request.address = null
+
+        releaseLast()
+    }
+
+    mtd releaseLast()
+    {
+        if !lastFree
+            return
+
+        // Unlink from list
+        ptrHeader := lastFree
+        if lastFree.prev
+        {
+            lastFree.prev.next = null
+            lastFree = lastFree.prev
+        }
+        else
+        {
+            @assert(firstFree == lastFree)
+            @assert(firstFree == ptrHeader)
+            lastFree, firstFree = null
+        }
 
         freeAddr := ptrHeader.allocAddr
         freeSize := ptrHeader.allocSize
 
-        // Fill the memory area with garbage
-        @memset(userAddr, FreeByte, userSize)
-        @memset(ptrHeader, FreeByte, @sizeof(Header))
-        @memset(ptrFooter, FreeByte, @sizeof(Footer))
+        // Fill header/footer
+        ptrFooter := cast(*DebugAllocatorFooter) (ptrHeader.allocAddr + ptrHeader.userSize + @sizeof(DebugAllocatorHeader))
+        @memset(ptrHeader, FreeByte, @sizeof(DebugAllocatorHeader))
+        @memset(ptrFooter, FreeByte, @sizeof(DebugAllocatorFooter))
 
         // Really free the memory
         var req: AllocatorRequest
@@ -208,7 +258,102 @@ impl IAllocator for DebugAllocator
         req.address = freeAddr
         req.size = freeSize
         allocator.req(&req)
-        request.address = null
+    }
+
+    mtd alloc(request: *AllocatorRequest)
+    {
+        // Special case
+        if request.size == 0
+        {
+            if request.mode == .Realloc
+                free(request)
+            request.address = null
+            return
+        }
+
+        // In case of a reallocation, get the previous allocated user sizeAlloc
+        // This will be used to fill with garbage the difference
+        copyReq := dref request
+        prevSize := 0'uint
+        prevHeader := cast(^DebugAllocatorHeader) request.address
+        if request.mode == AllocatorMode.Realloc and request.address
+        {
+            prevHeader -= 1
+            copyReq.address = prevHeader.allocAddr
+            prevSize = prevHeader.userSize
+
+            // Unlink now, before the realloc, because that block could
+            // become invalid in case of a reallocation
+            if prevHeader
+            {
+                if !prevHeader.prev
+                    self.firstAlloc = prevHeader.next
+                else
+                    prevHeader.prev.next = prevHeader.next
+                if prevHeader.next
+                    prevHeader.next.prev = prevHeader.prev
+            }
+        }
+
+        // Adapt sizeAlloc to be able to store additional informations
+        // Take care of alignement request, because we need to be sure
+        // that the returned memory block is well aligned
+        toAddAlign := memAlign(@sizeof(DebugAllocatorHeader), request.alignement)
+
+        // Make the real allocation
+        copyReq.size += toAddAlign + @sizeof(DebugAllocatorFooter)
+        allocator.req(&copyReq)
+
+        // This is the aligned returned user address
+        userAddr := cast(^u8) copyReq.address
+        userAddr += toAddAlign
+
+        // Setup header
+        header := cast(*DebugAllocatorHeader) (userAddr - @sizeof(DebugAllocatorHeader))
+        header.magic = MagicAlloc
+        header.allocAddr = copyReq.address
+        header.allocSize = copyReq.size
+        header.userSize = request.size
+        header.loc = copyReq.callerLoc
+        header.hint = copyReq.hint
+
+        // Setup footer
+        footer := cast(*DebugAllocatorFooter) (userAddr + request.size)
+        footer.magic = MagicAlloc
+
+        // Fill with garbage
+        if request.mode == AllocatorMode.Alloc or !request.address
+            @memset(userAddr, AllocByte, request.size)
+        elif prevSize < request.size
+            @memset(userAddr + prevSize, AllocByte, request.size - prevSize)
+
+        // Stats
+        if !prevSize
+            self.countAlloc += 1
+        self.sizeAlloc -= prevSize
+        self.sizeAlloc += request.size
+
+        // Set the new user address
+        request.address = userAddr
+
+        // Set a unique id
+        self.nextId += 1
+        header.allocId = self.nextId
+
+        // To but a breakpoint on a given allocator id
+        #[Swag.Global]
+        var breakId: u32
+        if header.allocId == breakId
+        {
+            @assert(false)
+        }
+
+        // Link to list of allocated blocks
+        header.prev = null
+        header.next = self.firstAlloc
+        if header.next
+            header.next.prev = header
+        self.firstAlloc = header
     }
 
     mtd req(request: *AllocatorRequest)
@@ -225,107 +370,14 @@ impl IAllocator for DebugAllocator
         case FreeAll:
             allocator.req(request)
             firstAlloc = null
-            count = 0
-            size = 0
+            countAlloc, sizeAlloc = 0
 
         case Realloc:
             assertIsAllocated(request.address)
             fallthrough
 
         case Alloc:
-            // Special case
-            if request.size == 0
-            {
-                if request.mode == .Realloc
-                    free(request)
-                request.address = null
-                return
-            }
-
-            // In case of a reallocation, get the previous allocated user size
-            // This will be used to fill with garbage the difference
-            copyReq := dref request
-            prevSize := 0'uint
-            prevHeader := cast(^Header) request.address
-            if request.mode == AllocatorMode.Realloc and request.address
-            {
-                prevHeader -= 1
-                copyReq.address = prevHeader.allocAddr
-                prevSize = prevHeader.userSize
-
-                // Unlink now, before the realloc, because that block could
-                // become invalid in case of a reallocation
-                if prevHeader
-                {
-                    if !prevHeader.prev
-                        self.firstAlloc = prevHeader.next
-                    else
-                        prevHeader.prev.next = prevHeader.next
-                    if prevHeader.next
-                        prevHeader.next.prev = prevHeader.prev
-                }
-            }
-
-            // Adapt size to be able to store additional informations
-            // Take care of alignement request, because we need to be sure
-            // that the returned memory block is well aligned
-            toAddAlign := memAlign(@sizeof(Header), request.alignement)
-
-            // Make the real allocation
-            copyReq.size += toAddAlign + @sizeof(Footer)
-            allocator.req(&copyReq)
-
-            // This is the aligned returned user address
-            userAddr := cast(^u8) copyReq.address
-            userAddr += toAddAlign
-
-            // Setup header
-            header := cast(*Header) (userAddr - @sizeof(Header))
-            header.magic = MagicAlloc
-            header.allocAddr = copyReq.address
-            header.allocSize = copyReq.size
-            header.userSize = request.size
-            header.locFilename = copyReq.callerLoc.fileName
-            header.locLine = copyReq.callerLoc.lineStart + 1
-            header.hint = copyReq.hint
-
-            // Setup footer
-            footer := cast(*Footer) (userAddr + request.size)
-            footer.magic = MagicAlloc
-
-            // Fill with garbage
-            if request.mode == AllocatorMode.Alloc or !request.address
-                @memset(userAddr, AllocByte, request.size)
-            elif prevSize < request.size
-                @memset(userAddr + prevSize, AllocByte, request.size - prevSize)
-
-            // Stats
-            if !prevSize
-                self.count += 1
-            self.size -= prevSize
-            self.size += request.size
-
-            // Set the new user address
-            request.address = userAddr
-
-            // Set a unique id
-            self.nextId += 1
-            header.allocId = self.nextId
-
-            // To but a breakpoint on a given allocator id
-            #[Swag.Global]
-            var breakId: u32
-            if header.allocId == breakId
-            {
-                @assert(false)
-            }
-
-            // Link to list of allocated blocks
-            header.prev = null
-            header.next = self.firstAlloc
-            if header.next
-                header.next.prev = header
-            self.firstAlloc = header
+            alloc(request)
         }
     }
 }

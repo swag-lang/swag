@@ -14,5 +14,5 @@
 
     free(ptr, 16, dbg)
     delete'String(ptr1, dbg)
-    @assert(dbg.isEmpty())
+    @assert(dbg.countAlloc == 0)
 }

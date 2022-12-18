@@ -436,7 +436,7 @@ impl ConcatBuffer
             return
 
         total := count()
-        newDatas := Memory.alloc(total, allocator)
+        newDatas := cast(^u8) Memory.alloc(total, allocator)
 
         curPtr := newDatas
         visit b: dref self
