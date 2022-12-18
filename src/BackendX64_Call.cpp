@@ -143,6 +143,22 @@ void BackendX64::emitCall(X64Gen& pp, TypeInfoFuncAttr* typeFunc, const Utf8& fu
 
     // Store result
     pp.emit_Call_Result(typeFunc, offsetRT);
+
+    // In case of stack trace, we force a "nop" just after the function call, in order
+    // to be sure that there's at least one instruction before the potential next line.
+    // Because the stack trace is based on the instruction just after the call, not the
+    // call itself. So we want to be sure that the next instruction is at the same line as
+    // the call. That's why we add a nop.
+    if (!typeFunc->returnType || typeFunc->returnType->isVoid())
+    {
+        if (typeFunc->declNode && typeFunc->declNode->sourceFile && typeFunc->declNode->sourceFile->module)
+        {
+            if (typeFunc->declNode->sourceFile->module->buildCfg.stackTrace)
+            {
+                concat.addU8(0x90); // nop
+            }
+        }
+    }
 }
 
 void BackendX64::emitCall(X64Gen& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, bool localCall)

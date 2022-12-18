@@ -329,6 +329,6 @@ func __logStackTrace()
 
         @print(" |  --> ")
         fileName := @mkstring(line.FileName, @strlen(line.FileName))
-        @print(fileName, ":", line.LineNumber-1, "\n")
+        @print(fileName, ":", line.LineNumber, "\n")
     }
 }

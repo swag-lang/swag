@@ -31,7 +31,7 @@ namespace OS
     void                 consoleSetColor(LogColor color);
     const BackendTarget& getNativeTarget();
 
-    bool  doProcess(Module* module, const Utf8& cmdline, const string& currentDirectory, bool logAll, uint32_t& numErrors, LogColor logColor = LogColor::DarkCyan, const char* logPrefix = nullptr);
+    bool  doProcess(Module* module, const Utf8& cmdline, const string& currentDirectory, uint32_t& numErrors);
     void  doRunProcess(const Utf8& cmdline, const string& currentDirectory);
     void  setThreadName(thread* thread, const char* threadName);
     void  exit(int code);

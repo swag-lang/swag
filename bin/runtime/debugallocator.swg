@@ -143,6 +143,7 @@ impl DebugAllocator
 
     // This function will assert if the given address is not conform
     // to an allocated block
+    //#[Swag.PrintBc]
     mtd assertIsAllocated(addr: *void)
     {
         if !addr return

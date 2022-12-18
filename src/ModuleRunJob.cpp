@@ -28,7 +28,7 @@ JobResult ModuleRunJob::execute()
         cmdLine += " ";
         cmdLine += g_CommandLine->userArguments;
 
-        OS::doProcess(module, cmdLine, path.parent_path().parent_path().string(), true, numErrors, LogColor::Default);
+        OS::doProcess(module, cmdLine, path.parent_path().parent_path().string(), numErrors);
         g_Workspace->numErrors += numErrors;
         module->numErrors += numErrors;
     }

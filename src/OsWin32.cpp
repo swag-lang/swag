@@ -106,7 +106,7 @@ namespace OS
         SetConsoleTextAttribute(consoleHandle, attributes | back);
     }
 
-    bool doProcess(Module* module, const Utf8& cmdline, const string& currentDirectory, bool logAll, uint32_t& numErrors, LogColor logColor, const char* logPrefix)
+    bool doProcess(Module* module, const Utf8& cmdline, const string& currentDirectory, uint32_t& numErrors)
     {
         STARTUPINFOA        si;
         PROCESS_INFORMATION pi;
@@ -191,99 +191,55 @@ namespace OS
                     pz = strstr(oneLine.c_str(), "error:");
                     if (pz)
                     {
-                        // Something can have been printed before with a '@print' without an '\n', so just to not miss anything...
-                        if (pz != oneLine.c_str() && logAll)
-                        {
-                            g_Log.lock();
-                            g_Log.setColor(logColor);
-                            if (logPrefix)
-                                g_Log.print(logPrefix);
-                            auto tmpLine  = oneLine;
-                            tmpLine.count = (int) (pz - oneLine.c_str());
-                            g_Log.print(tmpLine + "\n");
-                            g_Log.setDefaultColor();
-                            g_Log.unlock();
-                            oneLine = pz;
-                        }
+                        numErrors++;
+                        ok = false;
 
-                        if (module)
-                        {
-                            ok = false;
+                        g_Log.lock();
+                        g_Log.setColor(LogColor::Red);
+                        g_Log.print(oneLine + "\n");
+                        g_Log.setDefaultColor();
+                        g_Log.unlock();
+                        continue;
+                    }
 
-                            // Extract file and location
-                            vector<Utf8> tokens;
-                            Utf8::tokenize(oneLine, ':', tokens);
-                            for (auto& t : tokens)
-                                t.trim();
-                            if (tokens.size() <= 2)
+                    // Source code
+                    g_Log.lock();
+                    pz = strstr(oneLine.c_str(), " |  --> ");
+                    if (pz && module)
+                    {
+                        auto oneLine1 = pz + 8;
+
+                        // Extract file and location
+                        vector<Utf8> tokens;
+                        Utf8::tokenize(oneLine1, ':', tokens);
+                        for (auto& t : tokens)
+                            t.trim();
+                        if (tokens.size() > 2)
+                        {
+                            auto fileName = tokens[0] + ":";
+                            fileName += tokens[1];
+                            auto sourceFile = module->findFile(fileName);
+                            if (!sourceFile)
+                                sourceFile = g_Workspace->bootstrapModule->findFile(fileName);
+                            if (!sourceFile)
+                                sourceFile = g_Workspace->runtimeModule->findFile(fileName);
+                            if (sourceFile)
                             {
-                                // User message error: just log as a normal message
-                                if (logAll)
+                                auto codeLine = sourceFile->getLine(atoi(tokens[2]) - 1);
+                                if (!codeLine.empty())
                                 {
-                                    g_Log.lock();
-                                    g_Log.setColor(logColor);
-                                    if (logPrefix)
-                                        g_Log.print(logPrefix);
-                                    g_Log.print(oneLine + "\n");
-                                    g_Log.setDefaultColor();
-                                    g_Log.unlock();
+                                    g_Log.setColor(LogColor::Gray);
+                                    g_Log.print(" |  ");
+                                    g_Log.print(codeLine + "\n");
                                 }
                             }
-                            else
-                            {
-                                auto fileName = tokens[1] + ":";
-                                fileName += tokens[2];
-                                auto sourceFile = module->findFile(fileName);
-                                if (!sourceFile)
-                                    sourceFile = g_Workspace->bootstrapModule->findFile(fileName);
-                                if (!sourceFile)
-                                    sourceFile = g_Workspace->runtimeModule->findFile(fileName);
-                                if (sourceFile && tokens.size() == 6) // error: drive letter: path: line: column: message
-                                {
-                                    SourceLocation startLoc;
-                                    startLoc.line         = atoi(tokens[tokens.size() - 3]) - 1;
-                                    startLoc.column       = atoi(tokens[tokens.size() - 2]) - 1;
-                                    SourceLocation endLoc = startLoc;
-                                    auto           msg    = tokens.back();
-                                    msg                   = "runtime execution, " + msg;
-                                    Diagnostic diag{sourceFile, startLoc, endLoc, msg};
-                                    Report::report(diag);
-                                }
-                                else
-                                {
-                                    numErrors++;
-                                    g_Log.lock();
-                                    g_Log.setColor(LogColor::Red);
-                                    g_Log.print(oneLine + "\n");
-                                    g_Log.setDefaultColor();
-                                    g_Log.unlock();
-                                }
-                            }
-                        }
-                        else
-                        {
-                            numErrors++;
-                            ok = false;
-
-                            g_Log.lock();
-                            g_Log.setColor(LogColor::Red);
-                            g_Log.print(oneLine + "\n");
-                            g_Log.setDefaultColor();
-                            g_Log.unlock();
                         }
                     }
 
                     // Messages
-                    else if (logAll)
-                    {
-                        g_Log.lock();
-                        g_Log.setColor(logColor);
-                        if (logPrefix)
-                            g_Log.print(logPrefix);
-                        g_Log.print(oneLine + "\n");
-                        g_Log.setDefaultColor();
-                        g_Log.unlock();
-                    }
+                    g_Log.setDefaultColor();
+                    g_Log.print(oneLine + "\n");
+                    g_Log.unlock();
                 }
 
                 continue;
