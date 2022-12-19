@@ -55,84 +55,58 @@ void* AllocatorImpl::tryFreeBlock(uint32_t maxCount, size_t size)
 
     while (tryBlock && cpt++ < maxCount)
     {
-        // :SimpleDefrag
-        while (tryBlock->next && (uint8_t*) tryBlock + tryBlock->size == (uint8_t*) tryBlock->next)
+        // This block does not have enough size. Skip it.
+        if (size > tryBlock->size)
         {
-            tryBlock->size += tryBlock->next->size;
-            tryBlock->next = tryBlock->next->next;
+            prevBlock = tryBlock;
+            tryBlock  = tryBlock->next;
+            SWAG_ASSERT(tryBlock != firstFreeBlock);
+            continue;
         }
 
-        // :SimpleDefrag
-        while (tryBlock->next && (uint8_t*) tryBlock->next + tryBlock->next->size == (uint8_t*) tryBlock)
-        {
-            tryBlock->next->size += tryBlock->size;
-            if (prevBlock)
-                prevBlock->next = tryBlock->next;
-            else
-                firstFreeBlock = tryBlock->next;
-            tryBlock = tryBlock->next;
-        }
+        auto splitBlock = tryBlock->next;
+        auto remainSize = tryBlock->size - size;
 
-        if (size <= tryBlock->size)
+        // The block does not have exactly the requested size.
+        // We need to split it.
+        if (remainSize)
         {
-            auto remainSize = tryBlock->size - size;
-            if (remainSize)
+            auto bucket = remainSize / 8;
+            auto split  = (uint8_t*) tryBlock + size;
+
+            // The remaining block can fit in a bucket.
+            if (bucket < MAX_FREE_BUCKETS)
             {
-                if (g_CommandLine.stats)
-                    g_Stats.wastedMemory -= size;
-                auto bucket = remainSize / 8;
-                auto split  = (uint8_t*) tryBlock + size;
-                auto result = tryBlock;
-
-                if (bucket < MAX_FREE_BUCKETS)
-                {
-                    auto next           = freeBuckets[bucket];
-                    freeBuckets[bucket] = split;
-                    freeBucketsMask |= 1ULL << bucket;
-                    *(void**) freeBuckets[bucket] = next;
-                    if (prevBlock)
-                        prevBlock->next = tryBlock->next;
-                    else
-                        firstFreeBlock = tryBlock->next;
-                }
-                else
-                {
-                    auto next       = tryBlock->next;
-                    auto splitBlock = (FreeBlock*) split;
-                    if (prevBlock)
-                        prevBlock->next = splitBlock;
-                    else
-                        firstFreeBlock = splitBlock;
-                    splitBlock->size = remainSize;
-                    splitBlock->next = next;
-                }
-
-                return result;
+                auto next           = freeBuckets[bucket];
+                freeBuckets[bucket] = split;
+                freeBucketsMask |= 1ULL << bucket;
+                *(void**) freeBuckets[bucket] = next;
             }
+
+            // The remaining block is too big to fit.
+            // Put it in the free block list
             else
             {
-                if (g_CommandLine.stats)
-                    g_Stats.wastedMemory -= tryBlock->size;
-
-                auto result = tryBlock;
-                if (prevBlock)
-                    prevBlock->next = tryBlock->next;
-                else
-                    firstFreeBlock = tryBlock->next;
-
-                return result;
+                splitBlock       = (FreeBlock*) split;
+                splitBlock->size = remainSize;
+                splitBlock->next = tryBlock->next;
             }
         }
 
-        prevBlock = tryBlock;
-        tryBlock  = tryBlock->next;
-        SWAG_ASSERT(tryBlock != firstFreeBlock);
+        // The block has exactly the requested size. Just take it.
+        if (g_CommandLine.stats)
+            g_Stats.wastedMemory -= size;
+        if (prevBlock)
+            prevBlock->next = splitBlock;
+        else
+            firstFreeBlock = splitBlock;
+        return tryBlock;
     }
 
     return nullptr;
 }
 
-void* AllocatorImpl::useRealBucket(uint32_t bucket)
+void* AllocatorImpl::useRealBucket(uint32_t bucket, size_t size)
 {
     SWAG_ASSERT(bucket < MAX_FREE_BUCKETS);
     SWAG_ASSERT(freeBuckets[bucket]);
@@ -166,7 +140,7 @@ void* AllocatorImpl::useBucket(uint32_t bucket, size_t size)
     if (g_CommandLine.stats)
         g_Stats.wastedMemory += wasted;
 
-    return useRealBucket(bucket);
+    return useRealBucket(bucket, size);
 }
 
 void AllocatorImpl::allocateNewBlock(size_t size)
@@ -261,7 +235,7 @@ void* AllocatorImpl::alloc(size_t size)
     {
         // Try in the list of free blocks, per bucket
         if (freeBuckets[bucket])
-            return useRealBucket((uint32_t) bucket);
+            return useRealBucket((uint32_t) bucket, size);
 
         // Try with the biggest bucket available with free blocks
         // This will split the block
@@ -292,46 +266,16 @@ void AllocatorImpl::free(void* ptr, size_t size)
     auto bucket = size / 8;
     if (bucket < MAX_FREE_BUCKETS)
     {
-        // :SimpleDefrag
-        // If there's already a free block at the same size, and that block is just after the one
-        // we want to free, then just append the two blocks, and put this block in the new corresponding
-        // bigger bucket.
-        if (((size * 2) < MAX_FREE_BUCKETS * 8) && freeBuckets[bucket] == (uint8_t*) ptr + size)
-        {
-            freeBuckets[bucket] = *(void**) freeBuckets[bucket];
-            if (!freeBuckets[bucket])
-                freeBucketsMask &= ~(1ULL << bucket);
-
-            size *= 2;
-            bucket              = size / 8;
-            *(void**) ptr       = freeBuckets[bucket];
-            freeBuckets[bucket] = ptr;
-            freeBucketsMask |= 1ULL << bucket;
-        }
-        else
-        {
-            *(void**) ptr       = freeBuckets[bucket];
-            freeBuckets[bucket] = ptr;
-            freeBucketsMask |= 1ULL << bucket;
-        }
+        *(void**) ptr       = freeBuckets[bucket];
+        freeBuckets[bucket] = ptr;
+        freeBucketsMask |= 1ULL << bucket;
     }
     else
     {
-        // :SimpleDefrag
-        if ((uint8_t*) firstFreeBlock == (uint8_t*) ptr + size)
-        {
-            auto fptr      = (FreeBlock*) ptr;
-            fptr->size     = size + firstFreeBlock->size;
-            fptr->next     = firstFreeBlock->next;
-            firstFreeBlock = fptr;
-        }
-        else
-        {
-            auto fptr      = (FreeBlock*) ptr;
-            fptr->size     = size;
-            fptr->next     = firstFreeBlock;
-            firstFreeBlock = fptr;
-        }
+        auto fptr      = (FreeBlock*) ptr;
+        fptr->size     = size;
+        fptr->next     = firstFreeBlock;
+        firstFreeBlock = fptr;
     }
 }
 

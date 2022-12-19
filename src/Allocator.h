@@ -19,7 +19,7 @@ struct AllocatorImpl
     void* bigAlloc(size_t size);
     void* alloc(size_t size);
 
-    void* useRealBucket(uint32_t bucket);
+    void* useRealBucket(uint32_t bucket, size_t size);
     void* useBucket(uint32_t bucket, size_t size);
     void* tryFreeBlock(uint32_t maxCount, size_t size);
 
