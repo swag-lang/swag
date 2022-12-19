@@ -10,7 +10,7 @@
 #include "Hash.h"
 
 #undef BYTECODE_OP
-#define BYTECODE_OP(__op, __flags, __dis, __nump) {#__op, (int) strlen(#__op), __flags, __dis, __nump},
+#define BYTECODE_OP(__op, __flags, __dis) {#__op, (int) strlen(#__op), __flags, __dis},
 ByteCodeOpDesc g_ByteCodeOpDesc[] = {
 #include "ByteCodeOpList.h"
 };

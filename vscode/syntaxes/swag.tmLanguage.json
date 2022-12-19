@@ -123,7 +123,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "(@)\\b(itftableof|modules|args|defined|stringcmp|typecmp|interfaceof|getpinfos|getcontext|setcontext|compiler|isbytecode|print|errormsg|breakpoint|assert|panic|hastag|gettag|safety|init|drop|mkany|mkslice|mkstring|mkcallback|mkinterface|sizeof|alignof|offsetof|typeof|kindof|countof|dataof|stringof|nameof|runes|postcopy|postmove|spread|isconstexpr)\\b"
+          "match": "(@)\\b(itftableof|modules|args|defined|stringcmp|dbgalloc|rtflags|typecmp|interfaceof|getpinfos|getcontext|setcontext|compiler|isbytecode|print|errormsg|breakpoint|assert|panic|hastag|gettag|safety|init|drop|mkany|mkslice|mkstring|mkcallback|mkinterface|sizeof|alignof|offsetof|typeof|kindof|countof|dataof|stringof|nameof|runes|postcopy|postmove|spread|isconstexpr)\\b"
         }
       ]
     },

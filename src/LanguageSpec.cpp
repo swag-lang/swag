@@ -162,7 +162,10 @@ void LanguageSpec::setupNames()
     name_atitftableof = "@itftableof";
     name_atstrcmp     = "@stringcmp";
     name_attypecmp    = "@typecmp";
-    name_sharpself    = "#self";
+    name_atdbgalloc   = "@dbgalloc";
+    name_atrtflags    = "@rtflags";
+
+    name_sharpself = "#self";
 
     name_memcpy  = "memcpy";
     name_memset  = "memset";
@@ -359,6 +362,8 @@ void LanguageSpec::setupKeywords()
     keywords.add("@strlen", TokenId::IntrinsicStrLen);
     keywords.add("@strcmp", TokenId::IntrinsicStrCmp);
     keywords.add("@stringcmp", TokenId::IntrinsicStringCmp);
+    keywords.add("@dbgalloc", TokenId::IntrinsicDbgAlloc);
+    keywords.add("@rtflags", TokenId::IntrinsicRtFlags);
     keywords.add("@typecmp", TokenId::IntrinsicTypeCmp);
     keywords.add("@getcontext", TokenId::IntrinsicGetContext);
     keywords.add("@setcontext", TokenId::IntrinsicSetContext);

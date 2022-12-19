@@ -118,6 +118,9 @@ func @args()->const [..] string
 var __debugAlloc:   DebugAllocator
 var __runtimeFlags  = RuntimeFlags.Zero
 
+func @dbgalloc() => &__debugAlloc
+func @rtflags()  => __runtimeFlags
+
 func __setupRuntime(flags: RuntimeFlags)
 {
     @getcontext().tempAllocator.setCapacity(@getcontext().allocator)
@@ -134,8 +137,8 @@ func __closeRuntime()
 {
     @getcontext().tempAllocator.release()
 
-    //if !(__runtimeFlags & .FromCompiler) and (__runtimeFlags & .DebugAllocator)
-    //    __debugAlloc.printLeaks()
+    if !(__runtimeFlags & .FromCompiler) and (__runtimeFlags & .DebugAllocator)
+        __debugAlloc.printLeaks()
 
     __exit()
 }

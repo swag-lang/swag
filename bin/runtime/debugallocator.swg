@@ -30,6 +30,8 @@ struct DebugAllocator
     sizeAlloc:  uint    // Total user sizeAlloc, in bytes
     countAlloc: u32     // Number of allocated blocks
     nextId:     u32     // The next allocated id to assign
+
+    canPrintLeaks:  bool = true
 }
 
 impl DebugAllocator
@@ -129,7 +131,7 @@ impl DebugAllocator
 
         while scan
         {
-            @print(scan.loc.fileName, ":", scan.loc.lineStart, ": ")
+            @print(scan.loc.fileName, ":", scan.loc.lineStart + 1, ": ")
             @print("id: ", scan.allocId, " sizeAlloc: ")
             printDisplaySize(scan.userSize)
             if scan.hint @print(" hint: ", scan.hint)
@@ -142,7 +144,7 @@ impl DebugAllocator
     // Output to the console the list of all allocated blocks (leaks)
     mtd printLeaks()
     {
-        if countAlloc == 0
+        if countAlloc == 0 or !canPrintLeaks
             return
         @print("############################################\n")
         @print("Swag.DebugAllocator: Memory leaks detected !\n")

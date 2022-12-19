@@ -114,6 +114,7 @@ This is the list of all keywords:
 @compiler
 @countof
 @dataof
+@dbgalloc
 @defined
 @drop
 @errormsg
@@ -139,6 +140,7 @@ This is the list of all keywords:
 @postcopy
 @postmove
 @print
+@rtflags
 @safety
 @setcontext
 @sizeof

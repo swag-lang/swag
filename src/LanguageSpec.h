@@ -184,6 +184,8 @@ struct LanguageSpec
     Utf8 name_atitftableof;
     Utf8 name_atstrcmp;
     Utf8 name_attypecmp;
+    Utf8 name_atdbgalloc;
+    Utf8 name_atrtflags;
 
     Utf8 name_sharpself;
 

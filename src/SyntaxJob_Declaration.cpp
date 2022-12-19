@@ -571,6 +571,7 @@ bool SyntaxJob::doLeftInstruction(AstNode* parent, AstNode** result, AstWith* wi
 
     case TokenId::IntrinsicGetContext:
     case TokenId::IntrinsicGetProcessInfos:
+    case TokenId::IntrinsicDbgAlloc:
         SWAG_CHECK(doAffectExpression(parent, result));
         break;
 
@@ -653,6 +654,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicSetContext:
     case TokenId::InternalSetErr:
     case TokenId::IntrinsicGetProcessInfos:
+    case TokenId::IntrinsicDbgAlloc:
         SWAG_CHECK(doLeftInstruction(parent, result));
         break;
 

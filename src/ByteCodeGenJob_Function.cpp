@@ -466,6 +466,12 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         freeRegisterRC(context, child2);
         break;
     }
+    case TokenId::IntrinsicRtFlags:
+    {
+        node->resultRegisterRC = reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::IntrinsicRtFlags, node->resultRegisterRC);
+        break;
+    }
     case TokenId::IntrinsicStringCmp:
     {
         auto child0            = callParams->childs[0];
@@ -491,6 +497,14 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto child0 = callParams->childs[0];
         emitInstruction(context, ByteCodeOp::InternalSetErr, child0->resultRegisterRC[0], child0->resultRegisterRC[1]);
         freeRegisterRC(context, child0);
+        break;
+    }
+    case TokenId::IntrinsicDbgAlloc:
+    {
+        node->resultRegisterRC                = reserveRegisterRC(context);
+        node->identifierRef->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC        = node->resultRegisterRC;
+        emitInstruction(context, ByteCodeOp::IntrinsicDbgAlloc, node->resultRegisterRC);
         break;
     }
     case TokenId::IntrinsicGetContext:

@@ -1557,6 +1557,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Store8_Indirect(regOffset(ip->c.u32), RAX, RDI);
             break;
 
+        case ByteCodeOp::IntrinsicDbgAlloc:
+            emitInternalCall(pp, moduleToGen, g_LangSpec->name_atdbgalloc, {}, regOffset(ip->a.u32));
+            break;
+        case ByteCodeOp::IntrinsicRtFlags:
+            emitInternalCall(pp, moduleToGen, g_LangSpec->name_atrtflags, {}, regOffset(ip->a.u32));
+            break;
         case ByteCodeOp::IntrinsicStringCmp:
             emitInternalCall(pp, moduleToGen, g_LangSpec->name_atstrcmp, {ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32}, regOffset(ip->d.u32));
             break;

@@ -722,6 +722,18 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::IntrinsicDbgAlloc:
+        {
+            auto result = emitCall(buildParameters, moduleToGen, g_LangSpec->name_atdbgalloc, allocR, allocT, {}, {});
+            builder.CreateStore(result, TO_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+            break;
+        }
+        case ByteCodeOp::IntrinsicRtFlags:
+        {
+            auto result = emitCall(buildParameters, moduleToGen, g_LangSpec->name_atrtflags, allocR, allocT, {}, {});
+            builder.CreateStore(result, TO_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+            break;
+        }
         case ByteCodeOp::IntrinsicStringCmp:
         {
             auto result = emitCall(buildParameters, moduleToGen, g_LangSpec->name_atstrcmp, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32}, {});
@@ -3264,7 +3276,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 else if (returnType->isPointer() || returnType->isLambdaClosure())
                 {
                     auto llvmType = swagTypeToLLVMType(buildParameters, moduleToGen, returnType);
-                    auto ptr = builder.CreatePointerCast(allocResult, llvmType->getPointerTo());
+                    auto ptr      = builder.CreatePointerCast(allocResult, llvmType->getPointerTo());
                     builder.CreateRet(builder.CreateLoad(ptr));
                 }
                 else
