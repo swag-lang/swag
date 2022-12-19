@@ -27,11 +27,13 @@ struct DebugAllocator
     firstAlloc: *DebugAllocatorHeader   // First allocated block
     firstFree:  *DebugAllocatorHeader   // First freed block
     lastFree:   *DebugAllocatorHeader   // Last freed block
-    sizeAlloc:  uint    // Total user sizeAlloc, in bytes
-    countAlloc: u32     // Number of allocated blocks
-    nextId:     u32     // The next allocated id to assign
+    sizeAlloc:  uint                    // Total user sizeAlloc, in bytes
+    countAlloc: u32                     // Number of allocated blocks
+    nextId:     u32                     // The next allocated id to assign
 
-    canPrintLeaks:  bool = true
+    // Debug/behaviour parameters
+    breakOnAllocId:     u32     // will @assert when the current allocation id reaches that value
+    disablePrintLeaks:  bool    // disable printLeaks(). Mostly for the runtime allocator.
 }
 
 impl DebugAllocator
@@ -144,7 +146,8 @@ impl DebugAllocator
     // Output to the console the list of all allocated blocks (leaks)
     mtd printLeaks()
     {
-        if countAlloc == 0 or !canPrintLeaks
+        return
+        if countAlloc == 0 or disablePrintLeaks
             return
         @print("############################################\n")
         @print("Swag.DebugAllocator: Memory leaks detected !\n")
@@ -343,9 +346,7 @@ impl IAllocator for DebugAllocator
         header.allocId = self.nextId
 
         // To but a breakpoint on a given allocator id
-        #[Swag.Global]
-        var breakId: u32
-        if header.allocId == breakId
+        if header.allocId == breakOnAllocId
         {
             @assert(false)
         }

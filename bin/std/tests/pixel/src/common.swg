@@ -23,3 +23,8 @@ private func tmpPath(name: string)->String
 {
     return Path.combine(tmpPath(), name)
 }
+
+#init
+{
+    //@dbgalloc().breakOnAllocId = 44
+}

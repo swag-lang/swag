@@ -491,19 +491,29 @@ impl Tesselate
         clear()
     }
 
+    // Clear content
     public mtd clear()
     {
+        @init(&basin)
+        @init(&edgeEvent)
+        polyStart = 0
+
         Memory.delete(head)
         Memory.delete(tail)
         Memory.delete(afHead)
         Memory.delete(afMiddle)
         Memory.delete(afTail)
+        head, tail, afHead, afMiddle, afTail = null
+
         visit p: map Memory.delete(p)
         visit p: edgeList Memory.delete(p)
         visit p: nodes Memory.delete(p)
         visit p: points Memory.delete(p)
-
-        @init(self)
+        triangles.clear()
+        map.clear()
+        edgeList.clear()
+        nodes.clear()
+        points.clear()
     }
 
     // Returns the list of triangles

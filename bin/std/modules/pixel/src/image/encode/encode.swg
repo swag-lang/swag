@@ -84,3 +84,8 @@ public impl Image
     Image.addEncoder'(Jpg.Encoder)()
     Image.addEncoder'(Png.Encoder)()
 }
+
+#drop
+{
+    Image.encoders.free()
+}
