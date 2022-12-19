@@ -184,6 +184,8 @@ void Workspace::addRuntime()
     modules.push_back(runtimeModule);
 
     addRuntimeFile("runtime.swg");
+    addRuntimeFile("runtime_err.swg");
+    addRuntimeFile("runtime_str.swg");
     addRuntimeFile("runtime_windows.swg");
     addRuntimeFile("systemallocator.swg");
     addRuntimeFile("scratchallocator.swg");
