@@ -6,7 +6,7 @@
 #include "Report.h"
 #include "Diagnostic.h"
 
-CommandLine* g_CommandLine = nullptr;
+CommandLine g_CommandLine;
 
 bool CommandLine::check()
 {
@@ -72,12 +72,12 @@ bool CommandLine::check()
     }
 
     // Add/check script file extension
-    if (!g_CommandLine->scriptName.empty())
+    if (!g_CommandLine.scriptName.empty())
     {
-        fs::path p(g_CommandLine->scriptName);
+        fs::path p(g_CommandLine.scriptName);
         if (p.extension().string().empty())
         {
-            g_CommandLine->scriptName += ".swgs";
+            g_CommandLine.scriptName += ".swgs";
         }
         else if (p.extension().string() != ".swgs")
         {

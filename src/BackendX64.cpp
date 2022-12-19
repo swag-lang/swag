@@ -333,7 +333,7 @@ JobResult BackendX64::prepareOutput(int stage, const BuildParameters& buildParam
         pp.pass = BackendPreCompilePass::FunctionBodies;
 
         pp.filename = Fmt("%s%d", buildParameters.outputFileName.c_str(), precompileIndex);
-        pp.filename += Backend::getObjectFileExtension(g_CommandLine->target);
+        pp.filename += Backend::getObjectFileExtension(g_CommandLine.target);
 
         emitHeader(buildParameters);
         createRuntime(buildParameters);

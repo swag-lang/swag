@@ -83,7 +83,7 @@ void ModuleCfgManager::newCfgFile(vector<SourceFile*>& allFiles, const Utf8& dir
 
     // If we have only one core, then we will sort files in alphabetical order to always
     // treat them in a reliable order. That way, --randomize and --seed can work.
-    if (g_CommandLine->numCores == 1)
+    if (g_CommandLine.numCores == 1)
         allFiles.push_back(file);
     else
         registerCfgFile(file);
@@ -192,7 +192,7 @@ bool ModuleCfgManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFileP
 
 bool ModuleCfgManager::fetchModuleCfgSwag(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName, bool fetch)
 {
-    string remotePath = g_CommandLine->exePath.parent_path().string();
+    string remotePath = g_CommandLine.exePath.parent_path().string();
     remotePath += "/";
     remotePath += dep->locationParam;
     remotePath += "/";
@@ -321,7 +321,7 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
         case CompareVersionResult::VERSION_GREATER:
         case CompareVersionResult::REVISION_GREATER:
         case CompareVersionResult::BUILDNUM_GREATER:
-            if (cfgModule->wasAddedDep || g_CommandLine->computeDep)
+            if (cfgModule->wasAddedDep || g_CommandLine.computeDep)
             {
                 cfgModule->mustFetchDep = true;
                 pendingCfgModules.insert(cfgModule);
@@ -330,10 +330,10 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
             break;
 
         // If the dependency does not specify something, that means that we don't know if we are up to date.
-        // In that case, if g_CommandLine->computeDep is true, we will have to fetch dependency configuration file
+        // In that case, if g_CommandLine.computeDep is true, we will have to fetch dependency configuration file
         // to get the one that corresponds to the dependency (UINT32_MAX means 'latest')
         case CompareVersionResult::EQUAL:
-            if (g_CommandLine->computeDep)
+            if (g_CommandLine.computeDep)
             {
                 if (dep->verNum == UINT32_MAX || dep->revNum == UINT32_MAX || dep->buildNum == UINT32_MAX)
                 {
@@ -364,7 +364,7 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
         case CompareVersionResult::REVISION_GREATER:
         case CompareVersionResult::BUILDNUM_GREATER:
             cfgModule->fetchDep = dep;
-            if (cfgModule->wasAddedDep || g_CommandLine->computeDep)
+            if (cfgModule->wasAddedDep || g_CommandLine.computeDep)
             {
                 cfgModule->mustFetchDep = true;
                 pendingCfgModules.insert(cfgModule);
@@ -417,12 +417,12 @@ bool ModuleCfgManager::execute()
     // In this pass, only the #dependencies block will
     // be evaluated
     //////////////////////////////////////////////////
-    if (!g_CommandLine->scriptCommand)
+    if (!g_CommandLine.scriptCommand)
     {
         enumerateCfgFiles(g_Workspace->dependenciesPath);
         enumerateCfgFiles(g_Workspace->modulesPath);
         enumerateCfgFiles(g_Workspace->examplesPath);
-        if (g_CommandLine->test || g_CommandLine->listDepCmd || g_CommandLine->fetchDep)
+        if (g_CommandLine.test || g_CommandLine.listDepCmd || g_CommandLine.fetchDep)
             enumerateCfgFiles(g_Workspace->testsPath);
     }
 
@@ -430,10 +430,10 @@ bool ModuleCfgManager::execute()
     else
     {
         auto file          = g_Allocator.alloc<SourceFile>();
-        file->name         = fs::path(g_CommandLine->scriptName.c_str()).filename().string().c_str();
+        file->name         = fs::path(g_CommandLine.scriptName.c_str()).filename().string().c_str();
         file->isCfgFile    = true;
         file->isScriptFile = true;
-        file->path         = Utf8::normalizePath(g_CommandLine->scriptName);
+        file->path         = Utf8::normalizePath(g_CommandLine.scriptName);
         registerCfgFile(file);
     }
 
@@ -444,7 +444,7 @@ bool ModuleCfgManager::execute()
 
     // Script mode. We need to have a workspace in that cache to store
     // the dependencies.
-    if (g_CommandLine->scriptCommand)
+    if (g_CommandLine.scriptCommand)
     {
         // We want each script with the same set of dependencies to have the same
         // cache folder. So we compute a CRC that will be used in the workspace name.
@@ -572,7 +572,7 @@ bool ModuleCfgManager::execute()
             cmp = compareVersions(module->localCfgDep.moduleVersion, module->localCfgDep.moduleRevision, module->localCfgDep.moduleBuildNum, module->buildCfg.moduleVersion, module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
             if (cmp != CompareVersionResult::EQUAL)
                 module->mustFetchDep = true;
-            else if (g_CommandLine->getDepCmd && g_CommandLine->getDepForce)
+            else if (g_CommandLine.getDepCmd && g_CommandLine.getDepForce)
                 module->mustFetchDep = true;
         }
     }
@@ -582,7 +582,7 @@ bool ModuleCfgManager::execute()
 
     // List all dependencies
     //////////////////////////////////////////////////
-    if (g_CommandLine->listDepCmd)
+    if (g_CommandLine.listDepCmd)
     {
         for (auto m : allModules)
         {
@@ -608,7 +608,7 @@ bool ModuleCfgManager::execute()
     // 1/ The module is not present (first time)
     // 2/ The module is present but is not up to date
     //////////////////////////////////////////////////
-    if (g_CommandLine->fetchDep)
+    if (g_CommandLine.fetchDep)
     {
         for (auto m : allModules)
         {

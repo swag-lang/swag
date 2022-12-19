@@ -8,7 +8,7 @@
 JobResult ModuleRunJob::execute()
 {
     fs::path path = g_Workspace->targetPath.string() + buildParameters.outputFileName.c_str();
-    path += Backend::getOutputFileExtension(g_CommandLine->target, BuildCfgBackendKind::Executable);
+    path += Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::Executable);
     if (!fs::exists(path))
         return JobResult::ReleaseJob;
 
@@ -26,7 +26,7 @@ JobResult ModuleRunJob::execute()
 
         Utf8 cmdLine = path.string();
         cmdLine += " ";
-        cmdLine += g_CommandLine->userArguments;
+        cmdLine += g_CommandLine.userArguments;
 
         OS::doProcess(module, cmdLine, path.parent_path().parent_path().string(), numErrors);
         g_Workspace->numErrors += numErrors;
@@ -36,7 +36,7 @@ JobResult ModuleRunJob::execute()
     {
         auto cmdLine = path.string();
         cmdLine += " ";
-        cmdLine += g_CommandLine->userArguments;
+        cmdLine += g_CommandLine.userArguments;
         OS::doRunProcess(cmdLine, path.parent_path().parent_path().string());
     }
 

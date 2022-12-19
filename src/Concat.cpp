@@ -21,7 +21,7 @@ void Concat::init(int size)
     firstBucket->datas    = bucketSize ? (uint8_t*) g_Allocator.alloc(bucketSize) : nullptr;
     firstBucket->capacity = size;
 
-    if (g_CommandLine->stats)
+    if (g_CommandLine.stats)
     {
         g_Stats.memConcat += sizeof(ConcatBucket);
         g_Stats.memConcat += bucketSize;
@@ -98,7 +98,7 @@ void Concat::ensureSpace(int numBytes)
     lastBucket->capacity = (int) Allocator::alignSize(lastBucket->capacity);
     lastBucket->datas    = (uint8_t*) g_Allocator.alloc(lastBucket->capacity);
 
-    if (g_CommandLine->stats)
+    if (g_CommandLine.stats)
     {
         g_Stats.memConcat += sizeof(ConcatBucket);
         g_Stats.memConcat += lastBucket->capacity;

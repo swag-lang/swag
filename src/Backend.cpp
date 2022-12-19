@@ -31,7 +31,7 @@ BackendFunctionBodyJobBase* Backend::newFunctionJob()
 void Backend::setup()
 {
     initCallingConventions();
-    if (!g_CommandLine->output)
+    if (!g_CommandLine.output)
         return;
 
     LLVM::setup();
@@ -39,16 +39,16 @@ void Backend::setup()
     string rtPath;
 
     // Add the runtime CRT
-    if (g_CommandLine->target.os == SwagTargetOs::Windows)
+    if (g_CommandLine.target.os == SwagTargetOs::Windows)
     {
-        if (isArchArm(g_CommandLine->target.arch))
-            rtPath = g_CommandLine->exePath.parent_path().string() + "/runtime/windows-arm64";
+        if (isArchArm(g_CommandLine.target.arch))
+            rtPath = g_CommandLine.exePath.parent_path().string() + "/runtime/windows-arm64";
         else
-            rtPath = g_CommandLine->exePath.parent_path().string() + "/runtime/windows-x86_64";
+            rtPath = g_CommandLine.exePath.parent_path().string() + "/runtime/windows-x86_64";
     }
 
     SWAG_ASSERT(!rtPath.empty());
-    g_CommandLine->libPaths.push_back(Utf8::normalizePath(rtPath));
+    g_CommandLine.libPaths.push_back(Utf8::normalizePath(rtPath));
 }
 
 string Backend::getCacheFolder(const BuildParameters& buildParameters)
@@ -82,12 +82,12 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
     if (!timeExportFile)
         return false;
 
-    if (g_CommandLine->rebuild)
+    if (g_CommandLine.rebuild)
     {
-        if (g_CommandLine->rebuildAll)
+        if (g_CommandLine.rebuildAll)
             return false;
 
-        if (g_CommandLine->moduleName.empty())
+        if (g_CommandLine.moduleName.empty())
         {
             Utf8 modulePath = Utf8::normalizePath(module->path);
             Utf8 srcPath    = Utf8::normalizePath(g_Workspace->dependenciesPath);
@@ -95,7 +95,7 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
                 return false;
         }
 
-        if (g_CommandLine->moduleName == module->name)
+        if (g_CommandLine.moduleName == module->name)
             return false;
     }
 
@@ -146,7 +146,7 @@ Utf8 Backend::getOutputFileName(const BuildParameters& buildParameters)
     SWAG_ASSERT(!buildParameters.outputFileName.empty());
     Utf8 destFile = g_Workspace->targetPath.string();
     destFile += buildParameters.outputFileName;
-    destFile += getOutputFileExtension(g_CommandLine->target, buildParameters.buildCfg->backendKind);
+    destFile += getOutputFileExtension(g_CommandLine.target, buildParameters.buildCfg->backendKind);
     destFile = Utf8::normalizePath(fs::path(destFile.c_str()));
     return destFile;
 }
@@ -301,7 +301,7 @@ JobResult Backend::generateExportFile(Job* ownerJob)
 
 bool Backend::saveExportFile()
 {
-    if (mustCompile && g_CommandLine->output)
+    if (mustCompile && g_CommandLine.output)
     {
         auto result = bufferSwg.flushToFile(exportFilePath);
         if (!result)

@@ -11,7 +11,7 @@
 
 bool BackendLLVM::emitOS(const BuildParameters& buildParameters)
 {
-    if (g_CommandLine->target.os == SwagTargetOs::Windows)
+    if (g_CommandLine.target.os == SwagTargetOs::Windows)
     {
         int   ct              = buildParameters.compileType;
         int   precompileIndex = buildParameters.precompileIndex;
@@ -35,7 +35,7 @@ bool BackendLLVM::emitOS(const BuildParameters& buildParameters)
 
         // Stack probing. Must do it by hand to avoid linking with vc runtime on windows.
         // void __chkstk()
-        if (g_CommandLine->target.arch == SwagTargetArch::X86_64)
+        if (g_CommandLine.target.arch == SwagTargetArch::X86_64)
         {
             Utf8 in;
             in.append(R"(
@@ -82,7 +82,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     SWAG_CHECK(emitOS(buildParameters));
 
     const char* entryPoint = nullptr;
-    switch (g_CommandLine->target.os)
+    switch (g_CommandLine.target.os)
     {
     case SwagTargetOs::Windows:
         entryPoint = "mainCRTStartup";
@@ -179,7 +179,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         auto dep      = moduleDependencies[i];
         auto nameDown = dep->name;
         Ast::normalizeIdentifierName(nameDown);
-        auto nameLib = nameDown + Backend::getOutputFileExtension(g_CommandLine->target, BuildCfgBackendKind::DynamicLib);
+        auto nameLib = nameDown + Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::DynamicLib);
         auto ptrStr  = builder.CreateGlobalStringPtr(nameLib.c_str());
         emitCall(buildParameters, module, g_LangSpec->name__loaddll, nullptr, allocT, {UINT32_MAX, UINT32_MAX}, {ptrStr, builder.getInt64(nameLib.length())});
     }

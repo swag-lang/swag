@@ -262,7 +262,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
     if (!extension)
     {
         extension = g_Allocator.alloc<Extension>();
-        if (g_CommandLine->stats)
+        if (g_CommandLine.stats)
             g_Stats.memNodesExt += Allocator::alignSize(sizeof(Extension));
     }
 
@@ -272,7 +272,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
         if (extension->bytecode)
             return;
         extension->bytecode = g_Allocator.alloc<ExtensionByteCode>();
-        if (g_CommandLine->stats)
+        if (g_CommandLine.stats)
             g_Stats.memNodesExt += Allocator::alignSize(sizeof(ExtensionByteCode));
         break;
 
@@ -280,7 +280,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
         if (extension->semantic)
             return;
         extension->semantic = g_Allocator.alloc<ExtensionSemantic>();
-        if (g_CommandLine->stats)
+        if (g_CommandLine.stats)
             g_Stats.memNodesExt += Allocator::alignSize(sizeof(ExtensionSemantic));
         break;
 
@@ -288,7 +288,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
         if (extension->owner)
             return;
         extension->owner = g_Allocator.alloc<ExtensionOwner>();
-        if (g_CommandLine->stats)
+        if (g_CommandLine.stats)
             g_Stats.memNodesExt += Allocator::alignSize(sizeof(ExtensionOwner));
         break;
 
@@ -296,7 +296,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
         if (extension->misc)
             return;
         extension->misc = g_Allocator.alloc<ExtensionMisc>();
-        if (g_CommandLine->stats)
+        if (g_CommandLine.stats)
             g_Stats.memNodesExt += Allocator::alignSize(sizeof(ExtensionMisc));
         break;
     }

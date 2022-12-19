@@ -24,11 +24,11 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     compilerSegment.setup(SegmentKind::Compiler, this);
     tlsSegment.setup(SegmentKind::Tls, this);
 
-    contentJobGeneratedFile.resize(g_CommandLine->numCores);
-    countLinesGeneratedFile.set_size_clear(g_CommandLine->numCores);
+    contentJobGeneratedFile.resize(g_CommandLine.numCores);
+    countLinesGeneratedFile.set_size_clear(g_CommandLine.numCores);
 
-    compilerSegmentPerThread.set_size_clear(g_CommandLine->numCores);
-    for (int i = 0; i < g_CommandLine->numCores; i++)
+    compilerSegmentPerThread.set_size_clear(g_CommandLine.numCores);
+    for (int i = 0; i < g_CommandLine.numCores; i++)
     {
         compilerSegmentPerThread[i] = new DataSegment;
         compilerSegmentPerThread[i]->setup(SegmentKind::Compiler, this);
@@ -44,12 +44,12 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     scopeRoot                      = Ast::newScope(nullptr, "", ScopeKind::Module, nullptr);
     astRoot                        = Ast::newNode<AstNode>(nullptr, AstNodeKind::Module, nullptr, nullptr);
     scopeRoot->owner               = astRoot;
-    buildPass                      = g_CommandLine->buildPass;
+    buildPass                      = g_CommandLine.buildPass;
     buildParameters.buildCfg       = &buildCfg;
     buildParameters.outputFileName = name;
 
     // Setup build configuration
-    if (g_CommandLine->buildCfg == "fast-compile")
+    if (g_CommandLine.buildCfg == "fast-compile")
     {
         buildCfg.byteCodeOptimizeLevel    = 0;
         buildCfg.byteCodeDebugInline      = false;
@@ -62,7 +62,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
         buildCfg.backendOptimizeSize      = false;
         buildCfg.backendDebugInformations = false;
     }
-    else if (g_CommandLine->buildCfg == "debug")
+    else if (g_CommandLine.buildCfg == "debug")
     {
         buildCfg.byteCodeOptimizeLevel    = 0;
         buildCfg.byteCodeDebugInline      = true;
@@ -75,7 +75,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
         buildCfg.backendOptimizeSize      = false;
         buildCfg.backendDebugInformations = true;
     }
-    else if (g_CommandLine->buildCfg == "fast-debug")
+    else if (g_CommandLine.buildCfg == "fast-debug")
     {
         buildCfg.byteCodeOptimizeLevel    = 1;
         buildCfg.byteCodeDebugInline      = false;
@@ -88,7 +88,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
         buildCfg.backendOptimizeSize      = false;
         buildCfg.backendDebugInformations = true;
     }
-    else if (g_CommandLine->buildCfg == "release")
+    else if (g_CommandLine.buildCfg == "release")
     {
         buildCfg.byteCodeOptimizeLevel    = 2;
         buildCfg.byteCodeDebugInline      = false;
@@ -103,22 +103,22 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     }
 
     // Overwrite with command line
-    if (g_CommandLine->buildCfgInlineBC != "default")
-        buildCfg.byteCodeInline = g_CommandLine->buildCfgInlineBC == "true" ? true : false;
-    if (g_CommandLine->buildCfgOptimBC != "default")
-        buildCfg.byteCodeOptimizeLevel = max(0, min(atoi(g_CommandLine->buildCfgOptimBC.c_str()), 2));
-    if (g_CommandLine->buildCfgDebug != "default")
-        buildCfg.backendDebugInformations = g_CommandLine->buildCfgDebug == "true" ? true : false;
-    if (g_CommandLine->buildCfgOptimSpeed != "default")
-        buildCfg.backendOptimizeSpeed = g_CommandLine->buildCfgOptimSpeed == "true" ? true : false;
-    if (g_CommandLine->buildCfgOptimSize != "default")
-        buildCfg.backendOptimizeSize = g_CommandLine->buildCfgOptimSize == "true" ? true : false;
-    if (g_CommandLine->buildCfgSafety != "default")
-        buildCfg.safetyGuards = g_CommandLine->buildCfgSafety == "true" ? 0xFFFFFFFF'FFFFFFFF : 0;
-    if (g_CommandLine->buildCfgStackTrace != "default")
-        buildCfg.stackTrace = g_CommandLine->buildCfgStackTrace == "true" ? true : false;
-    if (g_CommandLine->buildCfgDebugAlloc != "default")
-        buildCfg.debugAllocator = g_CommandLine->buildCfgDebugAlloc == "true" ? true : false;
+    if (g_CommandLine.buildCfgInlineBC != "default")
+        buildCfg.byteCodeInline = g_CommandLine.buildCfgInlineBC == "true" ? true : false;
+    if (g_CommandLine.buildCfgOptimBC != "default")
+        buildCfg.byteCodeOptimizeLevel = max(0, min(atoi(g_CommandLine.buildCfgOptimBC.c_str()), 2));
+    if (g_CommandLine.buildCfgDebug != "default")
+        buildCfg.backendDebugInformations = g_CommandLine.buildCfgDebug == "true" ? true : false;
+    if (g_CommandLine.buildCfgOptimSpeed != "default")
+        buildCfg.backendOptimizeSpeed = g_CommandLine.buildCfgOptimSpeed == "true" ? true : false;
+    if (g_CommandLine.buildCfgOptimSize != "default")
+        buildCfg.backendOptimizeSize = g_CommandLine.buildCfgOptimSize == "true" ? true : false;
+    if (g_CommandLine.buildCfgSafety != "default")
+        buildCfg.safetyGuards = g_CommandLine.buildCfgSafety == "true" ? 0xFFFFFFFF'FFFFFFFF : 0;
+    if (g_CommandLine.buildCfgStackTrace != "default")
+        buildCfg.stackTrace = g_CommandLine.buildCfgStackTrace == "true" ? true : false;
+    if (g_CommandLine.buildCfgDebugAlloc != "default")
+        buildCfg.debugAllocator = g_CommandLine.buildCfgDebugAlloc == "true" ? true : false;
 
     computePublicPath();
 }
@@ -148,7 +148,7 @@ void Module::computePublicPath()
     }
 
     publicPath += "/";
-    publicPath.append(g_Workspace->getTargetFullName(g_CommandLine->buildCfg, g_CommandLine->target).c_str());
+    publicPath.append(g_Workspace->getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target).c_str());
 
     if (!isScriptFile && kind != ModuleKind::Script && !isErrorModule)
     {
@@ -343,20 +343,20 @@ bool Module::canGenerateLegit()
     // Normal module
     if (kind != ModuleKind::Test)
     {
-        if (!g_CommandLine->outputLegit)
+        if (!g_CommandLine.outputLegit)
             return false;
     }
 
     // The test folder could generate normal modules (libraries) too
     else
     {
-        if (!g_CommandLine->test)
+        if (!g_CommandLine.test)
             return false;
-        if (!g_CommandLine->outputTest)
+        if (!g_CommandLine.outputTest)
             return false;
         if (!byteCodeTestFunc.empty())
             return false;
-        if (g_CommandLine->scriptMode)
+        if (g_CommandLine.scriptMode)
             return false;
     }
 
@@ -400,7 +400,7 @@ void Module::allocateBackend()
     // to know if a build is necessary
     if (!numTestErrors && !numTestWarnings && buildPass >= BuildPass::Backend && kind != ModuleKind::Runtime && kind != ModuleKind::BootStrap)
     {
-        switch (g_CommandLine->backendGenType)
+        switch (g_CommandLine.backendGenType)
         {
         case BackendGenType::LLVM:
             backend = new BackendLLVM(this);
@@ -560,7 +560,7 @@ void Module::addByteCodeFunc(ByteCode* bc)
 
         if (attributeFlags & ATTRIBUTE_TEST_FUNC)
         {
-            if (g_CommandLine->testFilter.empty() || strstr(bc->node->sourceFile->name, g_CommandLine->testFilter.c_str()))
+            if (g_CommandLine.testFilter.empty() || strstr(bc->node->sourceFile->name, g_CommandLine.testFilter.c_str()))
                 byteCodeTestFunc.push_back(bc);
         }
         else if (attributeFlags & ATTRIBUTE_INIT_FUNC)
@@ -800,7 +800,7 @@ void Module::setBuildPass(BuildPass buildP)
 {
     ScopedLock lk(mutexBuildPass);
     buildPass = (BuildPass) min((int) buildP, (int) buildPass);
-    buildPass = (BuildPass) min((int) g_CommandLine->buildPass, (int) buildPass);
+    buildPass = (BuildPass) min((int) g_CommandLine.buildPass, (int) buildPass);
 }
 
 void Module::setHasBeenBuilt(uint32_t buildResult)
@@ -883,28 +883,28 @@ bool Module::hasBytecodeToRun()
 {
     bool runByteCode = false;
     // If we have some #test functions, and we are in test mode
-    if (g_CommandLine->test && g_CommandLine->runByteCodeTests && !byteCodeTestFunc.empty())
+    if (g_CommandLine.test && g_CommandLine.runByteCodeTests && !byteCodeTestFunc.empty())
         runByteCode = true;
     // If we have #run functions
     else if (!byteCodeRunFunc.empty())
         runByteCode = true;
     // If we need to run in bytecode mode
-    else if (g_CommandLine->run && g_CommandLine->scriptMode)
+    else if (g_CommandLine.run && g_CommandLine.scriptMode)
         runByteCode = true;
     return runByteCode;
 }
 
 bool Module::mustGenerateTestExe()
 {
-    if (!g_CommandLine->test)
+    if (!g_CommandLine.test)
         return false;
-    if (!g_CommandLine->outputTest)
+    if (!g_CommandLine.outputTest)
         return false;
     if (kind != ModuleKind::Test)
         return false;
     if (byteCodeTestFunc.empty())
         return false;
-    if (g_CommandLine->scriptMode)
+    if (g_CommandLine.scriptMode)
         return false;
     if (g_Workspace->filteredModule && g_Workspace->filteredModule != this)
         return false;
@@ -918,7 +918,7 @@ bool Module::mustOutputSomething()
 {
     bool mustOutput = true;
     // do not generate an executable that has been run in script mode
-    if (byteCodeMainFunc && g_CommandLine->scriptMode)
+    if (byteCodeMainFunc && g_CommandLine.scriptMode)
         mustOutput = false;
     else if (kind == ModuleKind::BootStrap || kind == ModuleKind::Runtime)
         mustOutput = false;
@@ -927,7 +927,7 @@ bool Module::mustOutputSomething()
     else if (files.empty())
         mustOutput = false;
     // a test module needs swag to be in test mode
-    else if (kind == ModuleKind::Test && !g_CommandLine->outputTest)
+    else if (kind == ModuleKind::Test && !g_CommandLine.outputTest)
         mustOutput = false;
     // if all files are exported, then do not generate a module
     else if (buildCfg.backendKind == BuildCfgBackendKind::Export)
@@ -1072,7 +1072,7 @@ Utf8 Module::getGlobalPrivFct(const Utf8& nameFct)
 
 void Module::logStage(const char* msg)
 {
-    if (!g_CommandLine->verboseStages)
+    if (!g_CommandLine.verboseStages)
         return;
     g_Log.verbose(Fmt("[%s] -- %s", name.c_str(), msg));
 }

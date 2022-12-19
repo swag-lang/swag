@@ -708,7 +708,7 @@ TypeInfoPointer* TypeManager::makePointerTo(TypeInfo* toType, bool isConst, bool
 TypeInfoParam* TypeManager::makeParam()
 {
     auto typeParam = g_Allocator.alloc<TypeInfoParam>();
-    if (g_CommandLine && g_CommandLine->stats)
+    if (g_CommandLine.stats)
         g_Stats.memParams += Allocator::alignSize(sizeof(TypeInfoParam));
     return typeParam;
 }

@@ -1325,7 +1325,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             g_Log.printColor("#############################################\n", LogColor::Magenta);
             g_Log.printColor("entering bytecode debugger, type '?' for help\n", LogColor::Magenta);
             g_Log.printColor("---------------------------------------------\n", LogColor::Magenta);
-            g_Log.printColor(Fmt("build configuration            = '%s'\n", g_CommandLine->buildCfg.c_str()), LogColor::Magenta);
+            g_Log.printColor(Fmt("build configuration            = '%s'\n", g_CommandLine.buildCfg.c_str()), LogColor::Magenta);
             g_Log.printColor(Fmt("BuildCfg.byteCodeDebugInline   = %s\n", module->buildCfg.byteCodeDebugInline ? "true" : "false"), LogColor::Magenta);
             g_Log.printColor(Fmt("BuildCfg.byteCodeInline        = %s\n", module->buildCfg.byteCodeInline ? "true" : "false"), LogColor::Magenta);
             g_Log.printColor(Fmt("BuildCfg.byteCodeOptimizeLevel = %d\n", module->buildCfg.byteCodeOptimizeLevel), LogColor::Magenta);

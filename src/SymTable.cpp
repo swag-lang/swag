@@ -49,7 +49,7 @@ SymbolName* SymTable::registerSymbolNameNoLock(JobContext* context, AstNode* nod
     if (!symbol)
     {
         symbol = g_Allocator.alloc<SymbolName>();
-        if (g_CommandLine->stats)
+        if (g_CommandLine.stats)
             g_Stats.memSymName += Allocator::alignSize(sizeof(SymbolName));
         symbol->name       = *aliasName;
         symbol->kind       = kind;
@@ -410,7 +410,7 @@ SymbolOverload* SymbolName::addOverloadNoLock(AstNode* node, TypeInfo* typeInfo,
     auto overload      = g_Allocator.alloc<SymbolOverload>();
     overload->typeInfo = typeInfo;
     overload->node     = node;
-    if (g_CommandLine->stats)
+    if (g_CommandLine.stats)
         g_Stats.memSymOver += sizeof(SymbolOverload);
 
     if (computedValue)
@@ -667,7 +667,7 @@ void SymTableHash::add(SymbolName* data)
         allocated = 16;
         buffer    = (Entry*) g_Allocator.alloc(allocated * sizeof(Entry));
         memset(buffer, 0, allocated * sizeof(Entry));
-        if (g_CommandLine->stats)
+        if (g_CommandLine.stats)
             g_Stats.memSymTable += allocated * sizeof(Entry);
     }
 
@@ -696,7 +696,7 @@ void SymTableHash::add(SymbolName* data)
 
         g_Allocator.free(oldBuffer, oldAllocated * sizeof(Entry));
 
-        if (g_CommandLine->stats)
+        if (g_CommandLine.stats)
         {
             g_Stats.memSymTable -= oldAllocated * sizeof(Entry);
             g_Stats.memSymTable += allocated * sizeof(Entry);

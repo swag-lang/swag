@@ -77,14 +77,14 @@ namespace BackendLinker
         vector<Utf8> libPaths;
 
         // System library paths
-        for (auto p : g_CommandLine->libPaths)
+        for (auto p : g_CommandLine.libPaths)
             libPaths.push_back(p);
 
         // Modules
         libPaths.push_back(g_Workspace->targetPath.string());
 
         // Runtime
-        libPaths.push_back(g_CommandLine->exePath.parent_path().string());
+        libPaths.push_back(g_CommandLine.exePath.parent_path().string());
 
         for (const auto& oneLibPath : libPaths)
         {
@@ -101,8 +101,8 @@ namespace BackendLinker
         for (auto fl : buildParameters.foreignLibs)
         {
             one = fl;
-            if (Utf8::getExtension(one) != Backend::getOutputFileExtension(g_CommandLine->target, BuildCfgBackendKind::StaticLib))
-                one += Backend::getOutputFileExtension(g_CommandLine->target, BuildCfgBackendKind::StaticLib);
+            if (Utf8::getExtension(one) != Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::StaticLib))
+                one += Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::StaticLib);
             arguments.push_back(one);
         }
 
@@ -110,8 +110,8 @@ namespace BackendLinker
         for (const auto& dep : module->moduleDependencies)
         {
             auto libName = dep->name;
-            if (Utf8::getExtension(libName) != Backend::getOutputFileExtension(g_CommandLine->target, BuildCfgBackendKind::StaticLib))
-                libName += Backend::getOutputFileExtension(g_CommandLine->target, BuildCfgBackendKind::StaticLib);
+            if (Utf8::getExtension(libName) != Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::StaticLib))
+                libName += Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::StaticLib);
             auto fullName = g_Workspace->targetPath.string();
             fullName      = Utf8::normalizePath(fs::path(fullName.c_str()));
             fullName += "/";
@@ -129,8 +129,8 @@ namespace BackendLinker
                 continue;
 
             auto libName = dep->name;
-            if (Utf8::getExtension(libName) != Backend::getOutputFileExtension(g_CommandLine->target, BuildCfgBackendKind::StaticLib))
-                libName += Backend::getOutputFileExtension(g_CommandLine->target, BuildCfgBackendKind::StaticLib);
+            if (Utf8::getExtension(libName) != Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::StaticLib))
+                libName += Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::StaticLib);
             auto fullName = g_Workspace->targetPath.string();
             fullName      = Utf8::normalizePath(fs::path(fullName.c_str()));
             fullName += "/";
@@ -148,13 +148,13 @@ namespace BackendLinker
         arguments.push_back("/NODEFAULTLIB");
         arguments.push_back("/ERRORLIMIT:0");
 
-        if (isArchArm(g_CommandLine->target.arch))
+        if (isArchArm(g_CommandLine.target.arch))
             arguments.push_back("/MACHINE:ARM64");
         else
             arguments.push_back("/MACHINE:X64");
 
         if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Executable)
-            arguments.push_back(Fmt("/STACK:%d,%d", g_CommandLine->stackSizeRT, g_CommandLine->stackSizeRT));
+            arguments.push_back(Fmt("/STACK:%d,%d", g_CommandLine.stackSizeRT, g_CommandLine.stackSizeRT));
 
         if (buildParameters.buildCfg->backendDebugInformations)
             arguments.push_back("/DEBUG");
@@ -167,7 +167,7 @@ namespace BackendLinker
 
     void getArguments(const BuildParameters& buildParameters, Module* module, vector<Utf8>& arguments, bool forCmdLine)
     {
-        auto objFileType = Backend::getObjType(g_CommandLine->target);
+        auto objFileType = Backend::getObjType(g_CommandLine.target);
         switch (objFileType)
         {
         case BackendObjType::Coff:
@@ -205,7 +205,7 @@ namespace BackendLinker
             linkArgumentsPtr.push_back(one.c_str());
 
         // Log linker parameters
-        if (g_CommandLine->verboseLink)
+        if (g_CommandLine.verboseLink)
         {
             Utf8 linkStr;
             for (auto& one : linkArguments)
@@ -232,7 +232,7 @@ namespace BackendLinker
             this_thread::yield();
         }
 
-        auto objFileType = Backend::getObjType(g_CommandLine->target);
+        auto objFileType = Backend::getObjType(g_CommandLine.target);
         bool result      = true;
         switch (objFileType)
         {

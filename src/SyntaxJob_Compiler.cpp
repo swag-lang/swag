@@ -444,22 +444,22 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken());
         if (token.text == g_LangSpec->name_lexer)
         {
-            if (g_CommandLine->test)
+            if (g_CommandLine.test)
                 sourceFile->buildPass = BuildPass::Lexer;
         }
         else if (token.text == g_LangSpec->name_syntax)
         {
-            if (g_CommandLine->test)
+            if (g_CommandLine.test)
                 sourceFile->buildPass = BuildPass::Syntax;
         }
         else if (token.text == g_LangSpec->name_semantic)
         {
-            if (g_CommandLine->test)
+            if (g_CommandLine.test)
                 sourceFile->buildPass = BuildPass::Semantic;
         }
         else if (token.text == g_LangSpec->name_backend)
         {
-            if (g_CommandLine->test)
+            if (g_CommandLine.test)
                 sourceFile->buildPass = BuildPass::Backend;
         }
         else
@@ -497,7 +497,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         }
 
         SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, Report::report({sourceFile, token, Err(Err0374)}));
-        SWAG_ASSERT(g_CommandLine->test);
+        SWAG_ASSERT(g_CommandLine.test);
 
         if (token.text == g_LangSpec->name_testerrors)
             sourceFile->multipleTestErrors = true;
@@ -529,7 +529,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         }
 
         SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, Report::report({sourceFile, token, Err(Err0375)}));
-        SWAG_ASSERT(g_CommandLine->test);
+        SWAG_ASSERT(g_CommandLine.test);
 
         if (token.text == g_LangSpec->name_testwarnings)
             sourceFile->multipleTestWarnings = true;

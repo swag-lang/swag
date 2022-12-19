@@ -20,7 +20,7 @@ bool BackendX64::emitOS(const BuildParameters& buildParameters)
 
     concat.align(16);
 
-    if (g_CommandLine->target.os == SwagTargetOs::Windows)
+    if (g_CommandLine.target.os == SwagTargetOs::Windows)
     {
         // int _DllMainCRTStartup(void*, int, void*)
         pp.getOrAddSymbol("_DllMainCRTStartup", CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
@@ -30,7 +30,7 @@ bool BackendX64::emitOS(const BuildParameters& buildParameters)
     }
     else
     {
-        Report::error(module, Fmt(Err(Err0056), Backend::getOsName(g_CommandLine->target)));
+        Report::error(module, Fmt(Err(Err0056), Backend::getOsName(g_CommandLine.target)));
         return false;
     }
 }
@@ -46,13 +46,13 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     auto startAddress = concat.totalCount();
 
     const char* entryPoint = nullptr;
-    switch (g_CommandLine->target.os)
+    switch (g_CommandLine.target.os)
     {
     case SwagTargetOs::Windows:
         entryPoint = "mainCRTStartup";
         break;
     default:
-        Report::error(module, Fmt(Err(Err0056), Backend::getOsName(g_CommandLine->target)));
+        Report::error(module, Fmt(Err(Err0056), Backend::getOsName(g_CommandLine.target)));
         return false;
     }
 
@@ -131,7 +131,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         auto nameDown = dep->name;
         Ast::normalizeIdentifierName(nameDown);
         auto nameLib = nameDown;
-        nameLib += Backend::getOutputFileExtension(g_CommandLine->target, BuildCfgBackendKind::DynamicLib);
+        nameLib += Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::DynamicLib);
 
         pp.pushParams.clear();
         pp.pushParams.push_back({X64PushParamType::GlobalString, (uint64_t) nameLib.c_str()});

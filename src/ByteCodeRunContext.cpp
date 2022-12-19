@@ -48,16 +48,16 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodebc)
         }
         else
         {
-            stack = (uint8_t*) g_Allocator.alloc(g_CommandLine->stackSizeBC);
-            if (g_CommandLine->stats)
-                g_Stats.memBcStack += g_CommandLine->stackSizeBC;
+            stack = (uint8_t*) g_Allocator.alloc(g_CommandLine.stackSizeBC);
+            if (g_CommandLine.stats)
+                g_Stats.memBcStack += g_CommandLine.stackSizeBC;
         }
     }
 
     jc.sourceFile = sf;
     node          = nd;
 
-    bp    = stack + g_CommandLine->stackSizeBC;
+    bp    = stack + g_CommandLine.stackSizeBC;
     sp    = bp;
     spAlt = stack;
     bc    = nodebc;
@@ -70,8 +70,8 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodebc)
     registersRC.count = 0;
     g_ByteCodeStackTrace->steps.reserve(4096);
 
-    maxRecurse = g_CommandLine->maxRecurse;
-    profile    = g_CommandLine->profile;
+    maxRecurse = g_CommandLine.maxRecurse;
+    profile    = g_CommandLine.profile;
 
     curRC    = -1;
     firstRC  = -1;
@@ -82,7 +82,7 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodebc)
 
 void ByteCodeRunContext::stackOverflow()
 {
-    raiseError(Fmt(Err(Err0015), Utf8::toNiceSize(g_CommandLine->stackSizeBC).c_str()));
+    raiseError(Fmt(Err(Err0015), Utf8::toNiceSize(g_CommandLine.stackSizeBC).c_str()));
 }
 
 void ByteCodeRunContext::raiseError(const char* msg, SwagCompilerSourceLocation* loc)

@@ -627,7 +627,7 @@ T* allocType(TypeInfoKind k = TypeInfoKind::Invalid)
     auto newType = g_Allocator.alloc<T>();
     if (k != TypeInfoKind::Invalid)
         newType->kind = k;
-    if (g_CommandLine->stats)
+    if (g_CommandLine.stats)
     {
         g_Stats.memTypes += sizeof(T);
 #ifdef SWAG_DEV_MODE

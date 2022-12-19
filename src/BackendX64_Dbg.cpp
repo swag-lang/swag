@@ -1547,7 +1547,7 @@ bool BackendX64::emitDebug(const BuildParameters& buildParameters)
         emitRelocationTable(pp.concat, pp.relocTableDBGSSection, pp.patchDBGSSectionFlags, pp.patchDBGSSectionRelocTableCount);
     }
 
-    if (g_CommandLine->stats)
+    if (g_CommandLine.stats)
         g_Stats.sizeBackendDbg += concat.totalCount() - beforeCount;
     return true;
 }

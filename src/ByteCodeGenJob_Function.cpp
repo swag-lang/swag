@@ -1102,7 +1102,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
         {
             regList     = reserveRegisterRC(context);
             auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate64, regList[0]);
-            inst->b.u64 = (uint64_t) g_CommandLine->target.arch;
+            inst->b.u64 = (uint64_t) g_CommandLine.target.arch;
             break;
         }
 
@@ -1110,7 +1110,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
         {
             regList     = reserveRegisterRC(context);
             auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate64, regList[0]);
-            inst->b.u64 = (uint64_t) g_CommandLine->target.os;
+            inst->b.u64 = (uint64_t) g_CommandLine.target.os;
             break;
         }
 
@@ -1126,7 +1126,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
         {
             regList     = reserveRegisterRC(context);
             auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate64, regList[0]);
-            inst->b.u64 = (uint64_t) g_CommandLine->backendGenType;
+            inst->b.u64 = (uint64_t) g_CommandLine.backendGenType;
             break;
         }
 
@@ -1959,8 +1959,8 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     // Should be aligned !
     SWAG_ASSERT(!(funcNode->stackSize & 7));
 
-    if (funcNode->stackSize > g_CommandLine->stackSizeRT)
-        Report::report({funcNode, Fmt(Err(Err0536), Utf8::toNiceSize(g_CommandLine->stackSizeRT).c_str())});
+    if (funcNode->stackSize > g_CommandLine.stackSizeRT)
+        Report::report({funcNode, Fmt(Err(Err0536), Utf8::toNiceSize(g_CommandLine.stackSizeRT).c_str())});
 
     if (funcNode->stackSize == 0)
         emitInstruction(context, ByteCodeOp::SetBP);

@@ -200,7 +200,7 @@ bool ByteCode::canEmit()
     // Do we need to generate that function ?
     if (funcNode->attributeFlags & ATTRIBUTE_COMPILER)
         return false;
-    if ((funcNode->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine->test)
+    if ((funcNode->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine.test)
         return false;
     if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
         return false;

@@ -48,7 +48,7 @@ void Diagnostic::setRange2(AstNode* node, const Utf8& h)
 
 bool Diagnostic::mustPrintCode() const
 {
-    return hasFile && !sourceFile->path.empty() && hasLocation && showSource && !g_CommandLine->errorCompact;
+    return hasFile && !sourceFile->path.empty() && hasLocation && showSource && !g_CommandLine.errorCompact;
 }
 
 void Diagnostic::printSourceLine() const
@@ -61,7 +61,7 @@ void Diagnostic::printSourceLine() const
     fs::path path = checkFile->path;
 
     // Make it relatif to current path (should be shorter) if possible
-    if (!g_CommandLine->errorAbsolute)
+    if (!g_CommandLine.errorAbsolute)
     {
         error_code errorCode;
         auto       path1 = fs::relative(path, fs::current_path(), errorCode);
@@ -69,7 +69,7 @@ void Diagnostic::printSourceLine() const
             path = path1;
     }
 
-    if (!g_CommandLine->errorCompact)
+    if (!g_CommandLine.errorCompact)
         g_Log.print("--> ");
     g_Log.print(Utf8::normalizePath(path).c_str());
     if (hasRangeLocation)
@@ -153,7 +153,7 @@ void Diagnostic::report(bool verboseMode) const
             g_Log.print("error: ");
         break;
     case DiagnosticLevel::Warning:
-        if (g_CommandLine->warningsAsErrors)
+        if (g_CommandLine.warningsAsErrors)
         {
             g_Log.setColor(errorColor);
             g_Log.print("error: (from warning): ");
@@ -200,7 +200,7 @@ void Diagnostic::report(bool verboseMode) const
     }
 
     // Source line right after the header
-    if (g_CommandLine->errorCompact && hasFile && !sourceFile->path.empty() && showFileName)
+    if (g_CommandLine.errorCompact && hasFile && !sourceFile->path.empty() && showFileName)
     {
         printSourceLine();
     }
@@ -560,7 +560,7 @@ void Diagnostic::report(bool verboseMode) const
     }
 
     // Source file and location on their own line
-    if (!g_CommandLine->errorCompact && hasFile && !sourceFile->path.empty() && showFileName)
+    if (!g_CommandLine.errorCompact && hasFile && !sourceFile->path.empty() && showFileName)
     {
         printMargin(verboseMode);
 
@@ -570,7 +570,7 @@ void Diagnostic::report(bool verboseMode) const
     }
 
     // Code remarks
-    if (!g_CommandLine->errorCompact)
+    if (!g_CommandLine.errorCompact)
     {
         if (!remarks.empty())
         {

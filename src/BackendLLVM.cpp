@@ -193,7 +193,7 @@ JobResult BackendLLVM::prepareOutput(int stage, const BuildParameters& buildPara
         pp.pass = BackendPreCompilePass::FunctionBodies;
 
         pp.filename = Fmt("%s%d", buildParameters.outputFileName.c_str(), precompileIndex);
-        pp.filename += Backend::getObjectFileExtension(g_CommandLine->target);
+        pp.filename += Backend::getObjectFileExtension(g_CommandLine.target);
 
         pp.context = new llvm::LLVMContext();
         pp.module  = new llvm::Module(pp.filename.c_str(), *pp.context);
@@ -266,7 +266,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
 
     // Target triple
     string archName;
-    switch (g_CommandLine->target.arch)
+    switch (g_CommandLine.target.arch)
     {
     case SwagTargetArch::X86_64:
         archName = (const char*) llvm::Triple::getArchTypeName(llvm::Triple::x86_64).bytes_begin();
@@ -277,7 +277,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     }
 
     string vendorName, osName, abiName;
-    switch (g_CommandLine->target.os)
+    switch (g_CommandLine.target.os)
     {
     case SwagTargetOs::Windows:
         osName     = (const char*) llvm::Triple::getOSTypeName(llvm::Triple::Win32).bytes_begin();

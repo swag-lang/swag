@@ -26,7 +26,7 @@ void* operator new(size_t t)
     t      = Allocator::alignSize((int) t + sizeof(uint64_t));
     auto p = (uint64_t*) g_Allocator.alloc(t);
     *p     = (uint64_t) t;
-    if (g_CommandLine && g_CommandLine->stats)
+    if (g_CommandLine.stats)
         g_Stats.memNew += t;
     return p + 1;
 }
@@ -37,7 +37,7 @@ void operator delete(void* addr) noexcept
         return;
     auto p = (uint64_t*) addr;
     p--;
-    if (g_CommandLine && g_CommandLine->stats)
+    if (g_CommandLine.stats)
         g_Stats.memNew -= *p;
     return g_Allocator.free(p, *p);
 }
@@ -81,7 +81,7 @@ void* AllocatorImpl::tryFreeBlock(uint32_t maxCount, size_t size)
             auto remainSize = tryBlock->size - size;
             if (remainSize)
             {
-                if (g_CommandLine && g_CommandLine->stats)
+                if (g_CommandLine.stats)
                     g_Stats.wastedMemory -= size;
                 auto bucket = remainSize / 8;
                 auto split  = (uint8_t*) tryBlock + size;
@@ -113,7 +113,7 @@ void* AllocatorImpl::tryFreeBlock(uint32_t maxCount, size_t size)
             }
             else
             {
-                if (g_CommandLine && g_CommandLine->stats)
+                if (g_CommandLine.stats)
                     g_Stats.wastedMemory -= tryBlock->size;
 
                 auto result = tryBlock;
@@ -134,7 +134,7 @@ void* AllocatorImpl::tryFreeBlock(uint32_t maxCount, size_t size)
     return nullptr;
 }
 
-void* AllocatorImpl::tryBucket(uint32_t bucket, size_t size)
+void* AllocatorImpl::useBucket(uint32_t bucket, size_t size)
 {
     SWAG_ASSERT(bucket < MAX_FREE_BUCKETS);
     SWAG_ASSERT(freeBuckets[bucket]);
@@ -148,11 +148,11 @@ void* AllocatorImpl::tryBucket(uint32_t bucket, size_t size)
         auto ptr                  = (int8_t*) freeBuckets[bucket] + size;
         *(void**) ptr             = freeBuckets[wastedBucket];
         freeBuckets[wastedBucket] = ptr;
-        if (g_CommandLine && g_CommandLine->stats)
+        if (g_CommandLine.stats)
             g_Stats.wastedMemory += wasted;
     }
 
-    if (g_CommandLine && g_CommandLine->stats)
+    if (g_CommandLine.stats)
         g_Stats.wastedMemory -= bucket * 8;
     auto result         = freeBuckets[bucket];
     freeBuckets[bucket] = *(void**) result;
@@ -166,32 +166,23 @@ void* AllocatorImpl::alloc(size_t size)
 {
     SWAG_ASSERT((size & 7) == 0);
 
-    auto  bucket = size / 8;
-    void* result = nullptr;
+    auto bucket = size / 8;
     if (bucket < MAX_FREE_BUCKETS)
     {
         // Try in the list of free blocks, per bucket
         if (freeBuckets[bucket])
-        {
-            result = tryBucket((uint32_t) bucket, size);
-            if (result)
-                return result;
-        }
+            return useBucket((uint32_t) bucket, size);
 
         // Try other big buckets
         for (int i = MAX_FREE_BUCKETS - 1; i > (int) bucket; i--)
         {
             if (freeBuckets[i])
-            {
-                result = tryBucket(i, size);
-                if (result)
-                    return result;
-            }
+                return useBucket(i, size);
         }
     }
 
     // Magic number
-    result = tryFreeBlock(1024, size);
+    auto result = tryFreeBlock(1024, size);
     if (result)
     {
 #ifdef SWAG_DEV_MODE
@@ -199,8 +190,6 @@ void* AllocatorImpl::alloc(size_t size)
 #endif
         return result;
     }
-
-    bool hasStats = g_CommandLine && g_CommandLine->stats;
 
     // Do we need to allocate a new data block ?
     if (!lastBucket || lastBucket->maxUsed + size > lastBucket->allocated)
@@ -246,7 +235,7 @@ void* AllocatorImpl::alloc(size_t size)
 
         currentData = lastBucket->data;
 
-        if (hasStats)
+        if (g_CommandLine.stats)
         {
             g_Stats.allocatorMemory += sizeof(AllocatorBucket) + lastBucket->allocated;
             g_Stats.wastedMemory += lastBucket->allocated;
@@ -259,7 +248,7 @@ void* AllocatorImpl::alloc(size_t size)
 
     currentData += size;
     lastBucket->maxUsed += size;
-    if (hasStats)
+    if (g_CommandLine.stats)
         g_Stats.wastedMemory -= size;
 
     return currentData - size;
@@ -271,7 +260,7 @@ void AllocatorImpl::free(void* ptr, size_t size)
         return;
     SWAG_ASSERT(!(size & 7));
 
-    if (g_CommandLine && g_CommandLine->stats)
+    if (g_CommandLine.stats)
         g_Stats.wastedMemory += size;
 
 #ifdef SWAG_DEV_MODE
@@ -319,7 +308,7 @@ Allocator::Allocator()
 {
     impl = &_impl;
 
-    // Allocator created by the tls of a user bytecode thread. In that can, we use
+    // Allocator created by the tls of a user bytecode thread. In that case, we use
     // the same shared AllocatorImpl
     if (g_CompilerAllocTh >= g_Stats.numWorkers && g_Stats.numWorkers)
     {
@@ -371,6 +360,7 @@ void* Allocator::alloc(size_t size)
 
     if (!impl)
         impl = &_impl;
+
     uint8_t* result = (uint8_t*) impl->alloc(size);
 
 #ifdef SWAG_CHECK_MEMORY
@@ -385,31 +375,6 @@ void* Allocator::alloc(size_t size)
     if (shared)
         g_AllocatorMutex.unlock();
     return result;
-}
-
-#ifdef SWAG_CHECK_MEMORY
-void Allocator::checkBlock(void* ptr)
-{
-    uint8_t* addr  = (uint8_t*) ptr;
-    auto     start = addr;
-    addr -= sizeof(uint64_t);
-    auto size = *(uint64_t*) addr;
-    size -= 3 * sizeof(uint64_t);
-    addr -= sizeof(uint64_t);
-    SWAG_ASSERT(*(uint64_t*) addr == MAGIC_ALLOC);
-    start += size;
-    SWAG_ASSERT(*(uint64_t*) start == MAGIC_ALLOC);
-}
-#endif
-
-void Allocator::forceFree(void* ptr, size_t size)
-{
-    if (!ptr || !size)
-        return;
-
-    Timer timer(&g_Stats.freeTime);
-    SWAG_ASSERT(!shared && impl);
-    impl->free(ptr, size);
 }
 
 void Allocator::free(void* ptr, size_t size)
@@ -443,3 +408,18 @@ void Allocator::free(void* ptr, size_t size)
     if (shared)
         g_AllocatorMutex.unlock();
 }
+
+#ifdef SWAG_CHECK_MEMORY
+void Allocator::checkBlock(void* ptr)
+{
+    uint8_t* addr  = (uint8_t*) ptr;
+    auto     start = addr;
+    addr -= sizeof(uint64_t);
+    auto size = *(uint64_t*) addr;
+    size -= 3 * sizeof(uint64_t);
+    addr -= sizeof(uint64_t);
+    SWAG_ASSERT(*(uint64_t*) addr == MAGIC_ALLOC);
+    start += size;
+    SWAG_ASSERT(*(uint64_t*) start == MAGIC_ALLOC);
+}
+#endif

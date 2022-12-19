@@ -16,15 +16,14 @@ extern void help(CommandLineParser& cmdParser);
 
 int main(int argc, const char* argv[])
 {
-    g_CommandLine = g_Allocator.alloc<CommandLine>();
-    g_Workspace   = g_Allocator.alloc<Workspace>();
+    g_Workspace = g_Allocator.alloc<Workspace>();
 
     OS::setup();
     initErrors();
 
     // Arguments
     CommandLineParser cmdParser;
-    cmdParser.setup(g_CommandLine);
+    cmdParser.setup(&g_CommandLine);
 
     // Log default help
     if (argc <= 1)
@@ -38,8 +37,8 @@ int main(int argc, const char* argv[])
     fs::path p       = argv[1];
     if (p.extension() == ".swgs")
     {
-        command                   = "script";
-        g_CommandLine->scriptName = argv[1];
+        command                  = "script";
+        g_CommandLine.scriptName = argv[1];
     }
 
     // Command
@@ -65,17 +64,17 @@ int main(int argc, const char* argv[])
     }
 
     // Verify that the swag folder has been registered
-    fs::path pathF         = fs::absolute(OS::getExePath().c_str()).string();
-    g_CommandLine->exePath = pathF.string();
+    fs::path pathF        = fs::absolute(OS::getExePath().c_str()).string();
+    g_CommandLine.exePath = pathF.string();
 
     // Process all arguments
     if (!cmdParser.process(command, argc - 2, argv + 2))
         OS::exit(-1);
-    if (!g_CommandLine->check())
+    if (!g_CommandLine.check())
         OS::exit(-1);
 
     // Output command line in verbose mode
-    if (g_CommandLine->verboseCmdLine)
+    if (g_CommandLine.verboseCmdLine)
         g_Log.verbose(cmdParser.buildString(true));
 
     // Deal with the main command
@@ -89,26 +88,26 @@ int main(int argc, const char* argv[])
     }
     else if (command == "run")
     {
-        g_CommandLine->run = true;
+        g_CommandLine.run = true;
         g_Workspace->build();
     }
     else if (command == "test")
     {
-        g_CommandLine->test = true;
+        g_CommandLine.test = true;
         g_Workspace->build();
     }
     else if (command == "list")
     {
-        g_CommandLine->listDepCmd = true;
-        g_CommandLine->computeDep = true;
-        g_CommandLine->fetchDep   = false;
+        g_CommandLine.listDepCmd = true;
+        g_CommandLine.computeDep = true;
+        g_CommandLine.fetchDep   = false;
         g_Workspace->build();
     }
     else if (command == "get")
     {
-        g_CommandLine->getDepCmd  = true;
-        g_CommandLine->computeDep = true;
-        g_CommandLine->fetchDep   = true;
+        g_CommandLine.getDepCmd  = true;
+        g_CommandLine.computeDep = true;
+        g_CommandLine.fetchDep   = true;
         g_Workspace->build();
     }
     else if (command == "clean")

@@ -14,7 +14,7 @@ namespace Report
 {
     void reportNotes(vector<Diagnostic*>& notes, bool verbose = false)
     {
-        if (!g_CommandLine->errorCompact)
+        if (!g_CommandLine.errorCompact)
         {
             bool prevHasSourceCode = true;
             for (auto note : notes)
@@ -112,7 +112,7 @@ namespace Report
 
         // Warning to error option ?
         auto errorLevel = diag.errorLevel;
-        if (g_CommandLine->warningsAsErrors)
+        if (g_CommandLine.warningsAsErrors)
             errorLevel = DiagnosticLevel::Error;
 
         if (diag.exceptionError)
@@ -133,7 +133,7 @@ namespace Report
                     sourceFile->numTestErrors = 0;
                 else
                     sourceFile->numTestErrors--;
-                if (g_CommandLine->verboseTestErrors)
+                if (g_CommandLine.verboseTestErrors)
                 {
                     diag.report(true);
                     reportNotes(notes, true);
@@ -155,7 +155,7 @@ namespace Report
                     sourceFile->numTestWarnings = 0;
                 else
                     sourceFile->numTestWarnings--;
-                if (g_CommandLine->verboseTestErrors)
+                if (g_CommandLine.verboseTestErrors)
                 {
                     diag.report(true);
                     reportNotes(notes, true);

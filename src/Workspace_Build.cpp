@@ -132,14 +132,14 @@ Module* Workspace::createOrUseModule(const Utf8& moduleName, const Utf8& moduleP
     }
 
     // Is this the module we want to build ?
-    if (g_CommandLine->moduleName == moduleName)
+    if (g_CommandLine.moduleName == moduleName)
     {
         filteredModule = module;
-        if (g_CommandLine->run)
+        if (g_CommandLine.run)
             runModule = filteredModule;
     }
 
-    if (g_CommandLine->stats)
+    if (g_CommandLine.stats)
         g_Stats.numModules++;
 
     return module;
@@ -155,7 +155,7 @@ void Workspace::addBootstrap()
     modules.push_back(bootstrapModule);
 
     auto     file         = g_Allocator.alloc<SourceFile>();
-    fs::path p            = g_CommandLine->exePath;
+    fs::path p            = g_CommandLine.exePath;
     file->name            = "swag.bootstrap.swg";
     file->path            = p.parent_path().string() + "/runtime/bootstrap.swg";
     file->module          = bootstrapModule;
@@ -166,7 +166,7 @@ void Workspace::addBootstrap()
 void Workspace::addRuntimeFile(const char* fileName)
 {
     auto     file       = g_Allocator.alloc<SourceFile>();
-    fs::path p          = g_CommandLine->exePath;
+    fs::path p          = g_CommandLine.exePath;
     file->name          = fileName;
     file->path          = p.parent_path().string() + "/runtime/" + fileName;
     file->module        = runtimeModule;
@@ -206,7 +206,7 @@ void Workspace::setupInternalTags()
     OneTag oneTag;
 
     // Swag.Endian = "little" or "big" depending on the architecture
-    switch (g_CommandLine->target.arch)
+    switch (g_CommandLine.target.arch)
     {
     case SwagTargetArch::X86_64:
         oneTag.type       = g_TypeMgr->typeInfoString;
@@ -231,7 +231,7 @@ fs::path Workspace::getTargetPath(const string& buildCfg, const BackendTarget& t
     p = workspacePath;
     p.append(SWAG_OUTPUT_FOLDER);
     p += "/";
-    auto targetFullName = getTargetFullName(g_CommandLine->buildCfg, g_CommandLine->target);
+    auto targetFullName = getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target);
     p.append(targetFullName.c_str());
     return p;
 }
@@ -239,8 +239,8 @@ fs::path Workspace::getTargetPath(const string& buildCfg, const BackendTarget& t
 void Workspace::setupTarget()
 {
     // Target directory
-    targetPath = getTargetPath(g_CommandLine->buildCfg, g_CommandLine->target);
-    if (g_CommandLine->verbosePath)
+    targetPath = getTargetPath(g_CommandLine.buildCfg, g_CommandLine.target);
+    if (g_CommandLine.verbosePath)
         g_Log.verbose(Fmt("target path is `%s`", Utf8::normalizePath(targetPath.string().c_str()).c_str()));
 
     error_code errorCode;
@@ -268,7 +268,7 @@ void Workspace::setupTarget()
         OS::exit(-1);
     }
 
-    auto targetFullName = getTargetFullName(g_CommandLine->buildCfg, g_CommandLine->target);
+    auto targetFullName = getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target);
     cachePath.append(workspacePath.filename().string() + "-" + targetFullName.c_str());
     if (!fs::exists(cachePath) && !fs::create_directories(cachePath, errorCode))
     {
@@ -276,7 +276,7 @@ void Workspace::setupTarget()
         OS::exit(-1);
     }
 
-    if (g_CommandLine->verbosePath)
+    if (g_CommandLine.verbosePath)
         g_Log.verbose(Fmt("cache path is `%s`", Utf8::normalizePath(cachePath.string().c_str()).c_str()));
 
     cachePath += "/";
@@ -718,7 +718,7 @@ bool Workspace::buildTarget()
     // to void wasting some cores
     //////////////////////////////////////////////////
 
-    if (g_CommandLine->numCores != 1 && !g_CommandLine->scriptCommand)
+    if (g_CommandLine.numCores != 1 && !g_CommandLine.scriptCommand)
     {
         auto enumJob0          = g_Allocator.alloc<EnumerateModuleJob>();
         enumJob0->readFileMode = true;
@@ -728,7 +728,7 @@ bool Workspace::buildTarget()
     // Bootstrap module semantic pass
     //////////////////////////////////////////////////
     {
-        if (g_CommandLine->verboseStages)
+        if (g_CommandLine.verboseStages)
             bootstrapModule->logStage("buildRTModule\n");
 
         Timer timer(&g_Stats.bootstrapTime);
@@ -738,7 +738,7 @@ bool Workspace::buildTarget()
     // Runtime module semantic pass
     //////////////////////////////////////////////////
     {
-        if (g_CommandLine->verboseStages)
+        if (g_CommandLine.verboseStages)
             runtimeModule->logStage("buildRTModule\n");
 
         Timer timer(&g_Stats.runtimeTime);
@@ -760,7 +760,7 @@ bool Workspace::buildTarget()
     SWAG_CHECK(g_ModuleCfgMgr->execute());
 
     // Exit now (do not really build) in case of "get", "list" commands
-    if (g_CommandLine->listDepCmd || g_CommandLine->getDepCmd)
+    if (g_CommandLine.listDepCmd || g_CommandLine.getDepCmd)
         return true;
 
     // Ask for a syntax pass on all files of all modules
@@ -776,11 +776,11 @@ bool Workspace::buildTarget()
     // Filter modules to build
     //////////////////////////////////////////////////
     auto toBuild = modules;
-    if (!g_CommandLine->moduleName.empty())
+    if (!g_CommandLine.moduleName.empty())
     {
         if (!filteredModule)
         {
-            Report::error(Fmt(Err(Err0556), g_CommandLine->moduleName.c_str()));
+            Report::error(Fmt(Err(Err0556), g_CommandLine.moduleName.c_str()));
             return false;
         }
 
@@ -876,41 +876,41 @@ bool Workspace::build()
 
     // [devmode] randomize/seed
 #ifdef SWAG_DEV_MODE
-    if (g_CommandLine->randomize)
+    if (g_CommandLine.randomize)
     {
-        if (!g_CommandLine->randSeed)
+        if (!g_CommandLine.randSeed)
         {
             using namespace std::chrono;
             milliseconds ms         = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
-            g_CommandLine->randSeed = (int) ms.count() & 0x7FFFFFFF;
-            srand(g_CommandLine->randSeed);
-            g_CommandLine->randSeed = rand() & 0x7FFFFFFF;
+            g_CommandLine.randSeed = (int) ms.count() & 0x7FFFFFFF;
+            srand(g_CommandLine.randSeed);
+            g_CommandLine.randSeed = rand() & 0x7FFFFFFF;
         }
 
-        srand(g_CommandLine->randSeed);
+        srand(g_CommandLine.randSeed);
         g_Log.setColor(LogColor::DarkBlue);
-        g_Log.print(Fmt("[devmode] randomize seed is %d\n", g_CommandLine->randSeed));
+        g_Log.print(Fmt("[devmode] randomize seed is %d\n", g_CommandLine.randSeed));
         g_Log.setDefaultColor();
     }
 #endif
 
     // User arguments that can be retrieved with '@args'
     pair<void*, void*> oneArg;
-    g_CommandLine->exePathStr = g_CommandLine->exePath.string();
-    oneArg.first              = (void*) g_CommandLine->exePathStr.c_str();
-    oneArg.second             = (void*) g_CommandLine->exePathStr.size();
-    g_CommandLine->userArgumentsStr.push_back(oneArg);
+    g_CommandLine.exePathStr = g_CommandLine.exePath.string();
+    oneArg.first              = (void*) g_CommandLine.exePathStr.c_str();
+    oneArg.second             = (void*) g_CommandLine.exePathStr.size();
+    g_CommandLine.userArgumentsStr.push_back(oneArg);
 
-    Utf8::tokenizeBlanks(g_CommandLine->userArguments, g_CommandLine->userArgumentsVec);
-    for (auto& arg : g_CommandLine->userArgumentsVec)
+    Utf8::tokenizeBlanks(g_CommandLine.userArguments, g_CommandLine.userArgumentsVec);
+    for (auto& arg : g_CommandLine.userArgumentsVec)
     {
         oneArg.first  = (void*) arg.buffer;
         oneArg.second = (void*) (size_t) arg.length();
-        g_CommandLine->userArgumentsStr.push_back(oneArg);
+        g_CommandLine.userArgumentsStr.push_back(oneArg);
     }
 
-    g_CommandLine->userArgumentsSlice.first  = &g_CommandLine->userArgumentsStr[0];
-    g_CommandLine->userArgumentsSlice.second = (void*) g_CommandLine->userArgumentsStr.size();
+    g_CommandLine.userArgumentsSlice.first  = &g_CommandLine.userArgumentsStr[0];
+    g_CommandLine.userArgumentsSlice.second = (void*) g_CommandLine.userArgumentsStr.size();
 
     // Build !
     auto result = true;
@@ -920,28 +920,28 @@ bool Workspace::build()
 
         setup();
 
-        if (!g_CommandLine->scriptCommand)
+        if (!g_CommandLine.scriptCommand)
         {
-            if (g_CommandLine->verbosePath)
+            if (g_CommandLine.verbosePath)
                 g_Log.verbose(Fmt("workspace path is `%s`", Utf8::normalizePath(workspacePath.string().c_str()).c_str()));
-            if (g_CommandLine->listDepCmd || g_CommandLine->getDepCmd)
+            if (g_CommandLine.listDepCmd || g_CommandLine.getDepCmd)
                 g_Log.messageHeaderCentered("Workspace", workspacePath.filename().string().c_str());
             else
             {
-                auto targetFullName = g_Workspace->getTargetFullName(g_CommandLine->buildCfg, g_CommandLine->target);
+                auto targetFullName = g_Workspace->getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target);
                 g_Log.messageHeaderCentered("Workspace", Fmt("%s [%s]", workspacePath.filename().string().c_str(), targetFullName.c_str()));
             }
         }
 
         addBootstrap();
         addRuntime();
-        if (!g_CommandLine->scriptCommand)
+        if (!g_CommandLine.scriptCommand)
             setupTarget();
         result = buildTarget();
     }
 
     // Results
-    if (!g_CommandLine->scriptCommand)
+    if (!g_CommandLine.scriptCommand)
     {
         if (g_Stats.skippedModules.load() > 0)
             g_Log.messageHeaderCentered("Skipped modules", Fmt("%d", g_Stats.skippedModules.load()));

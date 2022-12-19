@@ -233,9 +233,9 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
     SWAG_ASSERT(module);
 
     // Log the generated code in '<module>.swg'
-    if (logGenerated && !fromNode->sourceFile->numTestErrors && !fromNode->sourceFile->numTestWarnings && g_CommandLine->output)
+    if (logGenerated && !fromNode->sourceFile->numTestErrors && !fromNode->sourceFile->numTestWarnings && g_CommandLine.output)
     {
-        if (fromNode->sourceFile->module->buildCfg.backendDebugInformations && !g_CommandLine->scriptCommand)
+        if (fromNode->sourceFile->module->buildCfg.backendDebugInformations && !g_CommandLine.scriptCommand)
         {
             SWAG_CHECK(saveEmbedded(content, parent, fromNode, tmpFileName, tmpFilePath, previousLogLine));
         }
@@ -343,7 +343,7 @@ JobResult SyntaxJob::execute()
         baseContext        = &context;
         context.job        = this;
         context.sourceFile = sourceFile;
-        if (g_CommandLine->stats)
+        if (g_CommandLine.stats)
             g_Stats.numFiles++;
 
         tokenizer.setFile(sourceFile);

@@ -16,7 +16,7 @@ Utf8::~Utf8()
 void Utf8::freeBuffer()
 {
     g_Allocator.free(buffer, allocated);
-    if (g_CommandLine->stats)
+    if (g_CommandLine.stats)
         g_Stats.memUtf8 -= allocated;
 }
 
@@ -102,11 +102,11 @@ void Utf8::reserve(int newSize)
     auto newBuffer = (char*) g_Allocator.alloc(allocated);
     if (count)
         memcpy(newBuffer, buffer, count + 1);
-    if (g_CommandLine->stats)
+    if (g_CommandLine.stats)
         g_Stats.memUtf8 += allocated;
 
     g_Allocator.free(buffer, lastAllocated);
-    if (g_CommandLine->stats)
+    if (g_CommandLine.stats)
         g_Stats.memUtf8 -= lastAllocated;
 
     buffer = newBuffer;
@@ -148,7 +148,7 @@ const char* Utf8::c_str() const
     auto buf  = (char*) g_Allocator.alloc(size);
     memcpy(buf, buffer, count);
     buf[count] = 0;
-    if (g_CommandLine->stats)
+    if (g_CommandLine.stats)
         g_Stats.memUtf8CStr += size;
     return buf;
 }
@@ -479,7 +479,7 @@ void Utf8::makeLocal()
     memcpy(buf, buffer, count);
     buffer        = buf;
     buffer[count] = 0;
-    if (g_CommandLine->stats)
+    if (g_CommandLine.stats)
         g_Stats.memUtf8 += allocated;
 }
 

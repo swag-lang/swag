@@ -36,7 +36,7 @@ static Utf8 getProfileBc(ByteCode* bc, int level)
 
 static void printChilds(ByteCode* bc, int level)
 {
-    if (level >= g_CommandLine->profileChildsLevel)
+    if (level >= g_CommandLine.profileChildsLevel)
         return;
 
     level++;
@@ -51,7 +51,7 @@ static void printChilds(ByteCode* bc, int level)
 
 void profiler()
 {
-    if (!g_CommandLine->profile)
+    if (!g_CommandLine.profile)
         return;
 
     g_Log.setColor(LogColor::Gray);
@@ -89,7 +89,7 @@ void profiler()
 
     for (auto bc : bcs)
     {
-        if (!g_CommandLine->profileFilter.empty() && bc->name.find(g_CommandLine->profileFilter.c_str()) == -1)
+        if (!g_CommandLine.profileFilter.empty() && bc->name.find(g_CommandLine.profileFilter.c_str()) == -1)
             continue;
         line = getProfileBc(bc, 0);
         g_Log.print(line);

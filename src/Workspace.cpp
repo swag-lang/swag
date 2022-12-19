@@ -15,7 +15,7 @@ void Workspace::setupUserTags()
 {
     // Command line tags
     // Format is --tag:"TagName : type = value"
-    for (auto& tag : g_CommandLine->tags)
+    for (auto& tag : g_CommandLine.tags)
     {
         OneTag oneTag;
         oneTag.cmdLine = tag;
@@ -141,7 +141,7 @@ void Workspace::setup()
         Report::error(Fmt(Err(Err0541), workspacePath.string().c_str()));
         invalid = true;
     }
-    else if (!g_CommandLine->scriptCommand && !fs::exists(modulesPath) && !fs::exists(testsPath))
+    else if (!g_CommandLine.scriptCommand && !fs::exists(modulesPath) && !fs::exists(testsPath))
     {
         Report::error(Fmt(Err(Err0542), workspacePath.string().c_str()));
         invalid = true;
@@ -158,7 +158,7 @@ void Workspace::setup()
 
 void Workspace::setupPaths()
 {
-    workspacePath = fs::absolute(g_CommandLine->workspacePath);
+    workspacePath = fs::absolute(g_CommandLine.workspacePath);
     if (workspacePath.empty())
         workspacePath = fs::current_path();
 
@@ -182,7 +182,7 @@ void Workspace::setupPaths()
 void Workspace::setupCachePath()
 {
     // Cache directory
-    cachePath = g_CommandLine->cachePath;
+    cachePath = g_CommandLine.cachePath;
     if (cachePath.empty())
     {
         cachePath = OS::getTemporaryFolder();

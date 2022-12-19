@@ -14,16 +14,16 @@ void ThreadManager::init()
     initDefaultContext();
 
     int numCores = std::thread::hardware_concurrency();
-    if (g_CommandLine->numCores == 0)
-        g_CommandLine->numCores = numCores;
-    int numWorkers     = g_CommandLine->numCores;
+    if (g_CommandLine.numCores == 0)
+        g_CommandLine.numCores = numCores;
+    int numWorkers     = g_CommandLine.numCores;
     numWorkers         = max(1, numWorkers);
     numWorkers         = min(numWorkers, numCores);
     g_Stats.numWorkers = numWorkers;
 
-    queueJobs.affinity.resize(g_CommandLine->numCores);
-    queueJobsIO.affinity.resize(g_CommandLine->numCores);
-    queueJobsOpt.affinity.resize(g_CommandLine->numCores);
+    queueJobs.affinity.resize(g_CommandLine.numCores);
+    queueJobsIO.affinity.resize(g_CommandLine.numCores);
+    queueJobsOpt.affinity.resize(g_CommandLine.numCores);
 
     // When numWorkers is 1, then we do not want any worker thread. The main thread
     // will execute jobs by its own (otherwise the main thread will be suspended, and workers
@@ -117,7 +117,7 @@ void ThreadManager::addJobNoLock(Job* job)
     }
 
     // Wakeup one thread
-    if (g_CommandLine->numCores != 1)
+    if (g_CommandLine.numCores != 1)
     {
         if (!availableThreads.empty())
         {
@@ -310,7 +310,7 @@ void ThreadManager::clearOptionalJobs()
         }
         queueJobsOpt.jobs.clear();
 
-        for (int i = 0; i < g_CommandLine->numCores; i++)
+        for (int i = 0; i < g_CommandLine.numCores; i++)
         {
             for (auto p : queueJobsOpt.affinity[i])
                 p->release();
@@ -326,7 +326,7 @@ void ThreadManager::clearOptionalJobs()
 void ThreadManager::waitEndJobs()
 {
     // If one core only, do the jobs right now, in order
-    if (g_CommandLine->numCores == 1)
+    if (g_CommandLine.numCores == 1)
     {
         while (tryExecuteJob()) {}
         return;
@@ -436,7 +436,7 @@ Job* ThreadManager::getJobNoLock(JobQueue& queue)
     {
         auto jobPickIndex = (int) queue.jobs.size() - 1;
 #ifdef SWAG_DEV_MODE
-        if (g_CommandLine->randomize)
+        if (g_CommandLine.randomize)
             jobPickIndex = rand() % queue.jobs.count;
 #endif
         job = queue.jobs[jobPickIndex];

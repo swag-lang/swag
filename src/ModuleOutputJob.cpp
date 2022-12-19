@@ -9,7 +9,7 @@ JobResult ModuleOutputJob::execute()
 {
     if (pass == ModuleOutputJobPass::Init)
     {
-        if (g_CommandLine->verboseStages)
+        if (g_CommandLine.verboseStages)
             module->logStage("ModuleOutputJobPass::Init\n");
         pass = ModuleOutputJobPass::PrepareOutputStage1;
 
@@ -25,7 +25,7 @@ JobResult ModuleOutputJob::execute()
             exportJob->backend      = module->backend;
             exportJob->dependentJob = this;
             jobsToAdd.push_back(exportJob);
-            if (!g_CommandLine->output)
+            if (!g_CommandLine.output)
                 return JobResult::KeepJobAlive;
         }
         else
@@ -36,9 +36,9 @@ JobResult ModuleOutputJob::execute()
 
     if (pass == ModuleOutputJobPass::PrepareOutputStage1)
     {
-        if (!g_CommandLine->output)
+        if (!g_CommandLine.output)
             return JobResult::ReleaseJob;
-        if (g_CommandLine->verboseStages)
+        if (g_CommandLine.verboseStages)
             module->logStage("ModuleOutputJobPass::PrepareOutputStage1\n");
 
         pass = ModuleOutputJobPass::PrepareOutputStage2;
@@ -50,7 +50,7 @@ JobResult ModuleOutputJob::execute()
         int minPerFile = 1024;
         int maxPerFile = 1024;
 
-        if (g_CommandLine->backendGenType == BackendGenType::LLVM)
+        if (g_CommandLine.backendGenType == BackendGenType::LLVM)
         {
             minPerFile = module->buildParameters.buildCfg->backendLLVM.minFunctionPerFile;
             maxPerFile = module->buildParameters.buildCfg->backendLLVM.maxFunctionPerFile;
@@ -106,7 +106,7 @@ JobResult ModuleOutputJob::execute()
 
     if (pass == ModuleOutputJobPass::PrepareOutputStage2)
     {
-        if (g_CommandLine->verboseStages)
+        if (g_CommandLine.verboseStages)
             module->logStage("ModuleOutputJobPass::PrepareOutputStage2\n");
 
         pass = ModuleOutputJobPass::WaitForDependencies;
@@ -153,7 +153,7 @@ JobResult ModuleOutputJob::execute()
             return JobResult::ReleaseJob;
         if (module->numErrors)
             return JobResult::ReleaseJob;
-        if (g_CommandLine->verboseStages)
+        if (g_CommandLine.verboseStages)
             module->logStage("ModuleOutputJobPass::WaitForDependencies\n");
 
         if (!module->waitForDependenciesDone(this))
@@ -165,7 +165,7 @@ JobResult ModuleOutputJob::execute()
     {
         if (module->numErrors)
             return JobResult::ReleaseJob;
-        if (g_CommandLine->verboseStages)
+        if (g_CommandLine.verboseStages)
             module->logStage("ModuleOutputJobPass::GenOutput\n");
 
         pass = ModuleOutputJobPass::Done;

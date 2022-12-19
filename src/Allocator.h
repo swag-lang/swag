@@ -17,7 +17,7 @@ struct AllocatorImpl
     void  free(void*, size_t size);
     void* alloc(size_t size);
 
-    void* tryBucket(uint32_t bucket, size_t size);
+    void* useBucket(uint32_t bucket, size_t size);
     void* tryFreeBlock(uint32_t maxCount, size_t size);
 
     typedef struct FreeBlock
@@ -52,14 +52,13 @@ struct Allocator
         free(ptr, alignSize(sizeof(T)));
     }
 
+    void  free(void*, size_t size);
+    void* alloc(size_t size);
+
     static size_t alignSize(size_t size);
 #ifdef SWAG_CHECK_MEMORY
     static void checkBlock(void* ptr);
 #endif
-
-    void  free(void*, size_t size);
-    void  forceFree(void* ptr, size_t size);
-    void* alloc(size_t size);
 
     AllocatorImpl* impl = nullptr;
     AllocatorImpl  _impl;

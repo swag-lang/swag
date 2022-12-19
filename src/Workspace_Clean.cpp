@@ -8,7 +8,7 @@
 
 void Workspace::cleanFolderContent(const fs::path& path)
 {
-    if (g_CommandLine->cleanLog)
+    if (g_CommandLine.cleanLog)
         return;
 
     OS::visitFilesRec(path.string().c_str(),
@@ -96,7 +96,7 @@ void Workspace::cleanScript(bool all)
 void Workspace::cleanCommand()
 {
     // Clear scripts cache
-    if (g_CommandLine->scriptMode)
+    if (g_CommandLine.scriptMode)
     {
         cleanScript(true);
         g_Log.messageHeaderCentered("Done", "");
@@ -150,13 +150,13 @@ void Workspace::cleanCommand()
     cleanPublic(testsPath);
 
     // Clean the full content of the dependency path
-    if (g_CommandLine->cleanDep)
+    if (g_CommandLine.cleanDep)
     {
         if (fs::exists(dependenciesPath))
         {
             auto path = Utf8::normalizePath(dependenciesPath.string());
             g_Log.messageHeaderCentered("Cleaning", path);
-            if (!g_CommandLine->cleanLog)
+            if (!g_CommandLine.cleanLog)
                 cleanFolderContent(dependenciesPath);
         }
     }

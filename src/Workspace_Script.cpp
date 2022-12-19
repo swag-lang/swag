@@ -31,34 +31,34 @@ void Workspace::setScriptWorkspace(const Utf8& name)
     }
 
     // This is it. Build and run !
-    g_CommandLine->workspacePath = cacheWorkspace.string();
+    g_CommandLine.workspacePath = cacheWorkspace.string();
     setupPaths();
 
     // Now that we have the workspace name, we can clean dependencies and temp
-    if (g_CommandLine->cleanDep)
+    if (g_CommandLine.cleanDep)
         cleanScript(false);
 }
 
 void Workspace::scriptCommand()
 {
-    if (g_CommandLine->scriptName.empty())
+    if (g_CommandLine.scriptName.empty())
     {
-        Report::error(Fmt(Err(Err0318), g_CommandLine->scriptName.c_str()));
+        Report::error(Fmt(Err(Err0318), g_CommandLine.scriptName.c_str()));
         OS::exit(-1);
     }
 
     // Script filename
-    fs::path pathF            = fs::absolute(g_CommandLine->scriptName).string();
-    g_CommandLine->scriptName = Utf8::normalizePath(pathF.string());
-    if (!fs::exists(g_CommandLine->scriptName))
+    fs::path pathF            = fs::absolute(g_CommandLine.scriptName).string();
+    g_CommandLine.scriptName = Utf8::normalizePath(pathF.string());
+    if (!fs::exists(g_CommandLine.scriptName))
     {
-        Report::error(Fmt(Err(Err0166), g_CommandLine->scriptName.c_str()));
+        Report::error(Fmt(Err(Err0166), g_CommandLine.scriptName.c_str()));
         OS::exit(-1);
     }
 
-    g_CommandLine->run           = true;
-    g_CommandLine->scriptMode    = true;
-    g_CommandLine->scriptCommand = true;
+    g_CommandLine.run           = true;
+    g_CommandLine.scriptMode    = true;
+    g_CommandLine.scriptCommand = true;
 
     g_Workspace->setupCachePath();
     if (!fs::exists(g_Workspace->cachePath))

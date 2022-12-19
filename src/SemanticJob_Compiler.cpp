@@ -742,7 +742,7 @@ Utf8 SemanticJob::getCompilerFunctionString(AstNode* node, TokenId id)
     case TokenId::CompilerCallerFunction:
         return node->ownerFct->getNameForUserCompiler();
     case TokenId::CompilerBuildCfg:
-        return g_CommandLine->buildCfg;
+        return g_CommandLine.buildCfg;
     default:
         SWAG_ASSERT(false);
         break;
@@ -758,7 +758,7 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
     {
     case TokenId::CompilerBackend:
         node->setFlagsValueIsComputed();
-        switch (g_CommandLine->backendGenType)
+        switch (g_CommandLine.backendGenType)
         {
         case BackendGenType::X64:
             node->computedValue->reg.u64 = (uint64_t) SwagBackendGenType::X64;
@@ -773,14 +773,14 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
 
     case TokenId::CompilerArch:
         node->setFlagsValueIsComputed();
-        node->computedValue->reg.u64 = (uint64_t) g_CommandLine->target.arch;
+        node->computedValue->reg.u64 = (uint64_t) g_CommandLine.target.arch;
         node->typeInfo               = g_Workspace->swagScope.regTypeInfoTargetArch;
         SWAG_ASSERT(node->typeInfo);
         return true;
 
     case TokenId::CompilerOs:
         node->setFlagsValueIsComputed();
-        node->computedValue->reg.u64 = (uint64_t) g_CommandLine->target.os;
+        node->computedValue->reg.u64 = (uint64_t) g_CommandLine.target.os;
         node->typeInfo               = g_Workspace->swagScope.regTypeInfoTargetOs;
         SWAG_ASSERT(node->typeInfo);
         return true;

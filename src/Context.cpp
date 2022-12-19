@@ -237,9 +237,9 @@ void initDefaultContext()
     g_ProcessInfos.modules.count  = 0;
 
     static Utf8 args;
-    args += g_CommandLine->exePathStr;
+    args += g_CommandLine.exePathStr;
     args += " ";
-    args += g_CommandLine->userArguments;
+    args += g_CommandLine.userArguments;
 
     g_ProcessInfos.args.buffer = (void*) args.c_str();
     g_ProcessInfos.args.count  = (uint64_t) args.length();

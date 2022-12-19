@@ -124,4 +124,4 @@ struct CommandLine
     bool check();
 };
 
-extern CommandLine* g_CommandLine;
+extern CommandLine g_CommandLine;

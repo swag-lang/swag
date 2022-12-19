@@ -95,9 +95,9 @@ void ModuleBuildJob::publishFilesToTarget(Module* moduleToPublish)
     // Everything in a sub folder named 'os-arch' will be copied only if this matches the current os and arch
     auto osArchPath = publishPath;
     osArchPath += "/";
-    osArchPath += Backend::getOsName(g_CommandLine->target);
+    osArchPath += Backend::getOsName(g_CommandLine.target);
     osArchPath += "-";
-    osArchPath += Backend::getArchName(g_CommandLine->target);
+    osArchPath += Backend::getArchName(g_CommandLine.target);
     if (fs::exists(osArchPath))
     {
         OS::visitFiles(osArchPath.c_str(),
@@ -194,13 +194,13 @@ bool ModuleBuildJob::loadDependency(Module* depModule)
 void ModuleBuildJob::checkMissingErrors()
 {
     // During unit testing, be sure we don't have untriggered errors
-    if (g_CommandLine->test && g_CommandLine->runByteCodeTests)
+    if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
     {
         for (auto file : module->files)
         {
             if (file->numTestErrors)
             {
-                if (g_CommandLine->testFilter.empty() || strstr(file->name, g_CommandLine->testFilter.c_str()))
+                if (g_CommandLine.testFilter.empty() || strstr(file->name, g_CommandLine.testFilter.c_str()))
                 {
                     auto nb             = file->numTestErrors.load();
                     file->numTestErrors = 0;
@@ -210,7 +210,7 @@ void ModuleBuildJob::checkMissingErrors()
 
             if (file->numTestWarnings)
             {
-                if (g_CommandLine->testFilter.empty() || strstr(file->name, g_CommandLine->testFilter.c_str()))
+                if (g_CommandLine.testFilter.empty() || strstr(file->name, g_CommandLine.testFilter.c_str()))
                 {
                     auto nb               = file->numTestWarnings.load();
                     file->numTestWarnings = 0;
@@ -231,7 +231,7 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Init)
     {
-        if (g_CommandLine->verboseStages)
+        if (g_CommandLine.verboseStages)
             module->logStage("ModuleBuildPass::Init\n");
         if (module->kind != ModuleKind::BootStrap && module->kind != ModuleKind::Runtime)
             module->initFrom(g_Workspace->runtimeModule);
@@ -247,7 +247,7 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Dependencies)
     {
-        if (g_CommandLine->verboseStages)
+        if (g_CommandLine.verboseStages)
             module->logStage("ModuleBuildPass::Dependencies\n");
         module->allocateBackend();
         module->backend->setupExportFile();
@@ -301,7 +301,7 @@ JobResult ModuleBuildJob::execute()
     {
         if (module->numErrors)
             return JobResult::ReleaseJob;
-        if (g_CommandLine->verboseStages)
+        if (g_CommandLine.verboseStages)
             module->logStage("ModuleBuildPass::Syntax\n");
 
         // Determine now if we need to recompile
@@ -309,10 +309,10 @@ JobResult ModuleBuildJob::execute()
 
         // If we do not need to compile, then exit, we're done with that module
         bool mustBuild = true;
-        if (!module->backend->mustCompile && !g_CommandLine->test)
+        if (!module->backend->mustCompile && !g_CommandLine.test)
         {
             // Force the build if we will run that module in bytecode mode
-            if (!g_CommandLine->scriptMode || g_Workspace->runModule != module)
+            if (!g_CommandLine.scriptMode || g_Workspace->runModule != module)
                 mustBuild = false;
         }
 
@@ -342,7 +342,7 @@ JobResult ModuleBuildJob::execute()
             module->syntaxGroup.complete(this);
 
             // When synchrone, do it now, as syntaxGroup is not relevant
-            if (g_CommandLine->numCores == 1 || g_CommandLine->scriptCommand)
+            if (g_CommandLine.numCores == 1 || g_CommandLine.scriptCommand)
             {
                 for (auto file : module->files)
                 {
@@ -365,9 +365,9 @@ JobResult ModuleBuildJob::execute()
     {
         if (module->numErrors)
             return JobResult::ReleaseJob;
-        if (g_CommandLine->verboseStages)
+        if (g_CommandLine.verboseStages)
             module->logStage("ModuleBuildPass::Publish\n");
-        if (g_CommandLine->buildPass <= BuildPass::Syntax)
+        if (g_CommandLine.buildPass <= BuildPass::Syntax)
             return JobResult::ReleaseJob;
 
         // Need to run all error modules
@@ -384,7 +384,7 @@ JobResult ModuleBuildJob::execute()
         }
 
         pass = ModuleBuildPass::IncludeSwg;
-        if (g_CommandLine->output && !module->path.empty() && module->kind != ModuleKind::Test)
+        if (g_CommandLine.output && !module->path.empty() && module->kind != ModuleKind::Test)
         {
             publishFilesToPublic();
             publishFilesToTarget();
@@ -400,7 +400,7 @@ JobResult ModuleBuildJob::execute()
     {
         module->setHasBeenBuilt(BUILDRES_PUBLISH);
 
-        if (g_CommandLine->verboseStages)
+        if (g_CommandLine.verboseStages)
             module->logStage("ModuleBuildPass::IncludeSwg\n");
 
         for (auto& dep : module->moduleDependencies)
@@ -420,7 +420,7 @@ JobResult ModuleBuildJob::execute()
     {
         if (module->numErrors)
             return JobResult::ReleaseJob;
-        if (g_CommandLine->verboseStages)
+        if (g_CommandLine.verboseStages)
             module->logStage("ModuleBuildPass::SemanticModule\n");
 
         module->buildModulesSlice();
@@ -439,7 +439,7 @@ JobResult ModuleBuildJob::execute()
     {
         if (module->numErrors)
             return JobResult::ReleaseJob;
-        if (g_CommandLine->verboseStages)
+        if (g_CommandLine.verboseStages)
             module->logStage("ModuleBuildPass::BeforeCompilerMessagesPass0\n");
 
         pass = ModuleBuildPass::CompilerMessagesPass0;
@@ -455,7 +455,7 @@ JobResult ModuleBuildJob::execute()
     {
         if (module->numErrors)
             return JobResult::ReleaseJob;
-        if (g_CommandLine->verboseStages)
+        if (g_CommandLine.verboseStages)
             module->logStage("ModuleBuildPass::CompilerMessagesPass0\n");
 
         if (!module->flushCompilerMessages(&context, 0, this))
@@ -479,7 +479,7 @@ JobResult ModuleBuildJob::execute()
     {
         if (module->numErrors)
             return JobResult::ReleaseJob;
-        if (g_CommandLine->verboseStages)
+        if (g_CommandLine.verboseStages)
             module->logStage("ModuleBuildPass::BeforeCompilerMessagesPass1\n");
 
         pass = ModuleBuildPass::AfterSemantic;
@@ -495,7 +495,7 @@ JobResult ModuleBuildJob::execute()
     {
         if (module->numErrors)
             return JobResult::ReleaseJob;
-        if (g_CommandLine->verboseStages)
+        if (g_CommandLine.verboseStages)
             module->logStage("ModuleBuildPass::AfterSemantic\n");
 
         // This is too late for meta programming of 'impl' blocks...
@@ -525,7 +525,7 @@ JobResult ModuleBuildJob::execute()
     {
         if (module->numErrors)
             return JobResult::ReleaseJob;
-        if (g_CommandLine->verboseStages)
+        if (g_CommandLine.verboseStages)
             module->logStage("ModuleBuildPass::OptimizeBc\n");
 
         bool done = false;
@@ -544,7 +544,7 @@ JobResult ModuleBuildJob::execute()
     {
         if (module->numErrors)
             return JobResult::ReleaseJob;
-        if (g_CommandLine->verboseStages)
+        if (g_CommandLine.verboseStages)
             module->logStage("ModuleBuildPass::WaitForDependencies\n");
 
         if (module->kind != ModuleKind::Config)
@@ -569,7 +569,7 @@ JobResult ModuleBuildJob::execute()
     {
         if (module->numErrors)
             return JobResult::ReleaseJob;
-        if (g_CommandLine->verboseStages)
+        if (g_CommandLine.verboseStages)
             module->logStage("ModuleBuildPass::FlushGenFiles\n");
 
         module->flushGenFiles();
@@ -585,7 +585,7 @@ JobResult ModuleBuildJob::execute()
     {
         if (module->numErrors)
             return JobResult::ReleaseJob;
-        if (g_CommandLine->verboseStages)
+        if (g_CommandLine.verboseStages)
             module->logStage("ModuleBuildPass::RunByteCode\n");
 
         module->initProcessInfos();
@@ -598,7 +598,7 @@ JobResult ModuleBuildJob::execute()
         auto setupFct = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__setupRuntime);
         SWAG_ASSERT(setupFct);
 
-        if (g_CommandLine->verboseStages)
+        if (g_CommandLine.verboseStages)
             module->logStage(Fmt("__setupRuntime %s\n", setupFct->node->sourceFile->name.c_str()));
         ExecuteNodeParams execParams;
         auto              runtimeFlags = Backend::getRuntimeFlags(module);
@@ -613,16 +613,16 @@ JobResult ModuleBuildJob::execute()
         module->acceptsCompileString = false;
 
         // #init functions are only executed in script mode, if the module has a #main
-        bool callInitDrop = !module->byteCodeInitFunc.empty() && g_CommandLine->scriptMode && module->byteCodeMainFunc;
+        bool callInitDrop = !module->byteCodeInitFunc.empty() && g_CommandLine.scriptMode && module->byteCodeMainFunc;
 
         // OR in a test module, during testing
-        callInitDrop |= g_CommandLine->test && g_CommandLine->runByteCodeTests && module->kind == ModuleKind::Test;
+        callInitDrop |= g_CommandLine.test && g_CommandLine.runByteCodeTests && module->kind == ModuleKind::Test;
 
         if (callInitDrop)
         {
             for (auto func : module->byteCodeInitFunc)
             {
-                if (g_CommandLine->verboseStages)
+                if (g_CommandLine.verboseStages)
                     module->logStage(Fmt("#init %s\n", func->node->sourceFile->name.c_str()));
                 module->executeNode(func->node->sourceFile, func->node, baseContext);
                 if (module->criticalErrors)
@@ -633,7 +633,7 @@ JobResult ModuleBuildJob::execute()
 
             for (auto func : module->byteCodePreMainFunc)
             {
-                if (g_CommandLine->verboseStages)
+                if (g_CommandLine.verboseStages)
                     module->logStage(Fmt("#premain %s\n", func->node->sourceFile->name.c_str()));
                 module->executeNode(func->node->sourceFile, func->node, baseContext);
                 if (module->criticalErrors)
@@ -648,14 +648,14 @@ JobResult ModuleBuildJob::execute()
         if (!module->byteCodeRunFunc.empty())
         {
             // A #run pass cannot modify a bss variable
-            if (!g_CommandLine->scriptMode)
+            if (!g_CommandLine.scriptMode)
                 module->bssCannotChange = true;
 
             for (auto func : module->byteCodeRunFunc)
             {
-                if (g_CommandLine->stats)
+                if (g_CommandLine.stats)
                     g_Stats.runFunctions++;
-                if (g_CommandLine->verboseStages)
+                if (g_CommandLine.verboseStages)
                     module->logStage(Fmt("#run %s\n", func->node->sourceFile->name.c_str()));
                 module->executeNode(func->node->sourceFile, func->node, baseContext);
                 if (module->criticalErrors)
@@ -669,7 +669,7 @@ JobResult ModuleBuildJob::execute()
             return JobResult::ReleaseJob;
 
         // #test functions are only executed in test mode
-        if (g_CommandLine->test && g_CommandLine->runByteCodeTests)
+        if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
         {
             if (!module->byteCodeTestFunc.empty())
             {
@@ -679,9 +679,9 @@ JobResult ModuleBuildJob::execute()
 
                 for (auto func : module->byteCodeTestFunc)
                 {
-                    if (g_CommandLine->stats)
+                    if (g_CommandLine.stats)
                         g_Stats.testFunctions++;
-                    if (g_CommandLine->verboseStages)
+                    if (g_CommandLine.verboseStages)
                         module->logStage(Fmt("#test %s\n", func->node->sourceFile->name.c_str()));
                     module->executeNode(func->node->sourceFile, func->node, baseContext);
                     if (module->criticalErrors)
@@ -699,9 +699,9 @@ JobResult ModuleBuildJob::execute()
             return JobResult::ReleaseJob;
 
         // #main function, in script mode
-        if (module->byteCodeMainFunc && g_CommandLine->scriptMode)
+        if (module->byteCodeMainFunc && g_CommandLine.scriptMode)
         {
-            if (g_CommandLine->verboseStages)
+            if (g_CommandLine.verboseStages)
                 module->logStage(Fmt("#main %s\n", module->byteCodeMainFunc->node->sourceFile->name.c_str()));
             module->executeNode(module->byteCodeMainFunc->node->sourceFile, module->byteCodeMainFunc->node, baseContext);
             if (module->criticalErrors)
@@ -716,7 +716,7 @@ JobResult ModuleBuildJob::execute()
         {
             for (auto func : module->byteCodeDropFunc)
             {
-                if (g_CommandLine->verboseStages)
+                if (g_CommandLine.verboseStages)
                     module->logStage(Fmt("#drop %s\n", func->node->sourceFile->name.c_str()));
                 module->executeNode(func->node->sourceFile, func->node, baseContext);
                 if (module->criticalErrors)
@@ -736,7 +736,7 @@ JobResult ModuleBuildJob::execute()
     {
         if (module->numErrors)
             return JobResult::ReleaseJob;
-        if (g_CommandLine->verboseStages)
+        if (g_CommandLine.verboseStages)
             module->logStage("ModuleBuildPass::Output\n");
 
         if (module->kind == ModuleKind::Config || module->kind == ModuleKind::Script)
@@ -744,7 +744,7 @@ JobResult ModuleBuildJob::execute()
         else
         {
             // Do not run native tests or command in script mode, it's already done in bytecode
-            if (g_CommandLine->scriptMode)
+            if (g_CommandLine.scriptMode)
                 pass = ModuleBuildPass::Done;
             else
                 pass = ModuleBuildPass::RunNative;
@@ -766,7 +766,7 @@ JobResult ModuleBuildJob::execute()
     if (pass == ModuleBuildPass::RunNative)
     {
         checkMissingErrors();
-        if (g_CommandLine->verboseStages)
+        if (g_CommandLine.verboseStages)
             module->logStage("ModuleBuildPass::RunNative\n");
 
         pass = ModuleBuildPass::Done;
@@ -774,7 +774,7 @@ JobResult ModuleBuildJob::execute()
             return JobResult::ReleaseJob;
 
         // Run test executable
-        if (module->mustGenerateTestExe() && g_CommandLine->runBackendTests)
+        if (module->mustGenerateTestExe() && g_CommandLine.runBackendTests)
         {
             auto job                            = g_Allocator.alloc<ModuleRunJob>();
             job->module                         = module;
@@ -785,7 +785,7 @@ JobResult ModuleBuildJob::execute()
         }
 
         // Run command
-        if (g_CommandLine->run && module->kind != ModuleKind::Test)
+        if (g_CommandLine.run && module->kind != ModuleKind::Test)
         {
             auto job                         = g_Allocator.alloc<ModuleRunJob>();
             job->module                      = module;

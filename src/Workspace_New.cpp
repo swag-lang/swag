@@ -7,10 +7,10 @@
 
 void newScriptFile()
 {
-    ofstream file(g_CommandLine->scriptName);
+    ofstream file(g_CommandLine.scriptName);
     if (!file.is_open())
     {
-        Report::errorOS(Fmt(Err(Err0347), g_CommandLine->scriptName.c_str()));
+        Report::errorOS(Fmt(Err(Err0347), g_CommandLine.scriptName.c_str()));
         OS::exit(-1);
     }
 
@@ -31,8 +31,8 @@ void newScriptFile()
 
     file << content;
 
-    g_Log.message(Fmt("=> script file `%s` has been created", g_CommandLine->scriptName.c_str()));
-    g_Log.message(Fmt("=> type 'swag script -f:%s' to run that script", g_CommandLine->scriptName.c_str()));
+    g_Log.message(Fmt("=> script file `%s` has been created", g_CommandLine.scriptName.c_str()));
+    g_Log.message(Fmt("=> type 'swag script -f:%s' to run that script", g_CommandLine.scriptName.c_str()));
 }
 
 void Workspace::newModule(string moduleName)
@@ -40,7 +40,7 @@ void Workspace::newModule(string moduleName)
     error_code errorCode;
 
     // Create one module folder
-    auto modulePath = g_CommandLine->test ? testsPath : modulesPath;
+    auto modulePath = g_CommandLine.test ? testsPath : modulesPath;
     modulePath.append(moduleName);
 
     if (fs::exists(modulePath))
@@ -109,7 +109,7 @@ void Workspace::newModule(string moduleName)
 }
 )";
 
-    if (g_CommandLine->test)
+    if (g_CommandLine.test)
         modulePath.append("test1.swg");
     else
         modulePath.append("main.swg");
@@ -119,7 +119,7 @@ void Workspace::newModule(string moduleName)
         Report::errorOS(Fmt(Err(Err0824), modulePath.string().c_str()));
         OS::exit(-1);
     }
-    if (g_CommandLine->test)
+    if (g_CommandLine.test)
         file << contentTest;
     else
         file << contentMain;
@@ -128,7 +128,7 @@ void Workspace::newModule(string moduleName)
 void Workspace::newCommand()
 {
     // Create a script file
-    if (workspacePath.empty() && !g_CommandLine->scriptName.empty())
+    if (workspacePath.empty() && !g_CommandLine.scriptName.empty())
     {
         newScriptFile();
         OS::exit(0);
@@ -145,7 +145,7 @@ void Workspace::newCommand()
     // Create workspace
     error_code errorCode;
     string     moduleName;
-    if (g_CommandLine->moduleName.empty())
+    if (g_CommandLine.moduleName.empty())
     {
         if (fs::exists(workspacePath))
         {
@@ -197,13 +197,13 @@ void Workspace::newCommand()
             OS::exit(-1);
         }
 
-        moduleName = g_CommandLine->moduleName;
+        moduleName = g_CommandLine.moduleName;
     }
 
     // Create module
     newModule(moduleName);
 
-    if (g_CommandLine->test)
+    if (g_CommandLine.test)
     {
         g_Log.message(Fmt("=> test module `%s` has been created", moduleName.c_str()));
         g_Log.message(Fmt("=> type 'swag test -w:%s -m:%s' to test that module only", workspacePath.string().c_str(), moduleName.c_str()));

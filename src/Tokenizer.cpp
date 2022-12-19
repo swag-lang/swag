@@ -62,7 +62,7 @@ void Tokenizer::processChar(uint32_t c)
 
     if (c == '\n')
     {
-        if (g_CommandLine->stats)
+        if (g_CommandLine.stats)
             g_Stats.numLines++;
         location.column = 0;
         location.line++;
@@ -188,7 +188,7 @@ void Tokenizer::doIdentifier(Token& token, uint32_t c, unsigned offset)
 bool Tokenizer::getToken(Token& token)
 {
     Timer timer(&g_Stats.tokenizerTime);
-    if (g_CommandLine->stats)
+    if (g_CommandLine.stats)
         g_Stats.numTokens++;
 
     token.literalType      = LiteralType::TT_MAX;
