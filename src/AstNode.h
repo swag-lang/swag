@@ -725,6 +725,8 @@ struct AstIntrinsicProp : public AstNode
 
 struct AstExpressionList : public AstNode
 {
+    AstNode* clone(CloneContext& context);
+
     TypeInfo* castToStruct = nullptr;
 };
 

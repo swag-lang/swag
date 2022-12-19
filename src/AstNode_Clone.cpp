@@ -276,6 +276,8 @@ AstNode* AstNode::clone(CloneContext& context)
         return ((AstOp*) this)->clone(context);
     case AstNodeKind::Defer:
         return ((AstDefer*) this)->clone(context);
+    case AstNodeKind::ExpressionList:
+        return ((AstExpressionList*) this)->clone(context);
 
     default:
     {
@@ -820,6 +822,13 @@ AstNode* AstArrayPointerSlicing::clone(CloneContext& context)
     for (auto f : structFlatParams)
         newNode->structFlatParams.push_back(findChildRef(f, newNode));
 
+    return newNode;
+}
+
+AstNode* AstExpressionList::clone(CloneContext& context)
+{
+    auto newNode = Ast::newNode<AstExpressionList>();
+    newNode->copyFrom(context, this);
     return newNode;
 }
 
