@@ -3,7 +3,7 @@
 #include "Stats.h"
 #define MAX_FREE_BUCKETS 256 / 8
 
-struct AllocatorBucket
+struct AllocatorBlock
 {
     uint8_t* data      = nullptr;
     size_t   maxUsed   = 0;
@@ -26,10 +26,10 @@ struct AllocatorImpl
         size_t     size;
     } FreeBlock;
 
-    FreeBlock*       firstFreeBlock = nullptr;
-    AllocatorBucket* lastBucket     = nullptr;
-    uint8_t*         currentData    = nullptr;
-    void*            freeBuckets[MAX_FREE_BUCKETS];
+    FreeBlock*      firstFreeBlock = nullptr;
+    AllocatorBlock* lastBlock      = nullptr;
+    uint8_t*        currentData    = nullptr;
+    void*           freeBuckets[MAX_FREE_BUCKETS];
 };
 
 struct Allocator

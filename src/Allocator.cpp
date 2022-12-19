@@ -9,7 +9,7 @@
 #include "Report.h"
 #include "Diagnostic.h"
 
-const uint64_t ALLOCATOR_BUCKET_SIZE = 1024 * 1024;
+const uint64_t ALLOCATOR_BLOCK_SIZE = 1024 * 1024;
 
 #ifdef SWAG_CHECK_MEMORY
 const uint64_t MAGIC_ALLOC = 0xC0DEC0DEC0DEC0DE;
@@ -192,13 +192,13 @@ void* AllocatorImpl::alloc(size_t size)
     }
 
     // Do we need to allocate a new data block ?
-    if (!lastBucket || lastBucket->maxUsed + size > lastBucket->allocated)
+    if (!lastBlock || lastBlock->maxUsed + size > lastBlock->allocated)
     {
-        // We get the remaining space in the last bucket, to be able to use it as
+        // We get the remaining space in the last block, to be able to use it as
         // a free block
-        if (lastBucket)
+        if (lastBlock)
         {
-            auto remain = lastBucket->allocated - lastBucket->maxUsed;
+            auto remain = lastBlock->allocated - lastBlock->maxUsed;
             if (remain)
             {
                 SWAG_ASSERT(!(remain & 7));
@@ -207,50 +207,51 @@ void* AllocatorImpl::alloc(size_t size)
                 if (bucket < MAX_FREE_BUCKETS)
                 {
                     auto next                     = freeBuckets[bucket];
-                    freeBuckets[bucket]           = lastBucket->data + lastBucket->maxUsed;
+                    freeBuckets[bucket]           = lastBlock->data + lastBlock->maxUsed;
                     *(void**) freeBuckets[bucket] = next;
                 }
                 else
                 {
                     auto next            = firstFreeBlock;
-                    firstFreeBlock       = (FreeBlock*) (lastBucket->data + lastBucket->maxUsed);
+                    firstFreeBlock       = (FreeBlock*) (lastBlock->data + lastBlock->maxUsed);
                     firstFreeBlock->size = remain;
                     firstFreeBlock->next = next;
                 }
             }
         }
 
-        auto allocated = max(size, ALLOCATOR_BUCKET_SIZE);
-        lastBucket     = (AllocatorBucket*) malloc(sizeof(AllocatorBucket) + allocated);
-        if (!lastBucket)
+        // Allocate a new block of datas
+        auto allocated = max(size, ALLOCATOR_BLOCK_SIZE);
+        lastBlock      = (AllocatorBlock*) malloc(sizeof(AllocatorBlock) + allocated);
+        if (!lastBlock)
         {
             Report::error(Err(Err0014));
             OS::exit(-1);
             return nullptr;
         }
 
-        lastBucket->maxUsed   = 0;
-        lastBucket->allocated = allocated;
-        lastBucket->data      = (uint8_t*) (lastBucket + 1);
+        lastBlock->maxUsed   = 0;
+        lastBlock->allocated = allocated;
+        lastBlock->data      = (uint8_t*) (lastBlock + 1);
 
-        currentData = lastBucket->data;
+        currentData = lastBlock->data;
 
         if (g_CommandLine.stats)
         {
-            g_Stats.allocatorMemory += sizeof(AllocatorBucket) + lastBucket->allocated;
-            g_Stats.wastedMemory += lastBucket->allocated;
+            g_Stats.allocatorMemory += sizeof(AllocatorBlock) + lastBlock->allocated;
+            g_Stats.wastedMemory += lastBlock->allocated;
         }
     }
 
+    // Allocate in the current block
 #ifdef SWAG_DEV_MODE
     memset(currentData, 0xAA, size);
 #endif
 
     currentData += size;
-    lastBucket->maxUsed += size;
+    lastBlock->maxUsed += size;
     if (g_CommandLine.stats)
         g_Stats.wastedMemory -= size;
-
     return currentData - size;
 }
 
