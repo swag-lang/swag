@@ -1,7 +1,7 @@
 #pragma once
 #include "Assert.h"
 #include "Stats.h"
-#define MAX_FREE_BUCKETS 256 / 8
+#define MAX_FREE_BUCKETS 512 / 8
 
 struct AllocatorBlock
 {
@@ -15,8 +15,11 @@ struct AllocatorImpl
     AllocatorImpl();
 
     void  free(void*, size_t size);
+    void  allocateNewBlock(size_t size);
+    void* bigAlloc(size_t size);
     void* alloc(size_t size);
 
+    void* useRealBucket(uint32_t bucket);
     void* useBucket(uint32_t bucket, size_t size);
     void* tryFreeBlock(uint32_t maxCount, size_t size);
 
@@ -30,6 +33,7 @@ struct AllocatorImpl
     AllocatorBlock* lastBlock      = nullptr;
     uint8_t*        currentData    = nullptr;
     void*           freeBuckets[MAX_FREE_BUCKETS];
+    uint64_t        freeBucketsMask = 0;
 };
 
 struct Allocator
