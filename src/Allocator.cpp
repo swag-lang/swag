@@ -329,8 +329,7 @@ void* Allocator::alloc(size_t size)
 {
     if (shared)
         g_AllocatorMutex.lock();
-    if (!impl)
-        impl = &_impl;
+    SWAG_ASSERT(impl);
 
 #ifdef SWAG_CHECK_MEMORY
     auto userSize = size;
@@ -360,8 +359,7 @@ void Allocator::free(void* ptr, size_t size)
 
     if (shared)
         g_AllocatorMutex.lock();
-    if (!impl)
-        impl = &_impl;
+    SWAG_ASSERT(impl);
 
     uint8_t* addr = (uint8_t*) ptr;
 
