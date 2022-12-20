@@ -146,7 +146,6 @@ impl DebugAllocator
     // Output to the console the list of all allocated blocks (leaks)
     mtd printLeaks()
     {
-        return
         if countAlloc == 0 or disablePrintLeaks
             return
         @print("############################################\n")

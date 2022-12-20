@@ -31,6 +31,14 @@ enum class TokenId : uint8_t;
 static const uint32_t BCC_FLAG_NOLOCATION = 0x00000001;
 static const uint32_t BCC_FLAG_NOSAFETY   = 0x00000002;
 
+enum EmitOpUserKind
+{
+    Init,
+    Drop,
+    PostCopy,
+    PostMove,
+};
+
 enum class SafetyMsg
 {
     CastTruncated,
@@ -212,6 +220,7 @@ struct ByteCodeGenJob : public Job
     static ByteCodeInstruction* emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0 = 0, uint32_t r1 = 0, uint32_t r2 = 0, uint32_t r3 = 0, const std::source_location location = std::source_location::current());
 
     static bool emitDefaultParamValue(ByteCodeGenContext* context, AstNode* param, RegisterList& regList);
+    static void emitOpCallUser(ByteCodeGenContext* context, TypeInfoStruct* typeStruct, EmitOpUserKind kind, bool pushParam = true, uint32_t offset = 0, uint32_t numParams = 1);
     static void emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc = nullptr, bool pushParam = true, uint32_t offset = 0, uint32_t numParams = 1);
     static bool emitExpressionListBefore(ByteCodeGenContext* context);
     static bool emitExpressionList(ByteCodeGenContext* context);
@@ -402,6 +411,7 @@ struct ByteCodeGenJob : public Job
 
     static void generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct);
     static bool generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
+    static void emitOpUserFields(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct, EmitOpUserKind kind);
     static bool generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);

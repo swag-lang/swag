@@ -10,6 +10,25 @@
 #include "LanguageSpec.h"
 #include "ModuleManager.h"
 
+void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, TypeInfoStruct* typeStruct, EmitOpUserKind kind, bool pushParam, uint32_t offset, uint32_t numParams)
+{
+    switch (kind)
+    {
+    case EmitOpUserKind::Init:
+        emitOpCallUser(context, typeStruct->opUserInitFct, typeStruct->opInit, pushParam, offset, numParams);
+        break;
+    case EmitOpUserKind::Drop:
+        emitOpCallUser(context, typeStruct->opUserDropFct, typeStruct->opDrop, pushParam, offset, numParams);
+        break;
+    case EmitOpUserKind::PostCopy:
+        emitOpCallUser(context, typeStruct->opUserPostCopyFct, typeStruct->opPostCopy, pushParam, offset, numParams);
+        break;
+    case EmitOpUserKind::PostMove:
+        emitOpCallUser(context, typeStruct->opUserPostMoveFct, typeStruct->opPostMove, pushParam, offset, numParams);
+        break;
+    }
+}
+
 void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc, bool pushParam, uint32_t offset, uint32_t numParams)
 {
     if (!funcDecl && !bc)
@@ -68,6 +87,7 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
 
     for (int i = 0; i < 4; i++)
     {
+        auto        kind  = (EmitOpUserKind) i;
         ByteCode**  resOp = nullptr;
         Utf8        addName;
         SymbolName* symbol = nullptr;
@@ -76,9 +96,9 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
         bool needPostCopy = false;
         bool needPostMove = false;
 
-        switch (i)
+        switch (kind)
         {
-        case 0:
+        case EmitOpUserKind::Init:
         {
             if (typeInfoStruct->opInit)
                 continue;
@@ -115,7 +135,7 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
             addName = "_opInit";
             break;
         }
-        case 1:
+        case EmitOpUserKind::Drop:
         {
             if (typeInfoStruct->opDrop)
                 continue;
@@ -154,7 +174,7 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
             addName = "_opDropGenerated";
             break;
         }
-        case 2:
+        case EmitOpUserKind::PostCopy:
         {
             if (typeInfoStruct->opPostCopy)
                 continue;
@@ -195,7 +215,7 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
             addName = "_opPostCopyGenerated";
             break;
         }
-        case 3:
+        case EmitOpUserKind::PostMove:
         {
             if (typeInfoStruct->opPostMove)
                 continue;
@@ -256,23 +276,23 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
                 needPostMove = true;
         }
 
-        switch (i)
+        switch (kind)
         {
-        case 1:
+        case EmitOpUserKind::Drop:
             if (!needDrop)
             {
                 typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_DROP;
                 continue;
             }
             break;
-        case 2:
+        case EmitOpUserKind::PostCopy:
             if (!needPostCopy)
             {
                 typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_COPY;
                 continue;
             }
             break;
-        case 3:
+        case EmitOpUserKind::PostMove:
             if (!needPostMove)
             {
                 typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_MOVE;
@@ -294,9 +314,9 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
         opInit->isCompilerGenerated   = true;
         *resOp                        = opInit;
 
-        switch (i)
+        switch (kind)
         {
-        case 0:
+        case EmitOpUserKind::Init:
             // Export generated function if necessary
             if (!(structNode->flags & AST_FROM_GENERIC))
             {
@@ -314,7 +334,7 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
             }
             break;
 
-        case 1:
+        case EmitOpUserKind::Drop:
             // Export generated function if necessary
             if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))
             {
@@ -331,7 +351,7 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
             }
             break;
 
-        case 2:
+        case EmitOpUserKind::PostCopy:
             // Export generated function if necessary
             if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))
             {
@@ -348,7 +368,7 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
             }
             break;
 
-        case 3:
+        case EmitOpUserKind::PostMove:
             // Export generated function if necessary
             if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))
             {
@@ -372,6 +392,59 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
     ScopedLock lk1(structNode->mutex);
     structNode->semFlags |= AST_SEM_STRUCT_OP_ALLOCATED;
     structNode->dependentJobs.setRunning();
+}
+
+void ByteCodeGenJob::emitOpUserFields(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct, EmitOpUserKind kind)
+{
+    for (auto typeParam : typeInfoStruct->fields)
+    {
+        auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
+        if (typeVar->isArrayOfStruct())
+        {
+            auto typeArray     = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
+            auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct);
+            if (typeArray->totalCount == 1)
+            {
+
+                emitOpCallUser(context, typeStructVar, kind, true, typeParam->offset);
+            }
+            else
+            {
+                // Reference to the field
+                emitInstruction(context, ByteCodeOp::GetParam64, 0, 24);
+                if (typeParam->offset)
+                {
+                    auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, 0, 0, 0);
+                    inst->b.u64 = typeParam->offset;
+                    inst->flags |= BCI_IMM_B;
+                }
+
+                // Need to loop on every element of the array
+                RegisterList r0 = reserveRegisterRC(context);
+
+                auto inst     = emitInstruction(context, ByteCodeOp::SetImmediate32, r0);
+                inst->b.u64   = typeArray->totalCount;
+                auto seekJump = context->bc->numInstructions;
+
+                emitInstruction(context, ByteCodeOp::PushRAParam, 0);
+                emitOpCallUser(context, typeStructVar, kind, false);
+
+                inst = emitInstruction(context, ByteCodeOp::IncPointer64, 0, 0, 0);
+                inst->flags |= BCI_IMM_B;
+                inst->b.u64 = typeStructVar->sizeOf;
+
+                emitInstruction(context, ByteCodeOp::DecrementRA32, r0);
+                emitInstruction(context, ByteCodeOp::JumpIfNotZero32, r0)->b.s32 = seekJump - context->bc->numInstructions - 1;
+
+                freeRegisterRC(context, r0);
+            }
+        }
+        else if (typeVar->isStruct())
+        {
+            auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+            emitOpCallUser(context, typeStructVar, kind, true, typeParam->offset);
+        }
+    }
 }
 
 bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
@@ -729,14 +802,8 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     // Call user function if defined
     emitOpCallUser(&cxt, typeInfoStruct->opUserDropFct);
 
-    for (auto typeParam : typeInfoStruct->fields)
-    {
-        auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
-        if (!typeVar->isStruct())
-            continue;
-        auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-        emitOpCallUser(&cxt, typeStructVar->opUserDropFct, typeStructVar->opDrop, true, typeParam->offset);
-    }
+    // Call for each field
+    emitOpUserFields(&cxt, typeInfoStruct, EmitOpUserKind::Drop);
 
     emitInstruction(&cxt, ByteCodeOp::Ret);
     emitInstruction(&cxt, ByteCodeOp::End);
