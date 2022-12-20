@@ -545,8 +545,8 @@ void initErrors()
     SWAG_ERROR(Err0535, "`%s` should only be used before a function call that can raise errors (a function marked with `throw`)");
     SWAG_ERROR(Err0536, "stack overflow (maximum stack size is `--stack-size:%s`)");
     SWAG_ERROR(Err0537, "cannot convert typeinfo `%s` to runtime typeinfo");
-    SWAG_ERROR(Err0538, "fatal error: invalid value `%s` for command line `--tag:%s`; this is not a valid literal");
-    SWAG_ERROR(Err0539, "fatal error: command line --tag `%s` unsupported type `%s`");
+    SWAG_ERROR(Err0538, "fatal error: unexpected compile tag value `%s` (command is `--tag:%s`)");
+    SWAG_ERROR(Err0539, "fatal error: unknown compile tag type `%s` (command is `--tag:%s`)");
     SWAG_ERROR(Err0540, "fatal error: expected workspace folder `--workspace`");
     SWAG_ERROR(Err0541, "fatal error: workspace folder `%s` does not exist");
     SWAG_ERROR(Err0542, "fatal error: invalid workspace `%s`, subfolder `modules/` or `tests/` does not exist");

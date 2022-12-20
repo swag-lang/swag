@@ -11,6 +11,25 @@
 
 Workspace* g_Workspace = nullptr;
 
+static void helpUserTags()
+{
+    g_Log.eol();
+    g_Log.print("Syntax is:\n");
+    g_Log.eol();
+    g_Log.print("--tag:\"<TagName>\"\n");
+    g_Log.print("--tag:\"<TagName> = <literal>\"\n");
+    g_Log.print("--tag:\"<TagName>: <type> = <literal>\"\n");
+    g_Log.eol();
+    g_Log.print("Examples:\n");
+    g_Log.eol();
+    g_Log.print("--tag:\"Swag.DebugAllocator.captureAllocStack\"\n");
+    g_Log.print("--tag:\"Swag.DebugAllocator.captureAllocStack = false\"\n");
+    g_Log.print("--tag:\"Swag.DebugAllocator.captureAllocStack: bool = true\"\n");
+    g_Log.print("--tag:\"Swag.ScratchAllocator.capacity: uint = 4000_0000\"\n");
+    g_Log.eol();
+    g_Log.print("");
+}
+
 void Workspace::setupUserTags()
 {
     // Command line tags
@@ -42,7 +61,8 @@ void Workspace::setupUserTags()
                 auto it = g_LangSpec->keywords.find(tokens1[1]);
                 if (!it || *it != TokenId::NativeType)
                 {
-                    Report::error(Fmt(Err(Err0539), tokens1[0].c_str(), tokens1[1].c_str()));
+                    Report::error(Fmt(Err(Err0539), tokens1[1].c_str(), oneTagName.c_str()));
+                    helpUserTags();
                     OS::exit(-1);
                 }
 
@@ -56,9 +76,15 @@ void Workspace::setupUserTags()
             auto tokenVal = tokens[1];
             tokenVal.trim();
 
-            oneTag.type = nullptr;
+            bool defaultType = false;
+            oneTag.type      = nullptr;
             if (literalType != LiteralType::TT_MAX)
                 oneTag.type = TypeManager::literalTypeToType(literalType);
+            else
+            {
+                defaultType = true;
+                oneTag.type = g_TypeMgr->typeInfoS32;
+            }
 
             // If type is already specified as string, just take the value part without any conversion
             if (oneTag.type && oneTag.type->isString())
@@ -75,20 +101,37 @@ void Workspace::setupUserTags()
 
                 bool neg = false;
                 tokenizer.getToken(token);
-                if (token.id == TokenId::SymMinus)
-                {
-                    neg = true;
-                    tokenizer.getToken(token);
-                }
-                else if (token.id == TokenId::SymPlus)
-                {
-                    tokenizer.getToken(token);
-                }
 
-                if (token.id != TokenId::LiteralNumber && token.id != TokenId::LiteralString)
+                if (token.id == TokenId::KwdTrue)
                 {
-                    Report::error(Fmt(Err(Err0538), tokenVal.c_str(), tokens1[0].c_str()));
-                    OS::exit(-1);
+                    if (defaultType)
+                        oneTag.type = g_TypeMgr->typeInfoBool;
+                    token.literalValue.b = true;
+                }
+                else if (token.id == TokenId::KwdFalse)
+                {
+                    if (defaultType)
+                        oneTag.type = g_TypeMgr->typeInfoBool;
+                    token.literalValue.b = false;
+                }
+                else
+                {
+                    if (token.id == TokenId::SymMinus)
+                    {
+                        neg = true;
+                        tokenizer.getToken(token);
+                    }
+                    else if (token.id == TokenId::SymPlus)
+                    {
+                        tokenizer.getToken(token);
+                    }
+
+                    if (token.id != TokenId::LiteralNumber && token.id != TokenId::LiteralString)
+                    {
+                        Report::error(Fmt(Err(Err0538), tokenVal.c_str(), oneTagName.c_str()));
+                        helpUserTags();
+                        OS::exit(-1);
+                    }
                 }
 
                 // Check type and value
@@ -100,8 +143,9 @@ void Workspace::setupUserTags()
                 auto errMsg = SemanticJob::checkLiteralType(oneTag.value, token, oneTag.type, neg);
                 if (!errMsg.empty())
                 {
-                    auto err = Fmt(Err(Err0322), tokens1[0].c_str(), errMsg.c_str());
+                    auto err = Fmt(Err(Err0322), oneTagName.c_str(), errMsg.c_str());
                     Report::error(err);
+                    helpUserTags();
                     OS::exit(-1);
                 }
             }
