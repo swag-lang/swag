@@ -17,15 +17,12 @@ impl Arr
 struct T
 {
     x: Arr
-    y: [2] Arr
+    y: [2,2] Arr
 }
 
 #test
 {
     var t1, t2: T
     t1 =,move t2
-    @assert(G == 3)
-    t1 = t2
-    G = 0
-    @assert(G == 0)
+    @assert(G==5)
 }

@@ -411,7 +411,8 @@ struct ByteCodeGenJob : public Job
 
     static void generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct);
     static bool generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
-    static void emitOpUserFields(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct, EmitOpUserKind kind);
+    static void emitOpCallUserArrayOfStruct(ByteCodeGenContext* context, TypeInfo* typeVar, EmitOpUserKind kind, bool pushParam, uint32_t offset);
+    static void emitOpCallUserFields(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct, EmitOpUserKind kind);
     static bool generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);

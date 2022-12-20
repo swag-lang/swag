@@ -1,6 +1,6 @@
 struct Arr
 {
-    tt: s32
+    tt: s32 = 5
 }
 
 var G = 0
