@@ -137,8 +137,8 @@ func __closeRuntime()
 {
     @getcontext().tempAllocator.release()
 
-    //if !(__runtimeFlags & .FromCompiler) and (__runtimeFlags & .DebugAllocator)
-   //     __debugAlloc.printLeaks()
+    if !(__runtimeFlags & .FromCompiler) and (__runtimeFlags & .DebugAllocator)
+        __debugAlloc.printLeaks()
 
     __exit()
 }

@@ -540,6 +540,7 @@ impl Decoder
         if inChannels == outChannels
         {
             Memory.copy(result.pixels.buffer, dstPixels, result.size);
+            Memory.free(dstPixels, dstPixelsSize)
             return result
         }
 
