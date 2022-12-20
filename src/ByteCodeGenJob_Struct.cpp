@@ -405,8 +405,16 @@ void ByteCodeGenJob::emitOpUserFields(ByteCodeGenContext* context, TypeInfoStruc
             auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct);
             if (typeArray->totalCount == 1)
             {
-
                 emitOpCallUser(context, typeStructVar, kind, true, typeParam->offset);
+            }
+            else if (typeArray->totalCount == 2)
+            {
+                emitOpCallUser(context, typeStructVar, kind, true, typeParam->offset);
+                auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, 0, 0, 0);
+                inst->flags |= BCI_IMM_B;
+                inst->b.u64 = typeStructVar->sizeOf;
+                emitInstruction(context, ByteCodeOp::PushRAParam, 0);
+                emitOpCallUser(context, typeStructVar, kind, false);
             }
             else
             {
@@ -818,119 +826,6 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     return true;
 }
 
-bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
-{
-    ScopedLock lk(typeInfoStruct->mutexGen);
-    if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_POST_MOVE)
-        return true;
-
-    auto sourceFile = context->sourceFile;
-    auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
-
-    SymbolName* symbol = nullptr;
-
-    // Need to be sure that function has been solved
-    {
-        ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
-        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opPostMove);
-        if (symbol && symbol->cptOverloads)
-        {
-            symbol->addDependentJob(context->job);
-            context->job->setPending(symbol, JobWaitKind::EmitPostMove, structNode, nullptr);
-            return true;
-        }
-    }
-
-    // For generic function, symbol is not registered in the scope of the instantiated struct, but in the
-    // generic struct
-    if (!symbol && typeInfoStruct->opUserPostMoveFct)
-    {
-        ScopedLock lockTable(typeInfoStruct->opUserPostMoveFct->ownerScope->symTable.mutex);
-        symbol = typeInfoStruct->opUserPostMoveFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opPostMove);
-        if (symbol && symbol->cptOverloads)
-        {
-            symbol->addDependentJob(context->job);
-            context->job->setPending(symbol, JobWaitKind::EmitPostMove, structNode, nullptr);
-            return true;
-        }
-    }
-
-    // If user function is foreign, then this is the generated version with everything already done
-    if (typeInfoStruct->opUserPostMoveFct && typeInfoStruct->opUserPostMoveFct->attributeFlags & ATTRIBUTE_FOREIGN)
-        return true;
-
-    // Need to wait for function full semantic resolve
-    bool needPostMove = false;
-    if (typeInfoStruct->opUserPostMoveFct)
-    {
-        // Content must have been solved ! #selectif pb
-        SWAG_ASSERT(!(typeInfoStruct->opUserPostMoveFct->content->flags & AST_NO_SEMANTIC));
-
-        needPostMove = true;
-        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserPostMoveFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
-        if (context->result == ContextResult::Pending)
-            return true;
-    }
-
-    // Be sure sub structs are generated too
-    for (auto typeParam : typeInfoStruct->fields)
-    {
-        auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
-        if (typeVar->isArray())
-            typeVar = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
-        if (!typeVar->isStruct())
-            continue;
-        auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-        context->job->waitStructGenerated(typeStructVar);
-        if (context->result == ContextResult::Pending)
-            return true;
-        SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPECOP_GENERATED);
-        generateStruct_opPostMove(context, typeStructVar);
-        if (context->result == ContextResult::Pending)
-            return true;
-        if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
-            needPostMove = true;
-        if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
-            SWAG_VERIFY(!(structNode->structFlags & STRUCTFLAG_UNION), context->report({typeParam->declNode, Fmt(Err(Err0910), typeStructVar->getDisplayNameC())}));
-    }
-
-    typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_MOVE;
-    if (!needPostMove)
-        return true;
-
-    auto opPostMove = typeInfoStruct->opPostMove;
-    SWAG_ASSERT(opPostMove);
-
-    ByteCodeGenContext cxt{*context};
-    cxt.bc = opPostMove;
-    if (cxt.bc->node)
-        cxt.bc->node->semFlags |= AST_SEM_BYTECODE_RESOLVED | AST_SEM_BYTECODE_GENERATED;
-
-    for (auto typeParam : typeInfoStruct->fields)
-    {
-        auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
-        if (!typeVar->isStruct())
-            continue;
-        auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-        emitOpCallUser(&cxt, typeStructVar->opUserPostMoveFct, typeStructVar->opPostMove, true, typeParam->offset);
-    }
-
-    // Then call user function if defined
-    emitOpCallUser(&cxt, typeInfoStruct->opUserPostMoveFct);
-
-    emitInstruction(&cxt, ByteCodeOp::Ret);
-    emitInstruction(&cxt, ByteCodeOp::End);
-
-    if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
-    {
-        ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
-        cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
-    }
-
-    sourceFile->module->addByteCodeFunc(opPostMove);
-    return true;
-}
-
 bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
     ScopedLock lk(typeInfoStruct->mutexGen);
@@ -1021,14 +916,8 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     if (cxt.bc->node)
         cxt.bc->node->semFlags |= AST_SEM_BYTECODE_RESOLVED | AST_SEM_BYTECODE_GENERATED;
 
-    for (auto typeParam : typeInfoStruct->fields)
-    {
-        auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
-        if (!typeVar->isStruct())
-            continue;
-        auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-        emitOpCallUser(&cxt, typeStructVar->opUserPostCopyFct, typeStructVar->opPostCopy, true, typeParam->offset);
-    }
+    // Call for each field
+    emitOpUserFields(&cxt, typeInfoStruct, EmitOpUserKind::PostCopy);
 
     // Then call user function if defined
     emitOpCallUser(&cxt, typeInfoStruct->opUserPostCopyFct);
@@ -1043,6 +932,113 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     }
 
     sourceFile->module->addByteCodeFunc(opPostCopy);
+    return true;
+}
+
+bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
+{
+    ScopedLock lk(typeInfoStruct->mutexGen);
+    if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_POST_MOVE)
+        return true;
+
+    auto sourceFile = context->sourceFile;
+    auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
+
+    SymbolName* symbol = nullptr;
+
+    // Need to be sure that function has been solved
+    {
+        ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
+        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opPostMove);
+        if (symbol && symbol->cptOverloads)
+        {
+            symbol->addDependentJob(context->job);
+            context->job->setPending(symbol, JobWaitKind::EmitPostMove, structNode, nullptr);
+            return true;
+        }
+    }
+
+    // For generic function, symbol is not registered in the scope of the instantiated struct, but in the
+    // generic struct
+    if (!symbol && typeInfoStruct->opUserPostMoveFct)
+    {
+        ScopedLock lockTable(typeInfoStruct->opUserPostMoveFct->ownerScope->symTable.mutex);
+        symbol = typeInfoStruct->opUserPostMoveFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opPostMove);
+        if (symbol && symbol->cptOverloads)
+        {
+            symbol->addDependentJob(context->job);
+            context->job->setPending(symbol, JobWaitKind::EmitPostMove, structNode, nullptr);
+            return true;
+        }
+    }
+
+    // If user function is foreign, then this is the generated version with everything already done
+    if (typeInfoStruct->opUserPostMoveFct && typeInfoStruct->opUserPostMoveFct->attributeFlags & ATTRIBUTE_FOREIGN)
+        return true;
+
+    // Need to wait for function full semantic resolve
+    bool needPostMove = false;
+    if (typeInfoStruct->opUserPostMoveFct)
+    {
+        // Content must have been solved ! #selectif pb
+        SWAG_ASSERT(!(typeInfoStruct->opUserPostMoveFct->content->flags & AST_NO_SEMANTIC));
+
+        needPostMove = true;
+        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserPostMoveFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
+        if (context->result == ContextResult::Pending)
+            return true;
+    }
+
+    // Be sure sub structs are generated too
+    for (auto typeParam : typeInfoStruct->fields)
+    {
+        auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
+        if (typeVar->isArray())
+            typeVar = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
+        if (!typeVar->isStruct())
+            continue;
+        auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+        context->job->waitStructGenerated(typeStructVar);
+        if (context->result == ContextResult::Pending)
+            return true;
+        SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPECOP_GENERATED);
+        generateStruct_opPostMove(context, typeStructVar);
+        if (context->result == ContextResult::Pending)
+            return true;
+        if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
+            needPostMove = true;
+        if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
+            SWAG_VERIFY(!(structNode->structFlags & STRUCTFLAG_UNION), context->report({typeParam->declNode, Fmt(Err(Err0910), typeStructVar->getDisplayNameC())}));
+    }
+
+    typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_MOVE;
+    if (!needPostMove)
+        return true;
+
+    auto opPostMove = typeInfoStruct->opPostMove;
+    SWAG_ASSERT(opPostMove);
+
+    ByteCodeGenContext cxt{*context};
+    cxt.bc = opPostMove;
+    if (cxt.bc->node)
+        cxt.bc->node->semFlags |= AST_SEM_BYTECODE_RESOLVED | AST_SEM_BYTECODE_GENERATED;
+
+    // Call for each field
+    emitOpUserFields(&cxt, typeInfoStruct, EmitOpUserKind::PostMove);
+
+    // Then call user function if defined
+    emitOpCallUser(&cxt, typeInfoStruct->opUserPostMoveFct);
+
+    emitInstruction(&cxt, ByteCodeOp::Ret);
+    emitInstruction(&cxt, ByteCodeOp::End);
+
+    if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
+    {
+        ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
+        cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
+    }
+
+    sourceFile->module->addByteCodeFunc(opPostMove);
     return true;
 }
 
