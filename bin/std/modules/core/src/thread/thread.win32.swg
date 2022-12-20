@@ -63,7 +63,7 @@ impl Thread
         context = dref @getcontext()
         @init(&context.tempAllocator)
         if tempAllocSize < 0
-            context.tempAllocator.setCapacity(context.allocator)
+            context.tempAllocator.setCapacity(context.tempAllocator.capacity, context.allocator)
         elif tempAllocSize != 0
             context.tempAllocator.setCapacity(cast(uint) tempAllocSize, context.allocator)
 

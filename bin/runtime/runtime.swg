@@ -123,11 +123,14 @@ func @rtflags()  => __runtimeFlags
 
 func __setupRuntime(flags: RuntimeFlags)
 {
-    @getcontext().tempAllocator.setCapacity(@getcontext().allocator)
-
     __runtimeFlags = flags
+
+    c := @gettag("Swag.ScratchAllocator.capacity", uint, 4 * 1024 * 1024)
+    @getcontext().tempAllocator.setCapacity(c, @getcontext().allocator)
+
     if !(__runtimeFlags & .FromCompiler) and (__runtimeFlags & .DebugAllocator)
     {
+        __debugAlloc.captureAllocStack = @gettag("Swag.DebugAllocator.captureAllocStack", bool, false)
         __debugAlloc.setup(@getcontext().allocator)
         @getcontext().allocator = __debugAlloc
     }

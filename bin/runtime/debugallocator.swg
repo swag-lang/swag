@@ -134,14 +134,15 @@ impl DebugAllocator
         if countAlloc == 0 or disablePrintLeaks
             return
 
+        scan := cast(*DebugAllocatorHeader) firstAlloc
+
         @print("############################################\n")
         @print("Swag.DebugAllocator: Memory leaks detected !\n")
-        @print("############################################\n")
-
-        scan := cast(*DebugAllocatorHeader) firstAlloc
+        @print("--------------------------------------------\n")
         @print(countAlloc, " block(s) for a total of ")
         printDisplaySize(sizeAlloc)
         @print("\n")
+        @print("############################################\n")
 
         cpt := 0
         while scan
