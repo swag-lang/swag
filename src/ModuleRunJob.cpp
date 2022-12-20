@@ -20,24 +20,21 @@ JobResult ModuleRunJob::execute()
     else
         g_Log.messageHeaderCentered("Running backend", module->name.c_str());
 
+    Utf8 cmdLine = path.string();
+    cmdLine += " ";
+    cmdLine += g_CommandLine.userArguments;
+
     if (buildParameters.compileType == BackendCompileType::Test)
     {
         uint32_t numErrors = 0;
-
-        Utf8 cmdLine = path.string();
-        cmdLine += " ";
-        cmdLine += g_CommandLine.userArguments;
-
         OS::doProcess(module, cmdLine, path.parent_path().parent_path().string(), numErrors);
         g_Workspace->numErrors += numErrors;
         module->numErrors += numErrors;
     }
     else
     {
-        auto cmdLine = path.string();
-        cmdLine += " ";
-        cmdLine += g_CommandLine.userArguments;
-        OS::doRunProcess(cmdLine, path.parent_path().parent_path().string());
+        uint32_t numErrors = 0;
+        OS::doProcess(module, cmdLine, path.parent_path().parent_path().string(), numErrors);
     }
 
     return JobResult::ReleaseJob;

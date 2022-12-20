@@ -32,7 +32,6 @@ namespace OS
     const BackendTarget& getNativeTarget();
 
     bool  doProcess(Module* module, const Utf8& cmdline, const string& currentDirectory, uint32_t& numErrors);
-    void  doRunProcess(const Utf8& cmdline, const string& currentDirectory);
     void  setThreadName(thread* thread, const char* threadName);
     void  exit(int code);
     void* loadLibrary(const char* name);
