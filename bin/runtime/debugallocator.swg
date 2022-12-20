@@ -97,23 +97,24 @@ impl DebugAllocator
         if (ptrHeader.magic != MagicAlloc and ptrHeader.magic != MagicFree) or
            (ptrFooter.magic != MagicAlloc and ptrFooter.magic != MagicFree)
         {
-            @panic("block is corrupt", #location)
+            @panic("memory block is corrupt", #location)
         }
 
         if ptrHeader.allocId == 0 or
            ptrHeader.userSize == 0 or
+           ptrHeader.stackCount > @countof(ptrHeader.stack) or
            (ptrHeader.magic == MagicAlloc and !ptrHeader.prev and firstAlloc != ptrHeader) or
            (ptrHeader.magic == MagicFree and !ptrHeader.prev and firstFree != ptrHeader) or
            (ptrHeader.prev and ptrHeader.prev.next != ptrHeader) or
            (ptrHeader.next and ptrHeader.next.prev != ptrHeader)
         {
-            @panic("block is corrupt", #location)
+            @panic("memory block is corrupt", #location)
         }
 
         if (ptrHeader.magic == MagicFree and ptrHeader.magic == MagicFree)
         {
             loc := ptrHeader.loc.fileName ? ptrHeader.loc : #location
-            @panic("double free", loc)
+            @panic("memory block double free", loc)
         }
     }
 }
@@ -145,15 +146,19 @@ impl DebugAllocator
         cpt := 0
         while scan
         {
+            checkIsAllocated(scan)
+
             // One leak
             @print("\x1b[91m")
             @print("error: leak: ")
-            @print(scan.loc.fileName, ":", scan.loc.lineStart + 1, ": ")
             @print("id: ", scan.allocId, " sizeAlloc: ")
             printDisplaySize(scan.userSize)
             if scan.hint @print(" hint: ", scan.hint)
             @print("\n")
             @print("\x1b[97m")
+            @print(" |  --> ")
+            @print(scan.loc.fileName, ":", scan.loc.lineStart + 1, "\n")
+
 
             // Stack
             if scan.stackCount
@@ -338,8 +343,7 @@ impl IAllocator for DebugAllocator
         header.userSize = request.size
         header.loc = copyReq.callerLoc
         header.hint = copyReq.hint
-        if captureAllocStack
-            header.stackCount = __captureStack(header.stack)
+        header.stackCount = captureAllocStack ? __captureStack(header.stack) : 0
 
         // Setup footer
         footer := cast(*DebugAllocatorFooter) (userAddr + request.size)

@@ -318,12 +318,11 @@ func __logStackTrace(where: [..] *void)
     var line: IMAGEHLP_LINE64
     line.SizeOfStruct = @sizeof(IMAGEHLP_LINE64)
 
-    lastOne  := nb-4
-    loop i: lastOne..0
+    loop i: nb-1..0
     {
         @print("\x1b[93m")
         @print("callstack:")
-        @print(lastOne-i)
+        @print(nb-i)
         @print(": ")
 
         if SymFromAddr(GetCurrentProcess(), cast(ULONG64) cast(uint) where[i], &displacement, psym)
