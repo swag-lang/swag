@@ -287,14 +287,25 @@ func __panicBox(msg, title: string)
     }
 }
 
-func __logStackTrace()
+func __captureStack(where: [..] *void)->u32
 {
     using __Win32RT
-    var arr: [64] *void
-    nb := RtlCaptureStackBackTrace(0, 64, arr, null)
+    nb := RtlCaptureStackBackTrace(0, acast @countof(where), acast @dataof(where), null)
+    return nb
+}
 
-    if !SymInitialize(GetCurrentProcess(), null, TRUE)
-        return
+var __logStackTraceInitDone = false
+func __logStackTrace(where: [..] *void)
+{
+    using __Win32RT
+    nb := @countof(where)
+
+    if !__logStackTraceInitDone
+    {
+        if !SymInitialize(GetCurrentProcess(), null, TRUE)
+            return
+        __logStackTraceInitDone = true
+    }
 
     const SYM_LEN_NAME = 128
     var sym: [@sizeof(SYMBOL_INFO) + SYM_LEN_NAME * @sizeof(CHAR)] u8
@@ -315,7 +326,7 @@ func __logStackTrace()
         @print(lastOne-i)
         @print(": ")
 
-        if SymFromAddr(GetCurrentProcess(), cast(ULONG64) cast(uint) arr[i], &displacement, psym)
+        if SymFromAddr(GetCurrentProcess(), cast(ULONG64) cast(uint) where[i], &displacement, psym)
         {
             symName := @mkstring(cast(const *u8) psym.Name, @strlen(psym.Name))
             @print(symName)
@@ -324,7 +335,7 @@ func __logStackTrace()
         @print("\n")
         @print("\x1b[97m")
 
-        if !SymGetLineFromAddr64(GetCurrentProcess(), cast(ULONG64) cast(uint) arr[i], acast &displacement, &line)
+        if !SymGetLineFromAddr64(GetCurrentProcess(), cast(ULONG64) cast(uint) where[i], acast &displacement, &line)
             continue
 
         @print(" |  --> ")

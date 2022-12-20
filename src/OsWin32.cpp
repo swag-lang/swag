@@ -204,10 +204,10 @@ namespace OS
 
                     // Source code
                     g_Log.lock();
-                    pz = strstr(oneLine.c_str(), " |  --> ");
+                    pz = strstr(oneLine.c_str(), " --> ");
                     if (pz && module)
                     {
-                        auto oneLine1 = pz + 8;
+                        auto oneLine1 = pz + 5;
 
                         // Extract file and location
                         vector<Utf8> tokens;
@@ -218,7 +218,7 @@ namespace OS
                         {
                             auto fileName = tokens[0] + ":";
                             fileName += tokens[1];
-                            auto sourceFile = module->findFile(fileName);
+                            auto sourceFile = g_Workspace->findFile(fileName);
                             if (!sourceFile)
                                 sourceFile = g_Workspace->bootstrapModule->findFile(fileName);
                             if (!sourceFile)
@@ -230,6 +230,7 @@ namespace OS
                                 {
                                     g_Log.setColor(LogColor::Gray);
                                     g_Log.print(" |  ");
+                                    codeLine.trim();
                                     g_Log.print(codeLine + "\n");
                                 }
                             }

@@ -27,4 +27,6 @@ private func tmpPath(name: string)->String
 #init
 {
     //@dbgalloc().breakOnAllocId = 14244
+    @dbgalloc().showMaxLeaks = 2
+    @dbgalloc().captureAllocStack = true
 }

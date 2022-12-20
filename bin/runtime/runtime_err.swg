@@ -140,7 +140,9 @@ func @panic(message: string, loc: CompilerSourceLocation)
         return
 
     // Print the calling stack trace
-    __logStackTrace()
+    var arr: [64] *void
+    nb := __captureStack(arr)
+    __logStackTrace(@mkslice(&arr[0], nb))
 
     // Print the error stack trace if available
     for i := cast(s32) cxt.traceIndex - 1; i >= 0; i -= 1

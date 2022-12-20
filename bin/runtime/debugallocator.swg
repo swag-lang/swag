@@ -10,6 +10,8 @@ struct DebugAllocatorHeader
     hint:           string
     prev:           *DebugAllocatorHeader
     next:           *DebugAllocatorHeader
+    stack:          [8] *void
+    stackCount:     u32
     magic:          u32
     allocId:        u32
 }
@@ -32,8 +34,10 @@ struct DebugAllocator
     nextId:     u32                     // The next allocated id to assign
 
     // Debug/behaviour parameters
-    breakOnAllocId:     u32     // will @assert when the current allocation id reaches that value
-    disablePrintLeaks:  bool    // disable printLeaks(). Mostly for the runtime allocator.
+    captureAllocStack:  bool        // For each allocation, capture stack
+    showMaxLeaks:       u32 = 100   // Maximum number of memory leaks to show
+    breakOnAllocId:     u32         // Will @assert when the current allocation id reaches that value
+    disablePrintLeaks:  bool        // Disable printLeaks(). Mostly for the runtime allocator.
 }
 
 impl DebugAllocator
@@ -124,34 +128,48 @@ impl DebugAllocator
     }
 
     // Output to the console the list of all allocated blocks (leaks)
-    mtd printAllocated()
+    mtd printLeaks()
     {
+        if countAlloc == 0 or disablePrintLeaks
+            return
+
+        @print("############################################\n")
+        @print("Swag.DebugAllocator: Memory leaks detected !\n")
+        @print("############################################\n")
+
         scan := cast(*DebugAllocatorHeader) firstAlloc
         @print(countAlloc, " block(s) for a total of ")
         printDisplaySize(sizeAlloc)
         @print("\n")
 
+        cpt := 0
         while scan
         {
+            // One leak
+            @print("\x1b[91m")
+            @print("error: leak: ")
             @print(scan.loc.fileName, ":", scan.loc.lineStart + 1, ": ")
             @print("id: ", scan.allocId, " sizeAlloc: ")
             printDisplaySize(scan.userSize)
             if scan.hint @print(" hint: ", scan.hint)
             @print("\n")
+            @print("\x1b[97m")
 
+            // Stack
+            if scan.stackCount
+                __logStackTrace(@mkslice(&scan.stack[0], scan.stackCount))
+
+            // Next
             scan = scan.next
-        }
-    }
 
-    // Output to the console the list of all allocated blocks (leaks)
-    mtd printLeaks()
-    {
-        if countAlloc == 0 or disablePrintLeaks
-            return
-        @print("############################################\n")
-        @print("Swag.DebugAllocator: Memory leaks detected !\n")
-        @print("############################################\n")
-        printAllocated()
+            // Clamp
+            cpt += 1
+            if showMaxLeaks and cpt >= showMaxLeaks
+            {
+                @print("... too many leaks, stopped\n")
+                break
+            }
+        }
     }
 
     // This function will assert if the given user address is not conform
@@ -320,6 +338,8 @@ impl IAllocator for DebugAllocator
         header.userSize = request.size
         header.loc = copyReq.callerLoc
         header.hint = copyReq.hint
+        if captureAllocStack
+            header.stackCount = __captureStack(header.stack)
 
         // Setup footer
         footer := cast(*DebugAllocatorFooter) (userAddr + request.size)
