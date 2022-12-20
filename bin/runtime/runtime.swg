@@ -115,24 +115,27 @@ func @args()->const [..] string
 }
 
 ////////////////////////////////////////////////////////////
+var __runtimeFlags: RuntimeFlags = Zero
 var __debugAlloc:   DebugAllocator
-var __runtimeFlags  = RuntimeFlags.Zero
+var __sysAlloc:     SystemAllocator
 
-func @dbgalloc() => &__debugAlloc
 func @rtflags()  => __runtimeFlags
+func @dbgalloc() => &__debugAlloc
+func @sysalloc() => &__sysAlloc
 
 func __setupRuntime(flags: RuntimeFlags)
 {
     __runtimeFlags = flags
 
+    cxt := @getcontext()
     c := @gettag("Swag.ScratchAllocator.capacity", uint, 4 * 1024 * 1024)
-    @getcontext().tempAllocator.setCapacity(c, @getcontext().allocator)
+    cxt.tempAllocator.setCapacity(c, cxt.allocator)
 
     if !(__runtimeFlags & .FromCompiler) and (__runtimeFlags & .DebugAllocator)
     {
         __debugAlloc.captureAllocStack = @gettag("Swag.DebugAllocator.captureAllocStack", bool, false)
-        __debugAlloc.setup(@getcontext().allocator)
-        @getcontext().allocator = __debugAlloc
+        __debugAlloc.setup(cxt.allocator)
+        cxt.allocator = __debugAlloc
     }
 }
 

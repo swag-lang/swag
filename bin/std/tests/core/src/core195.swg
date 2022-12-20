@@ -5,7 +5,7 @@
     //#assert Reflection.hasDrop(std.File.FileInfo)
 
     var dbg: Swag.DebugAllocator
-    dbg.setup(Swag.systemAllocator())
+    dbg.setup(@sysalloc())
 
     ptr := alloc(16, dbg)
     ptr1 := new'String(dbg)

@@ -3,7 +3,7 @@ using Swag
 #test
 {
     var alloc: Swag.ScratchAllocator
-    alloc.setCapacity(10, Swag.systemAllocator())
+    alloc.setCapacity(10, @sysalloc())
     itf := cast(IAllocator) alloc
 
     var req: AllocatorRequest

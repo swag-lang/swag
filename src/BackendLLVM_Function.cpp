@@ -728,6 +728,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(result, TO_PTR_I8(GEP_I32(allocR, ip->a.u32)));
             break;
         }
+        case ByteCodeOp::IntrinsicSysAlloc:
+        {
+            auto result = emitCall(buildParameters, moduleToGen, g_LangSpec->name_atsysalloc, allocR, allocT, {}, {});
+            builder.CreateStore(result, TO_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+            break;
+        }
         case ByteCodeOp::IntrinsicRtFlags:
         {
             auto result = emitCall(buildParameters, moduleToGen, g_LangSpec->name_atrtflags, allocR, allocT, {}, {});

@@ -507,6 +507,14 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::IntrinsicDbgAlloc, node->resultRegisterRC);
         break;
     }
+    case TokenId::IntrinsicSysAlloc:
+    {
+        node->resultRegisterRC                = reserveRegisterRC(context);
+        node->identifierRef->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC        = node->resultRegisterRC;
+        emitInstruction(context, ByteCodeOp::IntrinsicSysAlloc, node->resultRegisterRC);
+        break;
+    }
     case TokenId::IntrinsicGetContext:
     {
         node->resultRegisterRC = reserveRegisterRC(context);

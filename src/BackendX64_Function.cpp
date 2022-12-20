@@ -1560,6 +1560,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::IntrinsicDbgAlloc:
             emitInternalCall(pp, moduleToGen, g_LangSpec->name_atdbgalloc, {}, regOffset(ip->a.u32));
             break;
+        case ByteCodeOp::IntrinsicSysAlloc:
+            emitInternalCall(pp, moduleToGen, g_LangSpec->name_atsysalloc, {}, regOffset(ip->a.u32));
+            break;
         case ByteCodeOp::IntrinsicRtFlags:
             emitInternalCall(pp, moduleToGen, g_LangSpec->name_atrtflags, {}, regOffset(ip->a.u32));
             break;

@@ -37,6 +37,7 @@ BYTECODE_OP(IntrinsicPanic, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C, "@pan
 BYTECODE_OP(IntrinsicTypeCmp, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C | OPFLAG_IMM_C | OPFLAG_WRITE_D, "_rd_ = @typecmp(_ra_, _rb_, _rcu64_)")
 BYTECODE_OP(IntrinsicStringCmp, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C | OPFLAG_READ_D | OPFLAG_WRITE_D, "_rd_ = @stringcmp(_ra_, _rb_, _rc_, _rd_)")
 BYTECODE_OP(IntrinsicDbgAlloc, OPFLAG_WRITE_A, "_ra_ = @dbgalloc()")
+BYTECODE_OP(IntrinsicSysAlloc, OPFLAG_WRITE_A, "_ra_ = @sysalloc()")
 BYTECODE_OP(IntrinsicRtFlags, OPFLAG_WRITE_A, "_ra_ = @rtflags()")
 
 BYTECODE_OP(IntrinsicAlloc, OPFLAG_WRITE_A | OPFLAG_READ_B, "_ra_ = @alloc(_rb_)")

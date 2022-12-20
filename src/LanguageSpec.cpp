@@ -163,6 +163,7 @@ void LanguageSpec::setupNames()
     name_atstrcmp     = "@stringcmp";
     name_attypecmp    = "@typecmp";
     name_atdbgalloc   = "@dbgalloc";
+    name_atsysalloc   = "@sysalloc";
     name_atrtflags    = "@rtflags";
 
     name_sharpself = "#self";
@@ -363,6 +364,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("@strcmp", TokenId::IntrinsicStrCmp);
     keywords.add("@stringcmp", TokenId::IntrinsicStringCmp);
     keywords.add("@dbgalloc", TokenId::IntrinsicDbgAlloc);
+    keywords.add("@sysalloc", TokenId::IntrinsicSysAlloc);
     keywords.add("@rtflags", TokenId::IntrinsicRtFlags);
     keywords.add("@typecmp", TokenId::IntrinsicTypeCmp);
     keywords.add("@getcontext", TokenId::IntrinsicGetContext);

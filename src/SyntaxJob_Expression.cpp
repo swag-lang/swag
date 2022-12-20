@@ -271,6 +271,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
     case TokenId::IntrinsicTypeOf:
     case TokenId::IntrinsicItfTableOf:
     case TokenId::IntrinsicDbgAlloc:
+    case TokenId::IntrinsicSysAlloc:
     case TokenId::IntrinsicRtFlags:
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
@@ -1273,6 +1274,7 @@ bool SyntaxJob::doLeftExpressionAffect(AstNode* parent, AstNode** result, AstWit
     case TokenId::IntrinsicGetContext:
     case TokenId::IntrinsicGetProcessInfos:
     case TokenId::IntrinsicDbgAlloc:
+    case TokenId::IntrinsicSysAlloc:
         SWAG_CHECK(doIdentifierRef(parent, result));
         return true;
     case TokenId::SymLeftParen:

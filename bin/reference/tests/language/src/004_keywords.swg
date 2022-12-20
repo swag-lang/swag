@@ -147,6 +147,7 @@ This is the list of all keywords:
 @spread
 @stringcmp
 @stringof
+@sysalloc
 @typecmp
 @typeof
 

@@ -2216,6 +2216,12 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         localCall(context, bc, 0, ip->a.u32);
         break;
     }
+    case ByteCodeOp::IntrinsicSysAlloc:
+    {
+        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_atsysalloc);
+        localCall(context, bc, 0, ip->a.u32);
+        break;
+    }
     case ByteCodeOp::IntrinsicRtFlags:
     {
         auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_atrtflags);
