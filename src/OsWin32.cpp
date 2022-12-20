@@ -114,7 +114,6 @@ namespace OS
         HANDLE              hChildStdoutRd, hChildStdoutWr;
         DWORD               dwRead;
         CHAR                chBuf[4096];
-        Utf8                strout;
         DWORD               exit;
         UINT                errmode;
 
@@ -158,16 +157,18 @@ namespace OS
         }
 
         // Wait until child process exits
+        Utf8 strout;
         bool ok  = true;
         chBuf[0] = 0;
         while (1)
         {
             PeekNamedPipe(hChildStdoutRd, chBuf, 4096, &dwRead, nullptr, nullptr);
-            if (dwRead)
+            if (dwRead || !strout.empty())
             {
+                bool notLast = dwRead != 0;
+
                 // Read compiler results
-                strout.clear();
-                if (ReadFile(hChildStdoutRd, chBuf, 4096, &dwRead, nullptr))
+                if (notLast && ReadFile(hChildStdoutRd, chBuf, 4096, &dwRead, nullptr))
                 {
                     strout.append(chBuf, dwRead);
                     while (dwRead == 4096)
@@ -180,6 +181,13 @@ namespace OS
                 // Process result
                 vector<Utf8> lines;
                 Utf8::tokenize(strout, '\n', lines);
+                strout.clear();
+                if (notLast)
+                {
+                    strout = lines.back();
+                    lines.pop_back();
+                }
+
                 for (auto oneLine : lines)
                 {
                     if (oneLine.back() == '\r')
@@ -219,10 +227,6 @@ namespace OS
                             auto fileName = tokens[0] + ":";
                             fileName += tokens[1];
                             auto sourceFile = g_Workspace->findFile(fileName);
-                            if (!sourceFile)
-                                sourceFile = g_Workspace->bootstrapModule->findFile(fileName);
-                            if (!sourceFile)
-                                sourceFile = g_Workspace->runtimeModule->findFile(fileName);
                             if (sourceFile)
                             {
                                 auto codeLine = sourceFile->getLine(atoi(tokens[2]) - 1);
@@ -288,7 +292,7 @@ namespace OS
 
         SetErrorMode(errmode);
         return ok;
-    }       
+    }
 
     Utf8 getExePath()
     {
