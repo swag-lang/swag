@@ -2215,25 +2215,39 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
     auto idRef = Ast::newIdentifierRef(node->sourceFile, fctCallParam);
     if (symbol->kind == SymbolKind::Variable)
     {
-        // Call from a lambda, on a variable : we need to keep the original variable, and put the UFCS one in its own identifierref
-        // Copy all previous references to the one we want to pass as parameter
-        // X.Y.call(...) => X.Y.call(X.Y, ...)
-        for (auto child : identifierRef->childs)
+        if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->kind == AstNodeKind::FuncCall)
         {
-            auto copyChild = Ast::cloneRaw(child, idRef);
-
-            // We want to generate bytecode for the expression on the left only if the lambda is dereferenced from a struct/itf
-            // Otherwise the left expression is only used for scoping
-            if (!identifierRef->startScope || identifierRef->startScope != match.symbolOverload->node->ownerStructScope)
+            // Function that returns an interface, used as an ufcs.
+            // Ex: cfg := @compiler().getBuildCfg()
+            // :SpecUfcsNode
+            identifierRef->previousResolvedNode->flags |= AST_TO_UFCS;
+            fctCallParam->specUfcsNode = identifierRef->previousResolvedNode;
+            auto id                    = Ast::newIdentifier(node->sourceFile, Fmt("__8tmp_%d", g_UniqueID.fetch_add(1)), idRef, idRef);
+            id->flags |= AST_NO_BYTECODE;
+        }
+        else
+        {
+            // Call from a lambda, on a variable : we need to keep the original variable, and put the UFCS one in its own identifierref
+            // Copy all previous references to the one we want to pass as parameter
+            // X.Y.call(...) => X.Y.call(X.Y, ...)
+            for (auto child : identifierRef->childs)
             {
-                child->flags |= AST_NO_BYTECODE;
-                copyChild->flags |= AST_UFCS_FCT;
-            }
+                auto copyChild = Ast::cloneRaw(child, idRef);
 
-            if (child == identifierRef->previousResolvedNode)
-            {
-                copyChild->flags |= AST_TO_UFCS;
-                break;
+                // We want to generate bytecode for the expression on the left only if the lambda is dereferenced from a struct/itf
+                // Otherwise the left expression is only used for scoping
+                if (!identifierRef->startScope ||
+                    identifierRef->startScope != match.symbolOverload->node->ownerStructScope)
+                {
+                    child->flags |= AST_NO_BYTECODE;
+                    copyChild->flags |= AST_UFCS_FCT;
+                }
+
+                if (child == identifierRef->previousResolvedNode)
+                {
+                    copyChild->flags |= AST_TO_UFCS;
+                    break;
+                }
             }
         }
     }
@@ -2932,10 +2946,12 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
                 canTry = true;
             // Before was a function call
             else if (identifierRef->resolvedSymbolName->kind == SymbolKind::Function &&
+                     identifierRef->previousResolvedNode &&
                      identifierRef->previousResolvedNode->kind == AstNodeKind::FuncCall)
                 canTry = true;
             // Before was an inlined function call
             else if (identifierRef->resolvedSymbolName->kind == SymbolKind::Function &&
+                     identifierRef->previousResolvedNode &&
                      identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier &&
                      identifierRef->previousResolvedNode->childs.size() &&
                      identifierRef->previousResolvedNode->childs.front()->kind == AstNodeKind::FuncCallParams &&
@@ -2956,13 +2972,21 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
         }
     }
 
-    if (canDoUfcs && (symbol->kind == SymbolKind::Variable))
+    if (canDoUfcs && symbol->kind == SymbolKind::Variable)
     {
-        if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind != SymbolKind::Variable)
+        if (identifierRef->resolvedSymbolName &&
+            identifierRef->resolvedSymbolName->kind == SymbolKind::Function &&
+            identifierRef->previousResolvedNode &&
+            identifierRef->previousResolvedNode->kind == AstNodeKind::FuncCall)
         {
-            auto subNode = identifierRef->previousResolvedNode ? identifierRef->previousResolvedNode : node;
-            auto msg     = Fmt(Err(Err0124), identifierRef->resolvedSymbolName->name.c_str(), SymTable::getArticleKindName(identifierRef->resolvedSymbolName->kind));
-            return context->report({subNode, msg});
+        }
+        else if (identifierRef->resolvedSymbolName &&
+                 identifierRef->resolvedSymbolName->kind != SymbolKind::Variable)
+        {
+            auto       subNode = identifierRef->previousResolvedNode ? identifierRef->previousResolvedNode : node;
+            Diagnostic diag{subNode, subNode->token, Fmt(Err(Err0124), identifierRef->resolvedSymbolName->name.c_str(), SymTable::getArticleKindName(identifierRef->resolvedSymbolName->kind))};
+            diag.setRange2(node->token, Hnt(Hnt0079));
+            return context->report(diag);
         }
     }
 

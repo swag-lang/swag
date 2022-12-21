@@ -496,6 +496,7 @@ struct AstFuncCallParam : public AstNode
 
     AstReturn*     autoTupleReturn   = nullptr;
     TypeInfoParam* resolvedParameter = nullptr;
+    AstNode*       specUfcsNode      = nullptr;
 
     int indexParam = 0;
 };

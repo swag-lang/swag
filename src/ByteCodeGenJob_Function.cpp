@@ -39,8 +39,20 @@ bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitFuncCallParam(ByteCodeGenContext* context)
 {
-    AstNode* node  = context->node;
-    auto     front = node->childs.front();
+    auto node = CastAst<AstFuncCallParam>(context->node, AstNodeKind::FuncCallParam);
+
+    // Special case when the parameter comes from an ufcs call that returns an interface.
+    // In that case 'specUfcsNode' is the node that makes the call. The register will be
+    // the object pointer of the returned interface.
+    // :SpecUfcsNode
+    if (node->specUfcsNode)
+    {
+        node->typeInfo         = node->specUfcsNode->typeInfo;
+        node->resultRegisterRC = node->specUfcsNode->resultRegisterRC;
+        return true;
+    }
+
+    auto front = node->childs.front();
 
     // If we have a cast to an interface, be sure interface has been fully solved
     // Semantic will pass only if the interface has been registered in the struct, and not solved.
@@ -1035,6 +1047,28 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context)
     auto allParams = node->childs.empty() ? nullptr : node->childs.back();
     SWAG_ASSERT(!allParams || allParams->kind == AstNodeKind::FuncCallParams);
     SWAG_CHECK(emitCall(context, allParams, funcNode, nullptr, funcNode->resultRegisterRC, false, false, true));
+    if (context->result != ContextResult::Done)
+        return true;
+
+    // :SpecUfcsNode
+    // Specific case. The function returns an interface, so it returns two registers.
+    // But we want that interface to be also an ufcs parameter.
+    // Ex: cfg := @compiler().getBuildCfg()
+    if (node->typeInfo->isInterface() && node->flags & AST_TO_UFCS)
+    {
+        auto r = reserveRegisterRC(context);
+
+        // So we need to remember the object pointer to be passed as a parameter.
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r, node->resultRegisterRC[0]);
+
+        // And we need to put the itable pointer in the first register, in order for the lambda value (function pointer)
+        // to be dereferenced.
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+
+        // From now on, the register is the object pointer (not the itable). Used un emitFuncCallParam.
+        node->resultRegisterRC = r;
+    }
+
     return true;
 }
 

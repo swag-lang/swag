@@ -569,6 +569,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::LambdaCallPop:
     {
         auto ptr = registersRC[ip->a.u32].u64;
+        SWAG_ASSERT(ptr);
 
         // Bytecode lambda
         if (ByteCode::isByteCodeLambda((void*) ptr))
