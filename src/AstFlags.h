@@ -128,6 +128,7 @@ static const uint64_t AST_SEM_SPEC_STACKSIZE          = 0x08000000;
 static const uint64_t AST_SEM_FROM_NULL               = 0x10000000;
 static const uint64_t AST_SEM_FROM_REF                = 0x20000000;
 static const uint64_t AST_SEM_STRUCT_OP_ALLOCATED     = 0x40000000;
+static const uint64_t AST_SEM_FORCE_CONST_EXPR        = 0x80000000;
 
 static const uint8_t AST_SPEC_IDENTIFIERREF_AUTO_SCOPE = 0x01;
 static const uint8_t AST_SPEC_IDENTIFIER_BACKTICK      = 0x01;

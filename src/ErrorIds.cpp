@@ -289,8 +289,8 @@ void initErrors()
     SWAG_ERROR(Err0277, "an `@alias` number should be in the range [0, 31] (`%u` provided)");
     SWAG_ERROR(Err0278, "invalid variable name `%s` (cannot start with `@`)");
     SWAG_ERROR(Err0279, "unexpected tuple unpacking in %s");
-    SWAG_ERROR(Err0280, "cannot evaluate constant expression of type `%s` at compile time");
-    SWAG_ERROR(Err0281, "cannot evaluate constant expression of type `%s` at compile time because struct is not marked with `Swag.ConstExpr`");
+    SWAG_ERROR(Err0280, "cannot evaluate the constant expression of type `%s` at compile time");
+    SWAG_ERROR(Err0281, "cannot evaluate the value of type `%s` at compile time because the struct is not marked with `Swag.ConstExpr`");
     SWAG_ERROR(Err0282, "attempt to unpack `%d` variable(s), but the expression on the right contains `%d` element(s)");
     SWAG_ERROR(Err0283, "`@gettag` default value expected, found a type");
     SWAG_ERROR(Err0284, "`#import` location already defined as `%s`");
@@ -955,7 +955,7 @@ void initErrors()
     SWAG_ERROR(Hlp0033, "you can unpack a variable with `?` if you don't want to retreive it");
     SWAG_ERROR(Hlp0034, "`#selectif` and `#checkif` cannot be used on `opDrop`, `opPostCopy` and `opPostMove`");
     SWAG_ERROR(Hlp0035, "this is reserved for function calls");
-    SWAG_ERROR(Hlp0036, nullptr);
+    SWAG_ERROR(Hlp0036, "you could force the evaluation with a `#run`");
     SWAG_ERROR(Hlp0037, nullptr);
     SWAG_ERROR(Hlp0038, nullptr);
     SWAG_ERROR(Hlp0039, nullptr);
@@ -1011,7 +1011,7 @@ void initErrors()
     SWAG_ERROR(Hnt0043, "this could be moved before `%s`");
     SWAG_ERROR(Hnt0044, "this should be followed by the arguments between `()`");
     SWAG_ERROR(Hnt0045, "this is the second initialization");
-    SWAG_ERROR(Hnt0046, "this call could be preceeded by `#run` to force the call at compile time");
+    SWAG_ERROR(Hnt0046, "this could be preceeded by `#run` to force the call at compile time");
     SWAG_ERROR(Hnt0047, "this is an hidden call to `%s`");
     SWAG_ERROR(Hnt0048, "this argument (type is `%s`) does not match");
     SWAG_ERROR(Hnt0049, "this implies a first parameter `self`");

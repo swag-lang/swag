@@ -77,8 +77,8 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
     // Struct return
     if (realType->isStruct())
     {
-        // If struct is makred as constexpr, then we can raw copy the slice content
-        if (realType->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
+        // If struct is marked as constexpr, then we can raw copy the struct content
+        if ((realType->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR) || (node->semFlags & AST_SEM_FORCE_CONST_EXPR))
         {
             auto     storageSegment             = SemanticJob::getConstantSegFromContext(node);
             uint8_t* addrDst                    = nullptr;

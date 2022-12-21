@@ -30,7 +30,7 @@ Diagnostic* SemanticJob::computeNonConstExprNote(AstNode* node)
             {
                 if (c->resolvedSymbolOverload && !(c->resolvedSymbolOverload->node->attributeFlags & ATTRIBUTE_CONSTEXPR))
                 {
-                    auto result  = new Diagnostic(c, Fmt(Nte(Nte0042), c->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
+                    auto result  = new Diagnostic(c, c->token, Fmt(Nte(Nte0042), c->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
                     result->hint = Hnt(Hnt0046);
                     return result;
                 }
@@ -38,7 +38,7 @@ Diagnostic* SemanticJob::computeNonConstExprNote(AstNode* node)
 
             if (c->resolvedSymbolName->kind == SymbolKind::Variable)
             {
-                return new Diagnostic(c, Fmt(Nte(Nte0041), c->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
+                return new Diagnostic(c, c->token, Fmt(Nte(Nte0041), c->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
             }
         }
     }
@@ -78,11 +78,15 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
             {
             case TypeInfoKind::Struct:
             {
+                // Type is forced constexpr, evaluate it "as is"
                 if (realType->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
                     break;
 
                 if (realType->isTuple())
-                    return context->report({node, Err(Err0321)});
+                {
+                    Diagnostic diag{node, Err(Err0321)};
+                    return context->report(diag);
+                }
 
                 // It is possible to convert a complex struct to a constant static array of values if the struct
                 // implements 'opCount' and 'opSlice'
@@ -104,16 +108,30 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                 SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opSlice, typeStruct, &symSlice));
 
                 if (!symCount || !symSlice)
-                    return context->report({node, Fmt(Err(Err0281), realType->getDisplayNameC())});
+                {
+                    // Force evaluation by a #run
+                    if (node->flags & AST_RUN_BLOCK)
+                    {
+                        node->semFlags |= AST_SEM_FORCE_CONST_EXPR;
+                        break;
+                    }
 
-                VectorNative<AstNode*> params;
+                    Diagnostic diag{node, Fmt(Err(Err0281), realType->getDisplayNameC())};
+                    diag.hint = Hlp(Hlp0036);
+                    return context->report(diag);
+                }
+
                 SWAG_ASSERT(!context->node->extension || !context->node->extension->misc || !context->node->extension->misc->resolvedUserOpSymbolOverload);
 
                 // opCount
+                VectorNative<AstNode*> params;
                 params.push_back(node);
                 SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opCount, nullptr, nullptr, node, params));
                 if (context->result != ContextResult::Done)
                     return true;
+
+                SWAG_ASSERT(context->node->extension);
+                SWAG_ASSERT(context->node->extension->misc);
 
                 auto extension                          = context->node->extension->misc;
                 execParams.specReturnOpCount            = extension->resolvedUserOpSymbolOverload;
@@ -163,11 +181,15 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                     if (typeSliceContent->isStruct() && (typeSliceContent->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
                         ok = true;
                     if (!ok)
-                        return context->report({node, Fmt(Err(Err0059), typeSliceContent->getDisplayNameC())});
+                    {
+                        Diagnostic diag{node, Fmt(Err(Err0059), typeSliceContent->getDisplayNameC())};
+                        return context->report(diag);
+                    }
                 }
                 else
                 {
-                    return context->report({node, Fmt(Err(Err0058), concreteType->getDisplayNameC())});
+                    Diagnostic diag{node, Fmt(Err(Err0058), concreteType->getDisplayNameC())};
+                    return context->report(diag);
                 }
 
                 // opDrop
