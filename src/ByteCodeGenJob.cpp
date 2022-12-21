@@ -754,7 +754,6 @@ JobResult ByteCodeGenJob::execute()
     if (sourceFile->isRuntimeFile && context.bc)
     {
         ScopedLock lk(sourceFile->module->mutexFile);
-        SWAG_ASSERT(context.bc->typeInfoFunc);
         sourceFile->module->mapRuntimeFcts[context.bc->getCallName()] = context.bc;
     }
 

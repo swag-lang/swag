@@ -128,9 +128,8 @@ enum class SwagTargetOs : uint32_t
 
 enum class SwagRuntimeFlags : uint64_t
 {
-    Zero           = 0x00000000'00000000,
-    FromCompiler   = 0x00000000'00000001,
-    DebugAllocator = 0x00000000'00000002,
+    Zero         = 0x00000000'00000000,
+    FromCompiler = 0x00000000'00000001,
 };
 
 typedef struct SwagProcessInfos
@@ -176,14 +175,18 @@ struct BuildCfg
     bool      embbedImports = false;
 
     // Debug
-    static const auto SAFETY_BC      = ATTRIBUTE_SAFETY_BOUNDCHECK_ON;
-    static const auto SAFETY_OF      = ATTRIBUTE_SAFETY_OVERFLOW_ON;
-    static const auto SAFETY_MT      = ATTRIBUTE_SAFETY_MATH_ON;
-    static const auto SAFETY_CA      = ATTRIBUTE_SAFETY_CAST_ON;
-    static const auto SAFETY_SW      = ATTRIBUTE_SAFETY_SWITCH_ON;
-    uint64_t          safetyGuards   = 0xFFFFFFFF'FFFFFFFF;
-    bool              stackTrace     = true;
-    bool              debugAllocator = true;
+    static const auto SAFETY_BC    = ATTRIBUTE_SAFETY_BOUNDCHECK_ON;
+    static const auto SAFETY_OF    = ATTRIBUTE_SAFETY_OVERFLOW_ON;
+    static const auto SAFETY_MT    = ATTRIBUTE_SAFETY_MATH_ON;
+    static const auto SAFETY_CA    = ATTRIBUTE_SAFETY_CAST_ON;
+    static const auto SAFETY_SW    = ATTRIBUTE_SAFETY_SWITCH_ON;
+    uint64_t          safetyGuards = 0xFFFFFFFF'FFFFFFFF;
+
+    bool     stackTrace                 = true;
+    uint32_t scratchAllocatorCapacity   = 4 * 1024 * 1024;
+    bool     debugAllocator             = true;
+    bool     debugAllocatorCaptureStack = true;
+    bool     debugAllocatorLeaks        = true;
 
     // Bytecode
     uint32_t byteCodeOptimizeLevel = 1;

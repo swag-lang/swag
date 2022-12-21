@@ -34,10 +34,10 @@ struct DebugAllocator
     nextId:     u32                     // The next allocated id to assign
 
     // Debug/behaviour parameters
-    captureAllocStack:  bool        // For each allocation, capture stack
-    showMaxLeaks:       u32 = 100   // Maximum number of memory leaks to show
-    breakOnAllocId:     u32         // Will @assert when the current allocation id reaches that value
-    disablePrintLeaks:  bool        // Disable printLeaks(). Mostly for the runtime allocator.
+    captureAllocStack   = true          // For each allocation, capture stack
+    breakOnAllocId:     u32             // Will @assert when the current allocation id reaches that value
+    detectLeaks         = true          // Detect memory leaks
+    showMaxLeaks:       u32 = 100       // Maximum number of memory leaks to show
 }
 
 impl DebugAllocator
@@ -131,7 +131,7 @@ impl DebugAllocator
     // Output to the console the list of all allocated blocks (leaks)
     mtd printLeaks()
     {
-        if countAlloc == 0 or disablePrintLeaks
+        if countAlloc == 0 or !detectLeaks
             return
 
         scan := cast(*DebugAllocatorHeader) firstAlloc

@@ -490,7 +490,6 @@ namespace Swag
     {
         Zero = 0
         FromCompiler = 1
-        DebugAllocator
     }
 
     enum TargetArch
@@ -550,8 +549,12 @@ namespace Swag
         const SafetySW  = 0x0001000000000000    // "switch"
         const SafetyAll = 0x000FF00000000000
         safetyGuards:   u64 = SafetyAll
-        stackTrace      = true
-        debugAllocator  = true
+
+        stackTrace                  = true
+        scratchAllocatorCapacity    = 4'u32 * 1024 * 1024 // Default capacity of the 'temp' allocator
+        debugAllocator              = true  // Use Swag.DebugAllocator by default
+        debugAllocatorCaptureStack  = true  // Capture the call stack for each allocation
+        debugAllocatorLeaks         = true  // Detect memory leaks
 
         // Bytecode
         byteCodeOptimizeLevel   = 1

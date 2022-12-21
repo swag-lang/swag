@@ -119,6 +119,9 @@ var __runtimeFlags: RuntimeFlags = Zero
 var __debugAlloc:   DebugAllocator
 var __sysAlloc:     SystemAllocator
 
+// Make a build configuration copy
+const __buildCfg = #run dref @compiler().getBuildCfg()
+
 func @rtflags()  => __runtimeFlags
 func @dbgalloc() => &__debugAlloc
 func @sysalloc() => &__sysAlloc
@@ -128,12 +131,12 @@ func __setupRuntime(flags: RuntimeFlags)
     __runtimeFlags = flags
 
     cxt := @getcontext()
-    c := @gettag("Swag.ScratchAllocator.capacity", uint, 4 * 1024 * 1024)
-    cxt.tempAllocator.setCapacity(c, cxt.allocator)
+    cxt.tempAllocator.setCapacity(acast __buildCfg.scratchAllocatorCapacity, cxt.allocator)
 
-    if !(__runtimeFlags & .FromCompiler) and (__runtimeFlags & .DebugAllocator)
+    if !(__runtimeFlags & .FromCompiler) and __buildCfg.debugAllocator
     {
-        __debugAlloc.captureAllocStack = @gettag("Swag.DebugAllocator.captureAllocStack", bool, false)
+        __debugAlloc.captureAllocStack  = __buildCfg.debugAllocatorCaptureStack
+        __debugAlloc.detectLeaks        = __buildCfg.debugAllocatorLeaks
         __debugAlloc.setup(cxt.allocator)
         cxt.allocator = __debugAlloc
     }
@@ -143,7 +146,7 @@ func __closeRuntime()
 {
     @getcontext().tempAllocator.release()
 
-    if !(__runtimeFlags & .FromCompiler) and (__runtimeFlags & .DebugAllocator)
+    if !(__runtimeFlags & .FromCompiler) and __buildCfg.debugAllocator
         __debugAlloc.printLeaks()
 
     __exit()

@@ -227,8 +227,6 @@ const char* Backend::getOsName(const BackendTarget& target)
 uint64_t Backend::getRuntimeFlags(Module* module)
 {
     uint64_t flags = (uint64_t) SwagRuntimeFlags::Zero;
-    if (module->buildCfg.debugAllocator)
-        flags |= (uint64_t) SwagRuntimeFlags::DebugAllocator;
     return flags;
 }
 
