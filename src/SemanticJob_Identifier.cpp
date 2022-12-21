@@ -119,11 +119,18 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
     if (node->typeInfo->isEnum())
         identifierRef->startScope = CastTypeInfo<TypeInfoEnum>(node->typeInfo, node->typeInfo->kind)->scope;
 
-    switch (typeInfo->kind)
+    auto scopeType = typeInfo;
+    if (scopeType->isLambdaClosure())
+    {
+        auto funcType = CastTypeInfo<TypeInfoFuncAttr>(scopeType, TypeInfoKind::LambdaClosure);
+        scopeType     = funcType->returnType;
+    }
+
+    switch (scopeType->kind)
     {
     case TypeInfoKind::Pointer:
     {
-        auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+        auto typePointer = CastTypeInfo<TypeInfoPointer>(scopeType, TypeInfoKind::Pointer);
         auto subType     = TypeManager::concreteType(typePointer->pointedType);
         if (subType->isStruct() || subType->isInterface())
             identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
@@ -133,19 +140,19 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
 
     case TypeInfoKind::TypeListArray:
     case TypeInfoKind::TypeListTuple:
-        identifierRef->startScope = CastTypeInfo<TypeInfoList>(typeInfo, typeInfo->kind)->scope;
+        identifierRef->startScope = CastTypeInfo<TypeInfoList>(scopeType, scopeType->kind)->scope;
         node->typeInfo            = typeInfo;
         break;
 
     case TypeInfoKind::Interface:
     case TypeInfoKind::Struct:
-        identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind)->scope;
+        identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(scopeType, scopeType->kind)->scope;
         node->typeInfo            = typeInfo;
         break;
 
     case TypeInfoKind::Array:
     {
-        auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        auto typeArray = CastTypeInfo<TypeInfoArray>(scopeType, TypeInfoKind::Array);
         auto subType   = TypeManager::concreteType(typeArray->finalType);
         if (subType->isStruct())
             identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
@@ -155,7 +162,7 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
 
     case TypeInfoKind::Slice:
     {
-        auto typeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+        auto typeSlice = CastTypeInfo<TypeInfoSlice>(scopeType, TypeInfoKind::Slice);
         auto subType   = TypeManager::concreteType(typeSlice->pointedType);
         if (subType->isStruct())
             identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
