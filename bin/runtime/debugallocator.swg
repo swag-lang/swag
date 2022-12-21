@@ -172,7 +172,9 @@ impl DebugAllocator
             cpt += 1
             if showMaxLeaks and cpt >= showMaxLeaks
             {
+                @print("\x1b[91m")
                 @print("... too many leaks, stopped\n")
+                @print("\x1b[97m")
                 break
             }
         }
