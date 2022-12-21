@@ -571,6 +571,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         reserveLinearRegisterRC2(context, node->resultRegisterRC);
         node->parent->resultRegisterRC = node->resultRegisterRC;
         emitInstruction(context, ByteCodeOp::IntrinsicCompiler, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+        emitPostCallUfcs(context);
         break;
     }
     case TokenId::IntrinsicIsByteCode:
@@ -1038,17 +1039,9 @@ bool ByteCodeGenJob::emitLambdaCall(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context)
+void ByteCodeGenJob::emitPostCallUfcs(ByteCodeGenContext* context)
 {
-    AstNode* node     = context->node;
-    auto     overload = node->resolvedSymbolOverload;
-    auto     funcNode = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
-
-    auto allParams = node->childs.empty() ? nullptr : node->childs.back();
-    SWAG_ASSERT(!allParams || allParams->kind == AstNodeKind::FuncCallParams);
-    SWAG_CHECK(emitCall(context, allParams, funcNode, nullptr, funcNode->resultRegisterRC, false, false, true));
-    if (context->result != ContextResult::Done)
-        return true;
+    AstNode* node = context->node;
 
     // :SpecUfcsNode
     // Specific case. The function returns an interface, so it returns two registers.
@@ -1068,7 +1061,20 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context)
         // From now on, the register is the object pointer (not the itable). Used un emitFuncCallParam.
         node->resultRegisterRC = r;
     }
+}
 
+bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context)
+{
+    AstNode* node     = context->node;
+    auto     overload = node->resolvedSymbolOverload;
+    auto     funcNode = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
+
+    auto allParams = node->childs.empty() ? nullptr : node->childs.back();
+    SWAG_ASSERT(!allParams || allParams->kind == AstNodeKind::FuncCallParams);
+    SWAG_CHECK(emitCall(context, allParams, funcNode, nullptr, funcNode->resultRegisterRC, false, false, true));
+    if (context->result != ContextResult::Done)
+        return true;
+    emitPostCallUfcs(context);
     return true;
 }
 

@@ -253,6 +253,7 @@ struct ByteCodeGenJob : public Job
     static bool emitCompareOpGreaterEq(ByteCodeGenContext* context, AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitCompareOpGreaterEq(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitCompareOp(ByteCodeGenContext* context);
+    static void emitPostCallUfcs(ByteCodeGenContext* context);
     static bool emitCall(ByteCodeGenContext* context);
     static void emitPushRAParams(ByteCodeGenContext* context, VectorNative<uint32_t>& accParams, bool forVariadic);
     static bool emitReturnByCopyAddress(ByteCodeGenContext* context, AstNode* node, TypeInfoFuncAttr* typeInfoFunc);
