@@ -135,10 +135,10 @@ func __setupRuntime(flags: RuntimeFlags)
 
     if !(__runtimeFlags & .FromCompiler) and __buildCfg.debugAllocator
     {
-        __debugAlloc.captureAllocStack  = __buildCfg.debugAllocatorCaptureStack
-        __debugAlloc.detectLeaks        = __buildCfg.debugAllocatorLeaks
+        __debugAlloc.captureAllocStack = __buildCfg.debugAllocatorCaptureStack
+        __debugAlloc.detectLeaks       = __buildCfg.debugAllocatorLeaks
         __debugAlloc.setup(cxt.allocator)
-        //cxt.allocator = __debugAlloc
+        cxt.allocator = __debugAlloc
     }
 }
 

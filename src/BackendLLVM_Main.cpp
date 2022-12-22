@@ -166,6 +166,10 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         emitCall(buildParameters, module, g_LangSpec->name__tlsSetValue, nullptr, allocT, {UINT32_MAX, UINT32_MAX}, {toTlsId, toContext});
     }
 
+    // Initialize constant segment because we need to have correct pointers to DebugAllocator...
+    // This is different with x64 because in x64 patching is not done by hand...
+    builder.CreateCall(modu.getFunction("__initConstantSeg"));
+
     // __setupRuntime
     {
         auto rtFlags = builder.getInt64(Backend::getRuntimeFlags(module));
