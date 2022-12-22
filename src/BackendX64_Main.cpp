@@ -422,6 +422,9 @@ bool BackendX64::emitGlobalDrop(const BuildParameters& buildParameters)
         emitCall(pp, bc->getCallName());
     }
 
+    // __dropGlobalVariables
+    emitInternalCallExt(pp, module, g_LangSpec->name__dropGlobalVariables, pp.pushParams);
+
     pp.emit_Add32_RSP(40);
     pp.emit_Ret();
 

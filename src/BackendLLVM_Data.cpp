@@ -138,6 +138,22 @@ bool BackendLLVM::emitInitSeg(const BuildParameters& buildParameters, DataSegmen
             src       = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, llvm::Type::getInt64Ty(context));
             builder.CreateStore(src, dest);
         }
+        else if (fromSegment == SegmentKind::Bss)
+        {
+            auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(gVar), builder.getInt64(k.patchOffset));
+            dest      = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
+            auto src  = builder.CreateInBoundsGEP(TO_PTR_I8(pp.bssSeg), builder.getInt64(k.fromOffset));
+            src       = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, llvm::Type::getInt64Ty(context));
+            builder.CreateStore(src, dest);
+        }
+        else if (fromSegment == SegmentKind::Data)
+        {
+            auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(gVar), builder.getInt64(k.patchOffset));
+            dest = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
+            auto src = builder.CreateInBoundsGEP(TO_PTR_I8(pp.mutableSeg), builder.getInt64(k.fromOffset));
+            src = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, llvm::Type::getInt64Ty(context));
+            builder.CreateStore(src, dest);
+        }
         else
         {
             SWAG_ASSERT(false);
@@ -146,10 +162,10 @@ bool BackendLLVM::emitInitSeg(const BuildParameters& buildParameters, DataSegmen
 
     for (auto& k : dataSegment->initFuncPtr)
     {
-        auto dest      = builder.CreateInBoundsGEP(TO_PTR_I8(gVar), builder.getInt64(k.first));
-        dest           = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
-        auto F         = modu.getOrInsertFunction(k.second.c_str(), fctType);
-        auto src       = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, F.getCallee(), llvm::Type::getInt64Ty(context));
+        auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(gVar), builder.getInt64(k.first));
+        dest      = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
+        auto F    = modu.getOrInsertFunction(k.second.c_str(), fctType);
+        auto src  = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, F.getCallee(), llvm::Type::getInt64Ty(context));
         builder.CreateStore(src, dest);
     }
 

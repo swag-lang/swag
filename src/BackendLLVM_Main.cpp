@@ -166,6 +166,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         emitCall(buildParameters, module, g_LangSpec->name__tlsSetValue, nullptr, allocT, {UINT32_MAX, UINT32_MAX}, {toTlsId, toContext});
     }
 
+    // __setupRuntime
     {
         auto rtFlags = builder.getInt64(Backend::getRuntimeFlags(module));
         emitCall(buildParameters, module, g_LangSpec->name__setupRuntime, nullptr, allocT, {UINT32_MAX}, {rtFlags});
@@ -260,7 +261,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         builder.CreateCall(funcDrop);
     }
 
-    // Call exit
+    // __closeRuntime
     emitCall(buildParameters, module, g_LangSpec->name__closeRuntime, nullptr, allocT, {}, {});
 
     builder.CreateRetVoid();
@@ -419,7 +420,7 @@ bool BackendLLVM::emitGlobalDrop(const BuildParameters& buildParameters)
     auto& pp      = *perThread[ct][precompileIndex];
     auto& context = *pp.context;
     auto& builder = *pp.builder;
-    auto  modu    = pp.module;
+    auto& modu    = *pp.module;
 
     auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
     auto            nameFct = module->getGlobalPrivFct(g_LangSpec->name_globalDrop);
@@ -436,8 +437,13 @@ bool BackendLLVM::emitGlobalDrop(const BuildParameters& buildParameters)
         auto node = bc->node;
         if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
             continue;
-        auto func = modu->getOrInsertFunction(bc->getCallName().c_str(), fctType);
+        auto func = modu.getOrInsertFunction(bc->getCallName().c_str(), fctType);
         builder.CreateCall(func);
+    }
+
+    // __dropGlobalVariables
+    {
+        emitCall(buildParameters, module, g_LangSpec->name__dropGlobalVariables, nullptr, nullptr, {}, {});
     }
 
     builder.CreateRetVoid();

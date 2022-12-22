@@ -26,6 +26,7 @@ struct LanguageSpec
 
     Utf8 name__setupRuntime;
     Utf8 name__closeRuntime;
+    Utf8 name__dropGlobalVariables;
     Utf8 name__panic;
     Utf8 name__pusherr;
     Utf8 name__poperr;

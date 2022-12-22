@@ -86,6 +86,12 @@ struct SwagModule
     SwagSlice types;
 };
 
+struct SwagGlobalVarToDrop
+{
+    void* ptr;
+    void* opDrop;
+};
+
 static const auto MAX_LEN_ERROR_MSG = 128;
 static const auto MAX_TRACE         = 32;
 typedef struct SwagContext

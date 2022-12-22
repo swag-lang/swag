@@ -11,21 +11,22 @@ void LanguageSpec::setupNames()
     name_globalPreMain = "__%s_globalPreMain";
     name_getTypeTable  = "__%s_getTypeTable";
 
-    name__setupRuntime   = "__setupRuntime";
-    name__closeRuntime   = "__closeRuntime";
-    name__panic          = "__panic";
-    name__pusherr        = "__pusherr";
-    name__poperr         = "__poperr";
-    name__seterr         = "__seterr";
-    name__geterr         = "__geterr";
-    name__tlsAlloc       = "__tlsAlloc";
-    name__tlsGetValue    = "__tlsGetValue";
-    name__tlsSetValue    = "__tlsSetValue";
-    name__tlsGetPtr      = "__tlsGetPtr";
-    name__initStackTrace = "__initStackTrace";
-    name__stackTrace     = "__stackTrace";
-    name__loaddll        = "__loaddll";
-    name__checkAny       = "__checkAny";
+    name__setupRuntime        = "__setupRuntime";
+    name__closeRuntime        = "__closeRuntime";
+    name__dropGlobalVariables = "__dropGlobalVariables";
+    name__panic               = "__panic";
+    name__pusherr             = "__pusherr";
+    name__poperr              = "__poperr";
+    name__seterr              = "__seterr";
+    name__geterr              = "__geterr";
+    name__tlsAlloc            = "__tlsAlloc";
+    name__tlsGetValue         = "__tlsGetValue";
+    name__tlsSetValue         = "__tlsSetValue";
+    name__tlsGetPtr           = "__tlsGetPtr";
+    name__initStackTrace      = "__initStackTrace";
+    name__stackTrace          = "__stackTrace";
+    name__loaddll             = "__loaddll";
+    name__checkAny            = "__checkAny";
 
     name_swag = "swag";
     name_Swag = "Swag";
@@ -372,6 +373,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("@getpinfos", TokenId::IntrinsicGetProcessInfos);
     keywords.add("@args", TokenId::IntrinsicArguments);
     keywords.add("@modules", TokenId::IntrinsicModules);
+    keywords.add("@gvtd", TokenId::IntrinsicGvtd);
     keywords.add("@isbytecode", TokenId::IntrinsicIsByteCode);
     keywords.add("@compiler", TokenId::IntrinsicCompiler);
     keywords.add("@atomadd", TokenId::IntrinsicAtomicAdd);

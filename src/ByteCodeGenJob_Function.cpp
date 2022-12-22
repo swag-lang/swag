@@ -566,6 +566,13 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::IntrinsicModules, node->resultRegisterRC[0], node->resultRegisterRC[1]);
         break;
     }
+    case TokenId::IntrinsicGvtd:
+    {
+        reserveLinearRegisterRC2(context, node->resultRegisterRC);
+        node->parent->resultRegisterRC = node->resultRegisterRC;
+        emitInstruction(context, ByteCodeOp::IntrinsicGvtd, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+        break;
+    }
     case TokenId::IntrinsicCompiler:
     {
         reserveLinearRegisterRC2(context, node->resultRegisterRC);

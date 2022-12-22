@@ -198,7 +198,7 @@ namespace Swag
     }
 
     // #########################################################
-    // Modules
+    // Process Infos
     // #########################################################
 
     struct Module
@@ -211,6 +211,12 @@ namespace Swag
     {
         modules: const [..] Module
         args:    string
+    }
+
+    struct Gvtd
+    {
+        ptr:    *void
+        opDrop: func(*void)
     }
 
     // #########################################################
@@ -643,6 +649,7 @@ func @getpinfos()->*Swag.ProcessInfos;
 func @isbytecode()->bool;
 func @compiler()->Swag.ICompiler;
 func @modules()->const [..] Swag.Module;
+func @gvtd()->const [..] Swag.Gvtd;
 
 func @alloc(size: uint)->*void;
 func @realloc(ptr: *void, size: uint)->*void;

@@ -112,6 +112,7 @@ struct Module
     void        initFrom(Module* other);
     void        computePublicPath();
     void        buildModulesSlice();
+    void        buildGlobalVarsToDropSlice();
     void        buildTypesSlice();
     void        initProcessInfos();
     void        callPreMain();
@@ -149,6 +150,7 @@ struct Module
     void              addCompilerFunc(ByteCode* bc);
     void              addByteCodeFunc(ByteCode* bc);
     void              addGlobalVar(AstNode* node, GlobalVarKind varKind);
+    void              addGlobalVarToDrop(AstNode* node, uint32_t storageOffset, DataSegment* storageSegment);
     void              addForeignLib(const Utf8& text);
     TypeInfoFuncAttr* getRuntimeTypeFct(const Utf8& fctName);
     ByteCode*         getRuntimeFct(const Utf8& fctName);
@@ -240,32 +242,42 @@ struct Module
     VectorNative<uint32_t>                           countLinesGeneratedFile;
     VectorNative<DataSegment*>                       compilerSegmentPerThread;
 
-    AstNode*          astRoot          = nullptr;
-    Scope*            scopeRoot        = nullptr;
-    Backend*          backend          = nullptr;
-    ByteCode*         byteCodeMainFunc = nullptr;
-    AstNode*          mainIsDefined    = nullptr;
-    ModuleDependency* fetchDep         = nullptr;
-    SwagModule*       modulesSlice     = nullptr;
+    struct GlobalVarToDrop
+    {
+        ByteCode*    opDrop;
+        uint32_t     storageOffset;
+        DataSegment* storageSegment;
+    };
+    VectorNative<GlobalVarToDrop> globalVarsToDrop;
+
+    AstNode*             astRoot               = nullptr;
+    Scope*               scopeRoot             = nullptr;
+    Backend*             backend               = nullptr;
+    ByteCode*            byteCodeMainFunc      = nullptr;
+    AstNode*             mainIsDefined         = nullptr;
+    ModuleDependency*    fetchDep              = nullptr;
+    SwagModule*          modulesSlice          = nullptr;
+    SwagGlobalVarToDrop* globalVarsToDropSlice = nullptr;
 
     void* compilerItf[2];
 
     uint64_t moreRecentSourceFile = 0;
 
     ModuleKind  kind;
-    BuildPass   buildPass            = BuildPass::Full;
-    uint32_t    hasBeenBuilt         = BUILDRES_NONE;
-    uint32_t    modulesSliceOffset   = UINT32_MAX;
-    uint32_t    typesSliceOffset     = UINT32_MAX;
-    uint32_t    numKickedFunc        = 0;
-    int         optimPass            = 0;
-    atomic<int> numTestErrors        = 0;
-    atomic<int> numTestWarnings      = 0;
-    atomic<int> optimNeedRestart     = 0;
-    atomic<int> numCompilerFunctions = 0;
-    atomic<int> numErrors            = 0;
-    atomic<int> numWarnings          = 0;
-    atomic<int> criticalErrors       = 0;
+    BuildPass   buildPass                   = BuildPass::Full;
+    uint32_t    hasBeenBuilt                = BUILDRES_NONE;
+    uint32_t    modulesSliceOffset          = UINT32_MAX;
+    uint32_t    typesSliceOffset            = UINT32_MAX;
+    uint32_t    globalVarsToDropSliceOffset = UINT32_MAX;
+    uint32_t    numKickedFunc               = 0;
+    int         optimPass                   = 0;
+    atomic<int> numTestErrors               = 0;
+    atomic<int> numTestWarnings             = 0;
+    atomic<int> optimNeedRestart            = 0;
+    atomic<int> numCompilerFunctions        = 0;
+    atomic<int> numErrors                   = 0;
+    atomic<int> numWarnings                 = 0;
+    atomic<int> criticalErrors              = 0;
 
     bool isLocalToWorkspace = false;
     bool isErrorModule      = false;

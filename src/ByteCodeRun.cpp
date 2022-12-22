@@ -1863,6 +1863,21 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         }
         break;
     }
+    case ByteCodeOp::IntrinsicGvtd:
+    {
+        auto module = context->jc.sourceFile->module;
+        if (module->globalVarsToDropSliceOffset == UINT32_MAX)
+        {
+            registersRC[ip->a.u32].pointer = nullptr;
+            registersRC[ip->b.u32].u64     = 0;
+        }
+        else
+        {
+            registersRC[ip->a.u32].pointer = (uint8_t*) module->globalVarsToDropSlice;
+            registersRC[ip->b.u32].u64     = module->globalVarsToDrop.count + 1;
+        }
+        break;
+    }
     case ByteCodeOp::IntrinsicCompiler:
     {
         auto itf                       = (uint8_t**) getCompilerItf(context->jc.sourceFile->module);

@@ -2576,6 +2576,22 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 pp.emit_Store64_Immediate(0, moduleToGen->moduleDependencies.count + 1, RAX);
             }
             break;
+        case ByteCodeOp::IntrinsicGvtd:
+            if (moduleToGen->globalVarsToDropSliceOffset == UINT32_MAX)
+            {
+                pp.emit_LoadAddress_Indirect(regOffset(ip->a.u32), RAX, RDI);
+                pp.emit_Store64_Immediate(0, 0, RAX);
+                pp.emit_LoadAddress_Indirect(regOffset(ip->b.u32), RAX, RDI);
+                pp.emit_Store64_Immediate(0, 0, RAX);
+            }
+            else
+            {
+                pp.emit_Symbol_RelocationAddr(RAX, pp.symMSIndex, moduleToGen->globalVarsToDropSliceOffset);
+                pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX, RDI);
+                pp.emit_LoadAddress_Indirect(regOffset(ip->b.u32), RAX, RDI);
+                pp.emit_Store64_Immediate(0, moduleToGen->globalVarsToDrop.count, RAX);
+            }
+            break;
 
         case ByteCodeOp::IntrinsicCompiler:
             pp.emit_LoadAddress_Indirect(regOffset(ip->a.u32), RAX, RDI);

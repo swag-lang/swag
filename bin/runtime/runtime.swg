@@ -138,7 +138,7 @@ func __setupRuntime(flags: RuntimeFlags)
         __debugAlloc.captureAllocStack  = __buildCfg.debugAllocatorCaptureStack
         __debugAlloc.detectLeaks        = __buildCfg.debugAllocatorLeaks
         __debugAlloc.setup(cxt.allocator)
-        cxt.allocator = __debugAlloc
+        //cxt.allocator = __debugAlloc
     }
 }
 
@@ -150,4 +150,10 @@ func __closeRuntime()
         __debugAlloc.printLeaks()
 
     __exit()
+}
+
+func __dropGlobalVariables()
+{
+    //x := @gvtd()
+    //@print("gvtd: ", @countof(x), "\n")
 }

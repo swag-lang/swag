@@ -282,6 +282,38 @@ void Module::buildModulesSlice()
     SWAG_ASSERT((offset - modulesSliceOffset) == (moduleDependencies.count + 1) * sizeof(SwagModule));
 }
 
+void Module::buildGlobalVarsToDropSlice()
+{
+    if (kind == ModuleKind::Config || kind == ModuleKind::BootStrap || kind == ModuleKind::Runtime)
+        return;
+    if (globalVarsToDrop.size() == 0)
+        return;
+
+    uint8_t* resultPtr;
+    globalVarsToDropSliceOffset = mutableSegment.reserve((uint32_t) globalVarsToDrop.size() * sizeof(SwagGlobalVarToDrop), &resultPtr);
+    globalVarsToDropSlice       = (SwagGlobalVarToDrop*) resultPtr;
+    auto offset                 = globalVarsToDropSliceOffset;
+
+    for (auto& g : globalVarsToDrop)
+    {
+        *(void**) resultPtr = g.opDrop;
+        if (g.opDrop->node)
+        {
+            auto funcNode = CastAst<AstFuncDecl>(g.opDrop->node, AstNodeKind::FuncDecl);
+            mutableSegment.addInitPtrFunc(offset, funcNode->getCallName());
+        }
+        else
+            mutableSegment.addInitPtrFunc(offset, g.opDrop->getCallName());
+        resultPtr += sizeof(void*);
+        offset += sizeof(void*);
+
+        *(void**) resultPtr = g.storageSegment->address(g.storageOffset);
+        mutableSegment.addInitPtr(offset, g.storageOffset, g.storageSegment->kind);
+        resultPtr += sizeof(void*);
+        offset += sizeof(void*);
+    }
+}
+
 void Module::buildTypesSlice()
 {
     if (modulesSliceOffset == UINT32_MAX)
@@ -508,6 +540,19 @@ void Module::addGlobalVar(AstNode* node, GlobalVarKind varKind)
     case GlobalVarKind::Constant:
         globalVarsConstant.push_back(node);
         break;
+    }
+}
+
+void Module::addGlobalVarToDrop(AstNode* node, uint32_t storageOffset, DataSegment* storageSegment)
+{
+    ScopedLock lk(mutexGlobalVars);
+    if (node->typeInfo && node->typeInfo->isStruct())
+    {
+        TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+        if (typeStruct->opDrop)
+        {
+            globalVarsToDrop.push_back({typeStruct->opDrop, storageOffset, storageSegment});
+        }
     }
 }
 
