@@ -121,6 +121,8 @@ func @errormsg(message: string, loc: Swag.CompilerSourceLocation)
 #[Swag.Safety("", false)]
 func @panic(message: string, loc: CompilerSourceLocation)
 {
+    @breakpoint()
+
     cxt := @getcontext()
 
     // User function

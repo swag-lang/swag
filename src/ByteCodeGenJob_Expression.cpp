@@ -126,8 +126,11 @@ bool ByteCodeGenJob::emitConditionalOp(ByteCodeGenContext* context)
     auto ifFalse    = node->childs[2];
 
     // Copy If false result
-    for (int r = 0; r < node->resultRegisterRC.size(); r++)
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[r], ifFalse->resultRegisterRC[r]);
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[0], ifFalse->resultRegisterRC[0]);
+    if (node->resultRegisterRC.size() == 2 && ifFalse->resultRegisterRC.size() == 2)
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[1], ifFalse->resultRegisterRC[1]);
+    else if (node->resultRegisterRC.size() == 2 && ifFalse->resultRegisterRC.size() == 1)
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[1], ifFalse->resultRegisterRC[0]);
 
     // Update jump after the IfTrue block
     auto inst   = &context->bc->out[node->seekJumpAfterIfFalse];

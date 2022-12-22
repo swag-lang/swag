@@ -352,7 +352,7 @@ func __logStackTrace(where: [..] *void, startAfter: *Swag.CompilerSourceLocation
         }
 
         hasStarted = true
-        @print("\x1b[93m")
+        @print("\x1b[33m")
         @print("callstack:")
         @print(nb-i)
         @print(": ")

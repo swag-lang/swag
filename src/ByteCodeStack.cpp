@@ -114,16 +114,17 @@ void ByteCodeStack::log()
         return;
 
     int maxSteps = 20;
-    for (int i = max(0, (int) copySteps.size() - maxSteps); i < (int) copySteps.size(); i++)
+    int nb       = (int) copySteps.size() - 1;
+    for (int i = nb; i >= 0; i--)
     {
-        maxSteps--;
-        if (maxSteps == 0)
-            break;
-
         bool current = false;
         if (currentContext && currentContext->debugOn)
             current = i == (copySteps.size() - 1) - currentContext->debugStackFrameOffset;
         logStep(i, current, copySteps[i]);
+
+        maxSteps--;
+        if (maxSteps == 0)
+            break;
     }
 }
 
