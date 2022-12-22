@@ -4,7 +4,7 @@ using Swag
 #test
 {
     var dbg: DebugAllocator
-    dbg.setup(systemAllocator())
+    dbg.setup(@sysalloc())
 
     var req: AllocatorRequest
     req.size = 10

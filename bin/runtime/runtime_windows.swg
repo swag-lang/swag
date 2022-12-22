@@ -287,15 +287,15 @@ func __panicBox(msg, title: string)
     }
 }
 
-func __captureStack(where: [..] *void)->u32
+func __captureStack(skip: u32, where: [..] *void)->u32
 {
     using __Win32RT
-    nb := RtlCaptureStackBackTrace(0, acast @countof(where), acast @dataof(where), null)
+    nb := RtlCaptureStackBackTrace(skip+1, acast @countof(where), acast @dataof(where), null)
     return nb
 }
 
 var __logStackTraceInitDone = false
-func __logStackTrace(where: [..] *void)
+func __logStackTrace(where: [..] *void, startAfter: *Swag.CompilerSourceLocation = null, printNoLine = true)
 {
     using __Win32RT
     nb := @countof(where)
@@ -318,14 +318,46 @@ func __logStackTrace(where: [..] *void)
     var line: IMAGEHLP_LINE64
     line.SizeOfStruct = @sizeof(IMAGEHLP_LINE64)
 
-    loop i: nb-1..0
+    hasStarted := false
+
+    loop i: 0..nb-1
     {
+        hasSymbol := SymFromAddr(GetCurrentProcess(), cast(ULONG64) cast(uint) where[i], &displacement, psym)
+        hasLine   := SymGetLineFromAddr64(GetCurrentProcess(), cast(ULONG64) cast(uint) where[i], acast &displacement, &line)
+        fileName  := hasLine ? @mkstring(line.FileName, @strlen(line.FileName)) : null
+        if !hasLine and !printNoLine
+            continue
+
+        // Do not print the call until a given location has been reached.
+        // For DebugAllocator leaks
+        if !hasStarted and startAfter
+        {
+            if !hasLine or !fileName continue
+            if startAfter.lineStart+1 != line.LineNumber continue
+            if @countof(fileName) != @countof(startAfter.fileName) continue
+
+            samePath := true
+            loop it: @countof(fileName)
+            {
+                if fileName[it] == startAfter.fileName[it] continue
+                if fileName[it] == "\\"'u8 and startAfter.fileName[it] == "/"'u8 continue
+                if fileName[it] == "/"'u8 and startAfter.fileName[it] == "\\"'u8 continue
+                samePath = false
+                break
+            }
+
+            if !samePath continue
+            hasStarted = true
+            continue
+        }
+
+        hasStarted = true
         @print("\x1b[93m")
         @print("callstack:")
         @print(nb-i)
         @print(": ")
 
-        if SymFromAddr(GetCurrentProcess(), cast(ULONG64) cast(uint) where[i], &displacement, psym)
+        if hasSymbol
         {
             symName := @mkstring(cast(const *u8) psym.Name, @strlen(psym.Name))
             @print(symName)
@@ -334,11 +366,10 @@ func __logStackTrace(where: [..] *void)
         @print("\n")
         @print("\x1b[97m")
 
-        if !SymGetLineFromAddr64(GetCurrentProcess(), cast(ULONG64) cast(uint) where[i], acast &displacement, &line)
-            continue
-
-        @print(" |  --> ")
-        fileName := @mkstring(line.FileName, @strlen(line.FileName))
-        @print(fileName, ":", line.LineNumber, "\n")
+        if hasLine
+        {
+            @print(" |  --> ")
+            @print(fileName, ":", line.LineNumber, "\n")
+        }
     }
 }

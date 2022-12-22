@@ -141,7 +141,7 @@ func @panic(message: string, loc: CompilerSourceLocation)
 
     // Print the calling stack trace
     var arr: [64] *void
-    nb := __captureStack(arr)
+    nb := __captureStack(1, arr)
     __logStackTrace(@mkslice(&arr[0], nb))
 
     // Print the error stack trace if available

@@ -104,7 +104,6 @@ void SwagScope::registerType(TypeInfo* typeInfo)
     {
         SWAG_ASSERT(!regTypeInfoSourceLoc);
         regTypeInfoSourceLoc = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-        regTypeInfoSourceLoc->flags |= TYPEINFO_STRUCT_TYPEINFO;
         SWAG_ASSERT(typeInfo->sizeOf == sizeof(SwagCompilerSourceLocation));
     }
     else if (typeInfo->name == g_LangSpec->name_TargetArch)

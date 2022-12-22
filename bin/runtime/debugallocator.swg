@@ -10,7 +10,7 @@ struct DebugAllocatorHeader
     hint:           string
     prev:           *DebugAllocatorHeader
     next:           *DebugAllocatorHeader
-    stack:          [8] *void
+    stack:          [16] *void
     stackCount:     u32
     magic:          u32
     allocId:        u32
@@ -97,7 +97,7 @@ impl DebugAllocator
         if (ptrHeader.magic != MagicAlloc and ptrHeader.magic != MagicFree) or
            (ptrFooter.magic != MagicAlloc and ptrFooter.magic != MagicFree)
         {
-            @panic("memory block is corrupt", #location)
+            @panic("memory block corruption", #location)
         }
 
         if ptrHeader.allocId == 0 or
@@ -108,7 +108,7 @@ impl DebugAllocator
            (ptrHeader.prev and ptrHeader.prev.next != ptrHeader) or
            (ptrHeader.next and ptrHeader.next.prev != ptrHeader)
         {
-            @panic("memory block is corrupt", #location)
+            @panic("memory block corruption", #location)
         }
 
         if (ptrHeader.magic == MagicFree and ptrHeader.magic == MagicFree)
@@ -163,7 +163,9 @@ impl DebugAllocator
 
             // Stack
             if scan.stackCount
-                __logStackTrace(@mkslice(&scan.stack[0], scan.stackCount))
+            {
+                __logStackTrace(@mkslice(&scan.stack[0], scan.stackCount), &scan.loc, false)
+            }
 
             // Next
             scan = scan.next
@@ -346,7 +348,7 @@ impl IAllocator for DebugAllocator
         header.userSize = request.size
         header.loc = copyReq.callerLoc
         header.hint = copyReq.hint
-        header.stackCount = captureAllocStack ? __captureStack(header.stack) : 0
+        header.stackCount = captureAllocStack ? __captureStack(2, header.stack) : 0
 
         // Setup footer
         footer := cast(*DebugAllocatorFooter) (userAddr + request.size)
