@@ -575,7 +575,7 @@ static void printInstruction(ByteCodeRunContext* context, ByteCode* bc, ByteCode
 
     for (int i = 0; i < (cpt + count - 1); i++)
     {
-        bc->printInstruction(ip, count == 1 ? nullptr : context->debugCxtIp);
+        bc->printInstruction(ip, context->debugCxtIp);
         if (ip->op == ByteCodeOp::End)
             break;
         ip++;
@@ -902,8 +902,8 @@ static void printHelp()
     g_Log.print("frame  <num>                  move stack frame to level <num>\n");
     g_Log.eol();
 
-    g_Log.print("i [num]                       print the current bytecode instruction and <num> instructions around\n");
-    g_Log.print("bc                            print the current function bytecode\n");
+    g_Log.print("i [num]                       print the current bytecode instruction and [num] instructions around\n");
+    g_Log.print("ii                            print the current function bytecode\n");
     g_Log.print("x [@format] [@num] <expr>     print memory (format = s8|s16|s32|s64|u8|u16|u32|u64|x8|x16|x32|x64|f32|f64)\n");
     g_Log.eol();
 
@@ -1036,7 +1036,7 @@ static bool addBreakpoint(ByteCodeRunContext* context, const ByteCodeRunContext:
     return true;
 }
 
-static void printContextInstruction(ByteCodeRunContext* context)
+static void printContextInstruction(ByteCodeRunContext* context, bool force = false)
 {
     SWAG_ASSERT(context->debugCxtBc);
     SWAG_ASSERT(context->debugCxtIp);
@@ -1046,9 +1046,12 @@ static void printContextInstruction(ByteCodeRunContext* context)
     ByteCode::getLocation(context->debugCxtBc, context->debugCxtIp, &file, &location);
 
     // Print file
-    if (file && file != context->debugStepLastFile)
+    if (file)
     {
-        g_Log.printColor(Fmt("=> file %s\n", file->name.c_str()), LogColor::Yellow);
+        if (force || file != context->debugStepLastFile)
+        {
+            g_Log.printColor(Fmt("=> file %s\n", file->name.c_str()), LogColor::DarkYellow);
+        }
     }
 
     // Print function name
@@ -1064,22 +1067,25 @@ static void printContextInstruction(ByteCodeRunContext* context)
         newFunc = context->debugCxtIp->node->ownerFct;
     }
 
-    if (newFunc && newFunc != context->debugStepLastFunc)
+    if (newFunc)
     {
-        if (isInlined)
-            g_Log.printColor(Fmt("=> inlined function %s\n", newFunc->getScopedName().c_str()), LogColor::Yellow);
-        else
-            g_Log.printColor(Fmt("=> function %s\n", newFunc->getScopedName().c_str()), LogColor::Yellow);
+        if (force || newFunc != context->debugStepLastFunc)
+        {
+            if (isInlined)
+                g_Log.printColor(Fmt("=> inlined function %s\n", newFunc->getScopedName().c_str()), LogColor::DarkYellow);
+            else
+                g_Log.printColor(Fmt("=> function %s\n", newFunc->getScopedName().c_str()), LogColor::DarkYellow);
+        }
     }
 
     // Print source line
-    if (location && (context->debugStepLastFile != file || context->debugStepLastLocation && context->debugStepLastLocation->line != location->line))
+    if (location && file)
     {
-        if (file)
+        if ((force && !context->debugBcMode) || (context->debugStepLastFile != file || (context->debugStepLastLocation && context->debugStepLastLocation->line != location->line)))
         {
-            g_Log.printColor(Fmt("%08u -> ", location->line), LogColor::Yellow);
+            g_Log.printColor(Fmt("[%08u] ", location->line), LogColor::Cyan);
             auto str1 = file->getLine(location->line);
-            g_Log.printColor(str1, LogColor::Yellow);
+            g_Log.printColor(str1, LogColor::White);
             g_Log.eol();
         }
     }
@@ -1785,7 +1791,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             /////////////////////////////////////////
             if (cmd == "i")
             {
-                int regN = 1;
+                int regN = 4;
 
                 if (cmds.size() > 2)
                     goto evalDefault;
@@ -1844,7 +1850,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 
             // Bytecode dump
             /////////////////////////////////////////
-            if (cmd == "bc")
+            if (cmd == "ii")
             {
                 if (cmds.size() != 1)
                     goto evalDefault;
@@ -1864,9 +1870,10 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 
                 context->debugBcMode = !context->debugBcMode;
                 if (context->debugBcMode)
-                    g_Log.printColor("bytecode mode\n", LogColor::White);
+                    g_Log.printColor("=> bytecode mode\n", LogColor::Gray);
                 else
-                    g_Log.printColor("source code mode\n", LogColor::White);
+                    g_Log.printColor("=> source code mode\n", LogColor::Gray);
+                printContextInstruction(context, true);
                 continue;
             }
 
@@ -1931,16 +1938,15 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     for (uint32_t l = startLine; l <= endLine && !eof; l++)
                         lines.push_back(toLogBc->node->sourceFile->getLine(l, &eof));
 
-                    g_Log.setColor(LogColor::Yellow);
                     uint32_t lineIdx = 0;
                     for (const auto& l : lines)
                     {
-                        g_Log.print(Fmt("%08u ", startLine + lineIdx));
                         if (curLocation->line == startLine + lineIdx)
-                            g_Log.print(" -> ");
+                            g_Log.printColor(Fmt("[%08u] ", startLine + lineIdx), LogColor::Cyan);
                         else
-                            g_Log.print("    ");
-                        g_Log.print(l.c_str());
+                            g_Log.printColor(Fmt(" %08u  ", startLine + lineIdx), LogColor::Cyan);
+
+                        g_Log.printColor(l.c_str(), LogColor::White);
                         g_Log.eol();
                         lineIdx++;
                     }
