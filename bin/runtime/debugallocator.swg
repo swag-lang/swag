@@ -89,15 +89,15 @@ impl DebugAllocator
         return result
     }
 
-    mtd checkIsAllocated(ptrHeader: ^DebugAllocatorHeader)
+    mtd checkIsAllocated(ptrHeader: ^DebugAllocatorHeader, callerLoc = #callerlocation)
     {
-        ptrEnd := cast(^u8) (ptrHeader + 1)
+        ptrEnd    := cast(^u8) (ptrHeader + 1)
         ptrFooter := cast(*DebugAllocatorFooter) (ptrEnd + ptrHeader.userSize)
 
         if (ptrHeader.magic != MagicAlloc and ptrHeader.magic != MagicFree) or
            (ptrFooter.magic != MagicAlloc and ptrFooter.magic != MagicFree)
         {
-            @panic("memory block corruption", #location)
+            @panic("memory block corruption", callerLoc)
         }
 
         if ptrHeader.allocId == 0 or
@@ -108,12 +108,12 @@ impl DebugAllocator
            (ptrHeader.prev and ptrHeader.prev.next != ptrHeader) or
            (ptrHeader.next and ptrHeader.next.prev != ptrHeader)
         {
-            @panic("memory block corruption", #location)
+            @panic("memory block corruption", callerLoc)
         }
 
         if (ptrHeader.magic == MagicFree and ptrHeader.magic == MagicFree)
         {
-            loc := ptrHeader.loc.fileName ? ptrHeader.loc : #location
+            loc := ptrHeader.loc.fileName ? ptrHeader.loc : callerLoc
             @panic("memory block double free", loc)
         }
     }
@@ -147,7 +147,7 @@ impl DebugAllocator
         cpt := 0
         while scan
         {
-            checkIsAllocated(scan)
+            checkIsAllocated(scan, null)
 
             // One leak
             @print("\x1b[91m")
@@ -184,12 +184,12 @@ impl DebugAllocator
 
     // This function will assert if the given user address is not conform
     // to an allocated block
-    mtd assertIsAllocated(addr: *void)
+    mtd assertIsAllocated(addr: *void, callerLoc = #callerlocation)
     {
         if !addr
             return
         ptrHeader := cast(*DebugAllocatorHeader) (cast(^u8) addr - @sizeof(DebugAllocatorHeader))
-        checkIsAllocated(ptrHeader)
+        checkIsAllocated(ptrHeader, callerLoc)
     }
 
     // Check all allocated pointers
@@ -211,7 +211,7 @@ impl IAllocator for DebugAllocator
         if !request.address
             return
 
-        assertIsAllocated(request.address)
+        assertIsAllocated(request.address, request.callerLoc)
 
         userAddr := cast(^u8) request.address
         ptrHeader := cast(*DebugAllocatorHeader) (userAddr - @sizeof(DebugAllocatorHeader))
@@ -404,7 +404,7 @@ impl IAllocator for DebugAllocator
             countAlloc, sizeAlloc = 0
 
         case Realloc:
-            assertIsAllocated(request.address)
+            assertIsAllocated(request.address, request.callerLoc)
             fallthrough
 
         case Alloc:

@@ -252,8 +252,9 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
         if (!typeLambda->isSame(typeFunc, ISSAME_EXACT | ISSAME_INTERFACE))
         {
-            Diagnostic diag{child, Fmt(Err(Err0652), child->token.ctext(), typeBaseInterface->name.c_str())};
-            Diagnostic note{symbolName->declNode, Err(Err0653), DiagnosticLevel::Note};
+            Diagnostic diag{child, child->token, Fmt(Err(Err0652), child->token.ctext(), typeBaseInterface->name.c_str())};
+            Diagnostic note{symbolName->declNode, Nte(Nte0002), DiagnosticLevel::Note};
+            note.showRange = false;
             return context->report(diag, &note);
         }
 

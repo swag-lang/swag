@@ -659,7 +659,7 @@ void initErrors()
     SWAG_ERROR(Err0650, nullptr);
     SWAG_ERROR(Err0651, nullptr);
     SWAG_ERROR(Err0652, "the function `%s` has an incorrect signature for interface `%s`");
-    SWAG_ERROR(Err0653, "should be");
+    SWAG_ERROR(Err0653, nullptr);
     SWAG_ERROR(Err0654, "expected `self` as a first parameter for the interface function `%s`");
     SWAG_ERROR(Err0655, "unexpected type for the first parameter of interface function implementation (`self` expected, `%s` provided)");
     SWAG_ERROR(Err0656, nullptr);
@@ -1053,7 +1053,7 @@ void initErrors()
 
     SWAG_ERROR(Nte0000, "here is its declaration");
     SWAG_ERROR(Nte0001, "`%s` is %s of type `%s` which does not contain a subscope");
-    SWAG_ERROR(Nte0002, nullptr);
+    SWAG_ERROR(Nte0002, "should be");
     SWAG_ERROR(Nte0003, nullptr);
     SWAG_ERROR(Nte0004, "occurred in generated code");
     SWAG_ERROR(Nte0005, nullptr);
