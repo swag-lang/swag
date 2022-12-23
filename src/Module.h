@@ -244,9 +244,9 @@ struct Module
 
     struct GlobalVarToDrop
     {
-        ByteCode*    opDrop;
-        uint32_t     storageOffset;
-        DataSegment* storageSegment;
+        TypeInfoStruct* type;
+        uint32_t        storageOffset;
+        DataSegment*    storageSegment;
     };
     VectorNative<GlobalVarToDrop> globalVarsToDrop;
 

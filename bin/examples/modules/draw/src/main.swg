@@ -609,6 +609,8 @@ func displayPage7(renderer: *Pixel.RenderOgl, painter: *Pixel.Painter)
         painter.fillPolygon(&p, Argb.Red)
         painter.drawPath(&p, Argb.Blue, 2)
     }
+
+    renderer.releaseRenderTarget(tgt)
 }
 
 struct MyView

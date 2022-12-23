@@ -222,7 +222,6 @@ impl Polygon
     mtd clean()
     {
         var res: Clipper.ClipperPaths
-
         clean(&res)
         clear()
         if res.count

@@ -60,6 +60,15 @@ struct Capture
 
 impl Capture
 {
+    mtd opDrop()
+    {
+        visit it: forms
+        {
+            type := @kindof(it)
+            Memory.delete(@dataof(it), type)
+        }
+    }
+
     mtd setup(view: *EditView)
     {
         editView = view
@@ -482,7 +491,7 @@ impl Capture
 
     mtd paintBackImage(painter: *Painter, x, y: f32, z: f32)
     {
-        renderer := editView.getApp().renderer
+        renderer := editView.getApp().getRenderer()
 
         // Background image
         if !backTexture.isValid() and backImg.width > 0

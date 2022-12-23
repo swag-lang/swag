@@ -90,6 +90,7 @@ impl LinePathList
             res.paths.count = 0
         }
 
+        clear()
         paths =,move newList.paths
         clean()
     }
@@ -107,6 +108,7 @@ impl LinePathList
             res.paths.count = 0
         }
 
+        clear()
         paths =,move newList.paths
     }
 }

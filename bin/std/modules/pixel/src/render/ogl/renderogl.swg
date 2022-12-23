@@ -26,6 +26,7 @@ const InvalidRenderTargetHandle: RenderTargetHandle = acast 0
 alias RenderTargetSurfaceHandle = uint
 const InvalidRenderTargetSurfaceHandle: RenderTargetSurfaceHandle = acast 0
 
+#[Swag.NoCopy]
 struct RenderOgl
 {
     using native:       NativeRenderOgl
@@ -196,8 +197,17 @@ private impl RenderOgl
 
 impl RenderOgl
 {
+    mtd opDrop()
+    {
+        visit rt: stackReleasedRT
+            Memory.delete(rt)
+        visit rt: stackRT
+            Memory.delete(rt)
+        Memory.delete(curRT)
+    }
+
     // To be called before rendering
-    func begin(using self, rc: RenderingContext)
+    mtd begin(rc: RenderingContext)
     {
         curRC = rc
         native.setCurrentContext(curRC)
@@ -205,7 +215,7 @@ impl RenderOgl
     }
 
     // To be called after rendering
-    func end(using self)
+    mtd end()
     {
         glFlush()
         glFinish()
@@ -213,7 +223,7 @@ impl RenderOgl
     }
 
     // Set the current rendering context
-    func setCurrentContext(using self, rc: RenderingContext)
+    mtd setCurrentContext(rc: RenderingContext)
     {
         native.setCurrentContext(rc)
     }

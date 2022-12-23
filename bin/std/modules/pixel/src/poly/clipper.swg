@@ -154,7 +154,7 @@ public struct Transform
     usingPolyTree:          bool
     strictSimple:           bool
     reverseOutput:          bool
-    edgeList:               Array'*Edge
+    edgeList:               Array'{^Edge, uint}
     minimaList:             Array'LocalMinimum
     polyOuts:               Array'*OutRec
     joinList:               Array'*Join
@@ -172,6 +172,12 @@ public struct Transform
 
 impl Transform
 {
+    public mtd opDrop()
+    {
+        visit it: edgeList
+            Memory.delete(it.item0, it.item1)
+    }
+
     mtd execute(clipT: ClipType, solution: *ClipperPaths, subjFillT, clipFillT: PolyFillType)
     {
         subjFillType  = subjFillT
@@ -196,6 +202,7 @@ impl Transform
 
         edges  := Memory.new'Edge(cast(uint) highI + 1)
         isFlat := true
+        edgeList.add({edges, cast(uint) highI + 1})
 
         // 1. Basic (first) edge initialization ...
         edges[1].curr = pg.buffer[1]
@@ -262,7 +269,6 @@ impl Transform
         if isFlat
             return
 
-        edgeList.add(edges)
         if e.prev.bot == e.prev.top
             e = e.next
 

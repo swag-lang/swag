@@ -1218,7 +1218,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             if (context->result != ContextResult::Done)
                 return true;
             TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-            if (typeStruct->opDrop)
+            if (typeStruct->opDrop || typeStruct->opUserDropFct)
                 isGlobalToDrop = true;
         }
 

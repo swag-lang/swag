@@ -303,14 +303,25 @@ void Module::buildGlobalVarsToDropSlice()
         offset += sizeof(void*);
 
         // opDrop function
-        *(void**) resultPtr = g.opDrop;
-        if (g.opDrop->node)
+        if (g.type->opUserDropFct && g.type->opUserDropFct->isForeign())
         {
-            auto funcNode = CastAst<AstFuncDecl>(g.opDrop->node, AstNodeKind::FuncDecl);
-            mutableSegment.addInitPtrFunc(offset, funcNode->getCallName());
+            g.type->opUserDropFct->computeFullNameForeign(false);
+            mutableSegment.addInitPtrFunc(offset, g.type->opUserDropFct->fullnameForeign);
         }
         else
-            mutableSegment.addInitPtrFunc(offset, g.opDrop->getCallName());
+        {
+            auto opDrop = g.type->opDrop;
+            SWAG_ASSERT(opDrop);
+            *(void**) resultPtr = opDrop;
+            if (opDrop->node)
+            {
+                auto funcNode = CastAst<AstFuncDecl>(opDrop->node, AstNodeKind::FuncDecl);
+                mutableSegment.addInitPtrFunc(offset, funcNode->getCallName());
+            }
+            else
+                mutableSegment.addInitPtrFunc(offset, opDrop->getCallName());
+        }
+
         resultPtr += sizeof(void*);
         offset += sizeof(void*);
     }
@@ -550,8 +561,8 @@ void Module::addGlobalVarToDrop(AstNode* node, uint32_t storageOffset, DataSegme
     ScopedLock lk(mutexGlobalVars);
     SWAG_ASSERT(node->typeInfo && node->typeInfo->isStruct());
     TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-    SWAG_ASSERT(typeStruct->opDrop);
-    globalVarsToDrop.push_back({typeStruct->opDrop, storageOffset, storageSegment});
+    SWAG_ASSERT(typeStruct->opDrop || (typeStruct->opUserDropFct && typeStruct->opUserDropFct->isForeign()));
+    globalVarsToDrop.push_back({typeStruct, storageOffset, storageSegment});
 }
 
 void Module::addCompilerFunc(ByteCode* bc)
