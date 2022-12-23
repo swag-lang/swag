@@ -218,6 +218,7 @@ impl RecentWnd
         visit r, idx: res
         {
             capture := catch recent.addRecent(r.fullname, front: false)
+            defer(err) Memory.delete(capture)
             if @err continue
 
             if idx == 0

@@ -33,9 +33,6 @@ impl ThemeStyle
             Memory.delete(refr)
             refr = null
         }
-
-        styleSheetMetrics.clear()
-        styleSheetColors.clear()
     }
 
     private mtd set(theme: *Theme)
@@ -44,6 +41,7 @@ impl ThemeStyle
         refr.theme = theme
         refr.count = 1
     }
+
 
     // Create a specific style based on the parent
     mtd create(parent: *ThemeStyle)

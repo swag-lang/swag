@@ -471,6 +471,12 @@ impl Application
 {
     mtd opDrop()
     {
+        visit it: surfaces
+            it.destroy()
+        sendDestroyEvents()
+        visit it: postedEvents
+            toDelete.add({it, it.type})
+        deletePointers()
         theme.freeDefault()
     }
 

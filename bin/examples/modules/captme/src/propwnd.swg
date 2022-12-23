@@ -1190,8 +1190,8 @@ impl PropWnd
 
     mtd selectionHasChanged()
     {
-        while mainLayout.childs.count
-            mainLayout.childs[0].destroyNow()
+        visit it: mainLayout.childs
+            it.destroy()
         if !getSelectedBaseForm()
             return
 

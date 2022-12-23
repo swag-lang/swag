@@ -5,6 +5,11 @@ struct QuickStyle
 
 impl QuickStyle
 {
+    mtd opDrop()
+    {
+        clear()
+    }
+
     func deleteOne(itf: IForm)
     {
         Memory.delete(@dataof(itf), @kindof(itf))

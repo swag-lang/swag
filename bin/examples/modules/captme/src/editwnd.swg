@@ -84,6 +84,11 @@ impl IWnd for EditView
 
 impl EditView
 {
+    mtd opDrop()
+    {
+        Memory.delete(capture)
+    }
+
     mtd getCaptureRect()->Math.Rectangle
     {
         var captureRect: retval
