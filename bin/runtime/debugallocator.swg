@@ -151,10 +151,10 @@ impl DebugAllocator
 
             // One leak
             @print("\x1b[91m")
-            @print("error: leak: ")
-            @print("id: ", scan.allocId, " sizeAlloc: ")
+            @print("leak error: ")
+            @print("id [", scan.allocId, "] sizeAlloc [")
             printDisplaySize(scan.userSize)
-            if scan.hint @print(" hint: ", scan.hint)
+            if scan.hint @print("] hint [", scan.hint, "]")
             @print("\n")
             @print("\x1b[97m")
             @print(" |  --> ")
@@ -177,7 +177,7 @@ impl DebugAllocator
                 @print("\x1b[91m")
                 @print("... too many leaks (")
                 @print(countAlloc)
-                @print("), stopped\n")
+                @print(")...\n")
                 @print("\x1b[97m")
                 break
             }
