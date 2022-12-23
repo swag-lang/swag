@@ -13,7 +13,7 @@ impl Event
 {
     func opDrop(using self)
     {
-        Debug.assert(handle == null, "missing call to release()")
+        release()
     }
 
     // Returns true if the event is valid

@@ -154,6 +154,8 @@ func __closeRuntime()
 
 func __dropGlobalVariables()
 {
-    //x := @gvtd()
-    //@print("gvtd: ", @countof(x), "\n")
+    visit g: @gvtd()
+    {
+        g.opDrop(g.ptr)
+    }
 }

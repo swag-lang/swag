@@ -1209,6 +1209,19 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 return true;
         }
 
+        // Register global variable in the list of global variables to drop if the variable is
+        // a struct with a 'opDrop' function
+        auto isGlobalToDrop = false;
+        if (node->typeInfo && node->typeInfo->isStruct())
+        {
+            context->job->waitStructGeneratedAlloc(node->typeInfo);
+            if (context->result != ContextResult::Done)
+                return true;
+            TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+            if (typeStruct->opDrop)
+                isGlobalToDrop = true;
+        }
+
         SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_PUBLIC), context->report({node, Err(Err0313)}));
 
         node->flags |= AST_R_VALUE;
@@ -1246,7 +1259,10 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 module->addGlobalVar(node, symbolFlags & OVERLOAD_VAR_BSS ? GlobalVarKind::Bss : GlobalVarKind::Mutable);
             }
 
-            module->addGlobalVarToDrop(node, storageOffset, storageSegment);
+            // Register global variable in the list of global variables to drop if the variable is
+            // a struct with a 'opDrop' function
+            if (isGlobalToDrop)
+                module->addGlobalVarToDrop(node, storageOffset, storageSegment);
         }
     }
     else if (symbolFlags & OVERLOAD_VAR_LOCAL)

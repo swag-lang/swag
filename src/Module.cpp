@@ -296,6 +296,13 @@ void Module::buildGlobalVarsToDropSlice()
 
     for (auto& g : globalVarsToDrop)
     {
+        // Variable address
+        *(void**) resultPtr = g.storageSegment->address(g.storageOffset);
+        mutableSegment.addInitPtr(offset, g.storageOffset, g.storageSegment->kind);
+        resultPtr += sizeof(void*);
+        offset += sizeof(void*);
+
+        // opDrop function
         *(void**) resultPtr = g.opDrop;
         if (g.opDrop->node)
         {
@@ -304,11 +311,6 @@ void Module::buildGlobalVarsToDropSlice()
         }
         else
             mutableSegment.addInitPtrFunc(offset, g.opDrop->getCallName());
-        resultPtr += sizeof(void*);
-        offset += sizeof(void*);
-
-        *(void**) resultPtr = g.storageSegment->address(g.storageOffset);
-        mutableSegment.addInitPtr(offset, g.storageOffset, g.storageSegment->kind);
         resultPtr += sizeof(void*);
         offset += sizeof(void*);
     }
@@ -546,14 +548,10 @@ void Module::addGlobalVar(AstNode* node, GlobalVarKind varKind)
 void Module::addGlobalVarToDrop(AstNode* node, uint32_t storageOffset, DataSegment* storageSegment)
 {
     ScopedLock lk(mutexGlobalVars);
-    if (node->typeInfo && node->typeInfo->isStruct())
-    {
-        TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-        if (typeStruct->opDrop)
-        {
-            globalVarsToDrop.push_back({typeStruct->opDrop, storageOffset, storageSegment});
-        }
-    }
+    SWAG_ASSERT(node->typeInfo && node->typeInfo->isStruct());
+    TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+    SWAG_ASSERT(typeStruct->opDrop);
+    globalVarsToDrop.push_back({typeStruct->opDrop, storageOffset, storageSegment});
 }
 
 void Module::addCompilerFunc(ByteCode* bc)

@@ -177,20 +177,6 @@ impl Array
         }
     }
 
-    mtd free()
-    {
-        if !buffer
-            return
-
-        // Need to drop every structs
-        #if Reflection.hasDrop(T)
-        {
-            @drop(buffer, count)
-        }
-
-        Memory.free(buffer, capacity * @sizeof(T), allocator)
-    }
-
     mtd realloc(newCapacity: uint)
     {
         if allocator == null
@@ -218,6 +204,23 @@ impl Array
 
         buffer = newBuffer
         capacity = newCapacity
+    }
+
+    // Free the array content
+    mtd free()
+    {
+        if !buffer
+            return
+
+        // Need to drop every structs
+        #if Reflection.hasDrop(T)
+        {
+            @drop(buffer, count)
+        }
+
+        Memory.free(buffer, capacity * @sizeof(T), allocator)
+        buffer = null
+        count, capacity  = 0
     }
 
     // Create a temporary array

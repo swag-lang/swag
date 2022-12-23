@@ -100,6 +100,17 @@ impl HashTable
         return Hash.hash32(key) | HASH_MASK
     }
 
+    mtd grow()
+    {
+        // We need to trigger the growing of the table is there's not enough room
+        if capacity != 0 and capacity - (count + deleted) > capacity / 4
+            return
+
+        newCapacity := capacity * 2
+        reserve(newCapacity)
+    }
+
+    // Free the hashtable content
     mtd free()
     {
         if !table
@@ -119,16 +130,8 @@ impl HashTable
         }
 
         Memory.free(table, capacity * @sizeof(HashTableEntry), allocator)
-    }
-
-    mtd grow()
-    {
-        // We need to trigger the growing of the table is there's not enough room
-        if capacity != 0 and capacity - (count + deleted) > capacity / 4
-            return
-
-        newCapacity := capacity * 2
-        reserve(newCapacity)
+        table = null
+        count, capacity, deleted = 0
     }
 
     // Reserve 'newCapacity' elements in the table.

@@ -114,8 +114,3 @@ public impl Image
     Image.addDecoder'(Png.Decoder)()
     Image.addDecoder'(Gif.Decoder)()
 }
-
-#drop
-{
-    Image.decoders.free()
-}
