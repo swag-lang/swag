@@ -15,10 +15,18 @@ public struct TypeFace
     forceBold:      bool
 }
 
+var g_HashTypeFace: HashTable'(String, *TypeFace)
+
+#drop
+{
+    visit k, v: g_HashTypeFace
+        Memory.delete(v)
+    g_HashTypeFace.free()
+}
+
 impl TypeFace
 {
-    var hashTypeFace: HashTable'(String, *TypeFace)
-    var lock:         Sync.Mutex
+    var lock: Sync.Mutex
 
     func moveTo(to: const *FT_Vector, pathList: *LinePathList)->s32
     {
@@ -86,7 +94,7 @@ public impl TypeFace
         Sync.scopedLock(&lock)
 
         str := String.from(fullname)
-        here := hashTypeFace.find(str)
+        here := g_HashTypeFace.find(str)
         if here
             return here.value
 
@@ -108,7 +116,7 @@ public impl TypeFace
 
         FT_New_Memory_Face(g_FT, tf.buffer.buffer, cast(FT_Long) tf.buffer.count, 0, &tf.face)
 
-        hashTypeFace.add(str, tf)
+        g_HashTypeFace.add(str, tf)
         return tf
     }
 

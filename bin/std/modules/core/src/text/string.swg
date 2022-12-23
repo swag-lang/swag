@@ -150,7 +150,7 @@ impl String
     }
 
     // Returns the byte at the given index
-    mtd opIndex(index: uint)->u8
+    mtdc opIndex(index: uint)->u8
     {
         if !length
             return 0

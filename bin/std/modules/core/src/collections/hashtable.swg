@@ -81,8 +81,16 @@ impl HashTable
                 }
                 #else
                 {
-                    var @alias0 = Reflection.isStruct(K) ? cast(const ref K) &`table[@index].key : `table[@index].key
-                    var @alias1 = Reflection.isStruct(V) ? cast(const ref V) &`table[@index].value : `table[@index].value
+                    #if Reflection.isStruct(K)
+                        var @alias0 = cast(const ref K) &`table[@index].key
+                    #else
+                        var @alias0 = `table[@index].key
+                    #if Reflection.isStruct(V)
+                        var @alias1 = cast(const ref V) &`table[@index].value
+                    #else
+                        var @alias1 = `table[@index].value
+                    //var @alias0 = Reflection.isStruct(K) ? cast(const ref K) &`table[@index].key : `table[@index].key
+                    //var @alias1 = Reflection.isStruct(V) ? cast(const ref V) &`table[@index].value : `table[@index].value
                 }
 
                 #mixin `stmt { break = break Up; continue = break Down; }

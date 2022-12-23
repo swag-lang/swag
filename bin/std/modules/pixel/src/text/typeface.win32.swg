@@ -26,7 +26,7 @@ impl TypeFace
         Sync.scopedLock(&lock)
 
         str := String.from(fullname)
-        here := hashTypeFace.find(str)
+        here := g_HashTypeFace.find(str)
         if here
             return here.value
 
@@ -36,7 +36,7 @@ impl TypeFace
 
         try FT_New_Memory_Face(g_FT, tf.buffer.buffer, cast(FT_Long) tf.buffer.count, 0, &tf.face)
 
-        hashTypeFace.add(str, tf)
+        g_HashTypeFace.add(str, tf)
         return tf
     }
 }

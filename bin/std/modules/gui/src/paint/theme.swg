@@ -73,16 +73,6 @@ impl Theme
         Memory.delete(res.defaultFsTypeFaceB)
         Memory.delete(res.defaultFsTypeFaceI)
         Memory.delete(res.defaultFsTypeFaceBI)
-
-        Memory.delete(res.fontDefault.regular)
-        Memory.delete(res.fontDefault.bold)
-        Memory.delete(res.fontDefault.italic)
-        Memory.delete(res.fontDefault.boldItalic)
-
-        Memory.delete(res.fontDefaultFs.regular)
-        Memory.delete(res.fontDefaultFs.bold)
-        Memory.delete(res.fontDefaultFs.italic)
-        Memory.delete(res.fontDefaultFs.boldItalic)
     }
 
     private mtd setupDefault(renderer: *RenderOgl)

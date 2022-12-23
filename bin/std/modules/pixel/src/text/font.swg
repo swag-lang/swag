@@ -41,10 +41,17 @@ public struct Font
     dirty:      bool
 }
 
+private var g_HashFont: HashTable'(String, *Font)
+
+#drop
+{
+    visit k, v: g_HashFont
+        Memory.delete(v)
+}
+
 public impl Font
 {
-    private var hashFont: HashTable'(String, *Font)
-    private var lock:     Sync.Mutex
+    private var lock: Sync.Mutex
 
     mtd opDrop()
     {
@@ -68,7 +75,7 @@ public impl Font
 
         Sync.scopedLock(&lock)
 
-        here := hashFont.find(str)
+        here := g_HashFont.find(str)
         if here return here.value
 
         font := Memory.new'Font()
@@ -83,7 +90,7 @@ public impl Font
         font.underlinePos = mulFix(cast(s32) typeFace.face.underline_position, metrics.y_scale) / 64.0
         font.underlineSize = mulFix(cast(s32) typeFace.face.underline_thickness, metrics.y_scale) / 64.0
 
-        hashFont.add(str, font)
+        g_HashFont.add(str, font)
         return font
     }
 
