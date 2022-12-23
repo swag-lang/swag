@@ -202,26 +202,6 @@ bool SemanticJob::resolveConditionalOp(SemanticContext* context)
         return true;
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, expression, CASTFLAG_AUTO_BOOL));
-    if (expression->flags & AST_VALUE_COMPUTED)
-    {
-        node->childs.clear();
-
-        if (expression->computedValue->reg.b)
-        {
-            node->inheritComputedValue(ifTrue);
-            node->typeInfo = ifTrue->typeInfo;
-            node->childs.push_back(ifTrue);
-        }
-        else
-        {
-            node->inheritComputedValue(ifFalse);
-            node->typeInfo = ifFalse->typeInfo;
-            node->childs.push_back(ifFalse);
-        }
-
-        node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
-        return true;
-    }
 
     auto rightT = ifFalse;
     auto leftT  = ifTrue;
@@ -232,6 +212,7 @@ bool SemanticJob::resolveConditionalOp(SemanticContext* context)
         leftT->typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
         swap(leftT, rightT);
 
+    // Make the cast
     {
         PushErrContext ec(context, rightT, ErrorContextKind::Note, Nte(Nte0055), Fmt(Hnt(Hnt0011), rightT->typeInfo->getDisplayNameC()));
         SWAG_CHECK(TypeManager::makeCompatibles(context, rightT, leftT, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));
@@ -242,6 +223,26 @@ bool SemanticJob::resolveConditionalOp(SemanticContext* context)
         node->typeInfo = ifFalse->typeInfo;
     else
         node->typeInfo = ifTrue->typeInfo;
+
+    // Constant expression
+    if (expression->flags & AST_VALUE_COMPUTED)
+    {
+        node->childs.clear();
+
+        if (expression->computedValue->reg.b)
+        {
+            node->inheritComputedValue(ifTrue);
+            node->childs.push_back(ifTrue);
+        }
+        else
+        {
+            node->inheritComputedValue(ifFalse);
+            node->childs.push_back(ifFalse);
+        }
+
+        node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
+        return true;
+    }
 
     expression->allocateExtension(ExtensionKind::ByteCode);
     expression->extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitConditionalOpAfterExpr;
