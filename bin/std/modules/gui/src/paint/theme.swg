@@ -60,6 +60,31 @@ struct Theme
 
 impl Theme
 {
+    private mtd freeDefault()
+    {
+        Memory.delete(res.icons24)
+        Memory.delete(res.icons64)
+        Memory.delete(res.spin)
+        Memory.delete(res.defaultTypeFaceR)
+        Memory.delete(res.defaultTypeFaceB)
+        Memory.delete(res.defaultTypeFaceI)
+        Memory.delete(res.defaultTypeFaceBI)
+        Memory.delete(res.defaultFsTypeFaceR)
+        Memory.delete(res.defaultFsTypeFaceB)
+        Memory.delete(res.defaultFsTypeFaceI)
+        Memory.delete(res.defaultFsTypeFaceBI)
+
+        Memory.delete(res.fontDefault.regular)
+        Memory.delete(res.fontDefault.bold)
+        Memory.delete(res.fontDefault.italic)
+        Memory.delete(res.fontDefault.boldItalic)
+
+        Memory.delete(res.fontDefaultFs.regular)
+        Memory.delete(res.fontDefaultFs.bold)
+        Memory.delete(res.fontDefaultFs.italic)
+        Memory.delete(res.fontDefaultFs.boldItalic)
+    }
+
     private mtd setupDefault(renderer: *RenderOgl)
     {
         intialized = true

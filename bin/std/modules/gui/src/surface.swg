@@ -100,7 +100,9 @@ impl Surface
         {
             .flags = flags
             .wnd = Memory.new'SurfaceWnd()
+            .wnd.isAllocated = true
             .wnd.itf = cast(IWnd) .wnd
+            .wnd.type = SurfaceWnd
             .wnd.surface = surface
             .wnd.focusStrategy = .None
             .applySurfaceFlags()

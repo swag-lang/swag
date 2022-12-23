@@ -19,10 +19,10 @@ impl ThemeStyle
 {
     mtd opDrop()
     {
-        release()
+        free()
     }
 
-    private mtd release()
+    private mtd free()
     {
         if !refr
             return
@@ -33,6 +33,9 @@ impl ThemeStyle
             Memory.delete(refr)
             refr = null
         }
+
+        styleSheetMetrics.clear()
+        styleSheetColors.clear()
     }
 
     private mtd set(theme: *Theme)
@@ -45,7 +48,7 @@ impl ThemeStyle
     // Create a specific style based on the parent
     mtd create(parent: *ThemeStyle)
     {
-        release()
+        free()
         theme := Memory.new'Theme()
         dref theme = dref parent.refr.theme
         set(theme)
@@ -68,7 +71,7 @@ impl ThemeStyle
         dirty = true
 
         // By default, same as the parent
-        release()
+        free()
         refr = parent.refr
         refr.count += 1
 

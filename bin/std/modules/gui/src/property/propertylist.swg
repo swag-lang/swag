@@ -368,6 +368,14 @@ private impl PropertyList
 
 impl PropertyList
 {
+    mtd opDrop()
+    {
+        Memory.delete(fontBig.regular)
+        Memory.delete(fontBig.bold)
+        Memory.delete(fontBig.italic)
+        Memory.delete(fontBig.boldItalic)
+    }
+
     #[Swag.Discardable]
     func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*PropertyList
     {

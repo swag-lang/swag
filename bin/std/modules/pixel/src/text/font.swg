@@ -46,6 +46,12 @@ public impl Font
     private var hashFont: HashTable'(String, *Font)
     private var lock:     Sync.Mutex
 
+    mtd opDrop()
+    {
+        visit k, v: unicodeRef
+            Memory.delete(v)
+    }
+
     private func mulFix(a, b: s32)->s32
     {
         ab := cast(s64) a * cast(s64) b

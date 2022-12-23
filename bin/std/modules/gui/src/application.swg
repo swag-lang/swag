@@ -469,6 +469,11 @@ private impl Application
 
 impl Application
 {
+    mtd opDrop()
+    {
+        theme.freeDefault()
+    }
+
     // Get application variables
     #[Swag.Inline]
     {
