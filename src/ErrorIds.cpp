@@ -82,9 +82,9 @@ void initErrors()
     SWAG_ERROR(Err0068, "expected the parameters of special function `%s`");
     SWAG_ERROR(Err0069, "unexpected first parameter type for special function `%s` (`%s` expected, `%s` provided)");
     SWAG_ERROR(Err0070, "unexpected type of generic %s for %s (`%s` expected, `%s` provided)");
-    SWAG_ERROR(Err0071, "unexpected number of generic parameters for special function `%s`");
+    SWAG_ERROR(Err0071, "too many generic parameters for special function `%s`");
     SWAG_ERROR(Err0072, "unexpected generic parameter for special function `%s` (`string` expected, `%s` provided)");
-    SWAG_ERROR(Err0073, "unexpected number of generic parameters for special function `%s`");
+    SWAG_ERROR(Err0073, nullptr);
     SWAG_ERROR(Err0074, "unexpected generic parameter for special function `%s` (`bool` expected, `%s` provided)");
     SWAG_ERROR(Err0075, "`opVisit` should have the `Swag.Macro` attribute");
     SWAG_ERROR(Err0076, "the call level limit has been reached (the maximum level is `--max-recurse:%d`)");
@@ -457,7 +457,7 @@ void initErrors()
     SWAG_ERROR(Err0447, "empty tuple definition");
     SWAG_ERROR(Err0448, "expected an identifier");
     SWAG_ERROR(Err0449, "unexpected token `%s` in tuple type, `,` or `}` are expected here");
-    SWAG_ERROR(Err0450, "too many generic parameters for special function `%s`");
+    SWAG_ERROR(Err0450, "expected one single generic parameter for special function `%s` (`%d` provided)");
     SWAG_ERROR(Err0451, "`using` on a member is invalid in an interface definition");
     SWAG_ERROR(Err0452, "a method should not be declared inside an `enum impl` block");
     SWAG_ERROR(Err0453, "`var` is not necessary to declare a field inside a struct");

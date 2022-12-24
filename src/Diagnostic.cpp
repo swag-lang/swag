@@ -222,6 +222,7 @@ void Diagnostic::report(bool verboseMode) const
         // Get all lines of code
         if (showMultipleCodeLines)
         {
+            printMargin(verboseMode, true);
             for (int i = -2; i <= 0; i++)
             {
                 if ((int) location0.line + i < 0)
@@ -562,6 +563,9 @@ void Diagnostic::report(bool verboseMode) const
     // Source file and location on their own line
     if (!g_CommandLine.errorCompact && hasFile && !sourceFile->path.empty() && showFileName)
     {
+        if (showMultipleCodeLines)
+            printMargin(verboseMode, true);
+
         printMargin(verboseMode);
 
         g_Log.setColor(sourceFileColor);

@@ -1052,7 +1052,7 @@ void SemanticJob::findClosestMatches(SemanticContext* context, const Utf8& searc
         auto score = Utf8::fuzzyCompare(searchName1, searchName2);
 
         // If number of changes is too big considering the size of the text, cancel
-        if (score > (uint32_t) searchName.count / 2)
+        if (searchName.count > 1 && score > (uint32_t) searchName.count / 2)
             continue;
         // If too much changes, cancel
         if (score > 2)
@@ -1139,8 +1139,9 @@ Utf8 SemanticJob::findClosestMatchesMsg(SemanticContext* context, vector<Utf8>& 
 
 void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node)
 {
-    auto  job            = context->job;
-    auto& scopeHierarchy = job->cacheScopeHierarchy;
+    auto  job                = context->job;
+    auto& scopeHierarchy     = job->cacheScopeHierarchy;
+    auto& scopeHierarchyVars = job->cacheScopeHierarchyVars;
 
     // What kind of thing to we search for ?
     auto searchFor = IdentifierSearchFor::Whatever;
@@ -1156,12 +1157,16 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
         scopeHierarchy.clear();
         addAlternativeScopeOnce(scopeHierarchy, identifierRef->startScope);
     }
+    else
+    {
+        collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, node, COLLECT_ALL);
+    }
 
     findClosestMatches(context, searchFor, node, scopeHierarchy, best);
     Utf8 appendMsg;
     Utf8 bestMatch = findClosestMatchesMsg(context, best);
     if (!bestMatch.empty())
-        appendMsg = " (" + bestMatch + ")";
+        appendMsg = bestMatch;
 
     vector<const Diagnostic*> notes;
     Diagnostic*               diag = nullptr;
@@ -1238,10 +1243,18 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
         }
     }
 
-    diag->textMsg += appendMsg;
-
     VectorNative<OneTryMatch*> v;
     symbolErrorRemarks(context, v, node, diag);
     symbolErrorNotes(context, v, node, diag, notes);
+
+    if (diag->hint.empty())
+        diag->hint = appendMsg;
+    else
+    {
+        diag->textMsg += " (";
+        diag->textMsg += appendMsg;
+        diag->textMsg += ")";
+    }
+
     context->report(*diag, notes);
 }
