@@ -2072,13 +2072,13 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                         auto         orgNode  = funcNode->originalGeneric ? funcNode->originalGeneric : overload->typeInfo->declNode;
                         auto         couldBe  = Fmt(Nte(Nte0045), orgNode->typeInfo->getDisplayNameC());
                         couldBe += Ast::computeGenericParametersReplacement(typeFunc->genericParameters);
-                        note = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
+                        note = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
                         note->remarks.push_back(Fmt(Nte(Nte0047), overload->typeInfo->getDisplayNameC()));
                     }
                     else
                     {
                         auto couldBe = Fmt(Nte(Nte0048), overload->typeInfo->getDisplayNameC());
-                        note         = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
+                        note         = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
                     }
 
                     if (!overload->typeInfo->isLambdaClosure())

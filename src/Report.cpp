@@ -30,6 +30,21 @@ namespace Report
         }
     }
 
+    bool fuzzySameLine(uint32_t line1, uint32_t line2)
+    {
+        if (line1 == line2)
+            return true;
+        if (line1 == line2 + 1)
+            return true;
+        if (line1 == line2 + 2)
+            return true;
+        if (line1 + 1 == line2)
+            return true;
+        if (line1 + 2 == line2)
+            return true;
+        return false;
+    }
+
     void cleanNotes(const Diagnostic& diag, vector<Diagnostic*>& notes)
     {
         for (auto n : notes)
@@ -44,8 +59,8 @@ namespace Report
             }
 
             // No need to repeat the same source file line reference
-            if (note->startLocation.line == diag.startLocation.line &&
-                note->endLocation.line == diag.endLocation.line &&
+            if (fuzzySameLine(note->startLocation.line, diag.startLocation.line) &&
+                fuzzySameLine(note->endLocation.line, diag.endLocation.line) &&
                 note->sourceFile == diag.sourceFile &&
                 !note->forceSourceFile)
             {
@@ -63,8 +78,8 @@ namespace Report
                 auto note1 = const_cast<Diagnostic*>(n1);
 
                 // No need to repeat the same source file line reference
-                if (note->startLocation.line == note1->startLocation.line &&
-                    note->endLocation.line == note1->endLocation.line &&
+                if (fuzzySameLine(note->startLocation.line, note1->startLocation.line) &&
+                    fuzzySameLine(note->endLocation.line, note1->endLocation.line) &&
                     note->sourceFile == note1->sourceFile &&
                     note->showFileName &&
                     !note1->forceSourceFile)

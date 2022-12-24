@@ -142,61 +142,79 @@ void Diagnostic::report(bool verboseMode) const
     auto stackColor       = verboseMode ? verboseColor : LogColor::DarkYellow;
     g_Log.setColor(verboseMode ? verboseColor : LogColor::White);
 
-    // Message level
-    switch (errorLevel)
+    bool showErrorLevel = true;
+    auto myHint         = hint;
+    auto myShowRange    = showRange;
+
+    if (!g_CommandLine.errorCompact && errorLevel == DiagnosticLevel::Note && hint.empty() && hasRangeLocation2 == false && hasRangeLocation)
     {
-    case DiagnosticLevel::Error:
-        g_Log.setColor(errorColor);
-        if (sourceFile && sourceFile->duringSyntax)
-            g_Log.print("syntax error: ");
+        printMargin(verboseMode, true);
+        showErrorLevel = false;
+        if (!noteHeader.empty())
+            myHint = noteHeader + " " + textMsg;
         else
-            g_Log.print("error: ");
-        break;
-    case DiagnosticLevel::Warning:
-        if (g_CommandLine.warningsAsErrors)
-        {
-            g_Log.setColor(errorColor);
-            g_Log.print("error: (from warning): ");
-        }
-        else
-        {
-            g_Log.setColor(warningColor);
-            g_Log.print("warning: ");
-        }
-        break;
-    case DiagnosticLevel::Note:
-        g_Log.setColor(noteColor);
-        if (noteHeader.empty())
-        {
-            g_Log.print("note: ");
-        }
-        else
-        {
-            g_Log.print(noteHeader);
-            g_Log.print(": ");
-        }
-        break;
-    case DiagnosticLevel::Help:
-        g_Log.setColor(noteColor);
-        g_Log.print("help: ");
-        break;
-    case DiagnosticLevel::CallStack:
-    {
-        g_Log.setColor(stackColor);
-        if (currentStackLevel)
-            g_Log.print(Fmt("[callstack:%03u]: ", stackLevel));
-        else
-            g_Log.print(Fmt("callstack:%03u: ", stackLevel));
-        break;
+            myHint = textMsg;
+        myShowRange = true;
     }
-    case DiagnosticLevel::CallStackInlined:
-        g_Log.setColor(stackColor);
-        g_Log.print("inlined: ");
-        break;
-    case DiagnosticLevel::TraceError:
-        g_Log.setColor(stackColor);
-        g_Log.print("trace error: ");
-        break;
+
+    // Message level
+    if (showErrorLevel)
+    {
+        switch (errorLevel)
+        {
+        case DiagnosticLevel::Error:
+            g_Log.setColor(errorColor);
+            if (sourceFile && sourceFile->duringSyntax)
+                g_Log.print("syntax error: ");
+            else
+                g_Log.print("error: ");
+            break;
+        case DiagnosticLevel::Warning:
+            if (g_CommandLine.warningsAsErrors)
+            {
+                g_Log.setColor(errorColor);
+                g_Log.print("error: (from warning): ");
+            }
+            else
+            {
+                g_Log.setColor(warningColor);
+                g_Log.print("warning: ");
+            }
+            break;
+        case DiagnosticLevel::Note:
+            g_Log.setColor(noteColor);
+            if (noteHeader.empty())
+            {
+                g_Log.print("note: ");
+            }
+            else
+            {
+                g_Log.print(noteHeader);
+                g_Log.print(": ");
+            }
+            break;
+        case DiagnosticLevel::Help:
+            g_Log.setColor(noteColor);
+            g_Log.print("help: ");
+            break;
+        case DiagnosticLevel::CallStack:
+        {
+            g_Log.setColor(stackColor);
+            if (currentStackLevel)
+                g_Log.print(Fmt("[callstack:%03u]: ", stackLevel));
+            else
+                g_Log.print(Fmt("callstack:%03u: ", stackLevel));
+            break;
+        }
+        case DiagnosticLevel::CallStackInlined:
+            g_Log.setColor(stackColor);
+            g_Log.print("inlined: ");
+            break;
+        case DiagnosticLevel::TraceError:
+            g_Log.setColor(stackColor);
+            g_Log.print("trace error: ");
+            break;
+        }
     }
 
     // Source line right after the header
@@ -206,8 +224,28 @@ void Diagnostic::report(bool verboseMode) const
     }
 
     // User message
-    g_Log.print(textMsg);
-    g_Log.eol();
+    if (showErrorLevel)
+    {
+        g_Log.print(textMsg);
+        g_Log.eol();
+    }
+
+    // Source file and location on their own line
+    if (!g_CommandLine.errorCompact && hasFile && !sourceFile->path.empty())
+    {
+        if (showFileName)
+        {
+            g_Log.setColor(sourceFileColor);
+            printSourceLine();
+            g_Log.eol();
+        }
+
+        if (showErrorLevel || showFileName)
+        {
+            if (errorLevel == DiagnosticLevel::Note && myShowRange && hasRangeLocation)
+                printMargin(verboseMode, true);
+        }
+    }
 
     // Source code
     vector<Utf8> lines;
@@ -256,7 +294,7 @@ void Diagnostic::report(bool verboseMode) const
             }
         }
 
-        bool reportRange = showRange &&
+        bool reportRange = myShowRange &&
                            !lines.empty() &&
                            errorLevel != DiagnosticLevel::CallStack &&
                            errorLevel != DiagnosticLevel::CallStackInlined &&
@@ -275,7 +313,7 @@ void Diagnostic::report(bool verboseMode) const
                     if (hilightCodeRange && i == lines.size() - 1)
                         break;
 
-                    if (!showRange && errorLevel == DiagnosticLevel::Note)
+                    if (!myShowRange && errorLevel == DiagnosticLevel::Note)
                     {
                         g_Log.setColor(hilightCodeColor);
                     }
@@ -314,20 +352,20 @@ void Diagnostic::report(bool verboseMode) const
                 endLocation2.column < startLocation.column)
             {
                 ranges.push_back({startLocation2, endLocation2, hint2});
-                ranges.push_back({startLocation, endLocation, hint});
+                ranges.push_back({startLocation, endLocation, myHint});
             }
             else if (hasRangeLocation2 &&
                      startLocation2.line == startLocation.line &&
                      endLocation2.line == startLocation2.line &&
                      startLocation2.column > endLocation.column)
             {
-                ranges.push_back({startLocation, endLocation, hint});
+                ranges.push_back({startLocation, endLocation, myHint});
                 ranges.push_back({startLocation2, endLocation2, hint2});
                 invertError = true;
             }
             else
             {
-                ranges.push_back({startLocation, endLocation, hint});
+                ranges.push_back({startLocation, endLocation, myHint});
             }
 
             // Preprocess ranges
@@ -560,19 +598,6 @@ void Diagnostic::report(bool verboseMode) const
         }
     }
 
-    // Source file and location on their own line
-    if (!g_CommandLine.errorCompact && hasFile && !sourceFile->path.empty() && showFileName)
-    {
-        if (showMultipleCodeLines)
-            printMargin(verboseMode, true);
-
-        printMargin(verboseMode);
-
-        g_Log.setColor(sourceFileColor);
-        printSourceLine();
-        g_Log.eol();
-    }
-
     // Code remarks
     if (!g_CommandLine.errorCompact)
     {
@@ -618,16 +643,8 @@ Diagnostic* Diagnostic::hereIs(SymbolOverload* overload, bool forceShowRange)
     if (site->typeInfo->isTuple())
         showRange = true;
 
-    Diagnostic* note;
-    if (forceShowRange)
-    {
-        note = new Diagnostic{site, site->token, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
-    }
-    else
-    {
-        note            = new Diagnostic{site, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
+    Diagnostic* note = new Diagnostic{site, site->token, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
+    if (!forceShowRange)
         note->showRange = showRange;
-    }
-
     return note;
 }
