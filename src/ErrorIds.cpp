@@ -179,9 +179,9 @@ void initErrors()
     SWAG_ERROR(Err0167, "operator `^` does not accept type `%s`");
     SWAG_ERROR(Err0168, "unexpected operation `%s` on a tuple type");
     SWAG_ERROR(Err0169, "more than one module with the name `%s` is present in the workspace (path is `%s`)");
-    SWAG_ERROR(Err0170, "operator `<<` does not accept type `%s`");
+    SWAG_ERROR(Err0170, "unexpected type `%s` for operator `<<` (integer expected)");
     SWAG_ERROR(Err0171, "expected the type of the array after the dimensions, but found `%s`");
-    SWAG_ERROR(Err0172, "operator `>>` does not accept type `%s`");
+    SWAG_ERROR(Err0172, "unexpected type `%s` for operator `>>` (integer expected)");
     SWAG_ERROR(Err0173, "a shift operand should be of type `u32` and not `%s`");
     SWAG_ERROR(Err0174, "unexpected hexadecimal digit `%c`, %s");
     SWAG_ERROR(Err0175, "cannot cast implicitly from `%s` to `%s`");

@@ -988,13 +988,15 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
     }
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU32, nullptr, right, CASTFLAG_TRY_COERCE));
-    auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
-    auto module        = node->sourceFile->module;
+    auto module = node->sourceFile->module;
 
     if (!leftTypeInfo->isNativeIntegerOrRune())
-        return context->report({left, Fmt(Err(Err0170), leftTypeInfo->getDisplayNameC())});
-    if (!rightTypeInfo->isNative(NativeTypeKind::U32))
-        return context->report({right, Fmt(Err(Err0173), rightTypeInfo->getDisplayNameC())});
+    {
+        Diagnostic diag{left, Fmt(Err(Err0170), leftTypeInfo->getDisplayNameC())};
+        diag.hint = Diagnostic::isType(leftTypeInfo);
+        diag.setRange2(node->token, Hnt(Hnt0061));
+        return context->report(diag);
+    }
 
     bool isSmall = node->specFlags & AST_SPEC_OP_SMALL;
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
@@ -1126,13 +1128,15 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
     }
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU32, nullptr, right, CASTFLAG_TRY_COERCE));
-    auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
-    auto module        = node->sourceFile->module;
+    auto module = node->sourceFile->module;
 
     if (!leftTypeInfo->isNativeIntegerOrRune())
-        return context->report({left, Fmt(Err(Err0172), leftTypeInfo->getDisplayNameC())});
-    if (!rightTypeInfo->isNative(NativeTypeKind::U32))
-        return context->report({right, Fmt(Err(Err0173), rightTypeInfo->getDisplayNameC())});
+    {
+        Diagnostic diag{left, Fmt(Err(Err0172), leftTypeInfo->getDisplayNameC())};
+        diag.hint = Diagnostic::isType(leftTypeInfo);
+        diag.setRange2(node->token, Hnt(Hnt0061));
+        return context->report(diag);
+    }
 
     bool isSmall = node->specFlags & AST_SPEC_OP_SMALL;
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
