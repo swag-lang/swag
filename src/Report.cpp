@@ -47,6 +47,9 @@ namespace Report
 
     void cleanNotes(const Diagnostic& diag, vector<Diagnostic*>& notes)
     {
+        auto                cdiag = const_cast<Diagnostic*>(&diag);
+        vector<Diagnostic*> newNotes;
+
         for (auto n : notes)
         {
             auto note = const_cast<Diagnostic*>(n);
@@ -65,8 +68,25 @@ namespace Report
                 !note->forceSourceFile)
             {
                 note->showFileName = false;
+
+                // Try to transform a note in a hint
+                if (diag.hint.empty() &&
+                    note->startLocation.line == diag.startLocation.line &&
+                    note->endLocation.line == diag.endLocation.line &&
+                    note->startLocation.column == diag.startLocation.column &&
+                    note->endLocation.column == diag.endLocation.column &&
+                    note->hasRangeLocation && note->hint.empty() &&
+                    !note->hasRangeLocation2)
+                {
+                    cdiag->hint = note->textMsg;
+                    continue;
+                }
             }
+
+            newNotes.push_back(note);
         }
+
+        notes = newNotes;
 
         for (auto n : notes)
         {
