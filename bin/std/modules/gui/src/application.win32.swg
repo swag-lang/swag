@@ -51,8 +51,8 @@ impl Application
 
         // We need to have a unique id per shortcut
         var crc32: Hash.Crc32
-        crc32.update(@mkslice(cast(const *u8) &mod, 4))
-        crc32.update(@mkslice(cast(const *u8) &winkey, 4))
+        crc32.update(@mkslice(cast(const ^u8) &mod, 4))
+        crc32.update(@mkslice(cast(const ^u8) &winkey, 4))
         crc32.crc &= 0x7FFFFFFF
 
         catch UnregisterHotKey(null, acast crc32.crc)

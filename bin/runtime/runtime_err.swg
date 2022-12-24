@@ -204,7 +204,7 @@ func @panic(message: string, loc: CompilerSourceLocation)
     __panicBox(cast(string) str, title)
 }
 
-func __panic(file: const *u8, line: u32, col: u32, message: const *u8)
+func __panic(file: const ^u8, line: u32, col: u32, message: const ^u8)
 {
     var loc: CompilerSourceLocation
     loc.fileName = cast(string) @mkslice(file, @strlen(file))

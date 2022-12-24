@@ -178,9 +178,9 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     {
         if type.flags & TypeInfoFlags.CString
         {
-            ptr := dref cast(const **u8) valueData
+            ptr := dref cast(const ^^u8) valueData
             len := @strlen(ptr)
-            buf.addBytes(@mkslice(ptr, len));
+            buf.addBytes(@mkslice(ptr, len))
             return
         }
 

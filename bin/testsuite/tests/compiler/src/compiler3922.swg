@@ -1,4 +1,4 @@
-func toto()->*u8 => null
+func toto()->^u8 => null
 
 #test
 {

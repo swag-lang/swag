@@ -125,7 +125,7 @@ public struct Encoder
     ihdr:                   Ihdr
     currentChunk:           Chunk
     tmpBuf:                 [256] u8
-    writePtr:               *u8
+    writePtr:               ^u8
     crc:                    Hash.Crc32
     subimage:               [7] SubImage
     widestPass:             s32
@@ -154,7 +154,7 @@ impl Encoder
         dref cast(*u32) dst = v
     }
 
-    mtd writeData(buf: const *u8, bytes: u32)
+    mtd writeData(buf: const ^u8, bytes: u32)
     {
         stream.addBytes(@mkslice(buf, bytes))
     }
@@ -162,10 +162,10 @@ impl Encoder
     mtd writeU32(val: u32)
     {
         v := Math.nativeToBigEndian(val)
-        stream.addBytes(@mkslice(cast(const *u8) &v, 4))
+        stream.addBytes(@mkslice(cast(const ^u8) &v, 4))
     }
 
-    mtd writeHeader(chunkType: const [4] u8, chunkLength: uint)->*u8
+    mtd writeHeader(chunkType: const [4] u8, chunkLength: uint)->^u8
     {
         total := chunkLength + 8 + 4
         stream.grow(total)
@@ -297,7 +297,7 @@ impl Encoder
         finishChunk()
     }
 
-    mtd writeIDatBytes(sl: *u8, len: u32) throw
+    mtd writeIDatBytes(sl: ^u8, len: u32) throw
     {
         bufferToCompress.add(@mkslice(sl, len))
     }

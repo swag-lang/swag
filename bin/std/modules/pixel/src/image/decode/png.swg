@@ -123,7 +123,7 @@ impl Decoder
         stream.curByte += ch.length
 
         var crc: Hash.Crc32
-        crc.update(@mkslice(cast(const *u8) &ch.type, 4))
+        crc.update(@mkslice(cast(const ^u8) &ch.type, 4))
         crc.update(result.datas)
 
         var vcrc: u32

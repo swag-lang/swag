@@ -888,7 +888,13 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstTypeExpres
         CONCAT_FIXED_STR(concat, "[..] ");
 
     for (int i = 0; i < node->ptrCount; i++)
-        concat.addChar('*');
+    {
+        if (node->ptrFlags[i] & AstTypeExpression::PTR_ARITMETIC)
+            concat.addChar('^');
+        else
+            concat.addChar('*');
+    }
+
     if (node->identifier)
     {
         SWAG_CHECK(outputNode(context, concat, node->identifier));

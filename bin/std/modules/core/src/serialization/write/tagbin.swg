@@ -196,7 +196,7 @@ impl TagBin
             (raw, sizeof) := isPodFinal(typeElem)
             if raw
             {
-                output.addBytes(@mkslice(cast(const *u8) data, countElem * sizeof))
+                output.addBytes(@mkslice(cast(const ^u8) data, countElem * sizeof))
                 return true
             }
         }

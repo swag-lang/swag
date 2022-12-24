@@ -38,7 +38,7 @@ func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileIn
     var fileTime:   SYSTEMTIME
     var stackPath:  Array'String
 
-    dataof := cast(const *u16) @dataof(findfile.cFileName)
+    dataof := cast(const ^u16) @dataof(findfile.cFileName)
 
     stackPath.add(String.from(dirName))
     while !stackPath.isEmpty()

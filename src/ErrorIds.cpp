@@ -717,7 +717,7 @@ void initErrors()
     SWAG_ERROR(Err0708, "the enum value `%s` is out of range of `u8`");
     SWAG_ERROR(Err0709, "cannot deduce the flag value of `%s` because the previous value is not a power of two");
     SWAG_ERROR(Err0710, "the enum value `%s` is out of range of `u16`");
-    SWAG_ERROR(Err0711, nullptr);
+    SWAG_ERROR(Err0711, "`%s` should have an arithmetic pointer as a first parameter");
     SWAG_ERROR(Err0712, "the enum value `%s` is out of range of `u32`");
     SWAG_ERROR(Err0713, "attempt to unpack `%u` variable(s), but the tuple on the right only contains `%u` field(s)");
     SWAG_ERROR(Err0714, "the enum value `%s` is out of range of `u64`");

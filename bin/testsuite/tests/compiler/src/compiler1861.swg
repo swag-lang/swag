@@ -1,4 +1,4 @@
-func toto(ptr: const *u8)
+func toto(ptr: const ^u8)
 {
     x := @mkstring(ptr, 4)
     //@print(@typeof(x).name)

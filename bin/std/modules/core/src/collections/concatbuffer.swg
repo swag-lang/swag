@@ -177,7 +177,7 @@ impl ConcatBuffer
                currentSP > curBucket.datas + curBucket.count - @sizeof(T)
             {
                 v := val
-                addBytes(@mkslice(cast(*u8) &v, @sizeof(T)), false)
+                addBytes(@mkslice(cast(^u8) &v, @sizeof(T)), false)
                 return
             }
 
@@ -197,7 +197,7 @@ impl ConcatBuffer
     #[Swag.Inline]
     mtd(T) addStruct(val: T)
     {
-        addBytes(@mkslice(cast(const *u8) &val, @sizeof(T)))
+        addBytes(@mkslice(cast(const ^u8) &val, @sizeof(T)))
     }
 
     // Append a slice of bytes to the buffer

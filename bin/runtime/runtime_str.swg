@@ -185,7 +185,7 @@ func @print(params: ...)
         if ko.flags & TypeInfoFlags.CString
         {
             #[Safety("cast", false)]
-            ptr := cast(const *u8) v
+            ptr := cast(const ^u8) v
             len := @strlen(ptr)
             __printString(@mkstring(ptr, len))
             continue
