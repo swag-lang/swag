@@ -338,8 +338,8 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
     {
         Utf8       msg = Fmt(Err(Err0885), symbol->name.c_str(), SymTable::getArticleKindName(symbol->kind));
         Diagnostic diag{node, token, msg};
-        Utf8       note = Nte(Nte0036);
-        Diagnostic diagNote{symbol->nodes.front(), note, DiagnosticLevel::Note};
+        auto       front = symbol->nodes.front();
+        Diagnostic diagNote{front, front->token, Nte(Nte0036), DiagnosticLevel::Note};
         context->report(diag, &diagNote);
         return false;
     }

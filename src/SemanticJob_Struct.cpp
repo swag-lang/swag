@@ -1087,7 +1087,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             if (!(node->flags & AST_GENERATED) && hasItemName)
             {
                 Diagnostic note{Hlp(Hlp0009), DiagnosticLevel::Help};
-                return context->report({child, Fmt(Err(Err0674), child->token.ctext())}, &note);
+                return context->report({child, child->token, Fmt(Err(Err0674), child->token.ctext())}, &note);
             }
 
             if (!hasItemName)

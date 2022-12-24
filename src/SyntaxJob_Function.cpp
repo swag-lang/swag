@@ -540,7 +540,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         }
 
         funcNode->inheritTokenName(token);
-        SWAG_CHECK(checkIsValidUserName(funcNode));
+        SWAG_CHECK(checkIsValidUserName(funcNode, &token));
     }
 
     // Register function name

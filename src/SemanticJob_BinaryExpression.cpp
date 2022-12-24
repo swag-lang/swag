@@ -517,6 +517,7 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
     default:
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0163), leftTypeInfo->getDisplayNameC())};
+        diag.hint = Hnt(Hnt0061);
         diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
@@ -629,6 +630,7 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
     default:
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0164), leftTypeInfo->getDisplayNameC())};
+        diag.hint = Hnt(Hnt0061);
         diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }

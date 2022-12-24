@@ -131,7 +131,10 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 else
                     hint += "` because of a `with`";
 
-                note = new Diagnostic{leftId->fromAlternateVar, Nte(Nte0023), Diagnostic::isType(left->typeInfo), DiagnosticLevel::Note};
+                if (left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM && left->typeInfo->isConst())
+                    note = new Diagnostic{leftId->fromAlternateVar, Nte(Nte0023), DiagnosticLevel::Note};
+                else if (!(left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM))
+                    note = new Diagnostic{leftId->fromAlternateVar, Nte(Nte0023), Diagnostic::isType(left->typeInfo), DiagnosticLevel::Note};
             }
         }
 
@@ -141,7 +144,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             {
                 Diagnostic note1{Hlp(Hlp0016), DiagnosticLevel::Help};
                 Diagnostic diag{left, Fmt(Err(Err0740), left->resolvedSymbolName->name.c_str()), hint};
-                return context->report(diag, &note1, note);
+                return context->report(diag, note, &note1);
             }
             else if (hint.empty())
             {
@@ -199,11 +202,11 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     {
         auto leftConcrete = TypeManager::concreteType(leftTypeInfo);
         if (right->flags & AST_NO_LEFT_DROP)
-            SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, ISSAME_CAST), context->report({node, Fmt(Err(Err0568), g_LangSpec->name_nodrop.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, ISSAME_CAST), context->report({node, node->token, Fmt(Err(Err0568), g_LangSpec->name_nodrop.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
         if (right->flags & AST_NO_RIGHT_DROP)
-            SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, ISSAME_CAST), context->report({node, Fmt(Err(Err0568), g_LangSpec->name_moveraw.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, ISSAME_CAST), context->report({node, node->token, Fmt(Err(Err0568), g_LangSpec->name_moveraw.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
         if (right->flags & AST_FORCE_MOVE)
-            SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, ISSAME_CAST), context->report({node, Fmt(Err(Err0568), g_LangSpec->name_move.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, ISSAME_CAST), context->report({node, node->token, Fmt(Err(Err0568), g_LangSpec->name_move.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
     }
 
     // No direct operations on any, except affect any to any

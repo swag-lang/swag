@@ -564,7 +564,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                       bi.badSignatureRequestedType->getDisplayNameC(),
                                       bi.badSignatureGivenType->getDisplayNameC())};
 
-            diag->hint = explicitCastHint;
+            diag->hint = explicitCastHint.empty() ? Diagnostic::isType(bi.badSignatureGivenType) : explicitCastHint;
         }
 
         if (destFuncDecl && bi.badSignatureParameterIdx < destFuncDecl->genericParameters->childs.size())

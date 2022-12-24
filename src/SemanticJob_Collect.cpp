@@ -355,7 +355,11 @@ bool SemanticJob::collectAssignment(SemanticContext* context, DataSegment* stora
             auto assign   = node->assignment;
             auto overload = assign->resolvedSymbolOverload;
             if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
-                return context->report({assign, Err(Err0645), Hnt(Hnt0045)});
+            {
+                Diagnostic diag{assign, Err(Err0645), Hnt(Hnt0045)};
+                diag.setRange2(node->type, Hnt(Hnt0007));
+                return context->report(diag);
+            }
 
             // Copy from a constant
             SWAG_ASSERT(assign->flags & AST_CONST_EXPR);

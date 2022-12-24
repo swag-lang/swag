@@ -87,12 +87,12 @@ bool SemanticJob::checkFuncPrototypeOpReturnType(SemanticContext* context, AstFu
     if (wanted == nullptr)
     {
         if (returnType == g_TypeMgr->typeInfoVoid)
-            return context->report({node, Fmt(Err(Err0063), node->token.ctext())});
+            return context->report({node, node->token, Fmt(Err(Err0063), node->token.ctext())});
         return true;
     }
 
     if (wanted != g_TypeMgr->typeInfoVoid && returnType == g_TypeMgr->typeInfoVoid)
-        return context->report({node, Fmt(Err(Err0064), node->token.ctext(), wanted->getDisplayNameC())});
+        return context->report({node, node->token, Fmt(Err(Err0064), node->token.ctext(), wanted->getDisplayNameC())});
 
     if (!returnType->isSame(wanted, ISSAME_CAST))
         return context->report({node->returnType->childs.front(), Fmt(Err(Err0065), node->token.ctext(), wanted->name.c_str(), returnType->getDisplayNameC())});
@@ -550,7 +550,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
 
         Diagnostic* note = nullptr;
         if (leftType->declNode)
-            note = new Diagnostic{leftType->declNode, Fmt(Nte(Nte0027), leftType->getDisplayNameC()), DiagnosticLevel::Note};
+            note = new Diagnostic{leftType->declNode, leftType->declNode->token, Fmt(Nte(Nte0027), leftType->getDisplayNameC()), DiagnosticLevel::Note};
 
         if (!opConst)
         {

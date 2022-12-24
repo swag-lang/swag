@@ -132,9 +132,9 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
             // Instructions
             ScopedBreakable scopedBreakable(this, switchNode);
             if (token.id == TokenId::KwdCase || token.id == TokenId::KwdDefault)
-                return error(previousToken, Err(Err0869));
+                return error(previousToken, Err(Err0869), Hlp(Hlp0037));
             if (token.id == TokenId::SymRightCurly)
-                return error(previousToken, Err(Err0823));
+                return error(previousToken, Err(Err0869), Hlp(Hlp0038));
             while (token.id != TokenId::KwdCase && token.id != TokenId::KwdDefault && token.id != TokenId::SymRightCurly)
                 SWAG_CHECK(doEmbeddedInstruction(statement));
         }

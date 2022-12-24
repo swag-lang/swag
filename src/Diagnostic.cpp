@@ -146,17 +146,20 @@ void Diagnostic::report(bool verboseMode) const
     auto myHint         = hint;
     auto myShowRange    = showRange;
 
-    if (!g_CommandLine.errorCompact && errorLevel == DiagnosticLevel::Note && hint.empty() && hasRangeLocation2 == false && hasRangeLocation)
+    if (errorLevel == DiagnosticLevel::Note || errorLevel == DiagnosticLevel::Help)
     {
-        printMargin(verboseMode, true);
-        showErrorLevel = false;
-        if (!noteHeader.empty())
-            myHint = noteHeader + " " + textMsg;
-        else
-            myHint = textMsg;
-        myShowRange = true;
+        if (!g_CommandLine.errorCompact && hint.empty() && hasRangeLocation2 == false && hasRangeLocation)
+        {
+            printMargin(verboseMode, true);
+            showErrorLevel = false;
+            if (!noteHeader.empty())
+                myHint = noteHeader + " " + textMsg;
+            else
+                myHint = textMsg;
+            myShowRange = true;
+        }
     }
-
+ 
     // Message level
     if (showErrorLevel)
     {
@@ -242,8 +245,11 @@ void Diagnostic::report(bool verboseMode) const
 
         if (showErrorLevel || showFileName)
         {
-            if (errorLevel == DiagnosticLevel::Note && myShowRange && hasRangeLocation)
-                printMargin(verboseMode, true);
+            if (errorLevel == DiagnosticLevel::Note || errorLevel == DiagnosticLevel::Help)
+            {
+                if (myShowRange && hasRangeLocation && !showMultipleCodeLines)
+                    printMargin(verboseMode, true);
+            }
         }
     }
 
@@ -603,6 +609,7 @@ void Diagnostic::report(bool verboseMode) const
     {
         if (!remarks.empty())
         {
+            printMargin(verboseMode, true);
             g_Log.setColor(remarkColor);
             for (auto r : remarks)
             {

@@ -97,7 +97,7 @@ void initErrors()
     SWAG_ERROR(Err0083, "the %s `%s` is deprecated (marked with `Swag.Deprecated`)");
     SWAG_ERROR(Err0084, "`@runes` should have a string as a parameter (`%s` provided)");
     SWAG_ERROR(Err0085, "the identifier `%s` cannot be dereferenced like a struct or a pointer (type is `%s`)");
-    SWAG_ERROR(Err0086, "the variable `%s` has only been used to find function `%s`; use the scope `%s` instead");
+    SWAG_ERROR(Err0086, "the variable `%s` has only been used as a scope to find the function `%s`");
     SWAG_ERROR(Err0087, "unexpected function call at global scope");
     SWAG_ERROR(Err0088, "unexpected specified lambda parameter type");
     SWAG_ERROR(Err0089, "`%s` cannot be evaluated at compile time");
@@ -349,7 +349,7 @@ void initErrors()
     SWAG_ERROR(Err0337, "cannot use a range in a switch with an expression");
     SWAG_ERROR(Err0338, "too many array dimensions (maximum is `254`)");
     SWAG_ERROR(Err0339, "expected a pointer declaration `*` or `^` after `const`");
-    SWAG_ERROR(Err0340, "too many pointer dimensions (maximim is `%u`)");
+    SWAG_ERROR(Err0340, "too many pointer dimensions (maximum is `%u`)");
     SWAG_ERROR(Err0341, "the literal number `%I64u` is not in the range of `u8`");
     SWAG_ERROR(Err0342, "cannot use the operator `orelse` on a struct");
     SWAG_ERROR(Err0343, "expected a type declaration, found `%s`");
@@ -361,7 +361,7 @@ void initErrors()
     SWAG_ERROR(Err0349, "a %s definition should appear at file or namespace scope");
     SWAG_ERROR(Err0350, "`%s` attribute should not be used in a file marked with `#global export` because the whole file is implicitly public");
     SWAG_ERROR(Err0351, "found `elif` without a corresponding `if`");
-    SWAG_ERROR(Err0352, "cannot deduce the generic parameters when calling the special %s");
+    SWAG_ERROR(Err0352, "cannot deduce the generic parameters when calling %s");
     SWAG_ERROR(Err0353, "unexpected token `%s` after the `%s` expose attribute");
     SWAG_ERROR(Err0354, "unexpected attribute usage (`%s`) after the `%s` expose attribute");
     SWAG_ERROR(Err0355, "expected an attribute name, found `%s`");
@@ -575,7 +575,7 @@ void initErrors()
     SWAG_ERROR(Err0565, "the affectation is not allowed because the left expression is not a value");
     SWAG_ERROR(Err0566, "the affectation is not allowed");
     SWAG_ERROR(Err0567, nullptr);
-    SWAG_ERROR(Err0568, "unexpected affectation modifier `%s`, left and right types should be the same (`%s` and `%s` provided)");
+    SWAG_ERROR(Err0568, "unexpected `%s` affectation, the left and right types should be the same (`%s` and `%s` provided)");
     SWAG_ERROR(Err0569, "cannot affect an expression of type `void`");
     SWAG_ERROR(Err0570, "unexpected operation `%s` on type `%s`");
     SWAG_ERROR(Err0571, "the affectation is not allowed on %s `%s`");
@@ -616,7 +616,7 @@ void initErrors()
     SWAG_ERROR(Err0607, "a switch without an expression cannot be marked as `Swag.Complete`");
     SWAG_ERROR(Err0608, "unexpected switch type `any`, you need to cast to a concrete type");
     SWAG_ERROR(Err0609, "unexpected switch type `%s`");
-    SWAG_ERROR(Err0610, "the switch body is empty");
+    SWAG_ERROR(Err0610, "unexpected empty `switch` body");
     SWAG_ERROR(Err0611, "the switch value `%s` has already been defined");
     SWAG_ERROR(Err0612, "the switch enum value `%s` has already been defined");
     SWAG_ERROR(Err0613, "the switch value `%d` has already been defined");
@@ -829,7 +829,7 @@ void initErrors()
     SWAG_ERROR(Err0820, "the enum `%s` is already defined");
     SWAG_ERROR(Err0821, "cannot unpack the variable `%s` from the struct `%s` because there`s no corresponding member");
     SWAG_ERROR(Err0822, "`using` on a variable with a pointer type is only possible for a pointer to a struct (and type is `%s`)");
-    SWAG_ERROR(Err0823, "the `case` statement is empty, you should add a `break`");
+    SWAG_ERROR(Err0823, nullptr);
     SWAG_ERROR(Err0824, "fatal error: cannot create file `%s`");
     SWAG_ERROR(Err0825, "expected `,` or `]`, found `%s`");
     SWAG_ERROR(Err0826, "unexpected `[` when accessing an array with multiple dimensions");
@@ -875,7 +875,7 @@ void initErrors()
     SWAG_ERROR(Err0866, "`default` already defined");
     SWAG_ERROR(Err0867, "expected a `case` expression before `:`");
     SWAG_ERROR(Err0868, "expected a `case` expression before `break`");
-    SWAG_ERROR(Err0869, "the `case` statement is empty, you should add a `break` or a `fallthrough`");
+    SWAG_ERROR(Err0869, "unexpected empty `case` statement");
     SWAG_ERROR(Err0870, "opVisit special name expected");
     SWAG_ERROR(Err0871, "expected the `visit` expression to evaluate before `{`");
     SWAG_ERROR(Err0872, "expected another `visit` variable name after `,` and before `:`");
@@ -956,8 +956,8 @@ void initErrors()
     SWAG_ERROR(Hlp0034, "`#selectif` and `#checkif` cannot be used on `opDrop`, `opPostCopy` and `opPostMove`");
     SWAG_ERROR(Hlp0035, "this is reserved for function calls");
     SWAG_ERROR(Hlp0036, "you could force the evaluation with a `#run`");
-    SWAG_ERROR(Hlp0037, nullptr);
-    SWAG_ERROR(Hlp0038, nullptr);
+    SWAG_ERROR(Hlp0037, "you should add a `break` or a `fallthrough`");
+    SWAG_ERROR(Hlp0038, "you should add a `break`");
     SWAG_ERROR(Hlp0039, nullptr);
     SWAG_ERROR(Hlp0040, nullptr);
 
@@ -1045,7 +1045,7 @@ void initErrors()
     SWAG_ERROR(Hnt0077, "...than this");
     SWAG_ERROR(Hnt0078, "this function does not accept aliased names");
     SWAG_ERROR(Hnt0079, "this is a lambda");
-    SWAG_ERROR(Hnt0080, nullptr);
+    SWAG_ERROR(Hnt0080, "this should be replaced by the scope `%s`");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

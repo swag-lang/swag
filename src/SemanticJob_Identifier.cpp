@@ -774,8 +774,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             return context->report(diag);
         }
 
-        Diagnostic diag{parent->previousResolvedNode, Fmt(Err(Err0086), parent->previousResolvedNode->token.ctext(), symbol->name.c_str(), parent->startScope->name.c_str())};
-        diag.hint = Hnt(Hnt0073);
+        Diagnostic diag{parent->previousResolvedNode, Fmt(Err(Err0086), parent->previousResolvedNode->token.ctext(), symbol->name.c_str())};
+        diag.setRange2(identifier->token, Hnt(Hnt0073));
+        diag.hint = Fmt(Hnt(Hnt0080), parent->startScope->name.c_str()); 
         return context->report(diag);
     }
 

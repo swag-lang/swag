@@ -62,23 +62,25 @@ namespace Report
             }
 
             // No need to repeat the same source file line reference
-            if (fuzzySameLine(note->startLocation.line, diag.startLocation.line) &&
-                fuzzySameLine(note->endLocation.line, diag.endLocation.line) &&
-                note->sourceFile == diag.sourceFile &&
+            if ((!note->hasRangeLocation || fuzzySameLine(note->startLocation.line, diag.startLocation.line)) &&
+                (!note->hasRangeLocation || fuzzySameLine(note->endLocation.line, diag.endLocation.line)) &&
+                (!note->hasRangeLocation || note->sourceFile == diag.sourceFile) &&
                 !note->forceSourceFile)
             {
                 note->showFileName = false;
 
                 // Try to transform a note in a hint
                 if (diag.hint.empty() &&
-                    note->startLocation.line == diag.startLocation.line &&
-                    note->endLocation.line == diag.endLocation.line &&
-                    note->startLocation.column == diag.startLocation.column &&
-                    note->endLocation.column == diag.endLocation.column &&
-                    note->hasRangeLocation && note->hint.empty() &&
-                    !note->hasRangeLocation2)
+                        note->hint.empty() &&
+                        !note->hasRangeLocation2 &&
+                        !note->hasRangeLocation ||
+                    (note->startLocation.line == diag.startLocation.line &&
+                     note->endLocation.line == diag.endLocation.line &&
+                     note->startLocation.column == diag.startLocation.column &&
+                     note->endLocation.column == diag.endLocation.column))
                 {
                     cdiag->hint = note->textMsg;
+                    cdiag->remarks.insert(cdiag->remarks.end(), note->remarks.begin(), note->remarks.end());
                     continue;
                 }
             }

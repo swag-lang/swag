@@ -3453,6 +3453,7 @@ bool TypeManager::convertLiteralTupleToStructType(SemanticContext* context, Type
 
 bool TypeManager::makeCompatibles(SemanticContext* context, AstNode* leftNode, AstNode* rightNode, uint32_t castFlags)
 {
+    PushErrContext ec(context, leftNode, ErrorContextKind::Hint2, "", Diagnostic::isType(leftNode->typeInfo));
     SWAG_CHECK(makeCompatibles(context, leftNode->typeInfo, leftNode, rightNode, castFlags));
     return true;
 }
