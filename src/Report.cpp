@@ -137,6 +137,7 @@ namespace Report
                 {
                     diag.report(true);
                     reportNotes(notes, true);
+                    g_Log.eol();
                 }
 
                 return false;
@@ -159,6 +160,7 @@ namespace Report
                 {
                     diag.report(true);
                     reportNotes(notes, true);
+                    g_Log.eol();
                 }
 
                 return false;
@@ -168,6 +170,7 @@ namespace Report
         // Print error/warning
         diag.report();
         reportNotes(notes);
+        g_Log.eol();
 
         if (errorLevel == DiagnosticLevel::Error)
         {
