@@ -136,6 +136,7 @@ struct Diagnostic
 
     static Utf8        isType(TypeInfo* typeInfo);
     static Diagnostic* hereIs(SymbolOverload* overload, bool forceShowRange = false);
+    static Diagnostic* hereIs(AstNode* node, bool forceShowRange = false);
 
     SourceLocation startLocation;
     SourceLocation endLocation;

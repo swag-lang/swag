@@ -689,7 +689,7 @@ void initErrors()
     SWAG_ERROR(Err0680, "cannot initialize an interface member");
     SWAG_ERROR(Err0681, "cannot resolve the interface because the type `%s` is generic");
     SWAG_ERROR(Err0682, "an interface member cannot be relocated with `Swag.Offset`");
-    SWAG_ERROR(Err0683, "the interface `%s` is empty");
+    SWAG_ERROR(Err0683, "unexpected empty interface `%s`");
     SWAG_ERROR(Err0684, "an embedded interface (`%s`) cannot be public");
     SWAG_ERROR(Err0685, nullptr);
     SWAG_ERROR(Err0686, nullptr);

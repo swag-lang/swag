@@ -54,8 +54,7 @@ bool AstOutput::checkIsPublic(OutputContext& context, AstNode* testNode, AstNode
                     what = "declaration";
 
                 Diagnostic diag{usedNode, Fmt(Err(Err0018), what.c_str(), typeWhat.c_str(), overload->node->token.ctext())};
-                Diagnostic note{overload->node, Fmt(Nte(Nte0040), overload->node->token.ctext()), DiagnosticLevel::Note};
-                return context.report(diag, &note);
+                return context.report(diag, Diagnostic::hereIs(overload));
             }
 
             Diagnostic diag{overload->node, Fmt(Err(Err0316), typeWhat.c_str(), overload->node->token.ctext())};

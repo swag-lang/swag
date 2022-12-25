@@ -21,7 +21,16 @@ bool SemanticJob::resolveMove(SemanticContext* context)
     if (node->flags & AST_FORCE_MOVE)
     {
         if ((right->typeInfo->isStruct() && right->typeInfo->isConst()) || right->typeInfo->isConstPointerRef())
-            return context->report({right, Fmt(Err(Err0559), right->typeInfo->getDisplayNameC())});
+        {
+            Diagnostic diag{right, Fmt(Err(Err0559), right->typeInfo->getDisplayNameC())};
+            if (right->resolvedSymbolOverload && right->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
+            {
+                Diagnostic note{Hlp(Hlp0016)};
+                return context->report(diag, &note);
+            }
+
+            return context->report(diag);
+        }
     }
 
     return true;
@@ -259,6 +268,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             context->job->waitAllStructInterfaces(rightTypeInfo);
             if (context->result == ContextResult::Pending)
                 return true;
+            PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Diagnostic::isType(leftTypeInfo));
             SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_UNCONST));
         }
     }

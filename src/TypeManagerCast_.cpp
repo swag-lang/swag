@@ -326,6 +326,8 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         // A specific error message ?
         if (!msg.empty())
         {
+            if(hint.empty())
+                hint = Diagnostic::isType(fromType);
             Diagnostic diag{fromNode, msg, hint};
             return context->report(diag);
         }

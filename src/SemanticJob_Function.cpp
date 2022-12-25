@@ -297,7 +297,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         {
             SWAG_VERIFY(module->kind == ModuleKind::Test, context->report({node, Err(Err0744)}));
             SWAG_VERIFY(node->returnType->typeInfo == g_TypeMgr->typeInfoVoid, context->report({node->returnType, Err(Err0745), Hnt(Hnt0026)}));
-            SWAG_VERIFY(!node->parameters || node->parameters->childs.size() == 0, context->report({node->parameters, Err(Err0746)}));
+            SWAG_VERIFY(!node->parameters || node->parameters->childs.size() == 0, context->report({node->parameters, Err(Err0746), Hnt(Hnt0026)}));
         }
 
         if (node->attributeFlags & ATTRIBUTE_PUBLIC)
@@ -533,7 +533,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
         if (funcNode->genericParameters)
         {
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC), context->report({funcNode->genericParameters, Fmt(Err(Err0752), funcNode->token.ctext())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC), context->report({funcNode->genericParameters, Fmt(Err(Err0752), funcNode->token.ctext()), Hnt(Hnt0026)}));
             funcNode->flags |= AST_IS_GENERIC;
         }
 
@@ -750,7 +750,11 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
 
         // The function wants to return something, but has the 'Swag.NoReturn' attribute
         if (!funcNode->returnType->typeInfo->isVoid() && (funcNode->attributeFlags & ATTRIBUTE_NO_RETURN))
-            return context->report({funcNode->returnType->childs.front(), Err(Err0766)});
+        {
+            Diagnostic diag{funcNode->returnType->childs.front(), Err(Err0766)};
+            diag.hint = Hnt(Hnt0026);
+            return context->report(diag);
+        }
         // The function returns nothing but has the 'Swag.Discardable' attribute
         if (funcNode->returnType->typeInfo->isVoid() && funcNode->attributeFlags & ATTRIBUTE_DISCARDABLE)
             return context->report({funcNode, Fmt(Err(Err0767), funcNode->token.ctext())});

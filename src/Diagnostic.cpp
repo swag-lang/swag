@@ -635,6 +635,15 @@ Utf8 Diagnostic::isType(TypeInfo* typeInfo)
     return Fmt(Hnt(Hnt0011), typeInfo->getDisplayNameC());
 }
 
+Diagnostic* Diagnostic::hereIs(AstNode* node, bool forceShowRange)
+{
+    if (node->resolvedSymbolOverload)
+        return hereIs(node->resolvedSymbolOverload, forceShowRange);
+    auto note = new Diagnostic{node, node->token, Fmt(Nte(Nte0040), node->token.ctext()), DiagnosticLevel::Note};
+    note->showRange = forceShowRange;
+    return note;
+}
+
 Diagnostic* Diagnostic::hereIs(SymbolOverload* overload, bool forceShowRange)
 {
     if (!overload)

@@ -469,6 +469,10 @@ Utf8 SymTable::getArticleKindName(SymbolOverload* overload)
         refNiceName = Fmt("the lambda `%s`", overload->symbol->name.c_str());
     else if (overload->typeInfo->isClosure())
         refNiceName = Fmt("the closure `%s`", overload->symbol->name.c_str());
+    else if (overload->flags & OVERLOAD_VAR_FUNC_PARAM)
+        refNiceName = Fmt("the function parameter `%s`", overload->symbol->name.c_str());
+    else if (overload->flags & OVERLOAD_VAR_GLOBAL)
+        refNiceName = Fmt("the global variable `%s`", overload->symbol->name.c_str());
     else
         refNiceName = Fmt("the %s `%s`", SymTable::getNakedKindName(overload->symbol->kind), overload->symbol->name.c_str());
     return refNiceName;

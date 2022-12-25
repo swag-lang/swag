@@ -253,7 +253,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         if (!typeLambda->isSame(typeFunc, ISSAME_EXACT | ISSAME_INTERFACE))
         {
             Diagnostic diag{child, child->token, Fmt(Err(Err0652), child->token.ctext(), typeBaseInterface->name.c_str())};
-            Diagnostic note{symbolName->declNode, Nte(Nte0002), DiagnosticLevel::Note};
+            Diagnostic note{symbolName->declNode, symbolName->declNode->token, Nte(Nte0002), DiagnosticLevel::Note};
             note.showRange = false;
             return context->report(diag, &note);
         }
@@ -300,8 +300,8 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         auto missingNode = typeInterface->fields[idx];
         if (!itfRef.itf)
         {
-            Diagnostic diag{node, Fmt(Err(Err0657), typeBaseInterface->name.c_str())};
-            auto       note = new Diagnostic({missingNode->declNode, Fmt("missing `%s`", missingNode->namedParam.c_str()), DiagnosticLevel::Note});
+            Diagnostic diag{node, node->token, Fmt(Err(Err0657), typeBaseInterface->name.c_str())};
+            auto       note = new Diagnostic({missingNode->declNode, missingNode->declNode->token, Fmt("missing `%s`", missingNode->namedParam.c_str()), DiagnosticLevel::Note});
             return context->report(diag, note);
         }
 
@@ -503,7 +503,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         storageIndex++;
     }
 
-    SWAG_VERIFY(!typeITable->fields.empty(), context->report({node, Fmt(Err(Err0683), node->token.ctext())}));
+    SWAG_VERIFY(!typeITable->fields.empty(), context->report({node, node->token, Fmt(Err(Err0683), node->token.ctext())}));
     typeInterface->itable = typeITable;
 
     // Struct interface, with one pointer for the data, and one pointer for itable

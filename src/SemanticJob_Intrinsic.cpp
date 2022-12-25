@@ -827,7 +827,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
 
         if (node->token.id == TokenId::IntrinsicCVaStart)
         {
-            SWAG_VERIFY(node->ownerFct && node->ownerFct->parameters && node->ownerFct->parameters->childs.size(), context->report({node, Err(Err0442)}));
+            SWAG_VERIFY(node->ownerFct && node->ownerFct->parameters && node->ownerFct->parameters->childs.size(), context->report({node, node->token, Err(Err0442)}));
             auto typeParam = node->ownerFct->parameters->childs.back()->typeInfo;
             SWAG_VERIFY(typeParam->isCVariadic(), context->report({node, node->token, Err(Err0442)}));
             node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCVaStart;

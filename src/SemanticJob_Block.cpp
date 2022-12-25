@@ -405,7 +405,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                     {
                         if (!val64.contains(one->value->reg.u64))
                         {
-                            Diagnostic diag{node, Fmt(Err(Err0620), typeEnum->name.c_str(), one->namedParam.c_str())};
+                            Diagnostic diag{node, node->token, Fmt(Err(Err0620), typeEnum->name.c_str(), one->namedParam.c_str())};
                             Diagnostic note{one->declNode, Nte(Nte0034), DiagnosticLevel::Note};
                             return context->report(diag, &note);
                         }
@@ -628,7 +628,12 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         return true;
     }
 
-    SWAG_VERIFY(node->extraNameToken.text.empty(), context->report({node, node->extraNameToken, Fmt(Err(Err0625), typeInfo->getDisplayNameC())}));
+    if (!node->extraNameToken.text.empty())
+    {
+        Diagnostic diag{node, node->extraNameToken, Fmt(Err(Err0625), typeInfo->getDisplayNameC())};
+        diag.hint = Hnt(Hnt0026);
+        return context->report(diag);
+    }
 
     if (node->aliasNames.size() > 2)
     {

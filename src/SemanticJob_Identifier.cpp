@@ -956,7 +956,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     if (identifier->identifierRef && identifier->identifierRef->flags & AST_GLOBAL_CALL)
     {
         if (identifier->callParameters)
-            return context->report({identifier, Fmt(Err(Err0087), identifier->token.ctext(), SymTable::getArticleKindName(symbolKind))});
+            return context->report({identifier, identifier->token, Fmt(Err(Err0087), identifier->token.ctext(), SymTable::getArticleKindName(symbolKind))});
         return context->report({identifier, Fmt(Err(Err0776), identifier->token.ctext(), SymTable::getArticleKindName(symbolKind))});
     }
 
@@ -2095,7 +2095,8 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 }
                 else
                 {
-                    auto couldBe = Fmt(Nte(Nte0050), SymTable::getArticleKindName(match->symbolOverload->symbol->kind), overload->typeInfo->getDisplayNameC());
+                    auto concreteType = TypeManager::concreteType(overload->typeInfo, CONCRETE_ALIAS);
+                    auto couldBe      = Fmt(Nte(Nte0050), SymTable::getArticleKindName(match->symbolOverload).c_str(), concreteType->getDisplayNameC());
                     note         = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
                 }
 
@@ -4410,10 +4411,10 @@ bool SemanticJob::checkCanThrow(SemanticContext* context)
     auto parentFct = (node->semFlags & AST_SEM_EMBEDDED_RETURN) ? node->ownerInline->func : node->ownerFct;
 
     if (parentFct->isSpecialFunctionName())
-        return context->report({node, Fmt(Err(Err0137), node->token.ctext(), parentFct->token.ctext())});
+        return context->report({node, node->token, Fmt(Err(Err0137), node->token.ctext(), parentFct->token.ctext())});
 
     if (!(parentFct->typeInfo->flags & TYPEINFO_CAN_THROW) && !(parentFct->attributeFlags & ATTRIBUTE_SHARP_FUNC))
-        return context->report({node, Fmt(Err(Err0138), node->token.ctext(), parentFct->token.ctext())});
+        return context->report({node, node->token, Fmt(Err(Err0138), node->token.ctext(), parentFct->token.ctext())});
 
     return true;
 }
