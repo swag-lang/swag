@@ -508,8 +508,20 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
         {
             if (context.doneParameters[j])
             {
+                context.badSignatureInfos.badSignatureNum1 = j;
+                for (int k = 0; k < context.parameters.size(); k++)
+                {
+                    auto checkParam = context.parameters[k];
+                    if (checkParam->extension &&
+                        checkParam->extension->misc &&
+                        checkParam->extension->misc->isNamed &&
+                        checkParam->extension->misc->isNamed->token.text == parameters[j]->namedParam)
+                    {
+                        context.badSignatureInfos.badSignatureNum1 = k;
+                        break;
+                    }
+                }
                 context.badSignatureInfos.badSignatureParameterIdx = parameterIndex;
-                context.badSignatureInfos.badSignatureNum1         = j;
                 context.result                                     = MatchResult::DuplicatedNamedParameter;
                 return;
             }
