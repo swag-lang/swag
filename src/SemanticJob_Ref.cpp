@@ -346,7 +346,12 @@ bool SemanticJob::resolveKeepRef(SemanticContext* context)
 
     auto typeInfo = TypeManager::concreteType(front->typeInfo);
     if (!typeInfo->isPointerRef() && !typeInfo->isPointer())
-        return context->report({node, Fmt(Err(Err0517), typeInfo->getDisplayNameC())});
+    {
+        Diagnostic diag{node, node->token, Fmt(Err(Err0517), typeInfo->getDisplayNameC())};
+        diag.hint = Hnt(Hnt0061);
+        diag.setRange2(front, Diagnostic::isType(typeInfo));
+        return context->report(diag);
+    }
 
     if (!typeInfo->isPointerRef())
     {

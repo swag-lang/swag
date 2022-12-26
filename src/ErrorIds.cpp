@@ -1046,6 +1046,7 @@ void initErrors()
     SWAG_ERROR(Hnt0078, "this function does not accept aliased names");
     SWAG_ERROR(Hnt0079, "this is a lambda");
     SWAG_ERROR(Hnt0080, "this should be replaced by the scope `%s`");
+    SWAG_ERROR(Hnt0081, "this is the first one");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

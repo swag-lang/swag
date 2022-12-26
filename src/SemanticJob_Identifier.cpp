@@ -1974,7 +1974,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 couldBe += with;
             }
 
-            auto note                   = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
+            auto note                   = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
             note->showRange             = false;
             note->showMultipleCodeLines = false;
             notes.push_back(note);
@@ -2840,12 +2840,14 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
             if (dep.node->specFlags & AST_SPEC_DECLPARAM_GENERATED_SELF)
             {
                 Diagnostic diag{dependentVar, Fmt(Err(Err0117), dependentVar->typeInfo->getDisplayNameC())};
+                diag.hint = Hnt(Hnt0081);
                 Diagnostic note{dep.node, Nte(Nte0056), DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }
             else
             {
                 Diagnostic diag{dep.node, Fmt(Err(Err0117), dependentVar->typeInfo->getDisplayNameC())};
+                diag.hint = Hnt(Hnt0081);
                 Diagnostic note{dependentVar, Nte(Nte0021), DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }
