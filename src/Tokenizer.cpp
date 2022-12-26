@@ -273,13 +273,6 @@ bool Tokenizer::getToken(Token& token)
 
             doIdentifier(token, nc, offset);
             token.endLocation = location;
-
-            if (token.id == TokenId::Identifier)
-            {
-                error(token, Fmt(Err(Err0140), token.ctext()));
-                return false;
-            }
-
             return true;
         }
 

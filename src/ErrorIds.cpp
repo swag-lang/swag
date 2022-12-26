@@ -276,7 +276,7 @@ void initErrors()
     SWAG_ERROR(Err0264, "unknown operator modifier `%s`");
     SWAG_ERROR(Err0265, "the operator modifier `%s` is already used once");
     SWAG_ERROR(Err0266, "the operator modifier `%s` is invalid for operator `%s`");
-    SWAG_ERROR(Err0267, "unexpected compare operator `=`, do you mean `==` ?");
+    SWAG_ERROR(Err0267, "unexpected compare operator `=`");
     SWAG_ERROR(Err0268, "`#dependencies` should only be declared at the file level");
     SWAG_ERROR(Err0269, "expected the `#main` function (executable entry point)");
     SWAG_ERROR(Err0270, "the initializer list is empty");
@@ -1047,6 +1047,7 @@ void initErrors()
     SWAG_ERROR(Hnt0079, "this is a lambda");
     SWAG_ERROR(Hnt0080, "this should be replaced by the scope `%s`");
     SWAG_ERROR(Hnt0081, "this is the first one");
+    SWAG_ERROR(Hnt0082, "do you mean `==` ?");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
