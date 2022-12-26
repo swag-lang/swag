@@ -1048,6 +1048,8 @@ void SemanticJob::findClosestMatches(SemanticContext* context, const Utf8& searc
     {
         auto searchName2 = searchList[i];
         searchName2.makeLower();
+        if (searchName1 == searchName2)
+            continue;
 
         auto score = Utf8::fuzzyCompare(searchName1, searchName2);
 

@@ -780,7 +780,7 @@ void initErrors()
     SWAG_ERROR(Err0771, "the `retval` type should not be used in a function that returns nothing");
     SWAG_ERROR(Err0772, "expected an expression of type `%s` after `return`");
     SWAG_ERROR(Err0773, "the return type has already been deduced to be nothing");
-    SWAG_ERROR(Err0774, "returning a value of type `%s`, but the %s returns nothing");
+    SWAG_ERROR(Err0774, "unexpected return value of type `%s`, the %s returns nothing");
     SWAG_ERROR(Err0775, "cannot expand `%s` because this is recursive");
     SWAG_ERROR(Err0776, "unexpected identifier at global scope");
     SWAG_ERROR(Err0777, "the generic type replacement for %s of %s has generated an invalid type (`%s` becomes `%s`)");
