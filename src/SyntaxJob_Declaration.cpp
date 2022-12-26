@@ -29,7 +29,13 @@ bool SyntaxJob::doWith(AstNode* parent, AstNode** result)
     {
         SWAG_CHECK(doAffectExpression(node, &id));
 
-        SWAG_VERIFY(id->kind != AstNodeKind::StatementNoScope, error(id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Err0487)));
+        if (id->kind == AstNodeKind::StatementNoScope)
+        {
+            Diagnostic diag{node->sourceFile, id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Err0487)};
+            Diagnostic note{Hlp(Hlp0039), DiagnosticLevel::Help};
+            return Report::report(diag, &note);
+        }
+
         if (id->kind != AstNodeKind::IdentifierRef &&
             id->kind != AstNodeKind::VarDecl &&
             id->kind != AstNodeKind::AffectOp)
@@ -131,7 +137,7 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
                 default:
                 {
                     Diagnostic diag{node, Err(Err0386)};
-                    Diagnostic note{child, Nte(Nte0024), DiagnosticLevel::Note};
+                    Diagnostic note{child, child->token, Nte(Nte0024), DiagnosticLevel::Note};
                     return Report::report(diag, &note);
                 }
                 }

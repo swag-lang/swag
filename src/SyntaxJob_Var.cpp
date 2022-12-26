@@ -14,9 +14,9 @@ bool SyntaxJob::checkIsValidVarName(AstNode* node)
     {
         auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
         if (identifier->genericParameters)
-            return error(identifier->genericParameters, Fmt(Err(Err0273), identifier->token.ctext()));
+            return error(identifier->genericParameters, Fmt(Err(Err0273), identifier->token.ctext()), nullptr, Hnt(Hnt0026));
         if (identifier->callParameters)
-            return error(identifier->callParameters, Fmt(Err(Err0274), identifier->token.ctext()));
+            return error(identifier->callParameters, Fmt(Err(Err0274), identifier->token.ctext()), nullptr, Hnt(Hnt0026));
     }
 
     if (node->token.text[0] != '@')

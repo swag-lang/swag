@@ -140,7 +140,7 @@ void initErrors()
     SWAG_ERROR(Err0126, "the `opSlice` special function should return a string or a slice (`%s` provided)");
     SWAG_ERROR(Err0127, "the identifier `%s` has call parameters, but is %s and not a function");
     SWAG_ERROR(Err0128, nullptr);
-    SWAG_ERROR(Err0129, nullptr);
+    SWAG_ERROR(Err0129, "use of an unknown intrinsic `%s`");
     SWAG_ERROR(Err0130, "unexpected generic parameters, the identifier `%s` is %s and not a function or a struct");
     SWAG_ERROR(Err0132, "invalid reference to file scope");
     SWAG_ERROR(Err0133, "cannot resolve the identifier `%s`");
@@ -958,7 +958,7 @@ void initErrors()
     SWAG_ERROR(Hlp0036, "you could force the evaluation with a `#run`");
     SWAG_ERROR(Hlp0037, "you should add a `break` or a `fallthrough`");
     SWAG_ERROR(Hlp0038, "you should add a `break`");
-    SWAG_ERROR(Hlp0039, nullptr);
+    SWAG_ERROR(Hlp0039, "`with` should be followed by one single variable");
     SWAG_ERROR(Hlp0040, nullptr);
 
     /////////////////////////////////////////////////////////////////////

@@ -32,13 +32,13 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
                 auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
                 Diagnostic diag{implNode->identifier, Fmt(Err(Err0441), Scope::getNakedKindName(newScope->kind), implNode->token.ctext(), Scope::getNakedKindName(ScopeKind::Enum))};
                 diag.hint = Fmt(Hnt(Hnt0019), implNode->token.ctext());
-                Diagnostic note{enumNode, Fmt(Nte(Nte0027), implNode->token.ctext()), DiagnosticLevel::Note};
+                Diagnostic note{enumNode, enumNode->token, Fmt(Nte(Nte0027), implNode->token.ctext()), DiagnosticLevel::Note};
                 return Report::report(diag, &note);
             }
             else
             {
                 Diagnostic diag{enumNode->sourceFile, token, Fmt(Err(Err0885), enumNode->token.ctext(), Scope::getArticleKindName(newScope->kind))};
-                Diagnostic note{newScope->owner, Nte(Nte0036), DiagnosticLevel::Note};
+                Diagnostic note{newScope->owner, newScope->owner->token, Nte(Nte0036), DiagnosticLevel::Note};
                 return Report::report(diag, &note);
             }
         }
@@ -90,7 +90,7 @@ bool SyntaxJob::doEnumContent(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymLeftCurly)
     {
         auto startLoc = token.startLocation;
-        auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
+        auto stmt     = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
         if (result)
             *result = stmt;
         SWAG_CHECK(eatToken());

@@ -1066,7 +1066,7 @@ void SemanticJob::findClosestMatches(SemanticContext* context, const Utf8& searc
             bool here = false;
             for (auto& n : result)
             {
-                if (n == searchName)
+                if (n == searchList[i])
                 {
                     here = true;
                     break;
@@ -1074,7 +1074,10 @@ void SemanticJob::findClosestMatches(SemanticContext* context, const Utf8& searc
             }
 
             if (!here)
+            {
                 result.push_back(searchList[i]);
+            }
+
             bestScore = score;
         }
     }
@@ -1083,7 +1086,7 @@ void SemanticJob::findClosestMatches(SemanticContext* context, const Utf8& searc
 void SemanticJob::findClosestMatches(SemanticContext* context, IdentifierSearchFor searchFor, AstNode* node, VectorNative<AlternativeScope>& scopeHierarchy, vector<Utf8>& best)
 {
     // Do not take some time if file is supposed to fail, in test mode
-    if (context->sourceFile->numTestErrors)
+    if (context->sourceFile->numTestErrors && !g_CommandLine.verboseTestErrors)
         return;
 
     vector<Utf8> searchList;
@@ -1110,8 +1113,39 @@ void SemanticJob::findClosestMatches(SemanticContext* context, IdentifierSearchF
                 one.symbolName->kind != SymbolKind::Struct &&
                 one.symbolName->kind != SymbolKind::Interface)
                 continue;
+            if (one.symbolName->cptOverloadsInit == 0)
+                continue;
 
             searchList.push_back(one.symbolName->name);
+        }
+    }
+
+    if (searchFor == IdentifierSearchFor::Type)
+    {
+        for (int i = 0; i < (int) g_LangSpec->keywords.allocated; i++)
+        {
+            if (g_LangSpec->keywords.buffer[i].value == TokenId::NativeType)
+            {
+                searchList.push_back(g_LangSpec->keywords.buffer[i].key);
+            }
+        }
+    }
+    else if (searchFor == IdentifierSearchFor::Function && node->token.text[0] == '@')
+    {
+        for (int i = 0; i < (int) g_LangSpec->keywords.allocated; i++)
+        {
+            auto &k = g_LangSpec->keywords.buffer[i].key;
+            if (k && k[0] == '@')
+                searchList.push_back(k);
+        }
+    }
+    else if (searchFor == IdentifierSearchFor::Function && node->token.text[0] == '#')
+    {
+        for (int i = 0; i < (int) g_LangSpec->keywords.allocated; i++)
+        {
+            auto& k = g_LangSpec->keywords.buffer[i].key;
+            if (k && k[0] == '#')
+                searchList.push_back(k);
         }
     }
 
@@ -1175,7 +1209,12 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
     switch (searchFor)
     {
     case IdentifierSearchFor::Function:
-        diag = new Diagnostic{node->sourceFile, node->token, Fmt(Err(Err0228), node->token.ctext())};
+        if (node->token.text[0] == '#')
+            diag = new Diagnostic{node->sourceFile, node->token, Fmt(Err(Err0140), node->token.ctext())};
+        else if (node->token.text[0] == '@')
+            diag = new Diagnostic{node->sourceFile, node->token, Fmt(Err(Err0129), node->token.ctext())};
+        else
+            diag = new Diagnostic{node->sourceFile, node->token, Fmt(Err(Err0228), node->token.ctext())};
         break;
     case IdentifierSearchFor::Type:
         diag = new Diagnostic{node->sourceFile, node->token, Fmt(Err(Err0165), node->token.ctext())};
