@@ -123,7 +123,7 @@ void initErrors()
     SWAG_ERROR(Err0109, "unused return value of function `%s`");
     SWAG_ERROR(Err0110, "the identifier `%s` cannot be found in %s `%s`");
     SWAG_ERROR(Err0111, "pointer arithmetic is not allowed on type `void`");
-    SWAG_ERROR(Err0112, nullptr);
+    SWAG_ERROR(Err0112, "the %s `%s` cannot be found in `%s`");
     SWAG_ERROR(Err0113, "found %d overloads for `%s` but no one could match");
     SWAG_ERROR(Err0114, "cannot take the address of the function return value (type is `%s`)");
     SWAG_ERROR(Err0115, "ambiguous resolution of generic %s `%s`");

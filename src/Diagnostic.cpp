@@ -80,14 +80,38 @@ void Diagnostic::printSourceLine() const
         g_Log.print(": ");
 }
 
-void Diagnostic::printMargin(bool verboseMode, bool eol)
+void Diagnostic::printMargin(bool verboseMode, bool eol, int maxDigits, int lineNo)
 {
+    if (!maxDigits)
+    {
+        if (eol)
+            g_Log.eol();
+        return;
+    }
+
     static int HEADER_SIZE  = 0;
     auto       verboseColor = LogColor::DarkCyan;
     auto       codeColor    = verboseMode ? verboseColor : LogColor::Gray;
     g_Log.setColor(codeColor);
     for (int i = 0; i < HEADER_SIZE; i++)
         g_Log.print(" ");
+
+    if (maxDigits)
+    {
+        auto l = lineNo;
+        int  m = 0;
+        while (l)
+        {
+            l /= 10;
+            m++;
+        }
+
+        while (m++ < maxDigits)
+            g_Log.print(" ");
+        if (lineNo)
+            g_Log.print(Fmt("%d", lineNo));
+    }
+
     g_Log.print(" |  ");
     if (eol)
         g_Log.eol();
@@ -159,7 +183,7 @@ void Diagnostic::report(bool verboseMode) const
             myShowRange = true;
         }
     }
- 
+
     // Message level
     if (showErrorLevel)
     {
@@ -185,6 +209,7 @@ void Diagnostic::report(bool verboseMode) const
             }
             break;
         case DiagnosticLevel::Note:
+            printMargin(verboseMode, true);
             g_Log.setColor(noteColor);
             if (noteHeader.empty())
             {
@@ -197,6 +222,7 @@ void Diagnostic::report(bool verboseMode) const
             }
             break;
         case DiagnosticLevel::Help:
+            printMargin(verboseMode, true);
             g_Log.setColor(noteColor);
             g_Log.print("help: ");
             break;
@@ -255,6 +281,9 @@ void Diagnostic::report(bool verboseMode) const
 
     // Source code
     vector<Utf8> lines;
+    vector<int>  linesNo;
+    int          maxDigits = 5;
+
     g_Log.setColor(codeColor);
     if (mustPrintCode())
     {
@@ -266,7 +295,6 @@ void Diagnostic::report(bool verboseMode) const
         // Get all lines of code
         if (showMultipleCodeLines)
         {
-            printMargin(verboseMode, true);
             for (int i = -2; i <= 0; i++)
             {
                 if ((int) location0.line + i < 0)
@@ -274,11 +302,13 @@ void Diagnostic::report(bool verboseMode) const
                 bool eof     = false;
                 auto oneLine = sourceFile->getLine(location0.line + i, &eof);
                 lines.push_back(eof ? Utf8(" ") : oneLine);
+                linesNo.push_back(location0.line + i + 1);
             }
         }
         else
         {
             lines.push_back(sourceFile->getLine(location0.line));
+            linesNo.push_back(location0.line + 1);
         }
 
         // Remove blanks on the left, but keep indentation
@@ -310,12 +340,26 @@ void Diagnostic::report(bool verboseMode) const
         // Print all lines
         if (lines.size())
         {
+            for (auto l : linesNo)
+            {
+                int m = 0;
+                while (l)
+                {
+                    l /= 10;
+                    m++;
+                }
+                maxDigits = max(maxDigits, m);
+            }
+
+            if (showMultipleCodeLines)
+                printMargin(verboseMode, true);
+
             for (int i = 0; i < lines.size(); i++)
             {
                 const char* pz = lines[i].c_str();
                 if (*pz && *pz != '\n' && *pz != '\r')
                 {
-                    printMargin(verboseMode);
+                    printMargin(verboseMode, false, maxDigits, linesNo[i]);
                     if (hilightCodeRange && i == lines.size() - 1)
                         break;
 
@@ -486,7 +530,7 @@ void Diagnostic::report(bool verboseMode) const
                 ///////////////////////////
                 else
                 {
-                    printMargin(verboseMode, false);
+                    printMargin(verboseMode, false, maxDigits);
 
                     auto startIndex = minBlanks;
                     int  rangeIdx   = 0;
@@ -548,7 +592,7 @@ void Diagnostic::report(bool verboseMode) const
                     if (ranges.size() > 1 && !ranges[0].hint.empty())
                     {
                         g_Log.eol();
-                        printMargin(verboseMode, false);
+                        printMargin(verboseMode, false, maxDigits);
 
                         startIndex = minBlanks;
                         for (int ri = 0; ri < ranges.size() - 1; ri++)
@@ -578,7 +622,7 @@ void Diagnostic::report(bool verboseMode) const
                         }
 
                         g_Log.eol();
-                        printMargin(verboseMode, false);
+                        printMargin(verboseMode, false, maxDigits);
 
                         startIndex = minBlanks;
                         for (int ri = 0; ri < ranges.size() - 1; ri++)
@@ -609,7 +653,7 @@ void Diagnostic::report(bool verboseMode) const
     {
         if (!remarks.empty())
         {
-            printMargin(verboseMode, true);
+            printMargin(verboseMode, true, maxDigits);
             g_Log.setColor(remarkColor);
             for (auto r : remarks)
             {
@@ -639,7 +683,7 @@ Diagnostic* Diagnostic::hereIs(AstNode* node, bool forceShowRange)
 {
     if (node->resolvedSymbolOverload)
         return hereIs(node->resolvedSymbolOverload, forceShowRange);
-    auto note = new Diagnostic{node, node->token, Fmt(Nte(Nte0040), node->token.ctext()), DiagnosticLevel::Note};
+    auto note       = new Diagnostic{node, node->token, Fmt(Nte(Nte0040), node->token.ctext()), DiagnosticLevel::Note};
     note->showRange = forceShowRange;
     return note;
 }

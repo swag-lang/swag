@@ -1136,7 +1136,7 @@ void SemanticJob::findClosestMatches(SemanticContext* context, IdentifierSearchF
     {
         for (int i = 0; i < (int) g_LangSpec->keywords.allocated; i++)
         {
-            auto &k = g_LangSpec->keywords.buffer[i].key;
+            auto& k = g_LangSpec->keywords.buffer[i].key;
             if (k && k[0] == '@')
                 searchList.push_back(k);
         }
@@ -1229,7 +1229,8 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
     // Error in scope context
     if (identifierRef->startScope)
     {
-        auto typeRef = TypeManager::concreteType(identifierRef->typeInfo);
+        auto typeWhere = identifierRef->startScope->owner->typeInfo;
+        auto typeRef   = TypeManager::concreteType(identifierRef->typeInfo);
         if (typeRef && typeRef->isPointer())
             typeRef = CastTypeInfo<TypeInfoPointer>(typeRef, TypeInfoKind::Pointer)->pointedType;
 
@@ -1265,9 +1266,17 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
                     note->showRange = false;
                     notes.push_back(note);
                 }
+                else if (typeWhere)
+                {
+                    Utf8 what = "identifier";
+                    if (node->callParameters)
+                        what = "function";
+                    diag = new Diagnostic{node, node->token, Fmt(Err(Err0112), what.c_str(), node->token.ctext(), typeWhere->getDisplayNameC())};
+                }
                 else
                 {
-                    diag = new Diagnostic{node, node->token, Fmt(Err(Err0110), node->token.ctext(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())};
+                    Utf8 where = Scope::getNakedKindName(identifierRef->startScope->kind);
+                    diag       = new Diagnostic{node, node->token, Fmt(Err(Err0110), node->token.ctext(), where.c_str(), displayName.c_str())};
                 }
 
                 switch (identifierRef->startScope->owner->kind)
