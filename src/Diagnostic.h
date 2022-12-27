@@ -131,7 +131,6 @@ struct Diagnostic
     void setRange2(const Token& node, const Utf8& h);
 
     void setupColors(bool verboseMode);
-    bool mustPrintCode();
     void collectSourceCode();
     void collectRanges();
     void printSourceCode();
@@ -139,6 +138,7 @@ struct Diagnostic
     void printErrorLevel();
     void printMargin(bool eol = false, bool maxDigits = false, int lineNo = 0);
     void printRemarks();
+    void printRanges();
 
     void reportCompact(bool verboseMode);
     void report(bool verboseMode = false);
@@ -169,6 +169,7 @@ struct Diagnostic
     LogColor          noteColor;
     LogColor          stackColor;
     LogColor          remarkColor;
+    LogColor          sourceFileColor;
     bool              invertError = false;
 
     SourceLocation startLocation;
