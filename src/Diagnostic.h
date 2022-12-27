@@ -157,6 +157,8 @@ struct Diagnostic
 
     uint32_t stackLevel = 0;
 
+    bool showErrorLevel        = true;
+    bool display               = true;
     bool currentStackLevel     = false;
     bool hasFile               = false;
     bool hasLocation           = false;

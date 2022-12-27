@@ -89,12 +89,9 @@ void Diagnostic::printMargin(bool verboseMode, bool eol, int maxDigits, int line
         return;
     }
 
-    static int HEADER_SIZE  = 0;
-    auto       verboseColor = LogColor::DarkCyan;
-    auto       codeColor    = verboseMode ? verboseColor : LogColor::Gray;
+    auto verboseColor = LogColor::DarkCyan;
+    auto codeColor    = verboseMode ? verboseColor : LogColor::Gray;
     g_Log.setColor(codeColor);
-    for (int i = 0; i < HEADER_SIZE; i++)
-        g_Log.print(" ");
 
     if (maxDigits)
     {
@@ -166,24 +163,6 @@ void Diagnostic::report(bool verboseMode) const
     auto stackColor       = verboseMode ? verboseColor : LogColor::DarkYellow;
     g_Log.setColor(verboseMode ? verboseColor : LogColor::White);
 
-    bool showErrorLevel = true;
-    auto myHint         = hint;
-    auto myShowRange    = showRange;
-
-    if (errorLevel == DiagnosticLevel::Note || errorLevel == DiagnosticLevel::Help)
-    {
-        if (!g_CommandLine.errorCompact && hint.empty() && hasRangeLocation2 == false && hasRangeLocation)
-        {
-            printMargin(verboseMode, true);
-            showErrorLevel = false;
-            if (!noteHeader.empty())
-                myHint = noteHeader + " " + textMsg;
-            else
-                myHint = textMsg;
-            myShowRange = true;
-        }
-    }
-
     // Message level
     if (showErrorLevel)
     {
@@ -245,6 +224,10 @@ void Diagnostic::report(bool verboseMode) const
             break;
         }
     }
+    else
+    {
+        printMargin(verboseMode, true);
+    }
 
     // Source line right after the header
     if (g_CommandLine.errorCompact && hasFile && !sourceFile->path.empty() && showFileName)
@@ -273,7 +256,7 @@ void Diagnostic::report(bool verboseMode) const
         {
             if (errorLevel == DiagnosticLevel::Note || errorLevel == DiagnosticLevel::Help)
             {
-                if (myShowRange && hasRangeLocation && !showMultipleCodeLines)
+                if (showRange && hasRangeLocation && !showMultipleCodeLines)
                     printMargin(verboseMode, true);
             }
         }
@@ -330,7 +313,7 @@ void Diagnostic::report(bool verboseMode) const
             }
         }
 
-        bool reportRange = myShowRange &&
+        bool reportRange = showRange &&
                            !lines.empty() &&
                            errorLevel != DiagnosticLevel::CallStack &&
                            errorLevel != DiagnosticLevel::CallStackInlined &&
@@ -363,7 +346,7 @@ void Diagnostic::report(bool verboseMode) const
                     if (hilightCodeRange && i == lines.size() - 1)
                         break;
 
-                    if (!myShowRange && errorLevel == DiagnosticLevel::Note)
+                    if (!showRange && errorLevel == DiagnosticLevel::Note)
                     {
                         g_Log.setColor(hilightCodeColor);
                     }
@@ -402,20 +385,20 @@ void Diagnostic::report(bool verboseMode) const
                 endLocation2.column < startLocation.column)
             {
                 ranges.push_back({startLocation2, endLocation2, hint2});
-                ranges.push_back({startLocation, endLocation, myHint});
+                ranges.push_back({startLocation, endLocation, hint});
             }
             else if (hasRangeLocation2 &&
                      startLocation2.line == startLocation.line &&
                      endLocation2.line == startLocation2.line &&
                      startLocation2.column > endLocation.column)
             {
-                ranges.push_back({startLocation, endLocation, myHint});
+                ranges.push_back({startLocation, endLocation, hint});
                 ranges.push_back({startLocation2, endLocation2, hint2});
                 invertError = true;
             }
             else
             {
-                ranges.push_back({startLocation, endLocation, myHint});
+                ranges.push_back({startLocation, endLocation, hint});
             }
 
             // Preprocess ranges

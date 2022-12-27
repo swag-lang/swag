@@ -12,24 +12,6 @@
 
 namespace Report
 {
-    void reportNotes(vector<Diagnostic*>& notes, bool verbose = false)
-    {
-        if (!g_CommandLine.errorCompact)
-        {
-            bool prevHasSourceCode = true;
-            for (auto note : notes)
-            {
-                // Separator if we have a bunch of notes without source code, and one that comes after, but with source code
-                auto hasSourceCode = note->mustPrintCode();
-                if (hasSourceCode && !prevHasSourceCode)
-                    Diagnostic::printMargin(verbose, true);
-                prevHasSourceCode = hasSourceCode;
-
-                note->report(verbose);
-            }
-        }
-    }
-
     bool fuzzySameLine(uint32_t line1, uint32_t line2)
     {
         if (line1 == line2)
@@ -45,14 +27,12 @@ namespace Report
         return false;
     }
 
-    void cleanNotes(const Diagnostic& diag, vector<Diagnostic*>& notes)
+    void cleanNotes(vector<Diagnostic*>& notes)
     {
-        auto                cdiag = const_cast<Diagnostic*>(&diag);
-        vector<Diagnostic*> newNotes;
-
-        for (auto n : notes)
+        for (auto note : notes)
         {
-            auto note = const_cast<Diagnostic*>(n);
+            if (!note->display)
+                continue;
 
             // No multiline range... a test, to reduce verbosity
             if (note->endLocation.line > note->startLocation.line)
@@ -61,43 +41,12 @@ namespace Report
                 note->showMultipleCodeLines = false;
             }
 
-            // No need to repeat the same source file line reference
-            if ((!note->hasRangeLocation || fuzzySameLine(note->startLocation.line, diag.startLocation.line)) &&
-                (!note->hasRangeLocation || fuzzySameLine(note->endLocation.line, diag.endLocation.line)) &&
-                (!note->hasRangeLocation || note->sourceFile == diag.sourceFile) &&
-                !note->forceSourceFile)
+            for (auto note1 : notes)
             {
-                note->showFileName = false;
-
-                // Try to transform a note in a hint
-                if (diag.hint.empty() &&
-                        note->hint.empty() &&
-                        !note->hasRangeLocation2 &&
-                        !note->hasRangeLocation ||
-                    (note->startLocation.line == diag.startLocation.line &&
-                     note->endLocation.line == diag.endLocation.line &&
-                     note->startLocation.column == diag.startLocation.column &&
-                     note->endLocation.column == diag.endLocation.column))
-                {
-                    cdiag->hint = note->textMsg;
-                    cdiag->remarks.insert(cdiag->remarks.end(), note->remarks.begin(), note->remarks.end());
+                if (note == note1)
                     continue;
-                }
-            }
-
-            newNotes.push_back(note);
-        }
-
-        notes = newNotes;
-
-        for (auto n : notes)
-        {
-            auto note = const_cast<Diagnostic*>(n);
-            for (auto n1 : notes)
-            {
-                if (n == n1)
+                if (!note1->display)
                     continue;
-                auto note1 = const_cast<Diagnostic*>(n1);
 
                 // No need to repeat the same source file line reference
                 if (fuzzySameLine(note->startLocation.line, note1->startLocation.line) &&
@@ -108,8 +57,66 @@ namespace Report
                 {
                     note1->showFileName = false;
                 }
+
+                // Try to transform a note in a hint
+                if (note->hint.empty() &&
+                        note1->hint.empty() &&
+                        !note1->hasRangeLocation2 &&
+                        !note1->hasRangeLocation ||
+                    (note1->startLocation.line == note->startLocation.line &&
+                     note1->endLocation.line == note->endLocation.line &&
+                     note1->startLocation.column == note->startLocation.column &&
+                     note1->endLocation.column == note->endLocation.column))
+                {
+                    note->hint = note1->textMsg;
+                    note->remarks.insert(note->remarks.end(), note1->remarks.begin(), note1->remarks.end());
+                    note1->display = false;
+                }
             }
+
+            // Transform a note/help in a hint
+            if (note->errorLevel == DiagnosticLevel::Note || note->errorLevel == DiagnosticLevel::Help)
+            {
+                if (note->hint.empty() && note->hasRangeLocation2 == false && note->hasRangeLocation)
+                {
+                    note->showErrorLevel = false;
+                    if (!note->noteHeader.empty())
+                    {
+                        note->hint = note->noteHeader;
+                        note->hint += " ";
+                        note->hint += note->textMsg;
+                    }
+                    else
+                        note->hint = note->textMsg;
+                    note->showRange = true;
+                }
+            }
+
         }
+    }
+
+    void report(const Diagnostic& diag, const vector<const Diagnostic*>& inNotes, bool verbose)
+    {
+        if (g_CommandLine.errorCompact)
+        {
+            diag.report(verbose);
+            return;
+        }
+
+        // Make a copy
+        vector<Diagnostic*> notes;
+        notes.push_back(new Diagnostic{diag});
+        for (auto n: inNotes)
+            notes.push_back(new Diagnostic{*n});
+
+        cleanNotes(notes);
+        for (auto n : notes)
+        {
+            if (n->display)
+                n->report(verbose);
+        }
+
+        g_Log.eol();
     }
 
     SourceFile* getDiagFile(const Diagnostic& diag)
@@ -125,7 +132,7 @@ namespace Report
         return sourceFile;
     }
 
-    bool report(const Diagnostic& diag, const vector<const Diagnostic*>& inNotes)
+    bool report(const Diagnostic& diag, const vector<const Diagnostic*>& notes)
     {
         auto sourceFile = getDiagFile(diag);
 
@@ -136,16 +143,6 @@ namespace Report
         }
 
         ScopedLock lock(g_Log.mutexAccess);
-
-        // Make a copy, because we could have to change some 'Diagnostic' content.
-        vector<Diagnostic*> notes;
-        for (auto d : inNotes)
-        {
-            auto n = new Diagnostic{*d};
-            notes.push_back(n);
-        }
-
-        cleanNotes(diag, notes);
 
         // Warning to error option ?
         auto errorLevel = diag.errorLevel;
@@ -172,9 +169,7 @@ namespace Report
                     sourceFile->numTestErrors--;
                 if (g_CommandLine.verboseTestErrors)
                 {
-                    diag.report(true);
-                    reportNotes(notes, true);
-                    g_Log.eol();
+                    report(diag, notes, true);
                 }
 
                 return false;
@@ -195,9 +190,7 @@ namespace Report
                     sourceFile->numTestWarnings--;
                 if (g_CommandLine.verboseTestErrors)
                 {
-                    diag.report(true);
-                    reportNotes(notes, true);
-                    g_Log.eol();
+                    report(diag, notes, true);
                 }
 
                 return false;
@@ -205,9 +198,7 @@ namespace Report
         }
 
         // Print error/warning
-        diag.report();
-        reportNotes(notes);
-        g_Log.eol();
+        report(diag, notes, false);
 
         if (errorLevel == DiagnosticLevel::Error)
         {
