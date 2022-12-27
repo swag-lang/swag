@@ -12,9 +12,13 @@ void Diagnostic::setup()
     {
     case DiagnosticLevel::CallStack:
     case DiagnosticLevel::CallStackInlined:
+    case DiagnosticLevel::TraceError:
+        showRange             = false;
+        showMultipleCodeLines = false;
+        break;
+
     case DiagnosticLevel::Note:
     case DiagnosticLevel::Help:
-    case DiagnosticLevel::TraceError:
         showMultipleCodeLines = false;
         break;
     default:
@@ -81,7 +85,7 @@ void Diagnostic::printSourceLine()
         g_Log.print(": ");
 }
 
-void Diagnostic::printMargin(bool verboseMode, bool eol, int maxDigits, int lineNo)
+void Diagnostic::printMargin(bool eol, bool maxDigits, int lineNo)
 {
     if (!maxDigits)
     {
@@ -90,8 +94,6 @@ void Diagnostic::printMargin(bool verboseMode, bool eol, int maxDigits, int line
         return;
     }
 
-    auto verboseColor = LogColor::DarkCyan;
-    auto codeColor    = verboseMode ? verboseColor : LogColor::Gray;
     g_Log.setColor(codeColor);
 
     if (maxDigits)
@@ -104,7 +106,7 @@ void Diagnostic::printMargin(bool verboseMode, bool eol, int maxDigits, int line
             m++;
         }
 
-        while (m++ < maxDigits)
+        while (m++ < 5)
             g_Log.print(" ");
         if (lineNo)
             g_Log.print(Fmt("%d", lineNo));
@@ -115,15 +117,8 @@ void Diagnostic::printMargin(bool verboseMode, bool eol, int maxDigits, int line
         g_Log.eol();
 }
 
-void Diagnostic::printErrorLevel(bool verboseMode)
+void Diagnostic::printErrorLevel()
 {
-    auto verboseColor = LogColor::DarkCyan;
-    auto errorColor   = verboseMode ? verboseColor : LogColor::Red;
-    auto warningColor = verboseMode ? verboseColor : LogColor::Magenta;
-    auto noteColor    = verboseMode ? verboseColor : LogColor::Cyan;
-    auto stackColor   = verboseMode ? verboseColor : LogColor::DarkYellow;
-    g_Log.setColor(verboseMode ? verboseColor : LogColor::White);
-
     switch (errorLevel)
     {
     case DiagnosticLevel::Error:
@@ -146,7 +141,7 @@ void Diagnostic::printErrorLevel(bool verboseMode)
         }
         break;
     case DiagnosticLevel::Note:
-        printMargin(verboseMode, true);
+        printMargin(true);
         g_Log.setColor(noteColor);
         if (noteHeader.empty())
         {
@@ -159,7 +154,7 @@ void Diagnostic::printErrorLevel(bool verboseMode)
         }
         break;
     case DiagnosticLevel::Help:
-        printMargin(verboseMode, true);
+        printMargin(true);
         g_Log.setColor(noteColor);
         g_Log.print("help: ");
         break;
@@ -183,20 +178,18 @@ void Diagnostic::printErrorLevel(bool verboseMode)
     }
 }
 
-void Diagnostic::printRemarks(bool verboseMode)
+void Diagnostic::printRemarks()
 {
     if (!remarks.empty())
     {
-        printMargin(verboseMode, true);
+        printMargin(true);
 
-        auto verboseColor = LogColor::DarkCyan;
-        auto remarkColor  = verboseMode ? verboseColor : LogColor::White;
         g_Log.setColor(remarkColor);
         for (auto r : remarks)
         {
             if (r.empty())
                 continue;
-            printMargin(verboseMode);
+            printMargin(false);
             g_Log.setColor(remarkColor);
             g_Log.print(r);
             g_Log.eol();
@@ -239,33 +232,208 @@ static void fixRange(const Utf8& backLine, SourceLocation& startLocation, int& r
     }
 }
 
+void Diagnostic::collectRanges()
+{
+    if (hasRangeLocation2 &&
+        startLocation2.line == startLocation.line &&
+        endLocation2.line == startLocation2.line &&
+        endLocation2.column < startLocation.column)
+    {
+        ranges.push_back({startLocation2, endLocation2, hint2});
+        ranges.push_back({startLocation, endLocation, hint});
+    }
+    else if (hasRangeLocation2 &&
+             startLocation2.line == startLocation.line &&
+             endLocation2.line == startLocation2.line &&
+             startLocation2.column > endLocation.column)
+    {
+        ranges.push_back({startLocation, endLocation, hint});
+        ranges.push_back({startLocation2, endLocation2, hint2});
+        invertError = true;
+    }
+    else
+    {
+        ranges.push_back({startLocation, endLocation, hint});
+    }
+
+    // Preprocess ranges
+    for (auto& r : ranges)
+    {
+        const auto& backLine = lines.back();
+
+        if (r.startLocation.line == r.endLocation.line && r.startLocation.column > r.endLocation.column)
+            swap(r.startLocation.column, r.endLocation.column);
+
+        r.range = 1;
+        if (!hasRangeLocation)
+            r.range = 1;
+        else if (r.endLocation.line == r.startLocation.line)
+            r.range = r.endLocation.column - r.startLocation.column;
+        else
+            r.range = (int) backLine.length() - r.startLocation.column;
+        r.range = max(1, r.range);
+
+        // Special case for a range == 1.
+        if (r.range == 1 && (int) r.startLocation.column < backLine.count)
+        {
+            int decal = r.startLocation.column;
+
+            // If this is a word, than take the whole word
+            if ((backLine[decal] & 0x80) == 0)
+            {
+                bool isCWord = isalpha(backLine[decal]) || backLine[decal] == '_' || backLine[decal] == '#' || backLine[decal] == '@';
+                if (isCWord)
+                {
+                    while (SWAG_IS_ALNUM(backLine[decal + 1]) || backLine[decal + 1] == '_')
+                    {
+                        decal += 1;
+                        r.range += 1;
+                    }
+                }
+
+                // If this is an operator
+#define ISOP(__c) __c == '>' || __c == '<' || __c == '=' || __c == '-' || __c == '+' || __c == '*' || __c == '/' || __c == '%'
+                if (ISOP(backLine[decal]))
+                {
+                    while (ISOP(backLine[decal + 1]))
+                    {
+                        decal += 1;
+                        r.range += 1;
+                    }
+                }
+            }
+        }
+
+        // Fix
+        fixRange(backLine, r.startLocation, r.range, '{', '}');
+        fixRange(backLine, r.startLocation, r.range, '(', ')');
+        fixRange(backLine, r.startLocation, r.range, '[', ']');
+    }
+}
+
+void Diagnostic::setupColors(bool verboseMode)
+{
+    verboseColor     = LogColor::DarkCyan;
+    errorColor       = verboseMode ? verboseColor : LogColor::Red;
+    codeColor        = verboseMode ? verboseColor : LogColor::Gray;
+    hilightCodeColor = verboseMode ? verboseColor : LogColor::White;
+    rangeNoteColor   = verboseMode ? verboseColor : LogColor::Cyan;
+    warningColor     = verboseMode ? verboseColor : LogColor::Magenta;
+    noteColor        = verboseMode ? verboseColor : LogColor::Cyan;
+    stackColor       = verboseMode ? verboseColor : LogColor::DarkYellow;
+    remarkColor      = verboseMode ? verboseColor : LogColor::White;
+}
+
 void Diagnostic::reportCompact(bool verboseMode)
 {
-    printErrorLevel(verboseMode);
+    setupColors(verboseMode);
+    printErrorLevel();
     printSourceLine();
     g_Log.print(textMsg);
     g_Log.eol();
 }
 
+void Diagnostic::collectSourceCode()
+{
+    auto location0 = startLocation;
+    auto location1 = endLocation;
+    location0.line -= sourceFile->getLineOffset;
+    location1.line -= sourceFile->getLineOffset;
+
+    // Get all lines of code
+    if (showMultipleCodeLines)
+    {
+        for (int i = -2; i <= 0; i++)
+        {
+            if ((int) location0.line + i < 0)
+                continue;
+            bool eof     = false;
+            auto oneLine = sourceFile->getLine(location0.line + i, &eof);
+            lines.push_back(eof ? Utf8(" ") : oneLine);
+            linesNo.push_back(location0.line + i + 1);
+        }
+    }
+    else
+    {
+        lines.push_back(sourceFile->getLine(location0.line));
+        linesNo.push_back(location0.line + 1);
+    }
+
+    // Remove blanks on the left, but keep indentation
+    for (int i = 0; i < lines.size(); i++)
+    {
+        auto        line = lines[i];
+        const char* pz   = line.c_str();
+        if (*pz && *pz != '\n' && *pz != '\r')
+        {
+            uint32_t countBlanks = 0;
+            while (SWAG_IS_BLANK(*pz))
+            {
+                pz++;
+                countBlanks++;
+            }
+
+            minBlanks = min(minBlanks, countBlanks);
+        }
+    }
+}
+
+void Diagnostic::printSourceCode()
+{
+    // Print all lines
+    if (!lines.size())
+        return;
+
+    if (showMultipleCodeLines)
+        printMargin(true);
+
+    for (int i = 0; i < lines.size(); i++)
+    {
+        const char* pz = lines[i].c_str();
+        if (*pz && *pz != '\n' && *pz != '\r')
+        {
+            printMargin(false, true, linesNo[i]);
+            if (i == lines.size() - 1)
+                break;
+
+            if (!showRange && errorLevel == DiagnosticLevel::Note)
+            {
+                g_Log.setColor(hilightCodeColor);
+            }
+            else if (errorLevel == DiagnosticLevel::CallStack ||
+                     errorLevel == DiagnosticLevel::CallStackInlined ||
+                     errorLevel == DiagnosticLevel::TraceError)
+            {
+                g_Log.setColor(hilightCodeColor);
+            }
+            else
+            {
+                g_Log.setColor(codeColor);
+            }
+
+            if (lines[i].empty())
+                continue;
+            g_Log.print(lines[i].c_str() + minBlanks);
+            g_Log.eol();
+        }
+    }
+}
+
 void Diagnostic::report(bool verboseMode)
 {
-    auto verboseColor     = LogColor::DarkCyan;
-    auto errorColor       = verboseMode ? verboseColor : LogColor::Red;
-    auto codeColor        = verboseMode ? verboseColor : LogColor::Gray;
-    auto hilightCodeColor = verboseMode ? verboseColor : LogColor::White;
-    auto rangeNoteColor   = verboseMode ? verboseColor : LogColor::Cyan;
+    setupColors(verboseMode);
     g_Log.setColor(verboseMode ? verboseColor : LogColor::White);
 
     // Message level
     if (showErrorLevel)
     {
-        printErrorLevel(verboseMode);
+        printErrorLevel();
         g_Log.print(textMsg);
         g_Log.eol();
     }
     else
     {
-        printMargin(verboseMode, true);
+        printMargin(true);
     }
 
     // Source file and location on their own line
@@ -285,209 +453,24 @@ void Diagnostic::report(bool verboseMode)
             if (errorLevel == DiagnosticLevel::Note || errorLevel == DiagnosticLevel::Help)
             {
                 if (showRange && hasRangeLocation && !showMultipleCodeLines)
-                    printMargin(verboseMode, true);
+                    printMargin(true);
             }
         }
     }
 
     // Source code
-    vector<Utf8> lines;
-    vector<int>  linesNo;
-    int          maxDigits = 5;
-
-    g_Log.setColor(codeColor);
     if (mustPrintCode())
     {
-        auto location0 = startLocation;
-        auto location1 = endLocation;
-        location0.line -= sourceFile->getLineOffset;
-        location1.line -= sourceFile->getLineOffset;
-
-        // Get all lines of code
-        if (showMultipleCodeLines)
-        {
-            for (int i = -2; i <= 0; i++)
-            {
-                if ((int) location0.line + i < 0)
-                    continue;
-                bool eof     = false;
-                auto oneLine = sourceFile->getLine(location0.line + i, &eof);
-                lines.push_back(eof ? Utf8(" ") : oneLine);
-                linesNo.push_back(location0.line + i + 1);
-            }
-        }
-        else
-        {
-            lines.push_back(sourceFile->getLine(location0.line));
-            linesNo.push_back(location0.line + 1);
-        }
-
-        // Remove blanks on the left, but keep indentation
-        uint32_t minBlanks = UINT32_MAX;
-        for (int i = 0; i < lines.size(); i++)
-        {
-            auto        line = lines[i];
-            const char* pz   = line.c_str();
-            if (*pz && *pz != '\n' && *pz != '\r')
-            {
-                uint32_t countBlanks = 0;
-                while (SWAG_IS_BLANK(*pz))
-                {
-                    pz++;
-                    countBlanks++;
-                }
-
-                minBlanks = min(minBlanks, countBlanks);
-            }
-        }
-
-        bool reportRange = showRange &&
-                           !lines.empty() &&
-                           errorLevel != DiagnosticLevel::CallStack &&
-                           errorLevel != DiagnosticLevel::CallStackInlined &&
-                           errorLevel != DiagnosticLevel::TraceError;
-        auto hilightCodeRange = !verboseMode && reportRange;
-
-        // Print all lines
-        if (lines.size())
-        {
-            for (auto l : linesNo)
-            {
-                int m = 0;
-                while (l)
-                {
-                    l /= 10;
-                    m++;
-                }
-                maxDigits = max(maxDigits, m);
-            }
-
-            if (showMultipleCodeLines)
-                printMargin(verboseMode, true);
-
-            for (int i = 0; i < lines.size(); i++)
-            {
-                const char* pz = lines[i].c_str();
-                if (*pz && *pz != '\n' && *pz != '\r')
-                {
-                    printMargin(verboseMode, false, maxDigits, linesNo[i]);
-                    if (hilightCodeRange && i == lines.size() - 1)
-                        break;
-
-                    if (!showRange && errorLevel == DiagnosticLevel::Note)
-                    {
-                        g_Log.setColor(hilightCodeColor);
-                    }
-                    else if (errorLevel == DiagnosticLevel::CallStack ||
-                             errorLevel == DiagnosticLevel::CallStackInlined ||
-                             errorLevel == DiagnosticLevel::TraceError)
-                    {
-                        g_Log.setColor(hilightCodeColor);
-                    }
-
-                    if (lines[i].empty())
-                        continue;
-                    g_Log.print(lines[i].c_str() + minBlanks);
-                    g_Log.eol();
-                }
-            }
-        }
+        collectSourceCode();
+        printSourceCode();
 
         // Show "^^^^^^^"
-        if (reportRange)
+        if (showRange)
         {
-            struct RangeHint
-            {
-                SourceLocation startLocation;
-                SourceLocation endLocation;
-                Utf8           hint;
-                const char*    c     = "^";
-                int            range = 0;
-            };
-            vector<RangeHint> ranges;
-
-            bool invertError = false;
-            if (hasRangeLocation2 &&
-                startLocation2.line == startLocation.line &&
-                endLocation2.line == startLocation2.line &&
-                endLocation2.column < startLocation.column)
-            {
-                ranges.push_back({startLocation2, endLocation2, hint2});
-                ranges.push_back({startLocation, endLocation, hint});
-            }
-            else if (hasRangeLocation2 &&
-                     startLocation2.line == startLocation.line &&
-                     endLocation2.line == startLocation2.line &&
-                     startLocation2.column > endLocation.column)
-            {
-                ranges.push_back({startLocation, endLocation, hint});
-                ranges.push_back({startLocation2, endLocation2, hint2});
-                invertError = true;
-            }
-            else
-            {
-                ranges.push_back({startLocation, endLocation, hint});
-            }
-
-            // Preprocess ranges
-            for (auto& r : ranges)
-            {
-                const auto& backLine = lines.back();
-
-                if (r.startLocation.line == r.endLocation.line && r.startLocation.column > r.endLocation.column)
-                    swap(r.startLocation.column, r.endLocation.column);
-
-                r.range = 1;
-                if (!hasRangeLocation)
-                    r.range = 1;
-                else if (r.endLocation.line == r.startLocation.line)
-                    r.range = r.endLocation.column - r.startLocation.column;
-                else
-                    r.range = (int) backLine.length() - r.startLocation.column;
-                r.range = max(1, r.range);
-
-                // Special case for a range == 1.
-                if (r.range == 1 && (int) r.startLocation.column < backLine.count)
-                {
-                    int decal = r.startLocation.column;
-
-                    // If this is a word, than take the whole word
-                    if ((backLine[decal] & 0x80) == 0)
-                    {
-                        bool isCWord = isalpha(backLine[decal]) || backLine[decal] == '_' || backLine[decal] == '#' || backLine[decal] == '@';
-                        if (isCWord)
-                        {
-                            while (SWAG_IS_ALNUM(backLine[decal + 1]) || backLine[decal + 1] == '_')
-                            {
-                                decal += 1;
-                                r.range += 1;
-                            }
-                        }
-
-                        // If this is an operator
-#define ISOP(__c) __c == '>' || __c == '<' || __c == '=' || __c == '-' || __c == '+' || __c == '*' || __c == '/' || __c == '%'
-                        if (ISOP(backLine[decal]))
-                        {
-                            while (ISOP(backLine[decal + 1]))
-                            {
-                                decal += 1;
-                                r.range += 1;
-                            }
-                        }
-                    }
-                }
-
-                // Fix
-                fixRange(backLine, r.startLocation, r.range, '{', '}');
-                fixRange(backLine, r.startLocation, r.range, '(', ')');
-                fixRange(backLine, r.startLocation, r.range, '[', ']');
-            }
+            collectRanges();
 
             for (int lastLine = 0; lastLine < 2; lastLine++)
             {
-                if (!hilightCodeRange && lastLine == 0)
-                    continue;
-
                 const auto& backLine = lines.back();
 
                 // Display line with error in color
@@ -541,7 +524,7 @@ void Diagnostic::report(bool verboseMode)
                 ///////////////////////////
                 else
                 {
-                    printMargin(verboseMode, false, maxDigits);
+                    printMargin(false, true);
 
                     auto startIndex = minBlanks;
                     int  rangeIdx   = 0;
@@ -603,7 +586,7 @@ void Diagnostic::report(bool verboseMode)
                     if (ranges.size() > 1 && !ranges[0].hint.empty())
                     {
                         g_Log.eol();
-                        printMargin(verboseMode, false, maxDigits);
+                        printMargin(false, true);
 
                         startIndex = minBlanks;
                         for (int ri = 0; ri < ranges.size() - 1; ri++)
@@ -633,7 +616,7 @@ void Diagnostic::report(bool verboseMode)
                         }
 
                         g_Log.eol();
-                        printMargin(verboseMode, false, maxDigits);
+                        printMargin(false, true);
 
                         startIndex = minBlanks;
                         for (int ri = 0; ri < ranges.size() - 1; ri++)
@@ -660,7 +643,7 @@ void Diagnostic::report(bool verboseMode)
     }
 
     // Code remarks
-    printRemarks(verboseMode);
+    printRemarks();
 
     g_Log.setDefaultColor();
 }

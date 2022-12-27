@@ -130,17 +130,46 @@ struct Diagnostic
     void setRange2(AstNode* node, const Utf8& h);
     void setRange2(const Token& node, const Utf8& h);
 
+    void setupColors(bool verboseMode);
     bool mustPrintCode();
+    void collectSourceCode();
+    void collectRanges();
+    void printSourceCode();
     void printSourceLine();
-    void printErrorLevel(bool verboseMode);
-    void printMargin(bool verboseMode, bool eol = false, int maxDigits = 0, int lineNo = 0);
-    void printRemarks(bool verboseMode);
+    void printErrorLevel();
+    void printMargin(bool eol = false, bool maxDigits = false, int lineNo = 0);
+    void printRemarks();
+
     void reportCompact(bool verboseMode);
     void report(bool verboseMode = false);
 
     static Utf8        isType(TypeInfo* typeInfo);
     static Diagnostic* hereIs(SymbolOverload* overload, bool forceShowRange = false);
     static Diagnostic* hereIs(AstNode* node, bool forceShowRange = false);
+
+    struct RangeHint
+    {
+        SourceLocation startLocation;
+        SourceLocation endLocation;
+        Utf8           hint;
+        const char*    c     = "^";
+        int            range = 0;
+    };
+
+    vector<RangeHint> ranges;
+    vector<Utf8>      lines;
+    vector<int>       linesNo;
+    uint32_t          minBlanks = UINT32_MAX;
+    LogColor          verboseColor;
+    LogColor          errorColor;
+    LogColor          codeColor;
+    LogColor          hilightCodeColor;
+    LogColor          rangeNoteColor;
+    LogColor          warningColor;
+    LogColor          noteColor;
+    LogColor          stackColor;
+    LogColor          remarkColor;
+    bool              invertError = false;
 
     SourceLocation startLocation;
     SourceLocation endLocation;
