@@ -443,7 +443,7 @@ void initErrors()
     SWAG_ERROR(Err0433, "invalid literal number conversion of `%I64u`");
     SWAG_ERROR(Err0434, "expected at least one digit in the hexadecimal number");
     SWAG_ERROR(Err0435, "exception during compile time execution !");
-    SWAG_ERROR(Err0436, "it could be a bug in the compile time part of your program");
+    SWAG_ERROR(Err0436, nullptr);
     SWAG_ERROR(Err0437, "literal suffix type must be native (`%s` provided)");
     SWAG_ERROR(Err0438, "`for` is invalid for an enum implementation block");
     SWAG_ERROR(Err0439, "unexpected literal suffix type (`%s`)");
@@ -1075,7 +1075,7 @@ void initErrors()
     SWAG_ERROR(Nte0019, "it is applied on this %s");
     SWAG_ERROR(Nte0020, "here is the start");
     SWAG_ERROR(Nte0021, "here is another one");
-    SWAG_ERROR(Nte0022, nullptr);
+    SWAG_ERROR(Nte0022, "it could be a bug in the compile time part of your program");
     SWAG_ERROR(Nte0023, "here is the immutable value");
     SWAG_ERROR(Nte0024, "here is a previous declaration");
     SWAG_ERROR(Nte0025, "here is attribute `%s`");

@@ -210,12 +210,17 @@ namespace OS
                         continue;
                     }
 
-                    // Source code
+                    // Messages
                     g_Log.lock();
-                    pz = strstr(oneLine.c_str(), " --> ");
+                    g_Log.setDefaultColor();
+                    g_Log.print(oneLine + "\n");
+                    g_Log.unlock();
+
+                    // Source code
+                    pz = strstr(oneLine.c_str(), "--> ");
                     if (pz && module)
                     {
-                        auto oneLine1 = pz + 5;
+                        auto oneLine1 = pz + 4;
 
                         // Extract file and location
                         vector<Utf8> tokens;
@@ -240,11 +245,6 @@ namespace OS
                             }
                         }
                     }
-
-                    // Messages
-                    g_Log.setDefaultColor();
-                    g_Log.print(oneLine + "\n");
-                    g_Log.unlock();
                 }
 
                 continue;

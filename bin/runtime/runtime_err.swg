@@ -114,7 +114,7 @@ func @errormsg(message: string, loc: Swag.CompilerSourceLocation)
     @print("\x1b[91m")
     @print("error: ", message, "\n")
     @print("\x1b[97m")
-    @print(" |  --> ")
+    @print("--> ")
     @print(loc.fileName, ":", loc.lineStart + 1, "\n")
 }
 
@@ -150,7 +150,7 @@ func @panic(message: string, loc: CompilerSourceLocation)
         @print("\x1b[93m")
         @print("trace error:\n");
         @print("\x1b[97m")
-        @print(" |  --> ")
+        @print("--> ")
         @print(cxt.trace[i].fileName)
         @print(":");
         @print(cast(s64) cxt.trace[i].lineStart + 1);

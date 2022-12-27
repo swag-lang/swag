@@ -368,7 +368,7 @@ func __logStackTrace(where: [..] *void, startAfter: *Swag.CompilerSourceLocation
 
         if hasLine
         {
-            @print(" |  --> ")
+            @print("--> ")
             @print(fileName, ":", line.LineNumber, "\n")
         }
     }

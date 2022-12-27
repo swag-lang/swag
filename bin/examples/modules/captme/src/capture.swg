@@ -429,7 +429,7 @@ impl Capture
             imgRect.width = base.paintPos.width
             imgRect.height = base.paintPos.height
             imgRect.offset(-base.shadowOffset.x, -base.shadowOffset.y)
-            painter.setShader(&render.shaderSimple)
+            painter.setShaderr(&render.shaderSimple)
             painter.setBlendingMode(.Alpha)
             painter.drawTexture(imgRect, srcRect, rt.colorBuffer)
             painter.unbindRenderTarget()

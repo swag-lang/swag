@@ -3696,7 +3696,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
     runContext->ip--;
     auto       ip = runContext->ip;
     Diagnostic diag{ip->node, Err(Err0435)};
-    Diagnostic note1{Err(Err0436), DiagnosticLevel::Note};
+    Diagnostic note1{Nte(Nte0022), DiagnosticLevel::Note};
     Diagnostic note2{Nte(Nte0009), DiagnosticLevel::Note};
     diag.exceptionError                  = true;
     g_ByteCodeStackTrace->currentContext = runContext;

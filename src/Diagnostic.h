@@ -147,6 +147,8 @@ struct Diagnostic
     static Diagnostic* hereIs(SymbolOverload* overload, bool forceShowRange = false);
     static Diagnostic* hereIs(AstNode* node, bool forceShowRange = false);
 
+    static const int MAX_LINE_DIGITS = 5;
+
     struct RangeHint
     {
         SourceLocation startLocation;

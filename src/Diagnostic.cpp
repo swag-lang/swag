@@ -82,9 +82,9 @@ void Diagnostic::printSourceLine()
         g_Log.print(": ");
 }
 
-void Diagnostic::printMargin(bool eol, bool maxDigits, int lineNo)
+void Diagnostic::printMargin(bool eol, bool printLineNo, int lineNo)
 {
-    if (!maxDigits)
+    if (!printLineNo)
     {
         if (eol)
             g_Log.eol();
@@ -93,7 +93,7 @@ void Diagnostic::printMargin(bool eol, bool maxDigits, int lineNo)
 
     g_Log.setColor(codeColor);
 
-    if (maxDigits)
+    if (printLineNo)
     {
         auto l = lineNo;
         int  m = 0;
@@ -103,7 +103,7 @@ void Diagnostic::printMargin(bool eol, bool maxDigits, int lineNo)
             m++;
         }
 
-        while (m++ < 5)
+        while (m++ < MAX_LINE_DIGITS)
             g_Log.print(" ");
         if (lineNo)
             g_Log.print(Fmt("%d", lineNo));
