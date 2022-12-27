@@ -595,14 +595,11 @@ void Diagnostic::report(bool verboseMode)
     if (showSource)
     {
         collectSourceCode();
-        printSourceCode();
-
-        // Show ranges
         if (showRange)
-        {
             collectRanges();
+        printSourceCode();
+        if (showRange)
             printRanges();
-        }
     }
 
     // Code remarks
