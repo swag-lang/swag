@@ -99,7 +99,8 @@ namespace Report
     {
         if (g_CommandLine.errorCompact)
         {
-            diag.report(verbose);
+            auto c = new Diagnostic{diag};
+            c->reportCompact(verbose);
             return;
         }
 

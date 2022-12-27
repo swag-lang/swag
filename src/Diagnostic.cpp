@@ -46,13 +46,16 @@ void Diagnostic::setRange2(AstNode* node, const Utf8& h)
     setRange2(start, end, h);
 }
 
-bool Diagnostic::mustPrintCode() const
+bool Diagnostic::mustPrintCode()
 {
     return hasFile && !sourceFile->path.empty() && hasLocation && showSource && !g_CommandLine.errorCompact;
 }
 
-void Diagnostic::printSourceLine() const
+void Diagnostic::printSourceLine()
 {
+    if (!hasFile || sourceFile->path.empty() || !showFileName)
+        return;
+
     SWAG_ASSERT(sourceFile);
     auto checkFile = sourceFile;
     if (checkFile->fileForSourceLocation)
@@ -69,8 +72,6 @@ void Diagnostic::printSourceLine() const
             path = path1;
     }
 
-    if (!g_CommandLine.errorCompact)
-        g_Log.print("--> ");
     g_Log.print(Utf8::normalizePath(path).c_str());
     if (hasRangeLocation)
         g_Log.print(Fmt(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, endLocation.line + 1, endLocation.column + 1));
@@ -114,6 +115,95 @@ void Diagnostic::printMargin(bool verboseMode, bool eol, int maxDigits, int line
         g_Log.eol();
 }
 
+void Diagnostic::printErrorLevel(bool verboseMode)
+{
+    auto verboseColor = LogColor::DarkCyan;
+    auto errorColor   = verboseMode ? verboseColor : LogColor::Red;
+    auto warningColor = verboseMode ? verboseColor : LogColor::Magenta;
+    auto noteColor    = verboseMode ? verboseColor : LogColor::Cyan;
+    auto stackColor   = verboseMode ? verboseColor : LogColor::DarkYellow;
+    g_Log.setColor(verboseMode ? verboseColor : LogColor::White);
+
+    switch (errorLevel)
+    {
+    case DiagnosticLevel::Error:
+        g_Log.setColor(errorColor);
+        if (sourceFile && sourceFile->duringSyntax)
+            g_Log.print("syntax error: ");
+        else
+            g_Log.print("error: ");
+        break;
+    case DiagnosticLevel::Warning:
+        if (g_CommandLine.warningsAsErrors)
+        {
+            g_Log.setColor(errorColor);
+            g_Log.print("error: (from warning): ");
+        }
+        else
+        {
+            g_Log.setColor(warningColor);
+            g_Log.print("warning: ");
+        }
+        break;
+    case DiagnosticLevel::Note:
+        printMargin(verboseMode, true);
+        g_Log.setColor(noteColor);
+        if (noteHeader.empty())
+        {
+            g_Log.print("note: ");
+        }
+        else
+        {
+            g_Log.print(noteHeader);
+            g_Log.print(": ");
+        }
+        break;
+    case DiagnosticLevel::Help:
+        printMargin(verboseMode, true);
+        g_Log.setColor(noteColor);
+        g_Log.print("help: ");
+        break;
+    case DiagnosticLevel::CallStack:
+    {
+        g_Log.setColor(stackColor);
+        if (currentStackLevel)
+            g_Log.print(Fmt("[callstack:%03u]: ", stackLevel));
+        else
+            g_Log.print(Fmt("callstack:%03u: ", stackLevel));
+        break;
+    }
+    case DiagnosticLevel::CallStackInlined:
+        g_Log.setColor(stackColor);
+        g_Log.print("inlined: ");
+        break;
+    case DiagnosticLevel::TraceError:
+        g_Log.setColor(stackColor);
+        g_Log.print("trace error: ");
+        break;
+    }
+}
+
+void Diagnostic::printRemarks(bool verboseMode)
+{
+    if (!remarks.empty())
+    {
+        printMargin(verboseMode, true);
+
+        auto verboseColor = LogColor::DarkCyan;
+        auto remarkColor  = verboseMode ? verboseColor : LogColor::White;
+        g_Log.setColor(remarkColor);
+        for (auto r : remarks)
+        {
+            if (r.empty())
+                continue;
+            printMargin(verboseMode);
+            g_Log.setColor(remarkColor);
+            g_Log.print(r);
+            g_Log.eol();
+        }
+    }
+}
+
 static void fixRange(const Utf8& backLine, SourceLocation& startLocation, int& range, char c1, char c2)
 {
     if (range == 1)
@@ -149,105 +239,43 @@ static void fixRange(const Utf8& backLine, SourceLocation& startLocation, int& r
     }
 }
 
-void Diagnostic::report(bool verboseMode) const
+void Diagnostic::reportCompact(bool verboseMode)
+{
+    printErrorLevel(verboseMode);
+    printSourceLine();
+    g_Log.print(textMsg);
+    g_Log.eol();
+}
+
+void Diagnostic::report(bool verboseMode)
 {
     auto verboseColor     = LogColor::DarkCyan;
     auto errorColor       = verboseMode ? verboseColor : LogColor::Red;
-    auto remarkColor      = verboseMode ? verboseColor : LogColor::White;
-    auto sourceFileColor  = verboseMode ? verboseColor : LogColor::Gray;
     auto codeColor        = verboseMode ? verboseColor : LogColor::Gray;
     auto hilightCodeColor = verboseMode ? verboseColor : LogColor::White;
     auto rangeNoteColor   = verboseMode ? verboseColor : LogColor::Cyan;
-    auto warningColor     = verboseMode ? verboseColor : LogColor::Magenta;
-    auto noteColor        = verboseMode ? verboseColor : LogColor::Cyan;
-    auto stackColor       = verboseMode ? verboseColor : LogColor::DarkYellow;
     g_Log.setColor(verboseMode ? verboseColor : LogColor::White);
 
     // Message level
     if (showErrorLevel)
     {
-        switch (errorLevel)
-        {
-        case DiagnosticLevel::Error:
-            g_Log.setColor(errorColor);
-            if (sourceFile && sourceFile->duringSyntax)
-                g_Log.print("syntax error: ");
-            else
-                g_Log.print("error: ");
-            break;
-        case DiagnosticLevel::Warning:
-            if (g_CommandLine.warningsAsErrors)
-            {
-                g_Log.setColor(errorColor);
-                g_Log.print("error: (from warning): ");
-            }
-            else
-            {
-                g_Log.setColor(warningColor);
-                g_Log.print("warning: ");
-            }
-            break;
-        case DiagnosticLevel::Note:
-            printMargin(verboseMode, true);
-            g_Log.setColor(noteColor);
-            if (noteHeader.empty())
-            {
-                g_Log.print("note: ");
-            }
-            else
-            {
-                g_Log.print(noteHeader);
-                g_Log.print(": ");
-            }
-            break;
-        case DiagnosticLevel::Help:
-            printMargin(verboseMode, true);
-            g_Log.setColor(noteColor);
-            g_Log.print("help: ");
-            break;
-        case DiagnosticLevel::CallStack:
-        {
-            g_Log.setColor(stackColor);
-            if (currentStackLevel)
-                g_Log.print(Fmt("[callstack:%03u]: ", stackLevel));
-            else
-                g_Log.print(Fmt("callstack:%03u: ", stackLevel));
-            break;
-        }
-        case DiagnosticLevel::CallStackInlined:
-            g_Log.setColor(stackColor);
-            g_Log.print("inlined: ");
-            break;
-        case DiagnosticLevel::TraceError:
-            g_Log.setColor(stackColor);
-            g_Log.print("trace error: ");
-            break;
-        }
+        printErrorLevel(verboseMode);
+        g_Log.print(textMsg);
+        g_Log.eol();
     }
     else
     {
         printMargin(verboseMode, true);
     }
 
-    // Source line right after the header
-    if (g_CommandLine.errorCompact && hasFile && !sourceFile->path.empty() && showFileName)
-    {
-        printSourceLine();
-    }
-
-    // User message
-    if (showErrorLevel)
-    {
-        g_Log.print(textMsg);
-        g_Log.eol();
-    }
-
     // Source file and location on their own line
-    if (!g_CommandLine.errorCompact && hasFile && !sourceFile->path.empty())
+    if (hasFile && !sourceFile->path.empty())
     {
         if (showFileName)
         {
+            auto sourceFileColor = verboseMode ? verboseColor : LogColor::Gray;
             g_Log.setColor(sourceFileColor);
+            g_Log.print("--> ");
             printSourceLine();
             g_Log.eol();
         }
@@ -568,7 +596,7 @@ void Diagnostic::report(bool verboseMode) const
                     if (!ranges.back().hint.empty())
                     {
                         g_Log.print(" ");
-                        g_Log.setColor(remarkColor);
+                        g_Log.setColor(codeColor);
                         g_Log.print(ranges.back().hint);
                     }
 
@@ -620,7 +648,7 @@ void Diagnostic::report(bool verboseMode) const
                                 startIndex++;
                             }
 
-                            g_Log.setColor(remarkColor);
+                            g_Log.setColor(codeColor);
                             g_Log.print(r.hint);
                         }
                     }
@@ -632,23 +660,7 @@ void Diagnostic::report(bool verboseMode) const
     }
 
     // Code remarks
-    if (!g_CommandLine.errorCompact)
-    {
-        if (!remarks.empty())
-        {
-            printMargin(verboseMode, true, maxDigits);
-            g_Log.setColor(remarkColor);
-            for (auto r : remarks)
-            {
-                if (r.empty())
-                    continue;
-                printMargin(verboseMode);
-                g_Log.setColor(remarkColor);
-                g_Log.print(r);
-                g_Log.eol();
-            }
-        }
-    }
+    printRemarks(verboseMode);
 
     g_Log.setDefaultColor();
 }

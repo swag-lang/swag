@@ -125,14 +125,18 @@ struct Diagnostic
         setup();
     }
 
-    void        setup();
-    bool        mustPrintCode() const;
-    void        printSourceLine() const;
-    static void printMargin(bool verboseMode, bool eol = false, int maxDigits = 0, int lineNo = 0);
-    void        report(bool verboseMode = false) const;
-    void        setRange2(const SourceLocation& start, const SourceLocation& end, const Utf8& h);
-    void        setRange2(AstNode* node, const Utf8& h);
-    void        setRange2(const Token& node, const Utf8& h);
+    void setup();
+    void setRange2(const SourceLocation& start, const SourceLocation& end, const Utf8& h);
+    void setRange2(AstNode* node, const Utf8& h);
+    void setRange2(const Token& node, const Utf8& h);
+
+    bool mustPrintCode();
+    void printSourceLine();
+    void printErrorLevel(bool verboseMode);
+    void printMargin(bool verboseMode, bool eol = false, int maxDigits = 0, int lineNo = 0);
+    void printRemarks(bool verboseMode);
+    void reportCompact(bool verboseMode);
+    void report(bool verboseMode = false);
 
     static Utf8        isType(TypeInfo* typeInfo);
     static Diagnostic* hereIs(SymbolOverload* overload, bool forceShowRange = false);
