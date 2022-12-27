@@ -281,11 +281,9 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         }
         else if (destFuncDecl)
         {
-            diag = new Diagnostic{callParameters,
-                                  Fmt(Err(Err0188),
-                                      refNiceName.c_str(),
-                                      destFuncDecl->parameters->childs[match.cptResolved]->token.ctext(),
-                                      destFuncDecl->parameters->childs[match.cptResolved]->typeInfo->getDisplayNameC())};
+            diag       = new Diagnostic{callParameters, Fmt(Err(Err0188), refNiceName.c_str())};
+            auto miss  = destFuncDecl->parameters->childs[match.cptResolved];
+            diag->hint = Fmt(Hnt(Hnt0083), miss->token.ctext(), miss->typeInfo->getDisplayNameC());
         }
         else
         {

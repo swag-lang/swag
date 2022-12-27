@@ -380,7 +380,8 @@ void Diagnostic::printSourceCode()
 {
     if (!lines.size())
         return;
-    if (showRange)
+
+    if (showRange && (showErrorLevel || showFileName))
         printMargin(true);
 
     for (int i = 0; i < lines.size() - 1; i++)

@@ -197,7 +197,7 @@ void initErrors()
     SWAG_ERROR(Err0185, "cannot affect a closure to a lambda type");
     SWAG_ERROR(Err0186, "cannot find special function `%s` in `%s` when solving operator `%s`");
     SWAG_ERROR(Err0187, "missing index when dereferencing array `%s`");
-    SWAG_ERROR(Err0188, "not enough parameters for %s (missing `%s` of type `%s`)");
+    SWAG_ERROR(Err0188, "not enough parameters for %s");
     SWAG_ERROR(Err0189, "expected arguments `()` when calling %s");
     SWAG_ERROR(Err0190, "unexpected `throw` in attribute declaration");
     SWAG_ERROR(Err0191, "unexpected `#selectif` or `#checkif` on special function `%s`");
@@ -494,10 +494,10 @@ void initErrors()
     SWAG_ERROR(Err0484, "unexpected interface lambda declaration");
     SWAG_ERROR(Err0485, "an array access value should be of type integer (`%s` provided)");
     SWAG_ERROR(Err0486, "cannot dereference a pointer to `void`");
-    SWAG_ERROR(Err0487, "unexpected multiple variables declaration in `with`");
+    SWAG_ERROR(Err0487, "unexpected declaration of multiple variables in `with`");
     SWAG_ERROR(Err0488, "an expression of type `%s` cannot be dereferenced like a pointer");
-    SWAG_ERROR(Err0489, "the `@init` first parameter should be a pointer (`%s` provided)");
-    SWAG_ERROR(Err0490, "the `@init` second parameter should be an integer (`%s` provided)");
+    SWAG_ERROR(Err0489, "the first parameter of `@init` should be a pointer (`%s` provided)");
+    SWAG_ERROR(Err0490, "the second parameter of `@init` should be an integer (`%s` provided)");
     SWAG_ERROR(Err0491, "too many initialization parameters for type `%s`");
     SWAG_ERROR(Err0492, "the identifier `%s` cannot be found in enum `%s` or in %s `%s`");
     SWAG_ERROR(Err0493, "cannot call `@postcopy` on type `%s` because it is marked with the `Swag.NoCopy` attribute");
@@ -1048,6 +1048,7 @@ void initErrors()
     SWAG_ERROR(Hnt0080, "this should be replaced by the scope `%s`");
     SWAG_ERROR(Hnt0081, "this is the first one");
     SWAG_ERROR(Hnt0082, "do you mean `==` ?");
+    SWAG_ERROR(Hnt0083, "missing `%s` of type `%s`");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

@@ -20,7 +20,13 @@ bool SyntaxJob::doWith(AstNode* parent, AstNode** result)
     if (token.id == TokenId::KwdVar)
     {
         SWAG_CHECK(doVarDecl(node, &id));
-        SWAG_VERIFY(id->kind == AstNodeKind::VarDecl, error(id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Err0487)));
+        if (id->kind != AstNodeKind::VarDecl)
+        {
+            Diagnostic diag{id->sourceFile, id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Err0487)};
+            Diagnostic note{Hlp(Hlp0039), DiagnosticLevel::Help};
+            return Report::report(diag, &note);
+        }
+     
         SWAG_ASSERT(id->extension->semantic->semanticAfterFct == SemanticJob::resolveVarDeclAfter);
         id->extension->semantic->semanticAfterFct = SemanticJob::resolveWithVarDeclAfter;
         node->id.push_back(id->token.text);

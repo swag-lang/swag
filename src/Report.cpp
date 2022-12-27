@@ -91,7 +91,6 @@ namespace Report
                     note->showRange = true;
                 }
             }
-
         }
     }
 

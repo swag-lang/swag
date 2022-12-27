@@ -157,7 +157,7 @@ impl DebugAllocator
             if scan.hint @print("] hint [", scan.hint, "]")
             @print("\n")
             @print("\x1b[97m")
-            @print(" |  --> ")
+            @print("--> ")
             @print(scan.loc.fileName, ":", scan.loc.lineStart + 1, "\n")
 
 
