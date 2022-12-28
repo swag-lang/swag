@@ -245,7 +245,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             }
             else
             {
-                return context->report({node, Fmt(Err(Err0462), typeInfo->getDisplayNameC())});
+                Diagnostic diag{node, node->token, Fmt(Err(Err0462), typeInfo->getDisplayNameC())};
+                Diagnostic note{Hlp(Hlp0041)};
+                return context->report(diag, &note);
             }
         }
         else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !(node->flags & AST_UFCS_FCT))

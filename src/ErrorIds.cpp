@@ -445,7 +445,7 @@ void initErrors()
     SWAG_ERROR(Err0435, "exception during compile time execution !");
     SWAG_ERROR(Err0436, nullptr);
     SWAG_ERROR(Err0437, "literal suffix type must be native (`%s` provided)");
-    SWAG_ERROR(Err0438, "`for` is invalid for an enum implementation block");
+    SWAG_ERROR(Err0438, "unexpected `for` in an enum implementation block");
     SWAG_ERROR(Err0439, "unexpected literal suffix type (`%s`)");
     SWAG_ERROR(Err0440, "unexpected generic parameters, should be naked");
     SWAG_ERROR(Err0441, "the implementation block kind (%s) does not match the type of `%s` (%s)");
@@ -960,7 +960,9 @@ void initErrors()
     SWAG_ERROR(Hlp0038, "you should add a `break`");
     SWAG_ERROR(Hlp0039, "`with` should be followed by one single variable");
     SWAG_ERROR(Hlp0040, "you could use `++` if you want to append strings at compile time");
-
+    SWAG_ERROR(Hlp0041, "this type of parameter does not have an associated memory storage");
+    SWAG_ERROR(Hlp0042, nullptr);
+    
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -1050,6 +1052,7 @@ void initErrors()
     SWAG_ERROR(Hnt0082, "do you mean `==` ?");
     SWAG_ERROR(Hnt0083, "missing `%s` of type `%s`");
     SWAG_ERROR(Hnt0084, "this %s has type `%s`");
+    SWAG_ERROR(Hnt0085, "this is an enum implementation block");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

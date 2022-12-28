@@ -17,6 +17,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
 
     auto scopeKind = ScopeKind::Struct;
     SWAG_CHECK(eatToken());
+    auto kindLoc = token;
     switch (token.id)
     {
     case TokenId::KwdEnum:
@@ -37,7 +38,14 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     auto identifierStruct = implNode->identifier;
     if (token.id == TokenId::KwdFor)
     {
-        SWAG_VERIFY(scopeKind != ScopeKind::Enum, Report::report({implNode, token, Err(Err0438)}));
+        if (scopeKind == ScopeKind::Enum)
+        {
+            Diagnostic diag{implNode, token, Err(Err0438)};
+            diag.hint = Hnt(Hnt0061);
+            diag.setRange2(kindLoc, Hnt(Hnt0085));
+            return Report::report(diag);
+        }
+
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifierFor, IDENTIFIER_NO_FCT_PARAMS));
         implNode->identifierFor->allocateExtension(ExtensionKind::Semantic);
