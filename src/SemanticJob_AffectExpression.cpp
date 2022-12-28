@@ -358,7 +358,8 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             break;
         }
 
-        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Diagnostic::isType(leftTypeInfo));
+        PushErrContext ec1(context, nullptr, ErrorContextKind::MsgPrio, Fmt(Err(Err0196), "affect", rightTypeInfo->getDisplayNameC(), "to", leftTypeInfo->getDisplayNameC()));
+        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Diagnostic::isType(left));
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, nullptr, right, CASTFLAG_AUTO_BOOL | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT | CASTFLAG_ACCEPT_PENDING));
         if (context->result == ContextResult::Pending)
             return true;
@@ -380,12 +381,15 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             break;
         }
 
-        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Diagnostic::isType(leftTypeInfo));
+        auto           mmsg = tokenId == TokenId::SymLowerLowerEqual ? "make a left shift with" : "make a right shift with";
+        PushErrContext ec1(context, nullptr, ErrorContextKind::MsgPrio, Fmt(Err(Err0196), mmsg, leftTypeInfo->getDisplayNameC(), "and", rightTypeInfo->getDisplayNameC()));
+        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Diagnostic::isType(left));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU32, left, right, CASTFLAG_TRY_COERCE));
 
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
             leftTypeInfo->nativeType == NativeTypeKind::String ||
+            leftTypeInfo->nativeType == NativeTypeKind::CString ||
             leftTypeInfo->nativeType == NativeTypeKind::F32 ||
             leftTypeInfo->nativeType == NativeTypeKind::F64)
         {
@@ -437,10 +441,13 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         }
 
         SWAG_CHECK(forEnumFlags || checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
-        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Diagnostic::isType(leftTypeInfo));
+
+        PushErrContext ec1(context, nullptr, ErrorContextKind::MsgPrio, Fmt(Err(Err0196), "make a bit operation with", leftTypeInfo->getDisplayNameC(), "and", rightTypeInfo->getDisplayNameC()));
+        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Diagnostic::isType(left));
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
 
         if (leftTypeInfo->nativeType == NativeTypeKind::String ||
+            leftTypeInfo->nativeType == NativeTypeKind::CString ||
             leftTypeInfo->nativeType == NativeTypeKind::F32 ||
             leftTypeInfo->nativeType == NativeTypeKind::F64)
         {
@@ -499,10 +506,14 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
 
-        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Diagnostic::isType(leftTypeInfo));
+        auto           mmsg = tokenId == TokenId::SymPlusEqual ? "add" : "substract";
+        PushErrContext ec1(context, nullptr, ErrorContextKind::MsgPrio, Fmt(Err(Err0196), mmsg, leftTypeInfo->getDisplayNameC(), "and", rightTypeInfo->getDisplayNameC()));
+        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Diagnostic::isType(left));
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
+
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
-            leftTypeInfo->nativeType == NativeTypeKind::String)
+            leftTypeInfo->nativeType == NativeTypeKind::String ||
+            leftTypeInfo->nativeType == NativeTypeKind::CString)
         {
             return notAllowed(context, node, leftTypeInfo);
         }
@@ -523,10 +534,14 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         }
 
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
-        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Diagnostic::isType(leftTypeInfo));
+
+        PushErrContext ec1(context, nullptr, ErrorContextKind::MsgPrio, Fmt(Err(Err0196), "divide", leftTypeInfo->getDisplayNameC(), "and", rightTypeInfo->getDisplayNameC()));
+        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Diagnostic::isType(left));
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
+
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
-            leftTypeInfo->nativeType == NativeTypeKind::String)
+            leftTypeInfo->nativeType == NativeTypeKind::String ||
+            leftTypeInfo->nativeType == NativeTypeKind::CString)
         {
             return notAllowed(context, node, leftTypeInfo);
         }
@@ -549,10 +564,15 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         }
 
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
-        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Diagnostic::isType(leftTypeInfo));
+
+        auto           mmsg = tokenId == TokenId::SymPercentEqual ? "make a modulo with" : "multiply";
+        PushErrContext ec1(context, nullptr, ErrorContextKind::MsgPrio, Fmt(Err(Err0196), mmsg, leftTypeInfo->getDisplayNameC(), "and", rightTypeInfo->getDisplayNameC()));
+        PushErrContext ec(context, left, ErrorContextKind::Hint2, "", Diagnostic::isType(left));
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
+
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
-            leftTypeInfo->nativeType == NativeTypeKind::String)
+            leftTypeInfo->nativeType == NativeTypeKind::String ||
+            leftTypeInfo->nativeType == NativeTypeKind::CString)
         {
             return notAllowed(context, node, leftTypeInfo);
         }

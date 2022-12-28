@@ -24,7 +24,7 @@ PushErrContext::~PushErrContext()
     cxt->errorContextStack.pop_back();
 }
 
-void ErrorContext::fillContext(JobContext* context, const Diagnostic& diag, vector<const Diagnostic*>& notes)
+void ErrorContext::fillContext(JobContext* context, Diagnostic& diag, vector<const Diagnostic*>& notes)
 {
     if (diag.errorLevel == DiagnosticLevel::Error)
         context->hasError = true;
@@ -38,6 +38,12 @@ void ErrorContext::fillContext(JobContext* context, const Diagnostic& diag, vect
         {
             switch (exp.type)
             {
+            case ErrorContextKind::MsgPrio:
+                if (diag.lowPrio)
+                    diag.textMsg = exp.msg;
+                exp.hide = true;
+                break;
+                
             case ErrorContextKind::Hint2:
                 exp.hide = true;
                 if (exp.node)

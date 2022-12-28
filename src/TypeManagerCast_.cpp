@@ -318,7 +318,8 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
             if (TypeManager::makeCompatibles(context, toType, fromType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             {
                 Diagnostic diag{fromNode, Fmt(Err(Err0175), fromType->getDisplayNameC(), toType->getDisplayNameC())};
-                diag.hint = Fmt(Hnt(Hnt0032), fromType->getDisplayNameC(), toType->getDisplayNameC());
+                diag.hint    = Fmt(Hnt(Hnt0032), fromType->getDisplayNameC(), toType->getDisplayNameC());
+                diag.lowPrio = true;
                 return context->report(diag);
             }
         }
@@ -326,7 +327,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         // A specific error message ?
         if (!msg.empty())
         {
-            if(hint.empty())
+            if (hint.empty())
                 hint = Diagnostic::isType(fromType);
             Diagnostic diag{fromNode, msg, hint};
             return context->report(diag);
@@ -335,6 +336,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         // General cast error
         Diagnostic diag{fromNode, Fmt(Err(Err0177), fromType->getDisplayNameC(), toType->getDisplayNameC())};
         diag.hint = Diagnostic::isType(fromType);
+        diag.lowPrio = true;
         return context->report(diag);
     }
 

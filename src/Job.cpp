@@ -248,9 +248,10 @@ bool JobContext::report(const Diagnostic& diag, const vector<const Diagnostic*>&
     if (silentError)
         return false;
 
+    auto copyDiag  = diag;
     auto copyNotes = notes;
-    ErrorContext::fillContext(this, diag, copyNotes);
-    return Report::report(diag, copyNotes);
+    ErrorContext::fillContext(this, copyDiag, copyNotes);
+    return Report::report(copyDiag, copyNotes);
 }
 
 bool JobContext::checkSizeOverflow(const char* typeOverflow, uint64_t value, uint64_t maxValue)

@@ -144,6 +144,7 @@ struct Diagnostic
     void report(bool verboseMode = false);
 
     static Utf8        isType(TypeInfo* typeInfo);
+    static Utf8        isType(AstNode* node);
     static Diagnostic* hereIs(SymbolOverload* overload, bool forceShowRange = false);
     static Diagnostic* hereIs(AstNode* node, bool forceShowRange = false);
 
@@ -193,6 +194,7 @@ struct Diagnostic
 
     uint32_t stackLevel = 0;
 
+    bool lowPrio               = false;
     bool showErrorLevel        = true;
     bool display               = true;
     bool currentStackLevel     = false;

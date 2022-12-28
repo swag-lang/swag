@@ -17,6 +17,7 @@ enum class ErrorContextKind
     Export,
     Hint2,
     HereIs,
+    MsgPrio,
 };
 
 struct ErrorContext
@@ -29,7 +30,7 @@ struct ErrorContext
     bool                 locIsToken = false;
     bool                 hide       = false;
 
-    static void fillContext(JobContext* context, const Diagnostic& diag, vector<const Diagnostic*>& notes);
+    static void fillContext(JobContext* context, Diagnostic& diag, vector<const Diagnostic*>& notes);
 };
 
 struct PushErrContext

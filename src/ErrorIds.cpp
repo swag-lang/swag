@@ -205,7 +205,7 @@ void initErrors()
     SWAG_ERROR(Err0193, "cannot slice a pointer which does not allow pointer arithmetic");
     SWAG_ERROR(Err0194, "cannot dereference `%s` by index because its type does not allow pointer arithmetic");
     SWAG_ERROR(Err0195, "too many arguments in the tuple initialization (`%d` expected, `%d` provided)");
-    SWAG_ERROR(Err0196, nullptr);
+    SWAG_ERROR(Err0196, "mismatched types, cannot %s `%s` %s `%s`");
     SWAG_ERROR(Err0197, "too many initializers for `%s` (`%d` expected, `%d` provided)");
     SWAG_ERROR(Err0198, "a `#run` block should not be used as an expression");
     SWAG_ERROR(Err0199, "unexpected `opDrop` special function for `%s` because the struct is marked with `Swag.ConstExpr`");
@@ -1049,6 +1049,7 @@ void initErrors()
     SWAG_ERROR(Hnt0081, "this is the first one");
     SWAG_ERROR(Hnt0082, "do you mean `==` ?");
     SWAG_ERROR(Hnt0083, "missing `%s` of type `%s`");
+    SWAG_ERROR(Hnt0084, "this %s has type `%s`");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

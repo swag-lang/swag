@@ -618,6 +618,15 @@ Utf8 Diagnostic::isType(TypeInfo* typeInfo)
     return Fmt(Hnt(Hnt0011), typeInfo->getDisplayNameC());
 }
 
+Utf8 Diagnostic::isType(AstNode* node)
+{
+    if (!node->typeInfo)
+        return "";
+    if (node->resolvedSymbolOverload)
+        return Fmt(Hnt(Hnt0084), SymTable::getNakedKindName(node->resolvedSymbolOverload), node->typeInfo->getDisplayNameC());
+    return isType(node->typeInfo);
+}
+
 Diagnostic* Diagnostic::hereIs(AstNode* node, bool forceShowRange)
 {
     if (node->resolvedSymbolOverload)
