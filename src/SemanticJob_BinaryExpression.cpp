@@ -66,8 +66,20 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     case NativeTypeKind::Int:
     case NativeTypeKind::UInt:
         break;
+    case NativeTypeKind::String:
+    {
+        Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+        Diagnostic note{Hlp(Hlp0040)};
+        diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+        return context->report(diag, &note);
+    }
     default:
-        return context->report({left, Fmt(Err(Err0143), leftTypeInfo->getDisplayNameC())});
+    {
+        Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+        diag.hint = Hnt(Hnt0061);
+        diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+        return context->report(diag);
+    }
     }
 
     node->typeInfo = leftTypeInfo;
@@ -182,7 +194,12 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
     case NativeTypeKind::UInt:
         break;
     default:
-        return context->report({left, Fmt(Err(Err0147), leftTypeInfo->getDisplayNameC())});
+    {
+        Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+        diag.hint = Hnt(Hnt0061);
+        diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+        return context->report(diag);
+    }
     }
 
     node->typeInfo = leftTypeInfo;
@@ -271,7 +288,12 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
     case NativeTypeKind::UInt:
         break;
     default:
-        return context->report({node, Fmt(Err(Err0148), leftTypeInfo->getDisplayNameC())});
+    {
+        Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+        diag.hint = Hnt(Hnt0061);
+        diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+        return context->report(diag);
+    }
     }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
@@ -369,7 +391,12 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
     case NativeTypeKind::UInt:
         break;
     default:
-        return context->report({node, Fmt(Err(Err0149), leftTypeInfo->getDisplayNameC())});
+    {
+        Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+        diag.hint = Hnt(Hnt0061);
+        diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+        return context->report(diag);
+    }
     }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
@@ -760,7 +787,12 @@ bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* r
     case NativeTypeKind::UInt:
         break;
     default:
-        return context->report({context->node, Fmt(Err(Err0167), leftTypeInfo->getDisplayNameC())});
+    {
+        Diagnostic diag{node, node->token, Fmt(Err(Err0164), leftTypeInfo->getDisplayNameC())};
+        diag.hint = Hnt(Hnt0061);
+        diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+        return context->report(diag);
+    }
     }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))

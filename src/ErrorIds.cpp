@@ -151,14 +151,14 @@ void initErrors()
     SWAG_ERROR(Err0139, "`%s` should only be used before a function call, and `%s` is %s");
     SWAG_ERROR(Err0140, "use of an unknown compiler instruction `%s`");
     SWAG_ERROR(Err0141, "expected `\"` or an intrinsic name, found character `%c`");
-    SWAG_ERROR(Err0142, "operator `+` does not accept operand type `%s`");
-    SWAG_ERROR(Err0143, "operator `+` does not accept type `%s`");
+    SWAG_ERROR(Err0142, "the operator `+` does not accept an operand of type `%s`");
+    SWAG_ERROR(Err0143, "the operator `%s` does not accept a left expression of type `%s`");
     SWAG_ERROR(Err0144, "pointer arithmetic is not allowed on `typeinfo`");
     SWAG_ERROR(Err0145, "a digit separator `_` should not be followed by another digit separator");
-    SWAG_ERROR(Err0146, "operator `-` does not accept operand type `%s`");
-    SWAG_ERROR(Err0147, "operator `-` does not accept type `%s`");
-    SWAG_ERROR(Err0148, "operator `*` does not accept type `%s`");
-    SWAG_ERROR(Err0149, "operator `/` does not accept type `%s`");
+    SWAG_ERROR(Err0146, "the operator `-` does not accept an operand of type `%s`");
+    SWAG_ERROR(Err0147, nullptr);
+    SWAG_ERROR(Err0148, nullptr);
+    SWAG_ERROR(Err0149, nullptr);
     SWAG_ERROR(Err0150, "division by zero");
     SWAG_ERROR(Err0151, "expected at least one digit in the binary number");
     SWAG_ERROR(Err0152, "a digit separator `_` should not end a literal number");
@@ -176,7 +176,7 @@ void initErrors()
     SWAG_ERROR(Err0164, "the operator `&` does not accept type `%s` as a left expression");
     SWAG_ERROR(Err0165, "use of undeclared type `%s`");
     SWAG_ERROR(Err0166, "fatal error: script file `%s` does not exist");
-    SWAG_ERROR(Err0167, "operator `^` does not accept type `%s`");
+    SWAG_ERROR(Err0167, nullptr);
     SWAG_ERROR(Err0168, "unexpected operation `%s` on a tuple type");
     SWAG_ERROR(Err0169, "more than one module with the name `%s` is present in the workspace (path is `%s`)");
     SWAG_ERROR(Err0170, "unexpected type `%s` for operator `<<` (integer expected)");
@@ -959,7 +959,7 @@ void initErrors()
     SWAG_ERROR(Hlp0037, "you should add a `break` or a `fallthrough`");
     SWAG_ERROR(Hlp0038, "you should add a `break`");
     SWAG_ERROR(Hlp0039, "`with` should be followed by one single variable");
-    SWAG_ERROR(Hlp0040, nullptr);
+    SWAG_ERROR(Hlp0040, "you could use `++` if you want to append strings at compile time");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
