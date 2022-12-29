@@ -596,7 +596,7 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
             {
                 if (c->resolvedSymbolName && c->resolvedSymbolName->kind == SymbolKind::Variable)
                 {
-                    SWAG_VERIFY(cptVar == 0, context->report({back, Err(Err0029)}));
+                    SWAG_VERIFY(cptVar == 0, context->report({back, Err(Err0029), Hnt(Hnt0061)}));
                     cptVar++;
                 }
             }

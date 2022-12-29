@@ -19,7 +19,7 @@ void initErrors()
     SWAG_ERROR(Err0747, "%s cannot be public");
     SWAG_ERROR(Err0505, "%s overflow, the maximum supported size is `0x%I64x` bytes");
     SWAG_ERROR(Err0006, "%s should be named because some arguments before are named");
-    SWAG_ERROR(Err0738, "%s should have a default value because some parameters before have one");
+    SWAG_ERROR(Err0738, "%s should have a default value because the parameter before have one");
     SWAG_ERROR(Err0606, "%s should return a value");
     SWAG_ERROR(Err0834, "%s size overflow");
     SWAG_ERROR(Err0215, "[safety] `<<` shift operand value on type `%s` is greater than `%d`");
@@ -836,7 +836,7 @@ void initErrors()
     SWAG_ERROR(Err0181, "value `%I64u` does not fit in the type `%s`");
     SWAG_ERROR(Err0183, "value `%s` (`%I64u` in decimal) does not fit in the type `%s`");
     SWAG_ERROR(Err0056, "x64 backend unsupported os `%s`");
-    SWAG_ERROR(Err0723, nullptr);
+    SWAG_ERROR(Err0723, "mismatched types for field `%s`, `%s` expected but `%s` provided");
     SWAG_ERROR(Err0401, nullptr);
     SWAG_ERROR(Err0849, nullptr);
     SWAG_ERROR(Err0189, nullptr);
@@ -1055,6 +1055,9 @@ void initErrors()
     SWAG_ERROR(Hnt0085, "this is an enum implementation block");
     SWAG_ERROR(Hnt0086, "`impl` parent scope is `%s` but `%s` parent scope is `%s`");
     SWAG_ERROR(Hnt0087, "`self` is expected as a first parameter");
+    SWAG_ERROR(Hnt0088, "this parameter has a default value");
+    SWAG_ERROR(Hnt0089, "this parameter should have one too");
+    SWAG_ERROR(Hnt0090, nullptr);
     
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

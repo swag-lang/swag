@@ -43,7 +43,7 @@ void ErrorContext::fillContext(JobContext* context, Diagnostic& diag, vector<con
                     diag.textMsg = exp.msg;
                 exp.hide = true;
                 break;
-                
+
             case ErrorContextKind::Hint2:
                 exp.hide = true;
                 if (exp.node)
@@ -114,10 +114,12 @@ void ErrorContext::fillContext(JobContext* context, Diagnostic& diag, vector<con
                 exp.locIsToken = true;
                 break;
             case ErrorContextKind::SelectIf:
-                msg = Fmt(Nte(Nte0054), name.c_str());
+                msg            = Fmt(Nte(Nte0054), name.c_str());
+                exp.locIsToken = true;
                 break;
             case ErrorContextKind::CheckIf:
-                msg = Fmt(Nte(Nte0033), name.c_str());
+                msg            = Fmt(Nte(Nte0033), name.c_str());
+                exp.locIsToken = true;
                 break;
             case ErrorContextKind::HereIs:
                 note = Diagnostic::hereIs(exp.node->resolvedSymbolOverload);

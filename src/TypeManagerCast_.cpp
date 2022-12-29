@@ -2044,6 +2044,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
                 TypeInfoParam* fieldJ = symContext.solvedCallParameters[j];
 
                 auto oldType = childJ->typeInfo;
+                PushErrContext ec{context, childJ, ErrorContextKind::MsgPrio, Fmt(Err(Err0723), fieldJ->namedParam.c_str(), fieldJ->typeInfo->getDisplayNameC(), childJ->typeInfo->getDisplayNameC())};
                 SWAG_CHECK(TypeManager::makeCompatibles(context, fieldJ->typeInfo, childJ->typeInfo, nullptr, childJ, castFlags | CASTFLAG_TRY_COERCE));
                 if (childJ->typeInfo != oldType)
                     hasChanged = true;

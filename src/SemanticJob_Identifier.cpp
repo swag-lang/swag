@@ -776,7 +776,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
         Diagnostic diag{parent->previousResolvedNode, Fmt(Err(Err0086), parent->previousResolvedNode->token.ctext(), symbol->name.c_str())};
         diag.setRange2(identifier->token, Hnt(Hnt0073));
-        diag.hint = Fmt(Hnt(Hnt0080), parent->startScope->name.c_str()); 
+        diag.hint = Fmt(Hnt(Hnt0080), parent->startScope->name.c_str());
         return context->report(diag);
     }
 
@@ -1176,9 +1176,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 {
                     if (!(overload->node->attributeFlags & ATTRIBUTE_DISCARDABLE) && !(identifier->flags & AST_DISCARD))
                     {
-                        Diagnostic diag(identifier, Fmt(Err(Err0092), overload->node->token.ctext()));
+                        Diagnostic diag(identifier, identifier->token, Fmt(Err(Err0092), overload->node->token.ctext()));
                         diag.hint = Hnt(Hnt0023);
-                        Diagnostic note(overload->node, Nte(Nte0039), DiagnosticLevel::Note);
+                        Diagnostic note(overload->node, overload->node->token, Nte(Nte0039), DiagnosticLevel::Note);
                         return context->report(diag, &note);
                     }
                     else
@@ -1189,8 +1189,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             }
             else if (typeInfoRet->isVoid() && (identifier->flags & AST_DISCARD))
             {
-                Diagnostic diag{identifier, Err(Err0094), Diagnostic::isType(typeInfo)};
-                Diagnostic note{overload->node, Nte(Nte0039), DiagnosticLevel::Note};
+                Diagnostic diag{identifier, identifier->token, Err(Err0094)};
+                diag.hint = Diagnostic::isType(typeInfo);
+                Diagnostic note{overload->node, overload->node->token, Nte(Nte0039), DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }
 
@@ -2097,7 +2098,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 {
                     auto concreteType = TypeManager::concreteType(overload->typeInfo, CONCRETE_ALIAS);
                     auto couldBe      = Fmt(Nte(Nte0050), SymTable::getArticleKindName(match->symbolOverload).c_str(), concreteType->getDisplayNameC());
-                    note         = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
+                    note              = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
                 }
 
                 note->noteHeader = "could be";

@@ -62,7 +62,8 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         typeInfo->parameters.reserve((int) parameters->childs.size());
     }
 
-    auto sourceFile = context->sourceFile;
+    AstNode* firstParamWithDef = nullptr;
+    auto     sourceFile        = context->sourceFile;
     for (auto param : parameters->childs)
     {
         auto nodeParam        = CastAst<AstVarDecl>(param, AstNodeKind::FuncDeclParam);
@@ -131,6 +132,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
             {
                 defaultValueDone               = true;
                 typeInfo->firstDefaultValueIdx = index - 1;
+                firstParamWithDef              = nodeParam;
             }
 
             if (nodeParam->assignment->kind == AstNodeKind::CompilerSpecialFunction)
@@ -155,7 +157,13 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         else if (!nodeParam->typeInfo->isCode())
         {
             auto name = SemanticJob::getTheNiceParameterRank(index);
-            SWAG_VERIFY(!defaultValueDone, context->report({nodeParam, Fmt(Err(Err0738), name.c_str())}));
+            if (defaultValueDone)
+            {
+                Diagnostic diag{nodeParam, Fmt(Err(Err0738), name.c_str())};
+                diag.hint = Hnt(Hnt0089);
+                diag.setRange2(firstParamWithDef, Hnt(Hnt0088));
+                return context->report(diag);
+            }
         }
 
         if (forGenerics)
@@ -1429,7 +1437,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     while (ownerInline)
     {
         if (ownerInline->func == funcDecl)
-            return context->report({identifier, Fmt(Err(Err0775), identifier->token.ctext())});
+            return context->report({identifier, identifier->token, Fmt(Err(Err0775), identifier->token.ctext())});
         ownerInline = ownerInline->ownerInline;
     }
 

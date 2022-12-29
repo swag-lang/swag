@@ -375,10 +375,10 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
         if (node->childs.size() > 1)
         {
             auto msg = node->childs[1];
-            context->report({node, msg->computedValue->text});
+            context->report({node, node->token, msg->computedValue->text});
         }
         else
-            context->report({node, Err(Err0238)});
+            context->report({node, node->token, Err(Err0238)});
         return false;
     }
 
