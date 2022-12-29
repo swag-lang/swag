@@ -667,7 +667,7 @@ void initErrors()
     SWAG_ERROR(Err0658, nullptr);
     SWAG_ERROR(Err0659, "the implementation block for `%s` is private but the corresponding identifier is not");
     SWAG_ERROR(Err0660, "the implementation block for `%s` is not private but the corresponding identifier is");
-    SWAG_ERROR(Err0661, "the implementation block is not defined in the same scope as `%s` (`impl` parent scope is `%s`, `%s` parent scope is `%s`)");
+    SWAG_ERROR(Err0661, "the implementation block is not defined in the same scope as `%s`)");
     SWAG_ERROR(Err0662, "expected a struct or an enum, but `%s` is %s");
     SWAG_ERROR(Err0663, nullptr);
     SWAG_ERROR(Err0664, "unsupported alias as an implementation block name");
@@ -1053,6 +1053,7 @@ void initErrors()
     SWAG_ERROR(Hnt0083, "missing `%s` of type `%s`");
     SWAG_ERROR(Hnt0084, "this %s has type `%s`");
     SWAG_ERROR(Hnt0085, "this is an enum implementation block");
+    SWAG_ERROR(Hnt0086, "`impl` parent scope is `%s` but `%s` parent scope is `%s`");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

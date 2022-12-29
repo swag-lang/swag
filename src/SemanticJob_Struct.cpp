@@ -602,7 +602,8 @@ bool SemanticJob::checkImplScopes(SemanticContext* context, AstImpl* node, Scope
             return context->report(diag, note);
         }
 
-        Diagnostic diag{node, node->token, Fmt(Err(Err0661), node->token.ctext(), scopeImpl->parentScope->getFullName().c_str(), node->token.ctext(), scope->parentScope->getFullName().c_str())};
+        Diagnostic diag{node, node->token, Fmt(Err(Err0661), node->token.ctext())};
+        diag.hint = Fmt(Hnt(Hnt0086), scopeImpl->parentScope->getFullName().c_str(), node->token.ctext(), scope->parentScope->getFullName().c_str());
         return context->report(diag, note);
     }
 
