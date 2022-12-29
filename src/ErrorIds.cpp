@@ -365,7 +365,7 @@ void initErrors()
     SWAG_ERROR(Err0353, "unexpected token `%s` after the `%s` expose attribute");
     SWAG_ERROR(Err0354, "unexpected attribute usage (`%s`) after the `%s` expose attribute");
     SWAG_ERROR(Err0355, "expected an attribute name, found `%s`");
-    SWAG_ERROR(Err0356, "the attribute usage is empty");
+    SWAG_ERROR(Err0356, "unexpected empty attribute usage");
     SWAG_ERROR(Err0357, "the literal number `%I64u` is not in the range of `u16`");
     SWAG_ERROR(Err0358, "the literal number `%I64u` is not in the range of `u32`");
     SWAG_ERROR(Err0359, "the literal number `%I64d` is not in the range of `s8`");

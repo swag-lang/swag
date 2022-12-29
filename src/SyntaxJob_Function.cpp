@@ -888,7 +888,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
     {
         // Do not accept a specified return type if lambda parameters are deduced
         if (acceptMissingType && hasMissingType && *hasMissingType)
-            return error(token, Err(Err0458), Hlp(Hlp0018), Hnt(Hnt0026));
+            return error(token, Err(Err0458), Hlp(Hlp0018));
 
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
