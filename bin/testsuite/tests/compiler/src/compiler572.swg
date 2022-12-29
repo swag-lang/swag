@@ -1,4 +1,4 @@
-#global testerror
+#global testerrors
 
 struct Point
 {
@@ -17,7 +17,7 @@ struct Point
 	@assert(pt1 != pt2)
 }
 
-#global testerror
+//#global testerror
 impl Point
 {
 	func opEqual(self, other: Point) -> bool

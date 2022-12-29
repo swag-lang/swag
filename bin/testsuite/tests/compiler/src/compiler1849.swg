@@ -1,4 +1,3 @@
-
 #global testerror
 
 //#[Swag.PrintBc]
@@ -7,5 +6,5 @@
     var x : string
     #[Swag.Safety("", true)]
     ptr := &x[1]
-    @assert(:ptr == "A"'u8)
+    @assert(dref ptr == "A"'u8)
 }

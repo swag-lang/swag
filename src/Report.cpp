@@ -41,6 +41,28 @@ namespace Report
                 note->showMultipleCodeLines = false;
             }
 
+            // Transform a note/help in a hint
+            if (note->errorLevel == DiagnosticLevel::Note || note->errorLevel == DiagnosticLevel::Help)
+            {
+                if (note->hint.empty() && note->hasRangeLocation2 == false && note->hasRangeLocation)
+                {
+                    note->showErrorLevel = false;
+                    if (!note->noteHeader.empty())
+                    {
+                        note->hint = note->noteHeader;
+                        note->hint += " ";
+                    }
+
+                    note->hint += note->textMsg;
+                    note->showRange = true;
+                }
+            }
+        }
+
+        for (auto note : notes)
+        {
+            if (!note->display)
+                continue;
             for (auto note1 : notes)
             {
                 if (note == note1)
@@ -53,6 +75,7 @@ namespace Report
                     fuzzySameLine(note->endLocation.line, note1->endLocation.line) &&
                     note->sourceFile == note1->sourceFile &&
                     note->showFileName &&
+                    note->display &&
                     !note1->forceSourceFile)
                 {
                     note1->showFileName = false;
@@ -72,23 +95,26 @@ namespace Report
                     note->remarks.insert(note->remarks.end(), note1->remarks.begin(), note1->remarks.end());
                     note1->display = false;
                 }
-            }
 
-            // Transform a note/help in a hint
-            if (note->errorLevel == DiagnosticLevel::Note || note->errorLevel == DiagnosticLevel::Help)
-            {
-                if (note->hint.empty() && note->hasRangeLocation2 == false && note->hasRangeLocation)
+                // Merge hints
+                if (note->hint2.empty() &&
+                    note1->hint2.empty() &&
+                    !note1->hint.empty() &&
+                    !note->hasRangeLocation2 &&
+                    !note1->hasRangeLocation2 &&
+                    note->hasRangeLocation &&
+                    note1->hasRangeLocation &&
+                    note1->startLocation.line == note->startLocation.line &&
+                    note1->endLocation.line == note->endLocation.line &&
+                    (note1->startLocation.column > note->endLocation.column ||
+                     note1->endLocation.column < note->startLocation.column))
                 {
-                    note->showErrorLevel = false;
-                    if (!note->noteHeader.empty())
-                    {
-                        note->hint = note->noteHeader;
-                        note->hint += " ";
-                        note->hint += note->textMsg;
-                    }
-                    else
-                        note->hint = note->textMsg;
-                    note->showRange = true;
+                    note->hasRangeLocation2 = true;
+                    note->hint2             = note1->hint;
+                    note->startLocation2    = note1->startLocation;
+                    note->endLocation2      = note1->endLocation;
+                    note->remarks.insert(note->remarks.end(), note1->remarks.begin(), note1->remarks.end());
+                    note1->display = false;
                 }
             }
         }
@@ -106,7 +132,7 @@ namespace Report
         // Make a copy
         vector<Diagnostic*> notes;
         notes.push_back(new Diagnostic{diag});
-        for (auto n: inNotes)
+        for (auto n : inNotes)
             notes.push_back(new Diagnostic{*n});
 
         cleanNotes(notes);

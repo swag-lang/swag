@@ -80,7 +80,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
             diag.hint = Fmt(Hnt(Hnt0019), implNode->token.ctext());
         else if (newScope->kind == ScopeKind::Struct)
             diag.hint = Fmt(Hnt(Hnt0020), implNode->token.ctext());
-        Diagnostic note{newScope->owner, Fmt(Nte(Nte0027), implNode->token.ctext()), DiagnosticLevel::Note};
+        Diagnostic note{newScope->owner, newScope->owner->token, Fmt(Nte(Nte0027), implNode->token.ctext()), DiagnosticLevel::Note};
         return Report::report(diag, &note);
     }
 

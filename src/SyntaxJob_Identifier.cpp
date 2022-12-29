@@ -68,7 +68,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
     else if (Tokenizer::isLiteral(token.id))
         return error(token, Fmt(Err(Err0285), token.ctext()));
     else if (token.id == TokenId::EndOfFile)
-        return error(token, Err(Err0849));
+        return error(token, Err(Err0448));
     else
     {
         relaxIdentifier(token);

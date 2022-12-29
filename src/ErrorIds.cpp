@@ -405,10 +405,10 @@ void initErrors()
     SWAG_ERROR(Err0848, "expected an initialization of `%s` because the enum `%s` does not contain a value for zero");
     SWAG_ERROR(Err0646, "expected an interface, but `%s` is %s");
     SWAG_ERROR(Err0872, "expected another `visit` variable name after `,` and before `:`");
-    SWAG_ERROR(Err0020, "expected arguments `()` when calling %s");
+    SWAG_ERROR(Err0020, "expected arguments `()` when calling function `%s`");
     SWAG_ERROR(Err0151, "expected at least one digit in the binary number");
     SWAG_ERROR(Err0434, "expected at least one digit in the hexadecimal number");
-    SWAG_ERROR(Err0677, "expected at least one parameter for the interface member `%s` (`self` is expected as a first parameter)");
+    SWAG_ERROR(Err0677, "expected at least one parameter for the interface member `%s`");
     SWAG_ERROR(Err0450, "expected one single generic parameter for special function `%s` (`%d` provided)");
     SWAG_ERROR(Err0879, "expected the `#global if` expression");
     SWAG_ERROR(Err0878, "expected the `#if` expression");
@@ -509,7 +509,7 @@ void initErrors()
     SWAG_ERROR(Err0192, "pointer arithmetic is not allowed");
     SWAG_ERROR(Err0078, "reserved function name `%s`");
     SWAG_ERROR(Err0741, "some `@alias` names in the function `%s` are not contiguous (missing `@alias%u`)");
-    SWAG_ERROR(Err0657, "some functions of the interface `%s` are not implemented");
+    SWAG_ERROR(Err0657, "some functions of the interface `%s` are not implemented for `%s`");
     SWAG_ERROR(Err0536, "stack overflow (maximum stack size is `--stack-size:%s`)");
     SWAG_ERROR(Err0112, "the %s `%s` cannot be found in `%s`");
     SWAG_ERROR(Err0083, "the %s `%s` is deprecated (marked with `Swag.Deprecated`)");
@@ -642,7 +642,7 @@ void initErrors()
     SWAG_ERROR(Err0163, "the operator `|` does not accept type `%s` as a left expression");
     SWAG_ERROR(Err0265, "the operator modifier `%s` is already used once");
     SWAG_ERROR(Err0266, "the operator modifier `%s` is invalid for operator `%s`");
-    SWAG_ERROR(Err0791, "the pointer to the value and the type are not related (the first parameter is a pointer to `%s` but the second parameter is of type `%s`)");
+    SWAG_ERROR(Err0791, "mismatched types in `@mkany`, the pointer to the value and the type are not related");
     SWAG_ERROR(Err0770, "the return type has already been deduced to be `%s` (and `%s` is provided)");
     SWAG_ERROR(Err0773, "the return type has already been deduced to be nothing");
     SWAG_ERROR(Err0888, "the return value of intrinsic `%s` cannot be discarded");
@@ -1054,7 +1054,8 @@ void initErrors()
     SWAG_ERROR(Hnt0084, "this %s has type `%s`");
     SWAG_ERROR(Hnt0085, "this is an enum implementation block");
     SWAG_ERROR(Hnt0086, "`impl` parent scope is `%s` but `%s` parent scope is `%s`");
-
+    SWAG_ERROR(Hnt0087, "`self` is expected as a first parameter");
+    
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

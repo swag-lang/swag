@@ -104,7 +104,7 @@ bool SemanticJob::checkFuncPrototypeOpParam(SemanticContext* context, AstFuncDec
 {
     auto typeParam = TypeManager::concreteType(parameters->childs[index]->typeInfo, CONCRETE_ALIAS);
     if (!typeParam->isSame(wanted, ISSAME_CAST))
-        return context->report({parameters->childs[index], Fmt(Err(Err0066), wanted->getDisplayNameC(), typeParam->getDisplayNameC())});
+        return context->report({parameters->childs[index], Fmt(Err(Err0053), wanted->getDisplayNameC(), typeParam->getDisplayNameC())});
     return true;
 }
 

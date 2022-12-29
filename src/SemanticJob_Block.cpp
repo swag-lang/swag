@@ -289,7 +289,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
 
     // Deal with complete
     SWAG_CHECK(collectAttributes(context, node, nullptr));
-    SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_COMPLETE) || node->expression, context->report({node, Err(Err0607)}));
+    SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_COMPLETE) || node->expression, context->report({node, node->token, Err(Err0607)}));
 
     node->byteCodeFct = ByteCodeGenJob::emitSwitch;
     if (!node->expression)
@@ -317,7 +317,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
         return context->report({node->expression, Fmt(Err(Err0609), typeSwitch->getDisplayNameC())});
     }
 
-    SWAG_VERIFY(!node->cases.empty(), context->report({node, Err(Err0610)}));
+    SWAG_VERIFY(!node->cases.empty(), context->report({node, node->token, Err(Err0610)}));
 
     // Collect constant expressions, to avoid double definitions
     Array<AstNode*> valDef;
@@ -390,8 +390,8 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                     {
                         if (!valText.contains(one->value->text))
                         {
-                            Diagnostic diag{node, Fmt(Err(Err0620), typeEnum->name.c_str(), one->namedParam.c_str())};
-                            Diagnostic note{one->declNode, Nte(Nte0034), DiagnosticLevel::Note};
+                            Diagnostic diag{node, node->token, Fmt(Err(Err0620), typeEnum->name.c_str(), one->namedParam.c_str())};
+                            Diagnostic note{one->declNode, one->declNode->token, Nte(Nte0034), DiagnosticLevel::Note};
                             return context->report(diag, &note);
                         }
                     }
@@ -406,7 +406,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                         if (!val64.contains(one->value->reg.u64))
                         {
                             Diagnostic diag{node, node->token, Fmt(Err(Err0620), typeEnum->name.c_str(), one->namedParam.c_str())};
-                            Diagnostic note{one->declNode, Nte(Nte0034), DiagnosticLevel::Note};
+                            Diagnostic note{one->declNode, one->declNode->token, Nte(Nte0034), DiagnosticLevel::Note};
                             return context->report(diag, &note);
                         }
                     }

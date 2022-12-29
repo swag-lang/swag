@@ -305,15 +305,15 @@ Utf8 SemanticJob::checkLiteralType(ComputedValue& computedValue, Token& token, T
         {
         case NativeTypeKind::U8:
             if (computedValue.reg.u64 > UINT8_MAX)
-                return Fmt(Err(Err0394), computedValue.reg.u64);
+                return Fmt(Err(Err0341), computedValue.reg.u64);
             break;
         case NativeTypeKind::U16:
             if (computedValue.reg.u64 > UINT16_MAX)
-                return Fmt(Err(Err0398), computedValue.reg.u64);
+                return Fmt(Err(Err0357), computedValue.reg.u64);
             break;
         case NativeTypeKind::U32:
             if (computedValue.reg.u64 > UINT32_MAX)
-                return Fmt(Err(Err0404), computedValue.reg.u64);
+                return Fmt(Err(Err0358), computedValue.reg.u64);
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
@@ -339,11 +339,11 @@ Utf8 SemanticJob::checkLiteralType(ComputedValue& computedValue, Token& token, T
 
         case NativeTypeKind::Rune:
             if (computedValue.reg.u64 > UINT32_MAX)
-                return Fmt(Err(Err0432), computedValue.reg.u64);
+                return Fmt(Err(Err0362), computedValue.reg.u64);
             break;
 
         default:
-            return Fmt(Err(Err0433), computedValue.reg.u64);
+            return Fmt(Err(Err0387), computedValue.reg.u64);
         }
 
         break;

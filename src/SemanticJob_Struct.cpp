@@ -300,7 +300,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         auto missingNode = typeInterface->fields[idx];
         if (!itfRef.itf)
         {
-            Diagnostic diag{node, node->token, Fmt(Err(Err0657), typeBaseInterface->name.c_str())};
+            Diagnostic diag{node, node->token, Fmt(Err(Err0657), typeBaseInterface->name.c_str(), typeInfo->getDisplayNameC())};
             auto       note = new Diagnostic({missingNode->declNode, missingNode->declNode->token, Fmt("missing `%s`", missingNode->namedParam.c_str()), DiagnosticLevel::Note});
             return context->report(diag, note);
         }
@@ -453,6 +453,8 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
             if (typeLambda->parameters.size() == 0)
             {
                 Diagnostic diag{varDecl->type, Fmt(Err(Err0677), child->token.ctext())};
+                diag.hint = Hnt(Hnt0087);
+
                 if (varDecl->specFlags & AST_SPEC_VARDECL_GEN_ITF)
                 {
                     Diagnostic note{Hlp(Hlp0031), DiagnosticLevel::Help};
@@ -484,7 +486,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         {
             auto attr = typeParam->attributes.getAttribute(g_LangSpec->name_Swag_Offset);
             SWAG_ASSERT(attr);
-            return context->report({attr->node, Err(Err0682)});
+            return context->report({attr->node, attr->node->token, Err(Err0682)});
         }
 
         typeParam->offset                                          = storageOffset;

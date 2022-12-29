@@ -1327,13 +1327,14 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     else
     {
         // If we are returning an interface, be sure they are defined before casting
-        if (returnType && returnType->isInterface())
+        if (returnType->isInterface())
         {
             context->job->waitAllStructInterfaces(child->typeInfo);
             if (context->result != ContextResult::Done)
                 return true;
         }
 
+        PushErrContext ec{context, funcNode->returnType, ErrorContextKind::Note, Fmt(Nte(Nte0067), returnType->getDisplayNameC())};
         SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT | CASTFLAG_PTR_REF));
     }
 
