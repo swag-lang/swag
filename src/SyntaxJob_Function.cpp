@@ -93,7 +93,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result
         SWAG_CHECK(eatToken());
         while (token.id != TokenId::SymVertical)
         {
-            SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Err(Err0401)));
+            SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Err(Err0448)));
             callParams->aliasNames.push_back(token);
             SWAG_CHECK(eatToken());
             if (token.id == TokenId::SymVertical)
