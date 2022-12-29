@@ -376,8 +376,8 @@ void initErrors()
     SWAG_ERROR(Err0364, "a `#mixin` replacement block should only be used inside a breakable statement (`loop`, `visit`, `for` ...)");
     SWAG_ERROR(Err0365, "`#mixin` invalid replacement `%s`");
     SWAG_ERROR(Err0366, "`#mixin` has an empty replacement block");
-    SWAG_ERROR(Err0367, nullptr);
-    SWAG_ERROR(Err0368, nullptr);
+    SWAG_ERROR(Err0367, "mismatched types for the lower bound of the slice, integer expected (`%s` provided)");
+    SWAG_ERROR(Err0368, "mismatched types for the upper bound of the slice, integer expected (`%s` provided)");
     SWAG_ERROR(Err0369, "`#global` should be defined first, at the top of the file");
     SWAG_ERROR(Err0370, "`#global export` already defined");
     SWAG_ERROR(Err0371, "`#global foreignlib` should be followed by a string");
@@ -808,10 +808,10 @@ void initErrors()
     SWAG_ERROR(Err0799, "unsupported `@stringof` expression");
     SWAG_ERROR(Err0800, "`@countof` should not be used on a tuple type");
     SWAG_ERROR(Err0801, "unexpected `@countof` expression type `%s` (should be integer)");
-    SWAG_ERROR(Err0802, "constant value should be unsigned, but is `%d`");
+    SWAG_ERROR(Err0802, "the constant value should be unsigned, but is `%d`");
     SWAG_ERROR(Err0803, "unsupported `@nameof` expression");
-    SWAG_ERROR(Err0804, "a `#message` function should have a parameter of type `Swag.CompilerMsgMask` (`%s` provided)");
-    SWAG_ERROR(Err0805, "constant value should be unsigned, but is `%I64d`");
+    SWAG_ERROR(Err0804, "a `#message` block should have a parameter of type `Swag.CompilerMsgMask` (`%s` provided)");
+    SWAG_ERROR(Err0805, "the constant value should be unsigned, but is `%I64d`");
     SWAG_ERROR(Err0806, "`@spread` can only be called as a function parameter");
     SWAG_ERROR(Err0807, "an expression of type `%s` cannot be spreaded");
     SWAG_ERROR(Err0808, "cannot instantiate generic %s `%s` with an unsized value");

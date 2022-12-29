@@ -221,8 +221,14 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     auto     typeVar  = TypeManager::concreteType(node->array->typeInfo);
     uint64_t maxBound = 0;
 
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, nullptr, node->lowerBound, CASTFLAG_TRY_COERCE));
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, nullptr, node->upperBound, CASTFLAG_TRY_COERCE));
+    {
+        PushErrContext ec(context, nullptr, ErrorContextKind::MsgPrio, Fmt(Err(Err0367), node->lowerBound->typeInfo->getDisplayNameC()));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, nullptr, node->lowerBound, CASTFLAG_TRY_COERCE));
+    }
+    {
+        PushErrContext ec(context, nullptr, ErrorContextKind::MsgPrio, Fmt(Err(Err0367), node->lowerBound->typeInfo->getDisplayNameC()));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, nullptr, node->upperBound, CASTFLAG_TRY_COERCE));
+    }
 
     // Slicing of an array
     if (typeVar->isArray())
