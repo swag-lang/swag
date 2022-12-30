@@ -21,75 +21,75 @@ const char* ByteCodeGenJob::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo*
         switch (msg)
         {
         case SafetyMsg::NotZero:
-            typedMsg[m][0][0] = Err(Err0221);
+            typedMsg[m][0][0] = Err(SEr0007);
             break;
         case SafetyMsg::BadSlicingUp:
-            typedMsg[m][0][0] = Err(Err0229);
+            typedMsg[m][0][0] = Err(SEr0004);
             break;
         case SafetyMsg::BadSlicingDown:
-            typedMsg[m][0][0] = Err(Err0230);
+            typedMsg[m][0][0] = Err(SEr0005);
             break;
         case SafetyMsg::IndexRange:
-            typedMsg[m][0][0] = Err(Err0222);
+            typedMsg[m][0][0] = Err(SEr0008);
             break;
         case SafetyMsg::SwitchComplete:
-            typedMsg[m][0][0] = Err(Err0246);
+            typedMsg[m][0][0] = Err(SEr0019);
             break;
         case SafetyMsg::CastTruncated:
             SWAG_ASSERT(toType && fromType);
-            typedMsg[m][i][j] = Fmt(Err(Err0207), fromType->name.c_str(), toType->name.c_str());
+            typedMsg[m][i][j] = Fmt(Err(SEr0018), fromType->name.c_str(), toType->name.c_str());
             break;
         case SafetyMsg::CastNeg:
             SWAG_ASSERT(toType && fromType);
-            typedMsg[m][i][j] = Fmt(Err(Err0208), fromType->name.c_str(), toType->name.c_str());
+            typedMsg[m][i][j] = Fmt(Err(SEr0006), fromType->name.c_str(), toType->name.c_str());
             break;
         case SafetyMsg::IFPlus:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(Err(Err0209), toType->name.c_str());
+            typedMsg[m][i][j] = Fmt(Err(SEr0012), toType->name.c_str());
             break;
         case SafetyMsg::IFMinus:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(Err(Err0210), toType->name.c_str());
+            typedMsg[m][i][j] = Fmt(Err(SEr0014), toType->name.c_str());
             break;
         case SafetyMsg::IFMul:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(Err(Err0211), toType->name.c_str());
+            typedMsg[m][i][j] = Fmt(Err(SEr0010), toType->name.c_str());
             break;
         case SafetyMsg::IFPlusEq:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(Err(Err0212), toType->name.c_str());
+            typedMsg[m][i][j] = Fmt(Err(SEr0011), toType->name.c_str());
             break;
         case SafetyMsg::IFMinusEq:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(Err(Err0213), toType->name.c_str());
+            typedMsg[m][i][j] = Fmt(Err(SEr0013), toType->name.c_str());
             break;
         case SafetyMsg::IFMulEq:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(Err(Err0214), toType->name.c_str());
+            typedMsg[m][i][j] = Fmt(Err(SEr0009), toType->name.c_str());
             break;
         case SafetyMsg::ShiftLeftOp:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(Err(Err0215), toType->name.c_str(), (toType->sizeOf * 8) - 1);
+            typedMsg[m][i][j] = Fmt(Err(SEr0001), toType->name.c_str(), (toType->sizeOf * 8) - 1);
             break;
         case SafetyMsg::ShiftRightOp:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(Err(Err0216), toType->name.c_str(), (toType->sizeOf * 8) - 1);
+            typedMsg[m][i][j] = Fmt(Err(SEr0002), toType->name.c_str(), (toType->sizeOf * 8) - 1);
             break;
         case SafetyMsg::ShiftLeftOf:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(Err(Err0217), toType->name.c_str());
+            typedMsg[m][i][j] = Fmt(Err(SEr0015), toType->name.c_str());
             break;
         case SafetyMsg::ShiftRightOf:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(Err(Err0218), toType->name.c_str());
+            typedMsg[m][i][j] = Fmt(Err(SEr0016), toType->name.c_str());
             break;
         case SafetyMsg::NegAbs:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(Err(Err0219), toType->name.c_str());
+            typedMsg[m][i][j] = Fmt(Err(SEr0003), toType->name.c_str());
             break;
         case SafetyMsg::Neg:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(Err(Err0220), toType->name.c_str());
+            typedMsg[m][i][j] = Fmt(Err(SEr0017), toType->name.c_str());
             break;
         }
     }

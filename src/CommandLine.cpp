@@ -81,7 +81,7 @@ bool CommandLine::check()
         }
         else if (p.extension().string() != ".swgs")
         {
-            Report::error(Fmt(Err(Err0319), p.extension().string().c_str()));
+            Report::error(Fmt(Err(CEr0013), p.extension().string().c_str()));
             return false;
         }
     }

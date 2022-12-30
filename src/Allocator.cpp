@@ -177,7 +177,7 @@ void AllocatorImpl::allocateNewBlock(size_t size)
     lastBlock      = (AllocatorBlock*) malloc(sizeof(AllocatorBlock) + allocated);
     if (!lastBlock)
     {
-        Report::error(Err(Err0014));
+        Report::error(Err(CEr0019));
         OS::exit(-1);
         return;
     }
@@ -303,7 +303,7 @@ Allocator::Allocator()
             g_SharedAllocator = (Allocator*) malloc(sizeof(Allocator));
             if (!g_SharedAllocator)
             {
-                Report::error(Err(Err0014));
+                Report::error(Err(CEr0019));
                 OS::exit(-1);
                 return;
             }

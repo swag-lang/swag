@@ -61,7 +61,7 @@ void Workspace::setupUserTags()
                 auto it = g_LangSpec->keywords.find(tokens1[1]);
                 if (!it || *it != TokenId::NativeType)
                 {
-                    Report::error(Fmt(Err(Err0539), tokens1[1].c_str(), oneTagName.c_str()));
+                    Report::error(Fmt(Err(CEr0024), tokens1[1].c_str(), oneTagName.c_str()));
                     helpUserTags();
                     OS::exit(-1);
                 }
@@ -128,7 +128,7 @@ void Workspace::setupUserTags()
 
                     if (token.id != TokenId::LiteralNumber && token.id != TokenId::LiteralString)
                     {
-                        Report::error(Fmt(Err(Err0538), tokenVal.c_str(), oneTagName.c_str()));
+                        Report::error(Fmt(Err(CEr0023), tokenVal.c_str(), oneTagName.c_str()));
                         helpUserTags();
                         OS::exit(-1);
                     }
@@ -143,7 +143,7 @@ void Workspace::setupUserTags()
                 auto errMsg = SemanticJob::checkLiteralType(oneTag.value, token, oneTag.type, neg);
                 if (!errMsg.empty())
                 {
-                    auto err = Fmt(Err(Err0322), oneTagName.c_str(), errMsg.c_str());
+                    auto err = Fmt(Err(CEr0015), oneTagName.c_str(), errMsg.c_str());
                     Report::error(err);
                     helpUserTags();
                     OS::exit(-1);
@@ -175,19 +175,19 @@ void Workspace::setup()
 
     if (workspacePath.empty())
     {
-        Report::error(Err(Err0540));
+        Report::error(Err(CEr0011));
         OS::exit(-1);
     }
 
     bool invalid = false;
     if (!fs::exists(workspacePath))
     {
-        Report::error(Fmt(Err(Err0541), workspacePath.string().c_str()));
+        Report::error(Fmt(Err(CEr0026), workspacePath.string().c_str()));
         invalid = true;
     }
     else if (!g_CommandLine.scriptCommand && !fs::exists(modulesPath) && !fs::exists(testsPath))
     {
-        Report::error(Fmt(Err(Err0542), workspacePath.string().c_str()));
+        Report::error(Fmt(Err(CEr0016), workspacePath.string().c_str()));
         invalid = true;
     }
 
