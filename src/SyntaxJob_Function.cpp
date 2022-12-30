@@ -148,7 +148,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result
                 break;
 
             if (token.id == closeToken)
-                return Report::report({callParams, tokenComma, Err(Tkn0014)});
+                return Report::report({callParams, tokenComma, Err(Err0066)});
         }
     }
 
@@ -378,7 +378,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acc
             auto tokenComma = token;
             SWAG_CHECK(eatToken(TokenId::SymComma));
             if (token.id == TokenId::SymRightParen)
-                return Report::report({allParams, tokenComma, Err(Tkn0015)});
+                return Report::report({allParams, tokenComma, Err(Err0188)});
 
             SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdUsing, error(token, Fmt(Err(Syn0112), token.ctext())));
         }

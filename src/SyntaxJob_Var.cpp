@@ -16,7 +16,7 @@ bool SyntaxJob::checkIsValidVarName(AstNode* node)
         if (identifier->genericParameters)
             return error(identifier->genericParameters, Fmt(Err(Syn0161), identifier->token.ctext()), nullptr, Hnt(Hnt0026));
         if (identifier->callParameters)
-            return error(identifier->callParameters, Fmt(Err(Tkn0013), identifier->token.ctext()), nullptr, Hnt(Hnt0026));
+            return error(identifier->callParameters, Fmt(Err(Err0433), identifier->token.ctext()), nullptr, Hnt(Hnt0026));
     }
 
     if (node->token.text[0] != '@')

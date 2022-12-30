@@ -831,7 +831,7 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, uint32_t exprFlags, AstNode
     SWAG_CHECK(doFactorExpression(&parent, exprFlags, &leftNode));
     Ast::removeFromParent(leftNode);
     SWAG_CHECK(doOperatorPrecedence(&leftNode));
-    SWAG_VERIFY(token.id != TokenId::SymEqual, error(token, Err(Tkn0016), Hnt(Hnt0082)));
+    SWAG_VERIFY(token.id != TokenId::SymEqual, error(token, Err(Err0432), Hnt(Hnt0082)));
     Ast::addChildBack(parent, leftNode);
     if (result)
         *result = leftNode;

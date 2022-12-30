@@ -234,7 +234,7 @@ bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
         {
             auto prevToken = token;
             SWAG_CHECK(eatToken(TokenId::SymComma));
-            SWAG_VERIFY(token.id != TokenId::SymColon, error(prevToken, Err(Tkn0006)));
+            SWAG_VERIFY(token.id != TokenId::SymColon, error(prevToken, Err(Err0404)));
             SWAG_CHECK(doIdentifierRef(nullptr, &node->expression));
             SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a 'visit' variable name"));
             SWAG_CHECK(checkIsValidVarName(node->expression->childs.back()));
