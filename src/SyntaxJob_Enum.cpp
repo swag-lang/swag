@@ -37,7 +37,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
             }
             else
             {
-                Diagnostic diag{enumNode->sourceFile, token, Fmt(Err(Syn0129), enumNode->token.ctext(), Scope::getArticleKindName(newScope->kind))};
+                Diagnostic diag{enumNode->sourceFile, token, Fmt(Err(Err0394), enumNode->token.ctext(), Scope::getArticleKindName(newScope->kind))};
                 Diagnostic note{newScope->owner, newScope->owner->token, Nte(Nte0036), DiagnosticLevel::Note};
                 return Report::report(diag, &note);
             }

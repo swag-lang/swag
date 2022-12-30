@@ -220,8 +220,6 @@ void initErrors()
     SWAG_ERROR(Syn0126, "the operator modifier `%s` is invalid for operator `%s`");
     SWAG_ERROR(Syn0127, "the return value of intrinsic `%s` cannot be discarded");
     SWAG_ERROR(Syn0128, "the struct `%s` should be initialized in place with `{}` and not parenthesis");
-    SWAG_ERROR(Syn0129, "the symbol `%s` is already defined as %s in an accessible scope");
-    SWAG_ERROR(Syn0130, "the symbol `%s` is already defined in an accessible scope");
     SWAG_ERROR(Syn0131, "the variable should have a type or should be initialized");
     SWAG_ERROR(Syn0132, "too many array dimensions (maximum is `254`)");
     SWAG_ERROR(Syn0133, "too many pointer dimensions (maximum is `%u`)");
@@ -863,8 +861,8 @@ void initErrors()
     SWAG_ERROR(Err0432, "unexpected compare operator `=`");
     SWAG_ERROR(Err0398, "expected an identifier, found symbol `%s`");
     SWAG_ERROR(Err0404, "expected another `visit` variable name after `,` and before `:`");
-    SWAG_ERROR(Err0394, nullptr);
-    SWAG_ERROR(Err0305, nullptr);
+    SWAG_ERROR(Err0394, "the symbol `%s` is already defined as %s in an accessible scope");
+    SWAG_ERROR(Err0305, "the symbol `%s` is already defined in an accessible scope");
     SWAG_ERROR(Err0592, nullptr);
     SWAG_ERROR(Err0605, nullptr);
     SWAG_ERROR(Err0707, nullptr);

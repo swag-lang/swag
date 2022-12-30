@@ -234,7 +234,7 @@ bool SyntaxJob::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlo
             }
             else if (symbol->kind != SymbolKind::Namespace)
             {
-                Utf8       msg = Fmt(Err(Syn0130), symbol->name.c_str());
+                Utf8       msg = Fmt(Err(Err0305), symbol->name.c_str());
                 Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
                 Utf8       note = Nte(Nte0036);
                 Diagnostic diagNote{symbol->nodes.front(), note, DiagnosticLevel::Note};

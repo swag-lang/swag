@@ -1936,7 +1936,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
 
             auto       symbol = overloads[0]->overload->symbol;
             auto       match  = matches[0];
-            Diagnostic diag{node, Fmt(Err(Syn0130), symbol->name.c_str())};
+            Diagnostic diag{node, Fmt(Err(Err0305), symbol->name.c_str())};
             auto       note = new Diagnostic{match->symbolOverload->node, match->symbolOverload->node->token, Nte(Nte0036), DiagnosticLevel::Note};
             return context->report(diag, note);
         }
@@ -2042,7 +2042,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         auto symbol = overloads[0]->overload->symbol;
         if (flags & MIP_FOR_GHOSTING)
         {
-            Diagnostic  diag{node, node->token, Fmt(Err(Syn0130), symbol->name.c_str())};
+            Diagnostic  diag{node, node->token, Fmt(Err(Err0305), symbol->name.c_str())};
             Diagnostic* note = nullptr;
             for (auto match : matches)
             {
