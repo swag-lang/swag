@@ -469,7 +469,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         else if (destFuncDecl && bi.badSignatureParameterIdx < destFuncDecl->parameters->childs.size())
         {
             auto reqParam = destFuncDecl->parameters->childs[bi.badSignatureParameterIdx];
-            note          = new Diagnostic{reqParam, Fmt(Nte(Nte0066), reqParam->token.ctext(), refNiceName.c_str()), DiagnosticLevel::Note};
+            note          = new Diagnostic{reqParam, reqParam->token, Fmt(Nte(Nte0066), reqParam->token.ctext(), refNiceName.c_str()), DiagnosticLevel::Note};
         }
         else
             note = Diagnostic::hereIs(overload);

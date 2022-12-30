@@ -414,10 +414,7 @@ void Diagnostic::printSourceCode()
         errorMsg.clear();
         while (startIndex < (int) r.startLocation.column && startIndex < (uint32_t) backLine.length())
         {
-            if (backLine[startIndex] >= 32 || backLine[startIndex] == '\t')
-                errorMsg += backLine[startIndex];
-            else
-                errorMsg += " ";
+            errorMsg += backLine[startIndex];
             startIndex++;
         }
 
@@ -430,8 +427,7 @@ void Diagnostic::printSourceCode()
         errorMsg.clear();
         for (uint32_t i = 0; i < (uint32_t) r.range && i < (uint32_t) backLine.length(); i++)
         {
-            if (backLine[startIndex] >= 32 || backLine[startIndex] == '\t')
-                errorMsg += backLine[startIndex];
+            errorMsg += backLine[startIndex];
             startIndex++;
         }
 

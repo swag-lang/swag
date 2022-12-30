@@ -347,11 +347,11 @@ void initErrors()
     SWAG_ERROR(Err0075, "`opVisit` should have the `Swag.Macro` attribute");
     SWAG_ERROR(Err0668, "`using` is not possible on a constant");
     SWAG_ERROR(Err0692, "`using` is not possible on a variable of type `%s`");
-    SWAG_ERROR(Err0691, "`using` is not possible on an enum variable");
+    SWAG_ERROR(Err0691, nullptr);
     SWAG_ERROR(Err0695, "`using` is not possible on type `%s` (expected a namespace, a struct, an enum or a variable)");
     SWAG_ERROR(Err0669, "`using` on a field is only valid for a struct type (`%s` provided)");
     SWAG_ERROR(Err0689, "`using` on a variable should not be used in `%s` scope");
-    SWAG_ERROR(Err0822, "`using` on a variable with a pointer type is only possible for a pointer to a struct (and type is `%s`)");
+    SWAG_ERROR(Err0822, "`using` on a variable with a pointer type is only possible for a pointer to a struct (and pointed type is `%s`)");
     SWAG_ERROR(Err0703, "`with` should not be used on type `%s` (expected a namespace, an enum or a struct)");
     SWAG_ERROR(Err0763, "a %s cannot be marked with the `Swag.Inline` attribute");
     SWAG_ERROR(Err0761, "a %s cannot be marked with the `Swag.Macro` attribute");
