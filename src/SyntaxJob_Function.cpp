@@ -93,12 +93,12 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result
         SWAG_CHECK(eatToken());
         while (token.id != TokenId::SymVertical)
         {
-            SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Err(Err0448)));
+            SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Err(Syn0077)));
             callParams->aliasNames.push_back(token);
             SWAG_CHECK(eatToken());
             if (token.id == TokenId::SymVertical)
                 break;
-            SWAG_VERIFY(token.id == TokenId::SymComma, error(token, Err(Err0402)));
+            SWAG_VERIFY(token.id == TokenId::SymComma, error(token, Err(Syn0176)));
             SWAG_CHECK(eatToken());
         }
 
@@ -123,7 +123,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result
             if (token.id == TokenId::SymColon)
             {
                 if (paramExpression->kind != AstNodeKind::IdentifierRef || paramExpression->childs.size() != 1)
-                    return Report::report({paramExpression, Fmt(Err(Err0403), token.ctext())});
+                    return Report::report({paramExpression, Fmt(Err(Syn0110), token.ctext())});
                 param->allocateExtension(ExtensionKind::IsNamed);
                 param->extension->misc->isNamed = paramExpression->childs.front();
                 SWAG_CHECK(eatToken());
@@ -148,7 +148,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result
                 break;
 
             if (token.id == closeToken)
-                return Report::report({callParams, tokenComma, Err(Err0856)});
+                return Report::report({callParams, tokenComma, Err(Tkn0014)});
         }
     }
 
@@ -172,7 +172,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, boo
         paramNode->flags |= AST_DECL_USING;
     }
 
-    SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdConst, error(token, Fmt(Err(Err0410), token.ctext())));
+    SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdConst, error(token, Fmt(Err(Syn0112), token.ctext())));
     paramNode->token.text = token.text;
 
     // 'self'
@@ -183,12 +183,12 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, boo
         {
             isConst = true;
             SWAG_CHECK(eatToken());
-            SWAG_VERIFY(token.id == TokenId::Identifier && token.text == g_LangSpec->name_self, error(token, Err(Err0405)));
+            SWAG_VERIFY(token.id == TokenId::Identifier && token.text == g_LangSpec->name_self, error(token, Err(Syn0045)));
             paramNode->token.text = g_LangSpec->name_self;
         }
 
         SWAG_CHECK(eatToken());
-        SWAG_VERIFY(paramNode->ownerStructScope, error(token, Err(Err0406)));
+        SWAG_VERIFY(paramNode->ownerStructScope, error(token, Err(Syn0027)));
 
         // For an enum, 'self' is replaced with the type itself, not a pointer to the type like for a struct
         if (paramNode->ownerStructScope->kind == ScopeKind::Enum)
@@ -202,7 +202,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, boo
         }
         else
         {
-            SWAG_VERIFY(paramNode->ownerStructScope->kind == ScopeKind::Struct, error(token, Err(Err0406)));
+            SWAG_VERIFY(paramNode->ownerStructScope->kind == ScopeKind::Struct, error(token, Err(Syn0027)));
             auto typeNode         = Ast::newTypeExpression(sourceFile, paramNode);
             typeNode->ptrCount    = 1;
             typeNode->ptrFlags[0] = isConst ? AstTypeExpression::PTR_CONST : 0;
@@ -222,7 +222,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, boo
         while (token.id == TokenId::SymComma)
         {
             SWAG_CHECK(eatToken());
-            SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Err0408), token.ctext())));
+            SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0166), token.ctext())));
 
             AstVarDecl* otherVarNode = Ast::newVarDecl(sourceFile, token.text, parent, this, AstNodeKind::FuncDeclParam);
             SWAG_CHECK(eatToken());
@@ -295,7 +295,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, boo
         if (!hasType && !hasAssignment)
         {
             if (!acceptMissingType)
-                return error(token, Err(Err0409));
+                return error(token, Err(Syn0090));
             else if (hasMissingType)
                 *hasMissingType = true;
         }
@@ -318,7 +318,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, boo
 
 bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acceptMissingType, bool* hasMissingType, bool isMethod, bool isConstMethod, bool isItfMethod)
 {
-    SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(token, Err(Err0883)));
+    SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(token, Err(Syn0091)));
 
     // To avoid calling 'format' in case we know this is fine, otherwise it will be called each time, even when ok
     if (token.id != TokenId::SymLeftParen && parent->kind == AstNodeKind::AttrDecl)
@@ -365,9 +365,9 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acc
             {
                 SWAG_ASSERT(hasMissingType);
                 if (!missingTypes && *hasMissingType)
-                    return error(allParams->childs.back(), Err(Err0088), Hlp(Hlp0019));
+                    return error(allParams->childs.back(), Err(Syn0170), Hlp(Hlp0019));
                 if (oneParamDone && !(*hasMissingType) && missingTypes)
-                    return error(allParams->childs.back(), Err(Err0409), Hlp(Hlp0019));
+                    return error(allParams->childs.back(), Err(Syn0090), Hlp(Hlp0019));
                 *hasMissingType = *hasMissingType || missingTypes;
             }
 
@@ -378,9 +378,9 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acc
             auto tokenComma = token;
             SWAG_CHECK(eatToken(TokenId::SymComma));
             if (token.id == TokenId::SymRightParen)
-                return Report::report({allParams, tokenComma, Err(Err0855)});
+                return Report::report({allParams, tokenComma, Err(Tkn0015)});
 
-            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdUsing, error(token, Fmt(Err(Err0410), token.ctext())));
+            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdUsing, error(token, Fmt(Err(Syn0112), token.ctext())));
         }
     }
 
@@ -396,11 +396,11 @@ bool SyntaxJob::doGenericDeclParameters(AstNode* parent, AstNode** result)
         *result = allParams;
 
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
-    SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, Err(Err0411)));
+    SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, Err(Syn0092)));
 
     while (token.id != TokenId::SymRightParen)
     {
-        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Err(Err0412)));
+        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Err(Syn0058)));
         auto oneParam = Ast::newVarDecl(sourceFile, token.text, allParams, this, AstNodeKind::FuncDeclParam);
         oneParam->flags |= AST_IS_GENERIC;
         SWAG_CHECK(eatToken());
@@ -408,7 +408,7 @@ bool SyntaxJob::doGenericDeclParameters(AstNode* parent, AstNode** result)
         if (token.id == TokenId::SymColon)
         {
             SWAG_CHECK(eatToken());
-            SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(token, Err(Err0555)));
+            SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(token, Err(Syn0134)));
             SWAG_CHECK(doTypeExpression(oneParam, &oneParam->type));
         }
 
@@ -441,13 +441,13 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     if (isMethod || isConstMethod)
     {
         if (!funcNode->ownerStructScope)
-            return error(token, Err(Err0407), nullptr, Hnt(Hnt0042));
+            return error(token, Err(Syn0039), nullptr, Hnt(Hnt0042));
 
         if (funcNode->ownerStructScope->kind == ScopeKind::Enum)
-            return error(token, Err(Err0452), Hlp(Hlp0007), Hnt(Hnt0042));
+            return error(token, Err(Syn0038), Hlp(Hlp0007), Hnt(Hnt0042));
 
         if (funcNode->ownerStructScope->kind != ScopeKind::Struct)
-            return error(token, Err(Err0407), Hlp(Hlp0007), Hnt(Hnt0042));
+            return error(token, Err(Syn0039), Hlp(Hlp0007), Hnt(Hnt0042));
     }
 
     if (typeFuncId == TokenId::Invalid)
@@ -530,12 +530,12 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         isIntrinsic = token.text[0] == '@';
         if (isIntrinsic)
         {
-            SWAG_VERIFY(sourceFile->isBootstrapFile || sourceFile->isRuntimeFile, error(token, Fmt(Err(Err0413), token.ctext()), Hlp(Hlp0008)));
+            SWAG_VERIFY(sourceFile->isBootstrapFile || sourceFile->isRuntimeFile, error(token, Fmt(Err(Syn0106), token.ctext()), Hlp(Hlp0008)));
         }
         else
         {
             relaxIdentifier(token);
-            SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Err0414), token.ctext())));
+            SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0089), token.ctext())));
             funcNode->tokenName = token;
         }
 
@@ -595,7 +595,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
         SWAG_CHECK(eatToken(TokenId::SymLeftParen));
-        SWAG_VERIFY(token.id != TokenId::SymRightParen, error(funcNode, Err(Err0750)));
+        SWAG_VERIFY(token.id != TokenId::SymRightParen, error(funcNode, Err(Syn0033)));
         SWAG_CHECK(doExpression(funcNode, EXPR_FLAG_NONE, &funcNode->parameters));
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
     }
@@ -612,7 +612,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
             Scoped    scoped(this, newScope);
             ScopedFct scopedFct(this, funcNode);
             SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
-            SWAG_VERIFY(token.id != TokenId::KwdRetVal, error(token, Err(Err0560)));
+            SWAG_VERIFY(token.id != TokenId::KwdRetVal, error(token, Err(Syn0144)));
             AstNode* typeExpression;
             SWAG_CHECK(doTypeExpression(typeNode, &typeExpression));
         }
@@ -654,7 +654,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     // If we have now a semi colon, then this is an empty function, like a forward decl in c++
     if (token.id == TokenId::SymSemiColon)
     {
-        SWAG_VERIFY(!funcForCompiler, error(token, Fmt(Err(Err0416), funcNode->getDisplayNameC())));
+        SWAG_VERIFY(!funcForCompiler, error(token, Fmt(Err(Syn0054), funcNode->getDisplayNameC())));
         SWAG_CHECK(eatSemiCol("function declaration"));
         funcNode->flags |= AST_EMPTY_FCT;
         return true;
@@ -840,14 +840,14 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
                     break;
 
                 SWAG_CHECK(eatToken(TokenId::SymComma, "in capture block"));
-                SWAG_VERIFY(token.id != TokenId::SymVertical, error(token, Err(Err0120)));
+                SWAG_VERIFY(token.id != TokenId::SymVertical, error(token, Err(Syn0057)));
             }
 
             capture->token.endLocation = token.endLocation;
             SWAG_CHECK(eatToken(TokenId::SymVertical));
         }
 
-        SWAG_VERIFY(token.id == TokenId::SymLeftParen, error(token, Err(Err0456)));
+        SWAG_VERIFY(token.id == TokenId::SymLeftParen, error(token, Err(Syn0049)));
         typeInfo->flags |= TYPEINFO_CLOSURE;
     }
     else
@@ -888,7 +888,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
     {
         // Do not accept a specified return type if lambda parameters are deduced
         if (acceptMissingType && hasMissingType && *hasMissingType)
-            return error(token, Err(Err0458), Hlp(Hlp0018));
+            return error(token, Err(Syn0165), Hlp(Hlp0018));
 
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
@@ -955,7 +955,7 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
 
     auto lambdaDecl = CastAst<AstFuncDecl>(lambda, AstNodeKind::FuncDecl);
     if (!lambda->ownerFct && lambdaDecl->captureParameters)
-        return error(lambdaDecl, Err(Err0179), Hlp(Hlp0017));
+        return error(lambdaDecl, Err(Syn0153), Hlp(Hlp0017));
 
     // Lambda sub function will be resolved by the owner function
     if (lambda->ownerFct)

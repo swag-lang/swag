@@ -284,7 +284,7 @@ bool SemanticJob::createTmpVarStruct(SemanticContext* context, AstIdentifier* id
 
     // Be sure it's the NAME{} syntax
     if (!(identifier->callParameters->flags & AST_CALL_FOR_STRUCT))
-        return context->report({callP, Fmt(Err(Err0082), identifier->typeInfo->name.c_str())});
+        return context->report({callP, Fmt(Err(Syn0128), identifier->typeInfo->name.c_str())});
 
     auto varParent = identifier->identifierRef->parent;
     while (varParent->kind == AstNodeKind::ExpressionList)
@@ -1007,7 +1007,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         // Be sure it's the NAME{} syntax
         if (identifier->callParameters && !(identifier->flags & AST_GENERATED) && !(identifier->callParameters->flags & AST_CALL_FOR_STRUCT))
         {
-            Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0082), identifier->typeInfo->name.c_str())};
+            Diagnostic diag{identifier, identifier->token, Fmt(Err(Syn0128), identifier->typeInfo->name.c_str())};
             Diagnostic note(Hlp(Hlp0035), DiagnosticLevel::Help);
             return context->report(diag, &note);
         }
@@ -1936,7 +1936,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
 
             auto       symbol = overloads[0]->overload->symbol;
             auto       match  = matches[0];
-            Diagnostic diag{node, Fmt(Err(Err0886), symbol->name.c_str())};
+            Diagnostic diag{node, Fmt(Err(Syn0130), symbol->name.c_str())};
             auto       note = new Diagnostic{match->symbolOverload->node, match->symbolOverload->node->token, Nte(Nte0036), DiagnosticLevel::Note};
             return context->report(diag, note);
         }
@@ -2042,7 +2042,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         auto symbol = overloads[0]->overload->symbol;
         if (flags & MIP_FOR_GHOSTING)
         {
-            Diagnostic  diag{node, node->token, Fmt(Err(Err0886), symbol->name.c_str())};
+            Diagnostic  diag{node, node->token, Fmt(Err(Syn0130), symbol->name.c_str())};
             Diagnostic* note = nullptr;
             for (auto match : matches)
             {

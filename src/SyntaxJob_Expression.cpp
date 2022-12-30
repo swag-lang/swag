@@ -17,7 +17,7 @@ bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymQuote)
     {
         SWAG_CHECK(eatToken());
-        SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::NativeType, error(token, Err(Err0241)));
+        SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::NativeType, error(token, Err(Syn0060)));
         auto identifierRef = Ast::newIdentifierRef(sourceFile, node, this);
         SWAG_CHECK(doIdentifier(identifierRef, IDENTIFIER_NO_PARAMS | IDENTIFIER_TYPE_DECL));
         identifierRef->childs.back()->semanticFct = SemanticJob::resolveLiteralSuffix;
@@ -77,7 +77,7 @@ bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
         }
 
         SWAG_CHECK(eatToken(TokenId::SymRightSquare));
-        SWAG_VERIFY(token.id != TokenId::SymLeftSquare, error(token, Err(Err0826), Hlp(Hlp0006)));
+        SWAG_VERIFY(token.id != TokenId::SymLeftSquare, error(token, Err(Syn0139), Hlp(Hlp0006)));
     }
 
     return true;
@@ -93,7 +93,7 @@ bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(eatToken());
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
-    SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, Err(Err0861)));
+    SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, Err(Syn0044)));
 
     // Three parameters
     if (node->token.id == TokenId::IntrinsicMakeInterface)
@@ -173,7 +173,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
     {
         auto startLoc = token.startLocation;
         SWAG_CHECK(eatToken());
-        SWAG_VERIFY(token.id != TokenId::SymRightParen, error(startLoc, token.endLocation, Err(Err0862)));
+        SWAG_VERIFY(token.id != TokenId::SymRightParen, error(startLoc, token.endLocation, Err(Syn0160)));
         AstNode* expr;
         SWAG_CHECK(doExpression(parent, exprFlags, &expr));
         expr->flags |= AST_IN_ATOMIC_EXPR;
@@ -662,10 +662,10 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
             case TokenId::SymGreaterGreaterEqual:
                 break;
             default:
-                return error(token, Fmt(Err(Err0266), forNode.ctext()));
+                return error(token, Fmt(Err(Syn0126), forNode.ctext()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_SAFE), error(token, Fmt(Err(Err0265), token.ctext())));
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_SAFE), error(token, Fmt(Err(Syn0125), token.ctext())));
             mdfFlags |= MODIFIER_SAFE;
             SWAG_CHECK(eatToken());
             continue;
@@ -681,10 +681,10 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
             case TokenId::SymGreaterGreaterEqual:
                 break;
             default:
-                return error(token, Fmt(Err(Err0266), forNode.ctext()));
+                return error(token, Fmt(Err(Syn0126), forNode.ctext()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_SMALL), error(token, Fmt(Err(Err0265), token.ctext())));
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_SMALL), error(token, Fmt(Err(Syn0125), token.ctext())));
             mdfFlags |= MODIFIER_SMALL;
             SWAG_CHECK(eatToken());
             continue;
@@ -698,10 +698,10 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
             case TokenId::SymColonEqual:
                 break;
             default:
-                return error(token, Fmt(Err(Err0266), forNode.ctext()));
+                return error(token, Fmt(Err(Syn0126), forNode.ctext()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_NO_LEFT_DROP), error(token, Fmt(Err(Err0265), token.ctext())));
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_NO_LEFT_DROP), error(token, Fmt(Err(Syn0125), token.ctext())));
             mdfFlags |= MODIFIER_NO_LEFT_DROP;
             SWAG_CHECK(eatToken());
             continue;
@@ -715,10 +715,10 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
             case TokenId::SymColonEqual:
                 break;
             default:
-                return error(token, Fmt(Err(Err0266), forNode.ctext()));
+                return error(token, Fmt(Err(Syn0126), forNode.ctext()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_MOVE), error(token, Fmt(Err(Err0265), token.ctext())));
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_MOVE), error(token, Fmt(Err(Syn0125), token.ctext())));
             mdfFlags |= MODIFIER_MOVE;
             SWAG_CHECK(eatToken());
             continue;
@@ -732,17 +732,17 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
             case TokenId::SymColonEqual:
                 break;
             default:
-                return error(token, Fmt(Err(Err0266), forNode.ctext()));
+                return error(token, Fmt(Err(Syn0126), forNode.ctext()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_NO_RIGHT_DROP), error(token, Fmt(Err(Err0265), token.ctext())));
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_MOVE), error(token, Fmt(Err(Err0265), g_LangSpec->name_move.c_str())));
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_NO_RIGHT_DROP), error(token, Fmt(Err(Syn0125), token.ctext())));
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_MOVE), error(token, Fmt(Err(Syn0125), g_LangSpec->name_move.c_str())));
             mdfFlags |= MODIFIER_MOVE | MODIFIER_NO_RIGHT_DROP;
             SWAG_CHECK(eatToken());
             continue;
         }
 
-        return error(token, Fmt(Err(Err0264), token.ctext()));
+        return error(token, Fmt(Err(Syn0178), token.ctext()));
     }
 
     return true;
@@ -831,7 +831,7 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, uint32_t exprFlags, AstNode
     SWAG_CHECK(doFactorExpression(&parent, exprFlags, &leftNode));
     Ast::removeFromParent(leftNode);
     SWAG_CHECK(doOperatorPrecedence(&leftNode));
-    SWAG_VERIFY(token.id != TokenId::SymEqual, error(token, Err(Err0267), Hnt(Hnt0082)));
+    SWAG_VERIFY(token.id != TokenId::SymEqual, error(token, Err(Tkn0016), Hnt(Hnt0082)));
     Ast::addChildBack(parent, leftNode);
     if (result)
         *result = leftNode;
@@ -983,7 +983,7 @@ bool SyntaxJob::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** resu
     case TokenId::CompilerFuncPreMain:
     case TokenId::CompilerFuncMain:
     case TokenId::CompilerFuncTest:
-        return error(token, Fmt(Err(Err0055), token.ctext()));
+        return error(token, Fmt(Err(Syn0020), token.ctext()));
 
     default:
         SWAG_CHECK(doBoolExpression(parent, exprFlags, &boolExpression));
@@ -1057,7 +1057,7 @@ bool SyntaxJob::doExpressionListTuple(AstNode* parent, AstNode** result)
             // Name
             if (token.id == TokenId::SymColon)
             {
-                SWAG_VERIFY(paramExpression->kind == AstNodeKind::IdentifierRef, error(paramExpression, Err(Err0448)));
+                SWAG_VERIFY(paramExpression->kind == AstNodeKind::IdentifierRef, error(paramExpression, Err(Syn0077)));
                 SWAG_CHECK(checkIsSingleIdentifier(paramExpression, "as a tuple field name"));
                 SWAG_CHECK(checkIsValidVarName(paramExpression->childs.back()));
                 auto namedExpression = paramExpression->childs.back();
@@ -1094,7 +1094,7 @@ bool SyntaxJob::doExpressionListArray(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     if (token.id == TokenId::SymRightSquare)
-        return error(token, Fmt(Err(Err0270)));
+        return error(token, Fmt(Err(Syn0124)));
     if (result)
         *result = initNode;
 
@@ -1171,7 +1171,7 @@ bool SyntaxJob::doDefer(AstNode* parent, AstNode** result)
         else if (token.text == g_LangSpec->name_noerr)
             node->deferKind = DeferKind::NoError;
         else
-            return error(token, Fmt(Err(Err0256), token.ctext()), Hlp(Hlp0023));
+            return error(token, Fmt(Err(Syn0142), token.ctext()), Hlp(Hlp0023));
 
         SWAG_CHECK(eatToken());
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
@@ -1197,7 +1197,7 @@ bool SyntaxJob::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t 
         SWAG_CHECK(eatToken());
         while (true)
         {
-            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::SymQuestion, error(token, Fmt(Err(Err0271), token.ctext())));
+            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::SymQuestion, error(token, Fmt(Err(Syn0042), token.ctext())));
             SWAG_CHECK(doIdentifierRef(multi, nullptr, identifierFlags | IDENTIFIER_ACCEPT_QUESTION));
             if (token.id != TokenId::SymComma)
                 break;
@@ -1219,7 +1219,7 @@ bool SyntaxJob::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t 
         {
             if (token.id == TokenId::SymDot)
             {
-                SWAG_VERIFY(withNode, error(token, Err(Err0836)));
+                SWAG_VERIFY(withNode, error(token, Err(Syn0180)));
                 prePrendWith = true;
                 eatToken();
             }
@@ -1497,7 +1497,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result, AstWith* w
             *result = leftNode;
     }
 
-    SWAG_VERIFY(token.id != TokenId::SymEqualEqual, error(token, Err(Err0454)));
+    SWAG_VERIFY(token.id != TokenId::SymEqualEqual, error(token, Err(Syn0149)));
 
     if (token.id != TokenId::SymLeftCurly)
         SWAG_CHECK(eatSemiCol("left expression"));

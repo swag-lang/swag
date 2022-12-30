@@ -16,7 +16,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         *result = enumNode;
 
     SWAG_CHECK(eatToken());
-    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Err0396), token.ctext())));
+    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0074), token.ctext())));
     enumNode->inheritTokenName(token);
     SWAG_CHECK(checkIsValidUserName(enumNode));
 
@@ -30,14 +30,14 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
             if (newScope->owner->kind == AstNodeKind::Impl)
             {
                 auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
-                Diagnostic diag{implNode->identifier, Fmt(Err(Err0441), Scope::getNakedKindName(newScope->kind), implNode->token.ctext(), Scope::getNakedKindName(ScopeKind::Enum))};
+                Diagnostic diag{implNode->identifier, Fmt(Err(Syn0123), Scope::getNakedKindName(newScope->kind), implNode->token.ctext(), Scope::getNakedKindName(ScopeKind::Enum))};
                 diag.hint = Fmt(Hnt(Hnt0019), implNode->token.ctext());
                 Diagnostic note{enumNode, enumNode->token, Fmt(Nte(Nte0027), implNode->token.ctext()), DiagnosticLevel::Note};
                 return Report::report(diag, &note);
             }
             else
             {
-                Diagnostic diag{enumNode->sourceFile, token, Fmt(Err(Err0885), enumNode->token.ctext(), Scope::getArticleKindName(newScope->kind))};
+                Diagnostic diag{enumNode->sourceFile, token, Fmt(Err(Syn0129), enumNode->token.ctext(), Scope::getArticleKindName(newScope->kind))};
                 Diagnostic note{newScope->owner, newScope->owner->token, Nte(Nte0036), DiagnosticLevel::Note};
                 return Report::report(diag, &note);
             }
@@ -73,7 +73,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         SWAG_CHECK(doTypeExpression(typeNode));
     }
 
-    SWAG_VERIFY(token.id == TokenId::SymLeftCurly, error(token, Fmt(Err(Err0399), token.ctext())));
+    SWAG_VERIFY(token.id == TokenId::SymLeftCurly, error(token, Fmt(Err(Syn0031), token.ctext())));
 
     // Content of enum
     Scoped scoped(this, newScope);
@@ -160,7 +160,7 @@ bool SyntaxJob::doEnumContent(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doEnumValue(AstNode* parent, AstNode** result)
 {
-    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Err0400), token.ctext())));
+    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0075), token.ctext())));
     auto enumValue = Ast::newNode<AstEnumValue>(this, AstNodeKind::EnumValue, sourceFile, parent);
     if (result)
         *result = enumValue;

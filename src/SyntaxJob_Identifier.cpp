@@ -29,7 +29,7 @@ bool SyntaxJob::checkIsValidUserName(AstNode* node, Token* loc)
     if (!sourceFile->isGenerated && !sourceFile->isBootstrapFile && !sourceFile->isRuntimeFile)
     {
         if (node->token.text.length() > 1 && node->token.text[0] == '_' && node->token.text[1] == '_')
-            return error(loc ? *loc : node->token, Fmt(Err(Err0272), node->token.ctext()));
+            return error(loc ? *loc : node->token, Fmt(Err(Syn0122), node->token.ctext()));
     }
 
     return true;
@@ -41,7 +41,7 @@ bool SyntaxJob::checkIsSingleIdentifier(AstNode* node, const char* msg)
         node->childs.size() > 1 ||
         node->childs.back()->kind != AstNodeKind::Identifier)
     {
-        return error(node, Fmt(Err(Err0121), msg));
+        return error(node, Fmt(Err(Syn0062), msg));
     }
 
     return true;
@@ -58,17 +58,17 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         token.startLocation = backTickToken.startLocation;
         backTick            = true;
         if (token.id == TokenId::SymQuestion)
-            return error(token, Fmt(Err(Err0835), token.ctext()));
+            return error(token, Fmt(Err(Tkn0005), token.ctext()));
     }
 
     if (token.id == TokenId::SymQuestion && !(identifierFlags & IDENTIFIER_ACCEPT_QUESTION))
-        return error(token, Fmt(Err(Err0835), token.ctext()));
+        return error(token, Fmt(Err(Tkn0005), token.ctext()));
     else if (token.id != TokenId::SymQuestion && Tokenizer::isSymbol(token.id))
-        return error(token, Fmt(Err(Err0835), token.ctext()));
+        return error(token, Fmt(Err(Tkn0005), token.ctext()));
     else if (Tokenizer::isLiteral(token.id))
-        return error(token, Fmt(Err(Err0285), token.ctext()));
+        return error(token, Fmt(Err(Syn0079), token.ctext()));
     else if (token.id == TokenId::EndOfFile)
-        return error(token, Err(Err0448));
+        return error(token, Err(Syn0077));
     else
     {
         relaxIdentifier(token);
@@ -79,7 +79,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
             !Tokenizer::isIntrinsicReturn(token.id) &&
             !Tokenizer::isIntrinsicNoReturn(token.id))
         {
-            return error(token, Fmt(Err(Err0850), token.ctext()));
+            return error(token, Fmt(Err(Syn0078), token.ctext()));
         }
     }
 
@@ -98,7 +98,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
     // Replace "Self" with the corresponding struct name
     if (identifier->token.text == g_LangSpec->name_Self)
     {
-        SWAG_VERIFY(parent->ownerStructScope, Report::report({identifier, Err(Err0838)}));
+        SWAG_VERIFY(parent->ownerStructScope, Report::report({identifier, Err(Syn0135)}));
         if (currentSelfStructScope)
             identifier->token.text = currentSelfStructScope->name;
         else
@@ -123,7 +123,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         {
             if (identifierFlags & IDENTIFIER_TYPE_DECL)
             {
-                Diagnostic diag{identifier, token, Fmt(Err(Err0082), identifier->token.ctext())};
+                Diagnostic diag{identifier, token, Fmt(Err(Syn0128), identifier->token.ctext())};
                 Diagnostic note(Hlp(Hlp0035), DiagnosticLevel::Help);
                 return Report::report(diag, &note);
             }
@@ -145,7 +145,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         if (!(identifierFlags & IDENTIFIER_NO_PARAMS))
         {
             if (identifierFlags & IDENTIFIER_TYPE_DECL)
-                return Report::report({identifier, token, Err(Err0840)});
+                return Report::report({identifier, token, Err(Syn0120)});
             Ast::removeFromParent(identifier);
             SWAG_CHECK(doArrayPointerIndex((AstNode**) &identifier));
             Ast::addChildBack(parent, identifier);
@@ -233,8 +233,8 @@ bool SyntaxJob::doDiscard(AstNode* parent, AstNode** result)
         break;
     default:
         if (Tokenizer::isIntrinsicReturn(token.id))
-            return error(token, Fmt(Err(Err0888), token.ctext()), nullptr, Hnt(Hnt0008));
-        return error(token, Fmt(Err(Err0841), token.ctext()));
+            return error(token, Fmt(Err(Syn0127), token.ctext()), nullptr, Hnt(Hnt0008));
+        return error(token, Fmt(Err(Syn0173), token.ctext()));
     }
 
     if (result)
@@ -285,7 +285,7 @@ bool SyntaxJob::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDi
 
     if (result)
         *result = node;
-    SWAG_VERIFY(node->ownerFct, error(node, Fmt(Err(Err0842), node->token.ctext())));
+    SWAG_VERIFY(node->ownerFct, error(node, Fmt(Err(Syn0021), node->token.ctext())));
     SWAG_CHECK(eatToken());
 
     ScopedTryCatchAssume sc(this, (AstTryCatchAssume*) node);
@@ -293,7 +293,7 @@ bool SyntaxJob::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDi
     if (token.id == TokenId::SymLeftCurly)
     {
         node->specFlags |= AST_SPEC_TCA_BLOCK;
-        SWAG_VERIFY(!afterDiscard, error(token, Err(Err0847)));
+        SWAG_VERIFY(!afterDiscard, error(token, Err(Tkn0012)));
         SWAG_CHECK(doCurlyStatement(node));
 
         if (node->semanticFct == SemanticJob::resolveTry)
@@ -310,11 +310,11 @@ bool SyntaxJob::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDi
     }
     else
     {
-        SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, Fmt(Err(Err0843), node->token.ctext())));
-        SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, Fmt(Err(Err0844), node->token.ctext())));
-        SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, Fmt(Err(Err0845), node->token.ctext())));
-        SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, Fmt(Err(Err0846), node->token.ctext())));
-        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Err0853), node->token.ctext())));
+        SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, Fmt(Err(Syn0147), node->token.ctext())));
+        SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, Fmt(Err(Tkn0010), node->token.ctext())));
+        SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, Fmt(Err(Syn0140), node->token.ctext())));
+        SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, Fmt(Err(Syn0146), node->token.ctext())));
+        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0019), node->token.ctext())));
         SWAG_CHECK(doIdentifierRef(node));
     }
 
@@ -324,16 +324,16 @@ bool SyntaxJob::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDi
 bool SyntaxJob::doThrow(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Throw, sourceFile, parent);
-    SWAG_VERIFY(node->ownerFct, error(node, Err(Err0854)));
+    SWAG_VERIFY(node->ownerFct, error(node, Err(Syn0028)));
     node->semanticFct = SemanticJob::resolveThrow;
     if (result)
         *result = node;
     SWAG_CHECK(eatToken());
 
-    SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, Fmt(Err(Err0843), node->token.ctext())));
-    SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, Fmt(Err(Err0844), node->token.ctext())));
-    SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, Fmt(Err(Err0845), node->token.ctext())));
-    SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, Fmt(Err(Err0846), node->token.ctext())));
+    SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, Fmt(Err(Syn0147), node->token.ctext())));
+    SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, Fmt(Err(Tkn0010), node->token.ctext())));
+    SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, Fmt(Err(Syn0140), node->token.ctext())));
+    SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, Fmt(Err(Syn0146), node->token.ctext())));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
     return true;
 }

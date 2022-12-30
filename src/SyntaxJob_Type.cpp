@@ -15,7 +15,7 @@ bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
         *result = node;
     SWAG_CHECK(eatToken());
 
-    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Err0333), token.ctext())));
+    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0071), token.ctext())));
     node->inheritTokenName(token);
     node->inheritTokenLocation(token);
     SWAG_CHECK(checkIsValidUserName(node));
@@ -52,13 +52,13 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result)
 
     if (token.id == TokenId::KwdMethod)
     {
-        SWAG_VERIFY(currentStructScope, error(token, Err(Err0894), nullptr, Hnt(Hnt0049)));
+        SWAG_VERIFY(currentStructScope, error(token, Err(Syn0025), nullptr, Hnt(Hnt0049)));
         isMethod = true;
         kind     = AstNodeKind::TypeLambda;
     }
     else if (token.id == TokenId::KwdConstMethod)
     {
-        SWAG_VERIFY(currentStructScope, error(token, Err(Err0894), nullptr, Hnt(Hnt0050)));
+        SWAG_VERIFY(currentStructScope, error(token, Err(Syn0025), nullptr, Hnt(Hnt0050)));
         isMethodC = true;
         kind      = AstNodeKind::TypeLambda;
     }
@@ -143,7 +143,7 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result)
 
             if (token.text == g_LangSpec->name_self)
             {
-                SWAG_VERIFY(currentStructScope, error(token, Err(Err0334)));
+                SWAG_VERIFY(currentStructScope, error(token, Err(Syn0026)));
                 SWAG_CHECK(eatToken());
                 auto typeNode         = Ast::newTypeExpression(sourceFile, params);
                 typeNode->ptrCount    = 1;
@@ -400,7 +400,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             }
 
             if (node->arrayDim == 254)
-                return error(token, Err(Err0338));
+                return error(token, Err(Syn0132));
             node->arrayDim++;
             SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
             if (token.id != TokenId::SymComma)
@@ -415,13 +415,13 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             if (contextFlags & CONTEXT_FLAG_EXPRESSION)
             {
                 if (inTypeVarDecl)
-                    return Report::report({sourceFile, rightSquareToken, Err(Err0561)});
-                Diagnostic diag{sourceFile, rightSquareToken, Err(Err0561)};
+                    return Report::report({sourceFile, rightSquareToken, Err(Syn0024)});
+                Diagnostic diag{sourceFile, rightSquareToken, Err(Syn0024)};
                 return Report::report(diag);
             }
             else
             {
-                return error(rightSquareToken, Err(Err0561));
+                return error(rightSquareToken, Err(Syn0024));
             }
         }
 
@@ -429,7 +429,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         {
             if (node->typeFlags & TYPEFLAG_IS_SLICE)
             {
-                Diagnostic diag{sourceFile, token, Fmt(Err(Err0527), token.ctext())};
+                Diagnostic diag{sourceFile, token, Fmt(Err(Syn0095), token.ctext())};
                 Diagnostic note{sourceFile, leftSquareToken, Hlp(Hlp0025), DiagnosticLevel::Help};
                 return Report::report(diag, &note);
             }
@@ -444,7 +444,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
                 }
                 else
                 {
-                    Diagnostic diag{sourceFile, token, Fmt(Err(Err0526), token.ctext())};
+                    Diagnostic diag{sourceFile, token, Fmt(Err(Syn0088), token.ctext())};
                     Diagnostic note{Hlp(Hlp0024), DiagnosticLevel::Help};
                     return Report::report(diag, &note);
                 }
@@ -458,9 +458,9 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             token.id != TokenId::SymCircumflex)
         {
             if (inTypeVarDecl)
-                return Report::report({sourceFile, token, Fmt(Err(Err0343), token.ctext())});
+                return Report::report({sourceFile, token, Fmt(Err(Syn0066), token.ctext())});
 
-            Diagnostic diag{sourceFile, token, Fmt(Err(Err0343), token.ctext())};
+            Diagnostic diag{sourceFile, token, Fmt(Err(Syn0066), token.ctext())};
             return Report::report(diag);
         }
 
@@ -470,12 +470,12 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             auto callParam = node->findParent(AstNodeKind::FuncCallParam);
             if (callParam)
             {
-                Diagnostic diag{sourceFile, token, Fmt(Err(Err0171), token.ctext())};
+                Diagnostic diag{sourceFile, token, Fmt(Err(Syn0096), token.ctext())};
                 return Report::report(diag);
             }
             else
             {
-                return error(token, Fmt(Err(Err0171), token.ctext()));
+                return error(token, Fmt(Err(Syn0096), token.ctext()));
             }
         }
     }
@@ -497,7 +497,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         }
         else
         {
-            SWAG_VERIFY(token.id == TokenId::SymAsterisk, error(token, Err(Err0339)));
+            SWAG_VERIFY(token.id == TokenId::SymAsterisk, error(token, Err(Syn0061)));
         }
     }
 
@@ -507,7 +507,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         while (token.id == TokenId::SymAsterisk || token.id == TokenId::SymCircumflex)
         {
             if (node->ptrCount == AstTypeExpression::MAX_PTR_COUNT)
-                return error(token, Fmt(Err(Err0340), AstTypeExpression::MAX_PTR_COUNT));
+                return error(token, Fmt(Err(Syn0133), AstTypeExpression::MAX_PTR_COUNT));
             node->ptrFlags[node->ptrCount] = isPtrConst ? AstTypeExpression::PTR_CONST : 0;
             if (token.id == TokenId::SymCircumflex)
                 node->ptrFlags[node->ptrCount] |= AstTypeExpression::PTR_ARITMETIC;
@@ -517,7 +517,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             if (token.id == TokenId::KwdConst)
             {
                 SWAG_CHECK(eatToken());
-                SWAG_VERIFY(token.id == TokenId::SymAsterisk || token.id == TokenId::SymCircumflex || token.id == TokenId::SymAmpersand, error(token, Err(Err0339)));
+                SWAG_VERIFY(token.id == TokenId::SymAsterisk || token.id == TokenId::SymCircumflex || token.id == TokenId::SymAmpersand, error(token, Err(Syn0061)));
                 isPtrConst = true;
             }
 
@@ -591,22 +591,22 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     // Specific error messages
     if (parent && parent->kind == AstNodeKind::TupleContent)
     {
-        Diagnostic diag{sourceFile, token, Fmt(Err(Err0202), token.ctext())};
+        Diagnostic diag{sourceFile, token, Fmt(Err(Syn0067), token.ctext())};
         return Report::report(diag);
     }
 
     if (token.id == TokenId::SymLeftParen)
     {
-        Diagnostic diag{sourceFile, token, Fmt(Err(Err0343), token.ctext())};
+        Diagnostic diag{sourceFile, token, Fmt(Err(Syn0066), token.ctext())};
         Diagnostic note{sourceFile, token, Hlp(Hlp0004), DiagnosticLevel::Help};
         return Report::report(diag, &note);
     }
 
     if (Tokenizer::isSymbol(token.id))
-        return error(token, Fmt(Err(Err0839), token.ctext()));
+        return error(token, Fmt(Err(Syn0172), token.ctext()));
 
     // Generic error
-    return error(token, Fmt(Err(Err0343), token.ctext()));
+    return error(token, Fmt(Err(Syn0066), token.ctext()));
 }
 
 bool SyntaxJob::doCast(AstNode* parent, AstNode** result)

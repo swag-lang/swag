@@ -22,7 +22,7 @@ bool SyntaxJob::doWith(AstNode* parent, AstNode** result)
         SWAG_CHECK(doVarDecl(node, &id));
         if (id->kind != AstNodeKind::VarDecl)
         {
-            Diagnostic diag{id->sourceFile, id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Err0487)};
+            Diagnostic diag{id->sourceFile, id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Syn0157)};
             Diagnostic note{Hlp(Hlp0039), DiagnosticLevel::Help};
             return Report::report(diag, &note);
         }
@@ -37,7 +37,7 @@ bool SyntaxJob::doWith(AstNode* parent, AstNode** result)
 
         if (id->kind == AstNodeKind::StatementNoScope)
         {
-            Diagnostic diag{node->sourceFile, id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Err0487)};
+            Diagnostic diag{node->sourceFile, id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Syn0157)};
             Diagnostic note{Hlp(Hlp0039), DiagnosticLevel::Help};
             return Report::report(diag, &note);
         }
@@ -45,7 +45,7 @@ bool SyntaxJob::doWith(AstNode* parent, AstNode** result)
         if (id->kind != AstNodeKind::IdentifierRef &&
             id->kind != AstNodeKind::VarDecl &&
             id->kind != AstNodeKind::AffectOp)
-            return error(node->token, Err(Err0483));
+            return error(node->token, Err(Syn0148));
 
         id->allocateExtension(ExtensionKind::Semantic);
         if (id->kind == AstNodeKind::IdentifierRef)
@@ -142,7 +142,7 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
                         break;
                 default:
                 {
-                    Diagnostic diag{node, Err(Err0386)};
+                    Diagnostic diag{node, Err(Syn0036)};
                     Diagnostic note{child, child->token, Nte(Nte0024), DiagnosticLevel::Note};
                     return Report::report(diag, &note);
                 }
@@ -165,7 +165,7 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
 {
-    SWAG_VERIFY(currentScope->isGlobal(), error(token, Err(Err0388)));
+    SWAG_VERIFY(currentScope->isGlobal(), error(token, Err(Syn0040)));
     SWAG_CHECK(doNamespace(parent, result, false, false));
     return true;
 }
@@ -207,17 +207,17 @@ bool SyntaxJob::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlo
             break;
         case TokenId::SymLeftCurly:
             if (!privName)
-                return error(token, Err(Err0389));
+                return error(token, Err(Syn0094));
             break;
         case TokenId::SymSemiColon:
-            return error(token, Err(Err0390));
+            return error(token, Err(Syn0093));
         default:
-            return error(token, Fmt(Err(Err0391), token.ctext()));
+            return error(token, Fmt(Err(Syn0041), token.ctext()));
         }
 
         // Be sure this is not the swag namespace, except for a runtime file
         if (!sourceFile->isBootstrapFile && !sourceFile->isRuntimeFile)
-            SWAG_VERIFY(!namespaceNode->token.text.compareNoCase(g_LangSpec->name_Swag), error(token, Fmt(Err(Err0392), token.ctext())));
+            SWAG_VERIFY(!namespaceNode->token.text.compareNoCase(g_LangSpec->name_Swag), error(token, Fmt(Err(Syn0118), token.ctext())));
 
         // Add/Get namespace
         {
@@ -234,7 +234,7 @@ bool SyntaxJob::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlo
             }
             else if (symbol->kind != SymbolKind::Namespace)
             {
-                Utf8       msg = Fmt(Err(Err0886), symbol->name.c_str());
+                Utf8       msg = Fmt(Err(Syn0130), symbol->name.c_str());
                 Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
                 Utf8       note = Nte(Nte0036);
                 Diagnostic diagNote{symbol->nodes.front(), note, DiagnosticLevel::Note};
@@ -515,7 +515,7 @@ bool SyntaxJob::doScopeBreakable(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
     if (token.id != TokenId::SymLeftCurly)
     {
-        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Err0395), token.ctext())));
+        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0164), token.ctext())));
         labelNode->inheritTokenName(token);
         labelNode->inheritTokenLocation(token);
         SWAG_CHECK(eatToken());
@@ -777,20 +777,20 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 
     case TokenId::KwdPublic:
     case TokenId::KwdPrivate:
-        return error(token, Fmt(Err(Err0665), token.ctext()));
+        return error(token, Fmt(Err(Syn0121), token.ctext()));
 
     case TokenId::SymDot:
     {
         auto withNode = parent->findParent(AstNodeKind::With);
-        SWAG_VERIFY(withNode, error(token, Err(Err0836)));
+        SWAG_VERIFY(withNode, error(token, Err(Syn0180)));
         eatToken();
-        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Err(Err0816)));
+        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Err(Syn0022)));
         return doLeftInstruction(parent, result, CastAst<AstWith>(withNode, AstNodeKind::With));
     }
 
     default:
         if (Tokenizer::isIntrinsicReturn(token.id))
-            return error(token, Fmt(Err(Err0892), token.ctext()), nullptr, Hnt(Hnt0008));
+            return error(token, Fmt(Err(Syn0179), token.ctext()), nullptr, Hnt(Hnt0008));
         return invalidTokenError(InvalidTokenError::EmbeddedInstruction);
     }
 

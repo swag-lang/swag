@@ -18,35 +18,35 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
     {
     case TokenId::SymAmpersandAmpersand:
         if (kind == InvalidTokenError::EmbeddedInstruction)
-            return error(token, Fmt(Err(Err0891), "&&", "and"));
+            return error(token, Fmt(Err(Syn0105), "&&", "and"));
         break;
     case TokenId::SymVerticalVertical:
         if (kind == InvalidTokenError::EmbeddedInstruction)
-            return error(token, Fmt(Err(Err0891), "||", "or"));
+            return error(token, Fmt(Err(Syn0105), "||", "or"));
         break;
     case TokenId::KwdElse:
         if (kind == InvalidTokenError::EmbeddedInstruction)
-            return error(token, Err(Err0323));
+            return error(token, Err(Syn0102));
         break;
     case TokenId::KwdElif:
         if (kind == InvalidTokenError::EmbeddedInstruction)
-            return error(token, Err(Err0351));
+            return error(token, Err(Syn0101));
         break;
     case TokenId::CompilerElse:
         if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
-            return error(token, Err(Err0324));
+            return error(token, Err(Syn0098));
         break;
     case TokenId::CompilerElseIf:
         if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
-            return error(token, Err(Err0325));
+            return error(token, Err(Syn0097));
         break;
 
     case TokenId::SymRightParen:
-        return error(token, Err(Err0326));
+        return error(token, Err(Syn0099));
     case TokenId::SymRightCurly:
-        return error(token, Err(Err0327));
+        return error(token, Err(Syn0103));
     case TokenId::SymRightSquare:
-        return error(token, Err(Err0328));
+        return error(token, Err(Syn0100));
     }
 
     Utf8 msg;
@@ -55,20 +55,20 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
     switch (kind)
     {
     case InvalidTokenError::TopLevelInstruction:
-        msg += Err(Err0895);
+        msg += Err(Syn0064);
         hint = Hnt(Hnt0014);
         break;
     case InvalidTokenError::EmbeddedInstruction:
-        msg += Err(Err0896);
+        msg += Err(Syn0073);
         break;
     case InvalidTokenError::LeftExpression:
-        msg += Err(Err0897);
+        msg += Err(Syn0059);
         break;
     case InvalidTokenError::LeftExpressionVar:
-        msg += Err(Err0898);
+        msg += Err(Syn0068);
         break;
     case InvalidTokenError::PrimaryExpression:
-        msg += Err(Err0899);
+        msg += Err(Syn0076);
         break;
     }
 
@@ -142,14 +142,14 @@ bool SyntaxJob::eatCloseToken(TokenId id, const SourceLocation& start, const cha
             msg = "";
         if (token.id == TokenId::EndOfFile)
         {
-            Diagnostic diag{sourceFile, token, Fmt(Err(Err0329), g_LangSpec->tokenToName(id).c_str(), msg)};
+            Diagnostic diag{sourceFile, token, Fmt(Err(Syn0047), g_LangSpec->tokenToName(id).c_str(), msg)};
             Diagnostic note{sourceFile, start, start, Nte(Nte0020), DiagnosticLevel::Note};
             note.showMultipleCodeLines = token.startLocation.line != start.line;
             return Report::report(diag, &note);
         }
         else
         {
-            Diagnostic diag{sourceFile, token, Fmt(Err(Err0330), g_LangSpec->tokenToName(id).c_str(), token.ctext(), msg)};
+            Diagnostic diag{sourceFile, token, Fmt(Err(Syn0048), g_LangSpec->tokenToName(id).c_str(), token.ctext(), msg)};
             Diagnostic note{sourceFile, start, start, Nte(Nte0020), DiagnosticLevel::Note};
             note.showMultipleCodeLines = token.startLocation.line != start.line;
             return Report::report(diag, &note);
@@ -167,9 +167,9 @@ bool SyntaxJob::eatToken(TokenId id, const char* msg)
         if (!msg)
             msg = "";
         if (token.id == TokenId::EndOfFile)
-            SWAG_CHECK(error(token, Fmt(Err(Err0329), g_LangSpec->tokenToName(id).c_str(), msg)));
+            SWAG_CHECK(error(token, Fmt(Err(Syn0047), g_LangSpec->tokenToName(id).c_str(), msg)));
         else
-            SWAG_CHECK(error(token, Fmt(Err(Err0330), g_LangSpec->tokenToName(id).c_str(), token.ctext(), msg)));
+            SWAG_CHECK(error(token, Fmt(Err(Syn0048), g_LangSpec->tokenToName(id).c_str(), token.ctext(), msg)));
     }
 
     SWAG_CHECK(eatToken());
@@ -183,9 +183,9 @@ bool SyntaxJob::eatSemiCol(const char* msg)
         if (!msg)
             msg = "";
         if (Tokenizer::isSymbol(token.id))
-            SWAG_CHECK(error(token, Fmt(Err(Err0837), token.ctext(), msg)));
+            SWAG_CHECK(error(token, Fmt(Err(Syn0171), token.ctext(), msg)));
         else
-            SWAG_CHECK(error(token, Fmt(Err(Err0331), token.ctext(), msg), nullptr, Hnt(Hnt0013)));
+            SWAG_CHECK(error(token, Fmt(Err(Syn0037), token.ctext(), msg), nullptr, Hnt(Hnt0013)));
     }
 
     if (token.id == TokenId::SymSemiColon)
