@@ -50,25 +50,25 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(SEr0001, "[safety] `<<` shift operand value on type `%s` is greater than `%d`");
-    SWAG_ERROR(SEr0002, "[safety] `>>` shift operand value on type `%s` is greater than `%d`");
-    SWAG_ERROR(SEr0003, "[safety] `@abs` integer overflow on type `%s`");
-    SWAG_ERROR(SEr0004, "[safety] bad slicing, lower bound is greater than upper bound");
-    SWAG_ERROR(SEr0005, "[safety] bad slicing, upper bound is out of range");
-    SWAG_ERROR(SEr0006, "[safety] cast from a negative value of type `%s` to unsigned type `%s`");
-    SWAG_ERROR(SEr0007, "[safety] division by zero");
-    SWAG_ERROR(SEr0008, "[safety] index out of range");
-    SWAG_ERROR(SEr0009, "[safety] integer overflow during `*=` operation on type `%s`");
-    SWAG_ERROR(SEr0010, "[safety] integer overflow during `*` operation on type `%s`");
-    SWAG_ERROR(SEr0011, "[safety] integer overflow during `+=` operation on type `%s`");
-    SWAG_ERROR(SEr0012, "[safety] integer overflow during `+` operation on type `%s`");
-    SWAG_ERROR(SEr0013, "[safety] integer overflow during `-=` operation on type `%s`");
-    SWAG_ERROR(SEr0014, "[safety] integer overflow during `-` operation on type `%s`");
-    SWAG_ERROR(SEr0015, "[safety] integer overflow during `<<` operation on type `%s`");
-    SWAG_ERROR(SEr0016, "[safety] integer overflow during `>>` operation on type `%s`");
-    SWAG_ERROR(SEr0017, "[safety] integer overflow when taking the negative value of type `%s`");
-    SWAG_ERROR(SEr0018, "[safety] truncated bits when casting expression from `%s` to `%s`");
-    SWAG_ERROR(SEr0019, "[safety] unexpected switch value (switch is marked with `Swag.Complete`)");
+    SWAG_ERROR(Saf0001, "[safety] `<<` shift operand value on type `%s` is greater than `%d`");
+    SWAG_ERROR(Saf0002, "[safety] `>>` shift operand value on type `%s` is greater than `%d`");
+    SWAG_ERROR(Saf0003, "[safety] `@abs` integer overflow on type `%s`");
+    SWAG_ERROR(Saf0004, "[safety] bad slicing, lower bound is greater than upper bound");
+    SWAG_ERROR(Saf0005, "[safety] bad slicing, upper bound is out of range");
+    SWAG_ERROR(Saf0006, "[safety] cast from a negative value of type `%s` to unsigned type `%s`");
+    SWAG_ERROR(Saf0007, "[safety] division by zero");
+    SWAG_ERROR(Saf0008, "[safety] index out of range");
+    SWAG_ERROR(Saf0009, "[safety] integer overflow during `*=` operation on type `%s`");
+    SWAG_ERROR(Saf0010, "[safety] integer overflow during `*` operation on type `%s`");
+    SWAG_ERROR(Saf0011, "[safety] integer overflow during `+=` operation on type `%s`");
+    SWAG_ERROR(Saf0012, "[safety] integer overflow during `+` operation on type `%s`");
+    SWAG_ERROR(Saf0013, "[safety] integer overflow during `-=` operation on type `%s`");
+    SWAG_ERROR(Saf0014, "[safety] integer overflow during `-` operation on type `%s`");
+    SWAG_ERROR(Saf0015, "[safety] integer overflow during `<<` operation on type `%s`");
+    SWAG_ERROR(Saf0016, "[safety] integer overflow during `>>` operation on type `%s`");
+    SWAG_ERROR(Saf0017, "[safety] integer overflow when taking the negative value of type `%s`");
+    SWAG_ERROR(Saf0018, "[safety] truncated bits when casting expression from `%s` to `%s`");
+    SWAG_ERROR(Saf0019, "[safety] unexpected switch value (switch is marked with `Swag.Complete`)");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
