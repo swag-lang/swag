@@ -29,7 +29,6 @@ struct SourceFile
     string                 path;
     Utf8                   externalContent;
     Utf8                   scopeName;
-    Utf8                   silentError;
 
     Module*     module                = nullptr;
     AstNode*    astRoot               = nullptr;
@@ -51,7 +50,6 @@ struct SourceFile
     int         numWarnings     = 0;
     atomic<int> numTestErrors   = 0;
     atomic<int> numTestWarnings = 0;
-    int         silent          = 0;
     uint32_t    indexInModule   = UINT32_MAX;
     BuildPass   buildPass       = BuildPass::Full;
 

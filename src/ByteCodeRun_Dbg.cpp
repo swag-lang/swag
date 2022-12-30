@@ -14,6 +14,7 @@
 #include "TypeManager.h"
 #include "Workspace.h"
 #include "ThreadManager.h"
+#include "Report.h"
 
 struct EvaluateResult
 {
@@ -25,8 +26,9 @@ struct EvaluateResult
 
 static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, EvaluateResult& res, CompilerAstKind kind, bool silent = false)
 {
+    PushSilentError se;
+
     auto sourceFile = context->debugCxtBc->sourceFile;
-    sourceFile->silentError.clear();
 
     // Syntax
     SyntaxJob syntaxJob;
@@ -36,14 +38,15 @@ static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, Eva
     parent.ownerFct   = CastAst<AstFuncDecl>(context->debugCxtBc->node, AstNodeKind::FuncDecl);
     parent.sourceFile = sourceFile;
     parent.parent     = context->debugCxtIp->node;
-    if (!syntaxJob.constructEmbedded(expr, &parent, nullptr, kind, false, true))
+
+    if (!syntaxJob.constructEmbedded(expr, &parent, nullptr, kind, false))
     {
         if (silent)
             return false;
-        if (sourceFile->silentError.empty())
+        if (g_SilentErrorMsg.empty())
             g_Log.printColor("expression syntax error\n", LogColor::Red);
         else
-            g_Log.printColor(Fmt("%s\n", sourceFile->silentError.c_str()), LogColor::Red);
+            g_Log.printColor(Fmt("%s\n", g_SilentErrorMsg.c_str()), LogColor::Red);
         return false;
     }
 
@@ -52,7 +55,6 @@ static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, Eva
     SemanticJob semanticJob;
     semanticJob.sourceFile = sourceFile;
     semanticJob.module     = sourceFile->module;
-    sourceFile->silent++;
     semanticJob.nodes.push_back(child);
 
     g_ThreadMgr.doJobCount = true;
@@ -66,22 +68,20 @@ static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, Eva
     }
     g_ThreadMgr.doJobCount = false;
 
-    if (!sourceFile->silentError.empty())
+    if (!g_SilentErrorMsg.empty())
     {
-        sourceFile->silent--;
         if (silent)
             return false;
-        if (sourceFile->silentError.empty())
+        if (g_SilentErrorMsg.empty())
             g_Log.printColor("cannot solve expression\n", LogColor::Red);
         else
-            g_Log.printColor(Fmt("%s\n", sourceFile->silentError.c_str()), LogColor::Red);
+            g_Log.printColor(Fmt("%s\n", g_SilentErrorMsg.c_str()), LogColor::Red);
         return false;
     }
 
     // This has been evaluated to a constant
     if (child->flags & AST_VALUE_COMPUTED)
     {
-        sourceFile->silent--;
         res.type  = child->typeInfo;
         res.value = child->computedValue;
         return true;
@@ -108,15 +108,14 @@ static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, Eva
     }
     g_ThreadMgr.doJobCount = false;
 
-    if (!sourceFile->silentError.empty())
+    if (!g_SilentErrorMsg.empty())
     {
-        sourceFile->silent--;
         if (silent)
             return false;
-        if (sourceFile->silentError.empty())
+        if (g_SilentErrorMsg.empty())
             g_Log.printColor("cannot generate expression\n", LogColor::Red);
         else
-            g_Log.printColor(Fmt("%s\n", child->sourceFile->silentError.c_str()), LogColor::Red);
+            g_Log.printColor(Fmt("%s\n", g_SilentErrorMsg.c_str()), LogColor::Red);
         return false;
     }
 
@@ -139,7 +138,6 @@ static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, Eva
     auto resExec = sourceFile->module->executeNode(sourceFile, child, &callerContext, &execParams);
 
     child->extension->bytecode->bc->releaseOut();
-    sourceFile->silent--;
     g_RunContext         = &g_RunContextVal;
     g_ByteCodeStackTrace = &g_ByteCodeStackTraceVal;
 
@@ -147,10 +145,10 @@ static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, Eva
     {
         if (silent)
             return false;
-        if (child->sourceFile->silentError.empty())
+        if (g_SilentErrorMsg.empty())
             g_Log.printColor("cannot run expression\n", LogColor::Red);
         else
-            g_Log.printColor(Fmt("%s\n", child->sourceFile->silentError.c_str()), LogColor::Red);
+            g_Log.printColor(Fmt("%s\n", g_SilentErrorMsg.c_str()), LogColor::Red);
         return false;
     }
 
@@ -535,7 +533,6 @@ static void printContext(ByteCodeRunContext* context)
     auto ipNode = context->debugCxtIp->node;
     auto bc     = context->debugCxtBc;
 
-    g_Log.unlock();
     g_Log.eol();
 
     if (ipNode && ipNode->ownerFct)
@@ -558,7 +555,6 @@ static void printContext(ByteCodeRunContext* context)
     g_Log.messageHeaderDot("stack level", Fmt("%u", context->debugStackFrameOffset), LogColor::Gray, LogColor::Gray, " ");
 
     g_Log.eol();
-    g_Log.lock();
 }
 
 static void printInstruction(ByteCodeRunContext* context, ByteCode* bc, ByteCodeInstruction* ip, int num = 1)
@@ -631,7 +627,7 @@ static void computeDebugContext(ByteCodeRunContext* context)
 static void appendValue(Utf8& str, const EvaluateResult& res, int indent);
 static void appendValueProtected(Utf8& str, const EvaluateResult& res, int indent = 0)
 {
-    auto typeInfo = res.type;
+    auto typeInfo = TypeManager::concreteType(res.type, CONCRETE_ALIAS);
     auto addr     = res.addr;
 
     if (!addr && res.value)
@@ -1321,7 +1317,6 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
     {
         static bool firstOne = true;
 
-        g_Log.lock();
         g_Log.setColor(LogColor::Gray);
 
         if (firstOne)
@@ -1348,8 +1343,6 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
         context->debugStepLastLocation = nullptr;
         context->debugStepLastFile     = nullptr;
         context->debugStackFrameOffset = 0;
-
-        g_Log.unlock();
     }
 
     // Check breakpoints
@@ -1410,8 +1403,6 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 
     if (!zapCurrentIp)
     {
-        g_Log.lock();
-
         computeDebugContext(context);
         printContextInstruction(context);
 
@@ -1783,7 +1774,6 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             {
                 if (cmds.size() != 1)
                     goto evalDefault;
-                g_Log.unlock();
                 return false;
             }
 
@@ -1855,9 +1845,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 if (cmds.size() != 1)
                     goto evalDefault;
 
-                g_Log.unlock();
                 context->debugCxtBc->print(context->debugCxtIp);
-                g_Log.lock();
                 continue;
             }
 
@@ -2270,8 +2258,6 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 
             evalDynExpression(context, line, res, CompilerAstKind::EmbeddedInstruction);
         }
-
-        g_Log.unlock();
     }
 
     context->debugLastCurRC = context->curRC;

@@ -224,7 +224,7 @@ bool SyntaxJob::saveEmbedded(const Utf8& content, AstNode* parent, AstNode* from
     return true;
 }
 
-bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode* fromNode, CompilerAstKind kind, bool logGenerated, bool silentError)
+bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode* fromNode, CompilerAstKind kind, bool logGenerated)
 {
     Utf8     tmpFileName     = "<generated>";
     Utf8     tmpFilePath     = "<generated>";
@@ -233,7 +233,7 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
     SWAG_ASSERT(module);
 
     // Log the generated code in '<module>.swg'
-    if (logGenerated && !fromNode->sourceFile->numTestErrors && !fromNode->sourceFile->numTestWarnings && g_CommandLine.output)
+    if (logGenerated && fromNode && !fromNode->sourceFile->numTestErrors && !fromNode->sourceFile->numTestWarnings && g_CommandLine.output)
     {
         if (fromNode->sourceFile->module->buildCfg.backendDebugInformations && !g_CommandLine.scriptCommand)
         {
@@ -248,8 +248,6 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
     tmpFile->name   = tmpFileName;
     tmpFile->path   = tmpFilePath;
     tmpFile->path += tmpFileName;
-    if (silentError)
-        tmpFile->silent++;
     if (fromNode)
     {
         tmpFile->sourceNode = fromNode;
@@ -289,11 +287,7 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
         sflags |= AST_GENERATED_USER;
 
     ScopedFlags scopedFlags(this, sflags);
-    if (!eatToken())
-    {
-        parent->sourceFile->silentError = sourceFile->silentError;
-        return false;
-    }
+    SWAG_CHECK(eatToken());
 
     while (true)
     {
@@ -312,18 +306,10 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
             SWAG_CHECK(doEnumValue(parent));
             break;
         case CompilerAstKind::EmbeddedInstruction:
-            if (!doEmbeddedInstruction(parent))
-            {
-                parent->sourceFile->silentError = sourceFile->silentError;
-                return false;
-            }
+            SWAG_CHECK(doEmbeddedInstruction(parent));
             break;
         case CompilerAstKind::Expression:
-            if (!doExpression(parent, EXPR_FLAG_NONE))
-            {
-                parent->sourceFile->silentError = sourceFile->silentError;
-                return false;
-            }
+            SWAG_CHECK(doExpression(parent, EXPR_FLAG_NONE));
             break;
         default:
             SWAG_ASSERT(false);

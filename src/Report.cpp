@@ -10,6 +10,9 @@
 #include "ErrorIds.h"
 #include "File.h"
 
+thread_local int    g_SilentError = 0;
+thread_local string g_SilentErrorMsg;
+
 namespace Report
 {
     bool fuzzySameLine(uint32_t line1, uint32_t line2)
@@ -160,15 +163,15 @@ namespace Report
 
     bool report(const Diagnostic& diag, const vector<const Diagnostic*>& notes)
     {
-        auto sourceFile = getDiagFile(diag);
-
-        if (sourceFile->silent > 0 && !diag.exceptionError)
+        if (g_SilentError > 0 && !diag.exceptionError)
         {
-            sourceFile->silentError = diag.textMsg;
+            g_SilentErrorMsg = diag.textMsg;
             return false;
         }
 
         ScopedLock lock(g_Log.mutexAccess);
+
+        auto sourceFile = getDiagFile(diag);
 
         // Warning to error option ?
         auto errorLevel = diag.errorLevel;

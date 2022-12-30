@@ -18,3 +18,20 @@ namespace Report
     bool internalError(AstNode* node, const char* msg);
     bool internalError(Module* module, const char* msg);
 }; // namespace Report
+
+extern thread_local int    g_SilentError;
+extern thread_local string g_SilentErrorMsg;
+
+struct PushSilentError
+{
+    PushSilentError()
+    {
+        g_SilentError++;
+        g_SilentErrorMsg.clear();
+    }
+
+    ~PushSilentError()
+    {
+        g_SilentError--;
+    }
+};

@@ -105,6 +105,7 @@ struct ByteCode
                 context->oldBc->profileChilds.insert(this);
         }
 
+        SWAG_ASSERT(context->curRC == context->registersRC.size());
         context->registersRC.push_back(context->registers.count);
         context->registers.reserve(context->registers.count + maxReservedRegisterRC);
         context->curRegistersRC = context->registers.buffer + context->registers.count;
@@ -118,10 +119,15 @@ struct ByteCode
 
     SWAG_FORCE_INLINE void leaveByteCode(ByteCodeRunContext* context)
     {
+        SWAG_ASSERT(context->curRC >= 0);
         if (--context->curRC >= 0)
         {
             context->registers.count = context->registersRC.get_pop_back();
             context->curRegistersRC  = context->registers.buffer + context->registersRC.back();
+        }
+        else
+        {
+            context->registersRC.count = 0;
         }
 
         if (context->profile)
