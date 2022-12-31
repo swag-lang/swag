@@ -16,6 +16,72 @@
 #include "ThreadManager.h"
 #include "Report.h"
 
+static void printHelp()
+{
+    g_Log.setColor(LogColor::Gray);
+    g_Log.eol();
+
+    g_Log.print("<return>                      'step', runs to the next line or instruction (depends on 'bcmode')\n");
+    g_Log.print("<shift+return>                'next', runs to the next line or instruction (depends on 'bcmode')\n");
+    g_Log.print("<tab>                         contextual completion of the current word\n");
+    g_Log.eol();
+
+    g_Log.print("s(tep)                        runs to the next line\n");
+    g_Log.print("n(ext)                        like s, but does not step into functions or inlined code\n");
+    g_Log.print("f(inish)                      runs until the current function is done\n");
+    g_Log.print("c(ont(inue))                  runs until another breakpoint is reached\n");
+    g_Log.print("un(til) <num>                 runs to the given line or instruction (depends on 'bcmode')\n");
+    g_Log.print("j(ump)  <num>                 jump to the given line or instruction (depends on 'bcmode')\n");
+    g_Log.eol();
+
+    g_Log.print("l(ist) [num]                  print the current source code line and [num] lines around\n");
+    g_Log.print("ll [name]                     print the current function (or function [name]) source code\n");
+    g_Log.eol();
+
+    g_Log.print("e(xec(ute)) <stmt>            execute the Swag code statement <stmt> in the current context\n");
+    g_Log.print("$<expr|stmt>                  execute the Swag code expression <expr> or statement <stmt> in the current context\n");
+    g_Log.print("<expr|stmt>                   execute the Swag code expression <expr> or statement <stmt> in the current context (if not a valid debugger command)\n");
+    g_Log.eol();
+
+    g_Log.print("p(rint) [@format] <expr>      print the value of the Swag code expression <expr> in the current context (format is the same as 'x' command)\n");
+    g_Log.print("info locals                   print all current local variables\n");
+    g_Log.print("info args                     print all current function arguments\n");
+    g_Log.print("info func [filter]            print all functions which contains [filter] in their names\n");
+    g_Log.print("info modules                  print all modules\n");
+    g_Log.print("info regs [@format]           print all registers (format is the same as 'x' command)\n");
+    g_Log.print("(w)here                       print contextual informations\n");
+    g_Log.eol();
+
+    g_Log.print("b(reak)                       print all breakpoints\n");
+    g_Log.print("b(reak) func <name>           add breakpoint when entering function <name> in the current file\n");
+    g_Log.print("b(reak) <line>                add breakpoint in the current source file at <line>\n");
+    g_Log.print("b(reak) <file>:<line>         add breakpoint in <file> at <line>\n");
+    g_Log.print("b(reak) clear                 remove all breakpoints\n");
+    g_Log.print("b(reak) clear <num>           remove breakpoint <num>\n");
+    g_Log.print("b(reak) enable <num>          enable breakpoint <num>\n");
+    g_Log.print("b(reak) disable <num>         disable breakpoint <num>\n");
+    g_Log.print("tb(reak) ...                  same as 'b(reak)' except that the breakpoint will be automatically removed on hit\n");
+    g_Log.eol();
+
+    g_Log.print("stack                         print callstack\n");
+    g_Log.print("u(p)   [num]                  move stack frame <num> level up\n");
+    g_Log.print("d(own) [num]                  move stack frame <num> level down\n");
+    g_Log.print("frame  <num>                  move stack frame to level <num>\n");
+    g_Log.eol();
+
+    g_Log.print("i [num]                       print the current bytecode instruction and [num] instructions around\n");
+    g_Log.print("ii                            print the current function bytecode\n");
+    g_Log.print("x [@format] [@num] <expr>     print memory (format = s8|s16|s32|s64|u8|u16|u32|u64|x8|x16|x32|x64|f32|f64)\n");
+    g_Log.eol();
+
+    g_Log.print("bcmode                        swap between bytecode mode and source mode\n");
+    g_Log.eol();
+
+    g_Log.print("?                             print this list of commands\n");
+    g_Log.print("q(uit)                        quit the compiler\n");
+    g_Log.eol();
+}
+
 struct EvaluateResult
 {
     TypeInfo*      type  = nullptr;
@@ -557,27 +623,6 @@ static void printContext(ByteCodeRunContext* context)
     g_Log.eol();
 }
 
-static void printInstruction(ByteCodeRunContext* context, ByteCode* bc, ByteCodeInstruction* ip, int num = 1)
-{
-    int count = num;
-    int cpt   = 1;
-    while (--num)
-    {
-        if (ip == bc->out)
-            break;
-        cpt++;
-        ip--;
-    }
-
-    for (int i = 0; i < (cpt + count - 1); i++)
-    {
-        bc->printInstruction(ip, context->debugCxtIp);
-        if (ip->op == ByteCodeOp::End)
-            break;
-        ip++;
-    }
-}
-
 static void computeDebugContext(ByteCodeRunContext* context)
 {
     context->debugCxtBc    = context->bc;
@@ -621,6 +666,62 @@ static void computeDebugContext(ByteCodeRunContext* context)
             continue;
         if (context->debugCxtRc)
             context->debugCxtRc--;
+    }
+}
+
+static void printSourceLines(SourceFile* file, SourceLocation* curLocation, int startLine, int endLine)
+{
+    vector<Utf8> lines;
+    bool         eof = false;
+    for (int l = startLine; l <= endLine && !eof; l++)
+        lines.push_back(file->getLine(l, &eof));
+
+    uint32_t lineIdx = 0;
+    for (const auto& l : lines)
+    {
+        if (curLocation->line == startLine + lineIdx)
+            g_Log.printColor("-> ", LogColor::Cyan);
+        else
+            g_Log.printColor("   ", LogColor::Cyan);
+
+        g_Log.printColor(Fmt("%-5u ", startLine + lineIdx), LogColor::Gray);
+
+        g_Log.printColor(l.c_str(), LogColor::Gray);
+        g_Log.eol();
+
+        lineIdx++;
+    }
+}
+
+static void printSourceLines(SourceFile* file, SourceLocation* curLocation, uint32_t offset = 3)
+{
+    int startLine, endLine;
+    if (offset > curLocation->line)
+        startLine = 0;
+    else
+        startLine = curLocation->line - offset;
+    endLine = curLocation->line + offset;
+    printSourceLines(file, curLocation, startLine, endLine);
+}
+
+static void printInstructions(ByteCodeRunContext* context, ByteCode* bc, ByteCodeInstruction* ip, int num = 1)
+{
+    int count = num;
+    int cpt   = 1;
+    while (--num)
+    {
+        if (ip == bc->out)
+            break;
+        cpt++;
+        ip--;
+    }
+
+    for (int i = 0; i < (cpt + count - 1); i++)
+    {
+        bc->printInstruction(ip, context->debugCxtIp);
+        if (ip->op == ByteCodeOp::End)
+            break;
+        ip++;
     }
 }
 
@@ -845,72 +946,6 @@ static void appendValue(Utf8& str, const EvaluateResult& res, int indent = 0)
     }
 }
 
-static void printHelp()
-{
-    g_Log.setColor(LogColor::Gray);
-    g_Log.eol();
-
-    g_Log.print("<return>                      'step', runs to the next line or instruction (depends on 'bcmode')\n");
-    g_Log.print("<shift+return>                'next', runs to the next line or instruction (depends on 'bcmode')\n");
-    g_Log.print("<tab>                         contextual completion of the current word\n");
-    g_Log.eol();
-
-    g_Log.print("s(tep)                        runs to the next line\n");
-    g_Log.print("n(ext)                        like s, but does not step into functions or inlined code\n");
-    g_Log.print("f(inish)                      runs until the current function is done\n");
-    g_Log.print("c(ont(inue))                  runs until another breakpoint is reached\n");
-    g_Log.print("un(til) <num>                 runs to the given line or instruction (depends on 'bcmode')\n");
-    g_Log.print("j(ump)  <num>                 jump to the given line or instruction (depends on 'bcmode')\n");
-    g_Log.eol();
-
-    g_Log.print("l(ist) [num]                  print the current source code line and [num] lines around\n");
-    g_Log.print("ll [name]                     print the current function (or function [name]) source code\n");
-    g_Log.eol();
-
-    g_Log.print("e(xec(ute)) <stmt>            execute the Swag code statement <stmt> in the current context\n");
-    g_Log.print("$<expr|stmt>                  execute the Swag code expression <expr> or statement <stmt> in the current context\n");
-    g_Log.print("<expr|stmt>                   execute the Swag code expression <expr> or statement <stmt> in the current context (if not a valid debugger command)\n");
-    g_Log.eol();
-
-    g_Log.print("p(rint) [@format] <expr>      print the value of the Swag code expression <expr> in the current context (format is the same as 'x' command)\n");
-    g_Log.print("info locals                   print all current local variables\n");
-    g_Log.print("info args                     print all current function arguments\n");
-    g_Log.print("info func [filter]            print all functions which contains [filter] in their names\n");
-    g_Log.print("info modules                  print all modules\n");
-    g_Log.print("info regs [@format]           print all registers (format is the same as 'x' command)\n");
-    g_Log.print("(w)here                       print contextual informations\n");
-    g_Log.eol();
-
-    g_Log.print("b(reak)                       print all breakpoints\n");
-    g_Log.print("b(reak) func <name>           add breakpoint when entering function <name> in the current file\n");
-    g_Log.print("b(reak) <line>                add breakpoint in the current source file at <line>\n");
-    g_Log.print("b(reak) <file>:<line>         add breakpoint in <file> at <line>\n");
-    g_Log.print("b(reak) clear                 remove all breakpoints\n");
-    g_Log.print("b(reak) clear <num>           remove breakpoint <num>\n");
-    g_Log.print("b(reak) enable <num>          enable breakpoint <num>\n");
-    g_Log.print("b(reak) disable <num>         disable breakpoint <num>\n");
-    g_Log.print("tb(reak) ...                  same as 'b(reak)' except that the breakpoint will be automatically removed on hit\n");
-    g_Log.eol();
-
-    g_Log.print("stack                         print callstack\n");
-    g_Log.print("u(p)   [num]                  move stack frame <num> level up\n");
-    g_Log.print("d(own) [num]                  move stack frame <num> level down\n");
-    g_Log.print("frame  <num>                  move stack frame to level <num>\n");
-    g_Log.eol();
-
-    g_Log.print("i [num]                       print the current bytecode instruction and [num] instructions around\n");
-    g_Log.print("ii                            print the current function bytecode\n");
-    g_Log.print("x [@format] [@num] <expr>     print memory (format = s8|s16|s32|s64|u8|u16|u32|u64|x8|x16|x32|x64|f32|f64)\n");
-    g_Log.eol();
-
-    g_Log.print("bcmode                        swap between bytecode mode and source mode\n");
-    g_Log.eol();
-
-    g_Log.print("?                             print this list of commands\n");
-    g_Log.print("q(uit)                        quit the compiler\n");
-    g_Log.eol();
-}
-
 static void printBreakpoints(ByteCodeRunContext* context)
 {
     if (context->debugBreakpoints.empty())
@@ -1046,7 +1081,7 @@ static void printContextInstruction(ByteCodeRunContext* context, bool force = fa
     {
         if (force || file != context->debugStepLastFile)
         {
-            g_Log.printColor(Fmt("=> file %s\n", file->name.c_str()), LogColor::DarkYellow);
+            g_Log.printColor(Fmt("=> file: %s\n", file->name.c_str()), LogColor::DarkYellow);
         }
     }
 
@@ -1068,27 +1103,40 @@ static void printContextInstruction(ByteCodeRunContext* context, bool force = fa
         if (force || newFunc != context->debugStepLastFunc)
         {
             if (isInlined)
-                g_Log.printColor(Fmt("=> inlined function %s\n", newFunc->getScopedName().c_str()), LogColor::DarkYellow);
+                g_Log.printColor(Fmt("=> inlined function: %s\n", newFunc->getScopedName().c_str()), LogColor::DarkYellow);
             else
-                g_Log.printColor(Fmt("=> function %s\n", newFunc->getScopedName().c_str()), LogColor::DarkYellow);
+                g_Log.printColor(Fmt("=> function: %s\n", newFunc->getScopedName().c_str()), LogColor::DarkYellow);
         }
     }
 
     // Print source line
     if (location && file)
     {
-        if ((force && !context->debugBcMode) || (context->debugStepLastFile != file || (context->debugStepLastLocation && context->debugStepLastLocation->line != location->line)))
+        if ((force && !context->debugBcMode) ||
+            (context->debugStepLastFile != file ||
+             (context->debugStepLastLocation && context->debugStepLastLocation->line != location->line)))
         {
-            g_Log.printColor(Fmt("[%08u] ", location->line), LogColor::Cyan);
-            auto str1 = file->getLine(location->line);
-            g_Log.printColor(str1, LogColor::White);
-            g_Log.eol();
+            if (context->debugBcMode)
+            {
+                Utf8 l = file->getLine(location->line);
+                l.trim();
+                if (!l.empty())
+                {
+                    g_Log.printColor("=> code: ", LogColor::DarkYellow);
+                    g_Log.printColor(l, LogColor::DarkYellow);
+                    g_Log.eol();
+                }
+            }
+            else
+                printSourceLines(file, location, 3);
         }
     }
 
     // Print instruction
     if (context->debugBcMode)
-        printInstruction(context, context->debugCxtBc, context->debugCxtIp);
+    {
+        printInstructions(context, context->debugCxtBc, context->debugCxtIp, 3);
+    }
 
     context->debugLastBc           = context->debugCxtBc;
     context->debugStepLastFile     = file;
@@ -1309,6 +1357,9 @@ static Utf8 getCommandLine(ByteCodeRunContext* context, bool& ctrl, bool& shift)
 
 bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 {
+    static mutex dbgMutex;
+    ScopedLock   sc(dbgMutex);
+
     auto ip                              = context->ip;
     auto module                          = context->bc->sourceFile->module;
     g_ByteCodeStackTrace->currentContext = context;
@@ -1408,7 +1459,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 
         while (true)
         {
-            g_Log.setColor(LogColor::Cyan);
+            g_Log.setColor(LogColor::Green);
             g_Log.print("> ");
 
             // Get command from user
@@ -1791,7 +1842,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 if (cmds.size() == 2)
                     regN = atoi(cmds[1].c_str());
 
-                printInstruction(context, context->debugCxtBc, context->debugCxtIp, regN);
+                printInstructions(context, context->debugCxtBc, context->debugCxtIp, regN);
                 continue;
             }
 
@@ -1904,39 +1955,19 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     SourceLocation* curLocation;
                     ByteCode::getLocation(toLogBc, toLogIp, &curFile, &curLocation);
 
-                    auto funcNode = CastAst<AstFuncDecl>(toLogBc->node, AstNodeKind::FuncDecl);
-
-                    uint32_t startLine = toLogBc->node->token.startLocation.line;
-                    uint32_t endLine   = funcNode->content->token.endLocation.line;
-
                     if (cmd == "l")
                     {
                         uint32_t offset = 3;
                         if (cmds.size() == 2)
                             offset = atoi(cmds[1]);
-                        if (offset > curLocation->line)
-                            startLine = 0;
-                        else
-                            startLine = curLocation->line - offset;
-                        endLine = curLocation->line + offset;
+                        printSourceLines(toLogBc->node->sourceFile, curLocation, offset);
                     }
-
-                    vector<Utf8> lines;
-                    bool         eof = false;
-                    for (uint32_t l = startLine; l <= endLine && !eof; l++)
-                        lines.push_back(toLogBc->node->sourceFile->getLine(l, &eof));
-
-                    uint32_t lineIdx = 0;
-                    for (const auto& l : lines)
+                    else
                     {
-                        if (curLocation->line == startLine + lineIdx)
-                            g_Log.printColor(Fmt("[%08u] ", startLine + lineIdx), LogColor::Cyan);
-                        else
-                            g_Log.printColor(Fmt(" %08u  ", startLine + lineIdx), LogColor::Cyan);
-
-                        g_Log.printColor(l.c_str(), LogColor::White);
-                        g_Log.eol();
-                        lineIdx++;
+                        auto     funcNode  = CastAst<AstFuncDecl>(toLogBc->node, AstNodeKind::FuncDecl);
+                        uint32_t startLine = toLogBc->node->token.startLocation.line;
+                        uint32_t endLine   = funcNode->content->token.endLocation.line;
+                        printSourceLines(toLogBc->node->sourceFile, curLocation, startLine, endLine);
                     }
                 }
                 else

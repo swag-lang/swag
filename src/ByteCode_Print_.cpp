@@ -215,25 +215,35 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     static const int ALIGN_PRETTY = 80;
     static const int ALIGN_SOURCE = 125;
 
-    static const wchar_t* bcNum = L"%08d";
-    int                   i     = (int) (ip - out);
+    static const wchar_t* bcNum  = L"%08d";
+    int                   i      = (int) (ip - out);
+    bool                  forDbg = curIp != nullptr;
 
     // Instruction rank
-    g_Log.setColor(LogColor::Cyan);
-    if (ip == curIp)
-        g_Log.print("[");
-    else
+    if (forDbg)
+    {
+        if (ip == curIp)
+            g_Log.printColor("-> ", LogColor::Cyan);
+        else
+            g_Log.printColor("   ", LogColor::Cyan);
+        g_Log.setColor(LogColor::Gray);
+        wprintf(bcNum, i);
         g_Log.print(" ");
-    wprintf(bcNum, i);
-    if (ip == curIp)
-        g_Log.print("]");
+    }
     else
+    {
+        g_Log.setColor(LogColor::Cyan);
+        wprintf(bcNum, i);
         g_Log.print(" ");
+    }
 
     g_Log.setCountLength(true);
 
     // Instruction
-    g_Log.setColor(LogColor::White);
+    if (forDbg)
+        g_Log.setColor(LogColor::Gray);
+    else
+        g_Log.setColor(LogColor::White);
     int len = (int) strlen(g_ByteCodeOpDesc[(int) ip->op].name);
     while (len++ < ALIGN_OPCODE)
         g_Log.print(" ");
@@ -268,16 +278,22 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
 
     // Tree Node
 #ifdef SWAG_DEV_MODE
-    g_Log.setColor(LogColor::Magenta);
-    g_Log.print("  ");
-    wprintf(bcNum, ip->treeNode);
-    g_Log.print("  ");
-    g_Log.print(Fmt("%08X", ip->crc));
-    g_Log.print("  ");
-    g_Log.setColor(LogColor::Gray);
+    if (!forDbg)
+    {
+        g_Log.setColor(LogColor::Magenta);
+        g_Log.print("  ");
+        wprintf(bcNum, ip->treeNode);
+        g_Log.print("  ");
+        g_Log.print(Fmt("%08X", ip->crc));
+        g_Log.print("  ");
+        g_Log.setColor(LogColor::Gray);
+    }
 #endif
 
-    g_Log.setColor(LogColor::White);
+    if (forDbg)
+        g_Log.setColor(LogColor::Gray);
+    else
+        g_Log.setColor(LogColor::White);
     while (g_Log.length < ALIGN_PRETTY)
         g_Log.print(" ");
     printPrettyInstruction(ip);
@@ -334,15 +350,18 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     }
 
 #ifdef SWAG_DEV_MODE
-    g_Log.setColor(LogColor::Magenta);
-    while (g_Log.length < ALIGN_SOURCE)
-        g_Log.print(" ");
-    g_Log.print(Fmt("%08d ", ip->serial));
-    if (ip->sourceFile)
+    if (!forDbg)
     {
-        Utf8 sf = Utf8::normalizePath(ip->sourceFile);
-        auto pz = strrchr(sf.buffer, '/');
-        g_Log.print(Fmt("%s:%d", pz ? pz + 1 : sf.c_str(), ip->sourceLine));
+        g_Log.setColor(LogColor::Magenta);
+        while (g_Log.length < ALIGN_SOURCE)
+            g_Log.print(" ");
+        g_Log.print(Fmt("%08d ", ip->serial));
+        if (ip->sourceFile)
+        {
+            Utf8 sf = Utf8::normalizePath(ip->sourceFile);
+            auto pz = strrchr(sf.buffer, '/');
+            g_Log.print(Fmt("%s:%d", pz ? pz + 1 : sf.c_str(), ip->sourceLine));
+        }
     }
 #endif
 
