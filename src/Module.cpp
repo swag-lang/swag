@@ -426,10 +426,15 @@ ByteCode* Module::findBc(const Utf8& bcName)
     {
         if (bc->name == bcName)
             return bc;
-        n1 = name + ".";
-        n1 += bcName;
-        if (bc->name == n1)
-            return bc;
+
+        if (buildCfg.moduleNamespace.buffer)
+        {
+            n1 = Utf8{(const char*) buildCfg.moduleNamespace.buffer, (uint32_t) buildCfg.moduleNamespace.count};
+            n1 += ".";
+            n1 += bcName;
+            if (bc->name == n1)
+                return bc;
+        }
     }
 
     return nullptr;

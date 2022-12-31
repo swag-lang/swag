@@ -34,8 +34,8 @@ static void printHelp()
     g_Log.print("n(ext)                        like s, but does not step into functions or inlined code\n");
     g_Log.print("f(inish)                      runs until the current function is done\n");
     g_Log.print("c(ont(inue))                  runs until another breakpoint is reached\n");
-    g_Log.print("un(til) <num>                 runs to the given line or instruction (depends on 'bcmode')\n");
-    g_Log.print("j(ump)  <num>                 jump to the given line or instruction (depends on 'bcmode')\n");
+    g_Log.print("un(til) <num>                 runs to the given line or instruction in the current function (depends on 'bcmode')\n");
+    g_Log.print("j(ump)  <num>                 jump to the given line or instruction in the current function (depends on 'bcmode')\n");
     g_Log.eol();
 
     g_Log.print("l(ist) [num]                  print the current source code line and [num] lines around\n");
@@ -2048,7 +2048,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     bkp.line       = lineNo;
                     bkp.autoRemove = oneShot;
                     if (addBreakpoint(context, bkp))
-                        g_Log.printColor(Fmt("breakpoint #%d, file '%s', line '%d'\n", context->debugBreakpoints.size(), curFile->name.c_str(), lineNo), LogColor::White);
+                        g_Log.printColor(Fmt("breakpoint #%d, file '%s', line '%d'\n", context->debugBreakpoints.size(), curFile->name.c_str(), lineNo), LogColor::Gray);
                     continue;
                 }
 
@@ -2059,7 +2059,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                         g_Log.printColor("no breakpoint\n", LogColor::Red);
                     else
                     {
-                        g_Log.printColor(Fmt("%d breakpoint(s) have been removed\n", context->debugBreakpoints.size()), LogColor::White);
+                        g_Log.printColor(Fmt("%d breakpoint(s) have been removed\n", context->debugBreakpoints.size()), LogColor::Gray);
                         context->debugBreakpoints.clear();
                     }
 
@@ -2077,14 +2077,14 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     auto bc  = g_Workspace->findBc(cmds[2]);
                     if (!bc)
                     {
-                        g_Log.printColor(Fmt("cannot find function '%s'", cmds[2].c_str()), LogColor::Red);
+                        g_Log.printColor(Fmt("cannot find function '%s'\n", cmds[2].c_str()), LogColor::Red);
                         continue;
                     }
 
                     bkp.name       = cmds[2];
                     bkp.autoRemove = oneShot;
                     if (addBreakpoint(context, bkp))
-                        g_Log.printColor(Fmt("breakpoint #%d entering function '%s'\n", context->debugBreakpoints.size(), bkp.name.c_str()), LogColor::White);
+                        g_Log.printColor(Fmt("breakpoint #%d entering function '%s'\n", context->debugBreakpoints.size(), bkp.name.c_str()), LogColor::Gray);
                     continue;
                 }
 
@@ -2100,7 +2100,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     else
                     {
                         context->debugBreakpoints.erase(context->debugBreakpoints.begin() + numB - 1);
-                        g_Log.printColor(Fmt("breakpoint #%d has been removed\n", numB), LogColor::White);
+                        g_Log.printColor(Fmt("breakpoint #%d has been removed\n", numB), LogColor::Gray);
                     }
 
                     continue;
@@ -2115,7 +2115,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     else
                     {
                         context->debugBreakpoints[numB - 1].disabled = true;
-                        g_Log.printColor(Fmt("breakpoint #%d has been disabled\n", numB), LogColor::White);
+                        g_Log.printColor(Fmt("breakpoint #%d has been disabled\n", numB), LogColor::Gray);
                     }
 
                     continue;
@@ -2130,7 +2130,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     else
                     {
                         context->debugBreakpoints[numB - 1].disabled = false;
-                        g_Log.printColor(Fmt("breakpoint #%d has been enabled\n", numB), LogColor::White);
+                        g_Log.printColor(Fmt("breakpoint #%d has been enabled\n", numB), LogColor::Gray);
                     }
 
                     continue;
@@ -2222,20 +2222,20 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 context->debugStackFrameOffset = 0;
 
                 uint32_t to = (uint32_t) atoi(cmds[1]);
-                if (to >= context->bc->numInstructions - 1)
-                {
-                    g_Log.printColor("cannot reach this 'jump' destination\n", LogColor::Red);
-                    continue;
-                }
-
                 if (context->debugBcMode)
                 {
+                    if (to >= context->bc->numInstructions - 1)
+                    {
+                        g_Log.printColor("cannot reach this 'jump' destination\n", LogColor::Red);
+                        continue;
+                    }
+
                     context->ip         = context->bc->out + to;
                     context->debugCxtIp = context->ip;
                 }
                 else
                 {
-                    auto curIp = context->ip;
+                    auto curIp = context->bc->out;
                     while (true)
                     {
                         if (curIp >= context->bc->out + context->bc->numInstructions - 1)
