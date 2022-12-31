@@ -427,7 +427,7 @@ static void appendLiteralValueProtected(ByteCodeRunContext* context, Utf8& resul
         else if (!fmt.isHexa)
             result = Fmt("%3u ", getAddrValue<uint8_t>(addr));
         else
-            result = Fmt("%02llx ", getAddrValue<uint8_t>(addr));
+            result = Fmt("0x%02llx ", getAddrValue<uint8_t>(addr));
         break;
 
     case 16:
@@ -436,7 +436,7 @@ static void appendLiteralValueProtected(ByteCodeRunContext* context, Utf8& resul
         else if (!fmt.isHexa)
             result = Fmt("%5u ", getAddrValue<uint16_t>(addr));
         else
-            result = Fmt("%04llx ", getAddrValue<uint16_t>(addr));
+            result = Fmt("0x%04llx ", getAddrValue<uint16_t>(addr));
         break;
 
     case 32:
@@ -447,7 +447,7 @@ static void appendLiteralValueProtected(ByteCodeRunContext* context, Utf8& resul
         else if (!fmt.isHexa)
             result = Fmt("%10u ", getAddrValue<uint32_t>(addr));
         else
-            result = Fmt("%08llx ", getAddrValue<uint32_t>(addr));
+            result = Fmt("0x%08llx ", getAddrValue<uint32_t>(addr));
         break;
 
     case 64:
@@ -458,7 +458,7 @@ static void appendLiteralValueProtected(ByteCodeRunContext* context, Utf8& resul
         else if (!fmt.isHexa)
             result = Fmt("%20llu ", getAddrValue<uint64_t>(addr));
         else
-            result = Fmt("%016llx ", getAddrValue<uint64_t>(addr));
+            result = Fmt("0x%016llx ", getAddrValue<uint64_t>(addr));
         break;
     }
 }
@@ -544,11 +544,12 @@ static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
 
     const uint8_t* addrB = (const uint8_t*) addrVal;
 
-    g_Log.setColor(LogColor::Gray);
-
     while (count > 0)
     {
         auto addrLine = addrB;
+
+        g_Log.printColor(Fmt("0x%016llx ", addrLine), LogColor::DarkYellow);
+        g_Log.setColor(LogColor::Gray);
 
         for (int i = 0; i < min(count, perLine); i++)
         {
@@ -1667,6 +1668,39 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 continue;
             }
 
+            // Info registers
+            /////////////////////////////////////////
+            if (cmd == "info" && cmds.size() >= 2 && cmds[1] == "regs")
+            {
+                if (cmds.size() > 3)
+                    goto evalDefault;
+
+                ValueFormat fmt;
+                fmt.isHexa   = true;
+                fmt.bitCount = 64;
+                if (cmds.size() > 2)
+                {
+                    if (!getValueFormat(cmds[2], fmt))
+                        goto evalDefault;
+                }
+
+                g_Log.setColor(LogColor::Gray);
+                for (int i = 0; i < context->getRegCount(context->debugCxtRc); i++)
+                {
+                    auto& regP = context->getRegBuffer(context->debugCxtRc)[i];
+                    Utf8  str;
+                    appendLiteralValue(context, str, fmt, &regP);
+                    str.trim();
+                    g_Log.print(Fmt("$r%d = ", i));
+                    g_Log.print(str);
+                    g_Log.eol();
+                }
+
+                g_Log.print(Fmt("$sp = 0x%016llx\n", context->sp));
+                g_Log.print(Fmt("$bp = 0x%016llx\n", context->bp));
+                continue;
+            }
+
             // Info args
             /////////////////////////////////////////
             if (cmd == "info" && cmds.size() == 2 && cmds[1] == "args")
@@ -1853,39 +1887,6 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 if (cmds.size() != 1)
                     goto evalDefault;
                 printContext(context);
-                continue;
-            }
-
-            // Print all registers
-            /////////////////////////////////////////
-            if (cmd == "info" && cmds.size() >= 2 && cmds[1] == "regs")
-            {
-                if (cmds.size() > 3)
-                    goto evalDefault;
-
-                ValueFormat fmt;
-                fmt.isHexa   = true;
-                fmt.bitCount = 64;
-                if (cmds.size() > 2)
-                {
-                    if (!getValueFormat(cmds[2], fmt))
-                        goto evalDefault;
-                }
-
-                g_Log.setColor(LogColor::Gray);
-                for (int i = 0; i < context->getRegCount(context->debugCxtRc); i++)
-                {
-                    auto& regP = context->getRegBuffer(context->debugCxtRc)[i];
-                    Utf8  str;
-                    appendLiteralValue(context, str, fmt, &regP);
-                    str.trim();
-                    g_Log.print(Fmt("$r%d = ", i));
-                    g_Log.print(str);
-                    g_Log.eol();
-                }
-
-                g_Log.print(Fmt("$sp = %016llx\n", context->sp));
-                g_Log.print(Fmt("$bp = %016llx\n", context->bp));
                 continue;
             }
 
