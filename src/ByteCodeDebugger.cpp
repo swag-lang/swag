@@ -16,8 +16,9 @@
 #include "ThreadManager.h"
 #include "Report.h"
 
-static const char* COLOR_TYPE = Log::VDarkCyan;
-static const char* COLOR_NAME = Log::VDarkYellow;
+static const char* COLOR_TYPE    = Log::VDarkCyan;
+static const char* COLOR_NAME    = Log::VDarkYellow;
+static const char* COLOR_DEFAULT = Log::VDarkWhite;
 
 static void printHelp()
 {
@@ -536,7 +537,7 @@ static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
 
         addrB = addrLine;
         addrB += min(count, perLine) * (fmt.bitCount / 8);
-        count -= min(count, 8);
+        count -= min(count, perLine);
         if (!count)
             break;
     }
@@ -793,7 +794,7 @@ static void appendTypedValueProtected(ByteCodeRunContext* context, Utf8& str, co
         {
             for (int i = 0; i < indent + 1; i++)
                 str += "   ";
-            str += Fmt("(%s%s%s) %s%s%s = ", COLOR_TYPE, p->typeInfo->getDisplayNameC(), Log::VDarkWhite, COLOR_NAME, p->namedParam.c_str(), Log::VDarkWhite);
+            str += Fmt("(%s%s%s) %s%s%s = ", COLOR_TYPE, p->typeInfo->getDisplayNameC(), COLOR_DEFAULT, COLOR_NAME, p->namedParam.c_str(), COLOR_DEFAULT);
             EvaluateResult res1;
             res1.type = p->typeInfo;
             res1.addr = ((uint8_t*) addr) + p->offset;
@@ -1571,16 +1572,23 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 {
                     if (!res.type->isVoid())
                     {
+                        auto concrete = TypeManager::concreteType(res.type, CONCRETE_ALIAS);
                         Utf8 str;
                         if (hasFormat)
                         {
+                            if (!concrete->isNativeIntegerOrRune() && !concrete->isNativeFloat())
+                            {
+                                g_Log.printColor(Fmt("cannot apply print format to type `%s`\n", concrete->getDisplayNameC()), LogColor::Red);
+                                continue;
+                            }
+
                             if (!res.addr && res.value)
                                 res.addr = &res.value->reg;
                             appendLiteralValue(context, str, fmt, res.addr);
                         }
                         else
                         {
-                            str = Fmt("(%s%s%s) ", COLOR_TYPE, res.type->getDisplayNameC(), Log::VDarkWhite);
+                            str = Fmt("(%s%s%s) ", COLOR_TYPE, res.type->getDisplayNameC(), COLOR_DEFAULT);
                             appendTypedValue(context, str, res, 0, hasFormat ? &fmt : nullptr);
                         }
 
@@ -1665,7 +1673,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                         // Generated
                         if (over->symbol->name.length() > 2 && over->symbol->name[0] == '_' && over->symbol->name[1] == '_')
                             continue;
-                        Utf8           str = Fmt("(%s%s%s) %s%s%s = ", COLOR_TYPE, over->typeInfo->getDisplayNameC(), Log::VDarkWhite, COLOR_NAME, over->symbol->name.c_str(), Log::VDarkWhite);
+                        Utf8           str = Fmt("(%s%s%s) %s%s%s = ", COLOR_TYPE, over->typeInfo->getDisplayNameC(), COLOR_DEFAULT, COLOR_NAME, over->symbol->name.c_str(), COLOR_DEFAULT);
                         EvaluateResult res;
                         res.type = over->typeInfo;
                         res.addr = context->debugCxtBp + over->computedValue.storageOffset;
@@ -1702,13 +1710,13 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     Utf8  str;
                     appendLiteralValue(context, str, fmt, &regP);
                     str.trim();
-                    g_Log.print(Fmt("%s$r%d%s = ", COLOR_NAME, i, Log::VDarkWhite));
+                    g_Log.print(Fmt("%s$r%d%s = ", COLOR_NAME, i, COLOR_DEFAULT));
                     g_Log.print(str);
                     g_Log.eol();
                 }
 
-                g_Log.print(Fmt("%s$sp%s = 0x%016llx\n", COLOR_NAME, Log::VDarkWhite, context->sp));
-                g_Log.print(Fmt("%s$bp%s = 0x%016llx\n", COLOR_NAME, Log::VDarkWhite, context->bp));
+                g_Log.print(Fmt("%s$sp%s = 0x%016llx\n", COLOR_NAME, COLOR_DEFAULT, context->sp));
+                g_Log.print(Fmt("%s$bp%s = 0x%016llx\n", COLOR_NAME, COLOR_DEFAULT, context->bp));
                 continue;
             }
 
@@ -1726,7 +1734,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                         auto over = l->resolvedSymbolOverload;
                         if (!over)
                             continue;
-                        Utf8           str = Fmt("(%s%s%s) %s%s%s = ", COLOR_TYPE, over->typeInfo->getDisplayNameC(), Log::VDarkWhite, COLOR_NAME, over->symbol->name.c_str(), Log::VDarkWhite);
+                        Utf8           str = Fmt("(%s%s%s) %s%s%s = ", COLOR_TYPE, over->typeInfo->getDisplayNameC(), COLOR_DEFAULT, COLOR_NAME, over->symbol->name.c_str(), COLOR_DEFAULT);
                         EvaluateResult res;
                         res.type = over->typeInfo;
                         res.addr = context->debugCxtBp + over->computedValue.storageOffset;
@@ -2195,7 +2203,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 if (cmds.size() > 1)
                     goto evalDefault;
 
-                g_Log.printColor("continue...\n", LogColor::White);
+                g_Log.printColor("continue...\n", LogColor::Gray);
                 context->debugStackFrameOffset = 0;
                 context->debugStepMode         = ByteCodeRunContext::DebugStepMode::ToNextBreakpoint;
                 context->debugOn               = false;
@@ -2290,7 +2298,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             {
                 if (!res.type->isVoid())
                 {
-                    Utf8 str = Fmt("(%s%s%s) ", COLOR_TYPE, res.type->getDisplayNameC(), Log::VDarkWhite);
+                    Utf8 str = Fmt("(%s%s%s) ", COLOR_TYPE, res.type->getDisplayNameC(), COLOR_DEFAULT);
                     appendTypedValue(context, str, res, 0);
                     g_Log.printColor(str);
                     if (str.back() != '\n')
