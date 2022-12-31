@@ -347,7 +347,7 @@
     <ClCompile Include="../src/ByteCodeRunContext.cpp">
       <Filter>Backend\ByteCode\Run</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ByteCodeRun_Dbg.cpp">
+    <ClCompile Include="..\src\ByteCodeDebugger.cpp">
       <Filter>Backend\ByteCode\Run</Filter>
     </ClCompile>
     <ClCompile Include="../src/ByteCodeRun.cpp">

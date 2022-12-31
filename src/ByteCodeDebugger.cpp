@@ -55,6 +55,9 @@ static void printHelp()
     g_Log.print("(w)here                       print contextual informations\n");
     g_Log.eol();
 
+    g_Log.print("x [@format] [@num] <expr>     print memory (format = s8|s16|s32|s64|u8|u16|u32|u64|x8|x16|x32|x64|f32|f64)\n");
+    g_Log.eol();
+
     g_Log.print("b(reak)                       print all breakpoints\n");
     g_Log.print("b(reak) func <name>           add breakpoint when entering function <name> in the current file\n");
     g_Log.print("b(reak) <line>                add breakpoint in the current source file at <line>\n");
@@ -72,12 +75,9 @@ static void printHelp()
     g_Log.print("frame  <num>                  move stack frame to level <num>\n");
     g_Log.eol();
 
+    g_Log.print("bcmode                        swap between bytecode mode and source code mode\n");
     g_Log.print("i [num]                       print the current bytecode instruction and [num] instructions around\n");
     g_Log.print("ii                            print the current function bytecode\n");
-    g_Log.print("x [@format] [@num] <expr>     print memory (format = s8|s16|s32|s64|u8|u16|u32|u64|x8|x16|x32|x64|f32|f64)\n");
-    g_Log.eol();
-
-    g_Log.print("bcmode                        swap between bytecode mode and source mode\n");
     g_Log.eol();
 
     g_Log.print("?                             print this list of commands\n");
@@ -1870,6 +1870,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             {
                 if (cmds.size() != 1)
                     goto evalDefault;
+                g_Log.setDefaultColor();
                 return false;
             }
 
