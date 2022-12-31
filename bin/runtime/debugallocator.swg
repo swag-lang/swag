@@ -350,7 +350,6 @@ impl IAllocator for DebugAllocator
         header.userSize = request.size
         header.loc = copyReq.callerLoc
         header.hint = copyReq.hint
-        @breakpoint()
         header.stackCount = captureAllocStack ? __captureStack(2, header.stack) : 0
 
         // Setup footer
