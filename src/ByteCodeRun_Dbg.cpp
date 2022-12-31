@@ -16,6 +16,9 @@
 #include "ThreadManager.h"
 #include "Report.h"
 
+static const char* COLOR_TYPE = Log::VDarkCyan;
+static const char* COLOR_NAME = Log::VDarkYellow;
+
 static void printHelp()
 {
     g_Log.setColor(LogColor::Gray);
@@ -308,6 +311,7 @@ struct ValueFormat
     bool isSigned = false;
     bool isFloat  = false;
     bool isHexa   = true;
+    bool print0x  = true;
 };
 
 static bool getValueFormat(const Utf8& cmd, ValueFormat& fmt)
@@ -416,65 +420,7 @@ static bool getValueFormat(const Utf8& cmd, ValueFormat& fmt)
     return false;
 }
 
-static void appendLiteralValueProtected(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr)
-{
-    switch (fmt.bitCount)
-    {
-    case 8:
-    default:
-        if (fmt.isSigned)
-            result = Fmt("%4d ", getAddrValue<int8_t>(addr));
-        else if (!fmt.isHexa)
-            result = Fmt("%3u ", getAddrValue<uint8_t>(addr));
-        else
-            result = Fmt("0x%02llx ", getAddrValue<uint8_t>(addr));
-        break;
-
-    case 16:
-        if (fmt.isSigned)
-            result = Fmt("%6d ", getAddrValue<int16_t>(addr));
-        else if (!fmt.isHexa)
-            result = Fmt("%5u ", getAddrValue<uint16_t>(addr));
-        else
-            result = Fmt("0x%04llx ", getAddrValue<uint16_t>(addr));
-        break;
-
-    case 32:
-        if (fmt.isFloat)
-            result = Fmt("%16.5g ", getAddrValue<float>(addr));
-        else if (fmt.isSigned)
-            result = Fmt("%11d ", getAddrValue<int32_t>(addr));
-        else if (!fmt.isHexa)
-            result = Fmt("%10u ", getAddrValue<uint32_t>(addr));
-        else
-            result = Fmt("0x%08llx ", getAddrValue<uint32_t>(addr));
-        break;
-
-    case 64:
-        if (fmt.isFloat)
-            result = Fmt("%16.5g ", getAddrValue<double>(addr));
-        else if (fmt.isSigned)
-            result = Fmt("%21lld ", getAddrValue<int64_t>(addr));
-        else if (!fmt.isHexa)
-            result = Fmt("%20llu ", getAddrValue<uint64_t>(addr));
-        else
-            result = Fmt("0x%016llx ", getAddrValue<uint64_t>(addr));
-        break;
-    }
-}
-
-static void appendLiteralValue(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr)
-{
-    SWAG_TRY
-    {
-        appendLiteralValueProtected(context, result, fmt, addr);
-    }
-    SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)
-    {
-        result = "<error>";
-    }
-}
-
+static void appendLiteralValue(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr);
 static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
 {
     vector<Utf8> cmds;
@@ -484,6 +430,7 @@ static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
     int         startIdx = 0;
     if (cmds.size() && getValueFormat(cmds[0], fmt))
         startIdx++;
+    fmt.print0x = false;
 
     // Count
     int count = 64;
@@ -726,8 +673,75 @@ static void printInstructions(ByteCodeRunContext* context, ByteCode* bc, ByteCod
     }
 }
 
-static void appendValue(Utf8& str, const EvaluateResult& res, int indent);
-static void appendValueProtected(Utf8& str, const EvaluateResult& res, int indent = 0)
+static void appendLiteralValueProtected(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr)
+{
+    switch (fmt.bitCount)
+    {
+    case 8:
+    default:
+        if (fmt.isSigned)
+            result = Fmt("%4d ", getAddrValue<int8_t>(addr));
+        else if (!fmt.isHexa)
+            result = Fmt("%3u ", getAddrValue<uint8_t>(addr));
+        else if (fmt.print0x)
+            result = Fmt("0x%02llx ", getAddrValue<uint8_t>(addr));
+        else
+            result = Fmt("%02llx ", getAddrValue<uint8_t>(addr));
+        break;
+
+    case 16:
+        if (fmt.isSigned)
+            result = Fmt("%6d ", getAddrValue<int16_t>(addr));
+        else if (!fmt.isHexa)
+            result = Fmt("%5u ", getAddrValue<uint16_t>(addr));
+        else if (fmt.print0x)
+            result = Fmt("0x%04llx ", getAddrValue<uint16_t>(addr));
+        else
+            result = Fmt("%04llx ", getAddrValue<uint16_t>(addr));
+        break;
+
+    case 32:
+        if (fmt.isFloat)
+            result = Fmt("%16.5g ", getAddrValue<float>(addr));
+        else if (fmt.isSigned)
+            result = Fmt("%11d ", getAddrValue<int32_t>(addr));
+        else if (!fmt.isHexa)
+            result = Fmt("%10u ", getAddrValue<uint32_t>(addr));
+        else if (fmt.print0x)
+            result = Fmt("0x%08llx ", getAddrValue<uint32_t>(addr));
+        else
+            result = Fmt("%08llx ", getAddrValue<uint32_t>(addr));
+        break;
+
+    case 64:
+        if (fmt.isFloat)
+            result = Fmt("%16.5g ", getAddrValue<double>(addr));
+        else if (fmt.isSigned)
+            result = Fmt("%21lld ", getAddrValue<int64_t>(addr));
+        else if (!fmt.isHexa)
+            result = Fmt("%20llu ", getAddrValue<uint64_t>(addr));
+        else if (fmt.print0x)
+            result = Fmt("0x%016llx ", getAddrValue<uint64_t>(addr));
+        else
+            result = Fmt("%016llx ", getAddrValue<uint64_t>(addr));
+        break;
+    }
+}
+
+static void appendLiteralValue(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr)
+{
+    SWAG_TRY
+    {
+        appendLiteralValueProtected(context, result, fmt, addr);
+    }
+    SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)
+    {
+        result = "<error>";
+    }
+}
+
+static void appendTypedValue(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent, ValueFormat* fmt = nullptr);
+static void appendTypedValueProtected(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent, ValueFormat* fmt = nullptr)
 {
     auto typeInfo = TypeManager::concreteType(res.type, CONCRETE_ALIAS);
     auto addr     = res.addr;
@@ -779,14 +793,11 @@ static void appendValueProtected(Utf8& str, const EvaluateResult& res, int inden
         {
             for (int i = 0; i < indent + 1; i++)
                 str += "   ";
-            str += p->namedParam.c_str();
-            str += ": ";
-            str += p->typeInfo->getDisplayName().c_str();
-            str += " = ";
+            str += Fmt("(%s%s%s) %s%s%s = ", COLOR_TYPE, p->typeInfo->getDisplayNameC(), Log::VDarkWhite, COLOR_NAME, p->namedParam.c_str(), Log::VDarkWhite);
             EvaluateResult res1;
             res1.type = p->typeInfo;
             res1.addr = ((uint8_t*) addr) + p->offset;
-            appendValue(str, res1, indent + 1);
+            appendTypedValue(context, str, res1, indent + 1, fmt);
             if (str.back() != '\n')
                 str += "\n";
         }
@@ -806,7 +817,7 @@ static void appendValueProtected(Utf8& str, const EvaluateResult& res, int inden
             EvaluateResult res1;
             res1.type = typeArray->pointedType;
             res1.addr = ((uint8_t*) addr) + (idx * typeArray->pointedType->sizeOf);
-            appendValue(str, res1, indent + 1);
+            appendTypedValue(context, str, res1, indent + 1);
             if (str.back() != '\n')
                 str += "\n";
         }
@@ -833,7 +844,7 @@ static void appendValueProtected(Utf8& str, const EvaluateResult& res, int inden
                 EvaluateResult res1;
                 res1.type = typeSlice->pointedType;
                 res1.addr = ptr + (idx * typeSlice->pointedType->sizeOf);
-                appendValue(str, res1, indent + 1);
+                appendTypedValue(context, str, res1, indent + 1);
                 if (str.back() != '\n')
                     str += "\n";
             }
@@ -909,18 +920,18 @@ static void appendValueProtected(Utf8& str, const EvaluateResult& res, int inden
             return;
 
         case NativeTypeKind::U8:
-            str += Fmt("%u", *(uint8_t*) addr);
+            str += Fmt("%u (0x%x)", *(uint8_t*) addr, *(uint8_t*) addr);
             return;
         case NativeTypeKind::U16:
-            str += Fmt("%u", *(uint16_t*) addr);
+            str += Fmt("%u (0x%x)", *(uint16_t*) addr, *(uint16_t*) addr);
             return;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            str += Fmt("%u", *(uint32_t*) addr);
+            str += Fmt("%u (0x%x)", *(uint32_t*) addr, *(uint32_t*) addr);
             return;
         case NativeTypeKind::UInt:
         case NativeTypeKind::U64:
-            str += Fmt("%llu", *(uint64_t*) addr);
+            str += Fmt("%llu (0x%x)", *(uint64_t*) addr, *(uint64_t*) addr);
             return;
 
         case NativeTypeKind::F32:
@@ -935,11 +946,11 @@ static void appendValueProtected(Utf8& str, const EvaluateResult& res, int inden
     str += "?";
 }
 
-static void appendValue(Utf8& str, const EvaluateResult& res, int indent = 0)
+static void appendTypedValue(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent, ValueFormat* fmt)
 {
     SWAG_TRY
     {
-        appendValueProtected(str, res, indent);
+        appendTypedValueProtected(context, str, res, indent, fmt);
     }
     SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)
     {
@@ -1569,8 +1580,8 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                         }
                         else
                         {
-                            str = Fmt("%s: ", res.type->getDisplayNameC());
-                            appendValue(str, res);
+                            str = Fmt("(%s%s%s) ", COLOR_TYPE, res.type->getDisplayNameC(), Log::VDarkWhite);
+                            appendTypedValue(context, str, res, 0, hasFormat ? &fmt : nullptr);
                         }
 
                         g_Log.printColor(str);
@@ -1654,11 +1665,11 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                         // Generated
                         if (over->symbol->name.length() > 2 && over->symbol->name[0] == '_' && over->symbol->name[1] == '_')
                             continue;
-                        Utf8           str = Fmt("%s: %s = ", over->symbol->name.c_str(), over->typeInfo->getDisplayNameC());
+                        Utf8           str = Fmt("(%s%s%s) %s%s%s = ", COLOR_TYPE, over->typeInfo->getDisplayNameC(), Log::VDarkWhite, COLOR_NAME, over->symbol->name.c_str(), Log::VDarkWhite);
                         EvaluateResult res;
                         res.type = over->typeInfo;
                         res.addr = context->debugCxtBp + over->computedValue.storageOffset;
-                        appendValue(str, res);
+                        appendTypedValue(context, str, res, 0);
                         g_Log.printColor(str);
                         if (str.back() != '\n')
                             g_Log.eol();
@@ -1691,13 +1702,13 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     Utf8  str;
                     appendLiteralValue(context, str, fmt, &regP);
                     str.trim();
-                    g_Log.print(Fmt("$r%d = ", i));
+                    g_Log.print(Fmt("%s$r%d%s = ", COLOR_NAME, i, Log::VDarkWhite));
                     g_Log.print(str);
                     g_Log.eol();
                 }
 
-                g_Log.print(Fmt("$sp = 0x%016llx\n", context->sp));
-                g_Log.print(Fmt("$bp = 0x%016llx\n", context->bp));
+                g_Log.print(Fmt("%s$sp%s = 0x%016llx\n", COLOR_NAME, Log::VDarkWhite, context->sp));
+                g_Log.print(Fmt("%s$bp%s = 0x%016llx\n", COLOR_NAME, Log::VDarkWhite, context->bp));
                 continue;
             }
 
@@ -1715,11 +1726,11 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                         auto over = l->resolvedSymbolOverload;
                         if (!over)
                             continue;
-                        Utf8           str = Fmt("%s: %s = ", over->symbol->name.c_str(), over->typeInfo->getDisplayNameC());
+                        Utf8           str = Fmt("(%s%s%s) %s%s%s = ", COLOR_TYPE, over->typeInfo->getDisplayNameC(), Log::VDarkWhite, COLOR_NAME, over->symbol->name.c_str(), Log::VDarkWhite);
                         EvaluateResult res;
                         res.type = over->typeInfo;
                         res.addr = context->debugCxtBp + over->computedValue.storageOffset;
-                        appendValue(str, res);
+                        appendTypedValue(context, str, res, 0);
                         g_Log.printColor(str);
                         if (str.back() != '\n')
                             g_Log.eol();
@@ -2278,8 +2289,8 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             {
                 if (!res.type->isVoid())
                 {
-                    Utf8 str = Fmt("%s: ", res.type->getDisplayNameC());
-                    appendValue(str, res);
+                    Utf8 str = Fmt("(%s%s%s) ", COLOR_TYPE, res.type->getDisplayNameC(), Log::VDarkWhite);
+                    appendTypedValue(context, str, res, 0);
                     g_Log.printColor(str);
                     if (str.back() != '\n')
                         g_Log.eol();

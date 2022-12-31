@@ -34,6 +34,14 @@ static const int CENTER_COLUMN = 24;
 
 struct Log
 {
+    static constexpr const char* VDarkRed     = "\x1b[31m";
+    static constexpr const char* VDarkGreen   = "\x1b[32m";
+    static constexpr const char* VDarkYellow  = "\x1b[33m";
+    static constexpr const char* VDarkBlue    = "\x1b[34m";
+    static constexpr const char* VDarkMagenta = "\x1b[35m";
+    static constexpr const char* VDarkCyan    = "\x1b[36m";
+    static constexpr const char* VDarkWhite   = "\x1b[37m";
+
     void setColor(LogColor color);
     void setDefaultColor();
 
