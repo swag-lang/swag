@@ -1148,7 +1148,7 @@ static void printContextInstruction(ByteCodeRunContext* context, bool force = fa
     // Print instruction
     if (context->debugBcMode)
     {
-        printInstructions(context, context->debugCxtBc, context->debugCxtIp, 3);
+        printInstructions(context, context->debugCxtBc, context->debugCxtIp, 4);
     }
 
     context->debugLastBc           = context->debugCxtBc;
