@@ -37,7 +37,9 @@ namespace OS
     void* loadLibrary(const char* name);
     void* getProcAddress(void* handle, const char* name);
     bool  isDebuggerAttached();
-    Key   promptChar(int& c, bool& ctrl, bool& shift);
+
+    Key  promptChar(int& c, bool& ctrl, bool& shift);
+    bool longOpStopKeyPressed();
 
     Utf8 getExePath();
     Utf8 getLastErrorAsString();

@@ -918,6 +918,11 @@ namespace OS
         gen.concat.currentSP = (uint8_t*) ptr;
     }
 
+    bool longOpStopKeyPressed()
+    {
+        return GetAsyncKeyState(VK_ESCAPE) < 0;
+    }
+
     Key promptChar(int& c, bool& ctrl, bool& shift)
     {
         INPUT_RECORD buffer[128];

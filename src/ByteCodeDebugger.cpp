@@ -544,32 +544,49 @@ static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
     }
 }
 
-static void printContext(ByteCodeRunContext* context)
+static void printWhere(ByteCodeRunContext* context)
 {
     auto ipNode = context->debugCxtIp->node;
     auto bc     = context->debugCxtBc;
 
-    g_Log.eol();
-
     if (ipNode && ipNode->ownerFct)
     {
         ipNode->ownerFct->typeInfo->computeScopedName();
-        g_Log.messageHeaderDot("function", ipNode->ownerFct->typeInfo->scopedName, LogColor::Gray, LogColor::Gray, " ");
+        g_Log.printColor("function: ", LogColor::Gray);
+        g_Log.printColor(ipNode->ownerFct->typeInfo->scopedName, LogColor::DarkYellow);
+        g_Log.eol();
     }
 
-    g_Log.messageHeaderDot("bytecode name", bc->name.c_str(), LogColor::Gray, LogColor::Gray, " ");
-    g_Log.messageHeaderDot("bytecode type", bc->getCallType()->getDisplayNameC(), LogColor::Gray, LogColor::Gray, " ");
+    g_Log.printColor("bytecode name: ", LogColor::Gray);
+    g_Log.printColor(bc->name, LogColor::DarkYellow);
+    g_Log.eol();
+
+    g_Log.printColor("bytecode type: ", LogColor::Gray);
+    g_Log.printColor(bc->getCallType()->getDisplayNameC(), LogColor::DarkYellow);
+    g_Log.eol();
 
     if (bc->sourceFile && bc->node)
-        g_Log.messageHeaderDot("bytecode location", Fmt("%s:%u:%u", bc->sourceFile->path.c_str(), bc->node->token.startLocation.line + 1, bc->node->token.startLocation.column + 1), LogColor::Gray, LogColor::Gray, " ");
+    {
+        g_Log.printColor("bytecode location: ", LogColor::Gray);
+        g_Log.printColor(Fmt("%s:%u:%u", bc->sourceFile->path.c_str(), bc->node->token.startLocation.line + 1, bc->node->token.startLocation.column + 1), LogColor::DarkYellow);
+        g_Log.eol();
+    }
     else if (bc->sourceFile)
-        g_Log.messageHeaderDot("bytecode source file", bc->sourceFile->path, LogColor::Gray, LogColor::Gray, " ");
+    {
+        g_Log.printColor("bytecode source file: ", LogColor::Gray);
+        g_Log.printColor(bc->sourceFile->path.c_str(), LogColor::DarkYellow);
+        g_Log.eol();
+    }
 
     if (ipNode && ipNode->sourceFile)
-        g_Log.messageHeaderDot("instruction location", Fmt("%s:%u:%u", ipNode->sourceFile->path.c_str(), ipNode->token.startLocation.line + 1, ipNode->token.startLocation.column + 1), LogColor::Gray, LogColor::Gray, " ");
+    {
+        g_Log.printColor("instruction location: ", LogColor::Gray);
+        g_Log.printColor(Fmt("%s:%u:%u", ipNode->sourceFile->path.c_str(), ipNode->token.startLocation.line + 1, ipNode->token.startLocation.column + 1), LogColor::DarkYellow);
+        g_Log.eol();
+    }
 
-    g_Log.messageHeaderDot("stack level", Fmt("%u", context->debugStackFrameOffset), LogColor::Gray, LogColor::Gray, " ");
-
+    g_Log.printColor("stack level: ", LogColor::Gray);
+    g_Log.printColor(Fmt("%u", context->debugStackFrameOffset), LogColor::DarkYellow);
     g_Log.eol();
 }
 
@@ -1628,7 +1645,8 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             {
                 if (cmds.size() > 3)
                     goto evalDefault;
-                auto filter = cmds.size() == 3 ? cmds[2] : Utf8("");
+                auto           filter = cmds.size() == 3 ? cmds[2] : Utf8("");
+                vector<string> all;
                 g_Log.setColor(LogColor::Gray);
                 for (auto m : g_Workspace->modules)
                 {
@@ -1636,17 +1654,32 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     {
                         if (filter.empty() || bc->name.find(filter) != -1)
                         {
-                            g_Log.print(Fmt("%s%s%s ", COLOR_NAME, bc->name.c_str(), COLOR_DEFAULT));
+                            string          str = Fmt("%s%s%s ", COLOR_NAME, bc->getCallName().c_str(), COLOR_DEFAULT).c_str();
                             SourceFile*     bcFile;
                             SourceLocation* bcLocation;
                             ByteCode::getLocation(bc, bc->out, &bcFile, &bcLocation);
+                            str += Fmt(" (%s%s%s) ", COLOR_TYPE, bc->getCallType()->getDisplayNameC(), COLOR_DEFAULT);
                             if (bcFile)
-                                g_Log.print(Fmt("%s", bcFile->name.c_str()));
+                                str += Fmt("%s", bcFile->name.c_str());
                             if (bcLocation)
-                                g_Log.print(Fmt(":%d", bcLocation->line));
-                            g_Log.eol();
+                                str += Fmt(":%d", bcLocation->line);
+                            all.push_back(str);
                         }
                     }
+                }
+
+                sort(all.begin(), all.end(), [](const string& a, const string& b)
+                     { return a < b; });
+                for (auto& o : all)
+                {
+                    if (OS::longOpStopKeyPressed())
+                    {
+                        g_Log.printColor("...stopped\n", LogColor::Red);
+                        break;
+                    }
+
+                    g_Log.print(o);
+                    g_Log.eol();
                 }
 
                 continue;
@@ -1914,7 +1947,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             {
                 if (cmds.size() != 1)
                     goto evalDefault;
-                printContext(context);
+                printWhere(context);
                 continue;
             }
 
