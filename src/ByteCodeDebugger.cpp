@@ -21,250 +21,6 @@ static const char* COLOR_TYPE    = Log::VDarkCyan;
 static const char* COLOR_NAME    = Log::VDarkYellow;
 static const char* COLOR_DEFAULT = Log::VDarkWhite;
 
-static void printHelp()
-{
-    g_Log.setColor(LogColor::Gray);
-    g_Log.eol();
-
-    g_Log.print("<return>                      'step', runs to the next line or instruction (depends on 'bcmode')\n");
-    g_Log.print("<shift+return>                'next', runs to the next line or instruction (depends on 'bcmode')\n");
-    g_Log.print("<tab>                         contextual completion of the current word\n");
-    g_Log.eol();
-
-    g_Log.print("s(tep)                        runs to the next line\n");
-    g_Log.print("n(ext)                        like s, but does not step into functions or inlined code\n");
-    g_Log.print("f(inish)                      runs until the current function is done\n");
-    g_Log.print("c(ont(inue))                  runs until another breakpoint is reached\n");
-    g_Log.print("un(til) <num>                 runs to the given line or instruction in the current function (depends on 'bcmode')\n");
-    g_Log.print("j(ump)  <num>                 jump to the given line or instruction in the current function (depends on 'bcmode')\n");
-    g_Log.eol();
-
-    g_Log.print("l(ist) [num]                  print the current source code line and [num] lines around\n");
-    g_Log.print("ll [name]                     print the current function (or function [name]) source code\n");
-    g_Log.eol();
-
-    g_Log.print("e(xec(ute)) <stmt>            execute the Swag code statement <stmt> in the current context\n");
-    g_Log.print("$<expr|stmt>                  execute the Swag code expression <expr> or statement <stmt> in the current context\n");
-    g_Log.print("<expr|stmt>                   execute the Swag code expression <expr> or statement <stmt> in the current context (if not a valid debugger command)\n");
-    g_Log.eol();
-
-    g_Log.print("p(rint) [@format] <expr>      print the value of the Swag code expression <expr> in the current context (format is the same as 'x' command)\n");
-    g_Log.print("info locals                   print all current local variables\n");
-    g_Log.print("info args                     print all current function arguments\n");
-    g_Log.print("info func [filter]            print all functions which contains [filter] in their names\n");
-    g_Log.print("info modules                  print all modules\n");
-    g_Log.print("info regs [@format]           print all registers (format is the same as 'x' command)\n");
-    g_Log.print("(w)here                       print contextual informations\n");
-    g_Log.eol();
-
-    g_Log.print("x [@format] [@num] <expr>     print memory (format = s8|s16|s32|s64|u8|u16|u32|u64|x8|x16|x32|x64|f32|f64)\n");
-    g_Log.eol();
-
-    g_Log.print("b(reak)                       print all breakpoints\n");
-    g_Log.print("b(reak) func <name>           add breakpoint when entering function <name> in the current file\n");
-    g_Log.print("b(reak) <line>                add breakpoint in the current source file at <line>\n");
-    g_Log.print("b(reak) <file>:<line>         add breakpoint in <file> at <line>\n");
-    g_Log.print("b(reak) clear                 remove all breakpoints\n");
-    g_Log.print("b(reak) clear <num>           remove breakpoint <num>\n");
-    g_Log.print("b(reak) enable <num>          enable breakpoint <num>\n");
-    g_Log.print("b(reak) disable <num>         disable breakpoint <num>\n");
-    g_Log.print("tb(reak) ...                  same as 'b(reak)' except that the breakpoint will be automatically removed on hit\n");
-    g_Log.eol();
-
-    g_Log.print("bt                            backtrace, print callstack\n");
-    g_Log.print("u(p)   [num]                  move stack frame <num> level up\n");
-    g_Log.print("d(own) [num]                  move stack frame <num> level down\n");
-    g_Log.print("frame  <num>                  move stack frame to level <num>\n");
-    g_Log.eol();
-
-    g_Log.print("bcmode                        swap between bytecode mode and source code mode\n");
-    g_Log.print("i [num]                       print the current bytecode instruction and [num] instructions around\n");
-    g_Log.print("ii                            print the current function bytecode\n");
-    g_Log.eol();
-
-    g_Log.print("?                             print this list of commands\n");
-    g_Log.print("q(uit)                        quit the compiler\n");
-    g_Log.eol();
-}
-
-struct EvaluateResult
-{
-    TypeInfo*      type  = nullptr;
-    void*          addr  = nullptr;
-    ComputedValue* value = nullptr;
-    void*          storage[2];
-};
-
-static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, EvaluateResult& res, CompilerAstKind kind, bool silent = false)
-{
-    PushSilentError se;
-
-    auto sourceFile = context->debugCxtBc->sourceFile;
-
-    // Syntax
-    SyntaxJob syntaxJob;
-    AstNode   parent;
-    syntaxJob.module  = sourceFile->module;
-    parent.ownerScope = context->debugCxtIp->node ? context->debugCxtIp->node->ownerScope : nullptr;
-    parent.ownerFct   = CastAst<AstFuncDecl>(context->debugCxtBc->node, AstNodeKind::FuncDecl);
-    parent.sourceFile = sourceFile;
-    parent.parent     = context->debugCxtIp->node;
-
-    if (!syntaxJob.constructEmbedded(expr, &parent, nullptr, kind, false))
-    {
-        if (silent)
-            return false;
-        if (g_SilentErrorMsg.empty())
-            g_Log.printColor("expression syntax error\n", LogColor::Red);
-        else
-            g_Log.printColor(Fmt("%s\n", g_SilentErrorMsg.c_str()), LogColor::Red);
-        return false;
-    }
-
-    // Semantic
-    auto        child = parent.childs.front();
-    SemanticJob semanticJob;
-    semanticJob.sourceFile = sourceFile;
-    semanticJob.module     = sourceFile->module;
-    semanticJob.nodes.push_back(child);
-    semanticJob.context.forDebugger = true;
-
-    g_ThreadMgr.doJobCount = true;
-    while (true)
-    {
-        auto result = semanticJob.execute();
-        if (result == JobResult::ReleaseJob)
-            break;
-        while (g_ThreadMgr.addJobCount.load())
-            this_thread::yield();
-    }
-    g_ThreadMgr.doJobCount = false;
-
-    if (!g_SilentErrorMsg.empty())
-    {
-        if (silent)
-            return false;
-        if (g_SilentErrorMsg.empty())
-            g_Log.printColor("cannot solve expression\n", LogColor::Red);
-        else
-            g_Log.printColor(Fmt("%s\n", g_SilentErrorMsg.c_str()), LogColor::Red);
-        return false;
-    }
-
-    // This has been evaluated to a constant
-    if (child->flags & AST_VALUE_COMPUTED)
-    {
-        res.type  = child->typeInfo;
-        res.value = child->computedValue;
-        return true;
-    }
-
-    // Gen bytecode for expression
-    ByteCodeGenJob genJob;
-    genJob.sourceFile = sourceFile;
-    genJob.module     = sourceFile->module;
-    genJob.nodes.push_back(child);
-    child->allocateExtension(ExtensionKind::ByteCode);
-    child->extension->bytecode->bc             = g_Allocator.alloc<ByteCode>();
-    child->extension->bytecode->bc->node       = child;
-    child->extension->bytecode->bc->sourceFile = sourceFile;
-
-    g_ThreadMgr.doJobCount = true;
-    while (true)
-    {
-        auto result = genJob.execute();
-        if (result == JobResult::ReleaseJob)
-            break;
-        while (g_ThreadMgr.addJobCount.load())
-            this_thread::yield();
-    }
-    g_ThreadMgr.doJobCount = false;
-
-    if (!g_SilentErrorMsg.empty())
-    {
-        if (silent)
-            return false;
-        if (g_SilentErrorMsg.empty())
-            g_Log.printColor("cannot generate expression\n", LogColor::Red);
-        else
-            g_Log.printColor(Fmt("%s\n", g_SilentErrorMsg.c_str()), LogColor::Red);
-        return false;
-    }
-
-    // Execute node
-    JobContext         callerContext;
-    ByteCodeRunContext runContext;
-    ByteCodeStack      stackTrace;
-    ExecuteNodeParams  execParams;
-    execParams.inheritSp    = context->debugCxtSp;
-    execParams.inheritSpAlt = context->debugCxtSpAlt;
-    execParams.inheritStack = context->debugCxtStack;
-    execParams.inheritBp    = context->debugCxtBp;
-    execParams.forDebugger  = true;
-    runContext.debugAccept  = false;
-    runContext.sharedStack  = true;
-
-    g_RunContext         = &runContext;
-    g_ByteCodeStackTrace = &stackTrace;
-
-    auto resExec = sourceFile->module->executeNode(sourceFile, child, &callerContext, &execParams);
-
-    child->extension->bytecode->bc->releaseOut();
-    g_RunContext         = &g_RunContextVal;
-    g_ByteCodeStackTrace = &g_ByteCodeStackTraceVal;
-
-    if (!resExec)
-    {
-        if (silent)
-            return false;
-        if (g_SilentErrorMsg.empty())
-            g_Log.printColor("cannot run expression\n", LogColor::Red);
-        else
-            g_Log.printColor(Fmt("%s\n", g_SilentErrorMsg.c_str()), LogColor::Red);
-        return false;
-    }
-
-    res.type       = TypeManager::concreteType(child->typeInfo, CONCRETE_FUNC);
-    res.storage[0] = runContext.registersRR[0].pointer;
-    res.storage[1] = runContext.registersRR[1].pointer;
-    if (res.type->flags & TYPEINFO_RETURN_BY_COPY)
-        res.addr = res.storage[0];
-    else
-        res.addr = &res.storage[0];
-    return true;
-}
-
-static bool evalExpression(ByteCodeRunContext* context, const Utf8& expr, EvaluateResult& res, bool silent = false)
-{
-    auto funcDecl = CastAst<AstFuncDecl>(context->debugCxtBc->node, AstNodeKind::FuncDecl);
-    for (auto l : context->debugCxtBc->localVars)
-    {
-        auto over = l->resolvedSymbolOverload;
-        if (over && over->symbol->name == expr)
-        {
-            res.type = over->typeInfo;
-            res.addr = context->debugCxtBp + over->computedValue.storageOffset;
-            return true;
-        }
-    }
-
-    if (funcDecl->parameters)
-    {
-        for (auto l : funcDecl->parameters->childs)
-        {
-            auto over = l->resolvedSymbolOverload;
-            if (over && over->symbol->name == expr)
-            {
-                res.type = over->typeInfo;
-                res.addr = context->debugCxtBp + over->computedValue.storageOffset;
-                return true;
-            }
-        }
-    }
-
-    return evalDynExpression(context, expr, res, CompilerAstKind::Expression, silent);
-}
-
 static bool isNumber(const char* pz)
 {
     while (*pz)
@@ -308,16 +64,7 @@ static T getAddrValue(const void* addr)
     }
 }
 
-struct ValueFormat
-{
-    int  bitCount = 8;
-    bool isSigned = false;
-    bool isFloat  = false;
-    bool isHexa   = true;
-    bool print0x  = true;
-};
-
-static bool getValueFormat(const Utf8& cmd, ValueFormat& fmt)
+bool ByteCodeDebugger::getValueFormat(const Utf8& cmd, ValueFormat& fmt)
 {
     // Format
     if (cmd == "@s8")
@@ -423,8 +170,7 @@ static bool getValueFormat(const Utf8& cmd, ValueFormat& fmt)
     return false;
 }
 
-static void appendLiteralValue(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr);
-static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
+void ByteCodeDebugger::printMemory(ByteCodeRunContext* context, const Utf8& arg)
 {
     vector<Utf8> cmds;
     Utf8::tokenize(arg, ' ', cmds);
@@ -693,7 +439,7 @@ static void printInstructions(ByteCodeRunContext* context, ByteCode* bc, ByteCod
     }
 }
 
-static void appendLiteralValueProtected(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr)
+void ByteCodeDebugger::appendLiteralValueProtected(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr)
 {
     switch (fmt.bitCount)
     {
@@ -748,7 +494,7 @@ static void appendLiteralValueProtected(ByteCodeRunContext* context, Utf8& resul
     }
 }
 
-static void appendLiteralValue(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr)
+void ByteCodeDebugger::appendLiteralValue(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr)
 {
     SWAG_TRY
     {
@@ -760,8 +506,7 @@ static void appendLiteralValue(ByteCodeRunContext* context, Utf8& result, const 
     }
 }
 
-static void appendTypedValue(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent, ValueFormat* fmt = nullptr);
-static void appendTypedValueProtected(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent, ValueFormat* fmt = nullptr)
+void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent, ValueFormat* fmt)
 {
     auto typeInfo = TypeManager::concreteType(res.type, CONCRETE_ALIAS);
     auto addr     = res.addr;
@@ -966,7 +711,7 @@ static void appendTypedValueProtected(ByteCodeRunContext* context, Utf8& str, co
     str += "?";
 }
 
-static void appendTypedValue(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent, ValueFormat* fmt)
+void ByteCodeDebugger::appendTypedValue(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent, ValueFormat* fmt)
 {
     SWAG_TRY
     {
