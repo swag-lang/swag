@@ -70,7 +70,7 @@ static void printHelp()
     g_Log.print("tb(reak) ...                  same as 'b(reak)' except that the breakpoint will be automatically removed on hit\n");
     g_Log.eol();
 
-    g_Log.print("stack                         print callstack\n");
+    g_Log.print("bt                            backtrace, print callstack\n");
     g_Log.print("u(p)   [num]                  move stack frame <num> level up\n");
     g_Log.print("d(own) [num]                  move stack frame <num> level down\n");
     g_Log.print("frame  <num>                  move stack frame to level <num>\n");
@@ -126,6 +126,7 @@ static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, Eva
     semanticJob.sourceFile = sourceFile;
     semanticJob.module     = sourceFile->module;
     semanticJob.nodes.push_back(child);
+    semanticJob.context.forDebugger = true;
 
     g_ThreadMgr.doJobCount = true;
     while (true)
@@ -1761,7 +1762,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 
             // Print stack
             /////////////////////////////////////////
-            if (cmd == "stack")
+            if (cmd == "bt")
             {
                 if (cmds.size() != 1)
                     goto evalDefault;

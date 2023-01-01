@@ -49,6 +49,7 @@ struct SemanticContext : public JobContext
     TypeInfo*                         castErrorToType   = nullptr;
     TypeInfo*                         castErrorFromType = nullptr;
     uint32_t                          castErrorFlags    = 0;
+    bool                              forDebugger       = false;
 };
 
 struct OneOverload
