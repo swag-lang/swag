@@ -17,10 +17,6 @@
 #include "Report.h"
 #include "ByteCodeDebugger.h"
 
-static const char* COLOR_TYPE    = Log::VDarkCyan;
-static const char* COLOR_NAME    = Log::VDarkYellow;
-static const char* COLOR_DEFAULT = Log::VDarkWhite;
-
 static bool isNumber(const char* pz)
 {
     while (*pz)
@@ -49,125 +45,6 @@ static bool getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN)
     }
 
     return true;
-}
-
-template<typename T>
-static T getAddrValue(const void* addr)
-{
-    SWAG_TRY
-    {
-        return *(T*) addr;
-    }
-    SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)
-    {
-        return 0;
-    }
-}
-
-bool ByteCodeDebugger::getValueFormat(const Utf8& cmd, ValueFormat& fmt)
-{
-    // Format
-    if (cmd == "@s8")
-    {
-        fmt.bitCount = 8;
-        fmt.isSigned = true;
-        fmt.isHexa   = false;
-        return true;
-    }
-
-    if (cmd == "@s16")
-    {
-        fmt.bitCount = 16;
-        fmt.isSigned = true;
-        fmt.isHexa   = false;
-        return true;
-    }
-
-    if (cmd == "@s32")
-    {
-        fmt.bitCount = 32;
-        fmt.isSigned = true;
-        fmt.isHexa   = false;
-        return true;
-    }
-
-    if (cmd == "@s64")
-    {
-        fmt.bitCount = 64;
-        fmt.isSigned = true;
-        fmt.isHexa   = false;
-        return true;
-    }
-
-    if (cmd == "@u8")
-    {
-        fmt.bitCount = 8;
-        fmt.isHexa   = false;
-        return true;
-    }
-
-    if (cmd == "@u16")
-    {
-        fmt.bitCount = 16;
-        fmt.isHexa   = false;
-        return true;
-    }
-
-    if (cmd == "@u32")
-    {
-        fmt.bitCount = 32;
-        fmt.isHexa   = false;
-        return true;
-    }
-
-    if (cmd == "@u64")
-    {
-        fmt.bitCount = 64;
-        fmt.isHexa   = false;
-        return true;
-    }
-
-    if (cmd == "@x8")
-    {
-        fmt.bitCount = 8;
-        return true;
-    }
-
-    if (cmd == "@x16")
-    {
-        fmt.bitCount = 16;
-        return true;
-    }
-
-    if (cmd == "@x32")
-    {
-        fmt.bitCount = 32;
-        return true;
-    }
-
-    if (cmd == "@x64")
-    {
-        fmt.bitCount = 64;
-        return true;
-    }
-
-    if (cmd == "@f32")
-    {
-        fmt.bitCount = 32;
-        fmt.isFloat  = true;
-        fmt.isHexa   = false;
-        return true;
-    }
-
-    if (cmd == "@f64")
-    {
-        fmt.bitCount = 64;
-        fmt.isFloat  = true;
-        fmt.isHexa   = false;
-        return true;
-    }
-
-    return false;
 }
 
 void ByteCodeDebugger::printMemory(ByteCodeRunContext* context, const Utf8& arg)
@@ -337,52 +214,6 @@ static void printWhere(ByteCodeRunContext* context)
     g_Log.eol();
 }
 
-static void computeDebugContext(ByteCodeRunContext* context)
-{
-    context->debugCxtBc    = context->bc;
-    context->debugCxtIp    = context->ip;
-    context->debugCxtRc    = context->curRC;
-    context->debugCxtBp    = context->bp;
-    context->debugCxtSp    = context->sp;
-    context->debugCxtSpAlt = context->spAlt;
-    context->debugCxtStack = context->stack;
-    if (context->debugStackFrameOffset == 0)
-        return;
-
-    VectorNative<ByteCodeStackStep> steps;
-    g_ByteCodeStackTrace->getSteps(steps);
-    if (steps.empty())
-        return;
-
-    uint32_t maxLevel              = g_ByteCodeStackTrace->maxLevel(context);
-    context->debugStackFrameOffset = min(context->debugStackFrameOffset, maxLevel);
-    uint32_t ns                    = 0;
-
-    for (int i = (int) maxLevel; i >= 0; i--)
-    {
-        if (i >= steps.size())
-            continue;
-
-        auto& step = steps[i];
-        if (ns == context->debugStackFrameOffset)
-        {
-            context->debugCxtBc    = step.bc;
-            context->debugCxtIp    = step.ip;
-            context->debugCxtBp    = step.bp;
-            context->debugCxtSp    = step.sp;
-            context->debugCxtSpAlt = step.spAlt;
-            context->debugCxtStack = step.stack;
-            break;
-        }
-
-        ns++;
-        if (!step.ip)
-            continue;
-        if (context->debugCxtRc)
-            context->debugCxtRc--;
-    }
-}
-
 static void printSourceLines(SourceFile* file, SourceLocation* curLocation, int startLine, int endLine)
 {
     vector<Utf8> lines;
@@ -439,419 +270,7 @@ static void printInstructions(ByteCodeRunContext* context, ByteCode* bc, ByteCod
     }
 }
 
-void ByteCodeDebugger::appendLiteralValueProtected(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr)
-{
-    switch (fmt.bitCount)
-    {
-    case 8:
-    default:
-        if (fmt.isSigned)
-            result = Fmt("%4d ", getAddrValue<int8_t>(addr));
-        else if (!fmt.isHexa)
-            result = Fmt("%3u ", getAddrValue<uint8_t>(addr));
-        else if (fmt.print0x)
-            result = Fmt("0x%02llx ", getAddrValue<uint8_t>(addr));
-        else
-            result = Fmt("%02llx ", getAddrValue<uint8_t>(addr));
-        break;
-
-    case 16:
-        if (fmt.isSigned)
-            result = Fmt("%6d ", getAddrValue<int16_t>(addr));
-        else if (!fmt.isHexa)
-            result = Fmt("%5u ", getAddrValue<uint16_t>(addr));
-        else if (fmt.print0x)
-            result = Fmt("0x%04llx ", getAddrValue<uint16_t>(addr));
-        else
-            result = Fmt("%04llx ", getAddrValue<uint16_t>(addr));
-        break;
-
-    case 32:
-        if (fmt.isFloat)
-            result = Fmt("%16.5g ", getAddrValue<float>(addr));
-        else if (fmt.isSigned)
-            result = Fmt("%11d ", getAddrValue<int32_t>(addr));
-        else if (!fmt.isHexa)
-            result = Fmt("%10u ", getAddrValue<uint32_t>(addr));
-        else if (fmt.print0x)
-            result = Fmt("0x%08llx ", getAddrValue<uint32_t>(addr));
-        else
-            result = Fmt("%08llx ", getAddrValue<uint32_t>(addr));
-        break;
-
-    case 64:
-        if (fmt.isFloat)
-            result = Fmt("%16.5g ", getAddrValue<double>(addr));
-        else if (fmt.isSigned)
-            result = Fmt("%21lld ", getAddrValue<int64_t>(addr));
-        else if (!fmt.isHexa)
-            result = Fmt("%20llu ", getAddrValue<uint64_t>(addr));
-        else if (fmt.print0x)
-            result = Fmt("0x%016llx ", getAddrValue<uint64_t>(addr));
-        else
-            result = Fmt("%016llx ", getAddrValue<uint64_t>(addr));
-        break;
-    }
-}
-
-void ByteCodeDebugger::appendLiteralValue(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr)
-{
-    SWAG_TRY
-    {
-        appendLiteralValueProtected(context, result, fmt, addr);
-    }
-    SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)
-    {
-        result = "<error>";
-    }
-}
-
-void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent, ValueFormat* fmt)
-{
-    auto typeInfo = TypeManager::concreteType(res.type, CONCRETE_ALIAS);
-    auto addr     = res.addr;
-
-    if (!addr && res.value)
-        addr = &res.value->reg;
-
-    if (typeInfo->isEnum())
-    {
-        Register reg;
-        auto     ptr = ((uint8_t**) addr)[0];
-        reg.pointer  = ptr;
-        str += Ast::enumToString(typeInfo, res.value ? res.value->text : Utf8{}, reg, false);
-        return;
-    }
-
-    if (typeInfo->isPointerToTypeInfo())
-    {
-        auto ptr = ((ConcreteTypeInfo**) addr)[0];
-        if (!ptr)
-            str += "null";
-        else
-        {
-            Utf8 str1;
-            str1.setView((const char*) ptr->name.buffer, (int) ptr->name.count);
-            str += str1;
-        }
-
-        return;
-    }
-
-    if (typeInfo->isPointer() || typeInfo->isLambdaClosure())
-    {
-        auto ptr = ((uint8_t**) addr)[0];
-        if (ptr == nullptr)
-            str += "null";
-        else
-            str += Fmt("0x%016llx", ptr);
-        return;
-    }
-
-    if (typeInfo->isStruct())
-    {
-        if (res.value)
-            addr = res.value->reg.pointer;
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-        str += "\n";
-        for (auto p : typeStruct->fields)
-        {
-            for (int i = 0; i < indent + 1; i++)
-                str += "   ";
-            str += Fmt("(%s%s%s) %s%s%s = ", COLOR_TYPE, p->typeInfo->getDisplayNameC(), COLOR_DEFAULT, COLOR_NAME, p->namedParam.c_str(), COLOR_DEFAULT);
-            EvaluateResult res1;
-            res1.type = p->typeInfo;
-            res1.addr = ((uint8_t*) addr) + p->offset;
-            appendTypedValue(context, str, res1, indent + 1, fmt);
-            if (str.back() != '\n')
-                str += "\n";
-        }
-
-        return;
-    }
-
-    if (typeInfo->isArray())
-    {
-        auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        str += Fmt("0x%016llx\n", addr);
-        for (uint32_t idx = 0; idx < typeArray->count; idx++)
-        {
-            for (int i = 0; i < indent; i++)
-                str += "   ";
-            str += Fmt(" [%d] ", idx);
-            EvaluateResult res1;
-            res1.type = typeArray->pointedType;
-            res1.addr = ((uint8_t*) addr) + (idx * typeArray->pointedType->sizeOf);
-            appendTypedValue(context, str, res1, indent + 1);
-            if (str.back() != '\n')
-                str += "\n";
-        }
-
-        return;
-    }
-
-    if (typeInfo->isSlice())
-    {
-        auto typeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
-        auto ptr       = ((uint8_t**) addr)[0];
-        auto count     = ((uint64_t*) addr)[1];
-        if (ptr == nullptr)
-            str += "null";
-        else
-        {
-            str += Fmt("(0x%016llx ", ptr);
-            str += Fmt("%llu)\n", count);
-            for (uint64_t idx = 0; idx < count; idx++)
-            {
-                for (int i = 0; i < indent; i++)
-                    str += "   ";
-                str += Fmt(" [%d] ", idx);
-                EvaluateResult res1;
-                res1.type = typeSlice->pointedType;
-                res1.addr = ptr + (idx * typeSlice->pointedType->sizeOf);
-                appendTypedValue(context, str, res1, indent + 1);
-                if (str.back() != '\n')
-                    str += "\n";
-            }
-        }
-
-        return;
-    }
-
-    if (typeInfo->isInterface())
-    {
-        auto ptr = ((uint8_t**) addr)[0];
-        if (ptr == nullptr)
-            str += "null";
-        else
-        {
-            str += Fmt("(0x%016llx ", ptr);
-            str += Fmt("0x%016llx)", ((void**) addr)[1]);
-        }
-        return;
-    }
-
-    if (typeInfo->isNative())
-    {
-        switch (typeInfo->nativeType)
-        {
-        case NativeTypeKind::String:
-        {
-            void*    ptr;
-            uint64_t len;
-
-            if (res.value)
-            {
-                ptr = res.value->text.buffer;
-                len = res.value->text.length();
-            }
-            else
-            {
-                ptr = ((void**) addr)[0];
-                len = ((uint64_t*) addr)[1];
-            }
-
-            if (!ptr)
-                str += "null";
-            else
-            {
-                Utf8 str1;
-                str1.resize((int) len);
-                memcpy(str1.buffer, ptr, len);
-                str += "\"";
-                str += str1;
-                str += "\"";
-            }
-
-            return;
-        }
-
-        case NativeTypeKind::Bool:
-            str += Fmt("%s", *(bool*) addr ? "true" : "false");
-            return;
-
-        case NativeTypeKind::S8:
-            str += Fmt("%d", *(int8_t*) addr);
-            return;
-        case NativeTypeKind::S16:
-            str += Fmt("%d", *(int16_t*) addr);
-            return;
-        case NativeTypeKind::S32:
-            str += Fmt("%d", *(int32_t*) addr);
-            return;
-        case NativeTypeKind::Int:
-        case NativeTypeKind::S64:
-            str += Fmt("%lld", *(int64_t*) addr);
-            return;
-
-        case NativeTypeKind::U8:
-            str += Fmt("%u (0x%x)", *(uint8_t*) addr, *(uint8_t*) addr);
-            return;
-        case NativeTypeKind::U16:
-            str += Fmt("%u (0x%x)", *(uint16_t*) addr, *(uint16_t*) addr);
-            return;
-        case NativeTypeKind::U32:
-        case NativeTypeKind::Rune:
-            str += Fmt("%u (0x%x)", *(uint32_t*) addr, *(uint32_t*) addr);
-            return;
-        case NativeTypeKind::UInt:
-        case NativeTypeKind::U64:
-            str += Fmt("%llu (0x%x)", *(uint64_t*) addr, *(uint64_t*) addr);
-            return;
-
-        case NativeTypeKind::F32:
-            str += Fmt("%f", *(float*) addr);
-            return;
-        case NativeTypeKind::F64:
-            str += Fmt("%lf", *(double*) addr);
-            return;
-        }
-    }
-
-    str += "?";
-}
-
-void ByteCodeDebugger::appendTypedValue(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent, ValueFormat* fmt)
-{
-    SWAG_TRY
-    {
-        appendTypedValueProtected(context, str, res, indent, fmt);
-    }
-    SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)
-    {
-        str += "<error>";
-    }
-}
-
-static void printBreakpoints(ByteCodeRunContext* context)
-{
-    if (context->debugBreakpoints.empty())
-    {
-        g_Log.printColor("no breakpoint\n", LogColor::Red);
-        return;
-    }
-
-    g_Log.setColor(LogColor::Gray);
-    for (int i = 0; i < context->debugBreakpoints.size(); i++)
-    {
-        const auto& bkp = context->debugBreakpoints[i];
-        g_Log.print(Fmt("#%d: ", i + 1));
-        switch (bkp.type)
-        {
-        case ByteCodeRunContext::DebugBkpType::FuncName:
-            g_Log.print(Fmt("entering function '%s'", bkp.name.c_str()));
-            break;
-        case ByteCodeRunContext::DebugBkpType::FileLine:
-            g_Log.print(Fmt("file %s, line '%d'", bkp.name.c_str(), bkp.line));
-            break;
-        case ByteCodeRunContext::DebugBkpType::InstructionIndex:
-            g_Log.print(Fmt("instruction '%d'", bkp.line));
-            break;
-        }
-
-        if (bkp.disabled)
-            g_Log.print(" (DISABLED)");
-        if (bkp.autoRemove)
-            g_Log.print(" (ONE SHOT)");
-        g_Log.eol();
-    }
-}
-
-static void checkBreakpoints(ByteCodeRunContext* context)
-{
-    for (auto it = context->debugBreakpoints.begin(); it != context->debugBreakpoints.end(); it++)
-    {
-        auto& bkp = *it;
-        if (bkp.disabled)
-            continue;
-
-        if (bkp.type == ByteCodeRunContext::DebugBkpType::FuncName)
-        {
-            if ((context->ip == context->bc->out) && (context->bc->name == bkp.name))
-            {
-                if (!bkp.autoDisabled)
-                {
-                    g_Log.printColor(Fmt("#### breakpoint hit entering function '%s' ####\n", context->bc->name.c_str()), LogColor::Magenta);
-                    context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
-                    context->debugOn       = true;
-                    bkp.autoDisabled       = true;
-                    if (bkp.autoRemove)
-                        context->debugBreakpoints.erase(it);
-                    else
-                        bkp.autoDisabled = true;
-                    break;
-                }
-            }
-            else
-            {
-                bkp.autoDisabled = false;
-            }
-        }
-        else if (bkp.type == ByteCodeRunContext::DebugBkpType::FileLine)
-        {
-            SourceFile*     file;
-            SourceLocation* location;
-            ByteCode::getLocation(context->bc, context->ip, &file, &location);
-            if (file && location && file->name == bkp.name && location->line == bkp.line)
-            {
-                if (!bkp.autoDisabled)
-                {
-                    g_Log.printColor(Fmt("#### breakpoint hit at line '%d' ####\n", bkp.line), LogColor::Magenta);
-                    context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
-                    context->debugOn       = true;
-                    if (bkp.autoRemove)
-                        context->debugBreakpoints.erase(it);
-                    else
-                        bkp.autoDisabled = true;
-                    break;
-                }
-            }
-            else
-            {
-                bkp.autoDisabled = false;
-            }
-        }
-        else if (bkp.type == ByteCodeRunContext::DebugBkpType::InstructionIndex)
-        {
-            uint32_t offset = (uint32_t) (context->ip - context->bc->out);
-            if (offset == bkp.line)
-            {
-                if (!bkp.autoDisabled)
-                {
-                    g_Log.printColor(Fmt("#### breakpoint hit at instruction '%d' ####\n", bkp.line), LogColor::Magenta);
-                    context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
-                    context->debugOn       = true;
-                    if (bkp.autoRemove)
-                        context->debugBreakpoints.erase(it);
-                    else
-                        bkp.autoDisabled = true;
-                    break;
-                }
-            }
-            else
-            {
-                bkp.autoDisabled = false;
-            }
-        }
-    }
-}
-
-static bool addBreakpoint(ByteCodeRunContext* context, const ByteCodeRunContext::DebugBreakpoint& bkp)
-{
-    for (const auto& b : context->debugBreakpoints)
-    {
-        if (b.type == bkp.type && b.name == bkp.name && b.line == bkp.line && b.autoRemove == bkp.autoRemove)
-        {
-            g_Log.printColor("breakpoint already exists\n", LogColor::Red);
-            return false;
-        }
-    }
-
-    context->debugBreakpoints.push_back(bkp);
-    return true;
-}
-
-static void printContextInstruction(ByteCodeRunContext* context, bool force = false)
+void ByteCodeDebugger::printContextInstruction(ByteCodeRunContext* context, bool force)
 {
     SWAG_ASSERT(context->debugCxtBc);
     SWAG_ASSERT(context->debugCxtIp);
@@ -928,7 +347,53 @@ static void printContextInstruction(ByteCodeRunContext* context, bool force = fa
     context->debugStepLastFunc     = newFunc;
 }
 
-static Utf8 completion(ByteCodeRunContext* context, const Utf8& line, Utf8& toComplete)
+void ByteCodeDebugger::computeDebugContext(ByteCodeRunContext* context)
+{
+    context->debugCxtBc    = context->bc;
+    context->debugCxtIp    = context->ip;
+    context->debugCxtRc    = context->curRC;
+    context->debugCxtBp    = context->bp;
+    context->debugCxtSp    = context->sp;
+    context->debugCxtSpAlt = context->spAlt;
+    context->debugCxtStack = context->stack;
+    if (context->debugStackFrameOffset == 0)
+        return;
+
+    VectorNative<ByteCodeStackStep> steps;
+    g_ByteCodeStackTrace->getSteps(steps);
+    if (steps.empty())
+        return;
+
+    uint32_t maxLevel              = g_ByteCodeStackTrace->maxLevel(context);
+    context->debugStackFrameOffset = min(context->debugStackFrameOffset, maxLevel);
+    uint32_t ns                    = 0;
+
+    for (int i = (int) maxLevel; i >= 0; i--)
+    {
+        if (i >= steps.size())
+            continue;
+
+        auto& step = steps[i];
+        if (ns == context->debugStackFrameOffset)
+        {
+            context->debugCxtBc    = step.bc;
+            context->debugCxtIp    = step.ip;
+            context->debugCxtBp    = step.bp;
+            context->debugCxtSp    = step.sp;
+            context->debugCxtSpAlt = step.spAlt;
+            context->debugCxtStack = step.stack;
+            break;
+        }
+
+        ns++;
+        if (!step.ip)
+            continue;
+        if (context->debugCxtRc)
+            context->debugCxtRc--;
+    }
+}
+
+Utf8 ByteCodeDebugger::completion(ByteCodeRunContext* context, const Utf8& line, Utf8& toComplete)
 {
     vector<Utf8> tokens;
     Utf8::tokenize(line, ' ', tokens);
@@ -968,7 +433,7 @@ static Utf8 completion(ByteCodeRunContext* context, const Utf8& line, Utf8& toCo
     return "";
 }
 
-static Utf8 getCommandLine(ByteCodeRunContext* context, bool& ctrl, bool& shift)
+Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, bool& shift)
 {
     static vector<Utf8> debugCmdHistory;
     static uint32_t     debugCmdHistoryIndex = 0;

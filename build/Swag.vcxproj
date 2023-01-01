@@ -293,7 +293,9 @@
     <ClCompile Include="../src/BackendX64SaveObjJob.cpp" />
     <ClCompile Include="..\src\BackendX64_Main.cpp" />
     <ClCompile Include="../src/ByteCode.cpp" />
+    <ClCompile Include="..\src\ByteCodeDebugger_Bkp.cpp" />
     <ClCompile Include="..\src\ByteCodeDebugger_Help.cpp" />
+    <ClCompile Include="..\src\ByteCodeDebugger_Value.cpp" />
     <ClCompile Include="..\src\ByteCodeDebugge_Eval.cpp" />
     <ClCompile Include="..\src\ByteCodeGenJob_AffectOp.cpp" />
     <ClCompile Include="..\src\ByteCodeGenJob_BinaryOp.cpp" />

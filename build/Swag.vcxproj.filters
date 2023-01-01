@@ -506,6 +506,12 @@
     <ClCompile Include="..\src\ByteCodeDebugge_Eval.cpp">
       <Filter>Backend\ByteCode\Debugger</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\ByteCodeDebugger_Bkp.cpp">
+      <Filter>Backend\ByteCode\Debugger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ByteCodeDebugger_Value.cpp">
+      <Filter>Backend\ByteCode\Debugger</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">
