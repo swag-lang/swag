@@ -45,8 +45,13 @@ struct ByteCodeDebugger
         break;                                       \
     if (__result == BcDbgCommandResult::Return)      \
         return false;                                \
+    if (__result == BcDbgCommandResult::Continue)    \
+        continue;                                    \
     if (__result == BcDbgCommandResult::EvalDefault) \
-        goto evalDefault;
+    {                                                \
+        evalDefault(context, line);                  \
+        continue;                                    \
+    }
 
     template<typename T>
     static T getAddrValue(const void* addr)
@@ -63,6 +68,7 @@ struct ByteCodeDebugger
 
     static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, EvaluateResult& res, CompilerAstKind kind, bool silent = false);
     static bool evalExpression(ByteCodeRunContext* context, const Utf8& expr, EvaluateResult& res, bool silent = false);
+    static void evalDefault(ByteCodeRunContext* context, const Utf8& cmd);
 
     static bool getValueFormat(const Utf8& cmd, ValueFormat& fmt);
 

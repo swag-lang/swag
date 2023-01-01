@@ -189,3 +189,31 @@ BcDbgCommandResult ByteCodeDebugger::cmdExecute(ByteCodeRunContext* context, con
     evalDynExpression(context, cmdExpr, res, CompilerAstKind::EmbeddedInstruction);
     return BcDbgCommandResult::Continue;
 }
+
+void ByteCodeDebugger::evalDefault(ByteCodeRunContext* context, const Utf8& cmd)
+{
+    auto line = cmd;
+
+    line.trim();
+    if (line[0] == '$')
+        line.remove(0, 1);
+    if (line.empty())
+        return;
+
+    EvaluateResult res;
+    if (evalExpression(context, line, res, true))
+    {
+        if (!res.type->isVoid())
+        {
+            Utf8 str = Fmt("(%s%s%s) ", COLOR_TYPE, res.type->getDisplayNameC(), COLOR_DEFAULT);
+            appendTypedValue(context, str, res, 0);
+            g_Log.printColor(str);
+            if (str.back() != '\n')
+                g_Log.eol();
+        }
+    }
+    else
+    {
+        evalDynExpression(context, line, res, CompilerAstKind::EmbeddedInstruction);
+    }
+}

@@ -682,30 +682,9 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
                 continue;
             }
 
-        evalDefault:
             // Default to 'print' / 'execute'
             /////////////////////////////////////////
-            line.trim();
-            if (line[0] == '$')
-                line.remove(0, 1);
-            if (line.empty())
-                continue;
-            EvaluateResult res;
-            if (evalExpression(context, line, res, true))
-            {
-                if (!res.type->isVoid())
-                {
-                    Utf8 str = Fmt("(%s%s%s) ", COLOR_TYPE, res.type->getDisplayNameC(), COLOR_DEFAULT);
-                    appendTypedValue(context, str, res, 0);
-                    g_Log.printColor(str);
-                    if (str.back() != '\n')
-                        g_Log.eol();
-                }
-
-                continue;
-            }
-
-            evalDynExpression(context, line, res, CompilerAstKind::EmbeddedInstruction);
+            evalDefault(context, line);
         }
     }
 
