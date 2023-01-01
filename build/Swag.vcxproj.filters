@@ -503,7 +503,7 @@
     <ClCompile Include="..\src\ByteCodeDebugger_Help.cpp">
       <Filter>Backend\ByteCode\Debugger</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ByteCodeDebugge_Eval.cpp">
+    <ClCompile Include="..\src\ByteCodeDebugger_Eval.cpp">
       <Filter>Backend\ByteCode\Debugger</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeDebugger_Bkp.cpp">
@@ -513,6 +513,9 @@
       <Filter>Backend\ByteCode\Debugger</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeDebugger_Print.cpp">
+      <Filter>Backend\ByteCode\Debugger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ByteCodeDebugger_Info.cpp">
       <Filter>Backend\ByteCode\Debugger</Filter>
     </ClCompile>
   </ItemGroup>

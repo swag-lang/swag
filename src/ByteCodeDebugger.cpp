@@ -530,11 +530,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             /////////////////////////////////////////
             if (cmd == "e" || cmd == "exec" || cmd == "execute")
             {
-                if (cmds.size() < 2)
-                    goto evalDefault;
-
-                EvaluateResult res;
-                evalDynExpression(context, cmdExpr, res, CompilerAstKind::EmbeddedInstruction);
+                CHECK_CMD_RESULT(cmdExecute(context, cmds, cmdExpr));
                 continue;
             }
 
@@ -542,45 +538,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             /////////////////////////////////////////
             if (cmd == "info" && cmds.size() >= 2 && cmds[1] == "func")
             {
-                if (cmds.size() > 3)
-                    goto evalDefault;
-                auto           filter = cmds.size() == 3 ? cmds[2] : Utf8("");
-                vector<string> all;
-                g_Log.setColor(LogColor::Gray);
-                for (auto m : g_Workspace->modules)
-                {
-                    for (auto bc : m->byteCodeFunc)
-                    {
-                        if (filter.empty() || bc->name.find(filter) != -1)
-                        {
-                            string          str = Fmt("%s%s%s ", COLOR_NAME, bc->getCallName().c_str(), COLOR_DEFAULT).c_str();
-                            SourceFile*     bcFile;
-                            SourceLocation* bcLocation;
-                            ByteCode::getLocation(bc, bc->out, &bcFile, &bcLocation);
-                            str += Fmt(" (%s%s%s) ", COLOR_TYPE, bc->getCallType()->getDisplayNameC(), COLOR_DEFAULT);
-                            if (bcFile)
-                                str += Fmt("%s", bcFile->name.c_str());
-                            if (bcLocation)
-                                str += Fmt(":%d", bcLocation->line);
-                            all.push_back(str);
-                        }
-                    }
-                }
-
-                sort(all.begin(), all.end(), [](const string& a, const string& b)
-                     { return a < b; });
-                for (auto& o : all)
-                {
-                    if (OS::longOpStopKeyPressed())
-                    {
-                        g_Log.printColor("...stopped\n", LogColor::Red);
-                        break;
-                    }
-
-                    g_Log.print(o);
-                    g_Log.eol();
-                }
-
+                CHECK_CMD_RESULT(cmdInfoFuncs(context, cmds, cmdExpr));
                 continue;
             }
 
@@ -588,12 +546,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             /////////////////////////////////////////
             if (cmd == "info" && cmds.size() == 2 && cmds[1] == "modules")
             {
-                g_Log.setColor(LogColor::Gray);
-                for (auto m : g_Workspace->modules)
-                {
-                    g_Log.print(Fmt("%s\n", m->name.c_str()));
-                }
-
+                CHECK_CMD_RESULT(cmdInfoModules(context, cmds, cmdExpr));
                 continue;
             }
 
@@ -601,29 +554,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             /////////////////////////////////////////
             if (cmd == "info" && cmds.size() == 2 && cmds[1] == "locals")
             {
-                if (context->debugCxtBc->localVars.empty())
-                    g_Log.printColor("no locals\n");
-                else
-                {
-                    for (auto l : context->debugCxtBc->localVars)
-                    {
-                        auto over = l->resolvedSymbolOverload;
-                        if (!over)
-                            continue;
-                        // Generated
-                        if (over->symbol->name.length() > 2 && over->symbol->name[0] == '_' && over->symbol->name[1] == '_')
-                            continue;
-                        Utf8           str = Fmt("(%s%s%s) %s%s%s = ", COLOR_TYPE, over->typeInfo->getDisplayNameC(), COLOR_DEFAULT, COLOR_NAME, over->symbol->name.c_str(), COLOR_DEFAULT);
-                        EvaluateResult res;
-                        res.type = over->typeInfo;
-                        res.addr = context->debugCxtBp + over->computedValue.storageOffset;
-                        appendTypedValue(context, str, res, 0);
-                        g_Log.printColor(str);
-                        if (str.back() != '\n')
-                            g_Log.eol();
-                    }
-                }
-
+                CHECK_CMD_RESULT(cmdInfoLocals(context, cmds, cmdExpr));
                 continue;
             }
 
@@ -631,32 +562,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             /////////////////////////////////////////
             if (cmd == "info" && cmds.size() >= 2 && cmds[1] == "regs")
             {
-                if (cmds.size() > 3)
-                    goto evalDefault;
-
-                ValueFormat fmt;
-                fmt.isHexa   = true;
-                fmt.bitCount = 64;
-                if (cmds.size() > 2)
-                {
-                    if (!getValueFormat(cmds[2], fmt))
-                        goto evalDefault;
-                }
-
-                g_Log.setColor(LogColor::Gray);
-                for (int i = 0; i < context->getRegCount(context->debugCxtRc); i++)
-                {
-                    auto& regP = context->getRegBuffer(context->debugCxtRc)[i];
-                    Utf8  str;
-                    appendLiteralValue(context, str, fmt, &regP);
-                    str.trim();
-                    g_Log.print(Fmt("%s$r%d%s = ", COLOR_NAME, i, COLOR_DEFAULT));
-                    g_Log.print(str);
-                    g_Log.eol();
-                }
-
-                g_Log.print(Fmt("%s$sp%s = 0x%016llx\n", COLOR_NAME, COLOR_DEFAULT, context->sp));
-                g_Log.print(Fmt("%s$bp%s = 0x%016llx\n", COLOR_NAME, COLOR_DEFAULT, context->bp));
+                CHECK_CMD_RESULT(cmdInfoRegs(context, cmds, cmdExpr));
                 continue;
             }
 
@@ -664,27 +570,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             /////////////////////////////////////////
             if (cmd == "info" && cmds.size() == 2 && cmds[1] == "args")
             {
-                auto funcDecl = CastAst<AstFuncDecl>(context->debugCxtBc->node, AstNodeKind::FuncDecl);
-                if (!funcDecl->parameters || funcDecl->parameters->childs.empty())
-                    g_Log.printColor("no arguments\n");
-                else
-                {
-                    for (auto l : funcDecl->parameters->childs)
-                    {
-                        auto over = l->resolvedSymbolOverload;
-                        if (!over)
-                            continue;
-                        Utf8           str = Fmt("(%s%s%s) %s%s%s = ", COLOR_TYPE, over->typeInfo->getDisplayNameC(), COLOR_DEFAULT, COLOR_NAME, over->symbol->name.c_str(), COLOR_DEFAULT);
-                        EvaluateResult res;
-                        res.type = over->typeInfo;
-                        res.addr = context->debugCxtBp + over->computedValue.storageOffset;
-                        appendTypedValue(context, str, res, 0);
-                        g_Log.printColor(str);
-                        if (str.back() != '\n')
-                            g_Log.eol();
-                    }
-                }
-
+                CHECK_CMD_RESULT(cmdInfoArgs(context, cmds, cmdExpr));
                 continue;
             }
 

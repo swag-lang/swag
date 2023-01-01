@@ -31,6 +31,20 @@ struct ByteCodeDebugger
         bool print0x  = true;
     };
 
+    enum class CommandResult
+    {
+        Break,
+        Continue,
+        EvalDefault,
+    };
+
+#define CHECK_CMD_RESULT(__cmd)                 \
+    auto __result = __cmd;                      \
+    if (__result == CommandResult::Break)       \
+        break;                                  \
+    if (__result == CommandResult::EvalDefault) \
+        goto evalDefault;
+
     template<typename T>
     static T getAddrValue(const void* addr)
     {
@@ -63,6 +77,13 @@ struct ByteCodeDebugger
     static void printSourceLines(SourceFile* file, SourceLocation* curLocation, int startLine, int endLine);
     static void printSourceLines(SourceFile* file, SourceLocation* curLocation, uint32_t offset = 3);
     static void printInstructions(ByteCodeRunContext* context, ByteCode* bc, ByteCodeInstruction* ip, int num = 1);
+
+    static CommandResult cmdExecute(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
+    static CommandResult cmdInfoFuncs(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
+    static CommandResult cmdInfoModules(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
+    static CommandResult cmdInfoLocals(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
+    static CommandResult cmdInfoRegs(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
+    static CommandResult cmdInfoArgs(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
 
     static bool getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN);
     static void printContextInstruction(ByteCodeRunContext* context, bool force = false);
