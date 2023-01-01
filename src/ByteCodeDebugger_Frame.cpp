@@ -40,7 +40,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrame(ByteCodeRunContext* context, const
         return BcDbgCommandResult::Continue;
     }
 
-    printContextInstruction(context);
+    printDebugContext(context);
     return BcDbgCommandResult::Continue;
 }
 
@@ -72,7 +72,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrameUp(ByteCodeRunContext* context, con
         return BcDbgCommandResult::Continue;
     }
 
-    printContextInstruction(context);
+    printDebugContext(context);
     return BcDbgCommandResult::Continue;
 }
 
@@ -103,6 +103,6 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrameDown(ByteCodeRunContext* context, c
         return BcDbgCommandResult::Continue;
     }
 
-    printContextInstruction(context);
+    printDebugContext(context);
     return BcDbgCommandResult::Continue;
 }

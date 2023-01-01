@@ -136,7 +136,7 @@ void ByteCodeDebugger::printInstructions(ByteCodeRunContext* context, ByteCode* 
     }
 }
 
-void ByteCodeDebugger::printContextInstruction(ByteCodeRunContext* context, bool force)
+void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force)
 {
     SWAG_ASSERT(context->debugCxtBc);
     SWAG_ASSERT(context->debugCxtIp);

@@ -92,7 +92,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const 
         }
     }
 
-    printContextInstruction(context);
+    printDebugContext(context);
     return BcDbgCommandResult::Continue;
 }
 
@@ -127,7 +127,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBcMode(ByteCodeRunContext* context, cons
         g_Log.printColor("=> bytecode mode\n", LogColor::Gray);
     else
         g_Log.printColor("=> source code mode\n", LogColor::Gray);
-    printContextInstruction(context, true);
+    printDebugContext(context, true);
     return BcDbgCommandResult::Continue;
 }
 

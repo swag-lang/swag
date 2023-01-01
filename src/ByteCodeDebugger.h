@@ -115,10 +115,12 @@ struct ByteCodeDebugger
     static BcDbgCommandResult cmdBreakpoint(ByteCodeRunContext* context, const Utf8& cmd, const vector<Utf8>& cmds, const Utf8& cmdExpr);
 
     static bool getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN);
-    static void printContextInstruction(ByteCodeRunContext* context, bool force = false);
+    static void printDebugContext(ByteCodeRunContext* context, bool force = false);
     static void computeDebugContext(ByteCodeRunContext* context);
     static Utf8 completion(ByteCodeRunContext* context, const Utf8& line, Utf8& toComplete);
     static Utf8 getCommandLine(ByteCodeRunContext* context, bool& ctrl, bool& shift);
+    static bool processCommandLine(ByteCodeRunContext* context, vector<Utf8>& cmds, Utf8& line, Utf8& cmdExpr);
+    static bool mustBreak(ByteCodeRunContext* context);
     static bool step(ByteCodeRunContext* context);
 
     static void printHelp();
