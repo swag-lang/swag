@@ -462,7 +462,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             /////////////////////////////////////////
             if (cmd == "?")
             {
-                printHelp();
+                CHECK_CMD_RESULT(cmdHelp(context, cmds, cmdExpr));
                 continue;
             }
 
@@ -566,27 +566,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             /////////////////////////////////////////
             if (cmd == "q" || cmd == "quit")
             {
-                if (cmds.size() != 1)
-                    goto evalDefault;
-                g_Log.setDefaultColor();
-                return false;
-            }
-
-            // Print current instruction
-            /////////////////////////////////////////
-            if (cmd == "i")
-            {
-                int regN = 4;
-
-                if (cmds.size() > 2)
-                    goto evalDefault;
-                if (cmds.size() != 1 && !Utf8::isNumber(cmds[1]))
-                    goto evalDefault;
-
-                if (cmds.size() == 2)
-                    regN = atoi(cmds[1].c_str());
-
-                printInstructions(context, context->debugCxtBc, context->debugCxtIp, regN);
+                CHECK_CMD_RESULT(cmdQuit(context, cmds, cmdExpr));
                 continue;
             }
 
@@ -594,9 +574,15 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             /////////////////////////////////////////
             if (cmd == "w" || cmd == "where")
             {
-                if (cmds.size() != 1)
-                    goto evalDefault;
-                printWhere(context);
+                CHECK_CMD_RESULT(cmdWhere(context, cmds, cmdExpr));
+                continue;
+            }
+
+            // Print current instruction
+            /////////////////////////////////////////
+            if (cmd == "i")
+            {
+                CHECK_CMD_RESULT(cmdInstruction(context, cmds, cmdExpr));
                 continue;
             }
 
@@ -604,10 +590,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             /////////////////////////////////////////
             if (cmd == "ii")
             {
-                if (cmds.size() != 1)
-                    goto evalDefault;
-
-                context->debugCxtBc->print(context->debugCxtIp);
+                CHECK_CMD_RESULT(cmdInstructionDump(context, cmds, cmdExpr));
                 continue;
             }
 
@@ -615,74 +598,23 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             /////////////////////////////////////////
             if (cmd == "bcmode")
             {
-                if (cmds.size() != 1)
-                    goto evalDefault;
-
-                context->debugBcMode = !context->debugBcMode;
-                if (context->debugBcMode)
-                    g_Log.printColor("=> bytecode mode\n", LogColor::Gray);
-                else
-                    g_Log.printColor("=> source code mode\n", LogColor::Gray);
-                printContextInstruction(context, true);
+                CHECK_CMD_RESULT(cmdBcMode(context, cmds, cmdExpr));
                 continue;
             }
 
-            // Function code
+            // Function line code
             /////////////////////////////////////////
-            if (cmd == "l" || cmd == "list" || cmd == "ll")
+            if (cmd == "l" || cmd == "list")
             {
-                if (cmd == "l" || cmd == "list")
-                {
-                    if (cmds.size() > 2)
-                        goto evalDefault;
-                    if (cmds.size() > 1 && !Utf8::isNumber(cmds[1]))
-                        goto evalDefault;
-                }
+                CHECK_CMD_RESULT(cmdList(context, cmds, cmdExpr));
+                continue;
+            }
 
-                auto toLogBc = context->debugCxtBc;
-                auto toLogIp = context->debugCxtIp;
-
-                if (cmd == "ll" && cmds.size() > 1)
-                {
-                    if (cmds.size() > 2)
-                        goto evalDefault;
-                    auto name = cmds[1];
-                    auto bc   = g_Workspace->findBc(name);
-                    if (bc)
-                    {
-                        toLogBc = bc;
-                        toLogIp = bc->out;
-                    }
-                    else
-                    {
-                        g_Log.printColor(Fmt("cannot find function '%s'\n", name.c_str()), LogColor::Red);
-                        continue;
-                    }
-                }
-
-                if (toLogBc->node && toLogBc->node->kind == AstNodeKind::FuncDecl && toLogBc->node->sourceFile)
-                {
-                    SourceFile*     curFile;
-                    SourceLocation* curLocation;
-                    ByteCode::getLocation(toLogBc, toLogIp, &curFile, &curLocation);
-
-                    if (cmd == "l")
-                    {
-                        uint32_t offset = 3;
-                        if (cmds.size() == 2)
-                            offset = atoi(cmds[1]);
-                        printSourceLines(toLogBc->node->sourceFile, curLocation, offset);
-                    }
-                    else
-                    {
-                        auto     funcNode  = CastAst<AstFuncDecl>(toLogBc->node, AstNodeKind::FuncDecl);
-                        uint32_t startLine = toLogBc->node->token.startLocation.line;
-                        uint32_t endLine   = funcNode->content->token.endLocation.line;
-                        printSourceLines(toLogBc->node->sourceFile, curLocation, startLine, endLine);
-                    }
-                }
-                else
-                    g_Log.printColor("no source code\n", LogColor::Red);
+            // Function full code
+            /////////////////////////////////////////
+            if (cmd == "ll")
+            {
+                CHECK_CMD_RESULT(cmdLongList(context, cmds, cmdExpr));
                 continue;
             }
 

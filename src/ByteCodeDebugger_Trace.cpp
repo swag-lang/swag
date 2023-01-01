@@ -116,3 +116,26 @@ BcDbgCommandResult ByteCodeDebugger::cmdUntil(ByteCodeRunContext* context, const
     context->debugStepMode         = ByteCodeRunContext::DebugStepMode::ToNextBreakpoint;
     return BcDbgCommandResult::Break;
 }
+
+BcDbgCommandResult ByteCodeDebugger::cmdBcMode(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+{
+    if (cmds.size() != 1)
+        return BcDbgCommandResult::EvalDefault;
+
+    context->debugBcMode = !context->debugBcMode;
+    if (context->debugBcMode)
+        g_Log.printColor("=> bytecode mode\n", LogColor::Gray);
+    else
+        g_Log.printColor("=> source code mode\n", LogColor::Gray);
+    printContextInstruction(context, true);
+    return BcDbgCommandResult::Continue;
+}
+
+BcDbgCommandResult ByteCodeDebugger::cmdQuit(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+{
+    if (cmds.size() != 1)
+        return BcDbgCommandResult::EvalDefault;
+
+    g_Log.setDefaultColor();
+    return BcDbgCommandResult::Return;
+}

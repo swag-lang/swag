@@ -67,3 +67,9 @@ void ByteCodeDebugger::printHelp()
     g_Log.print("q(uit)                        quit the compiler\n");
     g_Log.eol();
 }
+
+BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+{
+    printHelp();
+    return BcDbgCommandResult::Continue;
+}

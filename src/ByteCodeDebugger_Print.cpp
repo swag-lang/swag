@@ -2,9 +2,14 @@
 #include "TypeInfo.h"
 #include "ByteCode.h"
 #include "ByteCodeDebugger.h"
+#include "Workspace.h"
+#include "Ast.h"
 
-void ByteCodeDebugger::printWhere(ByteCodeRunContext* context)
+BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
+    if (cmds.size() != 1)
+        return BcDbgCommandResult::EvalDefault;
+
     auto ipNode = context->debugCxtIp->node;
     auto bc     = context->debugCxtBc;
 
@@ -47,6 +52,32 @@ void ByteCodeDebugger::printWhere(ByteCodeRunContext* context)
     g_Log.printColor("stack level: ", LogColor::Gray);
     g_Log.printColor(Fmt("%u", context->debugStackFrameOffset), LogColor::DarkYellow);
     g_Log.eol();
+
+    return BcDbgCommandResult::Continue;
+}
+
+BcDbgCommandResult ByteCodeDebugger::cmdInstruction(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+{
+    if (cmds.size() > 2)
+        return BcDbgCommandResult::EvalDefault;
+    if (cmds.size() != 1 && !Utf8::isNumber(cmds[1].c_str()))
+        return BcDbgCommandResult::EvalDefault;
+
+    int regN = 4;
+    if (cmds.size() == 2)
+        regN = atoi(cmds[1].c_str());
+
+    printInstructions(context, context->debugCxtBc, context->debugCxtIp, regN);
+    return BcDbgCommandResult::Continue;
+}
+
+BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+{
+    if (cmds.size() != 1)
+        return BcDbgCommandResult::EvalDefault;
+
+    context->debugCxtBc->print(context->debugCxtIp);
+    return BcDbgCommandResult::Continue;
 }
 
 void ByteCodeDebugger::printSourceLines(SourceFile* file, SourceLocation* curLocation, int startLine, int endLine)
@@ -305,6 +336,74 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
         if (!count)
             break;
     }
+
+    return BcDbgCommandResult::Continue;
+}
+
+BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+{
+    if (cmds.size() > 2)
+        return BcDbgCommandResult::EvalDefault;
+    if (cmds.size() > 1 && !Utf8::isNumber(cmds[1].c_str()))
+        return BcDbgCommandResult::EvalDefault;
+
+    auto toLogBc = context->debugCxtBc;
+    auto toLogIp = context->debugCxtIp;
+
+    if (toLogBc->node && toLogBc->node->kind == AstNodeKind::FuncDecl && toLogBc->node->sourceFile)
+    {
+        SourceFile*     curFile;
+        SourceLocation* curLocation;
+        ByteCode::getLocation(toLogBc, toLogIp, &curFile, &curLocation);
+
+        uint32_t offset = 3;
+        if (cmds.size() == 2)
+            offset = atoi(cmds[1].c_str());
+        printSourceLines(toLogBc->node->sourceFile, curLocation, offset);
+    }
+    else
+        g_Log.printColor("no source code\n", LogColor::Red);
+
+    return BcDbgCommandResult::Continue;
+}
+
+BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+{
+    if (cmds.size() > 2)
+        return BcDbgCommandResult::EvalDefault;
+
+    auto toLogBc = context->debugCxtBc;
+    auto toLogIp = context->debugCxtIp;
+
+    if (cmds.size() > 1)
+    {
+        auto name = cmds[1];
+        auto bc   = g_Workspace->findBc(name);
+        if (bc)
+        {
+            toLogBc = bc;
+            toLogIp = bc->out;
+        }
+        else
+        {
+            g_Log.printColor(Fmt("cannot find function '%s'\n", name.c_str()), LogColor::Red);
+            return BcDbgCommandResult::Continue;
+        }
+    }
+
+    if (toLogBc->node && toLogBc->node->kind == AstNodeKind::FuncDecl && toLogBc->node->sourceFile)
+    {
+        SourceFile*     curFile;
+        SourceLocation* curLocation;
+        ByteCode::getLocation(toLogBc, toLogIp, &curFile, &curLocation);
+
+        auto     funcNode  = CastAst<AstFuncDecl>(toLogBc->node, AstNodeKind::FuncDecl);
+        uint32_t startLine = toLogBc->node->token.startLocation.line;
+        uint32_t endLine   = funcNode->content->token.endLocation.line;
+        printSourceLines(toLogBc->node->sourceFile, curLocation, startLine, endLine);
+    }
+    else
+        g_Log.printColor("no source code\n", LogColor::Red);
 
     return BcDbgCommandResult::Continue;
 }
