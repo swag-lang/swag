@@ -14,6 +14,7 @@
 #include "LanguageSpec.h"
 #include "SemanticJob.h"
 #include "Module.h"
+#include "ByteCodeDebugger.h"
 
 #define IMMA_B(ip) ((ip->flags & BCI_IMM_A) ? ip->a.b : registersRC[ip->a.u32].b)
 #define IMMB_B(ip) ((ip->flags & BCI_IMM_B) ? ip->b.b : registersRC[ip->b.u32].b)
@@ -3554,7 +3555,7 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
     {
         while (true)
         {
-            if (!debugger(context))
+            if (!ByteCodeDebugger::step(context))
                 OS::exit(0);
             if (!executeInstruction(context, context->ip++))
                 break;

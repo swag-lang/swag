@@ -16,8 +16,6 @@ struct ByteCodeRun
     void         ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip);
     void         ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc, int numCVariadicParams = 0);
 
-    bool debugger(ByteCodeRunContext* context);
-
     bool executeInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip);
     void runLoopNoDbg(ByteCodeRunContext* context);
     bool runLoop(ByteCodeRunContext* context);

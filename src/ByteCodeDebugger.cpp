@@ -15,6 +15,7 @@
 #include "Workspace.h"
 #include "ThreadManager.h"
 #include "Report.h"
+#include "ByteCodeDebugger.h"
 
 static const char* COLOR_TYPE    = Log::VDarkCyan;
 static const char* COLOR_NAME    = Log::VDarkYellow;
@@ -1393,7 +1394,7 @@ static Utf8 getCommandLine(ByteCodeRunContext* context, bool& ctrl, bool& shift)
     return line;
 }
 
-bool ByteCodeRun::debugger(ByteCodeRunContext* context)
+bool ByteCodeDebugger::step(ByteCodeRunContext* context)
 {
     static mutex dbgMutex;
     ScopedLock   sc(dbgMutex);

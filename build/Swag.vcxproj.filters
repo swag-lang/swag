@@ -347,9 +347,6 @@
     <ClCompile Include="../src/ByteCodeRunContext.cpp">
       <Filter>Backend\ByteCode\Run</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ByteCodeDebugger.cpp">
-      <Filter>Backend\ByteCode\Run</Filter>
-    </ClCompile>
     <ClCompile Include="../src/ByteCodeRun.cpp">
       <Filter>Backend\ByteCode\Run</Filter>
     </ClCompile>
@@ -499,6 +496,9 @@
     </ClCompile>
     <ClCompile Include="..\src\ErrorContext.cpp">
       <Filter>Main\Report</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ByteCodeDebugger.cpp">
+      <Filter>Backend\ByteCode\Debugger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -812,6 +812,9 @@
     <ClInclude Include="..\src\ErrorList.h">
       <Filter>Main\Report</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\ByteCodeDebugger.h">
+      <Filter>Backend\ByteCode\Debugger</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
@@ -876,6 +879,9 @@
     </Filter>
     <Filter Include="Main\Report">
       <UniqueIdentifier>{70f7c54c-e50c-4523-895c-c808e6cb62b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Backend\ByteCode\Debugger">
+      <UniqueIdentifier>{5d64ad0d-846a-4092-a35f-d23655afc3d6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
