@@ -5,7 +5,7 @@
 BcDbgCommandResult ByteCodeDebugger::cmdBackTrace(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() != 1)
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
 
     g_ByteCodeStackTrace->currentContext = context;
     g_ByteCodeStackTrace->log();
@@ -15,9 +15,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdBackTrace(ByteCodeRunContext* context, c
 BcDbgCommandResult ByteCodeDebugger::cmdFrame(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() == 1)
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
     if (cmds.size() > 2)
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
 
     if (!Utf8::isNumber(cmds[1].c_str()))
     {
@@ -47,9 +47,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrame(ByteCodeRunContext* context, const
 BcDbgCommandResult ByteCodeDebugger::cmdFrameUp(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() > 2)
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
     if (cmds.size() != 1 && !Utf8::isNumber(cmds[1].c_str()))
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
 
     uint32_t off = 1;
     if (cmds.size() == 2)
@@ -79,9 +79,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrameUp(ByteCodeRunContext* context, con
 BcDbgCommandResult ByteCodeDebugger::cmdFrameDown(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() > 2)
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
     if (cmds.size() != 1 && !Utf8::isNumber(cmds[1].c_str()))
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
 
     uint32_t off = 1;
     if (cmds.size() == 2)

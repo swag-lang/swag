@@ -131,10 +131,12 @@ bool ByteCodeDebugger::addBreakpoint(ByteCodeRunContext* context, const ByteCode
     return true;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdBreakpoint(ByteCodeRunContext* context, const Utf8& cmd, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdBreakpoint(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() > 3)
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
+
+    auto cmd = cmds[0];
 
     if (cmds.size() == 1)
     {
@@ -200,7 +202,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakpoint(ByteCodeRunContext* context, 
     }
 
     if (cmds.size() == 2)
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
 
     // Break on function
     if (cmds[1] == "func")
@@ -222,7 +224,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakpoint(ByteCodeRunContext* context, 
     }
 
     if (!Utf8::isNumber(cmds[2].c_str()))
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
 
     // Clear one breakpoint
     if (cmds[1] == "clear")

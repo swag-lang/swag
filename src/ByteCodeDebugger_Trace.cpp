@@ -5,7 +5,7 @@
 BcDbgCommandResult ByteCodeDebugger::cmdStep(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() > 1)
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
 
     context->debugStackFrameOffset = 0;
     context->debugStepMode         = ByteCodeRunContext::DebugStepMode::NextLine;
@@ -15,7 +15,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdStep(ByteCodeRunContext* context, const 
 BcDbgCommandResult ByteCodeDebugger::cmdNext(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() > 1)
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
 
     context->debugStackFrameOffset = 0;
     context->debugStepMode         = ByteCodeRunContext::DebugStepMode::NextLineStepOut;
@@ -26,7 +26,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdNext(ByteCodeRunContext* context, const 
 BcDbgCommandResult ByteCodeDebugger::cmdFinish(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() > 1)
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
 
     context->debugStackFrameOffset = 0;
     context->debugStepMode         = ByteCodeRunContext::DebugStepMode::FinishedFunction;
@@ -37,7 +37,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdFinish(ByteCodeRunContext* context, cons
 BcDbgCommandResult ByteCodeDebugger::cmdContinue(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() > 1)
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
 
     g_Log.printColor("continue...\n", LogColor::Gray);
     context->debugStackFrameOffset = 0;
@@ -49,9 +49,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdContinue(ByteCodeRunContext* context, co
 BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() > 2)
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
     if (cmds.size() > 1 && !Utf8::isNumber(cmds[1].c_str()))
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
 
     context->debugStackFrameOffset = 0;
 
@@ -99,9 +99,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const 
 BcDbgCommandResult ByteCodeDebugger::cmdUntil(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() > 2)
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
     if (cmds.size() > 1 && !Utf8::isNumber(cmds[1].c_str()))
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
 
     ByteCodeRunContext::DebugBreakpoint bkp;
     if (context->debugBcMode)
@@ -120,7 +120,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdUntil(ByteCodeRunContext* context, const
 BcDbgCommandResult ByteCodeDebugger::cmdBcMode(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() != 1)
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
 
     context->debugBcMode = !context->debugBcMode;
     if (context->debugBcMode)
@@ -134,7 +134,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBcMode(ByteCodeRunContext* context, cons
 BcDbgCommandResult ByteCodeDebugger::cmdQuit(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() != 1)
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
 
     g_Log.setDefaultColor();
     return BcDbgCommandResult::Return;

@@ -8,7 +8,7 @@
 BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() != 1)
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
 
     auto ipNode = context->debugCxtIp->node;
     auto bc     = context->debugCxtBc;
@@ -59,9 +59,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
 BcDbgCommandResult ByteCodeDebugger::cmdInstruction(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() > 2)
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
     if (cmds.size() != 1 && !Utf8::isNumber(cmds[1].c_str()))
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
 
     int regN = 4;
     if (cmds.size() == 2)
@@ -74,7 +74,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstruction(ByteCodeRunContext* context,
 BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() != 1)
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
 
     context->debugCxtBc->print(context->debugCxtIp);
     return BcDbgCommandResult::Continue;
@@ -216,7 +216,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
 BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() < 2)
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
 
     vector<Utf8> exprCmds;
     Utf8::tokenize(cmdExpr, ' ', exprCmds);
@@ -343,9 +343,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
 BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() > 2)
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
     if (cmds.size() > 1 && !Utf8::isNumber(cmds[1].c_str()))
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
 
     auto toLogBc = context->debugCxtBc;
     auto toLogIp = context->debugCxtIp;
@@ -370,7 +370,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
 BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() > 2)
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
 
     auto toLogBc = context->debugCxtBc;
     auto toLogIp = context->debugCxtIp;

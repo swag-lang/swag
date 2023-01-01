@@ -17,6 +17,63 @@
 #include "Report.h"
 #include "ByteCodeDebugger.h"
 
+vector<BcDbgCommand> ByteCodeDebugger::commands;
+
+void ByteCodeDebugger::setup()
+{
+    if (commands.size())
+        return;
+
+    // clang-format off
+    commands.push_back({"<return>",         "",  "",        "'step' runs to the next line or instruction (depends on 'bcmode')"});
+    commands.push_back({"<shift+return>",   "",  "",        "'next', runs to the next line or instruction (depends on 'bcmode')"});
+    commands.push_back({"<tab>",            "",  "",        "contextual completion of the current word"});
+
+    commands.push_back({"step",     "s", "",        "runs to the next line", cmdStep});
+    commands.push_back({"next",     "n", "",        "like 'step', but does not enter functions or inlined code", cmdNext});
+    commands.push_back({"finish",   "f", "",        "runs until the current function is done", cmdFinish});
+    commands.push_back({"continue", "c", "",        "runs until another breakpoint is reached", cmdContinue});
+    commands.push_back({"until",    "u", "",        "runs to the given line or instruction in the current function (depends on 'bcmode')", cmdUntil});
+    commands.push_back({"jump",     "j", "",        "jump to the given line or instruction in the current function (depends on 'bcmode')", cmdJump});
+    commands.push_back({"list",     "l", "[num]",   "print the current source code line and [num] lines around", cmdList});
+    commands.push_back({"ll",       "",  "[name]",  "print the current function (or function [name]) source code", cmdLongList });
+
+    commands.push_back({"execute",  "e", "<stmt>",              "execute the code statement <stmt> in the current context", cmdExecute});
+    commands.push_back({"print",    "p", "[@format] <expr>",    "print the result of the expression <expr> in the current context (format is the same as 'x' command)", cmdPrint});
+
+    commands.push_back({"info",     "",  "locals",              "print all current local variables", cmdInfo});
+    commands.push_back({"info",     "",  "args",                "print all current function arguments", cmdInfo});
+    commands.push_back({"info",     "",  "funcs [filter]",      "print all functions which contains [filter] in their names", cmdInfo});
+    commands.push_back({"info",     "",  "modules",             "print all modules", cmdInfo});
+    commands.push_back({"info",     "",  "regs [@format]",      "print all registers (format is the same as 'x' command)", cmdInfo});
+
+    commands.push_back({"where",    "w", "",                    "print contextual informations", cmdWhere});
+
+    commands.push_back({"x",        "",  "[@format] [@num] <expr>",     "print memory (format = s8|s16|s32|s64|u8|u16|u32|u64|x8|x16|x32|x64|f32|f64)", cmdMemory});
+
+    commands.push_back({"break",    "",   "",                   "print all breakpoints", cmdBreakpoint});
+    commands.push_back({"break",    "",   "func <name>",        "add breakpoint when entering function <name> in the current file", cmdBreakpoint});
+    commands.push_back({"break",    "",   "<line>",             "add breakpoint in the current source file at <line>", cmdBreakpoint});
+    commands.push_back({"break",    "",   "<file>:<line>",      "add breakpoint in <file> at <line>", cmdBreakpoint});
+    commands.push_back({"break",    "",   "clear",              "remove all breakpoints", cmdBreakpoint});
+    commands.push_back({"break",    "",   "clear <num>",        "remove breakpoint <num>", cmdBreakpoint});
+    commands.push_back({"break",    "",   "enable <num>",       "enable breakpoint <num>", cmdBreakpoint});
+    commands.push_back({"break",    "",   "disable <num>",      "disablebreakpoint <num>", cmdBreakpoint});
+
+    commands.push_back({"bt",       "",   "",                   "backtrace, print callstack", cmdBackTrace});
+    commands.push_back({"up",       "u",  "[num]",              "move stack frame <num> level up", cmdFrameUp});
+    commands.push_back({"down",     "d",  "[num]",              "move stack frame <num> level down", cmdFrameDown});
+    commands.push_back({"frame",    "",   "<num>",              "set stack frame to level <num>", cmdFrame});
+
+    commands.push_back({"bcmode",   "",   "",                   "swap between bytecode mode and source code mode", cmdBcMode});
+    commands.push_back({"i",        "",   "[num]",              "print the current bytecode instruction and [num] instructions around", cmdInstruction});
+    commands.push_back({"ii",       "",   "",                   "print the current function bytecode", cmdInstructionDump});
+
+    commands.push_back({"help",     "?",  "",                   "print this list of commands", cmdHelp});
+    commands.push_back({"quit",     "q",  "",                   "quit the compiler", cmdQuit});
+    // clang-format on
+}
+
 bool ByteCodeDebugger::getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN)
 {
     regN = atoi(arg.c_str() + 1);
@@ -410,6 +467,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
         static bool firstOne = true;
 
         g_Log.setColor(LogColor::Gray);
+        setup();
 
         if (firstOne)
         {
@@ -478,233 +536,38 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
         if (!processCommandLine(context, cmds, line, cmdExpr))
             continue;
 
-        // Help
+        // Command
         /////////////////////////////////////////
-        if (cmd == "?")
-        {
-            CHECK_CMD_RESULT(cmdHelp(context, cmds, cmdExpr));
-            continue;
-        }
+        BcDbgCommandResult result = BcDbgCommandResult::Invalid;
 
-        // Print expression
-        /////////////////////////////////////////
-        if (cmd == "p" || cmd == "print")
-        {
-            CHECK_CMD_RESULT(cmdPrint(context, cmds, cmdExpr));
-            continue;
-        }
-
-        // Execute expression
-        /////////////////////////////////////////
-        if (cmd == "e" || cmd == "exec" || cmd == "execute")
-        {
-            CHECK_CMD_RESULT(cmdExecute(context, cmds, cmdExpr));
-            continue;
-        }
-
-        // Info functions
-        /////////////////////////////////////////
-        if (cmd == "info" && cmds.size() >= 2 && cmds[1] == "func")
-        {
-            CHECK_CMD_RESULT(cmdInfoFuncs(context, cmds, cmdExpr));
-            continue;
-        }
-
-        // Info modules
-        /////////////////////////////////////////
-        if (cmd == "info" && cmds.size() == 2 && cmds[1] == "modules")
-        {
-            CHECK_CMD_RESULT(cmdInfoModules(context, cmds, cmdExpr));
-            continue;
-        }
-
-        // Info locals
-        /////////////////////////////////////////
-        if (cmd == "info" && cmds.size() == 2 && cmds[1] == "locals")
-        {
-            CHECK_CMD_RESULT(cmdInfoLocals(context, cmds, cmdExpr));
-            continue;
-        }
-
-        // Info registers
-        /////////////////////////////////////////
-        if (cmd == "info" && cmds.size() >= 2 && cmds[1] == "regs")
-        {
-            CHECK_CMD_RESULT(cmdInfoRegs(context, cmds, cmdExpr));
-            continue;
-        }
-
-        // Info args
-        /////////////////////////////////////////
-        if (cmd == "info" && cmds.size() == 2 && cmds[1] == "args")
-        {
-            CHECK_CMD_RESULT(cmdInfoArgs(context, cmds, cmdExpr));
-            continue;
-        }
-
-        // Print memory
-        /////////////////////////////////////////
-        if (cmd == "x")
-        {
-            CHECK_CMD_RESULT(cmdMemory(context, cmds, cmdExpr));
-            continue;
-        }
-
-        // Print stack
-        /////////////////////////////////////////
-        if (cmd == "bt")
-        {
-            CHECK_CMD_RESULT(cmdBackTrace(context, cmds, cmdExpr));
-            continue;
-        }
-
-        // Set stack frame
-        /////////////////////////////////////////
-        if (cmd == "frame")
-        {
-            CHECK_CMD_RESULT(cmdFrame(context, cmds, cmdExpr));
-            continue;
-        }
-
-        // Stack frame up
-        /////////////////////////////////////////
-        if (cmd == "u" || cmd == "up")
-        {
-            CHECK_CMD_RESULT(cmdFrameUp(context, cmds, cmdExpr));
-            continue;
-        }
-
-        // Stack frame down
-        /////////////////////////////////////////
-        if (cmd == "d" || cmd == "down")
-        {
-            CHECK_CMD_RESULT(cmdFrameDown(context, cmds, cmdExpr));
-            continue;
-        }
-
-        // Exit
-        /////////////////////////////////////////
-        if (cmd == "q" || cmd == "quit")
-        {
-            CHECK_CMD_RESULT(cmdQuit(context, cmds, cmdExpr));
-            continue;
-        }
-
-        // Print context
-        /////////////////////////////////////////
-        if (cmd == "w" || cmd == "where")
-        {
-            CHECK_CMD_RESULT(cmdWhere(context, cmds, cmdExpr));
-            continue;
-        }
-
-        // Print current instruction
-        /////////////////////////////////////////
-        if (cmd == "i")
-        {
-            CHECK_CMD_RESULT(cmdInstruction(context, cmds, cmdExpr));
-            continue;
-        }
-
-        // Bytecode dump
-        /////////////////////////////////////////
-        if (cmd == "ii")
-        {
-            CHECK_CMD_RESULT(cmdInstructionDump(context, cmds, cmdExpr));
-            continue;
-        }
-
-        // Bc mode
-        /////////////////////////////////////////
-        if (cmd == "bcmode")
-        {
-            CHECK_CMD_RESULT(cmdBcMode(context, cmds, cmdExpr));
-            continue;
-        }
-
-        // Function line code
-        /////////////////////////////////////////
-        if (cmd == "l" || cmd == "list")
-        {
-            CHECK_CMD_RESULT(cmdList(context, cmds, cmdExpr));
-            continue;
-        }
-
-        // Function full code
-        /////////////////////////////////////////
-        if (cmd == "ll")
-        {
-            CHECK_CMD_RESULT(cmdLongList(context, cmds, cmdExpr));
-            continue;
-        }
-
-        // Breakpoints
-        /////////////////////////////////////////
-        if (cmd == "b" || cmd == "break" || cmd == "tb" || cmd == "tbreak")
-        {
-            CHECK_CMD_RESULT(cmdBreakpoint(context, cmd, cmds, cmdExpr));
-            continue;
-        }
-
-        // Next instruction
-        /////////////////////////////////////////
         if (cmd.empty())
         {
-            CHECK_CMD_RESULT(cmdEmpty(context, shift, cmds, cmdExpr));
-            continue;
+            result = cmdEmpty(context, shift, cmds, cmdExpr);
         }
-
-        // Step to next line
-        /////////////////////////////////////////
-        if (cmd == "s" || cmd == "step")
+        else
         {
-            CHECK_CMD_RESULT(cmdStep(context, cmds, cmdExpr));
-            continue;
+            for (auto& c : commands)
+            {
+                if (c.cb == nullptr)
+                    continue;
+
+                if (cmd == c.name || cmd == c.shortname)
+                {
+                    result = c.cb(context, cmds, cmdExpr);
+                    break;
+                }
+            }
         }
 
-        // Step to next line, step out
-        /////////////////////////////////////////
-        if (cmd == "n" || cmd == "next")
-        {
-            CHECK_CMD_RESULT(cmdNext(context, cmds, cmdExpr));
-            continue;
-        }
-
-        // Run to the end of the current function
-        /////////////////////////////////////////
-        if (cmd == "f" || cmd == "finish")
-        {
-            CHECK_CMD_RESULT(cmdFinish(context, cmds, cmdExpr));
-            continue;
-        }
-
-        // Continue
-        /////////////////////////////////////////
-        if (cmd == "c" || cmd == "cont" || cmd == "continue")
-        {
-            CHECK_CMD_RESULT(cmdContinue(context, cmds, cmdExpr));
-            continue;
-        }
-
-        // Jump to line/instruction
-        /////////////////////////////////////////
-        if (cmd == "j" || cmd == "jump")
-        {
-            CHECK_CMD_RESULT(cmdJump(context, cmds, cmdExpr));
-            continue;
-        }
-
-        // Run until a line/instruction is reached
-        /////////////////////////////////////////
-        if (cmd == "un" || cmd == "until")
-        {
-            CHECK_CMD_RESULT(cmdUntil(context, cmds, cmdExpr));
-            continue;
-        }
-
-        // Default to 'print' / 'execute'
-        /////////////////////////////////////////
-        evalDefault(context, line);
+        if (result == BcDbgCommandResult::Break)
+            break;
+        else if (result == BcDbgCommandResult::Return)
+            return false;
+        else if (result == BcDbgCommandResult::BadArguments)
+            g_Log.printColor(Fmt("bad '%s' arguments\n", cmd.c_str()), LogColor::Red);
+        else if (result == BcDbgCommandResult::Invalid)
+            g_Log.printColor(Fmt("unknown debugger command '%s'\n", cmd.c_str()), LogColor::Red);
+        continue;
     }
 
     context->debugLastCurRC = context->curRC;

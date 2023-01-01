@@ -10,7 +10,7 @@
 BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() > 3)
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
 
     auto           filter = cmds.size() == 3 ? cmds[2] : Utf8("");
     vector<string> all;
@@ -54,8 +54,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, c
 
 BcDbgCommandResult ByteCodeDebugger::cmdInfoModules(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
-    if (cmds.size() > 3)
-        return BcDbgCommandResult::EvalDefault;
+    if (cmds.size() > 2)
+        return BcDbgCommandResult::BadArguments;
 
     g_Log.setColor(LogColor::Gray);
     for (auto m : g_Workspace->modules)
@@ -68,8 +68,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoModules(ByteCodeRunContext* context,
 
 BcDbgCommandResult ByteCodeDebugger::cmdInfoLocals(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
-    if (cmds.size() > 3)
-        return BcDbgCommandResult::EvalDefault;
+    if (cmds.size() > 2)
+        return BcDbgCommandResult::BadArguments;
 
     if (context->debugCxtBc->localVars.empty())
     {
@@ -101,7 +101,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoLocals(ByteCodeRunContext* context, 
 BcDbgCommandResult ByteCodeDebugger::cmdInfoRegs(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() > 3)
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
 
     ValueFormat fmt;
     fmt.isHexa   = true;
@@ -109,7 +109,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoRegs(ByteCodeRunContext* context, co
     if (cmds.size() > 2)
     {
         if (!getValueFormat(cmds[2], fmt))
-            return BcDbgCommandResult::EvalDefault;
+            return BcDbgCommandResult::BadArguments;
     }
 
     g_Log.setColor(LogColor::Gray);
@@ -132,8 +132,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoRegs(ByteCodeRunContext* context, co
 
 BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
-    if (cmds.size() > 3)
-        return BcDbgCommandResult::EvalDefault;
+    if (cmds.size() > 2)
+        return BcDbgCommandResult::BadArguments;
 
     auto funcDecl = CastAst<AstFuncDecl>(context->debugCxtBc->node, AstNodeKind::FuncDecl);
     if (!funcDecl->parameters || funcDecl->parameters->childs.empty())
@@ -160,61 +160,21 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, co
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdInfo(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() < 2)
-        return BcDbgCommandResult::EvalDefault;
+        return BcDbgCommandResult::BadArguments;
 
-    auto expr = cmdExpr;
+    if (cmds[1] == "locals")
+        return cmdInfoLocals(context, cmds, cmdExpr);
+    if (cmds[1] == "funcs")
+        return cmdInfoFuncs(context, cmds, cmdExpr);
+    if (cmds[1] == "modules")
+        return cmdInfoModules(context, cmds, cmdExpr);
+    if (cmds[1] == "regs")
+        return cmdInfoRegs(context, cmds, cmdExpr);
+    if (cmds[1] == "args")
+        return cmdInfoArgs(context, cmds, cmdExpr);
 
-    ValueFormat fmt;
-    fmt.isHexa     = true;
-    fmt.bitCount   = 64;
-    bool hasFormat = false;
-    if (cmds.size() > 1)
-    {
-        if (getValueFormat(cmds[1], fmt))
-        {
-            hasFormat = true;
-            expr.clear();
-            for (int i = 2; i < cmds.size(); i++)
-                expr += cmds[i] + " ";
-            expr.trim();
-            if (expr.empty())
-                return BcDbgCommandResult::EvalDefault;
-        }
-    }
-
-    EvaluateResult res;
-    if (!evalExpression(context, expr, res))
-        return BcDbgCommandResult::Continue;
-    if (res.type->isVoid())
-        return BcDbgCommandResult::Continue;
-
-    auto concrete = TypeManager::concreteType(res.type, CONCRETE_ALIAS);
-    Utf8 str;
-    if (hasFormat)
-    {
-        if (!concrete->isNativeIntegerOrRune() && !concrete->isNativeFloat())
-        {
-            g_Log.printColor(Fmt("cannot apply print format to type `%s`\n", concrete->getDisplayNameC()), LogColor::Red);
-            return BcDbgCommandResult::Continue;
-        }
-
-        if (!res.addr && res.value)
-            res.addr = &res.value->reg;
-        appendLiteralValue(context, str, fmt, res.addr);
-    }
-    else
-    {
-        str = Fmt("(%s%s%s) ", COLOR_TYPE, res.type->getDisplayNameC(), COLOR_DEFAULT);
-        appendTypedValue(context, str, res, 0);
-    }
-
-    g_Log.printColor(str);
-    str.trim();
-    if (str.back() != '\n')
-        g_Log.eol();
-
-    return BcDbgCommandResult::Continue;
+    return BcDbgCommandResult::BadArguments;
 }
