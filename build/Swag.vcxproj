@@ -294,6 +294,7 @@
     <ClCompile Include="..\src\BackendX64_Main.cpp" />
     <ClCompile Include="../src/ByteCode.cpp" />
     <ClCompile Include="..\src\ByteCodeDebugger_Bkp.cpp" />
+    <ClCompile Include="..\src\ByteCodeDebugger_Frame.cpp" />
     <ClCompile Include="..\src\ByteCodeDebugger_Help.cpp" />
     <ClCompile Include="..\src\ByteCodeDebugger_Info.cpp" />
     <ClCompile Include="..\src\ByteCodeDebugger_Print.cpp" />

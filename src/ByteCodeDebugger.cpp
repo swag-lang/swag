@@ -589,11 +589,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             /////////////////////////////////////////
             if (cmd == "bt")
             {
-                if (cmds.size() != 1)
-                    goto evalDefault;
-
-                g_ByteCodeStackTrace->currentContext = context;
-                g_ByteCodeStackTrace->log();
+                CHECK_CMD_RESULT(cmdBackTrace(context, cmds, cmdExpr));
                 continue;
             }
 
@@ -601,33 +597,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             /////////////////////////////////////////
             if (cmd == "frame")
             {
-                if (cmds.size() == 1)
-                    goto evalDefault;
-                if (cmds.size() > 2)
-                    goto evalDefault;
-
-                if (!Utf8::isNumber(cmds[1]))
-                {
-                    g_Log.printColor("invalid 'frame' number\n", LogColor::Red);
-                    continue;
-                }
-
-                uint32_t off      = atoi(cmds[1].c_str());
-                uint32_t maxLevel = g_ByteCodeStackTrace->maxLevel(context);
-                off               = min(off, maxLevel);
-
-                auto oldIndex                  = context->debugStackFrameOffset;
-                context->debugStackFrameOffset = maxLevel - off;
-                computeDebugContext(context);
-                if (!context->debugCxtIp)
-                {
-                    context->debugStackFrameOffset = oldIndex;
-                    computeDebugContext(context);
-                    g_Log.printColor("this frame is external; you cannot go there\n", LogColor::Red);
-                    continue;
-                }
-
-                printContextInstruction(context);
+                CHECK_CMD_RESULT(cmdFrame(context, cmds, cmdExpr));
                 continue;
             }
 
@@ -635,33 +605,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             /////////////////////////////////////////
             if (cmd == "u" || cmd == "up")
             {
-                if (cmds.size() > 2)
-                    goto evalDefault;
-                if (cmds.size() != 1 && !Utf8::isNumber(cmds[1]))
-                    goto evalDefault;
-
-                uint32_t off = 1;
-                if (cmds.size() == 2)
-                    off = atoi(cmds[1].c_str());
-                uint32_t maxLevel = g_ByteCodeStackTrace->maxLevel(context);
-                if (context->debugStackFrameOffset == maxLevel)
-                    g_Log.printColor("initial frame selected; you cannot go up\n", LogColor::Red);
-                else
-                {
-                    auto oldIndex = context->debugStackFrameOffset;
-                    context->debugStackFrameOffset += off;
-                    computeDebugContext(context);
-                    if (!context->debugCxtIp)
-                    {
-                        context->debugStackFrameOffset = oldIndex;
-                        computeDebugContext(context);
-                        g_Log.printColor("the up frame is external; you cannot go there\n", LogColor::Red);
-                        continue;
-                    }
-
-                    printContextInstruction(context);
-                }
-
+                CHECK_CMD_RESULT(cmdFrameUp(context, cmds, cmdExpr));
                 continue;
             }
 
@@ -669,32 +613,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             /////////////////////////////////////////
             if (cmd == "d" || cmd == "down")
             {
-                if (cmds.size() > 2)
-                    goto evalDefault;
-                if (cmds.size() != 1 && !Utf8::isNumber(cmds[1]))
-                    goto evalDefault;
-
-                uint32_t off = 1;
-                if (cmds.size() == 2)
-                    off = atoi(cmds[1].c_str());
-                if (context->debugStackFrameOffset == 0)
-                    g_Log.printColor("bottom(innermost) frame selected; you cannot go down\n", LogColor::Red);
-                else
-                {
-                    auto oldIndex = context->debugStackFrameOffset;
-                    context->debugStackFrameOffset -= min(context->debugStackFrameOffset, off);
-                    computeDebugContext(context);
-                    if (!context->debugCxtIp)
-                    {
-                        context->debugStackFrameOffset = oldIndex;
-                        computeDebugContext(context);
-                        g_Log.printColor("the down frame is external; you cannot go there\n", LogColor::Red);
-                        continue;
-                    }
-
-                    printContextInstruction(context);
-                }
-
+                CHECK_CMD_RESULT(cmdFrameDown(context, cmds, cmdExpr));
                 continue;
             }
 
