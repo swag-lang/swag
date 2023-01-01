@@ -622,162 +622,16 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             /////////////////////////////////////////
             if (cmd == "b" || cmd == "break" || cmd == "tb" || cmd == "tbreak")
             {
-                if (cmds.size() == 1)
-                {
-                    printBreakpoints(context);
-                    continue;
-                }
-
-                if (cmds.size() > 3)
-                    goto evalDefault;
-
-                bool oneShot = false;
-                if (cmd == "tb" || cmd == "tbreak")
-                    oneShot = true;
-
-                // At line
-                vector<Utf8> fileFunc;
-                Utf8::tokenize(cmds[1], ':', fileFunc);
-                if (cmds.size() == 2 && ((fileFunc.size() == 1 && Utf8::isNumber(cmds[1])) || (fileFunc.size() == 2 && Utf8::isNumber(fileFunc[1]))))
-                {
-                    SourceFile*     curFile;
-                    SourceLocation* curLocation;
-                    ByteCode::getLocation(context->debugCxtBc, context->debugCxtIp, &curFile, &curLocation);
-
-                    ByteCodeRunContext::DebugBreakpoint bkp;
-                    bkp.name = curFile->name;
-
-                    if (fileFunc.size() == 2)
-                    {
-                        if (fileFunc[0] != curFile->name && fileFunc[0] + ".swg" != curFile->name && fileFunc[0] + ".swgs" != curFile->name)
-                        {
-                            auto f = g_Workspace->findFile(fileFunc[0]);
-                            if (!f)
-                                f = g_Workspace->findFile(fileFunc[0] + ".swg");
-                            if (!f)
-                                f = g_Workspace->findFile(fileFunc[0] + ".swgs");
-                            if (!f)
-                            {
-                                g_Log.printColor(Fmt("cannot find file '%s'\n", fileFunc[0].c_str()), LogColor::Red);
-                                continue;
-                            }
-                            bkp.name = f->name;
-                        }
-                    }
-
-                    int lineNo     = fileFunc.size() == 2 ? atoi(fileFunc[1]) : atoi(cmds[1]);
-                    bkp.type       = ByteCodeRunContext::DebugBkpType::FileLine;
-                    bkp.line       = lineNo;
-                    bkp.autoRemove = oneShot;
-                    if (addBreakpoint(context, bkp))
-                        g_Log.printColor(Fmt("breakpoint #%d, file '%s', line '%d'\n", context->debugBreakpoints.size(), curFile->name.c_str(), lineNo), LogColor::Gray);
-                    continue;
-                }
-
-                // Clear all breakpoints
-                if (cmds.size() == 2 && cmds[1] == "clear")
-                {
-                    if (context->debugBreakpoints.empty())
-                        g_Log.printColor("no breakpoint\n", LogColor::Red);
-                    else
-                    {
-                        g_Log.printColor(Fmt("%d breakpoint(s) have been removed\n", context->debugBreakpoints.size()), LogColor::Gray);
-                        context->debugBreakpoints.clear();
-                    }
-
-                    continue;
-                }
-
-                if (cmds.size() == 2)
-                    goto evalDefault;
-
-                // Break on function
-                if (cmds[1] == "func")
-                {
-                    ByteCodeRunContext::DebugBreakpoint bkp;
-                    bkp.type = ByteCodeRunContext::DebugBkpType::FuncName;
-                    auto bc  = g_Workspace->findBc(cmds[2]);
-                    if (!bc)
-                    {
-                        g_Log.printColor(Fmt("cannot find function '%s'\n", cmds[2].c_str()), LogColor::Red);
-                        continue;
-                    }
-
-                    bkp.name       = cmds[2];
-                    bkp.autoRemove = oneShot;
-                    if (addBreakpoint(context, bkp))
-                        g_Log.printColor(Fmt("breakpoint #%d entering function '%s'\n", context->debugBreakpoints.size(), bkp.name.c_str()), LogColor::Gray);
-                    continue;
-                }
-
-                if (!Utf8::isNumber(cmds[2]))
-                    goto evalDefault;
-
-                // Clear one breakpoint
-                if (cmds[1] == "clear")
-                {
-                    int numB = atoi(cmds[2]);
-                    if (!numB || numB - 1 >= context->debugBreakpoints.size())
-                        g_Log.printColor("invalid breakpoint number\n", LogColor::Red);
-                    else
-                    {
-                        context->debugBreakpoints.erase(context->debugBreakpoints.begin() + numB - 1);
-                        g_Log.printColor(Fmt("breakpoint #%d has been removed\n", numB), LogColor::Gray);
-                    }
-
-                    continue;
-                }
-
-                // Disable one breakpoint
-                if (cmds[1] == "disable")
-                {
-                    int numB = atoi(cmds[2]);
-                    if (!numB || numB - 1 >= context->debugBreakpoints.size())
-                        g_Log.printColor("invalid breakpoint number\n", LogColor::Red);
-                    else
-                    {
-                        context->debugBreakpoints[numB - 1].disabled = true;
-                        g_Log.printColor(Fmt("breakpoint #%d has been disabled\n", numB), LogColor::Gray);
-                    }
-
-                    continue;
-                }
-
-                // Enable one breakpoint
-                if (cmds[1] == "enable")
-                {
-                    int numB = atoi(cmds[2]);
-                    if (!numB || numB - 1 >= context->debugBreakpoints.size())
-                        g_Log.printColor("invalid breakpoint number\n", LogColor::Red);
-                    else
-                    {
-                        context->debugBreakpoints[numB - 1].disabled = false;
-                        g_Log.printColor(Fmt("breakpoint #%d has been enabled\n", numB), LogColor::Gray);
-                    }
-
-                    continue;
-                }
+                CHECK_CMD_RESULT(cmdBreakpoint(context, cmd, cmds, cmdExpr));
+                continue;
             }
 
             // Next instruction
             /////////////////////////////////////////
             if (cmd.empty())
             {
-                if (context->debugBcMode)
-                    break;
-
-                context->debugStackFrameOffset = 0;
-                if (shift)
-                {
-                    context->debugStepRC   = context->curRC;
-                    context->debugStepMode = ByteCodeRunContext::DebugStepMode::NextLineStepOut;
-                }
-                else
-                {
-                    context->debugStepMode = ByteCodeRunContext::DebugStepMode::NextLine;
-                }
-
-                break;
+                CHECK_CMD_RESULT(cmdEmpty(context, shift, cmds, cmdExpr));
+                continue;
             }
 
             // Step to next line
