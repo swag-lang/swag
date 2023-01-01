@@ -67,12 +67,11 @@ struct ByteCodeDebugger
     static void checkBreakpoints(ByteCodeRunContext* context);
     static bool addBreakpoint(ByteCodeRunContext* context, const ByteCodeRunContext::DebugBreakpoint& bkp);
 
-    static void appendTypedValue(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent, ValueFormat* fmt = nullptr);
-    static void appendTypedValueProtected(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent, ValueFormat* fmt = nullptr);
+    static void appendTypedValue(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent);
+    static void appendTypedValueProtected(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent);
     static void appendLiteralValue(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr);
     static void appendLiteralValueProtected(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr);
 
-    static void printMemory(ByteCodeRunContext* context, const Utf8& arg);
     static void printWhere(ByteCodeRunContext* context);
     static void printSourceLines(SourceFile* file, SourceLocation* curLocation, int startLine, int endLine);
     static void printSourceLines(SourceFile* file, SourceLocation* curLocation, uint32_t offset = 3);
@@ -83,6 +82,7 @@ struct ByteCodeDebugger
     static BcDbgCommandResult cmdFrameUp(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
     static BcDbgCommandResult cmdFrameDown(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
     static BcDbgCommandResult cmdExecute(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
+    static BcDbgCommandResult cmdPrint(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
     static BcDbgCommandResult cmdInfoFuncs(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
     static BcDbgCommandResult cmdInfoModules(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
     static BcDbgCommandResult cmdInfoLocals(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
@@ -94,6 +94,7 @@ struct ByteCodeDebugger
     static BcDbgCommandResult cmdContinue(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
     static BcDbgCommandResult cmdJump(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
     static BcDbgCommandResult cmdUntil(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
+    static BcDbgCommandResult cmdMemory(ByteCodeRunContext* context, const Utf8& cmd, const vector<Utf8>& cmds, const Utf8& cmdExpr);
     
     static bool getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN);
     static void printContextInstruction(ByteCodeRunContext* context, bool force = false);

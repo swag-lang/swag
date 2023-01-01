@@ -3,127 +3,6 @@
 #include "ByteCode.h"
 #include "ByteCodeDebugger.h"
 
-void ByteCodeDebugger::printMemory(ByteCodeRunContext* context, const Utf8& arg)
-{
-    vector<Utf8> cmds;
-    Utf8::tokenize(arg, ' ', cmds);
-
-    ValueFormat fmt;
-    int         startIdx = 0;
-    if (cmds.size() && getValueFormat(cmds[0], fmt))
-        startIdx++;
-    fmt.print0x = false;
-
-    // Count
-    int count = 64;
-    if (startIdx < cmds.size() && cmds[startIdx].length() > 1 && cmds[startIdx][0] == '@' && Utf8::isNumber(cmds[startIdx] + 1) && cmds.size() != 1)
-    {
-        count = atoi(cmds[startIdx] + 1);
-        startIdx++;
-    }
-
-    count = max(count, 1);
-    count = min(count, 4096);
-
-    // Expression
-    Utf8 expr;
-    for (int i = startIdx; i < cmds.size(); i++)
-    {
-        expr += cmds[i];
-        expr += " ";
-    }
-
-    expr.trim();
-    if (expr.empty())
-    {
-        g_Log.printColor("invalid 'x' expression\n", LogColor::Red);
-        return;
-    }
-
-    uint64_t       addrVal = 0;
-    EvaluateResult res;
-    if (!evalExpression(context, expr, res))
-        return;
-    if (!res.addr)
-    {
-        res.addr = res.value->reg.pointer;
-        addrVal  = (uint64_t) res.addr;
-    }
-    else if (res.type->isPointer())
-        addrVal = *(uint64_t*) res.addr;
-    else
-        addrVal = (uint64_t) res.addr;
-
-    int perLine = 8;
-    switch (fmt.bitCount)
-    {
-    case 8:
-        perLine = 16;
-        break;
-    case 16:
-        perLine = 8;
-        break;
-    case 32:
-        perLine = 8;
-        break;
-    case 64:
-        perLine = 4;
-        break;
-    }
-
-    const uint8_t* addrB = (const uint8_t*) addrVal;
-
-    while (count > 0)
-    {
-        auto addrLine = addrB;
-
-        g_Log.printColor(Fmt("0x%016llx ", addrLine), LogColor::DarkYellow);
-        g_Log.setColor(LogColor::Gray);
-
-        for (int i = 0; i < min(count, perLine); i++)
-        {
-            Utf8 str;
-            appendLiteralValue(context, str, fmt, addrB);
-            g_Log.print(str);
-            addrB += fmt.bitCount / 8;
-        }
-
-        addrB = addrLine;
-        if (fmt.bitCount == 8)
-        {
-            // Align to the right
-            for (int i = 0; i < perLine - min(count, perLine); i++)
-            {
-                if (fmt.isHexa)
-                    g_Log.print("   ");
-                else if (!fmt.isSigned)
-                    g_Log.print("    ");
-                else
-                    g_Log.print("     ");
-            }
-
-            // Print as 'char'
-            g_Log.print(" ");
-            for (int i = 0; i < min(count, perLine); i++)
-            {
-                auto c = getAddrValue<uint8_t>(addrB);
-                if (c < 32 || c > 127)
-                    c = '.';
-                g_Log.print(Fmt("%c", c));
-                addrB += 1;
-            }
-        }
-
-        g_Log.eol();
-
-        addrB = addrLine;
-        addrB += min(count, perLine) * (fmt.bitCount / 8);
-        count -= min(count, perLine);
-        if (!count)
-            break;
-    }
-}
-
 void ByteCodeDebugger::printWhere(ByteCodeRunContext* context)
 {
     auto ipNode = context->debugCxtIp->node;
@@ -301,4 +180,131 @@ void ByteCodeDebugger::printContextInstruction(ByteCodeRunContext* context, bool
     context->debugStepLastFile     = file;
     context->debugStepLastLocation = location;
     context->debugStepLastFunc     = newFunc;
+}
+
+BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, const Utf8& arg, const vector<Utf8>& _cmds, const Utf8& cmdExpr)
+{
+    if (_cmds.size() < 2)
+        return BcDbgCommandResult::EvalDefault;
+
+    vector<Utf8> cmds;
+    Utf8::tokenize(arg, ' ', cmds);
+
+    ValueFormat fmt;
+    int         startIdx = 0;
+    if (cmds.size() && getValueFormat(cmds[0], fmt))
+        startIdx++;
+    fmt.print0x = false;
+
+    // Count
+    int count = 64;
+    if (startIdx < cmds.size() && cmds[startIdx].length() > 1 && cmds[startIdx][0] == '@' && Utf8::isNumber(cmds[startIdx] + 1) && cmds.size() != 1)
+    {
+        count = atoi(cmds[startIdx] + 1);
+        startIdx++;
+    }
+
+    count = max(count, 1);
+    count = min(count, 4096);
+
+    // Expression
+    Utf8 expr;
+    for (int i = startIdx; i < cmds.size(); i++)
+    {
+        expr += cmds[i];
+        expr += " ";
+    }
+
+    expr.trim();
+    if (expr.empty())
+    {
+        g_Log.printColor("invalid 'x' expression\n", LogColor::Red);
+        return BcDbgCommandResult::Continue;
+    }
+
+    uint64_t       addrVal = 0;
+    EvaluateResult res;
+    if (!evalExpression(context, expr, res))
+        return BcDbgCommandResult::Continue;
+
+    if (!res.addr)
+    {
+        res.addr = res.value->reg.pointer;
+        addrVal  = (uint64_t) res.addr;
+    }
+    else if (res.type->isPointer())
+        addrVal = *(uint64_t*) res.addr;
+    else
+        addrVal = (uint64_t) res.addr;
+
+    int perLine = 8;
+    switch (fmt.bitCount)
+    {
+    case 8:
+        perLine = 16;
+        break;
+    case 16:
+        perLine = 8;
+        break;
+    case 32:
+        perLine = 8;
+        break;
+    case 64:
+        perLine = 4;
+        break;
+    }
+
+    const uint8_t* addrB = (const uint8_t*) addrVal;
+
+    while (count > 0)
+    {
+        auto addrLine = addrB;
+
+        g_Log.printColor(Fmt("0x%016llx ", addrLine), LogColor::DarkYellow);
+        g_Log.setColor(LogColor::Gray);
+
+        for (int i = 0; i < min(count, perLine); i++)
+        {
+            Utf8 str;
+            appendLiteralValue(context, str, fmt, addrB);
+            g_Log.print(str);
+            addrB += fmt.bitCount / 8;
+        }
+
+        addrB = addrLine;
+        if (fmt.bitCount == 8)
+        {
+            // Align to the right
+            for (int i = 0; i < perLine - min(count, perLine); i++)
+            {
+                if (fmt.isHexa)
+                    g_Log.print("   ");
+                else if (!fmt.isSigned)
+                    g_Log.print("    ");
+                else
+                    g_Log.print("     ");
+            }
+
+            // Print as 'char'
+            g_Log.print(" ");
+            for (int i = 0; i < min(count, perLine); i++)
+            {
+                auto c = getAddrValue<uint8_t>(addrB);
+                if (c < 32 || c > 127)
+                    c = '.';
+                g_Log.print(Fmt("%c", c));
+                addrB += 1;
+            }
+        }
+
+        g_Log.eol();
+
+        addrB = addrLine;
+        addrB += min(count, perLine) * (fmt.bitCount / 8);
+        count -= min(count, perLine);
+        if (!count)
+            break;
+    }
+
+    return BcDbgCommandResult::Continue;
 }

@@ -177,7 +177,7 @@ void ByteCodeDebugger::appendLiteralValue(ByteCodeRunContext* context, Utf8& res
     }
 }
 
-void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent, ValueFormat* fmt)
+void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent)
 {
     auto typeInfo = TypeManager::concreteType(res.type, CONCRETE_ALIAS);
     auto addr     = res.addr;
@@ -233,7 +233,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
             EvaluateResult res1;
             res1.type = p->typeInfo;
             res1.addr = ((uint8_t*) addr) + p->offset;
-            appendTypedValue(context, str, res1, indent + 1, fmt);
+            appendTypedValue(context, str, res1, indent + 1);
             if (str.back() != '\n')
                 str += "\n";
         }
@@ -382,11 +382,11 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
     str += "?";
 }
 
-void ByteCodeDebugger::appendTypedValue(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent, ValueFormat* fmt)
+void ByteCodeDebugger::appendTypedValue(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent)
 {
     SWAG_TRY
     {
-        appendTypedValueProtected(context, str, res, indent, fmt);
+        appendTypedValueProtected(context, str, res, indent);
     }
     SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)
     {

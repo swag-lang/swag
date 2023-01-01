@@ -4,6 +4,7 @@
 #include "Workspace.h"
 #include "Module.h"
 #include "Ast.h"
+#include "TypeManager.h"
 #include "ByteCodeDebugger.h"
 
 BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
@@ -155,6 +156,65 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, co
         if (str.back() != '\n')
             g_Log.eol();
     }
+
+    return BcDbgCommandResult::Continue;
+}
+
+BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+{
+    if (cmds.size() < 2)
+        return BcDbgCommandResult::EvalDefault;
+
+    auto expr = cmdExpr;
+
+    ValueFormat fmt;
+    fmt.isHexa     = true;
+    fmt.bitCount   = 64;
+    bool hasFormat = false;
+    if (cmds.size() > 1)
+    {
+        if (getValueFormat(cmds[1], fmt))
+        {
+            hasFormat = true;
+            expr.clear();
+            for (int i = 2; i < cmds.size(); i++)
+                expr += cmds[i] + " ";
+            expr.trim();
+            if (expr.empty())
+                return BcDbgCommandResult::EvalDefault;
+        }
+    }
+
+    EvaluateResult res;
+    if (!evalExpression(context, expr, res))
+        return BcDbgCommandResult::Continue;
+    if (res.type->isVoid())
+        return BcDbgCommandResult::Continue;
+
+    auto concrete = TypeManager::concreteType(res.type, CONCRETE_ALIAS);
+    Utf8 str;
+    if (hasFormat)
+    {
+        if (!concrete->isNativeIntegerOrRune() && !concrete->isNativeFloat())
+        {
+            g_Log.printColor(Fmt("cannot apply print format to type `%s`\n", concrete->getDisplayNameC()), LogColor::Red);
+            return BcDbgCommandResult::Continue;
+        }
+
+        if (!res.addr && res.value)
+            res.addr = &res.value->reg;
+        appendLiteralValue(context, str, fmt, res.addr);
+    }
+    else
+    {
+        str = Fmt("(%s%s%s) ", COLOR_TYPE, res.type->getDisplayNameC(), COLOR_DEFAULT);
+        appendTypedValue(context, str, res, 0);
+    }
+
+    g_Log.printColor(str);
+    str.trim();
+    if (str.back() != '\n')
+        g_Log.eol();
 
     return BcDbgCommandResult::Continue;
 }
