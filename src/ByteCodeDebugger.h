@@ -60,6 +60,7 @@ struct ByteCodeDebugger
 
     static void printMemory(ByteCodeRunContext* context, const Utf8& arg);
 
+    static bool getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN);
     static void printContextInstruction(ByteCodeRunContext* context, bool force = false);
     static void computeDebugContext(ByteCodeRunContext* context);
     static Utf8 completion(ByteCodeRunContext* context, const Utf8& line, Utf8& toComplete);

@@ -882,3 +882,15 @@ Utf8 Utf8::truncateDisplay(const char* str, int maxLen)
         result += "...";
     return result;
 }
+
+bool Utf8::isNumber(const char* pz)
+{
+    while (*pz)
+    {
+        if (!isdigit(*pz))
+            return false;
+        pz++;
+    }
+
+    return true;
+}

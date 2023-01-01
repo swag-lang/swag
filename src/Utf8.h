@@ -94,6 +94,7 @@ struct Utf8
     static uint32_t    fuzzyCompare(const Utf8& str1, const Utf8& str2);
     static Utf8        getExtension(const Utf8& name);
     static Utf8        truncateDisplay(const char* str, int maxLen);
+    static bool        isNumber(const char* pz);
 };
 
 struct HashUtf8

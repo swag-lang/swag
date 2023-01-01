@@ -17,19 +17,7 @@
 #include "Report.h"
 #include "ByteCodeDebugger.h"
 
-static bool isNumber(const char* pz)
-{
-    while (*pz)
-    {
-        if (!isdigit(*pz))
-            return false;
-        pz++;
-    }
-
-    return true;
-}
-
-static bool getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN)
+bool ByteCodeDebugger::getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN)
 {
     regN = atoi(arg.c_str() + 1);
     if (!context->getRegCount(context->debugCxtRc))
@@ -60,7 +48,7 @@ void ByteCodeDebugger::printMemory(ByteCodeRunContext* context, const Utf8& arg)
 
     // Count
     int count = 64;
-    if (startIdx < cmds.size() && cmds[startIdx].length() > 1 && cmds[startIdx][0] == '@' && isNumber(cmds[startIdx] + 1) && cmds.size() != 1)
+    if (startIdx < cmds.size() && cmds[startIdx].length() > 1 && cmds[startIdx][0] == '@' && Utf8::isNumber(cmds[startIdx] + 1) && cmds.size() != 1)
     {
         count = atoi(cmds[startIdx] + 1);
         startIdx++;
@@ -742,7 +730,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
                 {
                     cmds[i] = Fmt("0x%llx", (uint64_t) context->bp);
                 }
-                else if (cmds[i].length() > 2 && cmds[i][0] == '$' && cmds[i][1] == 'r' && isNumber(cmds[i] + 2))
+                else if (cmds[i].length() > 2 && cmds[i][0] == '$' && cmds[i][1] == 'r' && Utf8::isNumber(cmds[i] + 2))
                 {
                     int regN;
                     if (!getRegIdx(context, cmds[i] + 1, regN))
@@ -1032,7 +1020,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
                 if (cmds.size() > 2)
                     goto evalDefault;
 
-                if (!isNumber(cmds[1]))
+                if (!Utf8::isNumber(cmds[1]))
                 {
                     g_Log.printColor("invalid 'frame' number\n", LogColor::Red);
                     continue;
@@ -1063,7 +1051,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             {
                 if (cmds.size() > 2)
                     goto evalDefault;
-                if (cmds.size() != 1 && !isNumber(cmds[1]))
+                if (cmds.size() != 1 && !Utf8::isNumber(cmds[1]))
                     goto evalDefault;
 
                 uint32_t off = 1;
@@ -1097,7 +1085,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             {
                 if (cmds.size() > 2)
                     goto evalDefault;
-                if (cmds.size() != 1 && !isNumber(cmds[1]))
+                if (cmds.size() != 1 && !Utf8::isNumber(cmds[1]))
                     goto evalDefault;
 
                 uint32_t off = 1;
@@ -1142,7 +1130,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
 
                 if (cmds.size() > 2)
                     goto evalDefault;
-                if (cmds.size() != 1 && !isNumber(cmds[1]))
+                if (cmds.size() != 1 && !Utf8::isNumber(cmds[1]))
                     goto evalDefault;
 
                 if (cmds.size() == 2)
@@ -1197,7 +1185,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
                 {
                     if (cmds.size() > 2)
                         goto evalDefault;
-                    if (cmds.size() > 1 && !isNumber(cmds[1]))
+                    if (cmds.size() > 1 && !Utf8::isNumber(cmds[1]))
                         goto evalDefault;
                 }
 
@@ -1268,7 +1256,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
                 // At line
                 vector<Utf8> fileFunc;
                 Utf8::tokenize(cmds[1], ':', fileFunc);
-                if (cmds.size() == 2 && ((fileFunc.size() == 1 && isNumber(cmds[1])) || (fileFunc.size() == 2 && isNumber(fileFunc[1]))))
+                if (cmds.size() == 2 && ((fileFunc.size() == 1 && Utf8::isNumber(cmds[1])) || (fileFunc.size() == 2 && Utf8::isNumber(fileFunc[1]))))
                 {
                     SourceFile*     curFile;
                     SourceLocation* curLocation;
@@ -1340,7 +1328,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
                     continue;
                 }
 
-                if (!isNumber(cmds[2]))
+                if (!Utf8::isNumber(cmds[2]))
                     goto evalDefault;
 
                 // Clear one breakpoint
@@ -1468,7 +1456,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             {
                 if (cmds.size() > 2)
                     goto evalDefault;
-                if (cmds.size() > 1 && !isNumber(cmds[1]))
+                if (cmds.size() > 1 && !Utf8::isNumber(cmds[1]))
                     goto evalDefault;
 
                 context->debugStackFrameOffset = 0;
@@ -1520,7 +1508,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             {
                 if (cmds.size() > 2)
                     goto evalDefault;
-                if (cmds.size() > 1 && !isNumber(cmds[1]))
+                if (cmds.size() > 1 && !Utf8::isNumber(cmds[1]))
                     goto evalDefault;
 
                 ByteCodeRunContext::DebugBreakpoint bkp;
