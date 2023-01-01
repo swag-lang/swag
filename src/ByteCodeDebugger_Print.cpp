@@ -182,25 +182,25 @@ void ByteCodeDebugger::printContextInstruction(ByteCodeRunContext* context, bool
     context->debugStepLastFunc     = newFunc;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, const Utf8& arg, const vector<Utf8>& _cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
-    if (_cmds.size() < 2)
+    if (cmds.size() < 2)
         return BcDbgCommandResult::EvalDefault;
 
-    vector<Utf8> cmds;
-    Utf8::tokenize(arg, ' ', cmds);
+    vector<Utf8> exprCmds;
+    Utf8::tokenize(cmdExpr, ' ', exprCmds);
 
     ValueFormat fmt;
     int         startIdx = 0;
-    if (cmds.size() && getValueFormat(cmds[0], fmt))
+    if (exprCmds.size() && getValueFormat(exprCmds[0], fmt))
         startIdx++;
     fmt.print0x = false;
 
     // Count
     int count = 64;
-    if (startIdx < cmds.size() && cmds[startIdx].length() > 1 && cmds[startIdx][0] == '@' && Utf8::isNumber(cmds[startIdx] + 1) && cmds.size() != 1)
+    if (startIdx < exprCmds.size() && exprCmds[startIdx].length() > 1 && exprCmds[startIdx][0] == '@' && Utf8::isNumber(exprCmds[startIdx] + 1) && exprCmds.size() != 1)
     {
-        count = atoi(cmds[startIdx] + 1);
+        count = atoi(exprCmds[startIdx] + 1);
         startIdx++;
     }
 
@@ -209,9 +209,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
 
     // Expression
     Utf8 expr;
-    for (int i = startIdx; i < cmds.size(); i++)
+    for (int i = startIdx; i < exprCmds.size(); i++)
     {
-        expr += cmds[i];
+        expr += exprCmds[i];
         expr += " ";
     }
 

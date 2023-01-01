@@ -526,7 +526,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             /////////////////////////////////////////
             if (cmd == "x")
             {
-                CHECK_CMD_RESULT(cmdMemory(context, cmd, cmds, cmdExpr));
+                CHECK_CMD_RESULT(cmdMemory(context, cmds, cmdExpr));
                 continue;
             }
 
