@@ -988,103 +988,39 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             /////////////////////////////////////////
             if (cmd == "s" || cmd == "step")
             {
-                if (cmds.size() > 1)
-                    goto evalDefault;
-
-                context->debugStackFrameOffset = 0;
-                context->debugStepMode         = ByteCodeRunContext::DebugStepMode::NextLine;
-                break;
+                CHECK_CMD_RESULT(cmdStep(context, cmds, cmdExpr));
+                continue;
             }
 
             // Step to next line, step out
             /////////////////////////////////////////
             if (cmd == "n" || cmd == "next")
             {
-                if (cmds.size() > 1)
-                    goto evalDefault;
-
-                context->debugStackFrameOffset = 0;
-                context->debugStepMode         = ByteCodeRunContext::DebugStepMode::NextLineStepOut;
-                context->debugStepRC           = context->curRC;
-                break;
+                CHECK_CMD_RESULT(cmdNext(context, cmds, cmdExpr));
+                continue;
             }
 
             // Run to the end of the current function
             /////////////////////////////////////////
             if (cmd == "f" || cmd == "finish")
             {
-                if (cmds.size() > 1)
-                    goto evalDefault;
-
-                context->debugStackFrameOffset = 0;
-                context->debugStepMode         = ByteCodeRunContext::DebugStepMode::FinishedFunction;
-                context->debugStepRC           = context->curRC - 1;
-                break;
+                CHECK_CMD_RESULT(cmdFinish(context, cmds, cmdExpr));
+                continue;
             }
 
             // Continue
             /////////////////////////////////////////
             if (cmd == "c" || cmd == "cont" || cmd == "continue")
             {
-                if (cmds.size() > 1)
-                    goto evalDefault;
-
-                g_Log.printColor("continue...\n", LogColor::Gray);
-                context->debugStackFrameOffset = 0;
-                context->debugStepMode         = ByteCodeRunContext::DebugStepMode::ToNextBreakpoint;
-                context->debugOn               = false;
-                break;
+                CHECK_CMD_RESULT(cmdContinue(context, cmds, cmdExpr));
+                continue;
             }
 
             // Jump to line/instruction
             /////////////////////////////////////////
             if (cmd == "j" || cmd == "jump")
             {
-                if (cmds.size() > 2)
-                    goto evalDefault;
-                if (cmds.size() > 1 && !Utf8::isNumber(cmds[1]))
-                    goto evalDefault;
-
-                context->debugStackFrameOffset = 0;
-
-                uint32_t to = (uint32_t) atoi(cmds[1]);
-                if (context->debugBcMode)
-                {
-                    if (to >= context->bc->numInstructions - 1)
-                    {
-                        g_Log.printColor("cannot reach this 'jump' destination\n", LogColor::Red);
-                        continue;
-                    }
-
-                    context->ip         = context->bc->out + to;
-                    context->debugCxtIp = context->ip;
-                }
-                else
-                {
-                    auto curIp = context->bc->out;
-                    while (true)
-                    {
-                        if (curIp >= context->bc->out + context->bc->numInstructions - 1)
-                        {
-                            g_Log.printColor("cannot reach this 'jump' destination\n", LogColor::Red);
-                            break;
-                        }
-
-                        SourceFile*     file;
-                        SourceLocation* location;
-                        ByteCode::getLocation(context->bc, curIp, &file, &location);
-                        if (location && location->line == to)
-                        {
-                            context->ip         = curIp;
-                            context->debugCxtIp = context->ip;
-                            break;
-                        }
-
-                        curIp++;
-                    }
-                }
-
-                printContextInstruction(context);
+                CHECK_CMD_RESULT(cmdJump(context, cmds, cmdExpr));
                 continue;
             }
 
@@ -1092,23 +1028,8 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             /////////////////////////////////////////
             if (cmd == "un" || cmd == "until")
             {
-                if (cmds.size() > 2)
-                    goto evalDefault;
-                if (cmds.size() > 1 && !Utf8::isNumber(cmds[1]))
-                    goto evalDefault;
-
-                ByteCodeRunContext::DebugBreakpoint bkp;
-                if (context->debugBcMode)
-                    bkp.type = ByteCodeRunContext::DebugBkpType::InstructionIndex;
-                else
-                    bkp.type = ByteCodeRunContext::DebugBkpType::FileLine;
-                bkp.name       = context->debugStepLastFile->name;
-                bkp.line       = atoi(cmds[1]);
-                bkp.autoRemove = true;
-                addBreakpoint(context, bkp);
-                context->debugStackFrameOffset = 0;
-                context->debugStepMode         = ByteCodeRunContext::DebugStepMode::ToNextBreakpoint;
-                break;
+                CHECK_CMD_RESULT(cmdUntil(context, cmds, cmdExpr));
+                continue;
             }
 
         evalDefault:

@@ -518,6 +518,9 @@
     <ClCompile Include="..\src\ByteCodeDebugger_Info.cpp">
       <Filter>Backend\ByteCode\Debugger</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\ByteCodeDebugger_Trace.cpp">
+      <Filter>Backend\ByteCode\Debugger</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">

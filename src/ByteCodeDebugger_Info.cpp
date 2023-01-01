@@ -6,10 +6,10 @@
 #include "Ast.h"
 #include "ByteCodeDebugger.h"
 
-ByteCodeDebugger::CommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() > 3)
-        return ByteCodeDebugger::CommandResult::EvalDefault;
+        return BcDbgCommandResult::EvalDefault;
 
     auto           filter = cmds.size() == 3 ? cmds[2] : Utf8("");
     vector<string> all;
@@ -48,13 +48,13 @@ ByteCodeDebugger::CommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContex
         g_Log.eol();
     }
 
-    return ByteCodeDebugger::CommandResult::Continue;
+    return BcDbgCommandResult::Continue;
 }
 
-ByteCodeDebugger::CommandResult ByteCodeDebugger::cmdInfoModules(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdInfoModules(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() > 3)
-        return ByteCodeDebugger::CommandResult::EvalDefault;
+        return BcDbgCommandResult::EvalDefault;
 
     g_Log.setColor(LogColor::Gray);
     for (auto m : g_Workspace->modules)
@@ -62,18 +62,18 @@ ByteCodeDebugger::CommandResult ByteCodeDebugger::cmdInfoModules(ByteCodeRunCont
         g_Log.print(Fmt("%s\n", m->name.c_str()));
     }
 
-    return ByteCodeDebugger::CommandResult::Continue;
+    return BcDbgCommandResult::Continue;
 }
 
-ByteCodeDebugger::CommandResult ByteCodeDebugger::cmdInfoLocals(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdInfoLocals(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() > 3)
-        return ByteCodeDebugger::CommandResult::EvalDefault;
+        return BcDbgCommandResult::EvalDefault;
 
     if (context->debugCxtBc->localVars.empty())
     {
         g_Log.printColor("no locals\n", LogColor::Red);
-        return ByteCodeDebugger::CommandResult::Continue;
+        return BcDbgCommandResult::Continue;
     }
 
     for (auto l : context->debugCxtBc->localVars)
@@ -94,13 +94,13 @@ ByteCodeDebugger::CommandResult ByteCodeDebugger::cmdInfoLocals(ByteCodeRunConte
             g_Log.eol();
     }
 
-    return ByteCodeDebugger::CommandResult::Continue;
+    return BcDbgCommandResult::Continue;
 }
 
-ByteCodeDebugger::CommandResult ByteCodeDebugger::cmdInfoRegs(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdInfoRegs(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() > 3)
-        return ByteCodeDebugger::CommandResult::EvalDefault;
+        return BcDbgCommandResult::EvalDefault;
 
     ValueFormat fmt;
     fmt.isHexa   = true;
@@ -108,7 +108,7 @@ ByteCodeDebugger::CommandResult ByteCodeDebugger::cmdInfoRegs(ByteCodeRunContext
     if (cmds.size() > 2)
     {
         if (!getValueFormat(cmds[2], fmt))
-            return ByteCodeDebugger::CommandResult::EvalDefault;
+            return BcDbgCommandResult::EvalDefault;
     }
 
     g_Log.setColor(LogColor::Gray);
@@ -126,19 +126,19 @@ ByteCodeDebugger::CommandResult ByteCodeDebugger::cmdInfoRegs(ByteCodeRunContext
     g_Log.print(Fmt("%s$sp%s = 0x%016llx\n", COLOR_NAME, COLOR_DEFAULT, context->sp));
     g_Log.print(Fmt("%s$bp%s = 0x%016llx\n", COLOR_NAME, COLOR_DEFAULT, context->bp));
 
-    return ByteCodeDebugger::CommandResult::Continue;
+    return BcDbgCommandResult::Continue;
 }
 
-ByteCodeDebugger::CommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() > 3)
-        return ByteCodeDebugger::CommandResult::EvalDefault;
+        return BcDbgCommandResult::EvalDefault;
 
     auto funcDecl = CastAst<AstFuncDecl>(context->debugCxtBc->node, AstNodeKind::FuncDecl);
     if (!funcDecl->parameters || funcDecl->parameters->childs.empty())
     {
         g_Log.printColor("no arguments\n", LogColor::Red);
-        return ByteCodeDebugger::CommandResult::Continue;
+        return BcDbgCommandResult::Continue;
     }
 
     for (auto l : funcDecl->parameters->childs)
@@ -156,5 +156,5 @@ ByteCodeDebugger::CommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext
             g_Log.eol();
     }
 
-    return ByteCodeDebugger::CommandResult::Continue;
+    return BcDbgCommandResult::Continue;
 }

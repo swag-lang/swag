@@ -8,6 +8,13 @@ struct ComputedValue;
 struct Utf8;
 enum class CompilerAstKind;
 
+enum class BcDbgCommandResult
+{
+    Break,
+    Continue,
+    EvalDefault,
+};
+
 struct ByteCodeDebugger
 {
     static constexpr const char* COLOR_TYPE    = Log::VDarkCyan;
@@ -31,18 +38,11 @@ struct ByteCodeDebugger
         bool print0x  = true;
     };
 
-    enum class CommandResult
-    {
-        Break,
-        Continue,
-        EvalDefault,
-    };
-
-#define CHECK_CMD_RESULT(__cmd)                 \
-    auto __result = __cmd;                      \
-    if (__result == CommandResult::Break)       \
-        break;                                  \
-    if (__result == CommandResult::EvalDefault) \
+#define CHECK_CMD_RESULT(__cmd)                      \
+    auto __result = __cmd;                           \
+    if (__result == BcDbgCommandResult::Break)       \
+        break;                                       \
+    if (__result == BcDbgCommandResult::EvalDefault) \
         goto evalDefault;
 
     template<typename T>
@@ -78,12 +78,18 @@ struct ByteCodeDebugger
     static void printSourceLines(SourceFile* file, SourceLocation* curLocation, uint32_t offset = 3);
     static void printInstructions(ByteCodeRunContext* context, ByteCode* bc, ByteCodeInstruction* ip, int num = 1);
 
-    static CommandResult cmdExecute(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
-    static CommandResult cmdInfoFuncs(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
-    static CommandResult cmdInfoModules(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
-    static CommandResult cmdInfoLocals(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
-    static CommandResult cmdInfoRegs(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
-    static CommandResult cmdInfoArgs(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
+    static BcDbgCommandResult cmdExecute(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
+    static BcDbgCommandResult cmdInfoFuncs(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
+    static BcDbgCommandResult cmdInfoModules(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
+    static BcDbgCommandResult cmdInfoLocals(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
+    static BcDbgCommandResult cmdInfoRegs(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
+    static BcDbgCommandResult cmdInfoArgs(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
+    static BcDbgCommandResult cmdStep(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
+    static BcDbgCommandResult cmdNext(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
+    static BcDbgCommandResult cmdFinish(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
+    static BcDbgCommandResult cmdContinue(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
+    static BcDbgCommandResult cmdJump(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
+    static BcDbgCommandResult cmdUntil(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
 
     static bool getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN);
     static void printContextInstruction(ByteCodeRunContext* context, bool force = false);

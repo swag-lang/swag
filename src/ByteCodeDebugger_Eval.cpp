@@ -180,12 +180,12 @@ bool ByteCodeDebugger::evalExpression(ByteCodeRunContext* context, const Utf8& e
     return evalDynExpression(context, expr, res, CompilerAstKind::Expression, silent);
 }
 
-ByteCodeDebugger::CommandResult ByteCodeDebugger::cmdExecute(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdExecute(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() < 2)
-        return ByteCodeDebugger::CommandResult::EvalDefault;
+        return BcDbgCommandResult::EvalDefault;
 
     EvaluateResult res;
     evalDynExpression(context, cmdExpr, res, CompilerAstKind::EmbeddedInstruction);
-    return ByteCodeDebugger::CommandResult::Continue;
+    return BcDbgCommandResult::Continue;
 }
