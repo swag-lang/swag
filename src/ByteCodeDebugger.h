@@ -59,6 +59,10 @@ struct ByteCodeDebugger
     static void appendLiteralValueProtected(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr);
 
     static void printMemory(ByteCodeRunContext* context, const Utf8& arg);
+    static void printWhere(ByteCodeRunContext* context);
+    static void printSourceLines(SourceFile* file, SourceLocation* curLocation, int startLine, int endLine);
+    static void printSourceLines(SourceFile* file, SourceLocation* curLocation, uint32_t offset = 3);
+    static void printInstructions(ByteCodeRunContext* context, ByteCode* bc, ByteCodeInstruction* ip, int num = 1);
 
     static bool getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN);
     static void printContextInstruction(ByteCodeRunContext* context, bool force = false);
