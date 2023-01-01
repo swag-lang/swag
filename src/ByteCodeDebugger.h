@@ -123,6 +123,7 @@ struct ByteCodeDebugger
     static bool step(ByteCodeRunContext* context);
 
     static void printHelp();
+    static void printHelp(const BcDbgCommand& cmd);
 
     static vector<BcDbgCommand> commands;
 };

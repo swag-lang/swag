@@ -2,36 +2,45 @@
 #include "Log.h"
 #include "ByteCodeDebugger.h"
 
+void ByteCodeDebugger::printHelp(const BcDbgCommand& cmd)
+{
+    Utf8 line;
+    line.clear();
+
+    line += " ";
+    line += cmd.shortname;
+    line += " ";
+
+    while (line.length() < 4)
+        line += " ";
+    line += cmd.name;
+    line += " ";
+
+    while (line.length() < 14)
+        line += " ";
+    line += cmd.args;
+    line += " ";
+
+    while (line.length() < 44)
+        line += " ";
+    line += cmd.help;
+
+    g_Log.print(line);
+    g_Log.eol();
+}
+
 void ByteCodeDebugger::printHelp()
 {
     g_Log.setColor(LogColor::Gray);
-
-    Utf8 line;
     for (auto& c : commands)
-    {
-        line.clear();
-
-        line += " ";
-        line += c.shortname;
-        while (line.length() < 4)
-            line += " ";
-
-        line += c.name;
-        while (line.length() < 15)
-            line += " ";
-
-        line += c.args;
-        while (line.length() < 45)
-            line += " ";
-
-        line += c.help;
-        g_Log.print(line);
-        g_Log.eol();
-    }
+        printHelp(c);
 }
 
 BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
+    if (cmds.size() > 1)
+        return BcDbgCommandResult::BadArguments;
+
     printHelp();
     return BcDbgCommandResult::Continue;
 }
