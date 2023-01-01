@@ -1004,7 +1004,7 @@ static void checkBreakpoints(ByteCodeRunContext* context)
 
         if (bkp.type == ByteCodeRunContext::DebugBkpType::FuncName)
         {
-            if (context->bc->node && (context->bc->node->token.text == bkp.name || context->bc->name == bkp.name))
+            if ((context->ip == context->bc->out) && (context->bc->name == bkp.name))
             {
                 if (!bkp.autoDisabled)
                 {
@@ -1019,7 +1019,7 @@ static void checkBreakpoints(ByteCodeRunContext* context)
                     break;
                 }
             }
-            else if (context->bc->node && context->bc->node->token.text != bkp.name && context->bc->name != bkp.name)
+            else
             {
                 bkp.autoDisabled = false;
             }
@@ -1053,14 +1053,21 @@ static void checkBreakpoints(ByteCodeRunContext* context)
             uint32_t offset = (uint32_t) (context->ip - context->bc->out);
             if (offset == bkp.line)
             {
-                g_Log.printColor(Fmt("#### breakpoint hit at instruction '%d' ####\n", bkp.line), LogColor::Magenta);
-                context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
-                context->debugOn       = true;
-                if (bkp.autoRemove)
-                    context->debugBreakpoints.erase(it);
-                else
-                    bkp.autoDisabled = true;
-                break;
+                if (!bkp.autoDisabled)
+                {
+                    g_Log.printColor(Fmt("#### breakpoint hit at instruction '%d' ####\n", bkp.line), LogColor::Magenta);
+                    context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
+                    context->debugOn       = true;
+                    if (bkp.autoRemove)
+                        context->debugBreakpoints.erase(it);
+                    else
+                        bkp.autoDisabled = true;
+                    break;
+                }
+            }
+            else
+            {
+                bkp.autoDisabled = false;
             }
         }
     }
@@ -1629,7 +1636,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     {
                         if (filter.empty() || bc->name.find(filter) != -1)
                         {
-                            g_Log.print(Fmt("%s ", bc->name.c_str()));
+                            g_Log.print(Fmt("%s%s%s ", COLOR_NAME, bc->name.c_str(), COLOR_DEFAULT));
                             SourceFile*     bcFile;
                             SourceLocation* bcLocation;
                             ByteCode::getLocation(bc, bc->out, &bcFile, &bcLocation);
