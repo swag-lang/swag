@@ -222,7 +222,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
         INHERIT(forNode, ATTRIBUTE_SAFETY_CAST_ON | ATTRIBUTE_SAFETY_CAST_OFF);
         INHERIT(forNode, ATTRIBUTE_SAFETY_MATH_ON | ATTRIBUTE_SAFETY_MATH_OFF);
         INHERIT(forNode, ATTRIBUTE_SAFETY_OVERFLOW_ON | ATTRIBUTE_SAFETY_OVERFLOW_OFF);
-        INHERIT(forNode, ATTRIBUTE_SAFETY_SWITCH_ON | ATTRIBUTE_SAFETY_SWITCH_OFF);
+        INHERIT(forNode, ATTRIBUTE_SAFETY_RANGE_ON | ATTRIBUTE_SAFETY_RANGE_OFF);
 
         INHERIT(forNode, ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
         INHERIT(forNode, ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
@@ -388,7 +388,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                     flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_OVERFLOW_ON : ATTRIBUTE_SAFETY_OVERFLOW_OFF;
                     flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_MATH_ON : ATTRIBUTE_SAFETY_MATH_OFF;
                     flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_CAST_ON : ATTRIBUTE_SAFETY_CAST_OFF;
-                    flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_SWITCH_ON : ATTRIBUTE_SAFETY_SWITCH_OFF;
+                    flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_RANGE_ON : ATTRIBUTE_SAFETY_RANGE_OFF;
                 }
 
                 for (auto& w : what)
@@ -404,10 +404,10 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                         flags &= ~(ATTRIBUTE_SAFETY_OVERFLOW_ON | ATTRIBUTE_SAFETY_OVERFLOW_OFF);
                         flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_OVERFLOW_ON : ATTRIBUTE_SAFETY_OVERFLOW_OFF;
                     }
-                    else if (w == g_LangSpec->name_switch)
+                    else if (w == g_LangSpec->name_range)
                     {
-                        flags &= ~(ATTRIBUTE_SAFETY_SWITCH_ON | ATTRIBUTE_SAFETY_SWITCH_OFF);
-                        flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_SWITCH_ON : ATTRIBUTE_SAFETY_SWITCH_OFF;
+                        flags &= ~(ATTRIBUTE_SAFETY_RANGE_ON | ATTRIBUTE_SAFETY_RANGE_OFF);
+                        flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_RANGE_ON : ATTRIBUTE_SAFETY_RANGE_OFF;
                     }
                     else if (w == g_LangSpec->name_math)
                     {

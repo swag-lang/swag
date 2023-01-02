@@ -618,7 +618,7 @@ void initErrors()
     SWAG_ERROR(Err0028, "the `Swag.Strict` attribute should only be used on a type alias");
     SWAG_ERROR(Err0159, "the `Swag.Tls` and `Swag.Compiler` attributes are exclusive");
     SWAG_ERROR(Err0601, "the `Swag.Using` is empty");
-    SWAG_ERROR(Err0616, "the `default` statement should be removed in a switch marked with `Swag.Complete`");
+    SWAG_ERROR(Err0616, "unexpected `default` statement in a switch marked with `Swag.Complete`");
     SWAG_ERROR(Err0126, "the `opSlice` special function should return a string or a slice (`%s` provided)");
     SWAG_ERROR(Err0771, "the `retval` type should not be used in a function that returns nothing");
     SWAG_ERROR(Err0769, "the `retval` type should only be used in a function body");
@@ -964,7 +964,7 @@ void initErrors()
     SWAG_ERROR(Hlp0006, "to access an array with multiple dimensions, the syntax is [x, y], not [x][y]");
     SWAG_ERROR(Hlp0024, "to declare a multi dimensional array, syntax is [N1, N2, ...] and not [N1][N2][...]");
     SWAG_ERROR(Hlp0023, "valid modes are `defer(err)` and `defer(noerr)`");
-    SWAG_ERROR(Hlp0011, "valid safety values are `boundcheck`, `overflow`, `math`, `switch` and `cast`");
+    SWAG_ERROR(Hlp0011, "valid safety values are `boundcheck`, `overflow`, `math`, `range` and `cast`");
     SWAG_ERROR(Hlp0018, "when the parameter types of a lambda are inferred, the return type will be inferred too");
     SWAG_ERROR(Hlp0003, "you can affect a lambda to a closure type, but not the other way around");
     SWAG_ERROR(Hlp0033, "you can unpack a variable with `?` if you don't want to retreive it");

@@ -36,9 +36,9 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
         {
             node->computedValue->reg.b = module->mustEmitSafety(node, ATTRIBUTE_SAFETY_OVERFLOW_ON, ATTRIBUTE_SAFETY_OVERFLOW_OFF);
         }
-        else if (w == g_LangSpec->name_switch)
+        else if (w == g_LangSpec->name_range)
         {
-            node->computedValue->reg.b = module->mustEmitSafety(node, ATTRIBUTE_SAFETY_SWITCH_ON, ATTRIBUTE_SAFETY_SWITCH_OFF);
+            node->computedValue->reg.b = module->mustEmitSafety(node, ATTRIBUTE_SAFETY_RANGE_ON, ATTRIBUTE_SAFETY_RANGE_OFF);
         }
         else if (w == g_LangSpec->name_math)
         {

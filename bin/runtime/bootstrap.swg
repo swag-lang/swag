@@ -552,7 +552,7 @@ namespace Swag
         const SafetyOF  = 0x0000200000000000    // "overflow"
         const SafetyMT  = 0x0000400000000000    // "math"
         const SafetyCA  = 0x0000800000000000    // "cast"
-        const SafetySW  = 0x0001000000000000    // "switch"
+        const SafetyRA  = 0x0001000000000000    // "range"
         const SafetyAll = 0x000FF00000000000
         safetyGuards:   u64 = SafetyAll
 

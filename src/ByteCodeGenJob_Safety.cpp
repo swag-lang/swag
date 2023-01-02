@@ -132,7 +132,7 @@ bool ByteCodeGenJob::emitSafetySwitchDefault(ByteCodeGenContext* context)
 {
     if (context->contextFlags & BCC_FLAG_NOSAFETY)
         return true;
-    if (!context->sourceFile->module->mustEmitSafety(context->node->parent, ATTRIBUTE_SAFETY_SWITCH_ON, ATTRIBUTE_SAFETY_SWITCH_OFF))
+    if (!context->sourceFile->module->mustEmitSafety(context->node->parent, ATTRIBUTE_SAFETY_RANGE_ON, ATTRIBUTE_SAFETY_RANGE_OFF))
         return true;
     emitInstruction(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) ByteCodeGenJob::safetyMsg(SafetyMsg::SwitchComplete);
     return true;
