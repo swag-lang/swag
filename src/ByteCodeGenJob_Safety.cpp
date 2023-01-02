@@ -20,6 +20,9 @@ const char* ByteCodeGenJob::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo*
     {
         switch (msg)
         {
+        case SafetyMsg::InvalidBool:
+            typedMsg[m][0][0] = Err(Saf0020);
+            break;
         case SafetyMsg::NotZero:
             typedMsg[m][0][0] = Err(Saf0007);
             break;
@@ -135,6 +138,29 @@ bool ByteCodeGenJob::emitSafetySwitchDefault(ByteCodeGenContext* context)
     if (!context->sourceFile->module->mustEmitSafety(context->node->parent, ATTRIBUTE_SAFETY_RANGE_ON, ATTRIBUTE_SAFETY_RANGE_OFF))
         return true;
     emitInstruction(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) ByteCodeGenJob::safetyMsg(SafetyMsg::SwitchComplete);
+    return true;
+}
+
+bool ByteCodeGenJob::emitSafetyValue(ByteCodeGenContext* context, int r, TypeInfo* typeInfo)
+{
+    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_RANGE_ON, ATTRIBUTE_SAFETY_RANGE_OFF))
+        return true;
+
+    PushICFlags ic(context, BCI_SAFETY);
+    typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
+
+    if (typeInfo->isNative(NativeTypeKind::Bool))
+    {
+        auto r0     = reserveRegisterRC(context);
+        auto inst   = emitInstruction(context, ByteCodeOp::BinOpBitmaskAnd8, r, 0, r0);
+        inst->b.u32 = 0xFE;
+        inst->flags |= BCI_IMM_B;
+        emitInstruction(context, ByteCodeOp::JumpIfZero8, r0)->b.s32   = 1;
+        emitInstruction(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) ByteCodeGenJob::safetyMsg(SafetyMsg::InvalidBool);
+        freeRegisterRC(context, r0);
+        return true;
+    }
+
     return true;
 }
 

@@ -69,6 +69,7 @@ void initErrors()
     SWAG_ERROR(Saf0017, "[safety] integer overflow when taking the negative value of type `%s`");
     SWAG_ERROR(Saf0018, "[safety] truncated bits when casting expression from `%s` to `%s`");
     SWAG_ERROR(Saf0019, "[safety] unexpected switch value (switch is marked with `Swag.Complete`)");
+    SWAG_ERROR(Saf0020, "[safety] invalid boolean value (neither `true` or `false`)");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

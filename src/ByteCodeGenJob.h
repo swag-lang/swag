@@ -60,6 +60,7 @@ enum class SafetyMsg
     BadSlicingUp,
     BadSlicingDown,
     NotZero,
+    InvalidBool,
     Count,
 };
 
@@ -318,6 +319,7 @@ struct ByteCodeGenJob : public Job
     static bool emitSwitchCaseBeforeCase(ByteCodeGenContext* context);
     static bool emitSwitchCaseBeforeBlock(ByteCodeGenContext* context);
     static bool emitSafetySwitchDefault(ByteCodeGenContext* context);
+    static bool emitSafetyValue(ByteCodeGenContext* context, int r0, TypeInfo* typeInfo);
     static bool emitSwitchCaseAfterBlock(ByteCodeGenContext* context);
     static bool emitGetErr(ByteCodeGenContext* context);
     static bool emitIndex(ByteCodeGenContext* context);

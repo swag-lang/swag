@@ -299,6 +299,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             auto inst   = emitInstruction(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
             inst->b.u64 = resolved->computedValue.storageOffset;
             inst->c.u64 = resolved->storageIndex;
+            SWAG_CHECK(emitSafetyValue(context, node->resultRegisterRC, node->typeInfo));
         }
 
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
@@ -367,6 +368,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         {
             SWAG_ASSERT(typeInfo->sizeOf <= sizeof(uint64_t));
             emitGetFromSeg(context, resolved->computedValue.storageSegment, resolved->computedValue.storageOffset, node->resultRegisterRC);
+            SWAG_CHECK(emitSafetyValue(context, node->resultRegisterRC, node->typeInfo));
         }
 
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
@@ -458,6 +460,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             }
 
             inst->b.u64 = resolved->computedValue.storageOffset;
+            SWAG_CHECK(emitSafetyValue(context, node->resultRegisterRC, node->typeInfo));
         }
 
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;

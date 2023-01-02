@@ -47,8 +47,11 @@ closure/lambda, pouvoir zaper un paramètre avec ? => closure|&total|(?, depth) 
 STRANGE
 ****************************************
 
-- Syntax étrange macro & alias : Utf8.visitRunes(|r| str)
-- tuple, {x, y: s32} pas possible, car 'x' peut être un type seul {s32, x: s32}
+-------------------------------------
+Syntax étrange macro & alias : Utf8.visitRunes(|r| str)
+-------------------------------------
+tuple, {x, y: s32} pas possible, car 'x' peut être un type seul {s32, x: s32}
+-------------------------------------
 
 
 
@@ -69,7 +72,9 @@ TODO
 ****************************************
 
 -------------------------------------
-DebugAllocator, double free detection
+safety, flags in Swag.Safety plutôt que string ?
+-------------------------------------
+DebugAllocator
 -------------------------------------
 safety, sanitize access to stack/memory
 -------------------------------------
@@ -90,6 +95,7 @@ llvm debug, pas à jour
 - variables local en #[Swag.global]
 - mettre les constants
 - mettre les enums (void CodeViewDebug::emitStaticConstMemberList())
+-------------------------------------
 
 
 
@@ -104,7 +110,7 @@ OPTIMS
 ****************************************
 
 -------------------------------------
-setStack sans lecture avant return
+setStack/clearstack etc... sans lecture avant return
 -------------------------------------
 pass orEq/andEq/xOrEq/Div/shift etc en mode Stack StackStack
 -------------------------------------

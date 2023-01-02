@@ -1,8 +1,10 @@
-enum A { R; G; B; }
+#global testerror
 
-//#[Swag.PrintBc]
+#[Swag.Safety("range", true)]
 #test
 {
-    x := cast(A) 4
-    @print(x)
+    x := true
+    ptr := cast(*u8) &x
+    dref ptr += 1
+    @assert(x != true)
 }

@@ -248,6 +248,7 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
         return Report::internalError(context->node, "emitTypeDeRef, size not supported");
     }
 
+    SWAG_CHECK(emitSafetyValue(context, r0, typeInfo));
     return true;
 }
 
