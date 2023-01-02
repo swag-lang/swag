@@ -3,6 +3,6 @@
 {
     x := 0
     ptr := &x
-    @breakpoint()
-    @print(x)
+    //@breakpoint()
+    //@print(x)
 }
