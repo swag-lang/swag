@@ -586,6 +586,40 @@ void X64Gen::emit_SetE()
     concat.addU8(0xC0);
 }
 
+void X64Gen::emit_SetEP()
+{
+    // sete al
+    concat.addU8(0x0F);
+    concat.addU8(0x94);
+    concat.addU8(0xC0);
+
+    // setnp ah
+    concat.addU8(0x0F);
+    concat.addU8(0x9B);
+    concat.addU8(0xC4);
+
+    // and al, ah
+    concat.addU8(0x20);
+    concat.addU8(0xE0);
+}
+
+void X64Gen::emit_SetNEP()
+{
+    // setne al
+    concat.addU8(0x0F);
+    concat.addU8(0x95);
+    concat.addU8(0xC0);
+
+    // setp ah
+    concat.addU8(0x0F);
+    concat.addU8(0x9A);
+    concat.addU8(0xC4);
+
+    // or al, ah
+    concat.addU8(0x08);
+    concat.addU8(0xE0);
+}
+
 void X64Gen::emit_SetG()
 {
     concat.addU8(0x0F);
@@ -801,7 +835,8 @@ void X64Gen::emit_CmpF32_Indirect(uint32_t offsetStack, uint8_t reg, uint8_t mem
 {
     SWAG_ASSERT(reg < R8 && memReg < R8);
     concat.addU8(0x0F);
-    concat.addU8(0x2F);
+    //concat.addU8(0x2F);
+    concat.addU8(0x2E);
     emit_ModRM(offsetStack, reg & 0b111, memReg & 0b111);
 }
 

@@ -900,6 +900,30 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
 
             break;
 
+        case ByteCodeOp::JumpIfEqualF32:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfNotEqualF32);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+                break;
+            }
+
+            if (ip[1].op == ByteCodeOp::Ret &&
+                context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfNotEqualF32);
+                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                setNop(context, ip + 1);
+                break;
+            }
+
+            break;
+
         case ByteCodeOp::JumpIfEqual64:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
@@ -917,6 +941,30 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !(ip[1].flags & BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotEqual64);
+                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                setNop(context, ip + 1);
+                break;
+            }
+
+            break;
+
+        case ByteCodeOp::JumpIfEqualF64:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfNotEqualF64);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+                break;
+            }
+
+            if (ip[1].op == ByteCodeOp::Ret &&
+                context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfNotEqualF64);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;

@@ -303,6 +303,18 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             context->ip += ip->b.s32;
         break;
     }
+    case ByteCodeOp::JumpIfNotEqualF32:
+    {
+        if (IMMA_F32(ip) != IMMC_F32(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::JumpIfNotEqualF64:
+    {
+        if (IMMA_F64(ip) != IMMC_F64(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
     case ByteCodeOp::JumpIfEqual8:
     {
         if (IMMA_U8(ip) == IMMC_U8(ip))
@@ -330,6 +342,18 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::JumpIfEqual64:
     {
         if (IMMA_U64(ip) == IMMC_U64(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::JumpIfEqualF32:
+    {
+        if (IMMA_F32(ip) == IMMC_F32(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::JumpIfEqualF64:
+    {
+        if (IMMA_F64(ip) == IMMC_F64(ip))
             context->ip += ip->b.s32;
         break;
     }
@@ -2205,6 +2229,16 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         registersRC[ip->c.u32].b = IMMA_U64(ip) == IMMB_U64(ip);
         break;
     }
+    case ByteCodeOp::CompareOpEqualF32:
+    {
+        registersRC[ip->c.u32].b = IMMA_F32(ip) == IMMB_F32(ip);
+        break;
+    }
+    case ByteCodeOp::CompareOpEqualF64:
+    {
+        registersRC[ip->c.u32].b = IMMA_F64(ip) == IMMB_F64(ip);
+        break;
+    }
 
     case ByteCodeOp::CompareOpNotEqual8:
     {
@@ -2224,6 +2258,16 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::CompareOpNotEqual64:
     {
         registersRC[ip->c.u32].b = IMMA_U64(ip) != IMMB_U64(ip);
+        break;
+    }
+    case ByteCodeOp::CompareOpNotEqualF32:
+    {
+        registersRC[ip->c.u32].b = IMMA_F32(ip) != IMMB_F32(ip);
+        break;
+    }
+    case ByteCodeOp::CompareOpNotEqualF64:
+    {
+        registersRC[ip->c.u32].b = IMMA_F64(ip) != IMMB_F64(ip);
         break;
     }
 

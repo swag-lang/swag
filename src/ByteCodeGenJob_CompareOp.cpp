@@ -200,16 +200,20 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
             return true;
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
-        case NativeTypeKind::F32:
         case NativeTypeKind::Rune:
             emitInstruction(context, ByteCodeOp::CompareOpEqual32, r0, r1, r2);
+            return true;
+        case NativeTypeKind::F32:
+            emitInstruction(context, ByteCodeOp::CompareOpEqualF32, r0, r1, r2);
             return true;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-        case NativeTypeKind::F64:
             emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
+            return true;
+        case NativeTypeKind::F64:
+            emitInstruction(context, ByteCodeOp::CompareOpEqualF64, r0, r1, r2);
             return true;
         case NativeTypeKind::String:
             if (right->semFlags & AST_SEM_TYPE_IS_NULL)
@@ -313,16 +317,20 @@ bool ByteCodeGenJob::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode*
             return true;
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
-        case NativeTypeKind::F32:
         case NativeTypeKind::Rune:
             emitInstruction(context, ByteCodeOp::CompareOpNotEqual32, r0, r1, r2);
+            return true;
+        case NativeTypeKind::F32:
+            emitInstruction(context, ByteCodeOp::CompareOpNotEqualF32, r0, r1, r2);
             return true;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-        case NativeTypeKind::F64:
             emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0, r1, r2);
+            return true;
+        case NativeTypeKind::F64:
+            emitInstruction(context, ByteCodeOp::CompareOpNotEqualF64, r0, r1, r2);
             return true;
         case NativeTypeKind::String:
             if (right->semFlags & AST_SEM_TYPE_IS_NULL)

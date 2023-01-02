@@ -2575,6 +2575,22 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r0);
             break;
         }
+        case ByteCodeOp::CompareOpEqualF32:
+        {
+            MK_BINOPF32_CAB();
+            auto v0 = builder.CreateFCmpOEQ(r1, r2);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CompareOpEqualF64:
+        {
+            MK_BINOPF64_CAB();
+            auto v0 = builder.CreateFCmpOEQ(r1, r2);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
 
         case ByteCodeOp::CompareOpNotEqual8:
         {
@@ -2605,6 +2621,22 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpNE(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CompareOpNotEqualF32:
+        {
+            MK_BINOPF32_CAB();
+            auto v0 = builder.CreateFCmpUNE(r1, r2);
+            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CompareOpNotEqualF64:
+        {
+            MK_BINOPF64_CAB();
+            auto v0 = builder.CreateFCmpUNE(r1, r2);
+            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2882,6 +2914,28 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             blockIsClosed = true;
             break;
         }
+        case ByteCodeOp::JumpIfNotEqualF32:
+        {
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto r0         = MK_IMMA_F32();
+            auto r1         = MK_IMMC_F32();
+            auto b0         = builder.CreateFCmpUNE(r0, r1);
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
+            break;
+        }
+        case ByteCodeOp::JumpIfNotEqualF64:
+        {
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto r0         = MK_IMMA_F64();
+            auto r1         = MK_IMMC_F64();
+            auto b0         = builder.CreateFCmpUNE(r0, r1);
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
+            break;
+        }
         case ByteCodeOp::JumpIfEqual8:
         {
             auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
@@ -2915,7 +2969,39 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             blockIsClosed = true;
             break;
         }
-
+        case ByteCodeOp::JumpIfEqual64:
+        {
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto r0         = MK_IMMA_64();
+            auto r1         = MK_IMMC_64();
+            auto b0         = builder.CreateICmpEQ(r0, r1);
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
+            break;
+        }
+        case ByteCodeOp::JumpIfEqualF32:
+        {
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto r0         = MK_IMMA_F32();
+            auto r1         = MK_IMMC_F32();
+            auto b0         = builder.CreateFCmpOEQ(r0, r1);
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
+            break;
+        }
+        case ByteCodeOp::JumpIfEqualF64:
+        {
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto r0         = MK_IMMA_F64();
+            auto r1         = MK_IMMC_F64();
+            auto b0         = builder.CreateFCmpOEQ(r0, r1);
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
+            break;
+        }
         case ByteCodeOp::IncJumpIfEqual64:
         {
             {
@@ -2932,18 +3018,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 builder.CreateCondBr(b0, labelTrue, labelFalse);
                 blockIsClosed = true;
             }
-            break;
-        }
-
-        case ByteCodeOp::JumpIfEqual64:
-        {
-            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-            auto r0         = MK_IMMA_64();
-            auto r1         = MK_IMMC_64();
-            auto b0         = builder.CreateICmpEQ(r0, r1);
-            builder.CreateCondBr(b0, labelTrue, labelFalse);
-            blockIsClosed = true;
             break;
         }
 

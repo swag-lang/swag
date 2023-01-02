@@ -471,6 +471,8 @@ struct X64Gen
     void emit_SetB();
     void emit_SetBE();
     void emit_SetE();
+    void emit_SetEP();
+    void emit_SetNEP();
     void emit_SetG();
     void emit_SetGE();
     void emit_SetL();
