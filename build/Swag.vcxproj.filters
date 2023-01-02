@@ -506,7 +506,7 @@
     <ClCompile Include="..\src\ByteCodeDebugger_Eval.cpp">
       <Filter>Backend\ByteCode\Debugger</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ByteCodeDebugger_Bkp.cpp">
+    <ClCompile Include="..\src\ByteCodeDebugger_Break.cpp">
       <Filter>Backend\ByteCode\Debugger</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeDebugger_Value.cpp">

@@ -30,56 +30,58 @@ void ByteCodeDebugger::setup()
     commands.push_back({"<tab>",            "",  "",        "contextual completion of the current word"});
     commands.push_back({});
 
-    commands.push_back({"step",     "s", "",                    "runs to the next line", cmdStep});
-    commands.push_back({"next",     "n", "",                    "like 'step', but does not enter functions or inlined code", cmdNext});
-    commands.push_back({"finish",   "f", "",                    "runs until the current function is done", cmdFinish});
-    commands.push_back({"continue", "c", "",                    "runs until another breakpoint is reached", cmdContinue});
-    commands.push_back({"until",    "u", "",                    "runs to the given line or instruction in the current function (depends on 'bcmode')", cmdUntil});
-    commands.push_back({"jump",     "j", "",                    "jump to the given line or instruction in the current function (depends on 'bcmode')", cmdJump});
-    commands.push_back({});
-
-    commands.push_back({ "execute",  "e", "<stmt>",              "execute the code statement <stmt> in the current context", cmdExecute });
-    commands.push_back({ "print",    "p", "[@format] <expr>",    "print the result of the expression <expr> in the current context (format is the same as 'x' command)", cmdPrint });
-    commands.push_back({});
-
-    commands.push_back({ "x",        "",  "[@format] [@num] <address>",     "print memory (format = s8|s16|s32|s64|u8|u16|u32|u64|x8|x16|x32|x64|f32|f64)", cmdMemory });
-    commands.push_back({});
-
-    commands.push_back({"list",     "l", "[num]",               "print the current source code line and [num] lines around", cmdList});
-    commands.push_back({"ll",       "",  "[name]",              "print the current function (or function [name]) source code", cmdLongList });
-    commands.push_back({});
-
-    commands.push_back({"info",     "",  "locals",              "print all current local variables", cmdInfo});
-    commands.push_back({"info",     "",  "args",                "print all current function arguments", cmdInfo});
-    commands.push_back({"info",     "",  "funcs [filter]",      "print all functions which contains [filter] in their names", cmdInfo});
-    commands.push_back({"info",     "",  "modules",             "print all modules", cmdInfo});
-    commands.push_back({"info",     "",  "regs [@format]",      "print all registers (format is the same as 'x' command)", cmdInfo});
-    commands.push_back({"where",    "w", "",                    "print contextual informations", cmdWhere});
-    commands.push_back({});
-
-    commands.push_back({"break",    "",   "",                   "print all breakpoints", cmdBreakpoint});
-    commands.push_back({"break",    "",   "func <name>",        "add breakpoint when entering function <name> in the current file", cmdBreakpoint});
-    commands.push_back({"break",    "",   "<line>",             "add breakpoint in the current source file at <line>", cmdBreakpoint});
-    commands.push_back({"break",    "",   "<file>:<line>",      "add breakpoint in <file> at <line>", cmdBreakpoint});
-    commands.push_back({"break",    "",   "clear",              "remove all breakpoints", cmdBreakpoint});
-    commands.push_back({"break",    "",   "clear <num>",        "remove breakpoint <num>", cmdBreakpoint});
-    commands.push_back({"break",    "",   "enable <num>",       "enable breakpoint <num>", cmdBreakpoint});
-    commands.push_back({"break",    "",   "disable <num>",      "disablebreakpoint <num>", cmdBreakpoint});
-    commands.push_back({});
-
-    commands.push_back({"bt",       "",   "",                   "backtrace, print callstack", cmdBackTrace});
-    commands.push_back({"up",       "u",  "[num]",              "move stack frame <num> level up", cmdFrameUp});
-    commands.push_back({"down",     "d",  "[num]",              "move stack frame <num> level down", cmdFrameDown});
-    commands.push_back({"frame",    "",   "<num>",              "set stack frame to level <num>", cmdFrame});
-    commands.push_back({});
-
-    commands.push_back({"bcmode",   "",   "",                   "swap between bytecode mode and source code mode", cmdBcMode});
-    commands.push_back({"i",        "",   "[num]",              "print the current bytecode instruction and [num] instructions around", cmdInstruction});
-    commands.push_back({"ii",       "",   "",                   "print the current function bytecode", cmdInstructionDump});
-    commands.push_back({});
-
-    commands.push_back({"help",     "?",  "",                   "print this list of commands", cmdHelp});
-    commands.push_back({"quit",     "q",  "",                   "quit the compiler", cmdQuit});
+    commands.push_back({"step",        "s",    "",                    "runs to the next line", cmdStep});
+    commands.push_back({"next",        "n",    "",                    "like 'step', but does not enter functions or inlined code", cmdNext});
+    commands.push_back({"finish",      "f",    "",                    "runs until the current function is done", cmdFinish});
+    commands.push_back({"continue",    "c",    "",                    "runs until another breakpoint is reached", cmdContinue});
+    commands.push_back({"until",       "",     "",                    "runs to the given line or instruction in the current function (depends on 'bcmode')", cmdUntil});
+    commands.push_back({"jump",        "j",    "",                    "jump to the given line or instruction in the current function (depends on 'bcmode')", cmdJump});
+    commands.push_back({});                    
+                                               
+    commands.push_back({ "execute",    "e",    "<stmt>",              "execute the code statement <stmt> in the current context", cmdExecute });
+    commands.push_back({ "print",      "p",    "[@format] <expr>",    "print the result of the expression <expr> in the current context (format is the same as 'x' command)", cmdPrint });
+    commands.push_back({});                    
+                                               
+    commands.push_back({ "x",          "",     "[@format] [@num] <address>",     "print memory (format = s8|s16|s32|s64|u8|u16|u32|u64|x8|x16|x32|x64|f32|f64)", cmdMemory });
+    commands.push_back({});                    
+                                               
+    commands.push_back({"list",        "l",    "[num]",               "print the current source code line and [num] lines around", cmdList});
+    commands.push_back({"ll",          "",     "[name]",              "print the current function (or function [name]) source code", cmdLongList });
+    commands.push_back({});                    
+                                               
+    commands.push_back({"info",        "",     "locals",              "print all current local variables", cmdInfo});
+    commands.push_back({"info",        "",     "args",                "print all current function arguments", cmdInfo});
+    commands.push_back({"info",        "",     "(br)eakpoints",       "print all breakpoints", cmdInfo });
+    commands.push_back({"info",        "",     "modules",             "print all modules", cmdInfo});
+    commands.push_back({"info",        "",     "funcs [filter]",      "print all functions which contains [filter] in their names", cmdInfo});
+    commands.push_back({"info",        "",     "regs  [@format]",     "print all registers (format is the same as 'x' command)", cmdInfo});
+    commands.push_back({"where",       "w",    "",                    "print contextual informations", cmdWhere});
+    commands.push_back({});            
+                                       
+    commands.push_back({"break",       "br",   "",                    "print all breakpoints", cmdBreak});
+    commands.push_back({"break",       "br",   "func <name>",         "add breakpoint when entering function <name>", cmdBreak});
+    commands.push_back({"break",       "br",   "line <line>",         "add breakpoint in the current source file at <line>", cmdBreak});
+    commands.push_back({"break",       "br",   "file <file> <line>",  "add breakpoint in <file> at <line>", cmdBreak});
+    commands.push_back({"break",       "br",   "clear",               "remove all breakpoints", cmdBreak});
+    commands.push_back({"break",       "br",   "clear   <num>",       "remove breakpoint <num>", cmdBreak});
+    commands.push_back({"break",       "br",   "(en)able  <num>",     "enable breakpoint <num>", cmdBreak});
+    commands.push_back({"break",       "br",   "(di)sable <num>",     "disable breakpoint <num>", cmdBreak});
+    commands.push_back({"tbreak",      "tb",   "",                    "same as 'break' except that the breakpoint will be automatically removed on hit", cmdBreak});
+    commands.push_back({});                                           
+                                                                      
+    commands.push_back({"bt",          "",     "",                    "backtrace, print callstack", cmdBackTrace});
+    commands.push_back({"up",          "u",    "[num]",               "move stack frame <num> level up", cmdFrameUp});
+    commands.push_back({"down",        "d",    "[num]",               "move stack frame <num> level down", cmdFrameDown});
+    commands.push_back({"frame",       "",     "<num>",               "set stack frame to level <num>", cmdFrame});
+    commands.push_back({});                                           
+                                                                      
+    commands.push_back({"bcmode",      "",     "",                    "swap between bytecode mode and source code mode", cmdBcMode});
+    commands.push_back({"i",           "",     "[num]",               "print the current bytecode instruction and [num] instructions around", cmdInstruction});
+    commands.push_back({"ii",          "",     "",                    "print the current function bytecode", cmdInstructionDump});
+    commands.push_back({});                                           
+                                                                      
+    commands.push_back({"help",        "?",    "",                    "print this list of commands", cmdHelp});
+    commands.push_back({"quit",        "q",    "",                    "quit the compiler", cmdQuit});
     // clang-format on
 }
 

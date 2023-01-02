@@ -414,6 +414,8 @@ SourceFile* Module::findFile(const Utf8& fileName)
     {
         if (Utf8::normalizePath(p->path) == Utf8::normalizePath(fileName.c_str()))
             return p;
+        if (Utf8::normalizePath(p->name.c_str()) == Utf8::normalizePath(fileName.c_str()))
+            return p;
     }
 
     return nullptr;

@@ -95,7 +95,7 @@ void ByteCodeDebugger::printSourceLines(SourceFile* file, SourceLocation* curLoc
         else
             g_Log.printColor("   ", LogColor::Cyan);
 
-        g_Log.printColor(Fmt("%-5u ", startLine + lineIdx), LogColor::Gray);
+        g_Log.printColor(Fmt("%-5u ", startLine + lineIdx + 1), LogColor::Gray);
 
         g_Log.printColor(l.c_str(), LogColor::Gray);
         g_Log.eol();

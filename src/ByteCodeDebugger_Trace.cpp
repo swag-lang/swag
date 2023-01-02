@@ -48,9 +48,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdContinue(ByteCodeRunContext* context, co
 
 BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
-    if (cmds.size() > 2)
+    if (cmds.size() != 2)
         return BcDbgCommandResult::BadArguments;
-    if (cmds.size() > 1 && !Utf8::isNumber(cmds[1].c_str()))
+    if (!Utf8::isNumber(cmds[1].c_str()))
         return BcDbgCommandResult::BadArguments;
 
     context->debugStackFrameOffset = 0;
@@ -81,7 +81,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const 
             SourceFile*     file;
             SourceLocation* location;
             ByteCode::getLocation(context->bc, curIp, &file, &location);
-            if (location && location->line == to)
+            if (location && location->line + 1 == to)
             {
                 context->ip         = curIp;
                 context->debugCxtIp = context->ip;
@@ -98,9 +98,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const 
 
 BcDbgCommandResult ByteCodeDebugger::cmdUntil(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
-    if (cmds.size() > 2)
+    if (cmds.size() != 2)
         return BcDbgCommandResult::BadArguments;
-    if (cmds.size() > 1 && !Utf8::isNumber(cmds[1].c_str()))
+    if (!Utf8::isNumber(cmds[1].c_str()))
         return BcDbgCommandResult::BadArguments;
 
     ByteCodeRunContext::DebugBreakpoint bkp;

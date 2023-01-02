@@ -175,6 +175,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfo(ByteCodeRunContext* context, const 
         return cmdInfoRegs(context, cmds, cmdExpr);
     if (cmds[1] == "args")
         return cmdInfoArgs(context, cmds, cmdExpr);
+    if (cmds[1] == "breakpoints" || cmds[1] == "br")
+        return cmdBreakPrint(context, cmds, cmdExpr);
 
     return BcDbgCommandResult::BadArguments;
 }
