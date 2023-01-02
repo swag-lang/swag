@@ -39,10 +39,10 @@ void ByteCodeDebugger::setup()
     commands.push_back({});                    
                                                
     commands.push_back({"execute",     "e",    "<stmt>",              "execute the code statement <stmt> in the current context", cmdExecute });
-    commands.push_back({"print",       "p",    "[@format] <expr>",    "print the result of the expression <expr> in the current context (format is the same as 'x' command)", cmdPrint });
+    commands.push_back({"print",       "p",    "[/format] <expr>",    "print the result of the expression <expr> in the current context (format is the same as 'x' command)", cmdPrint });
     commands.push_back({});                    
                                                
-    commands.push_back({"x",           "",     "[@format] [@num] <address>",     "print memory (format = s8|s16|s32|s64|u8|u16|u32|u64|x8|x16|x32|x64|f32|f64)", cmdMemory });
+    commands.push_back({"x",           "",     "[/format] [/num] <address>",     "print memory (format = s8|s16|s32|s64|u8|u16|u32|u64|x8|x16|x32|x64|f32|f64)", cmdMemory });
     commands.push_back({});                    
                                                
     commands.push_back({"list",        "l",    "[num]",               "print the current source code line and [num] lines around", cmdList});
@@ -54,7 +54,7 @@ void ByteCodeDebugger::setup()
     commands.push_back({"info",        "",     "(br)eakpoints",       "print all breakpoints", cmdInfo });
     commands.push_back({"info",        "",     "modules",             "print all modules", cmdInfo});
     commands.push_back({"info",        "",     "funcs [filter]",      "print all functions which contains [filter] in their names", cmdInfo});
-    commands.push_back({"info",        "",     "regs  [@format]",     "print all registers (format is the same as 'x' command)", cmdInfo});
+    commands.push_back({"info",        "",     "regs  [/format]",     "print all registers (format is the same as 'x' command)", cmdInfo});
     commands.push_back({"where",       "w",    "",                    "print contextual informations", cmdWhere});
     commands.push_back({});            
                                        

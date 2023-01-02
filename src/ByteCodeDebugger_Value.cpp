@@ -6,8 +6,14 @@
 
 bool ByteCodeDebugger::getValueFormat(const Utf8& cmd, ValueFormat& fmt)
 {
+    if (cmd.empty() || cmd[0] != '/')
+        return false;
+
+    auto cmd1 = cmd;
+    cmd1.remove(0, 1);
+
     // Format
-    if (cmd == "@s8")
+    if (cmd1 == "s8")
     {
         fmt.bitCount = 8;
         fmt.isSigned = true;
@@ -15,7 +21,7 @@ bool ByteCodeDebugger::getValueFormat(const Utf8& cmd, ValueFormat& fmt)
         return true;
     }
 
-    if (cmd == "@s16")
+    if (cmd1 == "s16")
     {
         fmt.bitCount = 16;
         fmt.isSigned = true;
@@ -23,7 +29,7 @@ bool ByteCodeDebugger::getValueFormat(const Utf8& cmd, ValueFormat& fmt)
         return true;
     }
 
-    if (cmd == "@s32")
+    if (cmd1 == "s32")
     {
         fmt.bitCount = 32;
         fmt.isSigned = true;
@@ -31,7 +37,7 @@ bool ByteCodeDebugger::getValueFormat(const Utf8& cmd, ValueFormat& fmt)
         return true;
     }
 
-    if (cmd == "@s64")
+    if (cmd1 == "s64")
     {
         fmt.bitCount = 64;
         fmt.isSigned = true;
@@ -39,59 +45,59 @@ bool ByteCodeDebugger::getValueFormat(const Utf8& cmd, ValueFormat& fmt)
         return true;
     }
 
-    if (cmd == "@u8")
+    if (cmd1 == "u8")
     {
         fmt.bitCount = 8;
         fmt.isHexa   = false;
         return true;
     }
 
-    if (cmd == "@u16")
+    if (cmd1 == "u16")
     {
         fmt.bitCount = 16;
         fmt.isHexa   = false;
         return true;
     }
 
-    if (cmd == "@u32")
+    if (cmd1 == "u32")
     {
         fmt.bitCount = 32;
         fmt.isHexa   = false;
         return true;
     }
 
-    if (cmd == "@u64")
+    if (cmd1 == "u64")
     {
         fmt.bitCount = 64;
         fmt.isHexa   = false;
         return true;
     }
 
-    if (cmd == "@x8")
+    if (cmd1 == "x8")
     {
         fmt.bitCount = 8;
         return true;
     }
 
-    if (cmd == "@x16")
+    if (cmd1 == "x16")
     {
         fmt.bitCount = 16;
         return true;
     }
 
-    if (cmd == "@x32")
+    if (cmd1 == "x32")
     {
         fmt.bitCount = 32;
         return true;
     }
 
-    if (cmd == "@x64")
+    if (cmd1 == "x64")
     {
         fmt.bitCount = 64;
         return true;
     }
 
-    if (cmd == "@f32")
+    if (cmd1 == "f32")
     {
         fmt.bitCount = 32;
         fmt.isFloat  = true;
@@ -99,7 +105,7 @@ bool ByteCodeDebugger::getValueFormat(const Utf8& cmd, ValueFormat& fmt)
         return true;
     }
 
-    if (cmd == "@f64")
+    if (cmd1 == "f64")
     {
         fmt.bitCount = 64;
         fmt.isFloat  = true;
