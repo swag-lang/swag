@@ -1,8 +1,8 @@
-#[Swag.Optim("", false)]
+enum A { R; G; B; }
+
+//#[Swag.PrintBc]
 #test
 {
-    x := 0
-    ptr := &x
-    //@breakpoint()
-    //@print(x)
+    x := cast(A) 4
+    @print(x)
 }

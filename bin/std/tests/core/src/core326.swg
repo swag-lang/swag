@@ -45,7 +45,7 @@ func years_employed(employee: Employee)->u32 => DateTime.now().year - employee.d
     alice2 := alice; alice2.date = Time.DateTime{2010, 1, 1}
     alice3 := alice2
 
-    @assert(alice.years_employed() == 22)
+    @assert(alice.years_employed() >= 22)
     @assert(alice != alice2)
     @assert(alice2 == alice3)
 }

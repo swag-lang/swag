@@ -28,9 +28,9 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
         return true;
     if (castFlags & (CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK))
         return true;
-    if (!fromNode->sourceFile->module->mustEmitSafetyOF(fromNode))
-        return true;
     if (!(castFlags & CASTFLAG_EXPLICIT))
+        return true;
+    if (!fromNode->sourceFile->module->mustEmitSafety(fromNode, ATTRIBUTE_SAFETY_CAST_ON, ATTRIBUTE_SAFETY_CAST_OFF))
         return true;
 
     auto msg  = ByteCodeGenJob::safetyMsg(SafetyMsg::CastTruncated, toType, fromType);
