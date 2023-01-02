@@ -21,6 +21,9 @@ void ByteCodeDebugger::printBreakpoints(ByteCodeRunContext* context)
         case ByteCodeRunContext::DebugBkpType::FuncName:
             g_Log.print(Fmt("entering function '%s'", bkp.name.c_str()));
             break;
+        case ByteCodeRunContext::DebugBkpType::FuncNameContains:
+            g_Log.print(Fmt("entering function *'%s'", bkp.name.c_str()));
+            break;
         case ByteCodeRunContext::DebugBkpType::FileLine:
             g_Log.print(Fmt("file %s, line '%d'", bkp.name.c_str(), bkp.line));
             break;
@@ -45,7 +48,33 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
         if (bkp.disabled)
             continue;
 
-        if (bkp.type == ByteCodeRunContext::DebugBkpType::FuncName)
+        switch (bkp.type)
+        {
+        case ByteCodeRunContext::DebugBkpType::FuncName:
+        {
+            if ((context->ip == context->bc->out) && (context->bc->name == bkp.name))
+            {
+                if (!bkp.autoDisabled)
+                {
+                    g_Log.printColor(Fmt("#### breakpoint hit entering function '%s' ####\n", context->bc->name.c_str()), LogColor::Magenta);
+                    context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
+                    context->debugOn       = true;
+                    bkp.autoDisabled       = true;
+                    if (bkp.autoRemove)
+                        context->debugBreakpoints.erase(it);
+                    else
+                        bkp.autoDisabled = true;
+                    return;
+                }
+            }
+            else
+            {
+                bkp.autoDisabled = false;
+            }
+            break;
+        }
+
+        case ByteCodeRunContext::DebugBkpType::FuncNameContains:
         {
             if ((context->ip == context->bc->out) && (context->bc->name.find(bkp.name) != -1))
             {
@@ -59,15 +88,17 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
                         context->debugBreakpoints.erase(it);
                     else
                         bkp.autoDisabled = true;
-                    break;
+                    return;
                 }
             }
             else
             {
                 bkp.autoDisabled = false;
             }
+            break;
         }
-        else if (bkp.type == ByteCodeRunContext::DebugBkpType::FileLine)
+
+        case ByteCodeRunContext::DebugBkpType::FileLine:
         {
             SourceFile*     file;
             SourceLocation* location;
@@ -83,15 +114,17 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
                         context->debugBreakpoints.erase(it);
                     else
                         bkp.autoDisabled = true;
-                    break;
+                    return;
                 }
             }
             else
             {
                 bkp.autoDisabled = false;
             }
+            break;
         }
-        else if (bkp.type == ByteCodeRunContext::DebugBkpType::InstructionIndex)
+
+        case ByteCodeRunContext::DebugBkpType::InstructionIndex:
         {
             uint32_t offset = (uint32_t) (context->ip - context->bc->out);
             if (offset == bkp.line)
@@ -105,13 +138,15 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
                         context->debugBreakpoints.erase(it);
                     else
                         bkp.autoDisabled = true;
-                    break;
+                    return;
                 }
             }
             else
             {
                 bkp.autoDisabled = false;
             }
+            break;
+        }
         }
     }
 }
@@ -200,9 +235,6 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakClear(ByteCodeRunContext* context, 
 
 BcDbgCommandResult ByteCodeDebugger::cmdBreakPrint(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
-    if (cmds.size() != 1)
-        return BcDbgCommandResult::BadArguments;
-
     printBreakpoints(context);
     return BcDbgCommandResult::Continue;
 }
@@ -218,15 +250,26 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFunc(ByteCodeRunContext* context, c
         oneShot = true;
 
     ByteCodeRunContext::DebugBreakpoint bkp;
-    bkp.type = ByteCodeRunContext::DebugBkpType::FuncName;
-    auto bc  = g_Workspace->findBc(cmds[2].c_str());
-    if (!bc)
+    bkp.name = cmds[2];
+
+    if (bkp.name[0] == '*')
     {
-        g_Log.printColor(Fmt("cannot find function '%s'\n", cmds[2].c_str()), LogColor::Red);
-        return BcDbgCommandResult::Continue;
+        bkp.type = ByteCodeRunContext::DebugBkpType::FuncNameContains;
+        bkp.name.remove(0, 1);
+        if (bkp.name.empty())
+            return BcDbgCommandResult::BadArguments;
+    }
+    else
+    {
+        bkp.type = ByteCodeRunContext::DebugBkpType::FuncName;
+        auto bc  = g_Workspace->findBc(bkp.name.c_str());
+        if (!bc)
+        {
+            g_Log.printColor(Fmt("cannot find function '%s'\n", bkp.name.c_str()), LogColor::Red);
+            return BcDbgCommandResult::Continue;
+        }
     }
 
-    bkp.name       = cmds[2];
     bkp.autoRemove = oneShot;
     if (addBreakpoint(context, bkp))
     {
@@ -309,9 +352,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreak(ByteCodeRunContext* context, const
         return cmdBreakEnable(context, cmds, cmdExpr);
     if (cmds[1] == "disable" || cmds[1] == "di")
         return cmdBreakDisable(context, cmds, cmdExpr);
-    if (cmds[1] == "clear")
+    if (cmds[1] == "clear" || cmds[1] == "cl")
         return cmdBreakClear(context, cmds, cmdExpr);
-    if (cmds[1] == "func")
+    if (cmds[1] == "func" || cmds[1] == "f")
         return cmdBreakFunc(context, cmds, cmdExpr);
     if (cmds[1] == "line")
         return cmdBreakLine(context, cmds, cmdExpr);

@@ -38,11 +38,11 @@ void ByteCodeDebugger::setup()
     commands.push_back({"jump",        "j",    "",                    "jump to the given line or instruction in the current function (depends on 'bcmode')", cmdJump});
     commands.push_back({});                    
                                                
-    commands.push_back({ "execute",    "e",    "<stmt>",              "execute the code statement <stmt> in the current context", cmdExecute });
-    commands.push_back({ "print",      "p",    "[@format] <expr>",    "print the result of the expression <expr> in the current context (format is the same as 'x' command)", cmdPrint });
+    commands.push_back({"execute",     "e",    "<stmt>",              "execute the code statement <stmt> in the current context", cmdExecute });
+    commands.push_back({"print",       "p",    "[@format] <expr>",    "print the result of the expression <expr> in the current context (format is the same as 'x' command)", cmdPrint });
     commands.push_back({});                    
                                                
-    commands.push_back({ "x",          "",     "[@format] [@num] <address>",     "print memory (format = s8|s16|s32|s64|u8|u16|u32|u64|x8|x16|x32|x64|f32|f64)", cmdMemory });
+    commands.push_back({"x",           "",     "[@format] [@num] <address>",     "print memory (format = s8|s16|s32|s64|u8|u16|u32|u64|x8|x16|x32|x64|f32|f64)", cmdMemory });
     commands.push_back({});                    
                                                
     commands.push_back({"list",        "l",    "[num]",               "print the current source code line and [num] lines around", cmdList});
@@ -59,11 +59,12 @@ void ByteCodeDebugger::setup()
     commands.push_back({});            
                                        
     commands.push_back({"break",       "br",   "",                    "print all breakpoints", cmdBreak});
-    commands.push_back({"break",       "br",   "func <name>",         "add breakpoint when entering function <name>", cmdBreak});
+    commands.push_back({"break",       "br",   "(f)unc <name>",       "add breakpoint when entering function with exact <name>", cmdBreak});
+    commands.push_back({"break",       "br",   "(f)unc *<name>",      "add breakpoint when entering function containing <name>", cmdBreak });
     commands.push_back({"break",       "br",   "line <line>",         "add breakpoint in the current source file at <line>", cmdBreak});
     commands.push_back({"break",       "br",   "file <file> <line>",  "add breakpoint in <file> at <line>", cmdBreak});
-    commands.push_back({"break",       "br",   "clear",               "remove all breakpoints", cmdBreak});
-    commands.push_back({"break",       "br",   "clear   <num>",       "remove breakpoint <num>", cmdBreak});
+    commands.push_back({"break",       "br",   "(cl)ear",             "remove all breakpoints", cmdBreak});
+    commands.push_back({"break",       "br",   "(cl)ear   <num>",     "remove breakpoint <num>", cmdBreak});
     commands.push_back({"break",       "br",   "(en)able  <num>",     "enable breakpoint <num>", cmdBreak});
     commands.push_back({"break",       "br",   "(di)sable <num>",     "disable breakpoint <num>", cmdBreak});
     commands.push_back({"tbreak",      "tb",   "",                    "same as 'break' except that the breakpoint will be automatically removed on hit", cmdBreak});

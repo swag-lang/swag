@@ -141,6 +141,7 @@ struct ByteCodeRunContext
     enum class DebugBkpType
     {
         FuncName,
+        FuncNameContains,
         FileLine,
         InstructionIndex,
     };
