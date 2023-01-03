@@ -935,7 +935,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
     if (!typeInfo->isNative())
         return Report::internalError(context->node, "emitCast, cast type not native");
 
-    emitSafetyCast(context, typeInfo, fromTypeInfo, exprNode);
+    emitSafetyCastOverflow(context, typeInfo, fromTypeInfo, exprNode);
     ensureCanBeChangedRC(context, exprNode->resultRegisterRC);
 
     switch (typeInfo->nativeType)

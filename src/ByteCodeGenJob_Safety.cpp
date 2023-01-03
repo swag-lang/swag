@@ -658,9 +658,9 @@ void ByteCodeGenJob::emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, 
     }
 }
 
-void ByteCodeGenJob::emitSafetyCast(ByteCodeGenContext* context, TypeInfo* typeInfo, TypeInfo* fromTypeInfo, AstNode* exprNode)
+void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* typeInfo, TypeInfo* fromTypeInfo, AstNode* exprNode)
 {
-    if (!mustEmitSafety(context, SAFETY_CAST))
+    if (!mustEmitSafety(context, SAFETY_OVERFLOW))
         return;
     if (!typeInfo->isNative())
         return;

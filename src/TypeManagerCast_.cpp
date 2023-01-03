@@ -30,7 +30,7 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
         return true;
     if (!(castFlags & CASTFLAG_EXPLICIT))
         return true;
-    if (!fromNode->sourceFile->module->mustEmitSafety(fromNode, SAFETY_CAST))
+    if (!fromNode->sourceFile->module->mustEmitSafety(fromNode, SAFETY_OVERFLOW))
         return true;
 
     auto msg  = ByteCodeGenJob::safetyMsg(SafetyMsg::CastTruncated, toType, fromType);

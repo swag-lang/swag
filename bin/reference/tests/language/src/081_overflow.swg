@@ -29,6 +29,24 @@ Add the ',safe' modifier after the operation. This will disable safety checks.
     @assert(y == 127)
 }
 
+
+/**
+Check that a cast does not lose information.
+*/
+#test
+{
+    x := 255'u8
+    //y := cast(s8) x   // This would lose information and panic, as 255 cannot be encoded in 's8'
+    //@print(y)
+}
+
+#test
+{
+    x := -1's8
+    //y := cast(u8) y   // This cast also is not possible, because 'x' is negative and 'y' is 'u8'
+    //@print(y)
+}
+
 /**
 You can disable these safety checks with the corresponding attribute.
 */

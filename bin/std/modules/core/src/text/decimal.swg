@@ -6,7 +6,7 @@
 */
 
 #global namespace StrConv
-#global #[Swag.Safety("overflow|cast", false)]
+#global #[Swag.Safety("overflow", false)]
 using Globalization
 
 struct Decimal
