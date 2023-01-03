@@ -61,6 +61,7 @@ enum class SafetyMsg
     BadSlicingDown,
     NotZero,
     InvalidBool,
+    InvalidFloat,
     Count,
 };
 

@@ -1,3 +1,4 @@
+#global #[Swag.Safety("range", false)]
 using Core, StrConv
 
 struct atofTest

@@ -847,22 +847,23 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s64)->{f: f64, ok: bool}
     return result
 }
 
+#[Swag.Safety("range", false)]
 func special(s: const [..] u8)->{ value: f64, eat: u32 }
 {
     var result: retval
 
     switch
     {
-    case !Latin1.compare(s, "nan", ignoreCase: true):
+    case !Latin1.compare(s, "NaN", ignoreCase: true):
         result.value = Swag.F64.Nan
         result.eat = 3
-    case !Latin1.compare(s, "inf", ignoreCase: true):
+    case !Latin1.compare(s, "Inf", ignoreCase: true):
         result.value = Swag.F64.Inf
         result.eat = 3
-    case !Latin1.compare(s, "+inf", ignoreCase: true):
+    case !Latin1.compare(s, "+Inf", ignoreCase: true):
         result.value = Swag.F64.Inf
         result.eat = 4
-    case !Latin1.compare(s, "-inf", ignoreCase: true):
+    case !Latin1.compare(s, "-Inf", ignoreCase: true):
         result.value = Swag.F64.NegInf
         result.eat = 4
     }
@@ -878,6 +879,7 @@ public func parse(s: const [..] u8) -> {value: f64, eat: u32, ovf: bool} throw
         return result
 
     // Special values, infinity, nan
+    #[Swag.Safety("range", false)]
     (result.value, result.eat) = special(s)
     if result.eat
         return result

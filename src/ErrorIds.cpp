@@ -70,6 +70,7 @@ void initErrors()
     SWAG_ERROR(Saf0018, "[safety] truncated bits when casting expression from `%s` to `%s`");
     SWAG_ERROR(Saf0019, "[safety] unexpected switch value (switch is marked with `Swag.Complete`)");
     SWAG_ERROR(Saf0020, "[safety] invalid boolean value (neither `true` or `false`)");
+    SWAG_ERROR(Saf0021, "[safety] invalid float value (nan)");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

@@ -23,6 +23,9 @@ const char* ByteCodeGenJob::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo*
         case SafetyMsg::InvalidBool:
             typedMsg[m][0][0] = Err(Saf0020);
             break;
+        case SafetyMsg::InvalidFloat:
+            typedMsg[m][0][0] = Err(Saf0021);
+            break;
         case SafetyMsg::NotZero:
             typedMsg[m][0][0] = Err(Saf0007);
             break;
@@ -157,6 +160,26 @@ bool ByteCodeGenJob::emitSafetyValue(ByteCodeGenContext* context, int r, TypeInf
         inst->flags |= BCI_IMM_B;
         emitInstruction(context, ByteCodeOp::JumpIfZero8, r0)->b.s32   = 1;
         emitInstruction(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) ByteCodeGenJob::safetyMsg(SafetyMsg::InvalidBool);
+        freeRegisterRC(context, r0);
+        return true;
+    }
+
+    if (typeInfo->isNative(NativeTypeKind::F32))
+    {
+        auto r0 = reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::CompareOpEqualF32, r, r, r0);
+        emitInstruction(context, ByteCodeOp::JumpIfTrue, r0)->b.s32    = 1;
+        emitInstruction(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) ByteCodeGenJob::safetyMsg(SafetyMsg::InvalidFloat);
+        freeRegisterRC(context, r0);
+        return true;
+    }
+
+    if (typeInfo->isNative(NativeTypeKind::F64))
+    {
+        auto r0 = reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::CompareOpEqualF64, r, r, r0);
+        emitInstruction(context, ByteCodeOp::JumpIfTrue, r0)->b.s32    = 1;
+        emitInstruction(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) ByteCodeGenJob::safetyMsg(SafetyMsg::InvalidFloat);
         freeRegisterRC(context, r0);
         return true;
     }
