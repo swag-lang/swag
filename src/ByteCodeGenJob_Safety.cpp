@@ -109,11 +109,11 @@ void ByteCodeGenJob::emitAssert(ByteCodeGenContext* context, uint32_t reg, const
     emitInstruction(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) msg;
 }
 
-bool ByteCodeGenJob::mustEmitSafety(ByteCodeGenContext* context, uint64_t whatOn, uint64_t whatOff)
+bool ByteCodeGenJob::mustEmitSafety(ByteCodeGenContext* context, uint16_t what)
 {
     if (context->contextFlags & BCC_FLAG_NOSAFETY)
         return false;
-    if (!context->sourceFile->module->mustEmitSafety(context->node, whatOn, whatOff))
+    if (!context->sourceFile->module->mustEmitSafety(context->node, what))
         return false;
     return true;
 }
@@ -138,7 +138,7 @@ bool ByteCodeGenJob::emitSafetySwitchDefault(ByteCodeGenContext* context)
 {
     if (context->contextFlags & BCC_FLAG_NOSAFETY)
         return true;
-    if (!context->sourceFile->module->mustEmitSafety(context->node->parent, ATTRIBUTE_SAFETY_RANGE_ON, ATTRIBUTE_SAFETY_RANGE_OFF))
+    if (!context->sourceFile->module->mustEmitSafety(context->node->parent, SAFETY_RANGE))
         return true;
     emitInstruction(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) ByteCodeGenJob::safetyMsg(SafetyMsg::SwitchComplete);
     return true;
@@ -146,7 +146,7 @@ bool ByteCodeGenJob::emitSafetySwitchDefault(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitSafetyValue(ByteCodeGenContext* context, int r, TypeInfo* typeInfo)
 {
-    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_RANGE_ON, ATTRIBUTE_SAFETY_RANGE_OFF))
+    if (!mustEmitSafety(context, SAFETY_RANGE))
         return true;
 
     PushICFlags ic(context, BCI_SAFETY);
@@ -189,7 +189,7 @@ bool ByteCodeGenJob::emitSafetyValue(ByteCodeGenContext* context, int r, TypeInf
 
 void ByteCodeGenJob::emitSafetyLeftShift(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, TypeInfo* typeInfo)
 {
-    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_OVERFLOW_ON, ATTRIBUTE_SAFETY_OVERFLOW_OFF))
+    if (!mustEmitSafety(context, SAFETY_OVERFLOW))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);
@@ -301,7 +301,7 @@ void ByteCodeGenJob::emitSafetyLeftShift(ByteCodeGenContext* context, uint32_t r
 
 void ByteCodeGenJob::emitSafetyRightShift(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, TypeInfo* typeInfo)
 {
-    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_OVERFLOW_ON, ATTRIBUTE_SAFETY_OVERFLOW_OFF))
+    if (!mustEmitSafety(context, SAFETY_OVERFLOW))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);
@@ -412,7 +412,7 @@ void ByteCodeGenJob::emitSafetyRightShift(ByteCodeGenContext* context, uint32_t 
 
 void ByteCodeGenJob::emitSafetyLeftShiftEq(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, TypeInfo* typeInfo)
 {
-    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_OVERFLOW_ON, ATTRIBUTE_SAFETY_OVERFLOW_OFF))
+    if (!mustEmitSafety(context, SAFETY_OVERFLOW))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);
@@ -439,7 +439,7 @@ void ByteCodeGenJob::emitSafetyLeftShiftEq(ByteCodeGenContext* context, uint32_t
 
 void ByteCodeGenJob::emitSafetyRightShiftEq(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, TypeInfo* typeInfo)
 {
-    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_OVERFLOW_ON, ATTRIBUTE_SAFETY_OVERFLOW_OFF))
+    if (!mustEmitSafety(context, SAFETY_OVERFLOW))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);
@@ -466,7 +466,7 @@ void ByteCodeGenJob::emitSafetyRightShiftEq(ByteCodeGenContext* context, uint32_
 
 void ByteCodeGenJob::emitSafetyDivZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits)
 {
-    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_MATH_ON, ATTRIBUTE_SAFETY_MATH_OFF))
+    if (!mustEmitSafety(context, SAFETY_MATH))
         return;
 
     emitSafetyNotZero(context, r, bits, safetyMsg(SafetyMsg::NotZero));
@@ -494,7 +494,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckLowerU64(ByteCodeGenContext* context, u
 
 void ByteCodeGenJob::emitSafetyNeg(ByteCodeGenContext* context, uint32_t r0, TypeInfo* typeInfo, bool forAbs)
 {
-    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_OVERFLOW_ON, ATTRIBUTE_SAFETY_OVERFLOW_OFF))
+    if (!mustEmitSafety(context, SAFETY_OVERFLOW))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);
@@ -555,7 +555,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckLowerEqU64(ByteCodeGenContext* context,
 
 void ByteCodeGenJob::emitSafetyBoundCheckString(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
-    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_BOUNDCHECK_ON, ATTRIBUTE_SAFETY_BOUNDCHECK_OFF))
+    if (!mustEmitSafety(context, SAFETY_BOUNDCHECK))
         return;
 
     emitSafetyBoundCheckLowerEqU64(context, r0, r1);
@@ -563,7 +563,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckString(ByteCodeGenContext* context, uin
 
 void ByteCodeGenJob::emitSafetyBoundCheckSlice(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
-    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_BOUNDCHECK_ON, ATTRIBUTE_SAFETY_BOUNDCHECK_OFF))
+    if (!mustEmitSafety(context, SAFETY_BOUNDCHECK))
         return;
 
     emitSafetyBoundCheckLowerU64(context, r0, r1);
@@ -571,7 +571,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckSlice(ByteCodeGenContext* context, uint
 
 void ByteCodeGenJob::emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint32_t r0, TypeInfoArray* typeInfoArray)
 {
-    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_BOUNDCHECK_ON, ATTRIBUTE_SAFETY_BOUNDCHECK_OFF))
+    if (!mustEmitSafety(context, SAFETY_BOUNDCHECK))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);
@@ -584,7 +584,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint
 
 void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exprNode, bool isExplicit)
 {
-    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_CAST_ON, ATTRIBUTE_SAFETY_CAST_OFF))
+    if (!mustEmitSafety(context, SAFETY_CAST))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);
@@ -608,7 +608,7 @@ void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exp
 
 void ByteCodeGenJob::emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, AstArrayPointerSlicing* node)
 {
-    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_BOUNDCHECK_ON, ATTRIBUTE_SAFETY_BOUNDCHECK_OFF))
+    if (!mustEmitSafety(context, SAFETY_BOUNDCHECK))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);
@@ -660,7 +660,7 @@ void ByteCodeGenJob::emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, 
 
 void ByteCodeGenJob::emitSafetyCast(ByteCodeGenContext* context, TypeInfo* typeInfo, TypeInfo* fromTypeInfo, AstNode* exprNode)
 {
-    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_CAST_ON, ATTRIBUTE_SAFETY_CAST_OFF))
+    if (!mustEmitSafety(context, SAFETY_CAST))
         return;
     if (!typeInfo->isNative())
         return;

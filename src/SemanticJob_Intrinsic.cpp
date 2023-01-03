@@ -30,23 +30,23 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
 
         if (w == g_LangSpec->name_boundcheck)
         {
-            node->computedValue->reg.b = module->mustEmitSafety(node, ATTRIBUTE_SAFETY_BOUNDCHECK_ON, ATTRIBUTE_SAFETY_BOUNDCHECK_OFF);
+            node->computedValue->reg.b = module->mustEmitSafety(node, SAFETY_BOUNDCHECK);
         }
         else if (w == g_LangSpec->name_overflow)
         {
-            node->computedValue->reg.b = module->mustEmitSafety(node, ATTRIBUTE_SAFETY_OVERFLOW_ON, ATTRIBUTE_SAFETY_OVERFLOW_OFF);
+            node->computedValue->reg.b = module->mustEmitSafety(node, SAFETY_OVERFLOW);
         }
         else if (w == g_LangSpec->name_range)
         {
-            node->computedValue->reg.b = module->mustEmitSafety(node, ATTRIBUTE_SAFETY_RANGE_ON, ATTRIBUTE_SAFETY_RANGE_OFF);
+            node->computedValue->reg.b = module->mustEmitSafety(node, SAFETY_RANGE);
         }
         else if (w == g_LangSpec->name_math)
         {
-            node->computedValue->reg.b = module->mustEmitSafety(node, ATTRIBUTE_SAFETY_MATH_ON, ATTRIBUTE_SAFETY_MATH_OFF);
+            node->computedValue->reg.b = module->mustEmitSafety(node, SAFETY_MATH);
         }
         else if (w == g_LangSpec->name_cast)
         {
-            node->computedValue->reg.b = module->mustEmitSafety(node, ATTRIBUTE_SAFETY_CAST_ON, ATTRIBUTE_SAFETY_CAST_OFF);
+            node->computedValue->reg.b = module->mustEmitSafety(node, SAFETY_CAST);
         }
         else
         {

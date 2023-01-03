@@ -5,20 +5,12 @@
 // MUST BE IN SYNC IN BOOTSTRAP.SWG
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-static const uint64_t ATTRIBUTE_SAFETY_BOUNDCHECK_ON  = 0x0000100000000000;
-static const uint64_t ATTRIBUTE_SAFETY_OVERFLOW_ON    = 0x0000200000000000;
-static const uint64_t ATTRIBUTE_SAFETY_MATH_ON        = 0x0000400000000000;
-static const uint64_t ATTRIBUTE_SAFETY_CAST_ON        = 0x0000800000000000;
-static const uint64_t ATTRIBUTE_SAFETY_RANGE_ON       = 0x0001000000000000;
-static const uint64_t ATTRIBUTE_SAFETY_BOUNDCHECK_OFF = 0x0010000000000000;
-static const uint64_t ATTRIBUTE_SAFETY_OVERFLOW_OFF   = 0x0020000000000000;
-static const uint64_t ATTRIBUTE_SAFETY_MATH_OFF       = 0x0040000000000000;
-static const uint64_t ATTRIBUTE_SAFETY_CAST_OFF       = 0x0080000000000000;
-static const uint64_t ATTRIBUTE_SAFETY_RANGE_OFF      = 0x0100000000000000;
-
-static const uint64_t ATTRIBUTE_SAFETY_MASK_ON  = ATTRIBUTE_SAFETY_BOUNDCHECK_ON | ATTRIBUTE_SAFETY_OVERFLOW_ON | ATTRIBUTE_SAFETY_MATH_ON | ATTRIBUTE_SAFETY_CAST_ON | ATTRIBUTE_SAFETY_RANGE_ON;
-static const uint64_t ATTRIBUTE_SAFETY_MASK_OFF = ATTRIBUTE_SAFETY_BOUNDCHECK_OFF | ATTRIBUTE_SAFETY_OVERFLOW_OFF | ATTRIBUTE_SAFETY_MATH_OFF | ATTRIBUTE_SAFETY_CAST_OFF | ATTRIBUTE_SAFETY_RANGE_OFF;
-static const uint64_t ATTRIBUTE_SAFETY_MASK     = ATTRIBUTE_SAFETY_MASK_ON | ATTRIBUTE_SAFETY_MASK_OFF;
+static const uint64_t SAFETY_BOUNDCHECK = 0x0001;
+static const uint64_t SAFETY_OVERFLOW   = 0x0002;
+static const uint64_t SAFETY_MATH       = 0x0004;
+static const uint64_t SAFETY_CAST       = 0x0008;
+static const uint64_t SAFETY_RANGE      = 0x0010;
+static const uint64_t SAFETY_ALL        = 0xFFFF;
 
 enum AttributeUsage
 {
@@ -181,18 +173,12 @@ struct BuildCfg
     bool      embbedImports = false;
 
     // Debug
-    static const auto SAFETY_BC    = ATTRIBUTE_SAFETY_BOUNDCHECK_ON;
-    static const auto SAFETY_OF    = ATTRIBUTE_SAFETY_OVERFLOW_ON;
-    static const auto SAFETY_MT    = ATTRIBUTE_SAFETY_MATH_ON;
-    static const auto SAFETY_CA    = ATTRIBUTE_SAFETY_CAST_ON;
-    static const auto SAFETY_RA    = ATTRIBUTE_SAFETY_RANGE_ON;
-    uint64_t          safetyGuards = 0xFFFFFFFF'FFFFFFFF;
-
-    bool     stackTrace                 = true;
     uint32_t scratchAllocatorCapacity   = 4 * 1024 * 1024;
+    uint16_t safetyGuards               = SAFETY_ALL;
     bool     debugAllocator             = true;
     bool     debugAllocatorCaptureStack = true;
     bool     debugAllocatorLeaks        = true;
+    bool     stackTrace                 = true;
 
     // Bytecode
     uint32_t byteCodeOptimizeLevel = 1;

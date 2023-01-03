@@ -2,7 +2,7 @@
 Swag will panic if a bad cast is performed.
 
 Attribute is #[Swag.Safety("cast", true)].
-You can also add 'SafetyCA' to the 'buildCfg.safetyGuards' variable.
+You can also add 'SafetyCast' to the 'buildCfg.safetyGuards' variable.
 */
 
 /**

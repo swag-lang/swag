@@ -384,7 +384,8 @@ struct AstNode
     uint64_t attributeFlags = 0;
 
     RegisterList resultRegisterRC;
-    uint32_t     padding;
+    uint16_t     safetyOn  = 0;
+    uint16_t     safetyOff = 0;
 
     uint32_t doneFlags = 0;
     uint32_t semFlags  = 0;

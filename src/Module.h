@@ -137,7 +137,7 @@ struct Module
     bool mustOptimizeBC(AstNode* node);
     bool mustOptimizeBK(AstNode* node);
     bool mustEmitSafetyOF(AstNode* node);
-    bool mustEmitSafety(AstNode* node, uint64_t whatOn, uint64_t whatOff);
+    bool mustEmitSafety(AstNode* node, uint16_t what);
 
     void setBuildPass(BuildPass buildP);
 

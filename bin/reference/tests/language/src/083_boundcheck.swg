@@ -2,7 +2,7 @@
 Swag will panic if an index is out of range when dereferencing a sized value like an array, a slice, a string...
 
 Attribute is #[Swag.Safety("boundcheck", true)].
-You can also add 'SafetyBC' to the 'buildCfg.safetyGuards' variable.
+You can also add 'SafetyBoundCheck' to the 'buildCfg.safetyGuards' variable.
 */
 
 /**

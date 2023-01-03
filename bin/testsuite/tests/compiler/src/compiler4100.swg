@@ -5,6 +5,6 @@
     if @isbytecode()
     {
         cfg := @compiler().getBuildCfg().safetyGuards
-        @assert(@typeof(cfg) == u64)
+        @assert(@sizeof(cfg) == 2)
     }
 }

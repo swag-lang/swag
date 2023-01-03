@@ -68,7 +68,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
         buildCfg.byteCodeDebugInline      = true;
         buildCfg.byteCodeInline           = true;
         buildCfg.byteCodeEmitAssume       = true;
-        buildCfg.safetyGuards             = 0xFFFFFFFF'FFFFFFFF;
+        buildCfg.safetyGuards             = SAFETY_ALL;
         buildCfg.stackTrace               = true;
         buildCfg.debugAllocator           = true;
         buildCfg.backendOptimizeSpeed     = false;
@@ -81,7 +81,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
         buildCfg.byteCodeDebugInline      = false;
         buildCfg.byteCodeInline           = true;
         buildCfg.byteCodeEmitAssume       = true;
-        buildCfg.safetyGuards             = 0xFFFFFFFF'FFFFFFFF;
+        buildCfg.safetyGuards             = SAFETY_ALL;
         buildCfg.stackTrace               = true;
         buildCfg.debugAllocator           = true;
         buildCfg.backendOptimizeSpeed     = true;
@@ -114,7 +114,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     if (g_CommandLine.buildCfgOptimSize != "default")
         buildCfg.backendOptimizeSize = g_CommandLine.buildCfgOptimSize == "true" ? true : false;
     if (g_CommandLine.buildCfgSafety != "default")
-        buildCfg.safetyGuards = g_CommandLine.buildCfgSafety == "true" ? 0xFFFFFFFF'FFFFFFFF : 0;
+        buildCfg.safetyGuards = g_CommandLine.buildCfgSafety == "true" ? SAFETY_ALL : 0;
     if (g_CommandLine.buildCfgStackTrace != "default")
         buildCfg.stackTrace = g_CommandLine.buildCfgStackTrace == "true" ? true : false;
     if (g_CommandLine.buildCfgDebugAlloc != "default")
@@ -904,16 +904,16 @@ void Module::printBC()
 
 bool Module::mustEmitSafetyOF(AstNode* node)
 {
-    return mustEmitSafety(node, ATTRIBUTE_SAFETY_OVERFLOW_ON, ATTRIBUTE_SAFETY_OVERFLOW_OFF);
+    return mustEmitSafety(node, SAFETY_OVERFLOW);
 }
 
-bool Module::mustEmitSafety(AstNode* node, uint64_t whatOn, uint64_t whatOff)
+bool Module::mustEmitSafety(AstNode* node, uint16_t what)
 {
     // Special operator version without overflow checking
-    if (whatOff == ATTRIBUTE_SAFETY_OVERFLOW_OFF && node->attributeFlags & ATTRIBUTE_SAFETY_OFF_OPERATOR)
+    if (what == SAFETY_OVERFLOW && node->attributeFlags & ATTRIBUTE_SAFETY_OFF_OPERATOR)
         return false;
 
-    return ((buildCfg.safetyGuards & whatOn) || (node->attributeFlags & whatOn)) && !(node->attributeFlags & whatOff);
+    return ((buildCfg.safetyGuards & what) || (node->safetyOn & what)) && !(node->safetyOff & what);
 }
 
 bool Module::mustOptimizeBC(AstNode* node)

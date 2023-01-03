@@ -2,7 +2,7 @@
 Swag will panic if some operators overflow.
 
 Attribute is #[Swag.Safety("overflow", true)].
-You can also add 'SafetyOF' to the 'buildCfg.safetyGuards' variable.
+You can also add 'SafetyOverflow' to the 'buildCfg.safetyGuards' variable.
 
 Operators that can overflow are : + - * << >> and their equivalent += -= *= <<= >>=
 */

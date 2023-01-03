@@ -2,7 +2,7 @@
 Swag will panic if some math operations are invalid.
 
 Attribute is #[Swag.Safety("math", true)].
-You can also add 'SafetyMT' to the 'buildCfg.safetyGuards' variable.
+You can also add 'SafetyMath' to the 'buildCfg.safetyGuards' variable.
 */
 
 /**

@@ -125,6 +125,8 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     sourceFile = from->sourceFile;
 
     attributeFlags = from->attributeFlags;
+    safetyOn       = from->safetyOn;
+    safetyOff      = from->safetyOff;
     specFlags      = from->specFlags;
 
     parent = context.parent;

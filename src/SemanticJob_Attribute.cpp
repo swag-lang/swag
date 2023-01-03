@@ -156,16 +156,25 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     }
 }
 
-#define INHERIT(__c, __f)               \
+#define INHERIT_ATTR(__c, __f)          \
     if (!(__c->attributeFlags & (__f))) \
         __c->attributeFlags |= attributeFlags & (__f);
+
+#define INHERIT_SAFETY(__c, __f)                               \
+    if (!(__c->safetyOn & (__f)) && !(__c->safetyOff & (__f))) \
+    {                                                          \
+        __c->safetyOn |= safetyOn & (__f);                     \
+        __c->safetyOff |= safetyOff & (__f);                   \
+    }
 
 void SemanticJob::inheritAttributesFromParent(AstNode* child)
 {
     if (!child->parent)
         return;
 
-    child->attributeFlags |= child->parent->attributeFlags & (ATTRIBUTE_SAFETY_MASK | ATTRIBUTE_SELECTIF_MASK);
+    child->attributeFlags |= child->parent->attributeFlags & ATTRIBUTE_SELECTIF_MASK;
+    child->safetyOn |= child->parent->safetyOn;
+    child->safetyOff |= child->parent->safetyOff;
 }
 
 void SemanticJob::inheritAttributesFromOwnerFunc(AstNode* child)
@@ -174,16 +183,19 @@ void SemanticJob::inheritAttributesFromOwnerFunc(AstNode* child)
     SWAG_ASSERT(child->ownerFct);
 
     auto attributeFlags = child->ownerFct->attributeFlags;
+    auto safetyOn       = child->ownerFct->safetyOn;
+    auto safetyOff      = child->ownerFct->safetyOff;
 
     child->attributeFlags |= attributeFlags & ATTRIBUTE_PRINT_BC;
 
-    INHERIT(child, ATTRIBUTE_SAFETY_BOUNDCHECK_ON | ATTRIBUTE_SAFETY_BOUNDCHECK_OFF);
-    INHERIT(child, ATTRIBUTE_SAFETY_CAST_ON | ATTRIBUTE_SAFETY_CAST_OFF);
-    INHERIT(child, ATTRIBUTE_SAFETY_MATH_ON | ATTRIBUTE_SAFETY_MATH_OFF);
-    INHERIT(child, ATTRIBUTE_SAFETY_OVERFLOW_ON | ATTRIBUTE_SAFETY_OVERFLOW_OFF);
+    INHERIT_SAFETY(child, SAFETY_BOUNDCHECK);
+    INHERIT_SAFETY(child, SAFETY_CAST);
+    INHERIT_SAFETY(child, SAFETY_MATH);
+    INHERIT_SAFETY(child, SAFETY_OVERFLOW);
+    INHERIT_SAFETY(child, SAFETY_RANGE);
 
-    INHERIT(child, ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
-    INHERIT(child, ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
+    INHERIT_ATTR(child, ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
+    INHERIT_ATTR(child, ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
 }
 
 bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result)
@@ -213,24 +225,26 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
         isHereTmp.clear();
 
         auto attributeFlags = curAttr->attributeFlags;
+        auto safetyOn       = curAttr->safetyOn;
+        auto safetyOff      = curAttr->safetyOff;
 
         // Inherit all simple flags
-        forNode->attributeFlags |= attributeFlags & ~(ATTRIBUTE_SAFETY_MASK | ATTRIBUTE_OPTIM_MASK | ATTRIBUTE_SELECTIF_MASK | ATTRIBUTE_EXPOSE_MASK);
+        forNode->attributeFlags |= attributeFlags & ~(ATTRIBUTE_OPTIM_MASK | ATTRIBUTE_SELECTIF_MASK | ATTRIBUTE_EXPOSE_MASK);
 
         // Inherit with condition
-        INHERIT(forNode, ATTRIBUTE_SAFETY_BOUNDCHECK_ON | ATTRIBUTE_SAFETY_BOUNDCHECK_OFF);
-        INHERIT(forNode, ATTRIBUTE_SAFETY_CAST_ON | ATTRIBUTE_SAFETY_CAST_OFF);
-        INHERIT(forNode, ATTRIBUTE_SAFETY_MATH_ON | ATTRIBUTE_SAFETY_MATH_OFF);
-        INHERIT(forNode, ATTRIBUTE_SAFETY_OVERFLOW_ON | ATTRIBUTE_SAFETY_OVERFLOW_OFF);
-        INHERIT(forNode, ATTRIBUTE_SAFETY_RANGE_ON | ATTRIBUTE_SAFETY_RANGE_OFF);
+        INHERIT_SAFETY(forNode, SAFETY_BOUNDCHECK);
+        INHERIT_SAFETY(forNode, SAFETY_CAST);
+        INHERIT_SAFETY(forNode, SAFETY_MATH);
+        INHERIT_SAFETY(forNode, SAFETY_OVERFLOW);
+        INHERIT_SAFETY(forNode, SAFETY_RANGE);
 
-        INHERIT(forNode, ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
-        INHERIT(forNode, ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
+        INHERIT_ATTR(forNode, ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
+        INHERIT_ATTR(forNode, ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
 
-        INHERIT(forNode, ATTRIBUTE_SELECTIF_MASK);
+        INHERIT_ATTR(forNode, ATTRIBUTE_SELECTIF_MASK);
 
         if (!(forNode->flags & AST_PRIVATE))
-            INHERIT(forNode, ATTRIBUTE_EXPOSE_MASK);
+            INHERIT_ATTR(forNode, ATTRIBUTE_EXPOSE_MASK);
 
         for (auto child : curAttr->childs)
         {
@@ -383,12 +397,10 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
 
                 if (text.empty())
                 {
-                    flags &= ~ATTRIBUTE_SAFETY_MASK;
-                    flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_BOUNDCHECK_ON : ATTRIBUTE_SAFETY_BOUNDCHECK_OFF;
-                    flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_OVERFLOW_ON : ATTRIBUTE_SAFETY_OVERFLOW_OFF;
-                    flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_MATH_ON : ATTRIBUTE_SAFETY_MATH_OFF;
-                    flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_CAST_ON : ATTRIBUTE_SAFETY_CAST_OFF;
-                    flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_RANGE_ON : ATTRIBUTE_SAFETY_RANGE_OFF;
+                    if (attrValue->reg.b)
+                        forNode->safetyOn = SAFETY_ALL;
+                    else
+                        forNode->safetyOff = SAFETY_ALL;
                 }
 
                 for (auto& w : what)
@@ -396,28 +408,48 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                     w.trim();
                     if (w == g_LangSpec->name_boundcheck)
                     {
-                        flags &= ~(ATTRIBUTE_SAFETY_BOUNDCHECK_ON | ATTRIBUTE_SAFETY_BOUNDCHECK_OFF);
-                        flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_BOUNDCHECK_ON : ATTRIBUTE_SAFETY_BOUNDCHECK_OFF;
+                        forNode->safetyOn &= ~SAFETY_BOUNDCHECK;
+                        forNode->safetyOff &= ~SAFETY_BOUNDCHECK;
+                        if (attrValue->reg.b)
+                            forNode->safetyOn |= SAFETY_BOUNDCHECK;
+                        else
+                            forNode->safetyOff |= SAFETY_BOUNDCHECK;
                     }
                     else if (w == g_LangSpec->name_overflow)
                     {
-                        flags &= ~(ATTRIBUTE_SAFETY_OVERFLOW_ON | ATTRIBUTE_SAFETY_OVERFLOW_OFF);
-                        flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_OVERFLOW_ON : ATTRIBUTE_SAFETY_OVERFLOW_OFF;
+                        forNode->safetyOn &= ~SAFETY_OVERFLOW;
+                        forNode->safetyOff &= ~SAFETY_OVERFLOW;
+                        if (attrValue->reg.b)
+                            forNode->safetyOn |= SAFETY_OVERFLOW;
+                        else
+                            forNode->safetyOff |= SAFETY_OVERFLOW;
                     }
                     else if (w == g_LangSpec->name_range)
                     {
-                        flags &= ~(ATTRIBUTE_SAFETY_RANGE_ON | ATTRIBUTE_SAFETY_RANGE_OFF);
-                        flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_RANGE_ON : ATTRIBUTE_SAFETY_RANGE_OFF;
+                        forNode->safetyOn &= ~SAFETY_RANGE;
+                        forNode->safetyOff &= ~SAFETY_RANGE;
+                        if (attrValue->reg.b)
+                            forNode->safetyOn |= SAFETY_RANGE;
+                        else
+                            forNode->safetyOff |= SAFETY_RANGE;
                     }
                     else if (w == g_LangSpec->name_math)
                     {
-                        flags &= ~(ATTRIBUTE_SAFETY_MATH_ON | ATTRIBUTE_SAFETY_MATH_OFF);
-                        flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_MATH_ON : ATTRIBUTE_SAFETY_MATH_OFF;
+                        forNode->safetyOn &= ~SAFETY_MATH;
+                        forNode->safetyOff &= ~SAFETY_MATH;
+                        if (attrValue->reg.b)
+                            forNode->safetyOn |= SAFETY_MATH;
+                        else
+                            forNode->safetyOff |= SAFETY_MATH;
                     }
                     else if (w == g_LangSpec->name_cast)
                     {
-                        flags &= ~(ATTRIBUTE_SAFETY_CAST_ON | ATTRIBUTE_SAFETY_CAST_OFF);
-                        flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_CAST_ON : ATTRIBUTE_SAFETY_CAST_OFF;
+                        forNode->safetyOn &= ~SAFETY_CAST;
+                        forNode->safetyOff &= ~SAFETY_CAST;
+                        if (attrValue->reg.b)
+                            forNode->safetyOn |= SAFETY_CAST;
+                        else
+                            forNode->safetyOff |= SAFETY_CAST;
                     }
                     else
                     {

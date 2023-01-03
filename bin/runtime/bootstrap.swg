@@ -517,6 +517,13 @@ namespace Swag
         LLVM
     }
 
+    const SafetyBoundCheck  = 0x0001
+    const SafetyOverflow    = 0x0002
+    const SafetyMath        = 0x0004
+    const SafetyCast        = 0x0008
+    const SafetyRange       = 0x0010
+    const SafetyAll         = 0xFFFF
+
     struct BuildCfgBackendLLVM
     {
         minFunctionPerFile: u32 = 256
@@ -548,19 +555,12 @@ namespace Swag
         embbedImports       = false
 
         // Debug
-        const SafetyBC  = 0x0000100000000000    // "boundcheck"
-        const SafetyOF  = 0x0000200000000000    // "overflow"
-        const SafetyMT  = 0x0000400000000000    // "math"
-        const SafetyCA  = 0x0000800000000000    // "cast"
-        const SafetyRA  = 0x0001000000000000    // "range"
-        const SafetyAll = 0x000FF00000000000
-        safetyGuards:   u64 = SafetyAll
-
-        stackTrace                  = true
         scratchAllocatorCapacity    = 4'u32 * 1024 * 1024 // Default capacity of the 'temp' allocator
+        safetyGuards: u16           = SafetyAll
         debugAllocator              = true  // Use Swag.DebugAllocator by default
         debugAllocatorCaptureStack  = true  // Capture the call stack for each allocation
         debugAllocatorLeaks         = true  // Detect memory leaks
+        stackTrace                  = true
 
         // Bytecode
         byteCodeOptimizeLevel   = 1
