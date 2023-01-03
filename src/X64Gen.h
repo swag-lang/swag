@@ -84,6 +84,8 @@ enum JumpType
     JAE,
     JG,
     JA,
+    JP,
+    JNP,
     JUMP,
 };
 

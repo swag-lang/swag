@@ -5,6 +5,7 @@ using test_foreign
 {
     toto36(func(x: ...)
     {
+        //@print(@countof(x))
         @assert(@countof(x) == 4)
         @assert(cast(s32) x[0] == 40)
         @assert(cast(s32) x[1] == 50)

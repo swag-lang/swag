@@ -835,7 +835,7 @@ void X64Gen::emit_CmpF32_Indirect(uint32_t offsetStack, uint8_t reg, uint8_t mem
 {
     SWAG_ASSERT(reg < R8 && memReg < R8);
     concat.addU8(0x0F);
-    //concat.addU8(0x2F);
+    // concat.addU8(0x2F);
     concat.addU8(0x2E);
     emit_ModRM(offsetStack, reg & 0b111, memReg & 0b111);
 }
@@ -1238,6 +1238,12 @@ void X64Gen::emit_NearJumpOp(JumpType jumpType)
     case JA:
         concat.addU8(0x77);
         break;
+    case JP:
+        concat.addU8(0x7A);
+        break;
+    case JNP:
+        concat.addU8(0x7B);
+        break;
     case JL:
         concat.addU8(0x7C);
         break;
@@ -1294,6 +1300,14 @@ void X64Gen::emit_LongJumpOp(JumpType jumpType)
     case JL:
         concat.addU8(0x0F);
         concat.addU8(0x8C);
+        break;
+    case JP:
+        concat.addU8(0x0F);
+        concat.addU8(0x8A);
+        break;
+    case JNP:
+        concat.addU8(0x0F);
+        concat.addU8(0x8B);
         break;
     case JGE:
         concat.addU8(0x0F);

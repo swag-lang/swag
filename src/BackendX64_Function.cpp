@@ -1793,10 +1793,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             MK_JMPCMP_64(JNZ);
             break;
         case ByteCodeOp::JumpIfNotEqualF32:
-            MK_JMPCMP_F32(JNZ);
+            MK_JMPCMP2_F32(JP, JNZ);
             break;
         case ByteCodeOp::JumpIfNotEqualF64:
-            MK_JMPCMP_F64(JNZ);
+            MK_JMPCMP2_F64(JP, JNZ);
             break;
 
         case ByteCodeOp::JumpIfEqual8:
@@ -1812,10 +1812,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             MK_JMPCMP_64(JZ);
             break;
         case ByteCodeOp::JumpIfEqualF32:
-            MK_JMPCMP_F32(JZ);
+            MK_JMPCMP3_F32(JP, JZ);
             break;
         case ByteCodeOp::JumpIfEqualF64:
-            MK_JMPCMP_F64(JZ);
+            MK_JMPCMP3_F64(JP, JZ);
             break;
         case ByteCodeOp::IncJumpIfEqual64:
             pp.emit_Inc64_Indirect(regOffset(ip->a.u32), RDI);

@@ -593,3 +593,111 @@
         pp.emit_CmpF64(XMM0, XMM1);                                    \
     }                                                                  \
     pp.emit_Jump(__op, i, ip->b.s32);
+
+#define MK_JMPCMP2_F32(__op1, __op2)                                   \
+    if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_C))          \
+    {                                                                  \
+        pp.emit_LoadF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);     \
+        pp.emit_CmpF32_Indirect(regOffset(ip->c.u32), XMM0, RDI);      \
+    }                                                                  \
+    else                                                               \
+    {                                                                  \
+        if (ip->flags & BCI_IMM_A)                                     \
+        {                                                              \
+            pp.emit_Load32_Immediate(ip->a.u32, RAX);                  \
+            pp.emit_CopyF32(RAX, XMM0);                                \
+        }                                                              \
+        else                                                           \
+            pp.emit_LoadF32_Indirect(regOffset(ip->a.u32), XMM0, RDI); \
+        if (ip->flags & BCI_IMM_C)                                     \
+        {                                                              \
+            pp.emit_Load32_Immediate(ip->c.u32, RAX);                  \
+            pp.emit_CopyF32(RAX, XMM1);                                \
+        }                                                              \
+        else                                                           \
+            pp.emit_LoadF32_Indirect(regOffset(ip->c.u32), XMM1, RDI); \
+        pp.emit_CmpF32(XMM0, XMM1);                                    \
+    }                                                                  \
+    pp.emit_Jump(__op1, i, ip->b.s32);                                 \
+    pp.emit_Jump(__op2, i, ip->b.s32);
+
+#define MK_JMPCMP2_F64(__op1, __op2)                                   \
+    if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_C))          \
+    {                                                                  \
+        pp.emit_LoadF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);     \
+        pp.emit_CmpF64_Indirect(regOffset(ip->c.u32), XMM0, RDI);      \
+    }                                                                  \
+    else                                                               \
+    {                                                                  \
+        if (ip->flags & BCI_IMM_A)                                     \
+        {                                                              \
+            pp.emit_Load64_Immediate(ip->a.u64, RAX);                  \
+            pp.emit_CopyF64(RAX, XMM0);                                \
+        }                                                              \
+        else                                                           \
+            pp.emit_LoadF64_Indirect(regOffset(ip->a.u32), XMM0, RDI); \
+        if (ip->flags & BCI_IMM_C)                                     \
+        {                                                              \
+            pp.emit_Load64_Immediate(ip->c.u64, RAX);                  \
+            pp.emit_CopyF64(RAX, XMM1);                                \
+        }                                                              \
+        else                                                           \
+            pp.emit_LoadF64_Indirect(regOffset(ip->c.u32), XMM1, RDI); \
+        pp.emit_CmpF64(XMM0, XMM1);                                    \
+    }                                                                  \
+    pp.emit_Jump(__op1, i, ip->b.s32);                                 \
+    pp.emit_Jump(__op2, i, ip->b.s32);
+
+#define MK_JMPCMP3_F32(__op1, __op2)                                   \
+    if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_C))          \
+    {                                                                  \
+        pp.emit_LoadF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);     \
+        pp.emit_CmpF32_Indirect(regOffset(ip->c.u32), XMM0, RDI);      \
+    }                                                                  \
+    else                                                               \
+    {                                                                  \
+        if (ip->flags & BCI_IMM_A)                                     \
+        {                                                              \
+            pp.emit_Load32_Immediate(ip->a.u32, RAX);                  \
+            pp.emit_CopyF32(RAX, XMM0);                                \
+        }                                                              \
+        else                                                           \
+            pp.emit_LoadF32_Indirect(regOffset(ip->a.u32), XMM0, RDI); \
+        if (ip->flags & BCI_IMM_C)                                     \
+        {                                                              \
+            pp.emit_Load32_Immediate(ip->c.u32, RAX);                  \
+            pp.emit_CopyF32(RAX, XMM1);                                \
+        }                                                              \
+        else                                                           \
+            pp.emit_LoadF32_Indirect(regOffset(ip->c.u32), XMM1, RDI); \
+        pp.emit_CmpF32(XMM0, XMM1);                                    \
+    }                                                                  \
+    pp.emit_Jump(__op1, i, 0);                                         \
+    pp.emit_Jump(__op2, i, ip->b.s32);
+
+#define MK_JMPCMP3_F64(__op1, __op2)                                   \
+    if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_C))          \
+    {                                                                  \
+        pp.emit_LoadF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);     \
+        pp.emit_CmpF64_Indirect(regOffset(ip->c.u32), XMM0, RDI);      \
+    }                                                                  \
+    else                                                               \
+    {                                                                  \
+        if (ip->flags & BCI_IMM_A)                                     \
+        {                                                              \
+            pp.emit_Load64_Immediate(ip->a.u64, RAX);                  \
+            pp.emit_CopyF64(RAX, XMM0);                                \
+        }                                                              \
+        else                                                           \
+            pp.emit_LoadF64_Indirect(regOffset(ip->a.u32), XMM0, RDI); \
+        if (ip->flags & BCI_IMM_C)                                     \
+        {                                                              \
+            pp.emit_Load64_Immediate(ip->c.u64, RAX);                  \
+            pp.emit_CopyF64(RAX, XMM1);                                \
+        }                                                              \
+        else                                                           \
+            pp.emit_LoadF64_Indirect(regOffset(ip->c.u32), XMM1, RDI); \
+        pp.emit_CmpF64(XMM0, XMM1);                                    \
+    }                                                                  \
+    pp.emit_Jump(__op1, i, 0);                                         \
+    pp.emit_Jump(__op2, i, ip->b.s32);
