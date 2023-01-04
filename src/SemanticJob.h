@@ -223,7 +223,7 @@ struct SemanticJob : public Job
     static bool checkUnreachableCode(SemanticContext* context);
     static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode);
     static void checkDeprecated(SemanticContext* context, AstNode* identifier);
-    static Utf8 checkLiteralType(ComputedValue& computedValue, Token& token, TypeInfo* typeSuffix, bool negApplied);
+    static Utf8 checkLiteralValue(ComputedValue& computedValue, Token& token, TypeInfo* typeSuffix, bool negApplied);
     static bool checkCanThrow(SemanticContext* context);
     static bool checkCanCatch(SemanticContext* context);
     static bool checkImplScopes(SemanticContext* context, AstImpl* node, Scope* scopeImpl, Scope* scope);

@@ -142,7 +142,7 @@ bool SemanticJob::processLiteralString(SemanticContext* context)
     return true;
 }
 
-Utf8 SemanticJob::checkLiteralType(ComputedValue& computedValue, Token& token, TypeInfo* typeSuffix, bool negApplied)
+Utf8 SemanticJob::checkLiteralValue(ComputedValue& computedValue, Token& token, TypeInfo* typeSuffix, bool negApplied)
 {
     if (negApplied)
     {
@@ -503,7 +503,7 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
         }
     }
 
-    auto errMsg = checkLiteralType(*node->computedValue, token, suffix->typeInfo, negApplied);
+    auto errMsg = checkLiteralValue(*node->computedValue, token, suffix->typeInfo, negApplied);
     if (!errMsg.empty())
         return context->report({node, errMsg});
 

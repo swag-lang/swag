@@ -140,7 +140,7 @@ void Workspace::setupUserTags()
                 oneTag.value.reg  = token.literalValue;
                 oneTag.value.text = token.text;
 
-                auto errMsg = SemanticJob::checkLiteralType(oneTag.value, token, oneTag.type, neg);
+                auto errMsg = SemanticJob::checkLiteralValue(oneTag.value, token, oneTag.type, neg);
                 if (!errMsg.empty())
                 {
                     auto err = Fmt(Err(CEr0015), oneTagName.c_str(), errMsg.c_str());

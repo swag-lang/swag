@@ -72,12 +72,11 @@ TODO
 ****************************************
 
 -------------------------------------
-safety, flags in Swag.Safety plutôt que string ?
+fast math ? (faire les tests de float en u32/U64 comme avant la prise en charge de nan)
 -------------------------------------
 DebugAllocator
--------------------------------------
+safety, regle de free avec delai
 safety, sanitize access to stack/memory
--------------------------------------
 safety, exit stackframe (return local value)
 -------------------------------------
 on doit exporter les implementation d'interface pour un truc public ?
