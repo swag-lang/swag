@@ -179,7 +179,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     }
     else if (force || (context->debugLastBc != context->debugCxtBc))
     {
-        g_Log.printColor(Fmt("=> generated function: %s\n", context->debugCxtBc->getCallName().c_str()), LogColor::DarkYellow);
+        g_Log.printColor(Fmt("=> generated function: %s\n", context->debugCxtBc->name.c_str()), LogColor::DarkYellow);
     }
 
     // Print source line

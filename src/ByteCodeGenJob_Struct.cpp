@@ -132,7 +132,7 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
             if (typeInfoStruct->opUserInitFct && typeInfoStruct->opUserInitFct->attributeFlags & ATTRIBUTE_FOREIGN)
                 continue;
             resOp   = &typeInfoStruct->opInit;
-            addName = "_opInit";
+            addName = ".opInit";
             break;
         }
         case EmitOpUserKind::Drop:
@@ -171,7 +171,7 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
             if (typeInfoStruct->opUserDropFct)
                 needDrop = true;
             resOp   = &typeInfoStruct->opDrop;
-            addName = "_opDropGenerated";
+            addName = ".opDropGenerated";
             break;
         }
         case EmitOpUserKind::PostCopy:
@@ -212,7 +212,7 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
             if (typeInfoStruct->opUserPostCopyFct)
                 needPostCopy = true;
             resOp   = &typeInfoStruct->opPostCopy;
-            addName = "_opPostCopyGenerated";
+            addName = ".opPostCopyGenerated";
             break;
         }
         case EmitOpUserKind::PostMove:
@@ -251,7 +251,7 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
             if (typeInfoStruct->opUserPostMoveFct)
                 needPostMove = true;
             resOp   = &typeInfoStruct->opPostMove;
-            addName = "_opPostMoveGenerated";
+            addName = ".opPostMoveGenerated";
             break;
         }
         }
@@ -306,10 +306,9 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
         opInit->sourceFile   = sourceFile;
         opInit->typeInfoFunc = g_TypeMgr->typeInfoOpCall;
         opInit->name         = structNode->ownerScope->getFullName();
-        opInit->name += "_";
+        opInit->name += ".";
         opInit->name += structNode->token.text;
         opInit->name += addName;
-        opInit->name.replaceAll('.', '_');
         opInit->maxReservedRegisterRC = 3;
         opInit->isCompilerGenerated   = true;
         *resOp                        = opInit;

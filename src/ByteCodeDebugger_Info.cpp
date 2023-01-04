@@ -21,7 +21,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, c
         {
             if (filter.empty() || bc->name.find(filter) != -1)
             {
-                string          str = Fmt("%s%s%s ", COLOR_NAME, bc->getCallName().c_str(), COLOR_DEFAULT).c_str();
+                string          str = Fmt("%s%s%s ", COLOR_NAME, bc->name.c_str(), COLOR_DEFAULT).c_str();
                 SourceFile*     bcFile;
                 SourceLocation* bcLocation;
                 ByteCode::getLocation(bc, bc->out, &bcFile, &bcLocation);
