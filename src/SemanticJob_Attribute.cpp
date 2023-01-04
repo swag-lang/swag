@@ -189,10 +189,12 @@ void SemanticJob::inheritAttributesFromOwnerFunc(AstNode* child)
     child->attributeFlags |= attributeFlags & ATTRIBUTE_PRINT_BC;
 
     INHERIT_SAFETY(child, SAFETY_BOUNDCHECK);
-    INHERIT_SAFETY(child, SAFETY_CAST);
-    INHERIT_SAFETY(child, SAFETY_MATH);
     INHERIT_SAFETY(child, SAFETY_OVERFLOW);
-    INHERIT_SAFETY(child, SAFETY_RANGE);
+    INHERIT_SAFETY(child, SAFETY_MATH);
+    INHERIT_SAFETY(child, SAFETY_ANY);
+    INHERIT_SAFETY(child, SAFETY_SWITCH);
+    INHERIT_SAFETY(child, SAFETY_BOOL);
+    INHERIT_SAFETY(child, SAFETY_NAN);
 
     INHERIT_ATTR(child, ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
     INHERIT_ATTR(child, ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
@@ -233,10 +235,12 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
 
         // Inherit with condition
         INHERIT_SAFETY(forNode, SAFETY_BOUNDCHECK);
-        INHERIT_SAFETY(forNode, SAFETY_CAST);
-        INHERIT_SAFETY(forNode, SAFETY_MATH);
         INHERIT_SAFETY(forNode, SAFETY_OVERFLOW);
-        INHERIT_SAFETY(forNode, SAFETY_RANGE);
+        INHERIT_SAFETY(forNode, SAFETY_MATH);
+        INHERIT_SAFETY(forNode, SAFETY_ANY);
+        INHERIT_SAFETY(forNode, SAFETY_SWITCH);
+        INHERIT_SAFETY(forNode, SAFETY_BOOL);
+        INHERIT_SAFETY(forNode, SAFETY_NAN);
 
         INHERIT_ATTR(forNode, ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
         INHERIT_ATTR(forNode, ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
@@ -406,52 +410,29 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 for (auto& w : what)
                 {
                     w.trim();
-                    if (w == g_LangSpec->name_boundcheck)
-                    {
-                        forNode->safetyOn &= ~SAFETY_BOUNDCHECK;
-                        forNode->safetyOff &= ~SAFETY_BOUNDCHECK;
-                        if (attrValue->reg.b)
-                            forNode->safetyOn |= SAFETY_BOUNDCHECK;
-                        else
-                            forNode->safetyOff |= SAFETY_BOUNDCHECK;
-                    }
-                    else if (w == g_LangSpec->name_overflow)
-                    {
-                        forNode->safetyOn &= ~SAFETY_OVERFLOW;
-                        forNode->safetyOff &= ~SAFETY_OVERFLOW;
-                        if (attrValue->reg.b)
-                            forNode->safetyOn |= SAFETY_OVERFLOW;
-                        else
-                            forNode->safetyOff |= SAFETY_OVERFLOW;
-                    }
-                    else if (w == g_LangSpec->name_range)
-                    {
-                        forNode->safetyOn &= ~SAFETY_RANGE;
-                        forNode->safetyOff &= ~SAFETY_RANGE;
-                        if (attrValue->reg.b)
-                            forNode->safetyOn |= SAFETY_RANGE;
-                        else
-                            forNode->safetyOff |= SAFETY_RANGE;
-                    }
-                    else if (w == g_LangSpec->name_math)
-                    {
-                        forNode->safetyOn &= ~SAFETY_MATH;
-                        forNode->safetyOff &= ~SAFETY_MATH;
-                        if (attrValue->reg.b)
-                            forNode->safetyOn |= SAFETY_MATH;
-                        else
-                            forNode->safetyOff |= SAFETY_MATH;
-                    }
-                    else if (w == g_LangSpec->name_cast)
-                    {
-                        forNode->safetyOn &= ~SAFETY_CAST;
-                        forNode->safetyOff &= ~SAFETY_CAST;
-                        if (attrValue->reg.b)
-                            forNode->safetyOn |= SAFETY_CAST;
-                        else
-                            forNode->safetyOff |= SAFETY_CAST;
-                    }
-                    else
+                    bool done = false;
+
+#define CHECK_SAFETY_NAME(__name, __flag) \
+    if (w == g_LangSpec->__name)          \
+    {                                     \
+        done = true;                      \
+        forNode->safetyOn &= ~__flag;     \
+        forNode->safetyOff &= ~__flag;    \
+        if (attrValue->reg.b)             \
+            forNode->safetyOn |= __flag;  \
+        else                              \
+            forNode->safetyOff |= __flag; \
+    }
+
+                    CHECK_SAFETY_NAME(name_bound, SAFETY_BOUNDCHECK);
+                    CHECK_SAFETY_NAME(name_over, SAFETY_OVERFLOW);
+                    CHECK_SAFETY_NAME(name_math, SAFETY_MATH);
+                    CHECK_SAFETY_NAME(name_any, SAFETY_ANY);
+                    CHECK_SAFETY_NAME(name_switch, SAFETY_SWITCH);
+                    CHECK_SAFETY_NAME(name_bool, SAFETY_BOOL);
+                    CHECK_SAFETY_NAME(name_nan, SAFETY_NAN);
+
+                    if (!done)
                     {
                         Diagnostic note{Hlp(Hlp0011), DiagnosticLevel::Help};
                         return context->report({child, attrParam->token, Fmt(Err(Err0593), w.c_str())}, &note);

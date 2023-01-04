@@ -155,15 +155,18 @@ struct LanguageSpec
     Utf8 name_err;
     Utf8 name_noerr;
 
+    Utf8 name_bound;
+    Utf8 name_over;
+    Utf8 name_math;
+    Utf8 name_switch;
+    Utf8 name_bool;
+    Utf8 name_nan;
+    Utf8 name_any;
+
     Utf8 name_name;
     Utf8 name_msg;
     Utf8 name_module;
     Utf8 name_function;
-    Utf8 name_boundcheck;
-    Utf8 name_overflow;
-    Utf8 name_range;
-    Utf8 name_math;
-    Utf8 name_cast;
     Utf8 name_bytecode;
     Utf8 name_usage;
     Utf8 name_what;

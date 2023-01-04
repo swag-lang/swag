@@ -129,7 +129,7 @@ const Zag: [64] u32 = [
     55, 62, 63,
 ]
 
-#[Inline, Safety("overflow", false)]
+#[Inline, Safety("over", false)]
 {
     func descale(x: s32, n: u32)->s16 => cast(s16) ((x + (1's32 << (n - 1))) >> n)
     func rol(i, j: u32)->u32          => cast(u32) ((i << j) | (i >> (32 - j)))
@@ -1313,7 +1313,7 @@ impl Decoder
         return result
     }
 
-    #[Safety("overflow", false)]
+    #[Safety("over", false)]
     mtd decodeBlockDcFirst(cmpId: s32, blkX, blkY: s32) throw
     {
         p := coeffBufGetp(dcCoeffs[cmpId], blkX, blkY)
@@ -1329,7 +1329,7 @@ impl Decoder
         p[0] = cast(s16) (s << successiveLow)
     }
 
-    #[Safety("overflow", false)]
+    #[Safety("over", false)]
     mtd decodeBlockDcRefine(cmpId: s32, blkX, blkY: s32) throw
     {
         if getBits2(1)
@@ -1339,7 +1339,7 @@ impl Decoder
         }
     }
 
-    #[Safety("overflow", false)]
+    #[Safety("over", false)]
     mtd decodeBlockAcFirst(cmpId: s32, blkX, blkY: s32) throw
     {
         if eobRun
@@ -1386,7 +1386,7 @@ impl Decoder
         }
     }
 
-    #[Safety("overflow", false)]
+    #[Safety("over", false)]
     mtd decodeBlockAcRefine(cmpId: s32, blkX, blkY: s32) throw
     {
         p1 := 1 << successiveLow
@@ -1611,7 +1611,7 @@ impl Decoder
         if !res throw "unexpected marker"
     }
 
-    #[Safety("overflow", false), Discardable]
+    #[Safety("over", false), Discardable]
     mtd getBits1(numBits: s32)->u32
     {
         i := bitBuf >> cast(u32) ((16 - numBits)) & ((1'u32 << cast(u32) numBits) - 1)
@@ -1632,7 +1632,7 @@ impl Decoder
         return i
     }
 
-    #[Safety("overflow", false), Discardable]
+    #[Safety("over", false), Discardable]
     mtd getBits2(numBits: s32)->u32
     {
         i := (bitBuf >> cast(u32) (16 - numBits)) & ((1'u32 << cast(u32) numBits) - 1)

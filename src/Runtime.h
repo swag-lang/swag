@@ -8,8 +8,10 @@
 static const uint64_t SAFETY_BOUNDCHECK = 0x0001;
 static const uint64_t SAFETY_OVERFLOW   = 0x0002;
 static const uint64_t SAFETY_MATH       = 0x0004;
-static const uint64_t SAFETY_CAST       = 0x0008;
-static const uint64_t SAFETY_RANGE      = 0x0010;
+static const uint64_t SAFETY_ANY        = 0x0008;
+static const uint64_t SAFETY_SWITCH     = 0x0010;
+static const uint64_t SAFETY_BOOL       = 0x0020;
+static const uint64_t SAFETY_NAN        = 0x0040;
 static const uint64_t SAFETY_ALL        = 0xFFFF;
 
 enum AttributeUsage

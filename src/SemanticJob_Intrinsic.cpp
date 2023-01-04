@@ -27,28 +27,24 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
 
         const auto& w      = front->computedValue->text;
         auto        module = node->sourceFile->module;
+        bool        done   = false;
 
-        if (w == g_LangSpec->name_boundcheck)
-        {
-            node->computedValue->reg.b = module->mustEmitSafety(node, SAFETY_BOUNDCHECK);
-        }
-        else if (w == g_LangSpec->name_overflow)
-        {
-            node->computedValue->reg.b = module->mustEmitSafety(node, SAFETY_OVERFLOW);
-        }
-        else if (w == g_LangSpec->name_range)
-        {
-            node->computedValue->reg.b = module->mustEmitSafety(node, SAFETY_RANGE);
-        }
-        else if (w == g_LangSpec->name_math)
-        {
-            node->computedValue->reg.b = module->mustEmitSafety(node, SAFETY_MATH);
-        }
-        else if (w == g_LangSpec->name_cast)
-        {
-            node->computedValue->reg.b = module->mustEmitSafety(node, SAFETY_CAST);
-        }
-        else
+#define CHECK_SAFETY_NAME(__name, __flag)                                  \
+    if (w == g_LangSpec->__name)                                           \
+    {                                                                      \
+        done                       = true;                                 \
+        node->computedValue->reg.b = module->mustEmitSafety(node, __flag); \
+    }
+
+        CHECK_SAFETY_NAME(name_bound, SAFETY_BOUNDCHECK);
+        CHECK_SAFETY_NAME(name_over, SAFETY_OVERFLOW);
+        CHECK_SAFETY_NAME(name_math, SAFETY_MATH);
+        CHECK_SAFETY_NAME(name_switch, SAFETY_SWITCH);
+        CHECK_SAFETY_NAME(name_any, SAFETY_ANY);
+        CHECK_SAFETY_NAME(name_any, SAFETY_BOOL);
+        CHECK_SAFETY_NAME(name_any, SAFETY_NAN);
+
+        if (!done)
         {
             Diagnostic note{Hlp(Hlp0011), DiagnosticLevel::Help};
             return context->report({front, front->token, Fmt(Err(Err0593), w.c_str())}, &note);

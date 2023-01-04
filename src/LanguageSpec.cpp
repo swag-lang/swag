@@ -133,24 +133,27 @@ void LanguageSpec::setupNames()
     name_err     = "err";
     name_noerr   = "noerr";
 
-    name_name       = "name";
-    name_msg        = "msg";
-    name_module     = "module";
-    name_function   = "function";
-    name_boundcheck = "boundcheck";
-    name_overflow   = "overflow";
-    name_range      = "range";
-    name_math       = "math";
-    name_cast       = "cast";
-    name_bytecode   = "bytecode";
-    name_usage      = "usage";
-    name_what       = "what";
-    name_value      = "value";
-    name_disk       = "disk";
-    name_retval     = "retval";
-    name_methods    = "methods";
-    name_nozero     = "nozero";
-    name_toplevel   = "toplevel";
+    name_bound  = "bound";
+    name_over   = "over";
+    name_switch = "switch";
+    name_math   = "math";
+    name_any    = "any";
+    name_bool   = "bool";
+    name_nan    = "nan";
+
+    name_name     = "name";
+    name_msg      = "msg";
+    name_module   = "module";
+    name_function = "function";
+    name_bytecode = "bytecode";
+    name_usage    = "usage";
+    name_what     = "what";
+    name_value    = "value";
+    name_disk     = "disk";
+    name_retval   = "retval";
+    name_methods  = "methods";
+    name_nozero   = "nozero";
+    name_toplevel = "toplevel";
 
     name_atalias      = "@alias";
     name_atmixin      = "@mixin";

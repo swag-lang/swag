@@ -176,7 +176,7 @@ func @print(params: ...)
 
         if ko.flags & TypeInfoFlags.PointerTypeInfo
         {
-            #[Safety("cast", false)]
+            #[Safety("any", false)]
             ptr := cast(const *TypeInfo) v
             __printString(ptr.name)
             continue
@@ -184,7 +184,7 @@ func @print(params: ...)
 
         if ko.flags & TypeInfoFlags.CString
         {
-            #[Safety("cast", false)]
+            #[Safety("any", false)]
             ptr := cast(const ^u8) v
             len := @strlen(ptr)
             __printString(@mkstring(ptr, len))
@@ -193,7 +193,7 @@ func @print(params: ...)
 
         if ko.kind == .Pointer
         {
-            #[Safety("cast", false)]
+            #[Safety("any", false)]
             __printU64(cast(u64) cast(uint) v)
             continue
         }

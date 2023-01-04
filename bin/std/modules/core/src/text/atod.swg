@@ -6,7 +6,7 @@
 */
 
 #global namespace StrConv.Atod
-#global #[Swag.Safety("overflow", false)]
+#global #[Swag.Safety("over", false)]
 using Globalization
 
 func exact(neg: bool, mantissa: u64, exponent: s64) -> {f: f64, ok: bool}
@@ -847,7 +847,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s64)->{f: f64, ok: bool}
     return result
 }
 
-#[Swag.Safety("range", false)]
+#[Swag.Safety("nan", false)]
 func special(s: const [..] u8)->{ value: f64, eat: u32 }
 {
     var result: retval
@@ -879,7 +879,7 @@ public func parse(s: const [..] u8) -> {value: f64, eat: u32, ovf: bool} throw
         return result
 
     // Special values, infinity, nan
-    #[Swag.Safety("range", false)]
+    #[Swag.Safety("nan", false)]
     (result.value, result.eat) = special(s)
     if result.eat
         return result

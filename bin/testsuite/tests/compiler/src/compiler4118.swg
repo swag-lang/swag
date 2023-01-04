@@ -1,6 +1,6 @@
 #global testerror
 
-#[Swag.Safety("range", true)]
+#[Swag.Safety("bool", true)]
 #test
 {
     x := true

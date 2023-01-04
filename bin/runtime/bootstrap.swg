@@ -520,8 +520,10 @@ namespace Swag
     const SafetyBoundCheck  = 0x0001
     const SafetyOverflow    = 0x0002
     const SafetyMath        = 0x0004
-    const SafetyCast        = 0x0008
-    const SafetyRange       = 0x0010
+    const SafetyAny         = 0x0008
+    const SafetySwitch      = 0x0010
+    const SafetyBool        = 0x0020
+    const SafetyNaN         = 0x0040
     const SafetyAll         = 0xFFFF
 
     struct BuildCfgBackendLLVM

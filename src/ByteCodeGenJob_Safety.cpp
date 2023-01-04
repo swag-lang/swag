@@ -138,7 +138,7 @@ bool ByteCodeGenJob::emitSafetySwitchDefault(ByteCodeGenContext* context)
 {
     if (context->contextFlags & BCC_FLAG_NOSAFETY)
         return true;
-    if (!context->sourceFile->module->mustEmitSafety(context->node->parent, SAFETY_RANGE))
+    if (!context->sourceFile->module->mustEmitSafety(context->node->parent, SAFETY_SWITCH))
         return true;
     emitInstruction(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) ByteCodeGenJob::safetyMsg(SafetyMsg::SwitchComplete);
     return true;
@@ -146,14 +146,14 @@ bool ByteCodeGenJob::emitSafetySwitchDefault(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitSafetyValue(ByteCodeGenContext* context, int r, TypeInfo* typeInfo)
 {
-    if (!mustEmitSafety(context, SAFETY_RANGE))
-        return true;
-
-    PushICFlags ic(context, BCI_SAFETY);
-    typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
-
     if (typeInfo->isNative(NativeTypeKind::Bool))
     {
+        if (!mustEmitSafety(context, SAFETY_BOOL))
+            return true;
+
+        PushICFlags ic(context, BCI_SAFETY);
+        typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
+
         auto r0     = reserveRegisterRC(context);
         auto inst   = emitInstruction(context, ByteCodeOp::BinOpBitmaskAnd8, r, 0, r0);
         inst->b.u32 = 0xFE;
@@ -166,6 +166,12 @@ bool ByteCodeGenJob::emitSafetyValue(ByteCodeGenContext* context, int r, TypeInf
 
     if (typeInfo->isNative(NativeTypeKind::F32))
     {
+        if (!mustEmitSafety(context, SAFETY_NAN))
+            return true;
+
+        PushICFlags ic(context, BCI_SAFETY);
+        typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
+
         auto r0 = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::CompareOpEqualF32, r, r, r0);
         emitInstruction(context, ByteCodeOp::JumpIfTrue, r0)->b.s32    = 1;
@@ -176,6 +182,12 @@ bool ByteCodeGenJob::emitSafetyValue(ByteCodeGenContext* context, int r, TypeInf
 
     if (typeInfo->isNative(NativeTypeKind::F64))
     {
+        if (!mustEmitSafety(context, SAFETY_NAN))
+            return true;
+
+        PushICFlags ic(context, BCI_SAFETY);
+        typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
+
         auto r0 = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::CompareOpEqualF64, r, r, r0);
         emitInstruction(context, ByteCodeOp::JumpIfTrue, r0)->b.s32    = 1;
@@ -584,7 +596,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint
 
 void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exprNode, bool isExplicit)
 {
-    if (!mustEmitSafety(context, SAFETY_CAST))
+    if (!mustEmitSafety(context, SAFETY_ANY))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);

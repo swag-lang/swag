@@ -1,4 +1,4 @@
-#global #[Swag.Safety("overflow", true)]
+#global #[Swag.Safety("over", true)]
 #global testerrors
 
 const x1 = 10'u32 >> 32
