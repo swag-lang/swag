@@ -377,8 +377,15 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
         SourceFile*     file;
         SourceLocation* location;
         ByteCode::getLocation(context->bc, ip, &file, &location);
-        if (!location || (context->debugStepLastFile == file && context->debugStepLastLocation && context->debugStepLastLocation->line == location->line))
+        if (context->debugBcMode)
+        {
+            context->debugOn       = true;
+            context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
+        }
+        else if (!location || (context->debugStepLastFile == file && context->debugStepLastLocation && context->debugStepLastLocation->line == location->line))
+        {
             zapCurrentIp = true;
+        }
         else
         {
             context->debugOn       = true;
@@ -391,7 +398,17 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
         SourceFile*     file;
         SourceLocation* location;
         ByteCode::getLocation(context->bc, ip, &file, &location, false, true);
-        if (!location || (context->debugStepLastFile == file && context->debugStepLastLocation && context->debugStepLastLocation->line == location->line))
+        if (context->debugBcMode)
+        {
+            if (context->curRC > context->debugStepRC)
+                zapCurrentIp = true;
+            else
+            {
+                context->debugOn       = true;
+                context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
+            }
+        }
+        else if (!location || (context->debugStepLastFile == file && context->debugStepLastLocation && context->debugStepLastLocation->line == location->line))
             zapCurrentIp = true;
         else if (context->curRC > context->debugStepRC)
             zapCurrentIp = true;
@@ -554,7 +571,10 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
 
         if (cmd.empty())
         {
-            result = cmdEmpty(context, shift, cmds, cmdExpr);
+            if (!shift)
+                result = cmdStep(context, cmds, cmdExpr);
+            else
+                result = cmdNext(context, cmds, cmdExpr);
         }
         else
         {

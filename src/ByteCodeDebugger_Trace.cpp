@@ -139,22 +139,3 @@ BcDbgCommandResult ByteCodeDebugger::cmdQuit(ByteCodeRunContext* context, const 
     g_Log.setDefaultColor();
     return BcDbgCommandResult::Return;
 }
-
-BcDbgCommandResult ByteCodeDebugger::cmdEmpty(ByteCodeRunContext* context, bool shift, const vector<Utf8>& cmds, const Utf8& cmdExpr)
-{
-    if (context->debugBcMode)
-        return BcDbgCommandResult::Break;
-
-    context->debugStackFrameOffset = 0;
-    if (shift)
-    {
-        context->debugStepRC   = context->curRC;
-        context->debugStepMode = ByteCodeRunContext::DebugStepMode::NextLineStepOut;
-    }
-    else
-    {
-        context->debugStepMode = ByteCodeRunContext::DebugStepMode::NextLine;
-    }
-
-    return BcDbgCommandResult::Break;
-}

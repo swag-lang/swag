@@ -117,7 +117,6 @@ struct ByteCodeDebugger
     static BcDbgCommandResult cmdBreakFunc(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
     static BcDbgCommandResult cmdBreakLine(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
     static BcDbgCommandResult cmdBreakFileLine(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);
-    static BcDbgCommandResult cmdEmpty(ByteCodeRunContext* context, bool shift, const vector<Utf8>& cmds, const Utf8& cmdExpr);
 
     static void setup();
     static bool getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN);

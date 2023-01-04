@@ -177,9 +177,13 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
                 g_Log.printColor(Fmt("=> function: %s\n", newFunc->getScopedName().c_str()), LogColor::DarkYellow);
         }
     }
+    else if (force || (context->debugLastBc != context->debugCxtBc))
+    {
+        g_Log.printColor(Fmt("=> generated function: %s\n", context->debugCxtBc->getCallName().c_str()), LogColor::DarkYellow);
+    }
 
     // Print source line
-    if (location && file)
+    if (location && file && newFunc)
     {
         if ((force && !context->debugBcMode) ||
             (context->debugStepLastFile != file ||
@@ -398,14 +402,19 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
 
     if (toLogBc->node && toLogBc->node->kind == AstNodeKind::FuncDecl && toLogBc->node->sourceFile)
     {
-        SourceFile*     curFile;
-        SourceLocation* curLocation;
-        ByteCode::getLocation(toLogBc, toLogIp, &curFile, &curLocation);
+        auto funcNode = CastAst<AstFuncDecl>(toLogBc->node, AstNodeKind::FuncDecl);
+        if (funcNode->content)
+        {
+            SourceFile*     curFile;
+            SourceLocation* curLocation;
+            ByteCode::getLocation(toLogBc, toLogIp, &curFile, &curLocation);
 
-        auto     funcNode  = CastAst<AstFuncDecl>(toLogBc->node, AstNodeKind::FuncDecl);
-        uint32_t startLine = toLogBc->node->token.startLocation.line;
-        uint32_t endLine   = funcNode->content->token.endLocation.line;
-        printSourceLines(toLogBc->node->sourceFile, curLocation, startLine, endLine);
+            uint32_t startLine = toLogBc->node->token.startLocation.line;
+            uint32_t endLine   = funcNode->content->token.endLocation.line;
+            printSourceLines(toLogBc->node->sourceFile, curLocation, startLine, endLine);
+        }
+        else
+            g_Log.printColor("no source code\n", LogColor::Red);
     }
     else
         g_Log.printColor("no source code\n", LogColor::Red);
