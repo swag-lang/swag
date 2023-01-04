@@ -458,6 +458,29 @@ void ByteCodeGenJob::emitOpCallUserFields(ByteCodeGenContext* context, TypeInfoS
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
         if (typeVar->isArrayOfStruct())
         {
+            auto typeArray     = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
+            auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct);
+
+            switch (kind)
+            {
+            case EmitOpUserKind::Init:
+                if (!typeStructVar->opInit && !typeStructVar->opUserInitFct)
+                    continue;
+                break;
+            case EmitOpUserKind::Drop:
+                if (!typeStructVar->opDrop && !typeStructVar->opUserDropFct)
+                    continue;
+                break;
+            case EmitOpUserKind::PostCopy:
+                if (!typeStructVar->opPostCopy && !typeStructVar->opUserPostCopyFct)
+                    continue;
+                break;
+            case EmitOpUserKind::PostMove:
+                if (!typeStructVar->opPostMove && !typeStructVar->opUserPostMoveFct)
+                    continue;
+                break;
+            }
+
             emitOpCallUserArrayOfStruct(context, typeVar, kind, true, typeParam->offset);
         }
         else if (typeVar->isStruct())

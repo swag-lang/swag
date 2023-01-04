@@ -836,7 +836,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     uint32_t storageOffset     = 0;
     uint32_t storageIndexField = 0;
     uint32_t storageIndexConst = 0;
-    uint32_t structFlags       = TYPEINFO_STRUCT_ALL_UNINITIALIZED;
+    uint64_t structFlags       = TYPEINFO_STRUCT_ALL_UNINITIALIZED;
 
     // No need to flatten structure if it's not a compound (optim)
     VectorNative<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? job->tmpNodes : node->content->childs;
@@ -916,11 +916,19 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         }
 
         typeParam->index = storageIndexField;
+        auto varTypeInfo = varDecl->typeInfo;
+
+        // If variable is initialized, struct is too.
+        if (!(varDecl->flags & AST_EXPLICITLY_NOT_INITIALIZED))
+        {
+            if (varDecl->assignment || varDecl->type->flags & AST_HAS_STRUCT_PARAMETERS)
+                structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
+            else if (!varTypeInfo->isStruct() && !varTypeInfo->isArrayOfStruct())
+                structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
+        }
 
         // Inherit flags
-        if (!(varDecl->flags & AST_EXPLICITLY_NOT_INITIALIZED))
-            structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
-        if (varDecl->typeInfo->flags & TYPEINFO_STRUCT_NO_COPY)
+        if (varTypeInfo->flags & TYPEINFO_STRUCT_NO_COPY)
             structFlags |= TYPEINFO_STRUCT_NO_COPY;
 
         // Remove attribute constexpr if necessary
@@ -928,13 +936,13 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             node->attributeFlags &= ~ATTRIBUTE_CONSTEXPR;
 
         // Var is a struct
-        if (varDecl->typeInfo->isStruct())
+        if (varTypeInfo->isStruct())
         {
-            if (varDecl->typeInfo->declNode->attributeFlags & ATTRIBUTE_EXPORT_TYPE_NOZERO)
+            if (varTypeInfo->declNode->attributeFlags & ATTRIBUTE_EXPORT_TYPE_NOZERO)
                 structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
-            structFlags |= varDecl->typeInfo->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES;
+            structFlags |= varTypeInfo->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES;
 
-            if (!(varDecl->typeInfo->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED))
+            if (!(varTypeInfo->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED))
                 structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
 
             if (varDecl->type && varDecl->type->flags & AST_HAS_STRUCT_PARAMETERS)
@@ -959,9 +967,9 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         }
 
         // Var is an array of structs
-        else if (varDecl->typeInfo->isArray() && !varDecl->assignment)
+        else if (varTypeInfo->isArray() && !varDecl->assignment)
         {
-            auto varTypeArray = CastTypeInfo<TypeInfoArray>(varDecl->typeInfo, TypeInfoKind::Array);
+            auto varTypeArray = CastTypeInfo<TypeInfoArray>(varTypeInfo, TypeInfoKind::Array);
             if (varTypeArray->pointedType->isStruct())
             {
                 structFlags |= varTypeArray->pointedType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES;
@@ -1003,7 +1011,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         // If the struct is not generic, be sure that a field is not generic either
         if (!(node->flags & AST_IS_GENERIC))
         {
-            if (varDecl->typeInfo->flags & TYPEINFO_GENERIC)
+            if (varTypeInfo->flags & TYPEINFO_GENERIC)
             {
                 if (varDecl->type)
                     child = varDecl->type;
