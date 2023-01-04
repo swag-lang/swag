@@ -108,6 +108,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdUntil(ByteCodeRunContext* context, const
         bkp.type = ByteCodeRunContext::DebugBkpType::InstructionIndex;
     else
         bkp.type = ByteCodeRunContext::DebugBkpType::FileLine;
+    bkp.bc         = context->debugCxtBc;
     bkp.name       = context->debugStepLastFile->name;
     bkp.line       = atoi(cmds[1].c_str());
     bkp.autoRemove = true;

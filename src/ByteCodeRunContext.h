@@ -150,6 +150,7 @@ struct ByteCodeRunContext
     {
         DebugBkpType type;
         Utf8         name;
+        ByteCode*    bc           = nullptr;
         uint32_t     line         = 0;
         bool         disabled     = false;
         bool         autoDisabled = false;

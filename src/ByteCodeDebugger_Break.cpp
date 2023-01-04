@@ -127,7 +127,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
         case ByteCodeRunContext::DebugBkpType::InstructionIndex:
         {
             uint32_t offset = (uint32_t) (context->ip - context->bc->out);
-            if (offset == bkp.line)
+            if (offset == bkp.line && context->bc == bkp.bc)
             {
                 if (!bkp.autoDisabled)
                 {
