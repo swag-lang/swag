@@ -19,10 +19,10 @@ void ByteCodeDebugger::printBreakpoints(ByteCodeRunContext* context)
         switch (bkp.type)
         {
         case ByteCodeRunContext::DebugBkpType::FuncName:
-            g_Log.print(Fmt("entering function '%s'", bkp.name.c_str()));
+            g_Log.print(Fmt("function '%s'", bkp.name.c_str()));
             break;
         case ByteCodeRunContext::DebugBkpType::FuncNameContains:
-            g_Log.print(Fmt("entering function *'%s'", bkp.name.c_str()));
+            g_Log.print(Fmt("function with '%s' in the name", bkp.name.c_str()));
             break;
         case ByteCodeRunContext::DebugBkpType::FileLine:
             g_Log.print(Fmt("file %s, line '%d'", bkp.name.c_str(), bkp.line));
@@ -42,7 +42,8 @@ void ByteCodeDebugger::printBreakpoints(ByteCodeRunContext* context)
 
 void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
 {
-    for (auto it = context->debugBreakpoints.begin(); it != context->debugBreakpoints.end(); it++)
+    int idxBkp = 1;
+    for (auto it = context->debugBreakpoints.begin(); it != context->debugBreakpoints.end(); it++, idxBkp++)
     {
         auto& bkp = *it;
         if (bkp.disabled)
@@ -56,7 +57,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
             {
                 if (!bkp.autoDisabled)
                 {
-                    g_Log.printColor(Fmt("#### breakpoint hit entering function '%s' ####\n", context->bc->name.c_str()), LogColor::Magenta);
+                    g_Log.printColor(Fmt("#### breakpoint hit #%d function '%s' ####\n", idxBkp, context->bc->name.c_str()), LogColor::Magenta);
                     context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
                     context->debugOn       = true;
                     bkp.autoDisabled       = true;
@@ -80,7 +81,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
             {
                 if (!bkp.autoDisabled)
                 {
-                    g_Log.printColor(Fmt("#### breakpoint hit entering function '%s' ####\n", context->bc->name.c_str()), LogColor::Magenta);
+                    g_Log.printColor(Fmt("#### breakpoint hit #%d function with '%s' in the name ####\n", idxBkp, bkp.name.c_str()), LogColor::Magenta);
                     context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
                     context->debugOn       = true;
                     bkp.autoDisabled       = true;
@@ -107,7 +108,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
             {
                 if (!bkp.autoDisabled)
                 {
-                    g_Log.printColor(Fmt("#### breakpoint hit at line '%d' ####\n", bkp.line), LogColor::Magenta);
+                    g_Log.printColor(Fmt("#### breakpoint hit #%d at line '%d' ####\n", idxBkp, bkp.line), LogColor::Magenta);
                     context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
                     context->debugOn       = true;
                     if (bkp.autoRemove)
@@ -131,7 +132,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
             {
                 if (!bkp.autoDisabled)
                 {
-                    g_Log.printColor(Fmt("#### breakpoint hit at instruction '%d' ####\n", bkp.line), LogColor::Magenta);
+                    g_Log.printColor(Fmt("#### breakpoint hit #%d at instruction '%d' ####\n", idxBkp, bkp.line), LogColor::Magenta);
                     context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
                     context->debugOn       = true;
                     if (bkp.autoRemove)
@@ -273,7 +274,10 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFunc(ByteCodeRunContext* context, c
     bkp.autoRemove = oneShot;
     if (addBreakpoint(context, bkp))
     {
-        g_Log.printColor(Fmt("breakpoint #%d entering function '%s'\n", context->debugBreakpoints.size(), bkp.name.c_str()), LogColor::Gray);
+        if (bkp.type == ByteCodeRunContext::DebugBkpType::FuncNameContains)
+            g_Log.printColor(Fmt("breakpoint #%d function with '%s' in the name\n", context->debugBreakpoints.size(), bkp.name.c_str()), LogColor::Gray);
+        else
+            g_Log.printColor(Fmt("breakpoint #%d function '%s'\n", context->debugBreakpoints.size(), bkp.name.c_str()), LogColor::Gray);
     }
 
     return BcDbgCommandResult::Continue;

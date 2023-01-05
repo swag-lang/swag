@@ -78,8 +78,8 @@ struct ByteCodeDebugger
     static void appendLiteralValue(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr);
     static void appendLiteralValueProtected(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr);
 
-    static void printSourceLines(SourceFile* file, SourceLocation* curLocation, int startLine, int endLine);
-    static void printSourceLines(SourceFile* file, SourceLocation* curLocation, uint32_t offset = 3);
+    static void printSourceLines(ByteCodeRunContext* context, ByteCode* bc, SourceFile* file, SourceLocation* curLocation, int startLine, int endLine);
+    static void printSourceLines(ByteCodeRunContext* context, ByteCode* bc, SourceFile* file, SourceLocation* curLocation, uint32_t offset = 3);
     static void printInstructions(ByteCodeRunContext* context, ByteCode* bc, ByteCodeInstruction* ip, int num = 1);
 
     static BcDbgCommandResult cmdBackTrace(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr);

@@ -96,7 +96,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
             (context->debugStepLastFile != file) ||
             (context->debugStepLastLocation && context->debugStepLastLocation->line != location->line))
         {
-            printSourceLines(file, location, 3);
+            printSourceLines(context, context->debugCxtBc, file, location, 3);
         }
     }
 
@@ -175,7 +175,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
     return BcDbgCommandResult::Continue;
 }
 
-void ByteCodeDebugger::printSourceLines(SourceFile* file, SourceLocation* curLocation, int startLine, int endLine)
+void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* bc, SourceFile* file, SourceLocation* curLocation, int startLine, int endLine)
 {
     vector<Utf8> lines;
     bool         eof = false;
@@ -185,6 +185,7 @@ void ByteCodeDebugger::printSourceLines(SourceFile* file, SourceLocation* curLoc
     uint32_t lineIdx = 0;
     for (const auto& l : lines)
     {
+        // Current line
         if (curLocation->line == startLine + lineIdx)
             g_Log.setColor(LogColor::Green);
         else
@@ -195,8 +196,60 @@ void ByteCodeDebugger::printSourceLines(SourceFile* file, SourceLocation* curLoc
         else
             g_Log.print("   ");
 
+        // Line
         g_Log.print(Fmt("%-5u ", startLine + lineIdx + 1));
 
+        // Line breakpoint
+        ByteCodeRunContext::DebugBreakpoint* hasBkp = nullptr;
+        for (auto it = context->debugBreakpoints.begin(); it != context->debugBreakpoints.end(); it++)
+        {
+            auto& bkp = *it;
+            switch (bkp.type)
+            {
+            case ByteCodeRunContext::DebugBkpType::FuncName:
+            {
+                SourceFile*     locFile;
+                SourceLocation* locLocation;
+                ByteCode::getLocation(bc, bc->out, &locFile, &locLocation);
+                if (context->bc->name == bkp.name && locLocation && startLine + lineIdx + 1 == locLocation->line)
+                    hasBkp = &bkp;
+                break;
+            }
+
+            case ByteCodeRunContext::DebugBkpType::FuncNameContains:
+            {
+                SourceFile*     locFile;
+                SourceLocation* locLocation;
+                ByteCode::getLocation(bc, bc->out, &locFile, &locLocation);
+                if (context->bc->name.find(bkp.name) != -1 && locLocation && startLine + lineIdx + 1 == locLocation->line)
+                    hasBkp = &bkp;
+                break;
+            }
+
+            case ByteCodeRunContext::DebugBkpType::FileLine:
+                if (file->name == bkp.name && startLine + lineIdx + 1 == bkp.line)
+                    hasBkp = &bkp;
+                break;
+            }
+        }
+
+        if (hasBkp)
+        {
+            if (hasBkp->disabled)
+                g_Log.setColor(LogColor::Gray);
+            else
+                g_Log.setColor(LogColor::Red);
+            g_Log.print(Utf8("\xe2\x96\xa0"));
+        }
+        else
+            g_Log.print(" ");
+        g_Log.print(" ");
+
+        // Code
+        if (curLocation->line == startLine + lineIdx)
+            g_Log.setColor(LogColor::Green);
+        else
+            g_Log.setColor(LogColor::Gray);
         g_Log.print(l.c_str());
         g_Log.eol();
 
@@ -204,7 +257,7 @@ void ByteCodeDebugger::printSourceLines(SourceFile* file, SourceLocation* curLoc
     }
 }
 
-void ByteCodeDebugger::printSourceLines(SourceFile* file, SourceLocation* curLocation, uint32_t offset)
+void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* bc, SourceFile* file, SourceLocation* curLocation, uint32_t offset)
 {
     int startLine, endLine;
     if (offset > curLocation->line)
@@ -212,7 +265,7 @@ void ByteCodeDebugger::printSourceLines(SourceFile* file, SourceLocation* curLoc
     else
         startLine = curLocation->line - offset;
     endLine = curLocation->line + offset;
-    printSourceLines(file, curLocation, startLine, endLine);
+    printSourceLines(context, bc, file, curLocation, startLine, endLine);
 }
 
 void ByteCodeDebugger::printInstructions(ByteCodeRunContext* context, ByteCode* bc, ByteCodeInstruction* ip, int num)
@@ -414,7 +467,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
         uint32_t offset = 3;
         if (cmds.size() == 2)
             offset = atoi(cmds[1].c_str());
-        printSourceLines(toLogBc->node->sourceFile, curLocation, offset);
+        printSourceLines(context, toLogBc, toLogBc->node->sourceFile, curLocation, offset);
     }
     else
         g_Log.printColor("no source code\n", LogColor::Red);
@@ -457,7 +510,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
 
             uint32_t startLine = toLogBc->node->token.startLocation.line;
             uint32_t endLine   = funcNode->content->token.endLocation.line;
-            printSourceLines(toLogBc->node->sourceFile, curLocation, startLine, endLine);
+            printSourceLines(context, toLogBc, toLogBc->node->sourceFile, curLocation, startLine, endLine);
         }
         else
             g_Log.printColor("no source code\n", LogColor::Red);

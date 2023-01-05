@@ -58,15 +58,15 @@ void ByteCodeDebugger::setup()
     commands.push_back({"where",       "w",    "",                    "print contextual informations", cmdWhere});
     commands.push_back({});            
                                        
-    commands.push_back({"break",       "br",   "",                    "print all breakpoints", cmdBreak});
-    commands.push_back({"break",       "br",   "(f)unc <name>",       "add breakpoint when entering function with exact <name>", cmdBreak});
-    commands.push_back({"break",       "br",   "(f)unc *<name>",      "add breakpoint when entering function containing <name>", cmdBreak });
-    commands.push_back({"break",       "br",   "line <line>",         "add breakpoint in the current source file at <line>", cmdBreak});
-    commands.push_back({"break",       "br",   "file <file> <line>",  "add breakpoint in <file> at <line>", cmdBreak});
-    commands.push_back({"break",       "br",   "(cl)ear",             "remove all breakpoints", cmdBreak});
-    commands.push_back({"break",       "br",   "(cl)ear   <num>",     "remove breakpoint <num>", cmdBreak});
-    commands.push_back({"break",       "br",   "(en)able  <num>",     "enable breakpoint <num>", cmdBreak});
-    commands.push_back({"break",       "br",   "(di)sable <num>",     "disable breakpoint <num>", cmdBreak});
+    commands.push_back({"break",       "b",    "",                    "print all breakpoints", cmdBreak});
+    commands.push_back({"break",       "b",    "(f)unc <name>",       "add breakpoint when entering function with exact <name>", cmdBreak});
+    commands.push_back({"break",       "b",    "(f)unc *<name>",      "add breakpoint when entering function containing <name>", cmdBreak });
+    commands.push_back({"break",       "b",    "line <line>",         "add breakpoint in the current source file at <line>", cmdBreak});
+    commands.push_back({"break",       "b",    "file <file> <line>",  "add breakpoint in <file> at <line>", cmdBreak});
+    commands.push_back({"break",       "b",    "(cl)ear",             "remove all breakpoints", cmdBreak});
+    commands.push_back({"break",       "b",    "(cl)ear   <num>",     "remove breakpoint <num>", cmdBreak});
+    commands.push_back({"break",       "b",    "(en)able  <num>",     "enable breakpoint <num>", cmdBreak});
+    commands.push_back({"break",       "b",    "(di)sable <num>",     "disable breakpoint <num>", cmdBreak});
     commands.push_back({"tbreak",      "tb",   "",                    "same as 'break' except that the breakpoint will be automatically removed on hit", cmdBreak});
     commands.push_back({});                                           
                                                                       
