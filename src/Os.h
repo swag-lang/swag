@@ -25,6 +25,7 @@ namespace OS
         Back,
         Ascii,
         Escape,
+        PasteFromClipboard,
     };
 
     void                 setup();
@@ -38,6 +39,7 @@ namespace OS
     void* getProcAddress(void* handle, const char* name);
     bool  isDebuggerAttached();
 
+    Utf8 getClipboardString();
     Key  promptChar(int& c, bool& ctrl, bool& shift);
     bool longOpStopKeyPressed();
 

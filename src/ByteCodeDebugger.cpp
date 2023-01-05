@@ -219,6 +219,7 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
 
         switch (key)
         {
+        //////////////////////////////////
         case OS::Key::Left:
             if (!cursorX)
                 continue;
@@ -239,6 +240,7 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
                 MOVE_LEFT();
             continue;
 
+        //////////////////////////////////
         case OS::Key::Right:
             if (cursorX == line.count)
                 continue;
@@ -259,22 +261,29 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
                 MOVE_RIGHT();
             continue;
 
+        //////////////////////////////////
         case OS::Key::Home:
             if (cursorX)
                 fputs(Fmt("\x1B[%dD", cursorX), stdout); // Move the cursor at 0
             cursorX = 0;
             continue;
+
+        //////////////////////////////////
         case OS::Key::End:
             if (cursorX != line.count)
                 fputs(Fmt("\x1B[%dC", line.count - cursorX), stdout); // Move the cursor to the end of line
             cursorX = line.count;
             continue;
+
+        //////////////////////////////////
         case OS::Key::Delete:
             if (cursorX == line.count)
                 continue;
             fputs("\x1B[1P", stdout); // Delete the character
             line.remove(cursorX, 1);
             continue;
+
+        //////////////////////////////////
         case OS::Key::Back:
             if (!cursorX)
                 continue;
@@ -282,6 +291,8 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
             fputs("\x1B[1P", stdout); // Delete the character
             line.remove(cursorX, 1);
             continue;
+
+        //////////////////////////////////
         case OS::Key::Up:
             if (debugCmdHistoryIndex == 0)
                 continue;
@@ -292,6 +303,8 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
             fputs(line, stdout); // Insert command from history
             cursorX = line.count;
             break;
+
+        //////////////////////////////////
         case OS::Key::Down:
             if (debugCmdHistoryIndex == debugCmdHistory.size())
                 continue;
@@ -312,6 +325,7 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
             }
             break;
 
+        //////////////////////////////////
         case OS::Key::Escape:
             if (cursorX) // Move the cursor at 0
                 fputs(Fmt("\x1B[%dD", cursorX), stdout);
@@ -320,6 +334,22 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
             cursorX = 0;
             break;
 
+        //////////////////////////////////
+        case OS::Key::PasteFromClipboard:
+        {
+            Utf8 str = OS::getClipboardString();
+            fputs(Fmt("\x1B[%d@", str.length()), stdout); // Insert n blanks and shift right
+            for (auto cc : str)
+            {
+                fputc(cc, stdout);
+                line.insert(cursorX, (char) cc);
+                cursorX++;
+            }
+
+            break;
+        }
+
+        //////////////////////////////////
         case OS::Key::Ascii:
             fputs("\x1B[1@", stdout); // Insert n blanks and shift right
             fputc(c, stdout);
@@ -327,6 +357,7 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
             cursorX++;
             break;
 
+        //////////////////////////////////
         case OS::Key::Tab:
             if (!context->debugCxtIp || !context->debugCxtIp->node || !context->debugCxtIp->node->sourceFile)
                 continue;

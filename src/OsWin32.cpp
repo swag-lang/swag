@@ -923,24 +923,50 @@ namespace OS
         return GetAsyncKeyState(VK_ESCAPE) < 0;
     }
 
+    Utf8 getClipboardString()
+    {
+        if (!OpenClipboard(GetDesktopWindow()))
+            return "";
+
+        if (IsClipboardFormatAvailable(CF_TEXT))
+        {
+            auto hglob = GetClipboardData(CF_TEXT);
+            if (hglob)
+            {
+                auto pz     = GlobalLock(hglob);
+                Utf8 result = (const char*) pz;
+                GlobalUnlock(pz);
+                return result;
+            }
+        }
+
+        CloseClipboard();
+        return "";
+    }
+
+#pragma optimize("", off)
     Key promptChar(int& c, bool& ctrl, bool& shift)
     {
-        INPUT_RECORD buffer[128];
-        DWORD        dwRead;
-        auto         hStdin = GetStdHandle(STD_INPUT_HANDLE);
+        static INPUT_RECORD buffer[1024];
+        static DWORD        dwRead      = 0;
+        static DWORD        dwReadIndex = 0;
+
+        auto hStdin = GetStdHandle(STD_INPUT_HANDLE);
         SetConsoleMode(hStdin, ENABLE_WINDOW_INPUT);
 
         while (true)
         {
-            if (!ReadConsoleInput(hStdin, buffer, 128, &dwRead))
-                continue;
-
-            for (DWORD i = 0; i < dwRead; i++)
+            if (dwReadIndex >= dwRead)
             {
-                const auto& evt = buffer[i];
-                if (evt.EventType != KEY_EVENT)
+                dwReadIndex = 0;
+                if (!ReadConsoleInput(hStdin, buffer, 1024, &dwRead))
                     continue;
-                if (!evt.Event.KeyEvent.bKeyDown)
+            }
+
+            while (dwReadIndex < dwRead)
+            {
+                const auto& evt = buffer[dwReadIndex++];
+                if (evt.EventType != KEY_EVENT || !evt.Event.KeyEvent.bKeyDown)
                     continue;
 
                 ctrl  = GetAsyncKeyState(VK_CONTROL) < 0;
@@ -970,10 +996,21 @@ namespace OS
                     return OS::Key::Tab;
                 case VK_ESCAPE:
                     return OS::Key::Escape;
+                case VK_CONTROL:
+                    continue;
+
                 default:
+                    if (ctrl)
+                    {
+                        if (evt.Event.KeyEvent.wVirtualKeyCode == 'V')
+                            return OS::Key::PasteFromClipboard;
+                        continue;
+                    }
+
                     c = evt.Event.KeyEvent.uChar.AsciiChar;
                     if (c >= ' ' && c <= 127)
                         return OS::Key::Ascii;
+
                     continue;
                 }
             }
