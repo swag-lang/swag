@@ -211,17 +211,7 @@ void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* b
                 SourceFile*     locFile;
                 SourceLocation* locLocation;
                 ByteCode::getLocation(bc, bc->out, &locFile, &locLocation);
-                if (context->bc->name == bkp.name && locLocation && startLine + lineIdx + 1 == locLocation->line)
-                    hasBkp = &bkp;
-                break;
-            }
-
-            case ByteCodeRunContext::DebugBkpType::FuncNameContains:
-            {
-                SourceFile*     locFile;
-                SourceLocation* locLocation;
-                ByteCode::getLocation(bc, bc->out, &locFile, &locLocation);
-                if (context->bc->name.find(bkp.name) != -1 && locLocation && startLine + lineIdx + 1 == locLocation->line)
+                if (getByteCodeName(context->bc).find(bkp.name) != -1 && locLocation && startLine + lineIdx + 1 == locLocation->line)
                     hasBkp = &bkp;
                 break;
             }

@@ -19,10 +19,7 @@ void ByteCodeDebugger::printBreakpoints(ByteCodeRunContext* context)
         switch (bkp.type)
         {
         case ByteCodeRunContext::DebugBkpType::FuncName:
-            g_Log.print(Fmt("function '%s'", bkp.name.c_str()));
-            break;
-        case ByteCodeRunContext::DebugBkpType::FuncNameContains:
-            g_Log.print(Fmt("function with '%s' in the name", bkp.name.c_str()));
+            g_Log.print(Fmt("function with a match on '%s'", bkp.name.c_str()));
             break;
         case ByteCodeRunContext::DebugBkpType::FileLine:
             g_Log.print(Fmt("file %s, line '%d'", bkp.name.c_str(), bkp.line));
@@ -53,35 +50,11 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
         {
         case ByteCodeRunContext::DebugBkpType::FuncName:
         {
-            if ((context->ip == context->bc->out) && (context->bc->name == bkp.name))
+            if ((context->ip == context->bc->out) && (getByteCodeName(context->bc).find(bkp.name) != -1 || getByteCodeFileName(context->bc).find(bkp.name) != -1))
             {
                 if (!bkp.autoDisabled)
                 {
-                    g_Log.printColor(Fmt("#### breakpoint hit #%d function '%s' ####\n", idxBkp, context->bc->name.c_str()), LogColor::Magenta);
-                    context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
-                    context->debugOn       = true;
-                    bkp.autoDisabled       = true;
-                    if (bkp.autoRemove)
-                        context->debugBreakpoints.erase(it);
-                    else
-                        bkp.autoDisabled = true;
-                    return;
-                }
-            }
-            else
-            {
-                bkp.autoDisabled = false;
-            }
-            break;
-        }
-
-        case ByteCodeRunContext::DebugBkpType::FuncNameContains:
-        {
-            if ((context->ip == context->bc->out) && (context->bc->name.find(bkp.name) != -1))
-            {
-                if (!bkp.autoDisabled)
-                {
-                    g_Log.printColor(Fmt("#### breakpoint hit #%d function with '%s' in the name ####\n", idxBkp, bkp.name.c_str()), LogColor::Magenta);
+                    g_Log.printColor(Fmt("#### breakpoint hit #%d function with a match on '%s' ####\n", idxBkp, bkp.name.c_str()), LogColor::Magenta);
                     context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
                     context->debugOn       = true;
                     bkp.autoDisabled       = true;
@@ -253,31 +226,12 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFunc(ByteCodeRunContext* context, c
     ByteCodeRunContext::DebugBreakpoint bkp;
     bkp.name = cmds[2];
 
-    if (bkp.name[0] == '*')
-    {
-        bkp.type = ByteCodeRunContext::DebugBkpType::FuncNameContains;
-        bkp.name.remove(0, 1);
-        if (bkp.name.empty())
-            return BcDbgCommandResult::BadArguments;
-    }
-    else
-    {
-        bkp.type = ByteCodeRunContext::DebugBkpType::FuncName;
-        auto bc  = g_Workspace->findBc(bkp.name.c_str());
-        if (!bc)
-        {
-            g_Log.printColor(Fmt("cannot find function '%s'\n", bkp.name.c_str()), LogColor::Red);
-            return BcDbgCommandResult::Continue;
-        }
-    }
-
+    bkp.type       = ByteCodeRunContext::DebugBkpType::FuncName;
     bkp.autoRemove = oneShot;
+
     if (addBreakpoint(context, bkp))
     {
-        if (bkp.type == ByteCodeRunContext::DebugBkpType::FuncNameContains)
-            g_Log.printColor(Fmt("breakpoint #%d function with '%s' in the name\n", context->debugBreakpoints.size(), bkp.name.c_str()), LogColor::Gray);
-        else
-            g_Log.printColor(Fmt("breakpoint #%d function '%s'\n", context->debugBreakpoints.size(), bkp.name.c_str()), LogColor::Gray);
+        g_Log.printColor(Fmt("breakpoint #%d function with a match on '%s'\n", context->debugBreakpoints.size(), bkp.name.c_str()), LogColor::Gray);
     }
 
     return BcDbgCommandResult::Continue;

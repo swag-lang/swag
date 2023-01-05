@@ -52,8 +52,8 @@ void ByteCodeDebugger::setup()
     commands.push_back({"info",        "",     "locals",              "print all current local variables", cmdInfo});
     commands.push_back({"info",        "",     "args",                "print all current function arguments", cmdInfo});
     commands.push_back({"info",        "",     "(br)eakpoints",       "print all breakpoints", cmdInfo });
-    commands.push_back({"info",        "",     "modules",             "print all modules", cmdInfo});
-    commands.push_back({"info",        "",     "funcs [filter]",      "print all functions which contains [filter] in their names", cmdInfo});
+    commands.push_back({"info",        "",     "module",              "print all modules", cmdInfo});
+    commands.push_back({"info",        "",     "func [filter]",       "print all functions which contains [filter] in their names", cmdInfo});
     commands.push_back({"info",        "",     "regs  [/format]",     "print all registers (format is the same as 'x' command)", cmdInfo});
     commands.push_back({"where",       "w",    "",                    "print contextual informations", cmdWhere});
     commands.push_back({});            

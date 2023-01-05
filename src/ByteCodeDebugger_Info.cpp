@@ -7,6 +7,20 @@
 #include "TypeManager.h"
 #include "ByteCodeDebugger.h"
 
+Utf8 ByteCodeDebugger::getByteCodeName(ByteCode* bc)
+{
+    if (bc->node)
+        return bc->node->getScopedName();
+    return bc->name;
+}
+
+Utf8 ByteCodeDebugger::getByteCodeFileName(ByteCode* bc)
+{
+    if (bc->sourceFile)
+        return bc->sourceFile->name;
+    return "";
+}
+
 BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() > 3)
@@ -15,13 +29,16 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, c
     auto           filter = cmds.size() == 3 ? cmds[2] : Utf8("");
     vector<string> all;
     g_Log.setColor(LogColor::Gray);
+
+    uint32_t total = 0;
     for (auto m : g_Workspace->modules)
     {
         for (auto bc : m->byteCodeFunc)
         {
-            if (filter.empty() || bc->name.find(filter) != -1)
+            total++;
+            if (filter.empty() || getByteCodeName(bc).find(filter) != -1 || getByteCodeFileName(bc).find(filter) != -1)
             {
-                string          str = Fmt("%s%s%s ", COLOR_NAME, bc->name.c_str(), COLOR_DEFAULT).c_str();
+                string          str = Fmt("%s%s%s ", COLOR_NAME, getByteCodeName(bc).c_str(), COLOR_DEFAULT).c_str();
                 SourceFile*     bcFile;
                 SourceLocation* bcLocation;
                 ByteCode::getLocation(bc, bc->out, &bcFile, &bcLocation);
@@ -33,6 +50,12 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, c
                 all.push_back(str);
             }
         }
+    }
+
+    if (all.empty())
+    {
+        g_Log.printColor(Fmt("...no match (%d parsed functions)\n", total), LogColor::Red);
+        return BcDbgCommandResult::Continue;
     }
 
     sort(all.begin(), all.end(), [](const string& a, const string& b)
@@ -167,9 +190,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfo(ByteCodeRunContext* context, const 
 
     if (cmds[1] == "locals")
         return cmdInfoLocals(context, cmds, cmdExpr);
-    if (cmds[1] == "funcs")
+    if (cmds[1] == "func")
         return cmdInfoFuncs(context, cmds, cmdExpr);
-    if (cmds[1] == "modules")
+    if (cmds[1] == "module")
         return cmdInfoModules(context, cmds, cmdExpr);
     if (cmds[1] == "regs")
         return cmdInfoRegs(context, cmds, cmdExpr);
