@@ -34,7 +34,7 @@ void ByteCodeDebugger::setup()
     commands.push_back({"next",        "n",    "",                    "like 'step', but does not enter functions or inlined code", cmdNext});
     commands.push_back({"finish",      "f",    "",                    "runs until the current function is done", cmdFinish});
     commands.push_back({"continue",    "c",    "",                    "runs until another breakpoint is reached", cmdContinue});
-    commands.push_back({"until",       "",     "",                    "runs to the given line or instruction in the current function (depends on 'bcmode')", cmdUntil});
+    commands.push_back({"until",       "u",     "",                   "runs to the given line or instruction in the current function (depends on 'bcmode')", cmdUntil});
     commands.push_back({"jump",        "j",    "",                    "jump to the given line or instruction in the current function (depends on 'bcmode')", cmdJump});
     commands.push_back({});                    
                                                
@@ -71,8 +71,8 @@ void ByteCodeDebugger::setup()
     commands.push_back({});                                           
                                                                       
     commands.push_back({"bt",          "",     "",                    "backtrace, print callstack", cmdBackTrace});
-    commands.push_back({"up",          "u",    "[num]",               "move stack frame <num> level up", cmdFrameUp});
-    commands.push_back({"down",        "d",    "[num]",               "move stack frame <num> level down", cmdFrameDown});
+    commands.push_back({"up",          "",     "[num]",               "move stack frame <num> level up", cmdFrameUp});
+    commands.push_back({"down",        "",     "[num]",               "move stack frame <num> level down", cmdFrameDown});
     commands.push_back({"frame",       "",     "<num>",               "set stack frame to level <num>", cmdFrame});
     commands.push_back({});                                           
                                                                       

@@ -5,6 +5,114 @@
 #include "Workspace.h"
 #include "Ast.h"
 
+void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force)
+{
+    SWAG_ASSERT(context->debugCxtBc);
+    SWAG_ASSERT(context->debugCxtIp);
+
+    SourceFile*     file;
+    SourceLocation* location;
+    ByteCode::getLocation(context->debugCxtBc, context->debugCxtIp, &file, &location);
+
+    // Print file
+    if (file)
+    {
+        if (force || file != context->debugStepLastFile)
+        {
+            g_Log.printColor("=> ", LogColor::DarkYellow);
+            g_Log.printColor("file: ", LogColor::DarkYellow);
+            g_Log.printColor(file->name.c_str(), LogColor::Cyan);
+            g_Log.eol();
+        }
+    }
+
+    // Get current function
+    AstNode* newFunc   = nullptr;
+    bool     isInlined = false;
+    auto     node      = context->debugCxtIp->node;
+    if (node)
+    {
+        if (node->ownerInline)
+        {
+            isInlined = true;
+            newFunc   = node->ownerInline->func;
+        }
+        else
+        {
+            newFunc = node->ownerFct;
+        }
+    }
+
+    // Print function name
+    if (newFunc)
+    {
+        if (force || newFunc != context->debugStepLastFunc)
+        {
+            if (isInlined)
+            {
+                g_Log.printColor("=> ", LogColor::DarkYellow);
+                g_Log.printColor("owner function: ", LogColor::DarkYellow);
+                g_Log.printColor(node->ownerFct->getScopedName().c_str(), LogColor::Cyan);
+                g_Log.eol();
+
+                g_Log.printColor("=> ", LogColor::DarkYellow);
+                g_Log.printColor("inlined function: ", LogColor::DarkYellow);
+                g_Log.printColor(newFunc->getScopedName().c_str(), LogColor::Cyan);
+                g_Log.eol();
+            }
+            else
+            {
+                g_Log.printColor("=> ", LogColor::DarkYellow);
+                g_Log.printColor("function: ", LogColor::DarkYellow);
+                g_Log.printColor(newFunc->getScopedName().c_str(), LogColor::Cyan);
+                g_Log.eol();
+            }
+        }
+    }
+    else if (force || (context->debugLastBc != context->debugCxtBc))
+    {
+        g_Log.printColor("=> ", LogColor::DarkYellow);
+        g_Log.printColor("generated function: ", LogColor::DarkYellow);
+        g_Log.printColor(context->debugCxtBc->name.c_str(), LogColor::Cyan);
+        g_Log.eol();
+    }
+
+    // Print source line
+    if (location && file && newFunc)
+    {
+        if ((force && !context->debugBcMode) ||
+            (context->debugStepLastFile != file ||
+             (context->debugStepLastLocation && context->debugStepLastLocation->line != location->line)))
+        {
+            if (context->debugBcMode)
+            {
+                Utf8 l = file->getLine(location->line);
+                l.trim();
+                if (!l.empty())
+                {
+                    g_Log.printColor("=> ", LogColor::DarkYellow);
+                    g_Log.printColor("code: ", LogColor::DarkYellow);
+                    g_Log.printColor(l, LogColor::Cyan);
+                    g_Log.eol();
+                }
+            }
+            else
+                printSourceLines(file, location, 3);
+        }
+    }
+
+    // Print instruction
+    if (context->debugBcMode)
+    {
+        printInstructions(context, context->debugCxtBc, context->debugCxtIp, 4);
+    }
+
+    context->debugLastBc           = context->debugCxtBc;
+    context->debugStepLastFile     = file;
+    context->debugStepLastLocation = location;
+    context->debugStepLastFunc     = newFunc;
+}
+
 BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() != 1)
@@ -134,114 +242,6 @@ void ByteCodeDebugger::printInstructions(ByteCodeRunContext* context, ByteCode* 
             break;
         ip++;
     }
-}
-
-void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force)
-{
-    SWAG_ASSERT(context->debugCxtBc);
-    SWAG_ASSERT(context->debugCxtIp);
-
-    SourceFile*     file;
-    SourceLocation* location;
-    ByteCode::getLocation(context->debugCxtBc, context->debugCxtIp, &file, &location);
-
-    // Print file
-    if (file)
-    {
-        if (force || file != context->debugStepLastFile)
-        {
-            g_Log.printColor("=> ", LogColor::DarkYellow);
-            g_Log.printColor("file: ", LogColor::DarkYellow);
-            g_Log.printColor(file->name.c_str(), LogColor::Cyan);
-            g_Log.eol();
-        }
-    }
-
-    // Get current function
-    AstNode* newFunc   = nullptr;
-    bool     isInlined = false;
-    auto     node      = context->debugCxtIp->node;
-    if (node)
-    {
-        if (node->ownerInline)
-        {
-            isInlined = true;
-            newFunc   = node->ownerInline->func;
-        }
-        else
-        {
-            newFunc = node->ownerFct;
-        }
-    }
-
-    // Print function name
-    if (newFunc)
-    {
-        if (force || newFunc != context->debugStepLastFunc)
-        {
-            if (isInlined)
-            {
-                g_Log.printColor("=> ", LogColor::DarkYellow);
-                g_Log.printColor("owner function: ", LogColor::DarkYellow);
-                g_Log.printColor(node->ownerFct->getScopedName().c_str(), LogColor::Cyan);
-                g_Log.eol();
-
-                g_Log.printColor("=> ", LogColor::DarkYellow);
-                g_Log.printColor("inlined function: ", LogColor::DarkYellow);
-                g_Log.printColor(newFunc->getScopedName().c_str(), LogColor::Cyan);
-                g_Log.eol();
-            }
-            else
-            {
-                g_Log.printColor("=> ", LogColor::DarkYellow);
-                g_Log.printColor("function: ", LogColor::DarkYellow);
-                g_Log.printColor(newFunc->getScopedName().c_str(), LogColor::Cyan);
-                g_Log.eol();
-            }
-        }
-    }
-    else if (force || (context->debugLastBc != context->debugCxtBc))
-    {
-        g_Log.printColor("=> ", LogColor::DarkYellow);
-        g_Log.printColor("generated function: ", LogColor::DarkYellow);
-        g_Log.printColor(context->debugCxtBc->name.c_str(), LogColor::Cyan);
-        g_Log.eol();
-    }
-
-    // Print source line
-    if (location && file && newFunc)
-    {
-        if ((force && !context->debugBcMode) ||
-            (context->debugStepLastFile != file ||
-             (context->debugStepLastLocation && context->debugStepLastLocation->line != location->line)))
-        {
-            if (context->debugBcMode)
-            {
-                Utf8 l = file->getLine(location->line);
-                l.trim();
-                if (!l.empty())
-                {
-                    g_Log.printColor("=> ", LogColor::DarkYellow);
-                    g_Log.printColor("code: ", LogColor::DarkYellow);
-                    g_Log.printColor(l, LogColor::Cyan);
-                    g_Log.eol();
-                }
-            }
-            else
-                printSourceLines(file, location, 3);
-        }
-    }
-
-    // Print instruction
-    if (context->debugBcMode)
-    {
-        printInstructions(context, context->debugCxtBc, context->debugCxtIp, 4);
-    }
-
-    context->debugLastBc           = context->debugCxtBc;
-    context->debugStepLastFile     = file;
-    context->debugStepLastLocation = location;
-    context->debugStepLastFunc     = newFunc;
 }
 
 BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)

@@ -1,7 +1,7 @@
 #pragma once
 #include "Job.h"
 #include "DependentJobs.h"
-struct AstNode;
+#include "AstNode.h"
 struct SourceFile;
 struct SemanticContext;
 struct ByteCode;
@@ -130,12 +130,21 @@ struct PushLocation
         bc->pushLocation(loc);
     }
 
-    ~PushLocation()
+    PushLocation(ByteCodeGenContext* bc, AstNode* node)
     {
-        savedBc->popLocation();
+        if (!node)
+            return;
+        savedBc = bc;
+        bc->pushLocation(&node->token.startLocation);
     }
 
-    ByteCodeGenContext* savedBc;
+    ~PushLocation()
+    {
+        if (savedBc)
+            savedBc->popLocation();
+    }
+
+    ByteCodeGenContext* savedBc = nullptr;
 };
 
 struct PushNode

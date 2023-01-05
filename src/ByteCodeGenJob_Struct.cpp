@@ -85,6 +85,15 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
     if (typeInfoStruct->flags & TYPEINFO_SPECOP_GENERATED)
         return;
 
+    // Type of those functions
+    auto typeInfoFunc    = (TypeInfoFuncAttr*) g_TypeMgr->typeInfoOpCall->clone();
+    auto param0          = typeInfoFunc->parameters[0];
+    param0->typeInfo     = param0->typeInfo->clone();
+    auto typePtr         = CastTypeInfo<TypeInfoPointer>(typeInfoFunc->parameters[0]->typeInfo, TypeInfoKind::Pointer);
+    typePtr->pointedType = typeInfoStruct;
+    typePtr->forceComputeName();
+    typeInfoFunc->forceComputeName();
+
     for (int i = 0; i < 4; i++)
     {
         auto        kind  = (EmitOpUserKind) i;
@@ -304,7 +313,7 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
         auto      sourceFile = context->sourceFile;
         ByteCode* opInit     = g_Allocator.alloc<ByteCode>();
         opInit->sourceFile   = sourceFile;
-        opInit->typeInfoFunc = g_TypeMgr->typeInfoOpCall;
+        opInit->typeInfoFunc = typeInfoFunc;
         opInit->name         = structNode->ownerScope->getFullName();
         opInit->name += ".";
         opInit->name += structNode->token.text;
@@ -454,6 +463,8 @@ void ByteCodeGenJob::emitOpCallUserFields(ByteCodeGenContext* context, TypeInfoS
 {
     for (auto typeParam : typeInfoStruct->fields)
     {
+        PushLocation pl(context, typeParam->declNode);
+
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
         if (typeVar->isArrayOfStruct())
         {
