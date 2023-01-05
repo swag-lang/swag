@@ -51,34 +51,33 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
             if (isInlined)
             {
                 g_Log.printColor("=> ", LogColor::DarkYellow);
-                g_Log.printColor("owner function: ", LogColor::DarkYellow);
-                g_Log.printColor(node->ownerFct->getScopedName().c_str(), LogColor::Cyan);
+                g_Log.printColor("inlined: ", LogColor::DarkYellow);
+                g_Log.printColor(newFunc->getScopedName().c_str(), LogColor::Cyan);
+                g_Log.printColor(" ");
+                g_Log.printColor(newFunc->typeInfo->getDisplayNameC(), LogColor::DarkCyan);
                 g_Log.eol();
+            }
 
-                g_Log.printColor("=> ", LogColor::DarkYellow);
-                g_Log.printColor("inlined function: ", LogColor::DarkYellow);
-                g_Log.printColor(newFunc->getScopedName().c_str(), LogColor::Cyan);
-                g_Log.eol();
-            }
-            else
-            {
-                g_Log.printColor("=> ", LogColor::DarkYellow);
-                g_Log.printColor("function: ", LogColor::DarkYellow);
-                g_Log.printColor(newFunc->getScopedName().c_str(), LogColor::Cyan);
-                g_Log.eol();
-            }
+            g_Log.printColor("=> ", LogColor::DarkYellow);
+            g_Log.printColor("function: ", LogColor::DarkYellow);
+            g_Log.printColor(node->ownerFct->getScopedName().c_str(), LogColor::Cyan);
+            g_Log.printColor(" ");
+            g_Log.printColor(node->ownerFct->typeInfo->getDisplayNameC(), LogColor::DarkCyan);
+            g_Log.eol();
         }
     }
     else if (force || (context->debugLastBc != context->debugCxtBc))
     {
         g_Log.printColor("=> ", LogColor::DarkYellow);
-        g_Log.printColor("generated function: ", LogColor::DarkYellow);
+        g_Log.printColor("generated: ", LogColor::DarkYellow);
         g_Log.printColor(context->debugCxtBc->name.c_str(), LogColor::Cyan);
+        g_Log.printColor(" ");
+        g_Log.printColor(context->debugCxtBc->typeInfoFunc->getDisplayNameC(), LogColor::DarkCyan);
         g_Log.eol();
     }
 
     // Print source line
-    if (location && file && newFunc)
+    if (location && file)
     {
         if ((force && !context->debugBcMode) ||
             (context->debugStepLastFile != file ||
@@ -123,18 +122,29 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
 
     if (ipNode && ipNode->ownerFct)
     {
-        ipNode->ownerFct->typeInfo->computeScopedName();
+        auto inlined = ipNode->ownerInline;
+        while (inlined)
+        {
+            g_Log.printColor("inlined: ", LogColor::Gray);
+            g_Log.printColor(inlined->func->getScopedName(), LogColor::DarkYellow);
+            g_Log.printColor(" ");
+            g_Log.printColor(inlined->func->typeInfo->getDisplayNameC(), LogColor::DarkCyan);
+            g_Log.eol();
+            inlined = inlined->ownerInline;
+        }
+
         g_Log.printColor("function: ", LogColor::Gray);
-        g_Log.printColor(ipNode->ownerFct->typeInfo->scopedName, LogColor::DarkYellow);
+        g_Log.printColor(ipNode->ownerFct->getScopedName(), LogColor::DarkYellow);
+        g_Log.printColor(" ");
+        g_Log.printColor(ipNode->ownerFct->typeInfo->getDisplayNameC(), LogColor::DarkCyan);
         g_Log.eol();
     }
 
-    g_Log.printColor("bytecode name: ", LogColor::Gray);
-    g_Log.printColor(bc->name, LogColor::DarkYellow);
     g_Log.eol();
-
-    g_Log.printColor("bytecode type: ", LogColor::Gray);
-    g_Log.printColor(bc->getCallType()->getDisplayNameC(), LogColor::DarkYellow);
+    g_Log.printColor("bytecode: ", LogColor::Gray);
+    g_Log.printColor(bc->name, LogColor::DarkYellow);
+    g_Log.printColor(" ");
+    g_Log.printColor(bc->typeInfoFunc->getDisplayNameC(), LogColor::DarkCyan);
     g_Log.eol();
 
     if (bc->sourceFile && bc->node)
@@ -150,6 +160,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
         g_Log.eol();
     }
 
+    g_Log.eol();
     if (ipNode && ipNode->sourceFile)
     {
         g_Log.printColor("instruction location: ", LogColor::Gray);
