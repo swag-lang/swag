@@ -535,6 +535,14 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
         context->debugStepLastLocation = nullptr;
         context->debugStepLastFile     = nullptr;
         context->debugStackFrameOffset = 0;
+
+        // Bar
+        /////////////////////////////////////////
+        g_Log.setColor(LogColor::Green);
+        for (int i = 0; i < LINE_W; i++)
+            g_Log.print(Utf8("\xe2\x94\x80"));
+        g_Log.eol();
+        g_Log.setColor(LogColor::Gray);
     }
 
     // Check breakpoints/step mode
@@ -584,6 +592,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
         for (int i = 0; i < LINE_W; i++)
             g_Log.print(Utf8("\xe2\x94\x80"));
         g_Log.eol();
+        g_Log.setColor(LogColor::Gray);
 
         // Command
         /////////////////////////////////////////
