@@ -32,6 +32,7 @@ struct ByteCodeDebugger
     static constexpr const char* COLOR_TYPE    = Log::VDarkCyan;
     static constexpr const char* COLOR_NAME    = Log::VDarkYellow;
     static constexpr const char* COLOR_DEFAULT = Log::VDarkWhite;
+    static const int             LINE_W        = 71;
 
     struct EvaluateResult
     {

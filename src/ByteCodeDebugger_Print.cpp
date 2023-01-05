@@ -10,6 +10,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     SWAG_ASSERT(context->debugCxtBc);
     SWAG_ASSERT(context->debugCxtIp);
 
+    bool            printSomething = false;
     SourceFile*     file;
     SourceLocation* location;
     ByteCode::getLocation(context->debugCxtBc, context->debugCxtIp, &file, &location);
@@ -23,6 +24,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
             g_Log.printColor("file: ", LogColor::DarkYellow);
             g_Log.printColor(file->name.c_str(), LogColor::Cyan);
             g_Log.eol();
+            printSomething = true;
         }
     }
 
@@ -64,6 +66,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
             g_Log.printColor(" ");
             g_Log.printColor(node->ownerFct->typeInfo->getDisplayNameC(), LogColor::DarkCyan);
             g_Log.eol();
+            printSomething = true;
         }
     }
     else if (force || (context->debugLastBc != context->debugCxtBc))
@@ -74,29 +77,26 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
         g_Log.printColor(" ");
         g_Log.printColor(context->debugCxtBc->typeInfoFunc->getDisplayNameC(), LogColor::DarkCyan);
         g_Log.eol();
+        printSomething = true;
+    }
+
+    // Separation
+    if (printSomething)
+    {
+        g_Log.setColor(LogColor::Green);
+        for (int i = 0; i < LINE_W; i++)
+            g_Log.print(Utf8("\xe2\x94\x80"));
+        g_Log.eol();
     }
 
     // Print source line
-    if (location && file)
+    if (location && file && !context->debugBcMode)
     {
-        if ((force && !context->debugBcMode) ||
-            (context->debugStepLastFile != file ||
-             (context->debugStepLastLocation && context->debugStepLastLocation->line != location->line)))
+        if ((force) ||
+            (context->debugStepLastFile != file) ||
+            (context->debugStepLastLocation && context->debugStepLastLocation->line != location->line))
         {
-            if (context->debugBcMode)
-            {
-                Utf8 l = file->getLine(location->line);
-                l.trim();
-                if (!l.empty())
-                {
-                    g_Log.printColor("=> ", LogColor::DarkYellow);
-                    g_Log.printColor("code: ", LogColor::DarkYellow);
-                    g_Log.printColor(l, LogColor::Cyan);
-                    g_Log.eol();
-                }
-            }
-            else
-                printSourceLines(file, location, 3);
+            printSourceLines(file, location, 3);
         }
     }
 
@@ -175,30 +175,6 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdInstruction(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
-{
-    if (cmds.size() > 2)
-        return BcDbgCommandResult::BadArguments;
-    if (cmds.size() != 1 && !Utf8::isNumber(cmds[1].c_str()))
-        return BcDbgCommandResult::BadArguments;
-
-    int regN = 4;
-    if (cmds.size() == 2)
-        regN = atoi(cmds[1].c_str());
-
-    printInstructions(context, context->debugCxtBc, context->debugCxtIp, regN);
-    return BcDbgCommandResult::Continue;
-}
-
-BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
-{
-    if (cmds.size() != 1)
-        return BcDbgCommandResult::BadArguments;
-
-    context->debugCxtBc->print(context->debugCxtIp);
-    return BcDbgCommandResult::Continue;
-}
-
 void ByteCodeDebugger::printSourceLines(SourceFile* file, SourceLocation* curLocation, int startLine, int endLine)
 {
     vector<Utf8> lines;
@@ -210,13 +186,18 @@ void ByteCodeDebugger::printSourceLines(SourceFile* file, SourceLocation* curLoc
     for (const auto& l : lines)
     {
         if (curLocation->line == startLine + lineIdx)
-            g_Log.printColor("-> ", LogColor::Cyan);
+            g_Log.setColor(LogColor::Green);
         else
-            g_Log.printColor("   ", LogColor::Cyan);
+            g_Log.setColor(LogColor::Gray);
 
-        g_Log.printColor(Fmt("%-5u ", startLine + lineIdx + 1), LogColor::Gray);
+        if (curLocation->line == startLine + lineIdx)
+            g_Log.print("-> ");
+        else
+            g_Log.print("   ");
 
-        g_Log.printColor(l.c_str(), LogColor::Gray);
+        g_Log.print(Fmt("%-5u ", startLine + lineIdx + 1));
+
+        g_Log.print(l.c_str());
         g_Log.eol();
 
         lineIdx++;
@@ -246,8 +227,11 @@ void ByteCodeDebugger::printInstructions(ByteCodeRunContext* context, ByteCode* 
         ip--;
     }
 
+    SourceFile* lastFile = nullptr;
+    uint32_t    lastLine = UINT32_MAX;
     for (int i = 0; i < (cpt + count - 1); i++)
     {
+        bc->printSourceCode(ip, &lastLine, &lastFile);
         bc->printInstruction(ip, context->debugCxtIp);
         if (ip->op == ByteCodeOp::End)
             break;
@@ -384,6 +368,30 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
             break;
     }
 
+    return BcDbgCommandResult::Continue;
+}
+
+BcDbgCommandResult ByteCodeDebugger::cmdInstruction(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+{
+    if (cmds.size() > 2)
+        return BcDbgCommandResult::BadArguments;
+    if (cmds.size() != 1 && !Utf8::isNumber(cmds[1].c_str()))
+        return BcDbgCommandResult::BadArguments;
+
+    int regN = 4;
+    if (cmds.size() == 2)
+        regN = atoi(cmds[1].c_str());
+
+    printInstructions(context, context->debugCxtBc, context->debugCxtIp, regN);
+    return BcDbgCommandResult::Continue;
+}
+
+BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+{
+    if (cmds.size() != 1)
+        return BcDbgCommandResult::BadArguments;
+
+    context->debugCxtBc->print(context->debugCxtIp);
     return BcDbgCommandResult::Continue;
 }
 

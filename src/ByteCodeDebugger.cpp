@@ -491,8 +491,6 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
     auto module                          = context->bc->sourceFile->module;
     g_ByteCodeStackTrace->currentContext = context;
 
-    static const int LINE_W = 71;
-
     if (context->debugEntry)
     {
         static bool firstOne = true;

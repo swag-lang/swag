@@ -24,15 +24,16 @@ void ByteCode::printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine, Sour
             *lastFile = file;
         auto s = file->getLine(location->line);
         s.trim();
+
         g_Log.setColor(LogColor::Yellow);
-        g_Log.print("          ");
+        g_Log.print("         ");
         if (s.empty())
             g_Log.print("<blank>");
         else
             g_Log.print(s);
 
-        g_Log.setColor(LogColor::Gray);
-        g_Log.print(Fmt("  (%s:%d)", file->name.c_str(), location->line + 1));
+        // g_Log.setColor(LogColor::Gray);
+        // g_Log.print(Fmt("  (%s:%d)", file->name.c_str(), location->line + 1));
 
         g_Log.eol();
     }
@@ -223,10 +224,14 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     if (forDbg)
     {
         if (ip == curIp)
-            g_Log.printColor("-> ", LogColor::Cyan);
+            g_Log.setColor(LogColor::Green);
         else
-            g_Log.printColor("   ", LogColor::Cyan);
-        g_Log.setColor(LogColor::Gray);
+            g_Log.setColor(LogColor::Gray);
+
+        if (ip == curIp)
+            g_Log.print("-> ");
+        else
+            g_Log.print("   ");
         wprintf(bcNum, i);
         g_Log.print(" ");
     }
@@ -240,9 +245,7 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     g_Log.setCountLength(true);
 
     // Instruction
-    if (forDbg)
-        g_Log.setColor(LogColor::Gray);
-    else
+    if (!forDbg)
         g_Log.setColor(LogColor::White);
     int len = (int) strlen(g_ByteCodeOpDesc[(int) ip->op].name);
     while (len++ < ALIGN_OPCODE)
@@ -251,7 +254,8 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     g_Log.print("   ");
 
     // Parameters
-    g_Log.setColor(LogColor::Gray);
+    if (!forDbg)
+        g_Log.setColor(LogColor::Gray);
     auto opFlags = g_ByteCodeOpDesc[(int) ip->op].flags;
     printInstructionReg("A", ip->a, opFlags & OPFLAG_WRITE_A, opFlags & OPFLAG_READ_A, opFlags & (OPFLAG_READ_VAL32_A | OPFLAG_READ_VAL64_A) || ip->flags & BCI_IMM_A);
     printInstructionReg("B", ip->b, opFlags & OPFLAG_WRITE_B, opFlags & OPFLAG_READ_B, opFlags & (OPFLAG_READ_VAL32_B | OPFLAG_READ_VAL64_B) || ip->flags & BCI_IMM_B);
@@ -268,8 +272,8 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     // Flags 2
     while (g_Log.length < ALIGN_FLAGS2)
         g_Log.print(" ");
-    g_Log.setColor(LogColor::Gray);
-    g_Log.print(ip->flags & BCI_IMM_A ? "A" : ".");
+    if (!forDbg)
+        g_Log.print(ip->flags & BCI_IMM_A ? "A" : ".");
     g_Log.print(ip->flags & BCI_IMM_B ? "B" : ".");
     g_Log.print(ip->flags & BCI_IMM_C ? "C" : ".");
     g_Log.print(ip->flags & BCI_IMM_D ? "D" : ".");
@@ -290,15 +294,14 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     }
 #endif
 
-    if (forDbg)
-        g_Log.setColor(LogColor::Gray);
-    else
+    if (!forDbg)
         g_Log.setColor(LogColor::White);
     while (g_Log.length < ALIGN_PRETTY)
         g_Log.print(" ");
     printPrettyInstruction(ip);
 
-    g_Log.setColor(LogColor::Gray);
+    if (!forDbg)
+        g_Log.setColor(LogColor::Gray);
     g_Log.print(" ");
 
     // Jump offset
@@ -373,7 +376,6 @@ void ByteCode::print(ByteCodeInstruction* curIp)
 {
     g_Log.lock();
 
-    g_Log.eol();
     g_Log.setColor(LogColor::Magenta);
     g_Log.print(sourceFile->path);
     g_Log.print(", ");
