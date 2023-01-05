@@ -3,6 +3,7 @@
 #include "TypeManager.h"
 #include "Ast.h"
 #include "ByteCodeDebugger.h"
+#include "ByteCode.h"
 
 bool ByteCodeDebugger::getValueFormat(const Utf8& cmd, ValueFormat& fmt)
 {
@@ -191,6 +192,23 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
     if (!addr && res.value)
         addr = &res.value->reg;
 
+    if (typeInfo->isPointerRef())
+    {
+        auto ptr = ((uint8_t**) addr)[0];
+        if (ptr == nullptr)
+            str += "null";
+        else
+        {
+            str += Fmt("0x%016llx", ptr);
+            auto res1 = res;
+            res1.type = TypeManager::concretePtrRef(typeInfo);
+            res1.addr = *(void**) res1.addr;
+            appendTypedValue(context, str, res1, indent + 1);
+        }
+
+        return;
+    }
+
     if (typeInfo->isEnum())
     {
         Register reg;
@@ -207,21 +225,53 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
             str += "null";
         else
         {
+            str += Fmt("0x%016llx", ptr);
+            str += " ";
             Utf8 str1;
             str1.setView((const char*) ptr->name.buffer, (int) ptr->name.count);
+            str += COLOR_TYPE;
             str += str1;
+            str += COLOR_DEFAULT;
         }
 
         return;
     }
 
-    if (typeInfo->isPointer() || typeInfo->isLambdaClosure())
+    if (typeInfo->isPointer())
     {
         auto ptr = ((uint8_t**) addr)[0];
         if (ptr == nullptr)
             str += "null";
         else
             str += Fmt("0x%016llx", ptr);
+        return;
+    }
+
+    if (typeInfo->isLambdaClosure())
+    {
+        auto ptr = ((uint8_t**) addr)[0];
+        if (ptr == nullptr)
+            str += "null";
+        else
+        {
+            str += Fmt("0x%016llx ", ptr);
+            if (ByteCode::isByteCodeLambda(ptr))
+            {
+                str += "(bytecode) ";
+                auto bc = (ByteCode*) ByteCode::undoByteCodeLambda(ptr);
+                str += COLOR_NAME;
+                str += bc->name.c_str();
+                str += " ";
+                str += COLOR_TYPE;
+                str += bc->getCallType()->getDisplayNameC();
+                str += COLOR_DEFAULT;
+            }
+            else
+            {
+                str += "(native) ";
+            }
+        }
+
         return;
     }
 
