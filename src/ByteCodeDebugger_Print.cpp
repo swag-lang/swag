@@ -150,36 +150,62 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     {
         if (force || file != context->debugStepLastFile)
         {
-            g_Log.printColor(Fmt("=> file: %s\n", file->name.c_str()), LogColor::DarkYellow);
+            g_Log.printColor("=> ", LogColor::DarkYellow);
+            g_Log.printColor("file: ", LogColor::DarkYellow);
+            g_Log.printColor(file->name.c_str(), LogColor::Cyan);
+            g_Log.eol();
+        }
+    }
+
+    // Get current function
+    AstNode* newFunc   = nullptr;
+    bool     isInlined = false;
+    auto     node      = context->debugCxtIp->node;
+    if (node)
+    {
+        if (node->ownerInline)
+        {
+            isInlined = true;
+            newFunc   = node->ownerInline->func;
+        }
+        else
+        {
+            newFunc = node->ownerFct;
         }
     }
 
     // Print function name
-    AstNode* newFunc   = nullptr;
-    bool     isInlined = false;
-    if (context->debugCxtIp->node && context->debugCxtIp->node->ownerInline)
-    {
-        isInlined = true;
-        newFunc   = context->debugCxtIp->node->ownerInline->func;
-    }
-    else if (context->debugCxtIp->node)
-    {
-        newFunc = context->debugCxtIp->node->ownerFct;
-    }
-
     if (newFunc)
     {
         if (force || newFunc != context->debugStepLastFunc)
         {
             if (isInlined)
-                g_Log.printColor(Fmt("=> inlined function: %s\n", newFunc->getScopedName().c_str()), LogColor::DarkYellow);
+            {
+                g_Log.printColor("=> ", LogColor::DarkYellow);
+                g_Log.printColor("owner function: ", LogColor::DarkYellow);
+                g_Log.printColor(node->ownerFct->getScopedName().c_str(), LogColor::Cyan);
+                g_Log.eol();
+
+                g_Log.printColor("=> ", LogColor::DarkYellow);
+                g_Log.printColor("inlined function: ", LogColor::DarkYellow);
+                g_Log.printColor(newFunc->getScopedName().c_str(), LogColor::Cyan);
+                g_Log.eol();
+            }
             else
-                g_Log.printColor(Fmt("=> function: %s\n", newFunc->getScopedName().c_str()), LogColor::DarkYellow);
+            {
+                g_Log.printColor("=> ", LogColor::DarkYellow);
+                g_Log.printColor("function: ", LogColor::DarkYellow);
+                g_Log.printColor(newFunc->getScopedName().c_str(), LogColor::Cyan);
+                g_Log.eol();
+            }
         }
     }
     else if (force || (context->debugLastBc != context->debugCxtBc))
     {
-        g_Log.printColor(Fmt("=> generated function: %s\n", context->debugCxtBc->name.c_str()), LogColor::DarkYellow);
+        g_Log.printColor("=> ", LogColor::DarkYellow);
+        g_Log.printColor("generated function: ", LogColor::DarkYellow);
+        g_Log.printColor(context->debugCxtBc->name.c_str(), LogColor::Cyan);
+        g_Log.eol();
     }
 
     // Print source line
@@ -195,8 +221,9 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
                 l.trim();
                 if (!l.empty())
                 {
-                    g_Log.printColor("=> code: ", LogColor::DarkYellow);
-                    g_Log.printColor(l, LogColor::DarkYellow);
+                    g_Log.printColor("=> ", LogColor::DarkYellow);
+                    g_Log.printColor("code: ", LogColor::DarkYellow);
+                    g_Log.printColor(l, LogColor::Cyan);
                     g_Log.eol();
                 }
             }

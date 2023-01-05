@@ -491,6 +491,8 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
     auto module                          = context->bc->sourceFile->module;
     g_ByteCodeStackTrace->currentContext = context;
 
+    static const int LINE_W = 71;
+
     if (context->debugEntry)
     {
         static bool firstOne = true;
@@ -501,15 +503,28 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
         if (firstOne)
         {
             firstOne = false;
+            g_Log.setColor(LogColor::Magenta);
+
             g_Log.eol();
-            g_Log.printColor("#############################################\n", LogColor::Magenta);
-            g_Log.printColor("entering bytecode debugger, type '?' for help\n", LogColor::Magenta);
-            g_Log.printColor("---------------------------------------------\n", LogColor::Magenta);
-            g_Log.printColor(Fmt("build configuration            = '%s'\n", g_CommandLine.buildCfg.c_str()), LogColor::Magenta);
-            g_Log.printColor(Fmt("BuildCfg.byteCodeDebugInline   = %s\n", module->buildCfg.byteCodeDebugInline ? "true" : "false"), LogColor::Magenta);
-            g_Log.printColor(Fmt("BuildCfg.byteCodeInline        = %s\n", module->buildCfg.byteCodeInline ? "true" : "false"), LogColor::Magenta);
-            g_Log.printColor(Fmt("BuildCfg.byteCodeOptimizeLevel = %d\n", module->buildCfg.byteCodeOptimizeLevel), LogColor::Magenta);
-            g_Log.printColor("#############################################\n", LogColor::Magenta);
+            for (int i = 0; i < LINE_W; i++)
+                g_Log.print(Utf8("\xe2\x95\x90"));
+            g_Log.eol();
+
+            g_Log.print("entering bytecode debugger, type '?' for help\n");
+
+            for (int i = 0; i < LINE_W; i++)
+                g_Log.print(Utf8("\xe2\x94\x80"));
+            g_Log.eol();
+
+            g_Log.print(Fmt("build configuration            = '%s'\n", g_CommandLine.buildCfg.c_str()));
+            g_Log.print(Fmt("BuildCfg.byteCodeDebugInline   = %s\n", module->buildCfg.byteCodeDebugInline ? "true" : "false"));
+            g_Log.print(Fmt("BuildCfg.byteCodeInline        = %s\n", module->buildCfg.byteCodeInline ? "true" : "false"));
+            g_Log.print(Fmt("BuildCfg.byteCodeOptimizeLevel = %d\n", module->buildCfg.byteCodeOptimizeLevel));
+
+            for (int i = 0; i < LINE_W; i++)
+                g_Log.print(Utf8("\xe2\x95\x90"));
+            g_Log.eol();
+
             g_Log.eol();
         }
         else
@@ -564,6 +579,13 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
         // Replace some stuff
         if (!processCommandLine(context, cmds, line, cmdExpr))
             continue;
+
+        // Bar
+        /////////////////////////////////////////
+        g_Log.setColor(LogColor::Green);
+        for (int i = 0; i < LINE_W; i++)
+            g_Log.print(Utf8("\xe2\x94\x80"));
+        g_Log.eol();
 
         // Command
         /////////////////////////////////////////
