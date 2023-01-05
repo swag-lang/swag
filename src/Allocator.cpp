@@ -317,12 +317,7 @@ Allocator::Allocator()
 
 size_t Allocator::alignSize(size_t size)
 {
-    if (!size)
-        return 0;
-    auto alignedSize = size & ~7;
-    if (size != alignedSize)
-        return alignedSize + 8;
-    return size;
+    return ((size + 7) & ~7);
 }
 
 void* Allocator::alloc(size_t size)
