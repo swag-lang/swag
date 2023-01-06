@@ -30,14 +30,16 @@ struct DebugAllocator
     firstFree:  *DebugAllocatorHeader   // First freed block
     lastFree:   *DebugAllocatorHeader   // Last freed block
     sizeAlloc:  uint                    // Total allocated memory, in bytes
+    sizeFree:   uint                    // Total of free blocks in quarantine
     countAlloc: u32                     // Number of allocated blocks
     nextId:     u32                     // The next allocated id to assign
 
     // Debug/behaviour parameters
-    captureAllocStack   = true          // For each allocation, capture stack
+    maxFreeSize:        uint = 4*1024   // Maximum total size (in kbs) of free blocks in quarantine
     breakOnAllocId:     u32             // Will @assert when the current allocation id reaches that value
-    detectLeaks         = true          // Detect memory leaks
     showMaxLeaks:       u32 = 100       // Maximum number of memory leaks to show
+    captureAllocStack   = true          // For each allocation, capture stack
+    detectLeaks         = true          // Detect memory leaks if true
 }
 
 impl DebugAllocator
@@ -87,6 +89,27 @@ impl DebugAllocator
         return (value + toAlign) & ~toAlign
     }
 
+    mtd checkIsFreed(ptrHeader: ^DebugAllocatorHeader)
+    {
+        ptrEnd    := cast(^u8) (ptrHeader + 1)
+        ptrFooter := cast(*DebugAllocatorFooter) (ptrEnd + ptrHeader.userSize)
+
+        if (ptrHeader.magic != MagicFree or ptrFooter.magic != MagicFree)
+        {
+            @panic("memory block corruption", #location)
+        }
+
+        if ptrHeader.allocId == 0 or
+           ptrHeader.userSize == 0 or
+           ptrHeader.stackCount > @countof(ptrHeader.stack) or
+           (!ptrHeader.prev and firstFree != ptrHeader) or
+           (ptrHeader.prev and ptrHeader.prev.next != ptrHeader) or
+           (ptrHeader.next and ptrHeader.next.prev != ptrHeader)
+        {
+            @panic("memory block corruption", #location)
+        }
+    }
+
     mtd checkIsAllocated(ptrHeader: ^DebugAllocatorHeader, callerLoc = #callerlocation)
     {
         ptrEnd    := cast(^u8) (ptrHeader + 1)
@@ -119,6 +142,13 @@ impl DebugAllocator
 
 impl DebugAllocator
 {
+    mtd opDrop()
+    {
+        // Free all blocks in quarantine
+        while sizeFree > 0
+            DebugAllocator.IAllocator.releaseLast(self)
+    }
+
     // Setup the allocator
     mtd setup(allocator: IAllocator)
     {
@@ -192,13 +222,20 @@ impl DebugAllocator
         checkIsAllocated(ptrHeader, callerLoc)
     }
 
-    // Check all allocated pointers
-    mtd checkAllAllocated()
+    // Check all allocated blocks
+    mtd checkAllMemory()
     {
         ptrHeader := cast(*DebugAllocatorHeader) firstAlloc
         while ptrHeader
         {
             checkIsAllocated(ptrHeader)
+            ptrHeader = ptrHeader.next
+        }
+
+        ptrHeader = cast(*DebugAllocatorHeader) firstFree
+        while ptrHeader
+        {
+            checkIsFreed(ptrHeader)
             ptrHeader = ptrHeader.next
         }
     }
@@ -228,11 +265,12 @@ impl IAllocator for DebugAllocator
             ptrHeader.next.prev = ptrHeader.prev
 
         // Stats
-        @assert(self.countAlloc > 0)
-        self.countAlloc -= 1
-        @assert(self.sizeAlloc >= ptrHeader.userSize)
+        @assert(countAlloc > 0)
+        countAlloc -= 1
+        @assert(sizeAlloc >= ptrHeader.userSize)
         userSize := ptrHeader.userSize
-        self.sizeAlloc -= userSize
+        sizeAlloc -= userSize
+        sizeFree  += userSize
 
         // Fill the user memory area with garbage
         @memset(userAddr, FreeByte, userSize)
@@ -254,7 +292,10 @@ impl IAllocator for DebugAllocator
         if !lastFree
             lastFree = firstFree
 
-        releaseLast()
+        // Purge oldest memory blocks if necessary, until we are in the quarantine
+        // budget again
+        while sizeFree > (maxFreeSize << 10)
+            releaseLast()
     }
 
     mtd releaseLast()
@@ -262,8 +303,15 @@ impl IAllocator for DebugAllocator
         if !lastFree
             return
 
-        // Unlink from list
         ptrHeader := lastFree
+        checkIsFreed(ptrHeader)
+
+        // Stats
+        userSize := ptrHeader.userSize
+        @assert(userSize <= sizeFree)
+        sizeFree -= userSize
+
+        // Unlink from list
         if lastFree.prev
         {
             lastFree.prev.next = null
@@ -279,7 +327,7 @@ impl IAllocator for DebugAllocator
         freeAddr := ptrHeader.allocAddr
         freeSize := ptrHeader.allocSize
 
-        // Fill header/footer
+        // Fill header/footer with garbage
         ptrFooter := cast(*DebugAllocatorFooter) (ptrHeader.allocAddr + ptrHeader.userSize + @sizeof(DebugAllocatorHeader))
         @memset(ptrHeader, FreeByte, @sizeof(DebugAllocatorHeader))
         @memset(ptrFooter, FreeByte, @sizeof(DebugAllocatorFooter))
