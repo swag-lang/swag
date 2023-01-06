@@ -66,6 +66,8 @@ enum class SafetyMsg
     IntrinsicLog,
     IntrinsicLog2,
     IntrinsicLog10,
+    IntrinsicASin,
+    IntrinsicACos,
     Count,
 };
 

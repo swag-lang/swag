@@ -341,6 +341,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     // Some safety checks depending on the intrinsic
     if (mustEmitSafety(context, SAFETY_MATH))
     {
+        PushICFlags ic(context, BCI_SAFETY);
         switch (node->token.id)
         {
         case TokenId::IntrinsicAbs:
@@ -394,6 +395,37 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             inst->b.f64 = 0;
             inst->flags |= BCI_IMM_B;
             emitAssert(context, re, safetyMsg(SafetyMsg::IntrinsicLog10, t0));
+            freeRegisterRC(context, re);
+            break;
+        }
+        case TokenId::IntrinsicASin:
+        case TokenId::IntrinsicACos:
+        {
+            auto t0  = TypeManager::concreteType(callParams->childs[0]->typeInfo);
+            auto msg = node->token.id == TokenId::IntrinsicASin ? safetyMsg(SafetyMsg::IntrinsicASin, t0) : safetyMsg(SafetyMsg::IntrinsicACos, t0);
+            auto re  = reserveRegisterRC(context);
+            if (t0->nativeType == NativeTypeKind::F32)
+            {
+                auto inst   = emitInstruction(context, ByteCodeOp::CompareOpGreaterEqF32, callParams->childs[0]->resultRegisterRC, 0, re);
+                inst->b.f32 = -1;
+                inst->flags |= BCI_IMM_B;
+                emitAssert(context, re, msg);
+                inst        = emitInstruction(context, ByteCodeOp::CompareOpLowerEqF32, callParams->childs[0]->resultRegisterRC, 0, re);
+                inst->b.f32 = 1;
+                inst->flags |= BCI_IMM_B;
+                emitAssert(context, re, msg);
+            }
+            else
+            {
+                auto inst   = emitInstruction(context, ByteCodeOp::CompareOpGreaterEqF64, callParams->childs[0]->resultRegisterRC, 0, re);
+                inst->b.f64 = -1;
+                inst->flags |= BCI_IMM_B;
+                emitAssert(context, re, msg);
+                inst        = emitInstruction(context, ByteCodeOp::CompareOpLowerEqF64, callParams->childs[0]->resultRegisterRC, 0, re);
+                inst->b.f64 = 1;
+                inst->flags |= BCI_IMM_B;
+                emitAssert(context, re, msg);
+            }
             freeRegisterRC(context, re);
             break;
         }

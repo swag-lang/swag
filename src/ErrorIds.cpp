@@ -74,8 +74,8 @@ void initErrors()
     SWAG_ERROR(Saf0002, "the '>>' operand on type '%s' is greater than '%d'");
     SWAG_ERROR(Saf0018, "truncated bits when casting expression from '%s' to '%s'");
     SWAG_ERROR(Saf0019, "unexpected switch value (switch is marked with 'Swag.Complete')");
-    SWAG_ERROR(Saf0026, nullptr);
-    SWAG_ERROR(Saf0027, nullptr);
+    SWAG_ERROR(Saf0026, "'@asin' invalid argument (type is '%s')");
+    SWAG_ERROR(Saf0027, "'@acos' invalid argument (type is '%s')");
     SWAG_ERROR(Saf0028, nullptr);
     SWAG_ERROR(Saf0029, nullptr);
 

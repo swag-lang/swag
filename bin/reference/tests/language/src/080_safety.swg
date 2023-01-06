@@ -141,6 +141,22 @@ Division by zero.
 }
 
 /**
+Swag will also check for invalid arguments on some math intrinsics.
+*/
+#test
+{
+    // All of this will panic, because arguments are incorrect.
+
+    //@abs(-128)
+    //@log(-2'f32)
+    //@log2(-2'f32)
+    //@log10(2'f64)
+    //@sqrt(-2'f32)
+    //@asin(-2'f32)
+    //@acos(2'f32)
+}
+
+/**
 #[Swag.Safety("switch", true)]
 Swag will panic if a dynamic switch is marked with #[Swag.Complete], but the value is not covered by a 'case'.
 */
