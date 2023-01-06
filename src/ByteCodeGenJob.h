@@ -53,7 +53,6 @@ enum class SafetyMsg
     ShiftRightOp,
     ShiftLeftOf,
     ShiftRightOf,
-    NegAbs,
     Neg,
     SwitchComplete,
     IndexRange,
@@ -62,6 +61,8 @@ enum class SafetyMsg
     NotZero,
     InvalidBool,
     InvalidFloat,
+    IntrinsicAbs,
+    IntrinsicSqrt,
     Count,
 };
 

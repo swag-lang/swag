@@ -190,6 +190,7 @@ void SemanticJob::inheritAttributesFromOwnerFunc(AstNode* child)
 
     INHERIT_SAFETY(child, SAFETY_BOUNDCHECK);
     INHERIT_SAFETY(child, SAFETY_OVERFLOW);
+    INHERIT_SAFETY(child, SAFETY_INTRINSICS);
     INHERIT_SAFETY(child, SAFETY_MATH);
     INHERIT_SAFETY(child, SAFETY_ANY);
     INHERIT_SAFETY(child, SAFETY_SWITCH);
@@ -236,6 +237,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
         // Inherit with condition
         INHERIT_SAFETY(forNode, SAFETY_BOUNDCHECK);
         INHERIT_SAFETY(forNode, SAFETY_OVERFLOW);
+        INHERIT_SAFETY(forNode, SAFETY_INTRINSICS);
         INHERIT_SAFETY(forNode, SAFETY_MATH);
         INHERIT_SAFETY(forNode, SAFETY_ANY);
         INHERIT_SAFETY(forNode, SAFETY_SWITCH);
@@ -426,6 +428,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
 
                     CHECK_SAFETY_NAME(name_bound, SAFETY_BOUNDCHECK);
                     CHECK_SAFETY_NAME(name_over, SAFETY_OVERFLOW);
+                    CHECK_SAFETY_NAME(name_intr, SAFETY_INTRINSICS);
                     CHECK_SAFETY_NAME(name_math, SAFETY_MATH);
                     CHECK_SAFETY_NAME(name_any, SAFETY_ANY);
                     CHECK_SAFETY_NAME(name_switch, SAFETY_SWITCH);

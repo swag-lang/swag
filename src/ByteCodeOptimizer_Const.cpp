@@ -583,7 +583,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::IntrinsicF32x2:
             {
                 Register result;
-                SWAG_CHECK(ByteCodeRun::executeMathIntrinsic(context, ip, result, ip->b, ip->c));
+                SWAG_CHECK(ByteCodeRun::executeMathIntrinsic(context, ip, result, ip->b, ip->c, false));
                 ip->b.u32 = result.u32;
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
                 OK();
@@ -595,7 +595,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::IntrinsicF64x2:
             {
                 Register result;
-                SWAG_CHECK(ByteCodeRun::executeMathIntrinsic(context, ip, result, ip->b, ip->c));
+                SWAG_CHECK(ByteCodeRun::executeMathIntrinsic(context, ip, result, ip->b, ip->c, false));
                 ip->b.u64 = result.u64;
                 SET_OP(ip, ByteCodeOp::SetImmediate64);
                 OK();
@@ -949,7 +949,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::IntrinsicF32x1:
             {
                 Register result;
-                SWAG_CHECK(ByteCodeRun::executeMathIntrinsic(context, ip, result, ip->b, ip->c));
+                SWAG_CHECK(ByteCodeRun::executeMathIntrinsic(context, ip, result, ip->b, ip->c, false));
                 ip->b.u32 = result.u32;
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
                 OK();
@@ -960,7 +960,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::IntrinsicS64x1:
             {
                 Register result;
-                SWAG_CHECK(ByteCodeRun::executeMathIntrinsic(context, ip, result, ip->b, ip->c));
+                SWAG_CHECK(ByteCodeRun::executeMathIntrinsic(context, ip, result, ip->b, ip->c, false));
                 SET_OP(ip, ByteCodeOp::SetImmediate64);
                 ip->b.u64 = result.u64;
                 OK();

@@ -135,6 +135,7 @@ void LanguageSpec::setupNames()
 
     name_bound  = "bound";
     name_over   = "over";
+    name_intr   = "intr";
     name_switch = "switch";
     name_math   = "math";
     name_any    = "any";

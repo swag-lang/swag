@@ -89,13 +89,17 @@ const char* ByteCodeGenJob::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo*
             SWAG_ASSERT(toType);
             typedMsg[m][i][j] = Fmt(Err(Saf0016), toType->name.c_str());
             break;
-        case SafetyMsg::NegAbs:
-            SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(Err(Saf0003), toType->name.c_str());
-            break;
         case SafetyMsg::Neg:
             SWAG_ASSERT(toType);
             typedMsg[m][i][j] = Fmt(Err(Saf0017), toType->name.c_str());
+            break;
+        case SafetyMsg::IntrinsicAbs:
+            SWAG_ASSERT(toType);
+            typedMsg[m][i][j] = Fmt(Err(Saf0003), toType->name.c_str());
+            break;
+        case SafetyMsg::IntrinsicSqrt:
+            SWAG_ASSERT(toType);
+            typedMsg[m][i][j] = Fmt(Err(Saf0022), toType->name.c_str());
             break;
         }
     }
@@ -506,14 +510,11 @@ void ByteCodeGenJob::emitSafetyBoundCheckLowerU64(ByteCodeGenContext* context, u
 
 void ByteCodeGenJob::emitSafetyNeg(ByteCodeGenContext* context, uint32_t r0, TypeInfo* typeInfo, bool forAbs)
 {
-    if (!mustEmitSafety(context, SAFETY_OVERFLOW))
-        return;
-
     PushICFlags ic(context, BCI_SAFETY);
 
     auto re = reserveRegisterRC(context);
 
-    auto msg  = safetyMsg(SafetyMsg::NegAbs, typeInfo);
+    auto msg  = safetyMsg(SafetyMsg::IntrinsicAbs, typeInfo);
     auto msg1 = safetyMsg(SafetyMsg::Neg, typeInfo);
 
     switch (typeInfo->nativeType)

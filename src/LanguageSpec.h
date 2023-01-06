@@ -157,6 +157,7 @@ struct LanguageSpec
 
     Utf8 name_bound;
     Utf8 name_over;
+    Utf8 name_intr;
     Utf8 name_math;
     Utf8 name_switch;
     Utf8 name_bool;

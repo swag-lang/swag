@@ -1226,6 +1226,12 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             case ByteCodeOp::JumpIfEqual64:
                 OPT_JMPAC(==, u64);
                 break;
+            case ByteCodeOp::JumpIfEqualF32:
+                OPT_JMPAC(==, f32);
+                break;
+            case ByteCodeOp::JumpIfEqualF64:
+                OPT_JMPAC(==, f64);
+                break;
 
             case ByteCodeOp::JumpIfNotEqual8:
                 OPT_JMPAC(!=, u8);
@@ -1238,6 +1244,12 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 break;
             case ByteCodeOp::JumpIfNotEqual64:
                 OPT_JMPAC(!=, u64);
+                break;
+            case ByteCodeOp::JumpIfNotEqualF32:
+                OPT_JMPAC(!=, f32);
+                break;
+            case ByteCodeOp::JumpIfNotEqualF64:
+                OPT_JMPAC(!=, f64);
                 break;
 
             case ByteCodeOp::JumpIfGreaterS32:

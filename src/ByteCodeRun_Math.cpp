@@ -87,7 +87,7 @@ void ByteCodeRun::executeShiftRight(JobContext* context, Register* rdest, const 
     }
 }
 
-bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction* ip, Register& ra, const Register& rb, const Register& rc)
+bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction* ip, Register& ra, const Register& rb, const Register& rc, bool runtime)
 {
     switch (ip->op)
     {
@@ -97,6 +97,12 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         {
         case TokenId::IntrinsicAbs:
             ra.s8 = (int8_t) abs(rb.s8);
+            if (!runtime && rb.s8 == INT8_MIN)
+            {
+                Diagnostic diag{ip->node, ip->node->token, Err(Err0605), Hnt(Hnt0001)};
+                diag.setRange2(ip->node->childs.front(), Fmt(Hnt(Hnt0091), (int64_t) rb.s8));
+                return context->report(diag);
+            }
             break;
         case TokenId::IntrinsicBitCountNz:
             ra.u8 = OS::bitcountnz(rb.u8);
@@ -120,6 +126,12 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         {
         case TokenId::IntrinsicAbs:
             ra.s16 = (int16_t) abs(rb.s16);
+            if (!runtime && rb.s16 == INT16_MIN)
+            {
+                Diagnostic diag{ip->node, ip->node->token, Err(Err0605), Hnt(Hnt0001)};
+                diag.setRange2(ip->node->childs.front(), Fmt(Hnt(Hnt0091), (int64_t) rb.s16));
+                return context->report(diag);
+            }
             break;
         case TokenId::IntrinsicBitCountNz:
             ra.u16 = OS::bitcountnz(rb.u16);
@@ -146,6 +158,12 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         {
         case TokenId::IntrinsicAbs:
             ra.s32 = abs(rb.s32);
+            if (!runtime && rb.s32 == INT32_MIN)
+            {
+                Diagnostic diag{ip->node, ip->node->token, Err(Err0605), Hnt(Hnt0001)};
+                diag.setRange2(ip->node->childs.front(), Fmt(Hnt(Hnt0091), (int64_t) rb.s32));
+                return context->report(diag);
+            }
             break;
         case TokenId::IntrinsicBitCountNz:
             ra.u32 = OS::bitcountnz(rb.u32);
@@ -172,6 +190,12 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         {
         case TokenId::IntrinsicAbs:
             ra.s64 = abs(rb.s64);
+            if (!runtime && rb.s64 == INT64_MIN)
+            {
+                Diagnostic diag{ip->node, ip->node->token, Err(Err0605), Hnt(Hnt0001)};
+                diag.setRange2(ip->node->childs.front(), Fmt(Hnt(Hnt0091), rb.s64));
+                return context->report(diag);
+            }
             break;
         case TokenId::IntrinsicBitCountNz:
             ra.u64 = OS::bitcountnz(rb.u64);
@@ -384,11 +408,13 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         switch ((TokenId) ip->d.u32)
         {
         case TokenId::IntrinsicSqrt:
-            if (rb.f32 < 0)
-                return context->report({ip->node, Fmt(Err(Err0425), rb.f32), Hnt(Hnt0001)});
             ra.f32 = sqrtf(rb.f32);
-            if (isnan(ra.f32))
-                return context->report({ip->node, Fmt(Err(Err0425), rb.f32)});
+            if (!runtime && (rb.f32 < 0 || isnan(ra.f32)))
+            {
+                Diagnostic diag{ip->node, ip->node->token, Err(Err0425), Hnt(Hnt0001)};
+                diag.setRange2(ip->node->childs.front(), Fmt(Hnt(Hnt0090), rb.f32));
+                return context->report(diag);
+            }
             break;
         case TokenId::IntrinsicSin:
             ra.f32 = sinf(rb.f32);
@@ -469,11 +495,13 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         switch ((TokenId) ip->d.u32)
         {
         case TokenId::IntrinsicSqrt:
-            if (rb.f64 < 0)
-                return context->report({ip->node, Fmt(Err(Err0425), rb.f64), Hnt(Hnt0001)});
             ra.f64 = sqrt(rb.f64);
-            if (isnan(ra.f64))
-                return context->report({ip->node, Fmt(Err(Err0425), rb.f64)});
+            if (!runtime && (rb.f64 < 0 || isnan(ra.f64)))
+            {
+                Diagnostic diag{ip->node, ip->node->token, Err(Err0425), Hnt(Hnt0001)};
+                diag.setRange2(ip->node->childs.front(), Fmt(Hnt(Hnt0090), rb.f64));
+                return context->report(diag);
+            }
             break;
         case TokenId::IntrinsicSin:
             ra.f64 = sin(rb.f64);

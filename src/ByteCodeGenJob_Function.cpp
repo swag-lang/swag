@@ -334,16 +334,34 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     if (node->resolvedSymbolOverload->node->flags & AST_DEFINED_INTRINSIC)
     {
         askForByteCode(context->job, node->resolvedSymbolOverload->node, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
-        if (context->result == ContextResult::Pending)
+        if (context->result != ContextResult::Done)
             return true;
     }
 
     // Some safety checks depending on the intrinsic
-    switch (node->token.id)
+    if (mustEmitSafety(context, SAFETY_MATH))
     {
-    case TokenId::IntrinsicAbs:
-        emitSafetyNeg(context, callParams->childs[0]->resultRegisterRC, TypeManager::concreteType(callParams->childs[0]->typeInfo), true);
-        break;
+        switch (node->token.id)
+        {
+        case TokenId::IntrinsicAbs:
+        {
+            auto t0 = TypeManager::concreteType(callParams->childs[0]->typeInfo);
+            emitSafetyNeg(context, callParams->childs[0]->resultRegisterRC, t0, true);
+            break;
+        }
+        case TokenId::IntrinsicSqrt:
+        {
+            auto t0     = TypeManager::concreteType(callParams->childs[0]->typeInfo);
+            auto re     = reserveRegisterRC(context);
+            auto op     = t0->nativeType == NativeTypeKind::F32 ? ByteCodeOp::CompareOpGreaterEqF32 : ByteCodeOp::CompareOpGreaterEqF64;
+            auto inst   = emitInstruction(context, op, callParams->childs[0]->resultRegisterRC, 0, re);
+            inst->b.f64 = 0;
+            inst->flags |= BCI_IMM_B;
+            emitAssert(context, re, safetyMsg(SafetyMsg::IntrinsicSqrt, t0));
+            freeRegisterRC(context, re);
+            break;
+        }
+        }
     }
 
     switch (node->token.id)

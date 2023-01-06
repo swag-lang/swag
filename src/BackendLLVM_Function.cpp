@@ -725,19 +725,19 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicDbgAlloc:
         {
             auto result = emitCall(buildParameters, moduleToGen, g_LangSpec->name_atdbgalloc, allocR, allocT, {}, {});
-            builder.CreateStore(result, TO_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+            builder.CreateStore(TO_PTR_I8(result), TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
             break;
         }
         case ByteCodeOp::IntrinsicSysAlloc:
         {
             auto result = emitCall(buildParameters, moduleToGen, g_LangSpec->name_atsysalloc, allocR, allocT, {}, {});
-            builder.CreateStore(result, TO_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+            builder.CreateStore(TO_PTR_I8(result), TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
             break;
         }
         case ByteCodeOp::IntrinsicRtFlags:
         {
             auto result = emitCall(buildParameters, moduleToGen, g_LangSpec->name_atrtflags, allocR, allocT, {}, {});
-            builder.CreateStore(result, TO_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+            builder.CreateStore(result, TO_PTR_I64(GEP_I32(allocR, ip->a.u32)));
             break;
         }
         case ByteCodeOp::IntrinsicStringCmp:
@@ -2628,7 +2628,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOPF32_CAB();
             auto v0 = builder.CreateFCmpUNE(r1, r2);
-            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2636,7 +2636,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOPF64_CAB();
             auto v0 = builder.CreateFCmpUNE(r1, r2);
-            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }

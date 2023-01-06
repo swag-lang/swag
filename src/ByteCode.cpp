@@ -87,6 +87,8 @@ Utf8 ByteCode::getCallName()
 
 TypeInfoFuncAttr* ByteCode::getCallType()
 {
+    if (isCompilerGenerated)
+        return g_TypeMgr->typeInfoOpCall;
     if (alias)
         return alias->getCallType();
     if (node && node->typeInfo->isFuncAttr())

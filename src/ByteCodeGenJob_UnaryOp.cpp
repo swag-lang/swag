@@ -12,7 +12,9 @@ bool ByteCodeGenJob::emitUnaryOpMinus(ByteCodeGenContext* context, TypeInfo* typ
     if (!typeInfo->isNative())
         return Report::internalError(context->node, "emitUnaryOpMinus, type not native");
 
-    emitSafetyNeg(context, r0, typeInfoExpr);
+    if (mustEmitSafety(context, SAFETY_OVERFLOW))
+        emitSafetyNeg(context, r0, typeInfoExpr);
+
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::S8:
