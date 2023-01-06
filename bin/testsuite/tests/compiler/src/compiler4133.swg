@@ -1,10 +1,11 @@
 #global testerror
 #global if #run @compiler().getBuildCfg().byteCodeOptimizeLevel > 0
 
-#[Swag.Safety("math", false)]
+#[Swag.Safety("nan", false)]
+//#[Swag.PrintBc]
 #test
 {
-    y := -128's8
-    x := @abs(y)
+    y := -2.0'f32
+    x := @log(y)
     @print(x)
 }

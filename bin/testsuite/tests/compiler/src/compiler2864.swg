@@ -1,5 +1,5 @@
 #global testerror
-#global if @compiler().getBuilfCfg().byteCodeOptimizeLevel > 0
+#global if #run @compiler().getBuildCfg().byteCodeOptimizeLevel > 0
 
 //#[Swag.PrintBc]
 //#[Swag.Optim("", false)]
