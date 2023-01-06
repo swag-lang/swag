@@ -63,6 +63,9 @@ enum class SafetyMsg
     InvalidFloat,
     IntrinsicAbs,
     IntrinsicSqrt,
+    IntrinsicLog,
+    IntrinsicLog2,
+    IntrinsicLog10,
     Count,
 };
 

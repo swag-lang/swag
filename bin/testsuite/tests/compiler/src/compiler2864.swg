@@ -1,8 +1,9 @@
 #global testerror
-#global if #run @compiler().getBuildCfg().byteCodeOptimizeLevel > 0
+#assert #run @compiler().getBuildCfg().byteCodeOptimizeLevel > 0
 
 //#[Swag.PrintBc]
 //#[Swag.Optim("", false)]
+#[Swag.Safety("math", true)]
 #test
 {
     /*x := 0xFFFFFFFF'u32

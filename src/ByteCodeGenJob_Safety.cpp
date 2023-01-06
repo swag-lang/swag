@@ -101,6 +101,18 @@ const char* ByteCodeGenJob::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo*
             SWAG_ASSERT(toType);
             typedMsg[m][i][j] = Fmt(Err(Saf0022), toType->name.c_str());
             break;
+        case SafetyMsg::IntrinsicLog:
+            SWAG_ASSERT(toType);
+            typedMsg[m][i][j] = Fmt(Err(Saf0023), toType->name.c_str());
+            break;
+        case SafetyMsg::IntrinsicLog2:
+            SWAG_ASSERT(toType);
+            typedMsg[m][i][j] = Fmt(Err(Saf0024), toType->name.c_str());
+            break;
+        case SafetyMsg::IntrinsicLog10:
+            SWAG_ASSERT(toType);
+            typedMsg[m][i][j] = Fmt(Err(Saf0025), toType->name.c_str());
+            break;
         }
     }
 

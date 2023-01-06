@@ -361,6 +361,42 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             freeRegisterRC(context, re);
             break;
         }
+        case TokenId::IntrinsicLog:
+        {
+            auto t0     = TypeManager::concreteType(callParams->childs[0]->typeInfo);
+            auto re     = reserveRegisterRC(context);
+            auto op     = t0->nativeType == NativeTypeKind::F32 ? ByteCodeOp::CompareOpGreaterF32 : ByteCodeOp::CompareOpGreaterF64;
+            auto inst   = emitInstruction(context, op, callParams->childs[0]->resultRegisterRC, 0, re);
+            inst->b.f64 = 0;
+            inst->flags |= BCI_IMM_B;
+            emitAssert(context, re, safetyMsg(SafetyMsg::IntrinsicLog, t0));
+            freeRegisterRC(context, re);
+            break;
+        }
+        case TokenId::IntrinsicLog2:
+        {
+            auto t0     = TypeManager::concreteType(callParams->childs[0]->typeInfo);
+            auto re     = reserveRegisterRC(context);
+            auto op     = t0->nativeType == NativeTypeKind::F32 ? ByteCodeOp::CompareOpGreaterF32 : ByteCodeOp::CompareOpGreaterF64;
+            auto inst   = emitInstruction(context, op, callParams->childs[0]->resultRegisterRC, 0, re);
+            inst->b.f64 = 0;
+            inst->flags |= BCI_IMM_B;
+            emitAssert(context, re, safetyMsg(SafetyMsg::IntrinsicLog2, t0));
+            freeRegisterRC(context, re);
+            break;
+        }
+        case TokenId::IntrinsicLog10:
+        {
+            auto t0     = TypeManager::concreteType(callParams->childs[0]->typeInfo);
+            auto re     = reserveRegisterRC(context);
+            auto op     = t0->nativeType == NativeTypeKind::F32 ? ByteCodeOp::CompareOpGreaterF32 : ByteCodeOp::CompareOpGreaterF64;
+            auto inst   = emitInstruction(context, op, callParams->childs[0]->resultRegisterRC, 0, re);
+            inst->b.f64 = 0;
+            inst->flags |= BCI_IMM_B;
+            emitAssert(context, re, safetyMsg(SafetyMsg::IntrinsicLog10, t0));
+            freeRegisterRC(context, re);
+            break;
+        }
         }
     }
 
