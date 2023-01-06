@@ -42,10 +42,8 @@ func set(dest: ^void, value: u8, size: uint)
 // Align a value to the given amount
 func align(value: uint, alignement: u32)->uint
 {
-    toAlign := alignement orelse @sizeof(*void)
-    result := value & ~(toAlign - 1)
-    if result < value result += toAlign
-    return result
+    toAlign := (alignement orelse @sizeof(*void)) - 1
+    return (value + toAlign) & ~toAlign
 }
 
 // Align a pointer to the given amount

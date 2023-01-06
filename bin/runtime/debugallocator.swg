@@ -29,7 +29,7 @@ struct DebugAllocator
     firstAlloc: *DebugAllocatorHeader   // First allocated block
     firstFree:  *DebugAllocatorHeader   // First freed block
     lastFree:   *DebugAllocatorHeader   // Last freed block
-    sizeAlloc:  uint                    // Total user sizeAlloc, in bytes
+    sizeAlloc:  uint                    // Total allocated memory, in bytes
     countAlloc: u32                     // Number of allocated blocks
     nextId:     u32                     // The next allocated id to assign
 
@@ -83,10 +83,8 @@ impl DebugAllocator
 
     func memAlign(value: uint, alignement: u32)->uint
     {
-        toAlign := alignement orelse @sizeof(*void)
-        result := value & ~(toAlign - 1)
-        if result < value result += toAlign
-        return result
+        toAlign := (alignement orelse @sizeof(*void)) - 1
+        return (value + toAlign) & ~toAlign
     }
 
     mtd checkIsAllocated(ptrHeader: ^DebugAllocatorHeader, callerLoc = #callerlocation)
@@ -229,15 +227,6 @@ impl IAllocator for DebugAllocator
         if ptrHeader.next
             ptrHeader.next.prev = ptrHeader.prev
 
-        // Link to free list
-        ptrHeader.prev = null
-        ptrHeader.next = firstFree
-        if firstFree
-            firstFree.prev = ptrHeader
-        firstFree = ptrHeader
-        if !lastFree
-            lastFree = firstFree
-
         // Stats
         @assert(self.countAlloc > 0)
         self.countAlloc -= 1
@@ -255,6 +244,15 @@ impl IAllocator for DebugAllocator
 
         // This is the norm...
         request.address = null
+
+        // Link to the start of the free list
+        ptrHeader.prev = null
+        ptrHeader.next = firstFree
+        if firstFree
+            firstFree.prev = ptrHeader
+        firstFree = ptrHeader
+        if !lastFree
+            lastFree = firstFree
 
         releaseLast()
     }
