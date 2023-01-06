@@ -97,13 +97,15 @@ namespace Swag
     attr ExportType(what: string)
 
     #[AttrUsage(AttributeUsage.All|AttributeUsage.File)]
+    #[AttrMulti]
     attr Safety(what: string, value: bool)
+
+    #[AttrUsage(AttributeUsage.Function|AttributeUsage.File)]
+    #[AttrMulti]
+    attr Optim(what: string, value: bool)
 
     #[AttrUsage(AttributeUsage.All)]
     attr SelectIf(value: bool)
-
-    #[AttrUsage(AttributeUsage.Function|AttributeUsage.File)]
-    attr Optim(what: string, value: bool)
 
     // Hardcoded
     attr Strict()

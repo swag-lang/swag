@@ -7,6 +7,29 @@
 #include "Math.h"
 #include "LanguageSpec.h"
 
+#define INHERIT_ATTR(__c, __f)          \
+    if (!(__c->attributeFlags & (__f))) \
+        __c->attributeFlags |= attributeFlags & (__f);
+
+#define INHERIT_SAFETY(__c, __f)                               \
+    if (!(__c->safetyOn & (__f)) && !(__c->safetyOff & (__f))) \
+    {                                                          \
+        __c->safetyOn |= safetyOn & (__f);                     \
+        __c->safetyOff |= safetyOff & (__f);                   \
+    }
+
+#define CHECK_SAFETY_NAME(__name, __flag) \
+    if (w == g_LangSpec->__name)          \
+    {                                     \
+        done = true;                      \
+        forNode->safetyOn &= ~__flag;     \
+        forNode->safetyOff &= ~__flag;    \
+        if (attrValue->reg.b)             \
+            forNode->safetyOn |= __flag;  \
+        else                              \
+            forNode->safetyOff |= __flag; \
+    }
+
 bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode)
 {
     if (!checkNode)
@@ -156,17 +179,6 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     }
 }
 
-#define INHERIT_ATTR(__c, __f)          \
-    if (!(__c->attributeFlags & (__f))) \
-        __c->attributeFlags |= attributeFlags & (__f);
-
-#define INHERIT_SAFETY(__c, __f)                               \
-    if (!(__c->safetyOn & (__f)) && !(__c->safetyOff & (__f))) \
-    {                                                          \
-        __c->safetyOn |= safetyOn & (__f);                     \
-        __c->safetyOff |= safetyOff & (__f);                   \
-    }
-
 void SemanticJob::inheritAttributesFromParent(AstNode* child)
 {
     if (!child->parent)
@@ -264,7 +276,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             {
                 if (isHereTmp.contains(typeInfo))
                 {
-                    Diagnostic diag{forNode, Fmt(Err(Err0591), child->token.ctext(), child->token.ctext())};
+                    Diagnostic diag{forNode, Fmt(Err(Err0591), child->token.ctext())};
                     Diagnostic note{child, Nte(Nte0032), DiagnosticLevel::Note};
                     return context->report(diag, &note);
                 }
@@ -390,55 +402,49 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             //////
             else if (child->token.text == g_LangSpec->name_Safety)
             {
-                auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_Safety, g_LangSpec->name_what);
-                SWAG_ASSERT(attrParam);
-                auto attrWhat = &attrParam->value;
-                auto text     = attrWhat->text;
-                text.trim();
-                vector<Utf8> what;
-                Utf8::tokenize(text, '|', what);
+                VectorNative<const OneAttribute*> allAttrs;
+                vector<Utf8>                      what;
 
-                auto attrValue = curAttr->attributes.getValue(g_LangSpec->name_Swag_Safety, g_LangSpec->name_value);
-                SWAG_ASSERT(attrValue);
-
-                if (text.empty())
+                curAttr->attributes.getAttributes(allAttrs, g_LangSpec->name_Swag_Safety);
+                for (auto attr : allAttrs)
                 {
-                    if (attrValue->reg.b)
-                        forNode->safetyOn = SAFETY_ALL;
-                    else
-                        forNode->safetyOff = SAFETY_ALL;
-                }
+                    auto attrParam = attr->getParam(g_LangSpec->name_what);
+                    SWAG_ASSERT(attrParam);
+                    auto attrValue = attr->getValue(g_LangSpec->name_value);
+                    SWAG_ASSERT(attrValue);
 
-                for (auto& w : what)
-                {
-                    w.trim();
-                    bool done = false;
+                    auto attrWhat = &attrParam->value;
+                    auto text     = attrWhat->text;
+                    text.trim();
+                    Utf8::tokenize(text, '|', what);
 
-#define CHECK_SAFETY_NAME(__name, __flag) \
-    if (w == g_LangSpec->__name)          \
-    {                                     \
-        done = true;                      \
-        forNode->safetyOn &= ~__flag;     \
-        forNode->safetyOff &= ~__flag;    \
-        if (attrValue->reg.b)             \
-            forNode->safetyOn |= __flag;  \
-        else                              \
-            forNode->safetyOff |= __flag; \
-    }
-
-                    CHECK_SAFETY_NAME(name_bound, SAFETY_BOUNDCHECK);
-                    CHECK_SAFETY_NAME(name_over, SAFETY_OVERFLOW);
-                    CHECK_SAFETY_NAME(name_intr, SAFETY_INTRINSICS);
-                    CHECK_SAFETY_NAME(name_math, SAFETY_MATH);
-                    CHECK_SAFETY_NAME(name_any, SAFETY_ANY);
-                    CHECK_SAFETY_NAME(name_switch, SAFETY_SWITCH);
-                    CHECK_SAFETY_NAME(name_bool, SAFETY_BOOL);
-                    CHECK_SAFETY_NAME(name_nan, SAFETY_NAN);
-
-                    if (!done)
+                    if (text.empty())
                     {
-                        Diagnostic note{Hlp(Hlp0011), DiagnosticLevel::Help};
-                        return context->report({child, attrParam->token, Fmt(Err(Err0593), w.c_str())}, &note);
+                        if (attrValue->reg.b)
+                            forNode->safetyOn = SAFETY_ALL;
+                        else
+                            forNode->safetyOff = SAFETY_ALL;
+                    }
+
+                    for (auto& w : what)
+                    {
+                        w.trim();
+                        bool done = false;
+
+                        CHECK_SAFETY_NAME(name_bound, SAFETY_BOUNDCHECK);
+                        CHECK_SAFETY_NAME(name_over, SAFETY_OVERFLOW);
+                        CHECK_SAFETY_NAME(name_intr, SAFETY_INTRINSICS);
+                        CHECK_SAFETY_NAME(name_math, SAFETY_MATH);
+                        CHECK_SAFETY_NAME(name_any, SAFETY_ANY);
+                        CHECK_SAFETY_NAME(name_switch, SAFETY_SWITCH);
+                        CHECK_SAFETY_NAME(name_bool, SAFETY_BOOL);
+                        CHECK_SAFETY_NAME(name_nan, SAFETY_NAN);
+
+                        if (!done)
+                        {
+                            Diagnostic note{Hlp(Hlp0011), DiagnosticLevel::Help};
+                            return context->report({child, attrParam->token, Fmt(Err(Err0593), w.c_str())}, &note);
+                        }
                     }
                 }
             }
@@ -446,41 +452,47 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             //////
             else if (child->token.text == g_LangSpec->name_Optim)
             {
-                auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_Optim, g_LangSpec->name_what);
-                SWAG_ASSERT(attrParam);
-                auto attrWhat = &attrParam->value;
-                auto text     = attrWhat->text;
-                text.trim();
-                vector<Utf8> what;
-                Utf8::tokenize(text, '|', what);
+                VectorNative<const OneAttribute*> allAttrs;
+                vector<Utf8>                      what;
 
-                auto attrValue = curAttr->attributes.getValue(g_LangSpec->name_Swag_Optim, g_LangSpec->name_value);
-                SWAG_ASSERT(attrValue);
-
-                if (text.empty())
+                curAttr->attributes.getAttributes(allAttrs, g_LangSpec->name_Swag_Optim);
+                for (auto attr : allAttrs)
                 {
-                    flags &= ~(ATTRIBUTE_OPTIM_MASK);
-                    flags |= attrValue->reg.b ? ATTRIBUTE_OPTIM_BYTECODE_ON : ATTRIBUTE_OPTIM_BYTECODE_OFF;
-                    flags |= attrValue->reg.b ? ATTRIBUTE_OPTIM_BACKEND_ON : ATTRIBUTE_OPTIM_BACKEND_OFF;
-                }
+                    auto attrParam = attr->getParam(g_LangSpec->name_what);
+                    SWAG_ASSERT(attrParam);
+                    auto attrValue = attr->getValue(g_LangSpec->name_value);
+                    SWAG_ASSERT(attrValue);
 
-                for (auto& w : what)
-                {
-                    w.trim();
-                    if (w == g_LangSpec->name_bytecode)
+                    auto attrWhat = &attrParam->value;
+                    auto text     = attrWhat->text;
+                    text.trim();
+                    Utf8::tokenize(text, '|', what);
+
+                    if (text.empty())
                     {
-                        flags &= ~(ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
+                        flags &= ~(ATTRIBUTE_OPTIM_MASK);
                         flags |= attrValue->reg.b ? ATTRIBUTE_OPTIM_BYTECODE_ON : ATTRIBUTE_OPTIM_BYTECODE_OFF;
-                    }
-                    else if (w == g_LangSpec->name_backend)
-                    {
-                        flags &= ~(ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
                         flags |= attrValue->reg.b ? ATTRIBUTE_OPTIM_BACKEND_ON : ATTRIBUTE_OPTIM_BACKEND_OFF;
                     }
-                    else
+
+                    for (auto& w : what)
                     {
-                        Diagnostic note{Hlp(Hlp0012), DiagnosticLevel::Help};
-                        return context->report({child, attrParam->token, Fmt(Err(Err0594), w.c_str())}, &note);
+                        w.trim();
+                        if (w == g_LangSpec->name_bytecode)
+                        {
+                            flags &= ~(ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
+                            flags |= attrValue->reg.b ? ATTRIBUTE_OPTIM_BYTECODE_ON : ATTRIBUTE_OPTIM_BYTECODE_OFF;
+                        }
+                        else if (w == g_LangSpec->name_backend)
+                        {
+                            flags &= ~(ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
+                            flags |= attrValue->reg.b ? ATTRIBUTE_OPTIM_BACKEND_ON : ATTRIBUTE_OPTIM_BACKEND_OFF;
+                        }
+                        else
+                        {
+                            Diagnostic note{Hlp(Hlp0012), DiagnosticLevel::Help};
+                            return context->report({child, attrParam->token, Fmt(Err(Err0594), w.c_str())}, &note);
+                        }
                     }
                 }
             }

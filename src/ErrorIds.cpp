@@ -648,7 +648,7 @@ void initErrors()
     SWAG_ERROR(Err0583, "the attribute '%s' can only be applied to %s");
     SWAG_ERROR(Err0588, "the attribute '%s' cannot be applied to %s");
     SWAG_ERROR(Err0600, "the attribute '%s' does not have the 'Swag.AttributeUsage.File' usage, so it should not be used with '#global'");
-    SWAG_ERROR(Err0591, "the attribute '%s' is assigned twice, and 'Swag.AttrMulti' is not present in the declaration of '%s'");
+    SWAG_ERROR(Err0591, "the attribute '%s' is assigned twice, but 'Swag.AttrMulti' is not present in the declaration");
     SWAG_ERROR(Err0586, "the attribute '%s' should not be used in that context");
     SWAG_ERROR(Err0297, "the attribute 'Swag.Discardable' should only be used on a lambda variable (provided type is '%s')");
     SWAG_ERROR(Err0602, "the attribute parameter cannot be evaluated at compile time");

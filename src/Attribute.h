@@ -68,6 +68,9 @@ struct AttributeParameter
 
 struct OneAttribute
 {
+    const AttributeParameter* getParam(const Utf8& paramName) const;
+    const ComputedValue*      getValue(const Utf8& paramName) const;
+
     Utf8                       name;
     vector<AttributeParameter> parameters;
     AstNode*                   node     = nullptr;
@@ -77,6 +80,7 @@ struct OneAttribute
 struct AttributeList
 {
     OneAttribute*             getAttribute(const Utf8& fullName);
+    void                      getAttributes(VectorNative<const OneAttribute*>& res, const Utf8& fullName);
     const AttributeParameter* getParam(const Utf8& fullName, const Utf8& parameter);
     const ComputedValue*      getValue(const Utf8& fullName, const Utf8& parameter);
     bool                      hasAttribute(const Utf8& fullName);

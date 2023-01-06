@@ -13,6 +13,44 @@ OneAttribute* AttributeList::getAttribute(const Utf8& fullName)
     return nullptr;
 }
 
+void AttributeList::getAttributes(VectorNative<const OneAttribute*>& res, const Utf8& fullName)
+{
+    SWAG_RACE_CONDITION_READ(raceCond);
+
+    res.clear();
+    for (auto& it : allAttributes)
+    {
+        if (it.name == fullName)
+            res.push_back(&it);
+    }
+}
+
+const AttributeParameter* OneAttribute::getParam(const Utf8& paramName) const
+{
+    for (auto& param : parameters)
+    {
+        if (param.token.text == paramName)
+        {
+            return &param;
+        }
+    }
+
+    return nullptr;
+}
+
+const ComputedValue* OneAttribute::getValue(const Utf8& paramName) const
+{
+    for (auto& param : parameters)
+    {
+        if (param.token.text == paramName)
+        {
+            return &param.value;
+        }
+    }
+
+    return nullptr;
+}
+
 const AttributeParameter* AttributeList::getParam(const Utf8& fullName, const Utf8& parameter)
 {
     SWAG_RACE_CONDITION_READ(raceCond);
