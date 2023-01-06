@@ -704,7 +704,9 @@ JobResult ModuleBuildJob::execute()
         {
             if (g_CommandLine.verboseStages)
                 module->logStage(Fmt("#main %s\n", module->byteCodeMainFunc->node->sourceFile->name.c_str()));
-            module->executeNode(module->byteCodeMainFunc->node->sourceFile, module->byteCodeMainFunc->node, baseContext);
+            ExecuteNodeParams params;
+            params.breakOnStart = g_CommandLine.dbgMain;
+            module->executeNode(module->byteCodeMainFunc->node->sourceFile, module->byteCodeMainFunc->node, baseContext, &params);
             if (module->criticalErrors)
                 return JobResult::ReleaseJob;
         }

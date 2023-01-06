@@ -242,6 +242,8 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     // Setup run context
     if (params)
     {
+        g_RunContext->debugOn    = params->breakOnStart;
+        g_RunContext->debugEntry = params->breakOnStart;
         if (params->inheritSp)
             g_RunContext->sp = params->inheritSp;
         if (params->inheritSpAlt)

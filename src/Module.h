@@ -87,7 +87,8 @@ struct ExecuteNodeParams
     uint8_t*               inheritStack      = nullptr;
 
     void* debuggerResult[2];
-    bool  forDebugger = false;
+    bool  forDebugger  = false;
+    bool  breakOnStart = false;
 };
 
 struct CompilerMessage

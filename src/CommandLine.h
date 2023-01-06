@@ -51,6 +51,7 @@ struct CommandLine
 
     bool warningsAsErrors = false;
     bool dbgCatch         = false;
+    bool dbgMain          = false;
     bool dbgOff           = false;
 
 #ifdef SWAG_DEV_MODE
