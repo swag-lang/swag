@@ -154,6 +154,7 @@ struct Diagnostic
     void printErrorLevel();
     void printMargin(bool eol = false, bool maxDigits = false, int lineNo = 0);
     void printRemarks();
+    void setColorRanges(DiagnosticLevel level, bool invertColors);
     void printRanges();
 
     void reportCompact(bool verboseMode);
@@ -182,6 +183,8 @@ struct Diagnostic
     LogColor          verboseColor;
     LogColor          errorColor;
     LogColor          codeColor;
+    LogColor          hintColor;
+    LogColor          marginCodeColor;
     LogColor          hilightCodeColor;
     LogColor          rangeNoteColor;
     LogColor          warningColor;

@@ -91,7 +91,7 @@ void Diagnostic::printMargin(bool eol, bool printLineNo, int lineNo)
         return;
     }
 
-    g_Log.setColor(codeColor);
+    g_Log.setColor(marginCodeColor);
 
     if (printLineNo)
     {
@@ -313,13 +313,15 @@ void Diagnostic::setupColors(bool verboseMode)
     verboseColor     = LogColor::DarkCyan;
     errorColor       = verboseMode ? verboseColor : LogColor::Red;
     codeColor        = verboseMode ? verboseColor : LogColor::Gray;
+    marginCodeColor  = verboseMode ? verboseColor : LogColor::DarkCyan;
+    hintColor        = verboseMode ? verboseColor : LogColor::White;
     hilightCodeColor = verboseMode ? verboseColor : LogColor::White;
     rangeNoteColor   = verboseMode ? verboseColor : LogColor::Cyan;
     warningColor     = verboseMode ? verboseColor : LogColor::Magenta;
     noteColor        = verboseMode ? verboseColor : LogColor::Cyan;
     stackColor       = verboseMode ? verboseColor : LogColor::DarkYellow;
     remarkColor      = verboseMode ? verboseColor : LogColor::White;
-    sourceFileColor  = verboseMode ? verboseColor : LogColor::Gray;
+    sourceFileColor  = verboseMode ? verboseColor : LogColor::DarkCyan;
 }
 
 void Diagnostic::reportCompact(bool verboseMode)
@@ -445,6 +447,23 @@ void Diagnostic::printSourceCode()
     g_Log.eol();
 }
 
+void Diagnostic::setColorRanges(DiagnosticLevel level, bool invertColors)
+{
+    switch (level)
+    {
+    case DiagnosticLevel::Error:
+        g_Log.setColor(invertColors ? rangeNoteColor : errorColor);
+        break;
+    case DiagnosticLevel::Warning:
+        g_Log.setColor(invertColors ? rangeNoteColor : warningColor);
+        break;
+    case DiagnosticLevel::Note:
+    case DiagnosticLevel::Help:
+        g_Log.setColor(invertColors ? errorColor : rangeNoteColor);
+        break;
+    }
+}
+
 void Diagnostic::printRanges()
 {
     const auto& backLine = lines.back();
@@ -464,37 +483,9 @@ void Diagnostic::printRanges()
         }
 
         if (rangeIdx != ranges.size() - 1)
-        {
-            switch (errorLevel)
-            {
-            case DiagnosticLevel::Error:
-                g_Log.setColor(invertError ? errorColor : rangeNoteColor);
-                break;
-            case DiagnosticLevel::Warning:
-                g_Log.setColor(invertError ? warningColor : rangeNoteColor);
-                break;
-            case DiagnosticLevel::Note:
-            case DiagnosticLevel::Help:
-                g_Log.setColor(invertError ? rangeNoteColor : errorColor);
-                break;
-            }
-        }
+            setColorRanges(errorLevel, !invertError);
         else
-        {
-            switch (errorLevel)
-            {
-            case DiagnosticLevel::Error:
-                g_Log.setColor(invertError ? rangeNoteColor : errorColor);
-                break;
-            case DiagnosticLevel::Warning:
-                g_Log.setColor(invertError ? rangeNoteColor : warningColor);
-                break;
-            case DiagnosticLevel::Note:
-            case DiagnosticLevel::Help:
-                g_Log.setColor(invertError ? errorColor : rangeNoteColor);
-                break;
-            }
-        }
+            setColorRanges(errorLevel, invertError);
 
         for (uint32_t i = 0; i < (uint32_t) r.range && i < (uint32_t) backLine.length(); i++)
         {
@@ -509,7 +500,7 @@ void Diagnostic::printRanges()
     if (!ranges.back().hint.empty())
     {
         g_Log.print(" ");
-        g_Log.setColor(codeColor);
+        g_Log.setColor(hintColor);
         g_Log.print(ranges.back().hint);
     }
 
@@ -531,20 +522,7 @@ void Diagnostic::printRanges()
                 startIndex++;
             }
 
-            switch (errorLevel)
-            {
-            case DiagnosticLevel::Error:
-                g_Log.setColor(invertError ? errorColor : rangeNoteColor);
-                break;
-            case DiagnosticLevel::Warning:
-                g_Log.setColor(invertError ? warningColor : rangeNoteColor);
-                break;
-            case DiagnosticLevel::Note:
-            case DiagnosticLevel::Help:
-                g_Log.setColor(invertError ? rangeNoteColor : errorColor);
-                break;
-            }
-
+            setColorRanges(errorLevel, !invertError);
             g_Log.print("|");
         }
 
@@ -564,7 +542,7 @@ void Diagnostic::printRanges()
                 startIndex++;
             }
 
-            g_Log.setColor(codeColor);
+            g_Log.setColor(hintColor);
             g_Log.print(r.hint);
         }
     }
