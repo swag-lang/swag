@@ -195,7 +195,7 @@ private impl TagBin
             elif fromStruct and fromStruct.fromGeneric != @typeof(Array)
             {
                 // 2 pod structs with the same size
-                if Reflection.hasAttribute(to, Serialization.PodFinal) and 
+                if Reflection.hasAttribute(to, Serialization.PodFinal) and
                    Reflection.hasAttribute(from, Serialization.PodFinal) and
                    to.sizeof == from.sizeof
                 {
@@ -350,9 +350,9 @@ impl TagBin
                 aliases := Reflection.getAttributes(val, Serialization.Alias)
                 visit al: aliases
                 {
-                    val := Reflection.getAttributeValue(al, "name")
-                    Debug.assert(val != null)
-                    reqCrcName = Hash.Crc32.compute(cast(string) val)
+                    value := Reflection.getAttributeValue(al, "name")
+                    Debug.assert(value != null)
+                    reqCrcName = Hash.Crc32.compute(cast(string) value)
                     ent = sec.mapSeek.find(reqCrcName)
                     if ent
                         break

@@ -195,17 +195,17 @@ impl Offset
         else
             miterLim = 0.5
 
-        var y: f64 = ?
+        var arcT: f64 = ?
         if arcTolerance <= 0.0
-            y = DefaultArcTolerance
+            arcT = DefaultArcTolerance
         elif arcTolerance > abs(delta) * DefaultArcTolerance
-            y = abs(delta) * DefaultArcTolerance
+            arcT = abs(delta) * DefaultArcTolerance
         else
-            y = arcTolerance
+            arcT = arcTolerance
 
         const Pi    = ConstF64.Pi
         const TwoPi = ConstF64.TwoPi
-        steps := Pi / acos(1 - y / abs(delta))
+        steps := Pi / acos(1 - arcT / abs(delta))
         if steps > abs(delta) * Pi
             steps = abs(delta) * Pi
         sinVal = sin(TwoPi / steps)

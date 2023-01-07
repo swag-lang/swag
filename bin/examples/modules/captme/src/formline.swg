@@ -156,10 +156,10 @@ impl IForm for FormLine
             for i := 0; i < cmd.drawTriangles.count; i += 3
             {
                 tri := cmd.drawTriangles.start + i
-                x0  := painter.vertexBuffer[tri].pos
-                x1  := painter.vertexBuffer[tri+1].pos
-                x2  := painter.vertexBuffer[tri+2].pos
-                if pos.isInTriangle(x0, x1, x2)
+                xx0 := painter.vertexBuffer[tri].pos
+                xx1 := painter.vertexBuffer[tri+1].pos
+                xx2 := painter.vertexBuffer[tri+2].pos
+                if pos.isInTriangle(xx0, xx1, xx2)
                     return true
             }
         }

@@ -133,13 +133,14 @@ func __setupRuntime(flags: RuntimeFlags)
     cxt := @getcontext()
     cxt.tempAllocator.setCapacity(acast __buildCfg.scratchAllocatorCapacity, cxt.allocator)
 
-    if __buildCfg.debugAllocator
+    /*if __buildCfg.debugAllocator
     {
+        @init(&__debugAlloc)
         __debugAlloc.captureAllocStack = __buildCfg.debugAllocatorCaptureStack
         __debugAlloc.detectLeaks       = __buildCfg.debugAllocatorLeaks
         __debugAlloc.setup(cxt.allocator)
         cxt.allocator = __debugAlloc
-    }
+    }*/
 }
 
 func __closeRuntime()

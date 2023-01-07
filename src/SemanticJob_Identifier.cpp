@@ -3346,8 +3346,19 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
             {
                 for (int j = 0; j < countMatches; j++)
                 {
-                    if (node->ownerInline->scope->isParentOf(matches[j]->symbolOverload->node->ownerScope))
+                    auto nodeToKeep = matches[j]->symbolOverload->node;
+                    if (node->ownerInline->scope->isParentOf(nodeToKeep->ownerScope))
                     {
+                        auto inMixin = nodeToKeep->findParent(AstNodeKind::CompilerMixin);
+                        if (inMixin)
+                        {
+                            auto inMacro = inMixin->findParent(AstNodeKind::CompilerMacro);
+                            if (inMacro)
+                            {
+                                break;
+                            }
+                        }
+
                         curMatch->remove = true;
                         break;
                     }

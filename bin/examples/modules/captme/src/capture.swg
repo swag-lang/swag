@@ -706,11 +706,11 @@ impl Capture
             case FormDraw:
                 if autoSel
                     continue
-                bound := f.boundRect(false)
-                arrX.add(cast(s32) bound.x)
-                arrX.add(cast(s32) bound.right())
-                arrY.add(cast(s32) bound.y)
-                arrY.add(cast(s32) bound.bottom())
+                boundR := f.boundRect(false)
+                arrX.add(cast(s32) boundR.x)
+                arrX.add(cast(s32) boundR.right())
+                arrY.add(cast(s32) boundR.y)
+                arrY.add(cast(s32) boundR.bottom())
 
             default:
                 if autoSel

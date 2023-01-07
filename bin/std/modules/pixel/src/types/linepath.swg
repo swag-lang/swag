@@ -342,12 +342,10 @@ public impl LinePath
         endPosBuffer = startPoint
         polygon.points.add(endPosBuffer)
 
-        var pos, p1, p2, lastP: Vector2 = ?
         lastElem := elements.count - 1
-
         visit elem, i: elements
         {
-            pos = elem.position
+            pos := elem.position
 
             #[Swag.Complete]
             switch elem.type

@@ -513,6 +513,8 @@ private var g_HashNameToType: HashTable'(string, typeinfo)
 
 #premain
 {
+//    @init(&g_HashCrcToType)
+//    @init(&g_HashNameToType)
     visit m: @getpinfos().modules
     {
         visit t: m.types

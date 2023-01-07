@@ -545,10 +545,10 @@ impl IWnd for MainWnd
             {
                 visit it: capture.selection
                 {
-                    itf := capture.forms[it]
-                    if @kindof(itf) != FormImage
+                    itfForm := capture.forms[it]
+                    if @kindof(itfForm) != FormImage
                         continue
-                    b := cast(*FormImage) @dataof(itf)
+                    b := cast(*FormImage) @dataof(itfForm)
                     if b.kind != .Image
                         continue
                     evt.hidden = false
@@ -570,10 +570,10 @@ impl IWnd for MainWnd
             {
                 visit it: capture.selection
                 {
-                    itf := capture.forms[it]
-                    if @kindof(itf) != FormImage
+                    itfForm := capture.forms[it]
+                    if @kindof(itfForm) != FormImage
                         continue
-                    b := cast(*FormImage) @dataof(itf)
+                    b := cast(*FormImage) @dataof(itfForm)
                     if b.kind != .Image
                         continue
                     evt.hidden = false

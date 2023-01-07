@@ -473,11 +473,10 @@ impl QuickWnd
 
         visit it, i: currentStyle.forms
         {
-            type := @kindof(it)
-            btn  := cast(*IconButton) layout.childs[i + firstVisible]
+            btn := cast(*IconButton) layout.childs[i + firstVisible]
 
             #[Swag.Complete]
-            switch type
+            switch @kindof(it)
             {
             case FormArrow:
                 btn.isChecked = mode == .Arrow and it.isSame(&main.mdlFormArrow)
