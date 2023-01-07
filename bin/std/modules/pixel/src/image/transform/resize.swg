@@ -232,7 +232,8 @@ namespace ResizeTools
                 left  := crow.left
                 right := crow.right
 
-                var da, dr, dg, db: f64
+                #if BPP == 32 var da: f64
+                var dr, dg, db: f64
                 pw  := crow.weights.buffer
                 ptr := srcRow + left * bpp8
                 loop (right - left) + 1
@@ -282,7 +283,8 @@ namespace ResizeTools
                 left  := crow.left
                 right := crow.right
 
-                var da, dr, dg, db: f64
+                #if BPP == 32 var da: f64
+                var dr, dg, db: f64
                 pw  := crow.weights.buffer
                 ptr := srcCol + left * w8Src
                 loop (right - left) + 1

@@ -214,7 +214,6 @@ impl RichEditCtrl
         {
             pt := getCursorDisplayPos(cp)
             var numBlanks: s32
-            tx := getTabOffset(cast(s32) pt.x, &numBlanks)
 
             line := lines[cp.lineIndex]
             loop tabSize - numBlanks

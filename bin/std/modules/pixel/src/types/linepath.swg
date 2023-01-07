@@ -465,7 +465,6 @@ impl LinePath
 
     mtd flattenBezier(pos, p1, p2: Vector2, quality: PaintQuality)
     {
-        v := pos - endPosBuffer
         minDist := getFlattenDistance(quality)
         startPt := endPosBuffer
 

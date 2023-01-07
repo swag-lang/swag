@@ -423,7 +423,6 @@ impl MenuCtrl
         metrics := getThemeMetrics()
 
         pos := getSurfaceRect()
-        surfaceRect := pos
         pos.x += hotItem.pos
         pos.x -= metrics.menuPopup_ShadowSize
         pos.x -= metrics.menuBar_SpaceBetween * 0.5
@@ -561,8 +560,6 @@ impl MenuCtrl
         if !paintByFrame
             clientRect.inflate(-metrics.menuPopup_ShadowSize)
         clientRect.applyPadding(padding)
-
-        y := clientRect.y
 
         position.width = 0
         position.height = clientRect.y

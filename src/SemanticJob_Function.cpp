@@ -229,6 +229,7 @@ bool SemanticJob::resolveFuncDeclAfterSI(SemanticContext* context)
     }
 
     resolveFuncDecl(context);
+    resolveScopedStmtAfter(context);
     context->node = saveNode;
     return true;
 }
@@ -346,6 +347,8 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         node->dependentJobs.setRunning();
         return true;
     }
+
+    SWAG_CHECK(checkUnusedSymbols(context, node->scope));
 
     // Now the full function has been solved, so we wakeup jobs depending on that
     SWAG_CHECK(setFullResolve(context, node));
@@ -1040,6 +1043,55 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::checkUnusedSymbols(SemanticContext* context, Scope* scope)
+{
+    auto node = context->node;
+    if (!node->sourceFile || !node->sourceFile->module)
+        return true;
+    if (node->sourceFile->module->kind == ModuleKind::Test)
+        return true;
+    if (node->flags & AST_EMPTY_FCT)
+        return true;
+    if (node->flags & AST_IS_GENERIC)
+        return true;
+    if (scope->kind == ScopeKind::Struct)
+        return true;
+
+    auto&      table = scope->symTable;
+    ScopedLock lock(table.mutex);
+
+    for (uint32_t i = 0; i < table.mapNames.count; i++)
+    {
+        auto sym = table.mapNames.buffer[i].symbolName;
+        if (!sym || !sym->nodes.count || !sym->overloads.count)
+            continue;
+        if (sym->flags & SYMBOL_USED)
+            continue;
+        if (sym->kind == SymbolKind::GenericType)
+            continue;
+        if (sym->name[0] == '@')
+            continue;
+
+        auto front    = sym->nodes.front();
+        auto overload = sym->overloads.front();
+
+        if (front->flags & AST_GENERATED)
+            continue;
+        if (overload->typeInfo->isCVariadic())
+            continue;
+        if (!(overload->flags & OVERLOAD_VAR_LOCAL))
+            continue;
+
+        if (front->isGeneratedSelf())
+            front = front->ownerFct;
+
+        Diagnostic diag{front, front->token, Fmt(Err(Wrn0002), SymTable::getNakedKindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
+        context->report(diag);
+    }
+
+    return true;
+}
+
 bool SemanticJob::checkUnreachableCode(SemanticContext* context)
 {
     auto node = context->node;
@@ -1055,7 +1107,7 @@ bool SemanticJob::checkUnreachableCode(SemanticContext* context)
         }
 
         auto idx = Ast::findChildIndex(node->parent, node);
-        return context->report({node->parent->childs[idx + 1], Err(Err0768), DiagnosticLevel::Warning});
+        return context->report({node->parent->childs[idx + 1], Err(Wrn0001), DiagnosticLevel::Warning});
     }
 
     return true;

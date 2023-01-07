@@ -706,7 +706,6 @@ impl Capture
             case FormDraw:
                 if autoSel
                     continue
-                form2 := cast(*FormDraw) form
                 bound := f.boundRect(false)
                 arrX.add(cast(s32) bound.x)
                 arrX.add(cast(s32) bound.right())

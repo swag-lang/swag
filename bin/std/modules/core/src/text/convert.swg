@@ -365,7 +365,6 @@ func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
     Debug.assert(kindof.flags & TypeInfoFlags.Float != 0, "value to convert is not a float")
 
     dataof := @dataof(fmt.value)
-    bits := kindof.sizeof * 8
 
     var value: f64
     switch kindof.nativeKind

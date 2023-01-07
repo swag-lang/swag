@@ -62,7 +62,6 @@ impl IWnd for PalettePicker
     mtd onMouseEvent(evt: *MouseEvent)
     {
         pos := surfaceToLocal(evt.surfacePos)
-        clientRect := getClientRectPadding()
         evt.accepted = false
 
         // Hit test

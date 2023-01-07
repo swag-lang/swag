@@ -346,7 +346,6 @@ impl RichEditView
         sel0 := ed.getBegSelection()
         sel1 := ed.getEndSelection()
         size := ed.getXExtent()
-        clientRect := getClientRect()
 
         i := 0
         while i < count

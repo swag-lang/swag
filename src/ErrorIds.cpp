@@ -841,7 +841,6 @@ void initErrors()
     SWAG_ERROR(Err0070, "unexpected type of generic %s for %s ('%s' expected, '%s' provided)");
     SWAG_ERROR(Err0095, "unexpected type of ufcs (first) parameter for %s ('%s' expected, '%s' provided)");
     SWAG_ERROR(Err0815, "unexpected usage of %s ('%s') as a generic argument");
-    SWAG_ERROR(Err0768, "unreachable code");
     SWAG_ERROR(Err0259, "unrecognized character escape sequence '%c'");
     SWAG_ERROR(Err0803, "unsupported '@nameof' expression");
     SWAG_ERROR(Err0799, "unsupported '@stringof' expression");
@@ -1086,6 +1085,13 @@ void initErrors()
     SWAG_ERROR(Hnt0092, nullptr);
     SWAG_ERROR(Hnt0093, nullptr);
     SWAG_ERROR(Hnt0094, nullptr);
+
+    /////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
+
+    SWAG_ERROR(Wrn0001, "unreachable code");
+    SWAG_ERROR(Wrn0002, "the %s '%s' is unused");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

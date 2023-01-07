@@ -460,7 +460,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         }
 
         diag->hint = explicitCastHint;
-        if (paramNode && paramNode->specFlags & AST_SPEC_DECLPARAM_GENERATED_SELF)
+        if (paramNode && paramNode->isGeneratedSelf())
         {
             note                        = new Diagnostic{destFuncDecl, destFuncDecl->token, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
             note->showRange             = false;
@@ -592,7 +592,7 @@ void SemanticJob::symbolErrorNotes(SemanticContext* context, VectorNative<OneTry
     if (overloads.size() == 1 && overloads[0]->dependentVar)
     {
         // Do not generate a note if this is a generated 'using' in case of methods
-        if (overloads[0]->dependentVar->kind != AstNodeKind::FuncDeclParam || !(overloads[0]->dependentVar->specFlags & AST_SPEC_DECLPARAM_GENERATED_SELF))
+        if (!overloads[0]->dependentVar->isGeneratedSelf())
         {
             auto note = new Diagnostic{overloads[0]->dependentVar, Nte(Nte0013), DiagnosticLevel::Note};
             notes.push_back(note);

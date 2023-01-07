@@ -75,7 +75,6 @@ public impl ByteStream
         count := @countof(slice)
         if !count return
 
-        exceed := cast(int) ((seek + count) - writeBuffer.count)
         if seek + count > writeBuffer.count
             writeBuffer.reserve(seek + count)
         ptr := writeBuffer.buffer + seek

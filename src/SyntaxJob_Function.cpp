@@ -749,8 +749,10 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         }
 
         newScope->owner = resStmt;
+        resStmt->allocateExtension(ExtensionKind::Semantic);
+        resStmt->extension->semantic->semanticAfterFct = SemanticJob::resolveScopedStmtAfter;
         resStmt->allocateExtension(ExtensionKind::ByteCode);
-        resStmt->extension->bytecode->byteCodeAfterFct = &ByteCodeGenJob::emitLeaveScope;
+        resStmt->extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitLeaveScope;
     }
 
     return true;

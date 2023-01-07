@@ -273,7 +273,8 @@ struct AstNode
     bool isPublic();
 
     // clang-format off
-    bool isForeign() { return attributeFlags & ATTRIBUTE_FOREIGN; }
+    bool isForeign()       { return attributeFlags & ATTRIBUTE_FOREIGN; }
+    bool isGeneratedSelf() { return kind == AstNodeKind::FuncDeclParam && specFlags & AST_SPEC_DECLPARAM_GENERATED_SELF; }
     // clang-format on
 
     void        setPassThrough();

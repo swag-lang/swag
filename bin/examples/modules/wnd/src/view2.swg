@@ -25,7 +25,7 @@ func createTreeSimple(view: *Wnd, maxItems = 50)->*ListCtrl
             loop k: maxItems / 3
             {
                 Format.replaceString(&str, "sub sub item %", k)
-                line2 := tree.createLine(str, parentLine: line1)
+                discard tree.createLine(str, parentLine: line1)
             }
         }
     }

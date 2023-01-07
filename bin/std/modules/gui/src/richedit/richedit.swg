@@ -126,8 +126,6 @@ private impl RichEditCtrl
                 firstHidden = false
             }
         }
-
-        sy := countVisibleLines * size.y
     }
 
     mtd setModified(mdf: bool)

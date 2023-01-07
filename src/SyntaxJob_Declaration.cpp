@@ -26,7 +26,7 @@ bool SyntaxJob::doWith(AstNode* parent, AstNode** result)
             Diagnostic note{Hlp(Hlp0039), DiagnosticLevel::Help};
             return Report::report(diag, &note);
         }
-     
+
         SWAG_ASSERT(id->extension->semantic->semanticAfterFct == SemanticJob::resolveVarDeclAfter);
         id->extension->semantic->semanticAfterFct = SemanticJob::resolveWithVarDeclAfter;
         node->id.push_back(id->token.text);
@@ -354,6 +354,7 @@ bool SyntaxJob::doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeK
         statement->byteCodeFct = ByteCodeGenJob::emitDebugNop;
         statement->allocateExtension(ExtensionKind::Semantic);
         statement->extension->semantic->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
+        statement->extension->semantic->semanticAfterFct  = SemanticJob::resolveScopedStmtAfter;
     }
 
     if (result)
@@ -384,6 +385,7 @@ bool SyntaxJob::doEmbeddedStatement(AstNode* parent, AstNode** result)
         *result = statement;
     statement->allocateExtension(ExtensionKind::Semantic);
     statement->extension->semantic->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
+    statement->extension->semantic->semanticAfterFct  = SemanticJob::resolveScopedStmtAfter;
     statement->flags |= AST_NEED_SCOPE;
     newScope->owner = statement;
     SWAG_CHECK(doEmbeddedInstruction(statement));

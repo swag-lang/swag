@@ -732,7 +732,7 @@ impl Painter
     // Bind a render target
     mtd unbindRenderTarget()
     {
-        cmd := newCommand(CommandId.UnbindRenderTarget, true)
+        discard newCommand(CommandId.UnbindRenderTarget, true)
         popState()
 
         if stackRT.count

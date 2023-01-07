@@ -167,7 +167,6 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
         // Paint content
         painter.setParams(.Antialiased)
-        font := wnd.getTheme().res.fontDefault.regular
         loop i: GridSize
         {
             loop j: GridSize

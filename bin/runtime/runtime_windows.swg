@@ -232,7 +232,7 @@ func __printString(message: string)
         return
     using __Win32RT
     len := cast(u32) @countof(message)
-    wlen := WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), @dataof(message), len, null, null);
+    discard WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), @dataof(message), len, null, null)
 }
 
 ////////////////////////////////////////////////////////////

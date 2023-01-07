@@ -116,7 +116,7 @@ impl RichString
         if !count
             return
 
-        startChunk, endChunk := 0'uint
+        startChunk := 0'uint
         var chunk: RichChunk
 
         byteIdx := 0'uint

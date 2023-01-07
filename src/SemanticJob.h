@@ -220,6 +220,7 @@ struct SemanticJob : public Job
     static bool checkCanTakeAddress(SemanticContext* context, AstNode* node);
     static bool checkIsConcreteOrType(SemanticContext* context, AstNode* node);
     static bool checkPublicAlias(SemanticContext* context, AstNode* node);
+    static bool checkUnusedSymbols(SemanticContext* context, Scope* scope);
     static bool checkUnreachableCode(SemanticContext* context);
     static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode);
     static void checkDeprecated(SemanticContext* context, AstNode* identifier);
@@ -490,6 +491,7 @@ struct SemanticJob : public Job
     static bool resolveMove(SemanticContext* context);
     static bool resolveRange(SemanticContext* context);
     static bool resolveScopedStmtBefore(SemanticContext* context);
+    static bool resolveScopedStmtAfter(SemanticContext* context);
     static bool resolveArrayPointerDeRef(SemanticContext* context);
     static bool resolveArrayPointerSlicing(SemanticContext* context);
     static bool resolveKeepRef(SemanticContext* context);

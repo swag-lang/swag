@@ -460,21 +460,31 @@ bool SymTable::registerUsingAliasOverload(JobContext* context, AstNode* node, Sy
     return true;
 }
 
+Utf8 SymTable::getNakedKindName(SymbolOverload* overload)
+{
+    if (overload->typeInfo->isTuple())
+        return "tuple";
+    if (overload->typeInfo->isLambda())
+        return "lambda";
+    if (overload->typeInfo->isClosure())
+        return "closure";
+    if (overload->node->isGeneratedSelf())
+        return "implicit function parameter";
+    if (overload->flags & OVERLOAD_VAR_FUNC_PARAM)
+        return "function parameter";
+    if (overload->flags & OVERLOAD_VAR_GLOBAL)
+        return "global variable";
+    if (overload->flags & OVERLOAD_VAR_LOCAL)
+        return "local variable";
+    if (overload->flags & OVERLOAD_CONSTANT)
+        return "constant";
+    return SymTable::getNakedKindName(overload->symbol->kind);
+}
+
 Utf8 SymTable::getArticleKindName(SymbolOverload* overload)
 {
-    Utf8 refNiceName;
-    if (overload->typeInfo->isTuple())
-        refNiceName = "the tuple";
-    else if (overload->typeInfo->isLambda())
-        refNiceName = Fmt("the lambda `%s`", overload->symbol->name.c_str());
-    else if (overload->typeInfo->isClosure())
-        refNiceName = Fmt("the closure `%s`", overload->symbol->name.c_str());
-    else if (overload->flags & OVERLOAD_VAR_FUNC_PARAM)
-        refNiceName = Fmt("the function parameter `%s`", overload->symbol->name.c_str());
-    else if (overload->flags & OVERLOAD_VAR_GLOBAL)
-        refNiceName = Fmt("the global variable `%s`", overload->symbol->name.c_str());
-    else
-        refNiceName = Fmt("the %s `%s`", SymTable::getNakedKindName(overload->symbol->kind), overload->symbol->name.c_str());
+    Utf8 refNiceName = "the ";
+    refNiceName += getNakedKindName(overload);
     return refNiceName;
 }
 
@@ -542,13 +552,6 @@ const char* SymTable::getNakedKindName(SymbolKind kind)
     }
 
     return "<symbol>";
-}
-
-const char* SymTable::getNakedKindName(SymbolOverload* overload)
-{
-    if (overload->flags & OVERLOAD_COMPUTED_VALUE)
-        return "constant";
-    return getNakedKindName(overload->symbol->kind);
 }
 
 SymbolOverload* SymbolName::findOverload(TypeInfo* typeInfo)

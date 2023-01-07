@@ -162,7 +162,6 @@ impl IWnd for Tab
     {
         painter := evt.bc.painter
         theme   := getTheme()
-        metrics := getThemeMetrics()
         colors  := getThemeColors()
         rects   := getThemeRects()
 

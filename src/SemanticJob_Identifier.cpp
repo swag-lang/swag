@@ -740,6 +740,14 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     auto dependentVar = oneMatch.dependentVar;
     auto sourceFile   = context->sourceFile;
 
+    // Mark as used
+    if (symbol)
+        symbol->flags |= SYMBOL_USED;
+    if (dependentVar && dependentVar->resolvedSymbolName)
+        dependentVar->resolvedSymbolName->flags |= SYMBOL_USED;
+    if (dependentVar && dependentVar->resolvedSymbolOverload)
+        dependentVar->resolvedSymbolOverload->symbol->flags |= SYMBOL_USED;
+
     // Test x.toto with x not a struct (like a native type for example), but toto is known, so
     // no error was raised before
     if (symbol &&
@@ -2838,7 +2846,7 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
 
         if (dependentVar)
         {
-            if (dep.node->specFlags & AST_SPEC_DECLPARAM_GENERATED_SELF)
+            if (dep.node->isGeneratedSelf())
             {
                 Diagnostic diag{dependentVar, Fmt(Err(Err0117), dependentVar->typeInfo->getDisplayNameC())};
                 diag.hint = Hnt(Hnt0081);
@@ -3638,8 +3646,11 @@ bool SemanticJob::solveSelectIf(SemanticContext* context, OneMatch* oneMatch, As
         // To avoid a race condition with the job that is currently dealing with the funcDecl,
         // we will reevaluate it with a semanticAfterFct trick
         funcDecl->content->allocateExtension(ExtensionKind::Semantic);
-        SWAG_ASSERT(!funcDecl->content->extension->semantic->semanticAfterFct || funcDecl->content->extension->semantic->semanticAfterFct == SemanticJob::resolveFuncDeclAfterSI);
-        funcDecl->content->extension->semantic->semanticAfterFct = SemanticJob::resolveFuncDeclAfterSI;
+        auto sem = funcDecl->content->extension->semantic;
+        SWAG_ASSERT(!sem->semanticAfterFct ||
+                    sem->semanticAfterFct == SemanticJob::resolveFuncDeclAfterSI ||
+                    sem->semanticAfterFct == SemanticJob::resolveScopedStmtAfter);
+        sem->semanticAfterFct = SemanticJob::resolveFuncDeclAfterSI;
 
         g_ThreadMgr.addJob(job);
     }

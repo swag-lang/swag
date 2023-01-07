@@ -171,7 +171,6 @@ impl IForm for FormText
 
         pp := Math.Rectangle{0, 0, paintPos.width, paintPos.height}
         pp.inflate(-bSize * 0.5)
-        round := Math.max(bSize, 10)
 
         if text.isEmpty()
         {
@@ -292,7 +291,6 @@ impl IForm for FormText
 
         for i := 0; i < paths.count; i += 2
         {
-            pathl  := &paths[i]
             pathl1 := &paths[i + 1]
 
             wt := (pathl1.bvMax.x - pathl1.bvMin.x) * z

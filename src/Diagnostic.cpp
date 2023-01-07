@@ -470,6 +470,9 @@ void Diagnostic::printRanges()
             case DiagnosticLevel::Error:
                 g_Log.setColor(invertError ? errorColor : rangeNoteColor);
                 break;
+            case DiagnosticLevel::Warning:
+                g_Log.setColor(invertError ? warningColor : rangeNoteColor);
+                break;
             case DiagnosticLevel::Note:
             case DiagnosticLevel::Help:
                 g_Log.setColor(invertError ? rangeNoteColor : errorColor);
@@ -482,6 +485,9 @@ void Diagnostic::printRanges()
             {
             case DiagnosticLevel::Error:
                 g_Log.setColor(invertError ? rangeNoteColor : errorColor);
+                break;
+            case DiagnosticLevel::Warning:
+                g_Log.setColor(invertError ? rangeNoteColor : warningColor);
                 break;
             case DiagnosticLevel::Note:
             case DiagnosticLevel::Help:
@@ -529,6 +535,9 @@ void Diagnostic::printRanges()
             {
             case DiagnosticLevel::Error:
                 g_Log.setColor(invertError ? errorColor : rangeNoteColor);
+                break;
+            case DiagnosticLevel::Warning:
+                g_Log.setColor(invertError ? warningColor : rangeNoteColor);
                 break;
             case DiagnosticLevel::Note:
             case DiagnosticLevel::Help:
@@ -619,7 +628,7 @@ Utf8 Diagnostic::isType(AstNode* node)
     if (!node->typeInfo)
         return "";
     if (node->resolvedSymbolOverload)
-        return Fmt(Hnt(Hnt0084), SymTable::getNakedKindName(node->resolvedSymbolOverload), node->typeInfo->getDisplayNameC());
+        return Fmt(Hnt(Hnt0084), SymTable::getNakedKindName(node->resolvedSymbolOverload).c_str(), node->typeInfo->getDisplayNameC());
     return isType(node->typeInfo);
 }
 

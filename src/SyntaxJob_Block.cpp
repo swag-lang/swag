@@ -123,6 +123,7 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
             auto statement = Ast::newNode<AstSwitchCaseBlock>(this, AstNodeKind::SwitchCaseBlock, sourceFile, caseNode);
             statement->allocateExtension(ExtensionKind::Semantic);
             statement->extension->semantic->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
+            statement->extension->semantic->semanticAfterFct  = SemanticJob::resolveScopedStmtAfter;
             statement->ownerCase                              = caseNode;
             caseNode->block                                   = statement;
             if (isDefault)

@@ -815,7 +815,7 @@ impl RegExp
         return pz
     }
 
-    mtd toI32(pz, pzEnd: const ^rune, val: *s32)->const ^rune throw
+    func toI32(pz, pzEnd: const ^rune, val: *s32)->const ^rune throw
     {
         var result: retval
         if !Unicode.isLatin1(pz[0]) or !Latin1.isDigit(cast(u8) pz[0])
@@ -836,9 +836,8 @@ impl RegExp
 
     mtd preprocessEnum(sl: const [..] rune)->const ^rune throw
     {
-        pz      := @dataof(sl)
-        pzStart := pz
-        pzEnd   := pz + @countof(sl)
+        pz    := @dataof(sl)
+        pzEnd := pz + @countof(sl)
 
         if preprocessed.count == 0
             throw "syntax, { without a previous expression"
@@ -1042,7 +1041,6 @@ impl RegExp
         in32 := Unicode.fromUtf8(in)
         in32.add(0)
 
-        start := cast(const ^rune) in32.buffer
         pz    := cast(const ^rune) in32.buffer
         pzEnd := pz + in32.count
 

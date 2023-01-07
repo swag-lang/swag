@@ -60,6 +60,7 @@ enum class SymbolKind : uint8_t
 };
 
 const uint16_t SYMBOL_ATTRIBUTE_GEN = 0x0001;
+const uint16_t SYMBOL_USED          = 0x0002;
 
 struct SymbolOverload
 {
@@ -144,10 +145,10 @@ struct SymTable
     static void     decreaseOverloadNoLock(SymbolName* symbol);
     static void     disabledIfBlockOverloadNoLock(AstNode* node, SymbolName* symbol);
 
+    static Utf8        getNakedKindName(SymbolOverload* overload);
     static Utf8        getArticleKindName(SymbolOverload* overload);
-    static const char* getArticleKindName(SymbolKind kind);
     static const char* getNakedKindName(SymbolKind kind);
-    static const char* getNakedKindName(SymbolOverload* overload);
+    static const char* getArticleKindName(SymbolKind kind);
 
     SharedMutex                mutex;
     SymTableHash               mapNames;
