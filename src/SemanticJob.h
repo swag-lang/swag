@@ -227,9 +227,9 @@ struct SemanticJob : public Job
     static bool checkImplScopes(SemanticContext* context, AstImpl* node, Scope* scopeImpl, Scope* scope);
     static void checkCanInstantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch);
 
-    static bool checkUnusedSymbols(SemanticContext* context, Scope* scope);
-    static bool checkUnreachableCode(SemanticContext* context);
-    static bool checkDeprecated(SemanticContext* context, AstNode* identifier);
+    static bool warnUnusedSymbols(SemanticContext* context, Scope* scope);
+    static bool warnUnreachableCode(SemanticContext* context);
+    static bool warnDeprecated(SemanticContext* context, AstNode* identifier);
 
     static SemanticJob*   newJob(Job* dependentJob, SourceFile* sourceFile, AstNode* rootNode, bool run);
     static bool           error(SemanticContext* context, const Utf8& msg);

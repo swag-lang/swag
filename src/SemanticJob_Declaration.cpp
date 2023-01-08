@@ -171,6 +171,6 @@ bool SemanticJob::resolveScopedStmtBefore(SemanticContext* context)
 
 bool SemanticJob::resolveScopedStmtAfter(SemanticContext* context)
 {
-    SWAG_CHECK(checkUnusedSymbols(context, context->node->ownerScope));
+    SWAG_CHECK(warnUnusedSymbols(context, context->node->ownerScope));
     return true;
 }

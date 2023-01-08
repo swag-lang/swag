@@ -4,7 +4,7 @@
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 
-bool SemanticJob::checkDeprecated(SemanticContext* context, AstNode* identifier)
+bool SemanticJob::warnDeprecated(SemanticContext* context, AstNode* identifier)
 {
     auto node = identifier->resolvedSymbolOverload->node;
     if (!(node->attributeFlags & ATTRIBUTE_DEPRECATED))
@@ -61,7 +61,7 @@ bool SemanticJob::checkDeprecated(SemanticContext* context, AstNode* identifier)
     }
 }
 
-bool SemanticJob::checkUnusedSymbols(SemanticContext* context, Scope* scope)
+bool SemanticJob::warnUnusedSymbols(SemanticContext* context, Scope* scope)
 {
     auto node = context->node;
     if (!node->sourceFile || !node->sourceFile->module)
@@ -116,7 +116,7 @@ bool SemanticJob::checkUnusedSymbols(SemanticContext* context, Scope* scope)
     return isOk;
 }
 
-bool SemanticJob::checkUnreachableCode(SemanticContext* context)
+bool SemanticJob::warnUnreachableCode(SemanticContext* context)
 {
     auto node = context->node;
 

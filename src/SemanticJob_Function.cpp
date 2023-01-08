@@ -346,7 +346,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         return true;
     }
 
-    SWAG_CHECK(checkUnusedSymbols(context, node->scope));
+    SWAG_CHECK(warnUnusedSymbols(context, node->scope));
 
     // Now the full function has been solved, so we wakeup jobs depending on that
     SWAG_CHECK(setFullResolve(context, node));
@@ -1170,7 +1170,7 @@ AstFuncDecl* SemanticJob::getFunctionForReturn(AstNode* node)
 
 bool SemanticJob::resolveReturn(SemanticContext* context)
 {
-    SWAG_CHECK(checkUnreachableCode(context));
+    SWAG_CHECK(warnUnreachableCode(context));
 
     auto node     = CastAst<AstReturn>(context->node, AstNodeKind::Return);
     auto funcNode = getFunctionForReturn(node);

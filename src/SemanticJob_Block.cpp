@@ -977,7 +977,7 @@ bool SemanticJob::resolveBreak(SemanticContext* context)
     SWAG_VERIFY(node->ownerBreakable, context->report({node, Err(Err0632)}));
     node->ownerBreakable->breakList.push_back(node);
 
-    SWAG_CHECK(checkUnreachableCode(context));
+    SWAG_CHECK(warnUnreachableCode(context));
     node->byteCodeFct = ByteCodeGenJob::emitBreak;
     return true;
 }
@@ -999,7 +999,7 @@ bool SemanticJob::resolveFallThrough(SemanticContext* context)
     auto switchBlock = CastAst<AstSwitch>(node->ownerBreakable, AstNodeKind::Switch);
     SWAG_VERIFY(node->switchCase->caseIndex < switchBlock->cases.size() - 1, context->report({node, Err(Err0635)}));
 
-    SWAG_CHECK(checkUnreachableCode(context));
+    SWAG_CHECK(warnUnreachableCode(context));
     node->byteCodeFct = ByteCodeGenJob::emitFallThrough;
 
     return true;
@@ -1033,7 +1033,7 @@ bool SemanticJob::resolveContinue(SemanticContext* context)
     SWAG_VERIFY(checkBreakable, context->report({node, Err(Err0637)}));
     checkBreakable->continueList.push_back(node);
 
-    SWAG_CHECK(checkUnreachableCode(context));
+    SWAG_CHECK(warnUnreachableCode(context));
     node->byteCodeFct = ByteCodeGenJob::emitContinue;
     return true;
 }
