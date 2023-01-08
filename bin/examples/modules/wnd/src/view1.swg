@@ -13,7 +13,7 @@ func createListSimple(view: *Wnd, maxItems = 50)->*ListCtrl
         Format.replaceString(&str, "item %", i)
         icon := app.theme.getIcon24(ThemeIcons24.Search, 16)
         if i % 2 == 0 icon.clear()
-        line := list.createLine(str, icon)
+        discard list.createLine(str, icon)
     }
 
     list.computeLayout()

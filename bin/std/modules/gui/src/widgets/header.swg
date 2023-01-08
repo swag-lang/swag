@@ -62,7 +62,6 @@ impl IWnd for Header
         theme   := getTheme()
         metrics := getThemeMetrics()
         colors  := getThemeColors()
-        rects   := getThemeRects()
 
         if hotIdx == idx and !hotSeparator
         {
@@ -217,7 +216,6 @@ impl IWnd for Header
         case MouseMove:
             if moving
             {
-                item := items[hotIdx]
                 pos := surfaceToLocal(evt.surfacePos)
                 pos += scrollPos.x
                 move := pos.x - getItemPosition(hotIdx) + padding.x

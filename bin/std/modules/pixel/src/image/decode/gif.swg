@@ -471,7 +471,7 @@ public impl Decoder
         /* Background color index */
         bgIndex = readU8()
         /* Aspect ratio */
-        aspect := readU8()
+        discard readU8()
 
         read(gct.colors, 3'uint * gct.size)
         palette = &gct

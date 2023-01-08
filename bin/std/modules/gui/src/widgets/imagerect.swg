@@ -25,7 +25,6 @@ impl IWnd for ImageRect
         }
 
         painter := evt.bc.painter
-        theme   := getTheme()
         rect    := getClientRectPadding()
 
         color := getThemeColors().imageRect_Fg

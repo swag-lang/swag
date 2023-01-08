@@ -85,7 +85,6 @@ public impl EditDlg
     {
         if !label
         {
-            metrics := getThemeMetrics()
             label = Label.create(surface.getView(), message, {0, 0, 0, height})
             with label
             {

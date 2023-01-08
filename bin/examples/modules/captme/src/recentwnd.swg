@@ -102,7 +102,7 @@ impl IWnd for RecentView
                         .addItem(CmdIdFileLocation)
                     }
 
-                    res := menu.doModal(evt.surfacePos, autoDestroy: true)
+                    discard menu.doModal(evt.surfacePos, autoDestroy: true)
                 }
             }
         }
@@ -143,7 +143,6 @@ impl IWnd for RecentView
     {
         painter    := evt.bc.painter
         clientRect := getClientRectPadding()
-        colors     := getThemeColors()
 
         painter.setParams(.Antialiased)
         x := clientRect.x

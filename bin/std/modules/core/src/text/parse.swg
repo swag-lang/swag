@@ -355,7 +355,6 @@ func parseBool(str: string) -> {value: bool, eat: u32} throw
 {
     var result: retval
 
-    countof := @countof(str)
     sub := Tokenize.getWhileAlnum(str)
     switch sub
     {

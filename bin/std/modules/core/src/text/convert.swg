@@ -390,7 +390,6 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
 
     var value: u64
     var signedValue: s64
-    var signed: bool
 
     overflowS64 := false
     switch kindof.nativeKind

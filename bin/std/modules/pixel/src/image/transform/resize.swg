@@ -275,7 +275,6 @@ namespace ResizeTools
         #[Swag.Mixin]
         func(BPP: u8) doIt()
         {
-            var v: u8
             crow0 := contrib.row.buffer
             loop y: imgDst.height
             {

@@ -1060,10 +1060,15 @@ bool SemanticJob::checkUnusedSymbols(SemanticContext* context, Scope* scope)
     auto&      table = scope->symTable;
     ScopedLock lock(table.mutex);
 
-    for (uint32_t i = 0; i < table.mapNames.count; i++)
+    uint32_t cptDone = 0;
+    for (uint32_t i = 0; i < table.mapNames.allocated && cptDone != table.mapNames.count; i++)
     {
         auto sym = table.mapNames.buffer[i].symbolName;
-        if (!sym || !sym->nodes.count || !sym->overloads.count)
+        if (!sym)
+            continue;
+        cptDone++;
+
+        if (!sym->nodes.count || !sym->overloads.count)
             continue;
         if (sym->flags & SYMBOL_USED)
             continue;

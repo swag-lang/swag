@@ -347,7 +347,7 @@ func createView0(tabView: *Tab, view: *Wnd)
         swnd := Wnd.create'ScrollWnd(view, {600, 350, 400, 200}, id: "scroll")
         swnd.createView'Wnd()
         swnd.view.backgroundStyle = .Dialog
-        button1 := PushButton.create(swnd.view, "Normal", {5, 15})
+        discard PushButton.create(swnd.view, "Normal", {5, 15})
         discard PushButton.create(swnd.view, "Other", {5, 55})
         edit := EditBox.create(swnd.view, "NoScroll", {5, 100})
         edit.setNote("NoScroll")

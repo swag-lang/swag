@@ -180,7 +180,7 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
         var ps: PAINTSTRUCT
         hDC := BeginPaint(hWnd, &ps)
 
-        var rc, rc1: RECT
+        var rc1: RECT
         GetClientRect(hWnd, &rc1)
 
         // Blit the "disabled" desktop

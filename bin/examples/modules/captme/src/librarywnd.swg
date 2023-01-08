@@ -80,7 +80,6 @@ impl IWnd for LibraryView
     mtd onPaintEvent(evt: *PaintEvent)
     {
         painter    := evt.bc.painter
-        colors     := getThemeColors()
         clientRect := getClientRectPadding()
 
         x := clientRect.x

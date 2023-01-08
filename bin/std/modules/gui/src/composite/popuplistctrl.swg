@@ -117,7 +117,6 @@ impl IWnd for PopupListView
 
     mtd onPaintEvent(evt: *PaintEvent)
     {
-        bc      := evt.bc
         painter := evt.bc.painter
 
         theme   := getTheme()
@@ -202,8 +201,6 @@ impl PopupListCtrl
     // Create the popup list, but do not display it
     func create(owner: *Wnd)->*PopupListCtrl
     {
-        metrics := owner.getThemeMetrics()
-
         popup := Wnd.create'PopupListCtrl(owner.getTopView(), owner.position, owner.id)
 
         with popup
@@ -224,8 +221,6 @@ impl PopupListCtrl
     // Show popup
     mtd show(x, y: f32, width: f32 = 10)
     {
-        metrics := getThemeMetrics()
-
         scrollWnd.setScrollSize(0, cast(f32) items.count * heightItem)
 
         pt := parent.surfaceToLocal({x, y})

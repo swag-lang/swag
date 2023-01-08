@@ -48,7 +48,6 @@ impl IWnd for FrameWnd
             painter := bc.painter
             theme   := getTheme()
             colors  := getThemeColors()
-            rects   := getThemeRects()
             metrics := getThemeMetrics()
 
             clientRect := getClientRect()
@@ -68,7 +67,6 @@ impl IWnd for FrameWnd
         theme   := getTheme()
         colors  := getThemeColors()
         rects   := getThemeRects()
-        metrics := getThemeMetrics()
 
         var subRectBk:  *ThemeImageRect
         var colorBk:    Color

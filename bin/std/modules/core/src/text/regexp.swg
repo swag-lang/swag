@@ -817,7 +817,6 @@ impl RegExp
 
     func toI32(pz, pzEnd: const ^rune, val: *s32)->const ^rune throw
     {
-        var result: retval
         if !Unicode.isLatin1(pz[0]) or !Latin1.isDigit(cast(u8) pz[0])
             throw "syntax"
 
@@ -939,11 +938,7 @@ impl RegExp
 
     mtd preprocessUnicode(sl: const [..] rune)->const ^rune throw
     {
-        pz      := @dataof(sl)
-        pzStart := pz
-        pzEnd   := pz + @countof(sl)
-
-        pz += 2
+        pz := @dataof(sl) + 2
         if pz[0] == "{"'rune
         {
             if pz[1] == "L"'rune and pz[3] == "}"'rune

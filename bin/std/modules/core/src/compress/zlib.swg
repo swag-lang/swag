@@ -56,7 +56,7 @@ impl ZLib
             throw "unsupported dictionnary"
 
         // Compression level
-        flevel := (flg >>,safe 6) & 3
+        //flevel := (flg >>,safe 6) & 3
 
         var result: retval
         result = try decoder.decompress(bs.remainReadToSlice(), winSize)

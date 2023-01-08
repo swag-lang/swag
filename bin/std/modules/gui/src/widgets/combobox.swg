@@ -91,8 +91,6 @@ impl IWnd for ComboBox
         // Item
         if !editBox and selectedIdx < items.count
         {
-            fntHeight := theme.res.fontDefault.regular.height
-
             var format: RichStringFormat
             item := items[selectedIdx]
             itemRect := clientRect

@@ -498,7 +498,6 @@ impl LinePath
     mtd flattenCurve(p0, p1, p2, p3: Vector2, quality: PaintQuality)
     {
         minDist := getFlattenDistance(quality)
-        startPt := endPosBuffer
 
         // We divide a segment by half until the computed point on the curve is close to the corresponding segment
         var tmp: Array'{factor: f32, pos: Vector2}

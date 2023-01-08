@@ -15,7 +15,6 @@ impl IWnd for ToggleButton
     {
         bc     := evt.bc
         theme   := getTheme()
-        metrics := getThemeMetrics()
         colors  := getThemeColors()
         rects   := getThemeRects()
 

@@ -578,7 +578,6 @@ private impl ListView
         colors  := getThemeColors()
         metrics := getThemeMetrics()
         rects   := getThemeRects()
-        font    := theme.res.fontDefault.regular
 
         // Selection box
         isSelected  := list.isLineSelected(idx)

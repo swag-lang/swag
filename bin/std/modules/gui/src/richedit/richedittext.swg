@@ -212,7 +212,6 @@ impl RichEditCtrl
         }
         elif c == "\t"'rune and (richEdFlags & .TabToSpaces)
         {
-            pt := getCursorDisplayPos(cp)
             var numBlanks: s32
 
             line := lines[cp.lineIndex]
@@ -300,8 +299,7 @@ impl RichEditCtrl
         elif cp.lineIndex == lines.count
             newLine(cp.lineIndex)
 
-        str  := text
-        line := lines[cp.lineIndex]
+        str := text
         loop
         {
             (c, eat) := Utf8.decodeRune(str)

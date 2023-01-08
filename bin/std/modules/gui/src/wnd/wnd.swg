@@ -132,7 +132,6 @@ impl IWnd for Wnd
 {
     mtd onEvent(evt: *Event)
     {
-        eat := false
         switch evt.kind
         {
         case Create:

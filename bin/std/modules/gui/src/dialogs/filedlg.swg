@@ -75,7 +75,6 @@ private impl FileDlg
 
         curFolder = folder
         Path.normalize(&curFolder)
-        tt := curFolder
 
         if curFolder.back() == "/"'u8
             curFolder.removeBack()

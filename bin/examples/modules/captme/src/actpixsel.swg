@@ -230,7 +230,6 @@ impl MainWnd
         startCount := capture.forms.count - forms.count
         visit f: forms
         {
-            b  := cast(*BaseForm) @dataof(f)
             br := f.boundRect(false)
 
             with nf := Memory.new'FormImage()

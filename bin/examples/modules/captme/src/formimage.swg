@@ -386,7 +386,6 @@ impl IForm for FormImage
                 pp.height -= 10
 
                 var icon: Icon
-                var title: string
                 switch kind
                 {
                 case Image:

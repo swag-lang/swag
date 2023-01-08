@@ -486,11 +486,11 @@ impl Decoder
 
             case BKGD:
                 seenBKGD = true
-                chunk := readChunk(ch)
+                discard readChunk(ch)
 
             case IEND:
                 seenIEND = true
-                chunk := readChunk(ch)
+                discard readChunk(ch)
 
             case IDAT:
                 if seenIDAT
@@ -509,7 +509,7 @@ impl Decoder
                 seenIDAT = true
 
             default:
-                chunk := readChunk(ch)
+                discard readChunk(ch)
             }
 
             firstChunk = false

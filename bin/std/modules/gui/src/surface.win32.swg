@@ -94,7 +94,7 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
 
         case WM_PAINT:
             var ps: PAINTSTRUCT
-            hdc := BeginPaint(hWnd, &ps)
+            discard BeginPaint(hWnd, &ps)
             surface.invalidate()
             surface.paint()
             EndPaint(hWnd, &ps)

@@ -527,9 +527,7 @@ impl MenuCtrl
 
     mtd computeLayoutBar()
     {
-        theme   := getTheme()
-        metrics := getThemeMetrics()
-
+        metrics    := getThemeMetrics()
         clientRect := getClientRectPadding()
 
         x := clientRect.x

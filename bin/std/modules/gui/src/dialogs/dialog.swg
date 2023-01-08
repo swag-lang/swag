@@ -132,7 +132,6 @@ impl Dialog
     #[Swag.Discardable]
     mtd addButton(str: string, id: WndId, isDefault: bool = false)->*PushButton
     {
-        metrics := getThemeMetrics()
         with btn := PushButton.create(wndBottom, str, {}, #self.id)
         {
             .form = isDefault ? .Default : .Strong

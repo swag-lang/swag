@@ -166,7 +166,6 @@ impl Painter
     private func getTextureSize(brush: Brush)->{w: s32, h: s32}
     {
         var result: retval
-        var wt, ht: s32 = ?
 
         // For a hatch brush, texture size is always 8x8
         if brush.type == .Hatch

@@ -19,10 +19,7 @@ impl IWnd for PalettePicker
     {
         bc      := evt.bc
         painter := bc.painter
-        theme   := getTheme()
-        metrics := getThemeMetrics()
         colors  := getThemeColors()
-        rects   := getThemeRects()
 
         var colorBorder: Color = ?
 
