@@ -1,10 +1,24 @@
 #include "pch.h"
 #include "Diagnostic.h"
-#include "Log.h"
 #include "SourceFile.h"
-#include "SymTable.h"
 #include "TypeInfo.h"
 #include "ErrorIds.h"
+
+void Diagnostic::setupColors(bool verboseMode)
+{
+    verboseColor     = LogColor::DarkCyan;
+    errorColor       = verboseMode ? verboseColor : LogColor::Red;
+    codeColor        = verboseMode ? verboseColor : LogColor::Gray;
+    marginCodeColor  = verboseMode ? verboseColor : LogColor::DarkCyan;
+    hintColor        = verboseMode ? verboseColor : LogColor::White;
+    hilightCodeColor = verboseMode ? verboseColor : LogColor::DarkYellow;
+    rangeNoteColor   = verboseMode ? verboseColor : LogColor::White;
+    warningColor     = verboseMode ? verboseColor : LogColor::Magenta;
+    noteColor        = verboseMode ? verboseColor : LogColor::DarkCyan;
+    stackColor       = verboseMode ? verboseColor : LogColor::DarkYellow;
+    remarkColor      = verboseMode ? verboseColor : LogColor::White;
+    sourceFileColor  = verboseMode ? verboseColor : LogColor::DarkCyan;
+}
 
 void Diagnostic::setup()
 {
@@ -298,22 +312,6 @@ void Diagnostic::collectRanges()
         fixRange(backLine, r.startLocation, r.range, '(', ')');
         fixRange(backLine, r.startLocation, r.range, '[', ']');
     }
-}
-
-void Diagnostic::setupColors(bool verboseMode)
-{
-    verboseColor     = LogColor::DarkCyan;
-    errorColor       = verboseMode ? verboseColor : LogColor::Red;
-    codeColor        = verboseMode ? verboseColor : LogColor::Gray;
-    marginCodeColor  = verboseMode ? verboseColor : LogColor::DarkCyan;
-    hintColor        = verboseMode ? verboseColor : LogColor::White;
-    hilightCodeColor = verboseMode ? verboseColor : LogColor::White;
-    rangeNoteColor   = verboseMode ? verboseColor : LogColor::Cyan;
-    warningColor     = verboseMode ? verboseColor : LogColor::Magenta;
-    noteColor        = verboseMode ? verboseColor : LogColor::White;
-    stackColor       = verboseMode ? verboseColor : LogColor::DarkYellow;
-    remarkColor      = verboseMode ? verboseColor : LogColor::White;
-    sourceFileColor  = verboseMode ? verboseColor : LogColor::DarkCyan;
 }
 
 void Diagnostic::reportCompact(bool verboseMode)

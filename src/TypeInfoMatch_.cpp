@@ -28,6 +28,13 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
 
         if (i >= parameters.size() && !isAfterVariadic)
         {
+            if (context.result == MatchResult::BadSignature &&
+                (context.flags & SymbolMatchContext::MATCH_UFCS) &&
+                context.badSignatureInfos.badSignatureParameterIdx == 0)
+            {
+                return;
+            }
+
             context.badSignatureInfos.badSignatureParameterIdx = i;
             context.badSignatureInfos.badSignatureNum1         = numParams;
             context.badSignatureInfos.badSignatureNum2         = (int) parameters.size();

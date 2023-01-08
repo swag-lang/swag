@@ -87,8 +87,37 @@ static int getBadParamIdx(OneTryMatch& oneTry, AstNode* callParameters)
     return badParamIdx;
 }
 
+bool SemanticJob::preprocessMatchError(SemanticContext* context, OneTryMatch& oneTry, vector<const Diagnostic*>& result0, vector<const Diagnostic*>& result1)
+{
+    SymbolOverload*    overload = oneTry.overload;
+    auto&              match    = oneTry.symMatchContext;
+    BadSignatureInfos& bi       = oneTry.symMatchContext.badSignatureInfos;
+    auto               typeFunc = overload->symbol->kind == SymbolKind::Function ? CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr) : nullptr;
+
+    // UFCS.toto(a, ...) with in fact toto(a, ...)
+    if (match.result == MatchResult::BadSignature &&
+        typeFunc &&
+        match.parameters.size() == typeFunc->parameters.size() + 1 &&
+        oneTry.ufcs &&
+        typeFunc->parameters.size() >= 1 &&
+        !(typeFunc->parameters[0]->typeInfo->flags & TYPEINFO_SELF) &&
+        bi.badSignatureParameterIdx == 0)
+    {
+        auto ufcs  = match.parameters[0];
+        auto note  = new Diagnostic{ufcs, ufcs->token, Hlp(Hlp0044), DiagnosticLevel::Help};
+        note->hint = Hnt(Hnt0094);
+        result1.push_back(note);
+    }
+
+    return false;
+}
+
 void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, vector<const Diagnostic*>& result0, vector<const Diagnostic*>& result1)
 {
+    // Smart changes for smarter errors (very specific cases)
+    if (preprocessMatchError(context, oneTry, result0, result1))
+        return;
+
     auto              node              = context->node;
     BadSignatureInfos bi                = oneTry.symMatchContext.badSignatureInfos;
     auto              symbol            = oneTry.overload->symbol;
@@ -388,11 +417,13 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         }
         else if (oneTry.ufcs && bi.badSignatureParameterIdx == 0)
         {
-            diag = new Diagnostic{diagNode,
+            diag             = new Diagnostic{diagNode,
                                   Fmt(Err(Err0095),
-                                      refNiceName.c_str(),
                                       bi.badSignatureRequestedType->getDisplayNameC(),
                                       bi.badSignatureGivenType->getDisplayNameC())};
+            auto nodeCall    = diagNode->parent->childs.back();
+            explicitCastHint = Diagnostic::isType(bi.badSignatureGivenType);
+            diag->setRange2(nodeCall->token, Fmt(Hnt(Hnt0093), bi.badSignatureGivenType->getDisplayNameC()));
         }
         else
         {

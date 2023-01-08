@@ -286,6 +286,7 @@ struct SemanticJob : public Job
     static Utf8           getTheNiceArgumentRank(int idx);
     static Utf8           getNiceParameterRank(int idx);
     static Utf8           getTheNiceParameterRank(int idx);
+    static bool           preprocessMatchError(SemanticContext* context, OneTryMatch& oneTry, vector<const Diagnostic*>& result0, vector<const Diagnostic*>& result1);
     static void           getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, vector<const Diagnostic*>& result0, vector<const Diagnostic*>& result1);
     static void           symbolErrorRemarks(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, Diagnostic* diag);
     static Utf8           findClosestMatchesMsg(SemanticContext* context, vector<Utf8>& best);

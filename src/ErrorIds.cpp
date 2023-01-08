@@ -759,7 +759,7 @@ void initErrors()
     SWAG_ERROR(Err0735, "the type 'cvarargs' should only be used for a function parameter");
     SWAG_ERROR(Err0810, "the type cannot be evaluated in that context because it is generic");
     SWAG_ERROR(Err0477, "the upper bound '%I64u' of the slicing arguments is out of range (maximum value is '%I64u')");
-    SWAG_ERROR(Err0086, "the variable '%s' has only been used as a scope to find the function '%s'");
+    SWAG_ERROR(Err0086, "the variable '%s' has only been used as a scope to find function '%s'");
     SWAG_ERROR(Err0645, "the variable is initialized twice, first with type arguments, and then with an assignment");
     SWAG_ERROR(Err0289, "the version should be of the form 'version.revision.buildnum', with each number >= 0 or the '?' character");
     SWAG_ERROR(Err0880, "the while expression is always true");
@@ -839,7 +839,7 @@ void initErrors()
     SWAG_ERROR(Err0679, "unexpected type for the first parameter of interface member ('self' expected, '%s' provided)");
     SWAG_ERROR(Err0106, "unexpected type of 'self' parameter for %s ('%s' expected, '%s' provided)");
     SWAG_ERROR(Err0070, "unexpected type of generic %s for %s ('%s' expected, '%s' provided)");
-    SWAG_ERROR(Err0095, "unexpected type of ufcs (first) parameter for %s ('%s' expected, '%s' provided)");
+    SWAG_ERROR(Err0095, "unexpected type of ufcs first parameter ('%s' expected, '%s' provided)");
     SWAG_ERROR(Err0815, "unexpected usage of %s ('%s') as a generic argument");
     SWAG_ERROR(Err0259, "unrecognized character escape sequence '%c'");
     SWAG_ERROR(Err0803, "unsupported '@nameof' expression");
@@ -986,7 +986,7 @@ void initErrors()
     SWAG_ERROR(Hlp0038, "you should add a 'break'");
     SWAG_ERROR(Hlp0042, "you could use 'func' instead of 'mtd' or 'mtdc'");
     SWAG_ERROR(Hlp0043, "this is ambiguous, so you should remove one 'using'");
-    SWAG_ERROR(Hlp0044, nullptr);
+    SWAG_ERROR(Hlp0044, "it looks like it could be an invalid ufcs call");
     SWAG_ERROR(Hlp0045, nullptr);
 
     /////////////////////////////////////////////////////////////////////
@@ -1074,7 +1074,7 @@ void initErrors()
     SWAG_ERROR(Hnt0013, "this should be on another line, or separated with ';'");
     SWAG_ERROR(Hnt0026, "this should be removed");
     SWAG_ERROR(Hnt0042, "this should be replaced by 'func'");
-    SWAG_ERROR(Hnt0080, "this should be replaced by the scope '%s'");
+    SWAG_ERROR(Hnt0080, "this should be removed or replaced by the scope '%s'");
     SWAG_ERROR(Hnt0068, "this tuple contains '%d' field(s)");
     SWAG_ERROR(Hnt0069, "this tuple is empty");
     SWAG_ERROR(Hnt0032, "this type is '%s' (could be casted with 'cast(%s)')");
@@ -1086,8 +1086,8 @@ void initErrors()
     SWAG_ERROR(Hnt0090, "this evaluates to '%f'");
     SWAG_ERROR(Hnt0091, "this evaluates to '%lld'");
     SWAG_ERROR(Hnt0092, "this should be renamed to '_%s' if this is intentional");
-    SWAG_ERROR(Hnt0093, nullptr);
-    SWAG_ERROR(Hnt0094, nullptr);
+    SWAG_ERROR(Hnt0093, "this function does not accept type '%s' as a first argument");
+    SWAG_ERROR(Hnt0094, "should this be removed ?");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

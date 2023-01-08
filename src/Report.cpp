@@ -87,13 +87,13 @@ namespace Report
 
                 // Try to transform a note in a hint
                 if (note->hint.empty() &&
-                        note1->hint.empty() &&
-                        !note1->hasRangeLocation2 &&
-                        !note1->hasRangeLocation ||
-                    (note1->startLocation.line == note->startLocation.line &&
-                     note1->endLocation.line == note->endLocation.line &&
-                     note1->startLocation.column == note->startLocation.column &&
-                     note1->endLocation.column == note->endLocation.column))
+                    note1->hint.empty() &&
+                    !note1->hasRangeLocation2 &&
+                    (!note1->hasRangeLocation ||
+                     (note1->startLocation.line == note->startLocation.line &&
+                      note1->endLocation.line == note->endLocation.line &&
+                      note1->startLocation.column == note->startLocation.column &&
+                      note1->endLocation.column == note->endLocation.column)))
                 {
                     note->hint = note1->textMsg;
                     note->remarks.insert(note->remarks.end(), note1->remarks.begin(), note1->remarks.end());
