@@ -104,6 +104,22 @@ CLEAN
 
 
 
+
+****************************************
+CORE
+****************************************
+
+-------------------------------------
+TagBin, en cas d'erreur plein de trucs à faire (donner plus d'infos...)
+-------------------------------------
+UUID (mais pour que ça aille vite faudrait du SIMD...)
+https://github.com/crashoz/uuid_v4/blob/master/uuid_v4.h
+-------------------------------------
+
+
+
+
+
 ****************************************
 OPTIMS
 ****************************************
