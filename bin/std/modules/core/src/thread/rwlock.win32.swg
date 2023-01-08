@@ -10,14 +10,17 @@ struct RWLock
 
 impl RWLock
 {
+    mtd lock()   = lockExclusive()
+    mtd unlock() = unlockExclusive()
+
     // Try to lock the mutex, and return 'true' if it's the case
-    func tryLockExclusive(using self)->bool
+    mtd tryLockExclusive()->bool
     {
         return TryAcquireSRWLockExclusive(&v) ? true : false
     }
 
     // Lock mutex
-    func lockExclusive(using self)
+    mtd lockExclusive()
     {
         AcquireSRWLockExclusive(&v)
     }
@@ -29,19 +32,19 @@ impl RWLock
     }
 
     // Try to lock the mutex, and return 'true' if it's the case
-    func tryLockShared(using self)->bool
+    mtd tryLockShared()->bool
     {
         return TryAcquireSRWLockShared(&v) ? true : false
     }
 
     // Lock mutex
-    func lockShared(using self)
+    mtd lockShared()
     {
         AcquireSRWLockShared(&v)
     }
 
     // Unlock mutex
-    func unlockShared(using self)
+    mtd unlockShared()
     {
         ReleaseSRWLockShared(&v)
     }

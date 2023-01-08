@@ -510,11 +510,13 @@ func roomInArray(addr: *void, type: const *TypeInfoStruct, valueType: typeinfo)-
 
 private var g_HashCrcToType: HashTable'(u32, typeinfo)
 private var g_HashNameToType: HashTable'(string, typeinfo)
+private var g_HashLock: Sync.RWLock
 
+// #premain can be called more than once if we are compiling/run more than one
+// module using Core at the same time. So lock !
 #premain
 {
-//    @init(&g_HashCrcToType)
-//    @init(&g_HashNameToType)
+    Sync.scopedLock(&g_HashLock)
     visit m: @getpinfos().modules
     {
         visit t: m.types
@@ -528,6 +530,7 @@ private var g_HashNameToType: HashTable'(string, typeinfo)
 // Convert a crc to a registered typeinfo
 func crcToType(crc: u32)->typeinfo
 {
+    Sync.sharedLock(&g_HashLock)
     e := g_HashCrcToType.find(crc)
     if !e
         return null
@@ -537,6 +540,7 @@ func crcToType(crc: u32)->typeinfo
 // Convert a crc to a registered typeinfo
 func nameToType(name: string)->typeinfo
 {
+    Sync.sharedLock(&g_HashLock)
     e := g_HashNameToType.find(name)
     if !e
         return null
