@@ -985,6 +985,9 @@ void initErrors()
     SWAG_ERROR(Hlp0037, "you should add a 'break' or a 'fallthrough'");
     SWAG_ERROR(Hlp0038, "you should add a 'break'");
     SWAG_ERROR(Hlp0042, "you could use 'func' instead of 'mtd' or 'mtdc'");
+    SWAG_ERROR(Hlp0043, "this is ambiguous, so you should remove one 'using'");
+    SWAG_ERROR(Hlp0044, nullptr);
+    SWAG_ERROR(Hlp0045, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
