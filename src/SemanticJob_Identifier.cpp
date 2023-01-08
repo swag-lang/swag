@@ -2790,9 +2790,23 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
 
     // Collect all matches
     bool hasWith = false;
+    bool hasUfcs = false;
     for (auto& dep : scopeHierarchyVars)
     {
         bool getIt = false;
+
+        // This is a function, and first parameter matches the using var
+        bool okForUfcs = false;
+        if (symbol->kind == SymbolKind::Function)
+        {
+            auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
+            if (typeInfo->parameters.size())
+            {
+                auto firstParam = typeInfo->parameters.front()->typeInfo;
+                if (firstParam->isSame(dep.node->typeInfo, ISSAME_EXACT))
+                    okForUfcs = true;
+            }
+        }
 
         // Exact same scope
         if (dep.scope == symScope || dep.scope->getFullName() == symScope->getFullName())
@@ -2803,21 +2817,17 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
             getIt = true;
 
         // For mtd sub functions and ufcs
-        else if (symbol->kind == SymbolKind::Function)
+        else if (okForUfcs)
         {
-            auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
-            if (typeInfo->parameters.size())
-            {
-                auto firstParam = typeInfo->parameters.front()->typeInfo;
-                if (firstParam->isSame(dep.node->typeInfo, ISSAME_EXACT))
-                    getIt = true;
-            }
+            hasUfcs = true;
+            getIt   = true;
         }
 
         if (getIt)
         {
             if (dep.node->parent->kind == AstNodeKind::With)
                 hasWith = true;
+            dep.flags |= okForUfcs ? ALTSCOPE_UFCS : 0;
             toCheck.push_back(dep);
         }
     }
@@ -2830,6 +2840,16 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
             SWAG_ASSERT(dep.node->parent);
             bool isWith = dep.node->parent->kind == AstNodeKind::With;
             if (!isWith)
+                dep.node = nullptr;
+        }
+    }
+
+    // If something has an ufcs match, then remove all those that don't
+    if (hasUfcs)
+    {
+        for (auto& dep : toCheck)
+        {
+            if (!(dep.flags & ALTSCOPE_UFCS))
                 dep.node = nullptr;
         }
     }
