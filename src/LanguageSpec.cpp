@@ -51,6 +51,7 @@ void LanguageSpec::setupNames()
     name_PrintBc    = "PrintBc";
     name_ExportType = "ExportType";
     name_Using      = "Using";
+    name_Warn       = "Warn";
 
     name_Swag_AttrUsage  = "Swag.AttrUsage";
     name_Swag_AttrMulti  = "Swag.AttrMulti";
@@ -64,6 +65,7 @@ void LanguageSpec::setupNames()
     name_Swag_Opaque     = "Swag.Opaque";
     name_Swag_Offset     = "Swag.Offset";
     name_Swag_ExportType = "Swag.ExportType";
+    name_Swag_Warn       = "Swag.Warn";
 
     name_opBinary       = "opBinary";
     name_opUnary        = "opUnary";
@@ -150,6 +152,7 @@ void LanguageSpec::setupNames()
     name_usage    = "usage";
     name_what     = "what";
     name_value    = "value";
+    name_level    = "level";
     name_disk     = "disk";
     name_retval   = "retval";
     name_methods  = "methods";

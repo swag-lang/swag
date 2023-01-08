@@ -217,6 +217,22 @@ void ModuleBuildJob::checkMissingErrors()
                     Report::report({file, Fmt(Err(Err0501), nb, file->numWarnings)});
                 }
             }
+
+            if (file->multipleTestErrors && !file->numErrors)
+            {
+                if (g_CommandLine.testFilter.empty() || strstr(file->name, g_CommandLine.testFilter.c_str()))
+                {
+                    Report::report({file, Err(Err0707)});
+                }
+            }
+
+            if (file->multipleTestWarnings && !file->numWarnings)
+            {
+                if (g_CommandLine.testFilter.empty() || strstr(file->name, g_CommandLine.testFilter.c_str()))
+                {
+                    Report::report({file, Err(Err0580)});
+                }
+            }
         }
     }
 }
@@ -379,6 +395,7 @@ JobResult ModuleBuildJob::execute()
                 auto job       = g_Allocator.alloc<ModuleBuildJob>();
                 job->module    = errorMd;
                 job->fromError = true;
+                errorMd->inheritCfgFrom(module);
                 g_ThreadMgr.addJob(job);
             }
         }

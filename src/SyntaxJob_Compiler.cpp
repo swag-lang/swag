@@ -563,7 +563,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
             parent = sourceFile->astRoot;
 
             // Add front in case astRoot already has some childs (if the #global comes after another one).
-            // We need #global attributes to be first in the file, before other #globals (namespaces, public/protected etc...).
+            // We need #global attributes to be first in the file, before other #globals (namespaces, public etc...).
             // Otherwise we can have a race condition between multiple globals.
             Ast::addChildFront(parent, resultNode);
         }

@@ -26,6 +26,8 @@ PushErrContext::~PushErrContext()
 
 void ErrorContext::fillContext(JobContext* context, Diagnostic& diag, vector<const Diagnostic*>& notes)
 {
+    diag.raisedOnNode = context->node;
+
     if (diag.errorLevel == DiagnosticLevel::Error)
         context->hasError = true;
 

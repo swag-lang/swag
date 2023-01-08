@@ -9,6 +9,7 @@
 #include "Ast.h"
 #include "ErrorIds.h"
 #include "File.h"
+#include "LanguageSpec.h"
 
 thread_local int    g_SilentError = 0;
 thread_local string g_SilentErrorMsg;
@@ -134,7 +135,8 @@ namespace Report
 
         // Make a copy
         vector<Diagnostic*> notes;
-        notes.push_back(new Diagnostic{diag});
+        auto                c = new Diagnostic{diag};
+        notes.push_back(c);
         for (auto n : inNotes)
             notes.push_back(new Diagnostic{*n});
 
@@ -161,22 +163,211 @@ namespace Report
         return sourceFile;
     }
 
-    bool report(const Diagnostic& diag, const vector<const Diagnostic*>& notes)
+    bool dealWithWarning(AstAttrUse* attrUse, const Utf8& warnMsg, Diagnostic& diag, vector<const Diagnostic*>& inNotes, bool& retResult)
     {
-        if (g_SilentError > 0 && !diag.exceptionError)
+        auto attrWarn = attrUse->attributes.getAttribute(g_LangSpec->name_Swag_Warn);
+        if (!attrWarn)
+            return false;
+
+        auto what    = attrWarn->getValue(g_LangSpec->name_what);
+        auto level   = attrWarn->getValue(g_LangSpec->name_level);
+        auto whatVal = what->text;
+        whatVal.trim();
+
+        auto l = (WarnLevel) level->reg.u8;
+        if (whatVal.empty())
         {
-            g_SilentErrorMsg = diag.textMsg;
+            if (l == WarnLevel::Disable)
+                retResult = false;
+            else
+            {
+                retResult = true;
+                if (l == WarnLevel::Error)
+                    diag.errorLevel = DiagnosticLevel::Error;
+            }
+
+            return true;
+        }
+        else
+        {
+            vector<Utf8> tokens;
+            Utf8::tokenize(what->text, '|', tokens);
+            for (auto& tk : tokens)
+            {
+                tk.trim();
+                tk.makeLower();
+                if (tk == warnMsg)
+                {
+                    if (l == WarnLevel::Disable)
+                    {
+                        retResult = false;
+                    }
+                    else
+                    {
+                        retResult = true;
+                        if (l == WarnLevel::Error)
+                            diag.errorLevel = DiagnosticLevel::Error;
+                    }
+
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    bool dealWithWarning(Diagnostic& diag, vector<const Diagnostic*>& notes)
+    {
+        if (diag.errorLevel != DiagnosticLevel::Warning)
+            return true;
+        if (!diag.raisedOnNode)
+            return true;
+
+        // Get warning identifier
+        Utf8 warnMsg;
+        auto pz = diag.textMsg.c_str();
+        while (*pz && *pz != '[')
+            pz++;
+        if (*pz == 0)
+            return true;
+        pz++;
+        while (*pz && *pz != ']')
+            warnMsg += *pz++;
+        if (*pz == 0)
+            return true;
+        warnMsg.makeLower();
+
+        // Check attributes in the ast hierarchy
+        auto node = diag.raisedOnNode;
+        while (node)
+        {
+            if (node->kind == AstNodeKind::AttrUse)
+            {
+                auto attrUse   = CastAst<AstAttrUse>(node, AstNodeKind::AttrUse);
+                bool retResult = true;
+                if (dealWithWarning(attrUse, warnMsg, diag, notes, retResult))
+                    return retResult;
+            }
+
+            node = node->parent;
+        }
+
+        // Check attributes in the file
+        auto sourceFile = getDiagFile(diag);
+        auto attrUse    = sourceFile->astAttrUse;
+        while (attrUse)
+        {
+            bool retResult = true;
+            if (dealWithWarning(attrUse, warnMsg, diag, notes, retResult))
+                return retResult;
+            if (attrUse->extension && attrUse->extension->owner)
+                attrUse = attrUse->extension->owner->ownerAttrUse;
+        }
+
+        // Check build configuration
+        auto module = sourceFile->module;
+
+        if (module->buildCfg.warnAsErrors.buffer)
+        {
+            Utf8 txt{(const char*) module->buildCfg.warnAsErrors.buffer, (uint32_t) module->buildCfg.warnAsErrors.count};
+            txt.trim();
+            if (!txt.empty())
+            {
+                vector<Utf8> tokens;
+                Utf8::tokenize(txt, '|', tokens);
+                for (auto& tk : tokens)
+                {
+                    tk.trim();
+                    tk.makeLower();
+                    if (tk == warnMsg)
+                    {
+                        diag.errorLevel = DiagnosticLevel::Error;
+                        return true;
+                    }
+                }
+            }
+        }
+
+        if (module->buildCfg.warnAsWarnings.buffer)
+        {
+            Utf8 txt{(const char*) module->buildCfg.warnAsWarnings.buffer, (uint32_t) module->buildCfg.warnAsWarnings.count};
+            txt.trim();
+            if (!txt.empty())
+            {
+                vector<Utf8> tokens;
+                Utf8::tokenize(txt, '|', tokens);
+                for (auto& tk : tokens)
+                {
+                    tk.trim();
+                    tk.makeLower();
+                    if (tk == warnMsg)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        if (module->buildCfg.warnAsDisabled.buffer)
+        {
+            Utf8 txt{(const char*) module->buildCfg.warnAsDisabled.buffer, (uint32_t) module->buildCfg.warnAsDisabled.count};
+            txt.trim();
+            if (!txt.empty())
+            {
+                vector<Utf8> tokens;
+                Utf8::tokenize(txt, '|', tokens);
+                for (auto& tk : tokens)
+                {
+                    tk.trim();
+                    tk.makeLower();
+                    if (tk == warnMsg)
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        if (module->buildCfg.warnDefaultDisabled)
+        {
+            return false;
+        }
+
+        if (module->buildCfg.warnDefaultErrors)
+        {
+            diag.errorLevel = DiagnosticLevel::Error;
+            return true;
+        }
+
+        return true;
+    }
+
+    bool report(const Diagnostic& inDiag, const vector<const Diagnostic*>& inNotes)
+    {
+        if (g_SilentError > 0 && !inDiag.exceptionError)
+        {
+            g_SilentErrorMsg = inDiag.textMsg;
             return false;
         }
 
         ScopedLock lock(g_Log.mutexAccess);
 
-        auto sourceFile = getDiagFile(diag);
+        auto copyDiag  = new Diagnostic{inDiag};
+        auto copyNotes = inNotes;
 
-        // Warning to error option ?
+        if (!dealWithWarning(*copyDiag, copyNotes))
+        {
+            if (g_CommandLine.verboseTestErrors)
+                report(*copyDiag, copyNotes, true);
+            return true;
+        }
+
+        const auto& diag  = *copyDiag;
+        const auto& notes = copyNotes;
+
+        auto sourceFile = getDiagFile(diag);
         auto errorLevel = diag.errorLevel;
-        if (g_CommandLine.warningsAsErrors)
-            errorLevel = DiagnosticLevel::Error;
 
         if (diag.exceptionError)
         {
@@ -197,10 +388,7 @@ namespace Report
                 else
                     sourceFile->numTestErrors--;
                 if (g_CommandLine.verboseTestErrors)
-                {
                     report(diag, notes, true);
-                }
-
                 return false;
             }
         }
@@ -218,11 +406,8 @@ namespace Report
                 else
                     sourceFile->numTestWarnings--;
                 if (g_CommandLine.verboseTestErrors)
-                {
                     report(diag, notes, true);
-                }
-
-                return false;
+                return true;
             }
         }
 
@@ -350,5 +535,4 @@ namespace Report
         module->numErrors++;
         return false;
     }
-
 }; // namespace Report

@@ -11,11 +11,11 @@
 #include "LanguageSpec.h"
 #include "AstOutput.h"
 
-void SemanticJob::checkDeprecated(SemanticContext* context, AstNode* identifier)
+bool SemanticJob::checkDeprecated(SemanticContext* context, AstNode* identifier)
 {
     auto node = identifier->resolvedSymbolOverload->node;
     if (!(node->attributeFlags & ATTRIBUTE_DEPRECATED))
-        return;
+        return true;
     auto symbol = identifier->resolvedSymbolOverload->symbol;
 
     const ComputedValue* v = nullptr;
@@ -53,18 +53,18 @@ void SemanticJob::checkDeprecated(SemanticContext* context, AstNode* identifier)
     }
     }
 
-    Diagnostic diag{identifier, Fmt(Err(Wrn0003), SymTable::getNakedKindName(symbol->kind), identifier->resolvedSymbolOverload->symbol->name.c_str()), DiagnosticLevel::Warning};
+    Diagnostic diag{identifier, identifier->token, Fmt(Err(Wrn0003), SymTable::getNakedKindName(symbol->kind), identifier->resolvedSymbolOverload->symbol->name.c_str()), DiagnosticLevel::Warning};
     Diagnostic note1{node, node->token, Nte(Nte0031), DiagnosticLevel::Note};
     note1.showRange = false;
 
     if (v && v->text.empty())
     {
-        context->report(diag, &note1);
+        return context->report(diag, &note1);
     }
     else
     {
         Diagnostic note2({v->text, DiagnosticLevel::Note});
-        context->report(diag, &note1, &note2);
+        return context->report(diag, &note1, &note2);
     }
 }
 

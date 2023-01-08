@@ -15,6 +15,13 @@ static const uint64_t SAFETY_NAN        = 0x0040;
 static const uint64_t SAFETY_INTRINSICS = 0x0080;
 static const uint64_t SAFETY_ALL        = 0xFFFF;
 
+enum WarnLevel : uint8_t
+{
+    Enable,
+    Disable,
+    Error,
+};
+
 enum AttributeUsage
 {
     // Usage
@@ -182,6 +189,13 @@ struct BuildCfg
     bool     debugAllocatorCaptureStack = true;
     bool     debugAllocatorLeaks        = true;
     bool     stackTrace                 = true;
+
+    // Warnings
+    SwagSlice warnAsErrors;
+    SwagSlice warnAsWarnings;
+    SwagSlice warnAsDisabled;
+    bool      warnDefaultDisabled = false;
+    bool      warnDefaultErrors   = false;
 
     // Bytecode
     uint32_t byteCodeOptimizeLevel = 1;

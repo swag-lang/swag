@@ -69,6 +69,7 @@ struct LanguageSpec
     Utf8 name_Pack;
     Utf8 name_ExportType;
     Utf8 name_Using;
+    Utf8 name_Warn;
 
     Utf8 name_Swag_AttrUsage;
     Utf8 name_Swag_AttrMulti;
@@ -82,6 +83,7 @@ struct LanguageSpec
     Utf8 name_Swag_Opaque;
     Utf8 name_Swag_Offset;
     Utf8 name_Swag_ExportType;
+    Utf8 name_Swag_Warn;
 
     Utf8 name_opInitGenerated;
     Utf8 name_opDropGenerated;
@@ -172,6 +174,7 @@ struct LanguageSpec
     Utf8 name_usage;
     Utf8 name_what;
     Utf8 name_value;
+    Utf8 name_level;
     Utf8 name_disk;
     Utf8 name_retval;
     Utf8 name_methods;

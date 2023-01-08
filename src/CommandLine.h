@@ -49,7 +49,6 @@ struct CommandLine
     bool runByteCodeTests = true;
     bool runBackendTests  = true;
 
-    bool warningsAsErrors = false;
     bool dbgCatch         = false;
     bool dbgMain          = false;
     bool dbgOff           = false;

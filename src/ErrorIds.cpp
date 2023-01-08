@@ -873,8 +873,8 @@ void initErrors()
     SWAG_ERROR(Err0305, "the symbol '%s' is already defined in an accessible scope");
     SWAG_ERROR(Err0592, "failed to load the module '%s' while resolving the foreign function '%s': %s");
     SWAG_ERROR(Err0605, "'@abs' integer overflow");
-    SWAG_ERROR(Err0707, nullptr);
-    SWAG_ERROR(Err0580, nullptr);
+    SWAG_ERROR(Err0707, "expected at least one test error but nothing was raised");
+    SWAG_ERROR(Err0580, "expected at least one test warning but nothing was raised");
     SWAG_ERROR(Err0578, nullptr);
     SWAG_ERROR(Err0693, nullptr);
     SWAG_ERROR(Err0690, nullptr);

@@ -126,16 +126,8 @@ void Diagnostic::printErrorLevel()
             g_Log.print("error: ");
         break;
     case DiagnosticLevel::Warning:
-        if (g_CommandLine.warningsAsErrors)
-        {
-            g_Log.setColor(errorColor);
-            g_Log.print("error: (from warning): ");
-        }
-        else
-        {
-            g_Log.setColor(warningColor);
-            g_Log.print("warning: ");
-        }
+        g_Log.setColor(warningColor);
+        g_Log.print("warning: ");
         break;
     case DiagnosticLevel::Note:
         printMargin(true);

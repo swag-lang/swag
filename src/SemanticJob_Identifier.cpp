@@ -968,7 +968,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         return context->report({identifier, Fmt(Err(Err0776), identifier->token.ctext(), SymTable::getArticleKindName(symbolKind))});
     }
 
-    checkDeprecated(context, identifier);
+    SWAG_CHECK(checkDeprecated(context, identifier));
 
     if (symbolKind != SymbolKind::Variable && symbolKind != SymbolKind::Function)
     {

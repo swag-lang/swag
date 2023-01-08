@@ -1048,8 +1048,6 @@ bool SemanticJob::checkUnusedSymbols(SemanticContext* context, Scope* scope)
     auto node = context->node;
     if (!node->sourceFile || !node->sourceFile->module)
         return true;
-    if (node->sourceFile->module->kind == ModuleKind::Test)
-        return true;
     if (node->flags & AST_EMPTY_FCT)
         return true;
     if (node->flags & AST_IS_GENERIC)
@@ -1063,6 +1061,7 @@ bool SemanticJob::checkUnusedSymbols(SemanticContext* context, Scope* scope)
     ScopedLock lock(table.mutex);
 
     uint32_t cptDone = 0;
+    bool     isOk    = true;
     for (uint32_t i = 0; i < table.mapNames.allocated && cptDone != table.mapNames.count; i++)
     {
         auto sym = table.mapNames.buffer[i].symbolName;
@@ -1093,10 +1092,10 @@ bool SemanticJob::checkUnusedSymbols(SemanticContext* context, Scope* scope)
             front = front->ownerFct;
 
         Diagnostic diag{front, front->token, Fmt(Err(Wrn0002), SymTable::getNakedKindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
-        context->report(diag);
+        isOk = isOk && context->report(diag);
     }
 
-    return true;
+    return isOk;
 }
 
 bool SemanticJob::checkUnreachableCode(SemanticContext* context)

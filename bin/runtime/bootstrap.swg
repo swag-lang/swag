@@ -104,6 +104,17 @@ namespace Swag
     #[AttrMulti]
     attr Optim(what: string, value: bool)
 
+    enum WarnLevel: u8
+    {
+        Enable
+        Disable
+        Error
+    }
+
+    #[AttrUsage(AttributeUsage.All|AttributeUsage.File)]
+    #[AttrMulti]
+    attr Warn(what: string, level: WarnLevel)
+
     #[AttrUsage(AttributeUsage.All)]
     attr SelectIf(value: bool)
 
@@ -560,12 +571,19 @@ namespace Swag
         embbedImports       = false
 
         // Debug
-        scratchAllocatorCapacity    = 4'u32 * 1024 * 1024 // Default capacity of the 'temp' allocator
+        scratchAllocatorCapacity    = 4'u32 * 1024 * 1024 // Default capacity of the 'temp' allocator (in bytes)
         safetyGuards: u16           = SafetyAll
         debugAllocator              = true  // Use Swag.DebugAllocator by default
         debugAllocatorCaptureStack  = true  // Capture the call stack for each allocation
         debugAllocatorLeaks         = true  // Detect memory leaks
         stackTrace                  = true
+
+        // Warnings
+        warnAsErrors:           string  // Format is "wrnXXXX|wrnXXXX..."
+        warnAsWarning:          string
+        warnAsDisabled:         string
+        warnDefaultDisabled:    bool    // All warning are disabled, except those specified above
+        warnDefaultErrors:      bool    // All warning are treated as errors, except those specified above
 
         // Bytecode
         byteCodeOptimizeLevel   = 1

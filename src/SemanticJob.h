@@ -220,15 +220,16 @@ struct SemanticJob : public Job
     static bool checkCanTakeAddress(SemanticContext* context, AstNode* node);
     static bool checkIsConcreteOrType(SemanticContext* context, AstNode* node);
     static bool checkPublicAlias(SemanticContext* context, AstNode* node);
-    static bool checkUnusedSymbols(SemanticContext* context, Scope* scope);
-    static bool checkUnreachableCode(SemanticContext* context);
     static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode);
-    static void checkDeprecated(SemanticContext* context, AstNode* identifier);
     static Utf8 checkLiteralValue(ComputedValue& computedValue, Token& token, TypeInfo* typeSuffix, bool negApplied);
     static bool checkCanThrow(SemanticContext* context);
     static bool checkCanCatch(SemanticContext* context);
     static bool checkImplScopes(SemanticContext* context, AstImpl* node, Scope* scopeImpl, Scope* scope);
     static void checkCanInstantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch);
+
+    static bool checkUnusedSymbols(SemanticContext* context, Scope* scope);
+    static bool checkUnreachableCode(SemanticContext* context);
+    static bool checkDeprecated(SemanticContext* context, AstNode* identifier);
 
     static SemanticJob*   newJob(Job* dependentJob, SourceFile* sourceFile, AstNode* rootNode, bool run);
     static bool           error(SemanticContext* context, const Utf8& msg);

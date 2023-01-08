@@ -472,6 +472,15 @@ void Module::allocateBackend()
     }
 }
 
+void Module::inheritCfgFrom(Module* from)
+{
+    buildCfg.warnAsErrors        = from->buildCfg.warnAsErrors;
+    buildCfg.warnAsWarnings      = from->buildCfg.warnAsWarnings;
+    buildCfg.warnAsDisabled      = from->buildCfg.warnAsDisabled;
+    buildCfg.warnDefaultDisabled = from->buildCfg.warnDefaultDisabled;
+    buildCfg.warnDefaultErrors   = from->buildCfg.warnDefaultErrors;
+}
+
 void Module::release()
 {
     constantSegment.release();

@@ -1,12 +1,9 @@
-#global testwarning
-#global testwarning
-#global testwarning
-#global testwarning
+#global testwarnings
+#global #[Swag.Warn("wrn0003", Swag.WarnLevel.Enable)]
 
 #[Swag.Deprecated("use this instead")]
 enum AA
 {
-
 }
 
 enum BB
@@ -18,7 +15,6 @@ enum BB
 #[Swag.Deprecated("use this instead")]
 struct CC
 {
-
 }
 
 var cc: CC
@@ -36,5 +32,6 @@ func titi()
 {
     var x: AA = ?
     y := BB.A
+
     titi()
 }
