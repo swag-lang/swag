@@ -99,7 +99,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
         structType   = typePtr->pointedType;
     }
 
-    if (toType->isPointerRef() && toType->isConst() && castFlags & CASTFLAG_PARAMS)
+    if (structType->isPointerRef() && toType->isConst() && castFlags & CASTFLAG_PARAMS)
     {
         auto typePtr = CastTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
         structType   = typePtr->pointedType;
@@ -335,7 +335,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
 
         // General cast error
         Diagnostic diag{fromNode, Fmt(Err(Err0177), fromType->getDisplayNameC(), toType->getDisplayNameC())};
-        diag.hint = Diagnostic::isType(fromType);
+        diag.hint    = Diagnostic::isType(fromType);
         diag.lowPrio = true;
         return context->report(diag);
     }
@@ -2043,7 +2043,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
                 auto           childJ = child->childs[j];
                 TypeInfoParam* fieldJ = symContext.solvedCallParameters[j];
 
-                auto oldType = childJ->typeInfo;
+                auto           oldType = childJ->typeInfo;
                 PushErrContext ec{context, childJ, ErrorContextKind::MsgPrio, Fmt(Err(Err0723), fieldJ->namedParam.c_str(), fieldJ->typeInfo->getDisplayNameC(), childJ->typeInfo->getDisplayNameC())};
                 SWAG_CHECK(TypeManager::makeCompatibles(context, fieldJ->typeInfo, childJ->typeInfo, nullptr, childJ, castFlags | CASTFLAG_TRY_COERCE));
                 if (childJ->typeInfo != oldType)

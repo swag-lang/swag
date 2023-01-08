@@ -118,7 +118,7 @@ bool SemanticJob::warnUnusedSymbols(SemanticContext* context, Scope* scope)
             if (funcDecl->fromItfSymbol)
                 continue;
 
-            if (front->isGeneratedSelf())
+            /*if (front->isGeneratedSelf())
             {
                 front = front->ownerFct;
                 Diagnostic diag{front, front->token, Fmt(Err(Wrn0004), SymTable::getNakedKindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
@@ -126,7 +126,7 @@ bool SemanticJob::warnUnusedSymbols(SemanticContext* context, Scope* scope)
                 diag.hint = Hnt(Hnt0049);
                 isOk      = isOk && context->report(diag, &note);
             }
-            /*else
+            else
             {
                 Diagnostic diag{front, front->token, Fmt(Err(Wrn0004), SymTable::getNakedKindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
                 diag.hint = Fmt(Hnt(Hnt0092), sym->name.c_str());
