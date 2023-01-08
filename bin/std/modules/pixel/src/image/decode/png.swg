@@ -112,7 +112,7 @@ public struct Decoder
 
 impl Decoder
 {
-    func readChunk(using self, ch: ChunkHeader)->Chunk throw
+    mtd readChunk(ch: ChunkHeader)->Chunk throw
     {
         var result: retval
 
@@ -134,7 +134,7 @@ impl Decoder
         return result
     }
 
-    func readHeader(using self, ch: ChunkHeader) throw
+    mtd readHeader(ch: ChunkHeader) throw
     {
         chunk := readChunk(ch)
         header = dref cast(const *Header) @dataof(chunk.datas)
@@ -191,7 +191,7 @@ impl Decoder
     }
 
     // Expand 1, 2, 4 bits to 8 bits
-    func expand8(using self, width, height: u32, output: ^u8)
+    mtd expand8(width, height: u32, output: ^u8)
     {
         rowStrideIn  := getStrideIn(width);
         rowStrideOut := inChannels * width
@@ -293,14 +293,14 @@ impl Decoder
         }
     }
 
-    func getStrideIn(using self, width: u32)->uint
+    mtd getStrideIn(width: u32)->uint
     {
         if header.bitDepth < 8
             return cast(uint) ((inChannels * width * header.bitDepth) + 7) / 8
         return cast(uint) inChannels * width
     }
 
-    func defilter8(using self, width, height: u32, input, output: ^u8)
+    mtd defilter8(width, height: u32, input, output: ^u8)
     {
         rowStrideIn := getStrideIn(width)
         rowStrideOut := cast(uint) inChannels * width
@@ -372,7 +372,7 @@ impl Decoder
         }
     }
 
-    func defilter(using self, width, height: u32, input, output: ^u8)
+    mtd defilter(width, height: u32, input, output: ^u8)
     {
         if header.bitDepth < 8
         {
@@ -388,7 +388,7 @@ impl Decoder
         }
     }
 
-    func adam7(using self)
+    mtd adam7()
     {
         var tmpArr: Array'u8
         input := dcmpBuf.buffer
@@ -423,7 +423,7 @@ impl Decoder
         }
     }
 
-    func defilter(using self)
+    mtd defilter()
     {
         if header.interlaceMethod != .Adam7
         {
@@ -437,7 +437,7 @@ impl Decoder
         }
     }
 
-    func doIt(using self, buffer: const [..] u8)->Image throw
+    mtd doIt(buffer: const [..] u8)->Image throw
     {
         stream.init(buffer)
 
@@ -548,7 +548,7 @@ impl Decoder
         return result
     }
 
-    func convert(using self, result: *Image)
+    mtd convert(result: *Image)
     {
         defer Memory.free(dstPixels, dstPixelsSize)
 
@@ -627,12 +627,12 @@ impl Decoder
 
 public impl IImageDecoder for Decoder
 {
-    func canDecode(using self, fileName: string)->bool
+    mtd canDecode(fileName: string)->bool
     {
         return Path.getExtensionLowerCase(fileName) == ".png"
     }
 
-    func decode(using self, buffer: const [..] u8, options: DecodeOptions)->Image throw
+    mtd decode(buffer: const [..] u8, options: DecodeOptions)->Image throw
     {
         decOptions = options
         return doIt(buffer)

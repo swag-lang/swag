@@ -103,14 +103,19 @@ bool SemanticJob::warnUnusedSymbols(SemanticContext* context, Scope* scope)
             continue;
         if (overload->typeInfo->isCVariadic())
             continue;
-        if (!(overload->flags & OVERLOAD_VAR_LOCAL))
-            continue;
 
-        if (front->isGeneratedSelf())
-            front = front->ownerFct;
-
-        Diagnostic diag{front, front->token, Fmt(Err(Wrn0002), SymTable::getNakedKindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
-        isOk = isOk && context->report(diag);
+        if (overload->flags & OVERLOAD_VAR_LOCAL)
+        {
+            Diagnostic diag{front, front->token, Fmt(Err(Wrn0002), SymTable::getNakedKindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
+            isOk = isOk && context->report(diag);
+        }
+        /*else if (overload->flags & OVERLOAD_VAR_FUNC_PARAM)
+        {
+            if (front->isGeneratedSelf())
+                front = front->ownerFct;
+            Diagnostic diag{front, front->token, Fmt(Err(Wrn0002), SymTable::getNakedKindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
+            isOk = isOk && context->report(diag);
+        }*/
     }
 
     return isOk;
