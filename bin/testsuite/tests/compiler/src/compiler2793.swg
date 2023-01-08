@@ -1,5 +1,5 @@
-#global testwarnings
-#global #[Swag.Warn("wrn0003", Swag.WarnLevel.Enable)]
+#global testerrors
+#global #[Swag.Warn("wrn0003", Swag.WarnLevel.Error)]
 
 #[Swag.Deprecated("use this instead")]
 enum AA

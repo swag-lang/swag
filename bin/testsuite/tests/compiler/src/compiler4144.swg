@@ -1,3 +1,4 @@
+#global skip
 #global testwarnings
 
 interface I
