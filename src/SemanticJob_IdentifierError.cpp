@@ -53,7 +53,7 @@ void SemanticJob::checkDeprecated(SemanticContext* context, AstNode* identifier)
     }
     }
 
-    Diagnostic diag{identifier, Fmt(Err(Err0083), SymTable::getNakedKindName(symbol->kind), identifier->resolvedSymbolOverload->symbol->name.c_str()), DiagnosticLevel::Warning};
+    Diagnostic diag{identifier, Fmt(Err(Wrn0003), SymTable::getNakedKindName(symbol->kind), identifier->resolvedSymbolOverload->symbol->name.c_str()), DiagnosticLevel::Warning};
     Diagnostic note1{node, node->token, Nte(Nte0031), DiagnosticLevel::Note};
     note1.showRange = false;
 

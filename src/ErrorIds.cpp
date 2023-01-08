@@ -608,7 +608,7 @@ void initErrors()
     SWAG_ERROR(Err0657, "some functions of the interface '%s' are not implemented for '%s'");
     SWAG_ERROR(Err0536, "stack overflow (maximum stack size is '--stack-size:%s')");
     SWAG_ERROR(Err0112, "the %s '%s' cannot be found in '%s'");
-    SWAG_ERROR(Err0083, "the %s '%s' is deprecated (marked with 'Swag.Deprecated')");
+    SWAG_ERROR(Err0083, nullptr);
     SWAG_ERROR(Err0096, "the %s '%s' is used alone as an expression");
     SWAG_ERROR(Err0756, "the %s cannot have the 'Swag.Implicit' attribute because it is generic");
     SWAG_ERROR(Err0755, "the %s cannot have the 'Swag.NoReturn' attribute without 'Swag.Macro' or 'Swag.Mixin'");
@@ -1092,6 +1092,7 @@ void initErrors()
 
     SWAG_ERROR(Wrn0001, "unreachable code");
     SWAG_ERROR(Wrn0002, "the %s '%s' is unused");
+    SWAG_ERROR(Wrn0003, "the %s '%s' is deprecated (marked with 'Swag.Deprecated')");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
