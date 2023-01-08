@@ -6,7 +6,7 @@ struct SystemAllocator
 
 impl IAllocator for SystemAllocator
 {
-    mtd free(request: *AllocatorRequest)
+    func free(request: *AllocatorRequest)
     {
         if !request.address
             return

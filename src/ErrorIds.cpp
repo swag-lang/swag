@@ -984,7 +984,7 @@ void initErrors()
     SWAG_ERROR(Hlp0040, "you could use '++' if you want to append strings at compile time");
     SWAG_ERROR(Hlp0037, "you should add a 'break' or a 'fallthrough'");
     SWAG_ERROR(Hlp0038, "you should add a 'break'");
-    SWAG_ERROR(Hlp0042, nullptr);
+    SWAG_ERROR(Hlp0042, "you could use 'func' instead of 'mtd' or 'mtdc'");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -1082,7 +1082,7 @@ void initErrors()
     SWAG_ERROR(Hnt0002, "this value can only be converted to type '%s' with a dynamic call to 'opAffect'");
     SWAG_ERROR(Hnt0090, "this evaluates to '%f'");
     SWAG_ERROR(Hnt0091, "this evaluates to '%lld'");
-    SWAG_ERROR(Hnt0092, nullptr);
+    SWAG_ERROR(Hnt0092, "this should be renamed to '_%s' if this is intentional");
     SWAG_ERROR(Hnt0093, nullptr);
     SWAG_ERROR(Hnt0094, nullptr);
 
@@ -1093,6 +1093,7 @@ void initErrors()
     SWAG_ERROR(Wrn0001, "unreachable code");
     SWAG_ERROR(Wrn0002, "the %s '%s' is unused");
     SWAG_ERROR(Wrn0003, "the %s '%s' is deprecated (marked with 'Swag.Deprecated')");
+    SWAG_ERROR(Wrn0004, "the %s '%s' is unused");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

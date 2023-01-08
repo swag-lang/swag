@@ -310,7 +310,7 @@ void Diagnostic::setupColors(bool verboseMode)
     hilightCodeColor = verboseMode ? verboseColor : LogColor::White;
     rangeNoteColor   = verboseMode ? verboseColor : LogColor::Cyan;
     warningColor     = verboseMode ? verboseColor : LogColor::Magenta;
-    noteColor        = verboseMode ? verboseColor : LogColor::Cyan;
+    noteColor        = verboseMode ? verboseColor : LogColor::White;
     stackColor       = verboseMode ? verboseColor : LogColor::DarkYellow;
     remarkColor      = verboseMode ? verboseColor : LogColor::White;
     sourceFileColor  = verboseMode ? verboseColor : LogColor::DarkCyan;

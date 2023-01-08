@@ -459,6 +459,7 @@ struct AstFuncDecl : public AstNode
     TypeInfoParam*  methodParam           = nullptr;
     Job*            pendingLambdaJob      = nullptr;
     AstMakePointer* makePointerLambda     = nullptr;
+    TypeInfoParam*  fromItfSymbol         = nullptr;
 
     uint32_t aliasMask              = 0;
     uint32_t stackSize              = 0;

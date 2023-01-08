@@ -213,18 +213,18 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
 
         // We need to search the function (as a variable) in the interface
         // If not found, then this is a normal function...
-        auto symbolName = typeInterface->findChildByNameNoLock(child->token.text); // O(n) !
-        if (!symbolName)
+        auto itfSymbol = typeInterface->findChildByNameNoLock(child->token.text); // O(n) !
+        if (!itfSymbol)
             continue;
 
         // We need to be sure function semantic is done
         {
-            auto symbolName1 = node->scope->symTable.find(child->token.text);
-            SWAG_ASSERT(symbolName1);
-            ScopedLock lk(symbolName1->mutex);
-            if (symbolName1->cptOverloads)
+            auto symbolName = node->scope->symTable.find(child->token.text);
+            SWAG_ASSERT(symbolName);
+            ScopedLock lk(symbolName->mutex);
+            if (symbolName->cptOverloads)
             {
-                job->waitSymbolNoLock(symbolName1);
+                job->waitSymbolNoLock(symbolName);
                 return true;
             }
         }
@@ -248,12 +248,12 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         }
 
         // Match function signature
-        auto typeLambda = CastTypeInfo<TypeInfoFuncAttr>(symbolName->typeInfo, TypeInfoKind::LambdaClosure);
+        auto typeLambda = CastTypeInfo<TypeInfoFuncAttr>(itfSymbol->typeInfo, TypeInfoKind::LambdaClosure);
         auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
         if (!typeLambda->isSame(typeFunc, ISSAME_EXACT | ISSAME_INTERFACE))
         {
             Diagnostic diag{child, child->token, Fmt(Err(Err0652), child->token.ctext(), typeBaseInterface->name.c_str())};
-            Diagnostic note{symbolName->declNode, symbolName->declNode->token, Nte(Nte0002), DiagnosticLevel::Note};
+            Diagnostic note{itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0002), DiagnosticLevel::Note};
             note.showRange = false;
             return context->report(diag, &note);
         }
@@ -266,8 +266,8 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         SWAG_VERIFY(firstParamPtr->pointedType == typeStruct, context->report({typeFunc->parameters[0]->declNode, Fmt(Err(Err0655), firstParamType->getDisplayNameC())}));
 
         // use resolvedUserOpSymbolOverload to store the match
-        mapItToFunc[symbolName]           = child;
-        mapItIdxToFunc[symbolName->index] = (AstFuncDecl*) child;
+        mapItToFunc[itfSymbol]           = child;
+        mapItIdxToFunc[itfSymbol->index] = (AstFuncDecl*) child;
     }
 
     // If structure is generic, then do nothing, we cannot solve

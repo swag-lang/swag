@@ -346,6 +346,42 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         return true;
     }
 
+    // Flag the function with AST_SPEC_FUNCDECL_IS_IMPL_MTD if this is an interface implementation method
+    if (node->ownerScope && node->ownerScope->kind == ScopeKind::Impl)
+    {
+        auto implNode = CastAst<AstImpl>(node->ownerScope->owner, AstNodeKind::Impl);
+        if (implNode->identifierFor)
+        {
+            auto forId = implNode->identifier->childs.back();
+
+            // Be sure interface has been fully solved
+            {
+                ScopedLock lk(forId->mutex);
+                ScopedLock lk1(forId->resolvedSymbolName->mutex);
+                if (forId->resolvedSymbolName->cptOverloads)
+                {
+                    context->job->waitSymbolNoLock(forId->resolvedSymbolName);
+                    return true;
+                }
+            }
+
+            {
+                auto       typeBaseInterface = CastTypeInfo<TypeInfoStruct>(forId->resolvedSymbolOverload->typeInfo, TypeInfoKind::Interface);
+                auto       typeInterface     = CastTypeInfo<TypeInfoStruct>(typeBaseInterface->itable, TypeInfoKind::Struct);
+                ScopedLock lk(typeInterface->mutex);
+
+                // We need to search the function (as a variable) in the interface
+                // If not found, then this is a normal function...
+                auto symbolName = typeInterface->findChildByNameNoLock(node->token.text); // O(n) !
+                if (symbolName)
+                {
+                    node->fromItfSymbol = symbolName;
+                }
+            }
+        }
+    }
+
+    // Warnings
     SWAG_CHECK(warnUnusedSymbols(context, node->scope));
 
     // Now the full function has been solved, so we wakeup jobs depending on that

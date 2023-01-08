@@ -95,6 +95,8 @@ bool SemanticJob::warnUnusedSymbols(SemanticContext* context, Scope* scope)
             continue;
         if (sym->name[0] == '@')
             continue;
+        if (sym->name[0] == '_')
+            continue;
 
         auto front    = sym->nodes.front();
         auto overload = sym->overloads.front();
@@ -107,15 +109,30 @@ bool SemanticJob::warnUnusedSymbols(SemanticContext* context, Scope* scope)
         if (overload->flags & OVERLOAD_VAR_LOCAL)
         {
             Diagnostic diag{front, front->token, Fmt(Err(Wrn0002), SymTable::getNakedKindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
-            isOk = isOk && context->report(diag);
+            diag.hint = Fmt(Hnt(Hnt0092), sym->name.c_str());
+            isOk      = isOk && context->report(diag);
         }
-        /*else if (overload->flags & OVERLOAD_VAR_FUNC_PARAM)
+        else if (overload->flags & OVERLOAD_VAR_FUNC_PARAM)
         {
+            auto funcDecl = CastAst<AstFuncDecl>(front->findParent(AstNodeKind::FuncDecl), AstNodeKind::FuncDecl);
+            if (funcDecl->fromItfSymbol)
+                continue;
+
             if (front->isGeneratedSelf())
+            {
                 front = front->ownerFct;
-            Diagnostic diag{front, front->token, Fmt(Err(Wrn0002), SymTable::getNakedKindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
-            isOk = isOk && context->report(diag);
-        }*/
+                Diagnostic diag{front, front->token, Fmt(Err(Wrn0004), SymTable::getNakedKindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
+                Diagnostic note{Hlp(Hlp0042), DiagnosticLevel::Help};
+                diag.hint = Hnt(Hnt0049);
+                isOk      = isOk && context->report(diag, &note);
+            }
+            /*else
+            {
+                Diagnostic diag{front, front->token, Fmt(Err(Wrn0004), SymTable::getNakedKindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
+                diag.hint = Fmt(Hnt(Hnt0092), sym->name.c_str());
+                isOk      = isOk && context->report(diag);
+            }*/
+        }
     }
 
     return isOk;

@@ -470,6 +470,12 @@ Utf8 SymTable::getNakedKindName(SymbolOverload* overload)
         return "closure";
     if (overload->node->isGeneratedSelf())
         return "implicit function parameter";
+    if(overload->flags & OVERLOAD_VAR_CAPTURE)
+        return "captured parameter";
+    if (overload->flags & OVERLOAD_VAR_FUNC_PARAM && overload->node->ownerFct && overload->node->ownerFct->typeInfo->isLambda())
+        return "lambda parameter";
+    if (overload->flags & OVERLOAD_VAR_FUNC_PARAM && overload->node->ownerFct && overload->node->ownerFct->typeInfo->isClosure())
+        return "closure parameter";
     if (overload->flags & OVERLOAD_VAR_FUNC_PARAM)
         return "function parameter";
     if (overload->flags & OVERLOAD_VAR_GLOBAL)
