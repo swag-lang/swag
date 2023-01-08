@@ -31,7 +31,10 @@ struct Application
 
     mutexPostedEvents:  Sync.Mutex
 
+    duringTimerEvents:  bool
     timers:             Array'(*Timer)
+    timersToAdd:        Array'(*Timer)
+    timersToDelete:     Array'(*Timer)
     frameEvents:        Array'(*Wnd)
     modalSurfaces:      Array'(*Surface)
     toDelete:           Array'{*void, const *Swag.TypeInfo}
@@ -357,6 +360,7 @@ private impl Application
 
     mtd sendTimerEvents()
     {
+        duringTimerEvents = true
         visit t: timers
         {
             if !t.stopwatch.isStarted
@@ -370,6 +374,18 @@ private impl Application
                 t.stopwatch.restart()
             }
         }
+
+        duringTimerEvents = false
+
+        // Add new registered timers
+        visit t: timersToAdd
+            timers.add(t)
+        timersToAdd.clear()
+
+        // Remove some timers
+        visit t: timersToDelete
+            deleteTimer(t)
+        timersToDelete.clear()
     }
 
     mtd sendFrameEvents()
@@ -679,15 +695,23 @@ impl Application
         timer := Memory.new'Timer()
         timer.timeMs = time.toMs()
         timer.target = target
-        timers.add(timer)
+        if duringTimerEvents
+            timersToAdd.add(timer)
+        else
+            timers.add(timer)
         return timer
     }
 
     // Delete and unregister timer
     mtd deleteTimer(timer: *Timer)
     {
-        Memory.delete(timer)
-        timers.remove(timer)
+        if duringTimerEvents
+            timersToDelete.add(timer)
+        else
+        {
+            Memory.delete(timer)
+            timers.remove(timer)
+        }
     }
 
     // Register a window to receive a FrameEvent each running loop
