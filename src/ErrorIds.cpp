@@ -19,31 +19,31 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(CEr0002, "fatal error: the cache directory '%s' does not exist");
-    SWAG_ERROR(CEr0003, "fatal error: cannot create the cache directory '%s'");
-    SWAG_ERROR(CEr0004, "fatal error: cannot create the directory '%s'");
-    SWAG_ERROR(CEr0005, "fatal error: cannot create the file '%s'");
-    SWAG_ERROR(CEr0006, "fatal error: cannot create the public directory '%s'");
-    SWAG_ERROR(CEr0007, "fatal error: cannot create the script file '%s'");
-    SWAG_ERROR(CEr0008, "fatal error: cannot create the target directory '%s'");
-    SWAG_ERROR(CEr0009, "fatal error: cannot delete the directory '%s'");
-    SWAG_ERROR(CEr0010, "fatal error: cannot delete the file '%s'");
-    SWAG_ERROR(CEr0011, "fatal error: expected a workspace folder '--workspace'");
-    SWAG_ERROR(CEr0012, "fatal error: invalid module '%s', the configuration file '%s' is missing");
-    SWAG_ERROR(CEr0013, "fatal error: invalid script file extension, should be '.swgs' instead of '%s'");
-    SWAG_ERROR(CEr0014, "fatal error: invalid swag command '%s'");
-    SWAG_ERROR(CEr0015, "fatal error: invalid value for '--tag:%s' (%s)");
-    SWAG_ERROR(CEr0016, "fatal error: invalid workspace '%s', subfolder 'modules/' or 'tests/' does not exist");
-    SWAG_ERROR(CEr0017, "fatal error: missing script file, use '--file:<filename>.swgs' to specify a script to run");
-    SWAG_ERROR(CEr0018, "fatal error: the module '%s' already exists in the '/modules' folder");
-    SWAG_ERROR(CEr0019, "fatal error: not enough memory !");
-    SWAG_ERROR(CEr0020, "fatal error: the script file '%s' does not exist");
-    SWAG_ERROR(CEr0021, "fatal error: some problems have been found in the compiler bootstrap !!!");
-    SWAG_ERROR(CEr0022, "fatal error: some problems have been found in the compiler runtime !!!");
-    SWAG_ERROR(CEr0023, "fatal error: unexpected compile tag value '%s' (command is '--tag:%s')");
-    SWAG_ERROR(CEr0024, "fatal error: unknown compile tag type '%s' (command is '--tag:%s')");
-    SWAG_ERROR(CEr0025, "fatal error: the workspace folder '%s' already exists");
-    SWAG_ERROR(CEr0026, "fatal error: the workspace folder '%s' does not exist");
+    SWAG_ERROR(Fat0002, "fatal error: the cache directory '%s' does not exist");
+    SWAG_ERROR(Fat0003, "fatal error: cannot create the cache directory '%s'");
+    SWAG_ERROR(Fat0004, "fatal error: cannot create the directory '%s'");
+    SWAG_ERROR(Fat0005, "fatal error: cannot create the file '%s'");
+    SWAG_ERROR(Fat0006, "fatal error: cannot create the public directory '%s'");
+    SWAG_ERROR(Fat0007, "fatal error: cannot create the script file '%s'");
+    SWAG_ERROR(Fat0008, "fatal error: cannot create the target directory '%s'");
+    SWAG_ERROR(Fat0009, "fatal error: cannot delete the directory '%s'");
+    SWAG_ERROR(Fat0010, "fatal error: cannot delete the file '%s'");
+    SWAG_ERROR(Fat0011, "fatal error: expected a workspace folder '--workspace'");
+    SWAG_ERROR(Fat0012, "fatal error: invalid module '%s', the configuration file '%s' is missing");
+    SWAG_ERROR(Fat0013, "fatal error: invalid script file extension, should be '.swgs' instead of '%s'");
+    SWAG_ERROR(Fat0014, "fatal error: invalid swag command '%s'");
+    SWAG_ERROR(Fat0015, "fatal error: invalid value for '--tag:%s' (%s)");
+    SWAG_ERROR(Fat0016, "fatal error: invalid workspace '%s', subfolder 'modules/' or 'tests/' does not exist");
+    SWAG_ERROR(Fat0017, "fatal error: missing script file, use '--file:<filename>.swgs' to specify a script to run");
+    SWAG_ERROR(Fat0018, "fatal error: the module '%s' already exists in the '/modules' folder");
+    SWAG_ERROR(Fat0019, "fatal error: not enough memory !");
+    SWAG_ERROR(Fat0020, "fatal error: the script file '%s' does not exist");
+    SWAG_ERROR(Fat0021, "fatal error: some problems have been found in the compiler bootstrap !!!");
+    SWAG_ERROR(Fat0022, "fatal error: some problems have been found in the compiler runtime !!!");
+    SWAG_ERROR(Fat0023, "fatal error: unexpected compile tag value '%s' (command is '--tag:%s')");
+    SWAG_ERROR(Fat0024, "fatal error: unknown compile tag type '%s' (command is '--tag:%s')");
+    SWAG_ERROR(Fat0025, "fatal error: the workspace folder '%s' already exists");
+    SWAG_ERROR(Fat0026, "fatal error: the workspace folder '%s' does not exist");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

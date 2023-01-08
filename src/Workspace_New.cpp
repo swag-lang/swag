@@ -10,7 +10,7 @@ void newScriptFile()
     ofstream file(g_CommandLine.scriptName);
     if (!file.is_open())
     {
-        Report::errorOS(Fmt(Err(CEr0007), g_CommandLine.scriptName.c_str()));
+        Report::errorOS(Fmt(Err(Fat0007), g_CommandLine.scriptName.c_str()));
         OS::exit(-1);
     }
 
@@ -45,13 +45,13 @@ void Workspace::newModule(string moduleName)
 
     if (fs::exists(modulePath))
     {
-        Report::errorOS(Fmt(Err(CEr0018), moduleName.c_str()));
+        Report::errorOS(Fmt(Err(Fat0018), moduleName.c_str()));
         OS::exit(-1);
     }
 
     if (!fs::create_directories(modulePath, errorCode))
     {
-        Report::errorOS(Fmt(Err(CEr0004), modulePath.string().c_str()));
+        Report::errorOS(Fmt(Err(Fat0004), modulePath.string().c_str()));
         OS::exit(-1);
     }
 
@@ -61,7 +61,7 @@ void Workspace::newModule(string moduleName)
     ofstream fileCfg(cfgFileName);
     if (!fileCfg.is_open())
     {
-        Report::errorOS(Fmt(Err(CEr0005), cfgFileName.string().c_str()));
+        Report::errorOS(Fmt(Err(Fat0005), cfgFileName.string().c_str()));
         OS::exit(-1);
     }
 
@@ -90,7 +90,7 @@ void Workspace::newModule(string moduleName)
     modulePath.append(SWAG_SRC_FOLDER);
     if (!fs::create_directories(modulePath, errorCode))
     {
-        Report::errorOS(Fmt(Err(CEr0004), modulePath.string().c_str()));
+        Report::errorOS(Fmt(Err(Fat0004), modulePath.string().c_str()));
         OS::exit(-1);
     }
 
@@ -116,7 +116,7 @@ void Workspace::newModule(string moduleName)
     ofstream file(modulePath);
     if (!file.is_open())
     {
-        Report::errorOS(Fmt(Err(CEr0005), modulePath.string().c_str()));
+        Report::errorOS(Fmt(Err(Fat0005), modulePath.string().c_str()));
         OS::exit(-1);
     }
     if (g_CommandLine.test)
@@ -138,7 +138,7 @@ void Workspace::newCommand()
 
     if (workspacePath.empty())
     {
-        Report::error(Err(CEr0011));
+        Report::error(Err(Fat0011));
         OS::exit(-1);
     }
 
@@ -149,38 +149,38 @@ void Workspace::newCommand()
     {
         if (fs::exists(workspacePath))
         {
-            Report::error(Fmt(Err(CEr0025), workspacePath.string().c_str()));
+            Report::error(Fmt(Err(Fat0025), workspacePath.string().c_str()));
             OS::exit(-1);
         }
 
         // Create workspace folders
         if (!fs::create_directories(workspacePath, errorCode))
         {
-            Report::errorOS(Fmt(Err(CEr0004), workspacePath.string().c_str()));
+            Report::errorOS(Fmt(Err(Fat0004), workspacePath.string().c_str()));
             OS::exit(-1);
         }
 
         if (!fs::create_directories(examplesPath.parent_path(), errorCode))
         {
-            Report::errorOS(Fmt(Err(CEr0004), examplesPath.string().c_str()));
+            Report::errorOS(Fmt(Err(Fat0004), examplesPath.string().c_str()));
             OS::exit(-1);
         }
 
         if (!fs::create_directories(testsPath.parent_path(), errorCode))
         {
-            Report::errorOS(Fmt(Err(CEr0004), testsPath.string().c_str()));
+            Report::errorOS(Fmt(Err(Fat0004), testsPath.string().c_str()));
             OS::exit(-1);
         }
 
         if (!fs::create_directories(modulesPath.parent_path(), errorCode))
         {
-            Report::errorOS(Fmt(Err(CEr0004), modulesPath.string().c_str()));
+            Report::errorOS(Fmt(Err(Fat0004), modulesPath.string().c_str()));
             OS::exit(-1);
         }
 
         if (!fs::create_directories(dependenciesPath.parent_path(), errorCode))
         {
-            Report::errorOS(Fmt(Err(CEr0004), dependenciesPath.string().c_str()));
+            Report::errorOS(Fmt(Err(Fat0004), dependenciesPath.string().c_str()));
             OS::exit(-1);
         }
 
@@ -193,7 +193,7 @@ void Workspace::newCommand()
     {
         if (!fs::exists(workspacePath))
         {
-            Report::error(Fmt(Err(CEr0026), workspacePath.string().c_str()));
+            Report::error(Fmt(Err(Fat0026), workspacePath.string().c_str()));
             OS::exit(-1);
         }
 

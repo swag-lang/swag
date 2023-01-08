@@ -141,7 +141,7 @@ void Module::computePublicPath()
             error_code errorCode;
             if (!fs::create_directories(publicPath.c_str(), errorCode))
             {
-                Report::errorOS(Fmt(Err(CEr0006), publicPath.c_str()));
+                Report::errorOS(Fmt(Err(Fat0006), publicPath.c_str()));
                 OS::exit(-1);
             }
         }
@@ -157,7 +157,7 @@ void Module::computePublicPath()
             error_code errorCode;
             if (!fs::create_directories(publicPath.c_str(), errorCode))
             {
-                Report::errorOS(Fmt(Err(CEr0006), publicPath.c_str()));
+                Report::errorOS(Fmt(Err(Fat0006), publicPath.c_str()));
                 OS::exit(-1);
             }
         }

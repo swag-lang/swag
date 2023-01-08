@@ -17,7 +17,7 @@ void Workspace::cleanFolderContent(const fs::path& path)
                           std::error_code err;
                           if (fs::remove_all(cFileName, err) == -1)
                           {
-                              Report::errorOS(Fmt(Err(CEr0010), cFileName));
+                              Report::errorOS(Fmt(Err(Fat0010), cFileName));
                               OS::exit(-1);
                           }
                       });
@@ -25,7 +25,7 @@ void Workspace::cleanFolderContent(const fs::path& path)
     std::error_code err;
     if (fs::remove_all(path, err) == -1)
     {
-        Report::errorOS(Fmt(Err(CEr0009), path.string().c_str()));
+        Report::errorOS(Fmt(Err(Fat0009), path.string().c_str()));
         OS::exit(-1);
     }
 }

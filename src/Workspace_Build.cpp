@@ -248,7 +248,7 @@ void Workspace::setupTarget()
     error_code errorCode;
     if (!fs::exists(targetPath) && !fs::create_directories(targetPath, errorCode))
     {
-        Report::errorOS(Fmt(Err(CEr0008), targetPath.string().c_str()));
+        Report::errorOS(Fmt(Err(Fat0008), targetPath.string().c_str()));
         OS::exit(-1);
     }
 
@@ -258,7 +258,7 @@ void Workspace::setupTarget()
     setupCachePath();
     if (!fs::exists(cachePath))
     {
-        Report::errorOS(Fmt(Err(CEr0002), cachePath.string().c_str()));
+        Report::errorOS(Fmt(Err(Fat0002), cachePath.string().c_str()));
         OS::exit(-1);
     }
 
@@ -266,7 +266,7 @@ void Workspace::setupTarget()
     cachePath.append(SWAG_CACHE_FOLDER);
     if (!fs::exists(cachePath) && !fs::create_directories(cachePath, errorCode))
     {
-        Report::errorOS(Fmt(Err(CEr0003), cachePath.string().c_str()));
+        Report::errorOS(Fmt(Err(Fat0003), cachePath.string().c_str()));
         OS::exit(-1);
     }
 
@@ -274,7 +274,7 @@ void Workspace::setupTarget()
     cachePath.append(workspacePath.filename().string() + "-" + targetFullName.c_str());
     if (!fs::exists(cachePath) && !fs::create_directories(cachePath, errorCode))
     {
-        Report::errorOS(Fmt(Err(CEr0003), cachePath.string().c_str()));
+        Report::errorOS(Fmt(Err(Fat0003), cachePath.string().c_str()));
         OS::exit(-1);
     }
 
@@ -688,7 +688,7 @@ bool Workspace::buildRTModule(Module* module)
 
     if (module->numErrors)
     {
-        Report::error(module->kind == ModuleKind::BootStrap ? Err(CEr0021) : Err(CEr0022));
+        Report::error(module->kind == ModuleKind::BootStrap ? Err(Fat0021) : Err(Fat0022));
         return false;
     }
 
@@ -706,7 +706,7 @@ bool Workspace::buildRTModule(Module* module)
     // Errors !!!
     if (module->numErrors)
     {
-        Report::error(module->kind == ModuleKind::BootStrap ? Err(CEr0021) : Err(CEr0022));
+        Report::error(module->kind == ModuleKind::BootStrap ? Err(Fat0021) : Err(Fat0022));
         return false;
     }
 
