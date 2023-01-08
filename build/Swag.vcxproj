@@ -402,6 +402,7 @@
     <ClCompile Include="../src/Stats.cpp" />
     <ClCompile Include="../src/SwagScope.cpp" />
     <ClCompile Include="../src/SymTable.cpp" />
+    <ClCompile Include="..\src\SemanticJob_Warn.cpp" />
     <ClCompile Include="..\src\SyntaxJob_Attribute.cpp" />
     <ClCompile Include="..\src\SyntaxJob_Block.cpp" />
     <ClCompile Include="..\src\SyntaxJob_Compiler.cpp" />

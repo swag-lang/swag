@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Workspace.h"
 #include "ThreadManager.h"
-#include "SemanticJob.h"
 #include "ModuleSemanticJob.h"
 #include "EnumerateModuleJob.h"
 #include "ModuleBuildJob.h"
@@ -11,10 +10,8 @@
 #include "Backend.h"
 #include "ByteCodeOptimizer.h"
 #include "ModuleCfgManager.h"
-#include "ErrorIds.h"
 #include "Report.h"
 #include "ModuleManager.h"
-#include "SymTable.h"
 #include "TypeTableJob.h"
 
 void Workspace::computeModuleName(const fs::path& path, Utf8& moduleName, Utf8& moduleFolder, ModuleKind& kind)

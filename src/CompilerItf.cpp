@@ -1,8 +1,5 @@
 #include "pch.h"
 #include "Module.h"
-#include "SemanticJob.h"
-#include "Ast.h"
-#include "ThreadManager.h"
 #include "Context.h"
 
 void* getMessage(Module* module)

@@ -11,63 +11,6 @@
 #include "LanguageSpec.h"
 #include "AstOutput.h"
 
-bool SemanticJob::checkDeprecated(SemanticContext* context, AstNode* identifier)
-{
-    auto node = identifier->resolvedSymbolOverload->node;
-    if (!(node->attributeFlags & ATTRIBUTE_DEPRECATED))
-        return true;
-    auto symbol = identifier->resolvedSymbolOverload->symbol;
-
-    const ComputedValue* v = nullptr;
-    switch (node->kind)
-    {
-    case AstNodeKind::FuncDecl:
-    {
-        auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-        v             = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
-        break;
-    }
-    case AstNodeKind::EnumDecl:
-    {
-        auto typeInfo = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
-        v             = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
-        break;
-    }
-    case AstNodeKind::StructDecl:
-    {
-        auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-        v             = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
-        break;
-    }
-    case AstNodeKind::InterfaceDecl:
-    {
-        auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
-        v             = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
-        break;
-    }
-    case AstNodeKind::EnumValue:
-    {
-        auto typeInfo = CastAst<AstEnumValue>(node, AstNodeKind::EnumValue);
-        v             = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
-        break;
-    }
-    }
-
-    Diagnostic diag{identifier, identifier->token, Fmt(Err(Wrn0003), SymTable::getNakedKindName(symbol->kind), identifier->resolvedSymbolOverload->symbol->name.c_str()), DiagnosticLevel::Warning};
-    Diagnostic note1{node, node->token, Nte(Nte0031), DiagnosticLevel::Note};
-    note1.showRange = false;
-
-    if (v && v->text.empty())
-    {
-        return context->report(diag, &note1);
-    }
-    else
-    {
-        Diagnostic note2({v->text, DiagnosticLevel::Note});
-        return context->report(diag, &note1, &note2);
-    }
-}
-
 Utf8 SemanticJob::getNiceArgumentRank(int idx)
 {
     switch (idx)

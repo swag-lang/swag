@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "SourceFile.h"
 #include "SemanticJob.h"
 #include "ByteCodeGenJob.h"
 #include "Ast.h"
@@ -9,7 +8,6 @@
 #include "Os.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
-#include "Mutex.h"
 
 bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcNode, AstNode* parameters, bool forGenerics)
 {
@@ -1038,82 +1036,6 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
             node->flags |= AST_FORCE_MOVE | AST_NO_RIGHT_DROP;
             node->autoTupleReturn->forceNoDrop.push_back(child->resolvedSymbolOverload);
         }
-    }
-
-    return true;
-}
-
-bool SemanticJob::checkUnusedSymbols(SemanticContext* context, Scope* scope)
-{
-    auto node = context->node;
-    if (!node->sourceFile || !node->sourceFile->module)
-        return true;
-    if (node->flags & AST_EMPTY_FCT)
-        return true;
-    if (node->flags & AST_IS_GENERIC)
-        return true;
-    if (scope->kind == ScopeKind::Struct)
-        return true;
-    if (scope->owner != node && !node->isParentOf(scope->owner))
-        return true;
-
-    auto&      table = scope->symTable;
-    ScopedLock lock(table.mutex);
-
-    uint32_t cptDone = 0;
-    bool     isOk    = true;
-    for (uint32_t i = 0; i < table.mapNames.allocated && cptDone != table.mapNames.count; i++)
-    {
-        auto sym = table.mapNames.buffer[i].symbolName;
-        if (!sym)
-            continue;
-        cptDone++;
-
-        if (!sym->nodes.count || !sym->overloads.count)
-            continue;
-        if (sym->flags & SYMBOL_USED)
-            continue;
-        if (sym->kind == SymbolKind::GenericType)
-            continue;
-        if (sym->name[0] == '@')
-            continue;
-
-        auto front    = sym->nodes.front();
-        auto overload = sym->overloads.front();
-
-        if (front->flags & AST_GENERATED)
-            continue;
-        if (overload->typeInfo->isCVariadic())
-            continue;
-        if (!(overload->flags & OVERLOAD_VAR_LOCAL))
-            continue;
-
-        if (front->isGeneratedSelf())
-            front = front->ownerFct;
-
-        Diagnostic diag{front, front->token, Fmt(Err(Wrn0002), SymTable::getNakedKindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
-        isOk = isOk && context->report(diag);
-    }
-
-    return isOk;
-}
-
-bool SemanticJob::checkUnreachableCode(SemanticContext* context)
-{
-    auto node = context->node;
-
-    // Return must be the last of its block
-    if (node->parent->childs.back() != node)
-    {
-        if (node->parent->kind == AstNodeKind::If)
-        {
-            AstIf* ifNode = CastAst<AstIf>(node->parent, AstNodeKind::If);
-            if (ifNode->ifBlock == node || ifNode->elseBlock == node)
-                return true;
-        }
-
-        auto idx = Ast::findChildIndex(node->parent, node);
-        return context->report({node->parent->childs[idx + 1], Err(Wrn0001), DiagnosticLevel::Warning});
     }
 
     return true;

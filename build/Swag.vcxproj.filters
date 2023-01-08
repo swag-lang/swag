@@ -524,6 +524,9 @@
     <ClCompile Include="..\src\ByteCodeDebugger_Frame.cpp">
       <Filter>Backend\ByteCode\Debugger</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\SemanticJob_Warn.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">
