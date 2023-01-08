@@ -184,10 +184,9 @@ impl DebugAllocator
             printDisplaySize(scan.userSize)
             if scan.hint @print("] hint [", scan.hint, "]")
             @print("\n")
-            @print("\x1b[97m")
+            @print("\x1b[36m")
             @print("--> ")
             @print(scan.loc.fileName, ":", scan.loc.lineStart + 1, "\n")
-
 
             // Stack
             if scan.stackCount

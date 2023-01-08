@@ -237,9 +237,10 @@ namespace OS
                                 auto codeLine = sourceFile->getLine(atoi(tokens[2]) - 1);
                                 if (!codeLine.empty())
                                 {
-                                    g_Log.setColor(LogColor::Gray);
+                                    g_Log.setColor(LogColor::DarkCyan);
                                     g_Log.print(" |  ");
                                     codeLine.trim();
+                                    g_Log.setColor(LogColor::Gray);
                                     g_Log.print(codeLine + "\n");
                                 }
                             }

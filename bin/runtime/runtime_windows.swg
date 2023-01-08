@@ -364,7 +364,7 @@ func __logStackTrace(where: [..] *void, startAfter: *Swag.CompilerSourceLocation
         }
 
         @print("\n")
-        @print("\x1b[97m")
+        @print("\x1b[36m")
 
         if hasLine
         {
