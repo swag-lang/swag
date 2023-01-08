@@ -299,10 +299,11 @@ impl Capture
         visit &itf, idx: res
         {
             itf.setup(self)
+            bound := itf.boundRect(false)
             if idx == 0
-                boundRect = itf.boundRect(false)
+                boundRect = bound
             else
-                boundRect.setUnion(itf.boundRect(false))
+                boundRect.setUnion(bound)
         }
 
         undo.oldForms = res
@@ -320,7 +321,6 @@ impl Capture
 
         visit itf: undo.oldForms
         {
-            bound := itf.boundRect(false)
             dx := -boundRect.x + pt.x - (boundRect.width * 0.5)
             dy := -boundRect.y + pt.y - (boundRect.height * 0.5)
             itf.moveForm(acast dx, acast dy)

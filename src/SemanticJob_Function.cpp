@@ -1056,6 +1056,8 @@ bool SemanticJob::checkUnusedSymbols(SemanticContext* context, Scope* scope)
         return true;
     if (scope->kind == ScopeKind::Struct)
         return true;
+    if (scope->owner != node && !node->isParentOf(scope->owner))
+        return true;
 
     auto&      table = scope->symTable;
     ScopedLock lock(table.mutex);
