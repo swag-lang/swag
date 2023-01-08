@@ -40,6 +40,9 @@ v.add(#code @print(a))
 -------------------------------------
 closure/lambda, pouvoir zaper un paramètre avec ? => closure|&total|(?, depth) ()
 -------------------------------------
+if a == 1 do toto() else do titi()
+-------------------------------------
+
 
 
 
