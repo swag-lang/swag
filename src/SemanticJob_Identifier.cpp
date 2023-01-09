@@ -2958,6 +2958,20 @@ bool SemanticJob::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFun
     if (typeFunc->isLambdaClosure())
         return false;
 
+    // If we have the correct number of arguments, but the ufcs node matches the first parameter, and the first real parameter does not,
+    // then try ufcs
+    if (numParams == typeFunc->parameters.size() && cmpFirstParam && parameters->childs.size())
+    {
+        cmpFirstParam = TypeManager::makeCompatibles(context,
+                                                     typeFunc->parameters[0]->typeInfo,
+                                                     parameters->childs.front()->typeInfo,
+                                                     nullptr,
+                                                     parameters->childs.front(),
+                                                     CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR | CASTFLAG_UFCS | CASTFLAG_FORCE_UNCONST);
+        if (!cmpFirstParam)
+            return true;
+    }
+
     return nodeIsExplicit;
 }
 

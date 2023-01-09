@@ -765,7 +765,7 @@ void initErrors()
     SWAG_ERROR(Err0880, "the while expression is always true");
     SWAG_ERROR(Err0062, "too few arguments for special function '%s' (at least '%d' expected, only '%d' provided)");
     SWAG_ERROR(Err0626, "too many 'visit' alias names (maximum is '2', but '%u' are provided)");
-    SWAG_ERROR(Err0026, "too many arguments for %s ('%d' expected, '%d' provided)");
+    SWAG_ERROR(Err0026, "too many arguments ('%d' expected, '%d' provided)");
     SWAG_ERROR(Err0195, "too many arguments in the tuple initialization ('%d' expected, '%d' provided)");
     SWAG_ERROR(Err0044, "too many generic parameters for %s '%s' ('%d' expected, '%d' provided)");
     SWAG_ERROR(Err0071, "too many generic parameters for special function '%s'");
@@ -837,7 +837,7 @@ void initErrors()
     SWAG_ERROR(Err0172, "unexpected type '%s' for operator '>>' (integer expected)");
     SWAG_ERROR(Err0655, "unexpected type for the first parameter of interface function implementation ('self' expected, '%s' provided)");
     SWAG_ERROR(Err0679, "unexpected type for the first parameter of interface member ('self' expected, '%s' provided)");
-    SWAG_ERROR(Err0106, "unexpected type of 'self' parameter for %s ('%s' expected, '%s' provided)");
+    SWAG_ERROR(Err0106, "unexpected type of 'self' parameter ('%s' expected, '%s' provided)");
     SWAG_ERROR(Err0070, "unexpected type of generic %s for %s ('%s' expected, '%s' provided)");
     SWAG_ERROR(Err0095, "unexpected type of ufcs first parameter ('%s' expected, '%s' provided)");
     SWAG_ERROR(Err0815, "unexpected usage of %s ('%s') as a generic argument");
