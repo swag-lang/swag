@@ -116,14 +116,14 @@ func @args()->const [..] string
 
 ////////////////////////////////////////////////////////////
 var __runtimeFlags: RuntimeFlags = Zero
-var __debugAlloc:   DebugAllocator
+var __debugAlloc:   *DebugAllocator
 var __sysAlloc:     SystemAllocator
 
 // Make a build configuration copy
 const __buildCfg = #run dref @compiler().getBuildCfg()
 
 func @rtflags()  => __runtimeFlags
-func @dbgalloc() => &__debugAlloc
+func @dbgalloc() => __debugAlloc
 func @sysalloc() => &__sysAlloc
 
 func __setupRuntime(flags: RuntimeFlags)
@@ -135,11 +135,12 @@ func __setupRuntime(flags: RuntimeFlags)
 
     if __buildCfg.debugAllocator
     {
-        //@init(&__debugAlloc)
+        __debugAlloc = @alloc(@sizeof(DebugAllocator))
+        @init(__debugAlloc)
         __debugAlloc.captureAllocStack = __buildCfg.debugAllocatorCaptureStack
         __debugAlloc.detectLeaks       = __buildCfg.debugAllocatorLeaks
         __debugAlloc.setup(cxt.allocator)
-        cxt.allocator = __debugAlloc
+        cxt.allocator = dref __debugAlloc
     }
 }
 
