@@ -129,17 +129,17 @@ public impl JSon
         return true
     }
 
-    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
+    #[Warn("wrn0004", WarnLevel.Disable)]
     mtd endElement() throw
     {
     }
 
-    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
+    #[Warn("wrn0004", WarnLevel.Disable)]
     mtd beginValue() throw
     {
     }
 
-    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
+    #[Warn("wrn0004", WarnLevel.Disable)]
     mtd endValue() throw
     {
         zapBlanks()
@@ -148,7 +148,7 @@ public impl JSon
             stream.moveSeek()
     }
 
-    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
+    #[Warn("wrn0004", WarnLevel.Disable)]
     mtd getVersion()->u32
     {
         return 0

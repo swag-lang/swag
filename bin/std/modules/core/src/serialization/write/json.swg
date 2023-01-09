@@ -118,12 +118,12 @@ impl JSon
             output.addBytes(" ")
     }
 
-    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
+    #[Warn("wrn0004", WarnLevel.Disable)]
     mtd endElement()
     {
     }
 
-    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
+    #[Warn("wrn0004", WarnLevel.Disable)]
     mtd beginValue()
     {
     }

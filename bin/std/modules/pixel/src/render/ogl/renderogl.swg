@@ -1,5 +1,5 @@
 #global public
-using Core, Ogl, Math
+using Swag, Core, Ogl, Math
 
 private
 {
@@ -229,7 +229,7 @@ impl RenderOgl
     }
 
     // Clear current render buffers
-    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
+    #[Warn("wrn0004", WarnLevel.Disable)]
     mtd clear()
     {
         glClearStencil(0)
@@ -255,7 +255,7 @@ impl RenderOgl
     }
 
     // Reset the scissor
-    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
+    #[Warn("wrn0004", WarnLevel.Disable)]
     mtd resetScissorRect()
     {
         glDisable(GL_SCISSOR_TEST)
@@ -394,7 +394,7 @@ impl RenderOgl
     }
 
     // Create a render target
-    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
+    #[Warn("wrn0004", WarnLevel.Disable)]
     mtd createRenderTarget(w, h: s32)->RenderTarget
     {
         var colorID: GLuint
@@ -428,7 +428,7 @@ impl RenderOgl
     }
 
     // Delete a render target
-    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
+    #[Warn("wrn0004", WarnLevel.Disable)]
     mtd deleteRenderTarget(rt: *RenderTarget)
     {
         if rt.handle == InvalidRenderTargetHandle or !rt.colorBuffer.valid
@@ -448,7 +448,7 @@ impl RenderOgl
         rt.colorBuffer.valid = false
     }
 
-    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
+    #[Warn("wrn0004", WarnLevel.Disable)]
     // Register an image for rendering
     mtd addImage(image: Image)->Texture
     {
@@ -516,7 +516,7 @@ impl RenderOgl
         return result
     }
 
-    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
+    #[Warn("wrn0004", WarnLevel.Disable)]
     // Unregister a texture created with 'addImage'
     mtd removeTexture(texture: *Texture)
     {

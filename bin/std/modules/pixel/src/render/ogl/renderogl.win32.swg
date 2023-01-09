@@ -1,5 +1,5 @@
 #global if #os == Swag.TargetOs.Windows
-using Core, Win32, Ogl, Gdi32
+using Swag, Core, Win32, Ogl, Gdi32
 
 public struct NativeRenderOgl
 {
@@ -15,13 +15,13 @@ public struct RenderingContext
 
 public impl NativeRenderOgl
 {
-    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
+    #[Warn("wrn0004", WarnLevel.Disable)]
     mtd createContext(hWnd: HWND, width, height: s32, mainRC: HGLRC = null)->RenderingContext throw
     {
         return try createContext(GetDC(hWnd), width, height, mainRC)
     }
 
-    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
+    #[Warn("wrn0004", WarnLevel.Disable)]
     mtd createContext(hdc: HDC, width, height: s32, mainRC: HGLRC = null)->RenderingContext throw
     {
         var result: retval
@@ -45,20 +45,20 @@ public impl NativeRenderOgl
         return result
     }
 
-    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
+    #[Warn("wrn0004", WarnLevel.Disable)]
     mtd dropContext(rc: RenderingContext)
     {
         catch wglMakeCurrent(null, null)
         catch wglDeleteContext(rc.hRC)
     }
 
-    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
+    #[Warn("wrn0004", WarnLevel.Disable)]
     func setCurrentContext(using self, rc: RenderingContext)
     {
         catch wglMakeCurrent(rc.hDC, rc.hRC)
     }
 
-    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
+    #[Warn("wrn0004", WarnLevel.Disable)]
     func swapBuffers(using self, rc: RenderingContext)
     {
         assume SwapBuffers(rc.hDC)
