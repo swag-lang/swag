@@ -9,6 +9,7 @@ func breakPanic(message: string, loc = #callerlocation)
 }
 
 #[Swag.Inline]
+#[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
 func assert(expr: bool, message: string = null, loc = #callerlocation)
 {
     #if ASSERT
@@ -19,6 +20,7 @@ func assert(expr: bool, message: string = null, loc = #callerlocation)
 }
 
 #[Swag.Inline]
+#[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
 func(what: string) safety(expr: bool, message: string = null, loc = #callerlocation)
 {
     #if @safety(what)
@@ -29,6 +31,7 @@ func(what: string) safety(expr: bool, message: string = null, loc = #callerlocat
 }
 
 #[Swag.Inline]
+#[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
 func safetyBoundCheck(expr: bool, message: string = null, loc = #callerlocation)
 {
     safety'("bound")(expr, message, loc)

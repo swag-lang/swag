@@ -554,9 +554,19 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     }
 
     // Clone original node
-    auto         overload = match.symbolOverload;
-    auto         funcNode = overload->node;
-    AstFuncDecl* newFunc  = CastAst<AstFuncDecl>(funcNode->clone(cloneContext), AstNodeKind::FuncDecl);
+    auto overload = match.symbolOverload;
+    auto funcNode = overload->node;
+
+    // If function has some attributes, we need to clone the attributes too
+    auto cloneNode = funcNode;
+    while (cloneNode->parent && cloneNode->parent->kind == AstNodeKind::AttrUse)
+        cloneNode = cloneNode->parent;
+    cloneNode        = cloneNode->clone(cloneContext);
+    auto newFuncNode = cloneNode;
+    while (newFuncNode->kind == AstNodeKind::AttrUse)
+        newFuncNode = newFuncNode->childs.back();
+
+    AstFuncDecl* newFunc = CastAst<AstFuncDecl>(newFuncNode, AstNodeKind::FuncDecl);
     newFunc->flags |= AST_FROM_GENERIC;
     newFunc->originalGeneric = funcNode;
 
@@ -570,7 +580,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     auto p = funcNode->parent;
     while (p && p->kind == AstNodeKind::AttrUse)
         p = p->parent;
-    Ast::addChildBack(p, newFunc);
+    Ast::addChildBack(p, cloneNode);
 
     // :ContextCall
     // If we are calling the function in a struct context (struct.func), then add the struct as
@@ -627,7 +637,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     SWAG_CHECK(updateGenericParameters(context, true, true, newTypeFunc->genericParameters, newFunc->genericParameters->childs, genericParameters, match));
     newTypeFunc->forceComputeName();
 
-    auto job = end(context, context->job, match.symbolName, newFunc, true, cloneContext.replaceTypes);
+    auto job = end(context, context->job, match.symbolName, cloneNode, true, cloneContext.replaceTypes);
     context->job->jobsToAdd.push_back(job);
 
     return true;

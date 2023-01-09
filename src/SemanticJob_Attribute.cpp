@@ -338,6 +338,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             else if (child->token.text == g_LangSpec->name_Using)
             {
                 auto id = CastAst<AstIdentifier>(child->childs.back(), AstNodeKind::Identifier);
+                id->flags |= AST_NO_SEMANTIC;
+
                 SWAG_VERIFY(id->callParameters && id->callParameters->childs.size() >= 1, context->report({id, Err(Err0601)}));
                 for (auto c : id->callParameters->childs)
                 {
