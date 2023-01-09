@@ -143,7 +143,8 @@ bool SemanticJob::warnUnusedSymbols(SemanticContext* context, Scope* scope)
         else if (overload->flags & OVERLOAD_VAR_CAPTURE)
         {
             Diagnostic diag{front, front->token, Fmt(Err(Wrn0006), SymTable::getNakedKindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
-            isOk = isOk && context->report(diag);
+            diag.hint = Hnt(Hnt0026);
+            isOk      = isOk && context->report(diag);
         }
         else if (overload->flags & OVERLOAD_CONSTANT)
         {

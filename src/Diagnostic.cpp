@@ -86,7 +86,8 @@ void Diagnostic::printSourceLine()
             path = path1;
     }
 
-    g_Log.setColor(sourceFileColor);
+    if (!g_CommandLine.errorCompact)
+        g_Log.setColor(sourceFileColor);
     g_Log.print(Utf8::normalizePath(path).c_str());
     if (hasRangeLocation)
         g_Log.print(Fmt(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, endLocation.line + 1, endLocation.column + 1));
