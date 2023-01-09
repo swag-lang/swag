@@ -149,6 +149,7 @@ bool ByteCodeGenJob::emitCastToNativeBool(ByteCodeGenContext* context, AstNode* 
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::Bool:
+            emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r0, exprNode->resultRegisterRC);
             break;
         case NativeTypeKind::U8:
         case NativeTypeKind::S8:
