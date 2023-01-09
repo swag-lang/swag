@@ -102,8 +102,8 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
         buildCfg.backendDebugInformations = true;
     }
 
-    buildCfg.warnAsDisabled.buffer = (void*) "wrn0004";
-    buildCfg.warnAsDisabled.count  = 7;
+    //buildCfg.warnAsDisabled.buffer = (void*) "wrn0004";
+    //buildCfg.warnAsDisabled.count  = 7;
 
     // Overwrite with command line
     if (g_CommandLine.buildCfgInlineBC != "default")

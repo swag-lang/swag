@@ -224,6 +224,14 @@ namespace Report
         if (!diag.raisedOnNode)
             return true;
 
+        // No warning if it's in a dependency
+        auto sourceFile = getDiagFile(diag);
+        if (sourceFile->imported && sourceFile->imported->kind == ModuleKind::Dependency)
+            return false;
+        auto module = sourceFile->module;
+        if (module->kind == ModuleKind::Dependency)
+            return false;
+
         // Get warning identifier
         Utf8 warnMsg;
         auto pz = diag.textMsg.c_str();
@@ -254,8 +262,7 @@ namespace Report
         }
 
         // Check attributes in the file
-        auto sourceFile = getDiagFile(diag);
-        auto attrUse    = sourceFile->astAttrUse;
+        auto attrUse = sourceFile->astAttrUse;
         while (attrUse)
         {
             bool retResult = true;
@@ -266,8 +273,6 @@ namespace Report
         }
 
         // Check build configuration
-        auto module = sourceFile->module;
-
         if (module->buildCfg.warnAsErrors.buffer)
         {
             Utf8 txt{(const char*) module->buildCfg.warnAsErrors.buffer, (uint32_t) module->buildCfg.warnAsErrors.count};
