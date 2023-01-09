@@ -4354,6 +4354,35 @@ void ByteCodeOptimizer::reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstr
     }
 }
 
+void ByteCodeOptimizer::reduceLateStack(ByteCodeOptContext* context, ByteCodeInstruction* ip)
+{
+    switch (ip->op)
+    {
+    case ByteCodeOp::SetAtStackPointer8:
+    case ByteCodeOp::SetAtStackPointer16:
+    case ByteCodeOp::SetAtStackPointer32:
+    case ByteCodeOp::SetAtStackPointer64:
+    case ByteCodeOp::SetAtStackPointer8x2:
+    case ByteCodeOp::SetAtStackPointer16x2:
+    case ByteCodeOp::SetAtStackPointer32x2:
+    case ByteCodeOp::SetAtStackPointer64x2:
+    case ByteCodeOp::SetZeroStack8:
+    case ByteCodeOp::SetZeroStack16:
+    case ByteCodeOp::SetZeroStack32:
+    case ByteCodeOp::SetZeroStack64:
+    case ByteCodeOp::CopyStack8:
+    case ByteCodeOp::CopyStack16:
+    case ByteCodeOp::CopyStack32:
+    case ByteCodeOp::CopyStack64:
+        if (ip[1].op == ByteCodeOp::CopyRCtoRRRet || ip[1].op == ByteCodeOp::Ret)
+        {
+            setNop(context, ip);
+            break;
+        }
+        break;
+    }
+}
+
 void ByteCodeOptimizer::reduceStackOp(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
     switch (ip->op)
@@ -4806,6 +4835,7 @@ bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         reduceAppend(context, ip);
         reduceForceSafe(context, ip);
         reduceStackOp(context, ip);
+        reduceLateStack(context, ip);
         reduceFactor(context, ip);
     }
 
