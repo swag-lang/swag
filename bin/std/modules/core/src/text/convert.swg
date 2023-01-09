@@ -285,9 +285,9 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     switch type
     {
     case bool:
-        convertBool(buf, cast(bool) concreteValue, strFormat)
+        convertBool(buf, cast(bool) concreteValue)
     case rune:
-        convertRune(buf, cast(rune) concreteValue, strFormat)
+        convertRune(buf, cast(rune) concreteValue)
     case string:
         buf.addBytes(cast(string) concreteValue)
     default:
@@ -500,13 +500,13 @@ func convertInt(buf: *ConcatBuffer, value: any, strFormat: string)
 }
 
 // Convert a 'bool' to a string, and put the result in a ConcatBuffer
-func convertBool(buf: *ConcatBuffer, value: bool, strFormat: string)
+func convertBool(buf: *ConcatBuffer, value: bool)
 {
     buf.addBytes(value ? "true" : "false")
 }
 
 // Convert a 'rune' to a string, and put the result in a ConcatBuffer
-func convertRune(buf: *ConcatBuffer, value: rune, strFormat: string)
+func convertRune(buf: *ConcatBuffer, value: rune)
 {
     var arr: [4] u8
     var count = Utf8.encodeRune(arr, value)

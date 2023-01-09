@@ -229,6 +229,7 @@ impl RenderOgl
     }
 
     // Clear current render buffers
+    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
     mtd clear()
     {
         glClearStencil(0)
@@ -254,6 +255,7 @@ impl RenderOgl
     }
 
     // Reset the scissor
+    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
     mtd resetScissorRect()
     {
         glDisable(GL_SCISSOR_TEST)
@@ -369,7 +371,7 @@ impl RenderOgl
     {
         var result: retval = Image.create(w, h, .BGRA8)
         glReadBuffer(GL_COLOR_ATTACHMENT0)
-        glReadPixels(x, curRT.colorBuffer.height - h, w, h, GL_BGRA, GL_UNSIGNED_BYTE, result.pixels.buffer)
+        glReadPixels(x, curRT.colorBuffer.height - h - y, w, h, GL_BGRA, GL_UNSIGNED_BYTE, result.pixels.buffer)
         unbindRenderTarget()
         return result
     }
@@ -392,6 +394,7 @@ impl RenderOgl
     }
 
     // Create a render target
+    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
     mtd createRenderTarget(w, h: s32)->RenderTarget
     {
         var colorID: GLuint
@@ -425,6 +428,7 @@ impl RenderOgl
     }
 
     // Delete a render target
+    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
     mtd deleteRenderTarget(rt: *RenderTarget)
     {
         if rt.handle == InvalidRenderTargetHandle or !rt.colorBuffer.valid
@@ -444,6 +448,7 @@ impl RenderOgl
         rt.colorBuffer.valid = false
     }
 
+    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
     // Register an image for rendering
     mtd addImage(image: Image)->Texture
     {
@@ -511,6 +516,7 @@ impl RenderOgl
         return result
     }
 
+    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
     // Unregister a texture created with 'addImage'
     mtd removeTexture(texture: *Texture)
     {
@@ -881,7 +887,7 @@ impl RenderOgl
     }
 
     // Create the given shader
-    mtd createShader(base: *ShaderBase, vertex, pixel: const [..] u8, version: string = "330 core") throw
+    mtd createShader(base: *ShaderBase, vertex, pixel: const [..] u8) throw
     {
         var buf: String = @mkstring(@dataof(vertex), @countof(vertex))
         buf.replace("#include base",  @mkstring(@dataof(BaseVertexShader), @countof(BaseVertexShader)))

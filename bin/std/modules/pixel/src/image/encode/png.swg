@@ -148,7 +148,7 @@ public struct Encoder
 
 impl Encoder
 {
-    mtd writeU32(dst: *u8, val: u32)
+    func writeU32(dst: *u8, val: u32)
     {
         v := Math.nativeToBigEndian(val)
         dref cast(*u32) dst = v
@@ -302,12 +302,12 @@ impl Encoder
         bufferToCompress.add(@mkslice(sl, len))
     }
 
-    mtd encodeRow(row: ^u8, len: u32)->bool throw
+    mtd encodeRow(row: ^u8)->bool throw
     {
         pass := rowInfo.pass
 
         if !ihdr.interlaceMethod or pass == 6
-            return encodeScanLine(row, len)
+            return encodeScanLine(row)
 
         bitDepth := ihdr.bitDepth
         if bitDepth < 8
@@ -340,7 +340,7 @@ impl Encoder
                 }
             }
 
-            return encodeScanLine(scanline, len)
+            return encodeScanLine(scanline)
         }
 
         loop k: subimage[pass].width
@@ -349,7 +349,7 @@ impl Encoder
             Memory.copy(scanline + k * pixelSize, row + ioffset, acast pixelSize)
         }
 
-        return encodeScanLine(scanline, len)
+        return encodeScanLine(scanline)
     }
 
     mtd getBestFilter(size: u32)->Filter
@@ -490,7 +490,7 @@ impl Encoder
         }
     }
 
-    mtd encodeScanLine(sl: ^u8, len: u32)->bool throw
+    mtd encodeScanLine(sl: ^u8)->bool throw
     {
         pass := rowInfo.pass
 
@@ -643,7 +643,7 @@ public impl IImageEncoder for Encoder
         loop
         {
             ioffset := (image.height - rowInfo.rowNum - 1) * image.width * image.bpp8
-            if encodeRow(image.pixels.buffer + ioffset, acast (image.width * image.bpp8))
+            if encodeRow(image.pixels.buffer + ioffset)
                 break
         }
 

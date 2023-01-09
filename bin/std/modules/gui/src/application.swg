@@ -103,7 +103,7 @@ private impl Application
         if mouseCaptureWnd
             targetWnd = mouseCaptureWnd
         else
-            targetWnd = getWndAt(mousePos.x, mousePos.y)
+            targetWnd = getWndAtMouse()
         targetWnd = skipDisabled(targetWnd)
 
         // If no target window, but one target surface, then we will send
@@ -640,7 +640,7 @@ impl Application
     }
 
     // Returns the window under the given point
-    mtd getWndAt(x, y: f32)->*Wnd
+    mtd getWndAtMouse()->*Wnd
     {
         mousePos := mouse.getPosition()
         targetSurface := getSurfaceAt(mousePos.x, mousePos.y)

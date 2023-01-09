@@ -88,7 +88,7 @@ impl TagBin
         // Patch fat table seek and count
         curSeek := output.getSeek()
         output.setSeek(sec.startSeek)
-        output.addNative(output.getOffset(curSeek))
+        output.addNative(ConcatBuffer.getOffset(curSeek))
         output.addNative(sec.mapSeek.count)
         output.setSeek(curSeek)
 
@@ -97,13 +97,13 @@ impl TagBin
         visit k, v: sec.mapSeek
         {
             output.addNative(k) // Crc
-            output.addNative(output.getOffset(v)) // Linear seek inside the buffer
+            output.addNative(ConcatBuffer.getOffset(v)) // Linear seek inside the buffer
         }
 
         releaseSection()
     }
 
-    mtd beginStruct(structType: typeinfo, structData: const *u8)->bool
+    mtd beginStruct(structType: typeinfo, _structData: const *u8)->bool
     {
         if  Reflection.hasAttribute(structType, Serialization.Final) or
             Reflection.hasAttribute(structType, Serialization.PodFinal)
@@ -154,14 +154,17 @@ impl TagBin
         output.addNative(val.pointedType.crc32)
     }
 
+    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
     mtd endElement()
     {
     }
 
+    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
     mtd beginValue()
     {
     }
 
+    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
     mtd endValue()
     {
     }
@@ -204,6 +207,7 @@ impl TagBin
         return false
     }
 
+    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
     mtd endSequence()
     {
     }

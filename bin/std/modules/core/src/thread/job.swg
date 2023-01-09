@@ -60,7 +60,7 @@ var g_totalJobs:            u32
     }
 }
 
-func workerEntry(th: Thread)
+func workerEntry(_th: Thread)
 {
     while !g_mustEnd
     {

@@ -32,7 +32,7 @@ public impl JSon
         stream = ByteStream.openRead(input)
     }
 
-    mtd beginSequence(typeElem: typeinfo, data: *u8, countElem: *uint)->bool throw
+    mtd beginSequence(_typeElem: typeinfo, _data: *u8, _countElem: *uint)->bool throw
     {
         zapBlanks()
         c := stream.readU8()
@@ -50,7 +50,7 @@ public impl JSon
             throw "malformed array (missing closing ']')"
     }
 
-    mtd toNextSequenceElement(countElem: *uint)->bool
+    mtd toNextSequenceElement(_countElem: *uint)->bool
     {
         zapBlanks()
         c := stream.peekU8()
@@ -73,7 +73,7 @@ public impl JSon
             throw "malformed root (missing closing '}')"
     }
 
-    mtd beginSection(kind: SectionKind) throw
+    mtd beginSection(_kind: SectionKind) throw
     {
         zapBlanks()
         c := stream.readU8()
@@ -89,7 +89,7 @@ public impl JSon
             throw "malformed struct (missing closing '}')"
     }
 
-    mtd beginStruct(structType: typeinfo, structData: const *u8)->bool throw
+    mtd beginStruct(_structType: typeinfo, _structData: const *u8)->bool throw
     {
         beginSection(.Ordered)
         return false
@@ -129,14 +129,17 @@ public impl JSon
         return true
     }
 
+    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
     mtd endElement() throw
     {
     }
 
+    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
     mtd beginValue() throw
     {
     }
 
+    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
     mtd endValue() throw
     {
         zapBlanks()
@@ -145,6 +148,7 @@ public impl JSon
             stream.moveSeek()
     }
 
+    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
     mtd getVersion()->u32
     {
         return 0

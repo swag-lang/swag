@@ -26,7 +26,7 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
             valueType := structType.generics[0].pointedType
             while @countof(one) and one[0] != "#"'u8
             {
-                addrVal := Reflection.roomInArray(addr, structType, valueType)
+                addrVal := Reflection.roomInArray(addr, valueType)
                 one = try pokeValue(addrVal, valueType, one)
                 one = Tokenize.eatSpaces(one)
             }

@@ -44,7 +44,7 @@ public func getMonitors()->Array'Monitor
 {
     var result: retval
 
-    func proc(hMonitor: HMONITOR, hDC: HDC, lpRect: *RECT, lParam: LPARAM)->BOOL
+    func proc(hMonitor: HMONITOR, _hDC: HDC, _lpRect: *RECT, lParam: LPARAM)->BOOL
     {
         var mi: MONITORINFO
         catch GetMonitorInfoA(hMonitor, &mi)

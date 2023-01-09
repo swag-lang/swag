@@ -366,7 +366,7 @@ impl Painter
         }
     }
 
-    mtd drawMoveCursor(using cxt: *Context, pos: Vector2)
+    func drawMoveCursor(using cxt: *Context, pos: Vector2)
     {
         if pos.distance(path.endPoint) < 1
         {

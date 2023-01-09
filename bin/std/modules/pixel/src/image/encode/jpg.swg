@@ -321,7 +321,7 @@ impl Encoder
         loop i: 162 dhtInfo.valuesCbAC[i] = StdAcChrominanceValues[i]
     }
 
-    mtd computeHuffmanTable(nrCodes: const ^u8, stdTable: const ^u8, hT: ^BitString)
+    func computeHuffmanTable(nrCodes: const ^u8, stdTable: const ^u8, hT: ^BitString)
     {
         codevalue  := 0'u16
         posInTable := 0
@@ -526,9 +526,9 @@ impl Encoder
     {
         #[Swag.Inline]
         {
-            mtd Y(r, g, b: u8)  => cast(u8) (((TabYR[r] + TabYG[g] + TabYB[b]) >> 16) - 128)
-            mtd Cb(r, g, b: u8) => cast(u8) ((TabCbR[r] + TabCbG[g] + TabCbB[b]) >> 16)
-            mtd Cr(r, g, b: u8) => cast(u8) ((TabCrR[r] + TabCrG[g] + TabCrB[b]) >> 16)
+            func Y(r, g, b: u8)  => cast(u8) (((TabYR[r] + TabYG[g] + TabYB[b]) >> 16) - 128)
+            func Cb(r, g, b: u8) => cast(u8) ((TabCbR[r] + TabCbG[g] + TabCbB[b]) >> 16)
+            func Cr(r, g, b: u8) => cast(u8) ((TabCrR[r] + TabCrG[g] + TabCrB[b]) >> 16)
         }
 
         pos := 0
@@ -542,9 +542,9 @@ impl Encoder
                 r := pdst[location].r
                 g := pdst[location].g
                 b := pdst[location].b
-                duY[pos]  = Y(self, r, g, b)
-                duCb[pos] = Cb(self, r, g, b)
-                duCr[pos] = Cr(self, r, g, b)
+                duY[pos]  = Y(r, g, b)
+                duCb[pos] = Cb(r, g, b)
+                duCr[pos] = Cr(r, g, b)
                 location += 1
                 pos += 1
             }
@@ -553,7 +553,7 @@ impl Encoder
         }
     }
 
-    mtd quantization(data: ^s8, fdtbl: ^f32, outData: ^s16)
+    func quantization(data: ^s8, fdtbl: ^f32, outData: ^s16)
     {
         var dataFloat: [64] f32
         loop i: 64

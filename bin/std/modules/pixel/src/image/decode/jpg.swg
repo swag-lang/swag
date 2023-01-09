@@ -535,7 +535,7 @@ impl Decoder
         }
     }
 
-    mtd idct(data: ^s16, buf: ^u8)
+    func idct(data: ^s16, buf: ^u8)
     {
         pdstPtr := buf
         dataPtr := data
@@ -1775,7 +1775,7 @@ impl Decoder
         return Marker.M_ERROR
     }
 
-    mtd readVariableMarker(marker: Marker) throw
+    mtd readVariableMarker(_marker: Marker) throw
     {
         left := getBits1(16)
         if left < 2 throw "bad variable marker"

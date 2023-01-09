@@ -47,7 +47,7 @@ struct AA
 
 var aa: AA
 
-func createView7(tabView: *Tab, view: *Wnd)
+func createView7(_tabView: *Tab, view: *Wnd)
 {
     lt := PropertyList.create(view, {5, 55, 400, 600})
     aa.str = "String content"

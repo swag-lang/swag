@@ -1,6 +1,6 @@
 using Core, Gui, Pixel
 
-func createView6(tabView: *Tab, view: *Wnd)
+func createView6(_tabView: *Tab, view: *Wnd)
 {
     {
         lt := StackLayoutCtrl.create(view, .Top, {5, 5, 200, 200})

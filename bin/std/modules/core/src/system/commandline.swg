@@ -25,7 +25,7 @@ struct ParseOptions
 }
 
 // Returns true if `oneArg` is a valid option (starting with a delimiter)
-func isOption(oneArg: string, options: ParseOptions)->bool
+func isOption(oneArg: string, _options: ParseOptions)->bool
 {
     if @countof(oneArg) == 0
         return false

@@ -284,7 +284,7 @@ impl ConcatBuffer
     }
 
     // Get the linearized seek offset
-    mtd getOffset(seek: ConcatBufferSeek)->uint
+    func getOffset(seek: ConcatBufferSeek)->uint
     {
         return seek.bucket ? seek.bucket.countBefore + cast(uint) (seek.sp - seek.bucket.datas) : 0
     }

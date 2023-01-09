@@ -151,7 +151,7 @@ impl Decoder
                 {
                     while serializer.toNextSequenceElement(&count)
                     {
-                        bufArr := Reflection.roomInArray(data, structType, valueType)
+                        bufArr := Reflection.roomInArray(data, valueType)
                         readValue(bufArr, valueType)
                     }
                 }

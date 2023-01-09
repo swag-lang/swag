@@ -185,7 +185,7 @@ private impl PropertyList
         }
     }
 
-    mtd refreshNative(item: *PropertyListItem)
+    func refreshNative(item: *PropertyListItem)
     {
         nativeType := cast(const *Swag.TypeInfoNative) item.typeValue.pointedType
         ptrData    := item.ptrData
@@ -282,7 +282,7 @@ private impl PropertyList
         refreshNative(item)
     }
 
-    mtd refreshItem(using item: *PropertyListItem)
+    func refreshItem(using item: *PropertyListItem)
     {
         if Reflection.isEnum(typeValue.pointedType)
         {

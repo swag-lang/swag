@@ -41,7 +41,7 @@ impl StringBuilder
     // Append a rune
     mtd appendRune(value: rune)
     {
-        convertRune(&buffer, value, null)
+        convertRune(&buffer, value)
     }
 
     // Append a value

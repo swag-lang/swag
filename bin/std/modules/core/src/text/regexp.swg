@@ -272,7 +272,7 @@ impl RegExp
         return srcPtr
     }
 
-    mtd dfaMatch(out: *Array'(*DfaNode), c: rune, curState: *DfaNode)->bool
+    func dfaMatch(out: *Array'(*DfaNode), c: rune, curState: *DfaNode)->bool
     {
         ok := false
 
@@ -545,7 +545,7 @@ impl RegExp
         }
     }
 
-    mtd dfaEClosure(in, out: *HashSet'(*NfaNode))
+    func dfaEClosure(in, out: *HashSet'(*NfaNode))
     {
         out.clear()
 

@@ -22,7 +22,7 @@ impl ImageList
     {
         self.texture = #self.texture
         frameSizeX  = fsx orelse #self.texture.width
-        frameSizeY  = fsx orelse #self.texture.height
+        frameSizeY  = fsy orelse #self.texture.height
         totalFrames = cpt orelse (self.texture.width / frameSizeX) * (self.texture.height / frameSizeY)
     }
 }

@@ -44,7 +44,7 @@ impl JSon
         endStruct()
     }
 
-    mtd beginSequence(typeElem: typeinfo, data: const *void, countElem: uint)->bool
+    mtd beginSequence(_typeElem: typeinfo, _data: const *void, _countElem: uint)->bool
     {
         output.addBytes("[")
         lastSeekValue = output.getSeek()
@@ -72,7 +72,7 @@ impl JSon
         lastSeekValue = output.getSeek()
     }
 
-    mtd beginSection(kind: SectionKind)
+    mtd beginSection(_kind: SectionKind)
     {
         output.addBytes("{")
         lastSeekValue = output.getSeek()
@@ -98,7 +98,7 @@ impl JSon
         lastSeekValue = output.getSeek()
     }
 
-    mtd beginStruct(structType: typeinfo, structData: const *u8)->bool
+    mtd beginStruct(_structType: typeinfo, _structData: const *u8)->bool
     {
         beginSection(.Ordered)
         return false
@@ -118,10 +118,12 @@ impl JSon
             output.addBytes(" ")
     }
 
+    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
     mtd endElement()
     {
     }
 
+    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
     mtd beginValue()
     {
     }

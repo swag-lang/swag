@@ -222,6 +222,7 @@ impl TagBin
             throw ErrorInvalidFile
     }
 
+    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
     mtd endRoot() throw
     {
     }
@@ -282,7 +283,7 @@ impl TagBin
         releaseSection()
     }
 
-    mtd beginStruct(structType: typeinfo, structData: const *u8)->bool throw
+    mtd beginStruct(structType: typeinfo, _structData: const *u8)->bool throw
     {
         if  Reflection.hasAttribute(structType, Serialization.Final) or
             Reflection.hasAttribute(structType, Serialization.PodFinal)
@@ -405,10 +406,12 @@ impl TagBin
         convertNextNative = null
     }
 
+    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
     mtd beginValue() throw
     {
     }
 
+    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
     mtd endValue() throw
     {
     }
@@ -476,10 +479,12 @@ impl TagBin
         return false
     }
 
+    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
     mtd endSequence() throw
     {
     }
 
+    #[Swag.Warn("wrn0004", Swag.WarnLevel.Disable)]
     mtd toNextSequenceElement(countElem: *uint)->bool
     {
         if dref countElem == 0
