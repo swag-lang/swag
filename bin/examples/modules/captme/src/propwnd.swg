@@ -552,7 +552,7 @@ impl PropWnd
             picker := createColorPicker(btn, backCol)
             if curSel.subKind == .PixSel
             {
-                picker.sigChanged += closure|me, btn|(pk) {
+                picker.sigChanged += closure|btn|(pk) {
                     g_Main.pixSelFillCol = pk.getColor()
                     btn.invalidate()
                 }
@@ -790,7 +790,7 @@ impl PropWnd
                 combo.selectedIdx = cast(u32) combo.items.count - 1
         }
 
-        combo.sigChanged += closure|self, curSel|(combo, idx)
+        combo.sigChanged += closure|self|(combo, idx)
         {
             if idx == Swag.U32.Max
                 return
