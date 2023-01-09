@@ -37,6 +37,7 @@ struct Undo
 
     selection:      Array'uint
 
+    toFreeForms:    Array'IForm
     oldForms:       Array'IForm
     oldS32:         Array's32
     oldU32:         Array'u32
@@ -66,6 +67,11 @@ struct Undo
 
 impl Undo
 {
+    mtd opDrop()
+    {
+        Capture.freeForms(toFreeForms)
+    }
+
     mtd init()
     {
         switch kind
@@ -206,6 +212,7 @@ impl Undo
     {
         mtd removeSelection()
         {
+            toFreeForms.clear()
             selection.sort()
             offset := 0
             visit s: selection
@@ -213,6 +220,7 @@ impl Undo
                 f := capture.forms[s - offset]
                 offset += 1
                 capture.forms.removeOrdered(f)
+                toFreeForms.add(f)
             }
 
             capture.selection.clear()
@@ -465,6 +473,7 @@ impl Undo
             removeSelection()
 
         case CreateForm:
+            toFreeForms.clear()
             visit f: oldForms
                 capture.forms.add(f)
         }
@@ -602,11 +611,13 @@ impl Undo
             }
 
         case MoveToFront, MoveToBack, MoveForward, MoveBackward, DeleteSelection:
+            toFreeForms.clear()
             capture.selection = selection
             capture.forms     = oldForms
             capture.selectionHasChanged()
 
         case CreateForm:
+            toFreeForms = oldForms
             loop oldForms
             {
                 capture.selection.remove(capture.forms.count - 1)

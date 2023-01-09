@@ -60,13 +60,18 @@ struct Capture
 
 impl Capture
 {
-    mtd opDrop()
+    func freeForms(forms: Array'IForm)
     {
         visit it: forms
         {
             type := @kindof(it)
             Memory.delete(@dataof(it), type)
         }
+    }
+
+    mtd opDrop()
+    {
+        freeForms(forms)
     }
 
     mtd setup(view: *EditView)

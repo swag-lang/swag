@@ -182,7 +182,10 @@ impl DebugAllocator
             @print("leak error: ")
             @print("id [", scan.allocId, "] sizeAlloc [")
             printDisplaySize(scan.userSize)
-            if scan.hint @print("] hint [", scan.hint, "]")
+            if scan.hint 
+                @print("] hint [", scan.hint, "]")
+            else
+                @print("]")
             @print("\n")
             @print("\x1b[36m")
             @print("--> ")
