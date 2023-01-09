@@ -532,7 +532,10 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         SWAG_ASSERT(g_CommandLine.test);
 
         if (token.text == g_LangSpec->name_testwarnings)
+        {
             sourceFile->multipleTestWarnings = true;
+            sourceFile->module->numTestWarnings++;
+        }
         else
         {
             sourceFile->numTestWarnings++;

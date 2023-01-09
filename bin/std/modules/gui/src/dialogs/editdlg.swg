@@ -11,7 +11,7 @@ public struct EditDlg
 public impl EditDlg
 {
     // Creates the message box
-    func createSingleLine(from: *Surface, multiLine = false)->*EditDlg
+    func createSingleLine(from: *Surface)->*EditDlg
     {
         dlg := Wnd.create'EditDlg()
         metrics := from.wnd.getThemeMetrics()

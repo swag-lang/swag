@@ -353,7 +353,7 @@ impl IRichEditLexer for RichEditLexerSwag
             }
 
             ed.pushUndo()
-            ed.insertText(str, 0)
+            ed.insertText(str)
             ed.popUndo()
             ed.ensureCaretIsVisible()
             return true

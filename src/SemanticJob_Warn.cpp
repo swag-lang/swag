@@ -115,10 +115,15 @@ bool SemanticJob::warnUnusedSymbols(SemanticContext* context, Scope* scope)
         else if (overload->flags & OVERLOAD_VAR_FUNC_PARAM)
         {
             auto funcDecl = CastAst<AstFuncDecl>(front->findParent(AstNodeKind::FuncDecl), AstNodeKind::FuncDecl);
+
+            // If the function is an interface implementation, no unused check
             if (funcDecl->fromItfSymbol)
                 continue;
+            // If this is a lambda expression
+            if (funcDecl->flags & AST_IS_LAMBDA_EXPRESSION)
+                continue;
 
-            /*if (front->isGeneratedSelf())
+            if (front->isGeneratedSelf())
             {
                 front = front->ownerFct;
                 Diagnostic diag{front, front->token, Fmt(Err(Wrn0004), SymTable::getNakedKindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
@@ -131,7 +136,7 @@ bool SemanticJob::warnUnusedSymbols(SemanticContext* context, Scope* scope)
                 Diagnostic diag{front, front->token, Fmt(Err(Wrn0004), SymTable::getNakedKindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
                 diag.hint = Fmt(Hnt(Hnt0092), sym->name.c_str());
                 isOk      = isOk && context->report(diag);
-            }*/
+            }
         }
     }
 

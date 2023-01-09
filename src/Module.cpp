@@ -102,6 +102,9 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
         buildCfg.backendDebugInformations = true;
     }
 
+    buildCfg.warnAsDisabled.buffer = (void*) "wrn0004";
+    buildCfg.warnAsDisabled.count  = 7;
+
     // Overwrite with command line
     if (g_CommandLine.buildCfgInlineBC != "default")
         buildCfg.byteCodeInline = g_CommandLine.buildCfgInlineBC == "true" ? true : false;
@@ -450,7 +453,11 @@ void Module::allocateBackend()
 
     // Allocate backend, even if we do not want to output, because the backend can be used
     // to know if a build is necessary
-    if (!numTestErrors && !numTestWarnings && buildPass >= BuildPass::Backend && kind != ModuleKind::Runtime && kind != ModuleKind::BootStrap)
+    if (!numTestErrors &&
+        !numTestWarnings &&
+        buildPass >= BuildPass::Backend &&
+        kind != ModuleKind::Runtime &&
+        kind != ModuleKind::BootStrap)
     {
         switch (g_CommandLine.backendGenType)
         {

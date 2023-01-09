@@ -36,7 +36,7 @@ private impl RichEditCtrl
     {
         undo := Memory.new'RichEditUndo()
         undo.type       = .Delete
-        (undo.runes, undo.styles) = getTextPrivate(posStart, posEnd, selRect)
+        (undo.runes, undo.styles) = getTextPrivate(posStart, posEnd)
         undo.selBeg     = selBeg
         undo.cursorPos  = cursorPos
         undo.hasSelRect = selRect
@@ -267,7 +267,7 @@ impl RichEditCtrl
     {
         if isSelectionEmpty()
             return
-        res := getTextPrivate(getBegSelection(), getEndSelection(), hasSelRect)
+        res := getTextPrivate(getBegSelection(), getEndSelection())
 
         registerClipboardFormat()
         if clipFormat Clipboard.addData(clipFormat, res.styles.toSlice())
@@ -290,7 +290,7 @@ impl RichEditCtrl
             insertText(txt, st)
         }
         else
-            insertText(txt, 0)
+            insertText(txt)
 
         popUndo()
         forceCaretVisible = true

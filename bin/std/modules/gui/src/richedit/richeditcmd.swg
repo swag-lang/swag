@@ -341,11 +341,11 @@ impl RichEditCtrl
             {
                 pushUndo()
                 deleteSelection()
-                insertText("\t", 0)
+                insertText("\t")
                 popUndo()
             }
             else
-                insertBegLine("\t", false)
+                insertBegLine("\t")
 
         case EditBackTabulation:
             if isReadOnly()

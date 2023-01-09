@@ -14,7 +14,7 @@ public struct ApplicationNative
 
 impl Application
 {
-    mtd pickColorAtMouse()->Color
+    func pickColorAtMouse()->Color
     {
         hdc := GetDC(null)
 

@@ -2,7 +2,7 @@ using Core, Pixel
 
 impl RichEditCtrl
 {
-    mtd getTextPrivate(start, end: RichEditCursor, selRect: bool)->{text: Array'rune, styles: Array'u8}
+    mtd getTextPrivate(start, end: RichEditCursor)->{text: Array'rune, styles: Array'u8}
     {
         var result: retval
         if !hasSelRect
@@ -292,7 +292,7 @@ impl RichEditCtrl
         recomputeScroll = true
     }
 
-    mtd insertTextPrivate(cp: *RichEditCursor, text: string, txtStyle: RichEditStyleRef, selRect: bool)
+    mtd insertTextPrivate(cp: *RichEditCursor, text: string, txtStyle: RichEditStyleRef)
     {
         if lines.isEmpty()
             newLine(0)
@@ -406,7 +406,7 @@ public impl RichEditCtrl
     // Get the selected text
     mtd getSelectedText()->String
     {
-        res := getTextPrivate(getBegSelection(), getEndSelection(), hasSelRect)
+        res := getTextPrivate(getBegSelection(), getEndSelection())
         txt := Utf8.fromUnicode(res.text.toSlice())
         return txt
     }
@@ -418,7 +418,7 @@ public impl RichEditCtrl
         var sel1: RichEditCursor
         moveCursorStartFile(&sel0)
         moveCursorEndFile(&sel1)
-        res := getTextPrivate(sel0, sel1, false)
+        res := getTextPrivate(sel0, sel1)
         txt := Utf8.fromUnicode(res.text.toSlice())
         return txt
     }
@@ -429,7 +429,7 @@ public impl RichEditCtrl
         clear()
 
         var cp: RichEditCursor
-        insertTextPrivate(&cp, text, 0, false)
+        insertTextPrivate(&cp, text, 0)
 
         resetModified()
         invalidate()
@@ -445,12 +445,12 @@ public impl RichEditCtrl
             cp.charPosInLine = lines[cp.lineIndex].length()
         }
 
-        insertTextPrivate(&cp, text, txtStyle, false)
+        insertTextPrivate(&cp, text, txtStyle)
         setModified(true)
     }
 
     // Insert a text with a given style
-    mtd insertText(text: string, style: RichEditStyleRef)
+    mtd insertText(text: string)
     {
         undo := Memory.new'RichEditUndo()
         undo.type       = .Insert
@@ -462,7 +462,7 @@ public impl RichEditCtrl
         undo.serial     = 0
         resetUndo()
         toUndo.add(undo)
-        insertTextPrivate(&cursorPos, text, 0, hasSelRect)
+        insertTextPrivate(&cursorPos, text, 0)
         clearSelection()
         setModified(true)
     }
@@ -608,7 +608,7 @@ public impl RichEditCtrl
                 cp.lineIndex = caretI
                 if cp.charPosInLine > lines[cp.lineIndex].length()
                     continue
-                insertTextPrivate(&cp, @mkstring(&az[0], cpt), st, false)
+                insertTextPrivate(&cp, @mkstring(&az[0], cpt), st)
             }
 
             moveCursorRight(&selBeg)
@@ -616,7 +616,7 @@ public impl RichEditCtrl
         }
         else
         {
-            insertTextPrivate(&cursorPos, @mkstring(&az[0], cpt), st, false)
+            insertTextPrivate(&cursorPos, @mkstring(&az[0], cpt), st)
             clearSelection()
         }
 
@@ -626,7 +626,7 @@ public impl RichEditCtrl
     }
 
     // Insert text at the start of each selected line
-    mtd insertBegLine(txt: string, lastLine: bool)
+    mtd insertBegLine(txt: string)
     {
         first := true
 
@@ -650,7 +650,7 @@ public impl RichEditCtrl
 
             setCursorPos(beg)
             selBeg = beg
-            insertText(txt, 0)
+            insertText(txt)
 
             popUndo()
 

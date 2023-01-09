@@ -123,7 +123,7 @@ impl PalettePicker
     }
 
     // Add a range of changing 'luminance'
-    mtd addLumColors(numColors: s32, base: Color, sat: f32)
+    mtd addLumColors(numColors: s32, base: Color)
     {
         (h, s, l) := base.toHsl()
 

@@ -170,7 +170,7 @@ impl ColorPickerCtrl
                         return
                     }
 
-                    col := app.pickColorAtMouse()
+                    col := Application.pickColorAtMouse()
                     v.setColor(col)
 
                     if app.mouse.isButtonPressed(.Left)

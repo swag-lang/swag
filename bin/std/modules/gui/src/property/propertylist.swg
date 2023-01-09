@@ -79,7 +79,7 @@ private impl PropertyList
         return item
     }
 
-    mtd refreshEnumFlags(using item: *PropertyListItem)
+    func refreshEnumFlags(using item: *PropertyListItem)
     {
         var val1, val2: u64
         switch typeValue.pointedType.sizeof
@@ -101,7 +101,7 @@ private impl PropertyList
         checkBox.checked = val1 & val2 ? .Checked : .UnChecked
     }
 
-    mtd refreshEnum(using item: *PropertyListItem)
+    func refreshEnum(using item: *PropertyListItem)
     {
         typeEnum := cast(const *Swag.TypeInfoEnum) typeValue.pointedType
 
@@ -226,7 +226,7 @@ private impl PropertyList
         }
     }
 
-    mtd addBool(f: Swag.TypeValue, nativeType: const *Swag.TypeInfoNative, ptrData: *u8)
+    mtd addBool(f: Swag.TypeValue, ptrData: *u8)
     {
         item := addItem(f, ptrData, false)
 
@@ -347,8 +347,7 @@ private impl PropertyList
             }
             elif Reflection.isBool(f.pointedType)
             {
-                nativeType := cast(const *Swag.TypeInfoNative) f.pointedType
-                addBool(f, nativeType, ptrData)
+                addBool(f, ptrData)
             }
             elif Reflection.isInteger(f.pointedType) or Reflection.isFloat(f.pointedType)
             {
