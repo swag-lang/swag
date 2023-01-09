@@ -522,6 +522,13 @@ bool AstOutput::outputLiteral(OutputContext& context, Concat& concat, AstNode* n
         return true;
     }
 
+    if (typeInfo->isEnum())
+    {
+        Utf8 str = Ast::enumToString(typeInfo, str, value.reg, true);
+        concat.addString(str);
+        return true;
+    }
+
     SWAG_ASSERT(typeInfo->isNative());
     auto str = Ast::literalToString(typeInfo, value);
     switch (typeInfo->nativeType)
