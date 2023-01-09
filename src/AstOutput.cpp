@@ -524,7 +524,7 @@ bool AstOutput::outputLiteral(OutputContext& context, Concat& concat, AstNode* n
 
     if (typeInfo->isEnum())
     {
-        Utf8 str = Ast::enumToString(typeInfo, str, value.reg, true);
+        Utf8 str = Ast::enumToString(typeInfo, value.text, value.reg, true);
         concat.addString(str);
         return true;
     }
