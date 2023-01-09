@@ -13,6 +13,7 @@ static const uint64_t SAFETY_SWITCH     = 0x0010;
 static const uint64_t SAFETY_BOOL       = 0x0020;
 static const uint64_t SAFETY_NAN        = 0x0040;
 static const uint64_t SAFETY_INTRINSICS = 0x0080;
+static const uint64_t SAFETY_ANALYSIS   = 0x0100;
 static const uint64_t SAFETY_ALL        = 0xFFFF;
 
 enum WarnLevel : uint8_t

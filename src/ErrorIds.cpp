@@ -875,7 +875,7 @@ void initErrors()
     SWAG_ERROR(Err0605, "'@abs' integer overflow");
     SWAG_ERROR(Err0707, "expected at least one test error but nothing was raised");
     SWAG_ERROR(Err0580, "expected at least one test warning but nothing was raised");
-    SWAG_ERROR(Err0578, nullptr);
+    SWAG_ERROR(Err0578, "return of a local stack variable or temporary");
     SWAG_ERROR(Err0693, nullptr);
     SWAG_ERROR(Err0690, nullptr);
     SWAG_ERROR(Err0688, nullptr);
@@ -972,7 +972,7 @@ void initErrors()
     SWAG_ERROR(Hlp0006, "to access an array with multiple dimensions, the syntax is [x, y], not [x][y]");
     SWAG_ERROR(Hlp0024, "to declare a multi dimensional array, syntax is [N1, N2, ...] and not [N1][N2][...]");
     SWAG_ERROR(Hlp0023, "valid modes are 'defer(err)' and 'defer(noerr)'");
-    SWAG_ERROR(Hlp0011, "valid safety values are 'bound|over|math|switch|any|bool|nan|intr'");
+    SWAG_ERROR(Hlp0011, "valid safety values are 'bound|over|math|switch|any|bool|nan|intr|analysis'");
     SWAG_ERROR(Hlp0018, "when the parameter types of a lambda are inferred, the return type will be inferred too");
     SWAG_ERROR(Hlp0003, "you can affect a lambda to a closure type, but not the other way around");
     SWAG_ERROR(Hlp0033, "you can unpack a variable with '?' if you don't want to retreive it");
@@ -1174,7 +1174,7 @@ void initErrors()
     SWAG_ERROR(Nte0051, "there is an hidden call to '%s' for type '%s'");
     SWAG_ERROR(Nte0006, "this 'using' field can be converted");
     SWAG_ERROR(Nte0009, "you can run swag with --dbg-catch to attach the bytecode debugger when the error occurs");
-    SWAG_ERROR(Nte0003, nullptr);
+    SWAG_ERROR(Nte0003, "this variable can escape the current frame");
     SWAG_ERROR(Nte0005, nullptr);
 }
 

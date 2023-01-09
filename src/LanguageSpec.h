@@ -165,6 +165,7 @@ struct LanguageSpec
     Utf8 name_bool;
     Utf8 name_nan;
     Utf8 name_any;
+    Utf8 name_analysis;
 
     Utf8 name_name;
     Utf8 name_msg;

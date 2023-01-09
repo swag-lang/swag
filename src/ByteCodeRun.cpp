@@ -2273,7 +2273,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
     case ByteCodeOp::IntrinsicDbgAlloc:
     {
-        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_atdbgalloc);
+         auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_atdbgalloc);
         localCall(context, bc, 0, ip->a.u32);
         break;
     }

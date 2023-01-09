@@ -208,6 +208,7 @@ void SemanticJob::inheritAttributesFromOwnerFunc(AstNode* child)
     INHERIT_SAFETY(child, SAFETY_SWITCH);
     INHERIT_SAFETY(child, SAFETY_BOOL);
     INHERIT_SAFETY(child, SAFETY_NAN);
+    INHERIT_SAFETY(child, SAFETY_ANALYSIS);
 
     INHERIT_ATTR(child, ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
     INHERIT_ATTR(child, ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
@@ -255,6 +256,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
         INHERIT_SAFETY(forNode, SAFETY_SWITCH);
         INHERIT_SAFETY(forNode, SAFETY_BOOL);
         INHERIT_SAFETY(forNode, SAFETY_NAN);
+        INHERIT_SAFETY(forNode, SAFETY_ANALYSIS);
 
         INHERIT_ATTR(forNode, ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
         INHERIT_ATTR(forNode, ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
@@ -439,6 +441,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                         CHECK_SAFETY_NAME(name_switch, SAFETY_SWITCH);
                         CHECK_SAFETY_NAME(name_bool, SAFETY_BOOL);
                         CHECK_SAFETY_NAME(name_nan, SAFETY_NAN);
+                        CHECK_SAFETY_NAME(name_analysis, SAFETY_ANALYSIS);
 
                         if (!done)
                         {

@@ -44,6 +44,7 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
         CHECK_SAFETY_NAME(name_any, SAFETY_ANY);
         CHECK_SAFETY_NAME(name_any, SAFETY_BOOL);
         CHECK_SAFETY_NAME(name_any, SAFETY_NAN);
+        CHECK_SAFETY_NAME(name_analysis, SAFETY_ANALYSIS);
 
         if (!done)
         {
@@ -475,7 +476,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     {
         // :ConcreteRef
         expression->typeInfo = getConcreteTypeUnRef(expression, 0);
-        node->typeInfo = expression->typeInfo;
+        node->typeInfo       = expression->typeInfo;
 
         SWAG_VERIFY(typeInfo->isNativeInteger(), context->report({expression, Fmt(Err(Err0801), typeInfo->getDisplayNameC()), Diagnostic::isType(typeInfo)}));
         if (node->flags & AST_VALUE_COMPUTED)

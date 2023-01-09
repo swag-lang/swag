@@ -55,6 +55,7 @@ struct ByteCodeOptContext : public JobContext
     map<uint32_t, ByteCodeOptTreeNode*>                 map32Node;
     vector<ByteCodeOptTreeNode>                         tree;
     unordered_map<ByteCodeInstruction*, uint32_t>       mapInstNode;
+    void*                                               checkContext = nullptr;
 
     ByteCode* bc;
     Module*   module;

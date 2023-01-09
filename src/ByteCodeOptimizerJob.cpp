@@ -14,60 +14,69 @@ bool ByteCodeOptimizerJob::optimize(ByteCode* bc, bool& restart)
 {
     SWAG_RACE_CONDITION_WRITE(bc->raceCond);
 
-    if (!module->mustOptimizeBC(bc->node))
-        return true;
     optContext.bc     = bc;
     optContext.module = module;
 
-    while (true)
+    if (module->mustOptimizeBC(bc->node))
     {
-        if (!bc->isEmpty && bc->isDoingNothing())
+        while (true)
         {
-            bc->isEmpty = true;
-            restart     = true;
-        }
+            if (!bc->isEmpty && bc->isDoingNothing())
+            {
+                bc->isEmpty = true;
+                restart     = true;
+            }
 
-        if (bc->isEmpty)
-            return true;
+            if (bc->isEmpty)
+                return true;
 
-        ByteCodeOptimizer::setContextFlags(&optContext);
-        ByteCodeOptimizer::setJumps(&optContext);
-        ByteCodeOptimizer::genTree(&optContext, false);
-
-        if (optContext.hasError)
-            return false;
-        optContext.allPassesHaveDoneSomething = false;
-
-        OPT_PASS(ByteCodeOptimizer::optimizePassJumps);
-        OPT_PASS(ByteCodeOptimizer::optimizePassDeadCode);
-        OPT_PASS(ByteCodeOptimizer::optimizePassImmediate);
-        OPT_PASS(ByteCodeOptimizer::optimizePassConst);
-        OPT_PASS(ByteCodeOptimizer::optimizePassDupCopyRBRA);
-        OPT_PASS(ByteCodeOptimizer::optimizePassDupCopy);
-        OPT_PASS(ByteCodeOptimizer::optimizePassRetCopyLocal);
-        OPT_PASS(ByteCodeOptimizer::optimizePassRetCopyInline);
-        OPT_PASS(ByteCodeOptimizer::optimizePassRetCopyGlobal);
-        OPT_PASS(ByteCodeOptimizer::optimizePassReduce);
-        OPT_PASS(ByteCodeOptimizer::optimizePassDeadStore);
-        OPT_PASS(ByteCodeOptimizer::optimizePassDeadStoreDup);
-        OPT_PASS(ByteCodeOptimizer::optimizePassLoop);
-        OPT_PASS(ByteCodeOptimizer::optimizePassAlias);
-        OPT_PASS(ByteCodeOptimizer::optimizePassSwitch);
-
-        ByteCodeOptimizer::removeNops(&optContext);
-        if (!optContext.allPassesHaveDoneSomething)
-        {
+            ByteCodeOptimizer::setContextFlags(&optContext);
             ByteCodeOptimizer::setJumps(&optContext);
-            ByteCodeOptimizer::genTree(&optContext, true);
+            ByteCodeOptimizer::genTree(&optContext, false);
 
-            OPT_PASS(ByteCodeOptimizer::optimizePassDupBlocks);
-            OPT_PASS(ByteCodeOptimizer::optimizePassReduceX2);
+            if (optContext.hasError)
+                return false;
+            optContext.allPassesHaveDoneSomething = false;
+
+            OPT_PASS(ByteCodeOptimizer::optimizePassJumps);
+            OPT_PASS(ByteCodeOptimizer::optimizePassDeadCode);
+            OPT_PASS(ByteCodeOptimizer::optimizePassImmediate);
+            OPT_PASS(ByteCodeOptimizer::optimizePassConst);
+            OPT_PASS(ByteCodeOptimizer::optimizePassDupCopyRBRA);
+            OPT_PASS(ByteCodeOptimizer::optimizePassDupCopy);
+            OPT_PASS(ByteCodeOptimizer::optimizePassRetCopyLocal);
+            OPT_PASS(ByteCodeOptimizer::optimizePassRetCopyInline);
+            OPT_PASS(ByteCodeOptimizer::optimizePassRetCopyGlobal);
+            OPT_PASS(ByteCodeOptimizer::optimizePassReduce);
+            OPT_PASS(ByteCodeOptimizer::optimizePassDeadStore);
+            OPT_PASS(ByteCodeOptimizer::optimizePassDeadStoreDup);
+            OPT_PASS(ByteCodeOptimizer::optimizePassLoop);
+            OPT_PASS(ByteCodeOptimizer::optimizePassAlias);
+            OPT_PASS(ByteCodeOptimizer::optimizePassSwitch);
+
             ByteCodeOptimizer::removeNops(&optContext);
             if (!optContext.allPassesHaveDoneSomething)
-                break;
-        }
+            {
+                ByteCodeOptimizer::setJumps(&optContext);
+                ByteCodeOptimizer::genTree(&optContext, true);
 
-        restart = true;
+                OPT_PASS(ByteCodeOptimizer::optimizePassDupBlocks);
+                OPT_PASS(ByteCodeOptimizer::optimizePassReduceX2);
+                ByteCodeOptimizer::removeNops(&optContext);
+                if (!optContext.allPassesHaveDoneSomething)
+                    break;
+            }
+
+            restart = true;
+        }
+    }
+
+    if (bc->node && module->mustEmitSafety(bc->node, SAFETY_ANALYSIS))
+    {
+        ByteCodeOptimizer::setContextFlags(&optContext);
+        ByteCodeOptimizer::setJumps(&optContext);
+        ByteCodeOptimizer::genTree(&optContext, true);
+        SWAG_CHECK(ByteCodeOptimizer::optimizePassCheck(&optContext));
     }
 
     return true;
@@ -81,7 +90,12 @@ bool ByteCodeOptimizerJob::optimize()
     for (int i = startIndex; i < endIndex; i++)
     {
         auto bc = module->byteCodeFunc[i];
-        SWAG_CHECK(optimize(bc, restart));
+        if (!optimize(bc, restart))
+        {
+            if (bc->node && bc->node->attributeFlags & ATTRIBUTE_PRINT_BC)
+                bc->print();
+            return false;
+        }
     }
 
     // Restart everything if something has been done during this pass

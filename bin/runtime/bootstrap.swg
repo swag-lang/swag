@@ -538,6 +538,7 @@ namespace Swag
     const SafetyBool        = 0x0020
     const SafetyNaN         = 0x0040
     const SafetyIntrinsics  = 0x0080
+    const SafetyAnalysis    = 0x0100
     const SafetyAll         = 0xFFFF
 
     struct BuildCfgBackendLLVM

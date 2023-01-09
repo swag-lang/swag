@@ -1,5 +1,8 @@
 #test
 {
-    @dbgalloc().countAlloc = @dbgalloc().countAlloc
-    x := @rtflags()
+    if @dbgalloc()
+    {
+        @dbgalloc().countAlloc = @dbgalloc().countAlloc
+        x := @rtflags()
+    }
 }
