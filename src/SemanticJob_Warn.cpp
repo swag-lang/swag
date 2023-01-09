@@ -151,12 +151,6 @@ bool SemanticJob::warnUnusedSymbols(SemanticContext* context, Scope* scope)
             diag.hint = Fmt(Hnt(Hnt0092), sym->name.c_str());
             isOk      = isOk && context->report(diag);
         }
-        else
-        {
-            //Diagnostic diag{front, front->token, Fmt(Err(Wrn0007), SymTable::getNakedKindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
-            //diag.hint = Fmt(Hnt(Hnt0092), sym->name.c_str());
-            //isOk      = isOk && context->report(diag);
-        }
     }
 
     return isOk;
