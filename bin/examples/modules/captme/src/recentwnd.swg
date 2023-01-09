@@ -236,7 +236,7 @@ impl RecentWnd
         return recent
     }
 
-    mtd updateRecent(capture: *Capture)
+    mtd updateRecent()
     {
         if recentView.selected >= recentView.items.count
             return

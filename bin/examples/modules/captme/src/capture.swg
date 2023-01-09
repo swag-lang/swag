@@ -162,7 +162,7 @@ impl Capture
     mtd hasChanged()
     {
         changed = true
-        editView.main.recentWnd.updateRecent(self)
+        editView.main.recentWnd.updateRecent()
         editView.main.updateSizeDisplay()
     }
 
@@ -777,7 +777,7 @@ impl Capture
     // CONTENT
     //////////////////////////////
 
-    mtd popupMenu(view: *EditView, pos: Math.Point)
+    func popupMenu(view: *EditView, pos: Math.Point)
     {
         with menu := MenuCtrl.createPopup(view)
         {

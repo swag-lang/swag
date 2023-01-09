@@ -9,7 +9,7 @@ struct GizmoPoints
     firstMoving:    bool
     movingRect:     Math.Rectangle
     movingStart:    Math.Point
-    sigChanged:     closure(self, Math.Point, u32, bool)
+    sigChanged:     closure(Math.Point, u32, bool)
 
     minSizeX:       f32 = 2
     minSizeY:       f32 = 2
@@ -44,10 +44,10 @@ impl GizmoPoints
             {
                 diff := pos - movingStart
                 if firstMoving and sigChanged
-                    sigChanged(self, diff, hotAnchor, true)
+                    sigChanged(diff, hotAnchor, true)
                 firstMoving = false
                 if sigChanged
-                    sigChanged(self, diff, hotAnchor, false)
+                    sigChanged(diff, hotAnchor, false)
                 return true
             }
             else
@@ -75,7 +75,7 @@ impl GizmoPoints
         return false
     }
 
-    mtd paint(app: *Application, painter: *Painter, hot: bool, col: Color = Argb.White)
+    mtd paint(_app: *Application, painter: *Painter, hot: bool, col: Color = Argb.White)
     {
         anchorSize2 := anchorSize * 0.5
         color := Color.getBlend(Argb.Black, col, hot ? 0.8 : 1)
@@ -86,7 +86,7 @@ impl GizmoPoints
         }
     }
 
-    mtd apply(iform: IForm, diff: Math.Point, pt: u32, first: bool)
+    func apply(iform: IForm, diff: Math.Point, pt: u32, first: bool)
     {
         form := cast(*BaseForm) @dataof(iform)
         capture := form.capture

@@ -61,7 +61,7 @@ func getGrabRect()->{x1: s32, y1: s32, x2: s32, y2: s32}
 var g_HitTest:  POINT
 var g_Hit:      HWND
 var g_Ignore:   HWND
-func enumProc(hWnd: HWND, lParam: LPARAM)->BOOL
+func enumProc(hWnd: HWND, _lParam: LPARAM)->BOOL
 {
     if !IsWindowVisible(hWnd)
         return TRUE
