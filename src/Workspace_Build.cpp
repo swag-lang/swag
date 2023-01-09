@@ -880,7 +880,7 @@ bool Workspace::build()
         if (!g_CommandLine.randSeed)
         {
             using namespace std::chrono;
-            milliseconds ms         = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+            milliseconds ms        = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
             g_CommandLine.randSeed = (int) ms.count() & 0x7FFFFFFF;
             srand(g_CommandLine.randSeed);
             g_CommandLine.randSeed = rand() & 0x7FFFFFFF;
@@ -896,8 +896,8 @@ bool Workspace::build()
     // User arguments that can be retrieved with '@args'
     pair<void*, void*> oneArg;
     g_CommandLine.exePathStr = g_CommandLine.exePath.string();
-    oneArg.first              = (void*) g_CommandLine.exePathStr.c_str();
-    oneArg.second             = (void*) g_CommandLine.exePathStr.size();
+    oneArg.first             = (void*) g_CommandLine.exePathStr.c_str();
+    oneArg.second            = (void*) g_CommandLine.exePathStr.size();
     g_CommandLine.userArgumentsStr.push_back(oneArg);
 
     Utf8::tokenizeBlanks(g_CommandLine.userArguments, g_CommandLine.userArgumentsVec);
@@ -944,8 +944,15 @@ bool Workspace::build()
     {
         if (g_Stats.skippedModules.load() > 0)
             g_Log.messageHeaderCentered("Skipped modules", Fmt("%d", g_Stats.skippedModules.load()));
-        if (g_Workspace->numErrors)
-            g_Log.messageHeaderCentered("Done", Fmt("%d error(s)", g_Workspace->numErrors.load()), LogColor::Green, LogColor::Red);
+
+        if (g_Workspace->numErrors.load() == 1)
+            g_Log.messageHeaderCentered("Done", Fmt("%d error", g_Workspace->numErrors.load()), LogColor::Green, LogColor::Red);
+        else if (g_Workspace->numErrors.load())
+            g_Log.messageHeaderCentered("Done", Fmt("%d errors", g_Workspace->numErrors.load()), LogColor::Green, LogColor::Red);
+        else if (g_Workspace->numWarnings.load() == 1)
+            g_Log.messageHeaderCentered("Done", Fmt("%.3fs (%d warning)", OS::timerToSeconds(g_Stats.totalTime.load()), g_Workspace->numWarnings.load()), LogColor::Green, LogColor::Magenta);
+        else if (g_Workspace->numWarnings.load())
+            g_Log.messageHeaderCentered("Done", Fmt("%.3fs (%d warnings)", OS::timerToSeconds(g_Stats.totalTime.load()), g_Workspace->numWarnings.load()), LogColor::Green, LogColor::Magenta);
         else
             g_Log.messageHeaderCentered("Done", Fmt("%.3fs", OS::timerToSeconds(g_Stats.totalTime.load())));
     }

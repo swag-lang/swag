@@ -448,6 +448,10 @@ namespace Report
                 }
             }
         }
+        else if (errorLevel == DiagnosticLevel::Warning)
+        {
+            g_Workspace->numWarnings++;
+        }
 
 #if SWAG_DEV_MODE
         if (errorLevel == DiagnosticLevel::Error)

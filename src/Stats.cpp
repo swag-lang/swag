@@ -32,6 +32,8 @@ void Stats::print()
         g_Log.messageHeaderDot("executed #run", Fmt("%u", runFunctions.load()));
         if (g_Workspace->numErrors)
             g_Log.messageHeaderDot("errors", Fmt("%u", g_Workspace->numErrors.load()), LogColor::Red);
+        if (g_Workspace->numWarnings)
+            g_Log.messageHeaderDot("warnings", Fmt("%u", g_Workspace->numWarnings.load()), LogColor::Red);
         g_Log.print("\n");
 
         g_Log.messageHeaderDot("instructions", Fmt("%u", numInstructions.load()));

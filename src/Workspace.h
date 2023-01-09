@@ -87,7 +87,8 @@ struct Workspace
     fs::path              modulesPath;
     fs::path              dependenciesPath;
     SharedMutex           mutexModules;
-    atomic<int>           numErrors = 0;
+    atomic<int>           numErrors   = 0;
+    atomic<int>           numWarnings = 0;
     VectorNative<Module*> modules;
     Module*               runModule = nullptr;
 
