@@ -129,12 +129,12 @@ public impl JSon
         return true
     }
 
-    #[Warn("wrn0004", WarnLevel.Disable)]
+    #[Warn("wrn0005", WarnLevel.Disable)]
     mtd endElement() throw
     {
     }
 
-    #[Warn("wrn0004", WarnLevel.Disable)]
+    #[Warn("wrn0005", WarnLevel.Disable)]
     mtd beginValue() throw
     {
     }
@@ -148,7 +148,7 @@ public impl JSon
             stream.moveSeek()
     }
 
-    #[Warn("wrn0004", WarnLevel.Disable)]
+    #[Warn("wrn0005", WarnLevel.Disable)]
     mtd getVersion()->u32
     {
         return 0

@@ -118,12 +118,12 @@ impl JSon
             output.addBytes(" ")
     }
 
-    #[Warn("wrn0004", WarnLevel.Disable)]
+    #[Warn("wrn0005", WarnLevel.Disable)]
     mtd endElement()
     {
     }
 
-    #[Warn("wrn0004", WarnLevel.Disable)]
+    #[Warn("wrn0005", WarnLevel.Disable)]
     mtd beginValue()
     {
     }

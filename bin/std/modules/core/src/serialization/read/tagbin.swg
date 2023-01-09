@@ -222,7 +222,7 @@ impl TagBin
             throw ErrorInvalidFile
     }
 
-    #[Warn("wrn0004", WarnLevel.Disable)]
+    #[Warn("wrn0005", WarnLevel.Disable)]
     mtd endRoot() throw
     {
     }
@@ -406,12 +406,12 @@ impl TagBin
         convertNextNative = null
     }
 
-    #[Warn("wrn0004", WarnLevel.Disable)]
+    #[Warn("wrn0005", WarnLevel.Disable)]
     mtd beginValue() throw
     {
     }
 
-    #[Warn("wrn0004", WarnLevel.Disable)]
+    #[Warn("wrn0005", WarnLevel.Disable)]
     mtd endValue() throw
     {
     }
@@ -479,12 +479,12 @@ impl TagBin
         return false
     }
 
-    #[Warn("wrn0004", WarnLevel.Disable)]
+    #[Warn("wrn0005", WarnLevel.Disable)]
     mtd endSequence() throw
     {
     }
 
-    #[Warn("wrn0004", WarnLevel.Disable)]
+    #[Warn("wrn0005", WarnLevel.Disable)]
     mtd toNextSequenceElement(countElem: *uint)->bool
     {
         if dref countElem == 0

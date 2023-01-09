@@ -126,7 +126,7 @@ bool SemanticJob::warnUnusedSymbols(SemanticContext* context, Scope* scope)
             if (front->isGeneratedSelf())
             {
                 front = front->ownerFct;
-                Diagnostic diag{front, front->token, Fmt(Err(Wrn0004), SymTable::getNakedKindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
+                Diagnostic diag{front, front->token, Fmt(Err(Wrn0005), SymTable::getNakedKindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
                 Diagnostic note{Hlp(Hlp0042), DiagnosticLevel::Help};
                 diag.hint = Hnt(Hnt0049);
                 isOk      = isOk && context->report(diag, &note);
