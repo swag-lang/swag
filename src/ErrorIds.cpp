@@ -1099,6 +1099,9 @@ void initErrors()
     SWAG_ERROR(Wrn0004, "the %s '%s' is unused");
     SWAG_ERROR(Wrn0005, "the %s '%s' is unused");
     SWAG_ERROR(Wrn0006, "the %s '%s' is unused");
+    SWAG_ERROR(Wrn0007, "the %s '%s' is unused");
+    SWAG_ERROR(Wrn0008, nullptr);
+    SWAG_ERROR(Wrn0009, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
