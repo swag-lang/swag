@@ -530,6 +530,8 @@ string LanguageSpec::tokenToName(TokenId id)
         return "->";
     case TokenId::SymEqual:
         return "=";
+    case TokenId::SymVertical:
+        return "|";
     }
 
     return "???";

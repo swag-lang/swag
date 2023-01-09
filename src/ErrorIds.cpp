@@ -987,7 +987,7 @@ void initErrors()
     SWAG_ERROR(Hlp0042, "you could use 'func' instead of 'mtd' or 'mtdc'");
     SWAG_ERROR(Hlp0043, "this is ambiguous, so you should remove one 'using'");
     SWAG_ERROR(Hlp0044, "it looks like it could be an invalid ufcs call");
-    SWAG_ERROR(Hlp0045, nullptr);
+    SWAG_ERROR(Hlp0045, "'closure' should be followed by the capture parameters between '|...|'");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

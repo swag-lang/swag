@@ -811,7 +811,11 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
         }
         else
         {
-            SWAG_CHECK(eatToken(TokenId::SymVertical, "to start capture block"));
+            {
+                PushErrContext ec(&context, nullptr, ErrorContextKind::Help, Hlp(Hlp0045));
+                SWAG_CHECK(eatToken(TokenId::SymVertical, "to start the capture block"));
+            }
+
             while (token.id != TokenId::SymVertical)
             {
                 auto parentId = (AstNode*) capture;
