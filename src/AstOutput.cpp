@@ -111,6 +111,52 @@ bool AstOutput::outputGenericParameters(OutputContext& context, Concat& concat, 
     return true;
 }
 
+bool AstOutput::outputAttrUse(OutputContext& context, Concat& concat, AstNode* node, bool& hasSomething)
+{
+    auto nodeAttr = CastAst<AstAttrUse>(node, AstNodeKind::AttrUse);
+
+    // Be sure this is not an empty attribute block (empty or that contains
+    // other empty blocks)
+    hasSomething  = true;
+    auto scanAttr = nodeAttr;
+    while (scanAttr->content && scanAttr->content->kind == AstNodeKind::Statement)
+    {
+        if (scanAttr->content->childs.empty())
+        {
+            hasSomething = false;
+            break;
+        }
+        if (scanAttr->content->childs.size() > 1)
+            break;
+        if (scanAttr->content->childs[0]->kind != AstNodeKind::AttrUse)
+            break;
+        scanAttr = (AstAttrUse*) scanAttr->content->childs[0];
+    }
+
+    if (!hasSomething)
+        return true;
+
+    bool first = true;
+    for (auto s : nodeAttr->childs)
+    {
+        if (s == nodeAttr->content)
+            continue;
+        if (!first)
+            CONCAT_FIXED_STR(concat, ", ");
+        else
+            CONCAT_FIXED_STR(concat, "#[");
+        first = false;
+        SWAG_CHECK(outputNode(context, concat, s));
+    }
+
+    if (!first)
+    {
+        concat.addChar(']');
+    }
+
+    return true;
+}
+
 bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstNode* node, AstNode* genericParameters, AstNode* parameters, AstNode* selectIf)
 {
     ScopeExportNode sen(context, node);
@@ -375,7 +421,8 @@ bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode
     auto attr = &attributes;
     if (attr && !attr->empty())
     {
-        bool first = true;
+        set<AstNode*> done;
+        bool          first = true;
         for (int j = 0; j < attr->allAttributes.size(); j++)
         {
             auto& one = attr->allAttributes[j];
@@ -390,35 +437,42 @@ bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode
             if (typeInfo->isEnum() && one.typeFunc && !(one.typeFunc->attributeUsage & (AttributeUsage::All | AttributeUsage::Enum)))
                 continue;
 
-            if (!first)
-                CONCAT_FIXED_STR(concat, ", ");
-            else
+            if (one.node)
             {
-                first = false;
+                if (done.contains(one.node))
+                    continue;
+                done.insert(one.node);
+                bool hasSomehting = true;
                 concat.addIndent(context.indent);
-                CONCAT_FIXED_STR(concat, "#[");
+                SWAG_CHECK(outputAttrUse(context, concat, one.node, hasSomehting));
+                concat.addEol();
             }
-
-            // No need to write "Swag.", less to write, less to read, as export files have
-            // a 'using Swag' on top.
-            if (!strncmp(one.name.c_str(), "Swag.", 5))
-                concat.addString(one.name.c_str() + 5);
             else
-                concat.addString(one.name);
-
-            if (!one.parameters.empty())
             {
-                concat.addChar('(');
-
-                for (int i = 0; i < one.parameters.size(); i++)
+                if (!first)
+                    CONCAT_FIXED_STR(concat, ", ");
+                else
                 {
-                    auto& oneParam = one.parameters[i];
-                    if (i)
-                        CONCAT_FIXED_STR(concat, ", ");
-                    SWAG_CHECK(outputLiteral(context, concat, one.node, oneParam.typeInfo, oneParam.value));
+                    first = false;
+                    concat.addIndent(context.indent);
+                    CONCAT_FIXED_STR(concat, "#[");
                 }
 
-                concat.addChar(')');
+                concat.addString(one.name);
+                if (!one.parameters.empty())
+                {
+                    concat.addChar('(');
+
+                    for (int i = 0; i < one.parameters.size(); i++)
+                    {
+                        auto& oneParam = one.parameters[i];
+                        if (i)
+                            CONCAT_FIXED_STR(concat, ", ");
+                        SWAG_CHECK(outputLiteral(context, concat, one.node, oneParam.typeInfo, oneParam.value));
+                    }
+
+                    concat.addChar(')');
+                }
             }
         }
 
@@ -712,7 +766,7 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
         SWAG_ASSERT(typeStruct);
         if (typeStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
         {
-            CONCAT_FIXED_STR(concat, "#[Swag.ExportType(\"nozero\")]");
+            CONCAT_FIXED_STR(concat, "#[ExportType(\"nozero\")]");
             concat.addEolIndent(context.indent);
         }
     }
@@ -1121,48 +1175,12 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::AttrUse:
     {
-        auto nodeAttr = CastAst<AstAttrUse>(node, AstNodeKind::AttrUse);
-
-        // Be sure this is not an empty attribute block (empty or that contains
-        // other empty blocks)
         bool hasSomething = true;
-        auto scanAttr     = nodeAttr;
-        while (scanAttr->content->kind == AstNodeKind::Statement)
-        {
-            if (scanAttr->content->childs.empty())
-            {
-                hasSomething = false;
-                break;
-            }
-            if (scanAttr->content->childs.size() > 1)
-                break;
-            if (scanAttr->content->childs[0]->kind != AstNodeKind::AttrUse)
-                break;
-            scanAttr = (AstAttrUse*) scanAttr->content->childs[0];
-        }
-
+        outputAttrUse(context, concat, node, hasSomething);
         if (!hasSomething)
             break;
-
-        bool first = true;
-        for (auto s : nodeAttr->childs)
-        {
-            if (s == nodeAttr->content)
-                continue;
-            if (!first)
-                CONCAT_FIXED_STR(concat, ", ");
-            else
-                CONCAT_FIXED_STR(concat, "#[");
-            first = false;
-            SWAG_CHECK(outputNode(context, concat, s));
-        }
-
-        if (!first)
-        {
-            concat.addChar(']');
-            concat.addEolIndent(context.indent);
-        }
-
+        concat.addEolIndent(context.indent);
+        auto nodeAttr = CastAst<AstAttrUse>(node, AstNodeKind::AttrUse);
         SWAG_CHECK(outputNode(context, concat, nodeAttr->content));
         break;
     }

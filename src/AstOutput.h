@@ -26,6 +26,7 @@ struct AstOutput
     static bool outputLambdaExpression(OutputContext& context, Concat& concat, AstNode* node);
     static bool outputEnum(OutputContext& context, Concat& concat, AstEnum* node);
     static bool outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* node);
+    static bool outputAttrUse(OutputContext& context, Concat& concat, AstNode* node, bool &hasSomething);
     static bool outputFuncSignature(OutputContext& context, Concat& concat, AstNode* node, AstNode* genericParameters, AstNode* parameters, AstNode* selectIf);
     static bool outputGenericParameters(OutputContext& context, Concat& concat, AstNode* node);
     static bool outputAttributesUsage(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc);
