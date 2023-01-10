@@ -336,9 +336,11 @@ bool ByteCodeOptimizer::optimizePassCheckStack(ByteCodeOptContext* context, uint
 
 bool ByteCodeOptimizer::optimizePassCheck(ByteCodeOptContext* context)
 {
-    // if (context->bc->name != "__compiler4160.toto")
-    //     return true;
-    // context->bc->print();
+#if 0
+     if (context->bc->name != "__compiler4160.toto")
+         return true;
+     context->bc->print();
+#endif
 
     if (!context->bc->node)
         return true;
@@ -367,7 +369,9 @@ bool ByteCodeOptimizer::optimizePassCheck(ByteCodeOptContext* context)
     context->checkContext = &cxt;
     SWAG_CHECK(optimizePassCheckStack(context, 0));
     if (g_CommandLine.stats && !cxt.mustStop)
-        g_Stats.numSan++;
+        g_Stats.numSanPassed++;
+    else if (g_CommandLine.stats && cxt.mustStop)
+        g_Stats.numSanSkipped++;
 
     return true;
 }

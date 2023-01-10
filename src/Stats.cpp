@@ -30,7 +30,9 @@ void Stats::print()
         if (g_CommandLine.test)
             g_Log.messageHeaderDot("executed #test", Fmt("%u", testFunctions.load()));
         g_Log.messageHeaderDot("executed #run", Fmt("%u", runFunctions.load()));
-        g_Log.messageHeaderDot("san passed", Fmt("%u", numSan.load()));
+        float pc0 = (numSanPassed.load() * 100.0f) / (numSanPassed.load() + numSanSkipped.load());
+        g_Log.messageHeaderDot("san passed", Fmt("%u %.1f%%", numSanPassed.load(), pc0));
+        g_Log.messageHeaderDot("san skipped", Fmt("%u", numSanSkipped.load()));
         if (g_Workspace->numErrors)
             g_Log.messageHeaderDot("errors", Fmt("%u", g_Workspace->numErrors.load()), LogColor::Red);
         if (g_Workspace->numWarnings)
@@ -38,8 +40,8 @@ void Stats::print()
         g_Log.print("\n");
 
         g_Log.messageHeaderDot("instructions", Fmt("%u", numInstructions.load()));
-        float pc = (totalOptimsBC.load() * 100.0f) / (numInstructions.load());
-        g_Log.messageHeaderDot("kicked", Fmt("%d %.1f%%", totalOptimsBC.load(), pc));
+        float pc1 = (totalOptimsBC.load() * 100.0f) / (numInstructions.load());
+        g_Log.messageHeaderDot("kicked", Fmt("%d %.1f%%", totalOptimsBC.load(), pc1));
         g_Log.messageHeaderDot("total", Fmt("%u", numInstructions.load() - totalOptimsBC.load()));
         g_Log.print("\n");
 
