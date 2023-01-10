@@ -366,5 +366,8 @@ bool ByteCodeOptimizer::optimizePassCheck(ByteCodeOptContext* context)
 
     context->checkContext = &cxt;
     SWAG_CHECK(optimizePassCheckStack(context, 0));
+    if (g_CommandLine.stats && !cxt.mustStop)
+        g_Stats.numSan++;
+
     return true;
 }

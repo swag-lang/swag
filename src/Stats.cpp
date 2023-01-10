@@ -30,6 +30,7 @@ void Stats::print()
         if (g_CommandLine.test)
             g_Log.messageHeaderDot("executed #test", Fmt("%u", testFunctions.load()));
         g_Log.messageHeaderDot("executed #run", Fmt("%u", runFunctions.load()));
+        g_Log.messageHeaderDot("san passed", Fmt("%u", numSan.load()));
         if (g_Workspace->numErrors)
             g_Log.messageHeaderDot("errors", Fmt("%u", g_Workspace->numErrors.load()), LogColor::Red);
         if (g_Workspace->numWarnings)
