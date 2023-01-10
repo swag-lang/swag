@@ -875,7 +875,7 @@ void initErrors()
     SWAG_ERROR(Err0605, "'@abs' integer overflow");
     SWAG_ERROR(Err0707, "expected at least one test error but nothing was raised");
     SWAG_ERROR(Err0580, "expected at least one test warning but nothing was raised");
-    SWAG_ERROR(Err0578, "return of a local stack variable or temporary");
+    SWAG_ERROR(Err0578, nullptr);
     SWAG_ERROR(Err0693, nullptr);
     SWAG_ERROR(Err0690, nullptr);
     SWAG_ERROR(Err0688, nullptr);
@@ -1176,6 +1176,13 @@ void initErrors()
     SWAG_ERROR(Nte0009, "you can run swag with --dbg-catch to attach the bytecode debugger when the error occurs");
     SWAG_ERROR(Nte0003, "this variable can escape the current frame");
     SWAG_ERROR(Nte0005, nullptr);
+
+    /////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
+
+    SWAG_ERROR(San0001, "return of a local stack variable or temporary");
+    SWAG_ERROR(San0002, "potential stack corruption accessing stack offset '%lld' (stack size is '%lld')");
 }
 
 Utf8 Err(ErrorID idx)

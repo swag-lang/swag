@@ -4835,7 +4835,7 @@ bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         reduceAppend(context, ip);
         reduceForceSafe(context, ip);
         reduceStackOp(context, ip);
-        //reduceLateStack(context, ip);
+        reduceLateStack(context, ip);
         reduceFactor(context, ip);
     }
 

@@ -17,6 +17,15 @@ bool ByteCodeOptimizerJob::optimize(ByteCode* bc, bool& restart)
     optContext.bc     = bc;
     optContext.module = module;
 
+    if (bc->node && !bc->sanDone && module->mustEmitSafety(bc->node, SAFETY_ANALYSIS))
+    {
+        bc->sanDone = true;
+        ByteCodeOptimizer::setContextFlags(&optContext);
+        ByteCodeOptimizer::setJumps(&optContext);
+        ByteCodeOptimizer::genTree(&optContext, false);
+        SWAG_CHECK(ByteCodeOptimizer::optimizePassCheck(&optContext));
+    }
+
     if (module->mustOptimizeBC(bc->node))
     {
         while (true)
@@ -69,14 +78,6 @@ bool ByteCodeOptimizerJob::optimize(ByteCode* bc, bool& restart)
 
             restart = true;
         }
-    }
-
-    if (bc->node && module->mustEmitSafety(bc->node, SAFETY_ANALYSIS))
-    {
-        ByteCodeOptimizer::setContextFlags(&optContext);
-        ByteCodeOptimizer::setJumps(&optContext);
-        ByteCodeOptimizer::genTree(&optContext, true);
-        SWAG_CHECK(ByteCodeOptimizer::optimizePassCheck(&optContext));
     }
 
     return true;

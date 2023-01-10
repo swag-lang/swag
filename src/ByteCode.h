@@ -235,6 +235,7 @@ struct ByteCode
     bool isUsed                  = false;
     bool forceEmit               = false;
     bool hasForeignFunctionCalls = false;
+    bool sanDone                 = false;
 
     atomic<bool> isEmpty;
 
