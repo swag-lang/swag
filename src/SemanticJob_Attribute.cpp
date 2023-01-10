@@ -202,13 +202,12 @@ void SemanticJob::inheritAttributesFromOwnerFunc(AstNode* child)
 
     INHERIT_SAFETY(child, SAFETY_BOUNDCHECK);
     INHERIT_SAFETY(child, SAFETY_OVERFLOW);
-    INHERIT_SAFETY(child, SAFETY_INTRINSICS);
     INHERIT_SAFETY(child, SAFETY_MATH);
     INHERIT_SAFETY(child, SAFETY_ANY);
     INHERIT_SAFETY(child, SAFETY_SWITCH);
     INHERIT_SAFETY(child, SAFETY_BOOL);
     INHERIT_SAFETY(child, SAFETY_NAN);
-    INHERIT_SAFETY(child, SAFETY_ANALYSIS);
+    INHERIT_SAFETY(child, SAFETY_SANITY);
 
     INHERIT_ATTR(child, ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
     INHERIT_ATTR(child, ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
@@ -250,13 +249,12 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
         // Inherit with condition
         INHERIT_SAFETY(forNode, SAFETY_BOUNDCHECK);
         INHERIT_SAFETY(forNode, SAFETY_OVERFLOW);
-        INHERIT_SAFETY(forNode, SAFETY_INTRINSICS);
         INHERIT_SAFETY(forNode, SAFETY_MATH);
         INHERIT_SAFETY(forNode, SAFETY_ANY);
         INHERIT_SAFETY(forNode, SAFETY_SWITCH);
         INHERIT_SAFETY(forNode, SAFETY_BOOL);
         INHERIT_SAFETY(forNode, SAFETY_NAN);
-        INHERIT_SAFETY(forNode, SAFETY_ANALYSIS);
+        INHERIT_SAFETY(forNode, SAFETY_SANITY);
 
         INHERIT_ATTR(forNode, ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
         INHERIT_ATTR(forNode, ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
@@ -437,13 +435,12 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
 
                         CHECK_SAFETY_NAME(name_bound, SAFETY_BOUNDCHECK);
                         CHECK_SAFETY_NAME(name_over, SAFETY_OVERFLOW);
-                        CHECK_SAFETY_NAME(name_intr, SAFETY_INTRINSICS);
                         CHECK_SAFETY_NAME(name_math, SAFETY_MATH);
                         CHECK_SAFETY_NAME(name_any, SAFETY_ANY);
                         CHECK_SAFETY_NAME(name_switch, SAFETY_SWITCH);
                         CHECK_SAFETY_NAME(name_bool, SAFETY_BOOL);
                         CHECK_SAFETY_NAME(name_nan, SAFETY_NAN);
-                        CHECK_SAFETY_NAME(name_analysis, SAFETY_ANALYSIS);
+                        CHECK_SAFETY_NAME(name_sanity, SAFETY_SANITY);
 
                         if (!done)
                         {

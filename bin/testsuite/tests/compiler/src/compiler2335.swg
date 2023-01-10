@@ -1,3 +1,4 @@
+#[Swag.Safety("sanity", false)]
 func toto()->{rune, u32}
 {
 	const maskx = 0b00111111

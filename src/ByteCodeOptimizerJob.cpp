@@ -17,7 +17,7 @@ bool ByteCodeOptimizerJob::optimize(ByteCode* bc, bool& restart)
     optContext.bc     = bc;
     optContext.module = module;
 
-    if (bc->node && !bc->sanDone && module->mustEmitSafety(bc->node, SAFETY_ANALYSIS))
+    if (bc->node && !bc->sanDone && module->mustEmitSafety(bc->node, SAFETY_SANITY))
     {
         bc->sanDone = true;
         ByteCodeOptimizer::setContextFlags(&optContext);

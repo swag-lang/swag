@@ -972,7 +972,7 @@ void initErrors()
     SWAG_ERROR(Hlp0006, "to access an array with multiple dimensions, the syntax is [x, y], not [x][y]");
     SWAG_ERROR(Hlp0024, "to declare a multi dimensional array, syntax is [N1, N2, ...] and not [N1][N2][...]");
     SWAG_ERROR(Hlp0023, "valid modes are 'defer(err)' and 'defer(noerr)'");
-    SWAG_ERROR(Hlp0011, "valid safety values are 'bound|over|math|switch|any|bool|nan|intr|analysis'");
+    SWAG_ERROR(Hlp0011, "valid safety values are 'bound|over|math|switch|any|bool|nan|sanity'");
     SWAG_ERROR(Hlp0018, "when the parameter types of a lambda are inferred, the return type will be inferred too");
     SWAG_ERROR(Hlp0003, "you can affect a lambda to a closure type, but not the other way around");
     SWAG_ERROR(Hlp0033, "you can unpack a variable with '?' if you don't want to retreive it");
@@ -1185,7 +1185,7 @@ void initErrors()
     SWAG_ERROR(San0002, "potential stack corruption accessing stack offset '%lld' (stack size is '%lld')");
     SWAG_ERROR(San0003, "use of of non initialized stack memory");
     SWAG_ERROR(San0004, "local variable '%s' is used without being initialized");
-    SWAG_ERROR(San0005, nullptr);
+    SWAG_ERROR(San0005, "attempt to dereference a null pointer");
     SWAG_ERROR(San0006, nullptr);
     SWAG_ERROR(San0007, nullptr);
     SWAG_ERROR(San0008, nullptr);
