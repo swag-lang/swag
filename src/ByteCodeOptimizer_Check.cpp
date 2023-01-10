@@ -31,7 +31,9 @@ struct Context
     ByteCode*             bc      = nullptr;
     ByteCodeInstruction*  ip      = nullptr;
     VectorNative<uint8_t> stack;
+    VectorNative<uint8_t> stackState;
     VectorNative<Value>   regs;
+    bool                  mustStop = false;
 };
 
 static SymbolOverload* getLocalVar(Context& cxt, uint32_t stackOffset)
@@ -51,31 +53,69 @@ static SymbolOverload* getLocalVar(Context& cxt, uint32_t stackOffset)
 
 static bool raiseError(Context& cxt, Utf8 msg, Diagnostic* note = nullptr)
 {
-    // cxt.bc->print();
-
     SourceFile*     file;
     SourceLocation* loc;
     ByteCode::getLocation(cxt.bc, cxt.ip, &file, &loc);
 
     Diagnostic diag({file, *loc, msg});
-    return cxt.context->report(diag);
+    return cxt.context->report(diag, note);
 }
 
 static bool checkEscapeFrame(Context& cxt, uint64_t stackOffset)
 {
     SWAG_ASSERT(stackOffset >= 0 && stackOffset < UINT32_MAX);
     auto sym = getLocalVar(cxt, (uint32_t) stackOffset);
-    if (!sym)
-        return raiseError(cxt, Err(San0001));
 
-    Diagnostic note({sym->node, sym->node->token, Nte(Nte0003), DiagnosticLevel::Note});
-    return raiseError(cxt, Err(San0001), &note);
+    Diagnostic* note = nullptr;
+    if (sym)
+        note = new Diagnostic({sym->node, sym->node->token, Nte(Nte0003), DiagnosticLevel::Note});
+    return raiseError(cxt, Err(San0001), note);
 }
 
 bool checkStackOffset(Context& cxt, uint64_t stackOffset)
 {
     if (stackOffset >= cxt.stack.count)
         return raiseError(cxt, Fmt(Err(San0002), stackOffset, cxt.stack.count));
+    return true;
+}
+
+static bool checkStackState(Context& cxt, void* addr, uint32_t sizeOf)
+{
+    auto offset = (uint8_t*) addr - cxt.stack.buffer;
+    SWAG_ASSERT(offset + sizeOf <= cxt.stackState.count);
+    auto addrState = cxt.stackState.buffer + offset;
+
+    bool ok = true;
+    switch (sizeOf)
+    {
+    case 1:
+        if (*(uint8_t*) addrState != 0xFF)
+            ok = false;
+        break;
+    case 2:
+        if (*(uint16_t*) addrState != 0xFFFF)
+            ok = false;
+        break;
+    case 4:
+        if (*(uint32_t*) addrState != 0xFFFFFFFF)
+            ok = false;
+        break;
+    case 8:
+        if (*(uint64_t*) addrState != 0xFFFFFFFFFFFFFFFF)
+            ok = false;
+        break;
+    default:
+        return true;
+    }
+
+    if (!ok)
+    {
+        auto sym = getLocalVar(cxt, (uint32_t) offset);
+        if (sym)
+            return raiseError(cxt, Fmt(Err(San0004), sym->symbol->name.c_str()));
+        return raiseError(cxt, Err(San0003));
+    }
+
     return true;
 }
 
@@ -106,6 +146,13 @@ static bool getStackAddress(uint8_t*& result, Context& cxt, uint64_t stackOffset
     SWAG_CHECK(checkStackOffset(cxt, stackOffset));
     result = cxt.stack.buffer + stackOffset;
     return true;
+}
+
+static void setStackState(Context& cxt, void* addr, uint32_t sizeOf)
+{
+    auto offset = (uint8_t*) addr - cxt.stack.buffer;
+    SWAG_ASSERT(offset + sizeOf <= cxt.stackState.count);
+    memset(cxt.stackState.buffer + offset, 0xFF, sizeOf);
 }
 
 bool ByteCodeOptimizer::optimizePassCheckStack(ByteCodeOptContext* context, uint32_t curNode)
@@ -142,34 +189,47 @@ bool ByteCodeOptimizer::optimizePassCheckStack(ByteCodeOptContext* context, uint
         case ByteCodeOp::SetZeroStackX:
             SWAG_CHECK(getStackAddress(addr, cxt, ip->a.u32));
             memset(addr, 0, ip->b.u32);
+            setStackState(cxt, addr, ip->b.u32);
             break;
         case ByteCodeOp::SetZeroStack64:
             SWAG_CHECK(getStackAddress(addr, cxt, ip->a.u32));
             *(uint64_t*) addr = 0;
+            setStackState(cxt, addr, 8);
             break;
 
         case ByteCodeOp::SetAtStackPointer64:
             SWAG_CHECK(getStackAddress(addr, cxt, ip->a.u32));
             SWAG_CHECK(getImmediateB(imm, cxt, ip));
             *(uint64_t*) addr = imm.u64;
+            setStackState(cxt, addr, 8);
             break;
 
         case ByteCodeOp::SetAtPointer32:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
             if (ra->kind != ValueKind::StackAddr)
+            {
+                cxt.mustStop = true;
                 return true;
+            }
+
             SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u64 + ip->c.u32));
             SWAG_CHECK(getImmediateB(imm, cxt, ip));
             *(uint32_t*) addr = imm.u32;
+            setStackState(cxt, addr, 4);
             break;
 
         case ByteCodeOp::SetAtPointer64:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
             if (ra->kind != ValueKind::StackAddr)
+            {
+                cxt.mustStop = true;
                 return true;
+            }
+
             SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u64 + ip->c.u32));
             SWAG_CHECK(getImmediateB(imm, cxt, ip));
             *(uint64_t*) addr = imm.u64;
+            setStackState(cxt, addr, 8);
             break;
 
         case ByteCodeOp::SetImmediate32:
@@ -182,13 +242,24 @@ bool ByteCodeOptimizer::optimizePassCheckStack(ByteCodeOptContext* context, uint
         case ByteCodeOp::Mul64byVB64:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
             if (ra->kind == ValueKind::Unknown)
+            {
+                cxt.mustStop = true;
                 return true;
+            }
+
             ra->reg.s64 *= ip->b.u64;
             break;
 
+        case ByteCodeOp::GetFromStack32:
+            SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+            SWAG_CHECK(getStackAddress(addr, cxt, ip->b.u32));
+            SWAG_CHECK(checkStackState(cxt, addr, 4));
+            ra->reg.u64 = *(uint32_t*) addr;
+            break;
         case ByteCodeOp::GetFromStack64:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
             SWAG_CHECK(getStackAddress(addr, cxt, ip->b.u32));
+            SWAG_CHECK(checkStackState(cxt, addr, 8));
             ra->reg.u64 = *(uint64_t*) addr;
             break;
 
@@ -211,7 +282,11 @@ bool ByteCodeOptimizer::optimizePassCheckStack(ByteCodeOptContext* context, uint
         case ByteCodeOp::DeRef64:
             SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));
             if (rb->kind != ValueKind::StackAddr)
+            {
+                cxt.mustStop = true;
                 return true;
+            }
+
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
             SWAG_CHECK(getStackAddress(addr, cxt, rb->reg.u64 + ip->c.s64));
             ra->reg.u64 = *(uint64_t*) addr;
@@ -220,13 +295,18 @@ bool ByteCodeOptimizer::optimizePassCheckStack(ByteCodeOptContext* context, uint
         case ByteCodeOp::AffectOpPlusEqS64:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
             if (ra->kind != ValueKind::StackAddr)
+            {
+                cxt.mustStop = true;
                 return true;
+            }
+
             SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32));
             SWAG_CHECK(getImmediateB(imm, cxt, ip));
             *(uint64_t*) addr += imm.s64;
             break;
 
         default:
+            cxt.mustStop = true;
             return true;
         }
 
@@ -245,6 +325,8 @@ bool ByteCodeOptimizer::optimizePassCheckStack(ByteCodeOptContext* context, uint
             auto saveCxt = cxt;
             if (!optimizePassCheckStack(context, n))
                 return false;
+            if (cxt.mustStop)
+                return true;
             cxt = saveCxt;
         }
     }
@@ -254,22 +336,29 @@ bool ByteCodeOptimizer::optimizePassCheckStack(ByteCodeOptContext* context, uint
 
 bool ByteCodeOptimizer::optimizePassCheck(ByteCodeOptContext* context)
 {
-    //if (context->bc->name != "__compiler4157.toto")
-    //   return true;
+    // if (context->bc->name != "__compiler4160.toto")
+    //     return true;
+    // context->bc->print();
 
     if (!context->bc->node)
         return true;
 
     Context cxt;
 
-    cxt.bc      = context->bc;
-    cxt.ip      = nullptr;
-    cxt.context = context;
+    cxt.bc       = context->bc;
+    cxt.ip       = nullptr;
+    cxt.context  = context;
+    cxt.mustStop = false;
 
     auto funcDecl = CastAst<AstFuncDecl>(cxt.bc->node, AstNodeKind::FuncDecl);
+
     cxt.stack.reserve(funcDecl->stackSize);
-    memset(cxt.stack.buffer, 0xCD, funcDecl->stackSize * sizeof(uint8_t));
+    memset(cxt.stack.buffer, 0, funcDecl->stackSize * sizeof(uint8_t));
     cxt.stack.count = funcDecl->stackSize;
+
+    cxt.stackState.reserve(funcDecl->stackSize);
+    memset(cxt.stackState.buffer, 0, funcDecl->stackSize * sizeof(uint8_t));
+    cxt.stackState.count = funcDecl->stackSize;
 
     cxt.regs.reserve(context->bc->maxReservedRegisterRC);
     memset(cxt.regs.buffer, 0, context->bc->maxReservedRegisterRC * sizeof(Value));

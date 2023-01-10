@@ -1183,6 +1183,13 @@ void initErrors()
 
     SWAG_ERROR(San0001, "return of a local stack variable or temporary");
     SWAG_ERROR(San0002, "potential stack corruption accessing stack offset '%lld' (stack size is '%lld')");
+    SWAG_ERROR(San0003, "use of of non initialized stack memory");
+    SWAG_ERROR(San0004, "local variable '%s' is used without being initialized");
+    SWAG_ERROR(San0005, nullptr);
+    SWAG_ERROR(San0006, nullptr);
+    SWAG_ERROR(San0007, nullptr);
+    SWAG_ERROR(San0008, nullptr);
+    SWAG_ERROR(San0009, nullptr);
 }
 
 Utf8 Err(ErrorID idx)
