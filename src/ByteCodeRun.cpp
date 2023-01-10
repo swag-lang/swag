@@ -877,11 +877,6 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
-    case ByteCodeOp::IncrementRA32:
-    {
-        registersRC[ip->a.u32].u32++;
-        break;
-    }
     case ByteCodeOp::DecrementRA32:
     {
         registersRC[ip->a.u32].u32--;

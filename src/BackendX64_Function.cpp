@@ -1898,9 +1898,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             MK_JMPCMP_F64(JAE);
             break;
 
-        case ByteCodeOp::IncrementRA32:
-            pp.emit_Inc32_Indirect(regOffset(ip->a.u32), RDI);
-            break;
         case ByteCodeOp::DecrementRA32:
             pp.emit_Dec32_Indirect(regOffset(ip->a.u32), RDI);
             break;

@@ -706,11 +706,6 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 OK();
                 break;
 
-            case ByteCodeOp::IncrementRA32:
-                SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u32 += 1;
-                OK();
-                break;
             case ByteCodeOp::DecrementRA32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
                 ip->b.u32 -= 1;
