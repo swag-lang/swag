@@ -10,6 +10,7 @@ impl AA
         @assert(x == 555)
     }
 
+#[Swag.PrintBc]
     mtd toto()
     {
         @assert(x == 666)
