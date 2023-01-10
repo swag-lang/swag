@@ -1,9 +1,11 @@
 #global testerror
 
+//#[Swag.PrintBc]
 #[Swag.Optim("", false)]
 #[Swag.Safety("sanity", true)]
 func toto()
 {
-    var ptr: *s32
-    dref ptr = 1
+    var a: s32 = ?
+    var ptr: *s32 = &a
+    dref ptr += 1
 }

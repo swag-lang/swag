@@ -5,6 +5,17 @@
 #include "Ast.h"
 #pragma optimize("", off)
 
+#define BINOPEQ(__cast, __op, __reg)                                     \
+    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                         \
+    if (ra->kind == ValueKind::Constant)                                 \
+        SWAG_CHECK(checkNotNull(cxt, ra->reg.u64));                      \
+    if (ra->kind != ValueKind::StackAddr)                                \
+        break;                                                           \
+    SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32));                 \
+    SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(imm.reg.__reg))); \
+    SWAG_CHECK(getImmediateB(imm, cxt, ip));                             \
+    *(__cast*) addr __op imm.reg.__reg;
+
 enum class RefKind
 {
     Unknown,
@@ -173,209 +184,217 @@ bool ByteCodeOptimizer::optimizePassCheckStack(ByteCodeOptContext* context, uint
 
     while (true)
     {
-        cxt.ip = ip;
-        switch (ip->op)
+        if (!(ip->flags & BCI_SAFETY))
         {
-        case ByteCodeOp::DecSPBP:
-        case ByteCodeOp::Ret:
-            break;
-
-        case ByteCodeOp::MakeStackPointer:
-            SWAG_CHECK(checkStackOffset(cxt, ip->b.u32));
-            SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->kind    = ValueKind::StackAddr;
-            ra->reg.u64 = ip->b.u32;
-            break;
-
-        case ByteCodeOp::SetZeroStackX:
-            SWAG_CHECK(getStackAddress(addr, cxt, ip->a.u32));
-            memset(addr, 0, ip->b.u32);
-            setStackState(cxt, addr, ip->b.u32, ValueKind::Constant);
-            break;
-        case ByteCodeOp::SetZeroStack8:
-            SWAG_CHECK(getStackAddress(addr, cxt, ip->a.u32));
-            *(uint8_t*) addr = 0;
-            setStackState(cxt, addr, 1, ValueKind::Constant);
-            break;
-        case ByteCodeOp::SetZeroStack16:
-            SWAG_CHECK(getStackAddress(addr, cxt, ip->a.u32));
-            *(uint16_t*) addr = 0;
-            setStackState(cxt, addr, 2, ValueKind::Constant);
-            break;
-        case ByteCodeOp::SetZeroStack32:
-            SWAG_CHECK(getStackAddress(addr, cxt, ip->a.u32));
-            *(uint32_t*) addr = 0;
-            setStackState(cxt, addr, 4, ValueKind::Constant);
-            break;
-        case ByteCodeOp::SetZeroStack64:
-            SWAG_CHECK(getStackAddress(addr, cxt, ip->a.u32));
-            *(uint64_t*) addr = 0;
-            setStackState(cxt, addr, 8, ValueKind::Constant);
-            break;
-
-        case ByteCodeOp::SetAtStackPointer64:
-            SWAG_CHECK(getStackAddress(addr, cxt, ip->a.u32));
-            SWAG_CHECK(getImmediateB(imm, cxt, ip));
-            *(uint64_t*) addr = imm.reg.u64;
-            setStackState(cxt, addr, 8, imm.kind);
-            break;
-
-        case ByteCodeOp::SetAtPointer32:
-            SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            if (ra->kind == ValueKind::Constant)
-                SWAG_CHECK(checkNotNull(cxt, ra->reg.u64));
-            if (ra->kind != ValueKind::StackAddr)
-                break;
-            SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u64 + ip->c.u32));
-            SWAG_CHECK(getImmediateB(imm, cxt, ip));
-            *(uint32_t*) addr = imm.reg.u32;
-            setStackState(cxt, addr, 4, ValueKind::Constant);
-            break;
-        case ByteCodeOp::SetAtPointer64:
-            SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            if (ra->kind == ValueKind::Constant)
-                SWAG_CHECK(checkNotNull(cxt, ra->reg.u64));
-            if (ra->kind != ValueKind::StackAddr)
+            cxt.ip = ip;
+            switch (ip->op)
+            {
+            case ByteCodeOp::DecSPBP:
+            case ByteCodeOp::Ret:
                 break;
 
-            SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u64 + ip->c.u32));
-            SWAG_CHECK(getImmediateB(imm, cxt, ip));
-            *(uint64_t*) addr = imm.reg.u64;
-            setStackState(cxt, addr, 8, imm.kind);
-            break;
-
-        case ByteCodeOp::SetImmediate32:
-            SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->kind    = ValueKind::Constant;
-            ra->reg.u64 = ip->b.u32;
-            break;
-        case ByteCodeOp::SetImmediate64:
-            SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->kind    = ValueKind::Constant;
-            ra->reg.u64 = ip->b.u64;
-            break;
-        case ByteCodeOp::ClearRA:
-            SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->kind    = ValueKind::Constant;
-            ra->reg.u64 = 0;
-            break;
-
-        case ByteCodeOp::Mul64byVB64:
-            SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.s64 *= ip->b.u64;
-            break;
-
-        case ByteCodeOp::GetFromStack8:
-            SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            SWAG_CHECK(getStackAddress(addr, cxt, ip->b.u32));
-            SWAG_CHECK(checkStackInitialized(cxt, addr, 1));
-            ra->kind    = ValueKind::Constant;
-            ra->reg.u64 = *(uint8_t*) addr;
-            break;
-        case ByteCodeOp::GetFromStack16:
-            SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            SWAG_CHECK(getStackAddress(addr, cxt, ip->b.u32));
-            SWAG_CHECK(checkStackInitialized(cxt, addr, 2));
-            ra->kind    = ValueKind::Constant;
-            ra->reg.u64 = *(uint16_t*) addr;
-            break;
-        case ByteCodeOp::GetFromStack32:
-            SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            SWAG_CHECK(getStackAddress(addr, cxt, ip->b.u32));
-            SWAG_CHECK(checkStackInitialized(cxt, addr, 4));
-            ra->kind    = ValueKind::Constant;
-            ra->reg.u64 = *(uint32_t*) addr;
-            break;
-        case ByteCodeOp::GetFromStack64:
-            SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            SWAG_CHECK(getStackAddress(addr, cxt, ip->b.u32));
-            SWAG_CHECK(checkStackInitialized(cxt, addr, 8));
-            if (!checkStackState(cxt, addr, 8, ValueKind::StackAddr, true))
-                ra->kind = ValueKind::Constant;
-            ra->reg.u64 = *(uint64_t*) addr;
-            break;
-
-        case ByteCodeOp::IncPointer64:
-            SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));
-            *rc = *ra;
-            SWAG_CHECK(getImmediateB(imm, cxt, ip));
-            rc->reg.u64 += imm.reg.s64;
-            break;
-
-        case ByteCodeOp::CopyRCtoRR:
-            if (ip->flags & BCI_IMM_A)
+            case ByteCodeOp::MakeStackPointer:
+                SWAG_CHECK(checkStackOffset(cxt, ip->b.u32));
+                SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+                ra->kind    = ValueKind::StackAddr;
+                ra->reg.u64 = ip->b.u32;
                 break;
-            SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            if (ra->kind == ValueKind::StackAddr)
-                return checkEscapeFrame(cxt, ra->reg.u32);
-            break;
 
-        case ByteCodeOp::DeRef8:
-            SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));
-            if (rb->kind == ValueKind::Constant)
-                SWAG_CHECK(checkNotNull(cxt, rb->reg.u64));
-            if (rb->kind != ValueKind::StackAddr)
+            case ByteCodeOp::SetZeroStackX:
+                SWAG_CHECK(getStackAddress(addr, cxt, ip->a.u32));
+                memset(addr, 0, ip->b.u32);
+                setStackState(cxt, addr, ip->b.u32, ValueKind::Constant);
                 break;
-            SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            SWAG_CHECK(getStackAddress(addr, cxt, rb->reg.u64 + ip->c.s64));
-            SWAG_CHECK(checkStackInitialized(cxt, addr, 1));
-            ra->kind    = ValueKind::Constant;
-            ra->reg.u64 = *(uint8_t*) addr;
-            break;
-        case ByteCodeOp::DeRef16:
-            SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));
-            if (rb->kind == ValueKind::Constant)
-                SWAG_CHECK(checkNotNull(cxt, rb->reg.u64));
-            if (rb->kind != ValueKind::StackAddr)
+            case ByteCodeOp::SetZeroStack8:
+                SWAG_CHECK(getStackAddress(addr, cxt, ip->a.u32));
+                *(uint8_t*) addr = 0;
+                setStackState(cxt, addr, 1, ValueKind::Constant);
                 break;
-            SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            SWAG_CHECK(getStackAddress(addr, cxt, rb->reg.u64 + ip->c.s64));
-            SWAG_CHECK(checkStackInitialized(cxt, addr, 2));
-            ra->kind    = ValueKind::Constant;
-            ra->reg.u64 = *(uint16_t*) addr;
-            break;
-        case ByteCodeOp::DeRef32:
-            SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));
-            if (rb->kind == ValueKind::Constant)
-                SWAG_CHECK(checkNotNull(cxt, rb->reg.u64));
-            if (rb->kind != ValueKind::StackAddr)
+            case ByteCodeOp::SetZeroStack16:
+                SWAG_CHECK(getStackAddress(addr, cxt, ip->a.u32));
+                *(uint16_t*) addr = 0;
+                setStackState(cxt, addr, 2, ValueKind::Constant);
                 break;
-            SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            SWAG_CHECK(getStackAddress(addr, cxt, rb->reg.u64 + ip->c.s64));
-            SWAG_CHECK(checkStackInitialized(cxt, addr, 4));
-            ra->kind    = ValueKind::Constant;
-            ra->reg.u64 = *(uint32_t*) addr;
-            break;
-        case ByteCodeOp::DeRef64:
-            SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));
-            if (rb->kind == ValueKind::Constant)
-                SWAG_CHECK(checkNotNull(cxt, rb->reg.u64));
-            if (rb->kind != ValueKind::StackAddr)
+            case ByteCodeOp::SetZeroStack32:
+                SWAG_CHECK(getStackAddress(addr, cxt, ip->a.u32));
+                *(uint32_t*) addr = 0;
+                setStackState(cxt, addr, 4, ValueKind::Constant);
                 break;
-            SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            SWAG_CHECK(getStackAddress(addr, cxt, rb->reg.u64 + ip->c.s64));
-            SWAG_CHECK(checkStackInitialized(cxt, addr, 8));
-            if (!checkStackState(cxt, addr, 8, ValueKind::StackAddr, true))
-                ra->kind = ValueKind::Constant;
-            ra->reg.u64 = *(uint64_t*) addr;
-            break;
+            case ByteCodeOp::SetZeroStack64:
+                SWAG_CHECK(getStackAddress(addr, cxt, ip->a.u32));
+                *(uint64_t*) addr = 0;
+                setStackState(cxt, addr, 8, ValueKind::Constant);
+                break;
 
-        case ByteCodeOp::AffectOpPlusEqS64:
-            SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32));
-            SWAG_CHECK(getImmediateB(imm, cxt, ip));
-            *(uint64_t*) addr += imm.reg.s64;
-            break;
+            case ByteCodeOp::SetAtStackPointer64:
+                SWAG_CHECK(getStackAddress(addr, cxt, ip->a.u32));
+                SWAG_CHECK(getImmediateB(imm, cxt, ip));
+                *(uint64_t*) addr = imm.reg.u64;
+                setStackState(cxt, addr, 8, imm.kind);
+                break;
 
-        default:
-            cxt.mustStop = true;
-            return true;
+            case ByteCodeOp::SetAtPointer32:
+                SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+                if (ra->kind == ValueKind::Constant)
+                    SWAG_CHECK(checkNotNull(cxt, ra->reg.u64));
+                if (ra->kind != ValueKind::StackAddr)
+                    break;
+                SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u64 + ip->c.u32));
+                SWAG_CHECK(getImmediateB(imm, cxt, ip));
+                *(uint32_t*) addr = imm.reg.u32;
+                setStackState(cxt, addr, 4, ValueKind::Constant);
+                break;
+            case ByteCodeOp::SetAtPointer64:
+                SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+                if (ra->kind == ValueKind::Constant)
+                    SWAG_CHECK(checkNotNull(cxt, ra->reg.u64));
+                if (ra->kind != ValueKind::StackAddr)
+                    break;
+
+                SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u64 + ip->c.u32));
+                SWAG_CHECK(getImmediateB(imm, cxt, ip));
+                *(uint64_t*) addr = imm.reg.u64;
+                setStackState(cxt, addr, 8, imm.kind);
+                break;
+
+            case ByteCodeOp::SetImmediate32:
+                SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+                ra->kind    = ValueKind::Constant;
+                ra->reg.u64 = ip->b.u32;
+                break;
+            case ByteCodeOp::SetImmediate64:
+                SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+                ra->kind    = ValueKind::Constant;
+                ra->reg.u64 = ip->b.u64;
+                break;
+            case ByteCodeOp::ClearRA:
+                SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+                ra->kind    = ValueKind::Constant;
+                ra->reg.u64 = 0;
+                break;
+
+            case ByteCodeOp::Mul64byVB64:
+                SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+                ra->reg.s64 *= ip->b.u64;
+                break;
+
+            case ByteCodeOp::GetFromStack8:
+                SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+                SWAG_CHECK(getStackAddress(addr, cxt, ip->b.u32));
+                SWAG_CHECK(checkStackInitialized(cxt, addr, 1));
+                ra->kind    = ValueKind::Constant;
+                ra->reg.u64 = *(uint8_t*) addr;
+                break;
+            case ByteCodeOp::GetFromStack16:
+                SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+                SWAG_CHECK(getStackAddress(addr, cxt, ip->b.u32));
+                SWAG_CHECK(checkStackInitialized(cxt, addr, 2));
+                ra->kind    = ValueKind::Constant;
+                ra->reg.u64 = *(uint16_t*) addr;
+                break;
+            case ByteCodeOp::GetFromStack32:
+                SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+                SWAG_CHECK(getStackAddress(addr, cxt, ip->b.u32));
+                SWAG_CHECK(checkStackInitialized(cxt, addr, 4));
+                ra->kind    = ValueKind::Constant;
+                ra->reg.u64 = *(uint32_t*) addr;
+                break;
+            case ByteCodeOp::GetFromStack64:
+                SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+                SWAG_CHECK(getStackAddress(addr, cxt, ip->b.u32));
+                SWAG_CHECK(checkStackInitialized(cxt, addr, 8));
+                if (!checkStackState(cxt, addr, 8, ValueKind::StackAddr, true))
+                    ra->kind = ValueKind::Constant;
+                ra->reg.u64 = *(uint64_t*) addr;
+                break;
+
+            case ByteCodeOp::IncPointer64:
+                SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+                SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));
+                *rc = *ra;
+                SWAG_CHECK(getImmediateB(imm, cxt, ip));
+                rc->reg.u64 += imm.reg.s64;
+                break;
+
+            case ByteCodeOp::CopyRCtoRR:
+                if (ip->flags & BCI_IMM_A)
+                    break;
+                SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+                if (ra->kind == ValueKind::StackAddr)
+                    return checkEscapeFrame(cxt, ra->reg.u32);
+                break;
+
+            case ByteCodeOp::DeRef8:
+                SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));
+                if (rb->kind == ValueKind::Constant)
+                    SWAG_CHECK(checkNotNull(cxt, rb->reg.u64));
+                if (rb->kind != ValueKind::StackAddr)
+                    break;
+                SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+                SWAG_CHECK(getStackAddress(addr, cxt, rb->reg.u64 + ip->c.s64));
+                SWAG_CHECK(checkStackInitialized(cxt, addr, 1));
+                ra->kind    = ValueKind::Constant;
+                ra->reg.u64 = *(uint8_t*) addr;
+                break;
+            case ByteCodeOp::DeRef16:
+                SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));
+                if (rb->kind == ValueKind::Constant)
+                    SWAG_CHECK(checkNotNull(cxt, rb->reg.u64));
+                if (rb->kind != ValueKind::StackAddr)
+                    break;
+                SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+                SWAG_CHECK(getStackAddress(addr, cxt, rb->reg.u64 + ip->c.s64));
+                SWAG_CHECK(checkStackInitialized(cxt, addr, 2));
+                ra->kind    = ValueKind::Constant;
+                ra->reg.u64 = *(uint16_t*) addr;
+                break;
+            case ByteCodeOp::DeRef32:
+                SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));
+                if (rb->kind == ValueKind::Constant)
+                    SWAG_CHECK(checkNotNull(cxt, rb->reg.u64));
+                if (rb->kind != ValueKind::StackAddr)
+                    break;
+                SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+                SWAG_CHECK(getStackAddress(addr, cxt, rb->reg.u64 + ip->c.s64));
+                SWAG_CHECK(checkStackInitialized(cxt, addr, 4));
+                ra->kind    = ValueKind::Constant;
+                ra->reg.u64 = *(uint32_t*) addr;
+                break;
+            case ByteCodeOp::DeRef64:
+                SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));
+                if (rb->kind == ValueKind::Constant)
+                    SWAG_CHECK(checkNotNull(cxt, rb->reg.u64));
+                if (rb->kind != ValueKind::StackAddr)
+                    break;
+                SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+                SWAG_CHECK(getStackAddress(addr, cxt, rb->reg.u64 + ip->c.s64));
+                SWAG_CHECK(checkStackInitialized(cxt, addr, 8));
+                if (!checkStackState(cxt, addr, 8, ValueKind::StackAddr, true))
+                    ra->kind = ValueKind::Constant;
+                ra->reg.u64 = *(uint64_t*) addr;
+                break;
+
+            case ByteCodeOp::AffectOpPlusEqS8:
+                BINOPEQ(uint8_t, +=, s8);
+                break;
+            case ByteCodeOp::AffectOpPlusEqS16:
+                BINOPEQ(uint16_t, +=, s16);
+                break;
+            case ByteCodeOp::AffectOpPlusEqS32:
+                BINOPEQ(uint32_t, +=, s32);
+                break;
+            case ByteCodeOp::AffectOpPlusEqS64:
+                BINOPEQ(uint64_t, +=, s64);
+                break;
+
+            default:
+                cxt.mustStop = true;
+                return true;
+            }
         }
 
         if (ip == node->end)
             break;
-
         ip++;
     }
 
