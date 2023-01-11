@@ -320,7 +320,7 @@
     <ClCompile Include="..\src\ByteCodeGenJob_Safety.cpp" />
     <ClCompile Include="../src/ByteCodeOptimizerJob.cpp" />
     <ClCompile Include="..\src\ByteCodeOptimizer_Alias.cpp" />
-    <ClCompile Include="..\src\ByteCodeOptimizer_Check.cpp" />
+    <ClCompile Include="..\src\ByteCodeOptimizer_Sanity.cpp" />
     <ClCompile Include="..\src\ByteCodeOptimizer_Const.cpp" />
     <ClCompile Include="..\src\ByteCodeOptimizer_DeadCode.cpp" />
     <ClCompile Include="..\src\ByteCodeOptimizer_DeadStore.cpp" />

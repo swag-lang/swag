@@ -527,7 +527,7 @@
     <ClCompile Include="..\src\SemanticJob_Warn.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ByteCodeOptimizer_Check.cpp">
+    <ClCompile Include="..\src\ByteCodeOptimizer_Sanity.cpp">
       <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
   </ItemGroup>

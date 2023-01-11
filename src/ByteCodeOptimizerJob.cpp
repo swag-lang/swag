@@ -23,7 +23,7 @@ bool ByteCodeOptimizerJob::optimize(ByteCode* bc, bool& restart)
         ByteCodeOptimizer::setContextFlags(&optContext);
         ByteCodeOptimizer::setJumps(&optContext);
         ByteCodeOptimizer::genTree(&optContext, false);
-        SWAG_CHECK(ByteCodeOptimizer::optimizePassCheck(&optContext));
+        SWAG_CHECK(ByteCodeOptimizer::optimizePassSanity(&optContext));
     }
 
     if (module->mustOptimizeBC(bc->node))

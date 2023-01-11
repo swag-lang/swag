@@ -2,7 +2,6 @@
 ;
 using Swag;
 
-//#[PrintBc]
 func main ()
 {
 	var a : s32;
