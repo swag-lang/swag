@@ -1250,18 +1250,15 @@ impl Decoder
 
     mtd calcMcuBlockOrder()
     {
-        maxSampH := 0
-        maxSampV := 0
+        maxSampH := 1
+        maxSampV := 1
 
         loop cid: compsInFrame
         {
-            if compSampH[cid] > maxSampH
-                maxSampH = compSampH[cid]
-            if compSampV[cid] > maxSampV
-                maxSampV = compSampV[cid]
+            maxSampH = Math.max(maxSampH, compSampH[cid])
+            maxSampV = Math.max(maxSampV, compSampV[cid])
         }
 
-        #[Swag.Safety("sanity", false)]
         loop cid: compsInFrame
         {
             compBlocksH[cid] = ((((imageSizeX * compSampH[cid]) + (maxSampH - 1)) / maxSampH) + 7) / 8
