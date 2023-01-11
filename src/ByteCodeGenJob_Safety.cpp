@@ -129,6 +129,7 @@ const char* ByteCodeGenJob::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo*
 
 void ByteCodeGenJob::emitAssert(ByteCodeGenContext* context, uint32_t reg, const char* msg)
 {
+    PushICFlags ic(context, BCI_SAFETY);
     emitInstruction(context, ByteCodeOp::JumpIfTrue, reg)->b.s32   = 1;
     emitInstruction(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) msg;
 }
