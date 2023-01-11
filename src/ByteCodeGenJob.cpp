@@ -309,6 +309,7 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     ins.flags = context->instructionsFlags;
     if (context->tryCatchScope)
         ins.flags |= BCI_TRYCATCH;
+    ins.dynFlags = 0;
 
     ins.node = context->forceNode ? context->forceNode : node;
 

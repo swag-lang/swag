@@ -1817,7 +1817,11 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
     // Pass a variadic parameter to another function
     auto numVariadic = (uint32_t) (numCallParams - numTypeParams) + 1;
-    auto lastParam   = allParams && !allParams->childs.empty() ? allParams->childs.back() : nullptr;
+    if (typeInfoFunc->flags & TYPEINFO_VARIADIC)
+        SWAG_VERIFY(numVariadic <= SWAG_LIMIT_MAX_VARIADIC_PARAMS, context->report({allParams, Fmt(Err(Err0578), numVariadic, SWAG_LIMIT_MAX_VARIADIC_PARAMS)}));
+
+    auto lastParam = allParams && !allParams->childs.empty() ? allParams->childs.back() : nullptr;
+
     if (lastParam && lastParam->typeInfo && lastParam->typeInfo->isTypedVariadic())
     {
         precallStack += 2 * sizeof(Register);
@@ -1934,7 +1938,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         auto inst               = emitInstruction(context, ByteCodeOp::ForeignCall);
         inst->a.pointer         = (uint8_t*) funcNode;
         inst->b.pointer         = (uint8_t*) typeInfoFunc;
-        inst->numVariadicParams = numVariadic;
+        inst->numVariadicParams = (uint8_t) numVariadic;
         context->bc->hasForeignFunctionCallsModules.insert(ModuleManager::getForeignModuleName(funcNode));
     }
     else if (funcNode)
@@ -1943,7 +1947,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         SWAG_ASSERT(funcNode->extension && funcNode->extension->bytecode && funcNode->extension->bytecode->bc);
         inst->a.pointer                           = (uint8_t*) funcNode->extension->bytecode->bc;
         inst->b.pointer                           = (uint8_t*) typeInfoFunc;
-        inst->numVariadicParams                   = numVariadic;
+        inst->numVariadicParams                   = (uint8_t) numVariadic;
         funcNode->extension->bytecode->bc->isUsed = true;
     }
     else
@@ -1951,7 +1955,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         SWAG_ASSERT(varNodeRegisters.size() > 0);
         auto inst                            = emitInstruction(context, ByteCodeOp::LambdaCall, varNodeRegisters);
         inst->b.pointer                      = (uint8_t*) typeInfoFunc;
-        inst->numVariadicParams              = numVariadic;
+        inst->numVariadicParams              = (uint8_t) numVariadic;
         context->bc->hasForeignFunctionCalls = true;
     }
 

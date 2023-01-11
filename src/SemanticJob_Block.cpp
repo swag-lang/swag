@@ -413,15 +413,14 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                 }
             }
         }
-        else
-        {
-            auto caseNode = Ast::newNode<AstSwitchCase>(nullptr, AstNodeKind::SwitchCase, context->sourceFile, node);
-            caseNode->flags |= AST_GENERATED;
-            caseNode->specFlags   = AST_SPEC_SWITCHCASE_ISDEFAULT;
-            caseNode->ownerSwitch = node;
-            node->cases.push_back(caseNode);
-            caseNode->byteCodeFct = ByteCodeGenJob::emitSafetySwitchDefault;
-        }
+
+        // Add a safety test in a switch default to catch runtime invalid values
+        auto caseNode = Ast::newNode<AstSwitchCase>(nullptr, AstNodeKind::SwitchCase, context->sourceFile, node);
+        caseNode->flags |= AST_GENERATED;
+        caseNode->specFlags   = AST_SPEC_SWITCHCASE_ISDEFAULT;
+        caseNode->ownerSwitch = node;
+        node->cases.push_back(caseNode);
+        caseNode->byteCodeFct = ByteCodeGenJob::emitSafetySwitchDefault;
     }
 
     return true;

@@ -875,7 +875,7 @@ void initErrors()
     SWAG_ERROR(Err0605, "'@abs' integer overflow");
     SWAG_ERROR(Err0707, "expected at least one test error but nothing was raised");
     SWAG_ERROR(Err0580, "expected at least one test warning but nothing was raised");
-    SWAG_ERROR(Err0578, nullptr);
+    SWAG_ERROR(Err0578, "too many variadic parameters ('%d' provided, maximum is '%d')");
     SWAG_ERROR(Err0693, nullptr);
     SWAG_ERROR(Err0690, nullptr);
     SWAG_ERROR(Err0688, nullptr);
@@ -1181,11 +1181,11 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(San0001, "return of a local stack variable or temporary");
-    SWAG_ERROR(San0002, "potential stack corruption accessing stack offset '%lld' (stack size is '%lld')");
-    SWAG_ERROR(San0003, "use of of non initialized stack memory");
-    SWAG_ERROR(San0004, "local variable '%s' is used without being initialized");
-    SWAG_ERROR(San0005, "attempt to dereference a null pointer");
+    SWAG_ERROR(San0001, "possible return of a local stack variable or temporary");
+    SWAG_ERROR(San0002, "possible stack corruption, stack offset is '%lld' but stack size is '%lld'");
+    SWAG_ERROR(San0003, "possible usage of non initialized stack memory");
+    SWAG_ERROR(San0004, "possible usage of non initialized local variable '%s'");
+    SWAG_ERROR(San0005, "possible attempt of dereferencing a null pointer");
     SWAG_ERROR(San0006, nullptr);
     SWAG_ERROR(San0007, nullptr);
     SWAG_ERROR(San0008, nullptr);
