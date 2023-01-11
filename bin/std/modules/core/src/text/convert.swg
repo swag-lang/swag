@@ -149,8 +149,8 @@ impl ConvertFormatInt
 // Convert a value to an utf8 string, and append the result in a ConcatBuffer
 func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
 {
-    valueData     := @dataof(value)
-    type          := Reflection.makeConcreteAlias(@kindof(value))
+    valueData := @dataof(value)
+    type      := Reflection.makeConcreteAlias(@kindof(value))
 
     // A reference
     if Reflection.isPointerRef(type)
