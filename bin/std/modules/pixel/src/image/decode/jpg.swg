@@ -1261,6 +1261,7 @@ impl Decoder
                 maxSampV = compSampV[cid]
         }
 
+        #[Swag.Safety("sanity", false)]
         loop cid: compsInFrame
         {
             compBlocksH[cid] = ((((imageSizeX * compSampH[cid]) + (maxSampH - 1)) / maxSampH) + 7) / 8

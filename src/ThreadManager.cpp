@@ -264,6 +264,12 @@ static void exceptionMessage(Job* job, SWAG_LPEXCEPTION_POINTERS args)
 
 static int exceptionHandler(Job* job, SWAG_LPEXCEPTION_POINTERS args)
 {
+    if (OS::isDebuggerAttached())
+    {
+        OS::errorBox("[Developer Mode]", "Exception raised !");
+        return EXCEPTION_CONTINUE_EXECUTION;
+    }
+
     exceptionMessage(job, args);
     return SWAG_EXCEPTION_EXECUTE_HANDLER;
 }

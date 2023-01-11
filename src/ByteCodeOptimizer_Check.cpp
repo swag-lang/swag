@@ -3,6 +3,9 @@
 #include "TypeInfo.h"
 #include "Log.h"
 #include "Ast.h"
+#include "SourceFile.h"
+#include "Module.h"
+
 #pragma optimize("", off)
 
 #define BINOPEQ(__cast, __op, __reg)                                    \
@@ -91,8 +94,20 @@ static bool raiseError(Context& cxt, Utf8 msg, Diagnostic* note = nullptr)
     SourceLocation* loc;
     ByteCode::getLocation(cxt.bc, cxt.state.ip, &file, &loc);
 
+    if (!file->module->mustEmitSafety(cxt.state.ip->node, SAFETY_SANITY))
+        return false;
+
     Diagnostic diag({file, *loc, msg});
     return cxt.context->report(diag, note);
+}
+
+static bool checkDivZero(Context& cxt, Value& value, uint64_t val)
+{
+    if (value.kind != ValueKind::Constant)
+        return true;
+    if (val == 0)
+        return raiseError(cxt, Err(San0006));
+    return true;
 }
 
 static bool checkEscapeFrame(Context& cxt, uint64_t stackOffset)
@@ -650,34 +665,95 @@ bool ByteCodeOptimizer::optimizePassCheckStack(ByteCodeOptContext* context)
             break;
 
         case ByteCodeOp::AffectOpDivEqS8:
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.u8));
             BINOPEQ(uint8_t, /=, s8);
             break;
         case ByteCodeOp::AffectOpDivEqS16:
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.u16));
             BINOPEQ(uint16_t, /=, s16);
             break;
         case ByteCodeOp::AffectOpDivEqS32:
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.u32));
             BINOPEQ(uint32_t, /=, s32);
             break;
         case ByteCodeOp::AffectOpDivEqS64:
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.u64));
             BINOPEQ(uint64_t, /=, s64);
             break;
         case ByteCodeOp::AffectOpDivEqU8:
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.u8));
             BINOPEQ(uint8_t, /=, u8);
             break;
         case ByteCodeOp::AffectOpDivEqU16:
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.u16));
             BINOPEQ(uint16_t, /=, u16);
             break;
         case ByteCodeOp::AffectOpDivEqU32:
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.u32));
             BINOPEQ(uint32_t, /=, u32);
             break;
         case ByteCodeOp::AffectOpDivEqU64:
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.u64));
             BINOPEQ(uint64_t, /=, u64);
             break;
         case ByteCodeOp::AffectOpDivEqF32:
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.u32));
             BINOPEQ(float, /=, f32);
             break;
         case ByteCodeOp::AffectOpDivEqF64:
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.u64));
             BINOPEQ(double, /=, f64);
+            break;
+
+        case ByteCodeOp::AffectOpModuloEqS8:
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.u8));
+            BINOPEQ(uint8_t, %=, s8);
+            break;
+        case ByteCodeOp::AffectOpModuloEqS16:
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.u16));
+            BINOPEQ(uint16_t, %=, s16);
+            break;
+        case ByteCodeOp::AffectOpModuloEqS32:
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.u32));
+            BINOPEQ(uint32_t, %=, s32);
+            break;
+        case ByteCodeOp::AffectOpModuloEqS64:
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.u64));
+            BINOPEQ(uint64_t, %=, s64);
+            break;
+        case ByteCodeOp::AffectOpModuloEqU8:
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.u8));
+            BINOPEQ(uint8_t, %=, u8);
+            break;
+        case ByteCodeOp::AffectOpModuloEqU16:
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.u16));
+            BINOPEQ(uint16_t, %=, u16);
+            break;
+        case ByteCodeOp::AffectOpModuloEqU32:
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.u32));
+            BINOPEQ(uint32_t, %=, u32);
+            break;
+        case ByteCodeOp::AffectOpModuloEqU64:
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.u64));
+            BINOPEQ(uint64_t, %=, u64);
             break;
 
         case ByteCodeOp::AffectOpAndEqU8:
@@ -1047,34 +1123,54 @@ bool ByteCodeOptimizer::optimizePassCheckStack(ByteCodeOptContext* context)
             break;
 
         case ByteCodeOp::BinOpDivS32:
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.u32));
             BINOP(/, s32);
             break;
         case ByteCodeOp::BinOpDivS64:
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.u64));
             BINOP(/, s64);
             break;
         case ByteCodeOp::BinOpDivU32:
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.u32));
             BINOP(/, u32);
             break;
         case ByteCodeOp::BinOpDivU64:
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.u64));
             BINOP(/, u64);
             break;
         case ByteCodeOp::BinOpDivF32:
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.u32));
             BINOP(/, f32);
             break;
         case ByteCodeOp::BinOpDivF64:
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.u64));
             BINOP(/, f64);
             break;
 
         case ByteCodeOp::BinOpModuloS32:
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.u32));
             BINOP(%, s32);
             break;
         case ByteCodeOp::BinOpModuloS64:
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.u64));
             BINOP(%, s64);
             break;
         case ByteCodeOp::BinOpModuloU32:
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.u32));
             BINOP(%, u32);
             break;
         case ByteCodeOp::BinOpModuloU64:
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.u64));
             BINOP(%, u64);
             break;
 
@@ -1099,7 +1195,7 @@ bool ByteCodeOptimizer::optimizePassCheckStack(ByteCodeOptContext* context)
 bool ByteCodeOptimizer::optimizePassCheck(ByteCodeOptContext* context)
 {
 #if 0
-    if (context->bc->name != "__compiler4170.toto")
+    if (context->bc->name != "__compiler4171.toto")
         return true;
     context->bc->print();
 #endif

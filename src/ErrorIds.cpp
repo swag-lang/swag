@@ -1181,12 +1181,12 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(San0001, "possible return of a local stack variable or temporary");
-    SWAG_ERROR(San0002, "possible stack corruption, stack offset is '%lld' but stack size is '%lld'");
-    SWAG_ERROR(San0003, "possible usage of non initialized stack memory");
-    SWAG_ERROR(San0004, "possible usage of non initialized local variable '%s'");
-    SWAG_ERROR(San0005, "possible attempt of dereferencing a null pointer");
-    SWAG_ERROR(San0006, nullptr);
+    SWAG_ERROR(San0001, "[sanity] possible return of a local stack variable or temporary");
+    SWAG_ERROR(San0002, "[sanity] possible stack corruption, stack offset is '%lld' but stack size is '%lld'");
+    SWAG_ERROR(San0003, "[sanity] possible usage of non initialized stack memory");
+    SWAG_ERROR(San0004, "[sanity] possible usage of non initialized local variable '%s'");
+    SWAG_ERROR(San0005, "[sanity] possible attempt of dereferencing a null pointer");
+    SWAG_ERROR(San0006, "[sanity] possible division by zero");
     SWAG_ERROR(San0007, nullptr);
     SWAG_ERROR(San0008, nullptr);
     SWAG_ERROR(San0009, nullptr);
