@@ -1580,7 +1580,7 @@ bool ByteCodeOptimizer::optimizePassSanityStack(ByteCodeOptContext* context)
                 cxt.state.regs[i] = {ValueKind::Unknown};
             setStackState(cxt, cxt.state.stack.buffer, cxt.state.stack.count, {ValueKind::Unknown});
 
-            //printf("%s\n", g_ByteCodeOpDesc[(int) ip->op].name);
+            // printf("%s\n", g_ByteCodeOpDesc[(int) ip->op].name);
             cxt.incomplete = true;
             break;
         }
@@ -1595,7 +1595,7 @@ bool ByteCodeOptimizer::optimizePassSanityStack(ByteCodeOptContext* context)
 bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
 {
 #if 0
-    if (context->bc->name != "__compiler4166.toto")
+    if (context->bc->name != "__compiler4176.toto")
         return true;
     context->bc->print();
 #endif
@@ -1631,6 +1631,8 @@ bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
     SWAG_CHECK(optimizePassSanityStack(context));
     while (cxt.states.size())
     {
+        for (uint32_t i = 0; i < cxt.bc->numInstructions; i++)
+            cxt.bc->out[i].dynFlags &= ~BCID_SAN_PASS;
         cxt.state = cxt.states.back();
         cxt.states.pop_back();
         SWAG_CHECK(optimizePassSanityStack(context));
