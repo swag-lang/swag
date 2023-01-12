@@ -19,63 +19,63 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(Fat0002, "fatal error: the cache directory '%s' does not exist");
-    SWAG_ERROR(Fat0003, "fatal error: cannot create the cache directory '%s'");
-    SWAG_ERROR(Fat0004, "fatal error: cannot create the directory '%s'");
-    SWAG_ERROR(Fat0005, "fatal error: cannot create the file '%s'");
-    SWAG_ERROR(Fat0006, "fatal error: cannot create the public directory '%s'");
-    SWAG_ERROR(Fat0007, "fatal error: cannot create the script file '%s'");
-    SWAG_ERROR(Fat0008, "fatal error: cannot create the target directory '%s'");
-    SWAG_ERROR(Fat0009, "fatal error: cannot delete the directory '%s'");
-    SWAG_ERROR(Fat0010, "fatal error: cannot delete the file '%s'");
-    SWAG_ERROR(Fat0011, "fatal error: expected a workspace folder '--workspace'");
-    SWAG_ERROR(Fat0012, "fatal error: invalid module '%s', the configuration file '%s' is missing");
-    SWAG_ERROR(Fat0013, "fatal error: invalid script file extension, should be '.swgs' instead of '%s'");
-    SWAG_ERROR(Fat0014, "fatal error: invalid swag command '%s'");
-    SWAG_ERROR(Fat0015, "fatal error: invalid value for '--tag:%s' (%s)");
-    SWAG_ERROR(Fat0016, "fatal error: invalid workspace '%s', subfolder 'modules/' or 'tests/' does not exist");
-    SWAG_ERROR(Fat0017, "fatal error: missing script file, use '--file:<filename>.swgs' to specify a script to run");
-    SWAG_ERROR(Fat0018, "fatal error: the module '%s' already exists in the '/modules' folder");
-    SWAG_ERROR(Fat0019, "fatal error: not enough memory !");
-    SWAG_ERROR(Fat0020, "fatal error: the script file '%s' does not exist");
-    SWAG_ERROR(Fat0021, "fatal error: some problems have been found in the compiler bootstrap !!!");
-    SWAG_ERROR(Fat0022, "fatal error: some problems have been found in the compiler runtime !!!");
-    SWAG_ERROR(Fat0023, "fatal error: unexpected compile tag value '%s' (command is '--tag:%s')");
-    SWAG_ERROR(Fat0024, "fatal error: unknown compile tag type '%s' (command is '--tag:%s')");
-    SWAG_ERROR(Fat0025, "fatal error: the workspace folder '%s' already exists");
-    SWAG_ERROR(Fat0026, "fatal error: the workspace folder '%s' does not exist");
+    SWAG_ERROR(Fat0002, "[fatal error] the cache directory '%s' does not exist");
+    SWAG_ERROR(Fat0003, "[fatal error] cannot create the cache directory '%s'");
+    SWAG_ERROR(Fat0004, "[fatal error] cannot create the directory '%s'");
+    SWAG_ERROR(Fat0005, "[fatal error] cannot create the file '%s'");
+    SWAG_ERROR(Fat0006, "[fatal error] cannot create the public directory '%s'");
+    SWAG_ERROR(Fat0007, "[fatal error] cannot create the script file '%s'");
+    SWAG_ERROR(Fat0008, "[fatal error] cannot create the target directory '%s'");
+    SWAG_ERROR(Fat0009, "[fatal error] cannot delete the directory '%s'");
+    SWAG_ERROR(Fat0010, "[fatal error] cannot delete the file '%s'");
+    SWAG_ERROR(Fat0011, "[fatal error] expected a workspace folder '--workspace'");
+    SWAG_ERROR(Fat0012, "[fatal error] invalid module '%s', the configuration file '%s' is missing");
+    SWAG_ERROR(Fat0013, "[fatal error] invalid script file extension, should be '.swgs' instead of '%s'");
+    SWAG_ERROR(Fat0014, "[fatal error] invalid swag command '%s'");
+    SWAG_ERROR(Fat0015, "[fatal error] invalid value for '--tag:%s' (%s)");
+    SWAG_ERROR(Fat0016, "[fatal error] invalid workspace '%s', subfolder 'modules/' or 'tests/' does not exist");
+    SWAG_ERROR(Fat0017, "[fatal error] missing script file, use '--file:<filename>.swgs' to specify a script to run");
+    SWAG_ERROR(Fat0018, "[fatal error] the module '%s' already exists in the '/modules' folder");
+    SWAG_ERROR(Fat0019, "[fatal error] not enough memory !");
+    SWAG_ERROR(Fat0020, "[fatal error] the script file '%s' does not exist");
+    SWAG_ERROR(Fat0021, "[fatal error] some problems have been found in the compiler bootstrap !!!");
+    SWAG_ERROR(Fat0022, "[fatal error] some problems have been found in the compiler runtime !!!");
+    SWAG_ERROR(Fat0023, "[fatal error] unexpected compile tag value '%s' (command is '--tag:%s')");
+    SWAG_ERROR(Fat0024, "[fatal error] unknown compile tag type '%s' (command is '--tag:%s')");
+    SWAG_ERROR(Fat0025, "[fatal error] the workspace folder '%s' already exists");
+    SWAG_ERROR(Fat0026, "[fatal error] the workspace folder '%s' does not exist");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(Saf0003, "'@abs' integer overflow (type is '%s')");
-    SWAG_ERROR(Saf0023, "'@log' invalid argument (type is '%s')");
-    SWAG_ERROR(Saf0025, "'@log10' invalid argument (type is '%s')");
-    SWAG_ERROR(Saf0024, "'@log2' invalid argument (type is '%s')");
-    SWAG_ERROR(Saf0022, "'@sqrt' invalid argument (type is '%s')");
-    SWAG_ERROR(Saf0006, "cast from a negative value of type '%s' to an unsigned type '%s'");
-    SWAG_ERROR(Saf0007, "division by zero");
-    SWAG_ERROR(Saf0008, "index out of range");
-    SWAG_ERROR(Saf0010, "integer overflow during '*' operation (type is '%s')");
-    SWAG_ERROR(Saf0009, "integer overflow during '*=' operation (type is '%s')");
-    SWAG_ERROR(Saf0012, "integer overflow during '+' operation (type is '%s')");
-    SWAG_ERROR(Saf0011, "integer overflow during '+=' operation (type is '%s')");
-    SWAG_ERROR(Saf0014, "integer overflow during '-' operation (type is '%s')");
-    SWAG_ERROR(Saf0013, "integer overflow during '-=' operation (type is '%s')");
-    SWAG_ERROR(Saf0015, "integer overflow during '<<' operation (type is '%s')");
-    SWAG_ERROR(Saf0016, "integer overflow during '>>' operation (type is '%s')");
-    SWAG_ERROR(Saf0017, "integer overflow when taking the negative value of type '%s'");
-    SWAG_ERROR(Saf0020, "invalid boolean value (neither 'true' nor 'false')");
-    SWAG_ERROR(Saf0021, "invalid float value (NaN)");
-    SWAG_ERROR(Saf0004, "invalid slicing, the lower bound is greater than the upper bound");
-    SWAG_ERROR(Saf0005, "invalid slicing, the upper bound is out of range");
-    SWAG_ERROR(Saf0001, "the '<<' operand on type '%s' is greater than '%d'");
-    SWAG_ERROR(Saf0002, "the '>>' operand on type '%s' is greater than '%d'");
-    SWAG_ERROR(Saf0018, "truncated bits when casting expression from '%s' to '%s'");
-    SWAG_ERROR(Saf0019, "unexpected switch value (switch is marked with 'Swag.Complete')");
-    SWAG_ERROR(Saf0026, "'@asin' invalid argument (type is '%s')");
-    SWAG_ERROR(Saf0027, "'@acos' invalid argument (type is '%s')");
+    SWAG_ERROR(Saf0003, "[safety] '@abs' integer overflow (type is '%s')");
+    SWAG_ERROR(Saf0023, "[safety] '@log' invalid argument (type is '%s')");
+    SWAG_ERROR(Saf0025, "[safety] '@log10' invalid argument (type is '%s')");
+    SWAG_ERROR(Saf0024, "[safety] '@log2' invalid argument (type is '%s')");
+    SWAG_ERROR(Saf0022, "[safety] '@sqrt' invalid argument (type is '%s')");
+    SWAG_ERROR(Saf0006, "[safety] cast from a negative value of type '%s' to an unsigned type '%s'");
+    SWAG_ERROR(Saf0007, "[safety] division by zero");
+    SWAG_ERROR(Saf0008, "[safety] index out of range");
+    SWAG_ERROR(Saf0010, "[safety] integer overflow during '*' operation (type is '%s')");
+    SWAG_ERROR(Saf0009, "[safety] integer overflow during '*=' operation (type is '%s')");
+    SWAG_ERROR(Saf0012, "[safety] integer overflow during '+' operation (type is '%s')");
+    SWAG_ERROR(Saf0011, "[safety] integer overflow during '+=' operation (type is '%s')");
+    SWAG_ERROR(Saf0014, "[safety] integer overflow during '-' operation (type is '%s')");
+    SWAG_ERROR(Saf0013, "[safety] integer overflow during '-=' operation (type is '%s')");
+    SWAG_ERROR(Saf0015, "[safety] integer overflow during '<<' operation (type is '%s')");
+    SWAG_ERROR(Saf0016, "[safety] integer overflow during '>>' operation (type is '%s')");
+    SWAG_ERROR(Saf0017, "[safety] integer overflow when taking the negative value of type '%s'");
+    SWAG_ERROR(Saf0020, "[safety] invalid boolean value (neither 'true' nor 'false')");
+    SWAG_ERROR(Saf0021, "[safety] invalid float value (NaN)");
+    SWAG_ERROR(Saf0004, "[safety] invalid slicing, the lower bound is greater than the upper bound");
+    SWAG_ERROR(Saf0005, "[safety] invalid slicing, the upper bound is out of range");
+    SWAG_ERROR(Saf0001, "[safety] the '<<' operand on type '%s' is greater than '%d'");
+    SWAG_ERROR(Saf0002, "[safety] the '>>' operand on type '%s' is greater than '%d'");
+    SWAG_ERROR(Saf0018, "[safety] truncated bits when casting expression from '%s' to '%s'");
+    SWAG_ERROR(Saf0019, "[safety] unexpected switch value (switch is marked with 'Swag.Complete')");
+    SWAG_ERROR(Saf0026, "[safety] '@asin' invalid argument (type is '%s')");
+    SWAG_ERROR(Saf0027, "[safety] '@acos' invalid argument (type is '%s')");
     SWAG_ERROR(Saf0028, nullptr);
     SWAG_ERROR(Saf0029, nullptr);
 
@@ -1181,15 +1181,20 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(San0001, "[sanity] possible return of a local stack variable or temporary");
-    SWAG_ERROR(San0002, "[sanity] possible stack corruption, stack offset is '%lld' but stack size is '%lld'");
-    SWAG_ERROR(San0003, "[sanity] possible usage of non initialized stack memory");
-    SWAG_ERROR(San0004, "[sanity] possible usage of non initialized local variable '%s'");
-    SWAG_ERROR(San0005, "[sanity] possible attempt of dereferencing a null pointer");
-    SWAG_ERROR(San0006, "[sanity] possible division by zero");
-    SWAG_ERROR(San0007, "[sanity] possible out of bound access to %s '%s'");
-    SWAG_ERROR(San0008, nullptr);
-    SWAG_ERROR(San0009, nullptr);
+    SWAG_ERROR(San0001, "[sanity] return of a stack local variable or temporary");
+    SWAG_ERROR(San0002, "[sanity] return of stack %s '%s'");
+    SWAG_ERROR(San0003, "[sanity] usage of non initialized stack memory");
+    SWAG_ERROR(San0004, "[sanity] usage of non initialized %s '%s'");
+    SWAG_ERROR(San0005, "[sanity] attempt of dereferencing a null pointer");
+    SWAG_ERROR(San0006, "[sanity] attempt of dereferencing null %s '%s'");
+    SWAG_ERROR(San0007, "[sanity] division by zero");
+    SWAG_ERROR(San0008, "[sanity] division by zero (%s '%s')");
+    SWAG_ERROR(San0009, "[sanity] out of bound access to %s '%s'");
+    SWAG_ERROR(San0010, "[sanity] stack corruption, stack offset is '%lld' but stack size is '%lld'");
+    SWAG_ERROR(San0011, nullptr);
+    SWAG_ERROR(San0012, nullptr);
+    SWAG_ERROR(San0013, nullptr);
+    SWAG_ERROR(San0014, nullptr);
 }
 
 Utf8 Err(ErrorID idx)
