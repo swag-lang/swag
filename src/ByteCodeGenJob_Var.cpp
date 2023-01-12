@@ -96,7 +96,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
             if (!(node->doneFlags & AST_DONE_VARDECL_REF_CALL))
             {
                 RegisterList r0 = reserveRegisterRC(context);
-                emitRetValRef(context, r0, retVal, resolved->computedValue.storageOffset);
+                emitRetValRef(context, resolved, r0, retVal, resolved->computedValue.storageOffset);
                 node->type->resultRegisterRC = r0;
                 node->doneFlags |= AST_DONE_VARDECL_REF_CALL;
             }
@@ -116,7 +116,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
         {
             node->allocateExtension(ExtensionKind::AdditionalRegs);
             node->extension->misc->additionalRegisterRC = reserveRegisterRC(context);
-            emitRetValRef(context, node->extension->misc->additionalRegisterRC, retVal, resolved->computedValue.storageOffset);
+            emitRetValRef(context, resolved, node->extension->misc->additionalRegisterRC, retVal, resolved->computedValue.storageOffset);
             node->resultRegisterRC = node->assignment->resultRegisterRC;
             node->doneFlags |= AST_DONE_PRE_CAST;
         }
@@ -187,7 +187,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
         if (retVal)
         {
             RegisterList r0 = reserveRegisterRC(context);
-            emitRetValRef(context, r0, true, 0);
+            emitRetValRef(context, resolved, r0, true, 0);
             emitSetZeroAtPointer(context, typeInfo->sizeOf, r0);
             freeRegisterRC(context, r0);
         }

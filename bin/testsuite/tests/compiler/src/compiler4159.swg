@@ -1,6 +1,6 @@
 #global testerror
 
-#[Swag.Safety("analysis", true)]
+#[Swag.Safety("sanity", true)]
 func toto()
 {
     var x: [2] s32

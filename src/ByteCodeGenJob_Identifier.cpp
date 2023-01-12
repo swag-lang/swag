@@ -40,7 +40,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     if (resolved->flags & OVERLOAD_RETVAL)
     {
         RegisterList r0 = reserveRegisterRC(context);
-        emitRetValRef(context, r0, true, 0);
+        emitRetValRef(context, resolved, r0, true, 0);
         identifier->resultRegisterRC                = r0;
         identifier->identifierRef->resultRegisterRC = identifier->resultRegisterRC;
         identifier->parent->resultRegisterRC        = node->resultRegisterRC;
@@ -400,13 +400,15 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
                  typeInfo->isListArray() ||
                  typeInfo->isStruct())
         {
-            auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
-            inst->b.u64 = resolved->computedValue.storageOffset;
+            auto inst       = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
+            inst->b.u64     = resolved->computedValue.storageOffset;
+            inst->c.pointer = (uint8_t*) resolved;
         }
         else if (node->forceTakeAddress() && (!typeInfo->isString() || node->parent->kind != AstNodeKind::ArrayPointerIndex))
         {
-            auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
-            inst->b.u64 = resolved->computedValue.storageOffset;
+            auto inst       = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
+            inst->b.u64     = resolved->computedValue.storageOffset;
+            inst->c.pointer = (uint8_t*) resolved;
             if (node->parent->flags & AST_ARRAY_POINTER_REF)
                 emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
         }
@@ -420,7 +422,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (typeInfo->isInterface() && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !(node->flags & AST_UFCS_FCT))
         {
-            emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC)->b.u64 = resolved->computedValue.storageOffset;
+            auto inst       = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
+            inst->b.u64     = resolved->computedValue.storageOffset;
+            inst->c.pointer = (uint8_t*) resolved;
             if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
                 emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC)->c.u64 = sizeof(void*);
             else if (node->flags & AST_TO_UFCS) // Get the structure pointer
@@ -428,8 +432,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (typeInfo->isClosure())
         {
-            auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
-            inst->b.u64 = resolved->computedValue.storageOffset;
+            auto inst       = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
+            inst->b.u64     = resolved->computedValue.storageOffset;
+            inst->c.pointer = (uint8_t*) resolved;
         }
         else if (typeInfo->numRegisters() == 2)
         {

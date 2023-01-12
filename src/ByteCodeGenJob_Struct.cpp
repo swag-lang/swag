@@ -1170,7 +1170,7 @@ bool ByteCodeGenJob::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r
     return true;
 }
 
-void ByteCodeGenJob::emitRetValRef(ByteCodeGenContext* context, RegisterList& r0, bool retVal, uint32_t stackOffset)
+void ByteCodeGenJob::emitRetValRef(ByteCodeGenContext* context, SymbolOverload* resolved, RegisterList& r0, bool retVal, uint32_t stackOffset)
 {
     auto node = context->node;
     if (retVal)
@@ -1186,7 +1186,8 @@ void ByteCodeGenJob::emitRetValRef(ByteCodeGenContext* context, RegisterList& r0
     {
         auto inst = emitInstruction(context, ByteCodeOp::MakeStackPointer, r0);
         SWAG_ASSERT(stackOffset != UINT32_MAX);
-        inst->b.s32 = stackOffset;
+        inst->b.s32     = stackOffset;
+        inst->c.pointer = (uint8_t*) resolved;
     }
 }
 
@@ -1205,7 +1206,7 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
         if (retVal)
         {
             RegisterList r0 = reserveRegisterRC(context);
-            emitRetValRef(context, r0, true, 0);
+            emitRetValRef(context, resolved, r0, true, 0);
             emitSetZeroAtPointer(context, typeInfoStruct->sizeOf, r0);
             freeRegisterRC(context, r0);
         }
@@ -1221,7 +1222,7 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
     {
         // Push self
         RegisterList r0 = reserveRegisterRC(context);
-        emitRetValRef(context, r0, retVal, resolved->computedValue.storageOffset);
+        emitRetValRef(context, resolved, r0, retVal, resolved->computedValue.storageOffset);
 
         // Offset variable reference
         if (regOffset != UINT32_MAX)
@@ -1265,7 +1266,7 @@ void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t 
                 SWAG_ASSERT(param->resolvedParameter);
                 auto typeParam = param->resolvedParameter;
 
-                emitRetValRef(context, r0, retVal, resolved->computedValue.storageOffset + typeParam->offset);
+                emitRetValRef(context, resolved, r0, retVal, resolved->computedValue.storageOffset + typeParam->offset);
                 if (retVal && typeParam->offset)
                 {
                     auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, r0, 0, r0);

@@ -1,7 +1,7 @@
 #global testerror
 
 //#[Swag.PrintBc]
-#[Swag.Safety("analysis", true)]
+#[Swag.Safety("sanity", true)]
 func toto()->*s32
 {
     a := 0

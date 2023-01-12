@@ -1187,7 +1187,7 @@ void initErrors()
     SWAG_ERROR(San0004, "[sanity] possible usage of non initialized local variable '%s'");
     SWAG_ERROR(San0005, "[sanity] possible attempt of dereferencing a null pointer");
     SWAG_ERROR(San0006, "[sanity] possible division by zero");
-    SWAG_ERROR(San0007, nullptr);
+    SWAG_ERROR(San0007, "[sanity] possible out of bound access to %s '%s'");
     SWAG_ERROR(San0008, nullptr);
     SWAG_ERROR(San0009, nullptr);
 }

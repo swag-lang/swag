@@ -1456,7 +1456,7 @@ bool ByteCodeGenJob::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNod
         SWAG_ASSERT(param->resolvedParameter);
         auto typeParam = param->resolvedParameter;
 
-        emitRetValRef(context, node->resultRegisterRC, false, resolved->computedValue.storageOffset + typeParam->offset);
+        emitRetValRef(context, resolved, node->resultRegisterRC, false, resolved->computedValue.storageOffset + typeParam->offset);
         emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->resultRegisterRC);
         context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
 

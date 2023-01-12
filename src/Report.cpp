@@ -352,7 +352,7 @@ namespace Report
     {
         if (g_SilentError > 0 && !inDiag.exceptionError)
         {
-            g_SilentErrorMsg = inDiag.textMsg;
+            g_SilentErrorMsg = inDiag.textMsg.c_str();
             return false;
         }
 
