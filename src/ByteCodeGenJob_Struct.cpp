@@ -1103,7 +1103,8 @@ bool ByteCodeGenJob::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r
     }
 
     // Shallow copy
-    emitMemCpy(context, r0, r1, typeInfoStruct->sizeOf);
+    if (!(typeInfoStruct->flags & TYPEINFO_STRUCT_EMPTY))
+        emitMemCpy(context, r0, r1, typeInfoStruct->sizeOf);
 
     // A copy
     bool mustCopy = (from->flags & (AST_TRANSIENT | AST_FORCE_MOVE)) ? false : true;

@@ -10,6 +10,21 @@
 
 #define STATE() cxt.states[cxt.state]
 
+#define MEMCPY(__cast, __sizeof)                                               \
+    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                               \
+    SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));                               \
+    if (ra->kind == ValueKind::StackAddr && rb->kind == ValueKind::StackAddr)  \
+    {                                                                          \
+        SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, ra->overload));     \
+        SWAG_CHECK(getStackAddress(addr2, cxt, rb->reg.u32, rb->overload));    \
+        SWAG_CHECK(checkStackInitialized(cxt, addr2, __sizeof, rb->overload)); \
+        SWAG_CHECK(getStackValue(vb, cxt, addr2, __sizeof));                   \
+        setStackValue(cxt, addr, __sizeof, vb);                                \
+        *(__cast*) addr = *(__cast*) addr2;                                    \
+        break;                                                                 \
+    }                                                                          \
+    invalidateCurState(cxt);
+
 #define BINOPEQ(__cast, __op, __reg)                                                      \
     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                                          \
     if (ra->kind == ValueKind::Constant)                                                  \
@@ -237,7 +252,7 @@ static bool getStackValue(Value& result, Context& cxt, void* addr, uint32_t size
 {
     auto offset = (uint8_t*) addr - STATE().stack.buffer;
     SWAG_ASSERT(sizeOf <= 8);
-    SWAG_ASSERT(offset + sizeOf <= cxt.state.stackValue.count);
+    SWAG_ASSERT(offset + sizeOf <= STATE().stackValue.count);
     auto addrValue = STATE().stackValue.buffer + offset;
 
     result.kind = addrValue->kind;
@@ -359,7 +374,7 @@ static bool getStackAddress(uint8_t*& result, Context& cxt, uint64_t stackOffset
 static void setStackValue(Context& cxt, void* addr, uint32_t sizeOf, const Value& value)
 {
     auto offset = (uint32_t) ((uint8_t*) addr - STATE().stack.buffer);
-    SWAG_ASSERT(offset + sizeOf <= STATE().stackValue.count);
+    SWAG_ASSERT(offset + sizeOf <= (uint32_t) STATE().stackValue.count);
 
     for (uint32_t i = offset; i < offset + sizeOf; i++)
     {
@@ -368,14 +383,27 @@ static void setStackValue(Context& cxt, void* addr, uint32_t sizeOf, const Value
     }
 }
 
+static void invalidateCurStateStack(Context& cxt)
+{
+    setStackValue(cxt, STATE().stack.buffer, STATE().stack.count, {ValueKind::Unknown});
+}
+
+static void invalidateCurState(Context& cxt)
+{
+    for (int i = 0; i < STATE().regs.count; i++)
+        STATE().regs[i] = {ValueKind::Unknown};
+    invalidateCurStateStack(cxt);
+}
+
 bool ByteCodeOptimizer::optimizePassSanityStack(ByteCodeOptContext* context)
 {
-    auto&    cxt  = *(Context*) context->checkContext;
-    Value*   ra   = nullptr;
-    Value*   rb   = nullptr;
-    Value*   rc   = nullptr;
-    Value*   rd   = nullptr;
-    uint8_t* addr = nullptr;
+    auto&    cxt   = *(Context*) context->checkContext;
+    Value*   ra    = nullptr;
+    Value*   rb    = nullptr;
+    Value*   rc    = nullptr;
+    Value*   rd    = nullptr;
+    uint8_t* addr  = nullptr;
+    uint8_t* addr2 = nullptr;
     Value    va, vb, vc;
 
     auto ip = STATE().ip;
@@ -1577,19 +1605,30 @@ bool ByteCodeOptimizer::optimizePassSanityStack(ByteCodeOptContext* context)
             ra->reg.u64 = ~ra->reg.u64;
             break;
 
+        case ByteCodeOp::MemCpy8:
+            MEMCPY(uint8_t, 1);
+            break;
+        case ByteCodeOp::MemCpy16:
+            MEMCPY(uint16_t, 2);
+            break;
+        case ByteCodeOp::MemCpy32:
+            MEMCPY(uint32_t, 4);
+            break;
+        case ByteCodeOp::MemCpy64:
+            MEMCPY(uint64_t, 8);
+            break;
+
         case ByteCodeOp::LambdaCall:
         case ByteCodeOp::LocalCall:
         case ByteCodeOp::ForeignCall:
-            setStackValue(cxt, STATE().stack.buffer, STATE().stack.count, {ValueKind::Unknown});
+            invalidateCurStateStack(cxt);
             break;
 
         default:
-            for (int i = 0; i < STATE().regs.count; i++)
-                STATE().regs[i] = {ValueKind::Unknown};
-            setStackValue(cxt, STATE().stack.buffer, STATE().stack.count, {ValueKind::Unknown});
+            invalidateCurState(cxt);
+            cxt.incomplete = true;
 
             // printf("%s\n", g_ByteCodeOpDesc[(int) ip->op].name);
-            cxt.incomplete = true;
             break;
         }
 
@@ -1603,7 +1642,7 @@ bool ByteCodeOptimizer::optimizePassSanityStack(ByteCodeOptContext* context)
 bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
 {
 #if 0
-    if (context->bc->name != "__compiler4176.toto")
+    if (context->bc->name != "__compiler2540.__test9")
         return true;
     context->bc->print();
 #endif

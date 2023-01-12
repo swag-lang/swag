@@ -836,7 +836,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     uint32_t storageOffset     = 0;
     uint32_t storageIndexField = 0;
     uint32_t storageIndexConst = 0;
-    uint64_t structFlags       = TYPEINFO_STRUCT_ALL_UNINITIALIZED;
+    uint64_t structFlags       = TYPEINFO_STRUCT_ALL_UNINITIALIZED | TYPEINFO_STRUCT_EMPTY;
 
     // No need to flatten structure if it's not a compound (optim)
     VectorNative<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? job->tmpNodes : node->content->childs;
@@ -918,6 +918,10 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         typeParam->index = storageIndexField;
         auto varTypeInfo = varDecl->typeInfo;
 
+        // If variable is not empty, then struct is not
+        if (!varTypeInfo->isStruct() && !varTypeInfo->isArrayOfStruct())
+            structFlags &= ~TYPEINFO_STRUCT_EMPTY;
+
         // If variable is initialized, struct is too.
         if (!(varDecl->flags & AST_EXPLICITLY_NOT_INITIALIZED))
         {
@@ -944,6 +948,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
             if (!(varTypeInfo->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED))
                 structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
+            if (!(varTypeInfo->flags & TYPEINFO_STRUCT_EMPTY))
+                structFlags &= ~TYPEINFO_STRUCT_EMPTY;
 
             if (varDecl->type && varDecl->type->flags & AST_HAS_STRUCT_PARAMETERS)
             {
@@ -975,6 +981,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                 structFlags |= varTypeArray->pointedType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES;
                 if (!(varTypeArray->pointedType->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED))
                     structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
+                if (!(varTypeArray->pointedType->flags & TYPEINFO_STRUCT_EMPTY))
+                    structFlags &= ~TYPEINFO_STRUCT_EMPTY;
             }
         }
 
@@ -1174,9 +1182,11 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     {
         typeInfo->flags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
         typeInfo->flags &= ~TYPEINFO_STRUCT_HAS_INIT_VALUES;
+        typeInfo->flags &= ~TYPEINFO_STRUCT_EMPTY;
     }
 
     typeInfo->flags |= (structFlags & TYPEINFO_STRUCT_ALL_UNINITIALIZED);
+    typeInfo->flags |= (structFlags & TYPEINFO_STRUCT_EMPTY);
     typeInfo->flags |= (structFlags & TYPEINFO_STRUCT_HAS_INIT_VALUES);
     typeInfo->flags |= (structFlags & TYPEINFO_STRUCT_NO_COPY);
 

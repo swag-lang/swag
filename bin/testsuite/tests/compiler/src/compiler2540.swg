@@ -1,4 +1,4 @@
-#[Swag.NoCopy]
+//#[Swag.NoCopy]
 struct AA
 {
 }
@@ -11,5 +11,5 @@ struct BB
 #test
 {
     var x: BB
-    y :=,move x
+    y := x
 }

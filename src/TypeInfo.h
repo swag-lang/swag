@@ -78,6 +78,7 @@ static const uint64_t TYPEINFO_POINTER_REF              = 0x00001000'00000000;
 static const uint64_t TYPEINFO_POINTER_AUTO_REF         = 0x00002000'00000000;
 static const uint64_t TYPEINFO_STRUCT_NO_INIT           = 0x00004000'00000000;
 static const uint64_t TYPEINFO_SPECOP_GENERATED         = 0x00008000'00000000;
+static const uint64_t TYPEINFO_STRUCT_EMPTY             = 0x00010000'00000000;
 
 static const uint32_t ISSAME_EXACT       = 0x00000001;
 static const uint32_t ISSAME_CAST        = 0x00000002;
