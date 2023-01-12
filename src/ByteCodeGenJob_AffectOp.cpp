@@ -120,6 +120,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->isClosure() && aliasFrom->isClosure())
     {
+        // Because we copy the full capture block, but only capture fields are initialized
         SWAG_ASSERT(from);
 
         // :ConvertToClosure

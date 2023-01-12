@@ -16,7 +16,6 @@ impl A
 
 var G = 0
 
-//#[Swag.PrintBc]
 #test
 {
     var x: A

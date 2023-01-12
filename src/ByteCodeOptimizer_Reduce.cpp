@@ -4686,7 +4686,7 @@ void ByteCodeOptimizer::reduceStackOp(ByteCodeOptContext* context, ByteCodeInstr
 
 void ByteCodeOptimizer::reduceForceSafe(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
-    if (ip->flags & BCI_SAFETY_OF)
+    if (ip->dynFlags & BCID_SAFETY_OF)
         return;
 
     switch (ip->op)

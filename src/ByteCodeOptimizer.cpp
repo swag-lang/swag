@@ -292,9 +292,9 @@ void ByteCodeOptimizer::setContextFlags(ByteCodeOptContext* context)
     {
         // Mark some instructions for some specific passes
         if (ip->node && ip->node->sourceFile && ip->node->sourceFile->module && ip->node->sourceFile->module->mustEmitSafetyOF(ip->node))
-            ip->flags |= BCI_SAFETY_OF;
+            ip->dynFlags |= BCID_SAFETY_OF;
         else
-            ip->flags &= ~BCI_SAFETY_OF;
+            ip->dynFlags &= ~BCID_SAFETY_OF;
 
         switch (ip->op)
         {

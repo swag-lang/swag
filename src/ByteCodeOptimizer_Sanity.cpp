@@ -23,7 +23,7 @@
         *(__cast*) addr = *(__cast*) addr2;                                    \
         break;                                                                 \
     }                                                                          \
-    invalidateCurState(cxt);
+    invalidateCurStateStack(cxt);
 
 #define BINOPEQ(__cast, __op, __reg)                                                      \
     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                                          \
@@ -251,17 +251,10 @@ static bool checkStackOffset(Context& cxt, uint64_t stackOffset, SymbolOverload*
 static bool getStackValue(Value& result, Context& cxt, void* addr, uint32_t sizeOf)
 {
     auto offset = (uint8_t*) addr - STATE().stack.buffer;
-    SWAG_ASSERT(sizeOf <= 8);
     SWAG_ASSERT(offset + sizeOf <= STATE().stackValue.count);
     auto addrValue = STATE().stackValue.buffer + offset;
 
-    result.kind = addrValue->kind;
-    if (result.kind == ValueKind::Invalid)
-    {
-        result.overload = nullptr;
-        return true;
-    }
-
+    result.kind     = addrValue->kind;
     result.overload = addrValue->overload;
     addrValue++;
 
@@ -270,17 +263,11 @@ static bool getStackValue(Value& result, Context& cxt, void* addr, uint32_t size
         auto value = *addrValue;
         addrValue++;
 
-        if (value.kind == ValueKind::Invalid)
-        {
-            result.kind     = ValueKind::Invalid;
-            result.overload = nullptr;
-            return true;
-        }
-
         if (value.kind != result.kind)
         {
             result.kind     = ValueKind::Unknown;
             result.overload = nullptr;
+            return true;
         }
 
         result = value;
@@ -1617,6 +1604,22 @@ bool ByteCodeOptimizer::optimizePassSanityStack(ByteCodeOptContext* context)
         case ByteCodeOp::MemCpy64:
             MEMCPY(uint64_t, 8);
             break;
+        case ByteCodeOp::IntrinsicMemCpy:
+            SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+            SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));
+            SWAG_CHECK(getImmediateC(vc, cxt, ip));
+            if (ra->kind == ValueKind::StackAddr && rb->kind == ValueKind::StackAddr && vc.kind == ValueKind::Constant)
+            {
+                SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, ra->overload));
+                SWAG_CHECK(getStackAddress(addr2, cxt, rb->reg.u32, rb->overload));
+                SWAG_CHECK(checkStackInitialized(cxt, addr2, vc.reg.u32, rb->overload));
+                SWAG_CHECK(getStackValue(va, cxt, addr2, vc.reg.u32));
+                setStackValue(cxt, addr, vc.reg.u32, va);
+                memcpy(addr, addr2, vc.reg.u32);
+                break;
+            }
+            invalidateCurStateStack(cxt);
+            break;
 
         case ByteCodeOp::LambdaCall:
         case ByteCodeOp::LocalCall:
@@ -1642,7 +1645,7 @@ bool ByteCodeOptimizer::optimizePassSanityStack(ByteCodeOptContext* context)
 bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
 {
 #if 0
-    if (context->bc->name != "__compiler2540.__test9")
+    if (context->bc->name != "__compiler3583.__test9")
         return true;
     context->bc->print();
 #endif
@@ -1661,16 +1664,16 @@ bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
     auto funcDecl = CastAst<AstFuncDecl>(cxt.bc->node, AstNodeKind::FuncDecl);
 
     state.stack.reserve(funcDecl->stackSize);
-    memset(state.stack.buffer, 0, funcDecl->stackSize * sizeof(uint8_t));
     state.stack.count = funcDecl->stackSize;
+    memset(state.stack.buffer, 0, state.stack.count * sizeof(uint8_t));
 
     state.stackValue.reserve(funcDecl->stackSize);
-    memset(state.stackValue.buffer, (uint8_t) ValueKind::Invalid, funcDecl->stackSize * sizeof(uint8_t));
     state.stackValue.count = funcDecl->stackSize;
+    memset(state.stackValue.buffer, (uint8_t) ValueKind::Invalid, state.stackValue.count * sizeof(Value));
 
     state.regs.reserve(context->bc->maxReservedRegisterRC);
-    memset(state.regs.buffer, 0, context->bc->maxReservedRegisterRC * sizeof(Value));
     state.regs.count = context->bc->maxReservedRegisterRC;
+    memset(state.regs.buffer, 0, state.regs.count * sizeof(Value));
 
     context->checkContext = &cxt;
 
