@@ -1,8 +1,4 @@
-//#global testerror
-
-//#[Swag.Optim("", false)]
 #[Swag.Safety("", true)]
-//#[Swag.PrintBc]
 func toto()->s32
 {
     x := 1

@@ -1189,7 +1189,7 @@ void initErrors()
     SWAG_ERROR(San0006, "[sanity] attempt of dereferencing null %s '%s'");
     SWAG_ERROR(San0007, "[sanity] division by zero");
     SWAG_ERROR(San0008, "[sanity] division by zero (%s '%s')");
-    SWAG_ERROR(San0009, "[sanity] out of bound access to %s '%s'");
+    SWAG_ERROR(San0009, nullptr);
     SWAG_ERROR(San0010, "[sanity] stack corruption, stack offset is '%lld' but stack size is '%lld'");
     SWAG_ERROR(San0011, nullptr);
     SWAG_ERROR(San0012, nullptr);
