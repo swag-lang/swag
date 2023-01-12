@@ -1,6 +1,5 @@
 #global testerror
 
-//#[Swag.PrintBc]
 #[Swag.Optim("", false)]
 #[Swag.Safety("sanity", true)]
 func toto(v: bool)
