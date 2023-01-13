@@ -450,15 +450,19 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
             break;
 
+        case ByteCodeOp::BinOpShiftLeftS8:
         case ByteCodeOp::BinOpShiftLeftU8:
             emitShiftLogical(pp, ip, 8, 0xE0);
             break;
+        case ByteCodeOp::BinOpShiftLeftS16:
         case ByteCodeOp::BinOpShiftLeftU16:
             emitShiftLogical(pp, ip, 16, 0xE0);
             break;
+        case ByteCodeOp::BinOpShiftLeftS32:
         case ByteCodeOp::BinOpShiftLeftU32:
             emitShiftLogical(pp, ip, 32, 0xE0);
             break;
+        case ByteCodeOp::BinOpShiftLeftS64:
         case ByteCodeOp::BinOpShiftLeftU64:
             emitShiftLogical(pp, ip, 64, 0xE0);
             break;

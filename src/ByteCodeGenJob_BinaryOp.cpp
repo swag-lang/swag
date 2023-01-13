@@ -343,30 +343,31 @@ bool ByteCodeGenJob::emitShiftLeft(ByteCodeGenContext* context, TypeInfo* typeIn
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::S8:
-        emitInstruction(context, ByteCodeOp::BinOpShiftLeftU8, r0, r1, r2)->flags |= shiftFlags;
+        emitInstruction(context, ByteCodeOp::BinOpShiftLeftS8, r0, r1, r2)->flags |= shiftFlags;
         return true;
-    case NativeTypeKind::S16:
-        emitInstruction(context, ByteCodeOp::BinOpShiftLeftU16, r0, r1, r2)->flags |= shiftFlags;
-        return true;
-    case NativeTypeKind::S32:
-        emitInstruction(context, ByteCodeOp::BinOpShiftLeftU32, r0, r1, r2)->flags |= shiftFlags;
-        return true;
-    case NativeTypeKind::S64:
-    case NativeTypeKind::Int:
-        emitInstruction(context, ByteCodeOp::BinOpShiftLeftU64, r0, r1, r2)->flags |= shiftFlags;
-        return true;
-
     case NativeTypeKind::U8:
         emitInstruction(context, ByteCodeOp::BinOpShiftLeftU8, r0, r1, r2)->flags |= shiftFlags;
         return true;
+
+    case NativeTypeKind::S16:
+        emitInstruction(context, ByteCodeOp::BinOpShiftLeftS16, r0, r1, r2)->flags |= shiftFlags;
+        return true;
     case NativeTypeKind::U16:
         emitInstruction(context, ByteCodeOp::BinOpShiftLeftU16, r0, r1, r2)->flags |= shiftFlags;
+        return true;
+
+    case NativeTypeKind::S32:
+        emitInstruction(context, ByteCodeOp::BinOpShiftLeftS32, r0, r1, r2)->flags |= shiftFlags;
         return true;
     case NativeTypeKind::U32:
     case NativeTypeKind::Rune:
         emitInstruction(context, ByteCodeOp::BinOpShiftLeftU32, r0, r1, r2)->flags |= shiftFlags;
         return true;
 
+    case NativeTypeKind::S64:
+    case NativeTypeKind::Int:
+        emitInstruction(context, ByteCodeOp::BinOpShiftLeftS64, r0, r1, r2)->flags |= shiftFlags;
+        return true;
     case NativeTypeKind::U64:
     case NativeTypeKind::UInt:
         emitInstruction(context, ByteCodeOp::BinOpShiftLeftU64, r0, r1, r2)->flags |= shiftFlags;

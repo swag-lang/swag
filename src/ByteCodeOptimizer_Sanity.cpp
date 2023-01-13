@@ -1699,6 +1699,18 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             BINOPDIV(%, u64);
             break;
 
+        case ByteCodeOp::BinOpShiftLeftS8:
+            BINOP2(<< , u8, u32);
+            break;
+        case ByteCodeOp::BinOpShiftLeftS16:
+            BINOP2(<< , u16, u32);
+            break;
+        case ByteCodeOp::BinOpShiftLeftS32:
+            BINOP2(<< , u32, u32);
+            break;
+        case ByteCodeOp::BinOpShiftLeftS64:
+            BINOP2(<< , u64, u32);
+            break;
         case ByteCodeOp::BinOpShiftLeftU8:
             BINOP2(<<, u8, u32);
             break;

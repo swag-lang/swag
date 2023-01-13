@@ -1344,15 +1344,19 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::BinOpShiftLeftS8:
         case ByteCodeOp::BinOpShiftLeftU8:
             emitShiftLogical(context, builder, allocR, ip, 8, true);
             break;
+        case ByteCodeOp::BinOpShiftLeftS16:
         case ByteCodeOp::BinOpShiftLeftU16:
             emitShiftLogical(context, builder, allocR, ip, 16, true);
             break;
+        case ByteCodeOp::BinOpShiftLeftS32:
         case ByteCodeOp::BinOpShiftLeftU32:
             emitShiftLogical(context, builder, allocR, ip, 32, true);
             break;
+        case ByteCodeOp::BinOpShiftLeftS64:
         case ByteCodeOp::BinOpShiftLeftU64:
             emitShiftLogical(context, builder, allocR, ip, 64, true);
             break;

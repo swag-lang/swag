@@ -1734,6 +1734,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
+    case ByteCodeOp::BinOpShiftLeftS8:
     case ByteCodeOp::BinOpShiftLeftU8:
     {
         Register r1, r2;
@@ -1742,6 +1743,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         ByteCodeRun::executeLeftShift(registersRC + ip->c.u32, r1, r2, 8, false, ip->flags & BCI_SHIFT_SMALL);
         break;
     }
+    case ByteCodeOp::BinOpShiftLeftS16:
     case ByteCodeOp::BinOpShiftLeftU16:
     {
         Register r1, r2;
@@ -1750,6 +1752,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         ByteCodeRun::executeLeftShift(registersRC + ip->c.u32, r1, r2, 16, false, ip->flags & BCI_SHIFT_SMALL);
         break;
     }
+    case ByteCodeOp::BinOpShiftLeftS32:
     case ByteCodeOp::BinOpShiftLeftU32:
     {
         Register r1, r2;
@@ -1758,6 +1761,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         ByteCodeRun::executeLeftShift(registersRC + ip->c.u32, r1, r2, 32, false, ip->flags & BCI_SHIFT_SMALL);
         break;
     }
+    case ByteCodeOp::BinOpShiftLeftS64:
     case ByteCodeOp::BinOpShiftLeftU64:
     {
         Register r1, r2;

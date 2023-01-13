@@ -297,25 +297,25 @@ void ByteCodeGenJob::emitSafetyLeftShift(ByteCodeGenContext* context, uint32_t r
         switch (typeInfo->sizeOf)
         {
         case 1:
-            emitInstruction(context, ByteCodeOp::BinOpShiftLeftU8, r0, r1, re)->flags |= shiftFlags;
+            emitInstruction(context, ByteCodeOp::BinOpShiftLeftS8, r0, r1, re)->flags |= shiftFlags;
             emitInstruction(context, ByteCodeOp::BinOpShiftRightS8, re, r1, re)->flags |= shiftFlags;
             emitInstruction(context, ByteCodeOp::CompareOpEqual8, re, r0, re1);
             emitAssert(context, re1, msg);
             break;
         case 2:
-            emitInstruction(context, ByteCodeOp::BinOpShiftLeftU16, r0, r1, re)->flags |= shiftFlags;
+            emitInstruction(context, ByteCodeOp::BinOpShiftLeftS16, r0, r1, re)->flags |= shiftFlags;
             emitInstruction(context, ByteCodeOp::BinOpShiftRightS16, re, r1, re)->flags |= shiftFlags;
             emitInstruction(context, ByteCodeOp::CompareOpEqual16, re, r0, re1);
             emitAssert(context, re1, msg);
             break;
         case 4:
-            emitInstruction(context, ByteCodeOp::BinOpShiftLeftU32, r0, r1, re)->flags |= shiftFlags;
+            emitInstruction(context, ByteCodeOp::BinOpShiftLeftS32, r0, r1, re)->flags |= shiftFlags;
             emitInstruction(context, ByteCodeOp::BinOpShiftRightS32, re, r1, re)->flags |= shiftFlags;
             emitInstruction(context, ByteCodeOp::CompareOpEqual32, re, r0, re1);
             emitAssert(context, re1, msg);
             break;
         case 8:
-            emitInstruction(context, ByteCodeOp::BinOpShiftLeftU64, r0, r1, re)->flags |= shiftFlags;
+            emitInstruction(context, ByteCodeOp::BinOpShiftLeftS64, r0, r1, re)->flags |= shiftFlags;
             emitInstruction(context, ByteCodeOp::BinOpShiftRightS64, re, r1, re)->flags |= shiftFlags;
             emitInstruction(context, ByteCodeOp::CompareOpEqual64, re, r0, re1);
             emitAssert(context, re1, msg);
