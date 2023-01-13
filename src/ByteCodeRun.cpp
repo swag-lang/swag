@@ -1739,7 +1739,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         Register r1, r2;
         r1.u8  = IMMA_U8(ip);
         r2.u32 = IMMB_U32(ip);
-        ByteCodeRun::executeShiftLeft(registersRC + ip->c.u32, r1, r2, 8, ip->flags & BCI_SHIFT_SMALL);
+        ByteCodeRun::executeShiftLeft(registersRC + ip->c.u32, r1, r2, 8, false, ip->flags & BCI_SHIFT_SMALL);
         break;
     }
     case ByteCodeOp::BinOpShiftLeftU16:
@@ -1747,7 +1747,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         Register r1, r2;
         r1.u16 = IMMA_U16(ip);
         r2.u32 = IMMB_U32(ip);
-        ByteCodeRun::executeShiftLeft(registersRC + ip->c.u32, r1, r2, 16, ip->flags & BCI_SHIFT_SMALL);
+        ByteCodeRun::executeShiftLeft(registersRC + ip->c.u32, r1, r2, 16, false, ip->flags & BCI_SHIFT_SMALL);
         break;
     }
     case ByteCodeOp::BinOpShiftLeftU32:
@@ -1755,7 +1755,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         Register r1, r2;
         r1.u32 = IMMA_U32(ip);
         r2.u32 = IMMB_U32(ip);
-        ByteCodeRun::executeShiftLeft(registersRC + ip->c.u32, r1, r2, 32, ip->flags & BCI_SHIFT_SMALL);
+        ByteCodeRun::executeShiftLeft(registersRC + ip->c.u32, r1, r2, 32, false, ip->flags & BCI_SHIFT_SMALL);
         break;
     }
     case ByteCodeOp::BinOpShiftLeftU64:
@@ -1763,7 +1763,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         Register r1, r2;
         r1.u64 = IMMA_U64(ip);
         r2.u32 = IMMB_U32(ip);
-        ByteCodeRun::executeShiftLeft(registersRC + ip->c.u32, r1, r2, 64, ip->flags & BCI_SHIFT_SMALL);
+        ByteCodeRun::executeShiftLeft(registersRC + ip->c.u32, r1, r2, 64, false, ip->flags & BCI_SHIFT_SMALL);
         break;
     }
 
@@ -3312,7 +3312,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         auto     ptr = registersRC[ip->a.u32].pointer;
         rr.u8        = *(uint8_t*) ptr;
         r1.u32       = IMMB_U32(ip);
-        ByteCodeRun::executeShiftLeft(&rr, rr, r1, 8, ip->flags & BCI_SHIFT_SMALL);
+        ByteCodeRun::executeShiftLeft(&rr, rr, r1, 8, false, ip->flags & BCI_SHIFT_SMALL);
         *(uint8_t*) ptr = rr.u8;
         break;
     }
@@ -3322,7 +3322,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         auto     ptr = registersRC[ip->a.u32].pointer;
         rr.u16       = *(uint16_t*) ptr;
         r1.u32       = IMMB_U32(ip);
-        ByteCodeRun::executeShiftLeft(&rr, rr, r1, 16, ip->flags & BCI_SHIFT_SMALL);
+        ByteCodeRun::executeShiftLeft(&rr, rr, r1, 16, false, ip->flags & BCI_SHIFT_SMALL);
         *(uint16_t*) ptr = rr.u16;
         break;
     }
@@ -3332,7 +3332,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         auto     ptr = registersRC[ip->a.u32].pointer;
         rr.u32       = *(uint32_t*) ptr;
         r1.u32       = IMMB_U32(ip);
-        ByteCodeRun::executeShiftLeft(&rr, rr, r1, 32, ip->flags & BCI_SHIFT_SMALL);
+        ByteCodeRun::executeShiftLeft(&rr, rr, r1, 32, false, ip->flags & BCI_SHIFT_SMALL);
         *(uint32_t*) ptr = rr.u32;
         break;
     }
@@ -3342,7 +3342,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         auto     ptr = registersRC[ip->a.u32].pointer;
         rr.u64       = *(uint64_t*) ptr;
         r1.u32       = IMMB_U32(ip);
-        ByteCodeRun::executeShiftLeft(&rr, rr, r1, 64, ip->flags & BCI_SHIFT_SMALL);
+        ByteCodeRun::executeShiftLeft(&rr, rr, r1, 64, false, ip->flags & BCI_SHIFT_SMALL);
         *(uint64_t*) ptr = rr.u64;
         break;
     }

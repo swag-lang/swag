@@ -10,6 +10,7 @@
 #include "Report.h"
 #include "ByteCodeGenJob.h"
 #include "TypeManager.h"
+#include "ByteCodeRun.h"
 
 #pragma optimize("", off)
 
@@ -74,18 +75,24 @@
     }                                                                  \
     BINOPEQ(__cast, __op, __reg);
 
-#define BINOPEQ_SHIFT_OVF(__cast, __op, __reg1, __reg2)                                    \
-    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                                           \
-    SWAG_CHECK(checkNotNull(cxt, ra));                                                     \
-    if (ra->kind == ValueKind::StackAddr)                                                  \
-    {                                                                                      \
-        SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, sizeof(vb.reg.__reg1)));        \
-        SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg1), ra->overload)); \
-        SWAG_CHECK(getImmediateB(vb, cxt, ip));                                            \
-        if (vb.kind == ValueKind::Unknown)                                                 \
-            ra->kind = ValueKind::Unknown;                                                 \
-        else                                                                               \
-            *(__cast*) addr __op vb.reg.__reg2;                                            \
+#define BINOPEQ_SHIFT_OVF(__cast, __reg, __func, __isSigned, __isSmall)                   \
+    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                                          \
+    SWAG_CHECK(checkNotNull(cxt, ra));                                                    \
+    if (ra->kind == ValueKind::StackAddr)                                                 \
+    {                                                                                     \
+        SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, sizeof(vb.reg.__reg)));        \
+        SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra->overload)); \
+        SWAG_CHECK(getStackValue(va, cxt, addr, sizeof(vb.reg.__reg)));                   \
+        SWAG_CHECK(getImmediateB(vb, cxt, ip));                                           \
+        if (va.kind == ValueKind::Unknown || vb.kind == ValueKind::Unknown)               \
+            setStackValue(cxt, addr, sizeof(vb.reg.__reg), ValueKind::Unknown);           \
+        else                                                                              \
+        {                                                                                 \
+            Register r;                                                                   \
+            r.__reg = *(__cast*) addr;                                                    \
+            __func(&r, r, vb.reg, sizeof(vb.reg.__reg) * 8, __isSigned, __isSmall);       \
+            *(__cast*) addr = r.__reg;                                                    \
+        }                                                                                 \
     }
 
 #define CMPOP(__op, __reg)                                                                                                  \
@@ -1232,41 +1239,41 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             break;
 
         case ByteCodeOp::AffectOpShiftLeftEqU8:
-            BINOPEQ_SHIFT_OVF(uint8_t, <<=, u8, u32);
+            BINOPEQ_SHIFT_OVF(uint8_t, u8, ByteCodeRun::executeShiftLeft, false, ip->flags & BCI_SHIFT_SMALL);
             break;
         case ByteCodeOp::AffectOpShiftLeftEqU16:
-            BINOPEQ_SHIFT_OVF(uint8_t, <<=, u16, u32);
+            BINOPEQ_SHIFT_OVF(uint16_t, u16, ByteCodeRun::executeShiftLeft, false, ip->flags & BCI_SHIFT_SMALL);
             break;
         case ByteCodeOp::AffectOpShiftLeftEqU32:
-            BINOPEQ_SHIFT_OVF(uint8_t, <<=, u32, u32);
+            BINOPEQ_SHIFT_OVF(uint32_t, u32, ByteCodeRun::executeShiftLeft, false, ip->flags & BCI_SHIFT_SMALL);
             break;
         case ByteCodeOp::AffectOpShiftLeftEqU64:
-            BINOPEQ_SHIFT_OVF(uint8_t, <<=, u64, u32);
+            BINOPEQ_SHIFT_OVF(uint64_t, u64, ByteCodeRun::executeShiftLeft, false, ip->flags & BCI_SHIFT_SMALL);
             break;
 
         case ByteCodeOp::AffectOpShiftRightEqS8:
-            BINOPEQ_SHIFT_OVF(int8_t, >>=, s8, u32);
+            BINOPEQ_SHIFT_OVF(int8_t, s8, ByteCodeRun::executeShiftRight, true, ip->flags & BCI_SHIFT_SMALL);
             break;
         case ByteCodeOp::AffectOpShiftRightEqS16:
-            BINOPEQ_SHIFT_OVF(int8_t, >>=, s16, u32);
+            BINOPEQ_SHIFT_OVF(int16_t, s16, ByteCodeRun::executeShiftRight, true, ip->flags & BCI_SHIFT_SMALL);
             break;
         case ByteCodeOp::AffectOpShiftRightEqS32:
-            BINOPEQ_SHIFT_OVF(int8_t, >>=, s32, u32);
+            BINOPEQ_SHIFT_OVF(int32_t, s32, ByteCodeRun::executeShiftRight, true, ip->flags & BCI_SHIFT_SMALL);
             break;
         case ByteCodeOp::AffectOpShiftRightEqS64:
-            BINOPEQ_SHIFT_OVF(int8_t, >>=, s64, u32);
+            BINOPEQ_SHIFT_OVF(int64_t, s64, ByteCodeRun::executeShiftRight, true, ip->flags & BCI_SHIFT_SMALL);
             break;
         case ByteCodeOp::AffectOpShiftRightEqU8:
-            BINOPEQ_SHIFT_OVF(uint8_t, >>=, u8, u32);
+            BINOPEQ_SHIFT_OVF(uint8_t, u8, ByteCodeRun::executeShiftRight, true, ip->flags & BCI_SHIFT_SMALL);
             break;
         case ByteCodeOp::AffectOpShiftRightEqU16:
-            BINOPEQ_SHIFT_OVF(uint8_t, >>=, u16, u32);
+            BINOPEQ_SHIFT_OVF(uint16_t, u16, ByteCodeRun::executeShiftRight, true, ip->flags & BCI_SHIFT_SMALL);
             break;
         case ByteCodeOp::AffectOpShiftRightEqU32:
-            BINOPEQ_SHIFT_OVF(uint8_t, >>=, u32, u32);
+            BINOPEQ_SHIFT_OVF(uint32_t, u32, ByteCodeRun::executeShiftRight, true, ip->flags & BCI_SHIFT_SMALL);
             break;
         case ByteCodeOp::AffectOpShiftRightEqU64:
-            BINOPEQ_SHIFT_OVF(uint8_t, >>=, u64, u32);
+            BINOPEQ_SHIFT_OVF(uint64_t, u64, ByteCodeRun::executeShiftRight, true, ip->flags & BCI_SHIFT_SMALL);
             break;
 
         case ByteCodeOp::NegBool:

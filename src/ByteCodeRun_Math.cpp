@@ -5,7 +5,7 @@
 #include "Context.h"
 #include "ErrorIds.h"
 
-void ByteCodeRun::executeShiftLeft(Register* rdest, const Register& rleft, const Register& rright, uint32_t numBits, bool isSmall)
+void ByteCodeRun::executeShiftLeft(Register* rdest, const Register& rleft, const Register& rright, uint32_t numBits, bool isSigned, bool isSmall)
 {
     auto shift = rright.u32;
     if (isSmall)
