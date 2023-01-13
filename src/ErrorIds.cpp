@@ -70,8 +70,8 @@ void initErrors()
     SWAG_ERROR(Saf0021, "[safety] invalid float value (NaN)");
     SWAG_ERROR(Saf0004, "[safety] invalid slicing, the lower bound is greater than the upper bound");
     SWAG_ERROR(Saf0005, "[safety] invalid slicing, the upper bound is out of range");
-    SWAG_ERROR(Saf0001, "[safety] the '<<' operand on type '%s' is greater than '%d'");
-    SWAG_ERROR(Saf0002, "[safety] the '>>' operand on type '%s' is greater than '%d'");
+    SWAG_ERROR(Saf0001, nullptr);
+    SWAG_ERROR(Saf0002, nullptr);
     SWAG_ERROR(Saf0018, "[safety] truncated bits when casting expression from '%s' to '%s'");
     SWAG_ERROR(Saf0019, "[safety] unexpected switch value (switch is marked with 'Swag.Complete')");
     SWAG_ERROR(Saf0026, "[safety] '@asin' invalid argument (type is '%s')");

@@ -405,12 +405,12 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 {
                     if (tokenId == TokenId::SymLowerLowerEqual)
                     {
-                        auto msg = ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeftOp, left->typeInfo);
+                        auto msg = ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, left->typeInfo);
                         return context->report({right, msg});
                     }
                     else
                     {
-                        auto msg = ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftRightOp, left->typeInfo);
+                        auto msg = ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftRight, left->typeInfo);
                         return context->report({right, msg});
                     }
                 }
