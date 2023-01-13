@@ -298,13 +298,28 @@ inline bool mulWillOverflow(AstNode* node, uint64_t x, uint64_t y)
     return false;
 }
 
-inline bool shiftLeftHasOverflowed(AstNode* node, int8_t rdest, int8_t rleft, uint32_t rright, bool isSmall)
+template<typename T>
+inline bool leftShiftWillOverflow(AstNode* node, T left, uint32_t right)
 {
     if (node->sourceFile->module->mustEmitSafetyOF(node))
     {
-        if (rright >= 8)
+        if (right >= sizeof(T) * 8)
             return true;
-        if ((rdest & 0x80) != (rleft & 0x80))
+        if (((left << right) >> right) != left)
+            return true;
+    }
+
+    return false;
+}
+
+template<typename T>
+inline bool rightShiftWillOverflow(AstNode* node, T left, uint32_t right)
+{
+    if (node->sourceFile->module->mustEmitSafetyOF(node))
+    {
+        if (right >= sizeof(T) * 8)
+            return true;
+        if (((left >> right) << right) != left)
             return true;
     }
 

@@ -1043,93 +1043,51 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
     {
         node->setFlagsValueIsComputed();
 
-        auto msg = ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, leftTypeInfo);
-
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S8:
-            ByteCodeRun::executeShiftLeft(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 8, true, isSmall);
-            if (module->mustEmitSafetyOF(node))
-            {
-                if (right->computedValue->reg.u32 >= 8)
-                    return context->report({right, msg});
-                if ((node->computedValue->reg.s8 & 0x80) != (left->computedValue->reg.s8 & 0x80))
-                    return context->report({node, msg});
-            }
+            if (leftShiftWillOverflow(node, left->computedValue->reg.s8, right->computedValue->reg.u32))
+                return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoS8)});
+            ByteCodeRun::executeLeftShift(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 8, true, isSmall);
             break;
         case NativeTypeKind::S16:
-            ByteCodeRun::executeShiftLeft(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 16, true, isSmall);
-            if (module->mustEmitSafetyOF(node))
-            {
-                if (right->computedValue->reg.u32 >= 16)
-                    return context->report({right, msg});
-                if ((node->computedValue->reg.s16 & 0x8000) != (left->computedValue->reg.s16 & 0x8000))
-                    return context->report({node, msg});
-            }
+            if (leftShiftWillOverflow(node, left->computedValue->reg.s16, right->computedValue->reg.u32))
+                return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoS16)});
+            ByteCodeRun::executeLeftShift(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 16, true, isSmall);
             break;
         case NativeTypeKind::S32:
-            ByteCodeRun::executeShiftLeft(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 32, true, isSmall);
-            if (module->mustEmitSafetyOF(node))
-            {
-                if (right->computedValue->reg.u32 >= 32)
-                    return context->report({right, msg});
-                if ((node->computedValue->reg.s32 & 0x80000000) != (left->computedValue->reg.s32 & 0x80000000))
-                    return context->report({node, msg});
-            }
+            if (leftShiftWillOverflow(node, left->computedValue->reg.s32, right->computedValue->reg.u32))
+                return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoS32)});
+            ByteCodeRun::executeLeftShift(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 32, true, isSmall);
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
-            ByteCodeRun::executeShiftLeft(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 64, true, isSmall);
-            if (module->mustEmitSafetyOF(node))
-            {
-                if (right->computedValue->reg.u32 >= 64)
-                    return context->report({right, msg});
-                if ((node->computedValue->reg.s64 & 0x80000000'00000000) != (left->computedValue->reg.s64 & 0x80000000'00000000))
-                    return context->report({node, msg});
-            }
+            if (leftShiftWillOverflow(node, left->computedValue->reg.s64, right->computedValue->reg.u32))
+                return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoS64)});
+            ByteCodeRun::executeLeftShift(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 64, true, isSmall);
             break;
 
         case NativeTypeKind::U8:
-            ByteCodeRun::executeShiftLeft(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 8, false, isSmall);
-            if (module->mustEmitSafetyOF(node))
-            {
-                if (right->computedValue->reg.u32 >= 8)
-                    return context->report({right, msg});
-                if (node->computedValue->reg.u8 >> right->computedValue->reg.u32 != left->computedValue->reg.u8)
-                    return context->report({node, msg});
-            }
+            if (leftShiftWillOverflow(node, left->computedValue->reg.u8, right->computedValue->reg.u32))
+                return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU8)});
+            ByteCodeRun::executeLeftShift(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 8, false, isSmall);
             break;
         case NativeTypeKind::U16:
-            ByteCodeRun::executeShiftLeft(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 16, false, isSmall);
-            if (module->mustEmitSafetyOF(node))
-            {
-                if (right->computedValue->reg.u32 >= 16)
-                    return context->report({right, msg});
-                if (node->computedValue->reg.u16 >> right->computedValue->reg.u32 != left->computedValue->reg.u16)
-                    return context->report({node, msg});
-            }
+            if (leftShiftWillOverflow(node, left->computedValue->reg.u16, right->computedValue->reg.u32))
+                return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU16)});
+            ByteCodeRun::executeLeftShift(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 16, false, isSmall);
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            ByteCodeRun::executeShiftLeft(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 32, false, isSmall);
-            if (module->mustEmitSafetyOF(node))
-            {
-                if (right->computedValue->reg.u32 >= 32)
-                    return context->report({right, msg});
-                if (node->computedValue->reg.u32 >> right->computedValue->reg.u32 != left->computedValue->reg.u32)
-                    return context->report({node, msg});
-            }
+            if (leftShiftWillOverflow(node, left->computedValue->reg.u32, right->computedValue->reg.u32))
+                return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU32)});
+            ByteCodeRun::executeLeftShift(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 32, false, isSmall);
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-            ByteCodeRun::executeShiftLeft(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 64, false, isSmall);
-            if (module->mustEmitSafetyOF(node))
-            {
-                if (right->computedValue->reg.u32 >= 64)
-                    return context->report({right, msg});
-                if (node->computedValue->reg.u64 >> right->computedValue->reg.u32 != left->computedValue->reg.u64)
-                    return context->report({node, msg});
-            }
+            if (leftShiftWillOverflow(node, left->computedValue->reg.u64, right->computedValue->reg.u32))
+                return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU64)});
+            ByteCodeRun::executeLeftShift(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 64, false, isSmall);
             break;
         default:
             return Report::internalError(context->node, "resolveShiftLeft, type not supported");
@@ -1182,85 +1140,51 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
     {
         node->setFlagsValueIsComputed();
 
-        auto msg = ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftRight, leftTypeInfo);
-
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S8:
-            ByteCodeRun::executeShiftRight(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 8, true, isSmall);
-            if (module->mustEmitSafetyOF(node))
-            {
-                if (right->computedValue->reg.u32 >= 8)
-                    return context->report({right, msg});
-            }
+            if (rightShiftWillOverflow(node, left->computedValue->reg.s8, right->computedValue->reg.u32))
+                return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftRight, g_TypeMgr->typeInfoS8)});
+            ByteCodeRun::executeRightShift(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 8, true, isSmall);
             break;
         case NativeTypeKind::S16:
-            ByteCodeRun::executeShiftRight(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 16, true, isSmall);
-            if (module->mustEmitSafetyOF(node))
-            {
-                if (right->computedValue->reg.u32 >= 16)
-                    return context->report({right, msg});
-            }
+            if (rightShiftWillOverflow(node, left->computedValue->reg.s16, right->computedValue->reg.u32))
+                return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftRight, g_TypeMgr->typeInfoS16)});
+            ByteCodeRun::executeRightShift(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 16, true, isSmall);
             break;
         case NativeTypeKind::S32:
-            ByteCodeRun::executeShiftRight(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 32, true, isSmall);
-            if (module->mustEmitSafetyOF(node))
-            {
-                if (right->computedValue->reg.u32 >= 32)
-                    return context->report({right, msg});
-            }
+            if (rightShiftWillOverflow(node, left->computedValue->reg.s32, right->computedValue->reg.u32))
+                return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftRight, g_TypeMgr->typeInfoS32)});
+            ByteCodeRun::executeRightShift(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 32, true, isSmall);
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
-            ByteCodeRun::executeShiftRight(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 64, true, isSmall);
-            if (module->mustEmitSafetyOF(node))
-            {
-                if (right->computedValue->reg.u32 >= 64)
-                    return context->report({right, msg});
-            }
+            if (rightShiftWillOverflow(node, left->computedValue->reg.s64, right->computedValue->reg.u32))
+                return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftRight, g_TypeMgr->typeInfoS64)});
+            ByteCodeRun::executeRightShift(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 64, true, isSmall);
             break;
 
         case NativeTypeKind::U8:
-            ByteCodeRun::executeShiftRight(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 8, false, isSmall);
-            if (module->mustEmitSafetyOF(node))
-            {
-                if (right->computedValue->reg.u32 >= 8)
-                    return context->report({right, msg});
-                if (node->computedValue->reg.u8 << right->computedValue->reg.u32 != left->computedValue->reg.u8)
-                    return context->report({node, msg});
-            }
+            if (rightShiftWillOverflow(node, left->computedValue->reg.s32, right->computedValue->reg.u32))
+                return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftRight, g_TypeMgr->typeInfoU8)});
+            ByteCodeRun::executeRightShift(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 8, false, isSmall);
             break;
         case NativeTypeKind::U16:
-            ByteCodeRun::executeShiftRight(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 16, false, isSmall);
-            if (module->mustEmitSafetyOF(node))
-            {
-                if (right->computedValue->reg.u32 >= 16)
-                    return context->report({right, msg});
-                if (node->computedValue->reg.u16 << right->computedValue->reg.u32 != left->computedValue->reg.u16)
-                    return context->report({node, msg});
-            }
+            if (rightShiftWillOverflow(node, left->computedValue->reg.u16, right->computedValue->reg.u32))
+                return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftRight, g_TypeMgr->typeInfoU16)});
+            ByteCodeRun::executeRightShift(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 16, false, isSmall);
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            ByteCodeRun::executeShiftRight(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 32, false, isSmall);
-            if (module->mustEmitSafetyOF(node))
-            {
-                if (right->computedValue->reg.u32 >= 32)
-                    return context->report({right, msg});
-                if (node->computedValue->reg.u32 << right->computedValue->reg.u32 != left->computedValue->reg.u32)
-                    return context->report({node, msg});
-            }
+            if (rightShiftWillOverflow(node, left->computedValue->reg.u32, right->computedValue->reg.u32))
+                return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftRight, g_TypeMgr->typeInfoU32)});
+            ByteCodeRun::executeRightShift(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 32, false, isSmall);
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-            ByteCodeRun::executeShiftRight(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 64, false, isSmall);
-            if (module->mustEmitSafetyOF(node))
-            {
-                if (right->computedValue->reg.u32 >= 64)
-                    return context->report({right, msg});
-                if (node->computedValue->reg.u64 << right->computedValue->reg.u32 != left->computedValue->reg.u64)
-                    return context->report({node, msg});
-            }
+            if (rightShiftWillOverflow(node, left->computedValue->reg.u64, right->computedValue->reg.u32))
+                return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftRight, g_TypeMgr->typeInfoU64)});
+            ByteCodeRun::executeRightShift(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 64, false, isSmall);
             break;
         default:
             return Report::internalError(context->node, "resolveShiftRight, type not supported");

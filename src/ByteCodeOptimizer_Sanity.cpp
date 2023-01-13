@@ -1239,41 +1239,41 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             break;
 
         case ByteCodeOp::AffectOpShiftLeftEqU8:
-            BINOPEQ_SHIFT_OVF(uint8_t, u8, ByteCodeRun::executeShiftLeft, false, ip->flags & BCI_SHIFT_SMALL);
+            BINOPEQ_SHIFT_OVF(uint8_t, u8, ByteCodeRun::executeLeftShift, false, ip->flags & BCI_SHIFT_SMALL);
             break;
         case ByteCodeOp::AffectOpShiftLeftEqU16:
-            BINOPEQ_SHIFT_OVF(uint16_t, u16, ByteCodeRun::executeShiftLeft, false, ip->flags & BCI_SHIFT_SMALL);
+            BINOPEQ_SHIFT_OVF(uint16_t, u16, ByteCodeRun::executeLeftShift, false, ip->flags & BCI_SHIFT_SMALL);
             break;
         case ByteCodeOp::AffectOpShiftLeftEqU32:
-            BINOPEQ_SHIFT_OVF(uint32_t, u32, ByteCodeRun::executeShiftLeft, false, ip->flags & BCI_SHIFT_SMALL);
+            BINOPEQ_SHIFT_OVF(uint32_t, u32, ByteCodeRun::executeLeftShift, false, ip->flags & BCI_SHIFT_SMALL);
             break;
         case ByteCodeOp::AffectOpShiftLeftEqU64:
-            BINOPEQ_SHIFT_OVF(uint64_t, u64, ByteCodeRun::executeShiftLeft, false, ip->flags & BCI_SHIFT_SMALL);
+            BINOPEQ_SHIFT_OVF(uint64_t, u64, ByteCodeRun::executeLeftShift, false, ip->flags & BCI_SHIFT_SMALL);
             break;
 
         case ByteCodeOp::AffectOpShiftRightEqS8:
-            BINOPEQ_SHIFT_OVF(int8_t, s8, ByteCodeRun::executeShiftRight, true, ip->flags & BCI_SHIFT_SMALL);
+            BINOPEQ_SHIFT_OVF(int8_t, s8, ByteCodeRun::executeRightShift, true, ip->flags & BCI_SHIFT_SMALL);
             break;
         case ByteCodeOp::AffectOpShiftRightEqS16:
-            BINOPEQ_SHIFT_OVF(int16_t, s16, ByteCodeRun::executeShiftRight, true, ip->flags & BCI_SHIFT_SMALL);
+            BINOPEQ_SHIFT_OVF(int16_t, s16, ByteCodeRun::executeRightShift, true, ip->flags & BCI_SHIFT_SMALL);
             break;
         case ByteCodeOp::AffectOpShiftRightEqS32:
-            BINOPEQ_SHIFT_OVF(int32_t, s32, ByteCodeRun::executeShiftRight, true, ip->flags & BCI_SHIFT_SMALL);
+            BINOPEQ_SHIFT_OVF(int32_t, s32, ByteCodeRun::executeRightShift, true, ip->flags & BCI_SHIFT_SMALL);
             break;
         case ByteCodeOp::AffectOpShiftRightEqS64:
-            BINOPEQ_SHIFT_OVF(int64_t, s64, ByteCodeRun::executeShiftRight, true, ip->flags & BCI_SHIFT_SMALL);
+            BINOPEQ_SHIFT_OVF(int64_t, s64, ByteCodeRun::executeRightShift, true, ip->flags & BCI_SHIFT_SMALL);
             break;
         case ByteCodeOp::AffectOpShiftRightEqU8:
-            BINOPEQ_SHIFT_OVF(uint8_t, u8, ByteCodeRun::executeShiftRight, true, ip->flags & BCI_SHIFT_SMALL);
+            BINOPEQ_SHIFT_OVF(uint8_t, u8, ByteCodeRun::executeRightShift, true, ip->flags & BCI_SHIFT_SMALL);
             break;
         case ByteCodeOp::AffectOpShiftRightEqU16:
-            BINOPEQ_SHIFT_OVF(uint16_t, u16, ByteCodeRun::executeShiftRight, true, ip->flags & BCI_SHIFT_SMALL);
+            BINOPEQ_SHIFT_OVF(uint16_t, u16, ByteCodeRun::executeRightShift, true, ip->flags & BCI_SHIFT_SMALL);
             break;
         case ByteCodeOp::AffectOpShiftRightEqU32:
-            BINOPEQ_SHIFT_OVF(uint32_t, u32, ByteCodeRun::executeShiftRight, true, ip->flags & BCI_SHIFT_SMALL);
+            BINOPEQ_SHIFT_OVF(uint32_t, u32, ByteCodeRun::executeRightShift, true, ip->flags & BCI_SHIFT_SMALL);
             break;
         case ByteCodeOp::AffectOpShiftRightEqU64:
-            BINOPEQ_SHIFT_OVF(uint64_t, u64, ByteCodeRun::executeShiftRight, true, ip->flags & BCI_SHIFT_SMALL);
+            BINOPEQ_SHIFT_OVF(uint64_t, u64, ByteCodeRun::executeRightShift, true, ip->flags & BCI_SHIFT_SMALL);
             break;
 
         case ByteCodeOp::NegBool:
