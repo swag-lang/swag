@@ -298,27 +298,42 @@ inline bool mulWillOverflow(AstNode* node, uint64_t x, uint64_t y)
     return false;
 }
 
-template<typename T>
-inline bool leftShiftWillOverflow(AstNode* node, T left, uint32_t right)
+template<typename T, bool isSigned>
+inline bool leftShiftWillOverflow(AstNode* node, T left, uint32_t right, bool isSmall)
 {
     if (node->sourceFile->module->mustEmitSafetyOF(node))
     {
-        if (right >= sizeof(T) * 8)
+        if (!isSmall && (right >= sizeof(T) * 8))
             return true;
-        if (((left << right) >> right) != left)
-            return true;
+        if (isSmall)
+            right &= ((sizeof(T) * 8) - 1);
+        if (isSigned)
+        {
+            uint64_t bt = 1ULL << ((sizeof(T) * 8) - 1);
+            if (((left << right) & bt) != (left & bt))
+                return false;
+        }
+        else
+        {
+            if (((left << right) >> right) != left)
+                return true;
+        }
     }
 
     return false;
 }
 
-template<typename T>
-inline bool rightShiftWillOverflow(AstNode* node, T left, uint32_t right)
+template<typename T, bool isSigned>
+inline bool rightShiftWillOverflow(AstNode* node, T left, uint32_t right, bool isSmall)
 {
     if (node->sourceFile->module->mustEmitSafetyOF(node))
     {
-        if (right >= sizeof(T) * 8)
+        if (!isSmall && (right >= sizeof(T) * 8))
             return true;
+        if (isSigned)
+            return false;
+        if (isSmall)
+            right &= ((sizeof(T) * 8) - 1);
         if (((left >> right) << right) != left)
             return true;
     }

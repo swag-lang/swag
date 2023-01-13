@@ -3306,6 +3306,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
+    case ByteCodeOp::AffectOpShiftLeftEqS8:
     case ByteCodeOp::AffectOpShiftLeftEqU8:
     {
         Register r1, rr;
@@ -3316,6 +3317,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         *(uint8_t*) ptr = rr.u8;
         break;
     }
+    case ByteCodeOp::AffectOpShiftLeftEqS16:
     case ByteCodeOp::AffectOpShiftLeftEqU16:
     {
         Register r1, rr;
@@ -3326,6 +3328,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         *(uint16_t*) ptr = rr.u16;
         break;
     }
+    case ByteCodeOp::AffectOpShiftLeftEqS32:
     case ByteCodeOp::AffectOpShiftLeftEqU32:
     {
         Register r1, rr;
@@ -3336,6 +3339,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         *(uint32_t*) ptr = rr.u32;
         break;
     }
+    case ByteCodeOp::AffectOpShiftLeftEqS64:
     case ByteCodeOp::AffectOpShiftLeftEqU64:
     {
         Register r1, rr;

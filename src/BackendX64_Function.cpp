@@ -641,15 +641,19 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitBinOpInt64AtReg(pp, ip, X64Op::OR);
             break;
 
+        case ByteCodeOp::AffectOpShiftLeftEqS8:
         case ByteCodeOp::AffectOpShiftLeftEqU8:
             emitShiftEqLogical(pp, ip, 8, 0x20);
             break;
+        case ByteCodeOp::AffectOpShiftLeftEqS16:
         case ByteCodeOp::AffectOpShiftLeftEqU16:
             emitShiftEqLogical(pp, ip, 16, 0x20);
             break;
+        case ByteCodeOp::AffectOpShiftLeftEqS32:
         case ByteCodeOp::AffectOpShiftLeftEqU32:
             emitShiftEqLogical(pp, ip, 32, 0x20);
             break;
+        case ByteCodeOp::AffectOpShiftLeftEqS64:
         case ByteCodeOp::AffectOpShiftLeftEqU64:
             emitShiftEqLogical(pp, ip, 64, 0x20);
             break;

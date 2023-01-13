@@ -2384,10 +2384,18 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
         case ByteCodeOp::AffectOpShiftLeftEqU16:
         case ByteCodeOp::AffectOpShiftLeftEqU32:
         case ByteCodeOp::AffectOpShiftLeftEqU64:
+        case ByteCodeOp::AffectOpShiftLeftEqS8:
+        case ByteCodeOp::AffectOpShiftLeftEqS16:
+        case ByteCodeOp::AffectOpShiftLeftEqS32:
+        case ByteCodeOp::AffectOpShiftLeftEqS64:
         case ByteCodeOp::AffectOpShiftRightEqU8:
         case ByteCodeOp::AffectOpShiftRightEqU16:
         case ByteCodeOp::AffectOpShiftRightEqU32:
         case ByteCodeOp::AffectOpShiftRightEqU64:
+        case ByteCodeOp::AffectOpShiftRightEqS8:
+        case ByteCodeOp::AffectOpShiftRightEqS16:
+        case ByteCodeOp::AffectOpShiftRightEqS32:
+        case ByteCodeOp::AffectOpShiftRightEqS64:
             if (ip->b.u32 == 0)
                 setNop(context, ip);
             break;

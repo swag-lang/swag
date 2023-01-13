@@ -75,24 +75,25 @@
     }                                                                  \
     BINOPEQ(__cast, __op, __reg);
 
-#define BINOPEQ_SHIFT_OVF(__cast, __reg, __func, __isSigned, __isSmall)                   \
-    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                                          \
-    SWAG_CHECK(checkNotNull(cxt, ra));                                                    \
-    if (ra->kind == ValueKind::StackAddr)                                                 \
-    {                                                                                     \
-        SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, sizeof(vb.reg.__reg)));        \
-        SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra->overload)); \
-        SWAG_CHECK(getStackValue(va, cxt, addr, sizeof(vb.reg.__reg)));                   \
-        SWAG_CHECK(getImmediateB(vb, cxt, ip));                                           \
-        if (va.kind == ValueKind::Unknown || vb.kind == ValueKind::Unknown)               \
-            setStackValue(cxt, addr, sizeof(vb.reg.__reg), ValueKind::Unknown);           \
-        else                                                                              \
-        {                                                                                 \
-            Register r;                                                                   \
-            r.__reg = *(__cast*) addr;                                                    \
-            __func(&r, r, vb.reg, sizeof(vb.reg.__reg) * 8, __isSigned, __isSmall);       \
-            *(__cast*) addr = r.__reg;                                                    \
-        }                                                                                 \
+#define BINOPEQ_SHIFT_OVF(__cast, __reg, __func, __isSigned, __isSmall, __ovf, __msg, __type)                                                         \
+    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                                                                                                      \
+    SWAG_CHECK(checkNotNull(cxt, ra));                                                                                                                \
+    if (ra->kind == ValueKind::StackAddr)                                                                                                             \
+    {                                                                                                                                                 \
+        SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, sizeof(vb.reg.__reg)));                                                                    \
+        SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra->overload));                                                             \
+        SWAG_CHECK(getStackValue(va, cxt, addr, sizeof(vb.reg.__reg)));                                                                               \
+        SWAG_CHECK(getImmediateB(vb, cxt, ip));                                                                                                       \
+        if (va.kind == ValueKind::Unknown || vb.kind == ValueKind::Unknown)                                                                           \
+            setStackValue(cxt, addr, sizeof(vb.reg.__reg), ValueKind::Unknown);                                                                       \
+        else                                                                                                                                          \
+        {                                                                                                                                             \
+            SWAG_CHECK(checkOverflow(cxt, !__ovf<__cast, __isSigned>(ip->node, *(__cast*) addr, (uint32_t) vb.reg.__reg, __isSmall), __msg, __type)); \
+            Register r;                                                                                                                               \
+            r.__reg = *(__cast*) addr;                                                                                                                \
+            __func(&r, r, vb.reg, sizeof(vb.reg.__reg) * 8, __isSigned, __isSmall);                                                                   \
+            *(__cast*) addr = r.__reg;                                                                                                                \
+        }                                                                                                                                             \
     }
 
 #define CMPOP(__op, __reg)                                                                                                  \
@@ -497,6 +498,7 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
         case ByteCodeOp::IntrinsicSetContext:
         case ByteCodeOp::IntrinsicCVaEnd:
         case ByteCodeOp::IntrinsicFree:
+        case ByteCodeOp::DebugNop:
             break;
 
             // Fake 1 value
@@ -1238,42 +1240,54 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             BINOPEQ(uint64_t, ^=, u64);
             break;
 
+        case ByteCodeOp::AffectOpShiftLeftEqS8:
+            BINOPEQ_SHIFT_OVF(uint8_t, u8, ByteCodeRun::executeLeftShift, true, ip->flags & BCI_SHIFT_SMALL, leftShiftWillOverflow, SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU8);
+            break;
+        case ByteCodeOp::AffectOpShiftLeftEqS16:
+            BINOPEQ_SHIFT_OVF(uint16_t, u16, ByteCodeRun::executeLeftShift, true, ip->flags & BCI_SHIFT_SMALL, leftShiftWillOverflow, SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU16);
+            break;
+        case ByteCodeOp::AffectOpShiftLeftEqS32:
+            BINOPEQ_SHIFT_OVF(uint32_t, u32, ByteCodeRun::executeLeftShift, true, ip->flags & BCI_SHIFT_SMALL, leftShiftWillOverflow, SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU32);
+            break;
+        case ByteCodeOp::AffectOpShiftLeftEqS64:
+            BINOPEQ_SHIFT_OVF(uint64_t, u64, ByteCodeRun::executeLeftShift, true, ip->flags & BCI_SHIFT_SMALL, leftShiftWillOverflow, SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU64);
+            break;
         case ByteCodeOp::AffectOpShiftLeftEqU8:
-            BINOPEQ_SHIFT_OVF(uint8_t, u8, ByteCodeRun::executeLeftShift, false, ip->flags & BCI_SHIFT_SMALL);
+            BINOPEQ_SHIFT_OVF(uint8_t, u8, ByteCodeRun::executeLeftShift, false, ip->flags & BCI_SHIFT_SMALL, leftShiftWillOverflow, SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU8);
             break;
         case ByteCodeOp::AffectOpShiftLeftEqU16:
-            BINOPEQ_SHIFT_OVF(uint16_t, u16, ByteCodeRun::executeLeftShift, false, ip->flags & BCI_SHIFT_SMALL);
+            BINOPEQ_SHIFT_OVF(uint16_t, u16, ByteCodeRun::executeLeftShift, false, ip->flags & BCI_SHIFT_SMALL, leftShiftWillOverflow, SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU16);
             break;
         case ByteCodeOp::AffectOpShiftLeftEqU32:
-            BINOPEQ_SHIFT_OVF(uint32_t, u32, ByteCodeRun::executeLeftShift, false, ip->flags & BCI_SHIFT_SMALL);
+            BINOPEQ_SHIFT_OVF(uint32_t, u32, ByteCodeRun::executeLeftShift, false, ip->flags & BCI_SHIFT_SMALL, leftShiftWillOverflow, SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU32);
             break;
         case ByteCodeOp::AffectOpShiftLeftEqU64:
-            BINOPEQ_SHIFT_OVF(uint64_t, u64, ByteCodeRun::executeLeftShift, false, ip->flags & BCI_SHIFT_SMALL);
+            BINOPEQ_SHIFT_OVF(uint64_t, u64, ByteCodeRun::executeLeftShift, false, ip->flags & BCI_SHIFT_SMALL, leftShiftWillOverflow, SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU64);
             break;
 
         case ByteCodeOp::AffectOpShiftRightEqS8:
-            BINOPEQ_SHIFT_OVF(int8_t, s8, ByteCodeRun::executeRightShift, true, ip->flags & BCI_SHIFT_SMALL);
+            BINOPEQ_SHIFT_OVF(int8_t, s8, ByteCodeRun::executeRightShift, true, ip->flags & BCI_SHIFT_SMALL, rightShiftWillOverflow, SafetyMsg::ShiftRight, g_TypeMgr->typeInfoS8);
             break;
         case ByteCodeOp::AffectOpShiftRightEqS16:
-            BINOPEQ_SHIFT_OVF(int16_t, s16, ByteCodeRun::executeRightShift, true, ip->flags & BCI_SHIFT_SMALL);
+            BINOPEQ_SHIFT_OVF(int16_t, s16, ByteCodeRun::executeRightShift, true, ip->flags & BCI_SHIFT_SMALL, rightShiftWillOverflow, SafetyMsg::ShiftRight, g_TypeMgr->typeInfoS16);
             break;
         case ByteCodeOp::AffectOpShiftRightEqS32:
-            BINOPEQ_SHIFT_OVF(int32_t, s32, ByteCodeRun::executeRightShift, true, ip->flags & BCI_SHIFT_SMALL);
+            BINOPEQ_SHIFT_OVF(int32_t, s32, ByteCodeRun::executeRightShift, true, ip->flags & BCI_SHIFT_SMALL, rightShiftWillOverflow, SafetyMsg::ShiftRight, g_TypeMgr->typeInfoS32);
             break;
         case ByteCodeOp::AffectOpShiftRightEqS64:
-            BINOPEQ_SHIFT_OVF(int64_t, s64, ByteCodeRun::executeRightShift, true, ip->flags & BCI_SHIFT_SMALL);
+            BINOPEQ_SHIFT_OVF(int64_t, s64, ByteCodeRun::executeRightShift, true, ip->flags & BCI_SHIFT_SMALL, rightShiftWillOverflow, SafetyMsg::ShiftRight, g_TypeMgr->typeInfoS64);
             break;
         case ByteCodeOp::AffectOpShiftRightEqU8:
-            BINOPEQ_SHIFT_OVF(uint8_t, u8, ByteCodeRun::executeRightShift, true, ip->flags & BCI_SHIFT_SMALL);
+            BINOPEQ_SHIFT_OVF(uint8_t, u8, ByteCodeRun::executeRightShift, false, ip->flags & BCI_SHIFT_SMALL, rightShiftWillOverflow, SafetyMsg::ShiftRight, g_TypeMgr->typeInfoU8);
             break;
         case ByteCodeOp::AffectOpShiftRightEqU16:
-            BINOPEQ_SHIFT_OVF(uint16_t, u16, ByteCodeRun::executeRightShift, true, ip->flags & BCI_SHIFT_SMALL);
+            BINOPEQ_SHIFT_OVF(uint16_t, u16, ByteCodeRun::executeRightShift, false, ip->flags & BCI_SHIFT_SMALL, rightShiftWillOverflow, SafetyMsg::ShiftRight, g_TypeMgr->typeInfoU16);
             break;
         case ByteCodeOp::AffectOpShiftRightEqU32:
-            BINOPEQ_SHIFT_OVF(uint32_t, u32, ByteCodeRun::executeRightShift, true, ip->flags & BCI_SHIFT_SMALL);
+            BINOPEQ_SHIFT_OVF(uint32_t, u32, ByteCodeRun::executeRightShift, false, ip->flags & BCI_SHIFT_SMALL, rightShiftWillOverflow, SafetyMsg::ShiftRight, g_TypeMgr->typeInfoU32);
             break;
         case ByteCodeOp::AffectOpShiftRightEqU64:
-            BINOPEQ_SHIFT_OVF(uint64_t, u64, ByteCodeRun::executeRightShift, true, ip->flags & BCI_SHIFT_SMALL);
+            BINOPEQ_SHIFT_OVF(uint64_t, u64, ByteCodeRun::executeRightShift, false, ip->flags & BCI_SHIFT_SMALL, rightShiftWillOverflow, SafetyMsg::ShiftRight, g_TypeMgr->typeInfoU64);
             break;
 
         case ByteCodeOp::NegBool:

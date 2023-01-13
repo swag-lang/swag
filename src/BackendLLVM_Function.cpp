@@ -2154,15 +2154,19 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::AffectOpShiftLeftEqS8:
         case ByteCodeOp::AffectOpShiftLeftEqU8:
             emitShiftEqLogical(context, builder, allocR, ip, 8, true);
             break;
+        case ByteCodeOp::AffectOpShiftLeftEqS16:
         case ByteCodeOp::AffectOpShiftLeftEqU16:
             emitShiftEqLogical(context, builder, allocR, ip, 16, true);
             break;
+        case ByteCodeOp::AffectOpShiftLeftEqS32:
         case ByteCodeOp::AffectOpShiftLeftEqU32:
             emitShiftEqLogical(context, builder, allocR, ip, 32, true);
             break;
+        case ByteCodeOp::AffectOpShiftLeftEqS64:
         case ByteCodeOp::AffectOpShiftLeftEqU64:
             emitShiftEqLogical(context, builder, allocR, ip, 64, true);
             break;
