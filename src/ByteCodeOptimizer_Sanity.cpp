@@ -63,7 +63,18 @@
         }                                                                                                            \
     }
 
-#define BINOPEQ2(__cast, __op, __reg1, __reg2)                                             \
+#define BINOPEQ_DIV(__cast, __op, __reg)                               \
+    SWAG_CHECK(getImmediateB(vb, cxt, ip));                            \
+    SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.__reg == 0, vb.overload)); \
+    if (vb.kind == ValueKind::Constant && vb.reg.__reg == 0)           \
+    {                                                                  \
+        SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                   \
+        rc->kind = ValueKind::Unknown;                                 \
+        break;                                                         \
+    }                                                                  \
+    BINOPEQ(__cast, __op, __reg);
+
+#define BINOPEQ_SHIFT_OVF(__cast, __op, __reg1, __reg2)                                    \
     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                                           \
     SWAG_CHECK(checkNotNull(cxt, ra));                                                     \
     if (ra->kind == ValueKind::StackAddr)                                                  \
@@ -76,17 +87,6 @@
         else                                                                               \
             *(__cast*) addr __op vb.reg.__reg2;                                            \
     }
-
-#define BINOPEQDIV(__cast, __op, __reg)                                \
-    SWAG_CHECK(getImmediateB(vb, cxt, ip));                            \
-    SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.__reg == 0, vb.overload)); \
-    if (vb.kind == ValueKind::Constant && vb.reg.__reg == 0)           \
-    {                                                                  \
-        SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                   \
-        rc->kind = ValueKind::Unknown;                                 \
-        break;                                                         \
-    }                                                                  \
-    BINOPEQ(__cast, __op, __reg);
 
 #define CMPOP(__op, __reg)                                                                                                  \
     SWAG_CHECK(getImmediateA(va, cxt, ip));                                                                                 \
@@ -1106,28 +1106,28 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             break;
 
         case ByteCodeOp::AffectOpMulEqS8:
-            BINOPEQ(int8_t, *=, s8);
+            BINOPEQ_OVF(int8_t, *=, s8, mulOverflow, SafetyMsg::IFMulEq, g_TypeMgr->typeInfoS8);
             break;
         case ByteCodeOp::AffectOpMulEqS16:
-            BINOPEQ(int16_t, *=, s16);
+            BINOPEQ_OVF(int16_t, *=, s16, mulOverflow, SafetyMsg::IFMulEq, g_TypeMgr->typeInfoS16);
             break;
         case ByteCodeOp::AffectOpMulEqS32:
-            BINOPEQ(int32_t, *=, s32);
+            BINOPEQ_OVF(int32_t, *=, s32, mulOverflow, SafetyMsg::IFMulEq, g_TypeMgr->typeInfoS32);
             break;
         case ByteCodeOp::AffectOpMulEqS64:
-            BINOPEQ(int64_t, *=, s64);
+            BINOPEQ_OVF(int64_t, *=, s64, mulOverflow, SafetyMsg::IFMulEq, g_TypeMgr->typeInfoS64);
             break;
         case ByteCodeOp::AffectOpMulEqU8:
-            BINOPEQ(uint8_t, *=, u8);
+            BINOPEQ_OVF(uint8_t, *=, u8, mulOverflow, SafetyMsg::IFMulEq, g_TypeMgr->typeInfoU8);
             break;
         case ByteCodeOp::AffectOpMulEqU16:
-            BINOPEQ(uint16_t, *=, u16);
+            BINOPEQ_OVF(uint16_t, *=, u16, mulOverflow, SafetyMsg::IFMulEq, g_TypeMgr->typeInfoU16);
             break;
         case ByteCodeOp::AffectOpMulEqU32:
-            BINOPEQ(uint32_t, *=, u32);
+            BINOPEQ_OVF(uint32_t, *=, u32, mulOverflow, SafetyMsg::IFMulEq, g_TypeMgr->typeInfoU32);
             break;
         case ByteCodeOp::AffectOpMulEqU64:
-            BINOPEQ(uint64_t, *=, u64);
+            BINOPEQ_OVF(uint64_t, *=, u64, mulOverflow, SafetyMsg::IFMulEq, g_TypeMgr->typeInfoU64);
             break;
         case ByteCodeOp::AffectOpMulEqF32:
             BINOPEQ(float, *=, f32);
@@ -1137,59 +1137,59 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             break;
 
         case ByteCodeOp::AffectOpDivEqS8:
-            BINOPEQDIV(int8_t, /=, s8);
+            BINOPEQ_DIV(int8_t, /=, s8);
             break;
         case ByteCodeOp::AffectOpDivEqS16:
-            BINOPEQDIV(int16_t, /=, s16);
+            BINOPEQ_DIV(int16_t, /=, s16);
             break;
         case ByteCodeOp::AffectOpDivEqS32:
-            BINOPEQDIV(int32_t, /=, s32);
+            BINOPEQ_DIV(int32_t, /=, s32);
             break;
         case ByteCodeOp::AffectOpDivEqS64:
-            BINOPEQDIV(int64_t, /=, s64);
+            BINOPEQ_DIV(int64_t, /=, s64);
             break;
         case ByteCodeOp::AffectOpDivEqU8:
-            BINOPEQDIV(uint8_t, /=, u8);
+            BINOPEQ_DIV(uint8_t, /=, u8);
             break;
         case ByteCodeOp::AffectOpDivEqU16:
-            BINOPEQDIV(uint16_t, /=, u16);
+            BINOPEQ_DIV(uint16_t, /=, u16);
             break;
         case ByteCodeOp::AffectOpDivEqU32:
-            BINOPEQDIV(uint32_t, /=, u32);
+            BINOPEQ_DIV(uint32_t, /=, u32);
             break;
         case ByteCodeOp::AffectOpDivEqU64:
-            BINOPEQDIV(uint64_t, /=, u64);
+            BINOPEQ_DIV(uint64_t, /=, u64);
             break;
         case ByteCodeOp::AffectOpDivEqF32:
-            BINOPEQDIV(float, /=, f32);
+            BINOPEQ_DIV(float, /=, f32);
             break;
         case ByteCodeOp::AffectOpDivEqF64:
-            BINOPEQDIV(double, /=, f64);
+            BINOPEQ_DIV(double, /=, f64);
             break;
 
         case ByteCodeOp::AffectOpModuloEqS8:
-            BINOPEQDIV(int8_t, %=, s8);
+            BINOPEQ_DIV(int8_t, %=, s8);
             break;
         case ByteCodeOp::AffectOpModuloEqS16:
-            BINOPEQDIV(int16_t, %=, s16);
+            BINOPEQ_DIV(int16_t, %=, s16);
             break;
         case ByteCodeOp::AffectOpModuloEqS32:
-            BINOPEQDIV(int32_t, %=, s32);
+            BINOPEQ_DIV(int32_t, %=, s32);
             break;
         case ByteCodeOp::AffectOpModuloEqS64:
-            BINOPEQDIV(int64_t, %=, s64);
+            BINOPEQ_DIV(int64_t, %=, s64);
             break;
         case ByteCodeOp::AffectOpModuloEqU8:
-            BINOPEQDIV(uint8_t, %=, u8);
+            BINOPEQ_DIV(uint8_t, %=, u8);
             break;
         case ByteCodeOp::AffectOpModuloEqU16:
-            BINOPEQDIV(uint16_t, %=, u16);
+            BINOPEQ_DIV(uint16_t, %=, u16);
             break;
         case ByteCodeOp::AffectOpModuloEqU32:
-            BINOPEQDIV(uint32_t, %=, u32);
+            BINOPEQ_DIV(uint32_t, %=, u32);
             break;
         case ByteCodeOp::AffectOpModuloEqU64:
-            BINOPEQDIV(uint64_t, %=, u64);
+            BINOPEQ_DIV(uint64_t, %=, u64);
             break;
 
         case ByteCodeOp::AffectOpAndEqU8:
@@ -1232,41 +1232,41 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             break;
 
         case ByteCodeOp::AffectOpShiftLeftEqU8:
-            BINOPEQ2(uint8_t, <<=, u8, u32);
+            BINOPEQ_SHIFT_OVF(uint8_t, <<=, u8, u32);
             break;
         case ByteCodeOp::AffectOpShiftLeftEqU16:
-            BINOPEQ2(uint8_t, <<=, u16, u32);
+            BINOPEQ_SHIFT_OVF(uint8_t, <<=, u16, u32);
             break;
         case ByteCodeOp::AffectOpShiftLeftEqU32:
-            BINOPEQ2(uint8_t, <<=, u32, u32);
+            BINOPEQ_SHIFT_OVF(uint8_t, <<=, u32, u32);
             break;
         case ByteCodeOp::AffectOpShiftLeftEqU64:
-            BINOPEQ2(uint8_t, <<=, u64, u32);
+            BINOPEQ_SHIFT_OVF(uint8_t, <<=, u64, u32);
             break;
 
         case ByteCodeOp::AffectOpShiftRightEqS8:
-            BINOPEQ2(int8_t, >>=, s8, u32);
+            BINOPEQ_SHIFT_OVF(int8_t, >>=, s8, u32);
             break;
         case ByteCodeOp::AffectOpShiftRightEqS16:
-            BINOPEQ2(int8_t, >>=, s16, u32);
+            BINOPEQ_SHIFT_OVF(int8_t, >>=, s16, u32);
             break;
         case ByteCodeOp::AffectOpShiftRightEqS32:
-            BINOPEQ2(int8_t, >>=, s32, u32);
+            BINOPEQ_SHIFT_OVF(int8_t, >>=, s32, u32);
             break;
         case ByteCodeOp::AffectOpShiftRightEqS64:
-            BINOPEQ2(int8_t, >>=, s64, u32);
+            BINOPEQ_SHIFT_OVF(int8_t, >>=, s64, u32);
             break;
         case ByteCodeOp::AffectOpShiftRightEqU8:
-            BINOPEQ2(uint8_t, >>=, u8, u32);
+            BINOPEQ_SHIFT_OVF(uint8_t, >>=, u8, u32);
             break;
         case ByteCodeOp::AffectOpShiftRightEqU16:
-            BINOPEQ2(uint8_t, >>=, u16, u32);
+            BINOPEQ_SHIFT_OVF(uint8_t, >>=, u16, u32);
             break;
         case ByteCodeOp::AffectOpShiftRightEqU32:
-            BINOPEQ2(uint8_t, >>=, u32, u32);
+            BINOPEQ_SHIFT_OVF(uint8_t, >>=, u32, u32);
             break;
         case ByteCodeOp::AffectOpShiftRightEqU64:
-            BINOPEQ2(uint8_t, >>=, u64, u32);
+            BINOPEQ_SHIFT_OVF(uint8_t, >>=, u64, u32);
             break;
 
         case ByteCodeOp::NegBool:
