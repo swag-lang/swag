@@ -1185,12 +1185,12 @@ void initErrors()
     SWAG_ERROR(San0002, "[sanity] return of stack %s '%s'");
     SWAG_ERROR(San0003, "[sanity] usage of non initialized stack memory");
     SWAG_ERROR(San0004, "[sanity] usage of non initialized %s '%s'");
-    SWAG_ERROR(San0005, "[sanity] attempt of dereferencing a null pointer");
-    SWAG_ERROR(San0006, "[sanity] attempt of dereferencing null %s '%s'");
+    SWAG_ERROR(San0005, "[sanity] dereferencing a null pointer");
+    SWAG_ERROR(San0006, "[sanity] dereferencing null %s '%s'");
     SWAG_ERROR(San0007, "[sanity] division by zero");
     SWAG_ERROR(San0008, "[sanity] division by zero (%s '%s')");
     SWAG_ERROR(San0009, nullptr);
-    SWAG_ERROR(San0010, "[sanity] stack corruption, stack offset is '%lld' but stack size is '%lld'");
+    SWAG_ERROR(San0010, "[sanity] stack overflow (offset is '%lld', stack size is '%lld')");
     SWAG_ERROR(San0011, nullptr);
     SWAG_ERROR(San0012, nullptr);
     SWAG_ERROR(San0013, nullptr);
