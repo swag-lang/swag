@@ -90,25 +90,25 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S32:
-            if (addOverflow(node, left->computedValue->reg.s32, right->computedValue->reg.s32))
+            if (addWillOverflow(node, left->computedValue->reg.s32, right->computedValue->reg.s32))
                 return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoS32)});
             node->computedValue->reg.s64 = left->computedValue->reg.s32 + right->computedValue->reg.s32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
-            if (addOverflow(node, left->computedValue->reg.s64, right->computedValue->reg.s64))
+            if (addWillOverflow(node, left->computedValue->reg.s64, right->computedValue->reg.s64))
                 return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoS64)});
             node->computedValue->reg.s64 = left->computedValue->reg.s64 + right->computedValue->reg.s64;
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            if (addOverflow(node, left->computedValue->reg.u32, right->computedValue->reg.u32))
+            if (addWillOverflow(node, left->computedValue->reg.u32, right->computedValue->reg.u32))
                 return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoU32)});
             node->computedValue->reg.u64 = left->computedValue->reg.u32 + right->computedValue->reg.u32;
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-            if (addOverflow(node, left->computedValue->reg.u64, right->computedValue->reg.u64))
+            if (addWillOverflow(node, left->computedValue->reg.u64, right->computedValue->reg.u64))
                 return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoU64)});
             node->computedValue->reg.u64 = left->computedValue->reg.u64 + right->computedValue->reg.u64;
             break;
@@ -210,25 +210,25 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S32:
-            if (subOverflow(node, left->computedValue->reg.s32, right->computedValue->reg.s32))
+            if (subWillOverflow(node, left->computedValue->reg.s32, right->computedValue->reg.s32))
                 return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoS32)});
             node->computedValue->reg.s64 = left->computedValue->reg.s32 - right->computedValue->reg.s32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
-            if (subOverflow(node, left->computedValue->reg.s64, right->computedValue->reg.s64))
+            if (subWillOverflow(node, left->computedValue->reg.s64, right->computedValue->reg.s64))
                 return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoS64)});
             node->computedValue->reg.s64 = left->computedValue->reg.s64 - right->computedValue->reg.s64;
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            if (subOverflow(node, left->computedValue->reg.u32, right->computedValue->reg.u32))
+            if (subWillOverflow(node, left->computedValue->reg.u32, right->computedValue->reg.u32))
                 return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoU32)});
             node->computedValue->reg.u64 = left->computedValue->reg.u32 - right->computedValue->reg.u32;
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-            if (subOverflow(node, left->computedValue->reg.u64, right->computedValue->reg.u64))
+            if (subWillOverflow(node, left->computedValue->reg.u64, right->computedValue->reg.u64))
                 return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoU64)});
             node->computedValue->reg.u64 = left->computedValue->reg.u64 - right->computedValue->reg.u64;
             break;
@@ -303,25 +303,25 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S32:
-            if (mulOverflow(node, left->computedValue->reg.s32, right->computedValue->reg.s32))
+            if (mulWillOverflow(node, left->computedValue->reg.s32, right->computedValue->reg.s32))
                 return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoS32)});
             node->computedValue->reg.s64 = left->computedValue->reg.s32 * right->computedValue->reg.s32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
-            if (mulOverflow(node, left->computedValue->reg.s64, right->computedValue->reg.s64))
+            if (mulWillOverflow(node, left->computedValue->reg.s64, right->computedValue->reg.s64))
                 return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoS64)});
             node->computedValue->reg.s64 = left->computedValue->reg.s64 * right->computedValue->reg.s64;
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            if (mulOverflow(node, left->computedValue->reg.u32, right->computedValue->reg.u32))
+            if (mulWillOverflow(node, left->computedValue->reg.u32, right->computedValue->reg.u32))
                 return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoU32)});
             node->computedValue->reg.u64 = left->computedValue->reg.u32 * right->computedValue->reg.u32;
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-            if (mulOverflow(node, left->computedValue->reg.u64, right->computedValue->reg.u64))
+            if (mulWillOverflow(node, left->computedValue->reg.u64, right->computedValue->reg.u64))
                 return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoU64)});
             node->computedValue->reg.u64 = left->computedValue->reg.u64 * right->computedValue->reg.u64;
             break;
@@ -1049,7 +1049,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S8:
-            executeShiftLeft(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 8, isSmall);
+            ByteCodeRun::executeShiftLeft(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 8, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue->reg.u32 >= 8)
@@ -1059,7 +1059,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
             }
             break;
         case NativeTypeKind::S16:
-            executeShiftLeft(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 16, isSmall);
+            ByteCodeRun::executeShiftLeft(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 16, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue->reg.u32 >= 16)
@@ -1069,7 +1069,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
             }
             break;
         case NativeTypeKind::S32:
-            executeShiftLeft(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 32, isSmall);
+            ByteCodeRun::executeShiftLeft(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 32, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue->reg.u32 >= 32)
@@ -1080,7 +1080,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
-            executeShiftLeft(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 64, isSmall);
+            ByteCodeRun::executeShiftLeft(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 64, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue->reg.u32 >= 64)
@@ -1091,7 +1091,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
             break;
 
         case NativeTypeKind::U8:
-            executeShiftLeft(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 8, isSmall);
+            ByteCodeRun::executeShiftLeft(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 8, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue->reg.u32 >= 8)
@@ -1101,7 +1101,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
             }
             break;
         case NativeTypeKind::U16:
-            executeShiftLeft(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 16, isSmall);
+            ByteCodeRun::executeShiftLeft(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 16, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue->reg.u32 >= 16)
@@ -1112,7 +1112,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            executeShiftLeft(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 32, isSmall);
+            ByteCodeRun::executeShiftLeft(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 32, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue->reg.u32 >= 32)
@@ -1123,7 +1123,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-            executeShiftLeft(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 64, isSmall);
+            ByteCodeRun::executeShiftLeft(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 64, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue->reg.u32 >= 64)
@@ -1189,7 +1189,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S8:
-            executeShiftRight(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 8, true, isSmall);
+            ByteCodeRun::executeShiftRight(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 8, true, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue->reg.u32 >= 8)
@@ -1197,7 +1197,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
             }
             break;
         case NativeTypeKind::S16:
-            executeShiftRight(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 16, true, isSmall);
+            ByteCodeRun::executeShiftRight(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 16, true, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue->reg.u32 >= 16)
@@ -1205,7 +1205,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
             }
             break;
         case NativeTypeKind::S32:
-            executeShiftRight(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 32, true, isSmall);
+            ByteCodeRun::executeShiftRight(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 32, true, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue->reg.u32 >= 32)
@@ -1214,7 +1214,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
-            executeShiftRight(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 64, true, isSmall);
+            ByteCodeRun::executeShiftRight(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 64, true, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue->reg.u32 >= 64)
@@ -1223,7 +1223,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
             break;
 
         case NativeTypeKind::U8:
-            executeShiftRight(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 8, false, isSmall);
+            ByteCodeRun::executeShiftRight(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 8, false, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue->reg.u32 >= 8)
@@ -1233,7 +1233,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
             }
             break;
         case NativeTypeKind::U16:
-            executeShiftRight(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 16, false, isSmall);
+            ByteCodeRun::executeShiftRight(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 16, false, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue->reg.u32 >= 16)
@@ -1244,7 +1244,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            executeShiftRight(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 32, false, isSmall);
+            ByteCodeRun::executeShiftRight(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 32, false, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue->reg.u32 >= 32)
@@ -1255,7 +1255,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-            executeShiftRight(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 64, false, isSmall);
+            ByteCodeRun::executeShiftRight(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 64, false, isSmall);
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue->reg.u32 >= 64)

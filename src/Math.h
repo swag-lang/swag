@@ -10,7 +10,7 @@ inline bool isPowerOfTwo(size_t v)
     return (v & (v - 1)) == 0;
 }
 
-inline bool addOverflow(AstNode* node, int8_t x, int8_t y)
+inline bool addWillOverflow(AstNode* node, int8_t x, int8_t y)
 {
     if (node->sourceFile->module->mustEmitSafetyOF(node))
     {
@@ -22,7 +22,7 @@ inline bool addOverflow(AstNode* node, int8_t x, int8_t y)
     return false;
 }
 
-inline bool addOverflow(AstNode* node, int16_t x, int16_t y)
+inline bool addWillOverflow(AstNode* node, int16_t x, int16_t y)
 {
     if (node->sourceFile->module->mustEmitSafetyOF(node))
     {
@@ -34,7 +34,7 @@ inline bool addOverflow(AstNode* node, int16_t x, int16_t y)
     return false;
 }
 
-inline bool addOverflow(AstNode* node, int32_t x, int32_t y)
+inline bool addWillOverflow(AstNode* node, int32_t x, int32_t y)
 {
     if (node->sourceFile->module->mustEmitSafetyOF(node))
     {
@@ -46,7 +46,7 @@ inline bool addOverflow(AstNode* node, int32_t x, int32_t y)
     return false;
 }
 
-inline bool addOverflow(AstNode* node, int64_t x, int64_t y)
+inline bool addWillOverflow(AstNode* node, int64_t x, int64_t y)
 {
     if (node->sourceFile->module->mustEmitSafetyOF(node))
     {
@@ -59,7 +59,7 @@ inline bool addOverflow(AstNode* node, int64_t x, int64_t y)
     return false;
 }
 
-inline bool addOverflow(AstNode* node, uint8_t x, uint8_t y)
+inline bool addWillOverflow(AstNode* node, uint8_t x, uint8_t y)
 {
     if (node->sourceFile->module->mustEmitSafetyOF(node))
     {
@@ -71,7 +71,7 @@ inline bool addOverflow(AstNode* node, uint8_t x, uint8_t y)
     return false;
 }
 
-inline bool addOverflow(AstNode* node, uint16_t x, uint16_t y)
+inline bool addWillOverflow(AstNode* node, uint16_t x, uint16_t y)
 {
     if (node->sourceFile->module->mustEmitSafetyOF(node))
     {
@@ -83,7 +83,7 @@ inline bool addOverflow(AstNode* node, uint16_t x, uint16_t y)
     return false;
 }
 
-inline bool addOverflow(AstNode* node, uint32_t x, uint32_t y)
+inline bool addWillOverflow(AstNode* node, uint32_t x, uint32_t y)
 {
     if (node->sourceFile->module->mustEmitSafetyOF(node))
     {
@@ -95,7 +95,7 @@ inline bool addOverflow(AstNode* node, uint32_t x, uint32_t y)
     return false;
 }
 
-inline bool addOverflow(AstNode* node, uint64_t x, uint64_t y)
+inline bool addWillOverflow(AstNode* node, uint64_t x, uint64_t y)
 {
     if (node->sourceFile->module->mustEmitSafetyOF(node))
     {
@@ -106,7 +106,7 @@ inline bool addOverflow(AstNode* node, uint64_t x, uint64_t y)
     return false;
 }
 
-inline bool subOverflow(AstNode* node, int8_t x, int8_t y)
+inline bool subWillOverflow(AstNode* node, int8_t x, int8_t y)
 {
     if (node->sourceFile->module->mustEmitSafetyOF(node))
     {
@@ -118,7 +118,7 @@ inline bool subOverflow(AstNode* node, int8_t x, int8_t y)
     return false;
 }
 
-inline bool subOverflow(AstNode* node, int16_t x, int16_t y)
+inline bool subWillOverflow(AstNode* node, int16_t x, int16_t y)
 {
     if (node->sourceFile->module->mustEmitSafetyOF(node))
     {
@@ -130,7 +130,7 @@ inline bool subOverflow(AstNode* node, int16_t x, int16_t y)
     return false;
 }
 
-inline bool subOverflow(AstNode* node, int32_t x, int32_t y)
+inline bool subWillOverflow(AstNode* node, int32_t x, int32_t y)
 {
     if (node->sourceFile->module->mustEmitSafetyOF(node))
     {
@@ -142,7 +142,7 @@ inline bool subOverflow(AstNode* node, int32_t x, int32_t y)
     return false;
 }
 
-inline bool subOverflow(AstNode* node, int64_t x, int64_t y)
+inline bool subWillOverflow(AstNode* node, int64_t x, int64_t y)
 {
     if (node->sourceFile->module->mustEmitSafetyOF(node))
     {
@@ -154,7 +154,7 @@ inline bool subOverflow(AstNode* node, int64_t x, int64_t y)
     return false;
 }
 
-inline bool subOverflow(AstNode* node, uint8_t x, uint8_t y)
+inline bool subWillOverflow(AstNode* node, uint8_t x, uint8_t y)
 {
     uint32_t result = (uint32_t) x - (uint32_t) y;
     if (node->sourceFile->module->mustEmitSafetyOF(node))
@@ -166,7 +166,7 @@ inline bool subOverflow(AstNode* node, uint8_t x, uint8_t y)
     return false;
 }
 
-inline bool subOverflow(AstNode* node, uint16_t x, uint16_t y)
+inline bool subWillOverflow(AstNode* node, uint16_t x, uint16_t y)
 {
     uint32_t result = (uint32_t) x - (uint32_t) y;
     if (node->sourceFile->module->mustEmitSafetyOF(node))
@@ -178,7 +178,7 @@ inline bool subOverflow(AstNode* node, uint16_t x, uint16_t y)
     return false;
 }
 
-inline bool subOverflow(AstNode* node, uint32_t x, uint32_t y)
+inline bool subWillOverflow(AstNode* node, uint32_t x, uint32_t y)
 {
     uint64_t result = (uint64_t) x - (uint64_t) y;
     if (node->sourceFile->module->mustEmitSafetyOF(node))
@@ -190,7 +190,7 @@ inline bool subOverflow(AstNode* node, uint32_t x, uint32_t y)
     return false;
 }
 
-inline bool subOverflow(AstNode* node, uint64_t x, uint64_t y)
+inline bool subWillOverflow(AstNode* node, uint64_t x, uint64_t y)
 {
     if (node->sourceFile->module->mustEmitSafetyOF(node))
     {
@@ -201,7 +201,7 @@ inline bool subOverflow(AstNode* node, uint64_t x, uint64_t y)
     return false;
 }
 
-inline bool mulOverflow(AstNode* node, int8_t x, int8_t y)
+inline bool mulWillOverflow(AstNode* node, int8_t x, int8_t y)
 {
     if (node->sourceFile->module->mustEmitSafetyOF(node))
     {
@@ -213,7 +213,7 @@ inline bool mulOverflow(AstNode* node, int8_t x, int8_t y)
     return false;
 }
 
-inline bool mulOverflow(AstNode* node, int16_t x, int16_t y)
+inline bool mulWillOverflow(AstNode* node, int16_t x, int16_t y)
 {
     if (node->sourceFile->module->mustEmitSafetyOF(node))
     {
@@ -225,7 +225,7 @@ inline bool mulOverflow(AstNode* node, int16_t x, int16_t y)
     return false;
 }
 
-inline bool mulOverflow(AstNode* node, int32_t x, int32_t y)
+inline bool mulWillOverflow(AstNode* node, int32_t x, int32_t y)
 {
     if (node->sourceFile->module->mustEmitSafetyOF(node))
     {
@@ -237,7 +237,7 @@ inline bool mulOverflow(AstNode* node, int32_t x, int32_t y)
     return false;
 }
 
-inline bool mulOverflow(AstNode* node, int64_t x, int64_t y)
+inline bool mulWillOverflow(AstNode* node, int64_t x, int64_t y)
 {
     if (node->sourceFile->module->mustEmitSafetyOF(node))
     {
@@ -251,7 +251,7 @@ inline bool mulOverflow(AstNode* node, int64_t x, int64_t y)
     return false;
 }
 
-inline bool mulOverflow(AstNode* node, uint8_t x, uint8_t y)
+inline bool mulWillOverflow(AstNode* node, uint8_t x, uint8_t y)
 {
     if (node->sourceFile->module->mustEmitSafetyOF(node))
     {
@@ -263,7 +263,7 @@ inline bool mulOverflow(AstNode* node, uint8_t x, uint8_t y)
     return false;
 }
 
-inline bool mulOverflow(AstNode* node, uint16_t x, uint16_t y)
+inline bool mulWillOverflow(AstNode* node, uint16_t x, uint16_t y)
 {
     if (node->sourceFile->module->mustEmitSafetyOF(node))
     {
@@ -275,7 +275,7 @@ inline bool mulOverflow(AstNode* node, uint16_t x, uint16_t y)
     return false;
 }
 
-inline bool mulOverflow(AstNode* node, uint32_t x, uint32_t y)
+inline bool mulWillOverflow(AstNode* node, uint32_t x, uint32_t y)
 {
     if (node->sourceFile->module->mustEmitSafetyOF(node))
     {
@@ -287,7 +287,7 @@ inline bool mulOverflow(AstNode* node, uint32_t x, uint32_t y)
     return false;
 }
 
-inline bool mulOverflow(AstNode* node, uint64_t x, uint64_t y)
+inline bool mulWillOverflow(AstNode* node, uint64_t x, uint64_t y)
 {
     if (node->sourceFile->module->mustEmitSafetyOF(node))
     {
@@ -298,83 +298,15 @@ inline bool mulOverflow(AstNode* node, uint64_t x, uint64_t y)
     return false;
 }
 
-inline void executeShiftLeft(Register* rdest, const Register& rleft, const Register& rright, uint32_t numBits, bool isSmall)
+inline bool shiftLeftHasOverflowed(AstNode* node, int8_t rdest, int8_t rleft, uint32_t rright, bool isSmall)
 {
-    auto shift = rright.u32;
-    if (isSmall)
-        shift &= numBits - 1;
+    if (node->sourceFile->module->mustEmitSafetyOF(node))
+    {
+        if (rright >= 8)
+            return true;
+        if ((rdest & 0x80) != (rleft & 0x80))
+            return true;
+    }
 
-    if (shift >= numBits)
-        rdest->u64 = 0;
-    else
-        rdest->u64 = rleft.u64 << shift;
-}
-inline void executeShiftRight(Register* rdest, const Register& rleft, const Register& rright, uint32_t numBits, bool isSigned, bool isSmall)
-{
-    auto shift = rright.u32;
-    if (isSmall)
-        shift &= numBits - 1;
-
-    // Overflow, too many bits to shift
-    if (shift >= numBits)
-    {
-        if (isSigned)
-        {
-            switch (numBits)
-            {
-            case 8:
-                rdest->s64 = rleft.s8 < 0 ? -1 : 0;
-                break;
-            case 16:
-                rdest->s64 = rleft.s16 < 0 ? -1 : 0;
-                break;
-            case 32:
-                rdest->s64 = rleft.s32 < 0 ? -1 : 0;
-                break;
-            case 64:
-                rdest->s64 = rleft.s64 < 0 ? -1 : 0;
-                break;
-            }
-        }
-        else
-        {
-            rdest->u64 = 0;
-        }
-    }
-    else if (isSigned)
-    {
-        switch (numBits)
-        {
-        case 8:
-            rdest->s64 = rleft.s8 >> shift;
-            break;
-        case 16:
-            rdest->s64 = rleft.s16 >> shift;
-            break;
-        case 32:
-            rdest->s64 = rleft.s32 >> shift;
-            break;
-        case 64:
-            rdest->s64 = rleft.s64 >> shift;
-            break;
-        }
-    }
-    else
-    {
-        switch (numBits)
-        {
-        case 8:
-            rdest->u64 = rleft.u8 >> shift;
-            break;
-        case 16:
-            rdest->u64 = rleft.u16 >> shift;
-            break;
-        case 32:
-            rdest->u64 = rleft.u32 >> shift;
-            break;
-        case 64:
-            rdest->u64 = rleft.u64 >> shift;
-            break;
-        }
-    }
+    return false;
 }
