@@ -235,76 +235,76 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
 
             case ByteCodeOp::BinOpShiftLeftU8:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ByteCodeRun::executeShiftLeft(context, &ip->b, ip->a, ip->b, 8, ip->flags & BCI_SHIFT_SMALL);
+                executeShiftLeft(&ip->b, ip->a, ip->b, 8, ip->flags & BCI_SHIFT_SMALL);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftLeftU16:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ByteCodeRun::executeShiftLeft(context, &ip->b, ip->a, ip->b, 16, ip->flags & BCI_SHIFT_SMALL);
+                executeShiftLeft(&ip->b, ip->a, ip->b, 16, ip->flags & BCI_SHIFT_SMALL);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftLeftU32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ByteCodeRun::executeShiftLeft(context, &ip->b, ip->a, ip->b, 32, ip->flags & BCI_SHIFT_SMALL);
+                executeShiftLeft(&ip->b, ip->a, ip->b, 32, ip->flags & BCI_SHIFT_SMALL);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
 
             case ByteCodeOp::BinOpShiftLeftU64:
                 SET_OP(ip, ByteCodeOp::SetImmediate64);
-                ByteCodeRun::executeShiftLeft(context, &ip->b, ip->a, ip->b, 64, ip->flags & BCI_SHIFT_SMALL);
+                executeShiftLeft(&ip->b, ip->a, ip->b, 64, ip->flags & BCI_SHIFT_SMALL);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
 
             case ByteCodeOp::BinOpShiftRightS8:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ByteCodeRun::executeShiftRight(context, &ip->b, ip->a, ip->b, 8, true, ip->flags & BCI_SHIFT_SMALL);
+                executeShiftRight(&ip->b, ip->a, ip->b, 8, true, ip->flags & BCI_SHIFT_SMALL);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftRightS16:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ByteCodeRun::executeShiftRight(context, &ip->b, ip->a, ip->b, 16, true, ip->flags & BCI_SHIFT_SMALL);
+                executeShiftRight(&ip->b, ip->a, ip->b, 16, true, ip->flags & BCI_SHIFT_SMALL);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftRightS32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ByteCodeRun::executeShiftRight(context, &ip->b, ip->a, ip->b, 32, true, ip->flags & BCI_SHIFT_SMALL);
+                executeShiftRight(&ip->b, ip->a, ip->b, 32, true, ip->flags & BCI_SHIFT_SMALL);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftRightS64:
                 SET_OP(ip, ByteCodeOp::SetImmediate64);
-                ByteCodeRun::executeShiftRight(context, &ip->b, ip->a, ip->b, 64, true, ip->flags & BCI_SHIFT_SMALL);
+                executeShiftRight(&ip->b, ip->a, ip->b, 64, true, ip->flags & BCI_SHIFT_SMALL);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
 
             case ByteCodeOp::BinOpShiftRightU8:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ByteCodeRun::executeShiftRight(context, &ip->b, ip->a, ip->b, 8, false, ip->flags & BCI_SHIFT_SMALL);
+                executeShiftRight(&ip->b, ip->a, ip->b, 8, false, ip->flags & BCI_SHIFT_SMALL);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftRightU16:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ByteCodeRun::executeShiftRight(context, &ip->b, ip->a, ip->b, 16, false, ip->flags & BCI_SHIFT_SMALL);
+                executeShiftRight(&ip->b, ip->a, ip->b, 16, false, ip->flags & BCI_SHIFT_SMALL);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftRightU32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ByteCodeRun::executeShiftRight(context, &ip->b, ip->a, ip->b, 32, false, ip->flags & BCI_SHIFT_SMALL);
+                executeShiftRight(&ip->b, ip->a, ip->b, 32, false, ip->flags & BCI_SHIFT_SMALL);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftRightU64:
                 SET_OP(ip, ByteCodeOp::SetImmediate64);
-                ByteCodeRun::executeShiftRight(context, &ip->b, ip->a, ip->b, 64, false, ip->flags & BCI_SHIFT_SMALL);
+                executeShiftRight(&ip->b, ip->a, ip->b, 64, false, ip->flags & BCI_SHIFT_SMALL);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;

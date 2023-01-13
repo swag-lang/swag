@@ -297,3 +297,84 @@ inline bool mulOverflow(AstNode* node, uint64_t x, uint64_t y)
     }
     return false;
 }
+
+inline void executeShiftLeft(Register* rdest, const Register& rleft, const Register& rright, uint32_t numBits, bool isSmall)
+{
+    auto shift = rright.u32;
+    if (isSmall)
+        shift &= numBits - 1;
+
+    if (shift >= numBits)
+        rdest->u64 = 0;
+    else
+        rdest->u64 = rleft.u64 << shift;
+}
+inline void executeShiftRight(Register* rdest, const Register& rleft, const Register& rright, uint32_t numBits, bool isSigned, bool isSmall)
+{
+    auto shift = rright.u32;
+    if (isSmall)
+        shift &= numBits - 1;
+
+    // Overflow, too many bits to shift
+    if (shift >= numBits)
+    {
+        if (isSigned)
+        {
+            switch (numBits)
+            {
+            case 8:
+                rdest->s64 = rleft.s8 < 0 ? -1 : 0;
+                break;
+            case 16:
+                rdest->s64 = rleft.s16 < 0 ? -1 : 0;
+                break;
+            case 32:
+                rdest->s64 = rleft.s32 < 0 ? -1 : 0;
+                break;
+            case 64:
+                rdest->s64 = rleft.s64 < 0 ? -1 : 0;
+                break;
+            }
+        }
+        else
+        {
+            rdest->u64 = 0;
+        }
+    }
+    else if (isSigned)
+    {
+        switch (numBits)
+        {
+        case 8:
+            rdest->s64 = rleft.s8 >> shift;
+            break;
+        case 16:
+            rdest->s64 = rleft.s16 >> shift;
+            break;
+        case 32:
+            rdest->s64 = rleft.s32 >> shift;
+            break;
+        case 64:
+            rdest->s64 = rleft.s64 >> shift;
+            break;
+        }
+    }
+    else
+    {
+        switch (numBits)
+        {
+        case 8:
+            rdest->u64 = rleft.u8 >> shift;
+            break;
+        case 16:
+            rdest->u64 = rleft.u16 >> shift;
+            break;
+        case 32:
+            rdest->u64 = rleft.u32 >> shift;
+            break;
+        case 64:
+            rdest->u64 = rleft.u64 >> shift;
+            break;
+        }
+    }
+}
