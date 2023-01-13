@@ -98,7 +98,7 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
                 Diagnostic diag{typeNode, Fmt(Err(Err0252), typeNode->typeInfo->getDisplayNameC(), tag->type->getDisplayNameC(), tag->name.c_str())};
                 Diagnostic note{typeNode, Fmt(Nte(Nte0038), tag->cmdLine.c_str()), DiagnosticLevel::Note};
                 note.hasFile    = false;
-                note.showSource = false;
+                note.showSourceCode = false;
                 return context->report(diag, &note);
             }
 

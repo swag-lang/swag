@@ -25,7 +25,7 @@ void Diagnostic::setup()
     if (!hasFile || sourceFile->path.empty())
         showFileName = false;
     if (!hasFile || sourceFile->path.empty() || !hasLocation)
-        showSource = false;
+        showSourceCode = false;
 
     switch (errorLevel)
     {
@@ -145,7 +145,8 @@ void Diagnostic::printErrorLevel()
         g_Log.print("warning: ");
         break;
     case DiagnosticLevel::Note:
-        printMargin(true);
+        if (emptyMarginBefore)
+            printMargin(true);
         g_Log.setColor(noteColor);
         if (noteHeader.empty())
         {
@@ -158,7 +159,8 @@ void Diagnostic::printErrorLevel()
         }
         break;
     case DiagnosticLevel::Help:
-        printMargin(true);
+        if (emptyMarginBefore)
+            printMargin(true);
         g_Log.setColor(noteColor);
         g_Log.print("help: ");
         break;
@@ -567,7 +569,7 @@ void Diagnostic::report(bool verboseMode)
     }
 
     // Source code
-    if (showSource)
+    if (showSourceCode)
     {
         collectSourceCode();
         if (showRange)

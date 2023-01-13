@@ -87,6 +87,7 @@ namespace Report
 
                 // Try to transform a note in a hint
                 if (note->hint.empty() &&
+                    note->hasRangeLocation &&
                     note1->hint.empty() &&
                     !note1->hasRangeLocation2 &&
                     (!note1->hasRangeLocation ||
@@ -141,10 +142,20 @@ namespace Report
             notes.push_back(new Diagnostic{*n});
 
         cleanNotes(notes);
+
+        bool prevHasSomething = true;
         for (auto n : notes)
         {
-            if (n->display)
-                n->report(verbose);
+            if (!n->display)
+                continue;
+
+            auto hasSomething = n->showFileName || n->showSourceCode || !n->remarks.empty();
+            if (!hasSomething && !prevHasSomething)
+                n->emptyMarginBefore = false;
+
+            n->report(verbose);
+
+            prevHasSomething = hasSomething;
         }
 
         g_Log.eol();

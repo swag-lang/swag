@@ -5,6 +5,7 @@
 #include "Ast.h"
 #include "SourceFile.h"
 #include "Module.h"
+#include "Report.h"
 
 #pragma optimize("", off)
 
@@ -183,7 +184,6 @@ struct Context
     int                       state   = 0;
     set<ByteCodeInstruction*> statesHere;
     vector<State>             states;
-    bool                      incomplete = false;
 };
 
 static bool getStackValue(Value& result, Context& cxt, void* addr, uint32_t sizeOf)
@@ -375,13 +375,6 @@ static void invalidateCurStateStack(Context& cxt)
     setStackValue(cxt, STATE().stack.buffer, STATE().stack.count, ValueKind::Unknown);
 }
 
-static void invalidateCurState(Context& cxt)
-{
-    for (int i = 0; i < STATE().regs.count; i++)
-        STATE().regs[i] = {ValueKind::Unknown};
-    invalidateCurStateStack(cxt);
-}
-
 static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
 {
     Value*   ra    = nullptr;
@@ -466,6 +459,10 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
         case ByteCodeOp::IntrinsicIsConstExprSI:
         case ByteCodeOp::IntrinsicAlloc:
         case ByteCodeOp::IntrinsicRealloc:
+        case ByteCodeOp::IntrinsicSysAlloc:
+        case ByteCodeOp::IntrinsicDbgAlloc:
+        case ByteCodeOp::IntrinsicRtFlags:
+        case ByteCodeOp::IntrinsicIsByteCode:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
             ra->kind = ValueKind::Unknown;
             break;
@@ -486,12 +483,36 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             break;
 
         case ByteCodeOp::IntrinsicItfTableOf:
+        case ByteCodeOp::IntrinsicAtomicAddS8:
+        case ByteCodeOp::IntrinsicAtomicAddS16:
+        case ByteCodeOp::IntrinsicAtomicAddS32:
+        case ByteCodeOp::IntrinsicAtomicAddS64:
+        case ByteCodeOp::IntrinsicAtomicAndS8:
+        case ByteCodeOp::IntrinsicAtomicAndS16:
+        case ByteCodeOp::IntrinsicAtomicAndS32:
+        case ByteCodeOp::IntrinsicAtomicAndS64:
+        case ByteCodeOp::IntrinsicAtomicOrS8:
+        case ByteCodeOp::IntrinsicAtomicOrS16:
+        case ByteCodeOp::IntrinsicAtomicOrS32:
+        case ByteCodeOp::IntrinsicAtomicOrS64:
+        case ByteCodeOp::IntrinsicAtomicXorS8:
+        case ByteCodeOp::IntrinsicAtomicXorS16:
+        case ByteCodeOp::IntrinsicAtomicXorS32:
+        case ByteCodeOp::IntrinsicAtomicXorS64:
+        case ByteCodeOp::IntrinsicAtomicXchgS8:
+        case ByteCodeOp::IntrinsicAtomicXchgS16:
+        case ByteCodeOp::IntrinsicAtomicXchgS32:
+        case ByteCodeOp::IntrinsicAtomicXchgS64:
             SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));
             rc->kind = ValueKind::Unknown;
             break;
 
         case ByteCodeOp::IntrinsicTypeCmp:
         case ByteCodeOp::IntrinsicStringCmp:
+        case ByteCodeOp::IntrinsicAtomicCmpXchgS8:
+        case ByteCodeOp::IntrinsicAtomicCmpXchgS16:
+        case ByteCodeOp::IntrinsicAtomicCmpXchgS32:
+        case ByteCodeOp::IntrinsicAtomicCmpXchgS64:
             SWAG_CHECK(getRegister(rd, cxt, ip->d.u32));
             rd->kind = ValueKind::Unknown;
             break;
@@ -1677,6 +1698,24 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             }
             invalidateCurStateStack(cxt);
             break;
+        case ByteCodeOp::IntrinsicMemMove:
+            SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+            SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));
+            SWAG_CHECK(getImmediateC(vc, cxt, ip));
+            SWAG_CHECK(checkNotNull(cxt, ra));
+            SWAG_CHECK(checkNotNull(cxt, rb));
+            if (ra->kind == ValueKind::StackAddr && rb->kind == ValueKind::StackAddr && vc.kind == ValueKind::Constant)
+            {
+                SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, vc.reg.u32));
+                SWAG_CHECK(getStackAddress(addr2, cxt, rb->reg.u32, vc.reg.u32));
+                SWAG_CHECK(checkStackInitialized(cxt, addr2, vc.reg.u32, rb->overload));
+                SWAG_CHECK(getStackValue(va, cxt, addr2, vc.reg.u32));
+                setStackValue(cxt, addr, vc.reg.u32, va.kind);
+                memmove(addr, addr2, vc.reg.u32);
+                break;
+            }
+            invalidateCurStateStack(cxt);
+            break;
         case ByteCodeOp::IntrinsicMemSet:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
             SWAG_CHECK(getImmediateB(vb, cxt, ip));
@@ -1698,11 +1737,46 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             invalidateCurStateStack(cxt);
             break;
 
-        default:
-            invalidateCurState(cxt);
-            cxt.incomplete = true;
-            // printf("%s\n", g_ByteCodeOpDesc[(int) ip->op].name);
+        case ByteCodeOp::IntrinsicS8x1:
+        case ByteCodeOp::IntrinsicS16x1:
+        case ByteCodeOp::IntrinsicS32x1:
+        case ByteCodeOp::IntrinsicS64x1:
+        case ByteCodeOp::IntrinsicF32x1:
+        case ByteCodeOp::IntrinsicF64x1:
+            SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            ra->kind = ValueKind::Unknown;
+            if (vb.kind == ValueKind::Constant)
+            {
+                ra->kind = ValueKind::Constant;
+                SWAG_CHECK(ByteCodeRun::executeMathIntrinsic(context, ip, ra->reg, vb.reg, vb.reg, false));
+            }
             break;
+
+        case ByteCodeOp::IntrinsicS8x2:
+        case ByteCodeOp::IntrinsicS16x2:
+        case ByteCodeOp::IntrinsicS32x2:
+        case ByteCodeOp::IntrinsicS64x2:
+        case ByteCodeOp::IntrinsicU8x2:
+        case ByteCodeOp::IntrinsicU16x2:
+        case ByteCodeOp::IntrinsicU32x2:
+        case ByteCodeOp::IntrinsicU64x2:
+        case ByteCodeOp::IntrinsicF32x2:
+        case ByteCodeOp::IntrinsicF64x2:
+            SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            SWAG_CHECK(getImmediateC(vc, cxt, ip));
+            ra->kind = ValueKind::Unknown;
+            if (vb.kind == ValueKind::Constant && vc.kind == ValueKind::Constant)
+            {
+                ra->kind = ValueKind::Constant;
+                SWAG_CHECK(ByteCodeRun::executeMathIntrinsic(context, ip, ra->reg, vb.reg, vc.reg, false));
+            }
+            break;
+
+        default:
+            Report::internalError(cxt.bc->sourceFile->module, Fmt("unknown instruction `%s` during sanity check", g_ByteCodeOpDesc[(int) ip->op].name));
+            return false;
         }
 
         ip->dynFlags |= BCID_SAN_PASS;
@@ -1714,22 +1788,21 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
 
 bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
 {
+    if (!context->bc->node || context->bc->isCompilerGenerated)
+        return true;
+
 #if 0
-    if (context->bc->name != "__compiler4179.toto")
+    if (context->bc->name != "__compiler4181.toto")
         return true;
     context->bc->print();
 #endif
 
-    if (!context->bc->node || context->bc->isCompilerGenerated)
-        return true;
-
     Context cxt;
     State   state;
 
-    cxt.bc         = context->bc;
-    state.ip       = nullptr;
-    cxt.context    = context;
-    cxt.incomplete = false;
+    cxt.bc      = context->bc;
+    state.ip    = nullptr;
+    cxt.context = context;
 
     auto funcDecl = CastAst<AstFuncDecl>(cxt.bc->node, AstNodeKind::FuncDecl);
 
@@ -1772,11 +1845,6 @@ bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
         for (uint32_t j = 0; j < cxt.bc->numInstructions; j++)
             cxt.bc->out[j].dynFlags &= ~BCID_SAN_PASS;
     }
-
-    if (g_CommandLine.stats && !cxt.incomplete)
-        g_Stats.numSanDone++;
-    else if (g_CommandLine.stats && cxt.incomplete)
-        g_Stats.numSanIncomplete++;
 
     return true;
 }

@@ -30,9 +30,6 @@ void Stats::print()
         if (g_CommandLine.test)
             g_Log.messageHeaderDot("executed #test", Fmt("%u", testFunctions.load()));
         g_Log.messageHeaderDot("executed #run", Fmt("%u", runFunctions.load()));
-        float pc0 = (numSanDone.load() * 100.0f) / (numSanDone.load() + numSanIncomplete.load());
-        g_Log.messageHeaderDot("san done", Fmt("%u %.1f%%", numSanDone.load(), pc0));
-        g_Log.messageHeaderDot("san incomplete", Fmt("%u", numSanIncomplete.load()));
         if (g_Workspace->numErrors)
             g_Log.messageHeaderDot("errors", Fmt("%u", g_Workspace->numErrors.load()), LogColor::Red);
         if (g_Workspace->numWarnings)

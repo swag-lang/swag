@@ -17,8 +17,6 @@ struct Stats
     atomic<int> numInitFuncPtr           = 0;
     atomic<int> numNodes                 = 0;
     atomic<int> numTokens                = 0;
-    atomic<int> numSanDone               = 0;
-    atomic<int> numSanIncomplete         = 0;
 
     atomic<uint64_t> readFilesTime             = 0;
     atomic<uint64_t> totalTime                 = 0;

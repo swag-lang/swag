@@ -29,7 +29,7 @@ struct Diagnostic
         , hasFile{true}
         , hasLocation{true}
         , hasRangeLocation{true}
-        , showSource{true}
+        , showSourceCode{true}
     {
         setup();
     }
@@ -42,7 +42,7 @@ struct Diagnostic
         , hasFile{true}
         , hasLocation{true}
         , hasRangeLocation{false}
-        , showSource{true}
+        , showSourceCode{true}
     {
         setup();
     }
@@ -56,7 +56,7 @@ struct Diagnostic
         , hasFile{true}
         , hasLocation{true}
         , hasRangeLocation{true}
-        , showSource{true}
+        , showSourceCode{true}
     {
         setup();
     }
@@ -71,7 +71,7 @@ struct Diagnostic
         , hasFile{true}
         , hasLocation{true}
         , hasRangeLocation{true}
-        , showSource{true}
+        , showSourceCode{true}
     {
         setup();
     }
@@ -87,7 +87,7 @@ struct Diagnostic
         , hasFile{true}
         , hasLocation{true}
         , hasRangeLocation{true}
-        , showSource{true}
+        , showSourceCode{true}
     {
         setup();
     }
@@ -100,7 +100,7 @@ struct Diagnostic
         , hasFile{true}
         , hasLocation{true}
         , hasRangeLocation{true}
-        , showSource{true}
+        , showSourceCode{true}
     {
         node->computeLocation(startLocation, endLocation);
         setup();
@@ -115,7 +115,7 @@ struct Diagnostic
         , hasFile{true}
         , hasLocation{true}
         , hasRangeLocation{true}
-        , showSource{true}
+        , showSourceCode{true}
     {
         node->computeLocation(startLocation, endLocation);
         setup();
@@ -223,9 +223,10 @@ struct Diagnostic
     bool hasRangeLocation      = false;
     bool hasRangeLocation2     = false;
     bool exceptionError        = false;
-    bool showSource            = false;
+    bool showSourceCode            = false;
     bool showRange             = true;
     bool showMultipleCodeLines = true;
     bool showFileName          = true;
     bool forceSourceFile       = false;
+    bool emptyMarginBefore     = true;
 };
