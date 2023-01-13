@@ -6,6 +6,10 @@
 #include "SourceFile.h"
 #include "Module.h"
 #include "Report.h"
+#include "Math.h"
+#include "Report.h"
+#include "ByteCodeGenJob.h"
+#include "TypeManager.h"
 
 #pragma optimize("", off)
 
@@ -33,11 +37,30 @@
     {                                                                                     \
         SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, sizeof(vb.reg.__reg)));        \
         SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra->overload)); \
+        SWAG_CHECK(getStackValue(va, cxt, addr, sizeof(vb.reg.__reg)));                   \
         SWAG_CHECK(getImmediateB(vb, cxt, ip));                                           \
-        if (vb.kind == ValueKind::Unknown)                                                \
+        if (va.kind == ValueKind::Unknown || vb.kind == ValueKind::Unknown)               \
             setStackValue(cxt, addr, sizeof(vb.reg.__reg), ValueKind::Unknown);           \
         else                                                                              \
             *(__cast*) addr __op vb.reg.__reg;                                            \
+    }
+
+#define BINOPEQ_OVF(__cast, __op, __reg, __ovf, __msg, __type)                                                       \
+    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                                                                     \
+    SWAG_CHECK(checkNotNull(cxt, ra));                                                                               \
+    if (ra->kind == ValueKind::StackAddr)                                                                            \
+    {                                                                                                                \
+        SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, sizeof(vb.reg.__reg)));                                   \
+        SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra->overload));                            \
+        SWAG_CHECK(getStackValue(va, cxt, addr, sizeof(vb.reg.__reg)));                                              \
+        SWAG_CHECK(getImmediateB(vb, cxt, ip));                                                                      \
+        if (va.kind == ValueKind::Unknown || vb.kind == ValueKind::Unknown)                                          \
+            setStackValue(cxt, addr, sizeof(vb.reg.__reg), ValueKind::Unknown);                                      \
+        else                                                                                                         \
+        {                                                                                                            \
+            SWAG_CHECK(checkOverflow(cxt, !__ovf(ip->node, *(__cast*) addr, (__cast) vb.reg.__reg), __msg, __type)); \
+            *(__cast*) addr __op vb.reg.__reg;                                                                       \
+        }                                                                                                            \
     }
 
 #define BINOPEQ2(__cast, __op, __reg1, __reg2)                                             \
@@ -71,7 +94,8 @@
     SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                                                                            \
     rc->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown; \
     if (rc->kind == ValueKind::Constant)                                                                                    \
-        rc->reg.b = va.reg.__reg __op vb.reg.__reg;
+        rc->reg.b = va.reg.__reg __op vb.reg.__reg;                                                                         \
+    addConstant(cxt, rc->kind, ip, rc->reg.u64);
 
 #define BINOP(__op, __reg)                                                                                                  \
     SWAG_CHECK(getImmediateA(va, cxt, ip));                                                                                 \
@@ -79,7 +103,8 @@
     SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                                                                            \
     rc->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown; \
     if (rc->kind == ValueKind::Constant)                                                                                    \
-        rc->reg.__reg = va.reg.__reg __op vb.reg.__reg;
+        rc->reg.__reg = va.reg.__reg __op vb.reg.__reg;                                                                     \
+    addConstant(cxt, rc->kind, ip, rc->reg.u64);
 
 #define BINOP2(__op, __reg1, __reg2)                                                                                        \
     SWAG_CHECK(getImmediateA(va, cxt, ip));                                                                                 \
@@ -87,7 +112,8 @@
     SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                                                                            \
     rc->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown; \
     if (rc->kind == ValueKind::Constant)                                                                                    \
-        rc->reg.__reg1 = va.reg.__reg1 __op vb.reg.__reg2;
+        rc->reg.__reg1 = va.reg.__reg1 __op vb.reg.__reg2;                                                                  \
+    addConstant(cxt, rc->kind, ip, rc->reg.u64);
 
 #define BINOPDIV(__op, __reg)                                          \
     SWAG_CHECK(getImmediateB(vb, cxt, ip));                            \
@@ -179,12 +205,40 @@ struct State
 
 struct Context
 {
-    ByteCodeOptContext*       context = nullptr;
-    ByteCode*                 bc      = nullptr;
-    int                       state   = 0;
-    set<ByteCodeInstruction*> statesHere;
-    vector<State>             states;
+    ByteCodeOptContext*                 context = nullptr;
+    ByteCode*                           bc      = nullptr;
+    int                                 state   = 0;
+    set<ByteCodeInstruction*>           statesHere;
+    vector<State>                       states;
+    map<ByteCodeInstruction*, uint64_t> constants;
 };
+
+static void addConstant(Context& cxt, ValueKind kind, ByteCodeInstruction* ip, uint64_t value)
+{
+    if (kind != ValueKind::Constant)
+    {
+        ip->dynFlags |= BCID_SANITY_BAD_CONSTANT;
+        return;
+    }
+
+    if (ip->dynFlags & BCID_SANITY_BAD_CONSTANT)
+    {
+        return;
+    }
+
+    auto it = cxt.constants.find(ip);
+    if (it == cxt.constants.end())
+    {
+        cxt.constants[ip] = value;
+        return;
+    }
+
+    if (it->second != value)
+    {
+        ip->dynFlags |= BCID_SANITY_BAD_CONSTANT;
+        return;
+    }
+}
 
 static bool getStackValue(Value& result, Context& cxt, void* addr, uint32_t sizeOf)
 {
@@ -246,6 +300,13 @@ static bool raiseError(Context& cxt, Utf8 msg, SymbolOverload* overload = nullpt
     ByteCode::getLocation(cxt.bc, cxt.states[cxt.state].ip, &file, &loc);
     Diagnostic diag({file, *loc, msg});
     return cxt.context->report(diag);
+}
+
+static bool checkOverflow(Context& cxt, bool isValid, SafetyMsg msgKind, TypeInfo* type)
+{
+    if (isValid)
+        return true;
+    return raiseError(cxt, ByteCodeGenJob::safetyMsg(msgKind, type));
 }
 
 static bool checkDivZero(Context& cxt, Value& value, bool isZero, SymbolOverload* overload = nullptr)
@@ -856,6 +917,7 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             SWAG_CHECK(getStackValue(*ra, cxt, addr, 1));
             SWAG_CHECK(checkStackInitialized(cxt, addr, 1, ra->overload));
             ra->reg.u64 = *(uint8_t*) addr;
+            addConstant(cxt, ra->kind, ip, *(uint8_t*) addr);
             break;
         case ByteCodeOp::GetFromStack16:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
@@ -863,6 +925,7 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             SWAG_CHECK(getStackValue(*ra, cxt, addr, 2));
             SWAG_CHECK(checkStackInitialized(cxt, addr, 2, ra->overload));
             ra->reg.u64 = *(uint16_t*) addr;
+            addConstant(cxt, ra->kind, ip, *(uint16_t*) addr);
             break;
         case ByteCodeOp::GetFromStack32:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
@@ -870,6 +933,7 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             SWAG_CHECK(getStackValue(*ra, cxt, addr, 4));
             SWAG_CHECK(checkStackInitialized(cxt, addr, 4, ra->overload));
             ra->reg.u64 = *(uint32_t*) addr;
+            addConstant(cxt, ra->kind, ip, *(uint32_t*) addr);
             break;
         case ByteCodeOp::GetFromStack64:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
@@ -877,6 +941,7 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             SWAG_CHECK(getStackValue(*ra, cxt, addr, 8));
             SWAG_CHECK(checkStackInitialized(cxt, addr, 8, ra->overload));
             ra->reg.u64 = *(uint64_t*) addr;
+            addConstant(cxt, ra->kind, ip, *(uint64_t*) addr);
             break;
 
         case ByteCodeOp::IncPointer64:
@@ -979,28 +1044,28 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             break;
 
         case ByteCodeOp::AffectOpPlusEqS8:
-            BINOPEQ(uint8_t, +=, s8);
+            BINOPEQ_OVF(int8_t, +=, s8, addOverflow, SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoS8);
             break;
         case ByteCodeOp::AffectOpPlusEqS16:
-            BINOPEQ(uint16_t, +=, s16);
+            BINOPEQ_OVF(int16_t, +=, s16, addOverflow, SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoS16);
             break;
         case ByteCodeOp::AffectOpPlusEqS32:
-            BINOPEQ(uint32_t, +=, s32);
+            BINOPEQ_OVF(int32_t, +=, s32, addOverflow, SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoS32);
             break;
         case ByteCodeOp::AffectOpPlusEqS64:
-            BINOPEQ(uint64_t, +=, s64);
+            BINOPEQ_OVF(int64_t, +=, s64, addOverflow, SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoS64);
             break;
         case ByteCodeOp::AffectOpPlusEqU8:
-            BINOPEQ(uint8_t, +=, u8);
+            BINOPEQ_OVF(uint8_t, +=, u8, addOverflow, SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoU8);
             break;
         case ByteCodeOp::AffectOpPlusEqU16:
-            BINOPEQ(uint16_t, +=, u16);
+            BINOPEQ_OVF(uint16_t, +=, u16, addOverflow, SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoU16);
             break;
         case ByteCodeOp::AffectOpPlusEqU32:
-            BINOPEQ(uint32_t, +=, u32);
+            BINOPEQ_OVF(uint32_t, +=, u32, addOverflow, SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoU32);
             break;
         case ByteCodeOp::AffectOpPlusEqU64:
-            BINOPEQ(uint64_t, +=, u64);
+            BINOPEQ_OVF(uint64_t, +=, u64, addOverflow, SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoU64);
             break;
         case ByteCodeOp::AffectOpPlusEqF32:
             BINOPEQ(float, +=, f32);
@@ -1010,28 +1075,28 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             break;
 
         case ByteCodeOp::AffectOpMinusEqS8:
-            BINOPEQ(uint8_t, -=, s8);
+            BINOPEQ_OVF(int8_t, -=, s8, subOverflow, SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoS8);
             break;
         case ByteCodeOp::AffectOpMinusEqS16:
-            BINOPEQ(uint16_t, -=, s16);
+            BINOPEQ_OVF(int16_t, -=, s16, subOverflow, SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoS16);
             break;
         case ByteCodeOp::AffectOpMinusEqS32:
-            BINOPEQ(uint32_t, -=, s32);
+            BINOPEQ_OVF(int32_t, -=, s32, subOverflow, SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoS32);
             break;
         case ByteCodeOp::AffectOpMinusEqS64:
-            BINOPEQ(uint64_t, -=, s64);
+            BINOPEQ_OVF(int64_t, -=, s64, subOverflow, SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoS64);
             break;
         case ByteCodeOp::AffectOpMinusEqU8:
-            BINOPEQ(uint8_t, -=, u8);
+            BINOPEQ_OVF(uint8_t, -=, u8, subOverflow, SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoU8);
             break;
         case ByteCodeOp::AffectOpMinusEqU16:
-            BINOPEQ(uint16_t, -=, u16);
+            BINOPEQ_OVF(uint16_t, -=, u16, subOverflow, SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoU16);
             break;
         case ByteCodeOp::AffectOpMinusEqU32:
-            BINOPEQ(uint32_t, -=, u32);
+            BINOPEQ_OVF(uint32_t, -=, u32, subOverflow, SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoU32);
             break;
         case ByteCodeOp::AffectOpMinusEqU64:
-            BINOPEQ(uint64_t, -=, u64);
+            BINOPEQ_OVF(uint64_t, -=, u64, subOverflow, SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoU64);
             break;
         case ByteCodeOp::AffectOpMinusEqF32:
             BINOPEQ(float, -=, f32);
@@ -1041,16 +1106,16 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             break;
 
         case ByteCodeOp::AffectOpMulEqS8:
-            BINOPEQ(uint8_t, *=, s8);
+            BINOPEQ(int8_t, *=, s8);
             break;
         case ByteCodeOp::AffectOpMulEqS16:
-            BINOPEQ(uint16_t, *=, s16);
+            BINOPEQ(int16_t, *=, s16);
             break;
         case ByteCodeOp::AffectOpMulEqS32:
-            BINOPEQ(uint32_t, *=, s32);
+            BINOPEQ(int32_t, *=, s32);
             break;
         case ByteCodeOp::AffectOpMulEqS64:
-            BINOPEQ(uint64_t, *=, s64);
+            BINOPEQ(int64_t, *=, s64);
             break;
         case ByteCodeOp::AffectOpMulEqU8:
             BINOPEQ(uint8_t, *=, u8);
@@ -1072,16 +1137,16 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             break;
 
         case ByteCodeOp::AffectOpDivEqS8:
-            BINOPEQDIV(uint8_t, /=, s8);
+            BINOPEQDIV(int8_t, /=, s8);
             break;
         case ByteCodeOp::AffectOpDivEqS16:
-            BINOPEQDIV(uint16_t, /=, s16);
+            BINOPEQDIV(int16_t, /=, s16);
             break;
         case ByteCodeOp::AffectOpDivEqS32:
-            BINOPEQDIV(uint32_t, /=, s32);
+            BINOPEQDIV(int32_t, /=, s32);
             break;
         case ByteCodeOp::AffectOpDivEqS64:
-            BINOPEQDIV(uint64_t, /=, s64);
+            BINOPEQDIV(int64_t, /=, s64);
             break;
         case ByteCodeOp::AffectOpDivEqU8:
             BINOPEQDIV(uint8_t, /=, u8);
@@ -1103,16 +1168,16 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             break;
 
         case ByteCodeOp::AffectOpModuloEqS8:
-            BINOPEQDIV(uint8_t, %=, s8);
+            BINOPEQDIV(int8_t, %=, s8);
             break;
         case ByteCodeOp::AffectOpModuloEqS16:
-            BINOPEQDIV(uint16_t, %=, s16);
+            BINOPEQDIV(int16_t, %=, s16);
             break;
         case ByteCodeOp::AffectOpModuloEqS32:
-            BINOPEQDIV(uint32_t, %=, s32);
+            BINOPEQDIV(int32_t, %=, s32);
             break;
         case ByteCodeOp::AffectOpModuloEqS64:
-            BINOPEQDIV(uint64_t, %=, s64);
+            BINOPEQDIV(int64_t, %=, s64);
             break;
         case ByteCodeOp::AffectOpModuloEqU8:
             BINOPEQDIV(uint8_t, %=, u8);
@@ -1180,16 +1245,16 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             break;
 
         case ByteCodeOp::AffectOpShiftRightEqS8:
-            BINOPEQ2(uint8_t, >>=, s8, u32);
+            BINOPEQ2(int8_t, >>=, s8, u32);
             break;
         case ByteCodeOp::AffectOpShiftRightEqS16:
-            BINOPEQ2(uint8_t, >>=, s16, u32);
+            BINOPEQ2(int8_t, >>=, s16, u32);
             break;
         case ByteCodeOp::AffectOpShiftRightEqS32:
-            BINOPEQ2(uint8_t, >>=, s32, u32);
+            BINOPEQ2(int8_t, >>=, s32, u32);
             break;
         case ByteCodeOp::AffectOpShiftRightEqS64:
-            BINOPEQ2(uint8_t, >>=, s64, u32);
+            BINOPEQ2(int8_t, >>=, s64, u32);
             break;
         case ByteCodeOp::AffectOpShiftRightEqU8:
             BINOPEQ2(uint8_t, >>=, u8, u32);
@@ -1792,7 +1857,7 @@ bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
         return true;
 
 #if 0
-    if (context->bc->name != "__compiler4181.toto")
+    if (context->bc->name != "__compiler4182.toto")
         return true;
     context->bc->print();
 #endif
@@ -1845,6 +1910,18 @@ bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
         for (uint32_t j = 0; j < cxt.bc->numInstructions; j++)
             cxt.bc->out[j].dynFlags &= ~BCID_SAN_PASS;
     }
+
+    /*if (cxt.bc->sourceFile->module->mustOptimizeBC(cxt.bc->node))
+    {
+        for (auto& it : cxt.constants)
+        {
+            if (it.first->dynFlags & BCID_SANITY_BAD_CONSTANT)
+                continue;
+
+            SET_OP(it.first, ByteCodeOp::SetImmediate64);
+            it.first->b.u64 = it.second;
+        }
+    }*/
 
     return true;
 }
