@@ -335,8 +335,12 @@ impl Painter
         y := text.layoutRect.y
 
         // Vertical
-        totalHeight := cast(f32) (lines.count * format.font.regular.height)
-        totalHeight += cast(f32) (lines.count - 1) * format.lineGap
+        var totalHeight: f32
+        if lines.count
+        {
+            totalHeight = cast(f32) (lines.count * format.font.regular.height)
+            totalHeight += cast(f32) (lines.count - 1) * format.lineGap
+        }
 
         switch format.vertAlignment
         {

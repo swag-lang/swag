@@ -1398,7 +1398,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         auto val1 = IMMA_S32(ip);
         auto val2 = IMMB_S32(ip);
         if (addWillOverflow(ip->node, val1, val2))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoS32));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS32));
         registersRC[ip->c.u32].s32 = val1 + val2;
         break;
     }
@@ -1407,7 +1407,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         auto val1 = (uint32_t) IMMA_S32(ip);
         auto val2 = (uint32_t) IMMB_S32(ip);
         if (addWillOverflow(ip->node, val1, val2))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoU32));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU32));
         registersRC[ip->c.u32].s32 = val1 + val2;
         break;
     }
@@ -1416,7 +1416,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         auto val1 = IMMA_S64(ip);
         auto val2 = IMMB_S64(ip);
         if (addWillOverflow(ip->node, val1, val2))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoS64));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS64));
         registersRC[ip->c.u32].s64 = val1 + val2;
         break;
     }
@@ -1425,7 +1425,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         auto val1 = (uint64_t) IMMA_S64(ip);
         auto val2 = (uint64_t) IMMB_S64(ip);
         if (addWillOverflow(ip->node, val1, val2))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoU64));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU64));
         registersRC[ip->c.u32].s64 = val1 + val2;
         break;
     }
@@ -1478,7 +1478,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         auto val1 = IMMA_S32(ip);
         auto val2 = IMMB_S32(ip);
         if (subWillOverflow(ip->node, val1, val2))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoS32));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS32));
         registersRC[ip->c.u32].s32 = val1 - val2;
         break;
     }
@@ -1487,7 +1487,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         auto val1 = (uint32_t) IMMA_S32(ip);
         auto val2 = (uint32_t) IMMB_S32(ip);
         if (subWillOverflow(ip->node, val1, val2))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoU32));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU32));
         registersRC[ip->c.u32].s32 = val1 - val2;
         break;
     }
@@ -1496,7 +1496,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         auto val1 = IMMA_S64(ip);
         auto val2 = IMMB_S64(ip);
         if (subWillOverflow(ip->node, val1, val2))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoS64));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS64));
         registersRC[ip->c.u32].s64 = val1 - val2;
         break;
     }
@@ -1505,7 +1505,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         auto val1 = (uint64_t) IMMA_S64(ip);
         auto val2 = (uint64_t) IMMB_S64(ip);
         if (subWillOverflow(ip->node, val1, val2))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoU64));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU64));
         registersRC[ip->c.u32].s64 = val1 - val2;
         break;
     }
@@ -1558,7 +1558,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         auto val1 = IMMA_S32(ip);
         auto val2 = IMMB_S32(ip);
         if (mulWillOverflow(ip->node, val1, val2))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoS32));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS32));
         registersRC[ip->c.u32].s32 = val1 * val2;
         break;
     }
@@ -1567,7 +1567,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         auto val1 = (uint32_t) IMMA_S32(ip);
         auto val2 = (uint32_t) IMMB_S32(ip);
         if (mulWillOverflow(ip->node, val1, val2))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoU32));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU32));
         registersRC[ip->c.u32].s32 = val1 * val2;
         break;
     }
@@ -1576,7 +1576,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         auto val1 = IMMA_S64(ip);
         auto val2 = IMMB_S64(ip);
         if (mulWillOverflow(ip->node, val1, val2))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoS64));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS64));
         registersRC[ip->c.u32].s64 = val1 * val2;
         break;
     }
@@ -1585,7 +1585,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         auto val1 = (uint64_t) IMMA_S64(ip);
         auto val2 = (uint64_t) IMMB_S64(ip);
         if (mulWillOverflow(ip->node, val1, val2))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoU64));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU64));
         registersRC[ip->c.u32].s64 = val1 * val2;
         break;
     }
@@ -2693,56 +2693,56 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::AffectOpPlusEqS8:
     {
         if (addWillOverflow(ip->node, *(int8_t*) registersRC[ip->a.u32].pointer, IMMB_S8(ip)))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoS8));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS8));
         *(int8_t*) registersRC[ip->a.u32].pointer += IMMB_S8(ip);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqU8:
     {
         if (addWillOverflow(ip->node, *(uint8_t*) registersRC[ip->a.u32].pointer, (uint8_t) IMMB_S8(ip)))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoU8));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU8));
         *(int8_t*) registersRC[ip->a.u32].pointer += IMMB_S8(ip);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqS16:
     {
         if (addWillOverflow(ip->node, *(int16_t*) registersRC[ip->a.u32].pointer, IMMB_S16(ip)))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoS16));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS16));
         *(int16_t*) registersRC[ip->a.u32].pointer += IMMB_S16(ip);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqU16:
     {
         if (addWillOverflow(ip->node, *(uint16_t*) registersRC[ip->a.u32].pointer, (uint16_t) IMMB_S16(ip)))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoU16));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU16));
         *(int16_t*) registersRC[ip->a.u32].pointer += IMMB_S16(ip);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqS32:
     {
         if (addWillOverflow(ip->node, *(int32_t*) registersRC[ip->a.u32].pointer, IMMB_S32(ip)))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoS32));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS32));
         *(int32_t*) registersRC[ip->a.u32].pointer += IMMB_S32(ip);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqU32:
     {
         if (addWillOverflow(ip->node, *(uint32_t*) registersRC[ip->a.u32].pointer, (uint32_t) IMMB_S32(ip)))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoU32));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU32));
         *(int32_t*) registersRC[ip->a.u32].pointer += IMMB_S32(ip);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqS64:
     {
         if (addWillOverflow(ip->node, *(int64_t*) registersRC[ip->a.u32].pointer, IMMB_S64(ip)))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoS64));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS64));
         *(int64_t*) registersRC[ip->a.u32].pointer += IMMB_S64(ip);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqU64:
     {
         if (addWillOverflow(ip->node, *(uint64_t*) registersRC[ip->a.u32].pointer, (uint64_t) IMMB_S64(ip)))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoU64));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU64));
         *(int64_t*) registersRC[ip->a.u32].pointer += IMMB_S64(ip);
         break;
     }
@@ -2862,56 +2862,56 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::AffectOpMinusEqS8:
     {
         if (subWillOverflow(ip->node, *(int8_t*) registersRC[ip->a.u32].pointer, IMMB_S8(ip)))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoS8));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS8));
         *(int8_t*) registersRC[ip->a.u32].pointer -= IMMB_S8(ip);
         break;
     }
     case ByteCodeOp::AffectOpMinusEqU8:
     {
         if (subWillOverflow(ip->node, *(uint8_t*) registersRC[ip->a.u32].pointer, (uint8_t) IMMB_S8(ip)))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoU8));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU8));
         *(int8_t*) registersRC[ip->a.u32].pointer -= IMMB_S8(ip);
         break;
     }
     case ByteCodeOp::AffectOpMinusEqS16:
     {
         if (subWillOverflow(ip->node, *(int16_t*) registersRC[ip->a.u32].pointer, IMMB_S16(ip)))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoS16));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS16));
         *(int16_t*) registersRC[ip->a.u32].pointer -= IMMB_S16(ip);
         break;
     }
     case ByteCodeOp::AffectOpMinusEqU16:
     {
         if (subWillOverflow(ip->node, *(uint16_t*) registersRC[ip->a.u32].pointer, (uint16_t) IMMB_S16(ip)))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoU16));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU16));
         *(int16_t*) registersRC[ip->a.u32].pointer -= IMMB_S16(ip);
         break;
     }
     case ByteCodeOp::AffectOpMinusEqS32:
     {
         if (subWillOverflow(ip->node, *(int32_t*) registersRC[ip->a.u32].pointer, IMMB_S32(ip)))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoS32));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS32));
         *(int32_t*) registersRC[ip->a.u32].pointer -= IMMB_S32(ip);
         break;
     }
     case ByteCodeOp::AffectOpMinusEqU32:
     {
         if (subWillOverflow(ip->node, *(uint32_t*) registersRC[ip->a.u32].pointer, (uint32_t) IMMB_S32(ip)))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoU32));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU32));
         *(int32_t*) registersRC[ip->a.u32].pointer -= IMMB_S32(ip);
         break;
     }
     case ByteCodeOp::AffectOpMinusEqS64:
     {
         if (subWillOverflow(ip->node, *(int64_t*) registersRC[ip->a.u32].pointer, IMMB_S64(ip)))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoS64));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS64));
         *(int64_t*) registersRC[ip->a.u32].pointer -= IMMB_S64(ip);
         break;
     }
     case ByteCodeOp::AffectOpMinusEqU64:
     {
         if (subWillOverflow(ip->node, *(uint64_t*) registersRC[ip->a.u32].pointer, (uint64_t) IMMB_S64(ip)))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoU64));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU64));
         *(int64_t*) registersRC[ip->a.u32].pointer -= IMMB_S64(ip);
         break;
     }
@@ -3030,56 +3030,56 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::AffectOpMulEqS8:
     {
         if (mulWillOverflow(ip->node, *(int8_t*) registersRC[ip->a.u32].pointer, IMMB_S8(ip)))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr->typeInfoS8));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS8));
         *(int8_t*) registersRC[ip->a.u32].pointer *= IMMB_S8(ip);
         break;
     }
     case ByteCodeOp::AffectOpMulEqU8:
     {
         if (mulWillOverflow(ip->node, *(uint8_t*) registersRC[ip->a.u32].pointer, (uint8_t) IMMB_S8(ip)))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr->typeInfoU8));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU8));
         *(int8_t*) registersRC[ip->a.u32].pointer *= IMMB_S8(ip);
         break;
     }
     case ByteCodeOp::AffectOpMulEqS16:
     {
         if (mulWillOverflow(ip->node, *(int16_t*) registersRC[ip->a.u32].pointer, IMMB_S16(ip)))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr->typeInfoS16));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS16));
         *(int16_t*) registersRC[ip->a.u32].pointer *= IMMB_S16(ip);
         break;
     }
     case ByteCodeOp::AffectOpMulEqU16:
     {
         if (mulWillOverflow(ip->node, *(uint16_t*) registersRC[ip->a.u32].pointer, (uint16_t) IMMB_S16(ip)))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr->typeInfoU16));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU16));
         *(int16_t*) registersRC[ip->a.u32].pointer *= IMMB_S16(ip);
         break;
     }
     case ByteCodeOp::AffectOpMulEqS32:
     {
         if (mulWillOverflow(ip->node, *(int32_t*) registersRC[ip->a.u32].pointer, IMMB_S32(ip)))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr->typeInfoS32));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS32));
         *(int32_t*) registersRC[ip->a.u32].pointer *= IMMB_S32(ip);
         break;
     }
     case ByteCodeOp::AffectOpMulEqU32:
     {
         if (mulWillOverflow(ip->node, *(uint32_t*) registersRC[ip->a.u32].pointer, (uint32_t) IMMB_S32(ip)))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr->typeInfoU32));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU32));
         *(int32_t*) registersRC[ip->a.u32].pointer *= IMMB_S32(ip);
         break;
     }
     case ByteCodeOp::AffectOpMulEqS64:
     {
         if (mulWillOverflow(ip->node, *(int64_t*) registersRC[ip->a.u32].pointer, IMMB_S64(ip)))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr->typeInfoS64));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS64));
         *(int64_t*) registersRC[ip->a.u32].pointer *= IMMB_S64(ip);
         break;
     }
     case ByteCodeOp::AffectOpMulEqU64:
     {
         if (mulWillOverflow(ip->node, *(uint64_t*) registersRC[ip->a.u32].pointer, (uint64_t) IMMB_S64(ip)))
-            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr->typeInfoU64));
+            callInternalPanic(context, ip, ByteCodeGenJob::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU64));
         *(int64_t*) registersRC[ip->a.u32].pointer *= IMMB_S64(ip);
         break;
     }

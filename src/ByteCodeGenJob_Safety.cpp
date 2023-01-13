@@ -49,27 +49,27 @@ const char* ByteCodeGenJob::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo*
             SWAG_ASSERT(toType && fromType);
             typedMsg[m][i][j] = Fmt(Err(Saf0006), fromType->name.c_str(), toType->name.c_str());
             break;
-        case SafetyMsg::IFPlus:
+        case SafetyMsg::Plus:
             SWAG_ASSERT(toType);
             typedMsg[m][i][j] = Fmt(Err(Saf0012), toType->name.c_str());
             break;
-        case SafetyMsg::IFMinus:
+        case SafetyMsg::Minus:
             SWAG_ASSERT(toType);
             typedMsg[m][i][j] = Fmt(Err(Saf0014), toType->name.c_str());
             break;
-        case SafetyMsg::IFMul:
+        case SafetyMsg::Mul:
             SWAG_ASSERT(toType);
             typedMsg[m][i][j] = Fmt(Err(Saf0010), toType->name.c_str());
             break;
-        case SafetyMsg::IFPlusEq:
+        case SafetyMsg::PlusEq:
             SWAG_ASSERT(toType);
             typedMsg[m][i][j] = Fmt(Err(Saf0011), toType->name.c_str());
             break;
-        case SafetyMsg::IFMinusEq:
+        case SafetyMsg::MinusEq:
             SWAG_ASSERT(toType);
             typedMsg[m][i][j] = Fmt(Err(Saf0013), toType->name.c_str());
             break;
-        case SafetyMsg::IFMulEq:
+        case SafetyMsg::MulEq:
             SWAG_ASSERT(toType);
             typedMsg[m][i][j] = Fmt(Err(Saf0009), toType->name.c_str());
             break;

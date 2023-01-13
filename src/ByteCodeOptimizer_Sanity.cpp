@@ -108,15 +108,6 @@
     }                                                                                                                             \
     addConstant(cxt, rc->kind, ip, rc->reg.u64);
 
-#define CMPOP(__op, __reg)                                                                                                  \
-    SWAG_CHECK(getImmediateA(va, cxt, ip));                                                                                 \
-    SWAG_CHECK(getImmediateB(vb, cxt, ip));                                                                                 \
-    SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                                                                            \
-    rc->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown; \
-    if (rc->kind == ValueKind::Constant)                                                                                    \
-        rc->reg.b = va.reg.__reg __op vb.reg.__reg;                                                                         \
-    addConstant(cxt, rc->kind, ip, rc->reg.u64);
-
 #define BINOP(__op, __reg)                                                                                                  \
     SWAG_CHECK(getImmediateA(va, cxt, ip));                                                                                 \
     SWAG_CHECK(getImmediateB(vb, cxt, ip));                                                                                 \
@@ -126,7 +117,19 @@
         rc->reg.__reg = va.reg.__reg __op vb.reg.__reg;                                                                     \
     addConstant(cxt, rc->kind, ip, rc->reg.u64);
 
-#define BINOPDIV(__op, __reg)                                          \
+#define BINOP_OVF(__op, __reg, __ovf, __msg, __type)                                                                        \
+    SWAG_CHECK(getImmediateA(va, cxt, ip));                                                                                 \
+    SWAG_CHECK(getImmediateB(vb, cxt, ip));                                                                                 \
+    SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                                                                            \
+    rc->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown; \
+    if (rc->kind == ValueKind::Constant)                                                                                    \
+    {                                                                                                                       \
+        SWAG_CHECK(checkOverflow(cxt, !__ovf(ip->node, va.reg.__reg, vb.reg.__reg), __msg, __type));                        \
+        rc->reg.__reg = va.reg.__reg __op vb.reg.__reg;                                                                     \
+    }                                                                                                                       \
+    addConstant(cxt, rc->kind, ip, rc->reg.u64);
+
+#define BINOP_DIV(__op, __reg)                                         \
     SWAG_CHECK(getImmediateB(vb, cxt, ip));                            \
     SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.__reg == 0, vb.overload)); \
     if (vb.kind == ValueKind::Constant && vb.reg.__reg == 0)           \
@@ -136,6 +139,15 @@
         break;                                                         \
     }                                                                  \
     BINOP(__op, __reg)
+
+#define CMPOP(__op, __reg)                                                                                                  \
+    SWAG_CHECK(getImmediateA(va, cxt, ip));                                                                                 \
+    SWAG_CHECK(getImmediateB(vb, cxt, ip));                                                                                 \
+    SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                                                                            \
+    rc->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown; \
+    if (rc->kind == ValueKind::Constant)                                                                                    \
+        rc->reg.b = va.reg.__reg __op vb.reg.__reg;                                                                         \
+    addConstant(cxt, rc->kind, ip, rc->reg.u64);
 
 #define JUMP1(__expr)                                    \
     SWAG_CHECK(getImmediateA(va, cxt, ip));              \
@@ -1056,28 +1068,28 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             break;
 
         case ByteCodeOp::AffectOpPlusEqS8:
-            BINOPEQ_OVF(int8_t, +=, s8, addWillOverflow, SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoS8);
+            BINOPEQ_OVF(int8_t, +=, s8, addWillOverflow, SafetyMsg::PlusEq, g_TypeMgr->typeInfoS8);
             break;
         case ByteCodeOp::AffectOpPlusEqS16:
-            BINOPEQ_OVF(int16_t, +=, s16, addWillOverflow, SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoS16);
+            BINOPEQ_OVF(int16_t, +=, s16, addWillOverflow, SafetyMsg::PlusEq, g_TypeMgr->typeInfoS16);
             break;
         case ByteCodeOp::AffectOpPlusEqS32:
-            BINOPEQ_OVF(int32_t, +=, s32, addWillOverflow, SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoS32);
+            BINOPEQ_OVF(int32_t, +=, s32, addWillOverflow, SafetyMsg::PlusEq, g_TypeMgr->typeInfoS32);
             break;
         case ByteCodeOp::AffectOpPlusEqS64:
-            BINOPEQ_OVF(int64_t, +=, s64, addWillOverflow, SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoS64);
+            BINOPEQ_OVF(int64_t, +=, s64, addWillOverflow, SafetyMsg::PlusEq, g_TypeMgr->typeInfoS64);
             break;
         case ByteCodeOp::AffectOpPlusEqU8:
-            BINOPEQ_OVF(uint8_t, +=, u8, addWillOverflow, SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoU8);
+            BINOPEQ_OVF(uint8_t, +=, u8, addWillOverflow, SafetyMsg::PlusEq, g_TypeMgr->typeInfoU8);
             break;
         case ByteCodeOp::AffectOpPlusEqU16:
-            BINOPEQ_OVF(uint16_t, +=, u16, addWillOverflow, SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoU16);
+            BINOPEQ_OVF(uint16_t, +=, u16, addWillOverflow, SafetyMsg::PlusEq, g_TypeMgr->typeInfoU16);
             break;
         case ByteCodeOp::AffectOpPlusEqU32:
-            BINOPEQ_OVF(uint32_t, +=, u32, addWillOverflow, SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoU32);
+            BINOPEQ_OVF(uint32_t, +=, u32, addWillOverflow, SafetyMsg::PlusEq, g_TypeMgr->typeInfoU32);
             break;
         case ByteCodeOp::AffectOpPlusEqU64:
-            BINOPEQ_OVF(uint64_t, +=, u64, addWillOverflow, SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoU64);
+            BINOPEQ_OVF(uint64_t, +=, u64, addWillOverflow, SafetyMsg::PlusEq, g_TypeMgr->typeInfoU64);
             break;
         case ByteCodeOp::AffectOpPlusEqF32:
             BINOPEQ(float, +=, f32);
@@ -1087,28 +1099,28 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             break;
 
         case ByteCodeOp::AffectOpMinusEqS8:
-            BINOPEQ_OVF(int8_t, -=, s8, subWillOverflow, SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoS8);
+            BINOPEQ_OVF(int8_t, -=, s8, subWillOverflow, SafetyMsg::MinusEq, g_TypeMgr->typeInfoS8);
             break;
         case ByteCodeOp::AffectOpMinusEqS16:
-            BINOPEQ_OVF(int16_t, -=, s16, subWillOverflow, SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoS16);
+            BINOPEQ_OVF(int16_t, -=, s16, subWillOverflow, SafetyMsg::MinusEq, g_TypeMgr->typeInfoS16);
             break;
         case ByteCodeOp::AffectOpMinusEqS32:
-            BINOPEQ_OVF(int32_t, -=, s32, subWillOverflow, SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoS32);
+            BINOPEQ_OVF(int32_t, -=, s32, subWillOverflow, SafetyMsg::MinusEq, g_TypeMgr->typeInfoS32);
             break;
         case ByteCodeOp::AffectOpMinusEqS64:
-            BINOPEQ_OVF(int64_t, -=, s64, subWillOverflow, SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoS64);
+            BINOPEQ_OVF(int64_t, -=, s64, subWillOverflow, SafetyMsg::MinusEq, g_TypeMgr->typeInfoS64);
             break;
         case ByteCodeOp::AffectOpMinusEqU8:
-            BINOPEQ_OVF(uint8_t, -=, u8, subWillOverflow, SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoU8);
+            BINOPEQ_OVF(uint8_t, -=, u8, subWillOverflow, SafetyMsg::MinusEq, g_TypeMgr->typeInfoU8);
             break;
         case ByteCodeOp::AffectOpMinusEqU16:
-            BINOPEQ_OVF(uint16_t, -=, u16, subWillOverflow, SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoU16);
+            BINOPEQ_OVF(uint16_t, -=, u16, subWillOverflow, SafetyMsg::MinusEq, g_TypeMgr->typeInfoU16);
             break;
         case ByteCodeOp::AffectOpMinusEqU32:
-            BINOPEQ_OVF(uint32_t, -=, u32, subWillOverflow, SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoU32);
+            BINOPEQ_OVF(uint32_t, -=, u32, subWillOverflow, SafetyMsg::MinusEq, g_TypeMgr->typeInfoU32);
             break;
         case ByteCodeOp::AffectOpMinusEqU64:
-            BINOPEQ_OVF(uint64_t, -=, u64, subWillOverflow, SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoU64);
+            BINOPEQ_OVF(uint64_t, -=, u64, subWillOverflow, SafetyMsg::MinusEq, g_TypeMgr->typeInfoU64);
             break;
         case ByteCodeOp::AffectOpMinusEqF32:
             BINOPEQ(float, -=, f32);
@@ -1118,28 +1130,28 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             break;
 
         case ByteCodeOp::AffectOpMulEqS8:
-            BINOPEQ_OVF(int8_t, *=, s8, mulWillOverflow, SafetyMsg::IFMulEq, g_TypeMgr->typeInfoS8);
+            BINOPEQ_OVF(int8_t, *=, s8, mulWillOverflow, SafetyMsg::MulEq, g_TypeMgr->typeInfoS8);
             break;
         case ByteCodeOp::AffectOpMulEqS16:
-            BINOPEQ_OVF(int16_t, *=, s16, mulWillOverflow, SafetyMsg::IFMulEq, g_TypeMgr->typeInfoS16);
+            BINOPEQ_OVF(int16_t, *=, s16, mulWillOverflow, SafetyMsg::MulEq, g_TypeMgr->typeInfoS16);
             break;
         case ByteCodeOp::AffectOpMulEqS32:
-            BINOPEQ_OVF(int32_t, *=, s32, mulWillOverflow, SafetyMsg::IFMulEq, g_TypeMgr->typeInfoS32);
+            BINOPEQ_OVF(int32_t, *=, s32, mulWillOverflow, SafetyMsg::MulEq, g_TypeMgr->typeInfoS32);
             break;
         case ByteCodeOp::AffectOpMulEqS64:
-            BINOPEQ_OVF(int64_t, *=, s64, mulWillOverflow, SafetyMsg::IFMulEq, g_TypeMgr->typeInfoS64);
+            BINOPEQ_OVF(int64_t, *=, s64, mulWillOverflow, SafetyMsg::MulEq, g_TypeMgr->typeInfoS64);
             break;
         case ByteCodeOp::AffectOpMulEqU8:
-            BINOPEQ_OVF(uint8_t, *=, u8, mulWillOverflow, SafetyMsg::IFMulEq, g_TypeMgr->typeInfoU8);
+            BINOPEQ_OVF(uint8_t, *=, u8, mulWillOverflow, SafetyMsg::MulEq, g_TypeMgr->typeInfoU8);
             break;
         case ByteCodeOp::AffectOpMulEqU16:
-            BINOPEQ_OVF(uint16_t, *=, u16, mulWillOverflow, SafetyMsg::IFMulEq, g_TypeMgr->typeInfoU16);
+            BINOPEQ_OVF(uint16_t, *=, u16, mulWillOverflow, SafetyMsg::MulEq, g_TypeMgr->typeInfoU16);
             break;
         case ByteCodeOp::AffectOpMulEqU32:
-            BINOPEQ_OVF(uint32_t, *=, u32, mulWillOverflow, SafetyMsg::IFMulEq, g_TypeMgr->typeInfoU32);
+            BINOPEQ_OVF(uint32_t, *=, u32, mulWillOverflow, SafetyMsg::MulEq, g_TypeMgr->typeInfoU32);
             break;
         case ByteCodeOp::AffectOpMulEqU64:
-            BINOPEQ_OVF(uint64_t, *=, u64, mulWillOverflow, SafetyMsg::IFMulEq, g_TypeMgr->typeInfoU64);
+            BINOPEQ_OVF(uint64_t, *=, u64, mulWillOverflow, SafetyMsg::MulEq, g_TypeMgr->typeInfoU64);
             break;
         case ByteCodeOp::AffectOpMulEqF32:
             BINOPEQ(float, *=, f32);
@@ -1614,16 +1626,16 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             break;
 
         case ByteCodeOp::BinOpPlusS32:
-            BINOP(+, s32);
+            BINOP_OVF(+, s32, addWillOverflow, SafetyMsg::Plus, g_TypeMgr->typeInfoS32);
             break;
         case ByteCodeOp::BinOpPlusS64:
-            BINOP(+, s64);
+            BINOP_OVF(+, s64, addWillOverflow, SafetyMsg::Plus, g_TypeMgr->typeInfoS64);
             break;
         case ByteCodeOp::BinOpPlusU32:
-            BINOP(+, u32);
+            BINOP_OVF(+, u32, addWillOverflow, SafetyMsg::Plus, g_TypeMgr->typeInfoU32);
             break;
         case ByteCodeOp::BinOpPlusU64:
-            BINOP(+, u64);
+            BINOP_OVF(+, u64, addWillOverflow, SafetyMsg::Plus, g_TypeMgr->typeInfoU64);
             break;
         case ByteCodeOp::BinOpPlusF32:
             BINOP(+, f32);
@@ -1633,16 +1645,16 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             break;
 
         case ByteCodeOp::BinOpMinusS32:
-            BINOP(-, s32);
+            BINOP_OVF(-, s32, subWillOverflow, SafetyMsg::Minus, g_TypeMgr->typeInfoS32);
             break;
         case ByteCodeOp::BinOpMinusS64:
-            BINOP(-, s64);
+            BINOP_OVF(-, s64, subWillOverflow, SafetyMsg::Minus, g_TypeMgr->typeInfoS64);
             break;
         case ByteCodeOp::BinOpMinusU32:
-            BINOP(-, u32);
+            BINOP_OVF(-, u32, subWillOverflow, SafetyMsg::Minus, g_TypeMgr->typeInfoU32);
             break;
         case ByteCodeOp::BinOpMinusU64:
-            BINOP(-, u64);
+            BINOP_OVF(-, u64, subWillOverflow, SafetyMsg::Minus, g_TypeMgr->typeInfoU64);
             break;
         case ByteCodeOp::BinOpMinusF32:
             BINOP(-, f32);
@@ -1652,16 +1664,16 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             break;
 
         case ByteCodeOp::BinOpMulS32:
-            BINOP(*, s32);
+            BINOP_OVF(*, s32, mulWillOverflow, SafetyMsg::Mul, g_TypeMgr->typeInfoS32);
             break;
         case ByteCodeOp::BinOpMulS64:
-            BINOP(*, s64);
+            BINOP_OVF(*, s64, mulWillOverflow, SafetyMsg::Mul, g_TypeMgr->typeInfoS64);
             break;
         case ByteCodeOp::BinOpMulU32:
-            BINOP(*, u32);
+            BINOP_OVF(*, u32, mulWillOverflow, SafetyMsg::Mul, g_TypeMgr->typeInfoU32);
             break;
         case ByteCodeOp::BinOpMulU64:
-            BINOP(*, u64);
+            BINOP_OVF(*, u64, mulWillOverflow, SafetyMsg::Mul, g_TypeMgr->typeInfoU64);
             break;
         case ByteCodeOp::BinOpMulF32:
             BINOP(*, f32);
@@ -1671,35 +1683,35 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             break;
 
         case ByteCodeOp::BinOpDivS32:
-            BINOPDIV(/, s32);
+            BINOP_DIV(/, s32);
             break;
         case ByteCodeOp::BinOpDivS64:
-            BINOPDIV(/, s64);
+            BINOP_DIV(/, s64);
             break;
         case ByteCodeOp::BinOpDivU32:
-            BINOPDIV(/, u32);
+            BINOP_DIV(/, u32);
             break;
         case ByteCodeOp::BinOpDivU64:
-            BINOPDIV(/, u64);
+            BINOP_DIV(/, u64);
             break;
         case ByteCodeOp::BinOpDivF32:
-            BINOPDIV(/, f32);
+            BINOP_DIV(/, f32);
             break;
         case ByteCodeOp::BinOpDivF64:
-            BINOPDIV(/, f64);
+            BINOP_DIV(/, f64);
             break;
 
         case ByteCodeOp::BinOpModuloS32:
-            BINOPDIV(%, s32);
+            BINOP_DIV(%, s32);
             break;
         case ByteCodeOp::BinOpModuloS64:
-            BINOPDIV(%, s64);
+            BINOP_DIV(%, s64);
             break;
         case ByteCodeOp::BinOpModuloU32:
-            BINOPDIV(%, u32);
+            BINOP_DIV(%, u32);
             break;
         case ByteCodeOp::BinOpModuloU64:
-            BINOPDIV(%, u64);
+            BINOP_DIV(%, u64);
             break;
 
         case ByteCodeOp::BinOpShiftLeftS8:
