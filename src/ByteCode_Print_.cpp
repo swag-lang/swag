@@ -214,7 +214,7 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     static const int ALIGN_FLAGS1 = 65;
     static const int ALIGN_FLAGS2 = 70;
     static const int ALIGN_PRETTY = 80;
-    static const int ALIGN_SOURCE = 125;
+    static const int ALIGN_SOURCE = 145;
 
     static const wchar_t* bcNum  = L"%08d";
     int                   i      = (int) (ip - out);
