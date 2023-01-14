@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-#test
+func toto()
 {
     {
         x := 0'u8
@@ -24,4 +24,9 @@
         y := x orelse 1
         @assert(y == 1)
     }
+}
+
+#test
+{
+    toto()
 }

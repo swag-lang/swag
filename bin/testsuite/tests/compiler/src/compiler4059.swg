@@ -1,4 +1,4 @@
-#test
+func toto()
 {
     toto  := 0
     toto1 := 1
@@ -8,4 +8,9 @@
     ref2 := ref &toto2
 
     @assert(-ref1 == -1)
+}
+
+#test
+{
+    toto()
 }

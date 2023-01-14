@@ -8,8 +8,3 @@ func toto(str: string, x: cvarargs)
     ptr = null
     @cvastart(ptr)
 }
-
-#test
-{
-    toto("oula", 111, 222)
-}

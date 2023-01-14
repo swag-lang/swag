@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-#test
+func toto()
 {
     {
         x := 10's32
@@ -41,4 +41,9 @@
         @assert(@atomxchg(&x, y) == 10)
         @assert(x == 20)
     }
+}
+
+#test
+{
+    toto()
 }

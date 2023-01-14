@@ -1,24 +1,22 @@
-;
-;
-using Swag;
+using Swag
 
 //#[PrintBc]
-func main ()
+func toto()
 {
-	var a = 0;
+	var a = 0
 	while a < 10
 	{
-		a += 1;
+		a += 1
 		loop
 		{
-			break;
+			break
 		}
 	}
 
-	@assert(a == 10);
+	@assert(a == 10)
 }
 
 #run
 {
-	main()
+	toto()
 }
