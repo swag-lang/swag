@@ -1,18 +1,10 @@
 #include "pch.h"
 #include "ByteCodeOptimizer.h"
-#include "TypeInfo.h"
-#include "Log.h"
 #include "Ast.h"
-#include "SourceFile.h"
-#include "Module.h"
 #include "Report.h"
 #include "Math.h"
-#include "Report.h"
 #include "ByteCodeGenJob.h"
 #include "TypeManager.h"
-#include "ByteCodeRun.h"
-
-#pragma optimize("", off)
 
 #define STATE() cxt.states[cxt.state]
 
