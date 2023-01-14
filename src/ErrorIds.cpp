@@ -19,7 +19,6 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(Fat0002, "[fatal error] the cache directory '%s' does not exist");
     SWAG_ERROR(Fat0003, "[fatal error] cannot create the cache directory '%s'");
     SWAG_ERROR(Fat0004, "[fatal error] cannot create the directory '%s'");
     SWAG_ERROR(Fat0005, "[fatal error] cannot create the file '%s'");
@@ -35,21 +34,24 @@ void initErrors()
     SWAG_ERROR(Fat0015, "[fatal error] invalid value for '--tag:%s' (%s)");
     SWAG_ERROR(Fat0016, "[fatal error] invalid workspace '%s', subfolder 'modules/' or 'tests/' does not exist");
     SWAG_ERROR(Fat0017, "[fatal error] missing script file, use '--file:<filename>.swgs' to specify a script to run");
-    SWAG_ERROR(Fat0018, "[fatal error] the module '%s' already exists in the '/modules' folder");
     SWAG_ERROR(Fat0019, "[fatal error] not enough memory !");
-    SWAG_ERROR(Fat0020, "[fatal error] the script file '%s' does not exist");
     SWAG_ERROR(Fat0021, "[fatal error] some problems have been found in the compiler bootstrap !!!");
     SWAG_ERROR(Fat0022, "[fatal error] some problems have been found in the compiler runtime !!!");
-    SWAG_ERROR(Fat0023, "[fatal error] unexpected compile tag value '%s' (command is '--tag:%s')");
-    SWAG_ERROR(Fat0024, "[fatal error] unknown compile tag type '%s' (command is '--tag:%s')");
+    SWAG_ERROR(Fat0002, "[fatal error] the cache directory '%s' does not exist");
+    SWAG_ERROR(Fat0018, "[fatal error] the module '%s' already exists in the '/modules' folder");
+    SWAG_ERROR(Fat0020, "[fatal error] the script file '%s' does not exist");
     SWAG_ERROR(Fat0025, "[fatal error] the workspace folder '%s' already exists");
     SWAG_ERROR(Fat0026, "[fatal error] the workspace folder '%s' does not exist");
+    SWAG_ERROR(Fat0023, "[fatal error] unexpected compile tag value '%s' (command is '--tag:%s')");
+    SWAG_ERROR(Fat0024, "[fatal error] unknown compile tag type '%s' (command is '--tag:%s')");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
     SWAG_ERROR(Saf0003, "[safety] '@abs' integer overflow (type is '%s')");
+    SWAG_ERROR(Saf0027, "[safety] '@acos' invalid argument (type is '%s')");
+    SWAG_ERROR(Saf0026, "[safety] '@asin' invalid argument (type is '%s')");
     SWAG_ERROR(Saf0023, "[safety] '@log' invalid argument (type is '%s')");
     SWAG_ERROR(Saf0025, "[safety] '@log10' invalid argument (type is '%s')");
     SWAG_ERROR(Saf0024, "[safety] '@log2' invalid argument (type is '%s')");
@@ -70,12 +72,10 @@ void initErrors()
     SWAG_ERROR(Saf0021, "[safety] invalid float value (NaN)");
     SWAG_ERROR(Saf0004, "[safety] invalid slicing, the lower bound is greater than the upper bound");
     SWAG_ERROR(Saf0005, "[safety] invalid slicing, the upper bound is out of range");
-    SWAG_ERROR(Saf0001, nullptr);
-    SWAG_ERROR(Saf0002, nullptr);
     SWAG_ERROR(Saf0018, "[safety] truncated bits when casting expression from '%s' to '%s'");
     SWAG_ERROR(Saf0019, "[safety] unexpected switch value (switch is marked with 'Swag.Complete')");
-    SWAG_ERROR(Saf0026, "[safety] '@asin' invalid argument (type is '%s')");
-    SWAG_ERROR(Saf0027, "[safety] '@acos' invalid argument (type is '%s')");
+    SWAG_ERROR(Saf0001, nullptr);
+    SWAG_ERROR(Saf0002, nullptr);
     SWAG_ERROR(Saf0028, nullptr);
     SWAG_ERROR(Saf0029, nullptr);
 
@@ -83,26 +83,28 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(Tkn0001, "expected at least one digit in the binary number");
+    SWAG_ERROR(Tkn0020, "a digit separator '_' should not be followed by another digit separator");
+    SWAG_ERROR(Tkn0021, "a digit separator '_' should not end a literal number");
+    SWAG_ERROR(Tkn0023, "a digit separator '_' should not start a fractional part");
+    SWAG_ERROR(Tkn0022, "a digit separator '_' should not start a literal number");
+    SWAG_ERROR(Tkn0024, "a digit separator '_' should not start an exponent part");
     SWAG_ERROR(Tkn0002, "a floating point number exponent should have at least one digit");
     SWAG_ERROR(Tkn0003, "expected a binary digit, found '%s'");
     SWAG_ERROR(Tkn0004, "expected an hexadecimal digit, found '%s'");
+    SWAG_ERROR(Tkn0001, "expected at least one digit in the binary number");
     SWAG_ERROR(Tkn0007, "expected at least one digit in the hexadecimal number");
     SWAG_ERROR(Tkn0008, "the literal number cannot fit in 64 bits");
     SWAG_ERROR(Tkn0009, "too many digits in the literal number");
     SWAG_ERROR(Tkn0017, "unexpected end of file found in the string literal");
     SWAG_ERROR(Tkn0018, "unexpected end of line found in the string literal");
     SWAG_ERROR(Tkn0019, "unexpected literal number prefix '%s' (should be '0x' or '0b')");
-    SWAG_ERROR(Tkn0020, "a digit separator '_' should not be followed by another digit separator");
-    SWAG_ERROR(Tkn0021, "a digit separator '_' should not end a literal number");
-    SWAG_ERROR(Tkn0022, "a digit separator '_' should not start a literal number");
-    SWAG_ERROR(Tkn0023, "a digit separator '_' should not start a fractional part");
-    SWAG_ERROR(Tkn0024, "a digit separator '_' should not start an exponent part");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
+    SWAG_ERROR(Syn0182, "'#dependencies' should only be declared at the file level");
+    SWAG_ERROR(Syn0183, "'#dependencies' should only be used in the module configuration file ('module.swg')");
     SWAG_ERROR(Syn0001, "'#global export' already defined");
     SWAG_ERROR(Syn0002, "'#global foreignlib' should be followed by a string");
     SWAG_ERROR(Syn0003, "'#global testerror' is invalid outside a test module (in the './tests' folder of the workspace)");
@@ -127,6 +129,7 @@ void initErrors()
     SWAG_ERROR(Syn0022, "'.' in a 'with' statement should be followed by an identifier");
     SWAG_ERROR(Syn0023, "'@alias' special variable name should be followed by a number");
     SWAG_ERROR(Syn0024, "']' should not be followed by a line break when declaring an array type");
+    SWAG_ERROR(Syn0181, "'default' already defined");
     SWAG_ERROR(Syn0025, "'mtd' or 'mtdc' can only be used in a struct or in an interface context");
     SWAG_ERROR(Syn0026, "'self' should only be used inside a struct or 'impl' block");
     SWAG_ERROR(Syn0027, "'self' should only be used inside an 'impl' block");
@@ -160,6 +163,7 @@ void initErrors()
     SWAG_ERROR(Syn0055, "expected a 'case' expression before ':'");
     SWAG_ERROR(Syn0056, "expected a 'case' expression before 'break'");
     SWAG_ERROR(Syn0057, "expected a closure capture argument after ',' and before '|'");
+    SWAG_ERROR(Syn0184, "expected a constant name, found '%s'");
     SWAG_ERROR(Syn0058, "expected a generic name or a type");
     SWAG_ERROR(Syn0059, "expected a left expression");
     SWAG_ERROR(Syn0060, "expected a literal type qualifier after '''");
@@ -272,10 +276,6 @@ void initErrors()
     SWAG_ERROR(Syn0178, "unknown operator modifier '%s'");
     SWAG_ERROR(Syn0179, "unused return value of intrinsic '%s'");
     SWAG_ERROR(Syn0180, "usage of '.' in a statement is only valid inside a 'with' block");
-    SWAG_ERROR(Syn0181, "'default' already defined");
-    SWAG_ERROR(Syn0182, "'#dependencies' should only be declared at the file level");
-    SWAG_ERROR(Syn0183, "'#dependencies' should only be used in the module configuration file ('module.swg')");
-    SWAG_ERROR(Syn0184, "expected a constant name, found '%s'");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -299,7 +299,6 @@ void initErrors()
     SWAG_ERROR(Err0239, "'#macro' should only be used inside a 'Swag.Macro' function");
     SWAG_ERROR(Err0348, "'#self' should only be used inside a function");
     SWAG_ERROR(Err0744, "'#test' functions should only be used in a test module (in the './tests' folder of the workspace)");
-    SWAG_ERROR(Err0225, "'%s[index] = %s' is impossible because special function 'opIndexAffect' cannot be found in '%s'");
     SWAG_ERROR(Err0089, "'%s' cannot be evaluated at compile time");
     SWAG_ERROR(Err0788, "'%s' cannot have 'null' as a first parameter");
     SWAG_ERROR(Err0498, "'%s' count parameter should be an integer, but is '%s'");
@@ -315,6 +314,8 @@ void initErrors()
     SWAG_ERROR(Err0535, "'%s' should only be used before a function call that can raise errors (a function marked with 'throw')");
     SWAG_ERROR(Err0139, "'%s' should only be used before a function call, and '%s' is %s");
     SWAG_ERROR(Err0138, "'%s' should only be used inside a function marked with 'throw', and '%s' is not");
+    SWAG_ERROR(Err0225, "'%s[index] = %s' is impossible because special function 'opIndexAffect' cannot be found in '%s'");
+    SWAG_ERROR(Err0605, "'@abs' integer overflow");
     SWAG_ERROR(Err0427, "'@acos' is called with an invalid value");
     SWAG_ERROR(Err0426, "'@asin' is called with an invalid value");
     SWAG_ERROR(Err0800, "'@countof' should not be used on a tuple type");
@@ -323,9 +324,9 @@ void initErrors()
     SWAG_ERROR(Err0283, "'@gettag' default value expected, found a type");
     SWAG_ERROR(Err0245, "'@gettag' name expected, found a type");
     SWAG_ERROR(Err0630, "'@index' should only be used inside a breakable loop ('visit', 'loop' ...)");
+    SWAG_ERROR(Err0428, "'@log' is called with an invalid value");
     SWAG_ERROR(Err0424, "'@log10' is called with an invalid value");
     SWAG_ERROR(Err0423, "'@log2' is called with an invalid value");
-    SWAG_ERROR(Err0428, "'@log' is called with an invalid value");
     SWAG_ERROR(Err0790, "'@mkany' cannot have 'null' as a first parameter");
     SWAG_ERROR(Err0792, "'@mkany' should have a 'typeinfo' or a type value as a second parameter ('%s' provided)");
     SWAG_ERROR(Err0789, "'@mkany' should have a pointer as a first parameter");
@@ -356,7 +357,6 @@ void initErrors()
     SWAG_ERROR(Err0075, "'opVisit' should have the 'Swag.Macro' attribute");
     SWAG_ERROR(Err0668, "'using' is not possible on a constant");
     SWAG_ERROR(Err0692, "'using' is not possible on a variable of type '%s'");
-    SWAG_ERROR(Err0691, nullptr);
     SWAG_ERROR(Err0695, "'using' is not possible on type '%s' (expected a namespace, a struct, an enum or a variable)");
     SWAG_ERROR(Err0669, "'using' on a field is only valid for a struct type ('%s' provided)");
     SWAG_ERROR(Err0689, "'using' on a variable should not be used in '%s' scope");
@@ -559,16 +559,21 @@ void initErrors()
     SWAG_ERROR(Err0702, "expected an enum type, found '%s'");
     SWAG_ERROR(Err0772, "expected an expression of type '%s' after 'return'");
     SWAG_ERROR(Err0012, "expected an expression, found a type");
+    SWAG_ERROR(Err0398, "expected an identifier, found symbol '%s'");
     SWAG_ERROR(Err0848, "expected an initialization of '%s' because the enum '%s' does not contain a value for zero");
     SWAG_ERROR(Err0646, "expected an interface, but '%s' is %s");
+    SWAG_ERROR(Err0404, "expected another 'visit' variable name after ',' and before ':'");
     SWAG_ERROR(Err0020, "expected arguments '()' when calling function '%s'");
     SWAG_ERROR(Err0677, "expected at least one parameter for the interface member '%s'");
+    SWAG_ERROR(Err0707, "expected at least one test error but nothing was raised");
+    SWAG_ERROR(Err0580, "expected at least one test warning but nothing was raised");
     SWAG_ERROR(Err0450, "expected one single generic parameter for special function '%s' ('%d' provided)");
     SWAG_ERROR(Err0269, "expected the '#main' function (executable entry point)");
     SWAG_ERROR(Err0049, "expected the generic parameters of %s");
     SWAG_ERROR(Err0068, "expected the parameters of the special function '%s'");
     SWAG_ERROR(Err0064, "expected the return type of the special function '%s' ('%s' expected)");
     SWAG_ERROR(Err0063, "expected the return type of the special function '%s'");
+    SWAG_ERROR(Err0592, "failed to load the module '%s' while resolving the foreign function '%s': %s");
     SWAG_ERROR(Err0113, "found %d overloads for '%s' but no one could match");
     SWAG_ERROR(Err0893, "generic symbol '%s' is already declared in a top level context");
     SWAG_ERROR(Err0514, "invalid 'location' format; should have the form 'location=\"mode@accesspath\"'");
@@ -608,7 +613,6 @@ void initErrors()
     SWAG_ERROR(Err0657, "some functions of the interface '%s' are not implemented for '%s'");
     SWAG_ERROR(Err0536, "stack overflow (maximum stack size is '--stack-size:%s')");
     SWAG_ERROR(Err0112, "the %s '%s' cannot be found in '%s'");
-    SWAG_ERROR(Err0083, nullptr);
     SWAG_ERROR(Err0096, "the %s '%s' is used alone as an expression");
     SWAG_ERROR(Err0756, "the %s cannot have the 'Swag.Implicit' attribute because it is generic");
     SWAG_ERROR(Err0755, "the %s cannot have the 'Swag.NoReturn' attribute without 'Swag.Macro' or 'Swag.Mixin'");
@@ -627,7 +631,6 @@ void initErrors()
     SWAG_ERROR(Err0028, "the 'Swag.Strict' attribute should only be used on a type alias");
     SWAG_ERROR(Err0159, "the 'Swag.Tls' and 'Swag.Compiler' attributes are exclusive");
     SWAG_ERROR(Err0601, "the 'Swag.Using' is empty");
-    SWAG_ERROR(Err0616, "unexpected 'default' statement in a switch marked with 'Swag.Complete'");
     SWAG_ERROR(Err0126, "the 'opSlice' special function should return a string or a slice ('%s' provided)");
     SWAG_ERROR(Err0771, "the 'retval' type should not be used in a function that returns nothing");
     SWAG_ERROR(Err0769, "the 'retval' type should only be used in a function body");
@@ -745,7 +748,9 @@ void initErrors()
     SWAG_ERROR(Err0613, "the switch value '%d' has already been defined");
     SWAG_ERROR(Err0614, "the switch value '%f' has already been defined");
     SWAG_ERROR(Err0611, "the switch value '%s' has already been defined");
+    SWAG_ERROR(Err0394, "the symbol '%s' is already defined as %s in an accessible scope");
     SWAG_ERROR(Err0890, "the symbol '%s' is already defined as a name alias in an accessible scope");
+    SWAG_ERROR(Err0305, "the symbol '%s' is already defined in an accessible scope");
     SWAG_ERROR(Err0346, "the symbol '%s' is already defined in the parent scope");
     SWAG_ERROR(Err0705, "the type '%s' cannot be used as an enum type");
     SWAG_ERROR(Err0671, "the type '%s' is generic, but struct '%s' does not declare generic parameters");
@@ -772,6 +777,7 @@ void initErrors()
     SWAG_ERROR(Err0491, "too many initialization parameters for type '%s'");
     SWAG_ERROR(Err0197, "too many initializers for '%s' ('%d' expected, '%d' provided)");
     SWAG_ERROR(Err0043, "too many parameters for special function '%s' ('%d' expected, '%d' provided)");
+    SWAG_ERROR(Err0578, "too many variadic parameters ('%d' provided, maximum is '%d')");
     SWAG_ERROR(Err0252, "type '%s' and type '%s' defined in the command line for '%s' are incompatible");
     SWAG_ERROR(Err0873, "ufcs on closure is not (yet?) supported");
     SWAG_ERROR(Err0309, "unable to deduce type of %s '%s'");
@@ -782,14 +788,19 @@ void initErrors()
     SWAG_ERROR(Err0443, "unexpected '@cvaarg' type '%s'");
     SWAG_ERROR(Err0599, "unexpected 'Swag.ExportType' parameter '%s'");
     SWAG_ERROR(Err0594, "unexpected 'Swag.Optim' parameter '%s'");
+    SWAG_ERROR(Err0401, "unexpected 'catch' inside '%s' expression");
+    SWAG_ERROR(Err0616, "unexpected 'default' statement in a switch marked with 'Swag.Complete'");
     SWAG_ERROR(Err0199, "unexpected 'opDrop' special function for '%s' because the struct is marked with 'Swag.ConstExpr'");
     SWAG_ERROR(Err0517, "unexpected 'ref' because the right expression type is not a reference or a pointer (type is '%s')");
+    SWAG_ERROR(Err0849, "unexpected 'throw' in attribute declaration");
     SWAG_ERROR(Err0117, "unexpected 'using' on two variables with the same type ('%s')");
     SWAG_ERROR(Err0694, "unexpected 'using' type");
     SWAG_ERROR(Err0099, "unexpected aliased identifiers because the function '%s' is not a macro or a mixin");
     SWAG_ERROR(Err0597, "unexpected attribute usage");
     SWAG_ERROR(Err0031, "unexpected bitcast type '%s' (should be integer, rune or float)");
+    SWAG_ERROR(Err0189, "unexpected block after 'discard try/assume/catch'");
     SWAG_ERROR(Err0105, "unexpected call of an empty function ('%s')");
+    SWAG_ERROR(Err0433, "unexpected call parameters for the variable '%s'");
     SWAG_ERROR(Err0101, "unexpected call to the 'opDrop' special function (use '@drop' instead)");
     SWAG_ERROR(Err0100, "unexpected call to the 'opInit' special function (use '@init' instead)");
     SWAG_ERROR(Err0103, "unexpected call to the 'opPostCopy' special function (use '@postcopy' instead)");
@@ -797,6 +808,9 @@ void initErrors()
     SWAG_ERROR(Err0081, "unexpected character '%s'");
     SWAG_ERROR(Err0260, "unexpected character '['");
     SWAG_ERROR(Err0262, "unexpected character literal '%s' (this is a string, not a character)");
+    SWAG_ERROR(Err0066, "unexpected comma, expecting ')' or another function argument");
+    SWAG_ERROR(Err0188, "unexpected comma, expecting ')' or another function parameter");
+    SWAG_ERROR(Err0432, "unexpected compare operator '='");
     SWAG_ERROR(Err0610, "unexpected empty 'switch' body");
     SWAG_ERROR(Err0683, "unexpected empty interface '%s'");
     SWAG_ERROR(Err0080, "unexpected end of file found in the comment");
@@ -829,12 +843,12 @@ void initErrors()
     SWAG_ERROR(Err0067, "unexpected special function '%s' outside an 'impl' block");
     SWAG_ERROR(Err0609, "unexpected switch type '%s'");
     SWAG_ERROR(Err0608, "unexpected switch type 'any', you need to cast to a concrete type");
-    SWAG_ERROR(Err0048, "unexpected type ('*Swag.CVaList' expected, '%s' provided");
     SWAG_ERROR(Err0697, "unexpected type '%s' for an enum marked with 'Swag.EnumFlags' (should be an unsigned integer)");
     SWAG_ERROR(Err0698, "unexpected type '%s' for an enum marked with 'Swag.EnumIndex' (should be an integer)");
     SWAG_ERROR(Err0731, "unexpected type '%s' for attribute parameter");
     SWAG_ERROR(Err0170, "unexpected type '%s' for operator '<<' (integer expected)");
     SWAG_ERROR(Err0172, "unexpected type '%s' for operator '>>' (integer expected)");
+    SWAG_ERROR(Err0048, "unexpected type ('*Swag.CVaList' expected, '%s' provided");
     SWAG_ERROR(Err0655, "unexpected type for the first parameter of interface function implementation ('self' expected, '%s' provided)");
     SWAG_ERROR(Err0679, "unexpected type for the first parameter of interface member ('self' expected, '%s' provided)");
     SWAG_ERROR(Err0106, "unexpected type of 'self' parameter ('%s' expected, '%s' provided)");
@@ -860,22 +874,8 @@ void initErrors()
     SWAG_ERROR(Err0181, "value '%I64u' does not fit in the type '%s'");
     SWAG_ERROR(Err0183, "value '%s' ('%I64u' in decimal) does not fit in the type '%s'");
     SWAG_ERROR(Err0056, "x64 backend unsupported os '%s'");
-    SWAG_ERROR(Err0401, "unexpected 'catch' inside '%s' expression");
-    SWAG_ERROR(Err0849, "unexpected 'throw' in attribute declaration");
-    SWAG_ERROR(Err0189, "unexpected block after 'discard try/assume/catch'");
-    SWAG_ERROR(Err0433, "unexpected call parameters for the variable '%s'");
-    SWAG_ERROR(Err0066, "unexpected comma, expecting ')' or another function argument");
-    SWAG_ERROR(Err0188, "unexpected comma, expecting ')' or another function parameter");
-    SWAG_ERROR(Err0432, "unexpected compare operator '='");
-    SWAG_ERROR(Err0398, "expected an identifier, found symbol '%s'");
-    SWAG_ERROR(Err0404, "expected another 'visit' variable name after ',' and before ':'");
-    SWAG_ERROR(Err0394, "the symbol '%s' is already defined as %s in an accessible scope");
-    SWAG_ERROR(Err0305, "the symbol '%s' is already defined in an accessible scope");
-    SWAG_ERROR(Err0592, "failed to load the module '%s' while resolving the foreign function '%s': %s");
-    SWAG_ERROR(Err0605, "'@abs' integer overflow");
-    SWAG_ERROR(Err0707, "expected at least one test error but nothing was raised");
-    SWAG_ERROR(Err0580, "expected at least one test warning but nothing was raised");
-    SWAG_ERROR(Err0578, "too many variadic parameters ('%d' provided, maximum is '%d')");
+    SWAG_ERROR(Err0083, nullptr);
+    SWAG_ERROR(Err0691, nullptr);
     SWAG_ERROR(Err0693, nullptr);
     SWAG_ERROR(Err0690, nullptr);
     SWAG_ERROR(Err0688, nullptr);
@@ -897,7 +897,6 @@ void initErrors()
     SWAG_ERROR(Err0696, nullptr);
     SWAG_ERROR(Err0619, nullptr);
     SWAG_ERROR(Err0621, nullptr);
-    SWAG_ERROR(Err0436, nullptr);
     SWAG_ERROR(Err0531, nullptr);
     SWAG_ERROR(Err0563, nullptr);
     SWAG_ERROR(Err0530, nullptr);
@@ -937,7 +936,7 @@ void initErrors()
     SWAG_ERROR(Err0544, nullptr);
     SWAG_ERROR(Err0581, nullptr);
     SWAG_ERROR(Err0823, nullptr);
-
+    SWAG_ERROR(Err0436, nullptr);
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -947,6 +946,7 @@ void initErrors()
     SWAG_ERROR(Hlp0020, "'@mixin' should only be used inside a 'Swag.Mixin' function");
     SWAG_ERROR(Hlp0013, "'Swag.ExportType' valid values are 'methods' and 'nozero'");
     SWAG_ERROR(Hlp0012, "'Swag.Optim' valid values are 'bytecode' and 'backend'");
+    SWAG_ERROR(Hlp0045, "'closure' should be followed by the capture parameters between '|...|'");
     SWAG_ERROR(Hlp0039, "'with' should be followed by one single variable");
     SWAG_ERROR(Hlp0017, "a closure can only be defined in a function");
     SWAG_ERROR(Hlp0008, "a function name starting with '@' is reserved for intrinsics");
@@ -965,7 +965,9 @@ void initErrors()
     SWAG_ERROR(Hlp0005, "if you want to dereference variable '%s' like in C, use 'dref %s'");
     SWAG_ERROR(Hlp0002, "is there a missing 'self' ?");
     SWAG_ERROR(Hlp0028, "is there a missing 'using' before 'self' ?");
+    SWAG_ERROR(Hlp0044, "it looks like it could be an invalid ufcs call");
     SWAG_ERROR(Hlp0007, "methods ('mtd' and 'mtdc') are reserved for structs and interfaces");
+    SWAG_ERROR(Hlp0043, "this is ambiguous, so you should remove one 'using'");
     SWAG_ERROR(Hlp0035, "this is reserved for function calls");
     SWAG_ERROR(Hlp0022, "this kind of constant does not have an associated memory storage");
     SWAG_ERROR(Hlp0041, "this type of parameter does not have an associated memory storage");
@@ -982,25 +984,22 @@ void initErrors()
     SWAG_ERROR(Hlp0031, "you could also declare the interface member with 'mtd' or 'mtdc' instead of 'func'");
     SWAG_ERROR(Hlp0036, "you could force the evaluation with a '#run'");
     SWAG_ERROR(Hlp0040, "you could use '++' if you want to append strings at compile time");
+    SWAG_ERROR(Hlp0042, "you could use 'func' instead of 'mtd' or 'mtdc'");
     SWAG_ERROR(Hlp0037, "you should add a 'break' or a 'fallthrough'");
     SWAG_ERROR(Hlp0038, "you should add a 'break'");
-    SWAG_ERROR(Hlp0042, "you could use 'func' instead of 'mtd' or 'mtdc'");
-    SWAG_ERROR(Hlp0043, "this is ambiguous, so you should remove one 'using'");
-    SWAG_ERROR(Hlp0044, "it looks like it could be an invalid ufcs call");
-    SWAG_ERROR(Hlp0045, "'closure' should be followed by the capture parameters between '|...|'");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(Hnt0077, "...than this");
     SWAG_ERROR(Hnt0086, "'impl' parent scope is '%s' but '%s' parent scope is '%s'");
     SWAG_ERROR(Hnt0087, "'self' is expected as a first parameter");
+    SWAG_ERROR(Hnt0077, "...than this");
     SWAG_ERROR(Hnt0082, "do you mean '==' ?");
     SWAG_ERROR(Hnt0083, "missing '%s' of type '%s'");
+    SWAG_ERROR(Hnt0094, "should this be removed ?");
     SWAG_ERROR(Hnt0070, "this %s has the 'Swag.Compiler' attribute");
     SWAG_ERROR(Hnt0084, "this %s has type '%s'");
-    SWAG_ERROR(Hnt0001, "this intrinsic is called with invalid parameters");
     SWAG_ERROR(Hnt0060, "this 'dref' is not possible");
     SWAG_ERROR(Hnt0048, "this argument (type is '%s') does not match");
     SWAG_ERROR(Hnt0031, "this argument has a missing name");
@@ -1014,11 +1013,14 @@ void initErrors()
     SWAG_ERROR(Hnt0043, "this could be moved before '%s'");
     SWAG_ERROR(Hnt0046, "this could be preceeded by '#run' to force the call at compile time");
     SWAG_ERROR(Hnt0000, "this divisor expression is zero");
+    SWAG_ERROR(Hnt0090, "this evaluates to '%f'");
+    SWAG_ERROR(Hnt0091, "this evaluates to '%lld'");
     SWAG_ERROR(Hnt0033, "this evaluates to 0");
     SWAG_ERROR(Hnt0062, "this first value implies that all other types should also be '%s'");
     SWAG_ERROR(Hnt0039, "this function call returns an immutable '%s'");
     SWAG_ERROR(Hnt0057, "this function cannot be instantiated");
     SWAG_ERROR(Hnt0078, "this function does not accept aliased names");
+    SWAG_ERROR(Hnt0093, "this function does not accept type '%s' as a first argument");
     SWAG_ERROR(Hnt0073, "this function does not accept ufcs");
     SWAG_ERROR(Hnt0064, "this function has the 'Swag.Compiler' attribute");
     SWAG_ERROR(Hnt0065, "this function has the 'Swag.Test' attribute");
@@ -1027,6 +1029,7 @@ void initErrors()
     SWAG_ERROR(Hnt0016, "this function is marked with the 'Swag.Mixin' attribute");
     SWAG_ERROR(Hnt0050, "this implies a first parameter 'const self'");
     SWAG_ERROR(Hnt0049, "this implies a first parameter 'self'");
+    SWAG_ERROR(Hnt0001, "this intrinsic is called with invalid parameters");
     SWAG_ERROR(Hnt0008, "this intrinsic is not discardable, so the return value should always be used");
     SWAG_ERROR(Hnt0040, "this is a 'typeinfo' value");
     SWAG_ERROR(Hnt0018, "this is a constant");
@@ -1072,9 +1075,10 @@ void initErrors()
     SWAG_ERROR(Hnt0044, "this should be followed by the arguments between '()'");
     SWAG_ERROR(Hnt0076, "this should be lower");
     SWAG_ERROR(Hnt0013, "this should be on another line, or separated with ';'");
-    SWAG_ERROR(Hnt0026, "this should be removed");
-    SWAG_ERROR(Hnt0042, "this should be replaced by 'func'");
     SWAG_ERROR(Hnt0080, "this should be removed or replaced by the scope '%s'");
+    SWAG_ERROR(Hnt0026, "this should be removed");
+    SWAG_ERROR(Hnt0092, "this should be renamed to '_%s' if this is intentional");
+    SWAG_ERROR(Hnt0042, "this should be replaced by 'func'");
     SWAG_ERROR(Hnt0068, "this tuple contains '%d' field(s)");
     SWAG_ERROR(Hnt0069, "this tuple is empty");
     SWAG_ERROR(Hnt0032, "this type is '%s' (could be casted with 'cast(%s)')");
@@ -1083,11 +1087,6 @@ void initErrors()
     SWAG_ERROR(Hnt0022, "this type is immutable");
     SWAG_ERROR(Hnt0067, "this unpacks '%d' variable(s)");
     SWAG_ERROR(Hnt0002, "this value can only be converted to type '%s' with a dynamic call to 'opAffect'");
-    SWAG_ERROR(Hnt0090, "this evaluates to '%f'");
-    SWAG_ERROR(Hnt0091, "this evaluates to '%lld'");
-    SWAG_ERROR(Hnt0092, "this should be renamed to '_%s' if this is intentional");
-    SWAG_ERROR(Hnt0093, "this function does not accept type '%s' as a first argument");
-    SWAG_ERROR(Hnt0094, "should this be removed ?");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -1173,8 +1172,8 @@ void initErrors()
     SWAG_ERROR(Nte0013, "the symbol has been found thanks to a 'using'");
     SWAG_ERROR(Nte0051, "there is an hidden call to '%s' for type '%s'");
     SWAG_ERROR(Nte0006, "this 'using' field can be converted");
-    SWAG_ERROR(Nte0009, "you can run swag with --dbg-catch to attach the bytecode debugger when the error occurs");
     SWAG_ERROR(Nte0003, "this variable can escape the current frame");
+    SWAG_ERROR(Nte0009, "you can run swag with --dbg-catch to attach the bytecode debugger when the error occurs");
     SWAG_ERROR(Nte0005, nullptr);
     SWAG_ERROR(Nte0069, nullptr);
     SWAG_ERROR(Nte0070, nullptr);
@@ -1183,16 +1182,16 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(San0001, "[sanity] return of a stack local variable or temporary");
-    SWAG_ERROR(San0002, "[sanity] return of stack %s '%s'");
-    SWAG_ERROR(San0003, "[sanity] usage of non initialized stack memory");
-    SWAG_ERROR(San0004, "[sanity] usage of non initialized %s '%s'");
     SWAG_ERROR(San0005, "[sanity] dereferencing a null pointer");
     SWAG_ERROR(San0006, "[sanity] dereferencing null %s '%s'");
-    SWAG_ERROR(San0007, "[sanity] division by zero");
     SWAG_ERROR(San0008, "[sanity] division by zero (%s '%s')");
-    SWAG_ERROR(San0009, nullptr);
+    SWAG_ERROR(San0007, "[sanity] division by zero");
+    SWAG_ERROR(San0001, "[sanity] return of a stack local variable or temporary");
+    SWAG_ERROR(San0002, "[sanity] return of stack %s '%s'");
     SWAG_ERROR(San0010, "[sanity] stack overflow (offset is '%lld', stack size is '%lld')");
+    SWAG_ERROR(San0004, "[sanity] usage of non initialized %s '%s'");
+    SWAG_ERROR(San0003, "[sanity] usage of non initialized stack memory");
+    SWAG_ERROR(San0009, nullptr);
     SWAG_ERROR(San0011, nullptr);
     SWAG_ERROR(San0012, nullptr);
     SWAG_ERROR(San0013, nullptr);
