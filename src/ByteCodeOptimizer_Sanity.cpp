@@ -43,7 +43,10 @@
         if (va.kind == ValueKind::Unknown || vb.kind == ValueKind::Unknown)               \
             setStackValue(cxt, addr, sizeof(vb.reg.__reg), ValueKind::Unknown);           \
         else                                                                              \
+        {                                                                                 \
             *(__cast*) addr __op vb.reg.__reg;                                            \
+            setStackConstant(cxt, va.kind, ip, ra->reg.u32, addr, sizeof(vb.reg.__reg));  \
+        }                                                                                 \
     }
 
 #define BINOPEQ_OVF(__cast, __op, __reg, __ovf, __msg, __type)                                                       \
@@ -61,6 +64,7 @@
         {                                                                                                            \
             SWAG_CHECK(checkOverflow(cxt, !__ovf(ip->node, *(__cast*) addr, (__cast) vb.reg.__reg), __msg, __type)); \
             *(__cast*) addr __op vb.reg.__reg;                                                                       \
+            setStackConstant(cxt, va.kind, ip, ra->reg.u32, addr, sizeof(vb.reg.__reg));                             \
         }                                                                                                            \
     }
 
@@ -148,7 +152,7 @@
         SWAG_CHECK(checkOverflow(cxt, !__ovf<__cast, __isSigned>(ip->node, va.reg.__reg, vb.reg.u32, __isSmall), __msg, __type)); \
         __func(&rc->reg, va.reg, vb.reg, sizeof(va.reg.__reg) * 8, __isSigned, __isSmall);                                        \
     }                                                                                                                             \
-    addConstant(cxt, rc->kind, ip, rc->reg.u64, ConstantKind::ToC);
+    setConstant(cxt, rc->kind, ip, rc->reg.u64, ConstantKind::SetImmediateC);
 
 #define BINOP(__op, __reg)                                                                                                  \
     SWAG_CHECK(getImmediateA(va, cxt, ip));                                                                                 \
@@ -157,7 +161,7 @@
     rc->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown; \
     if (rc->kind == ValueKind::Constant)                                                                                    \
         rc->reg.__reg = va.reg.__reg __op vb.reg.__reg;                                                                     \
-    addConstant(cxt, rc->kind, ip, rc->reg.u64, ConstantKind::ToC);
+    setConstant(cxt, rc->kind, ip, rc->reg.u64, ConstantKind::SetImmediateC);
 
 #define BINOP_OVF(__op, __reg, __ovf, __msg, __type)                                                                        \
     SWAG_CHECK(getImmediateA(va, cxt, ip));                                                                                 \
@@ -169,7 +173,7 @@
         SWAG_CHECK(checkOverflow(cxt, !__ovf(ip->node, va.reg.__reg, vb.reg.__reg), __msg, __type));                        \
         rc->reg.__reg = va.reg.__reg __op vb.reg.__reg;                                                                     \
     }                                                                                                                       \
-    addConstant(cxt, rc->kind, ip, rc->reg.u64, ConstantKind::ToC);
+    setConstant(cxt, rc->kind, ip, rc->reg.u64, ConstantKind::SetImmediateC);
 
 #define BINOP_DIV(__op, __reg)                                         \
     SWAG_CHECK(getImmediateB(vb, cxt, ip));                            \
@@ -189,7 +193,7 @@
     rc->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown; \
     if (rc->kind == ValueKind::Constant)                                                                                    \
         rc->reg.b = va.reg.__reg __op vb.reg.__reg;                                                                         \
-    addConstant(cxt, rc->kind, ip, rc->reg.u64, ConstantKind::ToC);
+    setConstant(cxt, rc->kind, ip, rc->reg.u64, ConstantKind::SetImmediateC);
 
 #define JUMPT(__expr0, __expr1)                      \
     if (__expr0)                                     \
@@ -252,55 +256,87 @@ struct State
 
 enum class ConstantKind
 {
-    ToA,
-    ToB,
-    ToC,
-};
-
-struct ConstantValue
-{
-    ConstantKind kind;
-    uint64_t     value;
+    SetImmediateA,
+    SetImmediateB,
+    SetImmediateC,
+    SetAtStack32,
 };
 
 struct Context
 {
-    ByteCodeOptContext*                      context = nullptr;
-    ByteCode*                                bc      = nullptr;
-    int                                      state   = 0;
-    set<ByteCodeInstruction*>                statesHere;
-    vector<State>                            states;
-    map<ByteCodeInstruction*, ConstantValue> constants;
-    bool                                     canAddConstants = true;
+    ByteCodeOptContext*       context = nullptr;
+    ByteCode*                 bc      = nullptr;
+    int                       state   = 0;
+    set<ByteCodeInstruction*> statesHere;
+    vector<State>             states;
+    bool                      cansetConstants = true;
 };
 
-static void addConstant(Context& cxt, ValueKind kind, ByteCodeInstruction* ip, uint64_t value, ConstantKind cstKind)
+static void setStackConstant(Context& cxt, ValueKind kind, ByteCodeInstruction* ip, uint32_t offset, uint8_t* value, int sizeOf)
 {
-    if (!cxt.canAddConstants)
+    if (!cxt.cansetConstants)
         return;
-
     if (kind != ValueKind::Constant)
-    {
-        ip->dynFlags |= BCID_SANITY_BAD_CONSTANT;
         return;
-    }
+    if (!cxt.bc->sourceFile->module->mustOptimizeBC(cxt.bc->node))
+        return;
 
-    if (ip->dynFlags & BCID_SANITY_BAD_CONSTANT)
+    auto context = cxt.context;
+    switch (sizeOf)
     {
-        return;
+    case 1:
+        SET_OP(ip, ByteCodeOp::SetAtStackPointer8);
+        ip->flags |= BCI_IMM_B;
+        ip->a.u32 = offset;
+        ip->b.u64 = *(uint8_t*) value;
+        break;
+    case 2:
+        SET_OP(ip, ByteCodeOp::SetAtStackPointer16);
+        ip->flags |= BCI_IMM_B;
+        ip->a.u32 = offset;
+        ip->b.u64 = *(uint16_t*) value;
+        break;
+    case 4:
+        SET_OP(ip, ByteCodeOp::SetAtStackPointer32);
+        ip->flags |= BCI_IMM_B;
+        ip->a.u32 = offset;
+        ip->b.u64 = *(uint32_t*) value;
+        break;
+    case 8:
+        SET_OP(ip, ByteCodeOp::SetAtStackPointer64);
+        ip->flags |= BCI_IMM_B;
+        ip->a.u32 = offset;
+        ip->b.u64 = *(uint64_t*) value;
+        break;
     }
+}
 
-    auto it = cxt.constants.find(ip);
-    if (it == cxt.constants.end())
-    {
-        cxt.constants[ip] = {cstKind, value};
+static void setConstant(Context& cxt, ValueKind kind, ByteCodeInstruction* ip, uint64_t value, ConstantKind cstKind)
+{
+    if (!cxt.cansetConstants)
         return;
-    }
+    if (kind != ValueKind::Constant)
+        return;
+    if (!cxt.bc->sourceFile->module->mustOptimizeBC(cxt.bc->node))
+        return;
 
-    if (it->second.value != value)
+    auto context = cxt.context;
+    switch (cstKind)
     {
-        ip->dynFlags |= BCID_SANITY_BAD_CONSTANT;
-        return;
+    case ConstantKind::SetImmediateA:
+        SET_OP(ip, ByteCodeOp::SetImmediate64);
+        ip->b.u64 = value;
+        break;
+    case ConstantKind::SetImmediateB:
+        SET_OP(ip, ByteCodeOp::SetImmediate64);
+        ip->a.u32 = ip->b.u32;
+        ip->b.u64 = value;
+        break;
+    case ConstantKind::SetImmediateC:
+        SET_OP(ip, ByteCodeOp::SetImmediate64);
+        ip->a.u32 = ip->c.u32;
+        ip->b.u64 = value;
+        break;
     }
 }
 
@@ -524,7 +560,7 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
         }
 
         if (ip->flags & BCI_START_STMT_N)
-            cxt.canAddConstants = false;
+            cxt.cansetConstants = false;
 
         STATE().ip = ip;
         switch (ip->op)
@@ -1040,7 +1076,7 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             SWAG_CHECK(getStackValue(*ra, cxt, addr, 1));
             SWAG_CHECK(checkStackInitialized(cxt, addr, 1, ra->overload));
             ra->reg.u64 = *(uint8_t*) addr;
-            addConstant(cxt, ra->kind, ip, *(uint8_t*) addr, ConstantKind::ToA);
+            setConstant(cxt, ra->kind, ip, *(uint8_t*) addr, ConstantKind::SetImmediateA);
             break;
         case ByteCodeOp::GetFromStack16:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
@@ -1048,7 +1084,7 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             SWAG_CHECK(getStackValue(*ra, cxt, addr, 2));
             SWAG_CHECK(checkStackInitialized(cxt, addr, 2, ra->overload));
             ra->reg.u64 = *(uint16_t*) addr;
-            addConstant(cxt, ra->kind, ip, *(uint16_t*) addr, ConstantKind::ToA);
+            setConstant(cxt, ra->kind, ip, *(uint16_t*) addr, ConstantKind::SetImmediateA);
             break;
         case ByteCodeOp::GetFromStack32:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
@@ -1056,7 +1092,7 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             SWAG_CHECK(getStackValue(*ra, cxt, addr, 4));
             SWAG_CHECK(checkStackInitialized(cxt, addr, 4, ra->overload));
             ra->reg.u64 = *(uint32_t*) addr;
-            addConstant(cxt, ra->kind, ip, *(uint32_t*) addr, ConstantKind::ToA);
+            setConstant(cxt, ra->kind, ip, *(uint32_t*) addr, ConstantKind::SetImmediateA);
             break;
         case ByteCodeOp::GetFromStack64:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
@@ -1064,7 +1100,7 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             SWAG_CHECK(getStackValue(*ra, cxt, addr, 8));
             SWAG_CHECK(checkStackInitialized(cxt, addr, 8, ra->overload));
             ra->reg.u64 = *(uint64_t*) addr;
-            addConstant(cxt, ra->kind, ip, *(uint64_t*) addr, ConstantKind::ToA);
+            setConstant(cxt, ra->kind, ip, *(uint64_t*) addr, ConstantKind::SetImmediateA);
             break;
 
         case ByteCodeOp::IncPointer64:
@@ -2056,31 +2092,6 @@ bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
             break;
         for (uint32_t j = 0; j < cxt.bc->numInstructions; j++)
             cxt.bc->out[j].dynFlags &= ~BCID_SAN_PASS;
-    }
-
-    if (cxt.bc->sourceFile->module->mustOptimizeBC(cxt.bc->node))
-    {
-        for (auto& it : cxt.constants)
-        {
-            if (it.first->dynFlags & BCID_SANITY_BAD_CONSTANT)
-                continue;
-
-            SET_OP(it.first, ByteCodeOp::SetImmediate64);
-            it.first->b.u64 = it.second.value;
-            switch (it.second.kind)
-            {
-            case ConstantKind::ToA:
-                break;
-            case ConstantKind::ToB:
-                it.first->a.u32 = it.first->b.u32;
-                break;
-            case ConstantKind::ToC:
-                it.first->a.u32 = it.first->c.u32;
-                break;
-            }
-        }
-
-        // context->bc->print();
     }
 
     return true;

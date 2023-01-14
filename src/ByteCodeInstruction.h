@@ -23,10 +23,9 @@ static const uint16_t BCI_START_STMT_S  = 0x1000;
 static const uint16_t BCI_START_STMT    = BCI_START_STMT_N | BCI_START_STMT_S;
 static const uint16_t BCI_NO_BACKEND    = 0x2000;
 
-static const uint8_t BCID_OPT_FLAG            = 0x01;
-static const uint8_t BCID_SAN_PASS            = 0x02;
-static const uint8_t BCID_SAFETY_OF           = 0x04;
-static const uint8_t BCID_SANITY_BAD_CONSTANT = 0x08;
+static const uint8_t BCID_OPT_FLAG  = 0x01;
+static const uint8_t BCID_SAN_PASS  = 0x02;
+static const uint8_t BCID_SAFETY_OF = 0x04;
 
 struct ByteCodeInstruction
 {
