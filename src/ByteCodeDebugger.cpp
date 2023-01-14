@@ -25,9 +25,8 @@ void ByteCodeDebugger::setup()
         return;
 
     // clang-format off
-    commands.push_back({"<return>",         "",  "",        "'step' runs to the next line or instruction (depends on 'bcmode')"});
-    commands.push_back({"<shift+return>",   "",  "",        "'next', runs to the next line or instruction (depends on 'bcmode')"});
-    commands.push_back({"<tab>",            "",  "",        "contextual completion of the current word"});
+    commands.push_back({"<return>",    "",  "",                       "repeat the last command"});
+    commands.push_back({"<tab>",       "",  "",                       "contextual completion of the current word"});
     commands.push_back({});
 
     commands.push_back({"step",        "s",    "",                    "runs to the next line", cmdStep});
@@ -601,6 +600,15 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
         bool shift = false;
         auto line  = getCommandLine(context, ctrl, shift);
 
+        if (line.empty())
+        {
+            line = context->debugLastLine;
+            if (line.empty())
+                continue;
+        }
+
+        context->debugLastLine = line;
+
         // Split in command + parameters
         Utf8         cmd;
         Utf8         cmdExpr;
@@ -629,14 +637,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
         /////////////////////////////////////////
         BcDbgCommandResult result = BcDbgCommandResult::Invalid;
 
-        if (cmd.empty())
-        {
-            if (!shift)
-                result = cmdStep(context, cmds, cmdExpr);
-            else
-                result = cmdNext(context, cmds, cmdExpr);
-        }
-        else
+        if (!cmd.empty())
         {
             for (auto& c : commands)
             {

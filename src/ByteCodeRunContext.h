@@ -178,6 +178,7 @@ struct ByteCodeRunContext
     bool                    debugEntry      = false;
     bool                    debugAccept     = true;
     vector<DebugBreakpoint> debugBreakpoints;
+    Utf8                    debugLastLine;
 };
 
 extern bool g_Exiting;
