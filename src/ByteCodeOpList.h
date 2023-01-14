@@ -207,7 +207,7 @@ BYTECODE_OP(DecrementRA64, OPFLAG_WRITE_A | OPFLAG_READ_A, "_ra_--")
 BYTECODE_OP(Add32byVB32, OPFLAG_READ_A | OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B, "_ra_ += _rbu32_")
 BYTECODE_OP(Add64byVB64, OPFLAG_READ_A | OPFLAG_WRITE_A | OPFLAG_READ_VAL64_B, "_ra_ += _rbu64_")
 
-BYTECODE_OP(CopyRCtoRRRet, OPFLAG_READ_VAL32_A | OPFLAG_READ_B | OPFLAG_IMM_B, "my_result = _rbu64_, return(pop _rau32_)")
+BYTECODE_OP(CopyRCtoRRRet, OPFLAG_READ_VAL32_A | OPFLAG_READ_B | OPFLAG_IMM_B, "my_result = _rbu64_; pop _rau32_; return")
 BYTECODE_OP(CopyRCtoRR, OPFLAG_READ_A | OPFLAG_IMM_A, "my_result = _rau64_")
 BYTECODE_OP(CopyRCtoRR2, OPFLAG_READ_A | OPFLAG_READ_B, "my_result = _ra_, _rb_")
 BYTECODE_OP(CopyRCtoRT, OPFLAG_READ_A, "last_call_result_ptr = _ra_")

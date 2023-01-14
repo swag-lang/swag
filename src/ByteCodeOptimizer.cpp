@@ -47,7 +47,7 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx, b
     ByteCodeOptTreeNode* node = &context->tree[nodeIdx];
     node->end                 = node->start;
 
-    while (node->end->op != ByteCodeOp::Ret && !ByteCode::isJumpOrDyn(node->end) && !(node->end[1].flags & BCI_START_STMT))
+    while (!ByteCode::isRet(node->end) && !ByteCode::isJumpOrDyn(node->end) && !(node->end[1].flags & BCI_START_STMT))
     {
         if (computeCrc)
             node->crc = context->bc->computeCrc(node->end, node->crc, true, false);
@@ -70,7 +70,7 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx, b
     }
 #endif
 
-    if (node->end->op == ByteCodeOp::Ret)
+    if (ByteCode::isRet(node->end))
         return;
 
     bool here = false;

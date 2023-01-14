@@ -13,7 +13,7 @@ bool ByteCodeOptimizer::optimizePassDupBlocks(ByteCodeOptContext* context)
             uint64_t countBlock = (node->end - node->start) + 1;
 
             // Only factorize terminal blocks
-            if (node->end->op != ByteCodeOp::Ret && node->end->op != ByteCodeOp::Jump)
+            if (!ByteCode::isRet(node->end) && node->end->op != ByteCodeOp::Jump)
                 return;
 
             // Only one instruction in the block, do nothing
@@ -26,7 +26,7 @@ bool ByteCodeOptimizer::optimizePassDupBlocks(ByteCodeOptContext* context)
             //
             // Here we consider that if the block has only 2 instructions, then we do not jump to a block with also 2 instructions.
             // But '2' is kind of magical...
-            if (node->end->op == ByteCodeOp::Ret && countBlock <= 2)
+            if (ByteCode::isRet(node->end) && countBlock <= 2)
                 return;
 
             auto it = context->map32Node.find(node->crc);

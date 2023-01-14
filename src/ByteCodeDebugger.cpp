@@ -452,7 +452,7 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
     }
     case ByteCodeRunContext::DebugStepMode::FinishedFunction:
     {
-        if (context->curRC == 0 && context->debugStepRC == -1 && ip->op == ByteCodeOp::Ret)
+        if (context->curRC == 0 && context->debugStepRC == -1 && ByteCode::isRet(ip))
             context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
         else if (context->curRC > context->debugStepRC)
             zapCurrentIp = true;

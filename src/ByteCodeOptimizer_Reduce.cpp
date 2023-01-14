@@ -206,7 +206,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
     }
 }
 
-void ByteCodeOptimizer::reduceEmptyFct(ByteCodeOptContext* context, ByteCodeInstruction* ip)
+void ByteCodeOptimizer::reduceCallEmptyFct(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
     if (ip->op == ByteCodeOp::LocalCall || ip->op == ByteCodeOp::LocalCallPop || ip->op == ByteCodeOp::LocalCallPopRC)
     {
@@ -524,6 +524,15 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
 {
     switch (ip->op)
     {
+    case ByteCodeOp::DecSPBP:
+        if (ip[1].op == ByteCodeOp::CopyRCtoRRRet && ip[2].op == ByteCodeOp::End)
+        {
+            setNop(context, ip);
+            ip[1].a.u64 = 0;
+            break;
+        }
+        break;
+
     case ByteCodeOp::CopyRCtoRR:
         if (ip[1].op == ByteCodeOp::Ret)
         {
@@ -532,6 +541,8 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
             ip[0].flags |= ip[0].flags & BCI_IMM_A ? BCI_IMM_B : 0;
             ip[0].flags &= ~BCI_IMM_A;
             SET_OP(ip, ByteCodeOp::CopyRCtoRRRet);
+            if (!(ip[1].flags & BCI_START_STMT))
+                setNop(context, ip + 1);
             break;
         }
         break;
@@ -4830,7 +4841,7 @@ bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
         reduceErr(context, ip);
-        reduceEmptyFct(context, ip);
+        reduceCallEmptyFct(context, ip);
         reduceMemcpy(context, ip);
         reduceFunc(context, ip);
         reduceStack(context, ip);

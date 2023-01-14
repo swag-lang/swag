@@ -39,7 +39,7 @@ bool ByteCodeOptimizer::optimizePassDeadCode(ByteCodeOptContext* context)
                 ADD_TODO(ip + table[i] + 1);
             }
         }
-        else if (ip->op != ByteCodeOp::Ret && ip->op != ByteCodeOp::End)
+        else if (!ByteCode::isRet(ip) && ip->op != ByteCodeOp::End)
         {
             ADD_TODO(ip + 1);
         }

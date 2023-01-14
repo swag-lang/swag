@@ -47,7 +47,7 @@ struct ByteCodeOptimizer
 
     static void reduceFactor(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceErr(ByteCodeOptContext* context, ByteCodeInstruction* ip);
-    static void reduceEmptyFct(ByteCodeOptContext* context, ByteCodeInstruction* ip);
+    static void reduceCallEmptyFct(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceAppend(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceMemcpy(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceSwap(ByteCodeOptContext* context, ByteCodeInstruction* ip);
