@@ -137,8 +137,6 @@ pass orEq/andEq/xOrEq/Div/shift etc en mode Stack StackStack
 -------------------------------------
 x64 binaryop div, transformer en shift si log2
 -------------------------------------
-BinOpModuloS32/div/mul immediate mode
--------------------------------------
 x64 emit_BinOpInt32/64 etc.. faire un mode immediat pour le côté droit 'and cl, 5'
 -------------------------------------
 Mul64byVB64 a deux registres ! (binOpPlus/Minus inc pointer)

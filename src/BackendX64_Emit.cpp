@@ -624,14 +624,20 @@ void BackendX64::emitBinOpIntDivAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool 
     switch (bits)
     {
     case 32:
-        pp.emit_Load32_Indirect(regOffset(ip->a.u32), RAX, RDI);
+        if (ip->flags & BCI_IMM_A)
+            pp.emit_Load32_Immediate(ip->a.u32, RAX);
+        else
+            pp.emit_Load32_Indirect(regOffset(ip->a.u32), RAX, RDI);
         if (isSigned)
             pp.concat.addString1("\x99"); // cdq
         else
             pp.emit_Clear32(RDX);
         break;
     case 64:
-        pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
+        if (ip->flags & BCI_IMM_A)
+            pp.emit_Load64_Immediate(ip->a.u64, RAX);
+        else
+            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
         if (isSigned)
             pp.concat.addString2("\x48\x99"); // cqo
         else
