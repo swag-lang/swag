@@ -81,7 +81,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
         buildCfg.byteCodeDebugInline      = false;
         buildCfg.byteCodeInline           = true;
         buildCfg.byteCodeEmitAssume       = true;
-        buildCfg.safetyGuards             = SAFETY_ALL;
+        buildCfg.safetyGuards             = SAFETY_ALL & ~SAFETY_NAN & ~SAFETY_BOOL;
         buildCfg.stackTrace               = true;
         buildCfg.debugAllocator           = true;
         buildCfg.backendOptimizeSpeed     = true;
