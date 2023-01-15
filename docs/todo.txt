@@ -133,8 +133,6 @@ inline auto ?
 -------------------------------------
 InternalGetTlsPtr (Swag.Tls var), le faire une fois pour toute au début de la fonction comme le r0 = @getcontext()
 -------------------------------------
-setStack/clearstack etc... sans lecture avant return
--------------------------------------
 pass orEq/andEq/xOrEq/Div/shift etc en mode Stack StackStack
 -------------------------------------
 x64 binaryop div, transformer en shift si log2

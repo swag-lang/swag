@@ -437,6 +437,9 @@ static bool isSwapBlocked(ByteCodeInstruction* ip)
     case ByteCodeOp::GetFromStack16:
     case ByteCodeOp::GetFromStack32:
     case ByteCodeOp::GetFromStack64:
+    case ByteCodeOp::GetParam64:
+    case ByteCodeOp::SetImmediate32:
+    case ByteCodeOp::SetImmediate64:
         a = ip->a.u32;
         break;
     case ByteCodeOp::IncPointer64:
@@ -486,6 +489,9 @@ static bool canSwap(ByteCodeInstruction* ip)
     case ByteCodeOp::GetFromStack16:
     case ByteCodeOp::GetFromStack32:
     case ByteCodeOp::GetFromStack64:
+    case ByteCodeOp::GetParam64:
+    case ByteCodeOp::SetImmediate32:
+    case ByteCodeOp::SetImmediate64:
         if (isSwapBlocked(ip))
             return false;
         if (isSwapBlocked(ip + 1))
@@ -1113,7 +1119,27 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         }
 
         if ((ip[1].op == ByteCodeOp::ClearMaskU64) &&
-            (ip[1].b.u32 == 0xFFFFFFFF) &&
+            (ip[1].b.u64 == 0xFF) &&
+            (ip[0].a.u32 == ip[1].a.u32) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::GetParam8);
+            setNop(context, ip + 1);
+            break;
+        }
+
+        if ((ip[1].op == ByteCodeOp::ClearMaskU64) &&
+            (ip[1].b.u64 == 0xFFFF) &&
+            (ip[0].a.u32 == ip[1].a.u32) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::GetParam16);
+            setNop(context, ip + 1);
+            break;
+        }
+
+        if ((ip[1].op == ByteCodeOp::ClearMaskU64) &&
+            (ip[1].b.u64 == 0xFFFFFFFF) &&
             (ip[0].a.u32 == ip[1].a.u32) &&
             !(ip[1].flags & BCI_START_STMT))
         {

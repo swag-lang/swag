@@ -31,15 +31,15 @@ void BackendX64::emitGetParam(X64Gen& pp, TypeInfoFuncAttr* typeFunc, int reg, i
     {
     case 1:
         SWAG_ASSERT(!toAdd);
-        pp.emit_Clear32(RAX);
+        pp.emit_Clear64(RAX);
         pp.emit_Load8_Indirect(stackOffset, RAX, RDI);
-        pp.emit_Store32_Indirect(regOffset(reg), RAX, RDI);
+        pp.emit_Store64_Indirect(regOffset(reg), RAX, RDI);
         return;
     case 2:
         SWAG_ASSERT(!toAdd);
-        pp.emit_Clear32(RAX);
+        pp.emit_Clear64(RAX);
         pp.emit_Load16_Indirect(stackOffset, RAX, RDI);
-        pp.emit_Store32_Indirect(regOffset(reg), RAX, RDI);
+        pp.emit_Store64_Indirect(regOffset(reg), RAX, RDI);
         return;
     case 4:
         SWAG_ASSERT(!toAdd);
