@@ -47,7 +47,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu sc",          "--dbg-catch",            nullptr,    CommandLineType::Bool,          &cmdLine->dbgCatch, nullptr, "open bytecode debugger in case of compile time errors");
     addArg("bu sc",          "--dbg-main",             nullptr,    CommandLineType::Bool,          &cmdLine->dbgMain, nullptr, "open bytecode debugger at the start of #main");
     addArg("bu sc",          "--dbg-off",              nullptr,    CommandLineType::Bool,          &cmdLine->dbgOff, nullptr, "disable @breakpoint() instruction");
-#ifdef SWAG_DEV_MODE                                                                               
+#ifndef SWAG_DEV_MODE                                                                               
     addArg("bu sc",          "--dbg-devmode",          nullptr,    CommandLineType::Bool,          &cmdLine->dbgDevMode, nullptr, "message box in case of exception");
 #endif
 #ifdef SWAG_DEV_MODE                                                                               

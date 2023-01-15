@@ -636,27 +636,69 @@ void BackendX64::emitBinOpIntDivAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool 
             pp.concat.addString2("\x48\x99"); // cqo
         else
             pp.emit_Clear64(RDX);
-        pp.concat.addU8(0x48);
         break;
     default:
         SWAG_ASSERT(false);
         break;
     }
 
-    pp.concat.addU8(0xF7);
-
-    uint32_t offsetStack = ip->b.u32 * sizeof(Register);
-    if (offsetStack == 0)
-        pp.concat.addU8(0x37 | (isSigned ? 0b1000 : 0));
-    else if (offsetStack <= 0x7F)
+    if (ip->flags & BCI_IMM_B)
     {
-        pp.concat.addU8(0x77 | (isSigned ? 0b1000 : 0));
-        pp.concat.addU8((uint8_t) offsetStack);
+        switch (bits)
+        {
+        case 32:
+            pp.emit_Load32_Immediate(ip->b.u32, RCX);
+            break;
+        case 64:
+            pp.emit_Load64_Immediate(ip->b.u64, RCX);
+            break;
+        }
+
+        if (isSigned)
+        {
+            switch (bits)
+            {
+            case 32:
+                pp.concat.addString2("\xF7\xF9"); // div eax
+                break;
+            case 64:
+                pp.concat.addString3("\x48\xF7\xF9"); // div rcx
+                break;
+            }
+        }
+        else
+        {
+            switch (bits)
+            {
+            case 32:
+                pp.concat.addString2("\xF7\xF1"); // div eax
+                break;
+            case 64:
+                pp.concat.addString3("\x48\xF7\xF1"); // div rcx
+                break;
+            }
+        }
     }
     else
     {
-        pp.concat.addU8(0xB7 | (isSigned ? 0b1000 : 0));
-        pp.concat.addU32(offsetStack);
+        // div [rdi+?]
+        if (bits == 64)
+            pp.concat.addU8(0x48);
+        pp.concat.addU8(0xF7);
+
+        uint32_t offsetStack = ip->b.u32 * sizeof(Register);
+        if (offsetStack == 0)
+            pp.concat.addU8(0x37 | (isSigned ? 0b1000 : 0));
+        else if (offsetStack <= 0x7F)
+        {
+            pp.concat.addU8(0x77 | (isSigned ? 0b1000 : 0));
+            pp.concat.addU8((uint8_t) offsetStack);
+        }
+        else
+        {
+            pp.concat.addU8(0xB7 | (isSigned ? 0b1000 : 0));
+            pp.concat.addU32(offsetStack);
+        }
     }
 
     if (modulo)
