@@ -131,11 +131,6 @@ OPTIMS
 -------------------------------------
 inline auto ?
 -------------------------------------
-00000000                   DecSPBP   A{0x10}                              ...  ......    stacksize 16
-00000001             CopyRCtoRRRet   A{0x10} B{0x2}                       ...  .B....    my_result = 2, return(pop 16)
-00000002                       Ret   A{0x10}                              ...  ......    return(pop 16)
-00000003                       End                                        ...  ......
--------------------------------------
 InternalGetTlsPtr (Swag.Tls var), le faire une fois pour toute au début de la fonction comme le r0 = @getcontext()
 -------------------------------------
 setStack/clearstack etc... sans lecture avant return

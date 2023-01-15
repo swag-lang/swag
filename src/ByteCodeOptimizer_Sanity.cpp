@@ -249,9 +249,7 @@ struct State
 enum class ConstantKind
 {
     SetImmediateA,
-    SetImmediateB,
     SetImmediateC,
-    SetAtStack32,
 };
 
 struct Context
@@ -317,11 +315,6 @@ static void setConstant(Context& cxt, ValueKind kind, ByteCodeInstruction* ip, u
     {
     case ConstantKind::SetImmediateA:
         SET_OP(ip, ByteCodeOp::SetImmediate64);
-        ip->b.u64 = value;
-        break;
-    case ConstantKind::SetImmediateB:
-        SET_OP(ip, ByteCodeOp::SetImmediate64);
-        ip->a.u32 = ip->b.u32;
         ip->b.u64 = value;
         break;
     case ConstantKind::SetImmediateC:

@@ -1,5 +1,3 @@
-
-
 var G: s32 = 0
 
 //#[Swag.PrintBc]
