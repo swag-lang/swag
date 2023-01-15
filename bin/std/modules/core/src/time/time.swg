@@ -128,6 +128,7 @@ func ticksToDate(ticks: Ticks) -> {year: u16, month: u16, day: u16}
 }
 
 // Returns true if the given year is a leap year
+#[Swag.PrintBc]
 func isLeapYear(year: u16)->bool
 {
     return year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)

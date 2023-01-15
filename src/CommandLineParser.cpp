@@ -48,6 +48,9 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu sc",          "--dbg-main",             nullptr,    CommandLineType::Bool,          &cmdLine->dbgMain, nullptr, "open bytecode debugger at the start of #main");
     addArg("bu sc",          "--dbg-off",              nullptr,    CommandLineType::Bool,          &cmdLine->dbgOff, nullptr, "disable @breakpoint() instruction");
 #ifdef SWAG_DEV_MODE                                                                               
+    addArg("bu sc",          "--dbg-devmode",          nullptr,    CommandLineType::Bool,          &cmdLine->dbgDevMode, nullptr, "message box in case of exception");
+#endif
+#ifdef SWAG_DEV_MODE                                                                               
     addArg("bu sc",          "--randomize",            nullptr,    CommandLineType::Bool,          &cmdLine->randomize, nullptr, "[devmode] randomize behavior");
     addArg("bu sc",          "--seed",                 nullptr,    CommandLineType::Int,           &cmdLine->randSeed, nullptr, "[devmode] set seed for randomize behavior");
 #endif                                                                                             

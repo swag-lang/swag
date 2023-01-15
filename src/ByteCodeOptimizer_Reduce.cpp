@@ -32,7 +32,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
     case ByteCodeOp::InternalClearErr:
     {
         auto ipScan = ip + 1;
-        while (ipScan->op != ByteCodeOp::Ret)
+        while (!ByteCode::isRet(ipScan))
         {
             if (ipScan->op == ByteCodeOp::InternalHasErr ||
                 ipScan->op == ByteCodeOp::IntrinsicGetErr ||
@@ -71,7 +71,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
 
     case ByteCodeOp::InternalHasErr:
         // Has err followed by ret
-        if (ip[1].op == ByteCodeOp::Ret)
+        if (ByteCode::isRet(ip + 1))
         {
             setNop(context, ip);
             break;

@@ -49,9 +49,12 @@ struct CommandLine
     bool runByteCodeTests = true;
     bool runBackendTests  = true;
 
-    bool dbgCatch         = false;
-    bool dbgMain          = false;
-    bool dbgOff           = false;
+    bool dbgCatch = false;
+    bool dbgMain  = false;
+    bool dbgOff   = false;
+#ifndef SWAG_DEV_MODE
+    bool dbgDevMode = false;
+#endif
 
 #ifdef SWAG_DEV_MODE
     bool randomize = false;

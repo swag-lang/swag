@@ -69,9 +69,9 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
         auto bcReal     = bc ? bc : funcDecl->extension->bytecode->bc;
         bcReal->isUsed  = true;
         inst->a.pointer = (uint8_t*) bcReal;
+        SWAG_ASSERT(inst->a.pointer);
         SWAG_ASSERT(numParams <= 2);
         inst->b.pointer = numParams == 1 ? (uint8_t*) g_TypeMgr->typeInfoOpCall : (uint8_t*) g_TypeMgr->typeInfoOpCall2;
-        SWAG_ASSERT(inst->a.pointer);
     }
 
     emitInstruction(context, ByteCodeOp::IncSPPostCall, numParams * 8);
