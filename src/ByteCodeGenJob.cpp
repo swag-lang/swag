@@ -172,11 +172,16 @@ bool ByteCodeGenJob::emitPassThrough(ByteCodeGenContext* context)
     auto node = context->node;
     if (node->childs.empty())
         return true;
+
     auto child = node->childs.back();
     if (node->flags & AST_DISCARD)
         freeRegisterRC(context, child);
     else
+    {
+        SWAG_CHECK(emitCast(context, child, TypeManager::concreteType(child->typeInfo), child->castedTypeInfo));
         node->resultRegisterRC = child->resultRegisterRC;
+    }
+
     if (child->extension && child->extension->misc)
         freeRegisterRC(context, child->extension->misc->additionalRegisterRC);
     return true;
