@@ -363,6 +363,8 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
 bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node          = context->node;
+    auto sourceFile    = context->sourceFile;
+    auto module        = sourceFile->module;
     auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
 
@@ -443,7 +445,18 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
         }
     }
     else if (right->isConstant0())
+    {
         return context->report({right, Err(Err0150), Hnt(Hnt0033)});
+    }
+    else if (module->mustOptimizeBC(node))
+    {
+        // something / 1 => something
+        if (right->isConstant1())
+        {
+            node->setPassThrough();
+            Ast::removeFromParent(right);
+        }
+    }
 
     return true;
 }
@@ -514,7 +527,9 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
         }
     }
     else if (right->isConstant0())
+    {
         return context->report({right, Err(Err0150)});
+    }
 
     return true;
 }

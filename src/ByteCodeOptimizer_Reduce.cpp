@@ -4,6 +4,180 @@
 #include "Module.h"
 #include "Log.h"
 #include "AstNode.h"
+#include "Math.h"
+
+void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruction* ip)
+{
+    if (ip->flags & BCI_IMM_A)
+        return;
+    if (!(ip->flags & BCI_IMM_B))
+        return;
+
+    switch (ip->op)
+    {
+    case ByteCodeOp::BinOpDivU32:
+        if (ip->b.u32 == 1)
+        {
+            SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
+            ip->b.u32 = ip->a.u32;
+            ip->a.u32 = ip->c.u32;
+            ip->flags &= ~BCI_IMM_B;
+            break;
+        }
+
+        if (isPowerOfTwo(ip->b.u32))
+        {
+            SET_OP(ip, ByteCodeOp::BinOpShiftRightU32);
+            ip->b.u32 = (uint32_t) log2(ip->b.u32);
+            break;
+        }
+        break;
+
+    case ByteCodeOp::BinOpDivU64:
+        if (ip->b.u64 == 1)
+        {
+            SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
+            ip->b.u32 = ip->a.u32;
+            ip->a.u32 = ip->c.u32;
+            ip->flags &= ~BCI_IMM_B;
+            break;
+        }
+
+        if (isPowerOfTwo(ip->b.u64))
+        {
+            SET_OP(ip, ByteCodeOp::BinOpShiftRightU64);
+            ip->b.u64 = (uint64_t) log2(ip->b.u64);
+            break;
+        }
+        break;
+
+    case ByteCodeOp::BinOpDivS32:
+        if (ip->b.u32 == 1)
+        {
+            SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
+            ip->b.u32 = ip->a.u32;
+            ip->a.u32 = ip->c.u32;
+            ip->flags &= ~BCI_IMM_B;
+            break;
+        }
+
+        if (isPowerOfTwo(ip->b.u32))
+        {
+            SET_OP(ip, ByteCodeOp::BinOpShiftRightS32);
+            ip->b.u32 = (uint32_t) log2(ip->b.u32);
+            break;
+        }
+        break;
+
+    case ByteCodeOp::BinOpDivS64:
+        if (ip->b.u64 == 1)
+        {
+            SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
+            ip->b.u32 = ip->a.u32;
+            ip->a.u32 = ip->c.u32;
+            ip->flags &= ~BCI_IMM_B;
+            break;
+        }
+
+        if (isPowerOfTwo(ip->b.u64))
+        {
+            SET_OP(ip, ByteCodeOp::BinOpShiftRightS64);
+            ip->b.u64 = (uint64_t) log2(ip->b.u64);
+            break;
+        }
+        break;
+
+    case ByteCodeOp::BinOpModuloU32:
+        if (isPowerOfTwo(ip->b.u32))
+        {
+            SET_OP(ip, ByteCodeOp::BinOpBitmaskAnd32);
+            ip->b.u32 -= 1;
+            break;
+        }
+        break;
+
+    case ByteCodeOp::BinOpModuloU64:
+        if (isPowerOfTwo(ip->b.u32))
+        {
+            SET_OP(ip, ByteCodeOp::BinOpBitmaskAnd64);
+            ip->b.u64 -= 1;
+            break;
+        }
+        break;
+
+    case ByteCodeOp::BinOpMulU32_Safe:
+        if (ip->b.u32 == 1)
+        {
+            SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
+            ip->b.u32 = ip->a.u32;
+            ip->a.u32 = ip->c.u32;
+            ip->flags &= ~BCI_IMM_B;
+            break;
+        }
+
+        if (isPowerOfTwo(ip->b.u32))
+        {
+            SET_OP(ip, ByteCodeOp::BinOpShiftLeftU32);
+            ip->b.u32 = (uint32_t) log2(ip->b.u32);
+            break;
+        }
+        break;
+
+    case ByteCodeOp::BinOpMulU64_Safe:
+        if (ip->b.u64 == 1)
+        {
+            SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
+            ip->b.u32 = ip->a.u32;
+            ip->a.u32 = ip->c.u32;
+            ip->flags &= ~BCI_IMM_B;
+            break;
+        }
+
+        if (isPowerOfTwo(ip->b.u32))
+        {
+            SET_OP(ip, ByteCodeOp::BinOpShiftLeftU64);
+            ip->b.u64 = (uint32_t) log2(ip->b.u64);
+            break;
+        }
+        break;
+
+    case ByteCodeOp::BinOpMulS32_Safe:
+        if (ip->b.u32 == 1)
+        {
+            SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
+            ip->b.u32 = ip->a.u32;
+            ip->a.u32 = ip->c.u32;
+            ip->flags &= ~BCI_IMM_B;
+            break;
+        }
+
+        if (isPowerOfTwo(ip->b.u32))
+        {
+            SET_OP(ip, ByteCodeOp::BinOpShiftLeftS32);
+            ip->b.u32 = (uint32_t) log2(ip->b.u32);
+            break;
+        }
+        break;
+
+    case ByteCodeOp::BinOpMulS64_Safe:
+        if (ip->b.u64 == 1)
+        {
+            SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
+            ip->b.u32 = ip->a.u32;
+            ip->a.u32 = ip->c.u32;
+            ip->flags &= ~BCI_IMM_B;
+            break;
+        }
+
+        if (isPowerOfTwo(ip->b.u32))
+        {
+            SET_OP(ip, ByteCodeOp::BinOpShiftLeftS64);
+            ip->b.u64 = (uint32_t) log2(ip->b.u64);
+            break;
+        }
+        break;
+    }
+}
 
 void ByteCodeOptimizer::reduceFactor(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
@@ -4947,6 +5121,7 @@ bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         reduceStackOp(context, ip);
         reduceLateStack(context, ip);
         reduceFactor(context, ip);
+        reduceMath(context, ip);
     }
 
     return true;
