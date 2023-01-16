@@ -55,9 +55,10 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
                 if (!bkp.autoDisabled)
                 {
                     g_Log.printColor(Fmt("#### breakpoint hit #%d function with a match on '%s' ####\n", idxBkp, bkp.name.c_str()), LogColor::Magenta);
-                    context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
-                    context->debugOn       = true;
-                    bkp.autoDisabled       = true;
+                    context->debugStepMode          = ByteCodeRunContext::DebugStepMode::None;
+                    context->debugOn                = true;
+                    context->debugForcePrintContext = true;
+                    bkp.autoDisabled                = true;
                     if (bkp.autoRemove)
                         context->debugBreakpoints.erase(it);
                     else
@@ -80,8 +81,9 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
                 if (!bkp.autoDisabled)
                 {
                     g_Log.printColor(Fmt("#### breakpoint hit #%d at line '%d' ####\n", idxBkp, bkp.line), LogColor::Magenta);
-                    context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
-                    context->debugOn       = true;
+                    context->debugStepMode          = ByteCodeRunContext::DebugStepMode::None;
+                    context->debugOn                = true;
+                    context->debugForcePrintContext = true;
                     if (bkp.autoRemove)
                         context->debugBreakpoints.erase(it);
                     else
@@ -104,8 +106,9 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
                 if (!bkp.autoDisabled)
                 {
                     g_Log.printColor(Fmt("#### breakpoint hit #%d at instruction '%d' ####\n", idxBkp, bkp.line), LogColor::Magenta);
-                    context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
-                    context->debugOn       = true;
+                    context->debugStepMode          = ByteCodeRunContext::DebugStepMode::None;
+                    context->debugOn                = true;
+                    context->debugForcePrintContext = true;
                     if (bkp.autoRemove)
                         context->debugBreakpoints.erase(it);
                     else

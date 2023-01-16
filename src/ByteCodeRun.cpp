@@ -3570,7 +3570,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         if (!g_CommandLine.dbgOff)
         {
             context->debugRaiseStart = true;
-            context->debugEntry      = !context->debugOn;
+            context->debugEntry      = true;
             context->debugStepMode   = ByteCodeRunContext::DebugStepMode::None;
             throw "start debug";
         }

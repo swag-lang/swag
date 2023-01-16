@@ -595,25 +595,24 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             g_Log.eol();
 
             g_Log.eol();
-        }
-        else
-        {
-            g_Log.printColor("#### @breakpoint() hit ####\n", LogColor::Magenta);
+
+            // Bar
+            /////////////////////////////////////////
+            g_Log.setColor(LogColor::Green);
+            for (int i = 0; i < LINE_W; i++)
+                g_Log.print(Utf8("\xe2\x94\x80"));
+            g_Log.eol();
+            g_Log.setColor(LogColor::Gray);
         }
 
-        context->debugEntry            = false;
-        context->debugStepMode         = ByteCodeRunContext::DebugStepMode::None;
-        context->debugStepLastLocation = nullptr;
-        context->debugStepLastFile     = nullptr;
-        context->debugStackFrameOffset = 0;
+        g_Log.printColor("#### @breakpoint() hit ####\n", LogColor::Magenta);
 
-        // Bar
-        /////////////////////////////////////////
-        g_Log.setColor(LogColor::Green);
-        for (int i = 0; i < LINE_W; i++)
-            g_Log.print(Utf8("\xe2\x94\x80"));
-        g_Log.eol();
-        g_Log.setColor(LogColor::Gray);
+        context->debugEntry             = false;
+        context->debugStepMode          = ByteCodeRunContext::DebugStepMode::None;
+        context->debugStepLastLocation  = nullptr;
+        context->debugStepLastFile      = nullptr;
+        context->debugStackFrameOffset  = 0;
+        context->debugForcePrintContext = true;
     }
 
     // Check breakpoints/step mode

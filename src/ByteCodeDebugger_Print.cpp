@@ -10,6 +10,10 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     SWAG_ASSERT(context->debugCxtBc);
     SWAG_ASSERT(context->debugCxtIp);
 
+    if (context->debugForcePrintContext)
+        force = true;
+    context->debugForcePrintContext = false;
+
     auto loc = ByteCode::getLocation(context->debugCxtBc, context->debugCxtIp, true);
 
     // Print file

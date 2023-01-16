@@ -174,10 +174,11 @@ struct ByteCodeRunContext
     uint32_t                debugStackFrameOffset = 0;
     uint32_t                debugCxtRc            = 0;
     bool                    debugOn;
-    uint32_t                debugBcMode     = false;
-    bool                    debugRaiseStart = false;
-    bool                    debugEntry      = false;
-    bool                    debugAccept     = true;
+    uint32_t                debugBcMode            = false;
+    bool                    debugRaiseStart        = false;
+    bool                    debugEntry             = false;
+    bool                    debugAccept            = true;
+    bool                    debugForcePrintContext = false;
     vector<DebugBreakpoint> debugBreakpoints;
     Utf8                    debugLastLine;
 };
