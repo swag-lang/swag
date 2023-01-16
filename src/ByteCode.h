@@ -29,7 +29,6 @@ struct ByteCode
         Panic,
         ExceptionError,
         DebugNextLine,
-        DebugNextLineStepOut,
         DebugBreakFileLine,
         DebugContext,
         DebugPrintLine,

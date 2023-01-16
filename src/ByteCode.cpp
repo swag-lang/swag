@@ -25,64 +25,57 @@ void ByteCode::releaseOut()
 ByteCode::Location ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, LocationKind kind)
 {
     SWAG_ASSERT(bc && ip);
+    SWAG_ASSERT(ip->node && ip->node->ownerScope);
+    SWAG_ASSERT(bc->sourceFile);
 
     ByteCode::Location loc;
-    SourceFile*        file     = nullptr;
-    SourceLocation*    location = nullptr;
 
-    file = ip && ip->node && ip->node->sourceFile ? ip->node->sourceFile : bc->sourceFile;
-    if (file && file->fileForSourceLocation)
-        file = file->fileForSourceLocation;
+    loc.file = ip && ip->node && ip->node->sourceFile ? ip->node->sourceFile : bc->sourceFile;
+    if (loc.file && loc.file->fileForSourceLocation)
+        loc.file = loc.file->fileForSourceLocation;
+    loc.location = ip->location;
 
-    bool noInline        = false;
-    bool forceTakeInline = false;
+    bool zapInline = !bc->sourceFile->module->buildCfg.byteCodeDebugInline;
 
     switch (kind)
     {
-    case LocationKind::Panic:
-        location = ip->location;
+    case LocationKind::Backend:
+        if (ip->node->kind == AstNodeKind::FuncDecl)
+            return {nullptr, nullptr};
         break;
 
+    case LocationKind::Panic:
     case LocationKind::ExceptionError:
-    case LocationKind::Backend:
-    case LocationKind::DebugNextLine:
-    case LocationKind::DebugBreakFileLine:
     case LocationKind::FuncBc:
-    case LocationKind::DebugContext:
-    case LocationKind::DebugPrintLine:
-    case LocationKind::DebugJump:
     case LocationKind::Error:
     case LocationKind::Print:
         break;
 
     case LocationKind::PrintDeep:
-        forceTakeInline = true;
+        zapInline = false;
         break;
 
-    case LocationKind::DebugNextLineStepOut:
-        noInline = true;
+    case LocationKind::DebugNextLine:
+    case LocationKind::DebugBreakFileLine:
+    case LocationKind::DebugContext:
+    case LocationKind::DebugPrintLine:
+    case LocationKind::DebugJump:
         break;
     }
 
-    if (!ip || !ip->node || !ip->node->ownerScope || ip->node->kind == AstNodeKind::FuncDecl)
-        return {file, location};
-
-    // When inside an inline block (and not a mixin), zap all inline chain to the caller
-    if (!bc->sourceFile || (!bc->sourceFile->module->buildCfg.byteCodeDebugInline && !forceTakeInline) || noInline)
+    if (zapInline)
     {
         if (ip->node->ownerInline && !(ip->node->flags & AST_IN_MIXIN) && ip->node->ownerInline->ownerFct == ip->node->ownerFct)
         {
             auto n = ip->node;
             while (n->ownerInline && !(n->flags & AST_IN_MIXIN) && (n->ownerInline->ownerFct == n->ownerFct))
                 n = n->ownerInline;
-            location = &n->token.startLocation;
-            file     = n->sourceFile;
-            return {file, location};
+            loc.file     = n->sourceFile;
+            loc.location = &n->token.startLocation;
         }
     }
 
-    location = ip->location;
-    return {file, location};
+    return loc;
 }
 
 Utf8 ByteCode::getCallName()

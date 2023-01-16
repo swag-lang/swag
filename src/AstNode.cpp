@@ -392,6 +392,8 @@ void AstNode::setPassThrough()
 
 bool AstNode::isParentOf(AstNode* child)
 {
+    if (!child)
+        return false;
     while (child->parent)
     {
         if (child->parent == this)

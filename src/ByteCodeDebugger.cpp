@@ -405,13 +405,16 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
 
     case ByteCodeRunContext::DebugStepMode::NextLine:
     {
-        auto loc = ByteCode::getLocation(context->bc, ip, ByteCode::LocationKind::DebugNextLine);
         if (context->debugBcMode)
         {
             context->debugOn       = true;
             context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
+            break;
         }
-        else if (!loc.location || (context->debugStepLastFile == loc.file && context->debugStepLastLocation && context->debugStepLastLocation->line == loc.location->line))
+
+        auto loc = ByteCode::getLocation(context->bc, ip, ByteCode::LocationKind::DebugNextLine);
+        SWAG_ASSERT(loc.file && loc.location);
+        if (context->debugStepLastFile == loc.file && context->debugStepLastLocation && context->debugStepLastLocation->line == loc.location->line)
         {
             zapCurrentIp = true;
         }
@@ -424,21 +427,40 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
     }
     case ByteCodeRunContext::DebugStepMode::NextLineStepOut:
     {
-        auto loc = ByteCode::getLocation(context->bc, ip, ByteCode::LocationKind::DebugNextLineStepOut);
+        // If inside a sub function
+        if (context->curRC > context->debugStepRC)
+        {
+            zapCurrentIp = true;
+            break;
+        }
+
         if (context->debugBcMode)
         {
-            if (context->curRC > context->debugStepRC)
-                zapCurrentIp = true;
-            else
-            {
-                context->debugOn       = true;
-                context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
-            }
+            context->debugOn       = true;
+            context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
+            break;
         }
-        else if (!loc.location || (context->debugStepLastFile == loc.file && context->debugStepLastLocation && context->debugStepLastLocation->line == loc.location->line))
+
+        // If last break was in a real function, and now we are in an inline block
+        if (context->debugLastBreakIp && !context->debugLastBreakIp->node->ownerInline && ip->node->ownerInline)
+        {
             zapCurrentIp = true;
-        else if (context->curRC > context->debugStepRC)
+            break;
+        }
+
+        // If last break was in an inline block, and we are in a sub inline block
+        if (context->debugLastBreakIp && context->debugLastBreakIp->node->ownerInline && context->debugLastBreakIp->node->ownerInline->isParentOf(ip->node->ownerInline))
+        {
             zapCurrentIp = true;
+            break;
+        }
+
+        auto loc = ByteCode::getLocation(context->bc, ip, ByteCode::LocationKind::DebugNextLine);
+        SWAG_ASSERT(loc.file && loc.location);
+        if (context->debugStepLastFile == loc.file && context->debugStepLastLocation && context->debugStepLastLocation->line == loc.location->line)
+        {
+            zapCurrentIp = true;
+        }
         else
         {
             context->debugOn       = true;
@@ -604,7 +626,8 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
                 continue;
         }
 
-        context->debugLastLine = line;
+        context->debugLastLine    = line;
+        context->debugLastBreakIp = ip;
 
         // Split in command + parameters
         Utf8         cmd;
