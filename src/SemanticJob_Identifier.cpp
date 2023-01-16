@@ -3220,6 +3220,18 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
 {
     auto node         = context->node;
     auto countMatches = matches.size();
+
+    // Sometimes we don't care about multiple symbols with the same name
+    if (countMatches > 1 && node->parent && node->parent->parent)
+    {
+        auto grandParent = node->parent->parent;
+        if (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicNameOf)
+        {
+            matches.count = 1;
+            return true;
+        }
+    }
+
     for (int i = 0; i < countMatches; i++)
     {
         auto curMatch = matches[i];
