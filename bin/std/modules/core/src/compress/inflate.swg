@@ -283,9 +283,9 @@ impl Inflate
 
             // Fixed length block
             case 1:
-                try repeatHt.init(FixedLength)
-                try repeatZ.init(FixedDist)
-                try parseBlock(&repeatHt, &repeatZ, &result)
+                repeatHt.init(FixedLength)
+                repeatZ.init(FixedDist)
+                parseBlock(&repeatHt, &repeatZ, &result)
 
             case 3:
                 throw "invalid block type"
@@ -304,12 +304,12 @@ impl Inflate
                     codeLengthSizes[LengthDezigzag[i]] = s
                 }
 
-                try codeLengthHt.init(codeLengthSizes)
+                codeLengthHt.init(codeLengthSizes)
                 ntot := hlit + hdist
                 n := 0
                 while n < ntot
                 {
-                    c := try decode(&codeLengthHt)
+                    c := decode(&codeLengthHt)
                     if c < 0 or c >= 19
                         throw "bad code lengths"
 
@@ -351,9 +351,9 @@ impl Inflate
 
                 if n != ntot
                     throw "bad code lengths"
-                try repeatHt.init(lenCodes[0..hlit-1])
-                try repeatZ.init(lenCodes[hlit..ntot-1])
-                try parseBlock(&repeatHt, &repeatZ, &result)
+                repeatHt.init(lenCodes[0..hlit-1])
+                repeatZ.init(lenCodes[hlit..ntot-1])
+                parseBlock(&repeatHt, &repeatZ, &result)
             }
 
             if final == 1

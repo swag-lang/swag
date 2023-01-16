@@ -1986,6 +1986,16 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             break;
         }
 
+        if (ip[1].op == ByteCodeOp::GetFromStack8 &&
+            ip->a.u32 == ip[1].b.u32 &&
+            !(ip[0].flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::CopyRBtoRA8);
+            ip[1].b.u32 = ip[0].b.u32;
+            break;
+        }
+
         break;
 
     case ByteCodeOp::SetAtStackPointer16:
@@ -2050,6 +2060,15 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             break;
         }
 
+        if (ip[1].op == ByteCodeOp::GetFromStack16 &&
+            ip->a.u32 == ip[1].b.u32 &&
+            !(ip[0].flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::CopyRBtoRA16);
+            ip[1].b.u32 = ip[0].b.u32;
+            break;
+        }
         break;
 
     case ByteCodeOp::SetAtStackPointer32:
@@ -2121,6 +2140,16 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             !(ip[1].flags & BCI_START_STMT))
         {
             setNop(context, ip);
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::GetFromStack32 &&
+            ip->a.u32 == ip[1].b.u32 &&
+            !(ip[0].flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::CopyRBtoRA32);
+            ip[1].b.u32 = ip[0].b.u32;
             break;
         }
 
@@ -2201,6 +2230,16 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             !(ip[1].flags & BCI_START_STMT))
         {
             setNop(context, ip);
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::GetFromStack64 &&
+            ip->a.u32 == ip[1].b.u32 &&
+            !(ip[0].flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::CopyRBtoRA64);
+            ip[1].b.u32 = ip[0].b.u32;
             break;
         }
 
