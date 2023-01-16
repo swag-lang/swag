@@ -129,8 +129,6 @@ OPTIMS
 
 
 -------------------------------------
-diveq moduloeq mode B
--------------------------------------
 inline auto ?
 -------------------------------------
 InternalGetTlsPtr (Swag.Tls var), le faire une fois pour toute au début de la fonction comme le r0 = @getcontext()
