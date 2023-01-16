@@ -945,7 +945,6 @@ namespace OS
         return "";
     }
 
-#pragma optimize("", off)
     Key promptChar(int& c, bool& ctrl, bool& shift)
     {
         static INPUT_RECORD buffer[1024];
@@ -1001,12 +1000,8 @@ namespace OS
                     continue;
 
                 default:
-                    if (ctrl)
-                    {
-                        if (evt.Event.KeyEvent.wVirtualKeyCode == 'V')
-                            return OS::Key::PasteFromClipboard;
-                        continue;
-                    }
+                    if (ctrl && evt.Event.KeyEvent.wVirtualKeyCode == 'V')
+                        return OS::Key::PasteFromClipboard;
 
                     c = evt.Event.KeyEvent.uChar.AsciiChar;
                     if (c >= ' ' && c <= 127)
