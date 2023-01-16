@@ -1,8 +1,8 @@
 using Core
 
-impl Image
+public impl Image
 {
-    public enum ResizeMode
+    enum ResizeMode
     {
         Raw
         Bilinear
@@ -16,7 +16,7 @@ impl Image
 
     // Resize image
     // Put 'newWidth' or 'newHeight' to 0 to keep aspect ratio
-    public mtd resize(newWidth, newHeight: s32, mode = ResizeMode.Raw)
+    mtd resize(newWidth, newHeight: s32, mode = ResizeMode.Raw)
     {
         Debug.assert(newWidth > 0 or newHeight > 0)
         nw := newWidth orelse cast(s32) (newHeight * (width / cast(f32) height))
@@ -30,7 +30,7 @@ impl Image
 
     // Resize image
     // Put 'newWidth' or 'newHeight' to 0 to keep aspect ratio
-    public mtd toResize(newWidth, newHeight: s32, mode = ResizeMode.Raw)->Image
+    mtd toResize(newWidth, newHeight: s32, mode = ResizeMode.Raw)->Image
     {
         Debug.assert(newWidth > 0 or newHeight > 0)
         nw := newWidth orelse cast(s32) (newHeight * (width / cast(f32) height))

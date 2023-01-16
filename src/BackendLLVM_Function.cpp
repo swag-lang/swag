@@ -95,7 +95,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     if (pp.dbg && bc->node)
     {
         pp.dbg->startFunction(buildParameters, pp, bc, func, allocStack);
-        pp.dbg->setLocation(pp.builder, bc, nullptr);
+        pp.dbg->setLocation(pp.builder, bc, bc->out);
     }
 
     // Generate bytecode
@@ -383,6 +383,24 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 r2 = builder.CreateLoad(GEP_I32(allocR, ip->b.u32));
             if (ip->op == ByteCodeOp::DecPointer64)
                 r2 = builder.CreateNeg(r2);
+            auto r3 = builder.CreateInBoundsGEP(r1, r2);
+            builder.CreateStore(r3, r0);
+            break;
+        }
+
+        case ByteCodeOp::IncMulPointer64:
+        {
+            auto         r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->c.u32));
+            auto         r1 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+            llvm::Value* r2;
+            if (ip->flags & BCI_IMM_B)
+                r2 = builder.getInt64(ip->b.u64 * ip->d.u64);
+            else
+            {
+                r2 = builder.CreateLoad(GEP_I32(allocR, ip->b.u32));
+                r2 = builder.CreateMul(r2, builder.getInt64(ip->d.u64));
+            }
+
             auto r3 = builder.CreateInBoundsGEP(r1, r2);
             builder.CreateStore(r3, r0);
             break;

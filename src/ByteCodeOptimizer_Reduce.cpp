@@ -2235,6 +2235,19 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
 {
     switch (ip[0].op)
     {
+    case ByteCodeOp::Mul64byVB64:
+        if (ip[1].op == ByteCodeOp::IncPointer64 &&
+            !(ip[1].flags & BCI_IMM_B) &&
+            ip[1].b.u32 == ip[0].a.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::IncMulPointer64);
+            ip[1].d.u64 = ip->b.u64;
+            setNop(context, ip);
+            break;
+        }
+        break;
+
     case ByteCodeOp::IncPointer64:
         if (ip[0].flags & BCI_IMM_B &&
             ip[0].b.s64 > 0 && // Offset cannot be negative, so zap if incpointer is negative

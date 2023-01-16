@@ -2380,6 +2380,30 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 }
             }
             break;
+        case ByteCodeOp::IncMulPointer64:
+            if (ip->flags & BCI_IMM_B && (ip->b.u64 * ip->d.u64) <= 0x7FFFFFFF)
+            {
+                pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
+                pp.emit_Add64_Immediate(ip->b.u64 * ip->d.u64, RAX);
+                pp.emit_Store64_Indirect(regOffset(ip->c.u32), RAX, RDI);
+            }
+            else
+            {
+                if (ip->flags & BCI_IMM_B)
+                    pp.emit_Load64_Immediate(ip->b.u64, RAX);
+                else
+                    pp.emit_Load64_Indirect(regOffset(ip->b.u32), RAX, RDI);
+                pp.emit_Load64_Immediate(ip->d.u64, RCX);
+                pp.concat.addString3("\x48\xF7\xE1"); // mul rcx
+                if (ip->a.u32 == ip->c.u32)
+                    pp.emit_Op64_IndirectDst(regOffset(ip->a.u32), RAX, RDI, X64Op::ADD);
+                else
+                {
+                    pp.emit_Op64_IndirectSrc(regOffset(ip->a.u32), RAX, RDI, X64Op::ADD);
+                    pp.emit_Store64_Indirect(regOffset(ip->c.u32), RAX, RDI);
+                }
+            }
+            break;
         case ByteCodeOp::DecPointer64:
             if (ip->flags & BCI_IMM_B)
             {

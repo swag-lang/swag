@@ -137,8 +137,6 @@ pass orEq/andEq/xOrEq/Div/shift etc en mode Stack StackStack
 -------------------------------------
 x64 emit_BinOpInt32/64 etc.. faire un mode immediat pour le côté droit 'and cl, 5'
 -------------------------------------
-Mul64byVB64 a deux registres ! (binOpPlus/Minus inc pointer)
--------------------------------------
 passer/retourner des structs par value si <= 64 bits
 -------------------------------------
 x64: et si les premiers registres étaient des vrais registres x64 volatiles plutot que des accès indirects à la mémoire ?
