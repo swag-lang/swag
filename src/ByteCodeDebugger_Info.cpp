@@ -186,18 +186,18 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfo(ByteCodeRunContext* context, const 
     if (cmds.size() < 2)
         return BcDbgCommandResult::BadArguments;
 
-    if (cmds[1] == "locals")
+    if (cmds[1] == "locals" || cmds[1] == "l")
         return cmdInfoLocals(context, cmds, cmdExpr);
+    if (cmds[1] == "regs" || cmds[1] == "r")
+        return cmdInfoRegs(context, cmds, cmdExpr);
+    if (cmds[1] == "args" || cmds[1] == "a")
+        return cmdInfoArgs(context, cmds, cmdExpr);
+    if (cmds[1] == "breakpoints" || cmds[1] == "br")
+        return cmdBreakPrint(context, cmds, cmdExpr);
     if (cmds[1] == "func")
         return cmdInfoFuncs(context, cmds, cmdExpr);
     if (cmds[1] == "module")
         return cmdInfoModules(context, cmds, cmdExpr);
-    if (cmds[1] == "regs")
-        return cmdInfoRegs(context, cmds, cmdExpr);
-    if (cmds[1] == "args")
-        return cmdInfoArgs(context, cmds, cmdExpr);
-    if (cmds[1] == "breakpoints" || cmds[1] == "br")
-        return cmdBreakPrint(context, cmds, cmdExpr);
 
     return BcDbgCommandResult::BadArguments;
 }

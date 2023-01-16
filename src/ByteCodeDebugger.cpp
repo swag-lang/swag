@@ -48,12 +48,13 @@ void ByteCodeDebugger::setup()
     commands.push_back({"ll",          "",     "[name]",              "print the current function (or function [name]) source code", cmdLongList });
     commands.push_back({});                    
                                                
-    commands.push_back({"info",        "",     "locals",              "print all current local variables", cmdInfo});
-    commands.push_back({"info",        "",     "args",                "print all current function arguments", cmdInfo});
-    commands.push_back({"info",        "",     "(br)eakpoints",       "print all breakpoints", cmdInfo });
-    commands.push_back({"info",        "",     "module",              "print all modules", cmdInfo});
-    commands.push_back({"info",        "",     "func [filter]",       "print all functions which contains [filter] in their names", cmdInfo});
-    commands.push_back({"info",        "",     "regs  [/format]",     "print all registers (format is the same as 'x' command)", cmdInfo});
+    commands.push_back({"info",        "o",    "(l)ocals",            "print all current local variables", cmdInfo});
+    commands.push_back({"info",        "o",    "(a)rgs",              "print all current function arguments", cmdInfo});
+    commands.push_back({"info",        "o",    "(br)eakpoints",       "print all breakpoints", cmdInfo });
+    commands.push_back({"info",        "o",    "(r)egs [/format]",    "print all registers (format is the same as 'x' command)", cmdInfo });
+    commands.push_back({"info",        "o",    "module",              "print all modules", cmdInfo});
+    commands.push_back({"info",        "o",    "func [filter]",       "print all functions which contains [filter] in their names", cmdInfo});
+    commands.push_back({});
     commands.push_back({"where",       "w",    "",                    "print contextual informations", cmdWhere});
     commands.push_back({});            
                                        
@@ -77,7 +78,9 @@ void ByteCodeDebugger::setup()
                                                                       
     commands.push_back({"mode",        "m",    "bc",                  "swap between bytecode mode and source code mode", cmdMode});
     commands.push_back({"mode",        "m",    "inline",              "swap between inline mode and non inline mode", cmdMode});
-    commands.push_back({"mode",        "m",    "bkp",                 "enable/disable @breakpoint", cmdMode});
+    commands.push_back({"mode",        "m",    "bkp",                 "enable/disable call to @breakpoint()", cmdMode});
+    commands.push_back({});
+
     commands.push_back({"i",           "",     "[num]",               "print the current bytecode instruction and [num] instructions around", cmdInstruction});
     commands.push_back({"ii",          "",     "",                    "print the current function bytecode", cmdInstructionDump});
     commands.push_back({});                                           
