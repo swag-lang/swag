@@ -39,22 +39,16 @@ ByteCode::Location ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, 
 
     switch (kind)
     {
-    case LocationKind::Backend:
-        if (ip->node->kind == AstNodeKind::FuncDecl)
-            return {nullptr, nullptr};
+    case LocationKind::PrintDeep:
+        zapInline = false;
         break;
 
+    case LocationKind::Backend:
     case LocationKind::Panic:
     case LocationKind::ExceptionError:
     case LocationKind::FuncBc:
     case LocationKind::Error:
     case LocationKind::Print:
-        break;
-
-    case LocationKind::PrintDeep:
-        zapInline = false;
-        break;
-
     case LocationKind::DebugNextLine:
     case LocationKind::DebugBreakFileLine:
     case LocationKind::DebugContext:

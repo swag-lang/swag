@@ -192,6 +192,11 @@ void BackendX64::dbgSetLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeIns
         return;
     }
 
+    if (ip->node->kind == AstNodeKind::FuncDecl)
+    {
+        return;
+    }
+
     auto loc = ByteCode::getLocation(bc, ip, ByteCode::LocationKind::Backend);
     if (!loc.location)
         return;

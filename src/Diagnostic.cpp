@@ -30,7 +30,6 @@ void Diagnostic::setup()
     switch (errorLevel)
     {
     case DiagnosticLevel::CallStack:
-    case DiagnosticLevel::CallStackInlined:
     case DiagnosticLevel::TraceError:
         showRange             = false;
         showMultipleCodeLines = false;
@@ -166,17 +165,22 @@ void Diagnostic::printErrorLevel()
         break;
     case DiagnosticLevel::CallStack:
     {
-        g_Log.setColor(stackColor);
-        if (currentStackLevel)
-            g_Log.print(Fmt("[callstack:%03u]: ", stackLevel));
+        if (raisedOnNode->ownerInline)
+        {
+            g_Log.setColor(stackColor);
+            g_Log.print("inlined: ");
+        }
         else
-            g_Log.print(Fmt("callstack:%03u: ", stackLevel));
+        {
+            g_Log.setColor(stackColor);
+            if (currentStackLevel)
+                g_Log.print(Fmt("[callstack:%03u]: ", stackLevel));
+            else
+                g_Log.print(Fmt("callstack:%03u: ", stackLevel));
+        }
+
         break;
     }
-    case DiagnosticLevel::CallStackInlined:
-        g_Log.setColor(stackColor);
-        g_Log.print("inlined: ");
-        break;
     case DiagnosticLevel::TraceError:
         g_Log.setColor(stackColor);
         g_Log.print("trace error: ");

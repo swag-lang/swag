@@ -552,6 +552,12 @@ void BackendLLVMDbg::setLocation(llvm::IRBuilder<>* builder, ByteCode* bc, ByteC
 
     SWAG_ASSERT(dbgBuilder);
 
+    if (ip->node->kind == AstNodeKind::FuncDecl)
+    {
+        builder->SetCurrentDebugLocation(llvm::DebugLoc());
+        return;
+    }
+
     auto loc = ByteCode::getLocation(bc, ip, ByteCode::LocationKind::Backend);
     if (!loc.location)
     {

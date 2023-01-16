@@ -13,7 +13,6 @@ enum class DiagnosticLevel
     Verbose,
     Note,
     CallStack,
-    CallStackInlined,
     TraceError,
     Help,
 };

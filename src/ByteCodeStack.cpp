@@ -48,6 +48,7 @@ void ByteCodeStack::logStep(int level, bool current, ByteCodeStackStep& step)
     if (fct)
     {
         Diagnostic diag{sourceFile, *location, fct->getDisplayNameC(), DiagnosticLevel::CallStack};
+        diag.raisedOnNode      = ip->node;
         diag.stackLevel        = level;
         diag.currentStackLevel = current;
         diag.report();
@@ -55,6 +56,7 @@ void ByteCodeStack::logStep(int level, bool current, ByteCodeStackStep& step)
     else
     {
         Diagnostic diag{sourceFile, *location, bc->name, DiagnosticLevel::CallStack};
+        diag.raisedOnNode      = ip->node;
         diag.stackLevel        = level;
         diag.currentStackLevel = current;
         diag.report();
@@ -69,7 +71,8 @@ void ByteCodeStack::logStep(int level, bool current, ByteCodeStackStep& step)
         if (owner)
         {
             fct = owner->ownerInline && owner->ownerInline->ownerFct == ip->node->ownerFct ? owner->ownerInline->func : owner->ownerFct;
-            Diagnostic diag{owner->sourceFile, owner->token.startLocation, fct->getDisplayNameC(), DiagnosticLevel::CallStackInlined};
+            Diagnostic diag{owner->sourceFile, owner->token.startLocation, fct->getDisplayNameC(), DiagnosticLevel::CallStack};
+            diag.raisedOnNode = owner;
             diag.report();
         }
     }
@@ -79,7 +82,8 @@ void ByteCodeStack::logStep(int level, bool current, ByteCodeStackStep& step)
     while (parent && parent->ownerFct == ip->node->ownerFct)
     {
         fct = parent->ownerInline && parent->ownerInline->ownerFct == ip->node->ownerFct ? parent->ownerInline->func : parent->ownerFct;
-        Diagnostic diag{parent->sourceFile, parent->token.startLocation, fct->getDisplayNameC(), DiagnosticLevel::CallStackInlined};
+        Diagnostic diag{parent->sourceFile, parent->token.startLocation, fct->getDisplayNameC(), DiagnosticLevel::CallStack};
+        diag.raisedOnNode = parent;
         diag.report();
         parent = parent->ownerInline;
     }
