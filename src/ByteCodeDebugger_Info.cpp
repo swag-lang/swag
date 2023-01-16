@@ -38,15 +38,13 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, c
             total++;
             if (filter.empty() || getByteCodeName(bc).find(filter) != -1 || getByteCodeFileName(bc).find(filter) != -1)
             {
-                string          str = Fmt("%s%s%s ", COLOR_NAME, getByteCodeName(bc).c_str(), COLOR_DEFAULT).c_str();
-                SourceFile*     bcFile;
-                SourceLocation* bcLocation;
-                ByteCode::getLocation(bc, bc->out, &bcFile, &bcLocation);
+                string str = Fmt("%s%s%s ", COLOR_NAME, getByteCodeName(bc).c_str(), COLOR_DEFAULT).c_str();
+                auto   loc = ByteCode::getLocation(bc, bc->out);
                 str += Fmt(" (%s%s%s) ", COLOR_TYPE, bc->getCallType()->getDisplayNameC(), COLOR_DEFAULT);
-                if (bcFile)
-                    str += Fmt("%s", bcFile->name.c_str());
-                if (bcLocation)
-                    str += Fmt(":%d", bcLocation->line);
+                if (loc.file)
+                    str += Fmt("%s", loc.file->name.c_str());
+                if (loc.location)
+                    str += Fmt(":%d", loc.location->line);
                 all.push_back(str);
             }
         }

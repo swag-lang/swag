@@ -23,6 +23,12 @@ struct SourceLocation;
 
 struct ByteCode
 {
+    struct Location
+    {
+        SourceFile*     file     = nullptr;
+        SourceLocation* location = nullptr;
+    };
+
     static uint32_t getSetZeroAtPointerSize(ByteCodeInstruction* inst, uint32_t& offset)
     {
         switch (inst->op)
@@ -162,10 +168,10 @@ struct ByteCode
     inline static bool hasSomethingInD(ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[(int)inst->op].flags & (OPFLAG_READ_D | OPFLAG_WRITE_D | OPFLAG_READ_VAL32_D | OPFLAG_READ_VAL64_D); }
     // clang-format on
 
-    static void* doByteCodeLambda(void* ptr);
-    static void* undoByteCodeLambda(void* ptr);
-    static bool  isByteCodeLambda(void* ptr);
-    static void  getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** file, SourceLocation** location, bool force = false, bool noInline = false);
+    static void*    doByteCodeLambda(void* ptr);
+    static void*    undoByteCodeLambda(void* ptr);
+    static bool     isByteCodeLambda(void* ptr);
+    static Location getLocation(ByteCode* bc, ByteCodeInstruction* ip, bool force = false, bool noInline = false, bool forceTakeInline = false);
 
     void              printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine = nullptr, SourceFile** lastFile = nullptr);
     void              printPrettyInstruction(ByteCodeInstruction* ip);

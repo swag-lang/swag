@@ -9,23 +9,25 @@ void ByteCode::printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine, Sour
         return;
 
     // Print source code
-    SourceFile*     file;
-    SourceLocation* location;
-    ByteCode::getLocation(this, ip, &file, &location);
+    auto loc  = ByteCode::getLocation(this, ip, false, false, true);
+    auto loc1 = ByteCode::getLocation(this, ip);
 
-    if (!location)
+    if (!loc.location)
         return;
 
-    if (!lastLine || !lastFile || location->line != *lastLine || file != *lastFile)
+    if (!lastLine || !lastFile || loc.location->line != *lastLine || loc.file != *lastFile)
     {
         if (lastLine)
-            *lastLine = location->line;
+            *lastLine = loc.location->line;
         if (lastFile)
-            *lastFile = file;
-        auto s = file->getLine(location->line);
+            *lastFile = loc.file;
+        auto s = loc.file->getLine(loc.location->line);
         s.trim();
 
-        g_Log.setColor(LogColor::Yellow);
+        if (loc1.file != loc.file || loc1.location->line != loc.location->line)
+            g_Log.setColor(LogColor::DarkCyan);
+        else
+            g_Log.setColor(LogColor::Yellow);
         g_Log.print("         ");
         if (s.empty())
             g_Log.print("<blank>");
@@ -34,7 +36,6 @@ void ByteCode::printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine, Sour
 
         // g_Log.setColor(LogColor::Gray);
         // g_Log.print(Fmt("  (%s:%d)", file->name.c_str(), location->line + 1));
-
         g_Log.eol();
     }
 }

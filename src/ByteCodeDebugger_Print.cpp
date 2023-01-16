@@ -10,19 +10,17 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     SWAG_ASSERT(context->debugCxtBc);
     SWAG_ASSERT(context->debugCxtIp);
 
-    bool            printSomething = false;
-    SourceFile*     file;
-    SourceLocation* location;
-    ByteCode::getLocation(context->debugCxtBc, context->debugCxtIp, &file, &location);
+    auto loc = ByteCode::getLocation(context->debugCxtBc, context->debugCxtIp);
 
     // Print file
-    if (file)
+    bool printSomething = false;
+    if (loc.file)
     {
-        if (force || file != context->debugStepLastFile)
+        if (force || loc.file != context->debugStepLastFile)
         {
             g_Log.printColor("=> ", LogColor::DarkYellow);
             g_Log.printColor("file: ", LogColor::DarkYellow);
-            g_Log.printColor(file->name.c_str(), LogColor::Cyan);
+            g_Log.printColor(loc.file->name.c_str(), LogColor::Cyan);
             g_Log.eol();
             printSomething = true;
         }
@@ -90,13 +88,13 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     }
 
     // Print source line
-    if (location && file && !context->debugBcMode)
+    if (loc.location && loc.file && !context->debugBcMode)
     {
         if ((force) ||
-            (context->debugStepLastFile != file) ||
-            (context->debugStepLastLocation && context->debugStepLastLocation->line != location->line))
+            (context->debugStepLastFile != loc.file) ||
+            (context->debugStepLastLocation && context->debugStepLastLocation->line != loc.location->line))
         {
-            printSourceLines(context, context->debugCxtBc, file, location, 3);
+            printSourceLines(context, context->debugCxtBc, loc.file, loc.location, 3);
         }
     }
 
@@ -107,8 +105,8 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     }
 
     context->debugLastBc           = context->debugCxtBc;
-    context->debugStepLastFile     = file;
-    context->debugStepLastLocation = location;
+    context->debugStepLastFile     = loc.file;
+    context->debugStepLastLocation = loc.location;
     context->debugStepLastFunc     = newFunc;
 }
 
@@ -208,10 +206,8 @@ void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* b
             {
             case ByteCodeRunContext::DebugBkpType::FuncName:
             {
-                SourceFile*     locFile;
-                SourceLocation* locLocation;
-                ByteCode::getLocation(bc, bc->out, &locFile, &locLocation);
-                if (getByteCodeName(context->bc).find(bkp.name) != -1 && locLocation && startLine + lineIdx + 1 == locLocation->line)
+                auto loc = ByteCode::getLocation(bc, bc->out);
+                if (getByteCodeName(context->bc).find(bkp.name) != -1 && loc.location && startLine + lineIdx + 1 == loc.location->line)
                     hasBkp = &bkp;
                 break;
             }
@@ -450,14 +446,12 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
 
     if (toLogBc->node && toLogBc->node->kind == AstNodeKind::FuncDecl && toLogBc->node->sourceFile)
     {
-        SourceFile*     curFile;
-        SourceLocation* curLocation;
-        ByteCode::getLocation(toLogBc, toLogIp, &curFile, &curLocation);
+        auto loc = ByteCode::getLocation(toLogBc, toLogIp);
 
         uint32_t offset = 3;
         if (cmds.size() == 2)
             offset = atoi(cmds[1].c_str());
-        printSourceLines(context, toLogBc, toLogBc->node->sourceFile, curLocation, offset);
+        printSourceLines(context, toLogBc, toLogBc->node->sourceFile, loc.location, offset);
     }
     else
         g_Log.printColor("no source code\n", LogColor::Red);
@@ -494,13 +488,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
         auto funcNode = CastAst<AstFuncDecl>(toLogBc->node, AstNodeKind::FuncDecl);
         if (funcNode->content)
         {
-            SourceFile*     curFile;
-            SourceLocation* curLocation;
-            ByteCode::getLocation(toLogBc, toLogIp, &curFile, &curLocation);
+            auto loc = ByteCode::getLocation(toLogBc, toLogIp);
 
             uint32_t startLine = toLogBc->node->token.startLocation.line;
             uint32_t endLine   = funcNode->content->token.endLocation.line;
-            printSourceLines(context, toLogBc, toLogBc->node->sourceFile, curLocation, startLine, endLine);
+            printSourceLines(context, toLogBc, toLogBc->node->sourceFile, loc.location, startLine, endLine);
         }
         else
             g_Log.printColor("no source code\n", LogColor::Red);

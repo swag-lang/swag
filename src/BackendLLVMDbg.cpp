@@ -552,10 +552,8 @@ void BackendLLVMDbg::setLocation(llvm::IRBuilder<>* builder, ByteCode* bc, ByteC
 
     SWAG_ASSERT(dbgBuilder);
 
-    SourceFile*     sourceFile;
-    SourceLocation* location;
-    ByteCode::getLocation(bc, ip, &sourceFile, &location);
-    if (!location)
+    auto loc = ByteCode::getLocation(bc, ip);
+    if (!loc.location)
     {
         builder->SetCurrentDebugLocation(llvm::DebugLoc());
         return;
@@ -564,26 +562,26 @@ void BackendLLVMDbg::setLocation(llvm::IRBuilder<>* builder, ByteCode* bc, ByteC
     llvm::DIFile*  file  = getOrCreateFile(bc->sourceFile);
     llvm::DIScope* scope = getOrCreateScope(file, ip->node->ownerScope);
 
-    if (bc->sourceFile == sourceFile)
+    if (bc->sourceFile == loc.file)
     {
         lastInlineSourceFile = nullptr;
-        if (lastDebugLine != location->line + 1)
+        if (lastDebugLine != loc.location->line + 1)
         {
-            lastDebugLine = location->line + 1;
-            builder->SetCurrentDebugLocation(debugLocGet(location->line + 1, 0, scope));
+            lastDebugLine = loc.location->line + 1;
+            builder->SetCurrentDebugLocation(debugLocGet(loc.location->line + 1, 0, scope));
         }
     }
     else
     {
-        llvm::DIFile* orgFile = getOrCreateFile(sourceFile);
-        if (sourceFile != lastInlineSourceFile)
+        llvm::DIFile* orgFile = getOrCreateFile(loc.file);
+        if (loc.file != lastInlineSourceFile)
             lastInlineBlock = dbgBuilder->createLexicalBlockFile(scope, orgFile);
-        else if (lastDebugLine == location->line + 1)
+        else if (lastDebugLine == loc.location->line + 1)
             return;
 
-        lastInlineSourceFile = sourceFile;
-        lastDebugLine        = location->line + 1;
-        builder->SetCurrentDebugLocation(debugLocGet(location->line + 1, 0, lastInlineBlock));
+        lastInlineSourceFile = loc.file;
+        lastDebugLine        = loc.location->line + 1;
+        builder->SetCurrentDebugLocation(debugLocGet(loc.location->line + 1, 0, lastInlineBlock));
     }
 }
 

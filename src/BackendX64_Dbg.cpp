@@ -192,10 +192,8 @@ void BackendX64::dbgSetLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeIns
         return;
     }
 
-    SourceFile*     sourceFile;
-    SourceLocation* location;
-    ByteCode::getLocation(bc, ip, &sourceFile, &location);
-    if (!location)
+    auto loc = ByteCode::getLocation(bc, ip);
+    if (!loc.location)
         return;
 
     // Update begin of start scope
@@ -211,23 +209,23 @@ void BackendX64::dbgSetLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeIns
     }
 
     SWAG_ASSERT(!coffFct->dbgLines.empty());
-    if (coffFct->dbgLines.back().sourceFile != sourceFile)
+    if (coffFct->dbgLines.back().sourceFile != loc.file)
     {
         DbgLines dbgLines;
-        dbgLines.sourceFile = sourceFile;
+        dbgLines.sourceFile = loc.file;
         coffFct->dbgLines.push_back(dbgLines);
     }
 
     auto& dbgLines = coffFct->dbgLines.back().dbgLines;
 
     if (dbgLines.empty())
-        dbgLines.push_back({location->line + 1, byteOffset});
-    else if (dbgLines.back().line != location->line + 1)
+        dbgLines.push_back({loc.location->line + 1, byteOffset});
+    else if (dbgLines.back().line != loc.location->line + 1)
     {
         if (dbgLines.back().byteOffset == byteOffset)
-            dbgLines.back().line = location->line + 1;
+            dbgLines.back().line = loc.location->line + 1;
         else
-            dbgLines.push_back({location->line + 1, byteOffset});
+            dbgLines.push_back({loc.location->line + 1, byteOffset});
     }
 }
 

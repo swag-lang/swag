@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ByteCode.h"
 #include "ByteCodeDebugger.h"
+#include "Module.h"
 
 BcDbgCommandResult ByteCodeDebugger::cmdStep(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
@@ -78,10 +79,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const 
                 return BcDbgCommandResult::Continue;
             }
 
-            SourceFile*     file;
-            SourceLocation* location;
-            ByteCode::getLocation(context->bc, curIp, &file, &location);
-            if (location && location->line + 1 == to)
+            auto loc = ByteCode::getLocation(context->bc, curIp);
+            if (loc.location && loc.location->line + 1 == to)
             {
                 context->ip         = curIp;
                 context->debugCxtIp = context->ip;
@@ -118,17 +117,32 @@ BcDbgCommandResult ByteCodeDebugger::cmdUntil(ByteCodeRunContext* context, const
     return BcDbgCommandResult::Break;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdBcMode(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdMode(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
-    if (cmds.size() != 1)
+    if (cmds.size() != 2)
         return BcDbgCommandResult::BadArguments;
 
-    context->debugBcMode = !context->debugBcMode;
-    if (context->debugBcMode)
-        g_Log.printColor("=> bytecode mode\n", LogColor::Gray);
+    if (cmds[1] == "bc")
+    {
+        context->debugBcMode = !context->debugBcMode;
+        if (context->debugBcMode)
+            g_Log.printColor("=> bytecode mode\n", LogColor::Gray);
+        else
+            g_Log.printColor("=> source code mode\n", LogColor::Gray);
+        printDebugContext(context, true);
+    }
+    else if (cmds[1] == "inline")
+    {
+        context->bc->sourceFile->module->buildCfg.byteCodeDebugInline = !context->bc->sourceFile->module->buildCfg.byteCodeDebugInline;
+        if (context->bc->sourceFile->module->buildCfg.byteCodeDebugInline)
+            g_Log.printColor("=> inline mode\n", LogColor::Gray);
+        else
+            g_Log.printColor("=> no inline mode\n", LogColor::Gray);
+        printDebugContext(context, true);
+    }
     else
-        g_Log.printColor("=> source code mode\n", LogColor::Gray);
-    printDebugContext(context, true);
+        return BcDbgCommandResult::BadArguments;
+
     return BcDbgCommandResult::Continue;
 }
 

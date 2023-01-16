@@ -78,14 +78,12 @@ void ByteCodeRun::callInternalPanic(ByteCodeRunContext* context, ByteCodeInstruc
 {
     auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__panic);
 
-    SourceFile*     sourceFile;
-    SourceLocation* location;
-    ByteCode::getLocation(context->bc, ip, &sourceFile, &location, true);
+    auto loc = ByteCode::getLocation(context->bc, ip, true);
 
     context->push(msg);
-    context->push<uint64_t>(location->column);
-    context->push<uint64_t>(location->line);
-    context->push(sourceFile->path.c_str());
+    context->push<uint64_t>(loc.location->column);
+    context->push<uint64_t>(loc.location->line);
+    context->push(loc.file->path.c_str());
     localCall(context, bc, 4);
 }
 
@@ -1928,14 +1926,12 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     {
         auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__panic);
 
-        SourceFile*     sourceFile;
-        SourceLocation* location;
-        ByteCode::getLocation(context->bc, ip, &sourceFile, &location, true);
+        auto loc = ByteCode::getLocation(context->bc, ip, true);
 
         context->push(ip->d.pointer);
-        context->push<uint64_t>(location->column);
-        context->push<uint64_t>(location->line);
-        context->push(sourceFile->path.c_str());
+        context->push<uint64_t>(loc.location->column);
+        context->push<uint64_t>(loc.location->line);
+        context->push(loc.file->path.c_str());
         localCall(context, bc, 4);
         break;
     }
@@ -3646,14 +3642,12 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         }
         else
         {
-            SourceFile*     sourceFile;
-            SourceLocation* location;
-            ByteCode::getLocation(runContext->bc, ip, &sourceFile, &location);
-            if (location || !ip->node)
+            auto loc = ByteCode::getLocation(runContext->bc, ip);
+            if (loc.location || !ip->node)
             {
-                SWAG_ASSERT(location);
-                Diagnostic diag{sourceFile, *location, "[compile time execution] " + runContext->errorMsg};
-                errorContext->sourceFile = sourceFile;
+                SWAG_ASSERT(loc.location);
+                Diagnostic diag{loc.file, *loc.location, "[compile time execution] " + runContext->errorMsg};
+                errorContext->sourceFile = loc.file;
                 errorContext->report(diag);
             }
             else

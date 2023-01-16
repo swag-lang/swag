@@ -380,10 +380,9 @@ static bool raiseError(Context& cxt, Utf8 msg, SymbolOverload* overload = nullpt
         return cxt.context->report(diag);
     }
 
-    SourceFile*     file;
-    SourceLocation* loc;
-    ByteCode::getLocation(cxt.bc, cxt.states[cxt.state].ip, &file, &loc);
-    Diagnostic diag({file, *loc, msg});
+    auto loc = ByteCode::getLocation(cxt.bc, cxt.states[cxt.state].ip);
+
+    Diagnostic diag({loc.file, *loc.location, msg});
     return cxt.context->report(diag);
 }
 

@@ -22,34 +22,37 @@ void ByteCode::releaseOut()
     out = nullptr;
 }
 
-void ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** file, SourceLocation** location, bool force, bool noInline)
+ByteCode::Location ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, bool force, bool noInline, bool forceTakeInline)
 {
-    *file = ip && ip->node && ip->node->sourceFile ? ip->node->sourceFile : bc->sourceFile;
+    ByteCode::Location loc;
+    SourceFile*        file     = nullptr;
+    SourceLocation*    location = nullptr;
 
-    // When generated private code, without logging to generated file, then we must take the original source file
-    if ((*file) && (*file)->fileForSourceLocation)
-        *file = (*file)->fileForSourceLocation;
+    file = ip && ip->node && ip->node->sourceFile ? ip->node->sourceFile : bc->sourceFile;
+    if (file && file->fileForSourceLocation)
+        file = file->fileForSourceLocation;
 
-    *location = force ? ip->location : nullptr;
+    location = force ? ip->location : nullptr;
 
     if (!ip || !ip->node || !ip->node->ownerScope || ip->node->kind == AstNodeKind::FuncDecl)
-        return;
+        return {file, location};
 
     // When inside an inline block (and not a mixin), zap all inline chain to the caller
-    if (!bc->sourceFile || !bc->sourceFile->module->buildCfg.byteCodeDebugInline || noInline)
+    if (!bc->sourceFile || (!bc->sourceFile->module->buildCfg.byteCodeDebugInline && !forceTakeInline) || noInline)
     {
         if (ip->node->ownerInline && !(ip->node->flags & AST_IN_MIXIN) && ip->node->ownerInline->ownerFct == ip->node->ownerFct)
         {
             auto n = ip->node;
             while (n->ownerInline && !(n->flags & AST_IN_MIXIN) && (n->ownerInline->ownerFct == n->ownerFct))
                 n = n->ownerInline;
-            *location = &n->token.startLocation;
-            *file     = n->sourceFile;
-            return;
+            location = &n->token.startLocation;
+            file     = n->sourceFile;
+            return {file, location};
         }
     }
 
-    *location = ip->location;
+    location = ip->location;
+    return {file, location};
 }
 
 Utf8 ByteCode::getCallName()

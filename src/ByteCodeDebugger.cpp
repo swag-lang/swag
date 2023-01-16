@@ -33,8 +33,8 @@ void ByteCodeDebugger::setup()
     commands.push_back({"next",        "n",    "",                    "like 'step', but does not enter functions or inlined code", cmdNext});
     commands.push_back({"finish",      "f",    "",                    "runs until the current function is done", cmdFinish});
     commands.push_back({"continue",    "c",    "",                    "runs until another breakpoint is reached", cmdContinue});
-    commands.push_back({"until",       "u",     "",                   "runs to the given line or instruction in the current function (depends on 'bcmode')", cmdUntil});
-    commands.push_back({"jump",        "j",    "",                    "jump to the given line or instruction in the current function (depends on 'bcmode')", cmdJump});
+    commands.push_back({"until",       "u",     "",                   "runs to the given line or instruction in the current function (depends on 'mode bc')", cmdUntil});
+    commands.push_back({"jump",        "j",    "",                    "jump to the given line or instruction in the current function (depends on 'mode bc')", cmdJump});
     commands.push_back({});                    
                                                
     commands.push_back({"execute",     "e",    "<stmt>",              "execute the code statement <stmt> in the current context", cmdExecute });
@@ -75,7 +75,8 @@ void ByteCodeDebugger::setup()
     commands.push_back({"frame",       "",     "<num>",               "set stack frame to level <num>", cmdFrame});
     commands.push_back({});                                           
                                                                       
-    commands.push_back({"bcmode",      "",     "",                    "swap between bytecode mode and source code mode", cmdBcMode});
+    commands.push_back({"mode",        "m",    "bc",                  "swap between bytecode mode and source code mode", cmdMode});
+    commands.push_back({"mode",        "m",    "inline",              "swap between inline mode and non inline mode", cmdMode });
     commands.push_back({"i",           "",     "[num]",               "print the current bytecode instruction and [num] instructions around", cmdInstruction});
     commands.push_back({"ii",          "",     "",                    "print the current function bytecode", cmdInstructionDump});
     commands.push_back({});                                           
@@ -404,15 +405,13 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
 
     case ByteCodeRunContext::DebugStepMode::NextLine:
     {
-        SourceFile*     file;
-        SourceLocation* location;
-        ByteCode::getLocation(context->bc, ip, &file, &location);
+        auto loc = ByteCode::getLocation(context->bc, ip);
         if (context->debugBcMode)
         {
             context->debugOn       = true;
             context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
         }
-        else if (!location || (context->debugStepLastFile == file && context->debugStepLastLocation && context->debugStepLastLocation->line == location->line))
+        else if (!loc.location || (context->debugStepLastFile == loc.file && context->debugStepLastLocation && context->debugStepLastLocation->line == loc.location->line))
         {
             zapCurrentIp = true;
         }
@@ -425,9 +424,7 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
     }
     case ByteCodeRunContext::DebugStepMode::NextLineStepOut:
     {
-        SourceFile*     file;
-        SourceLocation* location;
-        ByteCode::getLocation(context->bc, ip, &file, &location, false, true);
+        auto loc = ByteCode::getLocation(context->bc, ip, false, true);
         if (context->debugBcMode)
         {
             if (context->curRC > context->debugStepRC)
@@ -438,7 +435,7 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
                 context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
             }
         }
-        else if (!location || (context->debugStepLastFile == file && context->debugStepLastLocation && context->debugStepLastLocation->line == location->line))
+        else if (!loc.location || (context->debugStepLastFile == loc.file && context->debugStepLastLocation && context->debugStepLastLocation->line == loc.location->line))
             zapCurrentIp = true;
         else if (context->curRC > context->debugStepRC)
             zapCurrentIp = true;
