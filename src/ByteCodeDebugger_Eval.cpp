@@ -37,23 +37,15 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     }
 
     // Semantic
-    auto        child = parent.childs.front();
-    SemanticJob semanticJob;
-    semanticJob.sourceFile = sourceFile;
-    semanticJob.module     = sourceFile->module;
-    semanticJob.nodes.push_back(child);
-    semanticJob.context.forDebugger = true;
+    auto child              = parent.childs.front();
+    auto semanticJob        = g_Allocator.alloc<SemanticJob>();
+    semanticJob->sourceFile = sourceFile;
+    semanticJob->module     = sourceFile->module;
+    semanticJob->nodes.push_back(child);
+    semanticJob->context.forDebugger = true;
 
-    g_ThreadMgr.doJobCount = true;
-    while (true)
-    {
-        auto result = semanticJob.execute();
-        if (result == JobResult::ReleaseJob)
-            break;
-        while (g_ThreadMgr.addJobCount.load())
-            this_thread::yield();
-    }
-    g_ThreadMgr.doJobCount = false;
+    g_ThreadMgr.addJob(semanticJob);
+    g_ThreadMgr.waitEndJobs();
 
     if (!g_SilentErrorMsg.empty())
     {
@@ -75,25 +67,17 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     }
 
     // Gen bytecode for expression
-    ByteCodeGenJob genJob;
-    genJob.sourceFile = sourceFile;
-    genJob.module     = sourceFile->module;
-    genJob.nodes.push_back(child);
+    auto genJob        = g_Allocator.alloc<ByteCodeGenJob>();
+    genJob->sourceFile = sourceFile;
+    genJob->module     = sourceFile->module;
+    genJob->nodes.push_back(child);
     child->allocateExtension(ExtensionKind::ByteCode);
     child->extension->bytecode->bc             = g_Allocator.alloc<ByteCode>();
     child->extension->bytecode->bc->node       = child;
     child->extension->bytecode->bc->sourceFile = sourceFile;
 
-    g_ThreadMgr.doJobCount = true;
-    while (true)
-    {
-        auto result = genJob.execute();
-        if (result == JobResult::ReleaseJob)
-            break;
-        while (g_ThreadMgr.addJobCount.load())
-            this_thread::yield();
-    }
-    g_ThreadMgr.doJobCount = false;
+    g_ThreadMgr.addJob(genJob);
+    g_ThreadMgr.waitEndJobs();
 
     if (!g_SilentErrorMsg.empty())
     {

@@ -44,7 +44,6 @@ struct ThreadManager
     atomic<int>              jobsOptInThreads = 0;
     atomic<int>              addJobCount      = 0;
     int                      currentJobsIO    = 0;
-    bool                     doJobCount       = false;
 };
 
 extern ThreadManager g_ThreadMgr;
