@@ -731,7 +731,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpMulEqS8_Safe:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             pp.emit_Load8_Indirect(0, RAX, RAX);
-            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
+            if (ip->flags & BCI_IMM_B)
+                pp.emit_Load64_Immediate(ip->b.u8, RCX);
+            else
+                pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
             concat.addString2("\xf6\xe9"); // imul cl
             emitOverflowSigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS8));
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
@@ -740,7 +743,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpMulEqS8_SSafe:
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             pp.emit_Load8_Indirect(0, RAX, RAX);
-            pp.emit_Load8_Indirect(regOffset(ip->b.u32), RCX, RDI);
+            if (ip->flags & BCI_IMM_B)
+                pp.emit_Load64_Immediate(ip->b.u8, RCX);
+            else
+                pp.emit_Load8_Indirect(regOffset(ip->b.u32), RCX, RDI);
             concat.addString2("\xf6\xe9"); // imul cl
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
             pp.emit_Store8_Indirect(0, RAX, RCX);
@@ -759,7 +765,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpMulEqS16_Safe:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             pp.emit_Load16_Indirect(0, RAX, RAX);
-            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
+            if (ip->flags & BCI_IMM_B)
+                pp.emit_Load64_Immediate(ip->b.u16, RCX);
+            else
+                pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
             concat.addString3("\x66\xf7\xe9"); // imul cx
             emitOverflowSigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS16));
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
@@ -768,7 +777,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpMulEqS16_SSafe:
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             pp.emit_Load16_Indirect(0, RAX, RAX);
-            pp.emit_Load16_Indirect(regOffset(ip->b.u32), RCX, RDI);
+            if (ip->flags & BCI_IMM_B)
+                pp.emit_Load64_Immediate(ip->b.u16, RCX);
+            else
+                pp.emit_Load16_Indirect(regOffset(ip->b.u32), RCX, RDI);
             concat.addString3("\x66\xf7\xe9"); // imul cx
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
             pp.emit_Store16_Indirect(0, RAX, RCX);
@@ -821,7 +833,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpMulEqS64_Safe:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             pp.emit_Load64_Indirect(0, RAX, RAX);
-            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
+            if (ip->flags & BCI_IMM_B)
+                pp.emit_Load64_Immediate(ip->b.u64, RCX);
+            else
+                pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
             concat.addString3("\x48\xf7\xe9"); // imul rcx
             emitOverflowSigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS64));
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
@@ -830,7 +845,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpMulEqS64_SSafe:
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             pp.emit_Load64_Indirect(0, RAX, RAX);
-            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
+            if (ip->flags & BCI_IMM_B)
+                pp.emit_Load64_Immediate(ip->b.u64, RCX);
+            else
+                pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
             concat.addString3("\x48\xf7\xe9"); // imul rcx
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
             pp.emit_Store64_Indirect(0, RAX, RCX);
@@ -849,7 +867,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpMulEqU8_Safe:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             pp.emit_Load8_Indirect(0, RAX, RAX);
-            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
+            if (ip->flags & BCI_IMM_B)
+                pp.emit_Load64_Immediate(ip->b.u8, RCX);
+            else
+                pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
             concat.addString2("\xf6\xe1"); // mul cl
             emitOverflowUnsigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU8));
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
@@ -858,7 +879,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpMulEqU8_SSafe:
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             pp.emit_Load8_Indirect(0, RAX, RAX);
-            pp.emit_Load8_Indirect(regOffset(ip->b.u32), RCX, RDI);
+            if (ip->flags & BCI_IMM_B)
+                pp.emit_Load64_Immediate(ip->b.u8, RCX);
+            else
+                pp.emit_Load8_Indirect(regOffset(ip->b.u32), RCX, RDI);
             concat.addString2("\xf6\xe1"); // mul cl
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
             pp.emit_Store8_Indirect(0, RAX, RCX);
@@ -877,7 +901,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpMulEqU16_Safe:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             pp.emit_Load16_Indirect(0, RAX, RAX);
-            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
+            if (ip->flags & BCI_IMM_B)
+                pp.emit_Load64_Immediate(ip->b.u16, RCX);
+            else
+                pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
             concat.addString3("\x66\xf7\xe1"); // mul cx
             emitOverflowUnsigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU16));
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
@@ -886,7 +913,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpMulEqU16_SSafe:
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             pp.emit_Load16_Indirect(0, RAX, RAX);
-            pp.emit_Load16_Indirect(regOffset(ip->b.u32), RCX, RDI);
+            if (ip->flags & BCI_IMM_B)
+                pp.emit_Load64_Immediate(ip->b.u16, RCX);
+            else
+                pp.emit_Load16_Indirect(regOffset(ip->b.u32), RCX, RDI);
             concat.addString3("\x66\xf7\xe1"); // mul cx
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
             pp.emit_Store16_Indirect(0, RAX, RCX);
@@ -905,7 +935,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpMulEqU32_Safe:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             pp.emit_Load32_Indirect(0, RAX, RAX);
-            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
+            if (ip->flags & BCI_IMM_B)
+                pp.emit_Load64_Immediate(ip->b.u32, RCX);
+            else
+                pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
             concat.addString2("\xf7\xe1"); // mul ecx
             emitOverflowUnsigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU32));
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
@@ -914,7 +947,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpMulEqU32_SSafe:
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             pp.emit_Load32_Indirect(0, RAX, RAX);
-            pp.emit_Load32_Indirect(regOffset(ip->b.u32), RCX, RDI);
+            if (ip->flags & BCI_IMM_B)
+                pp.emit_Load64_Immediate(ip->b.u32, RCX);
+            else
+                pp.emit_Load32_Indirect(regOffset(ip->b.u32), RCX, RDI);
             concat.addString2("\xf7\xe1"); // mul ecx
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
             pp.emit_Store32_Indirect(0, RAX, RCX);
@@ -933,7 +969,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpMulEqU64_Safe:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             pp.emit_Load64_Indirect(0, RAX, RAX);
-            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
+            if (ip->flags & BCI_IMM_B)
+                pp.emit_Load64_Immediate(ip->b.u64, RCX);
+            else
+                pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
             concat.addString3("\x48\xf7\xe1"); // mul rcx
             emitOverflowUnsigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU64));
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
@@ -942,7 +981,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpMulEqU64_SSafe:
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             pp.emit_Load64_Indirect(0, RAX, RAX);
-            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
+            if (ip->flags & BCI_IMM_B)
+                pp.emit_Load64_Immediate(ip->b.u64, RCX);
+            else
+                pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
             concat.addString3("\x48\xf7\xe1"); // mul rcx
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
             pp.emit_Store64_Indirect(0, RAX, RCX);
@@ -1010,6 +1052,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
             pp.emit_Store8_Indirect(0, RAX, RCX);
             break;
+
         case ByteCodeOp::AffectOpModuloEqS16:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             pp.emit_Load16_Indirect(0, RAX, RAX);
@@ -1019,6 +1062,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
             pp.emit_Store16_Indirect(0, RDX, RCX);
             break;
+
         case ByteCodeOp::AffectOpModuloEqS32:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             pp.emit_Load32_Indirect(0, RAX, RAX);
@@ -1028,6 +1072,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
             pp.emit_Store32_Indirect(0, RDX, RCX);
             break;
+
         case ByteCodeOp::AffectOpModuloEqS64:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             pp.emit_Load64_Indirect(0, RAX, RAX);
@@ -1047,6 +1092,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
             pp.emit_Store8_Indirect(0, RAX, RCX);
             break;
+
         case ByteCodeOp::AffectOpModuloEqU16:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             pp.emit_Load16_Indirect(0, RAX, RAX);
@@ -1056,6 +1102,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
             pp.emit_Store16_Indirect(0, RDX, RCX);
             break;
+
         case ByteCodeOp::AffectOpModuloEqU32:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             pp.emit_Load32_Indirect(0, RAX, RAX);
@@ -1065,6 +1112,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
             pp.emit_Store32_Indirect(0, RDX, RCX);
             break;
+
         case ByteCodeOp::AffectOpModuloEqU64:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             pp.emit_Load64_Indirect(0, RAX, RAX);

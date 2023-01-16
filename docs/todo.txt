@@ -129,7 +129,7 @@ OPTIMS
 
 
 -------------------------------------
-muleq, diveq, moduloeq immediate mode B
+diveq moduloeq mode B
 -------------------------------------
 inline auto ?
 -------------------------------------
