@@ -31,7 +31,10 @@ BcDbgCommandResult ByteCodeDebugger::cmdFinish(ByteCodeRunContext* context, cons
 
     context->debugStackFrameOffset = 0;
     context->debugStepMode         = ByteCodeRunContext::DebugStepMode::FinishedFunction;
-    context->debugStepRC           = context->curRC - 1;
+    if (context->debugLastBreakIp->node->ownerInline)
+        context->debugStepRC = context->curRC;
+    else
+        context->debugStepRC = context->curRC - 1;
     return BcDbgCommandResult::Break;
 }
 
@@ -79,7 +82,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const 
                 return BcDbgCommandResult::Continue;
             }
 
-            auto loc = ByteCode::getLocation(context->bc, curIp, ByteCode::LocationKind::DebugJump);
+            auto loc = ByteCode::getLocation(context->bc, curIp);
             if (loc.location && loc.location->line + 1 == to)
             {
                 context->ip         = curIp;
@@ -139,6 +142,14 @@ BcDbgCommandResult ByteCodeDebugger::cmdMode(ByteCodeRunContext* context, const 
         else
             g_Log.printColor("=> no inline mode\n", LogColor::Gray);
         printDebugContext(context, true);
+    }
+    else if (cmds[1] == "bkp")
+    {
+        g_CommandLine.dbgOff = !g_CommandLine.dbgOff;
+        if (g_CommandLine.dbgOff)
+            g_Log.printColor("=> @breakpoint() are disabled\n", LogColor::Gray);
+        else
+            g_Log.printColor("=> @breakpoint() are enabled\n", LogColor::Gray);
     }
     else
         return BcDbgCommandResult::BadArguments;

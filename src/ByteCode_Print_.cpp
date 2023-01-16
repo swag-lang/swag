@@ -9,8 +9,8 @@ void ByteCode::printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine, Sour
         return;
 
     // Print source code
-    auto loc  = ByteCode::getLocation(this, ip, ByteCode::LocationKind::PrintDeep);
-    auto loc1 = ByteCode::getLocation(this, ip, ByteCode::LocationKind::Print);
+    auto loc  = ByteCode::getLocation(this, ip, true);
+    auto loc1 = ByteCode::getLocation(this, ip);
 
     if (!loc.location)
         return;

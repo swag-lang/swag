@@ -23,22 +23,6 @@ struct SourceLocation;
 
 struct ByteCode
 {
-    enum class LocationKind
-    {
-        Backend,
-        Panic,
-        ExceptionError,
-        DebugNextLine,
-        DebugBreakFileLine,
-        DebugContext,
-        DebugPrintLine,
-        DebugJump,
-        Print,
-        PrintDeep,
-        Error,
-        FuncBc,
-    };
-
     struct Location
     {
         SourceFile*     file     = nullptr;
@@ -187,7 +171,7 @@ struct ByteCode
     static void*    doByteCodeLambda(void* ptr);
     static void*    undoByteCodeLambda(void* ptr);
     static bool     isByteCodeLambda(void* ptr);
-    static Location getLocation(ByteCode* bc, ByteCodeInstruction* ip, LocationKind kind);
+    static Location getLocation(ByteCode* bc, ByteCodeInstruction* ip, bool getInline = false);
 
     void              printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine = nullptr, SourceFile** lastFile = nullptr);
     void              printPrettyInstruction(ByteCodeInstruction* ip);

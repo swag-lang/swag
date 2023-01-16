@@ -22,7 +22,7 @@ void ByteCode::releaseOut()
     out = nullptr;
 }
 
-ByteCode::Location ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, LocationKind kind)
+ByteCode::Location ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, bool getInline)
 {
     SWAG_ASSERT(bc && ip);
     SWAG_ASSERT(ip->node && ip->node->ownerScope);
@@ -35,28 +35,7 @@ ByteCode::Location ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, 
         loc.file = loc.file->fileForSourceLocation;
     loc.location = ip->location;
 
-    bool zapInline = !bc->sourceFile->module->buildCfg.byteCodeDebugInline;
-
-    switch (kind)
-    {
-    case LocationKind::PrintDeep:
-        zapInline = false;
-        break;
-
-    case LocationKind::Backend:
-    case LocationKind::Panic:
-    case LocationKind::ExceptionError:
-    case LocationKind::FuncBc:
-    case LocationKind::Error:
-    case LocationKind::Print:
-    case LocationKind::DebugNextLine:
-    case LocationKind::DebugBreakFileLine:
-    case LocationKind::DebugContext:
-    case LocationKind::DebugPrintLine:
-    case LocationKind::DebugJump:
-        break;
-    }
-
+    bool zapInline = !bc->sourceFile->module->buildCfg.byteCodeDebugInline && !getInline;
     if (zapInline)
     {
         if (ip->node->ownerInline && !(ip->node->flags & AST_IN_MIXIN) && ip->node->ownerInline->ownerFct == ip->node->ownerFct)

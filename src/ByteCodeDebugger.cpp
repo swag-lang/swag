@@ -76,7 +76,8 @@ void ByteCodeDebugger::setup()
     commands.push_back({});                                           
                                                                       
     commands.push_back({"mode",        "m",    "bc",                  "swap between bytecode mode and source code mode", cmdMode});
-    commands.push_back({"mode",        "m",    "inline",              "swap between inline mode and non inline mode", cmdMode });
+    commands.push_back({"mode",        "m",    "inline",              "swap between inline mode and non inline mode", cmdMode});
+    commands.push_back({"mode",        "m",    "bkp",                 "enable/disable @breakpoint", cmdMode});
     commands.push_back({"i",           "",     "[num]",               "print the current bytecode instruction and [num] instructions around", cmdInstruction});
     commands.push_back({"ii",          "",     "",                    "print the current function bytecode", cmdInstructionDump});
     commands.push_back({});                                           
@@ -412,7 +413,7 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
             break;
         }
 
-        auto loc = ByteCode::getLocation(context->bc, ip, ByteCode::LocationKind::DebugNextLine);
+        auto loc = ByteCode::getLocation(context->bc, ip, context->debugLastBreakIp->node->ownerInline ? true : false);
         SWAG_ASSERT(loc.file && loc.location);
         if (context->debugStepLastFile == loc.file && context->debugStepLastLocation && context->debugStepLastLocation->line == loc.location->line)
         {
@@ -442,20 +443,20 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
         }
 
         // If last break was in a real function, and now we are in an inline block
-        if (context->debugLastBreakIp && !context->debugLastBreakIp->node->ownerInline && ip->node->ownerInline)
+        if (!context->debugLastBreakIp->node->ownerInline && ip->node->ownerInline)
         {
             zapCurrentIp = true;
             break;
         }
 
         // If last break was in an inline block, and we are in a sub inline block
-        if (context->debugLastBreakIp && context->debugLastBreakIp->node->ownerInline && context->debugLastBreakIp->node->ownerInline->isParentOf(ip->node->ownerInline))
+        if (context->debugLastBreakIp->node->ownerInline && context->debugLastBreakIp->node->ownerInline->isParentOf(ip->node->ownerInline))
         {
             zapCurrentIp = true;
             break;
         }
 
-        auto loc = ByteCode::getLocation(context->bc, ip, ByteCode::LocationKind::DebugNextLine);
+        auto loc = ByteCode::getLocation(context->bc, ip, context->debugLastBreakIp->node->ownerInline ? true : false);
         SWAG_ASSERT(loc.file && loc.location);
         if (context->debugStepLastFile == loc.file && context->debugStepLastLocation && context->debugStepLastLocation->line == loc.location->line)
         {
@@ -470,15 +471,36 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
     }
     case ByteCodeRunContext::DebugStepMode::FinishedFunction:
     {
+        // Top level function, break on ret
         if (context->curRC == 0 && context->debugStepRC == -1 && ByteCode::isRet(ip))
-            context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
-        else if (context->curRC > context->debugStepRC)
-            zapCurrentIp = true;
-        else
         {
-            context->debugOn       = true;
             context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
+            break;
         }
+
+        // We are in a sub function
+        if (context->curRC > context->debugStepRC)
+        {
+            zapCurrentIp = true;
+            break;
+        }
+
+        // If last break was in an inline block, and we are in a sub inline block
+        if (context->debugLastBreakIp->node->ownerInline && context->debugLastBreakIp->node->ownerInline->isParentOf(ip->node->ownerInline))
+        {
+            zapCurrentIp = true;
+            break;
+        }
+
+        // We are in the same inline block
+        if (ip->node->ownerInline && context->debugLastBreakIp->node->ownerInline == ip->node->ownerInline)
+        {
+            zapCurrentIp = true;
+            break;
+        }
+
+        context->debugOn       = true;
+        context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
         break;
     }
     }

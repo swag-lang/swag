@@ -39,7 +39,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, c
             if (filter.empty() || getByteCodeName(bc).find(filter) != -1 || getByteCodeFileName(bc).find(filter) != -1)
             {
                 string str = Fmt("%s%s%s ", COLOR_NAME, getByteCodeName(bc).c_str(), COLOR_DEFAULT).c_str();
-                auto   loc = ByteCode::getLocation(bc, bc->out, ByteCode::LocationKind::FuncBc);
+                auto   loc = ByteCode::getLocation(bc, bc->out);
                 str += Fmt(" (%s%s%s) ", COLOR_TYPE, bc->getCallType()->getDisplayNameC(), COLOR_DEFAULT);
                 if (loc.file)
                     str += Fmt("%s", loc.file->name.c_str());

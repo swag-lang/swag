@@ -78,7 +78,7 @@ void ByteCodeRun::callInternalPanic(ByteCodeRunContext* context, ByteCodeInstruc
 {
     auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__panic);
 
-    auto loc = ByteCode::getLocation(context->bc, ip, ByteCode::LocationKind::Panic);
+    auto loc = ByteCode::getLocation(context->bc, ip);
 
     context->push(msg);
     context->push<uint64_t>(loc.location->column);
@@ -1925,7 +1925,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::InternalPanic:
     {
         auto bc  = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__panic);
-        auto loc = ByteCode::getLocation(context->bc, ip, ByteCode::LocationKind::Panic);
+        auto loc = ByteCode::getLocation(context->bc, ip);
 
         context->push(ip->d.pointer);
         context->push<uint64_t>(loc.location->column);
@@ -3641,7 +3641,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         }
         else
         {
-            auto loc = ByteCode::getLocation(runContext->bc, ip, ByteCode::LocationKind::ExceptionError);
+            auto loc = ByteCode::getLocation(runContext->bc, ip);
             if (loc.location || !ip->node)
             {
                 SWAG_ASSERT(loc.location);
