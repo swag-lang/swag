@@ -1394,7 +1394,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             return context->report(diag, Diagnostic::hereIs(overload));
         }
 
-        if (overload->node->mustInline() && !(identifier->specFlags & AST_SPEC_IDENTIFIER_NO_INLINE))
+        if (overload->node->mustInline() &&
+            !(identifier->specFlags & AST_SPEC_IDENTIFIER_NO_INLINE) &&
+            !isFunctionButNotACall(context, identifier, overload->symbol))
         {
             // Mixin and macros must be inlined here, because no call is possible
             bool forceInline = false;
