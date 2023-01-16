@@ -79,7 +79,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const 
                 return BcDbgCommandResult::Continue;
             }
 
-            auto loc = ByteCode::getLocation(context->bc, curIp);
+            auto loc = ByteCode::getLocation(context->bc, curIp, ByteCode::LocationKind::DebugJump);
             if (loc.location && loc.location->line + 1 == to)
             {
                 context->ip         = curIp;

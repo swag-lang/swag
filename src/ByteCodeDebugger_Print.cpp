@@ -10,7 +10,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     SWAG_ASSERT(context->debugCxtBc);
     SWAG_ASSERT(context->debugCxtIp);
 
-    auto loc = ByteCode::getLocation(context->debugCxtBc, context->debugCxtIp);
+    auto loc = ByteCode::getLocation(context->debugCxtBc, context->debugCxtIp, ByteCode::LocationKind::DebugContext);
 
     // Print file
     bool printSomething = false;
@@ -206,7 +206,7 @@ void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* b
             {
             case ByteCodeRunContext::DebugBkpType::FuncName:
             {
-                auto loc = ByteCode::getLocation(bc, bc->out);
+                auto loc = ByteCode::getLocation(bc, bc->out, ByteCode::LocationKind::FuncBc);
                 if (getByteCodeName(context->bc).find(bkp.name) != -1 && loc.location && startLine + lineIdx + 1 == loc.location->line)
                     hasBkp = &bkp;
                 break;
@@ -446,7 +446,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
 
     if (toLogBc->node && toLogBc->node->kind == AstNodeKind::FuncDecl && toLogBc->node->sourceFile)
     {
-        auto loc = ByteCode::getLocation(toLogBc, toLogIp);
+        auto loc = ByteCode::getLocation(toLogBc, toLogIp, ByteCode::LocationKind::DebugPrintLine);
 
         uint32_t offset = 3;
         if (cmds.size() == 2)
@@ -488,7 +488,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
         auto funcNode = CastAst<AstFuncDecl>(toLogBc->node, AstNodeKind::FuncDecl);
         if (funcNode->content)
         {
-            auto loc = ByteCode::getLocation(toLogBc, toLogIp);
+            auto loc = ByteCode::getLocation(toLogBc, toLogIp, ByteCode::LocationKind::DebugPrintLine);
 
             uint32_t startLine = toLogBc->node->token.startLocation.line;
             uint32_t endLine   = funcNode->content->token.endLocation.line;

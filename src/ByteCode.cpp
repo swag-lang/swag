@@ -22,8 +22,10 @@ void ByteCode::releaseOut()
     out = nullptr;
 }
 
-ByteCode::Location ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, bool force, bool noInline, bool forceTakeInline)
+ByteCode::Location ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, LocationKind kind)
 {
+    SWAG_ASSERT(bc && ip);
+
     ByteCode::Location loc;
     SourceFile*        file     = nullptr;
     SourceLocation*    location = nullptr;
@@ -32,7 +34,35 @@ ByteCode::Location ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, 
     if (file && file->fileForSourceLocation)
         file = file->fileForSourceLocation;
 
-    location = force ? ip->location : nullptr;
+    bool noInline        = false;
+    bool forceTakeInline = false;
+
+    switch (kind)
+    {
+    case LocationKind::Panic:
+        location = ip->location;
+        break;
+
+    case LocationKind::ExceptionError:
+    case LocationKind::Backend:
+    case LocationKind::DebugNextLine:
+    case LocationKind::DebugBreakFileLine:
+    case LocationKind::FuncBc:
+    case LocationKind::DebugContext:
+    case LocationKind::DebugPrintLine:
+    case LocationKind::DebugJump:
+    case LocationKind::Error:
+    case LocationKind::Print:
+        break;
+
+    case LocationKind::PrintDeep:
+        forceTakeInline = true;
+        break;
+
+    case LocationKind::DebugNextLineStepOut:
+        noInline = true;
+        break;
+    }
 
     if (!ip || !ip->node || !ip->node->ownerScope || ip->node->kind == AstNodeKind::FuncDecl)
         return {file, location};

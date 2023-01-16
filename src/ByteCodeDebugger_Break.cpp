@@ -74,7 +74,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
 
         case ByteCodeRunContext::DebugBkpType::FileLine:
         {
-            auto loc = ByteCode::getLocation(context->bc, context->ip);
+            auto loc = ByteCode::getLocation(context->bc, context->ip, ByteCode::LocationKind::DebugBreakFileLine);
             if (loc.file && loc.location && loc.file->name == bkp.name && loc.location->line + 1 == bkp.line)
             {
                 if (!bkp.autoDisabled)
@@ -247,7 +247,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakLine(ByteCodeRunContext* context, c
     if (cmd == "tb" || cmd == "tbreak")
         oneShot = true;
 
-    auto loc = ByteCode::getLocation(context->debugCxtBc, context->debugCxtIp);
+    auto loc = ByteCode::getLocation(context->debugCxtBc, context->debugCxtIp, ByteCode::LocationKind::DebugBreakFileLine);
 
     ByteCodeRunContext::DebugBreakpoint bkp;
     bkp.type       = ByteCodeRunContext::DebugBkpType::FileLine;

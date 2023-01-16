@@ -552,7 +552,7 @@ void BackendLLVMDbg::setLocation(llvm::IRBuilder<>* builder, ByteCode* bc, ByteC
 
     SWAG_ASSERT(dbgBuilder);
 
-    auto loc = ByteCode::getLocation(bc, ip);
+    auto loc = ByteCode::getLocation(bc, ip, ByteCode::LocationKind::Backend);
     if (!loc.location)
     {
         builder->SetCurrentDebugLocation(llvm::DebugLoc());

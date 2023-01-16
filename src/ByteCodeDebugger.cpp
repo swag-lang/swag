@@ -405,7 +405,7 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
 
     case ByteCodeRunContext::DebugStepMode::NextLine:
     {
-        auto loc = ByteCode::getLocation(context->bc, ip);
+        auto loc = ByteCode::getLocation(context->bc, ip, ByteCode::LocationKind::DebugNextLine);
         if (context->debugBcMode)
         {
             context->debugOn       = true;
@@ -424,7 +424,7 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
     }
     case ByteCodeRunContext::DebugStepMode::NextLineStepOut:
     {
-        auto loc = ByteCode::getLocation(context->bc, ip, false, true);
+        auto loc = ByteCode::getLocation(context->bc, ip, ByteCode::LocationKind::DebugNextLineStepOut);
         if (context->debugBcMode)
         {
             if (context->curRC > context->debugStepRC)
