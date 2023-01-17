@@ -1,11 +1,11 @@
 /*
     :LICENCE
+    Mt19937-64 Mersenne Twister 64 bits.
     This code is based on the C-program by Matt Gallagher (https://github.com/mattgallagher/CwlUtils/blob/master/Sources/ReferenceRandomGenerators/mt19937-64.c)
     Original code by Takuji Nishimura and Makoto Matsumoto.
     See LICENCE.md for the corresponding licence.
 */
 
-// Mersenne Twister 64 bits.
 #global namespace Random
 
 const NN        = 312
@@ -15,13 +15,13 @@ const MATRIX_A  = 0xB5026F5AA96619E9'u64
 const UM        = 0xFFFFFFFF80000000'u64 /* Most significant 33 bits */
 const LM        = 0x7FFFFFFF'u64
 
-public struct Mt19937
+public struct Mt64
 {
     mt:  [NN] u64
 	mti: u64
 }
 
-public impl Mt19937
+public impl Mt64
 {
     #[Swag.Safety("over", false)]
     mtd seedU64(seed: u64)
