@@ -1642,6 +1642,13 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         break;
     }
 
+    case AstNodeKind::IntrinsicDefined:
+        concat.addString(node->token.text);
+        concat.addChar('(');
+        SWAG_CHECK(outputNode(context, concat, node->childs.front()));
+        concat.addChar(')');
+        break;
+
     case AstNodeKind::IntrinsicProp:
     {
         auto propertyNode = CastAst<AstIntrinsicProp>(node, AstNodeKind::IntrinsicProp);
