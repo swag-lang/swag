@@ -4,6 +4,6 @@ using Core
 //#[Swag.PrintBc]
 #test
 {
-	x := Env.getProcessorCount()
+	x := Hardware.getProcessorCount()
 	@assert(x > 0)
 }

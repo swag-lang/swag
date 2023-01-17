@@ -1,7 +1,9 @@
 /*
     :LICENCE
     Mt19937-64 Mersenne Twister 64 bits.
-    This code is based on the C-program by Matt Gallagher (https://github.com/mattgallagher/CwlUtils/blob/master/Sources/ReferenceRandomGenerators/mt19937-64.c)
+    This code is based on the C-program by Matt Gallagher
+    (https://github.com/mattgallagher/CwlUtils/blob/master/Sources/ReferenceRandomGenerators/mt19937-64.c)
+    (http://www.cocoawithlove.com/blog/2016/05/19/random-numbers.html)
     Original code by Takuji Nishimura and Makoto Matsumoto.
     See LICENCE.md for the corresponding licence.
 */
@@ -12,7 +14,7 @@ const NN        = 312
 const MID       = NN / 2
 const MM        = 156
 const MATRIX_A  = 0xB5026F5AA96619E9'u64
-const UM        = 0xFFFFFFFF80000000'u64 /* Most significant 33 bits */
+const UM        = 0xFFFFFFFF80000000'u64
 const LM        = 0x7FFFFFFF'u64
 
 public struct Mt64
@@ -70,7 +72,7 @@ public impl Mt64
             }
         }
 
-        mt[0] = 1'u64 << 63 // MSB is 1; assuring non-zero initial array
+        mt[0] = 1'u64 << 63
     }
 
     #[Swag.Safety("over", false)]
@@ -80,12 +82,6 @@ public impl Mt64
         {
             stateMid := mt[MID]
 
-            /* NOTE: this "untwist" code is modified from the original to improve
-                * performance, as described here:
-                * http://www.cocoawithlove.com/blog/2016/05/19/random-numbers.html
-                * These modifications are offered for use under the original license at
-                * the top of this file.
-                */
             for {i := 0; j := MID;}
                 i != MID - 1
                 {i += 1; j += 1;}

@@ -4,8 +4,6 @@ using Win32
 
 public const EndLine = "\r\n"
 
-public func getProcessorCount() => cast(u32) g_SysInfo.dwNumberOfProcessors
-
 // The system font directory
 public func getSpecialDirectory(what: SpecialDirectory)->String
 {

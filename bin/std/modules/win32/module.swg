@@ -1,4 +1,4 @@
-// Wrapper for Microsoft Kernel32 and User32.
+// Wrappers for Microsoft Windows Sdk Libraries.
 // 10.0.19041.0
 
 #dependencies
