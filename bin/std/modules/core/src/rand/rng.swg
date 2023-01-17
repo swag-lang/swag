@@ -10,6 +10,7 @@ struct(T = MWC) Rng
 
 impl Rng
 {
+    // Seed random generator with a 32 bits value
     #[Swag.Inline]
     mtd seedU32(seed: u32)
     {
@@ -19,6 +20,7 @@ impl Rng
             return rng.seedU64(cast(u64) seed)
     }
 
+    // Seed random generator with a 64 bits value
     #[Swag.Inline]
     mtd seedU64(seed: u64)
     {
@@ -28,6 +30,7 @@ impl Rng
             return rng.seedU32(cast,safe(u32) seed)
     }
 
+    // Returns an unsigned 32 bits random value
     #[Swag.Inline]
     mtd nextU32()->u32
     {
@@ -37,6 +40,7 @@ impl Rng
             return cast,safe(u32) rng.nextU64()
     }
 
+    // Returns an unsigned 64 bits random value
     #[Swag.Inline]
     mtd nextU64()->u64
     {
@@ -52,12 +56,14 @@ impl Rng
         seedU32(Time.nowMicroseconds())
     }
 
+    // Returns a signed 32 bits random value
     #[Swag.Inline]
     mtd nextS32()->s32
     {
         return bitcast(s32) nextU32()
     }
 
+    // Returns a signed 64 bits random value
     #[Swag.Inline]
     mtd nextS64()->s64
     {
@@ -148,7 +154,7 @@ impl Rng
         return nextU32(0, 2) == 0 ? false : true
     }
 
-    // Change the order of a slice
+    // Randomly change the order of a slice
     mtd(V) shuffle(slice: [..] V)
     {
         countOf := @countof(slice)
