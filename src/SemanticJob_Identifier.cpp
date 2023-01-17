@@ -4111,6 +4111,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
         // We want to force the ufcs
         if (node->semFlags & AST_SEM_FORCE_UFCS)
         {
+            if (identifierRef->flags & AST_SILENT_CHECK)
+                return true;
             unknownIdentifier(context, identifierRef, CastAst<AstIdentifier>(node, AstNodeKind::Identifier));
             return false;
         }
