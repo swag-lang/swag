@@ -36,6 +36,44 @@ public impl Mt19937
     }
 
     #[Swag.Safety("over", false)]
+    mtd seedU64(seed: const [..] u64)
+    {
+        keyLength := @countof(seed)
+
+        seedU64(19650218)
+        i := 1
+        j := 0
+        k := NN > keyLength ? NN : keyLength
+
+        while k
+        {
+            mt[i] = (mt[i] ^ ((mt[i-1] ^ (mt[i-1] >> 62)) * 3935559000370003845)) + seed[j] + j
+            i, j += 1
+            if i >= NN
+            {
+                mt[0] = mt[NN-1]
+                i = 1
+            }
+            if j >= keyLength
+                j = 0
+            k -= 1
+        }
+
+        for k = NN-1; k != 0; k -= 1
+        {
+            mt[i] = (mt[i] ^ ((mt[i-1] ^ (mt[i-1] >> 62)) * 2862933555777941757)) - i
+            i += 1
+            if i >= NN
+            {
+                mt[0] = mt[NN-1]
+                i=1
+            }
+        }
+
+        mt[0] = 1'u64 << 63 // MSB is 1; assuring non-zero initial array
+    }
+
+    #[Swag.Safety("over", false)]
     mtd nextU64()->u64
     {
         if mti >= NN
