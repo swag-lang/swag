@@ -326,6 +326,7 @@ JobResult SemanticJob::execute()
                         job->module       = module;
                         job->dependentJob = dependentJob;
                         job->nodes.push_back(node);
+                        job->context.errorContextStack.insert(job->context.errorContextStack.end(), context.errorContextStack.begin(), context.errorContextStack.end());
                         g_ThreadMgr.addJob(job);
                     }
 
