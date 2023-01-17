@@ -288,14 +288,14 @@ struct SemanticJob : public Job
     static Utf8           getTheNiceParameterRank(int idx);
     static bool           preprocessMatchError(SemanticContext* context, OneTryMatch& oneTry, vector<const Diagnostic*>& result0, vector<const Diagnostic*>& result1);
     static void           getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, vector<const Diagnostic*>& result0, vector<const Diagnostic*>& result1);
-    static void           symbolErrorRemarks(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, Diagnostic* diag);
+    static void           symbolErrorRemarks(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag);
     static Utf8           findClosestMatchesMsg(SemanticContext* context, vector<Utf8>& best);
     static void           findClosestMatches(SemanticContext* context, const Utf8& searchName, const vector<Utf8>& searchList, vector<Utf8>& result);
     static void           findClosestMatches(SemanticContext* context, IdentifierSearchFor searchFor, AstNode* node, VectorNative<AlternativeScope>& scopeHierarchy, vector<Utf8>& best);
     static bool           isFunctionButNotACall(SemanticContext* context, AstNode* node, SymbolName* symbol);
-    static void           symbolErrorNotes(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, Diagnostic* diag, vector<const Diagnostic*>& notes);
-    static bool           cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node);
-    static bool           matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, uint32_t flags = 0);
+    static void           symbolErrorNotes(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag, vector<const Diagnostic*>& notes);
+    static bool           cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node);
+    static bool           matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, uint32_t flags = 0);
     static bool           evaluateConstExpression(SemanticContext* context, AstNode* node);
     static bool           evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2);
     static bool           evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2, AstNode* node3);

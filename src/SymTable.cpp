@@ -323,11 +323,15 @@ bool SymTable::acceptGhostSymbolNoLock(JobContext* context, AstNode* node, Symbo
 
 bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, bool checkSameName)
 {
-    auto& token = node->token;
-    auto& name  = node->token.text;
+    auto token = &node->token;
+    if (node->kind == AstNodeKind::FuncDecl)
+    {
+        auto funcNode = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+        token         = &funcNode->tokenName;
+    }
 
     if (!symbol)
-        symbol = findNoLock(name);
+        symbol = findNoLock(token->text);
     if (!symbol)
         return true;
     if (acceptGhostSymbolNoLock(context, node, kind, symbol))
@@ -336,8 +340,7 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
     // A symbol with a different kind already exists
     if (symbol->kind != kind)
     {
-        Utf8       msg = Fmt(Err(Err0394), symbol->name.c_str(), SymTable::getArticleKindName(symbol->kind));
-        Diagnostic diag{node, token, msg};
+        Diagnostic diag{node, *token, Fmt(Err(Err0394), symbol->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
         auto       front = symbol->nodes.front();
         Diagnostic diagNote{front, front->token, Nte(Nte0036), DiagnosticLevel::Note};
         context->report(diag, &diagNote);
@@ -367,10 +370,8 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
             return true;
         }
 
-        Utf8       msg = Fmt(Err(Err0305), symbol->name.c_str());
-        Diagnostic diag{node, token, msg};
-        Utf8       note = Nte(Nte0036);
-        Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
+        Diagnostic diag{node, *token, Fmt(Err(Err0305), symbol->name.c_str())};
+        Diagnostic diagNote{firstOverload->node, firstOverload->node->token, Nte(Nte0036), DiagnosticLevel::Note};
         context->report(diag, &diagNote);
         return false;
     }
@@ -378,10 +379,9 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
     // Overloads are not allowed on certain types
     if (!canOverload && checkSameName)
     {
-        Utf8       msg = Fmt(Err(Err0305), symbol->name.c_str());
-        Diagnostic diag{node, token, msg};
-        Utf8       note = Nte(Nte0036);
-        Diagnostic diagNote{symbol->nodes.front(), symbol->nodes.front()->token, note, DiagnosticLevel::Note};
+        Diagnostic diag{node, *token, Fmt(Err(Err0305), symbol->name.c_str())};
+        auto       front = symbol->nodes.front();
+        Diagnostic diagNote{front, front->token, Nte(Nte0036), DiagnosticLevel::Note};
         context->report(diag, &diagNote);
         return false;
     }
@@ -397,10 +397,8 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
             !(overload->node->flags & AST_HAS_SELECT_IF))
         {
             auto       firstOverload = overload;
-            Utf8       msg           = Fmt(Err(Err0305), symbol->name.c_str());
-            Diagnostic diag{node, node->token, msg};
-            Utf8       note = Nte(Nte0036);
-            Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
+            Diagnostic diag{node, *token, Fmt(Err(Err0305), symbol->name.c_str())};
+            Diagnostic diagNote{firstOverload->node, firstOverload->node->token, Nte(Nte0036), DiagnosticLevel::Note};
             if (typeInfo->isFuncAttr())
                 diagNote.remarks.push_back(Ast::computeGenericParametersReplacement(((TypeInfoFuncAttr*) typeInfo)->genericParameters));
             context->report(diag, &diagNote);
@@ -470,7 +468,7 @@ Utf8 SymTable::getNakedKindName(SymbolOverload* overload)
         return "closure";
     if (overload->node->isGeneratedSelf())
         return "implicit function parameter";
-    if(overload->flags & OVERLOAD_VAR_CAPTURE)
+    if (overload->flags & OVERLOAD_VAR_CAPTURE)
         return "captured parameter";
     if (overload->flags & OVERLOAD_VAR_FUNC_PARAM && overload->node->ownerFct && overload->node->ownerFct->typeInfo->isLambda())
         return "lambda parameter";

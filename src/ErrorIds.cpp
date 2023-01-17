@@ -1168,7 +1168,7 @@ void initErrors()
     SWAG_ERROR(Nte0018, "the hidden call to '%s' returns type '%s' which does not contain a subscope");
     SWAG_ERROR(Nte0056, "the other one is an implicit 'using self' as a first parameter");
     SWAG_ERROR(Nte0044, "the symbol '%s' exists in interface scope '%s'");
-    SWAG_ERROR(Nte0043, "the symbol '%s' was not found in '%s'");
+    SWAG_ERROR(Nte0043, "the %s '%s' was not found in '%s', so the one from '%s' has been choosen instead");
     SWAG_ERROR(Nte0013, "the symbol has been found thanks to a 'using'");
     SWAG_ERROR(Nte0051, "there is an hidden call to '%s' for type '%s'");
     SWAG_ERROR(Nte0006, "this 'using' field can be converted");

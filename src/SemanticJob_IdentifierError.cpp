@@ -148,7 +148,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     bi.badSignatureRequestedType = Generic::doTypeSubstitution(oneTry.symMatchContext.genericReplaceTypes, bi.badSignatureRequestedType);
 
     // See if it would have worked with an explicit cast, to give a hint in the error message
-    Utf8 explicitCastHint;
+    Utf8 hintMsg;
     switch (match.result)
     {
     case MatchResult::BadGenericMatch:
@@ -162,7 +162,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         {
             if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_TRY_COERCE | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             {
-                explicitCastHint = Fmt(Hnt(Hnt0025), bi.badSignatureRequestedType->name.c_str());
+                hintMsg = Fmt(Hnt(Hnt0025), bi.badSignatureRequestedType->name.c_str());
                 break;
             }
         }
@@ -171,7 +171,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         {
             if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             {
-                explicitCastHint = Fmt(Hnt(Hnt0025), bi.badSignatureRequestedType->name.c_str());
+                hintMsg = Fmt(Hnt(Hnt0025), bi.badSignatureRequestedType->name.c_str());
                 break;
             }
         }
@@ -401,6 +401,16 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                       typeStruct->fields[badParamIdx - 1]->namedParam.c_str(),
                                       bi.badSignatureGivenType->getDisplayNameC())};
         }
+        else if (oneTry.ufcs && bi.badSignatureParameterIdx == 0)
+        {
+            diag          = new Diagnostic{diagNode,
+                                  Fmt(Err(Err0095),
+                                      bi.badSignatureRequestedType->getDisplayNameC(),
+                                      bi.badSignatureGivenType->getDisplayNameC())};
+            auto nodeCall = diagNode->parent->childs.back();
+            hintMsg       = Diagnostic::isType(bi.badSignatureGivenType);
+            diag->setRange2(nodeCall->token, Fmt(Hnt(Hnt0093), bi.badSignatureGivenType->getDisplayNameC()));
+        }
         else if (paramNode && paramNode->typeInfo->flags & TYPEINFO_SELF && bi.badSignatureParameterIdx == 0)
         {
             if (diagNode->kind == AstNodeKind::FuncDeclParam)
@@ -410,16 +420,6 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                       bi.badSignatureRequestedType->getDisplayNameC(),
                                       bi.badSignatureGivenType->getDisplayNameC())};
         }
-        else if (oneTry.ufcs && bi.badSignatureParameterIdx == 0)
-        {
-            diag             = new Diagnostic{diagNode,
-                                  Fmt(Err(Err0095),
-                                      bi.badSignatureRequestedType->getDisplayNameC(),
-                                      bi.badSignatureGivenType->getDisplayNameC())};
-            auto nodeCall    = diagNode->parent->childs.back();
-            explicitCastHint = Diagnostic::isType(bi.badSignatureGivenType);
-            diag->setRange2(nodeCall->token, Fmt(Hnt(Hnt0093), bi.badSignatureGivenType->getDisplayNameC()));
-        }
         else
         {
             diag = new Diagnostic{diagNode,
@@ -428,7 +428,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                       bi.badSignatureGivenType->getDisplayNameC())};
         }
 
-        diag->hint = explicitCastHint;
+        diag->hint = hintMsg;
         if (paramNode && paramNode->isGeneratedSelf())
         {
             note                        = new Diagnostic{destFuncDecl, destFuncDecl->token, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
@@ -446,9 +446,12 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         result0.push_back(diag);
 
         // Generic types
-        auto remark = Ast::computeGenericParametersReplacement(match.genericReplaceTypes);
-        if (!remark.empty())
-            note->remarks.insert(note->remarks.end(), remark.begin(), remark.end());
+        if (context->errorContextStack.empty() || context->errorContextStack.front().type != ErrorContextKind::Generic)
+        {
+            auto remark = Ast::computeGenericParametersReplacement(match.genericReplaceTypes);
+            if (!remark.empty())
+                note->remarks.insert(note->remarks.end(), remark.begin(), remark.end());
+        }
 
         // A more specific message ?
         Utf8 castMsg, castHint;
@@ -487,7 +490,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                   bi.badGenMatch.c_str(),
                                   bi.badSignatureRequestedType->getDisplayNameC(),
                                   bi.badSignatureGivenType->getDisplayNameC())};
-        diag->hint = explicitCastHint;
+        diag->hint = hintMsg;
 
         if (destFuncDecl && bi.badSignatureParameterIdx < destFuncDecl->parameters->childs.size())
         {
@@ -531,7 +534,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                       bi.badSignatureRequestedType->getDisplayNameC(),
                                       bi.badSignatureGivenType->getDisplayNameC())};
 
-            diag->hint = explicitCastHint.empty() ? Diagnostic::isType(bi.badSignatureGivenType) : explicitCastHint;
+            diag->hint = hintMsg.empty() ? Diagnostic::isType(bi.badSignatureGivenType) : hintMsg;
         }
 
         if (destFuncDecl && bi.badSignatureParameterIdx < destFuncDecl->genericParameters->childs.size())
@@ -549,7 +552,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     }
 }
 
-void SemanticJob::symbolErrorNotes(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, Diagnostic* diag, vector<const Diagnostic*>& notes)
+void SemanticJob::symbolErrorNotes(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag, vector<const Diagnostic*>& notes)
 {
     if (!node)
         return;
@@ -558,19 +561,19 @@ void SemanticJob::symbolErrorNotes(SemanticContext* context, VectorNative<OneTry
     auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
 
     // Symbol has been found with a using : display it
-    if (overloads.size() == 1 && overloads[0]->dependentVar)
+    if (tryMatches.size() == 1 && tryMatches[0]->dependentVar)
     {
         // Do not generate a note if this is a generated 'using' in case of methods
-        if (!overloads[0]->dependentVar->isGeneratedSelf())
+        if (!tryMatches[0]->dependentVar->isGeneratedSelf())
         {
-            auto note = new Diagnostic{overloads[0]->dependentVar, Nte(Nte0013), DiagnosticLevel::Note};
+            auto note = new Diagnostic{tryMatches[0]->dependentVar, Nte(Nte0013), DiagnosticLevel::Note};
             notes.push_back(note);
         }
     }
 
     // Additional error if the first parameter does not match, or if nothing matches
-    bool badUfcs = overloads.empty();
-    for (auto over : overloads)
+    bool badUfcs = tryMatches.empty();
+    for (auto over : tryMatches)
     {
         if (over->symMatchContext.result == MatchResult::BadSignature && over->symMatchContext.badSignatureInfos.badSignatureParameterIdx == 0)
         {
@@ -623,32 +626,43 @@ void SemanticJob::symbolErrorNotes(SemanticContext* context, VectorNative<OneTry
     }
 }
 
-void SemanticJob::symbolErrorRemarks(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, Diagnostic* diag)
+void SemanticJob::symbolErrorRemarks(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag)
 {
     if (!node)
         return;
     if (node->kind != AstNodeKind::Identifier && node->kind != AstNodeKind::FuncCall)
         return;
+    if (tryMatches.empty())
+        return;
 
+    // If we have an ufcs call, and the match does not come from its symtable, then that means that we have not found the
+    // symbol in the original struct also.
     auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
-    if (identifier->identifierRef->startScope)
+    if (identifier->identifierRef->startScope && !tryMatches.empty())
     {
-        // If we have an ufcs call, and the match does not come from its symtable, then that means that we have not found the
-        // symbol in the original struct also.
         int notFound = 0;
-        for (auto overload : overloads)
+        for (auto tryMatch : tryMatches)
         {
-            if (overload->overload->typeInfo->flags & TYPEINFO_GENERIC)
-                continue;
-
-            if (overload->overload->symbol->ownerTable != &identifier->identifierRef->startScope->symTable && overload->ufcs)
+            if (tryMatch->ufcs &&
+                tryMatch->overload->node->ownerStructScope &&
+                identifier->ownerStructScope &&
+                tryMatch->overload->node->ownerStructScope->owner != identifier->identifierRef->startScope->owner)
                 notFound++;
         }
 
-        if (notFound && notFound == overloads.size())
+        if (notFound == tryMatches.size())
         {
             if (identifier->identifierRef->typeInfo)
-                diag->remarks.push_back(Fmt(Nte(Nte0043), node->token.ctext(), identifier->identifierRef->typeInfo->getDisplayNameC()));
+            {
+                auto over = tryMatches.front()->overload;
+                auto msg  = Fmt(Nte(Nte0043),
+                               SymTable::getNakedKindName(over).c_str(),
+                               node->token.ctext(),
+                               identifier->identifierRef->typeInfo->getDisplayNameC(),
+                               over->node->ownerStructScope->owner->token.ctext());
+                diag->remarks.push_back(msg);
+            }
+
             for (auto s : identifier->identifierRef->startScope->childScopes)
             {
                 if (s->kind == ScopeKind::Impl)
@@ -663,7 +677,7 @@ void SemanticJob::symbolErrorRemarks(SemanticContext* context, VectorNative<OneT
     }
 }
 
-bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node)
+bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node)
 {
     AstIdentifier* identifier        = nullptr;
     AstNode*       genericParameters = nullptr;
@@ -682,7 +696,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
     // Take non generic errors in priority
     {
         vector<OneTryMatch*> n;
-        for (auto oneMatch : overloads)
+        for (auto oneMatch : tryMatches)
         {
             auto& one = *oneMatch;
             switch (one.symMatchContext.result)
@@ -702,14 +716,14 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
             }
         }
         if (!n.empty())
-            overloads = n;
+            tryMatches = n;
     }
 
     // MatchResult::MissingSomeParameters is a correct match, but not enough parameters
     // We take it in priority
     {
         vector<OneTryMatch*> n;
-        for (auto oneMatch : overloads)
+        for (auto oneMatch : tryMatches)
         {
             auto& one = *oneMatch;
             switch (one.symMatchContext.result)
@@ -720,81 +734,81 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
             }
         }
         if (!n.empty())
-            overloads = n;
+            tryMatches = n;
     }
 
     // If we do not have generic parameters, then eliminate generic fail
     if (!genericParameters)
     {
         vector<OneTryMatch*> n;
-        for (auto oneMatch : overloads)
+        for (auto oneMatch : tryMatches)
         {
             auto& one = *oneMatch;
             if (!(one.overload->flags & OVERLOAD_GENERIC))
                 n.push_back(oneMatch);
         }
         if (!n.empty())
-            overloads = n;
+            tryMatches = n;
     }
 
     // If we have generic parameters, then eliminate non generic fail
     if (genericParameters)
     {
         vector<OneTryMatch*> n;
-        for (auto oneMatch : overloads)
+        for (auto oneMatch : tryMatches)
         {
             auto& one = *oneMatch;
             if (one.overload->flags & OVERLOAD_GENERIC)
                 n.push_back(oneMatch);
         }
         if (!n.empty())
-            overloads = n;
+            tryMatches = n;
     }
 
     // Take selectif if failed in priority
     {
         vector<OneTryMatch*> n;
-        for (auto oneMatch : overloads)
+        for (auto oneMatch : tryMatches)
         {
             auto& one = *oneMatch;
             if (one.symMatchContext.result == MatchResult::SelectIfFailed)
                 n.push_back(oneMatch);
         }
         if (!n.empty())
-            overloads = n;
+            tryMatches = n;
     }
 
     // Take bad signature in priority
     {
         vector<OneTryMatch*> n;
-        for (auto oneMatch : overloads)
+        for (auto oneMatch : tryMatches)
         {
             auto& one = *oneMatch;
             if (one.symMatchContext.result == MatchResult::BadGenericSignature || one.symMatchContext.result == MatchResult::BadSignature)
                 n.push_back(oneMatch);
         }
         if (!n.empty())
-            overloads = n;
+            tryMatches = n;
     }
 
     // One single overload
-    if (overloads.size() == 1)
+    if (tryMatches.size() == 1)
     {
         // Be sure this is not because of an invalid special function signature
-        if (overloads[0]->overload->node->kind == AstNodeKind::FuncDecl)
-            SWAG_CHECK(checkFuncPrototype(context, CastAst<AstFuncDecl>(overloads[0]->overload->node, AstNodeKind::FuncDecl)));
+        if (tryMatches[0]->overload->node->kind == AstNodeKind::FuncDecl)
+            SWAG_CHECK(checkFuncPrototype(context, CastAst<AstFuncDecl>(tryMatches[0]->overload->node, AstNodeKind::FuncDecl)));
 
         vector<const Diagnostic*> errs0, errs1;
-        getDiagnosticForMatch(context, *overloads[0], errs0, errs1);
+        getDiagnosticForMatch(context, *tryMatches[0], errs0, errs1);
         SWAG_ASSERT(!errs0.empty());
-        symbolErrorRemarks(context, overloads, node, const_cast<Diagnostic*>(errs0[0]));
-        symbolErrorNotes(context, overloads, node, const_cast<Diagnostic*>(errs0[0]), errs1);
+        symbolErrorRemarks(context, tryMatches, node, const_cast<Diagnostic*>(errs0[0]));
+        symbolErrorNotes(context, tryMatches, node, const_cast<Diagnostic*>(errs0[0]), errs1);
         return context->report(*errs0[0], errs1);
     }
 
-    // Multiple overloads
-    Diagnostic diag{node, Fmt(Err(Err0113), overloads.size(), overloads[0]->overload->symbol->name.c_str())};
-    symbolErrorRemarks(context, overloads, node, &diag);
+    // Multiple tryMatches
+    Diagnostic diag{node, Fmt(Err(Err0113), tryMatches.size(), tryMatches[0]->overload->symbol->name.c_str())};
+    symbolErrorRemarks(context, tryMatches, node, &diag);
 
     vector<const Diagnostic*> notes;
 
@@ -813,13 +827,13 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
         bestBadGenParamIdx = -1;
         sameBadGenParamIdx = true;
 
-        for (auto& one : overloads)
+        for (auto& one : tryMatches)
         {
             if (badResult != MatchResult::Ok && badResult != one->symMatchContext.result)
                 sameBadResult = false;
             badResult = one->symMatchContext.result;
 
-            // If this is the same parameter that fails for every overloads, remember it
+            // If this is the same parameter that fails for every tryMatches, remember it
             if (one->symMatchContext.result == MatchResult::BadSignature)
             {
                 sameBadResult      = false;
@@ -861,7 +875,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
         if (pass == 1)
             break;
 
-        // If all fail on the same parameter, we do not display the list of overloads
+        // If all fail on the same parameter, we do not display the list of tryMatches
         if (sameBadParamIdx || sameBadGenParamIdx || sameBadResult)
         {
             static const int MAX_OVERLOADS = 5;
@@ -895,9 +909,9 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
             AstOutput::OutputContext outCxt;
             concat.init(10 * 1024);
 
-            for (int i = 0; i < min(overloads.size(), MAX_OVERLOADS); i++)
+            for (int i = 0; i < min(tryMatches.size(), MAX_OVERLOADS); i++)
             {
-                auto funcNode = CastAst<AstFuncDecl>(overloads[i]->overload->node, AstNodeKind::FuncDecl);
+                auto funcNode = CastAst<AstFuncDecl>(tryMatches[i]->overload->node, AstNodeKind::FuncDecl);
                 AstOutput::outputFuncSignature(outCxt, concat, funcNode, funcNode->genericParameters, funcNode->parameters, nullptr);
                 Utf8 n = Utf8{(const char*) concat.firstBucket->datas, concat.bucketCount(concat.firstBucket)};
                 if (n.back() == '\n')
@@ -909,24 +923,24 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
                 concat.clear();
             }
 
-            if (overloads.size() >= MAX_OVERLOADS)
+            if (tryMatches.size() >= MAX_OVERLOADS)
                 diagRemarks->remarks.push_back("...");
 
-            overloads.clear();
+            tryMatches.clear();
             break;
         }
 
-        // Remove overloads with a less accurate match
-        for (int i = 0; i < overloads.size(); i++)
+        // Remove tryMatches with a less accurate match
+        for (int i = 0; i < tryMatches.size(); i++)
         {
-            auto one = overloads[i];
+            auto one = tryMatches[i];
 
             if (one->symMatchContext.result == MatchResult::BadSignature)
             {
                 auto ep = getBadParamIdx(*one, callParameters);
                 if (ep < bestBadParamIdx)
                 {
-                    overloads.erase(i);
+                    tryMatches.erase(i);
                     i--;
                     continue;
                 }
@@ -937,7 +951,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
                 auto ep = one->symMatchContext.badSignatureInfos.badSignatureParameterIdx;
                 if (ep < bestBadGenParamIdx)
                 {
-                    overloads.erase(i);
+                    tryMatches.erase(i);
                     i--;
                     continue;
                 }
@@ -946,14 +960,14 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
     }
 
     int overIdx = 1;
-    for (auto& one : overloads)
+    for (auto& one : tryMatches)
     {
         vector<const Diagnostic*> errs0, errs1;
         getDiagnosticForMatch(context, *one, errs0, errs1);
 
         SWAG_ASSERT(!errs0.empty());
         auto note = const_cast<Diagnostic*>(errs0[0]);
-        if (overloads.size() > 1)
+        if (tryMatches.size() > 1)
             note->noteHeader = Fmt("overload %d", overIdx++);
         note->showFileName          = false;
         note->showMultipleCodeLines = false;
@@ -1003,7 +1017,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
         diag.hint          = Fmt(Hnt(Hnt0048), genericParameters->childs[badGenParamIdx]->typeInfo->getDisplayNameC());
     }
 
-    symbolErrorNotes(context, overloads, node, &diag, notes);
+    symbolErrorNotes(context, tryMatches, node, &diag, notes);
     return context->report(diag, notes);
 }
 
