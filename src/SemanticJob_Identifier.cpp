@@ -1600,6 +1600,7 @@ bool SemanticJob::isFunctionButNotACall(SemanticContext* context, AstNode* node,
             }
 
             if (grandParent->kind == AstNodeKind::Alias ||
+                (grandParent->kind == AstNodeKind::IntrinsicDefined) ||
                 (grandParent->kind == AstNodeKind::CompilerSpecialFunction && grandParent->token.id == TokenId::CompilerLocation) ||
                 (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicStringOf) ||
                 (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicNameOf) ||
@@ -3225,7 +3226,8 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
     if (countMatches > 1 && node->parent && node->parent->parent)
     {
         auto grandParent = node->parent->parent;
-        if (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicNameOf)
+        if (grandParent->kind == AstNodeKind::IntrinsicDefined ||
+            grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicNameOf)
         {
             matches.count = 1;
             return true;
