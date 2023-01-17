@@ -41,6 +41,7 @@ v.add(#code @print(a))
 closure/lambda, pouvoir zaper un paramètre avec ? => closure|&total|(?, depth) ()
 -------------------------------------
 if a == 1 do toto() else do titi()
+#if a a == 1 do...
 -------------------------------------
 
 
@@ -74,8 +75,11 @@ Erreur affichées dans les fichiers d'export plutot que dans le code source d'or
 TODO
 ****************************************
 
+
 -------------------------------------
 fast math ? (faire les tests de float en u32/U64 comme avant la prise en charge de nan)
+-------------------------------------
+debugger, ajouter la logique des expression $num qu'on peut récuper dans le prompt ensuite
 -------------------------------------
 DebugAllocator
 safety, regle de free avec delai
