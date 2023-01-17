@@ -373,11 +373,7 @@ namespace Report
         auto copyNotes = inNotes;
 
         if (!dealWithWarning(*copyDiag, copyNotes))
-        {
-            if (g_CommandLine.verboseTestErrors)
-                report(*copyDiag, copyNotes, true);
             return true;
-        }
 
         const auto& diag  = *copyDiag;
         const auto& notes = copyNotes;
