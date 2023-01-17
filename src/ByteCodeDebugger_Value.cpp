@@ -4,6 +4,7 @@
 #include "Ast.h"
 #include "ByteCodeDebugger.h"
 #include "ByteCode.h"
+#include "Workspace.h"
 
 bool ByteCodeDebugger::getValueFormat(const Utf8& cmd, ValueFormat& fmt)
 {
@@ -362,6 +363,25 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
     {
         switch (typeInfo->nativeType)
         {
+        case NativeTypeKind::Any:
+        {
+            auto ptr = ((uint8_t**) addr)[0];
+            if (ptr == nullptr)
+                str += "null";
+            else
+            {
+                str += Fmt("(0x%016llx ", ((void**) addr)[0]);
+                str += Fmt("0x%016llx)", ((void**) addr)[1]);
+                EvaluateResult res1;
+                res1.type = g_Workspace->swagScope.regTypeInfo;
+                res1.addr = ((void**) addr)[1];
+                appendTypedValue(context, str, res1, indent + 1);
+                if (str.back() != '\n')
+                    str += "\n";
+            }
+            return;
+        }
+
         case NativeTypeKind::String:
         {
             void*    ptr;

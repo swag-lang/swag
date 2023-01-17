@@ -45,7 +45,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     semanticJob->context.forDebugger = true;
 
     g_ThreadMgr.addJob(semanticJob);
-    g_ThreadMgr.waitEndJobs();
+    g_ThreadMgr.waitEndJobsSync();
 
     if (!g_SilentErrorMsg.empty())
     {
@@ -77,7 +77,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     child->extension->bytecode->bc->sourceFile = sourceFile;
 
     g_ThreadMgr.addJob(genJob);
-    g_ThreadMgr.waitEndJobs();
+    g_ThreadMgr.waitEndJobsSync();
 
     if (!g_SilentErrorMsg.empty())
     {

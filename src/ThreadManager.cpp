@@ -326,12 +326,17 @@ void ThreadManager::clearOptionalJobs()
         this_thread::yield();
 }
 
+void ThreadManager::waitEndJobsSync()
+{
+    while (tryExecuteJob()) {}
+}
+
 void ThreadManager::waitEndJobs()
 {
     // If one core only, do the jobs right now, in order
     if (g_CommandLine.numCores == 1)
     {
-        while (tryExecuteJob()) {}
+        waitEndJobsSync();
         return;
     }
 

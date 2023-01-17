@@ -26,6 +26,7 @@ struct ThreadManager
     void clearOptionalJobs();
     void executeOneJob(Job* job);
     void jobHasEnded(Job* job, JobResult result);
+    void waitEndJobsSync();
     void waitEndJobs();
     bool tryExecuteJob();
 
