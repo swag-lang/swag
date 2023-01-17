@@ -1,11 +1,10 @@
 #global namespace Random
 #global public
 
-alias DefaultRng = Rng'MWC
-
 struct(T = MWC) Rng
 {
-    rng: T
+    rng:        T
+    seedDone:   bool
 }
 
 impl Rng
@@ -14,6 +13,7 @@ impl Rng
     #[Swag.Inline]
     mtd seedU32(seed: u32)
     {
+        seedDone = true
         #if @defined(T.seedU32)
             return rng.seedU32(seed)
         #else
@@ -24,6 +24,7 @@ impl Rng
     #[Swag.Inline]
     mtd seedU64(seed: u64)
     {
+        seedDone = true
         #if @defined(T.seedU64)
             return rng.seedU64(seed)
         #else
@@ -34,6 +35,9 @@ impl Rng
     #[Swag.Inline]
     mtd nextU32()->u32
     {
+        if !seedDone
+            seedU32(Time.nowMilliseconds())
+
         #if @defined(T.nextU32)
             return rng.nextU32()
         #else
@@ -44,6 +48,9 @@ impl Rng
     #[Swag.Inline]
     mtd nextU64()->u64
     {
+        if !seedDone
+            seedU32(Time.nowMilliseconds())
+
         #if @defined(T.nextU64)
             return rng.nextU64()
         #else

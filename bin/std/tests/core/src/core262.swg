@@ -3,7 +3,7 @@ using Core.Random
 #test
 {
     var rng: Rng
-    //rng.seedNow()
+    rng.seedU32(0)
     @assert(bitcast(u32) rng.nextU32() == 820856226)
     @assert(bitcast(u64) rng.nextU64() == 10012380511238449408)
     @assert(bitcast(u32) rng.nextS32() == 3169966213)

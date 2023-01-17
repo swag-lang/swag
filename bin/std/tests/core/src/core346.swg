@@ -4,7 +4,7 @@ using Core
 {
     var arr: Array'u8
 
-    var rng: Random.DefaultRng
+    rng := Random.shared()
     loop 1000
     {
         v := cast(u8) (rng.nextU32() % 256)
