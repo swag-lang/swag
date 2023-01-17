@@ -5,7 +5,6 @@
 #include "Module.h"
 #include "TypeManager.h"
 #include "ErrorIds.h"
-#include "Diagnostic.h"
 #include "Report.h"
 
 bool SemanticJob::sendCompilerMsgTypeDecl(SemanticContext* context)

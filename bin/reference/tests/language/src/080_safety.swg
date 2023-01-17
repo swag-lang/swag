@@ -41,16 +41,19 @@ Swag will also check that a cast does not lose information.
 */
 #test
 {
-    x := 255'u8
-    //y := cast(s8) x   // This would lose information and panic, as 255 cannot be encoded in 's8'
-    //@print(y)
-}
+    x1 := 255'u8
 
-#test
-{
-    x := -1's8
-    //y := cast(u8) y   // This cast also is not possible, because 'x' is negative and 'y' is 'u8'
+    //y0 := cast(s8) x1     // This would lose information and panic, as 255 cannot be encoded in 's8'
+    //@print(y0)
+
+    y1 := cast,safe(s8) x1  // But ',safe' can be used on the cast operation too
+    @assert(y1 == -1)
+
+    x2 := -1's8
+    //y2 := cast(u8) x2     // This cast also is not possible, because 'x2' is negative and 'y' is 'u8'
     //@print(y)
+    y2 := cast,safe(u8) x2
+    @assert(y2 == 255)
 }
 
 /**

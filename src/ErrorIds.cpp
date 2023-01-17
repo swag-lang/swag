@@ -229,8 +229,8 @@ void initErrors()
     SWAG_ERROR(Syn0122, "the identifier '%s' starts with '__', and this is reserved by the language");
     SWAG_ERROR(Syn0123, "the implementation block kind (%s) does not match the type of '%s' (%s)");
     SWAG_ERROR(Syn0124, "the initializer list is empty");
-    SWAG_ERROR(Syn0125, "the operator modifier '%s' is already used once");
-    SWAG_ERROR(Syn0126, "the operator modifier '%s' is invalid for operator '%s'");
+    SWAG_ERROR(Syn0125, "the instruction modifier '%s' is already used once");
+    SWAG_ERROR(Syn0126, "the instruction modifier '%s' is invalid for '%s'");
     SWAG_ERROR(Syn0127, "the return value of intrinsic '%s' cannot be discarded");
     SWAG_ERROR(Syn0128, "the struct '%s' should be initialized in place with '{}' and not parenthesis");
     SWAG_ERROR(Syn0131, "the variable should have a type or should be initialized");

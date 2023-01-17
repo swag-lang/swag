@@ -615,8 +615,17 @@ bool SyntaxJob::doCast(AstNode* parent, AstNode** result)
     node->semanticFct = SemanticJob::resolveExplicitCast;
     if (result)
         *result = node;
-
     SWAG_CHECK(eatToken());
+
+    // Cast modifiers
+    uint32_t mdfFlags = 0;
+    SWAG_CHECK(doModifiers(node->token, mdfFlags));
+    if (mdfFlags & MODIFIER_SAFE)
+    {
+        node->specFlags |= AST_SPEC_CAST_SAFE;
+        node->attributeFlags |= ATTRIBUTE_SAFETY_OVERFLOW_OFF;
+    }
+
     SWAG_CHECK(eatToken(TokenId::SymLeftParen, "after 'cast'"));
     SWAG_CHECK(doTypeExpression(node));
     SWAG_CHECK(eatToken(TokenId::SymRightParen, "after the type expression"));

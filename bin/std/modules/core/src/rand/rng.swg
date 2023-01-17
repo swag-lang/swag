@@ -10,22 +10,52 @@ struct(T = MWC) Rng
 
 impl Rng
 {
-    // Seed the rng with the current time
-    mtd seedNow()
+    #[Swag.Inline]
+    mtd seedU32(seed: u32)
     {
-        rng.seedU32(Time.nowMicroseconds())
+        #if @defined(T.seedU32)
+            return rng.seedU32(seed)
+        #else
+            return rng.seedU64(cast(u64) seed)
     }
 
     #[Swag.Inline]
-    mtd seedU32(value: u32)
+    mtd seedU64(seed: u64)
     {
-        return rng.seedU32(value)
+        #if @defined(T.seedU64)
+            return rng.seedU64(seed)
+        #else
+            return rng.seedU32(cast,safe(u32) seed)
+    }
+
+    #[Swag.Inline]
+    mtd nextU32()->u32
+    {
+        #if @defined(T.nextU32)
+            return rng.nextU32()
+        #else
+            return cast,safe(u32) rng.nextU64()
+    }
+
+    #[Swag.Inline]
+    mtd nextU64()->u64
+    {
+        #if @defined(T.nextU64)
+            return rng.nextU64()
+        #else
+            return (cast(u64) rng.nextU32() << 32) | rng.nextU32()
+    }
+
+    // Seed the rng with the current time
+    mtd seedNow()
+    {
+        seedU32(Time.nowMicroseconds())
     }
 
     #[Swag.Inline]
     mtd nextS32()->s32
     {
-        return bitcast(s32) rng.nextU32()
+        return bitcast(s32) nextU32()
     }
 
     #[Swag.Inline]
@@ -34,24 +64,12 @@ impl Rng
         return bitcast(s64) nextU64()
     }
 
-    #[Swag.Inline]
-    mtd nextU32()->u32
-    {
-        return rng.nextU32()
-    }
-
-    #[Swag.Inline]
-    mtd nextU64()->u64
-    {
-        return (cast(u64) rng.nextU32() << 32) | rng.nextU32()
-    }
-
     // Range is [0..1[, so 1.0 will never be returned
     #[Swag.Inline]
     mtd nextF32()->f32
     {
-        v := rng.nextU32()
-        while v == Swag.U32.Max v = rng.nextU32()
+        v := nextU32()
+        while v == Swag.U32.Max v = nextU32()
         return v / cast(f32) Swag.U32.Max
     }
 
@@ -70,7 +88,7 @@ impl Rng
     {
         Debug.assert(max > min, "'max' must be greater than 'min'")
         range := cast(u32) (max - min)
-        value := rng.nextU32() % range
+        value := nextU32() % range
         return min + value
     }
 
@@ -90,7 +108,7 @@ impl Rng
     {
         Debug.assert(max > min, "'max' must be greater than 'min'")
         range := cast(u32) (max - min)
-        value := cast(s32) (rng.nextU32() % range)
+        value := cast(s32) (nextU32() % range)
         return min + value
     }
 

@@ -660,6 +660,7 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
             case TokenId::SymAsteriskEqual:
             case TokenId::SymLowerLowerEqual:
             case TokenId::SymGreaterGreaterEqual:
+            case TokenId::KwdCast:
                 break;
             default:
                 return error(token, Fmt(Err(Syn0126), forNode.ctext()));
@@ -778,12 +779,12 @@ bool SyntaxJob::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode
         SWAG_CHECK(eatToken());
 
         // Modifiers
-        uint32_t mdfFlags;
+        uint32_t mdfFlags = 0;
         SWAG_CHECK(doModifiers(binaryNode->token, mdfFlags));
         if (mdfFlags & MODIFIER_SAFE)
         {
             binaryNode->specFlags |= AST_SPEC_OP_SAFE;
-            binaryNode->attributeFlags |= ATTRIBUTE_SAFETY_OFF_OPERATOR;
+            binaryNode->attributeFlags |= ATTRIBUTE_SAFETY_OVERFLOW_OFF;
         }
 
         if (mdfFlags & MODIFIER_SMALL)
@@ -868,7 +869,7 @@ bool SyntaxJob::doBoolExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
 
 bool SyntaxJob::doMoveExpression(Token& forToken, AstNode* parent, AstNode** result)
 {
-    uint32_t mdfFlags;
+    uint32_t mdfFlags = 0;
     SWAG_CHECK(doModifiers(forToken, mdfFlags));
 
     // nodrop left
@@ -1347,7 +1348,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result, AstWith* w
         if (mdfFlags & MODIFIER_SAFE)
         {
             opFlags |= AST_SPEC_OP_SAFE;
-            opAttrFlags |= ATTRIBUTE_SAFETY_OFF_OPERATOR;
+            opAttrFlags |= ATTRIBUTE_SAFETY_OVERFLOW_OFF;
         }
         if (mdfFlags & MODIFIER_SMALL)
         {

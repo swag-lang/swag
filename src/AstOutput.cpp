@@ -1909,7 +1909,10 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         break;
 
     case AstNodeKind::Cast:
-        CONCAT_FIXED_STR(concat, "cast(");
+        CONCAT_FIXED_STR(concat, "cast");
+        if (node->specFlags & AST_SPEC_OP_SAFE)
+            CONCAT_FIXED_STR(concat, ",safe");
+        concat.addChar('(');
         SWAG_CHECK(outputNode(context, concat, node->childs[0]));
         CONCAT_FIXED_STR(concat, ") ");
         SWAG_CHECK(outputNode(context, concat, node->childs[1]));

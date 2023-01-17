@@ -10,6 +10,8 @@ using Core, Random
         //@print(x, "\n")
     }
 
-    //var rng1: Rng'Mt19937
-    //x := rng1.nextU64()
+    var rng1: Rng'Mt19937
+    rng1.seedU32(Time.nowMilliseconds())
+    x := rng1.nextU32()
+    //@print(x)
 }
