@@ -76,7 +76,8 @@ struct ListCtrl
     sigVirtualFill:     func(*Self, *ListLine, u32)
     sigSort:            func(*ListLine, *ListLine, u32, bool)->s32
 
-    lines:              ArrayPtr'ListLine
+    toFreeLines:        ArrayPtr'ListLine
+    lines:              Array'*ListLine
     idxLineToIdxList:   HashTable'(u32, u32)
     selModel:           SelModel
     checkModel:         SelModel
@@ -952,20 +953,20 @@ impl ListCtrl
     {
         Debug.assert(!isVirtual, "createLine cannot be called on a virtual list")
 
-        line := lines.newPtr()
         if parentLine
         {
+            line := parentLine.lines.newPtr()
             line.parent = parentLine
             line.level = parentLine.level + 1
             parentLine.lines.add(line)
-        }
-        else
-        {
-            line.index  = cast(u32) lines.count
-            idxLineToIdxList.add(line.index, line.index)
-            lines.add(line)
+            return line
         }
 
+        line := toFreeLines.newPtr()
+        line.index  = cast(u32) lines.count
+        idxLineToIdxList.add(line.index, line.index)
+        lines.add(line)
+        toFreeLines.add(line)
         return line
     }
 
@@ -1222,6 +1223,7 @@ impl ListCtrl
             // Update indexes after the insertion
             for idx := idxInsert + 1; idx < cast(u32) lines.count; idx += 1
                 idxLineToIdxList.add(lines[idx].index, cast(u32) (idx + to.lines.count))
+
             // Insert at the right position
             lines.insertAt(cast(uint) (idxInsert + 1), to.lines.toSlice())
         }
