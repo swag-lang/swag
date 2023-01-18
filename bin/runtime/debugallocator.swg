@@ -182,7 +182,7 @@ impl DebugAllocator
             @print("leak error: ")
             @print("id [", scan.allocId, "] sizeAlloc [")
             printDisplaySize(scan.userSize)
-            if scan.hint 
+            if scan.hint
                 @print("] hint [", scan.hint, "]")
             else
                 @print("]")
@@ -459,6 +459,9 @@ impl IAllocator for DebugAllocator
 
         case Alloc:
             alloc(request)
+
+        case AssertIsAllocated:
+            assertIsAllocated(request.address, request.callerLoc)
         }
     }
 }

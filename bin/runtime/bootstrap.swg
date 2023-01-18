@@ -242,6 +242,7 @@ namespace Swag
         Free
         Realloc
         FreeAll
+        AssertIsAllocated
     }
 
     struct AllocatorRequest

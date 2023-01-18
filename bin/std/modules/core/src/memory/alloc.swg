@@ -2,6 +2,22 @@
 #global namespace Memory
 using Swag
 
+// Check if a given pointer is allocated
+func assertIsAllocated(buffer: ^void, size: uint, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
+{
+    if !buffer return
+
+    var req: AllocatorRequest
+    req.callerLoc   = loc
+    req.mode        = AllocatorMode.AssertIsAllocated
+    req.size        = size
+    req.address     = buffer
+    req.hint        = hint
+
+    talloc := allocator orelse @getcontext().allocator
+    talloc.req(&req)
+}
+
 // Free the specified memory block
 func free(buffer: ^void, size: uint, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
 {
@@ -107,6 +123,7 @@ func(T) delete(ptr: *T, allocator: IAllocator = null, hint: string = null, loc =
     if !ptr
         return
     userHint := hint orelse @stringof(T)
+    assertIsAllocated(ptr, @sizeof(T), allocator, hint, loc)
     @drop(ptr)
     free(ptr, @sizeof(T), allocator, userHint, loc)
 }
@@ -119,6 +136,7 @@ func delete(ptr: *void, type: typeinfo, allocator: IAllocator = null, hint: stri
 
     Debug.assert(type != null)
     userHint := hint orelse type.name
+    assertIsAllocated(ptr, type.sizeof, allocator, userHint, loc)
 
     if type.kind == TypeInfoKind.Struct
     {
@@ -149,6 +167,7 @@ func(T) delete(ptr: ^T, num: uint, allocator: IAllocator = null, hint: string = 
     Debug.assert(num > 0)
 
     userHint := hint orelse @stringof(T)
+    assertIsAllocated(ptr, @sizeof(T) * num, allocator, userHint, loc)
     @drop(ptr, num)
     free(ptr, @sizeof(T) * num, allocator, userHint, loc)
 }
