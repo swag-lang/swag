@@ -26,7 +26,7 @@ var g_Discovered: u32
 
 func fillGrid()
 {
-    var rng: Random.DefaultRng
+    var rng: Random.Rng
     rng.seedNow()
 
     // Put a mine at random

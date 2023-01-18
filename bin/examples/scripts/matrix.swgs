@@ -23,7 +23,7 @@ struct C
 
 var g_RD:   [MaxColumns] C
 var g_Font: *Font
-var g_Rng:  Random.DefaultRng
+var g_Rng:  Random.Rng
 
 func initC(i: s32)
 {

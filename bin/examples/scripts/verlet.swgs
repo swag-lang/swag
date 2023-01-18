@@ -86,7 +86,7 @@ func simulate(dt: f32)
 
 const PositionC = Math.Vector2{400, 300}
 const RadC      = 200.0
-var g_Rng:      Random.DefaultRng
+var g_Rng:      Random.Rng
 var g_Objs:     Array'Verlet
 var g_Time:     f32
 

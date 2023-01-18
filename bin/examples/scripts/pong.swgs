@@ -22,7 +22,7 @@ struct Paddle
     pos: Vector2
 }
 
-var g_Rng:  Random.DefaultRng
+var g_Rng:  Random.Rng
 var g_Rect: Math.Rectangle
 var g_Font: *Font
 

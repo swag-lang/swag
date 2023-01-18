@@ -35,12 +35,11 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
     case Create:
         // Initial population
-        var rng: Random.DefaultRng
         loop i: 1..GridSize-2
         {
             loop j: 1..GridSize-2
             {
-                g_Grid[g_CurGen, i, j] = rng.nextBool()
+                g_Grid[g_CurGen, i, j] = Random.shared().nextBool()
             }
         }
 

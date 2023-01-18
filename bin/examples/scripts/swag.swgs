@@ -7,7 +7,7 @@
 
 using Core, Gui, Pixel, Math
 
-var g_Rng:    Random.DefaultRng
+var g_Rng:    Random.Rng
 var g_Points: Array'C
 
 struct C
