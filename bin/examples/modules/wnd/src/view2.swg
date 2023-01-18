@@ -2,7 +2,7 @@ using Core, Gui, Pixel
 
 func createTreeSimple(view: *Wnd, maxItems = 50)->*ListCtrl
 {
-    var rng: Random.DefaultRng
+    rng := Random.shared()
 
     tree := ListCtrl.createSimple(view, {5, 5, 250, 300})
     tree.setFrameForm(FrameWndForm.Round)

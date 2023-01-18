@@ -104,6 +104,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     sizeProlog       = concat.totalCount() - beforeProlog;
     uint16_t unwind0 = computeUnwindPushRDI(sizeProlog);
 
+    if (sizeStack + sizeParamsStack >= SWAG_LIMIT_PAGE_STACK)
+    {
+        pp.emit_Load64_Immediate(sizeStack + sizeParamsStack, RAX);
+        emitCall(pp, "__chkstk");
+    }
+
     pp.emit_Sub32_RSP(sizeStack + sizeParamsStack);
 
     coffFct->offsetStack  = offsetStack;

@@ -274,15 +274,17 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
         pp.symPI_backendKind    = pp.getOrAddSymbol("swag_process_infos_backendKind", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
 
         // Constant stuff needed to convert U64 to F64 (code from clang)
-        offset                   = pp.globalSegment.reserve(32, nullptr, 2 * sizeof(uint64_t));
-        pp.symCst_U64F64         = pp.getOrAddSymbol("swag_cast_u64f64", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
-        auto addr                = pp.globalSegment.address(offset);
-        *(uint32_t*) (addr + 0)  = 0x43300000;
-        *(uint32_t*) (addr + 4)  = 0x45300000;
-        *(uint32_t*) (addr + 8)  = 0x00000000;
-        *(uint32_t*) (addr + 12) = 0x00000000;
-        *(uint64_t*) (addr + 16) = 0x4330000000000000;
-        *(uint64_t*) (addr + 24) = 0x4530000000000000;
+        {
+            offset                   = pp.globalSegment.reserve(32, nullptr, 2 * sizeof(uint64_t));
+            pp.symCst_U64F64         = pp.getOrAddSymbol("swag_cast_u64f64", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+            auto addr                = pp.globalSegment.address(offset);
+            *(uint32_t*) (addr + 0)  = 0x43300000;
+            *(uint32_t*) (addr + 4)  = 0x45300000;
+            *(uint32_t*) (addr + 8)  = 0x00000000;
+            *(uint32_t*) (addr + 12) = 0x00000000;
+            *(uint64_t*) (addr + 16) = 0x4330000000000000;
+            *(uint64_t*) (addr + 24) = 0x4530000000000000;
+        }
     }
     else
     {

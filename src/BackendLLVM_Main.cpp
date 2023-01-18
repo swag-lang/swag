@@ -33,6 +33,8 @@ bool BackendLLVM::emitOS(const BuildParameters& buildParameters)
             builder.CreateRet(builder.getInt32(1));
         }
 
+        // :ChkStk
+        // See SWAG_LIMIT_PAGE_STACK
         // Stack probing. Must do it by hand to avoid linking with vc runtime on windows.
         // void __chkstk()
         if (g_CommandLine.target.arch == SwagTargetArch::X86_64)
