@@ -32,16 +32,16 @@ bool ByteCodeGenJob::emitNullConditionalOp(ByteCodeGenContext* context)
         SWAG_CHECK(emitUserOp(context, child0, nullptr, false));
         if (context->result != ContextResult::Done)
             return true;
-        emitInstruction(context, ByteCodeOp::JumpIfZero64, node->resultRegisterRC)->b.s32 = child0->resultRegisterRC.size() + 1; // After the "if not null"
+        emitInstruction(context, ByteCodeOp::JumpIfZero64, node->resultRegisterRC)->b.s32 = child0->resultRegisterRC.size(); // After the "if not null"
         freeRegisterRC(context, node->resultRegisterRC);
-        reserveRegisterRC(context, node->resultRegisterRC, child0->resultRegisterRC.size());
+        node->resultRegisterRC = child1->resultRegisterRC;
     }
     else
     {
-        int regIdx = 0;
-        reserveRegisterRC(context, node->resultRegisterRC, child0->resultRegisterRC.size());
+        node->resultRegisterRC = child1->resultRegisterRC;
 
         // For an interface, check the itable pointer
+        int regIdx = 0;
         if (child0->typeInfo->isInterface())
             regIdx = 1;
 
@@ -62,21 +62,14 @@ bool ByteCodeGenJob::emitNullConditionalOp(ByteCodeGenContext* context)
             break;
         }
 
-        inst->b.s32 = child0->resultRegisterRC.size() + 1; // After the "if not null"
+        inst->b.s32 = child0->resultRegisterRC.size(); // After the "if not null"
     }
 
     // If not null
     for (int r = 0; r < node->resultRegisterRC.size(); r++)
         emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[r], child0->resultRegisterRC[r]);
-    emitInstruction(context, ByteCodeOp::Jump)->b.s32 = node->resultRegisterRC.size(); // After the if null
-
-    // If null
-    for (int r = 0; r < node->resultRegisterRC.size(); r++)
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[r], child1->resultRegisterRC[r]);
 
     freeRegisterRC(context, child0);
-    freeRegisterRC(context, child1);
-
     return true;
 }
 
