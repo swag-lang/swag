@@ -314,7 +314,7 @@ void initErrors()
     SWAG_ERROR(Err0535, "'%s' should only be used before a function call that can raise errors (a function marked with 'throw')");
     SWAG_ERROR(Err0139, "'%s' should only be used before a function call, and '%s' is %s");
     SWAG_ERROR(Err0138, "'%s' should only be used inside a function marked with 'throw', and '%s' is not");
-    SWAG_ERROR(Err0225, "'%s[index] = %s' is impossible because special function 'opIndexAffect' cannot be found in '%s'");
+    SWAG_ERROR(Err0225, "cannot affect by index a type '%s' to '%s' because no corresponding function 'opIndexAffect' has been found in '%s'");
     SWAG_ERROR(Err0605, "'@abs' integer overflow");
     SWAG_ERROR(Err0427, "'@acos' is called with an invalid value");
     SWAG_ERROR(Err0426, "'@asin' is called with an invalid value");

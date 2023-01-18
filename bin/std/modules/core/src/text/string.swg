@@ -88,12 +88,19 @@ impl String
 
     mtd(op: string) opIndexAssign(index: uint, value: u8)
     {
+        Debug.safetyBoundCheck(index < length, "index out of range")
         #if op == "+="
             buffer[index] +=,safe value
         #elif op == "-="
             buffer[index] -=,safe value
         #else
             #assert(false, "invalid operator '" ++ op ++ "'")
+    }
+
+    mtd opIndexAffect(index: uint, value: u8)
+    {
+        Debug.safetyBoundCheck(index < length, "index out of range")
+        buffer[index] = value
     }
 
     mtd(op: string) opAssign(value: string)
@@ -152,8 +159,7 @@ impl String
     // Returns the byte at the given index
     mtdc opIndex(index: uint)->u8
     {
-        if !length
-            return 0
+        Debug.safetyBoundCheck(index < length, "index out of range")
         return buffer[index]
     }
 

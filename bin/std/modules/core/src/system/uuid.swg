@@ -24,9 +24,20 @@ public impl UUID
     }
 
     // Convert uuid to a string
-    /*mtd toString()->String
+    mtd toString()->String
     {
+        const Tbl = "0123456789ABCDEF"
+
         var result: retval
+        result.reserve(31)
+        result.length = 30
+
+        result[0] = Tbl[(val8[0] & 0xF)]
+        result[1] = Tbl[(val8[0] >>,safe 4)]
+        result[8] = "-"'u8
+        result[13] = "-"'u8
+        result[18] = "-"'u8
+        result[23] = "-"'u8
         return result
-    }*/
+    }
 }

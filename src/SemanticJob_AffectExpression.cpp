@@ -324,8 +324,12 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                         if (context->result != ContextResult::Done)
                             return true;
 
-                        Utf8 msg = Fmt(Err(Err0225), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC());
-                        return context->report({node, msg});
+                        Diagnostic diag{right, Fmt(Err(Err0225), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
+                        diag.hint = Diagnostic::isType(rightTypeInfo);
+                        diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+
+                        Diagnostic note{node, node->token, Fmt(Nte(Nte0051), "opIndexAffect", rightTypeInfo->getDisplayNameC()), DiagnosticLevel::Note};
+                        return context->report(diag, &note);
                     }
 
                     SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAffect, nullptr, nullptr, left, arrayNode->structFlatParams));

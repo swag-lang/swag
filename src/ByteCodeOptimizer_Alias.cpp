@@ -9,7 +9,7 @@
 // a = getparam(0)
 // b = getparam(0)
 // c = a * b => c = a * a
-bool ByteCodeOptimizer::optimizePassAlias(ByteCodeOptContext* context)
+bool ByteCodeOptimizer::optimizePassAliasFactor(ByteCodeOptContext* context)
 {
     context->map6432.clear();
     context->mapRegReg.clear();
@@ -186,5 +186,11 @@ bool ByteCodeOptimizer::optimizePassAlias(ByteCodeOptContext* context)
         }
     }
 
+    return true;
+}
+
+bool ByteCodeOptimizer::optimizePassAlias(ByteCodeOptContext* context)
+{
+    SWAG_CHECK(optimizePassAliasFactor(context));
     return true;
 }

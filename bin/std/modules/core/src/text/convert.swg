@@ -420,7 +420,7 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
         value = dref cast(*u64) dataof
     }
 
-    const tbl = "0123456789ABCDEF"
+    const Tbl = "0123456789ABCDEF"
     var tmp: [64] u8 = ?
     cpt := 63'u32
 
@@ -429,7 +429,7 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
     // So use '8' instead of '7'
     if overflowS64
     {
-        c := tbl[8 % fmt.base]
+        c := Tbl[8 % fmt.base]
         tmp[cpt] = c
         cpt, bits -= 1
         switch fmt.base
@@ -442,7 +442,7 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
 
     loop bits
     {
-        c := tbl[value % fmt.base]
+        c := Tbl[value % fmt.base]
         tmp[cpt] = c
         cpt -= 1
         value /= cast(u64) fmt.base
