@@ -596,110 +596,6 @@ void ByteCodeOptimizer::reduceAppend(ByteCodeOptContext* context, ByteCodeInstru
     }
 }
 
-static bool isSwapBlocked(ByteCodeInstruction* ip)
-{
-    uint32_t a = UINT32_MAX;
-    uint32_t c = UINT32_MAX;
-
-    if (ip[0].flags & BCI_START_STMT)
-        return true;
-
-    switch (ip->op)
-    {
-    case ByteCodeOp::MakeStackPointer:
-    case ByteCodeOp::GetFromStack8:
-    case ByteCodeOp::GetFromStack16:
-    case ByteCodeOp::GetFromStack32:
-    case ByteCodeOp::GetFromStack64:
-    case ByteCodeOp::GetParam64:
-    case ByteCodeOp::SetImmediate32:
-    case ByteCodeOp::SetImmediate64:
-        a = ip->a.u32;
-        break;
-    case ByteCodeOp::IncPointer64:
-        if (!(ip->flags & BCI_IMM_B))
-            return false;
-        a = ip->a.u32;
-        c = ip->c.u32;
-        break;
-    default:
-        return false;
-    }
-
-    if (ip[1].op == ip[0].op)
-        return true;
-    if (a != UINT32_MAX && ByteCode::hasRefToReg(ip + 1, a))
-        return true;
-    if (c != UINT32_MAX && ByteCode::hasRefToReg(ip + 1, c))
-        return true;
-    if (ip[1].op == ByteCodeOp::Ret || ip[1].op == ByteCodeOp::CopyRCtoRRRet)
-        return true;
-    if (ByteCode::isJump(ip + 1))
-        return true;
-    if (ip[1].flags & BCI_START_STMT)
-        return true;
-    if (ip->node->ownerInline != ip[1].node->ownerInline)
-        return true;
-
-    return false;
-}
-
-static bool canSwap(ByteCodeInstruction* ip)
-{
-    switch (ip->op)
-    {
-    case ByteCodeOp::MakeStackPointer:
-        if (isSwapBlocked(ip))
-            return false;
-        if (ip[1].op != ByteCodeOp::GetFromStack8 &&
-            ip[1].op != ByteCodeOp::GetFromStack16 &&
-            ip[1].op != ByteCodeOp::GetFromStack32 &&
-            ip[1].op != ByteCodeOp::GetFromStack64 &&
-            isSwapBlocked(ip + 1))
-            return false;
-        return true;
-
-    case ByteCodeOp::GetFromStack8:
-    case ByteCodeOp::GetFromStack16:
-    case ByteCodeOp::GetFromStack32:
-    case ByteCodeOp::GetFromStack64:
-    case ByteCodeOp::GetParam64:
-    case ByteCodeOp::SetImmediate32:
-    case ByteCodeOp::SetImmediate64:
-        if (isSwapBlocked(ip))
-            return false;
-        if (isSwapBlocked(ip + 1))
-            return false;
-        return true;
-
-    case ByteCodeOp::IncPointer64:
-        if (!(ip->flags & BCI_IMM_B))
-            return false;
-        if (isSwapBlocked(ip))
-            return false;
-        if (isSwapBlocked(ip + 1))
-            return false;
-        return true;
-    }
-
-    return false;
-}
-
-void ByteCodeOptimizer::reduceSwap(ByteCodeOptContext* context, ByteCodeInstruction* ip)
-{
-    if (canSwap(ip))
-    {
-        swap(ip[0], ip[1]);
-        if (canSwap(ip))
-        {
-            swap(ip[0], ip[1]);
-            return;
-        }
-
-        context->passHasDoneSomething = true;
-    }
-}
-
 void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
     switch (ip->op)
@@ -5167,7 +5063,6 @@ bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         reduceCast(context, ip);
         reduceNoOp(context, ip);
         reduceCmpJump(context, ip);
-        reduceSwap(context, ip);
         reduceAppend(context, ip);
         reduceForceSafe(context, ip);
         reduceStackOp(context, ip);

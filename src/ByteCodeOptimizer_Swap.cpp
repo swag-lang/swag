@@ -1,0 +1,92 @@
+#include "pch.h"
+#include "ByteCodeOptimizer.h"
+#include "SourceFile.h"
+#include "Module.h"
+#include "Log.h"
+#include "AstNode.h"
+
+bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
+{
+    context->mapInstInst.clear();
+    for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
+    {
+        switch (ip->op)
+        {
+        case ByteCodeOp::MakeStackPointer:
+        case ByteCodeOp::GetFromStack8:
+        case ByteCodeOp::GetFromStack16:
+        case ByteCodeOp::GetFromStack32:
+        case ByteCodeOp::GetFromStack64:
+        case ByteCodeOp::GetParam64:
+        case ByteCodeOp::SetImmediate32:
+        case ByteCodeOp::SetImmediate64:
+            break;
+        case ByteCodeOp::IncPointer64:
+            if (!(ip->flags & BCI_IMM_B))
+                continue;
+            break;
+        default:
+            continue;
+        }
+
+        auto ipn = ip + 1;
+        while (true)
+        {
+            if (ipn->op == ByteCodeOp::Ret || ipn->op == ByteCodeOp::CopyRCtoRRRet)
+                break;
+            if (ipn->flags & BCI_START_STMT)
+                break;
+            if (ip->node->ownerInline != ipn->node->ownerInline)
+                break;
+            if (ipn->op == ByteCodeOp::Nop)
+                break;
+
+            if ((ByteCode::hasWriteRegInA(ip) && ByteCode::hasRefToReg(ipn, ip->a.u32)) ||
+                (ByteCode::hasWriteRegInB(ip) && ByteCode::hasRefToReg(ipn, ip->b.u32)) ||
+                (ByteCode::hasWriteRegInC(ip) && ByteCode::hasRefToReg(ipn, ip->c.u32)) ||
+                (ByteCode::hasWriteRegInD(ip) && ByteCode::hasRefToReg(ipn, ip->d.u32)))
+            {
+                context->mapInstInst[ip] = ipn;
+                break;
+            }
+
+            if ((ByteCode::hasReadRegInA(ip) && ByteCode::hasWriteRefToReg(ipn, ip->a.u32)) ||
+                (ByteCode::hasReadRegInB(ip) && ByteCode::hasWriteRefToReg(ipn, ip->b.u32)) ||
+                (ByteCode::hasReadRegInC(ip) && ByteCode::hasWriteRefToReg(ipn, ip->c.u32)) ||
+                (ByteCode::hasReadRegInD(ip) && ByteCode::hasWriteRefToReg(ipn, ip->d.u32)))
+            {
+                break;
+            }
+
+            if (ByteCode::isJump(ipn))
+                break;
+            ipn++;
+        }
+    }
+
+    for (auto it : context->mapInstInst)
+    {
+        auto ip  = it.first;
+        auto ipn = it.second;
+
+        if (ipn == ip + 1)
+            continue;
+
+        auto it1 = context->mapInstInst.find(ip + 1);
+        if (it1 != context->mapInstInst.end() && it1->second >= it.second)
+            continue;
+
+        swap(ip[0], ip[1]);
+
+        if (ip[1].flags & BCI_START_STMT)
+        {
+            ip[0].flags |= ip[1].flags & BCI_START_STMT;
+            ip[1].flags &= ~BCI_START_STMT;
+        }
+
+        context->passHasDoneSomething = true;
+        break;
+    }
+
+    return true;
+}

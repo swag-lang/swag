@@ -530,6 +530,9 @@
     <ClCompile Include="..\src\ByteCodeOptimizer_Sanity.cpp">
       <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\ByteCodeOptimizer_Swap.cpp">
+      <Filter>Backend\ByteCode\Optimize</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">

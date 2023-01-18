@@ -38,6 +38,7 @@ struct ByteCodeOptimizer
 
     static void optimizePassSwitch(ByteCodeOptContext* context, ByteCodeOp op0, ByteCodeOp op1);
     static bool optimizePassSwitch(ByteCodeOptContext* context);
+    static bool optimizePassSwap(ByteCodeOptContext* context);
 
     static void optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, ByteCodeOp op);
     static void optimizePassDupCopyOp(ByteCodeOptContext* context, ByteCodeOp op);
@@ -51,7 +52,6 @@ struct ByteCodeOptimizer
     static void reduceCallEmptyFct(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceAppend(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceMemcpy(ByteCodeOptContext* context, ByteCodeInstruction* ip);
-    static void reduceSwap(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceFunc(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceStack(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstruction* ip);
