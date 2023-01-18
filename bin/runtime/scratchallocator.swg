@@ -117,6 +117,46 @@ impl IAllocator for ScratchAllocator
         request.address = null
     }
 
+    mtd alloc(request: *AllocatorRequest)
+    {
+        // Special case
+        if request.size == 0
+        {
+            if request.mode == .Realloc
+                free(request)
+            request.address = null
+            return
+        }
+
+        // Allocate in the buffer if there is enough room
+        usedAlign := align(used, request.alignement)
+        if usedAlign + request.size <= capacity
+        {
+            oldAddress := request.address
+            request.address = block + usedAlign
+            used = usedAlign + request.size
+            maxUsed = @max(maxUsed, used)
+            if oldAddress
+                @memcpy(request.address, oldAddress, request.oldSize)
+            return
+        }
+
+        // Otherwise this is a leak
+        // We prepend a LeakHeader to the user block, and linked it in
+        // the chained list of leak allocations (at the first position)
+        totalSize := request.size + @sizeof(LeakHeader)
+        ptr  := cast(^LeakHeader) alloc(totalSize, request.alignement)
+        leak := cast(^LeakHeader) firstLeak
+        if leak leak.prev = ptr
+        ptr.prev = null
+        ptr.next = firstLeak
+        firstLeak = ptr
+        ptr.size = totalSize
+        request.address = ptr + 1 // user block is after the header
+        totalLeak += request.size
+        maxLeak = @max(maxLeak, totalLeak)
+    }
+
     mtd req(request: *AllocatorRequest)
     {
         @assert(block != null)
@@ -128,47 +168,8 @@ impl IAllocator for ScratchAllocator
         case FreeAll:
             freeAll()
 
-        case Alloc:
-            request.address = null
-            fallthrough
-
-        case Realloc:
-            // Special case
-            if request.size == 0
-            {
-                if request.mode == .Realloc
-                    free(request)
-                request.address = null
-                return
-            }
-
-            // Allocate in the buffer if there is enough room
-            usedAlign := align(used, request.alignement)
-            if usedAlign + request.size <= capacity
-            {
-                oldAddress := request.address
-                request.address = block + usedAlign
-                used = usedAlign + request.size
-                maxUsed = @max(maxUsed, used)
-                if oldAddress
-                    @memcpy(request.address, oldAddress, request.oldSize)
-                break
-            }
-
-            // Otherwise this is a leak
-            // We prepend a LeakHeader to the user block, and linked it in
-            // the chained list of leak allocations (at the first position)
-            totalSize := request.size + @sizeof(LeakHeader)
-            ptr  := cast(^LeakHeader) alloc(totalSize, request.alignement)
-            leak := cast(^LeakHeader) firstLeak
-            if leak leak.prev = ptr
-            ptr.prev = null
-            ptr.next = firstLeak
-            firstLeak = ptr
-            ptr.size = totalSize
-            request.address = ptr + 1 // user block is after the header
-            totalLeak += request.size
-            maxLeak = @max(maxLeak, totalLeak)
+        case Realloc, Alloc:
+            alloc(request)
         }
     }
 }
