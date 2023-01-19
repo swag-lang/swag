@@ -44,7 +44,6 @@ impl UUID
     }
 
     // Convert uuid to a string
-    #[Swag.PrintBc]
     mtd toString(result: [..] u8)
     {
         Debug.assert(@countof(result) == 36)
