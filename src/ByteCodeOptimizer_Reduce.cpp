@@ -4746,6 +4746,47 @@ void ByteCodeOptimizer::reduceStackOp(ByteCodeOptContext* context, ByteCodeInstr
                 ip[1].a.u32 = ip->b.u32;
                 SET_OP(ip + 1, ByteCodeOp::AffectOpMulEqF64_S);
                 break;
+
+            /*case ByteCodeOp::AffectOpDivEqS8:
+                ip[1].a.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpDivEqS8_S);
+                break;
+            case ByteCodeOp::AffectOpDivEqS16:
+                ip[1].a.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpDivEqS16_S);
+                break;
+            case ByteCodeOp::AffectOpDivEqS32:
+                ip[1].a.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpDivEqS32_S);
+                break;
+            case ByteCodeOp::AffectOpDivEqS64:
+                ip[1].a.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpDivEqS64_S);
+                break;
+            case ByteCodeOp::AffectOpDivEqU8:
+                ip[1].a.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpDivEqU8_S);
+                break;
+            case ByteCodeOp::AffectOpDivEqU16:
+                ip[1].a.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpDivEqU16_S);
+                break;
+            case ByteCodeOp::AffectOpDivEqU32:
+                ip[1].a.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpDivEqU32_S);
+                break;
+            case ByteCodeOp::AffectOpDivEqU64:
+                ip[1].a.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpDivEqU64_S);
+                break;
+            case ByteCodeOp::AffectOpDivEqF32:
+                ip[1].a.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpDivEqF32_S);
+                break;
+            case ByteCodeOp::AffectOpDivEqF64:
+                ip[1].a.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpDivEqF64_S);
+                break;*/
             }
         }
         break;
@@ -4781,6 +4822,15 @@ void ByteCodeOptimizer::reduceStackOp(ByteCodeOptContext* context, ByteCodeInstr
                 ip[1].b.u32 = ip->b.u32;
                 SET_OP(ip + 1, ByteCodeOp::AffectOpMulEqU8_SSSafe);
                 break;
+
+            case ByteCodeOp::AffectOpDivEqS8_S:
+                ip[1].b.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpDivEqS8_SS);
+                break;
+            case ByteCodeOp::AffectOpDivEqU8_S:
+                ip[1].b.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpDivEqU8_SS);
+                break;
             }
         }
         break;
@@ -4815,6 +4865,15 @@ void ByteCodeOptimizer::reduceStackOp(ByteCodeOptContext* context, ByteCodeInstr
             case ByteCodeOp::AffectOpMulEqU16_SSafe:
                 ip[1].b.u32 = ip->b.u32;
                 SET_OP(ip + 1, ByteCodeOp::AffectOpMulEqU16_SSSafe);
+                break;
+
+            case ByteCodeOp::AffectOpDivEqS16_S:
+                ip[1].b.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpDivEqS16_SS);
+                break;
+            case ByteCodeOp::AffectOpDivEqU16_S:
+                ip[1].b.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpDivEqU16_SS);
                 break;
             }
         }
@@ -4863,6 +4922,19 @@ void ByteCodeOptimizer::reduceStackOp(ByteCodeOptContext* context, ByteCodeInstr
                 ip[1].b.u32 = ip->b.u32;
                 SET_OP(ip + 1, ByteCodeOp::AffectOpMulEqF32_SS);
                 break;
+
+            case ByteCodeOp::AffectOpDivEqS32_S:
+                ip[1].b.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpDivEqS32_SS);
+                break;
+            case ByteCodeOp::AffectOpDivEqU32_S:
+                ip[1].b.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpDivEqU32_SS);
+                break;
+            case ByteCodeOp::AffectOpDivEqF32_S:
+                ip[1].b.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpDivEqF32_SS);
+                break;
             }
         }
         break;
@@ -4909,6 +4981,19 @@ void ByteCodeOptimizer::reduceStackOp(ByteCodeOptContext* context, ByteCodeInstr
             case ByteCodeOp::AffectOpMulEqF64_S:
                 ip[1].b.u32 = ip->b.u32;
                 SET_OP(ip + 1, ByteCodeOp::AffectOpMulEqF64_SS);
+                break;
+
+            case ByteCodeOp::AffectOpDivEqS64_S:
+                ip[1].b.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpDivEqS64_SS);
+                break;
+            case ByteCodeOp::AffectOpDivEqU64_S:
+                ip[1].b.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpDivEqU64_SS);
+                break;
+            case ByteCodeOp::AffectOpDivEqF64_S:
+                ip[1].b.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpDivEqF64_SS);
                 break;
             }
         }

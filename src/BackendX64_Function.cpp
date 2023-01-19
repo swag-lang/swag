@@ -1050,110 +1050,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_StoreF64_Indirect(0, XMM0, RAX);
             break;
 
-        case ByteCodeOp::AffectOpModuloEqS8:
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
-            pp.emit_LoadS8S16_Indirect(0, RAX, RAX);
-            if (ip->flags & BCI_IMM_B)
-                pp.emit_Load64_Immediate(ip->b.u8, RCX);
-            else
-                pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
-            concat.addString2("\xf6\x9b"); // idiv al, bl
-            concat.addString2("\x88\xe0"); // mov al, ah
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
-            pp.emit_Store8_Indirect(0, RAX, RCX);
-            break;
-
-        case ByteCodeOp::AffectOpModuloEqS16:
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
-            pp.emit_Load16_Indirect(0, RAX, RAX);
-            concat.addString2("\x66\x99"); // cwd
-            if (ip->flags & BCI_IMM_B)
-                pp.emit_Load64_Immediate(ip->b.u16, RCX);
-            else
-                pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
-            concat.addString3("\x66\xf7\xf9"); // idiv ax, bx
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
-            pp.emit_Store16_Indirect(0, RDX, RCX);
-            break;
-
-        case ByteCodeOp::AffectOpModuloEqS32:
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
-            pp.emit_Load32_Indirect(0, RAX, RAX);
-            concat.addString1("\x99"); // cdq
-            if (ip->flags & BCI_IMM_B)
-                pp.emit_Load64_Immediate(ip->b.u32, RCX);
-            else
-                pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
-            concat.addString2("\xf7\xf9"); // idiv eax, ebx
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
-            pp.emit_Store32_Indirect(0, RDX, RCX);
-            break;
-
-        case ByteCodeOp::AffectOpModuloEqS64:
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
-            pp.emit_Load64_Indirect(0, RAX, RAX);
-            concat.addString2("\x48\x99"); // cqo
-            if (ip->flags & BCI_IMM_B)
-                pp.emit_Load64_Immediate(ip->b.u64, RCX);
-            else
-                pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
-            concat.addString3("\x48\xf7\xf9"); // idiv rax, rcx
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
-            pp.emit_Store64_Indirect(0, RDX, RCX);
-            break;
-
-        case ByteCodeOp::AffectOpModuloEqU8:
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
-            pp.emit_LoadS8S16_Indirect(0, RAX, RAX);
-            if (ip->flags & BCI_IMM_B)
-                pp.emit_Load64_Immediate(ip->b.u8, RCX);
-            else
-                pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
-            concat.addString2("\xf6\xf1"); // div al, cl
-            concat.addString2("\x88\xe0"); // mov al, ah
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
-            pp.emit_Store8_Indirect(0, RAX, RCX);
-            break;
-
-        case ByteCodeOp::AffectOpModuloEqU16:
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
-            pp.emit_Load16_Indirect(0, RAX, RAX);
-            pp.emit_Clear16(RDX);
-            if (ip->flags & BCI_IMM_B)
-                pp.emit_Load64_Immediate(ip->b.u16, RCX);
-            else
-                pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
-            concat.addString3("\x66\xf7\xf1"); // div ax, cx
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
-            pp.emit_Store16_Indirect(0, RDX, RCX);
-            break;
-
-        case ByteCodeOp::AffectOpModuloEqU32:
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
-            pp.emit_Load32_Indirect(0, RAX, RAX);
-            pp.emit_Clear32(RDX);
-            if (ip->flags & BCI_IMM_B)
-                pp.emit_Load64_Immediate(ip->b.u32, RCX);
-            else
-                pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
-            concat.addString2("\xf7\xf1"); // div eax, ecx
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
-            pp.emit_Store32_Indirect(0, RDX, RCX);
-            break;
-
-        case ByteCodeOp::AffectOpModuloEqU64:
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
-            pp.emit_Load64_Indirect(0, RAX, RAX);
-            pp.emit_Clear64(RDX);
-            if (ip->flags & BCI_IMM_B)
-                pp.emit_Load64_Immediate(ip->b.u64, RCX);
-            else
-                pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
-            concat.addString3("\x48\xf7\xf1"); // div rax, rcx
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
-            pp.emit_Store64_Indirect(0, RDX, RCX);
-            break;
-
         case ByteCodeOp::AffectOpDivEqS8:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             pp.emit_LoadS8S16_Indirect(0, RAX, RAX);
@@ -1270,6 +1166,110 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_LoadF64_Indirect(0, XMM0, RAX);
             concat.addString4("\xf2\x0f\x5e\xc1"); // divsd xmm0, xmm1
             pp.emit_StoreF64_Indirect(0, XMM0, RAX);
+            break;
+
+        case ByteCodeOp::AffectOpModuloEqS8:
+            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
+            pp.emit_LoadS8S16_Indirect(0, RAX, RAX);
+            if (ip->flags & BCI_IMM_B)
+                pp.emit_Load64_Immediate(ip->b.u8, RCX);
+            else
+                pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
+            concat.addString2("\xf6\x9b"); // idiv al, bl
+            concat.addString2("\x88\xe0"); // mov al, ah
+            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
+            pp.emit_Store8_Indirect(0, RAX, RCX);
+            break;
+
+        case ByteCodeOp::AffectOpModuloEqS16:
+            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
+            pp.emit_Load16_Indirect(0, RAX, RAX);
+            concat.addString2("\x66\x99"); // cwd
+            if (ip->flags & BCI_IMM_B)
+                pp.emit_Load64_Immediate(ip->b.u16, RCX);
+            else
+                pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
+            concat.addString3("\x66\xf7\xf9"); // idiv ax, bx
+            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
+            pp.emit_Store16_Indirect(0, RDX, RCX);
+            break;
+
+        case ByteCodeOp::AffectOpModuloEqS32:
+            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
+            pp.emit_Load32_Indirect(0, RAX, RAX);
+            concat.addString1("\x99"); // cdq
+            if (ip->flags & BCI_IMM_B)
+                pp.emit_Load64_Immediate(ip->b.u32, RCX);
+            else
+                pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
+            concat.addString2("\xf7\xf9"); // idiv eax, ebx
+            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
+            pp.emit_Store32_Indirect(0, RDX, RCX);
+            break;
+
+        case ByteCodeOp::AffectOpModuloEqS64:
+            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
+            pp.emit_Load64_Indirect(0, RAX, RAX);
+            concat.addString2("\x48\x99"); // cqo
+            if (ip->flags & BCI_IMM_B)
+                pp.emit_Load64_Immediate(ip->b.u64, RCX);
+            else
+                pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
+            concat.addString3("\x48\xf7\xf9"); // idiv rax, rcx
+            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
+            pp.emit_Store64_Indirect(0, RDX, RCX);
+            break;
+
+        case ByteCodeOp::AffectOpModuloEqU8:
+            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
+            pp.emit_LoadS8S16_Indirect(0, RAX, RAX);
+            if (ip->flags & BCI_IMM_B)
+                pp.emit_Load64_Immediate(ip->b.u8, RCX);
+            else
+                pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
+            concat.addString2("\xf6\xf1"); // div al, cl
+            concat.addString2("\x88\xe0"); // mov al, ah
+            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
+            pp.emit_Store8_Indirect(0, RAX, RCX);
+            break;
+
+        case ByteCodeOp::AffectOpModuloEqU16:
+            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
+            pp.emit_Load16_Indirect(0, RAX, RAX);
+            pp.emit_Clear16(RDX);
+            if (ip->flags & BCI_IMM_B)
+                pp.emit_Load64_Immediate(ip->b.u16, RCX);
+            else
+                pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
+            concat.addString3("\x66\xf7\xf1"); // div ax, cx
+            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
+            pp.emit_Store16_Indirect(0, RDX, RCX);
+            break;
+
+        case ByteCodeOp::AffectOpModuloEqU32:
+            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
+            pp.emit_Load32_Indirect(0, RAX, RAX);
+            pp.emit_Clear32(RDX);
+            if (ip->flags & BCI_IMM_B)
+                pp.emit_Load64_Immediate(ip->b.u32, RCX);
+            else
+                pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
+            concat.addString2("\xf7\xf1"); // div eax, ecx
+            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
+            pp.emit_Store32_Indirect(0, RDX, RCX);
+            break;
+
+        case ByteCodeOp::AffectOpModuloEqU64:
+            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
+            pp.emit_Load64_Indirect(0, RAX, RAX);
+            pp.emit_Clear64(RDX);
+            if (ip->flags & BCI_IMM_B)
+                pp.emit_Load64_Immediate(ip->b.u64, RCX);
+            else
+                pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
+            concat.addString3("\x48\xf7\xf1"); // div rax, rcx
+            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
+            pp.emit_Store64_Indirect(0, RDX, RCX);
             break;
 
         case ByteCodeOp::AffectOpPlusEqS8:

@@ -3122,41 +3122,101 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::AffectOpDivEqS8:
         *(int8_t*) registersRC[ip->a.u32].pointer /= IMMB_S8(ip);
         break;
+    case ByteCodeOp::AffectOpDivEqS8_S:
+        *(int8_t*) (context->bp + ip->a.u32) /= IMMB_S8(ip);
+        break;
+    case ByteCodeOp::AffectOpDivEqS8_SS:
+        *(int8_t*) (context->bp + ip->a.u32) /= *(int8_t*) (context->bp + ip->b.u32);
+        break;
 
     case ByteCodeOp::AffectOpDivEqS16:
         *(int16_t*) registersRC[ip->a.u32].pointer /= IMMB_S16(ip);
+        break;
+    case ByteCodeOp::AffectOpDivEqS16_S:
+        *(int16_t*) (context->bp + ip->a.u32) /= IMMB_S16(ip);
+        break;
+    case ByteCodeOp::AffectOpDivEqS16_SS:
+        *(int16_t*) (context->bp + ip->a.u32) /= *(int16_t*) (context->bp + ip->b.u32);
         break;
 
     case ByteCodeOp::AffectOpDivEqS32:
         *(int32_t*) registersRC[ip->a.u32].pointer /= IMMB_S32(ip);
         break;
+    case ByteCodeOp::AffectOpDivEqS32_S:
+        *(int32_t*) (context->bp + ip->a.u32) /= IMMB_S32(ip);
+        break;
+    case ByteCodeOp::AffectOpDivEqS32_SS:
+        *(int32_t*) (context->bp + ip->a.u32) /= *(int32_t*) (context->bp + ip->b.u32);
+        break;
 
     case ByteCodeOp::AffectOpDivEqS64:
         *(int64_t*) registersRC[ip->a.u32].pointer /= IMMB_S64(ip);
+        break;
+    case ByteCodeOp::AffectOpDivEqS64_S:
+        *(int32_t*) (context->bp + ip->a.u32) /= IMMB_S32(ip);
+        break;
+    case ByteCodeOp::AffectOpDivEqS64_SS:
+        *(int64_t*) (context->bp + ip->a.u32) /= *(int64_t*) (context->bp + ip->b.u32);
         break;
 
     case ByteCodeOp::AffectOpDivEqU8:
         *(uint8_t*) registersRC[ip->a.u32].pointer /= IMMB_U8(ip);
         break;
+    case ByteCodeOp::AffectOpDivEqU8_S:
+        *(uint8_t*) (context->bp + ip->a.u32) /= IMMB_U8(ip);
+        break;
+    case ByteCodeOp::AffectOpDivEqU8_SS:
+        *(uint8_t*) (context->bp + ip->a.u32) /= *(uint8_t*) (context->bp + ip->b.u32);
+        break;
 
     case ByteCodeOp::AffectOpDivEqU16:
         *(uint16_t*) registersRC[ip->a.u32].pointer /= IMMB_U16(ip);
+        break;
+    case ByteCodeOp::AffectOpDivEqU16_S:
+        *(uint16_t*) (context->bp + ip->a.u32) /= IMMB_U16(ip);
+        break;
+    case ByteCodeOp::AffectOpDivEqU16_SS:
+        *(uint16_t*) (context->bp + ip->a.u32) /= *(uint16_t*) (context->bp + ip->b.u32);
         break;
 
     case ByteCodeOp::AffectOpDivEqU32:
         *(uint32_t*) registersRC[ip->a.u32].pointer /= IMMB_U32(ip);
         break;
+    case ByteCodeOp::AffectOpDivEqU32_S:
+        *(uint32_t*) (context->bp + ip->a.u32) /= IMMB_U32(ip);
+        break;
+    case ByteCodeOp::AffectOpDivEqU32_SS:
+        *(uint32_t*) (context->bp + ip->a.u32) /= *(uint32_t*) (context->bp + ip->b.u32);
+        break;
 
     case ByteCodeOp::AffectOpDivEqU64:
         *(uint64_t*) registersRC[ip->a.u32].pointer /= IMMB_U64(ip);
+        break;
+    case ByteCodeOp::AffectOpDivEqU64_S:
+        *(uint64_t*) (context->bp + ip->a.u32) /= IMMB_U64(ip);
+        break;
+    case ByteCodeOp::AffectOpDivEqU64_SS:
+        *(uint64_t*) (context->bp + ip->a.u32) /= *(uint64_t*) (context->bp + ip->b.u32);
         break;
 
     case ByteCodeOp::AffectOpDivEqF32:
         *(float*) registersRC[ip->a.u32].pointer /= IMMB_F32(ip);
         break;
+    case ByteCodeOp::AffectOpDivEqF32_S:
+        *(float*) (context->bp + ip->a.u32) /= IMMB_F32(ip);
+        break;
+    case ByteCodeOp::AffectOpDivEqF32_SS:
+        *(float*) (context->bp + ip->a.u32) /= *(float*) (context->bp + ip->b.u32);
+        break;
 
     case ByteCodeOp::AffectOpDivEqF64:
         *(double*) registersRC[ip->a.u32].pointer /= IMMB_F64(ip);
+        break;
+    case ByteCodeOp::AffectOpDivEqF64_S:
+        *(double*) (context->bp + ip->a.u32) /= IMMB_F64(ip);
+        break;
+    case ByteCodeOp::AffectOpDivEqF64_SS:
+        *(double*) (context->bp + ip->a.u32) /= *(double*) (context->bp + ip->b.u32);
         break;
 
         /////////////////////////////////////
