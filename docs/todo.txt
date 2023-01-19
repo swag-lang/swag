@@ -135,8 +135,6 @@ OPTIMS
 -------------------------------------
 inline auto ?
 -------------------------------------
-InternalGetTlsPtr (Swag.Tls var), le faire une fois pour toute au début de la fonction comme le r0 = @getcontext()
--------------------------------------
 pass orEq/andEq/xOrEq/Div/shift etc en mode Stack StackStack
 -------------------------------------
 x64 emit_BinOpInt32/64 etc.. faire un mode immediat pour le côté droit 'and cl, 5'
