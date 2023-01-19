@@ -692,7 +692,8 @@ impl QuickWnd
                     self.main.mdlPixSel    = &self.main.mdlFormDraw
                 }
 
-                if @kindof(it) == type
+                capture := self.main.getCapture()
+                if @kindof(it) == type and capture.selection.count
                 {
                     var mdlValue: *BaseForm
 
@@ -733,18 +734,13 @@ impl QuickWnd
                         it.copy(mdlValue, b)
                     }
 
-                    capture := self.main.getCapture()
-                    if capture.selection.count
-                    {
-                        undo := capture.newUndo(.SetFormFromModel)
-                        undo.mdlType = type
-                        undo.mdlValue = mdlValue
-                        capture.pushUndo(undo)
-                    }
+                    undo := capture.newUndo(.SetFormFromModel)
+                    undo.mdlType = type
+                    undo.mdlValue = mdlValue
+                    capture.pushUndo(undo)
                 }
                 else
                 {
-                    capture := self.main.getCapture()
                     capture.selection.clear()
                 }
 

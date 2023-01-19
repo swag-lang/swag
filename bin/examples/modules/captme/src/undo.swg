@@ -70,6 +70,13 @@ impl Undo
     mtd opDrop()
     {
         Capture.freeForms(toFreeForms)
+
+        if kind == .SetFormFromModel
+        {
+            Memory.delete(mdlValue, mdlType)
+            visit f: oldForm
+                Memory.delete(f, mdlType)
+        }
     }
 
     mtd init()
