@@ -1257,17 +1257,17 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::AffectOpDivEqF32:
+            MK_IMMB_F32(XMM1);
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             pp.emit_LoadF32_Indirect(0, XMM0, RAX);
-            pp.emit_LoadF32_Indirect(regOffset(ip->b.u32), XMM1, RDI);
             concat.addString4("\xf3\x0f\x5e\xc1"); // divss xmm0, xmm1
             pp.emit_StoreF32_Indirect(0, XMM0, RAX);
             break;
 
         case ByteCodeOp::AffectOpDivEqF64:
+            MK_IMMB_F64(XMM1);
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             pp.emit_LoadF64_Indirect(0, XMM0, RAX);
-            pp.emit_LoadF64_Indirect(regOffset(ip->b.u32), XMM1, RDI);
             concat.addString4("\xf2\x0f\x5e\xc1"); // divsd xmm0, xmm1
             pp.emit_StoreF64_Indirect(0, XMM0, RAX);
             break;

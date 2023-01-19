@@ -2095,8 +2095,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
             auto r1 = builder.CreateLoad(TO_PTR_PTR_F32(r0));
-            auto r2 = TO_PTR_F32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateFDiv(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            auto v0 = builder.CreateFDiv(builder.CreateLoad(r1), MK_IMMB_F32());
             builder.CreateStore(v0, r1);
             break;
         }
@@ -2104,8 +2103,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
             auto r1 = builder.CreateLoad(TO_PTR_PTR_F64(r0));
-            auto r2 = TO_PTR_F64(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateFDiv(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            auto v0 = builder.CreateFDiv(builder.CreateLoad(r1), MK_IMMB_F64());
             builder.CreateStore(v0, r1);
             break;
         }
