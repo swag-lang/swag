@@ -1,13 +1,25 @@
-#[Swag.PrintBc]
-func toto(y: s32)->s32
+func toto(y: s8)->s8
 {
     x := y
-    x |= 6
+    x *= 2
     return x
 }
 
 #test
 {
-    y := toto(1)
-    @assert(y == 7)
+    y := toto(2)
+    @assert(y == 4)
+}
+
+func toto1(y: s16)->s16
+{
+    x := y
+    x *= 2
+    return x
+}
+
+#test
+{
+    y := toto1(3)
+    @assert(y == 6)
 }
