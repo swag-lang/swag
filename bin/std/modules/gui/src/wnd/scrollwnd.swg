@@ -76,7 +76,7 @@ public impl IWnd for ScrollWnd
         switch evt.kind
         {
         case MouseWheel:
-            if evt.modifiers & .Control or !showBarV
+            if evt.modifiers & .Shift or !showBarV
                 setScrollPos(view.scrollPos.x - (evt.move.y * scrollIncrementH), view.scrollPos.y)
             else
                 setScrollPos(view.scrollPos.x, view.scrollPos.y - (evt.move.y * scrollIncrementV))
