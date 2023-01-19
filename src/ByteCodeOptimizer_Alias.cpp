@@ -30,15 +30,11 @@ bool ByteCodeOptimizer::optimizePassAliasFactor(ByteCodeOptContext* context)
         if (ip->op == ByteCodeOp::GetFromStack8 ||
             ip->op == ByteCodeOp::GetFromStack16 ||
             ip->op == ByteCodeOp::GetFromStack32 ||
-            ip->op == ByteCodeOp::GetFromStack64)
-        {
-            curReg = ip->a.u32;
-            encode = ((uint64_t) ip->op << 32) | (ip->b.u32);
-        }
-        else if (ip->op == ByteCodeOp::GetParam8 ||
-                 ip->op == ByteCodeOp::GetParam16 ||
-                 ip->op == ByteCodeOp::GetParam32 ||
-                 ip->op == ByteCodeOp::GetParam64)
+            ip->op == ByteCodeOp::GetFromStack64 ||
+            ip->op == ByteCodeOp::GetParam8 ||
+            ip->op == ByteCodeOp::GetParam16 ||
+            ip->op == ByteCodeOp::GetParam32 ||
+            ip->op == ByteCodeOp::GetParam64)
         {
             curReg = ip->a.u32;
             encode = ((uint64_t) ip->op << 32) | (ip->b.u32);
