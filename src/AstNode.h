@@ -292,7 +292,6 @@ struct AstNode
     void        swap2Childs();
     bool        hasSpecialFuncCall();
     bool        hasSpecialFuncCall(const Utf8& name);
-    bool        mustInline();
     AstNode*    inSimpleReturn();
     bool        forceTakeAddress();
     void        computeLocation(SourceLocation& start, SourceLocation& end);
@@ -438,6 +437,7 @@ struct AstFuncDecl : public AstNode
     Utf8        getDisplayName();
     const char* getDisplayNameC();
     Utf8        getNameForUserCompiler();
+    bool        mustInline();
     Utf8        getCallName();
 
     DependentJobs          dependentJobs;

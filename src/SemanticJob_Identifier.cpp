@@ -1240,6 +1240,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     case SymbolKind::Function:
     {
+        auto funcDecl = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
+
         // Be sure that we didn't use a variable as a 'scope'
         if (identifier->childParentIdx)
         {
@@ -1285,7 +1287,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             return context->report({identifier, Err(Err0104)});
 
         // Be sure this is not a 'forward' decl
-        if (overload->node->flags & AST_EMPTY_FCT && !(overload->node->isForeign()) && identifier->token.text[0] != '@')
+        if (funcDecl->flags & AST_EMPTY_FCT && !(funcDecl->isForeign()) && identifier->token.text[0] != '@')
         {
             Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0105), identifier->token.ctext())};
             return context->report(diag, Diagnostic::hereIs(overload));
@@ -1302,23 +1304,23 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
 
         // Be sure the call is valid
-        if ((identifier->token.text[0] != '@') && !overload->node->isForeign())
+        if ((identifier->token.text[0] != '@') && !funcDecl->isForeign())
         {
             auto ownerFct = identifier->ownerFct;
             if (ownerFct)
             {
                 auto fctAttributes = ownerFct->attributeFlags;
 
-                if (!(fctAttributes & ATTRIBUTE_COMPILER) && (overload->node->attributeFlags & ATTRIBUTE_COMPILER) && !(identifier->flags & AST_RUN_BLOCK))
+                if (!(fctAttributes & ATTRIBUTE_COMPILER) && (funcDecl->attributeFlags & ATTRIBUTE_COMPILER) && !(identifier->flags & AST_RUN_BLOCK))
                 {
-                    Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0107), overload->node->token.ctext(), ownerFct->getDisplayNameC())};
+                    Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0107), funcDecl->token.ctext(), ownerFct->getDisplayNameC())};
                     diag.hint = Hnt(Hnt0064);
                     return context->report(diag, Diagnostic::hereIs(overload));
                 }
 
-                if (!(fctAttributes & ATTRIBUTE_TEST_FUNC) && (overload->node->attributeFlags & ATTRIBUTE_TEST_FUNC))
+                if (!(fctAttributes & ATTRIBUTE_TEST_FUNC) && (funcDecl->attributeFlags & ATTRIBUTE_TEST_FUNC))
                 {
-                    Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0108), overload->node->token.ctext(), ownerFct->getDisplayNameC())};
+                    Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0108), funcDecl->token.ctext(), ownerFct->getDisplayNameC())};
                     diag.hint = Hnt(Hnt0065);
                     return context->report(diag, Diagnostic::hereIs(overload));
                 }
@@ -1375,7 +1377,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         {
             if (isStatementIdentifier(identifier))
             {
-                if (!(overload->node->attributeFlags & ATTRIBUTE_DISCARDABLE) && !(identifier->flags & AST_DISCARD))
+                if (!(funcDecl->attributeFlags & ATTRIBUTE_DISCARDABLE) && !(identifier->flags & AST_DISCARD))
                 {
                     Diagnostic diag(identifier, identifier->token, Fmt(Err(Err0109), overload->node->token.ctext()));
                     diag.hint = Hnt(Hnt0023);
@@ -1394,13 +1396,13 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             return context->report(diag, Diagnostic::hereIs(overload));
         }
 
-        if (overload->node->mustInline() &&
+        if (funcDecl->mustInline() &&
             !(identifier->specFlags & AST_SPEC_IDENTIFIER_NO_INLINE) &&
             !isFunctionButNotACall(context, identifier, overload->symbol))
         {
             // Mixin and macros must be inlined here, because no call is possible
             bool forceInline = false;
-            if (overload->node->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
+            if (funcDecl->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
                 forceInline = true;
 
             // Expand inline function. Do not expand an inline call inside a function marked as inline.
@@ -1408,7 +1410,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             if (!identifier->ownerFct || !identifier->ownerFct->mustInline() || forceInline)
             {
                 // Need to wait for function full semantic resolve
-                auto funcDecl = static_cast<AstFuncDecl*>(overload->node);
                 context->job->waitFuncDeclFullResolve(funcDecl);
                 if (context->result != ContextResult::Done)
                     return true;
@@ -1444,7 +1445,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             dealWithIntrinsic(context, identifier);
             identifier->byteCodeFct = ByteCodeGenJob::emitIntrinsic;
         }
-        else if (overload->node->isForeign())
+        else if (funcDecl->isForeign())
         {
             identifier->byteCodeFct = ByteCodeGenJob::emitForeignCall;
         }

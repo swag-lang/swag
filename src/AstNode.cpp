@@ -302,17 +302,6 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
     }
 }
 
-bool AstNode::mustInline()
-{
-    if (attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
-        return true;
-    if (!(attributeFlags & ATTRIBUTE_INLINE))
-        return false;
-    if (sourceFile->module->buildCfg.byteCodeInline == false)
-        return false;
-    return true;
-}
-
 bool AstNode::isConstant0()
 {
     SWAG_ASSERT(typeInfo);
@@ -647,6 +636,18 @@ void AstIdentifierRef::computeName()
             token.text += ".";
         token.text += child->token.text;
     }
+}
+
+bool AstFuncDecl::mustInline()
+{
+    if (attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
+        return true;
+    if (sourceFile->module->buildCfg.byteCodeInline == false)
+        return false;
+    if (attributeFlags & ATTRIBUTE_INLINE)
+        return true;
+
+    return false;
 }
 
 Utf8 AstFuncDecl::getCallName()

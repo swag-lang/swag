@@ -477,8 +477,8 @@ bool ByteCodeGenJob::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
     ensureCanBeChangedRC(context, left->resultRegisterRC);
     left->allocateExtension(ExtensionKind::AdditionalRegs);
     left->extension->misc->additionalRegisterRC = left->resultRegisterRC;
-    left->resultRegisterRC.cannotFree     = true;
-    binNode->seekJumpExpression           = context->bc->numInstructions;
+    left->resultRegisterRC.cannotFree           = true;
+    binNode->seekJumpExpression                 = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::JumpIfFalse, left->resultRegisterRC);
     return true;
 }
@@ -514,8 +514,8 @@ bool ByteCodeGenJob::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
     ensureCanBeChangedRC(context, left->resultRegisterRC);
     left->allocateExtension(ExtensionKind::AdditionalRegs);
     left->extension->misc->additionalRegisterRC = left->resultRegisterRC;
-    left->resultRegisterRC.cannotFree     = true;
-    binNode->seekJumpExpression           = context->bc->numInstructions;
+    left->resultRegisterRC.cannotFree           = true;
+    binNode->seekJumpExpression                 = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::JumpIfTrue, left->resultRegisterRC);
     return true;
 }
@@ -655,7 +655,7 @@ bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context, AstNode* allParams,
     auto funcDecl = CastAst<AstFuncDecl>(symbolOverload->node, AstNodeKind::FuncDecl);
 
     // Note: Do not inline a call when evaluation compile time affectation (AST_SEM_EXEC_RET_STACK)
-    if (symbolOverload->node->mustInline() && !(node->semFlags & AST_SEM_EXEC_RET_STACK))
+    if (funcDecl->mustInline() && !(node->semFlags & AST_SEM_EXEC_RET_STACK))
     {
         // Expand inline function. Do not expand an inline call inside a function marked as inline.
         // The expansion will be done at the lowest level possible
@@ -689,7 +689,7 @@ bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context, AstNode* allParams,
         }
     }
 
-    bool foreign = symbolOverload->node->isForeign();
+    bool foreign = funcDecl->isForeign();
 
     // We are less restrictive on type parameters for useop, as type are more in control.
     // Se we could have a needed cast now.
