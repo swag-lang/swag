@@ -4792,19 +4792,19 @@ void ByteCodeOptimizer::reduceStackOp(ByteCodeOptContext* context, ByteCodeInstr
                 ip[1].a.u32 = ip->b.u32;
                 SET_OP(ip + 1, ByteCodeOp::AffectOpModuloEqS8_S);
                 break;
-                /*case ByteCodeOp::AffectOpModuloEqS16:
-                    ip[1].a.u32 = ip->b.u32;
-                    SET_OP(ip + 1, ByteCodeOp::AffectOpModuloEqS16_S);
-                    break;
-                case ByteCodeOp::AffectOpModuloEqS32:
-                    ip[1].a.u32 = ip->b.u32;
-                    SET_OP(ip + 1, ByteCodeOp::AffectOpModuloEqS32_S);
-                    break;
-                case ByteCodeOp::AffectOpModuloEqS64:
-                    ip[1].a.u32 = ip->b.u32;
-                    SET_OP(ip + 1, ByteCodeOp::AffectOpModuloEqS64_S);
-                    break;
-                case ByteCodeOp::AffectOpModuloEqU8:
+            case ByteCodeOp::AffectOpModuloEqS16:
+                ip[1].a.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpModuloEqS16_S);
+                break;
+            case ByteCodeOp::AffectOpModuloEqS32:
+                ip[1].a.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpModuloEqS32_S);
+                break;
+            case ByteCodeOp::AffectOpModuloEqS64:
+                ip[1].a.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpModuloEqS64_S);
+                break;
+                /*case ByteCodeOp::AffectOpModuloEqU8:
                     ip[1].a.u32 = ip->b.u32;
                     SET_OP(ip + 1, ByteCodeOp::AffectOpModuloEqU8_S);
                     break;

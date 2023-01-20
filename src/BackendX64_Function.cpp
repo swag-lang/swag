@@ -1281,6 +1281,22 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
             pp.emit_Store16_Indirect(0, RDX, RCX);
             break;
+        case ByteCodeOp::AffectOpModuloEqS16_S:
+            pp.emit_Load16_Indirect(offsetStack + ip->a.u32, RAX, RDI);
+            concat.addString2("\x66\x99"); // cwd
+            MK_IMMB_16(RCX);
+            concat.addString3("\x66\xF7\xF9"); // idiv ax, cx
+            pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
+            pp.emit_Store16_Indirect(0, RDX, RCX);
+            break;
+        case ByteCodeOp::AffectOpModuloEqS16_SS:
+            pp.emit_Load16_Indirect(offsetStack + ip->a.u32, RAX, RDI);
+            concat.addString2("\x66\x99"); // cwd
+            pp.emit_Load16_Indirect(offsetStack + ip->b.u32, RCX, RDI);
+            concat.addString3("\x66\xF7\xF9"); // idiv ax, cx
+            pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
+            pp.emit_Store16_Indirect(0, RDX, RCX);
+            break;
 
         case ByteCodeOp::AffectOpModuloEqS32:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
@@ -1291,6 +1307,22 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
             pp.emit_Store32_Indirect(0, RDX, RCX);
             break;
+        case ByteCodeOp::AffectOpModuloEqS32_S:
+            pp.emit_Load32_Indirect(offsetStack + ip->a.u32, RAX, RDI);
+            concat.addString1("\x99"); // cdq
+            MK_IMMB_32(RCX);
+            concat.addString2("\xF7\xF9"); // idiv eax, ecx
+            pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
+            pp.emit_Store32_Indirect(0, RDX, RCX);
+            break;
+        case ByteCodeOp::AffectOpModuloEqS32_SS:
+            pp.emit_Load32_Indirect(offsetStack + ip->a.u32, RAX, RDI);
+            concat.addString1("\x99"); // cdq
+            pp.emit_Load32_Indirect(offsetStack + ip->b.u32, RCX, RDI);
+            concat.addString2("\xF7\xF9"); // idiv eax, ecx
+            pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
+            pp.emit_Store32_Indirect(0, RDX, RCX);
+            break;
 
         case ByteCodeOp::AffectOpModuloEqS64:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
@@ -1299,6 +1331,22 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             MK_IMMB_64(RCX);
             concat.addString3("\x48\xf7\xf9"); // idiv rax, rcx
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
+            pp.emit_Store64_Indirect(0, RDX, RCX);
+            break;
+        case ByteCodeOp::AffectOpModuloEqS64_S:
+            pp.emit_Load64_Indirect(offsetStack + ip->a.u32, RAX, RDI);
+            concat.addString2("\x48\x99"); // cqo
+            MK_IMMB_64(RCX);
+            concat.addString3("\x48\xF7\xF9"); // idiv rax, rcx
+            pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
+            pp.emit_Store64_Indirect(0, RDX, RCX);
+            break;
+        case ByteCodeOp::AffectOpModuloEqS64_SS:
+            pp.emit_Load64_Indirect(offsetStack + ip->a.u32, RAX, RDI);
+            concat.addString2("\x48\x99"); // cqo
+            pp.emit_Load64_Indirect(offsetStack + ip->b.u32, RCX, RDI);
+            concat.addString3("\x48\xF7\xF9"); // idiv rax, rcx
+            pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
             pp.emit_Store64_Indirect(0, RDX, RCX);
             break;
 
