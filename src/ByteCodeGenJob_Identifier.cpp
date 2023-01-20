@@ -147,13 +147,24 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         {
             ensureCanBeChangedRC(context, node->resultRegisterRC);
 
+            // :UfcsItfInlined
             // Very specific case where an inlined call returns an interface, and we directly call a lamba of that interface.
             // In that case we want to take the resigter that defined the vtable, not the object.
-            // Seems like a hack to me. Sure there's a better solution...
-            if (identifier->identifierRef->specFlags & AST_SPEC_IDENTIFIERREF_ITF_UFCS)
+            if (identifier->childParentIdx)
             {
-                SWAG_ASSERT(node->resultRegisterRC.countResults == 2);
-                swap(node->resultRegisterRC.oneResult[0], node->resultRegisterRC.oneResult[1]);
+                auto prev = identifier->identifierRef->childs[identifier->childParentIdx - 1];
+                if (prev->childs.size())
+                {
+                    auto back = prev->childs.back();
+                    if (back->kind == AstNodeKind::Inline)
+                    {
+                        if (back->typeInfo->isInterface())
+                        {
+                            SWAG_ASSERT(node->resultRegisterRC.countResults == 2);
+                            swap(node->resultRegisterRC.oneResult[0], node->resultRegisterRC.oneResult[1]);
+                        }
+                    }
+                }
             }
 
             auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
@@ -495,6 +506,15 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         reserveRegisterRC(context, node->resultRegisterRC, resolved->registers.size());
         for (int i = 0; i < node->resultRegisterRC.size(); i++)
             emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[i], resolved->registers[i]);
+
+        // :UfcsItfInlined
+        // if we have something of the form vitf.call() where call is inlined.
+        // Need to take the vtable register.
+        if (node->flags & AST_FROM_UFCS && node->typeInfo->isInterface())
+        {
+            SWAG_ASSERT(node->resultRegisterRC.size() == 2);
+            swap(node->resultRegisterRC.oneResult[0], node->resultRegisterRC.oneResult[1]);
+        }
 
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
         node->parent->resultRegisterRC              = node->resultRegisterRC;

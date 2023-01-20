@@ -1467,6 +1467,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     inlineNode->attributeFlags = funcDecl->attributeFlags;
     inlineNode->func           = funcDecl;
     inlineNode->scope          = identifier->ownerScope;
+    inlineNode->typeInfo       = TypeManager::concreteType(funcDecl->typeInfo);
 
     if (identifier->extension && identifier->extension->owner && identifier->extension->owner->ownerTryCatchAssume)
     {

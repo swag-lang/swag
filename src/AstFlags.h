@@ -140,7 +140,6 @@ static const uint8_t AST_SPEC_FUNCDECL_FORCE_LATE_REGISTER = 0x04;
 static const uint8_t AST_SPEC_FUNCDECL_LATE_REGISTER_DONE  = 0x08;
 static const uint8_t AST_SPEC_FUNCTYPE_RETURN_DEFINED      = 0x01;
 static const uint8_t AST_SPEC_IDENTIFIERREF_AUTO_SCOPE     = 0x01;
-static const uint8_t AST_SPEC_IDENTIFIERREF_ITF_UFCS       = 0x02;
 static const uint8_t AST_SPEC_IDENTIFIER_BACKTICK          = 0x01;
 static const uint8_t AST_SPEC_IDENTIFIER_NO_INLINE         = 0x02;
 static const uint8_t AST_SPEC_IDENTIFIER_FROM_WITH         = 0x04;
