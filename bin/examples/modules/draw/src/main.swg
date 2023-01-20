@@ -643,6 +643,15 @@ impl IWnd for MyView
         painter.popState()
         painter.translateTransform(10, 920)
         painter.drawString(0, 0, "F1: AA on/off F2: Quality F3: Pattern F4: Change page", Res.font20, Argb.Black)
+
+        if Env.hasArg("swag.test")
+        {
+            Threading.sleep(100'ms)
+            g_Page = (g_Page + 1) % MaxPages
+            if g_Page == 0
+                Env.exit(0)
+            invalidate()
+        }
     }
 
     mtd onKeyEvent(evt: *KeyEvent)
@@ -710,6 +719,7 @@ impl IWnd for MyView
     surface.show()
 
     if Env.hasArg("swag.test")
-        app.maxRunFrame = 100
+        g_Page = 0
+
     app.run()
 }

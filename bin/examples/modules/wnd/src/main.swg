@@ -2,6 +2,10 @@ using Core, Pixel, Gui
 
 var app: Application
 
+var g_Tab:  *Tab
+var g_Page: u32
+const MAX_PAGES = 8
+
 #main
 {
     surface0 := try app.createSurface(100, 100, 1200, 1000, SurfaceFlags.OverlappedWindow)
@@ -9,6 +13,7 @@ var app: Application
     surface0.setIcon(app.theme.getIcon24(ThemeIcons24.WndMinimize, 20))
 
     tab := Tab.create(surface0.wnd.view, {}, id: "bigtab")
+    g_Tab = tab
     tab.dockStyle = .Center
     tab.barLayout = .Fixed
     tab.setAllPaddings(10)
@@ -40,13 +45,23 @@ var app: Application
     createView6(tab, view6)
     createView7(tab, view7)
 
-    tab.select(7)
+    if Env.hasArg("swag.test")
+    {
+        tab.select(0)
+        app.sigFrame += func(app) {
+            Threading.sleep(100'ms)
+            g_Page = (g_Page + 1) % MAX_PAGES
+            if g_Page == 0
+                Env.exit(0)
+            g_Tab.select(g_Page)
+        }
+    }
+    else
+        tab.select(7)
     surface0.show()
 
     //surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.Secondary | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)
     //surface1.show()
 
-    if Env.hasArg("swag.test")
-        app.maxRunFrame = 100
     app.run()
 }

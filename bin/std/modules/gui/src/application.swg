@@ -6,6 +6,7 @@ alias FrameCallback = closure(*Application)
 struct Application
 {
     using native:   ApplicationNative
+    sigFrame:       SigArray'closure(*Application)
 
     appIcon:        Pixel.Image
     renderer:       Pixel.RenderOgl
@@ -428,6 +429,8 @@ private impl Application
             surfaces s.paint()
 
         deletePointers()
+
+        sigFrame.call(self)
     }
 
     public mtd doModalLoop(surface: *Surface, cb: closure(self) = null)->WndId
