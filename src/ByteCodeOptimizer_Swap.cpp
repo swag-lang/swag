@@ -85,7 +85,11 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
                 if (ip[1].op != ByteCodeOp::GetFromStack8 &&
                     ip[1].op != ByteCodeOp::GetFromStack16 &&
                     ip[1].op != ByteCodeOp::GetFromStack32 &&
-                    ip[1].op != ByteCodeOp::GetFromStack64)
+                    ip[1].op != ByteCodeOp::GetFromStack64 &&
+                    ip[1].op != ByteCodeOp::GetParam8 &&
+                    ip[1].op != ByteCodeOp::GetParam16 &&
+                    ip[1].op != ByteCodeOp::GetParam32 &&
+                    ip[1].op != ByteCodeOp::GetParam64)
                     continue;
             }
         }

@@ -1,0 +1,33 @@
+#[Swag.PrintBc]
+func(T) toto(y: T)->T
+{
+    x := y
+    x /= 3
+    return x
+}
+
+#[Swag.PrintBc]
+func(T) toto(y, z: T)->T
+{
+    x1 := y
+    x2 := z
+    x2 += 1
+    x2 -= 1
+    x1 /= x2
+    return x1
+}
+
+#test
+{
+    @assert(toto's8(6) == 2)
+    @assert(toto's8(-6) == -2)
+    @assert(toto's8(9, 3) == 3)
+    @assert(toto's8(-9, 3) == -3)
+    @assert(toto's8(-9, -3) == 3)
+
+    @assert(toto's16(6) == 2)
+    @assert(toto's16(-6) == -2)
+    @assert(toto's16(9, 3) == 3)
+    @assert(toto's16(-9, 3) == -3)
+    @assert(toto's16(-9, -3) == 3)
+}

@@ -17,8 +17,6 @@ void ByteCode::printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine, Sour
 
     if (!lastLine || !lastFile || loc.location->line != *lastLine || loc.file != *lastFile)
     {
-        g_Log.eol();
-
         if (lastLine)
             *lastLine = loc.location->line;
         if (lastFile)
@@ -39,9 +37,8 @@ void ByteCode::printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine, Sour
         g_Log.eol();
 
         g_Log.print("         ");
-        g_Log.setColor(LogColor::Gray);
+        g_Log.setColor(LogColor::DarkMagenta);
         g_Log.print(Fmt("%s:%d", loc.file->name.c_str(), loc.location->line + 1));
-        g_Log.eol();
         g_Log.eol();
     }
 }
