@@ -680,11 +680,11 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
                 auto node = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Try, sourceFile, funcNode);
                 node->specFlags |= AST_SPEC_TCA_GENERATED | AST_SPEC_TCA_BLOCK;
                 node->semanticFct = SemanticJob::resolveTryBlock;
+                funcNode->content = node;
 
                 ScopedTryCatchAssume sc(this, (AstTryCatchAssume*) node);
                 auto                 returnNode = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, node); // stmt);
                 returnNode->semanticFct         = SemanticJob::resolveReturn;
-                funcNode->content               = returnNode;
                 funcNode->flags |= AST_SHORT_LAMBDA;
                 SWAG_CHECK(doExpression(returnNode, EXPR_FLAG_NONE));
             }

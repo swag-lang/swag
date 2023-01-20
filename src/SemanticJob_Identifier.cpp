@@ -3039,7 +3039,7 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
         if (identifierRef->resolvedSymbolName &&
             identifierRef->resolvedSymbolName->kind == SymbolKind::Function &&
             identifierRef->previousResolvedNode &&
-            identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier && 
+            identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier &&
             identifierRef->previousResolvedNode->doneFlags & AST_DONE_INLINED)
         {
             fine = true;
