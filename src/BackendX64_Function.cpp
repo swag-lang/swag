@@ -1097,10 +1097,26 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::AffectOpDivEqU8:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
-            pp.emit_LoadS8S16_Indirect(0, RAX, RAX);
+            pp.emit_LoadU8U32_Indirect(0, RAX, RAX);
             MK_IMMB_8(RCX);
             concat.addString2("\xF6\xF1"); // div al, cl
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
+            pp.emit_Store8_Indirect(0, RAX, RCX);
+            break;
+        case ByteCodeOp::AffectOpDivEqU8_S:
+            pp.emit_Load8_Indirect(offsetStack + ip->a.u32, RAX, RDI);
+            pp.emit_UnsignedExtend_8To32(RAX);
+            MK_IMMB_8(RCX);
+            concat.addString2("\xF6\xF1"); // div al, cl
+            pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
+            pp.emit_Store8_Indirect(0, RAX, RCX);
+            break;
+        case ByteCodeOp::AffectOpDivEqU8_SS:
+            pp.emit_Load8_Indirect(offsetStack + ip->a.u32, RAX, RDI);
+            pp.emit_UnsignedExtend_8To32(RAX);
+            pp.emit_Load8_Indirect(offsetStack + ip->b.u32, RCX, RDI);
+            concat.addString2("\xF6\xF1"); // div al, cl
+            pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
             pp.emit_Store8_Indirect(0, RAX, RCX);
             break;
 
