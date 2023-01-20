@@ -1,4 +1,3 @@
-#[Swag.PrintBc]
 func(T) toto(y: T)->T
 {
     x := y
@@ -6,7 +5,6 @@ func(T) toto(y: T)->T
     return x
 }
 
-#[Swag.PrintBc]
 func(T) toto(y, z: T)->T
 {
     x1 := y
@@ -30,4 +28,10 @@ func(T) toto(y, z: T)->T
     @assert(toto's16(9, 3) == 3)
     @assert(toto's16(-9, 3) == -3)
     @assert(toto's16(-9, -3) == 3)
+
+    @assert(toto's32(6) == 2)
+    @assert(toto's32(-6) == -2)
+    @assert(toto's32(9, 3) == 3)
+    @assert(toto's32(-9, 3) == -3)
+    @assert(toto's32(-9, -3) == 3)
 }
