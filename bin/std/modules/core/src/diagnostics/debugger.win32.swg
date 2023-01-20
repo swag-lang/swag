@@ -26,5 +26,5 @@ func attach() throw
     CloseHandle(proc)
 
     while !IsDebuggerPresent()
-        Threading.sleep(100'ms)
+        Threading.Thread.sleep(100'ms)
 }

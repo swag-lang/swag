@@ -460,7 +460,7 @@ impl MainWnd
             surface.hide()
 
         if captureDelay
-            Threading.sleep(captureDelay * 1000)
+            Threading.Thread.sleep(captureDelay * 1000)
 
         img := catch screenShot(mode)
         isValid := !@err and img.width > 0 and img.height > 0

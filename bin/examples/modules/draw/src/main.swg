@@ -646,7 +646,7 @@ impl IWnd for MyView
 
         if Env.hasArg("swag.test")
         {
-            Threading.sleep(100'ms)
+            Threading.Thread.sleep(100'ms)
             g_Page = (g_Page + 1) % MaxPages
             if g_Page == 0
                 Env.exit(0)

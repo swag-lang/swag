@@ -3,18 +3,6 @@
 #global namespace Threading
 using Win32
 
-// Sleep the current thread for a given amount of milliseconds
-func sleep(ms: Time.Duration)
-{
-    Sleep(ms.toMs())
-}
-
-// Sleep the current thread for a given amount of milliseconds
-func yield()
-{
-    SwitchToThread()
-}
-
 private func threadEntry(param: *void)->DWORD
 {
     th := cast(*Thread) param
@@ -53,6 +41,18 @@ func wait(threads: *Thread...)
 
 impl Thread
 {
+    // Sleep the current thread for a given amount of milliseconds
+    func sleep(ms: Time.Duration)
+    {
+        Sleep(ms.toMs())
+    }
+
+    // Sleep the current thread for a given amount of milliseconds
+    func yield()
+    {
+        SwitchToThread()
+    }
+
     // Initialize a thread in pause state
     mtd init(lambda: closure(Thread), userParam: *void = null, priority = ThreadPriority.Normal, tempAllocSize: s32 = -1) throw
     {
