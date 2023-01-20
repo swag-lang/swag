@@ -129,7 +129,7 @@ OPTIMS
 -------------------------------------
 inline auto ?
 -------------------------------------
-pass orEq/andEq/xOrEq/shiftEq etc en mode Stack StackStack
+pass orEq/andEq/xOrEq/shiftEq en mode Stack StackStack. Dans les faits, plein d'autres instructions pourraient avoir ce mode.
 -------------------------------------
 x64 emit_BinOpInt32/64 etc.. faire un mode immediat pour le côté droit 'and cl, 5'
 -------------------------------------

@@ -270,7 +270,7 @@ impl String
     {
         if !byteCount
             return
-        Debug.assert(byteIndex + byteCount <= length)
+        Debug.safetyBoundCheck(byteIndex + byteCount <= length, "index out of range")
         Memory.copyOver(buffer + byteIndex, buffer + byteIndex + byteCount, length - (byteIndex + byteCount))
         length -= byteCount
         buffer[length] = 0
@@ -281,7 +281,7 @@ impl String
     {
         if !byteCount
             return
-        Debug.assert(byteCount <= length)
+        Debug.safetyBoundCheck(byteCount <= length, "index out of range")
         length -= byteCount
         buffer[length] = 0
     }
@@ -295,7 +295,7 @@ impl String
             return
         }
 
-        Debug.assert(byteIndex < length, "invalid index")
+        Debug.safetyBoundCheck(byteIndex < length, "index out of range")
         countof := @countof(value)
         if !countof
             return
@@ -324,7 +324,7 @@ impl String
     // Append a rune to the String
     mtd append(value: rune)
     {
-        Debug.assert(Utf8.isValidRune(value))
+        Debug.assert(Utf8.isValidRune(value), "invalid rune")
         var tmp: [4] u8
         eat := Utf8.encodeRune(tmp, value)
         grow(length + eat + 1)
