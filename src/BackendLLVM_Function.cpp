@@ -2283,68 +2283,181 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::AffectOpModuloEqS8:
         {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(r0));
-            auto v0 = builder.CreateSRem(builder.CreateLoad(r1), MK_IMMB_8());
+            MK_BINOPEQ8_CAB();
+            auto v0 = builder.CreateSRem(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
+        case ByteCodeOp::AffectOpModuloEqS8_S:
+        {
+            MK_BINOPEQ8_SCAB();
+            auto v0 = builder.CreateSRem(builder.CreateLoad(r0), r1);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::AffectOpModuloEqS8_SS:
+        {
+            MK_BINOPEQ8_SSCAB();
+            auto v0 = builder.CreateSRem(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            builder.CreateStore(v0, r0);
+            break;
+        }
+
         case ByteCodeOp::AffectOpModuloEqS16:
         {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I16(r0));
-            auto v0 = builder.CreateSRem(builder.CreateLoad(r1), MK_IMMB_16());
+            MK_BINOPEQ16_CAB();
+            auto v0 = builder.CreateSRem(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
+        case ByteCodeOp::AffectOpModuloEqS16_S:
+        {
+            MK_BINOPEQ16_SCAB();
+            auto v0 = builder.CreateSRem(builder.CreateLoad(r0), r1);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::AffectOpModuloEqS16_SS:
+        {
+            MK_BINOPEQ16_SSCAB();
+            auto v0 = builder.CreateSRem(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            builder.CreateStore(v0, r0);
+            break;
+        }
+
         case ByteCodeOp::AffectOpModuloEqS32:
         {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I32(r0));
-            auto v0 = builder.CreateSRem(builder.CreateLoad(r1), MK_IMMB_32());
+            MK_BINOPEQ32_CAB();
+            auto v0 = builder.CreateSRem(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
+        case ByteCodeOp::AffectOpModuloEqS32_S:
+        {
+            MK_BINOPEQ32_SCAB();
+            auto v0 = builder.CreateSRem(builder.CreateLoad(r0), r1);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::AffectOpModuloEqS32_SS:
+        {
+            MK_BINOPEQ32_SSCAB();
+            auto v0 = builder.CreateSRem(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            builder.CreateStore(v0, r0);
+            break;
+        }
+
         case ByteCodeOp::AffectOpModuloEqS64:
         {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I64(r0));
-            auto v0 = builder.CreateSRem(builder.CreateLoad(r1), MK_IMMB_64());
+            MK_BINOPEQ64_CAB();
+            auto v0 = builder.CreateSRem(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
+        case ByteCodeOp::AffectOpModuloEqS64_S:
+        {
+            MK_BINOPEQ64_SCAB();
+            auto v0 = builder.CreateSRem(builder.CreateLoad(r0), r1);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::AffectOpModuloEqS64_SS:
+        {
+            MK_BINOPEQ64_SSCAB();
+            auto v0 = builder.CreateSRem(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            builder.CreateStore(v0, r0);
+            break;
+        }
+
         case ByteCodeOp::AffectOpModuloEqU8:
         {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(r0));
-            auto v0 = builder.CreateURem(builder.CreateLoad(r1), MK_IMMB_8());
+            MK_BINOPEQ8_CAB();
+            auto v0 = builder.CreateURem(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
+        case ByteCodeOp::AffectOpModuloEqU8_S:
+        {
+            MK_BINOPEQ8_SCAB();
+            auto v0 = builder.CreateURem(builder.CreateLoad(r0), r1);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::AffectOpModuloEqU8_SS:
+        {
+            MK_BINOPEQ8_SSCAB();
+            auto v0 = builder.CreateURem(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            builder.CreateStore(v0, r0);
+            break;
+        }
+
         case ByteCodeOp::AffectOpModuloEqU16:
         {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I16(r0));
-            auto v0 = builder.CreateURem(builder.CreateLoad(r1), MK_IMMB_16());
+            MK_BINOPEQ16_CAB();
+            auto v0 = builder.CreateURem(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
+        case ByteCodeOp::AffectOpModuloEqU16_S:
+        {
+            MK_BINOPEQ16_SCAB();
+            auto v0 = builder.CreateURem(builder.CreateLoad(r0), r1);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::AffectOpModuloEqU16_SS:
+        {
+            MK_BINOPEQ16_SSCAB();
+            auto v0 = builder.CreateURem(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            builder.CreateStore(v0, r0);
+            break;
+        }
+
         case ByteCodeOp::AffectOpModuloEqU32:
         {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I32(r0));
-            auto v0 = builder.CreateURem(builder.CreateLoad(r1), MK_IMMB_32());
+            MK_BINOPEQ32_CAB();
+            auto v0 = builder.CreateURem(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
+        case ByteCodeOp::AffectOpModuloEqU32_S:
+        {
+            MK_BINOPEQ32_SCAB();
+            auto v0 = builder.CreateURem(builder.CreateLoad(r0), r1);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::AffectOpModuloEqU32_SS:
+        {
+            MK_BINOPEQ32_SSCAB();
+            auto v0 = builder.CreateURem(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            builder.CreateStore(v0, r0);
+            break;
+        }
+
         case ByteCodeOp::AffectOpModuloEqU64:
         {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I64(r0));
-            auto v0 = builder.CreateURem(builder.CreateLoad(r1), MK_IMMB_64());
+            MK_BINOPEQ64_CAB();
+            auto v0 = builder.CreateURem(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
+        case ByteCodeOp::AffectOpModuloEqU64_S:
+        {
+            MK_BINOPEQ64_SCAB();
+            auto v0 = builder.CreateURem(builder.CreateLoad(r0), r1);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::AffectOpModuloEqU64_SS:
+        {
+            MK_BINOPEQ64_SSCAB();
+            auto v0 = builder.CreateURem(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            builder.CreateStore(v0, r0);
+            break;
+        }
+
+            /////////////////////////////////////
 
         case ByteCodeOp::AffectOpAndEqU8:
         {
@@ -2353,6 +2466,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r1);
             break;
         }
+
         case ByteCodeOp::AffectOpAndEqU16:
         {
             MK_BINOPEQ16_CAB();
@@ -2360,6 +2474,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r1);
             break;
         }
+
         case ByteCodeOp::AffectOpAndEqU32:
         {
             MK_BINOPEQ32_CAB();
@@ -2367,6 +2482,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r1);
             break;
         }
+
         case ByteCodeOp::AffectOpAndEqU64:
         {
             MK_BINOPEQ64_CAB();
@@ -2374,6 +2490,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r1);
             break;
         }
+
+            /////////////////////////////////////
 
         case ByteCodeOp::AffectOpOrEqU8:
         {
@@ -2404,6 +2522,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+            /////////////////////////////////////
+
         case ByteCodeOp::AffectOpShiftLeftEqS8:
         case ByteCodeOp::AffectOpShiftLeftEqU8:
             emitShiftEqLogical(context, builder, allocR, ip, 8, true);
@@ -2420,6 +2540,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpShiftLeftEqU64:
             emitShiftEqLogical(context, builder, allocR, ip, 64, true);
             break;
+
+            /////////////////////////////////////
 
         case ByteCodeOp::AffectOpShiftRightEqU8:
             emitShiftEqLogical(context, builder, allocR, ip, 8, false);
@@ -2447,6 +2569,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             emitShiftEqArithmetic(context, builder, allocR, ip, 64);
             break;
 
+            /////////////////////////////////////
+
         case ByteCodeOp::AffectOpXorEqU8:
         {
             MK_BINOPEQ8_CAB();
@@ -2454,6 +2578,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r1);
             break;
         }
+
         case ByteCodeOp::AffectOpXorEqU16:
         {
             MK_BINOPEQ16_CAB();
@@ -2461,6 +2586,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r1);
             break;
         }
+
         case ByteCodeOp::AffectOpXorEqU32:
         {
             MK_BINOPEQ32_CAB();
@@ -2468,6 +2594,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r1);
             break;
         }
+
         case ByteCodeOp::AffectOpXorEqU64:
         {
             MK_BINOPEQ64_CAB();
@@ -2475,6 +2602,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r1);
             break;
         }
+
+            /////////////////////////////////////
 
         case ByteCodeOp::CompareOpGreaterS32:
         {
