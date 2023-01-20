@@ -64,8 +64,22 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
     else if (parent->kind == AstNodeKind::Loop)
     {
         SWAG_ASSERT(parent->hasSpecialFuncCall(g_LangSpec->name_opCount));
-        allParams     = node->parent;
+        allParams     = parent;
         numCallParams = 1;
+    }
+    else if (parent->kind == AstNodeKind::SwitchCase)
+    {
+        SWAG_ASSERT(parent->hasSpecialFuncCall(g_LangSpec->name_opEquals));
+        auto caseNode         = CastAst<AstSwitchCase>(parent, AstNodeKind::SwitchCase);
+        auto switchNode       = CastAst<AstSwitch>(caseNode->ownerSwitch, AstNodeKind::Switch);
+        parameters.flags      = 0;
+        parameters.sourceFile = parent->sourceFile;
+        parameters.inheritTokenLocation(parent);
+        parameters.inheritOwners(parent);
+        parameters.childs.push_back(switchNode->expression);
+        parameters.childs.push_back(caseNode->childs.front());
+        allParams     = &parameters;
+        numCallParams = (uint32_t) parameters.childs.size();
     }
     else if (parent->kind == AstNodeKind::AffectOp &&
              (parent->hasSpecialFuncCall(g_LangSpec->name_opIndexAffect) || parent->hasSpecialFuncCall(g_LangSpec->name_opIndexAssign)))
@@ -720,10 +734,25 @@ bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
                 }
                 else if (caseNode->hasSpecialFuncCall())
                 {
+                    // This registers are shared and must be kept.
+                    // We need to do that because the special function could be inlined, and in that case will want to release
+                    // the parameters, which are our registers. And we do not want them to be released except by us...
+                    caseNode->ownerSwitch->resultRegisterRC.cannotFree             = true;
+                    caseNode->ownerSwitch->expression->resultRegisterRC.cannotFree = true;
+                    expr->resultRegisterRC.cannotFree                              = true;
+
                     SWAG_CHECK(emitCompareOpSpecialFunc(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRC, expr->resultRegisterRC, TokenId::SymEqualEqual));
                     if (context->result != ContextResult::Done)
                         return true;
-                    r0 = node->resultRegisterRC;
+
+                    caseNode->ownerSwitch->resultRegisterRC.cannotFree             = false;
+                    caseNode->ownerSwitch->expression->resultRegisterRC.cannotFree = false;
+                    expr->resultRegisterRC.cannotFree                              = false;
+
+                    if (caseNode->childs.back()->kind == AstNodeKind::Inline)
+                        r0 = caseNode->childs.back()->resultRegisterRC;
+                    else
+                        r0 = node->resultRegisterRC;
                 }
                 else
                 {
