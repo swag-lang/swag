@@ -3034,19 +3034,34 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
 
     if (canDoUfcs && symbol->kind == SymbolKind::Variable)
     {
+        bool fine = false;
+
+        if (identifierRef->resolvedSymbolName &&
+            identifierRef->resolvedSymbolName->kind == SymbolKind::Function &&
+            identifierRef->previousResolvedNode &&
+            identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier && 
+            identifierRef->previousResolvedNode->doneFlags & AST_DONE_INLINED)
+        {
+            fine = true;
+        }
+
         if (identifierRef->resolvedSymbolName &&
             identifierRef->resolvedSymbolName->kind == SymbolKind::Function &&
             identifierRef->previousResolvedNode &&
             identifierRef->previousResolvedNode->kind == AstNodeKind::FuncCall)
         {
+            fine = true;
         }
-        else if (identifierRef->resolvedSymbolName &&
-                 identifierRef->resolvedSymbolName->kind != SymbolKind::Variable)
+
+        if (!fine)
         {
-            auto       subNode = identifierRef->previousResolvedNode ? identifierRef->previousResolvedNode : node;
-            Diagnostic diag{subNode, subNode->token, Fmt(Err(Err0124), identifierRef->resolvedSymbolName->name.c_str(), SymTable::getArticleKindName(identifierRef->resolvedSymbolName->kind))};
-            diag.setRange2(node->token, Hnt(Hnt0079));
-            return context->report(diag);
+            if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind != SymbolKind::Variable)
+            {
+                auto       subNode = identifierRef->previousResolvedNode ? identifierRef->previousResolvedNode : node;
+                Diagnostic diag{subNode, subNode->token, Fmt(Err(Err0124), identifierRef->resolvedSymbolName->name.c_str(), SymTable::getArticleKindName(identifierRef->resolvedSymbolName->kind))};
+                diag.setRange2(node->token, Hnt(Hnt0079));
+                return context->report(diag);
+            }
         }
     }
 

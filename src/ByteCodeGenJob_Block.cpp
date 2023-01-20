@@ -60,6 +60,8 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
         allParams                                   = identifier->callParameters;
         numCallParams                               = allParams ? (int) allParams->childs.size() : 0;
+        if (identifier->typeInfo->isInterface())
+            identifier->identifierRef->specFlags |= AST_SPEC_IDENTIFIERREF_ITF_UFCS;
     }
     else if (parent->kind == AstNodeKind::Loop)
     {

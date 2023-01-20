@@ -20,6 +20,7 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
         case ByteCodeOp::GetParam64:
         case ByteCodeOp::SetImmediate32:
         case ByteCodeOp::SetImmediate64:
+        case ByteCodeOp::MakeConstantSegPointer:
             break;
         case ByteCodeOp::IncPointer64:
             if (!(ip->flags & BCI_IMM_B))

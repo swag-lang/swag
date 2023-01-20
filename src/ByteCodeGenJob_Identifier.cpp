@@ -146,6 +146,16 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         if (node->resolvedSymbolOverload->computedValue.storageOffset > 0)
         {
             ensureCanBeChangedRC(context, node->resultRegisterRC);
+
+            // Very specific case where an inlined call returns an interface, and we directly call a lamba of that interface.
+            // In that case we want to take the resigter that defined the vtable, not the object.
+            // Seems like a hack to me. Sure there's a better solution...
+            if (identifier->identifierRef->specFlags & AST_SPEC_IDENTIFIERREF_ITF_UFCS)
+            {
+                SWAG_ASSERT(node->resultRegisterRC.countResults == 2);
+                swap(node->resultRegisterRC.oneResult[0], node->resultRegisterRC.oneResult[1]);
+            }
+
             auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
             SWAG_ASSERT(node->resolvedSymbolOverload->computedValue.storageOffset != UINT32_MAX);
             inst->b.u64 = node->resolvedSymbolOverload->computedValue.storageOffset;

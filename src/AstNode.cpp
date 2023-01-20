@@ -654,8 +654,8 @@ bool AstFuncDecl::mustInline()
     if (content->childs.size() == 1 && content->childs.front()->flags & AST_VALUE_COMPUTED)
         return true;
 
-    // if (content->kind == AstNodeKind::Return)
-    //     int a = 0;
+    //if (content->kind == AstNodeKind::Return)
+    //    return true;
 
     return false;
 }
