@@ -19,21 +19,32 @@ func(T) toto(y, z: T)->T
 {
     @assert(toto's8(6) == 0)
     @assert(toto's8(5) == 2)
+    @assert(toto's8(-5) == -2)
     @assert(toto's8(6, 3) == 0)
     @assert(toto's8(5, 3) == 2)
+    @assert(toto's8(-5, 3) == -2)
+    @assert(toto's8(-5, -3) == -2)
 
     @assert(toto's16(6) == 0)
     @assert(toto's16(5) == 2)
+    @assert(toto's16(-5) == -2)
     @assert(toto's16(6, 3) == 0)
     @assert(toto's16(5, 3) == 2)
+    @assert(toto's16(-5, 3) == -2)
+    @assert(toto's16(-5, -3) == -2)
 
     @assert(toto's32(6) == 0)
     @assert(toto's32(5) == 2)
+    @assert(toto's32(-5) == -2)
     @assert(toto's32(6, 3) == 0)
     @assert(toto's32(5, 3) == 2)
+    @assert(toto's32(-5, 3) == -2)
+    @assert(toto's32(-5, -3) == -2)
 
     @assert(toto's64(6) == 0)
     @assert(toto's64(5) == 2)
     @assert(toto's64(6, 3) == 0)
     @assert(toto's64(5, 3) == 2)
+    @assert(toto's64(-5, 3) == -2)
+    @assert(toto's64(-5, -3) == -2)
 }
