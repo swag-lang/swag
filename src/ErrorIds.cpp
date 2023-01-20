@@ -729,8 +729,8 @@ void initErrors()
     SWAG_ERROR(Err0142, "the operator '+' does not accept an operand of type '%s'");
     SWAG_ERROR(Err0146, "the operator '-' does not accept an operand of type '%s'");
     SWAG_ERROR(Err0163, "the operator '|' does not accept type '%s' as a left expression");
-    SWAG_ERROR(Err0770, "the return type has already been deduced to be '%s' (and '%s' is provided)");
-    SWAG_ERROR(Err0773, "the return type has already been deduced to be nothing");
+    SWAG_ERROR(Err0770, "the return type has already been deduced to be '%s' (and '%s' is now provided)");
+    SWAG_ERROR(Err0773, "the return type has already been deduced to be nothing (and '%s' is now provided)");
     SWAG_ERROR(Err0431, "the runtime variable '%s' is initialized to zero and cannot be changed at compile time; initialize it with '?' if this is intended");
     SWAG_ERROR(Err0490, "the second parameter of '@init' should be an integer ('%s' provided)");
     SWAG_ERROR(Err0812, "the size cannot be computed because the expression is generic");

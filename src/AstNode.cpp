@@ -647,6 +647,16 @@ bool AstFuncDecl::mustInline()
     if (attributeFlags & ATTRIBUTE_INLINE)
         return true;
 
+    if (!content)
+        return false;
+
+    // The whole function evaluated to a constant
+    if (content->childs.size() == 1 && content->childs.front()->flags & AST_VALUE_COMPUTED)
+        return true;
+
+    // if (content->kind == AstNodeKind::Return)
+    //     int a = 0;
+
     return false;
 }
 

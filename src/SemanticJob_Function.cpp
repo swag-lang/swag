@@ -1213,17 +1213,19 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
 
     node->byteCodeFct      = ByteCodeGenJob::emitReturn;
     node->resolvedFuncDecl = funcNode;
+    auto funcReturnType    = TypeManager::concreteType(funcNode->returnType->typeInfo);
 
     // As the type of the function is deduced from the return type, be sure they match in case
     // of multiple returns
     if (funcNode->returnTypeDeducedNode)
     {
+
         // We return nothing, but the previous return had something
         if (node->childs.empty())
         {
-            if (funcNode->returnType->typeInfo != g_TypeMgr->typeInfoVoid)
+            if (!funcReturnType->isVoid())
             {
-                Diagnostic diag{node, Fmt(Err(Err0779), funcNode->returnType->typeInfo->getDisplayNameC())};
+                Diagnostic diag{node, Fmt(Err(Err0779), funcReturnType->getDisplayNameC())};
                 Diagnostic note{funcNode->returnTypeDeducedNode->childs.front(), Nte(Nte0063), DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }
@@ -1231,12 +1233,13 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
             return true;
         }
 
-        auto child = node->childs[0];
+        auto child     = node->childs[0];
+        auto childType = TypeManager::concreteType(child->typeInfo);
 
         // We try to return something, but the previous return had nothing
-        if (funcNode->returnType->typeInfo == g_TypeMgr->typeInfoVoid)
+        if (funcReturnType->isVoid() && !childType->isVoid())
         {
-            Diagnostic diag{node, Fmt(Err(Err0773), funcNode->returnType->typeInfo->getDisplayNameC())};
+            Diagnostic diag{child, Fmt(Err(Err0773), childType->getDisplayNameC())};
             Diagnostic note{funcNode->returnTypeDeducedNode, Nte(Nte0063), DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
@@ -1263,8 +1266,8 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
 
     // Deduce return type
     auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
-    bool lateRegister = funcNode->returnType->flags & AST_FORCE_FUNC_LATE_REGISTER;
-    if (funcNode->returnType->typeInfo == g_TypeMgr->typeInfoVoid)
+    bool lateRegister = funcNode->specFlags & AST_SPEC_FUNCDECL_FORCE_LATE_REGISTER;
+    if (funcReturnType->isVoid() && !(funcNode->specFlags & AST_SPEC_FUNCDECL_LATE_REGISTER_DONE))
     {
         // This is a short lambda without a specified return type. We now have it
         bool tryDeduce = false;
@@ -1280,7 +1283,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
             if (concreteReturn->isListTuple())
             {
                 SWAG_CHECK(convertLiteralTupleToStructDecl(context, funcNode->content, node->childs.front(), &funcNode->returnType));
-                funcNode->returnType->flags |= AST_FORCE_FUNC_LATE_REGISTER;
+                funcNode->specFlags |= AST_SPEC_FUNCDECL_FORCE_LATE_REGISTER;
                 Ast::setForceConstType(funcNode->returnType);
                 context->job->nodes.push_back(funcNode->returnType);
                 context->result = ContextResult::NewChilds;
@@ -1290,7 +1293,8 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
             typeInfoFunc->forceComputeName();
             funcNode->returnType->typeInfo  = typeInfoFunc->returnType;
             funcNode->returnTypeDeducedNode = node;
-            lateRegister                    = true;
+            funcNode->specFlags |= AST_SPEC_FUNCDECL_LATE_REGISTER_DONE;
+            lateRegister = true;
         }
     }
 
