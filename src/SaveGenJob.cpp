@@ -5,7 +5,7 @@
 #include "ErrorIds.h"
 #include "Report.h"
 
-JobResult SaveGenJob::execute()
+bool SaveGenJob::flush(Module* module)
 {
     for (int idx = 0; idx < module->contentJobGeneratedFile.size(); idx++)
     {
@@ -24,12 +24,19 @@ JobResult SaveGenJob::execute()
         {
             module->numErrors++;
             Report::errorOS(Fmt(Err(Err0524), publicPath.c_str()));
-            return JobResult::ReleaseJob;
+            return false;
         }
 
         fwrite(module->contentJobGeneratedFile[idx].c_str(), module->contentJobGeneratedFile[idx].length(), 1, h);
         fclose(h);
+        module->contentJobGeneratedFile[idx].clear();
     }
 
+    return true;
+}
+
+JobResult SaveGenJob::execute()
+{
+    flush(module);
     return JobResult::ReleaseJob;
 }

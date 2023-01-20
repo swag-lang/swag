@@ -15,7 +15,8 @@ struct SaveGenJob : public Job
         g_Allocator.free<SaveGenJob>(this);
     }
 
-    JobResult execute() override;
+    static bool flush(Module* module);
+    JobResult   execute() override;
 
     Utf8 content;
 };

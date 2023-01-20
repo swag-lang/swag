@@ -10,6 +10,7 @@
 #include "ErrorIds.h"
 #include "File.h"
 #include "LanguageSpec.h"
+#include "SaveGenJob.h"
 
 thread_local int    g_SilentError = 0;
 thread_local string g_SilentErrorMsg;
@@ -379,6 +380,8 @@ namespace Report
         const auto& notes = copyNotes;
 
         auto sourceFile = getDiagFile(diag);
+        SaveGenJob::flush(sourceFile->module);
+
         auto errorLevel = diag.errorLevel;
 
         if (diag.exceptionError)
