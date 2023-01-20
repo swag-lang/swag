@@ -708,20 +708,23 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         {
             SWAG_CHECK(eatToken());
 
-            auto stmt         = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, funcNode);
-            funcNode->content = stmt;
-
             if (funcNode->specFlags & AST_SPEC_FUNCDECL_THROW)
             {
-                auto node = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Try, sourceFile, stmt);
+                auto node = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Try, sourceFile, funcNode);
                 node->specFlags |= AST_SPEC_TCA_GENERATED | AST_SPEC_TCA_BLOCK;
                 node->semanticFct = SemanticJob::resolveTryBlock;
+                funcNode->content = node;
+
+                auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, node);
 
                 ScopedTryCatchAssume sc(this, (AstTryCatchAssume*) node);
                 SWAG_CHECK(doEmbeddedInstruction(stmt));
             }
             else
             {
+                auto stmt         = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, funcNode);
+                funcNode->content = stmt;
+
                 SWAG_CHECK(doEmbeddedInstruction(stmt));
             }
 

@@ -1,4 +1,3 @@
-#global skip
 func titi() throw { throw "0"; }
 
 #[Swag.Inline]
