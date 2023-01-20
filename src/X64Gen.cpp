@@ -1136,7 +1136,7 @@ void X64Gen::emit_Add32_RSP(uint32_t value)
 
 /////////////////////////////////////////////////////////////////////
 
-void X64Gen::emit_SignedExtend_8To32(uint8_t reg)
+void X64Gen::emit_Extend_S8S32(uint8_t reg)
 {
     switch (reg)
     {
@@ -1152,7 +1152,7 @@ void X64Gen::emit_SignedExtend_8To32(uint8_t reg)
     }
 }
 
-void X64Gen::emit_SignedExtend_8To16(uint8_t reg)
+void X64Gen::emit_Extend_S8S16(uint8_t reg)
 {
     switch (reg)
     {
@@ -1168,7 +1168,7 @@ void X64Gen::emit_SignedExtend_8To16(uint8_t reg)
     }
 }
 
-void X64Gen::emit_UnsignedExtend_8To32(uint8_t reg)
+void X64Gen::emit_Extend_U8U32(uint8_t reg)
 {
     // movzx eax, al
     concat.addU8(0x0F);
@@ -1176,7 +1176,7 @@ void X64Gen::emit_UnsignedExtend_8To32(uint8_t reg)
     concat.addU8(getModRM(REGREG, reg, reg));
 }
 
-void X64Gen::emit_UnsignedExtend_16To32(uint8_t reg)
+void X64Gen::emit_Extend_U16U32(uint8_t reg)
 {
     // movzx rax, ax
     concat.addU8(0x0F);
@@ -1184,7 +1184,7 @@ void X64Gen::emit_UnsignedExtend_16To32(uint8_t reg)
     concat.addU8(getModRM(REGREG, reg, reg));
 }
 
-void X64Gen::emit_UnsignedExtend_8To64(uint8_t reg)
+void X64Gen::emit_Extend_U8U64(uint8_t reg)
 {
     // movzx rax, al
     concat.addU8(0x48);
@@ -1193,7 +1193,7 @@ void X64Gen::emit_UnsignedExtend_8To64(uint8_t reg)
     concat.addU8(getModRM(REGREG, reg, reg));
 }
 
-void X64Gen::emit_UnsignedExtend_16To64(uint8_t reg)
+void X64Gen::emit_Extend_U16U64(uint8_t reg)
 {
     // movzx rax, al
     concat.addU8(0x48);

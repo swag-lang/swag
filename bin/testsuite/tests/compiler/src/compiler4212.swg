@@ -20,4 +20,9 @@ func(T) toto(y, z: T)->T
     @assert(toto'u8(6) == 2)
     @assert(toto'u8(9, 3) == 3)
     @assert(toto'u8(255, 2) == 127)
+
+    @assert(toto'u16(6) == 2)
+    @assert(toto'u16(9, 3) == 3)
+    @assert(toto'u16(255, 2) == 127)
+    @assert(toto'u16(0xFFFF, 2) == 0xFFFF >> 1)
 }

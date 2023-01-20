@@ -4767,11 +4767,11 @@ void ByteCodeOptimizer::reduceStackOp(ByteCodeOptContext* context, ByteCodeInstr
                 ip[1].a.u32 = ip->b.u32;
                 SET_OP(ip + 1, ByteCodeOp::AffectOpDivEqU8_S);
                 break;
-            /*case ByteCodeOp::AffectOpDivEqU16:
+            case ByteCodeOp::AffectOpDivEqU16:
                 ip[1].a.u32 = ip->b.u32;
                 SET_OP(ip + 1, ByteCodeOp::AffectOpDivEqU16_S);
                 break;
-            case ByteCodeOp::AffectOpDivEqU32:
+            /*case ByteCodeOp::AffectOpDivEqU32:
                 ip[1].a.u32 = ip->b.u32;
                 SET_OP(ip + 1, ByteCodeOp::AffectOpDivEqU32_S);
                 break;

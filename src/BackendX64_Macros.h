@@ -174,7 +174,7 @@
     if (ip->flags & BCI_IMM_B)                    \
     {                                             \
         pp.emit_Load8_Immediate(ip->b.u8, __reg); \
-        pp.emit_SignedExtend_8To32(__reg);      \
+        pp.emit_Extend_S8S32(__reg);      \
     }                                             \
     else                                          \
         pp.emit_LoadS8S32_Indirect(regOffset(ip->b.u32), __reg, RDI);
@@ -231,7 +231,7 @@
     if (ip->flags & BCI_IMM_C)                    \
     {                                             \
         pp.emit_Load8_Immediate(ip->c.u8, __reg); \
-        pp.emit_SignedExtend_8To32(__reg);      \
+        pp.emit_Extend_S8S32(__reg);      \
     }                                             \
     else                                          \
         pp.emit_LoadS8S32_Indirect(regOffset(ip->c.u32), __reg, RDI);

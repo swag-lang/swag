@@ -500,10 +500,10 @@ struct X64Gen
     void emit_Test32(uint8_t reg1, uint8_t reg2);
     void emit_Test64(uint8_t reg1, uint8_t reg2);
     void emit_Test8(uint8_t reg1, uint8_t reg2);
-    void emit_SignedExtend_8To32(uint8_t reg);
-    void emit_SignedExtend_8To16(uint8_t reg);
-    void emit_UnsignedExtend_16To32(uint8_t reg);
-    void emit_UnsignedExtend_16To64(uint8_t reg);
-    void emit_UnsignedExtend_8To32(uint8_t reg);
-    void emit_UnsignedExtend_8To64(uint8_t reg);
+    void emit_Extend_S8S32(uint8_t reg);
+    void emit_Extend_S8S16(uint8_t reg);
+    void emit_Extend_U16U32(uint8_t reg);
+    void emit_Extend_U16U64(uint8_t reg);
+    void emit_Extend_U8U32(uint8_t reg);
+    void emit_Extend_U8U64(uint8_t reg);
 };
