@@ -4759,11 +4759,11 @@ void ByteCodeOptimizer::reduceStackOp(ByteCodeOptContext* context, ByteCodeInstr
                 ip[1].a.u32 = ip->b.u32;
                 SET_OP(ip + 1, ByteCodeOp::AffectOpDivEqS32_S);
                 break;
-            /*case ByteCodeOp::AffectOpDivEqS64:
+            case ByteCodeOp::AffectOpDivEqS64:
                 ip[1].a.u32 = ip->b.u32;
                 SET_OP(ip + 1, ByteCodeOp::AffectOpDivEqS64_S);
                 break;
-            case ByteCodeOp::AffectOpDivEqU8:
+            /*case ByteCodeOp::AffectOpDivEqU8:
                 ip[1].a.u32 = ip->b.u32;
                 SET_OP(ip + 1, ByteCodeOp::AffectOpDivEqU8_S);
                 break;

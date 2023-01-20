@@ -34,4 +34,10 @@ func(T) toto(y, z: T)->T
     @assert(toto's32(9, 3) == 3)
     @assert(toto's32(-9, 3) == -3)
     @assert(toto's32(-9, -3) == 3)
+
+    @assert(toto's64(6) == 2)
+    @assert(toto's64(-6) == -2)
+    @assert(toto's64(9, 3) == 3)
+    @assert(toto's64(-9, 3) == -3)
+    @assert(toto's64(-9, -3) == 3)
 }
