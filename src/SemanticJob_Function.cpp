@@ -1398,6 +1398,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     // Register symbol now that we have inferred the return type
     if (lateRegister)
     {
+        funcNode->specFlags &= ~AST_SPEC_FUNCDECL_FORCE_LATE_REGISTER;
         typeInfoFunc->returnType = funcNode->returnType->typeInfo;
         typeInfoFunc->forceComputeName();
         SWAG_CHECK(registerFuncSymbol(context, funcNode));
