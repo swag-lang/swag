@@ -73,8 +73,22 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
             continue;
 
         auto it1 = context->mapInstInst.find(ip + 1);
-        if (it1 != context->mapInstInst.end() && it1->second >= it.second)
-            continue;
+        if (it1 != context->mapInstInst.end())
+        {
+            if (it1->second > it.second)
+                continue;
+
+            if (it1->second == it.second)
+            {
+                if (ip->op != ByteCodeOp::MakeStackPointer)
+                    continue;
+                if (ip[1].op != ByteCodeOp::GetFromStack8 &&
+                    ip[1].op != ByteCodeOp::GetFromStack16 &&
+                    ip[1].op != ByteCodeOp::GetFromStack32 &&
+                    ip[1].op != ByteCodeOp::GetFromStack64)
+                    continue;
+            }
+        }
 
         swap(ip[0], ip[1]);
 

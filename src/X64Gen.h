@@ -481,7 +481,6 @@ struct X64Gen
     void emit_SetLE();
     void emit_SetNA();
     void emit_SetNE();
-    void emit_SignedExtend_8_To_32(uint8_t reg);
     void emit_Store16_Immediate(uint32_t offset, uint16_t val, uint8_t reg);
     void emit_Store16_Indirect(uint32_t stackOffset, uint8_t reg, uint8_t memReg);
     void emit_Store32_Immediate(uint32_t offset, uint32_t val, uint8_t reg);
@@ -501,8 +500,10 @@ struct X64Gen
     void emit_Test32(uint8_t reg1, uint8_t reg2);
     void emit_Test64(uint8_t reg1, uint8_t reg2);
     void emit_Test8(uint8_t reg1, uint8_t reg2);
-    void emit_UnsignedExtend_16_To_32(uint8_t reg);
-    void emit_UnsignedExtend_16_To_64(uint8_t reg);
-    void emit_UnsignedExtend_8_To_32(uint8_t reg);
-    void emit_UnsignedExtend_8_To_64(uint8_t reg);
+    void emit_SignedExtend_8To32(uint8_t reg);
+    void emit_SignedExtend_8To16(uint8_t reg);
+    void emit_UnsignedExtend_16To32(uint8_t reg);
+    void emit_UnsignedExtend_16To64(uint8_t reg);
+    void emit_UnsignedExtend_8To32(uint8_t reg);
+    void emit_UnsignedExtend_8To64(uint8_t reg);
 };

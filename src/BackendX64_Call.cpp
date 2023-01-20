@@ -66,11 +66,11 @@ void BackendX64::emitGetParam(X64Gen& pp, TypeInfoFuncAttr* typeFunc, int reg, i
             {
             case 1:
                 pp.emit_Load8_Indirect((uint32_t) toAdd, RAX, RAX);
-                pp.emit_UnsignedExtend_8_To_64(RAX);
+                pp.emit_UnsignedExtend_8To64(RAX);
                 break;
             case 2:
                 pp.emit_Load16_Indirect((uint32_t) toAdd, RAX, RAX);
-                pp.emit_UnsignedExtend_16_To_64(RAX);
+                pp.emit_UnsignedExtend_16To64(RAX);
                 break;
             case 4:
                 pp.emit_Load32_Indirect((uint32_t) toAdd, RAX, RAX);
@@ -95,11 +95,11 @@ void BackendX64::emitGetParam(X64Gen& pp, TypeInfoFuncAttr* typeFunc, int reg, i
         {
         case 1:
             pp.emit_Load8_Indirect(0, RAX, RAX);
-            pp.emit_UnsignedExtend_8_To_64(RAX);
+            pp.emit_UnsignedExtend_8To64(RAX);
             break;
         case 2:
             pp.emit_Load16_Indirect(0, RAX, RAX);
-            pp.emit_UnsignedExtend_16_To_64(RAX);
+            pp.emit_UnsignedExtend_16To64(RAX);
             break;
         case 4:
             pp.emit_Load32_Indirect(0, RAX, RAX);
