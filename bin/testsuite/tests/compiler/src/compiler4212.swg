@@ -35,4 +35,12 @@ func(T) toto(y, z: T)->T
     @assert(toto'u64(9, 3) == 3)
     @assert(toto'u64(255, 2) == 127)
     @assert(toto'u64(0xFFFF_FFFF_FFFF_FFFF, 2) == 0xFFFF_FFFF_FFFF_FFFF >>,safe 1)
+
+    @assert(toto'f32(6) == 2)
+    @assert(toto'f32(9, 3) == 3)
+    @assert(toto'f32(254, 2) == 127)
+
+    @assert(toto'f64(6) == 2)
+    @assert(toto'f64(9, 3) == 3)
+    @assert(toto'f64(254, 2) == 127)
 }
