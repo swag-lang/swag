@@ -877,7 +877,7 @@ void initErrors()
     SWAG_ERROR(Err0083, "unexpected #[Swag.Inline] attribute as #[Swag.NoInline] is already defined");
     SWAG_ERROR(Err0691, "unexpected #[Swag.NoInline] attribute as #[Swag.Inline] is already defined");
     SWAG_ERROR(Err0693, "expected a literal of type '%s' but a dynamic value was provided");
-    SWAG_ERROR(Err0690, nullptr);
+    SWAG_ERROR(Err0690, "unexpected type '%s' for a #[Swag.ConstExpr] parameter");
     SWAG_ERROR(Err0688, nullptr);
     SWAG_ERROR(Err0504, nullptr);
     SWAG_ERROR(Err0577, nullptr);
@@ -987,6 +987,7 @@ void initErrors()
     SWAG_ERROR(Hlp0042, "you could use 'func' instead of 'mtd' or 'mtdc'");
     SWAG_ERROR(Hlp0037, "you should add a 'break' or a 'fallthrough'");
     SWAG_ERROR(Hlp0038, "you should add a 'break'");
+    SWAG_ERROR(Hlp0046, "only basic parameters (integers, float, string...) can be marked with the #[Swag.ConstExpr] attribute");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
