@@ -92,7 +92,8 @@ namespace Report
                     note1->hint.empty() &&
                     !note1->hasRangeLocation2 &&
                     (!note1->hasRangeLocation ||
-                     (note1->startLocation.line == note->startLocation.line &&
+                     (note->sourceFile == note1->sourceFile &&
+                      note1->startLocation.line == note->startLocation.line &&
                       note1->endLocation.line == note->endLocation.line &&
                       note1->startLocation.column == note->startLocation.column &&
                       note1->endLocation.column == note->endLocation.column)))
@@ -110,6 +111,7 @@ namespace Report
                     !note1->hasRangeLocation2 &&
                     note->hasRangeLocation &&
                     note1->hasRangeLocation &&
+                    note->sourceFile == note1->sourceFile &&
                     note1->startLocation.line == note->startLocation.line &&
                     note1->endLocation.line == note->endLocation.line &&
                     (note1->startLocation.column > note->endLocation.column ||
