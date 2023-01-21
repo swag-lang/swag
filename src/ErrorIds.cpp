@@ -874,8 +874,8 @@ void initErrors()
     SWAG_ERROR(Err0181, "value '%I64u' does not fit in the type '%s'");
     SWAG_ERROR(Err0183, "value '%s' ('%I64u' in decimal) does not fit in the type '%s'");
     SWAG_ERROR(Err0056, "x64 backend unsupported os '%s'");
-    SWAG_ERROR(Err0083, nullptr);
-    SWAG_ERROR(Err0691, nullptr);
+    SWAG_ERROR(Err0083, "unexpected #[Swag.Inline] attribute as #[Swag.NoInline] is already defined");
+    SWAG_ERROR(Err0691, "unexpected #[Swag.NoInline] attribute as #[Swag.Inline] is already defined");
     SWAG_ERROR(Err0693, nullptr);
     SWAG_ERROR(Err0690, nullptr);
     SWAG_ERROR(Err0688, nullptr);

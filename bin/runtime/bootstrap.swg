@@ -37,6 +37,8 @@ namespace Swag
 
     #[AttrUsage(AttributeUsage.Function)]
     attr Inline()
+    #[AttrUsage(AttributeUsage.Function)]
+    attr NoInline()
 
     #[AttrUsage(AttributeUsage.Function)]
     attr Macro()
@@ -590,7 +592,8 @@ namespace Swag
         byteCodeOptimizeLevel   = 1
         byteCodeDebugInline     = true
         byteCodeEmitAssume      = true
-        byteCodeInline          = true
+        byteCodeInline          = true  // Enable bytecode inlining with #[Swag.Inline]
+        byteCodeAutoInline      = true  // Automatic inlining of some other functions
 
         // Backend common
         backendKind               = BuildCfgBackendKind.Executable

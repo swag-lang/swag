@@ -39,7 +39,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     // Function prototype
     auto            funcType = getOrCreateFuncType(buildParameters, moduleToGen, typeFunc);
     llvm::Function* func     = (llvm::Function*) modu.getOrInsertFunction(funcName.c_str(), funcType).getCallee();
-    // setFuncAttributes(buildParameters, moduleToGen, bc, func);
+    setFuncAttributes(buildParameters, moduleToGen, node, bc, func);
 
     // No pointer aliasing, on all pointers. Is this correct ??
     // Note that without the NoAlias flag, some optims will not trigger (like vectorisation)
@@ -5521,14 +5521,14 @@ void BackendLLVM::emitInternalPanic(const BuildParameters& buildParameters, Modu
     emitCall(buildParameters, moduleToGen, g_LangSpec->name__panic, allocR, allocT, {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {r1, r2, r3, r4});
 }
 
-void BackendLLVM::setFuncAttributes(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc, llvm::Function* func)
+void BackendLLVM::setFuncAttributes(const BuildParameters& buildParameters, Module* moduleToGen, AstFuncDecl* funcNode, ByteCode* bc, llvm::Function* func)
 {
     llvm::AttrBuilder attr;
 
     if (!moduleToGen->mustOptimizeBK(bc->node))
-    {
         attr.addAttribute(llvm::Attribute::OptimizeNone);
-    }
+    if (funcNode && funcNode->attributeFlags & ATTRIBUTE_NO_INLINE)
+        attr.addAttribute(llvm::Attribute::NoInline);
 
     func->addAttributes(llvm::AttributeList::FunctionIndex, attr);
 }

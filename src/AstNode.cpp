@@ -646,16 +646,17 @@ bool AstFuncDecl::mustInline()
         return false;
     if (attributeFlags & ATTRIBUTE_INLINE)
         return true;
-
     if (!content)
         return false;
 
-    // The whole function evaluated to a constant
-    if (content->childs.size() == 1 && content->childs.front()->flags & AST_VALUE_COMPUTED)
-        return true;
+    if (sourceFile->module->buildCfg.byteCodeAutoInline == false)
+        return false;
+    if (attributeFlags & ATTRIBUTE_NO_INLINE)
+        return false;
 
-    //if (content->kind == AstNodeKind::Return)
-    //    return true;
+    // All short functions
+    if (shortForm)
+        return true;
 
     return false;
 }

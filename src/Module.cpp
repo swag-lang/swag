@@ -54,6 +54,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
         buildCfg.byteCodeOptimizeLevel    = 0;
         buildCfg.byteCodeDebugInline      = false;
         buildCfg.byteCodeInline           = false;
+        buildCfg.byteCodeAutoInline       = false;
         buildCfg.byteCodeEmitAssume       = true;
         buildCfg.safetyGuards             = 0;
         buildCfg.stackTrace               = false;
@@ -67,6 +68,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
         buildCfg.byteCodeOptimizeLevel    = 0;
         buildCfg.byteCodeDebugInline      = true;
         buildCfg.byteCodeInline           = true;
+        buildCfg.byteCodeAutoInline       = true;
         buildCfg.byteCodeEmitAssume       = true;
         buildCfg.safetyGuards             = SAFETY_ALL;
         buildCfg.stackTrace               = true;
@@ -80,6 +82,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
         buildCfg.byteCodeOptimizeLevel    = 1;
         buildCfg.byteCodeDebugInline      = false;
         buildCfg.byteCodeInline           = true;
+        buildCfg.byteCodeAutoInline       = true;
         buildCfg.byteCodeEmitAssume       = true;
         buildCfg.safetyGuards             = SAFETY_ALL & ~SAFETY_NAN & ~SAFETY_BOOL;
         buildCfg.stackTrace               = true;
@@ -93,6 +96,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
         buildCfg.byteCodeOptimizeLevel    = 2;
         buildCfg.byteCodeDebugInline      = false;
         buildCfg.byteCodeInline           = true;
+        buildCfg.byteCodeAutoInline       = true;
         buildCfg.byteCodeEmitAssume       = false;
         buildCfg.safetyGuards             = 0;
         buildCfg.stackTrace               = false;

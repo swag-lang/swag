@@ -476,6 +476,7 @@ void LanguageSpec::setupAttributesFlags()
     attributesFlags.add("EnumIndex", ATTRIBUTE_ENUM_INDEX);
     attributesFlags.add("Foreign", ATTRIBUTE_FOREIGN);
     attributesFlags.add("Inline", ATTRIBUTE_INLINE);
+    attributesFlags.add("NoInline", ATTRIBUTE_NO_INLINE);
     attributesFlags.add("Macro", ATTRIBUTE_MACRO);
     attributesFlags.add("Mixin", ATTRIBUTE_MIXIN);
     attributesFlags.add("Complete", ATTRIBUTE_COMPLETE);

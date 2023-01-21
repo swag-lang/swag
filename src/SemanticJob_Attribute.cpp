@@ -330,6 +330,11 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                     SWAG_VERIFY(!attrParam->value.text.empty(), context->report({child, attrParam->token, Err(Err0811)}));
                     SWAG_VERIFY(attrParam->value.text.find(".", 0) == -1, context->report({child, attrParam->token, Err(Err0813)}));
                 }
+
+                if (*it == ATTRIBUTE_INLINE && (flags & ATTRIBUTE_NO_INLINE))
+                    return context->report({child, Err(Err0083)});
+                if (*it == ATTRIBUTE_NO_INLINE && (flags & ATTRIBUTE_INLINE))
+                    return context->report({child, Err(Err0691)});
             }
 
             //////

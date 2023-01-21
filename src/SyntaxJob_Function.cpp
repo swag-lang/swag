@@ -699,6 +699,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
                 SWAG_CHECK(doExpression(returnNode, EXPR_FLAG_NONE));
             }
 
+            funcNode->shortForm                  = true;
             funcNode->content->token.endLocation = token.startLocation;
             resStmt                              = funcNode->content;
         }
@@ -730,6 +731,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
 
             funcNode->content->token.endLocation = token.startLocation;
             resStmt                              = funcNode->content;
+            funcNode->shortForm                  = true;
         }
 
         // Normal curly statement

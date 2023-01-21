@@ -202,6 +202,7 @@ struct BuildCfg
     bool     byteCodeDebugInline   = true;
     bool     byteCodeEmitAssume    = true;
     bool     byteCodeInline        = true;
+    bool     byteCodeAutoInline    = true;
 
     // Backend common
     BuildCfgBackendKind backendKind              = BuildCfgBackendKind::Executable;
