@@ -1312,11 +1312,26 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         // Reserve room on the stack, except for a retval
         else if (!(symbolFlags & OVERLOAD_RETVAL))
         {
-            auto alignOf                     = SemanticJob::alignOf(node);
-            node->ownerScope->startStackSize = (uint32_t) TypeManager::align(node->ownerScope->startStackSize, alignOf);
-            storageOffset                    = node->ownerScope->startStackSize;
-            node->ownerScope->startStackSize += typeInfo->sizeOf;
-            SemanticJob::setOwnerMaxStackSize(node, node->ownerScope->startStackSize);
+            // :DirectInlineLocalVar
+            if (node->assignment &&
+                node->assignment->kind == AstNodeKind::IdentifierRef &&
+                node->assignment->childs.back()->childs.size() &&
+                node->assignment->typeInfo == node->typeInfo &&
+                node->assignment->childs.back()->childs.back()->kind == AstNodeKind::Inline &&
+                node->assignment->childs.back()->childs.back()->flags & AST_TRANSIENT)
+            {
+                SWAG_ASSERT(node->assignment->childs.back()->childs.back()->computedValue);
+                storageOffset = node->assignment->childs.back()->childs.back()->computedValue->storageOffset;
+                node->specFlags |= AST_SPEC_VARDECL_INLINE_STORAGE;
+            }
+            else
+            {
+                auto alignOf                     = SemanticJob::alignOf(node);
+                node->ownerScope->startStackSize = (uint32_t) TypeManager::align(node->ownerScope->startStackSize, alignOf);
+                storageOffset                    = node->ownerScope->startStackSize;
+                node->ownerScope->startStackSize += typeInfo->sizeOf;
+                SemanticJob::setOwnerMaxStackSize(node, node->ownerScope->startStackSize);
+            }
         }
 
         node->allocateExtension(ExtensionKind::ByteCode);

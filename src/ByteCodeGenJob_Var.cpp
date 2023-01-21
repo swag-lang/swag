@@ -112,27 +112,37 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
     // User specific initialization with a right side
     if (node->assignment && !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
     {
-        if (!(node->doneFlags & AST_DONE_PRE_CAST))
+        // :DirectInlineLocalVar
+        // The local variable is using the storage from the inline call.
+        // No need to make a copy
+        if (node->specFlags & AST_SPEC_VARDECL_INLINE_STORAGE)
         {
+            freeRegisterRC(context, node->assignment);
+        }
+        else
+        {
+            if (!(node->doneFlags & AST_DONE_PRE_CAST))
+            {
+                node->allocateExtension(ExtensionKind::AdditionalRegs);
+                node->extension->misc->additionalRegisterRC = reserveRegisterRC(context);
+                emitRetValRef(context, resolved, node->extension->misc->additionalRegisterRC, retVal, resolved->computedValue.storageOffset);
+                node->resultRegisterRC = node->assignment->resultRegisterRC;
+                node->doneFlags |= AST_DONE_PRE_CAST;
+            }
+
+            SWAG_CHECK(emitCast(context, node->assignment, node->assignment->typeInfo, node->assignment->castedTypeInfo));
+            if (context->result != ContextResult::Done)
+                return true;
+
+            if (!mustDropLeft)
+                node->assignment->flags |= AST_NO_LEFT_DROP;
             node->allocateExtension(ExtensionKind::AdditionalRegs);
-            node->extension->misc->additionalRegisterRC = reserveRegisterRC(context);
-            emitRetValRef(context, resolved, node->extension->misc->additionalRegisterRC, retVal, resolved->computedValue.storageOffset);
-            node->resultRegisterRC = node->assignment->resultRegisterRC;
-            node->doneFlags |= AST_DONE_PRE_CAST;
+            emitAffectEqual(context, node->extension->misc->additionalRegisterRC, node->resultRegisterRC, node->typeInfo, node->assignment);
+            if (context->result != ContextResult::Done)
+                return true;
+            freeRegisterRC(context, node);
         }
 
-        SWAG_CHECK(emitCast(context, node->assignment, node->assignment->typeInfo, node->assignment->castedTypeInfo));
-        if (context->result != ContextResult::Done)
-            return true;
-
-        if (!mustDropLeft)
-            node->assignment->flags |= AST_NO_LEFT_DROP;
-        node->allocateExtension(ExtensionKind::AdditionalRegs);
-        emitAffectEqual(context, node->extension->misc->additionalRegisterRC, node->resultRegisterRC, node->typeInfo, node->assignment);
-        if (context->result != ContextResult::Done)
-            return true;
-
-        freeRegisterRC(context, node);
         return true;
     }
 

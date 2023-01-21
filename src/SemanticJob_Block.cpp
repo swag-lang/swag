@@ -105,6 +105,7 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
 
     auto func = node->func;
 
+    // :DirectInlineLocalVar
     // For a return by copy, need to reserve room on the stack for the return result
     if (func->returnType && func->returnType->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
     {

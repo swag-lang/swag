@@ -158,4 +158,5 @@ static const uint8_t AST_SPEC_TYPEEXPRESSION_DONEGEN       = 0x01;
 static const uint8_t AST_SPEC_TYPELAMBDA_CANTHROW          = 0x01;
 static const uint8_t AST_SPEC_VARDECL_CONSTASSIGN          = 0x01;
 static const uint8_t AST_SPEC_VARDECL_GEN_ITF              = 0x02;
+static const uint8_t AST_SPEC_VARDECL_INLINE_STORAGE       = 0x04;
 static const uint8_t AST_SPEC_VISIT_WANTPOINTER            = 0x01;

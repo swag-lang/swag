@@ -357,6 +357,8 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
 // Same, but we make the detection before and after a function that has been inlined
 bool ByteCodeOptimizer::optimizePassRetCopyInline(ByteCodeOptContext* context)
 {
+    return true;
+
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
         bool startOk = false;

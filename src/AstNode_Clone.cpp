@@ -525,11 +525,11 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
         newNode->content         = content->clone(cloneContext);
 
         // Content can be an automatic try block in case of a throwable function
-        // But we want to scope to have the function statement as an owner
+        // But we want the scope to have the function statement as an owner
         // :AutomaticTryContent
         if (newNode->content->kind == AstNodeKind::Try)
         {
-            SWAG_ASSERT(newNode->content->childs.front()->kind == AstNodeKind::Statement);
+            SWAG_ASSERT(newNode->content->childs.front()->kind == AstNodeKind::Statement || newNode->content->childs.front()->kind == AstNodeKind::Return);
             bodyScope->owner = newNode->content->childs.front();
         }
         else
