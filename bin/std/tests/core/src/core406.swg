@@ -1,4 +1,4 @@
-#global skip
+//#global skip
 using Core, StrConv
 
 #[Swag.Macro]
@@ -14,7 +14,7 @@ func(str: string) interpol()->String
         d += 1
 
         var sb1: StringBuilder
-        sb1.appendFormat("sb.appendAny(%)", @mkstring(d, 1))
+        sb1.appendFormat("sb.appendAny(`%)", @mkstring(d, 1))
         return sb1.toString()
     }
 
@@ -25,8 +25,8 @@ func(str: string) interpol()->String
 {
     a := 666
     b := 52
-    x := interpol'"{b}"()
-    Debug.assert(x == "52")
-    y := interpol'"{a}"()
+    x := interpol'"{a}"()
     Debug.assert(x == "666")
+    y := interpol'"{b}"()
+    Debug.assert(y == "52")
 }

@@ -7,6 +7,7 @@
 
 bool SaveGenJob::flush(Module* module)
 {
+    ScopedLock lk(module->mutexFlushGenFiles);
     for (int idx = 0; idx < module->contentJobGeneratedFile.size(); idx++)
     {
         if (module->contentJobGeneratedFile[idx].empty())

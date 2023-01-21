@@ -1316,9 +1316,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             if (assignment && (assignment->kind == AstNodeKind::Catch || assignment->kind == AstNodeKind::Try || assignment->kind == AstNodeKind::Assume))
                 assignment = assignment->childs.front();
 
-            if (node->token.text == "fct")
-                int a = 0;
-
             // :DirectInlineLocalVar
             if (assignment &&
                 assignment->kind == AstNodeKind::IdentifierRef &&

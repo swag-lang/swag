@@ -191,6 +191,7 @@ struct Module
     SharedMutex mutexByteCode;
     Mutex       mutexGlobalVars;
     Mutex       mutexBuildPass;
+    Mutex       mutexFlushGenFiles;
 
     string path;
     Utf8   name;
