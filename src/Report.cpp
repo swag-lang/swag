@@ -59,6 +59,7 @@ namespace Report
                     }
 
                     note->hint += note->textMsg;
+                    note->textMsg.clear();
                     note->showRange = true;
                 }
             }
@@ -99,6 +100,24 @@ namespace Report
                       note1->endLocation.column == note->endLocation.column)))
                 {
                     note->hint = note1->textMsg;
+                    note->remarks.insert(note->remarks.end(), note1->remarks.begin(), note1->remarks.end());
+                    note1->display = false;
+                }
+
+                // Try to move the hint
+                if (note->hint.empty() &&
+                    note->hasRangeLocation &&
+                    !note1->hint.empty() &&
+                    note1->textMsg.empty() &&
+                    !note1->hasRangeLocation2 &&
+                    (!note1->hasRangeLocation ||
+                     (note->sourceFile == note1->sourceFile &&
+                      note1->startLocation.line == note->startLocation.line &&
+                      note1->endLocation.line == note->endLocation.line &&
+                      note1->startLocation.column == note->startLocation.column &&
+                      note1->endLocation.column == note->endLocation.column)))
+                {
+                    note->hint = note1->hint;
                     note->remarks.insert(note->remarks.end(), note1->remarks.begin(), note1->remarks.end());
                     note1->display = false;
                 }
