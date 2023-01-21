@@ -1174,7 +1174,7 @@ void initErrors()
     SWAG_ERROR(Nte0006, "this 'using' field can be converted");
     SWAG_ERROR(Nte0003, "this variable can escape the current frame");
     SWAG_ERROR(Nte0009, "you can run swag with --dbg-catch to attach the bytecode debugger when the error occurs");
-    SWAG_ERROR(Nte0005, nullptr);
+    SWAG_ERROR(Nte0005, "expected 'string' because the return type of an #ast block is 'string'");
     SWAG_ERROR(Nte0069, nullptr);
     SWAG_ERROR(Nte0070, nullptr);
 

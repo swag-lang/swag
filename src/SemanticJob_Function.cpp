@@ -1362,8 +1362,23 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
                 return true;
         }
 
-        PushErrContext ec{context, funcNode->returnType, ErrorContextKind::Note, Fmt(Nte(Nte0067), returnType->getDisplayNameC())};
-        SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT | CASTFLAG_PTR_REF));
+        uint32_t castFlags = CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT | CASTFLAG_PTR_REF;
+
+        if (funcNode->attributeFlags & ATTRIBUTE_AST_FUNC)
+        {
+            PushErrContext ec{context, funcNode, ErrorContextKind::Note, Nte(Nte0005), nullptr, true};
+            SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, castFlags));
+        }
+        else if (funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC)
+        {
+            PushErrContext ec{context, funcNode, ErrorContextKind::Note, Fmt(Nte(Nte0067), returnType->getDisplayNameC()), nullptr, true};
+            SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, castFlags));
+        }
+        else
+        {
+            PushErrContext ec{context, funcNode->returnType, ErrorContextKind::Note, Fmt(Nte(Nte0067), returnType->getDisplayNameC())};
+            SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, castFlags));
+        }
     }
 
     if (child->kind == AstNodeKind::ExpressionList)

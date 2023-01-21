@@ -745,7 +745,7 @@ JobResult ByteCodeGenJob::execute()
     if (originalNode->attributeFlags & ATTRIBUTE_COMPILER_FUNC)
         module->addCompilerFunc(originalNode->extension->bytecode->bc);
 
-    // #ast/#run etc... can have a #[Swag.printbc]. We need to print it now, because it's compile time, and the legit
+    // #ast/#run etc... can have a #[Swag.PrintBc]. We need to print it now, because it's compile time, and the legit
     // pipeline for printing (after bc optimize) will not be called in that case
     if (context.bc)
     {
