@@ -655,8 +655,8 @@ bool AstFuncDecl::mustInline()
         return false;
 
     // All short functions
-    if (shortForm)
-        return true;
+    //if (shortForm)
+    //    return true;
 
     return false;
 }
