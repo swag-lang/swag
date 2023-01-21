@@ -66,6 +66,7 @@ void LanguageSpec::setupNames()
     name_Swag_Offset     = "Swag.Offset";
     name_Swag_ExportType = "Swag.ExportType";
     name_Swag_Warn       = "Swag.Warn";
+    name_Swag_ConstExpr  = "Swag.ConstExpr";
 
     name_opBinary       = "opBinary";
     name_opUnary        = "opUnary";

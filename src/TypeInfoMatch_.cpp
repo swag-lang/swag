@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "SemanticJob.h"
 #include "Generic.h"
+#include "LanguageSpec.h"
 
 static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& parameters, uint32_t forceCastFlags = 0)
 {
@@ -151,6 +152,14 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         if (context.cptResolved < context.doneParameters.size())
             context.doneParameters[context.cptResolved] = true;
 
+        // Check that ConstExpr is valid
+        bool constExprHasFailed = false;
+        if (same && !(callParameter->flags & AST_VALUE_COMPUTED) && wantedParameter->attributes.hasAttribute(g_LangSpec->name_Swag_ConstExpr))
+        {
+            constExprHasFailed = true;
+            same               = false;
+        }
+
         if (!same)
         {
             // Keep the first error
@@ -162,6 +171,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                 context.badSignatureInfos.castErrorToType           = context.semContext->castErrorToType;
                 context.badSignatureInfos.castErrorFromType         = context.semContext->castErrorFromType;
                 context.badSignatureInfos.castErrorFlags            = context.semContext->castErrorFlags;
+                context.badSignatureInfos.constExprHasFailed        = constExprHasFailed;
                 SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
             }
 

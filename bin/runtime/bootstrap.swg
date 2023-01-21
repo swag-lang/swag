@@ -27,7 +27,7 @@ namespace Swag
     attr AttrUsage(usage: AttributeUsage)
     attr AttrMulti()
 
-    #[AttrUsage(AttributeUsage.Function|AttributeUsage.Struct)]
+    #[AttrUsage(AttributeUsage.Function|AttributeUsage.FunctionParameter|AttributeUsage.Struct)]
     attr ConstExpr()
 
     #[AttrUsage(AttributeUsage.Function|AttributeUsage.Struct|AttributeUsage.File)]

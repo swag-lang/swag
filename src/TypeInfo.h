@@ -121,21 +121,23 @@ struct BadSignatureInfos
     int      badSignatureParameterIdx;
     int      badSignatureNum1;
     int      badSignatureNum2;
+    bool     constExprHasFailed;
 
     void clear()
     {
         badGenMatch.clear();
-        badSignatureParameterIdx  = -1;
         badNode                   = nullptr;
         badSignatureRequestedType = nullptr;
         badSignatureGivenType     = nullptr;
-        badGenValue1              = nullptr;
-        badGenValue2              = nullptr;
-        badSignatureNum1          = 0;
-        badSignatureNum2          = 0;
-        castErrorFlags            = 0;
         castErrorToType           = nullptr;
         castErrorFromType         = nullptr;
+        badGenValue1              = nullptr;
+        badGenValue2              = nullptr;
+        castErrorFlags            = 0;
+        badSignatureParameterIdx  = -1;
+        badSignatureNum1          = 0;
+        badSignatureNum2          = 0;
+        constExprHasFailed        = false;
     }
 };
 
