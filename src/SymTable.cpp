@@ -476,6 +476,8 @@ Utf8 SymTable::getNakedKindName(SymbolOverload* overload)
         return "closure parameter";
     if (overload->flags & OVERLOAD_VAR_FUNC_PARAM)
         return "function parameter";
+    if (overload->flags & OVERLOAD_VAR_INLINE)
+        return "function parameter";
     if (overload->flags & OVERLOAD_VAR_GLOBAL)
         return "global variable";
     if (overload->flags & OVERLOAD_VAR_LOCAL)

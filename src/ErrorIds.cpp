@@ -494,7 +494,7 @@ void initErrors()
     SWAG_ERROR(Err0524, "cannot open file '%s' for writing");
     SWAG_ERROR(Err0502, "cannot open file '%s'");
     SWAG_ERROR(Err0091, "cannot reference the compile time %s '%s' from runtime %s");
-    SWAG_ERROR(Err0206, "cannot reference the variable '%s' because it is in another stack frame");
+    SWAG_ERROR(Err0206, "cannot reference the %s '%s' because it is in another stack frame");
     SWAG_ERROR(Err0549, "cannot resolve %s '%s'");
     SWAG_ERROR(Err0516, "cannot resolve the dependency to module '%s' because of two different major versions ('%d' and '%d')");
     SWAG_ERROR(Err0518, "cannot resolve the dependency to module '%s', version '%s' cannot be found at location '%s'");

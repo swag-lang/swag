@@ -18,7 +18,7 @@ bool ByteCodeGenJob::sameStackFrame(ByteCodeGenContext* context, SymbolOverload*
 {
     if (!context->node->isSameStackFrame(overload))
     {
-        Diagnostic diag{context->node, Fmt(Err(Err0206), overload->symbol->name.c_str())};
+        Diagnostic diag{context->node, Fmt(Err(Err0206), SymTable::getNakedKindName(overload).c_str(), overload->symbol->name.c_str())};
         return context->report(diag, Diagnostic::hereIs(overload, true));
     }
 
