@@ -1312,16 +1312,23 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         // Reserve room on the stack, except for a retval
         else if (!(symbolFlags & OVERLOAD_RETVAL))
         {
+            auto assignment = node->assignment;
+            if (assignment && (assignment->kind == AstNodeKind::Catch || assignment->kind == AstNodeKind::Try || assignment->kind == AstNodeKind::Assume))
+                assignment = assignment->childs.front();
+
+            if (node->token.text == "fct")
+                int a = 0;
+
             // :DirectInlineLocalVar
-            if (node->assignment &&
-                node->assignment->kind == AstNodeKind::IdentifierRef &&
-                node->assignment->childs.back()->childs.size() &&
-                node->assignment->typeInfo == node->typeInfo &&
-                node->assignment->childs.back()->childs.back()->kind == AstNodeKind::Inline &&
-                node->assignment->childs.back()->childs.back()->flags & AST_TRANSIENT)
+            if (assignment &&
+                assignment->kind == AstNodeKind::IdentifierRef &&
+                assignment->childs.back()->childs.size() &&
+                assignment->typeInfo == node->typeInfo &&
+                assignment->childs.back()->childs.back()->kind == AstNodeKind::Inline &&
+                assignment->childs.back()->childs.back()->flags & AST_TRANSIENT)
             {
-                SWAG_ASSERT(node->assignment->childs.back()->childs.back()->computedValue);
-                storageOffset = node->assignment->childs.back()->childs.back()->computedValue->storageOffset;
+                SWAG_ASSERT(assignment->childs.back()->childs.back()->computedValue);
+                storageOffset = assignment->childs.back()->childs.back()->computedValue->storageOffset;
                 node->specFlags |= AST_SPEC_VARDECL_INLINE_STORAGE;
             }
             else
