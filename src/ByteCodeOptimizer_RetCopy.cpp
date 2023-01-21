@@ -3,6 +3,7 @@
 #include "SourceFile.h"
 #include "AstNode.h"
 #include "TypeInfo.h"
+#include "TypeManager.h"
 
 static void removeOpDrop(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg, ByteCodeInstruction* ip, uint32_t orgOffset)
 {
@@ -212,7 +213,7 @@ void ByteCodeOptimizer::registerMakeAddr(ByteCodeOptContext* context, ByteCodeIn
         if (context->bc->typeInfoFunc)
         {
             auto param = context->bc->typeInfoFunc->registerIdxToType(ip->c.u32);
-            if(param->isNativeIntegerOrRune() || param->isNativeFloat() || param->isBool())
+            if (param->isNativeIntegerOrRune() || param->isNativeFloat() || param->isBool())
                 break;
         }
 
@@ -357,20 +358,25 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
 // Same, but we make the detection before and after a function that has been inlined
 bool ByteCodeOptimizer::optimizePassRetCopyInline(ByteCodeOptContext* context)
 {
-    return true;
-
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
-        bool startOk = false;
+        bool       startOk     = false;
+        AstInline* inlineBlock = nullptr;
 
         if (ip->op == ByteCodeOp::MakeStackPointer &&
             ip[1].node->ownerInline != ip[0].node->ownerInline)
-            startOk = true;
+        {
+            inlineBlock = ip[1].node->ownerInline;
+            startOk     = true;
+        }
 
         if (ip->op == ByteCodeOp::MakeStackPointer &&
             ip[1].op == ByteCodeOp::IncPointer64 &&
             ip[2].node->ownerInline != ip[0].node->ownerInline)
-            startOk = true;
+        {
+            inlineBlock = ip[2].node->ownerInline;
+            startOk     = true;
+        }
 
         // Detect pushing pointer to the stack for a return value
         if (startOk)
@@ -387,7 +393,15 @@ bool ByteCodeOptimizer::optimizePassRetCopyInline(ByteCodeOptContext* context)
                 ip++;
 
             // This will copy the result in the real variable
+            bool canOptim = false;
             if (ip->op == ByteCodeOp::MakeStackPointer && ByteCode::isMemCpy(ip + 1) && ip[1].b.u32 == ipOrg->a.u32)
+                canOptim = true;
+
+            // For now, disable optimization for a struct.
+            if (canOptim && inlineBlock && TypeManager::concreteType(inlineBlock->func->typeInfo)->isStruct())
+                canOptim = false;
+
+            if (canOptim)
                 optimRetCopy(context, ipOrg, ip);
             else
                 ip = ipOrg;

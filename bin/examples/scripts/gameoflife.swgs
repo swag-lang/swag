@@ -105,7 +105,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         }
 
         wnd.invalidate()
-        Threading.sleep(1'ms)
+        Threading.Thread.sleep(1'ms)
     }
 
     return false
