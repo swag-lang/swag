@@ -404,6 +404,7 @@ bool AstOutput::outputAttributesUsage(OutputContext& context, Concat& concat, Ty
     ADD_ATTRUSAGE(AttributeUsage::Variable, "Variable");
     ADD_ATTRUSAGE(AttributeUsage::Struct, "Struct");
     ADD_ATTRUSAGE(AttributeUsage::Function, "Function");
+    ADD_ATTRUSAGE(AttributeUsage::FunctionParameter, "FunctionParameter");
     ADD_ATTRUSAGE(AttributeUsage::File, "File");
     ADD_ATTRUSAGE(AttributeUsage::Constant, "Constant");
 

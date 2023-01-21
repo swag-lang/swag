@@ -63,6 +63,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     bool        isGlobalVar = kind == AstNodeKind::VarDecl && checkNode->ownerScope->isGlobalOrImpl();
     bool        isStructVar = kind == AstNodeKind::VarDecl && (checkNode->flags & AST_STRUCT_MEMBER);
     bool        isLocalVar  = kind == AstNodeKind::VarDecl && !isGlobalVar && !isStructVar;
+    bool        isFuncParam = kind == AstNodeKind::FuncDeclParam;
     const char* specificMsg = nullptr;
 
     // Check specific hard coded attributes
@@ -127,16 +128,12 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
             return true;
         if ((typeInfo->attributeUsage & AttributeUsage::GlobalVariable) && isGlobalVar)
             return true;
+        if ((typeInfo->attributeUsage & AttributeUsage::FunctionParameter) && isFuncParam)
+            return true;
     }
 
-    switch (typeInfo->attributeUsage & AttributeUsage::All)
+    switch (typeInfo->attributeUsage & AttributeUsage::MaskType)
     {
-    case AttributeUsage::Function:
-        specificMsg = "a function";
-        break;
-    case AttributeUsage::Struct:
-        specificMsg = "a struct";
-        break;
     case AttributeUsage::Enum:
         specificMsg = "an enum";
         break;
@@ -149,6 +146,21 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     case AttributeUsage::GlobalVariable:
         specificMsg = "a global variable";
         break;
+    case AttributeUsage::Variable:
+        specificMsg = "a variable";
+        break;
+    case AttributeUsage::Struct:
+        specificMsg = "a struct";
+        break;
+    case AttributeUsage::Function:
+        specificMsg = "a function";
+        break;
+    case AttributeUsage::FunctionParameter:
+        specificMsg = "a function parameter";
+        break;
+    case AttributeUsage::File:
+        specificMsg = "a file";
+        break;
     case AttributeUsage::Constant:
         specificMsg = "a constant";
         break;
@@ -158,6 +170,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     {
         auto       nakedName = AstNode::getKindName(checkNode);
         Diagnostic diag{oneAttribute, Fmt(Err(Err0583), oneAttribute->token.ctext(), specificMsg)};
+        diag.hint = Hnt(Hnt0096);
         Diagnostic note1{checkNode, Fmt(Nte(Nte0019), nakedName.c_str()), DiagnosticLevel::Note};
         return context->report(diag, &note1, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload));
     }
@@ -167,12 +180,14 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
         if (nakedName == "<node>")
         {
             Diagnostic diag{oneAttribute, Fmt(Err(Err0586), oneAttribute->token.ctext())};
+            diag.hint = Hnt(Hnt0096);
             return context->report(diag, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload));
         }
         else
         {
             auto       nakedName1 = AstNode::getKindName(checkNode);
             Diagnostic diag{oneAttribute, Fmt(Err(Err0588), oneAttribute->token.ctext(), nakedName.c_str())};
+            diag.hint = Hnt(Hnt0096);
             Diagnostic note1{checkNode, checkNode->token, Fmt(Nte(Nte0026), nakedName1.c_str()), DiagnosticLevel::Note};
             return context->report(diag, &note1, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload));
         }
@@ -575,7 +590,12 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
 {
     auto node = CastAst<AstAttrUse>(context->node->parent, AstNodeKind::AttrUse);
     SWAG_VERIFY(node->content || (node->specFlags & AST_SPEC_ATTRUSE_GLOBAL), context->report({node, Err(Err0597)}));
+    SWAG_CHECK(resolveAttrUse(context, node));
+    return true;
+}
 
+bool SemanticJob::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
+{
     for (auto child : node->childs)
     {
         if (child == node->content)
@@ -655,6 +675,15 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
         node->attributes.emplace(oneAttribute);
     }
 
-    SWAG_CHECK(collectAttributes(context, node, nullptr, node));
+    AstNode*       forNode = node;
+    AttributeList* list    = nullptr;
+    if (node->content && node->content->kind == AstNodeKind::FuncDeclParam)
+    {
+        auto funcDeclParam = CastAst<AstVarDecl>(node->content, AstNodeKind::FuncDeclParam);
+        list               = &funcDeclParam->attributes;
+        forNode            = node->content;
+    }
+
+    SWAG_CHECK(collectAttributes(context, forNode, list, node));
     return true;
 }

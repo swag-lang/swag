@@ -3,19 +3,20 @@ namespace Swag
     // #[flags] is forced by the compiler
     enum AttributeUsage : u32
     {
-        Enum            = 0x00000001
-        EnumValue       = 0x00000002
-        StructVariable  = 0x00000004
-        GlobalVariable  = 0x00000008
-        Variable        = 0x00000010
-        Struct          = 0x00000020
-        Function        = 0x00000040
-        File            = 0x00000080
-        Constant        = 0x00000100
+        Enum                = 0x00000001
+        EnumValue           = 0x00000002
+        StructVariable      = 0x00000004
+        GlobalVariable      = 0x00000008
+        Variable            = 0x00000010
+        Struct              = 0x00000020
+        Function            = 0x00000040
+        FunctionParameter   = 0x00000080
+        File                = 0x00000100
+        Constant            = 0x00000200
         //
-        Multi           = 0x01000000
-        Gen             = 0x02000000
-        All             = 0x04000000
+        Multi               = 0x01000000
+        Gen                 = 0x02000000
+        All                 = 0x04000000
     }
 
     // #########################################################

@@ -25,15 +25,17 @@ enum WarnLevel : uint8_t
 enum AttributeUsage
 {
     // Usage
-    Enum           = 0x00000001,
-    EnumValue      = 0x00000002,
-    StructVariable = 0x00000004,
-    GlobalVariable = 0x00000008,
-    Variable       = 0x00000010,
-    Struct         = 0x00000020,
-    Function       = 0x00000040,
-    File           = 0x00000080,
-    Constant       = 0x00000100,
+    Enum              = 0x00000001,
+    EnumValue         = 0x00000002,
+    StructVariable    = 0x00000004,
+    GlobalVariable    = 0x00000008,
+    Variable          = 0x00000010,
+    Struct            = 0x00000020,
+    Function          = 0x00000040,
+    FunctionParameter = 0x00000080,
+    File              = 0x00000100,
+    Constant          = 0x00000200,
+    MaskType          = 0x00FFFFFF,
     // Flags
     Multi = 0x01000000,
     Gen   = 0x02000000,

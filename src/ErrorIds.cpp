@@ -1088,6 +1088,10 @@ void initErrors()
     SWAG_ERROR(Hnt0067, "this unpacks '%d' variable(s)");
     SWAG_ERROR(Hnt0002, "this value can only be converted to type '%s' with a dynamic call to 'opAffect'");
     SWAG_ERROR(Hnt0095, "you cannot reference this runtime %s from the %s");
+    SWAG_ERROR(Hnt0096, "unexpected attribute");
+    SWAG_ERROR(Hnt0097, nullptr);
+    SWAG_ERROR(Hnt0098, nullptr);
+    SWAG_ERROR(Hnt0099, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

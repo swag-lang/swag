@@ -550,7 +550,7 @@ Utf8 AstNode::getKindName(AstNode* node)
     case AstNodeKind::Alias:
         return "alias";
     case AstNodeKind::FuncDeclParam:
-        return "parameter";
+        return "function parameter";
     case AstNodeKind::StructDecl:
         return "struct";
     case AstNodeKind::InterfaceDecl:

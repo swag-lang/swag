@@ -71,6 +71,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         funcParam->typeInfo   = param->typeInfo;
         funcParam->index      = index++;
         funcParam->declNode   = nodeParam;
+        funcParam->attributes = nodeParam->attributes;
 
         // Code is only valid for a macro or mixin
         auto paramType     = nodeParam->typeInfo;

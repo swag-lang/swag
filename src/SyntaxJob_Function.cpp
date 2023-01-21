@@ -163,7 +163,15 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result
 bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* hasMissingType)
 {
     ScopedContextual sc(this, &contextualNoInline);
-    auto             paramNode = Ast::newVarDecl(sourceFile, "", parent, this, AstNodeKind::FuncDeclParam);
+
+    // Attribute
+    AstAttrUse* attrUse = nullptr;
+    if (token.id == TokenId::SymAttrStart)
+    {
+        SWAG_CHECK(doAttrUse(nullptr, (AstNode**) &attrUse));
+    }
+
+    auto paramNode = Ast::newVarDecl(sourceFile, "", parent, this, AstNodeKind::FuncDeclParam);
 
     // Using variable
     if (token.id == TokenId::KwdUsing)
@@ -300,6 +308,14 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, boo
                 *hasMissingType = true;
         }
 
+        // Add attribute as the last child, to avoid messing around with the first FuncDeclParam node.
+        if (attrUse)
+        {
+            paramNode->attrUse = attrUse;
+            paramNode->attrUse->content = paramNode;
+            Ast::addChildBack(paramNode, paramNode->attrUse);
+        }
+
         // Propagate types and assignment to multiple declarations
         for (auto one : otherVariables)
         {
@@ -307,9 +323,20 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, boo
             cloneContext.parent = one;
 
             if (paramNode->type)
+            {
                 one->type = (AstTypeExpression*) paramNode->type->clone(cloneContext);
+            }
+
             if (paramNode->assignment)
+            {
                 one->assignment = paramNode->assignment->clone(cloneContext);
+            }
+
+            if (paramNode->attrUse)
+            {
+                one->attrUse          = (AstAttrUse*) paramNode->attrUse->clone(cloneContext);
+                one->attrUse->content = one;
+            }
         }
     }
 
