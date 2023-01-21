@@ -39,7 +39,7 @@ Utf8 TypeInfo::getName()
 
 Utf8 TypeInfo::getTypeName(bool forceNoScope)
 {
-    SWAG_RACE_CONDITION_READ(raceName);
+    SharedLock lk(mutex);
     if (forceNoScope)
         return name;
     return scopedName;
