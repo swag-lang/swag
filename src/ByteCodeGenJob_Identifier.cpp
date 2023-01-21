@@ -3,9 +3,7 @@
 #include "ByteCode.h"
 #include "TypeManager.h"
 #include "Ast.h"
-#include "ErrorIds.h"
 #include "Report.h"
-#include "Diagnostic.h"
 
 bool ByteCodeGenJob::emitIdentifierRef(ByteCodeGenContext* context)
 {
@@ -16,13 +14,19 @@ bool ByteCodeGenJob::emitIdentifierRef(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::sameStackFrame(ByteCodeGenContext* context, SymbolOverload* overload)
 {
-    if (!context->node->isSameStackFrame(overload))
-    {
-        Diagnostic diag{context->node, Fmt(Err(Err0206), SymTable::getNakedKindName(overload).c_str(), overload->symbol->name.c_str())};
-        return context->report(diag, Diagnostic::hereIs(overload, true));
-    }
+    if (context->node->isSameStackFrame(overload))
+        return true;
 
-    return true;
+    Diagnostic diag{context->node, Fmt(Err(Err0206), SymTable::getNakedKindName(overload).c_str(), overload->symbol->name.c_str())};
+
+    if (context->node->ownerFct && context->node->ownerFct->attributeFlags & ATTRIBUTE_GENERATED_FUNC)
+        diag.hint = Fmt(Hnt(Hnt0095), SymTable::getNakedKindName(overload).c_str(), context->node->ownerFct->getDisplayName().c_str());
+
+    Diagnostic* note = nullptr;
+    if (overload->fromInlineParam)
+        note = new Diagnostic{overload->fromInlineParam, Fmt(Nte(Nte0069), overload->symbol->name.c_str()), DiagnosticLevel::Note};
+
+    return context->report(diag, Diagnostic::hereIs(overload, true), note);
 }
 
 bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)

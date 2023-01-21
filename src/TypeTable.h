@@ -49,7 +49,6 @@ struct TypeTable
     bool  makeConcreteStruct(JobContext* context, const auto& typeName, ConcreteTypeInfo* concreteTypeInfoValue, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t storageOffset, uint32_t cflags);
 
     MapPerSeg& getMapPerSeg(DataSegment* segment);
-    Utf8       getTypeName(TypeInfo* typeInfo, bool forceNoScope);
     void       tableJobDone(TypeTableJob* job, DataSegment* segment);
     TypeInfo*  getRealType(DataSegment* segment, ConcreteTypeInfo* concreteType);
     void       initFrom(Module* module, TypeTable* other);

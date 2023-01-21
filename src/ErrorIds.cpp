@@ -1087,6 +1087,7 @@ void initErrors()
     SWAG_ERROR(Hnt0022, "this type is immutable");
     SWAG_ERROR(Hnt0067, "this unpacks '%d' variable(s)");
     SWAG_ERROR(Hnt0002, "this value can only be converted to type '%s' with a dynamic call to 'opAffect'");
+    SWAG_ERROR(Hnt0095, "you cannot reference this runtime %s from the %s");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -1175,7 +1176,7 @@ void initErrors()
     SWAG_ERROR(Nte0003, "this variable can escape the current frame");
     SWAG_ERROR(Nte0009, "you can run swag with --dbg-catch to attach the bytecode debugger when the error occurs");
     SWAG_ERROR(Nte0005, "expected 'string' because the return type of an #ast block is 'string'");
-    SWAG_ERROR(Nte0069, nullptr);
+    SWAG_ERROR(Nte0069, "here is the runtime argument that corresponds to '%s'");
     SWAG_ERROR(Nte0070, nullptr);
 
     /////////////////////////////////////////////////////////////////////

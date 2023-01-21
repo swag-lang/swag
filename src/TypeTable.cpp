@@ -35,7 +35,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
         SWAG_ASSERT(!typeInfo->scopedName.empty());
     }
 
-    auto typeName           = getTypeName(typeInfo, cflags & MAKE_CONCRETE_TYPE_FORCE_NO_SCOPE);
+    auto typeName           = typeInfo->getTypeName(cflags & MAKE_CONCRETE_TYPE_FORCE_NO_SCOPE);
     auto nonPartialTypeName = typeName;
     if (cflags & MAKE_CONCRETE_TYPE_PARTIAL)
         typeName += "__partial";
@@ -549,14 +549,6 @@ bool TypeTable::makeConcreteAttributes(JobContext* context, AttributeList& attri
     }
 
     return true;
-}
-
-Utf8 TypeTable::getTypeName(TypeInfo* typeInfo, bool forceNoScope)
-{
-    SWAG_RACE_CONDITION_READ(typeInfo->raceName);
-    if (forceNoScope)
-        return typeInfo->name;
-    return typeInfo->scopedName;
 }
 
 void TypeTable::tableJobDone(TypeTableJob* job, DataSegment* segment)

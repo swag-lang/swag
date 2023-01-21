@@ -138,7 +138,8 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
             // This is a separated scope because mixins do not have their own scope, and we must have a
             // different symbol registration for each constant value
             // :InlineUsingParam
-            bool isConstant = false;
+            bool              isConstant   = false;
+            AstFuncCallParam* orgCallParam = nullptr;
             if (identifier && identifier->callParameters)
             {
                 for (int j = 0; j < identifier->callParameters->childs.size(); j++)
@@ -146,32 +147,37 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
                     auto callParam = CastAst<AstFuncCallParam>(identifier->callParameters->childs[j], AstNodeKind::FuncCallParam);
                     if (callParam->indexParam != i)
                         continue;
+                    orgCallParam = callParam;
                     if (!(callParam->flags & AST_VALUE_COMPUTED))
                         continue;
-                    SWAG_ASSERT(node->parametersScope);
-                    symTable.addSymbolTypeInfo(context,
-                                               callParam,
-                                               funcParam->typeInfo,
-                                               SymbolKind::Variable,
-                                               callParam->computedValue,
-                                               OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN | OVERLOAD_COMPUTED_VALUE,
-                                               nullptr,
-                                               callParam->computedValue->storageOffset,
-                                               callParam->computedValue->storageSegment,
-                                               &funcParam->token.text);
-                    isConstant = true;
+                    auto overload = symTable.addSymbolTypeInfo(context,
+                                                               callParam,
+                                                               funcParam->typeInfo,
+                                                               SymbolKind::Variable,
+                                                               callParam->computedValue,
+                                                               OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN | OVERLOAD_COMPUTED_VALUE,
+                                                               nullptr,
+                                                               callParam->computedValue->storageOffset,
+                                                               callParam->computedValue->storageSegment,
+                                                               &funcParam->token.text);
+
+                    overload->fromInlineParam = orgCallParam;
+                    isConstant                = true;
                     break;
                 }
             }
 
             if (!isConstant)
             {
-                node->parametersScope->symTable.addSymbolTypeInfo(context,
-                                                                  funcParam,
-                                                                  funcParam->typeInfo,
-                                                                  SymbolKind::Variable,
-                                                                  nullptr,
-                                                                  OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN);
+                SWAG_ASSERT(node->parametersScope);
+                auto overload = node->parametersScope->symTable.addSymbolTypeInfo(context,
+                                                                                  funcParam,
+                                                                                  funcParam->typeInfo,
+                                                                                  SymbolKind::Variable,
+                                                                                  nullptr,
+                                                                                  OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN);
+
+                overload->fromInlineParam = orgCallParam;
             }
         }
     }

@@ -455,7 +455,7 @@ void Diagnostic::setColorRanges(DiagnosticLevel level, bool invertColors)
         break;
     case DiagnosticLevel::Note:
     case DiagnosticLevel::Help:
-        g_Log.setColor(invertColors ? errorColor : rangeNoteColor);
+        g_Log.setColor(rangeNoteColor);
         break;
     }
 }

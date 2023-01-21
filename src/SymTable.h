@@ -66,12 +66,13 @@ struct SymbolOverload
 {
     ComputedValue computedValue;
     RegisterList  registers;
-    TypeInfo*     typeInfo       = nullptr;
-    AstNode*      node           = nullptr;
-    SymbolName*   symbol         = nullptr;
-    uint64_t      attributeFlags = 0;
-    uint32_t      flags          = 0;
-    uint32_t      storageIndex   = 0;
+    TypeInfo*     typeInfo        = nullptr;
+    AstNode*      node            = nullptr;
+    SymbolName*   symbol          = nullptr;
+    AstNode*      fromInlineParam = nullptr;
+    uint64_t      attributeFlags  = 0;
+    uint32_t      flags           = 0;
+    uint32_t      storageIndex    = 0;
     SharedMutex   mutexIncomplete;
 };
 

@@ -37,6 +37,14 @@ Utf8 TypeInfo::getName()
     return name;
 }
 
+Utf8 TypeInfo::getTypeName(bool forceNoScope)
+{
+    SWAG_RACE_CONDITION_READ(raceName);
+    if (forceNoScope)
+        return name;
+    return scopedName;
+}
+
 Utf8 TypeInfo::getDisplayName()
 {
     Utf8 str;
