@@ -200,6 +200,15 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
             node->computedValue->storageSegment = &module->compilerSegment;
             return true;
         }
+
+        offset = module->constantSegment.tryOffset(runContext->registersRR[0].pointer);
+        if (offset != UINT32_MAX)
+        {
+            node->flags |= AST_VALUE_IS_TYPEINFO;
+            node->computedValue->storageOffset  = offset;
+            node->computedValue->storageSegment = &module->constantSegment;
+            return true;
+        }
     }
 
     return callerContext->report({node, Fmt(Err(Err0058), realType->getDisplayNameC())});
