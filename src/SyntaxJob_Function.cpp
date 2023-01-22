@@ -311,7 +311,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, boo
         // Add attribute as the last child, to avoid messing around with the first FuncDeclParam node.
         if (attrUse)
         {
-            paramNode->attrUse = attrUse;
+            paramNode->attrUse          = attrUse;
             paramNode->attrUse->content = paramNode;
             Ast::addChildBack(paramNode, paramNode->attrUse);
         }
@@ -407,7 +407,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acc
             if (token.id == TokenId::SymRightParen)
                 return Report::report({allParams, tokenComma, Err(Err0188)});
 
-            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdUsing, error(token, Fmt(Err(Syn0112), token.ctext())));
+            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdUsing || token.id == TokenId::SymAttrStart, error(token, Fmt(Err(Syn0112), token.ctext())));
         }
     }
 
