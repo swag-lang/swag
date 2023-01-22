@@ -165,7 +165,7 @@ void Diagnostic::printErrorLevel()
         break;
     case DiagnosticLevel::CallStack:
     {
-        if (raisedOnNode->ownerInline)
+        if (raisedOnNode && raisedOnNode->ownerInline)
         {
             g_Log.setColor(stackColor);
             g_Log.print("inlined: ");
