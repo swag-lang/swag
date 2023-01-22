@@ -43,6 +43,9 @@ void ThreadManager::addJob(Job* job)
 
 void ThreadManager::addJobNoLock(Job* job)
 {
+    if (debuggerMode)
+        job->flags |= JOB_IS_DEBUGGER;
+
     if (job->flags & JOB_IS_IN_THREAD)
     {
         SWAG_ASSERT(job->waitOnJobs == 0);
@@ -422,7 +425,10 @@ Job* ThreadManager::getJobNoLock(JobQueue& queue)
 
     if (!queue.affinity[g_ThreadIndex].empty())
     {
-        job = queue.affinity[g_ThreadIndex].get_pop_back();
+        job = queue.affinity[g_ThreadIndex].back();
+        if (debuggerMode && !(job->flags & JOB_IS_DEBUGGER))
+            return nullptr;
+        queue.affinity[g_ThreadIndex].pop_back();
         SWAG_ASSERT(queue.affinityCount);
         queue.affinityCount--;
     }
@@ -433,7 +439,10 @@ Job* ThreadManager::getJobNoLock(JobQueue& queue)
         {
             if (!queue.affinity[i].empty())
             {
-                job = queue.affinity[i].get_pop_back();
+                job = queue.affinity[i].back();
+                if (debuggerMode && !(job->flags & JOB_IS_DEBUGGER))
+                    return nullptr;
+                queue.affinity[i].pop_back();
                 SWAG_ASSERT(queue.affinityCount);
                 queue.affinityCount--;
                 break;
@@ -444,10 +453,12 @@ Job* ThreadManager::getJobNoLock(JobQueue& queue)
     {
         auto jobPickIndex = (int) queue.jobs.size() - 1;
 #ifdef SWAG_DEV_MODE
-        if (g_CommandLine.randomize)
+        if (g_CommandLine.randomize && !debuggerMode)
             jobPickIndex = rand() % queue.jobs.count;
 #endif
         job = queue.jobs[jobPickIndex];
+        if (debuggerMode && !(job->flags & JOB_IS_DEBUGGER))
+            return nullptr;
         queue.jobs.erase(jobPickIndex);
     }
 
