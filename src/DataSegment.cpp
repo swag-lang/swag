@@ -175,7 +175,7 @@ uint32_t DataSegment::reserveNoLock(uint32_t size, uint8_t** resultPtr)
     return result;
 }
 
-uint32_t DataSegment::offset(uint8_t* location)
+uint32_t DataSegment::tryOffset(uint8_t* location)
 {
     SharedLock lock(mutex);
 
@@ -192,6 +192,14 @@ uint32_t DataSegment::offset(uint8_t* location)
         offset += bucket->count;
     }
 
+    return UINT32_MAX;
+}
+
+uint32_t DataSegment::offset(uint8_t* location)
+{
+    auto offset = tryOffset(location);
+    if (offset != UINT32_MAX)
+        return offset;
     SWAG_ASSERT(false);
     return 0;
 }

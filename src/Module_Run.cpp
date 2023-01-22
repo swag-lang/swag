@@ -188,6 +188,20 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         }
     }
 
+    // Pointer
+    if (realType->isPointerToTypeInfo())
+    {
+        auto     module = node->sourceFile->module;
+        uint32_t offset = module->compilerSegment.tryOffset(runContext->registersRR[0].pointer);
+        if (offset != UINT32_MAX)
+        {
+            node->flags |= AST_VALUE_IS_TYPEINFO;
+            node->computedValue->storageOffset  = offset;
+            node->computedValue->storageSegment = &module->compilerSegment;
+            return true;
+        }
+    }
+
     return callerContext->report({node, Fmt(Err(Err0058), realType->getDisplayNameC())});
 }
 
