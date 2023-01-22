@@ -1277,6 +1277,18 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         SWAG_CHECK(outputNode(context, concat, node->childs.front()));
         break;
 
+    case AstNodeKind::ArrayPointerSlicing:
+    {
+        auto arrayNode = CastAst<AstArrayPointerSlicing>(node, AstNodeKind::ArrayPointerSlicing);
+        SWAG_CHECK(outputNode(context, concat, arrayNode->array));
+        concat.addChar('[');
+        SWAG_CHECK(outputNode(context, concat, arrayNode->lowerBound));
+        CONCAT_FIXED_STR(concat, "..");
+        SWAG_CHECK(outputNode(context, concat, arrayNode->upperBound));
+        concat.addChar(']');
+        break;
+    }
+
     case AstNodeKind::ArrayPointerIndex:
     {
         auto arrayNode = CastAst<AstArrayPointerIndex>(node, AstNodeKind::ArrayPointerIndex);
