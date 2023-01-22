@@ -1,6 +1,7 @@
 //#global skip
 using Core, StrConv
 
+//#[Swag.PrintBc]
 #test
 {
     lafoule := 52

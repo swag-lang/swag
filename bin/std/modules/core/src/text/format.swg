@@ -149,10 +149,8 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
 // String interolation
 // Format is "my {<value to interpolate>:format}
 #[Swag.Macro]
-func toInterp(#[Swag.ConstExpr] exp: string)->String
+func toInterp(buf: *ConcatBuffer, #[Swag.ConstExpr] exp: string)
 {
-    var buf: ConcatBuffer
-
     #ast
     {
         var sb: StrConv.StringBuilder
@@ -195,11 +193,19 @@ func toInterp(#[Swag.ConstExpr] exp: string)->String
                 }
             }
 
-            sb.appendFormat("StrConv.convert(&buf, `%, \"%\")\n", value, format)
+            sb.appendFormat("StrConv.convert(buf, `%, \"%\")\n", value, format)
         }
 
         return sb.moveToString()
     }
+}
 
-    return buf.moveToString()
+// String interolation
+// Format is "my {<value to interpolate>:format}
+#[Swag.Mixin]
+func toInterp(#[Swag.ConstExpr] exp: string)->String
+{
+    var @mixin0: ConcatBuffer
+    toInterp(&@mixin0, exp)
+    return @mixin0.moveToString()
 }
