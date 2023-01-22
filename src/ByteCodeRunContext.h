@@ -106,6 +106,7 @@ struct ByteCodeRunContext
     int                  maxRecurse                = 0;
     ByteCode*            bc                        = nullptr;
     bool                 profile                   = false;
+    int                  fromForeignCall           = 0;
 
     JobContext jc;
 

@@ -9,6 +9,9 @@
 #include "BackendX64.h"
 #include "Context.h"
 #include "Report.h"
+#include "ByteCodeStack.h"
+#include <DbgHelp.h>
+#pragma comment(lib, "dbghelp.lib")
 
 namespace OS
 {
@@ -535,6 +538,41 @@ namespace OS
     bool isDebuggerAttached()
     {
         return IsDebuggerPresent() ? true : false;
+    }
+
+    string captureStack()
+    {
+        const int SYM_LEN_NAME = 128;
+        char      sym[sizeof(SYMBOL_INFO) + SYM_LEN_NAME * sizeof(CHAR)];
+        DWORD     displacement;
+
+        auto psym          = (SYMBOL_INFO*) sym;
+        psym->SizeOfStruct = sizeof(SYMBOL_INFO);
+        psym->MaxNameLen   = SYM_LEN_NAME;
+
+        IMAGEHLP_LINE64 line;
+        line.SizeOfStruct = sizeof(IMAGEHLP_LINE64);
+
+        string str;
+        void*  where[100];
+        auto   nb = RtlCaptureStackBackTrace(2, sizeof(where) / sizeof(void*), where, nullptr);
+        if (SymInitialize(GetCurrentProcess(), nullptr, TRUE))
+        {
+            for (int i = 0; i < nb; i++)
+            {
+                auto hasSymbol = SymFromAddr(GetCurrentProcess(), (ULONG64) where[i], (DWORD64*) &displacement, psym);
+                auto hasLine   = SymGetLineFromAddr64(GetCurrentProcess(), (ULONG64) where[i], &displacement, &line);
+                if (hasSymbol)
+                {
+                    str += psym->Name;
+                    if (hasLine)
+                        str += Fmt(":%s:%d", line.FileName, line.LineNumber);
+                    str += "\n";
+                }
+            }
+        }
+
+        return str;
     }
 
     void raiseException(int code)

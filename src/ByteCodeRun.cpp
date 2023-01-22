@@ -3738,6 +3738,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         runContext->ip--;
         g_ByteCodeStackTrace->currentContext = runContext;
         diag.contextFile                     = sourceFile;
+        diag.fromException                   = true;
         Report::report(diag, notes);
         diag.contextFile                     = nullptr;
         g_ByteCodeStackTrace->currentContext = nullptr;

@@ -6,18 +6,19 @@
 
 void Diagnostic::setupColors(bool verboseMode)
 {
-    verboseColor     = LogColor::DarkCyan;
-    errorColor       = verboseMode ? verboseColor : LogColor::Red;
-    codeColor        = verboseMode ? verboseColor : LogColor::Gray;
-    marginCodeColor  = verboseMode ? verboseColor : LogColor::DarkCyan;
-    hintColor        = verboseMode ? verboseColor : LogColor::White;
-    hilightCodeColor = verboseMode ? verboseColor : LogColor::DarkYellow;
-    rangeNoteColor   = verboseMode ? verboseColor : LogColor::White;
-    warningColor     = verboseMode ? verboseColor : LogColor::Magenta;
-    noteColor        = verboseMode ? verboseColor : LogColor::White;
-    stackColor       = verboseMode ? verboseColor : LogColor::DarkYellow;
-    remarkColor      = verboseMode ? verboseColor : LogColor::Magenta;
-    sourceFileColor  = verboseMode ? verboseColor : LogColor::DarkCyan;
+    verboseColor         = LogColor::DarkCyan;
+    errorColor           = verboseMode ? verboseColor : LogColor::Red;
+    codeColor            = verboseMode ? verboseColor : LogColor::Gray;
+    marginCodeColor      = verboseMode ? verboseColor : LogColor::DarkCyan;
+    hintColor            = verboseMode ? verboseColor : LogColor::White;
+    hilightCodeColor     = verboseMode ? verboseColor : LogColor::DarkYellow;
+    rangeNoteColor       = verboseMode ? verboseColor : LogColor::White;
+    warningColor         = verboseMode ? verboseColor : LogColor::Magenta;
+    noteColor            = verboseMode ? verboseColor : LogColor::White;
+    stackColor           = verboseMode ? verboseColor : LogColor::DarkYellow;
+    remarkColor          = verboseMode ? verboseColor : LogColor::Magenta;
+    nativeCallStackColor = verboseMode ? verboseColor : LogColor::Gray;
+    sourceFileColor      = verboseMode ? verboseColor : LogColor::DarkCyan;
 }
 
 void Diagnostic::setup()
@@ -30,6 +31,7 @@ void Diagnostic::setup()
     switch (errorLevel)
     {
     case DiagnosticLevel::CallStack:
+    case DiagnosticLevel::RuntimeCallStack:
     case DiagnosticLevel::TraceError:
         showRange             = false;
         showMultipleCodeLines = false;
@@ -163,6 +165,11 @@ void Diagnostic::printErrorLevel()
         g_Log.setColor(noteColor);
         g_Log.print("help: ");
         break;
+    case DiagnosticLevel::RuntimeCallStack:
+        g_Log.eol();
+        g_Log.setColor(noteColor);
+        g_Log.print("[runtime callstack]");
+        break;
     case DiagnosticLevel::CallStack:
     {
         if (raisedOnNode && raisedOnNode->ownerInline)
@@ -198,10 +205,18 @@ void Diagnostic::printRemarks()
         {
             if (r.empty())
                 continue;
-            printMargin(false, true, 0);
-            g_Log.setColor(remarkColor);
-            g_Log.print(r);
-            g_Log.eol();
+            if (errorLevel == DiagnosticLevel::RuntimeCallStack)
+            {
+                g_Log.setColor(nativeCallStackColor);
+                g_Log.print(r);
+            }
+            else
+            {
+                printMargin(false, true, 0);
+                g_Log.setColor(remarkColor);
+                g_Log.print(r);
+                g_Log.eol();
+            }
         }
     }
 }

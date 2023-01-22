@@ -13,6 +13,7 @@ enum class DiagnosticLevel
     Verbose,
     Note,
     CallStack,
+    RuntimeCallStack,
     TraceError,
     Help,
 };
@@ -190,6 +191,7 @@ struct Diagnostic
     LogColor          noteColor;
     LogColor          stackColor;
     LogColor          remarkColor;
+    LogColor          nativeCallStackColor;
     LogColor          sourceFileColor;
     bool              invertError = false;
 
@@ -222,10 +224,11 @@ struct Diagnostic
     bool hasRangeLocation      = false;
     bool hasRangeLocation2     = false;
     bool exceptionError        = false;
-    bool showSourceCode            = false;
+    bool showSourceCode        = false;
     bool showRange             = true;
     bool showMultipleCodeLines = true;
     bool showFileName          = true;
     bool forceSourceFile       = false;
     bool emptyMarginBefore     = true;
+    bool fromException         = false;
 };

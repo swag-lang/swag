@@ -78,6 +78,8 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodebc)
     hasError = false;
     errorLoc = nullptr;
     errorMsg.clear();
+
+    fromForeignCall = 0;
 }
 
 void ByteCodeRunContext::stackOverflow()

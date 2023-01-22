@@ -478,6 +478,20 @@ namespace Report
                     diag1.report();
                 }
             }
+
+            // Runtime callstack
+            if (diag.fromException &&
+                g_ByteCodeStackTrace->currentContext &&
+                g_ByteCodeStackTrace->currentContext->fromForeignCall)
+            {
+                auto nativeStack = OS::captureStack();
+                if (!nativeStack.empty())
+                {
+                    Diagnostic note{"", DiagnosticLevel::RuntimeCallStack};
+                    note.remarks.push_back(nativeStack);
+                    note.report();
+                }
+            }
         }
         else if (errorLevel == DiagnosticLevel::Warning)
         {
