@@ -512,3 +512,38 @@ func convertRune(buf: *ConcatBuffer, value: rune)
     var count = Utf8.encodeRune(arr, value)
     buf.addBytes(@mkslice(&arr[0], cast(uint) count))
 }
+
+// Templated version. Convert a value of type 'T'
+func(T) convert(buf: *ConcatBuffer, value: T, strFormat: string)
+{
+    #if Reflection.isInteger(T)
+    {
+        var fmt: ConvertFormatInt
+        fmt.value = value
+        fmt.setFormat(strFormat)
+        convertInt(buf, fmt)
+    }
+    #elif Reflection.isFloat(T)
+    {
+        var fmt: ConvertFormatFloat
+        fmt.value = value
+        fmt.setFormat(strFormat)
+        convertFloat(buf, fmt)
+    }
+    #elif Reflection.isBool(T)
+    {
+        convertBool(buf, value)
+    }
+    #elif Reflection.isRune(T)
+    {
+        convertRune(buf, value)
+    }
+    #elif Reflection.isString(T)
+    {
+        buf.addBytes(value)
+    }
+    #else
+    {
+        convertAny(buf, value, strFormat)
+    }
+}

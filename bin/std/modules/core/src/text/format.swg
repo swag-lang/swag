@@ -195,7 +195,7 @@ func toInterp(#[Swag.ConstExpr] exp: string)->String
                 }
             }
 
-            sb.appendFormat("StrConv.convertAny(&buf, `%, \"%\")\n", value, format)
+            sb.appendFormat("StrConv.convert(&buf, `%, \"%\")\n", value, format)
         }
 
         return sb.moveToString()
