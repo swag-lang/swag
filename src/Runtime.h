@@ -15,6 +15,9 @@ static const uint64_t SAFETY_NAN        = 0x0040;
 static const uint64_t SAFETY_SANITY     = 0x0080;
 static const uint64_t SAFETY_ALL        = 0xFFFF;
 
+static const int SWAG_EXCEPTION_TO_PREV_HANDLER     = 665;
+static const int SWAG_EXCEPTION_TO_COMPILER_HANDLER = 666;  // must be the same value in __raiseException666 in runtime_windows.h
+
 enum WarnLevel : uint8_t
 {
     Enable,

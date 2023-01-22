@@ -3677,7 +3677,9 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
 
     // Special exception raised by @error, to simply log an error message
     // This is called by panic too, in certain conditions (if we do not want dialog boxes, when running tests for example)
-    if (args->ExceptionRecord->ExceptionCode == 666)
+    if (args->ExceptionRecord->ExceptionCode == SWAG_EXCEPTION_TO_PREV_HANDLER)
+        return SWAG_EXCEPTION_EXECUTE_HANDLER;
+    if (args->ExceptionRecord->ExceptionCode == SWAG_EXCEPTION_TO_COMPILER_HANDLER)
     {
         runContext->canCatchError = false;
 

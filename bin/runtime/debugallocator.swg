@@ -96,6 +96,7 @@ impl DebugAllocator
 
         if (ptrHeader.magic != MagicFree or ptrFooter.magic != MagicFree)
         {
+            mutex.unlock()
             @panic("memory block corruption", #location)
         }
 
@@ -106,6 +107,7 @@ impl DebugAllocator
            (ptrHeader.prev and ptrHeader.prev.next != ptrHeader) or
            (ptrHeader.next and ptrHeader.next.prev != ptrHeader)
         {
+            mutex.unlock()
             @panic("memory block corruption", #location)
         }
     }
@@ -118,6 +120,7 @@ impl DebugAllocator
         if (ptrHeader.magic != MagicAlloc and ptrHeader.magic != MagicFree) or
            (ptrFooter.magic != MagicAlloc and ptrFooter.magic != MagicFree)
         {
+            mutex.unlock()
             @panic("memory block corruption", callerLoc)
         }
 
@@ -129,11 +132,13 @@ impl DebugAllocator
            (ptrHeader.prev and ptrHeader.prev.next != ptrHeader) or
            (ptrHeader.next and ptrHeader.next.prev != ptrHeader)
         {
+            mutex.unlock()
             @panic("memory block corruption", callerLoc)
         }
 
         if (ptrHeader.magic == MagicFree and ptrHeader.magic == MagicFree)
         {
+            mutex.unlock()
             loc := ptrHeader.loc.fileName ? ptrHeader.loc : callerLoc
             @panic("memory block double free", loc)
         }

@@ -5,6 +5,7 @@
 #include "Backend.h"
 #include "ByteCodeStack.h"
 #include "ModuleManager.h"
+#include "Os.h"
 
 uint64_t                         g_TlsContextId         = 0;
 uint64_t                         g_TlsThreadLocalId     = 0;
@@ -90,7 +91,7 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
     g_RunContext->bc->enterByteCode(g_RunContext);
 
     g_ByteCodeStackTrace->push({nullptr, nullptr});
-    module->runner.run(g_RunContext);
+    auto result = module->runner.run(g_RunContext);
 
     g_RunContext->sp            = saveSp;
     g_RunContext->spAlt         = saveSpAlt;
@@ -107,6 +108,9 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
 
     if (stackAllocated)
         g_RunContext->releaseStack();
+
+    if (!result)
+        OS::raiseException(SWAG_EXCEPTION_TO_PREV_HANDLER);
 }
 
 static void byteCodeRun(void* byteCodePtr, ...)

@@ -537,6 +537,11 @@ namespace OS
         return IsDebuggerPresent() ? true : false;
     }
 
+    void raiseException(int code)
+    {
+        RaiseException(code, 0, 0, 0);
+    }
+
     void assertBox(const char* expr, const char* file, int line)
     {
         char msg[2048];
