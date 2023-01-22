@@ -1961,7 +1961,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         auto cxt = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
         if (cxt->traceIndex == MAX_TRACE)
             break;
-        cxt->trace[cxt->traceIndex] = (SwagCompilerSourceLocation*) registersRC[ip->a.u32].pointer;
+        cxt->trace[cxt->traceIndex] = (SwagSourceCodeLocation*) registersRC[ip->a.u32].pointer;
         cxt->traceIndex++;
         break;
     }
@@ -3235,7 +3235,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         *(int16_t*) registersRC[ip->a.u32].pointer %= IMMB_S16(ip);
         break;
     case ByteCodeOp::AffectOpModuloEqS16_S:
-        *(int16_t*)(context->bp + ip->a.u32) %= IMMB_S16(ip);
+        *(int16_t*) (context->bp + ip->a.u32) %= IMMB_S16(ip);
         break;
     case ByteCodeOp::AffectOpModuloEqS16_SS:
         *(int16_t*) (context->bp + ip->a.u32) %= *(int16_t*) (context->bp + ip->b.u32);
@@ -3681,7 +3681,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
     {
         runContext->canCatchError = false;
 
-        auto location = (SwagCompilerSourceLocation*) args->ExceptionRecord->ExceptionInformation[0];
+        auto location = (SwagSourceCodeLocation*) args->ExceptionRecord->ExceptionInformation[0];
         SWAG_ASSERT(location);
 
         Utf8 fileName;

@@ -1,4 +1,4 @@
-struct(T, loc: Swag.CompilerSourceLocation) TOTO
+struct(T, loc: Swag.SourceCodeLocation) TOTO
 {
     #ast
     {

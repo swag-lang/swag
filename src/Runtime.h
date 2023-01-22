@@ -72,7 +72,7 @@ typedef struct SwagSlice
     uint64_t count  = 0;
 } SwagSlice;
 
-struct SwagCompilerSourceLocation
+struct SwagSourceCodeLocation
 {
     SwagSlice fileName;
     uint32_t  lineStart, colStart;
@@ -100,17 +100,17 @@ static const auto MAX_LEN_ERROR_MSG = 128;
 static const auto MAX_TRACE         = 32;
 typedef struct SwagContext
 {
-    SwagInterface               allocator;
-    uint64_t                    flags;
-    SwagScratchAllocator        tempAllocator;
-    uint8_t                     errorMsg[MAX_LEN_ERROR_MSG];
-    uint32_t                    errorMsgStart;
-    uint32_t                    errorMsgLen;
-    uint32_t                    traceIndex;
-    SwagCompilerSourceLocation* trace[MAX_TRACE];
-    SwagCompilerSourceLocation  exceptionLoc;
-    void*                       exceptionParams[3];
-    void*                       panic;
+    SwagInterface           allocator;
+    uint64_t                flags;
+    SwagScratchAllocator    tempAllocator;
+    uint8_t                 errorMsg[MAX_LEN_ERROR_MSG];
+    uint32_t                errorMsgStart;
+    uint32_t                errorMsgLen;
+    uint32_t                traceIndex;
+    SwagSourceCodeLocation* trace[MAX_TRACE];
+    SwagSourceCodeLocation  exceptionLoc;
+    void*                   exceptionParams[3];
+    void*                   panic;
 } SwagContext;
 
 typedef void (*SwagBytecodeRun)(void*, ...);

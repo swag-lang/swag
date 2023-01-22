@@ -40,9 +40,9 @@ enum class DependencyFetchKind
 
 struct SourceLocationCache
 {
-    SwagCompilerSourceLocation loc;
-    DataSegment*               storageSegment;
-    uint32_t                   storageOffset;
+    SwagSourceCodeLocation loc;
+    DataSegment*           storageSegment;
+    uint32_t               storageOffset;
 };
 
 struct ModuleDependency

@@ -1217,8 +1217,8 @@ void ByteCodeGenJob::computeSourceLocation(JobContext* context, AstNode* node, u
         }
     }
 
-    SwagCompilerSourceLocation* loc;
-    auto                        offset = seg->reserve(sizeof(SwagCompilerSourceLocation), (uint8_t**) &loc, sizeof(void*));
+    SwagSourceCodeLocation* loc;
+    auto                    offset = seg->reserve(sizeof(SwagSourceCodeLocation), (uint8_t**) &loc, sizeof(void*));
     seg->addInitPtr(offset, offsetName);
     memcpy(loc, &tmpLoc.loc, sizeof(tmpLoc.loc));
 

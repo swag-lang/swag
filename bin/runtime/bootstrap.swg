@@ -250,7 +250,7 @@ namespace Swag
 
     struct AllocatorRequest
     {
-        callerLoc:  CompilerSourceLocation
+        callerLoc:  SourceCodeLocation
         hint:       string
         address:	*void
         size:		uint
@@ -298,10 +298,10 @@ namespace Swag
         errorMsgStart:      u32
         errorMsgLen:        u32
         traceIndex:         u32
-        trace:              [MaxTrace] const *CompilerSourceLocation
-        exceptionLoc:       CompilerSourceLocation
+        trace:              [MaxTrace] const *SourceCodeLocation
+        exceptionLoc:       SourceCodeLocation
         exceptionParams:    [3] const *void
-        panic:              func(string, CompilerSourceLocation)
+        panic:              func(string, SourceCodeLocation)
     }
 
     // #########################################################
@@ -652,7 +652,7 @@ namespace Swag
         mtd compileString(str: string)
     }
 
-    struct CompilerSourceLocation
+    struct SourceCodeLocation
     {
         fileName:               string
         lineStart, colStart:    u32

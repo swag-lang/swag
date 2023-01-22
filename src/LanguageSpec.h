@@ -124,7 +124,7 @@ struct LanguageSpec
     Utf8 name_TypeInfoAlias;
     Utf8 name_TypeInfoNamespace;
 
-    Utf8 name_CompilerSourceLocation;
+    Utf8 name_SourceCodeLocation;
     Utf8 name_SystemAllocator;
     Utf8 name_DebugAllocator;
     Utf8 name_BuildCfg;

@@ -3,7 +3,7 @@
 // Will be put just before the returned address
 struct DebugAllocatorHeader
 {
-    loc:            CompilerSourceLocation
+    loc:            SourceCodeLocation
     allocAddr:      ^void
     allocSize:      uint
     userSize:       uint

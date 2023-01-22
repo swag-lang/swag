@@ -102,16 +102,16 @@ void LanguageSpec::setupNames()
     name_TypeInfoAlias     = "TypeInfoAlias";
     name_TypeInfoNamespace = "TypeInfoNamespace";
 
-    name_SystemAllocator        = "SystemAllocator";
-    name_DebugAllocator         = "DebugAllocator";
-    name_CompilerSourceLocation = "CompilerSourceLocation";
-    name_BuildCfg               = "BuildCfg";
-    name_AttributeUsage         = "AttributeUsage";
-    name_CVaList                = "CVaList";
-    name_TargetArch             = "TargetArch";
-    name_TargetOs               = "TargetOs";
-    name_Backend                = "Backend";
-    name_Swag_CompilerMsgMask   = "Swag.CompilerMsgMask";
+    name_SystemAllocator      = "SystemAllocator";
+    name_DebugAllocator       = "DebugAllocator";
+    name_SourceCodeLocation   = "SourceCodeLocation";
+    name_BuildCfg             = "BuildCfg";
+    name_AttributeUsage       = "AttributeUsage";
+    name_CVaList              = "CVaList";
+    name_TargetArch           = "TargetArch";
+    name_TargetOs             = "TargetOs";
+    name_Backend              = "Backend";
+    name_Swag_CompilerMsgMask = "Swag.CompilerMsgMask";
 
     name_export       = "export";
     name_generated    = "generated";

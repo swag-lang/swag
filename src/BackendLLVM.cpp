@@ -46,7 +46,7 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
             llvm::Type::getInt32Ty(context),                                                          // errorMsgLen
             llvm::Type::getInt32Ty(context),                                                          // traceIndex
             llvm::ArrayType::get(llvm::Type::getInt8Ty(context), MAX_TRACE * sizeof(void*)),          // trace
-            llvm::ArrayType::get(llvm::Type::getInt8Ty(context), sizeof(SwagCompilerSourceLocation)), // exceptionLoc
+            llvm::ArrayType::get(llvm::Type::getInt8Ty(context), sizeof(SwagSourceCodeLocation)), // exceptionLoc
             llvm::ArrayType::get(llvm::Type::getInt8Ty(context), 3 * sizeof(void*)),                  // exceptionParams
             llvm::Type::getInt8PtrTy(context),                                                        // panic
         };

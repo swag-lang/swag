@@ -236,7 +236,7 @@ func __printString(message: string)
 }
 
 ////////////////////////////////////////////////////////////
-func __raiseException666(message: string, loc: Swag.CompilerSourceLocation)
+func __raiseException666(message: string, loc: Swag.SourceCodeLocation)
 {
     cxt := @getcontext()
     cxt.exceptionLoc = loc
@@ -295,7 +295,7 @@ func __captureStack(skip: u32, where: [..] *void)->u32
 }
 
 var __logStackTraceInitDone = false
-func __logStackTrace(where: [..] *void, startAfter: *Swag.CompilerSourceLocation = null, printNoLine = true)
+func __logStackTrace(where: [..] *void, startAfter: *Swag.SourceCodeLocation = null, printNoLine = true)
 {
     using __Win32RT
     nb := @countof(where)

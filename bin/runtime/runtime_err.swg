@@ -46,7 +46,7 @@ func __poperr()
     cxt.errorMsgStart -= (cxt.errorMsgLen + 8)
 }
 
-func __checkAny(typeA, typeB: typeinfo, loc: CompilerSourceLocation)
+func __checkAny(typeA, typeB: typeinfo, loc: SourceCodeLocation)
 {
     if !@typecmp(typeA, typeB, TypeCmpFlags.CastAny)
     {
@@ -89,7 +89,7 @@ func __initStackTrace()
     cxt.traceIndex = 0
 }
 
-func __stackTrace(loc: CompilerSourceLocation)
+func __stackTrace(loc: SourceCodeLocation)
 {
     cxt := @getcontext()
     if cxt.traceIndex >= MaxTrace
@@ -100,7 +100,7 @@ func __stackTrace(loc: CompilerSourceLocation)
 
 
 ////////////////////////////////////////////////////////////
-func @errormsg(message: string, loc: Swag.CompilerSourceLocation)
+func @errormsg(message: string, loc: Swag.SourceCodeLocation)
 {
     // If the compiler is around, just let it deal with the message
     cxt := @getcontext()
@@ -119,7 +119,7 @@ func @errormsg(message: string, loc: Swag.CompilerSourceLocation)
 }
 
 #[Swag.Safety("", false)]
-func @panic(message: string, loc: CompilerSourceLocation)
+func @panic(message: string, loc: SourceCodeLocation)
 {
     cxt := @getcontext()
 
@@ -206,7 +206,7 @@ func @panic(message: string, loc: CompilerSourceLocation)
 
 func __panic(file: const ^u8, line: u32, col: u32, message: const ^u8)
 {
-    var loc: CompilerSourceLocation
+    var loc: SourceCodeLocation
     loc.fileName = cast(string) @mkslice(file, @strlen(file))
     loc.lineStart, loc.lineEnd = line
     loc.colStart, loc.colEnd = col

@@ -85,7 +85,7 @@ void ByteCodeRunContext::stackOverflow()
     raiseError(Fmt(Err(Err0015), Utf8::toNiceSize(g_CommandLine.stackSizeBC).c_str()));
 }
 
-void ByteCodeRunContext::raiseError(const char* msg, SwagCompilerSourceLocation* loc)
+void ByteCodeRunContext::raiseError(const char* msg, SwagSourceCodeLocation* loc)
 {
     hasError = true;
     errorLoc = loc;

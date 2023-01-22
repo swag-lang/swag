@@ -9,7 +9,7 @@ struct ByteCodeRunContext;
 struct ConcatBucket;
 struct ByteCode;
 struct ByteCodeInstruction;
-struct SwagCompilerSourceLocation;
+struct SwagSourceCodeLocation;
 struct JobContext;
 struct ConcreteCompilerMessage;
 struct SourceLocation;
@@ -27,7 +27,7 @@ struct ByteCodeRunContext
     void setup(SourceFile* sf, AstNode* node, ByteCode* nodebc);
     void releaseStack();
     void stackOverflow();
-    void raiseError(const char* msg, SwagCompilerSourceLocation* loc = nullptr);
+    void raiseError(const char* msg, SwagSourceCodeLocation* loc = nullptr);
     int  getRegCount(int cur);
 
     template<typename T>
@@ -115,8 +115,8 @@ struct ByteCodeRunContext
 
     VectorNative<uint32_t> ffiPushRAParam;
 
-    SwagCompilerSourceLocation* errorLoc      = nullptr;
-    JobContext*                 callerContext = nullptr;
+    SwagSourceCodeLocation* errorLoc      = nullptr;
+    JobContext*             callerContext = nullptr;
 
     AstNode*  node  = nullptr;
     ByteCode* oldBc = nullptr;
