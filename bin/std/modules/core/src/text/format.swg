@@ -145,3 +145,45 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
     if idx < nextIdx
         buf.addBytes(cast(const [..] u8) @mkslice(ptr + idx, cast(uint) nextIdx - idx))
 }
+
+// String interolation
+// Format is "my {value} to print" or "my {value}{printFormat} to print"
+#[Swag.Macro]
+func toInterp(#[Swag.ConstExpr] exp: string)->String
+{
+    var buf: ConcatBuffer
+
+    #ast
+    {
+        var sb: StrConv.StringBuilder
+
+        idx := 0'uint
+        while idx != @countof(exp)
+        {
+            idxE := Utf8.indexOf(exp, "{", startByteIndex: idx)
+            if idxE == Swag.UInt.Max
+            {
+                sb.appendFormat("buf.addBytes(\"%\")\n", exp[idx..@countof(exp)-1])
+                break
+            }
+
+            if idx != idxE
+                sb.appendFormat("buf.addBytes(\"%\")\n", exp[idx..idxE-1])
+
+            idx = idxE + 1
+            idxE = Utf8.indexOf(exp, "}", startByteIndex: idx)
+            if idxE == Swag.UInt.Max
+            {
+                sb.appendFormat("buf.addBytes(\"%\")\n", exp[idx-1..@countof(exp)-1])
+                break
+            }
+
+            sb.appendFormat("StrConv.convertAny(&buf, `%, null)\n", exp[idx..idxE-1])
+            idx = idxE + 1
+        }
+
+        return sb.toString()
+    }
+
+    return buf.toString()
+}
