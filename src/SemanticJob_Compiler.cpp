@@ -28,11 +28,16 @@ Diagnostic* SemanticJob::computeNonConstExprNote(AstNode* node)
         {
             if (c->resolvedSymbolName->kind == SymbolKind::Function)
             {
-                if (c->resolvedSymbolOverload && !(c->resolvedSymbolOverload->node->attributeFlags & ATTRIBUTE_CONSTEXPR))
+                if (c->resolvedSymbolOverload)
                 {
-                    auto result  = new Diagnostic(c, c->token, Fmt(Nte(Nte0042), c->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
-                    result->hint = Hnt(Hnt0046);
-                    return result;
+                    if (!(c->resolvedSymbolOverload->node->attributeFlags & ATTRIBUTE_CONSTEXPR))
+                    {
+                        auto result  = new Diagnostic(c, c->token, Fmt(Nte(Nte0042), c->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
+                        result->hint = Hnt(Hnt0046);
+                        return result;
+                    }
+
+                    return new Diagnostic(c, c->token, Nte(Nte0071), DiagnosticLevel::Note);
                 }
             }
 
@@ -40,6 +45,8 @@ Diagnostic* SemanticJob::computeNonConstExprNote(AstNode* node)
             {
                 return new Diagnostic(c, c->token, Fmt(Nte(Nte0041), c->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
             }
+
+            return new Diagnostic(c, Nte(Nte0070), DiagnosticLevel::Note);
         }
     }
 
