@@ -2228,7 +2228,8 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
                 {
                     ip[1].b.u32 = ip[0].a.u32;
                     ip[1].c.s64 += ip[0].b.s64;
-                    swap(ip[0], ip[1]);
+                    if (ip[0].a.u32 != ip[1].a.u32)
+                        swap(ip[0], ip[1]);
                 }
                 break;
             }
@@ -2248,7 +2249,8 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
                 {
                     ip[1].b.u32 = ip[0].a.u32;
                     ip[1].c.s64 += ip[0].b.s64;
-                    swap(ip[0], ip[1]);
+                    if (ip[0].a.u32 != ip[1].a.u32)
+                        swap(ip[0], ip[1]);
                 }
                 break;
             }
@@ -2268,7 +2270,8 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
                 {
                     ip[1].b.u32 = ip[0].a.u32;
                     ip[1].c.s64 += ip[0].b.s64;
-                    swap(ip[0], ip[1]);
+                    if (ip[0].a.u32 != ip[1].a.u32)
+                        swap(ip[0], ip[1]);
                 }
                 break;
             }
@@ -2288,7 +2291,8 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
                 {
                     ip[1].b.u32 = ip[0].a.u32;
                     ip[1].c.s64 += ip[0].b.s64;
-                    swap(ip[0], ip[1]);
+                    if (ip[0].a.u32 != ip[1].a.u32)
+                        swap(ip[0], ip[1]);
                 }
                 break;
             }
