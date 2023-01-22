@@ -676,6 +676,71 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
             break;
         }
         break;
+
+    case ByteCodeOp::PushRAParam:
+        if (ip[1].op == ByteCodeOp::PushRAParam &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::PushRAParam2);
+            ip->b.u32 = ip[1].a.u32;
+            setNop(context, ip + 1);
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::PushRAParam2 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::PushRAParam3);
+            ip->b.u32 = ip[1].a.u32;
+            ip->c.u32 = ip[1].b.u32;
+            setNop(context, ip + 1);
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::PushRAParam3 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::PushRAParam4);
+            ip->b.u32 = ip[1].a.u32;
+            ip->c.u32 = ip[1].b.u32;
+            ip->d.u32 = ip[1].c.u32;
+            setNop(context, ip + 1);
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::PushRAParam2:
+        if (ip[1].op == ByteCodeOp::PushRAParam &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::PushRAParam3);
+            ip->c.u32 = ip[1].a.u32;
+            setNop(context, ip + 1);
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::PushRAParam2 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::PushRAParam4);
+            ip->c.u32 = ip[1].a.u32;
+            ip->d.u32 = ip[1].b.u32;
+            setNop(context, ip + 1);
+            break;
+        }
+        break;
+
+    case ByteCodeOp::PushRAParam3:
+        if (ip[1].op == ByteCodeOp::PushRAParam &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::PushRAParam4);
+            ip->d.u32 = ip[1].a.u32;
+            setNop(context, ip + 1);
+            break;
+        }
+        break;
     }
 }
 
