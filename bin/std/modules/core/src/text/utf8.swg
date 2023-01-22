@@ -461,7 +461,7 @@ func indexOf(src: const [..] u8, what: const [..] rune, startByteIndex = 0'uint)
     length := @countof(src)
     if !length
         return Swag.UInt.Max
-    Debug.assert(startByteIndex < length, "invalid 'startByteIndex'")
+    Debug.safetyBoundCheck(startByteIndex < length, "index out of range")
 
     countof := @countof(what)
     if !countof
@@ -484,12 +484,6 @@ func indexOf(src: const [..] u8, what: const [..] rune, startByteIndex = 0'uint)
     return Swag.UInt.Max
 }
 
-// Returns true if 'src' contains the string 'what'
-func contains(src: const [..] u8, what: string)->bool
-{
-    return indexOf(src, what) != Swag.UInt.Max
-}
-
 // Find the given string, and returns the byte index of it
 // Returns Swag.UInt.Max if not found
 func indexOf(src: const [..] u8, what: string, startByteIndex = 0'uint, comparisonType = ComparisonType.Latin1)->uint
@@ -497,7 +491,7 @@ func indexOf(src: const [..] u8, what: string, startByteIndex = 0'uint, comparis
     length := @countof(src)
     if !length
         return Swag.UInt.Max
-    Debug.assert(startByteIndex < length, "invalid 'startByteIndex'")
+    Debug.safetyBoundCheck(startByteIndex < length, "index out of range")
 
     countof := @countof(what)
     if !countof or countof > (length - startByteIndex)
@@ -516,6 +510,12 @@ func indexOf(src: const [..] u8, what: string, startByteIndex = 0'uint, comparis
     }
 
     return Swag.UInt.Max
+}
+
+// Returns true if 'src' contains the string 'what'
+func contains(src: const [..] u8, what: string)->bool
+{
+    return indexOf(src, what) != Swag.UInt.Max
 }
 
 // Find the last rune occurence of 'what', and returns the byte index of it

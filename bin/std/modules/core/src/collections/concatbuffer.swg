@@ -374,25 +374,6 @@ impl ConcatBuffer
         }
     }
 
-    // Convert buffer to a String
-    mtd toString()->String
-    {
-        var result: retval
-        if !firstBucket
-            return result
-
-        result.reserve(count() + 1)
-
-        ptr := firstBucket
-        while ptr != lastBucket.next
-        {
-            result.append(@mkstring(ptr.datas, ptr.count))
-            ptr = ptr.next
-        }
-
-        return result
-    }
-
     // Convert to a slice *only* if the buffer is linear (see 'makeLinear')
     mtd toSlice()->[..] u8
     {
@@ -412,6 +393,25 @@ impl ConcatBuffer
         currentSP = firstBucket.datas
     }
 
+    // Convert buffer to a String
+    mtd toString()->String
+    {
+        var result: retval
+        if !firstBucket
+            return result
+
+        result.reserve(count() + 1)
+
+        ptr := firstBucket
+        while ptr != lastBucket.next
+        {
+            result.append(@mkstring(ptr.datas, ptr.count))
+            ptr = ptr.next
+        }
+
+        return result
+    }
+
     mtd eatBuffer()->{data: ^u8, size: uint, capacity: uint}
     {
         // Must be linear ?
@@ -426,6 +426,26 @@ impl ConcatBuffer
         firstBucket = null
 
         return {rdata, rcount, rcapacity}
+    }
+
+    // Move the content
+    mtd moveToString()->String
+    {
+        // Make a copy, as we have more than one bucket
+        if lastBucket != firstBucket
+            return toString()
+
+        // Otherwise we can just eat the buffer
+        eat := eatBuffer()
+        with var result: retval
+        {
+            .allocator = allocator
+            .buffer    = eat.data
+            .capacity  = eat.capacity
+            .length    = eat.size
+        }
+
+        return result
     }
 
     // linearize all buckets in one single big bucket

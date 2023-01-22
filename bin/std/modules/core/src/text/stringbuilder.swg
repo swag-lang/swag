@@ -67,4 +67,10 @@ impl StringBuilder
     {
         return buffer.toString()
     }
+
+    // Return the content as a string by eating the content of the string builder (if possible)
+    mtdc moveToString()->String
+    {
+        return buffer.moveToString()
+    }
 }

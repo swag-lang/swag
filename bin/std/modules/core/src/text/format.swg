@@ -161,7 +161,7 @@ func toInterp(#[Swag.ConstExpr] exp: string)->String
         while idx != @countof(exp)
         {
             // To the interpolated string if it exists
-            idxE := Utf8.indexOf(exp, "{", startByteIndex: idx)
+            idxE := Utf8.indexOf(exp, "{"'rune, startByteIndex: idx)
             if idxE == Swag.UInt.Max
             {
                 sb.appendFormat("buf.addBytes(\"%\")\n", exp[idx..@countof(exp)-1])
@@ -198,8 +198,8 @@ func toInterp(#[Swag.ConstExpr] exp: string)->String
             sb.appendFormat("StrConv.convertAny(&buf, `%, \"%\")\n", value, format)
         }
 
-        return sb.toString()
+        return sb.moveToString()
     }
 
-    return buf.toString()
+    return buf.moveToString()
 }
