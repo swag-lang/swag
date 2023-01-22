@@ -467,6 +467,8 @@ void AstNode::computeLocation(SourceLocation& start, SourceLocation& end)
     {
         if (p->kind == AstNodeKind::Statement)
             break;
+        if (p->kind == AstNodeKind::Inline)
+            break;
         if (p->flags & AST_GENERATED)
             continue;
         if (p->kind == AstNodeKind::FuncDeclType && p->childs.empty())

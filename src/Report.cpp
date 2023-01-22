@@ -42,8 +42,8 @@ namespace Report
             // No multiline range... a test, to reduce verbosity
             if (note->endLocation.line > note->startLocation.line)
             {
-                note->showRange             = false;
-                note->showMultipleCodeLines = false;
+                note->endLocation.line   = note->startLocation.line;
+                note->endLocation.column = UINT32_MAX;
             }
 
             // Transform a note/help in a hint

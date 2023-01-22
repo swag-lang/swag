@@ -1362,6 +1362,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                     !returnType->isNativeIntegerOrRune() &&
                     !returnType->isNativeFloat() &&
                     !returnType->isBool() &&
+                    !returnType->isPointerToTypeInfo() &&
                     !(returnType->flags & TYPEINFO_RETURN_BY_COPY) && // Treated later (as errors)
                     !(identifier->semFlags & AST_SEM_EXEC_RET_STACK))
                 {
