@@ -135,7 +135,11 @@ void AstNode::inheritOwnersAndFlags(SyntaxJob* job)
 void AstNode::allocateComputedValue()
 {
     if (!computedValue)
+    {
         computedValue = g_Allocator.alloc<ComputedValue>();
+        if (g_CommandLine.stats)
+            g_Stats.memNodesLiteral += sizeof(ComputedValue);
+    }
 }
 
 void AstNode::setFlagsValueIsComputed()

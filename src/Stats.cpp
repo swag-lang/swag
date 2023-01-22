@@ -73,6 +73,7 @@ void Stats::print()
         g_Log.print("\n");
         g_Log.messageHeaderDot("mem nodes", Fmt("%s", Utf8::toNiceSize(memNodes.load()).c_str()));
         g_Log.messageHeaderDot("mem nodes ext", Fmt("%s", Utf8::toNiceSize(memNodesExt.load()).c_str()));
+        g_Log.messageHeaderDot("mem nodes literal", Fmt("%s", Utf8::toNiceSize(memNodesLiteral.load()).c_str()));
         g_Log.messageHeaderDot("mem scopes", Fmt("%s", Utf8::toNiceSize(memScopes.load()).c_str()));
         g_Log.messageHeaderDot("mem seg", Fmt("%s", Utf8::toNiceSize(memSeg.load()).c_str()));
         g_Log.messageHeaderDot("mem concat", Fmt("%s", Utf8::toNiceSize(memConcat.load()).c_str()));

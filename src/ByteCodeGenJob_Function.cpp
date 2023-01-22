@@ -1585,10 +1585,10 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             // If this is a reference, then we push the type pointed by it, so that the user will receive a real type,
             // and not a reference to a type
             SWAG_ASSERT(child->computedValue);
-            SWAG_ASSERT(child->computedValue->storageSegment);
-            SWAG_ASSERT(child->computedValue->storageOffset != UINT32_MAX);
-            auto constSegment = child->computedValue->storageSegment;
-            emitMakeSegPointer(context, constSegment, child->computedValue->storageOffset, r0);
+            SWAG_ASSERT(child->computedValue->storageSegment2);
+            SWAG_ASSERT(child->computedValue->storageOffset2 != UINT32_MAX);
+            auto constSegment = child->computedValue->storageSegment2;
+            emitMakeSegPointer(context, constSegment, child->computedValue->storageOffset2, r0);
 
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
             maxCallParams++;
