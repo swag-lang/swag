@@ -182,8 +182,7 @@ struct FindUserOp
 };
 
 static const uint32_t COLLECT_ALL       = 0x00000000;
-static const uint32_t COLLECT_BACKTICK  = 0x00000001;
-static const uint32_t COLLECT_NO_STRUCT = 0x00000002;
+static const uint32_t COLLECT_NO_STRUCT = 0x00000001;
 
 static const uint32_t MIP_JUST_CHECK         = 0x00000001;
 static const uint32_t MIP_FOR_GHOSTING       = 0x00000002;
@@ -254,8 +253,8 @@ struct SemanticJob : public Job
     static bool           collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result, AstAttrUse* attrUse);
     static void           collectAlternativeScopes(AstNode* startNode, VectorNative<AlternativeScope>& scopes);
     static void           collectAlternativeScopeVars(AstNode* startNode, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars);
-    static void           collectAlternativeScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, uint32_t flags);
-    static bool           collectScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, uint32_t flags = COLLECT_ALL);
+    static void           collectAlternativeScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, uint32_t flags, IdentifierBackTypeMode backTickMode = IdentifierBackTypeMode::None, Token* backTickValue = nullptr);
+    static bool           collectScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, uint32_t flags, IdentifierBackTypeMode backTickMode = IdentifierBackTypeMode::None, Token* backTickValue = nullptr);
     static bool           setupIdentifierRef(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool           derefConstantValue(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, DataSegment* storageSegment, void* ptr);
     static bool           derefConstantValue(SemanticContext* context, AstNode* node, TypeInfoKind kind, NativeTypeKind nativeKind, void* ptr);

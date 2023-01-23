@@ -355,6 +355,8 @@ AstNode* AstIdentifier::clone(CloneContext& context)
     newNode->callParameters    = (AstFuncCallParams*) findChildRef(callParameters, newNode);
     newNode->genericParameters = findChildRef(genericParameters, newNode);
     newNode->aliasNames        = aliasNames;
+    newNode->backTickMode      = backTickMode;
+    newNode->backTickValue     = backTickValue;
 
     // Check if we need to replace the token.text with a type substitution
     // That way the new resolveIdentifier will just try to keep the typeinfo

@@ -880,11 +880,11 @@ void initErrors()
     SWAG_ERROR(Err0693, "expected a literal of type '%s' but a dynamic value was provided");
     SWAG_ERROR(Err0690, "unexpected type '%s' for a #[Swag.ConstExpr] parameter");
     SWAG_ERROR(Err0688, "cannot exclude the slice upper bound because it's zero");
-    SWAG_ERROR(Err0504, nullptr);
-    SWAG_ERROR(Err0577, nullptr);
-    SWAG_ERROR(Err0576, nullptr);
-    SWAG_ERROR(Err0575, nullptr);
-    SWAG_ERROR(Err0687, nullptr);
+    SWAG_ERROR(Err0504, "expected the number of scopes as a literal, found '%s'");
+    SWAG_ERROR(Err0577, "expected a simple untyped integer literal or 'u8'");
+    SWAG_ERROR(Err0576, "cannot move '%d' scopes up");
+    SWAG_ERROR(Err0575, "expected a value greater than zero");
+    SWAG_ERROR(Err0687, "expected a value lower than 256");
     SWAG_ERROR(Err0686, nullptr);
     SWAG_ERROR(Err0685, nullptr);
     SWAG_ERROR(Err0567, nullptr);

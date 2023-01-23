@@ -49,16 +49,39 @@ bool SyntaxJob::checkIsSingleIdentifier(AstNode* node, const char* msg)
 
 bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
 {
-    bool backTick = false;
+    Token backTickValue;
 
     if (token.id == TokenId::SymBackTick)
     {
         auto backTickToken = token;
         SWAG_CHECK(eatToken());
         token.startLocation = backTickToken.startLocation;
-        backTick            = true;
+
         if (token.id == TokenId::SymQuestion)
             return error(token, Fmt(Err(Err0398), token.ctext()));
+
+        backTickValue.id               = TokenId::SymBackTick;
+        backTickValue.literalType      = LiteralType::TT_UNTYPED_INT;
+        backTickValue.literalValue.u64 = 1;
+
+        if (token.id == TokenId::SymLeftParen)
+        {
+            SWAG_CHECK(eatToken());
+
+            if (token.id != TokenId::LiteralNumber)
+                return error(token, Fmt(Err(Err0504), token.ctext()));
+
+            if (token.literalType != LiteralType::TT_UNTYPED_INT && token.literalType != LiteralType::TT_U8)
+                return error(token, Fmt(Err(Err0577), token.ctext()));
+            if (token.literalValue.u64 > 255)
+                return error(token, Fmt(Err(Err0575), token.ctext()));
+            if (token.literalValue.u8 == 0)
+                return error(token, Fmt(Err(Err0575), token.ctext()));
+
+            backTickValue = token;
+            SWAG_CHECK(eatToken());
+            SWAG_CHECK(eatToken(TokenId::SymRightParen));
+        }
     }
 
     if (token.id == TokenId::SymQuestion && !(identifierFlags & IDENTIFIER_ACCEPT_QUESTION))
@@ -87,8 +110,13 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
     identifier->inheritTokenLocation(token);
     identifier->semanticFct   = SemanticJob::resolveIdentifier;
     identifier->identifierRef = CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
-    if (backTick)
-        identifier->specFlags |= AST_SPEC_IDENTIFIER_BACKTICK;
+
+    if (backTickValue.id != TokenId::Invalid)
+    {
+        identifier->backTickMode  = IdentifierBackTypeMode::Count;
+        identifier->backTickValue = backTickValue;
+    }
+
     if (contextualNoInline)
         identifier->specFlags |= AST_SPEC_IDENTIFIER_NO_INLINE;
     SWAG_CHECK(eatToken());

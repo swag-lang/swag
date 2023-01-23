@@ -415,17 +415,25 @@ struct AstIdentifierRef : public AstNode
     AstNode* previousResolvedNode = nullptr;
 };
 
+enum class IdentifierBackTypeMode
+{
+    None,
+    Count,
+};
+
 struct AstIdentifier : public AstNode
 {
     AstNode* clone(CloneContext& context);
 
     vector<Token> aliasNames;
 
-    AstIdentifierRef*  identifierRef     = nullptr;
-    AstNode*           genericParameters = nullptr;
-    AstFuncCallParams* callParameters    = nullptr;
-    TypeInfo*          alternateEnum     = nullptr;
-    AstNode*           fromAlternateVar  = nullptr;
+    AstIdentifierRef*      identifierRef     = nullptr;
+    AstNode*               genericParameters = nullptr;
+    AstFuncCallParams*     callParameters    = nullptr;
+    TypeInfo*              alternateEnum     = nullptr;
+    AstNode*               fromAlternateVar  = nullptr;
+    IdentifierBackTypeMode backTickMode      = IdentifierBackTypeMode::None;
+    Token                  backTickValue;
 };
 
 static const uint32_t FUNC_FLAG_FULL_RESOLVE    = 0x00000001;

@@ -1702,8 +1702,19 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     }
 
     case AstNodeKind::Identifier:
-        if (node->specFlags & AST_SPEC_IDENTIFIER_BACKTICK)
+    {
+        auto ident = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+        if (ident->backTickMode != IdentifierBackTypeMode::None)
+        {
             concat.addChar('`');
+            if (ident->backTickMode == IdentifierBackTypeMode::Count && ident->backTickValue.literalValue.u8 > 1)
+            {
+                concat.addChar('(');
+                concat.addStringFormat("%d", ident->backTickValue.literalValue.u8);
+                concat.addChar(')');
+            }
+        }
+    }
 
     case AstNodeKind::FuncCall:
     {
