@@ -511,12 +511,12 @@ bool ByteCodeGenJob::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
         node->lowerBound->doneFlags |= AST_DONE_CAST1;
     }
 
-    if (!(node->lowerBound->doneFlags & AST_DONE_CAST2))
+    if (!(node->upperBound->doneFlags & AST_DONE_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->upperBound, node->upperBound->typeInfo, node->upperBound->castedTypeInfo));
         if (context->result != ContextResult::Done)
             return true;
-        node->upperBound->doneFlags |= AST_DONE_CAST2;
+        node->upperBound->doneFlags |= AST_DONE_CAST1;
     }
 
     // Slicing of a structure, with a special function
