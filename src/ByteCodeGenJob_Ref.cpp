@@ -499,13 +499,18 @@ bool ByteCodeGenJob::emitMakePointer(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitMakeArrayPointerSlicingUpperBound(ByteCodeGenContext* context)
 {
+    auto job       = context->job;
     auto upperNode = context->node;
     auto slicing   = CastAst<AstArrayPointerSlicing>(context->node->parent, AstNodeKind::ArrayPointerSlicing);
     auto arrayNode = slicing->array;
 
     if (upperNode->extension && upperNode->extension->misc && upperNode->extension->misc->resolvedUserOpSymbolOverload)
     {
-        SWAG_CHECK(emitUserOp(context));
+        if (!job->allParamsTmp)
+            job->allParamsTmp = Ast::newFuncCallParams(upperNode->sourceFile, nullptr);
+        job->allParamsTmp->childs.clear();
+        job->allParamsTmp->childs.push_back(arrayNode);
+        SWAG_CHECK(emitUserOp(context, job->allParamsTmp, nullptr, false));
         if (context->result != ContextResult::Done)
             return true;
         return true;

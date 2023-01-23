@@ -221,7 +221,11 @@ bool SemanticJob::resolveArrayPointerSlicingUpperBound(SemanticContext* context)
     auto slicing   = CastAst<AstArrayPointerSlicing>(context->node->parent, AstNodeKind::ArrayPointerSlicing);
     auto upperNode = slicing->upperBound;
 
+    context->node = upperNode;
     SWAG_CHECK(resolveIntrinsicCountOf(context, upperNode, arrayNode));
+    context->node = arrayNode;
+    if (context->result != ContextResult::Done)
+        return true;
 
     if (upperNode->flags & AST_VALUE_COMPUTED)
     {

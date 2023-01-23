@@ -465,7 +465,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
         SWAG_VERIFY(!(typeInfo->isTuple()), context->report({expression, Err(Err0800), Diagnostic::isType(typeInfo)}));
         node->typeInfo = typeInfo;
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opCount, nullptr, nullptr, node, nullptr));
-        if (context->result == ContextResult::Pending)
+        if (context->result != ContextResult::Done)
             return true;
         node->typeInfo = g_TypeMgr->typeInfoUInt;
         if (!node->byteCodeFct)

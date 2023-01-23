@@ -66,23 +66,40 @@
         @assert(slice == "tri")
     }
 
-    // You can slice an array
+    // The upper limit is included by default. If you want to exclude it,
+    // use '..<' insteand of '..'
+    {
+        var str = "string"
+        var slice = str[1..<3]
+        @assert(slice == "tr")
+    }
+
+    // You can omit the upper bound if you want to slice to the end
+    {
+        var str = "string"
+        var slice = str[2..]
+        @assert(slice == "ring")
+    }
+
+    // You can omit the lower bound if you want to slice from the start (0)
+    {
+        var str = "string"
+        var slice = str[..2]        // Index 2 is included
+        @assert(slice == "str")
+        var slice1 = str[..<2]      // Index 2 is excluded
+        @assert(slice1 == "st")
+    }
+
+    // You can also slice an array
     {
         arr := [10, 20, 30, 40]
         slice := arr[2..3]
         @assert(slice[0] == 30)
         @assert(slice[1] == 40)
         @assert(@countof(slice) == 2)
-    }
 
-    // You can slice a pointer
-    {
-        arr := [10, 20, 30, 40]
-        ptr := &arr[2]
-        slice := ptr[0..1]
-        @assert(slice[0] == 30)
-        @assert(slice[1] == 40)
-        @assert(@countof(slice) == 2)
+        slice1 := arr[..]
+        @assert(@countof(slice1) == @countof(arr))
     }
 
     // You can slice another slice
@@ -96,5 +113,15 @@
         slice2 := slice1[1..2]
         @assert(slice2[0] == 30)
         @assert(slice2[1] == 40)
+    }
+
+    // You can transform a pointer to a slice
+    {
+        arr := [10, 20, 30, 40]
+        ptr := &arr[2]
+        slice := ptr[0..1]
+        @assert(slice[0] == 30)
+        @assert(slice[1] == 40)
+        @assert(@countof(slice) == 2)
     }
 }

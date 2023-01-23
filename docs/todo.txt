@@ -43,12 +43,7 @@ closure/lambda, pouvoir zaper un paramètre avec ? => closure|&total|(?, depth) 
 if a == 1 do toto() else do titi()
 #if a a == 1 do...
 -------------------------------------
-remplacer bitcast(X) par cast,bit(X)
--------------------------------------
-slicing[start..] jusqu'à la fin
-slicing[..end] depuis le début
-slicing[..] tout
-slicing[start..<end] exlusion de end
+remplacer bitcast(X) par cast,bit(X) ?
 -------------------------------------
 
 

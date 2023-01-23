@@ -95,7 +95,11 @@ bool SemanticJob::checkFuncPrototypeOpReturnType(SemanticContext* context, AstFu
         return context->report({node, node->token, Fmt(Err(Err0064), node->token.ctext(), wanted->getDisplayNameC())});
 
     if (!returnType->isSame(wanted, ISSAME_CAST))
+    {
+        if (node->returnType->childs.empty())
+            return context->report({node->returnType, Fmt(Err(Err0065), node->token.ctext(), wanted->name.c_str(), returnType->getDisplayNameC())});
         return context->report({node->returnType->childs.front(), Fmt(Err(Err0065), node->token.ctext(), wanted->name.c_str(), returnType->getDisplayNameC())});
+    }
 
     return true;
 }
