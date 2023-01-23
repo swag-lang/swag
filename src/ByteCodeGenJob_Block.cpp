@@ -41,9 +41,10 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
         node->ownerScope->symTable.addVarToDrop(nullptr, returnType, node->computedValue->storageOffset);
     }
 
-    AstNode* allParams     = nullptr;
-    int      numCallParams = 0;
-    parent                 = node->parent;
+    AstNode* allParams        = nullptr;
+    int      numCallParams    = 0;
+    bool     canFreeRegParams = true;
+    parent                    = node->parent;
 
     AstNode parameters;
     if (parent->kind == AstNodeKind::ArrayPointerIndex || parent->kind == AstNodeKind::ArrayPointerSlicing)
@@ -66,6 +67,20 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
         SWAG_ASSERT(parent->hasSpecialFuncCall(g_LangSpec->name_opCount));
         allParams     = parent;
         numCallParams = 1;
+    }
+    else if (parent->kind == AstNodeKind::AutoSlicingUp)
+    {
+        SWAG_ASSERT(parent->hasSpecialFuncCall(g_LangSpec->name_opCount));
+        auto slicing          = CastAst<AstArrayPointerSlicing>(parent->parent, AstNodeKind::ArrayPointerSlicing);
+        auto arrayNode        = slicing->array;
+        parameters.flags      = 0;
+        parameters.sourceFile = parent->sourceFile;
+        parameters.inheritTokenLocation(parent);
+        parameters.inheritOwners(parent);
+        parameters.childs.push_back(arrayNode);
+        allParams        = &parameters;
+        numCallParams    = (uint32_t) parameters.childs.size();
+        canFreeRegParams = false;
     }
     else if (parent->kind == AstNodeKind::SwitchCase)
     {
@@ -141,7 +156,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                     {
                         overload->registers = callParam->resultRegisterRC;
                         SWAG_ASSERT(overload->registers.countResults > 0);
-                        if (!overload->registers.cannotFree)
+                        if (!overload->registers.cannotFree && canFreeRegParams)
                         {
                             overload->registers.cannotFree = true;
                             node->allocateExtension(ExtensionKind::AdditionalRegs);
@@ -180,6 +195,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                                 overload->registers = callParam->resultRegisterRC;
                                 if (!overload->registers.cannotFree)
                                 {
+                                    SWAG_ASSERT(canFreeRegParams);
                                     overload->registers.cannotFree = true;
                                     node->allocateExtension(ExtensionKind::AdditionalRegs);
                                     for (int r = 0; r < overload->registers.size(); r++)
@@ -207,6 +223,8 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                         if (overload->flags & OVERLOAD_VAR_INLINE)
                         {
                             SWAG_CHECK(emitDefaultParamValue(context, defaultParam, overload->registers));
+
+                            SWAG_ASSERT(canFreeRegParams);
                             overload->registers.cannotFree = true;
                             node->allocateExtension(ExtensionKind::AdditionalRegs);
                             for (int r = 0; r < overload->registers.size(); r++)

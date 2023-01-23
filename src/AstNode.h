@@ -161,7 +161,7 @@ enum class AstNodeKind : uint8_t
     Assume,
     Throw,
     KeepRef,
-    Dummy,
+    AutoSlicingUp,
 };
 
 static const uint32_t CLONE_RAW             = 0x00000001;

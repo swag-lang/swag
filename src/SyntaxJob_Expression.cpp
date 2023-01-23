@@ -77,7 +77,7 @@ bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
                 return context.report(diag, &note);
             }
 
-            arrayNode->upperBound = Ast::newNode<AstNode>(this, AstNodeKind::Dummy, sourceFile, arrayNode, 0);
+            arrayNode->upperBound = Ast::newNode<AstNode>(this, AstNodeKind::AutoSlicingUp, sourceFile, arrayNode, 0);
             arrayNode->array->allocateExtension(ExtensionKind::Semantic);
             SWAG_ASSERT(!arrayNode->array->extension->semantic->semanticAfterFct);
             arrayNode->array->extension->semantic->semanticAfterFct = SemanticJob::resolveArrayPointerSlicingUpperBound;
