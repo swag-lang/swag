@@ -280,7 +280,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     {
         node->typeInfo = typeVar;
         if (node->array->flags & AST_VALUE_COMPUTED)
-            maxBound = node->array->computedValue->text.length();
+            maxBound = node->array->computedValue->text.length() - 1;
     }
 
     // Slicing of a pointer
