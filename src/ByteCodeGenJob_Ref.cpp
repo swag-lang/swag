@@ -548,6 +548,13 @@ bool ByteCodeGenJob::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
         node->upperBound->doneFlags |= AST_DONE_CAST1;
     }
 
+    // Exclude upper bound limit
+    if (node->specFlags & AST_SPEC_RANGE_EXCLUDE_UP && !(node->upperBound->flags & AST_VALUE_COMPUTED))
+    {
+        ensureCanBeChangedRC(context, node->upperBound->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::Add64byVB64, node->upperBound->resultRegisterRC)->b.s64 = -1;
+    }
+
     // Slicing of a structure, with a special function
     if (typeVar->isStruct())
     {
