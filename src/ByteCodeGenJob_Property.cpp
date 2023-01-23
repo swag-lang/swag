@@ -95,7 +95,7 @@ bool ByteCodeGenJob::emitIntrinsicSpread(ByteCodeGenContext* context)
     }
     else
     {
-        return Report::internalError(context->node,  "emitIntrinsicSpread, type not supported");
+        return Report::internalError(context->node, "emitIntrinsicSpread, type not supported");
     }
 
     return true;
@@ -150,10 +150,8 @@ bool ByteCodeGenJob::emitIntrinsicKindOf(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitIntrinsicCountOf(ByteCodeGenContext* context)
+bool ByteCodeGenJob::emitIntrinsicCountOf(ByteCodeGenContext* context, AstNode* node, AstNode* expr)
 {
-    auto node     = context->node;
-    auto expr     = node->childs.back();
     auto typeInfo = TypeManager::concretePtrRefType(expr->typeInfo);
 
     if (node->extension && node->extension->misc && node->extension->misc->resolvedUserOpSymbolOverload)
@@ -176,7 +174,15 @@ bool ByteCodeGenJob::emitIntrinsicCountOf(ByteCodeGenContext* context)
         return true;
     }
 
-    return Report::internalError(context->node,  "emitCountProperty, type not supported");
+    return Report::internalError(context->node, "emitIntrinsicCountOf, type not supported");
+}
+
+bool ByteCodeGenJob::emitIntrinsicCountOf(ByteCodeGenContext* context)
+{
+    auto node = context->node;
+    auto expr = node->childs.back();
+    SWAG_CHECK(emitIntrinsicCountOf(context, node, expr));
+    return true;
 }
 
 bool ByteCodeGenJob::emitIntrinsicDataOf(ByteCodeGenContext* context)
@@ -206,5 +212,5 @@ bool ByteCodeGenJob::emitIntrinsicDataOf(ByteCodeGenContext* context)
         return true;
     }
 
-    return Report::internalError(context->node,  "emitDataProperty, type not supported");
+    return Report::internalError(context->node, "emitIntrinsicDataOf, type not supported");
 }

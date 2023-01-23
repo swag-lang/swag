@@ -365,6 +365,7 @@ struct ByteCodeGenJob : public Job
     static bool emitFallThrough(ByteCodeGenContext* context);
     static bool emitContinue(ByteCodeGenContext* context);
     static bool emitMakePointer(ByteCodeGenContext* context);
+    static bool emitMakeArrayPointerSlicingUpperBound(ByteCodeGenContext* context);
     static bool emitMakeArrayPointerSlicing(ByteCodeGenContext* context);
     static bool emitMakeLambda(ByteCodeGenContext* context);
     static bool emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0, TypeInfo* typeInfo);
@@ -375,6 +376,7 @@ struct ByteCodeGenJob : public Job
     static bool emitStringRef(ByteCodeGenContext* context);
     static bool emitSliceRef(ByteCodeGenContext* context);
     static bool emitIntrinsicSpread(ByteCodeGenContext* context);
+    static bool emitIntrinsicCountOf(ByteCodeGenContext* context, AstNode* node, AstNode* expr);
     static bool emitIntrinsicCountOf(ByteCodeGenContext* context);
     static bool emitIntrinsicDataOf(ByteCodeGenContext* context);
     static bool emitImplicitKindOf(ByteCodeGenContext* context);

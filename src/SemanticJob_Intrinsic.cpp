@@ -97,7 +97,7 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
             {
                 Diagnostic diag{typeNode, Fmt(Err(Err0252), typeNode->typeInfo->getDisplayNameC(), tag->type->getDisplayNameC(), tag->name.c_str())};
                 Diagnostic note{typeNode, Fmt(Nte(Nte0038), tag->cmdLine.c_str()), DiagnosticLevel::Note};
-                note.hasFile    = false;
+                note.hasFile        = false;
                 note.showSourceCode = false;
                 return context->report(diag, &note);
             }
@@ -407,10 +407,10 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
         expression->typeInfo = getConcreteTypeUnRef(expression, 0);
 
         node->typeInfo = g_TypeMgr->typeInfoUInt;
-        if (node->flags & AST_VALUE_COMPUTED)
+        if (expression->flags & AST_VALUE_COMPUTED)
         {
             node->setFlagsValueIsComputed();
-            node->computedValue->reg.u64 = node->computedValue->text.length();
+            node->computedValue->reg.u64 = expression->computedValue->text.length();
         }
         else
         {
@@ -434,7 +434,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
 
         // :SliceLiteral
         // Slice literal. This can happen for enum values
-        if (node->flags & AST_VALUE_COMPUTED)
+        if (expression->flags & AST_VALUE_COMPUTED)
         {
             node->computedValue->reg.u64 = node->computedValue->reg.u64;
             node->typeInfo               = g_TypeMgr->typeInfoUInt;
@@ -475,30 +475,31 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     {
         // :ConcreteRef
         expression->typeInfo = getConcreteTypeUnRef(expression, 0);
-        node->typeInfo       = expression->typeInfo;
+        node->inheritComputedValue(expression);
+        node->typeInfo = expression->typeInfo;
 
         SWAG_VERIFY(typeInfo->isNativeInteger(), context->report({expression, Fmt(Err(Err0801), typeInfo->getDisplayNameC()), Diagnostic::isType(typeInfo)}));
-        if (node->flags & AST_VALUE_COMPUTED)
+        if (expression->flags & AST_VALUE_COMPUTED)
         {
             if (!(typeInfo->flags & TYPEINFO_UNSIGNED))
             {
                 switch (typeInfo->nativeType)
                 {
                 case NativeTypeKind::S8:
-                    if (node->computedValue->reg.s8 < 0)
+                    if (expression->computedValue->reg.s8 < 0)
                         return context->report({expression, Fmt(Err(Err0802), node->computedValue->reg.s8)});
                     break;
                 case NativeTypeKind::S16:
-                    if (node->computedValue->reg.s16 < 0)
+                    if (expression->computedValue->reg.s16 < 0)
                         return context->report({expression, Fmt(Err(Err0802), node->computedValue->reg.s16)});
                     break;
                 case NativeTypeKind::S32:
-                    if (node->computedValue->reg.s32 < 0)
+                    if (expression->computedValue->reg.s32 < 0)
                         return context->report({expression, Fmt(Err(Err0802), node->computedValue->reg.s32)});
                     break;
                 case NativeTypeKind::S64:
                 case NativeTypeKind::Int:
-                    if (node->computedValue->reg.s64 < 0)
+                    if (expression->computedValue->reg.s64 < 0)
                         return context->report({expression, Fmt(Err(Err0805), node->computedValue->reg.s64)});
                     break;
                 }

@@ -276,6 +276,7 @@ void initErrors()
     SWAG_ERROR(Syn0178, "unknown operator modifier '%s'");
     SWAG_ERROR(Syn0179, "unused return value of intrinsic '%s'");
     SWAG_ERROR(Syn0180, "usage of '.' in a statement is only valid inside a 'with' block");
+    SWAG_ERROR(Syn0185, "the slicing operator '..<' should be followed by the upper bound expression");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -988,6 +989,9 @@ void initErrors()
     SWAG_ERROR(Hlp0037, "you should add a 'break' or a 'fallthrough'");
     SWAG_ERROR(Hlp0038, "you should add a 'break'");
     SWAG_ERROR(Hlp0046, "only basic parameters (integers, float, string...) can be marked with the #[Swag.ConstExpr] attribute");
+    SWAG_ERROR(Hlp0047, "if you want to slice to the end, use '..' instead");
+    SWAG_ERROR(Hlp0048, nullptr);
+    SWAG_ERROR(Hlp0049, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -1091,7 +1095,7 @@ void initErrors()
     SWAG_ERROR(Hnt0095, "you cannot reference this runtime %s from the %s");
     SWAG_ERROR(Hnt0096, "unexpected attribute");
     SWAG_ERROR(Hnt0097, "this should be a compile time constant");
-    SWAG_ERROR(Hnt0098, nullptr);
+    SWAG_ERROR(Hnt0098, "missing upper bound");
     SWAG_ERROR(Hnt0099, nullptr);
 
     /////////////////////////////////////////////////////////////////////

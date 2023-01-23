@@ -261,7 +261,7 @@ void Diagnostic::collectRanges()
     if (hasRangeLocation2 &&
         startLocation2.line == startLocation.line &&
         endLocation2.line == startLocation2.line &&
-        endLocation2.column < startLocation.column)
+        endLocation2.column <= startLocation.column)
     {
         ranges.push_back({startLocation2, endLocation2, hint2});
         ranges.push_back({startLocation, endLocation, hint});
@@ -269,7 +269,7 @@ void Diagnostic::collectRanges()
     else if (hasRangeLocation2 &&
              startLocation2.line == startLocation.line &&
              endLocation2.line == startLocation2.line &&
-             startLocation2.column > endLocation.column)
+             startLocation2.column >= endLocation.column)
     {
         ranges.push_back({startLocation, endLocation, hint});
         ranges.push_back({startLocation2, endLocation2, hint2});

@@ -1,14 +1,10 @@
 #include "pch.h"
-#include "SourceFile.h"
 #include "Diagnostic.h"
 #include "Workspace.h"
 #include "Module.h"
-#include "Timer.h"
 #include "ByteCodeStack.h"
 #include "Context.h"
 #include "Ast.h"
-#include "ErrorIds.h"
-#include "File.h"
 #include "LanguageSpec.h"
 #include "SaveGenJob.h"
 
@@ -85,6 +81,26 @@ namespace Report
                     !note1->forceSourceFile)
                 {
                     note1->showFileName = false;
+                }
+
+                // Try to transform a hint of note 1 in a hint2 of note 0
+                if (!note1->hint.empty() &&
+                    note->hasRangeLocation &&
+                    !note->hasRangeLocation2 &&
+                    !note1->hasRangeLocation2 &&
+                    note->sourceFile == note1->sourceFile &&
+                    note1->startLocation.line == note->startLocation.line &&
+                    note1->endLocation.line == note->endLocation.line &&
+                    note1->startLocation.column != note->startLocation.column &&
+                    note1->endLocation.column != note->endLocation.column &&
+                    (note1->errorLevel == DiagnosticLevel::Note || note1->errorLevel == DiagnosticLevel::Help))
+                {
+                    note->hint2             = note1->hint;
+                    note->startLocation2    = note1->startLocation;
+                    note->endLocation2      = note1->endLocation;
+                    note->hasRangeLocation2 = true;
+                    note->remarks.insert(note->remarks.end(), note1->remarks.begin(), note1->remarks.end());
+                    note1->display = false;
                 }
 
                 // Try to transform a note in a hint

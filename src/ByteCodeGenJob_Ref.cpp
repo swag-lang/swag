@@ -497,6 +497,35 @@ bool ByteCodeGenJob::emitMakePointer(ByteCodeGenContext* context)
     return true;
 }
 
+bool ByteCodeGenJob::emitMakeArrayPointerSlicingUpperBound(ByteCodeGenContext* context)
+{
+    auto upperNode = context->node;
+    auto slicing   = CastAst<AstArrayPointerSlicing>(context->node->parent, AstNodeKind::ArrayPointerSlicing);
+    auto arrayNode = slicing->array;
+
+    if (upperNode->extension && upperNode->extension->misc && upperNode->extension->misc->resolvedUserOpSymbolOverload)
+    {
+        SWAG_CHECK(emitUserOp(context));
+        if (context->result != ContextResult::Done)
+            return true;
+        return true;
+    }
+
+    auto typeInfo = TypeManager::concretePtrRefType(arrayNode->typeInfo);
+    if (typeInfo->isString() ||
+        typeInfo->isSlice() ||
+        typeInfo->isVariadic() ||
+        typeInfo->isTypedVariadic())
+    {
+        upperNode->resultRegisterRC = reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, upperNode->resultRegisterRC, arrayNode->resultRegisterRC[1]);
+        emitInstruction(context, ByteCodeOp::Add64byVB64, upperNode->resultRegisterRC)->b.s64 = -1;
+        return true;
+    }
+
+    return Report::internalError(context->node, "emitMakeArrayPointerSlicingUpperBound, type not supported");
+}
+
 bool ByteCodeGenJob::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
 {
     auto job     = context->job;

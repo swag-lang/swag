@@ -4,6 +4,8 @@
 #include "LanguageSpec.h"
 #include "Scoped.h"
 #include "ErrorIds.h"
+#include "TypeManager.h"
+#include "Diagnostic.h"
 
 bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
 {
@@ -31,10 +33,23 @@ bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
     SWAG_CHECK(eatToken(TokenId::SymLeftSquare));
 
     AstNode* firstExpr = nullptr;
-    SWAG_CHECK(doExpression(nullptr, EXPR_FLAG_NONE, &firstExpr));
+
+    if (token.id == TokenId::SymDotDot || token.id == TokenId::SymDotDotLess)
+    {
+        firstExpr = Ast::newNode<AstNode>(this, AstNodeKind::Literal, sourceFile, nullptr);
+        firstExpr->allocateComputedValue();
+        firstExpr->flags |= AST_GENERATED;
+        firstExpr->computedValue->reg.u64 = 0;
+        firstExpr->token.literalType      = LiteralType::TT_UINT;
+        firstExpr->semanticFct            = SemanticJob::resolveLiteral;
+    }
+    else
+    {
+        SWAG_CHECK(doExpression(nullptr, EXPR_FLAG_NONE, &firstExpr));
+    }
 
     // Slicing
-    if (token.id == TokenId::SymDotDot)
+    if (token.id == TokenId::SymDotDot || token.id == TokenId::SymDotDotLess)
     {
         auto arrayNode         = Ast::newNode<AstArrayPointerSlicing>(this, AstNodeKind::ArrayPointerSlicing, sourceFile, nullptr, 3);
         arrayNode->semanticFct = SemanticJob::resolveArrayPointerSlicing;
@@ -42,8 +57,33 @@ bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
         Ast::addChildBack(arrayNode, *exprNode);
         Ast::addChildBack(arrayNode, firstExpr);
         arrayNode->lowerBound = firstExpr;
-        SWAG_CHECK(eatToken(TokenId::SymDotDot));
-        SWAG_CHECK(doExpression(arrayNode, EXPR_FLAG_NONE, &arrayNode->upperBound));
+        if (token.id == TokenId::SymDotDotLess)
+            arrayNode->specFlags |= AST_SPEC_RANGE_EXCLUDE_UP;
+        SWAG_CHECK(eatToken());
+
+        if (token.id != TokenId::SymRightSquare)
+        {
+            SWAG_CHECK(doExpression(arrayNode, EXPR_FLAG_NONE, &arrayNode->upperBound));
+        }
+
+        // To the end...
+        else
+        {
+            if (arrayNode->specFlags & AST_SPEC_RANGE_EXCLUDE_UP)
+            {
+                Diagnostic diag{sourceFile, token, Err(Syn0185)};
+                diag.hint = Hnt(Hnt0098);
+                Diagnostic note{arrayNode, arrayNode->token, Hlp(Hlp0047), DiagnosticLevel::Help};
+                return context.report(diag, &note);
+            }
+
+            arrayNode->upperBound = Ast::newNode<AstNode>(this, AstNodeKind::Dummy, sourceFile, arrayNode, 0);
+            arrayNode->array->allocateExtension(ExtensionKind::Semantic);
+            SWAG_ASSERT(!arrayNode->array->extension->semantic->semanticAfterFct);
+            arrayNode->array->extension->semantic->semanticAfterFct = SemanticJob::resolveArrayPointerSlicingUpperBound;
+            arrayNode->upperBound->flags |= AST_GENERATED;
+        }
+
         *exprNode = arrayNode;
         SWAG_CHECK(eatToken(TokenId::SymRightSquare));
     }

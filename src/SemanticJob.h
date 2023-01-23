@@ -496,6 +496,7 @@ struct SemanticJob : public Job
     static bool resolveScopedStmtBefore(SemanticContext* context);
     static bool resolveScopedStmtAfter(SemanticContext* context);
     static bool resolveArrayPointerDeRef(SemanticContext* context);
+    static bool resolveArrayPointerSlicingUpperBound(SemanticContext* context);
     static bool resolveArrayPointerSlicing(SemanticContext* context);
     static bool resolveKeepRef(SemanticContext* context);
     static bool resolveArrayPointerIndex(SemanticContext* context);

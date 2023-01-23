@@ -215,6 +215,27 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveArrayPointerSlicingUpperBound(SemanticContext* context)
+{
+    auto arrayNode = context->node;
+    auto slicing   = CastAst<AstArrayPointerSlicing>(context->node->parent, AstNodeKind::ArrayPointerSlicing);
+    auto upperNode = slicing->upperBound;
+
+    SWAG_CHECK(resolveIntrinsicCountOf(context, upperNode, arrayNode));
+
+    if (upperNode->flags & AST_VALUE_COMPUTED)
+    {
+        upperNode->computedValue->reg.u64 -= 1;
+        upperNode->byteCodeFct = ByteCodeGenJob::emitLiteral;
+    }
+    else
+    {
+        upperNode->byteCodeFct = ByteCodeGenJob::emitMakeArrayPointerSlicingUpperBound;
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
 {
     auto     node     = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
@@ -229,6 +250,9 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
         PushErrContext ec(context, nullptr, ErrorContextKind::MsgPrio, Fmt(Err(Err0367), node->lowerBound->typeInfo->getDisplayNameC()));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, nullptr, node->upperBound, CASTFLAG_TRY_COERCE));
     }
+
+    if (node->upperBound->flags & AST_VALUE_COMPUTED && node->specFlags & AST_SPEC_RANGE_EXCLUDE_UP)
+        node->upperBound->computedValue->reg.u64 -= 1;
 
     // Slicing of an array
     if (typeVar->isArray())
