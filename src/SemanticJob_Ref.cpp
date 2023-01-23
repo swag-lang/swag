@@ -255,8 +255,14 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, nullptr, node->upperBound, CASTFLAG_TRY_COERCE));
     }
 
-    if (node->upperBound->flags & AST_VALUE_COMPUTED && node->specFlags & AST_SPEC_RANGE_EXCLUDE_UP)
+    // Exclude upper bound if constant
+    if (node->upperBound->flags & AST_VALUE_COMPUTED &&
+        node->specFlags & AST_SPEC_RANGE_EXCLUDE_UP &&
+        !(node->upperBound->doneFlags & AST_DONE_ASSIGN_COMPUTED))
+    {
+        node->upperBound->doneFlags |= AST_DONE_ASSIGN_COMPUTED;
         node->upperBound->computedValue->reg.u64 -= 1;
+    }
 
     // Slicing of an array
     if (typeVar->isArray())
