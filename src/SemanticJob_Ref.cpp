@@ -260,6 +260,13 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
         node->specFlags & AST_SPEC_RANGE_EXCLUDE_UP &&
         !(node->upperBound->doneFlags & AST_DONE_ASSIGN_COMPUTED))
     {
+        if (!node->upperBound->computedValue->reg.u64)
+        {
+            Diagnostic diag{node->upperBound, Err(Err0688)};
+            diag.hint = Hnt(Hnt0033);
+            return context->report(diag);
+        }
+
         node->upperBound->doneFlags |= AST_DONE_ASSIGN_COMPUTED;
         node->upperBound->computedValue->reg.u64 -= 1;
     }

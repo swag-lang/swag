@@ -879,7 +879,7 @@ void initErrors()
     SWAG_ERROR(Err0691, "unexpected #[Swag.NoInline] attribute as #[Swag.Inline] is already defined");
     SWAG_ERROR(Err0693, "expected a literal of type '%s' but a dynamic value was provided");
     SWAG_ERROR(Err0690, "unexpected type '%s' for a #[Swag.ConstExpr] parameter");
-    SWAG_ERROR(Err0688, nullptr);
+    SWAG_ERROR(Err0688, "cannot exclude the slice upper bound because it's zero");
     SWAG_ERROR(Err0504, nullptr);
     SWAG_ERROR(Err0577, nullptr);
     SWAG_ERROR(Err0576, nullptr);
