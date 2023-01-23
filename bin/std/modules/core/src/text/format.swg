@@ -162,23 +162,23 @@ func toInterp(buf: *ConcatBuffer, #[Swag.ConstExpr] exp: string)
             idxE := Utf8.indexOf(exp, "{"'rune, startByteIndex: idx)
             if idxE == Swag.UInt.Max
             {
-                sb.appendFormat("buf.addBytes(\"%\")\n", exp[idx..@countof(exp)-1])
+                sb.appendFormat("buf.addBytes(\"%\")\n", exp[idx..])
                 break
             }
 
             if idx != idxE
-                sb.appendFormat("buf.addBytes(\"%\")\n", exp[idx..idxE-1])
+                sb.appendFormat("buf.addBytes(\"%\")\n", exp[idx..<idxE])
 
             // Find the end of the interpolated string, or the start of the format
             idx = idxE + 1
             idxE = Utf8.indexOf(exp, ["}"'rune, ":"'rune], startByteIndex: idx)
             if idxE == Swag.UInt.Max
             {
-                sb.appendFormat("buf.addBytes(\"%\")\n", exp[idx-1..@countof(exp)-1])
+                sb.appendFormat("buf.addBytes(\"%\")\n", exp[idx-1..])
                 break
             }
 
-            value := exp[idx..idxE-1]
+            value := exp[idx..<idxE]
             idx = idxE + 1
 
             // Format
@@ -188,7 +188,7 @@ func toInterp(buf: *ConcatBuffer, #[Swag.ConstExpr] exp: string)
                 idxE = Utf8.indexOf(exp, "}", startByteIndex: idx)
                 if idxE != Swag.UInt.Max
                 {
-                    format = exp[idx..idxE-1]
+                    format = exp[idx..<idxE]
                     idx = idxE + 1
                 }
             }

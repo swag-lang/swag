@@ -1283,7 +1283,10 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         SWAG_CHECK(outputNode(context, concat, arrayNode->array));
         concat.addChar('[');
         SWAG_CHECK(outputNode(context, concat, arrayNode->lowerBound));
-        CONCAT_FIXED_STR(concat, "..");
+        if (arrayNode->specFlags & AST_SPEC_RANGE_EXCLUDE_UP)
+            CONCAT_FIXED_STR(concat, "..<");
+        else
+            CONCAT_FIXED_STR(concat, "..");
         SWAG_CHECK(outputNode(context, concat, arrayNode->upperBound));
         concat.addChar(']');
         break;
@@ -1974,7 +1977,10 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::Range:
         SWAG_CHECK(outputNode(context, concat, node->childs[0]));
-        CONCAT_FIXED_STR(concat, "..");
+        if (node->specFlags & AST_SPEC_RANGE_EXCLUDE_UP)
+            CONCAT_FIXED_STR(concat, "..<");
+        else
+            CONCAT_FIXED_STR(concat, "..");
         SWAG_CHECK(outputNode(context, concat, node->childs[1]));
         break;
 
