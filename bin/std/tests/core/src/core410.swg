@@ -1,0 +1,15 @@
+using Core
+
+//#[Swag.PrintBc]
+#test
+{
+    var h: HashTable'(UUID, string)
+
+    v1 := UUID.getRandom()
+    v2 := UUID.getRandom()
+
+    h.add(v1, "toto")
+    h.add(v2, "titi")
+    @assert(h.contains(v1))
+    @assert(h.contains(v2))
+}

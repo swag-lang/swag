@@ -31,8 +31,13 @@ private func initRng()
 
 impl UUID
 {
+    mtd opEquals(other: Self)->bool
+    {
+        return val64[0] == other.val64[0] and val64[1] == other.val64[1]
+    }
+
     // Get a version 4 UUID (random)
-    func v4()->UUID
+    func getRandom()->UUID
     {
         initRng()
         var result: retval = ?
@@ -43,12 +48,18 @@ impl UUID
         return result
     }
 
-    // Convert uuid to a string
+    // Clear id
+    mtd clear()
+    {
+        val64[0], val64[1] = 0
+    }
+
+    // Convert uuid to a string of the form xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx
     mtd toString(result: [..] u8)
     {
         Debug.assert(@countof(result) == 36)
 
-        const Tbl = "0123456789ABCDEF"
+        const Tbl = "0123456789abcdef"
 
         result[0] = Tbl[(val8[0] & 0xF)]
         result[1] = Tbl[(val8[0] >>,safe 4)]
@@ -107,13 +118,14 @@ impl StrConv.IConvert for UUID
 {
     mtd convert(buf: *ConcatBuffer, fmt: const *StrConv.ConvertFormat, strFormat: string)
     {
-        var str: String
-        if @countof(strFormat) == 0 or @countof(strFormat) > 1
-            str = toString()
-        else
-        {
-        }
+        buf.addBytes(toString())
+    }
+}
 
-        buf.addBytes(str)
+impl Hash.IHash32 for UUID
+{
+    mtdc compute()->u32
+    {
+        return Hash.Crc32.compute(@mkslice(&val8[0], 16))
     }
 }
