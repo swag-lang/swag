@@ -303,7 +303,7 @@ JobResult SemanticJob::execute()
         case AstNodeResolveState::Enter:
         {
             // Some nodes need to spawn a new semantic job
-            if (canSpawn && node != originalNode)
+            if (canSpawn && node != originalNode && !(node->flags & AST_SEM_NO_SPAWN))
             {
                 switch (node->kind)
                 {
@@ -338,6 +338,18 @@ JobResult SemanticJob::execute()
                 case AstNodeKind::AttrUse:
                     if (!node->ownerScope->isGlobalOrImpl() || ((AstAttrUse*) node)->specFlags & AST_SPEC_ATTRUSE_GLOBAL)
                         break;
+                    if (canDoSem)
+                    {
+                        auto job          = g_Allocator.alloc<SemanticJob>();
+                        job->sourceFile   = sourceFile;
+                        job->module       = module;
+                        job->dependentJob = dependentJob;
+                        job->nodes.push_back(node);
+                        g_ThreadMgr.addJob(job);
+                    }
+
+                    nodes.pop_back();
+                    continue;
 
                 case AstNodeKind::VarDecl:
                 case AstNodeKind::ConstDecl:
@@ -351,7 +363,6 @@ JobResult SemanticJob::execute()
                 case AstNodeKind::AttrDecl:
                 case AstNodeKind::CompilerIf:
                 case AstNodeKind::Impl:
-                {
                     if (canDoSem)
                     {
                         auto job          = g_Allocator.alloc<SemanticJob>();
@@ -364,7 +375,6 @@ JobResult SemanticJob::execute()
 
                     nodes.pop_back();
                     continue;
-                }
                 }
             }
 

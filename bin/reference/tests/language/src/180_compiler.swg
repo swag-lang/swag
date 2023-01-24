@@ -40,11 +40,10 @@ func isThisDebug() => true
 }
 
 // This time 'isThisRelease' is not marked with 'Swag.ConstExpr'
-#[Swag.ConstExpr]
 func isThisRelease() => true
 
 // But this call is still valid because we force the compile time execution with '#run'
-#if isThisRelease() == false
+#if #run isThisRelease() == false
 {
     #error "this should not be called !"
 }

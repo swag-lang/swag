@@ -45,7 +45,7 @@ bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind k
 
     // Expression
     {
-        ScopedFlags scopedFlags(this, AST_NO_BACKEND);
+        ScopedFlags scopedFlags(this, AST_NO_BACKEND | AST_SEM_NO_SPAWN);
         SWAG_CHECK(eatToken());
         SWAG_VERIFY(token.id != TokenId::SymLeftCurly && token.id != TokenId::SymSemiColon, error(node->token, Err(Syn0083)));
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));

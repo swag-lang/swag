@@ -62,6 +62,7 @@ static const uint64_t AST_PRIVATE                    = 0x08000000'00000000;
 static const uint64_t AST_SPEC_SEMANTIC1             = 0x10000000'00000000;
 static const uint64_t AST_SPEC_SEMANTIC2             = 0x20000000'00000000;
 static const uint64_t AST_SPEC_SEMANTICX             = AST_SPEC_SEMANTIC1 | AST_SPEC_SEMANTIC2;
+static const uint64_t AST_SEM_NO_SPAWN               = 0x40000000'00000000;
 
 static const uint32_t AST_DONE_VARDECL_STRUCT_PARAMETERS = 0x00000001;
 static const uint32_t AST_DONE_VARDECL_REF_CALL          = 0x00000002;
