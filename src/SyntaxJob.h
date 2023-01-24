@@ -116,6 +116,7 @@ struct SyntaxJob : public Job
     bool doCompilerLocation(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerSpecialFunction(AstNode* parent, AstNode** result = nullptr);
     bool doIntrinsicDefined(AstNode* parent, AstNode** result = nullptr);
+    bool doIntrinsicLocation(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerDependencies(AstNode* parent);
     bool doCompilerInclude(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerLoad(AstNode* parent);

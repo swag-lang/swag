@@ -634,15 +634,6 @@ bool SyntaxJob::doCompilerLocation(AstNode* parent, AstNode** result)
     if (result)
         *result = exprNode;
     SWAG_CHECK(eatToken());
-
-    // Parameter
-    if (token.id == TokenId::SymLeftParen)
-    {
-        SWAG_CHECK(eatToken());
-        SWAG_CHECK(doIdentifierRef(exprNode, nullptr, IDENTIFIER_NO_PARAMS));
-        SWAG_CHECK(eatToken(TokenId::SymRightParen));
-    }
-
     exprNode->semanticFct = SemanticJob::resolveCompilerSpecialFunction;
     return true;
 }
@@ -654,6 +645,23 @@ bool SyntaxJob::doCompilerSpecialFunction(AstNode* parent, AstNode** result)
         *result = exprNode;
     SWAG_CHECK(eatToken());
     exprNode->semanticFct = SemanticJob::resolveCompilerSpecialFunction;
+    return true;
+}
+
+bool SyntaxJob::doIntrinsicLocation(AstNode* parent, AstNode** result)
+{
+    auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::IntrinsicLocation, sourceFile, parent);
+    if (result)
+        *result = exprNode;
+    exprNode->flags |= AST_NO_BYTECODE;
+    SWAG_CHECK(eatToken());
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+
+    ScopedFlags sc(this, AST_SILENT_CHECK);
+    SWAG_CHECK(doIdentifierRef(exprNode, nullptr, IDENTIFIER_NO_PARAMS));
+
+    SWAG_CHECK(eatToken(TokenId::SymRightParen));
+    exprNode->semanticFct = SemanticJob::resolveIntrinsicLocation;
     return true;
 }
 

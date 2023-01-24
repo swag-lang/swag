@@ -248,8 +248,8 @@ void LanguageSpec::setupKeywords()
     keywords.add("#file", TokenId::CompilerFile);
     keywords.add("#line", TokenId::CompilerLine);
     keywords.add("#callerfunction", TokenId::CompilerCallerFunction);
-    keywords.add("#location", TokenId::CompilerLocation);
     keywords.add("#callerlocation", TokenId::CompilerCallerLocation);
+    keywords.add("#location", TokenId::CompilerLocation);
     keywords.add("#self", TokenId::CompilerSelf);
     keywords.add("#swagversion", TokenId::CompilerBuildVersion);
     keywords.add("#swagrevision", TokenId::CompilerBuildRevision);
@@ -332,6 +332,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("cvarargs", TokenId::KwdCVarArgs);
 
     keywords.add("@defined", TokenId::IntrinsicDefined);
+    keywords.add("@location", TokenId::IntrinsicLocation);
     keywords.add("@hastag", TokenId::IntrinsicHasTag);
     keywords.add("@gettag", TokenId::IntrinsicGetTag);
     keywords.add("@safety", TokenId::IntrinsicSafety);

@@ -1608,7 +1608,7 @@ bool SemanticJob::isFunctionButNotACall(SemanticContext* context, AstNode* node,
 
             if (grandParent->kind == AstNodeKind::Alias ||
                 (grandParent->kind == AstNodeKind::IntrinsicDefined) ||
-                (grandParent->kind == AstNodeKind::CompilerSpecialFunction && grandParent->token.id == TokenId::CompilerLocation) ||
+                (grandParent->kind == AstNodeKind::IntrinsicLocation) ||
                 (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicStringOf) ||
                 (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicNameOf) ||
                 (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicRunes) ||

@@ -1588,12 +1588,6 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             break;
         case TokenId::CompilerLocation:
             CONCAT_FIXED_STR(concat, "#location");
-            if (!node->childs.empty())
-            {
-                concat.addChar('(');
-                SWAG_CHECK(outputNode(context, concat, node->childs[0]));
-                concat.addChar(')');
-            }
             break;
         case TokenId::CompilerArch:
             CONCAT_FIXED_STR(concat, "#arch");
@@ -1667,6 +1661,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     }
 
     case AstNodeKind::IntrinsicDefined:
+    case AstNodeKind::IntrinsicLocation:
         concat.addString(node->token.text);
         concat.addChar('(');
         SWAG_CHECK(outputNode(context, concat, node->childs.front()));

@@ -34,7 +34,7 @@ impl ConvertFormatFloat
     //      'G' ('E' for large exponents, 'f' otherwise)
     // [precision]
     //      integer, precision of the fractional part
-    func setFormat(using self, strFormat: string)
+    mtd setFormat(strFormat: string)
     {
         buffer := @dataof(strFormat)
         countof := @countof(strFormat)
@@ -99,7 +99,7 @@ impl ConvertFormatInt
     //      padding character, in ascii, mandatory before the next field
     // [width]
     //      width of the output, in characters
-    func setFormat(using self, strFormat: string)
+    mtd setFormat(strFormat: string)
     {
         buffer := @dataof(strFormat)
         countof := @countof(strFormat)

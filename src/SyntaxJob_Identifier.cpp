@@ -205,6 +205,9 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t iden
     case TokenId::CompilerLocation:
         SWAG_CHECK(doCompilerLocation(identifierRef));
         break;
+    case TokenId::IntrinsicLocation:
+        SWAG_CHECK(doIntrinsicLocation(identifierRef));
+        break;
 
     case TokenId::IntrinsicSpread:
     case TokenId::IntrinsicSizeOf:

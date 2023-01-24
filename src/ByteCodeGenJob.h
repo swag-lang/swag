@@ -26,7 +26,7 @@ struct TypeInfoPointer;
 struct TypeInfoFuncAttr;
 struct DataSegment;
 enum class ByteCodeOp : uint16_t;
-enum class TokenId : uint8_t;
+enum class TokenId : uint16_t;
 
 static const uint32_t BCC_FLAG_NOLOCATION = 0x00000001;
 static const uint32_t BCC_FLAG_NOSAFETY   = 0x00000002;

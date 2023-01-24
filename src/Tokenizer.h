@@ -4,7 +4,7 @@ struct SourceFile;
 struct TypeInfo;
 enum class Intrisic;
 
-enum class TokenId : uint8_t
+enum class TokenId : uint16_t
 {
 #define DEFINE_TOKEN_ID(__id, __flags) __id,
 #include "TokenIds.h"
@@ -62,10 +62,10 @@ struct SourceLocation
 struct Token
 {
     TokenId     id               = TokenId::Invalid;
-    LiteralType literalType      = (LiteralType) 0;
     bool        lastTokenIsEOL   = false;
     bool        lastTokenIsBlank = false;
-    uint8_t     padding[4]       = {0};
+    LiteralType literalType      = (LiteralType) 0;
+    uint8_t     padding[3]       = {0};
 
     Utf8           text;
     SourceLocation startLocation;

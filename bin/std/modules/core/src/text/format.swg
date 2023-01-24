@@ -10,13 +10,13 @@ func checkFormat(fct: string, fmt: string, values: ...)
     {
         #[SelectIf(false)]
         str := toString("bad number of arguments to '%' ('%' requested, '%' provided)", fct, cptPercent, @countof(values))
-        @errormsg(str, #location(values))
+        @errormsg(str, @location(values))
     }
 }
 
 // Count the number of valid '%' placeholders in the string format
 // Note that %% will not be counted, as this represents the '%' character
-#[Swag.ConstExpr]
+#[ConstExpr]
 func countPercent(fmt: string)->u32
 {
     cptPercent := 0'u32
@@ -148,8 +148,8 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
 
 // String interolation
 // Format is "my {<value to interpolate>:format}
-#[Swag.Macro]
-func toInterp(buf: *ConcatBuffer, #[Swag.ConstExpr] exp: string)
+#[Macro]
+func toInterp(buf: *ConcatBuffer, #[ConstExpr] exp: string)
 {
     #ast
     {
@@ -202,8 +202,8 @@ func toInterp(buf: *ConcatBuffer, #[Swag.ConstExpr] exp: string)
 
 // String interolation
 // Format is "my {<value to interpolate>:format}
-#[Swag.Mixin]
-func toInterp(#[Swag.ConstExpr] exp: string)->String
+#[Mixin]
+func toInterp(#[ConstExpr] exp: string)->String
 {
     var @mixin0: ConcatBuffer
     toInterp(&@mixin0, exp)

@@ -194,6 +194,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
         break;
 
     case TokenId::CompilerLocation:
+    case TokenId::IntrinsicLocation:
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
 

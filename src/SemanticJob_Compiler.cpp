@@ -793,6 +793,20 @@ bool SemanticJob::resolveCompilerInclude(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveIntrinsicLocation(SemanticContext* context)
+{
+    auto node      = context->node;
+    node->typeInfo = TypeManager::makeConst(g_Workspace->swagScope.regTypeInfoSourceLoc);
+    auto locNode   = node;
+    auto resolved  = node->childs.front()->resolvedSymbolOverload;
+    if (resolved)
+        locNode = resolved->node;
+    node->setFlagsValueIsComputed();
+    ByteCodeGenJob::computeSourceLocation(context, locNode, &node->computedValue->storageOffset, &node->computedValue->storageSegment);
+    SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
+    return true;
+}
+
 bool SemanticJob::resolveIntrinsicDefined(SemanticContext* context)
 {
     auto node = context->node;
@@ -866,22 +880,11 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         return true;
 
     case TokenId::CompilerLocation:
-    {
         node->typeInfo = TypeManager::makeConst(g_Workspace->swagScope.regTypeInfoSourceLoc);
-        auto locNode   = node;
-
-        if (!node->childs.empty())
-        {
-            auto resolved = node->childs.front()->resolvedSymbolOverload;
-            if (resolved)
-                locNode = resolved->node;
-        }
-
         node->setFlagsValueIsComputed();
-        ByteCodeGenJob::computeSourceLocation(context, locNode, &node->computedValue->storageOffset, &node->computedValue->storageSegment);
+        ByteCodeGenJob::computeSourceLocation(context, node, &node->computedValue->storageOffset, &node->computedValue->storageSegment);
         SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
         return true;
-    }
 
     case TokenId::CompilerCallerLocation:
         SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, Err(Err0254)}));
