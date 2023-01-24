@@ -38,7 +38,7 @@ impl Vector3
         #elif op == "-="    { x -= other.x; y -= other.y; z -= other.z; }
         #elif op == "*="    { x *= other.x; y *= other.y; z *= other.z; }
         #elif op == "/="    { x /= other.x; y /= other.y; z /= other.z; }
-        #else               #assert(false, "unsupported assign operation '" ++ op ++ "'")
+        #else               #error "unsupported assign operation '" ++ op ++ "'"
     }
 
     mtd(op: string) opAssign(value: f32)
@@ -47,7 +47,7 @@ impl Vector3
         #elif op == "-="    { x -= value; y -= value; z -= value; }
         #elif op == "*="    { x *= value; y *= value; z *= value; }
         #elif op == "/="    { x /= value; y /= value; z /= value; }
-        #else               #assert(false, "unsupported assign operation '" ++ op ++ "'")
+        #else               #error "unsupported assign operation '" ++ op ++ "'"
     }
 
     mtd(op: string) opBinary(other: Self)->Self
@@ -56,7 +56,7 @@ impl Vector3
         #elif op == "-" return Self{x - other.x, y - other.y, z - other.z}
         #elif op == "*" return Self{x * other.x, y * other.y, z * other.z}
         #elif op == "/" return Self{x / other.x, y / other.y, z / other.z}
-        #else           #assert(false, "unsupported binary operation '" ++ op ++ "'")
+        #else           #error "unsupported binary operation '" ++ op ++ "'"
     }
 
     mtd(op: string) opBinary(value: f32)->Self
@@ -65,13 +65,13 @@ impl Vector3
         #elif op == "-" return Self{x - value, y - value, z - value}
         #elif op == "*" return Self{x * value, y * value, z * value}
         #elif op == "/" return Self{x / value, y / value, z / value}
-        #else           #assert(false, "unsupported binary operation '" ++ op ++ "'")
+        #else           #error "unsupported binary operation '" ++ op ++ "'"
     }
 
     mtd(op: string) opUnary()->Self
     {
         #if   op == "-" return Self{-x, -y, -z}
-        #else #assert(false, "unsupported unary operation '" ++ op ++ "'")
+        #else #error "unsupported unary operation '" ++ op ++ "'"
     }
 
     // Set content

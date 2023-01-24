@@ -252,7 +252,7 @@ public impl JSon
         }
         #else
         {
-            #assert(false, "invalid type")
+            #error "invalid type"
         }
     }
 }

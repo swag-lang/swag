@@ -10,7 +10,7 @@ const TARGET = "debug"
 }
 #else
 {
-	//#assert(false, "invalid target")
+	//#error "invalid target"
 }
 
 #if DEBUG

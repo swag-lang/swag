@@ -94,7 +94,7 @@ impl String
         #elif op == "-="
             buffer[index] -=,safe value
         #else
-            #assert(false, "invalid operator '" ++ op ++ "'")
+            #error "invalid operator '" ++ op ++ "'"
     }
 
     mtd opIndexAffect(index: uint, value: u8)
@@ -108,7 +108,7 @@ impl String
         #if op == "+="
             append(value)
         #else
-            #assert(false, "invalid operator '" ++ op ++ "'")
+            #error "invalid operator '" ++ op ++ "'"
     }
 
     mtd(op: string) opAssign(value: rune)
@@ -116,7 +116,7 @@ impl String
         #if op == "+="
             append(value)
         #else
-            #assert(false, "invalid operator '" ++ op ++ "'")
+            #error "invalid operator '" ++ op ++ "'"
     }
 
     mtd(op: string) opAssign(value: u8)
@@ -124,7 +124,7 @@ impl String
         #if op == "+="
             append(value)
         #else
-            #assert(false, "invalid operator '" ++ op ++ "'")
+            #error "invalid operator '" ++ op ++ "'"
     }
 
     mtd opPostMove()

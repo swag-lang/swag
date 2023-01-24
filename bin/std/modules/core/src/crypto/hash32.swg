@@ -53,5 +53,5 @@ public func(T) hash32(value: T)->u32
         return key
     }
     #else
-        #assert(false, "cannot hash a value of type '" ++ @typeof(T).fullname ++ "'")
+        #error "cannot hash a value of type '" ++ @typeof(T).fullname ++ "'"
 }

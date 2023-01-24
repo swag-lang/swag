@@ -8,7 +8,7 @@
 #assert @defined(Global)
 var Global = 0
 
-// static #if/#else, with an expression that can be evaluated at compile time
+// static #if/#elif/#else, with an expression that can be evaluated at compile time
 const DEBUG = 1
 const RELEASE = 0
 #if DEBUG
@@ -21,14 +21,32 @@ const RELEASE = 0
 {
 }
 
-// 'isThisDebug' is marked with 'ConstExpr', so it can be automatically evaluated
+// #error to raise a compile time error, and #warning to raise a compile time warning
+#if false
+{
+    #error   "this is an error"
+    #warning "this is a warning"
+}
+
+// 'isThisDebug' is marked with 'Swag.ConstExpr', so it can be automatically evaluated
 // at compile time
 #[Swag.ConstExpr]
 func isThisDebug() => true
 
+// This call is valid
 #if isThisDebug() == false
 {
-    #assert(false, "this should not be called !")
+    #error "this should not be called !"
+}
+
+// This time 'isThisRelease' is not marked with 'Swag.ConstExpr'
+#[Swag.ConstExpr]
+func isThisRelease() => true
+
+// But this call is still valid because we force the compile time execution with '#run'
+#if isThisRelease() == false
+{
+    #error "this should not be called !"
 }
 
 // A more complicated #assert

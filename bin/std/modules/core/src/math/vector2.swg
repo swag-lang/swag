@@ -36,7 +36,7 @@ impl Vector2
         #elif op == "-="    { x -= other.x; y -= other.y; }
         #elif op == "*="    { x *= other.x; y *= other.y; }
         #elif op == "/="    { x /= other.x; y /= other.y; }
-        #else               #assert(false, "unsupported assign operation '" ++ op ++ "'")
+        #else               #error "unsupported assign operation '" ++ op ++ "'"
     }
 
     mtd(op: string) opAssign(value: f32)
@@ -45,7 +45,7 @@ impl Vector2
         #elif op == "-="    { x -= value; y -= value; }
         #elif op == "*="    { x *= value; y *= value; }
         #elif op == "/="    { x /= value; y /= value; }
-        #else               #assert(false, "unsupported assign operation '" ++ op ++ "'")
+        #else               #error "unsupported assign operation '" ++ op ++ "'"
     }
 
     mtdc(op: string) opBinary(other: Self)->Self
@@ -54,7 +54,7 @@ impl Vector2
         #elif op == "-" return Self{x - other.x, y - other.y}
         #elif op == "*" return Self{x * other.x, y * other.y}
         #elif op == "/" return Self{x / other.x, y / other.y}
-        #else           #assert(false, "unsupported binary operation '" ++ op ++ "'")
+        #else           #error "unsupported binary operation '" ++ op ++ "'"
     }
 
     mtdc(op: string) opBinary(value: f32)->Self
@@ -63,13 +63,13 @@ impl Vector2
         #elif op == "-" return Self{x - value, y - value}
         #elif op == "*" return Self{x * value, y * value}
         #elif op == "/" return Self{x / value, y / value}
-        #else           #assert(false, "unsupported binary operation '" ++ op ++ "'")
+        #else           #error "unsupported binary operation '" ++ op ++ "'"
     }
 
     mtdc(op: string) opUnary()->Self
     {
         #if   op == "-" return Self{-x, -y}
-        #else #assert(false, "unsupported unary operation '" ++ op ++ "'")
+        #else #error "unsupported unary operation '" ++ op ++ "'"
     }
 
     // Set content

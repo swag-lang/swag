@@ -7,5 +7,5 @@
 }
 #else
 {
-    #assert(false, "unsupported os")
+    #error "unsupported os"
 }

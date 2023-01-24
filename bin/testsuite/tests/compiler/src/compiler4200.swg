@@ -7,7 +7,7 @@ impl A
     #[Swag.Inline]
     mtd toto()
     {
-        #assert(false, "type '" ++ @typeof(T).name ++ "' is invalid")
+        #error "type '" ++ @typeof(T).name ++ "' is invalid"
     }
 }
 

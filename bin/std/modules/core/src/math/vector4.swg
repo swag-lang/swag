@@ -26,7 +26,7 @@ impl Vector4
     mtd(op: string) opUnary()->Self
     {
         #if   op == "-" return Vector4{-x, -y, -z, -w}
-        #else #assert(false, "unsupported unary operation '" ++ op ++ "'")
+        #else #error "unsupported unary operation '" ++ op ++ "'"
     }
 
     // Set the vector to zero
