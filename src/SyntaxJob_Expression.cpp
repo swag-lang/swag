@@ -960,7 +960,7 @@ bool SyntaxJob::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** resu
     case TokenId::CompilerRun:
     {
         ScopedFlags sf(this, AST_RUN_BLOCK);
-        auto        node  = Ast::newNode<AstCompilerSpecFunc>(this, AstNodeKind::CompilerRun, sourceFile, nullptr);
+        auto        node  = Ast::newNode<AstCompilerSpecFunc>(this, AstNodeKind::CompilerRunExpression, sourceFile, nullptr);
         node->semanticFct = SemanticJob::resolveCompilerRun;
         SWAG_CHECK(eatToken());
 

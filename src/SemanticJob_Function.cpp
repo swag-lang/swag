@@ -860,6 +860,7 @@ bool SemanticJob::isMethod(AstFuncDecl* funcNode)
     if (funcNode->ownerStructScope &&
         funcNode->parent->kind != AstNodeKind::CompilerAst &&
         funcNode->parent->kind != AstNodeKind::CompilerRun &&
+        funcNode->parent->kind != AstNodeKind::CompilerRunExpression &&
         funcNode->parent->kind != AstNodeKind::CompilerSelectIf &&
         funcNode->parent->kind != AstNodeKind::CompilerCheckIf &&
         !(funcNode->flags & AST_FROM_GENERIC) &&
@@ -1707,7 +1708,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     // Error if an alias has been defined, but not 'eaten' by the function
     if (identifier->kind == AstNodeKind::Identifier)
     {
-        if(funcDecl->attributeFlags & ATTRIBUTE_INLINE)
+        if (funcDecl->attributeFlags & ATTRIBUTE_INLINE)
             context->errorContextStack.push_back({identifier, ErrorContextKind::Inline});
 
         if (cloneContext.replaceNames.size() != cloneContext.usedReplaceNames.size())

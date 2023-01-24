@@ -249,6 +249,7 @@ AstNode* AstNode::clone(CloneContext& context)
     case AstNodeKind::CompilerIfBlock:
         return ((AstCompilerIfBlock*) this)->clone(context);
     case AstNodeKind::CompilerRun:
+    case AstNodeKind::CompilerRunExpression:
     case AstNodeKind::CompilerSelectIf:
     case AstNodeKind::CompilerCheckIf:
     case AstNodeKind::CompilerAst:

@@ -138,6 +138,7 @@ enum class AstNodeKind : uint8_t
     CompilerError,
     CompilerWarning,
     CompilerRun,
+    CompilerRunExpression,
     CompilerAst,
     CompilerSelectIf,
     CompilerCheckIf,

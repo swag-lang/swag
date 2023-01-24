@@ -303,7 +303,7 @@ JobResult SemanticJob::execute()
         case AstNodeResolveState::Enter:
         {
             // Some nodes need to spawn a new semantic job
-            if (canSpawn && node != originalNode && !(node->flags & AST_SEM_NO_SPAWN))
+            if (canSpawn && node != originalNode)
             {
                 switch (node->kind)
                 {
