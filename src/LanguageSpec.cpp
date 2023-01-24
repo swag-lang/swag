@@ -234,6 +234,8 @@ void LanguageSpec::setupKeywords()
     keywords.add("#foreignlib", TokenId::CompilerForeignLib);
     keywords.add("#assert", TokenId::CompilerAssert);
     keywords.add("#print", TokenId::CompilerPrint);
+    keywords.add("#error", TokenId::CompilerError);
+    keywords.add("#warning", TokenId::CompilerWarning);
     keywords.add("#run", TokenId::CompilerRun);
     keywords.add("#ast", TokenId::CompilerAst);
     keywords.add("#selectif", TokenId::CompilerSelectIf);

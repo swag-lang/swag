@@ -193,6 +193,40 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doCompilerError(AstNode* parent, AstNode** result)
+{
+    auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerError, sourceFile, parent);
+    if (result)
+        *result = node;
+    node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+    node->allocateExtension(ExtensionKind::Semantic);
+    node->extension->semantic->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
+    node->semanticFct                            = SemanticJob::resolveCompilerError;
+    node->token                                  = token;
+    SWAG_CHECK(eatToken());
+
+    SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
+    SWAG_CHECK(eatSemiCol("`#error` expression"));
+    return true;
+}
+
+bool SyntaxJob::doCompilerWarning(AstNode* parent, AstNode** result)
+{
+    auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerWarning, sourceFile, parent);
+    if (result)
+        *result = node;
+    node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+    node->allocateExtension(ExtensionKind::Semantic);
+    node->extension->semantic->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
+    node->semanticFct                            = SemanticJob::resolveCompilerWarning;
+    node->token                                  = token;
+    SWAG_CHECK(eatToken());
+
+    SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
+    SWAG_CHECK(eatSemiCol("`#warning` expression"));
+    return true;
+}
+
 bool SyntaxJob::doCompilerSelectIf(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstCompilerSpecFunc>(this, AstNodeKind::CompilerSelectIf, sourceFile, parent);

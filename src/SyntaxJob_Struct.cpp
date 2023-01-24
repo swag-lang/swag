@@ -428,6 +428,14 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
         SWAG_CHECK(doCompilerPrint(parent, result));
         parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;
         break;
+    case TokenId::CompilerError:
+        SWAG_CHECK(doCompilerError(parent, result));
+        parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;
+        break;
+    case TokenId::CompilerWarning:
+        SWAG_CHECK(doCompilerWarning(parent, result));
+        parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;
+        break;
     case TokenId::CompilerAst:
         SWAG_CHECK(doCompilerAst(parent, result));
         parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;

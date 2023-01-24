@@ -555,7 +555,7 @@ void initErrors()
     SWAG_ERROR(Err0662, "expected a struct or an enum, but '%s' is %s");
     SWAG_ERROR(Err0648, "expected a struct, but '%s' is %s");
     SWAG_ERROR(Err0290, "expected a struct, but symbol '%s' is %s");
-    SWAG_ERROR(Err0236, "expected a type 'string' as an '#assert' message ('%s' provided)");
+    SWAG_ERROR(Err0236, "expected a type 'string' as an '%s' message ('%s' provided)");
     SWAG_ERROR(Err0582, "expected an attribute, but '%s' is %s");
     SWAG_ERROR(Err0702, "expected an enum type, found '%s'");
     SWAG_ERROR(Err0772, "expected an expression of type '%s' after 'return'");
@@ -622,7 +622,7 @@ void initErrors()
     SWAG_ERROR(Err0759, "the %s is marked with 'Swag.Mixin' and 'Swag.Inline' attributes at the same time");
     SWAG_ERROR(Err0760, "the %s is marked with 'Swag.Mixin' and 'Swag.Macro' attributes at the same time");
     SWAG_ERROR(Err0749, "the %s returns a type '%s', but the body is missing a 'return'");
-    SWAG_ERROR(Err0237, "the '#assert' message string cannot be evaluated at compile time");
+    SWAG_ERROR(Err0237, "the '%s' message string cannot be evaluated at compile time");
     SWAG_ERROR(Err0234, "the '#ast' expression should be of type 'string' ('%s' provided)");
     SWAG_ERROR(Err0284, "the '#import' location is already defined as '%s'");
     SWAG_ERROR(Err0243, "the '#load' parameter should be of type string ('%s' provided)");

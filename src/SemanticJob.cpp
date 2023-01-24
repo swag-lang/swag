@@ -345,6 +345,8 @@ JobResult SemanticJob::execute()
                 case AstNodeKind::EnumDecl:
                 case AstNodeKind::CompilerAssert:
                 case AstNodeKind::CompilerPrint:
+                case AstNodeKind::CompilerError:
+                case AstNodeKind::CompilerWarning:
                 case AstNodeKind::CompilerRun:
                 case AstNodeKind::AttrDecl:
                 case AstNodeKind::CompilerIf:

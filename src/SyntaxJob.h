@@ -97,14 +97,16 @@ struct SyntaxJob : public Job
     bool doScopeBreakable(AstNode* parent, AstNode** result = nullptr);
     bool doGenericFuncCallParameters(AstNode* parent, AstNode** result = nullptr);
     bool doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, TokenId closeToken);
+    bool doIntrinsicTag(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind);
     bool doCompilerIf(AstNode* parent, AstNode** result = nullptr);
-    bool doIntrinsicTag(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerInline(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerMacro(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerMixin(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerAssert(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerPrint(AstNode* parent, AstNode** result = nullptr);
+    bool doCompilerError(AstNode* parent, AstNode** result = nullptr);
+    bool doCompilerWarning(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerAst(AstNode* parent, AstNode** result);
     bool doCompilerSelectIf(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerRunTopLevel(AstNode* parent, AstNode** result = nullptr);
