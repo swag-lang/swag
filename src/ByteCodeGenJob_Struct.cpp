@@ -34,6 +34,11 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
     if (!funcDecl && !bc)
         return;
 
+    if (funcDecl && funcDecl->resolvedSymbolName)
+        funcDecl->resolvedSymbolName->flags |= SYMBOL_USED;
+    if (bc)
+        bc->isUsed = true;
+
     if (funcDecl)
         askForByteCode(context->job, funcDecl, 0, context->bc);
     else if (bc && bc->node)

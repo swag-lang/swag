@@ -3,6 +3,9 @@
 #include "Ast.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
+#include "ByteCode.h"
+#include "Module.h"
+#include "Report.h"
 
 bool SemanticJob::warnDeprecated(SemanticContext* context, AstNode* identifier)
 {
@@ -61,7 +64,38 @@ bool SemanticJob::warnDeprecated(SemanticContext* context, AstNode* identifier)
     }
 }
 
-bool SemanticJob::warnUnusedSymbols(SemanticContext* context, Scope* scope)
+bool SemanticJob::warnUnusedFunction(Module* moduleToGen, ByteCode* one)
+{
+    if (moduleToGen->kind == ModuleKind::Test)
+        return true;
+    if (!one->node || !one->node->sourceFile || !one->node->resolvedSymbolName)
+        return true;
+    if (one->node->sourceFile->isEmbbeded || one->node->sourceFile->isExternal || one->node->sourceFile->imported)
+        return true;
+    if (one->node->sourceFile->isRuntimeFile || one->node->sourceFile->isBootstrapFile)
+        return true;
+    if (one->node->sourceFile->forceExport || one->node->sourceFile->globalAttr & ATTRIBUTE_PUBLIC)
+        return true;
+    auto funcDecl = CastAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
+    if (funcDecl->fromItfSymbol)
+        return true;
+    if (funcDecl->flags & (AST_IS_GENERIC | AST_GENERATED | AST_FROM_GENERIC))
+        return true;
+    if (funcDecl->attributeFlags & (ATTRIBUTE_PUBLIC | ATTRIBUTE_INLINE | ATTRIBUTE_INIT_FUNC | ATTRIBUTE_DROP_FUNC | ATTRIBUTE_PREMAIN_FUNC | ATTRIBUTE_MAIN_FUNC | ATTRIBUTE_COMPILER))
+        return true;
+
+    if (one->node->resolvedSymbolName->flags & SYMBOL_USED || one->isUsed)
+        return true;
+    if (funcDecl->token.text[0] == '_')
+        return true;
+
+    Diagnostic diag{funcDecl, funcDecl->tokenName, Fmt(Err(Wrn0008), funcDecl->token.ctext()), DiagnosticLevel::Warning};
+    if (!funcDecl->isSpecialFunctionName())
+        diag.hint = Fmt(Hnt(Hnt0092), funcDecl->token.ctext());
+    return Report::report(diag);
+}
+
+bool SemanticJob::warnUnusedVariables(SemanticContext* context, Scope* scope)
 {
     auto node = context->node;
     if (!node->sourceFile || !node->sourceFile->module)

@@ -72,6 +72,7 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool 
         else
             attr = ATTRIBUTE_PRIVATE;
 
+        sourceFile->globalAttr |= attr;
         SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, Fmt(Err(Syn0032), token.ctext())));
         SWAG_VERIFY(!sourceFile->forceExport, error(token, Fmt(Err(Syn0018), token.ctext())));
         if (newScope->flags & SCOPE_FILE)

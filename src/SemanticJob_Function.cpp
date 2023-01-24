@@ -398,7 +398,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     }
 
     // Warnings
-    SWAG_CHECK(warnUnusedSymbols(context, node->scope));
+    SWAG_CHECK(warnUnusedVariables(context, node->scope));
 
     // Now the full function has been solved, so we wakeup jobs depending on that
     SWAG_CHECK(setFullResolve(context, node));

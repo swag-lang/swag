@@ -1153,15 +1153,18 @@ void Module::logStage(const char* msg)
     g_Log.verbose(Fmt("[%s] -- %s", name.c_str(), msg));
 }
 
-void Module::filterFunctionsToEmit()
+bool Module::filterFunctionsToEmit()
 {
     byteCodeFuncToGen.reserve((int) byteCodeFunc.size());
     for (auto bc : byteCodeFunc)
     {
+        SWAG_CHECK(SemanticJob::warnUnusedFunction(this, bc));
         if (!bc->canEmit())
             continue;
         byteCodeFuncToGen.push_back(bc);
     }
+
+    return true;
 }
 
 void Module::flushGenFiles()

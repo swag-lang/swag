@@ -52,6 +52,7 @@ struct SourceFile
     atomic<int> numTestWarnings = 0;
     uint32_t    indexInModule   = UINT32_MAX;
     BuildPass   buildPass       = BuildPass::Full;
+    uint32_t    globalAttr      = 0;
 
     bool isExternal           = false;
     bool isCfgFile            = false;

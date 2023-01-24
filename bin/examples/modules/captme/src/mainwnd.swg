@@ -870,6 +870,7 @@ impl IWnd for MainWnd
                 MessageDlg.error(surface, @err, "Failed to update file !")
 
         case CmdIdExit:
+            libWnd.requestClose()
             postQuitEvent()
 
         case CmdIdResetQuickStyle:

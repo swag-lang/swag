@@ -165,7 +165,7 @@ struct Module
     void sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result);
     bool waitForDependenciesDone(Job* job, const set<Utf8>& modules);
     bool waitForDependenciesDone(Job* job);
-    void filterFunctionsToEmit();
+    bool filterFunctionsToEmit();
 
     bool     mustOutputSomething();
     bool     mustGenerateTestExe();
