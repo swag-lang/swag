@@ -5,5 +5,5 @@ func msg() => "msg"
 #test
 {
     x := 1
-    #assert(true, #run msg())
+    #assert true, #run msg()
 }

@@ -91,7 +91,7 @@ public impl BitArray
     #[Macro]
     mtd(ptr: bool) opVisit(stmt: code)
     {
-        #assert(ptr == false, "pointer visit not supported for BitArray")
+        #assert ptr == false, "pointer visit not supported for BitArray"
         if !count return
         remainingBits := count
         countBits := 0'uint

@@ -1438,7 +1438,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         break;
 
     case AstNodeKind::CompilerAssert:
-        CONCAT_FIXED_STR(concat, "#assert(");
+        CONCAT_FIXED_STR(concat, "#assert ");
         SWAG_CHECK(outputNode(context, concat, node->childs[0]));
         if (node->childs.size() > 1)
         {
@@ -1446,7 +1446,6 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             SWAG_CHECK(outputNode(context, concat, node->childs[1]));
         }
 
-        concat.addChar(')');
         break;
 
     case AstNodeKind::CompilerIf:

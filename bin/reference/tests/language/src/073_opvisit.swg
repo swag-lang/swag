@@ -15,7 +15,7 @@ impl MyStruct
     {
         // 'ptr' is a generic parameter that tells if we want to visit by pointer.
         // We do not use it in this example.
-        #assert(!ptr, "visiting myStruct by pointer is not supported")
+        #assert !ptr, "visiting myStruct by pointer is not supported"
 
         // Loop on the 3 fields
         loop idx: 3

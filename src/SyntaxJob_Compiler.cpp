@@ -174,20 +174,12 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent, AstNode** result)
 
     ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND);
     SWAG_CHECK(eatToken());
-    if (token.id == TokenId::SymLeftParen)
+    SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
+    if (token.id == TokenId::SymComma)
     {
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
-        if (token.id == TokenId::SymComma)
-        {
-            SWAG_CHECK(eatToken());
-            SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
-        }
-
-        SWAG_CHECK(eatToken(TokenId::SymRightParen));
     }
-    else
-        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
 
     SWAG_CHECK(eatSemiCol("`#assert` expression"));
     return true;
