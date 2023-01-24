@@ -1,9 +1,5 @@
 #include "pch.h"
 #include "BackendX64.h"
-#include "BackendX64FunctionBodyJob.h"
-#include "BackendX64_Macros.h"
-#include "ByteCodeOp.h"
-#include "Ast.h"
 #include "Module.h"
 #include "TypeManager.h"
 #include "Version.h"
@@ -664,13 +660,13 @@ void BackendX64::dbgRecordFields(X64Gen& pp, DbgTypeRecord* tr, TypeInfoStruct* 
         field.kind          = LF_MEMBER;
         field.type          = dbgGetOrCreateType(pp, p->typeInfo);
         field.name          = p->namedParam;
-        field.value.reg.u32 = p->offset;
+        field.value.reg.u32 = baseOffset + p->offset;
         tr->LF_FieldList.fields.push_back(field);
 
         if (p->flags & TYPEINFO_HAS_USING && p->typeInfo->isStruct())
         {
             auto typeStructField = CastTypeInfo<TypeInfoStruct>(p->typeInfo, TypeInfoKind::Struct);
-            dbgRecordFields(pp, tr, typeStructField, p->offset);
+            dbgRecordFields(pp, tr, typeStructField, baseOffset + p->offset);
         }
     }
 }
