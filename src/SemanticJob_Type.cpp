@@ -685,12 +685,37 @@ bool SemanticJob::resolveExplicitBitCast(SemanticContext* context)
 
     SWAG_VERIFY(typeInfo->sizeOf <= exprTypeInfo->sizeOf, context->report({exprNode, Fmt(Err(Err0033), typeInfo->getDisplayNameC(), exprTypeInfo->getDisplayNameC())}));
 
-    node->typeInfo = typeNode->typeInfo;
-    node->setPassThrough();
+    node->typeInfo    = typeNode->typeInfo;
+    node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
     node->inheritOrFlag(exprNode, AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_R_VALUE | AST_L_VALUE | AST_SIDE_EFFECTS);
     node->inheritComputedValue(exprNode);
     node->resolvedSymbolName     = exprNode->resolvedSymbolName;
     node->resolvedSymbolOverload = exprNode->resolvedSymbolOverload;
+
+    if (node->flags & AST_VALUE_COMPUTED && node->typeInfo->isNative())
+    {
+        switch (node->typeInfo->nativeType)
+        {
+        case NativeTypeKind::S8:
+            node->computedValue->reg.s64 = node->computedValue->reg.s8;
+            break;
+        case NativeTypeKind::S16:
+            node->computedValue->reg.s64 = node->computedValue->reg.s16;
+            break;
+        case NativeTypeKind::S32:
+            node->computedValue->reg.s64 = node->computedValue->reg.s32;
+            break;
+        case NativeTypeKind::U8:
+            node->computedValue->reg.u64 = node->computedValue->reg.u8;
+            break;
+        case NativeTypeKind::U16:
+            node->computedValue->reg.u64 = node->computedValue->reg.u16;
+            break;
+        case NativeTypeKind::U32:
+            node->computedValue->reg.u64 = node->computedValue->reg.u32;
+            break;
+        }
+    }
 
     return true;
 }
