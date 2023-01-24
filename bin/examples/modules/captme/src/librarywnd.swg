@@ -17,6 +17,14 @@ struct LibraryItem
     rect:       Math.Rectangle
 }
 
+impl LibraryItem
+{
+    mtd opDrop()
+    {
+        Memory.delete(capture)
+    }
+}
+
 struct LibraryView
 {
     using wnd: Wnd
@@ -140,6 +148,12 @@ impl IWnd for LibraryView
 
 impl LibraryView
 {
+    mtd opDrop()
+    {
+        visit c: loaded
+            Memory.delete(c)
+    }
+
     mtd fill() throw
     {
         if thread.isValid()
@@ -166,10 +180,7 @@ impl LibraryView
 
         renderer := getApp().getRenderer()
         visit &it: items
-        {
             renderer.removeTexture(&it.texture)
-            Memory.delete(it.capture)
-        }
 
         // Add items
         items.clear()
@@ -193,8 +204,8 @@ impl LibraryView
                     capture := catch Capture.load(it.fi.fullname)
                     if capture
                     {
-                        self.mutexLoaded.lock()
                         capture.backImg.release()
+                        self.mutexLoaded.lock()
                         self.loaded.add(capture)
                         self.mutexLoaded.unlock()
                         self.postInvalidateEvent()
