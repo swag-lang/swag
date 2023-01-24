@@ -2,7 +2,7 @@ struct(T, loc: Swag.SourceCodeLocation) TOTO
 {
     #ast
     {
-        //@errormsg(#location, "this is a test man !")
+        //@error(#location, "this is a test man !")
         @assert(cast(s64) loc.lineStart == 12)
         return ""
     }

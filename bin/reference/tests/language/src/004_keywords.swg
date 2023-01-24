@@ -29,6 +29,7 @@ This is the list of all keywords:
 #checkif
 #elif
 #else
+#error
 #global
 #if
 #import
@@ -40,12 +41,14 @@ This is the list of all keywords:
 #placeholder
 #print
 #selectif
+#warning
 
 #ast
 #drop
 #init
 #main
 #message
+#premain
 #run
 #test
 
@@ -117,7 +120,7 @@ This is the list of all keywords:
 @dbgalloc
 @defined
 @drop
-@errormsg
+@error
 @getcontext
 @getpinfos
 @gettag
@@ -128,6 +131,7 @@ This is the list of all keywords:
 @isconstexpr
 @itftableof
 @kindof
+@location
 @mkany
 @mkcallback
 @mkinterface

@@ -3002,8 +3002,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_LoadAddress_Indirect(regOffset(ip->a.u32), RAX, RDI);
             pp.emit_Store32_Immediate(0, 0, RAX);
             break;
-        case ByteCodeOp::IntrinsicErrorMsg:
-            emitInternalCall(pp, moduleToGen, g_LangSpec->name_aterrormsg, {ip->a.u32, ip->b.u32, ip->c.u32});
+        case ByteCodeOp::IntrinsicError:
+            emitInternalCall(pp, moduleToGen, g_LangSpec->name_aterror, {ip->a.u32, ip->b.u32, ip->c.u32});
             break;
         case ByteCodeOp::IntrinsicPanic:
             emitInternalCall(pp, moduleToGen, g_LangSpec->name_atpanic, {ip->a.u32, ip->b.u32, ip->c.u32});

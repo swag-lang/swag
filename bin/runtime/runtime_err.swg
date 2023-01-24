@@ -100,7 +100,7 @@ func __stackTrace(loc: SourceCodeLocation)
 
 
 ////////////////////////////////////////////////////////////
-func @errormsg(message: string, loc: Swag.SourceCodeLocation)
+func @error(message: string, loc: Swag.SourceCodeLocation)
 {
     // If the compiler is around, just let it deal with the message
     cxt := @getcontext()
@@ -131,7 +131,7 @@ func @panic(message: string, loc: SourceCodeLocation)
     }
 
     // Print the message first
-    @errormsg(message, loc)
+    @error(message, loc)
 
     // If we are running bytecode, then just let the runner deal with the assertion,
     // we will have more usefull information

@@ -1919,9 +1919,9 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
-    case ByteCodeOp::IntrinsicErrorMsg:
+    case ByteCodeOp::IntrinsicError:
     {
-        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_aterrormsg);
+        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_aterror);
         context->push(registersRC[ip->c.u32].u64);
         context->push(registersRC[ip->b.u32].u64);
         context->push(registersRC[ip->a.u32].u64);

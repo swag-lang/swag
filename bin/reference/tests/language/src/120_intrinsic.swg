@@ -14,7 +14,7 @@ func @compiler()->Swag.ICompiler;
 
 func @args()->const [..] string;
 @panic()
-@errormsg()
+@error()
 
 // Buildin
 

@@ -594,7 +594,7 @@ bool SyntaxJob::doLeftInstruction(AstNode* parent, AstNode** result, AstWith* wi
     case TokenId::IntrinsicAssert:
     case TokenId::IntrinsicBcBreakpoint:
     case TokenId::IntrinsicPanic:
-    case TokenId::IntrinsicErrorMsg:
+    case TokenId::IntrinsicError:
     case TokenId::IntrinsicFree:
     case TokenId::IntrinsicMemCpy:
     case TokenId::IntrinsicMemMove:
@@ -655,7 +655,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicCVaEnd:
     case TokenId::IntrinsicCVaStart:
     case TokenId::IntrinsicDrop:
-    case TokenId::IntrinsicErrorMsg:
+    case TokenId::IntrinsicError:
     case TokenId::IntrinsicFree:
     case TokenId::IntrinsicGetContext:
     case TokenId::IntrinsicInit:

@@ -3,7 +3,7 @@
 #[Swag.Macro]
 func toto(x: s32)
 {
-    @errormsg("error", @location(x))
+    @error("error", @location(x))
 }
 
 #test
