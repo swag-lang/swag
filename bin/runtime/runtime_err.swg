@@ -98,7 +98,6 @@ func __stackTrace(loc: SourceCodeLocation)
     cxt.traceIndex = cxt.traceIndex + 1
 }
 
-
 ////////////////////////////////////////////////////////////
 func @compilererror(message: string, loc: Swag.SourceCodeLocation)
 {
@@ -224,4 +223,15 @@ func __panic(file: const ^u8, line: u32, col: u32, message: const ^u8)
 
     var msg: string = message ? cast(string) @mkslice(message, @strlen(message)) : "panic"
     @panic(msg, loc)
+}
+
+func __compilererror(file: const ^u8, line: u32, col: u32, message: const ^u8)
+{
+    var loc: SourceCodeLocation
+    loc.fileName = cast(string) @mkslice(file, @strlen(file))
+    loc.lineStart, loc.lineEnd = line
+    loc.colStart, loc.colEnd = col
+
+    var msg: string = message ? cast(string) @mkslice(message, @strlen(message)) : "compiler error"
+    @compilererror(msg, loc)
 }

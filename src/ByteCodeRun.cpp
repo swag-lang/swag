@@ -74,12 +74,23 @@ SWAG_FORCE_INLINE void ByteCodeRun::localCall(ByteCodeRunContext* context, ByteC
     context->bc->enterByteCode(context, popParamsOnRet, returnRegOnRet, incSPPostCall);
 }
 
+void ByteCodeRun::callInternalCompilerError(ByteCodeRunContext* context, ByteCodeInstruction* ip, const char* msg)
+{
+    msg      = _strdup(msg); // Leak and slow, but only for messages
+    auto bc  = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__compilererror);
+    auto loc = ByteCode::getLocation(context->bc, ip);
+    context->push(msg);
+    context->push<uint64_t>(loc.location->column);
+    context->push<uint64_t>(loc.location->line);
+    context->push(loc.file->path.c_str());
+    localCall(context, bc, 4);
+}
+
 void ByteCodeRun::callInternalPanic(ByteCodeRunContext* context, ByteCodeInstruction* ip, const char* msg)
 {
-    auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__panic);
-
+    msg      = _strdup(msg); // Leak and slow, but only for messages
+    auto bc  = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__panic);
     auto loc = ByteCode::getLocation(context->bc, ip);
-
     context->push(msg);
     context->push<uint64_t>(loc.location->column);
     context->push<uint64_t>(loc.location->line);

@@ -14,6 +14,7 @@ void LanguageSpec::setupNames()
     name__setupRuntime        = "__setupRuntime";
     name__closeRuntime        = "__closeRuntime";
     name__dropGlobalVariables = "__dropGlobalVariables";
+    name__compilererror       = "__compilererror";
     name__panic               = "__panic";
     name__pusherr             = "__pusherr";
     name__poperr              = "__poperr";
