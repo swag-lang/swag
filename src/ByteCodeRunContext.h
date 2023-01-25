@@ -120,7 +120,8 @@ struct ByteCodeRunContext
     ByteCode* oldBc = nullptr;
 
     bool debugOnFirstError = false;
-    bool sharedStack   = false;
+    bool sharedStack       = false;
+    bool fromException666  = false;
 
     const ConcreteCompilerMessage* currentCompilerMessage = nullptr;
     Job*                           currentCompilerJob     = nullptr;

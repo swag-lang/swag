@@ -83,7 +83,7 @@ void ByteCodeStack::logStep(int level, bool current, ByteCodeStackStep& step)
 void ByteCodeStack::getSteps(VectorNative<ByteCodeStackStep>& copySteps, ByteCodeRunContext* runContext)
 {
     // Add one step for the current context if necessary
-    copySteps = steps;
+    auto copy = steps;
     if (runContext)
     {
         if (copySteps.empty() || copySteps.back().bc != runContext->bc || copySteps.back().ip != runContext->ip)
@@ -95,8 +95,25 @@ void ByteCodeStack::getSteps(VectorNative<ByteCodeStackStep>& copySteps, ByteCod
             step.sp    = runContext->sp;
             step.spAlt = runContext->spAlt;
             step.stack = runContext->stack;
-            copySteps.push_back(step);
+            copy.push_back(step);
         }
+    }
+
+    for (auto& it : copy)
+    {
+        // If we are running bytecode, and a panic, error or warning was raised, we filter the stack so that only
+        // relevent informations are displayed.
+        // No need to display runtime functions.
+        if (runContext->fromException666)
+        {
+            auto loc = ByteCode::getLocation(it.bc, it.ip);
+            if (loc.file && loc.file->isRuntimeFile)
+                continue;
+            if (loc.file && loc.file->isBootstrapFile)
+                continue;
+        }
+
+        copySteps.push_back(it);
     }
 }
 
