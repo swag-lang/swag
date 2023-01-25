@@ -26,7 +26,6 @@ This is the list of all keywords:
 #type
 
 #assert
-#checkif
 #elif
 #else
 #error
@@ -41,6 +40,7 @@ This is the list of all keywords:
 #placeholder
 #print
 #selectif
+#selectifonce
 #warning
 
 #ast

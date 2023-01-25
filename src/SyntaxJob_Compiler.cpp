@@ -221,12 +221,12 @@ bool SyntaxJob::doCompilerWarning(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCompilerSelectIf(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode<AstCompilerSpecFunc>(this, AstNodeKind::CompilerSelectIf, sourceFile, parent);
+    auto node = Ast::newNode<AstCompilerSpecFunc>(this, AstNodeKind::CompilerSelectIfOnce, sourceFile, parent);
     if (result)
         *result = node;
     auto tokenId = token.id;
-    if (tokenId == TokenId::CompilerCheckIf)
-        node->kind = AstNodeKind::CompilerCheckIf;
+    if (tokenId == TokenId::CompilerSelectIf)
+        node->kind = AstNodeKind::CompilerSelectIf;
     node->allocateExtension(ExtensionKind::Semantic);
     node->extension->semantic->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
     node->semanticFct                            = SemanticJob::resolveCompilerSelectIfExpression;
@@ -259,7 +259,7 @@ bool SyntaxJob::doCompilerSelectIf(AstNode* parent, AstNode** result)
     else
     {
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
-        SWAG_CHECK(eatSemiCol("`#selectif/#checkif` expression"));
+        SWAG_CHECK(eatSemiCol("`#selectifonce/#selectif` expression"));
     }
 
     return true;

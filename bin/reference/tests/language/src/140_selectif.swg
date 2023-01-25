@@ -1,12 +1,12 @@
 #test
 {
-    // On a function, you can use '#selectif' to constrain the usage of the function.
-    // If the #selectif expression returns false, then the function will not be considered for the call match.
-    // The #selectif expression is evaluated only once, whatever the call, so it is typically used to
+    // On a function, you can use '#selectifonce' to constrain the usage of the function.
+    // If the #selectifonce expression returns false, then the function will not be considered for the call match.
+    // The #selectifonce expression is evaluated only once, whatever the call, so it is typically used to
     // check generic parameters.
     {
         func(T) sum(x: T...)->T
-            #selectif @typeof(T) == s32 or @typeof(T) == s64
+            #selectifonce @typeof(T) == s32 or @typeof(T) == s64
         {
             total := 0'T
             visit it: x
@@ -23,18 +23,18 @@
         // res1 := sum'f32(1, 2)
     }
 
-    // You can use #selectif to make a kind of a generic specialisation
+    // You can use #selectifonce to make a kind of a generic specialisation
     {
         // s32 version
         func(T) isNull(x: T)->bool
-            #selectif @typeof(T) == s32
+            #selectifonce @typeof(T) == s32
         {
             return x == 0
         }
 
         // f32/f64 version
         func(T) isNull(x: T)->bool
-            #selectif @typeof(T) == f32 or @typeof(T) == f64
+            #selectifonce @typeof(T) == f32 or @typeof(T) == f64
         {
             return @abs(x) < 0.01
         }
@@ -43,10 +43,10 @@
         @assert(isNull(0.001'f32))
     }
 
-    // #selectif can also be followed by a block that returns a bool instead of an expression
+    // #selectifonce can also be followed by a block that returns a bool instead of an expression
     {
         func(T) sum(x: T...)->T
-            #selectif
+            #selectifonce
             {
                 if @typeof(T) == s32 or @typeof(T) == s64
                     return true
@@ -64,7 +64,7 @@
     // type is incorrect for example
     {
         func(T) sum(x, y: T)->T
-            #selectif
+            #selectifonce
             {
                 if @typeof(T) == s32 or @typeof(T) == s64
                     return true
@@ -79,12 +79,12 @@
         // x := sum'f32(1, 2)
     }
 
-    // Instead of #selectif, you can use #checkif.
-    // #checkif is evaluated for each call, so it can be used to check
+    // Instead of #selectifonce, you can use #selectif.
+    // #selectif is evaluated for each call, so it can be used to check
     // parameters, as long as they can be evaluated at compile time
     {
         func div(x, y: s32)->s32
-            #checkif
+            #selectif
             {
                 // If 'y' cannot be evaluated at compile time, then we can do nothing about it
                 if !@isconstexpr(y)
@@ -107,14 +107,14 @@
     {
         // A version of 'first' where 'x' is known at compile time
         func first(x: s32)->s32
-            #checkif @isconstexpr(x)
+            #selectif @isconstexpr(x)
         {
             return 555
         }
 
         // A version of 'first' where 'x' is *not* known at compile time
         func first(x: s32)->s32
-            #checkif !@isconstexpr(x)
+            #selectif !@isconstexpr(x)
         {
             return 666
         }

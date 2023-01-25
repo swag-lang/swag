@@ -1,7 +1,7 @@
 //var G = 0
 
 func append(buf: *void, fmt: string, values: ...)
-    #checkif
+    #selectif
     {
         if !@isconstexpr(fmt) return true
         cpt := @countof(values)

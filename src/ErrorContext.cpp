@@ -127,11 +127,11 @@ void ErrorContext::fillContext(JobContext* context, Diagnostic& diag, vector<con
                 msg            = Fmt(Nte(Nte0072), name.c_str());
                 exp.locIsToken = true;
                 break;
-            case ErrorContextKind::SelectIf:
+            case ErrorContextKind::SelectIfOnce:
                 msg            = Fmt(Nte(Nte0054), name.c_str());
                 exp.locIsToken = true;
                 break;
-            case ErrorContextKind::CheckIf:
+            case ErrorContextKind::SelectIf:
                 msg            = Fmt(Nte(Nte0033), name.c_str());
                 exp.locIsToken = true;
                 break;

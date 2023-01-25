@@ -205,7 +205,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     {
         node->resultRegisterRC = reserveRegisterRC(context);
 
-        // Get a parameter from a #selectif block... this is special
+        // Get a parameter from a #selectifonce block... this is special
         if (node->isSelectIfParam(resolved))
         {
             ByteCodeInstruction* inst;

@@ -2,7 +2,7 @@
 
 //#[Swag.Macro]
 func toto(x: string)
-    #selectif
+    #selectifonce
     {
         y := x
         @print(y)

@@ -239,7 +239,7 @@ void initErrors()
     SWAG_ERROR(Syn0134, "tuple types in generic parameters are not (yet?) supported");
     SWAG_ERROR(Syn0135, "type 'Self' should not be used outside an 'impl', 'struct' or 'interface' block");
     SWAG_ERROR(Syn0136, "unexpected '#global' instruction '%s'");
-    SWAG_ERROR(Syn0137, "unexpected '#selectif' or '#checkif' on special function '%s'");
+    SWAG_ERROR(Syn0137, "unexpected '#selectifonce' or '#selectif' on special function '%s'");
     SWAG_ERROR(Syn0138, "unexpected '->' in attribute declaration");
     SWAG_ERROR(Syn0139, "unexpected '[' when accessing an array with multiple dimensions");
     SWAG_ERROR(Syn0140, "unexpected 'assume' inside '%s' expression");
@@ -370,7 +370,7 @@ void initErrors()
     SWAG_ERROR(Err0860, "a %s cannot be marked with the 'Swag.NotGeneric' attribute");
     SWAG_ERROR(Err0804, "a '#message' block should have a parameter of type 'Swag.CompilerMsgMask' ('%s' provided)");
     SWAG_ERROR(Err0198, "a '#run' block should not be used as an expression");
-    SWAG_ERROR(Err0233, "a '#selectif' expression should be of type 'bool' ('%s' provided)");
+    SWAG_ERROR(Err0233, "a '#selectifonce' expression should be of type 'bool' ('%s' provided)");
     SWAG_ERROR(Err0301, "a '@mixin' number should be in the range [0, 9] ('%u' provided)");
     SWAG_ERROR(Err0596, "a 'Swag.Align' value should be a power of two ('%d' provided)");
     SWAG_ERROR(Err0811, "a 'Swag.Foreign' module name should not be empty");
@@ -942,7 +942,7 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(Hlp0034, "'#selectif' and '#checkif' cannot be used on 'opDrop', 'opPostCopy' and 'opPostMove'");
+    SWAG_ERROR(Hlp0034, "'#selectifonce' and '#selectif' cannot be used on 'opDrop', 'opPostCopy' and 'opPostMove'");
     SWAG_ERROR(Hlp0010, "'@alias' should only be used inside a 'Swag.Macro' or a 'Swag.Mixin' function");
     SWAG_ERROR(Hlp0020, "'@mixin' should only be used inside a 'Swag.Mixin' function");
     SWAG_ERROR(Hlp0013, "'Swag.ExportType' valid values are 'methods' and 'nozero'");
@@ -1169,8 +1169,8 @@ void initErrors()
     SWAG_ERROR(Nte0061, "occurred during generic expansion of '%s'");
     SWAG_ERROR(Nte0059, "occurred during inline expansion of '%s'");
     SWAG_ERROR(Nte0060, "occurred during public export of '%s'");
-    SWAG_ERROR(Nte0033, "occurred during the '#checkif' validation of the function call to '%s'");
-    SWAG_ERROR(Nte0054, "occurred during the '#selectif' validation of the function call to '%s'");
+    SWAG_ERROR(Nte0033, "occurred during the '#selectif' validation of the function call to '%s'");
+    SWAG_ERROR(Nte0054, "occurred during the '#selectifonce' validation of the function call to '%s'");
     SWAG_ERROR(Nte0004, "occurred in generated code");
     SWAG_ERROR(Nte0055, "occurred when trying to match the type of the other part of the conditional expression");
     SWAG_ERROR(Nte0047, "resulting type is '%s'");

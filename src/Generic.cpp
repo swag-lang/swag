@@ -570,8 +570,8 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     newFunc->flags |= AST_FROM_GENERIC;
     newFunc->originalGeneric = funcNode;
 
-    // If this is for testing a #selectif match, we must not evaluate the function content until the
-    // #selectif has passed
+    // If this is for testing a #selectifonce match, we must not evaluate the function content until the
+    // #selectifonce has passed
     if (selectIf)
         newFunc->content->flags |= AST_NO_SEMANTIC;
     else

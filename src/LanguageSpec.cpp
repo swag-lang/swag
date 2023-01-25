@@ -259,8 +259,8 @@ void LanguageSpec::setupKeywords()
     keywords.add("#if", TokenId::CompilerIf);
     keywords.add("#else", TokenId::CompilerElse);
     keywords.add("#elif", TokenId::CompilerElseIf);
+    keywords.add("#selectifonce", TokenId::CompilerSelectIfOnce);
     keywords.add("#selectif", TokenId::CompilerSelectIf);
-    keywords.add("#checkif", TokenId::CompilerCheckIf);
 
     keywords.add("#cfg", TokenId::CompilerBuildCfg);
     keywords.add("#arch", TokenId::CompilerArch);

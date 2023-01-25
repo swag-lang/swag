@@ -37,7 +37,7 @@ func countPercent(fmt: string)->u32
 // Format a string in 'dest'
 // Can be lot faster than the convenient version which returns a string
 func replaceString(dest: *String, fmt: string, values: ...)
-    #checkif
+    #selectif
     {
         if !@isconstexpr(fmt) return true
         checkFormat(@nameof(#self), fmt, values)
@@ -61,7 +61,7 @@ func replaceString(dest: *String, fmt: string, values: ...)
 
 // Format a string and returns the result as a String
 func toString(fmt: string, values: ...)->String
-    #checkif
+    #selectif
     {
         if !@isconstexpr(fmt) return true
         checkFormat(@nameof(#self), fmt, values)
@@ -78,7 +78,7 @@ func toString(fmt: string, values: ...)->String
 
 // Format a string and put the result in a ConcatBuffer
 func append(buf: *ConcatBuffer, fmt: string, values: ...)
-    #checkif
+    #selectif
     {
         if !@isconstexpr(fmt) or !@isconstexpr(values) return true
         checkFormat(@nameof(#self), fmt, values)

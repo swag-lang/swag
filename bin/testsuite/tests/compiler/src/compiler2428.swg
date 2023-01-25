@@ -1,5 +1,5 @@
 func print(s: string, f: ...)
-    #checkif
+    #selectif
     {
         @assert(@countof(f) == 3)
         return true

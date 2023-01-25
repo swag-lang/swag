@@ -75,7 +75,7 @@ public func resetColor()
 
 // Write a formatted message to the console
 public func printf(message: string, params: ...)
-    #checkif
+    #selectif
     {
         if !@isconstexpr(message) or !@isconstexpr(params) return true
         Format.checkFormat(@nameof(#self), message, params)

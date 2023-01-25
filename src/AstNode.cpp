@@ -709,7 +709,7 @@ Utf8 AstFuncDecl::getDisplayName()
     if (attributeFlags & (ATTRIBUTE_RUN_FUNC | ATTRIBUTE_RUN_GENERATED_FUNC))
         return "`#run` block";
     if (attributeFlags & ATTRIBUTE_SELECTIF_FUNC)
-        return "`#selectif` block";
+        return "`#selectifonce` block";
 
     if (attributeFlags & ATTRIBUTE_TEST_FUNC && attributeFlags & ATTRIBUTE_SHARP_FUNC)
         return "`#test` block";

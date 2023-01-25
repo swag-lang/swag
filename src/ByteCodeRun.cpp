@@ -3715,7 +3715,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         // Get the correct source file to raise the error in the correct context
         //
         // If we have an expansion, and the first expansion requests test error, then raise
-        // in its context to dismiss the error (like an error during a #selectif for example)
+        // in its context to dismiss the error (like an error during a #selectifonce for example)
         if (runContext->callerContext && runContext->callerContext->errorContextStack.size() && runContext->callerContext->errorContextStack[0].node->sourceFile->numTestErrors)
             diag.contextFile = runContext->callerContext->errorContextStack[0].node->sourceFile;
         else if (runContext->callerContext && runContext->callerContext->errorContextStack.size() && runContext->callerContext->errorContextStack[0].node->sourceFile->numTestWarnings)

@@ -10,14 +10,14 @@ struct(T) AA
 impl AA
 {
     //#[compileif(@typeof(T) == s32)]
-    func isNull(using self)->bool #selectif @typeof(T) == s32
+    func isNull(using self)->bool #selectifonce @typeof(T) == s32
     {
         G += 1
         return x == 0
     }
 
     //#[compileif(@typeof(T) == f32)]
-    func isNull(using self)->bool #selectif @typeof(T) == f32
+    func isNull(using self)->bool #selectifonce @typeof(T) == f32
     {
         G += 2
         return x == 0

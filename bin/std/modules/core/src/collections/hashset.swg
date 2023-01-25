@@ -169,7 +169,7 @@ impl HashSet
     // Add a new key.
     #[Discardable]
     mtd add(key: K)->*HashSetEntry
-        #selectif Reflection.canCopy(@typeof(K))
+        #selectifonce Reflection.canCopy(@typeof(K))
     {
         grow()
 
@@ -202,7 +202,7 @@ impl HashSet
     // Add a new key.
     #[Discardable]
     mtd emplaceInternal(key: *K)->*HashSetEntry
-        #selectif Reflection.canCopy(@typeof(K))
+        #selectifonce Reflection.canCopy(@typeof(K))
     {
         grow()
 
@@ -235,7 +235,7 @@ impl HashSet
     // Add a new key.
     #[Discardable]
     mtd emplace(key: *K)->*HashSetEntry
-        #selectif Reflection.canCopy(@typeof(K))
+        #selectifonce Reflection.canCopy(@typeof(K))
     {
         grow()
 

@@ -1,5 +1,5 @@
 func append()
-    #selectif
+    #selectifonce
     {
         @assert(@stringof(#self) == "__compiler2433.append")
         return true

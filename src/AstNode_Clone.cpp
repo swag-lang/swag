@@ -250,8 +250,8 @@ AstNode* AstNode::clone(CloneContext& context)
         return ((AstCompilerIfBlock*) this)->clone(context);
     case AstNodeKind::CompilerRun:
     case AstNodeKind::CompilerRunExpression:
+    case AstNodeKind::CompilerSelectIfOnce:
     case AstNodeKind::CompilerSelectIf:
-    case AstNodeKind::CompilerCheckIf:
     case AstNodeKind::CompilerAst:
         return ((AstCompilerSpecFunc*) this)->clone(context);
     case AstNodeKind::Namespace:

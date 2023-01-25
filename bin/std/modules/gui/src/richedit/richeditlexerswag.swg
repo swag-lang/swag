@@ -320,8 +320,8 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("#if", State.CompilerStatement)
         mapWords.add("#else", State.CompilerStatement)
         mapWords.add("#elif", State.CompilerStatement)
+        mapWords.add("#selectifonce", State.CompilerStatement)
         mapWords.add("#selectif", State.CompilerStatement)
-        mapWords.add("#checkif", State.CompilerStatement)
 
         mapWords.add("#cfg", State.Compiler)
         mapWords.add("#arch", State.Compiler)

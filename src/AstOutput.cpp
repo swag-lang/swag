@@ -1344,17 +1344,17 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::CompilerRun:
     case AstNodeKind::CompilerRunExpression:
     case AstNodeKind::CompilerAst:
+    case AstNodeKind::CompilerSelectIfOnce:
     case AstNodeKind::CompilerSelectIf:
-    case AstNodeKind::CompilerCheckIf:
     {
         if (node->kind == AstNodeKind::CompilerRun || node->kind == AstNodeKind::CompilerRunExpression)
             CONCAT_FIXED_STR(concat, "#run ");
         else if (node->kind == AstNodeKind::CompilerAst)
             CONCAT_FIXED_STR(concat, "#ast ");
+        else if (node->kind == AstNodeKind::CompilerSelectIfOnce)
+            CONCAT_FIXED_STR(concat, "#selectifonce ");
         else if (node->kind == AstNodeKind::CompilerSelectIf)
             CONCAT_FIXED_STR(concat, "#selectif ");
-        else if (node->kind == AstNodeKind::CompilerCheckIf)
-            CONCAT_FIXED_STR(concat, "#checkif ");
 
         auto front = node->childs.front();
         if (front->kind == AstNodeKind::FuncDecl)
