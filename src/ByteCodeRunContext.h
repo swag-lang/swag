@@ -27,7 +27,6 @@ struct ByteCodeRunContext
     void setup(SourceFile* sf, AstNode* node, ByteCode* nodebc);
     void releaseStack();
     void stackOverflow();
-    void raiseError(const char* msg, SwagSourceCodeLocation* loc = nullptr);
     int  getRegCount(int cur);
 
     template<typename T>
@@ -106,24 +105,21 @@ struct ByteCodeRunContext
     int                  maxRecurse                = 0;
     ByteCode*            bc                        = nullptr;
     bool                 profile                   = false;
-    int                  hasForeignCall           = 0;
+    int                  hasForeignCall            = 0;
 
     JobContext jc;
 
-    Utf8                   errorMsg;
     VectorNative<int>      registersRC;
     VectorNative<Register> registers;
 
     VectorNative<uint32_t> ffiPushRAParam;
 
-    SwagSourceCodeLocation* errorLoc      = nullptr;
-    JobContext*             callerContext = nullptr;
+    JobContext* callerContext = nullptr;
 
     AstNode*  node  = nullptr;
     ByteCode* oldBc = nullptr;
 
     bool canCatchError = false;
-    bool hasError      = false;
     bool sharedStack   = false;
 
     const ConcreteCompilerMessage* currentCompilerMessage = nullptr;

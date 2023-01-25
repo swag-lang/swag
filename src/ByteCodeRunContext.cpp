@@ -73,26 +73,15 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodebc)
     maxRecurse = g_CommandLine.maxRecurse;
     profile    = g_CommandLine.profile;
 
-    curRC    = -1;
-    firstRC  = -1;
-    hasError = false;
-    errorLoc = nullptr;
-    errorMsg.clear();
+    curRC   = -1;
+    firstRC = -1;
 
     hasForeignCall = 0;
 }
 
 void ByteCodeRunContext::stackOverflow()
 {
-    raiseError(Fmt(Err(Err0015), Utf8::toNiceSize(g_CommandLine.stackSizeBC).c_str()));
-}
-
-void ByteCodeRunContext::raiseError(const char* msg, SwagSourceCodeLocation* loc)
-{
-    hasError = true;
-    errorLoc = loc;
-    errorMsg = msg;
-    throw "raise error";
+    OS::raiseException(SWAG_EXCEPTION_TO_COMPILER_HANDLER, Fmt(Err(Err0015), Utf8::toNiceSize(g_CommandLine.stackSizeBC).c_str()));
 }
 
 int ByteCodeRunContext::getRegCount(int cur)

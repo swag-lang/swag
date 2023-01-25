@@ -45,22 +45,13 @@ void ByteCodeStack::logStep(int level, bool current, ByteCodeStackStep& step)
     auto sourceFile = ip->node->sourceFile;
     auto location   = ip->location;
     auto fct        = ip->node->ownerInline && ip->node->ownerInline->ownerFct == ip->node->ownerFct ? ip->node->ownerInline->func : ip->node->ownerFct;
-    if (fct)
-    {
-        Diagnostic diag{sourceFile, *location, fct->getDisplayNameC(), DiagnosticLevel::CallStack};
-        diag.raisedOnNode      = ip->node;
-        diag.stackLevel        = level;
-        diag.currentStackLevel = current;
-        diag.report();
-    }
-    else
-    {
-        Diagnostic diag{sourceFile, *location, bc->name, DiagnosticLevel::CallStack};
-        diag.raisedOnNode      = ip->node;
-        diag.stackLevel        = level;
-        diag.currentStackLevel = current;
-        diag.report();
-    }
+    auto name       = fct ? fct->getDisplayNameC() : bc->name.c_str();
+
+    Diagnostic diag{sourceFile, *location, name, DiagnosticLevel::CallStack};
+    diag.raisedOnNode      = ip->node;
+    diag.stackLevel        = level;
+    diag.currentStackLevel = current;
+    diag.report();
 
     // #mixin
     if (ip->node->flags & AST_IN_MIXIN)
@@ -71,20 +62,20 @@ void ByteCodeStack::logStep(int level, bool current, ByteCodeStackStep& step)
         if (owner)
         {
             fct = owner->ownerInline && owner->ownerInline->ownerFct == ip->node->ownerFct ? owner->ownerInline->func : owner->ownerFct;
-            Diagnostic diag{owner->sourceFile, owner->token.startLocation, fct->getDisplayNameC(), DiagnosticLevel::CallStack};
-            diag.raisedOnNode = owner;
-            diag.report();
+            Diagnostic diagMixin{owner->sourceFile, owner->token.startLocation, fct->getDisplayNameC(), DiagnosticLevel::CallStack};
+            diagMixin.raisedOnNode = owner;
+            diagMixin.report();
         }
     }
 
     // Inline chain
     auto parent = ip->node->ownerInline;
-    while (parent && parent->ownerFct == ip->node->ownerFct)
+    while (parent && parent->ownerFct == ip->node->ownerFct && parent->ownerInline)
     {
         fct = parent->ownerInline && parent->ownerInline->ownerFct == ip->node->ownerFct ? parent->ownerInline->func : parent->ownerFct;
-        Diagnostic diag{parent->sourceFile, parent->token.startLocation, fct->getDisplayNameC(), DiagnosticLevel::CallStack};
-        diag.raisedOnNode = parent;
-        diag.report();
+        Diagnostic diagInline{parent->sourceFile, parent->token.startLocation, fct->getDisplayNameC(), DiagnosticLevel::CallStack};
+        diagInline.raisedOnNode = parent;
+        diagInline.report();
         parent = parent->ownerInline;
     }
 }

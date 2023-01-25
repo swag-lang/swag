@@ -81,7 +81,7 @@ struct ByteCode
     {
         if (++context->curRC > context->maxRecurse)
         {
-            context->raiseError(Fmt(Err(Err0076), context->maxRecurse));
+            OS::raiseException(SWAG_EXCEPTION_TO_COMPILER_HANDLER, Fmt(Err(Err0076), context->maxRecurse));
             return;
         }
 

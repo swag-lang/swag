@@ -15,9 +15,10 @@
 
 namespace OS
 {
-    static BackendTarget nativeTarget;
-    static HANDLE        consoleHandle     = NULL;
-    static WORD          defaultAttributes = 0;
+    static BackendTarget      nativeTarget;
+    static HANDLE             consoleHandle     = NULL;
+    static WORD               defaultAttributes = 0;
+    static thread_local void* exceptionParams[4];
 
     void setup()
     {
@@ -575,9 +576,14 @@ namespace OS
         return str;
     }
 
-    void raiseException(int code)
+    void raiseException(int code, const char* msg)
     {
-        RaiseException(code, 0, 0, 0);
+        msg                = msg ? _strdup(msg) : 0;
+        exceptionParams[0] = nullptr;
+        exceptionParams[1] = (void*) msg;
+        exceptionParams[2] = (void*) (msg ? strlen(msg) : 0);
+        exceptionParams[3] = (void*) SwagExceptionKind::Panic;
+        RaiseException(code, 0, 4, (ULONG_PTR*) &exceptionParams[0]);
     }
 
     void assertBox(const char* expr, const char* file, int line)

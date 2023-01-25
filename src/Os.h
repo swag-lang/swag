@@ -38,7 +38,7 @@ namespace OS
     void*  loadLibrary(const char* name);
     void*  getProcAddress(void* handle, const char* name);
     bool   isDebuggerAttached();
-    void   raiseException(int code);
+    void   raiseException(int code, const char* msg = nullptr);
     string captureStack();
 
     Utf8 getClipboardString();

@@ -1304,7 +1304,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                 else if (module->bssCannotChange)
                 {
                     SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
-                    context->raiseError(Fmt(Err(Err0431), over->node->token.ctext()));
+                    callInternalPanic(context, ip, Fmt(Err(Err0431), over->node->token.ctext()));
                 }
             }
             registersRC[ip->a.u32].pointer = ptr;
@@ -1325,7 +1325,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                     else if (module->bssCannotChange)
                     {
                         SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
-                        context->raiseError(Fmt(Err(Err0431), over->node->token.ctext()));
+                        callInternalPanic(context, ip, Fmt(Err(Err0431), over->node->token.ctext()));
                     }
                 }
             }
@@ -3656,45 +3656,6 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
     if (runContext->debugRaiseStart)
         return SWAG_EXCEPTION_EXECUTE_HANDLER;
 
-    // Error ?
-    if (runContext->hasError)
-    {
-        auto ip = runContext->ip;
-        if (ip != runContext->bc->out)
-            ip--;
-
-        runContext->hasError = false;
-
-        JobContext* errorContext = runContext->callerContext ? runContext->callerContext : &runContext->jc;
-        if (runContext->errorLoc)
-        {
-            SourceLocation start = {runContext->errorLoc->lineStart, runContext->errorLoc->colStart};
-            SourceLocation end   = {runContext->errorLoc->lineEnd, runContext->errorLoc->colEnd};
-            Diagnostic     diag{ip->node->sourceFile, start, end, runContext->errorMsg};
-            errorContext->sourceFile = ip->node->sourceFile;
-            errorContext->report(diag);
-        }
-        else
-        {
-            auto loc = ByteCode::getLocation(runContext->bc, ip);
-            if (loc.location || !ip->node)
-            {
-                SWAG_ASSERT(loc.location);
-                Diagnostic diag{loc.file, *loc.location, "[compile time execution] " + runContext->errorMsg};
-                errorContext->sourceFile = loc.file;
-                errorContext->report(diag);
-            }
-            else
-            {
-                Diagnostic diag{ip->node, "[compile time execution] " + runContext->errorMsg};
-                errorContext->sourceFile = ip->node->sourceFile;
-                errorContext->report(diag);
-            }
-        }
-
-        return SWAG_EXCEPTION_EXECUTE_HANDLER;
-    }
-
     // Exception already processed. Need to pass the hand to the previous handle
     // This happens when bytecode executed foreign code, which executes bytecode again.
     if (args->ExceptionRecord->ExceptionCode == SWAG_EXCEPTION_TO_PREV_HANDLER)
@@ -3709,8 +3670,18 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         auto exceptionKind = (SwagExceptionKind) args->ExceptionRecord->ExceptionInformation[3];
 
         // Source code location
-        auto location = (SwagSourceCodeLocation*) args->ExceptionRecord->ExceptionInformation[0];
-        SWAG_ASSERT(location);
+        SwagSourceCodeLocation tmpLoc;
+        auto                   location = (SwagSourceCodeLocation*) args->ExceptionRecord->ExceptionInformation[0];
+        if (!location)
+        {
+            auto loc               = ByteCode::getLocation(runContext->bc, runContext->ip);
+            tmpLoc.fileName.buffer = (void*) loc.file->path.c_str();
+            tmpLoc.fileName.count  = loc.file->path.length();
+            tmpLoc.lineStart = tmpLoc.lineEnd = loc.location->line;
+            tmpLoc.colStart = tmpLoc.colEnd = loc.location->column;
+            location                        = &tmpLoc;
+        }
+
         Utf8 fileName{(const char*) location->fileName.buffer, (uint32_t) location->fileName.count};
 
         // User messsage
@@ -3761,9 +3732,11 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         vector<const Diagnostic*> notes;
         ErrorContext::fillContext(runContext->callerContext, diag, notes);
 
-        runContext->ip--;
+        if (runContext->ip != runContext->bc->out)
+            runContext->ip--;
         Report::report(diag, notes, runContext);
-        runContext->ip++;
+        if (runContext->ip != runContext->bc->out)
+            runContext->ip++;
 
         return SWAG_EXCEPTION_EXECUTE_HANDLER;
     }
