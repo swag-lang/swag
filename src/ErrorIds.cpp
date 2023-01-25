@@ -877,7 +877,7 @@ void initErrors()
     SWAG_ERROR(Err0056, "x64 backend unsupported os '%s'");
     SWAG_ERROR(Err0083, "unexpected #[Swag.Inline] attribute as #[Swag.NoInline] is already defined");
     SWAG_ERROR(Err0691, "unexpected #[Swag.NoInline] attribute as #[Swag.Inline] is already defined");
-    SWAG_ERROR(Err0693, "expected a literal of type '%s' but a dynamic value was provided");
+    SWAG_ERROR(Err0693, nullptr);
     SWAG_ERROR(Err0690, "unexpected type '%s' for a #[Swag.ConstExpr] parameter");
     SWAG_ERROR(Err0688, "cannot exclude the slice upper bound because it's zero");
     SWAG_ERROR(Err0504, "expected the number of scopes as a literal, found '%s'");
@@ -1094,7 +1094,7 @@ void initErrors()
     SWAG_ERROR(Hnt0002, "this value can only be converted to type '%s' with a dynamic call to 'opAffect'");
     SWAG_ERROR(Hnt0095, "you cannot reference this runtime %s from the %s");
     SWAG_ERROR(Hnt0096, "unexpected attribute");
-    SWAG_ERROR(Hnt0097, "this should be a compile time constant");
+    SWAG_ERROR(Hnt0097, nullptr);
     SWAG_ERROR(Hnt0098, "missing upper bound");
     SWAG_ERROR(Hnt0099, nullptr);
 

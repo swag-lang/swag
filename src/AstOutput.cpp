@@ -299,8 +299,20 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
         return true;
     }
 
+    // #selectif block
+    if (node->selectIf)
+    {
+        context.indent++;
+        concat.addEolIndent(context.indent);
+        SWAG_CHECK(outputNode(context, concat, node->selectIf));
+        context.indent--;
+    }
+    else
+    {
+        concat.addEolIndent(context.indent);
+    }
+
     // Content, normal function
-    concat.addEolIndent(context.indent);
     concat.addChar('{');
     context.indent++;
     concat.addEol();

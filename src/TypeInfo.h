@@ -121,7 +121,6 @@ struct BadSignatureInfos
     int      badSignatureParameterIdx;
     int      badSignatureNum1;
     int      badSignatureNum2;
-    bool     constExprHasFailed;
 
     void clear()
     {
@@ -137,7 +136,6 @@ struct BadSignatureInfos
         badSignatureParameterIdx  = -1;
         badSignatureNum1          = 0;
         badSignatureNum2          = 0;
-        constExprHasFailed        = false;
     }
 };
 

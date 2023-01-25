@@ -1,7 +1,8 @@
+#global skip
 var G = 0
 
 //#[Swag.Macro]
-func toto(#[Swag.ConstExpr] str: string)
+func toto(str: string)
     #selectif @isconstexpr(str)
 {
     G += 1

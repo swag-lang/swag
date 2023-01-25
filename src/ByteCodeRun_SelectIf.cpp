@@ -70,6 +70,7 @@ void* ByteCodeRun::executeLocationSI(ByteCodeRunContext* context, ByteCodeInstru
         return nullptr;
 
     auto child = callParams->childs[paramIdx];
+    child->allocateComputedValue();
     ByteCodeGenJob::computeSourceLocation(context->callerContext, child, &child->computedValue->storageOffset, &child->computedValue->storageSegment, true);
     return child->computedValue->storageSegment->address(child->computedValue->storageOffset);
 }

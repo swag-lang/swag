@@ -1,6 +1,6 @@
 using Swag
 
-func toto(a: s32, #[ConstExpr] str: string)
+func toto(a: s32, str: string)
 {
 }
 

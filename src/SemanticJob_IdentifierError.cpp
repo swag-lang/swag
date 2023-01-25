@@ -155,8 +155,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     case MatchResult::BadSignature:
     case MatchResult::BadGenericSignature:
         if (bi.badSignatureRequestedType->isPointer() ||
-            bi.badSignatureGivenType->isPointer() ||
-            bi.constExprHasFailed)
+            bi.badSignatureGivenType->isPointer())
             break;
 
         if (bi.badSignatureRequestedType->isNative())
@@ -394,12 +393,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         SWAG_ASSERT(callParameters);
         auto diagNode = match.parameters[bi.badSignatureParameterIdx];
 
-        if (bi.constExprHasFailed)
-        {
-            diag    = new Diagnostic{diagNode, Fmt(Err(Err0693), bi.badSignatureRequestedType->getDisplayNameC())};
-            hintMsg = Hnt(Hnt0097);
-        }
-        else if (overload->typeInfo->isStruct())
+        if (overload->typeInfo->isStruct())
         {
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
             diag            = new Diagnostic{diagNode,

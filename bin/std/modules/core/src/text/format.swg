@@ -149,7 +149,13 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
 // String interolation
 // Format is "my {<value to interpolate>:format}
 #[Macro]
-func toInterp(buf: *ConcatBuffer, #[ConstExpr] exp: string)
+func toInterp(buf: *ConcatBuffer, exp: string)
+    #selectif
+    {
+        if !@isconstexpr(exp)
+            @compilererror("expression should be constant", @location(exp))
+        return true
+    }
 {
     #ast
     {
@@ -203,7 +209,13 @@ func toInterp(buf: *ConcatBuffer, #[ConstExpr] exp: string)
 // String interolation
 // Format is "my {<value to interpolate>:format}
 #[Mixin]
-func toInterp(#[ConstExpr] exp: string)->String
+func toInterp(exp: string)->String
+    #selectif
+    {
+        if !@isconstexpr(exp)
+            @compilererror("expression should be constant", @location(exp))
+        return true
+    }
 {
     var @mixin0: ConcatBuffer
     toInterp(&@mixin0, exp)
