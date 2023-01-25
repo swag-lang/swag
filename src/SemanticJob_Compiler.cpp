@@ -806,10 +806,25 @@ bool SemanticJob::resolveIntrinsicLocation(SemanticContext* context)
 {
     auto node      = context->node;
     node->typeInfo = TypeManager::makeConst(g_Workspace->swagScope.regTypeInfoSourceLoc);
-    auto locNode   = node;
-    auto resolved  = node->childs.front()->resolvedSymbolOverload;
-    SWAG_ASSERT(resolved);
-    locNode = resolved->node;
+    auto locNode   = node->childs.front();
+
+    // If identifier is an inline param call replacement, take it
+    bool fromInline = false;
+    while (locNode->resolvedSymbolOverload)
+    {
+        if (locNode->resolvedSymbolOverload->fromInlineParam)
+        {
+            fromInline = true;
+            locNode    = locNode->resolvedSymbolOverload->fromInlineParam;
+        }
+        else
+        {
+            if (!fromInline)
+                locNode = locNode->resolvedSymbolOverload->node;
+            break;
+        }
+    }
+
     node->setFlagsValueIsComputed();
     ByteCodeGenJob::computeSourceLocation(context, locNode, &node->computedValue->storageOffset, &node->computedValue->storageSegment);
     SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
