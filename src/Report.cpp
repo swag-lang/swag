@@ -473,39 +473,42 @@ namespace Report
 
         if (errorLevel == DiagnosticLevel::Error)
         {
-            // Callstack
             if (runContext)
-                runContext->canCatchError = true;
-            SwagContext* context = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
-            if (context && (context->flags & (uint64_t) ContextFlags::ByteCode))
-                g_ByteCodeStackTrace->log(runContext);
-
-            // Error stack trace
-            for (int i = context->traceIndex - 1; i >= 0; i--)
             {
-                auto sourceFile1 = g_Workspace->findFile((const char*) context->trace[i]->fileName.buffer);
-                if (sourceFile1)
+                runContext->debugOnFirstError = true;
+
+                // Callstack
+                SwagContext* context = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
+                if (context && (context->flags & (uint64_t) ContextFlags::ByteCode))
+                    g_ByteCodeStackTrace->log(runContext);
+
+                // Error stack trace
+                for (int i = context->traceIndex - 1; i >= 0; i--)
                 {
-                    SourceLocation startLoc;
-                    startLoc.line   = context->trace[i]->lineStart;
-                    startLoc.column = context->trace[i]->colStart;
-                    SourceLocation endLoc;
-                    endLoc.line   = context->trace[i]->lineEnd;
-                    endLoc.column = context->trace[i]->colEnd;
-                    Diagnostic diag1({sourceFile1, startLoc, endLoc, "", DiagnosticLevel::TraceError});
-                    diag1.report();
+                    auto sourceFile1 = g_Workspace->findFile((const char*) context->trace[i]->fileName.buffer);
+                    if (sourceFile1)
+                    {
+                        SourceLocation startLoc;
+                        startLoc.line   = context->trace[i]->lineStart;
+                        startLoc.column = context->trace[i]->colStart;
+                        SourceLocation endLoc;
+                        endLoc.line   = context->trace[i]->lineEnd;
+                        endLoc.column = context->trace[i]->colEnd;
+                        Diagnostic diag1({sourceFile1, startLoc, endLoc, "", DiagnosticLevel::TraceError});
+                        diag1.report();
+                    }
                 }
-            }
 
-            // Runtime callstack
-            if (runContext && runContext->hasForeignCall)
-            {
-                auto nativeStack = OS::captureStack();
-                if (!nativeStack.empty())
+                // Runtime callstack
+                if (runContext->hasForeignCall)
                 {
-                    Diagnostic note{"", DiagnosticLevel::RuntimeCallStack};
-                    note.remarks.push_back(nativeStack);
-                    note.report();
+                    auto nativeStack = OS::captureStack();
+                    if (!nativeStack.empty())
+                    {
+                        Diagnostic note{"", DiagnosticLevel::RuntimeCallStack};
+                        note.remarks.push_back(nativeStack);
+                        note.report();
+                    }
                 }
             }
 

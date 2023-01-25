@@ -119,7 +119,7 @@ struct ByteCodeRunContext
     AstNode*  node  = nullptr;
     ByteCode* oldBc = nullptr;
 
-    bool canCatchError = false;
+    bool debugOnFirstError = false;
     bool sharedStack   = false;
 
     const ConcreteCompilerMessage* currentCompilerMessage = nullptr;

@@ -3653,6 +3653,7 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
 
 static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS args)
 {
+    // @breakpoint()
     if (runContext->debugRaiseStart)
         return SWAG_EXCEPTION_EXECUTE_HANDLER;
 
@@ -3664,8 +3665,6 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
     // Exception 666 raised during bytecode execution
     if (args->ExceptionRecord->ExceptionCode == SWAG_EXCEPTION_TO_COMPILER_HANDLER)
     {
-        runContext->canCatchError = false;
-
         // Kind of exception
         auto exceptionKind = (SwagExceptionKind) args->ExceptionRecord->ExceptionInformation[3];
 
@@ -3783,11 +3782,12 @@ bool ByteCodeRun::run(ByteCodeRunContext* runContext)
                 continue;
             }
 
-            if (g_CommandLine.dbgCatch && runContext->canCatchError)
+            if (g_CommandLine.dbgCatch && runContext->debugOnFirstError)
             {
                 runContext->ip--;
-                runContext->debugOn    = true;
-                runContext->debugEntry = true;
+                runContext->debugOnFirstError = false;
+                runContext->debugOn           = true;
+                runContext->debugEntry        = true;
                 continue;
             }
 
