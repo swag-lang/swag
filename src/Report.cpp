@@ -488,12 +488,11 @@ namespace Report
                     auto sourceFile1 = g_Workspace->findFile((const char*) context->trace[i]->fileName.buffer);
                     if (sourceFile1)
                     {
-                        SourceLocation startLoc;
+                        SourceLocation startLoc, endLoc;
                         startLoc.line   = context->trace[i]->lineStart;
                         startLoc.column = context->trace[i]->colStart;
-                        SourceLocation endLoc;
-                        endLoc.line   = context->trace[i]->lineEnd;
-                        endLoc.column = context->trace[i]->colEnd;
+                        endLoc.line     = context->trace[i]->lineEnd;
+                        endLoc.column   = context->trace[i]->colEnd;
                         Diagnostic diag1({sourceFile1, startLoc, endLoc, "", DiagnosticLevel::TraceError});
                         diag1.report();
                     }

@@ -60,12 +60,9 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
         return true;
 
     if (onlyConstExpr)
-    {
         SWAG_CHECK(checkIsConstExpr(context, node));
-        PushErrContext ec(context, node, ErrorContextKind::ConstExpr);
-        return executeCompilerNode(context, node);
-    }
 
+    PushErrContext ec(context, node, ErrorContextKind::CompileTime);
     return executeCompilerNode(context, node);
 }
 
@@ -328,7 +325,7 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
     auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
     SWAG_VERIFY(typeInfo->isString(), context->report({expression, Fmt(Err(Err0234), expression->typeInfo->getDisplayNameC())}));
 
-    SWAG_CHECK(executeCompilerNode(context, expression, true));
+    SWAG_CHECK(executeCompilerNode(context, expression, false));
     if (context->result != ContextResult::Done)
         return true;
     node->doneFlags |= AST_DONE_AST_BLOCK;

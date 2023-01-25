@@ -12,7 +12,7 @@ enum class ErrorContextKind
     Help,
     Generic,
     Inline,
-    ConstExpr,
+    CompileTime,
     SelectIf,
     CheckIf,
     Export,
