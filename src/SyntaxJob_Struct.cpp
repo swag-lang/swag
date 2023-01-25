@@ -61,12 +61,12 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     }
     else
     {
-        SWAG_CHECK(checkIsSingleIdentifier(implNode->identifier, "as an `impl` block name"));
+        SWAG_CHECK(checkIsSingleIdentifier(implNode->identifier, "as an 'impl' block name"));
     }
 
     // Content of impl block
     auto startLoc = token.startLocation;
-    SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the `impl` body"));
+    SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the 'impl' body"));
 
     // Get existing scope or create a new one
     auto& structName     = identifierStruct->childs.back()->token.text;
@@ -169,7 +169,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         }
     }
 
-    SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the `impl` body"));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the 'impl' body"));
     return true;
 }
 

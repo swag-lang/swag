@@ -178,7 +178,7 @@ bool SyntaxJob::doFor(AstNode* parent, AstNode** result)
 
     // Boolean expression
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
-    SWAG_CHECK(eatSemiCol("`for` boolean expression"));
+    SWAG_CHECK(eatSemiCol("'for' boolean expression"));
 
     // Post expression
     if (token.id == TokenId::SymLeftCurly)
@@ -294,7 +294,7 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
             tokenName = node->expression->token;
             if (token.id == TokenId::SymColon)
             {
-                SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a `loop` variable name"));
+                SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a 'loop' variable name"));
                 SWAG_CHECK(checkIsValidVarName(node->expression->childs.back()));
                 name = node->expression->childs.back()->token.text;
                 SWAG_CHECK(eatToken());

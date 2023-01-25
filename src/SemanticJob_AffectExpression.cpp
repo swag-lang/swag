@@ -126,7 +126,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             if (left->kind == AstNodeKind::Identifier && left->specFlags & (AST_SPEC_IDENTIFIER_FROM_USING | AST_SPEC_IDENTIFIER_FROM_WITH))
             {
                 auto leftId = CastAst<AstIdentifier>(left, AstNodeKind::Identifier);
-                hint        = "this is equivalent to `";
+                hint        = "this is equivalent to '";
                 for (int ic = 0; ic < orgLeft->childs.size(); ic++)
                 {
                     auto c = orgLeft->childs[ic];
@@ -136,9 +136,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 }
 
                 if (left->specFlags & AST_SPEC_IDENTIFIER_FROM_USING)
-                    hint += "` because of a `using`";
+                    hint += "' because of a 'using'";
                 else
-                    hint += "` because of a `with`";
+                    hint += "' because of a 'with'";
 
                 if (left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM && left->typeInfo->isConst())
                     note = new Diagnostic{leftId->fromAlternateVar, Nte(Nte0023), DiagnosticLevel::Note};
@@ -197,7 +197,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 node->token.id != TokenId::SymCircumflexEqual)
                 return notAllowed(context, node, leftTypeInfo, nullptr, left);
             if (!(leftTypeInfo->flags & TYPEINFO_ENUM_FLAGS) || !(rightTypeInfo->flags & TYPEINFO_ENUM_FLAGS))
-                return notAllowed(context, node, leftTypeInfo, "because the enum is not marked with `Swag.EnumFlags`", left);
+                return notAllowed(context, node, leftTypeInfo, "because the enum is not marked with 'Swag.EnumFlags'", left);
             forEnumFlags = true;
         }
     }

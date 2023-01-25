@@ -156,7 +156,7 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
             continue;
         }
 
-        SWAG_CHECK(eatSemiCol("`using` declaration"));
+        SWAG_CHECK(eatSemiCol("'using' declaration"));
         break;
     }
 
@@ -275,7 +275,7 @@ bool SyntaxJob::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlo
 
     if (forGlobal)
     {
-        SWAG_CHECK(eatSemiCol("`#global namespace`"));
+        SWAG_CHECK(eatSemiCol("'#global namespace'"));
         Scoped scoped(this, newScope);
         while (token.id != TokenId::EndOfFile)
         {
