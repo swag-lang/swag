@@ -53,7 +53,23 @@ Diagnostic* SemanticJob::computeNonConstExprNote(AstNode* node)
     return nullptr;
 }
 
-bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, bool onlyconstExpr)
+bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr)
+{
+    // No need to run, this is already baked
+    if (node->flags & AST_VALUE_COMPUTED)
+        return true;
+
+    if (onlyConstExpr)
+    {
+        SWAG_CHECK(checkIsConstExpr(context, node));
+        PushErrContext ec(context, node, ErrorContextKind::ConstExpr);
+        return executeCompilerNode(context, node);
+    }
+
+    return executeCompilerNode(context, node);
+}
+
+bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node)
 {
     // No need to run, this is already baked
     if (node->flags & AST_VALUE_COMPUTED)
@@ -61,10 +77,6 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
 
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
-    if (onlyconstExpr)
-    {
-        SWAG_CHECK(checkIsConstExpr(context, node));
-    }
 
     // Request to generate the corresponding bytecode
     {
@@ -799,8 +811,8 @@ bool SemanticJob::resolveIntrinsicLocation(SemanticContext* context)
     node->typeInfo = TypeManager::makeConst(g_Workspace->swagScope.regTypeInfoSourceLoc);
     auto locNode   = node;
     auto resolved  = node->childs.front()->resolvedSymbolOverload;
-    if (resolved)
-        locNode = resolved->node;
+    SWAG_ASSERT(resolved);
+    locNode = resolved->node;
     node->setFlagsValueIsComputed();
     ByteCodeGenJob::computeSourceLocation(context, locNode, &node->computedValue->storageOffset, &node->computedValue->storageSegment);
     SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));

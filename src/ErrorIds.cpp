@@ -1188,7 +1188,10 @@ void initErrors()
     SWAG_ERROR(Nte0069, "here is the runtime argument that corresponds to '%s'");
     SWAG_ERROR(Nte0070, "this fails to evaluate at compile time");
     SWAG_ERROR(Nte0071, "this function call fails to evaluate at compile time");
-
+    SWAG_ERROR(Nte0072, "occurred during constexpr evaluation");
+    SWAG_ERROR(Nte0073, nullptr);
+    SWAG_ERROR(Nte0074, nullptr);
+        
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

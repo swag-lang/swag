@@ -274,7 +274,8 @@ struct SemanticJob : public Job
     static void           resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatch* oneMatch, int i);
     static bool           setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcAttr, AstNode* parameters, bool forGenerics);
     static Diagnostic*    computeNonConstExprNote(AstNode* node);
-    static bool           executeCompilerNode(SemanticContext* context, AstNode* node, bool onlyconstExpr);
+    static bool           executeCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr);
+    static bool           executeCompilerNode(SemanticContext* context, AstNode* node);
     static bool           reserveAndStoreToSegment(JobContext* context, DataSegment* storageSegment, uint32_t& storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
     static bool           checkIsConstExpr(JobContext* context, bool test, AstNode* expression, const Utf8& errMsg = "", const Utf8& errParam = "");
     static bool           checkIsConstExpr(JobContext* context, AstNode* expression);

@@ -134,7 +134,7 @@ bool SemanticJob::processLiteralString(SemanticContext* context)
         }
         }
 
-        loc.column += (uint32_t) (pz - start) - 1;
+        loc.column += (uint32_t) (pz - start);
         return context->report({node->sourceFile, loc, Fmt(Err(Err0259), c)});
     }
 

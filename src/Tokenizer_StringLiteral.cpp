@@ -57,9 +57,8 @@ void Tokenizer::trimMultilineString(Utf8& text)
 bool Tokenizer::doStringLiteral(Token& token, bool raw, bool multiline)
 {
     unsigned offset;
-    token.id            = TokenId::LiteralString;
-    token.literalType   = raw ? LiteralType::TT_RAW_STRING : LiteralType::TT_STRING;
-    token.startLocation = location;
+    token.id          = TokenId::LiteralString;
+    token.literalType = raw ? LiteralType::TT_RAW_STRING : LiteralType::TT_STRING;
     token.text.clear();
 
     while (true)
@@ -130,6 +129,7 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw, bool multiline)
                 {
                     appendTokenName(token);
                     treatChar(c, offset);
+                    token.endLocation = location;
                     break;
                 }
 

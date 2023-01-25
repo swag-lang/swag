@@ -36,8 +36,9 @@ void ErrorContext::fillContext(JobContext* context, Diagnostic& diag, vector<con
 
     if (context->errorContextStack.size())
     {
-        bool doneGeneric = false;
-        bool doneInline  = false;
+        bool doneGeneric   = false;
+        bool doneInline    = false;
+        bool doneConstExpr = false;
 
         for (auto& exp : context->errorContextStack)
         {
@@ -76,6 +77,10 @@ void ErrorContext::fillContext(JobContext* context, Diagnostic& diag, vector<con
             case ErrorContextKind::Inline:
                 exp.hide   = doneInline;
                 doneInline = true;
+                break;
+            case ErrorContextKind::ConstExpr:
+                exp.hide      = doneConstExpr;
+                doneConstExpr = true;
                 break;
 
             case ErrorContextKind::Note:
@@ -116,6 +121,10 @@ void ErrorContext::fillContext(JobContext* context, Diagnostic& diag, vector<con
                 break;
             case ErrorContextKind::Inline:
                 msg            = Fmt(Nte(Nte0059), name.c_str());
+                exp.locIsToken = true;
+                break;
+            case ErrorContextKind::ConstExpr:
+                msg            = Fmt(Nte(Nte0072), name.c_str());
                 exp.locIsToken = true;
                 break;
             case ErrorContextKind::SelectIf:
