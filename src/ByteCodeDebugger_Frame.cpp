@@ -6,9 +6,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBackTrace(ByteCodeRunContext* context, c
 {
     if (cmds.size() != 1)
         return BcDbgCommandResult::BadArguments;
-
-    g_ByteCodeStackTrace->currentContext = context;
-    g_ByteCodeStackTrace->log();
+    g_ByteCodeStackTrace->log(context);
     return BcDbgCommandResult::Continue;
 }
 

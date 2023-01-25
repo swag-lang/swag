@@ -121,7 +121,7 @@ void ByteCodeDebugger::computeDebugContext(ByteCodeRunContext* context)
         return;
 
     VectorNative<ByteCodeStackStep> steps;
-    g_ByteCodeStackTrace->getSteps(steps);
+    g_ByteCodeStackTrace->getSteps(steps, context);
     if (steps.empty())
         return;
 
@@ -562,9 +562,8 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
     static mutex dbgMutex;
     ScopedLock   sc(dbgMutex);
 
-    auto ip                              = context->ip;
-    auto module                          = context->bc->sourceFile->module;
-    g_ByteCodeStackTrace->currentContext = context;
+    auto ip     = context->ip;
+    auto module = context->bc->sourceFile->module;
 
     if (context->debugEntry)
     {

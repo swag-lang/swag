@@ -230,5 +230,4 @@ struct Diagnostic
     bool forceSourceFile       = false;
     bool emptyMarginBefore     = true;
     bool criticalError         = false;
-    bool fromException         = false;
 };

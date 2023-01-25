@@ -3746,17 +3746,12 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         else
             diag.contextFile = runContext->bc->sourceFile;
 
-        // Retreive context, like current expansion
+        // Get error context
         vector<const Diagnostic*> notes;
         ErrorContext::fillContext(runContext->callerContext, diag, notes);
 
         runContext->ip--;
-        g_ByteCodeStackTrace->currentContext = runContext;
-        diag.fromException                   = true;
-
-        Report::report(diag, notes);
-
-        g_ByteCodeStackTrace->currentContext = nullptr;
+        Report::report(diag, notes, runContext);
         runContext->ip++;
 
         return SWAG_EXCEPTION_EXECUTE_HANDLER;
@@ -3768,15 +3763,16 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
 #endif
 
     runContext->ip--;
-    auto       ip = runContext->ip;
-    Diagnostic diag{ip->node, Err(Err0435)};
-    Diagnostic note1{Nte(Nte0022), DiagnosticLevel::Note};
-    Diagnostic note2{Nte(Nte0009), DiagnosticLevel::Note};
-    diag.criticalError                  = true;
-    g_ByteCodeStackTrace->currentContext = runContext;
-    Report::report(diag, &note1, &note2);
-    g_ByteCodeStackTrace->currentContext = nullptr;
+    Diagnostic diag{runContext->ip->node, Err(Err0435)};
+    diag.criticalError = true;
+
+    vector<const Diagnostic*> notes;
+    notes.push_back(new Diagnostic{Nte(Nte0022), DiagnosticLevel::Note});
+    notes.push_back(new Diagnostic{Nte(Nte0009), DiagnosticLevel::Note});
+    Report::report(diag, notes, runContext);
+
     runContext->ip++;
+
 #ifdef SWAG_DEV_MODE
     return SWAG_EXCEPTION_CONTINUE_EXECUTION;
 #else

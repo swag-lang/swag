@@ -257,8 +257,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
 
     // Global setup
     g_ByteCodeStackTrace->clear();
-    g_ByteCodeStackTrace->currentContext = g_RunContext;
-    g_RunContext->callerContext          = callerContext;
+    g_RunContext->callerContext = callerContext;
     g_RunContext->setup(sourceFile, node, bc);
     g_RunContext->oldBc = nullptr;
 

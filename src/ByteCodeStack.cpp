@@ -9,15 +9,15 @@
 thread_local ByteCodeStack  g_ByteCodeStackTraceVal;
 thread_local ByteCodeStack* g_ByteCodeStackTrace = &g_ByteCodeStackTraceVal;
 
-uint32_t ByteCodeStack::maxLevel(ByteCodeRunContext* context)
+uint32_t ByteCodeStack::maxLevel(ByteCodeRunContext* runContext)
 {
-    if (!context)
+    if (!runContext)
         return (uint32_t) steps.size() - 1;
 
     // The last stack step can be the same as the current context. If it's not the case,
     // then it's like we have one more step.
     auto& back = steps.back();
-    if (back.bc == context->bc && back.ip == context->ip)
+    if (back.bc == runContext->bc && back.ip == runContext->ip)
         return (uint32_t) steps.size() - 1;
 
     // Not the case. One more step.
@@ -89,31 +89,31 @@ void ByteCodeStack::logStep(int level, bool current, ByteCodeStackStep& step)
     }
 }
 
-void ByteCodeStack::getSteps(VectorNative<ByteCodeStackStep>& copySteps)
+void ByteCodeStack::getSteps(VectorNative<ByteCodeStackStep>& copySteps, ByteCodeRunContext* runContext)
 {
     // Add one step for the current context if necessary
     copySteps = steps;
-    if (currentContext)
+    if (runContext)
     {
-        if (copySteps.empty() || copySteps.back().bc != currentContext->bc || copySteps.back().ip != currentContext->ip)
+        if (copySteps.empty() || copySteps.back().bc != runContext->bc || copySteps.back().ip != runContext->ip)
         {
             ByteCodeStackStep step;
-            step.bc    = currentContext->bc;
-            step.ip    = currentContext->ip;
-            step.bp    = currentContext->bp;
-            step.sp    = currentContext->sp;
-            step.spAlt = currentContext->spAlt;
-            step.stack = currentContext->stack;
+            step.bc    = runContext->bc;
+            step.ip    = runContext->ip;
+            step.bp    = runContext->bp;
+            step.sp    = runContext->sp;
+            step.spAlt = runContext->spAlt;
+            step.stack = runContext->stack;
             copySteps.push_back(step);
         }
     }
 }
 
-void ByteCodeStack::log()
+void ByteCodeStack::log(ByteCodeRunContext* runContext)
 {
     // Add one step for the current context if necessary
     VectorNative<ByteCodeStackStep> copySteps;
-    getSteps(copySteps);
+    getSteps(copySteps, runContext);
     if (copySteps.empty())
         return;
 
@@ -122,23 +122,12 @@ void ByteCodeStack::log()
     for (int i = nb; i >= 0; i--)
     {
         bool current = false;
-        if (currentContext && currentContext->debugOn)
-            current = i == (copySteps.size() - 1) - currentContext->debugStackFrameOffset;
+        if (runContext && runContext->debugOn)
+            current = i == (copySteps.size() - 1) - runContext->debugStackFrameOffset;
         logStep(i, current, copySteps[i]);
 
         maxSteps--;
         if (maxSteps == 0)
             break;
     }
-}
-
-void ByteCodeStack::reportError(const Utf8& msg)
-{
-    g_Log.lock();
-    g_Log.setColor(LogColor::Red);
-    g_Log.print(msg);
-    g_Log.eol();
-    log();
-    g_Log.setDefaultColor();
-    g_Log.unlock();
 }

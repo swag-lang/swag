@@ -61,17 +61,14 @@ struct ByteCodeStack
     void clear()
     {
         steps.clear();
-        currentContext = nullptr;
     }
 
-    void     reportError(const Utf8& msg);
-    void     getSteps(VectorNative<ByteCodeStackStep>& copySteps);
-    uint32_t maxLevel(ByteCodeRunContext* context);
+    uint32_t maxLevel(ByteCodeRunContext* runContext);
+    void     getSteps(VectorNative<ByteCodeStackStep>& copySteps, ByteCodeRunContext* runContext);
     void     logStep(int level, bool current, ByteCodeStackStep& step);
-    void     log();
+    void     log(ByteCodeRunContext* runContext);
 
     VectorNative<ByteCodeStackStep> steps;
-    ByteCodeRunContext*             currentContext = nullptr;
 };
 
 extern thread_local ByteCodeStack  g_ByteCodeStackTraceVal;

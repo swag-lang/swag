@@ -397,7 +397,7 @@ namespace Report
         return true;
     }
 
-    bool report(const Diagnostic& inDiag, const vector<const Diagnostic*>& inNotes)
+    bool report(const Diagnostic& inDiag, const vector<const Diagnostic*>& inNotes, ByteCodeRunContext* runContext = nullptr)
     {
         if (g_SilentError > 0 && !inDiag.criticalError)
         {
@@ -444,6 +444,8 @@ namespace Report
                     report(diag, notes, true);
                 return false;
             }
+
+            g_Workspace->numErrors++;
             break;
 
         case DiagnosticLevel::Warning:
@@ -461,6 +463,8 @@ namespace Report
                     report(diag, notes, true);
                 return true;
             }
+
+            g_Workspace->numWarnings++;
             break;
         }
 
@@ -469,15 +473,12 @@ namespace Report
 
         if (errorLevel == DiagnosticLevel::Error)
         {
-            // Raise error
-            g_Workspace->numErrors++;
-
             // Callstack
-            if (g_ByteCodeStackTrace->currentContext)
-                g_ByteCodeStackTrace->currentContext->canCatchError = true;
+            if (runContext)
+                runContext->canCatchError = true;
             SwagContext* context = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
             if (context && (context->flags & (uint64_t) ContextFlags::ByteCode))
-                g_ByteCodeStackTrace->log();
+                g_ByteCodeStackTrace->log(runContext);
 
             // Error stack trace
             for (int i = context->traceIndex - 1; i >= 0; i--)
@@ -497,9 +498,7 @@ namespace Report
             }
 
             // Runtime callstack
-            if (diag.fromException &&
-                g_ByteCodeStackTrace->currentContext &&
-                g_ByteCodeStackTrace->currentContext->fromForeignCall)
+            if (runContext && runContext->hasForeignCall)
             {
                 auto nativeStack = OS::captureStack();
                 if (!nativeStack.empty())
@@ -509,22 +508,15 @@ namespace Report
                     note.report();
                 }
             }
-        }
-        else if (errorLevel == DiagnosticLevel::Warning)
-        {
-            g_Workspace->numWarnings++;
-        }
 
 #if SWAG_DEV_MODE
-        if (errorLevel == DiagnosticLevel::Error)
-        {
             if (!OS::isDebuggerAttached())
             {
                 OS::errorBox("[Developer Mode]", "Error raised !");
                 return false;
             }
-        }
 #endif
+        }
 
         return errorLevel == DiagnosticLevel::Error ? false : true;
     }

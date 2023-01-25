@@ -263,7 +263,6 @@ static int exceptionHandler(Job* job, SWAG_LPEXCEPTION_POINTERS args)
 {
     if (OS::isDebuggerAttached() || g_CommandLine.dbgDevMode)
     {
-        g_ByteCodeStackTrace->reportError("hardware exception during job execution !");
         OS::errorBox("[Developer Mode]", "Hardware exception raised !");
         return EXCEPTION_CONTINUE_EXECUTION;
     }
@@ -275,7 +274,6 @@ static int exceptionHandler(Job* job, SWAG_LPEXCEPTION_POINTERS args)
 #else
 static int exceptionHandler(Job* job, SWAG_LPEXCEPTION_POINTERS args)
 {
-    g_ByteCodeStackTrace->reportError("hardware exception during job execution !");
     OS::errorBox("[Developer Mode]", "Hardware exception raised !");
     return EXCEPTION_CONTINUE_EXECUTION;
 }

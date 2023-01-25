@@ -3,12 +3,13 @@ struct AstNode;
 struct Module;
 struct Diagnostic;
 struct SourceFile;
+struct ByteCodeRunContext;
 
 namespace Report
 {
     SourceFile* getDiagFile(const Diagnostic& diag);
 
-    bool report(const Diagnostic& diag, const vector<const Diagnostic*>& notes);
+    bool report(const Diagnostic& diag, const vector<const Diagnostic*>& notes, ByteCodeRunContext* runContext = nullptr);
     bool report(const Diagnostic& diag, const Diagnostic* note = nullptr, const Diagnostic* note1 = nullptr);
 
     void error(const Utf8& msg);
