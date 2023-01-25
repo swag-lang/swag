@@ -223,12 +223,12 @@ struct Diagnostic
     bool hasLocation           = false;
     bool hasRangeLocation      = false;
     bool hasRangeLocation2     = false;
-    bool exceptionError        = false;
     bool showSourceCode        = false;
     bool showRange             = true;
     bool showMultipleCodeLines = true;
     bool showFileName          = true;
     bool forceSourceFile       = false;
     bool emptyMarginBefore     = true;
+    bool criticalError         = false;
     bool fromException         = false;
 };

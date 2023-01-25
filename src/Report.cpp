@@ -399,7 +399,7 @@ namespace Report
 
     bool report(const Diagnostic& inDiag, const vector<const Diagnostic*>& inNotes)
     {
-        if (g_SilentError > 0 && !inDiag.exceptionError)
+        if (g_SilentError > 0 && !inDiag.criticalError)
         {
             g_SilentErrorMsg = inDiag.textMsg.c_str();
             return false;
@@ -421,19 +421,20 @@ namespace Report
 
         auto errorLevel = diag.errorLevel;
 
-        if (diag.exceptionError)
+        if (diag.criticalError)
         {
             errorLevel = DiagnosticLevel::Error;
             sourceFile->module->criticalErrors++;
         }
 
-        if (errorLevel == DiagnosticLevel::Error)
+        switch (errorLevel)
         {
+        case DiagnosticLevel::Error:
             sourceFile->numErrors++;
             sourceFile->module->numErrors++;
 
             // Do not raise an error if we are waiting for one, during tests
-            if ((sourceFile->numTestErrors || sourceFile->multipleTestErrors) && !diag.exceptionError)
+            if ((sourceFile->numTestErrors || sourceFile->multipleTestErrors) && !diag.criticalError)
             {
                 if (sourceFile->multipleTestErrors)
                     sourceFile->numTestErrors = 0;
@@ -443,10 +444,9 @@ namespace Report
                     report(diag, notes, true);
                 return false;
             }
-        }
+            break;
 
-        if (errorLevel == DiagnosticLevel::Warning)
-        {
+        case DiagnosticLevel::Warning:
             sourceFile->numWarnings++;
             sourceFile->module->numWarnings++;
 
@@ -461,6 +461,7 @@ namespace Report
                     report(diag, notes, true);
                 return true;
             }
+            break;
         }
 
         // Print error/warning

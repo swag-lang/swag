@@ -99,7 +99,7 @@ struct SwagGlobalVarToDrop
     void* opDrop;
 };
 
-enum class SwagExceptionType
+enum class SwagExceptionKind
 {
     Panic,
     Error,

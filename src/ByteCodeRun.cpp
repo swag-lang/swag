@@ -3694,64 +3694,68 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
     {
         runContext->canCatchError = false;
 
+        // Kind of exception
+        auto exceptionKind = (SwagExceptionKind) args->ExceptionRecord->ExceptionInformation[3];
+
+        // Source code location
         auto location = (SwagSourceCodeLocation*) args->ExceptionRecord->ExceptionInformation[0];
         SWAG_ASSERT(location);
+        Utf8 fileName{(const char*) location->fileName.buffer, (uint32_t) location->fileName.count};
 
-        Utf8 fileName;
-        fileName.append((const char*) location->fileName.buffer, (uint32_t) location->fileName.count);
-
-        Utf8 userMsg;
-        if (args->ExceptionRecord->ExceptionInformation[1] && args->ExceptionRecord->ExceptionInformation[2])
-            userMsg.append((const char*) args->ExceptionRecord->ExceptionInformation[1], (uint32_t) args->ExceptionRecord->ExceptionInformation[2]);
-        else
-            userMsg.append("panic");
-
-        SourceFile     dummyFile;
-        SourceLocation sourceLocation;
-        dummyFile.path        = fileName;
-        sourceLocation.line   = location->lineStart;
-        sourceLocation.column = location->colStart;
-        Diagnostic diag{&dummyFile, sourceLocation, userMsg};
-
-        // Retreive calling context, like current expension
-        vector<const Diagnostic*> notes;
-        if (runContext->callerContext)
+        // User messsage
+        Utf8 userMsg{(const char*) args->ExceptionRecord->ExceptionInformation[1], (uint32_t) args->ExceptionRecord->ExceptionInformation[2]};
+        if (userMsg.empty())
         {
-            ErrorContext::fillContext(runContext->callerContext, diag, notes);
-
-            // If we have an expansion, and the first expansion requests test error, then raise
-            // in its context to dismiss the error (like an error during a #selectif for example)
-            if (runContext->callerContext->errorContextStack.size())
+            switch (exceptionKind)
             {
-                auto firstSrcFile = runContext->callerContext->errorContextStack[0].node->sourceFile;
-                if (firstSrcFile->numTestErrors || firstSrcFile->numTestWarnings)
-                {
-                    runContext->ip--;
-                    g_ByteCodeStackTrace->currentContext = runContext;
-                    diag.contextFile                     = firstSrcFile;
-                    Report::report(diag, notes);
-                    diag.contextFile                     = nullptr;
-                    g_ByteCodeStackTrace->currentContext = nullptr;
-                    runContext->ip++;
-                    return SWAG_EXCEPTION_EXECUTE_HANDLER;
-                }
+            case SwagExceptionKind::Error:
+                userMsg = "compiler error";
+                break;
+            case SwagExceptionKind::Warning:
+                userMsg = "compiler warning";
+                break;
+            case SwagExceptionKind::Panic:
+                userMsg = "panic";
+                break;
             }
         }
 
-        SourceFile* sourceFile;
-        if (g_ByteCodeStackTrace->steps.size() && g_ByteCodeStackTrace->steps[0].bc)
-            sourceFile = g_ByteCodeStackTrace->steps[0].bc->sourceFile;
+        SourceFile dummyFile;
+        dummyFile.path = fileName;
+
+        SourceLocation sourceLocation;
+        sourceLocation.line   = location->lineStart;
+        sourceLocation.column = location->colStart;
+
+        Diagnostic diag{&dummyFile, sourceLocation, userMsg};
+
+        // Get the correct source file to raise the error in the correct context
+        //
+        // If we have an expansion, and the first expansion requests test error, then raise
+        // in its context to dismiss the error (like an error during a #selectif for example)
+        if (runContext->callerContext && runContext->callerContext->errorContextStack.size() && runContext->callerContext->errorContextStack[0].node->sourceFile->numTestErrors)
+            diag.contextFile = runContext->callerContext->errorContextStack[0].node->sourceFile;
+        else if (runContext->callerContext && runContext->callerContext->errorContextStack.size() && runContext->callerContext->errorContextStack[0].node->sourceFile->numTestWarnings)
+            diag.contextFile = runContext->callerContext->errorContextStack[0].node->sourceFile;
+        // Otherwise get the source file from the top of the bytecode stack of possible
+        else if (g_ByteCodeStackTrace->steps.size() && g_ByteCodeStackTrace->steps[0].bc)
+            diag.contextFile = g_ByteCodeStackTrace->steps[0].bc->sourceFile;
         else if (g_ByteCodeStackTrace->steps.size() > 1 && g_ByteCodeStackTrace->steps[1].bc)
-            sourceFile = g_ByteCodeStackTrace->steps[1].bc->sourceFile;
+            diag.contextFile = g_ByteCodeStackTrace->steps[1].bc->sourceFile;
+        // Otherwise take the current bytecode source file
         else
-            sourceFile = runContext->bc->sourceFile;
+            diag.contextFile = runContext->bc->sourceFile;
+
+        // Retreive context, like current expansion
+        vector<const Diagnostic*> notes;
+        ErrorContext::fillContext(runContext->callerContext, diag, notes);
 
         runContext->ip--;
         g_ByteCodeStackTrace->currentContext = runContext;
-        diag.contextFile                     = sourceFile;
         diag.fromException                   = true;
+
         Report::report(diag, notes);
-        diag.contextFile                     = nullptr;
+
         g_ByteCodeStackTrace->currentContext = nullptr;
         runContext->ip++;
 
@@ -3768,7 +3772,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
     Diagnostic diag{ip->node, Err(Err0435)};
     Diagnostic note1{Nte(Nte0022), DiagnosticLevel::Note};
     Diagnostic note2{Nte(Nte0009), DiagnosticLevel::Note};
-    diag.exceptionError                  = true;
+    diag.criticalError                  = true;
     g_ByteCodeStackTrace->currentContext = runContext;
     Report::report(diag, &note1, &note2);
     g_ByteCodeStackTrace->currentContext = nullptr;
