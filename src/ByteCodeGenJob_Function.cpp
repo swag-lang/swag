@@ -434,11 +434,20 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
 
     switch (node->token.id)
     {
-    case TokenId::IntrinsicError:
+    case TokenId::IntrinsicCompilerError:
     {
         auto child0 = callParams->childs.front();
         auto child1 = callParams->childs.back();
-        emitInstruction(context, ByteCodeOp::IntrinsicError, child0->resultRegisterRC[0], child0->resultRegisterRC[1], child1->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::IntrinsicCompilerError, child0->resultRegisterRC[0], child0->resultRegisterRC[1], child1->resultRegisterRC);
+        freeRegisterRC(context, child0);
+        freeRegisterRC(context, child1);
+        break;
+    }
+    case TokenId::IntrinsicCompilerWarning:
+    {
+        auto child0 = callParams->childs.front();
+        auto child1 = callParams->childs.back();
+        emitInstruction(context, ByteCodeOp::IntrinsicCompilerWarning, child0->resultRegisterRC[0], child0->resultRegisterRC[1], child1->resultRegisterRC);
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
         break;

@@ -16,7 +16,7 @@ impl Variant
     {
         if Slice.contains(t, tn)
             return true
-        @error(Format.toString("type '%' is not part of the variant", tn.fullname), @location(tn))
+        @compilererror(Format.toString("type '%' is not part of the variant", tn.fullname), @location(tn))
         return false
     }
 

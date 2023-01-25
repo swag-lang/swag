@@ -60,7 +60,7 @@
         }
     }
 
-    // By using '@error', you can trigger errors at compile time if the
+    // By using '@compilererror', you can trigger errors at compile time if the
     // type is incorrect for example
     {
         func(T) sum(x, y: T)->T
@@ -68,7 +68,7 @@
             {
                 if @typeof(T) == s32 or @typeof(T) == s64
                     return true
-                @error("invalid type " ++ @stringof(T), #location)
+                @compilererror("invalid type " ++ @stringof(T), #location)
                 return false
             }
         {
@@ -90,7 +90,7 @@
                 if !@isconstexpr(y)
                     return true
                 if y == 0
-                    @error("division by zero", #location)
+                    @compilererror("division by zero", #location)
                 return true
             }
         {

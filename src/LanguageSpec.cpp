@@ -160,20 +160,21 @@ void LanguageSpec::setupNames()
     name_nozero   = "nozero";
     name_toplevel = "toplevel";
 
-    name_atalias      = "@alias";
-    name_atmixin      = "@mixin";
-    name_atdrop       = "@drop";
-    name_atpostCopy   = "@postCopy";
-    name_atpostMove   = "@postMove";
-    name_atargs       = "@args";
-    name_atpanic      = "@panic";
-    name_aterror      = "@error";
-    name_atitftableof = "@itftableof";
-    name_atstrcmp     = "@stringcmp";
-    name_attypecmp    = "@typecmp";
-    name_atdbgalloc   = "@dbgalloc";
-    name_atsysalloc   = "@sysalloc";
-    name_atrtflags    = "@rtflags";
+    name_atalias           = "@alias";
+    name_atmixin           = "@mixin";
+    name_atdrop            = "@drop";
+    name_atpostCopy        = "@postCopy";
+    name_atpostMove        = "@postMove";
+    name_atargs            = "@args";
+    name_atpanic           = "@panic";
+    name_atcompilererror   = "@compilererror";
+    name_atcompilerwarning = "@compilerwarning";
+    name_atitftableof      = "@itftableof";
+    name_atstrcmp          = "@stringcmp";
+    name_attypecmp         = "@typecmp";
+    name_atdbgalloc        = "@dbgalloc";
+    name_atsysalloc        = "@sysalloc";
+    name_atrtflags         = "@rtflags";
 
     name_sharpself = "#self";
 
@@ -346,7 +347,8 @@ void LanguageSpec::setupKeywords()
     keywords.add("@compiler", TokenId::IntrinsicCompiler);
     keywords.add("@isbytecode", TokenId::IntrinsicIsByteCode);
     keywords.add("@print", TokenId::IntrinsicPrint);
-    keywords.add("@error", TokenId::IntrinsicError);
+    keywords.add("@compilererror", TokenId::IntrinsicCompilerError);
+    keywords.add("@compilerwarning", TokenId::IntrinsicCompilerWarning);
     keywords.add("@breakpoint", TokenId::IntrinsicBcBreakpoint);
     keywords.add("@assert", TokenId::IntrinsicAssert);
     keywords.add("@panic", TokenId::IntrinsicPanic);

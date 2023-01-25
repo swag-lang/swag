@@ -120,7 +120,8 @@ This is the list of all keywords:
 @dbgalloc
 @defined
 @drop
-@error
+@compilererror
+@compilerwarning
 @getcontext
 @getpinfos
 @gettag

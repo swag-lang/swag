@@ -30,7 +30,8 @@ BYTECODE_OP(ForeignCallPop, OPFLAG_READ_VAL64_A | OPFLAG_READ_VAL32_C | OPFLAG_R
 BYTECODE_OP(MakeLambda, OPFLAG_WRITE_A | OPFLAG_READ_VAL64_B, "_ra_ = ")
 
 BYTECODE_OP(IntrinsicItfTableOf, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_WRITE_C, "_rc_ = @itftableof(_ra_, _rb_)")
-BYTECODE_OP(IntrinsicError, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C, "@error(_ra_, _rb_, _rc_)")
+BYTECODE_OP(IntrinsicCompilerError, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C, "@compilererror(_ra_, _rb_, _rc_)")
+BYTECODE_OP(IntrinsicCompilerWarning, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C, "@compilerwarning(_ra_, _rb_, _rc_)")
 BYTECODE_OP(IntrinsicPanic, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C, "@panic(_ra_, _rb_, _rc_)")
 BYTECODE_OP(IntrinsicTypeCmp, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C | OPFLAG_IMM_C | OPFLAG_WRITE_D, "_rd_ = @typecmp(_ra_, _rb_, _rcu64_)")
 BYTECODE_OP(IntrinsicStringCmp, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C | OPFLAG_READ_D | OPFLAG_WRITE_D, "_rd_ = @stringcmp(_ra_, _rb_, _rc_, _rd_)")

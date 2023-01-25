@@ -189,7 +189,8 @@ struct LanguageSpec
     Utf8 name_atpostMove;
     Utf8 name_atargs;
     Utf8 name_atpanic;
-    Utf8 name_aterror;
+    Utf8 name_atcompilererror;
+    Utf8 name_atcompilerwarning;
     Utf8 name_atitftableof;
     Utf8 name_atstrcmp;
     Utf8 name_attypecmp;

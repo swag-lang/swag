@@ -2,7 +2,7 @@ struct(T, loc: s64 /*Swag.SourceCodeLocation*/) TOTO
 {
     #ast
     {
-        //@error(#location, "this is a test man !")
+        //@compilererror(#location, "this is a test man !")
         //@print(loc.fileName)
         @assert(loc == 666)
         return ""

@@ -5,7 +5,7 @@ func toto(x: string)
 {
     #run
     {
-        @error("error", @location(x))
+        @compilererror("error", @location(x))
     }
 }
 

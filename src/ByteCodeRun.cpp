@@ -1919,9 +1919,18 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
-    case ByteCodeOp::IntrinsicError:
+    case ByteCodeOp::IntrinsicCompilerError:
     {
-        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_aterror);
+        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_atcompilererror);
+        context->push(registersRC[ip->c.u32].u64);
+        context->push(registersRC[ip->b.u32].u64);
+        context->push(registersRC[ip->a.u32].u64);
+        localCall(context, bc, 3);
+        break;
+    }
+    case ByteCodeOp::IntrinsicCompilerWarning:
+    {
+        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_atcompilerwarning);
         context->push(registersRC[ip->c.u32].u64);
         context->push(registersRC[ip->b.u32].u64);
         context->push(registersRC[ip->a.u32].u64);
@@ -3680,8 +3689,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
     if (args->ExceptionRecord->ExceptionCode == SWAG_EXCEPTION_TO_PREV_HANDLER)
         return SWAG_EXCEPTION_EXECUTE_HANDLER;
 
-    // Special exception raised by @error, to simply log an error message
-    // This is called by panic too, in certain conditions (if we do not want dialog boxes, when running tests for example)
+    // Exception 666 raised during bytecode execution
     if (args->ExceptionRecord->ExceptionCode == SWAG_EXCEPTION_TO_COMPILER_HANDLER)
     {
         runContext->canCatchError = false;

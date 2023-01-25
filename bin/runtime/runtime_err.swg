@@ -100,13 +100,24 @@ func __stackTrace(loc: SourceCodeLocation)
 
 
 ////////////////////////////////////////////////////////////
-func @error(message: string, loc: Swag.SourceCodeLocation)
+func @compilererror(message: string, loc: Swag.SourceCodeLocation)
 {
     // If the compiler is around, just let it deal with the message
     cxt := @getcontext()
     if cxt.flags & Swag.ContextFlags.ByteCode
     {
         __raiseException666(message, loc, Swag.ExceptionKind.Error)
+        return
+    }
+}
+
+func @compilerwarning(message: string, loc: Swag.SourceCodeLocation)
+{
+    // If the compiler is around, just let it deal with the message
+    cxt := @getcontext()
+    if cxt.flags & Swag.ContextFlags.ByteCode
+    {
+        __raiseException666(message, loc, Swag.ExceptionKind.Warning)
         return
     }
 }

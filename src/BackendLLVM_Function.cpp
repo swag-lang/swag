@@ -3674,33 +3674,32 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::IntrinsicError:
+        case ByteCodeOp::IntrinsicCompilerError:
         {
             auto bcF = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extension->bytecode->bc;
             emitCall(buildParameters, moduleToGen, bcF->getCallName().c_str(), allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
             break;
         }
-        case ByteCodeOp::IntrinsicPanic:
+        case ByteCodeOp::IntrinsicCompilerWarning:
         {
-            emitCall(buildParameters, moduleToGen, g_LangSpec->name_atpanic, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
+            auto bcF = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extension->bytecode->bc;
+            emitCall(buildParameters, moduleToGen, bcF->getCallName().c_str(), allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
             break;
         }
 
+        case ByteCodeOp::IntrinsicPanic:
+            emitCall(buildParameters, moduleToGen, g_LangSpec->name_atpanic, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
+            break;
+
         case ByteCodeOp::InternalInitStackTrace:
-        {
             emitCall(buildParameters, moduleToGen, g_LangSpec->name__initStackTrace, allocR, allocT, {}, {});
             break;
-        }
         case ByteCodeOp::InternalStackTrace:
-        {
             emitCall(buildParameters, moduleToGen, g_LangSpec->name__stackTrace, allocR, allocT, {ip->a.u32}, {});
             break;
-        }
         case ByteCodeOp::InternalPanic:
-        {
             emitInternalPanic(buildParameters, moduleToGen, allocR, allocT, ip->node, (const char*) ip->d.pointer);
             break;
-        }
 
         case ByteCodeOp::InternalGetTlsPtr:
         {
