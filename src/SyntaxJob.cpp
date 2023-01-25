@@ -73,13 +73,13 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
     }
 
     if (Tokenizer::isSymbol(token.id))
-        msg += Fmt(", found symbol `%s` ", token.ctext());
+        msg += Fmt(", found symbol '%s' ", token.ctext());
     else if (token.id == TokenId::Identifier)
-        msg += Fmt(", found identifier `%s` ", token.ctext());
+        msg += Fmt(", found identifier '%s' ", token.ctext());
     else if (token.id == TokenId::NativeType)
-        msg += Fmt(", found type `%s` ", token.ctext());
+        msg += Fmt(", found type '%s' ", token.ctext());
     else
-        msg += Fmt(", found `%s` ", token.ctext());
+        msg += Fmt(", found '%s' ", token.ctext());
 
     switch (token.id)
     {

@@ -31,7 +31,7 @@ void newScriptFile()
 
     file << content;
 
-    g_Log.message(Fmt("=> script file `%s` has been created", g_CommandLine.scriptName.c_str()));
+    g_Log.message(Fmt("=> script file '%s' has been created", g_CommandLine.scriptName.c_str()));
     g_Log.message(Fmt("=> type 'swag script -f:%s' to run that script", g_CommandLine.scriptName.c_str()));
 }
 
@@ -184,7 +184,7 @@ void Workspace::newCommand()
             OS::exit(-1);
         }
 
-        g_Log.message(Fmt("=> workspace `%s` has been created", workspacePath.string().c_str()));
+        g_Log.message(Fmt("=> workspace '%s' has been created", workspacePath.string().c_str()));
         moduleName = workspacePath.filename().string();
     }
 
@@ -205,13 +205,13 @@ void Workspace::newCommand()
 
     if (g_CommandLine.test)
     {
-        g_Log.message(Fmt("=> test module `%s` has been created", moduleName.c_str()));
+        g_Log.message(Fmt("=> test module '%s' has been created", moduleName.c_str()));
         g_Log.message(Fmt("=> type 'swag test -w:%s -m:%s' to test that module only", workspacePath.string().c_str(), moduleName.c_str()));
         g_Log.message(Fmt("=> type 'swag test -w:%s to test all modules", workspacePath.string().c_str(), moduleName.c_str()));
     }
     else
     {
-        g_Log.message(Fmt("=> module `%s` has been created", moduleName.c_str()));
+        g_Log.message(Fmt("=> module '%s' has been created", moduleName.c_str()));
         g_Log.message(Fmt("=> type 'swag run -w:%s -m:%s' to build and run that module", workspacePath.string().c_str(), moduleName.c_str()));
     }
 

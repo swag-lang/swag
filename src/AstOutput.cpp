@@ -46,7 +46,7 @@ bool AstOutput::checkIsPublic(OutputContext& context, AstNode* testNode, AstNode
                 if (context.exportedNode && context.exportedNode->resolvedSymbolOverload)
                 {
                     auto symName = context.exportedNode->resolvedSymbolOverload->symbol;
-                    what         = Fmt("%s `%s`", SymTable::getNakedKindName(symName->kind), symName->name.c_str());
+                    what         = Fmt("%s '%s'", SymTable::getNakedKindName(symName->kind), symName->name.c_str());
                 }
                 else if (usedNode->kind == AstNodeKind::FuncCall)
                     what = "function call";

@@ -301,7 +301,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         if (!itfRef.itf)
         {
             Diagnostic diag{node, node->token, Fmt(Err(Err0657), typeBaseInterface->name.c_str(), typeInfo->getDisplayNameC())};
-            auto       note = new Diagnostic({missingNode->declNode, missingNode->declNode->token, Fmt("missing `%s`", missingNode->namedParam.c_str()), DiagnosticLevel::Note});
+            auto       note = new Diagnostic({missingNode->declNode, missingNode->declNode->token, Fmt("missing '%s'", missingNode->namedParam.c_str()), DiagnosticLevel::Note});
             return context->report(diag, note);
         }
 

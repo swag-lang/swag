@@ -24,7 +24,7 @@ void Workspace::computeModuleName(const fs::path& path, Utf8& moduleName, Utf8& 
     if (!Module::isValidName(cFileName, errorStr))
     {
         errorStr = "fatal error: " + errorStr;
-        errorStr += Fmt(" (path is `%s`)", path.string().c_str());
+        errorStr += Fmt(" (path is '%s')", path.string().c_str());
         Report::error(errorStr);
         OS::exit(-1);
     }
@@ -240,7 +240,7 @@ void Workspace::setupTarget()
     // Target directory
     targetPath = getTargetPath(g_CommandLine.buildCfg, g_CommandLine.target);
     if (g_CommandLine.verbosePath)
-        g_Log.verbose(Fmt("target path is `%s`", Utf8::normalizePath(targetPath.string().c_str()).c_str()));
+        g_Log.verbose(Fmt("target path is '%s'", Utf8::normalizePath(targetPath.string().c_str()).c_str()));
 
     error_code errorCode;
     if (!fs::exists(targetPath) && !fs::create_directories(targetPath, errorCode))
@@ -276,7 +276,7 @@ void Workspace::setupTarget()
     }
 
     if (g_CommandLine.verbosePath)
-        g_Log.verbose(Fmt("cache path is `%s`", Utf8::normalizePath(cachePath.string().c_str()).c_str()));
+        g_Log.verbose(Fmt("cache path is '%s'", Utf8::normalizePath(cachePath.string().c_str()).c_str()));
 
     cachePath += "/";
 }
@@ -285,7 +285,7 @@ static Utf8 errorPendingJobsType(Job* pendingJob)
 {
     Utf8 sym;
     if (pendingJob->waitingSymbolSolved)
-        sym = Fmt("%s `%s`", SymTable::getNakedKindName(pendingJob->waitingSymbolSolved->kind), pendingJob->waitingSymbolSolved->name.c_str());
+        sym = Fmt("%s '%s'", SymTable::getNakedKindName(pendingJob->waitingSymbolSolved->kind), pendingJob->waitingSymbolSolved->name.c_str());
 
     switch (pendingJob->waitingKind)
     {
@@ -381,7 +381,7 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, Job* depJob)
         case AstNodeKind::VarDecl:
         case AstNodeKind::EnumValue:
             msg += " ";
-            msg += Fmt("because of %s `%s`", AstNode::getKindName(prevJob->waitingHintNode).c_str(), prevJob->waitingHintNode->token.ctext());
+            msg += Fmt("because of %s '%s'", AstNode::getKindName(prevJob->waitingHintNode).c_str(), prevJob->waitingHintNode->token.ctext());
             break;
         }
     }
@@ -922,7 +922,7 @@ bool Workspace::build()
         if (!g_CommandLine.scriptCommand)
         {
             if (g_CommandLine.verbosePath)
-                g_Log.verbose(Fmt("workspace path is `%s`", Utf8::normalizePath(workspacePath.string().c_str()).c_str()));
+                g_Log.verbose(Fmt("workspace path is '%s'", Utf8::normalizePath(workspacePath.string().c_str()).c_str()));
             if (g_CommandLine.listDepCmd || g_CommandLine.getDepCmd)
                 g_Log.messageHeaderCentered("Workspace", workspacePath.filename().string().c_str());
             else

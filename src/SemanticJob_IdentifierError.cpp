@@ -1152,13 +1152,13 @@ Utf8 SemanticJob::findClosestMatchesMsg(SemanticContext* context, vector<Utf8>& 
     switch (best.size())
     {
     case 1:
-        appendMsg = Fmt("do you mean `%s` ?", best[0].c_str());
+        appendMsg = Fmt("do you mean '%s' ?", best[0].c_str());
         break;
     case 2:
-        appendMsg = Fmt("do you mean `%s` or `%s` ?", best[0].c_str(), best[1].c_str());
+        appendMsg = Fmt("do you mean '%s' or '%s' ?", best[0].c_str(), best[1].c_str());
         break;
     case 3:
-        appendMsg = Fmt("do you mean `%s`, `%s` or `%s` ?", best[0].c_str(), best[1].c_str(), best[2].c_str());
+        appendMsg = Fmt("do you mean '%s', '%s' or '%s' ?", best[0].c_str(), best[1].c_str(), best[2].c_str());
         break;
     }
 

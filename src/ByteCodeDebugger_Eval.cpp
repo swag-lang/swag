@@ -215,7 +215,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
     {
         if (!concrete->isNativeIntegerOrRune() && !concrete->isNativeFloat())
         {
-            g_Log.printColor(Fmt("cannot apply print format to type `%s`\n", concrete->getDisplayNameC()), LogColor::Red);
+            g_Log.printColor(Fmt("cannot apply print format to type '%s'\n", concrete->getDisplayNameC()), LogColor::Red);
             return BcDbgCommandResult::Continue;
         }
 

@@ -110,14 +110,14 @@ void Log::print(const char* message)
         while (*message)
         {
             Utf8 tt;
-            while (*message && *message != '`')
+            while (*message && *message != '\'')
                 tt += *message++;
             cout << tt.c_str();
             tt.clear();
             if (*message == 0)
                 break;
 
-            cout << "`";
+            cout << "\'";
 
             auto oldColor = curColor;
 
@@ -134,7 +134,7 @@ void Log::print(const char* message)
 
             message++;
             Utf8 totoSingle;
-            while (*message && *message != '`')
+            while (*message && *message != '\'')
             {
                 totoSingle += *message;
                 tt += *message++;
@@ -151,7 +151,7 @@ void Log::print(const char* message)
             tt.clear();
 
             setColor(oldColor);
-            cout << "`";
+            cout << "\'";
             if (*message == 0)
                 break;
         }
