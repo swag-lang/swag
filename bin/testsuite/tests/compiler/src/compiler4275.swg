@@ -1,4 +1,4 @@
-#global skip
+#global testerror
 
 var G = 0
 /*
@@ -11,7 +11,7 @@ func toto(#[Swag.ConstExpr] str: string)
     toto(str)
 }*/
 
-#[Swag.PrintBc]
+//#[Swag.PrintBc]
 func toto(str: string)
     #selectif
     {

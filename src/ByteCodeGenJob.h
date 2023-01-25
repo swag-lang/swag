@@ -223,7 +223,7 @@ struct ByteCodeGenJob : public Job
     static void getDependantCalls(AstNode* depNode, VectorNative<AstNode*>& dep);
     static void inherhitLocation(ByteCodeInstruction* inst, AstNode* node);
     static void collectLiteralsChilds(AstNode* node, VectorNative<AstNode*>* orderedChilds);
-    static void computeSourceLocation(JobContext* context, AstNode* node, uint32_t* storageOffset, DataSegment** storageSegment);
+    static void computeSourceLocation(JobContext* context, AstNode* node, uint32_t* storageOffset, DataSegment** storageSegment, bool forceCompiler = false);
     static void releaseByteCodeJob(AstNode* node);
     static bool checkCatchError(ByteCodeGenContext* context, AstNode* srcNode, AstNode* callNode, AstNode* funcNode, AstNode* parent, TypeInfo* typeInfoFunc);
     static bool sameStackFrame(ByteCodeGenContext* context, SymbolOverload* overload);
@@ -381,7 +381,8 @@ struct ByteCodeGenJob : public Job
     static bool emitIntrinsicDataOf(ByteCodeGenContext* context);
     static bool emitImplicitKindOf(ByteCodeGenContext* context);
     static bool emitIntrinsicKindOf(ByteCodeGenContext* context);
-    static bool emitIntrinsicIsConstExpr(ByteCodeGenContext* context);
+    static bool emitIntrinsicLocationSI(ByteCodeGenContext* context);
+    static bool emitIntrinsicIsConstExprSI(ByteCodeGenContext* context);
     static bool emitIntrinsicMakeAny(ByteCodeGenContext* context);
     static bool emitIntrinsicMakeSlice(ByteCodeGenContext* context);
     static bool emitIntrinsicMakeCallback(ByteCodeGenContext* context);

@@ -3,6 +3,7 @@
 #include "ByteCode.h"
 #include "Module.h"
 #include "ErrorIds.h"
+#include "ByteCodeGenJob.h"
 
 bool ByteCodeRun::getVariadicSI(ByteCodeRunContext* context, ByteCodeInstruction* ip, Register* regPtr, Register* regCount)
 {
@@ -57,6 +58,20 @@ bool ByteCodeRun::getVariadicSI(ByteCodeRunContext* context, ByteCodeInstruction
     }
 
     return false;
+}
+
+void* ByteCodeRun::executeLocationSI(ByteCodeRunContext* context, ByteCodeInstruction* ip)
+{
+    uint32_t paramIdx   = ip->c.u32;
+    auto     callParams = context->callerContext->selectIfParameters;
+    if (!callParams)
+        return nullptr;
+    if (paramIdx >= callParams->childs.size())
+        return nullptr;
+
+    auto child = callParams->childs[paramIdx];
+    ByteCodeGenJob::computeSourceLocation(context->callerContext, child, &child->computedValue->storageOffset, &child->computedValue->storageSegment, true);
+    return child->computedValue->storageSegment->address(child->computedValue->storageOffset);
 }
 
 bool ByteCodeRun::executeIsConstExprSI(ByteCodeRunContext* context, ByteCodeInstruction* ip)

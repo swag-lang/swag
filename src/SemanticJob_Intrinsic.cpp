@@ -693,7 +693,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         // Special case for a function parameter in a selectif block, should be done at runtime
         if (expr->isSelectIfParam(expr->resolvedSymbolOverload))
         {
-            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicIsConstExpr;
+            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicIsConstExprSI;
             break;
         }
 

@@ -608,6 +608,7 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
         case ByteCodeOp::IntrinsicMakeCallback:
         case ByteCodeOp::CloneString:
         case ByteCodeOp::IntrinsicIsConstExprSI:
+        case ByteCodeOp::IntrinsicLocationSI:
         case ByteCodeOp::IntrinsicAlloc:
         case ByteCodeOp::IntrinsicRealloc:
         case ByteCodeOp::IntrinsicSysAlloc:

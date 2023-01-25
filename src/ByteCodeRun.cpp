@@ -982,11 +982,12 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         registersRC[ip->a.u32].pointer = context->sp + ip->b.u32;
         break;
 
+    case ByteCodeOp::IntrinsicLocationSI:
+        registersRC[ip->a.u32].pointer = (uint8_t*) executeLocationSI(context, ip);
+        break;
     case ByteCodeOp::IntrinsicIsConstExprSI:
-    {
         registersRC[ip->a.u32].b = executeIsConstExprSI(context, ip);
         break;
-    }
 
     case ByteCodeOp::GetParam64SI:
         executeGetFromStackSI(context, ip);

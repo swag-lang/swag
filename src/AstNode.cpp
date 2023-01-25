@@ -705,37 +705,37 @@ const char* AstFuncDecl::getDisplayNameC()
 Utf8 AstFuncDecl::getDisplayName()
 {
     if (attributeFlags & ATTRIBUTE_AST_FUNC)
-        return "`#ast` block";
+        return "'#ast' block";
     if (attributeFlags & (ATTRIBUTE_RUN_FUNC | ATTRIBUTE_RUN_GENERATED_FUNC))
-        return "`#run` block";
+        return "'#run' block";
     if (attributeFlags & ATTRIBUTE_SELECTIF_FUNC)
-        return "`#selectifonce` block";
+        return "'#selectif' block";
 
     if (attributeFlags & ATTRIBUTE_TEST_FUNC && attributeFlags & ATTRIBUTE_SHARP_FUNC)
-        return "`#test` block";
+        return "'#test' block";
     if (attributeFlags & ATTRIBUTE_MAIN_FUNC)
-        return "`#main` block";
+        return "'#main' block";
     if (attributeFlags & ATTRIBUTE_COMPILER_FUNC)
-        return "`#message` block";
+        return "'#message' block";
     if (attributeFlags & ATTRIBUTE_INIT_FUNC)
-        return "`#init` block";
+        return "'#init' block";
     if (attributeFlags & ATTRIBUTE_DROP_FUNC)
-        return "`#drop` block";
+        return "'#drop' block";
     if (attributeFlags & ATTRIBUTE_PREMAIN_FUNC)
-        return "`#premain` block";
+        return "'#premain' block";
 
     if (flags & AST_IS_LAMBDA_EXPRESSION)
         return "lambda";
 
     if (attributeFlags & ATTRIBUTE_SHARP_FUNC)
-        return Fmt("`%s` block", token.ctext());
+        return Fmt("'%s' block", token.ctext());
 
     if (attributeFlags & ATTRIBUTE_MIXIN)
-        return Fmt("mixin `%s`", token.ctext());
+        return Fmt("mixin '%s'", token.ctext());
     if (attributeFlags & ATTRIBUTE_MACRO)
-        return Fmt("macro `%s`", token.ctext());
+        return Fmt("macro '%s'", token.ctext());
 
-    return Fmt("function `%s`", token.ctext());
+    return Fmt("function '%s'", token.ctext());
 }
 
 void AstFuncDecl::computeFullNameForeign(bool forExport)

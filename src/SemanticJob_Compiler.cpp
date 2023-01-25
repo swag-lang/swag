@@ -805,8 +805,16 @@ bool SemanticJob::resolveCompilerInclude(SemanticContext* context)
 bool SemanticJob::resolveIntrinsicLocation(SemanticContext* context)
 {
     auto node      = context->node;
-    node->typeInfo = TypeManager::makeConst(g_Workspace->swagScope.regTypeInfoSourceLoc);
     auto locNode   = node->childs.front();
+    node->typeInfo = TypeManager::makeConst(g_Workspace->swagScope.regTypeInfoSourceLoc);
+
+    if (locNode->isSelectIfParam(locNode->resolvedSymbolOverload))
+    {
+        node->flags &= ~AST_NO_BYTECODE;
+        locNode->flags |= AST_NO_BYTECODE;
+        node->byteCodeFct = ByteCodeGenJob::emitIntrinsicLocationSI;
+        return true;
+    }
 
     // If identifier is an inline param call replacement, take it
     bool fromInline = false;

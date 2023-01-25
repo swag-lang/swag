@@ -1180,9 +1180,9 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context)
     return true;
 }
 
-void ByteCodeGenJob::computeSourceLocation(JobContext* context, AstNode* node, uint32_t* storageOffset, DataSegment** storageSegment)
+void ByteCodeGenJob::computeSourceLocation(JobContext* context, AstNode* node, uint32_t* storageOffset, DataSegment** storageSegment, bool forceCompiler)
 {
-    auto seg        = SemanticJob::getConstantSegFromContext(context->node);
+    auto seg        = SemanticJob::getConstantSegFromContext(context->node, forceCompiler);
     *storageSegment = seg;
 
     auto sourceFile = node->sourceFile;

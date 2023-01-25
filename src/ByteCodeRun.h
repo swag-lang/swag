@@ -21,9 +21,10 @@ struct ByteCodeRun
     bool runLoop(ByteCodeRunContext* context);
     bool run(ByteCodeRunContext* runContext);
 
-    bool getVariadicSI(ByteCodeRunContext* context, ByteCodeInstruction* ip, Register* regPtr, Register* regCount);
-    bool executeIsConstExprSI(ByteCodeRunContext* context, ByteCodeInstruction* ip);
-    void executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeInstruction* ip);
+    bool  getVariadicSI(ByteCodeRunContext* context, ByteCodeInstruction* ip, Register* regPtr, Register* regCount);
+    void* executeLocationSI(ByteCodeRunContext* context, ByteCodeInstruction* ip);
+    bool  executeIsConstExprSI(ByteCodeRunContext* context, ByteCodeInstruction* ip);
+    void  executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeInstruction* ip);
 
     void         localCall(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet = 0, uint32_t returnRegOnRet = UINT32_MAX, uint32_t incSPPosCall = 0);
     void         callInternalCompilerError(ByteCodeRunContext* context, ByteCodeInstruction* ip, const char* msg);
