@@ -284,8 +284,16 @@ namespace Swag
         ByteCode = 0x00000000_00000002
     }
 
+    enum ExceptionKind
+    {
+        Panic
+        Error
+        Warning
+    }
+
     const MaxLenErrorMsg = 128
     const MaxTrace = 32
+
     struct Context
     {
         // Must stay first, in that order, for backend generation
@@ -300,7 +308,7 @@ namespace Swag
         traceIndex:         u32
         trace:              [MaxTrace] const *SourceCodeLocation
         exceptionLoc:       SourceCodeLocation
-        exceptionParams:    [3] const *void
+        exceptionParams:    [4] const *void
         panic:              func(string, SourceCodeLocation)
     }
 

@@ -104,18 +104,11 @@ func @error(message: string, loc: Swag.SourceCodeLocation)
 {
     // If the compiler is around, just let it deal with the message
     cxt := @getcontext()
-    contextFlags := cxt.flags
-    if contextFlags & Swag.ContextFlags.ByteCode
+    if cxt.flags & Swag.ContextFlags.ByteCode
     {
-        __raiseException666(message, loc)
+        __raiseException666(message, loc, Swag.ExceptionKind.Error)
         return
     }
-
-    @print("\x1b[91m")
-    @print("error: ", message, "\n")
-    @print("\x1b[97m")
-    @print("--> ")
-    @print(loc.fileName, ":", loc.lineStart + 1, "\n")
 }
 
 #[Swag.Safety("", false)]
@@ -130,14 +123,21 @@ func @panic(message: string, loc: SourceCodeLocation)
         return
     }
 
-    // Print the message first
-    @error(message, loc)
-
-    // If we are running bytecode, then just let the runner deal with the assertion,
+    // If we are running bytecode, then just let the runner deal with the message,
     // we will have more usefull information
     contextFlags := cxt.flags
-    if contextFlags & ContextFlags.ByteCode
+    if contextFlags & Swag.ContextFlags.ByteCode
+    {
+        __raiseException666(message, loc, Swag.ExceptionKind.Panic)
         return
+    }
+
+    // Print the message first
+    @print("\x1b[91m")
+    @print("error: ", message, "\n")
+    @print("\x1b[97m")
+    @print("--> ")
+    @print(loc.fileName, ":", loc.lineStart + 1, "\n")
 
     // Print the calling stack trace
     var arr: [64] *void

@@ -3675,10 +3675,13 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         return SWAG_EXCEPTION_EXECUTE_HANDLER;
     }
 
-    // Special exception raised by @error, to simply log an error message
-    // This is called by panic too, in certain conditions (if we do not want dialog boxes, when running tests for example)
+    // Exception already processed. Need to pass the hand to the previous handle
+    // This happens when bytecode executed foreign code, which executes bytecode again.
     if (args->ExceptionRecord->ExceptionCode == SWAG_EXCEPTION_TO_PREV_HANDLER)
         return SWAG_EXCEPTION_EXECUTE_HANDLER;
+
+    // Special exception raised by @error, to simply log an error message
+    // This is called by panic too, in certain conditions (if we do not want dialog boxes, when running tests for example)
     if (args->ExceptionRecord->ExceptionCode == SWAG_EXCEPTION_TO_COMPILER_HANDLER)
     {
         runContext->canCatchError = false;

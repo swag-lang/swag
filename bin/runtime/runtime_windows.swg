@@ -236,14 +236,15 @@ func __printString(message: string)
 }
 
 ////////////////////////////////////////////////////////////
-func __raiseException666(message: string, loc: Swag.SourceCodeLocation)
+func __raiseException666(message: string, loc: Swag.SourceCodeLocation, kind: Swag.ExceptionKind)
 {
     cxt := @getcontext()
     cxt.exceptionLoc = loc
     cxt.exceptionParams[0] = cast(const *void) &cxt.exceptionLoc
     cxt.exceptionParams[1] = cast(const *void) @dataof(message)
     cxt.exceptionParams[2] = cast(const *void) cast(uint) @countof(message)
-    __Win32RT.RaiseException(666, 0, 3, &cxt.exceptionParams[0])
+    cxt.exceptionParams[3] = cast(const *void) cast(uint) kind
+    __Win32RT.RaiseException(666, 0, 4, &cxt.exceptionParams[0])
 }
 
 ////////////////////////////////////////////////////////////
