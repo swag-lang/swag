@@ -1,8 +1,8 @@
 #global testerror
 
-var G = 0
+var GHI = 0
 
 #run
 {
-    G = 1
+    GHI = 1
 }

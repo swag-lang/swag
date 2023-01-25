@@ -3704,11 +3704,13 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         SourceFile dummyFile;
         dummyFile.path = fileName;
 
-        SourceLocation sourceLocation;
-        sourceLocation.line   = location->lineStart;
-        sourceLocation.column = location->colStart;
+        SourceLocation startLocation, endLocation;
+        startLocation.line   = location->lineStart;
+        startLocation.column = location->colStart;
+        endLocation.line     = location->lineEnd;
+        endLocation.column   = location->colEnd;
 
-        Diagnostic diag{&dummyFile, sourceLocation, userMsg};
+        Diagnostic diag{&dummyFile, startLocation, endLocation, userMsg};
 
         // Get the correct source file to raise the error in the correct context
         //
