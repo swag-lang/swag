@@ -14,7 +14,7 @@ impl P
     #[Swag.Inline]
     func toFloat(using self) -> {a: f32}
     {
-        var result: retval = ?
+        var result: retval = undefined
         result.a = self.a / 255'f32
         return result
     }

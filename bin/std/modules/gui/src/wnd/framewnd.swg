@@ -118,7 +118,7 @@ impl IWnd for FrameWnd
         metrics := getThemeMetrics()
 
         var subRectBorder:  *ThemeImageRect
-        var colorBorder:    Color = ?
+        var colorBorder:    Color = undefined
 
         switch frameForm
         {

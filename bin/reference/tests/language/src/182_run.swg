@@ -1,6 +1,6 @@
 // #run is a special function that will be called at compile time
 // It can be used to precompute some global values for example.
-var G: [5] f32 = ?
+var G: [5] f32 = undefined
 
 // Initialize G with [1,2,4,8,16] at compile time
 #run

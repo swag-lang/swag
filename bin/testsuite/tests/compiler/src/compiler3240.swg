@@ -11,5 +11,5 @@ struct SysCommandEvent3239
         Close
     }
 
-    sysKind: G3239.SysCommandEvent3239.Kind = ?
+    sysKind: G3239.SysCommandEvent3239.Kind = undefined
 }

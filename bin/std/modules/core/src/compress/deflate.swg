@@ -368,7 +368,7 @@ impl Deflate
             pHist  := &hist[pass << 8]
             curOfs := 0
 
-            var offsets: [256] u32 = ?
+            var offsets: [256] u32 = undefined
             loop i: 256
             {
                 offsets[i] = curOfs
@@ -682,8 +682,8 @@ impl Deflate
     {
         d := state
 
-        var codeSizesToPack:  [MaxHuffSymbols0 + MaxHuffSymbols1] u8 = ?
-        var packedCodeSizes:  [MaxHuffSymbols0 + MaxHuffSymbols1] u8 = ?
+        var codeSizesToPack:  [MaxHuffSymbols0 + MaxHuffSymbols1] u8 = undefined
+        var packedCodeSizes:  [MaxHuffSymbols0 + MaxHuffSymbols1] u8 = undefined
         prevCodeSize := 0xFF'u8
 
         d.huffCount[0, 256] = 1;

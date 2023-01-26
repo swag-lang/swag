@@ -56,7 +56,7 @@ enum RowFilter: u8
 struct ChunkHeader
 {
     length: u32
-    type:   ChunkType = ?
+    type:   ChunkType = undefined
 }
 
 enum InterlaceMethod : u8
@@ -79,10 +79,10 @@ struct Header
 	width:              u32
 	height:             u32
 	bitDepth:           u8
-	colorType:          ColorType = ?
+	colorType:          ColorType = undefined
 	compressionMethod:  u8
 	filterMethod:       u8
-	interlaceMethod:    InterlaceMethod = ?
+	interlaceMethod:    InterlaceMethod = undefined
 }
 
 struct Chunk
@@ -441,13 +441,13 @@ impl Decoder
     {
         stream.init(buffer)
 
-        var signature: u64 = ?
+        var signature: u64 = undefined
         stream.peekBytes(@sizeof(signature), cast(*u8) &signature)
         if signature != 0x0a1a0a0d474e5089 throw "not a png"
 
         var result:     retval
         var iDataBuf:   Array'u8
-        var ch:         ChunkHeader = ?
+        var ch:         ChunkHeader = undefined
 
         firstChunk := true
         seenIEND   := false

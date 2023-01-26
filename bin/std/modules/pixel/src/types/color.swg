@@ -93,7 +93,7 @@ impl Color
     #[Inline]
     func toArgbf(const self) -> {a: f32, r: f32, g: f32, b: f32}
     {
-        var result: retval = ?
+        var result: retval = undefined
         result.a = self.a / 255.0
         result.r = self.r / 255.0
         result.g = self.g / 255.0
@@ -105,7 +105,7 @@ impl Color
     #[Inline]
     func toRgbf(const self) -> {r: f32, g: f32, b: f32}
     {
-        var result: retval = ?
+        var result: retval = undefined
         result.r = self.r / 255.0
         result.g = self.g / 255.0
         result.b = self.b / 255.0
@@ -116,7 +116,7 @@ impl Color
     #[Inline]
     func fromRgb(r, g, b: u8)->Color
     {
-        var result: retval = ?
+        var result: retval = undefined
         result.setRgb(r, g, b)
         return result
     }
@@ -125,7 +125,7 @@ impl Color
     #[Inline]
     func fromRgbf(r, g, b: f32)->Color
     {
-        var result: retval = ?
+        var result: retval = undefined
         result.setRgbf(r, g, b)
         return result
     }
@@ -134,7 +134,7 @@ impl Color
     #[Inline]
     func fromArgb(a, r, g, b: u8)->Color
     {
-        var result: retval = ?
+        var result: retval = undefined
         result.setArgb(a, r, g, b)
         return result
     }
@@ -180,7 +180,7 @@ impl Color
     #[Inline]
     func fromArgbf(a, r, g, b: f32)->Color
     {
-        var result: retval = ?
+        var result: retval = undefined
         result.setArgbf(a, r, g, b)
         return result
     }
@@ -189,7 +189,7 @@ impl Color
     #[Inline]
     func fromHsl(h, s, l: f32)->Color
     {
-        var result: retval = ?
+        var result: retval = undefined
         result.setHsl(h, s, l)
         return result
     }
@@ -203,7 +203,7 @@ impl Color
             if h < 0 h += 1
             if h > 1 h -= 1
 
-            var v: f32 = ?
+            var v: f32 = undefined
             if 6 * h < 1
                 v = m1 + (m2 - m1) * h * 6
             elif 2 * h < 1
@@ -239,7 +239,7 @@ impl Color
     // Returns hue, saturation, lightness
     mtdc toHsl() -> {h: f32, s: f32, l: f32}
     {
-        var result: retval = ?
+        var result: retval = undefined
 
         (rf, gf, bf) := toRgbf()
         max := Math.max(rf, gf, bf)
@@ -281,7 +281,7 @@ impl Color
     #[ConstExpr]
     func getBlendKeepAlpha(col0, col1: Color, factor: f32)->Color
     {
-        var result: retval = ?
+        var result: retval = undefined
         result.a = col0.a
         result.r = cast(u8) Math.lerp(cast(f32) col0.r, cast(f32) col1.r, factor)
         result.g = cast(u8) Math.lerp(cast(f32) col0.g, cast(f32) col1.g, factor)
@@ -293,7 +293,7 @@ impl Color
     #[ConstExpr]
     func getBlend(col0, col1: Color, factor: f32)->Color
     {
-        var result: retval = ?
+        var result: retval = undefined
         result.a = cast(u8) Math.lerp(cast(f32) col0.a, cast(f32) col1.a, factor)
         result.r = cast(u8) Math.lerp(cast(f32) col0.r, cast(f32) col1.r, factor)
         result.g = cast(u8) Math.lerp(cast(f32) col0.g, cast(f32) col1.g, factor)

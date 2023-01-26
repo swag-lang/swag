@@ -59,7 +59,7 @@ func genInit()
 
 func evaluateSolution(idxSrc, idxDst: u32)->f32
 {
-    var a, b: Pixel.Color = ?
+    var a, b: Pixel.Color = undefined
 
     a.r = g_Image0.pixels[(idxSrc*3)+0]
     a.g = g_Image0.pixels[(idxSrc*3)+1]

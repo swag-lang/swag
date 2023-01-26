@@ -81,7 +81,7 @@ struct Ihdr
     width:             u32
     height:            u32
     bitDepth:          u8
-    colorType:         ColorType = ?
+    colorType:         ColorType = undefined
     compressionMethod: u8
     filterMethod:      u8
     interlaceMethod:   u8

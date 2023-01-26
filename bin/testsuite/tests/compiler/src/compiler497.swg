@@ -10,7 +10,7 @@ enum EN : s32
 //#[Swag.PrintBc]
 #test
 {
-	var val : EN = ?
+	var val : EN = undefined
 
 	using EN
 	val = EN.Red

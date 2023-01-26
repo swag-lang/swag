@@ -11,7 +11,7 @@ func getChar(buffer: const ^u8)->{const ^u8, rune}
 		return {ptr, acast c}
 	}
 
-	var wc: rune = ?
+	var wc: rune = undefined
 	if ((c & 0xE0) == 0xC0)
 	{
 		wc = (c & 0x1F) << 6;

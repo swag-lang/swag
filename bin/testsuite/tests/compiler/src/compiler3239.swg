@@ -8,5 +8,5 @@ public struct SysCommandEvent3239
         Close
     }
 
-    sysKind: Kind = ?
+    sysKind: Kind = undefined
 }

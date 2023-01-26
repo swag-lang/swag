@@ -24,12 +24,12 @@ using XInput, Win32
 
 impl GamePadState
 {
-    private var mapButtons: [@countof(GamePadButton)] GamePadButton = ?
+    private var mapButtons: [@countof(GamePadButton)] GamePadButton = undefined
 
     // Compute the current state of the given pad index
     func update(using self, padIndex: u32) throw
     {
-        var state: XINPUT_STATE = ?
+        var state: XINPUT_STATE = undefined
         res := XInputGetState(padIndex, &state)
         switch res
         {

@@ -82,7 +82,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
                 }
 
                 // First rune is white, the rest blends to black
-                var color: Color = ?
+                var color: Color = undefined
                 if j == 0
                     color = Color.getBlend(Argb.Green, Argb.White, 0.5)
                 else

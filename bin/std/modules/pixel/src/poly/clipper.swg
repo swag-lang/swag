@@ -84,8 +84,8 @@ struct Edge
     curr:         IntPoint
     top:          IntPoint
     dx:           f64
-    polyType:     PolyType = ?
-    side:         EdgeSide = ?
+    polyType:     PolyType = undefined
+    side:         EdgeSide = undefined
     windDelta:    s32
     windCnt:      s32
     windCnt2:     s32
@@ -122,7 +122,7 @@ struct PolyNode
 {
     index:      u32
     isOpen:     bool
-    jointype:   JoinType = ?
+    jointype:   JoinType = undefined
     contour:    ClipperPath
     childs:     Array'*PolyNode
     parent:     *PolyNode
@@ -162,9 +162,9 @@ public struct Transform
     intersectList:          Array'*IntersectNode
     scanBeamList:           Array'CInt
     maximaList:             Array'CInt
-    clipFillType:           PolyFillType = ?
-    subjFillType:           PolyFillType = ?
-    clipType:               ClipType = ?
+    clipFillType:           PolyFillType = undefined
+    subjFillType:           PolyFillType = undefined
+    clipType:               ClipType = undefined
     currentLM:              uint
     activeEdges:            *Edge
     sortedEdges:            *Edge
@@ -718,7 +718,7 @@ impl Transform
     {
         horzEdge := hE
 
-        var dir: Direction = ?
+        var dir: Direction = undefined
         var horzLeft, horzRight: CInt
 
         isOpen := (horzEdge.windDelta == 0)
@@ -2257,7 +2257,7 @@ impl Transform
 
     mtd isContributing(edge: *Edge)->bool
     {
-        var pft, pft2: PolyFillType = ?
+        var pft, pft2: PolyFillType = undefined
         if edge.polyType == .Subject
         {
             pft = subjFillType
@@ -2815,7 +2815,7 @@ impl Transform
                 e2.windCnt2 = (e2.windCnt2 == 0) ? 1 : 0
         }
 
-        var e1FillType, e2FillType, e1FillType2, e2FillType2: PolyFillType = ?
+        var e1FillType, e2FillType, e1FillType2, e2FillType2: PolyFillType = undefined
         if e1.polyType == .Subject
         {
             e1FillType = subjFillType

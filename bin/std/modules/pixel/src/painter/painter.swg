@@ -97,16 +97,16 @@ struct ColorMask
 
 struct Command
 {
-    id: CommandId = ?
+    id: CommandId = undefined
     using params: union
     {
         clear:          struct{color: Color; }
         drawTriangles:  struct{start: u32; count: u32; }
         transform:      struct{tr: Transform2; }
         clippingRect:   struct{rect: Rectangle; }
-        clippingRegion: struct{mode: ClippingMode = ?; }
+        clippingRegion: struct{mode: ClippingMode = undefined; }
         font:           struct{fontRef: *Font; }
-        blendingMode:   struct{mode: BlendingMode = ?; }
+        blendingMode:   struct{mode: BlendingMode = undefined; }
         textureFont:    struct{font: *Font; atlasIndex: s32; }
         colorMask:      ColorMask
         renderTgt:      struct{tgt: *RenderTarget; paintAlpha: bool; }
@@ -124,10 +124,10 @@ struct Command
                 {
                     boundRect:          Vector4
                     textureRect:        Vector4
-                    type:               BrushType = ?
-                    hatch:              HatchStyle = ?
-                    uvMode:             UVMode = ?
-                    interpolationMode:  InterpolationMode = ?
+                    type:               BrushType = undefined
+                    hatch:              HatchStyle = undefined
+                    uvMode:             UVMode = undefined
+                    interpolationMode:  InterpolationMode = undefined
                     texture:            Texture
                 }
     }

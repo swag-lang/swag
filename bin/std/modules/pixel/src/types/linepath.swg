@@ -11,7 +11,7 @@ public enum ElementType
 
 public struct Element
 {
-    type:       ElementType = ?
+    type:       ElementType = undefined
     position:   Vector2
     p1, p2:     Vector2
 }
@@ -26,7 +26,7 @@ public struct LinePath
     serial:         s32
 
     // Flatten infos
-    flattenQuality: PaintQuality = ?
+    flattenQuality: PaintQuality = undefined
     isPolyOnly:     bool
     isFlatten:      bool
     bvMin:          Vector2
@@ -85,7 +85,7 @@ public impl LinePath
         if newEndPoint.isEqualEpsilon(endPoint)
             return
 
-        var elem: Element = ?
+        var elem: Element = undefined
         elem.type = .Line
         elem.position.set(x, y)
         elements.add(elem)
@@ -100,7 +100,7 @@ public impl LinePath
         if newEndPoint.isEqualEpsilon(endPoint)
             return
 
-        var elem: Element = ?
+        var elem: Element = undefined
         elem.type = .Curve
         elem.position.set(x, y)
         elements.add(elem)
@@ -115,7 +115,7 @@ public impl LinePath
         if newEndPoint.isEqualEpsilon(endPoint)
             return
 
-        var elem: Element = ?
+        var elem: Element = undefined
         elem.type = .Bezier1
         elem.position.set(x, y)
         elem.p1.set(ctx, cty)
@@ -131,7 +131,7 @@ public impl LinePath
         if newEndPoint.isEqualEpsilon(endPoint)
             return
 
-        var elem: Element = ?
+        var elem: Element = undefined
         elem.type = .Bezier2
         elem.position.set(x, y)
         elem.p1.set(ct1x, ct1y)
@@ -154,7 +154,7 @@ public impl LinePath
         if newEndPoint.isEqualEpsilon(endPoint)
             return
 
-        var elem: Element = ?
+        var elem: Element = undefined
         elem.type = .Arc
         elem.position.set(centerX, centerY)
 
@@ -360,7 +360,7 @@ public impl LinePath
                 flattenBezier(pos, elem.p1, elem.p2, quality)
 
             case Curve:
-                var p0, p1, p2, p3: Vector2 = ?
+                var p0, p1, p2, p3: Vector2 = undefined
                 if lastElem <= 1
                 {
                     flattenLine(pos)
@@ -446,7 +446,7 @@ impl LinePath
             a2 := 2.0 * t * it
             a3 := t * t
 
-            var point: Vector2 = ?
+            var point: Vector2 = undefined
             point.x = a1 * startPt.x + a2 * p1.x + a3 * pos.x
             point.y = a1 * startPt.y + a2 * p1.y + a3 * pos.y
 
@@ -480,7 +480,7 @@ impl LinePath
             a3 := 3.0 * t * t * it
             a4 := t * t * t
 
-            var point: Vector2 = ?
+            var point: Vector2 = undefined
             point.x = a1 * startPt.x + a2 * p1.x + a3 * p2.x + a4 * pos.x
             point.y = a1 * startPt.y + a2 * p1.y + a3 * p2.y + a4 * pos.y
 
@@ -508,7 +508,7 @@ impl LinePath
         {
             t  := (tmp[i].factor + tmp[i + 1].factor) * 0.5
 
-            var point: Vector2 = ?
+            var point: Vector2 = undefined
             point  = p0 * t * t * t
             point += p1 * t * t
             point += p2 * t
@@ -527,7 +527,7 @@ impl LinePath
 
     mtd flattenArc(pos, p1, p2: Vector2, quality: PaintQuality)
     {
-        var endPos: Vector2 = ?
+        var endPos: Vector2 = undefined
         endPos.x = pos.x + (Math.sin(p1.y) * p2.x)
         endPos.y = pos.y + (-Math.cos(p1.y) * p2.y)
 

@@ -67,7 +67,7 @@ public impl Image
     {
         #assert Reflection.hasInterface(@typeof(T), IImageDecoder)
 
-        var decoder: ImageDecoder = ?
+        var decoder: ImageDecoder = undefined
         decoder.type = @typeof(T)
         decoder.itf = @mkinterface(null, @typeof(T), IImageDecoder)
         decoders.add(decoder)

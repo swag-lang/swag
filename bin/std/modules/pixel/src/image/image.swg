@@ -7,7 +7,7 @@ struct Image
     size:               uint
     width, height:      s32
     width8:             s32
-    pf:                 PixelFormat = ?
+    pf:                 PixelFormat = undefined
     bpp:                u8  // Bits per pixel
     bpp8:               u8  // Bytes per pixel
 

@@ -131,7 +131,7 @@ impl IWnd for ColorPicker
             if !img.pixels.buffer
                 img = Image.create(cast(s32) clientRect.width, cast(s32) clientRect.height, .RGBA8)
 
-            var modeFill: Image.FillHslType = ?
+            var modeFill: Image.FillHslType = undefined
 
             if mode == .AlphaHorz
             {

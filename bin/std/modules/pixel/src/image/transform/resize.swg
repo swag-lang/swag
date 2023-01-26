@@ -139,7 +139,7 @@ namespace ResizeTools
     {
         filterWidth := getFilterWidth(rmode)
 
-        var cscale, width: f64 = ?
+        var cscale, width: f64 = undefined
         if scale < 1.0
         {
             width = filterWidth / scale

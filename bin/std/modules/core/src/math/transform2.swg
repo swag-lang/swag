@@ -30,7 +30,7 @@ impl Transform2
     // Creates a rotation matix, with a given center of rotation
     func createRotation(angle: f32, centerX, centerY: f32)->Transform2
     {
-        var result: retval = ?
+        var result: retval = undefined
         using result
 
         s := Math.sin(angle)
@@ -51,7 +51,7 @@ impl Transform2
     // Creates a scale matix, with a given center
     func createScale(scaleX, scaleY: f32, centerX, centerY: f32)->Transform2
     {
-        var result: retval = ?
+        var result: retval = undefined
         using result
 
         m11 = scaleX
@@ -67,7 +67,7 @@ impl Transform2
     // Creates a translation matix
     func createTranslation(x, y: f32)->Transform2
     {
-        var result: retval = ?
+        var result: retval = undefined
         using result
 
         m11 = 1

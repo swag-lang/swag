@@ -87,7 +87,7 @@ impl IWnd for Header
         // Sort mark
         if sortMark != 0 and sortColumn == idx
         {
-            var icon: Icon = ?
+            var icon: Icon = undefined
             if sortMark == 1
                 icon = theme.getIcon24(ThemeIcons24.SortArrowDown)
             else

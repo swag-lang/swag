@@ -48,7 +48,7 @@ impl Image
             params := cast(*@mktype(f)) userData
             mode := params.rmode
 
-            var color: u8 = ?
+            var color: u8 = undefined
             #[Swag.Complete]
             switch params.value
             {

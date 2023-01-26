@@ -9,7 +9,7 @@ struct ST
 //#[Swag.Inline]
 func toto(x: retval)->ST
 {
-    var res: retval = ?
+    var res: retval = undefined
     res.x = 20
     return res
 }

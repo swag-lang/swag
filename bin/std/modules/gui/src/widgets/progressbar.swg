@@ -27,9 +27,9 @@ impl IWnd for ProgressBar
         colors  := getThemeColors()
         rects   := getThemeRects()
 
-        var colorBk:     Color = ?
-        var colorBorder: Color = ?
-        var colorMark:   Color = ?
+        var colorBk:     Color = undefined
+        var colorBorder: Color = undefined
+        var colorMark:   Color = undefined
 
         switch
         {

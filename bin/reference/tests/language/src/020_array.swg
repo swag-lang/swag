@@ -61,7 +61,7 @@
 
     // But for speed, you can force the array to be not initialized with '?'
     {
-        var array: [100] s32 = ?
+        var array: [100] s32 = undefined
     }
 
     // An array can have multiple dimensions

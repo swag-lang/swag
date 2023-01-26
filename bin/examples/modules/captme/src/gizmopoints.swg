@@ -56,7 +56,7 @@ impl GizmoPoints
                     view.getApp().popCursor()
                 hotAnchor = Swag.U32.Max
 
-                var rect: Math.Rectangle = ?
+                var rect: Math.Rectangle = undefined
                 visit c, i: anchors
                 {
                     rect.x = c.x - anchorSize * 0.5

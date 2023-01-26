@@ -24,7 +24,7 @@ impl MyStruct
             #macro
             {
                 // @alias0 will be the value
-                var @alias0: s32 = ?
+                var @alias0: s32 = undefined
 
                 // As this code is in the caller scope, with need to add a backtick before 'idx' to reference the
                 // variable of this function (and not a potential variable in the caller scope)
@@ -79,7 +79,7 @@ impl MyStruct
         {
             #macro
             {
-                var @alias0: s32 = ?
+                var @alias0: s32 = undefined
                 switch `idx
                 {
                 case 0: @alias0 = `self.z

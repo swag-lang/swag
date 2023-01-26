@@ -22,9 +22,9 @@ enum RichEditForm
 
 struct RichEditMapping
 {
-    key:        Input.Key = ?
-    modifiers:  Input.KeyModifiers = ?
-    command:    RichEditCommand = ?
+    key:        Input.Key = undefined
+    modifiers:  Input.KeyModifiers = undefined
+    command:    RichEditCommand = undefined
 }
 
 struct RichEditCtrl

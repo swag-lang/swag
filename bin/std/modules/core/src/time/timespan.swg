@@ -33,7 +33,7 @@ impl TimeSpan
     // Creates a TimeSpan with the given DateTime
     func from(dateTime: DateTime)->TimeSpan
     {
-        var result: retval = ?
+        var result: retval = undefined
         using result, dateTime
         ticks = dateToTicks(year, month, day)
         ticks += timeToTicks(hour, minute, second, millisecond)
@@ -43,7 +43,7 @@ impl TimeSpan
     // Converts a TimeSpan to a DateTime
     mtd toDateTime()->DateTime
     {
-        var dateTime: retval = ?
+        var dateTime: retval = undefined
         using dateTime
         (year, month, day) = ticksToDate(ticks)
         (hour, minute, second, millisecond) = ticksToTime(ticks)

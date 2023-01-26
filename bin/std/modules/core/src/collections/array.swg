@@ -672,7 +672,7 @@ impl Array
     mtd popBack()->T
     {
         Debug.assert(count > 0, "array is empty")
-        var result: retval = ?
+        var result: retval = undefined
         result =,nodrop,moveraw buffer[count - 1]
         count -= 1
         return result

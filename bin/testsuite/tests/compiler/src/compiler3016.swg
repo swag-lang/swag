@@ -13,6 +13,6 @@ impl IntPoint
 
 func GetBottomPt()
 {
-    var pp: IntPoint = ?
+    var pp: IntPoint = undefined
     while pp == pp {}
 }

@@ -839,7 +839,7 @@ impl Decoder
         d0 := scanLine0.buffer
         d1 := scanLine1.buffer
 
-        var y: ^u8 = ?
+        var y: ^u8 = undefined
         if row < 8
             y = pSampleBuf + row * 8
         else
@@ -921,7 +921,7 @@ impl Decoder
         d0 := scanLine0.buffer
         d1 := scanLine1.buffer
 
-        var y: ^u8 = ?
+        var y: ^u8 = undefined
         if row < 8
             y = pSampleBuf + row * 8
         else
@@ -1060,7 +1060,7 @@ impl Decoder
 
     mtd createLookUps()
     {
-        var fix: [4] s32 = ?
+        var fix: [4] s32 = undefined
         fix[0] = cast(s32) ((1.40200 / 2) * (1 << 16) + 0.5)
         fix[1] = cast(s32) ((1.77200 / 2) * (1 << 16) + 0.5)
         fix[2] = cast(s32) -((0.71414 / 2) * (1 << 16) + 0.5)

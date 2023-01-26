@@ -7,7 +7,7 @@
         sum := 0'uint
         loop i: 3
         {
-            var T: typeinfo = ?
+            var T: typeinfo = undefined
             switch i
             {
             case 0: T = f32

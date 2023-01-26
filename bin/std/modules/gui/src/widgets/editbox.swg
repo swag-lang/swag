@@ -103,9 +103,9 @@ impl IWnd for EditBox
 
         var subRectBk:      *ThemeImageRect
         var subRectBorder:  *ThemeImageRect
-        var colorBk:        Color = ?
-        var colorBorder:    Color = ?
-        var colorText:      Color = ?
+        var colorBk:        Color = undefined
+        var colorBorder:    Color = undefined
+        var colorText:      Color = undefined
 
         switch form
         {
@@ -597,7 +597,7 @@ private impl EditBox
 
     mtd getCaretPos()->Math.Rectangle
     {
-        var result: retval = ?
+        var result: retval = undefined
 
         clientRect := getEditRect()
         if icon.isValid()

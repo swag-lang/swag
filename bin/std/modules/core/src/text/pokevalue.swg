@@ -124,72 +124,72 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
     switch type
     {
     case s8:
-        var val: s8 = ?
+        var val: s8 = undefined
         (val, eat, ovf) = try parseS8(one)
         if ovf throw ParseErrorOverflow
         dref cast(*s8) patch = val
 
     case s16:
-        var val: s16 = ?
+        var val: s16 = undefined
         (val, eat, ovf) = try parseS16(one)
         if ovf throw ParseErrorOverflow
         dref cast(*s16) patch = val
 
     case s32:
-        var val: s32 = ?
+        var val: s32 = undefined
         (val, eat, ovf) = try parseS32(one)
         if ovf throw ParseErrorOverflow
         dref cast(*s32) patch = val
 
     case s64, int:
-        var val: s64 = ?
+        var val: s64 = undefined
         (val, eat, ovf) = try parseS64(one)
         if ovf throw ParseErrorOverflow
         dref cast(*s64) patch = val
 
     case u8:
-        var val: u8 = ?
+        var val: u8 = undefined
         (val, eat, ovf) = try parseU8(one)
         if ovf throw ParseErrorOverflow
         dref cast(*u8) patch = val
 
     case u16:
-        var val: u16 = ?
+        var val: u16 = undefined
         (val, eat, ovf) = try parseU16(one)
         if ovf throw ParseErrorOverflow
         dref cast(*u16) patch = val
 
     case u32:
-        var val: u32 = ?
+        var val: u32 = undefined
         (val, eat, ovf) = try parseU32(one)
         if ovf throw ParseErrorOverflow
         dref cast(*u32) patch = val
 
     case u64, uint:
-        var val: u64 = ?
+        var val: u64 = undefined
         (val, eat, ovf) = try parseU64(one)
         if ovf throw ParseErrorOverflow
         dref cast(*u64) patch = val
 
     case f32:
-        var val: f32 = ?
+        var val: f32 = undefined
         (val, eat, ovf) = try parseF32(one)
         if ovf throw ParseErrorOverflow
         dref cast(*f32) patch = val
 
     case f64:
-        var val: f64 = ?
+        var val: f64 = undefined
         (val, eat, ovf) = try parseF64(one)
         if ovf throw ParseErrorOverflow
         dref cast(*f64) patch = val
 
     case bool:
-        var val: bool = ?
+        var val: bool = undefined
         (val, eat) = try parseBool(one)
         dref cast(*bool) patch = val
 
     case rune:
-        var val: rune = ?
+        var val: rune = undefined
         (val, eat) = try parseRune(one)
         dref cast(*rune) patch = val
 

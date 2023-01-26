@@ -4,7 +4,7 @@
 #[Swag.Safety("sanity", true)]
 func toto(v: bool)
 {
-    var a, b: s32 = ?
+    var a, b: s32 = undefined
     if v
         a = 0
     else

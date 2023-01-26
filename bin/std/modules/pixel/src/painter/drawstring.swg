@@ -155,7 +155,7 @@ impl Painter
         y := Math.round(top + font.ascent)
 
         // Compute text extent only if necessary
-        var boundRect: StringMetrics = ?
+        var boundRect: StringMetrics = undefined
         if under != .None or brush.type != .SolidColor
             boundRect = measureString(x, y, text, font)
 

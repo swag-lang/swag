@@ -194,7 +194,7 @@ impl Painter
     {
         v0 := p
 
-        var v1, v2: Vector2 = ?
+        var v1, v2: Vector2 = undefined
         if d1.x * d2.y - d1.y * d2.x < 0
         {
             v0 += d1 * 0.25
@@ -217,7 +217,7 @@ impl Painter
 
     mtd drawRound(center: Vector2, radius: f32, angle0, angle1: f32, pen: Pen)
     {
-        var startPos, endPos: Vector2 = ?
+        var startPos, endPos: Vector2 = undefined
         startPos.x = center.x + (Math.cos(angle0) * radius)
         startPos.y = center.y + (Math.sin(angle0) * radius)
         endPos.x = center.x + (Math.cos(angle1) * radius)
@@ -231,7 +231,7 @@ impl Painter
         sharedRoundTmp.add({angle0, startPos})
         sharedRoundTmp.add({angle1, endPos})
 
-        var point: Math.Vector2 = ?
+        var point: Math.Vector2 = undefined
         for i := 0; i < sharedRoundTmp.count - 1; i += 1
         {
             angle := (sharedRoundTmp[i].factor + sharedRoundTmp[i + 1].factor) * 0.5
@@ -258,7 +258,7 @@ impl Painter
 
     mtd drawJoinRound(p, d1, d2: Vector2, pen: Pen)
     {
-        var angle0, angle1: f32 = ?
+        var angle0, angle1: f32 = undefined
         if d1.x * d2.y - d1.y * d2.x < 0
         {
             angle0 = Math.atan2(-d1.y, -d1.x)
@@ -305,7 +305,7 @@ impl Painter
 
         v0 := p
 
-        var v1, v2, v3: Vector2 = ?
+        var v1, v2, v3: Vector2 = undefined
         if d1.x * d2.y - d1.y * d2.x < 0
         {
             v0 += d1 * 0.25

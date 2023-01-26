@@ -6,7 +6,7 @@ using Win32, Math
 // Returns the current mouse position
 func getMousePos()->Point
 {
-    var pt: POINT = ?
+    var pt: POINT = undefined
     GetCursorPos(&pt)
     return Point{cast(f32) pt.x, cast(f32) pt.y}
 }

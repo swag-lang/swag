@@ -17,7 +17,7 @@ impl CStr
 //#[Swag.Macro]
 func cstr(x: string)->CStr
 {
-    var tmp: retval = ?
+    var tmp: retval = undefined
     countof := @countof(x)
     dataof := @dataof(x)
     tmp.length = countof

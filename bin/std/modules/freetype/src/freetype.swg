@@ -305,7 +305,7 @@ enum FT_Pixel_Mode
     FT_PIXEL_MODE_MAX
 }
 
-var Errors: [0xFF] string = ?
+var Errors: [0xFF] string = undefined
 #init
 {
     Errors[0x01] = "cannot open resource"

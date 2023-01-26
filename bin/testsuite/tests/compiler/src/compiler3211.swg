@@ -20,5 +20,5 @@ struct KeyEvent
 {
     using base: Event
     modifiers:  KeyModifiers = .None
-    key:        Key = ?
+    key:        Key = undefined
 }

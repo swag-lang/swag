@@ -1,4 +1,4 @@
-var X: u32 = ?
+var X: u32 = undefined
 
 #[Swag.Compiler]
 func set()

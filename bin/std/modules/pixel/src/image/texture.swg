@@ -4,7 +4,7 @@ using Ogl, Core
 struct Texture
 {
     handle:         TextureHandle
-    pf:             PixelFormat = ?
+    pf:             PixelFormat = undefined
     width, height:  s32
     valid:          bool
 }

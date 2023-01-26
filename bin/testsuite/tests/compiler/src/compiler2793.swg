@@ -30,7 +30,7 @@ func titi()
 //#[Swag.PrintBc]
 #test
 {
-    var x: AA = ?
+    var x: AA = undefined
     y := BB.A
 
     titi()

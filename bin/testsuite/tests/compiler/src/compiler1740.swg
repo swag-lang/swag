@@ -4,6 +4,6 @@
 #test
 {
     {
-        const array: s32 = ?
+        const array: s32 = undefined
     }
 }

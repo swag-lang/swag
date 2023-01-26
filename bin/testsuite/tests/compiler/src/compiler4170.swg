@@ -5,7 +5,7 @@
 func toto(param: s32)
 {
     var pix: [4] s32
-    var color: u8 = ?
+    var color: u8 = undefined
 
     #[Swag.Complete]
     switch param

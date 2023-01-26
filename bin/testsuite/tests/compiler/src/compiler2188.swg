@@ -1,7 +1,7 @@
 #[Swag.Inline]
 func toFloat() -> {a: f32, r: f32, g: f32}//, b: f32}
 {
-    var result: retval = ?
+    var result: retval = undefined
     result.a = 1
     result.r = 2
     result.g = 3

@@ -86,7 +86,7 @@ impl Vector2
         e := q1q0.dot(p0q0)
         det := a * c - b * b
 
-        var s, t: f32 = ?
+        var s, t: f32 = undefined
         if det > 0
         {
             bte := b * e

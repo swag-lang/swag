@@ -130,10 +130,10 @@ impl IWnd for IconButton
         metrics := getThemeMetrics()
 
         var subRectBk:      *ThemeImageRect
-        var colorBk:        Color = ?
-        var colorIcon:      Color = ?
-        var colorText:      Color = ?
-        var colorChecked:   Color = ?
+        var colorBk:        Color = undefined
+        var colorIcon:      Color = undefined
+        var colorText:      Color = undefined
+        var colorChecked:   Color = undefined
 
         switch form
         {

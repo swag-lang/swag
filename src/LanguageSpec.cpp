@@ -283,6 +283,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("true", TokenId::KwdTrue);
     keywords.add("false", TokenId::KwdFalse);
     keywords.add("null", TokenId::KwdNull);
+    keywords.add("undefined", TokenId::KwdUndefined);
 
     keywords.add("using", TokenId::KwdUsing);
     keywords.add("with", TokenId::KwdWith);

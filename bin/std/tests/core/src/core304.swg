@@ -5,7 +5,7 @@ using Core
     enum EE { R; G; B; }
     struct TT
     {
-        val0: EE = ?
+        val0: EE = undefined
     }
 
     var x: TT

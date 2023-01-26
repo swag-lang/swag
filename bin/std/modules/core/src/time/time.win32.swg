@@ -12,7 +12,7 @@ var g_PerfCounterFreq: u64
 // Get current time precise value
 public func nowPrecise()->u64
 {
-    var counter: u64 = ?
+    var counter: u64 = undefined
     QueryPerformanceCounter(acast &counter)
     return counter
 }

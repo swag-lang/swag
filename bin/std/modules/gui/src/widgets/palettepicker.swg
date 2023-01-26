@@ -21,7 +21,7 @@ impl IWnd for PalettePicker
         painter := bc.painter
         colors  := getThemeColors()
 
-        var colorBorder: Color = ?
+        var colorBorder: Color = undefined
 
         clientRect := getClientRectPadding()
         palPos.resize(pal.count)

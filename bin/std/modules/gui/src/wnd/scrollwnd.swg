@@ -236,7 +236,7 @@ public impl IWnd for ScrollWnd
                 clientRect.y = posBoxV
                 clientRect.height = sizeBoxV
 
-                var colorBox: Color = ?
+                var colorBox: Color = undefined
                 if isHotV and isPressedV
                     colorBox = colors.scrollBar_PressedBox
                 elif isHotV
@@ -263,7 +263,7 @@ public impl IWnd for ScrollWnd
                 clientRect.x = posBoxH
                 clientRect.width = sizeBoxH
 
-                var colorBox: Color = ?
+                var colorBox: Color = undefined
                 if isHotH and isPressedH
                     colorBox = colors.scrollBar_PressedBox
                 elif isHotH
@@ -414,7 +414,7 @@ public impl ScrollWnd
 
     private mtd getScrollPosPrivate(x, y: f32)->Math.Point
     {
-        var newSP: Math.Point = ?
+        var newSP: Math.Point = undefined
 
         clientRect := view.getClientRect()
         newSP.x = Math.max(x, 0)

@@ -1199,7 +1199,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     }
 
     case AstNodeKind::ExplicitNoInit:
-        concat.addChar('?');
+        CONCAT_FIXED_STR(concat, "undefined");
         break;
 
     case AstNodeKind::Index:

@@ -5,7 +5,7 @@ struct Test1
     coucous32: s32
     coucouu64: u64
     coucoub:   bool
-    coucoue:   EnumFlags = ?
+    coucoue:   EnumFlags = undefined
 }
 
 enum Enum           { Red; Green; Blue; }
@@ -19,12 +19,12 @@ struct Test2
     coucou1: f32
     coucou2: f64
     coucou3: String
-    coucou4: Enum = ?
+    coucou4: Enum = undefined
     coucou5: rune
     coucou6: Array'rune
     coucou7: Array'String
     coucou8: [4] f32
-    coucou9: Enum2 = ?
+    coucou9: Enum2 = undefined
 }
 
 #test

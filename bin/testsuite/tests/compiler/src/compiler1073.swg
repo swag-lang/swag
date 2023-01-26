@@ -3,7 +3,7 @@
 	@assert(G == 100)
 }
 
-var G: s32 = ?
+var G: s32 = undefined
 
 #run
 {

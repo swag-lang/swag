@@ -22,8 +22,8 @@
 
         func getWhite()->RGB
         {
-            // To avoid the clear of the returned struct, we use = ?
-            var result: retval = ?
+            // To avoid the clear of the returned struct, we use = undefined
+            var result: retval = undefined
             result.x = 0.5
             result.y = 0.1
             result.z = 1.0
@@ -42,8 +42,8 @@
     {
         func toto()->[255] s32
         {
-            // To avoid the clear of the array, we use = ?
-            var result: retval = ?
+            // To avoid the clear of the array, we use = undefined
+            var result: retval = undefined
             loop i: 255
                 result[i] = i
             return result

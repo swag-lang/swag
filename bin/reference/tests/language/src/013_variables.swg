@@ -36,10 +36,10 @@
         @assert(c == 0)
     }
 
-    // If you do not want the variable to be initialized, you can assign it with '?'
+    // If you do not want the variable to be initialized, you can assign it with 'undefined'
     {
-        var a: bool = ?
-        var b: string = ?
+        var a: bool = undefined
+        var b: string = undefined
     }
 
     // Type is optional if it can be deduced from the assignment

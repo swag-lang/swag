@@ -6,6 +6,6 @@ struct A { a, b, c: s32; }
 #[Swag.Safety("sanity", true)]
 func toto(v: bool)
 {
-    var a: A = ?
+    var a: A = undefined
     b := a
 }

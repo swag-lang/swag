@@ -18,8 +18,8 @@ func touch(fullname: string) throw
     hFile := CreateFileW(@dataof(winPath), FILE_WRITE_ATTRIBUTES, 0, null, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, null)
     defer CloseHandle(hFile)
 
-    var ft: FILETIME = ?
-    var st: SYSTEMTIME = ?
+    var ft: FILETIME = undefined
+    var st: SYSTEMTIME = undefined
     GetSystemTime(&st)
     SystemTimeToFileTime(&st, &ft)
     SetFileTime(hFile, null, null, &ft)

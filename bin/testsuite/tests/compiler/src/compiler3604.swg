@@ -23,8 +23,8 @@ impl I for A
 
     mtd toto()
     {
-        var x: XX = ?
-        var x1: XX1 = ?
-        var x2: XX2 = ?
+        var x: XX = undefined
+        var x1: XX1 = undefined
+        var x2: XX2 = undefined
     }
 }

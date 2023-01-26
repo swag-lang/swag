@@ -15,7 +15,7 @@ impl Image
         st := Math.clamp(strength, 0.0, 1.0)
 
         // Precompute bgr depending on luminance
-        var convArr: [256, 3] f32 = ?
+        var convArr: [256, 3] f32 = undefined
 
         if pf == .BGR8 or pf == .BGRA8
         {

@@ -608,7 +608,7 @@ private impl ListView
             painter.fillRect(rect, colors.listItem_AlternateBk)
         }
 
-        var colorText, colorExpand: Color = ?
+        var colorText, colorExpand: Color = undefined
         switch
         {
             case bc.isDisabled:
@@ -628,7 +628,7 @@ private impl ListView
         var format: RichStringFormat
         visit item, idxItem: line.items
         {
-            var colorFg: Color = ?
+            var colorFg: Color = undefined
             if item.colorFg.a and !isSelected
                 colorFg = item.colorFg
             else
@@ -922,7 +922,7 @@ impl ListCtrl
     {
         clientRect := scrollWnd.getClientRectPadding()
 
-        var scrollWidth: f32 = ?
+        var scrollWidth: f32 = undefined
         if horizontalExtent > 0
             scrollWidth = horizontalExtent
         elif header

@@ -22,7 +22,7 @@ public impl Image
     {
         #assert Reflection.hasInterface(@typeof(T), IImageEncoder)
 
-        var encoder: ImageEncoder = ?
+        var encoder: ImageEncoder = undefined
         encoder.type = @typeof(T)
         encoder.itf = @mkinterface(null, @typeof(T), IImageEncoder)
         encoders.add(encoder)

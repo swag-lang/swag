@@ -199,7 +199,7 @@ func compare(src, dst: const [..] rune, ignoreCase = false, len: uint = 0)->s32
     length := @countof(src)
     otherLength := @countof(dst)
 
-    var minLen: uint = ?
+    var minLen: uint = undefined
     if len
     {
         if length < len

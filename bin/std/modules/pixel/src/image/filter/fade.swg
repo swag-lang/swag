@@ -9,9 +9,9 @@ impl Image
         if pf.channels() < 3 or pf.bitDepth() != 8
             return
 
-        var convArrR: [256] u8 = ?
-        var convArrG: [256] u8 = ?
-        var convArrB: [256] u8 = ?
+        var convArrR: [256] u8 = undefined
+        var convArrG: [256] u8 = undefined
+        var convArrB: [256] u8 = undefined
 
         if pf == .BGR8 or pf == .BGRA8
         {

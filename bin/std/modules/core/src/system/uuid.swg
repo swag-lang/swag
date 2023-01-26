@@ -20,7 +20,7 @@ private func initRng()
 {
     if !g_RngInit
     {
-        var seed: [3] u64 = ?
+        var seed: [3] u64 = undefined
         seed[0] = Time.nowMilliseconds()
         seed[1] = Time.nowMicroseconds()
         seed[2] = Hardware.getMacAddress()
@@ -40,7 +40,7 @@ impl UUID
     func getRandom()->UUID
     {
         initRng()
-        var result: retval = ?
+        var result: retval = undefined
         result.val64[0] = g_Rng.nextU64()
         result.val64[1] = g_Rng.nextU64()
         result.val8[6] = (result.val8[6] & 0x0F) | 0x40 // Version 4

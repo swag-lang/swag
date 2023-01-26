@@ -152,14 +152,14 @@ struct KeyEvent
 {
     using base: Event
     modifiers:  Input.KeyModifiers = None
-    key:        Input.Key = ?
+    key:        Input.Key = undefined
     char:       rune
 }
 
 struct MouseEvent
 {
     using base: Event
-    button:     Input.MouseButton = ?
+    button:     Input.MouseButton = undefined
     surfacePos: Math.Point
     move:       Math.Point
     modifiers:  Input.KeyModifiers = None
@@ -198,7 +198,7 @@ struct SysCommandEvent
         User
     }
 
-    sysKind: Kind = ?
+    sysKind: Kind = undefined
 }
 
 struct SetThemeEvent

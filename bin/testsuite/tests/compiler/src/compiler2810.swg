@@ -3,6 +3,6 @@
 #test
 {
     enum V { A; B; }
-    var xx: V = ?
+    var xx: V = undefined
     xx.A
 }

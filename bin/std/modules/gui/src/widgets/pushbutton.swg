@@ -28,9 +28,9 @@ impl IWnd for PushButton
 
         var subRectBk:      *ThemeImageRect
         var subRectBorder:  *ThemeImageRect
-        var colorBk:        Color = ?
-        var colorBorder:    Color = ?
-        var colorText:      Color = ?
+        var colorBk:        Color = undefined
+        var colorBorder:    Color = undefined
+        var colorText:      Color = undefined
 
         if form == .Default
         {

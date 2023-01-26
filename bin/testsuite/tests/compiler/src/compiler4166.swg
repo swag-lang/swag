@@ -5,7 +5,7 @@
 #[Swag.Safety("sanity", true)]
 func toto()
 {
-    var a: s32 = ?
+    var a: s32 = undefined
     var ptr: *s32 = &a
     dref ptr += 1
 }

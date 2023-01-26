@@ -2,7 +2,7 @@
 #global namespace Console
 using Win32
 
-var g_ColorToWin: [@countof(Color)] u16 = ?
+var g_ColorToWin: [@countof(Color)] u16 = undefined
 
 #[Swag.Compiler]
 func colorToWin()

@@ -1165,8 +1165,8 @@ bool SyntaxJob::doInitializationExpression(Token& forToken, AstNode* parent, Ast
 {
     PushSyntaxContextFlags cf(this, CONTEXT_FLAG_EXPRESSION);
 
-    // var x = ? : not initialized
-    if (token.id == TokenId::SymQuestion)
+    // var x: type = undefined => not initialized
+    if (token.id == TokenId::KwdUndefined)
     {
         auto node         = Ast::newNode<AstNode>(this, AstNodeKind::ExplicitNoInit, sourceFile, parent);
         node->semanticFct = SemanticJob::resolveExplicitNoInit;

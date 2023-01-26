@@ -45,11 +45,11 @@ impl IWnd for Slider
         colors  := getThemeColors()
         rects   := getThemeRects()
 
-        var colorBkLeft:   Color = ?
-        var colorBkMiddle: Color = ?
-        var colorBkRight:  Color = ?
-        var colorMark1:    Color = ?
-        var colorMark2:    Color = ?
+        var colorBkLeft:   Color = undefined
+        var colorBkMiddle: Color = undefined
+        var colorBkRight:  Color = undefined
+        var colorMark1:    Color = undefined
+        var colorMark2:    Color = undefined
 
         if bc.isDisabled
         {
@@ -159,7 +159,7 @@ impl IWnd for Slider
             {
                 posStep := getPosBoxAt(x, metrics.slider_StepSize)
 
-                var colorStep: Color = ?
+                var colorStep: Color = undefined
                 if isHot1 or isHot2 or isMoving
                     colorStep = colors.slider_HotStepBk
                 elif x <= value1 and (sliderFlags & .HilightBar)

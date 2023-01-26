@@ -58,7 +58,7 @@ func(T) quickSort(values: [..] T, cb: closure(T, T)->s32)
         set2 := end - (high + 1)
         if set1 > 0 and set2 > 0
         {
-            var first, last: int = ?
+            var first, last: int = undefined
             if set1 <= set2
             {
                 first = begin

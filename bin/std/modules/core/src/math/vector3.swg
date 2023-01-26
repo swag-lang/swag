@@ -209,7 +209,7 @@ impl Vector3
     // Returns a vector which is the 'min' of two vectors
     func min(a, b: Self)->Self
     {
-        var result: retval = ?
+        var result: retval = undefined
         result.x = Math.min(a.x, b.x)
         result.y = Math.min(a.y, b.y)
         result.z = Math.min(a.z, b.z)
@@ -219,7 +219,7 @@ impl Vector3
     // Returns a vector which is the 'min' of two vectors
     func max(a, b: Self)->Self
     {
-        var result: retval = ?
+        var result: retval = undefined
         result.x = Math.max(a.x, b.x)
         result.y = Math.max(a.y, b.y)
         result.z = Math.max(a.z, b.z)

@@ -63,7 +63,7 @@ func timeToTicks(hour, minute, second, millisecond: u16)->Ticks
 // Convert a 64 bits tick value to a time
 func ticksToTime(ticks: Ticks) -> {hour: u16, minute: u16, second: u16, millisecond: u16}
 {
-    var result: retval = ?
+    var result: retval = undefined
     result.hour = acast ((ticks / TicksPerHour) % 24)
     result.minute = acast ((ticks / TicksPerMinute) % 60)
     result.second = acast ((ticks / TicksPerSecond) % 60)
@@ -120,7 +120,7 @@ func ticksToDate(ticks: Ticks) -> {year: u16, month: u16, day: u16}
     // m = 1-based month number
     while n >= days[m] m += 1
 
-    var result: retval = ?
+    var result: retval = undefined
     result.year  = acast (y400*400 + y100*100 + y4*4 + y1 + 1)
     result.month = acast (m)
     result.day   = acast (n - days[m-1] + 1)

@@ -141,15 +141,15 @@ const StdAcChrominanceValues: [] u8 = [
     0xe2, 0xe3, 0xe4, 0xe5, 0xe6, 0xe7, 0xe8, 0xe9, 0xea, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9, 0xfa
 ]
 
-var TabYR:   [256] s32 = ?
-var TabYG:   [256] s32 = ?
-var TabYB:   [256] s32 = ?
-var TabCbR:  [256] s32 = ?
-var TabCbG:  [256] s32 = ?
-var TabCbB:  [256] s32 = ?
-var TabCrR:  [256] s32 = ?
-var TabCrG:  [256] s32 = ?
-var TabCrB:  [256] s32 = ?
+var TabYR:   [256] s32 = undefined
+var TabYG:   [256] s32 = undefined
+var TabYB:   [256] s32 = undefined
+var TabCbR:  [256] s32 = undefined
+var TabCbG:  [256] s32 = undefined
+var TabCbB:  [256] s32 = undefined
+var TabCrR:  [256] s32 = undefined
+var TabCrG:  [256] s32 = undefined
+var TabCrB:  [256] s32 = undefined
 }
 
 // Precalculate YCbCr tables
@@ -252,7 +252,7 @@ impl Encoder
                 }
             }
 
-            var lastcolor: ColorRGB = ?
+            var lastcolor: ColorRGB = undefined
             Memory.copy(&lastcolor, pdst + nrline * xDiv8 + imageX - 1, 3)
             for column := imageX; column < xDiv8; column += 1
                 Memory.copy(pdst + nrline * xDiv8 + column, &lastcolor, 3)

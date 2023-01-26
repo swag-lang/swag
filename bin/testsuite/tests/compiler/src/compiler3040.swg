@@ -1,4 +1,4 @@
-var CPT: s32 = ?
+var CPT: s32 = undefined
 
 struct(T: const [..] typeinfo) AA
 {

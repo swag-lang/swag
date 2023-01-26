@@ -421,7 +421,7 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
     }
 
     const Tbl = "0123456789ABCDEF"
-    var tmp: [64] u8 = ?
+    var tmp: [64] u8 = undefined
     cpt := 63'u32
 
     // Special case for the lower digit of Swag.S64.Min

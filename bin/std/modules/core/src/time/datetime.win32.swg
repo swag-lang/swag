@@ -22,10 +22,10 @@ public impl DateTime
     // Returns a DateTime containing the current date and time
     func now()->DateTime
     {
-        var systemTime: SYSTEMTIME = ?
+        var systemTime: SYSTEMTIME = undefined
         GetLocalTime(&systemTime)
 
-        var result: retval = ?
+        var result: retval = undefined
         result.setSYSTEMTIME(systemTime)
         return result
     }
@@ -33,7 +33,7 @@ public impl DateTime
     // Initialize the structure with the current local date and time
     mtd setNow()
     {
-        var systemTime: SYSTEMTIME = ?
+        var systemTime: SYSTEMTIME = undefined
         GetLocalTime(&systemTime)
         setSYSTEMTIME(systemTime)
     }

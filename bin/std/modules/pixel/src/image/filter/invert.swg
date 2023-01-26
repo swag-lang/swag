@@ -9,7 +9,7 @@ impl Image
         if pf.channels() < 3 or pf.bitDepth() != 8
             return
 
-        var convArr: [256] u8 = ?
+        var convArr: [256] u8 = undefined
         loop i: 256 convArr[i] = cast(u8) (255 - i)
 
         f := &convArr[0]
