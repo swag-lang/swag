@@ -614,6 +614,42 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveIntrinsicMakeType(SemanticContext* context)
+{
+    auto node     = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
+    auto expr     = node->childs.front();
+    auto typeInfo = expr->typeInfo;
+
+    SWAG_CHECK(checkIsConstExpr(context, typeInfo, expr));
+    SWAG_VERIFY(!expr->typeInfo->isKindGeneric(), context->report({expr, Err(Err0810)}));
+
+    expr->flags |= AST_NO_BYTECODE;
+
+    // @mktype on a typeinfo will give back the original compiler type
+    if (typeInfo->isPointerToTypeInfo() &&
+        expr->computedValue &&
+        expr->computedValue->storageOffset != UINT32_MAX &&
+        expr->computedValue->storageSegment != nullptr)
+    {
+        auto storageSegment = expr->computedValue->storageSegment;
+        auto addr           = storageSegment->address(expr->computedValue->storageOffset);
+        auto newTypeInfo    = context->sourceFile->module->typeTable.getRealType(storageSegment, (ConcreteTypeInfo*) addr);
+        if (newTypeInfo)
+            typeInfo = newTypeInfo;
+    }
+
+    // Should be a lambda
+    if (typeInfo->isFuncAttr() && !(typeInfo->flags & TYPEINFO_FUNC_IS_ATTR))
+    {
+        typeInfo         = typeInfo->clone();
+        typeInfo->kind   = TypeInfoKind::LambdaClosure;
+        typeInfo->sizeOf = sizeof(void*);
+    }
+
+    node->typeInfo = typeInfo;
+    return true;
+}
+
 bool SemanticJob::resolveIntrinsicTypeOf(SemanticContext* context)
 {
     auto node     = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
@@ -625,44 +661,11 @@ bool SemanticJob::resolveIntrinsicTypeOf(SemanticContext* context)
 
     expr->flags |= AST_NO_BYTECODE;
 
-    // A @typeof/@kindof as a type in a declaration
-    if (node->specFlags & AST_SPEC_INTRINSIC_TYPEOF_AS_TYPE)
-    {
-        // @kindof on a typeinfo will give back the original compiler type
-        if (node->token.id == TokenId::IntrinsicKindOf &&
-            typeInfo->isPointerToTypeInfo() &&
-            expr->computedValue &&
-            expr->computedValue->storageOffset != UINT32_MAX &&
-            expr->computedValue->storageSegment != nullptr)
-        {
-            auto storageSegment = expr->computedValue->storageSegment;
-            auto addr           = storageSegment->address(expr->computedValue->storageOffset);
-            auto newTypeInfo    = context->sourceFile->module->typeTable.getRealType(storageSegment, (ConcreteTypeInfo*) addr);
-            if (newTypeInfo)
-                typeInfo = newTypeInfo;
-        }
-
-        // Should be a lambda
-        if (typeInfo->isFuncAttr() && !(typeInfo->flags & TYPEINFO_FUNC_IS_ATTR))
-        {
-            typeInfo         = typeInfo->clone();
-            typeInfo->kind   = TypeInfoKind::LambdaClosure;
-            typeInfo->sizeOf = sizeof(void*);
-        }
-
-        node->typeInfo = typeInfo;
-    }
-
-    // A @typeof to get a typeinfo
-    else
-    {
-        SWAG_CHECK(resolveTypeAsExpression(context, expr, &node->typeInfo));
-        if (context->result != ContextResult::Done)
-            return true;
-        node->inheritComputedValue(expr);
-        SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
-    }
-
+    SWAG_CHECK(resolveTypeAsExpression(context, expr, &node->typeInfo));
+    if (context->result != ContextResult::Done)
+        return true;
+    node->inheritComputedValue(expr);
+    SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
     return true;
 }
 
@@ -701,7 +704,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         SWAG_VERIFY(!expr->typeInfo->isKindGeneric(), context->report({expr, Err(Err0812)}));
         node->setFlagsValueIsComputed();
         node->computedValue->reg.u64 = expr->typeInfo->sizeOf;
-        if (node->computedValue->reg.u64 > 0xFFFFFFFF)
+        if (node->computedValue->reg.u64 > UINT32_MAX)
             node->typeInfo = g_TypeMgr->typeInfoUInt;
         else
             node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
@@ -715,7 +718,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         SWAG_VERIFY(!expr->typeInfo->isKindGeneric(), context->report({expr, Err(Err0814)}));
         node->setFlagsValueIsComputed();
         node->computedValue->reg.u64 = TypeManager::alignOf(expr->typeInfo);
-        if (node->computedValue->reg.u64 > 0xFFFFFFFF)
+        if (node->computedValue->reg.u64 > UINT32_MAX)
             node->typeInfo = g_TypeMgr->typeInfoUInt;
         else
             node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
@@ -728,12 +731,16 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         SWAG_CHECK(checkIsConstExpr(context, expr->resolvedSymbolOverload, expr));
         node->setFlagsValueIsComputed();
         node->computedValue->reg.u64 = expr->resolvedSymbolOverload->computedValue.storageOffset;
-        if (node->computedValue->reg.u64 > 0xFFFFFFFF)
+        if (node->computedValue->reg.u64 > UINT32_MAX)
             node->typeInfo = g_TypeMgr->typeInfoUInt;
         else
             node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
         break;
     }
+
+    case TokenId::IntrinsicMakeType:
+        SWAG_CHECK(resolveIntrinsicMakeType(context));
+        return true;
 
     case TokenId::IntrinsicTypeOf:
         SWAG_CHECK(resolveIntrinsicTypeOf(context));

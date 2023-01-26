@@ -576,7 +576,7 @@ impl Decoder
             pm := {dstPixels, key}
             result.visitPixels(&pm)
             {
-                params := cast(*@typeof(pm)) userData
+                params := cast(*@mktype(pm)) userData
                 src := params.dstPixels
                 src += x + y * image.width
                 pix[0] = src[0]
@@ -610,7 +610,7 @@ impl Decoder
             pm := {dstPixels, key0, key1, key2}
             result.visitPixels(&pm)
             {
-                params := cast(*@typeof(pm)) userData
+                params := cast(*@mktype(pm)) userData
                 src := params.dstPixels
                 src += (x * 3) + (y * image.width * 3)
                 pix[0] = src[0]

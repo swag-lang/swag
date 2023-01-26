@@ -19,7 +19,7 @@ impl Image
         {
             visitPixels(&f)
             {
-                params   := cast(*@typeof(f)) userData
+                params   := cast(*@mktype(f)) userData
                 dstImage := cast(*Image) params.dstImage
                 srcImage := cast(const *Image) params.srcImage
 

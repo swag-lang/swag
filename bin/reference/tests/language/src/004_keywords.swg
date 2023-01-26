@@ -138,6 +138,7 @@ This is the list of all keywords:
 @mkinterface
 @mkslice
 @mkstring
+@mktype
 @modules
 @nameof
 @offsetof

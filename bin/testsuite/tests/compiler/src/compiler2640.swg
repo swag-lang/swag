@@ -6,6 +6,6 @@
 
     v := cast(*void) &g
 
-    p := cast(*@typeof(g)) v
+    p := cast(*@mktype(g)) v
     @assert(p.factor == 666)
 }

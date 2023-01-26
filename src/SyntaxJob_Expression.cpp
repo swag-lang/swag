@@ -165,7 +165,9 @@ bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
     }
 
     // One single parameter
-    else if (node->token.id == TokenId::IntrinsicTypeOf || node->token.id == TokenId::IntrinsicKindOf)
+    else if (node->token.id == TokenId::IntrinsicTypeOf ||
+             node->token.id == TokenId::IntrinsicKindOf ||
+             node->token.id == TokenId::IntrinsicMakeType)
     {
         SWAG_CHECK(doExpression(node, EXPR_FLAG_TYPEOF));
     }

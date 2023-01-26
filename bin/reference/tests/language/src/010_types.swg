@@ -86,7 +86,7 @@
     // You can use '@typeof' to get the type of an expression.
     {
         var a = 0
-        var b: @typeof(a) = 1   // 'b' will have the same type as 'a'
+        var b: @mktype(a) = 1   // 'b' will have the same type as 'a'
         @assert(@typeof(a) == @typeof(b))
         @assert(@typeof(a) == s32)
 

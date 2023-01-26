@@ -176,6 +176,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("@offsetof", State.Intrinsic)
         mapWords.add("@typeof", State.Intrinsic)
         mapWords.add("@kindof", State.Intrinsic)
+        mapWords.add("@mktype", State.Intrinsic)
         mapWords.add("@countof", State.Intrinsic)
         mapWords.add("@stringof", State.Intrinsic)
         mapWords.add("@nameof", State.Intrinsic)

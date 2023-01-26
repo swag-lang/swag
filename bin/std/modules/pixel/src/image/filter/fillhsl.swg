@@ -62,7 +62,7 @@ impl Image
             pms := {hsl, swapRB}
             visitPixels(&pms)
             {
-                params := dref cast(*@typeof(pms)) userData
+                params := dref cast(*@mktype(pms)) userData
                 swapRB := params.swapRB
                 factor0 := y / cast(f32) image.height
                 col := Color.fromHsl(params.hsl.h, factor0, 0.5)
@@ -92,7 +92,7 @@ impl Image
             pms := {hsl, swapRB}
             visitPixels(&pms)
             {
-                params := dref cast(*@typeof(pms)) userData
+                params := dref cast(*@mktype(pms)) userData
                 swapRB := params.swapRB
                 factor0 := y / cast(f32) image.height
                 col := Color.fromHsl(params.hsl.h, 1, factor0)
@@ -122,7 +122,7 @@ impl Image
             pms := {hsl, swapRB}
             visitPixels(&pms)
             {
-                params := dref cast(*@typeof(pms)) userData
+                params := dref cast(*@mktype(pms)) userData
                 factor0 := x / cast(f32) image.width
                 factor1 := y / cast(f32) image.height
                 col := Color.fromHsl(factor0, factor1, 0.5)
@@ -135,7 +135,7 @@ impl Image
             pms := {hsl, swapRB}
             visitPixels(&pms)
             {
-                params := dref cast(*@typeof(pms)) userData
+                params := dref cast(*@mktype(pms)) userData
                 factor0 := x / cast(f32) image.width
                 factor1 := y / cast(f32) image.height
                 col := Color.fromHsl(factor0, 1, factor1)
@@ -148,7 +148,7 @@ impl Image
             pms := {hsl, swapRB}
             visitPixels(&pms)
             {
-                params := dref cast(*@typeof(pms)) userData
+                params := dref cast(*@mktype(pms)) userData
                 factor0 := x / cast(f32) image.width
                 factor1 := y / cast(f32) image.height
                 l := 0.5 + ((1 - factor0) * 0.5)
@@ -163,7 +163,7 @@ impl Image
             pms := {color.r / 255.0, swapRB}
             visitPixels(&pms)
             {
-                params := dref cast(*@typeof(pms)) userData
+                params := dref cast(*@mktype(pms)) userData
                 factor0 := x / cast(f32) image.width
                 factor1 := 1 - (y / cast(f32) image.height)
                 col := Color.fromRgbf(params.item0, factor0, factor1)
@@ -176,7 +176,7 @@ impl Image
             pms := {color.g / 255.0, swapRB}
             visitPixels(&pms)
             {
-                params := dref cast(*@typeof(pms)) userData
+                params := dref cast(*@mktype(pms)) userData
                 factor0 := x / cast(f32) image.width
                 factor1 := 1 - (y / cast(f32) image.height)
                 col := Color.fromRgbf(factor0, params.item0, factor1)
@@ -189,7 +189,7 @@ impl Image
             pms := {color.b / 255.0, swapRB}
             visitPixels(&pms)
             {
-                params := dref cast(*@typeof(pms)) userData
+                params := dref cast(*@mktype(pms)) userData
                 factor0 := x / cast(f32) image.width
                 factor1 := 1 - (y / cast(f32) image.height)
                 col := Color.fromRgbf(factor0, factor1, params.item0)

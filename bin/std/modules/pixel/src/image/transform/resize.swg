@@ -322,7 +322,7 @@ namespace ResizeTools
         f := {imgDst, imgSrc, contrib: &contrib}
         Jobs.parallelFor(|index, data| cast(u32) imgDst.width, &f)
         {
-            params := cast(*@typeof(f)) data
+            params := cast(*@mktype(f)) data
             scaleCol(params.imgDst, params.imgSrc, cast(int) index, params.contrib)
         }
     }
@@ -336,7 +336,7 @@ namespace ResizeTools
         f := {imgDst, imgSrc, contrib: &contrib}
         Jobs.parallelFor(|index, data| cast(u32) imgDst.height, &f)
         {
-            params := cast(*@typeof(f)) data
+            params := cast(*@mktype(f)) data
             scaleRow(params.imgDst, params.imgSrc, cast(int) index, params.contrib)
         }
     }
@@ -359,7 +359,7 @@ namespace ResizeTools
         {
             dstImage.visitPixels(&f)
             {
-                params := cast(*@typeof(f)) userData
+                params := cast(*@mktype(f)) userData
                 fx := cast(u32) (x * params.xscale)
                 fy := cast(u32) (y * params.yscale)
                 pixSrc := params.srcImage.pixels.buffer + (fx * image.bpp8) + (fy * params.srcImage.width * image.bpp8)

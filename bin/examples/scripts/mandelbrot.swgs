@@ -18,7 +18,7 @@ func compute()
     data := {minS: g_Slider.getValueLeft(), maxS: g_Slider.getValueRight()}
     g_Image.visitPixels(&data)
     {
-        params := cast(*@typeof(data)) userData
+        params := cast(*@mktype(data)) userData
         minS := params.minS
         maxS := params.maxS
 

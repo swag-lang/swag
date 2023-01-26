@@ -3,7 +3,7 @@
 {
     {
         x := 0
-        var y: @typeof(x) = 6
+        var y: @mktype(x) = 6
         @assert(@typeof(x) == @typeof(y))
         @assert(@typeof(y).fullname == "s32")
 
@@ -12,7 +12,7 @@
         @assert(@typeof(ptr).fullname == "^s32")
         @assert(@typeof(ptr) == @typeof(^s32))
 
-        var ptr1: const @typeof(ptr)
+        var ptr1: const @mktype(ptr)
         @assert(@typeof(ptr1).fullname == "const ^s32")
         @assert(@typeof(ptr1) == @typeof(const ^s32))
     }

@@ -140,7 +140,7 @@ impl Image
         p := {self, userData}
         Jobs.parallelVisit(|buffer, data| pixels.toSlice(), cast(u32) bpp8 * stride, &p)
         {
-            p := cast(*@typeof(p)) data
+            p := cast(*@mktype(p)) data
             #macro
             {
                 image    := `p.self

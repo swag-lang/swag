@@ -18,7 +18,7 @@ impl AA
         x = &titi
         x(self)
 
-        var y: @typeof(&titi)
+        var y: @mktype(&titi)
         y = &titi
         y(self)
     }

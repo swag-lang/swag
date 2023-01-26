@@ -1,7 +1,7 @@
 struct(T: const [..] typeinfo) AA
 {
-    x: @kindof(T[0])
-    y: @kindof(T[1])
+    x: @mktype(T[0])
+    y: @mktype(T[1])
     #assert T[0] == s32
     #assert T[1] == bool
 }

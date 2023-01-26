@@ -9,7 +9,7 @@ impl AA
 
 #test
 {
-    var x: @typeof(AA.toto)
+    var x: @mktype(AA.toto)
     x = &AA.toto
     @assert(x() == 666)
 }

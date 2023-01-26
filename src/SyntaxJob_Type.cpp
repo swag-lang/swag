@@ -526,11 +526,9 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     }
 
     // This is a @typeof
-    if (token.id == TokenId::IntrinsicTypeOf || token.id == TokenId::IntrinsicKindOf)
+    if (token.id == TokenId::IntrinsicMakeType)
     {
         SWAG_CHECK(doIdentifierRef(node, &node->identifier));
-        auto typeNode = CastAst<AstIntrinsicProp>(node->identifier->childs.front(), AstNodeKind::IntrinsicProp);
-        typeNode->specFlags |= AST_SPEC_INTRINSIC_TYPEOF_AS_TYPE;
         return true;
     }
 
