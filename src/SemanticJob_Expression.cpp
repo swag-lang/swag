@@ -194,8 +194,8 @@ bool SemanticJob::resolveConditionalOp(SemanticContext* context)
     auto ifTrue     = node->childs[1];
     auto ifFalse    = node->childs[2];
     SWAG_CHECK(checkIsConcrete(context, expression));
-    SWAG_CHECK(checkIsConcrete(context, ifTrue));
-    SWAG_CHECK(checkIsConcrete(context, ifFalse));
+    SWAG_CHECK(checkIsConcreteOrType(context, ifTrue));
+    SWAG_CHECK(checkIsConcreteOrType(context, ifFalse));
 
     SWAG_CHECK(evaluateConstExpression(context, expression, ifTrue, ifFalse));
     if (context->result == ContextResult::Pending)
