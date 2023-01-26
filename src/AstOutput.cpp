@@ -1061,6 +1061,11 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     switch (node->kind)
     {
+    case AstNodeKind::KeepRef:
+        CONCAT_FIXED_STR(concat, "ref ");
+        SWAG_CHECK(outputNode(context, concat, node->childs[0]));
+        break;
+
     case AstNodeKind::CompilerCode:
         concat.addChar(')');
         concat.addEolIndent(context.indent);

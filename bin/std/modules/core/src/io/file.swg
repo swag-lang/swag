@@ -54,8 +54,8 @@ func readAllText(fullname: string, encoding = TextEncoding.Utf8)->String throw
 func readAllLines(fullname: string, encoding = TextEncoding.Utf8)->Array'String throw
 {
     var result:     retval
-    var textReader: TextReader
 
+    var textReader: TextReader
     try textReader.open(fullname, encoding)
     defer textReader.close()
 
@@ -67,6 +67,27 @@ func readAllLines(fullname: string, encoding = TextEncoding.Utf8)->Array'String 
     }
 
     return result
+}
+
+// Call user code for each line
+#[Swag.Macro]
+func readEachLines(fullname: string, encoding = TextEncoding.Utf8, stmt: code) throw
+{
+    var textReader: TextReader
+    try textReader.open(fullname, encoding)
+    defer textReader.close()
+
+    res := textReader.readLine()
+    while !res.isNull()
+    {
+        #macro
+        {
+            var @alias0 = ref &`res
+            #mixin `stmt
+        }
+
+        res = textReader.readLine()
+    }
 }
 
 // Read a file, and store the result in an array of bytes

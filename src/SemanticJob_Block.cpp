@@ -1060,7 +1060,7 @@ bool SemanticJob::resolveScopeBreakable(SemanticContext* context)
     auto node = CastAst<AstScopeBreakable>(context->node, AstNodeKind::ScopeBreakable);
     node->block->allocateExtension(ExtensionKind::ByteCode);
     SWAG_ASSERT(!node->block->extension->bytecode->byteCodeBeforeFct);
-    SWAG_ASSERT(!node->block->extension->bytecode->byteCodeAfterFct);
+    SWAG_ASSERT(!node->block->extension->bytecode->byteCodeAfterFct || node->block->extension->bytecode->byteCodeAfterFct == ByteCodeGenJob::emitLeaveScope);
     node->block->extension->bytecode->byteCodeBeforeFct = ByteCodeGenJob::emitLabelBeforeBlock;
     node->block->extension->bytecode->byteCodeAfterFct  = ByteCodeGenJob::emitLoopAfterBlock;
     return true;
