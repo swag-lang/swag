@@ -367,7 +367,7 @@ impl Encoder
 
             loop nr: -(nrupper - 1)..(-nrlower)
             {
-                nof := bitcast(uint) cast(int) nr
+                nof := cast,bit(uint) cast(int) nr
                 category[nof] = cast(u8) cat
                 bitcode[nof].length = cast(u8) cat
                 bitcode[nof].value  = cast(u16) (nrupper - 1 + nr)
@@ -671,7 +671,7 @@ impl Encoder
             writeBits(hTDC[0])
         else
         {
-            diffc := bitcast(uint) cast(int) diff // If negative
+            diffc := cast,bit(uint) cast(int) diff // If negative
             writeBits(hTDC[category[diffc]])
             writeBits(bitcode[diffc])
         }
@@ -700,7 +700,7 @@ impl Encoder
                 nrzeroes = nrzeroes % 16
             }
 
-            offc := bitcast(uint) cast(int) du[i] // If negative
+            offc := cast,bit(uint) cast(int) du[i] // If negative
             writeBits(hTAC[nrzeroes * 16 + category[offc]])
             writeBits(bitcode[offc])
             i += 1

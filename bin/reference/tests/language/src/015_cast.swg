@@ -18,14 +18,14 @@
         @assert(y == 1)
     }
 
-    // use 'bitcast' to convert a native type to another without converting the value
+    // use 'cast,bit' to convert a native type to another without converting the value
     // Works only if the two types are of the same size
     {
         var x: f32 = 1.0
-        var y: u32 = bitcast(u32) x
+        var y: u32 = cast,bit(u32) x
         @assert(y == 0x3f800000)
-        #assert bitcast(u32) 1.0 == 0x3f800000
-        #assert bitcast(f32) 0x3f800000 == 1.0
+        #assert cast,bit(u32) 1.0 == 0x3f800000
+        #assert cast,bit(f32) 0x3f800000 == 1.0
     }
 
     // An implicit cast is done if there's no loss of precision.
@@ -43,11 +43,11 @@
 
     // To avoid overflow with operators + - * /, operations are promoted to 32 or 64 bits
     {
-        @assert(@typeof(1's8 + 2's8)   == s32)
-        @assert(@typeof(1's8 + 2's16)  == s32)
-        @assert(@typeof(1'u8 + 2'u8)   == u32)
-        @assert(@typeof(1'u8 + 2'u16)  == u32)
-        @assert(@typeof(1'u8 + 2'f64)  == f64)
+        @assert(@typeof(1's8 + 2's8)  == s32)
+        @assert(@typeof(1's8 + 2's16) == s32)
+        @assert(@typeof(1'u8 + 2'u8)  == u32)
+        @assert(@typeof(1'u8 + 2'u16) == u32)
+        @assert(@typeof(1'u8 + 2'f64) == f64)
     }
 
     // But in that case, you can still affect to the original type.

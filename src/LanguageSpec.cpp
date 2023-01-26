@@ -136,6 +136,7 @@ void LanguageSpec::setupNames()
     name_moveraw = "moveraw";
     name_err     = "err";
     name_noerr   = "noerr";
+    name_bit     = "bit";
 
     name_bound  = "bound";
     name_over   = "over";
@@ -290,7 +291,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("with", TokenId::KwdWith);
     keywords.add("cast", TokenId::KwdCast);
     keywords.add("acast", TokenId::KwdAutoCast);
-    keywords.add("bitcast", TokenId::KwdBitCast);
     keywords.add("dref", TokenId::KwdDeRef);
     keywords.add("retval", TokenId::KwdRetVal);
     keywords.add("try", TokenId::KwdTry);

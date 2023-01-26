@@ -44,6 +44,7 @@ static const uint32_t MODIFIER_SMALL         = 0x00000002;
 static const uint32_t MODIFIER_NO_LEFT_DROP  = 0x00000004;
 static const uint32_t MODIFIER_MOVE          = 0x00000008;
 static const uint32_t MODIFIER_NO_RIGHT_DROP = 0x00000010;
+static const uint32_t MODIFIER_BIT           = 0x00000020;
 
 static const uint32_t IDENTIFIER_NO_FCT_PARAMS   = 0x00000001;
 static const uint32_t IDENTIFIER_NO_GEN_PARAMS   = 0x00000002;
@@ -188,7 +189,6 @@ struct SyntaxJob : public Job
     bool doScopeFile(AstNode* parent, AstNode** result = nullptr);
     bool doUsing(AstNode* parent, AstNode** result = nullptr);
     bool doCast(AstNode* parent, AstNode** result = nullptr);
-    bool doBitCast(AstNode* parent, AstNode** result = nullptr);
     bool doAutoCast(AstNode* parent, AstNode** result = nullptr);
     bool doIf(AstNode* parent, AstNode** result = nullptr);
     bool doWhile(AstNode* parent, AstNode** result = nullptr);

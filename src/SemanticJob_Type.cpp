@@ -663,7 +663,7 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
 
 bool SemanticJob::resolveExplicitBitCast(SemanticContext* context)
 {
-    auto node     = CastAst<AstCast>(context->node, AstNodeKind::BitCast);
+    auto node     = CastAst<AstCast>(context->node, AstNodeKind::Cast);
     auto typeNode = node->childs[0];
     auto exprNode = node->childs[1];
 

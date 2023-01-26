@@ -111,7 +111,6 @@ enum class AstNodeKind : uint8_t
     GetErr,
     AutoCast,
     Cast,
-    BitCast,
     TypeList,
     SingleOp,
     MakePointer,

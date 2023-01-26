@@ -21,7 +21,7 @@ public func(T) hash32(value: T)->u32
     }
     #elif @sizeof(T) == 8
     {
-        val64 := bitcast(u64) value
+        val64 := cast,bit(u64) value
         key := (~val64) + (val64 << 18)
         key = key ^ (key >> 31)
         key = key * 21
@@ -32,7 +32,7 @@ public func(T) hash32(value: T)->u32
     }
     #elif @sizeof(T) == 4
     {
-        val32 := bitcast(u32) value
+        val32 := cast,bit(u32) value
         key := (~val32) + (val32 << 15)
         key = key ^ (key >> 12)
         key = key + (key << 2)

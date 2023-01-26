@@ -76,7 +76,7 @@
       "patterns": [
         {
           "name": "keyword",
-          "match": "\\b(using|with|cast|acast|bitcast|dref|ref|retval|try|catch|trycatch|assume|throw|discard)\\b"
+          "match": "\\b(using|with|cast|acast|dref|ref|retval|try|catch|trycatch|assume|throw|discard)\\b"
         }
       ]
     },
@@ -427,7 +427,7 @@
       "patterns": [
         {
           "name": "constant.character.escape",
-          "match": "\\,(safe|small|nodrop|move|moveraw)\\b"
+          "match": "\\,(safe|small|nodrop|bit|move|moveraw)\\b"
         }
       ]
     }

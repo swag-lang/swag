@@ -351,7 +351,7 @@ func roundShortest(d: *Decimal, mant: u64, exp: s64)
 // Negative precision means "only as much as needed to be exact."
 public func parse(buf: *ConcatBuffer, val: f64, fmt: u8, precision: s64, forceSign: bool)
 {
-	var bits: u64 = bitcast(u64) val
+	var bits: u64 = cast,bit(u64) val
 
     prec := precision
 	neg  := bits >> (Swag.F64.ExpBits + Swag.F64.MantBits) != 0

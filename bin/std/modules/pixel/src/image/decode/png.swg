@@ -211,14 +211,14 @@ impl Decoder
                 while k >= 8
                 {
                     c := src[0]
-                    dest[0] = bitcast(u8) ((c >>,safe 7) * 255)
-                    dest[1] = bitcast(u8) (((c >>,safe 6) & 1) * 255)
-                    dest[2] = bitcast(u8) (((c >>,safe 5) & 1) * 255)
-                    dest[3] = bitcast(u8) (((c >>,safe 4) & 1) * 255)
-                    dest[4] = bitcast(u8) (((c >>,safe 3) & 1) * 255)
-                    dest[5] = bitcast(u8) (((c >>,safe 2) & 1) * 255)
-                    dest[6] = bitcast(u8) (((c >>,safe 1) & 1) * 255)
-                    dest[7] = bitcast(u8) ((c & 1) * 255)
+                    dest[0] = cast,bit(u8) ((c >>,safe 7) * 255)
+                    dest[1] = cast,bit(u8) (((c >>,safe 6) & 1) * 255)
+                    dest[2] = cast,bit(u8) (((c >>,safe 5) & 1) * 255)
+                    dest[3] = cast,bit(u8) (((c >>,safe 4) & 1) * 255)
+                    dest[4] = cast,bit(u8) (((c >>,safe 3) & 1) * 255)
+                    dest[5] = cast,bit(u8) (((c >>,safe 2) & 1) * 255)
+                    dest[6] = cast,bit(u8) (((c >>,safe 1) & 1) * 255)
+                    dest[7] = cast,bit(u8) ((c & 1) * 255)
                     dest += 8
                     src += 1
                     k -= 8
@@ -226,13 +226,13 @@ impl Decoder
                 if k > 0
                 {
                     c := src[0]
-                    dest[0] = bitcast(u8) ((c >>,safe 7) * 255)
-                    if k > 1 dest[1] = bitcast(u8) (((c >>,safe 6) & 1) * 255)
-                    if k > 2 dest[2] = bitcast(u8) (((c >>,safe 5) & 1) * 255)
-                    if k > 3 dest[3] = bitcast(u8) (((c >>,safe 4) & 1) * 255)
-                    if k > 4 dest[4] = bitcast(u8) (((c >>,safe 3) & 1) * 255)
-                    if k > 5 dest[5] = bitcast(u8) (((c >>,safe 2) & 1) * 255)
-                    if k > 6 dest[6] = bitcast(u8) (((c >>,safe 1) & 1) * 255)
+                    dest[0] = cast,bit(u8) ((c >>,safe 7) * 255)
+                    if k > 1 dest[1] = cast,bit(u8) (((c >>,safe 6) & 1) * 255)
+                    if k > 2 dest[2] = cast,bit(u8) (((c >>,safe 5) & 1) * 255)
+                    if k > 3 dest[3] = cast,bit(u8) (((c >>,safe 4) & 1) * 255)
+                    if k > 4 dest[4] = cast,bit(u8) (((c >>,safe 3) & 1) * 255)
+                    if k > 5 dest[5] = cast,bit(u8) (((c >>,safe 2) & 1) * 255)
+                    if k > 6 dest[6] = cast,bit(u8) (((c >>,safe 1) & 1) * 255)
                 }
             }
         }
@@ -249,10 +249,10 @@ impl Decoder
                 while k >= 2
                 {
                     c := src[0]
-                    dest[0] = bitcast(u8) ((c >>,safe 6) * 85)
-                    dest[1] = bitcast(u8) (((c >>,safe 4) & 3) * 85)
-                    dest[2] = bitcast(u8) (((c >>,safe 2) & 3) * 85)
-                    dest[3] = bitcast(u8) ((c & 3) * 85)
+                    dest[0] = cast,bit(u8) ((c >>,safe 6) * 85)
+                    dest[1] = cast,bit(u8) (((c >>,safe 4) & 3) * 85)
+                    dest[2] = cast,bit(u8) (((c >>,safe 2) & 3) * 85)
+                    dest[3] = cast,bit(u8) ((c & 3) * 85)
                     dest += 4
                     src += 1
                     k -= 4
@@ -260,9 +260,9 @@ impl Decoder
                 if k > 0
                 {
                     c := src[0]
-                    dest[0] = bitcast(u8) ((c >>,safe 6) * 85)
-                    if k > 1 dest[1] = bitcast(u8) (((c >>,safe 4) & 3) * 85)
-                    if k > 2 dest[2] = bitcast(u8) (((c >>,safe 2) & 3) * 85)
+                    dest[0] = cast,bit(u8) ((c >>,safe 6) * 85)
+                    if k > 1 dest[1] = cast,bit(u8) (((c >>,safe 4) & 3) * 85)
+                    if k > 2 dest[2] = cast,bit(u8) (((c >>,safe 2) & 3) * 85)
                 }
             }
         }
@@ -279,15 +279,15 @@ impl Decoder
                 while k >= 2
                 {
                     c := src[0]
-                    dest[0] = bitcast(u8) ((c >>,safe 4) * 17)
-                    dest[1] = bitcast(u8) ((c & 15) * 17)
+                    dest[0] = cast,bit(u8) ((c >>,safe 4) * 17)
+                    dest[1] = cast,bit(u8) ((c & 15) * 17)
                     dest += 2
                     src += 1
                     k -= 2
                 }
                 if k > 0
                 {
-                    dest[0] = bitcast(u8) ((src[0] >>,safe 4) * 17)
+                    dest[0] = cast,bit(u8) ((src[0] >>,safe 4) * 17)
                 }
             }
         }
@@ -332,34 +332,34 @@ impl Decoder
                 loop i: inChannels
                     destOff[i] = src[i]
                 loop k: nk
-                    destOff[inChannels + k] = bitcast(u8) (src[inChannels + k] + destOff[k])
+                    destOff[inChannels + k] = cast,bit(u8) (src[inChannels + k] + destOff[k])
 
             case Up:
                 loop k: rowStrideIn
-                    destOff[k] = bitcast(u8) (src[k] + up[k])
+                    destOff[k] = cast,bit(u8) (src[k] + up[k])
 
             case Average:
                 loop i: inChannels
                 {
                     avg := up[i] >>,safe 1
-                    destOff[i] = bitcast(u8) (src[i] + avg)
+                    destOff[i] = cast,bit(u8) (src[i] + avg)
                 }
                 loop k: nk
                 {
                     avg := cast(u8) ((cast(u16) (up[inChannels + k]) + cast(u16) (destOff[k])) >>,safe 1)
-                    destOff[inChannels + k] = bitcast(u8) (src[inChannels + k] + avg)
+                    destOff[inChannels + k] = cast,bit(u8) (src[inChannels + k] + avg)
                 }
 
             case Paeth:
                 loop i: inChannels
                 {
                     paeth := filterPaeth(0, up[i], 0)
-                    destOff[i] = bitcast(u8) (src[i] + paeth)
+                    destOff[i] = cast,bit(u8) (src[i] + paeth)
                 }
                 loop k: nk
                 {
                     paeth := filterPaeth(destOff[k], up[inChannels + k], up[k])
-                    destOff[inChannels + k] = bitcast(u8) (src[inChannels + k] + paeth)
+                    destOff[inChannels + k] = cast,bit(u8) (src[inChannels + k] + paeth)
                 }
             }
 

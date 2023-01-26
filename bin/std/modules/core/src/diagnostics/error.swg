@@ -8,6 +8,6 @@ namespace Console
     {
         Console.printf(msg, args)
         Console.println()
-        Env.exit(bitcast(u32) -1)
+        Env.exit(cast,bit(u32) -1)
     }
 }

@@ -67,14 +67,14 @@ impl Rng
     #[Swag.Inline]
     mtd nextS32()->s32
     {
-        return bitcast(s32) nextU32()
+        return cast,bit(s32) nextU32()
     }
 
     // Returns a signed 64 bits random value
     #[Swag.Inline]
     mtd nextS64()->s64
     {
-        return bitcast(s64) nextU64()
+        return cast,bit(s64) nextU64()
     }
 
     // Range is [0..1[, so 1.0 will never be returned

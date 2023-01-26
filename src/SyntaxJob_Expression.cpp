@@ -541,9 +541,6 @@ bool SyntaxJob::doUnaryExpression(AstNode* parent, uint32_t exprFlags, AstNode**
     case TokenId::KwdAutoCast:
         SWAG_CHECK(doAutoCast(parent, result));
         return true;
-    case TokenId::KwdBitCast:
-        SWAG_CHECK(doBitCast(parent, result));
-        return true;
     case TokenId::SymMinus:
     case TokenId::SymExclam:
     case TokenId::SymTilde:
@@ -747,6 +744,22 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
 
             SWAG_VERIFY(!(mdfFlags & MODIFIER_NO_LEFT_DROP), error(token, Fmt(Err(Syn0125), token.ctext())));
             mdfFlags |= MODIFIER_NO_LEFT_DROP;
+            SWAG_CHECK(eatToken());
+            continue;
+        }
+
+        if (token.text == g_LangSpec->name_bit)
+        {
+            switch (opId)
+            {
+            case TokenId::KwdCast:
+                break;
+            default:
+                return error(token, Fmt(Err(Syn0126), forNode.ctext()));
+            }
+
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_BIT), error(token, Fmt(Err(Syn0125), token.ctext())));
+            mdfFlags |= MODIFIER_BIT;
             SWAG_CHECK(eatToken());
             continue;
         }

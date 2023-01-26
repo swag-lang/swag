@@ -732,8 +732,8 @@ const GWLP_ID             = -12
 
 const HWND_TOP       = (cast(HWND) 0'uint)
 const HWND_BOTTOM    = (cast(HWND) 1'uint)
-const HWND_TOPMOST   = (cast(HWND) bitcast(uint) -1'int)
-const HWND_NOTOPMOST = (cast(HWND) bitcast(uint) -2'int)
+const HWND_TOPMOST   = (cast(HWND) cast,bit(uint) -1'int)
+const HWND_NOTOPMOST = (cast(HWND) cast,bit(uint) -2'int)
 
 const SWP_NOSIZE          = 0x0001
 const SWP_NOMOVE          = 0x0002

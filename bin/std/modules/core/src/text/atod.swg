@@ -777,7 +777,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s64)->{f: f64, ok: bool}
 	if man == 0
     {
 		if neg
-			result.f = bitcast(f64) 0x8000000000000000 // Negative zero.
+			result.f = cast,bit(f64) 0x8000000000000000 // Negative zero.
 		return result
 	}
 
@@ -842,7 +842,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s64)->{f: f64, ok: bool}
 	retBits := (retExp2 << 52) | (retMantissa & 0x000FFFFFFFFFFFFF)
 	if neg
 		retBits |= 0x8000000000000000
-	result.f = bitcast(f64) retBits
+	result.f = cast,bit(f64) retBits
     result.ok = true
     return result
 }
@@ -920,6 +920,6 @@ public func parse(s: const [..] u8) -> {value: f64, eat: u32, ovf: bool} throw
 	read.trunc = read.bigtrunc
     (b, ovf) := read.floatBits()
     result.ovf = ovf
-    result.value = bitcast(f64) b
+    result.value = cast,bit(f64) b
     return result
 }

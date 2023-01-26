@@ -99,7 +99,6 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("with", State.Keyword)
         mapWords.add("cast", State.Keyword)
         mapWords.add("acast", State.Keyword)
-        mapWords.add("bitcast", State.Keyword)
         mapWords.add("dref", State.Keyword)
         mapWords.add("retval", State.Keyword)
         mapWords.add("try", State.Keyword)

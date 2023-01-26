@@ -624,23 +624,18 @@ bool SyntaxJob::doCast(AstNode* parent, AstNode** result)
         node->attributeFlags |= ATTRIBUTE_SAFETY_OVERFLOW_OFF;
     }
 
+    if (mdfFlags & MODIFIER_BIT)
+    {
+        node->specFlags |= AST_SPEC_CAST_BIT;
+        node->semanticFct = SemanticJob::resolveExplicitBitCast;
+    }
+
+    if (mdfFlags & MODIFIER_BIT && mdfFlags & MODIFIER_SAFE)
+    {
+        return error(node, Err(Syn0186));
+    }
+
     SWAG_CHECK(eatToken(TokenId::SymLeftParen, "after 'cast'"));
-    SWAG_CHECK(doTypeExpression(node));
-    SWAG_CHECK(eatToken(TokenId::SymRightParen, "after the type expression"));
-
-    SWAG_CHECK(doUnaryExpression(node, EXPR_FLAG_NONE));
-    return true;
-}
-
-bool SyntaxJob::doBitCast(AstNode* parent, AstNode** result)
-{
-    auto node         = Ast::newNode<AstCast>(this, AstNodeKind::BitCast, sourceFile, parent);
-    node->semanticFct = SemanticJob::resolveExplicitBitCast;
-    if (result)
-        *result = node;
-
-    SWAG_CHECK(eatToken());
-    SWAG_CHECK(eatToken(TokenId::SymLeftParen, "after 'bitcast'"));
     SWAG_CHECK(doTypeExpression(node));
     SWAG_CHECK(eatToken(TokenId::SymRightParen, "after the type expression"));
 

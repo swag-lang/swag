@@ -160,11 +160,12 @@ This is the list of all keywords:
 // Modifiers
 // ---------
 
-,move
-,nodrop
-,moveraw
 ,safe
 ,small
+,nodrop
+,bit
+,move
+,moveraw
 
 // Language keywords
 // -----------------
@@ -173,7 +174,6 @@ acast
 alias
 assume
 attr
-bitcast
 cast
 catch
 closure

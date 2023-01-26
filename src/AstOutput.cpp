@@ -1952,16 +1952,11 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::Cast:
         CONCAT_FIXED_STR(concat, "cast");
-        if (node->specFlags & AST_SPEC_OP_SAFE)
+        if (node->specFlags & AST_SPEC_CAST_SAFE)
             CONCAT_FIXED_STR(concat, ",safe");
+        if (node->specFlags & AST_SPEC_CAST_BIT)
+            CONCAT_FIXED_STR(concat, ",bit");
         concat.addChar('(');
-        SWAG_CHECK(outputNode(context, concat, node->childs[0]));
-        CONCAT_FIXED_STR(concat, ") ");
-        SWAG_CHECK(outputNode(context, concat, node->childs[1]));
-        break;
-
-    case AstNodeKind::BitCast:
-        CONCAT_FIXED_STR(concat, "bitcast(");
         SWAG_CHECK(outputNode(context, concat, node->childs[0]));
         CONCAT_FIXED_STR(concat, ") ");
         SWAG_CHECK(outputNode(context, concat, node->childs[1]));

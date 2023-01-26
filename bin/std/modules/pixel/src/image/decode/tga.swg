@@ -58,13 +58,13 @@ impl Decoder
                     switch bpp
                     {
                     case 24:
-                        dest[2] = bitcast(u8) (val >>,safe 16)
+                        dest[2] = cast,bit(u8) (val >>,safe 16)
                         fallthrough
                     case 16:
-                        dest[1] = bitcast(u8) (val >>,safe 8)
+                        dest[1] = cast,bit(u8) (val >>,safe 8)
                         fallthrough
                     case 8:
-                        dest[0] = bitcast(u8) val
+                        dest[0] = cast,bit(u8) val
                     default:
                         dref cast(*u32) dest = val
                     }

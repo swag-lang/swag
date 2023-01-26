@@ -446,8 +446,8 @@ impl Decoder
                     s = r < ExtendTest[s] ? r + ExtendOff[s] : r
                 }
 
-                s += bitcast(s32) lastDcVal[componentId]
-                lastDcVal[componentId] = bitcast(u32) s
+                s += cast,bit(s32) lastDcVal[componentId]
+                lastDcVal[componentId] = cast,bit(u32) s
 
                 p[0] = cast(s16) (s * q[0])
                 prevNumSet := blockMaxZagSet[rowBlock]

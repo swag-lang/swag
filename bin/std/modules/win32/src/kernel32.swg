@@ -45,8 +45,8 @@ alias va_list =         ^u8
 alias LPTHREAD_START_ROUTINE = func(*void)->DWORD
 alias WAITORTIMERCALLBACK    = func(*void, BOOL)
 
-const STD_INPUT_HANDLE 	= bitcast(DWORD) -10
-const STD_OUTPUT_HANDLE = bitcast(DWORD) -11
+const STD_INPUT_HANDLE 	= cast,bit(DWORD) -10
+const STD_OUTPUT_HANDLE = cast,bit(DWORD) -11
 
 const ERROR_FILE_NOT_FOUND          = 2
 const ERROR_NO_MORE_FILES           = 18
@@ -105,9 +105,9 @@ const FILE_WRITE_ATTRIBUTES = 0x0100
 const FILE_BEGIN   = 0'u32
 const FILE_CURRENT = 1'u32
 const FILE_END     = 2'u32
-const INVALID_FILE_SIZE         = bitcast(DWORD) -1
-const INVALID_SET_FILE_POINTER  = bitcast(DWORD) -1
-const INVALID_FILE_ATTRIBUTES   = bitcast(DWORD) -1
+const INVALID_FILE_SIZE         = cast,bit(DWORD) -1
+const INVALID_SET_FILE_POINTER  = cast,bit(DWORD) -1
+const INVALID_FILE_ATTRIBUTES   = cast,bit(DWORD) -1
 
 const CREATE_NEW            = 1'u32
 const CREATE_ALWAYS         = 2'u32
@@ -115,7 +115,7 @@ const OPEN_EXISTING         = 3'u32
 const OPEN_ALWAYS           = 4'u32
 const TRUNCATE_EXISTING     = 5'u32
 
-const INVALID_HANDLE_VALUE = cast(HANDLE) bitcast(uint) -1'int
+const INVALID_HANDLE_VALUE = cast(HANDLE) cast,bit(uint) -1'int
 const CONSOLE_TEXTMODE_BUFFER = 1'u32
 const MAX_PATH = 260
 const INFINITE = 0xFFFFFFFF
@@ -145,8 +145,8 @@ const THREAD_PRIORITY_NORMAL        = 0
 const THREAD_PRIORITY_ABOVE_NORMAL  = 1
 const THREAD_PRIORITY_HIGHEST       = 2
 
-func LOWORD(l: u64) => cast(s32) bitcast(s16) (l & 0xffff)
-func HIWORD(l: u64) => cast(s32) bitcast(s16) ((l >>,safe 16) & 0xffff)
+func LOWORD(l: u64) => cast(s32) cast,bit(s16) (l & 0xffff)
+func HIWORD(l: u64) => cast(s32) cast,bit(s16) ((l >>,safe 16) & 0xffff)
 
 alias SRWLOCK = *void
 const SRWLOCK_INIT = cast(SRWLOCK) null
@@ -490,7 +490,7 @@ namespace Win32Priv
     func ResumeThread(hThread: HANDLE)->DWORD throw
     {
         res := Win32Priv.ResumeThread(hThread)
-        if res == bitcast(DWORD) -1
+        if res == cast,bit(DWORD) -1
             try setError(GetLastError())
         return res
     }

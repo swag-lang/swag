@@ -131,6 +131,7 @@ static const uint64_t AST_SEM_FORCE_CONST_EXPR        = 0x80000000;
 static const uint8_t AST_SPEC_ARRAYPTRIDX_ISDEREF          = 0x01;
 static const uint8_t AST_SPEC_ATTRUSE_GLOBAL               = 0x01;
 static const uint8_t AST_SPEC_CAST_SAFE                    = 0x01;
+static const uint8_t AST_SPEC_CAST_BIT                     = 0x02;
 static const uint8_t AST_SPEC_DECLPARAM_GENERATED_SELF     = 0x01;
 static const uint8_t AST_SPEC_EXPRLIST_FOR_TUPLE           = 0x01;
 static const uint8_t AST_SPEC_EXPRLIST_FOR_CAPTURE         = 0x02;

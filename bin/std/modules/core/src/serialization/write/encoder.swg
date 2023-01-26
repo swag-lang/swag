@@ -121,8 +121,8 @@ impl Encoder
             var objType, itfType: typeinfo
             if itf.itable
             {
-                objType = itf.itable[bitcast(uint) -1'int]
-                itfType = itf.itable[bitcast(uint) -2'int]
+                objType = itf.itable[cast,bit(uint) -1'int]
+                itfType = itf.itable[cast,bit(uint) -2'int]
             }
 
             var typeVal: TypeValue

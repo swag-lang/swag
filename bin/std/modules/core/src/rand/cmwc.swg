@@ -36,7 +36,7 @@ impl CMWC4096
 	    x := t + c
 	    if x < c
             x, c += 1
-        v := bitcast(u32) (r - x)
+        v := cast,bit(u32) (r - x)
         q[i] = v
 	    return v
     }

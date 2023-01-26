@@ -158,6 +158,7 @@ struct LanguageSpec
     Utf8 name_moveraw;
     Utf8 name_err;
     Utf8 name_noerr;
+    Utf8 name_bit;
 
     Utf8 name_bound;
     Utf8 name_over;

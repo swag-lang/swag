@@ -959,10 +959,10 @@ impl PropWnd
 
         ctrl := createSlider("Start Size", acast MinCapSize, acast MaxCapSize, curSel.startSize)
         ctrl.slider.sigStartChange += closure|self|(slider) {
-            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormLine), @nameof(FormLine.startSize), true)
+            self.pushTypedValue(cast,bit(u32) slider.getValue(), @typeof(FormLine), @nameof(FormLine.startSize), true)
         }
         ctrl.slider.sigChanged += closure|self|(slider) {
-            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormLine), @nameof(FormLine.startSize), false)
+            self.pushTypedValue(cast,bit(u32) slider.getValue(), @typeof(FormLine), @nameof(FormLine.startSize), false)
         }
     }
 
@@ -975,10 +975,10 @@ impl PropWnd
         curSel := cast(*FormLine) getSelectedBaseForm()
         ctrl := createSlider("End Size", acast MinCapSize, acast MaxCapSize, curSel.endSize)
         ctrl.slider.sigStartChange += closure|self|(slider) {
-            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormLine), @nameof(FormLine.endSize), true)
+            self.pushTypedValue(cast,bit(u32) slider.getValue(), @typeof(FormLine), @nameof(FormLine.endSize), true)
         }
         ctrl.slider.sigChanged += closure|self|(slider) {
-            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormLine), @nameof(FormLine.endSize), false)
+            self.pushTypedValue(cast,bit(u32) slider.getValue(), @typeof(FormLine), @nameof(FormLine.endSize), false)
         }
     }
 
@@ -994,10 +994,10 @@ impl PropWnd
 
         ctrl := createSlider("Round", acast MinRoundSize, acast MaxRoundSize, curSel.roundSize)
         ctrl.slider.sigStartChange += closure|self|(slider) {
-            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormShape), @nameof(FormShape.roundSize), true)
+            self.pushTypedValue(cast,bit(u32) slider.getValue(), @typeof(FormShape), @nameof(FormShape.roundSize), true)
         }
         ctrl.slider.sigChanged += closure|self|(slider) {
-            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormShape), @nameof(FormShape.roundSize), false)
+            self.pushTypedValue(cast,bit(u32) slider.getValue(), @typeof(FormShape), @nameof(FormShape.roundSize), false)
         }
     }
 
@@ -1027,10 +1027,10 @@ impl PropWnd
 
         ctrl := createSlider(labl, acast minS, acast maxS, curSel.borderSize)
         ctrl.slider.sigStartChange += closure|self|(slider) {
-            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(BaseForm), @nameof(BaseForm.borderSize), true)
+            self.pushTypedValue(cast,bit(u32) slider.getValue(), @typeof(BaseForm), @nameof(BaseForm.borderSize), true)
         }
         ctrl.slider.sigChanged += closure|self|(slider) {
-            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(BaseForm), @nameof(BaseForm.borderSize), false)
+            self.pushTypedValue(cast,bit(u32) slider.getValue(), @typeof(BaseForm), @nameof(BaseForm.borderSize), false)
         }
     }
 
@@ -1043,10 +1043,10 @@ impl PropWnd
         curSel := cast(*FormText) getSelectedBaseForm()
         ctrl := createSlider("Size", acast MinFontSize, acast MaxFontSize, acast curSel.fontSize)
         ctrl.slider.sigStartChange += closure|self|(slider) {
-            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormText), @nameof(FormText.fontSize), true)
+            self.pushTypedValue(cast,bit(u32) slider.getValue(), @typeof(FormText), @nameof(FormText.fontSize), true)
         }
         ctrl.slider.sigChanged += closure|self|(slider) {
-            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormText), @nameof(FormText.fontSize), false)
+            self.pushTypedValue(cast,bit(u32) slider.getValue(), @typeof(FormText), @nameof(FormText.fontSize), false)
         }
     }
 
@@ -1059,10 +1059,10 @@ impl PropWnd
         curSel := cast(*FormText) getSelectedBaseForm()
         ctrl := createSlider("Strengh", acast MinBoldSize, acast MaxBoldSize, acast curSel.boldSize)
         ctrl.slider.sigStartChange += closure|self|(slider) {
-            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormText), @nameof(FormText.boldSize), true)
+            self.pushTypedValue(cast,bit(u32) slider.getValue(), @typeof(FormText), @nameof(FormText.boldSize), true)
         }
         ctrl.slider.sigChanged += closure|self|(slider) {
-            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormText), @nameof(FormText.boldSize), false)
+            self.pushTypedValue(cast,bit(u32) slider.getValue(), @typeof(FormText), @nameof(FormText.boldSize), false)
         }
     }
 

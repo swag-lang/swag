@@ -266,7 +266,6 @@ AstNode* AstNode::clone(CloneContext& context)
         return ((AstAlias*) this)->clone(context);
     case AstNodeKind::Cast:
     case AstNodeKind::AutoCast:
-    case AstNodeKind::BitCast:
         return ((AstCast*) this)->clone(context);
     case AstNodeKind::FuncCallParams:
         return ((AstFuncCallParams*) this)->clone(context);
