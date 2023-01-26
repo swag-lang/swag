@@ -1810,24 +1810,51 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         {
             if (overload->flags & OVERLOAD_GENERIC)
             {
-                auto* match                        = job->getOneGenericMatch();
-                match->flags                       = oneOverload.symMatchContext.flags;
-                match->symbolName                  = symbol;
-                match->symbolOverload              = overload;
-                match->genericParametersCallTypes  = move(oneOverload.symMatchContext.genericParametersCallTypes);
-                match->genericParametersGenTypes   = move(oneOverload.symMatchContext.genericParametersGenTypes);
-                match->genericReplaceTypes         = move(oneOverload.symMatchContext.genericReplaceTypes);
-                match->genericReplaceTypesFrom     = move(oneOverload.symMatchContext.genericReplaceTypesFrom);
-                match->genericReplaceValues        = move(oneOverload.symMatchContext.genericReplaceValues);
-                match->genericParameters           = genericParameters;
-                match->parameters                  = move(oneOverload.symMatchContext.parameters);
-                match->solvedParameters            = move(oneOverload.symMatchContext.solvedParameters);
-                match->numOverloadsWhenChecked     = oneOverload.cptOverloads;
-                match->numOverloadsInitWhenChecked = oneOverload.cptOverloadsInit;
-                if (overload->node->flags & AST_HAS_SELECT_IF)
-                    genericMatchesSI.push_back(match);
+                // Be sure that we would like to instantiate
+                bool asMatch = false;
+                if (node && node->kind == AstNodeKind::Identifier)
+                {
+                    auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+                    if (!identifier->genericParameters && node->parent && node->parent->parent)
+                    {
+                        auto grandParent = node->parent->parent;
+                        if (grandParent->kind == AstNodeKind::IntrinsicDefined ||
+                            grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicNameOf)
+                            asMatch = true;
+                    }
+                }
+
+                if (asMatch)
+                {
+                    auto match              = job->getOneMatch();
+                    match->symbolOverload   = overload;
+                    match->solvedParameters = move(oneOverload.symMatchContext.solvedParameters);
+                    match->dependentVar     = dependentVar;
+                    match->ufcs             = oneOverload.ufcs;
+                    match->oneOverload      = &oneOverload;
+                    matches.push_back(match);
+                }
                 else
-                    genericMatches.push_back(match);
+                {
+                    auto* match                        = job->getOneGenericMatch();
+                    match->flags                       = oneOverload.symMatchContext.flags;
+                    match->symbolName                  = symbol;
+                    match->symbolOverload              = overload;
+                    match->genericParametersCallTypes  = move(oneOverload.symMatchContext.genericParametersCallTypes);
+                    match->genericParametersGenTypes   = move(oneOverload.symMatchContext.genericParametersGenTypes);
+                    match->genericReplaceTypes         = move(oneOverload.symMatchContext.genericReplaceTypes);
+                    match->genericReplaceTypesFrom     = move(oneOverload.symMatchContext.genericReplaceTypesFrom);
+                    match->genericReplaceValues        = move(oneOverload.symMatchContext.genericReplaceValues);
+                    match->genericParameters           = genericParameters;
+                    match->parameters                  = move(oneOverload.symMatchContext.parameters);
+                    match->solvedParameters            = move(oneOverload.symMatchContext.solvedParameters);
+                    match->numOverloadsWhenChecked     = oneOverload.cptOverloads;
+                    match->numOverloadsInitWhenChecked = oneOverload.cptOverloadsInit;
+                    if (overload->node->flags & AST_HAS_SELECT_IF)
+                        genericMatchesSI.push_back(match);
+                    else
+                        genericMatches.push_back(match);
+                }
             }
             else
             {

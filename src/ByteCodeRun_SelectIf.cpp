@@ -69,10 +69,11 @@ void* ByteCodeRun::executeLocationSI(ByteCodeRunContext* context, ByteCodeInstru
     if (paramIdx >= callParams->childs.size())
         return nullptr;
 
-    auto child = callParams->childs[paramIdx];
-    child->allocateComputedValue();
-    ByteCodeGenJob::computeSourceLocation(context->callerContext, child, &child->computedValue->storageOffset, &child->computedValue->storageSegment, true);
-    return child->computedValue->storageSegment->address(child->computedValue->storageOffset);
+    auto         child          = callParams->childs[paramIdx];
+    uint32_t     storageOffset  = UINT32_MAX;
+    DataSegment* storageSegment = nullptr;
+    ByteCodeGenJob::computeSourceLocation(context->callerContext, child, &storageOffset, &storageSegment, true);
+    return storageSegment->address(storageOffset);
 }
 
 bool ByteCodeRun::executeIsConstExprSI(ByteCodeRunContext* context, ByteCodeInstruction* ip)
