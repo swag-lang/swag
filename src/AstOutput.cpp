@@ -1061,6 +1061,17 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     switch (node->kind)
     {
+    case AstNodeKind::CompilerCode:
+        concat.addChar(')');
+        concat.addEolIndent(context.indent);
+        concat.addChar('{');
+        concat.addEolIndent(context.indent);
+        SWAG_CHECK(outputNode(context, concat, node->childs[0]));
+        concat.addEolIndent(context.indent);
+        concat.addChar('}');
+        concat.addEolIndent(context.indent);
+        break;
+
     case AstNodeKind::With:
     {
         concat.addString("with ");
@@ -1755,7 +1766,9 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             SWAG_CHECK(outputNode(context, concat, identifier->callParameters));
             if (identifier->callParameters->flags & AST_CALL_FOR_STRUCT)
                 concat.addChar('}');
-            else
+            else if (identifier->callParameters->childs.empty())
+                concat.addChar(')');
+            else if (identifier->callParameters->childs.back()->childs.back()->kind != AstNodeKind::CompilerCode)
                 concat.addChar(')');
         }
 

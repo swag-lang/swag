@@ -1,11 +1,6 @@
-var G = 0
-
-#[Swag.Macro]
-func parse(stmt: code)->bool throw
+#[Swag.Macro, Swag.Discardable]
+public func parse58(stmt: code)->bool
 {
-    G += 1
-    if G == 5
-        return false
     #macro
     {
         #mixin stmt
@@ -14,11 +9,11 @@ func parse(stmt: code)->bool throw
     return true
 }
 
-#test
+#[Swag.Inline]
+public func toto58()
 {
-    cpt := 0
     countTot := 0
-    while try parse()
+    while parse58()
     {
         countTot += 1
     }

@@ -1,7 +1,7 @@
 var G = 0
 
 #[Swag.Macro]
-func parse(stmt: code)->bool throw
+func parse(stmt: code)->bool
 {
     G += 1
     if G == 5
@@ -14,14 +14,18 @@ func parse(stmt: code)->bool throw
     return true
 }
 
-#test
+func toto()
 {
-    cpt := 0
     countTot := 0
-    while try parse()
+    while parse()
     {
         countTot += 1
     }
 
     @assert(countTot == 4)
+}
+
+#test
+{
+    toto()
 }

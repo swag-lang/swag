@@ -78,9 +78,12 @@ bool SemanticJob::resolveWhile(SemanticContext* context)
 
     node->byteCodeFct = ByteCodeGenJob::emitLoop;
     node->boolExpression->allocateExtension(ExtensionKind::ByteCode);
+    SWAG_ASSERT(!node->boolExpression->extension->bytecode->byteCodeBeforeFct);
+    SWAG_ASSERT(!node->boolExpression->extension->bytecode->byteCodeAfterFct);
     node->boolExpression->extension->bytecode->byteCodeBeforeFct = ByteCodeGenJob::emitWhileBeforeExpr;
     node->boolExpression->extension->bytecode->byteCodeAfterFct  = ByteCodeGenJob::emitWhileAfterExpr;
     node->block->allocateExtension(ExtensionKind::ByteCode);
+    SWAG_ASSERT(!node->block->extension->bytecode->byteCodeAfterFct || node->block->extension->bytecode->byteCodeAfterFct == ByteCodeGenJob::emitLeaveScope);
     node->block->extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterBlock;
 
     // :SpecPropagateReturn
@@ -238,13 +241,17 @@ bool SemanticJob::resolveFor(SemanticContext* context)
     node->extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitLeaveScope;
 
     node->boolExpression->allocateExtension(ExtensionKind::ByteCode);
+    SWAG_ASSERT(!node->boolExpression->extension->bytecode->byteCodeBeforeFct);
+    SWAG_ASSERT(!node->boolExpression->extension->bytecode->byteCodeAfterFct);
     node->boolExpression->extension->bytecode->byteCodeBeforeFct = ByteCodeGenJob::emitForBeforeExpr;
     node->boolExpression->extension->bytecode->byteCodeAfterFct  = ByteCodeGenJob::emitForAfterExpr;
 
     node->postExpression->allocateExtension(ExtensionKind::ByteCode);
+    SWAG_ASSERT(!node->postExpression->extension->bytecode->byteCodeBeforeFct);
     node->postExpression->extension->bytecode->byteCodeBeforeFct = ByteCodeGenJob::emitForBeforePost;
 
     node->block->allocateExtension(ExtensionKind::ByteCode);
+    SWAG_ASSERT(!node->block->extension->bytecode->byteCodeAfterFct || node->block->extension->bytecode->byteCodeAfterFct == ByteCodeGenJob::emitLeaveScope);
     node->block->extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterBlock;
 
     // :SpecPropagateReturn
@@ -567,9 +574,13 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
     node->extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitLeaveScope;
 
     node->block->allocateExtension(ExtensionKind::ByteCode);
+    SWAG_ASSERT(!node->block->extension->bytecode->byteCodeAfterFct || node->block->extension->bytecode->byteCodeAfterFct == ByteCodeGenJob::emitLeaveScope);
     node->block->extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterBlock;
     if (!node->expression)
+    {
+        SWAG_ASSERT(!node->block->extension->bytecode->byteCodeBeforeFct);
         node->block->extension->bytecode->byteCodeBeforeFct = ByteCodeGenJob::emitLoopBeforeBlock;
+    }
 
     // :SpecPropagateReturn
     if (node->breakableFlags & BREAKABLE_RETURN_IN_INFINIT_LOOP && node->breakList.empty())
@@ -1048,6 +1059,8 @@ bool SemanticJob::resolveScopeBreakable(SemanticContext* context)
 {
     auto node = CastAst<AstScopeBreakable>(context->node, AstNodeKind::ScopeBreakable);
     node->block->allocateExtension(ExtensionKind::ByteCode);
+    SWAG_ASSERT(!node->block->extension->bytecode->byteCodeBeforeFct);
+    SWAG_ASSERT(!node->block->extension->bytecode->byteCodeAfterFct);
     node->block->extension->bytecode->byteCodeBeforeFct = ByteCodeGenJob::emitLabelBeforeBlock;
     node->block->extension->bytecode->byteCodeAfterFct  = ByteCodeGenJob::emitLoopAfterBlock;
     return true;
