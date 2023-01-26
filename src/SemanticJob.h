@@ -315,7 +315,6 @@ struct SemanticJob : public Job
     static void           setVarDeclResolve(AstVarDecl* varNode);
     static bool           convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags);
     static DataSegment*   getSegmentForVar(SemanticContext* context, AstVarDecl* node);
-    static bool           makeIntrinsicTypeOf(SemanticContext* context);
     static bool           getDigitHexa(SemanticContext* context, const char** pz, int& result, const char* errMsg);
     static bool           processLiteralString(SemanticContext* context);
     static bool           computeExpressionListTupleType(SemanticContext* context, AstNode* node);

@@ -614,11 +614,16 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::makeIntrinsicTypeOf(SemanticContext* context)
+bool SemanticJob::resolveIntrinsicTypeOf(SemanticContext* context)
 {
     auto node     = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto expr     = node->childs.front();
     auto typeInfo = expr->typeInfo;
+
+    SWAG_CHECK(checkIsConstExpr(context, typeInfo, expr));
+    SWAG_VERIFY(!expr->typeInfo->isKindGeneric(), context->report({expr, Err(Err0810)}));
+
+    expr->flags |= AST_NO_BYTECODE;
 
     // A @typeof/@kindof as a type in a declaration
     if (node->specFlags & AST_SPEC_INTRINSIC_TYPEOF_AS_TYPE)
@@ -658,19 +663,6 @@ bool SemanticJob::makeIntrinsicTypeOf(SemanticContext* context)
         SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
     }
 
-    return true;
-}
-
-bool SemanticJob::resolveIntrinsicTypeOf(SemanticContext* context)
-{
-    auto node = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-    auto expr = node->childs.front();
-
-    SWAG_CHECK(checkIsConstExpr(context, expr->typeInfo, expr));
-    SWAG_VERIFY(!expr->typeInfo->isKindGeneric(), context->report({expr, Err(Err0810)}));
-
-    expr->flags |= AST_NO_BYTECODE;
-    SWAG_CHECK(makeIntrinsicTypeOf(context));
     return true;
 }
 
