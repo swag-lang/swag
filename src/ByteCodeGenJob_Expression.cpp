@@ -327,7 +327,6 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     if (node->flags & AST_VALUE_IS_TYPEINFO)
     {
         emitMakeSegPointer(context, node->computedValue->storageSegment, node->computedValue->storageOffset, regList[0]);
-        node->parent->resultRegisterRC = node->resultRegisterRC;
     }
     else if (typeInfo->isNative())
     {

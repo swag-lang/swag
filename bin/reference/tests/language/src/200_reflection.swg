@@ -37,4 +37,29 @@
         @assert(@typeof(ptr.kind).fullname == "Swag.TypeInfoKind")
         @assert(ptr.sizeof == @sizeof(f64))
     }
+
+    // @mktype can be used to transform a typeinfo to a real compiler type
+    // This is the opposite of @typeof or @kindof
+    {
+        var x: @mktype(@typeof(s32))
+        #assert @typeof(x) == s32
+    }
+
+    // @mktype can evaluate a constexpr expression that returns a 'typeinfo' to determine the real type
+    {
+        #[Swag.ConstExpr]
+        func getType(str: bool)->typeinfo
+        {
+            if str return string
+            else   return s32
+        }
+
+        var x: @mktype(getType(false))
+        #assert @typeof(x) == s32
+        x = 0
+
+        var x1: @mktype(getType(true))
+        #assert @typeof(x1) == string
+        x1 = "0"
+    }
 }
