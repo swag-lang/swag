@@ -539,12 +539,12 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         case TokenId::CompilerSelectIfOnce:
             funcNode->token.text = "__selectifonce" + to_string(id);
             funcNode->flags |= AST_GENERATED;
-            funcNode->attributeFlags |= ATTRIBUTE_SELECTIF_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC;
+            funcNode->attributeFlags |= ATTRIBUTE_MATCH_SELECTIF_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC;
             break;
         case TokenId::CompilerSelectIf:
             funcNode->token.text = "__selectif" + to_string(id);
             funcNode->flags |= AST_GENERATED;
-            funcNode->attributeFlags |= ATTRIBUTE_SELECTIF_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC;
+            funcNode->attributeFlags |= ATTRIBUTE_MATCH_SELECTIF_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC;
             break;
         }
     }

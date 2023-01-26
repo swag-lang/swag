@@ -199,7 +199,7 @@ void SemanticJob::inheritAttributesFromParent(AstNode* child)
     if (!child->parent)
         return;
 
-    child->attributeFlags |= child->parent->attributeFlags & ATTRIBUTE_SELECTIF_MASK;
+    child->attributeFlags |= child->parent->attributeFlags & ATTRIBUTE_MATCH_MASK;
     child->safetyOn |= child->parent->safetyOn;
     child->safetyOff |= child->parent->safetyOff;
 }
@@ -259,7 +259,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
         auto safetyOff      = curAttr->safetyOff;
 
         // Inherit all simple flags
-        forNode->attributeFlags |= attributeFlags & ~(ATTRIBUTE_OPTIM_MASK | ATTRIBUTE_SELECTIF_MASK | ATTRIBUTE_EXPOSE_MASK);
+        forNode->attributeFlags |= attributeFlags & ~(ATTRIBUTE_OPTIM_MASK | ATTRIBUTE_MATCH_MASK | ATTRIBUTE_EXPOSE_MASK);
 
         // Inherit with condition
         INHERIT_SAFETY(forNode, SAFETY_BOUNDCHECK);
@@ -274,7 +274,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
         INHERIT_ATTR(forNode, ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
         INHERIT_ATTR(forNode, ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
 
-        INHERIT_ATTR(forNode, ATTRIBUTE_SELECTIF_MASK);
+        INHERIT_ATTR(forNode, ATTRIBUTE_MATCH_MASK);
 
         if (!(forNode->flags & AST_PRIVATE))
             INHERIT_ATTR(forNode, ATTRIBUTE_EXPOSE_MASK);
@@ -540,8 +540,9 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
 
                     if (text.empty())
                     {
-                        flags &= ~(ATTRIBUTE_MATCH_MASK);
-                        flags |= attrValue->reg.b ? ATTRIBUTE_SELECTIF_ON : ATTRIBUTE_SELECTIF_OFF;
+                        flags &= ~ATTRIBUTE_MATCH_MASK;
+                        if (!attrValue->reg.b)
+                            flags |= ATTRIBUTE_MATCH_SELECTIF_OFF | ATTRIBUTE_MATCH_SELF_OFF;
                     }
 
                     for (auto& w : what)
@@ -549,8 +550,17 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                         w.trim();
                         if (w == g_LangSpec->name_selectif)
                         {
-                            flags &= ~(ATTRIBUTE_SELECTIF_ON | ATTRIBUTE_SELECTIF_OFF);
-                            flags |= attrValue->reg.b ? ATTRIBUTE_SELECTIF_ON : ATTRIBUTE_SELECTIF_OFF;
+                            if (!attrValue->reg.b)
+                                flags |= ATTRIBUTE_MATCH_SELECTIF_OFF;
+                            else
+                                flags &= ~ATTRIBUTE_MATCH_SELECTIF_OFF;
+                        }
+                        else if (w == g_LangSpec->name_self)
+                        {
+                            if (!attrValue->reg.b)
+                                flags |= ATTRIBUTE_MATCH_SELF_OFF;
+                            else
+                                flags &= ~ATTRIBUTE_MATCH_SELF_OFF;
                         }
                         else
                         {

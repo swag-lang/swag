@@ -3291,7 +3291,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         // Take care of #selectifonce/#selectif
         if (overSym->kind == SymbolKind::Function &&
             !(context->node->flags & AST_IN_SELECTIF) &&
-            !(context->node->attributeFlags & ATTRIBUTE_SELECTIF_OFF))
+            !(context->node->attributeFlags & ATTRIBUTE_MATCH_SELECTIF_OFF))
         {
             auto funcDecl = CastAst<AstFuncDecl>(over->node, AstNodeKind::FuncDecl);
             if (funcDecl->selectIf)
@@ -3301,6 +3301,25 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
                     return true;
                 if (curMatch->remove)
                     continue;
+            }
+        }
+
+        // Do not match "self"
+        if (overSym->kind == SymbolKind::Function &&
+            context->node->attributeFlags & ATTRIBUTE_MATCH_SELF_OFF)
+        {
+            if (node->ownerInline)
+            {
+                if (node->ownerInline->func->resolvedSymbolOverload == over)
+                {
+                    matches[i]->remove = true;
+                    continue;
+                }
+            }
+            else if (node->ownerFct && node->ownerFct->resolvedSymbolOverload == over)
+            {
+                matches[i]->remove = true;
+                continue;
             }
         }
 

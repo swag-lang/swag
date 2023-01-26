@@ -990,7 +990,7 @@ void initErrors()
     SWAG_ERROR(Hlp0038, "you should add a 'break'");
     SWAG_ERROR(Hlp0046, nullptr);
     SWAG_ERROR(Hlp0047, "if you want to slice to the end, use '..' instead");
-    SWAG_ERROR(Hlp0048, "'Swag.Match' valid value is 'selectif'");
+    SWAG_ERROR(Hlp0048, "'Swag.Match' valid values are 'selectif|self'");
     SWAG_ERROR(Hlp0049, nullptr);
 
     /////////////////////////////////////////////////////////////////////
