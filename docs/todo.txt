@@ -45,6 +45,9 @@ if a == 1 do toto() else do titi()
 -------------------------------------
 remplacer bitcast(X) par cast,bit(X) ?
 -------------------------------------
+var a: s32 = ? 
+var a: s32 = undefined
+-------------------------------------
 
 
 

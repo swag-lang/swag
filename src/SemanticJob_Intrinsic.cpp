@@ -570,8 +570,6 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
     auto  sourceFile = context->sourceFile;
     auto& typeTable  = sourceFile->module->typeTable;
 
-    SWAG_CHECK(checkIsConstExpr(context, expr->typeInfo, expr));
-
     // Will be runtime for an 'any' type
     if (expr->typeInfo->isAny() || expr->typeInfo->isInterface())
     {
@@ -620,8 +618,14 @@ bool SemanticJob::resolveIntrinsicMakeType(SemanticContext* context)
     auto expr     = node->childs.front();
     auto typeInfo = expr->typeInfo;
 
-    SWAG_CHECK(checkIsConstExpr(context, typeInfo, expr));
-    SWAG_VERIFY(!expr->typeInfo->isKindGeneric(), context->report({expr, Err(Err0810)}));
+    SWAG_VERIFY(!typeInfo->isKindGeneric(), context->report({expr, Err(Err0810)}));
+
+    if (expr->flags & AST_CONST_EXPR)
+    {
+        SWAG_CHECK(executeCompilerNode(context, expr, true));
+        if (context->result != ContextResult::Done)
+            return true;
+    }
 
     expr->flags |= AST_NO_BYTECODE;
 
@@ -656,7 +660,6 @@ bool SemanticJob::resolveIntrinsicTypeOf(SemanticContext* context)
     auto expr     = node->childs.front();
     auto typeInfo = expr->typeInfo;
 
-    SWAG_CHECK(checkIsConstExpr(context, typeInfo, expr));
     SWAG_VERIFY(!expr->typeInfo->isKindGeneric(), context->report({expr, Err(Err0810)}));
 
     expr->flags |= AST_NO_BYTECODE;
@@ -700,7 +703,6 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     case TokenId::IntrinsicSizeOf:
     {
         auto expr = node->childs.front();
-        SWAG_CHECK(checkIsConstExpr(context, expr->typeInfo, expr));
         SWAG_VERIFY(!expr->typeInfo->isKindGeneric(), context->report({expr, Err(Err0812)}));
         node->setFlagsValueIsComputed();
         node->computedValue->reg.u64 = expr->typeInfo->sizeOf;
@@ -714,7 +716,6 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     case TokenId::IntrinsicAlignOf:
     {
         auto expr = node->childs.front();
-        SWAG_CHECK(checkIsConstExpr(context, expr->typeInfo, expr));
         SWAG_VERIFY(!expr->typeInfo->isKindGeneric(), context->report({expr, Err(Err0814)}));
         node->setFlagsValueIsComputed();
         node->computedValue->reg.u64 = TypeManager::alignOf(expr->typeInfo);
