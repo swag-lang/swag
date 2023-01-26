@@ -4,7 +4,7 @@ using Core, Pixel
 #[Swag.EnumFlags]
 enum SplitterFlags
 {
-    None
+    Zero = 0
     Vertical
     HideBars
 }
@@ -22,7 +22,7 @@ struct SplitterItem
 struct SplitterCtrl
 {
     using frameWnd: FrameWnd
-    splitterFlags   = SplitterFlags.None
+    splitterFlags   = SplitterFlags.Zero
     titleSize:      f32 = 30
 
     items:          ArrayPtr'SplitterItem

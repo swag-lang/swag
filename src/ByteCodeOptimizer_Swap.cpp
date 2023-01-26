@@ -1,9 +1,5 @@
 #include "pch.h"
 #include "ByteCodeOptimizer.h"
-#include "SourceFile.h"
-#include "Module.h"
-#include "Log.h"
-#include "AstNode.h"
 
 bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
 {
@@ -40,6 +36,16 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
             if (ip->node->ownerInline != ipn->node->ownerInline)
                 break;
             if (ipn->op == ByteCodeOp::Nop)
+                break;
+
+            // Do NOT move after a parameter, because we do not want the same register to be stored in
+            // different parameters
+            if (ipn->op == ByteCodeOp::PushRAParam ||
+                ipn->op == ByteCodeOp::PushRAParam2 ||
+                ipn->op == ByteCodeOp::PushRAParam3 ||
+                ipn->op == ByteCodeOp::PushRAParam4 ||
+                ipn->op == ByteCodeOp::PushRAParamCond ||
+                ipn->op == ByteCodeOp::PushRVParam)
                 break;
 
             if ((ByteCode::hasWriteRegInA(ip) && ByteCode::hasRefToReg(ipn, ip->a.u32)) ||
