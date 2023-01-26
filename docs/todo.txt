@@ -41,10 +41,16 @@ v.add(#code @print(a))
 closure/lambda, pouvoir zaper un paramètre avec ? => closure|&total|(?, depth) ()
 -------------------------------------
 if a == 1 do toto() else do titi()
-#if a a == 1 do...
+#if a == 1 do...
 -------------------------------------
 remplacer bitcast(X) par cast,bit(X) ?
 -------------------------------------
+cast,unconst ?
+-------------------------------------
+a = if b then c else d
+a = if b then c elif d then f else h
+-------------------------------------
+
 
 
 
@@ -80,7 +86,7 @@ TODO
 -------------------------------------
 fast math ? (faire les tests de float en u32/U64 comme avant la prise en charge de nan)
 -------------------------------------
-debugger, ajouter la logique des expression $num qu'on peut récupérer dans le prompt ensuite
+debugger, ajouter la logique des expressions $num qu'on peut récupérer dans le prompt ensuite
 -------------------------------------
 DebugAllocator
 safety, sanitize access to stack/memory
@@ -94,7 +100,7 @@ closure & ufcs (exemple 3477)
 -------------------------------------
 context & tempallocator, y'a vraiment aucun usage dans std, c'est pas normal, faut se pencher sur l'utilisation de ce truc
 -------------------------------------
-cast interface vers struct (avec safety)
+cast interface vers struct (avec safety) au lieu de struct := cast(*Toto) @dataof(Interface)
 -------------------------------------
 llvm debug, pas à jour
 - debug lambda capture parameters not visible

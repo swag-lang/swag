@@ -44,6 +44,9 @@ namespace BackendLinker
                             l2.trim();
                             auto l1 = Fmt("linker error: module '%s': %s", module->name.c_str(), l2.c_str());
                             l       = l1;
+#ifdef SWAG_DEV_MODE
+                            OS::errorBox("[Developer Mode]", "Error raised !");
+#endif
                         }
                     }
                     else
