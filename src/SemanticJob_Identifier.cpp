@@ -3112,9 +3112,16 @@ bool SemanticJob::appendLastCodeStatement(SemanticContext* context, AstIdentifie
         {
             if (node->callParameters && node->callParameters->childs.size() < typeFunc->parameters.size())
             {
-                if (node->parent->childParentIdx != node->parent->parent->childs.size() - 1)
+                auto parent = node->parent;
+                if (parent->parent->kind == AstNodeKind::Catch ||
+                    parent->parent->kind == AstNodeKind::Try ||
+                    parent->parent->kind == AstNodeKind::Assume ||
+                    parent->parent->kind == AstNodeKind::TryCatch)
+                    parent = parent->parent;
+
+                if (parent->childParentIdx != parent->parent->childs.size() - 1)
                 {
-                    auto brother = node->parent->parent->childs[node->parent->childParentIdx + 1];
+                    auto brother = parent->parent->childs[parent->childParentIdx + 1];
                     if (brother->kind == AstNodeKind::Statement)
                     {
                         auto fctCallParam = Ast::newFuncCallParam(context->sourceFile, node->callParameters);
