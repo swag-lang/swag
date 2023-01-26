@@ -66,7 +66,7 @@ struct LanguageSpec
     Utf8 name_Align;
     Utf8 name_Safety;
     Utf8 name_Optim;
-    Utf8 name_SelectIf;
+    Utf8 name_Match;
     Utf8 name_Pack;
     Utf8 name_ExportType;
     Utf8 name_Using;
@@ -77,7 +77,7 @@ struct LanguageSpec
     Utf8 name_Swag_Align;
     Utf8 name_Swag_Safety;
     Utf8 name_Swag_Optim;
-    Utf8 name_Swag_SelectIf;
+    Utf8 name_Swag_Match;
     Utf8 name_Swag_Pack;
     Utf8 name_Swag_Foreign;
     Utf8 name_Swag_Deprecated;
@@ -173,6 +173,7 @@ struct LanguageSpec
     Utf8 name_module;
     Utf8 name_function;
     Utf8 name_bytecode;
+    Utf8 name_selectif;
     Utf8 name_usage;
     Utf8 name_what;
     Utf8 name_value;

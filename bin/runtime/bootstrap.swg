@@ -119,7 +119,7 @@ namespace Swag
     attr Warn(what: string, level: WarnLevel)
 
     #[AttrUsage(AttributeUsage.All)]
-    attr SelectIf(value: bool)
+    attr Match(what: string, value: bool)
 
     // Hardcoded
     attr Strict()

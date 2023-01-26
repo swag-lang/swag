@@ -76,20 +76,6 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         auto paramType     = nodeParam->typeInfo;
         auto paramNodeType = nodeParam->type ? nodeParam->type : nodeParam;
 
-        // Check that a constexpr parameter is of a compatible type
-        if (funcParam->attributes.hasAttribute(g_LangSpec->name_Swag_ConstExpr))
-        {
-            if (!param->typeInfo->isString() &&
-                !param->typeInfo->isNativeFloat() &&
-                !param->typeInfo->isNativeIntegerOrRune() &&
-                !param->typeInfo->isBool())
-            {
-                Diagnostic diag{paramNodeType, Fmt(Err(Err0690), param->typeInfo->getDisplayNameC())};
-                Diagnostic note{paramNodeType, Hlp(Hlp0046)};
-                return context->report(diag, &note);
-            }
-        }
-
         // Code is only valid for a macro or mixin
         if (paramType->isCode())
             SWAG_VERIFY(funcNode->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN), context->report({paramNodeType, Err(Err0729)}));

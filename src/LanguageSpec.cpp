@@ -41,7 +41,7 @@ void LanguageSpec::setupNames()
 
     name_Safety     = "Safety";
     name_Optim      = "Optim";
-    name_SelectIf   = "SelectIf";
+    name_Match      = "Match";
     name_Pack       = "Pack";
     name_Align      = "Align";
     name_Complete   = "Complete";
@@ -59,7 +59,7 @@ void LanguageSpec::setupNames()
     name_Swag_Align      = "Swag.Align";
     name_Swag_Safety     = "Swag.Safety";
     name_Swag_Optim      = "Swag.Optim";
-    name_Swag_SelectIf   = "Swag.SelectIf";
+    name_Swag_Match      = "Swag.Match";
     name_Swag_Pack       = "Swag.Pack";
     name_Swag_Foreign    = "Swag.Foreign";
     name_Swag_Deprecated = "Swag.Deprecated";
@@ -151,6 +151,7 @@ void LanguageSpec::setupNames()
     name_module   = "module";
     name_function = "function";
     name_bytecode = "bytecode";
+    name_selectif = "selectif";
     name_usage    = "usage";
     name_what     = "what";
     name_value    = "value";

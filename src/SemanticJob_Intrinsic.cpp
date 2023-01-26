@@ -660,7 +660,7 @@ bool SemanticJob::resolveIntrinsicTypeOf(SemanticContext* context)
     auto expr     = node->childs.front();
     auto typeInfo = expr->typeInfo;
 
-    SWAG_VERIFY(!expr->typeInfo->isKindGeneric(), context->report({expr, Err(Err0810)}));
+    SWAG_VERIFY(!typeInfo->isKindGeneric(), context->report({expr, Err(Err0810)}));
 
     expr->flags |= AST_NO_BYTECODE;
 

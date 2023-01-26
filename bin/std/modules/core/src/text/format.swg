@@ -8,7 +8,7 @@ func checkFormat(fct: string, fmt: string, values: ...)
     cptPercent := countPercent(fmt)
     if cptPercent != @countof(values)
     {
-        #[SelectIf(false)]
+        #[Match("selectif", false)]
         str := toString("bad number of arguments to '%' ('%' requested, '%' provided)", fct, cptPercent, @countof(values))
         @compilererror(str, @location(values))
     }
@@ -48,7 +48,7 @@ func replaceString(dest: *String, fmt: string, values: ...)
 
     buf.setFirstBucket(@mkslice(dest.buffer, dest.capacity))
 
-    #[SelectIf(false)]
+    #[Match("selectif", false)]
     append(&buf, fmt, values)
 
     buf.makeLinear()
@@ -70,7 +70,7 @@ func toString(fmt: string, values: ...)->String
 {
     var buf: ConcatBuffer
 
-    #[SelectIf(false)]
+    #[Match("selectif", false)]
     append(&buf, fmt, values)
 
     return buf.toString()

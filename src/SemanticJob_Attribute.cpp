@@ -520,12 +520,45 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             }
 
             //////
-            else if (child->token.text == g_LangSpec->name_SelectIf)
+            else if (child->token.text == g_LangSpec->name_Match)
             {
-                auto attrValue = curAttr->attributes.getValue(g_LangSpec->name_Swag_SelectIf, g_LangSpec->name_value);
-                SWAG_ASSERT(attrValue);
-                flags &= ~(ATTRIBUTE_SELECTIF_MASK);
-                flags |= attrValue->reg.b ? ATTRIBUTE_SELECTIF_ON : ATTRIBUTE_SELECTIF_OFF;
+                VectorNative<const OneAttribute*> allAttrs;
+                vector<Utf8>                      what;
+
+                curAttr->attributes.getAttributes(allAttrs, g_LangSpec->name_Swag_Match);
+                for (auto attr : allAttrs)
+                {
+                    auto attrParam = attr->getParam(g_LangSpec->name_what);
+                    SWAG_ASSERT(attrParam);
+                    auto attrValue = attr->getValue(g_LangSpec->name_value);
+                    SWAG_ASSERT(attrValue);
+
+                    auto attrWhat = &attrParam->value;
+                    auto text     = attrWhat->text;
+                    text.trim();
+                    Utf8::tokenize(text, '|', what);
+
+                    if (text.empty())
+                    {
+                        flags &= ~(ATTRIBUTE_MATCH_MASK);
+                        flags |= attrValue->reg.b ? ATTRIBUTE_SELECTIF_ON : ATTRIBUTE_SELECTIF_OFF;
+                    }
+
+                    for (auto& w : what)
+                    {
+                        w.trim();
+                        if (w == g_LangSpec->name_selectif)
+                        {
+                            flags &= ~(ATTRIBUTE_SELECTIF_ON | ATTRIBUTE_SELECTIF_OFF);
+                            flags |= attrValue->reg.b ? ATTRIBUTE_SELECTIF_ON : ATTRIBUTE_SELECTIF_OFF;
+                        }
+                        else
+                        {
+                            Diagnostic note{Hlp(Hlp0048), DiagnosticLevel::Help};
+                            return context->report({child, attrParam->token, Fmt(Err(Err0693), w.c_str())}, &note);
+                        }
+                    }
+                }
             }
 
             //////

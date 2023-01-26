@@ -875,10 +875,10 @@ void initErrors()
     SWAG_ERROR(Err0181, "value '%I64u' does not fit in the type '%s'");
     SWAG_ERROR(Err0183, "value '%s' ('%I64u' in decimal) does not fit in the type '%s'");
     SWAG_ERROR(Err0056, "x64 backend unsupported os '%s'");
-    SWAG_ERROR(Err0083, "unexpected #[Swag.Inline] attribute as #[Swag.NoInline] is already defined");
-    SWAG_ERROR(Err0691, "unexpected #[Swag.NoInline] attribute as #[Swag.Inline] is already defined");
-    SWAG_ERROR(Err0693, nullptr);
-    SWAG_ERROR(Err0690, "unexpected type '%s' for a #[Swag.ConstExpr] parameter");
+    SWAG_ERROR(Err0083, "unexpected 'Swag.Inline' attribute as 'Swag.NoInline' is already defined");
+    SWAG_ERROR(Err0691, "unexpected 'Swag.NoInline' attribute as 'Swag.Inline' is already defined");
+    SWAG_ERROR(Err0693, "unexpected 'Swag.Match' parameter '%s'");
+    SWAG_ERROR(Err0690, nullptr);
     SWAG_ERROR(Err0688, "cannot exclude the slice upper bound because it's zero");
     SWAG_ERROR(Err0504, "expected the number of scopes as a literal, found '%s'");
     SWAG_ERROR(Err0577, "expected a simple untyped integer literal or 'u8'");
@@ -988,9 +988,9 @@ void initErrors()
     SWAG_ERROR(Hlp0042, "you could use 'func' instead of 'mtd' or 'mtdc'");
     SWAG_ERROR(Hlp0037, "you should add a 'break' or a 'fallthrough'");
     SWAG_ERROR(Hlp0038, "you should add a 'break'");
-    SWAG_ERROR(Hlp0046, "only basic parameters (integers, float, string...) can be marked with the #[Swag.ConstExpr] attribute");
+    SWAG_ERROR(Hlp0046, nullptr);
     SWAG_ERROR(Hlp0047, "if you want to slice to the end, use '..' instead");
-    SWAG_ERROR(Hlp0048, nullptr);
+    SWAG_ERROR(Hlp0048, "'Swag.Match' valid value is 'selectif'");
     SWAG_ERROR(Hlp0049, nullptr);
 
     /////////////////////////////////////////////////////////////////////
