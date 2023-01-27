@@ -1510,10 +1510,14 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
         }
 
         // Heuristic : too much values compared to the number of cases
+        // Comes from
+        // TargetLoweringBase::getMinimumJumpTableEntries()
+        // TargetLoweringBase::isSuitableForJumpTable in llvm
+
         auto range    = (maxValue - minValue) + 1;
         auto numCases = (int64_t) context->vecInst.size();
-
-        // Come from TargetLoweringBase::isSuitableForJumpTable in llvm
+        if (numCases < 4)
+            continue;
         bool canGen = range >= minJumpTableSize && range <= maxJumpTableSize && (numCases * 100 >= range * minDensity);
         if (!canGen)
             continue;
