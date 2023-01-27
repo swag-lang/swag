@@ -258,27 +258,14 @@ static void fixRange(const Utf8& backLine, SourceLocation& startLocation, int& r
 
 void Diagnostic::collectRanges()
 {
-    if (hasRangeLocation2 &&
-        startLocation2.line == startLocation.line &&
-        endLocation2.line == startLocation2.line &&
-        endLocation2.column <= startLocation.column)
-    {
-        ranges.push_back({startLocation2, endLocation2, hint2});
-        ranges.push_back({startLocation, endLocation, hint});
-    }
-    else if (hasRangeLocation2 &&
-             startLocation2.line == startLocation.line &&
-             endLocation2.line == startLocation2.line &&
-             startLocation2.column >= endLocation.column)
-    {
-        ranges.push_back({startLocation, endLocation, hint});
-        ranges.push_back({startLocation2, endLocation2, hint2});
-        invertError = true;
-    }
-    else
-    {
-        ranges.push_back({startLocation, endLocation, hint});
-    }
+    if (hasRangeLocation)
+        ranges.push_back({startLocation, endLocation, hint, errorLevel});
+    if (hasRangeLocation2)
+        ranges.push_back({startLocation2, endLocation2, hint2, DiagnosticLevel::Note});
+
+    // Sort ranges by column
+    sort(ranges.begin(), ranges.end(), [](auto& r1, auto& r2)
+         { return r1.startLocation.column < r2.startLocation.column; });
 
     // Preprocess ranges
     for (auto& r : ranges)
@@ -288,17 +275,17 @@ void Diagnostic::collectRanges()
         if (r.startLocation.line == r.endLocation.line && r.startLocation.column > r.endLocation.column)
             swap(r.startLocation.column, r.endLocation.column);
 
-        r.range = 1;
+        r.width = 1;
         if (!hasRangeLocation)
-            r.range = 1;
+            r.width = 1;
         else if (r.endLocation.line == r.startLocation.line)
-            r.range = r.endLocation.column - r.startLocation.column;
+            r.width = r.endLocation.column - r.startLocation.column;
         else
-            r.range = (int) backLine.length() - r.startLocation.column;
-        r.range = max(1, r.range);
+            r.width = (int) backLine.length() - r.startLocation.column;
+        r.width = max(1, r.width);
 
         // Special case for a range == 1.
-        if (r.range == 1 && (int) r.startLocation.column < backLine.count)
+        if (r.width == 1 && (int) r.startLocation.column < backLine.count)
         {
             int decal = r.startLocation.column;
 
@@ -311,7 +298,7 @@ void Diagnostic::collectRanges()
                     while (SWAG_IS_ALNUM(backLine[decal + 1]) || backLine[decal + 1] == '_')
                     {
                         decal += 1;
-                        r.range += 1;
+                        r.width += 1;
                     }
                 }
 
@@ -322,16 +309,16 @@ void Diagnostic::collectRanges()
                     while (ISOP(backLine[decal + 1]))
                     {
                         decal += 1;
-                        r.range += 1;
+                        r.width += 1;
                     }
                 }
             }
         }
 
         // Fix
-        fixRange(backLine, r.startLocation, r.range, '{', '}');
-        fixRange(backLine, r.startLocation, r.range, '(', ')');
-        fixRange(backLine, r.startLocation, r.range, '[', ']');
+        fixRange(backLine, r.startLocation, r.width, '{', '}');
+        fixRange(backLine, r.startLocation, r.width, '(', ')');
+        fixRange(backLine, r.startLocation, r.width, '[', ']');
     }
 }
 
@@ -397,6 +384,7 @@ void Diagnostic::printSourceCode()
     if (showRange && (showErrorLevel || showFileName))
         printMargin(true);
 
+    // Print all lines except the one that really contains the relevant stuff (and ranges)
     for (int i = 0; i < lines.size() - 1; i++)
     {
         const char* pz = lines[i].c_str();
@@ -410,6 +398,7 @@ void Diagnostic::printSourceCode()
 
     printMargin(false, true, linesNo.back());
 
+    // If we do not want ranges, print also the last line, we are done
     if (!showRange)
     {
         g_Log.setColor(codeColor);
@@ -418,8 +407,9 @@ void Diagnostic::printSourceCode()
         return;
     }
 
-    auto backLine = lines.back();
+    // Now we need to print the relevant lines, and change the color of the code for each given range
     Utf8 errorMsg;
+    auto backLine   = lines.back();
     auto startIndex = minBlanks;
     for (auto& r : ranges)
     {
@@ -431,20 +421,27 @@ void Diagnostic::printSourceCode()
             startIndex++;
         }
 
+        // Print normally to the first range
         g_Log.setColor(codeColor);
         g_Log.print(errorMsg);
         if (startIndex >= (uint32_t) backLine.count)
             break;
 
-        // Print hilighted code
+        // Collect the code corresponding to the current range
         errorMsg.clear();
-        for (uint32_t i = 0; i < (uint32_t) r.range && i < (uint32_t) backLine.length(); i++)
+        for (uint32_t i = 0; i < (uint32_t) r.width && i < (uint32_t) backLine.length(); i++)
         {
             errorMsg += backLine[startIndex];
             startIndex++;
         }
 
-        g_Log.setColor(hilightCodeColor);
+        // Print hilighted code
+        /*if (r.errorLevel == DiagnosticLevel::Error)
+            g_Log.setColor(errorColor);
+        else if (r.errorLevel == DiagnosticLevel::Warning)
+            g_Log.setColor(warningColor);
+        else*/
+            g_Log.setColor(hilightCodeColor);
         g_Log.print(errorMsg);
     }
 
@@ -458,15 +455,15 @@ void Diagnostic::printSourceCode()
     g_Log.eol();
 }
 
-void Diagnostic::setColorRanges(DiagnosticLevel level, bool invertColors)
+void Diagnostic::setColorRanges(DiagnosticLevel level)
 {
     switch (level)
     {
     case DiagnosticLevel::Error:
-        g_Log.setColor(invertColors ? rangeNoteColor : errorColor);
+        g_Log.setColor(errorColor);
         break;
     case DiagnosticLevel::Warning:
-        g_Log.setColor(invertColors ? rangeNoteColor : warningColor);
+        g_Log.setColor(warningColor);
         break;
     case DiagnosticLevel::Note:
     case DiagnosticLevel::Help:
@@ -480,10 +477,15 @@ void Diagnostic::printRanges()
     const auto& backLine = lines.back();
     printMargin(false, true);
 
+    // Print all marks
+    int  countHints = 0;
     auto startIndex = minBlanks;
     int  rangeIdx   = 0;
     for (auto& r : ranges)
     {
+        if (!r.hint.empty())
+            countHints += 1;
+
         while (startIndex < (int) r.startLocation.column && startIndex < (uint32_t) backLine.length())
         {
             if (backLine[startIndex] == '\t')
@@ -493,33 +495,37 @@ void Diagnostic::printRanges()
             startIndex++;
         }
 
-        if (rangeIdx != ranges.size() - 1)
-            setColorRanges(errorLevel, !invertError);
-        else
-            setColorRanges(errorLevel, invertError);
+        setColorRanges(r.errorLevel);
 
-        for (uint32_t i = 0; i < (uint32_t) r.range && i < (uint32_t) backLine.length(); i++)
+        for (uint32_t i = 0; i < (uint32_t) r.width && i < (uint32_t) backLine.length(); i++)
         {
             startIndex++;
-            g_Log.print(r.c);
+            if (r.errorLevel == DiagnosticLevel::Error)
+                g_Log.print("^");
+            else if (r.errorLevel == DiagnosticLevel::Warning)
+                g_Log.print("^");
+            else
+                g_Log.print("-");
         }
 
         rangeIdx++;
     }
 
-    // Last hint on the same line
-    if (!ranges.back().hint.empty())
+    // Last hint message on the same line
+    if (!ranges.empty() && !ranges.back().hint.empty())
     {
         g_Log.print(" ");
         g_Log.setColor(hintColor);
         g_Log.print(ranges.back().hint);
+        countHints -= 1;
     }
 
-    if (ranges.size() > 1 && !ranges[0].hint.empty())
+    if (countHints)
     {
         g_Log.eol();
         printMargin(false, true);
 
+        // Print the vertical bars
         startIndex = minBlanks;
         for (int ri = 0; ri < ranges.size() - 1; ri++)
         {
@@ -533,8 +539,11 @@ void Diagnostic::printRanges()
                 startIndex++;
             }
 
-            setColorRanges(errorLevel, !invertError);
-            g_Log.print("|");
+            if (!r.hint.empty())
+            {
+                setColorRanges(r.errorLevel);
+                g_Log.print("|");
+            }
         }
 
         g_Log.eol();

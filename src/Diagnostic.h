@@ -154,7 +154,7 @@ struct Diagnostic
     void printErrorLevel();
     void printMargin(bool eol = false, bool maxDigits = false, int lineNo = 0);
     void printRemarks();
-    void setColorRanges(DiagnosticLevel level, bool invertColors);
+    void setColorRanges(DiagnosticLevel level);
     void printRanges();
 
     void reportCompact(bool verboseMode);
@@ -169,11 +169,11 @@ struct Diagnostic
 
     struct RangeHint
     {
-        SourceLocation startLocation;
-        SourceLocation endLocation;
-        Utf8           hint;
-        const char*    c     = "^";
-        int            range = 0;
+        SourceLocation  startLocation;
+        SourceLocation  endLocation;
+        Utf8            hint;
+        DiagnosticLevel errorLevel;
+        int             width = 0;
     };
 
     vector<RangeHint> ranges;
@@ -193,7 +193,6 @@ struct Diagnostic
     LogColor          remarkColor;
     LogColor          nativeCallStackColor;
     LogColor          sourceFileColor;
-    bool              invertError = false;
 
     SourceLocation startLocation;
     SourceLocation endLocation;

@@ -982,7 +982,7 @@ void initErrors()
     SWAG_ERROR(Hlp0011, "valid safety values are 'bound|over|math|switch|any|bool|nan|sanity'");
     SWAG_ERROR(Hlp0018, "when the parameter types of a lambda are inferred, the return type will be inferred too");
     SWAG_ERROR(Hlp0003, "you can affect a lambda to a closure type, but not the other way around");
-    SWAG_ERROR(Hlp0033, "you can unpack a variable with '?' if you don't want to retreive it");
+    SWAG_ERROR(Hlp0033, "you can unpack a variable with '?' if you want to ignore it");
     SWAG_ERROR(Hlp0029, "you can use 'mtd' or 'mtdc' instead of 'func' to declare an implicit 'using self' as a first parameter");
     SWAG_ERROR(Hlp0025, "you cannot declare a slice or a static array of another slice or array");
     SWAG_ERROR(Hlp0019, "you cannot mix inferred and specified types in lambda parameters");
@@ -1099,7 +1099,7 @@ void initErrors()
     SWAG_ERROR(Hnt0095, "you cannot reference this runtime %s from the %s");
     SWAG_ERROR(Hnt0096, "unexpected attribute");
     SWAG_ERROR(Hnt0097, nullptr);
-    SWAG_ERROR(Hnt0098, "missing upper bound");
+    SWAG_ERROR(Hnt0098, "expected the upper bound");
     SWAG_ERROR(Hnt0099, nullptr);
 
     /////////////////////////////////////////////////////////////////////
