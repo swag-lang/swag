@@ -35,12 +35,12 @@ impl TextReader
         // In utf8 and ascii, just read to the buffer, as we do not have do decode
         elif encodingType == Ascii or encodingType == Utf8
         {
-            buffer.count = File.read(stream, buffer.buffer, buffer.capacity)
+            buffer.count = stream.read(buffer.buffer, buffer.capacity)
             return
         }
 
         // Read raw bytes in the decode buffer
-        decode.count = File.read(stream, decode.buffer, decode.capacity)
+        decode.count = stream.read(decode.buffer, decode.capacity)
 
         // Decode the BOM
         firstRawByte := 0'u32

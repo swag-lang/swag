@@ -91,9 +91,9 @@ func readAllBytes(fullname: string)->Array'u8 throw
     defer stream.close()
 
     var result: retval
-    len := try getSize(stream)
+    len := try stream.getSize()
     result.reserve(len)
-    result.count = read(stream, result.buffer, len)
+    result.count = stream.read(result.buffer, len)
 
     return result
 }
@@ -106,7 +106,7 @@ func writeAllBytes(fullname: string, buffer: const [..] u8)->uint throw
     Debug.assert(stream.isOpen())
     defer stream.close()
 
-    return try write(stream, @dataof(buffer), @countof(buffer))
+    return try stream.write(@dataof(buffer), @countof(buffer))
 }
 
 // Write a file with the content of a 'ConcatBuffer'
@@ -119,7 +119,7 @@ func writeAllBytes(fullname: string, buffer: ConcatBuffer)->uint throw
 
     total := 0'uint
     visit p: buffer
-        total += try write(stream, p.datas, p.count)
+        total += try stream.write(p.datas, p.count)
 
     return total
 }
@@ -135,8 +135,8 @@ func writeAllLines(fullname: string, lines: Array'string)->uint throw
     total := 0'uint
     visit v: lines
     {
-        total += try write(stream, @dataof(v), @countof(v))
-        total += try write(stream, @dataof("\n"), 1)
+        total += try stream.write(@dataof(v), @countof(v))
+        total += try stream.write(@dataof("\n"), 1)
     }
 
     return total

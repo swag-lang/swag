@@ -99,84 +99,6 @@ func openWrite(fullname: string)->FileStream throw
     return try open(fullname, FileMode.Create, FileAccess.Write, FileShare.None)
 }
 
-// Read from the given file stream, and returns the number of bytes
-func read(stream: FileStream, buffer: *void, length: uint)->uint
-{
-    Debug.assert(stream.isOpen())
-    Debug.assert(stream.canRead)
-
-    var dwRead: DWORD = 0
-    Debug.assert(length <= Swag.U32.Max)
-    discard ReadFile(stream.handle, buffer, cast(u32) length, &dwRead, null)
-    return cast(uint) dwRead
-}
-
-// Write to the given file stream, and returns the number of written bytes
-func write(stream: FileStream, buffer: const *void, length: uint)->uint throw
-{
-    Debug.assert(stream.isOpen())
-    Debug.assert(stream.canWrite)
-
-    var dwWrite: DWORD = 0
-    try WriteFile(stream.handle, buffer, cast(u32) length, &dwWrite, null)
-    return cast(uint) dwWrite
-}
-
-// Close the given file stream
-func close(stream: *FileStream)
-{
-    if stream.handle
-    {
-        CloseHandle(stream.handle)
-        stream.handle = null
-    }
-}
-
-// Returns the given file stream length on disk
-func getSize(stream: FileStream)->u64 throw
-{
-    Debug.assert(stream.isOpen())
-    Debug.assert(stream.canSeek)
-
-    hFile := cast(HANDLE) stream.handle
-    high  := 0'u32
-    low   := try GetFileSize(hFile, &high)
-    return low + (cast(u64) high << 32)
-}
-
-// Returns the current seek position of the given file stream
-func getPosition(stream: FileStream)->u64 throw
-{
-    Debug.assert(stream.isOpen())
-    Debug.assert(stream.canSeek)
-
-    hFile := cast(HANDLE) stream.handle
-    high  := 0
-    low   := try SetFilePointer(hFile, 0, &high, FILE_CURRENT)
-    return low + (cast(u64) high << 32)
-}
-
-// Set the current seek position of the given file stream
-func setPosition(stream: FileStream, origin: SeekOrigin, seek: u64) throw
-{
-    Debug.assert(stream.isOpen())
-    Debug.assert(stream.canSeek)
-
-    hFile := cast(HANDLE) stream.handle
-    low   := cast(LONG) (seek & 0xFFFFFFFF)
-    high  := cast(LONG) (seek >> 32)
-
-    var seekMode: DWORD
-    switch origin
-    {
-    case Begin:      seekMode = FILE_BEGIN
-    case Current:    seekMode = FILE_CURRENT
-    case End:        seekMode = FILE_END
-    }
-
-    try SetFilePointer(hFile, low, &high, seekMode)
-}
-
 // Locate file in the file explorer
 func locateInExplorer(name: string)
 {
@@ -184,4 +106,85 @@ func locateInExplorer(name: string)
     x.replace("/", "\\")
     x = Format.toString("/select,\"%\"", x)
     discard catch Env.startProcess("explorer.exe", x)
+}
+
+impl FileStream
+{
+    // Read from the given file stream, and returns the number of bytes
+    mtd read(buffer: *void, length: uint)->uint
+    {
+        Debug.assert(isOpen())
+        Debug.assert(canRead)
+
+        var dwRead: DWORD = 0
+        Debug.assert(length <= Swag.U32.Max)
+        discard ReadFile(handle, buffer, cast(u32) length, &dwRead, null)
+        return cast(uint) dwRead
+    }
+
+    // Write to the given file stream, and returns the number of written bytes
+    mtd write(buffer: const *void, length: uint)->uint throw
+    {
+        Debug.assert(isOpen())
+        Debug.assert(canWrite)
+
+        var dwWrite: DWORD = 0
+        try WriteFile(handle, buffer, cast(u32) length, &dwWrite, null)
+        return cast(uint) dwWrite
+    }
+
+    // Close the given file stream
+    mtd close()
+    {
+        if handle
+        {
+            CloseHandle(handle)
+            handle = null
+        }
+    }
+
+    // Returns the given file stream length on disk
+    mtd getSize()->u64 throw
+    {
+        Debug.assert(isOpen())
+        Debug.assert(canSeek)
+
+        hFile := cast(HANDLE) handle
+        high  := 0'u32
+        low   := try GetFileSize(hFile, &high)
+        return low + (cast(u64) high << 32)
+    }
+
+    // Returns the current seek position of the given file stream
+    mtd getPosition()->u64 throw
+    {
+        Debug.assert(isOpen())
+        Debug.assert(canSeek)
+
+        hFile := cast(HANDLE) handle
+        high  := 0
+        low   := try SetFilePointer(hFile, 0, &high, FILE_CURRENT)
+        return low + (cast(u64) high << 32)
+    }
+
+    // Set the current seek position of the given file stream
+    mtd setPosition(origin: SeekOrigin, seek: u64) throw
+    {
+        Debug.assert(isOpen())
+        Debug.assert(canSeek)
+
+        hFile := cast(HANDLE) handle
+        low   := cast(LONG) (seek & 0xFFFFFFFF)
+        high  := cast(LONG) (seek >> 32)
+
+        var seekMode: DWORD
+        switch origin
+        {
+        case Begin:      seekMode = FILE_BEGIN
+        case Current:    seekMode = FILE_CURRENT
+        case End:        seekMode = FILE_END
+        }
+
+        try SetFilePointer(hFile, low, &high, seekMode)
+    }
 }
