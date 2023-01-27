@@ -460,7 +460,7 @@ void initErrors()
     SWAG_ERROR(Err0311, "cannot create the constant because the type '%s' is generic");
     SWAG_ERROR(Err0312, "cannot create the variable because the type '%s' is generic");
     SWAG_ERROR(Err0709, "cannot deduce the flag value of '%s' because the previous value is not a power of two");
-    SWAG_ERROR(Err0352, "cannot deduce the generic parameters when calling %s");
+    SWAG_ERROR(Err0352, "cannot deduce the generic parameters when calling %s '%s'");
     SWAG_ERROR(Err0308, "cannot deduce the variable type because the expression is 'null'");
     SWAG_ERROR(Err0603, "cannot delete file '%s'");
     SWAG_ERROR(Err0194, "cannot dereference '%s' by index because its type does not allow pointer arithmetic");

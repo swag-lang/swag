@@ -126,6 +126,15 @@ namespace Report
                                 continue;
                             if (r0.startLocation.column >= r1.endLocation.column)
                                 continue;
+
+                            // Exact same range, but there's no hint. Replace
+                            if (r0.startLocation == r1.startLocation && r0.endLocation == r1.endLocation && r0.hint.empty())
+                            {
+                                r0.hint = r1.hint;
+                                note1->ranges.erase(note1->ranges.begin() + i);
+                                i--;
+                            }
+
                             canAdd = false;
                             break;
                         }

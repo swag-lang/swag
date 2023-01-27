@@ -241,21 +241,21 @@ static void fixRange(const Utf8& backLine, SourceLocation& startLocation, int& r
             cpt--;
     }
 
-    if (cpt > 0 && decal + range < backLine.length() && backLine[decal + range] == c2)
+    if (cpt > 0 && ((decal + range) < backLine.length()) && backLine[decal + range] == c2)
     {
         range++;
     }
-    else if (cpt > 0 && backLine[decal] == c1)
+    else if (cpt > 0 && (decal < backLine.length()) && backLine[decal] == c1)
     {
         startLocation.column++;
         range--;
     }
-    else if (cpt < 0 && decal && backLine[decal - 1] == c1)
+    else if (cpt < 0 && decal && ((decal - 1) < backLine.length()) && backLine[decal - 1] == c1)
     {
         startLocation.column--;
         range++;
     }
-    else if (cpt < 0 && backLine[decal + range - 1] == c2)
+    else if (cpt < 0 && ((decal + range - 1) < backLine.length()) && backLine[decal + range - 1] == c2)
     {
         range--;
     }
@@ -653,7 +653,7 @@ Utf8 Diagnostic::isType(TypeInfo* typeInfo)
 {
     if (!typeInfo)
         return "";
-    if (typeInfo->isTuple())
+    if (typeInfo->isTuple() || typeInfo->isListTuple())
         return Hnt(Hnt0010);
     return Fmt(Hnt(Hnt0011), typeInfo->getDisplayNameC());
 }

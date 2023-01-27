@@ -488,10 +488,11 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
             if (context->result != ContextResult::Done)
                 return true;
 
-            Diagnostic diag{context->node, Fmt(Err(Err0889), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
+            Diagnostic diag{context->node, context->node->token, Fmt(Err(Err0889), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
             auto       note0 = new Diagnostic{right->childs.front(), Fmt(Nte(Nte0057), suffix.c_str()), DiagnosticLevel::Note};
             auto       note1 = new Diagnostic{leftTypeInfo->declNode, Fmt(Nte(Nte0027), leftTypeInfo->getDisplayNameC()), DiagnosticLevel::Note};
             diag.hint        = Fmt(Hnt(Hnt0047), g_LangSpec->name_opAffectSuffix.c_str());
+            diag.addRange(left->token, Diagnostic::isType(leftTypeInfo));
             return context->report(diag, note0, note1);
         }
 

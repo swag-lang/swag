@@ -304,9 +304,9 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         if (!errNode)
             errNode = context->node;
         if (destFuncDecl && destFuncDecl->isSpecialFunctionName())
-            diag = new Diagnostic{errNode, Fmt(Err(Err0352), refNiceName.c_str())};
+            diag = new Diagnostic{errNode, errNode->token, Fmt(Err(Err0352), refNiceName.c_str(), destFuncDecl->token.ctext())};
         else if (genericParameters)
-            diag = new Diagnostic{errNode, Fmt(Err(Err0035), refNiceName.c_str())};
+            diag = new Diagnostic{genericParameters, Fmt(Err(Err0035), refNiceName.c_str())};
         else
             diag = new Diagnostic{errNode, Fmt(Err(Err0049), refNiceName.c_str())};
         result0.push_back(diag);
