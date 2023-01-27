@@ -931,6 +931,11 @@ SWAG_ERROR(Nte0071),
 SWAG_ERROR(Nte0072),
 SWAG_ERROR(Nte0073),
 SWAG_ERROR(Nte0074),
+SWAG_ERROR(Nte0075),
+SWAG_ERROR(Nte0076),
+SWAG_ERROR(Nte0077),
+SWAG_ERROR(Nte0078),
+SWAG_ERROR(Nte0079),
 
 /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////

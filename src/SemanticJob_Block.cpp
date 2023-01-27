@@ -78,13 +78,17 @@ bool SemanticJob::resolveWhile(SemanticContext* context)
 
     node->byteCodeFct = ByteCodeGenJob::emitLoop;
     node->boolExpression->allocateExtension(ExtensionKind::ByteCode);
-    SWAG_ASSERT(!node->boolExpression->extension->bytecode->byteCodeBeforeFct);
-    SWAG_ASSERT(!node->boolExpression->extension->bytecode->byteCodeAfterFct);
-    node->boolExpression->extension->bytecode->byteCodeBeforeFct = ByteCodeGenJob::emitWhileBeforeExpr;
-    node->boolExpression->extension->bytecode->byteCodeAfterFct  = ByteCodeGenJob::emitWhileAfterExpr;
+    auto extension = node->boolExpression->extension;
+    SWAG_ASSERT(!extension->bytecode->byteCodeBeforeFct || extension->bytecode->byteCodeBeforeFct == ByteCodeGenJob::emitWhileBeforeExpr);
+    extension->bytecode->byteCodeBeforeFct = ByteCodeGenJob::emitWhileBeforeExpr;
+
+    SWAG_ASSERT(!extension->bytecode->byteCodeAfterFct || extension->bytecode->byteCodeAfterFct == ByteCodeGenJob::emitWhileAfterExpr);
+    extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitWhileAfterExpr;
+
     node->block->allocateExtension(ExtensionKind::ByteCode);
-    SWAG_ASSERT(!node->block->extension->bytecode->byteCodeAfterFct || node->block->extension->bytecode->byteCodeAfterFct == ByteCodeGenJob::emitLeaveScope);
-    node->block->extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterBlock;
+    extension = node->block->extension;
+    SWAG_ASSERT(!extension->bytecode->byteCodeAfterFct || extension->bytecode->byteCodeAfterFct == ByteCodeGenJob::emitLeaveScope || extension->bytecode->byteCodeAfterFct == ByteCodeGenJob::emitLoopAfterBlock);
+    extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterBlock;
 
     // :SpecPropagateReturn
     if (node->breakableFlags & BREAKABLE_RETURN_IN_INFINIT_LOOP && node->breakList.empty())
@@ -565,21 +569,26 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
         }
 
         node->expression->allocateExtension(ExtensionKind::ByteCode);
-        node->expression->extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterExpr;
+        auto extension = node->expression->extension;
+        SWAG_ASSERT(!extension->bytecode->byteCodeAfterFct || extension->bytecode->byteCodeAfterFct == ByteCodeGenJob::emitLoopAfterExpr);
+        extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterExpr;
     }
 
     node->byteCodeFct = ByteCodeGenJob::emitLoop;
     node->allocateExtension(ExtensionKind::ByteCode);
-    SWAG_ASSERT(!node->extension->bytecode->byteCodeAfterFct || node->extension->bytecode->byteCodeAfterFct == ByteCodeGenJob::emitLeaveScope);
-    node->extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitLeaveScope;
+    auto extension = node->extension;
+    SWAG_ASSERT(!extension->bytecode->byteCodeAfterFct || extension->bytecode->byteCodeAfterFct == ByteCodeGenJob::emitLeaveScope);
+    extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitLeaveScope;
 
     node->block->allocateExtension(ExtensionKind::ByteCode);
-    SWAG_ASSERT(!node->block->extension->bytecode->byteCodeAfterFct || node->block->extension->bytecode->byteCodeAfterFct == ByteCodeGenJob::emitLeaveScope);
-    node->block->extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterBlock;
+    extension = node->block->extension;
+    SWAG_ASSERT(!extension->bytecode->byteCodeAfterFct || extension->bytecode->byteCodeAfterFct == ByteCodeGenJob::emitLeaveScope || extension->bytecode->byteCodeAfterFct == ByteCodeGenJob::emitLoopAfterBlock);
+    extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterBlock;
+
     if (!node->expression)
     {
-        SWAG_ASSERT(!node->block->extension->bytecode->byteCodeBeforeFct);
-        node->block->extension->bytecode->byteCodeBeforeFct = ByteCodeGenJob::emitLoopBeforeBlock;
+        SWAG_ASSERT(!extension->bytecode->byteCodeBeforeFct || extension->bytecode->byteCodeBeforeFct == ByteCodeGenJob::emitLoopBeforeBlock);
+        extension->bytecode->byteCodeBeforeFct = ByteCodeGenJob::emitLoopBeforeBlock;
     }
 
     // :SpecPropagateReturn

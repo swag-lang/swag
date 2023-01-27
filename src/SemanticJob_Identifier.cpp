@@ -1562,9 +1562,9 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
             auto nodeFunc = CastAst<AstFuncDecl>(one, AstNodeKind::FuncDecl);
             auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(nodeFunc->typeInfo, TypeInfoKind::FuncAttr);
             for (auto oneReplace : typeFunc->replaceTypes)
-            {
                 oneTryMatch.symMatchContext.genericReplaceTypes[oneReplace.first] = oneReplace.second;
-            }
+            for (auto oneReplace : typeFunc->replaceTypesFrom)
+                oneTryMatch.symMatchContext.genericReplaceTypesFrom[oneReplace.first] = oneReplace.second;
         }
 
         if (one->kind == AstNodeKind::StructDecl)
@@ -1572,9 +1572,9 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
             auto nodeStruct = CastAst<AstStruct>(one, AstNodeKind::StructDecl);
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(nodeStruct->typeInfo, TypeInfoKind::Struct);
             for (auto oneReplace : typeStruct->replaceTypes)
-            {
                 oneTryMatch.symMatchContext.genericReplaceTypes[oneReplace.first] = oneReplace.second;
-            }
+            for (auto oneReplace : typeStruct->replaceTypesFrom)
+                oneTryMatch.symMatchContext.genericReplaceTypesFrom[oneReplace.first] = oneReplace.second;
         }
     }
 }
@@ -3280,6 +3280,7 @@ bool SemanticJob::fillMatchContextGenericParameters(SemanticContext* context, Sy
             auto oneParam = CastAst<AstFuncCallParam>(genericParameters->childs[i], AstNodeKind::FuncCallParam);
             symMatchContext.genericParameters.push_back(oneParam);
             symMatchContext.genericParametersCallTypes.push_back(oneParam->typeInfo);
+            symMatchContext.genericParametersCallTypesFrom.push_back(oneParam);
         }
     }
 

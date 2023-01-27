@@ -110,6 +110,7 @@ struct BadSignatureInfos
 {
     Utf8           badGenMatch;
     AstNode*       badNode;
+    AstNode*       genMatchFromNode;
     TypeInfo*      badSignatureRequestedType;
     TypeInfo*      badSignatureGivenType;
     TypeInfo*      castErrorToType;
@@ -126,6 +127,7 @@ struct BadSignatureInfos
     {
         badGenMatch.clear();
         badNode                   = nullptr;
+        genMatchFromNode          = nullptr;
         badSignatureRequestedType = nullptr;
         badSignatureGivenType     = nullptr;
         castErrorToType           = nullptr;
@@ -188,6 +190,7 @@ struct SymbolMatchContext
     VectorNative<TypeInfoParam*>               solvedCallParameters;
     VectorNative<bool>                         doneParameters;
     VectorNative<TypeInfo*>                    genericParametersCallTypes;
+    VectorNative<AstNode*>                     genericParametersCallTypesFrom;
     VectorNative<TypeInfo*>                    genericParametersGenTypes;
     map<Utf8, TypeInfo*>                       genericReplaceTypes;
     map<Utf8, AstNode*>                        genericReplaceTypesFrom;
@@ -420,6 +423,7 @@ struct TypeInfoFuncAttr : public TypeInfo
     VectorNative<TypeInfoParam*> parameters;
     AttributeList                attributes;
     map<Utf8, TypeInfo*>         replaceTypes;
+    map<Utf8, AstNode*>          replaceTypesFrom;
 
     TypeInfo* returnType = nullptr;
 
@@ -566,6 +570,7 @@ struct TypeInfoStruct : public TypeInfo
     VectorNative<TypeInfoParam*> methods;
     VectorNative<TypeInfoParam*> interfaces;
     map<Utf8, TypeInfo*>         replaceTypes;
+    map<Utf8, AstNode*>          replaceTypesFrom;
     AttributeList                attributes;
     Utf8                         structName;
     SharedMutex                  mutexGen;

@@ -599,7 +599,7 @@ void initErrors()
     SWAG_ERROR(Err0053, "mismatched types, '%s' is expected ('%s' provided)");
     SWAG_ERROR(Err0050, "mismatched types, '%s' is expected for field '%s' ('%s' provided)");
     SWAG_ERROR(Err0196, "mismatched types, cannot %s '%s' %s '%s'");
-    SWAG_ERROR(Err0047, "mismatched types, generic type '%s' is assigned to '%s' ('%s' provided)");
+    SWAG_ERROR(Err0047, "mismatched types, the generic type '%s' is already assigned to '%s' ('%s' is now provided)");
     SWAG_ERROR(Err0187, "missing index when dereferencing array '%s'");
     SWAG_ERROR(Err0169, "more than one module with the name '%s' is present in the workspace (path is '%s')");
     SWAG_ERROR(Err0061, "no enough arguments for special function '%s' ('%d' expected, '%d' provided)");
@@ -1195,6 +1195,11 @@ void initErrors()
     SWAG_ERROR(Nte0072, "occurred during compile time evaluation");
     SWAG_ERROR(Nte0073, "the ufcs argument comes from an implicit 'using self' parameter");
     SWAG_ERROR(Nte0074, "the ufcs argument comes from this");
+    SWAG_ERROR(Nte0075, "the original instantiation type '%s' comes from here");
+    SWAG_ERROR(Nte0076, nullptr);
+    SWAG_ERROR(Nte0077, nullptr);
+    SWAG_ERROR(Nte0078, nullptr);
+    SWAG_ERROR(Nte0079, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

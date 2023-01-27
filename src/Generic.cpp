@@ -367,7 +367,8 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
 
     // Types replacements
     CloneContext cloneContext;
-    cloneContext.replaceTypes = move(match.genericReplaceTypes);
+    cloneContext.replaceTypes     = move(match.genericReplaceTypes);
+    cloneContext.replaceTypesFrom = move(match.genericReplaceTypesFrom);
 
     // Clone original node
     auto overload   = match.symbolOverload;
@@ -397,11 +398,12 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     structNode->content->flags &= ~AST_NO_SEMANTIC;
     Ast::addChildBack(sourceNode->parent, structNode);
 
-    newType->scope           = structNode->scope;
-    newType->declNode        = structNode;
-    newType->replaceTypes    = cloneContext.replaceTypes;
-    structNode->typeInfo     = newType;
-    structNode->ownerGeneric = context->node;
+    newType->scope            = structNode->scope;
+    newType->declNode         = structNode;
+    newType->replaceTypes     = cloneContext.replaceTypes;
+    newType->replaceTypesFrom = cloneContext.replaceTypesFrom;
+    structNode->typeInfo      = newType;
+    structNode->ownerGeneric  = context->node;
 
     // Replace generic values in the struct generic parameters
     SWAG_CHECK(updateGenericParameters(context, false, true, newType->genericParameters, structNode->genericParameters->childs, genericParameters, match));
@@ -539,7 +541,8 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
 
     // Types replacements
     CloneContext cloneContext;
-    cloneContext.replaceTypes = move(match.genericReplaceTypes);
+    cloneContext.replaceTypes     = move(match.genericReplaceTypes);
+    cloneContext.replaceTypesFrom = move(match.genericReplaceTypesFrom);
 
     // We replace all types and generic types with undefined for now
     if (noReplaceTypes)
@@ -626,9 +629,10 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     {
         newTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(newFunc->typeInfo->clone(), newFunc->typeInfo->kind);
         newTypeFunc->removeGenericFlag();
-        newTypeFunc->declNode     = newFunc;
-        newTypeFunc->replaceTypes = cloneContext.replaceTypes;
-        newFunc->typeInfo         = newTypeFunc;
+        newTypeFunc->declNode         = newFunc;
+        newTypeFunc->replaceTypes     = cloneContext.replaceTypes;
+        newTypeFunc->replaceTypesFrom = cloneContext.replaceTypesFrom;
+        newFunc->typeInfo             = newTypeFunc;
         if (noReplaceTypes)
             newTypeFunc->flags |= TYPEINFO_UNDEFINED;
     }

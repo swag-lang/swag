@@ -496,6 +496,8 @@ TypeInfo* TypeInfoFuncAttr::clone()
     newType->attributes           = attributes;
     newType->attributeUsage       = attributeUsage;
     newType->callConv             = callConv;
+    newType->replaceTypes         = replaceTypes;
+    newType->replaceTypesFrom     = replaceTypesFrom;
 
     for (int i = 0; i < genericParameters.size(); i++)
     {
@@ -873,6 +875,7 @@ TypeInfo* TypeInfoStruct::clone()
     newType->alignOf           = alignOf;
     newType->structName        = structName;
     newType->replaceTypes      = replaceTypes;
+    newType->replaceTypesFrom  = replaceTypesFrom;
 
     int size = (int) genericParameters.size();
     newType->genericParameters.reserve(size);

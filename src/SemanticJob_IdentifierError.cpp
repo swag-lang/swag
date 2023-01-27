@@ -527,13 +527,22 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     case MatchResult::BadGenericMatch:
     {
         SWAG_ASSERT(callParameters);
-        diag       = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
+        diag = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
                               Fmt(Err(Err0047),
                                   bi.badGenMatch.c_str(),
                                   bi.badSignatureRequestedType->getDisplayNameC(),
                                   bi.badSignatureGivenType->getDisplayNameC())};
-        diag->hint = hintMsg;
+        if (hintMsg.empty())
+            diag->hint = Diagnostic::isType(match.parameters[bi.badSignatureParameterIdx]->typeInfo);
+        else
+            diag->hint = hintMsg;
         result0.push_back(diag);
+
+        if (bi.genMatchFromNode)
+        {
+            auto note = new Diagnostic{bi.genMatchFromNode, Fmt(Nte(Nte0075), bi.genMatchFromNode->typeInfo->getDisplayNameC()), DiagnosticLevel::Note};
+            result1.push_back(note);
+        }
 
         if (destFuncDecl && bi.badSignatureParameterIdx < destFuncDecl->parameters->childs.size())
         {
