@@ -33,8 +33,6 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
                 break;
             if (ipn->flags & BCI_START_STMT)
                 break;
-            if (ip->node->ownerInline != ipn->node->ownerInline)
-                break;
             if (ipn->op == ByteCodeOp::Nop)
                 break;
 
@@ -101,7 +99,12 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
             }
         }
 
-        swap(ip[0], ip[1]);
+        swap(ip[0].op, ip[1].op);
+        swap(ip[0].flags, ip[1].flags);
+        swap(ip[0].a, ip[1].a);
+        swap(ip[0].b, ip[1].b);
+        swap(ip[0].c, ip[1].c);
+        swap(ip[0].d, ip[1].d);
 
         if (ip[1].flags & BCI_START_STMT)
         {

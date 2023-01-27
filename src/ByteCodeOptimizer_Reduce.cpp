@@ -2424,6 +2424,7 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
             ip[3].op == ByteCodeOp::SetAtPointer64 &&
             ip[0].a.u32 == ip[2].a.u32 &&
             ip[2].c.u32 == ip[3].a.u32 &&
+            ip[2].a.u32 == ip[2].c.u32 &&
             ip[2].flags & BCI_IMM_B &&
             ip[2].b.s64 > 0)
         {
