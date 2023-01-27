@@ -13,7 +13,12 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
         case ByteCodeOp::GetFromStack16:
         case ByteCodeOp::GetFromStack32:
         case ByteCodeOp::GetFromStack64:
+        case ByteCodeOp::GetParam8:
+        case ByteCodeOp::GetParam16:
+        case ByteCodeOp::GetParam32:
         case ByteCodeOp::GetParam64:
+        case ByteCodeOp::GetIncParam64:
+        case ByteCodeOp::GetIncFromStack64:
         case ByteCodeOp::SetImmediate32:
         case ByteCodeOp::SetImmediate64:
         case ByteCodeOp::MakeConstantSegPointer:
@@ -85,17 +90,39 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
 
             if (it1->second == it.second)
             {
-                if (ip->op != ByteCodeOp::MakeStackPointer)
-                    continue;
-                if (ip[1].op != ByteCodeOp::GetFromStack8 &&
-                    ip[1].op != ByteCodeOp::GetFromStack16 &&
-                    ip[1].op != ByteCodeOp::GetFromStack32 &&
-                    ip[1].op != ByteCodeOp::GetFromStack64 &&
-                    ip[1].op != ByteCodeOp::GetParam8 &&
-                    ip[1].op != ByteCodeOp::GetParam16 &&
-                    ip[1].op != ByteCodeOp::GetParam32 &&
-                    ip[1].op != ByteCodeOp::GetParam64)
-                    continue;
+                switch (ip->op)
+                {
+                case ByteCodeOp::MakeStackPointer:
+                    if (ip[1].op != ByteCodeOp::GetFromStack8 &&
+                        ip[1].op != ByteCodeOp::GetFromStack16 &&
+                        ip[1].op != ByteCodeOp::GetFromStack32 &&
+                        ip[1].op != ByteCodeOp::GetFromStack64 &&
+                        ip[1].op != ByteCodeOp::GetParam8 &&
+                        ip[1].op != ByteCodeOp::GetParam16 &&
+                        ip[1].op != ByteCodeOp::GetParam32 &&
+                        ip[1].op != ByteCodeOp::GetParam64)
+                        continue;
+                    break;
+                default:
+                {
+                    int cpt0 = 0;
+                    int cpt1 = 0;
+
+                    cpt0 += (ByteCode::hasReadRegInA(ip) || ByteCode::hasWriteRegInA(ip)) ? 1 : 0;
+                    cpt0 += (ByteCode::hasReadRegInB(ip) || ByteCode::hasWriteRegInB(ip)) ? 1 : 0;
+                    cpt0 += (ByteCode::hasReadRegInC(ip) || ByteCode::hasWriteRegInC(ip)) ? 1 : 0;
+                    cpt0 += (ByteCode::hasReadRegInD(ip) || ByteCode::hasWriteRegInD(ip)) ? 1 : 0;
+
+                    cpt1 += (ByteCode::hasReadRegInA(ip + 1) || ByteCode::hasWriteRegInA(ip + 1)) ? 1 : 0;
+                    cpt1 += (ByteCode::hasReadRegInB(ip + 1) || ByteCode::hasWriteRegInB(ip + 1)) ? 1 : 0;
+                    cpt1 += (ByteCode::hasReadRegInC(ip + 1) || ByteCode::hasWriteRegInC(ip + 1)) ? 1 : 0;
+                    cpt1 += (ByteCode::hasReadRegInD(ip + 1) || ByteCode::hasWriteRegInD(ip + 1)) ? 1 : 0;
+
+                    if (cpt1 <= cpt0)
+                        continue;
+                    break;
+                }
+                }
             }
         }
 
