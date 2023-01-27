@@ -27,8 +27,8 @@ impl TextReader
         // read the bom
         if checkPreamble
         {
-            buffer.reserve(1024)
-            decode.reserve(1024)
+            buffer.reserve(4*1024'uint)
+            decode.reserve(4*1024'uint)
             dref cast(*u32) decode.buffer = 0
         }
 
@@ -89,35 +89,40 @@ public impl TextReader
 
     // Read one line of text.
     // Returns false at the end
+    #[Swag.Safety("bound", false)]
     func readLine(using self, result: ref String)->bool
     {
         result.clear()
-        loop
+        scope Restart
         {
-            if byteSeek == buffer.count
-                readBuffer()
-            if buffer.count == 0
-                return false
-
-            while buffer[byteSeek] != "\n"'u8 and buffer[byteSeek] != "\r"'u8
+            loop
             {
-                result += buffer[byteSeek]
+                if byteSeek == buffer.count
+                    readBuffer()
+                if buffer.count == 0
+                    return false
+
+                c := buffer[byteSeek]
+                startIndex := byteSeek
+                while c != "\n"'u8 and c != "\r"'u8
+                {
+                    byteSeek += 1
+                    if byteSeek == buffer.count
+                        continue Restart
+                    c = buffer[byteSeek]
+                }
+
+                result = @mkstring(buffer.buffer + startIndex, byteSeek - startIndex)
+
+                // Eat end of line characters
                 byteSeek += 1
                 if byteSeek == buffer.count
-                    break
+                    readBuffer()
+                if c == "\r"'u8 and buffer.count and buffer[byteSeek] == "\n"'u8
+                    byteSeek += 1
+
+                return true
             }
-
-            if byteSeek == buffer.count
-                continue
-
-            // Eat end of line characters
-            byteSeek += 1
-            if byteSeek == buffer.count
-                readBuffer()
-            if buffer.count and buffer[byteSeek] == "\n"'u8
-                byteSeek += 1
-
-            return true
         }
 
         return false
