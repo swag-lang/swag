@@ -313,11 +313,12 @@ impl String
     }
 
     // Append a byte to the String
+    #[Swag.Inline]
     mtd append(value: u8)
     {
         grow(length + 2)
-        buffer[length] = value
-        buffer[length + 1] = 0
+        ptr := cast(*u16) (buffer + length)
+        dref ptr = value
         length += 1
     }
 
@@ -373,6 +374,7 @@ impl String
     }
 
     // Ensure the String is big enough to store a given amount of bytes
+    #[Swag.Inline]
     mtd grow(wantedCapacity: uint)
     {
         if wantedCapacity <= capacity
