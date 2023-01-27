@@ -307,7 +307,7 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
         {
             Diagnostic diag{node->sourceFile, node->token, Err(Err0342)};
             diag.hint = Hnt(Hnt0061);
-            diag.setRange2(expression, Diagnostic::isType(typeInfo));
+            diag.addRange(expression, Diagnostic::isType(typeInfo));
             return context->report(diag);
         }
         else if (!typeInfo->isString() &&
@@ -320,7 +320,7 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
         {
             Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0332), typeInfo->getDisplayNameC())};
             diag.hint = Hnt(Hnt0061);
-            diag.setRange2(expression, Diagnostic::isType(typeInfo));
+            diag.addRange(expression, Diagnostic::isType(typeInfo));
             return context->report(diag);
         }
 

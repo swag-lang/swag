@@ -79,7 +79,8 @@ struct CommandLine
     bool      verboseConcreteTypes  = false;
     bool      verboseBackendCommand = false;
     bool      verboseStages         = false;
-    bool      errorCompact          = false;
+    bool      errorOneLine          = false;
+    bool      errorCompact          = true;
     bool      errorMarkdown         = false;
     bool      errorAbsolute         = false;
 

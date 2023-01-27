@@ -57,7 +57,7 @@ void ErrorContext::fillContext(JobContext* context, Diagnostic& diag, vector<con
                     auto           dd = const_cast<Diagnostic*>(&diag);
                     SourceLocation start, end;
                     exp.node->computeLocation(start, end);
-                    dd->setRange2(start, end, exp.hint);
+                    dd->addRange(start, end, exp.hint);
                 }
 
                 break;

@@ -50,7 +50,7 @@ bool SemanticJob::resolveAfterAffectLeft(SemanticContext* context)
             if (node->typeInfo->isLambda() && op->dependentLambda->typeInfo->isClosure())
             {
                 Diagnostic diag{op->childs.back(), Err(Err0185)};
-                diag.setRange2(node, Diagnostic::isType(node->typeInfo));
+                diag.addRange(node, Diagnostic::isType(node->typeInfo));
                 Diagnostic help{Hlp(Hlp0003), DiagnosticLevel::Help};
                 return context->report(diag, &help);
             }
@@ -223,7 +223,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0570), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
         diag.hint = Hnt(Hnt0061);
-        diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+        diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
 
@@ -326,7 +326,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
                         Diagnostic diag{right, Fmt(Err(Err0225), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
                         diag.hint = Diagnostic::isType(rightTypeInfo);
-                        diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+                        diag.addRange(left, Diagnostic::isType(leftTypeInfo));
 
                         Diagnostic note{node, node->token, Fmt(Nte(Nte0051), "opIndexAffect", rightTypeInfo->getDisplayNameC()), DiagnosticLevel::Note};
                         return context->report(diag, &note);
@@ -482,7 +482,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             {
                 Diagnostic diag{node, node->token, Err(Err0192)};
                 diag.hint = Hnt(Hnt0061);
-                diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+                diag.addRange(left, Diagnostic::isType(leftTypeInfo));
                 return context->report(diag);
             }
 
@@ -490,7 +490,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             {
                 Diagnostic diag{node, node->token, Err(Err0144)};
                 diag.hint = Hnt(Hnt0061);
-                diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+                diag.addRange(left, Diagnostic::isType(leftTypeInfo));
                 return context->report(diag);
             }
 
@@ -498,7 +498,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             {
                 Diagnostic diag{node, node->token, Err(Err0111)};
                 diag.hint = Hnt(Hnt0061);
-                diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+                diag.addRange(left, Diagnostic::isType(leftTypeInfo));
                 return context->report(diag);
             }
 

@@ -70,14 +70,14 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
         Diagnostic note{Hlp(Hlp0040)};
-        diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+        diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag, &note);
     }
     default:
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
         diag.hint = Hnt(Hnt0061);
-        diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+        diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
     }
@@ -197,7 +197,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
         diag.hint = Hnt(Hnt0061);
-        diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+        diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
     }
@@ -291,7 +291,7 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
         diag.hint = Hnt(Hnt0061);
-        diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+        diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
     }
@@ -396,7 +396,7 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
         diag.hint = Hnt(Hnt0061);
-        diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+        diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
     }
@@ -566,7 +566,7 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0163), leftTypeInfo->getDisplayNameC())};
         diag.hint = Hnt(Hnt0061);
-        diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+        diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
     }
@@ -679,7 +679,7 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0164), leftTypeInfo->getDisplayNameC())};
         diag.hint = Hnt(Hnt0061);
-        diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+        diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
     }
@@ -805,7 +805,7 @@ bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* r
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0164), leftTypeInfo->getDisplayNameC())};
         diag.hint = Hnt(Hnt0061);
-        diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+        diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
     }
@@ -1049,7 +1049,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
     {
         Diagnostic diag{left, Fmt(Err(Err0170), leftTypeInfo->getDisplayNameC())};
         diag.hint = Diagnostic::isType(leftTypeInfo);
-        diag.setRange2(node->token, Hnt(Hnt0061));
+        diag.addRange(node->token, Hnt(Hnt0061));
         return context->report(diag);
     }
 
@@ -1146,7 +1146,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
     {
         Diagnostic diag{left, Fmt(Err(Err0172), leftTypeInfo->getDisplayNameC())};
         diag.hint = Diagnostic::isType(leftTypeInfo);
-        diag.setRange2(node->token, Hnt(Hnt0061));
+        diag.addRange(node->token, Hnt(Hnt0061));
         return context->report(diag);
     }
 

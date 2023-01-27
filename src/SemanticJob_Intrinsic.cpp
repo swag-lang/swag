@@ -186,7 +186,7 @@ bool SemanticJob::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* nod
         {
             Diagnostic diag{first, Err(Err0791)};
             diag.hint = Diagnostic::isType(first->typeInfo);
-            diag.setRange2(second->token, Diagnostic::isType(second->typeInfo));
+            diag.addRange(second->token, Diagnostic::isType(second->typeInfo));
             return context->report(diag);
         }
     }

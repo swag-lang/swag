@@ -150,14 +150,14 @@ bool SemanticJob::checkTypeIsNative(SemanticContext* context, TypeInfo* leftType
     {
         Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0005), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
         diag.hint = Hnt(Hnt0061);
-        diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+        diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
     else
     {
         Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0005), node->token.ctext(), rightTypeInfo->getDisplayNameC())};
         diag.hint = Hnt(Hnt0061);
-        diag.setRange2(right, Diagnostic::isType(rightTypeInfo));
+        diag.addRange(right, Diagnostic::isType(rightTypeInfo));
         return context->report(diag);
     }
 }
@@ -180,7 +180,7 @@ bool SemanticJob::notAllowed(SemanticContext* context, AstNode* node, TypeInfo* 
     Diagnostic diag{node, node->token, text};
     diag.hint = Hnt(Hnt0061);
     if (hintType)
-        diag.setRange2(hintType, Diagnostic::isType(typeInfo));
+        diag.addRange(hintType, Diagnostic::isType(typeInfo));
     return context->report(diag);
 }
 

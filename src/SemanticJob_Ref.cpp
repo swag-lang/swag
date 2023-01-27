@@ -279,7 +279,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
         {
             Diagnostic diag{node, node->token, Err(Err0474)};
             diag.hint = Hnt(Hnt0061);
-            diag.setRange2(node->array, Diagnostic::isType(typeInfoArray));
+            diag.addRange(node->array, Diagnostic::isType(typeInfoArray));
             return context->report(diag);
         }
 
@@ -307,7 +307,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
         {
             Diagnostic diag{node, node->token, Err(Err0193)};
             diag.hint = Hnt(Hnt0061);
-            diag.setRange2(node->array, Diagnostic::isType(typeVar));
+            diag.addRange(node->array, Diagnostic::isType(typeVar));
             return context->report(diag);
         }
 
@@ -348,7 +348,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
 
             Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0320), node->array->token.ctext(), typeInfo->getDisplayNameC())};
             diag.hint = Fmt(Hnt(Hnt0047), g_LangSpec->name_opSlice.c_str());
-            diag.setRange2(node->array, Diagnostic::isType(typeInfo));
+            diag.addRange(node->array, Diagnostic::isType(typeInfo));
             return context->report(diag);
         }
 
@@ -366,7 +366,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
         {
             Diagnostic diag{node->lowerBound, Fmt(Err(Err0476), node->lowerBound->computedValue->reg.u64, node->upperBound->computedValue->reg.u64)};
             diag.hint = Hnt(Hnt0076);
-            diag.setRange2(node->upperBound, Hnt(Hnt0077));
+            diag.addRange(node->upperBound, Hnt(Hnt0077));
             return context->report(diag);
         }
     }
@@ -396,7 +396,7 @@ bool SemanticJob::resolveKeepRef(SemanticContext* context)
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0517), typeInfo->getDisplayNameC())};
         diag.hint = Hnt(Hnt0061);
-        diag.setRange2(front, Diagnostic::isType(typeInfo));
+        diag.addRange(front, Diagnostic::isType(typeInfo));
         return context->report(diag);
     }
 
@@ -529,7 +529,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
         {
             Diagnostic diag{arrayNode->array, Fmt(Err(Err0481), arrayType->getDisplayNameC()), Diagnostic::isType(arrayType)};
             if (arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF)
-                diag.setRange2(arrayNode->token.startLocation, arrayNode->token.endLocation, Hnt(Hnt0060));
+                diag.addRange(arrayNode->token.startLocation, arrayNode->token.endLocation, Hnt(Hnt0060));
             return context->report(diag);
         }
 
@@ -582,13 +582,13 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
             if (arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF)
             {
                 Diagnostic diag{arrayNode->access, Err(Err0482), Diagnostic::isType(arrayType)};
-                diag.setRange2(arrayNode->token.startLocation, arrayNode->token.endLocation, Hnt(Hnt0060));
+                diag.addRange(arrayNode->token.startLocation, arrayNode->token.endLocation, Hnt(Hnt0060));
                 return context->report(diag);
             }
             else
             {
                 Diagnostic diag{arrayNode->access, Err(Err0482), Hnt(Hnt0061)};
-                diag.setRange2(arrayNode->array, Diagnostic::isType(arrayType));
+                diag.addRange(arrayNode->array, Diagnostic::isType(arrayType));
                 return context->report(diag);
             }
         }
@@ -703,13 +703,13 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         if (arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF)
         {
             Diagnostic diag{arrayNode->access, Err(Err0482), Diagnostic::isType(arrayType)};
-            diag.setRange2(arrayNode->token.startLocation, arrayNode->token.endLocation, Hnt(Hnt0060));
+            diag.addRange(arrayNode->token.startLocation, arrayNode->token.endLocation, Hnt(Hnt0060));
             return context->report(diag);
         }
         else
         {
             Diagnostic diag{arrayNode->access, Err(Err0482), Hnt(Hnt0061)};
-            diag.setRange2(arrayNode->array, Diagnostic::isType(arrayType));
+            diag.addRange(arrayNode->array, Diagnostic::isType(arrayType));
             return context->report(diag);
         }
     }
@@ -877,14 +877,14 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
             {
                 Diagnostic diag{arrayNode->access, Fmt(Err(Err0226), arrayType->getDisplayNameC())};
                 diag.hint = Fmt(Hnt(Hnt0047), g_LangSpec->name_opIndex.c_str());
-                diag.setRange2(arrayNode->array, Diagnostic::isType(arrayType));
+                diag.addRange(arrayNode->array, Diagnostic::isType(arrayType));
                 return context->report(diag);
             }
             else
             {
                 Diagnostic diag{arrayNode->access, Fmt(Err(Err0227), arrayNode->array->token.ctext(), arrayType->getDisplayNameC())};
                 diag.hint = Fmt(Hnt(Hnt0047), g_LangSpec->name_opIndex.c_str());
-                diag.setRange2(arrayNode->array, Diagnostic::isType(arrayType));
+                diag.addRange(arrayNode->array, Diagnostic::isType(arrayType));
                 return context->report(diag);
             }
         }
@@ -898,7 +898,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         Diagnostic diag{arrayNode->array, Fmt(Err(Err0488), arrayNode->array->typeInfo->getDisplayNameC())};
         diag.hint = Hnt(Hnt0021);
         if (arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF)
-            diag.setRange2(arrayNode->token.startLocation, arrayNode->token.endLocation, Hnt(Hnt0060));
+            diag.addRange(arrayNode->token.startLocation, arrayNode->token.endLocation, Hnt(Hnt0060));
         return context->report(diag);
     }
     }

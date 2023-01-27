@@ -142,12 +142,13 @@ struct Diagnostic
     }
 
     void setup();
-    void setRange2(const SourceLocation& start, const SourceLocation& end, const Utf8& h);
-    void setRange2(AstNode* node, const Utf8& h);
-    void setRange2(const Token& node, const Utf8& h);
+    void addRange(const SourceLocation& start, const SourceLocation& end, const Utf8& h);
+    void addRange(AstNode* node, const Utf8& h);
+    void addRange(const Token& node, const Utf8& h);
 
     void setupColors(bool verboseMode);
     void collectSourceCode();
+    void sortRanges();
     void collectRanges();
     void printSourceCode();
     void printSourceLine();
@@ -197,10 +198,6 @@ struct Diagnostic
     SourceLocation startLocation;
     SourceLocation endLocation;
     Utf8           hint;
-
-    SourceLocation startLocation2;
-    SourceLocation endLocation2;
-    Utf8           hint2;
 
     Utf8            textMsg;
     vector<Utf8>    remarks;

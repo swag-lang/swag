@@ -783,7 +783,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
 
         Diagnostic diag{parent->previousResolvedNode, Fmt(Err(Err0086), parent->previousResolvedNode->token.ctext(), symbol->name.c_str())};
-        diag.setRange2(identifier->token, Hnt(Hnt0073));
+        diag.addRange(identifier->token, Hnt(Hnt0073));
         diag.hint = Fmt(Hnt(Hnt0080), parent->startScope->name.c_str());
         return context->report(diag);
     }
@@ -1271,7 +1271,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 auto       cp = identifier->callParameters;
                 Diagnostic diag{cp->sourceFile, cp->aliasNames.front().startLocation, cp->aliasNames.back().endLocation, Fmt(Err(Err0099), identifier->token.ctext())};
                 diag.hint = Hnt(Hnt0026);
-                diag.setRange2(identifier->token, Hnt(Hnt0078));
+                diag.addRange(identifier->token, Hnt(Hnt0078));
                 return context->report(diag);
             }
         }
@@ -3091,7 +3091,7 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
             {
                 auto       subNode = identifierRef->previousResolvedNode ? identifierRef->previousResolvedNode : node;
                 Diagnostic diag{subNode, subNode->token, Fmt(Err(Err0124), identifierRef->resolvedSymbolName->name.c_str(), SymTable::getArticleKindName(identifierRef->resolvedSymbolName->kind))};
-                diag.setRange2(node->token, Hnt(Hnt0079));
+                diag.addRange(node->token, Hnt(Hnt0079));
                 return context->report(diag);
             }
         }

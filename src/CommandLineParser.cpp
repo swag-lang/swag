@@ -4,7 +4,6 @@
 #include "Log.h"
 #include "ErrorIds.h"
 #include "Report.h"
-#include "Diagnostic.h"
 
 void CommandLineParser::setup(CommandLine* cmdLine)
 {
@@ -19,7 +18,8 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("te",             "--verbose-testerrors",   nullptr,    CommandLineType::Bool,          &cmdLine->verboseTestErrors, nullptr, "log errors during test");
     addArg("bu sc te",       "--verbose-stages",       nullptr,    CommandLineType::Bool,          &cmdLine->verboseStages, nullptr, "log compiler stages");
                                                                                                    
-    addArg("bu sc",          "--error-compact",        "-ec",      CommandLineType::Bool,          &cmdLine->errorCompact, nullptr, "display errors in a single line");
+    addArg("bu sc",          "--error-oneline",        "-el",      CommandLineType::Bool,          &cmdLine->errorOneLine, nullptr, "display errors in a single line");
+    addArg("bu sc",          "--error-compact",        "-ec",      CommandLineType::Bool,          &cmdLine->errorCompact, nullptr, "merge errors and notes together if possible");
     addArg("bu sc",          "--error-abs",            "-ea",      CommandLineType::Bool,          &cmdLine->errorAbsolute, nullptr, "display absolute paths when an error is raised");
     addArg("bu sc",          "--error-markdown",       "-em",      CommandLineType::Bool,          &cmdLine->errorMarkdown, nullptr, "hilight markdown format");
                                                                                                    

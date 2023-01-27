@@ -42,7 +42,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         {
             Diagnostic diag{implNode, token, Err(Syn0143)};
             diag.hint = Hnt(Hnt0061);
-            diag.setRange2(kindLoc, Hnt(Hnt0085));
+            diag.addRange(kindLoc, Hnt(Hnt0085));
             return Report::report(diag);
         }
 

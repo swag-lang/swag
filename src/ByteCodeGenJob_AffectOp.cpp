@@ -21,7 +21,7 @@ bool ByteCodeGenJob::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeIn
     if (typeStruct->flags & TYPEINFO_STRUCT_NO_COPY)
     {
         Diagnostic diag{from, Fmt(Err(Err0231), typeStruct->getDisplayNameC()), Diagnostic::isType(typeArray)};
-        diag.setRange2(context->node->token, Hnt(Hnt0074));
+        diag.addRange(context->node->token, Hnt(Hnt0074));
         return context->report(diag);
     }
 

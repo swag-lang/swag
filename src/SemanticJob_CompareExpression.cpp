@@ -78,7 +78,7 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
         {
             Diagnostic diag{context->node, context->node->token, Fmt(Err(Err0001), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
             diag.hint = Hnt(Hnt0061);
-            diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+            diag.addRange(left, Diagnostic::isType(leftTypeInfo));
             return context->report(diag);
         }
         }
@@ -146,7 +146,7 @@ bool SemanticJob::resolveCompOp3Way(SemanticContext* context, AstNode* left, Ast
         {
             Diagnostic diag{context->node, context->node->token, Fmt(Err(Err0001), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
             diag.hint = Hnt(Hnt0061);
-            diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+            diag.addRange(left, Diagnostic::isType(leftTypeInfo));
             return context->report(diag);
         }
         }
@@ -211,7 +211,7 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
         {
             Diagnostic diag{context->node, context->node->token, Fmt(Err(Err0001), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
             diag.hint = Hnt(Hnt0061);
-            diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+            diag.addRange(left, Diagnostic::isType(leftTypeInfo));
             return context->report(diag);
         }
         }
@@ -276,7 +276,7 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
         {
             Diagnostic diag{context->node, context->node->token, Fmt(Err(Err0001), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
             diag.hint = Hnt(Hnt0061);
-            diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+            diag.addRange(left, Diagnostic::isType(leftTypeInfo));
             return context->report(diag);
         }
         }
@@ -339,7 +339,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     {
         Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0809), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
         diag.hint = Hnt(Hnt0061);
-        diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+        diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
     else if (!rightTypeInfo->isNative() &&
@@ -349,7 +349,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     {
         Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0778), node->token.ctext(), rightTypeInfo->getDisplayNameC())};
         diag.hint = Hnt(Hnt0061);
-        diag.setRange2(right, Diagnostic::isType(rightTypeInfo));
+        diag.addRange(right, Diagnostic::isType(rightTypeInfo));
         return context->report(diag);
     }
 
@@ -358,7 +358,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     {
         Diagnostic diag{node->sourceFile, node->token, Err(Err0007)};
         diag.hint = Hnt(Hnt0061);
-        diag.setRange2(left, Diagnostic::isType(leftTypeInfo));
+        diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
 
@@ -366,7 +366,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     {
         Diagnostic diag{node->sourceFile, node->token, Err(Err0007)};
         diag.hint = Hnt(Hnt0061);
-        diag.setRange2(right, Diagnostic::isType(rightTypeInfo));
+        diag.addRange(right, Diagnostic::isType(rightTypeInfo));
         return context->report(diag);
     }
 
@@ -375,7 +375,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     {
         Diagnostic diag{node->sourceFile, node->token, Err(Err0009)};
         diag.hint = Hnt(Hnt0061);
-        diag.setRange2(right, Diagnostic::isType(rightTypeInfo));
+        diag.addRange(right, Diagnostic::isType(rightTypeInfo));
         return context->report(diag);
     }
 
@@ -384,7 +384,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     {
         Diagnostic diag{node->sourceFile, node->token, Err(Err0010)};
         diag.hint = Hnt(Hnt0061);
-        diag.setRange2(right, Diagnostic::isType(rightTypeInfo));
+        diag.addRange(right, Diagnostic::isType(rightTypeInfo));
         return context->report(diag);
     }
 

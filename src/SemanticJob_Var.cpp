@@ -52,7 +52,7 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
         SWAG_ASSERT(varDecl->assignment);
         Diagnostic diag{varDecl, varDecl->token, Fmt(Err(Err0291), typeVar->getDisplayNameC())};
         diag.hint = Hnt(Hnt0066);
-        diag.setRange2(varDecl->assignment, Diagnostic::isType(TypeManager::concreteType(varDecl->assignment->typeInfo)));
+        diag.addRange(varDecl->assignment, Diagnostic::isType(TypeManager::concreteType(varDecl->assignment->typeInfo)));
         return context->report(diag);
     }
 
@@ -63,7 +63,7 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
     {
         Diagnostic diag{varDecl, varDecl->token, Err(Err0292)};
         diag.hint = Hnt(Hnt0066);
-        diag.setRange2(varDecl->assignment, Hnt(Hnt0069));
+        diag.addRange(varDecl->assignment, Hnt(Hnt0069));
         return context->report(diag);
     }
 
@@ -71,7 +71,7 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
     {
         Diagnostic diag{varDecl, varDecl->token, Fmt(Err(Err0293), numUnpack, typeStruct->fields.size())};
         diag.hint = Fmt(Hnt(Hnt0067), numUnpack);
-        diag.setRange2(varDecl->assignment, Fmt(Hnt(Hnt0068), typeStruct->fields.size()));
+        diag.addRange(varDecl->assignment, Fmt(Hnt(Hnt0068), typeStruct->fields.size()));
         PushErrContext ec(context, nullptr, ErrorContextKind::Help, Hlp(Hlp0033));
         return context->report(diag);
     }
@@ -80,7 +80,7 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
     {
         Diagnostic diag{varDecl, varDecl->token, Fmt(Err(Err0713), numUnpack, typeStruct->fields.size())};
         diag.hint = Fmt(Hnt(Hnt0067), numUnpack);
-        diag.setRange2(varDecl->assignment, Fmt(Hnt(Hnt0068), typeStruct->fields.size()));
+        diag.addRange(varDecl->assignment, Fmt(Hnt(Hnt0068), typeStruct->fields.size()));
         return context->report(diag);
     }
 
@@ -480,7 +480,7 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
     {
         Diagnostic diag{assign, Err(Err0295)};
         diag.hint = Hnt(Hnt0009);
-        diag.setRange2(identifier->callParameters, Hnt(Hnt0007));
+        diag.addRange(identifier->callParameters, Hnt(Hnt0007));
         return context->report(diag);
     }
 
@@ -980,7 +980,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             if (!leftConcreteType->isConst())
             {
                 Diagnostic diag{node->type, Err(Err0306), Fmt(Hnt(Hnt0004), leftConcreteType->getDisplayNameC())};
-                diag.setRange2(node->assignment, Diagnostic::isType(rightConcreteType));
+                diag.addRange(node->assignment, Diagnostic::isType(rightConcreteType));
                 return context->report(diag);
             }
         }

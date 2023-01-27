@@ -100,7 +100,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             if (!runtime && rb.s8 == INT8_MIN)
             {
                 Diagnostic diag{ip->node, ip->node->token, Err(Err0605), Hnt(Hnt0001)};
-                diag.setRange2(ip->node->childs.front(), Fmt(Hnt(Hnt0091), (int64_t) rb.s8));
+                diag.addRange(ip->node->childs.front(), Fmt(Hnt(Hnt0091), (int64_t) rb.s8));
                 return context->report(diag);
             }
             break;
@@ -129,7 +129,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             if (!runtime && rb.s16 == INT16_MIN)
             {
                 Diagnostic diag{ip->node, ip->node->token, Err(Err0605), Hnt(Hnt0001)};
-                diag.setRange2(ip->node->childs.front(), Fmt(Hnt(Hnt0091), (int64_t) rb.s16));
+                diag.addRange(ip->node->childs.front(), Fmt(Hnt(Hnt0091), (int64_t) rb.s16));
                 return context->report(diag);
             }
             break;
@@ -161,7 +161,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             if (!runtime && rb.s32 == INT32_MIN)
             {
                 Diagnostic diag{ip->node, ip->node->token, Err(Err0605), Hnt(Hnt0001)};
-                diag.setRange2(ip->node->childs.front(), Fmt(Hnt(Hnt0091), (int64_t) rb.s32));
+                diag.addRange(ip->node->childs.front(), Fmt(Hnt(Hnt0091), (int64_t) rb.s32));
                 return context->report(diag);
             }
             break;
@@ -193,7 +193,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             if (!runtime && rb.s64 == INT64_MIN)
             {
                 Diagnostic diag{ip->node, ip->node->token, Err(Err0605), Hnt(Hnt0001)};
-                diag.setRange2(ip->node->childs.front(), Fmt(Hnt(Hnt0091), rb.s64));
+                diag.addRange(ip->node->childs.front(), Fmt(Hnt(Hnt0091), rb.s64));
                 return context->report(diag);
             }
             break;
@@ -461,7 +461,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             if (!runtime && (rb.f32 < 0 || isnan(ra.f32)))
             {
                 Diagnostic diag{ip->node, ip->node->token, Err(Err0425), Hnt(Hnt0001)};
-                diag.setRange2(ip->node->childs.front(), Fmt(Hnt(Hnt0090), rb.f32));
+                diag.addRange(ip->node->childs.front(), Fmt(Hnt(Hnt0090), rb.f32));
                 return context->report(diag);
             }
             break;
@@ -470,7 +470,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             if (!runtime && (rb.f32 < -1 || rb.f32 > 1 || isnan(ra.f32)))
             {
                 Diagnostic diag{ip->node, ip->node->token, Err(Err0426), Hnt(Hnt0001)};
-                diag.setRange2(ip->node->childs.front(), Fmt(Hnt(Hnt0090), rb.f32));
+                diag.addRange(ip->node->childs.front(), Fmt(Hnt(Hnt0090), rb.f32));
                 return context->report(diag);
             }
             break;
@@ -479,7 +479,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             if (!runtime && (rb.f32 < -1 || rb.f32 > 1 || isnan(ra.f32)))
             {
                 Diagnostic diag{ip->node, ip->node->token, Err(Err0427), Hnt(Hnt0001)};
-                diag.setRange2(ip->node->childs.front(), Fmt(Hnt(Hnt0090), rb.f32));
+                diag.addRange(ip->node->childs.front(), Fmt(Hnt(Hnt0090), rb.f32));
                 return context->report(diag);
             }
             break;
@@ -488,7 +488,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             if (!runtime && (rb.f32 <= 0 || isnan(ra.f32)))
             {
                 Diagnostic diag{ip->node, ip->node->token, Err(Err0428), Hnt(Hnt0001)};
-                diag.setRange2(ip->node->childs.front(), Fmt(Hnt(Hnt0090), rb.f32));
+                diag.addRange(ip->node->childs.front(), Fmt(Hnt(Hnt0090), rb.f32));
                 return context->report(diag);
             }
             break;
@@ -497,7 +497,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             if (!runtime && (rb.f32 <= 0 || isnan(ra.f32)))
             {
                 Diagnostic diag{ip->node, ip->node->token, Err(Err0423), Hnt(Hnt0001)};
-                diag.setRange2(ip->node->childs.front(), Fmt(Hnt(Hnt0090), rb.f32));
+                diag.addRange(ip->node->childs.front(), Fmt(Hnt(Hnt0090), rb.f32));
                 return context->report(diag);
             }
             break;
@@ -506,7 +506,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             if (!runtime && (rb.f32 <= 0 || isnan(ra.f32)))
             {
                 Diagnostic diag{ip->node, ip->node->token, Err(Err0424), Hnt(Hnt0001)};
-                diag.setRange2(ip->node->childs.front(), Fmt(Hnt(Hnt0090), rb.f32));
+                diag.addRange(ip->node->childs.front(), Fmt(Hnt(Hnt0090), rb.f32));
                 return context->report(diag);
             }
             break;
@@ -569,7 +569,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             if (!runtime && (rb.f64 < 0 || isnan(ra.f64)))
             {
                 Diagnostic diag{ip->node, ip->node->token, Err(Err0425), Hnt(Hnt0001)};
-                diag.setRange2(ip->node->childs.front(), Fmt(Hnt(Hnt0090), rb.f64));
+                diag.addRange(ip->node->childs.front(), Fmt(Hnt(Hnt0090), rb.f64));
                 return context->report(diag);
             }
             break;
@@ -578,7 +578,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             if (!runtime && (rb.f64 < -1 || rb.f64 > 1 || isnan(ra.f64)))
             {
                 Diagnostic diag{ip->node, ip->node->token, Err(Err0426), Hnt(Hnt0001)};
-                diag.setRange2(ip->node->childs.front(), Fmt(Hnt(Hnt0090), rb.f64));
+                diag.addRange(ip->node->childs.front(), Fmt(Hnt(Hnt0090), rb.f64));
                 return context->report(diag);
             }
             break;
@@ -587,7 +587,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             if (!runtime && (rb.f64 < -1 || rb.f64 > 1 || isnan(ra.f64)))
             {
                 Diagnostic diag{ip->node, ip->node->token, Err(Err0427), Hnt(Hnt0001)};
-                diag.setRange2(ip->node->childs.front(), Fmt(Hnt(Hnt0090), rb.f64));
+                diag.addRange(ip->node->childs.front(), Fmt(Hnt(Hnt0090), rb.f64));
                 return context->report(diag);
             }
             break;
@@ -596,7 +596,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             if (!runtime && (rb.f64 <= 0 || isnan(ra.f64)))
             {
                 Diagnostic diag{ip->node, ip->node->token, Err(Err0428), Hnt(Hnt0001)};
-                diag.setRange2(ip->node->childs.front(), Fmt(Hnt(Hnt0090), rb.f64));
+                diag.addRange(ip->node->childs.front(), Fmt(Hnt(Hnt0090), rb.f64));
                 return context->report(diag);
             }
             break;
@@ -605,7 +605,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             if (!runtime && (rb.f64 <= 0 || isnan(ra.f64)))
             {
                 Diagnostic diag{ip->node, ip->node->token, Err(Err0423), Hnt(Hnt0001)};
-                diag.setRange2(ip->node->childs.front(), Fmt(Hnt(Hnt0090), rb.f64));
+                diag.addRange(ip->node->childs.front(), Fmt(Hnt(Hnt0090), rb.f64));
                 return context->report(diag);
             }
             break;
@@ -614,7 +614,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             if (!runtime && (rb.f64 <= 0 || isnan(ra.f64)))
             {
                 Diagnostic diag{ip->node, ip->node->token, Err(Err0424), Hnt(Hnt0001)};
-                diag.setRange2(ip->node->childs.front(), Fmt(Hnt(Hnt0090), rb.f64));
+                diag.addRange(ip->node->childs.front(), Fmt(Hnt(Hnt0090), rb.f64));
                 return context->report(diag);
             }
             break;

@@ -35,31 +35,32 @@ namespace Report
             if (!note->display)
                 continue;
 
-            // No multiline range... a test, to reduce verbosity
-            if (note->endLocation.line > note->startLocation.line)
-            {
-                note->endLocation.line   = note->startLocation.line;
-                note->endLocation.column = UINT32_MAX;
-            }
-
             // Transform a note/help in a hint
-            if (note->errorLevel == DiagnosticLevel::Note || note->errorLevel == DiagnosticLevel::Help)
+            if (g_CommandLine.errorCompact)
             {
-                if (note->hint.empty() && note->hasRangeLocation2 == false && note->hasRangeLocation)
+                if (note->errorLevel == DiagnosticLevel::Note || note->errorLevel == DiagnosticLevel::Help)
                 {
-                    note->showErrorLevel = false;
-                    if (!note->noteHeader.empty())
+                    if (note->hint.empty() && note->hasRangeLocation)
                     {
-                        note->hint = note->noteHeader;
-                        note->hint += " ";
-                    }
+                        note->showErrorLevel = false;
+                        if (!note->noteHeader.empty())
+                        {
+                            note->hint = note->noteHeader;
+                            note->hint += " ";
+                        }
 
-                    note->hint += note->textMsg;
-                    note->textMsg.clear();
-                    note->showRange = true;
+                        note->hint += note->textMsg;
+                        note->textMsg.clear();
+                        note->showRange = true;
+                    }
                 }
             }
+
+            note->collectRanges();
         }
+
+        if (!g_CommandLine.errorCompact)
+            return;
 
         for (auto note : notes)
         {
@@ -83,81 +84,66 @@ namespace Report
                     note1->showFileName = false;
                 }
 
-                // Try to transform a hint of note 1 in a hint2 of note 0
-                if (!note1->hint.empty() &&
-                    note->hasRangeLocation &&
-                    !note->hasRangeLocation2 &&
-                    !note1->hasRangeLocation2 &&
-                    note->sourceFile == note1->sourceFile &&
-                    note1->startLocation.line == note->startLocation.line &&
-                    note1->endLocation.line == note->endLocation.line &&
-                    note1->startLocation.column != note->startLocation.column &&
-                    note1->endLocation.column != note->endLocation.column &&
+                // A note/help without a range can be merged to the hint of the main error message (if not already defined)
+                if (note->ranges.size() &&
+                    note1->ranges.empty() &&
                     (note1->errorLevel == DiagnosticLevel::Note || note1->errorLevel == DiagnosticLevel::Help))
                 {
-                    note->hint2             = note1->hint;
-                    note->startLocation2    = note1->startLocation;
-                    note->endLocation2      = note1->endLocation;
-                    note->hasRangeLocation2 = true;
-                    note->remarks.insert(note->remarks.end(), note1->remarks.begin(), note1->remarks.end());
-                    note1->display = false;
+                    for (auto& r : note->ranges)
+                    {
+                        if (r.errorLevel == DiagnosticLevel::Error)
+                        {
+                            if (r.hint.empty())
+                            {
+                                r.hint = note1->textMsg;
+                                note->remarks.insert(note->remarks.end(), note1->remarks.begin(), note1->remarks.end());
+                                note1->display = false;
+                            }
+
+                            break;
+                        }
+                    }
                 }
 
-                // Try to transform a note in a hint
-                if (note->hint.empty() &&
-                    note->hasRangeLocation &&
-                    note1->hint.empty() &&
-                    !note1->hasRangeLocation2 &&
-                    (!note1->hasRangeLocation ||
-                     (note->sourceFile == note1->sourceFile &&
-                      note1->startLocation.line == note->startLocation.line &&
-                      note1->endLocation.line == note->endLocation.line &&
-                      note1->startLocation.column == note->startLocation.column &&
-                      note1->endLocation.column == note->endLocation.column)))
-                {
-                    note->hint = note1->textMsg;
-                    note->remarks.insert(note->remarks.end(), note1->remarks.begin(), note1->remarks.end());
-                    note1->display = false;
-                }
-
-                // Try to move the hint
-                if (note->hint.empty() &&
-                    note->hasRangeLocation &&
-                    !note1->hint.empty() &&
-                    note1->textMsg.empty() &&
-                    !note1->hasRangeLocation2 &&
-                    (!note1->hasRangeLocation ||
-                     (note->sourceFile == note1->sourceFile &&
-                      note1->startLocation.line == note->startLocation.line &&
-                      note1->endLocation.line == note->endLocation.line &&
-                      note1->startLocation.column == note->startLocation.column &&
-                      note1->endLocation.column == note->endLocation.column)))
-                {
-                    note->hint = note1->hint;
-                    note->remarks.insert(note->remarks.end(), note1->remarks.begin(), note1->remarks.end());
-                    note1->display = false;
-                }
-
-                // Merge hints
-                if (note->hint2.empty() &&
-                    note1->hint2.empty() &&
-                    !note1->hint.empty() &&
-                    !note->hasRangeLocation2 &&
-                    !note1->hasRangeLocation2 &&
-                    note->hasRangeLocation &&
-                    note1->hasRangeLocation &&
+                // Move ranges from note to note if they share the same line of code, and they do not overlap
+                if (note->showRange &&
+                    note1->showRange &&
                     note->sourceFile == note1->sourceFile &&
-                    note1->startLocation.line == note->startLocation.line &&
-                    note1->endLocation.line == note->endLocation.line &&
-                    (note1->startLocation.column > note->endLocation.column ||
-                     note1->endLocation.column < note->startLocation.column))
+                    note->startLocation.line == note1->startLocation.line &&
+                    note->endLocation.line == note1->endLocation.line &&
+                    note1->ranges.size() &&
+                    !note1->forceSourceFile &&
+                    (note1->errorLevel == DiagnosticLevel::Note || note1->errorLevel == DiagnosticLevel::Help))
                 {
-                    note->hasRangeLocation2 = true;
-                    note->hint2             = note1->hint;
-                    note->startLocation2    = note1->startLocation;
-                    note->endLocation2      = note1->endLocation;
-                    note->remarks.insert(note->remarks.end(), note1->remarks.begin(), note1->remarks.end());
-                    note1->display = false;
+                    for (int i = 0; i < note1->ranges.size(); i++)
+                    {
+                        bool        canAdd = true;
+                        const auto& r1     = note1->ranges[i];
+                        for (int j = 0; j < note->ranges.size(); j++)
+                        {
+                            auto& r0 = note->ranges[j];
+                            if (r0.endLocation.column <= r1.startLocation.column)
+                                continue;
+                            if (r0.startLocation.column >= r1.endLocation.column)
+                                continue;
+                            canAdd = false;
+                            break;
+                        }
+
+                        if (canAdd)
+                        {
+                            note->ranges.push_back(r1);
+                            note->sortRanges();
+                            note1->ranges.erase(note1->ranges.begin() + i);
+                            i--;
+                        }
+                    }
+
+                    if (note1->ranges.empty() && note1->textMsg.empty())
+                    {
+                        note->remarks.insert(note->remarks.end(), note1->remarks.begin(), note1->remarks.end());
+                        note1->display = false;
+                    }
                 }
             }
         }
@@ -165,7 +151,7 @@ namespace Report
 
     void report(const Diagnostic& diag, const vector<const Diagnostic*>& inNotes, bool verbose)
     {
-        if (g_CommandLine.errorCompact)
+        if (g_CommandLine.errorOneLine)
         {
             auto c = new Diagnostic{diag};
             c->reportCompact(verbose);

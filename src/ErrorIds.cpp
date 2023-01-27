@@ -1183,7 +1183,7 @@ void initErrors()
     SWAG_ERROR(Nte0056, "the other one is an implicit 'using self' as a first parameter");
     SWAG_ERROR(Nte0044, "the symbol '%s' exists in interface scope '%s'");
     SWAG_ERROR(Nte0043, "the %s '%s' was not found in '%s', so the one from '%s' has been choosen instead");
-    SWAG_ERROR(Nte0013, "the symbol has been found thanks to a 'using'");
+    SWAG_ERROR(Nte0013, "the symbol '%s' has been found thanks to a 'using'");
     SWAG_ERROR(Nte0051, "there is an hidden call to '%s' for type '%s'");
     SWAG_ERROR(Nte0006, "this 'using' field can be converted");
     SWAG_ERROR(Nte0003, "this variable can escape the current frame");
@@ -1193,8 +1193,8 @@ void initErrors()
     SWAG_ERROR(Nte0070, "this fails to evaluate at compile time");
     SWAG_ERROR(Nte0071, "this function call fails to evaluate at compile time");
     SWAG_ERROR(Nte0072, "occurred during compile time evaluation");
-    SWAG_ERROR(Nte0073, nullptr);
-    SWAG_ERROR(Nte0074, nullptr);
+    SWAG_ERROR(Nte0073, "the ufcs argument comes from an implicit 'using self' parameter");
+    SWAG_ERROR(Nte0074, "the ufcs argument comes from this");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

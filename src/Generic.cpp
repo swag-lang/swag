@@ -759,7 +759,7 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
                 {
                     Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0041), node->token.ctext())};
                     diag.hint = Hnt(Hnt0057);
-                    diag.setRange2(contextualNode, Hnt(Hnt0056));
+                    diag.addRange(contextualNode, Hnt(Hnt0056));
                     return context->report(diag);
                 }
             }

@@ -357,7 +357,7 @@ bool SemanticJob::collectAssignment(SemanticContext* context, DataSegment* stora
             if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
             {
                 Diagnostic diag{assign, Err(Err0645), Hnt(Hnt0045)};
-                diag.setRange2(node->type, Hnt(Hnt0007));
+                diag.addRange(node->type, Hnt(Hnt0007));
                 return context->report(diag);
             }
 

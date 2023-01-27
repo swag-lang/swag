@@ -47,27 +47,21 @@ void Diagnostic::setup()
     }
 }
 
-void Diagnostic::setRange2(const SourceLocation& start, const SourceLocation& end, const Utf8& h)
+void Diagnostic::addRange(const SourceLocation& start, const SourceLocation& end, const Utf8& h)
 {
-    hasRangeLocation2 = true;
-    startLocation2    = start;
-    endLocation2      = end;
-    hint2             = h;
+    ranges.push_back({start, end, h, DiagnosticLevel::Note});
 }
 
-void Diagnostic::setRange2(const Token& token, const Utf8& h)
+void Diagnostic::addRange(const Token& token, const Utf8& h)
 {
-    hasRangeLocation2 = true;
-    startLocation2    = token.startLocation;
-    endLocation2      = token.endLocation;
-    hint2             = h;
+    ranges.push_back({token.startLocation, token.endLocation, h, DiagnosticLevel::Note});
 }
 
-void Diagnostic::setRange2(AstNode* node, const Utf8& h)
+void Diagnostic::addRange(AstNode* node, const Utf8& h)
 {
     SourceLocation start, end;
     node->computeLocation(start, end);
-    setRange2(start, end, h);
+    ranges.push_back({start, end, h, DiagnosticLevel::Note});
 }
 
 void Diagnostic::printSourceLine()
@@ -87,7 +81,7 @@ void Diagnostic::printSourceLine()
             path = path1;
     }
 
-    if (!g_CommandLine.errorCompact)
+    if (!g_CommandLine.errorOneLine)
         g_Log.setColor(sourceFileColor);
     g_Log.print(Utf8::normalizePath(path).c_str());
     if (hasRangeLocation)
@@ -256,22 +250,39 @@ static void fixRange(const Utf8& backLine, SourceLocation& startLocation, int& r
     }
 }
 
-void Diagnostic::collectRanges()
+void Diagnostic::sortRanges()
 {
-    if (hasRangeLocation)
-        ranges.push_back({startLocation, endLocation, hint, errorLevel});
-    if (hasRangeLocation2)
-        ranges.push_back({startLocation2, endLocation2, hint2, DiagnosticLevel::Note});
-
-    // Sort ranges by column
     sort(ranges.begin(), ranges.end(), [](auto& r1, auto& r2)
          { return r1.startLocation.column < r2.startLocation.column; });
+}
+
+void Diagnostic::collectRanges()
+{
+    if (!showRange || !showSourceCode)
+        return;
+    if (hasRangeLocation)
+        ranges.push_back({startLocation, endLocation, hint, errorLevel});
+    else if (hasLocation)
+        ranges.push_back({startLocation, startLocation, hint, errorLevel});
+    if (ranges.empty())
+        return;
+
+    collectSourceCode();
+    sortRanges();
 
     // Preprocess ranges
     for (auto& r : ranges)
     {
         const auto& backLine = lines.back();
 
+        // No multiline range... a test, to reduce verbosity
+        if (r.endLocation.line > r.startLocation.line)
+        {
+            r.endLocation.line   = r.startLocation.line;
+            r.endLocation.column = UINT32_MAX;
+        }
+
+        // Be sure start column is before end column
         if (r.startLocation.line == r.endLocation.line && r.startLocation.column > r.endLocation.column)
             swap(r.startLocation.column, r.endLocation.column);
 
@@ -429,7 +440,7 @@ void Diagnostic::printSourceCode()
 
         // Collect the code corresponding to the current range
         errorMsg.clear();
-        for (uint32_t i = 0; i < (uint32_t) r.width && i < (uint32_t) backLine.length(); i++)
+        for (uint32_t i = 0; i < (uint32_t) r.width && startIndex < (uint32_t) backLine.length(); i++)
         {
             errorMsg += backLine[startIndex];
             startIndex++;
@@ -441,7 +452,7 @@ void Diagnostic::printSourceCode()
         else if (r.errorLevel == DiagnosticLevel::Warning)
             g_Log.setColor(warningColor);
         else*/
-            g_Log.setColor(hilightCodeColor);
+        g_Log.setColor(hilightCodeColor);
         g_Log.print(errorMsg);
     }
 
@@ -474,18 +485,17 @@ void Diagnostic::setColorRanges(DiagnosticLevel level)
 
 void Diagnostic::printRanges()
 {
+    if (ranges.empty())
+        return;
+
     const auto& backLine = lines.back();
     printMargin(false, true);
 
     // Print all marks
-    int  countHints = 0;
     auto startIndex = minBlanks;
     int  rangeIdx   = 0;
     for (auto& r : ranges)
     {
-        if (!r.hint.empty())
-            countHints += 1;
-
         while (startIndex < (int) r.startLocation.column && startIndex < (uint32_t) backLine.length())
         {
             if (backLine[startIndex] == '\t')
@@ -517,19 +527,28 @@ void Diagnostic::printRanges()
         g_Log.print(" ");
         g_Log.setColor(hintColor);
         g_Log.print(ranges.back().hint);
-        countHints -= 1;
+        ranges.pop_back();
     }
 
-    if (countHints)
+    // Remove all ranges with an empty hint
+    for (int i = 0; i < ranges.size(); i++)
+    {
+        if (ranges[i].hint.empty())
+        {
+            ranges.erase(ranges.begin() + i);
+            i--;
+        }
+    }
+
+    while (ranges.size())
     {
         g_Log.eol();
         printMargin(false, true);
 
-        // Print the vertical bars
+        // Print all the vertical bars
         startIndex = minBlanks;
-        for (int ri = 0; ri < ranges.size() - 1; ri++)
+        for (const auto& r : ranges)
         {
-            const auto& r = ranges[ri];
             while (startIndex < (int) r.startLocation.column && startIndex < (uint32_t) backLine.length())
             {
                 if (backLine[startIndex] == '\t')
@@ -539,20 +558,19 @@ void Diagnostic::printRanges()
                 startIndex++;
             }
 
-            if (!r.hint.empty())
-            {
-                setColorRanges(r.errorLevel);
-                g_Log.print("|");
-            }
+            setColorRanges(r.errorLevel);
+            g_Log.print("|");
+            startIndex++;
         }
 
         g_Log.eol();
         printMargin(false, true);
 
+        // Print the last hint
         startIndex = minBlanks;
-        for (int ri = 0; ri < ranges.size() - 1; ri++)
+        for (int i = 0; i < ranges.size(); i++)
         {
-            const auto& r = ranges[ri];
+            const auto& r = ranges[i];
             while (startIndex < (int) r.startLocation.column && startIndex < (uint32_t) backLine.length())
             {
                 if (backLine[startIndex] == '\t')
@@ -562,9 +580,21 @@ void Diagnostic::printRanges()
                 startIndex++;
             }
 
-            g_Log.setColor(hintColor);
-            g_Log.print(r.hint);
+            if (i == ranges.size() - 1)
+            {
+                g_Log.setColor(hintColor);
+                g_Log.print(r.hint);
+            }
+            else
+            {
+                setColorRanges(r.errorLevel);
+                g_Log.print("|");
+                startIndex++;
+            }
         }
+
+        // Remove processed range
+        ranges.pop_back();
     }
 
     g_Log.eol();
@@ -598,12 +628,8 @@ void Diagnostic::report(bool verboseMode)
     // Source code
     if (showSourceCode)
     {
-        collectSourceCode();
-        if (showRange)
-            collectRanges();
         printSourceCode();
-        if (showRange)
-            printRanges();
+        printRanges();
     }
 
     // Code remarks

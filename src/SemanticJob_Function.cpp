@@ -161,7 +161,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
             {
                 Diagnostic diag{nodeParam, Fmt(Err(Err0738), name.c_str())};
                 diag.hint = Hnt(Hnt0089);
-                diag.setRange2(firstParamWithDef, Hnt(Hnt0088));
+                diag.addRange(firstParamWithDef, Hnt(Hnt0088));
                 return context->report(diag);
             }
         }

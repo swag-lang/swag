@@ -2017,7 +2017,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
                 auto       badParamIdx = symContext.badSignatureInfos.badSignatureParameterIdx;
                 auto       failedParam = child->childs[badParamIdx];
                 Diagnostic diag{failedParam, Fmt(Err(Err0006), SemanticJob::getTheNiceArgumentRank(badParamIdx + 1).c_str()), Hnt(Hnt0031)};
-                diag.setRange2(child->childs[badParamIdx - 1], Hnt(Hnt0030));
+                diag.addRange(child->childs[badParamIdx - 1], Hnt(Hnt0030));
                 return context->report(diag);
             }
             case MatchResult::DuplicatedNamedParameter:
@@ -2025,7 +2025,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
                 auto       failedParam = child->childs[symContext.badSignatureInfos.badSignatureParameterIdx];
                 Diagnostic diag{failedParam->extension->misc->isNamed, Fmt(Err(Err0011), failedParam->extension->misc->isNamed->token.ctext())};
                 diag.hint = Hnt(Hnt0009);
-                diag.setRange2(child->childs[symContext.badSignatureInfos.badSignatureNum1], Hnt(Hnt0059));
+                diag.addRange(child->childs[symContext.badSignatureInfos.badSignatureNum1], Hnt(Hnt0059));
                 return context->report(diag);
             }
             case MatchResult::InvalidNamedParameter:
