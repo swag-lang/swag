@@ -2017,15 +2017,21 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
                 auto       badParamIdx = symContext.badSignatureInfos.badSignatureParameterIdx;
                 auto       failedParam = child->childs[badParamIdx];
                 Diagnostic diag{failedParam, Fmt(Err(Err0006), SemanticJob::getTheNiceArgumentRank(badParamIdx + 1).c_str()), Hnt(Hnt0031)};
-                diag.addRange(child->childs[badParamIdx - 1], Hnt(Hnt0030));
+                auto       otherParam = child->childs[badParamIdx - 1];
+                if (otherParam->extension && otherParam->extension->misc && otherParam->extension->misc->isNamed)
+                    otherParam = otherParam->extension->misc->isNamed;
+                diag.addRange(otherParam, Hnt(Hnt0030));
                 return context->report(diag);
             }
             case MatchResult::DuplicatedNamedParameter:
             {
                 auto       failedParam = child->childs[symContext.badSignatureInfos.badSignatureParameterIdx];
                 Diagnostic diag{failedParam->extension->misc->isNamed, Fmt(Err(Err0011), failedParam->extension->misc->isNamed->token.ctext())};
-                diag.hint = Hnt(Hnt0009);
-                diag.addRange(child->childs[symContext.badSignatureInfos.badSignatureNum1], Hnt(Hnt0059));
+                diag.hint       = Hnt(Hnt0009);
+                auto otherParam = child->childs[symContext.badSignatureInfos.badSignatureNum1];
+                if (otherParam->extension && otherParam->extension->misc && otherParam->extension->misc->isNamed)
+                    otherParam = otherParam->extension->misc->isNamed;
+                diag.addRange(otherParam, Hnt(Hnt0059));
                 return context->report(diag);
             }
             case MatchResult::InvalidNamedParameter:
