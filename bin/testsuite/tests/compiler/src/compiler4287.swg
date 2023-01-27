@@ -1,23 +1,24 @@
 var G = 0
 
 #[Swag.Macro]
-func parse(stmt: code)->bool
+func parse(stmt: code)
 {
-    G += 1
-    if G == 5
-        return false
-    #macro
+    loop
     {
-        #mixin stmt
+        G += 1
+        if G == 5
+            return
+        #macro
+        {
+            #mixin stmt
+        }
     }
-
-    return true
 }
 
 func toto()
 {
     countTot := 0
-    while parse()
+    parse()
     {
         countTot += 1
     }

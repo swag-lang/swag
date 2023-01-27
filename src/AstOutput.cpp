@@ -1833,41 +1833,21 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::Statement:
     case AstNodeKind::SwitchCaseBlock:
-        if (node->childs.count == 1 &&
-            node->parent->kind != AstNodeKind::FuncDecl &&
-            node->parent->kind != AstNodeKind::CompilerMacro &&
-            node->childs.front()->kind != AstNodeKind::For &&
-            node->childs.front()->kind != AstNodeKind::If &&
-            node->childs.front()->kind != AstNodeKind::While &&
-            node->childs.front()->kind != AstNodeKind::Visit &&
-            node->childs.front()->kind != AstNodeKind::Loop &&
-            node->childs.front()->kind != AstNodeKind::ScopeBreakable &&
-            node->childs.front()->kind != AstNodeKind::Switch)
+        concat.addChar('{');
+        concat.addEol();
+        for (auto child : node->childs)
         {
+            concat.addIndent(context.indent + 1);
             context.indent++;
-            concat.addIndent(1);
-            SWAG_CHECK(outputNode(context, concat, node->childs.front()));
+            SWAG_CHECK(outputNode(context, concat, child));
             context.indent--;
-        }
-        else
-        {
-            concat.addChar('{');
             concat.addEol();
-            for (auto child : node->childs)
-            {
-                concat.addIndent(context.indent + 1);
-                context.indent++;
-                SWAG_CHECK(outputNode(context, concat, child));
-                context.indent--;
-                concat.addEol();
-            }
-
-            removeLastBlankLine(concat);
-            concat.addIndent(context.indent);
-            concat.addChar('}');
-            concat.addEolIndent(context.indent);
         }
 
+        removeLastBlankLine(concat);
+        concat.addIndent(context.indent);
+        concat.addChar('}');
+        concat.addEolIndent(context.indent);
         break;
 
     case AstNodeKind::FuncCallParam:

@@ -368,14 +368,7 @@ bool SyntaxJob::doEmbeddedStatement(AstNode* parent, AstNode** result)
         return doScopedCurlyStatement(parent, result);
 
     // Empty statement
-    if (token.id == TokenId::SymSemiColon)
-    {
-        auto node = Ast::newNode(sourceFile, AstNodeKind::Statement, parent, this);
-        if (result)
-            *result = node;
-        SWAG_CHECK(eatToken());
-        return true;
-    }
+    SWAG_VERIFY(token.id != TokenId::SymSemiColon, error(token, Err(Syn0187)));
 
     // One single line, but we need a scope too
     auto     newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);

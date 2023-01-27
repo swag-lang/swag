@@ -53,19 +53,14 @@ func readAllText(fullname: string, encoding = TextEncoding.Utf8)->String throw
 // Read all the lines of a file
 func readAllLines(fullname: string, encoding = TextEncoding.Utf8)->Array'String throw
 {
-    var result:     retval
-
     var textReader: TextReader
-    try textReader.open(fullname, encoding)
+    textReader.open(fullname, encoding)
     defer textReader.close()
 
-    res := textReader.readLine()
-    while !res.isNull()
-    {
-        result.add(res)
-        res = textReader.readLine()
-    }
-
+    var result: retval
+    var res: String
+    while textReader.readLine(&res)
+        result.emplace(&res)
     return result
 }
 
@@ -74,31 +69,28 @@ func readAllLines(fullname: string, encoding = TextEncoding.Utf8)->Array'String 
 func readEachLines(fullname: string, encoding = TextEncoding.Utf8, stmt: code) throw
 {
     var textReader: TextReader
-    try textReader.open(fullname, encoding)
+    textReader.open(fullname, encoding)
     defer textReader.close()
 
-    res := textReader.readLine()
-    while !res.isNull()
+    var res: String
+    while textReader.readLine(&res)
     {
         #macro
         {
             var @alias0 = ref &`res
             #mixin `stmt
         }
-
-        res = textReader.readLine()
     }
 }
 
 // Read a file, and store the result in an array of bytes
 func readAllBytes(fullname: string)->Array'u8 throw
 {
-    var result: retval
-
     stream := try openRead(fullname)
     Debug.assert(stream.isOpen())
     defer stream.close()
 
+    var result: retval
     len := try getSize(stream)
     result.reserve(len)
     result.count = read(stream, result.buffer, len)

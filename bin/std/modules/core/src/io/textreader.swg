@@ -88,17 +88,16 @@ public impl TextReader
     }
 
     // Read one line of text.
-    // Returns a null string at the end
-    func readLine(using self)->String
+    // Returns false at the end
+    func readLine(using self, result: ref String)->bool
     {
-        var result: retval
-
+        result.clear()
         loop
         {
             if byteSeek == buffer.count
                 readBuffer()
             if buffer.count == 0
-                return result
+                return false
 
             while buffer[byteSeek] != "\n"'u8 and buffer[byteSeek] != "\r"'u8
             {
@@ -118,13 +117,10 @@ public impl TextReader
             if buffer.count and buffer[byteSeek] == "\n"'u8
                 byteSeek += 1
 
-            // Result must be empty, not null, to differenciate an empty line
-            // and the end of the file
-            result.ensureNotNull()
-            return result
+            return true
         }
 
-        return result
+        return false
     }
 
     // Read from the current position to the end, and returns the corresponding

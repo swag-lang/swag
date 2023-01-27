@@ -278,7 +278,7 @@ void initErrors()
     SWAG_ERROR(Syn0180, "usage of '.' in a statement is only valid inside a 'with' block");
     SWAG_ERROR(Syn0185, "the slicing operator '..<' should be followed by the upper bound expression");
     SWAG_ERROR(Syn0186, "cast modifiers 'safe' and 'bit' are exclusive");
-    SWAG_ERROR(Syn0187, nullptr);
+    SWAG_ERROR(Syn0187, "unexpected empty statement ';'");
     SWAG_ERROR(Syn0188, nullptr);
     SWAG_ERROR(Syn0189, nullptr);
 

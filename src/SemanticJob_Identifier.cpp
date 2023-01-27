@@ -3130,6 +3130,7 @@ bool SemanticJob::appendLastCodeStatement(SemanticContext* context, AstIdentifie
                         case AstNodeKind::Loop:
                         case AstNodeKind::If:
                         case AstNodeKind::CompilerIf:
+                        case AstNodeKind::While:
                         {
                             Diagnostic diag{node, node->token, Fmt(Err(Err0686), SymTable::getNakedKindName(overload).c_str(), overload->node->token.ctext(), brotherParent->token.ctext())};
                             return context->report(diag, Diagnostic::hereIs(overload->node));
@@ -3148,18 +3149,6 @@ bool SemanticJob::appendLastCodeStatement(SemanticContext* context, AstIdentifie
                         fctCallParam->semFlags |= AST_SEM_AUTO_CODE_PARAM;
                         fctCallParam->typeInfo = typeCode;
                         codeNode->typeInfo     = typeCode;
-
-                        // Update parent if necessary with a dummy statement
-                        switch (brotherParent->kind)
-                        {
-                        case AstNodeKind::While:
-                        {
-                            auto w   = CastAst<AstWhile>(brotherParent, AstNodeKind::While);
-                            w->block = Ast::newNode(context->sourceFile, AstNodeKind::Statement, brotherParent, nullptr);
-                            w->block->flags |= AST_GENERATED;
-                            break;
-                        }
-                        }
                     }
                 }
             }

@@ -1,19 +1,22 @@
-#[Swag.Macro, Swag.Discardable]
-public func parse58(stmt: code)->bool
+#[Swag.Macro]
+public func parse58(stmt: code)
 {
-    #macro
+    loop
     {
-        #mixin stmt
+        #macro
+        {
+            #mixin stmt
+        }
     }
 
-    return true
+    return
 }
 
 #[Swag.Inline]
 public func toto58()
 {
     countTot := 0
-    while parse58()
+    parse58()
     {
         countTot += 1
     }

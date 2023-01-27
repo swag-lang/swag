@@ -1,4 +1,5 @@
-﻿using Core.File
+﻿#global skip
+using Core.File
 
 //#[Swag.PrintBc]
 #test
@@ -22,14 +23,12 @@
         @assert(@err == null)
         defer reader.close()
 
-        res := reader.readLine()
+        var res: String
+        @assert(reader.readLine(&res))
         @assert(res == @"using Core.File"@)
 
-        while !res.isNull()
+        while reader.readLine(&res)
         {
-            //Console.print("LINE: %\n", res)
-            //break
-            res = reader.readLine()
         }
     }
 }

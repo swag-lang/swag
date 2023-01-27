@@ -1,24 +1,25 @@
 var G = 0
 
 #[Swag.Macro]
-func parse(stmt: code)->bool throw
+func parse(stmt: code) throw
 {
-    G += 1
-    if G == 5
-        return false
-    #macro
+    loop
     {
-        #mixin stmt
+        G += 1
+        if G == 5
+            return
+        #macro
+        {
+            #mixin stmt
+        }
     }
-
-    return true
 }
 
 #test
 {
     cpt := 0
     countTot := 0
-    while try parse()
+    try parse()
     {
         countTot += 1
     }
