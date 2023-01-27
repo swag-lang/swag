@@ -5272,6 +5272,65 @@ bool ByteCodeOptimizer::optimizePassReduceX2(ByteCodeOptContext* context)
     return true;
 }
 
+// Instruction
+// Jump
+// Same Instruction
+void ByteCodeOptimizer::reduceDupInstr(ByteCodeOptContext* context, ByteCodeInstruction* ip)
+{
+    if (ip[0].op == ByteCodeOp::Nop)
+        return;
+    if (!ByteCode::isJump(ip + 1))
+        return;
+    if (ip[1].flags & BCI_START_STMT)
+        return;
+    if (ip[2].flags & BCI_START_STMT)
+        return;
+    if (ip[0].op != ip[2].op)
+        return;
+    if ((ip[0].flags & ~BCI_START_STMT) != (ip[2].flags & ~BCI_START_STMT))
+        return;
+    if (ByteCode::hasSomethingInA(ip) && ip[0].a.u64 != ip[2].a.u64)
+        return;
+    if (ByteCode::hasSomethingInB(ip) && ip[0].b.u64 != ip[2].b.u64)
+        return;
+    if (ByteCode::hasSomethingInB(ip) && ip[0].c.u64 != ip[2].c.u64)
+        return;
+    if (ByteCode::hasSomethingInB(ip) && ip[0].d.u64 != ip[2].d.u64)
+        return;
+
+    switch (ip->op)
+    {
+    case ByteCodeOp::GetFromStack8:
+    case ByteCodeOp::GetFromStack16:
+    case ByteCodeOp::GetFromStack32:
+    case ByteCodeOp::GetFromStack64:
+    case ByteCodeOp::GetParam8:
+    case ByteCodeOp::GetParam16:
+    case ByteCodeOp::GetParam32:
+    case ByteCodeOp::GetParam64:
+    case ByteCodeOp::GetParam64DeRef8:
+    case ByteCodeOp::GetParam64DeRef16:
+    case ByteCodeOp::GetParam64DeRef32:
+    case ByteCodeOp::GetParam64DeRef64:
+    case ByteCodeOp::GetIncFromStack64:
+    case ByteCodeOp::GetIncFromStack64DeRef8:
+    case ByteCodeOp::GetIncFromStack64DeRef16:
+    case ByteCodeOp::GetIncFromStack64DeRef32:
+    case ByteCodeOp::GetIncFromStack64DeRef64:
+    case ByteCodeOp::GetIncParam64:
+    case ByteCodeOp::GetIncParam64DeRef8:
+    case ByteCodeOp::GetIncParam64DeRef16:
+    case ByteCodeOp::GetIncParam64DeRef32:
+    case ByteCodeOp::GetIncParam64DeRef64:
+    case ByteCodeOp::IntrinsicIsConstExprSI:
+        setNop(context, ip + 2);
+        break;
+    default:
+        // printf("%s\n", g_ByteCodeOpDesc[(int) ip->op].name);
+        break;
+    }
+}
+
 bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
@@ -5292,6 +5351,7 @@ bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         reduceLateStack(context, ip);
         reduceFactor(context, ip);
         reduceMath(context, ip);
+        reduceDupInstr(context, ip);
     }
 
     return true;

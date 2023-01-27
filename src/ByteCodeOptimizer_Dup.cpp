@@ -317,5 +317,6 @@ bool ByteCodeOptimizer::optimizePassDupCopy(ByteCodeOptContext* context)
     optimizePassDupCopyOp(context, ByteCodeOp::GetIncParam64);
     optimizePassDupCopyOp(context, ByteCodeOp::SetImmediate32);
     optimizePassDupCopyOp(context, ByteCodeOp::SetImmediate64);
+
     return true;
 }

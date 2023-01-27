@@ -62,6 +62,7 @@ struct ByteCodeOptimizer
     static void reduceForceSafe(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceStackOp(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceLateStack(ByteCodeOptContext* context, ByteCodeInstruction* ip);
+    static void reduceDupInstr(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static bool optimizePassReduce(ByteCodeOptContext* context);
     static bool optimizePassReduceX2(ByteCodeOptContext* context);
 
