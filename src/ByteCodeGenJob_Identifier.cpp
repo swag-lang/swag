@@ -271,7 +271,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             else
             {
                 Diagnostic diag{node, node->token, Fmt(Err(Err0462), typeInfo->getDisplayNameC())};
-                Diagnostic note{Hlp(Hlp0041)};
+                Diagnostic note{Hlp(Hlp0041), DiagnosticLevel::Help};
                 return context->report(diag, &note);
             }
         }

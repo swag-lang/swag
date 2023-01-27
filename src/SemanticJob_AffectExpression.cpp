@@ -25,7 +25,7 @@ bool SemanticJob::resolveMove(SemanticContext* context)
             Diagnostic diag{right, Fmt(Err(Err0559), right->typeInfo->getDisplayNameC())};
             if (right->resolvedSymbolOverload && right->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
             {
-                Diagnostic note{Hlp(Hlp0016)};
+                Diagnostic note{Hlp(Hlp0016), DiagnosticLevel::Help};
                 return context->report(diag, &note);
             }
 

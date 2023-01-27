@@ -1038,7 +1038,7 @@ void initErrors()
     SWAG_ERROR(Hnt0016, "this function is marked with the 'Swag.Mixin' attribute");
     SWAG_ERROR(Hnt0050, "this implies a first parameter 'const self'");
     SWAG_ERROR(Hnt0049, "this implies a first parameter 'self'");
-    SWAG_ERROR(Hnt0001, "this intrinsic is called with invalid parameters");
+    SWAG_ERROR(Hnt0001, "this intrinsic is called with invalid arguments");
     SWAG_ERROR(Hnt0008, "this intrinsic is not discardable, so the return value should always be used");
     SWAG_ERROR(Hnt0040, "this is a 'typeinfo' value");
     SWAG_ERROR(Hnt0018, "this is a constant");

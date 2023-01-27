@@ -69,7 +69,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     case NativeTypeKind::String:
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-        Diagnostic note{Hlp(Hlp0040)};
+        Diagnostic note{Hlp(Hlp0040), DiagnosticLevel::Help};
         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag, &note);
     }
