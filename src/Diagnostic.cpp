@@ -49,19 +49,30 @@ void Diagnostic::setup()
 
 void Diagnostic::addRange(const SourceLocation& start, const SourceLocation& end, const Utf8& h)
 {
+    for (const auto& r : ranges)
+    {
+        if (r.startLocation.line == start.line &&
+            r.startLocation.column == start.column &&
+            r.endLocation.line == end.line &&
+            r.endLocation.column == end.column)
+        {
+            return;
+        }
+    }
+
     ranges.push_back({start, end, h, DiagnosticLevel::Note});
 }
 
 void Diagnostic::addRange(const Token& token, const Utf8& h)
 {
-    ranges.push_back({token.startLocation, token.endLocation, h, DiagnosticLevel::Note});
+    addRange(token.startLocation, token.endLocation, h);
 }
 
 void Diagnostic::addRange(AstNode* node, const Utf8& h)
 {
     SourceLocation start, end;
     node->computeLocation(start, end);
-    ranges.push_back({start, end, h, DiagnosticLevel::Note});
+    addRange(start, end, h);
 }
 
 void Diagnostic::printSourceLine()
