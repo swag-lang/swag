@@ -60,7 +60,6 @@ bool ByteCodeOptimizerJob::optimize(ByteCode* bc, bool& restart)
             OPT_PASS(ByteCodeOptimizer::optimizePassDeadStore);
             OPT_PASS(ByteCodeOptimizer::optimizePassDeadStoreDup);
             OPT_PASS(ByteCodeOptimizer::optimizePassLoop);
-            OPT_PASS(ByteCodeOptimizer::optimizePassSwitch);
             OPT_PASS(ByteCodeOptimizer::optimizePassSwap);
 
             ByteCodeOptimizer::removeNops(&optContext);
@@ -69,6 +68,7 @@ bool ByteCodeOptimizerJob::optimize(ByteCode* bc, bool& restart)
                 ByteCodeOptimizer::setJumps(&optContext);
                 ByteCodeOptimizer::genTree(&optContext, true);
 
+                OPT_PASS(ByteCodeOptimizer::optimizePassSwitch);
                 OPT_PASS(ByteCodeOptimizer::optimizePassDupBlocks);
                 OPT_PASS(ByteCodeOptimizer::optimizePassReduceX2);
                 ByteCodeOptimizer::removeNops(&optContext);

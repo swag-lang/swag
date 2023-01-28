@@ -5336,23 +5336,32 @@ void ByteCodeOptimizer::reduceDupInstr(ByteCodeOptContext* context, ByteCodeInst
 {
     if (ip[0].op == ByteCodeOp::Nop)
         return;
-    if (!ByteCode::isJump(ip + 1))
-        return;
     if (ip[1].flags & BCI_START_STMT)
         return;
-    if (ip[2].flags & BCI_START_STMT)
+    if (!ByteCode::isJump(ip + 1))
         return;
-    if (ip[0].op != ip[2].op)
+
+    auto ipn = ip + 1;
+    while (ByteCode::isJump(ipn))
+    {
+        if (ipn->flags & BCI_START_STMT)
+            return;
+        ipn++;
+    }
+
+    if (ipn->flags & BCI_START_STMT)
         return;
-    if ((ip[0].flags & ~BCI_START_STMT) != (ip[2].flags & ~BCI_START_STMT))
+    if (ip[0].op != ipn->op)
         return;
-    if (ByteCode::hasSomethingInA(ip) && ip[0].a.u64 != ip[2].a.u64)
+    if ((ip[0].flags & ~BCI_START_STMT) != (ipn->flags & ~BCI_START_STMT))
         return;
-    if (ByteCode::hasSomethingInB(ip) && ip[0].b.u64 != ip[2].b.u64)
+    if (ByteCode::hasSomethingInA(ip) && ip[0].a.u64 != ipn->a.u64)
         return;
-    if (ByteCode::hasSomethingInB(ip) && ip[0].c.u64 != ip[2].c.u64)
+    if (ByteCode::hasSomethingInB(ip) && ip[0].b.u64 != ipn->b.u64)
         return;
-    if (ByteCode::hasSomethingInB(ip) && ip[0].d.u64 != ip[2].d.u64)
+    if (ByteCode::hasSomethingInB(ip) && ip[0].c.u64 != ipn->c.u64)
+        return;
+    if (ByteCode::hasSomethingInB(ip) && ip[0].d.u64 != ipn->d.u64)
         return;
 
     switch (ip->op)
@@ -5380,7 +5389,7 @@ void ByteCodeOptimizer::reduceDupInstr(ByteCodeOptContext* context, ByteCodeInst
     case ByteCodeOp::GetIncParam64DeRef32:
     case ByteCodeOp::GetIncParam64DeRef64:
     case ByteCodeOp::IntrinsicIsConstExprSI:
-        setNop(context, ip + 2);
+        setNop(context, ipn);
         break;
     default:
         // printf("%s\n", g_ByteCodeOpDesc[(int) ip->op].name);
