@@ -40,14 +40,9 @@ enum FileShare
 // Read a file, and store the result in an utf8 string
 func readAllText(fullname: string, encoding = TextEncoding.Utf8)->String throw
 {
-    var result:     retval
     var textReader: TextReader
-
-    try textReader.open(fullname, encoding)
-    defer textReader.close()
-
-    result = textReader.readToEnd()
-    return result
+    textReader.open(fullname, encoding)
+    return textReader.readToEnd()
 }
 
 // Read all the lines of a file
@@ -55,7 +50,6 @@ func readAllLines(fullname: string, encoding = TextEncoding.Utf8)->Array'String 
 {
     var textReader: TextReader
     textReader.open(fullname, encoding)
-    defer textReader.close()
 
     var result: retval
     var res: String
@@ -70,7 +64,6 @@ func readEachLines(fullname: string, encoding = TextEncoding.Utf8, stmt: code) t
 {
     var textReader: TextReader
     textReader.open(fullname, encoding)
-    defer textReader.close()
 
     var res: String
     while textReader.readLine(&res)
@@ -86,15 +79,12 @@ func readEachLines(fullname: string, encoding = TextEncoding.Utf8, stmt: code) t
 // Read a file, and store the result in an array of bytes
 func readAllBytes(fullname: string)->Array'u8 throw
 {
-    stream := try openRead(fullname)
-    Debug.assert(stream.isOpen())
-    defer stream.close()
+    stream := openRead(fullname)
 
     var result: retval
-    len := try stream.getSize()
+    len := stream.getSize()
     result.reserve(len)
     result.count = stream.read(result.buffer, len)
-
     return result
 }
 
@@ -102,24 +92,19 @@ func readAllBytes(fullname: string)->Array'u8 throw
 #[Swag.Discardable]
 func writeAllBytes(fullname: string, buffer: const [..] u8)->uint throw
 {
-    stream := try openWrite(fullname)
-    Debug.assert(stream.isOpen())
-    defer stream.close()
-
-    return try stream.write(@dataof(buffer), @countof(buffer))
+    stream := openWrite(fullname)
+    return stream.write(@dataof(buffer), @countof(buffer))
 }
 
 // Write a file with the content of a 'ConcatBuffer'
 #[Swag.Discardable]
 func writeAllBytes(fullname: string, buffer: ConcatBuffer)->uint throw
 {
-    stream := try openWrite(fullname)
-    Debug.assert(stream.isOpen())
-    defer stream.close()
+    stream := openWrite(fullname)
 
     total := 0'uint
     visit p: buffer
-        total += try stream.write(p.datas, p.count)
+        total += stream.write(p.datas, p.count)
 
     return total
 }
@@ -128,15 +113,13 @@ func writeAllBytes(fullname: string, buffer: ConcatBuffer)->uint throw
 #[Swag.Discardable]
 func writeAllLines(fullname: string, lines: Array'string)->uint throw
 {
-    stream := try openWrite(fullname)
-    Debug.assert(stream.isOpen())
-    defer stream.close()
+    stream := openWrite(fullname)
 
     total := 0'uint
     visit v: lines
     {
-        total += try stream.write(@dataof(v), @countof(v))
-        total += try stream.write(@dataof("\n"), 1)
+        total += stream.write(@dataof(v), @countof(v))
+        total += stream.write(@dataof("\n"), 1)
     }
 
     return total

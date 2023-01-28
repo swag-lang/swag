@@ -15,11 +15,6 @@ struct FileStream
 
 impl FileStream
 {
-    func opDrop(using self)
-    {
-        Debug.assert(!isOpen(), "missing call to close()")
-    }
-
     // Returns true if the stream is valid
     func isOpen(using const self)->bool
     {
