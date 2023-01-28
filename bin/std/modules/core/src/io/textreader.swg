@@ -84,33 +84,33 @@ public impl TextReader
         var c: u8
         loop
         {
-            ptr64, ptr64B := cast(^u64) (buffer.buffer + byteSeek)
-            ptr64E := cast(^u64) (buffer.buffer + (buffer.count - byteSeek))
-
-            startIndex := byteSeek
+            ptr, ptrB := buffer.buffer + byteSeek
+            ptrE      := buffer.buffer + buffer.count
 
             // u64 by u64
-            while ptr64 + 8'uint < ptr64E
+            while ptr + 8'uint < ptrE
             {
-                c64 := dref ptr64
+                c64 := dref cast(*u64) ptr
                 if Math.hasByte(c64, "\n"'u8) or Math.hasByte(c64, "\r"'u8)
                     break
-                ptr64 += 1
-                byteSeek += 8
+                ptr += 8
             }
 
             // u8 by u8
-            c = buffer[byteSeek]
+            c = dref ptr
             while c != "\n"'u8 and c != "\r"'u8
             {
-                byteSeek += 1
-                if byteSeek == buffer.count
+                ptr += 1
+                if ptr == ptrE
                     break
-                c = buffer[byteSeek]
+                c = dref ptr
             }
 
-            result += @mkstring(cast(^u8) ptr64B, byteSeek - startIndex)
-            if byteSeek != buffer.count
+            range := cast(uint) (ptr - ptrB)
+            byteSeek += range
+
+            result += @mkstring(ptrB, range)
+            if ptr != ptrE
                 break
 
             readBuffer()
