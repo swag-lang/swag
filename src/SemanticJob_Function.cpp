@@ -1694,12 +1694,10 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     // Error if an alias has been defined, but not 'eaten' by the function
     if (identifier->kind == AstNodeKind::Identifier)
     {
-        if (funcDecl->attributeFlags & ATTRIBUTE_INLINE)
-            context->errorContextStack.push_back({identifier, ErrorContextKind::Inline});
-
         if (cloneContext.replaceNames.size() != cloneContext.usedReplaceNames.size())
         {
-            auto id = CastAst<AstIdentifier>(identifier, AstNodeKind::Identifier);
+            PushErrContext ec(context, identifier, ErrorContextKind::Inline);
+            auto           id = CastAst<AstIdentifier>(identifier, AstNodeKind::Identifier);
             for (auto& r : cloneContext.replaceNames)
             {
                 auto it = cloneContext.usedReplaceNames.find(r.second);

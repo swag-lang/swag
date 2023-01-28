@@ -1115,10 +1115,6 @@ AstNode* AstCompilerIfBlock::clone(CloneContext& context)
     newNode->cloneChilds(cloneContext, this);
     context.propageResult(cloneContext);
 
-    /*SWAG_ASSERT(symbols.empty());
-    SWAG_ASSERT(interfacesCount.empty());
-    SWAG_ASSERT(methodsCount.empty());*/
-
     if (newNode->ownerCompilerIfBlock)
         newNode->ownerCompilerIfBlock->blocks.push_back(newNode);
     newNode->numTestErrors   = numTestErrors;
@@ -1176,6 +1172,7 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
         idRef->childs.back()->token.text = newName;
     }
 
+    context.propageResult(cloneContext);
     return newNode;
 }
 
@@ -1194,6 +1191,7 @@ AstNode* AstTryCatchAssume::clone(CloneContext& context)
     auto cloneContext                = context;
     cloneContext.ownerTryCatchAssume = newNode;
     newNode->cloneChilds(cloneContext, this);
+    context.propageResult(cloneContext);
 
     return newNode;
 }
