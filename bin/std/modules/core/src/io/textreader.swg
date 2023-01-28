@@ -13,6 +13,7 @@ public struct TextReader
     decode:         Array'u8
     encodingType =  TextEncoding.Utf8
     byteSeek:       uint
+    bufferSize:     uint
     checkPreamble:  bool
 }
 
@@ -27,13 +28,13 @@ impl TextReader
         // read the bom
         if checkPreamble
         {
-            buffer.reserve(4*1024'uint)
-            decode.reserve(4*1024'uint)
+            buffer.reserve(bufferSize)
+            decode.reserve(bufferSize)
             dref cast(*u32) decode.buffer = 0
         }
 
-        // In utf8 and ascii, just read to the buffer, as we do not have do decode
-        elif encodingType == Ascii or encodingType == Utf8
+        // In utf8 and ascii, just read to the buffer, as we do not have to decode
+        elif encodingType == .Ascii or encodingType == .Utf8
         {
             buffer.count = stream.read(buffer.buffer, buffer.capacity)
             return
@@ -49,7 +50,7 @@ impl TextReader
             // Utf8
             if decode[0] == 0xEF and decode[1] == 0xBB and decode[2] == 0xBF
             {
-                encodingType = Utf8
+                encodingType = .Utf8
                 firstRawByte = 3
             }
 
@@ -78,6 +79,7 @@ public impl TextReader
 
         byteSeek = 0
         checkPreamble = true
+        bufferSize = Math.min(stream.getSize(), 64*1024'uint)
         encodingType = encoding;
     }
 
@@ -93,25 +95,37 @@ public impl TextReader
     func readLine(using self, result: ref String)->bool
     {
         result.clear()
+
+        ptr64, ptr64B := cast(^u64) (buffer.buffer + byteSeek)
+        ptr64E := cast(^u64) (buffer.buffer + buffer.count)
+
         scope Restart
         {
             loop
             {
                 if byteSeek == buffer.count
+                {
                     readBuffer()
+                    ptr64, ptr64B = cast(^u64) (buffer.buffer + byteSeek)
+                    ptr64E = cast(^u64) (buffer.buffer + buffer.count)
+                }
+
                 if buffer.count == 0
                     return false
 
                 startIndex := byteSeek
-                while buffer.count -,safe byteSeek > 8
+
+                // u64 by u64
+                while ptr64 + 8'uint < ptr64E
                 {
-                    ptr := cast(*u64) (buffer.buffer + byteSeek)
-                    c64 := dref ptr
+                    c64 := dref ptr64
                     if Math.hasByte(c64, "\n"'u8) or Math.hasByte(c64, "\r"'u8)
                         break
+                    ptr64 += 1
                     byteSeek += 8
                 }
 
+                // u8 by u8
                 c := buffer[byteSeek]
                 while c != "\n"'u8 and c != "\r"'u8
                 {
@@ -121,7 +135,7 @@ public impl TextReader
                     c = buffer[byteSeek]
                 }
 
-                result = @mkstring(buffer.buffer + startIndex, byteSeek - startIndex)
+                result = @mkstring(cast(^u8) ptr64B, byteSeek - startIndex)
 
                 // Eat end of line characters
                 byteSeek += 1
