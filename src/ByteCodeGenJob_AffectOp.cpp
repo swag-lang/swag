@@ -1,12 +1,9 @@
 #include "pch.h"
 #include "Ast.h"
 #include "ByteCodeGenJob.h"
-#include "ByteCodeOp.h"
 #include "ByteCode.h"
 #include "TypeManager.h"
-#include "ErrorIds.h"
 #include "Report.h"
-#include "Diagnostic.h"
 
 bool ByteCodeGenJob::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeInfo, RegisterList& dstReg, RegisterList& srcReg, AstNode* from)
 {

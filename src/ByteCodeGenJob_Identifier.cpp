@@ -147,7 +147,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     if (forStruct)
     {
         SWAG_ASSERT(!(resolved->flags & OVERLOAD_VAR_INLINE));
-        if (node->resolvedSymbolOverload->computedValue.storageOffset > 0)
+        if (resolved->computedValue.storageOffset > 0)
         {
             ensureCanBeChangedRC(context, node->resultRegisterRC);
 
@@ -172,8 +172,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             }
 
             auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
-            SWAG_ASSERT(node->resolvedSymbolOverload->computedValue.storageOffset != UINT32_MAX);
-            inst->b.u64 = node->resolvedSymbolOverload->computedValue.storageOffset;
+            SWAG_ASSERT(resolved->computedValue.storageOffset != UINT32_MAX);
+            inst->b.u64 = resolved->computedValue.storageOffset;
             inst->flags |= BCI_IMM_B;
         }
 
@@ -203,7 +203,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     // Function parameter : it's a register on the stack
     if (resolved->flags & OVERLOAD_VAR_FUNC_PARAM)
     {
-        node->resultRegisterRC = reserveRegisterRC(context);
+        node->resultRegisterRC = reserveRegisterRC(context, resolved->hintRegister);
+        SWAG_ASSERT(node->resultRegisterRC[0] < 256);
+        resolved->hintRegister = (uint8_t) node->resultRegisterRC[0];
 
         // Get a parameter from a #selectifonce block... this is special
         if (node->isSelectIfParam(resolved))
@@ -335,7 +337,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     // Variable from the data segment
     if (resolved->flags & OVERLOAD_VAR_GLOBAL)
     {
-        node->resultRegisterRC = reserveRegisterRC(context);
+        node->resultRegisterRC = reserveRegisterRC(context, resolved->hintRegister);
+        SWAG_ASSERT(node->resultRegisterRC[0] < 256);
+        resolved->hintRegister = (uint8_t) node->resultRegisterRC[0];
 
         // :SilentCall
         if (node->token.text.empty())
@@ -405,7 +409,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     if (resolved->flags & OVERLOAD_VAR_LOCAL)
     {
         SWAG_CHECK(sameStackFrame(context, resolved));
-        node->resultRegisterRC = reserveRegisterRC(context);
+        node->resultRegisterRC = reserveRegisterRC(context, resolved->hintRegister);
+        SWAG_ASSERT(node->resultRegisterRC[0] < 256);
+        resolved->hintRegister = (uint8_t) node->resultRegisterRC[0];
 
         // :SilentCall
         if (node->token.text.empty())
@@ -507,7 +513,17 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         // some code after (like when dereferencing something)
         SWAG_VERIFY(resolved->registers.size() > 0, Report::internalError(context->node, Fmt("emitIdentifier, identifier not generated '%s'", identifier->token.ctext()).c_str()));
 
-        reserveRegisterRC(context, node->resultRegisterRC, resolved->registers.size());
+        if (resolved->registers.size() == 1)
+        {
+            node->resultRegisterRC = reserveRegisterRC(context, resolved->hintRegister);
+            SWAG_ASSERT(node->resultRegisterRC[0] < 256);
+            resolved->hintRegister = (uint8_t) node->resultRegisterRC[0];
+        }
+        else
+        {
+            reserveRegisterRC(context, node->resultRegisterRC, resolved->registers.size());
+        }
+
         for (int i = 0; i < node->resultRegisterRC.size(); i++)
             emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[i], resolved->registers[i]);
 

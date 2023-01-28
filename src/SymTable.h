@@ -65,6 +65,7 @@ const uint16_t SYMBOL_USED          = 0x0002;
 struct SymbolOverload
 {
     ComputedValue computedValue;
+    SharedMutex   mutexIncomplete;
     RegisterList  registers;
     TypeInfo*     typeInfo        = nullptr;
     AstNode*      node            = nullptr;
@@ -73,7 +74,7 @@ struct SymbolOverload
     uint64_t      attributeFlags  = 0;
     uint32_t      flags           = 0;
     uint32_t      storageIndex    = 0;
-    SharedMutex   mutexIncomplete;
+    uint8_t       hintRegister    = 0;
 };
 
 struct SymbolName
