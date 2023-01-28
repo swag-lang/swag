@@ -10,7 +10,6 @@ public struct TextReader
 {
     stream:         FileStream
     buffer:         Array'u8
-    decode:         Array'u8
     encodingType =  TextEncoding.Utf8
     byteSeek:       uint
     bufferSize:     uint
@@ -21,49 +20,28 @@ impl TextReader
 {
     func readBuffer(using self)
     {
-        using TextEncoding
         byteSeek = 0
 
         // First init. Fill force 4 bytes of the decode buffer to be 0 to
         // read the bom
         if checkPreamble
         {
-            buffer.reserve(bufferSize)
-            decode.reserve(bufferSize)
-            dref cast(*u32) decode.buffer = 0
-        }
-
-        // In utf8 and ascii, just read to the buffer, as we do not have to decode
-        elif encodingType == .Ascii or encodingType == .Utf8
-        {
-            buffer.count = stream.read(buffer.buffer, buffer.capacity)
-            return
-        }
-
-        // Read raw bytes in the decode buffer
-        decode.count = stream.read(decode.buffer, decode.capacity)
-
-        // Decode the BOM
-        firstRawByte := 0'u32
-        if checkPreamble
-        {
-            // Utf8
-            if decode[0] == 0xEF and decode[1] == 0xBB and decode[2] == 0xBF
-            {
-                encodingType = .Utf8
-                firstRawByte = 3
-            }
-
             checkPreamble = false
+            buffer.reserve(bufferSize)
+
+            if encodingType == .Utf8
+            {
+                dref cast(*u32) buffer.buffer = 0
+                buffer.count = stream.read(buffer.buffer, buffer.capacity)
+
+                // BOM
+                if buffer[0] == 0xEF and buffer[1] == 0xBB and buffer[2] == 0xBF
+                    byteSeek = 3
+                return
+            }
         }
 
-        // Decode
-        switch encodingType
-        {
-        case Ascii, Utf8:
-            buffer.count = decode.count - firstRawByte
-            Memory.copy(buffer.buffer, decode.buffer + firstRawByte, cast(uint) buffer.count)
-        }
+        buffer.count = stream.read(buffer.buffer, buffer.capacity)
     }
 }
 
@@ -170,8 +148,8 @@ public impl TextReader
         readBuffer()
         while buffer.count
         {
-            result.grow(result.length + buffer.count)
-            Memory.copy(result.buffer + result.length, buffer.buffer, buffer.count)
+            result.grow(result.length + (buffer.count - byteSeek))
+            Memory.copy(result.buffer + result.length, buffer.buffer + byteSeek, buffer.count - byteSeek)
             result.length += buffer.count
             readBuffer()
         }
