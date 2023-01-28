@@ -1,5 +1,6 @@
-﻿#global skip
-using Core.File
+﻿using Core.File
+// DO NOT CHANGE THE COMMENT
+// DO NOT CHANGE THE COMMENT AGAIN
 
 //#[Swag.PrintBc]
 #test
@@ -26,6 +27,10 @@ using Core.File
         var res: String
         @assert(reader.readLine(&res))
         @assert(res == @"using Core.File"@)
+        @assert(reader.readLine(&res))
+        @assert(res == "// DO NOT CHANGE THE COMMENT")
+        @assert(reader.readLine(&res))
+        @assert(res == "// DO NOT CHANGE THE COMMENT AGAIN")
 
         while reader.readLine(&res)
         {

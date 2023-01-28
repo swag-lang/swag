@@ -102,8 +102,17 @@ public impl TextReader
                 if buffer.count == 0
                     return false
 
-                c := buffer[byteSeek]
                 startIndex := byteSeek
+                while buffer.count -,safe byteSeek > 8
+                {
+                    ptr := cast(*u64) (buffer.buffer + byteSeek)
+                    c64 := dref ptr
+                    if Math.hasByte(c64, "\n"'u8) or Math.hasByte(c64, "\r"'u8)
+                        break
+                    byteSeek += 8
+                }
+
+                c := buffer[byteSeek]
                 while c != "\n"'u8 and c != "\r"'u8
                 {
                     byteSeek += 1
