@@ -81,49 +81,51 @@ public impl TextReader
                 return false
         }
 
-        var c: u8
         loop
         {
             ptr, ptrB := buffer.buffer + byteSeek
             ptrE      := buffer.buffer + buffer.count
 
             // u64 by u64
-            while ptr + 8'uint < ptrE
+            while ptr + 8'uint <= ptrE
             {
                 c64 := dref cast(*u64) ptr
-                if Math.hasByte(c64, "\n"'u8) or Math.hasByte(c64, "\r"'u8)
+                if Math.hasByte(c64, "\r"'u8) or Math.hasByte(c64, "\n"'u8)
                     break
                 ptr += 8
             }
 
             // u8 by u8
-            c = dref ptr
-            while c != "\n"'u8 and c != "\r"'u8
-            {
+            while ptr != ptrE and dref ptr != "\r"'u8 and dref ptr != "\n"'u8
                 ptr += 1
-                if ptr == ptrE
-                    break
-                c = dref ptr
+
+            range  := cast(uint) (ptr - ptrB)
+            result += @mkstring(ptrB, range)
+
+            // We have reached the end of the buffer without finding an eol
+            // Restart
+            if ptr == ptrE
+            {
+                readBuffer()
+                if buffer.count == 0
+                    return true
+                continue
             }
 
-            range := cast(uint) (ptr - ptrB)
-            byteSeek += range
+            // + 1 because we eat the eol
+            byteSeek += range + 1
 
-            result += @mkstring(ptrB, range)
-            if ptr != ptrE
-                break
+            // If we have an '\r', then eat the following '\n' if it exists
+            if dref ptr == "\r"'u8
+            {
+                if byteSeek == buffer.count
+                    readBuffer()
+                if buffer.count and buffer[byteSeek] == "\n"'u8
+                    byteSeek += 1
+            }
 
-            readBuffer()
-            if buffer.count == 0
-                return true
+            break
         }
-
-        // Eat end of line characters
-        byteSeek += 1
-        if byteSeek == buffer.count
-            readBuffer()
-        if c == "\r"'u8 and buffer.count and buffer[byteSeek] == "\n"'u8
-            byteSeek += 1
 
         return true
     }
