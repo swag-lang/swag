@@ -68,8 +68,11 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, Ast
             child->computedValue->reg.f32 = -child->computedValue->reg.f32;
             if (typeInfo->flags & TYPEINFO_UNTYPED_FLOAT)
             {
-                float newValue  = -CastTypeInfo<TypeInfoNative>(typeInfo, typeInfo->kind)->valueFloat;
-                child->typeInfo = TypeManager::resolveUntypedType(typeInfo, *(uint32_t*) &newValue);
+                auto native        = CastTypeInfo<TypeInfoNative>(typeInfo, typeInfo->kind);
+                native             = (TypeInfoNative*) native->clone();
+                native->valueFloat = -native->valueFloat;
+                child->typeInfo    = TypeManager::resolveUntypedType(typeInfo, *(uint32_t*) &native->valueFloat);
+                op->typeInfo       = child->typeInfo;
             }
 
             break;
