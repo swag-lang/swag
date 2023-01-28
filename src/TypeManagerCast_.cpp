@@ -2710,8 +2710,9 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
             return true;
         }
 
+        // :PointerArithmetic
         // Cannot cast from non arithmetic to arithmetic
-        if ((toType->flags & TYPEINFO_POINTER_ARITHMETIC) && !(fromType->flags & TYPEINFO_POINTER_ARITHMETIC))
+        if (toType->isPointerArithmetic() && !fromType->isPointerArithmetic())
         {
             if (castFlags & CASTFLAG_FOR_AFFECT)
                 return castError(context, toType, fromType, fromNode, castFlags);

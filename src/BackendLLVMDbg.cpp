@@ -231,7 +231,7 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
     {
         auto          typeInfoPtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
         llvm::DIType* result      = nullptr;
-        if (typeInfoPtr->flags & TYPEINFO_POINTER_ARITHMETIC)
+        if (typeInfoPtr->isPointerArithmetic())
             result = getPointerToType(typeInfoPtr->pointedType, file);
         else
             result = getReferenceToType(typeInfoPtr->pointedType, file);

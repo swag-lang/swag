@@ -30,8 +30,23 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     if (leftTypeInfo->isPointer())
     {
         node->typeInfo = leftTypeInfo;
-        SWAG_VERIFY(leftTypeInfo->flags & TYPEINFO_POINTER_ARITHMETIC || context->forDebugger, context->report({left, Err(Err0192), Diagnostic::isType(leftTypeInfo)}));
-        SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, Err(Err0144)}));
+        if (!leftTypeInfo->isPointerArithmetic() && !context->forDebugger)
+        {
+            Diagnostic diag{node, node->token, Err(Err0192), Diagnostic::isType(leftTypeInfo)};
+            Diagnostic note{Hlp(Hlp0046), DiagnosticLevel::Help};
+            diag.hint = Hnt(Hnt0061);
+            diag.addRange(left, Diagnostic::isType(leftTypeInfo));
+            return context->report(diag, &note);
+        }
+
+        if (leftTypeInfo->isPointerTo(NativeTypeKind::Void))
+        {
+            Diagnostic diag{node, node->token, Err(Err0111)};
+            diag.hint = Hnt(Hnt0061);
+            diag.addRange(left, Diagnostic::isType(leftTypeInfo));
+            return context->report(diag);
+        }
+
         SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, Fmt(Err(Err0579), rightTypeInfo->getDisplayNameC())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, left, right, CASTFLAG_TRY_COERCE));
         return true;
@@ -40,9 +55,24 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     // :PointerArithmetic
     if (rightTypeInfo->isPointer())
     {
+        if (!rightTypeInfo->isPointerArithmetic() && !context->forDebugger)
+        {
+            Diagnostic diag{node, node->token, Err(Err0192), Diagnostic::isType(rightTypeInfo)};
+            Diagnostic note{Hlp(Hlp0046), DiagnosticLevel::Help};
+            diag.hint = Hnt(Hnt0061);
+            diag.addRange(right, Diagnostic::isType(rightTypeInfo));
+            return context->report(diag, &note);
+        }
+
+        if (rightTypeInfo->isPointerTo(NativeTypeKind::Void))
+        {
+            Diagnostic diag{node, node->token, Err(Err0111)};
+            diag.hint = Hnt(Hnt0061);
+            diag.addRange(right, Diagnostic::isType(rightTypeInfo));
+            return context->report(diag);
+        }
+
         node->typeInfo = rightTypeInfo;
-        SWAG_VERIFY(rightTypeInfo->flags & TYPEINFO_POINTER_ARITHMETIC || context->forDebugger, context->report({right, Err(Err0192), Diagnostic::isType(rightTypeInfo)}));
-        SWAG_VERIFY((rightTypeInfo->isPointerToTypeInfo()) == 0, context->report({right, Err(Err0144)}));
         SWAG_VERIFY(leftTypeInfo->isNativeInteger(), context->report({left, Fmt(Err(Err0579), leftTypeInfo->getDisplayNameC())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, right, left, CASTFLAG_TRY_COERCE));
         return true;
@@ -169,8 +199,15 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
             return true;
         }
 
-        SWAG_VERIFY(leftTypeInfo->flags & TYPEINFO_POINTER_ARITHMETIC, context->report({left, Err(Err0192), Diagnostic::isType(leftTypeInfo)}));
-        SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, Err(Err0144)}));
+        if (!leftTypeInfo->isPointerArithmetic() && !context->forDebugger)
+        {
+            Diagnostic diag{node, node->token, Err(Err0192), Diagnostic::isType(leftTypeInfo)};
+            Diagnostic note{Hlp(Hlp0046), DiagnosticLevel::Help};
+            diag.hint = Hnt(Hnt0061);
+            diag.addRange(left, Diagnostic::isType(leftTypeInfo));
+            return context->report(diag, &note);
+        }
+
         SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, Fmt(Err(Err0579), rightTypeInfo->getDisplayNameC())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, left, right, CASTFLAG_TRY_COERCE));
         return true;

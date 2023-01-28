@@ -609,7 +609,7 @@ void initErrors()
     SWAG_ERROR(Err0016, "not enough parameters for %s");
     SWAG_ERROR(Err0205, "not enough parameters in tuple initialization ('%d' expected, '%d' provided)");
     SWAG_ERROR(Err0157, "operator '%' does not accept type '%s'");
-    SWAG_ERROR(Err0144, "pointer arithmetic is not allowed on 'typeinfo'");
+    SWAG_ERROR(Err0144, nullptr);
     SWAG_ERROR(Err0111, "pointer arithmetic is not allowed on type 'void'");
     SWAG_ERROR(Err0579, "pointer arithmetic is not allowed with operand type '%s'");
     SWAG_ERROR(Err0192, "pointer arithmetic is not allowed");
@@ -992,7 +992,7 @@ void initErrors()
     SWAG_ERROR(Hlp0042, "you could use 'func' instead of 'mtd' or 'mtdc'");
     SWAG_ERROR(Hlp0037, "you should add a 'break' or a 'fallthrough'");
     SWAG_ERROR(Hlp0038, "you should add a 'break'");
-    SWAG_ERROR(Hlp0046, nullptr);
+    SWAG_ERROR(Hlp0046, "pointer arimthetic is only possible for pointers declared with '^' and not '*'");
     SWAG_ERROR(Hlp0047, "if you want to slice to the end, use '..' instead");
     SWAG_ERROR(Hlp0048, "'Swag.Match' valid values are 'selectif|self'");
     SWAG_ERROR(Hlp0049, nullptr);

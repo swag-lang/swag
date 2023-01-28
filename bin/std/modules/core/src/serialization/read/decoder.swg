@@ -181,7 +181,7 @@ impl Decoder
                 if Reflection.hasAttribute(field.pointedType, NoSerialize)
                     continue
 
-                if !itf or !itf.readElement(dref field, data + field.offset, idecoder)
+                if !itf or !itf.readElement(dref field, cast(^u8) data + field.offset, idecoder)
                 {
                     doIt := catch serializer.beginElement(field)
                     defer serializer.endElement()
@@ -191,7 +191,7 @@ impl Decoder
                     if !doIt
                         continue
 
-                    catch readValue(data + field.offset, field.pointedType)
+                    catch readValue(cast(^u8) data + field.offset, field.pointedType)
                     if @err and !(flags & .IgnoreStructFieldError)
                         throw @err
                 }

@@ -685,7 +685,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
     if (typeInfo->isPointer())
     {
         auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        return dbgGetOrCreatePointerToType(pp, typePtr->pointedType, !(typePtr->flags & TYPEINFO_POINTER_ARITHMETIC) && !forceUnRef);
+        return dbgGetOrCreatePointerToType(pp, typePtr->pointedType, !typePtr->isPointerArithmetic() && !forceUnRef);
     }
 
     // In the cache

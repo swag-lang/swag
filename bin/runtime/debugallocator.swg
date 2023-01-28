@@ -335,7 +335,7 @@ impl IAllocator for DebugAllocator
         freeSize := ptrHeader.allocSize
 
         // Fill header/footer with garbage
-        ptrFooter := cast(*DebugAllocatorFooter) (ptrHeader.allocAddr + ptrHeader.userSize + @sizeof(DebugAllocatorHeader))
+        ptrFooter := cast(*DebugAllocatorFooter) (cast(^u8) ptrHeader.allocAddr + ptrHeader.userSize + @sizeof(DebugAllocatorHeader))
         @memset(ptrHeader, FreeByte, @sizeof(DebugAllocatorHeader))
         @memset(ptrFooter, FreeByte, @sizeof(DebugAllocatorFooter))
 

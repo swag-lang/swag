@@ -479,20 +479,13 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         // :PointerArithmetic
         if (leftTypeInfo->isPointer())
         {
-            if (!(leftTypeInfo->flags & TYPEINFO_POINTER_ARITHMETIC))
+            if (!leftTypeInfo->isPointerArithmetic())
             {
                 Diagnostic diag{node, node->token, Err(Err0192)};
+                Diagnostic note{Hlp(Hlp0046), DiagnosticLevel::Help};
                 diag.hint = Hnt(Hnt0061);
                 diag.addRange(left, Diagnostic::isType(leftTypeInfo));
-                return context->report(diag);
-            }
-
-            if (leftTypeInfo->isPointerToTypeInfo())
-            {
-                Diagnostic diag{node, node->token, Err(Err0144)};
-                diag.hint = Hnt(Hnt0061);
-                diag.addRange(left, Diagnostic::isType(leftTypeInfo));
-                return context->report(diag);
+                return context->report(diag, &note);
             }
 
             if (leftTypeInfo->isPointerTo(NativeTypeKind::Void))

@@ -202,9 +202,9 @@ impl Encoder
                 if Reflection.hasAttribute(field.pointedType, NoSerialize)
                     continue
 
-                if !itf or !itf.writeElement(dref field, data + field.offset, cast(IEncoder) self)
+                if !itf or !itf.writeElement(dref field, cast(const ^u8) data + field.offset, cast(IEncoder) self)
                 {
-                    writeTypeValue(field, data + field.offset)
+                    writeTypeValue(field, cast(const ^u8) data + field.offset)
                 }
             }
 

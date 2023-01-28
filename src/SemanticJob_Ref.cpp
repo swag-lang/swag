@@ -303,7 +303,8 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     // Slicing of a pointer
     else if (typeVar->isPointer())
     {
-        if (!(typeVar->flags & TYPEINFO_POINTER_ARITHMETIC))
+        // :PointerArithmetic
+        if (!typeVar->isPointerArithmetic())
         {
             Diagnostic diag{node, node->token, Err(Err0193)};
             diag.hint = Hnt(Hnt0061);
@@ -500,7 +501,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     {
     case TypeInfoKind::Pointer:
     {
-        if (!(arrayType->flags & TYPEINFO_POINTER_ARITHMETIC) && !(arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF))
+        if (!arrayType->isPointerArithmetic() && !(arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF))
         {
             Diagnostic diag{arrayNode->array, Fmt(Err(Err0194), arrayNode->resolvedSymbolName->name.c_str()), Diagnostic::isType(arrayType)};
             return context->report(diag);
@@ -751,7 +752,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     {
     case TypeInfoKind::Pointer:
     {
-        if (!(arrayType->flags & TYPEINFO_POINTER_ARITHMETIC) && !(arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF))
+        if (!arrayType->isPointerArithmetic() && !(arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF))
         {
             Diagnostic diag{arrayNode->array, Fmt(Err(Err0194), arrayNode->resolvedSymbolName->name.c_str()), Diagnostic::isType(arrayType)};
             return context->report(diag);
