@@ -471,15 +471,40 @@ bool ByteCodeGenJob::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
         return true;
     binNode->doneFlags |= AST_DONE_CAST1;
 
-    // If the left expression is false, then we copy the result to the && operator, and we jump right after it
-    // (the jump offset will be updated later). That way, we do not evaluate B in 'A && B' if A is false.
-    // left->additionalRegisterRC will be used as the result register for the '&&' operation in 'emitBinaryOp'
-    ensureCanBeChangedRC(context, left->resultRegisterRC);
     left->allocateExtension(ExtensionKind::AdditionalRegs);
-    left->extension->misc->additionalRegisterRC = left->resultRegisterRC;
-    left->resultRegisterRC.cannotFree           = true;
-    binNode->seekJumpExpression                 = context->bc->numInstructions;
-    emitInstruction(context, ByteCodeOp::JumpIfFalse, left->resultRegisterRC);
+
+    // Can have already been allocated by another 'and' or 'or' above in case of multiple tests
+    if (left->extension->misc->additionalRegisterRC.size() == 0)
+    {
+        // The result register will be stored in additionalRegisterRC of the left expresion and retreived
+        // when evaluating the binary expression
+        // :BinOpAndOr
+        left->extension->misc->additionalRegisterRC = reserveRegisterRC(context);
+
+        // We try to share the result register with other 'and'/'or' to give optimization opportunities when we
+        // have more than one test in a row.
+        // That way we have multiple jumps with the same register, which can be optimized
+        if (binNode->childs.size() == 2)
+        {
+            auto child1 = binNode->childs[1];
+            while (child1->kind == AstNodeKind::BinaryOp && (child1->token.id == TokenId::KwdAnd || child1->token.id == TokenId::KwdOr))
+            {
+                auto child0 = child1->childs[0];
+                child0->allocateExtension(ExtensionKind::AdditionalRegs);
+                child0->extension->misc->additionalRegisterRC            = left->extension->misc->additionalRegisterRC;
+                child0->extension->misc->additionalRegisterRC.cannotFree = true;
+                if (child1->childs.size() != 2)
+                    break;
+                child1 = child1->childs[1];
+            }
+        }
+    }
+
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA64, left->extension->misc->additionalRegisterRC, left->resultRegisterRC);
+
+    // Short cut. Will just after the right expression in the the left expression is false. A and B => do not evaluate B
+    binNode->seekJumpExpression = context->bc->numInstructions;
+    emitInstruction(context, ByteCodeOp::JumpIfFalse, left->extension->misc->additionalRegisterRC);
     return true;
 }
 
@@ -487,11 +512,13 @@ bool ByteCodeGenJob::emitLogicalAnd(ByteCodeGenContext* context, uint32_t r0, ui
 {
     auto node = CastAst<AstBinaryOpNode>(context->node, AstNodeKind::BinaryOp);
 
-    // Because of the shortcuts, there's no need to actually do a || here, as we are sure that the
-    // expression on the left is true
+    // Because of the shortcuts, there's no need to actually do a 'and' here, as we are sure that the
+    // expression on the left is true because of the shortcut
     // Se we just need to propagate the result
-    emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r2, r1);
+    if (r2 != r1)
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r2, r1);
 
+    // And we update the shortcut jump after the 'right' side of the expression
     auto inst   = &context->bc->out[node->seekJumpExpression];
     inst->b.s32 = context->bc->numInstructions - node->seekJumpExpression - 1;
     return true;
@@ -508,14 +535,32 @@ bool ByteCodeGenJob::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
         return true;
     binNode->doneFlags |= AST_DONE_CAST1;
 
-    // If the left expression is true, then we copy the result to the || operator, and we jump right after it
-    // (the jump offset will be updated later). That way, we do not evaluate B in 'A || B' if B is true.
-    // left->additionalRegisterRC will be used as the result register for the '||' operation in 'emitBinaryOp'
-    ensureCanBeChangedRC(context, left->resultRegisterRC);
+    // See the 'and' version for comments
     left->allocateExtension(ExtensionKind::AdditionalRegs);
-    left->extension->misc->additionalRegisterRC = left->resultRegisterRC;
-    left->resultRegisterRC.cannotFree           = true;
-    binNode->seekJumpExpression                 = context->bc->numInstructions;
+    if (left->extension->misc->additionalRegisterRC.size() == 0)
+    {
+        left->extension->misc->additionalRegisterRC = reserveRegisterRC(context);
+
+        if (binNode->childs.size() == 2)
+        {
+            auto child1 = binNode->childs[1];
+            while (child1->kind == AstNodeKind::BinaryOp && (child1->token.id == TokenId::KwdAnd || child1->token.id == TokenId::KwdOr))
+            {
+                auto child0 = child1->childs[0];
+                child0->allocateExtension(ExtensionKind::AdditionalRegs);
+                child0->extension->misc->additionalRegisterRC            = left->extension->misc->additionalRegisterRC;
+                child0->extension->misc->additionalRegisterRC.cannotFree = true;
+                if (child1->childs.size() != 2)
+                    break;
+                child1 = child1->childs[1];
+            }
+        }
+    }
+
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA64, left->extension->misc->additionalRegisterRC, left->resultRegisterRC);
+
+    // Short cut. Will just after the right expression in the the left expression is true. A or B => do not evaluate B
+    binNode->seekJumpExpression = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::JumpIfTrue, left->resultRegisterRC);
     return true;
 }
@@ -523,12 +568,8 @@ bool ByteCodeGenJob::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitLogicalOr(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     auto node = CastAst<AstBinaryOpNode>(context->node, AstNodeKind::BinaryOp);
-
-    // Because of the shortcuts, there's no need to actually do a && here, as we are sure that the
-    // expression on the left is true
-    // Se we just need to propagate the result
-    emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r2, r1);
-
+    if (r2 != r1)
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r2, r1);
     auto inst   = &context->bc->out[node->seekJumpExpression];
     inst->b.s32 = context->bc->numInstructions - node->seekJumpExpression - 1;
     return true;
@@ -575,15 +616,17 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
             // So we take it as the result register.
             if (node->token.id == TokenId::KwdAnd || node->token.id == TokenId::KwdOr)
             {
-                auto front = node->childs[0];
-                SWAG_ASSERT(front->extension && !front->extension->misc->additionalRegisterRC.cannotFree);
-                r2 = front->extension->misc->additionalRegisterRC;
+                // :BinOpAndOr
+                auto front             = node->childs[0];
+                r2                     = front->extension->misc->additionalRegisterRC;
+                node->resultRegisterRC = front->extension->misc->additionalRegisterRC;
                 front->extension->misc->additionalRegisterRC.clear();
             }
             else
-                r2 = reserveRegisterRC(context);
-
-            node->resultRegisterRC = r2;
+            {
+                r2                     = reserveRegisterRC(context);
+                node->resultRegisterRC = r2;
+            }
 
             auto typeInfoExpr = node->castedTypeInfo ? node->castedTypeInfo : node->typeInfo;
 
