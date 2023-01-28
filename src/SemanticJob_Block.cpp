@@ -1034,23 +1034,6 @@ bool SemanticJob::resolveFallThrough(SemanticContext* context)
 bool SemanticJob::resolveContinue(SemanticContext* context)
 {
     auto node = CastAst<AstBreakContinue>(context->node, AstNodeKind::Continue);
-
-    // Label has been defined : search the corresponding ScopeBreakable node
-    AstBreakable* lastBreakable = nullptr;
-    if (!node->label.text.empty())
-    {
-        auto breakable = node->ownerBreakable;
-        while (breakable && (breakable->kind != AstNodeKind::ScopeBreakable || breakable->token.text != node->label.text))
-        {
-            if (breakable->kind != AstNodeKind::ScopeBreakable)
-                lastBreakable = breakable;
-            breakable = breakable->ownerBreakable;
-        }
-
-        SWAG_VERIFY(breakable, context->report({node->sourceFile, node->label, Fmt(Err(Err0631), node->label.text.c_str())}));
-        node->ownerBreakable = lastBreakable;
-    }
-
     SWAG_VERIFY(node->ownerBreakable, context->report({node, Err(Err0637)}));
 
     auto checkBreakable = node->ownerBreakable;

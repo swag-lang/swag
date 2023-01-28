@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-#test
+/*#test
 {
     cpt := 0
 
@@ -15,4 +15,4 @@
     }
 
 	@assert(cpt == 10)
-}
+}*/

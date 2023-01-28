@@ -362,6 +362,16 @@ bool SyntaxJob::doIndex(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doFallThrough(AstNode* parent, AstNode** result)
+{
+    auto node         = Ast::newNode<AstBreakContinue>(this, AstNodeKind::FallThrough, sourceFile, parent);
+    node->semanticFct = SemanticJob::resolveFallThrough;
+    if (result)
+        *result = node;
+    SWAG_CHECK(eatToken());
+    return true;
+}
+
 bool SyntaxJob::doBreak(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstBreakContinue>(this, AstNodeKind::Break, sourceFile, parent);
@@ -382,16 +392,6 @@ bool SyntaxJob::doBreak(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doFallThrough(AstNode* parent, AstNode** result)
-{
-    auto node         = Ast::newNode<AstBreakContinue>(this, AstNodeKind::FallThrough, sourceFile, parent);
-    node->semanticFct = SemanticJob::resolveFallThrough;
-    if (result)
-        *result = node;
-    SWAG_CHECK(eatToken());
-    return true;
-}
-
 bool SyntaxJob::doContinue(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstBreakContinue>(this, AstNodeKind::Continue, sourceFile, parent);
@@ -399,15 +399,5 @@ bool SyntaxJob::doContinue(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
     SWAG_CHECK(eatToken());
-    if (token.lastTokenIsEOL)
-        return true;
-
-    if (token.id != TokenId::SymSemiColon)
-    {
-        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Err(Syn0107)));
-        node->label = token;
-        SWAG_CHECK(eatToken());
-    }
-
     return true;
 }
