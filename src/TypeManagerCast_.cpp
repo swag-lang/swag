@@ -606,19 +606,6 @@ bool TypeManager::castToNativeRune(SemanticContext* context, TypeInfo* fromType,
             }
             break;
         }
-
-        if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
-        {
-            if (!fromNode)
-            {
-                auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
-                auto value  = native->valueInteger;
-                if (value < 0)
-                    return false;
-            }
-
-            return true;
-        }
     }
 
     return castError(context, g_TypeMgr->typeInfoRune, fromType, fromNode, castFlags);

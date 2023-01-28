@@ -5,7 +5,7 @@
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 
-bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* child)
+bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNode* child)
 {
     auto typeInfo = TypeManager::concreteType(child->typeInfo);
 
@@ -50,8 +50,11 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* child)
             child->computedValue->reg.s64 = -child->computedValue->reg.s32;
             if (typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
             {
-                int32_t newValue = -CastTypeInfo<TypeInfoNative>(typeInfo, typeInfo->kind)->valueInteger;
-                child->typeInfo  = TypeManager::makeUntypedType(typeInfo, *(uint32_t*) &newValue);
+                auto native          = CastTypeInfo<TypeInfoNative>(typeInfo, typeInfo->kind);
+                native               = (TypeInfoNative*) native->clone();
+                native->valueInteger = -native->valueInteger;
+                child->typeInfo      = TypeManager::resolveUntypedType(native, *(uint32_t*) &native->valueInteger);
+                op->typeInfo         = child->typeInfo;
             }
             break;
         case NativeTypeKind::S64:
@@ -66,7 +69,7 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* child)
             if (typeInfo->flags & TYPEINFO_UNTYPED_FLOAT)
             {
                 float newValue  = -CastTypeInfo<TypeInfoNative>(typeInfo, typeInfo->kind)->valueFloat;
-                child->typeInfo = TypeManager::makeUntypedType(typeInfo, *(uint32_t*) &newValue);
+                child->typeInfo = TypeManager::resolveUntypedType(typeInfo, *(uint32_t*) &newValue);
             }
 
             break;
@@ -241,7 +244,7 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
         break;
     case TokenId::SymMinus:
         SWAG_CHECK(checkTypeIsNative(context, op, typeInfo));
-        SWAG_CHECK(resolveUnaryOpMinus(context, child));
+        SWAG_CHECK(resolveUnaryOpMinus(context, op, child));
         break;
     case TokenId::SymTilde:
         SWAG_CHECK(checkTypeIsNative(context, op, typeInfo));

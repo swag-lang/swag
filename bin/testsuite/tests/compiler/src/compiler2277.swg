@@ -21,7 +21,7 @@ func toto()
 
     {
         x := 0'rune
-        y := x orelse 1
+        y := x orelse 1'rune
         @assert(y == 1)
     }
 }

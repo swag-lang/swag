@@ -7,6 +7,7 @@ TypeInfo* TypeInfoNative::clone()
 {
     auto newType = allocType<TypeInfoNative>();
     newType->copyFrom(this);
+    newType->valueInteger = valueInteger;
     return newType;
 }
 

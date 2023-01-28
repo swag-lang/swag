@@ -370,7 +370,7 @@ struct SemanticJob : public Job
     static bool resolveBinaryOpMul(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveBinaryOpDiv(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveUnaryOpExclam(SemanticContext* context, AstNode* child);
-    static bool resolveUnaryOpMinus(SemanticContext* context, AstNode* child);
+    static bool resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNode* child);
     static bool resolveUnaryOpInvert(SemanticContext* context, AstNode* child);
     static bool resolveUnaryOp(SemanticContext* context);
     static bool resolveTypeAsExpression(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, TypeInfo** resultTypeInfo, uint32_t flags = 0);

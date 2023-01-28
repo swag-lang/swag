@@ -310,7 +310,7 @@ impl RegExp
         if Unicode.isSymbolMath(c)  checkTr(RuneUnicodeSymbolMath)
 
         checkTr(c)
-        checkTr(0)
+        checkTr(0'rune)
 
         return ok
     }
@@ -370,10 +370,10 @@ impl RegExp
         s3 := table2.nodes.front()
         s4 := table2.nodes.back()
 
-        ns1.addTransition(0, s1)
-        s2.addTransition(0, ns2)
-        ns1.addTransition(0, s3)
-        s4.addTransition(0, ns2)
+        ns1.addTransition(0'rune, s1)
+        s2.addTransition(0'rune, ns2)
+        ns1.addTransition(0'rune, s3)
+        s4.addTransition(0'rune, ns2)
 
         table1.nodes.add(table2.nodes.toSlice())
         table1.nodes.insertAt(0, ns1)
@@ -411,8 +411,8 @@ impl RegExp
         table := try nfaPop()
         s1 := table.nodes.front()
         s2 := table.nodes.back()
-        s1.addTransition(0, s2)
-        s2.addTransition(0, s1)
+        s1.addTransition(0'rune, s2)
+        s2.addTransition(0'rune, s1)
         nfaStack.add(table)
     }
 
@@ -421,7 +421,7 @@ impl RegExp
         table := try nfaPop()
         s1 := table.nodes.front()
         s2 := table.nodes.back()
-        s2.addTransition(0, s1)
+        s2.addTransition(0'rune, s1)
         nfaStack.add(table)
     }
 
@@ -430,7 +430,7 @@ impl RegExp
         table := try nfaPop()
         s1 := table.nodes.front()
         s2 := table.nodes.back()
-        s1.addTransition(0, s2)
+        s1.addTransition(0'rune, s2)
         nfaStack.add(table)
     }
 
@@ -483,7 +483,7 @@ impl RegExp
 
             case "."'rune:
                 try unionValidate()
-                nfaPush(0)
+                nfaPush(0'rune)
 
             case "\\"'rune:
                 if isReservedChar(pz[1])
@@ -528,7 +528,7 @@ impl RegExp
 
             s1 := table1.nodes.back()
             s2 := table2.nodes.front()
-            s1.addTransition(0, s2)
+            s1.addTransition(0'rune, s2)
 
             table1.nodes.add(table2.nodes.toSlice())
             nfaStack.add(table1)
@@ -558,7 +558,7 @@ impl RegExp
             state := stack.popBack()
             out.add(state)
 
-            find := state.transitions.find(0)
+            find := state.transitions.find(0'rune)
             if !find continue
 
             visit to: find.value
@@ -1034,7 +1034,7 @@ impl RegExp
     mtd preprocess(in: string) throw
     {
         in32 := Unicode.fromUtf8(in)
-        in32.add(0)
+        in32.add(0'rune)
 
         pz    := cast(const ^rune) in32.buffer
         pzEnd := pz + in32.count

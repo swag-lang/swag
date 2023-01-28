@@ -541,7 +541,7 @@ TypeInfo* TypeManager::solidifyUntyped(TypeInfo* typeInfo)
     return typeInfo;
 }
 
-TypeInfo* TypeManager::makeUntypedType(TypeInfo* typeInfo, uint32_t value)
+TypeInfo* TypeManager::resolveUntypedType(TypeInfo* typeInfo, uint32_t value)
 {
     if (typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
     {
@@ -604,7 +604,7 @@ TypeInfo* TypeManager::literalTypeToType(const Token& token)
 {
     auto result = literalTypeToType(token.literalType);
     SWAG_ASSERT(result);
-    result = makeUntypedType(result, token.literalValue.u32);
+    result = resolveUntypedType(result, token.literalValue.u32);
     return result;
 }
 

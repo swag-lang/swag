@@ -106,7 +106,7 @@ struct TypeManager
 
     static bool      collectInterface(SemanticContext* context, TypeInfoStruct* fromTypeStruct, TypeInfoStruct* toTypeItf, InterfaceRef& ref, bool skipFirst = false);
     static TypeInfo* solidifyUntyped(TypeInfo* typeInfo);
-    static TypeInfo* makeUntypedType(TypeInfo* typeInfo, uint32_t value);
+    static TypeInfo* resolveUntypedType(TypeInfo* typeInfo, uint32_t value);
     static TypeInfo* literalTypeToType(LiteralType literalType);
     static TypeInfo* literalTypeToType(const Token& token);
     static void      promote3264(AstNode* left, AstNode* right);
