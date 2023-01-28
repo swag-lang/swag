@@ -1354,8 +1354,14 @@ bool SyntaxJob::doLeftExpressionAffect(AstNode* parent, AstNode** result, AstWit
         return true;
 
     case TokenId::KwdDeRef:
-        SWAG_CHECK(doDeRef(parent, result));
+    {
+        AstNode* id;
+        SWAG_CHECK(doDeRef(parent, &id));
+        id->flags |= AST_L_VALUE;
+        if (result)
+            *result = id;
         return true;
+    }
 
     default:
         return invalidTokenError(InvalidTokenError::LeftExpression);

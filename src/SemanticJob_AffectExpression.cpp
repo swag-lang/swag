@@ -76,7 +76,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     if (context->result != ContextResult::Done)
         return true;
 
-    SWAG_VERIFY(left->resolvedSymbolName && left->resolvedSymbolOverload, context->report({left, Err(Err0566)}));
+    // SWAG_VERIFY(left->resolvedSymbolName && left->resolvedSymbolOverload, context->report({left, Err(Err0566)}));
 
     // Check that left type is mutable
     // If not, try to find the culprit type
@@ -97,7 +97,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 if (typeChild && typeChild->isConst())
                 {
                     left = left->childs[i];
-                    if (left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
+                    if (left->resolvedSymbolOverload && left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
                         hint = Hnt(Hnt0029);
                     else
                         hint = Diagnostic::isType(left->typeInfo);
@@ -140,6 +140,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 else
                     hint += "' because of a 'with'";
 
+                SWAG_ASSERT(left->resolvedSymbolOverload);
                 if (left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM && left->typeInfo->isConst())
                     note = new Diagnostic{leftId->fromAlternateVar, Nte(Nte0023), DiagnosticLevel::Note};
                 else if (!(left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM))
@@ -149,7 +150,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
         if (left->typeInfo->isConst())
         {
-            if (left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
+            if (left->resolvedSymbolOverload && left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
             {
                 Diagnostic note1{Hlp(Hlp0016), DiagnosticLevel::Help};
                 Diagnostic diag{left, Fmt(Err(Err0740), left->resolvedSymbolName->name.c_str()), hint};
@@ -170,7 +171,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
     if (!(left->flags & AST_L_VALUE))
     {
-        if (left->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE)
+        if (left->resolvedSymbolOverload && left->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE)
             return context->report({left, Err(Err0564), Hnt(Hnt0018)});
         return context->report({left, Err(Err0565)});
     }

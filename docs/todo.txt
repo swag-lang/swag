@@ -82,8 +82,6 @@ TODO
 
 
 -------------------------------------
-dref (ptr + x) = 6 message d'erreur moisi, et faut que ce soit possible
--------------------------------------
 fast math ? (faire les tests de float en u32/U64 comme avant la prise en charge de nan)
 -------------------------------------
 debugger, ajouter la logique des expressions $num qu'on peut récupérer dans le prompt ensuite
