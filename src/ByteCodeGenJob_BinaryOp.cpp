@@ -479,7 +479,8 @@ bool ByteCodeGenJob::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
         // The result register will be stored in additionalRegisterRC of the left expresion and retreived
         // when evaluating the binary expression
         // :BinOpAndOr
-        left->extension->misc->additionalRegisterRC = reserveRegisterRC(context);
+        left->extension->misc->additionalRegisterRC = left->resultRegisterRC;
+        left->resultRegisterRC.cannotFree           = true;
 
         // We try to share the result register with other 'and'/'or' to give optimization opportunities when we
         // have more than one test in a row.
@@ -539,7 +540,8 @@ bool ByteCodeGenJob::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
     left->allocateExtension(ExtensionKind::AdditionalRegs);
     if (left->extension->misc->additionalRegisterRC.size() == 0)
     {
-        left->extension->misc->additionalRegisterRC = reserveRegisterRC(context);
+        left->extension->misc->additionalRegisterRC = left->resultRegisterRC;
+        left->resultRegisterRC.cannotFree           = true;
 
         if (binNode->childs.size() == 2)
         {
