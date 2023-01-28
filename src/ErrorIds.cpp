@@ -279,7 +279,7 @@ void initErrors()
     SWAG_ERROR(Syn0185, "the slicing operator '..<' should be followed by the upper bound expression");
     SWAG_ERROR(Syn0186, "cast modifiers 'safe' and 'bit' are exclusive");
     SWAG_ERROR(Syn0187, "unexpected empty statement ';'");
-    SWAG_ERROR(Syn0188, nullptr);
+    SWAG_ERROR(Syn0188, "unexpected end of comment '*/' after the %s");
     SWAG_ERROR(Syn0189, nullptr);
 
     /////////////////////////////////////////////////////////////////////

@@ -182,10 +182,23 @@ bool SyntaxJob::eatSemiCol(const char* msg)
     {
         if (!msg)
             msg = "";
+
+        if (token.id == TokenId::SymAsterisk)
+        {
+            auto st = token;
+            eatToken();
+            if (token.id == TokenId::SymSlash)
+            {
+                token.startLocation = st.startLocation;
+                return error(token, Fmt(Err(Syn0188), msg));
+            }
+
+            token = st;
+        }
+
         if (Tokenizer::isSymbol(token.id))
-            SWAG_CHECK(error(token, Fmt(Err(Syn0171), token.ctext(), msg)));
-        else
-            SWAG_CHECK(error(token, Fmt(Err(Syn0037), token.ctext(), msg), nullptr, Hnt(Hnt0013)));
+            return error(token, Fmt(Err(Syn0171), token.ctext(), msg));
+        return error(token, Fmt(Err(Syn0037), token.ctext(), msg), nullptr, Hnt(Hnt0013));
     }
 
     if (token.id == TokenId::SymSemiColon)
