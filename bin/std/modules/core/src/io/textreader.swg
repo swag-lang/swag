@@ -74,59 +74,58 @@ public impl TextReader
     {
         result.clear()
 
-        ptr64, ptr64B := cast(^u64) (buffer.buffer + byteSeek)
-        ptr64E := cast(^u64) (buffer.buffer + buffer.count)
-
-        scope Restart
+        if byteSeek == buffer.count
         {
-            loop
-            {
-                if byteSeek == buffer.count
-                {
-                    readBuffer()
-                    ptr64, ptr64B = cast(^u64) (buffer.buffer + byteSeek)
-                    ptr64E = cast(^u64) (buffer.buffer + buffer.count)
-                }
-
-                if buffer.count == 0
-                    return false
-
-                startIndex := byteSeek
-
-                // u64 by u64
-                while ptr64 + 8'uint < ptr64E
-                {
-                    c64 := dref ptr64
-                    if Math.hasByte(c64, "\n"'u8) or Math.hasByte(c64, "\r"'u8)
-                        break
-                    ptr64 += 1
-                    byteSeek += 8
-                }
-
-                // u8 by u8
-                c := buffer[byteSeek]
-                while c != "\n"'u8 and c != "\r"'u8
-                {
-                    byteSeek += 1
-                    if byteSeek == buffer.count
-                        continue Restart
-                    c = buffer[byteSeek]
-                }
-
-                result = @mkstring(cast(^u8) ptr64B, byteSeek - startIndex)
-
-                // Eat end of line characters
-                byteSeek += 1
-                if byteSeek == buffer.count
-                    readBuffer()
-                if c == "\r"'u8 and buffer.count and buffer[byteSeek] == "\n"'u8
-                    byteSeek += 1
-
-                return true
-            }
+            readBuffer()
+            if buffer.count == 0
+                return false
         }
 
-        return false
+        var c: u8
+        loop
+        {
+            ptr64, ptr64B := cast(^u64) (buffer.buffer + byteSeek)
+            ptr64E := cast(^u64) (buffer.buffer + (buffer.count - byteSeek))
+
+            startIndex := byteSeek
+
+            // u64 by u64
+            while ptr64 + 8'uint < ptr64E
+            {
+                c64 := dref ptr64
+                if Math.hasByte(c64, "\n"'u8) or Math.hasByte(c64, "\r"'u8)
+                    break
+                ptr64 += 1
+                byteSeek += 8
+            }
+
+            // u8 by u8
+            c = buffer[byteSeek]
+            while c != "\n"'u8 and c != "\r"'u8
+            {
+                byteSeek += 1
+                if byteSeek == buffer.count
+                    break
+                c = buffer[byteSeek]
+            }
+
+            result += @mkstring(cast(^u8) ptr64B, byteSeek - startIndex)
+            if byteSeek != buffer.count
+                break
+
+            readBuffer()
+            if buffer.count == 0
+                return true
+        }
+
+        // Eat end of line characters
+        byteSeek += 1
+        if byteSeek == buffer.count
+            readBuffer()
+        if c == "\r"'u8 and buffer.count and buffer[byteSeek] == "\n"'u8
+            byteSeek += 1
+
+        return true
     }
 
     // Read from the current position to the end, and returns the corresponding
