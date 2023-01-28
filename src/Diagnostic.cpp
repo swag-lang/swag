@@ -16,7 +16,7 @@ void Diagnostic::setupColors(bool verboseMode)
     warningColor         = verboseMode ? verboseColor : LogColor::Magenta;
     noteColor            = verboseMode ? verboseColor : LogColor::White;
     stackColor           = verboseMode ? verboseColor : LogColor::DarkYellow;
-    remarkColor          = verboseMode ? verboseColor : LogColor::Magenta;
+    remarkColor          = verboseMode ? verboseColor : LogColor::White;
     nativeCallStackColor = verboseMode ? verboseColor : LogColor::Gray;
     sourceFileColor      = verboseMode ? verboseColor : LogColor::DarkCyan;
 }
@@ -204,7 +204,7 @@ void Diagnostic::printRemarks()
 {
     if (!remarks.empty())
     {
-        printMargin(true);
+        printMargin(true, true);
 
         for (auto r : remarks)
         {
