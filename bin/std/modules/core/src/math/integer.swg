@@ -1,17 +1,22 @@
+// Some magical integer tricks comes from https://graphics.stanford.edu/~seander/bithacks.html#ValueInWord
+
 #global public
 #global namespace Math
 using Swag
 
-#[ConstExpr]
+#[ConstExpr, Safety("over", false)]
 func roundUpToPowerOf2(x: u32)->u32
 {
-    i := 1'u32
-    while i < x
-        i <<= 1
-    return i
+    v := x - 1
+    v |= v >> 1
+    v |= v >> 2
+    v |= v >> 4
+    v |= v >> 8
+    v |= v >> 16
+    return v + 1
 }
 
-#[ConstExpr]
+#[ConstExpr, Safety("over", false)]
 func roundDownToPowerOf2(x: u32)->u32
 {
     i := 1'u32
@@ -27,6 +32,69 @@ func isPowerOf2(x: u32)->bool
     return x & (x - 1) == 0
 }
 
+// Determin if any of the bytes is zero
+#[ConstExpr, Inline, Safety("over", false)]
+func hasZeroByte(v: u16)->bool
+{
+    return hasZeroByte(cast(u32) v)
+}
+
+#[ConstExpr, Inline, Safety("over", false)]
+func hasZeroByte(v: u32)->bool
+{
+    return cast(bool) (((v) - 0x01010101) & ~(v) & 0x80808080)
+}
+
+#[ConstExpr, Inline, Safety("over", false)]
+func hasZeroByte(v: u64)->bool
+{
+    return cast(bool) (((v) - 0x01010101_01010101) & ~(v) & 0x80808080_80808080)
+}
+
+// Make a 16 bits by repeating a given byte
+// 0x20 => 0x2020
+#[ConstExpr, Inline]
+func makeRepeat16(v: u8)->u16
+{
+    return (~0'u16/255 * v)
+}
+
+// Make a 32 bits by repeating a given byte
+// 0x20 => 0x20202020
+#[ConstExpr, Inline]
+func makeRepeat32(v: u8)->u32
+{
+    return (~0'u32/255 * v)
+}
+
+// Make a 64 bits by repeating a given byte
+// 0x20 => 0x20202020
+#[ConstExpr, Inline]
+func makeRepeat64(v: u8)->u64
+{
+    return (~0'u64/255 * v)
+}
+
+// Determin if an integer has a given byte
+#[ConstExpr, Inline]
+func hasByte(value: u16, byte: u8)->bool
+{
+    return hasByte(cast(u32) value, byte)
+}
+
+#[ConstExpr, Inline]
+func hasByte(value: u32, byte: u8)->bool
+{
+    return hasZeroByte(value ^ makeRepeat32(byte))
+}
+
+#[ConstExpr, Inline]
+func hasByte(value: u64, byte: u8)->bool
+{
+    return hasZeroByte(value ^ makeRepeat64(byte))
+}
+
+// Get the sign of an integer
 #[ConstExpr, Inline]
 {
     func sign(x: s8) => x < 0 ? -1 : 1
@@ -35,6 +103,7 @@ func isPowerOf2(x: u32)->bool
     func sign(x: s64) => x < 0 ? -1 : 1
 }
 
+// Wrappers for intrinsics
 #[ConstExpr, Inline]
 {
     func min(x, y: s8)  => @min(x, y)
