@@ -131,45 +131,51 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result)
             }
 
             // Accept a parameter name
+            AstNode* namedParam = nullptr;
             if (token.id == TokenId::Identifier)
             {
+                auto name = token.text;
                 tokenizer.saveState(token);
                 SWAG_CHECK(eatToken());
                 if (token.id != TokenId::SymColon)
                     tokenizer.restoreState(token);
                 else
+                {
+                    namedParam             = Ast::newNode<AstNode>(this, AstNodeKind::Identifier, sourceFile, nullptr);
+                    namedParam->token.text = name;
                     SWAG_CHECK(eatToken());
+                }
             }
 
+            AstTypeExpression* typeExpr = nullptr;
             if (token.text == g_LangSpec->name_self)
             {
                 SWAG_VERIFY(currentStructScope, error(token, Err(Syn0026)));
                 SWAG_CHECK(eatToken());
-                auto typeNode         = Ast::newTypeExpression(sourceFile, params);
-                typeNode->ptrCount    = 1;
-                typeNode->ptrFlags[0] = isConst ? AstTypeExpression::PTR_CONST : 0;
-                typeNode->typeFlags |= isConst ? TYPEFLAG_IS_CONST : 0;
-                typeNode->typeFlags |= TYPEFLAG_IS_SELF;
-                typeNode->identifier = Ast::newIdentifierRef(sourceFile, currentStructScope->name, typeNode, this);
+                typeExpr              = Ast::newTypeExpression(sourceFile, params);
+                typeExpr->ptrCount    = 1;
+                typeExpr->ptrFlags[0] = isConst ? AstTypeExpression::PTR_CONST : 0;
+                typeExpr->typeFlags |= isConst ? TYPEFLAG_IS_CONST : 0;
+                typeExpr->typeFlags |= TYPEFLAG_IS_SELF;
+                typeExpr->identifier = Ast::newIdentifierRef(sourceFile, currentStructScope->name, typeExpr, this);
             }
             // ...
             else if (token.id == TokenId::SymDotDotDot)
             {
-                auto typeExpr             = Ast::newTypeExpression(sourceFile, params);
+                typeExpr                  = Ast::newTypeExpression(sourceFile, params);
                 typeExpr->typeFromLiteral = g_TypeMgr->typeInfoVariadic;
                 SWAG_CHECK(eatToken());
             }
             // cvarargs
             else if (token.id == TokenId::KwdCVarArgs)
             {
-                auto typeExpr             = Ast::newTypeExpression(sourceFile, params);
+                typeExpr                  = Ast::newTypeExpression(sourceFile, params);
                 typeExpr->typeFromLiteral = g_TypeMgr->typeInfoCVariadic;
                 SWAG_CHECK(eatToken());
             }
             else
             {
-                AstNode* typeExpr;
-                SWAG_CHECK(doTypeExpression(params, &typeExpr));
+                SWAG_CHECK(doTypeExpression(params, (AstNode**) &typeExpr));
                 ((AstTypeExpression*) typeExpr)->typeFlags |= isConst ? TYPEFLAG_IS_CONST : 0;
 
                 // type...
@@ -181,6 +187,12 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result)
                     SWAG_CHECK(eatToken());
                     Ast::addChildBack(newTypeExpression, typeExpr);
                 }
+            }
+
+            if (namedParam)
+            {
+                typeExpr->allocateExtension(ExtensionKind::Misc);
+                typeExpr->extension->misc->isNamed = namedParam;
             }
 
             if (token.id != TokenId::SymComma)
