@@ -38,8 +38,6 @@ v.add(#code @print(a))
 #mixin v[0]
 #mixin v[1]
 -------------------------------------
-closure/lambda, pouvoir zaper un paramètre avec ? => closure|&total|(?, depth) ()
--------------------------------------
 if a == 1 do toto() else do titi()
 #if a == 1 do...
 -------------------------------------

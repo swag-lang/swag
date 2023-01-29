@@ -669,19 +669,24 @@ bool AstOutput::outputLambdaExpression(OutputContext& context, Concat& concat, A
             if (!first)
                 CONCAT_FIXED_STR(concat, ", ");
 
-            first = false;
-            concat.addString(p->token.text);
-            if (!p->childs.empty())
-            {
-                CONCAT_FIXED_STR(concat, ": ");
-                SWAG_CHECK(outputNode(context, concat, p->childs.front()));
-            }
-
+            first      = false;
             auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
-            if (param->assignment)
+            if (param->specFlags & AST_SPEC_VARDECL_UNNAMED)
+                concat.addChar('?');
+            else
             {
-                CONCAT_FIXED_STR(concat, " = ");
-                SWAG_CHECK(outputNode(context, concat, param->assignment));
+                concat.addString(p->token.text);
+                if (!p->childs.empty())
+                {
+                    CONCAT_FIXED_STR(concat, ": ");
+                    SWAG_CHECK(outputNode(context, concat, p->childs.front()));
+                }
+
+                if (param->assignment)
+                {
+                    CONCAT_FIXED_STR(concat, " = ");
+                    SWAG_CHECK(outputNode(context, concat, param->assignment));
+                }
             }
         }
     }

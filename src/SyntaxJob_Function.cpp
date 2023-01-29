@@ -180,6 +180,17 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, boo
         paramNode->flags |= AST_DECL_USING;
     }
 
+    // :QuestionAsParam
+    // Unused parameter
+    vector<Token> unnamedTokens;
+    if (token.id == TokenId::SymQuestion && acceptMissingType)
+    {
+        token.id   = TokenId::Identifier;
+        token.text = Fmt("__%d", g_UniqueID.fetch_add(1));
+        paramNode->specFlags |= AST_SPEC_VARDECL_UNNAMED;
+        unnamedTokens.push_back(token);
+    }
+
     SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdConst, error(token, Fmt(Err(Syn0112), token.ctext())));
     paramNode->token.text = token.text;
 
@@ -230,9 +241,18 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, boo
         while (token.id == TokenId::SymComma)
         {
             SWAG_CHECK(eatToken());
-            SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0166), token.ctext())));
-
             AstVarDecl* otherVarNode = Ast::newVarDecl(sourceFile, token.text, parent, this, AstNodeKind::FuncDeclParam);
+
+            // :QuestionAsParam
+            if (token.id == TokenId::SymQuestion && acceptMissingType)
+            {
+                token.id   = TokenId::Identifier;
+                token.text = Fmt("__%d", g_UniqueID.fetch_add(1));
+                otherVarNode->specFlags |= AST_SPEC_VARDECL_UNNAMED;
+                unnamedTokens.push_back(token);
+            }
+
+            SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0166), token.ctext())));
             SWAG_CHECK(eatToken());
             otherVariables.push_back(otherVarNode);
         }
@@ -243,6 +263,16 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, boo
         // Type
         if (token.id == TokenId::SymColon)
         {
+            if (unnamedTokens.size() == parent->childs.size())
+            {
+                Diagnostic diag{sourceFile, token, Err(Syn0189)};
+                diag.hint = Hnt(Hnt0061);
+                diag.addRange(unnamedTokens.front(), Hnt(Hnt0097));
+                for (int i = 1; i < unnamedTokens.size(); i++)
+                    diag.addRange(unnamedTokens[i], "");
+                return context.report(diag);
+            }
+
             hasType = true;
 
             SWAG_CHECK(eatToken());
@@ -288,6 +318,16 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, boo
         // Assignment
         if (token.id == TokenId::SymEqual)
         {
+            if (unnamedTokens.size() == parent->childs.size())
+            {
+                Diagnostic diag{sourceFile, token, Err(Syn0190)};
+                diag.hint = Hnt(Hnt0061);
+                diag.addRange(unnamedTokens.front(), Hnt(Hnt0099));
+                for (int i = 1; i < unnamedTokens.size(); i++)
+                    diag.addRange(unnamedTokens[i], "");
+                return context.report(diag);
+            }
+
             hasAssignment = true;
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doAssignmentExpression(paramNode, &paramNode->assignment));

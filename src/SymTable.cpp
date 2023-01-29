@@ -484,7 +484,7 @@ Utf8 SymTable::getNakedKindName(SymbolOverload* overload)
         return "local variable";
     if (overload->flags & OVERLOAD_CONSTANT)
         return "constant";
-    if(overload->node->kind == AstNodeKind::FuncDecl && overload->node->attributeFlags & ATTRIBUTE_MACRO)
+    if (overload->node->kind == AstNodeKind::FuncDecl && overload->node->attributeFlags & ATTRIBUTE_MACRO)
         return "macro";
     if (overload->node->kind == AstNodeKind::FuncDecl && overload->node->attributeFlags & ATTRIBUTE_MIXIN)
         return "mixin";

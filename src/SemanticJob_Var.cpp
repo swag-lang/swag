@@ -1367,6 +1367,5 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                                                                  storageSegment);
     SWAG_CHECK(overload);
     node->resolvedSymbolOverload = overload;
-
     return true;
 }

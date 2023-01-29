@@ -216,7 +216,7 @@ void initErrors()
     SWAG_ERROR(Syn0109, "invalid location '%s'");
     SWAG_ERROR(Syn0110, "invalid named parameter '%s'");
     SWAG_ERROR(Syn0111, "invalid variable name '%s' (cannot start with '@')");
-    SWAG_ERROR(Syn0112, "invalid variable name '%s'");
+    SWAG_ERROR(Syn0112, "expected a parameter name, found '%s'");
     SWAG_ERROR(Syn0113, "invalid version '%s'");
     SWAG_ERROR(Syn0114, "mismatched types for the upper bound of the slice, integer expected ('%s' provided)");
     SWAG_ERROR(Syn0115, "opVisit special name expected");
@@ -280,7 +280,9 @@ void initErrors()
     SWAG_ERROR(Syn0186, "cast modifiers 'safe' and 'bit' are exclusive");
     SWAG_ERROR(Syn0187, "unexpected empty statement ';'");
     SWAG_ERROR(Syn0188, "unexpected end of comment '*/' after the %s");
-    SWAG_ERROR(Syn0189, nullptr);
+    SWAG_ERROR(Syn0189, "unexpected start of a type declaration after unnamed parameters");
+    SWAG_ERROR(Syn0190, "unexpected start of an affectation after unnamed parameters");
+    SWAG_ERROR(Syn0191, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -1098,9 +1100,9 @@ void initErrors()
     SWAG_ERROR(Hnt0002, "this value can only be converted to type '%s' with a dynamic call to 'opAffect'");
     SWAG_ERROR(Hnt0095, "you cannot reference this runtime %s from the %s");
     SWAG_ERROR(Hnt0096, "unexpected attribute");
-    SWAG_ERROR(Hnt0097, nullptr);
+    SWAG_ERROR(Hnt0097, "you cannot specify a type for unnamed parameters ('?')");
     SWAG_ERROR(Hnt0098, "expected the upper bound");
-    SWAG_ERROR(Hnt0099, nullptr);
+    SWAG_ERROR(Hnt0099, "you cannot assign to unnamed parameters ('?')");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
