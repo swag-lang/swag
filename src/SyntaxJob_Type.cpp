@@ -189,7 +189,7 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result)
         }
     }
 
-    SWAG_CHECK(eatToken(TokenId::SymRightParen));
+    SWAG_CHECK(eatToken(TokenId::SymRightParen, "to close the lambda parameters"));
     if (token.id == TokenId::SymMinusGreat)
     {
         SWAG_CHECK(eatToken());
