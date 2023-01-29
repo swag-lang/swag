@@ -635,6 +635,10 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
     if ((flags & TYPEINFO_CAN_THROW) != (other->flags & TYPEINFO_CAN_THROW))
         return false;
 
+    // Default values should be the same
+    if (isLambdaClosure() && other->isLambdaClosure() && firstDefaultValueIdx != UINT32_MAX)
+        return false;
+
     if (isSameFlags & ISSAME_EXACT)
     {
         if (!returnType && other->returnType && !other->returnType->isVoid())

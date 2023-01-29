@@ -646,7 +646,7 @@ void initErrors()
     SWAG_ERROR(Err0564, "the affectation is not allowed because the left expression is immutable");
     SWAG_ERROR(Err0565, "the affectation is not allowed because the left expression is not a value");
     SWAG_ERROR(Err0571, "the affectation is not allowed on %s '%s'");
-    SWAG_ERROR(Err0566, "the affectation is not allowed");
+    SWAG_ERROR(Err0566, nullptr);
     SWAG_ERROR(Err0572, "the affectation is not allowed, '%s' is %s");
     SWAG_ERROR(Err0574, "the affectation to the tuple is not possible because the right expression is not compatible");
     SWAG_ERROR(Err0025, "the alias is public but '%s' is not");
@@ -884,7 +884,7 @@ void initErrors()
     SWAG_ERROR(Err0083, "unexpected 'Swag.Inline' attribute as 'Swag.NoInline' is already defined");
     SWAG_ERROR(Err0691, "unexpected 'Swag.NoInline' attribute as 'Swag.Inline' is already defined");
     SWAG_ERROR(Err0693, "unexpected 'Swag.Match' parameter '%s'");
-    SWAG_ERROR(Err0690, nullptr);
+    SWAG_ERROR(Err0690, "mismatched lambda default parameters");
     SWAG_ERROR(Err0688, "cannot exclude the slice upper bound because it's zero");
     SWAG_ERROR(Err0504, "expected the number of scopes as a literal, found '%s'");
     SWAG_ERROR(Err0577, "expected a simple untyped integer literal or 'u8'");
@@ -1103,6 +1103,10 @@ void initErrors()
     SWAG_ERROR(Hnt0097, "you cannot specify a type for unnamed parameters ('?')");
     SWAG_ERROR(Hnt0098, "expected the upper bound");
     SWAG_ERROR(Hnt0099, "you cannot assign to unnamed parameters ('?')");
+    SWAG_ERROR(Hnt0100, "cannot redefined lambda / closure default parameters");
+    SWAG_ERROR(Hnt0101, nullptr);
+    SWAG_ERROR(Hnt0102, nullptr);
+    
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

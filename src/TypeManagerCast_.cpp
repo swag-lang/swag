@@ -286,6 +286,15 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, TypeInfo* toType, TypeI
     {
         msg = Fmt(ErrNte(Err0178, forNote));
     }
+    else if (toType->isLambdaClosure() && fromType->isLambdaClosure())
+    {
+        auto fromTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(fromType, TypeInfoKind::LambdaClosure);
+        if (fromTypeFunc->firstDefaultValueIdx != UINT32_MAX)
+        {
+            msg  = Fmt(ErrNte(Err0690, forNote));
+            hint = Hnt(Hnt0100);
+        }
+    }
 }
 
 bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
@@ -335,7 +344,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
 
         // General cast error
         Diagnostic diag{fromNode, Fmt(Err(Err0177), fromType->getDisplayNameC(), toType->getDisplayNameC())};
-        diag.hint    = Diagnostic::isType(fromType);
+        diag.hint    = hint.empty() ? Diagnostic::isType(fromType) : hint;
         diag.lowPrio = true;
         return context->report(diag);
     }
