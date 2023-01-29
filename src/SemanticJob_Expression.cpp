@@ -209,7 +209,7 @@ bool SemanticJob::resolveConditionalOp(SemanticContext* context)
     // We cast the true expression to the false expression.
     // But some times, it's better to do the other way
     if (leftT->typeInfo->isConst() ||
-        leftT->typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
+        leftT->typeInfo->isUntypedInteger())
         swap(leftT, rightT);
 
     // Make the cast

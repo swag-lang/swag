@@ -48,7 +48,7 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, Ast
             if (child->computedValue->reg.s32 <= INT32_MIN)
                 return context->report({child, Fmt(Err(Err0831), child->computedValue->reg.s32, -child->computedValue->reg.s32)});
             child->computedValue->reg.s64 = -child->computedValue->reg.s32;
-            if (typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
+            if (typeInfo->isUntypedInteger())
             {
                 auto native          = CastTypeInfo<TypeInfoNative>(typeInfo, typeInfo->kind);
                 native               = (TypeInfoNative*) native->clone();
@@ -66,7 +66,7 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, Ast
 
         case NativeTypeKind::F32:
             child->computedValue->reg.f32 = -child->computedValue->reg.f32;
-            if (typeInfo->flags & TYPEINFO_UNTYPED_FLOAT)
+            if (typeInfo->isUntypedFloat())
             {
                 auto native        = CastTypeInfo<TypeInfoNative>(typeInfo, typeInfo->kind);
                 native             = (TypeInfoNative*) native->clone();

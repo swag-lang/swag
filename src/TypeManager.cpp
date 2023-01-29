@@ -534,21 +534,21 @@ TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeIn
 
 TypeInfo* TypeManager::solidifyUntyped(TypeInfo* typeInfo)
 {
-    if (typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
+    if (typeInfo->isUntypedInteger())
         return g_TypeMgr->typeInfoS32;
-    if (typeInfo->flags & TYPEINFO_UNTYPED_FLOAT)
+    if (typeInfo->isUntypedFloat())
         return g_TypeMgr->typeInfoF32;
     return typeInfo;
 }
 
 TypeInfo* TypeManager::resolveUntypedType(TypeInfo* typeInfo, uint32_t value)
 {
-    if (typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
+    if (typeInfo->isUntypedInteger())
     {
         auto it = mapUntypedValuesI.find(value);
         if (it != mapUntypedValuesI.end())
         {
-            SWAG_ASSERT(it->second->flags & TYPEINFO_UNTYPED_INTEGER);
+            SWAG_ASSERT(it->second->isUntypedInteger());
             SWAG_ASSERT(it->second->valueInteger == *(int32_t*) &value);
             return it->second;
         }
@@ -558,12 +558,12 @@ TypeInfo* TypeManager::resolveUntypedType(TypeInfo* typeInfo, uint32_t value)
         typeInfo                 = newType;
         mapUntypedValuesI[value] = newType;
     }
-    else if (typeInfo->flags & TYPEINFO_UNTYPED_BINHEXA)
+    else if (typeInfo->isUntypedBinHex())
     {
         auto it = mapUntypedValuesB.find(value);
         if (it != mapUntypedValuesB.end())
         {
-            SWAG_ASSERT(it->second->flags & TYPEINFO_UNTYPED_BINHEXA);
+            SWAG_ASSERT(it->second->isUntypedBinHex());
             SWAG_ASSERT(it->second->valueInteger == *(int32_t*) &value);
             return it->second;
         }
@@ -573,12 +573,12 @@ TypeInfo* TypeManager::resolveUntypedType(TypeInfo* typeInfo, uint32_t value)
         typeInfo                 = newType;
         mapUntypedValuesB[value] = newType;
     }
-    else if (typeInfo->flags & TYPEINFO_UNTYPED_FLOAT)
+    else if (typeInfo->isUntypedFloat())
     {
         auto it = mapUntypedValuesF.find(value);
         if (it != mapUntypedValuesF.end())
         {
-            SWAG_ASSERT(it->second->flags & TYPEINFO_UNTYPED_FLOAT);
+            SWAG_ASSERT(it->second->isUntypedFloat());
             SWAG_ASSERT(it->second->valueFloat == *(float*) &value);
             return it->second;
         }

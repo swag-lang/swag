@@ -643,7 +643,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
                     return false;
                 }
             }
-            else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+            else if (fromType->isUntypedInteger())
             {
                 if (!fromNode)
                 {
@@ -671,7 +671,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
                     fromNode->typeInfo = g_TypeMgr->typeInfoU8;
                 return true;
             }
-            else if ((fromType->flags & TYPEINFO_UNTYPED_INTEGER) || (fromType->flags & TYPEINFO_UNTYPED_BINHEXA))
+            else if (fromType->isUntypedInteger() || fromType->isUntypedBinHex())
             {
                 if (!fromNode)
                 {
@@ -772,7 +772,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
                     return false;
                 }
             }
-            else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+            else if (fromType->isUntypedInteger())
             {
                 if (!fromNode)
                 {
@@ -800,7 +800,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
                     fromNode->typeInfo = g_TypeMgr->typeInfoU16;
                 return true;
             }
-            else if ((fromType->flags & TYPEINFO_UNTYPED_INTEGER) || (fromType->flags & TYPEINFO_UNTYPED_BINHEXA))
+            else if (fromType->isUntypedInteger() || fromType->isUntypedBinHex())
             {
                 if (!fromNode)
                 {
@@ -901,7 +901,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
                     return false;
                 }
             }
-            else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+            else if (fromType->isUntypedInteger())
             {
                 if (!fromNode)
                 {
@@ -929,7 +929,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
                     fromNode->typeInfo = g_TypeMgr->typeInfoU32;
                 return true;
             }
-            else if ((fromType->flags & TYPEINFO_UNTYPED_INTEGER) || (fromType->flags & TYPEINFO_UNTYPED_BINHEXA))
+            else if (fromType->isUntypedInteger() || fromType->isUntypedBinHex())
             {
                 return true;
             }
@@ -1013,7 +1013,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
                     return false;
                 }
             }
-            else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+            else if (fromType->isUntypedInteger())
             {
                 if (!fromNode)
                 {
@@ -1033,7 +1033,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
                     fromNode->typeInfo = g_TypeMgr->typeInfoU64;
                 return true;
             }
-            else if ((fromType->flags & TYPEINFO_UNTYPED_INTEGER) || (fromType->flags & TYPEINFO_UNTYPED_BINHEXA))
+            else if (fromType->isUntypedInteger() || fromType->isUntypedBinHex())
             {
                 return true;
             }
@@ -1125,7 +1125,7 @@ bool TypeManager::castToNativeUInt(SemanticContext* context, TypeInfo* fromType,
                     return false;
                 }
             }
-            else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+            else if (fromType->isUntypedInteger())
             {
                 if (!fromNode)
                 {
@@ -1145,7 +1145,7 @@ bool TypeManager::castToNativeUInt(SemanticContext* context, TypeInfo* fromType,
                     fromNode->typeInfo = g_TypeMgr->typeInfoUInt;
                 return true;
             }
-            else if ((fromType->flags & TYPEINFO_UNTYPED_INTEGER) || (fromType->flags & TYPEINFO_UNTYPED_BINHEXA))
+            else if (fromType->isUntypedInteger() || fromType->isUntypedBinHex())
             {
                 return true;
             }
@@ -1215,7 +1215,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
         {
         case NativeTypeKind::U32:
         {
-            if (!(fromType->flags & TYPEINFO_UNTYPED_BINHEXA))
+            if (!fromType->isUntypedBinHex())
                 break;
             auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
             auto value  = native->valueInteger;
@@ -1241,7 +1241,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
                     fromNode->typeInfo = g_TypeMgr->typeInfoS8;
                 return true;
             }
-            else if ((fromType->flags & TYPEINFO_UNTYPED_INTEGER) || (fromType->flags & TYPEINFO_UNTYPED_BINHEXA))
+            else if (fromType->isUntypedInteger() || fromType->isUntypedBinHex())
             {
                 if (!fromNode)
                 {
@@ -1328,7 +1328,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
         {
         case NativeTypeKind::U32:
         {
-            if (!(fromType->flags & TYPEINFO_UNTYPED_BINHEXA))
+            if (!fromType->isUntypedBinHex())
                 break;
             auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
             auto value  = native->valueInteger;
@@ -1354,7 +1354,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
                     fromNode->typeInfo = g_TypeMgr->typeInfoS16;
                 return true;
             }
-            else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+            else if (fromType->isUntypedInteger())
             {
                 if (!fromNode)
                 {
@@ -1438,7 +1438,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
         switch (fromType->nativeType)
         {
         case NativeTypeKind::U32:
-            if (fromType->flags & TYPEINFO_UNTYPED_BINHEXA)
+            if (fromType->isUntypedBinHex())
                 return true;
 
         case NativeTypeKind::S8:
@@ -1458,7 +1458,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
                     fromNode->typeInfo = g_TypeMgr->typeInfoS32;
                 return true;
             }
-            else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+            else if (fromType->isUntypedInteger())
             {
                 return true;
             }
@@ -1521,7 +1521,7 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
         switch (fromType->nativeType)
         {
         case NativeTypeKind::U32:
-            if (fromType->flags & TYPEINFO_UNTYPED_BINHEXA)
+            if (fromType->isUntypedBinHex())
                 return true;
 
         case NativeTypeKind::S8:
@@ -1540,7 +1540,7 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
                     fromNode->typeInfo = g_TypeMgr->typeInfoS64;
                 return true;
             }
-            else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+            else if (fromType->isUntypedInteger())
             {
                 return true;
             }
@@ -1616,7 +1616,7 @@ bool TypeManager::castToNativeInt(SemanticContext* context, TypeInfo* fromType, 
                     fromNode->typeInfo = g_TypeMgr->typeInfoInt;
                 return true;
             }
-            else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+            else if (fromType->isUntypedInteger())
             {
                 return true;
             }
@@ -1689,7 +1689,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
             }
             return true;
         }
-        else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+        else if (fromType->isUntypedInteger())
         {
             if (!fromNode)
             {
@@ -1785,7 +1785,7 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
             }
             return true;
         }
-        else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+        else if (fromType->isUntypedInteger())
         {
             if (!fromNode)
             {
@@ -1851,7 +1851,7 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
 
             return true;
         }
-        else if (fromType->flags & TYPEINFO_UNTYPED_FLOAT)
+        else if (fromType->isUntypedFloat())
             return true;
         else if (castFlags & CASTFLAG_EXPLICIT)
             return true;
@@ -1866,12 +1866,12 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
     // Pick the best order
     if (castFlags & CASTFLAG_COMMUTATIVE)
     {
-        if ((toType->flags & TYPEINFO_UNTYPED_INTEGER) && !(fromType->flags & TYPEINFO_UNTYPED_INTEGER))
+        if (toType->isUntypedInteger() && !fromType->isUntypedInteger())
         {
             swap(toType, fromType);
             swap(toNode, fromNode);
         }
-        else if ((toType->flags & TYPEINFO_UNTYPED_FLOAT) && !(fromType->flags & TYPEINFO_UNTYPED_FLOAT))
+        else if (toType->isUntypedFloat() && !fromType->isUntypedFloat())
         {
             swap(toType, fromType);
             swap(toNode, fromNode);
@@ -3028,11 +3028,11 @@ void TypeManager::promote816(AstNode* left, AstNode* right)
 
 TypeInfo* TypeManager::promoteUntyped(TypeInfo* typeInfo)
 {
-    if (typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
+    if (typeInfo->isUntypedInteger())
         return g_TypeMgr->typeInfoS32;
-    if (typeInfo->flags & TYPEINFO_UNTYPED_FLOAT)
+    if (typeInfo->isUntypedFloat())
         return g_TypeMgr->typeInfoF32;
-    if (typeInfo->flags & TYPEINFO_UNTYPED_BINHEXA)
+    if (typeInfo->isUntypedBinHex())
         return g_TypeMgr->typeInfoU32;
     return typeInfo;
 }
@@ -3042,7 +3042,7 @@ void TypeManager::promoteUntypedInteger(AstNode* left, AstNode* right)
     TypeInfo* leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
     TypeInfo* rightTypeInfo = TypeManager::concreteType(right->typeInfo);
 
-    SWAG_ASSERT(leftTypeInfo->flags & TYPEINFO_UNTYPED_INTEGER);
+    SWAG_ASSERT(leftTypeInfo->isUntypedInteger());
     auto leftNative = CastTypeInfo<TypeInfoNative>(leftTypeInfo, TypeInfoKind::Native);
     if (rightTypeInfo->isNativeInteger())
     {
@@ -3102,13 +3102,13 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right, bool is3264)
     if (!leftTypeInfo->isNative() || !rightTypeInfo->isNative())
         return;
 
-    if ((leftTypeInfo->flags & TYPEINFO_UNTYPED_INTEGER) && !(rightTypeInfo->flags & TYPEINFO_UNTYPED_INTEGER))
+    if (leftTypeInfo->isUntypedInteger() && !rightTypeInfo->isUntypedInteger())
     {
         promoteUntypedInteger(left, right);
         leftTypeInfo = left->typeInfo;
     }
 
-    if (!(leftTypeInfo->flags & TYPEINFO_UNTYPED_INTEGER) && (rightTypeInfo->flags & TYPEINFO_UNTYPED_INTEGER))
+    if (!leftTypeInfo->isUntypedInteger() && rightTypeInfo->isUntypedInteger())
     {
         promoteUntypedInteger(right, left);
         rightTypeInfo = right->typeInfo;

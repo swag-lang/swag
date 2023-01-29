@@ -270,6 +270,9 @@ struct TypeInfo
     bool isAutoConstPointerRef()            { return (flags & TYPEINFO_POINTER_REF) && (flags & TYPEINFO_CONST) && (flags & TYPEINFO_POINTER_AUTO_REF); }
     bool isPointerArithmetic()              { return (flags & TYPEINFO_POINTER_ARITHMETIC); }
     bool isSelf()                           { return (flags & TYPEINFO_SELF); }
+    bool isUntypedInteger()                 { return (flags & TYPEINFO_UNTYPED_INTEGER); }
+    bool isUntypedFloat()                   { return (flags & TYPEINFO_UNTYPED_FLOAT); }
+    bool isUntypedBinHex()                  { return (flags & TYPEINFO_UNTYPED_BINHEXA); }
     // clang-format on
 
     virtual bool        isSame(TypeInfo* from, uint32_t isSameFlags);

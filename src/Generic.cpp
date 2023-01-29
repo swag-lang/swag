@@ -68,14 +68,14 @@ bool Generic::updateGenericParameters(SemanticContext* context, bool doType, boo
 
                 for (auto& v : match.genericReplaceTypesFrom)
                 {
-                    if (v.second->typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
+                    if (v.second->typeInfo->isUntypedInteger())
                     {
                         hint    = Hnt(Hnt0052);
                         errNode = v.second;
                         break;
                     }
 
-                    if (v.second->typeInfo->flags & TYPEINFO_UNTYPED_FLOAT)
+                    if (v.second->typeInfo->isUntypedFloat())
                     {
                         hint    = Hnt(Hnt0051);
                         errNode = v.second;
