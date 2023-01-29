@@ -718,7 +718,7 @@ void TypeManager::convertStructParamToRef(AstNode* node, TypeInfo* typeInfo)
     SWAG_ASSERT(node->kind == AstNodeKind::FuncDeclParam);
 
     // A struct/interface is forced to be a const reference
-    if (!(node->typeInfo->flags & TYPEINFO_GENERIC))
+    if (!node->typeInfo->isGeneric())
     {
         if (typeInfo->isStruct())
         {

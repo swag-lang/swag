@@ -92,7 +92,7 @@ bool SemanticJob::resolveImplForType(SemanticContext* context)
 
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(back->typeInfo, TypeInfoKind::Struct);
 
-    if (node->identifierFor->typeInfo->flags & TYPEINFO_GENERIC)
+    if (node->identifierFor->typeInfo->isGeneric())
         return true;
 
     // Make a concrete type for the given struct
@@ -271,7 +271,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     }
 
     // If structure is generic, then do nothing, we cannot solve
-    if (typeInfo->flags & TYPEINFO_GENERIC)
+    if (typeInfo->isGeneric())
     {
         decreaseInterfaceCount(typeStruct);
         return true;
@@ -479,7 +479,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
 
         if (!(node->flags & AST_IS_GENERIC))
         {
-            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, Fmt(Err(Err0681), child->typeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(!child->typeInfo->isGeneric(), context->report({child, Fmt(Err(Err0681), child->typeInfo->getDisplayNameC())}));
         }
 
         if (typeParam->attributes.hasAttribute(g_LangSpec->name_Swag_Offset))
@@ -1019,7 +1019,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         // If the struct is not generic, be sure that a field is not generic either
         if (!(node->flags & AST_IS_GENERIC))
         {
-            if (varTypeInfo->flags & TYPEINFO_GENERIC)
+            if (varTypeInfo->isGeneric())
             {
                 if (varDecl->type)
                     child = varDecl->type;
@@ -1165,7 +1165,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     }
 
     // Align structure size
-    if (typeInfo->alignOf > 1 && !(typeInfo->flags & TYPEINFO_GENERIC))
+    if (typeInfo->alignOf > 1 && !typeInfo->isGeneric())
         typeInfo->sizeOf = (uint32_t) TypeManager::align(typeInfo->sizeOf, typeInfo->alignOf);
 
     // Check public
@@ -1200,7 +1200,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         g_Workspace->swagScope.registerType(node->typeInfo);
 
     // Generate all functions associated with a struct
-    if (!(typeInfo->flags & TYPEINFO_GENERIC))
+    if (!typeInfo->isGeneric())
     {
         node->flags &= ~AST_NO_BYTECODE;
         node->flags |= AST_NO_BYTECODE_CHILDS;

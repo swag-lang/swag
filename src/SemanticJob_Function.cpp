@@ -710,7 +710,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     if (funcNode->genericParameters && funcNode->ownerStructScope)
     {
         auto structDecl = CastAst<AstStruct>(funcNode->ownerStructScope->owner, AstNodeKind::StructDecl);
-        if (structDecl->typeInfo->flags & TYPEINFO_GENERIC)
+        if (structDecl->typeInfo->isGeneric())
         {
             for (auto c : funcNode->genericParameters->childs)
             {

@@ -223,7 +223,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
         for (auto over : symbol->overloads)
         {
             auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
-            if (typeFunc->flags & TYPEINFO_GENERIC || typeFunc->returnType->flags & TYPEINFO_GENERIC)
+            if (typeFunc->isGeneric() || typeFunc->returnType->isGeneric())
                 continue;
             if (!(typeFunc->declNode->attributeFlags & ATTRIBUTE_IMPLICIT) && !(castFlags & CASTFLAG_EXPLICIT))
                 continue;
@@ -3450,7 +3450,7 @@ bool TypeManager::convertLiteralTupleToStructType(SemanticContext* context, Type
             // This is used for generic automatic deduction. We can use typeInfo->genericParameters, or we would
             // have to construct a struct AST with generic parameters too, and this is not possible as the struct
             // is not generic in all cases (generic types used in the struct can come from the function for example).
-            if (p->typeInfo->flags & TYPEINFO_GENERIC)
+            if (p->typeInfo->isGeneric())
                 typeInfo->deducedGenericParameters.push_back(typeField);
 
             auto varNode  = Ast::newVarDecl(sourceFile, nameVar, contentNode);
@@ -3593,7 +3593,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
     if (fromType->flags & TYPEINFO_AUTO_CAST)
         castFlags |= CASTFLAG_EXPLICIT;
-    if (toType->flags & TYPEINFO_GENERIC)
+    if (toType->isGeneric())
         castFlags |= CASTFLAG_NO_IMPLICIT;
     if (toType->flags & TYPEINFO_FROM_GENERIC)
         castFlags |= CASTFLAG_NO_IMPLICIT;

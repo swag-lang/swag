@@ -172,7 +172,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         else
         {
             // This is a generic type match
-            if (wantedTypeInfo->flags & TYPEINFO_GENERIC)
+            if (wantedTypeInfo->isGeneric())
             {
                 // Need to register inside types when the generic type is a compound
                 VectorNative<TypeInfo*> symbolTypeInfos;
@@ -395,7 +395,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                         }
 
                         // Array dimension was a generic symbol. Set the corresponding symbol in order to check its value
-                        if (symbolArray->flags & TYPEINFO_GENERIC && symbolArray->flags & TYPEINFO_GENERIC_COUNT)
+                        if (symbolArray->isGeneric() && symbolArray->flags & TYPEINFO_GENERIC_COUNT)
                         {
                             SWAG_ASSERT(symbolArray->sizeNode);
                             SWAG_ASSERT(symbolArray->sizeNode->resolvedSymbolName);
@@ -460,7 +460,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                     {
                         auto symbolLambda = CastTypeInfo<TypeInfoFuncAttr>(wantedTypeInfo, TypeInfoKind::LambdaClosure);
                         auto typeLambda   = CastTypeInfo<TypeInfoFuncAttr>(callTypeInfo, TypeInfoKind::LambdaClosure);
-                        if (symbolLambda->returnType && (symbolLambda->returnType->flags & TYPEINFO_GENERIC))
+                        if (symbolLambda->returnType && symbolLambda->returnType->isGeneric())
                         {
                             symbolTypeInfos.push_back(symbolLambda->returnType);
                             typeInfos.push_back(typeLambda->returnType);
@@ -479,7 +479,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                             else
                                 typeParam = typeLambda->parameters[idx];
 
-                            if (symbolParam->typeInfo->flags & TYPEINFO_GENERIC &&
+                            if (symbolParam->typeInfo->isGeneric() &&
                                 !typeParam->typeInfo->isNative(NativeTypeKind::Undefined))
                             {
                                 symbolTypeInfos.push_back(symbolParam->typeInfo);
@@ -663,11 +663,11 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
     // (we deduce the type)
     if (!userGenericParams && wantedNumGenericParams && !(context.flags & SymbolMatchContext::MATCH_DO_NOT_ACCEPT_NO_GENERIC))
     {
-        if ((myTypeInfo->flags & TYPEINFO_GENERIC) ||
+        if (myTypeInfo->isGeneric() ||
             (context.flags & SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC) ||
             !context.genericReplaceTypes.empty())
         {
-            if (!(myTypeInfo->flags & TYPEINFO_GENERIC) || !context.parameters.size())
+            if (!myTypeInfo->isGeneric() || !context.parameters.size())
             {
                 context.flags |= SymbolMatchContext::MATCH_GENERIC_AUTO;
                 for (int i = 0; i < wantedNumGenericParams; i++)
@@ -728,7 +728,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
         // In that case, we want to match the generic version of the type
         if (!userGenericParams && wantedNumGenericParams && (context.flags & SymbolMatchContext::MATCH_DO_NOT_ACCEPT_NO_GENERIC))
         {
-            if (myTypeInfo->flags & TYPEINFO_GENERIC)
+            if (myTypeInfo->isGeneric())
                 return;
         }
 
@@ -757,7 +757,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                                 context.result = MatchResult::NotEnoughGenericParameters;
                                 return;
                             }
-                            else if (myTypeInfo->flags & TYPEINFO_GENERIC)
+                            else if (myTypeInfo->isGeneric())
                             {
                                 context.result = MatchResult::NotEnoughGenericParameters;
                                 return;
@@ -770,7 +770,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
 
         // If there's no specified generic parameters, and we try to match a concrete function, then we must to
         // be sure that the current contextual types match the contextual types of the concrete function (if they are any)
-        else if (!userGenericParams && !(myTypeInfo->flags & TYPEINFO_GENERIC) && !context.genericReplaceTypes.empty())
+        else if (!userGenericParams && !myTypeInfo->isGeneric() && !context.genericReplaceTypes.empty())
         {
             if (myTypeInfo->declNode->kind == AstNodeKind::FuncDecl)
             {
@@ -798,7 +798,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
         auto typeInfo        = TypeManager::concreteType(context.genericParametersCallTypes[i], CONCRETE_FUNC);
         auto symbolParameter = genericParameters[i];
 
-        if (myTypeInfo->flags & TYPEINFO_GENERIC)
+        if (myTypeInfo->isGeneric())
         {
             auto firstChild = callParameter->childs.empty() ? nullptr : callParameter->childs.front();
             if (firstChild)
@@ -890,7 +890,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
 
         // We do not test computedValue for a struct, because it will contain the 'typeinfo', which can be different
         // for tuples
-        else if ((myTypeInfo->flags & TYPEINFO_GENERIC) ||
+        else if (myTypeInfo->isGeneric() ||
                  symbolParameter->typeInfo->isStruct() ||
                  callParameter->typeInfo->isAlias() ||
                  !(symbolParameter->flags & TYPEINFO_DEFINED_VALUE) ||

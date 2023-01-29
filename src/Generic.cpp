@@ -112,7 +112,7 @@ TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeIn
         return nullptr;
     if (replaceTypes.empty())
         return typeInfo;
-    if (!(typeInfo->flags & TYPEINFO_GENERIC))
+    if (!typeInfo->isGeneric())
         return typeInfo;
 
     // Search if the type has a corresponding replacement
@@ -480,7 +480,7 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, C
     // The type is still generic if the doTypeSubstitution didn't find any type to change
     // (for example if we have just generic value)
     TypeInfoFuncAttr* newTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(newFunc->typeInfo, newFunc->typeInfo->kind);
-    if (newTypeFunc->flags & TYPEINFO_GENERIC)
+    if (newTypeFunc->isGeneric())
     {
         newTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(newFunc->typeInfo->clone(), newFunc->typeInfo->kind);
         newTypeFunc->removeGenericFlag();
@@ -551,7 +551,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
             cloneContext.replaceTypes[p->typeInfo->name] = g_TypeMgr->typeInfoUndefined;
         for (auto p : typeFunc->parameters)
         {
-            if (p->typeInfo->flags & TYPEINFO_GENERIC)
+            if (p->typeInfo->isGeneric())
                 cloneContext.replaceTypes[p->typeInfo->name] = g_TypeMgr->typeInfoUndefined;
         }
     }
@@ -625,7 +625,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     // The type is still generic if the doTypeSubstitution didn't find any type to change
     // (for example if we have just generic value)
     TypeInfoFuncAttr* newTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(newFunc->typeInfo, newFunc->typeInfo->kind);
-    if (newTypeFunc->flags & TYPEINFO_GENERIC || noReplaceTypes)
+    if (newTypeFunc->isGeneric() || noReplaceTypes)
     {
         newTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(newFunc->typeInfo->clone(), newFunc->typeInfo->kind);
         newTypeFunc->removeGenericFlag();

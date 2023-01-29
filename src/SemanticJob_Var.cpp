@@ -1142,7 +1142,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         node->flags |= AST_NO_BYTECODE | AST_R_VALUE;
         if (!isGeneric)
         {
-            SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->report({node, Fmt(Err(Err0311), node->typeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(!node->typeInfo->isGeneric(), context->report({node, Fmt(Err(Err0311), node->typeInfo->getDisplayNameC())}));
 
             storageSegment = getSegmentForVar(context, node);
             if (node->extension && node->extension->misc && node->extension->misc->resolvedUserOpSymbolOverload)
@@ -1203,7 +1203,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     else if (symbolFlags & OVERLOAD_VAR_GLOBAL)
     {
         // Variable is still generic. Try to find default generic parameters to instantiate it
-        if (node->typeInfo->flags & TYPEINFO_GENERIC)
+        if (node->typeInfo->isGeneric())
         {
             SWAG_CHECK(Generic::instantiateDefaultGenericVar(context, node));
             if (context->result != ContextResult::Done)
@@ -1277,7 +1277,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
 
         // Variable is still generic. Try to find default generic parameters to instantiate it
-        if (node->typeInfo->flags & TYPEINFO_GENERIC)
+        if (node->typeInfo->isGeneric())
         {
             SWAG_CHECK(Generic::instantiateDefaultGenericVar(context, node));
             if (context->result != ContextResult::Done)

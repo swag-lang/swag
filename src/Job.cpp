@@ -113,7 +113,7 @@ void Job::waitStructGeneratedAlloc(TypeInfo* typeInfo)
         typeInfo = ((TypeInfoPointer*) typeInfo)->pointedType;
     if (!typeInfo->isStruct())
         return;
-    if (typeInfo->flags & TYPEINFO_GENERIC)
+    if (typeInfo->isGeneric())
         return;
 
     auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
@@ -140,7 +140,7 @@ void Job::waitStructGenerated(TypeInfo* typeInfo)
         typeInfo = ((TypeInfoPointer*) typeInfo)->pointedType;
     if (!typeInfo->isStruct())
         return;
-    if (typeInfo->flags & TYPEINFO_GENERIC)
+    if (typeInfo->isGeneric())
         return;
 
     auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);

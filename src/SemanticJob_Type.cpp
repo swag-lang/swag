@@ -139,7 +139,7 @@ bool SemanticJob::resolveTypeLambdaClosure(SemanticContext* context)
     if (node->returnType)
     {
         typeInfo->returnType = node->returnType->typeInfo;
-        if (typeInfo->returnType->flags & TYPEINFO_GENERIC)
+        if (typeInfo->returnType->isGeneric())
             typeInfo->flags |= TYPEINFO_GENERIC;
     }
     else
@@ -159,7 +159,7 @@ bool SemanticJob::resolveTypeLambdaClosure(SemanticContext* context)
             if (param->extension && param->extension->misc && param->extension->misc->isNamed)
                 typeParam->namedParam = param->extension->misc->isNamed->token.text;
 
-            if (typeParam->typeInfo->flags & TYPEINFO_GENERIC)
+            if (typeParam->typeInfo->isGeneric())
                 typeInfo->flags |= TYPEINFO_GENERIC;
 
             // Variadic must be the last one
@@ -232,7 +232,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
             if (child->kind == AstNodeKind::IdentifierRef &&
                 !(child->flags & AST_CONST_EXPR) &&
                 typeNode->ownerStructScope &&
-                typeNode->ownerStructScope->owner->typeInfo->flags & TYPEINFO_GENERIC)
+                typeNode->ownerStructScope->owner->typeInfo->isGeneric())
             {
                 typeNode->typeInfo = g_TypeMgr->typeInfoUndefined;
                 return true;
@@ -638,7 +638,7 @@ bool SemanticJob::resolveTypeAliasBefore(SemanticContext* context)
     node->typeInfo = typeInfo;
 
     uint32_t symbolFlags = OVERLOAD_INCOMPLETE;
-    if (node->typeInfo->flags & TYPEINFO_GENERIC)
+    if (node->typeInfo->isGeneric())
         symbolFlags |= OVERLOAD_GENERIC;
 
     node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::TypeAlias, nullptr, symbolFlags);
@@ -658,7 +658,7 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
     typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_CONST);
     typeInfo->computeName();
     uint32_t symbolFlags = node->resolvedSymbolOverload->flags & ~OVERLOAD_INCOMPLETE;
-    if (typeInfo->flags & TYPEINFO_GENERIC)
+    if (typeInfo->isGeneric())
         symbolFlags |= OVERLOAD_GENERIC;
     SWAG_CHECK(node->ownerScope->symTable.addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::TypeAlias, nullptr, symbolFlags));
     return true;

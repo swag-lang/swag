@@ -896,7 +896,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     identifier->resolvedSymbolName     = symbol;
     identifier->resolvedSymbolOverload = overload;
 
-    if (identifier->typeInfo->flags & TYPEINFO_GENERIC)
+    if (identifier->typeInfo->isGeneric())
         identifier->flags |= AST_IS_GENERIC;
 
     // Symbol is linked to a using var : insert the variable name before the symbol
@@ -1701,7 +1701,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             if (rawTypeInfo->isStruct())
             {
                 auto typeInfo = CastTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Struct);
-                if (!(typeInfo->flags & TYPEINFO_GENERIC))
+                if (!typeInfo->isGeneric())
                     oneOverload.symMatchContext.flags |= SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC;
             }
         }
@@ -3403,12 +3403,12 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
 
         // Priority to a concrete type versus a generic one
         auto lastOverloadType = overSym->ownerTable->scope->owner->typeInfo;
-        if (lastOverloadType && lastOverloadType->flags & TYPEINFO_GENERIC)
+        if (lastOverloadType && lastOverloadType->isGeneric())
         {
             for (int j = 0; j < countMatches; j++)
             {
                 auto newOverloadType = matches[j]->symbolOverload->symbol->ownerTable->scope->owner->typeInfo;
-                if (newOverloadType && !(newOverloadType->flags & TYPEINFO_GENERIC))
+                if (newOverloadType && !newOverloadType->isGeneric())
                 {
                     curMatch->remove = true;
                     break;
@@ -3940,9 +3940,9 @@ bool SemanticJob::needToWaitForSymbol(SemanticContext* context, AstIdentifier* n
 
                     // If this is a generic type, and it's from an instante, we must wait, because we will
                     // have to instantiate that symbol too
-                    if (node->ownerStructScope && (node->ownerStructScope->owner->flags & AST_FROM_GENERIC) && (node->typeInfo->flags & TYPEINFO_GENERIC))
+                    if (node->ownerStructScope && (node->ownerStructScope->owner->flags & AST_FROM_GENERIC) && node->typeInfo->isGeneric())
                         needToWait = true;
-                    if (node->ownerFct && (node->ownerFct->flags & AST_FROM_GENERIC) && (node->typeInfo->flags & TYPEINFO_GENERIC))
+                    if (node->ownerFct && (node->ownerFct->flags & AST_FROM_GENERIC) && node->typeInfo->isGeneric())
                         needToWait = true;
                 }
             }

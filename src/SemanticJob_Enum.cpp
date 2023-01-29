@@ -147,7 +147,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
     SWAG_ASSERT(enumNode);
 
     auto typeEnum = CastTypeInfo<TypeInfoEnum>(enumNode->typeInfo, TypeInfoKind::Enum);
-    if (typeEnum->rawType->flags & TYPEINFO_GENERIC)
+    if (typeEnum->rawType->isGeneric())
         return true;
 
     auto         assignNode     = valNode->childs.empty() ? nullptr : valNode->childs[0];
