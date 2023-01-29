@@ -6,7 +6,7 @@
     private var g_RngInit:  bool
 }
 
-public struct UUID
+struct UUID
 {
     using uuid: union
     {
@@ -55,6 +55,7 @@ impl UUID
     }
 
     // Convert uuid to a string of the form xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx
+    #[Swag.Safety("bound", false)]
     mtd toString(result: [..] u8)
     {
         Debug.assert(@countof(result) == 36)
