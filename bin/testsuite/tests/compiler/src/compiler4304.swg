@@ -1,5 +1,5 @@
-#[Swag.PrintBc]
-#[Swag.Optim("", false)]
+//#[Swag.PrintBc]
+//#[Swag.Optim("", false)]
 #test
 {
     x := 0'u8

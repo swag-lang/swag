@@ -5352,21 +5352,70 @@ void ByteCodeOptimizer::reduceDupInstr(ByteCodeOptContext* context, ByteCodeInst
         return;
     if (ip[1].flags & BCI_START_STMT)
         return;
-    if (!ByteCode::isJump(ip + 1))
-        return;
 
-    auto ipn = ip + 1;
-    while (ByteCode::isJump(ipn))
+    auto isParam = false;
+    switch (ip->op)
+    {
+    case ByteCodeOp::GetParam8:
+    case ByteCodeOp::GetParam16:
+    case ByteCodeOp::GetParam32:
+    case ByteCodeOp::GetParam64:
+    case ByteCodeOp::GetIncParam64:
+        isParam = true;
+        break;
+
+    case ByteCodeOp::GetFromStack8:
+    case ByteCodeOp::GetFromStack16:
+    case ByteCodeOp::GetFromStack32:
+    case ByteCodeOp::GetFromStack64:
+    case ByteCodeOp::GetParam64DeRef8:
+    case ByteCodeOp::GetParam64DeRef16:
+    case ByteCodeOp::GetParam64DeRef32:
+    case ByteCodeOp::GetParam64DeRef64:
+    case ByteCodeOp::GetIncFromStack64:
+    case ByteCodeOp::GetIncFromStack64DeRef8:
+    case ByteCodeOp::GetIncFromStack64DeRef16:
+    case ByteCodeOp::GetIncFromStack64DeRef32:
+    case ByteCodeOp::GetIncFromStack64DeRef64:
+    case ByteCodeOp::GetIncParam64DeRef8:
+    case ByteCodeOp::GetIncParam64DeRef16:
+    case ByteCodeOp::GetIncParam64DeRef32:
+    case ByteCodeOp::GetIncParam64DeRef64:
+    case ByteCodeOp::IntrinsicIsConstExprSI:
+        break;
+    default:
+        return;
+    }
+
+    auto ipn  = ip + 1;
+    bool exit = false;
+    while (!exit)
     {
         if (ipn->flags & BCI_START_STMT)
             return;
+        if (ipn->op == ip->op)
+            break;
+
+        if (ByteCode::hasWriteRefToRegA(ipn, ip[0].a.u32))
+            return;
+        if (ByteCode::hasWriteRefToRegB(ipn, ip[0].a.u32))
+            return;
+        if (ByteCode::hasWriteRefToRegC(ipn, ip[0].a.u32))
+            return;
+        if (ByteCode::hasWriteRefToRegD(ipn, ip[0].a.u32))
+            return;
+        if (ipn->op == ByteCodeOp::End)
+            return;
+
+        if (!isParam &&
+            !ByteCode::isJump(ipn) &&
+            !(g_ByteCodeOpDesc[(int) ipn->op].flags & OPFLAG_IS_REGONLY) &&
+            ipn->op != ByteCodeOp::Nop)
+            return;
+
         ipn++;
     }
 
-    if (ipn->flags & BCI_START_STMT)
-        return;
-    if (ip[0].op != ipn->op)
-        return;
     if ((ip[0].flags & ~BCI_START_STMT) != (ipn->flags & ~BCI_START_STMT))
         return;
     if (ByteCode::hasSomethingInA(ip) && ip[0].a.u64 != ipn->a.u64)
@@ -5378,37 +5427,7 @@ void ByteCodeOptimizer::reduceDupInstr(ByteCodeOptContext* context, ByteCodeInst
     if (ByteCode::hasSomethingInB(ip) && ip[0].d.u64 != ipn->d.u64)
         return;
 
-    switch (ip->op)
-    {
-    case ByteCodeOp::GetFromStack8:
-    case ByteCodeOp::GetFromStack16:
-    case ByteCodeOp::GetFromStack32:
-    case ByteCodeOp::GetFromStack64:
-    case ByteCodeOp::GetParam8:
-    case ByteCodeOp::GetParam16:
-    case ByteCodeOp::GetParam32:
-    case ByteCodeOp::GetParam64:
-    case ByteCodeOp::GetParam64DeRef8:
-    case ByteCodeOp::GetParam64DeRef16:
-    case ByteCodeOp::GetParam64DeRef32:
-    case ByteCodeOp::GetParam64DeRef64:
-    case ByteCodeOp::GetIncFromStack64:
-    case ByteCodeOp::GetIncFromStack64DeRef8:
-    case ByteCodeOp::GetIncFromStack64DeRef16:
-    case ByteCodeOp::GetIncFromStack64DeRef32:
-    case ByteCodeOp::GetIncFromStack64DeRef64:
-    case ByteCodeOp::GetIncParam64:
-    case ByteCodeOp::GetIncParam64DeRef8:
-    case ByteCodeOp::GetIncParam64DeRef16:
-    case ByteCodeOp::GetIncParam64DeRef32:
-    case ByteCodeOp::GetIncParam64DeRef64:
-    case ByteCodeOp::IntrinsicIsConstExprSI:
-        setNop(context, ipn);
-        break;
-    default:
-        // printf("%s\n", g_ByteCodeOpDesc[(int) ip->op].name);
-        break;
-    }
+    setNop(context, ipn);
 }
 
 bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
