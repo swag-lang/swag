@@ -1,8 +1,10 @@
+/**
+To declare a variable, use the 'var' keyword, followed by ':' and then the type.
+*/
 #test
 {
-    // To declare a variable, use the 'var' keyword, followed by ':' and then the type
     {
-        // Variable 'a' is of type 'u32' and its value is '1'
+        // Variable 'a' is of type 'u32' and its value is '1'.
         var a: u32 = 1
         @assert(a == 1)
 
@@ -10,7 +12,7 @@
         @assert(b == "string")
     }
 
-    // You can also declare multiple variables on the same line
+    // We have already seen that we can declare multiple variables on the same line.
     {
         var a, b: u32 = 123
         @assert(a == 123)
@@ -23,26 +25,40 @@
         @assert(a == 12)
         @assert(b == 1.5)
     }
+}
 
-    // If you don't assign a value, then the variable will be initialized with its default value (0)
-    {
-        var a: bool
-        @assert(a == false)
+/**
+If you don't assign a value, then the variable will be initialized with its default value (0).
+So a variable is **always** initialized.
+*/
+#test
+{
+    var a: bool
+    @assert(a == false)
 
-        var b: string
-        @assert(b == null)
+    var b: string
+    @assert(b == null)
 
-        var c: f64
-        @assert(c == 0)
-    }
+    var c: f64
+    @assert(c == 0)
+}
 
-    // If you do not want the variable to be initialized, you can assign it with 'undefined'
-    {
-        var a: bool = undefined
-        var b: string = undefined
-    }
+/**
+But if you really do not want the variable to be initialized, you can assign it with 'undefined'.
+To use with care, of course, but this is sometimes necessary to avoid the initialization cost.
+*/
+#test
+{
+    var a: bool = undefined
+    var b: string = undefined
+}
 
-    // Type is optional if it can be deduced from the assignment
+/**
+We have seen that the type is optional in the declaration if it can be deduced from the assignment.
+*/
+#test
+{
+    // This is a bunch of type inference.
     {
         var a = 1.5
         @assert(a == 1.5)
@@ -57,7 +73,7 @@
         #assert @typeof(c) == f64
     }
 
-    // Same for multiple variables
+    // The same goes for multiple variables.
     {
         var a, b = true
         @assert(a == true)
@@ -71,19 +87,22 @@
         #assert @typeof(c) == f32
         #assert @typeof(d) == string
     }
+}
 
-    // Even 'var' is optional if you use ':='
-    {
-        a := 1.5
-        @assert(a == 1.5)
-        #assert @typeof(a) == f32
+/**
+And in fact even 'var' is optional if you use the short form with ':='.
+*/
+#test
+{
+    a := 1.5
+    @assert(a == 1.5)
+    #assert @typeof(a) == f32
 
-        b := "string"
-        @assert(b == "string")
-        #assert @typeof(b) == string
+    b := "string"
+    @assert(b == "string")
+    #assert @typeof(b) == string
 
-        c := 1.5'f64
-        @assert(c == 1.5)
-        #assert @typeof(c) == f64
-    }
+    c := 1.5'f64
+    @assert(c == 1.5)
+    #assert @typeof(c) == f64
 }

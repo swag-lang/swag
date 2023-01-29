@@ -1,28 +1,38 @@
 /**
-In Swag, there's no need for ';' to end a statement like in C/C++.
+In Swag, there's no need to end a statement with ';' like in C/C++.
 Most of the time a end of line is enough.
+
+**#test** starts a new test function which will be executed with the *swag test* command. It's only possible to declare that kind of special function in a test module (which is the case here).
 */
+
 #test
 {
-    var x, y = 0
+    // Declare two variables x and y of type s32 (signed 32 bits), and initialize them to 1.
+    var x, y: s32 = 1
+
+    // Increment x and y by 1.
     x += 1
     y += 1
-    @assert(x == 1)
-    @assert(y == x)
+
+    // When running the tests, @assert will verify that those values are correct.
+    @assert(x == 2)     // Verify that x is equal to 2, and raise an error if not.
+    @assert(y == x)     // Verify that y is equal to x.
 }
 
 /**
-But ';' is possible too
+The semicolons are not mandatory, but it's possible to use them if you want.
 */
 #test
 {
+    // You can notice that the type of x and y is not specified here. This is due to type inference (we will see that later).
     var x, y = 0;
-    x += 1;
-    y += 1;
+
+    // You can also notice the short syntax to do the same operation on multiple variables at once.
+    x, y += 1;
 }
 
 /**
-This is usefull if you want to do multiple things on the same line.
+Semicolons can be usefull if you want to do multiple things on the same line.
 */
 #test
 {

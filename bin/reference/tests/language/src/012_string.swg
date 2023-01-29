@@ -1,6 +1,10 @@
+/**
+In Swag, strings are encoded in UTF8.
+*/
+
 #test
 {
-    // Strings are UTF8, and can be compared
+    // They also can be compared.
     {
         const a = "this is a chinese character: 是"
         #assert a == "this is a chinese character: 是"
@@ -9,50 +13,69 @@
         #assert b == "this are some cyrillic characters: ӜИ"
     }
 
-    // A rune is an unicode codepoint, and is 32 bits
+    // A rune is an unicode codepoint, and is 32 bits.
     {
         const a = "是"'rune
         #assert a == "是"'rune
         #assert @sizeof(a) == @sizeof(u32)
     }
+}
 
-    // You *cannot* index a string to get a rune, except in ascii strings. This is because i didn't want the
-    // runtime to come with UTF8 decoding.
+/**
+You cannot index a string to get a rune, except in ascii strings.
+This is because we didn't want the runtime to come with the cost of UTF8 encoding/decoding.
+But note that the 'Std.Core' module will have all you need to manipulate UTF8 strings.
+*/
+#test
+{
     // So in that case you will retrieve a byte.
     {
         const a = "this is a chinese character: 是"
+
+        // Get the first byte of the string
         const b = a[0]
         #assert b == "t"'u8
         #assert @typeof(b) == @typeof(u8)
 
         // Here, the 'X' character in the middle does not have the index '1', because the chinese character before is
-        // encoded in UTF8 with more than 1 byte
+        // encoded in UTF8 with more than 1 byte.
         const c = "是X是"
         #assert c[1] != "X"'u8 // False because the byte number 1 is not the character 'X'
     }
+}
 
-    // Multiple strings are compiled as one
-    {
-        const a = "this is "   "a"   " string"
-        #assert a == "this is a string"
-    }
+/**
+Multiple strings are compiled as one.
+*/
+#test
+{
+    const a = "this is "   "a"   " string"
+    #assert a == "this is a string"
+}
 
-    // You can concatenate some values if the values are known at compile time.
-    // Use the '++' operator for that
-    {
-        const a = "the devil number is " ++ 666
-        #assert a == "the devil number is 666"
+/**
+You can concatenate some values if the values are known at compile time.
+Use the '++' operator for that.
+*/
+#test
+{
+    const a = "the devil number is " ++ 666
+    #assert a == "the devil number is 666"
 
-        const b = 666
-        var c = "the devil number is not " ++ (b + 1) ++ "!"
-        @assert(c == "the devil number is not 667!")
+    const b = 666
+    var c = "the devil number is not " ++ (b + 1) ++ "!"
+    @assert(c == "the devil number is not 667!")
 
-        var d = "they are " ++ 4 ++ " apples in " ++ (2*2) ++ " baskets"
-        @assert(d == "they are 4 apples in 4 baskets")
-    }
+    var d = "they are " ++ 4 ++ " apples in " ++ (2*2) ++ " baskets"
+    @assert(d == "they are 4 apples in 4 baskets")
+}
 
-    // A string and a rune can contain escape sequences for special characters
-    // An escape sequence starts with '\'
+/**
+A string and a rune can contain some 'escape sequences' to specify special characters.
+*/
+#test
+{
+    // An escape sequence starts with '\'.
     {
         const a = "this is code ascii 0x00:   \0"
         const b = "this is code ascii 0x07:   \a"
@@ -67,7 +90,7 @@
         const k = "this is code ascii 0x5C:   \\"
     }
 
-    // An escape sequence can be used to specify an ascii or an unicode value
+    // An escape sequence can also be used to specify an ascii or a unicode value.
     {
         const a = "\x26"        // 1 byte, hexadecimal, extended ascii
         const b = "\u2626"      // 2 bytes, hexadecimal, unicode 16 bits
@@ -76,17 +99,21 @@
         const d = "\u2F46"
         #assert d == "⽆"
     }
+}
 
-    // A raw string does not transform the escape sequences
-    // A raw string starts and ends with the character '@'
+/**
+A 'raw string' does not transform the escape sequences inside it.
+*/
+#test
+{
+    // A raw string starts and ends with the character '@'.
     {
         const a = @"\u2F46"@
         #assert a != "⽆"
         #assert a == @"\u2F46"@
     }
 
-    // A raw string can be declared on several lines because <eol> is now
-    // part of the string
+    // A raw string can be declared on several lines because <eol> is now part of the string.
     {
         const a = @"this is
                     a
@@ -100,9 +127,14 @@
         // a
         // string
     }
+}
 
-    // A multiline string starts and ends with """
-    // Unlike raw strings, they still evaluate escape sequences
+/**
+A multiline string starts and ends with """.
+Unlike raw strings, they still evaluate escape sequences.
+*/
+#test
+{
     {
         const a = """this is
                      a
@@ -115,21 +147,25 @@
         // string
     }
 
-    // In a multiline or raw string, if you end a line with '\', the
-    // following eol will *NOT* be part of the string
+    // In a multiline or a raw string, if you end a line with '\', the following <eol> will *NOT* be part of the string.
     {
         const a = """\
                      this is
                      a
                      string
                      """
-        // Equivalent to :
+        // Is equivalent to :
         // this is
         // a
         // string
     }
+}
 
-    // A single character can be casted to every unsigned int type
+/**
+A single 'character' can be casted to every unsigned int type.
+*/
+#test
+{
     {
         var a = "0"'u8
         @assert(a == 48)
@@ -151,8 +187,13 @@
         @assert(e == 52)
         @assert(@typeof(e)== @typeof(rune))
     }
+}
 
-    // A string can be null if not defined
+/**
+A string can be 'null' if not defined.
+*/
+#test
+{
     {
         var a: string
         @assert(a == null)
@@ -161,9 +202,13 @@
         a = null
         @assert(a == null)
     }
+}
 
-    // You can also use '@stringof' to return at compile time the result of a
-    // constant expression as a string
+/**
+You can also use the instrinsic '@stringof' to return at compile time the result of a constant expression as a string.
+*/
+#test
+{
     {
         const X = 1
         #assert @stringof(X) == "1"

@@ -1,12 +1,92 @@
 /**
-This is the list of all keywords:
+This is the list of all keywords in the language.
 */
 
-#global skip // At the beginning of a file, this tells Swag to NOT take care of the rest.
+/**
+Basic types.
+```
+s8
+s16
+s32
+s64
+int
+u8
+u16
+u32
+u64
+uint
+f32
+f64
+bool
+string
+rune
+any
+typeinfo
+void
+code
+cstring
+cvarargs
+```
+*/
 
-// Compiler keywords
-// -----------------
+/**
+Language keywords.
+```
+if
+else
+elif
+and
+or
+switch
+case
+default
+break
+continue
+fallthrough
+for
+loop
+while
+visit
+return
+defer
+scope
 
+false
+true
+null
+undefined
+
+const
+var
+ref
+acast
+cast
+assume
+try
+catch
+throw
+closure
+func
+attr
+enum
+struct
+union
+namespace
+impl
+private
+public
+interface
+retval
+using
+alias
+discard
+dref
+```
+*/
+
+/**
+Compiler keywords.
+```
 #arch
 #backend
 #callerfunction
@@ -51,10 +131,12 @@ This is the list of all keywords:
 #premain
 #run
 #test
+```
+*/
 
-// Intrinsics libc
-// ---------------
-
+/**
+Intrinsics libc.
+```
 @abs
 @acos
 @alloc
@@ -100,16 +182,17 @@ This is the list of all keywords:
 @tan
 @tanh
 @trunc
+```
+*/
 
-// Intrinsics
-// ----------
-
+/**
+Other intrinsics.
+```
 @index
 @err
 @alias0
 @alias1
-@alias2 ...
-
+@alias2 and more generally @alias<N>
 @alignof
 @args
 @assert
@@ -133,6 +216,9 @@ This is the list of all keywords:
 @itftableof
 @kindof
 @location
+@mixin0
+@mixin1
+@mixin2 and more generally @mixinN
 @mkany
 @mkcallback
 @mkinterface
@@ -156,91 +242,17 @@ This is the list of all keywords:
 @sysalloc
 @typecmp
 @typeof
+```
+*/
 
-// Modifiers
-// ---------
-
+/**
+Modifiers.
+```
 ,safe
 ,small
 ,nodrop
 ,bit
 ,move
 ,moveraw
-
-// Language keywords
-// -----------------
-
-acast
-alias
-assume
-attr
-cast
-catch
-closure
-const
-discard
-dref
-enum
-func
-impl
-interface
-namespace
-private
-public
-ref
-retval
-struct
-throw
-try
-union
-using
-var
-
-false
-true
-null
-undefined
-
-and
-break
-case
-continue
-default
-defer
-elif
-else
-fallthrough
-for
-if
-scope
-loop
-or
-return
-switch
-visit
-while
-
-// Basic types
-// -----------
-
-any
-bool
-code
-cstring
-cvarargs
-f32
-f64
-int
-rune
-s16
-s32
-s64
-s8
-string
-typeinfo
-u16
-u32
-u64
-u8
-uint
-void
+```
+*/

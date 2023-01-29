@@ -1,6 +1,6 @@
 #test
 {
-    // This are all signed integers types
+    // This are all signed integers types.
     {
         var a: s8 = -1      // 8 bits signed integer
         var b: s16 = -2     // 16 bits signed integer
@@ -8,15 +8,15 @@
         var d: s64 = -4     // 64 bits signed integer
         var e: int = -4     // 64 bits signed integer
 
-        // The instrinsic '@assert' will panic at runtime if the enclosed expression is false
+        // Remember that the instrinsic '@assert' will raise an error at runtime if the enclosed expression is false.
         @assert(a == -1)
         @assert(b == -2)
         @assert(c == -3)
         @assert(d == -4)
 
-        // The instrinsic '@sizeof' gives the size, in bytes, of a variable
-        @assert(@sizeof(a) == 1)
-        @assert(@sizeof(b) == 2)
+        // The instrinsic '@sizeof' gives the size, in bytes, of a variable.
+        @assert(@sizeof(a) == 1)    // 'a' has type 's8', so this should be 1 byte.
+        @assert(@sizeof(b) == 2)    // 'b' has type 's16', so this should be 2 bytes.
         @assert(@sizeof(c) == 4)
         @assert(@sizeof(d) == 8)
         @assert(@sizeof(e) == 8)
@@ -42,7 +42,7 @@
         @assert(@sizeof(e) == 8)
     }
 
-    // This are all float types
+    // This are all floating point types.
     {
         var a: f32 = 3.14       // 32 bits floating point value
         var b: f64 = 3.14159    // 64 bits floating point value
@@ -54,7 +54,7 @@
         @assert(@sizeof(b) == 8)
     }
 
-    // The boolean type
+    // The boolean type.
     {
         var a: bool = true      // Stored in 1 byte
         var b: bool = false     // Stored in 1 byte
@@ -67,7 +67,7 @@
     }
 
     // The string type.
-    // Strings are UTF8, and are stored as two 64 bits (the pointer to the value and the string length in bytes)
+    // Strings are UTF8, and are stored as two 64 bits (the pointer to the value and the string length in bytes).
     {
         var a: string = "string 是"
         @assert(a == "string 是")
@@ -81,22 +81,31 @@
         @assert(a == "是"'rune)
         @assert(@sizeof(a) == 4)
     }
+}
 
-    // Swag has type reflection.
-    // You can use '@typeof' to get the type of an expression.
+/**
+Swag has type reflection at compile time and at runtime.
+We will see that later in more details.
+*/
+
+#test
+{
+    // You can use '@mktype' to create a type based on an expression.
     {
-        var a = 0
+        var a = 0               // 'a' is inferred to have the 's32' type
         var b: @mktype(a) = 1   // 'b' will have the same type as 'a'
+
+        // We can verify with '@typeof' that 'a' and 'b' have the same type.
         @assert(@typeof(a) == @typeof(b))
         @assert(@typeof(a) == s32)
 
-        // As the types of 'a' and 'b' are known at compile time, we can use '#assert' instead of '@assert'
-        // The #assert will be done by the compiler, and will not generate runtime code (unlike '@assert')
+        // As the types of 'a' and 'b' are known by the compiler, we can use '#assert' instead of '@assert'.
+        // The '#assert' will be done at compile time, and will not generate code (unlike '@assert').
         #assert @typeof(a) == @typeof(b)
         #assert @typeof(a) == s32
     }
 
-    // Types are values, at compile time and at runtime.
+    // Short notice that types are also values, at compile time and at runtime.
     {
         x := @typeof(s32)
         @assert(x == s32)

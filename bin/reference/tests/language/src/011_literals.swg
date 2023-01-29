@@ -1,6 +1,6 @@
 #test
 {
-    // Integers in decimal, hexadecimal or binary forms
+    // Integers in decimal, hexadecimal or binary forms.
     {
         const a: u32 = 123456           // Decimal
         const b: u32 = 0xFFFF           // Hexadecimal, with '0x'
@@ -10,7 +10,7 @@
         @assert(c == 15)
     }
 
-    // You can separate digits with the '_' character
+    // You can separate digits with the '_' character.
     {
         const a: u32 = 123_456
         const b: u32 = 0xF_F_F_F
@@ -20,12 +20,16 @@
         @assert(c == 15)
     }
 
-    // The default type of an hexadecimal number or a binary number is 'u32' or 'u64' depending on its value
+    // The default type of an hexadecimal number or a binary number is 'u32' or 'u64' depending on its value.
     {
+        // The compiler will deduce that the type of 'a' is 'u32'.
         const a = 0xFF
         #assert @typeof(a) == u32
-        const b = 0xFFFFFF_FFFFFF
+
+        // The compiler will deduce that the type of 'b' is 'u64' because the constant is too big for 32 bits.
+        const b = 0xF_FFFFF_FFFFFF
         #assert @typeof(b) == u64
+
         const c = 0b00000001
         #assert @typeof(c) == u32
         const d = 0b00000001_00000001_00000001_00000001_00000001
@@ -33,7 +37,7 @@
     }
 
     // A boolean is 'true' or 'false'
-    // Note that as constants are known at compile time, we can use '#assert' to check the values
+    // Note that as constants are known at compile time, we can use '#assert' to check the values.
     {
         const a = true
         #assert a == true
@@ -43,7 +47,7 @@
         #assert c == false
     }
 
-    // A float value has the usual C/C++ form
+    // A float value has the usual C/C++ form.
     {
         var a = 1.5
         @assert(a == 1.5)
@@ -62,21 +66,29 @@
         @assert(e == -0.1)
     }
 
-    // By default, a floating point value is 'f32', not 'f64' (aka double) like in C++
+    // By default, a floating point value is 'f32', not 'f64' (aka double) like in C/C++.
     {
         var a = 1.5
         @assert(a == 1.5)
         #assert @typeof(a) == f32
         #assert @typeof(a) != f64
     }
+}
 
-    // You can postfix a number literal by a type, to force it
+/**
+You can also postfix a number literal by a type.
+*/
+#test
+{
     {
+        // Declare 'a' to be a 'f64' variable assigned to '1.5'
         var a = 1.5'f64
         @assert(a == 1.5)
         @assert(a == 1.5'f64)
         #assert @typeof(a) == f64
 
+        // Here we have the first usage of the 'short declaration form' with ':='.
+        // 'b' is a new variable of type 'u8' initialized with '10'.
         b := 10'u8
         @assert(b == 10)
         #assert @typeof(b) == u8
