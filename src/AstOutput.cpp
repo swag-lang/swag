@@ -1019,7 +1019,7 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstNode* node
         typeInfo     = typeRef->pointedType;
     }
 
-    if (typeInfo->flags & TYPEINFO_SELF)
+    if (typeInfo->isSelf())
     {
         if (typeInfo->flags & TYPEINFO_CONST)
             CONCAT_FIXED_STR(concat, "const self");

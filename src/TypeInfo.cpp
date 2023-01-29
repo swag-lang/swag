@@ -343,7 +343,7 @@ bool TypeInfo::isMethod()
     auto param = ptr->parameters[0];
     if (!param->typeInfo->isPointer())
         return false;
-    if (!(param->typeInfo->flags & TYPEINFO_SELF))
+    if (!(param->typeInfo->isSelf()))
         return false;
     if (!(param->typeInfo->flags & TYPEINFO_HAS_USING))
         return false;

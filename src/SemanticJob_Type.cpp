@@ -82,12 +82,12 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
             {
                 auto nodeFct = CastAst<AstFuncDecl>(node->ownerFct, AstNodeKind::FuncDecl);
                 auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
-                if (typeFct->parameters.size() == 0 || !(typeFct->parameters[0]->typeInfo->flags & TYPEINFO_SELF))
+                if (typeFct->parameters.size() == 0 || !(typeFct->parameters[0]->typeInfo->isSelf()))
                 {
                     note  = new Diagnostic{node->ownerFct, node->ownerFct->token, Hlp(Hlp0002), DiagnosticLevel::Help};
                     note1 = new Diagnostic{Hlp(Hlp0029), DiagnosticLevel::Help};
                 }
-                else if (typeFct->parameters.size() && (typeFct->parameters[0]->typeInfo->flags & TYPEINFO_SELF) && !(typeFct->parameters[0]->typeInfo->flags & TYPEINFO_HAS_USING))
+                else if (typeFct->parameters.size() && typeFct->parameters[0]->typeInfo->isSelf() && !(typeFct->parameters[0]->typeInfo->flags & TYPEINFO_HAS_USING))
                     note = new Diagnostic{nodeFct->parameters->childs.front(), Hlp(Hlp0028), DiagnosticLevel::Help};
                 else
                     note = new Diagnostic{Hlp(Hlp0002), DiagnosticLevel::Help};

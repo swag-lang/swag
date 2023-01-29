@@ -504,7 +504,7 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
 
                 dbgBuilder->insertDeclare(value, var, dbgBuilder->createExpression(), location, pp.builder->GetInsertBlock());
 
-                if (typeParam->flags & TYPEINFO_SELF && child->token.text == "self")
+                if (typeParam->isSelf()  && child->token.text == "self")
                 {
                     var = dbgBuilder->createParameterVariable(scope, "this", idxParam + 1, file, loc.line + 1, type, !isOptimized, llvm::DINode::FlagObjectPointer);
                     dbgBuilder->insertDeclare(value, var, dbgBuilder->createExpression(), location, pp.builder->GetInsertBlock());

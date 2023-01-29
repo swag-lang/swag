@@ -100,7 +100,7 @@ bool SemanticJob::preprocessMatchError(SemanticContext* context, OneTryMatch& on
         match.parameters.size() == typeFunc->parameters.size() + 1 &&
         oneTry.ufcs &&
         typeFunc->parameters.size() >= 1 &&
-        !(typeFunc->parameters[0]->typeInfo->flags & TYPEINFO_SELF) &&
+        !typeFunc->parameters[0]->typeInfo->isSelf() &&
         bi.badSignatureParameterIdx == 0)
     {
         auto ufcs  = match.parameters[0];
@@ -438,7 +438,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             hintMsg       = Diagnostic::isType(bi.badSignatureGivenType);
             diag->addRange(nodeCall->token, Fmt(Hnt(Hnt0093), bi.badSignatureGivenType->getDisplayNameC()));
         }
-        else if (paramNode && paramNode->typeInfo->flags & TYPEINFO_SELF && bi.badSignatureParameterIdx == 0)
+        else if (paramNode && paramNode->typeInfo->isSelf() && bi.badSignatureParameterIdx == 0)
         {
             if (diagNode->kind == AstNodeKind::FuncDeclParam)
                 diagNode = node;

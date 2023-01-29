@@ -3542,14 +3542,14 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         if (!curMatch->ufcs && over->typeInfo->isFuncAttr())
         {
             auto typeFunc0 = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
-            if (!typeFunc0->parameters.empty() && typeFunc0->parameters[0]->typeInfo->flags & TYPEINFO_SELF)
+            if (!typeFunc0->parameters.empty() && typeFunc0->parameters[0]->typeInfo->isSelf())
             {
                 for (int j = 0; j < countMatches; j++)
                 {
                     if (matches[j]->symbolOverload->typeInfo->isFuncAttr())
                     {
                         auto typeFunc1 = CastTypeInfo<TypeInfoFuncAttr>(matches[j]->symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
-                        if (typeFunc1->parameters.empty() || !(typeFunc1->parameters[0]->typeInfo->flags & TYPEINFO_SELF))
+                        if (typeFunc1->parameters.empty() || !typeFunc1->parameters[0]->typeInfo->isSelf())
                         {
                             curMatch->remove = true;
                             break;
@@ -3563,14 +3563,14 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         if (curMatch->ufcs && over->typeInfo->isFuncAttr())
         {
             auto typeFunc0 = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
-            if (typeFunc0->parameters.empty() || !(typeFunc0->parameters[0]->typeInfo->flags & TYPEINFO_SELF))
+            if (typeFunc0->parameters.empty() || !typeFunc0->parameters[0]->typeInfo->isSelf())
             {
                 for (int j = 0; j < countMatches; j++)
                 {
                     if (matches[j]->symbolOverload->typeInfo->isFuncAttr())
                     {
                         auto typeFunc1 = CastTypeInfo<TypeInfoFuncAttr>(matches[j]->symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
-                        if (!typeFunc1->parameters.empty() && (typeFunc1->parameters[0]->typeInfo->flags & TYPEINFO_SELF))
+                        if (!typeFunc1->parameters.empty() && (typeFunc1->parameters[0]->typeInfo->isSelf()))
                         {
                             curMatch->remove = true;
                             break;
