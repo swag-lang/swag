@@ -214,6 +214,7 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result,
             // Default value
             if (token.id == TokenId::SymEqual)
             {
+                SWAG_VERIFY(inTypeVarDecl, error(token, Err(Syn0194)));
                 SWAG_CHECK(eatToken());
 
                 auto nameVar = namedParam ? namedParam->token.text : Fmt("__%d", g_UniqueID.fetch_add(1));

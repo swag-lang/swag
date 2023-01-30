@@ -285,7 +285,7 @@ void initErrors()
     SWAG_ERROR(Syn0191, "unexpected lambda parameter name");
     SWAG_ERROR(Syn0192, "unexpected 'const' before the lambda parameter name");
     SWAG_ERROR(Syn0193, "unexpected default value for a 'self' parameter");
-    SWAG_ERROR(Syn0194, nullptr);
+    SWAG_ERROR(Syn0194, "unexpected default value for lambda parameter");
     SWAG_ERROR(Syn0195, nullptr);
     
     /////////////////////////////////////////////////////////////////////
