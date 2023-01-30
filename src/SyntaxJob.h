@@ -20,6 +20,7 @@ struct AstAttrUse;
 struct AstInline;
 struct AstFuncCallParams;
 struct AstWith;
+struct AstTypeLambda;
 
 enum class AstNodeKind : uint8_t;
 
@@ -129,6 +130,7 @@ struct SyntaxJob : public Job
     bool doAlias(AstNode* parent, AstNode** result = nullptr);
     bool doTypeExpression(AstNode* parent, AstNode** result = nullptr, bool inTypeVarDecl = false);
     bool doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result = nullptr, bool inTypeVarDecl = false);
+    bool doTypeExpressionLambdaClosureTypeOrDecl(AstTypeLambda* node, AstNode** result, bool inTypeVarDecl);
     bool doDefer(AstNode* parent, AstNode** result = nullptr);
     bool doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const Token& assignToken, AstNodeKind kind, AstNode** result);
     bool doAffectExpression(AstNode* parent, AstNode** result = nullptr, AstWith* withNode = nullptr);

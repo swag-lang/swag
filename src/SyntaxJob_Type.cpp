@@ -46,43 +46,59 @@ bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result, bool inTypeVarDecl)
 {
-    AstNodeKind kind;
-    bool        isMethod  = false;
-    bool        isMethodC = false;
+    auto node         = Ast::newNode<AstTypeLambda>(this, AstNodeKind::TypeLambda, sourceFile, parent);
+    node->semanticFct = SemanticJob::resolveTypeLambdaClosure;
+    if (result)
+        *result = node;
+
+    if (inTypeVarDecl)
+    {
+        auto        newScope = Ast::newScope(node, node->token.text, ScopeKind::TypeLambda, currentScope);
+        Scoped      scoped(this, newScope);
+        ScopedFlags sf(this, AST_IN_FUNC_DECL_PARAMS);
+        SWAG_CHECK(doTypeExpressionLambdaClosureTypeOrDecl(node, result, inTypeVarDecl));
+    }
+    else
+    {
+        SWAG_CHECK(doTypeExpressionLambdaClosureTypeOrDecl(node, result, inTypeVarDecl));
+    }
+
+    return true;
+}
+
+bool SyntaxJob::doTypeExpressionLambdaClosureTypeOrDecl(AstTypeLambda* node, AstNode** result, bool inTypeVarDecl)
+{
+    bool isMethod  = false;
+    bool isMethodC = false;
 
     if (token.id == TokenId::KwdMethod)
     {
         SWAG_VERIFY(currentStructScope, error(token, Err(Syn0025), nullptr, Hnt(Hnt0049)));
-        isMethod = true;
-        kind     = AstNodeKind::TypeLambda;
+        isMethod   = true;
+        node->kind = AstNodeKind::TypeLambda;
     }
     else if (token.id == TokenId::KwdConstMethod)
     {
         SWAG_VERIFY(currentStructScope, error(token, Err(Syn0025), nullptr, Hnt(Hnt0050)));
-        isMethodC = true;
-        kind      = AstNodeKind::TypeLambda;
+        isMethodC  = true;
+        node->kind = AstNodeKind::TypeLambda;
     }
     else if (token.id == TokenId::KwdFunc)
     {
-        kind = AstNodeKind::TypeLambda;
+        node->kind = AstNodeKind::TypeLambda;
     }
     else
     {
-        kind = AstNodeKind::TypeClosure;
+        node->kind = AstNodeKind::TypeClosure;
     }
 
     SWAG_CHECK(eatToken());
-
-    auto node         = Ast::newNode<AstTypeLambda>(this, kind, sourceFile, parent);
-    node->semanticFct = SemanticJob::resolveTypeLambdaClosure;
-    if (result)
-        *result = node;
 
     AstNode* params = nullptr;
 
     // :ClosureForceFirstParam
     // A closure always has at least one parameter : the capture context
-    if (kind == AstNodeKind::TypeClosure)
+    if (node->kind == AstNodeKind::TypeClosure)
     {
         params           = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
         node->parameters = params;
@@ -201,6 +217,7 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result,
                     Ast::addChildBack(newTypeExpression, typeExpr);
                     if (token.id == TokenId::SymEqual)
                         return error(token, Err(Err0685));
+                    typeExpr = newTypeExpression;
                 }
             }
 
@@ -211,14 +228,18 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result,
                 typeExpr->extension->misc->isNamed = namedParam;
             }
 
-            // Default value
-            if (token.id == TokenId::SymEqual)
-            {
-                SWAG_VERIFY(inTypeVarDecl, error(token, Err(Syn0194)));
-                SWAG_CHECK(eatToken());
+            SWAG_VERIFY(token.id != TokenId::SymEqual || inTypeVarDecl, error(token, Err(Syn0194)));
 
+            // If we are in a type declaration, generate a variable and not just a type
+            if (inTypeVarDecl)
+            {
                 auto nameVar = namedParam ? namedParam->token.text : Fmt("__%d", g_UniqueID.fetch_add(1));
                 auto param   = Ast::newVarDecl(sourceFile, nameVar, params, this, AstNodeKind::FuncDeclParam);
+
+                param->allocateExtension(ExtensionKind::ExportNode);
+                param->extension->misc->exportNode = typeExpr;
+                param->flags |= AST_GENERATED;
+
                 Ast::removeFromParent(typeExpr);
                 Ast::addChildBack(param, typeExpr);
                 param->type = typeExpr;
@@ -227,11 +248,21 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result,
                 else
                     param->inheritTokenLocation(typeExpr);
 
-                SWAG_CHECK(doAssignmentExpression(param, &param->assignment));
+                if (namedParam)
+                {
+                    param->allocateExtension(ExtensionKind::Misc);
+                    param->extension->misc->isNamed = namedParam;
+                }
 
-                // Used to automatically solve enums
-                typeExpr->allocateExtension(ExtensionKind::Semantic);
-                typeExpr->extension->semantic->semanticAfterFct = SemanticJob::resolveVarDeclAfterType;
+                if (token.id == TokenId::SymEqual)
+                {
+                    SWAG_CHECK(eatToken());
+                    SWAG_CHECK(doAssignmentExpression(param, &param->assignment));
+
+                    // Used to automatically solve enums
+                    typeExpr->allocateExtension(ExtensionKind::Semantic);
+                    typeExpr->extension->semantic->semanticAfterFct = SemanticJob::resolveVarDeclAfterType;
+                }
             }
 
             if (token.id != TokenId::SymComma)

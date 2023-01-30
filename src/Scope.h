@@ -22,6 +22,7 @@ enum class ScopeKind
     Impl,
     Function,
     FunctionBody,
+    TypeLambda,
     Attribute,
     Statement,
     EmptyStatement,
