@@ -39,10 +39,11 @@ func __pusherr()
 func __poperr()
 {
     cxt := @getcontext()
-    @assert(cxt.errorMsgStart > 8)
+    @assert(cxt.errorMsgStart >= 8)
     ptr := cast(^u32) (&cxt.errorMsg[cxt.errorMsgStart] - 8)
     cxt.errorMsgLen = ptr[0]
     cxt.traceIndex = ptr[1]
+    @assert(cxt.errorMsgStart >= cxt.errorMsgLen + 8)
     cxt.errorMsgStart -= (cxt.errorMsgLen + 8)
 }
 
