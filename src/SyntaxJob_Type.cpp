@@ -205,10 +205,17 @@ bool SyntaxJob::doTypeExpressionLambdaClosureTypeOrDecl(AstTypeLambda* node, Ast
                 {
                     tokenizer.restoreState(token);
                 }
+                else if (tokenName.text == g_LangSpec->name_self)
+                {
+                    Diagnostic diag(sourceFile, token, Err(Syn0197));
+                    diag.hint = Hnt(Hnt0102);
+                    return context.report(diag);
+                }
                 else
                 {
                     SWAG_VERIFY(inTypeVarDecl, error(tokenName, Err(Syn0191)));
                     SWAG_VERIFY(!isConst, error(constToken, Err(Syn0192)));
+
                     namedParam        = Ast::newNode<AstNode>(this, AstNodeKind::Identifier, sourceFile, nullptr);
                     namedParam->token = tokenName;
                     SWAG_CHECK(eatToken());
@@ -234,7 +241,6 @@ bool SyntaxJob::doTypeExpressionLambdaClosureTypeOrDecl(AstTypeLambda* node, Ast
                 typeExpr->typeFlags |= isConst ? TYPEFLAG_IS_CONST : 0;
                 typeExpr->typeFlags |= TYPEFLAG_IS_SELF;
                 typeExpr->identifier = Ast::newIdentifierRef(sourceFile, currentStructScope->name, typeExpr, this);
-
                 if (token.id == TokenId::SymEqual)
                     return error(token, Err(Syn0193));
             }

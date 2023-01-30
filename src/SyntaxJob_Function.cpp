@@ -238,6 +238,13 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, boo
             Diagnostic diag(paramNode, token, Err(Syn0193));
             return context.report(diag);
         }
+
+        if (token.id == TokenId::SymColon)
+        {
+            Diagnostic diag(paramNode, token, Err(Syn0197));
+            diag.hint = Hnt(Hnt0102);
+            return context.report(diag);
+        }
     }
     else
     {
