@@ -293,6 +293,15 @@ bool SyntaxJob::doTypeExpressionLambdaClosureTypeOrDecl(AstTypeLambda* node, Ast
                     // Used to automatically solve enums
                     typeExpr->allocateExtension(ExtensionKind::Semantic);
                     typeExpr->extension->semantic->semanticAfterFct = SemanticJob::resolveVarDeclAfterType;
+
+                    // If we did not have specified a name, then this was not a type, but a name
+                    // ex: func(x = 1)
+                    if (!namedParam)
+                    {
+                        param->token.text = param->type->token.text;
+                        Ast::removeFromParent(param->type);
+                        param->type       = nullptr;
+                    }
                 }
             }
 
