@@ -725,7 +725,7 @@ bool AstOutput::outputVar(OutputContext& context, Concat& concat, AstVarDecl* no
         CONCAT_FIXED_STR(concat, "var ");
     }
 
-    bool isSelf = node->token.text == "self";
+    bool isSelf = node->token.text == g_LangSpec->name_self;
     if (isSelf && node->type && ((AstTypeExpression*) node->type)->typeFlags & TYPEFLAG_IS_CONST)
         CONCAT_FIXED_STR(concat, "const ");
 
@@ -1145,6 +1145,8 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         bool first = true;
         for (auto c : node->childs)
         {
+            if (c->extension && c->extension->misc && c->extension->misc->exportNode)
+                c = c->extension->misc->exportNode;
             if ((c->flags & AST_GENERATED) && !(c->flags & AST_GENERATED_USER))
                 continue;
             if (!first)

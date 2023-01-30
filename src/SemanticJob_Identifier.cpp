@@ -599,10 +599,21 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
     // that temporary variable as a new function call parameter
     if (typeInfoFunc->parameters.size() && maxParams < typeInfoFunc->parameters.size())
     {
-        auto funcDecl = CastAst<AstFuncDecl>(typeInfoFunc->declNode, AstNodeKind::FuncDecl);
-        for (int i = 0; i < funcDecl->parameters->childs.size(); i++)
+        AstNode* parameters = nullptr;
+        if (typeInfoFunc->declNode->kind == AstNodeKind::FuncDecl)
         {
-            auto funcParam = CastAst<AstVarDecl>(funcDecl->parameters->childs[i], AstNodeKind::FuncDeclParam);
+            auto funcDecl = CastAst<AstFuncDecl>(typeInfoFunc->declNode, AstNodeKind::FuncDecl);
+            parameters    = funcDecl->parameters;
+        }
+        else
+        {
+            auto funcDecl = CastAst<AstTypeLambda>(typeInfoFunc->declNode, AstNodeKind::TypeLambda);
+            parameters    = funcDecl->childs.front();
+        }
+
+        for (int i = 0; i < parameters->childs.size(); i++)
+        {
+            auto funcParam = CastAst<AstVarDecl>(parameters->childs[i], AstNodeKind::FuncDeclParam);
             if (!funcParam->assignment)
                 continue;
             switch (funcParam->assignment->token.id)

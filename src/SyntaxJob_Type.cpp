@@ -55,7 +55,7 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result,
     {
         auto        newScope = Ast::newScope(node, node->token.text, ScopeKind::TypeLambda, currentScope);
         Scoped      scoped(this, newScope);
-        ScopedFlags sf(this, AST_IN_FUNC_DECL_PARAMS);
+        ScopedFlags sf(this, AST_IN_TYPE_VAR_DECLARATION);
         SWAG_CHECK(doTypeExpressionLambdaClosureTypeOrDecl(node, result, inTypeVarDecl));
     }
     else
@@ -98,34 +98,65 @@ bool SyntaxJob::doTypeExpressionLambdaClosureTypeOrDecl(AstTypeLambda* node, Ast
 
     // :ClosureForceFirstParam
     // A closure always has at least one parameter : the capture context
+    AstTypeExpression* firstAddedType = nullptr;
+
     if (node->kind == AstNodeKind::TypeClosure)
     {
         params           = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
         node->parameters = params;
 
-        auto typeNode      = Ast::newTypeExpression(sourceFile, params);
-        typeNode->typeInfo = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
-        typeNode->flags |= AST_NO_SEMANTIC | AST_GENERATED;
+        firstAddedType           = Ast::newTypeExpression(sourceFile, params);
+        firstAddedType->typeInfo = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
+        firstAddedType->flags |= AST_NO_SEMANTIC | AST_GENERATED;
     }
     else if (isMethod)
     {
-        params               = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
-        node->parameters     = params;
-        auto typeNode        = Ast::newTypeExpression(sourceFile, params);
-        typeNode->ptrCount   = 1;
-        typeNode->typeFlags  = TYPEFLAG_IS_SELF;
-        typeNode->identifier = Ast::newIdentifierRef(sourceFile, currentStructScope->name, typeNode, this);
+        params                     = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
+        node->parameters           = params;
+        firstAddedType             = Ast::newTypeExpression(sourceFile, params);
+        firstAddedType->ptrCount   = 1;
+        firstAddedType->typeFlags  = TYPEFLAG_IS_SELF;
+        firstAddedType->identifier = Ast::newIdentifierRef(sourceFile, currentStructScope->name, firstAddedType, this);
     }
     else if (isMethodC)
     {
-        params                = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
-        node->parameters      = params;
-        auto typeNode         = Ast::newTypeExpression(sourceFile, params);
-        typeNode->ptrCount    = 1;
-        typeNode->ptrFlags[0] = AstTypeExpression::PTR_CONST;
-        typeNode->typeFlags |= TYPEFLAG_IS_CONST;
-        typeNode->typeFlags |= TYPEFLAG_IS_SELF;
-        typeNode->identifier = Ast::newIdentifierRef(sourceFile, currentStructScope->name, typeNode, this);
+        params                      = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
+        node->parameters            = params;
+        firstAddedType              = Ast::newTypeExpression(sourceFile, params);
+        firstAddedType->ptrCount    = 1;
+        firstAddedType->ptrFlags[0] = AstTypeExpression::PTR_CONST;
+        firstAddedType->typeFlags |= TYPEFLAG_IS_CONST;
+        firstAddedType->typeFlags |= TYPEFLAG_IS_SELF;
+        firstAddedType->identifier = Ast::newIdentifierRef(sourceFile, currentStructScope->name, firstAddedType, this);
+    }
+
+    // If we are in a type declaration, then this must be a FuncDeclParam and not a TypeExpression
+    if (inTypeVarDecl && firstAddedType)
+    {
+        Utf8 nameVar;
+        if (firstAddedType->typeFlags & TYPEFLAG_IS_SELF)
+        {
+            firstAddedType->token.text = g_LangSpec->name_self;
+            nameVar                    = g_LangSpec->name_self;
+        }
+        else
+        {
+            nameVar = Fmt("__%d", g_UniqueID.fetch_add(1));
+        }
+
+        auto param = Ast::newVarDecl(sourceFile, nameVar, params, this, AstNodeKind::FuncDeclParam);
+        if (firstAddedType->typeFlags & TYPEFLAG_IS_SELF)
+            param->specFlags |= AST_SPEC_DECLPARAM_GENERATED_SELF;
+
+        param->allocateExtension(ExtensionKind::ExportNode);
+        param->extension->misc->exportNode = firstAddedType;
+
+        param->flags |= AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+
+        Ast::removeFromParent(firstAddedType);
+        Ast::addChildBack(param, firstAddedType);
+        param->type = firstAddedType;
+        param->inheritTokenLocation(firstAddedType);
     }
 
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
@@ -238,7 +269,7 @@ bool SyntaxJob::doTypeExpressionLambdaClosureTypeOrDecl(AstTypeLambda* node, Ast
 
                 param->allocateExtension(ExtensionKind::ExportNode);
                 param->extension->misc->exportNode = typeExpr;
-                param->flags |= AST_GENERATED;
+                param->flags |= AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
 
                 Ast::removeFromParent(typeExpr);
                 Ast::addChildBack(param, typeExpr);

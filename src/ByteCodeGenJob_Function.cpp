@@ -1667,16 +1667,27 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             // If not covered, then this is a default value, or a variadic parameter
             if (!covered)
             {
-                // funcnode can be null in case of a lambda, so we need to retrieve the function description from the type
-                auto funcDescription = funcNode;
-                if (!funcDescription)
+                // funcNode can be null in case of a lambda, so we need to retrieve the function description from the type
+                AstNode* parameters = nullptr;
+                if (funcNode)
+                    parameters = funcNode->parameters;
+                else
                 {
                     SWAG_ASSERT(typeInfoFunc->declNode);
-                    funcDescription = CastAst<AstFuncDecl>(typeInfoFunc->declNode, AstNodeKind::FuncDecl, AstNodeKind::TypeLambda);
+                    if (typeInfoFunc->declNode->kind == AstNodeKind::FuncDecl)
+                    {
+                        auto funcDesc = CastAst<AstFuncDecl>(typeInfoFunc->declNode, AstNodeKind::FuncDecl);
+                        parameters    = funcDesc->parameters;
+                    }
+                    else
+                    {
+                        auto funcDesc = CastAst<AstTypeLambda>(typeInfoFunc->declNode, AstNodeKind::TypeLambda);
+                        parameters    = funcDesc->childs.front();
+                    }
                 }
 
                 // Empty variadic parameter
-                auto defaultParam = CastAst<AstVarDecl>(funcDescription->parameters->childs[i], AstNodeKind::FuncDeclParam);
+                auto defaultParam = CastAst<AstVarDecl>(parameters->childs[i], AstNodeKind::FuncDeclParam);
                 if (!defaultParam->typeInfo->isVariadic() &&
                     !defaultParam->typeInfo->isTypedVariadic() &&
                     !defaultParam->typeInfo->isCVariadic())

@@ -185,6 +185,9 @@ bool SemanticJob::resolveTypeLambdaClosure(SemanticContext* context)
             typeInfo->parameters.push_back(typeParam);
             index++;
         }
+
+        if(node->parameters->flags & AST_IN_TYPE_VAR_DECLARATION)
+            SWAG_CHECK(setupFuncDeclParams(context, typeInfo, node, node->parameters, false));
     }
 
     typeInfo->computeName();
