@@ -232,6 +232,12 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, boo
             typeNode->identifier = Ast::newIdentifierRef(sourceFile, paramNode->ownerStructScope->name, typeNode, this);
             paramNode->type      = typeNode;
         }
+
+        if (token.id == TokenId::SymEqual)
+        {
+            Diagnostic diag(paramNode, token, Err(Err0567));
+            return context.report(diag);
+        }
     }
     else
     {
