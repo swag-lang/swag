@@ -234,6 +234,10 @@ SWAG_ERROR(Syn0192),
 SWAG_ERROR(Syn0193),
 SWAG_ERROR(Syn0194),
 SWAG_ERROR(Syn0195),
+SWAG_ERROR(Syn0196),
+SWAG_ERROR(Syn0197),
+SWAG_ERROR(Syn0198),
+SWAG_ERROR(Syn0199),
 
 
 /////////////////////////////////////////////////////////////////////
@@ -975,6 +979,11 @@ SWAG_ERROR(Hlp0046),
 SWAG_ERROR(Hlp0047),
 SWAG_ERROR(Hlp0048),
 SWAG_ERROR(Hlp0049),
+SWAG_ERROR(Hlp0050),
+SWAG_ERROR(Hlp0051),
+SWAG_ERROR(Hlp0052),
+SWAG_ERROR(Hlp0053),
+SWAG_ERROR(Hlp0054),
 
 /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////

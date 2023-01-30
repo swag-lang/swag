@@ -286,7 +286,11 @@ void initErrors()
     SWAG_ERROR(Syn0192, "unexpected 'const' before the lambda parameter name");
     SWAG_ERROR(Syn0193, "unexpected default value for a 'self' parameter");
     SWAG_ERROR(Syn0194, "unexpected default value for lambda parameter");
-    SWAG_ERROR(Syn0195, nullptr);
+    SWAG_ERROR(Syn0195, "lambda type ambiguous parameters declaration");
+    SWAG_ERROR(Syn0196, "'#type' should be followed by the type name (found '%s')");
+    SWAG_ERROR(Syn0197, nullptr);
+    SWAG_ERROR(Syn0198, nullptr);
+    SWAG_ERROR(Syn0199, nullptr);
     
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -1002,6 +1006,11 @@ void initErrors()
     SWAG_ERROR(Hlp0047, "if you want to slice to the end, use '..' instead");
     SWAG_ERROR(Hlp0048, "'Swag.Match' valid values are 'selectif|self'");
     SWAG_ERROR(Hlp0049, nullptr);
+    SWAG_ERROR(Hlp0050, nullptr);
+    SWAG_ERROR(Hlp0051, nullptr);
+    SWAG_ERROR(Hlp0052, nullptr);
+    SWAG_ERROR(Hlp0053, nullptr);
+    SWAG_ERROR(Hlp0054, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -1108,7 +1117,7 @@ void initErrors()
     SWAG_ERROR(Hnt0098, "expected the upper bound");
     SWAG_ERROR(Hnt0099, "you cannot assign to unnamed parameters ('?')");
     SWAG_ERROR(Hnt0100, "cannot redefined lambda / closure default parameters");
-    SWAG_ERROR(Hnt0101, nullptr);
+    SWAG_ERROR(Hnt0101, "you should add '#type' before '%s' or, if this is a parameter, explicitly specify a type");
     SWAG_ERROR(Hnt0102, nullptr);
     
 
@@ -1206,7 +1215,7 @@ void initErrors()
     SWAG_ERROR(Nte0073, "the ufcs argument comes from an implicit 'using self' parameter");
     SWAG_ERROR(Nte0074, "the ufcs argument comes from this");
     SWAG_ERROR(Nte0075, "the original instantiation type '%s' comes from here");
-    SWAG_ERROR(Nte0076, nullptr);
+    SWAG_ERROR(Nte0076, "'%s' could be either a single type or a parameter name");
     SWAG_ERROR(Nte0077, nullptr);
     SWAG_ERROR(Nte0078, nullptr);
     SWAG_ERROR(Nte0079, nullptr);

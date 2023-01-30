@@ -168,12 +168,27 @@ bool SyntaxJob::doTypeExpressionLambdaClosureTypeOrDecl(AstTypeLambda* node, Ast
             node->parameters = params;
         }
 
+        bool        lastWasAlone  = false;
+        bool        curIsAlone    = false;
+        AstVarDecl* lastParameter = nullptr;
+        bool        thisIsAType   = false;
         while (true)
         {
+            curIsAlone = true;
+
             Token constToken;
             bool  isConst = false;
+            if (token.id == TokenId::CompilerType)
+            {
+                thisIsAType = true;
+                curIsAlone  = false;
+                SWAG_CHECK(eatToken());
+                SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0196), token.ctext())));
+            }
+
             if (token.id == TokenId::KwdConst)
             {
+                curIsAlone = false;
                 constToken = token;
                 isConst    = true;
                 SWAG_CHECK(eatToken());
@@ -197,12 +212,20 @@ bool SyntaxJob::doTypeExpressionLambdaClosureTypeOrDecl(AstTypeLambda* node, Ast
                     namedParam        = Ast::newNode<AstNode>(this, AstNodeKind::Identifier, sourceFile, nullptr);
                     namedParam->token = tokenName;
                     SWAG_CHECK(eatToken());
+                    curIsAlone  = false;
+                    thisIsAType = false;
                 }
+            }
+            else
+            {
+                thisIsAType = true;
+                curIsAlone  = false;
             }
 
             AstTypeExpression* typeExpr = nullptr;
             if (token.text == g_LangSpec->name_self)
             {
+                curIsAlone = false;
                 SWAG_VERIFY(currentStructScope, error(token, Err(Syn0026)));
                 SWAG_CHECK(eatToken());
                 typeExpr              = Ast::newTypeExpression(sourceFile, params);
@@ -218,6 +241,7 @@ bool SyntaxJob::doTypeExpressionLambdaClosureTypeOrDecl(AstTypeLambda* node, Ast
             // ...
             else if (token.id == TokenId::SymDotDotDot)
             {
+                curIsAlone                = false;
                 typeExpr                  = Ast::newTypeExpression(sourceFile, params);
                 typeExpr->typeFromLiteral = g_TypeMgr->typeInfoVariadic;
                 SWAG_CHECK(eatToken());
@@ -227,6 +251,7 @@ bool SyntaxJob::doTypeExpressionLambdaClosureTypeOrDecl(AstTypeLambda* node, Ast
             // cvarargs
             else if (token.id == TokenId::KwdCVarArgs)
             {
+                curIsAlone                = false;
                 typeExpr                  = Ast::newTypeExpression(sourceFile, params);
                 typeExpr->typeFromLiteral = g_TypeMgr->typeInfoCVariadic;
                 SWAG_CHECK(eatToken());
@@ -241,6 +266,7 @@ bool SyntaxJob::doTypeExpressionLambdaClosureTypeOrDecl(AstTypeLambda* node, Ast
                 // type...
                 if (token.id == TokenId::SymDotDotDot)
                 {
+                    curIsAlone = false;
                     Ast::removeFromParent(typeExpr);
                     auto newTypeExpression             = Ast::newTypeExpression(sourceFile, params);
                     newTypeExpression->typeFromLiteral = g_TypeMgr->typeInfoVariadic;
@@ -287,6 +313,8 @@ bool SyntaxJob::doTypeExpressionLambdaClosureTypeOrDecl(AstTypeLambda* node, Ast
 
                 if (token.id == TokenId::SymEqual)
                 {
+                    thisIsAType = false;
+                    curIsAlone  = false;
                     SWAG_CHECK(eatToken());
                     SWAG_CHECK(doAssignmentExpression(param, &param->assignment));
 
@@ -300,9 +328,26 @@ bool SyntaxJob::doTypeExpressionLambdaClosureTypeOrDecl(AstTypeLambda* node, Ast
                     {
                         param->token.text = param->type->token.text;
                         Ast::removeFromParent(param->type);
-                        param->type       = nullptr;
+                        param->type = nullptr;
                     }
                 }
+
+                if (lastWasAlone && !curIsAlone && !thisIsAType)
+                {
+                    Token tokenAmb         = param->token;
+                    tokenAmb.startLocation = lastParameter->token.startLocation;
+                    tokenAmb.endLocation   = token.startLocation;
+
+                    Diagnostic diag{sourceFile, tokenAmb, Err(Syn0195)};
+                    Diagnostic note{lastParameter, Fmt(Nte(Nte0076), lastParameter->type->token.ctext()), DiagnosticLevel::Note};
+                    note.hint = Fmt(Hnt(Hnt0101), lastParameter->type->token.ctext());
+                    context.report(diag, &note);
+
+                    return false;
+                }
+
+                lastWasAlone  = curIsAlone;
+                lastParameter = param;
             }
 
             if (token.id != TokenId::SymComma)
