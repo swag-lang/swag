@@ -44,7 +44,7 @@ bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result)
+bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result, bool inTypeVarDecl)
 {
     AstNodeKind kind;
     bool        isMethod  = false;
@@ -136,7 +136,7 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result)
             AstNode* namedParam = nullptr;
             if (token.id == TokenId::Identifier)
             {
-                auto name = token.text;
+                auto tokenName = token;
                 tokenizer.saveState(token);
                 SWAG_CHECK(eatToken());
                 if (token.id != TokenId::SymColon)
@@ -145,9 +145,10 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result)
                 }
                 else
                 {
-                    SWAG_VERIFY(!isConst, error(constToken, Err(Err0617)));
-                    namedParam             = Ast::newNode<AstNode>(this, AstNodeKind::Identifier, sourceFile, nullptr);
-                    namedParam->token.text = name;
+                    SWAG_VERIFY(inTypeVarDecl, error(tokenName, Err(Syn0191)));
+                    SWAG_VERIFY(!isConst, error(constToken, Err(Syn0192)));
+                    namedParam        = Ast::newNode<AstNode>(this, AstNodeKind::Identifier, sourceFile, nullptr);
+                    namedParam->token = tokenName;
                     SWAG_CHECK(eatToken());
                 }
             }
@@ -163,6 +164,9 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result)
                 typeExpr->typeFlags |= isConst ? TYPEFLAG_IS_CONST : 0;
                 typeExpr->typeFlags |= TYPEFLAG_IS_SELF;
                 typeExpr->identifier = Ast::newIdentifierRef(sourceFile, currentStructScope->name, typeExpr, this);
+
+                if (token.id == TokenId::SymEqual)
+                    return error(token, Err(Syn0193));
             }
             // ...
             else if (token.id == TokenId::SymDotDotDot)
@@ -170,6 +174,8 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result)
                 typeExpr                  = Ast::newTypeExpression(sourceFile, params);
                 typeExpr->typeFromLiteral = g_TypeMgr->typeInfoVariadic;
                 SWAG_CHECK(eatToken());
+                if (token.id == TokenId::SymEqual)
+                    return error(token, Err(Err0685));
             }
             // cvarargs
             else if (token.id == TokenId::KwdCVarArgs)
@@ -177,6 +183,8 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result)
                 typeExpr                  = Ast::newTypeExpression(sourceFile, params);
                 typeExpr->typeFromLiteral = g_TypeMgr->typeInfoCVariadic;
                 SWAG_CHECK(eatToken());
+                if (token.id == TokenId::SymEqual)
+                    return error(token, Err(Err0685));
             }
             else
             {
@@ -191,13 +199,38 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result)
                     newTypeExpression->typeFromLiteral = g_TypeMgr->typeInfoVariadic;
                     SWAG_CHECK(eatToken());
                     Ast::addChildBack(newTypeExpression, typeExpr);
+                    if (token.id == TokenId::SymEqual)
+                        return error(token, Err(Err0685));
                 }
             }
 
+            // We have a name
             if (namedParam)
             {
                 typeExpr->allocateExtension(ExtensionKind::Misc);
                 typeExpr->extension->misc->isNamed = namedParam;
+            }
+
+            // Default value
+            if (token.id == TokenId::SymEqual)
+            {
+                SWAG_CHECK(eatToken());
+
+                auto nameVar = namedParam ? namedParam->token.text : Fmt("__%d", g_UniqueID.fetch_add(1));
+                auto param   = Ast::newVarDecl(sourceFile, nameVar, params, this, AstNodeKind::FuncDeclParam);
+                Ast::removeFromParent(typeExpr);
+                Ast::addChildBack(param, typeExpr);
+                param->type = typeExpr;
+                if (namedParam)
+                    param->inheritTokenLocation(namedParam);
+                else
+                    param->inheritTokenLocation(typeExpr);
+
+                SWAG_CHECK(doAssignmentExpression(param, &param->assignment));
+
+                // Used to automatically solve enums
+                typeExpr->allocateExtension(ExtensionKind::Semantic);
+                typeExpr->extension->semantic->semanticAfterFct = SemanticJob::resolveVarDeclAfterType;
             }
 
             if (token.id != TokenId::SymComma)
@@ -334,7 +367,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     // This is a lambda
     if (token.id == TokenId::KwdFunc || token.id == TokenId::KwdClosure || token.id == TokenId::KwdMethod || token.id == TokenId::KwdConstMethod)
     {
-        return doTypeExpressionLambdaClosure(parent, result);
+        return doTypeExpressionLambdaClosure(parent, result, inTypeVarDecl);
     }
 
     // retval

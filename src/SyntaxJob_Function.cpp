@@ -235,7 +235,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, boo
 
         if (token.id == TokenId::SymEqual)
         {
-            Diagnostic diag(paramNode, token, Err(Err0567));
+            Diagnostic diag(paramNode, token, Err(Syn0193));
             return context.report(diag);
         }
     }

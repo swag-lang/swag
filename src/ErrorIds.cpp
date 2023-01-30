@@ -282,8 +282,12 @@ void initErrors()
     SWAG_ERROR(Syn0188, "unexpected end of comment '*/' after the %s");
     SWAG_ERROR(Syn0189, "unexpected start of a type declaration after unnamed parameters");
     SWAG_ERROR(Syn0190, "unexpected start of an affectation after unnamed parameters");
-    SWAG_ERROR(Syn0191, nullptr);
-
+    SWAG_ERROR(Syn0191, "unexpected lambda parameter name");
+    SWAG_ERROR(Syn0192, "unexpected 'const' before the lambda parameter name");
+    SWAG_ERROR(Syn0193, "unexpected default value for a 'self' parameter");
+    SWAG_ERROR(Syn0194, nullptr);
+    SWAG_ERROR(Syn0195, nullptr);
+    
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -893,9 +897,9 @@ void initErrors()
     SWAG_ERROR(Err0687, "expected a value lower than 256");
     SWAG_ERROR(Err0686, "the %s '%s' wants to convert the next statement in a 'code' parameter but this is not possible inside a '%s' expression");
     SWAG_ERROR(Err0685, "unexpected default value for a variadic parameter");
-    SWAG_ERROR(Err0567, "unexpected default value for a 'self' parameter");
-    SWAG_ERROR(Err0617, "unexpected 'const' before the lambda parameter name");
-    SWAG_ERROR(Err0167, nullptr);
+    SWAG_ERROR(Err0567, nullptr);
+    SWAG_ERROR(Err0617, nullptr);
+    SWAG_ERROR(Err0167, "unexpected lambda type parameter name");
     SWAG_ERROR(Err0533, nullptr);
     SWAG_ERROR(Err0128, nullptr);
     SWAG_ERROR(Err0118, nullptr);

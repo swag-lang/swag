@@ -128,7 +128,7 @@ struct SyntaxJob : public Job
     bool doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind);
     bool doAlias(AstNode* parent, AstNode** result = nullptr);
     bool doTypeExpression(AstNode* parent, AstNode** result = nullptr, bool inTypeVarDecl = false);
-    bool doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result = nullptr);
+    bool doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result = nullptr, bool inTypeVarDecl = false);
     bool doDefer(AstNode* parent, AstNode** result = nullptr);
     bool doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const Token& assignToken, AstNodeKind kind, AstNode** result);
     bool doAffectExpression(AstNode* parent, AstNode** result = nullptr, AstWith* withNode = nullptr);
