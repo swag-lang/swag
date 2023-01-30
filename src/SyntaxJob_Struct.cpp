@@ -547,6 +547,8 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
         Ast::removeFromParent(funcNode->parameters);
         Ast::addChildFront(typeNode, funcNode->parameters);
         typeNode->parameters = funcNode->parameters;
+        if (typeNode->parameters)
+            typeNode->parameters->flags |= AST_IN_TYPE_VAR_DECLARATION;
 
         if (token.id == TokenId::SymMinusGreat)
         {

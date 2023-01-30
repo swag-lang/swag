@@ -1,0 +1,24 @@
+interface I
+{
+    toto: func(self, x: s32 = 10)
+}
+
+struct A {}
+
+var G = 0
+impl I for A
+{
+    mtd toto(x: s32 = 20)
+    {
+        G += x
+    }
+}
+
+#test
+{
+    var a: A
+    var i = cast(I) a
+    i.toto()
+    a.I.toto()
+    @assert(G == 30)
+}
