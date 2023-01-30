@@ -947,6 +947,11 @@ AstNode* AstImpl::clone(CloneContext& context)
                 // consider it to be generic
                 newFunc->flags &= ~AST_FROM_GENERIC;
                 newFunc->flags |= AST_IS_GENERIC;
+                for (auto g : newFunc->genericParameters->childs)
+                {
+                    g->flags &= ~AST_FROM_GENERIC;
+                    g->flags |= AST_IS_GENERIC;
+                }
 
                 // Be sure we keep a generic typeinfo
                 SWAG_ASSERT(newFunc->typeInfo);
