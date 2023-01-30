@@ -894,7 +894,7 @@ void initErrors()
     SWAG_ERROR(Err0686, "the %s '%s' wants to convert the next statement in a 'code' parameter but this is not possible inside a '%s' expression");
     SWAG_ERROR(Err0685, "unexpected default value for a variadic parameter");
     SWAG_ERROR(Err0567, "unexpected default value for a 'self' parameter");
-    SWAG_ERROR(Err0617, nullptr);
+    SWAG_ERROR(Err0617, "unexpected 'const' before the lambda parameter name");
     SWAG_ERROR(Err0167, nullptr);
     SWAG_ERROR(Err0533, nullptr);
     SWAG_ERROR(Err0128, nullptr);

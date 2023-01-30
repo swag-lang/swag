@@ -123,10 +123,12 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result)
 
         while (true)
         {
-            bool isConst = false;
+            Token constToken;
+            bool  isConst = false;
             if (token.id == TokenId::KwdConst)
             {
-                isConst = true;
+                constToken = token;
+                isConst    = true;
                 SWAG_CHECK(eatToken());
             }
 
@@ -138,9 +140,12 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result)
                 tokenizer.saveState(token);
                 SWAG_CHECK(eatToken());
                 if (token.id != TokenId::SymColon)
+                {
                     tokenizer.restoreState(token);
+                }
                 else
                 {
+                    SWAG_VERIFY(!isConst, error(constToken, Err(Err0617)));
                     namedParam             = Ast::newNode<AstNode>(this, AstNodeKind::Identifier, sourceFile, nullptr);
                     namedParam->token.text = name;
                     SWAG_CHECK(eatToken());
