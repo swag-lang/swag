@@ -302,11 +302,13 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, boo
                 if (token.id == TokenId::SymDotDotDot)
                 {
                     Ast::removeFromParent(typeExpression);
-                    auto newTypeExpression             = Ast::newTypeExpression(sourceFile, paramNode);
-                    paramNode->type                    = newTypeExpression;
-                    newTypeExpression->typeFromLiteral = g_TypeMgr->typeInfoVariadic;
+                    auto newTypeExpression               = Ast::newTypeExpression(sourceFile, paramNode);
+                    paramNode->type                      = newTypeExpression;
+                    newTypeExpression->typeFromLiteral   = g_TypeMgr->typeInfoVariadic;
+                    newTypeExpression->token.endLocation = token.endLocation;
                     SWAG_CHECK(eatToken());
                     Ast::addChildBack(paramNode->type, typeExpression);
+                    newTypeExpression->token.startLocation = typeExpression->token.startLocation;
                 }
                 else
                 {
@@ -328,7 +330,9 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, boo
                 return context.report(diag);
             }
 
-            hasAssignment = true;
+            paramNode->assignToken = token;
+            hasAssignment          = true;
+
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doAssignmentExpression(paramNode, &paramNode->assignment));
 

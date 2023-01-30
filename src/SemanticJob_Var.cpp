@@ -292,6 +292,19 @@ bool SemanticJob::resolveVarDeclAfterType(SemanticContext* context)
     if (!varDecl->type || !varDecl->assignment)
         return true;
 
+    if (parent->kind == AstNodeKind::FuncDeclParam)
+    {
+        if (varDecl->type->typeInfo->isTypedVariadic() ||
+            varDecl->type->typeInfo->isVariadic() ||
+            varDecl->type->typeInfo->isCVariadic())
+        {
+            Diagnostic diag{varDecl, varDecl->assignToken, Err(Err0685)};
+            diag.hint = Hnt(Hnt0061);
+            diag.addRange(varDecl->type, Diagnostic::isType(varDecl->type->typeInfo));
+            return context->report(diag);
+        }
+    }
+
     // :AutoScope
     // Resolution of an affectation to an enum, without having to specify the enum name before
     // 'using', but just for affectation
