@@ -321,7 +321,7 @@ bool SymTable::acceptGhostSymbolNoLock(JobContext* context, AstNode* node, Symbo
     return false;
 }
 
-bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, bool checkSameName)
+bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol)
 {
     auto token = &node->token;
     if (node->kind == AstNodeKind::FuncDecl)
@@ -356,32 +356,9 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
         canOverload = true;
     if (!canOverload && !symbol->overloads.empty())
     {
-        auto firstOverload = symbol->overloads[0];
-
-        // Special case for function parameters. We want to let the symbol resolution to deal with ambiguities if we can
-        // because the user has some ways (#param) to solve this.
-        // That way, a function parameter can have the same name as something else (like a field in a struct)
-        if (symbol->kind == SymbolKind::Variable &&
-            node->parent &&
-            node->parent->kind == AstNodeKind::FuncDeclParams &&
-            this != &node->ownerScope->symTable &&
-            !(firstOverload->flags & OVERLOAD_VAR_FUNC_PARAM))
-        {
-            return true;
-        }
-
+        auto       firstOverload = symbol->overloads[0];
         Diagnostic diag{node, *token, Fmt(Err(Err0305), symbol->name.c_str())};
         Diagnostic diagNote{firstOverload->node, firstOverload->node->token, Nte(Nte0036), DiagnosticLevel::Note};
-        context->report(diag, &diagNote);
-        return false;
-    }
-
-    // Overloads are not allowed on certain types
-    if (!canOverload && checkSameName)
-    {
-        Diagnostic diag{node, *token, Fmt(Err(Err0305), symbol->name.c_str())};
-        auto       front = symbol->nodes.front();
-        Diagnostic diagNote{front, front->token, Nte(Nte0036), DiagnosticLevel::Note};
         context->report(diag, &diagNote);
         return false;
     }
