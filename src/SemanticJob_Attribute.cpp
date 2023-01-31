@@ -6,6 +6,7 @@
 #include "ErrorIds.h"
 #include "Math.h"
 #include "LanguageSpec.h"
+#include "Naming.h"
 
 #define INHERIT_ATTR(__c, __f)          \
     if (!(__c->attributeFlags & (__f))) \
@@ -51,7 +52,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
 
     SWAG_ASSERT(oneAttribute->typeInfo);
     if (!oneAttribute->typeInfo->isFuncAttr())
-        return context->report({oneAttribute, Fmt(Err(Err0582), oneAttribute->typeInfo->getDisplayNameC(), TypeInfo::getArticleKindName(oneAttribute->typeInfo))});
+        return context->report({oneAttribute, Fmt(Err(Err0582), oneAttribute->typeInfo->getDisplayNameC(), Naming::getArticleKindName(oneAttribute->typeInfo).c_str())});
 
     auto kind     = checkNode->kind;
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FuncAttr);

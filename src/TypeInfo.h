@@ -291,16 +291,14 @@ struct TypeInfo
     void            computeScopedNameExport() { computeWhateverName(COMPUTE_SCOPED_NAME_EXPORT); }
     // clang-format on
 
-    void               removeGenericFlag();
-    void               clearName();
-    void               forceComputeName();
-    void               getScopedName(Utf8& name);
-    Utf8               getName();
-    Utf8               getTypeName(bool forceNoScope);
-    const Utf8&        computeWhateverName(uint32_t nameType);
-    const Utf8&        computeWhateverNameNoLock(uint32_t nameType);
-    static const char* getArticleKindName(TypeInfo* typeInfo);
-    static const char* getNakedKindName(TypeInfo* typeInfo);
+    void        removeGenericFlag();
+    void        clearName();
+    void        forceComputeName();
+    void        getScopedName(Utf8& name);
+    Utf8        getName();
+    Utf8        getTypeName(bool forceNoScope);
+    const Utf8& computeWhateverName(uint32_t nameType);
+    const Utf8& computeWhateverNameNoLock(uint32_t nameType);
 
     SharedMutex mutex;
 

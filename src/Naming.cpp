@@ -121,21 +121,6 @@ namespace Naming
         return article;
     }
 
-    Utf8 getArticleKindName(SymbolKind kind)
-    {
-        Utf8 article;
-        auto result = getKindName(kind, article);
-        article += " ";
-        article += result;
-        return article;
-    }
-
-    Utf8 getNakedKindName(SymbolKind kind)
-    {
-        Utf8 article;
-        return getKindName(kind, article);
-    }
-
     Utf8 getKindName(SymbolKind kind, Utf8& article)
     {
         switch (kind)
@@ -180,6 +165,111 @@ namespace Naming
 
         article = "a";
         return "symbol";
+    }
+
+    Utf8 getArticleKindName(SymbolKind kind)
+    {
+        Utf8 article;
+        auto result = getKindName(kind, article);
+        article += " ";
+        article += result;
+        return article;
+    }
+
+    Utf8 getNakedKindName(SymbolKind kind)
+    {
+        Utf8 article;
+        return getKindName(kind, article);
+    }
+
+    Utf8 getKindName(TypeInfo* typeInfo, Utf8& article)
+    {
+        switch (typeInfo->kind)
+        {
+        case TypeInfoKind::Namespace:
+            article = "a";
+            return "namespace";
+        case TypeInfoKind::Enum:
+            article = "an";
+            return "enum";
+
+        case TypeInfoKind::Array:
+            article = "an";
+            return "array";
+
+        case TypeInfoKind::Slice:
+            article = "a";
+            return "slice";
+
+        case TypeInfoKind::Pointer:
+            article = "a";
+            if (typeInfo->isPointerRef())
+                return "reference";
+            if (typeInfo->isAutoConstPointerRef())
+                return "struct";
+            return "pointer";
+
+        case TypeInfoKind::FuncAttr:
+            article = "a";
+            return "function";
+
+        case TypeInfoKind::LambdaClosure:
+            article = "a";
+            if (typeInfo->isClosure())
+                return "closure";
+            return "lambda";
+
+        case TypeInfoKind::TypeListTuple:
+            article = "a";
+            return "tuple";
+        case TypeInfoKind::TypeListArray:
+            article = "an";
+            return "array";
+
+        case TypeInfoKind::Variadic:
+        case TypeInfoKind::TypedVariadic:
+        case TypeInfoKind::CVariadic:
+            article = "a";
+            return "variadic";
+
+        case TypeInfoKind::Struct:
+            article = "a";
+            return "struct";
+
+        case TypeInfoKind::Interface:
+            article = "an";
+            return "interface";
+
+        case TypeInfoKind::Generic:
+            article = "a";
+            return "generic type";
+
+        case TypeInfoKind::Alias:
+            article = "an";
+            return "alias type";
+
+        case TypeInfoKind::Native:
+            article = "a";
+            return "type";
+        }
+
+        article = "a";
+        return "type";
+    }
+
+    Utf8 getArticleKindName(TypeInfo* typeInfo)
+    {
+        Utf8 article;
+        auto result = getKindName(typeInfo, article);
+        article += " ";
+        article += result;
+        return article;
+    }
+
+    Utf8 getNakedKindName(TypeInfo* typeInfo)
+    {
+        Utf8 article;
+        return getKindName(typeInfo, article);
     }
 
 }; // namespace Naming

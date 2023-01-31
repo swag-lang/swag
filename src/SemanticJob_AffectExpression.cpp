@@ -8,6 +8,7 @@
 #include "Report.h"
 #include "ThreadManager.h"
 #include "LanguageSpec.h"
+#include "Naming.h"
 
 bool SemanticJob::resolveMove(SemanticContext* context)
 {
@@ -287,7 +288,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             !leftTypeInfo->isArray() &&
             !leftTypeInfo->isAlias() &&
             !leftTypeInfo->isEnum())
-            return context->report({left, Fmt(Err(Err0571), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->getDisplayNameC())});
+            return context->report({left, Fmt(Err(Err0571), Naming::getNakedKindName(leftTypeInfo).c_str(), leftTypeInfo->getDisplayNameC())});
         if (!rightTypeInfo->isNative() &&
             !rightTypeInfo->isPointer() &&
             !rightTypeInfo->isSlice() &&
@@ -298,7 +299,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             !rightTypeInfo->isInterface() &&
             !rightTypeInfo->isArray() &&
             !rightTypeInfo->isAlias())
-            return context->report({right, Fmt(Err(Err0572), rightTypeInfo->getDisplayNameC(), TypeInfo::getArticleKindName(rightTypeInfo))});
+            return context->report({right, Fmt(Err(Err0572), rightTypeInfo->getDisplayNameC(), Naming::getArticleKindName(rightTypeInfo).c_str())});
 
         if (forStruct)
         {
