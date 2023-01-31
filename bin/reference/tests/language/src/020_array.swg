@@ -1,5 +1,7 @@
-// Remember that dynamic arrays are part of the 'Std.Core' module.
-// Here we are only talking about native static arrays.
+/**
+Remember that dynamic arrays are part of the 'Std.Core' module.
+Here we are only talking about native static arrays.
+*/
 
 #test
 {
@@ -63,8 +65,13 @@
     {
         var array: [100] s32 = undefined
     }
+}
 
-    // An array can have multiple dimensions
+/**
+Of course an array can have multiple dimensions.
+*/
+#test
+{
     // Syntax is *not* [X][Y] like in C/C++, but is [X, Y]
     {
         var array: [2, 2] s32
