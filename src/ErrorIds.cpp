@@ -285,7 +285,7 @@ void initErrors()
     SWAG_ERROR(Syn0191, "unexpected lambda parameter name");
     SWAG_ERROR(Syn0192, "unexpected 'const' before the lambda parameter name");
     SWAG_ERROR(Syn0193, "unexpected default value for a 'self' parameter");
-    SWAG_ERROR(Syn0194, "unexpected default value for lambda parameter");
+    SWAG_ERROR(Syn0194, "unexpected default value for the lambda parameter type");
     SWAG_ERROR(Syn0195, "lambda type ambiguous parameters declaration");
     SWAG_ERROR(Syn0196, "'#type' should be followed by the type name (found '%s')");
     SWAG_ERROR(Syn0197, "unexpected start of a type declaration for a 'self' parameter");
@@ -763,9 +763,9 @@ void initErrors()
     SWAG_ERROR(Err0613, "the switch value '%d' has already been defined");
     SWAG_ERROR(Err0614, "the switch value '%f' has already been defined");
     SWAG_ERROR(Err0611, "the switch value '%s' has already been defined");
-    SWAG_ERROR(Err0394, "the symbol '%s' is already defined as %s in an accessible scope");
-    SWAG_ERROR(Err0890, "the symbol '%s' is already defined as a name alias in an accessible scope");
-    SWAG_ERROR(Err0305, "the symbol '%s' is already defined in an accessible scope");
+    SWAG_ERROR(Err0394, "the symbol '%s' is already defined as %s");
+    SWAG_ERROR(Err0890, "the symbol '%s' is already defined as a name alias");
+    SWAG_ERROR(Err0305, "the symbol '%s' is already defined");
     SWAG_ERROR(Err0346, "the symbol '%s' is already defined in the parent scope");
     SWAG_ERROR(Err0705, "the type '%s' cannot be used as an enum type");
     SWAG_ERROR(Err0671, "the type '%s' is generic, but struct '%s' does not declare generic parameters");
