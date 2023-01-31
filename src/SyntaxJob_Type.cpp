@@ -44,7 +44,7 @@ bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result, bool inTypeVarDecl)
+bool SyntaxJob::doLambdaClosureType(AstNode* parent, AstNode** result, bool inTypeVarDecl)
 {
     auto node         = Ast::newNode<AstTypeLambda>(this, AstNodeKind::TypeLambda, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveTypeLambdaClosure;
@@ -56,70 +56,41 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result,
         auto        newScope = Ast::newScope(node, node->token.text, ScopeKind::TypeLambda, currentScope);
         Scoped      scoped(this, newScope);
         ScopedFlags sf(this, AST_IN_TYPE_VAR_DECLARATION);
-        SWAG_CHECK(doTypeExpressionLambdaClosureTypeOrDecl(node, result, inTypeVarDecl));
+        SWAG_CHECK(doLambdaClosureTypePriv(node, result, inTypeVarDecl));
     }
     else
     {
-        SWAG_CHECK(doTypeExpressionLambdaClosureTypeOrDecl(node, result, inTypeVarDecl));
+        SWAG_CHECK(doLambdaClosureTypePriv(node, result, inTypeVarDecl));
     }
 
     return true;
 }
 
-bool SyntaxJob::doTypeExpressionLambdaClosureTypeOrDecl(AstTypeLambda* node, AstNode** result, bool inTypeVarDecl)
+bool SyntaxJob::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool inTypeVarDecl)
 {
-    bool isMethod  = false;
-    bool isMethodC = false;
-
-    if (token.id == TokenId::KwdMethod)
-    {
-        SWAG_VERIFY(currentStructScope, error(token, Err(Syn0025), nullptr, Hnt(Hnt0049)));
-        isMethod   = true;
-        node->kind = AstNodeKind::TypeLambda;
-    }
-    else if (token.id == TokenId::KwdConstMethod)
-    {
-        SWAG_VERIFY(currentStructScope, error(token, Err(Syn0025), nullptr, Hnt(Hnt0050)));
-        isMethodC  = true;
-        node->kind = AstNodeKind::TypeLambda;
-    }
-    else if (token.id == TokenId::KwdFunc)
-    {
-        node->kind = AstNodeKind::TypeLambda;
-    }
-    else
-    {
-        node->kind = AstNodeKind::TypeClosure;
-    }
-
-    SWAG_CHECK(eatToken());
-
-    AstNode* params = nullptr;
-
-    // :ClosureForceFirstParam
-    // A closure always has at least one parameter : the capture context
     AstTypeExpression* firstAddedType = nullptr;
+    AstNode*           params         = nullptr;
 
-    if (node->kind == AstNodeKind::TypeClosure)
+    switch (token.id)
     {
-        params           = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
-        node->parameters = params;
+    case TokenId::KwdMethod:
+        SWAG_VERIFY(currentStructScope, error(token, Err(Syn0025), nullptr, Hnt(Hnt0049)));
+        node->kind = AstNodeKind::TypeLambda;
+        SWAG_CHECK(eatToken());
 
-        firstAddedType           = Ast::newTypeExpression(sourceFile, params);
-        firstAddedType->typeInfo = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
-        firstAddedType->flags |= AST_NO_SEMANTIC | AST_GENERATED;
-    }
-    else if (isMethod)
-    {
         params                     = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
         node->parameters           = params;
         firstAddedType             = Ast::newTypeExpression(sourceFile, params);
         firstAddedType->ptrCount   = 1;
         firstAddedType->typeFlags  = TYPEFLAG_IS_SELF;
         firstAddedType->identifier = Ast::newIdentifierRef(sourceFile, currentStructScope->name, firstAddedType, this);
-    }
-    else if (isMethodC)
-    {
+        break;
+
+    case TokenId::KwdConstMethod:
+        SWAG_VERIFY(currentStructScope, error(token, Err(Syn0025), nullptr, Hnt(Hnt0050)));
+        node->kind = AstNodeKind::TypeLambda;
+        SWAG_CHECK(eatToken());
+
         params                      = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
         node->parameters            = params;
         firstAddedType              = Ast::newTypeExpression(sourceFile, params);
@@ -128,6 +99,29 @@ bool SyntaxJob::doTypeExpressionLambdaClosureTypeOrDecl(AstTypeLambda* node, Ast
         firstAddedType->typeFlags |= TYPEFLAG_IS_CONST;
         firstAddedType->typeFlags |= TYPEFLAG_IS_SELF;
         firstAddedType->identifier = Ast::newIdentifierRef(sourceFile, currentStructScope->name, firstAddedType, this);
+        break;
+
+    case TokenId::KwdClosure:
+        node->kind = AstNodeKind::TypeClosure;
+        SWAG_CHECK(eatToken());
+
+        // :ClosureForceFirstParam
+        // A closure always has at least one parameter : the capture context
+        params                   = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
+        node->parameters         = params;
+        firstAddedType           = Ast::newTypeExpression(sourceFile, params);
+        firstAddedType->typeInfo = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
+        firstAddedType->flags |= AST_NO_SEMANTIC | AST_GENERATED;
+        break;
+
+    case TokenId::KwdFunc:
+        node->kind = AstNodeKind::TypeLambda;
+        SWAG_CHECK(eatToken());
+        break;
+
+    default:
+        SWAG_ASSERT(false);
+        break;
     }
 
     // If we are in a type declaration, then this must be a FuncDeclParam and not a TypeExpression
@@ -168,9 +162,9 @@ bool SyntaxJob::doTypeExpressionLambdaClosureTypeOrDecl(AstTypeLambda* node, Ast
             node->parameters = params;
         }
 
+        AstVarDecl* lastParameter = nullptr;
         bool        lastWasAlone  = false;
         bool        curIsAlone    = false;
-        AstVarDecl* lastParameter = nullptr;
         bool        thisIsAType   = false;
         while (true)
         {
@@ -230,6 +224,8 @@ bool SyntaxJob::doTypeExpressionLambdaClosureTypeOrDecl(AstTypeLambda* node, Ast
             }
 
             AstTypeExpression* typeExpr = nullptr;
+
+            // self
             if (token.text == g_LangSpec->name_self)
             {
                 curIsAlone = false;
@@ -495,7 +491,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     // This is a lambda
     if (token.id == TokenId::KwdFunc || token.id == TokenId::KwdClosure || token.id == TokenId::KwdMethod || token.id == TokenId::KwdConstMethod)
     {
-        return doTypeExpressionLambdaClosure(parent, result, inTypeVarDecl);
+        return doLambdaClosureType(parent, result, inTypeVarDecl);
     }
 
     // retval
@@ -757,7 +753,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         alias->semanticFct                            = SemanticJob::resolveTypeAlias;
         alias->resolvedSymbolName                     = currentScope->symTable.registerSymbolName(&context, alias, SymbolKind::TypeAlias);
         node->identifier                              = Ast::newIdentifierRef(sourceFile, alias->token.text, node, this);
-        SWAG_CHECK(doTypeExpressionLambdaClosure(alias));
+        SWAG_CHECK(doLambdaClosureType(alias));
 
         node->identifier->allocateExtension(ExtensionKind::ExportNode);
         node->identifier->extension->misc->exportNode = alias->childs.front();
