@@ -33,7 +33,7 @@ bool SemanticJob::resolveImplForAfterFor(SemanticContext* context)
     auto node = CastAst<AstImpl>(context->node->parent, AstNodeKind::Impl);
 
     if (id->resolvedSymbolName->kind != SymbolKind::Struct)
-        return context->report({id->childs.back(), Fmt(Err(Err0290), id->resolvedSymbolName->name.c_str(), SymTable::getArticleKindName(id->resolvedSymbolName->kind))});
+        return context->report({id->childs.back(), Fmt(Err(Err0290), id->resolvedSymbolName->name.c_str(), SymTable::getArticleKindName(id->resolvedSymbolName->kind).c_str())});
 
     auto structDecl = CastAst<AstStruct>(id->resolvedSymbolOverload->node, AstNodeKind::StructDecl);
 

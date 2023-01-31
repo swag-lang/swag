@@ -58,7 +58,7 @@ bool SemanticJob::checkCanTakeAddress(SemanticContext* context, AstNode* node)
     {
         if (node->resolvedSymbolName->kind != SymbolKind::Variable)
         {
-            Diagnostic diag{node, Fmt(Err(Err0465), SymTable::getArticleKindName(node->resolvedSymbolName->kind))};
+            Diagnostic diag{node, Fmt(Err(Err0465), SymTable::getArticleKindName(node->resolvedSymbolName->kind).c_str())};
             diag.hint = Hnt(Hnt0054);
             return context->report(diag);
         }

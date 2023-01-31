@@ -683,7 +683,8 @@ Diagnostic* Diagnostic::hereIs(SymbolOverload* overload, bool forceShowRange)
     if (overload->node && overload->node->flags & AST_GENERATED)
         return nullptr;
 
-    auto refNiceName = SymTable::getArticleKindName(overload);
+    Utf8 refNiceName = "the ";
+    refNiceName += SymTable::getNakedKindName(overload);
 
     auto showRange = false;
     auto site      = overload->node;

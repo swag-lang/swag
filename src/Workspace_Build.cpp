@@ -285,7 +285,7 @@ static Utf8 errorPendingJobsType(Job* pendingJob)
 {
     Utf8 sym;
     if (pendingJob->waitingSymbolSolved)
-        sym = Fmt("%s '%s'", SymTable::getNakedKindName(pendingJob->waitingSymbolSolved->kind), pendingJob->waitingSymbolSolved->name.c_str());
+        sym = Fmt("%s '%s'", SymTable::getNakedKindName(pendingJob->waitingSymbolSolved->kind).c_str(), pendingJob->waitingSymbolSolved->name.c_str());
 
     switch (pendingJob->waitingKind)
     {

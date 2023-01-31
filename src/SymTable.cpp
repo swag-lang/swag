@@ -175,7 +175,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
         // No ghosting check for an inline parameter
         if (!(flags & OVERLOAD_VAR_INLINE) && !(flags & OVERLOAD_RETVAL))
         {
-            if (!checkHiddenSymbolNoLock(context, node, typeInfo, kind, symbol))
+            if (!checkHiddenSymbolNoLock(context, node, typeInfo, kind, symbol, flags))
                 return nullptr;
         }
 
@@ -321,7 +321,7 @@ bool SymTable::acceptGhostSymbolNoLock(JobContext* context, AstNode* node, Symbo
     return false;
 }
 
-bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol)
+bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, uint32_t overFlags)
 {
     auto token = &node->token;
     if (node->kind == AstNodeKind::FuncDecl)
@@ -340,7 +340,7 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
     // A symbol with a different kind already exists
     if (symbol->kind != kind)
     {
-        Diagnostic diag{node, *token, Fmt(Err(Err0394), symbol->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
+        Diagnostic diag{node, *token, Fmt(Err(Err0394), symbol->name.c_str(), getArticleKindName(symbol->kind).c_str())};
         auto       front = symbol->nodes.front();
         Diagnostic diagNote{front, front->token, Nte(Nte0036), DiagnosticLevel::Note};
         context->report(diag, &diagNote);
@@ -414,7 +414,7 @@ bool SymTable::registerUsingAliasOverload(JobContext* context, AstNode* node, Sy
         if (symbol->kind != SymbolKind::Alias)
         {
             auto       firstOverload = symbol->overloads[0];
-            Utf8       msg           = Fmt(Err(Err0394), symbol->name.c_str(), SymTable::getArticleKindName(symbol->kind));
+            Utf8       msg           = Fmt(Err(Err0394), symbol->name.c_str(), getArticleKindName(symbol->kind).c_str());
             Diagnostic diag{node, msg};
             Utf8       note = Nte(Nte0036);
             Diagnostic diagNote{firstOverload->node, note, DiagnosticLevel::Note};
@@ -435,112 +435,181 @@ bool SymTable::registerUsingAliasOverload(JobContext* context, AstNode* node, Sy
     return true;
 }
 
+Utf8 SymTable::getKindName(SymbolName* symbol, AstNode* node, TypeInfo* typeInfo, uint32_t overFlags, Utf8& article)
+{
+    if (typeInfo->isTuple())
+    {
+        article = "a";
+        return "tuple";
+    }
+
+    if (typeInfo->isLambda())
+    {
+        article = "a";
+        return "lambda";
+    }
+
+    if (typeInfo->isClosure())
+    {
+        article = "a";
+        return "closure";
+    }
+
+    if (node->isGeneratedSelf())
+    {
+        article = "an";
+        return "implicit parameter";
+    }
+
+    if (overFlags & OVERLOAD_VAR_CAPTURE)
+    {
+        article = "a";
+        return "captured parameter";
+    }
+
+    if (overFlags & OVERLOAD_VAR_FUNC_PARAM && node->ownerFct && node->ownerFct->typeInfo->isLambda())
+    {
+        article = "a";
+        return "lambda parameter";
+    }
+
+    if (overFlags & OVERLOAD_VAR_FUNC_PARAM && node->ownerFct && node->ownerFct->typeInfo->isClosure())
+    {
+        article = "a";
+        return "closure parameter";
+    }
+
+    if (overFlags & OVERLOAD_VAR_FUNC_PARAM)
+    {
+        article = "a";
+        return "function parameter";
+    }
+
+    if (overFlags & OVERLOAD_VAR_INLINE)
+    {
+        article = "a";
+        return "function parameter";
+    }
+
+    if (overFlags & OVERLOAD_VAR_GLOBAL)
+    {
+        article = "a";
+        return "global variable";
+    }
+
+    if (overFlags & OVERLOAD_VAR_LOCAL)
+    {
+        article = "a";
+        return "local variable";
+    }
+
+    if (overFlags & OVERLOAD_VAR_STRUCT)
+    {
+        article = "a";
+        return "field";
+    }
+
+    if (overFlags & OVERLOAD_CONSTANT)
+    {
+        article = "a";
+        return "constant";
+    }
+
+    if (node->kind == AstNodeKind::FuncDecl && node->attributeFlags & ATTRIBUTE_MACRO)
+    {
+        article = "a";
+        return "macro";
+    }
+
+    if (node->kind == AstNodeKind::FuncDecl && node->attributeFlags & ATTRIBUTE_MIXIN)
+    {
+        article = "a";
+        return "mixin";
+    }
+
+    if (node->kind == AstNodeKind::FuncDecl && node->attributeFlags & ATTRIBUTE_INLINE)
+    {
+        article = "an";
+        return "inlined function";
+    }
+
+    return getArticleKindName(symbol->kind);
+}
+
 Utf8 SymTable::getNakedKindName(SymbolOverload* overload)
 {
-    if (overload->typeInfo->isTuple())
-        return "tuple";
-    if (overload->typeInfo->isLambda())
-        return "lambda";
-    if (overload->typeInfo->isClosure())
-        return "closure";
-    if (overload->node->isGeneratedSelf())
-        return "implicit function parameter";
-    if (overload->flags & OVERLOAD_VAR_CAPTURE)
-        return "captured parameter";
-    if (overload->flags & OVERLOAD_VAR_FUNC_PARAM && overload->node->ownerFct && overload->node->ownerFct->typeInfo->isLambda())
-        return "lambda parameter";
-    if (overload->flags & OVERLOAD_VAR_FUNC_PARAM && overload->node->ownerFct && overload->node->ownerFct->typeInfo->isClosure())
-        return "closure parameter";
-    if (overload->flags & OVERLOAD_VAR_FUNC_PARAM)
-        return "function parameter";
-    if (overload->flags & OVERLOAD_VAR_INLINE)
-        return "function parameter";
-    if (overload->flags & OVERLOAD_VAR_GLOBAL)
-        return "global variable";
-    if (overload->flags & OVERLOAD_VAR_LOCAL)
-        return "local variable";
-    if (overload->flags & OVERLOAD_CONSTANT)
-        return "constant";
-    if (overload->node->kind == AstNodeKind::FuncDecl && overload->node->attributeFlags & ATTRIBUTE_MACRO)
-        return "macro";
-    if (overload->node->kind == AstNodeKind::FuncDecl && overload->node->attributeFlags & ATTRIBUTE_MIXIN)
-        return "mixin";
-    if (overload->node->kind == AstNodeKind::FuncDecl && overload->node->attributeFlags & ATTRIBUTE_INLINE)
-        return "inlined function";
-    return SymTable::getNakedKindName(overload->symbol->kind);
+    Utf8 article;
+    return getKindName(overload->symbol, overload->node, overload->typeInfo, overload->flags, article);
 }
 
 Utf8 SymTable::getArticleKindName(SymbolOverload* overload)
 {
-    Utf8 refNiceName = "the ";
-    refNiceName += getNakedKindName(overload);
-    return refNiceName;
+    Utf8 article;
+    auto result = getKindName(overload->symbol, overload->node, overload->typeInfo, overload->flags, article);
+    article += " ";
+    article += result;
+    return article;
 }
 
-const char* SymTable::getArticleKindName(SymbolKind kind)
+Utf8 SymTable::getArticleKindName(SymbolKind kind)
+{
+    Utf8 article;
+    auto result = getKindName(kind, article);
+    article += " ";
+    article += result;
+    return article;
+}
+
+Utf8 SymTable::getNakedKindName(SymbolKind kind)
+{
+    Utf8 article;
+    return getKindName(kind, article);
+}
+
+Utf8 SymTable::getKindName(SymbolKind kind, Utf8& article)
 {
     switch (kind)
     {
     case SymbolKind::Attribute:
-        return "an attribute";
-    case SymbolKind::Enum:
-        return "an enum";
-    case SymbolKind::EnumValue:
-        return "an enum value";
-    case SymbolKind::Function:
-        return "a function";
-    case SymbolKind::Namespace:
-        return "a namespace";
-    case SymbolKind::TypeAlias:
-        return "a type alias";
-    case SymbolKind::Alias:
-        return "a name alias";
-    case SymbolKind::Variable:
-        return "a variable";
-    case SymbolKind::Struct:
-        return "a struct";
-    case SymbolKind::Interface:
-        return "an interface";
-    case SymbolKind::GenericType:
-        return "a generic type";
-    case SymbolKind::PlaceHolder:
-        return "a placeholder";
-    }
-
-    return "<symbol>";
-}
-
-const char* SymTable::getNakedKindName(SymbolKind kind)
-{
-    switch (kind)
-    {
-    case SymbolKind::Attribute:
+        article = "an";
         return "attribute";
     case SymbolKind::Enum:
+        article = "an";
         return "enum";
     case SymbolKind::EnumValue:
+        article = "an";
         return "enum value";
     case SymbolKind::Function:
+        article = "a";
         return "function";
     case SymbolKind::Namespace:
+        article = "a";
         return "namespace";
     case SymbolKind::TypeAlias:
+        article = "a";
         return "type alias";
     case SymbolKind::Alias:
+        article = "a";
         return "name alias";
     case SymbolKind::Variable:
+        article = "a";
         return "variable";
     case SymbolKind::Struct:
+        article = "a";
         return "struct";
     case SymbolKind::Interface:
+        article = "an";
         return "interface";
     case SymbolKind::GenericType:
+        article = "a";
         return "generic type";
     case SymbolKind::PlaceHolder:
+        article = "a";
         return "placeholder";
     }
 
-    return "<symbol>";
+    article = "a";
+    return "symbol";
 }
 
 SymbolOverload* SymbolName::findOverload(TypeInfo* typeInfo)

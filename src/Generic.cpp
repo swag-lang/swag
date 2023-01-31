@@ -83,7 +83,7 @@ bool Generic::updateGenericParameters(SemanticContext* context, bool doType, boo
                     }
                 }
 
-                Diagnostic diag{errNode, Utf8::format(Err(Err0808), SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+                Diagnostic diag{errNode, Utf8::format(Err(Err0808), SymTable::getNakedKindName(symbol->kind).c_str(), symbol->name.c_str())};
                 diag.hint = hint;
                 return context->report(diag);
             }

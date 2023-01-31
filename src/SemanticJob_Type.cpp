@@ -332,7 +332,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
                     symName->kind != SymbolKind::Struct &&
                     symName->kind != SymbolKind::Interface)
                 {
-                    Diagnostic  diag{child->sourceFile, child->token, Fmt(Err(Err0017), child->token.ctext(), SymTable::getArticleKindName(symName->kind))};
+                    Diagnostic  diag{child->sourceFile, child->token, Fmt(Err(Err0017), child->token.ctext(), SymTable::getArticleKindName(symName->kind).c_str())};
                     Diagnostic* note = Diagnostic::hereIs(symOver);
                     if (typeNode->ptrCount && symName->kind == SymbolKind::Variable)
                     {
@@ -617,7 +617,7 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
     case SymbolKind::TypeAlias:
         break;
     default:
-        return context->report({back, Fmt(Err(Err0030), SymTable::getArticleKindName(symbol->kind))});
+        return context->report({back, Fmt(Err(Err0030), SymTable::getArticleKindName(symbol->kind).c_str())});
     }
 
     SWAG_ASSERT(overload);

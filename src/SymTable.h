@@ -138,7 +138,7 @@ struct SymTable
     SymbolOverload* addSymbolTypeInfo(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0, DataSegment* storageSegment = nullptr, Utf8* aliasName = nullptr);
     SymbolOverload* addSymbolTypeInfoNoLock(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0, DataSegment* storageSegment = nullptr, Utf8* aliasName = nullptr);
     bool            acceptGhostSymbolNoLock(JobContext* context, AstNode* node, SymbolKind kind, SymbolName* symbol);
-    bool            checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol);
+    bool            checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, uint32_t overFlags);
     SymbolName*     find(const Utf8& name, uint32_t crc = 0);
     SymbolName*     findNoLock(const Utf8& name, uint32_t crc = 0);
     void            addVarToDrop(SymbolOverload* overload, TypeInfo* typeInfo, uint32_t storageOffset);
@@ -147,10 +147,13 @@ struct SymTable
     static void     decreaseOverloadNoLock(SymbolName* symbol);
     static void     disabledIfBlockOverloadNoLock(AstNode* node, SymbolName* symbol);
 
-    static Utf8        getNakedKindName(SymbolOverload* overload);
-    static Utf8        getArticleKindName(SymbolOverload* overload);
-    static const char* getNakedKindName(SymbolKind kind);
-    static const char* getArticleKindName(SymbolKind kind);
+    static Utf8 getKindName(SymbolName* symbol, AstNode* node, TypeInfo* typeInfo, uint32_t overFlags, Utf8& article);
+    static Utf8 getNakedKindName(SymbolOverload* overload);
+    static Utf8 getArticleKindName(SymbolOverload* overload);
+
+    static Utf8 getNakedKindName(SymbolKind kind);
+    static Utf8 getArticleKindName(SymbolKind kind);
+    static Utf8 getKindName(SymbolKind kind, Utf8& article);
 
     SharedMutex                mutex;
     SymTableHash               mapNames;

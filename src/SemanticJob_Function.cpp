@@ -993,7 +993,7 @@ bool SemanticJob::resolveFuncCallGenParams(SemanticContext* context)
             symbol->kind == SymbolKind::Attribute)
         {
             Diagnostic note{Hlp(Hlp0021), DiagnosticLevel::Help};
-            return context->report({c, Fmt(Err(Err0815), SymTable::getArticleKindName(symbol->kind), symbol->name.c_str())}, &note);
+            return context->report({c, Fmt(Err(Err0815), SymTable::getArticleKindName(symbol->kind).c_str(), symbol->name.c_str())}, &note);
         }
     }
 

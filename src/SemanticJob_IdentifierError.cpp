@@ -134,7 +134,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     badParamIdx += 1;
 
     // Nice name to reference it
-    auto refNiceName = SymTable::getArticleKindName(overload);
+    Utf8 refNiceName = "the ";
+    refNiceName += SymTable::getNakedKindName(overload);
 
     // Get parameters of destination symbol
     AstFuncDecl* destFuncDecl = nullptr;
@@ -343,7 +344,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             errNode = context->node;
         if (!match.badSignatureInfos.badSignatureNum2)
         {
-            diag = new Diagnostic{errNode, Fmt(Err(Err0135), SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+            diag = new Diagnostic{errNode, Fmt(Err(Err0135), SymTable::getNakedKindName(symbol->kind).c_str(), symbol->name.c_str()).c_str()};
         }
         else
         {
@@ -351,7 +352,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                 errNode = genericParameters->childs[match.badSignatureInfos.badSignatureNum2];
             diag = new Diagnostic{errNode,
                                   Fmt(Err(Err0044),
-                                      SymTable::getNakedKindName(symbol->kind),
+                                      SymTable::getNakedKindName(symbol->kind).c_str(),
                                       symbol->name.c_str(),
                                       match.badSignatureInfos.badSignatureNum2,
                                       match.badSignatureInfos.badSignatureNum1)};
@@ -666,12 +667,12 @@ void SemanticJob::symbolErrorNotes(SemanticContext* context, VectorNative<OneTry
 
                 if (prev->typeInfo)
                 {
-                    auto note = new Diagnostic{prev, Fmt(Nte(Nte0001), prev->token.ctext(), SymTable::getArticleKindName(prev->resolvedSymbolName->kind), prev->typeInfo->getDisplayNameC()), DiagnosticLevel::Note};
+                    auto note = new Diagnostic{prev, Fmt(Nte(Nte0001), prev->token.ctext(), SymTable::getArticleKindName(prev->resolvedSymbolName->kind).c_str(), prev->typeInfo->getDisplayNameC()), DiagnosticLevel::Note};
                     notes.push_back(note);
                 }
                 else
                 {
-                    auto note = new Diagnostic{prev, Fmt(Nte(Nte0010), prev->token.ctext(), SymTable::getArticleKindName(prev->resolvedSymbolName->kind)), DiagnosticLevel::Note};
+                    auto note = new Diagnostic{prev, Fmt(Nte(Nte0010), prev->token.ctext(), SymTable::getArticleKindName(prev->resolvedSymbolName->kind).c_str()), DiagnosticLevel::Note};
                     notes.push_back(note);
                 }
 
