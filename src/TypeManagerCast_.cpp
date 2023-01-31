@@ -7,6 +7,7 @@
 #include "ByteCodeGenJob.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
+#include "Naming.h"
 
 bool TypeManager::errorOutOfRange(SemanticContext* context, AstNode* fromNode, TypeInfo* fromType, TypeInfo* toType, bool isNeg)
 {
@@ -2026,7 +2027,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
             {
                 auto       badParamIdx = symContext.badSignatureInfos.badSignatureParameterIdx;
                 auto       failedParam = child->childs[badParamIdx];
-                Diagnostic diag{failedParam, Fmt(Err(Err0006), SemanticJob::getTheNiceArgumentRank(badParamIdx + 1).c_str()), Hnt(Hnt0031)};
+                Diagnostic diag{failedParam, Fmt(Err(Err0006), Naming::niceArgumentRank(badParamIdx + 1).c_str()), Hnt(Hnt0031)};
                 auto       otherParam = child->childs[badParamIdx - 1];
                 if (otherParam->extension && otherParam->extension->misc && otherParam->extension->misc->isNamed)
                     otherParam = otherParam->extension->misc->isNamed;

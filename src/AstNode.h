@@ -284,8 +284,6 @@ struct AstNode
     // clang-format on
 
     void        setPassThrough();
-    static Utf8 getArticleKindName(AstNode* node);
-    static Utf8 getKindName(AstNode* node);
     AstNode*    findChildRef(AstNode* ref, AstNode* fromChild);
     AstNode*    findChildRefRec(AstNode* ref, AstNode* fromChild);
     AstNode*    findParent(AstNodeKind parentKind);

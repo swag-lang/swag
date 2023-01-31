@@ -52,7 +52,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
 
     SWAG_ASSERT(oneAttribute->typeInfo);
     if (!oneAttribute->typeInfo->isFuncAttr())
-        return context->report({oneAttribute, Fmt(Err(Err0582), oneAttribute->typeInfo->getDisplayNameC(), Naming::getArticleKindName(oneAttribute->typeInfo).c_str())});
+        return context->report({oneAttribute, Fmt(Err(Err0582), oneAttribute->typeInfo->getDisplayNameC(), Naming::aKindName(oneAttribute->typeInfo).c_str())});
 
     auto kind     = checkNode->kind;
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FuncAttr);
@@ -169,7 +169,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
 
     if (specificMsg)
     {
-        auto       nakedName = AstNode::getKindName(checkNode);
+        auto       nakedName = Naming::kindName(checkNode);
         Diagnostic diag{oneAttribute, Fmt(Err(Err0583), oneAttribute->token.ctext(), specificMsg)};
         diag.hint = Hnt(Hnt0096);
         Diagnostic note1{checkNode, Fmt(Nte(Nte0019), nakedName.c_str()), DiagnosticLevel::Note};
@@ -177,7 +177,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     }
     else
     {
-        auto nakedName = AstNode::getArticleKindName(checkNode);
+        auto nakedName = Naming::aKindName(checkNode);
         if (nakedName == "<node>")
         {
             Diagnostic diag{oneAttribute, Fmt(Err(Err0586), oneAttribute->token.ctext())};
@@ -186,7 +186,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
         }
         else
         {
-            auto       nakedName1 = AstNode::getKindName(checkNode);
+            auto       nakedName1 = Naming::kindName(checkNode);
             Diagnostic diag{oneAttribute, Fmt(Err(Err0588), oneAttribute->token.ctext(), nakedName.c_str())};
             diag.hint = Hnt(Hnt0096);
             Diagnostic note1{checkNode, checkNode->token, Fmt(Nte(Nte0026), nakedName1.c_str()), DiagnosticLevel::Note};

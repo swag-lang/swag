@@ -301,8 +301,8 @@ void initErrors()
     SWAG_ERROR(Err0316, "%s '%s' should be public because it is referenced in a public context");
     SWAG_ERROR(Err0747, "%s cannot be public");
     SWAG_ERROR(Err0505, "%s overflow, the maximum supported size is '0x%I64x' bytes");
-    SWAG_ERROR(Err0006, "%s should be named because some arguments before are named");
-    SWAG_ERROR(Err0738, "%s should have a default value because the parameter before have one");
+    SWAG_ERROR(Err0006, "the %s should be named because some arguments before are named");
+    SWAG_ERROR(Err0738, "the %s should have a default value because the parameter before have one");
     SWAG_ERROR(Err0606, "%s should return a value");
     SWAG_ERROR(Err0834, "%s size overflow");
     SWAG_ERROR(Err0255, "'#callerfunction' should only be used in a function parameter declaration");
@@ -704,7 +704,7 @@ void initErrors()
     SWAG_ERROR(Err0751, "the function '%s' has the 'Swag.NotGeneric' attribute but seems to be generic");
     SWAG_ERROR(Err0098, "the function '%s' should be called with '()' and not curlies (this is reserved for struct initialization)");
     SWAG_ERROR(Err0766, "the function cannot have a return type because it is flagged with the 'Swag.NoReturn' attribute");
-    SWAG_ERROR(Err0777, "the generic type replacement for %s of %s has generated an invalid type ('%s' becomes '%s')");
+    SWAG_ERROR(Err0777, "the generic type replacement for the %s of %s has generated an invalid type ('%s' becomes '%s')");
     SWAG_ERROR(Err0123, "the generic value '%s' has already been deduced from parameters to be '%s' (and '%s' is provided here)");
     SWAG_ERROR(Err0085, "the identifier '%s' cannot be dereferenced like a struct or a pointer (type is '%s')");
     SWAG_ERROR(Err0110, "the identifier '%s' cannot be found in %s '%s'");
@@ -834,8 +834,8 @@ void initErrors()
     SWAG_ERROR(Err0317, "unexpected floating point number suffix (type is '%s')");
     SWAG_ERROR(Err0087, "unexpected function call at global scope");
     SWAG_ERROR(Err0732, "unexpected function return type 'void', this is not necessary");
-    SWAG_ERROR(Err0054, "unexpected generic %s for %s (a type is expected but a value is provided)");
-    SWAG_ERROR(Err0057, "unexpected generic %s for %s (a value is expected but a type is provided)");
+    SWAG_ERROR(Err0054, "unexpected generic %s for the %s (a type is expected but a value is provided)");
+    SWAG_ERROR(Err0057, "unexpected generic %s for the %s (a value is expected but a type is provided)");
     SWAG_ERROR(Err0074, "unexpected generic parameter for special function '%s' ('bool' expected, '%s' provided)");
     SWAG_ERROR(Err0072, "unexpected generic parameter for special function '%s' ('string' expected, '%s' provided)");
     SWAG_ERROR(Err0135, "unexpected generic parameters for %s '%s'");

@@ -981,8 +981,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     if (identifier->identifierRef && identifier->identifierRef->flags & AST_GLOBAL_CALL)
     {
         if (identifier->callParameters)
-            return context->report({identifier, identifier->token, Fmt(Err(Err0087), identifier->token.ctext(), Naming::getArticleKindName(symbolKind).c_str())});
-        return context->report({identifier, Fmt(Err(Err0776), identifier->token.ctext(), Naming::getArticleKindName(symbolKind).c_str())});
+            return context->report({identifier, identifier->token, Fmt(Err(Err0087), identifier->token.ctext(), Naming::aKindName(symbolKind).c_str())});
+        return context->report({identifier, Fmt(Err(Err0776), identifier->token.ctext(), Naming::aKindName(symbolKind).c_str())});
     }
 
     SWAG_CHECK(warnDeprecated(context, identifier));
@@ -991,7 +991,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     {
         if (isStatementIdentifier(identifier))
         {
-            Diagnostic diag{identifier, Fmt(Err(Err0096), Naming::getNakedKindName(identifier->resolvedSymbolName->kind).c_str(), identifier->token.ctext()), Hnt(Hnt0026)};
+            Diagnostic diag{identifier, Fmt(Err(Err0096), Naming::kindName(identifier->resolvedSymbolName->kind).c_str(), identifier->token.ctext()), Hnt(Hnt0026)};
             return context->report(diag);
         }
     }
@@ -1137,8 +1137,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             auto fctAttributes = ownerFct->attributeFlags;
             if (!(fctAttributes & ATTRIBUTE_COMPILER) && (overload->node->attributeFlags & ATTRIBUTE_COMPILER) && !(ownerFct->flags & AST_RUN_BLOCK))
             {
-                Diagnostic diag{identifier, Fmt(Err(Err0091), AstNode::getKindName(overload->node).c_str(), overload->node->token.ctext(), ownerFct->getDisplayNameC())};
-                diag.hint = Fmt(Hnt(Hnt0070), AstNode::getKindName(overload->node).c_str());
+                Diagnostic diag{identifier, Fmt(Err(Err0091), Naming::kindName(overload->node).c_str(), overload->node->token.ctext(), ownerFct->getDisplayNameC())};
+                diag.hint = Fmt(Hnt(Hnt0070), Naming::kindName(overload->node).c_str());
                 return context->report(diag);
             }
         }
@@ -1244,7 +1244,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         {
             if (isStatementIdentifier(identifier))
             {
-                Diagnostic diag{identifier, Fmt(Err(Err0096), Naming::getNakedKindName(identifier->resolvedSymbolName->kind).c_str(), identifier->token.ctext()), Hnt(Hnt0026)};
+                Diagnostic diag{identifier, Fmt(Err(Err0096), Naming::kindName(identifier->resolvedSymbolName->kind).c_str(), identifier->token.ctext()), Hnt(Hnt0026)};
                 return context->report(diag);
             }
         }
@@ -1265,7 +1265,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             auto prev = identifier->identifierRef->childs[identifier->childParentIdx - 1];
             if (prev->resolvedSymbolName && prev->resolvedSymbolName->kind == SymbolKind::Variable && !(prev->flags & AST_FROM_UFCS))
             {
-                return context->report({prev, Fmt(Err(Err0097), AstNode::getKindName(prev->resolvedSymbolOverload->node).c_str(), prev->token.ctext(), identifier->token.ctext()), Hnt(Hnt0026)});
+                return context->report({prev, Fmt(Err(Err0097), Naming::kindName(prev->resolvedSymbolOverload->node).c_str(), prev->token.ctext(), identifier->token.ctext()), Hnt(Hnt0026)});
             }
         }
 
@@ -2010,7 +2010,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
 
         auto                      symbol  = overloads[0]->overload->symbol;
         auto                      errNode = node ? node : context->node;
-        Diagnostic                diag{errNode, errNode->token, Fmt(Err(Err0115), Naming::getNakedKindName(symbol->kind).c_str(), symbol->name.c_str())};
+        Diagnostic                diag{errNode, errNode->token, Fmt(Err(Err0115), Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
         vector<const Diagnostic*> notes;
         for (auto match : genericMatches)
         {
@@ -2155,7 +2155,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 else
                 {
                     auto concreteType = TypeManager::concreteType(overload->typeInfo, CONCRETE_ALIAS);
-                    auto couldBe      = Fmt(Nte(Nte0050), Naming::getArticleKindName(match->symbolOverload).c_str(), concreteType->getDisplayNameC());
+                    auto couldBe      = Fmt(Nte(Nte0050), Naming::aKindName(match->symbolOverload).c_str(), concreteType->getDisplayNameC());
                     note              = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
                 }
 
@@ -3102,7 +3102,7 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
             if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind != SymbolKind::Variable)
             {
                 auto       subNode = identifierRef->previousResolvedNode ? identifierRef->previousResolvedNode : node;
-                Diagnostic diag{subNode, subNode->token, Fmt(Err(Err0124), identifierRef->resolvedSymbolName->name.c_str(), Naming::getArticleKindName(identifierRef->resolvedSymbolName->kind).c_str())};
+                Diagnostic diag{subNode, subNode->token, Fmt(Err(Err0124), identifierRef->resolvedSymbolName->name.c_str(), Naming::aKindName(identifierRef->resolvedSymbolName->kind).c_str())};
                 diag.addRange(node->token, Hnt(Hnt0079));
                 return context->report(diag);
             }
@@ -3144,7 +3144,7 @@ bool SemanticJob::appendLastCodeStatement(SemanticContext* context, AstIdentifie
                         case AstNodeKind::CompilerIf:
                         case AstNodeKind::While:
                         {
-                            Diagnostic diag{node, node->token, Fmt(Err(Err0686), Naming::getNakedKindName(overload).c_str(), overload->node->token.ctext(), brotherParent->token.ctext())};
+                            Diagnostic diag{node, node->token, Fmt(Err(Err0686), Naming::kindName(overload).c_str(), overload->node->token.ctext(), brotherParent->token.ctext())};
                             return context->report(diag, Diagnostic::hereIs(overload->node));
                         }
                         }
@@ -3214,7 +3214,7 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
             }
             else
             {
-                Diagnostic diag{node, Fmt(Err(Err0127), node->token.ctext(), Naming::getArticleKindName(symbol->kind).c_str())};
+                Diagnostic diag{node, Fmt(Err(Err0127), node->token.ctext(), Naming::aKindName(symbol->kind).c_str())};
                 Diagnostic note{firstNode->sourceFile, firstNode->token.startLocation, firstNode->token.endLocation, Fmt(Nte(Nte0040), node->token.ctext()), DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }
@@ -3281,7 +3281,7 @@ bool SemanticJob::fillMatchContextGenericParameters(SemanticContext* context, Sy
             symbolKind != SymbolKind::TypeAlias)
         {
             auto       firstNode = symbol->nodes.front();
-            Diagnostic diag{genericParameters, Fmt(Err(Err0130), node->token.ctext(), Naming::getArticleKindName(symbol->kind).c_str())};
+            Diagnostic diag{genericParameters, Fmt(Err(Err0130), node->token.ctext(), Naming::aKindName(symbol->kind).c_str())};
             Diagnostic note{firstNode->sourceFile, firstNode->token.startLocation, firstNode->token.endLocation, Fmt(Nte(Nte0040), node->token.ctext()), DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
@@ -4641,7 +4641,7 @@ bool SemanticJob::checkCanCatch(SemanticContext* context)
     }
 
     auto lastChild = identifierRef->childs.back();
-    return context->report({node, Fmt(Err(Err0139), node->token.ctext(), lastChild->token.ctext(), Naming::getArticleKindName(lastChild->resolvedSymbolName->kind).c_str())});
+    return context->report({node, Fmt(Err(Err0139), node->token.ctext(), lastChild->token.ctext(), Naming::aKindName(lastChild->resolvedSymbolName->kind).c_str())});
 }
 
 bool SemanticJob::resolveTryBlock(SemanticContext* context)

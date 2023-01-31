@@ -4,6 +4,7 @@
 #include "Scoped.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
+#include "Naming.h"
 
 bool SyntaxJob::checkIsValidVarName(AstNode* node)
 {
@@ -152,7 +153,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
     // Tuple dereference
     else if (leftNode->kind == AstNodeKind::MultiIdentifierTuple)
     {
-        SWAG_VERIFY(acceptDeref, error(leftNode, Fmt(Err(Syn0177), Scope::getArticleKindName(currentScope->kind))));
+        SWAG_VERIFY(acceptDeref, error(leftNode, Fmt(Err(Syn0177), Naming::aKindName(currentScope->kind).c_str())));
 
         auto parentNode = Ast::newNode<AstNode>(this, AstNodeKind::StatementNoScope, sourceFile, parent);
         if (result)

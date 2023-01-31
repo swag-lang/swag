@@ -51,7 +51,7 @@ bool SemanticJob::warnDeprecated(SemanticContext* context, AstNode* identifier)
     }
     }
 
-    Diagnostic diag{identifier, identifier->token, Fmt(Err(Wrn0003), Naming::getNakedKindName(symbol->kind).c_str(), identifier->resolvedSymbolOverload->symbol->name.c_str()), DiagnosticLevel::Warning};
+    Diagnostic diag{identifier, identifier->token, Fmt(Err(Wrn0003), Naming::kindName(symbol->kind).c_str(), identifier->resolvedSymbolOverload->symbol->name.c_str()), DiagnosticLevel::Warning};
     Diagnostic note1{node, node->token, Nte(Nte0031), DiagnosticLevel::Note};
     note1.showRange = false;
 
@@ -146,7 +146,7 @@ bool SemanticJob::warnUnusedVariables(SemanticContext* context, Scope* scope)
 
         if (overload->flags & OVERLOAD_VAR_LOCAL)
         {
-            Diagnostic diag{front, front->token, Fmt(Err(Wrn0002), Naming::getNakedKindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
+            Diagnostic diag{front, front->token, Fmt(Err(Wrn0002), Naming::kindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
             diag.hint = Fmt(Hnt(Hnt0092), sym->name.c_str());
             isOk      = isOk && context->report(diag);
         }
@@ -164,27 +164,27 @@ bool SemanticJob::warnUnusedVariables(SemanticContext* context, Scope* scope)
             if (front->isGeneratedSelf())
             {
                 front = front->ownerFct;
-                Diagnostic diag{front, front->token, Fmt(Err(Wrn0005), Naming::getNakedKindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
+                Diagnostic diag{front, front->token, Fmt(Err(Wrn0005), Naming::kindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
                 Diagnostic note{Hlp(Hlp0042), DiagnosticLevel::Help};
                 diag.hint = Hnt(Hnt0049);
                 isOk      = isOk && context->report(diag, &note);
             }
             else
             {
-                Diagnostic diag{front, front->token, Fmt(Err(Wrn0004), Naming::getNakedKindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
+                Diagnostic diag{front, front->token, Fmt(Err(Wrn0004), Naming::kindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
                 diag.hint = Fmt(Hnt(Hnt0092), sym->name.c_str());
                 isOk      = isOk && context->report(diag);
             }
         }
         else if (overload->flags & OVERLOAD_VAR_CAPTURE)
         {
-            Diagnostic diag{front, front->token, Fmt(Err(Wrn0006), Naming::getNakedKindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
+            Diagnostic diag{front, front->token, Fmt(Err(Wrn0006), Naming::kindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
             diag.hint = Hnt(Hnt0026);
             isOk      = isOk && context->report(diag);
         }
         else if (overload->flags & OVERLOAD_CONSTANT)
         {
-            Diagnostic diag{front, front->token, Fmt(Err(Wrn0007), Naming::getNakedKindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
+            Diagnostic diag{front, front->token, Fmt(Err(Wrn0007), Naming::kindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
             diag.hint = Fmt(Hnt(Hnt0092), sym->name.c_str());
             isOk      = isOk && context->report(diag);
         }

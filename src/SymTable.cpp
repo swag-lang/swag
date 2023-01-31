@@ -341,7 +341,7 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
     // A symbol with a different kind already exists
     if (symbol->kind != kind)
     {
-        Diagnostic diag{node, *token, Fmt(Err(Err0394), symbol->name.c_str(), Naming::getArticleKindName(symbol->kind).c_str())};
+        Diagnostic diag{node, *token, Fmt(Err(Err0394), symbol->name.c_str(), Naming::aKindName(symbol->kind).c_str())};
         auto       front = symbol->nodes.front();
         Diagnostic diagNote{front, front->token, Nte(Nte0036), DiagnosticLevel::Note};
         context->report(diag, &diagNote);
@@ -415,7 +415,7 @@ bool SymTable::registerUsingAliasOverload(JobContext* context, AstNode* node, Sy
         if (symbol->kind != SymbolKind::Alias)
         {
             auto       firstOverload = symbol->overloads[0];
-            Utf8       msg           = Fmt(Err(Err0394), symbol->name.c_str(), Naming::getArticleKindName(symbol->kind).c_str());
+            Utf8       msg           = Fmt(Err(Err0394), symbol->name.c_str(), Naming::aKindName(symbol->kind).c_str());
             Diagnostic diag{node, msg};
             Utf8       note = Nte(Nte0036);
             Diagnostic diagNote{firstOverload->node, note, DiagnosticLevel::Note};

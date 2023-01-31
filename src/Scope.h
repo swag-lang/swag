@@ -52,20 +52,18 @@ struct Scope
     void addPublicNode(AstNode* node);
     void allocPublicSet();
 
-    static void        makeFullName(Utf8& result, const Utf8& parentName, const Utf8& name);
-    const Utf8&        getFullName();
-    Utf8               getDisplayFullName();
-    static const char* getNakedKindName(ScopeKind kind);
-    static const char* getArticleKindName(ScopeKind kind);
-    static void        collectScopeFromToExcluded(Scope* src, Scope* to, VectorNative<Scope*>& result);
-    Scope*             getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind scopeKind, bool matchName);
-    void               addChildNoLock(Scope* child);
-    void               removeChildNoLock(Scope* child);
-    bool               isParentOf(Scope* child);
-    bool               isSameOrParentOf(Scope* child);
-    bool               isGlobal();
-    bool               isTopLevel();
-    bool               isGlobalOrImpl();
+    static void makeFullName(Utf8& result, const Utf8& parentName, const Utf8& name);
+    const Utf8& getFullName();
+    Utf8        getDisplayFullName();
+    static void collectScopeFromToExcluded(Scope* src, Scope* to, VectorNative<Scope*>& result);
+    Scope*      getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind scopeKind, bool matchName);
+    void        addChildNoLock(Scope* child);
+    void        removeChildNoLock(Scope* child);
+    bool        isParentOf(Scope* child);
+    bool        isSameOrParentOf(Scope* child);
+    bool        isGlobal();
+    bool        isTopLevel();
+    bool        isGlobalOrImpl();
 
     SymTable                symTable;
     Utf8                    name;

@@ -288,7 +288,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             !leftTypeInfo->isArray() &&
             !leftTypeInfo->isAlias() &&
             !leftTypeInfo->isEnum())
-            return context->report({left, Fmt(Err(Err0571), Naming::getNakedKindName(leftTypeInfo).c_str(), leftTypeInfo->getDisplayNameC())});
+            return context->report({left, Fmt(Err(Err0571), Naming::kindName(leftTypeInfo).c_str(), leftTypeInfo->getDisplayNameC())});
         if (!rightTypeInfo->isNative() &&
             !rightTypeInfo->isPointer() &&
             !rightTypeInfo->isSlice() &&
@@ -299,7 +299,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             !rightTypeInfo->isInterface() &&
             !rightTypeInfo->isArray() &&
             !rightTypeInfo->isAlias())
-            return context->report({right, Fmt(Err(Err0572), rightTypeInfo->getDisplayNameC(), Naming::getArticleKindName(rightTypeInfo).c_str())});
+            return context->report({right, Fmt(Err(Err0572), rightTypeInfo->getDisplayNameC(), Naming::aKindName(rightTypeInfo).c_str())});
 
         if (forStruct)
         {

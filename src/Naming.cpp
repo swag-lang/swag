@@ -2,10 +2,11 @@
 #include "TypeInfo.h"
 #include "AstNode.h"
 #include "Naming.h"
+#include "Ast.h"
 
 namespace Naming
 {
-    Utf8 getKindName(SymbolName* symbol, AstNode* node, TypeInfo* typeInfo, uint32_t overFlags, Utf8& article)
+    Utf8 kindName(SymbolName* symbol, AstNode* node, TypeInfo* typeInfo, uint32_t overFlags, Utf8& article)
     {
         if (typeInfo->isTuple())
         {
@@ -103,25 +104,25 @@ namespace Naming
             return "inlined function";
         }
 
-        return getArticleKindName(symbol->kind);
+        return kindName(symbol->kind, article);
     }
 
-    Utf8 getNakedKindName(SymbolOverload* overload)
+    Utf8 kindName(SymbolOverload* overload)
     {
         Utf8 article;
-        return getKindName(overload->symbol, overload->node, overload->typeInfo, overload->flags, article);
+        return kindName(overload->symbol, overload->node, overload->typeInfo, overload->flags, article);
     }
 
-    Utf8 getArticleKindName(SymbolOverload* overload)
+    Utf8 aKindName(SymbolOverload* overload)
     {
         Utf8 article;
-        auto result = getKindName(overload->symbol, overload->node, overload->typeInfo, overload->flags, article);
+        auto result = kindName(overload->symbol, overload->node, overload->typeInfo, overload->flags, article);
         article += " ";
         article += result;
         return article;
     }
 
-    Utf8 getKindName(SymbolKind kind, Utf8& article)
+    Utf8 kindName(SymbolKind kind, Utf8& article)
     {
         switch (kind)
         {
@@ -167,22 +168,22 @@ namespace Naming
         return "symbol";
     }
 
-    Utf8 getArticleKindName(SymbolKind kind)
+    Utf8 kindName(SymbolKind kind)
     {
         Utf8 article;
-        auto result = getKindName(kind, article);
+        return kindName(kind, article);
+    }
+
+    Utf8 aKindName(SymbolKind kind)
+    {
+        Utf8 article;
+        auto result = kindName(kind, article);
         article += " ";
         article += result;
         return article;
     }
 
-    Utf8 getNakedKindName(SymbolKind kind)
-    {
-        Utf8 article;
-        return getKindName(kind, article);
-    }
-
-    Utf8 getKindName(TypeInfo* typeInfo, Utf8& article)
+    Utf8 kindName(TypeInfo* typeInfo, Utf8& article)
     {
         switch (typeInfo->kind)
         {
@@ -257,19 +258,212 @@ namespace Naming
         return "type";
     }
 
-    Utf8 getArticleKindName(TypeInfo* typeInfo)
+    Utf8 kindName(TypeInfo* typeInfo)
     {
         Utf8 article;
-        auto result = getKindName(typeInfo, article);
+        return kindName(typeInfo, article);
+    }
+
+    Utf8 aKindName(TypeInfo* typeInfo)
+    {
+        Utf8 article;
+        auto result = kindName(typeInfo, article);
         article += " ";
         article += result;
         return article;
     }
 
-    Utf8 getNakedKindName(TypeInfo* typeInfo)
+    Utf8 kindName(AstNode* node, Utf8& article)
+    {
+        switch (node->kind)
+        {
+        case AstNodeKind::VarDecl:
+            article = "a";
+            if (node->ownerScope && node->ownerScope->isGlobal())
+                return "global variable";
+            if (node->flags & AST_STRUCT_MEMBER)
+                return "struct member";
+            if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
+                return "function parameter";
+            return "local variable";
+
+        case AstNodeKind::ConstDecl:
+            article = "a";
+            return "constant";
+
+        case AstNodeKind::FuncDecl:
+        case AstNodeKind::FuncDeclType:
+            article = "a";
+            return "function";
+
+        case AstNodeKind::AttrDecl:
+            article = "an";
+            return "attribute declaration";
+
+        case AstNodeKind::EnumDecl:
+            article = "an";
+            return "enum";
+
+        case AstNodeKind::EnumValue:
+            article = "an";
+            return "enum value";
+
+        case AstNodeKind::Namespace:
+            article = "a";
+            return "namespace";
+
+        case AstNodeKind::Alias:
+            article = "an";
+            return "alias";
+
+        case AstNodeKind::FuncDeclParam:
+            article = "a";
+            return "function parameter";
+
+        case AstNodeKind::StructDecl:
+            article = "a";
+            return "struct";
+
+        case AstNodeKind::InterfaceDecl:
+            article = "an";
+            return "interface";
+
+        case AstNodeKind::Impl:
+        {
+            article  = "an";
+            auto ast = CastAst<AstImpl>(node, AstNodeKind::Impl);
+            if (ast->identifierFor)
+                return "interface implementation block";
+            else
+                return "implementation block";
+        }
+
+        case AstNodeKind::Identifier:
+            article = "an";
+            return "identifier";
+
+        case AstNodeKind::IntrinsicProp:
+            article = "an";
+            return "intrinsic";
+
+        case AstNodeKind::FuncCall:
+            article = "a";
+            return "function call";
+            article = "a";
+
+        case AstNodeKind::TypeExpression:
+            article = "a";
+            return "type";
+        }
+
+        article = "a";
+        return "node";
+    }
+
+    Utf8 kindName(AstNode* node)
     {
         Utf8 article;
-        return getKindName(typeInfo, article);
+        return kindName(node, article);
+    }
+
+    Utf8 aKindName(AstNode* node)
+    {
+        Utf8 article;
+        auto result = kindName(node, article);
+        article += " ";
+        article += result;
+        return article;
+    }
+
+    Utf8 kindName(ScopeKind kind, Utf8& article)
+    {
+        switch (kind)
+        {
+        case ScopeKind::Namespace:
+            article = "a";
+            return "namespace";
+
+        case ScopeKind::Enum:
+            article = "an";
+            return "enum";
+
+        case ScopeKind::TypeList:
+            article = "a";
+            return "tuple";
+
+        case ScopeKind::Struct:
+            article = "a";
+            return "struct";
+
+        case ScopeKind::File:
+            article = "a";
+            return "file";
+
+        case ScopeKind::Module:
+            article = "a";
+            return "module";
+
+        case ScopeKind::Statement:
+        case ScopeKind::EmptyStatement:
+            article = "a";
+            return "statement";
+
+        case ScopeKind::Inline:
+            article = "an";
+            return "inline";
+
+        case ScopeKind::Function:
+        case ScopeKind::FunctionBody:
+            article = "a";
+            return "function";
+
+        default:
+            article = "a";
+            return "scope";
+        }
+    }
+
+    Utf8 kindName(ScopeKind kind)
+    {
+        Utf8 article;
+        return kindName(kind, article);
+    }
+
+    Utf8 aKindName(ScopeKind kind)
+    {
+        Utf8 article;
+        auto result = kindName(kind, article);
+        article += " ";
+        article += result;
+        return article;
+    }
+
+    Utf8 niceArgumentRank(int idx)
+    {
+        switch (idx)
+        {
+        case 1:
+            return "first argument";
+        case 2:
+            return "second argument";
+        case 3:
+            return "third argument";
+        }
+        return Fmt("argument '%d'", idx);
+    }
+
+    Utf8 niceParameterRank(int idx)
+    {
+        switch (idx)
+        {
+        case 1:
+            return "first parameter";
+        case 2:
+            return "second parameter";
+        case 3:
+            return "third parameter";
+        }
+        return Fmt("parameter '%d'", idx);
     }
 
 }; // namespace Naming

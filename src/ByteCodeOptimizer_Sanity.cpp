@@ -401,7 +401,7 @@ static bool checkDivZero(Context& cxt, Value& value, bool isZero, SymbolOverload
     if (!isZero)
         return true;
     if (overload)
-        return raiseError(cxt, Fmt(Err(San0008), Naming::getNakedKindName(overload).c_str(), overload->symbol->name.c_str()), overload);
+        return raiseError(cxt, Fmt(Err(San0008), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
     return raiseError(cxt, Err(San0007));
 }
 
@@ -409,7 +409,7 @@ static bool checkEscapeFrame(Context& cxt, uint64_t stackOffset, SymbolOverload*
 {
     SWAG_ASSERT(stackOffset >= 0 && stackOffset < UINT32_MAX);
     if (overload)
-        return raiseError(cxt, Fmt(Err(San0002), Naming::getNakedKindName(overload).c_str(), overload->symbol->name.c_str()), overload);
+        return raiseError(cxt, Fmt(Err(San0002), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
     return raiseError(cxt, Err(San0001));
 }
 
@@ -427,7 +427,7 @@ static bool checkNotNull(Context& cxt, Value* value)
     if (value->reg.u64)
         return true;
     if (value->overload)
-        return raiseError(cxt, Fmt(Err(San0006), Naming::getNakedKindName(value->overload).c_str(), value->overload->symbol->name.c_str()), value->overload);
+        return raiseError(cxt, Fmt(Err(San0006), Naming::kindName(value->overload).c_str(), value->overload->symbol->name.c_str()), value->overload);
     return raiseError(cxt, Err(San0005));
 }
 
@@ -438,7 +438,7 @@ static bool checkStackInitialized(Context& cxt, void* addr, uint32_t sizeOf, Sym
     if (value.kind == ValueKind::Invalid)
     {
         if (overload)
-            return raiseError(cxt, Fmt(Err(San0004), Naming::getNakedKindName(overload).c_str(), overload->symbol->name.c_str()), overload);
+            return raiseError(cxt, Fmt(Err(San0004), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
         return raiseError(cxt, Err(San0003));
     }
 

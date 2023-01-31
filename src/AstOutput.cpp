@@ -38,7 +38,7 @@ bool AstOutput::checkIsPublic(OutputContext& context, AstNode* testNode, AstNode
         (symbol->kind == SymbolKind::Alias) ||
         (symbol->kind == SymbolKind::TypeAlias))
     {
-        Utf8 typeWhat = Naming::getNakedKindName(overload);
+        Utf8 typeWhat = Naming::kindName(overload);
         if (!overload->node->isPublic())
         {
             if (usedNode && overload->node != usedNode)
@@ -47,7 +47,7 @@ bool AstOutput::checkIsPublic(OutputContext& context, AstNode* testNode, AstNode
                 if (context.exportedNode && context.exportedNode->resolvedSymbolOverload)
                 {
                     auto symName = context.exportedNode->resolvedSymbolOverload->symbol;
-                    what         = Fmt("%s '%s'", Naming::getNakedKindName(symName->kind).c_str(), symName->name.c_str());
+                    what         = Fmt("%s '%s'", Naming::kindName(symName->kind).c_str(), symName->name.c_str());
                 }
                 else if (usedNode->kind == AstNodeKind::FuncCall)
                     what = "function call";

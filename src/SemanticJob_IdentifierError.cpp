@@ -12,58 +12,6 @@
 #include "AstOutput.h"
 #include "Naming.h"
 
-Utf8 SemanticJob::getNiceArgumentRank(int idx)
-{
-    switch (idx)
-    {
-    case 1:
-        return "first argument";
-    case 2:
-        return "second argument";
-    case 3:
-        return "third argument";
-    }
-    return Fmt("argument '%d'", idx);
-}
-
-Utf8 SemanticJob::getTheNiceArgumentRank(int idx)
-{
-    switch (idx)
-    {
-    case 1:
-    case 2:
-    case 3:
-        return "the " + getNiceArgumentRank(idx);
-    }
-    return Fmt("the argument '%d'", idx);
-}
-
-Utf8 SemanticJob::getNiceParameterRank(int idx)
-{
-    switch (idx)
-    {
-    case 1:
-        return "first parameter";
-    case 2:
-        return "second parameter";
-    case 3:
-        return "third parameter";
-    }
-    return Fmt("parameter '%d'", idx);
-}
-
-Utf8 SemanticJob::getTheNiceParameterRank(int idx)
-{
-    switch (idx)
-    {
-    case 1:
-    case 2:
-    case 3:
-        return "the " + getNiceParameterRank(idx);
-    }
-    return Fmt("the parameter '%d'", idx);
-}
-
 static int getBadParamIdx(OneTryMatch& oneTry, AstNode* callParameters)
 {
     BadSignatureInfos bi = oneTry.symMatchContext.badSignatureInfos;
@@ -136,7 +84,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
     // Nice name to reference it
     Utf8 refNiceName = "the ";
-    refNiceName += Naming::getNakedKindName(overload);
+    refNiceName += Naming::kindName(overload);
 
     // Get parameters of destination symbol
     AstFuncDecl* destFuncDecl = nullptr;
@@ -201,7 +149,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     {
         SWAG_ASSERT(failedParam);
         SWAG_ASSERT(badParamIdx >= 2);
-        diag = new Diagnostic{failedParam, Fmt(Err(Err0006), getTheNiceArgumentRank(badParamIdx).c_str()), Hnt(Hnt0031)};
+        diag = new Diagnostic{failedParam, Fmt(Err(Err0006), Naming::niceArgumentRank(badParamIdx).c_str()), Hnt(Hnt0031)};
         diag->addRange(callParameters->childs[badParamIdx - 2], Hnt(Hnt0030));
         result0.push_back(diag);
         return;
@@ -345,7 +293,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             errNode = context->node;
         if (!match.badSignatureInfos.badSignatureNum2)
         {
-            diag = new Diagnostic{errNode, Fmt(Err(Err0135), Naming::getNakedKindName(symbol->kind).c_str(), symbol->name.c_str()).c_str()};
+            diag = new Diagnostic{errNode, Fmt(Err(Err0135), Naming::kindName(symbol->kind).c_str(), symbol->name.c_str()).c_str()};
         }
         else
         {
@@ -353,7 +301,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                 errNode = genericParameters->childs[match.badSignatureInfos.badSignatureNum2];
             diag = new Diagnostic{errNode,
                                   Fmt(Err(Err0044),
-                                      Naming::getNakedKindName(symbol->kind).c_str(),
+                                      Naming::kindName(symbol->kind).c_str(),
                                       symbol->name.c_str(),
                                       match.badSignatureInfos.badSignatureNum2,
                                       match.badSignatureInfos.badSignatureNum1)};
@@ -517,7 +465,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         SWAG_ASSERT(callParameters);
         diag       = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
                               Fmt(Err(Err0777),
-                                  getTheNiceArgumentRank(badParamIdx).c_str(),
+                                  Naming::niceArgumentRank(badParamIdx).c_str(),
                                   refNiceName.c_str(),
                                   bi.badSignatureGivenType->getDisplayNameC(),
                                   bi.badSignatureRequestedType->getDisplayNameC())};
@@ -569,7 +517,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         {
             diag       = new Diagnostic{match.genericParameters[bi.badSignatureParameterIdx],
                                   Fmt(Err(Err0054),
-                                      getNiceArgumentRank(badParamIdx).c_str(),
+                                      Naming::niceArgumentRank(badParamIdx).c_str(),
                                       refNiceName.c_str())};
             diag->hint = Hnt(Hnt0028);
         }
@@ -577,7 +525,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         {
             diag       = new Diagnostic{match.genericParameters[bi.badSignatureParameterIdx],
                                   Fmt(Err(Err0057),
-                                      getNiceArgumentRank(badParamIdx).c_str(),
+                                      Naming::niceArgumentRank(badParamIdx).c_str(),
                                       refNiceName.c_str())};
             diag->hint = Hnt(Hnt0027);
         }
@@ -585,7 +533,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         {
             diag = new Diagnostic{match.genericParameters[bi.badSignatureParameterIdx],
                                   Fmt(Err(Err0070),
-                                      getNiceArgumentRank(badParamIdx).c_str(),
+                                      Naming::niceArgumentRank(badParamIdx).c_str(),
                                       refNiceName.c_str(),
                                       bi.badSignatureRequestedType->getDisplayNameC(),
                                       bi.badSignatureGivenType->getDisplayNameC())};
@@ -668,12 +616,12 @@ void SemanticJob::symbolErrorNotes(SemanticContext* context, VectorNative<OneTry
 
                 if (prev->typeInfo)
                 {
-                    auto note = new Diagnostic{prev, Fmt(Nte(Nte0001), prev->token.ctext(), Naming::getArticleKindName(prev->resolvedSymbolName->kind).c_str(), prev->typeInfo->getDisplayNameC()), DiagnosticLevel::Note};
+                    auto note = new Diagnostic{prev, Fmt(Nte(Nte0001), prev->token.ctext(), Naming::aKindName(prev->resolvedSymbolName->kind).c_str(), prev->typeInfo->getDisplayNameC()), DiagnosticLevel::Note};
                     notes.push_back(note);
                 }
                 else
                 {
-                    auto note = new Diagnostic{prev, Fmt(Nte(Nte0010), prev->token.ctext(), Naming::getArticleKindName(prev->resolvedSymbolName->kind).c_str()), DiagnosticLevel::Note};
+                    auto note = new Diagnostic{prev, Fmt(Nte(Nte0010), prev->token.ctext(), Naming::aKindName(prev->resolvedSymbolName->kind).c_str()), DiagnosticLevel::Note};
                     notes.push_back(note);
                 }
 
@@ -717,7 +665,7 @@ void SemanticJob::symbolErrorRemarks(SemanticContext* context, VectorNative<OneT
             {
                 auto over = tryMatches.front()->overload;
                 auto msg  = Fmt(Nte(Nte0043),
-                               Naming::getNakedKindName(over).c_str(),
+                               Naming::kindName(over).c_str(),
                                node->token.ctext(),
                                identifier->identifierRef->typeInfo->getDisplayNameC(),
                                over->node->ownerStructScope->owner->token.ctext());
@@ -1307,7 +1255,7 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
                 }
                 else if (prevIdentifier && prevIdentifier->alternateEnum)
                 {
-                    diag            = new Diagnostic{node, node->token, Fmt(Err(Err0492), node->token.ctext(), prevIdentifier->alternateEnum->getDisplayNameC(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())};
+                    diag            = new Diagnostic{node, node->token, Fmt(Err(Err0492), node->token.ctext(), prevIdentifier->alternateEnum->getDisplayNameC(), Naming::kindName(identifierRef->startScope->kind).c_str(), displayName.c_str())};
                     auto note       = new Diagnostic{prevIdentifier->alternateEnum->declNode, prevIdentifier->alternateEnum->declNode->token, Fmt(Nte(Nte0029), prevIdentifier->alternateEnum->getDisplayNameC()), DiagnosticLevel::Note};
                     note->showRange = false;
                     notes.push_back(note);
@@ -1321,7 +1269,7 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
                 }
                 else
                 {
-                    Utf8 where = Scope::getNakedKindName(identifierRef->startScope->kind);
+                    Utf8 where = Naming::kindName(identifierRef->startScope->kind).c_str();
                     diag       = new Diagnostic{node, node->token, Fmt(Err(Err0110), node->token.ctext(), where.c_str(), displayName.c_str())};
                 }
 

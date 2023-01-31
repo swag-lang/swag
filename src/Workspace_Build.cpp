@@ -286,7 +286,7 @@ static Utf8 errorPendingJobsType(Job* pendingJob)
 {
     Utf8 sym;
     if (pendingJob->waitingSymbolSolved)
-        sym = Fmt("%s '%s'", Naming::getNakedKindName(pendingJob->waitingSymbolSolved->kind).c_str(), pendingJob->waitingSymbolSolved->name.c_str());
+        sym = Fmt("%s '%s'", Naming::kindName(pendingJob->waitingSymbolSolved->kind).c_str(), pendingJob->waitingSymbolSolved->name.c_str());
 
     switch (pendingJob->waitingKind)
     {
@@ -337,15 +337,15 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, Job* depJob)
     if (depNode)
     {
         msg = Fmt(Nte(Nte0046),
-                  AstNode::getKindName(prevNode).c_str(),
+                  Naming::kindName(prevNode).c_str(),
                   prevNode->token.ctext(),
-                  AstNode::getKindName(depNode).c_str(),
+                  Naming::kindName(depNode).c_str(),
                   depNode->token.ctext());
     }
     else if (prevNode && prevJob->waitingIdType)
     {
         msg  = Fmt(Nte(Nte0053),
-                  AstNode::getKindName(prevNode).c_str(),
+                  Naming::kindName(prevNode).c_str(),
                   prevNode->token.ctext(),
                   prevJob->waitingIdType->getDisplayNameC());
         hint = Diagnostic::isType(prevNode->typeInfo);
@@ -368,7 +368,7 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, Job* depJob)
     }
     else
     {
-        msg        = Fmt(Nte(Nte0065), AstNode::getKindName(prevNode).c_str(), prevNode->token.ctext());
+        msg        = Fmt(Nte(Nte0065), Naming::kindName(prevNode).c_str(), prevNode->token.ctext());
         hint       = Diagnostic::isType(prevNode->typeInfo);
         addRemarks = true;
     }
@@ -382,7 +382,7 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, Job* depJob)
         case AstNodeKind::VarDecl:
         case AstNodeKind::EnumValue:
             msg += " ";
-            msg += Fmt("because of %s '%s'", AstNode::getKindName(prevJob->waitingHintNode).c_str(), prevJob->waitingHintNode->token.ctext());
+            msg += Fmt("because of %s '%s'", Naming::kindName(prevJob->waitingHintNode).c_str(), prevJob->waitingHintNode->token.ctext());
             break;
         }
     }
@@ -473,9 +473,9 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
                     auto front = prevJob->nodes.front();
                     auto back  = prevJob->nodes.back();
                     auto msg   = Fmt(Nte(Nte0046),
-                                   AstNode::getKindName(front).c_str(),
+                                   Naming::kindName(front).c_str(),
                                    front->token.ctext(),
-                                   AstNode::getKindName(back).c_str(),
+                                   Naming::kindName(back).c_str(),
                                    back->token.ctext());
 
                     auto note             = new Diagnostic{back, back->token, msg, DiagnosticLevel::Note};
@@ -500,7 +500,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
                 notes.push_back(note);
 
             auto       prevNodeLocal = pendingJob->originalNode ? pendingJob->originalNode : pendingJob->nodes.front();
-            Diagnostic diag{prevNodeLocal, prevNodeLocal->token, Fmt(Err(Err0419), AstNode::getKindName(prevNodeLocal).c_str(), prevNodeLocal->token.ctext())};
+            Diagnostic diag{prevNodeLocal, prevNodeLocal->token, Fmt(Err(Err0419), Naming::kindName(prevNodeLocal).c_str(), prevNodeLocal->token.ctext())};
             Report::report(diag, notes);
             doneOne                           = true;
             hasCycle                          = true;
@@ -546,7 +546,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
         {
             auto       node       = it.node;
             auto       pendingJob = it.pendingJob;
-            Diagnostic diag{node, node->token, Fmt(Err(Err0549), pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), node->token.ctext())};
+            Diagnostic diag{node, node->token, Fmt(Err(Err0549), pendingJob->module->name.c_str(), Naming::kindName(node).c_str(), node->token.ctext())};
             Report::report(diag);
         }
     }

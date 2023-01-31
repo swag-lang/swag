@@ -5,6 +5,7 @@
 #include "ErrorIds.h"
 #include "Report.h"
 #include "Module.h"
+#include "Naming.h"
 
 bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
 {
@@ -75,7 +76,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     auto newScope = Ast::newScope(implNode, structName, scopeKind, currentScope, true);
     if (scopeKind != newScope->kind)
     {
-        Diagnostic diag{implNode, Fmt(Err(Syn0123), Scope::getNakedKindName(scopeKind), implNode->token.ctext(), Scope::getNakedKindName(newScope->kind))};
+        Diagnostic diag{implNode, Fmt(Err(Syn0123), Naming::kindName(scopeKind).c_str(), implNode->token.ctext(), Naming::kindName(newScope->kind).c_str())};
         if (newScope->kind == ScopeKind::Enum)
             diag.hint = Fmt(Hnt(Hnt0019), implNode->token.ctext());
         else if (newScope->kind == ScopeKind::Struct)
@@ -240,13 +241,13 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
             if (newScope->owner->kind == AstNodeKind::Impl)
             {
                 auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
-                Diagnostic diag{implNode->identifier, Fmt(Err(Syn0123), Scope::getNakedKindName(newScope->kind), implNode->token.ctext(), Scope::getNakedKindName(ScopeKind::Struct))};
+                Diagnostic diag{implNode->identifier, Fmt(Err(Syn0123), Naming::kindName(newScope->kind).c_str(), implNode->token.ctext(), Naming::kindName(ScopeKind::Struct).c_str())};
                 Diagnostic note{structNode, Fmt(Nte(Nte0027), implNode->token.ctext()), DiagnosticLevel::Note};
                 return Report::report(diag, &note);
             }
             else
             {
-                Diagnostic diag{structNode->sourceFile, token, Fmt(Err(Err0394), structNode->token.ctext(), Scope::getArticleKindName(newScope->kind))};
+                Diagnostic diag{structNode->sourceFile, token, Fmt(Err(Err0394), structNode->token.ctext(), Naming::aKindName(newScope->kind).c_str())};
                 Diagnostic note{newScope->owner, Nte(Nte0036), DiagnosticLevel::Note};
                 return Report::report(diag, &note);
             }

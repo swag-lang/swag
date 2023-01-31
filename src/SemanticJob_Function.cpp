@@ -157,10 +157,9 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         }
         else if (!nodeParam->typeInfo->isCode())
         {
-            auto name = SemanticJob::getTheNiceParameterRank(index);
             if (defaultValueDone)
             {
-                Diagnostic diag{nodeParam, Fmt(Err(Err0738), name.c_str())};
+                Diagnostic diag{nodeParam, Fmt(Err(Err0738), Naming::niceParameterRank(index).c_str())};
                 diag.hint = Hnt(Hnt0089);
                 diag.addRange(firstParamWithDef, Hnt(Hnt0088));
                 return context->report(diag);
@@ -994,7 +993,7 @@ bool SemanticJob::resolveFuncCallGenParams(SemanticContext* context)
             symbol->kind == SymbolKind::Attribute)
         {
             Diagnostic note{Hlp(Hlp0021), DiagnosticLevel::Help};
-            return context->report({c, Fmt(Err(Err0815), Naming::getArticleKindName(symbol->kind).c_str(), symbol->name.c_str())}, &note);
+            return context->report({c, Fmt(Err(Err0815), Naming::aKindName(symbol->kind).c_str(), symbol->name.c_str())}, &note);
         }
     }
 

@@ -8,14 +8,27 @@ enum class SymbolKind : uint8_t;
 
 namespace Naming
 {
-    Utf8 getKindName(SymbolName* symbol, AstNode* node, TypeInfo* typeInfo, uint32_t overFlags, Utf8& article);
-    Utf8 getNakedKindName(SymbolOverload* overload);
-    Utf8 getArticleKindName(SymbolOverload* overload);
-    Utf8 getArticleKindName(SymbolKind kind);
-    Utf8 getNakedKindName(SymbolKind kind);
-    Utf8 getKindName(SymbolKind kind, Utf8& article);
+    Utf8 kindName(SymbolName* symbol, AstNode* node, TypeInfo* typeInfo, uint32_t overFlags, Utf8& article);
+    Utf8 kindName(SymbolOverload* overload);
+    Utf8 aKindName(SymbolOverload* overload);
 
-    Utf8 getKindName(TypeInfo* typeInfo, Utf8& article);
-    Utf8 getArticleKindName(TypeInfo* typeInfo);
-    Utf8 getNakedKindName(TypeInfo* typeInfo);
+    Utf8 kindName(SymbolKind kind, Utf8& article);
+    Utf8 kindName(SymbolKind kind);
+    Utf8 aKindName(SymbolKind kind);
+
+    Utf8 kindName(TypeInfo* typeInfo, Utf8& article);
+    Utf8 kindName(TypeInfo* typeInfo);
+    Utf8 aKindName(TypeInfo* typeInfo);
+
+    Utf8 kindName(AstNode* node, Utf8& article);
+    Utf8 kindName(AstNode* node);
+    Utf8 aKindName(AstNode* node);
+
+    Utf8 kindName(ScopeKind kind, Utf8& article);
+    Utf8 kindName(ScopeKind kind);
+    Utf8 aKindName(ScopeKind kind);
+
+    Utf8 niceArgumentRank(int idx);
+    Utf8 niceParameterRank(int idx);
+
 }; // namespace Naming

@@ -34,7 +34,7 @@ bool SemanticJob::resolveImplForAfterFor(SemanticContext* context)
     auto node = CastAst<AstImpl>(context->node->parent, AstNodeKind::Impl);
 
     if (id->resolvedSymbolName->kind != SymbolKind::Struct)
-        return context->report({id->childs.back(), Fmt(Err(Err0290), id->resolvedSymbolName->name.c_str(), Naming::getArticleKindName(id->resolvedSymbolName->kind).c_str())});
+        return context->report({id->childs.back(), Fmt(Err(Err0290), id->resolvedSymbolName->name.c_str(), Naming::aKindName(id->resolvedSymbolName->kind).c_str())});
 
     auto structDecl = CastAst<AstStruct>(id->resolvedSymbolOverload->node, AstNodeKind::StructDecl);
 
@@ -142,7 +142,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     auto typeInfo = node->identifier->typeInfo;
     if (!typeInfo->isInterface())
     {
-        Diagnostic diag{node->identifier, Fmt(Err(Err0646), node->identifier->token.ctext(), Naming::getArticleKindName(typeInfo).c_str())};
+        Diagnostic diag{node->identifier, Fmt(Err(Err0646), node->identifier->token.ctext(), Naming::aKindName(typeInfo).c_str())};
         return context->report(diag, Diagnostic::hereIs(node->identifier->resolvedSymbolOverload));
     }
 
@@ -150,7 +150,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     typeInfo = node->identifierFor->typeInfo;
     if (!typeInfo->isStruct())
     {
-        Diagnostic diag{node->identifierFor, Fmt(Err(Err0648), node->identifierFor->token.ctext(), Naming::getArticleKindName(typeInfo).c_str())};
+        Diagnostic diag{node->identifierFor, Fmt(Err(Err0648), node->identifierFor->token.ctext(), Naming::aKindName(typeInfo).c_str())};
         return context->report(diag, Diagnostic::hereIs(node->identifierFor->resolvedSymbolOverload));
     }
 
@@ -621,7 +621,7 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
     auto typeInfo = node->identifier->typeInfo;
     if (!typeInfo->isStruct() && !typeInfo->isEnum())
     {
-        Diagnostic diag{node->identifier, Fmt(Err(Err0662), node->identifier->token.ctext(), Naming::getArticleKindName(typeInfo).c_str())};
+        Diagnostic diag{node->identifier, Fmt(Err(Err0662), node->identifier->token.ctext(), Naming::aKindName(typeInfo).c_str())};
         return context->report(diag, Diagnostic::hereIs(node->identifier->resolvedSymbolOverload));
     }
 

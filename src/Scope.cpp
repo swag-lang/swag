@@ -29,64 +29,6 @@ bool Scope::isGlobalOrImpl()
     return false;
 }
 
-const char* Scope::getNakedKindName(ScopeKind kind)
-{
-    switch (kind)
-    {
-    case ScopeKind::Namespace:
-        return "namespace";
-    case ScopeKind::Enum:
-        return "enum";
-    case ScopeKind::TypeList:
-        return "tuple";
-    case ScopeKind::Struct:
-        return "struct";
-    case ScopeKind::File:
-        return "file";
-    case ScopeKind::Module:
-        return "global";
-    case ScopeKind::Statement:
-    case ScopeKind::EmptyStatement:
-        return "statement";
-    case ScopeKind::Inline:
-        return "inline";
-    case ScopeKind::Function:
-    case ScopeKind::FunctionBody:
-        return "function";
-    default:
-        return "scope";
-    }
-}
-
-const char* Scope::getArticleKindName(ScopeKind kind)
-{
-    switch (kind)
-    {
-    case ScopeKind::Namespace:
-        return "a namespace";
-    case ScopeKind::Enum:
-        return "an enum";
-    case ScopeKind::TypeList:
-        return "a tuple";
-    case ScopeKind::Struct:
-        return "a struct";
-    case ScopeKind::File:
-        return "a file";
-    case ScopeKind::Module:
-        return "a module";
-    case ScopeKind::Statement:
-    case ScopeKind::EmptyStatement:
-        return "a statement";
-    case ScopeKind::Inline:
-        return "an inline";
-    case ScopeKind::Function:
-    case ScopeKind::FunctionBody:
-        return "a function";
-    default:
-        return "a scope";
-    }
-}
-
 const Utf8& Scope::getFullName()
 {
     if (flags & SCOPE_FILE)
