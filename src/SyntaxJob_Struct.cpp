@@ -417,6 +417,15 @@ bool SyntaxJob::doTupleBody(AstNode* parent, bool acceptEmpty)
             curIsAlone  = false;
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doExpression(varNode, EXPR_FLAG_NONE, &varNode->assignment));
+
+            // If we did not have specified a name, then this was not a type, but a name
+            // ex: {x = 1}
+            if (namedParam.text.empty())
+            {
+                varNode->token.text = varNode->type->token.text;
+                Ast::removeFromParent(varNode->type);
+                varNode->type = nullptr;
+            }
         }
 
         if (lastWasAlone && !curIsAlone && !thisIsAType)
