@@ -359,13 +359,15 @@ bool SyntaxJob::doTypeExpressionLambdaClosureTypeOrDecl(AstTypeLambda* node, Ast
                 lastParameter = param;
             }
 
-            if (token.id != TokenId::SymComma)
+            SWAG_VERIFY(token.id == TokenId::SymComma || token.id == TokenId::SymRightParen, error(token, Fmt(Err(Syn0199), token.ctext())));
+            if (token.id == TokenId::SymRightParen)
                 break;
             SWAG_CHECK(eatToken());
         }
     }
 
     SWAG_CHECK(eatToken(TokenId::SymRightParen, "to close the lambda parameters"));
+
     if (token.id == TokenId::SymMinusGreat)
     {
         SWAG_CHECK(eatToken());

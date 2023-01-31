@@ -290,7 +290,7 @@ void initErrors()
     SWAG_ERROR(Syn0196, "'#type' should be followed by the type name (found '%s')");
     SWAG_ERROR(Syn0197, "unexpected start of a type declaration for a 'self' parameter");
     SWAG_ERROR(Syn0198, "tuple type ambiguous parameters declaration");
-    SWAG_ERROR(Syn0199, nullptr);
+    SWAG_ERROR(Syn0199, "unexpected token '%s' in the lambda type, ',' or ')' are expected here");
     
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
