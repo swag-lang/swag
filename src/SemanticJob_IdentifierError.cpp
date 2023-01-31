@@ -258,7 +258,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         else if (genericParameters)
             diag = new Diagnostic{genericParameters, Fmt(Err(Err0035), refNiceName.c_str())};
         else
-            diag = new Diagnostic{errNode, Fmt(Err(Err0049), refNiceName.c_str())};
+            diag = new Diagnostic{errNode, errNode->token, Fmt(Err(Err0049), refNiceName.c_str())};
         result0.push_back(diag);
 
         auto note = Diagnostic::hereIs(overload);
