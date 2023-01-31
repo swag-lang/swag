@@ -89,7 +89,7 @@ struct SyntaxJob : public Job
     bool eatSemiCol(const char* msg = nullptr);
     bool checkIsSingleIdentifier(AstNode* node, const char* msg);
 
-    bool        convertExpressionListToTuple(AstNode* parent, AstNode** result, bool isConst, bool anonymousStruct, bool anonymousUnion);
+    bool        doTupleOrAnonymousType(AstNode* parent, AstNode** result, bool isConst, bool anonymousStruct, bool anonymousUnion);
     bool        checkIsValidUserName(AstNode* node, Token* loc = nullptr);
     bool        checkIsValidVarName(AstNode* node);
     void        registerSubDecl(AstNode* subDecl);
@@ -146,7 +146,7 @@ struct SyntaxJob : public Job
     bool doEnumContent(AstNode* parent, AstNode** result = nullptr);
     bool doEnumValue(AstNode* parent, AstNode** result = nullptr);
     bool doEnum(AstNode* parent, AstNode** result = nullptr);
-    bool doStructBodyTuple(AstNode* parent, bool acceptEmpty);
+    bool doTupleBody(AstNode* parent, bool acceptEmpty);
     bool doStructBody(AstNode* parent, SyntaxStructType structType, AstNode** result = nullptr);
     bool doStruct(AstNode* parent, AstNode** result = nullptr);
     bool doStructContent(AstStruct* structNode, SyntaxStructType structType);

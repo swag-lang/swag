@@ -314,7 +314,7 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
         contentNode->extension->semantic->semanticBeforeFct = SemanticJob::preResolveStructContent;
 
         if (structType == SyntaxStructType::Tuple)
-            SWAG_CHECK(doStructBodyTuple(contentNode, true));
+            SWAG_CHECK(doTupleBody(contentNode, true));
         else
         {
             auto startLoc = token.startLocation;
@@ -328,7 +328,7 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
     return true;
 }
 
-bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty)
+bool SyntaxJob::doTupleBody(AstNode* parent, bool acceptEmpty)
 {
     auto startLoc = token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the tuple body"));
@@ -346,20 +346,56 @@ bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty)
         return Report::report(diag);
     }
 
+    bool        lastWasAlone  = false;
+    bool        curIsAlone    = false;
+    AstVarDecl* lastParameter = nullptr;
+    bool        thisIsAType   = false;
+
     int idx = 0;
     while (token.id != TokenId::EndOfFile)
     {
+        curIsAlone = true;
+
+        Token constToken;
+        if (token.id == TokenId::CompilerType)
+        {
+            thisIsAType = true;
+            curIsAlone  = false;
+            SWAG_CHECK(eatToken());
+            SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0196), token.ctext())));
+        }
+
+        // Accept a parameter name
+        Token namedParam;
+        if (token.id == TokenId::Identifier)
+        {
+            auto tokenName = token;
+            tokenizer.saveState(token);
+            SWAG_CHECK(eatToken());
+            if (token.id != TokenId::SymColon)
+            {
+                tokenizer.restoreState(token);
+            }
+            else
+            {
+                namedParam = tokenName;
+                SWAG_CHECK(eatToken());
+                curIsAlone  = false;
+                thisIsAType = false;
+            }
+        }
+        else
+        {
+            thisIsAType = true;
+            curIsAlone  = false;
+        }
+
         auto structFieldNode = Ast::newVarDecl(sourceFile, "", parent, nullptr);
         structFieldNode->flags |= AST_GENERATED;
-
-        AstTypeExpression* typeExpression = nullptr;
-        AstNode*           expression;
-        Token              prevToken = token;
-        SWAG_CHECK(doTypeExpression(parent, &expression));
-        Ast::removeFromParent(expression);
+        SWAG_CHECK(doTypeExpression(structFieldNode, &structFieldNode->type));
 
         // Name followed by ':'
-        if (token.id == TokenId::SymColon)
+        /*if (token.id == TokenId::SymColon)
         {
             typeExpression = CastAst<AstTypeExpression>(expression, AstNodeKind::TypeExpression);
             SWAG_VERIFY(prevToken.id == TokenId::Identifier, error(prevToken.startLocation, token.startLocation, Fmt(Err(Syn0065), prevToken.ctext())));
@@ -371,19 +407,43 @@ bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty)
             SWAG_CHECK(doTypeExpression(structFieldNode, &structFieldNode->type));
             expression = structFieldNode->type;
         }
-        else
+        else*/
         {
-            Ast::addChildBack(structFieldNode, expression);
-            structFieldNode->type       = expression;
-            structFieldNode->token.text = Fmt("item%u", idx);
-            structFieldNode->flags |= AST_AUTO_NAME;
+            if (namedParam.text.empty())
+            {
+                structFieldNode->token.text = Fmt("item%u", idx);
+                structFieldNode->flags |= AST_AUTO_NAME;
+            }
+            else
+            {
+                structFieldNode->token = namedParam;
+            }
         }
 
         if (token.id == TokenId::SymEqual)
         {
+            thisIsAType = false;
+            curIsAlone  = false;
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doExpression(structFieldNode, EXPR_FLAG_NONE, &structFieldNode->assignment));
         }
+
+        if (lastWasAlone && !curIsAlone && !thisIsAType)
+        {
+            Token tokenAmb         = structFieldNode->token;
+            tokenAmb.startLocation = lastParameter->token.startLocation;
+            tokenAmb.endLocation   = token.startLocation;
+
+            Diagnostic diag{sourceFile, tokenAmb, Err(Syn0198)};
+            Diagnostic note{lastParameter, Fmt(Nte(Nte0077), lastParameter->type->token.ctext()), DiagnosticLevel::Note};
+            note.hint = Fmt(Hnt(Hnt0103), lastParameter->type->token.ctext());
+            context.report(diag, &note);
+
+            return false;
+        }
+
+        lastWasAlone  = curIsAlone;
+        lastParameter = structFieldNode;
 
         idx++;
 

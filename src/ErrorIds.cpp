@@ -289,7 +289,7 @@ void initErrors()
     SWAG_ERROR(Syn0195, "lambda type ambiguous parameters declaration");
     SWAG_ERROR(Syn0196, "'#type' should be followed by the type name (found '%s')");
     SWAG_ERROR(Syn0197, "unexpected start of a type declaration for a 'self' parameter");
-    SWAG_ERROR(Syn0198, nullptr);
+    SWAG_ERROR(Syn0198, "tuple type ambiguous parameters declaration");
     SWAG_ERROR(Syn0199, nullptr);
     
     /////////////////////////////////////////////////////////////////////
@@ -1119,6 +1119,8 @@ void initErrors()
     SWAG_ERROR(Hnt0100, "cannot redefined lambda / closure default parameters");
     SWAG_ERROR(Hnt0101, "you should add '#type' before '%s' or, if this is a parameter, explicitly specify a type");
     SWAG_ERROR(Hnt0102, "'self' is already typed, so this should be removed");
+    SWAG_ERROR(Hnt0103, "you should add '#type' before '%s' or, if this is a field name, explicitly specify a type");
+    SWAG_ERROR(Hnt0104, nullptr);
     
 
     /////////////////////////////////////////////////////////////////////
@@ -1216,7 +1218,7 @@ void initErrors()
     SWAG_ERROR(Nte0074, "the ufcs argument comes from this");
     SWAG_ERROR(Nte0075, "the original instantiation type '%s' comes from here");
     SWAG_ERROR(Nte0076, "'%s' could be either a single type or a parameter name");
-    SWAG_ERROR(Nte0077, nullptr);
+    SWAG_ERROR(Nte0077, "'%s' could be either a single type or a field name");
     SWAG_ERROR(Nte0078, nullptr);
     SWAG_ERROR(Nte0079, nullptr);
 

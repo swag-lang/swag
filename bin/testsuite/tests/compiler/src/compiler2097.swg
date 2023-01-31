@@ -3,7 +3,7 @@ struct(T) Point
     x, y: T
 }
 
-func(T) RR()->{Point, err: bool}
+func(T) RR()->{#type Point, err: bool}
 {
     return {{1, 2}, true}
 }

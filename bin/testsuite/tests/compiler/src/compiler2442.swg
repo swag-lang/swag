@@ -3,7 +3,7 @@ struct A
     x, y: u64
 }
 
-func toto()->{A, err: string}
+func toto()->{#type A, err: string}
 {
     var result: retval
     result.err = "err"

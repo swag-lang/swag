@@ -378,7 +378,7 @@ bool SyntaxJob::doTypeExpressionLambdaClosureTypeOrDecl(AstTypeLambda* node, Ast
     return true;
 }
 
-bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, bool isConst, bool anonymousStruct, bool anonymousUnion)
+bool SyntaxJob::doTupleOrAnonymousType(AstNode* parent, AstNode** result, bool isConst, bool anonymousStruct, bool anonymousUnion)
 {
     auto structNode = Ast::newStructDecl(sourceFile, parent, this);
     structNode->flags |= AST_PRIVATE;
@@ -439,7 +439,7 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
         }
         else
         {
-            SWAG_CHECK(doStructBodyTuple(contentNode, false));
+            SWAG_CHECK(doTupleBody(contentNode, false));
         }
     }
 
@@ -724,18 +724,18 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     else if (token.id == TokenId::KwdStruct)
     {
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(convertExpressionListToTuple(node, &node->identifier, isConst, true, false));
+        SWAG_CHECK(doTupleOrAnonymousType(node, &node->identifier, isConst, true, false));
         return true;
     }
     else if (token.id == TokenId::KwdUnion)
     {
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(convertExpressionListToTuple(node, &node->identifier, isConst, true, true));
+        SWAG_CHECK(doTupleOrAnonymousType(node, &node->identifier, isConst, true, true));
         return true;
     }
     else if (token.id == TokenId::SymLeftCurly)
     {
-        SWAG_CHECK(convertExpressionListToTuple(node, &node->identifier, isConst, false, false));
+        SWAG_CHECK(doTupleOrAnonymousType(node, &node->identifier, isConst, false, false));
         return true;
     }
     else if (token.id == TokenId::KwdFunc || token.id == TokenId::KwdClosure || token.id == TokenId::KwdMethod || token.id == TokenId::KwdConstMethod)
