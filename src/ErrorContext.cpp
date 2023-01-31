@@ -54,10 +54,10 @@ void ErrorContext::fillContext(JobContext* context, Diagnostic& diag, vector<con
                 exp.hide = true;
                 if (exp.node)
                 {
-                    auto           dd = const_cast<Diagnostic*>(&diag);
                     SourceLocation start, end;
                     exp.node->computeLocation(start, end);
-                    dd->addRange(start, end, exp.hint);
+                    if (start.line == end.line && start.line == diag.startLocation.line)
+                        diag.addRange(start, end, exp.hint);
                 }
 
                 break;

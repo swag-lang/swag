@@ -2147,7 +2147,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 else if (overload->typeInfo->isStruct())
                 {
                     auto couldBe    = Fmt(Nte(Nte0049), overload->typeInfo->getDisplayNameC());
-                    note            = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
+                    note            = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
                     auto typeStruct = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
                     note->remarks.push_back(Ast::computeGenericParametersReplacement(typeStruct->genericParameters));
                     note->showRange = false;
@@ -2156,7 +2156,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 {
                     auto concreteType = TypeManager::concreteType(overload->typeInfo, CONCRETE_ALIAS);
                     auto couldBe      = Fmt(Nte(Nte0050), Naming::aKindName(match->symbolOverload).c_str(), concreteType->getDisplayNameC());
-                    note              = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
+                    note              = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
                 }
 
                 note->noteHeader = "could be";

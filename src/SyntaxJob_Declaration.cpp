@@ -234,11 +234,9 @@ bool SyntaxJob::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlo
             }
             else if (symbol->kind != SymbolKind::Namespace)
             {
-                Utf8       msg = Fmt(Err(Err0305), symbol->name.c_str());
-                Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
-                Utf8       note = Nte(Nte0036);
-                Diagnostic diagNote{symbol->nodes.front(), note, DiagnosticLevel::Note};
-                return Report::report(diag, &diagNote);
+                Diagnostic diag{sourceFile, token.startLocation, token.endLocation, Fmt(Err(Err0305), symbol->name.c_str())};
+                Diagnostic note{symbol->nodes.front(), symbol->nodes.front()->token, Nte(Nte0036), DiagnosticLevel::Note};
+                return context.report(diag, &note);
             }
             else
                 newScope = CastTypeInfo<TypeInfoNamespace>(symbol->overloads[0]->typeInfo, TypeInfoKind::Namespace)->scope;
