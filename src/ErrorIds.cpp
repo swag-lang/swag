@@ -806,7 +806,7 @@ void initErrors()
     SWAG_ERROR(Err0401, "unexpected 'catch' inside '%s' expression");
     SWAG_ERROR(Err0616, "unexpected 'default' statement in a switch marked with 'Swag.Complete'");
     SWAG_ERROR(Err0199, "unexpected 'opDrop' special function for '%s' because the struct is marked with 'Swag.ConstExpr'");
-    SWAG_ERROR(Err0517, "unexpected 'ref' because the right expression type is not a reference or a pointer (type is '%s')");
+    SWAG_ERROR(Err0517, "unexpected 'ref' because the right type is not a reference or a pointer (type is '%s')");
     SWAG_ERROR(Err0849, "unexpected 'throw' in attribute declaration");
     SWAG_ERROR(Err0117, "unexpected 'using' on two variables with the same type ('%s')");
     SWAG_ERROR(Err0694, "unexpected 'using' type");

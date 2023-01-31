@@ -2,10 +2,7 @@
 #include "SemanticJob.h"
 #include "TypeManager.h"
 #include "ByteCodeGenJob.h"
-#include "SourceFile.h"
 #include "Module.h"
-#include "TypeTable.h"
-#include "Runtime.h"
 #include "ErrorIds.h"
 #include "Report.h"
 #include "LanguageSpec.h"
@@ -399,11 +396,12 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
         node->typeInfo = g_TypeMgr->typeInfoS32;
     else
         node->typeInfo = g_TypeMgr->typeInfoBool;
-    TypeManager::promote3264(left, right);
 
     // :ConcreteRef
     left->typeInfo  = getConcreteTypeUnRef(left, CONCRETE_FUNC | CONCRETE_ENUM);
     right->typeInfo = getConcreteTypeUnRef(right, CONCRETE_FUNC | CONCRETE_ENUM);
+
+    TypeManager::promote3264(left, right);
 
     // Must not make types compatible for a struct, as we can compare a struct with whatever other type in
     // a opEquals function
