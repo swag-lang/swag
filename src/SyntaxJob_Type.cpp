@@ -267,7 +267,7 @@ bool SyntaxJob::doTypeExpressionLambdaClosureTypeOrDecl(AstTypeLambda* node, Ast
             else
             {
                 SWAG_CHECK(doTypeExpression(params, (AstNode**) &typeExpr));
-                ((AstTypeExpression*) typeExpr)->typeFlags |= isConst ? TYPEFLAG_IS_CONST : 0;
+                typeExpr->typeFlags |= isConst ? TYPEFLAG_IS_CONST : 0;
 
                 // type...
                 if (token.id == TokenId::SymDotDotDot)
@@ -281,6 +281,11 @@ bool SyntaxJob::doTypeExpressionLambdaClosureTypeOrDecl(AstTypeLambda* node, Ast
                     if (token.id == TokenId::SymEqual)
                         return error(token, Err(Err0685));
                     typeExpr = newTypeExpression;
+                }
+                else if (typeExpr->identifier && !testIsSingleIdentifier(typeExpr->identifier))
+                {
+                    thisIsAType = true;
+                    curIsAlone  = false;
                 }
             }
 
@@ -347,9 +352,7 @@ bool SyntaxJob::doTypeExpressionLambdaClosureTypeOrDecl(AstTypeLambda* node, Ast
                     Diagnostic diag{sourceFile, tokenAmb, Err(Syn0195)};
                     Diagnostic note{lastParameter, Fmt(Nte(Nte0076), lastParameter->type->token.ctext()), DiagnosticLevel::Note};
                     note.hint = Fmt(Hnt(Hnt0101), lastParameter->type->token.ctext());
-                    context.report(diag, &note);
-
-                    return false;
+                    return context.report(diag, &note);
                 }
 
                 lastWasAlone  = curIsAlone;

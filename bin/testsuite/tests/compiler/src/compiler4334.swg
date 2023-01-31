@@ -1,4 +1,4 @@
-#global skip
+//#global skip
 namespace A
 {
     alias B = s32
@@ -6,3 +6,4 @@ namespace A
 
 //#global testerror
 var G: {A.B, b: s32 = 1}
+var F: func(A.B, c: s32)

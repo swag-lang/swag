@@ -390,28 +390,25 @@ bool SyntaxJob::doTupleBody(AstNode* parent, bool acceptEmpty)
             curIsAlone  = false;
         }
 
-        auto structFieldNode = Ast::newVarDecl(sourceFile, "", parent, nullptr);
-        structFieldNode->flags |= AST_GENERATED;
-        SWAG_CHECK(doTypeExpression(structFieldNode, &structFieldNode->type));
+        auto varNode = Ast::newVarDecl(sourceFile, "", parent, nullptr);
+        varNode->flags |= AST_GENERATED;
+        SWAG_CHECK(doTypeExpression(varNode, &varNode->type));
 
-        AstTypeExpression* typeExpr = CastAst<AstTypeExpression>(structFieldNode->type, AstNodeKind::TypeExpression);
-        if (typeExpr->identifier)
+        AstTypeExpression* typeExpr = CastAst<AstTypeExpression>(varNode->type, AstNodeKind::TypeExpression);
+        if (typeExpr->identifier && !testIsSingleIdentifier(typeExpr->identifier))
         {
-            if (!testIsSingleIdentifier(typeExpr->identifier))
-            {
-                thisIsAType = true;
-                curIsAlone  = false;
-            }
+            thisIsAType = true;
+            curIsAlone  = false;
         }
 
         if (namedParam.text.empty())
         {
-            structFieldNode->token.text = Fmt("item%u", idx);
-            structFieldNode->flags |= AST_AUTO_NAME;
+            varNode->token.text = Fmt("item%u", idx);
+            varNode->flags |= AST_AUTO_NAME;
         }
         else
         {
-            structFieldNode->token = namedParam;
+            varNode->token = namedParam;
         }
 
         if (token.id == TokenId::SymEqual)
@@ -419,25 +416,23 @@ bool SyntaxJob::doTupleBody(AstNode* parent, bool acceptEmpty)
             thisIsAType = false;
             curIsAlone  = false;
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doExpression(structFieldNode, EXPR_FLAG_NONE, &structFieldNode->assignment));
+            SWAG_CHECK(doExpression(varNode, EXPR_FLAG_NONE, &varNode->assignment));
         }
 
         if (lastWasAlone && !curIsAlone && !thisIsAType)
         {
-            Token tokenAmb         = structFieldNode->token;
+            Token tokenAmb         = varNode->token;
             tokenAmb.startLocation = lastParameter->token.startLocation;
             tokenAmb.endLocation   = token.startLocation;
 
             Diagnostic diag{sourceFile, tokenAmb, Err(Syn0198)};
             Diagnostic note{lastParameter, Fmt(Nte(Nte0077), lastParameter->type->token.ctext()), DiagnosticLevel::Note};
             note.hint = Fmt(Hnt(Hnt0103), lastParameter->type->token.ctext());
-            context.report(diag, &note);
-
-            return false;
+            return context.report(diag, &note);
         }
 
         lastWasAlone  = curIsAlone;
-        lastParameter = structFieldNode;
+        lastParameter = varNode;
 
         idx++;
 
