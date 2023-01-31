@@ -6,7 +6,7 @@
 #include "Generic.h"
 #include "LanguageSpec.h"
 
-static void matchOneGenericParam(SymbolMatchContext& context, AstNode* callParameter, TypeInfo* callTypeInfo, TypeInfo* wantedTypeInfo, int idxParam)
+static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParameter, TypeInfo* callTypeInfo, TypeInfo* wantedTypeInfo, int idxParam)
 {
     SWAG_ASSERT(wantedTypeInfo->isGeneric());
 
@@ -495,7 +495,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         }
         else if (wantedTypeInfo->isGeneric())
         {
-            matchOneGenericParam(context, callParameter, callTypeInfo, wantedTypeInfo, i);
+            deduceGenericParam(context, callParameter, callTypeInfo, wantedTypeInfo, i);
         }
 
         if (context.cptResolved < context.solvedParameters.size())
@@ -579,7 +579,7 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
             }
             else if (wantedTypeInfo->isGeneric())
             {
-                matchOneGenericParam(context, callParameter, callTypeInfo, wantedTypeInfo, j);
+                deduceGenericParam(context, callParameter, callTypeInfo, wantedTypeInfo, j);
             }
 
             context.solvedParameters[j]                  = wantedParameter;
