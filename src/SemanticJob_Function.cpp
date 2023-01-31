@@ -8,6 +8,7 @@
 #include "Os.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
+#include "Naming.h"
 
 bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcNode, AstNode* parameters, bool forGenerics)
 {
@@ -993,7 +994,7 @@ bool SemanticJob::resolveFuncCallGenParams(SemanticContext* context)
             symbol->kind == SymbolKind::Attribute)
         {
             Diagnostic note{Hlp(Hlp0021), DiagnosticLevel::Help};
-            return context->report({c, Fmt(Err(Err0815), SymTable::getArticleKindName(symbol->kind).c_str(), symbol->name.c_str())}, &note);
+            return context->report({c, Fmt(Err(Err0815), Naming::getArticleKindName(symbol->kind).c_str(), symbol->name.c_str())}, &note);
         }
     }
 

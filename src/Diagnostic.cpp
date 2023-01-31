@@ -3,6 +3,7 @@
 #include "SourceFile.h"
 #include "TypeInfo.h"
 #include "ErrorIds.h"
+#include "Naming.h"
 
 void Diagnostic::setupColors(bool verboseMode)
 {
@@ -663,7 +664,7 @@ Utf8 Diagnostic::isType(AstNode* node)
     if (!node->typeInfo)
         return "";
     if (node->resolvedSymbolOverload)
-        return Fmt(Hnt(Hnt0084), SymTable::getNakedKindName(node->resolvedSymbolOverload).c_str(), node->typeInfo->getDisplayNameC());
+        return Fmt(Hnt(Hnt0084), Naming::getNakedKindName(node->resolvedSymbolOverload).c_str(), node->typeInfo->getDisplayNameC());
     return isType(node->typeInfo);
 }
 
@@ -684,7 +685,7 @@ Diagnostic* Diagnostic::hereIs(SymbolOverload* overload, bool forceShowRange)
         return nullptr;
 
     Utf8 refNiceName = "the ";
-    refNiceName += SymTable::getNakedKindName(overload);
+    refNiceName += Naming::getNakedKindName(overload);
 
     auto showRange = false;
     auto site      = overload->node;

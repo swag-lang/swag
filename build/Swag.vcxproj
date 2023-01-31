@@ -220,6 +220,7 @@
     <ClInclude Include="..\src\JobGroup.h" />
     <ClInclude Include="..\src\LoadSourceFileJob.h" />
     <ClInclude Include="..\src\MapRegTo.h" />
+    <ClInclude Include="..\src\Naming.h" />
     <ClInclude Include="..\src\OutputFileWin32.h" />
     <ClInclude Include="../src/RegisterList.h" />
     <ClInclude Include="../src/Runtime.h" />
@@ -372,6 +373,7 @@
     <ClCompile Include="..\src\LoadSourceFileJob.cpp" />
     <ClCompile Include="..\src\Module_CompilerMsg.cpp" />
     <ClCompile Include="..\src\Module_Run.cpp" />
+    <ClCompile Include="..\src\Naming.cpp" />
     <ClCompile Include="..\src\OutputFileWin32.cpp" />
     <ClCompile Include="../src/Scope.cpp" />
     <ClCompile Include="..\src\PrepCompilerMsgJob.cpp" />

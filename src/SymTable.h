@@ -147,14 +147,6 @@ struct SymTable
     static void     decreaseOverloadNoLock(SymbolName* symbol);
     static void     disabledIfBlockOverloadNoLock(AstNode* node, SymbolName* symbol);
 
-    static Utf8 getKindName(SymbolName* symbol, AstNode* node, TypeInfo* typeInfo, uint32_t overFlags, Utf8& article);
-    static Utf8 getNakedKindName(SymbolOverload* overload);
-    static Utf8 getArticleKindName(SymbolOverload* overload);
-
-    static Utf8 getNakedKindName(SymbolKind kind);
-    static Utf8 getArticleKindName(SymbolKind kind);
-    static Utf8 getKindName(SymbolKind kind, Utf8& article);
-
     SharedMutex                mutex;
     SymTableHash               mapNames;
     VectorNative<StructToDrop> structVarsToDrop;

@@ -13,6 +13,7 @@
 #include "Report.h"
 #include "ModuleManager.h"
 #include "TypeTableJob.h"
+#include "Naming.h"
 
 void Workspace::computeModuleName(const fs::path& path, Utf8& moduleName, Utf8& moduleFolder, ModuleKind& kind)
 {
@@ -285,7 +286,7 @@ static Utf8 errorPendingJobsType(Job* pendingJob)
 {
     Utf8 sym;
     if (pendingJob->waitingSymbolSolved)
-        sym = Fmt("%s '%s'", SymTable::getNakedKindName(pendingJob->waitingSymbolSolved->kind).c_str(), pendingJob->waitingSymbolSolved->name.c_str());
+        sym = Fmt("%s '%s'", Naming::getNakedKindName(pendingJob->waitingSymbolSolved->kind).c_str(), pendingJob->waitingSymbolSolved->name.c_str());
 
     switch (pendingJob->waitingKind)
     {

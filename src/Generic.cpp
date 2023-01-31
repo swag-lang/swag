@@ -7,6 +7,7 @@
 #include "ErrorIds.h"
 #include "SourceFile.h"
 #include "Module.h"
+#include "Naming.h"
 
 bool Generic::updateGenericParameters(SemanticContext* context, bool doType, bool doNode, VectorNative<TypeInfoParam*>& typeGenericParameters, VectorNative<AstNode*>& nodeGenericParameters, AstNode* callGenericParameters, OneGenericMatch& match)
 {
@@ -83,7 +84,7 @@ bool Generic::updateGenericParameters(SemanticContext* context, bool doType, boo
                     }
                 }
 
-                Diagnostic diag{errNode, Utf8::format(Err(Err0808), SymTable::getNakedKindName(symbol->kind).c_str(), symbol->name.c_str())};
+                Diagnostic diag{errNode, Utf8::format(Err(Err0808), Naming::getNakedKindName(symbol->kind).c_str(), symbol->name.c_str())};
                 diag.hint = hint;
                 return context->report(diag);
             }

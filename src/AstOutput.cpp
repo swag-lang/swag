@@ -7,6 +7,7 @@
 #include "AstOutput.h"
 #include "Module.h"
 #include "Report.h"
+#include "Naming.h"
 
 bool AstOutput::checkIsPublic(OutputContext& context, AstNode* testNode, AstNode* usedNode)
 {
@@ -37,7 +38,7 @@ bool AstOutput::checkIsPublic(OutputContext& context, AstNode* testNode, AstNode
         (symbol->kind == SymbolKind::Alias) ||
         (symbol->kind == SymbolKind::TypeAlias))
     {
-        Utf8 typeWhat = SymTable::getNakedKindName(overload);
+        Utf8 typeWhat = Naming::getNakedKindName(overload);
         if (!overload->node->isPublic())
         {
             if (usedNode && overload->node != usedNode)
@@ -46,7 +47,7 @@ bool AstOutput::checkIsPublic(OutputContext& context, AstNode* testNode, AstNode
                 if (context.exportedNode && context.exportedNode->resolvedSymbolOverload)
                 {
                     auto symName = context.exportedNode->resolvedSymbolOverload->symbol;
-                    what         = Fmt("%s '%s'", SymTable::getNakedKindName(symName->kind).c_str(), symName->name.c_str());
+                    what         = Fmt("%s '%s'", Naming::getNakedKindName(symName->kind).c_str(), symName->name.c_str());
                 }
                 else if (usedNode->kind == AstNodeKind::FuncCall)
                     what = "function call";

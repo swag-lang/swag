@@ -530,6 +530,9 @@
     <ClCompile Include="..\src\ByteCodeOptimizer_Swap.cpp">
       <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Naming.cpp">
+      <Filter>Main\Report</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">
@@ -844,6 +847,9 @@
     </ClInclude>
     <ClInclude Include="..\src\ByteCodeDebugger.h">
       <Filter>Backend\ByteCode\Debugger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Naming.h">
+      <Filter>Main\Report</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -4,6 +4,7 @@
 #include "TypeManager.h"
 #include "Ast.h"
 #include "Report.h"
+#include "Naming.h"
 
 bool ByteCodeGenJob::emitIdentifierRef(ByteCodeGenContext* context)
 {
@@ -17,10 +18,10 @@ bool ByteCodeGenJob::sameStackFrame(ByteCodeGenContext* context, SymbolOverload*
     if (context->node->isSameStackFrame(overload))
         return true;
 
-    Diagnostic diag{context->node, Fmt(Err(Err0206), SymTable::getNakedKindName(overload).c_str(), overload->symbol->name.c_str())};
+    Diagnostic diag{context->node, Fmt(Err(Err0206), Naming::getNakedKindName(overload).c_str(), overload->symbol->name.c_str())};
 
     if (context->node->ownerFct && context->node->ownerFct->attributeFlags & ATTRIBUTE_GENERATED_FUNC)
-        diag.hint = Fmt(Hnt(Hnt0095), SymTable::getNakedKindName(overload).c_str(), context->node->ownerFct->getDisplayName().c_str());
+        diag.hint = Fmt(Hnt(Hnt0095), Naming::getNakedKindName(overload).c_str(), context->node->ownerFct->getDisplayName().c_str());
 
     Diagnostic* note = nullptr;
     if (overload->fromInlineParam)

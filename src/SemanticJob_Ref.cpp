@@ -7,6 +7,7 @@
 #include "ErrorIds.h"
 #include "Report.h"
 #include "LanguageSpec.h"
+#include "Naming.h"
 
 bool SemanticJob::boundCheck(SemanticContext* context, AstNode* arrayAccess, uint64_t maxCount)
 {
@@ -58,7 +59,7 @@ bool SemanticJob::checkCanTakeAddress(SemanticContext* context, AstNode* node)
     {
         if (node->resolvedSymbolName->kind != SymbolKind::Variable)
         {
-            Diagnostic diag{node, Fmt(Err(Err0465), SymTable::getArticleKindName(node->resolvedSymbolName->kind).c_str())};
+            Diagnostic diag{node, Fmt(Err(Err0465), Naming::getArticleKindName(node->resolvedSymbolName->kind).c_str())};
             diag.hint = Hnt(Hnt0054);
             return context->report(diag);
         }

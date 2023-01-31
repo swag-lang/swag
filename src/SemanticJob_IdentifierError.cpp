@@ -10,6 +10,7 @@
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "AstOutput.h"
+#include "Naming.h"
 
 Utf8 SemanticJob::getNiceArgumentRank(int idx)
 {
@@ -135,7 +136,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
     // Nice name to reference it
     Utf8 refNiceName = "the ";
-    refNiceName += SymTable::getNakedKindName(overload);
+    refNiceName += Naming::getNakedKindName(overload);
 
     // Get parameters of destination symbol
     AstFuncDecl* destFuncDecl = nullptr;
@@ -344,7 +345,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             errNode = context->node;
         if (!match.badSignatureInfos.badSignatureNum2)
         {
-            diag = new Diagnostic{errNode, Fmt(Err(Err0135), SymTable::getNakedKindName(symbol->kind).c_str(), symbol->name.c_str()).c_str()};
+            diag = new Diagnostic{errNode, Fmt(Err(Err0135), Naming::getNakedKindName(symbol->kind).c_str(), symbol->name.c_str()).c_str()};
         }
         else
         {
@@ -352,7 +353,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                 errNode = genericParameters->childs[match.badSignatureInfos.badSignatureNum2];
             diag = new Diagnostic{errNode,
                                   Fmt(Err(Err0044),
-                                      SymTable::getNakedKindName(symbol->kind).c_str(),
+                                      Naming::getNakedKindName(symbol->kind).c_str(),
                                       symbol->name.c_str(),
                                       match.badSignatureInfos.badSignatureNum2,
                                       match.badSignatureInfos.badSignatureNum1)};
@@ -667,12 +668,12 @@ void SemanticJob::symbolErrorNotes(SemanticContext* context, VectorNative<OneTry
 
                 if (prev->typeInfo)
                 {
-                    auto note = new Diagnostic{prev, Fmt(Nte(Nte0001), prev->token.ctext(), SymTable::getArticleKindName(prev->resolvedSymbolName->kind).c_str(), prev->typeInfo->getDisplayNameC()), DiagnosticLevel::Note};
+                    auto note = new Diagnostic{prev, Fmt(Nte(Nte0001), prev->token.ctext(), Naming::getArticleKindName(prev->resolvedSymbolName->kind).c_str(), prev->typeInfo->getDisplayNameC()), DiagnosticLevel::Note};
                     notes.push_back(note);
                 }
                 else
                 {
-                    auto note = new Diagnostic{prev, Fmt(Nte(Nte0010), prev->token.ctext(), SymTable::getArticleKindName(prev->resolvedSymbolName->kind).c_str()), DiagnosticLevel::Note};
+                    auto note = new Diagnostic{prev, Fmt(Nte(Nte0010), prev->token.ctext(), Naming::getArticleKindName(prev->resolvedSymbolName->kind).c_str()), DiagnosticLevel::Note};
                     notes.push_back(note);
                 }
 
@@ -716,7 +717,7 @@ void SemanticJob::symbolErrorRemarks(SemanticContext* context, VectorNative<OneT
             {
                 auto over = tryMatches.front()->overload;
                 auto msg  = Fmt(Nte(Nte0043),
-                               SymTable::getNakedKindName(over).c_str(),
+                               Naming::getNakedKindName(over).c_str(),
                                node->token.ctext(),
                                identifier->identifierRef->typeInfo->getDisplayNameC(),
                                over->node->ownerStructScope->owner->token.ctext());
