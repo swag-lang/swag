@@ -394,30 +394,24 @@ bool SyntaxJob::doTupleBody(AstNode* parent, bool acceptEmpty)
         structFieldNode->flags |= AST_GENERATED;
         SWAG_CHECK(doTypeExpression(structFieldNode, &structFieldNode->type));
 
-        // Name followed by ':'
-        /*if (token.id == TokenId::SymColon)
+        AstTypeExpression* typeExpr = CastAst<AstTypeExpression>(structFieldNode->type, AstNodeKind::TypeExpression);
+        if (typeExpr->identifier)
         {
-            typeExpression = CastAst<AstTypeExpression>(expression, AstNodeKind::TypeExpression);
-            SWAG_VERIFY(prevToken.id == TokenId::Identifier, error(prevToken.startLocation, token.startLocation, Fmt(Err(Syn0065), prevToken.ctext())));
-            SWAG_ASSERT(typeExpression->identifier);
-            SWAG_CHECK(checkIsSingleIdentifier(typeExpression->identifier, "as a tuple field name"));
-            SWAG_CHECK(checkIsValidVarName(typeExpression->identifier->childs.back()));
-            structFieldNode->token.text = typeExpression->identifier->childs.back()->token.text;
-            SWAG_CHECK(eatToken());
-            SWAG_CHECK(doTypeExpression(structFieldNode, &structFieldNode->type));
-            expression = structFieldNode->type;
+            if (!testIsSingleIdentifier(typeExpr->identifier))
+            {
+                thisIsAType = true;
+                curIsAlone  = false;
+            }
         }
-        else*/
+
+        if (namedParam.text.empty())
         {
-            if (namedParam.text.empty())
-            {
-                structFieldNode->token.text = Fmt("item%u", idx);
-                structFieldNode->flags |= AST_AUTO_NAME;
-            }
-            else
-            {
-                structFieldNode->token = namedParam;
-            }
+            structFieldNode->token.text = Fmt("item%u", idx);
+            structFieldNode->flags |= AST_AUTO_NAME;
+        }
+        else
+        {
+            structFieldNode->token = namedParam;
         }
 
         if (token.id == TokenId::SymEqual)

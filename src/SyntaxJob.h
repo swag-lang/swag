@@ -87,15 +87,17 @@ struct SyntaxJob : public Job
     bool eatCloseToken(TokenId id, const SourceLocation& start, const char* msg);
     bool eatToken(TokenId id, const char* msg = nullptr);
     bool eatSemiCol(const char* msg = nullptr);
-    bool checkIsSingleIdentifier(AstNode* node, const char* msg);
 
-    bool        doTupleOrAnonymousType(AstNode* parent, AstNode** result, bool isConst, bool anonymousStruct, bool anonymousUnion);
+    bool        testIsSingleIdentifier(AstNode* node);
+    bool        checkIsSingleIdentifier(AstNode* node, const char* msg);
+    bool        testIsValidUserName(AstNode* node);
     bool        checkIsValidUserName(AstNode* node, Token* loc = nullptr);
     bool        checkIsValidVarName(AstNode* node);
     void        registerSubDecl(AstNode* subDecl);
     static void relaxIdentifier(Token& token);
     static void forceTakeAddress(AstNode* node);
 
+    bool doTupleOrAnonymousType(AstNode* parent, AstNode** result, bool isConst, bool anonymousStruct, bool anonymousUnion);
     bool doScopeBreakable(AstNode* parent, AstNode** result = nullptr);
     bool doGenericFuncCallParameters(AstNode* parent, AstNode** result = nullptr);
     bool doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, TokenId closeToken);

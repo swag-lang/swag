@@ -18,7 +18,7 @@ void SyntaxJob::relaxIdentifier(Token& token)
     }
 }
 
-bool SyntaxJob::checkIsValidUserName(AstNode* node, Token* loc)
+bool SyntaxJob::testIsValidUserName(AstNode* node)
 {
     if (node->parent && (node->parent->flags & AST_GENERATED))
         return true;
@@ -29,7 +29,28 @@ bool SyntaxJob::checkIsValidUserName(AstNode* node, Token* loc)
     if (!sourceFile->isGenerated && !sourceFile->isBootstrapFile && !sourceFile->isRuntimeFile)
     {
         if (node->token.text.length() > 1 && node->token.text[0] == '_' && node->token.text[1] == '_')
-            return error(loc ? *loc : node->token, Fmt(Err(Syn0122), node->token.ctext()));
+            return false;
+    }
+
+    return true;
+}
+
+bool SyntaxJob::checkIsValidUserName(AstNode* node, Token* loc)
+{
+    // An identifier that starts with '__' is reserved for internal usage !
+    if (!testIsValidUserName(node))
+        return error(loc ? *loc : node->token, Fmt(Err(Syn0122), node->token.ctext()));
+
+    return true;
+}
+
+bool SyntaxJob::testIsSingleIdentifier(AstNode* node)
+{
+    if (node->kind != AstNodeKind::IdentifierRef ||
+        node->childs.size() > 1 ||
+        node->childs.back()->kind != AstNodeKind::Identifier)
+    {
+        return false;
     }
 
     return true;
@@ -37,13 +58,8 @@ bool SyntaxJob::checkIsValidUserName(AstNode* node, Token* loc)
 
 bool SyntaxJob::checkIsSingleIdentifier(AstNode* node, const char* msg)
 {
-    if (node->kind != AstNodeKind::IdentifierRef ||
-        node->childs.size() > 1 ||
-        node->childs.back()->kind != AstNodeKind::Identifier)
-    {
+    if (!testIsSingleIdentifier(node))
         return error(node, Fmt(Err(Syn0062), msg));
-    }
-
     return true;
 }
 

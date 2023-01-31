@@ -171,7 +171,7 @@ void initErrors()
     SWAG_ERROR(Syn0062, "expected a single identifier %s");
     SWAG_ERROR(Syn0063, "expected a struct name, found '%s'");
     SWAG_ERROR(Syn0064, "expected a top level instruction");
-    SWAG_ERROR(Syn0065, "expected a tuple field name before ':', found '%s'");
+    SWAG_ERROR(Syn0065, nullptr);
     SWAG_ERROR(Syn0066, "expected a type declaration, found '%s'");
     SWAG_ERROR(Syn0067, "expected a type inside the tuple type definition, found '%s'");
     SWAG_ERROR(Syn0068, "expected a variable declaration");
