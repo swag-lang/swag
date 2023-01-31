@@ -397,8 +397,18 @@ bool SemanticJob::resolveKeepRef(SemanticContext* context)
     if (!typeInfo->isPointerRef() && !typeInfo->isPointer())
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0517), typeInfo->getDisplayNameC())};
-        diag.hint = Hnt(Hnt0061);
-        diag.addRange(front, Diagnostic::isType(typeInfo));
+
+        if (front->kind == AstNodeKind::IdentifierRef && front->childs.front()->kind == AstNodeKind::ArrayPointerIndex)
+        {
+            diag.addRange(front, Hnt(Hnt0104));
+            diag.hint = Fmt(Hnt(Hnt0105), typeInfo->getDisplayNameC());
+        }
+        else
+        {
+            diag.addRange(front, Diagnostic::isType(typeInfo));
+            diag.hint = Hnt(Hnt0061);
+        }
+
         return context->report(diag);
     }
 

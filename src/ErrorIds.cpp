@@ -291,7 +291,7 @@ void initErrors()
     SWAG_ERROR(Syn0197, "unexpected start of a type declaration for a 'self' parameter");
     SWAG_ERROR(Syn0198, "tuple type ambiguous parameters declaration");
     SWAG_ERROR(Syn0199, "unexpected token '%s' in the lambda type, ',' or ')' are expected here");
-    
+
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -1120,8 +1120,12 @@ void initErrors()
     SWAG_ERROR(Hnt0101, "you should add '#type' before '%s' or, if this is a parameter, explicitly specify a type");
     SWAG_ERROR(Hnt0102, "'self' is already typed, so this should be removed");
     SWAG_ERROR(Hnt0103, "you should add '#type' before '%s' or, if this is a field name, explicitly specify a type");
-    SWAG_ERROR(Hnt0104, nullptr);
-    
+    SWAG_ERROR(Hnt0104, "you could add '&' to take the address of this expression");
+    SWAG_ERROR(Hnt0105, "this is not allowed on type '%s'");
+    SWAG_ERROR(Hnt0106, nullptr);
+    SWAG_ERROR(Hnt0107, nullptr);
+    SWAG_ERROR(Hnt0108, nullptr);
+    SWAG_ERROR(Hnt0109, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
