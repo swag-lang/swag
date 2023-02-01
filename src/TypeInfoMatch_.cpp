@@ -676,9 +676,9 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
             (context.flags & SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC) ||
             !context.genericReplaceTypes.empty())
         {
+            context.flags |= SymbolMatchContext::MATCH_GENERIC_AUTO;
             if (!myTypeInfo->isGeneric() || !context.parameters.size())
             {
-                context.flags |= SymbolMatchContext::MATCH_GENERIC_AUTO;
                 for (int i = 0; i < wantedNumGenericParams; i++)
                 {
                     auto symbolParameter = genericParameters[i];
@@ -734,67 +734,77 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
 
     if (myTypeInfo->isStruct() && userGenericParams < wantedNumGenericParams)
     {
-        // In that case, we want to match the generic version of the type
-        if (!userGenericParams && wantedNumGenericParams && (context.flags & SymbolMatchContext::MATCH_DO_NOT_ACCEPT_NO_GENERIC))
+        // If we have SymbolMatchContext::MATCH_DO_NOT_ACCEPT_NO_GENERIC, and if we do not have generic parameters (but
+        // this is a generic struct), then we want to match the generic version of the type.
+        // For example in @typeof(A) where A is generic.
+        if (myTypeInfo->isGeneric() &&
+            !userGenericParams &&
+            wantedNumGenericParams &&
+            (context.flags & SymbolMatchContext::MATCH_DO_NOT_ACCEPT_NO_GENERIC))
         {
-            if (myTypeInfo->isGeneric())
-                return;
+            return;
         }
 
-        context.result = MatchResult::NotEnoughGenericParameters;
-        return;
+        if (!myTypeInfo->isGeneric())
+        {
+            context.result = MatchResult::NotEnoughGenericParameters;
+            return;
+        }
+
+        if (userGenericParams)
+        {
+            context.result = MatchResult::NotEnoughGenericParameters;
+            return;
+        }
     }
 
-    if (!myTypeInfo->isStruct())
+    if (!userGenericParams && wantedNumGenericParams)
     {
-        if (!userGenericParams && wantedNumGenericParams)
+        if (!(context.flags & SymbolMatchContext::MATCH_DO_NOT_ACCEPT_NO_GENERIC))
         {
-            if (!(context.flags & SymbolMatchContext::MATCH_DO_NOT_ACCEPT_NO_GENERIC))
+            for (int i = 0; i < wantedNumGenericParams; i++)
             {
-                for (int i = 0; i < wantedNumGenericParams; i++)
+                auto symbolParameter = genericParameters[i];
+                if (!symbolParameter->typeInfo->isNative(NativeTypeKind::Undefined))
                 {
-                    auto symbolParameter = genericParameters[i];
-                    if (!symbolParameter->typeInfo->isNative(NativeTypeKind::Undefined))
+                    auto it = context.genericReplaceTypes.find(symbolParameter->typeInfo->name);
+                    if (it == context.genericReplaceTypes.end())
                     {
-                        auto it = context.genericReplaceTypes.find(symbolParameter->typeInfo->name);
-                        if (it == context.genericReplaceTypes.end())
+                        // When we try to match an untyped generic lambda with a typed instance, we must fail.
+                        // This will force a new instance with deduced types if necessary
+                        if (context.genericReplaceTypes.empty() && context.flags & SymbolMatchContext::MATCH_FOR_LAMBDA)
                         {
-                            // When we try to match an untyped generic lambda with a typed instance, we must fail.
-                            // This will force a new instance with deduced types if necessary
-                            if (context.genericReplaceTypes.empty() && context.flags & SymbolMatchContext::MATCH_FOR_LAMBDA)
-                            {
-                                context.result = MatchResult::NotEnoughGenericParameters;
-                                return;
-                            }
-                            else if (myTypeInfo->isGeneric())
-                            {
-                                context.result = MatchResult::NotEnoughGenericParameters;
-                                return;
-                            }
+                            context.result = MatchResult::NotEnoughGenericParameters;
+                            return;
+                        }
+                        else if (myTypeInfo->isGeneric())
+                        {
+                            context.result = MatchResult::NotEnoughGenericParameters;
+                            return;
                         }
                     }
                 }
             }
         }
+    }
 
-        // If there's no specified generic parameters, and we try to match a concrete function, then we must to
-        // be sure that the current contextual types match the contextual types of the concrete function (if they are any)
-        else if (!userGenericParams && !myTypeInfo->isGeneric() && !context.genericReplaceTypes.empty())
+    // If there's no specified generic parameters, and we try to match a concrete function, then we must to
+    // be sure that the current contextual types match the contextual types of the concrete function (if they are any)
+    else if (!userGenericParams && !myTypeInfo->isGeneric() && !context.genericReplaceTypes.empty())
+    {
+        if (myTypeInfo->declNode->kind == AstNodeKind::FuncDecl)
         {
-            if (myTypeInfo->declNode->kind == AstNodeKind::FuncDecl)
+            auto myFunc     = CastAst<AstFuncDecl>(myTypeInfo->declNode, AstNodeKind::FuncDecl);
+            auto typeMyFunc = CastTypeInfo<TypeInfoFuncAttr>(myFunc->typeInfo, TypeInfoKind::FuncAttr);
+            if (!(typeMyFunc->replaceTypes.empty()))
             {
-                auto myFunc     = CastAst<AstFuncDecl>(myTypeInfo->declNode, AstNodeKind::FuncDecl);
-                auto typeMyFunc = CastTypeInfo<TypeInfoFuncAttr>(myFunc->typeInfo, TypeInfoKind::FuncAttr);
-                if (!(typeMyFunc->replaceTypes.empty()))
+                for (auto one : context.genericReplaceTypes)
                 {
-                    for (auto one : context.genericReplaceTypes)
+                    auto it = typeMyFunc->replaceTypes.find(one.first);
+                    if (it == typeMyFunc->replaceTypes.end() || it->second != one.second)
                     {
-                        auto it = typeMyFunc->replaceTypes.find(one.first);
-                        if (it == typeMyFunc->replaceTypes.end() || it->second != one.second)
-                        {
-                            context.result = MatchResult::NotEnoughGenericParameters;
-                            return;
-                        }
+                        context.result = MatchResult::NotEnoughGenericParameters;
+                        return;
                     }
                 }
             }
