@@ -765,29 +765,10 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
             return;
         }
 
-        if (userGenericParams)
+        if (userGenericParams || !myTypeInfo->isGeneric())
         {
             context.result = MatchResult::NotEnoughGenericParameters;
             return;
-        }
-
-        if (!myTypeInfo->isGeneric())
-        {
-            if (context.parameters.size() != wantedNumGenericParams)
-            {
-                context.result = MatchResult::NotEnoughGenericParameters;
-                return;
-            }
-
-            context.genericParameters.set_size_clear(wantedNumGenericParams);
-            for (int i = 0; i < context.parameters.size(); i++)
-            {
-                context.genericParametersCallTypes[i]     = context.parameters[i]->typeInfo;
-                context.genericParametersCallTypesFrom[i] = context.parameters[i];
-                context.genericParameters[i]              = context.parameters[i];
-            }
-
-            userGenericParams = wantedNumGenericParams;
         }
     }
 

@@ -351,7 +351,7 @@ void Generic::waitForGenericParameters(SemanticContext* context, OneGenericMatch
     }
 }
 
-bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match)
+bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool& alias)
 {
     auto node = context->node;
     SWAG_VERIFY(!match.genericReplaceTypes.empty(), context->report({node, Fmt(Err(Err0039), node->token.ctext())}));
@@ -385,6 +385,35 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     auto sourceNodeStruct = CastAst<AstStruct>(sourceNode, AstNodeKind::StructDecl);
     SWAG_CHECK(updateGenericParameters(context, true, false, newType->genericParameters, sourceNodeStruct->genericParameters->childs, genericParameters, match));
     newType->forceComputeName();
+
+    // Be sure that after the generic instantiation, we will not have a match.
+    // If this is the case, then the corresponding instantiation is used instead of creating a new exact same one.
+    // This can happen when deducing generic parameters.
+    for (auto& v : sourceSymbol->overloads)
+    {
+        if (v->typeInfo->name == newType->name)
+        {
+            TypeInfoStruct* t0 = (TypeInfoStruct*) v->typeInfo;
+            TypeInfoStruct* t1 = (TypeInfoStruct*) newType;
+
+            bool same = true;
+            for (int i = 0; i < t0->genericParameters.size(); i++)
+            {
+                if (!t0->genericParameters[i]->typeInfo->isSame(t1->genericParameters[i]->typeInfo, ISSAME_EXACT))
+                {
+                    same = false;
+                    break;
+                }
+            }
+
+            if (same)
+            {
+                alias                = true;
+                match.symbolOverload = v;
+                return true;
+            }
+        }
+    }
 
     CloneContext cloneContext;
     cloneContext.replaceTypes     = move(match.genericReplaceTypes);

@@ -2264,7 +2264,14 @@ bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericM
         // We can instantiate the struct because it's no more generic, and we have generic parameters to replace
         if (!(node->flags & AST_IS_GENERIC) && genericParameters)
         {
-            SWAG_CHECK(Generic::instantiateStruct(context, genericParameters, firstMatch));
+            bool alias = false;
+            SWAG_CHECK(Generic::instantiateStruct(context, genericParameters, firstMatch, alias));
+            if (alias)
+            {
+                auto oneMatch            = job->getOneMatch();
+                oneMatch->symbolOverload = firstMatch.symbolOverload;
+                matches.push_back(oneMatch);
+            }
         }
 
         // The new struct is no more generic without generic parameters. So we add a normal generic match for later (?)
