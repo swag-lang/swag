@@ -61,7 +61,7 @@ bool Generic::updateGenericParameters(SemanticContext* context, bool doType, boo
         auto genGen = match.genericParametersGenTypes[i];
         if (genGen->isKindGeneric())
         {
-            if (param->typeInfo->flags & (TYPEINFO_UNTYPED_INTEGER | TYPEINFO_UNTYPED_FLOAT))
+            if (param->typeInfo->isUntypedInteger() || param->typeInfo->isUntypedFloat())
             {
                 auto symbol  = match.symbolName;
                 auto errNode = context->node;
@@ -366,11 +366,6 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     if (context->result != ContextResult::Done)
         return true;
 
-    // Types replacements
-    CloneContext cloneContext;
-    cloneContext.replaceTypes     = move(match.genericReplaceTypes);
-    cloneContext.replaceTypesFrom = move(match.genericReplaceTypesFrom);
-
     // Clone original node
     auto overload   = match.symbolOverload;
     auto sourceNode = overload->node;
@@ -391,6 +386,9 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     SWAG_CHECK(updateGenericParameters(context, true, false, newType->genericParameters, sourceNodeStruct->genericParameters->childs, genericParameters, match));
     newType->forceComputeName();
 
+    CloneContext cloneContext;
+    cloneContext.replaceTypes     = move(match.genericReplaceTypes);
+    cloneContext.replaceTypesFrom = move(match.genericReplaceTypesFrom);
     // Add the struct type replacement now, in case the struct has a field to replace
     cloneContext.replaceTypes[overload->typeInfo->name] = newType;
 
