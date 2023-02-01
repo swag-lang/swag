@@ -105,8 +105,9 @@ struct OneMatch
     AstNode*        dependentVar   = nullptr;
     OneTryMatch*    oneOverload    = nullptr;
 
-    bool ufcs   = false;
-    bool remove = false;
+    bool ufcs          = false;
+    bool remove        = false;
+    bool typeWasForced = false;
 
     void reset()
     {
@@ -116,6 +117,7 @@ struct OneMatch
         dependentVar   = nullptr;
         ufcs           = false;
         remove         = false;
+        typeWasForced  = false;
     }
 };
 

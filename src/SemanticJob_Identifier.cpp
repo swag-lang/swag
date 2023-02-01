@@ -2229,16 +2229,43 @@ bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericM
             }
         }
 
+        // We can instantiate the struct because it's no more generic, and we have generic parameters to replae
         if (!(node->flags & AST_IS_GENERIC) && genericParameters)
         {
             SWAG_CHECK(Generic::instantiateStruct(context, genericParameters, firstMatch));
         }
-        else
+
+        // The new struct already is no more generic. So we add a normal match
+        else if (!(node->flags & AST_IS_GENERIC))
         {
             auto oneMatch            = job->getOneMatch();
             oneMatch->symbolOverload = firstMatch.symbolOverload;
             matches.push_back(oneMatch);
             node->flags |= AST_IS_GENERIC;
+        }
+
+        // The new struct is still generic and we have generic parameters
+        // We generate a new struct with the wanted generic parameters
+        else
+        {
+            SWAG_ASSERT(genericParameters);
+            auto oneMatch            = job->getOneMatch();
+            oneMatch->symbolOverload = firstMatch.symbolOverload;
+            matches.push_back(oneMatch);
+            node->flags |= AST_IS_GENERIC;
+
+            node->typeInfo     = firstMatch.symbolOverload->typeInfo->clone();
+            auto newStructType = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+            if (newStructType->genericParameters.size() == genericParameters->childs.size())
+            {
+                for (int i = 0; i < genericParameters->childs.size(); i++)
+                {
+                    newStructType->genericParameters[i]->typeInfo = genericParameters->childs[i]->typeInfo;
+                }
+            }
+
+            node->typeInfo->forceComputeName();
+            oneMatch->typeWasForced = true;
         }
     }
     else
@@ -4245,9 +4272,17 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
 
     // :SilentCall
     if (node->token.text.empty())
+    {
         node->typeInfo = identifierRef->typeInfo;
+    }
+    else if (match->typeWasForced)
+    {
+        SWAG_ASSERT(node->typeInfo);
+    }
     else
+    {
         node->typeInfo = match->symbolOverload->typeInfo;
+    }
 
     SWAG_CHECK(setSymbolMatch(context, identifierRef, node, *match));
     return true;
