@@ -78,8 +78,28 @@ static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParamet
                     callTypeInfo->setConst();
                 }
 
+                auto regTypeInfo = callTypeInfo;
+
+                // :DupGen
+                if (wantedTypeInfo->isStruct() && callTypeInfo->isStruct())
+                {
+                    auto callStruct   = CastTypeInfo<TypeInfoStruct>(callTypeInfo, TypeInfoKind::Struct);
+                    auto wantedStruct = CastTypeInfo<TypeInfoStruct>(wantedTypeInfo, TypeInfoKind::Struct);
+                    if (callStruct->genericParameters.size() == wantedStruct->genericParameters.size() && callStruct->genericParameters.size())
+                    {
+                        auto newStructType = (TypeInfoStruct*) callStruct->clone();
+                        for (int i = 0; i < callStruct->genericParameters.size(); i++)
+                        {
+                            newStructType->genericParameters[i]->name       = wantedStruct->genericParameters[i]->typeInfo->name;
+                            newStructType->genericParameters[i]->namedParam = wantedStruct->genericParameters[i]->typeInfo->name;
+                        }
+
+                        regTypeInfo = newStructType;
+                    }
+                }
+
                 // Associate the generic type with that concrete one
-                context.genericReplaceTypes[wantedTypeInfo->name]     = callTypeInfo;
+                context.genericReplaceTypes[wantedTypeInfo->name]     = regTypeInfo;
                 context.genericReplaceTypesFrom[wantedTypeInfo->name] = callParameter;
 
                 // If this is a valid generic argument, register it at the correct call position

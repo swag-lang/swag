@@ -322,6 +322,10 @@ bool SemanticJob::createTmpVarStruct(SemanticContext* context, AstIdentifier* id
     // Call parameters have already been evaluated, so do not reevaluate them again
     back->callParameters->flags |= AST_NO_SEMANTIC;
 
+    // :DupGen
+    // Type has already been evaluated
+    typeNode->identifier->flags |= AST_NO_SEMANTIC;
+
     // If this is in a return expression, then force the identifier type to be retval
     if (context->node->parent && context->node->parent->inSimpleReturn())
         typeNode->typeFlags |= TYPEFLAG_RETVAL;
@@ -1705,6 +1709,33 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
 
         auto rawTypeInfo = overload->typeInfo;
 
+        // :DupGen
+        TypeInfo* typeWasForced = nullptr;
+        if (node && node->parent && node->parent->inSimpleReturn())
+        {
+            rawTypeInfo = TypeManager::concreteType(rawTypeInfo, CONCRETE_ALIAS);
+            if (rawTypeInfo->isStruct())
+            {
+                auto fctTypeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+                if (fctTypeInfo->returnType && fctTypeInfo->returnType->isStruct())
+                {
+                    auto rawTypeStruct    = CastTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Struct);
+                    auto returnStructType = CastTypeInfo<TypeInfoStruct>(fctTypeInfo->returnType, TypeInfoKind::Struct);
+                    if (returnStructType->genericParameters.size() == rawTypeStruct->genericParameters.size() && rawTypeStruct->genericParameters.size())
+                    {
+                        rawTypeStruct = (TypeInfoStruct*) rawTypeInfo->clone();
+                        rawTypeInfo   = rawTypeStruct;
+                        typeWasForced = rawTypeInfo;
+                        for (int i = 0; i < returnStructType->genericParameters.size(); i++)
+                        {
+                            rawTypeStruct->genericParameters[i]->name       = returnStructType->genericParameters[i]->name;
+                            rawTypeStruct->genericParameters[i]->namedParam = returnStructType->genericParameters[i]->namedParam;
+                        }
+                    }
+                }
+            }
+        }
+
         // If this is a type alias that already has a generic instance, accept to not have generic
         // parameters on the source symbol
         if (rawTypeInfo->isAlias())
@@ -1900,6 +1931,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                     match->dependentVar     = dependentVar;
                     match->ufcs             = oneOverload.ufcs;
                     match->oneOverload      = &oneOverload;
+                    match->typeWasForced    = typeWasForced;
 
                     // As indexParam and resolvedParameter are directly stored in the node, we need to save them
                     // with the corresponding match, as they can be overwritten by another match attempt
@@ -2229,13 +2261,13 @@ bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericM
             }
         }
 
-        // We can instantiate the struct because it's no more generic, and we have generic parameters to replae
+        // We can instantiate the struct because it's no more generic, and we have generic parameters to replace
         if (!(node->flags & AST_IS_GENERIC) && genericParameters)
         {
             SWAG_CHECK(Generic::instantiateStruct(context, genericParameters, firstMatch));
         }
 
-        // The new struct already is no more generic. So we add a normal match
+        // The new struct is no more generic without generic parameters. So we add a normal generic match for later (?)
         else if (!(node->flags & AST_IS_GENERIC))
         {
             auto oneMatch            = job->getOneMatch();
@@ -2245,7 +2277,6 @@ bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericM
         }
 
         // The new struct is still generic and we have generic parameters
-        // We generate a new struct with the wanted generic parameters
         else
         {
             SWAG_ASSERT(genericParameters);
@@ -2254,18 +2285,23 @@ bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericM
             matches.push_back(oneMatch);
             node->flags |= AST_IS_GENERIC;
 
-            node->typeInfo     = firstMatch.symbolOverload->typeInfo->clone();
-            auto newStructType = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-            if (newStructType->genericParameters.size() == genericParameters->childs.size())
+            // :DupGen
+            // We generate a new struct with the wanted generic parameters to have those names for replacement.
+            auto newStructType = CastTypeInfo<TypeInfoStruct>(firstMatch.symbolOverload->typeInfo, TypeInfoKind::Struct);
+            if (newStructType->genericParameters.size() == genericParameters->childs.size() && genericParameters->childs.size())
             {
+                auto typeWasForced = firstMatch.symbolOverload->typeInfo->clone();
+                newStructType      = CastTypeInfo<TypeInfoStruct>(typeWasForced, TypeInfoKind::Struct);
                 for (int i = 0; i < genericParameters->childs.size(); i++)
                 {
-                    newStructType->genericParameters[i]->typeInfo = genericParameters->childs[i]->typeInfo;
+                    newStructType->genericParameters[i]->name       = genericParameters->childs[i]->typeInfo->name;
+                    newStructType->genericParameters[i]->namedParam = genericParameters->childs[i]->typeInfo->name;
+                    newStructType->genericParameters[i]->typeInfo   = genericParameters->childs[i]->typeInfo;
                 }
-            }
 
-            node->typeInfo->forceComputeName();
-            oneMatch->typeWasForced = true;
+                typeWasForced->forceComputeName();
+                oneMatch->typeWasForced = typeWasForced;
+            }
         }
     }
     else
@@ -4277,7 +4313,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
     }
     else if (match->typeWasForced)
     {
-        SWAG_ASSERT(node->typeInfo);
+        node->typeInfo = match->typeWasForced;
     }
     else
     {

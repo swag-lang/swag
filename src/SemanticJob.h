@@ -104,10 +104,10 @@ struct OneMatch
     Scope*          scope          = nullptr;
     AstNode*        dependentVar   = nullptr;
     OneTryMatch*    oneOverload    = nullptr;
+    TypeInfo*       typeWasForced  = nullptr;
 
-    bool ufcs          = false;
-    bool remove        = false;
-    bool typeWasForced = false;
+    bool ufcs   = false;
+    bool remove = false;
 
     void reset()
     {
@@ -115,9 +115,9 @@ struct OneMatch
         paramParameters.clear();
         symbolOverload = nullptr;
         dependentVar   = nullptr;
+        typeWasForced  = nullptr;
         ufcs           = false;
         remove         = false;
-        typeWasForced  = false;
     }
 };
 
