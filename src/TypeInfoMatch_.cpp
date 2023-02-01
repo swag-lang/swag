@@ -765,16 +765,29 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
             return;
         }
 
-        if (!myTypeInfo->isGeneric())
+        if (userGenericParams)
         {
             context.result = MatchResult::NotEnoughGenericParameters;
             return;
         }
 
-        if (userGenericParams)
+        if (!myTypeInfo->isGeneric())
         {
-            context.result = MatchResult::NotEnoughGenericParameters;
-            return;
+            if (context.parameters.size() != wantedNumGenericParams)
+            {
+                context.result = MatchResult::NotEnoughGenericParameters;
+                return;
+            }
+
+            context.genericParameters.set_size_clear(wantedNumGenericParams);
+            for (int i = 0; i < context.parameters.size(); i++)
+            {
+                context.genericParametersCallTypes[i]     = context.parameters[i]->typeInfo;
+                context.genericParametersCallTypesFrom[i] = context.parameters[i];
+                context.genericParameters[i]              = context.parameters[i];
+            }
+
+            userGenericParams = wantedNumGenericParams;
         }
     }
 
@@ -987,6 +1000,15 @@ static void fillUserGenericParams(SymbolMatchContext& context, VectorNative<Type
             context.genericParametersCallTypes[i]                       = genType->typeInfo;
         }
         else
+        {
+            context.genericReplaceTypes[genericParameters[i]->name]     = context.genericParametersCallTypes[i];
+            context.genericReplaceTypesFrom[genericParameters[i]->name] = context.genericParametersCallTypesFrom[i];
+        }
+    }
+
+    for (auto i = numGenericParams; i < wantedNumGenericParams; i++)
+    {
+        if (context.genericParametersCallTypes[numGenericParams])
         {
             context.genericReplaceTypes[genericParameters[i]->name]     = context.genericParametersCallTypes[i];
             context.genericReplaceTypesFrom[genericParameters[i]->name] = context.genericParametersCallTypesFrom[i];
