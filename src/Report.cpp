@@ -15,7 +15,8 @@ namespace Report
 {
     SourceFile* getDiagFile(const Diagnostic& diag)
     {
-        SWAG_ASSERT(diag.sourceFile || diag.contextFile);
+        if (!diag.sourceFile && !diag.contextFile)
+            return nullptr;
         SourceFile* sourceFile = diag.contextFile;
         if (!diag.contextFile)
             sourceFile = diag.sourceFile;

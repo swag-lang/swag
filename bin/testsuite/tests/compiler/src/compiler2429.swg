@@ -3,7 +3,8 @@
 func print(s: string, f: ...)
     #selectifx
     {
-        if @countof(f) != 3 @compilererror("invalid number of arguments", #location(f))
+        if @countof(f) != 3
+            @compilererror("invalid number of arguments", @location(f))
         return true
     }
 {
