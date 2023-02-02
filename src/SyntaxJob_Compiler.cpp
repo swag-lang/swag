@@ -49,6 +49,8 @@ bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind k
         SWAG_CHECK(eatToken());
         SWAG_VERIFY(token.id != TokenId::SymLeftCurly && token.id != TokenId::SymSemiColon, error(node->token, Err(Syn0083)));
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
+        node->allocateExtension(ExtensionKind::Semantic);
+        node->extension->semantic->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
         node->boolExpression->allocateExtension(ExtensionKind::Semantic);
         node->boolExpression->extension->semantic->semanticAfterFct = SemanticJob::resolveCompilerIf;
     }
@@ -175,12 +177,6 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent, AstNode** result)
     ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND);
     SWAG_CHECK(eatToken());
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
-    if (token.id == TokenId::SymComma)
-    {
-        SWAG_CHECK(eatToken());
-        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
-    }
-
     SWAG_CHECK(eatSemiCol("'#assert' expression"));
     return true;
 }

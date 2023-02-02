@@ -168,7 +168,7 @@ impl String
     #[Macro]
     mtd(ptr: bool) opVisitRunes(stmt: code)
     {
-        #assert !ptr, "visiting runes by pointer is not supported"
+        #if ptr #error "visiting runes by pointer is not supported"
         Utf8.visitRunes(|@alias0, @alias1, @alias2| toSlice(), stmt)
     }
 

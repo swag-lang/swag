@@ -6,5 +6,5 @@ func msg() => "msg"
 #test
 {
     x := 1
-    #assert true, msg()
+    #if false #error msg()
 }

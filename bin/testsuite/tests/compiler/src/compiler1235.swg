@@ -1,4 +1,4 @@
 #test
 {
-    #assert true, "toto" ++ "titi"
+    #if false #error "toto" ++ "titi"
 }

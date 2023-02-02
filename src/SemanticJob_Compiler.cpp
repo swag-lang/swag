@@ -7,10 +7,8 @@
 #include "FileJob.h"
 #include "ByteCode.h"
 #include "Backend.h"
-#include "ErrorIds.h"
 #include "Report.h"
 #include "LanguageSpec.h"
-#include "Os.h"
 
 Diagnostic* SemanticJob::computeNonConstExprNote(AstNode* node)
 {
@@ -421,20 +419,8 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
     if (node->flags & AST_IS_GENERIC)
         return true;
 
-    // Message ?
-    auto expr = node->childs[0];
-    if (node->childs.size() > 1)
-    {
-        auto msg     = node->childs[1];
-        auto typeMsg = TypeManager::concreteType(msg->typeInfo, CONCRETE_FUNC);
-        SWAG_VERIFY(typeMsg->isString(), context->report({msg, Fmt(Err(Err0236), node->token.ctext(), msg->typeInfo->getDisplayNameC()), Diagnostic::isType(msg->typeInfo).c_str()}));
-        SWAG_CHECK(evaluateConstExpression(context, msg));
-        if (context->result != ContextResult::Done)
-            return true;
-        SWAG_CHECK(checkIsConstExpr(context, msg->flags & AST_VALUE_COMPUTED, msg, Fmt(Err(Err0237), node->token.ctext())));
-    }
-
     // Expression to check
+    auto expr = node->childs[0];
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, expr, CASTFLAG_AUTO_BOOL));
     SWAG_CHECK(executeCompilerNode(context, expr, true));
     if (context->result != ContextResult::Done)
@@ -443,17 +429,7 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
     node->flags |= AST_NO_BYTECODE;
 
     if (!expr->computedValue->reg.b)
-    {
-        if (node->childs.size() > 1)
-        {
-            auto msg = node->childs[1];
-            context->report({node, node->token, msg->computedValue->text});
-        }
-        else
-            context->report({node, node->token, Err(Err0238)});
-        return false;
-    }
-
+        return context->report({node, node->token, Err(Err0238)});
     return true;
 }
 
@@ -564,7 +540,8 @@ bool SemanticJob::preResolveCompilerInstruction(SemanticContext* context)
 
     if (node->flags & AST_IS_GENERIC)
     {
-        node->childs.back()->flags |= AST_NO_SEMANTIC;
+        for (auto& c : node->childs)
+            c->flags |= AST_NO_SEMANTIC;
         node->semFlags |= AST_SEM_ON_CLONE;
     }
 
