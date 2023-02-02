@@ -449,14 +449,6 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                 result1.push_back(note);
         }
 
-        // Generic types
-        if (note && context->errorContextStack.empty() || context->errorContextStack.front().type != ErrorContextKind::Generic)
-        {
-            auto remark = Ast::computeGenericParametersReplacement(match.genericReplaceTypes);
-            if (!remark.empty())
-                note->remarks.insert(note->remarks.end(), remark.begin(), remark.end());
-        }
-
         return;
     }
 

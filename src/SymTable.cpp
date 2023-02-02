@@ -377,8 +377,6 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
             auto       firstOverload = overload;
             Diagnostic diag{node, *token, Fmt(Err(Err0305), symbol->name.c_str())};
             Diagnostic note{firstOverload->node, firstOverload->node->token, Nte(Nte0036), DiagnosticLevel::Note};
-            if (typeInfo->isFuncAttr())
-                note.remarks.push_back(Ast::computeGenericParametersReplacement(((TypeInfoFuncAttr*) typeInfo)->genericParameters));
             context->report(diag, &note);
             return false;
         }

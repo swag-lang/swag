@@ -2058,13 +2058,6 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 params.push_back(p);
             }
 
-            auto with = Ast::computeGenericParametersReplacement(params);
-            if (!with.empty())
-            {
-                couldBe += " ... ";
-                couldBe += with;
-            }
-
             auto note                   = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
             note->showRange             = false;
             note->showMultipleCodeLines = false;
@@ -2163,8 +2156,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                         AstFuncDecl* funcNode = CastAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
                         auto         orgNode  = funcNode->originalGeneric ? funcNode->originalGeneric : overload->typeInfo->declNode;
                         auto         couldBe  = Fmt(Nte(Nte0045), orgNode->typeInfo->getDisplayNameC());
-                        couldBe += Ast::computeGenericParametersReplacement(typeFunc->genericParameters);
-                        note = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
+                        note                  = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
                         note->remarks.push_back(Fmt(Nte(Nte0047), overload->typeInfo->getDisplayNameC()));
                     }
                     else
@@ -2180,8 +2172,6 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 {
                     auto couldBe    = Fmt(Nte(Nte0049), overload->typeInfo->getDisplayNameC());
                     note            = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
-                    auto typeStruct = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
-                    note->remarks.push_back(Ast::computeGenericParametersReplacement(typeStruct->genericParameters));
                     note->showRange = false;
                 }
                 else
