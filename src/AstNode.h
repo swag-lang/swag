@@ -284,24 +284,24 @@ struct AstNode
     bool isGeneratedSelf() { return kind == AstNodeKind::FuncDeclParam && specFlags & AST_SPEC_DECLPARAM_GENERATED_SELF; }
     // clang-format on
 
-    void        setPassThrough();
-    AstNode*    findChildRef(AstNode* ref, AstNode* fromChild);
-    AstNode*    findChildRefRec(AstNode* ref, AstNode* fromChild);
-    AstNode*    findParent(AstNodeKind parentKind);
-    AstNode*    findParent(AstNodeKind parentKind1, AstNodeKind parentKind2);
-    Utf8        getScopedName();
-    void        setOwnerAttrUse(AstAttrUse* attrUse);
-    void        allocateExtension(ExtensionKind extensionKind);
-    void        allocateExtensionNoLock(ExtensionKind extensionKind);
-    void        swap2Childs();
-    bool        hasSpecialFuncCall();
-    bool        hasSpecialFuncCall(const Utf8& name);
-    AstNode*    inSimpleReturn();
-    bool        forceTakeAddress();
-    void        computeLocation(SourceLocation& start, SourceLocation& end);
-    void        addAlternativeScope(Scope* scope, uint32_t altFlags = 0);
-    void        addAlternativeScopeVar(Scope* scope, AstNode* varNode, uint32_t altFlags = 0);
-    void        addAlternativeScopes(const VectorNative<AlternativeScope>& scopes);
+    void     setPassThrough();
+    AstNode* findChildRef(AstNode* ref, AstNode* fromChild);
+    AstNode* findChildRefRec(AstNode* ref, AstNode* fromChild);
+    AstNode* findParent(AstNodeKind parentKind);
+    AstNode* findParent(AstNodeKind parentKind1, AstNodeKind parentKind2);
+    Utf8     getScopedName();
+    void     setOwnerAttrUse(AstAttrUse* attrUse);
+    void     allocateExtension(ExtensionKind extensionKind);
+    void     allocateExtensionNoLock(ExtensionKind extensionKind);
+    void     swap2Childs();
+    bool     hasSpecialFuncCall();
+    bool     hasSpecialFuncCall(const Utf8& name);
+    AstNode* inSimpleReturn();
+    bool     forceTakeAddress();
+    void     computeLocation(SourceLocation& start, SourceLocation& end);
+    void     addAlternativeScope(Scope* scope, uint32_t altFlags = 0);
+    void     addAlternativeScopeVar(Scope* scope, AstNode* varNode, uint32_t altFlags = 0);
+    void     addAlternativeScopes(const VectorNative<AlternativeScope>& scopes);
 
     struct ExtensionByteCode
     {
@@ -763,6 +763,7 @@ struct AstStruct : public AstNode
     Scope*   scope             = nullptr;
     AstNode* ownerGeneric      = nullptr;
     AstNode* originalParent    = nullptr;
+    AstNode* selectIf          = nullptr;
 
     uint32_t packing     = sizeof(uint64_t);
     uint32_t structFlags = 0;

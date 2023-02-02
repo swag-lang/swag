@@ -901,8 +901,8 @@ void initErrors()
     SWAG_ERROR(Err0687, "expected a value lower than 256");
     SWAG_ERROR(Err0686, "the %s '%s' wants to convert the next statement in a 'code' parameter but this is not possible inside a '%s' expression");
     SWAG_ERROR(Err0685, "unexpected default value for a variadic parameter");
-    SWAG_ERROR(Err0567, nullptr);
-    SWAG_ERROR(Err0617, nullptr);
+    SWAG_ERROR(Err0567, "unexpected '#selectifx' for a struct");
+    SWAG_ERROR(Err0617, "the '#selectif' validation of '%s' has failed");
     SWAG_ERROR(Err0167, "unexpected lambda type parameter name");
     SWAG_ERROR(Err0533, nullptr);
     SWAG_ERROR(Err0128, nullptr);
@@ -1123,7 +1123,7 @@ void initErrors()
     SWAG_ERROR(Hnt0104, "you could add '&' to take the address of this expression");
     SWAG_ERROR(Hnt0105, "this is not allowed on type '%s'");
     SWAG_ERROR(Hnt0106, "this is an immutable struct parameter");
-    SWAG_ERROR(Hnt0107, nullptr);
+    SWAG_ERROR(Hnt0107, "this should be replaced with '#selectif'");
     SWAG_ERROR(Hnt0108, nullptr);
     SWAG_ERROR(Hnt0109, nullptr);
 
@@ -1195,9 +1195,9 @@ void initErrors()
     SWAG_ERROR(Nte0022, "it could be a bug in the compile time part of your program");
     SWAG_ERROR(Nte0019, "it is applied on this %s");
     SWAG_ERROR(Nte0012, "note: use '-w:<path>' or '--workspace:<path>' to specifiy a valid workspace folder, or execute swag from a valid workspace folder");
-    SWAG_ERROR(Nte0061, "occurred during generic expansion of '%s'");
-    SWAG_ERROR(Nte0059, "occurred during inline expansion of '%s'");
-    SWAG_ERROR(Nte0060, "occurred during public export of '%s'");
+    SWAG_ERROR(Nte0061, "occurred during the generic expansion of '%s'");
+    SWAG_ERROR(Nte0059, "occurred during the inline expansion of '%s'");
+    SWAG_ERROR(Nte0060, "occurred during the public export of '%s'");
     SWAG_ERROR(Nte0033, "occurred during the '#selectifx' validation of the function call to '%s'");
     SWAG_ERROR(Nte0054, "occurred during the '#selectif' validation of the function call to '%s'");
     SWAG_ERROR(Nte0004, "occurred in generated code");
@@ -1223,7 +1223,7 @@ void initErrors()
     SWAG_ERROR(Nte0075, "the original instantiation type '%s' comes from here");
     SWAG_ERROR(Nte0076, "'%s' could be either a single type or a parameter name");
     SWAG_ERROR(Nte0077, "'%s' could be either a single type or a field name");
-    SWAG_ERROR(Nte0078, nullptr);
+    SWAG_ERROR(Nte0078, "occurred during the '#selectif' validation of the struct '%s'");
     SWAG_ERROR(Nte0079, nullptr);
 
     /////////////////////////////////////////////////////////////////////

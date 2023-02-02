@@ -208,7 +208,7 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstN
     if (node->specFlags & AST_SPEC_FUNCDECL_THROW)
         CONCAT_FIXED_STR(concat, " throw");
 
-    // Select if must be exported
+    // #selectif must be exported
     if (selectIf)
     {
         context.indent++;
@@ -814,6 +814,15 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
     }
 
     concat.addEolIndent(context.indent);
+
+    // #selectif must be exported
+    if (node->selectIf)
+    {
+        context.indent++;
+        concat.addEolIndent(context.indent);
+        SWAG_CHECK(outputNode(context, concat, node->selectIf));
+        context.indent--;
+    }
 
     // Opaque export. Just simulate structure with the correct size.
     if (node->attributeFlags & ATTRIBUTE_OPAQUE)

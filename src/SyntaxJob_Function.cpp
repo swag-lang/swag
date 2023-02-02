@@ -727,7 +727,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
 
     funcNode->typeInfo->computeName();
 
-    // '#selectifx' block
+    // '#selectif' block
     if (token.id == TokenId::CompilerSelectIf || token.id == TokenId::CompilerSelectIfx)
     {
         Scoped    scoped(this, newScope);

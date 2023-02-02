@@ -51,11 +51,44 @@ namespace Report
             if (!note->display)
                 continue;
 
+            auto genCheckNode = note->raisedOnNode ? note->raisedOnNode : note->sourceNode;
+
             // This is a generic instance. Display type replacements.
-            if (note->sourceNode && note->sourceNode->ownerFct && note->sourceNode->ownerFct->typeInfo && !genReplaceDone)
+            if (genCheckNode &&
+                genCheckNode->ownerFct &&
+                genCheckNode->ownerFct->typeInfo &&
+                !genReplaceDone)
             {
-                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(note->sourceNode->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(genCheckNode->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
                 auto remarks  = Ast::computeGenericParametersReplacement(typeFunc->replaceTypes);
+                if (!remarks.empty())
+                {
+                    genReplaceDone = true;
+                    note->remarks.insert(note->remarks.end(), remarks.begin(), remarks.end());
+                }
+            }
+
+            if (genCheckNode &&
+                genCheckNode->ownerStructScope &&
+                genCheckNode->ownerStructScope->owner->typeInfo &&
+                !genReplaceDone)
+            {
+                auto typeStruct = CastTypeInfo<TypeInfoStruct>(genCheckNode->ownerStructScope->owner->typeInfo, TypeInfoKind::Struct);
+                auto remarks    = Ast::computeGenericParametersReplacement(typeStruct->replaceTypes);
+                if (!remarks.empty())
+                {
+                    genReplaceDone = true;
+                    note->remarks.insert(note->remarks.end(), remarks.begin(), remarks.end());
+                }
+            }
+
+            if (genCheckNode &&
+                genCheckNode->typeInfo &&
+                genCheckNode->typeInfo->kind == TypeInfoKind::Struct &&
+                !genReplaceDone)
+            {
+                auto typeStruct = CastTypeInfo<TypeInfoStruct>(genCheckNode->typeInfo, TypeInfoKind::Struct);
+                auto remarks    = Ast::computeGenericParametersReplacement(typeStruct->replaceTypes);
                 if (!remarks.empty())
                 {
                     genReplaceDone = true;

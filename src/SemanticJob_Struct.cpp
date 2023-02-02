@@ -800,6 +800,38 @@ void SemanticJob::flattenStructChilds(SemanticContext* context, AstNode* parent,
     }
 }
 
+bool SemanticJob::solveSelectIf(SemanticContext* context, AstStruct* structDecl)
+{
+    ScopedLock lk1(structDecl->mutex);
+
+    // Execute #selectif/#selectifx block
+    auto expr = structDecl->selectIf->childs.back();
+
+    if (!(expr->flags & AST_VALUE_COMPUTED))
+    {
+        auto node                   = context->node;
+        context->selectIfParameters = structDecl->genericParameters;
+
+        PushErrContext ec(context, node, ErrorContextKind::SelectIf);
+        auto           result       = executeCompilerNode(context, expr, false);
+        context->selectIfParameters = nullptr;
+        if (!result)
+            return false;
+        if (context->result != ContextResult::Done)
+            return true;
+    }
+
+    // Result
+    SWAG_ASSERT(expr->computedValue);
+    if (!expr->computedValue->reg.b)
+    {
+        Diagnostic diag{structDecl->selectIf, structDecl->selectIf->token, Fmt(Err(Err0617), structDecl->typeInfo->getDisplayNameC())};
+        return context->report(diag);
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveStruct(SemanticContext* context)
 {
     auto node       = CastAst<AstStruct>(context->node, AstNodeKind::StructDecl);
@@ -808,6 +840,14 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     auto job        = context->job;
 
     SWAG_ASSERT(typeInfo->declNode);
+
+    // #selectif
+    if (node->selectIf && !typeInfo->isGeneric())
+    {
+        SWAG_CHECK(solveSelectIf(context, node));
+        if (context->result != ContextResult::Done)
+            return true;
+    }
 
     // Structure packing
     if (node->structFlags & STRUCTFLAG_UNION)

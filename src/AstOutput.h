@@ -1,4 +1,5 @@
 #pragma once
+#pragma once
 #include "AstNode.h"
 #include "Allocator.h"
 #include "SourceFile.h"

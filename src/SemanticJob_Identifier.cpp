@@ -1894,7 +1894,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                     match->solvedParameters            = move(oneOverload.symMatchContext.solvedParameters);
                     match->numOverloadsWhenChecked     = oneOverload.cptOverloads;
                     match->numOverloadsInitWhenChecked = oneOverload.cptOverloadsInit;
-                    if (overload->node->flags & AST_HAS_SELECT_IF)
+                    if (overload->node->flags & AST_HAS_SELECT_IF && overload->node->kind == AstNodeKind::FuncDecl)
                         genericMatchesSI.push_back(match);
                     else
                         genericMatches.push_back(match);
@@ -1996,7 +1996,9 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         if (context->result == ContextResult::Done)
         {
             for (auto& g : genericMatchesSI)
+            {
                 SWAG_CHECK(Generic::instantiateFunction(context, g->genericParameters, *g, true));
+            }
         }
 
         for (auto& g : symbols)
