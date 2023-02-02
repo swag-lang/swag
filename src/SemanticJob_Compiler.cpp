@@ -306,7 +306,11 @@ bool SemanticJob::resolveCompilerSelectIfExpression(SemanticContext* context)
 
     auto expression = context->node->childs.back();
     auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
-    SWAG_VERIFY(typeInfo->isBool(), context->report({expression, Fmt(Err(Err0233), expression->typeInfo->getDisplayNameC())}));
+    if (!typeInfo->isBool())
+    {
+        Diagnostic diag{expression, Fmt(Err(Err0233), node->token.text.c_str(), expression->typeInfo->getDisplayNameC())};
+        return context->report(diag);
+    }
 
     return true;
 }

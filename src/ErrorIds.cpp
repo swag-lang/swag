@@ -384,7 +384,7 @@ void initErrors()
     SWAG_ERROR(Err0860, "a %s cannot be marked with the 'Swag.NotGeneric' attribute");
     SWAG_ERROR(Err0804, "a '#message' block should have a parameter of type 'Swag.CompilerMsgMask' ('%s' provided)");
     SWAG_ERROR(Err0198, "a '#run' block should not be used as an expression");
-    SWAG_ERROR(Err0233, "a '#selectifonce' expression should be of type 'bool' ('%s' provided)");
+    SWAG_ERROR(Err0233, "unexpected '%s' expression type ('bool' expected, '%s' provided)");
     SWAG_ERROR(Err0301, "a '@mixin' number should be in the range [0, 9] ('%u' provided)");
     SWAG_ERROR(Err0596, "a 'Swag.Align' value should be a power of two ('%d' provided)");
     SWAG_ERROR(Err0811, "a 'Swag.Foreign' module name should not be empty");
@@ -1093,7 +1093,7 @@ void initErrors()
     SWAG_ERROR(Hnt0021, "this should be a pointer");
     SWAG_ERROR(Hnt0058, "this should be an integer");
     SWAG_ERROR(Hnt0051, "this should be casted to 'f32' or 'f64'");
-    SWAG_ERROR(Hnt0052, "this should be casted to a sized type like 's32', 's64' etc...");
+    SWAG_ERROR(Hnt0052, "this should be casted to a sized integer like 's32', 's64' etc.");
     SWAG_ERROR(Hnt0055, "this should be explicitly initialized");
     SWAG_ERROR(Hnt0056, "this should be followed by generic arguments");
     SWAG_ERROR(Hnt0044, "this should be followed by the arguments between '()'");

@@ -98,10 +98,20 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         break;
     case NativeTypeKind::String:
     {
-        Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-        Diagnostic note{Hlp(Hlp0040), DiagnosticLevel::Help};
-        diag.addRange(left, Diagnostic::isType(leftTypeInfo));
-        return context->report(diag, &note);
+        if (left->flags & AST_VALUE_COMPUTED && right->flags & AST_VALUE_COMPUTED)
+        {
+            Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+            Diagnostic note{Hlp(Hlp0040), DiagnosticLevel::Help};
+            diag.addRange(left, Diagnostic::isType(leftTypeInfo));
+            return context->report(diag, &note);
+        }
+        else
+        {
+            Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+            diag.hint = Hnt(Hnt0061);
+            diag.addRange(left, Diagnostic::isType(leftTypeInfo));
+            return context->report(diag);
+        }
     }
     default:
     {

@@ -2,14 +2,17 @@
 #include "SemanticJob.h"
 #include "Generic.h"
 #include "Ast.h"
-#include "ThreadManager.h"
 #include "TypeManager.h"
 #include "ErrorIds.h"
-#include "SourceFile.h"
-#include "Module.h"
 #include "Naming.h"
 
-bool Generic::updateGenericParameters(SemanticContext* context, bool doType, bool doNode, VectorNative<TypeInfoParam*>& typeGenericParameters, VectorNative<AstNode*>& nodeGenericParameters, AstNode* callGenericParameters, OneGenericMatch& match)
+bool Generic::updateGenericParameters(SemanticContext*              context,
+                                      bool                          doType,
+                                      bool                          doNode,
+                                      VectorNative<TypeInfoParam*>& typeGenericParameters,
+                                      VectorNative<AstNode*>&       nodeGenericParameters,
+                                      AstNode*                      callGenericParameters,
+                                      OneGenericMatch&              match)
 {
     for (int i = 0; i < typeGenericParameters.size(); i++)
     {
@@ -416,8 +419,8 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     }
 
     CloneContext cloneContext;
-    cloneContext.replaceTypes     = move(match.genericReplaceTypes);
-    cloneContext.replaceTypesFrom = move(match.genericReplaceTypesFrom);
+    cloneContext.replaceTypes     = match.genericReplaceTypes;
+    cloneContext.replaceTypesFrom = match.genericReplaceTypesFrom;
     // Add the struct type replacement now, in case the struct has a field to replace
     cloneContext.replaceTypes[overload->typeInfo->name] = newType;
 
@@ -569,8 +572,8 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
 
     // Types replacements
     CloneContext cloneContext;
-    cloneContext.replaceTypes     = move(match.genericReplaceTypes);
-    cloneContext.replaceTypesFrom = move(match.genericReplaceTypesFrom);
+    cloneContext.replaceTypes     = match.genericReplaceTypes;
+    cloneContext.replaceTypesFrom = match.genericReplaceTypesFrom;
 
     // We replace all types and generic types with undefined for now
     if (noReplaceTypes)
