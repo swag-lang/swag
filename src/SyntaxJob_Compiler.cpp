@@ -221,12 +221,12 @@ bool SyntaxJob::doCompilerWarning(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCompilerSelectIf(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode<AstCompilerSpecFunc>(this, AstNodeKind::CompilerSelectIfOnce, sourceFile, parent);
+    auto node = Ast::newNode<AstCompilerSpecFunc>(this, AstNodeKind::CompilerSelectIf, sourceFile, parent);
     if (result)
         *result = node;
     auto tokenId = token.id;
-    if (tokenId == TokenId::CompilerSelectIf)
-        node->kind = AstNodeKind::CompilerSelectIf;
+    if (tokenId == TokenId::CompilerSelectIfx)
+        node->kind = AstNodeKind::CompilerSelectIfx;
     node->allocateExtension(ExtensionKind::Semantic);
     node->extension->semantic->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
     node->semanticFct                            = SemanticJob::resolveCompilerSelectIfExpression;

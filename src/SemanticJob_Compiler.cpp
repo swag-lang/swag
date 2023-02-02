@@ -300,7 +300,7 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
 
 bool SemanticJob::resolveCompilerSelectIfExpression(SemanticContext* context)
 {
-    auto node = CastAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerSelectIfOnce, AstNodeKind::CompilerSelectIf);
+    auto node = CastAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerSelectIf, AstNodeKind::CompilerSelectIfx);
     if (node->flags & AST_IS_GENERIC)
         return true;
 

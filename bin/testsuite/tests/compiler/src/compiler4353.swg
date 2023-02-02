@@ -1,6 +1,12 @@
 #global testerror
 func(T) add(x, y: T)->T
-    #selectif cast(bool) (@typeof(T).flags & .Integer)
+    #selectif
+    {
+        if cast(bool) (@typeof(T).flags & .Integer)
+            return true
+        @compilererror("type " ++ @typeof(T).name ++ " is not supported", @location(x))
+        return false
+    }
 {
     return x + y
 }

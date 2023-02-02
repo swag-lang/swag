@@ -3821,7 +3821,7 @@ bool SemanticJob::solveSelectIf(SemanticContext* context, OneMatch* oneMatch, As
 
     // #selectifx is evaluated for each call, so we remove the AST_VALUE_COMPUTED computed flag.
     // #selectif is evaluated once, so keep it.
-    if (funcDecl->selectIf->kind == AstNodeKind::CompilerSelectIf)
+    if (funcDecl->selectIf->kind == AstNodeKind::CompilerSelectIfx)
         expr->flags &= ~AST_VALUE_COMPUTED;
 
     if (!(expr->flags & AST_VALUE_COMPUTED))
@@ -3830,7 +3830,7 @@ bool SemanticJob::solveSelectIf(SemanticContext* context, OneMatch* oneMatch, As
         context->selectIfParameters = oneMatch->oneOverload->callParameters;
 
         ErrorContextKind type;
-        if (funcDecl->selectIf->kind == AstNodeKind::CompilerSelectIf)
+        if (funcDecl->selectIf->kind == AstNodeKind::CompilerSelectIfx)
             type = ErrorContextKind::SelectIf;
         else
             type = ErrorContextKind::SelectIfOnce;
