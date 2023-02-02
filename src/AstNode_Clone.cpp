@@ -363,8 +363,14 @@ AstNode* AstIdentifier::clone(CloneContext& context)
     auto it = context.replaceTypes.find(newNode->token.text);
     if (it != context.replaceTypes.end())
     {
+        // :ForLocationInSelectIf
+        auto it1 = context.replaceTypesFrom.find(newNode->token.text);
+        if (it1 != context.replaceTypesFrom.end())
+            newNode->fromAlternateVar = it1->second;
+
         if (!it->second->isNative(NativeTypeKind::Undefined))
             newNode->token.text = it->second->name;
+
         newNode->typeInfo = it->second;
         if (newNode->typeInfo->declNode)
         {

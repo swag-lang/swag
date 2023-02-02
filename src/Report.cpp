@@ -51,7 +51,7 @@ namespace Report
             if (!note->display)
                 continue;
 
-            auto genCheckNode = note->raisedOnNode ? note->raisedOnNode : note->sourceNode;
+            auto genCheckNode = note->sourceNode ? note->sourceNode : note->raisedOnNode;
 
             // This is a generic instance. Display type replacements.
             if (genCheckNode &&

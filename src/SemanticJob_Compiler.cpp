@@ -811,6 +811,15 @@ bool SemanticJob::resolveIntrinsicLocation(SemanticContext* context)
         return true;
     }
 
+    // :ForLocationInSelectIf
+    if (locNode->flags & AST_FROM_GENERIC_REPLACE)
+    {
+        SWAG_ASSERT(locNode->kind == AstNodeKind::IdentifierRef);
+        auto id = CastAst<AstIdentifier>(locNode->childs.front(), AstNodeKind::Identifier);
+        if (id->fromAlternateVar)
+            locNode = id->fromAlternateVar;
+    }
+
     // If identifier is an inline param call replacement, take it
     bool fromInline = false;
     while (locNode->resolvedSymbolOverload)
