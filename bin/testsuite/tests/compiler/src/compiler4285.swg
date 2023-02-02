@@ -4,7 +4,7 @@ var G = 0
 
 #[Macro]
 func toto(x: string)
-    #selectif @isconstexpr(x)
+    #selectifx @isconstexpr(x)
 {
     G += 1
 
@@ -13,7 +13,7 @@ func toto(x: string)
 }
 
 func toto(x: string)
-    #selectif !@isconstexpr(x)
+    #selectifx !@isconstexpr(x)
 {
     G += 2
 }

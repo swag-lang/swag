@@ -4,7 +4,7 @@ struct V {}
 
 //#[Swag.Macro]
 func toto(x: V)
-    #selectifonce
+    #selectif
     {
         y := x
         @print(y)

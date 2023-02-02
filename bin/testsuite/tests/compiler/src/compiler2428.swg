@@ -1,5 +1,5 @@
 func print(s: string, f: ...)
-    #selectif
+    #selectifx
     {
         @assert(@countof(f) == 3)
         return true

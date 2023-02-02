@@ -1966,7 +1966,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
     if (context->result != ContextResult::Done)
         return true;
 
-    // All choices were removed because of #selectifonce
+    // All choices were removed because of #selectif
     if (!genericMatches.size() && genericMatchesSI.size() && matches.empty() && prevMatchesCount)
     {
         if (justCheck)
@@ -1974,7 +1974,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         return cannotMatchIdentifierError(context, overloads, node);
     }
 
-    // Multi instantiation in case of #selectifonce
+    // Multi instantiation in case of #selectif
     if (genericMatchesSI.size() && matches.empty() && !prevMatchesCount)
     {
         if (justCheck)
@@ -3392,7 +3392,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         auto over     = curMatch->symbolOverload;
         auto overSym  = over->symbol;
 
-        // Take care of #selectifonce/#selectif
+        // Take care of #selectif/#selectifx
         if (overSym->kind == SymbolKind::Function &&
             !(context->node->flags & AST_IN_SELECTIF) &&
             !(context->node->attributeFlags & ATTRIBUTE_MATCH_SELECTIF_OFF))
@@ -3826,11 +3826,11 @@ bool SemanticJob::solveSelectIf(SemanticContext* context, OneMatch* oneMatch, As
         return true;
     }
 
-    // Execute #selectifonce/#selectif block
+    // Execute #selectif/#selectifx block
     auto expr = funcDecl->selectIf->childs.back();
 
-    // #selectif is evaluated for each call, so we remove the AST_VALUE_COMPUTED computed flag.
-    // #selectifonce is evaluated once, so keep it.
+    // #selectifx is evaluated for each call, so we remove the AST_VALUE_COMPUTED computed flag.
+    // #selectif is evaluated once, so keep it.
     if (funcDecl->selectIf->kind == AstNodeKind::CompilerSelectIf)
         expr->flags &= ~AST_VALUE_COMPUTED;
 
@@ -3867,7 +3867,7 @@ bool SemanticJob::solveSelectIf(SemanticContext* context, OneMatch* oneMatch, As
         funcDecl->content->flags &= ~AST_NO_SEMANTIC;
 
         // Need to restart semantic on instantiated function and on its content,
-        // because the #selectifonce has passed
+        // because the #selectif has passed
         // It's safe to create a job with the content as it has been fully evaluated.
         // It's NOT safe for the function itself as the job that deals with it can be
         // still running

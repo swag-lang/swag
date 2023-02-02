@@ -11,7 +11,7 @@ impl BB
 {
     //#[Swag.compileif(@typeof(T) != AA)]
     func opIndexAffect(using self, index: uint, value: T)
-        #selectifonce @typeof(T) != AA
+        #selectif @typeof(T) != AA
     {
         var x: T
         x = value

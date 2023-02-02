@@ -1,10 +1,10 @@
 #[Swag.Inline]
-func(T) toto() #selectifonce true
+func(T) toto() #selectif true
 {
 }
 
 #[Swag.Inline]
-func(T) toto() #selectifonce false
+func(T) toto() #selectif false
 {
 }
 

@@ -1,13 +1,13 @@
 var G = 0
 
 //#[Swag.PrintBc]
-func(T) toto(v: T) #selectifonce @typeof(T) == f32
+func(T) toto(v: T) #selectif @typeof(T) == f32
 {
     #assert @typeof(T) == f32
     G += 1
 }
 
-func(T) toto(v: T) #selectifonce @typeof(T) == s32
+func(T) toto(v: T) #selectif @typeof(T) == s32
 {
     #assert false
 }

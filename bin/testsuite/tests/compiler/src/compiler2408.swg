@@ -1,6 +1,6 @@
 #global testerror
 
-func toto() #selectifonce false
+func toto() #selectif false
 {
     @assert(false)
 }

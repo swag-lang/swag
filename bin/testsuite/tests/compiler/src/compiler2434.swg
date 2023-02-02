@@ -1,5 +1,5 @@
 func append(v: ...)
-    #selectif
+    #selectifx
     {
         @assert(@countof(v) == 2)
         return true

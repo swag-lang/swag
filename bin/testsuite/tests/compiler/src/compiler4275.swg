@@ -4,7 +4,7 @@ var G = 0
 
 //#[Swag.PrintBc]
 func toto(str: string)
-    #selectif
+    #selectifx
     {
         if !@isconstexpr(str)
             return true

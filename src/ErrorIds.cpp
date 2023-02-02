@@ -239,7 +239,7 @@ void initErrors()
     SWAG_ERROR(Syn0134, "tuple types in generic parameters are not (yet?) supported");
     SWAG_ERROR(Syn0135, "type 'Self' should not be used outside an 'impl', 'struct' or 'interface' block");
     SWAG_ERROR(Syn0136, "unexpected '#global' instruction '%s'");
-    SWAG_ERROR(Syn0137, "unexpected '#selectifonce' or '#selectif' on special function '%s'");
+    SWAG_ERROR(Syn0137, "unexpected '#selectif' or '#selectifx' on special function '%s'");
     SWAG_ERROR(Syn0138, "unexpected '->' in attribute declaration");
     SWAG_ERROR(Syn0139, "unexpected '[' when accessing an array with multiple dimensions");
     SWAG_ERROR(Syn0140, "unexpected 'assume' inside '%s' expression");
@@ -956,7 +956,7 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(Hlp0034, "'#selectifonce' and '#selectif' cannot be used on 'opDrop', 'opPostCopy' and 'opPostMove'");
+    SWAG_ERROR(Hlp0034, "'#selectif' and '#selectifx' cannot be used on 'opDrop', 'opPostCopy' and 'opPostMove'");
     SWAG_ERROR(Hlp0010, "'@alias' should only be used inside a 'Swag.Macro' or a 'Swag.Mixin' function");
     SWAG_ERROR(Hlp0020, "'@mixin' should only be used inside a 'Swag.Mixin' function");
     SWAG_ERROR(Hlp0013, "'Swag.ExportType' valid values are 'methods' and 'nozero'");
@@ -1198,8 +1198,8 @@ void initErrors()
     SWAG_ERROR(Nte0061, "occurred during generic expansion of '%s'");
     SWAG_ERROR(Nte0059, "occurred during inline expansion of '%s'");
     SWAG_ERROR(Nte0060, "occurred during public export of '%s'");
-    SWAG_ERROR(Nte0033, "occurred during the '#selectif' validation of the function call to '%s'");
-    SWAG_ERROR(Nte0054, "occurred during the '#selectifonce' validation of the function call to '%s'");
+    SWAG_ERROR(Nte0033, "occurred during the '#selectifx' validation of the function call to '%s'");
+    SWAG_ERROR(Nte0054, "occurred during the '#selectif' validation of the function call to '%s'");
     SWAG_ERROR(Nte0004, "occurred in generated code");
     SWAG_ERROR(Nte0055, "occurred when trying to match the type of the other part of the conditional expression");
     SWAG_ERROR(Nte0047, "resulting type is '%s'");

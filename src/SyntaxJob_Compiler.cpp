@@ -259,7 +259,7 @@ bool SyntaxJob::doCompilerSelectIf(AstNode* parent, AstNode** result)
     else
     {
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
-        SWAG_CHECK(eatSemiCol("'#selectif' expression"));
+        SWAG_CHECK(eatSemiCol("'#selectifx' expression"));
     }
 
     return true;

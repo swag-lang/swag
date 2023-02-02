@@ -7,7 +7,7 @@ func check(T: typeinfo, N: u32)->bool
 }
 
 func(T, N: u32) toto()
-#selectifonce
+#selectif
 {
     #assert check(T, N), "N is out of range"
     return true

@@ -1,11 +1,11 @@
 var G = 0
 
-func(T, N: u32) toto() #selectifonce N <= 4
+func(T, N: u32) toto() #selectif N <= 4
 {
     G += 1
 }
 
-func(T, N: u32) toto() #selectifonce N > 4
+func(T, N: u32) toto() #selectif N > 4
 {
     G += 10
 }

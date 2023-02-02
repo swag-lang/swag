@@ -893,7 +893,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
             switch (badResult)
             {
             case MatchResult::SelectIfFailed:
-                diagRemarks = new Diagnostic(Fmt("#selectifonce have all failed"), DiagnosticLevel::Note);
+                diagRemarks = new Diagnostic(Fmt("#selectif have all failed"), DiagnosticLevel::Note);
                 notes.push_back(diagRemarks);
                 break;
             case MatchResult::TooManyParameters:

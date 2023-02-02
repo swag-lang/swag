@@ -119,8 +119,8 @@ Compiler keywords.
 #mixin
 #placeholder
 #print
+#selectifx
 #selectif
-#selectifonce
 #warning
 
 #ast

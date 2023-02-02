@@ -184,7 +184,7 @@ impl HashTable
     // Add a new key value pair. If the key already exists, then the value will be replaced
     #[Discardable]
     mtd add(key: K, value: V)->*HashTableEntry
-        #selectifonce Reflection.canCopy(@typeof(K)) and
+        #selectif Reflection.canCopy(@typeof(K)) and
                   Reflection.canCopy(@typeof(V))
     {
         grow()
@@ -224,7 +224,7 @@ impl HashTable
     // Use with care !
     #[Discardable]
     mtd emplaceInternal(key: *K, value: *V)->*HashTableEntry
-        #selectifonce Reflection.canCopy(@typeof(K)) and
+        #selectif Reflection.canCopy(@typeof(K)) and
                   Reflection.canCopy(@typeof(V))
     {
         grow()
@@ -264,7 +264,7 @@ impl HashTable
     // Add a new key value pair. If the key already exists, then the value will be replaced
     #[Discardable]
     mtd emplace(key: K, value: *V)->*HashTableEntry
-        #selectifonce Reflection.canCopy(@typeof(K)) and
+        #selectif Reflection.canCopy(@typeof(K)) and
                   Reflection.canCopy(@typeof(V))
     {
         grow()

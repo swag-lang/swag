@@ -208,7 +208,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         SWAG_ASSERT(node->resultRegisterRC[0] < 256);
         resolved->hintRegister = (uint8_t) node->resultRegisterRC[0];
 
-        // Get a parameter from a #selectifonce block... this is special
+        // Get a parameter from a #selectif block... this is special
         if (node->isSelectIfParam(resolved))
         {
             ByteCodeInstruction* inst;

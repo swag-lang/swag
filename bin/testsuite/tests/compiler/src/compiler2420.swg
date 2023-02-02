@@ -1,5 +1,5 @@
 func toto(f: f32)
-#selectifonce
+#selectif
 {
     return true
 }

@@ -338,7 +338,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         }
     }
 
-    // Content semantic can have been disabled (#selectifonce). In that case, we're not done yet, so
+    // Content semantic can have been disabled (#selectif). In that case, we're not done yet, so
     // do not set the FULL_RESOLVE flag and do not generate bytecode
     if (node->content && (node->content->flags & AST_NO_SEMANTIC))
     {

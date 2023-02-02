@@ -1,13 +1,13 @@
 var G = 0
 
 func whatever(x: s32)
-    #selectif @isconstexpr(x)
+    #selectifx @isconstexpr(x)
 {
     G += 1
 }
 
 func whatever(x: s32)
-    #selectif !@isconstexpr(x)
+    #selectifx !@isconstexpr(x)
 {
     G += 2
 }

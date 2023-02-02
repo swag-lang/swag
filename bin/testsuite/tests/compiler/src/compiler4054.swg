@@ -4,7 +4,7 @@ struct(T) Arr {}
 impl Arr
 {
     mtd opDrop()
-    #selectifonce false
+    #selectif false
     {
         return 0
     }

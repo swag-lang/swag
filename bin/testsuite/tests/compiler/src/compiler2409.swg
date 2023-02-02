@@ -1,11 +1,11 @@
 var G = 0
 
-func(T) toto() #selectifonce @typeof(T) == f32
+func(T) toto() #selectif @typeof(T) == f32
 {
     G += 1
 }
 
-func(T) toto() #selectifonce @typeof(T) == s32
+func(T) toto() #selectif @typeof(T) == s32
 {
     G += 2
 }

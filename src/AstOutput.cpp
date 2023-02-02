@@ -300,7 +300,7 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
         return true;
     }
 
-    // #selectif block
+    // #selectifx block
     if (node->selectIf)
     {
         context.indent++;
@@ -1388,9 +1388,9 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         else if (node->kind == AstNodeKind::CompilerAst)
             CONCAT_FIXED_STR(concat, "#ast ");
         else if (node->kind == AstNodeKind::CompilerSelectIfOnce)
-            CONCAT_FIXED_STR(concat, "#selectifonce ");
-        else if (node->kind == AstNodeKind::CompilerSelectIf)
             CONCAT_FIXED_STR(concat, "#selectif ");
+        else if (node->kind == AstNodeKind::CompilerSelectIf)
+            CONCAT_FIXED_STR(concat, "#selectifx ");
 
         auto front = node->childs.front();
         if (front->kind == AstNodeKind::FuncDecl)

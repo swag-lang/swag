@@ -1,5 +1,5 @@
 func print(s, s1: string, f: ...)
-    #selectif
+    #selectifx
     {
         //@print(cast(s64) @countof(f))
         @assert(s == "toto")
