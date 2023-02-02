@@ -153,11 +153,6 @@ void ErrorContext::fillContext(JobContext* context, Diagnostic& diag, vector<con
             }
 
             note->hint = exp.hint;
-
-            auto remark = Ast::computeGenericParametersReplacement(exp.replaceTypes);
-            if (!remark.empty())
-                note->remarks.insert(note->remarks.end(), remark.begin(), remark.end());
-
             notes.push_back(note);
         }
     }

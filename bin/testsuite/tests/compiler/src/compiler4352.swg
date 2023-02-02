@@ -1,6 +1,6 @@
 #global skip
 func(T) add(x, y: T)->T
-    #selectif @typeof(T).flags & .Integer
+    #selectif cast(bool) (@typeof(T).flags & .Integer)
 {
     return x + y
 }

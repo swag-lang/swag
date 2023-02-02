@@ -30,10 +30,24 @@ namespace Report
 
     void cleanNotes(vector<Diagnostic*>& notes)
     {
+        bool genReplaceDone = false;
+
         for (auto note : notes)
         {
             if (!note->display)
                 continue;
+
+            // This is a generic instance. Display type replacements.
+            if (note->sourceNode && note->sourceNode->ownerFct && note->sourceNode->ownerFct->typeInfo && !genReplaceDone)
+            {
+                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(note->sourceNode->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+                auto remarks  = Ast::computeGenericParametersReplacement(typeFunc->replaceTypes);
+                if (!remarks.empty())
+                {
+                    genReplaceDone = true;
+                    note->remarks.insert(note->remarks.end(), remarks.begin(), remarks.end());
+                }
+            }
 
             // Transform a note/help in a hint
             if (g_CommandLine.errorCompact)
