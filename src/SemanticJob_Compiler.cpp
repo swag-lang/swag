@@ -62,8 +62,22 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
     if (onlyConstExpr)
         SWAG_CHECK(checkIsConstExpr(context, node));
 
-    PushErrContext ec(context, node, ErrorContextKind::CompileTime);
-    return executeCompilerNode(context, node);
+    // In case of error, it's not always relevant to show the context
+    bool showContext = true;
+    if (node->token.text.length() > 1 && node->token.text[0] == '_' && node->token.text[1] == '_')
+        showContext = false;
+    if (node->token.text[0] == '@')
+        showContext = false;
+
+    if (showContext)
+    {
+        PushErrContext ec(context, node, ErrorContextKind::CompileTime);
+        return executeCompilerNode(context, node);
+    }
+    else
+    {
+        return executeCompilerNode(context, node);
+    }
 }
 
 bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node)

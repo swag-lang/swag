@@ -13,6 +13,19 @@ thread_local string g_SilentErrorMsg;
 
 namespace Report
 {
+    SourceFile* getDiagFile(const Diagnostic& diag)
+    {
+        SWAG_ASSERT(diag.sourceFile || diag.contextFile);
+        SourceFile* sourceFile = diag.contextFile;
+        if (!diag.contextFile)
+            sourceFile = diag.sourceFile;
+        if (diag.sourceNode && diag.sourceNode->sourceFile == diag.sourceFile && diag.sourceNode->ownerInline)
+            sourceFile = diag.sourceNode->ownerInline->sourceFile;
+        if (sourceFile->fileForSourceLocation)
+            sourceFile = sourceFile->fileForSourceLocation;
+        return sourceFile;
+    }
+
     bool fuzzySameLine(uint32_t line1, uint32_t line2)
     {
         if (line1 == line2)
@@ -87,10 +100,13 @@ namespace Report
                 if (!note1->display)
                     continue;
 
+                auto sourceFile0 = getDiagFile(*note);
+                auto sourceFile1 = getDiagFile(*note1);
+
                 // No need to repeat the same source file line reference
                 if (fuzzySameLine(note->startLocation.line, note1->startLocation.line) &&
                     fuzzySameLine(note->endLocation.line, note1->endLocation.line) &&
-                    note->sourceFile == note1->sourceFile &&
+                    sourceFile0 == sourceFile1 &&
                     note->showFileName &&
                     note->display &&
                     !note1->forceSourceFile)
@@ -122,7 +138,7 @@ namespace Report
                 // Move ranges from note to note if they share the same line of code, and they do not overlap
                 if (note->showRange &&
                     note1->showRange &&
-                    note->sourceFile == note1->sourceFile &&
+                    sourceFile0 == sourceFile1 &&
                     note->startLocation.line == note1->startLocation.line &&
                     note->endLocation.line == note1->endLocation.line &&
                     note1->ranges.size() &&
@@ -206,19 +222,6 @@ namespace Report
         }
 
         g_Log.eol();
-    }
-
-    SourceFile* getDiagFile(const Diagnostic& diag)
-    {
-        SWAG_ASSERT(diag.sourceFile || diag.contextFile);
-        SourceFile* sourceFile = diag.contextFile;
-        if (!diag.contextFile)
-            sourceFile = diag.sourceFile;
-        if (diag.sourceNode && diag.sourceNode->sourceFile == diag.sourceFile && diag.sourceNode->ownerInline)
-            sourceFile = diag.sourceNode->ownerInline->sourceFile;
-        if (sourceFile->fileForSourceLocation)
-            sourceFile = sourceFile->fileForSourceLocation;
-        return sourceFile;
     }
 
     bool dealWithWarning(AstAttrUse* attrUse, const Utf8& warnMsg, Diagnostic& diag, vector<const Diagnostic*>& inNotes, bool& retResult)
