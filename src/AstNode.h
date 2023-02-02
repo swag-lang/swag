@@ -277,6 +277,7 @@ struct AstNode
     bool isSpecialFunctionName();
     bool isSpecialFunctionGenerated();
     bool isPublic();
+    bool isFunctionCall();
 
     // clang-format off
     bool isForeign()       { return attributeFlags & ATTRIBUTE_FOREIGN; }

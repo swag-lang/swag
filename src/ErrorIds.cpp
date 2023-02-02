@@ -1122,7 +1122,7 @@ void initErrors()
     SWAG_ERROR(Hnt0103, "you should add '#type' before '%s' or, if this is a field name, explicitly specify a type");
     SWAG_ERROR(Hnt0104, "you could add '&' to take the address of this expression");
     SWAG_ERROR(Hnt0105, "this is not allowed on type '%s'");
-    SWAG_ERROR(Hnt0106, nullptr);
+    SWAG_ERROR(Hnt0106, "this is an immutable struct parameter");
     SWAG_ERROR(Hnt0107, nullptr);
     SWAG_ERROR(Hnt0108, nullptr);
     SWAG_ERROR(Hnt0109, nullptr);

@@ -349,7 +349,6 @@ namespace Naming
         case AstNodeKind::FuncCall:
             article = "a";
             return "function call";
-            article = "a";
 
         case AstNodeKind::TypeExpression:
             article = "a";

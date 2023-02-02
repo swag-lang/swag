@@ -229,6 +229,7 @@ struct SemanticJob : public Job
     static bool checkCanCatch(SemanticContext* context);
     static bool checkImplScopes(SemanticContext* context, AstImpl* node, Scope* scopeImpl, Scope* scope);
     static void checkCanInstantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch);
+    static bool checkIsConstAffect(SemanticContext* context, AstNode* left, AstNode* right);
 
     static bool warnUnusedFunction(Module* moduleToGen, ByteCode* one);
     static bool warnUnusedVariables(SemanticContext* context, Scope* scope);

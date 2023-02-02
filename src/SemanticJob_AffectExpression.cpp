@@ -65,6 +65,140 @@ bool SemanticJob::resolveAfterAffectLeft(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::checkIsConstAffect(SemanticContext* context, AstNode* left, AstNode* right)
+{
+    bool isConst = false;
+
+    // Check that left type is mutable
+    if ((left->flags & AST_IS_CONST) ||
+        !(left->flags & AST_L_VALUE) ||
+        ((left->typeInfo->flags & TYPEINFO_FAKE_ALIAS) && left->typeInfo->isConst()) ||
+        (left->typeInfo->isConstPointerRef() && right->kind != AstNodeKind::KeepRef))
+    {
+        isConst = true;
+    }
+
+    if (!isConst)
+        return true;
+
+    Utf8        hint;
+    auto        node    = context->node;
+    Diagnostic* note    = nullptr;
+    auto        orgLeft = left;
+
+    if (left->kind == AstNodeKind::IdentifierRef)
+    {
+        // If not, try to find the culprit type
+        for (int i = left->childs.count - 1; i >= 0; i--)
+        {
+            auto child     = left->childs[i];
+            auto typeChild = TypeManager::concreteType(child->typeInfo, CONCRETE_ALIAS);
+            if (!typeChild)
+                continue;
+
+            if (child->kind == AstNodeKind::ArrayPointerIndex)
+            {
+                auto arr = CastAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
+                if (arr->array->typeInfo->isString())
+                {
+                    left = arr->array;
+                    break;
+                }
+            }
+
+            if (child->isFunctionCall() && (child->typeInfo->isConst() || child->typeInfo->isStruct()))
+            {
+                left = child;
+                hint = Fmt(Hnt(Hnt0039), left->typeInfo->getDisplayNameC());
+                break;
+            }
+
+            if (typeChild->isConst())
+            {
+                left = child;
+                break;
+            }
+        }
+
+        if (left->kind == AstNodeKind::Identifier && left->specFlags & (AST_SPEC_IDENTIFIER_FROM_USING | AST_SPEC_IDENTIFIER_FROM_WITH))
+        {
+            auto leftId = CastAst<AstIdentifier>(left, AstNodeKind::Identifier);
+            hint        = "this is equivalent to '";
+            for (int ic = 0; ic < orgLeft->childs.size(); ic++)
+            {
+                auto c = orgLeft->childs[ic];
+                if (ic)
+                    hint += ".";
+                hint += c->token.text;
+            }
+
+            if (left->specFlags & AST_SPEC_IDENTIFIER_FROM_USING)
+                hint += "' because of a 'using'";
+            else
+                hint += "' because of a 'with'";
+
+            SWAG_ASSERT(left->resolvedSymbolOverload);
+            if (left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM && left->typeInfo->isConst())
+                note = new Diagnostic{leftId->fromAlternateVar, Nte(Nte0023), DiagnosticLevel::Note};
+            else if (!(left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM))
+                note = new Diagnostic{leftId->fromAlternateVar, Nte(Nte0023), Diagnostic::isType(left->typeInfo), DiagnosticLevel::Note};
+        }
+    }
+
+    if (left->typeInfo->isConst() && left->resolvedSymbolOverload && left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
+    {
+        if (left == left->parent->childs.back())
+        {
+            Diagnostic diag{node, node->token, Fmt(Err(Err0740), left->resolvedSymbolName->name.c_str()), Hnt(Hnt0061)};
+            Diagnostic note1{Hlp(Hlp0016), DiagnosticLevel::Help};
+            if (hint.empty())
+                hint = Diagnostic::isType(left->typeInfo);
+            diag.addRange(left, hint);
+            return context->report(diag, note, &note1);
+        }
+        else if (left->typeInfo->isConstPointerRef())
+        {
+            Diagnostic diag{node, node->token, Fmt(Err(Err0740), left->resolvedSymbolName->name.c_str()), Hnt(Hnt0061)};
+            if (hint.empty())
+                hint = Hnt(Hnt0106);
+            diag.addRange(left, hint);
+            return context->report(diag, note);
+        }
+        else
+        {
+            Diagnostic diag{node, node->token, Fmt(Err(Err0740), left->resolvedSymbolName->name.c_str()), Hnt(Hnt0061)};
+            if (hint.empty())
+                hint = Diagnostic::isType(left);
+            diag.addRange(left, hint);
+            return context->report(diag, note);
+        }
+    }
+
+    if (left->flags & AST_L_VALUE)
+    {
+        Diagnostic diag{node, node->token, Err(Err0564), Hnt(Hnt0061)};
+        if (hint.empty())
+            hint = Diagnostic::isType(left);
+        diag.addRange(left, hint);
+        return context->report(diag, note);
+    }
+
+    if (left->resolvedSymbolOverload && left->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE)
+    {
+        Diagnostic diag{node, node->token, Err(Err0564), Hnt(Hnt0061)};
+        if (hint.empty())
+            hint = Hnt(Hnt0018);
+        diag.addRange(left, hint);
+        return context->report(diag);
+    }
+
+    Diagnostic diag{node, node->token, Err(Err0565), Hnt(Hnt0061)};
+    if (hint.empty())
+        hint = Diagnostic::isType(left);
+    diag.addRange(left, hint);
+    return context->report(diag);
+}
+
 bool SemanticJob::resolveAffect(SemanticContext* context)
 {
     auto node    = CastAst<AstOp>(context->node, AstNodeKind::AffectOp);
@@ -77,103 +211,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     if (context->result != ContextResult::Done)
         return true;
 
-    // Check that left type is mutable
-    // If not, try to find the culprit type
-    if ((left->flags & AST_IS_CONST) ||
-        !(left->flags & AST_L_VALUE) ||
-        ((left->typeInfo->flags & TYPEINFO_FAKE_ALIAS) && left->typeInfo->isConst()) ||
-        (left->typeInfo->isConstPointerRef() && right->kind != AstNodeKind::KeepRef))
-    {
-        Utf8        hint;
-        Diagnostic* note    = nullptr;
-        auto        orgLeft = left;
-
-        if (left->kind == AstNodeKind::IdentifierRef)
-        {
-            for (int i = left->childs.count - 1; i >= 0; i--)
-            {
-                auto typeChild = TypeManager::concreteType(left->childs[i]->typeInfo, CONCRETE_ALIAS);
-                if (typeChild && typeChild->isConst())
-                {
-                    left = left->childs[i];
-                    if (left->resolvedSymbolOverload && left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
-                        hint = Hnt(Hnt0029);
-                    else
-                        hint = Diagnostic::isType(left->typeInfo);
-                    break;
-                }
-
-                if (left->childs[i]->kind == AstNodeKind::ArrayPointerIndex)
-                {
-                    auto arr = CastAst<AstArrayPointerIndex>(left->childs[i], AstNodeKind::ArrayPointerIndex);
-                    if (arr->array->typeInfo->isString())
-                    {
-                        left = arr->array;
-                        hint = Diagnostic::isType(left->typeInfo);
-                        break;
-                    }
-                }
-
-                if (left->childs[i]->kind == AstNodeKind::FuncCall && left->childs[i]->typeInfo->isStruct())
-                {
-                    left = left->childs[i];
-                    hint = Fmt(Hnt(Hnt0039), left->typeInfo->getDisplayNameC());
-                    break;
-                }
-            }
-
-            if (left->kind == AstNodeKind::Identifier && left->specFlags & (AST_SPEC_IDENTIFIER_FROM_USING | AST_SPEC_IDENTIFIER_FROM_WITH))
-            {
-                auto leftId = CastAst<AstIdentifier>(left, AstNodeKind::Identifier);
-                hint        = "this is equivalent to '";
-                for (int ic = 0; ic < orgLeft->childs.size(); ic++)
-                {
-                    auto c = orgLeft->childs[ic];
-                    if (ic)
-                        hint += ".";
-                    hint += c->token.text;
-                }
-
-                if (left->specFlags & AST_SPEC_IDENTIFIER_FROM_USING)
-                    hint += "' because of a 'using'";
-                else
-                    hint += "' because of a 'with'";
-
-                SWAG_ASSERT(left->resolvedSymbolOverload);
-                if (left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM && left->typeInfo->isConst())
-                    note = new Diagnostic{leftId->fromAlternateVar, Nte(Nte0023), DiagnosticLevel::Note};
-                else if (!(left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM))
-                    note = new Diagnostic{leftId->fromAlternateVar, Nte(Nte0023), Diagnostic::isType(left->typeInfo), DiagnosticLevel::Note};
-            }
-        }
-
-        if (left->typeInfo->isConst())
-        {
-            if (left->resolvedSymbolOverload && left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
-            {
-                Diagnostic note1{Hlp(Hlp0016), DiagnosticLevel::Help};
-                Diagnostic diag{left, Fmt(Err(Err0740), left->resolvedSymbolName->name.c_str()), hint};
-                return context->report(diag, note, &note1);
-            }
-            else if (hint.empty())
-            {
-                hint = Diagnostic::isType(left->typeInfo);
-            }
-        }
-
-        if (left->flags & AST_L_VALUE)
-        {
-            Diagnostic diag{left, Err(Err0564), hint};
-            return context->report(diag, note);
-        }
-    }
-
-    if (!(left->flags & AST_L_VALUE))
-    {
-        if (left->resolvedSymbolOverload && left->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE)
-            return context->report({left, Err(Err0564), Hnt(Hnt0018)});
-        return context->report({left, Err(Err0565)});
-    }
+    SWAG_CHECK(checkIsConstAffect(context, left, right));
 
     // :ConcreteRef
     TypeInfo* leftTypeInfo  = TypeManager::concreteType(left->typeInfo, CONCRETE_ALIAS);

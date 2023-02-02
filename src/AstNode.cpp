@@ -161,6 +161,17 @@ void AstNode::inheritComputedValue(AstNode* from)
     }
 }
 
+bool AstNode::isFunctionCall()
+{
+    if (kind == AstNodeKind::FuncCall)
+        return true;
+    if (kind != AstNodeKind::Identifier)
+        return false;
+
+    auto id = CastAst<AstIdentifier>(this, AstNodeKind::Identifier);
+    return id->callParameters != nullptr;
+}
+
 bool AstNode::isPublic()
 {
     auto checkNode = this;
