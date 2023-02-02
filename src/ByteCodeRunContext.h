@@ -119,9 +119,10 @@ struct ByteCodeRunContext
     AstNode*  node  = nullptr;
     ByteCode* oldBc = nullptr;
 
-    bool debugOnFirstError = false;
-    bool sharedStack       = false;
-    bool fromException666  = false;
+    bool              debugOnFirstError = false;
+    bool              sharedStack       = false;
+    bool              fromException666  = false;
+    SwagExceptionKind fromExceptionKind = SwagExceptionKind::Panic;
 
     const ConcreteCompilerMessage* currentCompilerMessage = nullptr;
     Job*                           currentCompilerJob     = nullptr;

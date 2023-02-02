@@ -3737,6 +3737,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         if (runContext->ip != runContext->bc->out)
             runContext->ip--;
         runContext->fromException666 = true;
+        runContext->fromExceptionKind = exceptionKind;
         Report::report(diag, notes, runContext);
         runContext->fromException666 = false;
         if (runContext->ip != runContext->bc->out)
