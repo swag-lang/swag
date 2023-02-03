@@ -809,31 +809,46 @@ bool SemanticJob::resolveIntrinsicLocation(SemanticContext* context)
         return true;
     }
 
-    // :ForLocationInValidIf
-    if (locNode->flags & AST_FROM_GENERIC_REPLACE)
+    bool done = false;
+    while (true)
     {
-        SWAG_ASSERT(locNode->kind == AstNodeKind::IdentifierRef);
-        auto id = CastAst<AstIdentifier>(locNode->childs.front(), AstNodeKind::Identifier);
-        if (id->fromAlternateVar)
-            locNode = id->fromAlternateVar;
+        // If identifier is an inline param call replacement, take it
+        if (locNode->resolvedSymbolOverload && locNode->resolvedSymbolOverload->fromInlineParam)
+        {
+            locNode = locNode->resolvedSymbolOverload->fromInlineParam;
+            done    = true;
+            continue;
+        }
+
+        if (locNode->kind == AstNodeKind::FuncCallParam && locNode->childs.front()->kind == AstNodeKind::IdentifierRef)
+        {
+            auto id = CastAst<AstIdentifier>(locNode->childs.back()->childs.back(), AstNodeKind::Identifier);
+            if (id->fromAlternateVar)
+            {
+                locNode = id->fromAlternateVar;
+                done    = true;
+                continue;
+            }
+        }
+
+        // :ForLocationInValidIf
+        if (locNode->kind == AstNodeKind::IdentifierRef)
+        {
+            auto id = CastAst<AstIdentifier>(locNode->childs.back(), AstNodeKind::Identifier);
+            if (id->fromAlternateVar)
+            {
+                locNode = id->fromAlternateVar;
+                done    = true;
+                continue;
+            }
+        }
+
+        break;
     }
 
     // If identifier is an inline param call replacement, take it
-    bool fromInline = false;
-    while (locNode->resolvedSymbolOverload)
-    {
-        if (locNode->resolvedSymbolOverload->fromInlineParam)
-        {
-            fromInline = true;
-            locNode    = locNode->resolvedSymbolOverload->fromInlineParam;
-        }
-        else
-        {
-            if (!fromInline)
-                locNode = locNode->resolvedSymbolOverload->node;
-            break;
-        }
-    }
+    if (locNode->resolvedSymbolOverload && !done)
+        locNode = locNode->resolvedSymbolOverload->node;
 
     node->setFlagsValueIsComputed();
     ByteCodeGenJob::computeSourceLocation(context, locNode, &node->computedValue->storageOffset, &node->computedValue->storageSegment);
