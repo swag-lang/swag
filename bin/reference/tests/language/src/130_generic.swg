@@ -88,12 +88,27 @@ You can also specify constants as generic parameters.
  #test
  {
     {
-        // T is a type, N is a constant of type 's32', because remember that an identifier alone is considered to be a type.
+        // T is a type, N is a constant of type 's32', because remember that an identifier alone is considered to be a generic type.
         func(T, N: s32) myFunc(x: T) => x * N
 
         alias call = myFunc'(s32, 10)
         @assert(call(2) == 20)
         @assert(call(100) == 1000)
+    }
+
+    {
+        // So if you want to declare multiple constants, specify the type (or 'const') for each.
+        func(T: s32, N: s32) myFunc() => T * N
+
+        @assert(myFunc'(5, 10)() == 50)
+    }
+
+    {
+        // And if you want to declare multiple types with default values, specify the value for each.
+        func(T = s32, V = s32) myFunc(x: T, y: V) => x * y
+
+        @assert(myFunc(1's32, 2'f32) == 2.0)
+        @assert(myFunc(1's32, 2's32) == 2)
     }
 }
 
