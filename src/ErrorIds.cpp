@@ -904,8 +904,8 @@ void initErrors()
     SWAG_ERROR(Err0567, "unexpected '#validifx' for a struct");
     SWAG_ERROR(Err0617, "the '#validif' validation of '%s' has failed");
     SWAG_ERROR(Err0167, "unexpected lambda type parameter name");
-    SWAG_ERROR(Err0533, nullptr);
-    SWAG_ERROR(Err0128, nullptr);
+    SWAG_ERROR(Err0533, "expected a type or a default value when declaring the generic constant '%s'");
+    SWAG_ERROR(Err0128, "unexpected type when declaring the generic type '%s'");
     SWAG_ERROR(Err0118, nullptr);
     SWAG_ERROR(Err0678, nullptr);
     SWAG_ERROR(Err0618, nullptr);

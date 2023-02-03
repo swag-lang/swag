@@ -484,6 +484,19 @@ bool SyntaxJob::doGenericDeclParameters(AstNode* parent, AstNode** result)
 
     while (token.id != TokenId::SymRightParen)
     {
+        bool isConstant = false;
+        bool isType     = false;
+        if (token.id == TokenId::KwdConst)
+        {
+            isConstant = true;
+            SWAG_CHECK(eatToken());
+        }
+        else if (token.id == TokenId::KwdVar)
+        {
+            isType = true;
+            SWAG_CHECK(eatToken());
+        }
+
         SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Err(Syn0058)));
         auto oneParam = Ast::newVarDecl(sourceFile, token.text, allParams, this, AstNodeKind::FuncDeclParam);
         oneParam->flags |= AST_IS_GENERIC;
@@ -499,8 +512,23 @@ bool SyntaxJob::doGenericDeclParameters(AstNode* parent, AstNode** result)
         if (token.id == TokenId::SymEqual)
         {
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doAssignmentExpression(oneParam, &oneParam->assignment));
+            if (isConstant)
+                SWAG_CHECK(doAssignmentExpression(oneParam, &oneParam->assignment));
+            else if (isType || !oneParam->type)
+                SWAG_CHECK(doTypeExpression(oneParam, &oneParam->assignment));
+            else
+                SWAG_CHECK(doAssignmentExpression(oneParam, &oneParam->assignment));
         }
+
+        if (isType)
+            oneParam->specFlags |= AST_SPEC_DECLPARAM_GENERIC_TYPE;
+        else if (isConstant)
+            oneParam->specFlags |= AST_SPEC_DECLPARAM_GENERIC_CONSTANT;
+
+        if (isConstant && !oneParam->type && !oneParam->assignment)
+            return error(oneParam, Fmt(Err(Err0533), oneParam->token.ctext()));
+        if (isType && oneParam->type)
+            return error(oneParam, Fmt(Err(Err0128), oneParam->token.ctext()));
 
         if (token.id != TokenId::SymComma)
             break;

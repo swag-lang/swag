@@ -842,8 +842,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
-    bool genericType = !node->type && !node->assignment;
-    bool isGeneric   = false;
+    bool thisIsAGenericType = !node->type && !node->assignment;
+    bool isGeneric          = false;
     if (node->flags & AST_STRUCT_MEMBER)
     {
         auto p = node->findParent(AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
@@ -858,9 +858,11 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         (!node->assignment->typeInfo->isStruct() || !(node->assignment->flags & AST_IN_FUNC_DECL_PARAMS)) &&
         !isGeneric)
     {
-        // A generic type with a default value is a generic type
-        if ((node->flags & AST_IS_GENERIC) && !node->type && !(node->flags & AST_R_VALUE))
-            genericType = true;
+        // A generic identifier without a type but with a default value is a generic type
+        if ((node->flags & AST_IS_GENERIC) && !node->type && !(node->flags & AST_R_VALUE) && !(node->specFlags & AST_SPEC_DECLPARAM_GENERIC_CONSTANT))
+        {
+            thisIsAGenericType = true;
+        }
         else if (!(node->flags & AST_FROM_GENERIC) || !(node->doneFlags & AST_DONE_ASSIGN_COMPUTED))
         {
             SWAG_CHECK(checkIsConcreteOrType(context, node->assignment));
@@ -1053,7 +1055,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (node->flags & AST_IS_GENERIC)
     {
         symbolFlags |= OVERLOAD_GENERIC;
-        if (genericType && node->assignment)
+        if (thisIsAGenericType && node->assignment)
         {
             auto typeGeneric     = allocType<TypeInfoGeneric>();
             typeGeneric->name    = node->token.text;
@@ -1074,7 +1076,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             lambdaExpr = true;
         if (lambdaExpr)
         {
-            SWAG_CHECK(deduceLambdaTypeAffect(context, node, lambdaExpr, genericType));
+            SWAG_CHECK(deduceLambdaTypeAffect(context, node, lambdaExpr, thisIsAGenericType));
             if (context->result != ContextResult::Done)
                 return true;
         }
@@ -1082,8 +1084,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         // If this is a lambda parameter in an expression, this is fine, we will try to deduce the type
         if (lambdaExpr || node->typeInfo == g_TypeMgr->typeInfoUndefined)
         {
-            node->typeInfo = g_TypeMgr->typeInfoUndefined;
-            genericType    = false;
+            node->typeInfo     = g_TypeMgr->typeInfoUndefined;
+            thisIsAGenericType = false;
 
             // AST_PENDING_LAMBDA_TYPING will stop semantic, forcing to not evaluate the content of the function,
             // until types are known
@@ -1374,7 +1376,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     auto overload = node->ownerScope->symTable.addSymbolTypeInfo(context,
                                                                  node,
                                                                  node->typeInfo,
-                                                                 genericType ? SymbolKind::GenericType : SymbolKind::Variable,
+                                                                 thisIsAGenericType ? SymbolKind::GenericType : SymbolKind::Variable,
                                                                  isCompilerConstant ? node->computedValue : nullptr,
                                                                  symbolFlags,
                                                                  nullptr,

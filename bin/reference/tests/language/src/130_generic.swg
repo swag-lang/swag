@@ -1,11 +1,20 @@
+/**
+A function can be generic by specifying parameters after 'func'.
+At the call site, you specify the generic parameters with funcCall'(type1, type2, ...)(parameters).
+Note that parenthesis can be ommited if there's only one generic parameter.
+*/
 #test
 {
     {
-        // A function can be generic by specifying parameters after 'func'
-        // At the call site, you specify the generic parameters with funcCall'(type1, type2, ...)(parameters)
-        // Note that parenthesis can be ommited if there's only one generic parameter
+        // Here 'T' is a generic type.
+        func(var T) myFunc(val: T) => 2 * val
 
-        // Here 'T' is a generic type
+        @assert(myFunc's32(2) == 4)
+        @assert(myFunc'f32(2.0) == 4.0)
+    }
+
+    {
+        // You can omit 'var' to declare the generic type, because a single identifier is considered to be a type.
         func(T) myFunc(val: T) => 2 * val
 
         @assert(myFunc's32(2) == 4)
@@ -13,12 +22,11 @@
     }
 
     {
-        // Generic types can be deduced from parameters, so func'type() is
-        // not always necessary
-        func(T) myFunc(val: T) => 2 * val
+        // You can set a default value to the type.
+        func(T = s32) myFunc(val: T) => 2 * val
 
-        @assert(myFunc(2's32) == 4)         // T is deduced to be s32
-        @assert(myFunc(2.0'f32) == 4.0)     // T is deduced to be f32
+        @assert(myFunc(2's32) == 4)
+        @assert(myFunc'f32(2.0) == 4.0)
     }
 
     {
@@ -31,23 +39,69 @@
         @assert(myFunc(2's32, true) == true)
         @assert(myFunc'(s32, bool)(2, true) == true)
     }
+}
 
-    // You can also specify constants as generic parameters
+/**
+Generic types can be deduced from parameters, so func'type() is not always necessary.
+*/
+#test
+{
+    func(T) myFunc(val: T) => 2 * val
+
+    @assert(myFunc(2's32) == 4)         // T is deduced to be s32
+    @assert(myFunc(2.0'f32) == 4.0)     // T is deduced to be f32
+}
+
+/**
+You can also specify constants as generic parameters.
+*/
+#test
+{
+    // 'N' is a constant a type 's32'
+    {
+        func(const N: s32) myFunc() = @assert(N == 10)
+        myFunc'10()
+    }
+
+    // 'const' can also be omitted, as an identifier followed by a type definition is considered to be a constant and not a type.
     {
         func(N: s32) myFunc() = @assert(N == 10)
         myFunc'10()
     }
 
-    // And you can mix
+    // You can also assign a default value to the constant.
     {
+        func(N: s32 = 10) myFunc() = @assert(N == 10)
+        myFunc()
+    }
+
+    // You can ommit the type if you declare the constant with 'const'. It will be deduced from the assignment expression.
+    {
+        func(const N = 10) myFunc() = @assert(N == 10)
+        myFunc()
+    }
+}
+
+ /**
+ You can mix types and constants.
+ */
+ #test
+ {
+    {
+        // T is a type, N is a constant of type 's32', because remember that an identifier alone is considered to be a type.
         func(T, N: s32) myFunc(x: T) => x * N
 
         alias call = myFunc'(s32, 10)
         @assert(call(2) == 20)
         @assert(call(100) == 1000)
     }
+}
 
-    // Like functions, a struct can be generic
+/**
+Like functions, a struct can also be generic.
+*/
+#test
+{
     {
         struct(T) Struct
         {
