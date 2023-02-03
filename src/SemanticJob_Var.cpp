@@ -851,6 +851,34 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         isGeneric = p->flags & AST_IS_GENERIC;
     }
 
+    // Evaluate type constraint
+    if ((node->flags & AST_FROM_GENERIC) && node->typeConstraint)
+    {
+        SWAG_ASSERT(node->specFlags & AST_SPEC_DECLPARAM_GENERIC_TYPE);
+
+        auto typeRet = TypeManager::concreteType(node->typeConstraint->typeInfo, CONCRETE_ALL);
+        SWAG_VERIFY(typeRet->isBool(), context->report({node->typeConstraint, Fmt(Err(Err0678), typeRet->getDisplayNameC())}));
+
+        SWAG_CHECK(checkIsConstExpr(context, node->typeConstraint, Err(Err0128)));
+        SWAG_CHECK(evaluateConstExpression(context, node->typeConstraint));
+        if (context->result != ContextResult::Done)
+            return true;
+        SWAG_ASSERT(node->typeConstraint->computedValue);
+        if (!node->typeConstraint->computedValue->reg.b)
+        {
+            Diagnostic diag(node->typeConstraint, Fmt(Err(Err0118), node->typeInfo->getDisplayNameC()));
+            if (node->genTypeComesFrom)
+            {
+                Diagnostic note(node->genTypeComesFrom, Fmt(Nte(Nte0079), node->typeInfo->getDisplayNameC(), node->typeConstraint->token.ctext()), DiagnosticLevel::Note);
+                return context->report(diag, &note);
+            }
+            else
+            {
+                return context->report(diag);
+            }
+        }
+    }
+
     // Value
     if (node->assignment &&
         node->assignment->kind != AstNodeKind::ExpressionList &&

@@ -506,7 +506,14 @@ bool SyntaxJob::doGenericDeclParameters(AstNode* parent, AstNode** result)
         {
             SWAG_CHECK(eatToken());
             SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(token, Err(Syn0134)));
-            SWAG_CHECK(doTypeExpression(oneParam, &oneParam->type));
+
+            if (isType)
+            {
+                SWAG_CHECK(doAssignmentExpression(oneParam, &oneParam->typeConstraint));
+                oneParam->typeConstraint->flags |= AST_NO_SEMANTIC;
+            }
+            else
+                SWAG_CHECK(doTypeExpression(oneParam, &oneParam->type));
         }
 
         if (token.id == TokenId::SymEqual)
@@ -527,8 +534,6 @@ bool SyntaxJob::doGenericDeclParameters(AstNode* parent, AstNode** result)
 
         if (isConstant && !oneParam->type && !oneParam->assignment)
             return error(oneParam, Fmt(Err(Err0533), oneParam->token.ctext()));
-        if (isType && oneParam->type)
-            return error(oneParam, Fmt(Err(Err0128), oneParam->token.ctext()));
 
         if (token.id != TokenId::SymComma)
             break;

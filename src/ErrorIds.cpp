@@ -905,9 +905,9 @@ void initErrors()
     SWAG_ERROR(Err0617, "the '#validif' validation of '%s' has failed");
     SWAG_ERROR(Err0167, "unexpected lambda type parameter name");
     SWAG_ERROR(Err0533, "expected a type or a default value when declaring the generic constant '%s'");
-    SWAG_ERROR(Err0128, "unexpected type when declaring the generic type '%s'");
-    SWAG_ERROR(Err0118, nullptr);
-    SWAG_ERROR(Err0678, nullptr);
+    SWAG_ERROR(Err0128, "the type constraint cannot be evaluated at compile time");
+    SWAG_ERROR(Err0118, "the type constraint has failed on type '%s'");
+    SWAG_ERROR(Err0678, "a type constraint should return a 'bool' value ('%s' provided)");
     SWAG_ERROR(Err0618, nullptr);
     SWAG_ERROR(Err0696, nullptr);
     SWAG_ERROR(Err0619, nullptr);
@@ -1195,7 +1195,7 @@ void initErrors()
     SWAG_ERROR(Nte0022, "it could be a bug in the compile time part of your program");
     SWAG_ERROR(Nte0019, "it is applied on this %s");
     SWAG_ERROR(Nte0012, "note: use '-w:<path>' or '--workspace:<path>' to specifiy a valid workspace folder, or execute swag from a valid workspace folder");
-    SWAG_ERROR(Nte0061, "occurred during the generic expansion of '%s'");
+    SWAG_ERROR(Nte0061, "occurred during the generic instantiation of '%s'");
     SWAG_ERROR(Nte0059, "occurred during the inline expansion of '%s'");
     SWAG_ERROR(Nte0060, "occurred during the public export of '%s'");
     SWAG_ERROR(Nte0033, "occurred during the '#validifx' validation of the function call to '%s'");
@@ -1224,7 +1224,7 @@ void initErrors()
     SWAG_ERROR(Nte0076, "'%s' could be either a single type or a parameter name");
     SWAG_ERROR(Nte0077, "'%s' could be either a single type or a field name");
     SWAG_ERROR(Nte0078, "occurred during the '#validif' validation of the struct '%s'");
-    SWAG_ERROR(Nte0079, nullptr);
+    SWAG_ERROR(Nte0079, "the type '%s' does not conform to the constraint '%s'");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

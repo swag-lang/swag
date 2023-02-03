@@ -317,6 +317,10 @@ AstNode* AstVarDecl::clone(CloneContext& context)
     newNode->type       = (AstTypeExpression*) findChildRef(type, newNode);
     newNode->assignment = findChildRef(assignment, newNode);
 
+    newNode->typeConstraint = findChildRef(typeConstraint, newNode);
+    if (newNode->typeConstraint)
+        newNode->typeConstraint->flags &= ~AST_NO_SEMANTIC;
+
     // Is there an alias ?
     auto it = context.replaceNames.find(newNode->token.text);
     if (it != context.replaceNames.end())

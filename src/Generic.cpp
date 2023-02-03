@@ -20,11 +20,14 @@ bool Generic::updateGenericParameters(SemanticContext*              context,
 
         if (doType)
         {
+            auto varDecl = CastAst<AstVarDecl>(nodeGenericParameters[i], AstNodeKind::FuncDeclParam);
+
             // If the user has specified a generic type, take it
             if (callGenericParameters && i < callGenericParameters->childs.size())
             {
-                auto genParam   = callGenericParameters->childs[i];
-                param->typeInfo = genParam->typeInfo;
+                auto genParam             = callGenericParameters->childs[i];
+                param->typeInfo           = genParam->typeInfo;
+                varDecl->genTypeComesFrom = genParam;
 
                 if (genParam->computedValue)
                 {
@@ -39,13 +42,16 @@ bool Generic::updateGenericParameters(SemanticContext*              context,
             else if (match.genericParametersCallTypes[i])
             {
                 param->typeInfo = match.genericParametersCallTypes[i];
+                if (match.genericParametersCallTypesFrom.size() > i)
+                    varDecl->genTypeComesFrom = match.genericParametersCallTypesFrom[i];
             }
 
             // Take the type as it is in the instantiated struct/func
             else
             {
                 SWAG_ASSERT(i < nodeGenericParameters.size());
-                param->typeInfo = nodeGenericParameters[i]->typeInfo;
+                param->typeInfo           = nodeGenericParameters[i]->typeInfo;
+                varDecl->genTypeComesFrom = nodeGenericParameters[i];
             }
         }
 

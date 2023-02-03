@@ -135,9 +135,9 @@ bool SemanticJob::checkIsConstExpr(JobContext* context, bool test, AstNode* expr
     return context->report(diag, computeNonConstExprNote(expression));
 }
 
-bool SemanticJob::checkIsConstExpr(JobContext* context, AstNode* expression)
+bool SemanticJob::checkIsConstExpr(JobContext* context, AstNode* expression, const Utf8& errMsg, const Utf8& errParam)
 {
-    return checkIsConstExpr(context, expression->flags & AST_CONST_EXPR, expression);
+    return checkIsConstExpr(context, expression->flags & AST_CONST_EXPR, expression, errMsg, errParam);
 }
 
 bool SemanticJob::checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, AstNode* left, AstNode* right)

@@ -404,9 +404,11 @@ struct AstVarDecl : public AstNode
     Utf8          publicName;
     Token         assignToken;
 
-    AstNode*    type       = nullptr;
-    AstNode*    assignment = nullptr;
-    AstAttrUse* attrUse    = nullptr;
+    AstNode*    type             = nullptr;
+    AstNode*    assignment       = nullptr;
+    AstNode*    typeConstraint   = nullptr;
+    AstAttrUse* attrUse          = nullptr;
+    AstNode*    genTypeComesFrom = nullptr;
 };
 
 struct AstIdentifierRef : public AstNode
