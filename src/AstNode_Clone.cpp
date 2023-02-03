@@ -314,8 +314,9 @@ AstNode* AstVarDecl::clone(CloneContext& context)
     if (newNode->attrUse)
         newNode->attrUse->content = newNode;
 
-    newNode->type       = (AstTypeExpression*) findChildRef(type, newNode);
-    newNode->assignment = findChildRef(assignment, newNode);
+    newNode->type             = (AstTypeExpression*) findChildRef(type, newNode);
+    newNode->assignment       = findChildRef(assignment, newNode);
+    newNode->genTypeComesFrom = genTypeComesFrom;
 
     newNode->typeConstraint = findChildRef(typeConstraint, newNode);
     if (newNode->typeConstraint)

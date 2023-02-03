@@ -1225,6 +1225,11 @@ void initErrors()
     SWAG_ERROR(Nte0077, "'%s' could be either a single type or a field name");
     SWAG_ERROR(Nte0078, "occurred during the '#validif' validation of the struct '%s'");
     SWAG_ERROR(Nte0079, "the type '%s' does not conform to the constraint '%s'");
+    SWAG_ERROR(Nte0080, "the type '%s' does not conform to the constraint");
+    SWAG_ERROR(Nte0081, nullptr);
+    SWAG_ERROR(Nte0082, nullptr);
+    SWAG_ERROR(Nte0083, nullptr);
+    SWAG_ERROR(Nte0084, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

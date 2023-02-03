@@ -867,9 +867,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (!node->typeConstraint->computedValue->reg.b)
         {
             Diagnostic diag(node->typeConstraint, Fmt(Err(Err0118), node->typeInfo->getDisplayNameC()));
-            if (node->genTypeComesFrom)
+            if (node->genTypeComesFrom && node->typeConstraint->kind == AstNodeKind::IdentifierRef)
             {
                 Diagnostic note(node->genTypeComesFrom, Fmt(Nte(Nte0079), node->typeInfo->getDisplayNameC(), node->typeConstraint->token.ctext()), DiagnosticLevel::Note);
+                return context->report(diag, &note);
+            }
+            else if (node->genTypeComesFrom)
+            {
+                Diagnostic note(node->genTypeComesFrom, Fmt(Nte(Nte0080), node->typeInfo->getDisplayNameC()), DiagnosticLevel::Note);
                 return context->report(diag, &note);
             }
             else

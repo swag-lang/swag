@@ -1880,20 +1880,21 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 }
                 else
                 {
-                    auto* match                        = job->getOneGenericMatch();
-                    match->flags                       = oneOverload.symMatchContext.flags;
-                    match->symbolName                  = symbol;
-                    match->symbolOverload              = overload;
-                    match->genericParametersCallTypes  = move(oneOverload.symMatchContext.genericParametersCallTypes);
-                    match->genericParametersGenTypes   = move(oneOverload.symMatchContext.genericParametersGenTypes);
-                    match->genericReplaceTypes         = move(oneOverload.symMatchContext.genericReplaceTypes);
-                    match->genericReplaceTypesFrom     = move(oneOverload.symMatchContext.genericReplaceTypesFrom);
-                    match->genericReplaceValues        = move(oneOverload.symMatchContext.genericReplaceValues);
-                    match->genericParameters           = genericParameters;
-                    match->parameters                  = move(oneOverload.symMatchContext.parameters);
-                    match->solvedParameters            = move(oneOverload.symMatchContext.solvedParameters);
-                    match->numOverloadsWhenChecked     = oneOverload.cptOverloads;
-                    match->numOverloadsInitWhenChecked = oneOverload.cptOverloadsInit;
+                    auto* match                           = job->getOneGenericMatch();
+                    match->flags                          = oneOverload.symMatchContext.flags;
+                    match->symbolName                     = symbol;
+                    match->symbolOverload                 = overload;
+                    match->genericParametersCallTypes     = move(oneOverload.symMatchContext.genericParametersCallTypes);
+                    match->genericParametersCallTypesFrom = move(oneOverload.symMatchContext.genericParametersCallTypesFrom);
+                    match->genericParametersGenTypes      = move(oneOverload.symMatchContext.genericParametersGenTypes);
+                    match->genericReplaceTypes            = move(oneOverload.symMatchContext.genericReplaceTypes);
+                    match->genericReplaceTypesFrom        = move(oneOverload.symMatchContext.genericReplaceTypesFrom);
+                    match->genericReplaceValues           = move(oneOverload.symMatchContext.genericReplaceValues);
+                    match->genericParameters              = genericParameters;
+                    match->parameters                     = move(oneOverload.symMatchContext.parameters);
+                    match->solvedParameters               = move(oneOverload.symMatchContext.solvedParameters);
+                    match->numOverloadsWhenChecked        = oneOverload.cptOverloads;
+                    match->numOverloadsInitWhenChecked    = oneOverload.cptOverloadsInit;
                     if (overload->node->flags & AST_HAS_SELECT_IF && overload->node->kind == AstNodeKind::FuncDecl)
                         genericMatchesSI.push_back(match);
                     else
@@ -3828,7 +3829,7 @@ bool SemanticJob::solveValidIf(SemanticContext* context, OneMatch* oneMatch, Ast
 
     if (!(expr->flags & AST_VALUE_COMPUTED))
     {
-        auto node                   = context->node;
+        auto node                  = context->node;
         context->validIfParameters = oneMatch->oneOverload->callParameters;
 
         ErrorContextKind type;
@@ -3838,7 +3839,7 @@ bool SemanticJob::solveValidIf(SemanticContext* context, OneMatch* oneMatch, Ast
             type = ErrorContextKind::ValidIf;
 
         PushErrContext ec(context, node, type);
-        auto           result       = executeCompilerNode(context, expr, false);
+        auto           result      = executeCompilerNode(context, expr, false);
         context->validIfParameters = nullptr;
         if (!result)
             return false;
