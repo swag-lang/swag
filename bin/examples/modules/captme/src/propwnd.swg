@@ -230,7 +230,7 @@ impl PropWnd
         loop i: @countof(FormShapeKind)
         {
             btn0 := IconButton.create(frame.view, {})
-            btn0.userData = cast(*void) i
+            btn0.userData = cast(*void) cast(uint) i
             btn0.setForm(.RoundSquare)
             if curSel.kind == i btn0.isChecked = true
 
@@ -278,7 +278,7 @@ impl PropWnd
         loop i: @countof(FormStepKind)
         {
             btn0 := IconButton.create(frame.view, {})
-            btn0.userData = cast(*void) i
+            btn0.userData = cast(*void) cast(uint) i
             btn0.setForm(.RoundSquare)
             me := self
             btn0.sigPaintIcon = closure|me|(btn, bc, pos)
