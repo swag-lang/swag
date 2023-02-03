@@ -64,7 +64,7 @@ impl ConvertFormatFloat
         // Precision
         if cpt < countof
         {
-            (userWidth, eatCount, ?) := assume parseU64(@mkstring(buffer + cpt, cast(uint) (countof - cpt)))
+            (userWidth, eatCount, ?) := assume parseU64(@mkstring(buffer + cpt, cast(u64) (countof - cpt)))
             Debug.assert(userWidth <= 255, "precision overflow")
             if eatCount
                 precision = cast(s8) userWidth
@@ -140,7 +140,7 @@ impl ConvertFormatInt
         // Next comes the padding width
         if cpt >= countof
             return
-        (userWidth, eatCount, ?) := assume parseU64(@mkstring(buffer + cpt, cast(uint) countof - cpt))
+        (userWidth, eatCount, ?) := assume parseU64(@mkstring(buffer + cpt, cast(u64) countof - cpt))
         Debug.assert(userWidth <= 255, "padding width overflow")
         if eatCount width = cast(u8) userWidth
     }
@@ -199,7 +199,7 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     {
         enumName := Reflection.getEnumName(type, valueData)
         if !enumName.isEmpty()
-            buf.addBytes(@mkslice(enumName.buffer, cast(uint) enumName.length))
+            buf.addBytes(@mkslice(enumName.buffer, cast(u64) enumName.length))
         else
             buf.addBytes("?")
         return
@@ -403,7 +403,7 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
     case S32:
         signedValue = cast(s64) dref cast(*s32) dataof
         value = cast(u64) Math.abs(signedValue)
-    case S64, Int:
+    case S64:
         signedValue = dref cast(*s64) dataof
         // Cannot take the absolute value of Swag.S64.Min
         if signedValue == Swag.S64.Min
@@ -416,7 +416,7 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
         value = cast(u64) dref cast(*u16) dataof
     case U32:
         value = cast(u64) dref cast(*u32) dataof
-    case U64, UInt:
+    case U64:
         value = dref cast(*u64) dataof
     }
 
@@ -474,7 +474,7 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
         cpt -= 1
     }
 
-    buf.addBytes(cast([..] u8) @mkslice(&tmp[cpt + 1], cast(uint) 63 - cpt));
+    buf.addBytes(cast([..] u8) @mkslice(&tmp[cpt + 1], cast(u64) 63 - cpt));
 }
 
 // Convert a float to an utf8 string, and put the result in a ConcatBuffer
@@ -510,7 +510,7 @@ func convertRune(buf: *ConcatBuffer, value: rune)
 {
     var arr: [4] u8
     var count = Utf8.encodeRune(arr, value)
-    buf.addBytes(@mkslice(&arr[0], cast(uint) count))
+    buf.addBytes(@mkslice(&arr[0], cast(u64) count))
 }
 
 // Templated version. Convert a value of type 'T'

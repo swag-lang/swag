@@ -10,7 +10,7 @@ interface BB
 
 impl AA
 {
-    func toto(using self, v: uint, a: s32 = 0)
+    func toto(using self, v: u64, a: s32 = 0)
     {
     }
 }

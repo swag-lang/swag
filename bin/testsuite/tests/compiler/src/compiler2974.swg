@@ -7,7 +7,7 @@ enum X: const [..] u32
 #test
 {
     ptr := @typeof(X)
-    cpt := 0'uint
+    cpt := 0'u64
     visit p: ptr.values
     {
         ptr1 := cast(const [..] u32) p.value

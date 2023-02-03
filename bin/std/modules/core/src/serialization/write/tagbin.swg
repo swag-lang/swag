@@ -72,8 +72,8 @@ impl TagBin
 
         output.addNative(TagBinSignatures.Fat)
         sec.startSeek = output.getSeek()
-        output.addNative(0'uint) // Will store the fat offset here
-        output.addNative(0'uint) // Will store the fat count here
+        output.addNative(0'u64) // Will store the fat offset here
+        output.addNative(0'u64) // Will store the fat count here
     }
 
     mtd endSection()
@@ -169,7 +169,7 @@ impl TagBin
     {
     }
 
-    mtd beginSequence(typeElem: typeinfo, data: const *void, countElem: uint)->bool
+    mtd beginSequence(typeElem: typeinfo, data: const *void, countElem: u64)->bool
     {
         output.addNative(TagBinSignatures.Sequence)
         output.addNative(countElem)

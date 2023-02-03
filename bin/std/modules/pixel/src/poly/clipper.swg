@@ -154,7 +154,7 @@ public struct Transform
     usingPolyTree:          bool
     strictSimple:           bool
     reverseOutput:          bool
-    edgeList:               Array'{^Edge, uint}
+    edgeList:               Array'{^Edge, u64}
     minimaList:             Array'LocalMinimum
     polyOuts:               Array'*OutRec
     joinList:               Array'*Join
@@ -165,7 +165,7 @@ public struct Transform
     clipFillType:           PolyFillType = undefined
     subjFillType:           PolyFillType = undefined
     clipType:               ClipType = undefined
-    currentLM:              uint
+    currentLM:              u64
     activeEdges:            *Edge
     sortedEdges:            *Edge
 }
@@ -192,7 +192,7 @@ impl Transform
 
     mtd addPath(pg: *ClipperPath, polyType: PolyType)
     {
-        highI := cast(int) pg.count - 1
+        highI := cast(s64) pg.count - 1
         while highI > 0 and (pg.buffer[highI] == pg.buffer[0])
             highI -= 1
         while highI > 0 and (pg.buffer[highI] == pg.buffer[highI -1])
@@ -200,9 +200,9 @@ impl Transform
         if highI < 2
             return
 
-        edges  := Memory.new'Edge(cast(uint) highI + 1)
+        edges  := Memory.new'Edge(cast(u64) highI + 1)
         isFlat := true
-        edgeList.add({edges, cast(uint) highI + 1})
+        edgeList.add({edges, cast(u64) highI + 1})
 
         // 1. Basic (first) edge initialization ...
         edges[1].curr = pg.buffer[1]
@@ -732,7 +732,7 @@ impl Transform
         if !eLastHorz.nextInLML
             eMaxPair = getMaximaPair(eLastHorz)
 
-        var maxIt, maxRit: uint
+        var maxIt, maxRit: u64
         if maximaList.count > 0
         {
             if dir == .LeftToRight
@@ -746,10 +746,10 @@ impl Transform
             else
             {
                 maxRit = maximaList.count -,safe 1
-                while maxRit != Swag.UInt.Max and maximaList.buffer[maxRit] > horzEdge.bot.x
+                while maxRit != Swag.U64.Max and maximaList.buffer[maxRit] > horzEdge.bot.x
                     maxRit = maxRit -,safe 1
-                if maxRit != Swag.UInt.Max and maximaList.buffer[maxRit] <= eLastHorz.top.x
-                    maxRit = Swag.UInt.Max
+                if maxRit != Swag.U64.Max and maximaList.buffer[maxRit] <= eLastHorz.top.x
+                    maxRit = Swag.U64.Max
             }
         }
 
@@ -773,7 +773,7 @@ impl Transform
                     }
                     else
                     {
-                        while maxRit != Swag.UInt.Max and maximaList.buffer[maxRit] > e.curr.x
+                        while maxRit != Swag.U64.Max and maximaList.buffer[maxRit] > e.curr.x
                         {
                             if horzEdge.outIdx >= 0 and !isOpen
                                 addOutPt(horzEdge, IntPoint{maximaList.buffer[maxRit], horzEdge.bot.y})
@@ -3057,7 +3057,7 @@ impl Transform
             if cnt < 2 continue
 
             var pg: ClipperPath
-            pg.reserve(cast(uint) cnt)
+            pg.reserve(cast(u64) cnt)
             loop cnt
             {
                 pg.add(p.pt)
@@ -3089,7 +3089,7 @@ impl Transform
         }
     }
 
-    mtd disposeOutRec(index: uint)
+    mtd disposeOutRec(index: u64)
     {
         outRec := polyOuts[index]
         if outRec.pts
@@ -3102,7 +3102,7 @@ impl Transform
     {
         var result: retval
 
-        lm := 0'uint
+        lm := 0'u64
         if lm == minimaList.count
             return result
 

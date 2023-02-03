@@ -15,13 +15,13 @@ impl StringBuilder
     }
 
     // Returns the number of characters
-    mtdc count()->uint
+    mtdc count()->u64
     {
         return buffer.count()
     }
 
     // Set sizes of buckets of the string builder
-    mtd setBucketSize(size: uint)
+    mtd setBucketSize(size: u64)
     {
         buffer.setBucketSize(size)
     }

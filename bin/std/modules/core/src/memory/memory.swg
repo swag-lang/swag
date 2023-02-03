@@ -3,19 +3,19 @@
 using Swag
 
 // Copy one block of memory to a given address
-func copy(dest: ^void, src: const ^void, size: uint)
+func copy(dest: ^void, src: const ^void, size: u64)
 {
     if size @memcpy(dest, src, size)
 }
 
 // Move one block of memory to a given address
-func copyOver(dest: ^void, src: const ^void, size: uint)
+func copyOver(dest: ^void, src: const ^void, size: u64)
 {
     if size @memmove(dest, src, size)
 }
 
 // Compare two blocks of memory
-func compare(dest, src: const ^void, size: uint)->s32
+func compare(dest, src: const ^void, size: u64)->s32
 {
     if !size return 0
     return @memcmp(dest, src, size)
@@ -28,19 +28,19 @@ func(T) equals(dest, src: const ^T)->bool
 }
 
 // Clear one block of memory
-func clear(dest: ^void, size: uint)
+func clear(dest: ^void, size: u64)
 {
     if size @memset(dest, 0, size)
 }
 
 // Set the content of one block of memory to a specific byte value
-func set(dest: ^void, value: u8, size: uint)
+func set(dest: ^void, value: u8, size: u64)
 {
     if size @memset(dest, value, size)
 }
 
 // Align a value to the given amount
-func align(value: uint, alignement: u32)->uint
+func align(value: u64, alignement: u32)->u64
 {
     toAlign := (alignement orelse @sizeof(*void)) - 1
     return (value + toAlign) & ~toAlign
@@ -49,7 +49,7 @@ func align(value: uint, alignement: u32)->uint
 // Align a pointer to the given amount
 func align(value: const ^void, alignement: u32)->const ^void
 {
-    return acast align(cast(uint) value, alignement)
+    return acast align(cast(u64) value, alignement)
 }
 
 // Clear the temporary allocator

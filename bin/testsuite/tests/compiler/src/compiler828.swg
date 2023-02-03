@@ -1,13 +1,13 @@
 struct Utf8
 {
 	buffer: *u8
-	length:	uint
-	size:	uint
+	length:	u64
+	size:	u64
 }
 
 impl Utf8
 {
-	func reserveSize(using self, newSize: uint)
+	func reserveSize(using self, newSize: u64)
 	{
 		if size >= newSize
 			return;

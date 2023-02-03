@@ -36,7 +36,7 @@ func genInit()
     loop PopulationCount
     {
         soluce := g_Gen[0].all.addNewPtr()
-        soluce.genes.resize(cast(uint) g_NumGenes)
+        soluce.genes.resize(cast(u64) g_NumGenes)
         loop i: g_NumGenes soluce.genes[i] = i
         g_Rng.shuffle(soluce.genes.toSlice())
         evaluateSolution(soluce)
@@ -51,10 +51,10 @@ func genInit()
     loop PopulationCount
     {
         soluce := g_Gen[1].all.addNewPtr()
-        soluce.genes.resize(cast(uint) g_NumGenes)
+        soluce.genes.resize(cast(u64) g_NumGenes)
     }
 
-    g_Result.resize(cast(uint) g_NumGenes * 3)
+    g_Result.resize(cast(u64) g_NumGenes * 3)
 }
 
 func evaluateSolution(idxSrc, idxDst: u32)->f32
@@ -169,7 +169,7 @@ func genGo()->*u8
     Jobs.parallelFor(|index| numChilds)
     {
         var done: Array'bool
-        done.resize(cast(uint) g_NumGenes)
+        done.resize(cast(u64) g_NumGenes)
 
         nextGenIdx := (g_CurGen + 1) % 2
 
@@ -182,7 +182,7 @@ func genGo()->*u8
 
         // Copy solution from father
         child1 := g_Gen[nextGenIdx].all[index]
-        Memory.copy(child1.genes.buffer, father.genes.buffer, cast(uint) crossPoint1 * @sizeof(u32))
+        Memory.copy(child1.genes.buffer, father.genes.buffer, cast(u64) crossPoint1 * @sizeof(u32))
         loop i: crossPoint1
             done[child1.genes.buffer[i]] = true
 
@@ -211,7 +211,7 @@ func genGo()->*u8
             if done[i] continue
 
             bestRes := Swag.F32.Max
-            bestHole := 0'uint
+            bestHole := 0'u64
 
             for idx := 0; idx < Math.min(50, holes.count); idx += 1
             {

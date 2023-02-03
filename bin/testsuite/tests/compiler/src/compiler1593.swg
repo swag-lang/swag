@@ -10,7 +10,7 @@ struct B
 
 impl B
 {
-    func opIndex(using self, index: uint)->A
+    func opIndex(using self, index: u64)->A
     {
         return buffer[index]
     }

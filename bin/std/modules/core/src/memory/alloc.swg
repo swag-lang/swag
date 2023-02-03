@@ -3,7 +3,7 @@
 using Swag
 
 // Check if a given pointer is allocated
-func assertIsAllocated(buffer: ^void, size: uint, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
+func assertIsAllocated(buffer: ^void, size: u64, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
 {
     if !buffer return
 
@@ -19,7 +19,7 @@ func assertIsAllocated(buffer: ^void, size: uint, allocator: IAllocator = null, 
 }
 
 // Free the specified memory block
-func free(buffer: ^void, size: uint, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
+func free(buffer: ^void, size: u64, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
 {
     if !buffer return
 
@@ -47,7 +47,7 @@ func freeAll(allocator: IAllocator, hint: string = null, loc = #callerlocation)
 }
 
 // Reallocate/allocate a given amount of bytes
-func realloc(buffer: ^void, newSize: uint, oldSize: uint, allocator: IAllocator = null, alignement: u16 = 0, hint: string = null, loc = #callerlocation)->^void
+func realloc(buffer: ^void, newSize: u64, oldSize: u64, allocator: IAllocator = null, alignement: u16 = 0, hint: string = null, loc = #callerlocation)->^void
 {
     var req: AllocatorRequest
     req.callerLoc   = loc
@@ -65,7 +65,7 @@ func realloc(buffer: ^void, newSize: uint, oldSize: uint, allocator: IAllocator 
 }
 
 // Allocate a given amount of bytes
-func alloc(size: uint, allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->^void
+func alloc(size: u64, allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->^void
 {
     var req: AllocatorRequest
     req.callerLoc   = loc
@@ -81,7 +81,7 @@ func alloc(size: uint, allocator: IAllocator = null, alignement: u32 = 0, hint: 
 }
 
 // Allocate a given amount of bytes in the temporary allocator
-func tempAlloc(size: uint, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->^void
+func tempAlloc(size: u64, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->^void
 {
     var req: AllocatorRequest
     req.callerLoc   = loc
@@ -149,7 +149,7 @@ func delete(ptr: *void, type: typeinfo, allocator: IAllocator = null, hint: stri
 }
 
 // Allocate and initialize an array of the given type
-func(T) new(num: uint, allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->^T
+func(T) new(num: u64, allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->^T
 {
     Debug.assert(num > 0)
 
@@ -160,7 +160,7 @@ func(T) new(num: uint, allocator: IAllocator = null, alignement: u32 = 0, hint: 
 }
 
 // Drop and release memory of an array of the given type
-func(T) delete(ptr: ^T, num: uint, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
+func(T) delete(ptr: ^T, num: u64, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
 {
     if !ptr
         return

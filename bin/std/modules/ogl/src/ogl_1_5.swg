@@ -1,8 +1,8 @@
 #global public
 using Swag
 
-alias GLintptr   = int
-alias GLsizeiptr = uint
+alias GLintptr   = s64
+alias GLsizeiptr = u64
 
 #[Extension]
 {

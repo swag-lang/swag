@@ -106,7 +106,7 @@ impl MainWnd
         #[Swag.Global]
         var g_KeepRatio: bool = true
         #[Swag.Global]
-        var g_ResizeMode: uint = 5
+        var g_ResizeMode: u64 = 5
 
         capture := getCapture()
         ratio := cast(f32) capture.width / capture.height
@@ -139,7 +139,7 @@ impl MainWnd
         }
 
         #[Swag.Macro]
-        func createBtn(dlg: *Wnd, pos: Math.Rectangle, id: uint)
+        func createBtn(dlg: *Wnd, pos: Math.Rectangle, id: u64)
         {
             btn := CheckButton.create(dlg, " ", pos)
             btn.checked = `g_ResizeMode == id ? .Undefined : .UnChecked
@@ -178,7 +178,7 @@ impl MainWnd
                 btnc := cast(*CheckButton) c
                 if btnc.checked != .UnChecked
                 {
-                    g_ResizeMode = cast(uint) btnc.userData
+                    g_ResizeMode = cast(u64) btnc.userData
                     break
                 }
             }

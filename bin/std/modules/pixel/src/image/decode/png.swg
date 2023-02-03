@@ -39,10 +39,10 @@ enum ChunkType: u32
 	CbGI = @byteswap("C"'u32 << 24 | "b"'u32 << 16 | "H"'u32 << 8 | "I"'u32)
 }
 
-const Adam7OrigX:     []int = [0,4,0,2,0,1,0]
-const Adam7OrigY:     []int = [0,0,4,0,2,0,1]
-const Adam7SpacingX:  []int = [8,8,4,4,2,2,1]
-const Adam7SpacingY:  []int = [8,8,8,4,4,2,2]
+const Adam7OrigX:     []s64 = [0,4,0,2,0,1,0]
+const Adam7OrigY:     []s64 = [0,0,4,0,2,0,1]
+const Adam7SpacingX:  []s64 = [8,8,4,4,2,2,1]
+const Adam7SpacingY:  []s64 = [8,8,8,4,4,2,2]
 
 enum RowFilter: u8
 {
@@ -103,7 +103,7 @@ public struct Decoder
     outChannels:    s32
     dcmpBuf:        Array'u8
     dstPixels:      ^u8
-    dstPixelsSize:  uint
+    dstPixelsSize:  u64
     chunkTRNS:      Chunk
     seenTRSN:       bool
     seenBKGD:       bool
@@ -293,17 +293,17 @@ impl Decoder
         }
     }
 
-    mtd getStrideIn(width: u32)->uint
+    mtd getStrideIn(width: u32)->u64
     {
         if header.bitDepth < 8
-            return cast(uint) ((inChannels * width * header.bitDepth) + 7) / 8
-        return cast(uint) inChannels * width
+            return cast(u64) ((inChannels * width * header.bitDepth) + 7) / 8
+        return cast(u64) inChannels * width
     }
 
     mtd defilter8(width, height: u32, input, output: ^u8)
     {
         rowStrideIn := getStrideIn(width)
-        rowStrideOut := cast(uint) inChannels * width
+        rowStrideOut := cast(u64) inChannels * width
         destOffset := rowStrideOut - rowStrideIn
 
         src := input

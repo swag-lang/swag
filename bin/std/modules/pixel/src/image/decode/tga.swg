@@ -32,7 +32,7 @@ public struct Decoder
 
 impl Decoder
 {
-    func uncompress(bpp: u8, dstBuffer: ^u8, srcBuffer, lastSrc: const ^u8, length: uint) throw
+    func uncompress(bpp: u8, dstBuffer: ^u8, srcBuffer, lastSrc: const ^u8, length: u64) throw
     {
         lastDest := dstBuffer + length
         dest := dstBuffer
@@ -75,7 +75,7 @@ impl Decoder
             }
             else
             {
-                val := cast(uint) (bpp8 * (num + 1))
+                val := cast(u64) (bpp8 * (num + 1))
                 if dest + val > lastDest { invalid = true; break; }
                 if src + val > lastSrc { invalid = true; break; }
                 Memory.copy(dest, src, val)

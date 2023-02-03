@@ -4,7 +4,7 @@ using Core.Utf8
 struct RuneCountTest
 {
 	in:  string
-	out: uint
+	out: u64
 }
 
 const runecounttests: [] RuneCountTest = [

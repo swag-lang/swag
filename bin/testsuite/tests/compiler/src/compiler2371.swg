@@ -11,7 +11,7 @@ struct BB
 
 impl AA
 {
-    func opIndex(using self, idx: uint)->const &BB
+    func opIndex(using self, idx: u64)->const &BB
     {
         return v
     }

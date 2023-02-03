@@ -1,7 +1,7 @@
 struct CStr
 {
     buffer:     ^u8
-    length:     uint
+    length:     u64
 }
 
 impl CStr
@@ -21,8 +21,8 @@ func cstr(x: string)->CStr
     countof := @countof(x)
     dataof := @dataof(x)
     tmp.length = countof
-    tmp.buffer = cast(^u8) @alloc(cast(uint) countof + 1)
-    @memcpy(tmp.buffer, dataof, cast(uint) countof)
+    tmp.buffer = cast(^u8) @alloc(cast(u64) countof + 1)
+    @memcpy(tmp.buffer, dataof, cast(u64) countof)
     tmp.buffer[countof] = 0
     return tmp
 }
@@ -31,5 +31,5 @@ func cstr(x: string)->CStr
 #test
 {
     v := cstr("toto")
-    @assert(@mkstring(v.buffer, cast(uint) v.length) == "toto")
+    @assert(@mkstring(v.buffer, cast(u64) v.length) == "toto")
 }

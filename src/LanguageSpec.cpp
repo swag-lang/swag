@@ -449,12 +449,10 @@ void LanguageSpec::setupKeywords()
     keywords.add("s16", TokenId::NativeType);
     keywords.add("s32", TokenId::NativeType);
     keywords.add("s64", TokenId::NativeType);
-    keywords.add("int", TokenId::NativeType);
     keywords.add("u8", TokenId::NativeType);
     keywords.add("u16", TokenId::NativeType);
     keywords.add("u32", TokenId::NativeType);
     keywords.add("u64", TokenId::NativeType);
-    keywords.add("uint", TokenId::NativeType);
     keywords.add("bool", TokenId::NativeType);
     keywords.add("string", TokenId::NativeType);
     keywords.add("cstring", TokenId::NativeType);
@@ -463,8 +461,6 @@ void LanguageSpec::setupKeywords()
 
 void LanguageSpec::setupNativeTypes()
 {
-    nativeTypes.add("uint", LiteralType::TT_UINT);
-    nativeTypes.add("int", LiteralType::TT_INT);
     nativeTypes.add("u64", LiteralType::TT_U64);
     nativeTypes.add("u32", LiteralType::TT_U32);
     nativeTypes.add("u16", LiteralType::TT_U16);

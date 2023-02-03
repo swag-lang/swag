@@ -20,13 +20,13 @@ impl Polygon
 {
     // Get the given point
     #[Swag.Inline]
-    mtd getPoint(i: uint)->Vector2
+    mtd getPoint(i: u64)->Vector2
     {
         return points.buffer[i]
     }
 
     // Get the given point, with an optional offset
-    mtd getPoint(i: uint, offset: f32)->Vector2
+    mtd getPoint(i: u64, offset: f32)->Vector2
     {
         if Math.isZeroEpsilon(offset)
             return points.buffer[i]
@@ -65,7 +65,7 @@ impl Polygon
     // Divide by adding points if two points are too far away
     mtd normalizeDist(dist: f32, closed: bool = true)
     {
-        i := 0'uint
+        i := 0'u64
         while i < (closed ? points.count : points.count - 1)
         {
             defer i += 1

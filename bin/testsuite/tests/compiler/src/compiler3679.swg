@@ -5,7 +5,7 @@ struct A
 
 impl A
 {
-    mtd opIndexAffect(index0, index1, index2: uint, value: s32)
+    mtd opIndexAffect(index0, index1, index2: u64, value: s32)
     {
         @assert(index0 == 4)
         @assert(index1 == 40)

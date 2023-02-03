@@ -9,7 +9,7 @@ struct(T) SoaTest
 
 impl SoaTest
 {
-    mtd reserve(size: uint)
+    mtd reserve(size: u64)
     {
     }
 }

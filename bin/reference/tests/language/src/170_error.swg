@@ -6,12 +6,12 @@
 // It can then raise an error with the 'throw' keyword, passing an error message.
 // When an error is raised by a function, the return value is always equal to the default value,
 // depending on the return type.
-func count(name: string)->uint throw
+func count(name: string)->u64 throw
 {
     if name == null
     {
         // This function will return 0 in case of an error, because this is the default
-        // value for 'uint'.
+        // value for 'u64'.
         throw "null pointer"
     }
 

@@ -35,7 +35,7 @@ struct Undo
     baseForm:   IForm
     serial:     u32
 
-    selection:      Array'uint
+    selection:      Array'u64
 
     toFreeForms:    Array'IForm
     oldForms:       Array'IForm
@@ -411,7 +411,7 @@ impl Undo
             }
 
         case MoveToFront:
-            capture.hotForm = Swag.UInt.Max
+            capture.hotForm = Swag.U64.Max
             dstIdx := cast(s32) (capture.forms.count - 1)
             for i := cast(s32) (selection.count - 1); i >= 0; i -= 1
             {
@@ -429,7 +429,7 @@ impl Undo
             }
 
         case MoveToBack:
-            capture.hotForm = Swag.UInt.Max
+            capture.hotForm = Swag.U64.Max
             dstIdx := 0
             for i := 0; i < selection.count; i += 1
             {
@@ -447,7 +447,7 @@ impl Undo
             }
 
         case MoveForward:
-            capture.hotForm = Swag.UInt.Max
+            capture.hotForm = Swag.U64.Max
             for i := cast(s32) (selection.count - 1); i >= 0; i -= 1
             {
                 srcIdx := selection[i]
@@ -462,7 +462,7 @@ impl Undo
             }
 
         case MoveBackward:
-            capture.hotForm = Swag.UInt.Max
+            capture.hotForm = Swag.U64.Max
             for i := 0; i < selection.count; i += 1
             {
                 srcIdx := selection[i]

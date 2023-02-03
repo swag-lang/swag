@@ -126,7 +126,7 @@ public impl IImageDecoder for Decoder
             dataof = @dataof(buffer) + bfOffBits
 
         bc8 := bh.biBitCount / 8
-        byteSize := cast(uint) (bh.biWidth * bh.biHeight * bc8)
+        byteSize := cast(u64) (bh.biWidth * bh.biHeight * bc8)
         if dataof + byteSize > last
             throw "invalid source buffer"
 
@@ -140,7 +140,7 @@ public impl IImageDecoder for Decoder
                 c = 4 - c
                 dst := result.pixels.buffer
                 src := dataof
-                dstW := cast(uint) result.width * result.bpp8
+                dstW := cast(u64) result.width * result.bpp8
                 srcW := dstW + c
                 loop result.height
                 {

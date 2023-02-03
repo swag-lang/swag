@@ -3,11 +3,11 @@
 
 // Find 'value' in a slice by performing a binary search.
 // The slice must be sorted in ascending order
-func(T) findSorted(values: const [..] T, value: T) -> {index: uint, success: bool}
+func(T) findSorted(values: const [..] T, value: T) -> {index: u64, success: bool}
 {
     var result: retval
 
-    min := 0'uint
+    min := 0'u64
     countof := @countof(values)
     max := @countof(values)
 
@@ -35,7 +35,7 @@ func(T) findSorted(values: const [..] T, value: T) -> {index: uint, success: boo
 
 // Find 'value' in a slice by performing a linear search.
 // O^n, but slice does not have to be sorted
-func(T) findLinear(values: const [..] T, value: T) -> {index: uint, success: bool}
+func(T) findLinear(values: const [..] T, value: T) -> {index: u64, success: bool}
 {
     var result: retval
     visit v, i: values

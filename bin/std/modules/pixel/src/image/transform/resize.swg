@@ -53,24 +53,24 @@ namespace ResizeTools
     struct Contribution
     {
         weights:        Array'f64
-        left, right:    int
+        left, right:    s64
     }
 
     struct LineContrib
     {
         row:        Array'Contribution
-        windowSize: int
-        lineLength: int
+        windowSize: s64
+        lineLength: s64
     }
 
-    func allocContributions(lineLength, windowSize: int)->LineContrib
+    func allocContributions(lineLength, windowSize: s64)->LineContrib
     {
         var res: retval
         res.windowSize = windowSize
         res.lineLength = lineLength
-        res.row.resize(cast(uint) lineLength)
+        res.row.resize(cast(u64) lineLength)
         loop i: lineLength
-            res.row[i].weights.resize(cast(uint) windowSize)
+            res.row[i].weights.resize(cast(u64) windowSize)
         return res;
     }
 
@@ -135,7 +135,7 @@ namespace ResizeTools
         return 0
     }
 
-    func calcContributions(lineSize, srcSize: int, scale: f64, rmode: Image.ResizeMode)->LineContrib
+    func calcContributions(lineSize, srcSize: s64, scale: f64, rmode: Image.ResizeMode)->LineContrib
     {
         filterWidth := getFilterWidth(rmode)
 
@@ -151,7 +151,7 @@ namespace ResizeTools
             cscale = 1.0
         }
 
-        windowSize := 2 * (cast(int) Math.ceil(width) + 1)
+        windowSize := 2 * (cast(s64) Math.ceil(width) + 1)
 
         var res: retval
         res = allocContributions(lineSize, windowSize)
@@ -160,8 +160,8 @@ namespace ResizeTools
         {
             center := u / scale
 
-            left  := Math.max(cast(int) Math.floor(center - width), 0)
-            right := Math.min(cast(int) Math.ceil(center + width), srcSize - 1)
+            left  := Math.max(cast(s64) Math.floor(center - width), 0)
+            right := Math.min(cast(s64) Math.ceil(center + width), srcSize - 1)
 
             // Cut edge points to fit in filter window in case of spill-off
             if right - left + 1 > windowSize
@@ -216,7 +216,7 @@ namespace ResizeTools
     }
 
     #[Swag.Safety("", false)]
-    func scaleRow(imgDst, imgSrc: *Image, row: int, contrib: *LineContrib)
+    func scaleRow(imgDst, imgSrc: *Image, row: s64, contrib: *LineContrib)
     {
         bpp8   := imgDst.bpp8
         dstRow := imgDst.pixels.buffer + row * bpp8 * imgDst.width
@@ -264,7 +264,7 @@ namespace ResizeTools
     }
 
     #[Swag.Safety("", false)]
-    func scaleCol(imgDst, imgSrc: *Image, col: int, contrib: *LineContrib)
+    func scaleCol(imgDst, imgSrc: *Image, col: s64, contrib: *LineContrib)
     {
         bpp8   := imgDst.bpp8
         dstCol := imgDst.pixels.buffer + col * bpp8
@@ -294,14 +294,14 @@ namespace ResizeTools
                     dr += f * ptr[2]
                     #if BPP == 32 da += f * ptr[3]
                     pw += 1
-                    ptr += cast(uint) w8Src
+                    ptr += cast(u64) w8Src
                 }
 
                 dstCol[0] = cast(u8) db
                 dstCol[1] = cast(u8) dg
                 dstCol[2] = cast(u8) dr
                 #if BPP == 32 dstCol[3] = cast(u8) da
-                dstCol += cast(uint) w8Dst
+                dstCol += cast(u64) w8Dst
             }
         }
 
@@ -315,29 +315,29 @@ namespace ResizeTools
 
     func scaleCol(imgDst, imgSrc: *Image, rmode: Image.ResizeMode)
     {
-        sh := cast(int) imgSrc.height
-        dh := cast(int) imgDst.height
+        sh := cast(s64) imgSrc.height
+        dh := cast(s64) imgDst.height
         contrib := calcContributions(dh, sh, cast(f64) dh / sh, rmode)
 
         f := {imgDst, imgSrc, contrib: &contrib}
         Jobs.parallelFor(|index, data| cast(u32) imgDst.width, &f)
         {
             params := cast(*@mktype(f)) data
-            scaleCol(params.imgDst, params.imgSrc, cast(int) index, params.contrib)
+            scaleCol(params.imgDst, params.imgSrc, cast(s64) index, params.contrib)
         }
     }
 
     func scaleRow(imgDst, imgSrc: *Image, rmode: Image.ResizeMode)
     {
-        sw := cast(int) imgSrc.width
-        dw := cast(int) imgDst.width
+        sw := cast(s64) imgSrc.width
+        dw := cast(s64) imgDst.width
         contrib := calcContributions(dw, sw, cast(f64) dw / sw, rmode)
 
         f := {imgDst, imgSrc, contrib: &contrib}
         Jobs.parallelFor(|index, data| cast(u32) imgDst.height, &f)
         {
             params := cast(*@mktype(f)) data
-            scaleRow(params.imgDst, params.imgSrc, cast(int) index, params.contrib)
+            scaleRow(params.imgDst, params.imgSrc, cast(s64) index, params.contrib)
         }
     }
 

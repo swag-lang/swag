@@ -28,10 +28,10 @@ impl I for A
     ptr := cast(*TT) &i
     //@print(&a, " ", ptr.obj)
 
-    t := cast(const *Swag.TypeInfoStruct) ptr.itable[cast,bit(uint) -1'int]
+    t := cast(const *Swag.TypeInfoStruct) ptr.itable[cast,bit(u64) -1's64]
     //@print(" ", t.fullname)
 
-    t1 := cast(const *Swag.TypeInfoStruct) ptr.itable[cast,bit(uint) -2'int]
+    t1 := cast(const *Swag.TypeInfoStruct) ptr.itable[cast,bit(u64) -2's64]
     //@print(" ", t1.fullname)
 
     var itf1: TT

@@ -3641,8 +3641,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                         break;
                     case NativeTypeKind::U64:
                     case NativeTypeKind::S64:
-                    case NativeTypeKind::UInt:
-                    case NativeTypeKind::Int:
                         builder.CreateRet(builder.CreateLoad(TO_PTR_I64(allocResult)));
                         break;
                     case NativeTypeKind::F32:
@@ -5306,8 +5304,6 @@ llvm::Type* BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParamete
             return llvm::Type::getInt32Ty(context);
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
-        case NativeTypeKind::Int:
-        case NativeTypeKind::UInt:
             return llvm::Type::getInt64Ty(context);
         case NativeTypeKind::F32:
             return llvm::Type::getFloatTy(context);
@@ -5620,8 +5616,6 @@ void BackendLLVM::getReturnResult(llvm::LLVMContext&     context,
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::S64:
-        case NativeTypeKind::UInt:
-        case NativeTypeKind::Int:
             if (imm)
                 returnResult = builder.getInt64(reg.u64);
             else

@@ -46,8 +46,6 @@ cast,unconst ?
 a = if b then c else d
 a = if b then c elif d then f else h
 -------------------------------------
-virer int/uint ?
--------------------------------------
 
 
 

@@ -4,7 +4,7 @@ using Swag, Core, Serialization
 struct Image
 {
     pixels:             Array'u8
-    size:               uint
+    size:               u64
     width, height:      s32
     width8:             s32
     pf:                 PixelFormat = undefined
@@ -74,7 +74,7 @@ impl Image
         bpp    = self.pf.bpp()
         bpp8   = cast(u8) (bpp >> 3)
         width8 = self.width * bpp8
-        size   = cast(uint) (self.width * self.height * bpp8)
+        size   = cast(u64) (self.width * self.height * bpp8)
     }
 
     // Allocate pixels
@@ -147,7 +147,7 @@ impl Image
                 userData := `p.userData
                 pix      := `buffer
 
-                index := (cast(uint) (pix - image.pixels.buffer)) / image.bpp8
+                index := (cast(u64) (pix - image.pixels.buffer)) / image.bpp8
                 x := cast(s32) index % image.width
                 y := cast(s32) index / image.width
 

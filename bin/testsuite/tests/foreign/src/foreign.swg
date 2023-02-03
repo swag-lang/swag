@@ -325,7 +325,7 @@ public func tcf_entry(param: ^void)->u32
     return 0
 }
 
-public func tcf_createThread(lambda: ThreadProc, userParam: uint)
+public func tcf_createThread(lambda: ThreadProc, userParam: u64)
 {
     var paramBC: [2] *void
     paramBC[0] = acast lambda

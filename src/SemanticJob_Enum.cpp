@@ -280,7 +280,6 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
                     enumNode->computedValue->reg.u32++;
                 break;
             case NativeTypeKind::U64:
-            case NativeTypeKind::UInt:
                 if (enumNode->computedValue->reg.u64 == UINT64_MAX)
                     return context->report({valNode, Fmt(Err(Err0714), valNode->token.ctext())});
                 if (isFlags && enumNode->computedValue->reg.u64)
@@ -309,7 +308,6 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
                 enumNode->computedValue->reg.s32++;
                 break;
             case NativeTypeKind::S64:
-            case NativeTypeKind::Int:
                 if (enumNode->computedValue->reg.s64 <= INT64_MIN || enumNode->computedValue->reg.s64 >= INT64_MAX)
                     return context->report({valNode, Fmt(Err(Err0719), valNode->token.ctext())});
                 enumNode->computedValue->reg.s64++;

@@ -219,7 +219,7 @@ impl PropWnd
             visit c: layout.childs
             {
                 btn := cast(*IconButton) c
-                kind := cast(FormShapeKind) cast(uint) btn.userData
+                kind := cast(FormShapeKind) cast(u64) btn.userData
                 btn.isChecked = curSel.kind == kind
                 btn.invalidate()
             }
@@ -230,7 +230,7 @@ impl PropWnd
         loop i: @countof(FormShapeKind)
         {
             btn0 := IconButton.create(frame.view, {})
-            btn0.userData = cast(*void) cast(uint) i
+            btn0.userData = cast(*void) cast(u64) i
             btn0.setForm(.RoundSquare)
             if curSel.kind == i btn0.isChecked = true
 
@@ -246,7 +246,7 @@ impl PropWnd
                 color := btn.getThemeColors().btnIcon_Icon
 
                 #[Swag.Complete]
-                switch cast(FormShapeKind) cast(uint) btn.userData
+                switch cast(FormShapeKind) cast(u64) btn.userData
                 {
                 case Ellipse:
                     radius := rect.width * 0.5
@@ -259,7 +259,7 @@ impl PropWnd
             }
 
             btn0.sigPressed += closure|me, layout|(btn) {
-                kind := cast(uint) btn.userData
+                kind := cast(u64) btn.userData
                 me.pushTypedValue(acast kind, @typeof(FormShape), @nameof(FormShape.kind), true)
                 me.updateBtnState(layout)
             }
@@ -278,7 +278,7 @@ impl PropWnd
         loop i: @countof(FormStepKind)
         {
             btn0 := IconButton.create(frame.view, {})
-            btn0.userData = cast(*void) cast(uint) i
+            btn0.userData = cast(*void) cast(u64) i
             btn0.setForm(.RoundSquare)
             me := self
             btn0.sigPaintIcon = closure|me|(btn, bc, pos)
@@ -292,7 +292,7 @@ impl PropWnd
                 color := btn.getThemeColors().btnIcon_Icon
 
                 #[Swag.Complete]
-                switch cast(FormStepKind) cast(uint) btn.userData
+                switch cast(FormStepKind) cast(u64) btn.userData
                 {
                 case Ellipse:
                     radius := rect.width * 0.5
@@ -305,7 +305,7 @@ impl PropWnd
             }
 
             btn0.sigPressed += closure|me|(btn) {
-                kind := cast(uint) btn.userData
+                kind := cast(u64) btn.userData
                 me.pushTypedValue(acast kind, @typeof(FormStep), @nameof(FormStep.kind), true)
             }
         }
@@ -326,7 +326,7 @@ impl PropWnd
             visit c: layout.childs
             {
                 btn := cast(*IconButton) c
-                cap := cast(LineCapStyle) cast(uint) btn.userData
+                cap := cast(LineCapStyle) cast(u64) btn.userData
                 btn.isChecked = curSel.beginCap == cap
                 btn.invalidate()
             }
@@ -336,7 +336,7 @@ impl PropWnd
         visit i: LineCapStyle
         {
             btn0 := IconButton.create(layout, {}, {0, 0, 0, 40})
-            btn0.userData = cast(*void) cast(uint) i
+            btn0.userData = cast(*void) cast(u64) i
             btn0.setForm(.RoundSquare)
             btn0.isChecked = curSel.beginCap == i
 
@@ -347,7 +347,7 @@ impl PropWnd
                 curSel := cast(*FormShape) me.getSelectedBaseForm()
                 rect := pos
                 rect.inflate(-9, -9)
-                cap := cast(LineCapStyle) cast(uint) btn.userData
+                cap := cast(LineCapStyle) cast(u64) btn.userData
                 pen := Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
                 pen.beginCapStyle = cap
                 pen.endCapStyle = .None
@@ -356,7 +356,7 @@ impl PropWnd
             }
 
             btn0.sigPressed += closure|me, layout|(btn) {
-                kind := cast(uint) btn.userData
+                kind := cast(u64) btn.userData
                 me.pushTypedValue(acast kind, @typeof(FormLine), @nameof(FormLine.beginCap), true)
                 me.updateBtnState(layout)
             }
@@ -377,7 +377,7 @@ impl PropWnd
             visit c: layout.childs
             {
                 btn := cast(*IconButton) c
-                cap := cast(LineCapStyle) cast(uint) btn.userData
+                cap := cast(LineCapStyle) cast(u64) btn.userData
                 btn.isChecked = curSel.endCap == cap
                 btn.invalidate()
             }
@@ -387,7 +387,7 @@ impl PropWnd
         visit i: LineCapStyle
         {
             btn0 := IconButton.create(layout, {}, {0, 0, 0, 40})
-            btn0.userData = cast(*void) cast(uint) i
+            btn0.userData = cast(*void) cast(u64) i
             btn0.setForm(.RoundSquare)
             btn0.isChecked = curSel.endCap == i
 
@@ -398,7 +398,7 @@ impl PropWnd
                 curSel := cast(*FormShape) me.getSelectedBaseForm()
                 rect := pos
                 rect.inflate(-9, -9)
-                cap := cast(LineCapStyle) cast(uint) btn.userData
+                cap := cast(LineCapStyle) cast(u64) btn.userData
                 pen := Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
                 pen.beginCapStyle = .None
                 pen.endCapStyle = cap
@@ -407,7 +407,7 @@ impl PropWnd
             }
 
             btn0.sigPressed += closure|me, layout|(btn) {
-                kind := cast(uint) btn.userData
+                kind := cast(u64) btn.userData
                 me.pushTypedValue(acast kind, @typeof(FormLine), @nameof(FormLine.endCap), true)
                 me.updateBtnState(layout)
             }
@@ -428,7 +428,7 @@ impl PropWnd
             visit c: layout.childs
             {
                 btn := cast(*IconButton) c
-                dash := cast(DashStyle) cast(uint) btn.userData
+                dash := cast(DashStyle) cast(u64) btn.userData
                 btn.isChecked = curSel.dashStyle == dash
                 btn.invalidate()
             }
@@ -440,7 +440,7 @@ impl PropWnd
             if i == .Pattern continue
 
             btn0 := IconButton.create(layout, {}, {0, 0, 0, 32})
-            btn0.userData = cast(*void) cast(uint) i
+            btn0.userData = cast(*void) cast(u64) i
             btn0.setForm(.RoundSquare)
             btn0.isChecked = curSel.dashStyle == i
 
@@ -451,13 +451,13 @@ impl PropWnd
                 curSel := cast(*FormShape) me.getSelectedBaseForm()
                 rect := pos
                 rect.inflate(-9, -9)
-                dash := cast(DashStyle) cast(uint) btn.userData
+                dash := cast(DashStyle) cast(u64) btn.userData
                 pen := Pen.createDash(dash, btn.getThemeColors().btnIcon_Icon, DashSize)
                 bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
             }
 
             btn0.sigPressed += closure|me, layout|(btn) {
-                kind := cast(uint) btn.userData
+                kind := cast(u64) btn.userData
                 me.pushTypedValue(acast kind, @typeof(BaseForm), @nameof(BaseForm.dashStyle), true)
                 me.updateBtnState(layout)
             }

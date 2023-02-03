@@ -700,8 +700,6 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
-        case NativeTypeKind::Int:
-        case NativeTypeKind::UInt:
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicAddS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         default:
@@ -733,8 +731,6 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
-        case NativeTypeKind::Int:
-        case NativeTypeKind::UInt:
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicAndS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         default:
@@ -766,8 +762,6 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
-        case NativeTypeKind::Int:
-        case NativeTypeKind::UInt:
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicOrS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         default:
@@ -799,8 +793,6 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
-        case NativeTypeKind::Int:
-        case NativeTypeKind::UInt:
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicXorS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         default:
@@ -833,8 +825,6 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
-        case NativeTypeKind::Int:
-        case NativeTypeKind::UInt:
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicXchgS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         default:
@@ -868,8 +858,6 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
-        case NativeTypeKind::Int:
-        case NativeTypeKind::UInt:
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicCmpXchgS64, child0->resultRegisterRC, child1->resultRegisterRC, child2->resultRegisterRC, node->resultRegisterRC);
             break;
         default:
@@ -999,7 +987,6 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             op = ByteCodeOp::IntrinsicS32x2;
             break;
         case NativeTypeKind::S64:
-        case NativeTypeKind::Int:
             op = ByteCodeOp::IntrinsicS64x2;
             break;
         case NativeTypeKind::U8:
@@ -1012,7 +999,6 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             op = ByteCodeOp::IntrinsicU32x2;
             break;
         case NativeTypeKind::U64:
-        case NativeTypeKind::UInt:
             op = ByteCodeOp::IntrinsicU64x2;
             break;
         case NativeTypeKind::F32:
@@ -1072,7 +1058,6 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             op = ByteCodeOp::IntrinsicS32x1;
             break;
         case NativeTypeKind::S64:
-        case NativeTypeKind::Int:
             op = ByteCodeOp::IntrinsicS64x1;
             break;
         case NativeTypeKind::F32:

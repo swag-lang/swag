@@ -11,7 +11,7 @@ using Core
         arr.add(rand.nextS32(0, 100))
 
     arr.sort(func(x, y) => y <=> x)
-    @assert(!Slice.isSorted(@mkslice(arr.buffer, cast(uint) arr.count)))
+    @assert(!Slice.isSorted(@mkslice(arr.buffer, cast(u64) arr.count)))
     arr.sort()
-    @assert(Slice.isSorted(@mkslice(arr.buffer, cast(uint) arr.count)))
+    @assert(Slice.isSorted(@mkslice(arr.buffer, cast(u64) arr.count)))
 }

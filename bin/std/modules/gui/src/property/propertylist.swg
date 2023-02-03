@@ -116,7 +116,7 @@ private impl PropertyList
         case 16: val1s = dref cast(*string) ptrData
         }
 
-        idxSel := 0'uint
+        idxSel := 0'u64
         visit v, idx: typeEnum.values
         {
             switch typeEnum.rawType.sizeof
@@ -202,7 +202,7 @@ private impl PropertyList
         case U32:
             p := cast(^u32) ptrData
             ed.setText(Format.toString("%", dref p))
-        case U64, UInt:
+        case U64:
             p := cast(^u64) ptrData
             ed.setText(Format.toString("%", dref p))
         case S8:
@@ -214,7 +214,7 @@ private impl PropertyList
         case S32:
             p := cast(^s32) ptrData
             ed.setText(Format.toString("%", dref p))
-        case S64, Int:
+        case S64:
             p := cast(^s64) ptrData
             ed.setText(Format.toString("%", dref p))
         case F32:
@@ -265,7 +265,7 @@ private impl PropertyList
             ed.setInputU64(acast Swag.U16.Min, acast Swag.U16.Max)
         case U32:
             ed.setInputU64(acast Swag.U32.Min, acast Swag.U32.Max)
-        case U64, UInt:
+        case U64:
             ed.setInputU64(acast Swag.U64.Min, acast Swag.U64.Max)
         case S8:
             ed.setInputS64(acast Swag.S8.Min, acast Swag.S8.Max)
@@ -273,7 +273,7 @@ private impl PropertyList
             ed.setInputS64(acast Swag.S16.Min, acast Swag.S16.Max)
         case S32:
             ed.setInputS64(acast Swag.S32.Min, acast Swag.S32.Max)
-        case S64, Int:
+        case S64:
             ed.setInputS64(acast Swag.S64.Min, acast Swag.S64.Max)
         case F32, F64:
             ed.setInputF64()
@@ -424,7 +424,7 @@ impl PropertyList
         {
             if filter == null or @countof(filter) == 0
                 it.line.show()
-            elif Utf8.indexOf(it.filter.toSlice(), filter, comparisonType: Utf8.ComparisonType.Latin1NoCase) != Swag.UInt.Max
+            elif Utf8.indexOf(it.filter.toSlice(), filter, comparisonType: Utf8.ComparisonType.Latin1NoCase) != Swag.U64.Max
             {
                 it.line.show()
                 if it.forceShow

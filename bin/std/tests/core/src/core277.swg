@@ -1,9 +1,9 @@
 using Core
 
 #[Swag.ConstExpr]
-func maxSize(T: const [..] typeinfo)->uint
+func maxSize(T: const [..] typeinfo)->u64
 {
-    var ms: uint = 0
+    var ms: u64 = 0
     visit p: T
         ms = @max(p.sizeof, ms)
     return ms
@@ -20,7 +20,7 @@ impl AA
     #[Swag.ConstExpr]
     func isIn(V: typeinfo)->bool
     {
-        var ms: uint = 0
+        var ms: u64 = 0
         visit p: T
             if p == V return true
         return false

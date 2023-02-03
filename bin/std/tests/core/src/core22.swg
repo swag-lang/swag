@@ -10,7 +10,7 @@ using Core
 	cpt := 0
 	loop
 	{
-        sl := @mkslice(ptr, cast(uint) count)
+        sl := @mkslice(ptr, cast(u64) count)
 		(c, eat) := Core.Utf8.decodeRune(sl)
 		if !eat
 			break

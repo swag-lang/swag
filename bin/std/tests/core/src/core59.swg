@@ -2,7 +2,7 @@
 using Core
 
 //#[Swag.PrintBc]
-func fromCapa(capa: uint)->BitArray
+func fromCapa(capa: u64)->BitArray
 {
     var x: BitArray
     x.reserve(capa, false)

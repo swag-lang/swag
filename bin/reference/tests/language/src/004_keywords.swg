@@ -9,12 +9,10 @@ s8
 s16
 s32
 s64
-int
 u8
 u16
 u32
 u64
-uint
 f32
 f64
 bool

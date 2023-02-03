@@ -453,7 +453,7 @@ impl LinePath
             dist := point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
             if dist < minDist continue
 
-            tmp.insertAt(cast(uint) i + 1, {t, point})
+            tmp.insertAt(cast(u64) i + 1, {t, point})
             i -= 1
         }
 
@@ -487,7 +487,7 @@ impl LinePath
             dist := point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
             if dist < minDist continue
 
-            tmp.insertAt(cast(uint) i + 1, {t, point})
+            tmp.insertAt(cast(u64) i + 1, {t, point})
             i -= 1
         }
 
@@ -517,7 +517,7 @@ impl LinePath
             dist := point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
             if dist < minDist continue
 
-            tmp.insertAt(cast(uint) i + 1, {t, point})
+            tmp.insertAt(cast(u64) i + 1, {t, point})
             i -= 1
         }
 
@@ -548,7 +548,7 @@ impl LinePath
             dist := point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
             if dist < minDist continue
 
-            tmp.insertAt(cast(uint) i + 1, {angle, point})
+            tmp.insertAt(cast(u64) i + 1, {angle, point})
             i -= 1
         }
 

@@ -5,7 +5,7 @@ struct(T) A
 
 impl A
 {
-    mtd opIndex(i: uint)->s32
+    mtd opIndex(i: u64)->s32
     {
         #assert @typeof(T).fullname == "s32"
         return 0

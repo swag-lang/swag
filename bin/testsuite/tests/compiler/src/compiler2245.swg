@@ -20,7 +20,7 @@ func entry(param: ^void)->u32
     return 0
 }
 
-func create(lambda: ThreadProc, userParam: uint)
+func create(lambda: ThreadProc, userParam: u64)
 {
     var paramBC: [2] *void
     paramBC[0] = acast lambda

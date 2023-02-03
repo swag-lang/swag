@@ -3,13 +3,13 @@ using Core
 
 private impl RichEditCtrl
 {
-    mtd getSelectionRectRange(lineIndex: uint, rankBeg, rankEnd: *uint)->bool
+    mtd getSelectionRectRange(lineIndex: u64, rankBeg, rankEnd: *u64)->bool
     {
         line := lines[lineIndex]
         len  := line.length()
 
         x := getMarginLeft()
-        rb := 0'uint
+        rb := 0'u64
         while x < selRectangle.x and rb < len
         {
             x += getRuneSize(line, rb, x).x

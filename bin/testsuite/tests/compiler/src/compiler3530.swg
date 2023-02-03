@@ -1,12 +1,12 @@
-struct(T, N: uint) StaticArray
+struct(T, N: u64) StaticArray
 {
     buffer: [N] T
 }
 
 impl StaticArray
 {
-    mtdc opCount()->uint => N
-    mtdc opIndex(idx: uint)->T => buffer[idx]
+    mtdc opCount()->u64 => N
+    mtdc opIndex(idx: u64)->T => buffer[idx]
 }
 
 alias Vec2 = StaticArray'(f32, 2)

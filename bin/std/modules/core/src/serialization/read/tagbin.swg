@@ -27,8 +27,8 @@ using Swag
 
 struct TagBinSection
 {
-    mapSeek:        HashTable'(u32, uint)
-    afterFatSeek:   uint
+    mapSeek:        HashTable'(u32, u64)
+    afterFatSeek:   u64
     version:        u32
     kind:           SectionKind
     skipFat:        bool
@@ -95,7 +95,7 @@ private impl TagBin
         if Reflection.isStruct(to)
             toStruct = cast(const *Swag.TypeInfoStruct) to
 
-        // int/float/bool/rune to int/float/bool/rune
+        // s64/float/bool/rune to s64/float/bool/rune
         if Reflection.isSimpleNative(to) and Reflection.isSimpleNative(from)
         {
             convertNextNative = cast(const *Swag.TypeInfoNative) from
@@ -239,8 +239,8 @@ impl TagBin
         sig := stream.readNative'u32()
         if sig != Write.TagBinSignatures.Fat
             throw ErrorFat
-        fatSeek  := stream.readNative'uint()
-        fatCount := stream.readNative'uint()
+        fatSeek  := stream.readNative'u64()
+        fatCount := stream.readNative'u64()
 
         // We have a fat, but we do not want it !
         if skipFat
@@ -248,7 +248,7 @@ impl TagBin
             sec.afterFatSeek = fatSeek
             sec.afterFatSeek += @sizeof(u32) // Signature
             sec.afterFatSeek += fatCount * @sizeof(u32) // Crc
-            sec.afterFatSeek += fatCount * @sizeof(uint) // Element seek
+            sec.afterFatSeek += fatCount * @sizeof(u64) // Element seek
         }
         else
         {
@@ -261,7 +261,7 @@ impl TagBin
             while fatCount
             {
                 crc  := stream.readNative'u32()
-                seek := stream.readNative'uint()
+                seek := stream.readNative'u64()
                 sec.mapSeek.add(crc, seek)
                 fatCount -= 1
             }
@@ -395,7 +395,7 @@ impl TagBin
             sig := stream.readNative'u32()
             if sig != Write.TagBinSignatures.Sequence
                 throw ErrorCorrupted
-            discard stream.readNative'uint()
+            discard stream.readNative'u64()
         }
 
         return true
@@ -416,7 +416,7 @@ impl TagBin
     {
     }
 
-    mtd beginSequence(typeElem: typeinfo, data: *u8, countElem: *uint)->bool throw
+    mtd beginSequence(typeElem: typeinfo, data: *u8, countElem: *u64)->bool throw
     {
         orgCount := dref countElem
 
@@ -434,7 +434,7 @@ impl TagBin
                 throw ErrorCorrupted
 
             // 0 for a dynamic array, > 0 for a static array
-            dref countElem = stream.readNative'uint()
+            dref countElem = stream.readNative'u64()
         }
 
         // If we need to type conversion, we must read element by element
@@ -485,7 +485,7 @@ impl TagBin
     }
 
     #[Warn("wrn0005", WarnLevel.Disable)]
-    mtd toNextSequenceElement(countElem: *uint)->bool
+    mtd toNextSequenceElement(countElem: *u64)->bool
     {
         if dref countElem == 0
             return false
@@ -509,7 +509,7 @@ impl TagBin
         #if NT == Core.String
         {
             var result: retval
-            count := cast(uint) stream.readNative'u32()
+            count := cast(u64) stream.readNative'u32()
             result.reserve(count)
             stream.readBytes(result.buffer, count)
             result.length = count
@@ -534,7 +534,7 @@ impl TagBin
                 case U32, Rune:
                     v := stream.readNative'u32()
                     return cast(NT) v
-                case U64, UInt:
+                case U64:
                     v := stream.readNative'u64()
                     return cast(NT) v
                 case S8:
@@ -546,7 +546,7 @@ impl TagBin
                 case S32:
                     v := stream.readNative's32()
                     return cast(NT) v
-                case S64, Int:
+                case S64:
                     v := stream.readNative's64()
                     return cast(NT) v
                 case F32:

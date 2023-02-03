@@ -98,7 +98,7 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
         if ptr[nextIdx] == "%"'u8
         {
             // Add remaining text, and starts again after the mark
-            buf.addBytes(cast(const [..] u8) @mkslice(ptr + idx, cast(uint) (nextIdx - idx)))
+            buf.addBytes(cast(const [..] u8) @mkslice(ptr + idx, cast(u64) (nextIdx - idx)))
             idx = nextIdx + 1
             nextIdx = idx
 
@@ -127,7 +127,7 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
                 if ptr[nextIdx]
                     nextIdx += 1
                 idx = nextIdx
-                strFormat = @mkslice(ptrFormat, cast(uint) countFormat)
+                strFormat = @mkslice(ptrFormat, cast(u64) countFormat)
             }
 
             // Deal with the parameter
@@ -143,7 +143,7 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
 
     // Add remaining text
     if idx < nextIdx
-        buf.addBytes(cast(const [..] u8) @mkslice(ptr + idx, cast(uint) nextIdx - idx))
+        buf.addBytes(cast(const [..] u8) @mkslice(ptr + idx, cast(u64) nextIdx - idx))
 }
 
 // String interolation
@@ -161,12 +161,12 @@ func toInterp(buf: *ConcatBuffer, exp: string)
     {
         var sb: StrConv.StringBuilder
 
-        idx := 0'uint
+        idx := 0'u64
         while idx != @countof(exp)
         {
             // To the interpolated string if it exists
             idxE := Utf8.indexOf(exp, "{"'rune, startByteIndex: idx)
-            if idxE == Swag.UInt.Max
+            if idxE == Swag.U64.Max
             {
                 sb.appendFormat("buf.addBytes(\"%\")\n", exp[idx..])
                 break
@@ -178,7 +178,7 @@ func toInterp(buf: *ConcatBuffer, exp: string)
             // Find the end of the interpolated string, or the start of the format
             idx = idxE + 1
             idxE = Utf8.indexOf(exp, ["}"'rune, ":"'rune], startByteIndex: idx)
-            if idxE == Swag.UInt.Max
+            if idxE == Swag.U64.Max
             {
                 sb.appendFormat("buf.addBytes(\"%\")\n", exp[idx-1..])
                 break
@@ -192,7 +192,7 @@ func toInterp(buf: *ConcatBuffer, exp: string)
             if exp[idxE] == ":"'u8
             {
                 idxE = Utf8.indexOf(exp, "}", startByteIndex: idx)
-                if idxE != Swag.UInt.Max
+                if idxE != Swag.U64.Max
                 {
                     format = exp[idx..<idxE]
                     idx = idxE + 1

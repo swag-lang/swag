@@ -6,7 +6,7 @@ struct A
 impl A
 {
     #[Swag.Inline]
-    mtd(op: string) opIndexAssign(index: uint, value: s32)
+    mtd(op: string) opIndexAssign(index: u64, value: s32)
     {
         x[index] = value
     }

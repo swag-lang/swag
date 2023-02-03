@@ -48,7 +48,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         }
 
         SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, Fmt(Err(Err0579), rightTypeInfo->getDisplayNameC())}));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, left, right, CASTFLAG_TRY_COERCE));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, left, right, CASTFLAG_TRY_COERCE));
         return true;
     }
 
@@ -74,7 +74,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
 
         node->typeInfo = rightTypeInfo;
         SWAG_VERIFY(leftTypeInfo->isNativeInteger(), context->report({left, Fmt(Err(Err0579), leftTypeInfo->getDisplayNameC())}));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, right, left, CASTFLAG_TRY_COERCE));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, right, left, CASTFLAG_TRY_COERCE));
         return true;
     }
 
@@ -93,8 +93,6 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     case NativeTypeKind::F32:
     case NativeTypeKind::F64:
     case NativeTypeKind::Rune:
-    case NativeTypeKind::Int:
-    case NativeTypeKind::UInt:
         break;
     case NativeTypeKind::String:
     {
@@ -135,7 +133,6 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
             node->computedValue->reg.s64 = left->computedValue->reg.s32 + right->computedValue->reg.s32;
             break;
         case NativeTypeKind::S64:
-        case NativeTypeKind::Int:
             if (addWillOverflow(node, left->computedValue->reg.s64, right->computedValue->reg.s64))
                 return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS64)});
             node->computedValue->reg.s64 = left->computedValue->reg.s64 + right->computedValue->reg.s64;
@@ -147,7 +144,6 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
             node->computedValue->reg.u64 = left->computedValue->reg.u32 + right->computedValue->reg.u32;
             break;
         case NativeTypeKind::U64:
-        case NativeTypeKind::UInt:
             if (addWillOverflow(node, left->computedValue->reg.u64, right->computedValue->reg.u64))
                 return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU64)});
             node->computedValue->reg.u64 = left->computedValue->reg.u64 + right->computedValue->reg.u64;
@@ -205,7 +201,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
         if (rightTypeInfo->isPointer())
         {
             SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
-            node->typeInfo = g_TypeMgr->typeInfoInt;
+            node->typeInfo = g_TypeMgr->typeInfoS64;
             return true;
         }
 
@@ -219,7 +215,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
         }
 
         SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, Fmt(Err(Err0579), rightTypeInfo->getDisplayNameC())}));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, left, right, CASTFLAG_TRY_COERCE));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, left, right, CASTFLAG_TRY_COERCE));
         return true;
     }
 
@@ -237,8 +233,6 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
     case NativeTypeKind::F32:
     case NativeTypeKind::F64:
     case NativeTypeKind::Rune:
-    case NativeTypeKind::Int:
-    case NativeTypeKind::UInt:
         break;
     default:
     {
@@ -262,7 +256,6 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
             node->computedValue->reg.s64 = left->computedValue->reg.s32 - right->computedValue->reg.s32;
             break;
         case NativeTypeKind::S64:
-        case NativeTypeKind::Int:
             if (subWillOverflow(node, left->computedValue->reg.s64, right->computedValue->reg.s64))
                 return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS64)});
             node->computedValue->reg.s64 = left->computedValue->reg.s64 - right->computedValue->reg.s64;
@@ -274,7 +267,6 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
             node->computedValue->reg.u64 = left->computedValue->reg.u32 - right->computedValue->reg.u32;
             break;
         case NativeTypeKind::U64:
-        case NativeTypeKind::UInt:
             if (subWillOverflow(node, left->computedValue->reg.u64, right->computedValue->reg.u64))
                 return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU64)});
             node->computedValue->reg.u64 = left->computedValue->reg.u64 - right->computedValue->reg.u64;
@@ -331,8 +323,6 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
     case NativeTypeKind::F32:
     case NativeTypeKind::F64:
     case NativeTypeKind::Rune:
-    case NativeTypeKind::Int:
-    case NativeTypeKind::UInt:
         break;
     default:
     {
@@ -355,7 +345,6 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
             node->computedValue->reg.s64 = left->computedValue->reg.s32 * right->computedValue->reg.s32;
             break;
         case NativeTypeKind::S64:
-        case NativeTypeKind::Int:
             if (mulWillOverflow(node, left->computedValue->reg.s64, right->computedValue->reg.s64))
                 return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS64)});
             node->computedValue->reg.s64 = left->computedValue->reg.s64 * right->computedValue->reg.s64;
@@ -367,7 +356,6 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
             node->computedValue->reg.u64 = left->computedValue->reg.u32 * right->computedValue->reg.u32;
             break;
         case NativeTypeKind::U64:
-        case NativeTypeKind::UInt:
             if (mulWillOverflow(node, left->computedValue->reg.u64, right->computedValue->reg.u64))
                 return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU64)});
             node->computedValue->reg.u64 = left->computedValue->reg.u64 * right->computedValue->reg.u64;
@@ -436,8 +424,6 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
     case NativeTypeKind::F32:
     case NativeTypeKind::F64:
     case NativeTypeKind::Rune:
-    case NativeTypeKind::Int:
-    case NativeTypeKind::UInt:
         break;
     default:
     {
@@ -460,7 +446,6 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
             node->computedValue->reg.s64 = left->computedValue->reg.s32 / right->computedValue->reg.s32;
             break;
         case NativeTypeKind::S64:
-        case NativeTypeKind::Int:
             if (right->computedValue->reg.s64 == 0)
                 return context->report({right, Err(Err0150), Hnt(Hnt0033)});
             node->computedValue->reg.s64 = left->computedValue->reg.s64 / right->computedValue->reg.s64;
@@ -472,7 +457,6 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
             node->computedValue->reg.u64 = left->computedValue->reg.u32 / right->computedValue->reg.u32;
             break;
         case NativeTypeKind::U64:
-        case NativeTypeKind::UInt:
             if (right->computedValue->reg.u64 == 0)
                 return context->report({right, Err(Err0150), Hnt(Hnt0033)});
             node->computedValue->reg.u64 = left->computedValue->reg.u64 / right->computedValue->reg.u64;
@@ -533,8 +517,6 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
     case NativeTypeKind::U32:
     case NativeTypeKind::U64:
     case NativeTypeKind::Rune:
-    case NativeTypeKind::Int:
-    case NativeTypeKind::UInt:
         break;
     default:
         return context->report({node, Fmt(Err(Err0157), leftTypeInfo->getDisplayNameC())});
@@ -552,7 +534,6 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
             node->computedValue->reg.s64 = left->computedValue->reg.s32 % right->computedValue->reg.s32;
             break;
         case NativeTypeKind::S64:
-        case NativeTypeKind::Int:
             if (right->computedValue->reg.s64 == 0)
                 return context->report({right, Err(Err0150), Hnt(Hnt0033)});
             node->computedValue->reg.s64 = left->computedValue->reg.s64 % right->computedValue->reg.s64;
@@ -564,7 +545,6 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
             node->computedValue->reg.u64 = left->computedValue->reg.u32 % right->computedValue->reg.u32;
             break;
         case NativeTypeKind::U64:
-        case NativeTypeKind::UInt:
             if (right->computedValue->reg.u64 == 0)
                 return context->report({right, Err(Err0150), Hnt(Hnt0033)});
             node->computedValue->reg.u64 = left->computedValue->reg.u64 % right->computedValue->reg.u64;
@@ -606,8 +586,6 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
     case NativeTypeKind::U32:
     case NativeTypeKind::U64:
     case NativeTypeKind::Rune:
-    case NativeTypeKind::Int:
-    case NativeTypeKind::UInt:
         break;
     default:
     {
@@ -643,8 +621,6 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
-        case NativeTypeKind::Int:
-        case NativeTypeKind::UInt:
             node->computedValue->reg.u64 = left->computedValue->reg.u64 | right->computedValue->reg.u64;
             break;
         default:
@@ -719,8 +695,6 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
     case NativeTypeKind::U32:
     case NativeTypeKind::U64:
     case NativeTypeKind::Rune:
-    case NativeTypeKind::Int:
-    case NativeTypeKind::UInt:
         break;
     default:
     {
@@ -756,8 +730,6 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
-        case NativeTypeKind::Int:
-        case NativeTypeKind::UInt:
             node->computedValue->reg.u64 = left->computedValue->reg.u64 & right->computedValue->reg.u64;
             break;
         default:
@@ -845,8 +817,6 @@ bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* r
     case NativeTypeKind::U32:
     case NativeTypeKind::U64:
     case NativeTypeKind::Rune:
-    case NativeTypeKind::Int:
-    case NativeTypeKind::UInt:
         break;
     default:
     {
@@ -879,8 +849,6 @@ bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* r
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
-        case NativeTypeKind::Int:
-        case NativeTypeKind::UInt:
             node->computedValue->reg.s64 = left->computedValue->reg.s64 ^ right->computedValue->reg.s64;
             break;
         default:
@@ -1123,7 +1091,6 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
             ByteCodeRun::executeLeftShift(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 32, true, isSmall);
             break;
         case NativeTypeKind::S64:
-        case NativeTypeKind::Int:
             if (leftShiftWillOverflow<int64_t, true>(node, left->computedValue->reg.s64, right->computedValue->reg.u32, isSmall))
                 return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoS64)});
             ByteCodeRun::executeLeftShift(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 64, true, isSmall);
@@ -1146,7 +1113,6 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
             ByteCodeRun::executeLeftShift(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 32, false, isSmall);
             break;
         case NativeTypeKind::U64:
-        case NativeTypeKind::UInt:
             if (leftShiftWillOverflow<uint64_t, false>(node, left->computedValue->reg.u64, right->computedValue->reg.u32, isSmall))
                 return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeft, g_TypeMgr->typeInfoU64)});
             ByteCodeRun::executeLeftShift(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 64, false, isSmall);
@@ -1220,7 +1186,6 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
             ByteCodeRun::executeRightShift(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 32, true, isSmall);
             break;
         case NativeTypeKind::S64:
-        case NativeTypeKind::Int:
             if (rightShiftWillOverflow<int64_t, true>(node, left->computedValue->reg.s64, right->computedValue->reg.u32, isSmall))
                 return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftRight, g_TypeMgr->typeInfoS64)});
             ByteCodeRun::executeRightShift(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 64, true, isSmall);
@@ -1243,7 +1208,6 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
             ByteCodeRun::executeRightShift(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 32, false, isSmall);
             break;
         case NativeTypeKind::U64:
-        case NativeTypeKind::UInt:
             if (rightShiftWillOverflow<uint64_t, false>(node, left->computedValue->reg.u64, right->computedValue->reg.u32, isSmall))
                 return context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftRight, g_TypeMgr->typeInfoU64)});
             ByteCodeRun::executeRightShift(&node->computedValue->reg, left->computedValue->reg, right->computedValue->reg, 64, false, isSmall);

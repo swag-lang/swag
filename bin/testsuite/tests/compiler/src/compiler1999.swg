@@ -3,7 +3,7 @@ func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
     if(@countof(values) == 0)
         return
 
-    begin := 0'uint
+    begin := 0'u64
     end := @countof(values) - 1
     buffer := @dataof(values)
 
@@ -37,20 +37,20 @@ func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
 
         // To avoid too much recursions, we recurse only for the smaller partition
         #[Swag.Safety("over", false)]
-        set1 := cast(int) ((low - 1) - begin)
+        set1 := cast(s64) ((low - 1) - begin)
         #[Swag.Safety("over", false)]
-        set2 := cast(int) (end - (high + 1))
+        set2 := cast(s64) (end - (high + 1))
 
         if set1 > 0 and set2 > 0
         {
             if set1 <= set2
             {
-                sortQuick(@mkslice(buffer + begin, cast(uint) (low - begin) + 1), cb);
+                sortQuick(@mkslice(buffer + begin, cast(u64) (low - begin) + 1), cb);
                 begin = high + 1
             }
             else
             {
-                sortQuick(@mkslice(buffer + high + 1, cast(uint) (end - high) + 1), cb);
+                sortQuick(@mkslice(buffer + high + 1, cast(u64) (end - high) + 1), cb);
                 end = low - 1
             }
         }

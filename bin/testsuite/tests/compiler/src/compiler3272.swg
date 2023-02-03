@@ -6,7 +6,7 @@ struct C
 struct A {}
 impl A
 {
-    mtd opIndex(x: uint)->*C
+    mtd opIndex(x: u64)->*C
     {
         return null
     }

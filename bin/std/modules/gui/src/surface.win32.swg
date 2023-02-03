@@ -28,7 +28,7 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
     // Associate pointer to surface with 'hWnd'
     if msg == WM_CREATE
     {
-        lpcs := cast(*CREATESTRUCTW) cast(uint) lParam
+        lpcs := cast(*CREATESTRUCTW) cast(u64) lParam
         SetWindowLongPtrW(hWnd, GWLP_USERDATA, lpcs.lpCreateParams)
     }
 
@@ -114,7 +114,7 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
                 catch GetMonitorInfoA(hm, &info)
                 sdw := cast(s32) surface.app.theme.metrics.surfaceWnd_ShadowSize
 
-                mm := cast(*MINMAXINFO) cast(uint) lParam
+                mm := cast(*MINMAXINFO) cast(u64) lParam
                 mm.ptMaxPosition.x = (info.rcWork.left - info.rcMonitor.left) - sdw
                 mm.ptMaxPosition.y = (info.rcWork.top - info.rcMonitor.top) - sdw
                 mm.ptMaxSize.x     = (info.rcWork.right - info.rcWork.left) + 2 * sdw

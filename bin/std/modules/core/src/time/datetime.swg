@@ -40,7 +40,7 @@ impl DateTime
     #[Swag.Inline]
     mtdc opEquals(other: Self)->bool
     {
-        return Memory.compare(self, other, cast(uint) @sizeof(Self)) == 0
+        return Memory.compare(self, other, cast(u64) @sizeof(Self)) == 0
     }
 
     mtdc opCmp(other: DateTime)->s32
@@ -118,7 +118,7 @@ impl DateTime
                 if @mkstring(@dataof(buf), Math.min(@countof(buf), len)) == dow
                 {
                     dayOfWeek = acast idx
-                    buf = Tokenize.eatCount(buf, cast(uint) len)
+                    buf = Tokenize.eatCount(buf, cast(u64) len)
                     result.eat += cast(u32) len
                     done = true
                     break
@@ -142,7 +142,7 @@ impl DateTime
                 if @mkstring(@dataof(buf), Math.min(@countof(buf), len)) == dow
                 {
                     result.value.month = cast(u16) idx + 1
-                    buf = Tokenize.eatCount(buf, cast(uint) len)
+                    buf = Tokenize.eatCount(buf, cast(u64) len)
                     result.eat += cast(u32) len
                     done = true
                     break
@@ -164,7 +164,7 @@ impl DateTime
                 throw StrConv.ParseErrorInvalid
             result.eat += eat2
             result.value.day = day
-            buf = Tokenize.eatCount(buf, cast(uint) eat2)
+            buf = Tokenize.eatCount(buf, cast(u64) eat2)
 
             // Blank
             if !@countof(buf) or buf[0] != " "'u8
@@ -178,7 +178,7 @@ impl DateTime
                 throw StrConv.ParseErrorInvalid
             result.value.year = year
             result.eat += eat3
-            buf = Tokenize.eatCount(buf, cast(uint) eat3)
+            buf = Tokenize.eatCount(buf, cast(u64) eat3)
 
             // Check day of week
             if checkDate and dayOfWeek != result.value.dayOfWeek()
@@ -192,7 +192,7 @@ impl DateTime
                 throw StrConv.ParseErrorInvalid
             result.value.year = year
             result.eat += eat0
-            buf = Tokenize.eatCount(buf, cast(uint) eat0)
+            buf = Tokenize.eatCount(buf, cast(u64) eat0)
             if !@countof(buf) or buf[0] != "-"'u8
                 throw StrConv.ParseErrorInvalid
             buf = Tokenize.eatCount(buf, 1)
@@ -204,7 +204,7 @@ impl DateTime
                 throw StrConv.ParseErrorInvalid
             result.eat += eat1
             result.value.month = month
-            buf = Tokenize.eatCount(buf, cast(uint) eat1)
+            buf = Tokenize.eatCount(buf, cast(u64) eat1)
             if !@countof(buf) or buf[0] != "-"'u8
                 throw StrConv.ParseErrorInvalid
             buf = Tokenize.eatCount(buf, 1)
@@ -216,7 +216,7 @@ impl DateTime
                 throw StrConv.ParseErrorInvalid
             result.eat += eat2
             result.value.day = day
-            buf = Tokenize.eatCount(buf, cast(uint) eat2)
+            buf = Tokenize.eatCount(buf, cast(u64) eat2)
         }
 
         // Blank
@@ -231,7 +231,7 @@ impl DateTime
             throw StrConv.ParseErrorInvalid
         result.eat += eat3
         result.value.hour = hour
-        buf = Tokenize.eatCount(buf, cast(uint) eat3)
+        buf = Tokenize.eatCount(buf, cast(u64) eat3)
         if !@countof(buf) or buf[0] != ":"'u8
             throw StrConv.ParseErrorInvalid
         buf = Tokenize.eatCount(buf, 1)
@@ -243,7 +243,7 @@ impl DateTime
             throw StrConv.ParseErrorInvalid
         result.eat += eat4
         result.value.minute = minute
-        buf = Tokenize.eatCount(buf, cast(uint) eat4)
+        buf = Tokenize.eatCount(buf, cast(u64) eat4)
         if !@countof(buf) or buf[0] != ":"'u8
             throw StrConv.ParseErrorInvalid
         buf = Tokenize.eatCount(buf, 1)
@@ -255,7 +255,7 @@ impl DateTime
             throw StrConv.ParseErrorInvalid
         result.eat += eat5
         result.value.second = second
-        buf = Tokenize.eatCount(buf, cast(uint) eat5)
+        buf = Tokenize.eatCount(buf, cast(u64) eat5)
 
         // Milliseconds
         if fmt == .DateTimeMs or fmt == .IsoMs
@@ -270,7 +270,7 @@ impl DateTime
                 throw StrConv.ParseErrorInvalid
             result.eat += eat6
             result.value.millisecond = millisecond
-            buf = Tokenize.eatCount(buf, cast(uint) eat6)
+            buf = Tokenize.eatCount(buf, cast(u64) eat6)
         }
 
         if checkDate and !result.value.isValid()

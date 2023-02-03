@@ -6,7 +6,7 @@ public struct RichEditLine
     chars:              Array'rune
     styles:             Array'RichEditStyleRef
     dirtyStyle:         bool
-    hidden:             uint
+    hidden:             u64
     drawingRect:        Math.Rectangle
     lexerEndingState:   s32
     lexerCptCmt:        s32
@@ -30,14 +30,14 @@ impl RichEditLine
         styles.clear()
     }
 
-    mtd insertRune(insIndex: uint, c: rune, txtStyle: u8)
+    mtd insertRune(insIndex: u64, c: rune, txtStyle: u8)
     {
         dirtyStyle = true
         chars.insertAt(insIndex, c)
         styles.insertAt(insIndex, txtStyle)
     }
 
-    mtd insertRunes(insIndex: uint, src: RichEditLine, srcIndex, srcCount: uint)
+    mtd insertRunes(insIndex: u64, src: RichEditLine, srcIndex, srcCount: u64)
     {
         dirtyStyle = true
         srcI := srcIndex
@@ -49,10 +49,10 @@ impl RichEditLine
         }
     }
 
-    mtd insertRunes(insIndex: uint, runes: const [..] rune, styles: const [..] u8)
+    mtd insertRunes(insIndex: u64, runes: const [..] rune, styles: const [..] u8)
     {
         dirtyStyle = true
-        srcI := 0'uint
+        srcI := 0'u64
         for i := insIndex; i < insIndex + @countof(runes); i += 1
         {
             self.chars.insertAt(i, #self.runes[srcI])
@@ -61,7 +61,7 @@ impl RichEditLine
         }
     }
 
-    mtd removeRunes(srcIndex, count: uint)
+    mtd removeRunes(srcIndex, count: u64)
     {
         if !count return
         dirtyStyle = true
@@ -69,7 +69,7 @@ impl RichEditLine
         styles.remove(srcIndex, count)
     }
 
-    mtd setLength(l: uint)
+    mtd setLength(l: u64)
     {
         chars.resize(l)
         styles.resize(l)

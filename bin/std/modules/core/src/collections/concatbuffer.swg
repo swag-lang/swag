@@ -4,9 +4,9 @@ struct ConcatBufferBucket
 {
     datas:          ^u8
     next:           *ConcatBufferBucket
-    count:          uint
-    size:           uint
-    countBefore:    uint
+    count:          u64
+    size:           u64
+    countBefore:    u64
 }
 
 struct ConcatBufferSeek
@@ -25,14 +25,14 @@ struct ConcatBuffer
     curBucket:          *ConcatBufferBucket
     lastBucket:         *ConcatBufferBucket
     currentSP:          ^u8
-    granularity:        uint = 1024
+    granularity:        u64 = 1024
     isAtEnd:            bool = true
     viewFirstBucket:    ConcatBufferBucket
 }
 
 impl ConcatBuffer
 {
-    mtd opCount()->uint
+    mtd opCount()->u64
     {
         return count()
     }
@@ -62,20 +62,20 @@ impl ConcatBuffer
     }
 
     // Returns the number of bytes
-    mtd count()->uint
+    mtd count()->u64
     {
         return lastBucket ? lastBucket.countBefore + lastBucket.count : 0
     }
 
     // Be sure that there is enough room to store at least 'numBytes' bytes
-    mtd grow(numBytes: uint)
+    mtd grow(numBytes: u64)
     {
         Debug.assert(isAtEnd)
 
         if lastBucket
         {
             // Enough room in the last bucket
-            seek := cast(uint) (currentSP - lastBucket.datas)
+            seek := cast(u64) (currentSP - lastBucket.datas)
             if seek + numBytes <= lastBucket.size
                 return
 
@@ -128,7 +128,7 @@ impl ConcatBuffer
     }
 
     // Set the granularity of datas when allocated new buckets. Minimum size is 4.
-    mtd setBucketSize(size: uint)
+    mtd setBucketSize(size: u64)
     {
         Debug.assert(size >= 4)
         granularity = size
@@ -220,7 +220,7 @@ impl ConcatBuffer
             // Overwrite
             if !isAtEnd
             {
-                curCount := cast(uint) (currentSP - curBucket.datas)
+                curCount := cast(u64) (currentSP - curBucket.datas)
                 remain := curBucket.count - curCount
                 while num > remain
                 {
@@ -256,7 +256,7 @@ impl ConcatBuffer
             // Append
             else
             {
-                curCount := cast(uint) (currentSP - lastBucket.datas)
+                curCount := cast(u64) (currentSP - lastBucket.datas)
                 remain := lastBucket.size - curCount
                 while num > remain
                 {
@@ -284,9 +284,9 @@ impl ConcatBuffer
     }
 
     // Get the linearized seek offset
-    func getOffset(seek: ConcatBufferSeek)->uint
+    func getOffset(seek: ConcatBufferSeek)->u64
     {
-        return seek.bucket ? seek.bucket.countBefore + cast(uint) (seek.sp - seek.bucket.datas) : 0
+        return seek.bucket ? seek.bucket.countBefore + cast(u64) (seek.sp - seek.bucket.datas) : 0
     }
 
     // Returns the current 'seek' in the buffer
@@ -299,13 +299,13 @@ impl ConcatBuffer
     }
 
     // Seek current write pointer
-    mtd moveSeek(num: uint)
+    mtd moveSeek(num: u64)
     {
         total := num
 
         if !isAtEnd
         {
-            seek := cast(uint) (currentSP - curBucket.datas)
+            seek := cast(u64) (currentSP - curBucket.datas)
             while curBucket.next and seek + total > curBucket.count
             {
                 total -= (curBucket.count - seek)
@@ -369,7 +369,7 @@ impl ConcatBuffer
         {
             curBucket, lastBucket = seek.bucket
             currentSP  = seek.sp
-            lastBucket.count = cast(uint) (seek.sp - seek.bucket.datas)
+            lastBucket.count = cast(u64) (seek.sp - seek.bucket.datas)
             isAtEnd = true
         }
     }
@@ -412,7 +412,7 @@ impl ConcatBuffer
         return result
     }
 
-    mtd eatBuffer()->{data: ^u8, size: uint, capacity: uint}
+    mtd eatBuffer()->{data: ^u8, size: u64, capacity: u64}
     {
         // Must be linear ?
         Debug.assert(lastBucket == firstBucket)

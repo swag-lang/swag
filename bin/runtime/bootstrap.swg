@@ -154,12 +154,6 @@ namespace Swag
         const Max = cast,bit(s64) 0x7FFFFFFF_FFFFFFFF
     }
 
-    namespace Int
-    {
-        const Min = cast,bit(s64) 0x80000000_00000000
-        const Max = cast,bit(s64) 0x7FFFFFFF_FFFFFFFF
-    }
-
     namespace U8
     {
         const Min = 0'u8
@@ -181,11 +175,6 @@ namespace Swag
     namespace U64
     {
         const Min = 0'u64
-        const Max = 0xFFFFFFFF_FFFFFFFF'u64
-    }
-
-    namespace UInt
-    {
         const Max = 0xFFFFFFFF_FFFFFFFF'u64
     }
 
@@ -253,8 +242,8 @@ namespace Swag
         callerLoc:  SourceCodeLocation
         hint:       string
         address:	*void
-        size:		uint
-        oldSize:	uint
+        size:		u64
+        oldSize:	u64
         mode =		AllocatorMode.Alloc
         alignement: u32
     }
@@ -268,12 +257,12 @@ namespace Swag
     {
         allocator:    IAllocator
         block:        ^u8
-        capacity:     uint
-        used:         uint
-        maxUsed:      uint
+        capacity:     u64
+        used:         u64
+        maxUsed:      u64
         firstLeak:    *void
-        totalLeak:    uint
-        maxLeak:      uint
+        totalLeak:    u64
+        maxLeak:      u64
     }
 
     #[Swag.EnumFlags]
@@ -366,8 +355,6 @@ namespace Swag
         Any
         CString
         Undefined
-        UInt
-        Int
     }
 
     #[Swag.EnumFlags]
@@ -422,7 +409,7 @@ namespace Swag
     {
         fullname:   string
         name:       string
-        sizeof:     uint
+        sizeof:     u64
         crc32:      u32
         flags       = TypeInfoFlags.Zero
         kind 	    = TypeInfoKind.Invalid
@@ -485,8 +472,8 @@ namespace Swag
         using base: 	TypeInfo
         pointedType:	const *TypeInfo
         finalType:		const *TypeInfo
-        count:			uint
-        totalCount:		uint
+        count:			u64
+        totalCount:		u64
     }
 
     struct TypeInfoSlice
@@ -687,14 +674,14 @@ func @compiler()->Swag.ICompiler;
 func @modules()->const [..] Swag.Module;
 func @gvtd()->const [..] Swag.Gvtd;
 
-func @alloc(size: uint)->*void;
-func @realloc(ptr: *void, size: uint)->*void;
+func @alloc(size: u64)->*void;
+func @realloc(ptr: *void, size: u64)->*void;
 func @free(ptr: *void);
-func @memset(dst: *void, value: u8, size: uint);
-func @memcpy(dst: *void, src: const *void, size: uint);
-func @memmove(dst: *void, src: const *void, size: uint);
-func @memcmp(dst, src: const *void, size: uint)->s32;
-func @strlen(str: cstring)->uint;
+func @memset(dst: *void, value: u8, size: u64);
+func @memcpy(dst: *void, src: const *void, size: u64);
+func @memmove(dst: *void, src: const *void, size: u64);
+func @memcmp(dst, src: const *void, size: u64)->s32;
+func @strlen(str: cstring)->u64;
 func @strcmp(str1, str2: cstring)->s32;
 
 // Atomic operations

@@ -128,13 +128,13 @@ func getAbsolute(fullname: string)->String throw
     tmpArr.reserve(100)
 
     winPath := Utf16.toZeroTerminated(fullname)
-    res := cast(uint) try GetFullPathNameW(@dataof(winPath), cast(DWORD) tmpArr.capacity, tmpArr.buffer, null)
+    res := cast(u64) try GetFullPathNameW(@dataof(winPath), cast(DWORD) tmpArr.capacity, tmpArr.buffer, null)
 
     // No enough room in destination, give it another try
     if res >= 100
     {
         tmpArr.reserve(res + 1)
-        res = cast(uint) try GetFullPathNameW(@dataof(winPath), cast(DWORD) tmpArr.capacity, tmpArr.buffer, null)
+        res = cast(u64) try GetFullPathNameW(@dataof(winPath), cast(DWORD) tmpArr.capacity, tmpArr.buffer, null)
     }
 
     tmpArr.count = res

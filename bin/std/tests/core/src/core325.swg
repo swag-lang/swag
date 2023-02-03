@@ -7,11 +7,11 @@ func sendMessage(text: string)
 
 func sendWords(text: string)
 {
-    start := 0'uint
+    start := 0'u64
     while start < @countof(text)
     {
         stop := Utf8.indexOf(text, " "'rune, start)
-        if stop == Swag.UInt.Max
+        if stop == Swag.U64.Max
             stop = @countof(text) - 1
         word := text[start..stop]
         sendMessage(word)

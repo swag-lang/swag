@@ -141,7 +141,7 @@ private impl FileDlg
             line := list.getSelectedLine()
             if !line
                 return
-            idx := cast(uint) line.userData0
+            idx := cast(u64) line.userData0
             self.setCurFolder(self.treePathStr[idx].toString())
         }
     }
@@ -162,7 +162,7 @@ private impl FileDlg
         curList = catch Directory.enumerate(curFolder, options)
 
         item := comboType.getSelectedItem()
-        filter := dlgOptions.filters[cast(uint) item.userData0]
+        filter := dlgOptions.filters[cast(u64) item.userData0]
         tokens := Tokenize.split(filter.item1, ";"'rune)
 
         visit &fi: curList
@@ -483,7 +483,7 @@ impl FileDlg
         var result: retval
 
         item := comboType.getSelectedItem()
-        fi := dlgOptions.filters[cast(uint) item.userData0]
+        fi := dlgOptions.filters[cast(u64) item.userData0]
 
         tokens := Tokenize.split(editFile.text, ";"'rune)
         visit t: tokens

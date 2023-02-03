@@ -19,11 +19,11 @@ func(T) insertionSort(values: [..] T, cb: closure(T, T)->s32)
 // Quick sort algorithm
 func(T) quickSort(values: [..] T, cb: closure(T, T)->s32)
 {
-    count := cast(int) @countof(values)
+    count := cast(s64) @countof(values)
     if count == 0
         return
 
-    begin  := 0'int
+    begin  := 0's64
     end    := count - 1
     buffer := @dataof(values)
 
@@ -58,7 +58,7 @@ func(T) quickSort(values: [..] T, cb: closure(T, T)->s32)
         set2 := end - (high + 1)
         if set1 > 0 and set2 > 0
         {
-            var first, last: int = undefined
+            var first, last: s64 = undefined
             if set1 <= set2
             {
                 first = begin

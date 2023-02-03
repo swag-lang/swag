@@ -5,7 +5,7 @@ struct AA
 
 impl AA
 {
-    func opIndexAffect(self, idx: uint, v: bool)
+    func opIndexAffect(self, idx: u64, v: bool)
     {
         @assert(self.x == 555)
     }

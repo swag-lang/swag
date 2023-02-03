@@ -107,7 +107,7 @@ func getJobToExec()->*Job
 
 func removeJobNoLock(job: *Job)
 {
-    g_pendingJobs.removeAt(cast(uint) job.pendingIndex)
+    g_pendingJobs.removeAt(cast(u64) job.pendingIndex)
     if job.pendingIndex < g_pendingJobs.count
         g_pendingJobs[job.pendingIndex].pendingIndex = job.pendingIndex
     job.pendingIndex = Swag.U32.Max
@@ -137,7 +137,7 @@ public func setNumWorkers(numWorkers: u32 = 0) throw
     g_eventDone.init(true, true)
 
     g_numWorkers = numWorkers orelse Hardware.getProcessorCount()
-    g_workers.resize(cast(uint) g_numWorkers)
+    g_workers.resize(cast(u64) g_numWorkers)
     visit &th: g_workers
         try th.init(&workerEntry)
     visit &th: g_workers
@@ -249,7 +249,7 @@ public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = n
 
     // Launch jobs
     var sliceJobs: Array'(SliceJob'T)
-    sliceJobs.resize(cast(uint) numWorkers)
+    sliceJobs.resize(cast(u64) numWorkers)
 
     ptr := @dataof(range)
     visit &j: sliceJobs
@@ -315,7 +315,7 @@ public func parallelFor(count: u32, userData: *void = null, stmt: code)
 
     // Launch jobs
     var sliceJobs: Array'ForJob
-    sliceJobs.resize(cast(uint) numWorkers)
+    sliceJobs.resize(cast(u64) numWorkers)
 
     startIndex := 0'u32
     visit &j: sliceJobs

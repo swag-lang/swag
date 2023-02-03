@@ -58,19 +58,19 @@ public struct Decoder
     canvas:     ^u8
     frame:      Array'u8
     table:      Table
-    animStart:  uint
-    animRemain: uint
+    animStart:  u64
+    animRemain: u64
     reachEnd:   bool
     initDone:   bool
 
     streamStart:    const ^u8
     stream:         const ^u8
-    streamLen:      uint
+    streamLen:      u64
 }
 
 impl Decoder
 {
-    mtd seek(len: uint) throw
+    mtd seek(len: u64) throw
     {
         if len > streamLen
             throw "read error"
@@ -78,7 +78,7 @@ impl Decoder
         streamLen -= len
     }
 
-    mtd read(dest: *u8, len: uint) throw
+    mtd read(dest: *u8, len: u64) throw
     {
         if len > streamLen
             throw "read error"
@@ -235,7 +235,7 @@ impl Decoder
         if table.nentries == table.bulk
         {
             table.bulk *= 2
-            table.entries.resize(cast(uint) table.bulk)
+            table.entries.resize(cast(u64) table.bulk)
         }
 
         table.entries[table.nentries] = {length, prefix, suffix}
@@ -272,10 +272,10 @@ impl Decoder
         if keySize < 2 or keySize > 8
             throw "invalid frame"
 
-        start := cast(uint) (stream - streamStart)
+        start := cast(u64) (stream - streamStart)
         remainStart := streamLen
         discardSubBlocks()
-        end := cast(uint) (stream - streamStart)
+        end := cast(u64) (stream - streamStart)
         remainEnd := streamLen
         stream = streamStart + start
         streamLen = remainStart
@@ -364,7 +364,7 @@ impl Decoder
         {
             /* Read LCT */
             lct.size = 1 << ((fisrz & 0x07) + 1)
-            read(lct.colors, 3'uint * lct.size)
+            read(lct.colors, 3'u64 * lct.size)
             palette = &lct
         }
         else
@@ -473,13 +473,13 @@ public impl Decoder
         /* Aspect ratio */
         discard readU8()
 
-        read(gct.colors, 3'uint * gct.size)
+        read(gct.colors, 3'u64 * gct.size)
         palette = &gct
 
         if decodePixels
         {
-            frame.resize(4'uint * width * height)
-            Memory.set(frame.buffer, bgIndex, cast(uint) (width * height))
+            frame.resize(4'u64 * width * height)
+            Memory.set(frame.buffer, bgIndex, cast(u64) (width * height))
             canvas  = &frame.buffer[width * height]
 
             bgcolor := &palette.colors[bgIndex*3]
@@ -490,7 +490,7 @@ public impl Decoder
             }
         }
 
-        animStart = cast(uint) (stream - streamStart)
+        animStart = cast(u64) (stream - streamStart)
         animRemain = streamLen
 
         discard getFrame(decodePixels)

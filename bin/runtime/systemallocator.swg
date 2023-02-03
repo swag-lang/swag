@@ -11,7 +11,7 @@ impl IAllocator for SystemAllocator
         if !request.address
             return
         ptr := cast(^^void) request.address
-        @free(ptr[cast,bit(uint) -1'int])
+        @free(ptr[cast,bit(u64) -1's64])
         request.address = null
     }
 
@@ -47,15 +47,15 @@ impl IAllocator for SystemAllocator
             size += alignement - 1
 
             storePtr := cast(^^void) request.address
-            realPtr := cast(^u8) @realloc(storePtr ? storePtr[cast,bit(uint) -1'int] : null, size)
+            realPtr := cast(^u8) @realloc(storePtr ? storePtr[cast,bit(u64) -1's64] : null, size)
 
             userPtr := realPtr + @sizeof(*void)
-            userPtr = cast(^u8) (cast(uint) userPtr & ~(cast(uint) alignement - 1))
+            userPtr = cast(^u8) (cast(u64) userPtr & ~(cast(u64) alignement - 1))
             if userPtr != realPtr + @sizeof(*void)
                 userPtr += alignement
 
             storePtr = cast(^^void) userPtr
-            storePtr[cast,bit(uint) -1'int] = realPtr
+            storePtr[cast,bit(u64) -1's64] = realPtr
             request.address = userPtr
         }
     }

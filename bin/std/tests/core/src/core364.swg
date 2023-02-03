@@ -9,5 +9,5 @@ using Core
     seek := c.getSeek()
     c.addNative(2'u32)
     c.setSeek(seek)
-    c.addNative(3'uint)
+    c.addNative(3'u64)
 }

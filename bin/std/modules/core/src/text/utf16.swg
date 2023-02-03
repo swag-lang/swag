@@ -58,9 +58,9 @@ func encodeRune(dest: [..] u16, src: rune)->u32
 
 // Convert an utf8 buffer to a utf16 buffer, and returns the
 // number of valid elements in the destination buffer
-func fromUtf8(dest: [..] u16, src: const [..] u8)->uint
+func fromUtf8(dest: [..] u16, src: const [..] u8)->u64
 {
-    count := 0'uint
+    count := 0'u64
     srcPtr := @dataof(src)
     destPtr := @dataof(dest)
     srcLength := @countof(src)
@@ -94,7 +94,7 @@ func fromUtf8(src: const [..] u8)->Array'u16
 // Convert a character array (32 bits unicode) to an utf16 buffer
 // Returns the number of bytes written in the destination buffer
 // 'dest' must be at least 2 bytes long
-func fromUnicode(dest: [..] u16, src: const [..] rune)->uint
+func fromUnicode(dest: [..] u16, src: const [..] rune)->u64
 {
     dataof := @dataof(dest)
     remain := @countof(dest)
@@ -107,7 +107,7 @@ func fromUnicode(dest: [..] u16, src: const [..] rune)->uint
         remain -= cpt
     }
 
-    return cast(uint) (dataof - @dataof(dest))
+    return cast(u64) (dataof - @dataof(dest))
 }
 
 // Convert a character array (32 bits unicode) to an utf16 sequence
@@ -130,10 +130,10 @@ func toZeroTerminated(src: string)->Array'u16
 }
 
 // Compute the string length of a zero terminated utf16 buffer
-func lengthZeroTerminated(buf: const ^u16)->uint
+func lengthZeroTerminated(buf: const ^u16)->u64
 {
     ptr := buf
-    count := 0'uint
+    count := 0'u64
     while dref ptr
         ptr, count += 1
     return count

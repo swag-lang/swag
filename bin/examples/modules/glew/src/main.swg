@@ -8,11 +8,11 @@ const SINGLE = false
 
 func findFirstLine(what: string)
 {
-    idxFirst := 0'uint
+    idxFirst := 0'u64
     visit line: lines
     {
         idx := line.indexOf(what)
-        if idx == Swag.UInt.Max continue
+        if idx == Swag.U64.Max continue
         #if LOG Console.printf("line: %\n", line)
         toProcess.add(line)
         idxFirst = @index + 1
@@ -38,7 +38,7 @@ func findLine(what: string)->*String
     visit &line: lines
     {
         idx := line.indexOf(what)
-        if idx == Swag.UInt.Max continue
+        if idx == Swag.U64.Max continue
         #if LOG Console.printf("line: %\n", line)
         return line
     }
@@ -52,11 +52,11 @@ func swapParams(what: string)->String
     var result: retval
     if what == "void, " return result
 
-    var idxNext: uint
+    var idxNext: u64
     loop
     {
         idxNext = what.indexOf(",", idxNext)
-        if idxNext == Swag.UInt.Max break
+        if idxNext == Swag.U64.Max break
         if !result.isEmpty() result += ", "
 
         // Isolate parameter name
@@ -95,7 +95,7 @@ func swapParams(what: string)->String
             while idxType1 >= 0 and Latin1.isLetter(type[idxType1])
                 idxType1 -= 1
 
-            type.insert(cast(uint) (idxType1 + 1), "*")
+            type.insert(cast(u64) (idxType1 + 1), "*")
             type.length -= 1
             type.trim()
         }

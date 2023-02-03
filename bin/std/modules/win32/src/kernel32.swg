@@ -25,7 +25,7 @@ alias PCWSTR =			const ^u16
 alias LPCTSTR =			const ^u16
 alias LPDWORD =			^DWORD
 alias LPOVERLAPPED =	^DWORD
-alias DWORD_PTR =		uint
+alias DWORD_PTR =		u64
 alias UINT =			u32
 alias SHORT =			s16
 alias USHORT =			u16
@@ -39,7 +39,7 @@ alias LPSTR =           ^CHAR
 alias LPWSTR =          ^WCHAR
 alias LPCH =            ^CHAR
 alias LPWCH =           ^WCHAR
-alias SIZE_T =          uint
+alias SIZE_T =          u64
 alias va_list =         ^u8
 
 alias LPTHREAD_START_ROUTINE = func(*void)->DWORD
@@ -115,7 +115,7 @@ const OPEN_EXISTING         = 3'u32
 const OPEN_ALWAYS           = 4'u32
 const TRUNCATE_EXISTING     = 5'u32
 
-const INVALID_HANDLE_VALUE = cast(HANDLE) cast,bit(uint) -1'int
+const INVALID_HANDLE_VALUE = cast(HANDLE) cast,bit(u64) -1's64
 const CONSOLE_TEXTMODE_BUFFER = 1'u32
 const MAX_PATH = 260
 const INFINITE = 0xFFFFFFFF

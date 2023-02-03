@@ -49,7 +49,7 @@ public func getMonitors()->Array'Monitor
         if @err return TRUE
 
         var m: Monitor
-        ptr := cast(*Array'Monitor) cast(uint) lParam
+        ptr := cast(*Array'Monitor) cast(u64) lParam
 
         m.rect.x      = mi.rcMonitor.left
         m.rect.y      = mi.rcMonitor.top
@@ -65,7 +65,7 @@ public func getMonitors()->Array'Monitor
         return TRUE
     }
 
-    EnumDisplayMonitors(null, null, cast(const *void) &proc, cast(LPARAM) cast(uint) &result)
+    EnumDisplayMonitors(null, null, cast(const *void) &proc, cast(LPARAM) cast(u64) &result)
     return result
 }
 

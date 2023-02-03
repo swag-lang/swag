@@ -3,7 +3,7 @@
 #global public
 using Core, Win32, Pixel
 
-alias Format = uint
+alias Format = u64
 
 private var g_PngFormat: UINT
 
@@ -30,12 +30,12 @@ func addData(fmt: Format, data: const [..] u8)
         return
     defer discard CloseClipboard()
 
-    // Store the size in the first uint
-    hglob := GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, @countof(data) + @sizeof(uint))
+    // Store the size in the first u64
+    hglob := GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, @countof(data) + @sizeof(u64))
     pz := cast(^u8) GlobalLock(hglob)
-    pzu := cast(^uint) pz
+    pzu := cast(^u64) pz
     dref pzu = @countof(data)
-    Memory.copy(pz + @sizeof(uint), @dataof(data), @countof(data))
+    Memory.copy(pz + @sizeof(u64), @dataof(data), @countof(data))
     discard GlobalUnlock(pz)
     discard SetClipboardData(cast(UINT) fmt, hglob)
 }
@@ -55,9 +55,9 @@ func getData(fmt: Format)->Array'u8
         if hglob
         {
             pz := cast(^u8) GlobalLock(hglob)
-            pzu := cast(^uint) pz
+            pzu := cast(^u64) pz
             count := dref pzu
-            result.add(@mkslice(pz + @sizeof(uint), count))
+            result.add(@mkslice(pz + @sizeof(u64), count))
             discard GlobalUnlock(pz)
             return result
         }

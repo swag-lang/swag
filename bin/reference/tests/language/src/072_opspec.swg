@@ -25,14 +25,14 @@ impl Struct
 
     // Get value by slice [low..up]
     // Must return a string or a slice
-    func opSlice(using self, low, up: uint)->string { return "true"; }
+    func opSlice(using self, low, up: u64)->string { return "true"; }
 
     // Get value by index
-    func opIndex(using self, index: uint)->WhateverType { return true; }
+    func opIndex(using self, index: u64)->WhateverType { return true; }
 
     // Called by @countof
     // Use in a 'loop' block for example
-    func opCount(using self)->uint          { return 0; }
+    func opCount(using self)->u64          { return 0; }
     // Called by @dataof
     func opData(using self)->*WhateverType  { return null; }
 
@@ -71,8 +71,8 @@ impl Struct
     // Affect struct with another value at a given index
     // Can be overloaded
     // Called by '[] ='
-    func opIndexAffect(using self, index: uint, value: OneType) {}
-    func opIndexAffect(using self, index: uint, value: AnotherType) {}
+    func opIndexAffect(using self, index: u64, value: OneType) {}
+    func opIndexAffect(using self, index: u64, value: AnotherType) {}
 
     // Binary operator. 'op' generic argument contains the operator string
     // Generic function, can be overloaded
@@ -94,8 +94,8 @@ impl Struct
     // Affect operator. 'op' generic argument contains the operator string (see below)
     // Generic function, can be overloaded
     // Called by '+=', '-=', '*=', '/=', '%=', '|=', '&=', '^=', '<<=', '>>='
-    func(op: string) opIndexAssign(using self, index: uint, value: OneType) {}
-    func(op: string) opIndexAssign(using self, index: uint, value: AnotherType) {}
+    func(op: string) opIndexAssign(using self, index: u64, value: OneType) {}
+    func(op: string) opIndexAssign(using self, index: u64, value: AnotherType) {}
 
     // Called by a 'visit' block
     // Can have multiple versions, by adding a name after 'opVisit'

@@ -9,9 +9,9 @@ impl AA
     {
         @free(x)
         /*@print("x ")
-        @print(cast(s64) cast(uint) x)
+        @print(cast(s64) cast(u64) x)
         @print(" drop ")
-        @print(cast(s64) cast(uint) self)
+        @print(cast(s64) cast(u64) self)
         @print("\n")*/
     }
 
@@ -19,9 +19,9 @@ impl AA
     {
         x = @alloc(10)
         /*@print("x ")
-        @print(cast(s64) cast(uint) x)
+        @print(cast(s64) cast(u64) x)
         @print(" copy ")
-        @print(cast(s64) cast(uint) self)
+        @print(cast(s64) cast(u64) self)
         @print("\n")*/
     }
 
@@ -36,7 +36,7 @@ func titi()->[1] AA
 {
     var ptrptr: *u8 = @alloc(10)
     /*@print("ptr ")
-    @print(cast(s64) cast(uint) ptrptr)
+    @print(cast(s64) cast(u64) ptrptr)
     @print("\n")*/
     return [{ptrptr}]
 }

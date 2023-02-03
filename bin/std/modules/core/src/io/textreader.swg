@@ -11,8 +11,8 @@ public struct TextReader
     stream:         FileStream
     buffer:         Array'u8
     encodingType =  TextEncoding.Utf8
-    byteSeek:       uint
-    bufferSize:     uint
+    byteSeek:       u64
+    bufferSize:     u64
     checkPreamble:  bool
 }
 
@@ -57,7 +57,7 @@ public impl TextReader
 
         byteSeek = 0
         checkPreamble = true
-        bufferSize = Math.min(stream.getSize(), 64*1024'uint)
+        bufferSize = Math.min(stream.getSize(), 64*1024'u64)
         encodingType = encoding;
     }
 
@@ -87,7 +87,7 @@ public impl TextReader
             ptrE      := buffer.buffer + buffer.count
 
             // u64 by u64
-            while ptr + 8'uint <= ptrE
+            while ptr + 8'u64 <= ptrE
             {
                 c64 := dref cast(*u64) ptr
                 if Math.hasByte(c64, "\r"'u8) or Math.hasByte(c64, "\n"'u8)
@@ -99,7 +99,7 @@ public impl TextReader
             while ptr != ptrE and dref ptr != "\r"'u8 and dref ptr != "\n"'u8
                 ptr += 1
 
-            range  := cast(uint) (ptr - ptrB)
+            range  := cast(u64) (ptr - ptrB)
             result += @mkstring(ptrB, range)
 
             // We have reached the end of the buffer without finding an eol

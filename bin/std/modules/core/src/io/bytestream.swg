@@ -2,7 +2,7 @@ public struct ByteStream
 {
     readBuffer:     const [..] u8
     writeBuffer:    *Array'u8
-    seek:           uint
+    seek:           u64
     eof:            bool
 }
 
@@ -37,7 +37,7 @@ public impl ByteStream
     }
 
     // Returns length of associated slice
-    mtdc length()->uint
+    mtdc length()->u64
     {
         return writeBuffer ? writeBuffer.count : @countof(readBuffer)
     }
@@ -94,7 +94,7 @@ public impl ByteStream
     }
 
     // Read the given amount of bytes
-    mtd readBytes(dest: *u8, count: uint) throw
+    mtd readBytes(dest: *u8, count: u64) throw
     {
         if seek + count > length()
             throw "byte stream overflow"
@@ -119,7 +119,7 @@ public impl ByteStream
     }
 
     // Seek to the next byte
-    mtd moveSeek(offset: uint = 1)
+    mtd moveSeek(offset: u64 = 1)
     {
         seek += offset
         len := length()
@@ -132,7 +132,7 @@ public impl ByteStream
     }
 
     // Seek to the given position
-    mtd setSeek(offset: uint)
+    mtd setSeek(offset: u64)
     {
         len := length()
         Debug.assert(seek <= len)

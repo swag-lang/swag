@@ -17,7 +17,7 @@ struct Context
     normalPrev:         Vector2
     normalFirst:        Vector2
     normal:             Vector2
-    prim1, prim2:       uint
+    prim1, prim2:       u64
     prev:               Vector2
     path:               const *LinePath
     pen:                const *Pen
@@ -241,7 +241,7 @@ impl Painter
             if dist < minDist
                 continue
 
-            sharedRoundTmp.insertAt(cast(uint) i + 1, {angle, point})
+            sharedRoundTmp.insertAt(cast(u64) i + 1, {angle, point})
             i -= 1
         }
 

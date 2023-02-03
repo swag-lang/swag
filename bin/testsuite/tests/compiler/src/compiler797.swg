@@ -11,7 +11,7 @@ func toto(a: alloc)->*void
 func myAlloc(v: u32)->*void
 {
 	cpt = v
-	return @alloc(cast(uint) v)
+	return @alloc(cast(u64) v)
 }
 
 //#[Swag.PrintBc]

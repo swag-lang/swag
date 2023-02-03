@@ -954,7 +954,7 @@ impl IWnd for MainWnd
             capture.selectionHasChanged()
 
         case CmdIdInvertSelection:
-            var newSel: Array'uint
+            var newSel: Array'u64
             loop i: capture.forms
             {
                 if !capture.selection.contains(i)

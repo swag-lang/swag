@@ -12,7 +12,7 @@
 
     // The intrinsic '@index' returns the current index of the loop (starting at 0)
     {
-        cpt := 0'uint
+        cpt := 0'u64
         loop 5
         {
             cpt += @index

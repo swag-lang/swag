@@ -435,9 +435,9 @@ using Swag
     }
 
     // Returns the maximum sizeof a bunch of 'typeinfo'
-    func maxSizeOf(v: const [..] typeinfo)->uint
+    func maxSizeOf(v: const [..] typeinfo)->u64
     {
-        res := 0'uint
+        res := 0'u64
         visit p: v
             res = @max(res, p.sizeof)
         return res

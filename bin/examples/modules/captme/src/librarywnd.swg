@@ -35,11 +35,11 @@ struct LibraryView
     mutexLoaded:    Sync.Mutex
     loaded:         Array'*Capture
     thread:         Thread
-    hotItem         = Swag.UInt.Max
-    selectedItem    = Swag.UInt.Max
-    filterYear:     uint
-    filterMonth:    uint
-    filterDay:      uint
+    hotItem         = Swag.U64.Max
+    selectedItem    = Swag.U64.Max
+    filterYear:     u64
+    filterMonth:    u64
+    filterDay:      u64
 }
 
 impl IWnd for LibraryView
@@ -53,7 +53,7 @@ impl IWnd for LibraryView
         pos += scrollWnd.getScrollPos()
 
         // Hit test
-        ht := Swag.UInt.Max
+        ht := Swag.U64.Max
         visit it, idx: items
         {
             if it.rect.contains(pos)
@@ -69,13 +69,13 @@ impl IWnd for LibraryView
             hotItem = ht
         }
 
-        if evt.kind == .MousePressed and hotItem != Swag.UInt.Max and evt.button == .Left
+        if evt.kind == .MousePressed and hotItem != Swag.U64.Max and evt.button == .Left
         {
             selectedItem = hotItem
             invalidate()
         }
 
-        if evt.kind == .MouseDoubleClick and selectedItem != Swag.UInt.Max and evt.button == .Left
+        if evt.kind == .MouseDoubleClick and selectedItem != Swag.U64.Max and evt.button == .Left
         {
             item := items[selectedItem]
             catch File.touch(item.fi.fullname)
@@ -192,8 +192,8 @@ impl LibraryView
             items.add(item)
         }
 
-        hotItem = Swag.UInt.Max
-        selectedItem = Swag.UInt.Max
+        hotItem = Swag.U64.Max
+        selectedItem = Swag.U64.Max
 
         // Launch thread to read all captures
         try
@@ -295,7 +295,7 @@ impl LibraryWnd
             {
                 fillLastYear()
                 lastLine = listCtrl.createLine(Format.toString("%", fi.lastWriteTime.year), icon1)
-                lastLine.userData0 = acast cast(uint) fi.lastWriteTime.year
+                lastLine.userData0 = acast cast(u64) fi.lastWriteTime.year
                 lastLineYear = lastLine
             }
 
@@ -303,8 +303,8 @@ impl LibraryWnd
             {
                 fillLastMonth()
                 lastLine = listCtrl.createLine(Format.toString("%", DateTime.monthName(fi.lastWriteTime.month)), icon1, lastLineYear)
-                lastLine.userData0 = acast cast(uint) fi.lastWriteTime.year
-                lastLine.userData1 = acast cast(uint) fi.lastWriteTime.month
+                lastLine.userData0 = acast cast(u64) fi.lastWriteTime.year
+                lastLine.userData1 = acast cast(u64) fi.lastWriteTime.month
                 lastLineMonth = lastLine
             }
 
@@ -312,9 +312,9 @@ impl LibraryWnd
             {
                 fillLastDay()
                 lastLine = listCtrl.createLine(Format.toString("%, %", DateTime.dayOfWeekName(fi.lastWriteTime.dayOfWeek()), fi.lastWriteTime.day), icon1, lastLineMonth)
-                lastLine.userData0 = acast cast(uint) fi.lastWriteTime.year
-                lastLine.userData1 = acast cast(uint) fi.lastWriteTime.month
-                lastLine.userData2 = acast cast(uint) fi.lastWriteTime.day
+                lastLine.userData0 = acast cast(u64) fi.lastWriteTime.year
+                lastLine.userData1 = acast cast(u64) fi.lastWriteTime.month
+                lastLine.userData2 = acast cast(u64) fi.lastWriteTime.day
                 lastLineDay = lastLine
             }
 
@@ -375,9 +375,9 @@ impl LibraryWnd
             .sigSelChanged += closure|view|(list) {
                 sel := list.getSelectedLine()
                 if !sel return
-                view.filterYear = cast(uint) sel.userData0
-                view.filterMonth = cast(uint) sel.userData1
-                view.filterDay = cast(uint) sel.userData2
+                view.filterYear = cast(u64) sel.userData0
+                view.filterMonth = cast(u64) sel.userData1
+                view.filterDay = cast(u64) sel.userData2
                 catch view.fill()
             }
         }

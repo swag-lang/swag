@@ -70,7 +70,7 @@ impl RichEditCtrl
             li := start.lineIndex
             while li <= end.lineIndex
             {
-                var rankBeg, rankEnd: uint
+                var rankBeg, rankEnd: u64
                 if getSelectionRectRange(li, &rankBeg, &rankEnd)
                 {
                     loop i: rankEnd - rankBeg
@@ -89,7 +89,7 @@ impl RichEditCtrl
         return result
     }
 
-    mtd unwrap(lineIndex: uint)
+    mtd unwrap(lineIndex: u64)
     {
         if !(richEdFlags & .WordWrap)
             return
@@ -126,7 +126,7 @@ impl RichEditCtrl
         }
     }
 
-    mtd wrap(lineIndex: uint)
+    mtd wrap(lineIndex: u64)
     {
         if !(richEdFlags & .WordWrap)
             return
@@ -135,7 +135,7 @@ impl RichEditCtrl
 
         // Do the wrap
         curLine := lineIndex
-        i := 0'uint
+        i := 0'u64
         clientRect := edView.getClientRect()
         clientRect.width -= getMarginRight()
 
@@ -253,7 +253,7 @@ impl RichEditCtrl
             lineIndex := cp.lineIndex
             posInLine := cp.charPosInLine
 
-            var rankBeg, rankEnd: uint
+            var rankBeg, rankEnd: u64
             loop
             {
                 line := lines[lineIndex];
@@ -305,7 +305,7 @@ impl RichEditCtrl
             (c, eat) := Utf8.decodeRune(str)
             if !eat
                 break
-            str = Tokenize.eatCount(str, cast(uint) eat)
+            str = Tokenize.eatCount(str, cast(u64) eat)
             insertRunePrivate(cp, c, txtStyle)
         }
 
@@ -356,7 +356,7 @@ impl RichEditCtrl
             li := ps.lineIndex
             while li <= pe.lineIndex
             {
-                var rankBeg, rankEnd: uint
+                var rankBeg, rankEnd: u64
                 if getSelectionRectRange(li, &rankBeg, &rankEnd)
                 {
                     lines[li].removeRunes(rankBeg, rankEnd - rankBeg)

@@ -15,15 +15,15 @@ private
 }
 
 #[Swag.Strict]
-alias TextureHandle = uint
+alias TextureHandle = u64
 const InvalidTextureHandle: TextureHandle = acast 0
 
 #[Swag.Strict]
-alias RenderTargetHandle = uint
+alias RenderTargetHandle = u64
 const InvalidRenderTargetHandle: RenderTargetHandle = acast 0
 
 #[Swag.Strict]
-alias RenderTargetSurfaceHandle = uint
+alias RenderTargetSurfaceHandle = u64
 const InvalidRenderTargetSurfaceHandle: RenderTargetSurfaceHandle = acast 0
 
 #[Swag.NoCopy]
@@ -58,7 +58,7 @@ private impl RenderOgl
 
         glGetShaderiv(shaderID, GL_COMPILE_STATUS, &result)
         glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &infoLogLength)
-        infoLog.reserve(cast(uint) infoLogLength + 1)
+        infoLog.reserve(cast(u64) infoLogLength + 1)
         glGetShaderInfoLog(shaderID, infoLogLength, null, @dataof(infoLog))
         if infoLogLength
         {
@@ -509,7 +509,7 @@ impl RenderOgl
         var result: retval
         glEnable(GL_TEXTURE_2D)
         glBindTexture(GL_TEXTURE_2D, acast texture.handle)
-        result.resize(cast(uint) texture.getByteSize())
+        result.resize(cast(u64) texture.getByteSize())
         fmt := pixelFormatToNative(pf)
         glGetTexImage(GL_TEXTURE_2D, 0, fmt, GL_UNSIGNED_BYTE, result.buffer)
         glDisable(GL_TEXTURE_2D)
@@ -575,7 +575,7 @@ impl RenderOgl
         glUniformMatrix4fv(cast(GLint) mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
     }
 
-    private mtd executeCommand(dc: *Painter, cmd: Pixel.Command, cmdIdx: uint, width, height: s32)
+    private mtd executeCommand(dc: *Painter, cmd: Pixel.Command, cmdIdx: u64, width, height: s32)
     {
         switch cmd.id
         {
@@ -775,7 +775,7 @@ impl RenderOgl
                          ResetTextureFont,
                          BindTextureFont,
                          DrawTriangles:
-                        executeCommand(dc, cmd1, cast(uint) i, width, height)
+                        executeCommand(dc, cmd1, cast(u64) i, width, height)
                     }
                 }
             }

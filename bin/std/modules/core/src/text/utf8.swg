@@ -123,7 +123,7 @@ func decodeLastRune(buffer: const [..] u8) -> {c: rune, eat: u32}
         }
     }
 
-    result = decodeRune(@mkslice(ptr, cast(uint) eat))
+    result = decodeRune(@mkslice(ptr, cast(u64) eat))
     if result.eat != eat
     {
         result.c = RuneError
@@ -267,12 +267,12 @@ func encodeRune(dest: [..] u8, src: rune)->u32
 // Convert a rune array to an utf8 buffer
 // Returns the number of bytes written in the destination buffer
 // 'dest' must be at least 4 bytes long
-func fromUnicode(dest: [..] u8, src: const [..] rune)->uint
+func fromUnicode(dest: [..] u8, src: const [..] rune)->u64
 {
     dataof := @dataof(dest)
     remain := @countof(dest)
 
-    total := 0'uint
+    total := 0'u64
     visit ch: src
     {
         Debug.assert(remain >= 4, "destination buffer is too small")
@@ -297,9 +297,9 @@ func fromUnicode(src: const [..] rune)->String
 // Convert an utf16 array to an utf8 buffer
 // Returns the number of bytes written in the destination buffer
 // 'dest' must be at least 4 bytes long
-func fromUtf16(dest: [..] u8, src: const [..] u16)->uint
+func fromUtf16(dest: [..] u8, src: const [..] u16)->u64
 {
-    count := 0'uint
+    count := 0'u64
     srcPtr := @dataof(src)
     destPtr := @dataof(dest)
     srcLength := @countof(src)
@@ -395,7 +395,7 @@ func countBytesAt(buffer: const [..] u8)->u32
 }
 
 // Returns the byte index of the given rune index
-func byteIndex(buffer: const [..] u8, charIndex: uint) -> {index: uint, success: bool}
+func byteIndex(buffer: const [..] u8, charIndex: u64) -> {index: u64, success: bool}
 {
     var result: retval
 
@@ -411,8 +411,8 @@ func byteIndex(buffer: const [..] u8, charIndex: uint) -> {index: uint, success:
 
     dataof := @dataof(buffer)
 
-    resultChar := 0'uint
-    resultByte := 0'uint
+    resultChar := 0'u64
+    resultByte := 0'u64
     while countof and resultChar != charIndex
     {
         val := countBytesAt(@mkslice(dataof, countof))
@@ -429,12 +429,12 @@ func byteIndex(buffer: const [..] u8, charIndex: uint) -> {index: uint, success:
 }
 
 // Returns the number of runes in an utf8 buffer
-func countRunes(buffer: const [..] u8)->uint
+func countRunes(buffer: const [..] u8)->u64
 {
     dataof := @dataof(buffer)
     countof := @countof(buffer)
 
-    cpt := 0'uint
+    cpt := 0'u64
     while countof
     {
         val := countBytesAt(@mkslice(dataof, countof))
@@ -448,24 +448,24 @@ func countRunes(buffer: const [..] u8)->uint
 }
 
 // Find the first occurence of rune 'what', and returns the byte index of it
-// Returns Swag.UInt.Max if not found
-func indexOf(src: const [..] u8, what: rune, startByteIndex = 0'uint)->uint
+// Returns Swag.U64.Max if not found
+func indexOf(src: const [..] u8, what: rune, startByteIndex = 0'u64)->u64
 {
     return indexOf(src, [what], startByteIndex)
 }
 
 // Find one of the runes in 'what', and returns the byte index of it
-// Returns Swag.UInt.Max if not found
-func indexOf(src: const [..] u8, what: const [..] rune, startByteIndex = 0'uint)->uint
+// Returns Swag.U64.Max if not found
+func indexOf(src: const [..] u8, what: const [..] rune, startByteIndex = 0'u64)->u64
 {
     length := @countof(src)
     if !length
-        return Swag.UInt.Max
+        return Swag.U64.Max
     Debug.safetyBoundCheck(startByteIndex < length, "index out of range")
 
     countof := @countof(what)
     if !countof
-        return Swag.UInt.Max
+        return Swag.U64.Max
 
     idx := startByteIndex
     scan := @dataof(src) + startByteIndex
@@ -481,21 +481,21 @@ func indexOf(src: const [..] u8, what: const [..] rune, startByteIndex = 0'uint)
         remain -= res.eat
     }
 
-    return Swag.UInt.Max
+    return Swag.U64.Max
 }
 
 // Find the given string, and returns the byte index of it
-// Returns Swag.UInt.Max if not found
-func indexOf(src: const [..] u8, what: string, startByteIndex = 0'uint, comparisonType = ComparisonType.Latin1)->uint
+// Returns Swag.U64.Max if not found
+func indexOf(src: const [..] u8, what: string, startByteIndex = 0'u64, comparisonType = ComparisonType.Latin1)->u64
 {
     length := @countof(src)
     if !length
-        return Swag.UInt.Max
+        return Swag.U64.Max
     Debug.safetyBoundCheck(startByteIndex < length, "index out of range")
 
     countof := @countof(what)
     if !countof or countof > (length - startByteIndex)
-        return Swag.UInt.Max
+        return Swag.U64.Max
 
     idx := startByteIndex
     scan := @dataof(src) + startByteIndex
@@ -509,29 +509,29 @@ func indexOf(src: const [..] u8, what: string, startByteIndex = 0'uint, comparis
         remain -= 1
     }
 
-    return Swag.UInt.Max
+    return Swag.U64.Max
 }
 
 // Returns true if 'src' contains the string 'what'
 func contains(src: const [..] u8, what: string)->bool
 {
-    return indexOf(src, what) != Swag.UInt.Max
+    return indexOf(src, what) != Swag.U64.Max
 }
 
 // Find the last rune occurence of 'what', and returns the byte index of it
-// Returns Swag.UInt.Max if not found
-func lastIndexOf(src: const [..] u8, what: rune)->uint
+// Returns Swag.U64.Max if not found
+func lastIndexOf(src: const [..] u8, what: rune)->u64
 {
     return lastIndexOf(src, [what])
 }
 
 // Returns the last index (in bytes) of a rune
-// Returns Swag.UInt.Max if not found
-func lastIndexOf(src: const [..] u8, what: const [..] rune)->uint
+// Returns Swag.U64.Max if not found
+func lastIndexOf(src: const [..] u8, what: const [..] rune)->u64
 {
     length := @countof(src)
     if !length
-        return Swag.UInt.Max
+        return Swag.U64.Max
     dataof := @dataof(src)
 
     byteIdx := length
@@ -540,26 +540,26 @@ func lastIndexOf(src: const [..] u8, what: const [..] rune)->uint
         sl := @mkslice(dataof, byteIdx)
         (c, eat) := decodeLastRune(sl)
         if eat == 0
-            return Swag.UInt.Max
+            return Swag.U64.Max
 
         byteIdx -= eat
         if Slice.contains(what, c)
             return byteIdx
     }
 
-    return Swag.UInt.Max
+    return Swag.U64.Max
 }
 
 // Returns the last index (in bytes) of a string
-// Returns Swag.UInt.Max if not found
-func lastIndexOf(src: const [..] u8, what: string, comparisonType = ComparisonType.Latin1)->uint
+// Returns Swag.U64.Max if not found
+func lastIndexOf(src: const [..] u8, what: string, comparisonType = ComparisonType.Latin1)->u64
 {
     length := @countof(src)
     if !length
-        return Swag.UInt.Max
+        return Swag.U64.Max
     lengthStr := @countof(what)
     if lengthStr > length
-        return Swag.UInt.Max
+        return Swag.U64.Max
 
     idx := length - lengthStr
     dataof := @dataof(src) + idx
@@ -569,11 +569,11 @@ func lastIndexOf(src: const [..] u8, what: string, comparisonType = ComparisonTy
         if res == 0
             return idx
         if !idx
-            return Swag.UInt.Max
+            return Swag.U64.Max
         idx, dataof -= 1
     }
 
-    return Swag.UInt.Max
+    return Swag.U64.Max
 }
 
 // Return true if the string starts with 'str'
@@ -701,8 +701,8 @@ func visitRunes(buffer: const [..] u8, stmt: code)
     if !count
         return
 
-    byteIdx := 0'uint
-    charIdx := 0'uint
+    byteIdx := 0'u64
+    charIdx := 0'u64
     scan := @dataof(buffer)
     while count
     {

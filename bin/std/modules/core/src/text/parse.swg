@@ -389,7 +389,7 @@ func parseIdentifier(str: string)->string throw
     if str[0] != "_"'u8 and !Latin1.isLetter(str[0])
         throw ParseErrorInvalid
 
-    cpt := 1'uint
+    cpt := 1'u64
     while cpt < countof and (str[cpt] == "_"'u8 or Latin1.isLetterOrDigit(str[cpt]))
         cpt += 1
     return @mkstring(@dataof(str), cpt)

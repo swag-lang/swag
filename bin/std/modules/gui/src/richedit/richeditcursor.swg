@@ -3,13 +3,13 @@ using Core, Pixel
 
 struct RichEditCursor
 {
-    lineIndex:      uint
-    charPosInLine:  uint
+    lineIndex:      u64
+    charPosInLine:  u64
 }
 
 impl RichEditCtrl
 {
-    mtd getRuneSize(line: *RichEditLine, i: uint, x: f32)->Math.Point
+    mtd getRuneSize(line: *RichEditLine, i: u64, x: f32)->Math.Point
     {
         var size: retval
 
@@ -147,8 +147,8 @@ impl RichEditCtrl
         }
         else
         {
-            i  := 0'uint
-            pi := Swag.UInt.Max
+            i  := 0'u64
+            pi := Swag.U64.Max
             while i != pi and i != lines.count
             {
                 line  := lines[i]
@@ -398,7 +398,7 @@ impl RichEditCtrl
     mtd moveCursorPageUp(cp: *RichEditCursor)
     {
         client := edView.getClientRect()
-        count := cast(int) (client.height / getXExtent().y)
+        count := cast(s64) (client.height / getXExtent().y)
         while count
         {
             if cp.lineIndex == 0
@@ -411,7 +411,7 @@ impl RichEditCtrl
     mtd moveCursorPageDown(cp: *RichEditCursor)
     {
         client := edView.getClientRect()
-        count := cast(int) (client.height / getXExtent().y)
+        count := cast(s64) (client.height / getXExtent().y)
         while count
         {
             if cp.lineIndex == lines.count - 1

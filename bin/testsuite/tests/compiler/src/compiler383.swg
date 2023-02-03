@@ -4,7 +4,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	var cpt: uint = 0;
+	var cpt: u64 = 0;
 	loop(5)
 	{
 		cpt += @index;

@@ -42,7 +42,7 @@ impl RichString
     }
 
     #[Swag.Mixin]
-    private func addChunk(idx: uint, space, eol: bool = false)
+    private func addChunk(idx: u64, space, eol: bool = false)
     {
         if idx - startChunk == 0
             return
@@ -116,10 +116,10 @@ impl RichString
         if !count
             return
 
-        startChunk := 0'uint
+        startChunk := 0'u64
         var chunk: RichChunk
 
-        byteIdx := 0'uint
+        byteIdx := 0'u64
         isBold, isItalic := false
         colorFg := 0
         under := UnderlineStyle.None

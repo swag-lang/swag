@@ -90,7 +90,7 @@ func readAllBytes(fullname: string)->Array'u8 throw
 
 // Write a file with the content of a slice of bytes
 #[Swag.Discardable]
-func writeAllBytes(fullname: string, buffer: const [..] u8)->uint throw
+func writeAllBytes(fullname: string, buffer: const [..] u8)->u64 throw
 {
     stream := openWrite(fullname)
     return stream.write(@dataof(buffer), @countof(buffer))
@@ -98,11 +98,11 @@ func writeAllBytes(fullname: string, buffer: const [..] u8)->uint throw
 
 // Write a file with the content of a 'ConcatBuffer'
 #[Swag.Discardable]
-func writeAllBytes(fullname: string, buffer: ConcatBuffer)->uint throw
+func writeAllBytes(fullname: string, buffer: ConcatBuffer)->u64 throw
 {
     stream := openWrite(fullname)
 
-    total := 0'uint
+    total := 0'u64
     visit p: buffer
         total += stream.write(p.datas, p.count)
 
@@ -111,11 +111,11 @@ func writeAllBytes(fullname: string, buffer: ConcatBuffer)->uint throw
 
 // Write a file with the content of an array of string, one per line
 #[Swag.Discardable]
-func writeAllLines(fullname: string, lines: Array'string)->uint throw
+func writeAllLines(fullname: string, lines: Array'string)->u64 throw
 {
     stream := openWrite(fullname)
 
-    total := 0'uint
+    total := 0'u64
     visit v: lines
     {
         total += stream.write(@dataof(v), @countof(v))

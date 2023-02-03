@@ -4,7 +4,7 @@ using Swag
 public struct JSon
 {
     stream:     ByteStream
-    line, col:  uint = 1
+    line, col:  u64 = 1
     propName:   String
 }
 
@@ -32,7 +32,7 @@ public impl JSon
         stream = ByteStream.openRead(input)
     }
 
-    mtd beginSequence(_typeElem: typeinfo, _data: *u8, _countElem: *uint)->bool throw
+    mtd beginSequence(_typeElem: typeinfo, _data: *u8, _countElem: *u64)->bool throw
     {
         zapBlanks()
         c := stream.readU8()
@@ -50,7 +50,7 @@ public impl JSon
             throw "malformed array (missing closing ']')"
     }
 
-    mtd toNextSequenceElement(_countElem: *uint)->bool
+    mtd toNextSequenceElement(_countElem: *u64)->bool
     {
         zapBlanks()
         c := stream.peekU8()

@@ -64,13 +64,13 @@ struct RichEditCtrl
     undoMgr:                ArrayPtr'RichEditUndo
     toUndo:                 ArrayPtr'RichEditUndo
     mapping:                Array'RichEditMapping
-    currentUndo:            uint
-    undoCounter:            uint
-    modifiedUndoMarker:     uint
-    serialUndo:             uint
-    countVisibleLines:      uint
-    firstVisibleLineView:   uint
-    lastVisibleLineView:    uint
+    currentUndo:            u64
+    undoCounter:            u64
+    modifiedUndoMarker:     u64
+    serialUndo:             u64
+    countVisibleLines:      u64
+    firstVisibleLineView:   u64
+    lastVisibleLineView:    u64
     clipFormat:             Clipboard.Format
     cursorPosUndo:          RichEditCursor
     selBegUndo:             RichEditCursor
@@ -145,7 +145,7 @@ private impl RichEditCtrl
     }
 
     #[Swag.Discardable]
-    mtd newLine(index: uint)->*RichEditLine
+    mtd newLine(index: u64)->*RichEditLine
     {
         var p: *RichEditLine
 
@@ -169,14 +169,14 @@ private impl RichEditCtrl
         return p
     }
 
-    mtd deleteLine(lineIndex: uint)
+    mtd deleteLine(lineIndex: u64)
     {
         freeLines.add(lines[lineIndex])
         lines.removeAtOrdered(lineIndex)
         recomputeScroll = true
     }
 
-    mtd getFirstVisibleLine()->uint
+    mtd getFirstVisibleLine()->u64
     {
         loop i: lines.count
         {
@@ -187,7 +187,7 @@ private impl RichEditCtrl
         return 0
     }
 
-    mtd getLastVisibleLine()->uint
+    mtd getLastVisibleLine()->u64
     {
         if !lines.count
             return 0
@@ -200,7 +200,7 @@ private impl RichEditCtrl
         return 0
     }
 
-    mtd getPreviousVisibleLine(lineIndex: uint)->uint
+    mtd getPreviousVisibleLine(lineIndex: u64)->u64
     {
         if !lineIndex
             return 0
@@ -217,7 +217,7 @@ private impl RichEditCtrl
         return lineIndex
     }
 
-    mtd getNextVisibleLine(lineIndex: uint)->uint
+    mtd getNextVisibleLine(lineIndex: u64)->u64
     {
         count := lines.count
         if lineIndex == count - 1

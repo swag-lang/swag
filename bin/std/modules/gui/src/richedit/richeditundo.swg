@@ -18,7 +18,7 @@ struct RichEditUndo
     cursorPos:      RichEditCursor
     runes:          Array'rune
     styles:         Array'u8
-    serial:         uint
+    serial:         u64
     hasSelRect:     bool
 
     begSelectionBefore: RichEditCursor
@@ -29,7 +29,7 @@ struct RichEditUndo
 
 private impl RichEditCtrl
 {
-    mtd getLastModificationUndo()->uint
+    mtd getLastModificationUndo()->u64
     {
         count := currentUndo
         while count
@@ -47,7 +47,7 @@ private impl RichEditCtrl
     {
         // Its impossible to restore an unmodified state in that case
         if modifiedUndoMarker > currentUndo
-            modifiedUndoMarker = Swag.UInt.Max
+            modifiedUndoMarker = Swag.U64.Max
 
         while undoMgr.count > currentUndo
         {
@@ -65,7 +65,7 @@ impl RichEditCtrl
         toUndo.clear()
         currentUndo = 0
         serialUndo  = 0
-        modifiedUndoMarker = Swag.UInt.Max
+        modifiedUndoMarker = Swag.U64.Max
     }
 
     mtd pushUndo()

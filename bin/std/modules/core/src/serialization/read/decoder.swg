@@ -14,7 +14,7 @@ interface IDecoder
     mtd getVersion()->u32
 
     mtd read(data: *void, dataType: typeinfo) throw
-    mtd readBufferU8(count: uint)->*u8 throw
+    mtd readBufferU8(count: u64)->*u8 throw
 
     mtd readBool()->bool throw
     mtd readS8()->s8 throw
@@ -73,7 +73,7 @@ impl Decoder
                 dref cast(*u16) data  = serializer.readNative'u16()
             case U32, Rune:
                 dref cast(*u32) data  = serializer.readNative'u32()
-            case U64, UInt:
+            case U64:
                 dref cast(*u64) data  = serializer.readNative'u64()
             case S8:
                 dref cast(*s8) data   = serializer.readNative's8()
@@ -81,7 +81,7 @@ impl Decoder
                 dref cast(*s16) data  = serializer.readNative's16()
             case S32:
                 dref cast(*s32) data  = serializer.readNative's32()
-            case S64, Int:
+            case S64:
                 dref cast(*s64) data  = serializer.readNative's64()
             case F32:
                 dref cast(*f32) data  = serializer.readNative'f32()
@@ -143,7 +143,7 @@ impl Decoder
             {
                 valueType := structType.generics[0].pointedType
 
-                count := 0'uint
+                count := 0'u64
                 treated := serializer.beginSequence(type, data, &count)
                 defer(noerr) serializer.endSequence()
 
@@ -302,7 +302,7 @@ impl IDecoder for Decoder
         readValue(data, dataType)
     }
 
-    mtd readBufferU8(count: uint)->*u8 throw
+    mtd readBufferU8(count: u64)->*u8 throw
     {
         data := cast(^u8) Memory.alloc(count)
 

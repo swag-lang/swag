@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-func(N: uint) norm(a: const [N] f32)
+func(N: u64) norm(a: const [N] f32)
 {
     var arr: [N] s32
     @assert(N == 2)

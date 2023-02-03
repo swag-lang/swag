@@ -4,7 +4,7 @@ using Core, StrConv
 struct Test
 {
 	in:   s64
-	base: int
+	base: s64
 	out:  string
 }
 

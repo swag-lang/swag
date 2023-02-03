@@ -481,7 +481,7 @@ public struct Tesselate
     afHead:     *Node
     afMiddle:   *Node
     afTail:     *Node
-    polyStart:  uint
+    polyStart:  u64
 }
 
 impl Tesselate

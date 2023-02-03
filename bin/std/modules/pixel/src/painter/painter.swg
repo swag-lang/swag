@@ -279,7 +279,7 @@ impl Painter
         return cmd
     }
 
-    private mtd pushTriangle(p1, p2, p3: Vector2, uv1, uv2, uv3: Vector2, color: Color)->uint
+    private mtd pushTriangle(p1, p2, p3: Vector2, uv1, uv2, uv3: Vector2, color: Color)->u64
     {
         cmd := pushTriangleCmd()
         cmd.drawTriangles.count += 3
@@ -294,7 +294,7 @@ impl Painter
         return vertexBuffer.count - 3
     }
 
-    private mtd pushTriangle(p1, p2, p3: Vector2, color: Color)->uint
+    private mtd pushTriangle(p1, p2, p3: Vector2, color: Color)->u64
     {
         cmd := pushTriangleCmd()
         cmd.drawTriangles.count += 3
@@ -310,7 +310,7 @@ impl Painter
     }
 
     #[Swag.Safety("", false)]
-    private mtd addEdgeAA(tri: uint, startx, starty, endx, endy: f32)
+    private mtd addEdgeAA(tri: u64, startx, starty, endx, endy: f32)
     {
         ptr := vertexBuffer.buffer + tri
         if ptr.aanum == MaxAAEdge
@@ -343,7 +343,7 @@ impl Painter
     }
 
     #[Swag.Inline]
-    private mtd addEdgeAA(tri: uint, start, end: Vector2)
+    private mtd addEdgeAA(tri: u64, start, end: Vector2)
     {
         addEdgeAA(tri, start.x, start.y, end.x, end.y)
     }

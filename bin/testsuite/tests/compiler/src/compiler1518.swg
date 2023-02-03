@@ -1,6 +1,6 @@
 struct A
 {
-    myTruc: uint
+    myTruc: u64
     buffer: [2] u32
 }
 

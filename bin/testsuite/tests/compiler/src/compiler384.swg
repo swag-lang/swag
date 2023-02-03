@@ -3,7 +3,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	var cpt: uint = 0;
+	var cpt: u64 = 0;
 	while(cpt < 10)
 	{
 		cpt += @index;

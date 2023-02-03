@@ -24,7 +24,7 @@ impl Image
                 srcImage := cast(const *Image) params.srcImage
 
                 pixDst := dstImage.pixels.buffer + x * image.bpp8
-                pixDst += cast(uint) (y * (image.width * image.bpp8))
+                pixDst += cast(u64) (y * (image.width * image.bpp8))
 
                 y = image.height - y
 
@@ -40,7 +40,7 @@ impl Image
                     x1 := x - params.x
                     y1 := srcImage.height - (y - params.y)
                     pixSrc := srcImage.pixels.buffer + x1 * srcImage.bpp8
-                    pixSrc += cast(uint) (y1 * (srcImage.width * srcImage.bpp8))
+                    pixSrc += cast(u64) (y1 * (srcImage.width * srcImage.bpp8))
 
                     #[Swag.Complete]
                     switch params.mode

@@ -162,7 +162,7 @@ Unlike raw strings, they still evaluate escape sequences.
 }
 
 /**
-A single 'character' can be casted to every unsigned int type.
+A single 'character' can be casted to every unsigned s64 type.
 */
 #test
 {

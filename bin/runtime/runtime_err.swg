@@ -7,7 +7,7 @@ func __seterr(value: string)
     len := @countof(value)
     if len > MaxLenErrorMsg - cxt.errorMsgStart
     {
-        len = cast(uint) (MaxLenErrorMsg - cxt.errorMsgStart)
+        len = cast(u64) (MaxLenErrorMsg - cxt.errorMsgStart)
         @assert(len > 0)
     }
     @memcpy(&cxt.errorMsg[cxt.errorMsgStart], @dataof(value), len)
@@ -176,7 +176,7 @@ func @panic(message: string, loc: SourceCodeLocation)
 
     // Build message
     var str: [1024] u8
-    var len: uint
+    var len: u64
 
     if message != null
     {

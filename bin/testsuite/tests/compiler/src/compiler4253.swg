@@ -4,7 +4,7 @@ struct V {}
 impl V
 {
     mtd opCount() => 5
-    mtd opSlice(l, u: uint)->string
+    mtd opSlice(l, u: u64)->string
     {
         return "toto"
     }

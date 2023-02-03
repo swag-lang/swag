@@ -95,10 +95,10 @@ namespace __Win32RT
 
     #[Swag.Foreign("kernel32")]
     {
-        func RtlCopyMemory(destination: *void, source: const *void, length: uint);
-        func RtlMoveMemory(destination: *void, source: const *void, length: uint);
-        func RtlCompareMemory(destination, source: const *void, length: uint)->uint;
-        func RtlFillMemory(destination: *void, length: uint, fill: s32);
+        func RtlCopyMemory(destination: *void, source: const *void, length: u64);
+        func RtlMoveMemory(destination: *void, source: const *void, length: u64);
+        func RtlCompareMemory(destination, source: const *void, length: u64)->u64;
+        func RtlFillMemory(destination: *void, length: u64, fill: s32);
         func RtlCaptureStackBackTrace(framesToSkip: ULONG, framesToCapture: ULONG, backTrace: **void, backTraceHash: *ULONG)->USHORT;
 
         func GetStdHandle(nStdHandle: u32)->HANDLE;
@@ -193,30 +193,30 @@ scopefile
     func pow(val1, val2: f64)->f64;
     func atan2(val1, val2: f64)->f64;
 
-    func malloc(s: int)->^void;
-    func realloc(ptr: ^void, s: int)->^void;
+    func malloc(s: s64)->^void;
+    func realloc(ptr: ^void, s: s64)->^void;
     func free(ptr: ^void);
 
-    func strlen(a: const ^u8)->int;
+    func strlen(a: const ^u8)->s64;
     func strcmp(a, b: const ^u8)->s32;
 }
 
-func memset(dst: *void, value: s32, size: uint)
+func memset(dst: *void, value: s32, size: u64)
 {
     __Win32RT.RtlFillMemory(dst, size, value)
 }
 
-func memcpy(dst: *void, src: const *void, size: uint)
+func memcpy(dst: *void, src: const *void, size: u64)
 {
     __Win32RT.RtlCopyMemory(dst, src, size)
 }
 
-func memmove(dst: *void, src: const *void, size: uint)
+func memmove(dst: *void, src: const *void, size: u64)
 {
     __Win32RT.RtlMoveMemory(dst, src, size)
 }
 
-func memcmp(dst, src: const ^void, size: uint)->s32
+func memcmp(dst, src: const ^void, size: u64)->s32
 {
     len := __Win32RT.RtlCompareMemory(dst, src, size)
     if len == size return 0
@@ -242,8 +242,8 @@ func __raiseException666(message: string, loc: Swag.SourceCodeLocation, kind: Sw
     cxt.exceptionLoc = loc
     cxt.exceptionParams[0] = cast(const *void) &cxt.exceptionLoc
     cxt.exceptionParams[1] = cast(const *void) @dataof(message)
-    cxt.exceptionParams[2] = cast(const *void) cast(uint) @countof(message)
-    cxt.exceptionParams[3] = cast(const *void) cast(uint) kind
+    cxt.exceptionParams[2] = cast(const *void) cast(u64) @countof(message)
+    cxt.exceptionParams[3] = cast(const *void) cast(u64) kind
     __Win32RT.RaiseException(666, 0, 4, &cxt.exceptionParams[0])
 }
 
@@ -323,8 +323,8 @@ func __logStackTrace(where: [..] *void, startAfter: *Swag.SourceCodeLocation = n
 
     loop i: 0..nb-1
     {
-        hasSymbol := SymFromAddr(GetCurrentProcess(), cast(ULONG64) cast(uint) where[i], &displacement, psym)
-        hasLine   := SymGetLineFromAddr64(GetCurrentProcess(), cast(ULONG64) cast(uint) where[i], acast &displacement, &line)
+        hasSymbol := SymFromAddr(GetCurrentProcess(), cast(ULONG64) cast(u64) where[i], &displacement, psym)
+        hasLine   := SymGetLineFromAddr64(GetCurrentProcess(), cast(ULONG64) cast(u64) where[i], acast &displacement, &line)
         fileName  := hasLine ? @mkstring(line.FileName, @strlen(line.FileName)) : null
         if !hasLine and !printNoLine
             continue

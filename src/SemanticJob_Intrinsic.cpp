@@ -152,7 +152,7 @@ bool SemanticJob::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* n
         return context->report({first, Fmt(Err(Err0788), name)});
 
     // Slice count
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, second->typeInfo, nullptr, second, CASTFLAG_TRY_COERCE));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, second->typeInfo, nullptr, second, CASTFLAG_TRY_COERCE));
 
     // Create slice type
     auto ptrSlice         = allocType<TypeInfoSlice>();
@@ -397,7 +397,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
         node->setFlagsValueIsComputed();
         node->computedValue->reg.u64 = typeEnum->values.size();
         if (node->computedValue->reg.u64 > UINT32_MAX)
-            node->typeInfo = g_TypeMgr->typeInfoUInt;
+            node->typeInfo = g_TypeMgr->typeInfoU64;
         else
             node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
         return true;
@@ -409,13 +409,13 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
         // :ConcreteRef
         expression->typeInfo = getConcreteTypeUnRef(expression, 0);
 
-        node->typeInfo = g_TypeMgr->typeInfoUInt;
+        node->typeInfo = g_TypeMgr->typeInfoU64;
         if (expression->flags & AST_VALUE_COMPUTED)
         {
             node->setFlagsValueIsComputed();
             node->computedValue->reg.u64 = expression->computedValue->text.length();
             if (node->computedValue->reg.u64 > UINT32_MAX)
-                node->typeInfo = g_TypeMgr->typeInfoUInt;
+                node->typeInfo = g_TypeMgr->typeInfoU64;
             else
                 node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
         }
@@ -433,7 +433,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
         auto typeArray               = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         node->computedValue->reg.u64 = typeArray->count;
         if (node->computedValue->reg.u64 > UINT32_MAX)
-            node->typeInfo = g_TypeMgr->typeInfoUInt;
+            node->typeInfo = g_TypeMgr->typeInfoU64;
         else
             node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
     }
@@ -448,14 +448,14 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
         {
             node->computedValue->reg.u64 = node->computedValue->reg.u64;
             if (node->computedValue->reg.u64 > UINT32_MAX)
-                node->typeInfo = g_TypeMgr->typeInfoUInt;
+                node->typeInfo = g_TypeMgr->typeInfoU64;
             else
                 node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
         }
         else
         {
             node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCountOf;
-            node->typeInfo    = g_TypeMgr->typeInfoUInt;
+            node->typeInfo    = g_TypeMgr->typeInfoU64;
         }
     }
     else if (typeInfo->isListTuple() || typeInfo->isListArray())
@@ -467,14 +467,14 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
         node->setFlagsValueIsComputed();
         node->computedValue->reg.u64 = typeList->subTypes.size();
         if (node->computedValue->reg.u64 > UINT32_MAX)
-            node->typeInfo = g_TypeMgr->typeInfoUInt;
+            node->typeInfo = g_TypeMgr->typeInfoU64;
         else
             node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
     }
     else if (typeInfo->isVariadic() || typeInfo->isTypedVariadic())
     {
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCountOf;
-        node->typeInfo    = g_TypeMgr->typeInfoUInt;
+        node->typeInfo    = g_TypeMgr->typeInfoU64;
     }
     else if (typeInfo->isStruct())
     {
@@ -483,7 +483,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opCount, nullptr, nullptr, node, nullptr));
         if (context->result != ContextResult::Done)
             return true;
-        node->typeInfo = g_TypeMgr->typeInfoUInt;
+        node->typeInfo = g_TypeMgr->typeInfoU64;
         if (!node->byteCodeFct)
             node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCountOf;
     }
@@ -514,7 +514,6 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
                         return context->report({expression, Fmt(Err(Err0802), node->computedValue->reg.s32)});
                     break;
                 case NativeTypeKind::S64:
-                case NativeTypeKind::Int:
                     if (expression->computedValue->reg.s64 < 0)
                         return context->report({expression, Fmt(Err(Err0805), node->computedValue->reg.s64)});
                     break;
@@ -522,7 +521,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
             }
         }
 
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, typeInfo, nullptr, node, CASTFLAG_TRY_COERCE));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, typeInfo, nullptr, node, CASTFLAG_TRY_COERCE));
     }
 
     return true;
@@ -723,7 +722,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         node->setFlagsValueIsComputed();
         node->computedValue->reg.u64 = expr->typeInfo->sizeOf;
         if (node->computedValue->reg.u64 > UINT32_MAX)
-            node->typeInfo = g_TypeMgr->typeInfoUInt;
+            node->typeInfo = g_TypeMgr->typeInfoU64;
         else
             node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
         break;
@@ -736,7 +735,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         node->setFlagsValueIsComputed();
         node->computedValue->reg.u64 = TypeManager::alignOf(expr->typeInfo);
         if (node->computedValue->reg.u64 > UINT32_MAX)
-            node->typeInfo = g_TypeMgr->typeInfoUInt;
+            node->typeInfo = g_TypeMgr->typeInfoU64;
         else
             node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
         break;
@@ -749,7 +748,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         node->setFlagsValueIsComputed();
         node->computedValue->reg.u64 = expr->resolvedSymbolOverload->computedValue.storageOffset;
         if (node->computedValue->reg.u64 > UINT32_MAX)
-            node->typeInfo = g_TypeMgr->typeInfoUInt;
+            node->typeInfo = g_TypeMgr->typeInfoU64;
         else
             node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
         break;

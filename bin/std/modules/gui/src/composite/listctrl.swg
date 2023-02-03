@@ -1225,7 +1225,7 @@ impl ListCtrl
                 idxLineToIdxList.add(lines[idx].index, cast(u32) (idx + to.lines.count))
 
             // Insert at the right position
-            lines.insertAt(cast(uint) (idxInsert + 1), to.lines.toSlice())
+            lines.insertAt(cast(u64) (idxInsert + 1), to.lines.toSlice())
         }
 
         computeLayout()
@@ -1256,7 +1256,7 @@ impl ListCtrl
 
         // Insert at the right position
         idxInsert := idxLineToIdxList.find(line.index).value
-        lines.removeAtOrdered(cast(uint) (idxInsert + 1), cast(uint) removeCount)
+        lines.removeAtOrdered(cast(u64) (idxInsert + 1), cast(u64) removeCount)
 
         // Update indexes after the insertion
         for idx := idxInsert + 1; idx < cast(u32) lines.count; idx += 1

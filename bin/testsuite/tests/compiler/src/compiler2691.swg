@@ -1,5 +1,5 @@
 #test
 {
-    x := 1'int / 2'f64
+    x := 1's64 / 2'f64
     #assert @typeof(x) == f64
 }

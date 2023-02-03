@@ -801,7 +801,7 @@ impl QuickWnd
         if canAddModel
         {
             btn := Wnd.create'QuickButton(layout, null, {0, 0, 64, 64})
-            btn.userData = cast(*void) 1'uint // This is the model button
+            btn.userData = cast(*void) 1'u64 // This is the model button
             btn.formItf = formItf
             btn.setForm(.RoundSquare)
             btn.style.addStyleSheetColors("btnIcon_Bk          0x0")

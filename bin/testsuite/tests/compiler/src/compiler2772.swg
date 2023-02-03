@@ -28,8 +28,8 @@ func(T) toto()
     toto'u32()
     toto's64()
     toto'u64()
-    toto'int()
-    toto'uint()
+    toto's64()
+    toto'u64()
 
     {
         x := 456

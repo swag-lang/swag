@@ -4,7 +4,7 @@ struct(T) A
 
 impl A
 {
-    mtd opIndex(idx: uint)->T
+    mtd opIndex(idx: u64)->T
     {
         return null
     }

@@ -20,7 +20,7 @@ interface IEncoder
     mtd endSection() throw
 
     mtd write(data: const ^void, type: typeinfo) throw
-    mtd writeBufferU8(data: const ^u8, count: uint) throw
+    mtd writeBufferU8(data: const ^u8, count: u64) throw
 
     mtd writeBool(value: bool)
     mtd writeS8(value: s8)
@@ -85,7 +85,7 @@ impl Encoder
                 serializer.writeNative(dref cast(const *u16) data)
             case U32, Rune:
                 serializer.writeNative(dref cast(const *u32) data)
-            case U64, UInt:
+            case U64:
                 serializer.writeNative(dref cast(const *u64) data)
             case S8:
                 serializer.writeNative(dref cast(const *s8) data)
@@ -93,7 +93,7 @@ impl Encoder
                 serializer.writeNative(dref cast(const *s16) data)
             case S32:
                 serializer.writeNative(dref cast(const *s32) data)
-            case S64, Int:
+            case S64:
                 serializer.writeNative(dref cast(const *s64) data)
             case F32:
                 serializer.writeNative(dref cast(const *f32) data)
@@ -121,8 +121,8 @@ impl Encoder
             var objType, itfType: typeinfo
             if itf.itable
             {
-                objType = itf.itable[cast,bit(uint) -1'int]
-                itfType = itf.itable[cast,bit(uint) -2'int]
+                objType = itf.itable[cast,bit(u64) -1's64]
+                itfType = itf.itable[cast,bit(u64) -2's64]
             }
 
             var typeVal: TypeValue
@@ -286,7 +286,7 @@ impl IEncoder for Encoder
         writeValue(data, type)
     }
 
-    mtd writeBufferU8(data: const ^u8, count: uint) throw
+    mtd writeBufferU8(data: const ^u8, count: u64) throw
     {
         treated := serializer.beginSequence(u8, data, count)
         defer(noerr) serializer.endSequence()

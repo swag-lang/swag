@@ -37,12 +37,12 @@
 
     // Like 'loop' and 'while', you have access to '@index', the current loop index
     {
-        cpt := 0'uint
+        cpt := 0'u64
         for var i: u32 = 10; i < 15; i += 1
             cpt += @index
         @assert(cpt == 0+1+2+3+4)
 
-        cpt1 := 0'uint
+        cpt1 := 0'u64
         for i := 10; i < 15; i += 1
             cpt1 += @index
         @assert(cpt1 == 0+1+2+3+4)

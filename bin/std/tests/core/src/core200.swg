@@ -2,7 +2,7 @@
 
 #test
 {
-    mem := ScratchAllocator.create(16'uint)
+    mem := ScratchAllocator.create(16'u64)
     @assert(!@err)
     defer mem.release()
 

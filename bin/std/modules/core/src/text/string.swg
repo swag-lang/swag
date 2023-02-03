@@ -1,7 +1,7 @@
 #global public
 using Swag
 
-private const StringSmallSize = 16'uint
+private const StringSmallSize = 16'u64
 #assert @sizeof(String) == 56
 
 enum CharacterSet
@@ -13,8 +13,8 @@ enum CharacterSet
 struct String
 {
     buffer:     ^u8
-    length:     uint
-    capacity:   uint
+    length:     u64
+    capacity:   u64
     allocator:  IAllocator
     padding:    [StringSmallSize] u8
 }
@@ -22,7 +22,7 @@ struct String
 impl String
 {
     #[Inline]
-    mtdc opCount()->uint
+    mtdc opCount()->u64
     {
         return length
     }
@@ -51,7 +51,7 @@ impl String
         return @mkslice(buffer, length)
     }
 
-    mtdc opSlice(lower, upper: uint)->string
+    mtdc opSlice(lower, upper: u64)->string
     {
         Debug.assert(lower <= upper and lower < length and upper < length)
         return @mkstring(buffer + lower, (upper + 1) - lower)
@@ -86,7 +86,7 @@ impl String
         return Utf8.compare(toString(), other, Utf8.ComparisonType.Latin1)
     }
 
-    mtd(op: string) opIndexAssign(index: uint, value: u8)
+    mtd(op: string) opIndexAssign(index: u64, value: u8)
     {
         Debug.safetyBoundCheck(index < length, "index out of range")
         #if op == "+="
@@ -97,7 +97,7 @@ impl String
             #error "invalid operator '" ++ op ++ "'"
     }
 
-    mtd opIndexAffect(index: uint, value: u8)
+    mtd opIndexAffect(index: u64, value: u8)
     {
         Debug.safetyBoundCheck(index < length, "index out of range")
         buffer[index] = value
@@ -157,7 +157,7 @@ impl String
     }
 
     // Returns the byte at the given index
-    mtdc opIndex(index: uint)->u8
+    mtdc opIndex(index: u64)->u8
     {
         Debug.safetyBoundCheck(index < length, "index out of range")
         return buffer[index]
@@ -241,7 +241,7 @@ impl String
         byLength := @countof(by)
 
         idx := Utf8.indexOf(toString(), what, 0, comparisonType)
-        while idx != Swag.UInt.Max
+        while idx != Swag.U64.Max
         {
             reserve(length + byLength + 1)
             Memory.copyOver(buffer + idx + byLength, buffer + idx + whatLength, length - idx + 1)
@@ -266,7 +266,7 @@ impl String
     }
 
     // Remove some bytes at the given index
-    mtd remove(byteIndex: uint, byteCount: uint = 1)
+    mtd remove(byteIndex: u64, byteCount: u64 = 1)
     {
         if !byteCount
             return
@@ -277,7 +277,7 @@ impl String
     }
 
     // Remove some bytes at the end
-    mtd removeBack(byteCount: uint = 1)
+    mtd removeBack(byteCount: u64 = 1)
     {
         if !byteCount
             return
@@ -287,7 +287,7 @@ impl String
     }
 
     // Insert a substring at the given position
-    mtd insert(byteIndex: uint, value: string)
+    mtd insert(byteIndex: u64, value: string)
     {
         if byteIndex == length
         {
@@ -375,7 +375,7 @@ impl String
 
     // Ensure the String is big enough to store a given amount of bytes
     #[Swag.Inline]
-    mtd grow(wantedCapacity: uint)
+    mtd grow(wantedCapacity: u64)
     {
         if wantedCapacity <= capacity
             return
@@ -384,7 +384,7 @@ impl String
     }
 
     // Reserve room for at least 'newCapacity' bytes
-    mtd reserve(newCapacity: uint)
+    mtd reserve(newCapacity: u64)
     {
         length = Math.min(length, newCapacity)
         if allocator == null

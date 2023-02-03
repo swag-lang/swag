@@ -331,7 +331,7 @@ impl Core.StrConv.IPokeValue for Color
 {
     mtd poke(buf: string)->string throw
     {
-        var eat: uint
+        var eat: u64
         var ovf: bool
 
         one := Tokenize.eatSpaces(buf)

@@ -5,8 +5,8 @@ struct DebugAllocatorHeader
 {
     loc:            SourceCodeLocation
     allocAddr:      ^void
-    allocSize:      uint
-    userSize:       uint
+    allocSize:      u64
+    userSize:       u64
     hint:           string
     prev:           *DebugAllocatorHeader
     next:           *DebugAllocatorHeader
@@ -29,13 +29,13 @@ struct DebugAllocator
     firstAlloc: *DebugAllocatorHeader   // First allocated block
     firstFree:  *DebugAllocatorHeader   // First freed block
     lastFree:   *DebugAllocatorHeader   // Last freed block
-    sizeAlloc:  uint                    // Total allocated memory, in bytes
-    sizeFree:   uint                    // Total of free blocks in quarantine
+    sizeAlloc:  u64                    // Total allocated memory, in bytes
+    sizeFree:   u64                    // Total of free blocks in quarantine
     countAlloc: u32                     // Number of allocated blocks
     nextId:     u32                     // The next allocated id to assign
 
     // Debug/behaviour parameters
-    maxFreeSize:        uint = 4*1024   // Maximum total size (in kbs) of free blocks in quarantine
+    maxFreeSize:        u64 = 4*1024   // Maximum total size (in kbs) of free blocks in quarantine
     breakOnAllocId:     u32             // Will @assert when the current allocation id reaches that value
     showMaxLeaks:       u32 = 100       // Maximum number of memory leaks to show
     captureAllocStack   = true          // For each allocation, capture stack
@@ -49,7 +49,7 @@ impl DebugAllocator
     const AllocByte  = 0xAB         // Fill memory when allocated
     const FreeByte   = 0xFB         // Fill memory when deleted
 
-    func printDisplaySize(value: uint)
+    func printDisplaySize(value: u64)
     {
         sizeAlloc := value
         if sizeAlloc < 1024
@@ -83,7 +83,7 @@ impl DebugAllocator
         @print(sizeAlloc, " Tb")
     }
 
-    func memAlign(value: uint, alignement: u32)->uint
+    func memAlign(value: u64, alignement: u32)->u64
     {
         toAlign := (alignement orelse @sizeof(*void)) - 1
         return (value + toAlign) & ~toAlign
@@ -361,7 +361,7 @@ impl IAllocator for DebugAllocator
         // In case of a reallocation, get the previous allocated user sizeAlloc
         // This will be used to fill with garbage the difference
         copyReq := dref request
-        prevSize := 0'uint
+        prevSize := 0'u64
         prevHeader := cast(^DebugAllocatorHeader) request.address
         if request.mode == AllocatorMode.Realloc and request.address
         {

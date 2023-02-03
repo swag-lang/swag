@@ -110,7 +110,7 @@ struct ChunkBitfield
 
 struct Chunk
 {
-    offset:     uint
+    offset:     u64
     length:     u32
     type:       [4] u8
     crc:        u32
@@ -165,7 +165,7 @@ impl Encoder
         stream.addBytes(@mkslice(cast(const ^u8) &v, 4))
     }
 
-    mtd writeHeader(chunkType: const [4] u8, chunkLength: uint)->^u8
+    mtd writeHeader(chunkType: const [4] u8, chunkLength: u64)->^u8
     {
         total := chunkLength + 8 + 4
         stream.grow(total)
@@ -194,7 +194,7 @@ impl Encoder
         writeU32(currentChunk.crc)
     }
 
-    mtd writeChunk(chunkType: const [4] u8, buf: const *u8, length: uint)
+    mtd writeChunk(chunkType: const [4] u8, buf: const *u8, length: u64)
     {
         writePtr = writeHeader(chunkType, length)
         if length
@@ -222,8 +222,8 @@ impl Encoder
         if !width
             throw "SPNG_EINTERNAL"
 
-        res := cast(uint) numChannels() * ihdr.bitDepth
-        if res > Swag.UInt.Max / width
+        res := cast(u64) numChannels() * ihdr.bitDepth
+        if res > Swag.U64.Max / width
             throw "SPNG_EOVERFLOW"
         res = res * width
 
@@ -318,7 +318,7 @@ impl Encoder
             shiftAmount    := initialShift
 
             row_uc := row
-            Memory.clear(scanline, cast(uint) subimage[pass].scanlineWidth)
+            Memory.clear(scanline, cast(u64) subimage[pass].scanlineWidth)
 
             loop k: subimage[pass].width
             {
@@ -518,13 +518,13 @@ impl Encoder
             }
             else
             {
-                Memory.copy(scanline, sl, cast(uint) scanlineWidth - 1)
+                Memory.copy(scanline, sl, cast(u64) scanlineWidth - 1)
             }
         }
 
         requiresPrevious := encodeFlags.filterChoice & (.Up | .Average | .Paeth)
         if !rowInfo.scanlineIdx and requiresPrevious
-            Memory.clear(prevScanline, cast(uint) scanlineWidth)
+            Memory.clear(prevScanline, cast(u64) scanlineWidth)
 
         filtered_sl := filteredScanline
         filter := getBestFilter(scanlineWidth - 1)
@@ -625,12 +625,12 @@ public impl IImageEncoder for Encoder
         scanlineBufSize := subimage[widestPass].scanlineWidth
         scanlineBufSize += 32
 
-        scanlineBuf         = Memory.alloc(cast(uint) scanlineBufSize)
-        prevScanlineBuf     = Memory.alloc(cast(uint) scanlineBufSize)
-        filteredScanlineBuf = Memory.alloc(cast(uint) scanlineBufSize)
-        defer Memory.free(scanlineBuf, cast(uint) scanlineBufSize)
-        defer Memory.free(prevScanlineBuf, cast(uint) scanlineBufSize)
-        defer Memory.free(filteredScanlineBuf, cast(uint) scanlineBufSize)
+        scanlineBuf         = Memory.alloc(cast(u64) scanlineBufSize)
+        prevScanlineBuf     = Memory.alloc(cast(u64) scanlineBufSize)
+        filteredScanlineBuf = Memory.alloc(cast(u64) scanlineBufSize)
+        defer Memory.free(scanlineBuf, cast(u64) scanlineBufSize)
+        defer Memory.free(prevScanlineBuf, cast(u64) scanlineBufSize)
+        defer Memory.free(filteredScanlineBuf, cast(u64) scanlineBufSize)
 
         scanline         = scanlineBuf + 16
         prevScanline     = prevScanlineBuf + 16

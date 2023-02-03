@@ -25,7 +25,7 @@ static void helpUserTags()
     g_Log.print("--tag:\"Swag.DebugAllocator.captureAllocStack\"\n");
     g_Log.print("--tag:\"Swag.DebugAllocator.captureAllocStack = false\"\n");
     g_Log.print("--tag:\"Swag.DebugAllocator.captureAllocStack: bool = true\"\n");
-    g_Log.print("--tag:\"Swag.ScratchAllocator.capacity: uint = 4000_0000\"\n");
+    g_Log.print("--tag:\"Swag.ScratchAllocator.capacity: u64 = 4000_0000\"\n");
     g_Log.eol();
     g_Log.print("");
 }

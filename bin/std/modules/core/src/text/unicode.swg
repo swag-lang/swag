@@ -194,12 +194,12 @@ public func makeLower(buffer: [..] rune)
 }
 
 // Compare two unicode strings, and returns -1, 0 or 1
-func compare(src, dst: const [..] rune, ignoreCase = false, len: uint = 0)->s32
+func compare(src, dst: const [..] rune, ignoreCase = false, len: u64 = 0)->s32
 {
     length := @countof(src)
     otherLength := @countof(dst)
 
-    var minLen: uint = undefined
+    var minLen: u64 = undefined
     if len
     {
         if length < len
@@ -279,7 +279,7 @@ func isInTable(ranges: const [..] Range, r: rune)->bool
     }
 
     // binary search over ranges
-    lo := 0'uint
+    lo := 0'u64
     hi := @countof(ranges)
     while lo < hi
     {
@@ -304,7 +304,7 @@ func caseChangeTo(wCase: WantedCase, r: rune, caseRange: const [..] CaseRange) -
     var result: retval
 
 	// binary search over ranges
-	lo := 0'uint
+	lo := 0'u64
 	hi := @countof(caseRange)
 	while lo < hi
     {

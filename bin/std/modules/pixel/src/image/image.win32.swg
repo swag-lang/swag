@@ -19,7 +19,7 @@ impl Image
         hbmp := CreateDIBSection(null, &bi, acast DIB_RGB_COLORS, &ppvBits, null, 0)
         defer(noerr) DeleteObject(acast hbmp)
 
-        Memory.copy(ppvBits, pixels.buffer, cast(uint) width*height*bpp8)
+        Memory.copy(ppvBits, pixels.buffer, cast(u64) width*height*bpp8)
 
         var ii: ICONINFO
         ii.fIcon = TRUE

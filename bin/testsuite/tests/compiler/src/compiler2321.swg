@@ -1,5 +1,5 @@
 #test
 {
-    x := 1 + 2'uint
-    @assert(@typeof(x) == uint)
+    x := 1 + 2'u64
+    @assert(@typeof(x) == u64)
 }

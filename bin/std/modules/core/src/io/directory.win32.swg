@@ -116,7 +116,7 @@ func getCurrent()->String throw
     var arr16: Array'u16
     arr16.allocator = @getcontext().tempAllocator
 
-    arr16.reserve(cast(uint) length + 1)
+    arr16.reserve(cast(u64) length + 1)
     arr16.count = try GetCurrentDirectoryW(length + 1, @dataof(arr16))
 
     result = Utf8.fromUtf16(arr16.toSlice())

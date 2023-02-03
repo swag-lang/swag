@@ -27,7 +27,7 @@ using Swag
     func strchr(str: cstring, character: s32)->*u8;
     func strcmp(str1, str2: cstring)->s32;
     func strcoll(str1, str2: cstring)->s32;
-    func strncmp(str1, str2: cstring, num: uint)->s32;
+    func strncmp(str1, str2: cstring, num: u64)->s32;
     func strxfrm(dst: *u8, src: cstring, num: size_t)->size_t;
     func strerror(errnum: s32)->cstring;
 	func strlen(s: cstring)->size_t;

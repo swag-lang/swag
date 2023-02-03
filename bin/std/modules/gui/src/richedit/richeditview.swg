@@ -9,7 +9,7 @@ public struct RichEditView
     visibleCaret:       bool
     selMode:            bool
     timerCaret:         *Timer
-    firstLineSelMode:   uint
+    firstLineSelMode:   u64
     lastClientRect:     Math.Rectangle
 }
 
@@ -147,11 +147,11 @@ impl IWnd for RichEditView
             ed.ensureCaretIsVisibleInternal(ed.forceCaretVisibleCenter)
 
         // Start to the first visible line, if known
-        var i: uint
+        var i: u64
         if ed.dirtyFirstLineView or ed.recomputeScroll
         {
             i = 0
-            ed.firstVisibleLineView = Swag.UInt.Max
+            ed.firstVisibleLineView = Swag.U64.Max
         }
         else
         {
@@ -179,7 +179,7 @@ impl IWnd for RichEditView
                 bvis = false
 
             // Store the first visible line index
-            if bvis and ed.firstVisibleLineView == Swag.UInt.Max and (ed.lines[i].isVisible() or firstHidden)
+            if bvis and ed.firstVisibleLineView == Swag.U64.Max and (ed.lines[i].isVisible() or firstHidden)
                 ed.firstVisibleLineView = i
 
             if ed.recomputeScroll
@@ -318,7 +318,7 @@ impl RichEditView
         return x + me.width
     }
 
-    mtd paintLine(bc: *PaintContext, lineIndex: uint, py: f32, visible: bool)->f32
+    mtd paintLine(bc: *PaintContext, lineIndex: u64, py: f32, visible: bool)->f32
     {
         line := ed.lines[lineIndex]
         y := py

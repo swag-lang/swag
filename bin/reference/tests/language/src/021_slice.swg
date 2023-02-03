@@ -1,10 +1,10 @@
 #test
 {
-    // A slice is a pointer on a buffer of datas, and a 'uint' to count the number of elements
+    // A slice is a pointer on a buffer of datas, and a 'u64' to count the number of elements
     // It is declared with [..]
     {
         var a: [..] bool
-        #assert @sizeof(a) == @sizeof(*void) + @sizeof(uint)
+        #assert @sizeof(a) == @sizeof(*void) + @sizeof(u64)
     }
 
     // You can initialize a slice like an array

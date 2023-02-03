@@ -9,7 +9,7 @@ func level0()
 
 //#[Swag.PrintBc]
 #[Swag.Optim("", false)]
-func test(level: int)
+func test(level: s64)
 {
     //@breakpoint()
     ptr := &level

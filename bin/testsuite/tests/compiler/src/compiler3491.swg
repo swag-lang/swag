@@ -7,7 +7,7 @@ struct A
 impl A
 {
     //#[Swag.Macro]
-    mtd opIndex(idx: uint)->s32
+    mtd opIndex(idx: u64)->s32
     {
         @assert(a == 666)
         return 10

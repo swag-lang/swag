@@ -17,13 +17,11 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, Ast
     case NativeTypeKind::S64:
     case NativeTypeKind::F32:
     case NativeTypeKind::F64:
-    case NativeTypeKind::Int:
         break;
     case NativeTypeKind::U8:
     case NativeTypeKind::U16:
     case NativeTypeKind::U32:
     case NativeTypeKind::U64:
-    case NativeTypeKind::UInt:
         return context->report({child, Fmt(Err(Err0827), typeInfo->getDisplayNameC())});
     default:
         return context->report({child, Fmt(Err(Err0828), typeInfo->getDisplayNameC())});
@@ -58,7 +56,6 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, Ast
             }
             break;
         case NativeTypeKind::S64:
-        case NativeTypeKind::Int:
             if (child->computedValue->reg.s64 <= INT64_MIN)
                 return context->report({child, Fmt(Err(Err0832), child->computedValue->reg.s64, -child->computedValue->reg.s64)});
             child->computedValue->reg.s64 = -child->computedValue->reg.s64;
@@ -121,8 +118,6 @@ bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* child)
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
-        case NativeTypeKind::Int:
-        case NativeTypeKind::UInt:
             child->computedValue->reg.b = child->computedValue->reg.u64 ? false : true;
             break;
         }
@@ -145,8 +140,6 @@ bool SemanticJob::resolveUnaryOpInvert(SemanticContext* context, AstNode* child)
     case NativeTypeKind::U16:
     case NativeTypeKind::U32:
     case NativeTypeKind::U64:
-    case NativeTypeKind::Int:
-    case NativeTypeKind::UInt:
         break;
     default:
         return context->report({child, Fmt(Err(Err0833), typeInfo->getDisplayNameC())});
@@ -177,8 +170,6 @@ bool SemanticJob::resolveUnaryOpInvert(SemanticContext* context, AstNode* child)
 
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
-        case NativeTypeKind::Int:
-        case NativeTypeKind::UInt:
             child->computedValue->reg.u64 = ~child->computedValue->reg.u64;
             break;
         }

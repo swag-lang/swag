@@ -6,7 +6,7 @@ struct A
 impl A
 {
     #[Swag.Inline]
-    mtd opIndexAffect(index: uint, value: s32)
+    mtd opIndexAffect(index: u64, value: s32)
     {
         x[index] = value
     }

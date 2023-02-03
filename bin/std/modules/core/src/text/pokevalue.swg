@@ -5,7 +5,7 @@ using Swag
 // 'addr' must point to an initialized memory location that can hold type 'type'
 //
 // Accepted types are :
-// - s8,s16,s32,s64,int,u8,u16,u32,u64,uint,rune,bool,f32,f64
+// - s8,s16,s32,s64,s64,u8,u16,u32,u64,u64,rune,bool,f32,f64
 // - 'Core.String'  literal strings are not supported as 'buf' is supposed to be transient
 // - enum           with or without 'Swag.EnumFlags' attribute
 //
@@ -106,8 +106,8 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
             one = Tokenize.eatCount(one, 1)
         }
 
-        eat := cast(u32) cast(int) (@dataof(one) - @dataof(buf))
-        one = Tokenize.eatCount(buf, cast(uint) eat)
+        eat := cast(u32) cast(s64) (@dataof(one) - @dataof(buf))
+        one = Tokenize.eatCount(buf, cast(u64) eat)
         return one
     }
 
@@ -141,7 +141,7 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
         if ovf throw ParseErrorOverflow
         dref cast(*s32) patch = val
 
-    case s64, int:
+    case s64, s64:
         var val: s64 = undefined
         (val, eat, ovf) = try parseS64(one)
         if ovf throw ParseErrorOverflow
@@ -165,7 +165,7 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
         if ovf throw ParseErrorOverflow
         dref cast(*u32) patch = val
 
-    case u64, uint:
+    case u64, u64:
         var val: u64 = undefined
         (val, eat, ovf) = try parseU64(one)
         if ovf throw ParseErrorOverflow
@@ -202,5 +202,5 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
         throw Format.toString("unsupported type '%'", type.name)
     }
 
-    return Tokenize.eatCount(one, cast(uint) eat)
+    return Tokenize.eatCount(one, cast(u64) eat)
 }

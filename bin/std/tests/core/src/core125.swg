@@ -8,7 +8,7 @@ using Core
     arr.addAny("1")
     arr.addAny("2")
     arr.addAny("3")
-    Slice.quickSort(@mkslice(arr.buffer, cast(uint) arr.count), func(x, y) => y <=> x)
+    Slice.quickSort(@mkslice(arr.buffer, cast(u64) arr.count), func(x, y) => y <=> x)
     @assert(arr[0] == "3")
     @assert(arr[1] == "2")
     @assert(arr[2] == "1")

@@ -5,7 +5,7 @@ struct(T, N: u32) NumericArray
 
 impl NumericArray
 {
-    func opIndex(using self, idx: uint)->T
+    func opIndex(using self, idx: u64)->T
     {
         return buf[idx]
     }

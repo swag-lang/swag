@@ -1,5 +1,5 @@
 #[Swag.Discardable]
-func printf(format: cstring, args: cvarargs)->int
+func printf(format: cstring, args: cvarargs)->s64
 {
     var valist: Swag.CVaList
     @cvastart(&valist)

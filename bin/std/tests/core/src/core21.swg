@@ -2,7 +2,7 @@
 using Core
 
 //#[Swag.PrintBc]
-func XX(v: String)->[..]u8 => @mkslice(v.buffer, cast(uint) v.length)
+func XX(v: String)->[..]u8 => @mkslice(v.buffer, cast(u64) v.length)
 
 //#[Swag.PrintBc]
 #test

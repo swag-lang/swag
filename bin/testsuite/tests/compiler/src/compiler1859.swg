@@ -160,9 +160,9 @@ func aaa(ptr: ^s64)
         {
             x := [1, 2, 3]
             y := [1, 3, 3]
-            @print(cast(s64) @memcmp(&x[0], &y[0], 3'uint * 4))
+            @print(cast(s64) @memcmp(&x[0], &y[0], 3'u64 * 4))
             z := [1, 2, 3]
-            @print(cast(s64) @memcmp(&x[0], &z[0], 3'uint * 4))
+            @print(cast(s64) @memcmp(&x[0], &z[0], 3'u64 * 4))
         }
 
         {
@@ -170,7 +170,7 @@ func aaa(ptr: ^s64)
             @print(cast(s64) x[0])
             @print(cast(s64) x[1])
             @print(cast(s64) x[2])
-            @memset(&x[0], 0, cast(uint) 3 * @sizeof(u32))
+            @memset(&x[0], 0, cast(u64) 3 * @sizeof(u32))
             @print(cast(s64) x[0])
             @print(cast(s64) x[1])
             @print(cast(s64) x[2])
@@ -179,7 +179,7 @@ func aaa(ptr: ^s64)
         {
             x := [1, 2, 3]
             y := [10, 20, 30]
-            @memcpy(&x[0], &y[0], cast(uint) 3 * @sizeof(u32))
+            @memcpy(&x[0], &y[0], cast(u64) 3 * @sizeof(u32))
             @print(cast(s64) x[0])
             @print(cast(s64) x[1])
             @print(cast(s64) x[2])

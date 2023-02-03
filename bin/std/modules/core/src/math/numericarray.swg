@@ -9,7 +9,7 @@ struct(T, N: u32) NumericArray
 
 impl NumericArray
 {
-    mtdc opIndex(idx: uint)->T
+    mtdc opIndex(idx: u64)->T
     {
         return buf[idx]
     }

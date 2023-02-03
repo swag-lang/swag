@@ -7,5 +7,5 @@ struct RenderTarget
     depthStencil:   RenderTargetSurfaceHandle
 
     paintAlpha:     bool
-    paintAlphaIdx:  uint
+    paintAlphaIdx:  u64
 }

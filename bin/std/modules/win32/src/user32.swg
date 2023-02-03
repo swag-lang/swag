@@ -411,8 +411,8 @@ const SW_SHOWDEFAULT      = 10
 const SW_FORCEMINIMIZE    = 11
 const SW_MAX              = 11
 
-func MAKEINTRESOURCEA(val: s32) => cast(LPCSTR) cast(uint) val
-func MAKEINTRESOURCEW(val: s32) => cast(LPCWSTR) cast(uint) val
+func MAKEINTRESOURCEA(val: s32) => cast(LPCSTR) cast(u64) val
+func MAKEINTRESOURCEW(val: s32) => cast(LPCWSTR) cast(u64) val
 
 const WHEEL_DELTA = 120
 func GET_WHEEL_DELTA_WPARAM(wParam: u64) => HIWORD(wParam)
@@ -730,10 +730,10 @@ const GWLP_HWNDPARENT     = -8
 const GWLP_USERDATA       = -21
 const GWLP_ID             = -12
 
-const HWND_TOP       = (cast(HWND) 0'uint)
-const HWND_BOTTOM    = (cast(HWND) 1'uint)
-const HWND_TOPMOST   = (cast(HWND) cast,bit(uint) -1'int)
-const HWND_NOTOPMOST = (cast(HWND) cast,bit(uint) -2'int)
+const HWND_TOP       = (cast(HWND) 0'u64)
+const HWND_BOTTOM    = (cast(HWND) 1'u64)
+const HWND_TOPMOST   = (cast(HWND) cast,bit(u64) -1's64)
+const HWND_NOTOPMOST = (cast(HWND) cast,bit(u64) -2's64)
 
 const SWP_NOSIZE          = 0x0001
 const SWP_NOMOVE          = 0x0002

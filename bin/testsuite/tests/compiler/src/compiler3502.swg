@@ -8,7 +8,7 @@ struct A0
 impl A0
 {
     #[Swag.Macro]
-    mtd opIndex(idx: uint)->s32
+    mtd opIndex(idx: u64)->s32
     {
         return 0
     }
@@ -22,7 +22,7 @@ struct A1
 impl A1
 {
     #[Swag.Macro]
-    mtd opIndex(idx: uint)->s32
+    mtd opIndex(idx: u64)->s32
     {
         return 0
     }

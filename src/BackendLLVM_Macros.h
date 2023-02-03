@@ -182,8 +182,6 @@ inline llvm::Value* toPtrNative(llvm::LLVMContext& context, llvm::IRBuilder<>& b
         return TO_PTR_I32(v);
     case NativeTypeKind::S64:
     case NativeTypeKind::U64:
-    case NativeTypeKind::Int:
-    case NativeTypeKind::UInt:
         return TO_PTR_I64(v);
     case NativeTypeKind::F32:
         return TO_PTR_F32(v);
@@ -213,8 +211,6 @@ inline llvm::Value* toPtrPtrNative(llvm::LLVMContext& context, llvm::IRBuilder<>
         return TO_PTR_PTR_I32(v);
     case NativeTypeKind::S64:
     case NativeTypeKind::U64:
-    case NativeTypeKind::Int:
-    case NativeTypeKind::UInt:
         return TO_PTR_PTR_I64(v);
     case NativeTypeKind::F32:
         return TO_PTR_PTR_F32(v);

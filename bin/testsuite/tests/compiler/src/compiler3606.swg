@@ -8,5 +8,5 @@ enum E: MyType
 #test
 {
     var arr: [2] s32
-    arr[cast(uint) E.R] = 0
+    arr[cast(u64) E.R] = 0
 }

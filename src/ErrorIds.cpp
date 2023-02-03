@@ -453,7 +453,7 @@ void initErrors()
     SWAG_ERROR(Err0178, "cannot cast from a closure type to a lambda");
     SWAG_ERROR(Err0418, "cannot cast from an immutable type ('%s') to a mutable one ('%s')");
     SWAG_ERROR(Err0176, "cannot cast from struct to interface because '%s' (or one of its 'using' fields) does not implement '%s'");
-    SWAG_ERROR(Err0907, "cannot cast from type '%s' to a pointer type (only type 'uint' is accepted)");
+    SWAG_ERROR(Err0907, "cannot cast from type '%s' to a pointer type (only type 'u64' is accepted)");
     SWAG_ERROR(Err0175, "cannot cast implicitly from '%s' to '%s'");
     SWAG_ERROR(Err0203, "cannot cast, not enough initializers ('%d' expected, '%d' provided)");
     SWAG_ERROR(Err0204, "cannot cast, too many initializers ('%d' expected, '%d' provided)");
@@ -1032,7 +1032,7 @@ void initErrors()
     SWAG_ERROR(Hnt0006, "this cannot be visited");
     SWAG_ERROR(Hnt0041, "this comment does not end");
     SWAG_ERROR(Hnt0074, "this copy of an array of struct is disabled");
-    SWAG_ERROR(Hnt0005, "this could be casted to 'uint'");
+    SWAG_ERROR(Hnt0005, "this could be casted to 'u64'");
     SWAG_ERROR(Hnt0025, "this could be casted with 'cast(%s)'");
     SWAG_ERROR(Hnt0043, "this could be moved before '%s'");
     SWAG_ERROR(Hnt0046, "this could be preceeded by '#run' to force the call at compile time");

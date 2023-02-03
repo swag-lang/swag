@@ -2,7 +2,7 @@
 
 using Swag
 
-func alloc(size: uint, allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*void
+func alloc(size: u64, allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*void
 {
     return null
 }
@@ -12,7 +12,7 @@ func alloc(size: bool, allocator: IAllocator = null, alignement: u32 = 0, hint: 
     return null
 }
 
-func talloc(size: uint, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*void
+func talloc(size: u64, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*void
 {
     cxt := @getcontext()
     cxt.tempAllocator.alloc(10)

@@ -8,5 +8,5 @@ using Core
     c.addNative(1'u32)
     c.addNative(2'u32)
     c.clear()
-    c.addNative(1'uint)
+    c.addNative(1'u64)
 }

@@ -22,18 +22,18 @@ impl FontFamily
             return TRUE
         x := Utf8.fromUtf16(@mkslice(&fa.lfFaceName[0], len))
 
-        ret := cast(*FontFamilyEnumerate) cast(uint) lParam
-        idx := cast(uint) FontFamilyStyle.Regular
+        ret := cast(*FontFamilyEnumerate) cast(u64) lParam
+        idx := cast(u64) FontFamilyStyle.Regular
 
         if fa.lfWeight > FW_REGULAR
         {
             if fa.lfItalic == 255
-                idx = cast(uint) FontFamilyStyle.BoldItalic
+                idx = cast(u64) FontFamilyStyle.BoldItalic
             else
-                idx = cast(uint) FontFamilyStyle.Bold
+                idx = cast(u64) FontFamilyStyle.Bold
         }
         elif fa.lfItalic == 255
-            idx = cast(uint) FontFamilyStyle.Italic
+            idx = cast(u64) FontFamilyStyle.Italic
 
         ret.faces[idx].name = x
         ret.faces[idx].face = dref fa
@@ -54,7 +54,7 @@ impl FontFamily
                 return TRUE
 
             // Already here ?
-            ret := cast(*Array'FontFamilyEnumerate) cast(uint) lParam
+            ret := cast(*Array'FontFamilyEnumerate) cast(u64) lParam
             visit here: dref ret
             {
                 if here.name == x
@@ -66,7 +66,7 @@ impl FontFamily
 
             hdc := GetDC(null)
             defer ReleaseDC(null, hdc)
-            EnumFontFamiliesExW(hdc, fa, @mkcallback(&enumSubFamily), cast(LPARAM) cast(uint) &v, 0)
+            EnumFontFamiliesExW(hdc, fa, @mkcallback(&enumSubFamily), cast(LPARAM) cast(u64) &v, 0)
 
             ret.add(v)
         }
@@ -84,7 +84,7 @@ impl FontFamily
 
         var logFont: LOGFONTW
         logFont.lfCharSet = DEFAULT_CHARSET
-        EnumFontFamiliesExW(hdc, &logFont, @mkcallback(&enumFamily), cast(LPARAM) cast(uint) &result, 0)
+        EnumFontFamiliesExW(hdc, &logFont, @mkcallback(&enumFamily), cast(LPARAM) cast(u64) &result, 0)
 
         result.sort(func(a, b) {
             return a.name <=> b.name
@@ -100,7 +100,7 @@ impl FontFamily
 
         var arr: Array'FontFamilyEnumerate
         v := Utf16.toZeroTerminated(fontFamily)
-        EnumFontFamiliesW(hdc, v.buffer, @mkcallback(&enumFamily), cast(LPARAM) cast(uint) &arr)
+        EnumFontFamiliesW(hdc, v.buffer, @mkcallback(&enumFamily), cast(LPARAM) cast(u64) &arr)
 
         return arr[0]
     }
@@ -108,34 +108,34 @@ impl FontFamily
     // Creates a typeface from a FontFamilyEnumerate and FontFamilyStyle
     public func createTypeFace(enumerate: FontFamilyEnumerate, style: FontFamilyStyle)->*TypeFace throw
     {
-        logFont := enumerate.faces[cast(uint) style]
+        logFont := enumerate.faces[cast(u64) style]
         if style == .Regular
         {
             if logFont.face.lfWidth == 0
-                logFont = enumerate.faces[cast(uint) FontFamilyStyle.Bold]
+                logFont = enumerate.faces[cast(u64) FontFamilyStyle.Bold]
         }
         elif style == .Bold
         {
             if logFont.face.lfWidth == 0
-                logFont = enumerate.faces[cast(uint) FontFamilyStyle.Regular]
+                logFont = enumerate.faces[cast(u64) FontFamilyStyle.Regular]
         }
         elif style == .Italic
         {
             if logFont.face.lfWidth == 0
-                logFont = enumerate.faces[cast(uint) FontFamilyStyle.BoldItalic]
+                logFont = enumerate.faces[cast(u64) FontFamilyStyle.BoldItalic]
             if logFont.face.lfWidth == 0
-                logFont = enumerate.faces[cast(uint) FontFamilyStyle.Regular]
+                logFont = enumerate.faces[cast(u64) FontFamilyStyle.Regular]
             if logFont.face.lfWidth == 0
-                logFont = enumerate.faces[cast(uint) FontFamilyStyle.Bold]
+                logFont = enumerate.faces[cast(u64) FontFamilyStyle.Bold]
         }
         elif style == .BoldItalic
         {
             if logFont.face.lfWidth == 0
-                logFont = enumerate.faces[cast(uint) FontFamilyStyle.Italic]
+                logFont = enumerate.faces[cast(u64) FontFamilyStyle.Italic]
             if logFont.face.lfWidth == 0
-                logFont = enumerate.faces[cast(uint) FontFamilyStyle.Bold]
+                logFont = enumerate.faces[cast(u64) FontFamilyStyle.Bold]
             if logFont.face.lfWidth == 0
-                logFont = enumerate.faces[cast(uint) FontFamilyStyle.Regular]
+                logFont = enumerate.faces[cast(u64) FontFamilyStyle.Regular]
         }
 
         if logFont.face.lfWidth == 0

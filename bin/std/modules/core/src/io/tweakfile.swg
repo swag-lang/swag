@@ -126,7 +126,7 @@ impl TweakFile
         // Do references in a second pass
         while refs.count
         {
-            toDo := 0'uint
+            toDo := 0'u64
             refr := refs[toDo]
 
             loop

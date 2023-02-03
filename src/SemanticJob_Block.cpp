@@ -545,7 +545,7 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
             if (context->result != ContextResult::Done)
                 return true;
 
-            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, node->expression->typeInfo, nullptr, node->expression, CASTFLAG_TRY_COERCE));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, node->expression->typeInfo, nullptr, node->expression, CASTFLAG_TRY_COERCE));
             node->typeInfo = node->expression->typeInfo;
 
             // Do not evaluate loop if it's constant and 0
@@ -564,8 +564,8 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
         else
         {
             auto rangeNode = CastAst<AstRange>(node->expression, AstNodeKind::Range);
-            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoInt, rangeNode->expressionLow->typeInfo, nullptr, rangeNode->expressionLow, CASTFLAG_TRY_COERCE));
-            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoInt, rangeNode->expressionUp->typeInfo, nullptr, rangeNode->expressionUp, CASTFLAG_TRY_COERCE));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoS64, rangeNode->expressionLow->typeInfo, nullptr, rangeNode->expressionLow, CASTFLAG_TRY_COERCE));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoS64, rangeNode->expressionUp->typeInfo, nullptr, rangeNode->expressionUp, CASTFLAG_TRY_COERCE));
         }
 
         node->expression->allocateExtension(ExtensionKind::ByteCode);
@@ -969,7 +969,7 @@ bool SemanticJob::resolveIndex(SemanticContext* context)
     }
 
     if (!node->typeInfo)
-        node->typeInfo = g_TypeMgr->typeInfoUInt;
+        node->typeInfo = g_TypeMgr->typeInfoU64;
     node->byteCodeFct = ByteCodeGenJob::emitIndex;
     return true;
 }

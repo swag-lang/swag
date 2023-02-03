@@ -1,4 +1,4 @@
 #test
 {
-    x := @countof(0'uint)
+    x := @countof(0'u64)
 }

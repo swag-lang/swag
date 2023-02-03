@@ -64,7 +64,7 @@ impl SelModel
         {
             range := selection[isSelectedRange]
             if range.start == range.end
-                selection.removeAt(cast(uint) isSelectedRange)
+                selection.removeAt(cast(u64) isSelectedRange)
             elif range.start == idx
                 range.start += 1
             elif range.end == idx

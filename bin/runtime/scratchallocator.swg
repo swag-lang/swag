@@ -6,10 +6,10 @@ impl ScratchAllocator
     {
         prev:   *LeakHeader
         next:   *LeakHeader
-        size:   uint
+        size:   u64
     }
 
-    func align(value: uint, alignement: u32)->uint
+    func align(value: u64, alignement: u32)->u64
     {
         toAlign := alignement orelse @sizeof(*void)
         result := value & ~(toAlign - 1)
@@ -17,7 +17,7 @@ impl ScratchAllocator
         return result
     }
 
-    mtd free(addr: *void, size: uint)
+    mtd free(addr: *void, size: u64)
     {
         var req: AllocatorRequest
         req.mode = .Free
@@ -26,7 +26,7 @@ impl ScratchAllocator
         allocator.req(&req)
     }
 
-    mtd alloc(size: uint, alignement: u32 = 0)->*void
+    mtd alloc(size: u64, alignement: u32 = 0)->*void
     {
         var req: AllocatorRequest
         req.mode = .Alloc
@@ -63,7 +63,7 @@ impl ScratchAllocator
 
     // This will call 'release' prior to changing the capacity, so this must
     // be called at an early stage
-    mtd setCapacity(newCapacity: uint, allocator: IAllocator)
+    mtd setCapacity(newCapacity: u64, allocator: IAllocator)
     {
         @assert(#self.allocator != null)
         release()

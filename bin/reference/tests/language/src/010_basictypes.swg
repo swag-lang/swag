@@ -6,7 +6,6 @@
         var b: s16 = -2     // 16 bits signed integer
         var c: s32 = -3     // 32 bits signed integer
         var d: s64 = -4     // 64 bits signed integer
-        var e: int = -4     // 64 bits signed integer
 
         // Remember that the instrinsic '@assert' will raise an error at runtime if the enclosed expression is false.
         @assert(a == -1)
@@ -19,7 +18,6 @@
         @assert(@sizeof(b) == 2)    // 'b' has type 's16', so this should be 2 bytes.
         @assert(@sizeof(c) == 4)
         @assert(@sizeof(d) == 8)
-        @assert(@sizeof(e) == 8)
     }
 
     // This are all unsigned integers types
@@ -28,7 +26,6 @@
         var b: u16 = 2      // 16 bits unsigned integer
         var c: u32 = 3      // 32 bits unsigned integer
         var d: u64 = 4      // 64 bits unsigned integer
-        var e: uint = 4     // 64 bits unsigned integer
 
         @assert(a == 1)
         @assert(b == 2)
@@ -39,7 +36,6 @@
         @assert(@sizeof(b) == 2)
         @assert(@sizeof(c) == 4)
         @assert(@sizeof(d) == 8)
-        @assert(@sizeof(e) == 8)
     }
 
     // This are all floating point types.

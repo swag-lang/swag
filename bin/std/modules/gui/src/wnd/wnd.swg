@@ -280,7 +280,7 @@ impl Wnd
             parent.applyLayout()
     }
 
-    private mtd firstTopMostIndex()->uint
+    private mtd firstTopMostIndex()->u64
     {
         visit c, i: childs
         {
@@ -288,7 +288,7 @@ impl Wnd
                 return i
         }
 
-        return Swag.UInt.Max
+        return Swag.U64.Max
     }
 
     // Set window parent
@@ -313,7 +313,7 @@ impl Wnd
                 if !(wndFlags & .TopMost)
                 {
                     idxToInsert = who.firstTopMostIndex()
-                    if idxToInsert == Swag.UInt.Max
+                    if idxToInsert == Swag.U64.Max
                         idxToInsert = who.childs.count
                 }
 
@@ -693,7 +693,7 @@ impl Wnd
         if !(wndFlags & .TopMost)
         {
             idxToReplace = parent.firstTopMostIndex()
-            if idxToReplace == Swag.UInt.Max
+            if idxToReplace == Swag.U64.Max
                 return
             idxToReplace -= 1
         }

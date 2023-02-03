@@ -144,7 +144,7 @@
     }
 
     // Enum can be a set of flags with the #[Swag.EnumFlags] attribute
-    // Type should be u8, u16, u32, u64 or uint
+    // Type should be u8, u16, u32, u64 or u64
     {
         #[Swag.EnumFlags]
         enum MyFlags: u8

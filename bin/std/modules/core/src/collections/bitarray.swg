@@ -6,8 +6,8 @@ public struct BitArray
 {
     buffer:     ^u32
     allocator:  IAllocator
-    count:      uint
-    capacity:   uint
+    count:      u64
+    capacity:   u64
 }
 
 impl BitArray
@@ -19,7 +19,7 @@ impl BitArray
         Memory.free(buffer, capacity, allocator)
     }
 
-    mtd realloc(newCapacity: uint)
+    mtd realloc(newCapacity: u64)
     {
         if allocator == null
             allocator = @getcontext().allocator
@@ -29,7 +29,7 @@ impl BitArray
 
 public impl BitArray
 {
-    mtdc opCount()->uint
+    mtdc opCount()->u64
     {
         return count
     }
@@ -51,13 +51,13 @@ public impl BitArray
     }
 
     // Gets the value of the bit at a specific position
-    mtd opIndex(index: uint)->bool
+    mtd opIndex(index: u64)->bool
     {
         return get(index)
     }
 
     // Sets the value of the bit at a specific position
-    mtd opIndexAffect(index: uint, value: bool)
+    mtd opIndexAffect(index: u64, value: bool)
     {
         set(index, value)
     }
@@ -94,7 +94,7 @@ public impl BitArray
         #if ptr #error "pointer visit not supported for BitArray"
         if !count return
         remainingBits := count
-        countBits := 0'uint
+        countBits := 0'u64
 
         scope up
         loop idx: Math.max(count >>,safe 5, 1)
@@ -117,7 +117,7 @@ public impl BitArray
     }
 
     // Reserve the given amount of bits
-    mtd reserve(maxBits: uint)
+    mtd reserve(maxBits: u64)
     {
         if !maxBits
         {
@@ -137,7 +137,7 @@ public impl BitArray
     }
 
     // Reserve the given amount of bits and set an initial value to all bits
-    mtd reserve(maxBits: uint, initialValue: bool)
+    mtd reserve(maxBits: u64, initialValue: bool)
     {
         reserve(maxBits)
         Memory.set(buffer, initialValue ? 0xFF : 0x00, capacity)
@@ -150,7 +150,7 @@ public impl BitArray
     }
 
     // Sets the bit at a specific position to the specified value
-    mtd set(index: uint, value: bool)
+    mtd set(index: u64, value: bool)
     {
         Debug.assert(index < count)
         val := index >>,safe 5
@@ -163,7 +163,7 @@ public impl BitArray
     }
 
     // Gets the value of the bit at a specific position
-    mtdc get(index: uint)->bool
+    mtdc get(index: u64)->bool
     {
         Debug.assert(index < count)
         val := index >>,safe 5
@@ -173,7 +173,7 @@ public impl BitArray
     }
 
     // Inverts the value of the bit at a specific position
-    mtd invert(index: uint)
+    mtd invert(index: u64)
     {
         Debug.assert(index < count)
         val := index >>,safe 5

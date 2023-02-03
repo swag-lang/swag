@@ -5,7 +5,7 @@ struct V
 
 impl V
 {
-    mtd opIndexAffect(idx: uint, val: s32)
+    mtd opIndexAffect(idx: u64, val: s32)
     {
         x, y = val
     }

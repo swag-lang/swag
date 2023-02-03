@@ -12,7 +12,7 @@ func eatQuotes(str: string)->string
 }
 
 // Eat 'count' bytes, and returns the remaining string
-func eatCount(str: string, count: uint)->string
+func eatCount(str: string, count: u64)->string
 {
     countof := @countof(str)
     cpt := Math.min(count, countof)
@@ -25,7 +25,7 @@ func eatSpaces(str: string)->string
     countof := @countof(str)
     if !countof return str
 
-    cpt := 0'uint
+    cpt := 0'u64
     while cpt < countof and Latin1.isSpace(str[cpt])
         cpt += 1
     return @mkstring(@dataof(str) + cpt, countof - cpt)
@@ -51,7 +51,7 @@ func splitLines(src: string) -> Array'string
             cpt += 1
         }
 
-        onestr := @mkstring(dataof, cast(uint) (end - dataof))
+        onestr := @mkstring(dataof, cast(u64) (end - dataof))
         result.add(onestr)
         if cpt < countof - 1 and dref end == "\r"'u8 and end[1] == "\n"'u8
             end, cpt += 1
@@ -81,9 +81,9 @@ func split(src: string, separators: const [..] rune, maxSplit: u32 = 0)->Array's
     var result: retval
     var ptr = dataof
     var c: rune
-    var eat: uint
+    var eat: u64
 
-    startbyteIdx := 0'uint
+    startbyteIdx := 0'u64
     count := countof
     cpt   := 0
     loop
@@ -140,7 +140,7 @@ func split(src: string, separators: const [..] rune, maxSplit: u32 = 0)->Array's
 func getToSpace(str: string)->string
 {
     countof := @countof(str)
-    cpt := 0'uint
+    cpt := 0'u64
     while cpt < countof and !Latin1.isSpace(str[cpt])
         cpt += 1
     return @mkstring(@dataof(str), cpt)
@@ -150,14 +150,14 @@ func getToSpace(str: string)->string
 func getWhileAlnum(str: string)->string
 {
     countof := @countof(str)
-    cpt := 0'uint
+    cpt := 0'u64
     while cpt < countof and (Latin1.isDigit(str[cpt]) or Latin1.isLetter(str[cpt]))
         cpt += 1
     return @mkstring(@dataof(str), cpt)
 }
 
 // Returns a sub string starting at 'startByteIndex' and ending with 'delimiter'
-func getTo(src: string, delimiter: u8, startByteIndex = 0'uint, includeDelimiter = true)->string
+func getTo(src: string, delimiter: u8, startByteIndex = 0'u64, includeDelimiter = true)->string
 {
     dataof := @dataof(src)
     length := @countof(src)
@@ -174,7 +174,7 @@ func getTo(src: string, delimiter: u8, startByteIndex = 0'uint, includeDelimiter
         {
             if includeDelimiter
                 scan += 1
-            return @mkstring(dataof, cast(uint) (scan - dataof))
+            return @mkstring(dataof, cast(u64) (scan - dataof))
         }
 
         scan += 1

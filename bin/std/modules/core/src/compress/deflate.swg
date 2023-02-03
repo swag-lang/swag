@@ -140,8 +140,8 @@ struct Compressor
     blockIndex:         u32
     inBuf:              const ^u8
     inSrc:              const ^u8
-    srcBufLeft:         uint
-    outBufOfs:          uint
+    srcBufLeft:         u64
+    outBufOfs:          u64
     dict:               [LzDictSize + MaxMatchLen - 1] u8
     huffCount:          [MaxHuffTables, MaxHuffSymbols] u16
     huffCodes:          [MaxHuffTables, MaxHuffSymbols] u16
@@ -707,14 +707,14 @@ impl Deflate
             numDistCodes -= 1
         }
 
-        Memory.copy(&codeSizesToPack[0], &d.huffCodeSizes[0, 0], cast(uint) numLitCodes)
-        Memory.copy(&codeSizesToPack[0] + numLitCodes, &d.huffCodeSizes[1, 0], cast(uint) numDistCodes)
+        Memory.copy(&codeSizesToPack[0], &d.huffCodeSizes[0, 0], cast(u64) numLitCodes)
+        Memory.copy(&codeSizesToPack[0] + numLitCodes, &d.huffCodeSizes[1, 0], cast(u64) numDistCodes)
         totalCodeSizesToPack := numLitCodes + numDistCodes
         numPackedCodeSizes := 0
         rleZCount := 0
         rleRepeatCount := 0
 
-        Memory.clear(&d.huffCount[2, 0], cast(uint) @sizeof(d.huffCount[2, 0]) * MaxHuffSymbols2)
+        Memory.clear(&d.huffCount[2, 0], cast(u64) @sizeof(d.huffCount[2, 0]) * MaxHuffSymbols2)
         loop i: totalCodeSizesToPack
         {
             codeSize := codeSizesToPack[i]
@@ -916,8 +916,8 @@ impl Deflate
         if finish and d.bitsIn
             putBits(0, 8 - d.bitsIn)
 
-        Memory.clear(&d.huffCount[0, 0], cast(uint) @sizeof(d.huffCount[0, 0]) * MaxHuffSymbols0)
-        Memory.clear(&d.huffCount[1, 0], cast(uint) @sizeof(d.huffCount[1, 0]) * MaxHuffSymbols1)
+        Memory.clear(&d.huffCount[0, 0], cast(u64) @sizeof(d.huffCount[0, 0]) * MaxHuffSymbols0)
+        Memory.clear(&d.huffCount[1, 0], cast(u64) @sizeof(d.huffCount[1, 0]) * MaxHuffSymbols1)
 
         d.lzCodeBufAddr = &d.lzCodeBuf[0] + 1
         d.lzFlags = &d.lzCodeBuf[0]
@@ -926,13 +926,13 @@ impl Deflate
         d.totalLzBytes = 0
         d.blockIndex += 1
 
-        n := cast(uint) (d.outputBufAddr - outputBufStart)
+        n := cast(u64) (d.outputBufAddr - outputBufStart)
         if n != 0
         {
             if (outputBufStart == &d.outputBuf[0])
             {
                 d.result.resize(d.result.count + n)
-                Memory.copy(d.result.buffer + d.outBufOfs, d.outputBuf, cast(uint) n)
+                Memory.copy(d.result.buffer + d.outBufOfs, d.outputBuf, cast(u64) n)
                 d.outBufOfs += n
             }
             else

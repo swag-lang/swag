@@ -2,7 +2,7 @@
 #global namespace StrConv
 
 // Convert a size in a displayable format (with Kb, Mb and so on)
-func toDisplaySize(value: uint)->String
+func toDisplaySize(value: u64)->String
 {
     size := value
     if size < 1024

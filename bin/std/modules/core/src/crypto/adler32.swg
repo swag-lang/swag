@@ -53,14 +53,14 @@ public impl Adler32
         else
         {
             const n = NMax / 16
-            i := 0'uint
+            i := 0'u64
 
             while i + NMax <= countof
             {
-                rounds := 0'uint
+                rounds := 0'u64
                 for ; rounds < n; rounds += 1
                 {
-                    j := 0'uint
+                    j := 0'u64
                     for ; j < 16; j += 1
                     {
                         s1 += input[i + j]
@@ -78,7 +78,7 @@ public impl Adler32
             {
                 for ; i + 16 <= countof; i += 16
                 {
-                    j := 0'uint
+                    j := 0'u64
                     for ; j < 16; j += 1
                     {
                         s1 += input[i + j]

@@ -6,7 +6,7 @@ impl AA
 {
     mtd isIn(V: typeinfo)->bool
     {
-        var ms: uint = 0
+        var ms: u64 = 0
         visit p: T
             if p == V return true
         return false

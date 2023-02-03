@@ -92,7 +92,7 @@ impl GridLayoutCtrl
         res.numColumns = numColumns
         res.numRows = numRows
 
-        res.layout.resize(cast(uint) (numColumns * numRows))
+        res.layout.resize(cast(u64) (numColumns * numRows))
         loop numColumns res.colSizes.add(100)
         loop numRows    res.rowSizes.add(30)
 

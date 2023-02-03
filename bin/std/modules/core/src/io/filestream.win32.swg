@@ -11,7 +11,7 @@ impl FileStream
     }
 
     // Read from the given file stream, and returns the number of bytes
-    mtd read(buffer: *void, length: uint)->uint
+    mtd read(buffer: *void, length: u64)->u64
     {
         Debug.assert(isOpen())
         Debug.assert(canRead)
@@ -19,18 +19,18 @@ impl FileStream
         var dwRead: DWORD = 0
         Debug.assert(length <= Swag.U32.Max)
         discard ReadFile(handle, buffer, cast(u32) length, &dwRead, null)
-        return cast(uint) dwRead
+        return cast(u64) dwRead
     }
 
     // Write to the given file stream, and returns the number of written bytes
-    mtd write(buffer: const *void, length: uint)->uint throw
+    mtd write(buffer: const *void, length: u64)->u64 throw
     {
         Debug.assert(isOpen())
         Debug.assert(canWrite)
 
         var dwWrite: DWORD = 0
         try WriteFile(handle, buffer, cast(u32) length, &dwWrite, null)
-        return cast(uint) dwWrite
+        return cast(u64) dwWrite
     }
 
     // Close the given file stream

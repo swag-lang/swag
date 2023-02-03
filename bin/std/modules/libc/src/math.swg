@@ -51,12 +51,12 @@ const FP_ILOGB0   = FP_ILOGBNAN
 	func exp2f(x: f32)->f32;
 	func expm1(x: f64)->f64;
 	func expm1f(x: f32)->f32;
-	func frexp(value: f64, exp: *int)->f64;
-	func frexpf(value: f32, exp: *int)->f32;
-	func ilogb(x: f64)->int;
-	func ilogbf(x: f32)->int;
-	func ldexp(x: f64, exp: int)->f64;
-	func ldexpf(x: f32, exp: int)->f32;
+	func frexp(value: f64, exp: *s64)->f64;
+	func frexpf(value: f32, exp: *s64)->f32;
+	func ilogb(x: f64)->s64;
+	func ilogbf(x: f32)->s64;
+	func ldexp(x: f64, exp: s64)->f64;
+	func ldexpf(x: f32, exp: s64)->f32;
 	func log(x: f64)->f64;
 	func logf(x: f32)->f32;
 	func log10(x: f64)->f64;
@@ -69,8 +69,8 @@ const FP_ILOGB0   = FP_ILOGBNAN
 	func logbf(x: f32)->f32;
 	func modf(value: f64, iptr: *f64)->f64;
 	func modff(value: f32, iptr: *f32)->f32;
-	func scalbn(x: f64, n: int)->f64;
-	func scalbnf(x: f32, n: int)->f32;
+	func scalbn(x: f64, n: s64)->f64;
+	func scalbnf(x: f32, n: s64)->f32;
 	func scalbln(x: f64, n: s32)->f64;
 	func scalblnf(x: f32, n: s32)->f32;
 
@@ -119,8 +119,8 @@ const FP_ILOGB0   = FP_ILOGBNAN
 	func fmodf(x: f32, y: f32)->f32;
 	func remainder(x: f64, y: f64)->f64;
 	func remainderf(x: f32, y: f32)->f32;
-	func remquo(x: f64, y: f64, quo: *int)->f64;
-	func remquof(x: f32, y: f32, quo: *int)->f32;
+	func remquo(x: f64, y: f64, quo: *s64)->f64;
+	func remquof(x: f32, y: f32, quo: *s64)->f32;
 
 	func copysign(x: f64, y: f64)->f64;
 	func copysignf(x: f32, y: f32)->f32;

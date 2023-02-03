@@ -147,7 +147,7 @@ public impl Font
             newAtlas.bpp = 1
             newAtlas.width =  Math.roundUpToPowerOf2(size * 4) * newAtlas.bpp
             newAtlas.height = Math.roundUpToPowerOf2(size * 4)
-            newAtlas.datas.resize(cast(uint) newAtlas.width * newAtlas.height)
+            newAtlas.datas.resize(cast(u64) newAtlas.width * newAtlas.height)
             Memory.clear(newAtlas.datas.buffer, newAtlas.datas.count)
             atlases.add(newAtlas)
             atlas = &atlases.buffer[atlases.count - 1]
@@ -164,7 +164,7 @@ public impl Font
         src := bmp.buffer
         loop j: bmp.rows
         {
-            Memory.copy(buffer, src, cast(uint) bmp.width)
+            Memory.copy(buffer, src, cast(u64) bmp.width)
             src += bmp.pitch
             buffer -= atlas.width
         }

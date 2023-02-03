@@ -175,7 +175,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node)
                 // opSlice
                 AstNode tmpNode;
                 memset(&tmpNode, 0, sizeof(AstNode));
-                tmpNode.typeInfo = g_TypeMgr->typeInfoUInt;
+                tmpNode.typeInfo = g_TypeMgr->typeInfoU64;
                 params.push_back(&tmpNode);
                 params.push_back(&tmpNode);
                 SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opSlice, nullptr, nullptr, node, params));
@@ -578,7 +578,6 @@ bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
             g_Log.print(to_string(expr->computedValue->reg.s32));
             break;
         case NativeTypeKind::S64:
-        case NativeTypeKind::Int:
             g_Log.print(to_string(expr->computedValue->reg.s64));
             break;
         case NativeTypeKind::U8:
@@ -591,7 +590,6 @@ bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
             g_Log.print(to_string(expr->computedValue->reg.u32));
             break;
         case NativeTypeKind::U64:
-        case NativeTypeKind::UInt:
             g_Log.print(to_string(expr->computedValue->reg.u64));
             break;
         case NativeTypeKind::F32:

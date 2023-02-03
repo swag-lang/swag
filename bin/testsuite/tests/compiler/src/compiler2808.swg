@@ -13,7 +13,7 @@ func quick(values: [..] s32, cb: func(s32, s32)->s32)
     if(count == 0)
         return
 
-    begin := 0'uint
+    begin := 0'u64
     end := count - 1
     buffer := @dataof(values)
 
@@ -55,8 +55,8 @@ func quick(values: [..] s32, cb: func(s32, s32)->s32)
         @print(cast(s64) high)
         @print("\n")*/
 
-        //set1 := cast(int) ((low -,safe 1) - begin)
-        //set2 := cast(int) (end -,safe (high +,safe 1))
+        //set1 := cast(s64) ((low -,safe 1) - begin)
+        //set2 := cast(s64) (end -,safe (high +,safe 1))
         //if set1 > 0 and set2 > 0
         {
             /*if set1 <= set2

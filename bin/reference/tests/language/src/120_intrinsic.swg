@@ -46,14 +46,14 @@ func @args()->const [..] string;
 
 // Memory related
 
-func @alloc(size: uint)->*void;
-func @realloc(ptr: *void, size: uint)->*void;
+func @alloc(size: u64)->*void;
+func @realloc(ptr: *void, size: u64)->*void;
 func @free(ptr: *void);
-func @memset(dst: *void, value: u8, size: uint);
-func @memcpy(dst: *void, src: const *void, size: uint);
-func @memmove(dst: *void, src: const *void, size: uint);
-func @memcmp(dst, src: const *void, size: uint)->s32;
-func @strlen(value: const *u8)->uint;
+func @memset(dst: *void, value: u8, size: u64);
+func @memcpy(dst: *void, src: const *void, size: u64);
+func @memmove(dst: *void, src: const *void, size: u64);
+func @memcmp(dst, src: const *void, size: u64)->s32;
+func @strlen(value: const *u8)->u64;
 
 // Atomic operations
 

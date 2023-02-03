@@ -362,8 +362,6 @@ bool AstNode::isConstant1()
         return computedValue->reg.u32 == 1;
     case NativeTypeKind::U64:
     case NativeTypeKind::S64:
-    case NativeTypeKind::UInt:
-    case NativeTypeKind::Int:
         return computedValue->reg.u64 == 1;
     case NativeTypeKind::F32:
         return computedValue->reg.f32 == 1;

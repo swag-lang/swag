@@ -230,7 +230,7 @@ impl Encoder
         else
             yDiv8 = imageY
 
-        bufferRGB.resize(cast(uint) (xDiv8 * yDiv8))
+        bufferRGB.resize(cast(u64) (xDiv8 * yDiv8))
         pdst := bufferRGB.buffer
         pref := image.pixels.buffer
 
@@ -239,7 +239,7 @@ impl Encoder
             switch image.bpp
             {
             case 24:
-                Memory.copy(pdst + nrline * xDiv8, pref, cast(uint) (imageX * 3))
+                Memory.copy(pdst + nrline * xDiv8, pref, cast(u64) (imageX * 3))
                 pref += imageX * 3
 
             case 32:
@@ -259,12 +259,12 @@ impl Encoder
         }
 
         imageX  = xDiv8
-        tmpline := Array.createBuffer(cast(uint) imageX * @sizeof(ColorRGB))
+        tmpline := Array.createBuffer(cast(u64) imageX * @sizeof(ColorRGB))
 
         // Reorder in memory the inversed bitmap
         nrLineUp := imageY - 1
         nrLineDn := 0
-        dimline  := cast(uint) (imageX * 3)
+        dimline  := cast(u64) (imageX * 3)
         while nrLineUp > nrLineDn
         {
             Memory.copy(tmpline.buffer, pdst + nrLineUp * imageX, dimline)
@@ -367,7 +367,7 @@ impl Encoder
 
             loop nr: -(nrupper - 1)..(-nrlower)
             {
-                nof := cast,bit(uint) cast(int) nr
+                nof := cast,bit(u64) cast(s64) nr
                 category[nof] = cast(u8) cat
                 bitcode[nof].length = cast(u8) cat
                 bitcode[nof].value  = cast(u16) (nrupper - 1 + nr)
@@ -671,7 +671,7 @@ impl Encoder
             writeBits(hTDC[0])
         else
         {
-            diffc := cast,bit(uint) cast(int) diff // If negative
+            diffc := cast,bit(u64) cast(s64) diff // If negative
             writeBits(hTDC[category[diffc]])
             writeBits(bitcode[diffc])
         }
@@ -700,7 +700,7 @@ impl Encoder
                 nrzeroes = nrzeroes % 16
             }
 
-            offc := cast,bit(uint) cast(int) du[i] // If negative
+            offc := cast,bit(u64) cast(s64) du[i] // If negative
             writeBits(hTAC[nrzeroes * 16 + category[offc]])
             writeBits(bitcode[offc])
             i += 1

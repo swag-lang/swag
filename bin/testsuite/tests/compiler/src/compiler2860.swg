@@ -6,7 +6,7 @@
     typeset XX
     {
         Bool {bool}
-        Int  {int}
+        Int  {s64}
     }
 
     var x: XX = Bool{true}

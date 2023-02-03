@@ -1,4 +1,4 @@
-func(T, N: uint) dot(x, y: const [N] T)->T
+func(T, N: u64) dot(x, y: const [N] T)->T
 {
     var result: T
     loop i: x
@@ -6,7 +6,7 @@ func(T, N: uint) dot(x, y: const [N] T)->T
     return result
 }
 
-func(T, N: uint) norm(a: const [N] T)->T
+func(T, N: u64) norm(a: const [N] T)->T
 {
     return @sqrt(dot(a, a))
 }

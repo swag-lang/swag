@@ -2,14 +2,14 @@ struct(T) Array
 {
 }
 
-var G = 0'uint
+var G = 0'u64
 
 impl Array
 {
 	func validateCount(self)
 	{
         //@print(@typeof(T).name)
-	    size := cast(uint) @sizeof(T)
+	    size := cast(u64) @sizeof(T)
         G += size
     }
 
@@ -17,7 +17,7 @@ impl Array
 	{
         //@print(@typeof(T).name)
         size := @sizeof(T)
-        G += cast(uint) size
+        G += cast(u64) size
 		validateCount(self)
 	}
 }

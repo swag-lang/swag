@@ -5,14 +5,14 @@ struct(T) Array
 {
     allocator:  IAllocator
     buffer:     ^T
-    count:      uint
-    capacity:   uint
+    count:      u64
+    capacity:   u64
 }
 
 impl Array
 {
     #[Inline]
-    mtd opCount()->uint
+    mtd opCount()->u64
     {
         return count
     }
@@ -61,7 +61,7 @@ impl Array
     }
 
     #[Inline]
-    mtd opSlice(lower, upper: uint)->[..] T
+    mtd opSlice(lower, upper: u64)->[..] T
     {
         Debug.safetyBoundCheck(lower <= upper, "lower bound greater than upper bound")
         Debug.safetyBoundCheck(lower < count, "lower bound out of range")
@@ -70,7 +70,7 @@ impl Array
     }
 
     #[Inline]
-    mtdc opIndex(index: uint)->ref T
+    mtdc opIndex(index: u64)->ref T
         #selectif Reflection.isStruct(T)
     {
         Debug.safetyBoundCheck(index < count, "index out of range")
@@ -78,7 +78,7 @@ impl Array
     }
 
     #[Inline]
-    mtdc opIndex(index: uint)->T
+    mtdc opIndex(index: u64)->T
         #selectif !Reflection.isStruct(T)
     {
         Debug.safetyBoundCheck(index < count, "index out of range")
@@ -86,7 +86,7 @@ impl Array
     }
 
     #[Inline]
-    mtd opIndexAffect(index: uint, value: T)
+    mtd opIndexAffect(index: u64, value: T)
         #selectif Reflection.canCopy(T)
     {
         Debug.safetyBoundCheck(index < count, "index out of range")
@@ -94,7 +94,7 @@ impl Array
     }
 
     #[Inline]
-    mtd(op: string) opIndexAssign(index: uint, value: T)
+    mtd(op: string) opIndexAssign(index: u64, value: T)
     {
         Debug.safetyBoundCheck(index < count, "index out of range")
         #ast "buffer[index] " ++ op ++ " value"
@@ -177,7 +177,7 @@ impl Array
         }
     }
 
-    mtd realloc(newCapacity: uint)
+    mtd realloc(newCapacity: u64)
     {
         if allocator == null
             allocator = @getcontext().allocator
@@ -234,7 +234,7 @@ impl Array
 
     // Create a working buffer
     #[Swag.NotGeneric]
-    func createBuffer(size: uint)->Array'u8
+    func createBuffer(size: u64)->Array'u8
     {
         var result: retval
         result.resize(size)
@@ -254,7 +254,7 @@ impl Array
 
     // Ensure the Array is big enough to store at least 'newCount' elements
     // Number of valid elements does not change
-    mtd grow(newCount : uint)
+    mtd grow(newCount : u64)
     {
         if newCount <= capacity
             return
@@ -264,7 +264,7 @@ impl Array
 
     // Reserve room for 'newCapacity' elements without changing the array count
     // Number of valid elements does not change
-    mtd reserve(newCapacity: uint)
+    mtd reserve(newCapacity: u64)
     {
         if !newCapacity
         {
@@ -281,7 +281,7 @@ impl Array
     }
 
     // Change the number of valid elements in the array
-    mtd resize(newCount : uint)
+    mtd resize(newCount : u64)
     {
         if newCount == count
             return
@@ -377,7 +377,7 @@ impl Array
     // Insert a value at the given index. If 'index' is equal to 'count', then
     // the value is added at the end of the array.
     // Order is preserved.
-    mtd insertAt(index: uint, value: T)
+    mtd insertAt(index: u64, value: T)
         #selectif Reflection.canCopy(T)
     {
         Debug.assert(index <= count, "index out of range")
@@ -402,7 +402,7 @@ impl Array
     // Insert some values at the given index. If 'index' is equal to 'count', then
     // the values are added at the end of the array.
     // Order is preserved.
-    mtd insertAt(index: uint, values: const [..] T)
+    mtd insertAt(index: u64, values: const [..] T)
         #selectif Reflection.canCopy(T)
     {
         sliceCount := @countof(values)
@@ -439,7 +439,7 @@ impl Array
     // Move a value at the given index. If 'index' is equal to 'count', then
     // the value is added at the end of the array.
     // Order is preserved.
-    mtd emplaceAt(index: uint, value: *T)
+    mtd emplaceAt(index: u64, value: *T)
     {
         Debug.assert(index <= count, "index out of range")
         if index == count
@@ -463,7 +463,7 @@ impl Array
     // Move some values at the given index. If 'index' is equal to 'count', then
     // the values are moved at the end of the array.
     // Order is preserved.
-    mtd emplaceAt(index: uint, values: [..] T)
+    mtd emplaceAt(index: u64, values: [..] T)
         #selectif Reflection.canCopy(T)
     {
         sliceCount := @countof(values)
@@ -529,7 +529,7 @@ impl Array
     }
 
     // Remove 'num' elements starting at 'index'
-    mtd remove(index, num: uint)
+    mtd remove(index, num: u64)
     {
         if !num return
         Debug.assert(index + num <= count, "index out of range")
@@ -551,7 +551,7 @@ impl Array
 
     // Remove an element at 'index' by replacing it with the last element.
     // Order is not preserved
-    mtd removeAt(index: uint)
+    mtd removeAt(index: u64)
     {
         Debug.assert(index < count, "index out of range")
         count -= 1
@@ -563,7 +563,7 @@ impl Array
 
     // Remove 'numValues' elements at 'index' by shifting all others.
     // Order is preserved
-    mtd removeAtOrdered(index: uint, numValues: uint = 1)
+    mtd removeAtOrdered(index: u64, numValues: u64 = 1)
     {
         if !numValues
             return

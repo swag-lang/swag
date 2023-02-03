@@ -514,7 +514,7 @@ impl RegExp
         try operatorConcat(nfaStack.count)
     }
 
-    mtd operatorConcat(cpt: uint) throw
+    mtd operatorConcat(cpt: u64) throw
     {
         count := cpt
         while count >= 2

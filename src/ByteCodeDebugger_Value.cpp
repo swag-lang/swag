@@ -426,7 +426,6 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
         case NativeTypeKind::S32:
             str += Fmt("%d", *(int32_t*) addr);
             return;
-        case NativeTypeKind::Int:
         case NativeTypeKind::S64:
             str += Fmt("%lld", *(int64_t*) addr);
             return;
@@ -441,7 +440,6 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
         case NativeTypeKind::Rune:
             str += Fmt("%u (0x%x)", *(uint32_t*) addr, *(uint32_t*) addr);
             return;
-        case NativeTypeKind::UInt:
         case NativeTypeKind::U64:
             str += Fmt("%llu (0x%llx)", *(uint64_t*) addr, *(uint64_t*) addr);
             return;

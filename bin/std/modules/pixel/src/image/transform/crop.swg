@@ -9,8 +9,8 @@ impl Image
         {
             params := cast(*@mktype(f)) userData
             srcPix := params.self.pixels.buffer + (y + params.y) * params.self.width8
-            srcPix += cast(uint) (params.x * image.bpp8)
-            Memory.copy(pix, srcPix, cast(uint) image.width8)
+            srcPix += cast(u64) (params.x * image.bpp8)
+            Memory.copy(pix, srcPix, cast(u64) image.width8)
         }
     }
 

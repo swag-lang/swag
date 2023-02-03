@@ -20,39 +20,39 @@ const TMP_MAX      = 32767
 
 #[Foreign(ForeignLib)]
 {
-	func remove(filename: cstring)->int;
-	func rename(old, new: cstring)->int;
+	func remove(filename: cstring)->s64;
+	func rename(old, new: cstring)->s64;
 	func tmpfile()->*FILE;
 	func tmpnam(s: *u8)->*u8;
 
-	func fclose(stream: *FILE)->int;
-	func fflush(stream: *FILE)->int;
+	func fclose(stream: *FILE)->s64;
+	func fflush(stream: *FILE)->s64;
 	func fopen(filename, mode: cstring)->*FILE;
 	func freopen(filename, mode: cstring, stream: *FILE)->*FILE;
 	func setbuf(stream: *FILE, buf: *u8);
-	func setvbuf(stream: *FILE, buf: *u8, mode: int, size: size_t)->int;
+	func setvbuf(stream: *FILE, buf: *u8, mode: s64, size: size_t)->s64;
 
-	func fgetc(stream: *FILE)->int;
-	func fgets(s: *u8, n: int, stream: *FILE)->*u8;
-	func fputc(s: cstring, stream: *FILE)->int;
-	func getc(stream: *FILE)->int;
-	func getchar()->int;
-	func putc(c: int, stream: *FILE)->int;
-	func putchar()->int;
-	func puts(s: cstring)->int;
-	func ungetc(c: int, stream: *FILE)->int;
+	func fgetc(stream: *FILE)->s64;
+	func fgets(s: *u8, n: s64, stream: *FILE)->*u8;
+	func fputc(s: cstring, stream: *FILE)->s64;
+	func getc(stream: *FILE)->s64;
+	func getchar()->s64;
+	func putc(c: s64, stream: *FILE)->s64;
+	func putchar()->s64;
+	func puts(s: cstring)->s64;
+	func ungetc(c: s64, stream: *FILE)->s64;
 	func fread(ptr: *void, size: size_t, stream: *FILE)->size_t;
 	func fwrite(ptr: *void, size: size_t, nmemb: size_t, stream: *FILE)->size_t;
 
-	func fgetpos(stream: *FILE, pos: *fpos_t)->int;
-	func fseek(stream: *FILE, offset: s32, whence: int)->int;
-	func fsetpos(stream: *FILE, pos: *fpos_t)->int;
+	func fgetpos(stream: *FILE, pos: *fpos_t)->s64;
+	func fseek(stream: *FILE, offset: s32, whence: s64)->s64;
+	func fsetpos(stream: *FILE, pos: *fpos_t)->s64;
 	func ftell(stream: *FILE)->s32;
 	func rewind(stream: *FILE);
 
 	func clearerr(stream: *FILE);
-	func feof(stream: *FILE)->int;
-	func ferror(stream: *FILE)->int;
+	func feof(stream: *FILE)->s64;
+	func ferror(stream: *FILE)->s64;
 	func perror(s: cstring);
 }
 
@@ -82,7 +82,7 @@ var stderr: *FILE
     }
 
     #[Discardable]
-    func fprintf(file: *FILE, format: cstring, args: cvarargs)->int
+    func fprintf(file: *FILE, format: cstring, args: cvarargs)->s64
     {
         var valist: va_list
         va_start(&valist, 0)
@@ -92,7 +92,7 @@ var stderr: *FILE
     }
 
     #[Discardable]
-    func printf(format: cstring, args: cvarargs)->int
+    func printf(format: cstring, args: cvarargs)->s64
     {
         var valist: va_list
         va_start(&valist, 0)
@@ -102,7 +102,7 @@ var stderr: *FILE
     }
 
     #[Discardable]
-    func sprintf(s: *u8, format: cstring, args: cvarargs)->int
+    func sprintf(s: *u8, format: cstring, args: cvarargs)->s64
     {
         var valist: va_list
         va_start(&valist, 0)
@@ -112,7 +112,7 @@ var stderr: *FILE
     }
 
     #[Discardable]
-    func snprintf(s: *u8, count: size_t, format: cstring, args: cvarargs)->int
+    func snprintf(s: *u8, count: size_t, format: cstring, args: cvarargs)->s64
     {
         var valist: va_list
         va_start(&valist, 0)
@@ -122,31 +122,31 @@ var stderr: *FILE
     }
 
     #[Discardable]
-    func vprintf(format: cstring, args: *va_list)->int
+    func vprintf(format: cstring, args: *va_list)->s64
     {
         return stdio_common_vfprintf(0, stdout, format, null, dref cast(**void) args)
     }
 
     #[Discardable]
-    func vfprintf(file: *FILE, format: cstring, args: *va_list)->int
+    func vfprintf(file: *FILE, format: cstring, args: *va_list)->s64
     {
         return stdio_common_vfprintf(0, file, format, null, dref cast(**void) args)
     }
 
     #[Discardable]
-    func vsprintf(s: *u8, format: cstring, args: *va_list)->int
+    func vsprintf(s: *u8, format: cstring, args: *va_list)->s64
     {
         return stdio_common_vsprintf(0, s, SIZE_MAX, format, null, dref cast(**void) args)
     }
 
     #[Discardable]
-    func vsnprintf(s: *u8, count: size_t, format: cstring, args: *va_list)->int
+    func vsnprintf(s: *u8, count: size_t, format: cstring, args: *va_list)->s64
     {
         return stdio_common_vsprintf(0, s, count, format, null, dref cast(**void) args)
     }
 
     #[Discardable]
-    func scanf(format: cstring, args: cvarargs)->int
+    func scanf(format: cstring, args: cvarargs)->s64
     {
         var valist: va_list
         va_start(&valist, 0)
@@ -156,7 +156,7 @@ var stderr: *FILE
     }
 
     #[Discardable]
-    func fscanf(file: *FILE, format: cstring, args: cvarargs)->int
+    func fscanf(file: *FILE, format: cstring, args: cvarargs)->s64
     {
         var valist: va_list
         va_start(&valist, 0)
@@ -166,19 +166,19 @@ var stderr: *FILE
     }
 
     #[Discardable]
-    func vfscanf(file: *FILE, format: cstring, args: *va_list)->int
+    func vfscanf(file: *FILE, format: cstring, args: *va_list)->s64
     {
         return stdio_common_vfscanf(0, file, format, null, dref cast(**void) args)
     }
 
     #[Discardable]
-    func vscanf(format: cstring, args: *va_list)->int
+    func vscanf(format: cstring, args: *va_list)->s64
     {
         return stdio_common_vfscanf(0, stdin, format, null, dref cast(**void) args)
     }
 
     #[Discardable]
-    func sscanf(s, format: cstring, args: cvarargs)->int
+    func sscanf(s, format: cstring, args: cvarargs)->s64
     {
         var valist: va_list
         va_start(&valist, 0)
@@ -188,7 +188,7 @@ var stderr: *FILE
     }
 
     #[Discardable]
-    func vsscanf(s, format: cstring, args: *va_list)->int
+    func vsscanf(s, format: cstring, args: *va_list)->s64
     {
         return stdio_common_vsscanf(0, s, SIZE_MAX, format, null, dref cast(**void) args)
     }

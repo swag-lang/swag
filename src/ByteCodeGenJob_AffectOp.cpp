@@ -228,9 +228,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         emitInstruction(context, ByteCodeOp::SetAtPointer32, r0, r1);
         return true;
     case NativeTypeKind::S64:
-    case NativeTypeKind::Int:
     case NativeTypeKind::U64:
-    case NativeTypeKind::UInt:
     case NativeTypeKind::F64:
         emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
         return true;
@@ -287,11 +285,9 @@ bool ByteCodeGenJob::emitAffectPlusEqual(ByteCodeGenContext* context, uint32_t r
             emitInstruction(context, ByteCodeOp::AffectOpPlusEqU32, r0, r1);
             return true;
         case NativeTypeKind::S64:
-        case NativeTypeKind::Int:
             emitInstruction(context, ByteCodeOp::AffectOpPlusEqS64, r0, r1);
             return true;
         case NativeTypeKind::U64:
-        case NativeTypeKind::UInt:
             emitInstruction(context, ByteCodeOp::AffectOpPlusEqU64, r0, r1);
             return true;
         case NativeTypeKind::F32:
@@ -350,11 +346,9 @@ bool ByteCodeGenJob::emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t 
             emitInstruction(context, ByteCodeOp::AffectOpMinusEqU32, r0, r1);
             return true;
         case NativeTypeKind::S64:
-        case NativeTypeKind::Int:
             emitInstruction(context, ByteCodeOp::AffectOpMinusEqS64, r0, r1);
             return true;
         case NativeTypeKind::U64:
-        case NativeTypeKind::UInt:
             emitInstruction(context, ByteCodeOp::AffectOpMinusEqU64, r0, r1);
             return true;
         case NativeTypeKind::F32:
@@ -414,11 +408,9 @@ bool ByteCodeGenJob::emitAffectMulEqual(ByteCodeGenContext* context, uint32_t r0
         emitInstruction(context, ByteCodeOp::AffectOpMulEqU32, r0, r1);
         return true;
     case NativeTypeKind::S64:
-    case NativeTypeKind::Int:
         emitInstruction(context, ByteCodeOp::AffectOpMulEqS64, r0, r1);
         return true;
     case NativeTypeKind::U64:
-    case NativeTypeKind::UInt:
         emitInstruction(context, ByteCodeOp::AffectOpMulEqU64, r0, r1);
         return true;
     case NativeTypeKind::F32:
@@ -461,9 +453,7 @@ bool ByteCodeGenJob::emitAffectAndEqual(ByteCodeGenContext* context, uint32_t r0
         emitInstruction(context, ByteCodeOp::AffectOpAndEqU32, r0, r1);
         return true;
     case NativeTypeKind::S64:
-    case NativeTypeKind::Int:
     case NativeTypeKind::U64:
-    case NativeTypeKind::UInt:
         emitInstruction(context, ByteCodeOp::AffectOpAndEqU64, r0, r1);
         return true;
     default:
@@ -500,9 +490,7 @@ bool ByteCodeGenJob::emitAffectOrEqual(ByteCodeGenContext* context, uint32_t r0,
         emitInstruction(context, ByteCodeOp::AffectOpOrEqU32, r0, r1);
         return true;
     case NativeTypeKind::S64:
-    case NativeTypeKind::Int:
     case NativeTypeKind::U64:
-    case NativeTypeKind::UInt:
         emitInstruction(context, ByteCodeOp::AffectOpOrEqU64, r0, r1);
         return true;
     default:
@@ -539,9 +527,7 @@ bool ByteCodeGenJob::emitAffectXorEqual(ByteCodeGenContext* context, uint32_t r0
         emitInstruction(context, ByteCodeOp::AffectOpXorEqU32, r0, r1);
         return true;
     case NativeTypeKind::S64:
-    case NativeTypeKind::Int:
     case NativeTypeKind::U64:
-    case NativeTypeKind::UInt:
         emitInstruction(context, ByteCodeOp::AffectOpXorEqU64, r0, r1);
         return true;
     default:
@@ -592,9 +578,7 @@ bool ByteCodeGenJob::emitAffectShiftLeftEqual(ByteCodeGenContext* context, uint3
     case NativeTypeKind::S64:
         emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqS64, r0, r1)->flags |= shiftFlags;
         return true;
-    case NativeTypeKind::Int:
     case NativeTypeKind::U64:
-    case NativeTypeKind::UInt:
         emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqU64, r0, r1)->flags |= shiftFlags;
         return true;
     default:
@@ -633,7 +617,6 @@ bool ByteCodeGenJob::emitAffectShiftRightEqual(ByteCodeGenContext* context, uint
         emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqS32, r0, r1)->flags |= shiftFlags;
         return true;
     case NativeTypeKind::S64:
-    case NativeTypeKind::Int:
         emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqS64, r0, r1)->flags |= shiftFlags;
         return true;
 
@@ -648,7 +631,6 @@ bool ByteCodeGenJob::emitAffectShiftRightEqual(ByteCodeGenContext* context, uint
         emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqU32, r0, r1)->flags |= shiftFlags;
         return true;
     case NativeTypeKind::U64:
-    case NativeTypeKind::UInt:
         emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqU64, r0, r1)->flags |= shiftFlags;
         return true;
     default:
@@ -696,12 +678,10 @@ bool ByteCodeGenJob::emitAffectPercentEqual(ByteCodeGenContext* context, uint32_
         emitInstruction(context, ByteCodeOp::AffectOpModuloEqU32, r0, r1);
         return true;
     case NativeTypeKind::S64:
-    case NativeTypeKind::Int:
         emitSafetyDivZero(context, r1, 64);
         emitInstruction(context, ByteCodeOp::AffectOpModuloEqS64, r0, r1);
         return true;
     case NativeTypeKind::U64:
-    case NativeTypeKind::UInt:
         emitSafetyDivZero(context, r1, 64);
         emitInstruction(context, ByteCodeOp::AffectOpModuloEqU64, r0, r1);
         return true;
@@ -737,7 +717,6 @@ bool ByteCodeGenJob::emitAffectDivEqual(ByteCodeGenContext* context, uint32_t r0
         emitInstruction(context, ByteCodeOp::AffectOpDivEqS32, r0, r1);
         return true;
     case NativeTypeKind::S64:
-    case NativeTypeKind::Int:
         emitSafetyDivZero(context, r1, 64);
         emitInstruction(context, ByteCodeOp::AffectOpDivEqS64, r0, r1);
         return true;
@@ -755,7 +734,6 @@ bool ByteCodeGenJob::emitAffectDivEqual(ByteCodeGenContext* context, uint32_t r0
         emitInstruction(context, ByteCodeOp::AffectOpDivEqU32, r0, r1);
         return true;
     case NativeTypeKind::U64:
-    case NativeTypeKind::UInt:
         emitSafetyDivZero(context, r1, 64);
         emitInstruction(context, ByteCodeOp::AffectOpDivEqU64, r0, r1);
         return true;

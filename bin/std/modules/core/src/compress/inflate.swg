@@ -75,7 +75,7 @@ struct HuffmanTable
 {
 	fast:        [1 << FastBits] u16
 	firstCode:   [16] u16
-	maxCode:     [17] int
+	maxCode:     [17] s64
 	firstSymbol: [16] u16
 	size:        [288] u8
 	value:       [288] u16
@@ -108,7 +108,7 @@ impl HuffmanTable
             cde += sizes[i]
             if sizes[i] != 0 and (cde - 1) >= (1 << i)
                 throw "huffman bad code lengths"
-            maxCode[i] = cast(int) cde << (16 - i)
+            maxCode[i] = cast(s64) cde << (16 - i)
             cde <<=,safe 1
             k += sizes[i]
         }
@@ -225,7 +225,7 @@ impl Inflate
             {
                 // Repeat the last byte 'length' times
                 b := dest.buffer[dest.count - 1]
-                Memory.set(dest.buffer + dest.count, b, cast(uint) length)
+                Memory.set(dest.buffer + dest.count, b, cast(u64) length)
                 dest.count += length
             }
             elif distance >= length

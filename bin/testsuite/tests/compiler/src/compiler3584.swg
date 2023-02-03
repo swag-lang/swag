@@ -13,8 +13,8 @@ impl A
         //@print("drop ", vv, "\n");
     }
 
-    mtd opCount()->uint     { return 6; }
-    mtd opSlice(a, b: uint)->string { return "abcdef"; }
+    mtd opCount()->u64     { return 6; }
+    mtd opSlice(a, b: u64)->string { return "abcdef"; }
     mtd toString()->string  { return "abc:=0"; }
 }
 

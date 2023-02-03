@@ -38,9 +38,9 @@ struct Capture
         editView:   *EditView
         gizmo:      GizmoRect
         undos:      ArrayPtr'Undo
-        nextUndo:   uint
-        hotForm:    uint = Swag.UInt.Max
-        selection:  Array'uint
+        nextUndo:   u64
+        hotForm:    u64 = Swag.U64.Max
+        selection:  Array'u64
         paintRect:  Math.Rectangle
 
         backTexture: Texture
@@ -880,7 +880,7 @@ impl Capture
 
             if evt.kind == .MouseLeave
             {
-                hotForm = Swag.UInt.Max
+                hotForm = Swag.U64.Max
             }
             else
             {
@@ -892,7 +892,7 @@ impl Capture
                 }
             }
 
-            if hotForm != Swag.UInt.Max
+            if hotForm != Swag.U64.Max
             {
                 if !movingCursorSet
                 {
@@ -938,7 +938,7 @@ impl Capture
                         }
                     }
 
-                    if hotForm != Swag.UInt.Max
+                    if hotForm != Swag.U64.Max
                     {
                         if !here
                         {
@@ -979,7 +979,7 @@ impl Capture
                 view.main.updateState()
             }
 
-            if mouseMode == .Moving and hotForm == Swag.UInt.Max
+            if mouseMode == .Moving and hotForm == Swag.U64.Max
             {
                 app.popCursor()
                 movingCursorSet = false
@@ -1142,7 +1142,7 @@ impl Capture
         return false
     }
 
-    mtd hitTest(localPos: Math.Point)->uint
+    mtd hitTest(localPos: Math.Point)->u64
     {
         for i := cast(s32) forms.count - 1; i >= 0; i -= 1
         {
@@ -1155,7 +1155,7 @@ impl Capture
             return i
         }
 
-        return Swag.UInt.Max
+        return Swag.U64.Max
     }
 
     //////////////////////////////

@@ -61,7 +61,7 @@ struct EditBox
     isInvalid:          bool
     isHot:              bool
     isDragging:         bool
-    selBeg, selEnd:     uint
+    selBeg, selEnd:     u64
     timerCaret:         *Timer
     visibleCaret:       bool
     posSelBeg:          f32
@@ -627,7 +627,7 @@ private impl EditBox
         return result
     }
 
-    mtd getByteIndexAtPos(xmouse: f32)->uint
+    mtd getByteIndexAtPos(xmouse: f32)->u64
     {
         if !text.length
             return 0
@@ -708,7 +708,7 @@ private impl EditBox
         }
     }
 
-    mtd moveCaretLeftStartWord(sel: uint)->uint
+    mtd moveCaretLeftStartWord(sel: u64)->u64
     {
         if !sel
             return sel
@@ -732,7 +732,7 @@ private impl EditBox
         return 0
     }
 
-    mtd moveCaretRightEndWord(sel: uint)->uint
+    mtd moveCaretRightEndWord(sel: u64)->u64
     {
         if sel == text.length
             return sel
@@ -749,7 +749,7 @@ private impl EditBox
         return text.length
     }
 
-    mtd moveCaretLeft(sel: uint)->uint
+    mtd moveCaretLeft(sel: u64)->u64
     {
         if !sel
             return sel
@@ -758,7 +758,7 @@ private impl EditBox
         return sel - eat
     }
 
-    mtd moveCaretRight(sel: uint)->uint
+    mtd moveCaretRight(sel: u64)->u64
     {
         if sel == text.length
             return sel
@@ -811,7 +811,7 @@ impl EditBox
     }
 
     // Set current selection
-    mtd setSelection(start, end: uint)
+    mtd setSelection(start, end: u64)
     {
         selBeg = start
         selEnd = end

@@ -31,8 +31,6 @@ void TypeManager::setup()
     typeInfoString         = new TypeInfoNative(NativeTypeKind::String, "string", 2 * sizeof(Register), 0);
     typeInfoAny            = new TypeInfoNative(NativeTypeKind::Any, "any", 2 * sizeof(Register), 0);
     typeInfoUndefined      = new TypeInfoNative(NativeTypeKind::Undefined, "?", 0, 0);
-    typeInfoUInt           = new TypeInfoNative(NativeTypeKind::UInt, "uint", 8, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED);
-    typeInfoInt            = new TypeInfoNative(NativeTypeKind::Int, "int", 8, TYPEINFO_INTEGER);
     typeInfoUntypedInt     = new TypeInfoNative(NativeTypeKind::S32, "s32", 4, TYPEINFO_INTEGER | TYPEINFO_UNTYPED_INTEGER);
     typeInfoUntypedBinHexa = new TypeInfoNative(NativeTypeKind::U32, "u32", 4, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED | TYPEINFO_UNTYPED_BINHEXA);
     typeInfoUntypedFloat   = new TypeInfoNative(NativeTypeKind::F32, "f32", 4, TYPEINFO_FLOAT | TYPEINFO_UNTYPED_FLOAT);
@@ -89,12 +87,10 @@ void TypeManager::setup()
     MAKE_PTR(NativeTypeKind::U16, typeInfoU16);
     MAKE_PTR(NativeTypeKind::U32, typeInfoU32);
     MAKE_PTR(NativeTypeKind::U64, typeInfoU64);
-    MAKE_PTR(NativeTypeKind::UInt, typeInfoUInt);
     MAKE_PTR(NativeTypeKind::S8, typeInfoS8);
     MAKE_PTR(NativeTypeKind::S16, typeInfoS16);
     MAKE_PTR(NativeTypeKind::S32, typeInfoS32);
     MAKE_PTR(NativeTypeKind::S64, typeInfoS64);
-    MAKE_PTR(NativeTypeKind::Int, typeInfoInt);
     MAKE_PTR(NativeTypeKind::Rune, typeInfoRune);
     MAKE_PTR(NativeTypeKind::Bool, typeInfoBool);
     MAKE_PTR(NativeTypeKind::F32, typeInfoF32);
@@ -135,8 +131,6 @@ void TypeManager::setup()
     typeInfoSliceRunes->computeName();
 
     memset(g_LiteralTypeToType, 0, sizeof(g_LiteralTypeToType));
-    g_LiteralTypeToType[(int) LiteralType::TT_UINT]            = typeInfoUInt;
-    g_LiteralTypeToType[(int) LiteralType::TT_INT]             = typeInfoInt;
     g_LiteralTypeToType[(int) LiteralType::TT_U8]              = typeInfoU8;
     g_LiteralTypeToType[(int) LiteralType::TT_U16]             = typeInfoU16;
     g_LiteralTypeToType[(int) LiteralType::TT_U32]             = typeInfoU32;
@@ -166,12 +160,10 @@ void TypeManager::setup()
     promoteMatrix3264[(int) NativeTypeKind::U8][(int) NativeTypeKind::U16]  = typeInfoU32;
     promoteMatrix3264[(int) NativeTypeKind::U8][(int) NativeTypeKind::U32]  = typeInfoU32;
     promoteMatrix3264[(int) NativeTypeKind::U8][(int) NativeTypeKind::U64]  = typeInfoU64;
-    promoteMatrix3264[(int) NativeTypeKind::U8][(int) NativeTypeKind::UInt] = typeInfoUInt;
     promoteMatrix3264[(int) NativeTypeKind::U8][(int) NativeTypeKind::S8]   = typeInfoU32;
     promoteMatrix3264[(int) NativeTypeKind::U8][(int) NativeTypeKind::S16]  = typeInfoU32;
     promoteMatrix3264[(int) NativeTypeKind::U8][(int) NativeTypeKind::S32]  = typeInfoU32;
     promoteMatrix3264[(int) NativeTypeKind::U8][(int) NativeTypeKind::S64]  = typeInfoU64;
-    promoteMatrix3264[(int) NativeTypeKind::U8][(int) NativeTypeKind::Int]  = typeInfoUInt;
     promoteMatrix3264[(int) NativeTypeKind::U8][(int) NativeTypeKind::F32]  = typeInfoF32;
     promoteMatrix3264[(int) NativeTypeKind::U8][(int) NativeTypeKind::F64]  = typeInfoF64;
 
@@ -179,12 +171,10 @@ void TypeManager::setup()
     promoteMatrix3264[(int) NativeTypeKind::U16][(int) NativeTypeKind::U16]  = typeInfoU32;
     promoteMatrix3264[(int) NativeTypeKind::U16][(int) NativeTypeKind::U32]  = typeInfoU32;
     promoteMatrix3264[(int) NativeTypeKind::U16][(int) NativeTypeKind::U64]  = typeInfoU64;
-    promoteMatrix3264[(int) NativeTypeKind::U16][(int) NativeTypeKind::UInt] = typeInfoUInt;
     promoteMatrix3264[(int) NativeTypeKind::U16][(int) NativeTypeKind::S8]   = typeInfoU32;
     promoteMatrix3264[(int) NativeTypeKind::U16][(int) NativeTypeKind::S16]  = typeInfoU32;
     promoteMatrix3264[(int) NativeTypeKind::U16][(int) NativeTypeKind::S32]  = typeInfoU32;
     promoteMatrix3264[(int) NativeTypeKind::U16][(int) NativeTypeKind::S64]  = typeInfoU64;
-    promoteMatrix3264[(int) NativeTypeKind::U16][(int) NativeTypeKind::Int]  = typeInfoUInt;
     promoteMatrix3264[(int) NativeTypeKind::U16][(int) NativeTypeKind::F32]  = typeInfoF32;
     promoteMatrix3264[(int) NativeTypeKind::U16][(int) NativeTypeKind::F64]  = typeInfoF64;
 
@@ -192,12 +182,10 @@ void TypeManager::setup()
     promoteMatrix3264[(int) NativeTypeKind::U32][(int) NativeTypeKind::U16]  = typeInfoU32;
     promoteMatrix3264[(int) NativeTypeKind::U32][(int) NativeTypeKind::U32]  = typeInfoU32;
     promoteMatrix3264[(int) NativeTypeKind::U32][(int) NativeTypeKind::U64]  = typeInfoU64;
-    promoteMatrix3264[(int) NativeTypeKind::U32][(int) NativeTypeKind::UInt] = typeInfoUInt;
     promoteMatrix3264[(int) NativeTypeKind::U32][(int) NativeTypeKind::S8]   = typeInfoU32;
     promoteMatrix3264[(int) NativeTypeKind::U32][(int) NativeTypeKind::S16]  = typeInfoU32;
     promoteMatrix3264[(int) NativeTypeKind::U32][(int) NativeTypeKind::S32]  = typeInfoU32;
     promoteMatrix3264[(int) NativeTypeKind::U32][(int) NativeTypeKind::S64]  = typeInfoU64;
-    promoteMatrix3264[(int) NativeTypeKind::U32][(int) NativeTypeKind::Int]  = typeInfoUInt;
     promoteMatrix3264[(int) NativeTypeKind::U32][(int) NativeTypeKind::F32]  = typeInfoF32;
     promoteMatrix3264[(int) NativeTypeKind::U32][(int) NativeTypeKind::F64]  = typeInfoF64;
 
@@ -205,38 +193,21 @@ void TypeManager::setup()
     promoteMatrix3264[(int) NativeTypeKind::U64][(int) NativeTypeKind::U16]  = typeInfoU64;
     promoteMatrix3264[(int) NativeTypeKind::U64][(int) NativeTypeKind::U32]  = typeInfoU64;
     promoteMatrix3264[(int) NativeTypeKind::U64][(int) NativeTypeKind::U64]  = typeInfoU64;
-    promoteMatrix3264[(int) NativeTypeKind::U64][(int) NativeTypeKind::UInt] = typeInfoUInt;
     promoteMatrix3264[(int) NativeTypeKind::U64][(int) NativeTypeKind::S8]   = typeInfoU64;
     promoteMatrix3264[(int) NativeTypeKind::U64][(int) NativeTypeKind::S16]  = typeInfoU64;
     promoteMatrix3264[(int) NativeTypeKind::U64][(int) NativeTypeKind::S32]  = typeInfoU64;
     promoteMatrix3264[(int) NativeTypeKind::U64][(int) NativeTypeKind::S64]  = typeInfoU64;
-    promoteMatrix3264[(int) NativeTypeKind::U64][(int) NativeTypeKind::Int]  = typeInfoUInt;
     promoteMatrix3264[(int) NativeTypeKind::U64][(int) NativeTypeKind::F32]  = typeInfoF64;
     promoteMatrix3264[(int) NativeTypeKind::U64][(int) NativeTypeKind::F64]  = typeInfoF64;
-
-    promoteMatrix3264[(int) NativeTypeKind::UInt][(int) NativeTypeKind::U8]   = typeInfoUInt;
-    promoteMatrix3264[(int) NativeTypeKind::UInt][(int) NativeTypeKind::U16]  = typeInfoUInt;
-    promoteMatrix3264[(int) NativeTypeKind::UInt][(int) NativeTypeKind::U32]  = typeInfoUInt;
-    promoteMatrix3264[(int) NativeTypeKind::UInt][(int) NativeTypeKind::U64]  = typeInfoUInt;
-    promoteMatrix3264[(int) NativeTypeKind::UInt][(int) NativeTypeKind::UInt] = typeInfoUInt;
-    promoteMatrix3264[(int) NativeTypeKind::UInt][(int) NativeTypeKind::S8]   = typeInfoUInt;
-    promoteMatrix3264[(int) NativeTypeKind::UInt][(int) NativeTypeKind::S16]  = typeInfoUInt;
-    promoteMatrix3264[(int) NativeTypeKind::UInt][(int) NativeTypeKind::S32]  = typeInfoUInt;
-    promoteMatrix3264[(int) NativeTypeKind::UInt][(int) NativeTypeKind::S64]  = typeInfoUInt;
-    promoteMatrix3264[(int) NativeTypeKind::UInt][(int) NativeTypeKind::Int]  = typeInfoUInt;
-    promoteMatrix3264[(int) NativeTypeKind::UInt][(int) NativeTypeKind::F32]  = typeInfoF64;
-    promoteMatrix3264[(int) NativeTypeKind::UInt][(int) NativeTypeKind::F64]  = typeInfoF64;
 
     promoteMatrix3264[(int) NativeTypeKind::S8][(int) NativeTypeKind::U8]   = typeInfoS32;
     promoteMatrix3264[(int) NativeTypeKind::S8][(int) NativeTypeKind::U16]  = typeInfoS32;
     promoteMatrix3264[(int) NativeTypeKind::S8][(int) NativeTypeKind::U32]  = typeInfoS32;
     promoteMatrix3264[(int) NativeTypeKind::S8][(int) NativeTypeKind::U64]  = typeInfoS64;
-    promoteMatrix3264[(int) NativeTypeKind::S8][(int) NativeTypeKind::UInt] = typeInfoInt;
     promoteMatrix3264[(int) NativeTypeKind::S8][(int) NativeTypeKind::S8]   = typeInfoS32;
     promoteMatrix3264[(int) NativeTypeKind::S8][(int) NativeTypeKind::S16]  = typeInfoS32;
     promoteMatrix3264[(int) NativeTypeKind::S8][(int) NativeTypeKind::S32]  = typeInfoS32;
     promoteMatrix3264[(int) NativeTypeKind::S8][(int) NativeTypeKind::S64]  = typeInfoS64;
-    promoteMatrix3264[(int) NativeTypeKind::S8][(int) NativeTypeKind::Int]  = typeInfoInt;
     promoteMatrix3264[(int) NativeTypeKind::S8][(int) NativeTypeKind::F32]  = typeInfoF32;
     promoteMatrix3264[(int) NativeTypeKind::S8][(int) NativeTypeKind::F64]  = typeInfoF64;
 
@@ -244,12 +215,10 @@ void TypeManager::setup()
     promoteMatrix3264[(int) NativeTypeKind::S16][(int) NativeTypeKind::U16]  = typeInfoS32;
     promoteMatrix3264[(int) NativeTypeKind::S16][(int) NativeTypeKind::U32]  = typeInfoS32;
     promoteMatrix3264[(int) NativeTypeKind::S16][(int) NativeTypeKind::U64]  = typeInfoS64;
-    promoteMatrix3264[(int) NativeTypeKind::S16][(int) NativeTypeKind::UInt] = typeInfoInt;
     promoteMatrix3264[(int) NativeTypeKind::S16][(int) NativeTypeKind::S8]   = typeInfoS32;
     promoteMatrix3264[(int) NativeTypeKind::S16][(int) NativeTypeKind::S16]  = typeInfoS32;
     promoteMatrix3264[(int) NativeTypeKind::S16][(int) NativeTypeKind::S32]  = typeInfoS32;
     promoteMatrix3264[(int) NativeTypeKind::S16][(int) NativeTypeKind::S64]  = typeInfoS64;
-    promoteMatrix3264[(int) NativeTypeKind::S16][(int) NativeTypeKind::Int]  = typeInfoInt;
     promoteMatrix3264[(int) NativeTypeKind::S16][(int) NativeTypeKind::F32]  = typeInfoF32;
     promoteMatrix3264[(int) NativeTypeKind::S16][(int) NativeTypeKind::F64]  = typeInfoF64;
 
@@ -257,12 +226,10 @@ void TypeManager::setup()
     promoteMatrix3264[(int) NativeTypeKind::S32][(int) NativeTypeKind::U16]  = typeInfoS32;
     promoteMatrix3264[(int) NativeTypeKind::S32][(int) NativeTypeKind::U32]  = typeInfoS32;
     promoteMatrix3264[(int) NativeTypeKind::S32][(int) NativeTypeKind::U64]  = typeInfoS64;
-    promoteMatrix3264[(int) NativeTypeKind::S32][(int) NativeTypeKind::UInt] = typeInfoInt;
     promoteMatrix3264[(int) NativeTypeKind::S32][(int) NativeTypeKind::S8]   = typeInfoS32;
     promoteMatrix3264[(int) NativeTypeKind::S32][(int) NativeTypeKind::S16]  = typeInfoS32;
     promoteMatrix3264[(int) NativeTypeKind::S32][(int) NativeTypeKind::S32]  = typeInfoS32;
     promoteMatrix3264[(int) NativeTypeKind::S32][(int) NativeTypeKind::S64]  = typeInfoS64;
-    promoteMatrix3264[(int) NativeTypeKind::S32][(int) NativeTypeKind::Int]  = typeInfoInt;
     promoteMatrix3264[(int) NativeTypeKind::S32][(int) NativeTypeKind::F32]  = typeInfoF32;
     promoteMatrix3264[(int) NativeTypeKind::S32][(int) NativeTypeKind::F64]  = typeInfoF64;
 
@@ -270,38 +237,21 @@ void TypeManager::setup()
     promoteMatrix3264[(int) NativeTypeKind::S64][(int) NativeTypeKind::U16]  = typeInfoS64;
     promoteMatrix3264[(int) NativeTypeKind::S64][(int) NativeTypeKind::U32]  = typeInfoS64;
     promoteMatrix3264[(int) NativeTypeKind::S64][(int) NativeTypeKind::U64]  = typeInfoS64;
-    promoteMatrix3264[(int) NativeTypeKind::S64][(int) NativeTypeKind::UInt] = typeInfoS64;
     promoteMatrix3264[(int) NativeTypeKind::S64][(int) NativeTypeKind::S8]   = typeInfoS64;
     promoteMatrix3264[(int) NativeTypeKind::S64][(int) NativeTypeKind::S16]  = typeInfoS64;
     promoteMatrix3264[(int) NativeTypeKind::S64][(int) NativeTypeKind::S32]  = typeInfoS64;
     promoteMatrix3264[(int) NativeTypeKind::S64][(int) NativeTypeKind::S64]  = typeInfoS64;
-    promoteMatrix3264[(int) NativeTypeKind::S64][(int) NativeTypeKind::Int]  = typeInfoS64;
     promoteMatrix3264[(int) NativeTypeKind::S64][(int) NativeTypeKind::F32]  = typeInfoF64;
-    promoteMatrix3264[(int) NativeTypeKind::S64][(int) NativeTypeKind::F64]  = typeInfoF64;
-
-    promoteMatrix3264[(int) NativeTypeKind::Int][(int) NativeTypeKind::U8]   = typeInfoInt;
-    promoteMatrix3264[(int) NativeTypeKind::Int][(int) NativeTypeKind::U16]  = typeInfoInt;
-    promoteMatrix3264[(int) NativeTypeKind::Int][(int) NativeTypeKind::U32]  = typeInfoInt;
-    promoteMatrix3264[(int) NativeTypeKind::Int][(int) NativeTypeKind::U64]  = typeInfoInt;
-    promoteMatrix3264[(int) NativeTypeKind::Int][(int) NativeTypeKind::UInt] = typeInfoInt;
-    promoteMatrix3264[(int) NativeTypeKind::Int][(int) NativeTypeKind::S8]   = typeInfoInt;
-    promoteMatrix3264[(int) NativeTypeKind::Int][(int) NativeTypeKind::S16]  = typeInfoInt;
-    promoteMatrix3264[(int) NativeTypeKind::Int][(int) NativeTypeKind::S32]  = typeInfoInt;
-    promoteMatrix3264[(int) NativeTypeKind::Int][(int) NativeTypeKind::S64]  = typeInfoInt;
-    promoteMatrix3264[(int) NativeTypeKind::Int][(int) NativeTypeKind::Int]  = typeInfoInt;
-    promoteMatrix3264[(int) NativeTypeKind::Int][(int) NativeTypeKind::F32]  = typeInfoF64;
-    promoteMatrix3264[(int) NativeTypeKind::Int][(int) NativeTypeKind::F64]  = typeInfoF64;
+    promoteMatrix3264[(int) NativeTypeKind::S64][(int) NativeTypeKind::F64]  = typeInfoF64;       
 
     promoteMatrix3264[(int) NativeTypeKind::F32][(int) NativeTypeKind::U8]   = typeInfoF32;
     promoteMatrix3264[(int) NativeTypeKind::F32][(int) NativeTypeKind::U16]  = typeInfoF32;
     promoteMatrix3264[(int) NativeTypeKind::F32][(int) NativeTypeKind::U32]  = typeInfoF32;
     promoteMatrix3264[(int) NativeTypeKind::F32][(int) NativeTypeKind::U64]  = typeInfoF64;
-    promoteMatrix3264[(int) NativeTypeKind::F32][(int) NativeTypeKind::UInt] = typeInfoF64;
     promoteMatrix3264[(int) NativeTypeKind::F32][(int) NativeTypeKind::S8]   = typeInfoF32;
     promoteMatrix3264[(int) NativeTypeKind::F32][(int) NativeTypeKind::S16]  = typeInfoF32;
     promoteMatrix3264[(int) NativeTypeKind::F32][(int) NativeTypeKind::S32]  = typeInfoF32;
     promoteMatrix3264[(int) NativeTypeKind::F32][(int) NativeTypeKind::S64]  = typeInfoF64;
-    promoteMatrix3264[(int) NativeTypeKind::F32][(int) NativeTypeKind::Int]  = typeInfoF64;
     promoteMatrix3264[(int) NativeTypeKind::F32][(int) NativeTypeKind::F32]  = typeInfoF32;
     promoteMatrix3264[(int) NativeTypeKind::F32][(int) NativeTypeKind::F64]  = typeInfoF64;
 
@@ -309,12 +259,10 @@ void TypeManager::setup()
     promoteMatrix3264[(int) NativeTypeKind::F64][(int) NativeTypeKind::U16]  = typeInfoF64;
     promoteMatrix3264[(int) NativeTypeKind::F64][(int) NativeTypeKind::U32]  = typeInfoF64;
     promoteMatrix3264[(int) NativeTypeKind::F64][(int) NativeTypeKind::U64]  = typeInfoF64;
-    promoteMatrix3264[(int) NativeTypeKind::F64][(int) NativeTypeKind::UInt] = typeInfoF64;
     promoteMatrix3264[(int) NativeTypeKind::F64][(int) NativeTypeKind::S8]   = typeInfoF64;
     promoteMatrix3264[(int) NativeTypeKind::F64][(int) NativeTypeKind::S16]  = typeInfoF64;
     promoteMatrix3264[(int) NativeTypeKind::F64][(int) NativeTypeKind::S32]  = typeInfoF64;
     promoteMatrix3264[(int) NativeTypeKind::F64][(int) NativeTypeKind::S64]  = typeInfoF64;
-    promoteMatrix3264[(int) NativeTypeKind::F64][(int) NativeTypeKind::Int]  = typeInfoF64;
     promoteMatrix3264[(int) NativeTypeKind::F64][(int) NativeTypeKind::F32]  = typeInfoF64;
     promoteMatrix3264[(int) NativeTypeKind::F64][(int) NativeTypeKind::F64]  = typeInfoF64;
 
@@ -323,12 +271,10 @@ void TypeManager::setup()
     promoteMatrix816[(int) NativeTypeKind::U8][(int) NativeTypeKind::U16]  = typeInfoU16;
     promoteMatrix816[(int) NativeTypeKind::U8][(int) NativeTypeKind::U32]  = typeInfoU32;
     promoteMatrix816[(int) NativeTypeKind::U8][(int) NativeTypeKind::U64]  = typeInfoU64;
-    promoteMatrix816[(int) NativeTypeKind::U8][(int) NativeTypeKind::UInt] = typeInfoUInt;
     promoteMatrix816[(int) NativeTypeKind::U8][(int) NativeTypeKind::S8]   = typeInfoU8;
     promoteMatrix816[(int) NativeTypeKind::U8][(int) NativeTypeKind::S16]  = typeInfoU16;
     promoteMatrix816[(int) NativeTypeKind::U8][(int) NativeTypeKind::S32]  = typeInfoU32;
     promoteMatrix816[(int) NativeTypeKind::U8][(int) NativeTypeKind::S64]  = typeInfoU64;
-    promoteMatrix816[(int) NativeTypeKind::U8][(int) NativeTypeKind::Int]  = typeInfoUInt;
     promoteMatrix816[(int) NativeTypeKind::U8][(int) NativeTypeKind::F32]  = typeInfoF32;
     promoteMatrix816[(int) NativeTypeKind::U8][(int) NativeTypeKind::F64]  = typeInfoF64;
 
@@ -336,12 +282,10 @@ void TypeManager::setup()
     promoteMatrix816[(int) NativeTypeKind::U16][(int) NativeTypeKind::U16]  = typeInfoU16;
     promoteMatrix816[(int) NativeTypeKind::U16][(int) NativeTypeKind::U32]  = typeInfoU32;
     promoteMatrix816[(int) NativeTypeKind::U16][(int) NativeTypeKind::U64]  = typeInfoU64;
-    promoteMatrix816[(int) NativeTypeKind::U16][(int) NativeTypeKind::UInt] = typeInfoUInt;
     promoteMatrix816[(int) NativeTypeKind::U16][(int) NativeTypeKind::S8]   = typeInfoU16;
     promoteMatrix816[(int) NativeTypeKind::U16][(int) NativeTypeKind::S16]  = typeInfoU16;
     promoteMatrix816[(int) NativeTypeKind::U16][(int) NativeTypeKind::S32]  = typeInfoU32;
     promoteMatrix816[(int) NativeTypeKind::U16][(int) NativeTypeKind::S64]  = typeInfoU64;
-    promoteMatrix816[(int) NativeTypeKind::U16][(int) NativeTypeKind::Int]  = typeInfoUInt;
     promoteMatrix816[(int) NativeTypeKind::U16][(int) NativeTypeKind::F32]  = typeInfoF32;
     promoteMatrix816[(int) NativeTypeKind::U16][(int) NativeTypeKind::F64]  = typeInfoF64;
 
@@ -349,12 +293,10 @@ void TypeManager::setup()
     promoteMatrix816[(int) NativeTypeKind::U32][(int) NativeTypeKind::U16]  = typeInfoU32;
     promoteMatrix816[(int) NativeTypeKind::U32][(int) NativeTypeKind::U32]  = typeInfoU32;
     promoteMatrix816[(int) NativeTypeKind::U32][(int) NativeTypeKind::U64]  = typeInfoU64;
-    promoteMatrix816[(int) NativeTypeKind::U32][(int) NativeTypeKind::UInt] = typeInfoUInt;
     promoteMatrix816[(int) NativeTypeKind::U32][(int) NativeTypeKind::S8]   = typeInfoU32;
     promoteMatrix816[(int) NativeTypeKind::U32][(int) NativeTypeKind::S16]  = typeInfoU32;
     promoteMatrix816[(int) NativeTypeKind::U32][(int) NativeTypeKind::S32]  = typeInfoU32;
     promoteMatrix816[(int) NativeTypeKind::U32][(int) NativeTypeKind::S64]  = typeInfoU64;
-    promoteMatrix816[(int) NativeTypeKind::U32][(int) NativeTypeKind::Int]  = typeInfoUInt;
     promoteMatrix816[(int) NativeTypeKind::U32][(int) NativeTypeKind::F32]  = typeInfoF32;
     promoteMatrix816[(int) NativeTypeKind::U32][(int) NativeTypeKind::F64]  = typeInfoF64;
 
@@ -362,38 +304,21 @@ void TypeManager::setup()
     promoteMatrix816[(int) NativeTypeKind::U64][(int) NativeTypeKind::U16]  = typeInfoU64;
     promoteMatrix816[(int) NativeTypeKind::U64][(int) NativeTypeKind::U32]  = typeInfoU64;
     promoteMatrix816[(int) NativeTypeKind::U64][(int) NativeTypeKind::U64]  = typeInfoU64;
-    promoteMatrix816[(int) NativeTypeKind::U64][(int) NativeTypeKind::UInt] = typeInfoUInt;
     promoteMatrix816[(int) NativeTypeKind::U64][(int) NativeTypeKind::S8]   = typeInfoU64;
     promoteMatrix816[(int) NativeTypeKind::U64][(int) NativeTypeKind::S16]  = typeInfoU64;
     promoteMatrix816[(int) NativeTypeKind::U64][(int) NativeTypeKind::S32]  = typeInfoU64;
     promoteMatrix816[(int) NativeTypeKind::U64][(int) NativeTypeKind::S64]  = typeInfoU64;
-    promoteMatrix816[(int) NativeTypeKind::U64][(int) NativeTypeKind::Int]  = typeInfoUInt;
     promoteMatrix816[(int) NativeTypeKind::U64][(int) NativeTypeKind::F32]  = typeInfoF64;
     promoteMatrix816[(int) NativeTypeKind::U64][(int) NativeTypeKind::F64]  = typeInfoF64;
-
-    promoteMatrix816[(int) NativeTypeKind::UInt][(int) NativeTypeKind::U8]   = typeInfoUInt;
-    promoteMatrix816[(int) NativeTypeKind::UInt][(int) NativeTypeKind::U16]  = typeInfoUInt;
-    promoteMatrix816[(int) NativeTypeKind::UInt][(int) NativeTypeKind::U32]  = typeInfoUInt;
-    promoteMatrix816[(int) NativeTypeKind::UInt][(int) NativeTypeKind::U64]  = typeInfoUInt;
-    promoteMatrix816[(int) NativeTypeKind::UInt][(int) NativeTypeKind::UInt] = typeInfoUInt;
-    promoteMatrix816[(int) NativeTypeKind::UInt][(int) NativeTypeKind::S8]   = typeInfoUInt;
-    promoteMatrix816[(int) NativeTypeKind::UInt][(int) NativeTypeKind::S16]  = typeInfoUInt;
-    promoteMatrix816[(int) NativeTypeKind::UInt][(int) NativeTypeKind::S32]  = typeInfoUInt;
-    promoteMatrix816[(int) NativeTypeKind::UInt][(int) NativeTypeKind::S64]  = typeInfoUInt;
-    promoteMatrix816[(int) NativeTypeKind::UInt][(int) NativeTypeKind::Int]  = typeInfoUInt;
-    promoteMatrix816[(int) NativeTypeKind::UInt][(int) NativeTypeKind::F32]  = typeInfoF64;
-    promoteMatrix816[(int) NativeTypeKind::UInt][(int) NativeTypeKind::F64]  = typeInfoF64;
 
     promoteMatrix816[(int) NativeTypeKind::S8][(int) NativeTypeKind::U8]   = typeInfoS8;
     promoteMatrix816[(int) NativeTypeKind::S8][(int) NativeTypeKind::U16]  = typeInfoS16;
     promoteMatrix816[(int) NativeTypeKind::S8][(int) NativeTypeKind::U32]  = typeInfoS32;
     promoteMatrix816[(int) NativeTypeKind::S8][(int) NativeTypeKind::U64]  = typeInfoS64;
-    promoteMatrix816[(int) NativeTypeKind::S8][(int) NativeTypeKind::UInt] = typeInfoInt;
     promoteMatrix816[(int) NativeTypeKind::S8][(int) NativeTypeKind::S8]   = typeInfoS8;
     promoteMatrix816[(int) NativeTypeKind::S8][(int) NativeTypeKind::S16]  = typeInfoS16;
     promoteMatrix816[(int) NativeTypeKind::S8][(int) NativeTypeKind::S32]  = typeInfoS32;
     promoteMatrix816[(int) NativeTypeKind::S8][(int) NativeTypeKind::S64]  = typeInfoS64;
-    promoteMatrix816[(int) NativeTypeKind::S8][(int) NativeTypeKind::Int]  = typeInfoInt;
     promoteMatrix816[(int) NativeTypeKind::S8][(int) NativeTypeKind::F32]  = typeInfoF32;
     promoteMatrix816[(int) NativeTypeKind::S8][(int) NativeTypeKind::F64]  = typeInfoF64;
 
@@ -401,12 +326,10 @@ void TypeManager::setup()
     promoteMatrix816[(int) NativeTypeKind::S16][(int) NativeTypeKind::U16]  = typeInfoS16;
     promoteMatrix816[(int) NativeTypeKind::S16][(int) NativeTypeKind::U32]  = typeInfoS32;
     promoteMatrix816[(int) NativeTypeKind::S16][(int) NativeTypeKind::U64]  = typeInfoS64;
-    promoteMatrix816[(int) NativeTypeKind::S16][(int) NativeTypeKind::UInt] = typeInfoInt;
     promoteMatrix816[(int) NativeTypeKind::S16][(int) NativeTypeKind::S8]   = typeInfoS16;
     promoteMatrix816[(int) NativeTypeKind::S16][(int) NativeTypeKind::S16]  = typeInfoS16;
     promoteMatrix816[(int) NativeTypeKind::S16][(int) NativeTypeKind::S32]  = typeInfoS32;
     promoteMatrix816[(int) NativeTypeKind::S16][(int) NativeTypeKind::S64]  = typeInfoS64;
-    promoteMatrix816[(int) NativeTypeKind::S16][(int) NativeTypeKind::Int]  = typeInfoInt;
     promoteMatrix816[(int) NativeTypeKind::S16][(int) NativeTypeKind::F32]  = typeInfoF32;
     promoteMatrix816[(int) NativeTypeKind::S16][(int) NativeTypeKind::F64]  = typeInfoF64;
 
@@ -414,12 +337,10 @@ void TypeManager::setup()
     promoteMatrix816[(int) NativeTypeKind::S32][(int) NativeTypeKind::U16]  = typeInfoS32;
     promoteMatrix816[(int) NativeTypeKind::S32][(int) NativeTypeKind::U32]  = typeInfoS32;
     promoteMatrix816[(int) NativeTypeKind::S32][(int) NativeTypeKind::U64]  = typeInfoS64;
-    promoteMatrix816[(int) NativeTypeKind::S32][(int) NativeTypeKind::UInt] = typeInfoInt;
     promoteMatrix816[(int) NativeTypeKind::S32][(int) NativeTypeKind::S8]   = typeInfoS32;
     promoteMatrix816[(int) NativeTypeKind::S32][(int) NativeTypeKind::S16]  = typeInfoS32;
     promoteMatrix816[(int) NativeTypeKind::S32][(int) NativeTypeKind::S32]  = typeInfoS32;
     promoteMatrix816[(int) NativeTypeKind::S32][(int) NativeTypeKind::S64]  = typeInfoS64;
-    promoteMatrix816[(int) NativeTypeKind::S32][(int) NativeTypeKind::Int]  = typeInfoInt;
     promoteMatrix816[(int) NativeTypeKind::S32][(int) NativeTypeKind::F32]  = typeInfoF32;
     promoteMatrix816[(int) NativeTypeKind::S32][(int) NativeTypeKind::F64]  = typeInfoF64;
 
@@ -427,38 +348,21 @@ void TypeManager::setup()
     promoteMatrix816[(int) NativeTypeKind::S64][(int) NativeTypeKind::U16]  = typeInfoS64;
     promoteMatrix816[(int) NativeTypeKind::S64][(int) NativeTypeKind::U32]  = typeInfoS64;
     promoteMatrix816[(int) NativeTypeKind::S64][(int) NativeTypeKind::U64]  = typeInfoS64;
-    promoteMatrix816[(int) NativeTypeKind::S64][(int) NativeTypeKind::UInt] = typeInfoS64;
     promoteMatrix816[(int) NativeTypeKind::S64][(int) NativeTypeKind::S8]   = typeInfoS64;
     promoteMatrix816[(int) NativeTypeKind::S64][(int) NativeTypeKind::S16]  = typeInfoS64;
     promoteMatrix816[(int) NativeTypeKind::S64][(int) NativeTypeKind::S32]  = typeInfoS64;
     promoteMatrix816[(int) NativeTypeKind::S64][(int) NativeTypeKind::S64]  = typeInfoS64;
-    promoteMatrix816[(int) NativeTypeKind::S64][(int) NativeTypeKind::Int]  = typeInfoS64;
     promoteMatrix816[(int) NativeTypeKind::S64][(int) NativeTypeKind::F32]  = typeInfoF64;
     promoteMatrix816[(int) NativeTypeKind::S64][(int) NativeTypeKind::F64]  = typeInfoF64;
-
-    promoteMatrix816[(int) NativeTypeKind::Int][(int) NativeTypeKind::U8]   = typeInfoInt;
-    promoteMatrix816[(int) NativeTypeKind::Int][(int) NativeTypeKind::U16]  = typeInfoInt;
-    promoteMatrix816[(int) NativeTypeKind::Int][(int) NativeTypeKind::U32]  = typeInfoInt;
-    promoteMatrix816[(int) NativeTypeKind::Int][(int) NativeTypeKind::U64]  = typeInfoInt;
-    promoteMatrix816[(int) NativeTypeKind::Int][(int) NativeTypeKind::UInt] = typeInfoInt;
-    promoteMatrix816[(int) NativeTypeKind::Int][(int) NativeTypeKind::S8]   = typeInfoInt;
-    promoteMatrix816[(int) NativeTypeKind::Int][(int) NativeTypeKind::S16]  = typeInfoInt;
-    promoteMatrix816[(int) NativeTypeKind::Int][(int) NativeTypeKind::S32]  = typeInfoInt;
-    promoteMatrix816[(int) NativeTypeKind::Int][(int) NativeTypeKind::S64]  = typeInfoInt;
-    promoteMatrix816[(int) NativeTypeKind::Int][(int) NativeTypeKind::Int]  = typeInfoInt;
-    promoteMatrix816[(int) NativeTypeKind::Int][(int) NativeTypeKind::F32]  = typeInfoF64;
-    promoteMatrix816[(int) NativeTypeKind::Int][(int) NativeTypeKind::F64]  = typeInfoF64;
 
     promoteMatrix816[(int) NativeTypeKind::F32][(int) NativeTypeKind::U8]   = typeInfoF32;
     promoteMatrix816[(int) NativeTypeKind::F32][(int) NativeTypeKind::U16]  = typeInfoF32;
     promoteMatrix816[(int) NativeTypeKind::F32][(int) NativeTypeKind::U32]  = typeInfoF32;
     promoteMatrix816[(int) NativeTypeKind::F32][(int) NativeTypeKind::U64]  = typeInfoF64;
-    promoteMatrix816[(int) NativeTypeKind::F32][(int) NativeTypeKind::UInt] = typeInfoF64;
     promoteMatrix816[(int) NativeTypeKind::F32][(int) NativeTypeKind::S8]   = typeInfoF32;
     promoteMatrix816[(int) NativeTypeKind::F32][(int) NativeTypeKind::S16]  = typeInfoF32;
     promoteMatrix816[(int) NativeTypeKind::F32][(int) NativeTypeKind::S32]  = typeInfoF32;
     promoteMatrix816[(int) NativeTypeKind::F32][(int) NativeTypeKind::S64]  = typeInfoF64;
-    promoteMatrix816[(int) NativeTypeKind::F32][(int) NativeTypeKind::Int]  = typeInfoF64;
     promoteMatrix816[(int) NativeTypeKind::F32][(int) NativeTypeKind::F32]  = typeInfoF32;
     promoteMatrix816[(int) NativeTypeKind::F32][(int) NativeTypeKind::F64]  = typeInfoF64;
 
@@ -466,12 +370,10 @@ void TypeManager::setup()
     promoteMatrix816[(int) NativeTypeKind::F64][(int) NativeTypeKind::U16]  = typeInfoF64;
     promoteMatrix816[(int) NativeTypeKind::F64][(int) NativeTypeKind::U32]  = typeInfoF64;
     promoteMatrix816[(int) NativeTypeKind::F64][(int) NativeTypeKind::U64]  = typeInfoF64;
-    promoteMatrix816[(int) NativeTypeKind::F64][(int) NativeTypeKind::UInt] = typeInfoF64;
     promoteMatrix816[(int) NativeTypeKind::F64][(int) NativeTypeKind::S8]   = typeInfoF64;
     promoteMatrix816[(int) NativeTypeKind::F64][(int) NativeTypeKind::S16]  = typeInfoF64;
     promoteMatrix816[(int) NativeTypeKind::F64][(int) NativeTypeKind::S32]  = typeInfoF64;
     promoteMatrix816[(int) NativeTypeKind::F64][(int) NativeTypeKind::S64]  = typeInfoF64;
-    promoteMatrix816[(int) NativeTypeKind::F64][(int) NativeTypeKind::Int]  = typeInfoF64;
     promoteMatrix816[(int) NativeTypeKind::F64][(int) NativeTypeKind::F32]  = typeInfoF64;
     promoteMatrix816[(int) NativeTypeKind::F64][(int) NativeTypeKind::F64]  = typeInfoF64;
 }

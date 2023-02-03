@@ -738,7 +738,6 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
         }
 
         case NativeTypeKind::U64:
-        case NativeTypeKind::UInt:
         {
             auto inst = emitInstruction(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
@@ -778,7 +777,6 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
         }
 
         case NativeTypeKind::S64:
-        case NativeTypeKind::Int:
         {
             auto inst = emitInstruction(context, ByteCodeOp::CompareOpGreaterEqS64, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
@@ -842,7 +840,6 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
         }
 
         case NativeTypeKind::S64:
-        case NativeTypeKind::Int:
         {
             auto inst = emitInstruction(context, ByteCodeOp::CompareOpGreaterEqS64, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
@@ -878,7 +875,6 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
         }
 
         case NativeTypeKind::U64:
-        case NativeTypeKind::UInt:
         {
             auto inst = emitInstruction(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
@@ -933,7 +929,6 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
         }
 
         case NativeTypeKind::U64:
-        case NativeTypeKind::UInt:
         {
             auto inst = emitInstruction(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
@@ -943,7 +938,6 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
         }
 
         case NativeTypeKind::S64:
-        case NativeTypeKind::Int:
         {
             auto inst = emitInstruction(context, ByteCodeOp::CompareOpGreaterEqS64, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
@@ -991,11 +985,9 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
     // To S64
     ////////////////////////////////////////////////////
     case NativeTypeKind::S64:
-    case NativeTypeKind::Int:
         switch (fromTypeInfo->nativeType)
         {
         case NativeTypeKind::U64:
-        case NativeTypeKind::UInt:
         {
             auto inst = emitInstruction(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
@@ -1070,7 +1062,6 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
         }
 
         case NativeTypeKind::S64:
-        case NativeTypeKind::Int:
         {
             auto inst = emitInstruction(context, ByteCodeOp::CompareOpGreaterEqS64, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
@@ -1106,7 +1097,6 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
         }
 
         case NativeTypeKind::U64:
-        case NativeTypeKind::UInt:
         {
             auto inst = emitInstruction(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
@@ -1187,7 +1177,6 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
         }
 
         case NativeTypeKind::S64:
-        case NativeTypeKind::Int:
         {
             auto inst = emitInstruction(context, ByteCodeOp::CompareOpGreaterEqS64, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
@@ -1212,7 +1201,6 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
         }
 
         case NativeTypeKind::U64:
-        case NativeTypeKind::UInt:
         {
             auto inst = emitInstruction(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
@@ -1291,7 +1279,6 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
         }
 
         case NativeTypeKind::S64:
-        case NativeTypeKind::Int:
         {
             auto inst = emitInstruction(context, ByteCodeOp::CompareOpGreaterEqS64, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
@@ -1306,7 +1293,6 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
         }
 
         case NativeTypeKind::U64:
-        case NativeTypeKind::UInt:
         {
             auto inst = emitInstruction(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
@@ -1349,7 +1335,6 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
     // To U64
     ////////////////////////////////////////////////////
     case NativeTypeKind::U64:
-    case NativeTypeKind::UInt:
         switch (fromTypeInfo->nativeType)
         {
         case NativeTypeKind::S8:
@@ -1384,7 +1369,6 @@ void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInf
         }
 
         case NativeTypeKind::S64:
-        case NativeTypeKind::Int:
         {
             auto inst = emitInstruction(context, ByteCodeOp::CompareOpGreaterEqS64, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;

@@ -2,12 +2,12 @@ struct V {}
 
 impl V
 {
-    mtd opCount()->uint
+    mtd opCount()->u64
     {
         return 5
     }
 
-    mtd opSlice(l, u: uint)->string
+    mtd opSlice(l, u: u64)->string
     {
         @assert(l == 0)
         @assert(u == 5)

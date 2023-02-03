@@ -10,7 +10,7 @@ struct(T) BB
 impl BB
 {
     //#[Swag.compileif(@typeof(T) != AA)]
-    func opIndexAffect(using self, index: uint, value: T)
+    func opIndexAffect(using self, index: u64, value: T)
         #selectif @typeof(T) != AA
     {
         var x: T

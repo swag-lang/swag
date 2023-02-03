@@ -164,7 +164,6 @@ Utf8 SemanticJob::checkLiteralValue(ComputedValue& computedValue, Token& token, 
             token.literalType = LiteralType::TT_S32;
             break;
         case LiteralType::TT_U64:
-        case LiteralType::TT_UINT:
             token.literalType = LiteralType::TT_S64;
             break;
         }
@@ -243,7 +242,6 @@ Utf8 SemanticJob::checkLiteralValue(ComputedValue& computedValue, Token& token, 
 
     case LiteralType::TT_S32:
     case LiteralType::TT_S64:
-    case LiteralType::TT_INT:
     case LiteralType::TT_UNTYPED_INT:
         switch (typeSuffix->nativeType)
         {
@@ -260,7 +258,6 @@ Utf8 SemanticJob::checkLiteralValue(ComputedValue& computedValue, Token& token, 
                 return Fmt(Err(Err0358), computedValue.reg.u64);
             break;
         case NativeTypeKind::U64:
-        case NativeTypeKind::UInt:
             break;
 
         case NativeTypeKind::S8:
@@ -276,7 +273,6 @@ Utf8 SemanticJob::checkLiteralValue(ComputedValue& computedValue, Token& token, 
                 return Fmt(Err(Err0361), computedValue.reg.s64);
             break;
         case NativeTypeKind::S64:
-        case NativeTypeKind::Int:
             break;
 
         case NativeTypeKind::Rune:
@@ -299,7 +295,6 @@ Utf8 SemanticJob::checkLiteralValue(ComputedValue& computedValue, Token& token, 
 
     case LiteralType::TT_U32:
     case LiteralType::TT_U64:
-    case LiteralType::TT_UINT:
     case LiteralType::TT_UNTYPED_BINHEXA:
         switch (typeSuffix->nativeType)
         {
@@ -316,7 +311,6 @@ Utf8 SemanticJob::checkLiteralValue(ComputedValue& computedValue, Token& token, 
                 return Fmt(Err(Err0358), computedValue.reg.u64);
             break;
         case NativeTypeKind::U64:
-        case NativeTypeKind::UInt:
             break;
 
         case NativeTypeKind::S8:
@@ -332,7 +326,6 @@ Utf8 SemanticJob::checkLiteralValue(ComputedValue& computedValue, Token& token, 
                 return Fmt(Err(Err0429), computedValue.reg.u64);
             break;
         case NativeTypeKind::S64:
-        case NativeTypeKind::Int:
             if (computedValue.reg.u64 > (uint64_t) INT64_MAX + 1)
                 return Fmt(Err(Err0430), computedValue.reg.u64);
             break;
@@ -472,13 +465,11 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
     case NativeTypeKind::S16:
     case NativeTypeKind::S32:
     case NativeTypeKind::S64:
-    case NativeTypeKind::Int:
     case NativeTypeKind::U8:
     case NativeTypeKind::U16:
     case NativeTypeKind::U32:
     case NativeTypeKind::U64:
     case NativeTypeKind::Rune:
-    case NativeTypeKind::UInt:
     case NativeTypeKind::F32:
     case NativeTypeKind::F64:
         break;

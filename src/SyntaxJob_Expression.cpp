@@ -40,7 +40,7 @@ bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
         firstExpr->allocateComputedValue();
         firstExpr->flags |= AST_GENERATED;
         firstExpr->computedValue->reg.u64 = 0;
-        firstExpr->token.literalType      = LiteralType::TT_UINT;
+        firstExpr->token.literalType      = LiteralType::TT_U64;
         firstExpr->semanticFct            = SemanticJob::resolveLiteral;
     }
     else

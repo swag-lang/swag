@@ -131,7 +131,7 @@ impl FloatExt
     // defined by mant, exp and precision given by flt. It returns
     // lower, upper such that any number in the closed interval
     // [lower, upper] is converted back to the same floating point number.
-    func assignComputeBounds(using self, mantp: u64, expp: int, negp: bool)->{lower: FloatExt, upper: FloatExt}
+    func assignComputeBounds(using self, mantp: u64, expp: s64, negp: bool)->{lower: FloatExt, upper: FloatExt}
     {
         var result: retval
 

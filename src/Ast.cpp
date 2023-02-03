@@ -106,7 +106,6 @@ namespace Ast
                         ok = true;
                     break;
                 case NativeTypeKind::U64:
-                case NativeTypeKind::UInt:
                     if (value->value->reg.u64 == 0 && reg.u64 == 0)
                         ok = true;
                     else if (value->value->reg.u64 == 0)
@@ -161,8 +160,6 @@ namespace Ast
                         break;
                     case NativeTypeKind::S64:
                     case NativeTypeKind::U64:
-                    case NativeTypeKind::Int:
-                    case NativeTypeKind::UInt:
                     case NativeTypeKind::F64:
                         if (value->value->reg.u64 == reg.u64)
                             ok = true;
@@ -222,7 +219,6 @@ namespace Ast
                 result += reg.ch;
             break;
         case NativeTypeKind::U64:
-        case NativeTypeKind::UInt:
             result = Fmt("%llu", reg.u64);
             break;
         case NativeTypeKind::S8:
@@ -235,7 +231,6 @@ namespace Ast
             result = Fmt("%d", reg.s32);
             break;
         case NativeTypeKind::S64:
-        case NativeTypeKind::Int:
             result = Fmt("%lld", reg.s64);
             break;
         case NativeTypeKind::F32:

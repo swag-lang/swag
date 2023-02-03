@@ -61,7 +61,7 @@ impl Image
             {
                 p := px + ((x - kernelSize) * b8) + ((y - kernelSize) * w8)
                 kfull := (kernelSize * 2) + 1
-                koff := cast(uint) (w8 - (kfull * b8))
+                koff := cast(u64) (w8 - (kfull * b8))
                 loop kfull
                 {
                     loop kfull

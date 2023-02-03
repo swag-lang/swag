@@ -12,7 +12,7 @@ func(T) modifyInPlace(values: [..] T, cb: func(*T))
 // Reverse the content of a slice
 func(T) reverse(values: [..] T)
 {
-    i := 0'uint
+    i := 0'u64
     j := @countof(values) - 1
     d := @dataof(values)
     while i < j

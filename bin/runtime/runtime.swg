@@ -86,14 +86,14 @@ func __convertArgcArgv(args: const ^u8)
             cmdLine += 1
             start := cmdLine
             while dref cmdLine and dref cmdLine != "\""'u8 cmdLine += 1
-            __argv[__argc] = cast(string) @mkslice(start, cast(uint) (cmdLine - start))
+            __argv[__argc] = cast(string) @mkslice(start, cast(u64) (cmdLine - start))
             if dref cmdLine cmdLine += 1
         }
         else
         {
             start := cmdLine
             while dref cmdLine and dref cmdLine != " "'u8 cmdLine += 1
-            __argv[__argc] = cast(string) @mkslice(start, cast(uint) (cmdLine - start))
+            __argv[__argc] = cast(string) @mkslice(start, cast(u64) (cmdLine - start))
         }
 
         __argc += 1
@@ -111,7 +111,7 @@ func @args()->const [..] string
         __convertArgcArgv(ptr)
     }
 
-    return @mkslice(&__argv[0], cast(uint) __argc)
+    return @mkslice(&__argv[0], cast(u64) __argc)
 }
 
 ////////////////////////////////////////////////////////////

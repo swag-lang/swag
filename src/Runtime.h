@@ -272,8 +272,6 @@ enum class NativeTypeKind : uint8_t
     Any,
     CString,
     Undefined,
-    UInt,
-    Int,
     Count,
 };
 

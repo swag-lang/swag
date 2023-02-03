@@ -320,8 +320,8 @@ func doMove( from:s8, to:s8 )
 
     // castle update and params
     ki := (content == .White ? 6 : 90)
-    g_Game.castle[cast(uint)content, 0] = g_Game.castle[cast(uint)content, 0] and (from != ki) and (from != cast(s8)(ki+3))
-    g_Game.castle[cast(uint)content, 1] = g_Game.castle[cast(uint)content, 1] and (from != ki) and (from != cast(s8)(ki-4))
+    g_Game.castle[cast(u64)content, 0] = g_Game.castle[cast(u64)content, 0] and (from != ki) and (from != cast(s8)(ki+3))
+    g_Game.castle[cast(u64)content, 1] = g_Game.castle[cast(u64)content, 1] and (from != ki) and (from != cast(s8)(ki-4))
 
     g_Board[to].piece = g_Board[from].piece
     g_Board[to].content = g_Board[from].content

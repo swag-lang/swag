@@ -6,13 +6,13 @@ struct AA
 
 impl AA
 {
-    mtd opCount()->uint
+    mtd opCount()->u64
     {
         @assert(vv == 666)
         return 0
     }
 
-    mtd opSlice(a, b: uint)->const [..] s32
+    mtd opSlice(a, b: u64)->const [..] s32
     {
         @assert(false)
         return [1, 2, 3 ,4]

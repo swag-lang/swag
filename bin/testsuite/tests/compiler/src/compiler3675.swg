@@ -6,7 +6,7 @@ struct A
 impl A
 {
     #[Swag.Mixin]
-    mtd toto(index0: uint, value: s32)
+    mtd toto(index0: u64, value: s32)
     {
         #ast "x[index0] " ++ "+=" ++ " value"
     }

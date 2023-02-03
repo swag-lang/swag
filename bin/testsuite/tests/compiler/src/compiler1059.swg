@@ -14,7 +14,7 @@ impl Array
 		var request: AllocatorRequest
 		request.mode = AllocatorMode.Free
 		request.address = buffer
-		request.size = cast(uint) size * @sizeof(T)
+		request.size = cast(u64) size * @sizeof(T)
 		@getcontext().allocator.req(&request)
 	}
 
@@ -30,12 +30,12 @@ impl Array
 		context := @getcontext()
 
 		var request: AllocatorRequest
-		request.size = cast(uint) size * @sizeof(T)
+		request.size = cast(u64) size * @sizeof(T)
 		context.allocator.req(&request)
 		newBuffer := request.address
 
 		if buffer
-			@memcpy(newBuffer, buffer, cast(uint) count * @sizeof(T))
+			@memcpy(newBuffer, buffer, cast(u64) count * @sizeof(T))
 
 		request.mode = AllocatorMode.Free
 		request.address = buffer

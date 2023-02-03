@@ -72,12 +72,10 @@ struct TypeManager
     static bool castToNativeU16(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
     static bool castToNativeU32(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
     static bool castToNativeU64(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
-    static bool castToNativeUInt(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
     static bool castToNativeS8(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
     static bool castToNativeS16(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
     static bool castToNativeS32(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
     static bool castToNativeS64(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
-    static bool castToNativeInt(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
     static bool castToNativeF32(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
     static bool castToNativeF64(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
 
@@ -146,8 +144,6 @@ struct TypeManager
     TypeInfoNative* typeInfoAny       = nullptr;
     TypeInfoNative* typeInfoVoid      = nullptr;
     TypeInfoNative* typeInfoUndefined = nullptr;
-    TypeInfoNative* typeInfoUInt      = nullptr;
-    TypeInfoNative* typeInfoInt       = nullptr;
 
     TypeInfoPointer* typeInfoNull                                            = nullptr;
     TypeInfoPointer* typeInfoCString                                         = nullptr;

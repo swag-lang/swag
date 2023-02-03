@@ -6,7 +6,7 @@ struct A
 impl A
 {
     #[Swag.Inline]
-    mtd(op: string) opIndexAssign(index0, index1, index2: uint, value: s32)
+    mtd(op: string) opIndexAssign(index0, index1, index2: u64, value: s32)
     {
         @assert(index0 == 4)
         @assert(index1 == 40)

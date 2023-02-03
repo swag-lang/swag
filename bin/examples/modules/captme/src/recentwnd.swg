@@ -17,20 +17,20 @@ struct RecentView
     main:       *MainWnd
     recentWnd:  *RecentWnd
     items:      ArrayPtr'RecentItem
-    selected:   uint = Swag.UInt.Max
-    hotItem:    uint = Swag.UInt.Max
+    selected:   u64 = Swag.U64.Max
+    hotItem:    u64 = Swag.U64.Max
 }
 
 impl RecentView
 {
-    mtd select(idx: uint, force = false)
+    mtd select(idx: u64, force = false)
     {
         if selected == idx and !force
             return
 
         if idx >= items.count
         {
-            selected = Swag.UInt.Max
+            selected = Swag.U64.Max
             return
         }
 
@@ -69,7 +69,7 @@ impl IWnd for RecentView
         pos += recentWnd.getScrollPos()
 
         // Hit test
-        ht := Swag.UInt.Max
+        ht := Swag.U64.Max
         visit i, idx: items
         {
             if i.rect.contains(pos)
@@ -85,7 +85,7 @@ impl IWnd for RecentView
             hotItem = ht
         }
 
-        if evt.kind == .MousePressed and hotItem != Swag.UInt.Max
+        if evt.kind == .MousePressed and hotItem != Swag.U64.Max
         {
             if evt.button == .Left or evt.button == .Right
             {
@@ -273,7 +273,7 @@ impl RecentWnd
 
         // Select new one
         sel := recentView.selected
-        recentView.selected = Swag.UInt.Max
+        recentView.selected = Swag.U64.Max
         recentView.select(sel)
     }
 

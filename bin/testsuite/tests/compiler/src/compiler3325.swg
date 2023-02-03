@@ -2,9 +2,9 @@
 #test
 {
     #[Swag.Compiler]
-    func init()->uint
+    func init()->u64
     {
-        sum := 0'uint
+        sum := 0'u64
         loop i: 3
         {
             var T: typeinfo = undefined

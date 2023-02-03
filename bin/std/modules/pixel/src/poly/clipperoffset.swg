@@ -260,7 +260,7 @@ impl Offset
 
             // Build normals
             normals.clear()
-            normals.reserve(cast(uint) len)
+            normals.reserve(cast(u64) len)
             loop j: len - 1
                 normals.add(getUnitNormal(srcPoly[j], srcPoly[j + 1]))
             normals.add(getUnitNormal(srcPoly[len - 1], srcPoly[0]))

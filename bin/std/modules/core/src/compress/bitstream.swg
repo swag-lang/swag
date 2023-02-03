@@ -4,7 +4,7 @@
 struct BitStream
 {
     stream:     const [..] u8
-    curByte:    uint
+    curByte:    u64
     codeBuffer: u32
     numBits:    u8
     eof:        bool

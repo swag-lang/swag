@@ -236,12 +236,10 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("s16", State.Type)
         mapWords.add("s32", State.Type)
         mapWords.add("s64", State.Type)
-        mapWords.add("int", State.Type)
         mapWords.add("u8", State.Type)
         mapWords.add("u16", State.Type)
         mapWords.add("u32", State.Type)
         mapWords.add("u64", State.Type)
-        mapWords.add("uint", State.Type)
         mapWords.add("bool", State.Type)
         mapWords.add("string", State.Type)
         mapWords.add("cstring", State.Type)
@@ -377,7 +375,7 @@ impl IRichEditLexer for RichEditLexerSwag
 
     mtd compute(linePrev, line, lineNext: *RichEditLine)
     {
-        seek := 0'uint
+        seek := 0'u64
         currentState  := linePrev ? linePrev.lexerEndingState : State.Default
         currentCptCmt := linePrev ? linePrev.lexerCptCmt : 0
 

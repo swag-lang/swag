@@ -8,7 +8,7 @@ struct TT
 #test
 {
     var buf: [100] u8
-    idx := 0'uint
+    idx := 0'u64
 
     ptr := @typeof(TT)
     visit it: ptr.fields

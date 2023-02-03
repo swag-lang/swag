@@ -17,15 +17,15 @@ struct(K, V) HashTable
 
     allocator:  IAllocator
     table:      ^HashTableEntry
-    count:      uint // Number of valid entries
-    capacity:   uint // Number of total entries the table can hold
-    deleted:    uint // Number of deleted entries
+    count:      u64 // Number of valid entries
+    capacity:   u64 // Number of total entries the table can hold
+    deleted:    u64 // Number of deleted entries
 }
 
 impl HashTable
 {
     #[Inline]
-    mtd opCount()->uint
+    mtd opCount()->u64
     {
         return count
     }
@@ -143,7 +143,7 @@ impl HashTable
     }
 
     // Reserve 'newCapacity' elements in the table.
-    mtd reserve(newCapacity: uint)
+    mtd reserve(newCapacity: u64)
     {
         reqCapacity := Math.max(newCapacity, 32)
         if reqCapacity <= capacity
