@@ -509,7 +509,7 @@ bool SyntaxJob::doGenericDeclParameters(AstNode* parent, AstNode** result)
 
             if (isType)
             {
-                SWAG_CHECK(doAssignmentExpression(oneParam, &oneParam->typeConstraint));
+                SWAG_CHECK(doExpression(oneParam, EXPR_FLAG_STOP_AFFECT, &oneParam->typeConstraint));
                 oneParam->typeConstraint->flags |= AST_NO_SEMANTIC;
             }
             else

@@ -825,7 +825,7 @@ void initErrors()
     SWAG_ERROR(Err0262, "unexpected character literal '%s' (this is a string, not a character)");
     SWAG_ERROR(Err0066, "unexpected comma, expecting ')' or another function argument");
     SWAG_ERROR(Err0188, "unexpected comma, expecting ')' or another function parameter");
-    SWAG_ERROR(Err0432, "unexpected compare operator '='");
+    SWAG_ERROR(Err0432, "unexpected comparison operator '='");
     SWAG_ERROR(Err0610, "unexpected empty 'switch' body");
     SWAG_ERROR(Err0683, "unexpected empty interface '%s'");
     SWAG_ERROR(Err0080, "unexpected end of file found in the comment");
