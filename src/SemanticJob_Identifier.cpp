@@ -1418,44 +1418,45 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             return context->report(diag, Diagnostic::hereIs(overload));
         }
 
-        if (funcDecl->mustInline() &&
-            !(identifier->specFlags & AST_SPEC_IDENTIFIER_NO_INLINE) &&
-            !isFunctionButNotACall(context, identifier, overload->symbol))
+        if (funcDecl->mustInline() && !isFunctionButNotACall(context, identifier, overload->symbol))
         {
             // Mixin and macros must be inlined here, because no call is possible
             bool forceInline = false;
             if (funcDecl->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
                 forceInline = true;
 
-            // Expand inline function. Do not expand an inline call inside a function marked as inline.
-            // The expansion will be done at the lowest level possible
-            if (!identifier->ownerFct || !identifier->ownerFct->mustInline() || forceInline)
+            if (!(identifier->specFlags & AST_SPEC_IDENTIFIER_NO_INLINE) || forceInline)
             {
-                // Need to wait for function full semantic resolve
-                context->job->waitFuncDeclFullResolve(funcDecl);
-                if (context->result != ContextResult::Done)
+                // Expand inline function. Do not expand an inline call inside a function marked as inline.
+                // The expansion will be done at the lowest level possible
+                if (!identifier->ownerFct || !identifier->ownerFct->mustInline() || forceInline)
+                {
+                    // Need to wait for function full semantic resolve
+                    context->job->waitFuncDeclFullResolve(funcDecl);
+                    if (context->result != ContextResult::Done)
+                        return true;
+
+                    // First pass, we inline the function.
+                    // The identifier for the function call will be reresolved later when the content
+                    // of the inline os done.
+                    if (!(identifier->doneFlags & AST_DONE_INLINED))
+                    {
+                        identifier->doneFlags |= AST_DONE_INLINED;
+
+                        // In case of an inline call inside an inline function, the identifier kind has been changed to
+                        // AstNodeKind::FuncCall in the original function. So we restore it to be a simple identifier.
+                        identifier->kind = AstNodeKind::Identifier;
+
+                        SWAG_CHECK(makeInline(context, funcDecl, identifier));
+                    }
+                    else
+                    {
+                        SWAG_CHECK(setupIdentifierRef(context, identifier, returnType));
+                    }
+
+                    identifier->byteCodeFct = ByteCodeGenJob::emitPassThrough;
                     return true;
-
-                // First pass, we inline the function.
-                // The identifier for the function call will be reresolved later when the content
-                // of the inline os done.
-                if (!(identifier->doneFlags & AST_DONE_INLINED))
-                {
-                    identifier->doneFlags |= AST_DONE_INLINED;
-
-                    // In case of an inline call inside an inline function, the identifier kind has been changed to
-                    // AstNodeKind::FuncCall in the original function. So we restore it to be a simple identifier.
-                    identifier->kind = AstNodeKind::Identifier;
-
-                    SWAG_CHECK(makeInline(context, funcDecl, identifier));
                 }
-                else
-                {
-                    SWAG_CHECK(setupIdentifierRef(context, identifier, returnType));
-                }
-
-                identifier->byteCodeFct = ByteCodeGenJob::emitPassThrough;
-                return true;
             }
         }
 
