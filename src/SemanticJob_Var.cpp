@@ -1027,7 +1027,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
 
         // We need to decide which integer/float type it is
-        node->typeInfo = TypeManager::solidifyUntyped(node->typeInfo);
+        if (!isCompilerConstant)
+            node->typeInfo = TypeManager::solidifyUntyped(node->typeInfo);
 
         // Convert from initialization list to array
         if (node->typeInfo->isListArray())
