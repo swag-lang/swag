@@ -2,7 +2,7 @@ var G = 0
 
 //#[Swag.PrintBc]
 func(T) toto(v: T)
-#selectif
+#validif
 {
     return @typeof(T) == f32
 }

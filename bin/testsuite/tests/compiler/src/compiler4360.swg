@@ -1,7 +1,7 @@
 #global testerror
 
 struct(T) Point
-    #selectif T == bool
+    #validif T == bool
 {
 }
 

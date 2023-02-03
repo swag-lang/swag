@@ -117,8 +117,8 @@ Compiler keywords.
 #mixin
 #placeholder
 #print
-#selectifx
-#selectif
+#validifx
+#validif
 #warning
 
 #ast

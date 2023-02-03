@@ -103,7 +103,7 @@ enum class MatchResult
     MissingNamedParameter,
     DuplicatedNamedParameter,
     MismatchGenericValue,
-    SelectIfFailed,
+    ValidIfFailed,
 };
 
 struct BadSignatureInfos

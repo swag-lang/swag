@@ -1,7 +1,7 @@
 #global testerror
 
 func(T) toto()
-    #selectif
+    #validif
     {
         if T != bool
             @compilererror("s32 is bad !", @location(T))

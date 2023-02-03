@@ -800,21 +800,21 @@ void SemanticJob::flattenStructChilds(SemanticContext* context, AstNode* parent,
     }
 }
 
-bool SemanticJob::solveSelectIf(SemanticContext* context, AstStruct* structDecl)
+bool SemanticJob::solveValidIf(SemanticContext* context, AstStruct* structDecl)
 {
     ScopedLock lk1(structDecl->mutex);
 
-    // Execute #selectif/#selectifx block
-    auto expr = structDecl->selectIf->childs.back();
+    // Execute #validif/#validifx block
+    auto expr = structDecl->validif->childs.back();
 
     if (!(expr->flags & AST_VALUE_COMPUTED))
     {
         auto node                   = context->node;
-        context->selectIfParameters = structDecl->genericParameters;
+        context->validIfParameters = structDecl->genericParameters;
 
-        PushErrContext ec(context, node, ErrorContextKind::SelectIf);
+        PushErrContext ec(context, node, ErrorContextKind::ValidIf);
         auto           result       = executeCompilerNode(context, expr, false);
-        context->selectIfParameters = nullptr;
+        context->validIfParameters = nullptr;
         if (!result)
             return false;
         if (context->result != ContextResult::Done)
@@ -825,7 +825,7 @@ bool SemanticJob::solveSelectIf(SemanticContext* context, AstStruct* structDecl)
     SWAG_ASSERT(expr->computedValue);
     if (!expr->computedValue->reg.b)
     {
-        Diagnostic diag{structDecl->selectIf, structDecl->selectIf->token, Fmt(Err(Err0617), structDecl->typeInfo->getDisplayNameC())};
+        Diagnostic diag{structDecl->validif, structDecl->validif->token, Fmt(Err(Err0617), structDecl->typeInfo->getDisplayNameC())};
         return context->report(diag);
     }
 
@@ -841,10 +841,10 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
     SWAG_ASSERT(typeInfo->declNode);
 
-    // #selectif
-    if (node->selectIf && !typeInfo->isGeneric())
+    // #validif
+    if (node->validif && !typeInfo->isGeneric())
     {
-        SWAG_CHECK(solveSelectIf(context, node));
+        SWAG_CHECK(solveValidIf(context, node));
         if (context->result != ContextResult::Done)
             return true;
     }

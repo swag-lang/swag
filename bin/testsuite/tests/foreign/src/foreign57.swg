@@ -1,6 +1,6 @@
 #[Swag.Macro]
 public func toto57(x: string)
-    #selectifx
+    #validifx
     {
         if !@isconstexpr(x)
             @compilererror("toto", #location)

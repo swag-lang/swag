@@ -2,7 +2,7 @@
 static const uint64_t AST_CONST_EXPR                 = 0x00000000'00000001;
 static const uint64_t AST_VALUE_COMPUTED             = 0x00000000'00000002;
 static const uint64_t AST_GLOBAL_NODE                = 0x00000000'00000004;
-static const uint64_t AST_IN_SELECTIF                = 0x00000000'00000008;
+static const uint64_t AST_IN_VALIDIF                 = 0x00000000'00000008;
 static const uint64_t AST_IN_MIXIN                   = 0x00000000'00000010;
 static const uint64_t AST_DISCARD                    = 0x00000000'00000020;
 static const uint64_t AST_TAKE_ADDRESS               = 0x00000000'00000040;

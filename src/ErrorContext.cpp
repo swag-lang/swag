@@ -127,14 +127,14 @@ void ErrorContext::fillContext(JobContext* context, Diagnostic& diag, vector<con
                 msg            = Fmt(Nte(Nte0072), name.c_str());
                 exp.locIsToken = true;
                 break;
-            case ErrorContextKind::SelectIf:
+            case ErrorContextKind::ValidIf:
                 if (exp.node->kind == AstNodeKind::StructDecl)
                     msg = Fmt(Nte(Nte0078), name.c_str());
                 else
                     msg = Fmt(Nte(Nte0054), name.c_str());
                 exp.locIsToken = true;
                 break;
-            case ErrorContextKind::SelectIfx:
+            case ErrorContextKind::ValidIfx:
                 msg            = Fmt(Nte(Nte0033), name.c_str());
                 exp.locIsToken = true;
                 break;

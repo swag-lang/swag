@@ -1,9 +1,9 @@
 /**
-On a function, you can use '#selectif' to check if the usage of the function is correct.
-If the #selectif expression returns false, then the function will not be considered for the call.
+On a function, you can use '#validif' to check if the usage of the function is correct.
+If the #validif expression returns false, then the function will not be considered for the call.
 If there's no other overload to match, then the compiler will raise an error.
 
-The #selectif expression is evaluated only once, whatever the call, so it is typically used to
+The #validif expression is evaluated only once, whatever the call, so it is typically used to
 check generic parameters.
 */
 
@@ -11,7 +11,7 @@ check generic parameters.
 {
     // Here we validate the function only if the generic type is 's32' or 's64'.
     func(T) sum(x: T...)->T
-        #selectif @typeof(T) == s32 or @typeof(T) == s64
+        #validif @typeof(T) == s32 or @typeof(T) == s64
     {
         total := 0'T
         visit it: x
@@ -32,20 +32,20 @@ check generic parameters.
 }
 
 /**
-You can use #selectif to make a kind of a generic specialisation.
+You can use #validif to make a kind of a generic specialisation.
 */
 #test
 {
     // s32 version
     func(T) isNull(x: T)->bool
-        #selectif @typeof(T) == s32
+        #validif @typeof(T) == s32
     {
         return x == 0
     }
 
     // f32/f64 version
     func(T) isNull(x: T)->bool
-        #selectif @typeof(T) == f32 or @typeof(T) == f64
+        #validif @typeof(T) == f32 or @typeof(T) == f64
     {
         return @abs(x) < 0.01
     }
@@ -55,12 +55,12 @@ You can use #selectif to make a kind of a generic specialisation.
 }
 
 /**
-Instead of a single expression, #selectif can be followed by a block that returns a bool.
+Instead of a single expression, #validif can be followed by a block that returns a bool.
 */
 #test
 {
     func(T) sum(x: T...)->T
-        #selectif
+        #validif
         {
             if @typeof(T) == s32 or @typeof(T) == s64
                 return true
@@ -80,7 +80,7 @@ By using '@compilererror', you can then trigger your own errors at compile time 
 #test
 {
     func(T) sum(x, y: T)->T
-        #selectif
+        #validif
         {
             if @typeof(T) == s32 or @typeof(T) == s64
                 return true
@@ -97,14 +97,14 @@ By using '@compilererror', you can then trigger your own errors at compile time 
 }
 
 /**
-Instead of #selectif, you can use #selectifx.
-#selectifx is evaluated for **each** call, so it can be used to check parameters, as long as they can be evaluated at compile time.
+Instead of #validif, you can use #validifx.
+#validifx is evaluated for **each** call, so it can be used to check parameters, as long as they can be evaluated at compile time.
 */
 #test
 {
     {
         func div(x, y: s32)->s32
-            #selectifx
+            #validifx
             {
                 // Here we use '@isconstexpr'.
                 // If 'y' cannot be evaluated at compile time, then we can do nothing about it.
@@ -129,14 +129,14 @@ Instead of #selectif, you can use #selectifx.
     {
         // A version of 'first' where 'x' is known at compile time.
         func first(x: s32)->s32
-            #selectifx @isconstexpr(x)
+            #validifx @isconstexpr(x)
         {
             return 555
         }
 
         // A version of 'first' where 'x' is **not** known at compile time.
         func first(x: s32)->s32
-            #selectifx !@isconstexpr(x)
+            #validifx !@isconstexpr(x)
         {
             return 666
         }
@@ -151,13 +151,13 @@ Instead of #selectif, you can use #selectifx.
 }
 
 /**
-#selectif can also be used on a generic struct.
+#validif can also be used on a generic struct.
 Unlike functions, if the expression failed, then you will have an error right away because there's no overload in the case of structures.
 */
 #test
 {
     struct(T) Point
-        #selectif T == f32 or T == f64
+        #validif T == f32 or T == f64
     {
         x, y: T
     }

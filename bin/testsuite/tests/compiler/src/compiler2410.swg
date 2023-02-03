@@ -1,10 +1,10 @@
 #global testerror
 
-func(T) toto() #selectif @typeof(T) == f32
+func(T) toto() #validif @typeof(T) == f32
 {
 }
 
-func(T) toto() #selectif @typeof(T) == f64
+func(T) toto() #validif @typeof(T) == f64
 {
 }
 

@@ -3,14 +3,14 @@ var G = 0
 
 //#[Swag.Macro]
 func toto(str: string)
-    #selectifx @isconstexpr(str)
+    #validifx @isconstexpr(str)
 {
     G += 1
     toto(str)
 }
 
 func toto(str: string)
-    #selectifx !@isconstexpr(str)
+    #validifx !@isconstexpr(str)
 {
     G += 10
 }

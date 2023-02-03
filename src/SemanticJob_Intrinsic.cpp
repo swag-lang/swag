@@ -703,8 +703,8 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         node->typeInfo = g_TypeMgr->typeInfoBool;
         expr->flags |= AST_NO_BYTECODE;
 
-        // Special case for a function parameter in a selectif block, should be done at runtime
-        if (expr->isSelectIfParam(expr->resolvedSymbolOverload))
+        // Special case for a function parameter in a validif block, should be done at runtime
+        if (expr->isValidIfParam(expr->resolvedSymbolOverload))
         {
             node->byteCodeFct = ByteCodeGenJob::emitIntrinsicIsConstExprSI;
             break;

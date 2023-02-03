@@ -152,7 +152,7 @@ void LanguageSpec::setupNames()
     name_module   = "module";
     name_function = "function";
     name_bytecode = "bytecode";
-    name_selectif = "selectif";
+    name_validif  = "validif";
     name_usage    = "usage";
     name_what     = "what";
     name_value    = "value";
@@ -261,8 +261,8 @@ void LanguageSpec::setupKeywords()
     keywords.add("#if", TokenId::CompilerIf);
     keywords.add("#else", TokenId::CompilerElse);
     keywords.add("#elif", TokenId::CompilerElseIf);
-    keywords.add("#selectif", TokenId::CompilerSelectIf);
-    keywords.add("#selectifx", TokenId::CompilerSelectIfx);
+    keywords.add("#validif", TokenId::CompilerValidIf);
+    keywords.add("#validifx", TokenId::CompilerValidIfx);
 
     keywords.add("#cfg", TokenId::CompilerBuildCfg);
     keywords.add("#arch", TokenId::CompilerArch);

@@ -250,8 +250,8 @@ AstNode* AstNode::clone(CloneContext& context)
         return ((AstCompilerIfBlock*) this)->clone(context);
     case AstNodeKind::CompilerRun:
     case AstNodeKind::CompilerRunExpression:
-    case AstNodeKind::CompilerSelectIf:
-    case AstNodeKind::CompilerSelectIfx:
+    case AstNodeKind::CompilerValidIf:
+    case AstNodeKind::CompilerValidIfx:
     case AstNodeKind::CompilerAst:
         return ((AstCompilerSpecFunc*) this)->clone(context);
     case AstNodeKind::Namespace:
@@ -363,7 +363,7 @@ AstNode* AstIdentifier::clone(CloneContext& context)
     auto it = context.replaceTypes.find(newNode->token.text);
     if (it != context.replaceTypes.end())
     {
-        // :ForLocationInSelectIf
+        // :ForLocationInValidIf
         auto it1 = context.replaceTypesFrom.find(newNode->token.text);
         if (it1 != context.replaceTypesFrom.end())
             newNode->fromAlternateVar = it1->second;
@@ -502,7 +502,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
 
     newNode->genericParameters = genericParameters ? genericParameters->clone(cloneContext) : nullptr;
     newNode->parameters        = parameters ? parameters->clone(cloneContext) : nullptr;
-    newNode->selectIf          = selectIf ? selectIf->clone(cloneContext) : nullptr;
+    newNode->validif           = validif ? validif->clone(cloneContext) : nullptr;
     newNode->nodeCounts        = nodeCounts;
     newNode->makePointerLambda = makePointerLambda;
 
@@ -874,7 +874,7 @@ AstNode* AstStruct::clone(CloneContext& context)
 
     newNode->genericParameters = genericParameters ? genericParameters->clone(cloneContext) : nullptr;
     newNode->content           = content ? content->clone(cloneContext) : nullptr;
-    newNode->selectIf          = selectIf ? selectIf->clone(cloneContext) : nullptr;
+    newNode->validif           = validif ? validif->clone(cloneContext) : nullptr;
     newNode->flags |= AST_FROM_GENERIC;
     newNode->content->flags &= ~AST_NO_SEMANTIC;
 

@@ -501,7 +501,7 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, C
         newFunc->content->flags &= ~AST_NO_SEMANTIC;
     }
 
-    if (newFunc->selectIf)
+    if (newFunc->validif)
         newFunc->content->flags |= AST_NO_SEMANTIC;
 
     Ast::addChildBack(funcNode->parent, newFunc);
@@ -525,7 +525,7 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, C
     structJob->dependentJobs.add(newJob);
 }
 
-bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool selectIf)
+bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool validif)
 {
     auto node = context->node;
 
@@ -604,9 +604,9 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     newFunc->flags |= AST_FROM_GENERIC;
     newFunc->originalGeneric = funcNode;
 
-    // If this is for testing a #selectif match, we must not evaluate the function content until the
-    // #selectif has passed
-    if (selectIf)
+    // If this is for testing a #validif match, we must not evaluate the function content until the
+    // #validif has passed
+    if (validif)
         newFunc->content->flags |= AST_NO_SEMANTIC;
     else
         newFunc->content->flags &= ~AST_NO_SEMANTIC;

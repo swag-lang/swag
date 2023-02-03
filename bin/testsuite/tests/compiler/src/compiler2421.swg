@@ -1,7 +1,7 @@
 #global testerror
 
 func toto(f: f32)
-#selectif
+#validif
 {
     return false
 }

@@ -71,7 +71,7 @@ impl Array
 
     #[Inline]
     mtdc opIndex(index: u64)->ref T
-        #selectif Reflection.isStruct(T)
+        #validif Reflection.isStruct(T)
     {
         Debug.safetyBoundCheck(index < count, "index out of range")
         return buffer + index
@@ -79,7 +79,7 @@ impl Array
 
     #[Inline]
     mtdc opIndex(index: u64)->T
-        #selectif !Reflection.isStruct(T)
+        #validif !Reflection.isStruct(T)
     {
         Debug.safetyBoundCheck(index < count, "index out of range")
         return buffer[index]
@@ -87,7 +87,7 @@ impl Array
 
     #[Inline]
     mtd opIndexAffect(index: u64, value: T)
-        #selectif Reflection.canCopy(T)
+        #validif Reflection.canCopy(T)
     {
         Debug.safetyBoundCheck(index < count, "index out of range")
         buffer[index] = value
@@ -102,7 +102,7 @@ impl Array
 
     // Initializes an Array that contains values copied from the specified array
     mtd opAffect(arr: const [..] T)
-        #selectif Reflection.canCopy(T)
+        #validif Reflection.canCopy(T)
     {
         clear()
         countof := @countof(arr)
@@ -312,7 +312,7 @@ impl Array
 
     // Add a copy of one element at the end of the array
     mtd addOnce(value: T)
-        #selectif Reflection.canCopy(T)
+        #validif Reflection.canCopy(T)
     {
         if contains(value)
             return
@@ -323,7 +323,7 @@ impl Array
 
     // Add a copy of one element at the end of the array
     mtd add(value: T)
-        #selectif Reflection.canCopy(T)
+        #validif Reflection.canCopy(T)
     {
         grow(count + 1)
         buffer[count] =,nodrop value
@@ -333,7 +333,7 @@ impl Array
     // Add any value, as long as the type T accepts an opAffect of type G
     // or an implicit cast
     mtd(G) addAny(value: G)
-        #selectif Reflection.canCopy(G)
+        #validif Reflection.canCopy(G)
     {
         #if @typeof(G) != @typeof(T)
         {
@@ -378,7 +378,7 @@ impl Array
     // the value is added at the end of the array.
     // Order is preserved.
     mtd insertAt(index: u64, value: T)
-        #selectif Reflection.canCopy(T)
+        #validif Reflection.canCopy(T)
     {
         Debug.assert(index <= count, "index out of range")
         if index == count
@@ -403,7 +403,7 @@ impl Array
     // the values are added at the end of the array.
     // Order is preserved.
     mtd insertAt(index: u64, values: const [..] T)
-        #selectif Reflection.canCopy(T)
+        #validif Reflection.canCopy(T)
     {
         sliceCount := @countof(values)
         if !sliceCount
@@ -464,7 +464,7 @@ impl Array
     // the values are moved at the end of the array.
     // Order is preserved.
     mtd emplaceAt(index: u64, values: [..] T)
-        #selectif Reflection.canCopy(T)
+        #validif Reflection.canCopy(T)
     {
         sliceCount := @countof(values)
         if !sliceCount
@@ -499,7 +499,7 @@ impl Array
 
     // Append a slice to the end of this instance
     mtd add(values: const [..] T)
-        #selectif Reflection.canCopy(T)
+        #validif Reflection.canCopy(T)
     {
         sliceCount := @countof(values)
         if !sliceCount

@@ -1,7 +1,7 @@
 #global testerror
 
 func print(s: string, f: ...)
-    #selectifx
+    #validifx
     {
         if @countof(f) != 3
             @compilererror("invalid number of arguments", @location(f))

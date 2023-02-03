@@ -406,9 +406,9 @@ bool AstNode::isParentOf(AstNode* child)
     return false;
 }
 
-bool AstNode::isSelectIfParam(SymbolOverload* overload)
+bool AstNode::isValidIfParam(SymbolOverload* overload)
 {
-    if (!(flags & AST_IN_SELECTIF))
+    if (!(flags & AST_IN_VALIDIF))
         return false;
     if (!overload)
         return false;
@@ -636,10 +636,10 @@ Utf8 AstFuncDecl::getDisplayName()
         return "'#ast' block";
     if (attributeFlags & (ATTRIBUTE_RUN_FUNC | ATTRIBUTE_RUN_GENERATED_FUNC))
         return "'#run' block";
-    if (attributeFlags & ATTRIBUTE_MATCH_SELECTIF_FUNC)
-        return "'#selectif' block";
-    if (attributeFlags & ATTRIBUTE_MATCH_SELECTIFX_FUNC)
-        return "'#selectifx' block";
+    if (attributeFlags & ATTRIBUTE_MATCH_VALIDIF_FUNC)
+        return "'#validif' block";
+    if (attributeFlags & ATTRIBUTE_MATCH_VALIDIFX_FUNC)
+        return "'#validifx' block";
 
     if (attributeFlags & ATTRIBUTE_TEST_FUNC && attributeFlags & ATTRIBUTE_SHARP_FUNC)
         return "'#test' block";

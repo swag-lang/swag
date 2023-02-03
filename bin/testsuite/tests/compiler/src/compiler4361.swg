@@ -1,7 +1,7 @@
 #global testerror
 
 struct(T) Point
-    #selectif
+    #validif
     {
         if T != bool
             @compilererror("toto", #location)

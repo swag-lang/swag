@@ -1,5 +1,5 @@
 struct(T) Point
-    #selectif T == s32
+    #validif T == s32
 {
 }
 

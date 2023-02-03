@@ -543,18 +543,18 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                     {
                         flags &= ~ATTRIBUTE_MATCH_MASK;
                         if (!attrValue->reg.b)
-                            flags |= ATTRIBUTE_MATCH_SELECTIF_OFF | ATTRIBUTE_MATCH_SELF_OFF;
+                            flags |= ATTRIBUTE_MATCH_VALIDIF_OFF | ATTRIBUTE_MATCH_SELF_OFF;
                     }
 
                     for (auto& w : what)
                     {
                         w.trim();
-                        if (w == g_LangSpec->name_selectif)
+                        if (w == g_LangSpec->name_validif)
                         {
                             if (!attrValue->reg.b)
-                                flags |= ATTRIBUTE_MATCH_SELECTIF_OFF;
+                                flags |= ATTRIBUTE_MATCH_VALIDIF_OFF;
                             else
-                                flags &= ~ATTRIBUTE_MATCH_SELECTIF_OFF;
+                                flags &= ~ATTRIBUTE_MATCH_VALIDIF_OFF;
                         }
                         else if (w == g_LangSpec->name_self)
                         {

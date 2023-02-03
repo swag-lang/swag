@@ -17,7 +17,7 @@ func checkFloat(t: typeinfo, l = #callerlocation)->bool
 }
 
 func(T) add(x, y: T)->T
-    #selectif checkInteger(T, @location(x)) or
+    #validif checkInteger(T, @location(x)) or
               checkFloat(T, @location(x))
 {
     return x + y

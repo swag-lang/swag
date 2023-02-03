@@ -338,8 +338,8 @@ struct SemanticJob : public Job
     static bool           instantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch, bool forStruct);
     static bool           filterGenericMatches(SemanticContext* context, VectorNative<OneMatch*>& matches, VectorNative<OneGenericMatch*>& genMatches);
     static bool           filterMatchesInContext(SemanticContext* context, VectorNative<OneMatch*>& matches);
-    static bool           solveSelectIf(SemanticContext* context, AstStruct* structDecl);
-    static bool           solveSelectIf(SemanticContext* context, OneMatch* oneMatch, AstFuncDecl* funcDecl);
+    static bool           solveValidIf(SemanticContext* context, AstStruct* structDecl);
+    static bool           solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFuncDecl* funcDecl);
     static bool           filterMatches(SemanticContext* context, VectorNative<OneMatch*>& matches);
     static bool           filterSymbols(SemanticContext* context, AstIdentifier* node);
     static bool           preResolveGeneratedStruct(SemanticContext* context);
@@ -423,7 +423,7 @@ struct SemanticJob : public Job
     static bool resolveCompilerWarning(SemanticContext* context);
     static bool resolveCompilerForeignLib(SemanticContext* context);
     static bool resolveCompilerRun(SemanticContext* context);
-    static bool resolveCompilerSelectIfExpression(SemanticContext* context);
+    static bool resolveCompilerValidIfExpression(SemanticContext* context);
     static bool resolveCompilerAstExpression(SemanticContext* context);
     static bool resolveCompilerSpecialFunction(SemanticContext* context);
     static bool resolveIntrinsicDefined(SemanticContext* context);

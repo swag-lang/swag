@@ -1,7 +1,7 @@
 #global testerror
 
 struct(T) Point
-    #selectif
+    #validif
     {
         if T != bool
             @compilererror("s32 is bad !", @location(T))

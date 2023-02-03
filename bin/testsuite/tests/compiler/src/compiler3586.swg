@@ -9,7 +9,7 @@ interface I
 }
 
 func(T) titi()
-    #selectif @typeof(T).fullname != null
+    #validif @typeof(T).fullname != null
 {
 }
 

@@ -15,7 +15,7 @@ struct Generic
     static void waitForGenericParameters(SemanticContext* context, OneGenericMatch& match);
     static void instantiateSpecialFunc(SemanticContext* context, Job* structJob, CloneContext& cloneContext, AstFuncDecl** funcNode);
     static bool instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool& alias);
-    static bool instantiateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool selectIf = false);
+    static bool instantiateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool validif = false);
     static bool instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl* node);
     static bool instantiateDefaultGenericFunc(SemanticContext* context);
 };

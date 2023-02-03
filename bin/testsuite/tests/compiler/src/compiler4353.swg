@@ -1,6 +1,6 @@
 #global testerror
 func(T) add(x, y: T)->T
-    #selectif
+    #validif
     {
         if cast(bool) (@typeof(T).flags & .Integer)
             return true

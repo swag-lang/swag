@@ -1966,7 +1966,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
     if (context->result != ContextResult::Done)
         return true;
 
-    // All choices were removed because of #selectif
+    // All choices were removed because of #validif
     if (!genericMatches.size() && genericMatchesSI.size() && matches.empty() && prevMatchesCount)
     {
         if (justCheck)
@@ -1974,7 +1974,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         return cannotMatchIdentifierError(context, overloads, node);
     }
 
-    // Multi instantiation in case of #selectif
+    // Multi instantiation in case of #validif
     if (genericMatchesSI.size() && matches.empty() && !prevMatchesCount)
     {
         if (justCheck)
@@ -3384,15 +3384,15 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         auto over     = curMatch->symbolOverload;
         auto overSym  = over->symbol;
 
-        // Take care of #selectif/#selectifx
+        // Take care of #validif/#validifx
         if (overSym->kind == SymbolKind::Function &&
-            !(context->node->flags & AST_IN_SELECTIF) &&
-            !(context->node->attributeFlags & ATTRIBUTE_MATCH_SELECTIF_OFF))
+            !(context->node->flags & AST_IN_VALIDIF) &&
+            !(context->node->attributeFlags & ATTRIBUTE_MATCH_VALIDIF_OFF))
         {
             auto funcDecl = CastAst<AstFuncDecl>(over->node, AstNodeKind::FuncDecl);
-            if (funcDecl->selectIf)
+            if (funcDecl->validif)
             {
-                SWAG_CHECK(solveSelectIf(context, curMatch, funcDecl));
+                SWAG_CHECK(solveValidIf(context, curMatch, funcDecl));
                 if (context->result != ContextResult::Done)
                     return true;
                 if (curMatch->remove)
@@ -3805,7 +3805,7 @@ bool SemanticJob::filterMatchesInContext(SemanticContext* context, VectorNative<
     return true;
 }
 
-bool SemanticJob::solveSelectIf(SemanticContext* context, OneMatch* oneMatch, AstFuncDecl* funcDecl)
+bool SemanticJob::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFuncDecl* funcDecl)
 {
     ScopedLock lk0(funcDecl->funcMutex);
     ScopedLock lk1(funcDecl->mutex);
@@ -3818,28 +3818,28 @@ bool SemanticJob::solveSelectIf(SemanticContext* context, OneMatch* oneMatch, As
         return true;
     }
 
-    // Execute #selectif/#selectifx block
-    auto expr = funcDecl->selectIf->childs.back();
+    // Execute #validif/#validifx block
+    auto expr = funcDecl->validif->childs.back();
 
-    // #selectifx is evaluated for each call, so we remove the AST_VALUE_COMPUTED computed flag.
-    // #selectif is evaluated once, so keep it.
-    if (funcDecl->selectIf->kind == AstNodeKind::CompilerSelectIfx)
+    // #validifx is evaluated for each call, so we remove the AST_VALUE_COMPUTED computed flag.
+    // #validif is evaluated once, so keep it.
+    if (funcDecl->validif->kind == AstNodeKind::CompilerValidIfx)
         expr->flags &= ~AST_VALUE_COMPUTED;
 
     if (!(expr->flags & AST_VALUE_COMPUTED))
     {
         auto node                   = context->node;
-        context->selectIfParameters = oneMatch->oneOverload->callParameters;
+        context->validIfParameters = oneMatch->oneOverload->callParameters;
 
         ErrorContextKind type;
-        if (funcDecl->selectIf->kind == AstNodeKind::CompilerSelectIfx)
-            type = ErrorContextKind::SelectIfx;
+        if (funcDecl->validif->kind == AstNodeKind::CompilerValidIfx)
+            type = ErrorContextKind::ValidIfx;
         else
-            type = ErrorContextKind::SelectIf;
+            type = ErrorContextKind::ValidIf;
 
         PushErrContext ec(context, node, type);
         auto           result       = executeCompilerNode(context, expr, false);
-        context->selectIfParameters = nullptr;
+        context->validIfParameters = nullptr;
         if (!result)
             return false;
         if (context->result != ContextResult::Done)
@@ -3850,7 +3850,7 @@ bool SemanticJob::solveSelectIf(SemanticContext* context, OneMatch* oneMatch, As
     if (!expr->computedValue->reg.b)
     {
         oneMatch->remove                              = true;
-        oneMatch->oneOverload->symMatchContext.result = MatchResult::SelectIfFailed;
+        oneMatch->oneOverload->symMatchContext.result = MatchResult::ValidIfFailed;
         return true;
     }
 
@@ -3859,7 +3859,7 @@ bool SemanticJob::solveSelectIf(SemanticContext* context, OneMatch* oneMatch, As
         funcDecl->content->flags &= ~AST_NO_SEMANTIC;
 
         // Need to restart semantic on instantiated function and on its content,
-        // because the #selectif has passed
+        // because the #validif has passed
         // It's safe to create a job with the content as it has been fully evaluated.
         // It's NOT safe for the function itself as the job that deals with it can be
         // still running

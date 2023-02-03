@@ -215,17 +215,17 @@ bool SyntaxJob::doCompilerWarning(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCompilerSelectIf(AstNode* parent, AstNode** result)
+bool SyntaxJob::doCompilerValidIf(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode<AstCompilerSpecFunc>(this, AstNodeKind::CompilerSelectIf, sourceFile, parent);
+    auto node = Ast::newNode<AstCompilerSpecFunc>(this, AstNodeKind::CompilerValidIf, sourceFile, parent);
     if (result)
         *result = node;
     auto tokenId = token.id;
-    if (tokenId == TokenId::CompilerSelectIfx)
-        node->kind = AstNodeKind::CompilerSelectIfx;
+    if (tokenId == TokenId::CompilerValidIfx)
+        node->kind = AstNodeKind::CompilerValidIfx;
     node->allocateExtension(ExtensionKind::Semantic);
     node->extension->semantic->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
-    node->semanticFct                            = SemanticJob::resolveCompilerSelectIfExpression;
+    node->semanticFct                            = SemanticJob::resolveCompilerValidIfExpression;
     SWAG_CHECK(eatToken());
     parent->flags |= AST_HAS_SELECT_IF;
     node->flags |= AST_NO_BYTECODE_CHILDS;
@@ -238,7 +238,7 @@ bool SyntaxJob::doCompilerSelectIf(AstNode* parent, AstNode** result)
         return error(node, Fmt(Err(Syn0137), parent->token.ctext()), Hlp(Hlp0034));
     }
 
-    ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND | AST_IN_SELECTIF);
+    ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND | AST_IN_VALIDIF);
     if (token.id == TokenId::SymLeftCurly)
     {
         AstNode* funcNode;
@@ -255,7 +255,7 @@ bool SyntaxJob::doCompilerSelectIf(AstNode* parent, AstNode** result)
     else
     {
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
-        SWAG_CHECK(eatSemiCol("'#selectifx' expression"));
+        SWAG_CHECK(eatSemiCol("'#validifx' expression"));
     }
 
     return true;

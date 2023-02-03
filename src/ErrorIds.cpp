@@ -239,7 +239,7 @@ void initErrors()
     SWAG_ERROR(Syn0134, "tuple types in generic parameters are not (yet?) supported");
     SWAG_ERROR(Syn0135, "type 'Self' should not be used outside an 'impl', 'struct' or 'interface' block");
     SWAG_ERROR(Syn0136, "unexpected '#global' instruction '%s'");
-    SWAG_ERROR(Syn0137, "unexpected '#selectif' or '#selectifx' on special function '%s'");
+    SWAG_ERROR(Syn0137, "unexpected '#validif' or '#validifx' on special function '%s'");
     SWAG_ERROR(Syn0138, "unexpected '->' in attribute declaration");
     SWAG_ERROR(Syn0139, "unexpected '[' when accessing an array with multiple dimensions");
     SWAG_ERROR(Syn0140, "unexpected 'assume' inside '%s' expression");
@@ -901,8 +901,8 @@ void initErrors()
     SWAG_ERROR(Err0687, "expected a value lower than 256");
     SWAG_ERROR(Err0686, "the %s '%s' wants to convert the next statement in a 'code' parameter but this is not possible inside a '%s' expression");
     SWAG_ERROR(Err0685, "unexpected default value for a variadic parameter");
-    SWAG_ERROR(Err0567, "unexpected '#selectifx' for a struct");
-    SWAG_ERROR(Err0617, "the '#selectif' validation of '%s' has failed");
+    SWAG_ERROR(Err0567, "unexpected '#validifx' for a struct");
+    SWAG_ERROR(Err0617, "the '#validif' validation of '%s' has failed");
     SWAG_ERROR(Err0167, "unexpected lambda type parameter name");
     SWAG_ERROR(Err0533, nullptr);
     SWAG_ERROR(Err0128, nullptr);
@@ -956,7 +956,7 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(Hlp0034, "'#selectif' and '#selectifx' cannot be used on 'opDrop', 'opPostCopy' and 'opPostMove'");
+    SWAG_ERROR(Hlp0034, "'#validif' and '#validifx' cannot be used on 'opDrop', 'opPostCopy' and 'opPostMove'");
     SWAG_ERROR(Hlp0010, "'@alias' should only be used inside a 'Swag.Macro' or a 'Swag.Mixin' function");
     SWAG_ERROR(Hlp0020, "'@mixin' should only be used inside a 'Swag.Mixin' function");
     SWAG_ERROR(Hlp0013, "'Swag.ExportType' valid values are 'methods' and 'nozero'");
@@ -1004,7 +1004,7 @@ void initErrors()
     SWAG_ERROR(Hlp0038, "you should add a 'break'");
     SWAG_ERROR(Hlp0046, "pointer arimthetic is only possible for pointers declared with '^' and not '*'");
     SWAG_ERROR(Hlp0047, "if you want to slice to the end, use '..' instead");
-    SWAG_ERROR(Hlp0048, "'Swag.Match' valid values are 'selectif|self'");
+    SWAG_ERROR(Hlp0048, "'Swag.Match' valid values are 'validif|self'");
     SWAG_ERROR(Hlp0049, nullptr);
     SWAG_ERROR(Hlp0050, nullptr);
     SWAG_ERROR(Hlp0051, nullptr);
@@ -1123,7 +1123,7 @@ void initErrors()
     SWAG_ERROR(Hnt0104, "you could add '&' to take the address of this expression");
     SWAG_ERROR(Hnt0105, "this is not allowed on type '%s'");
     SWAG_ERROR(Hnt0106, "this is an immutable struct parameter");
-    SWAG_ERROR(Hnt0107, "this should be replaced with '#selectif'");
+    SWAG_ERROR(Hnt0107, "this should be replaced with '#validif'");
     SWAG_ERROR(Hnt0108, nullptr);
     SWAG_ERROR(Hnt0109, nullptr);
 
@@ -1198,8 +1198,8 @@ void initErrors()
     SWAG_ERROR(Nte0061, "occurred during the generic expansion of '%s'");
     SWAG_ERROR(Nte0059, "occurred during the inline expansion of '%s'");
     SWAG_ERROR(Nte0060, "occurred during the public export of '%s'");
-    SWAG_ERROR(Nte0033, "occurred during the '#selectifx' validation of the function call to '%s'");
-    SWAG_ERROR(Nte0054, "occurred during the '#selectif' validation of the function call to '%s'");
+    SWAG_ERROR(Nte0033, "occurred during the '#validifx' validation of the function call to '%s'");
+    SWAG_ERROR(Nte0054, "occurred during the '#validif' validation of the function call to '%s'");
     SWAG_ERROR(Nte0004, "occurred in generated code");
     SWAG_ERROR(Nte0055, "occurred when trying to match the type of the other part of the conditional expression");
     SWAG_ERROR(Nte0047, "resulting type is '%s'");
@@ -1223,7 +1223,7 @@ void initErrors()
     SWAG_ERROR(Nte0075, "the original instantiation type '%s' comes from here");
     SWAG_ERROR(Nte0076, "'%s' could be either a single type or a parameter name");
     SWAG_ERROR(Nte0077, "'%s' could be either a single type or a field name");
-    SWAG_ERROR(Nte0078, "occurred during the '#selectif' validation of the struct '%s'");
+    SWAG_ERROR(Nte0078, "occurred during the '#validif' validation of the struct '%s'");
     SWAG_ERROR(Nte0079, nullptr);
 
     /////////////////////////////////////////////////////////////////////

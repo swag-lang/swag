@@ -46,7 +46,7 @@ struct JobContext
         baseJob            = nullptr;
         node               = nullptr;
         sourceFile         = nullptr;
-        selectIfParameters = nullptr;
+        validIfParameters = nullptr;
         result             = ContextResult::Done;
         hasError           = false;
         silentError        = 0;
@@ -58,7 +58,7 @@ struct JobContext
     Job*        baseJob            = nullptr;
     AstNode*    node               = nullptr;
     SourceFile* sourceFile         = nullptr;
-    AstNode*    selectIfParameters = nullptr;
+    AstNode*    validIfParameters = nullptr;
     bool        hasError           = false;
     uint32_t    silentError        = false;
 

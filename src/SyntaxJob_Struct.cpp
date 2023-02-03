@@ -304,14 +304,14 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
 
     SWAG_CHECK(eatToken());
 
-    // '#selectif' block
-    if (token.id == TokenId::CompilerSelectIfx)
+    // '#validif' block
+    if (token.id == TokenId::CompilerValidIfx)
         return error(token, Err(Err0567), Hnt(Hnt0107));
-    if (token.id == TokenId::CompilerSelectIf)
+    if (token.id == TokenId::CompilerValidIf)
     {
         Scoped       scoped(this, newScope);
         ScopedStruct scopedStruct(this, newScope);
-        SWAG_CHECK(doCompilerSelectIf(structNode, &structNode->selectIf));
+        SWAG_CHECK(doCompilerValidIf(structNode, &structNode->validif));
     }
 
     // Content of struct

@@ -139,8 +139,8 @@ enum class AstNodeKind : uint8_t
     CompilerRun,
     CompilerRunExpression,
     CompilerAst,
-    CompilerSelectIf,
-    CompilerSelectIfx,
+    CompilerValidIf,
+    CompilerValidIfx,
     CompilerCode,
     CompilerDependencies,
     CompilerImport,
@@ -272,7 +272,7 @@ struct AstNode
     bool isConstant0();
     bool isConstant1();
     bool isParentOf(AstNode* child);
-    bool isSelectIfParam(SymbolOverload* overload);
+    bool isValidIfParam(SymbolOverload* overload);
     bool isSameStackFrame(SymbolOverload* overload);
     bool isSpecialFunctionName();
     bool isSpecialFunctionGenerated();
@@ -466,7 +466,7 @@ struct AstFuncDecl : public AstNode
     AstNode*        genericParameters     = nullptr;
     AstNode*        returnType            = nullptr;
     AstNode*        content               = nullptr;
-    AstNode*        selectIf              = nullptr;
+    AstNode*        validif               = nullptr;
     AstNode*        returnTypeDeducedNode = nullptr;
     AstNode*        originalGeneric       = nullptr;
     Scope*          scope                 = nullptr;
@@ -763,7 +763,7 @@ struct AstStruct : public AstNode
     Scope*   scope             = nullptr;
     AstNode* ownerGeneric      = nullptr;
     AstNode* originalParent    = nullptr;
-    AstNode* selectIf          = nullptr;
+    AstNode* validif           = nullptr;
 
     uint32_t packing     = sizeof(uint64_t);
     uint32_t structFlags = 0;

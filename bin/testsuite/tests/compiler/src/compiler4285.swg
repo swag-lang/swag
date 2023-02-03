@@ -4,16 +4,16 @@ var G = 0
 
 #[Macro]
 func toto(x: string)
-    #selectifx @isconstexpr(x)
+    #validifx @isconstexpr(x)
 {
     G += 1
 
-    #[Match("self|selectif", false)]
+    #[Match("self|validif", false)]
     toto(x)
 }
 
 func toto(x: string)
-    #selectifx !@isconstexpr(x)
+    #validifx !@isconstexpr(x)
 {
     G += 2
 }

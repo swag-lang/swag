@@ -8,7 +8,7 @@ func checkFormat(fct: string, fmt: string, values: ...)
     cptPercent := countPercent(fmt)
     if cptPercent != @countof(values)
     {
-        #[Match("selectif", false)]
+        #[Match("validif", false)]
         str := toString("bad number of arguments to '%' ('%' requested, '%' provided)", fct, cptPercent, @countof(values))
         @compilererror(str, @location(values))
     }
@@ -37,7 +37,7 @@ func countPercent(fmt: string)->u32
 // Format a string in 'dest'
 // Can be lot faster than the convenient version which returns a string
 func replaceString(dest: *String, fmt: string, values: ...)
-    #selectifx
+    #validifx
     {
         if !@isconstexpr(fmt) return true
         checkFormat(@nameof(#self), fmt, values)
@@ -48,7 +48,7 @@ func replaceString(dest: *String, fmt: string, values: ...)
 
     buf.setFirstBucket(@mkslice(dest.buffer, dest.capacity))
 
-    #[Match("selectif", false)]
+    #[Match("validif", false)]
     append(&buf, fmt, values)
 
     buf.makeLinear()
@@ -61,7 +61,7 @@ func replaceString(dest: *String, fmt: string, values: ...)
 
 // Format a string and returns the result as a String
 func toString(fmt: string, values: ...)->String
-    #selectifx
+    #validifx
     {
         if !@isconstexpr(fmt) return true
         checkFormat(@nameof(#self), fmt, values)
@@ -70,7 +70,7 @@ func toString(fmt: string, values: ...)->String
 {
     var buf: ConcatBuffer
 
-    #[Match("selectif", false)]
+    #[Match("validif", false)]
     append(&buf, fmt, values)
 
     return buf.toString()
@@ -78,7 +78,7 @@ func toString(fmt: string, values: ...)->String
 
 // Format a string and put the result in a ConcatBuffer
 func append(buf: *ConcatBuffer, fmt: string, values: ...)
-    #selectifx
+    #validifx
     {
         if !@isconstexpr(fmt) or !@isconstexpr(values) return true
         checkFormat(@nameof(#self), fmt, values)
@@ -150,7 +150,7 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
 // Format is "my {<value to interpolate>:format}
 #[Macro]
 func toInterp(buf: *ConcatBuffer, exp: string)
-    #selectifx
+    #validifx
     {
         if !@isconstexpr(exp)
             @compilererror("expression should be constant", @location(exp))
@@ -210,7 +210,7 @@ func toInterp(buf: *ConcatBuffer, exp: string)
 // Format is "my {<value to interpolate>:format}
 #[Mixin]
 func toInterp(exp: string)->String
-    #selectifx
+    #validifx
     {
         if !@isconstexpr(exp)
             @compilererror("expression should be constant", @location(exp))

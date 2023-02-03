@@ -338,7 +338,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         }
     }
 
-    // Content semantic can have been disabled (#selectif). In that case, we're not done yet, so
+    // Content semantic can have been disabled (#validif). In that case, we're not done yet, so
     // do not set the FULL_RESOLVE flag and do not generate bytecode
     if (node->content && (node->content->flags & AST_NO_SEMANTIC))
     {
@@ -847,8 +847,8 @@ bool SemanticJob::isMethod(AstFuncDecl* funcNode)
         funcNode->parent->kind != AstNodeKind::CompilerAst &&
         funcNode->parent->kind != AstNodeKind::CompilerRun &&
         funcNode->parent->kind != AstNodeKind::CompilerRunExpression &&
-        funcNode->parent->kind != AstNodeKind::CompilerSelectIf &&
-        funcNode->parent->kind != AstNodeKind::CompilerSelectIfx &&
+        funcNode->parent->kind != AstNodeKind::CompilerValidIf &&
+        funcNode->parent->kind != AstNodeKind::CompilerValidIfx &&
         !(funcNode->flags & AST_FROM_GENERIC) &&
         !(funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC) &&
         (funcNode->ownerScope->kind == ScopeKind::Struct) &&

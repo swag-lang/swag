@@ -134,12 +134,12 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         SWAG_ASSERT(false);
         return;
 
-    case MatchResult::SelectIfFailed:
+    case MatchResult::ValidIfFailed:
     {
         SWAG_ASSERT(destFuncDecl);
-        diag = new Diagnostic{node, node->token, Fmt(Err(Err0004), destFuncDecl->token.ctext(), destFuncDecl->selectIf->token.ctext())};
+        diag = new Diagnostic{node, node->token, Fmt(Err(Err0004), destFuncDecl->token.ctext(), destFuncDecl->validif->token.ctext())};
         result0.push_back(diag);
-        auto note       = new Diagnostic{destFuncDecl->selectIf, destFuncDecl->selectIf->token, Fmt(Nte(Nte0007), destFuncDecl->selectIf->token.ctext()), DiagnosticLevel::Note};
+        auto note       = new Diagnostic{destFuncDecl->validif, destFuncDecl->validif->token, Fmt(Nte(Nte0007), destFuncDecl->validif->token.ctext()), DiagnosticLevel::Note};
         note->showRange = false;
         result1.push_back(note);
         return;
@@ -710,7 +710,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
             case MatchResult::NotEnoughParameters:
             case MatchResult::MissingSomeParameters:
             case MatchResult::TooManyParameters:
-            case MatchResult::SelectIfFailed:
+            case MatchResult::ValidIfFailed:
             case MatchResult::NotEnoughGenericParameters:
                 n.push_back(oneMatch);
                 break;
@@ -766,13 +766,13 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
             tryMatches = n;
     }
 
-    // Take selectif if failed in priority
+    // Take validif if failed in priority
     {
         vector<OneTryMatch*> n;
         for (auto oneMatch : tryMatches)
         {
             auto& one = *oneMatch;
-            if (one.symMatchContext.result == MatchResult::SelectIfFailed)
+            if (one.symMatchContext.result == MatchResult::ValidIfFailed)
                 n.push_back(oneMatch);
         }
         if (!n.empty())
@@ -884,8 +884,8 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
 
             switch (badResult)
             {
-            case MatchResult::SelectIfFailed:
-                diagRemarks = new Diagnostic(Fmt("#selectif have all failed"), DiagnosticLevel::Note);
+            case MatchResult::ValidIfFailed:
+                diagRemarks = new Diagnostic(Fmt("#validif have all failed"), DiagnosticLevel::Note);
                 notes.push_back(diagRemarks);
                 break;
             case MatchResult::TooManyParameters:

@@ -158,7 +158,7 @@ bool AstOutput::outputAttrUse(OutputContext& context, Concat& concat, AstNode* n
     return true;
 }
 
-bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstNode* node, AstNode* genericParameters, AstNode* parameters, AstNode* selectIf)
+bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstNode* node, AstNode* genericParameters, AstNode* parameters, AstNode* validif)
 {
     ScopeExportNode sen(context, node);
 
@@ -208,12 +208,12 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstN
     if (node->specFlags & AST_SPEC_FUNCDECL_THROW)
         CONCAT_FIXED_STR(concat, " throw");
 
-    // #selectif must be exported
-    if (selectIf)
+    // #validif must be exported
+    if (validif)
     {
         context.indent++;
         concat.addEolIndent(context.indent);
-        SWAG_CHECK(outputNode(context, concat, selectIf));
+        SWAG_CHECK(outputNode(context, concat, validif));
         context.indent--;
     }
 
@@ -300,12 +300,12 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
         return true;
     }
 
-    // #selectifx block
-    if (node->selectIf)
+    // #validifx block
+    if (node->validif)
     {
         context.indent++;
         concat.addEolIndent(context.indent);
-        SWAG_CHECK(outputNode(context, concat, node->selectIf));
+        SWAG_CHECK(outputNode(context, concat, node->validif));
         context.indent--;
     }
     else
@@ -815,12 +815,12 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
 
     concat.addEolIndent(context.indent);
 
-    // #selectif must be exported
-    if (node->selectIf)
+    // #validif must be exported
+    if (node->validif)
     {
         context.indent++;
         concat.addEolIndent(context.indent);
-        SWAG_CHECK(outputNode(context, concat, node->selectIf));
+        SWAG_CHECK(outputNode(context, concat, node->validif));
         context.indent--;
     }
 
@@ -1389,17 +1389,17 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::CompilerRun:
     case AstNodeKind::CompilerRunExpression:
     case AstNodeKind::CompilerAst:
-    case AstNodeKind::CompilerSelectIf:
-    case AstNodeKind::CompilerSelectIfx:
+    case AstNodeKind::CompilerValidIf:
+    case AstNodeKind::CompilerValidIfx:
     {
         if (node->kind == AstNodeKind::CompilerRun || node->kind == AstNodeKind::CompilerRunExpression)
             CONCAT_FIXED_STR(concat, "#run ");
         else if (node->kind == AstNodeKind::CompilerAst)
             CONCAT_FIXED_STR(concat, "#ast ");
-        else if (node->kind == AstNodeKind::CompilerSelectIf)
-            CONCAT_FIXED_STR(concat, "#selectif ");
-        else if (node->kind == AstNodeKind::CompilerSelectIfx)
-            CONCAT_FIXED_STR(concat, "#selectifx ");
+        else if (node->kind == AstNodeKind::CompilerValidIf)
+            CONCAT_FIXED_STR(concat, "#validif ");
+        else if (node->kind == AstNodeKind::CompilerValidIfx)
+            CONCAT_FIXED_STR(concat, "#validifx ");
 
         auto front = node->childs.front();
         if (front->kind == AstNodeKind::FuncDecl)
@@ -2108,7 +2108,7 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
                 concat.addEol();
             }
             else
-                SWAG_CHECK(outputFuncSignature(context, concat, node, nullptr, node->parameters, node->selectIf));
+                SWAG_CHECK(outputFuncSignature(context, concat, node, nullptr, node->parameters, node->validif));
         }
     }
 

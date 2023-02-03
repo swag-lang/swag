@@ -112,7 +112,7 @@ struct SyntaxJob : public Job
     bool doCompilerError(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerWarning(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerAst(AstNode* parent, AstNode** result);
-    bool doCompilerSelectIf(AstNode* parent, AstNode** result = nullptr);
+    bool doCompilerValidIf(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerRunTopLevel(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerRunEmbedded(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerForeignLib(AstNode* parent, AstNode** result);

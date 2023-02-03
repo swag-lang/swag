@@ -310,9 +310,9 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveCompilerSelectIfExpression(SemanticContext* context)
+bool SemanticJob::resolveCompilerValidIfExpression(SemanticContext* context)
 {
-    auto node = CastAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerSelectIf, AstNodeKind::CompilerSelectIfx);
+    auto node = CastAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerValidIf, AstNodeKind::CompilerValidIfx);
     if (node->flags & AST_IS_GENERIC)
         return true;
 
@@ -801,7 +801,7 @@ bool SemanticJob::resolveIntrinsicLocation(SemanticContext* context)
     auto locNode   = node->childs.front();
     node->typeInfo = TypeManager::makeConst(g_Workspace->swagScope.regTypeInfoSourceLoc);
 
-    if (locNode->isSelectIfParam(locNode->resolvedSymbolOverload))
+    if (locNode->isValidIfParam(locNode->resolvedSymbolOverload))
     {
         node->flags &= ~AST_NO_BYTECODE;
         locNode->flags |= AST_NO_BYTECODE;
@@ -809,7 +809,7 @@ bool SemanticJob::resolveIntrinsicLocation(SemanticContext* context)
         return true;
     }
 
-    // :ForLocationInSelectIf
+    // :ForLocationInValidIf
     if (locNode->flags & AST_FROM_GENERIC_REPLACE)
     {
         SWAG_ASSERT(locNode->kind == AstNodeKind::IdentifierRef);

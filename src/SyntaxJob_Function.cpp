@@ -593,15 +593,15 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
             funcNode->flags |= AST_GENERATED;
             funcNode->attributeFlags |= ATTRIBUTE_AST_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC;
             break;
-        case TokenId::CompilerSelectIf:
-            funcNode->token.text = "__selectif" + to_string(id);
+        case TokenId::CompilerValidIf:
+            funcNode->token.text = "__validif" + to_string(id);
             funcNode->flags |= AST_GENERATED;
-            funcNode->attributeFlags |= ATTRIBUTE_MATCH_SELECTIF_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC;
+            funcNode->attributeFlags |= ATTRIBUTE_MATCH_VALIDIF_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC;
             break;
-        case TokenId::CompilerSelectIfx:
-            funcNode->token.text = "__selectifx" + to_string(id);
+        case TokenId::CompilerValidIfx:
+            funcNode->token.text = "__validifx" + to_string(id);
             funcNode->flags |= AST_GENERATED;
-            funcNode->attributeFlags |= ATTRIBUTE_MATCH_SELECTIFX_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC;
+            funcNode->attributeFlags |= ATTRIBUTE_MATCH_VALIDIFX_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC;
             break;
         }
     }
@@ -716,7 +716,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         auto      typeExpression        = Ast::newTypeExpression(sourceFile, typeNode, this);
         typeExpression->typeFromLiteral = g_TypeMgr->typeInfoString;
     }
-    else if (typeFuncId == TokenId::CompilerSelectIf || typeFuncId == TokenId::CompilerSelectIfx)
+    else if (typeFuncId == TokenId::CompilerValidIf || typeFuncId == TokenId::CompilerValidIfx)
     {
         typeNode->specFlags |= AST_SPEC_FUNCTYPE_RETURN_DEFINED;
         Scoped    scoped(this, newScope);
@@ -727,12 +727,12 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
 
     funcNode->typeInfo->computeName();
 
-    // '#selectif' block
-    if (token.id == TokenId::CompilerSelectIf || token.id == TokenId::CompilerSelectIfx)
+    // '#validif' block
+    if (token.id == TokenId::CompilerValidIf || token.id == TokenId::CompilerValidIfx)
     {
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
-        SWAG_CHECK(doCompilerSelectIf(funcNode, &funcNode->selectIf));
+        SWAG_CHECK(doCompilerValidIf(funcNode, &funcNode->validif));
     }
 
     // If we have now a semi colon, then this is an empty function, like a forward decl in c++
