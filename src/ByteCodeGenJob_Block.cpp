@@ -259,10 +259,20 @@ bool ByteCodeGenJob::emitInline(ByteCodeGenContext* context)
         }
         else
         {
-            // Transfert registers to release to the parent scope owner
-            node->ownerScope->owner->allocateExtension(ExtensionKind::AdditionalRegs);
-            for (auto r : node->extension->misc->registersToRelease)
-                node->ownerScope->owner->extension->misc->registersToRelease.push_back(r);
+            // Happens when the mixin is in a constexpr expression, inside a scope which is the real non constexpr code.
+            // In that case we need to release our registers, because it's a compile time execution done.
+            if ((node->parent->flags & AST_CONST_EXPR) != (node->ownerScope->owner->flags & AST_CONST_EXPR))
+            {
+                for (auto r : node->extension->misc->registersToRelease)
+                    freeRegisterRC(context, r);
+            }
+            else
+            {
+                // Transfert registers to release to the parent scope owner
+                node->ownerScope->owner->allocateExtension(ExtensionKind::AdditionalRegs);
+                for (auto r : node->extension->misc->registersToRelease)
+                    node->ownerScope->owner->extension->misc->registersToRelease.push_back(r);
+            }
         }
 
         node->extension->misc->registersToRelease.clear();
