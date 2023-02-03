@@ -191,6 +191,7 @@ struct Diagnostic
     LogColor          warningColor;
     LogColor          noteColor;
     LogColor          stackColor;
+    LogColor          autoRemarkColor;
     LogColor          remarkColor;
     LogColor          nativeCallStackColor;
     LogColor          sourceFileColor;
@@ -201,6 +202,7 @@ struct Diagnostic
 
     Utf8            textMsg;
     vector<Utf8>    remarks;
+    vector<Utf8>    autoRemarks;
     Utf8            noteHeader;
     DiagnosticLevel errorLevel;
 

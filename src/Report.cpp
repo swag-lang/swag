@@ -44,8 +44,6 @@ namespace Report
 
     void cleanNotes(vector<Diagnostic*>& notes)
     {
-        bool genReplaceDone = false;
-
         for (auto note : notes)
         {
             if (!note->display)
@@ -56,44 +54,32 @@ namespace Report
             // This is a generic instance. Display type replacements.
             if (genCheckNode &&
                 genCheckNode->ownerFct &&
-                genCheckNode->ownerFct->typeInfo &&
-                !genReplaceDone)
+                genCheckNode->ownerFct->typeInfo)
             {
                 auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(genCheckNode->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
                 auto remarks  = Ast::computeGenericParametersReplacement(typeFunc->replaceTypes);
                 if (!remarks.empty())
-                {
-                    genReplaceDone = true;
-                    note->remarks.insert(note->remarks.end(), remarks.begin(), remarks.end());
-                }
+                    note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
             }
 
             if (genCheckNode &&
                 genCheckNode->ownerStructScope &&
-                genCheckNode->ownerStructScope->owner->typeInfo &&
-                !genReplaceDone)
+                genCheckNode->ownerStructScope->owner->typeInfo)
             {
                 auto typeStruct = CastTypeInfo<TypeInfoStruct>(genCheckNode->ownerStructScope->owner->typeInfo, TypeInfoKind::Struct);
                 auto remarks    = Ast::computeGenericParametersReplacement(typeStruct->replaceTypes);
                 if (!remarks.empty())
-                {
-                    genReplaceDone = true;
-                    note->remarks.insert(note->remarks.end(), remarks.begin(), remarks.end());
-                }
+                    note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
             }
 
             if (genCheckNode &&
                 genCheckNode->typeInfo &&
-                genCheckNode->typeInfo->kind == TypeInfoKind::Struct &&
-                !genReplaceDone)
+                genCheckNode->typeInfo->kind == TypeInfoKind::Struct)
             {
                 auto typeStruct = CastTypeInfo<TypeInfoStruct>(genCheckNode->typeInfo, TypeInfoKind::Struct);
                 auto remarks    = Ast::computeGenericParametersReplacement(typeStruct->replaceTypes);
                 if (!remarks.empty())
-                {
-                    genReplaceDone = true;
-                    note->remarks.insert(note->remarks.end(), remarks.begin(), remarks.end());
-                }
+                    note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
             }
 
             // Transform a note/help in a hint
