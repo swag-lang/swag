@@ -798,7 +798,7 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
                 auto contextualNode = identifier->identifierRef->previousResolvedNode;
                 if (contextualNode)
                 {
-                    Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0041), node->token.ctext())};
+                    Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0715), node->token.ctext())};
                     diag.hint = Hnt(Hnt0057);
                     diag.addRange(contextualNode, Hnt(Hnt0056));
                     return context->report(diag);

@@ -2268,7 +2268,10 @@ bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericM
             }
         }
 
-        // The new struct is no more generic without generic parameters. So we add a normal generic match for later (?)
+        // The new struct is no more generic without generic parameters.
+        // It happens each time we reference a generic struct without generic parameters, like impl 'Array', @typeof(Array), self* Array or even
+        // a variable type (in that case we will try later to instantiate it with default generic parameters).
+        // So we match a generic struct as a normal match without instantiation (for now).
         else if (!(node->flags & AST_IS_GENERIC))
         {
             auto oneMatch            = job->getOneMatch();
