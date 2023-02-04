@@ -306,7 +306,13 @@ static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParamet
                 symbolTypeInfos.push_back(symbolSlice->pointedType);
                 typeInfos.push_back(typeArray->pointedType);
             }
-            else if (!callTypeInfo->isListArray())
+            else if (callTypeInfo->isListArray())
+            {
+                auto typeArray = CastTypeInfo<TypeInfoList>(callTypeInfo, TypeInfoKind::TypeListArray);
+                symbolTypeInfos.push_back(symbolSlice->pointedType);
+                typeInfos.push_back(typeArray->subTypes[0]->typeInfo);
+            }
+            else
             {
                 symbolTypeInfos.push_back(symbolSlice->pointedType);
                 typeInfos.push_back(callTypeInfo);
