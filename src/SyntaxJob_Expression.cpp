@@ -170,7 +170,7 @@ bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
              node->token.id == TokenId::IntrinsicSizeOf ||
              node->token.id == TokenId::IntrinsicMakeType)
     {
-        SWAG_CHECK(doExpression(node, EXPR_FLAG_SINGLE_PARENTHESIS));
+        SWAG_CHECK(doExpression(node, EXPR_FLAG_TYPEOF));
     }
     else
     {
@@ -410,11 +410,11 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
         }
 
         // We can differentiate between a literal array and a type array by looking at what's next
-        else if (exprFlags & EXPR_FLAG_SINGLE_PARENTHESIS)
+        else if (exprFlags & (EXPR_FLAG_TYPEOF | EXPR_FLAG_PARAMETER))
         {
             tokenizer.saveState(token);
             SWAG_CHECK(doExpressionListArray(parent, result));
-            if (token.id != TokenId::SymRightParen)
+            if (token.id != TokenId::SymRightParen && token.id != TokenId::SymRightCurly && token.id != TokenId::SymComma)
             {
                 tokenizer.restoreState(token);
                 Ast::removeFromParent(parent->childs.back());
@@ -433,7 +433,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
         if (exprFlags & EXPR_FLAG_SIMPLE)
             return invalidTokenError(InvalidTokenError::PrimaryExpression);
 
-        if (exprFlags & (EXPR_FLAG_ALIAS | EXPR_FLAG_SINGLE_PARENTHESIS))
+        if (exprFlags & (EXPR_FLAG_ALIAS | EXPR_FLAG_TYPEOF))
         {
             PushSyntaxContextFlags cf(this, CONTEXT_FLAG_EXPRESSION);
             SWAG_CHECK(doTypeExpression(parent, result));

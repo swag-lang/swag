@@ -128,7 +128,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result
             AstNode* paramExpression;
 
             inFunCall = true;
-            SWAG_CHECK(doExpression(param, EXPR_FLAG_NONE, &paramExpression));
+            SWAG_CHECK(doExpression(param, EXPR_FLAG_PARAMETER, &paramExpression));
             Ast::removeFromParent(paramExpression);
             inFunCall = false;
 
@@ -140,7 +140,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result
                 param->allocateExtension(ExtensionKind::IsNamed);
                 param->extension->misc->isNamed = paramExpression->childs.front();
                 SWAG_CHECK(eatToken());
-                SWAG_CHECK(doExpression(param, EXPR_FLAG_NONE));
+                SWAG_CHECK(doExpression(param, EXPR_FLAG_PARAMETER));
             }
             else
             {
