@@ -544,6 +544,8 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
 {
     SymbolName* symbol = nullptr;
     SWAG_CHECK(waitUserOp(context, name, left, &symbol));
+    if (context->result != ContextResult::Done)
+        return true;
 
     bool justCheck = ropFlags & ROP_JUST_CHECK;
     auto leftType  = TypeManager::concretePtrRefType(left->typeInfo);
@@ -572,9 +574,6 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
             return context->report(diag, note);
         }
     }
-
-    if (context->result != ContextResult::Done)
-        return true;
 
     auto node       = context->node;
     auto job        = context->job;
@@ -610,6 +609,19 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
         parameters.kind   = AstNodeKind::FuncDeclParams;
         genericParameters = &parameters;
         Ast::addChildBack(&parameters, &literal);
+    }
+
+    if (leftType->isGeneric())
+    {
+        PushErrContext ec(context,
+                          left->parent,
+                          ErrorContextKind::Note,
+                          Fmt(Nte(Nte0051), name.c_str(), leftType->getDisplayNameC()),
+                          "",
+                          true);
+        Diagnostic     diag(left, Fmt(Err(Err0715), name.c_str()));
+        diag.hint = Hnt(Hnt0056);
+        return context->report(diag);
     }
 
     auto& listTryMatch = job->cacheListTryMatch;
