@@ -494,7 +494,7 @@ void initErrors()
     SWAG_ERROR(Err0908, "cannot initialize a type '%s' from a type '%s' because no corresponding 'opAffect' can be found");
     SWAG_ERROR(Err0889, "cannot initialize a type '%s' with '%s' because no corresponding 'opAffectSuffix' function can be found in '%s'");
     SWAG_ERROR(Err0680, "cannot initialize an interface member");
-    SWAG_ERROR(Err0808, "cannot instantiate generic %s '%s' with an unsized value");
+    SWAG_ERROR(Err0808, "cannot instantiate the generic %s '%s' with an unsized value");
     SWAG_ERROR(Err0042, "cannot instantiate the generic function '%s' because of missing contextual types replacements");
     SWAG_ERROR(Err0041, nullptr);
     SWAG_ERROR(Err0715, "cannot instantiate the generic function '%s' because of missing generic arguments");

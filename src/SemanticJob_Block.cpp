@@ -882,7 +882,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
 
     SyntaxJob syntaxJob;
     syntaxJob.module = context->sourceFile->module;
-    syntaxJob.constructEmbedded(content, node, node, CompilerAstKind::EmbeddedInstruction, false);
+    SWAG_CHECK(syntaxJob.constructEmbedded(content, node, node, CompilerAstKind::EmbeddedInstruction, false));
     newExpression = node->childs.back();
     if (newVar)
     {

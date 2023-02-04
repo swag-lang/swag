@@ -364,7 +364,7 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
 
         SyntaxJob syntaxJob;
         syntaxJob.module = context->sourceFile->module;
-        syntaxJob.constructEmbedded(expression->computedValue->text, node, expression, kind, true);
+        SWAG_CHECK(syntaxJob.constructEmbedded(expression->computedValue->text, node, expression, kind, true));
 
         job->nodes.pop_back();
         for (int i = (int) node->childs.size() - 1; i >= 0; i--)

@@ -74,27 +74,37 @@ bool Generic::updateGenericParameters(SemanticContext*              context,
             {
                 auto symbol  = match.symbolName;
                 auto errNode = context->node;
-                Utf8 hint;
 
+                TypeInfo* errType = nullptr;
                 for (auto& v : match.genericReplaceTypesFrom)
                 {
-                    if (v.second->typeInfo->isUntypedInteger())
+                    if (v.second->typeInfo->isUntypedInteger() || v.second->typeInfo->isUntypedFloat())
                     {
-                        hint    = Hnt(Hnt0052);
+                        errType = v.second->typeInfo;
                         errNode = v.second;
                         break;
                     }
 
-                    if (v.second->typeInfo->isUntypedFloat())
+                    if (v.second->typeInfo->isListArray())
                     {
-                        hint    = Hnt(Hnt0051);
-                        errNode = v.second;
-                        break;
+                        auto listArr = CastTypeInfo<TypeInfoList>(v.second->typeInfo, TypeInfoKind::TypeListArray);
+                        if (listArr->subTypes[0]->typeInfo->isUntypedInteger() || listArr->subTypes[0]->typeInfo->isUntypedFloat())
+                        {
+                            errType = v.second->typeInfo = listArr->subTypes[0]->typeInfo;
+                            if (v.second->kind == AstNodeKind::FuncCallParam)
+                                errNode = v.second->childs.front()->childs.front();
+                            else
+                                errNode = v.second->childs.front();
+                            break;
+                        }
                     }
                 }
 
-                Diagnostic diag{errNode, Utf8::format(Err(Err0808), Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
-                diag.hint = hint;
+                Diagnostic diag{errNode, errNode->token, Utf8::format(Err(Err0808), Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
+                if (errType && errType->isUntypedInteger())
+                    diag.hint = Hnt(Hnt0052);
+                else if (errType && errType->isUntypedFloat())
+                    diag.hint = Hnt(Hnt0052);
                 return context->report(diag);
             }
         }
