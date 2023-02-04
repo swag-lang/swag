@@ -11,7 +11,7 @@ public struct Md5
 
 public impl Md5
 {
-    alias Digest = #type [16] u8
+    alias Digest = [16] u8
 
     // Finalize the computation
     mtd final(digest: Digest)

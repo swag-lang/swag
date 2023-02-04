@@ -1,7 +1,7 @@
 //
 //#global testerror
 
-alias A = #type [2] s32
+alias A = [2] s32
 var x: A = [5, 10]
 
 #test
@@ -9,7 +9,7 @@ var x: A = [5, 10]
     alias p = x
     @assert(@countof(p) == 2)
 
-    alias tt = #type [..] s32
+    alias tt = [..] s32
     alias tt1 = const *s32
 
     var v1: tt = @mkslice(&x[0], 2)

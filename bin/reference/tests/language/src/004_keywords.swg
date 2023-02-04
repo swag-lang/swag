@@ -53,6 +53,7 @@ false
 true
 null
 undefined
+retval
 
 const
 var
@@ -74,7 +75,6 @@ impl
 private
 public
 interface
-retval
 using
 alias
 discard

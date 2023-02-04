@@ -22,7 +22,7 @@ func ref1()->CB
     }
 }
 
-alias CB = #type closure()
+alias CB = closure()
 
 #test
 {

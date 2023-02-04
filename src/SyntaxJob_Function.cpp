@@ -52,8 +52,21 @@ bool SyntaxJob::doGenericFuncCallParameters(AstNode* parent, AstNode** result)
             break;
 
         case TokenId::SymLeftSquare:
+        {
+            // This is ambiguous. Can be a literal array or an array type.
+            // If parameters are inside parenthesis, then this means that we can differentiate between the 2 cases
+            // without the need of #type, as what follows a literal should be another parameter (,) or the closing parenthesis.
+            // And this is a good idea to write Arr'([2] s32) instead of Arr'[2] s32 anyway. So this should remove some ambiguities.
+            tokenizer.saveState(token);
             SWAG_CHECK(doExpressionListArray(param));
+            if (multi && token.id != TokenId::SymComma && token.id != TokenId::SymRightParen)
+            {
+                tokenizer.restoreState(token);
+                Ast::removeFromParent(param->childs.back());
+                SWAG_CHECK(doTypeExpression(param));
+            }
             break;
+        }
 
         case TokenId::CompilerType:
         {

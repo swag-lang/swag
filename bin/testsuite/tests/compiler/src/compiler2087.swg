@@ -1,6 +1,6 @@
 struct(T) BB
 {
-    alias TYPE = #type [4] T
+    alias TYPE = [4] T
     //alias y = {T, T}
 }
 
