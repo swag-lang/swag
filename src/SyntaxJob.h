@@ -54,11 +54,11 @@ static const uint32_t IDENTIFIER_ACCEPT_QUESTION = 0x00000008;
 static const uint32_t IDENTIFIER_NO_ARRAY        = 0x00000010;
 static const uint32_t IDENTIFIER_NO_PARAMS       = IDENTIFIER_NO_FCT_PARAMS | IDENTIFIER_NO_GEN_PARAMS | IDENTIFIER_NO_ARRAY;
 
-static const uint32_t EXPR_FLAG_NONE        = 0x00000000;
-static const uint32_t EXPR_FLAG_SIMPLE      = 0x00000001;
-static const uint32_t EXPR_FLAG_ALIAS       = 0x00000002;
-static const uint32_t EXPR_FLAG_TYPEOF      = 0x00000004;
-static const uint32_t EXPR_FLAG_STOP_AFFECT = 0x00000008;
+static const uint32_t EXPR_FLAG_NONE               = 0x00000000;
+static const uint32_t EXPR_FLAG_SIMPLE             = 0x00000001;
+static const uint32_t EXPR_FLAG_ALIAS              = 0x00000002;
+static const uint32_t EXPR_FLAG_SINGLE_PARENTHESIS = 0x00000004;
+static const uint32_t EXPR_FLAG_STOP_AFFECT        = 0x00000008;
 
 static const uint32_t CONTEXT_FLAG_EXPRESSION              = 0x00000001;
 static const uint32_t CONTEXT_FLAG_VARDECL_TYPE_EXPRESSION = 0x00000002;
