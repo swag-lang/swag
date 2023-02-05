@@ -1314,7 +1314,12 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             return context->report(diag, Diagnostic::hereIs(overload));
         }
 
-        identifier->flags |= AST_L_VALUE | AST_R_VALUE;
+        if (identifier->callParameters)
+            identifier->flags |= AST_L_VALUE | AST_R_VALUE;
+        else if (identifier->parent->parent->kind == AstNodeKind::MakePointerLambda)
+            identifier->flags |= AST_L_VALUE | AST_R_VALUE;
+        else if (identifier->parent->parent->kind == AstNodeKind::MakePointer)
+            identifier->flags |= AST_L_VALUE | AST_R_VALUE;
 
         // Need to make all types compatible, in case a cast is necessary
         if (!identifier->ownerFct || !(identifier->ownerFct->flags & AST_IS_GENERIC))
