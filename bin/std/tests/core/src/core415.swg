@@ -7,5 +7,6 @@ using Core
     a.add(String.from("b"))
 
     b := a
-    //@assert(b.contains(String.from("a")))
+    @assert(b.contains(String.from("a")))
+    @assert(b.contains(String.from("b")))
 }

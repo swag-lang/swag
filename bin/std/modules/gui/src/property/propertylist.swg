@@ -145,7 +145,7 @@ private impl PropertyList
             visit v: typeEnum.values
             {
                 itemB := items.addNewPtr()
-                itemB.typeValue = dref v
+                itemB.typeValue = v
                 itemB.ptrData = ptrData
 
                 dispDesc := Reflection.getAttributeValue(v, PropertyList.Description, "desc")

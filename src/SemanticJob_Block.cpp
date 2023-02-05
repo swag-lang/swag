@@ -701,15 +701,23 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         content += Fmt("loop %u { ", typeArray->totalCount);
         if (node->specFlags & AST_SPEC_VISIT_WANTPOINTER)
         {
-            content += Fmt("var %s = __addr%u + @index; ", alias0Name.c_str(), id);
+            content += "var ";
+            content += alias0Name;
+            content += Fmt(" = __addr%u + @index; ", id);
         }
         else if (pointedType->isStruct())
         {
-            pointedType->computeScopedName();
-            content += Fmt("var %s = cast(const *%s) __addr%u[@index]; ", alias0Name.c_str(), pointedType->scopedName.c_str(), id);
+            content += "var ";
+            content += alias0Name;
+            content += Fmt(" = ref &__addr%u[@index]; ", id);
         }
         else
-            content += Fmt("var %s = __addr%u[@index]; ", alias0Name.c_str(), id);
+        {
+            content += "var ";
+            content += alias0Name;
+            content += Fmt(" = __addr%u[@index]; ", id);
+        }
+
         content += "var ";
         content += alias1Name;
         content += " = @index;}}";
@@ -737,10 +745,9 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         }
         else if (pointedType->isStruct())
         {
-            pointedType->computeScopedName();
             content += "var ";
             content += alias0Name;
-            content += Fmt(" = cast(const *%s) __addr%u[@index]; ", pointedType->scopedName.c_str(), id);
+            content += Fmt(" = ref &__addr%u[@index]; ", id);
         }
         else
         {
@@ -776,10 +783,9 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         }
         else if (pointedType->isStruct())
         {
-            pointedType->computeScopedName();
             content += "var ";
             content += alias0Name;
-            content += Fmt(" = cast(const *%s) __addr%u[@index]; ", pointedType->scopedName.c_str(), id);
+            content += Fmt(" = ref &__addr%u[@index]; ", id);
         }
         else
         {

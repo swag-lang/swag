@@ -181,7 +181,7 @@ impl Decoder
                 if Reflection.hasAttribute(field.pointedType, NoSerialize)
                     continue
 
-                if !itf or !itf.readElement(dref field, cast(^u8) data + field.offset, idecoder)
+                if !itf or !itf.readElement(field, cast(^u8) data + field.offset, idecoder)
                 {
                     doIt := catch serializer.beginElement(field)
                     defer serializer.endElement()
