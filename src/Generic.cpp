@@ -563,6 +563,8 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
         }
     }
 
+    // If we instantiate with a tuple list (literal), then we must convert that to a proper struct decl and make
+    // a reference to it.
     auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(match.symbolOverload->node->typeInfo, TypeInfoKind::FuncAttr);
     for (auto& v : match.genericReplaceTypes)
     {
@@ -574,11 +576,22 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
             {
                 if (p->typeInfo == tpt)
                 {
-                    PushErrContext ec(context, typeFunc->declNode, ErrorContextKind::HereIs);
-                    auto           typeDest = CastTypeInfo<TypeInfoStruct>(match.solvedParameters[idx]->typeInfo, TypeInfoKind::Struct);
-                    SWAG_CHECK(TypeManager::convertLiteralTupleToStructType(context, typeDest, p));
-                    SWAG_ASSERT(context->result != ContextResult::Done);
-                    return true;
+                    if (match.solvedParameters[idx]->typeInfo->kind != TypeInfoKind::Generic)
+                    {
+                        PushErrContext ec(context, typeFunc->declNode, ErrorContextKind::HereIs);
+                        auto           typeDest = CastTypeInfo<TypeInfoStruct>(match.solvedParameters[idx]->typeInfo, TypeInfoKind::Struct);
+                        SWAG_CHECK(TypeManager::convertLiteralTupleToStructType(context, typeDest, p));
+                        SWAG_ASSERT(context->result != ContextResult::Done);
+                        return true;
+                    }
+                    else
+                    {
+                        PushErrContext ec(context, typeFunc->declNode, ErrorContextKind::HereIs);
+                        auto           typeDest = TypeManager::convertTypeListToStruct(context, tpt, true);
+                        SWAG_CHECK(TypeManager::convertLiteralTupleToStructType(context, typeDest, p));
+                        SWAG_ASSERT(context->result != ContextResult::Done);
+                        return true;
+                    }
                 }
 
                 idx++;
