@@ -264,6 +264,7 @@ struct TypeInfo
     bool isConst()                          { return (flags & TYPEINFO_CONST); }
     bool isStrict()                         { return (flags & TYPEINFO_STRICT); }
     bool isGeneric()                        { return (flags & TYPEINFO_GENERIC); }
+    bool isFromGeneric()                    { return (flags & TYPEINFO_FROM_GENERIC); }
     bool isTuple()                          { return (flags & TYPEINFO_STRUCT_IS_TUPLE); }
     bool isPointerRef()                     { return (flags & TYPEINFO_POINTER_REF); }
     bool isConstPointerRef()                { return (flags & TYPEINFO_POINTER_REF) && (flags & TYPEINFO_CONST); }

@@ -2715,7 +2715,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
         auto startScope = identifierRef->startScope;
         if (!startScope || oneTry == 1)
         {
-            uint32_t collectFlags  = COLLECT_ALL;
+            uint32_t collectFlags = COLLECT_ALL;
             auto     scopeUpMode  = node->scopeUpMode;
             auto     scopeUpValue = node->scopeUpValue;
 
@@ -3873,6 +3873,23 @@ bool SemanticJob::solveValidIf(SemanticContext* context, OneMatch* oneMatch, Ast
         job->module       = context->sourceFile->module;
         job->dependentJob = context->job->dependentJob;
         job->nodes.push_back(funcDecl->content);
+        job->context.errorContextStack.insert(job->context.errorContextStack.begin(),
+                                              context->job->context.errorContextStack.begin(),
+                                              context->job->context.errorContextStack.end());
+
+        // This comes from a generic instantiation. Add context
+        if (oneMatch->oneOverload->overload->typeInfo->isFromGeneric())
+        {
+            ErrorContext expNode;
+
+            auto typeFunc        = CastTypeInfo<TypeInfoFuncAttr>(oneMatch->oneOverload->overload->typeInfo, TypeInfoKind::FuncAttr);
+            expNode.node         = context->node;
+            expNode.replaceTypes = typeFunc->replaceTypes;
+            if (expNode.node->extension && expNode.node->extension->misc && expNode.node->extension->misc->exportNode)
+                expNode.node = expNode.node->extension->misc->exportNode;
+            expNode.type = ErrorContextKind::Generic;
+            job->context.errorContextStack.push_back(expNode);
+        }
 
         // To avoid a race condition with the job that is currently dealing with the funcDecl,
         // we will reevaluate it with a semanticAfterFct trick
@@ -4452,7 +4469,7 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext*             
                                                    VectorNative<AlternativeScopeVar>& scopesVars,
                                                    AstNode*                           startNode,
                                                    uint32_t                           flags,
-                                                   IdentifierScopeUpMode             scopeUpMode,
+                                                   IdentifierScopeUpMode              scopeUpMode,
                                                    Token*                             scopeUpValue)
 {
     // Add registered alternative scopes of the current node
@@ -4572,7 +4589,7 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext*                   conte
                                         VectorNative<AlternativeScopeVar>& scopesVars,
                                         AstNode*                           startNode,
                                         uint32_t                           flags,
-                                        IdentifierScopeUpMode             scopeUpMode,
+                                        IdentifierScopeUpMode              scopeUpMode,
                                         Token*                             scopeUpValue)
 {
     auto  job        = context->job;
