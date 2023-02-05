@@ -1,7 +1,7 @@
 #global namespace Jpg
 using Swag, Core
 
-scopefile {
+#scopefile {
 
 const InBufSize         = 4096
 const MaxHeight         = 8192

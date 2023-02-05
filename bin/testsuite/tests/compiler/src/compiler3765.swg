@@ -1,4 +1,4 @@
-scopefile {
+#scopefile {
 
 var x = 0
 

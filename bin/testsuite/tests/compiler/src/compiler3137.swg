@@ -1,11 +1,11 @@
 #test
 {
     x := 0
-    scope A
+    #scope A
     {
         loop 10
         {
-            scope A
+            #scope A
             {
                 loop 10
                 {

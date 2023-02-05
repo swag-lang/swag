@@ -3,7 +3,7 @@
 #test
 {
     i := 0
-    scope Scope
+    #scope Scope
     {
         if i == 2
             return

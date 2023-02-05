@@ -3,13 +3,13 @@
 #test
 {
 	error := false
-    scope outer
+    #scope Outer
     loop x: 10
     {
-        scope outer
+        #scope Outer
         loop 20
         {
-            break outer
+            break Outer
         }
 
 		error = true

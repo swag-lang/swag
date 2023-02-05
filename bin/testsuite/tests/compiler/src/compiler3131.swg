@@ -1,7 +1,7 @@
 #test
 {
     a := 0
-    scope
+    #scope
     {
         a += 1
         if a == 2

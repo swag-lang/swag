@@ -100,7 +100,7 @@ struct SyntaxJob : public Job
     static void forceTakeAddress(AstNode* node);
 
     bool doTupleOrAnonymousType(AstNode* parent, AstNode** result, bool isConst, bool anonymousStruct, bool anonymousUnion);
-    bool doScopeBreakable(AstNode* parent, AstNode** result = nullptr);
+    bool doCompilerScopeBreakable(AstNode* parent, AstNode** result = nullptr);
     bool doGenericFuncCallParameters(AstNode* parent, AstNode** result = nullptr);
     bool doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, TokenId closeToken);
     bool doIntrinsicTag(AstNode* parent, AstNode** result = nullptr);
@@ -192,7 +192,7 @@ struct SyntaxJob : public Job
     bool doReturn(AstNode* parent, AstNode** result = nullptr);
     bool doLambdaExpression(AstNode* parent, AstNode** result = nullptr);
     bool doWith(AstNode* parent, AstNode** result = nullptr);
-    bool doScopeFile(AstNode* parent, AstNode** result = nullptr);
+    bool doCompilerScopeFile(AstNode* parent, AstNode** result = nullptr);
     bool doUsing(AstNode* parent, AstNode** result = nullptr);
     bool doCast(AstNode* parent, AstNode** result = nullptr);
     bool doAutoCast(AstNode* parent, AstNode** result = nullptr);

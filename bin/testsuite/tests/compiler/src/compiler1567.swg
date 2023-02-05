@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    scope
+    #scope
     {
     }
 }

@@ -142,8 +142,6 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("case", State.Control)
         mapWords.add("continue", State.Control)
         mapWords.add("default", State.Control)
-        mapWords.add("scope", State.Control)
-        mapWords.add("scopefile", State.Control)
         mapWords.add("and", State.Control)
         mapWords.add("or", State.Control)
         mapWords.add("orelse", State.Control)
@@ -321,6 +319,8 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("#elif", State.CompilerStatement)
         mapWords.add("#validif", State.CompilerStatement)
         mapWords.add("#validifx", State.CompilerStatement)
+        mapWords.add("#scope", State.CompilerStatement)
+        mapWords.add("#scopefile", State.CompilerStatement)
 
         mapWords.add("#cfg", State.Compiler)
         mapWords.add("#arch", State.Compiler)

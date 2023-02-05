@@ -99,7 +99,7 @@
       "patterns": [
         {
           "name": "keyword.control",
-          "match": "\\b(if|else|elif|for|while|switch|defer|loop|visit|break|fallthrough|return|case|continue|default|scope|and|or|orelse)\\b"
+          "match": "\\b(if|else|elif|for|while|switch|defer|loop|visit|break|fallthrough|return|case|continue|default|and|or|orelse)\\b"
         }
       ]
     },
@@ -107,7 +107,7 @@
       "patterns": [
         {
           "name": "keyword.declaration",
-          "match": "\\b(enum|struct|union|impl|interface|func|closure|mtd|mtdc|namespace|scopefile|alias|attr)\\b"
+          "match": "\\b(enum|struct|union|impl|interface|func|closure|mtd|mtdc|namespace|alias|attr)\\b"
         }
       ]
     },
@@ -192,7 +192,7 @@
       "patterns": [
         {
           "name": "meta.preprocessor",
-          "match": "(#)(global|load|assert|error|warning|print|import|include|mixin|macro|inline|placeholder|foreignlib|if|else|elif|validif|validifx)\\b"
+          "match": "(#)(global|load|assert|error|warning|print|import|include|mixin|macro|inline|placeholder|foreignlib|if|else|elif|validif|validifx|scope|scopefile)\\b"
         }
       ]
     },

@@ -148,7 +148,7 @@ impl MutexRW
 // LIBC
 ////////////////////////////////////////////////////////////
 
-scopefile
+#scopefile
 {
     func sinf(val: f32)->f32;
     func cosf(val: f32)->f32;

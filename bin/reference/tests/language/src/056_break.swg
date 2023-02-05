@@ -30,7 +30,7 @@
     // But you can name a scope with the 'scope' keyword, and exit to the end of it with a 'break'
     {
         cpt := 0
-        scope BigScope
+        #scope BigScope
         {
             loop 10
             {
@@ -49,7 +49,7 @@
     // to the start of the scope
     {
         cpt := 0
-        scope Loop
+        #scope Loop
         {
             cpt += 1
             if cpt == 5
@@ -64,7 +64,7 @@
     // as an alternative of a bunch of if/else
     {
         cpt := 0
-        scope
+        #scope
         {
             if cpt == 1
             {
@@ -88,7 +88,7 @@
 
     // Note that a scope can be followed by a simple statement, not always a block
     {
-        scope Up loop 10
+        #scope Up loop 10
         {
             loop 10
             {

@@ -5,7 +5,7 @@
 #global namespace Gif
 using Swag, Core
 
-scopefile {
+#scopefile {
 
 struct Entry
 {

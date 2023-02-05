@@ -47,7 +47,6 @@ while
 visit
 return
 defer
-scope
 
 false
 true
@@ -120,6 +119,8 @@ Compiler keywords.
 #validifx
 #validif
 #warning
+#scope
+#scopefile
 
 #ast
 #drop

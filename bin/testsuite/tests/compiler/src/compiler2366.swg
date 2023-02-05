@@ -1,7 +1,7 @@
 #test
 {
     cpt := 0
-    scope down
+    #scope down
     {
         cpt += 1
         if cpt == 5

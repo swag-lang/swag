@@ -2010,7 +2010,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         break;
 
     case AstNodeKind::ScopeBreakable:
-        CONCAT_FIXED_STR(concat, "scope ");
+        CONCAT_FIXED_STR(concat, "#scope ");
         concat.addString(node->token.text);
         concat.addEolIndent(context.indent);
         SWAG_CHECK(outputNode(context, concat, node->childs[0]));

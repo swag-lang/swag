@@ -713,12 +713,12 @@ func visitRunes(buffer: const [..] u8, stmt: code)
 
         #macro
         {
-            scope inside
+            #scope Inside
             {
                 @alias0 := `c
                 @alias1 := `charIdx
                 @alias2 := `byteIdx
-                #mixin `stmt { continue=break inside; }
+                #mixin `stmt { continue=break Inside; }
             }
         }
 

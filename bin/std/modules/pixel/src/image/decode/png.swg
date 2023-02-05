@@ -8,7 +8,7 @@
 #global namespace Png
 using Swag, Core
 
-scopefile {
+#scopefile {
 
 enum ChunkType: u32
 {

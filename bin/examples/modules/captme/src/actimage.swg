@@ -254,7 +254,7 @@ impl MainWnd
             }
         }
 
-        scope Left loop x: capture.backImg.width
+        #scope Left loop x: capture.backImg.width
         {
             if x + capture.backImagePos.x < 0
                 continue
@@ -269,7 +269,7 @@ impl MainWnd
             }
         }
 
-        scope Right loop x: capture.backImg.width-1..0
+        #scope Right loop x: capture.backImg.width-1..0
         {
             if x + capture.backImagePos.x >= capture.width
                 continue
@@ -284,7 +284,7 @@ impl MainWnd
             }
         }
 
-        scope Up loop y: capture.backImg.height
+        #scope Up loop y: capture.backImg.height
         {
             if y + capture.backImagePos.y < 0
                 continue
@@ -299,7 +299,7 @@ impl MainWnd
             }
         }
 
-        scope Down loop y: capture.backImg.height-1..0
+        #scope Down loop y: capture.backImg.height-1..0
         {
             if y + capture.backImagePos.y >= capture.height
                 continue

@@ -66,12 +66,12 @@ impl HashTable
             return
 
         remain := count
-        scope Up loop capacity
+        #scope Up loop capacity
         {
             if table[@index].hash < HASH_FIRST
                 continue
 
-            scope Down
+            #scope Down
             #macro
             {
                 #if `ptr

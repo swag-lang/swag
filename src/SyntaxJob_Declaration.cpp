@@ -79,7 +79,7 @@ bool SyntaxJob::doWith(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doScopeFile(AstNode* parent, AstNode** result)
+bool SyntaxJob::doCompilerScopeFile(AstNode* parent, AstNode** result)
 {
     Token privName = token;
     SWAG_CHECK(eatToken());
@@ -498,7 +498,7 @@ void SyntaxJob::registerSubDecl(AstNode* subDecl)
     Ast::addChildBack(newParent, subDecl);
 }
 
-bool SyntaxJob::doScopeBreakable(AstNode* parent, AstNode** result)
+bool SyntaxJob::doCompilerScopeBreakable(AstNode* parent, AstNode** result)
 {
     auto labelNode = Ast::newNode<AstScopeBreakable>(this, AstNodeKind::ScopeBreakable, sourceFile, parent);
     if (result)
@@ -769,8 +769,8 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         break;
     }
 
-    case TokenId::KwdScope:
-        SWAG_CHECK(doScopeBreakable(parent, result));
+    case TokenId::KwdCompilerScope:
+        SWAG_CHECK(doCompilerScopeBreakable(parent, result));
         break;
     case TokenId::KwdAlias:
         SWAG_CHECK(doAlias(parent, result));
@@ -843,8 +843,8 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
     case TokenId::KwdUsing:
         SWAG_CHECK(doUsing(parent, result));
         break;
-    case TokenId::KwdScopeFile:
-        SWAG_CHECK(doScopeFile(parent, result));
+    case TokenId::KwdCompilerScopeFile:
+        SWAG_CHECK(doCompilerScopeFile(parent, result));
         break;
     case TokenId::SymAttrStart:
     {

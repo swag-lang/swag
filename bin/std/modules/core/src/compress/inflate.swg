@@ -7,7 +7,7 @@
 
 #global namespace Compress
 
-scopefile {
+#scopefile {
 
 const FastBits           = 9
 const FastMask           = (1 << FastBits) - 1

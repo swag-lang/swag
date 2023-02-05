@@ -218,7 +218,7 @@ impl FloatExt
         // between expMin and expMax.
         approxExp10 := ((expMin+expMax)/2 - exp) * 28 / 93 // log(10)/log(2) is close to 93/28.
         i := (approxExp10 - firstPowerOfTen) / stepPowerOfTen
-        scope Loop loop
+        #scope Loop loop
         {
             exp1 := exp + powersOfTen[i].exp + 64
             switch

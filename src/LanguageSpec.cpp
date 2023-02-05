@@ -281,6 +281,8 @@ void LanguageSpec::setupKeywords()
     keywords.add("#swagos", TokenId::CompilerSwagOs);
     keywords.add("#code", TokenId::CompilerCode);
     keywords.add("#type", TokenId::CompilerType);
+    keywords.add("#scope", TokenId::KwdCompilerScope);
+    keywords.add("#scopefile", TokenId::KwdCompilerScopeFile);
 
     keywords.add("true", TokenId::KwdTrue);
     keywords.add("false", TokenId::KwdFalse);
@@ -334,8 +336,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("case", TokenId::KwdCase);
     keywords.add("continue", TokenId::KwdContinue);
     keywords.add("default", TokenId::KwdDefault);
-    keywords.add("scope", TokenId::KwdScope);
-    keywords.add("scopefile", TokenId::KwdScopeFile);
     keywords.add("and", TokenId::KwdAnd);
     keywords.add("or", TokenId::KwdOr);
     keywords.add("orelse", TokenId::KwdOrElse);
