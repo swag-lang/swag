@@ -32,9 +32,9 @@ func changeContext(user: code)
 
     #macro
     {
-        var cxt = &`newCxt
+        var cxt = &#up newCxt
 
-        #mixin `user
+        #mixin #up user
     }
 
     @setcontext(savedCxt)

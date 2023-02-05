@@ -16,7 +16,7 @@
         myVar := 0
         #inline
         {
-            `myVar += 1
+            #up myVar += 1
         }
 
         @assert(myVar == 1)
@@ -27,7 +27,7 @@
         myVar := 0
         #inline
         {
-            alias myVar = `myVar
+            alias myVar = #up myVar
             myVar += 1
             myVar += 2
         }

@@ -65,9 +65,10 @@ bool SyntaxJob::checkIsSingleIdentifier(AstNode* node, const char* msg)
 
 bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
 {
-    Token backTickValue;
+    Token scopeUpValue;
 
-    if (token.id == TokenId::SymBackTick)
+    // #up to change the scope
+    if (token.id == TokenId::CompilerUp)
     {
         auto backTickToken = token;
         SWAG_CHECK(eatToken());
@@ -76,9 +77,9 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         if (token.id == TokenId::SymQuestion)
             return error(token, Fmt(Err(Err0398), token.ctext()));
 
-        backTickValue.id               = TokenId::SymBackTick;
-        backTickValue.literalType      = LiteralType::TT_UNTYPED_INT;
-        backTickValue.literalValue.u64 = 1;
+        scopeUpValue.id               = TokenId::CompilerUp;
+        scopeUpValue.literalType      = LiteralType::TT_UNTYPED_INT;
+        scopeUpValue.literalValue.u64 = 1;
 
         if (token.id == TokenId::SymLeftParen)
         {
@@ -94,7 +95,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
             if (token.literalValue.u8 == 0)
                 return error(token, Fmt(Err(Err0575), token.ctext()));
 
-            backTickValue = token;
+            scopeUpValue = token;
             SWAG_CHECK(eatToken());
             SWAG_CHECK(eatToken(TokenId::SymRightParen));
         }
@@ -127,10 +128,10 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
     identifier->semanticFct   = SemanticJob::resolveIdentifier;
     identifier->identifierRef = CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
 
-    if (backTickValue.id != TokenId::Invalid)
+    if (scopeUpValue.id != TokenId::Invalid)
     {
-        identifier->backTickMode  = IdentifierBackTypeMode::Count;
-        identifier->backTickValue = backTickValue;
+        identifier->scopeUpMode  = IdentifierScopeUpMode::Count;
+        identifier->scopeUpValue = scopeUpValue;
     }
 
     if (contextualNoInline)

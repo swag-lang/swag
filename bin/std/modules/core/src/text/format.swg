@@ -199,7 +199,7 @@ func toInterp(buf: *ConcatBuffer, exp: string)
                 }
             }
 
-            sb.appendFormat("StrConv.convert(buf, `%, \"%\")\n", value, format)
+            sb.appendFormat("StrConv.convert(buf, #up %, \"%\")\n", value, format)
         }
 
         return sb.moveToString()

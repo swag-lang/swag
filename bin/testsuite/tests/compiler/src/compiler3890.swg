@@ -7,7 +7,7 @@ impl A {
         #macro
         {
             var @alias0: s32
-            #mixin `stmt
+            #mixin #up stmt
         }
     }
 }

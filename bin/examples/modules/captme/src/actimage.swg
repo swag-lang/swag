@@ -142,7 +142,7 @@ impl MainWnd
         func createBtn(dlg: *Wnd, pos: Math.Rectangle, id: u64)
         {
             btn := CheckButton.create(dlg, " ", pos)
-            btn.checked = `g_ResizeMode == id ? .Undefined : .UnChecked
+            btn.checked = #up g_ResizeMode == id ? .Undefined : .UnChecked
             btn.userData = cast(*void) id
             btn.sigChanged += func(btn) {
                 visit c: btn.parent.childs

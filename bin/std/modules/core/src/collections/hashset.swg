@@ -72,20 +72,20 @@ impl HashSet
             #scope Down
             #macro
             {
-                #if `ptr
+                #if #up ptr
                 {
-                    var @alias0 = &`table[@index].key
+                    var @alias0 = &#up table[@index].key
                 }
                 #elif Reflection.isStruct(K)
                 {
-                    var @alias0 = cast(const ref K) &`table[@index].key
+                    var @alias0 = cast(const ref K) &#up table[@index].key
                 }
                 #else
                 {
-                    var @alias0 = `table[@index].key
+                    var @alias0 = #up table[@index].key
                 }
 
-                #mixin `stmt { break = break Up; continue = break Down; }
+                #mixin #up stmt { break = break Up; continue = break Down; }
             }
 
             remain -= 1

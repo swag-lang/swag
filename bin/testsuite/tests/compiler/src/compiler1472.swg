@@ -13,8 +13,8 @@ impl S
         {
             #macro
             {
-                var @alias0 = `v
-                #mixin `stmt
+                var @alias0 = #up v
+                #mixin #up stmt
             }
         }
     }

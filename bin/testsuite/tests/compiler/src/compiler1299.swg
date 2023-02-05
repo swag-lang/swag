@@ -3,7 +3,7 @@ var x = 0
 
 func toto()
 {
-    if `x == 0
+    if #up x == 0
     {
     }
 }

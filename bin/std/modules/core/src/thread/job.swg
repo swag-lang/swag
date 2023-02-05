@@ -223,9 +223,9 @@ public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = n
         {
             #macro
             {
-                @alias0 := `scan
-                @alias1 := `userData
-                #mixin `stmt
+                @alias0 := #up scan
+                @alias1 := #up userData
+                #mixin #up stmt
             }
 
             scan += offset
@@ -292,9 +292,9 @@ public func parallelFor(count: u32, userData: *void = null, stmt: code)
         {
             #macro
             {
-                @alias0 := `curIndex
-                @alias1 := `userData
-                #mixin `stmt
+                @alias0 := #up curIndex
+                @alias1 := #up userData
+                #mixin #up stmt
             }
 
             curIndex += 1

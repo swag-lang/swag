@@ -101,6 +101,7 @@ Compiler keywords.
 #swagrevision
 #swagversion
 #type
+#up
 
 #assert
 #elif

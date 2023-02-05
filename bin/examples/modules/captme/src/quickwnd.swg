@@ -158,7 +158,7 @@ impl QuickWnd
             form.borderColor = color
             it := cast(IForm) form
             it.setup(null)
-            `qsArrow.forms.add(it)
+            #up qsArrow.forms.add(it)
         }
 
         const BorderSize = 10.0
@@ -187,7 +187,7 @@ impl QuickWnd
             form.kind = kind
             it := cast(IForm) form
             it.setup(null)
-            `qsShape.forms.add(it)
+            #up qsShape.forms.add(it)
         }
 
         const BorderSize = 5.0
@@ -218,7 +218,7 @@ impl QuickWnd
                 form.paintShadow = false
             it := cast(IForm) form
             it.setup(null)
-            `qsImage.forms.add(it)
+            #up qsImage.forms.add(it)
         }
 
         add(2, .Image, Argb.White)
@@ -239,7 +239,7 @@ impl QuickWnd
             form.kind = kind
             it := cast(IForm) form
             it.setup(null)
-            `qsStep.forms.add(it)
+            #up qsStep.forms.add(it)
         }
 
         add(.Ellipse, Argb.White, Argb.Red)
@@ -262,7 +262,7 @@ impl QuickWnd
             form.borderColor = color
             it := cast(IForm) form
             it.setup(null)
-            `qsLine.forms.add(it)
+            #up qsLine.forms.add(it)
         }
 
         const BorderSize = 10.0
@@ -287,7 +287,7 @@ impl QuickWnd
             form.backColor = 0
             it := cast(IForm) form
             it.setup(null)
-            `qsPolygon.forms.add(it)
+            #up qsPolygon.forms.add(it)
         }
 
         const BorderSize = 5.0
@@ -313,7 +313,7 @@ impl QuickWnd
             form.text = "A"
             it := cast(IForm) form
             it.setup(null)
-            `qsText.forms.add(it)
+            #up qsText.forms.add(it)
         }
 
         add(3, 48, Argb.White, Argb.Red)
@@ -339,7 +339,7 @@ impl QuickWnd
             form.borderColor = color
             it := cast(IForm) form
             it.setup(null)
-            `qsDraw.forms.add(it)
+            #up qsDraw.forms.add(it)
         }
 
         const BorderSize = 10.0
@@ -365,7 +365,7 @@ impl QuickWnd
             form.subKind = .Highlight
             it := cast(IForm) form
             it.setup(null)
-            `qsHighlight.forms.add(it)
+            #up qsHighlight.forms.add(it)
         }
 
         #[Swag.Macro]
@@ -380,7 +380,7 @@ impl QuickWnd
             form.subKind = .Highlight
             it := cast(IForm) form
             it.setup(null)
-            `qsHighlight.forms.add(it)
+            #up qsHighlight.forms.add(it)
         }
 
         #[Swag.Macro]
@@ -394,7 +394,7 @@ impl QuickWnd
             form.subKind = .Highlight
             it := cast(IForm) form
             it.setup(null)
-            `qsHighlight.forms.add(it)
+            #up qsHighlight.forms.add(it)
         }
 
         addShape(.Rectangle, Argb.Red)
@@ -424,7 +424,7 @@ impl QuickWnd
             form.paintShadow = false
             it := cast(IForm) form
             it.setup(null)
-            `qsPixSel.forms.add(it)
+            #up qsPixSel.forms.add(it)
         }
 
         #[Swag.Macro]
@@ -436,7 +436,7 @@ impl QuickWnd
             form.paintShadow = false
             it := cast(IForm) form
             it.setup(null)
-            `qsPixSel.forms.add(it)
+            #up qsPixSel.forms.add(it)
         }
 
         #[Swag.Macro]
@@ -447,7 +447,7 @@ impl QuickWnd
             form.paintShadow = false
             it := cast(IForm) form
             it.setup(null)
-            `qsPixSel.forms.add(it)
+            #up qsPixSel.forms.add(it)
         }
 
         addShape(.Rectangle)

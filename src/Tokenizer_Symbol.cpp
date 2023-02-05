@@ -10,9 +10,6 @@ bool Tokenizer::doSymbol(uint32_t c, Token& token)
     case '\'':
         token.id = TokenId::SymQuote;
         return true;
-    case '`':
-        token.id = TokenId::SymBackTick;
-        return true;
     case '\\':
         token.id = TokenId::SymBackSlash;
         return true;

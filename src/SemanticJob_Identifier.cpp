@@ -935,8 +935,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                     context->job->nodes.push_back(idNode);
                     if (i == 0)
                     {
-                        idNode->backTickMode  = identifier->backTickMode;
-                        idNode->backTickValue = identifier->backTickValue;
+                        idNode->scopeUpMode  = identifier->scopeUpMode;
+                        idNode->scopeUpValue = identifier->scopeUpValue;
                     }
 
                     idNode->specFlags |= AST_SPEC_IDENTIFIER_FROM_USING;
@@ -956,8 +956,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 while (newParent->parent != idRef)
                     newParent = newParent->parent;
 
-                idNode->backTickMode  = identifier->backTickMode;
-                idNode->backTickValue = identifier->backTickValue;
+                idNode->scopeUpMode  = identifier->scopeUpMode;
+                idNode->scopeUpValue = identifier->scopeUpValue;
                 idNode->specFlags |= AST_SPEC_IDENTIFIER_FROM_USING;
                 idNode->fromAlternateVar = dependentVar;
 
@@ -2716,8 +2716,8 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
         if (!startScope || oneTry == 1)
         {
             uint32_t collectFlags  = COLLECT_ALL;
-            auto     backTickMode  = node->backTickMode;
-            auto     backTickValue = node->backTickValue;
+            auto     scopeUpMode  = node->scopeUpMode;
+            auto     scopeUpValue = node->scopeUpValue;
 
             startScope = node->ownerScope;
 
@@ -2764,7 +2764,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
             }
             else
             {
-                SWAG_CHECK(collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, node, collectFlags, backTickMode, &backTickValue));
+                SWAG_CHECK(collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, node, collectFlags, scopeUpMode, &scopeUpValue));
             }
 
             // Be sure this is the last try
@@ -4452,8 +4452,8 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext*             
                                                    VectorNative<AlternativeScopeVar>& scopesVars,
                                                    AstNode*                           startNode,
                                                    uint32_t                           flags,
-                                                   IdentifierBackTypeMode             backTickMode,
-                                                   Token*                             backTickValue)
+                                                   IdentifierScopeUpMode             scopeUpMode,
+                                                   Token*                             scopeUpValue)
 {
     // Add registered alternative scopes of the current node
     if (startNode->extension && startNode->extension->misc && !startNode->extension->misc->alternativeScopes.empty())
@@ -4487,7 +4487,7 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext*             
 
     if (startNode->kind == AstNodeKind::CompilerMacro)
     {
-        if (backTickMode == IdentifierBackTypeMode::None)
+        if (scopeUpMode == IdentifierScopeUpMode::None)
         {
             while (startNode->parent->kind != AstNodeKind::Inline && // Need to test on parent to be able to add alternative scopes of the inline block
                    startNode->kind != AstNodeKind::CompilerInline &&
@@ -4497,7 +4497,7 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext*             
             }
         }
 
-        backTickMode = IdentifierBackTypeMode::None;
+        scopeUpMode = IdentifierScopeUpMode::None;
 
         // Macro in a sub function, stop there
         if (startNode->kind == AstNodeKind::FuncDecl)
@@ -4507,13 +4507,13 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext*             
     // If we are in an inline block, jump right to the function parent
     else if (startNode->kind == AstNodeKind::CompilerInline)
     {
-        if (backTickMode == IdentifierBackTypeMode::None)
+        if (scopeUpMode == IdentifierScopeUpMode::None)
         {
             while (startNode && startNode->kind != AstNodeKind::FuncDecl)
                 startNode = startNode->parent;
         }
 
-        backTickMode = IdentifierBackTypeMode::None;
+        scopeUpMode = IdentifierScopeUpMode::None;
     }
 
     // If we are in an inline block, jump right to the function parent
@@ -4523,13 +4523,13 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext*             
         auto inlineBlock = CastAst<AstInline>(startNode, AstNodeKind::Inline);
         if (!(inlineBlock->func->attributeFlags & ATTRIBUTE_MIXIN))
         {
-            if (backTickMode == IdentifierBackTypeMode::None)
+            if (scopeUpMode == IdentifierScopeUpMode::None)
             {
                 while (startNode && startNode->kind != AstNodeKind::FuncDecl)
                     startNode = startNode->parent;
             }
 
-            backTickMode = IdentifierBackTypeMode::None;
+            scopeUpMode = IdentifierScopeUpMode::None;
         }
     }
 
@@ -4537,9 +4537,9 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext*             
         return;
 
     if (startNode->extension && startNode->extension->misc && startNode->extension->misc->alternativeNode)
-        collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode->extension->misc->alternativeNode, flags, backTickMode, backTickValue);
+        collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode->extension->misc->alternativeNode, flags, scopeUpMode, scopeUpValue);
     else if (startNode->parent)
-        collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode->parent, flags, backTickMode, backTickValue);
+        collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode->parent, flags, scopeUpMode, scopeUpValue);
 
     // Mixin block, collect alternative scopes from the original source tree (with the user code, before
     // making the inline)
@@ -4572,8 +4572,8 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext*                   conte
                                         VectorNative<AlternativeScopeVar>& scopesVars,
                                         AstNode*                           startNode,
                                         uint32_t                           flags,
-                                        IdentifierBackTypeMode             backTickMode,
-                                        Token*                             backTickValue)
+                                        IdentifierScopeUpMode             scopeUpMode,
+                                        Token*                             scopeUpValue)
 {
     auto  job        = context->job;
     auto& toProcess  = job->scopesToProcess;
@@ -4583,35 +4583,35 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext*                   conte
     scopes.clear();
 
     // Get alternative scopes from the node hierarchy
-    collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode, flags, backTickMode, backTickValue);
+    collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode, flags, scopeUpMode, scopeUpValue);
 
     auto startScope = startNode->ownerScope;
     if (startScope)
     {
         // For a backtick, do not collect scope until we find an inline block
-        if (backTickMode == IdentifierBackTypeMode::Count)
+        if (scopeUpMode == IdentifierScopeUpMode::Count)
         {
-            for (uint64_t i = 0; i < backTickValue->literalValue.u8; i++)
+            for (uint64_t i = 0; i < scopeUpValue->literalValue.u8; i++)
             {
                 while (startScope && startScope->kind != ScopeKind::Inline && startScope->kind != ScopeKind::Macro)
                     startScope = startScope->parentScope;
 
                 if (!startScope && i == 0)
                 {
-                    Diagnostic diag{context->node, *backTickValue, Err(Err0136)};
+                    Diagnostic diag{context->node, *scopeUpValue, Err(Err0136)};
                     return context->report(diag);
                 }
 
                 if (!startScope && i)
                 {
-                    Diagnostic diag{context->node, *backTickValue, Fmt(Err(Err0576), backTickValue->literalValue.u8)};
+                    Diagnostic diag{context->node, *scopeUpValue, Fmt(Err(Err0576), scopeUpValue->literalValue.u8)};
                     return context->report(diag);
                 }
 
                 startScope = startScope->parentScope;
             }
 
-            backTickMode = IdentifierBackTypeMode::None;
+            scopeUpMode = IdentifierScopeUpMode::None;
         }
 
         addAlternativeScope(scopes, startScope);
@@ -4675,7 +4675,7 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext*                   conte
         }
     }
 
-    SWAG_VERIFY(backTickMode == IdentifierBackTypeMode::None, context->report({startNode, Err(Err0136)}));
+    SWAG_VERIFY(scopeUpMode == IdentifierScopeUpMode::None, context->report({startNode, Err(Err0136)}));
 
     return true;
 }

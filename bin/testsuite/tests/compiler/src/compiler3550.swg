@@ -7,7 +7,7 @@ func parallelFor(count: u32, stmt: code)
     {
         #macro
         {
-            #mixin `stmt
+            #mixin #up stmt
         }
     }
 }

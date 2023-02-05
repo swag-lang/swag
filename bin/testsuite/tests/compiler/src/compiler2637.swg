@@ -24,7 +24,7 @@ impl BB
             {
                 #macro
                 {
-                    #mixin `stmt
+                    #mixin #up stmt
                 }
             }
         }

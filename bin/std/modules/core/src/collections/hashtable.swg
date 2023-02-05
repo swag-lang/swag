@@ -74,26 +74,26 @@ impl HashTable
             #scope Down
             #macro
             {
-                #if `ptr
+                #if #up ptr
                 {
-                    var @alias0 = &`table[@index].key
-                    var @alias1 = &`table[@index].value
+                    var @alias0 = &#up table[@index].key
+                    var @alias1 = &#up table[@index].value
                 }
                 #else
                 {
                     #if Reflection.isStruct(K)
-                        var @alias0 = cast(const ref K) &`table[@index].key
+                        var @alias0 = cast(const ref K) &#up table[@index].key
                     #else
-                        var @alias0 = `table[@index].key
+                        var @alias0 = #up table[@index].key
                     #if Reflection.isStruct(V)
-                        var @alias1 = cast(const ref V) &`table[@index].value
+                        var @alias1 = cast(const ref V) &#up table[@index].value
                     #else
-                        var @alias1 = `table[@index].value
-                    //var @alias0 = Reflection.isStruct(K) ? cast(const ref K) &`table[@index].key : `table[@index].key
-                    //var @alias1 = Reflection.isStruct(V) ? cast(const ref V) &`table[@index].value : `table[@index].value
+                        var @alias1 = #up table[@index].value
+                    //var @alias0 = Reflection.isStruct(K) ? cast(const ref K) &#up table[@index].key : #up table[@index].key
+                    //var @alias1 = Reflection.isStruct(V) ? cast(const ref V) &#up table[@index].value : #up table[@index].value
                 }
 
-                #mixin `stmt { break = break Up; continue = break Down; }
+                #mixin #up stmt { break = break Up; continue = break Down; }
             }
 
             remain -= 1

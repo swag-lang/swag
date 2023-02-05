@@ -13,8 +13,8 @@ func Visit(str: const [..] u8, user: code)
 			break
 		#macro
         {
-            value := `c
-            #mixin `user
+            value := #up c
+            #mixin #up user
         }
 
         ptr += eat

@@ -138,14 +138,14 @@ impl Array
             scan += 1
             #macro
             {
-                #if `ptr
-                    var @alias0 = cast(*T) `scan
+                #if #up ptr
+                    var @alias0 = cast(*T) #up scan
                 #elif Reflection.isStruct(T)
-                    var @alias0 = cast(ref T) `scan
+                    var @alias0 = cast(ref T) #up scan
                 #else
-                    var @alias0 = `scan[0]
+                    var @alias0 = #up scan[0]
                 var @alias1 = @index
-                #mixin `stmt
+                #mixin #up stmt
             }
         }
     }
@@ -165,14 +165,14 @@ impl Array
             scan -= 1
             #macro
             {
-                #if `ptr
-                    var @alias0 = `scan
+                #if #up ptr
+                    var @alias0 = #up scan
                 #elif Reflection.isStruct(T)
-                    var @alias0 = cast(const *T) `scan
+                    var @alias0 = cast(const *T) #up scan
                 #else
-                    var @alias0 = `scan[0]
+                    var @alias0 = #up scan[0]
                 var @alias1 = @index
-                #mixin `stmt
+                #mixin #up stmt
             }
         }
     }

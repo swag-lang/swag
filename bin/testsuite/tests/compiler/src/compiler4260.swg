@@ -3,7 +3,7 @@
 #[Swag.Macro]
 func toto()
 {
-    `(0) a = 0
+    #up(0) a = 0
 }
 
 #[Swag.Macro]

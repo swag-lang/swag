@@ -7,10 +7,10 @@ public func macro2365(stmt: code)
         #scope down
         #macro
         {
-            #mixin `stmt { break = break up; continue = break down; }
+            #mixin #up stmt { break = break up; continue = break down; }
         }
 
-        `g += 1
+        #up g += 1
     }
 }
 

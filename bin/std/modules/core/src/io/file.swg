@@ -70,8 +70,8 @@ func readEachLines(fullname: string, encoding = TextEncoding.Utf8, stmt: code) t
     {
         #macro
         {
-            var @alias0 = ref &`res
-            #mixin `stmt
+            var @alias0 = ref &#up res
+            #mixin #up stmt
         }
     }
 }

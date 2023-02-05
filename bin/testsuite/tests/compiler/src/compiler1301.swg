@@ -5,7 +5,7 @@ func toto(x: code)
     {
         #macro
         {
-            #mixin `x
+            #mixin #up x
         }
     }
 }

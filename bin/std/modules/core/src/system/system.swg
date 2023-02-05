@@ -11,6 +11,6 @@ func pushContext(cxt: Swag.Context, stmt: code)
     @setcontext(cxt)
     #macro
     {
-        #mixin `stmt
+        #mixin #up stmt
     }
 }

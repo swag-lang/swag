@@ -11,7 +11,7 @@ impl S
         {
             #macro
             {
-                #mixin `stmt
+                #mixin #up stmt
             }
         }
     }

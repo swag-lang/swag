@@ -1,7 +1,7 @@
 #[Swag.Macro]
 func toto()
 {
-    `(2) a = 0
+    #up(2) a = 0
 }
 
 #[Swag.Macro]

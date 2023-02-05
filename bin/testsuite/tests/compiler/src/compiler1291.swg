@@ -7,8 +7,8 @@ func Visit(user: code)
         c = 100
 		#macro
         {
-            value := `c
-            #mixin `user
+            value := #up c
+            #mixin #up user
         }
 	}
 }

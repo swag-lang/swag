@@ -25,7 +25,8 @@
     { "include": "#compiler-function" },
     { "include": "#compiler-global" },
     { "include": "#compiler-statement" },
-    { "include": "#compiler" },
+    { "include": "#compiler-ret" },
+    { "include": "#compiler-keywords" },
     { "include": "#compiler-invalid" },
     { "include": "#types" },
     { "include": "#strings" },
@@ -196,11 +197,19 @@
         }
       ]
     },
-    "compiler": {
+    "compiler-ret": {
       "patterns": [
         {
           "name": "constant.character.escape",
           "match": "(#)\\b(tokenpos|type|file|line|cfg|arch|os|module|backend|self|location|callerlocation|callerfunction|swagversion|swagrevision|swagbuildnum|swagos|code)"
+        }
+      ]
+    },
+    "compiler-keywords": {
+      "patterns": [
+        {
+          "name": "entity.name.function.intrinsic",
+          "match": "(#)\\b(up)"
         }
       ]
     },

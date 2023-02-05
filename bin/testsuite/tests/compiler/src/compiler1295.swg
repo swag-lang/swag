@@ -1,8 +1,8 @@
 #[Swag.Macro]
 func toto()
 {
-    @assert(`x == 666)
-    `x = 500
+    @assert(#up x == 666)
+    #up x = 500
 }
 
 #test

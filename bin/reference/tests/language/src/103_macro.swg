@@ -27,7 +27,7 @@
         #[Swag.Macro]
         func myMacro()
         {
-            `a += 1 // Back ticked to reference the 'a' of the caller
+            #up a += 1 // Add '#up' before the identifier to reference the 'a' of the caller
         }
 
         a := 0
@@ -46,18 +46,18 @@
 
         a := 0
 
-        myMacro(#code { `a += 1; } )
+        myMacro(#code { #up a += 1; } )
 
         myMacro()
         {
-            `a += 1
+            #up a += 1
         }
 
         @assert(a == 2)
     }
 
     // You can use '#macro' inside a macro to force the code after to be in the
-    // same scope of the caller. That is, no back tick is necessary to reference
+    // same scope of the caller. That is, no #up is necessary to reference
     // variables of the caller.
     {
         #[Swag.Macro]
@@ -69,7 +69,7 @@
             #macro
             {
                 // In the scope of the caller
-                #mixin `what
+                #mixin #up what
             }
         }
 
@@ -93,8 +93,8 @@
             {
                 #macro
                 {
-                    index := `a
-                    #mixin `what
+                    index := #up a
+                    #mixin #up what
                 }
 
                 a += 1
@@ -122,7 +122,7 @@
                     {
                         // 'break' in the user code will be replaced by 'break Up'
                         // So it will break outside the outer loop
-                        #mixin `what { break = break Up; }
+                        #mixin #up what { break = break Up; }
                     }
                 }
             }

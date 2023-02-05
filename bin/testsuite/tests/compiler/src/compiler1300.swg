@@ -4,7 +4,7 @@
 #[Swag.Inline]
 func toto()
 {
-    `x = 666
+    #up x = 666
 }
 
 #test

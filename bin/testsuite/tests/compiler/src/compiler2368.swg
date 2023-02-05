@@ -4,6 +4,6 @@ func toto(stmt: code)
 {
     #macro
     {
-        #mixin `stmt { break = break up; }
+        #mixin #up stmt { break = break up; }
     }
 }

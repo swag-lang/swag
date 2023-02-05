@@ -106,9 +106,9 @@ public impl BitArray
                 #scope Down
                 #macro
                 {
-                    var @alias0 = cast(bool) (`buffer[`idx] & `shift)
-                    var @alias1 = `countBits
-                    #mixin `stmt { break = break Up; continue = break Down; }
+                    var @alias0 = cast(bool) (#up buffer[#up idx] & #up shift)
+                    var @alias1 = #up countBits
+                    #mixin #up stmt { break = break Up; continue = break Down; }
                 }
 
                 countBits += 1
@@ -216,7 +216,7 @@ public impl BitArray
             buffer[@index] ^= other.buffer[@index]
     }
 
-    // Inverts all the bit values, so that elements set to 'true' are changed to `false`, and elements set to `false` are changed to 'true'.
+    // Inverts all the bit values, so that elements set to 'true' are changed to 'false', and elements set to 'false' are changed to 'true'.
     mtd not()
     {
         if !count return

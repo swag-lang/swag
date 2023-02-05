@@ -57,24 +57,24 @@ func __checkAny(typeA, typeB: typeinfo, loc: SourceCodeLocation)
 
         if !typeB
         {
-            __strcat(str, Swag.MaxLenErrorMsg, "[safety] `any` value is null and cannot be casted")
+            __strcat(str, Swag.MaxLenErrorMsg, "[safety] 'any' value is null and cannot be casted")
             if typeA
             {
-                __strcat(str, Swag.MaxLenErrorMsg, " (`")
+                __strcat(str, Swag.MaxLenErrorMsg, " ('")
                 __strcat(str, Swag.MaxLenErrorMsg, typeA.name)
-                __strcat(str, Swag.MaxLenErrorMsg, "` expected)")
+                __strcat(str, Swag.MaxLenErrorMsg, "' expected)")
             }
         }
         else
         {
-            __strcat(str, Swag.MaxLenErrorMsg, "[safety] invalid dynamic cast from type `any`")
+            __strcat(str, Swag.MaxLenErrorMsg, "[safety] invalid dynamic cast from type 'any'")
             if typeA and typeB
             {
-                __strcat(str, Swag.MaxLenErrorMsg, " (`")
+                __strcat(str, Swag.MaxLenErrorMsg, " ('")
                 __strcat(str, Swag.MaxLenErrorMsg, typeA.name)
-                __strcat(str, Swag.MaxLenErrorMsg, "` expected, `")
+                __strcat(str, Swag.MaxLenErrorMsg, "' expected, '")
                 __strcat(str, Swag.MaxLenErrorMsg, typeB.name)
-                __strcat(str, Swag.MaxLenErrorMsg, "` provided)")
+                __strcat(str, Swag.MaxLenErrorMsg, "' provided)")
             }
         }
 

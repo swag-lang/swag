@@ -52,9 +52,9 @@ impl Image
         {
 			#macro
 			{
-                @alias0 := `scan
+                @alias0 := #up scan
 				@alias1 := @index
-				#mixin `stmt
+				#mixin #up stmt
 			}
 
             scan += bpp8
@@ -143,15 +143,15 @@ impl Image
             p := cast(*@mktype(p)) data
             #macro
             {
-                image    := `p.self
-                userData := `p.userData
-                pix      := `buffer
+                image    := #up p.self
+                userData := #up p.userData
+                pix      := #up buffer
 
                 index := (cast(u64) (pix - image.pixels.buffer)) / image.bpp8
                 x := cast(s32) index % image.width
                 y := cast(s32) index / image.width
 
-                #mixin `stmt
+                #mixin #up stmt
             }
         }
     }

@@ -3,7 +3,7 @@
     myVar := 0
     #inline
     {
-        alias myVar = `myVar
+        alias myVar = #up myVar
         myVar += 1
     }
 

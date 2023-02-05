@@ -71,7 +71,7 @@ func pushAllocator(allocator: Swag.IAllocator, stmt: code)
 
     #macro
     {
-        #mixin `stmt
+        #mixin #up stmt
     }
 }
 
@@ -88,6 +88,6 @@ func pushTempAllocator(stmt: code)
 
     #macro
     {
-        #mixin `stmt
+        #mixin #up stmt
     }
 }

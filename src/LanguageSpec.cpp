@@ -281,8 +281,9 @@ void LanguageSpec::setupKeywords()
     keywords.add("#swagos", TokenId::CompilerSwagOs);
     keywords.add("#code", TokenId::CompilerCode);
     keywords.add("#type", TokenId::CompilerType);
-    keywords.add("#scope", TokenId::KwdCompilerScope);
-    keywords.add("#scopefile", TokenId::KwdCompilerScopeFile);
+    keywords.add("#scope", TokenId::CompilerScope);
+    keywords.add("#scopefile", TokenId::CompilerScopeFile);
+    keywords.add("#up", TokenId::CompilerUp);
 
     keywords.add("true", TokenId::KwdTrue);
     keywords.add("false", TokenId::KwdFalse);

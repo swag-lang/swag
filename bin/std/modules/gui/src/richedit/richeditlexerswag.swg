@@ -339,6 +339,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("#swagos", State.Compiler)
         mapWords.add("#code", State.Compiler)
         mapWords.add("#type", State.Compiler)
+        mapWords.add("#up", State.Compiler)
     }
 
     mtd insertRune(ed: *RichEditCtrl, ch: rune)->bool

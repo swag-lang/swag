@@ -715,10 +715,10 @@ func visitRunes(buffer: const [..] u8, stmt: code)
         {
             #scope Inside
             {
-                @alias0 := `c
-                @alias1 := `charIdx
-                @alias2 := `byteIdx
-                #mixin `stmt { continue=break Inside; }
+                @alias0 := #up c
+                @alias1 := #up charIdx
+                @alias2 := #up byteIdx
+                #mixin #up stmt { continue=break Inside; }
             }
         }
 

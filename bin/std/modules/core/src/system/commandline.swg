@@ -24,7 +24,7 @@ struct ParseOptions
 {
 }
 
-// Returns true if `oneArg` is a valid option (starting with a delimiter)
+// Returns true if 'oneArg' is a valid option (starting with a delimiter)
 func isOption(oneArg: string, _options: ParseOptions)->bool
 {
     if @countof(oneArg) == 0
@@ -126,7 +126,7 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
             dref cast(*bool) addr = true
         }
 
-        // All types supported by `Parse.pokeValue`
+        // All types supported by 'Parse.pokeValue'
         elif typeField == @typeof(Core.String) or
                 Reflection.isInteger(typeField) or
                 Reflection.isFloat(typeField) or

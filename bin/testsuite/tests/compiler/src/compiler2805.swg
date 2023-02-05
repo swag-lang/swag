@@ -7,7 +7,7 @@ func toto(stmt: code)
     {
         x := 0's64
         defer G = 1
-        #mixin `stmt
+        #mixin #up stmt
     }
 }
 

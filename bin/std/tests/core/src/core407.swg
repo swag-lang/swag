@@ -14,7 +14,7 @@ func interpol(str: string)->String
         d += 1
 
         var sb1: StringBuilder
-        sb1.appendFormat("sb.appendAny(`%)", @mkstring(d, 1))
+        sb1.appendFormat("sb.appendAny(#up %)", @mkstring(d, 1))
         return sb1.toString()
     }
 

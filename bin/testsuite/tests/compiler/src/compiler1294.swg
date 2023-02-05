@@ -1,7 +1,7 @@
 #[Swag.Macro]
 func toto()
 {
-    y := `x
+    y := #up x
     @assert(y == 666)
 }
 

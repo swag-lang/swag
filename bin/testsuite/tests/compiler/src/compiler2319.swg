@@ -9,7 +9,7 @@ func pushContext(cxt: Swag.Context, stmt: code)
 
     #macro
     {
-        #mixin `stmt
+        #mixin #up stmt
     }
 }
 

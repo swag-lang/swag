@@ -566,7 +566,7 @@ bool SyntaxJob::doLeftInstruction(AstNode* parent, AstNode** result, AstWith* wi
         SWAG_CHECK(doDropCopyMove(parent, result));
         break;
 
-    case TokenId::SymBackTick:
+    case TokenId::CompilerUp:
     case TokenId::CompilerSelf:
     case TokenId::Identifier:
     case TokenId::SymLeftParen:
@@ -629,7 +629,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::KwdDiscard:
     case TokenId::KwdDeRef:
 
-    case TokenId::SymBackTick:
+    case TokenId::CompilerUp:
     case TokenId::SymLeftParen:
     case TokenId::Identifier:
     case TokenId::CompilerSelf:
@@ -769,7 +769,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         break;
     }
 
-    case TokenId::KwdCompilerScope:
+    case TokenId::CompilerScope:
         SWAG_CHECK(doCompilerScopeBreakable(parent, result));
         break;
     case TokenId::KwdAlias:
@@ -843,7 +843,7 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
     case TokenId::KwdUsing:
         SWAG_CHECK(doUsing(parent, result));
         break;
-    case TokenId::KwdCompilerScopeFile:
+    case TokenId::CompilerScopeFile:
         SWAG_CHECK(doCompilerScopeFile(parent, result));
         break;
     case TokenId::SymAttrStart:

@@ -6,8 +6,8 @@ func toto(t: s32, x: code)
     @assert(xx == 100)
     #inline
     {
-        value := `xx
-        #mixin `x
+        value := #up xx
+        #mixin #up x
     }
 }
 

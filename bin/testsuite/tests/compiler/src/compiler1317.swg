@@ -5,7 +5,7 @@
 
     #inline
     {
-        `cpt = 10
+        #up cpt = 10
     }
 
     @assert(cpt == 10)

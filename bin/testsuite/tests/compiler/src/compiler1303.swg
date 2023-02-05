@@ -6,7 +6,7 @@ func toto(x: code)
         #inline
         {
             value := 100
-            #mixin `x
+            #mixin #up x
         }
     }
 }

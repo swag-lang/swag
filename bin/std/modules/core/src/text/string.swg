@@ -190,12 +190,12 @@ impl String
             scan += 1
             #macro
             {
-                #if `ptr
-                    var @alias0 = `scan
+                #if #up ptr
+                    var @alias0 = #up scan
                 #else
-                    var @alias0 = dref `scan
+                    var @alias0 = dref #up scan
                 var @alias1 = @index
-                #mixin `stmt
+                #mixin #up stmt
             }
         }
     }

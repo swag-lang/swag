@@ -1757,15 +1757,17 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::Identifier:
     {
         auto ident = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
-        if (ident->backTickMode != IdentifierBackTypeMode::None)
+        if (ident->scopeUpMode != IdentifierScopeUpMode::None)
         {
-            concat.addChar('`');
-            if (ident->backTickMode == IdentifierBackTypeMode::Count && ident->backTickValue.literalValue.u8 > 1)
+            CONCAT_FIXED_STR(concat, "#up");
+            if (ident->scopeUpMode == IdentifierScopeUpMode::Count && ident->scopeUpValue.literalValue.u8 > 1)
             {
                 concat.addChar('(');
-                concat.addStringFormat("%d", ident->backTickValue.literalValue.u8);
+                concat.addStringFormat("%d", ident->scopeUpValue.literalValue.u8);
                 concat.addChar(')');
             }
+
+            concat.addChar(' ');
         }
     }
 

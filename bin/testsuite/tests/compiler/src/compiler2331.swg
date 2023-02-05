@@ -10,7 +10,7 @@ impl AA
     {
         #macro
         {
-            #if `ptr {}
+            #if #up ptr {}
         }
     }
 }
