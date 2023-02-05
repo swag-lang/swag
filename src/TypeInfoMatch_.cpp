@@ -6,7 +6,7 @@
 #include "Generic.h"
 #include "LanguageSpec.h"
 
-static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParameter, TypeInfo* callTypeInfo, TypeInfo* wantedTypeInfo, int idxParam)
+static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParameter, TypeInfo* callTypeInfo, TypeInfo* wantedTypeInfo, int idxParam, uint32_t castFlags)
 {
     SWAG_ASSERT(wantedTypeInfo->isGeneric());
 
@@ -39,7 +39,12 @@ static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParamet
 
             // Yes, and the map is not the same, then this is an error
             else
-                same = TypeManager::makeCompatibles(context.semContext, it->second, callTypeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK | CASTFLAG_PARAMS);
+            {
+                same = TypeManager::makeCompatibles(context.semContext, it->second, callTypeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK | CASTFLAG_PARAMS | castFlags);
+                if (context.semContext->result != ContextResult::Done)
+                    return;
+            }
+
             if (!same)
             {
                 context.badSignatureInfos.badSignatureParameterIdx  = idxParam;
@@ -521,7 +526,9 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         }
         else if (wantedTypeInfo->isGeneric())
         {
-            deduceGenericParam(context, callParameter, callTypeInfo, wantedTypeInfo, i);
+            deduceGenericParam(context, callParameter, callTypeInfo, wantedTypeInfo, i, castFlags & CASTFLAG_ACCEPT_PENDING);
+            if (context.semContext->result != ContextResult::Done)
+                return;
         }
 
         if (context.cptResolved < context.solvedParameters.size())
@@ -595,6 +602,9 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
             uint32_t castFlags = CASTFLAG_NO_ERROR | CASTFLAG_PARAMS;
             castFlags |= forceCastFlags;
             bool same = TypeManager::makeCompatibles(context.semContext, wantedParameter->typeInfo, callTypeInfo, nullptr, nullptr, castFlags);
+            if (context.semContext->result != ContextResult::Done)
+                return;
+
             if (!same)
             {
                 context.badSignatureInfos.badSignatureParameterIdx  = parameterIndex;
@@ -605,7 +615,7 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
             }
             else if (wantedTypeInfo->isGeneric())
             {
-                deduceGenericParam(context, callParameter, callTypeInfo, wantedTypeInfo, j);
+                deduceGenericParam(context, callParameter, callTypeInfo, wantedTypeInfo, j, castFlags & CASTFLAG_ACCEPT_PENDING);
             }
 
             context.solvedParameters[j]                  = wantedParameter;
@@ -916,9 +926,9 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
             same = false;
         else
             same = TypeManager::makeCompatibles(context.semContext, symbolParameter->typeInfo, typeInfo, nullptr, nullptr, CASTFLAG_FOR_GENERIC | CASTFLAG_NO_ERROR | CASTFLAG_ACCEPT_PENDING);
-
-        if (context.semContext->result == ContextResult::Pending)
+        if (context.semContext->result != ContextResult::Done)
             return;
+
         if (!same)
         {
             context.badSignatureInfos.badSignatureParameterIdx  = i;

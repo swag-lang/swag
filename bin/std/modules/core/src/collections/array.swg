@@ -168,7 +168,7 @@ impl Array
                 #if #up ptr
                     var @alias0 = #up scan
                 #elif Reflection.isStruct(T)
-                    var @alias0 = cast(const *T) #up scan
+                    var @alias0 = cast(ref T) #up scan
                 #else
                     var @alias0 = #up scan[0]
                 var @alias1 = @index
