@@ -3419,6 +3419,12 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
     bool result = false;
 
+    auto isSameFlags = ISSAME_CAST;
+    if (castFlags & CASTFLAG_FOR_AFFECT)
+        isSameFlags |= ISSAME_FOR_AFFECT;
+    if (castFlags & CASTFLAG_FOR_GENERIC)
+        isSameFlags |= ISSAME_FOR_GENERIC;
+
     // From a reference
     if (fromType->isPointerRef() ||
         (fromNode && fromNode->kind == AstNodeKind::KeepRef && fromType->isPointer()))
@@ -3429,7 +3435,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
             castFlags |= CASTFLAG_FORCE_UNCONST;
             result = true;
         }
-        else if (fromTypeRef->isSame(toType, ISSAME_CAST))
+        else if (fromTypeRef->isSame(toType, isSameFlags))
         {
             castFlags |= CASTFLAG_FORCE_UNCONST;
             result = true;
@@ -3442,16 +3448,8 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         fromType = concretePtrRef(fromType);
 
     // If not already ok, call 'same'
-    if (!result)
-    {
-        auto isSameFlags = ISSAME_CAST;
-        if (castFlags & CASTFLAG_FOR_AFFECT)
-            isSameFlags |= ISSAME_FOR_AFFECT;
-        if (castFlags & CASTFLAG_FOR_GENERIC)
-            isSameFlags |= ISSAME_FOR_GENERIC;
-        if (fromType->isSame(toType, isSameFlags))
-            result = true;
-    }
+    if (!result && fromType->isSame(toType, isSameFlags))
+        result = true;
 
     // Always match against a generic
     if (!result)
