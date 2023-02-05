@@ -3,7 +3,7 @@
 
 // Find 'value' in a slice by performing a binary search.
 // The slice must be sorted in ascending order
-func(T) findSorted(values: const [..] T, value: T) -> {index: u64, success: bool}
+func(T, V) findSorted(values: const [..] T, value: V) -> {index: u64, success: bool}
 {
     var result: retval
 
@@ -35,7 +35,7 @@ func(T) findSorted(values: const [..] T, value: T) -> {index: u64, success: bool
 
 // Find 'value' in a slice by performing a linear search.
 // O^n, but slice does not have to be sorted
-func(T) findLinear(values: const [..] T, value: T) -> {index: u64, success: bool}
+func(T, V) findLinear(values: const [..] T, value: V) -> {index: u64, success: bool}
 {
     var result: retval
     visit v, i: values
@@ -53,7 +53,7 @@ func(T) findLinear(values: const [..] T, value: T) -> {index: u64, success: bool
 
 // Returns true if the given slice contains the 'value'
 #[Swag.ConstExpr]
-func(T) contains(values: const [..] T, value: T)->bool
+func(T, V) contains(values: const [..] T, value: V)->bool
 {
     visit v: values
     {
