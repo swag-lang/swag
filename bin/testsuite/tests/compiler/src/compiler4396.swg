@@ -1,0 +1,17 @@
+#global testerror
+
+struct A { x, y: s32; }
+
+func toto(x: ref A)
+{
+    x.x = 1
+    x.y = 2
+}
+
+#test
+{
+    var a: A
+    //b := ref a
+    toto(a)
+    @print(a.x, a.y)
+}

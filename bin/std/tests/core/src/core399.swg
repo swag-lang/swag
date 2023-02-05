@@ -55,5 +55,5 @@ func process(intro: ref Node) -> ref Node
 #test
 {
     var intro: Node
-    process(intro)
+    process(&intro)
 }

@@ -25,5 +25,5 @@ func toto(x: const ref AA)
 #test
 {
     var v: C
-    toto(v)
+    toto(&v)
 }

@@ -1005,7 +1005,7 @@ void initErrors()
     SWAG_ERROR(Hlp0046, "pointer arimthetic is only possible for pointers declared with '^' and not '*'");
     SWAG_ERROR(Hlp0047, "if you want to slice to the end, use '..' instead");
     SWAG_ERROR(Hlp0048, "'Swag.Match' valid values are 'validif|self'");
-    SWAG_ERROR(Hlp0049, nullptr);
+    SWAG_ERROR(Hlp0049, "you could try to take the address of '%s' with '&'");
     SWAG_ERROR(Hlp0050, nullptr);
     SWAG_ERROR(Hlp0051, nullptr);
     SWAG_ERROR(Hlp0052, nullptr);
@@ -1124,8 +1124,8 @@ void initErrors()
     SWAG_ERROR(Hnt0105, "this is not allowed on type '%s'");
     SWAG_ERROR(Hnt0106, "this is an immutable struct parameter");
     SWAG_ERROR(Hnt0107, "this should be replaced with '#validif'");
-    SWAG_ERROR(Hnt0108, nullptr);
-    SWAG_ERROR(Hnt0109, nullptr);
+    SWAG_ERROR(Hnt0108, "this should be a pointer to '%s'");
+    SWAG_ERROR(Hnt0109, "this is not allowed on a non pointer type");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

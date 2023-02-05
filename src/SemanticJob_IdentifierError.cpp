@@ -426,6 +426,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                 result1.push_back(note);
             }
         }
+        else if(diag->hint.empty())
+            diag->hint = castHint;
 
         // Here is
         Diagnostic* note = nullptr;

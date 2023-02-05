@@ -294,6 +294,10 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, TypeInfo* toType, TypeI
             hint = Hnt(Hnt0100);
         }
     }
+    else if (!fromType->isPointer() && toType->isPointerRef())
+    {
+        hint = Fmt(Hnt(Hnt0108), fromType->getDisplayNameC());
+    }
 }
 
 bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
@@ -2373,8 +2377,8 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
         return true;
     }
 
-    // Struct to struct
-    if (fromType->isStruct() && toTypePointer->pointedType->isStruct())
+    // Struct to automatic const ref struct
+    if (fromType->isStruct() && toTypePointer->pointedType->isStruct() && toTypePointer->isAutoConstPointerRef())
     {
         auto fromStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
         auto toStruct   = CastTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Struct);

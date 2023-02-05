@@ -402,14 +402,21 @@ bool SemanticJob::resolveKeepRef(SemanticContext* context)
         {
             diag.addRange(front, Hnt(Hnt0104));
             diag.hint = Fmt(Hnt(Hnt0105), typeInfo->getDisplayNameC());
+            return context->report(diag);
+        }
+        else if (front->kind == AstNodeKind::IdentifierRef)
+        {
+            Diagnostic note{front, Fmt(Hlp(Hlp0049), front->token.ctext()), DiagnosticLevel::Help};
+            diag.hint = Hnt(Hnt0109);
+            diag.addRange(front, Fmt(Hnt(Hnt0108), typeInfo->getDisplayNameC()));
+            return context->report(diag, &note);
         }
         else
         {
             diag.addRange(front, Diagnostic::isType(typeInfo));
-            diag.hint = Hnt(Hnt0061);
+            diag.hint = Hnt(Hnt0109);
+            return context->report(diag);
         }
-
-        return context->report(diag);
     }
 
     if (!typeInfo->isPointerRef())
