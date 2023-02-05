@@ -965,7 +965,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
         // Do not cast for structs, as we can have special assignment with different types
         // Except if this is an initializer list {...}
-        if (!leftConcreteType->isStruct() || rightConcreteType->isInitializerList())
+        if (!leftConcreteType->isStruct() || rightConcreteType->isInitializerList() || rightConcreteType->isTuple())
         {
             // Cast from struct to interface : need to wait for all interfaces to be registered
             if (leftConcreteType->isInterface() && rightConcreteType->isStruct())

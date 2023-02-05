@@ -950,7 +950,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
         return false;
 
     bool forTuple = isTuple();
-    if (forTuple != to->isTuple())
+    if (forTuple != to->isTuple() && !(isSameFlags & ISSAME_FOR_AFFECT))
         return false;
 
     auto other = CastTypeInfo<TypeInfoStruct>(to, to->kind);
