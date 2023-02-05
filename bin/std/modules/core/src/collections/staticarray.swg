@@ -1,15 +1,13 @@
 #global export
 using Swag
 
-struct(T) Array
+struct(T, N: u64) StaticArray
 {
-    allocator:  IAllocator
-    buffer:     ^T
-    count:      u64
-    capacity:   u64
+    buffer: [N] T
+    count:  u64
 }
 
-impl Array
+impl StaticArray
 {
     #[Inline]
     mtd opCount()->u64
@@ -20,32 +18,12 @@ impl Array
     #[Inline]
     mtd opData()->const *T
     {
-        return buffer
+        return &buffer[0]
     }
 
     mtd opDrop()
     {
         free()
-    }
-
-    mtd opPostCopy()
-    {
-        if buffer == null
-            return
-
-        oldBuffer := buffer
-        buffer = null
-        realloc(count)
-
-        #if Reflection.hasPostCopy(T)
-        {
-            loop count
-                buffer[@index] =,nodrop oldBuffer[@index]
-        }
-        #else
-        {
-            Memory.copy(buffer, oldBuffer, @sizeof(T) * count)
-        }
     }
 
     #[Inline]
@@ -66,7 +44,7 @@ impl Array
         Debug.safetyBoundCheck(lower <= upper, "lower bound greater than upper bound")
         Debug.safetyBoundCheck(lower < count, "lower bound out of range")
         Debug.safetyBoundCheck(upper < count, "upper bound out of range")
-        return @mkslice(buffer + lower, (upper + 1) - lower)
+        return @mkslice(&buffer[0] + lower, (upper + 1) - lower)
     }
 
     #[Inline]
@@ -106,10 +84,11 @@ impl Array
     {
         clear()
         countof := @countof(arr)
-        if !countof return
+        if !countof
+            return
+        Debug.assert(countof < N, "slice is too big")
         dataof := @dataof(arr)
 
-        grow(countof)
         #if Reflection.hasPostCopy(T)
         {
             loop i: countof
@@ -127,11 +106,12 @@ impl Array
     #[Macro]
     func(ptr: bool) opVisit(using const self, stmt: code)
     {
-        if !count return
+        if !count
+            return
 
         // Little trick to avoid labels. That way a 'continue' in the user code will work
         // correctly, that's why we increment 'scan' before the use code, and take -1 to start.
-        scan := buffer - 1
+        scan := &buffer[0] - 1
 
         loop count
         {
@@ -154,11 +134,12 @@ impl Array
     #[Macro]
     func(ptr: bool) opVisitBack(using const self, stmt: code)
     {
-        if !count return
+        if !count
+            return
 
         // Little trick to avoid labels. That way a 'continue' in the user code will work
         // correctly, that's why we decrement 'scan' before the use code.
-        scan := buffer + count
+        scan := &buffer[0] + count
 
         loop count
         {
@@ -177,68 +158,19 @@ impl Array
         }
     }
 
-    mtd realloc(newCapacity: u64)
-    {
-        if allocator == null
-            allocator = @getcontext().allocator
-
-        if newCapacity == 0
-        {
-            Memory.free(buffer, capacity * @sizeof(T), allocator)
-            buffer = null
-            capacity = 0
-            return
-        }
-
-        newBuffer := cast(^T) Memory.realloc(buffer, newCapacity * @sizeof(T), capacity * @sizeof(T), allocator)
-
-        // Need to call opPostMove on every existing element if the buffer has not been reallocated
-        // in place
-        #if Reflection.hasPostMove(T)
-        {
-            if buffer and newBuffer != buffer
-            {
-                @postmove(newBuffer, count)
-            }
-        }
-
-        buffer = newBuffer
-        capacity = newCapacity
-    }
-
     // Free the array content
     mtd free()
     {
-        if !buffer
+        if !count
             return
 
         // Need to drop every structs
         #if Reflection.hasDrop(T)
         {
-            @drop(buffer, count)
+            @drop(&buffer[0], count)
         }
 
-        Memory.free(buffer, capacity * @sizeof(T), allocator)
-        buffer = null
-        count, capacity  = 0
-    }
-
-    // Create a temporary array
-    #[Swag.Inline]
-    func(TA) createTemp()->Array'TA
-    {
-        var result: retval
-        result.allocator = @getcontext().tempAllocator
-        return result
-    }
-
-    // Create a working buffer
-    #[Swag.NotGeneric]
-    func createBuffer(size: u64)->Array'u8
-    {
-        var result: retval
-        result.resize(size)
-        return result
+        count = 0
     }
 
     // Returns true if the array is empty
@@ -249,35 +181,7 @@ impl Array
     #[Inline]
     mtd toSlice()->[..] T
     {
-        return @mkslice(buffer, count)
-    }
-
-    // Ensure the Array is big enough to store at least 'newCount' elements
-    // Number of valid elements does not change
-    mtd grow(newCount : u64)
-    {
-        if newCount <= capacity
-            return
-        newCapacity := Math.max(capacity * 2, newCount)
-        reserve(newCapacity)
-    }
-
-    // Reserve room for 'newCapacity' elements without changing the array count
-    // Number of valid elements does not change
-    mtd reserve(newCapacity: u64)
-    {
-        if !newCapacity
-        {
-            free()
-            buffer = null
-            count, capacity = 0
-            return
-        }
-
-        if newCapacity <= capacity
-            return
-
-        realloc(newCapacity)
+        return @mkslice(&buffer[0], count)
     }
 
     // Change the number of valid elements in the array
@@ -285,9 +189,9 @@ impl Array
     {
         if newCount == count
             return
+        Debug.assert(newCount < N, "size is too big")
         if newCount > count
         {
-            grow(newCount)
             @init(buffer + count, newCount - count)
             count = newCount
         }
@@ -304,7 +208,7 @@ impl Array
         #if Reflection.hasDrop(T)
         {
             loop count
-                @drop(buffer + @index)
+                @drop(&buffer[0] + @index)
         }
 
         count = 0
@@ -316,7 +220,7 @@ impl Array
     {
         if contains(value)
             return
-        grow(count + 1)
+        Debug.assert(count != N, "the array is full")
         buffer[count] =,nodrop value
         count += 1
     }
@@ -325,7 +229,7 @@ impl Array
     mtd add(value: T)
         #validif Reflection.canCopy(T)
     {
-        grow(count + 1)
+        Debug.assert(count != N, "the array is full")
         buffer[count] =,nodrop value
         count += 1
     }
@@ -350,7 +254,7 @@ impl Array
     // initialize them. Returns the address of the first element
     mtd emplaceAddress(num: u32 = 1)->^T
     {
-        grow(count + num)
+        Debug.assert(count + num <= N, "the array is full")
         count += num
         return buffer + count - num
     }
@@ -359,7 +263,7 @@ impl Array
     // Returns the address of the first element
     mtd emplaceInitAddress(num: u32 = 1)->^T
     {
-        grow(count + num)
+        Debug.assert(count + num <= N, "the array is full")
         count += num
         res := buffer + count - num
         @init(res, num)
@@ -369,7 +273,7 @@ impl Array
     // Move one element at the end of the array
     mtd emplace(value: *T)
     {
-        grow(count + 1)
+        Debug.assert(count != N, "the array is full")
         buffer[count] =,nodrop,move dref value
         count += 1
     }
@@ -383,7 +287,7 @@ impl Array
         Debug.assert(index <= count, "index out of range")
         if index == count
             return add(value)
-        grow(count + 1)
+        Debug.assert(count != N, "the array is full")
         count += 1
 
         #if Reflection.hasPostMove(T)
@@ -393,7 +297,7 @@ impl Array
         }
         #else
         {
-            Memory.copyOver(buffer + index + 1, buffer + index, @sizeof(T) * (count - 1 - index))
+            Memory.copyOver(&buffer[0] + index + 1, &buffer[0] + index, @sizeof(T) * (count - 1 - index))
         }
 
         buffer[index] =,nodrop value
@@ -412,7 +316,7 @@ impl Array
         Debug.assert(index <= count, "index out of range")
         if index == count
             return add(values)
-        grow(count + sliceCount)
+        Debug.assert(count + sliceCount <= N, "the array is full")
         count += sliceCount
 
         #if Reflection.hasPostMove(T)
@@ -422,7 +326,7 @@ impl Array
         }
         #else
         {
-            Memory.copyOver(buffer + index + sliceCount, buffer + index, @sizeof(T) * (count - sliceCount - index))
+            Memory.copyOver(&buffer[0] + index + sliceCount, &buffer[0] + index, @sizeof(T) * (count - sliceCount - index))
         }
 
         #if Reflection.hasPostCopy(T)
@@ -432,7 +336,7 @@ impl Array
         }
         #else
         {
-            Memory.copy(buffer + index, @dataof(values), @sizeof(T) * sliceCount)
+            Memory.copy(&buffer[0] + index, @dataof(values), @sizeof(T) * sliceCount)
         }
     }
 
@@ -444,7 +348,7 @@ impl Array
         Debug.assert(index <= count, "index out of range")
         if index == count
             return emplace(value)
-        grow(count + 1)
+        Debug.assert(count != N, "the array is full")
         count += 1
 
         #if Reflection.hasPostMove(T)
@@ -454,7 +358,7 @@ impl Array
         }
         #else
         {
-            Memory.copyOver(buffer + index + 1, buffer + index, @sizeof(T) * (count - 1 - index))
+            Memory.copyOver(&buffer[0] + index + 1, &buffer[0] + index, @sizeof(T) * (count - 1 - index))
         }
 
         buffer[index] =,nodrop,move dref value
@@ -473,7 +377,7 @@ impl Array
         Debug.assert(index <= count, "index out of range")
         if index == count
             return add(values)
-        grow(count + sliceCount)
+        Debug.assert(count + sliceCount <= N, "the array is full")
         count += sliceCount
 
         #if Reflection.hasPostMove(T)
@@ -483,7 +387,7 @@ impl Array
         }
         #else
         {
-            Memory.copyOver(buffer + index + @countof(values), buffer + index, @sizeof(T) * (count - sliceCount - index))
+            Memory.copyOver(&buffer[0] + index + @countof(values), &buffer[0] + index, @sizeof(T) * (count - sliceCount - index))
         }
 
         #if Reflection.hasPostMove(T)
@@ -493,7 +397,7 @@ impl Array
         }
         #else
         {
-            Memory.copy(buffer + index, @dataof(values), @sizeof(T) * sliceCount)
+            Memory.copy(&buffer[0] + index, @dataof(values), @sizeof(T) * sliceCount)
         }
     }
 
@@ -504,18 +408,13 @@ impl Array
         sliceCount := @countof(values)
         if !sliceCount
             return
-
-        // Do not add myself if there's not enough room (because we will reallocate)
-        if count + sliceCount > capacity
-            Debug.assert(@dataof(values) < buffer or @dataof(values) > buffer + capacity)
-
-        grow(count + sliceCount)
+        Debug.assert(count + sliceCount <= N, "the array is full")
         oldCount := count
         count += sliceCount
 
         #if Reflection.hasPostCopy(T)
         {
-            destPtr := buffer + oldCount
+            destPtr := &buffer[0] + oldCount
             loop sliceCount
             {
                 dref destPtr =,nodrop values[@index]
@@ -524,7 +423,7 @@ impl Array
         }
         #else
         {
-            Memory.copy(buffer + oldCount, @dataof(values), sliceCount * @sizeof(T))
+            Memory.copy(&buffer[0] + oldCount, @dataof(values), sliceCount * @sizeof(T))
         }
     }
 
@@ -536,7 +435,7 @@ impl Array
 
         #if !Reflection.hasPostMove(T) and !Reflection.hasDrop(T)
         {
-            Memory.copyOver(buffer + index, buffer + index + num, (count - (index + num)) * @sizeof(T))
+            Memory.copyOver(&buffer[0] + index, &buffer[0] + index + num, (count - (index + num)) * @sizeof(T))
         }
         #else
         {
@@ -556,7 +455,7 @@ impl Array
         Debug.assert(index < count, "index out of range")
         count -= 1
         if index == count
-            @drop(buffer + count)
+            @drop(&buffer[0] + count)
         else
             buffer[index] =,moveraw buffer[count]
     }
@@ -573,7 +472,7 @@ impl Array
         #if Reflection.hasDrop(T)
         {
             loop idx: numValues
-                @drop(buffer + index + idx)
+                @drop(&buffer[0] + index + idx)
         }
 
         if index >= count
@@ -590,7 +489,7 @@ impl Array
         }
         #else
         {
-            Memory.copyOver(buffer + index, buffer + index + numValues, @sizeof(T) * (count - index))
+            Memory.copyOver(&buffer[0] + index, &buffer[0] + index + numValues, @sizeof(T) * (count - index))
         }
     }
 
@@ -650,7 +549,7 @@ impl Array
     mtd frontPtr()->*T
     {
         Debug.assert(count > 0, "array is empty")
-        return buffer
+        return &buffer[0]
     }
 
     // Returns a copy of the last element
@@ -665,7 +564,7 @@ impl Array
     mtd backPtr()->*T
     {
         Debug.assert(count > 0, "array is empty")
-        return buffer + count - 1
+        return &buffer[count - 1]
     }
 
     // Returns a copy of the last element, and remove it from the array
@@ -682,7 +581,7 @@ impl Array
     mtd removeBack()
     {
         Debug.assert(count > 0, "array is empty")
-        @drop(buffer + count - 1)
+        @drop(&buffer[0] + count - 1)
         count -= 1
     }
 }
