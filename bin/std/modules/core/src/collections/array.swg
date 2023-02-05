@@ -596,7 +596,7 @@ impl Array
 
     // Remove the given 'value'
     // If not found, does nothing
-    mtd remove(value: T)
+    mtd(V) remove(value: V)
     {
         (idx, found) := Slice.findLinear(toSlice(), value)
         if !found return
@@ -605,7 +605,7 @@ impl Array
 
     // Remove the given 'value'
     // If not found, does nothing
-    mtd removeOrdered(value: T)
+    mtd(V) removeOrdered(value: V)
     {
         (idx, found) := Slice.findLinear(toSlice(), value)
         if !found return
@@ -613,7 +613,7 @@ impl Array
     }
 
     // Returns true if the given 'value' is in the array
-    mtd contains(value: T)->bool
+    mtd(V) contains(value: V)->bool
     {
         res := Slice.findLinear(toSlice(), value)
         return res.success

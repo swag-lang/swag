@@ -9,4 +9,6 @@ using Core
     b := a
     @assert(b.contains(String.from("a")))
     @assert(b.contains(String.from("b")))
+    @assert(b.contains("a"))
+    @assert(b.contains("b"))
 }
