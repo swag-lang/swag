@@ -416,9 +416,9 @@ bool SyntaxJob::doTupleOrAnonymousType(AstNode* parent, AstNode** result, bool i
         rootScope = sourceFile->scopeFile;
     else
         rootScope = newParent->ownerScope;
-    structNode->allocateExtension(ExtensionKind::AltScopes);
-    structNode->addAlternativeScope(currentScope);
+    structNode->content->addAlternativeScope(currentScope);
     SWAG_ASSERT(parent);
+    structNode->allocateExtension(ExtensionKind::AltScopes);
     structNode->extension->misc->alternativeNode = parent;
 
     auto newScope     = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, rootScope, true);
