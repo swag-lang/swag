@@ -260,6 +260,10 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, TypeInfo* toType, TypeI
         hint = Hnt(Hnt0022);
         msg  = Fmt(ErrNte(Err0418, forNote), fromType->getDisplayNameC(), toType->getDisplayNameC());
     }
+    else if (toType->isPointerArithmetic() && !fromType->isPointerArithmetic())
+    {
+        msg = Fmt(ErrNte(Err0041, forNote), fromType->getDisplayNameC(), toType->getDisplayNameC());
+    }
     else if (toType->isInterface() && ((fromType->isStruct()) || (fromType->isPointerTo(TypeInfoKind::Struct))))
     {
         auto fromTypeCpy = fromType;
@@ -2514,6 +2518,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         // Cannot cast from non arithmetic to arithmetic
         if (toType->isPointerArithmetic() && !fromType->isPointerArithmetic())
         {
+            // Fine to compare pointers for examples, but not to affect them.
             if (castFlags & CASTFLAG_FOR_AFFECT)
                 return castError(context, toType, fromType, fromNode, castFlags);
             return true;
