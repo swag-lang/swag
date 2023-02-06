@@ -1022,7 +1022,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
                 return false;
 
             // But this is ok to affect between tuple and struct even if they do not have the same fields names
-            if (!(isSameFlags & ISSAME_FOR_AFFECT))
+            if (!(isSameFlags & ISSAME_FOR_AFFECT) || (isSameFlags & ISSAME_EXACT))
             {
                 if (fields[i]->namedParam != other->fields[i]->namedParam)
                     return false;

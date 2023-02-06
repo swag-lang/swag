@@ -255,13 +255,13 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 2));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoVoid));
-        SWAG_VERIFY(!parameters->childs[1]->typeInfo->isSame(typeStruct, ISSAME_CAST | ISSAME_EXACT), context->report({parameters->childs[1], Fmt(Err(Err0077), name.c_str(), typeStruct->name.c_str())}));
+        SWAG_VERIFY(!parameters->childs[1]->typeInfo->isSame(typeStruct, ISSAME_EXACT), context->report({parameters->childs[1], Fmt(Err(Err0077), name.c_str(), typeStruct->name.c_str())}));
     }
     else if (name == g_LangSpec->name_opAffectSuffix)
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 2));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoVoid));
-        SWAG_VERIFY(!parameters->childs[1]->typeInfo->isSame(typeStruct, ISSAME_CAST | ISSAME_EXACT), context->report({parameters->childs[1], Fmt(Err(Err0077), name.c_str(), typeStruct->name.c_str())}));
+        SWAG_VERIFY(!parameters->childs[1]->typeInfo->isSame(typeStruct, ISSAME_EXACT), context->report({parameters->childs[1], Fmt(Err(Err0077), name.c_str(), typeStruct->name.c_str())}));
     }
     else if (name == g_LangSpec->name_opSlice)
     {
