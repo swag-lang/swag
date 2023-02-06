@@ -57,7 +57,7 @@ static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParamet
                 if (it1 != context.genericReplaceTypesFrom.end())
                     context.badSignatureInfos.genMatchFromNode = it1->second;
 
-                context.result = MatchResult::BadGenericMatch;
+                context.result = MatchResult::BadSignature;
             }
         }
         else

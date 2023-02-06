@@ -100,7 +100,6 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     Utf8 hintMsg;
     switch (match.result)
     {
-    case MatchResult::BadGenericMatch:
     case MatchResult::BadSignature:
     case MatchResult::BadGenericSignature:
         if (bi.badSignatureRequestedType->isPointer() ||
@@ -408,6 +407,12 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         diag->hint = hintMsg;
         result0.push_back(diag);
 
+        if (bi.genMatchFromNode)
+        {
+            auto note = new Diagnostic{ bi.genMatchFromNode, Fmt(Nte(Nte0075), bi.genMatchFromNode->typeInfo->getDisplayNameC()), DiagnosticLevel::Note };
+            result1.push_back(note);
+        }
+
         // A more specific cast message ?
         Utf8 castMsg, castHint;
         TypeManager::getCastErrorMsg(castMsg, castHint, bi.castErrorToType, bi.castErrorFromType, bi.castErrorFlags, true);
@@ -476,42 +481,6 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                   bi.badSignatureRequestedType->getDisplayNameC(),
                                   bi.badSignatureGivenType->getDisplayNameC())};
         result0.push_back(diag);
-        return;
-    }
-
-    case MatchResult::BadGenericMatch:
-    {
-        SWAG_ASSERT(callParameters);
-        diag = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
-                              Fmt(Err(Err0047),
-                                  bi.badGenMatch.c_str(),
-                                  bi.badSignatureRequestedType->getDisplayNameC(),
-                                  bi.badSignatureGivenType->getDisplayNameC())};
-        if (hintMsg.empty())
-            diag->hint = Diagnostic::isType(match.parameters[bi.badSignatureParameterIdx]->typeInfo);
-        else
-            diag->hint = hintMsg;
-        result0.push_back(diag);
-
-        if (bi.genMatchFromNode)
-        {
-            auto note = new Diagnostic{bi.genMatchFromNode, Fmt(Nte(Nte0075), bi.genMatchFromNode->typeInfo->getDisplayNameC()), DiagnosticLevel::Note};
-            result1.push_back(note);
-        }
-
-        if (destFuncDecl && bi.badSignatureParameterIdx < destFuncDecl->parameters->childs.size())
-        {
-            auto reqParam = destFuncDecl->parameters->childs[bi.badSignatureParameterIdx];
-            auto note     = new Diagnostic{reqParam, Fmt(Nte(Nte0066), reqParam->token.ctext(), refNiceName.c_str()), DiagnosticLevel::Note};
-            result1.push_back(note);
-        }
-        else
-        {
-            auto note = Diagnostic::hereIs(overload);
-            if (note)
-                result1.push_back(note);
-        }
-
         return;
     }
 
