@@ -166,16 +166,21 @@ struct SymbolMatchContext
         solvedCallParameters.clear();
         doneParameters.clear();
         genericParametersCallTypes.clear();
+        genericParametersCallTypesFrom.clear();
         genericParametersGenTypes.clear();
         genericReplaceTypes.clear();
         genericReplaceTypesFrom.clear();
         mapGenericTypesIndex.clear();
+        genericReplaceValues.clear();
         badSignatureInfos.clear();
-        flags              = 0;
-        result             = MatchResult::Ok;
-        cptResolved        = 0;
+
+        semContext  = nullptr;
+        flags       = 0;
+        result      = MatchResult::Ok;
+        cptResolved = 0;
+
         hasNamedParameters = false;
-        semContext         = nullptr;
+        autoOpCast         = false;
     }
 
     void resetTmp()
@@ -205,6 +210,7 @@ struct SymbolMatchContext
     int         cptResolved;
 
     bool hasNamedParameters;
+    bool autoOpCast;
 };
 
 struct TypeInfo

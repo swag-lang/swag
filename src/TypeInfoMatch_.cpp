@@ -1039,19 +1039,35 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         return;
     }
 
-    // If function is a generic instantiation, then we do not authorize CASTFLAG_AUTO_OPCAST (opCast), because
-    // it can lead to ambiguities depending on the instantiation order :
-    // First we instantate A, then B, then we call A which has an opCast to B (2558)
-    uint32_t castFlags = CASTFLAG_AUTO_OPCAST;
-
+    bool done          = false;
+    context.autoOpCast = false;
     if (declNode && declNode->kind == AstNodeKind::FuncDecl)
     {
         auto funcNode = CastAst<AstFuncDecl>(declNode, AstNodeKind::FuncDecl);
         if (funcNode->parameters && (funcNode->parameters->flags & AST_IS_GENERIC))
-            castFlags &= ~CASTFLAG_AUTO_OPCAST;
+        {
+            done = true;
+
+            auto cpyContext = context;
+            matchParameters(cpyContext, parameters, CASTFLAG_DEFAULT);
+            if (cpyContext.result != MatchResult::Ok)
+            {
+                matchParameters(context, parameters, CASTFLAG_AUTO_OPCAST);
+                if (context.semContext->result != ContextResult::Done)
+                    return;
+                if (context.result == MatchResult::Ok)
+                    context.autoOpCast = true;
+            }
+            else
+            {
+                context = cpyContext;
+            }
+        }
     }
 
-    matchParameters(context, parameters, castFlags);
+    if (!done)
+        matchParameters(context, parameters, CASTFLAG_AUTO_OPCAST);
+
     if (context.result == MatchResult::Ok)
         matchNamedParameters(context, parameters);
 

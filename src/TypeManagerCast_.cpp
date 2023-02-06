@@ -168,6 +168,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
             fromNode->extension->misc->resolvedUserOpSymbolOverload = toAffect[0];
         }
 
+        context->castFlagsResult |= CASTFLAG_RESULT_AUTO_OPCAST;
         return true;
     }
 
@@ -242,6 +243,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
             fromNode->semFlags |= AST_SEM_USER_CAST;
         }
 
+        context->castFlagsResult |= CASTFLAG_RESULT_AUTO_OPCAST;
         return true;
     }
 

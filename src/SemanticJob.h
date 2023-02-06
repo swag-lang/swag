@@ -106,8 +106,9 @@ struct OneMatch
     OneTryMatch*    oneOverload    = nullptr;
     TypeInfo*       typeWasForced  = nullptr;
 
-    bool ufcs   = false;
-    bool remove = false;
+    bool ufcs       = false;
+    bool remove     = false;
+    bool autoOpCast = false;
 
     void reset()
     {
@@ -118,6 +119,7 @@ struct OneMatch
         typeWasForced  = nullptr;
         ufcs           = false;
         remove         = false;
+        autoOpCast     = false;
     }
 };
 
