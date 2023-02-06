@@ -949,16 +949,13 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
     if (!TypeInfo::isSame(to, isSameFlags))
         return false;
 
-    bool duckTyping = isTuple() || to->isTuple();
-    auto other      = CastTypeInfo<TypeInfoStruct>(to, to->kind);
+    bool hasTuple = isTuple() || to->isTuple();
+    auto other    = CastTypeInfo<TypeInfoStruct>(to, to->kind);
 
     // Do not compare names if one is a tuple
     bool sameName = declNode->ownerScope == to->declNode->ownerScope && structName == other->structName;
-    if (!duckTyping && !sameName)
+    if (!hasTuple && !sameName)
         return false;
-
-    if (duckTyping)
-        int a = 0;
 
     // Compare generic parameters
     if (!(flags & TYPEINFO_GENERATED_TUPLE) && !(other->flags & TYPEINFO_GENERATED_TUPLE))
@@ -991,23 +988,17 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
     }
 
     // Compare field by field
-    if (!(isSameFlags & ISSAME_CAST) && !duckTyping)
+    bool compareFields = false;
+    if (!hasTuple && !(isSameFlags & ISSAME_CAST))
     {
         if ((flags & TYPEINFO_GENERIC) != (other->flags & TYPEINFO_GENERIC))
             return false;
         if (scope != other->scope)
             return false;
-        int childCount = (int) fields.size();
-        if (childCount != other->fields.size())
-            return false;
 
-        for (int i = 0; i < childCount; i++)
-        {
-            if (!fields[i]->isSame(other->fields[i], isSameFlags))
-                return false;
-        }
+        compareFields = true;
     }
-    else if (duckTyping && !sameName)
+    else if (hasTuple && !sameName)
     {
         if (!(flags & TYPEINFO_GENERATED_TUPLE) && !(other->flags & TYPEINFO_GENERATED_TUPLE))
         {
@@ -1015,18 +1006,22 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
                 return false;
         }
 
+        compareFields = true;
+    }
+
+    if (compareFields)
+    {
         int childCount = (int) fields.size();
         if (childCount != other->fields.size())
             return false;
 
-        // Two tuple types will match if their content is equal, including specific user names
-        // {x: s32} := {y: s32}
         for (int i = 0; i < childCount; i++)
         {
+            // Compare field type
             if (!fields[i]->isSame(other->fields[i], isSameFlags))
                 return false;
 
-            // But this is ok to affect one tuple to another even if they do not have the same fields names
+            // But this is ok to affect between tuple and struct even if they do not have the same fields names
             if (!(isSameFlags & ISSAME_FOR_AFFECT))
             {
                 if (fields[i]->namedParam != other->fields[i]->namedParam)
