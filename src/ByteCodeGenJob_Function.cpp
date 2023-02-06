@@ -1570,8 +1570,6 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             auto r0 = reserveRegisterRC(context);
             toFree.push_back(r0);
 
-            // If this is a reference, then we push the type pointed by it, so that the user will receive a real type,
-            // and not a reference to a type
             SWAG_ASSERT(child->computedValue);
             SWAG_ASSERT(child->computedValue->storageSegment2);
             SWAG_ASSERT(child->computedValue->storageOffset2 != UINT32_MAX);
@@ -1581,9 +1579,8 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
             maxCallParams++;
 
-            // For a big data, or a reference, we directly set the data pointer in the 'any' instead
-            // of pushing it to the stack.
-            if ((typeParam->flags & TYPEINFO_RETURN_BY_COPY) || typeParam->isAutoConstPointerRef())
+            // For a big data we directly set the data pointer in the 'any' instead of pushing it to the stack.
+            if (typeParam->flags & TYPEINFO_RETURN_BY_COPY)
             {
                 emitInstruction(context, ByteCodeOp::PushRAParam, child->resultRegisterRC[0]);
                 maxCallParams++;
