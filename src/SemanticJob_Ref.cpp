@@ -527,7 +527,15 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
-        SWAG_VERIFY(typePtr->pointedType != g_TypeMgr->typeInfoVoid, context->report({arrayNode->access, Err(Err0486)}));
+
+        if (typePtr->pointedType->isVoid())
+        {
+            Diagnostic diag{arrayNode->access, Err(Err0486)};
+            diag.hint = Hnt(Hnt0110);
+            diag.addRange(arrayNode->array, Diagnostic::isType(typePtr));
+            return context->report(diag);
+        }
+
         arrayNode->typeInfo = typePtr->pointedType;
         arrayNode->flags |= AST_ARRAY_POINTER_REF;
         arrayNode->array->flags |= AST_ARRAY_POINTER_REF;
@@ -778,7 +786,15 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
-        SWAG_VERIFY(typePtr->pointedType != g_TypeMgr->typeInfoVoid, context->report({arrayNode->access, Err(Err0486)}));
+
+        if (typePtr->pointedType->isVoid())
+        {
+            Diagnostic diag{arrayNode->access, Err(Err0486)};
+            diag.hint = Hnt(Hnt0110);
+            diag.addRange(arrayNode->array, Diagnostic::isType(typePtr));
+            return context->report(diag);
+        }
+
         arrayNode->typeInfo = typePtr->pointedType;
         setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
         break;

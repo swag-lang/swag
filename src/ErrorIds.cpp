@@ -323,7 +323,7 @@ void initErrors()
     SWAG_ERROR(Err0497, "'%s' second parameter should be a pointer to type '%s', but points to '%s'");
     SWAG_ERROR(Err0496, "'%s' second parameter should be a pointer, but is '%s'");
     SWAG_ERROR(Err0787, "'%s' should have a pointer as a first parameter");
-    SWAG_ERROR(Err0711, "'%s' should have an arithmetic pointer as a first parameter");
+    SWAG_ERROR(Err0711, "'%s' should have a block pointer as a first parameter");
     SWAG_ERROR(Err0858, "'%s' should not be followed by a line break %s");
     SWAG_ERROR(Err0137, "'%s' should not be used inside a struct special function ('%s' in that case)");
     SWAG_ERROR(Err0535, "'%s' should only be used before a function call that can raise errors (a function marked with 'throw')");
@@ -473,8 +473,8 @@ void initErrors()
     SWAG_ERROR(Err0352, "cannot deduce the generic parameters when calling %s '%s'");
     SWAG_ERROR(Err0308, "cannot deduce the variable type because the expression is 'null'");
     SWAG_ERROR(Err0603, "cannot delete file '%s'");
-    SWAG_ERROR(Err0194, "cannot dereference '%s' by index because its type does not allow pointer arithmetic");
-    SWAG_ERROR(Err0486, "cannot dereference a pointer to 'void'");
+    SWAG_ERROR(Err0194, "cannot dereference '%s' by index because this is a pointer to value (does not allow pointer arithmetic)");
+    SWAG_ERROR(Err0486, "cannot dereference a 'void' pointer");
     SWAG_ERROR(Err0482, "cannot dereference a tuple like a pointer or an array");
     SWAG_ERROR(Err0481, "cannot dereference type '%s'");
     SWAG_ERROR(Err0094, "cannot discard a function call that returns nothing");
@@ -496,7 +496,7 @@ void initErrors()
     SWAG_ERROR(Err0680, "cannot initialize an interface member");
     SWAG_ERROR(Err0808, "cannot instantiate the generic %s '%s' with an unsized value");
     SWAG_ERROR(Err0042, "cannot instantiate the generic function '%s' because of missing contextual types replacements");
-    SWAG_ERROR(Err0041, "cannot cast from a value pointer ('%s') to a block pointer ('%s')");
+    SWAG_ERROR(Err0041, "cannot cast from a pointer to value ('%s') to a pointer to block ('%s')");
     SWAG_ERROR(Err0715, "cannot instantiate the generic function '%s' because of missing generic arguments");
     SWAG_ERROR(Err0039, "cannot instantiate the generic struct '%s' because of missing contextual types replacements");
     SWAG_ERROR(Err0721, "cannot instantiate the generic struct '%s' because of missing generic arguments");
@@ -519,7 +519,7 @@ void initErrors()
     SWAG_ERROR(Err0513, "cannot resolve the module dependency '%s' ('location' is empty)");
     SWAG_ERROR(Err0672, "cannot resolve the struct '%s' because the type '%s' is generic");
     SWAG_ERROR(Err0320, "cannot slice '%s' because the special function 'opSlice' has not been found in type '%s'");
-    SWAG_ERROR(Err0193, "cannot slice a pointer which does not allow pointer arithmetic");
+    SWAG_ERROR(Err0193, "cannot slice a pointer to value (does not allow pointer arithmetic)");
     SWAG_ERROR(Err0465, "cannot take the address of %s");
     SWAG_ERROR(Err0469, "cannot take the address of a constant of type '%s'");
     SWAG_ERROR(Err0462, "cannot take the address of a function parameter of type '%s'");
@@ -1126,6 +1126,11 @@ void initErrors()
     SWAG_ERROR(Hnt0107, "this should be replaced with '#validif'");
     SWAG_ERROR(Hnt0108, "this should be a pointer to '%s'");
     SWAG_ERROR(Hnt0109, "this is not allowed on a non pointer type");
+    SWAG_ERROR(Hnt0110, "this is not allowed because 'void' does not have a size");
+    SWAG_ERROR(Hnt0111, nullptr);
+    SWAG_ERROR(Hnt0112, nullptr);
+    SWAG_ERROR(Hnt0113, nullptr);
+    SWAG_ERROR(Hnt0114, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

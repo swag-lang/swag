@@ -4,6 +4,6 @@
 #global testerror
 #test
 {
-	var ptr: *void
+	var ptr: ^void
 	ptr[0] = 0
 }
