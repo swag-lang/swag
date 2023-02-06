@@ -2342,6 +2342,10 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
 {
     auto toTypePointer = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
 
+    auto isSameFlags = ISSAME_CAST;
+    if (castFlags & CASTFLAG_FOR_AFFECT)
+        isSameFlags |= ISSAME_FOR_AFFECT;
+
     if (fromType->isPointer())
     {
         // Convert from pointer to ref : only if authorized
@@ -2350,13 +2354,13 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
 
         // Compare pointed types
         auto fromTypePointer = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
-        if (toTypePointer->pointedType->isSame(fromTypePointer->pointedType, ISSAME_CAST))
+        if (toTypePointer->pointedType->isSame(fromTypePointer->pointedType, isSameFlags))
             return true;
     }
     else if (toType->isConst())
     {
         // Compare pointed types
-        if ((castFlags & CASTFLAG_PARAMS) && toTypePointer->pointedType->isSame(fromType, ISSAME_CAST))
+        if ((castFlags & CASTFLAG_PARAMS) && toTypePointer->pointedType->isSame(fromType, isSameFlags))
             return true;
     }
 

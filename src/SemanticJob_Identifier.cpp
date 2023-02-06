@@ -393,7 +393,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         if (nodeCall->typeInfo->isLambdaClosure() && (nodeCall->typeInfo->declNode->semFlags & AST_SEM_PENDING_LAMBDA_TYPING))
             resolvePendingLambdaTyping(nodeCall, &oneMatch, i);
 
-        uint32_t castFlags = CASTFLAG_AUTO_OPCAST | CASTFLAG_ACCEPT_PENDING | CASTFLAG_PARAMS | CASTFLAG_PTR_REF;
+        uint32_t castFlags = CASTFLAG_AUTO_OPCAST | CASTFLAG_ACCEPT_PENDING | CASTFLAG_PARAMS | CASTFLAG_PTR_REF | CASTFLAG_FOR_AFFECT;
         if (i == 0 && oneMatch.ufcs)
             castFlags |= CASTFLAG_UFCS;
 

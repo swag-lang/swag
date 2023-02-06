@@ -8,7 +8,7 @@ func toto(ptr: const ^u8)
 
 #test
 {
-    toto(cast(const *u8) "toto")
+    toto(cast(const ^u8) "toto")
 }
 
 /*#foreignlib "user32"

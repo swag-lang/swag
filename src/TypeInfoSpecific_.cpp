@@ -949,16 +949,16 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
     if (!TypeInfo::isSame(to, isSameFlags))
         return false;
 
-    bool forTuple = isTuple();
-    if (forTuple != to->isTuple() && !(isSameFlags & ISSAME_FOR_AFFECT))
-        return false;
+    bool duckTyping = isTuple() || to->isTuple();
+    auto other      = CastTypeInfo<TypeInfoStruct>(to, to->kind);
 
-    auto other = CastTypeInfo<TypeInfoStruct>(to, to->kind);
-
-    // Do not compare names for tuples
+    // Do not compare names if one is a tuple
     bool sameName = declNode->ownerScope == to->declNode->ownerScope && structName == other->structName;
-    if (!forTuple && !sameName)
+    if (!duckTyping && !sameName)
         return false;
+
+    if (duckTyping)
+        int a = 0;
 
     // Compare generic parameters
     if (!(flags & TYPEINFO_GENERATED_TUPLE) && !(other->flags & TYPEINFO_GENERATED_TUPLE))
@@ -991,7 +991,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
     }
 
     // Compare field by field
-    if (!(isSameFlags & ISSAME_CAST) && !forTuple)
+    if (!(isSameFlags & ISSAME_CAST) && !duckTyping)
     {
         if ((flags & TYPEINFO_GENERIC) != (other->flags & TYPEINFO_GENERIC))
             return false;
@@ -1007,7 +1007,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
                 return false;
         }
     }
-    else if (forTuple && !sameName)
+    else if (duckTyping && !sameName)
     {
         if (!(flags & TYPEINFO_GENERATED_TUPLE) && !(other->flags & TYPEINFO_GENERATED_TUPLE))
         {

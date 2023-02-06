@@ -148,7 +148,7 @@ impl Md5
         dref a += b
     }
 
-    func transform(state: [4] u32, block: const *u8)
+    func transform(state: [4] u32, block: const ^u8)
     {
         a := state[0]
         b := state[1]

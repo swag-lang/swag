@@ -127,7 +127,7 @@ impl Decoder
         crc.update(result.datas)
 
         var vcrc: u32
-        stream.peek32Be(cast(*u8) &vcrc)
+        stream.peek32Be(cast(^u8) &vcrc)
         if vcrc != crc.crc
             throw "invalid checksum"
 
@@ -442,7 +442,7 @@ impl Decoder
         stream.init(buffer)
 
         var signature: u64 = undefined
-        stream.peekBytes(@sizeof(signature), cast(*u8) &signature)
+        stream.peekBytes(@sizeof(signature), cast(^u8) &signature)
         if signature != 0x0a1a0a0d474e5089 throw "not a png"
 
         var result:     retval
@@ -459,8 +459,8 @@ impl Decoder
             // Peek a chunk header only if it's not already done
             if !chIsHere
             {
-                stream.peek32Be(cast(*u8) &ch.length)
-                stream.peek32(cast(*u8) &ch.type)
+                stream.peek32Be(cast(^u8) &ch.length)
+                stream.peek32(cast(^u8) &ch.type)
             }
 
             chIsHere = false
@@ -499,8 +499,8 @@ impl Decoder
                 {
                     chunk := readChunk(ch)
                     iDataBuf.add(chunk.datas)
-                    stream.peek32Be(cast(*u8) &ch.length)
-                    stream.peek32(cast(*u8) &ch.type)
+                    stream.peek32Be(cast(^u8) &ch.length)
+                    stream.peek32(cast(^u8) &ch.type)
                     if stream.eof
                         throw "invalid chunk"
                 }

@@ -440,7 +440,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             context.result = MatchResult::BadSignature;
         }
 
-        uint32_t castFlags = CASTFLAG_NO_ERROR | CASTFLAG_ACCEPT_PENDING;
+        uint32_t castFlags = CASTFLAG_NO_ERROR | CASTFLAG_ACCEPT_PENDING | CASTFLAG_FOR_AFFECT;
         if (context.flags & SymbolMatchContext::MATCH_UNCONST)
             castFlags |= CASTFLAG_UNCONST;
         if (context.flags & SymbolMatchContext::MATCH_UFCS && i == 0)

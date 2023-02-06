@@ -69,7 +69,7 @@ func getChar(buffer: const ^u8)->{const ^u8, rune}
 	const str = "⺁⺆⻇"
 
 	var c: rune
-	var ptr: const *u8 = @dataof(str)
+	var ptr: const ^u8 = @dataof(str)
 	cpt := 0
 	loop
 	{

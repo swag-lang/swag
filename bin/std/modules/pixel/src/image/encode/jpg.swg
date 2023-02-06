@@ -655,7 +655,7 @@ impl Encoder
         }
     }
 
-    mtd processDU(componentDU: ^s8, fdtbl: ^f32, dC: ^s16, hTDC, hTAC: ^BitString)
+    mtd processDU(componentDU: ^s8, fdtbl: ^f32, dC: *s16, hTDC, hTAC: ^BitString)
     {
         eob       := hTAC[0x00]
         m16Zeroes := hTAC[0xF0]
@@ -664,8 +664,8 @@ impl Encoder
 
         loop i: 64
             du[ZigZag[i]] = duDct[i]
-        diff := du[0] - dC[0]
-        dC[0] = du[0]
+        diff := du[0] - dref dC
+        dref dC = du[0]
 
         if diff == 0
             writeBits(hTDC[0])

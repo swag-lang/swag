@@ -1247,7 +1247,8 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
             return context->report(diag, &note);
         }
 
-        if (!TypeManager::makeCompatibles(context, funcNode->returnType->typeInfo, nullptr, child, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK | CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT))
+        uint32_t castFlags = CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK | CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT;
+        if (!TypeManager::makeCompatibles(context, funcNode->returnType->typeInfo, nullptr, child, castFlags))
         {
             Diagnostic diag{child, Fmt(Err(Err0770), funcNode->returnType->typeInfo->getDisplayNameC(), child->typeInfo->getDisplayNameC())};
             Diagnostic note{funcNode->returnTypeDeducedNode->childs.front(), Nte(Nte0063), DiagnosticLevel::Note};
