@@ -1,3 +1,4 @@
+#global testerror
 struct Node {x: s32;}
 struct(T) Arr {}
 

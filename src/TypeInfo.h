@@ -98,6 +98,7 @@ enum class MatchResult
     BadSignature,
     BadGenericMatch,
     BadGenericType,
+    CannotDeduceGenericType,
     BadGenericSignature,
     InvalidNamedParameter,
     MissingNamedParameter,

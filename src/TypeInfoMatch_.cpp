@@ -103,6 +103,16 @@ static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParamet
                     }
                 }
 
+                if (wantedTypeInfo->isKindGeneric() && regTypeInfo->isListTuple())
+                {
+                    context.badSignatureInfos.badSignatureParameterIdx  = idxParam;
+                    context.badSignatureInfos.badSignatureRequestedType = wantedTypeInfo;
+                    context.badSignatureInfos.badSignatureGivenType     = callTypeInfo;
+                    SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
+                    context.result = MatchResult::CannotDeduceGenericType;
+                    return;
+                }
+
                 // Associate the generic type with that concrete one
                 context.genericReplaceTypes[wantedTypeInfo->name]     = regTypeInfo;
                 context.genericReplaceTypesFrom[wantedTypeInfo->name] = callParameter;

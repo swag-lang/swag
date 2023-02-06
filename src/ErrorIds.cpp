@@ -704,7 +704,7 @@ void initErrors()
     SWAG_ERROR(Err0751, "the function '%s' has the 'Swag.NotGeneric' attribute but seems to be generic");
     SWAG_ERROR(Err0098, "the function '%s' should be called with '()' and not curlies (this is reserved for struct initialization)");
     SWAG_ERROR(Err0766, "the function cannot have a return type because it is flagged with the 'Swag.NoReturn' attribute");
-    SWAG_ERROR(Err0777, "the generic type replacement for the %s of %s has generated an invalid type ('%s' becomes '%s')");
+    SWAG_ERROR(Err0777, "the %s of %s has generated an invalid generic type ('%s' becomes '%s')");
     SWAG_ERROR(Err0123, "the generic value '%s' has already been deduced from parameters to be '%s' (and '%s' is provided here)");
     SWAG_ERROR(Err0085, "the identifier '%s' cannot be dereferenced like a struct or a pointer (type is '%s')");
     SWAG_ERROR(Err0110, "the identifier '%s' cannot be found in %s '%s'");
@@ -908,7 +908,7 @@ void initErrors()
     SWAG_ERROR(Err0128, "the type constraint cannot be evaluated at compile time");
     SWAG_ERROR(Err0118, "the type constraint has failed on type '%s'");
     SWAG_ERROR(Err0678, "a type constraint should return a 'bool' value ('%s' provided)");
-    SWAG_ERROR(Err0618, nullptr);
+    SWAG_ERROR(Err0618, "cannot deduce the generic type '%s' from type '%s'");
     SWAG_ERROR(Err0696, nullptr);
     SWAG_ERROR(Err0619, nullptr);
     SWAG_ERROR(Err0621, nullptr);

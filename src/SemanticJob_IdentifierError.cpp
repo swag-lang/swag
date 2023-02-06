@@ -426,7 +426,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                 result1.push_back(note);
             }
         }
-        else if(diag->hint.empty())
+        else if (diag->hint.empty())
             diag->hint = castHint;
 
         // Here is
@@ -464,6 +464,17 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                   bi.badSignatureGivenType->getDisplayNameC(),
                                   bi.badSignatureRequestedType->getDisplayNameC())};
         diag->hint = Fmt(Hnt(Hnt0063), bi.badSignatureRequestedType->getDisplayNameC());
+        result0.push_back(diag);
+        return;
+    }
+
+    case MatchResult::CannotDeduceGenericType:
+    {
+        SWAG_ASSERT(callParameters);
+        diag = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
+                              Fmt(Err(Err0618),
+                                  bi.badSignatureRequestedType->getDisplayNameC(),
+                                  bi.badSignatureGivenType->getDisplayNameC())};
         result0.push_back(diag);
         return;
     }

@@ -1,3 +1,4 @@
+#global testerror
 struct A { x: s32; }
 
 func(T) toto(x: T)
