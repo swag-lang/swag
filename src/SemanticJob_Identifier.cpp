@@ -1646,6 +1646,24 @@ bool SemanticJob::isFunctionButNotACall(SemanticContext* context, AstNode* node,
     return false;
 }
 
+static bool areGenericReplaceTypesIdentical(TypeInfo* typeInfo, OneGenericMatch& match)
+{
+    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
+
+    SWAG_ASSERT(match.genericReplaceTypes.size() == typeFunc->replaceTypes.size());
+    for (auto rt : match.genericReplaceTypes)
+    {
+        auto it = typeFunc->replaceTypes.find(rt.first);
+        SWAG_ASSERT(it != typeFunc->replaceTypes.end());
+        if (rt.second != it->second)
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, uint32_t flags)
 {
     bool  justCheck        = flags & MIP_JUST_CHECK;
@@ -1970,10 +1988,46 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
     // to create an instance with the exact type.
     // We only test the first match here, because the filtering of matches would have remove it if some other instances
     // without autoOpCast are present.
-    if (matches.size() > 0 && matches[0]->autoOpCast && (genericMatches.size() > 0 || genericMatchesSI.size() > 0))
+    if (matches.size() > 0 && matches[0]->autoOpCast && genericMatches.size() > 0)
     {
-        prevMatchesCount = 0;
-        matches.clear();
+        VectorNative<OneGenericMatch*> newGenericMatches;
+        for (int im = 0; im < matches.size(); im++)
+        {
+            for (int i = 0; i < genericMatches.size(); i++)
+            {
+                auto same = areGenericReplaceTypesIdentical(matches[im]->oneOverload->overload->typeInfo, *genericMatches[i]);
+                if (!same)
+                    newGenericMatches.push_back(genericMatches[i]);
+            }
+        }
+
+        genericMatches = move(newGenericMatches);
+        if (!genericMatches.empty())
+        {
+            prevMatchesCount = 0;
+            matches.clear();
+        }
+    }
+
+    if (matches.size() > 0 && matches[0]->autoOpCast && genericMatchesSI.size() > 0)
+    {
+        VectorNative<OneGenericMatch*> newGenericMatchesSI;
+        for (int im = 0; im < matches.size(); im++)
+        {
+            for (int i = 0; i < genericMatchesSI.size(); i++)
+            {
+                auto same = areGenericReplaceTypesIdentical(matches[im]->oneOverload->overload->typeInfo, *genericMatchesSI[i]);
+                if (!same)
+                    newGenericMatchesSI.push_back(genericMatchesSI[i]);
+            }
+        }
+
+        genericMatchesSI = move(newGenericMatchesSI);
+        if (!genericMatchesSI.empty())
+        {
+            prevMatchesCount = 0;
+            matches.clear();
+        }
     }
 
     SWAG_CHECK(filterMatchesInContext(context, matches));

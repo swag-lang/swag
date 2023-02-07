@@ -64,7 +64,8 @@ namespace Report
 
             if (genCheckNode &&
                 genCheckNode->ownerStructScope &&
-                genCheckNode->ownerStructScope->owner->typeInfo)
+                genCheckNode->ownerStructScope->owner->typeInfo &&
+                genCheckNode->ownerStructScope->owner->typeInfo->kind == TypeInfoKind::Struct)
             {
                 auto typeStruct = CastTypeInfo<TypeInfoStruct>(genCheckNode->ownerStructScope->owner->typeInfo, TypeInfoKind::Struct);
                 auto remarks    = Ast::computeGenericParametersReplacement(typeStruct->replaceTypes);

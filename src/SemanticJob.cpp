@@ -1,14 +1,10 @@
 #include "pch.h"
 #include "SemanticJob.h"
-#include "SymTable.h"
 #include "ThreadManager.h"
 #include "Ast.h"
-#include "AstNode.h"
-#include "SourceFile.h"
 #include "Module.h"
 #include "ErrorIds.h"
 #include "Timer.h"
-#include "Allocator.h"
 #include "TypeManager.h"
 
 bool SemanticJob::setUnRef(AstNode* node)
