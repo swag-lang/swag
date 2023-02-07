@@ -1648,17 +1648,20 @@ bool SemanticJob::isFunctionButNotACall(SemanticContext* context, AstNode* node,
 
 static bool areGenericReplaceTypesIdentical(TypeInfo* typeInfo, OneGenericMatch& match)
 {
-    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
+    if (typeInfo->kind != TypeInfoKind::FuncAttr)
+        return false;
 
-    SWAG_ASSERT(match.genericReplaceTypes.size() == typeFunc->replaceTypes.size());
+    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
+    if (match.genericReplaceTypes.size() != typeFunc->replaceTypes.size())
+        return false;
+
     for (auto rt : match.genericReplaceTypes)
     {
         auto it = typeFunc->replaceTypes.find(rt.first);
-        SWAG_ASSERT(it != typeFunc->replaceTypes.end());
-        if (rt.second != it->second)
-        {
+        if (it == typeFunc->replaceTypes.end())
             return false;
-        }
+        if (rt.second != it->second)
+            return false;
     }
 
     return true;
@@ -1983,59 +1986,25 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
     SWAG_CHECK(filterMatches(context, matches));
     if (context->result != ContextResult::Done)
         return true;
-
-    // If to match an instance, we always need an automatic opCast, then we only keep generic matches in order
-    // to create an instance with the exact type.
-    // We only test the first match here, because the filtering of matches would have remove it if some other instances
-    // without autoOpCast are present.
-    if (matches.size() > 0 && matches[0]->autoOpCast && genericMatches.size() > 0)
-    {
-        VectorNative<OneGenericMatch*> newGenericMatches;
-        for (int im = 0; im < matches.size(); im++)
-        {
-            for (int i = 0; i < genericMatches.size(); i++)
-            {
-                auto same = areGenericReplaceTypesIdentical(matches[im]->oneOverload->overload->typeInfo, *genericMatches[i]);
-                if (!same)
-                    newGenericMatches.push_back(genericMatches[i]);
-            }
-        }
-
-        genericMatches = move(newGenericMatches);
-        if (!genericMatches.empty())
-        {
-            prevMatchesCount = 0;
-            matches.clear();
-        }
-    }
-
-    if (matches.size() > 0 && matches[0]->autoOpCast && genericMatchesSI.size() > 0)
-    {
-        VectorNative<OneGenericMatch*> newGenericMatchesSI;
-        for (int im = 0; im < matches.size(); im++)
-        {
-            for (int i = 0; i < genericMatchesSI.size(); i++)
-            {
-                auto same = areGenericReplaceTypesIdentical(matches[im]->oneOverload->overload->typeInfo, *genericMatchesSI[i]);
-                if (!same)
-                    newGenericMatchesSI.push_back(genericMatchesSI[i]);
-            }
-        }
-
-        genericMatchesSI = move(newGenericMatchesSI);
-        if (!genericMatchesSI.empty())
-        {
-            prevMatchesCount = 0;
-            matches.clear();
-        }
-    }
-
     SWAG_CHECK(filterMatchesInContext(context, matches));
     if (context->result != ContextResult::Done)
         return true;
     SWAG_CHECK(filterGenericMatches(context, matches, genericMatches));
     if (context->result != ContextResult::Done)
         return true;
+    SWAG_CHECK(filterGenericMatches(context, matches, genericMatchesSI));
+    if (context->result != ContextResult::Done)
+        return true;
+
+    // If to match an instance, we always need an automatic opCast, then we only keep generic matches in order
+    // to create an instance with the exact type.
+    // We only test the first match here, because the filtering of matches would have remove it if some other instances
+    // without autoOpCast are present.
+    if (matches.size() > 0 && matches[0]->autoOpCast && (genericMatches.size() > 0 || genericMatchesSI.size() > 0))
+    {
+        prevMatchesCount = 0;
+        matches.clear();
+    }
 
     // All choices were removed because of #validif
     if (!genericMatches.size() && genericMatchesSI.size() && matches.empty() && prevMatchesCount)
@@ -3771,40 +3740,39 @@ static int scopeCost(Scope* from, Scope* to)
 
 bool SemanticJob::filterGenericMatches(SemanticContext* context, VectorNative<OneMatch*>& matches, VectorNative<OneGenericMatch*>& genMatches)
 {
-    if (genMatches.size() > 1)
+    // We have a match and more than one generic match
+    // We need to be sure than instantiated another generic match will not be better than keeping
+    // the already instantiated one
+    if (genMatches.size() > 1 && matches.size() == 1)
     {
-        // We have a match and more than one generic match
-        // We need to be sure than instantiated another generic match will not be better than keeping
-        // the already instantiated one
-        if (genMatches.size() > 1 && matches.size() == 1)
+        auto idCost       = scopeCost(context->node->ownerScope, matches[0]->symbolOverload->node->ownerScope);
+        auto bestIsIdCost = true;
+        int  bestGenId    = 0;
+
+        for (int i = 0; i < genMatches.size(); i++)
         {
-            auto idCost       = scopeCost(context->node->ownerScope, matches[0]->symbolOverload->node->ownerScope);
-            auto bestIsIdCost = true;
-            int  bestGenId    = 0;
-
-            for (int i = 0; i < genMatches.size(); i++)
+            auto& p    = genMatches[i];
+            auto  cost = scopeCost(context->node->ownerScope, p->symbolOverload->node->ownerScope);
+            if (cost < idCost)
             {
-                auto& p    = genMatches[i];
-                auto  cost = scopeCost(context->node->ownerScope, p->symbolOverload->node->ownerScope);
-                if (cost < idCost)
-                {
-                    bestIsIdCost = false;
-                    bestGenId    = i;
-                    idCost       = cost;
-                }
-            }
-
-            if (!bestIsIdCost)
-            {
-                matches.clear();
-                auto temp = genMatches[bestGenId];
-                genMatches.clear();
-                genMatches.push_back(temp);
-                return true;
+                bestIsIdCost = false;
+                bestGenId    = i;
+                idCost       = cost;
             }
         }
 
-        // Take the most "specialized" generic match, i.e. the one with the more 'genericReplaceTypes'
+        if (!bestIsIdCost)
+        {
+            matches.clear();
+            auto temp = genMatches[bestGenId];
+            genMatches.clear();
+            genMatches.push_back(temp);
+        }
+    }
+
+    // Take the most "specialized" generic match, i.e. the one with the more 'genericReplaceTypes'
+    if (genMatches.size() > 1)
+    {
         int bestS = -1;
         for (int i = 0; i < genMatches.size(); i++)
         {
@@ -3820,6 +3788,26 @@ bool SemanticJob::filterGenericMatches(SemanticContext* context, VectorNative<On
                 i--;
             }
         }
+    }
+
+    // We eliminate all generic matches that will create an already existing match.
+    // This way we can keep some matches with autoOpCast if we have no choice (we will not try to
+    // instantiate 'without' autoOpCast, because it would result in a autoOpCast too.
+    if (matches.size() && genMatches.size())
+    {
+        VectorNative<OneGenericMatch*> newGenericMatches;
+        newGenericMatches.reserve((int) genMatches.size());
+        for (int im = 0; im < matches.size(); im++)
+        {
+            for (int i = 0; i < genMatches.size(); i++)
+            {
+                auto same = areGenericReplaceTypesIdentical(matches[im]->oneOverload->overload->typeInfo, *genMatches[i]);
+                if (!same)
+                    newGenericMatches.push_back_once(genMatches[i]);
+            }
+        }
+
+        genMatches = move(newGenericMatches);
     }
 
     return true;

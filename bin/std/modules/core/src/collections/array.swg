@@ -330,6 +330,14 @@ impl Array
         count += 1
     }
 
+    // Move one element at the end of the array
+    mtd emplace(value: *T)
+    {
+        grow(count + 1)
+        buffer[count] =,nodrop,move dref value
+        count += 1
+    }
+
     // Reserve room at the end of the array for 'num' elements, but does not
     // initialize them. Returns the address of the first element
     mtd emplaceAddress(num: u32 = 1)->^T
@@ -348,14 +356,6 @@ impl Array
         res := buffer + count - num
         @init(res, num)
         return res
-    }
-
-    // Move one element at the end of the array
-    mtd emplace(value: *T)
-    {
-        grow(count + 1)
-        buffer[count] =,nodrop,move dref value
-        count += 1
     }
 
     // Insert a value at the given index. If 'index' is equal to 'count', then
