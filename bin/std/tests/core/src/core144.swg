@@ -23,8 +23,8 @@ using Core
 
     {
         var x: Array'String
-        x.addAny("toto")
-        x.addAny("titi")
+        x.add("toto")
+        x.add("titi")
         str := Format.toString("arr=%", x)
         //Console.print("%\n", str)
         @assert(str == "arr=[toto,titi]")

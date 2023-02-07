@@ -5,7 +5,7 @@ using Core
 #test
 {
     var arr: Array'String
-    loop 10 arr.addAny("totototototototototototototototototototototototo")
+    loop 10 arr.add("totototototototototototototototototototototototo")
 
     var arr1: Array'String
     arr1 = arr

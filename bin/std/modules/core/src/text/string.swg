@@ -51,12 +51,7 @@ impl String
         return @mkslice(buffer, length)
     }
 
-    mtdc opSlice(lower, upper: u64)->string
-    {
-        Debug.assert(lower <= upper and lower < length and upper < length)
-        return @mkstring(buffer + lower, (upper + 1) - lower)
-    }
-
+    #[Implicit]
     mtd opAffect(value: string)
     {
         if @dataof(value) == null
@@ -70,6 +65,12 @@ impl String
         grow(newCapacity)
         Memory.copy(buffer, @dataof(value), length)
         buffer[length] = 0
+    }
+
+    mtdc opSlice(lower, upper: u64)->string
+    {
+        Debug.assert(lower <= upper and lower < length and upper < length)
+        return @mkstring(buffer + lower, (upper + 1) - lower)
     }
 
     mtdc opEquals(other: string)->bool

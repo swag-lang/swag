@@ -5,10 +5,10 @@ using Core
 {
     var arr1: Array'String
     var arr2: Array'String
-    arr1.addAny("0")
-    arr1.addAny("1")
-    arr2.addAny("2")
-    arr2.addAny("3")
+    arr1.add("0")
+    arr1.add("1")
+    arr2.add("2")
+    arr2.add("3")
     arr1.add(arr2.toSlice())
     @assert(arr1.count == 4)
     @assert(arr1[2] == "2")

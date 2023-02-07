@@ -16,8 +16,8 @@ using Core
     @assert(!Slice.contains(arr.toSlice(), 101'u32))
 
     var arr1: Array'String
-    arr1.addAny("0")
-    arr1.addAny("1")
+    arr1.add("0")
+    arr1.add("1")
 
     var str: String = "A"
     arr1.emplaceAt(0, &str)

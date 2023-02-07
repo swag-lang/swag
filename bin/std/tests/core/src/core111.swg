@@ -4,10 +4,10 @@ using Core
 #test
 {
     var x: Array'String
-    x.addAny("1")
-    x.addAny("2")
-    x.addAny("3")
-    x.addAny("4")
+    x.add("1")
+    x.add("2")
+    x.add("3")
+    x.add("4")
     x.removeAtOrdered(1)
     @assert(x[0] == "1")
     @assert(x[1] == "3")

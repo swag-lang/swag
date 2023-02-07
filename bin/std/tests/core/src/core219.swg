@@ -5,7 +5,7 @@ using Core
 #test
 {
     var arr: Array'String
-    arr.addAny("toto")
+    arr.add("toto")
     visit v: arr
     {
         //Console.print("%\n", @typeof(v))

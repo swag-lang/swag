@@ -330,22 +330,6 @@ impl Array
         count += 1
     }
 
-    // Add any value, as long as the type T accepts an opAffect of type G
-    // or an implicit cast
-    mtd(G) addAny(value: G)
-        #validif Reflection.canCopy(G)
-    {
-        #if @typeof(G) != @typeof(T)
-        {
-            var x: T = value
-            add(x)
-        }
-        #else
-        {
-            add(value)
-        }
-    }
-
     // Reserve room at the end of the array for 'num' elements, but does not
     // initialize them. Returns the address of the first element
     mtd emplaceAddress(num: u32 = 1)->^T

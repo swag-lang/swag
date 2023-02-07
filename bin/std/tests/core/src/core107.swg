@@ -4,8 +4,8 @@ using Core
 #test
 {
     var x: Array'String
-    x.addAny("toto")
-    x.addAny("titi")
+    x.add("toto")
+    x.add("titi")
     @assert(x[0] == "toto")
     @assert(x[1] == "titi")
     x[0] = String.from("tata")

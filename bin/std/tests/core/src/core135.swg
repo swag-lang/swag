@@ -4,7 +4,7 @@ using Core
 #test
 {
     var arr: Array'String
-    loop 10 arr.addAny("toto")
+    loop 10 arr.add("toto")
 
     //Console.write("result is %\n", res)
     var arr1: Array'String
