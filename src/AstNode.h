@@ -693,6 +693,7 @@ const uint16_t TYPEFLAG_RETVAL         = 0x0040;
 const uint16_t TYPEFLAG_USING          = 0x0080;
 const uint16_t TYPEFLAG_IS_CONST_SLICE = 0x0100;
 const uint16_t TYPEFLAG_IS_REF         = 0x0200;
+const uint16_t TYPEFLAG_IS_MOVE_REF    = 0x0400;
 
 struct AstTypeExpression : public AstNode
 {

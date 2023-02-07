@@ -524,10 +524,12 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     }
 
     // Const keyword
-    bool isConst    = false;
-    bool isPtrConst = false;
+    bool  isConst    = false;
+    bool  isPtrConst = false;
+    Token tokenConst;
     if (token.id == TokenId::KwdConst)
     {
+        tokenConst = token;
         isConst    = true;
         isPtrConst = true;
         SWAG_CHECK(eatToken());
@@ -547,6 +549,27 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     {
         node->typeFlags |= TYPEFLAG_IS_REF;
         SWAG_CHECK(eatToken());
+
+        if (token.id == TokenId::SymComma && !token.lastTokenIsBlank && !token.lastTokenIsEOL)
+        {
+            SWAG_CHECK(eatToken());
+
+            if (token.id != TokenId::Identifier || token.text != g_LangSpec->name_move)
+            {
+                Diagnostic diag{sourceFile, token, Fmt(Err(Err0696), token.ctext())};
+                return context.report(diag);
+            }
+
+            if (isConst)
+            {
+                Diagnostic diag{sourceFile, token, Err(Err0619)};
+                diag.addRange(tokenConst, Hnt(Hnt0061));
+                return context.report(diag);
+            }
+
+            node->typeFlags |= TYPEFLAG_IS_MOVE_REF;
+            SWAG_CHECK(eatToken());
+        }
     }
 
     // Array
@@ -657,8 +680,8 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     // Const after array
     if (token.id == TokenId::KwdConst)
     {
-        isPtrConst      = true;
-        auto tokenConst = token;
+        isPtrConst = true;
+        tokenConst = token;
 
         SWAG_CHECK(eatToken());
 

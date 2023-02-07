@@ -79,6 +79,7 @@ static const uint64_t TYPEINFO_POINTER_AUTO_REF         = 0x00002000'00000000;
 static const uint64_t TYPEINFO_STRUCT_NO_INIT           = 0x00004000'00000000;
 static const uint64_t TYPEINFO_SPECOP_GENERATED         = 0x00008000'00000000;
 static const uint64_t TYPEINFO_STRUCT_EMPTY             = 0x00010000'00000000;
+static const uint64_t TYPEINFO_POINTER_MOVE_REF         = 0x00020000'00000000;
 
 static const uint32_t ISSAME_EXACT       = 0x00000001;
 static const uint32_t ISSAME_CAST        = 0x00000002;
@@ -273,6 +274,7 @@ struct TypeInfo
     bool isFromGeneric()                    { return (flags & TYPEINFO_FROM_GENERIC); }
     bool isTuple()                          { return (flags & TYPEINFO_STRUCT_IS_TUPLE); }
     bool isPointerRef()                     { return (flags & TYPEINFO_POINTER_REF); }
+    bool isPointerMoveRef()                 { return (flags & TYPEINFO_POINTER_REF) && (flags & TYPEINFO_POINTER_MOVE_REF); }
     bool isConstPointerRef()                { return (flags & TYPEINFO_POINTER_REF) && (flags & TYPEINFO_CONST); }
     bool isAutoConstPointerRef()            { return (flags & TYPEINFO_POINTER_REF) && (flags & TYPEINFO_CONST) && (flags & TYPEINFO_POINTER_AUTO_REF); }
     bool isPointerArithmetic()              { return (flags & TYPEINFO_POINTER_ARITHMETIC); }

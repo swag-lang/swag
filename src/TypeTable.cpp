@@ -152,6 +152,8 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::PointerTypeInfo;
     if (typeInfo->isPointerRef())
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::PointerRef;
+    if (typeInfo->isPointerMoveRef())
+        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::PointerMoveRef;
     if (typeInfo->isPointerArithmetic())
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::PointerArithmetic;
     if (typeInfo->isCString())

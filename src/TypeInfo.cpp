@@ -272,6 +272,8 @@ bool TypeInfo::isSame(TypeInfo* from, uint32_t isSameFlags)
             return false;
         if ((flags & TYPEINFO_AUTO_CAST) != (from->flags & TYPEINFO_AUTO_CAST))
             return false;
+        if ((flags & TYPEINFO_POINTER_MOVE_REF) != (from->flags & TYPEINFO_POINTER_MOVE_REF))
+            return false;
         if ((isClosure()) != (from->isClosure()))
             return false;
     }

@@ -374,7 +374,8 @@ namespace Swag
         CString           = 0x00000400
         Generic           = 0x00000800
         PointerRef        = 0x00001000
-        PointerArithmetic = 0x00002000
+        PointerMoveRef    = 0x00002000
+        PointerArithmetic = 0x00004000
     }
 
     struct Interface
