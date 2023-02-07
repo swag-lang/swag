@@ -2352,6 +2352,9 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
     if (castFlags & CASTFLAG_FOR_AFFECT)
         isSameFlags |= ISSAME_FOR_AFFECT;
 
+    if ((toType->flags & TYPEINFO_POINTER_MOVE_REF) != (fromType->flags & TYPEINFO_POINTER_MOVE_REF))
+        return castError(context, toType, fromType, fromNode, castFlags);
+
     if (fromType->isPointer())
     {
         // Convert from pointer to ref : only if authorized

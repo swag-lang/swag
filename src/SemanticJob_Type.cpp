@@ -510,8 +510,14 @@ bool SemanticJob::resolveType(SemanticContext* context)
     {
         auto typeRef = g_TypeMgr->makePointerTo(typeNode->typeInfo, typeNode->typeFlags & TYPEFLAG_IS_CONST, false, TYPEINFO_POINTER_REF);
         typeRef->flags |= (typeRef->pointedType->flags & TYPEINFO_GENERIC);
+
         if (typeNode->typeFlags & TYPEFLAG_IS_MOVE_REF)
+        {
+            auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
+            SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, Err(Err0696)}));
             typeRef->flags |= TYPEINFO_POINTER_MOVE_REF;
+        }
+
         typeNode->typeInfo = typeRef;
         typeRef->computeName();
     }

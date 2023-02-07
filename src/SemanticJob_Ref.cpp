@@ -387,6 +387,45 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveMoveRef(SemanticContext* context)
+{
+    auto node  = context->node;
+    auto front = node->childs.front();
+    node->inheritAndFlag1(AST_CONST_EXPR);
+
+    auto typeInfo = TypeManager::concreteType(front->typeInfo);
+
+    if (!typeInfo->isPointer() && !typeInfo->isPointerRef())
+    {
+        Diagnostic diag(node, node->token, Fmt(Err(Err0621), front->typeInfo->getDisplayNameC()));
+        diag.addRange(front, Diagnostic::isType(front->typeInfo));
+        return context->report(diag);
+    }
+
+    if (typeInfo->isConst())
+    {
+        Diagnostic diag(node, node->token, Err(Err0531));
+        diag.addRange(front, Diagnostic::isType(front->typeInfo));
+        return context->report(diag);
+    }
+
+    if (front->flags & AST_VALUE_COMPUTED)
+    {
+        Diagnostic diag(node, node->token, Err(Err0563));
+        return context->report(diag);
+    }
+
+    if (!typeInfo->isPointerMoveRef())
+    {
+        typeInfo = typeInfo->clone();
+        typeInfo->flags |= TYPEINFO_POINTER_REF | TYPEINFO_POINTER_MOVE_REF;
+    }
+
+    node->typeInfo    = typeInfo;
+    node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
+    return true;
+}
+
 bool SemanticJob::resolveKeepRef(SemanticContext* context)
 {
     auto node  = context->node;

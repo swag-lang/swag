@@ -321,6 +321,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("var", TokenId::KwdVar);
     keywords.add("const", TokenId::KwdConst);
     keywords.add("ref", TokenId::KwdRef);
+    keywords.add("moveref", TokenId::KwdMoveRef);
 
     keywords.add("if", TokenId::KwdIf);
     keywords.add("else", TokenId::KwdElse);

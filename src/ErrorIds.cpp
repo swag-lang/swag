@@ -909,11 +909,11 @@ void initErrors()
     SWAG_ERROR(Err0118, "the type constraint has failed on type '%s'");
     SWAG_ERROR(Err0678, "a type constraint should return a 'bool' value ('%s' provided)");
     SWAG_ERROR(Err0618, "cannot deduce the generic type '%s' from type '%s'");
-    SWAG_ERROR(Err0696, "expected 'move' after the comma to declare a type reference move semantic, but found '%s'");
-    SWAG_ERROR(Err0619, "a type reference with the 'move' semantic cannot be declared as 'const'");
-    SWAG_ERROR(Err0621, nullptr);
-    SWAG_ERROR(Err0531, nullptr);
-    SWAG_ERROR(Err0563, nullptr);
+    SWAG_ERROR(Err0696, "the type 'moveref' should only be used for a function parameter");
+    SWAG_ERROR(Err0619, "a move semantic reference ('moveref') cannot be declared as 'const'");
+    SWAG_ERROR(Err0621, "unexpected 'moveref' on type '%s' (a pointer or a reference is expected)");
+    SWAG_ERROR(Err0531, "unexpected 'moveref' on an immutable expression");
+    SWAG_ERROR(Err0563, "unexpected 'moveref' on a computed value");
     SWAG_ERROR(Err0530, nullptr);
     SWAG_ERROR(Err0562, nullptr);
     SWAG_ERROR(Err0663, nullptr);

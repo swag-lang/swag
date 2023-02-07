@@ -1,11 +1,8 @@
 #global testerror
 using Swag
 
-func toto(x: const moveref s32)
-{
-}
-
 //#[Swag.PrintBc]
 #test
 {
+    var x: moveref s32
 }

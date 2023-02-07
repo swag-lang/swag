@@ -466,6 +466,17 @@ bool SyntaxJob::doKeepRef(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doMoveRef(AstNode* parent, AstNode** result)
+{
+    auto refNode = Ast::newNode<AstNode>(this, AstNodeKind::MoveRef, sourceFile, parent);
+    if (result)
+        *result = refNode;
+    refNode->semanticFct = SemanticJob::resolveMoveRef;
+    SWAG_CHECK(eatToken());
+    SWAG_CHECK(doUnaryExpression(refNode, EXPR_FLAG_SIMPLE));
+    return true;
+}
+
 bool SyntaxJob::doDeRef(AstNode* parent, AstNode** result)
 {
     auto identifierRef     = Ast::newIdentifierRef(sourceFile, parent, this);
@@ -531,11 +542,19 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode
     {
         SWAG_CHECK(doDeRef(parent, &exprNode));
     }
+
     // Force ref pointer
     else if (token.id == TokenId::KwdRef)
     {
         SWAG_CHECK(doKeepRef(parent, &exprNode));
     }
+
+    // Moveref
+    else if (token.id == TokenId::KwdMoveRef)
+    {
+        SWAG_CHECK(doMoveRef(parent, &exprNode));
+    }
+
     else
     {
         SWAG_CHECK(doSinglePrimaryExpression(parent, exprFlags, &exprNode));

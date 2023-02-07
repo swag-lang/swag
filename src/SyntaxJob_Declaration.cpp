@@ -571,6 +571,7 @@ bool SyntaxJob::doLeftInstruction(AstNode* parent, AstNode** result, AstWith* wi
     case TokenId::Identifier:
     case TokenId::SymLeftParen:
     case TokenId::KwdDeRef:
+    case TokenId::KwdMoveRef:
         SWAG_CHECK(doAffectExpression(parent, result, withNode));
         break;
 

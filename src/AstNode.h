@@ -164,6 +164,7 @@ enum class AstNodeKind : uint8_t
     Assume,
     Throw,
     KeepRef,
+    MoveRef,
     AutoSlicingUp,
 };
 

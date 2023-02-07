@@ -544,32 +544,25 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     node->arrayDim = 0;
     node->ptrCount = 0;
 
+    // Move reference
+    if (token.id == TokenId::KwdMoveRef)
+    {
+        if (isConst)
+        {
+            Diagnostic diag{sourceFile, token, Err(Err0619)};
+            diag.addRange(tokenConst, Hnt(Hnt0061));
+            return context.report(diag);
+        }
+
+        SWAG_CHECK(eatToken());
+        node->typeFlags |= TYPEFLAG_IS_REF | TYPEFLAG_IS_MOVE_REF;
+    }
+
     // Reference
-    if (token.id == TokenId::KwdRef)
+    else if (token.id == TokenId::KwdRef)
     {
         node->typeFlags |= TYPEFLAG_IS_REF;
         SWAG_CHECK(eatToken());
-
-        if (token.id == TokenId::SymComma && !token.lastTokenIsBlank && !token.lastTokenIsEOL)
-        {
-            SWAG_CHECK(eatToken());
-
-            if (token.id != TokenId::Identifier || token.text != g_LangSpec->name_move)
-            {
-                Diagnostic diag{sourceFile, token, Fmt(Err(Err0696), token.ctext())};
-                return context.report(diag);
-            }
-
-            if (isConst)
-            {
-                Diagnostic diag{sourceFile, token, Err(Err0619)};
-                diag.addRange(tokenConst, Hnt(Hnt0061));
-                return context.report(diag);
-            }
-
-            node->typeFlags |= TYPEFLAG_IS_MOVE_REF;
-            SWAG_CHECK(eatToken());
-        }
     }
 
     // Array
