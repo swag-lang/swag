@@ -1209,6 +1209,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             identifier->flags |= AST_NO_BYTECODE;
 
         // Lambda call
+        typeInfo = TypeManager::concretePtrRefType(identifier->typeInfo, CONCRETE_ALL & ~CONCRETE_FORCEALIAS);
         if (typeInfo->isLambdaClosure() && identifier->callParameters)
         {
             auto typeInfoRet = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::LambdaClosure)->returnType;
@@ -3327,7 +3328,7 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
             symbolKind != SymbolKind::TypeAlias &&
             !node->token.text.empty() && // :SilentCall
             !symbol->overloads[0]->typeInfo->isKindGeneric() &&
-            !TypeManager::concreteType(symbol->overloads[0]->typeInfo, CONCRETE_ALIAS)->isLambdaClosure())
+            !TypeManager::concretePtrRefType(symbol->overloads[0]->typeInfo, CONCRETE_ALIAS)->isLambdaClosure())
         {
             auto firstNode = symbol->nodes.front();
             if (symbolKind == SymbolKind::Variable)

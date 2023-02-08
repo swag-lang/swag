@@ -1488,6 +1488,12 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         auto typeVar = TypeManager::concreteType(typeArr->finalType, CONCRETE_ALIAS);
         typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(typeVar, TypeInfoKind::LambdaClosure);
     }
+    else if (varNode->typeInfo->isPointerRef())
+    {
+        auto typeVar = TypeManager::concretePtrRefType(varNode->typeInfo, CONCRETE_ALIAS);
+        typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(typeVar, TypeInfoKind::LambdaClosure);
+        emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
+    }
     else
     {
         auto typeVar = TypeManager::concreteType(varNode->typeInfo, CONCRETE_ALIAS);
