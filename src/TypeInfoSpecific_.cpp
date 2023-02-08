@@ -155,7 +155,7 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
     to = TypeManager::concreteType(to);
     if (isSameFlags & ISSAME_CAST)
     {
-        if (to->isKindGeneric())
+        if (to->isKindGeneric() && !(flags & TYPEINFO_POINTER_MOVE_REF))
             return true;
         if (this->isPointerNull() && to->isLambdaClosure())
             return true;
@@ -706,12 +706,16 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
 
     for (int i = 0; i < parameters.size(); i++)
     {
-        if (parameters[i]->typeInfo->isNative(NativeTypeKind::Undefined))
+        auto type1 = parameters[i]->typeInfo;
+        auto type2 = other->parameters[i + firstParam]->typeInfo;
+
+        if (type1->isNative(NativeTypeKind::Undefined) || type2->isNative(NativeTypeKind::Undefined))
             continue;
-        if (other->parameters[i + firstParam]->typeInfo->isNative(NativeTypeKind::Undefined))
-            continue;
-        auto type1 = TypeManager::concretePtrRef(parameters[i]->typeInfo);
-        auto type2 = TypeManager::concretePtrRef(other->parameters[i + firstParam]->typeInfo);
+
+        if ((type1->flags & TYPEINFO_POINTER_MOVE_REF) != (type2->flags & TYPEINFO_POINTER_MOVE_REF))
+            return false;
+        type1 = TypeManager::concretePtrRef(type1);
+        type2 = TypeManager::concretePtrRef(type2);
         if (!type1->isSame(type2, isSameFlags))
             return false;
     }

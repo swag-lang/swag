@@ -67,7 +67,7 @@ func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileIn
                     if options.recurse
                     {
                         newPath := Path.combine(toScan.toString(), filename.toString())
-                        stackPath.emplace(&newPath)
+                        stackPath.add(moveref &newPath)
                     }
                 }
                 else
@@ -93,7 +93,7 @@ func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileIn
                     fi.lastWriteTime.setSYSTEMTIME(fileTime)
 
                     if !options.filterLambda or options.filterLambda(fi)
-                        result.emplace(&fi)
+                        result.add(moveref &fi)
                 }
             }
 

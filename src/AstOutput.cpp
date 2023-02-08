@@ -1085,6 +1085,10 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         CONCAT_FIXED_STR(concat, "ref ");
         SWAG_CHECK(outputNode(context, concat, node->childs[0]));
         break;
+    case AstNodeKind::MoveRef:
+        CONCAT_FIXED_STR(concat, "moveref ");
+        SWAG_CHECK(outputNode(context, concat, node->childs[0]));
+        break;
 
     case AstNodeKind::CompilerCode:
         concat.addChar(')');

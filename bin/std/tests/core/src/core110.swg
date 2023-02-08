@@ -1,4 +1,3 @@
-
 using Core
 
 #test
@@ -7,6 +6,6 @@ using Core
     var y: String = "toto"
 
     @assert(y.capacity > 0)
-    x.emplace(&y)
+    x.add(moveref &y)
     @assert(y.capacity == 0)
 }

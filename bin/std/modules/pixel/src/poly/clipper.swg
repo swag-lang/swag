@@ -3064,7 +3064,7 @@ impl Transform
                 p = p.prev
             }
 
-            polys.emplace(&pg)
+            polys.add(moveref &pg)
         }
     }
 

@@ -419,6 +419,7 @@ bool SemanticJob::resolveMoveRef(SemanticContext* context)
     {
         typeInfo = typeInfo->clone();
         typeInfo->flags |= TYPEINFO_POINTER_REF | TYPEINFO_POINTER_MOVE_REF;
+        typeInfo->forceComputeName();
     }
 
     node->typeInfo    = typeInfo;

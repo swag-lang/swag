@@ -331,10 +331,10 @@ impl Array
     }
 
     // Move one element at the end of the array
-    mtd emplace(value: *T)
+    mtd add(value: moveref T)
     {
         grow(count + 1)
-        buffer[count] =,nodrop,move dref value
+        buffer[count] =,nodrop,move value
         count += 1
     }
 
@@ -427,7 +427,7 @@ impl Array
     {
         Debug.assert(index <= count, "index out of range")
         if index == count
-            return emplace(value)
+            return add(moveref value)
         grow(count + 1)
         count += 1
 

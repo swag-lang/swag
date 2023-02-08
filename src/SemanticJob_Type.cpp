@@ -519,7 +519,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
         }
 
         typeNode->typeInfo = typeRef;
-        typeRef->computeName();
+        typeRef->forceComputeName();
     }
 
     typeNode->allocateComputedValue();

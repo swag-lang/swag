@@ -234,6 +234,14 @@ impl StaticArray
         count += 1
     }
 
+    // Move one element at the end of the array
+    mtd add(value: moveref T)
+    {
+        Debug.assert(count != N, "the array is full")
+        buffer[count] =,nodrop,move value
+        count += 1
+    }
+
     // Reserve room at the end of the array for 'num' elements, but does not
     // initialize them. Returns the address of the first element
     mtd emplaceAddress(num: u32 = 1)->^T
@@ -252,14 +260,6 @@ impl StaticArray
         res := buffer + count - num
         @init(res, num)
         return res
-    }
-
-    // Move one element at the end of the array
-    mtd emplace(value: *T)
-    {
-        Debug.assert(count != N, "the array is full")
-        buffer[count] =,nodrop,move dref value
-        count += 1
     }
 
     // Insert a value at the given index. If 'index' is equal to 'count', then

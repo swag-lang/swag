@@ -15,7 +15,7 @@ struct BABA
     var x: BABA
     x.val = 666
 
-    arr.emplace(&x)
+    arr.add(moveref &x)
 
     @assert(arr[0].val == 666)
 }

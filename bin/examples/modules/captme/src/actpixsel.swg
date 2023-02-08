@@ -120,7 +120,7 @@ impl MainWnd
             if masks
             {
                 img := Image.create(1 + cast(s32) br.width, 1 + cast(s32) br.height, .RGBA8)
-                masks.emplace(&img)
+                masks.add(moveref &img)
             }
 
             // Compute colors at the start and at the end of the column, to interpolate
@@ -161,7 +161,7 @@ impl MainWnd
                 i.boundCols.add({y1, y2, col1, col2})
             }
 
-            infos.emplace(&i)
+            infos.add(moveref &i)
         }
 
         params := {capture, infos: infos.buffer, forms: &forms, masks}

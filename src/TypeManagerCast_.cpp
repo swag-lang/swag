@@ -3440,6 +3440,9 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         isSameFlags |= ISSAME_FOR_GENERIC;
 
     // From a reference
+    if ((fromType->flags & TYPEINFO_POINTER_MOVE_REF) != (toType->flags & TYPEINFO_POINTER_MOVE_REF))
+        return castError(context, toType, fromType, fromNode, castFlags);
+
     if (fromType->isPointerRef() ||
         (fromNode && fromNode->kind == AstNodeKind::KeepRef && fromType->isPointer()))
     {

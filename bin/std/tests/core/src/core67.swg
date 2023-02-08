@@ -11,6 +11,6 @@ struct BABA
     var arr: Array'BABA
 
     var x: BABA
-    arr.emplace(&x)
+    arr.add(moveref &x)
     @assert(arr.count == 1)
 }
