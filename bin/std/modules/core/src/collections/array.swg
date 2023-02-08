@@ -383,6 +383,30 @@ impl Array
         buffer[index] =,nodrop value
     }
 
+    // Move a value at the given index. If 'index' is equal to 'count', then
+    // the value is added at the end of the array.
+    // Order is preserved.
+    mtd insertAt(index: u64, value: moveref T)
+    {
+        Debug.assert(index <= count, "index out of range")
+        if index == count
+            return add(moveref value)
+        grow(count + 1)
+        count += 1
+
+        #if Reflection.hasPostMove(T)
+        {
+            for idx := count - 1; idx > index; idx -= 1
+                buffer[idx] =,nodrop,moveraw buffer[idx - 1]
+        }
+        #else
+        {
+            Memory.copyOver(buffer + index + 1, buffer + index, @sizeof(T) * (count - 1 - index))
+        }
+
+        buffer[index] =,nodrop,move value
+    }
+
     // Insert some values at the given index. If 'index' is equal to 'count', then
     // the values are added at the end of the array.
     // Order is preserved.
@@ -418,30 +442,6 @@ impl Array
         {
             Memory.copy(buffer + index, @dataof(values), @sizeof(T) * sliceCount)
         }
-    }
-
-    // Move a value at the given index. If 'index' is equal to 'count', then
-    // the value is added at the end of the array.
-    // Order is preserved.
-    mtd emplaceAt(index: u64, value: *T)
-    {
-        Debug.assert(index <= count, "index out of range")
-        if index == count
-            return add(moveref value)
-        grow(count + 1)
-        count += 1
-
-        #if Reflection.hasPostMove(T)
-        {
-            for idx := count - 1; idx > index; idx -= 1
-                buffer[idx] =,nodrop,moveraw buffer[idx - 1]
-        }
-        #else
-        {
-            Memory.copyOver(buffer + index + 1, buffer + index, @sizeof(T) * (count - 1 - index))
-        }
-
-        buffer[index] =,nodrop,move dref value
     }
 
     // Move some values at the given index. If 'index' is equal to 'count', then

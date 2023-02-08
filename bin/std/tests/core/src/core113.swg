@@ -20,7 +20,7 @@ using Core
     arr1.add("1")
 
     var str: String = "A"
-    arr1.emplaceAt(0, &str)
+    arr1.insertAt(0, moveref &str)
     @assert(arr1[0] == "A")
     @assert(arr1[1] == "0")
     @assert(arr1[2] == "1")

@@ -385,7 +385,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                       bi.badSignatureGivenType->getDisplayNameC())};
             auto nodeCall = diagNode->parent->childs.back();
             hintMsg       = Diagnostic::isType(bi.badSignatureGivenType);
-            diag->addRange(nodeCall->token, Fmt(Hnt(Hnt0093), bi.badSignatureGivenType->getDisplayNameC()));
+            if (!oneTry.overload->node->isSpecialFunctionName())
+                diag->addRange(nodeCall->token, Fmt(Hnt(Hnt0093), bi.badSignatureGivenType->getDisplayNameC()));
         }
         else if (paramNode && paramNode->typeInfo->isSelf() && bi.badSignatureParameterIdx == 0)
         {
@@ -409,7 +410,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
         if (bi.genMatchFromNode)
         {
-            auto note = new Diagnostic{ bi.genMatchFromNode, Fmt(Nte(Nte0075), bi.genMatchFromNode->typeInfo->getDisplayNameC()), DiagnosticLevel::Note };
+            auto note = new Diagnostic{bi.genMatchFromNode, Fmt(Nte(Nte0075), bi.genMatchFromNode->typeInfo->getDisplayNameC()), DiagnosticLevel::Note};
             result1.push_back(note);
         }
 
