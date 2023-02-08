@@ -554,8 +554,17 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             return context.report(diag);
         }
 
+        auto prevToken = token;
         SWAG_CHECK(eatToken());
         node->typeFlags |= TYPEFLAG_IS_REF | TYPEFLAG_IS_MOVE_REF;
+
+        if (token.id == TokenId::KwdRef)
+        {
+            Diagnostic diag(sourceFile, token, Err(Err0530));
+            diag.hint = Hnt(Hnt0111);
+            diag.addRange(prevToken, "");
+            return context.report(diag);
+        }
     }
 
     // Reference

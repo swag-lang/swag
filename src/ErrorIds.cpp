@@ -914,7 +914,7 @@ void initErrors()
     SWAG_ERROR(Err0621, "unexpected 'moveref' on type '%s' (a pointer or a reference is expected)");
     SWAG_ERROR(Err0531, "unexpected 'moveref' on an immutable expression");
     SWAG_ERROR(Err0563, "unexpected 'moveref' on a computed value");
-    SWAG_ERROR(Err0530, nullptr);
+    SWAG_ERROR(Err0530, "unexpected 'ref' after a 'moveref'");
     SWAG_ERROR(Err0562, nullptr);
     SWAG_ERROR(Err0663, nullptr);
     SWAG_ERROR(Err0658, nullptr);
@@ -1127,7 +1127,7 @@ void initErrors()
     SWAG_ERROR(Hnt0108, "this should be a pointer to '%s'");
     SWAG_ERROR(Hnt0109, "this is not allowed on a non pointer type");
     SWAG_ERROR(Hnt0110, "this is not allowed because 'void' does not have a size");
-    SWAG_ERROR(Hnt0111, nullptr);
+    SWAG_ERROR(Hnt0111, "'moveref' and 'ref' are mutually exclusive");
     SWAG_ERROR(Hnt0112, nullptr);
     SWAG_ERROR(Hnt0113, nullptr);
     SWAG_ERROR(Hnt0114, nullptr);

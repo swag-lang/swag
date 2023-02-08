@@ -106,6 +106,8 @@ struct OneMatch
     OneTryMatch*    oneOverload    = nullptr;
     TypeInfo*       typeWasForced  = nullptr;
 
+    uint32_t flags = 0;
+
     bool ufcs       = false;
     bool remove     = false;
     bool autoOpCast = false;
@@ -117,6 +119,7 @@ struct OneMatch
         symbolOverload = nullptr;
         dependentVar   = nullptr;
         typeWasForced  = nullptr;
+        flags          = 0;
         ufcs           = false;
         remove         = false;
         autoOpCast     = false;

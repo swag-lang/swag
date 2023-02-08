@@ -98,11 +98,23 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
         structType   = typePtr->pointedType;
     }
 
-    if (structType->isPointerRef() && toType->isConst() && castFlags & CASTFLAG_PARAMS)
+    bool isMoveRef = false;
+
+    // Cast to a const reference, must take the pointed struct
+    if (structType->isConstPointerRef() && castFlags & CASTFLAG_PARAMS)
     {
         auto typePtr = CastTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
         structType   = typePtr->pointedType;
         toType       = structType;
+    }
+
+    // We can also match a moveref with an opAffect
+    else if (structType->isPointerMoveRef() && castFlags & CASTFLAG_PARAMS)
+    {
+        auto typePtr = CastTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
+        structType   = typePtr->pointedType;
+        toType       = structType;
+        isMoveRef    = true;
     }
 
     if (structType->isStruct() && (castFlags & (CASTFLAG_EXPLICIT | CASTFLAG_AUTO_OPCAST)))
@@ -168,7 +180,9 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
             fromNode->extension->misc->resolvedUserOpSymbolOverload = toAffect[0];
         }
 
-        context->castFlagsResult |= CASTFLAG_RESULT_AUTO_OPCAST;
+        context->castFlagsResult |= CASTFLAG_RESULT_AUTO_OPAFFECT;
+        if (isMoveRef)
+            context->castFlagsResult |= CASTFLAG_RESULT_AUTO_MOVE_OPAFFECT;
         return true;
     }
 

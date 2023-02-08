@@ -508,7 +508,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                 context.result = MatchResult::BadGenericType;
             }
         }
-
+                
         bool same = TypeManager::makeCompatibles(context.semContext, wantedTypeInfo, callTypeInfo, nullptr, nullptr, castFlags);
         if (context.semContext->result != ContextResult::Done)
             return;

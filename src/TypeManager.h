@@ -39,8 +39,10 @@ static const uint32_t CASTFLAG_PTR_REF            = 0x02000000;
 static const uint32_t CASTFLAG_NO_TUPLE_TO_STRUCT = 0x04000000;
 
 // Stored in SymbolMatchContext.flags
-static const uint32_t CASTFLAG_RESULT_STRUCT_CONVERT = 0x01000000;
-static const uint32_t CASTFLAG_RESULT_AUTO_OPCAST    = 0x02000000;
+static const uint32_t CASTFLAG_RESULT_STRUCT_CONVERT     = 0x01000000;
+static const uint32_t CASTFLAG_RESULT_AUTO_OPCAST        = 0x02000000;
+static const uint32_t CASTFLAG_RESULT_AUTO_OPAFFECT      = 0x04000000;
+static const uint32_t CASTFLAG_RESULT_AUTO_MOVE_OPAFFECT = 0x08000000;
 
 static const uint32_t CONCRETE_ALL        = 0xFFFFFFFF;
 static const uint32_t CONCRETE_ENUM       = 0x00000001;

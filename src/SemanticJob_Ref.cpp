@@ -759,7 +759,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 {
     auto arrayNode         = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
     auto arrayAccess       = arrayNode->access;
-    auto arrayType         = TypeManager::concretePtrRefType(arrayNode->array->typeInfo);
+    auto arrayType         = getConcreteTypeUnRef(arrayNode->array, CONCRETE_ALL);
     arrayNode->byteCodeFct = ByteCodeGenJob::emitPointerDeRef;
 
     SWAG_CHECK(checkIsConcrete(context, arrayNode->array));

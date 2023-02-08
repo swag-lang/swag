@@ -579,7 +579,22 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 newParam->indexParam = nodeCall->indexParam;
                 Ast::removeFromParent(newParam);
                 Ast::insertChild(identifier->callParameters, newParam, i);
-                Ast::newIdentifierRef(sourceFile, varNode->token.text, newParam);
+
+                // If the match is against a 'moveref', then we should have a 'moveref' node and a makepointer.
+                if (typeInfoFunc->parameters[nodeCall->indexParam]->typeInfo->isPointerMoveRef())
+                {
+                    auto moveRefNode = Ast::newNode<AstNode>(nullptr, AstNodeKind::MoveRef, sourceFile, newParam);
+                    moveRefNode->flags |= AST_GENERATED;
+                    moveRefNode->semanticFct = SemanticJob::resolveMoveRef;
+                    auto mkPtrNode           = Ast::newNode<AstMakePointer>(nullptr, AstNodeKind::MakePointer, sourceFile, moveRefNode);
+                    mkPtrNode->flags |= AST_GENERATED;
+                    mkPtrNode->semanticFct = SemanticJob::resolveMakePointer;
+                    Ast::newIdentifierRef(sourceFile, varNode->token.text, mkPtrNode);
+                }
+                else
+                {
+                    Ast::newIdentifierRef(sourceFile, varNode->token.text, newParam);
+                }
 
                 // We want to export the original parameter, not the temporary variable reference
                 newParam->allocateExtension(ExtensionKind::ExportNode);
@@ -1790,6 +1805,8 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         setupContextualGenericTypeReplacement(context, oneOverload, overload, flags);
 
         oneOverload.symMatchContext.semContext = context;
+        context->castFlagsResult               = 0;
+
         if (rawTypeInfo->isStruct())
         {
             forStruct     = true;
@@ -1901,6 +1918,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                     match->dependentVar     = dependentVar;
                     match->ufcs             = oneOverload.ufcs;
                     match->oneOverload      = &oneOverload;
+                    match->flags            = oneOverload.symMatchContext.flags;
                     matches.push_back(match);
                 }
                 else
@@ -1959,6 +1977,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                     match->autoOpCast       = oneOverload.symMatchContext.autoOpCast;
                     match->oneOverload      = &oneOverload;
                     match->typeWasForced    = typeWasForced;
+                    match->flags            = oneOverload.symMatchContext.flags;
 
                     // As indexParam and resolvedParameter are directly stored in the node, we need to save them
                     // with the corresponding match, as they can be overwritten by another match attempt
@@ -3476,6 +3495,18 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
             }
 
             break;
+        }
+
+        // Priority to a 'moveref' call
+        if (curMatch->flags & CASTFLAG_RESULT_AUTO_MOVE_OPAFFECT)
+        {
+            for (int j = 0; j < countMatches; j++)
+            {
+                if (!(matches[j]->flags & CASTFLAG_RESULT_AUTO_MOVE_OPAFFECT))
+                {
+                    matches[j]->remove = true;
+                }
+            }
         }
 
         // Priority to a match without an auto cast
