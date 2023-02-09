@@ -1,7 +1,7 @@
 
 using Core
 
-#[Swag.PrintBc]
+//#[Swag.PrintBc]
 #test
 {
     var x: Array'String
