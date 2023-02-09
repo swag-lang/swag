@@ -2368,8 +2368,11 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
 
     if ((toType->flags & TYPEINFO_POINTER_MOVE_REF) != (fromType->flags & TYPEINFO_POINTER_MOVE_REF))
     {
-        if (!(toType->flags & TYPEINFO_POINTER_MOVE_REF) || !(castFlags & CASTFLAG_ACCEPT_MOVE_REF))
-            return castError(context, toType, fromType, fromNode, castFlags);
+        if (castFlags & CASTFLAG_PARAMS)
+        {
+            if (!(toType->flags & TYPEINFO_POINTER_MOVE_REF) || !(castFlags & CASTFLAG_ACCEPT_MOVE_REF))
+                return castError(context, toType, fromType, fromNode, castFlags);
+        }
     }
 
     if (fromType->isPointer())
@@ -3469,8 +3472,11 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     // From a reference
     if ((fromType->flags & TYPEINFO_POINTER_MOVE_REF) != (toType->flags & TYPEINFO_POINTER_MOVE_REF))
     {
-        if (!(toType->flags & TYPEINFO_POINTER_MOVE_REF) || !(castFlags & CASTFLAG_ACCEPT_MOVE_REF))
-            return castError(context, toType, fromType, fromNode, castFlags);
+        if (castFlags & CASTFLAG_PARAMS)
+        {
+            if (!(toType->flags & TYPEINFO_POINTER_MOVE_REF) || !(castFlags & CASTFLAG_ACCEPT_MOVE_REF))
+                return castError(context, toType, fromType, fromNode, castFlags);
+        }
     }
 
     if (fromType->isPointerRef() ||
