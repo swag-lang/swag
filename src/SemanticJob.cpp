@@ -21,6 +21,7 @@ bool SemanticJob::setUnRef(AstNode* node)
     case AstNodeKind::IdentifierRef:
     case AstNodeKind::NoDrop:
     case AstNodeKind::Move:
+    case AstNodeKind::FuncCallParam:
         setUnRef(node->childs.back());
         break;
     }
