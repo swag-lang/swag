@@ -457,6 +457,8 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             castFlags |= CASTFLAG_UFCS;
         if (callParameter->semFlags & AST_SEM_LITERAL_SUFFIX)
             castFlags |= CASTFLAG_LITERAL_SUFFIX;
+        if (callParameter->flags & AST_TRANSIENT && wantedTypeInfo->isPointerMoveRef())
+            castFlags |= CASTFLAG_ACCEPT_MOVE_REF;
         castFlags |= forceCastFlags | CASTFLAG_PARAMS | CASTFLAG_PTR_REF;
 
         context.semContext->castFlagsResult   = 0;
@@ -508,7 +510,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                 context.result = MatchResult::BadGenericType;
             }
         }
-                
+
         bool same = TypeManager::makeCompatibles(context.semContext, wantedTypeInfo, callTypeInfo, nullptr, nullptr, castFlags);
         if (context.semContext->result != ContextResult::Done)
             return;

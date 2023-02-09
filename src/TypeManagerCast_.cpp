@@ -2367,7 +2367,10 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
         isSameFlags |= ISSAME_FOR_AFFECT;
 
     if ((toType->flags & TYPEINFO_POINTER_MOVE_REF) != (fromType->flags & TYPEINFO_POINTER_MOVE_REF))
-        return castError(context, toType, fromType, fromNode, castFlags);
+    {
+        if (!(toType->flags & TYPEINFO_POINTER_MOVE_REF) || !(castFlags & CASTFLAG_ACCEPT_MOVE_REF))
+            return castError(context, toType, fromType, fromNode, castFlags);
+    }
 
     if (fromType->isPointer())
     {
@@ -2431,6 +2434,16 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
         {
             if (fromStruct != toStruct)
                 context->castFlagsResult |= CASTFLAG_RESULT_STRUCT_CONVERT;
+            return true;
+        }
+    }
+
+    // Struct to moveref can go to there
+    if (fromType->isStruct() && toTypePointer->pointedType->isStruct() && toTypePointer->isPointerMoveRef())
+    {
+        if (fromType->isSame(toTypePointer->pointedType, isSameFlags))
+        {
+            context->castFlagsResult |= CASTFLAG_RESULT_GUESS_MOVE;
             return true;
         }
     }
@@ -3455,7 +3468,10 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
     // From a reference
     if ((fromType->flags & TYPEINFO_POINTER_MOVE_REF) != (toType->flags & TYPEINFO_POINTER_MOVE_REF))
-        return castError(context, toType, fromType, fromNode, castFlags);
+    {
+        if (!(toType->flags & TYPEINFO_POINTER_MOVE_REF) || !(castFlags & CASTFLAG_ACCEPT_MOVE_REF))
+            return castError(context, toType, fromType, fromNode, castFlags);
+    }
 
     if (fromType->isPointerRef() ||
         (fromNode && fromNode->kind == AstNodeKind::KeepRef && fromType->isPointer()))

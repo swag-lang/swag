@@ -393,7 +393,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         if (nodeCall->typeInfo->isLambdaClosure() && (nodeCall->typeInfo->declNode->semFlags & AST_SEM_PENDING_LAMBDA_TYPING))
             resolvePendingLambdaTyping(nodeCall, &oneMatch, i);
 
-        uint32_t castFlags = CASTFLAG_AUTO_OPCAST | CASTFLAG_ACCEPT_PENDING | CASTFLAG_PARAMS | CASTFLAG_PTR_REF | CASTFLAG_FOR_AFFECT;
+        uint32_t castFlags = CASTFLAG_AUTO_OPCAST | CASTFLAG_ACCEPT_PENDING | CASTFLAG_PARAMS | CASTFLAG_PTR_REF | CASTFLAG_FOR_AFFECT | CASTFLAG_ACCEPT_MOVE_REF;
         if (i == 0 && oneMatch.ufcs)
             castFlags |= CASTFLAG_UFCS;
 
@@ -3504,6 +3504,18 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
             for (int j = 0; j < countMatches; j++)
             {
                 if (!(matches[j]->flags & CASTFLAG_RESULT_AUTO_MOVE_OPAFFECT))
+                {
+                    matches[j]->remove = true;
+                }
+            }
+        }
+
+        // Priority to a guess 'moveref' call
+        if (curMatch->flags & CASTFLAG_RESULT_GUESS_MOVE)
+        {
+            for (int j = 0; j < countMatches; j++)
+            {
+                if (!(matches[j]->flags & CASTFLAG_RESULT_GUESS_MOVE))
                 {
                     matches[j]->remove = true;
                 }
