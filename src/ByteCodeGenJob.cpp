@@ -197,6 +197,7 @@ bool ByteCodeGenJob::emitPassThrough(ByteCodeGenContext* context)
 
     if (child->extension && child->extension->misc)
         freeRegisterRC(context, child->extension->misc->additionalRegisterRC);
+
     return true;
 }
 

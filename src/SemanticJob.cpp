@@ -15,8 +15,15 @@ bool SemanticJob::setUnRef(AstNode* node)
         return false;
 
     node->semFlags |= AST_SEM_FROM_REF;
-    if (node->kind == AstNodeKind::IdentifierRef)
-        node->childs.back()->semFlags |= AST_SEM_FROM_REF;
+
+    switch (node->kind)
+    {
+    case AstNodeKind::IdentifierRef:
+    case AstNodeKind::NoDrop:
+    case AstNodeKind::Move:
+        setUnRef(node->childs.back());
+        break;
+    }
 
     return true;
 }
