@@ -256,7 +256,7 @@ bool TypeInfo::isMethod()
     return true;
 }
 
-bool TypeInfo::isSame(TypeInfo* from, uint32_t isSameFlags)
+bool TypeInfo::isSame(TypeInfo* from, uint32_t castFlags)
 {
     if (this == from)
         return true;
@@ -264,7 +264,7 @@ bool TypeInfo::isSame(TypeInfo* from, uint32_t isSameFlags)
     if (kind != from->kind)
         return false;
 
-    if (isSameFlags & CASTFLAG_EXACT)
+    if (castFlags & CASTFLAG_EXACT)
     {
         if ((flags & TYPEINFO_CONST) != (from->flags & TYPEINFO_CONST))
             return false;
@@ -346,11 +346,11 @@ TypeInfoParam* TypeInfoParam::clone()
     return newType;
 }
 
-bool TypeInfoParam::isSame(TypeInfoParam* to, uint32_t isSameFlags)
+bool TypeInfoParam::isSame(TypeInfoParam* to, uint32_t castFlags)
 {
     if (this == to)
         return true;
-    return typeInfo->isSame(to->typeInfo, isSameFlags);
+    return typeInfo->isSame(to->typeInfo, castFlags);
 }
 
 void TypeInfoParam::allocateComputedValue()

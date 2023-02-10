@@ -27,7 +27,7 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
 {
     if (!fromNode || !(fromNode->flags & AST_VALUE_COMPUTED))
         return true;
-    if (castFlags & (CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK))
+    if (castFlags & CASTFLAG_JUST_CHECK)
         return true;
     if (!(castFlags & CASTFLAG_EXPLICIT))
         return true;
@@ -163,7 +163,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
                 continue;
             if (typeFunc->parameters.size() <= 1)
                 continue;
-            if (makeCompatibles(context, typeFunc->parameters[1]->typeInfo, fromType, nullptr, nullptr, CASTFLAG_NO_LAST_MINUTE | CASTFLAG_TRY_COERCE | CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK))
+            if (makeCompatibles(context, typeFunc->parameters[1]->typeInfo, fromType, nullptr, nullptr, CASTFLAG_NO_LAST_MINUTE | CASTFLAG_TRY_COERCE | CASTFLAG_JUST_CHECK))
                 toAffect.push_back(over);
         }
 
@@ -336,7 +336,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
     context->castErrorFromType = fromType;
     context->castErrorFlags    = castFlags;
 
-    if (!(castFlags & CASTFLAG_NO_ERROR))
+    if (!(castFlags & CASTFLAG_JUST_CHECK))
     {
         // More specific message
         Utf8 hint, msg;
@@ -347,7 +347,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         // Is there an explicit cast possible ?
         if (!(castFlags & CASTFLAG_EXPLICIT))
         {
-            if (TypeManager::makeCompatibles(context, toType, fromType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
+            if (TypeManager::makeCompatibles(context, toType, fromType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK))
             {
                 Diagnostic diag{fromNode, Fmt(Err(Err0175), fromType->getDisplayNameC(), toType->getDisplayNameC())};
                 diag.hint    = Fmt(Hnt(Hnt0032), fromType->getDisplayNameC(), toType->getDisplayNameC());
@@ -656,7 +656,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
             {
                 if (fromNode->computedValue->reg.s64 < 0)
                 {
-                    if (!(castFlags & CASTFLAG_NO_ERROR))
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
                         errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU8, true);
                     return false;
                 }
@@ -679,7 +679,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
             {
                 if (fromNode->computedValue->reg.u64 > UINT8_MAX)
                 {
-                    if (!(castFlags & CASTFLAG_NO_ERROR))
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
                         errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU8);
                     return false;
                 }
@@ -781,7 +781,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (fromNode->computedValue->reg.s64 < 0)
                 {
-                    if (!(castFlags & CASTFLAG_NO_ERROR))
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
                         errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU16, true);
                     return false;
                 }
@@ -804,7 +804,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (fromNode->computedValue->reg.u64 > UINT16_MAX)
                 {
-                    if (!(castFlags & CASTFLAG_NO_ERROR))
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
                         errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU16);
                     return false;
                 }
@@ -906,7 +906,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (fromNode->computedValue->reg.s64 < 0)
                 {
-                    if (!(castFlags & CASTFLAG_NO_ERROR))
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
                         errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU32, true);
                     return false;
                 }
@@ -929,7 +929,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (fromNode->computedValue->reg.u64 > UINT32_MAX)
                 {
-                    if (!(castFlags & CASTFLAG_NO_ERROR))
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
                         errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU32);
                     return false;
                 }
@@ -1024,7 +1024,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (fromNode->computedValue->reg.s64 < 0)
                 {
-                    if (!(castFlags & CASTFLAG_NO_ERROR))
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
                         errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU64, true);
                     return false;
                 }
@@ -1134,7 +1134,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
             {
                 if (fromNode->computedValue->reg.s64 < INT8_MIN || fromNode->computedValue->reg.s64 > INT8_MAX)
                 {
-                    if (!(castFlags & CASTFLAG_NO_ERROR))
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
                         errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS8);
                     return false;
                 }
@@ -1244,7 +1244,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (fromNode->computedValue->reg.s64 < INT16_MIN || fromNode->computedValue->reg.s64 > INT16_MAX)
                 {
-                    if (!(castFlags & CASTFLAG_NO_ERROR))
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
                         errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS16);
                     return false;
                 }
@@ -1345,7 +1345,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (fromNode->computedValue->reg.s64 < INT32_MIN || fromNode->computedValue->reg.s64 > INT32_MAX)
                 {
-                    if (!(castFlags & CASTFLAG_NO_ERROR))
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
                         errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS32);
                     return false;
                 }
@@ -1425,7 +1425,7 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (fromNode->computedValue->reg.s64 < INT64_MIN || fromNode->computedValue->reg.s64 > INT64_MAX)
                 {
-                    if (!(castFlags & CASTFLAG_NO_ERROR))
+                    if (!(castFlags & CASTFLAG_JUST_CHECK))
                         errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS64);
                     return false;
                 }
@@ -2675,7 +2675,7 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
         auto          fromSize     = fromTypeList->subTypes.size();
         if (toTypeArray->count != fromSize)
         {
-            if (!(castFlags & CASTFLAG_NO_ERROR))
+            if (!(castFlags & CASTFLAG_JUST_CHECK))
             {
                 if (toTypeArray->count > fromTypeList->subTypes.size())
                     context->report({fromNode, Fmt(Err(Err0203), toTypeArray->count, fromTypeList->subTypes.size())});

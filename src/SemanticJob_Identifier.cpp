@@ -3102,7 +3102,7 @@ bool SemanticJob::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFun
                                                       ufcsNode->typeInfo,
                                                       nullptr,
                                                       ufcsNode,
-                                                      CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR | CASTFLAG_UFCS | CASTFLAG_FORCE_UNCONST);
+                                                      CASTFLAG_JUST_CHECK | CASTFLAG_UFCS | CASTFLAG_FORCE_UNCONST);
     if (context->result == ContextResult::Pending)
         return false;
 
@@ -3140,7 +3140,7 @@ bool SemanticJob::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFun
                                                      parameters->childs.front()->typeInfo,
                                                      nullptr,
                                                      parameters->childs.front(),
-                                                     CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR | CASTFLAG_UFCS | CASTFLAG_FORCE_UNCONST);
+                                                     CASTFLAG_JUST_CHECK | CASTFLAG_UFCS | CASTFLAG_FORCE_UNCONST);
         if (!cmpFirstParam)
             return true;
     }

@@ -40,7 +40,7 @@ static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParamet
             // Yes, and the map is not the same, then this is an error
             else
             {
-                same = TypeManager::makeCompatibles(context.semContext, it->second, callTypeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK | CASTFLAG_PARAMS | castFlags);
+                same = TypeManager::makeCompatibles(context.semContext, it->second, callTypeInfo, nullptr, nullptr, CASTFLAG_JUST_CHECK | CASTFLAG_PARAMS | castFlags);
                 if (context.semContext->result != ContextResult::Done)
                     return;
             }
@@ -450,7 +450,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             context.result = MatchResult::BadSignature;
         }
 
-        uint32_t castFlags = CASTFLAG_NO_ERROR | CASTFLAG_ACCEPT_PENDING | CASTFLAG_FOR_AFFECT;
+        uint32_t castFlags = CASTFLAG_JUST_CHECK | CASTFLAG_ACCEPT_PENDING | CASTFLAG_FOR_AFFECT;
         if (context.flags & SymbolMatchContext::MATCH_UNCONST)
             castFlags |= CASTFLAG_UNCONST;
         if (context.flags & SymbolMatchContext::MATCH_UFCS && i == 0)
@@ -611,7 +611,7 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
                 context.result = MatchResult::BadSignature;
             }
 
-            uint32_t castFlags = CASTFLAG_NO_ERROR | CASTFLAG_PARAMS;
+            uint32_t castFlags = CASTFLAG_JUST_CHECK | CASTFLAG_PARAMS;
             castFlags |= forceCastFlags;
             bool same = TypeManager::makeCompatibles(context.semContext, wantedParameter->typeInfo, callTypeInfo, nullptr, nullptr, castFlags);
             if (context.semContext->result != ContextResult::Done)
@@ -937,7 +937,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
         if (typeInfo->isAny() && !symbolParameter->typeInfo->isGeneric() && !symbolParameter->typeInfo->isAny())
             same = false;
         else
-            same = TypeManager::makeCompatibles(context.semContext, symbolParameter->typeInfo, typeInfo, nullptr, nullptr, CASTFLAG_FOR_GENERIC | CASTFLAG_NO_ERROR | CASTFLAG_ACCEPT_PENDING);
+            same = TypeManager::makeCompatibles(context.semContext, symbolParameter->typeInfo, typeInfo, nullptr, nullptr, CASTFLAG_FOR_GENERIC | CASTFLAG_JUST_CHECK | CASTFLAG_ACCEPT_PENDING);
         if (context.semContext->result != ContextResult::Done)
             return;
 

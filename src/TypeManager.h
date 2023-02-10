@@ -10,7 +10,7 @@ enum class LiteralType : uint8_t;
 struct Token;
 
 static const uint32_t CASTFLAG_DEFAULT            = 0x00000000;
-static const uint32_t CASTFLAG_NO_ERROR           = 0x00000001;
+static const uint32_t CASTFLAG_INTERFACE          = 0x00000001;
 static const uint32_t CASTFLAG_EXPLICIT           = 0x00000002;
 static const uint32_t CASTFLAG_CONCRETE_ENUM      = 0x00000004;
 static const uint32_t CASTFLAG_JUST_CHECK         = 0x00000008;
@@ -40,7 +40,6 @@ static const uint32_t CASTFLAG_NO_TUPLE_TO_STRUCT = 0x04000000;
 static const uint32_t CASTFLAG_ACCEPT_MOVE_REF    = 0x08000000;
 static const uint32_t CASTFLAG_EXACT              = 0x10000000;
 static const uint32_t CASTFLAG_CAST               = 0x20000000;
-static const uint32_t CASTFLAG_INTERFACE          = 0x40000000;
 
 // Stored in SymbolMatchContext.flags
 static const uint32_t CASTFLAG_RESULT_STRUCT_CONVERT     = 0x01000000;

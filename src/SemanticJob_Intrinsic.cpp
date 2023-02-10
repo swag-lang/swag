@@ -93,7 +93,7 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
         auto tag = g_Workspace->hasTag(nameNode->computedValue->text);
         if (tag)
         {
-            if (!TypeManager::makeCompatibles(context, typeNode->typeInfo, tag->type, nullptr, typeNode, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
+            if (!TypeManager::makeCompatibles(context, typeNode->typeInfo, tag->type, nullptr, typeNode, CASTFLAG_JUST_CHECK))
             {
                 Diagnostic diag{typeNode, Fmt(Err(Err0252), typeNode->typeInfo->getDisplayNameC(), tag->type->getDisplayNameC(), tag->name.c_str())};
                 Diagnostic note{typeNode, Fmt(Nte(Nte0038), tag->cmdLine.c_str()), DiagnosticLevel::Note};
@@ -182,7 +182,7 @@ bool SemanticJob::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* nod
     // Check second parameter
     if (second->flags & AST_VALUE_IS_TYPEINFO)
     {
-        if (!TypeManager::makeCompatibles(context, ptrPointer->pointedType, second->typeInfo, nullptr, second, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
+        if (!TypeManager::makeCompatibles(context, ptrPointer->pointedType, second->typeInfo, nullptr, second, CASTFLAG_JUST_CHECK))
         {
             Diagnostic diag{first, Err(Err0791)};
             diag.hint = Diagnostic::isType(first->typeInfo);
