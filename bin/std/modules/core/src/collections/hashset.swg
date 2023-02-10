@@ -201,30 +201,29 @@ impl HashSet
 
     // Add a new key.
     #[Discardable]
-    mtd emplaceInternal(key: *K)->*HashSetEntry
-        #validif Reflection.canCopy(@typeof(K))
+    mtd add(key: moveref K)->*HashSetEntry
     {
         grow()
 
-        hashVal := hashKey(dref key)
+        hashVal := hashKey(key)
         index := hashVal % capacity
 
         while table[index].hash >= HASH_FIRST
         {
-            if table[index].hash == hashVal and table[index].key == dref key
+            if table[index].hash == hashVal and table[index].key == key
                 return table + index
             index = (index + 1) % capacity
         }
 
         if table[index].hash == HASH_FREE
         {
-            table[index].key =,nodrop,moveraw dref key
+            table[index].key =,nodrop,move key
         }
         else
         {
             if table[index].hash == HASH_DELETED
                 deleted -= 1
-            table[index].key =,moveraw dref key
+            table[index].key =,move key
         }
 
         table[index].hash = hashVal
@@ -234,30 +233,30 @@ impl HashSet
 
     // Add a new key.
     #[Discardable]
-    mtd emplace(key: *K)->*HashSetEntry
+    mtd emplaceInternal(key: ref K)->*HashSetEntry
         #validif Reflection.canCopy(@typeof(K))
     {
         grow()
 
-        hashVal := hashKey(dref key)
+        hashVal := hashKey(key)
         index := hashVal % capacity
 
         while table[index].hash >= HASH_FIRST
         {
-            if table[index].hash == hashVal and table[index].key == dref key
+            if table[index].hash == hashVal and table[index].key == key
                 return table + index
             index = (index + 1) % capacity
         }
 
         if table[index].hash == HASH_FREE
         {
-            table[index].key =,nodrop,move dref key
+            table[index].key =,nodrop,moveraw key
         }
         else
         {
             if table[index].hash == HASH_DELETED
                 deleted -= 1
-            table[index].key =,move dref key
+            table[index].key =,moveraw key
         }
 
         table[index].hash = hashVal

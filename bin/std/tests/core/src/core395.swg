@@ -6,7 +6,7 @@ using Core
     loop i: 50
     {
         x := Format.toString("%", i)
-        h.emplace(&x)
+        h.add(moveref &x)
         @assert(x.length == 0)
     }
 }

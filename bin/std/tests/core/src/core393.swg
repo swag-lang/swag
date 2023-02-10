@@ -6,7 +6,7 @@ using Core
     loop i: 50
     {
         x := String.from("s")
-        h.emplace(i, &x)
+        h.add(i, moveref &x)
         @assert(x.length == 0)
     }
 }

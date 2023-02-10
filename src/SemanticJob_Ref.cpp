@@ -415,12 +415,9 @@ bool SemanticJob::resolveMoveRef(SemanticContext* context)
         return context->report(diag);
     }
 
-    if (!typeInfo->isPointerMoveRef())
-    {
-        typeInfo = typeInfo->clone();
-        typeInfo->flags |= TYPEINFO_POINTER_REF | TYPEINFO_POINTER_MOVE_REF;
-        typeInfo->forceComputeName();
-    }
+    typeInfo = typeInfo->clone();
+    typeInfo->flags |= TYPEINFO_POINTER_REF | TYPEINFO_POINTER_ACCEPT_MOVE_REF;
+    typeInfo->forceComputeName();
 
     node->typeInfo    = typeInfo;
     node->byteCodeFct = ByteCodeGenJob::emitPassThrough;

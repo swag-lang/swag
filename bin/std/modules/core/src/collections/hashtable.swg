@@ -184,8 +184,7 @@ impl HashTable
     // Add a new key value pair. If the key already exists, then the value will be replaced
     #[Discardable]
     mtd add(key: K, value: V)->*HashTableEntry
-        #validif Reflection.canCopy(@typeof(K)) and
-                  Reflection.canCopy(@typeof(V))
+        #validif Reflection.canCopy(@typeof(K)) and Reflection.canCopy(@typeof(V))
     {
         grow()
 
@@ -221,22 +220,21 @@ impl HashTable
         return table + index
     }
 
-    // Use with care !
+    // Add a new key value pair. If the key already exists, then the value will be replaced
     #[Discardable]
-    mtd emplaceInternal(key: *K, value: *V)->*HashTableEntry
-        #validif Reflection.canCopy(@typeof(K)) and
-                  Reflection.canCopy(@typeof(V))
+    mtd add(key: K, value: moveref V)->*HashTableEntry
+        #validif Reflection.canCopy(@typeof(K))
     {
         grow()
 
-        hashVal := hashKey(dref key)
+        hashVal := hashKey(key)
         index := hashVal % capacity
 
         while table[index].hash >= HASH_FIRST
         {
-            if table[index].hash == hashVal and table[index].key == dref key
+            if table[index].hash == hashVal and table[index].key == key
             {
-                table[index].value =,moveraw dref value
+                table[index].value =,move value
                 return table + index
             }
 
@@ -245,15 +243,15 @@ impl HashTable
 
         if table[index].hash == HASH_FREE
         {
-            table[index].key =,nodrop,moveraw dref key
-            table[index].value =,nodrop,moveraw dref value
+            table[index].key =,nodrop key
+            table[index].value =,nodrop,move value
         }
         else
         {
             if table[index].hash == HASH_DELETED
                 deleted -= 1
-            table[index].key =,moveraw dref key
-            table[index].value =,moveraw dref value
+            table[index].key = key
+            table[index].value =,move value
         }
 
         table[index].hash = hashVal
@@ -261,9 +259,9 @@ impl HashTable
         return table + index
     }
 
-    // Add a new key value pair. If the key already exists, then the value will be replaced
+    // Use with care !
     #[Discardable]
-    mtd emplace(key: K, value: *V)->*HashTableEntry
+    mtd emplaceInternal(key: ref K, value: ref V)->*HashTableEntry
         #validif Reflection.canCopy(@typeof(K)) and
                   Reflection.canCopy(@typeof(V))
     {
@@ -276,7 +274,7 @@ impl HashTable
         {
             if table[index].hash == hashVal and table[index].key == key
             {
-                table[index].value =,move dref value
+                table[index].value =,moveraw value
                 return table + index
             }
 
@@ -285,15 +283,15 @@ impl HashTable
 
         if table[index].hash == HASH_FREE
         {
-            table[index].key =,nodrop key
-            table[index].value =,nodrop,move dref value
+            table[index].key =,nodrop,moveraw key
+            table[index].value =,nodrop,moveraw value
         }
         else
         {
             if table[index].hash == HASH_DELETED
                 deleted -= 1
-            table[index].key = key
-            table[index].value =,move dref value
+            table[index].key =,moveraw key
+            table[index].value =,moveraw value
         }
 
         table[index].hash = hashVal

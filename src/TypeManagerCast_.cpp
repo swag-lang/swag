@@ -2366,15 +2366,6 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
     if (castFlags & CASTFLAG_FOR_AFFECT)
         isSameFlags |= ISSAME_FOR_AFFECT;
 
-    if ((toType->flags & TYPEINFO_POINTER_MOVE_REF) != (fromType->flags & TYPEINFO_POINTER_MOVE_REF))
-    {
-        if (castFlags & CASTFLAG_PARAMS)
-        {
-            if (!(toType->flags & TYPEINFO_POINTER_MOVE_REF) || !(castFlags & CASTFLAG_ACCEPT_MOVE_REF))
-                return castError(context, toType, fromType, fromNode, castFlags);
-        }
-    }
-
     if (fromType->isPointer())
     {
         // Convert from pointer to ref : only if authorized
@@ -3469,16 +3460,18 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     if (castFlags & CASTFLAG_FOR_GENERIC)
         isSameFlags |= ISSAME_FOR_GENERIC;
 
-    // From a reference
-    if ((fromType->flags & TYPEINFO_POINTER_MOVE_REF) != (toType->flags & TYPEINFO_POINTER_MOVE_REF))
+    // To/From a moveref
+    if (!(fromType->flags & TYPEINFO_POINTER_ACCEPT_MOVE_REF) && (toType->flags & TYPEINFO_POINTER_MOVE_REF))
     {
-        if (castFlags & CASTFLAG_PARAMS)
-        {
-            if (!(toType->flags & TYPEINFO_POINTER_MOVE_REF) || !(castFlags & CASTFLAG_ACCEPT_MOVE_REF))
-                return castError(context, toType, fromType, fromNode, castFlags);
-        }
+        if ((castFlags & CASTFLAG_PARAMS) && !(castFlags & CASTFLAG_ACCEPT_MOVE_REF))
+            return castError(context, toType, fromType, fromNode, castFlags);
+    }
+    else if ((fromType->flags & TYPEINFO_POINTER_ACCEPT_MOVE_REF) && !(toType->flags & TYPEINFO_POINTER_MOVE_REF))
+    {
+        return castError(context, toType, fromType, fromNode, castFlags);
     }
 
+    // From a reference
     if (fromType->isPointerRef() ||
         (fromNode && fromNode->kind == AstNodeKind::KeepRef && fromType->isPointer()))
     {
