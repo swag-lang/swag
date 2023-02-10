@@ -923,12 +923,13 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
         // store something in the cache
         Utf8 args;
         for (auto& p : typeFunc->parameters)
+        {
             args += p->typeInfo->name;
+            args += "@";
+        }
 
         bool isMethod = typeFunc->isMethod();
         auto numArgs  = (uint16_t) typeFunc->parameters.size();
-        if (isMethod) // Remove 'using self' first parameter
-            numArgs--;
 
         DbgTypeIndex argsTypeIndex;
         auto         itn = pp.dbgMapTypesNames.find(args);
@@ -939,8 +940,6 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
             tr1->LF_ArgList.count = numArgs;
             for (int i = 0; i < typeFunc->parameters.size(); i++)
             {
-                if (isMethod && i == 0) // Remove 'using self' first parameter
-                    continue;
                 auto p = typeFunc->parameters[i];
                 tr1->LF_ArgList.args.push_back(dbgGetOrCreateType(pp, p->typeInfo));
             }
@@ -1160,7 +1159,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                     //////////
                     dbgStartRecord(pp, concat, S_LOCAL);
                     concat.addU32(typeIdx); // Type
-                    concat.addU16(0);       // CV_LVARFLAGS (do not set IsParameter, because we do not want a dereference, don't know what's going on here)
+                    concat.addU16(0);
                     dbgEmitTruncatedString(concat, child->token.text);
                     dbgEndRecord(pp, concat);
 
@@ -1227,11 +1226,16 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                     //////////
                     dbgStartRecord(pp, concat, S_LOCAL);
                     concat.addU32(typeIdx); // Type
+                    concat.addU16(1);       // set fIsParam. If not set, callstack signature won't be good.
 
-                    // CV_LVARFLAGS (do not set IsParameter, because we do not want a dereference, don't know what's going on here)
-                    concat.addU16(0);
+                    // The real name, in case of 2 registers, will be created below without the 'fIsParam' flag set.
+                    // Because i don't know how two deal with those parameters (in fact we have 2 parameters/registers in the calling convention,
+                    // but the signature has only one visible parameter).
+                    if(typeParam->numRegisters() == 2)
+                        dbgEmitTruncatedString(concat, "__" + child->token.text);
+                    else
+                        dbgEmitTruncatedString(concat, child->token.text);
 
-                    dbgEmitTruncatedString(concat, child->token.text);
                     dbgEndRecord(pp, concat);
 
                     //////////
@@ -1256,6 +1260,28 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                     concat.addU16((uint16_t) (f.endAddress - f.startAddress)); // Range
                     dbgEndRecord(pp, concat);
 
+                    // If we have 2 registers then we cannot create a symbol flagged as 'parameter' in order to really see it.
+                    if (typeParam->numRegisters() == 2)
+                    {
+                        typeIdx = dbgGetOrCreateType(pp, typeParam);
+
+                        //////////
+                        dbgStartRecord(pp, concat, S_LOCAL);
+                        concat.addU32(typeIdx); // Type
+                        concat.addU16(0);       // set fIsParam to 0
+                        dbgEmitTruncatedString(concat, child->token.text);
+                        dbgEndRecord(pp, concat);
+
+                        //////////
+                        dbgStartRecord(pp, concat, S_DEFRANGE_REGISTER_REL);
+                        concat.addU16(R_RDI); // Register
+                        concat.addU16(0);     // Flags
+                        concat.addU32(offsetStackParam);
+                        dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);
+                        concat.addU16((uint16_t) (f.endAddress - f.startAddress)); // Range
+                        dbgEndRecord(pp, concat);
+                    }
+
                     // Codeview seems to need this pointer to be named "this"...
                     // So add it
                     if (typeFunc->isMethod() && child->token.text == g_LangSpec->name_self)
@@ -1263,7 +1289,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                         //////////
                         dbgStartRecord(pp, concat, S_LOCAL);
                         concat.addU32(typeIdx); // Type
-                        concat.addU16(0);       // CV_LVARFLAGS (do not set IsParameter, because we do not want a dereference, don't know what's going on here)
+                        concat.addU16(1);       // set fIsParam
                         dbgEmitTruncatedString(concat, "this");
                         dbgEndRecord(pp, concat);
 
