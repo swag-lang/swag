@@ -996,7 +996,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
         else
         {
-            if ((leftConcreteType->kind != rightConcreteType->kind) || !rightConcreteType->isSame(leftConcreteType, ISSAME_CAST))
+            if ((leftConcreteType->kind != rightConcreteType->kind) || !rightConcreteType->isSame(leftConcreteType, CASTFLAG_CAST))
             {
                 SWAG_CHECK(resolveUserOpAffect(context, leftConcreteType, rightConcreteType, node->type, node->assignment));
                 if (context->result != ContextResult::Done)

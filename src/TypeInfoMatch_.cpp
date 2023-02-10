@@ -66,7 +66,7 @@ static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParamet
             if (wantedTypeInfo->isPointer())
                 canReg = false;
             else if (wantedTypeInfo->isStruct() && callTypeInfo->isStruct())
-                canReg = wantedTypeInfo->isSame(callTypeInfo, ISSAME_CAST);
+                canReg = wantedTypeInfo->isSame(callTypeInfo, CASTFLAG_CAST);
 
             // Do not register type replacement if the concrete type is a pending lambda typing (we do not know
             // yet the type of parameters)
@@ -214,7 +214,7 @@ static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParamet
                     // Because of using var cast, we can have here *A and *B with a match.
                     // But we do not want A and B to match in generic replacement.
                     // So we check they are the same.
-                    auto canNext = symbolPtr->pointedType->isSame(typePtr->pointedType, ISSAME_CAST);
+                    auto canNext = symbolPtr->pointedType->isSame(typePtr->pointedType, CASTFLAG_CAST);
                     if (canNext)
                     {
                         symbolTypeInfos.push_back(symbolPtr->pointedType);
@@ -232,7 +232,7 @@ static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParamet
                 // Because of using var cast, we can have here *A and *B with a match.
                 // But we do not want A and B to match in generic replacement.
                 // So we check they are the same.
-                auto canNext = symbolPtr->pointedType->isSame(callTypeInfo, ISSAME_CAST);
+                auto canNext = symbolPtr->pointedType->isSame(callTypeInfo, CASTFLAG_CAST);
                 if (canNext)
                 {
                     symbolTypeInfos.push_back(symbolPtr->pointedType);
@@ -1169,7 +1169,7 @@ TypeInfoParam* TypeInfoStruct::hasInterfaceNoLock(TypeInfoStruct* itf)
 {
     for (auto child : interfaces)
     {
-        if (child->typeInfo->isSame(itf, ISSAME_CAST))
+        if (child->typeInfo->isSame(itf, CASTFLAG_CAST))
             return child;
     }
 

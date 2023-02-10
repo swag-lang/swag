@@ -264,7 +264,7 @@ bool TypeInfo::isSame(TypeInfo* from, uint32_t isSameFlags)
     if (kind != from->kind)
         return false;
 
-    if (isSameFlags & ISSAME_EXACT)
+    if (isSameFlags & CASTFLAG_EXACT)
     {
         if ((flags & TYPEINFO_CONST) != (from->flags & TYPEINFO_CONST))
             return false;

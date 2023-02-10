@@ -241,7 +241,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
                 continue;
             if (!(typeFunc->declNode->attributeFlags & ATTRIBUTE_IMPLICIT) && !(castFlags & CASTFLAG_EXPLICIT))
                 continue;
-            if (typeFunc->returnType->isSame(toType, ISSAME_EXACT))
+            if (typeFunc->returnType->isSame(toType, CASTFLAG_EXACT))
                 toCast.push_back(over);
         }
 
@@ -2120,7 +2120,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
 
         auto testStruct = it.typeStruct->getStructOrPointedStruct();
         SWAG_ASSERT(testStruct);
-        if (testStruct->isSame(toStruct, ISSAME_CAST))
+        if (testStruct->isSame(toStruct, CASTFLAG_CAST))
         {
             ok = true;
             if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
@@ -2190,7 +2190,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
                 {
                     auto foundTypeStruct0 = foundStruct->getStructOrPointedStruct();
                     auto foundTypeStruct1 = typeStruct->getStructOrPointedStruct();
-                    if (foundTypeStruct0 && foundTypeStruct1 && foundTypeStruct0->isSame(foundTypeStruct1, ISSAME_CAST))
+                    if (foundTypeStruct0 && foundTypeStruct1 && foundTypeStruct0->isSame(foundTypeStruct1, CASTFLAG_CAST))
                     {
                         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
                         {
@@ -2362,10 +2362,6 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
 {
     auto toTypePointer = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
 
-    auto isSameFlags = ISSAME_CAST;
-    if (castFlags & CASTFLAG_FOR_AFFECT)
-        isSameFlags |= ISSAME_FOR_AFFECT;
-
     if (fromType->isPointer())
     {
         // Convert from pointer to ref : only if authorized
@@ -2374,13 +2370,13 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
 
         // Compare pointed types
         auto fromTypePointer = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
-        if (toTypePointer->pointedType->isSame(fromTypePointer->pointedType, isSameFlags))
+        if (toTypePointer->pointedType->isSame(fromTypePointer->pointedType, castFlags | CASTFLAG_CAST))
             return true;
     }
     else if (toType->isConst())
     {
         // Compare pointed types
-        if ((castFlags & CASTFLAG_PARAMS) && toTypePointer->pointedType->isSame(fromType, isSameFlags))
+        if ((castFlags & CASTFLAG_PARAMS) && toTypePointer->pointedType->isSame(fromType, castFlags | CASTFLAG_CAST))
             return true;
     }
 
@@ -2435,7 +2431,7 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
     // Struct to moveref can go to there
     if (fromType->isStruct() && toTypePointer->pointedType->isStruct() && toTypePointer->isPointerMoveRef())
     {
-        if (fromType->isSame(toTypePointer->pointedType, isSameFlags))
+        if (fromType->isSame(toTypePointer->pointedType, castFlags))
         {
             context->castFlagsResult |= CASTFLAG_RESULT_GUESS_MOVE;
             return true;
@@ -2556,7 +2552,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
     {
         auto fromTypeArray = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
         if ((!(castFlags & CASTFLAG_NO_IMPLICIT) && toTypePointer->pointedType->isVoid()) ||
-            (!(castFlags & CASTFLAG_NO_IMPLICIT) && toTypePointer->pointedType->isSame(fromTypeArray->pointedType, ISSAME_CAST)) ||
+            (!(castFlags & CASTFLAG_NO_IMPLICIT) && toTypePointer->pointedType->isSame(fromTypeArray->pointedType, CASTFLAG_CAST)) ||
             (castFlags & CASTFLAG_EXPLICIT))
         {
             if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
@@ -2574,7 +2570,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
     {
         auto fromTypeSlice = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Slice);
         if ((!(castFlags & CASTFLAG_NO_IMPLICIT) && toTypePointer->pointedType->isVoid()) ||
-            (!(castFlags & CASTFLAG_NO_IMPLICIT) && toTypePointer->pointedType->isSame(fromTypeSlice->pointedType, ISSAME_CAST)) ||
+            (!(castFlags & CASTFLAG_NO_IMPLICIT) && toTypePointer->pointedType->isSame(fromTypeSlice->pointedType, CASTFLAG_CAST)) ||
             (castFlags & CASTFLAG_EXPLICIT))
         {
             if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
@@ -2594,7 +2590,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         {
             // to *void or *structure
             if (toTypePointer->pointedType->isVoid() ||
-                toTypePointer->pointedType->isSame(fromType, ISSAME_CAST))
+                toTypePointer->pointedType->isSame(fromType, CASTFLAG_CAST))
             {
                 if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK) && !toTypePointer->isSelf())
                 {
@@ -2770,7 +2766,7 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
     else if (fromType->isArray())
     {
         TypeInfoArray* fromTypeArray = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
-        if ((!(castFlags & CASTFLAG_NO_IMPLICIT) && toTypeSlice->pointedType->isSame(fromTypeArray->pointedType, ISSAME_CAST)) ||
+        if ((!(castFlags & CASTFLAG_NO_IMPLICIT) && toTypeSlice->pointedType->isSame(fromTypeArray->pointedType, CASTFLAG_CAST)) ||
             (castFlags & CASTFLAG_EXPLICIT))
         {
             if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
@@ -3454,12 +3450,6 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
     bool result = false;
 
-    auto isSameFlags = ISSAME_CAST;
-    if (castFlags & CASTFLAG_FOR_AFFECT)
-        isSameFlags |= ISSAME_FOR_AFFECT;
-    if (castFlags & CASTFLAG_FOR_GENERIC)
-        isSameFlags |= ISSAME_FOR_GENERIC;
-
     // To/From a moveref
     if (!(fromType->flags & TYPEINFO_POINTER_ACCEPT_MOVE_REF) && (toType->flags & TYPEINFO_POINTER_MOVE_REF))
     {
@@ -3481,7 +3471,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
             castFlags |= CASTFLAG_FORCE_UNCONST;
             result = true;
         }
-        else if (fromTypeRef->isSame(toType, isSameFlags))
+        else if (fromTypeRef->isSame(toType, castFlags | CASTFLAG_CAST))
         {
             castFlags |= CASTFLAG_FORCE_UNCONST;
             result = true;
@@ -3494,7 +3484,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         fromType = concretePtrRef(fromType);
 
     // If not already ok, call 'same'
-    if (!result && fromType->isSame(toType, isSameFlags))
+    if (!result && fromType->isSame(toType, castFlags | CASTFLAG_CAST))
         result = true;
 
     // Always match against a generic

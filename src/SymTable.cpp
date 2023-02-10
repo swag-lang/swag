@@ -7,6 +7,7 @@
 #include "ErrorIds.h"
 #include "Mutex.h"
 #include "Naming.h"
+#include "TypeManager.h"
 
 SymbolName* SymTable::find(const Utf8& name, uint32_t crc)
 {
@@ -440,7 +441,7 @@ SymbolOverload* SymbolName::findOverload(TypeInfo* typeInfo)
     {
         if (it->typeInfo == typeInfo)
             return it;
-        if (it->typeInfo->isSame(typeInfo, ISSAME_EXACT))
+        if (it->typeInfo->isSame(typeInfo, CASTFLAG_EXACT))
             return it;
     }
 

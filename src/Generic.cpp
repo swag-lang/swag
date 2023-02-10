@@ -418,7 +418,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
             bool same = true;
             for (int i = 0; i < t0->genericParameters.size(); i++)
             {
-                if (!t0->genericParameters[i]->typeInfo->isSame(t1->genericParameters[i]->typeInfo, ISSAME_EXACT))
+                if (!t0->genericParameters[i]->typeInfo->isSame(t1->genericParameters[i]->typeInfo, CASTFLAG_EXACT))
                 {
                     same = false;
                     break;

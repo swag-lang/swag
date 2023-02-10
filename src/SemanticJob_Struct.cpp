@@ -251,7 +251,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         // Match function signature
         auto typeLambda = CastTypeInfo<TypeInfoFuncAttr>(itfSymbol->typeInfo, TypeInfoKind::LambdaClosure);
         auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
-        if (!typeLambda->isSame(typeFunc, ISSAME_EXACT | ISSAME_INTERFACE))
+        if (!typeLambda->isSame(typeFunc, CASTFLAG_EXACT | CASTFLAG_INTERFACE))
         {
             Diagnostic diag{child, child->token, Fmt(Err(Err0652), child->token.ctext(), typeBaseInterface->name.c_str())};
             Diagnostic note{itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0002), DiagnosticLevel::Note};

@@ -83,7 +83,7 @@ bool SemanticJob::valueEqualsTo(const ComputedValue* value1, const ComputedValue
         if (!typeInfo1 || !typeInfo2)
             return false;
 
-        if (typeInfo1->isSame(typeInfo2, ISSAME_EXACT))
+        if (typeInfo1->isSame(typeInfo2, CASTFLAG_EXACT))
             return true;
     }
 

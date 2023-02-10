@@ -16,7 +16,7 @@ bool TypeInfoNative::isSame(TypeInfo* to, uint32_t isSameFlags)
     if (this == to)
         return true;
 
-    if (isSameFlags & ISSAME_CAST)
+    if (isSameFlags & CASTFLAG_CAST)
     {
         if (to->isKindGeneric())
             return true;
@@ -58,7 +58,7 @@ bool TypeInfoCode::isSame(TypeInfo* to, uint32_t isSameFlags)
         return true;
     if (!TypeInfo::isSame(to, isSameFlags))
         return false;
-    if (isSameFlags & ISSAME_CAST)
+    if (isSameFlags & CASTFLAG_CAST)
         return true;
     return false;
 }
@@ -153,7 +153,7 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
         return true;
 
     to = TypeManager::concreteType(to);
-    if (isSameFlags & ISSAME_CAST)
+    if (isSameFlags & CASTFLAG_CAST)
     {
         if (to->isKindGeneric() && !(flags & TYPEINFO_POINTER_MOVE_REF))
             return true;
@@ -164,7 +164,7 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
     if (!TypeInfo::isSame(to, isSameFlags))
         return false;
 
-    if (isSameFlags & ISSAME_CAST)
+    if (isSameFlags & CASTFLAG_CAST)
     {
         if (this->isPointerNull())
             return true;
@@ -175,9 +175,9 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
     auto other = static_cast<TypeInfoPointer*>(to);
 
     // Anonymous pointers
-    if (isSameFlags & ISSAME_CAST)
+    if (isSameFlags & CASTFLAG_CAST)
     {
-        if (other->pointedType == g_TypeMgr->typeInfoVoid && !(isSameFlags & ISSAME_FOR_GENERIC))
+        if (other->pointedType == g_TypeMgr->typeInfoVoid && !(isSameFlags & CASTFLAG_FOR_GENERIC))
             return true;
         if ((to->flags & TYPEINFO_POINTER_ARITHMETIC) && !(flags & TYPEINFO_POINTER_ARITHMETIC))
             return false;
@@ -343,7 +343,7 @@ bool TypeInfoList::isSame(TypeInfo* to, uint32_t isSameFlags)
 
     // Can cast from typelist tuple to struct
     // The real check will be done later
-    if (isSameFlags & ISSAME_CAST)
+    if (isSameFlags & CASTFLAG_CAST)
     {
         if (to->isStruct() && kind == TypeInfoKind::TypeListTuple)
             return true;
@@ -361,7 +361,7 @@ bool TypeInfoList::isSame(TypeInfo* to, uint32_t isSameFlags)
             return false;
     }
 
-    if (isSameFlags & ISSAME_EXACT)
+    if (isSameFlags & CASTFLAG_EXACT)
     {
         if (scope != other->scope)
             return false;
@@ -417,11 +417,11 @@ bool TypeInfoGeneric::isSame(TypeInfo* to, uint32_t isSameFlags)
 {
     if (this == to)
         return true;
-    if (!(isSameFlags & ISSAME_EXACT) && !to->isKindGeneric())
+    if (!(isSameFlags & CASTFLAG_EXACT) && !to->isKindGeneric())
         return true;
     if (to->kind == kind)
         return name == to->name;
-    if (isSameFlags & ISSAME_EXACT)
+    if (isSameFlags & CASTFLAG_EXACT)
         return name == to->name;
     return true;
 }
@@ -459,7 +459,7 @@ bool TypeInfoEnum::isSame(TypeInfo* to, uint32_t isSameFlags)
 {
     if (this == to)
         return true;
-    if (isSameFlags & ISSAME_CAST)
+    if (isSameFlags & CASTFLAG_CAST)
     {
         if (to->isKindGeneric())
             return true;
@@ -473,7 +473,7 @@ bool TypeInfoEnum::isSame(TypeInfo* to, uint32_t isSameFlags)
     if (values.size() != other->values.size())
         return false;
 
-    if (!(isSameFlags & ISSAME_CAST))
+    if (!(isSameFlags & CASTFLAG_CAST))
     {
         int childSize = (int) values.size();
         if (childSize != other->values.size())
@@ -641,7 +641,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
     if (isLambdaClosure() && other->isLambdaClosure() && firstDefaultValueIdx != UINT32_MAX)
         return false;
 
-    if (isSameFlags & ISSAME_EXACT)
+    if (isSameFlags & CASTFLAG_EXACT)
     {
         if (!returnType && other->returnType && !other->returnType->isVoid())
             return false;
@@ -728,7 +728,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint32_t isSameFlags)
     if (this == to)
         return true;
 
-    if (isSameFlags & ISSAME_CAST)
+    if (isSameFlags & CASTFLAG_CAST)
     {
         if (kind == TypeInfoKind::LambdaClosure && to->isPointerNull())
             return true;
@@ -742,7 +742,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint32_t isSameFlags)
     if (!isSame(other, isSameFlags))
         return false;
 
-    if ((isSameFlags & ISSAME_EXACT) || (to->isLambdaClosure()))
+    if ((isSameFlags & CASTFLAG_EXACT) || (to->isLambdaClosure()))
     {
         if (returnType && returnType != g_TypeMgr->typeInfoVoid && !other->returnType)
             return false;
@@ -936,13 +936,13 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
     if (to->flags & TYPEINFO_FAKE_ALIAS)
         to = static_cast<TypeInfoAlias*>(to)->rawType;
 
-    if (isSameFlags & ISSAME_CAST)
+    if (isSameFlags & CASTFLAG_CAST)
     {
         if (to->isKindGeneric())
             return true;
     }
 
-    if (isSameFlags & ISSAME_INTERFACE)
+    if (isSameFlags & CASTFLAG_INTERFACE)
     {
         if (kind == TypeInfoKind::Interface && to->isStruct())
         {
@@ -973,7 +973,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
         {
             auto myGenParam    = genericParameters[i];
             auto otherGenParam = other->genericParameters[i];
-            if (isSameFlags & ISSAME_CAST)
+            if (isSameFlags & CASTFLAG_CAST)
             {
                 if (otherGenParam->typeInfo->isKindGeneric())
                     continue;
@@ -995,7 +995,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
 
     // Compare field by field
     bool compareFields = false;
-    if (!hasTuple && !(isSameFlags & ISSAME_CAST))
+    if (!hasTuple && !(isSameFlags & CASTFLAG_CAST))
     {
         if ((flags & TYPEINFO_GENERIC) != (other->flags & TYPEINFO_GENERIC))
             return false;
@@ -1028,7 +1028,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
                 return false;
 
             // But this is ok to affect between tuple and struct even if they do not have the same fields names
-            if (!(isSameFlags & ISSAME_FOR_AFFECT) || (isSameFlags & ISSAME_EXACT))
+            if (!(isSameFlags & CASTFLAG_FOR_AFFECT) || (isSameFlags & CASTFLAG_EXACT))
             {
                 if (fields[i]->namedParam != other->fields[i]->namedParam)
                     return false;

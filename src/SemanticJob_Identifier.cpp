@@ -2976,7 +2976,7 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
             if (typeInfo->parameters.size())
             {
                 auto firstParam = typeInfo->parameters.front()->typeInfo;
-                if (firstParam->isSame(dep.node->typeInfo, ISSAME_EXACT))
+                if (firstParam->isSame(dep.node->typeInfo, CASTFLAG_EXACT))
                     okForUfcs = true;
             }
         }

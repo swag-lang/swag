@@ -82,12 +82,6 @@ static const uint64_t TYPEINFO_STRUCT_EMPTY             = 0x00010000'00000000;
 static const uint64_t TYPEINFO_POINTER_MOVE_REF         = 0x00020000'00000000;
 static const uint64_t TYPEINFO_POINTER_ACCEPT_MOVE_REF  = 0x00040000'00000000;
 
-static const uint32_t ISSAME_EXACT       = 0x00000001;
-static const uint32_t ISSAME_CAST        = 0x00000002;
-static const uint32_t ISSAME_INTERFACE   = 0x00000004;
-static const uint32_t ISSAME_FOR_AFFECT  = 0x00000008;
-static const uint32_t ISSAME_FOR_GENERIC = 0x00000010;
-
 enum class MatchResult
 {
     Ok,

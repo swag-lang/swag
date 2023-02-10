@@ -249,11 +249,11 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     {
         auto leftConcrete = TypeManager::concreteType(leftTypeInfo);
         if (right->flags & AST_NO_LEFT_DROP)
-            SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, ISSAME_CAST), context->report({node, node->token, Fmt(Err(Err0568), g_LangSpec->name_nodrop.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CASTFLAG_CAST), context->report({node, node->token, Fmt(Err(Err0568), g_LangSpec->name_nodrop.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
         if (right->flags & AST_NO_RIGHT_DROP)
-            SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, ISSAME_CAST), context->report({node, node->token, Fmt(Err(Err0568), g_LangSpec->name_moveraw.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CASTFLAG_CAST), context->report({node, node->token, Fmt(Err(Err0568), g_LangSpec->name_moveraw.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
         if (right->flags & AST_FORCE_MOVE)
-            SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, ISSAME_CAST), context->report({node, node->token, Fmt(Err(Err0568), g_LangSpec->name_move.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CASTFLAG_CAST), context->report({node, node->token, Fmt(Err(Err0568), g_LangSpec->name_move.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
     }
 
     // No direct operations on any, except affect any to any
@@ -343,7 +343,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         {
             if (arrayNode)
             {
-                if (leftTypeInfo->kind == rightTypeInfo->kind && rightTypeInfo->isSame(leftTypeInfo, ISSAME_CAST))
+                if (leftTypeInfo->kind == rightTypeInfo->kind && rightTypeInfo->isSame(leftTypeInfo, CASTFLAG_CAST))
                 {
                     SWAG_CHECK(waitForStructUserOps(context, left));
                     if (context->result == ContextResult::Pending)
@@ -375,7 +375,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             }
             else
             {
-                if (leftTypeInfo->kind == rightTypeInfo->kind && rightTypeInfo->isSame(leftTypeInfo, ISSAME_CAST | ISSAME_FOR_AFFECT))
+                if (leftTypeInfo->kind == rightTypeInfo->kind && rightTypeInfo->isSame(leftTypeInfo, CASTFLAG_CAST | CASTFLAG_FOR_AFFECT))
                 {
                     SWAG_CHECK(waitForStructUserOps(context, left));
                     if (context->result == ContextResult::Pending)
