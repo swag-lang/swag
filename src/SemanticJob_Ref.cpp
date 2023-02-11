@@ -120,7 +120,14 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     auto child    = node->childs.front();
     auto typeInfo = child->typeInfo;
 
-    SWAG_ASSERT(child->resolvedSymbolName);
+    if (!child->resolvedSymbolName)
+    {
+        Diagnostic diag{node, node->token, Err(Err0047)};
+        diag.hint = Hnt(Hnt0061);
+        diag.addRange(child, Diagnostic::isType(typeInfo));
+        return context->report(diag);
+    }
+
     if (child->resolvedSymbolName->kind == SymbolKind::Function)
     {
         // For a function, if no parameters, then this is for a lambda
@@ -348,11 +355,9 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
         auto        typeInfo = node->array->typeInfo;
         SymbolName* symbol   = nullptr;
         SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opSlice, node->array, &symbol));
+        YIELD();
         if (!symbol)
         {
-            if (context->result != ContextResult::Done)
-                return true;
-
             Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0320), node->array->token.ctext(), typeInfo->getDisplayNameC())};
             diag.hint = Fmt(Hnt(Hnt0047), g_LangSpec->name_opSlice.c_str());
             diag.addRange(node->array, Diagnostic::isType(typeInfo));
@@ -360,6 +365,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
         }
 
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opSlice, nullptr, nullptr, node->array, node->structFlatParams));
+        YIELD();
     }
     else
     {

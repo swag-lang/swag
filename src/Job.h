@@ -35,6 +35,10 @@ enum class ContextResult
     NewChilds1,
 };
 
+#define YIELD()                                 \
+    if (context->result != ContextResult::Done) \
+        return true;
+
 struct JobContext
 {
     bool report(const Diagnostic& diag, const Diagnostic* note = nullptr, const Diagnostic* note1 = nullptr);
@@ -43,24 +47,24 @@ struct JobContext
 
     void reset()
     {
-        baseJob            = nullptr;
-        node               = nullptr;
-        sourceFile         = nullptr;
+        baseJob           = nullptr;
+        node              = nullptr;
+        sourceFile        = nullptr;
         validIfParameters = nullptr;
-        result             = ContextResult::Done;
-        hasError           = false;
-        silentError        = 0;
+        result            = ContextResult::Done;
+        hasError          = false;
+        silentError       = 0;
         errorContextStack.clear();
     }
 
     vector<ErrorContext> errorContextStack;
 
-    Job*        baseJob            = nullptr;
-    AstNode*    node               = nullptr;
-    SourceFile* sourceFile         = nullptr;
+    Job*        baseJob           = nullptr;
+    AstNode*    node              = nullptr;
+    SourceFile* sourceFile        = nullptr;
     AstNode*    validIfParameters = nullptr;
-    bool        hasError           = false;
-    uint32_t    silentError        = false;
+    bool        hasError          = false;
+    uint32_t    silentError       = false;
 
     ContextResult result = ContextResult::Done;
 };

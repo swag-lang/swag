@@ -609,7 +609,7 @@ void initErrors()
     SWAG_ERROR(Err0053, "mismatched types, '%s' is expected ('%s' provided)");
     SWAG_ERROR(Err0050, "mismatched types, '%s' is expected for field '%s' ('%s' provided)");
     SWAG_ERROR(Err0196, "mismatched types, cannot %s '%s' %s '%s'");
-    SWAG_ERROR(Err0047, nullptr);
+    SWAG_ERROR(Err0047, "cannot take the address of the right expression");
     SWAG_ERROR(Err0187, "missing index when dereferencing array '%s'");
     SWAG_ERROR(Err0169, "more than one module with the name '%s' is present in the workspace (path is '%s')");
     SWAG_ERROR(Err0061, "no enough arguments for special function '%s' ('%d' expected, '%d' provided)");
