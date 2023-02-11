@@ -2431,7 +2431,7 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
     // Struct to moveref can go to there
     if (fromType->isStruct() && toTypePointer->pointedType->isStruct() && toTypePointer->isPointerMoveRef())
     {
-        if (fromType->isSame(toTypePointer->pointedType, castFlags))
+        if (fromType->isSame(toTypePointer->pointedType, castFlags | CASTFLAG_CAST))
         {
             context->castFlagsResult |= CASTFLAG_RESULT_GUESS_MOVE;
             return true;
