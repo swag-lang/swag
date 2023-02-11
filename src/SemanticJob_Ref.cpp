@@ -132,7 +132,12 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
         // Only for a reference
         typeInfo = TypeManager::concreteType(typeInfo);
         if (!typeInfo->isPointerRef())
-            return context->report({node, Fmt(Err(Err0114), typeInfo->getDisplayNameC())});
+        {
+            Diagnostic diag{node, node->token, Fmt(Err(Err0114), typeInfo->getDisplayNameC())};
+            diag.hint = Hnt(Hnt0061);
+            diag.addRange(child, Fmt(Hnt(Hnt0112), Naming::aKindName(typeInfo).c_str()));
+            return context->report(diag);
+        }
     }
 
     SWAG_CHECK(checkCanTakeAddress(context, child));

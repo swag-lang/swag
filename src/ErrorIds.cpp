@@ -1128,7 +1128,7 @@ void initErrors()
     SWAG_ERROR(Hnt0109, "this is not allowed on a non pointer type");
     SWAG_ERROR(Hnt0110, "this is not allowed because 'void' does not have a size");
     SWAG_ERROR(Hnt0111, "'moveref' and 'ref' are mutually exclusive");
-    SWAG_ERROR(Hnt0112, nullptr);
+    SWAG_ERROR(Hnt0112, "you can only take the address of a returned reference, and this is %s");
     SWAG_ERROR(Hnt0113, nullptr);
     SWAG_ERROR(Hnt0114, nullptr);
 

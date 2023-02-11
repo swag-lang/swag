@@ -1619,9 +1619,10 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
 
 bool SemanticJob::isFunctionButNotACall(SemanticContext* context, AstNode* node, SymbolName* symbol)
 {
+    AstIdentifier* id = nullptr;
     if (node && node->kind == AstNodeKind::Identifier)
     {
-        auto id = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+        id = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
         if (id != id->identifierRef->childs.back())
             return false;
     }
@@ -1639,7 +1640,12 @@ bool SemanticJob::isFunctionButNotACall(SemanticContext* context, AstNode* node,
             if (symbol->kind == SymbolKind::Function)
             {
                 if (grandParent->kind == AstNodeKind::MakePointer && node == node->parent->childs.back())
+                {
+                    if (id && id->callParameters)
+                        return false;
                     return true;
+                }
+
                 if (grandParent->kind == AstNodeKind::MakePointerLambda && node == node->parent->childs.back())
                     return true;
             }
@@ -4370,7 +4376,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
                 return true;
             SWAG_CHECK(fillMatchContextGenericParameters(context, symMatchContext, node, symbolOverload));
 
-            if (node->forceTakeAddress())
+            bool notACall = isFunctionButNotACall(context, node, symbolOverload->symbol);
+            if (node->forceTakeAddress() && notACall)
                 symMatchContext.flags |= SymbolMatchContext::MATCH_FOR_LAMBDA;
 
             listTryMatch.push_back(tryMatch);
