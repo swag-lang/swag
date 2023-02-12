@@ -1057,7 +1057,7 @@ void SemanticJob::findClosestMatches(SemanticContext* context, const Utf8& searc
 void SemanticJob::findClosestMatches(SemanticContext* context, IdentifierSearchFor searchFor, AstNode* node, VectorNative<AlternativeScope>& scopeHierarchy, vector<Utf8>& best)
 {
     // Do not take some time if file is supposed to fail, in test mode
-    if (context->sourceFile->numTestErrors && !g_CommandLine.verboseTestErrors)
+    if (context->sourceFile->shouldHaveError && !g_CommandLine.verboseTestErrors)
         return;
 
     vector<Utf8> searchList;

@@ -1,4 +1,4 @@
-#global testerrors
+#global testerror
 struct A { z: s32; }
 
 //#[Swag.PrintBc]

@@ -1,4 +1,4 @@
-//#global testwarnings
+//#global testwarning
 #global #[Swag.Warn("wrn0004", Swag.WarnLevel.Error)]
 #test
 {

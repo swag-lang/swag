@@ -1,4 +1,4 @@
-#global testwarnings
+#global testwarning
 
 interface I
 {

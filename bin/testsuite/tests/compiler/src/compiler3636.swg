@@ -1,4 +1,4 @@
-#global testerrors
+#global testerror
 
 struct(T) ArrayPtr
 {

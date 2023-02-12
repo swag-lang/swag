@@ -1,4 +1,4 @@
-#global testerrors
+#global testerror
 #global #[Swag.Safety("over", true)]
 
 var x0: u8 = cast(u8) 256.0

@@ -467,12 +467,8 @@ namespace Report
             sourceFile->module->numErrors++;
 
             // Do not raise an error if we are waiting for one, during tests
-            if ((sourceFile->numTestErrors || sourceFile->multipleTestErrors) && !diag.criticalError)
+            if (sourceFile->shouldHaveError && !diag.criticalError)
             {
-                if (sourceFile->multipleTestErrors)
-                    sourceFile->numTestErrors = 0;
-                else
-                    sourceFile->numTestErrors--;
                 if (g_CommandLine.verboseTestErrors)
                     report(diag, notes, true);
                 return false;
@@ -486,12 +482,8 @@ namespace Report
             sourceFile->module->numWarnings++;
 
             // Do not raise a warning if we are waiting for one, during tests
-            if (sourceFile->numTestWarnings || sourceFile->multipleTestWarnings)
+            if (sourceFile->shouldHaveWarning)
             {
-                if (sourceFile->multipleTestWarnings)
-                    sourceFile->numTestWarnings = 0;
-                else
-                    sourceFile->numTestWarnings--;
                 if (g_CommandLine.verboseTestErrors)
                     report(diag, notes, true);
                 return true;

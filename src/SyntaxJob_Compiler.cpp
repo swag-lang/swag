@@ -494,7 +494,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
     }
 
     /////////////////////////////////
-    else if (token.text == g_LangSpec->name_testerror || token.text == g_LangSpec->name_testerrors)
+    else if (token.text == g_LangSpec->name_testerror)
     {
         // Put the file in its own module, because of errors
         if (!moduleSpecified)
@@ -520,22 +520,15 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, Report::report({sourceFile, token, Err(Syn0003)}));
         SWAG_ASSERT(g_CommandLine.test);
 
-        if (token.text == g_LangSpec->name_testerrors)
-            sourceFile->multipleTestErrors = true;
-        else
-        {
-            sourceFile->numTestErrors++;
-            sourceFile->module->numTestErrors++;
-            if (currentCompilerIfBlock)
-                currentCompilerIfBlock->numTestErrors++;
-        }
+        sourceFile->shouldHaveError = true;
+        module->shouldHaveError     = true;
 
         SWAG_CHECK(eatToken());
         SWAG_CHECK(eatSemiCol("'#global testerror'"));
     }
 
     /////////////////////////////////
-    else if (token.text == g_LangSpec->name_testwarning || token.text == g_LangSpec->name_testwarnings)
+    else if (token.text == g_LangSpec->name_testwarning)
     {
         // Put the file in its own module, because of errors
         if (!moduleSpecified)
@@ -552,18 +545,8 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, Report::report({sourceFile, token, Err(Syn0004)}));
         SWAG_ASSERT(g_CommandLine.test);
 
-        if (token.text == g_LangSpec->name_testwarnings)
-        {
-            sourceFile->multipleTestWarnings = true;
-            sourceFile->module->numTestWarnings++;
-        }
-        else
-        {
-            sourceFile->numTestWarnings++;
-            sourceFile->module->numTestWarnings++;
-            if (currentCompilerIfBlock)
-                currentCompilerIfBlock->numTestWarnings++;
-        }
+        sourceFile->shouldHaveWarning = true;
+        module->shouldHaveWarning     = true;
 
         SWAG_CHECK(eatToken());
         SWAG_CHECK(eatSemiCol("'#global testwarning'"));

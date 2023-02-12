@@ -1,4 +1,4 @@
-#global testerrors
+#global testerror
 #global #[Swag.Warn("wrn0003", Swag.WarnLevel.Error)]
 
 #[Swag.Deprecated("use this instead")]

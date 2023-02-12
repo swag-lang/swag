@@ -880,9 +880,6 @@ struct AstCompilerIfBlock : public AstNode
     VectorNative<AstNode*>    subDecls;
     VectorNative<AstNode*>    imports;
     VectorNative<AstNode*>    includes;
-
-    int numTestErrors   = 0;
-    int numTestWarnings = 0;
 };
 
 enum class CompilerAstKind

@@ -1,4 +1,4 @@
-#global testerrors
+#global testerror
 
 #[Swag.Macro]
 func(ptr: bool) opVisitToto(x: string, stmt: code)

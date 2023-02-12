@@ -123,9 +123,7 @@ void LanguageSpec::setupNames()
     name_semantic     = "semantic";
     name_backend      = "backend";
     name_testerror    = "testerror";
-    name_testerrors   = "testerrors";
     name_testwarning  = "testwarning";
-    name_testwarnings = "testwarnings";
     name_location     = "location";
     name_version      = "version";
 

@@ -1,4 +1,4 @@
-#global testerrors
+#global testerror
 
 func toto()->closure(s32)
 {

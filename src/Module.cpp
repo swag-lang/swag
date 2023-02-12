@@ -454,8 +454,8 @@ void Module::allocateBackend()
 
     // Allocate backend, even if we do not want to output, because the backend can be used
     // to know if a build is necessary
-    if (!numTestErrors &&
-        !numTestWarnings &&
+    if (!shouldHaveError &&
+        !shouldHaveWarning &&
         buildPass >= BuildPass::Backend &&
         kind != ModuleKind::Runtime &&
         kind != ModuleKind::BootStrap)
@@ -984,7 +984,7 @@ bool Module::mustGenerateTestExe()
         return false;
     if (g_Workspace->filteredModule && g_Workspace->filteredModule != this)
         return false;
-    if (numTestErrors || numTestWarnings)
+    if (shouldHaveError || shouldHaveWarning)
         return false;
 
     return true;

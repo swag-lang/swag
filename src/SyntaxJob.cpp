@@ -246,7 +246,7 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
     SWAG_ASSERT(module);
 
     // Log the generated code in '<module>.swg'
-    if (logGenerated && fromNode && !fromNode->sourceFile->numTestErrors && !fromNode->sourceFile->numTestWarnings && g_CommandLine.output)
+    if (logGenerated && fromNode && !fromNode->sourceFile->shouldHaveError && !fromNode->sourceFile->shouldHaveWarning && g_CommandLine.output)
     {
         if (fromNode->sourceFile->module->buildCfg.backendDebugInformations && !g_CommandLine.scriptCommand)
         {
@@ -264,8 +264,8 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
     if (fromNode)
     {
         tmpFile->sourceNode = fromNode;
-        tmpFile->numTestErrors.store(fromNode->sourceFile->numTestErrors);
-        tmpFile->numTestWarnings.store(fromNode->sourceFile->numTestWarnings);
+        tmpFile->shouldHaveError = fromNode->sourceFile->shouldHaveError;
+        tmpFile->shouldHaveWarning = fromNode->sourceFile->shouldHaveWarning;
     }
 
     sourceFile         = tmpFile;

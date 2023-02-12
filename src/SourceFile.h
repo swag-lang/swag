@@ -43,16 +43,14 @@ struct SourceFile
 
     uint64_t writeTime = 0;
 
-    long        bufferSize      = 0;
-    long        allocBufferSize = 0;
-    int         getLineOffset   = 0;
-    int         numErrors       = 0;
-    int         numWarnings     = 0;
-    atomic<int> numTestErrors   = 0;
-    atomic<int> numTestWarnings = 0;
-    uint32_t    indexInModule   = UINT32_MAX;
-    BuildPass   buildPass       = BuildPass::Full;
-    uint32_t    globalAttr      = 0;
+    long      bufferSize      = 0;
+    long      allocBufferSize = 0;
+    int       getLineOffset   = 0;
+    int       numErrors       = 0;
+    int       numWarnings     = 0;
+    uint32_t  indexInModule   = UINT32_MAX;
+    BuildPass buildPass       = BuildPass::Full;
+    uint32_t  globalAttr      = 0;
 
     bool isExternal           = false;
     bool isCfgFile            = false;
@@ -61,8 +59,8 @@ struct SourceFile
     bool isRuntimeFile        = false;
     bool isScriptFile         = false;
     bool isEmbbeded           = false;
-    bool multipleTestErrors   = false;
-    bool multipleTestWarnings = false;
+    bool shouldHaveError   = false;
+    bool shouldHaveWarning = false;
     bool fromTests            = false;
     bool forceExport          = false;
     bool duringSyntax         = false;

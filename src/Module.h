@@ -274,13 +274,14 @@ struct Module
     uint32_t    globalVarsToDropSliceOffset = UINT32_MAX;
     uint32_t    numKickedFunc               = 0;
     int         optimPass                   = 0;
-    atomic<int> numTestErrors               = 0;
-    atomic<int> numTestWarnings             = 0;
     atomic<int> optimNeedRestart            = 0;
     atomic<int> numCompilerFunctions        = 0;
     atomic<int> numErrors                   = 0;
     atomic<int> numWarnings                 = 0;
     atomic<int> criticalErrors              = 0;
+
+    bool shouldHaveError   = false;
+    bool shouldHaveWarning = false;
 
     bool isLocalToWorkspace = false;
     bool isErrorModule      = false;

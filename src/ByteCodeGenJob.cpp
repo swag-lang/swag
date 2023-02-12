@@ -782,7 +782,7 @@ JobResult ByteCodeGenJob::execute()
         context.bc->node->kind == AstNodeKind::FuncDecl)
     {
         auto funcNode = CastAst<AstFuncDecl>(context.bc->node, AstNodeKind::FuncDecl);
-        if (!funcNode->sourceFile->numTestErrors)
+        if (!funcNode->sourceFile->shouldHaveError)
         {
             // Be sure that every used registers have been released
             if (context.bc->maxReservedRegisterRC > context.bc->availableRegistersRC.size())

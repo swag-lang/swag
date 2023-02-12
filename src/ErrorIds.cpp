@@ -559,8 +559,8 @@ void initErrors()
     SWAG_ERROR(Err0036, "error: backend: cannot locate windows sdk folder");
     SWAG_ERROR(Err0102, "evaluation of a function parameter of type '%s' is not supported at compile time");
     SWAG_ERROR(Err0435, "exception during compile time execution !");
-    SWAG_ERROR(Err0500, "expected '%d' test errors (%d raised)");
-    SWAG_ERROR(Err0501, "expected '%d' test warnings (%d raised)");
+    SWAG_ERROR(Err0500, nullptr);
+    SWAG_ERROR(Err0501, nullptr);
     SWAG_ERROR(Err0141, "expected '\"' or an intrinsic name, found character '%c'");
     SWAG_ERROR(Err0654, "expected 'self' as a first parameter for the interface function '%s'");
     SWAG_ERROR(Err0779, "expected a return value because the return type has already been deduced to be '%s'");

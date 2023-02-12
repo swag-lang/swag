@@ -198,27 +198,7 @@ void ModuleBuildJob::checkMissingErrors()
     {
         for (auto file : module->files)
         {
-            if (file->numTestErrors)
-            {
-                if (g_CommandLine.testFilter.empty() || strstr(file->name, g_CommandLine.testFilter.c_str()))
-                {
-                    auto nb             = file->numTestErrors.load();
-                    file->numTestErrors = 0;
-                    Report::report({file, Fmt(Err(Err0500), nb, file->numErrors)});
-                }
-            }
-
-            if (file->numTestWarnings)
-            {
-                if (g_CommandLine.testFilter.empty() || strstr(file->name, g_CommandLine.testFilter.c_str()))
-                {
-                    auto nb               = file->numTestWarnings.load();
-                    file->numTestWarnings = 0;
-                    Report::report({file, Fmt(Err(Err0501), nb, file->numWarnings)});
-                }
-            }
-
-            if (file->multipleTestErrors && !file->numErrors)
+            if (file->shouldHaveError && !file->numErrors)
             {
                 if (g_CommandLine.testFilter.empty() || strstr(file->name, g_CommandLine.testFilter.c_str()))
                 {
@@ -226,7 +206,7 @@ void ModuleBuildJob::checkMissingErrors()
                 }
             }
 
-            if (file->multipleTestWarnings && !file->numWarnings)
+            if (file->shouldHaveWarning && !file->numWarnings)
             {
                 if (g_CommandLine.testFilter.empty() || strstr(file->name, g_CommandLine.testFilter.c_str()))
                 {

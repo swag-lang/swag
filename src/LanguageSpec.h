@@ -145,9 +145,7 @@ struct LanguageSpec
     Utf8 name_semantic;
     Utf8 name_backend;
     Utf8 name_testerror;
-    Utf8 name_testerrors;
     Utf8 name_testwarning;
-    Utf8 name_testwarnings;
     Utf8 name_location;
     Utf8 name_version;
 

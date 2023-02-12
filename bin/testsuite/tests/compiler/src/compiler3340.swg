@@ -1,5 +1,5 @@
 #global #[Swag.Safety("over", true)]
-#global testerrors
+#global testerror
 
 const G: u8 = -10
 const G: u16 = -10

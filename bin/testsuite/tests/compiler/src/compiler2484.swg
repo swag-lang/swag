@@ -1,5 +1,5 @@
 #global #[Swag.Safety("over", true)]
-#global testerrors
+#global testerror
 
 const x0 = 1'u8 << 8
 const x1 = 1'u32 << 32

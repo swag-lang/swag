@@ -1,3 +1,3 @@
-﻿#global testerror;
-#global testpass lexer;
+﻿#global testerror
+#global testpass lexer
 È
