@@ -1,17 +1,17 @@
 #include "pch.h"
 #ifdef _WIN32
+#include <DbgHelp.h>
+#pragma comment(lib, "dbghelp.lib")
+
 #include "Workspace.h"
 #include "Module.h"
 #include "Diagnostic.h"
 #include "ErrorIds.h"
-#include "OutputFileWin32.h"
 #include "TypeManager.h"
 #include "BackendX64.h"
 #include "Context.h"
 #include "Report.h"
 #include "ByteCodeStack.h"
-#include <DbgHelp.h>
-#pragma comment(lib, "dbghelp.lib")
 
 namespace OS
 {
@@ -560,17 +560,6 @@ namespace OS
         case IDCONTINUE:
             break;
         }
-    }
-
-    OutputFile* newOutputFile()
-    {
-        auto result = g_Allocator.alloc<OutputFileWin32>();
-        return result;
-    }
-
-    void freeOutputFile(OutputFile* file)
-    {
-        g_Allocator.free<OutputFileWin32>(file);
     }
 
     bool touchFile(const fs::path& path)

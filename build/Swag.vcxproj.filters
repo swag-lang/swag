@@ -389,9 +389,6 @@
     <ClCompile Include="..\src\ByteCode_Print_.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\OutputFileWin32.cpp">
-      <Filter>Os</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\ByteCodeRun_Math.cpp">
       <Filter>Backend\ByteCode\Run</Filter>
     </ClCompile>
@@ -749,9 +746,6 @@
     <ClInclude Include="../src/ByteCodeGenJob.h">
       <Filter>Backend\ByteCode\Gen</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\OutputFileWin32.h">
-      <Filter>Os</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Mutex.h">
       <Filter>Threading</Filter>
     </ClInclude>
@@ -844,9 +838,6 @@
     </ClInclude>
     <ClInclude Include="../src/JobThread.h">
       <Filter>Jobs</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\OutputFile.h">
-      <Filter>Wmf</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

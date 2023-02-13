@@ -1,6 +1,5 @@
 #pragma once
 #include "Log.h"
-#include "OutputFile.h"
 #include "VectorNative.h"
 
 struct BuildParameters;
@@ -57,9 +56,6 @@ namespace OS
     uint64_t getFileWriteTime(const char* fileName);
     bool     touchFile(const fs::path& path);
     string   getTemporaryFolder();
-
-    OutputFile* newOutputFile();
-    void        freeOutputFile(OutputFile* file);
 
     uint64_t timerNow();
     double   timerToSeconds(uint64_t timer);

@@ -2,6 +2,8 @@
 #include "Concat.h"
 #include "CommandLine.h"
 #include "Os.h"
+#include "Report.h"
+#include "ErrorIds.h"
 
 void Concat::init(int size)
 {
@@ -342,21 +344,21 @@ void Concat::addS32Str8(int value)
 
 bool Concat::flushToFile(const string& path)
 {
-    auto* outputFile = OS::newOutputFile();
-
-    if (!outputFile->openWrite(path))
+    FILE* f = nullptr;
+    if (fopen_s(&f, path.c_str(), "wb"))
+    {
+        Report::errorOS(Fmt(Err(Err0524), path.c_str()));
         return false;
+    }
 
     auto bucket = firstBucket;
     while (bucket != lastBucket->nextBucket)
     {
-        outputFile->save(bucket->datas, bucketCount(bucket));
+        fwrite(bucket->datas, 1, bucketCount(bucket), f);
         bucket = bucket->nextBucket;
     }
 
-    outputFile->close();
-    OS::freeOutputFile(outputFile);
-
+    fclose(f);
     clear();
     return true;
 }
