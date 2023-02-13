@@ -136,7 +136,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result
             if (token.id == TokenId::SymColon)
             {
                 if (paramExpression->kind != AstNodeKind::IdentifierRef || paramExpression->childs.size() != 1)
-                    return Report::report({paramExpression, Fmt(Err(Syn0110), token.ctext())});
+                    return context.report({paramExpression, Fmt(Err(Syn0110), token.ctext())});
                 param->allocateExtension(ExtensionKind::IsNamed);
                 param->extension->misc->isNamed = paramExpression->childs.front();
                 SWAG_CHECK(eatToken());
@@ -161,7 +161,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result
                 break;
 
             if (token.id == closeToken)
-                return Report::report({callParams, tokenComma, Err(Err0066)});
+                return context.report({callParams, tokenComma, Err(Err0066)});
         }
     }
 
@@ -475,7 +475,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acc
             auto tokenComma = token;
             SWAG_CHECK(eatToken(TokenId::SymComma));
             if (token.id == TokenId::SymRightParen)
-                return Report::report({allParams, tokenComma, Err(Err0188)});
+                return context.report({allParams, tokenComma, Err(Err0188)});
 
             SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdUsing || token.id == TokenId::SymAttrStart, error(token, Fmt(Err(Syn0112), token.ctext())));
         }

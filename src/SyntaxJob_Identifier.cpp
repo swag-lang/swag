@@ -143,7 +143,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
     // Replace "Self" with the corresponding struct name
     if (identifier->token.text == g_LangSpec->name_Self)
     {
-        SWAG_VERIFY(parent->ownerStructScope, Report::report({identifier, Err(Syn0135)}));
+        SWAG_VERIFY(parent->ownerStructScope, context.report({identifier, Err(Syn0135)}));
         if (currentSelfStructScope)
             identifier->token.text = currentSelfStructScope->name;
         else
@@ -170,7 +170,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
             {
                 Diagnostic diag{identifier, token, Fmt(Err(Syn0128), identifier->token.ctext())};
                 Diagnostic note(Hlp(Hlp0035), DiagnosticLevel::Help);
-                return Report::report(diag, &note);
+                return context.report(diag, &note);
             }
 
             SWAG_CHECK(eatToken(TokenId::SymLeftParen));
@@ -190,7 +190,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         if (!(identifierFlags & IDENTIFIER_NO_PARAMS))
         {
             if (identifierFlags & IDENTIFIER_TYPE_DECL)
-                return Report::report({identifier, token, Err(Syn0120)});
+                return context.report({identifier, token, Err(Syn0120)});
             Ast::removeFromParent(identifier);
             SWAG_CHECK(doArrayPointerIndex((AstNode**) &identifier));
             Ast::addChildBack(parent, identifier);

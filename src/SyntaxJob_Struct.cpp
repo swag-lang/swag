@@ -14,7 +14,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     if (result)
         *result = implNode;
 
-    SWAG_VERIFY(module->acceptsCompileImpl, Report::report({implNode, Err(Syn0104)}));
+    SWAG_VERIFY(module->acceptsCompileImpl, context.report({implNode, Err(Syn0104)}));
 
     auto scopeKind = ScopeKind::Struct;
     SWAG_CHECK(eatToken());
@@ -44,7 +44,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
             Diagnostic diag{implNode, token, Err(Syn0143)};
             diag.hint = Hnt(Hnt0061);
             diag.addRange(kindLoc, Hnt(Hnt0085));
-            return Report::report(diag);
+            return context.report(diag);
         }
 
         SWAG_CHECK(eatToken());
@@ -58,7 +58,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         implInterface                                   = true;
 
         auto last = CastAst<AstIdentifier>(identifierStruct->childs.back(), AstNodeKind::Identifier);
-        SWAG_VERIFY(!last->genericParameters, Report::report({last->genericParameters, Err(Syn0162)}));
+        SWAG_VERIFY(!last->genericParameters, context.report({last->genericParameters, Err(Syn0162)}));
     }
     else
     {
@@ -82,7 +82,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         else if (newScope->kind == ScopeKind::Struct)
             diag.hint = Fmt(Hnt(Hnt0020), implNode->token.ctext());
         Diagnostic note{newScope->owner, newScope->owner->token, Fmt(Nte(Nte0027), implNode->token.ctext()), DiagnosticLevel::Note};
-        return Report::report(diag, &note);
+        return context.report(diag, &note);
     }
 
     implNode->structScope = newScope;
@@ -243,13 +243,13 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
                 auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
                 Diagnostic diag{implNode->identifier, Fmt(Err(Syn0123), Naming::kindName(newScope->kind).c_str(), implNode->token.ctext(), Naming::kindName(ScopeKind::Struct).c_str())};
                 Diagnostic note{structNode, Fmt(Nte(Nte0027), implNode->token.ctext()), DiagnosticLevel::Note};
-                return Report::report(diag, &note);
+                return context.report(diag, &note);
             }
             else
             {
                 Diagnostic diag{structNode->sourceFile, token, Fmt(Err(Err0394), structNode->token.ctext(), Naming::aKindName(newScope->kind).c_str())};
                 Diagnostic note{newScope->owner, Nte(Nte0036), DiagnosticLevel::Note};
-                return Report::report(diag, &note);
+                return context.report(diag, &note);
             }
         }
 
@@ -354,7 +354,7 @@ bool SyntaxJob::doTupleBody(AstNode* parent, bool acceptEmpty)
         }
 
         Diagnostic diag{sourceFile, token, Fmt(Err(Syn0046), token.ctext())};
-        return Report::report(diag);
+        return context.report(diag);
     }
 
     bool        lastWasAlone  = false;
@@ -548,7 +548,7 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
     case TokenId::KwdUsing:
     {
         ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
-        SWAG_VERIFY(structType != SyntaxStructType::Interface, Report::report({parent, token, Err(Syn0029)}));
+        SWAG_VERIFY(structType != SyntaxStructType::Interface, context.report({parent, token, Err(Syn0029)}));
         SWAG_CHECK(eatToken());
         auto structNode = CastAst<AstStruct>(parent->ownerStructScope->owner, AstNodeKind::StructDecl);
         structNode->specFlags |= AST_SPEC_STRUCTDECL_HAS_USING;
@@ -572,7 +572,7 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
     {
         Diagnostic diag{parent, token, Err(Syn0030)};
         diag.hint = Hnt(Hnt0026);
-        return Report::report(diag);
+        return context.report(diag);
     }
 
     case TokenId::KwdMethod:

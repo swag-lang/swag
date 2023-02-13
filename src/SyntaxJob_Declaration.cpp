@@ -24,7 +24,7 @@ bool SyntaxJob::doWith(AstNode* parent, AstNode** result)
         {
             Diagnostic diag{id->sourceFile, id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Syn0157)};
             Diagnostic note{Hlp(Hlp0039), DiagnosticLevel::Help};
-            return Report::report(diag, &note);
+            return context.report(diag, &note);
         }
 
         SWAG_ASSERT(id->extension->semantic->semanticAfterFct == SemanticJob::resolveVarDeclAfter);
@@ -39,7 +39,7 @@ bool SyntaxJob::doWith(AstNode* parent, AstNode** result)
         {
             Diagnostic diag{node->sourceFile, id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Syn0157)};
             Diagnostic note{Hlp(Hlp0039), DiagnosticLevel::Help};
-            return Report::report(diag, &note);
+            return context.report(diag, &note);
         }
 
         if (id->kind != AstNodeKind::IdentifierRef &&
@@ -144,7 +144,7 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
                 {
                     Diagnostic diag{node, Err(Syn0036)};
                     Diagnostic note{child, child->token, Nte(Nte0024), DiagnosticLevel::Note};
-                    return Report::report(diag, &note);
+                    return context.report(diag, &note);
                 }
                 }
             }

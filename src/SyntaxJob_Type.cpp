@@ -614,9 +614,9 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             if (contextFlags & CONTEXT_FLAG_EXPRESSION)
             {
                 if (inTypeVarDecl)
-                    return Report::report({sourceFile, rightSquareToken, Err(Syn0024)});
+                    return context.report({sourceFile, rightSquareToken, Err(Syn0024)});
                 Diagnostic diag{sourceFile, rightSquareToken, Err(Syn0024)};
-                return Report::report(diag);
+                return context.report(diag);
             }
             else
             {
@@ -630,7 +630,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             {
                 Diagnostic diag{sourceFile, token, Fmt(Err(Syn0095), token.ctext())};
                 Diagnostic note{sourceFile, leftSquareToken, Hlp(Hlp0025), DiagnosticLevel::Help};
-                return Report::report(diag, &note);
+                return context.report(diag, &note);
             }
             else
             {
@@ -645,7 +645,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
                 {
                     Diagnostic diag{sourceFile, token, Fmt(Err(Syn0088), token.ctext())};
                     Diagnostic note{Hlp(Hlp0024), DiagnosticLevel::Help};
-                    return Report::report(diag, &note);
+                    return context.report(diag, &note);
                 }
             }
         }
@@ -657,10 +657,10 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             token.id != TokenId::SymCircumflex)
         {
             if (inTypeVarDecl)
-                return Report::report({sourceFile, token, Fmt(Err(Syn0066), token.ctext())});
+                return context.report({sourceFile, token, Fmt(Err(Syn0066), token.ctext())});
 
             Diagnostic diag{sourceFile, token, Fmt(Err(Syn0066), token.ctext())};
-            return Report::report(diag);
+            return context.report(diag);
         }
 
         if (token.id == TokenId::SymComma)
@@ -670,7 +670,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             if (callParam)
             {
                 Diagnostic diag{sourceFile, token, Fmt(Err(Syn0096), token.ctext())};
-                return Report::report(diag);
+                return context.report(diag);
             }
             else
             {
@@ -789,14 +789,14 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     if (parent && parent->kind == AstNodeKind::TupleContent)
     {
         Diagnostic diag{sourceFile, token, Fmt(Err(Syn0067), token.ctext())};
-        return Report::report(diag);
+        return context.report(diag);
     }
 
     if (token.id == TokenId::SymLeftParen)
     {
         Diagnostic diag{sourceFile, token, Fmt(Err(Syn0066), token.ctext())};
         Diagnostic note{sourceFile, token, Hlp(Hlp0004), DiagnosticLevel::Help};
-        return Report::report(diag, &note);
+        return context.report(diag, &note);
     }
 
     if (Tokenizer::isSymbol(token.id))
