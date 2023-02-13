@@ -470,7 +470,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
             auto  concreteType = TypeManager::concreteType(nodeCall->typeInfo, CONCRETE_FUNC);
             nodeCall->allocateComputedValue();
             nodeCall->computedValue->storageSegment2 = getConstantSegFromContext(nodeCall);
-            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, concreteType, nodeCall->computedValue->storageSegment2, &nodeCall->computedValue->storageOffset2));
+            SWAG_CHECK(typeTable.makeExportedTypeInfo(context, concreteType, nodeCall->computedValue->storageSegment2, &nodeCall->computedValue->storageOffset2));
         }
 
         // If passing a closure

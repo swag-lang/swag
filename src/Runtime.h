@@ -275,7 +275,7 @@ enum class NativeTypeKind : uint8_t
     Count,
 };
 
-enum class TypeInfoFlags : uint32_t
+enum class ExportedTypeInfoFlags : uint32_t
 {
     None              = 0x00000000,
     PointerTypeInfo   = 0x00000001,
@@ -295,7 +295,7 @@ enum class TypeInfoFlags : uint32_t
     PointerArithmetic = 0x00004000,
 };
 
-struct ConcreteTypeInfo
+struct ExportedTypeInfo
 {
     SwagSlice    fullName;
     SwagSlice    name;
@@ -306,66 +306,66 @@ struct ConcreteTypeInfo
     uint8_t      padding[3];
 };
 
-struct ConcreteAny
+struct ExportedAny
 {
     void*             value;
-    ConcreteTypeInfo* type;
+    ExportedTypeInfo* type;
 };
 
-struct ConcreteAttributeParameter
+struct ExportedAttributeParameter
 {
     SwagSlice   name;
-    ConcreteAny value;
+    ExportedAny value;
 };
 
-struct ConcreteAttribute
+struct ExportedAttribute
 {
-    ConcreteTypeInfo* type;
+    ExportedTypeInfo* type;
     SwagSlice         params;
 };
 
-struct ConcreteTypeValue
+struct ExportedTypeValue
 {
     SwagSlice         name;
-    ConcreteTypeInfo* pointedType;
+    ExportedTypeInfo* pointedType;
     void*             value;
     SwagSlice         attributes;
     uint32_t          offsetOf;
     uint32_t          crc32;
 };
 
-struct ConcreteTypeInfoNative
+struct ExportedTypeInfoNative
 {
-    ConcreteTypeInfo base;
+    ExportedTypeInfo base;
     NativeTypeKind   nativeKind;
 };
 
-struct ConcreteTypeInfoPointer
+struct ExportedTypeInfoPointer
 {
-    ConcreteTypeInfo  base;
-    ConcreteTypeInfo* pointedType;
+    ExportedTypeInfo  base;
+    ExportedTypeInfo* pointedType;
 };
 
-struct ConcreteTypeInfoAlias
+struct ExportedTypeInfoAlias
 {
-    ConcreteTypeInfo  base;
-    ConcreteTypeInfo* rawType;
+    ExportedTypeInfo  base;
+    ExportedTypeInfo* rawType;
 };
 
-struct ConcreteTypeInfoNamespace
+struct ExportedTypeInfoNamespace
 {
-    ConcreteTypeInfo base;
+    ExportedTypeInfo base;
 };
 
-struct ConcreteTypeInfoStruct
+struct ExportedTypeInfoStruct
 {
-    ConcreteTypeInfo  base;
+    ExportedTypeInfo  base;
     void*             opInit;
     void*             opDrop;
     void*             opPostCopy;
     void*             opPostMove;
     SwagSlice         structName;
-    ConcreteTypeInfo* fromGeneric;
+    ExportedTypeInfo* fromGeneric;
     SwagSlice         generics;
     SwagSlice         fields;
     SwagSlice         methods;
@@ -373,48 +373,48 @@ struct ConcreteTypeInfoStruct
     SwagSlice         attributes;
 };
 
-struct ConcreteTypeInfoFunc
+struct ExportedTypeInfoFunc
 {
-    ConcreteTypeInfo  base;
+    ExportedTypeInfo  base;
     SwagSlice         generics;
     SwagSlice         parameters;
-    ConcreteTypeInfo* returnType;
+    ExportedTypeInfo* returnType;
     SwagSlice         attributes;
 };
 
-struct ConcreteTypeInfoEnum
+struct ExportedTypeInfoEnum
 {
-    ConcreteTypeInfo  base;
+    ExportedTypeInfo  base;
     SwagSlice         values;
-    ConcreteTypeInfo* rawType;
+    ExportedTypeInfo* rawType;
     SwagSlice         attributes;
 };
 
-struct ConcreteTypeInfoArray
+struct ExportedTypeInfoArray
 {
-    ConcreteTypeInfo  base;
-    ConcreteTypeInfo* pointedType;
-    ConcreteTypeInfo* finalType;
+    ExportedTypeInfo  base;
+    ExportedTypeInfo* pointedType;
+    ExportedTypeInfo* finalType;
     uint64_t          count;
     uint64_t          totalCount;
 };
 
-struct ConcreteTypeInfoSlice
+struct ExportedTypeInfoSlice
 {
-    ConcreteTypeInfo  base;
-    ConcreteTypeInfo* pointedType;
+    ExportedTypeInfo  base;
+    ExportedTypeInfo* pointedType;
 };
 
-struct ConcreteTypeInfoVariadic
+struct ExportedTypeInfoVariadic
 {
-    ConcreteTypeInfo  base;
-    ConcreteTypeInfo* rawType;
+    ExportedTypeInfo  base;
+    ExportedTypeInfo* rawType;
 };
 
-struct ConcreteTypeInfoGeneric
+struct ExportedTypeInfoGeneric
 {
-    ConcreteTypeInfo  base;
-    ConcreteTypeInfo* rawType;
+    ExportedTypeInfo  base;
+    ExportedTypeInfo* rawType;
 };
 
 enum class CompilerMsgKind
@@ -443,12 +443,12 @@ enum class CompilerMsgKindMask : uint64_t
     All                   = 0xFFFFFFFFFFFFFFFF,
 };
 
-struct ConcreteCompilerMessage
+struct ExportedCompilerMessage
 {
     SwagSlice         moduleName;
     CompilerMsgKind   kind;
     SwagSlice         name;
-    ConcreteTypeInfo* type;
+    ExportedTypeInfo* type;
 };
 
 static const uint64_t SWAG_LAMBDA_BC_MARKER_BIT = 63;

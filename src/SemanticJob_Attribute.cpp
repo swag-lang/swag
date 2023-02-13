@@ -364,7 +364,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 {
                     SWAG_ASSERT(c->flags & AST_VALUE_IS_TYPEINFO);
                     SWAG_ASSERT(c->computedValue);
-                    auto ptr       = (ConcreteTypeInfo*) c->computedValue->storageSegment->address(c->computedValue->storageOffset);
+                    auto ptr       = (ExportedTypeInfo*) c->computedValue->storageSegment->address(c->computedValue->storageOffset);
                     auto typeChild = context->sourceFile->module->typeTable.getRealType(c->computedValue->storageSegment, ptr);
                     SWAG_ASSERT(typeChild);
                     Scope* scope;

@@ -221,7 +221,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
 
     if (typeInfo->isPointerToTypeInfo())
     {
-        auto ptr = ((ConcreteTypeInfo**) addr)[0];
+        auto ptr = ((ExportedTypeInfo**) addr)[0];
         if (!ptr)
             str += "null";
         else

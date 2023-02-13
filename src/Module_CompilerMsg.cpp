@@ -106,12 +106,12 @@ bool Module::flushCompilerMessages(JobContext* context, uint32_t pass, Job* job)
 
 bool Module::sendCompilerMessage(CompilerMsgKind msgKind, Job* dependentJob)
 {
-    ConcreteCompilerMessage msg = {0};
+    ExportedCompilerMessage msg = {0};
     msg.kind                    = msgKind;
     return sendCompilerMessage(&msg, dependentJob);
 }
 
-bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob)
+bool Module::sendCompilerMessage(ExportedCompilerMessage* msg, Job* dependentJob)
 {
     if (byteCodeCompiler[(int) msg->kind].empty())
         return true;

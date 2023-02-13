@@ -11,7 +11,7 @@ struct ByteCode;
 struct ByteCodeInstruction;
 struct SwagSourceCodeLocation;
 struct JobContext;
-struct ConcreteCompilerMessage;
+struct ExportedCompilerMessage;
 struct SourceLocation;
 
 struct StackValue
@@ -124,7 +124,7 @@ struct ByteCodeRunContext
     bool              fromException666  = false;
     SwagExceptionKind fromExceptionKind = SwagExceptionKind::Panic;
 
-    const ConcreteCompilerMessage* currentCompilerMessage = nullptr;
+    const ExportedCompilerMessage* currentCompilerMessage = nullptr;
     Job*                           currentCompilerJob     = nullptr;
 
     // Debugger

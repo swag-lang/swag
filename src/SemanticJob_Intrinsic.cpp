@@ -218,7 +218,7 @@ bool SemanticJob::resolveIntrinsicMakeInterface(SemanticContext* context)
 
     third->allocateComputedValue();
     third->computedValue->storageSegment = getConstantSegFromContext(third);
-    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, third->typeInfo, third->computedValue->storageSegment, &third->computedValue->storageOffset, MAKE_CONCRETE_TYPE_SHOULD_WAIT));
+    SWAG_CHECK(typeTable.makeExportedTypeInfo(context, third->typeInfo, third->computedValue->storageSegment, &third->computedValue->storageOffset, MAKE_CONCRETE_TYPE_SHOULD_WAIT));
     if (context->result != ContextResult::Done)
         return true;
 
@@ -591,7 +591,7 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
         SWAG_CHECK(checkIsConcrete(context, expr));
         node->allocateComputedValue();
         node->computedValue->storageSegment = getConstantSegFromContext(node);
-        SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, expr->typeInfo, node->computedValue->storageSegment, &node->computedValue->storageOffset, MAKE_CONCRETE_TYPE_SHOULD_WAIT, &node->typeInfo));
+        SWAG_CHECK(typeTable.makeExportedTypeInfo(context, expr->typeInfo, node->computedValue->storageSegment, &node->computedValue->storageOffset, MAKE_CONCRETE_TYPE_SHOULD_WAIT, &node->typeInfo));
         if (context->result != ContextResult::Done)
             return true;
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicKindOf;
@@ -652,7 +652,7 @@ bool SemanticJob::resolveIntrinsicMakeType(SemanticContext* context)
     {
         auto storageSegment = expr->computedValue->storageSegment;
         auto addr           = storageSegment->address(expr->computedValue->storageOffset);
-        auto newTypeInfo    = context->sourceFile->module->typeTable.getRealType(storageSegment, (ConcreteTypeInfo*) addr);
+        auto newTypeInfo    = context->sourceFile->module->typeTable.getRealType(storageSegment, (ExportedTypeInfo*) addr);
         if (newTypeInfo)
             typeInfo = newTypeInfo;
     }

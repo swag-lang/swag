@@ -9,14 +9,14 @@
 #include "ErrorIds.h"
 #include "Crc32.h"
 
-bool TypeGen::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, uint32_t cflags, TypeInfo** ptrTypeInfo)
+bool TypeGen::makeExportedTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, uint32_t cflags, TypeInfo** ptrTypeInfo)
 {
     auto&      mapPerSeg = getMapPerSeg(storageSegment);
     ScopedLock lk(mapPerSeg.mutex);
-    return makeConcreteTypeInfoNoLock(context, nullptr, typeInfo, storageSegment, storage, cflags, ptrTypeInfo);
+    return makeExportedTypeInfoNoLock(context, nullptr, typeInfo, storageSegment, storage, cflags, ptrTypeInfo);
 }
 
-bool TypeGen::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo** result, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, uint32_t cflags, TypeInfo** ptrTypeInfo)
+bool TypeGen::makeExportedTypeInfoNoLock(JobContext* context, ExportedTypeInfo** result, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, uint32_t cflags, TypeInfo** ptrTypeInfo)
 {
     switch (typeInfo->kind)
     {
@@ -130,48 +130,48 @@ bool TypeGen::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo**
     }
 
     // Build concrete structure content
-    ConcreteTypeInfo* concreteTypeInfoValue;
-    uint32_t          storageOffset = storageSegment->reserve(typeStruct->sizeOf, (uint8_t**) &concreteTypeInfoValue);
+    ExportedTypeInfo* exportedTypeInfoValue;
+    uint32_t          storageOffset = storageSegment->reserve(typeStruct->sizeOf, (uint8_t**) &exportedTypeInfoValue);
 
     SWAG_ASSERT(!typeName.empty());
-    SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->fullName, nonPartialTypeName, storageSegment, OFFSETOF(concreteTypeInfoValue->fullName)));
-    SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->name, typeInfo->getName(), storageSegment, OFFSETOF(concreteTypeInfoValue->name)));
-    concreteTypeInfoValue->crc32 = Crc32::compute((const uint8_t*) concreteTypeInfoValue->fullName.buffer, (uint32_t) concreteTypeInfoValue->fullName.count);
+    SWAG_CHECK(makeConcreteString(context, &exportedTypeInfoValue->fullName, nonPartialTypeName, storageSegment, OFFSETOF(exportedTypeInfoValue->fullName)));
+    SWAG_CHECK(makeConcreteString(context, &exportedTypeInfoValue->name, typeInfo->getName(), storageSegment, OFFSETOF(exportedTypeInfoValue->name)));
+    exportedTypeInfoValue->crc32 = Crc32::compute((const uint8_t*) exportedTypeInfoValue->fullName.buffer, (uint32_t) exportedTypeInfoValue->fullName.count);
 
     if (typeInfo->flags & TYPEINFO_FUNC_IS_ATTR)
-        concreteTypeInfoValue->kind = TypeInfoKind::Attribute;
+        exportedTypeInfoValue->kind = TypeInfoKind::Attribute;
     else
-        concreteTypeInfoValue->kind = typeInfo->kind;
+        exportedTypeInfoValue->kind = typeInfo->kind;
 
-    concreteTypeInfoValue->sizeOf = typeInfo->sizeOf;
+    exportedTypeInfoValue->sizeOf = typeInfo->sizeOf;
 
     // Setup useful flags
-    concreteTypeInfoValue->flags = (uint16_t) TypeInfoFlags::None;
+    exportedTypeInfoValue->flags = (uint16_t) ExportedTypeInfoFlags::None;
     if (typeInfo->isPointerToTypeInfo())
-        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::PointerTypeInfo;
+        exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::PointerTypeInfo;
     if (typeInfo->isPointerRef())
-        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::PointerRef;
+        exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::PointerRef;
     if (typeInfo->isPointerMoveRef())
-        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::PointerMoveRef;
+        exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::PointerMoveRef;
     if (typeInfo->isPointerArithmetic())
-        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::PointerArithmetic;
+        exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::PointerArithmetic;
     if (typeInfo->isCString())
-        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::CString;
+        exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::CString;
     if (typeInfo->isNativeInteger())
-        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::Integer;
+        exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::Integer;
     if (typeInfo->isNativeFloat())
-        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::Float;
+        exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::Float;
     if (typeInfo->isNativeIntegerUnsigned())
-        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::Unsigned;
+        exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::Unsigned;
     if (typeInfo->isStrict())
-        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::Strict;
+        exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::Strict;
     if (typeInfo->isGeneric())
-        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::Generic;
+        exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::Generic;
     if (typeInfo->isTuple())
-        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::Tuple;
+        exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::Tuple;
 
     // True by default, will be removed by struct if necessary
-    concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::CanCopy;
+    exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::CanCopy;
 
     // Register type and value
     // Do it now to break recursive references
@@ -179,13 +179,13 @@ bool TypeGen::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo**
     MapType mapType;
     mapType.realType      = typeInfo;
     mapType.newRealType   = typePtr;
-    mapType.concreteType  = concreteTypeInfoValue;
+    mapType.concreteType  = exportedTypeInfoValue;
     mapType.storageOffset = storageOffset;
     if (result)
         *result = mapType.concreteType;
 
     mapPerSeg.concreteTypes[typeName]                     = mapType;
-    mapPerSeg.concreteTypesReverse[concreteTypeInfoValue] = typeInfo;
+    mapPerSeg.concreteTypesReverse[exportedTypeInfoValue] = typeInfo;
 
     // Build pointer type to structure
     typePtr->flags |= TYPEINFO_CONST;
@@ -202,41 +202,41 @@ bool TypeGen::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo**
     {
     case TypeInfoKind::Native:
     {
-        auto concreteType        = (ConcreteTypeInfoNative*) concreteTypeInfoValue;
+        auto concreteType        = (ExportedTypeInfoNative*) exportedTypeInfoValue;
         concreteType->nativeKind = typeInfo->nativeType;
         break;
     }
 
     case TypeInfoKind::Pointer:
     {
-        auto concreteType = (ConcreteTypeInfoPointer*) concreteTypeInfoValue;
+        auto concreteType = (ExportedTypeInfoPointer*) exportedTypeInfoValue;
         auto realType     = (TypeInfoPointer*) typeInfo;
-        SWAG_CHECK(makeConcreteSubTypeInfo(context, &concreteType->pointedType, concreteTypeInfoValue, storageSegment, storageOffset, realType->pointedType, cflags));
+        SWAG_CHECK(makeConcreteSubTypeInfo(context, &concreteType->pointedType, exportedTypeInfoValue, storageSegment, storageOffset, realType->pointedType, cflags));
         break;
     }
 
     case TypeInfoKind::Alias:
     {
-        auto concreteType = (ConcreteTypeInfoAlias*) concreteTypeInfoValue;
+        auto concreteType = (ExportedTypeInfoAlias*) exportedTypeInfoValue;
         auto realType     = (TypeInfoAlias*) typeInfo;
-        SWAG_CHECK(makeConcreteSubTypeInfo(context, &concreteType->rawType, concreteTypeInfoValue, storageSegment, storageOffset, realType->rawType, cflags));
+        SWAG_CHECK(makeConcreteSubTypeInfo(context, &concreteType->rawType, exportedTypeInfoValue, storageSegment, storageOffset, realType->rawType, cflags));
         break;
     }
 
     case TypeInfoKind::Struct:
     case TypeInfoKind::Interface:
     {
-        SWAG_CHECK(makeConcreteStruct(context, typeName, concreteTypeInfoValue, typeInfo, storageSegment, storageOffset, cflags));
+        SWAG_CHECK(makeConcreteStruct(context, typeName, exportedTypeInfoValue, typeInfo, storageSegment, storageOffset, cflags));
         break;
     }
 
     case TypeInfoKind::LambdaClosure:
     case TypeInfoKind::FuncAttr:
     {
-        auto concreteType = (ConcreteTypeInfoFunc*) concreteTypeInfoValue;
+        auto concreteType = (ExportedTypeInfoFunc*) exportedTypeInfoValue;
         auto realType     = (TypeInfoFuncAttr*) typeInfo;
 
-        SWAG_CHECK(makeConcreteAttributes(context, realType->attributes, concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, cflags));
+        SWAG_CHECK(makeExportedAttributes(context, realType->attributes, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, cflags));
 
         // Generics
         concreteType->generics.buffer = 0;
@@ -245,11 +245,11 @@ bool TypeGen::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo**
         {
             uint32_t count = (uint32_t) concreteType->generics.count;
             uint32_t storageArray;
-            auto     addrArray = (ConcreteTypeValue*) makeConcreteSlice(context, count * sizeof(ConcreteTypeValue), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->generics.buffer, storageArray);
+            auto     addrArray = (ExportedTypeValue*) makeConcreteSlice(context, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->generics.buffer, storageArray);
             for (int param = 0; param < concreteType->generics.count; param++)
             {
-                SWAG_CHECK(makeConcreteTypeValue(context, addrArray + param, storageSegment, storageArray, realType->genericParameters[param], cflags));
-                storageArray += sizeof(ConcreteTypeValue);
+                SWAG_CHECK(makeExportedTypeValue(context, addrArray + param, storageSegment, storageArray, realType->genericParameters[param], cflags));
+                storageArray += sizeof(ExportedTypeValue);
             }
         }
 
@@ -269,24 +269,24 @@ bool TypeGen::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo**
         {
             uint32_t count = (uint32_t) realType->parameters.size();
             uint32_t storageArray;
-            auto     addrArray = (ConcreteTypeValue*) makeConcreteSlice(context, count * sizeof(ConcreteTypeValue), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->parameters.buffer, storageArray);
+            auto     addrArray = (ExportedTypeValue*) makeConcreteSlice(context, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->parameters.buffer, storageArray);
             for (int param = firstParam; param < realType->parameters.size(); param++)
             {
-                SWAG_CHECK(makeConcreteTypeValue(context, addrArray + param - firstParam, storageSegment, storageArray, realType->parameters[param], cflags));
-                storageArray += sizeof(ConcreteTypeValue);
+                SWAG_CHECK(makeExportedTypeValue(context, addrArray + param - firstParam, storageSegment, storageArray, realType->parameters[param], cflags));
+                storageArray += sizeof(ExportedTypeValue);
             }
         }
 
-        SWAG_CHECK(makeConcreteSubTypeInfo(context, &concreteType->returnType, concreteTypeInfoValue, storageSegment, storageOffset, realType->returnType, cflags));
+        SWAG_CHECK(makeConcreteSubTypeInfo(context, &concreteType->returnType, exportedTypeInfoValue, storageSegment, storageOffset, realType->returnType, cflags));
         break;
     }
 
     case TypeInfoKind::Enum:
     {
-        auto concreteType = (ConcreteTypeInfoEnum*) concreteTypeInfoValue;
+        auto concreteType = (ExportedTypeInfoEnum*) exportedTypeInfoValue;
         auto realType     = (TypeInfoEnum*) typeInfo;
 
-        SWAG_CHECK(makeConcreteAttributes(context, realType->attributes, concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, cflags));
+        SWAG_CHECK(makeExportedAttributes(context, realType->attributes, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, cflags));
 
         concreteType->values.buffer = 0;
         concreteType->values.count  = realType->values.size();
@@ -294,44 +294,44 @@ bool TypeGen::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo**
         {
             uint32_t count = (uint32_t) realType->values.size();
             uint32_t storageArray;
-            auto     addrArray = (ConcreteTypeValue*) makeConcreteSlice(context, count * sizeof(ConcreteTypeValue), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->values.buffer, storageArray);
+            auto     addrArray = (ExportedTypeValue*) makeConcreteSlice(context, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->values.buffer, storageArray);
             for (int param = 0; param < concreteType->values.count; param++)
             {
-                SWAG_CHECK(makeConcreteTypeValue(context, addrArray + param, storageSegment, storageArray, realType->values[param], cflags));
-                storageArray += sizeof(ConcreteTypeValue);
+                SWAG_CHECK(makeExportedTypeValue(context, addrArray + param, storageSegment, storageArray, realType->values[param], cflags));
+                storageArray += sizeof(ExportedTypeValue);
             }
         }
 
         concreteType->rawType = 0;
         if (realType->rawType)
-            SWAG_CHECK(makeConcreteSubTypeInfo(context, &concreteType->rawType, concreteTypeInfoValue, storageSegment, storageOffset, realType->rawType, cflags));
+            SWAG_CHECK(makeConcreteSubTypeInfo(context, &concreteType->rawType, exportedTypeInfoValue, storageSegment, storageOffset, realType->rawType, cflags));
         break;
     }
 
     case TypeInfoKind::Array:
     {
-        auto concreteType        = (ConcreteTypeInfoArray*) concreteTypeInfoValue;
+        auto concreteType        = (ExportedTypeInfoArray*) exportedTypeInfoValue;
         auto realType            = (TypeInfoArray*) typeInfo;
         concreteType->count      = realType->count;
         concreteType->totalCount = realType->totalCount;
-        SWAG_CHECK(makeConcreteSubTypeInfo(context, &concreteType->pointedType, concreteTypeInfoValue, storageSegment, storageOffset, realType->pointedType, cflags));
-        SWAG_CHECK(makeConcreteSubTypeInfo(context, &concreteType->finalType, concreteTypeInfoValue, storageSegment, storageOffset, realType->finalType, cflags));
+        SWAG_CHECK(makeConcreteSubTypeInfo(context, &concreteType->pointedType, exportedTypeInfoValue, storageSegment, storageOffset, realType->pointedType, cflags));
+        SWAG_CHECK(makeConcreteSubTypeInfo(context, &concreteType->finalType, exportedTypeInfoValue, storageSegment, storageOffset, realType->finalType, cflags));
         break;
     }
 
     case TypeInfoKind::Slice:
     {
-        auto concreteType = (ConcreteTypeInfoSlice*) concreteTypeInfoValue;
+        auto concreteType = (ExportedTypeInfoSlice*) exportedTypeInfoValue;
         auto realType     = (TypeInfoSlice*) typeInfo;
-        SWAG_CHECK(makeConcreteSubTypeInfo(context, &concreteType->pointedType, concreteTypeInfoValue, storageSegment, storageOffset, realType->pointedType, cflags));
+        SWAG_CHECK(makeConcreteSubTypeInfo(context, &concreteType->pointedType, exportedTypeInfoValue, storageSegment, storageOffset, realType->pointedType, cflags));
         break;
     }
 
     case TypeInfoKind::TypedVariadic:
     {
-        auto concreteType = (ConcreteTypeInfoVariadic*) concreteTypeInfoValue;
+        auto concreteType = (ExportedTypeInfoVariadic*) exportedTypeInfoValue;
         auto realType     = (TypeInfoVariadic*) typeInfo;
-        SWAG_CHECK(makeConcreteSubTypeInfo(context, &concreteType->rawType, concreteTypeInfoValue, storageSegment, storageOffset, realType->rawType, cflags));
+        SWAG_CHECK(makeConcreteSubTypeInfo(context, &concreteType->rawType, exportedTypeInfoValue, storageSegment, storageOffset, realType->rawType, cflags));
         break;
     }
     }
@@ -339,7 +339,7 @@ bool TypeGen::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo**
     return true;
 }
 
-bool TypeGen::makeConcreteSubTypeInfo(JobContext* context, ConcreteTypeInfo** result, void* concreteTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfo* typeInfo, uint32_t cflags)
+bool TypeGen::makeConcreteSubTypeInfo(JobContext* context, ExportedTypeInfo** result, void* exportedTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfo* typeInfo, uint32_t cflags)
 {
     if (!typeInfo)
     {
@@ -348,7 +348,7 @@ bool TypeGen::makeConcreteSubTypeInfo(JobContext* context, ConcreteTypeInfo** re
     }
 
     uint32_t tmpStorageOffset;
-    SWAG_CHECK(makeConcreteTypeInfoNoLock(context, result, typeInfo, storageSegment, &tmpStorageOffset, cflags));
+    SWAG_CHECK(makeExportedTypeInfoNoLock(context, result, typeInfo, storageSegment, &tmpStorageOffset, cflags));
     storageSegment->addInitPtr(OFFSETOFR(result), tmpStorageOffset);
 
     return true;
@@ -370,7 +370,7 @@ bool TypeGen::makeConcreteString(JobContext* context, SwagSlice* result, const U
     return true;
 }
 
-void* TypeGen::makeConcreteSlice(JobContext* context, uint32_t sizeOf, void* concreteTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, void** result, uint32_t& storageArray)
+void* TypeGen::makeConcreteSlice(JobContext* context, uint32_t sizeOf, void* exportedTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, void** result, uint32_t& storageArray)
 {
     uint8_t* addrDst;
     storageArray = storageSegment->reserve(sizeOf, &addrDst);
@@ -396,7 +396,7 @@ void* TypeGen::makeConcreteSlice(JobContext* context, uint32_t sizeOf, DataSegme
     return addrDst;
 }
 
-bool TypeGen::makeConcreteAny(JobContext* context, ConcreteAny* ptrAny, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue& computedValue, TypeInfo* typeInfo, uint32_t cflags)
+bool TypeGen::makeExportedAny(JobContext* context, ExportedAny* ptrAny, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue& computedValue, TypeInfo* typeInfo, uint32_t cflags)
 {
     auto sourceFile = context->sourceFile;
     if (typeInfo->isNative())
@@ -412,17 +412,17 @@ bool TypeGen::makeConcreteAny(JobContext* context, ConcreteAny* ptrAny, DataSegm
     return true;
 }
 
-bool TypeGen::makeConcreteTypeValue(JobContext* context, void* concreteTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfoParam* realType, uint32_t cflags)
+bool TypeGen::makeExportedTypeValue(JobContext* context, void* exportedTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfoParam* realType, uint32_t cflags)
 {
     auto sourceFile   = context->sourceFile;
-    auto concreteType = (ConcreteTypeValue*) concreteTypeInfoValue;
+    auto concreteType = (ExportedTypeValue*) exportedTypeInfoValue;
 
     concreteType->offsetOf = realType->offset;
 
     SWAG_CHECK(makeConcreteString(context, &concreteType->name, realType->namedParam, storageSegment, OFFSETOF(concreteType->name)));
     concreteType->crc32 = Crc32::compute((const uint8_t*) concreteType->name.buffer, (uint32_t) concreteType->name.count);
-    SWAG_CHECK(makeConcreteSubTypeInfo(context, &concreteType->pointedType, concreteTypeInfoValue, storageSegment, storageOffset, realType->typeInfo, cflags));
-    SWAG_CHECK(makeConcreteAttributes(context, realType->attributes, concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, cflags));
+    SWAG_CHECK(makeConcreteSubTypeInfo(context, &concreteType->pointedType, exportedTypeInfoValue, storageSegment, storageOffset, realType->typeInfo, cflags));
+    SWAG_CHECK(makeExportedAttributes(context, realType->attributes, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, cflags));
 
     // Value
     if (realType->flags & TYPEINFO_DEFINED_VALUE)
@@ -465,7 +465,7 @@ bool TypeGen::makeConcreteTypeValue(JobContext* context, void* concreteTypeInfoV
     return true;
 }
 
-bool TypeGen::makeConcreteAttributes(JobContext* context, AttributeList& attributes, void* concreteTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, SwagSlice* result, uint32_t cflags)
+bool TypeGen::makeExportedAttributes(JobContext* context, AttributeList& attributes, void* exportedTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, SwagSlice* result, uint32_t cflags)
 {
     if (attributes.empty())
         return true;
@@ -477,18 +477,18 @@ bool TypeGen::makeConcreteAttributes(JobContext* context, AttributeList& attribu
 
     uint32_t count = (uint32_t) result->count;
     uint32_t storageOffsetAttributes;
-    auto     ptrStorageAttributes = (uint8_t*) makeConcreteSlice(context, count * sizeof(ConcreteAttribute), concreteTypeInfoValue, storageSegment, storageOffset, &result->buffer, storageOffsetAttributes);
+    auto     ptrStorageAttributes = (uint8_t*) makeConcreteSlice(context, count * sizeof(ExportedAttribute), exportedTypeInfoValue, storageSegment, storageOffset, &result->buffer, storageOffsetAttributes);
 
     uint32_t curOffsetAttributes = storageOffsetAttributes;
     for (auto& one : attributes.allAttributes)
     {
-        auto attrAddr        = (ConcreteAttribute*) ptrStorageAttributes;
+        auto attrAddr        = (ExportedAttribute*) ptrStorageAttributes;
         auto offsetStartAttr = curOffsetAttributes;
 
         // Type of the attribute
-        SWAG_CHECK(makeConcreteSubTypeInfo(context, (ConcreteTypeInfo**) ptrStorageAttributes, attrAddr, storageSegment, offsetStartAttr, one.typeFunc, cflags));
-        curOffsetAttributes += sizeof(ConcreteTypeInfo*);
-        ptrStorageAttributes += sizeof(ConcreteTypeInfo*);
+        SWAG_CHECK(makeConcreteSubTypeInfo(context, (ExportedTypeInfo**) ptrStorageAttributes, attrAddr, storageSegment, offsetStartAttr, one.typeFunc, cflags));
+        curOffsetAttributes += sizeof(ExportedTypeInfo*);
+        ptrStorageAttributes += sizeof(ExportedTypeInfo*);
 
         // Slice to all parameters
         auto ptrParamsAttribute    = (SwagSlice*) ptrStorageAttributes;
@@ -500,7 +500,7 @@ bool TypeGen::makeConcreteAttributes(JobContext* context, AttributeList& attribu
         {
             count = (uint32_t) one.parameters.size();
             uint32_t storageOffsetParams;
-            auto     ptrStorageAllParams = (uint8_t*) makeConcreteSlice(context, count * sizeof(ConcreteAttributeParameter), storageSegment, curOffsetAttributes, &ptrParamsAttribute->buffer, storageOffsetParams);
+            auto     ptrStorageAllParams = (uint8_t*) makeConcreteSlice(context, count * sizeof(ExportedAttributeParameter), storageSegment, curOffsetAttributes, &ptrParamsAttribute->buffer, storageOffsetParams);
 
             uint32_t curOffsetParams = storageOffsetParams;
             uint32_t cptParam        = 0;
@@ -528,7 +528,7 @@ bool TypeGen::makeConcreteAttributes(JobContext* context, AttributeList& attribu
                     auto& mapPerSeg = getMapPerSeg(oneParam.value.storageSegment);
                     if (oneParam.value.storageSegment != storageSegment)
                         mapPerSeg.mutex.lock();
-                    auto it = mapPerSeg.concreteTypesReverse.find((ConcreteTypeInfo*) addr);
+                    auto it = mapPerSeg.concreteTypesReverse.find((ExportedTypeInfo*) addr);
                     SWAG_ASSERT(it != mapPerSeg.concreteTypesReverse.end());
                     typeValue = it->second;
                     if (oneParam.value.storageSegment != storageSegment)
@@ -536,10 +536,10 @@ bool TypeGen::makeConcreteAttributes(JobContext* context, AttributeList& attribu
                 }
 
                 // Value of the parameter
-                makeConcreteAny(context, (ConcreteAny*) ptrStorageAllParams, storageSegment, curOffsetParams, oneParam.value, typeValue, cflags);
+                makeExportedAny(context, (ExportedAny*) ptrStorageAllParams, storageSegment, curOffsetParams, oneParam.value, typeValue, cflags);
 
-                curOffsetParams += sizeof(ConcreteAny);
-                ptrStorageAllParams += sizeof(ConcreteAny);
+                curOffsetParams += sizeof(ExportedAny);
+                ptrStorageAllParams += sizeof(ExportedAny);
                 cptParam++;
             }
         }
@@ -562,7 +562,7 @@ void TypeGen::tableJobDone(TypeGenStructJob* job, DataSegment* segment)
         segment->addPatchMethod(it1.first, it1.second);
 }
 
-TypeInfo* TypeGen::getRealType(DataSegment* segment, ConcreteTypeInfo* concreteType)
+TypeInfo* TypeGen::getRealType(DataSegment* segment, ExportedTypeInfo* concreteType)
 {
     auto&      mapPerSeg = getMapPerSeg(segment);
     SharedLock lk(mapPerSeg.mutex);
@@ -580,14 +580,14 @@ void TypeGen::initFrom(Module* module, TypeGen* other)
     mapPerSegment[0]->concreteTypes = other->mapPerSegment[0]->concreteTypes;
     for (auto& it : mapPerSegment[0]->concreteTypes)
     {
-        it.second.concreteType                                         = (ConcreteTypeInfo*) module->constantSegment.address(it.second.storageOffset);
+        it.second.concreteType                                         = (ExportedTypeInfo*) module->constantSegment.address(it.second.storageOffset);
         mapPerSegment[0]->concreteTypesReverse[it.second.concreteType] = it.second.realType;
     }
 
     mapPerSegment[1]->concreteTypes = other->mapPerSegment[1]->concreteTypes;
     for (auto& it : mapPerSegment[1]->concreteTypes)
     {
-        it.second.concreteType                                         = (ConcreteTypeInfo*) module->compilerSegment.address(it.second.storageOffset);
+        it.second.concreteType                                         = (ExportedTypeInfo*) module->compilerSegment.address(it.second.storageOffset);
         mapPerSegment[1]->concreteTypesReverse[it.second.concreteType] = it.second.realType;
     }
 }
@@ -609,7 +609,7 @@ TypeGen::MapPerSeg& TypeGen::getMapPerSeg(DataSegment* segment)
     return *mapPerSegment[2 + segment->compilerThreadIdx];
 }
 
-bool TypeGen::makeConcreteStruct(JobContext* context, const auto& typeName, ConcreteTypeInfo* concreteTypeInfoValue, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t storageOffset, uint32_t cflags)
+bool TypeGen::makeConcreteStruct(JobContext* context, const auto& typeName, ExportedTypeInfo* exportedTypeInfoValue, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t storageOffset, uint32_t cflags)
 {
     // If we are already waiting for a job to finish, then we must... wait, and not generate new jobs
     if (context->baseJob->waitingKind == JobWaitKind::MakeConcrete && context->result != ContextResult::Done)
@@ -624,7 +624,7 @@ bool TypeGen::makeConcreteStruct(JobContext* context, const auto& typeName, Conc
     job->module                = module;
     job->typeTable             = this;
     job->sourceFile            = sourceFile;
-    job->concreteTypeInfoValue = concreteTypeInfoValue;
+    job->exportedTypeInfoValue = exportedTypeInfoValue;
     job->typeInfo              = typeInfo;
     job->storageOffset         = storageOffset;
     job->storageSegment        = storageSegment;

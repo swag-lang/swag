@@ -29,8 +29,8 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
         }
         else
         {
-            auto ptr1                  = (ConcreteTypeInfo*) left->computedValue->storageSegment->address(left->computedValue->storageOffset);
-            auto ptr2                  = (ConcreteTypeInfo*) right->computedValue->storageSegment->address(right->computedValue->storageOffset);
+            auto ptr1                  = (ExportedTypeInfo*) left->computedValue->storageSegment->address(left->computedValue->storageOffset);
+            auto ptr2                  = (ExportedTypeInfo*) right->computedValue->storageSegment->address(right->computedValue->storageOffset);
             node->computedValue->reg.b = TypeManager::compareConcreteType(ptr1, ptr2);
         }
     }

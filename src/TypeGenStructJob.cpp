@@ -8,7 +8,7 @@
 
 bool TypeGenStructJob::computeStruct()
 {
-    auto concreteType = (ConcreteTypeInfoStruct*) concreteTypeInfoValue;
+    auto concreteType = (ExportedTypeInfoStruct*) exportedTypeInfoValue;
     auto realType     = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
     auto attributes   = realType->declNode ? realType->declNode->attributeFlags : 0;
 
@@ -18,13 +18,13 @@ bool TypeGenStructJob::computeStruct()
     if (!(cflags & MAKE_CONCRETE_TYPE_PARTIAL))
     {
         if (realType->flags & TYPEINFO_STRUCT_NO_COPY)
-            concreteTypeInfoValue->flags &= ~(uint16_t) TypeInfoFlags::CanCopy;
+            exportedTypeInfoValue->flags &= ~(uint16_t) ExportedTypeInfoFlags::CanCopy;
         if (realType->opPostCopy || realType->opUserPostCopyFct)
-            concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasPostCopy;
+            exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::HasPostCopy;
         if (realType->opPostMove || realType->opUserPostMoveFct)
-            concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasPostMove;
+            exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::HasPostMove;
         if (realType->opDrop || realType->opUserDropFct)
-            concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasDrop;
+            exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::HasDrop;
     }
 
     // Special functions lambdas
@@ -136,7 +136,7 @@ bool TypeGenStructJob::computeStruct()
     SWAG_CHECK(typeTable->makeConcreteString(baseContext, &concreteType->structName, realType->structName, storageSegment, OFFSETOF(concreteType->structName)));
 
     // Struct attributes
-    SWAG_CHECK(typeTable->makeConcreteAttributes(baseContext, realType->attributes, concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, cflags));
+    SWAG_CHECK(typeTable->makeExportedAttributes(baseContext, realType->attributes, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, cflags));
 
     if (!realType->replaceTypes.empty())
     {
@@ -170,11 +170,11 @@ bool TypeGenStructJob::computeStruct()
     {
         uint32_t count = (uint32_t) concreteType->generics.count;
         uint32_t storageArray;
-        auto     addrArray = (ConcreteTypeValue*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeValue), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->generics.buffer, storageArray);
+        auto     addrArray = (ExportedTypeValue*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->generics.buffer, storageArray);
         for (int param = 0; param < concreteType->generics.count; param++)
         {
-            SWAG_CHECK(typeTable->makeConcreteTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->genericParameters[param], cflags));
-            storageArray += sizeof(ConcreteTypeValue);
+            SWAG_CHECK(typeTable->makeExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->genericParameters[param], cflags));
+            storageArray += sizeof(ExportedTypeValue);
         }
     }
 
@@ -188,11 +188,11 @@ bool TypeGenStructJob::computeStruct()
         {
             uint32_t count = (uint32_t) concreteType->fields.count;
             uint32_t storageArray;
-            auto     addrArray = (ConcreteTypeValue*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeValue), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->fields.buffer, storageArray);
+            auto     addrArray = (ExportedTypeValue*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->fields.buffer, storageArray);
             for (int param = 0; param < concreteType->fields.count; param++)
             {
-                SWAG_CHECK(typeTable->makeConcreteTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->fields[param], cflags));
-                storageArray += sizeof(ConcreteTypeValue);
+                SWAG_CHECK(typeTable->makeExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->fields[param], cflags));
+                storageArray += sizeof(ExportedTypeValue);
             }
         }
     }
@@ -209,18 +209,18 @@ bool TypeGenStructJob::computeStruct()
             {
                 uint32_t count = (uint32_t) concreteType->methods.count;
                 uint32_t storageArray;
-                auto     addrArray = (ConcreteTypeValue*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeValue), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->methods.buffer, storageArray);
+                auto     addrArray = (ExportedTypeValue*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->methods.buffer, storageArray);
                 for (int param = 0; param < concreteType->methods.count; param++)
                 {
-                    SWAG_CHECK(typeTable->makeConcreteTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->methods[param], cflags));
+                    SWAG_CHECK(typeTable->makeExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->methods[param], cflags));
 
                     // 'value' will contain a pointer to the lambda.
                     // Register it for later patches
-                    uint32_t     fieldOffset = storageArray + offsetof(ConcreteTypeValue, value);
+                    uint32_t     fieldOffset = storageArray + offsetof(ExportedTypeValue, value);
                     AstFuncDecl* funcNode    = CastAst<AstFuncDecl>(realType->methods[param]->typeInfo->declNode, AstNodeKind::FuncDecl);
                     patchMethods.push_back({funcNode, fieldOffset});
 
-                    storageArray += sizeof(ConcreteTypeValue);
+                    storageArray += sizeof(ExportedTypeValue);
                 }
             }
         }
@@ -236,19 +236,19 @@ bool TypeGenStructJob::computeStruct()
         {
             uint32_t count = (uint32_t) concreteType->interfaces.count;
             uint32_t storageArray;
-            auto     addrArray = (ConcreteTypeValue*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeValue), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->interfaces.buffer, storageArray);
+            auto     addrArray = (ExportedTypeValue*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->interfaces.buffer, storageArray);
             for (int param = 0; param < concreteType->interfaces.count; param++)
             {
-                SWAG_CHECK(typeTable->makeConcreteTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->interfaces[param], cflags));
+                SWAG_CHECK(typeTable->makeExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->interfaces[param], cflags));
 
                 // :ItfIsConstantSeg
                 // Compute the storage of the interface for @interfaceof
-                uint32_t fieldOffset = offsetof(ConcreteTypeValue, value);
+                uint32_t fieldOffset = offsetof(ExportedTypeValue, value);
                 uint32_t valueOffset = storageArray + fieldOffset;
                 storageSegment->addInitPtr(valueOffset, realType->interfaces[param]->offset, SegmentKind::Constant);
                 addrArray[param].value = module->constantSegment.address(realType->interfaces[param]->offset);
 
-                storageArray += sizeof(ConcreteTypeValue);
+                storageArray += sizeof(ExportedTypeValue);
             }
         }
     }

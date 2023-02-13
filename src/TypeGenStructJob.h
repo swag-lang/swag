@@ -1,7 +1,7 @@
 #pragma once
 #include "Job.h"
 struct TypeGen;
-struct ConcreteTypeInfo;
+struct ExportedTypeInfo;
 struct AstFuncDecl;
 struct DataSegment;
 
@@ -14,7 +14,7 @@ struct TypeGenStructJob : public Job
     Vector<pair<AstFuncDecl*, uint32_t>> patchMethods;
 
     TypeGen*          typeTable             = nullptr;
-    ConcreteTypeInfo* concreteTypeInfoValue = nullptr;
+    ExportedTypeInfo* exportedTypeInfoValue = nullptr;
     TypeInfo*         typeInfo              = nullptr;
     DataSegment*      storageSegment        = nullptr;
 

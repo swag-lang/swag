@@ -340,7 +340,7 @@ void Module::buildTypesSlice()
     uint8_t* resultPtr;
     uint32_t numTypes = (uint32_t) map.size();
 
-    typesSliceOffset = constantSegment.reserve(sizeof(uint64_t) + (numTypes * sizeof(ConcreteTypeInfo*)), &resultPtr);
+    typesSliceOffset = constantSegment.reserve(sizeof(uint64_t) + (numTypes * sizeof(ExportedTypeInfo*)), &resultPtr);
     auto offset      = typesSliceOffset;
 
     // First store the number of types in the table
@@ -356,11 +356,11 @@ void Module::buildTypesSlice()
 
     for (auto t : map)
     {
-        *(ConcreteTypeInfo**) resultPtr = t.second.concreteType;
+        *(ExportedTypeInfo**) resultPtr = t.second.concreteType;
         constantSegment.addInitPtr(offset, t.second.storageOffset);
 
-        resultPtr += sizeof(ConcreteTypeInfo*);
-        offset += sizeof(ConcreteTypeInfo*);
+        resultPtr += sizeof(ExportedTypeInfo*);
+        offset += sizeof(ExportedTypeInfo*);
     }
 
     // Patch module list

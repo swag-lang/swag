@@ -32,12 +32,12 @@ JobResult PrepCompilerMsgJob::execute()
             if (pass == 0)
                 makeFlags |= MAKE_CONCRETE_TYPE_PARTIAL;
 
-            if (!module->typeTable.makeConcreteTypeInfo(&context, msg.typeInfo, storageSegment, &storageOffset, makeFlags))
+            if (!module->typeTable.makeExportedTypeInfo(&context, msg.typeInfo, storageSegment, &storageOffset, makeFlags))
                 return JobResult::ReleaseJob;
             if (context.result != ContextResult::Done)
                 return JobResult::KeepJobAlive;
 
-            msg.concrete.type = (ConcreteTypeInfo*) storageSegment->address(storageOffset);
+            msg.concrete.type = (ExportedTypeInfo*) storageSegment->address(storageOffset);
         }
     }
 

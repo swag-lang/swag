@@ -1187,10 +1187,10 @@ bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, Ty
     {
         void** ppt         = (void**) ptr;
         void*  anyValue    = ppt[0];
-        auto   anyTypeInfo = (ConcreteTypeInfo*) ppt[1];
+        auto   anyTypeInfo = (ExportedTypeInfo*) ppt[1];
         if (anyTypeInfo->kind == TypeInfoKind::Native)
         {
-            auto anyNative = (ConcreteTypeInfoNative*) anyTypeInfo;
+            auto anyNative = (ExportedTypeInfoNative*) anyTypeInfo;
             node->typeInfo = nullptr;
             return derefConstantValue(context, node, anyNative->base.kind, anyNative->nativeKind, anyValue);
         }

@@ -2032,7 +2032,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
                 // :AnyTypeSegment
                 toNode->allocateExtension(ExtensionKind::Any);
                 toNode->extension->misc->anyTypeSegment = SemanticJob::getConstantSegFromContext(toNode);
-                SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromType, toNode->extension->misc->anyTypeSegment, &toNode->extension->misc->anyTypeOffset));
+                SWAG_CHECK(typeTable.makeExportedTypeInfo(context, fromType, toNode->extension->misc->anyTypeSegment, &toNode->extension->misc->anyTypeOffset));
             }
 
             return true;
@@ -2059,7 +2059,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             // :AnyTypeSegment
             fromNode->allocateExtension(ExtensionKind::Any);
             fromNode->extension->misc->anyTypeSegment = SemanticJob::getConstantSegFromContext(fromNode);
-            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, fromNode->castedTypeInfo, fromNode->extension->misc->anyTypeSegment, &fromNode->extension->misc->anyTypeOffset));
+            SWAG_CHECK(typeTable.makeExportedTypeInfo(context, fromNode->castedTypeInfo, fromNode->extension->misc->anyTypeSegment, &fromNode->extension->misc->anyTypeOffset));
         }
     }
     else if (fromType->isAny())
@@ -2100,7 +2100,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             // :AnyTypeSegment
             fromNode->allocateExtension(ExtensionKind::Any);
             fromNode->extension->misc->anyTypeSegment = SemanticJob::getConstantSegFromContext(fromNode);
-            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, toType, fromNode->extension->misc->anyTypeSegment, &fromNode->extension->misc->anyTypeOffset));
+            SWAG_CHECK(typeTable.makeExportedTypeInfo(context, toType, fromNode->extension->misc->anyTypeSegment, &fromNode->extension->misc->anyTypeOffset));
         }
     }
 
@@ -3571,15 +3571,15 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     return true;
 }
 
-static const ConcreteTypeInfo* concreteAlias(const ConcreteTypeInfo* type1)
+static const ExportedTypeInfo* concreteAlias(const ExportedTypeInfo* type1)
 {
-    if (type1->kind != TypeInfoKind::Alias || (type1->flags & (uint16_t) TypeInfoFlags::Strict))
+    if (type1->kind != TypeInfoKind::Alias || (type1->flags & (uint16_t) ExportedTypeInfoFlags::Strict))
         return type1;
-    auto typeAlias = (const ConcreteTypeInfoAlias*) type1;
-    return concreteAlias((ConcreteTypeInfo*) typeAlias->rawType);
+    auto typeAlias = (const ExportedTypeInfoAlias*) type1;
+    return concreteAlias((ExportedTypeInfo*) typeAlias->rawType);
 }
 
-bool TypeManager::compareConcreteType(const ConcreteTypeInfo* type1, const ConcreteTypeInfo* type2)
+bool TypeManager::compareConcreteType(const ExportedTypeInfo* type1, const ExportedTypeInfo* type2)
 {
     SWAG_ASSERT(type1 && type2);
     if (type1 == type2)

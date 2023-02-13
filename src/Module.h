@@ -93,7 +93,7 @@ struct ExecuteNodeParams
 
 struct CompilerMessage
 {
-    ConcreteCompilerMessage concrete;
+    ExportedCompilerMessage concrete;
     TypeInfo*               typeInfo;
     AstNode*                node;
 };
@@ -144,7 +144,7 @@ struct Module
     void setBuildPass(BuildPass buildP);
 
     bool sendCompilerMessage(CompilerMsgKind msgKind, Job* dependentJob);
-    bool sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob);
+    bool sendCompilerMessage(ExportedCompilerMessage* msg, Job* dependentJob);
     bool postCompilerMessage(JobContext* context, CompilerMessage& msg);
     bool prepareCompilerMessages(JobContext* context, uint32_t pass);
     bool flushCompilerMessages(JobContext* context, uint32_t pass, Job* job);

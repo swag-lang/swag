@@ -100,14 +100,14 @@ bool SemanticJob::resolveImplForType(SemanticContext* context)
     auto& typeTable = module->typeTable;
     back->allocateComputedValue();
     back->computedValue->storageSegment = getConstantSegFromContext(back);
-    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeStruct, back->computedValue->storageSegment, &back->computedValue->storageOffset, MAKE_CONCRETE_TYPE_SHOULD_WAIT));
+    SWAG_CHECK(typeTable.makeExportedTypeInfo(context, typeStruct, back->computedValue->storageSegment, &back->computedValue->storageOffset, MAKE_CONCRETE_TYPE_SHOULD_WAIT));
     if (context->result != ContextResult::Done)
         return true;
 
     // Make a concrete type for the given interface
     first->allocateComputedValue();
     first->computedValue->storageSegment = getConstantSegFromContext(first);
-    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, first->typeInfo, first->computedValue->storageSegment, &first->computedValue->storageOffset, MAKE_CONCRETE_TYPE_SHOULD_WAIT));
+    SWAG_CHECK(typeTable.makeExportedTypeInfo(context, first->typeInfo, first->computedValue->storageSegment, &first->computedValue->storageOffset, MAKE_CONCRETE_TYPE_SHOULD_WAIT));
     if (context->result != ContextResult::Done)
         return true;
 
