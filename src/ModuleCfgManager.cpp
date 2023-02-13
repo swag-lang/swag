@@ -186,7 +186,9 @@ bool ModuleCfgManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFileP
     }
 
     fclose(fsrc);
+    fflush(fdest);
     fclose(fdest);
+
     return true;
 }
 
@@ -650,6 +652,7 @@ bool ModuleCfgManager::execute()
                 {
                     string pathDst = m.second->fetchDep->resolvedLocation.c_str();
                     fwrite(pathDst.c_str(), pathDst.length(), 1, f);
+                    fflush(f);
                     fclose(f);
                 }
 

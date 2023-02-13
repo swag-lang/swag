@@ -28,6 +28,7 @@ bool SaveGenJob::flush(Module* module)
         }
 
         fwrite(module->contentJobGeneratedFile[idx].c_str(), module->contentJobGeneratedFile[idx].length(), 1, h);
+        fflush(h);
         fclose(h);
         module->contentJobGeneratedFile[idx].clear();
     }

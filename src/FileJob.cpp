@@ -45,7 +45,9 @@ JobResult CopyFileJob::execute()
     }
 
     fclose(fsrc);
+    fflush(fdest);
     fclose(fdest);
+
     return JobResult::ReleaseJob;
 }
 

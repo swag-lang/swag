@@ -358,7 +358,9 @@ bool Concat::flushToFile(const string& path)
         bucket = bucket->nextBucket;
     }
 
+    fflush(f);
     fclose(f);
+
     clear();
     return true;
 }
