@@ -3,8 +3,6 @@
 #include "JobThread.h"
 #include "Context.h"
 #include "Module.h"
-#include "AstNode.h"
-#include "ByteCodeStack.h"
 #include "Workspace.h"
 
 ThreadManager g_ThreadMgr;

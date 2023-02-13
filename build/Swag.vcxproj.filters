@@ -1,23 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="../src/JobThread.cpp">
-      <Filter>Threading</Filter>
-    </ClCompile>
     <ClCompile Include="../src/ThreadManager.cpp">
-      <Filter>Threading</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/Job.cpp">
       <Filter>Threading</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Main.cpp">
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="../src/SyntaxJob.cpp">
-      <Filter>Lexer</Filter>
+      <Filter>Syntax</Filter>
     </ClCompile>
     <ClCompile Include="../src/Ast.cpp">
-      <Filter>Lexer</Filter>
+      <Filter>Syntax</Filter>
     </ClCompile>
     <ClCompile Include="../src/SemanticJob.cpp">
       <Filter>Semantic</Filter>
@@ -66,40 +60,40 @@
       <Filter>Semantic</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SyntaxJob_Identifier.cpp">
-      <Filter>Lexer</Filter>
+      <Filter>Syntax</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SyntaxJob_Function.cpp">
-      <Filter>Lexer</Filter>
+      <Filter>Syntax</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SyntaxJob_Expression.cpp">
-      <Filter>Lexer</Filter>
+      <Filter>Syntax</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SyntaxJob_Enum.cpp">
-      <Filter>Lexer</Filter>
+      <Filter>Syntax</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SyntaxJob_Declaration.cpp">
-      <Filter>Lexer</Filter>
+      <Filter>Syntax</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SyntaxJob_Compiler.cpp">
-      <Filter>Lexer</Filter>
+      <Filter>Syntax</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SyntaxJob_Attribute.cpp">
-      <Filter>Lexer</Filter>
+      <Filter>Syntax</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SyntaxJob_Type.cpp">
-      <Filter>Lexer</Filter>
+      <Filter>Syntax</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SemanticJob_Expression.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
     <ClCompile Include="../src/AstNode.cpp">
-      <Filter>Lexer</Filter>
+      <Filter>Syntax</Filter>
     </ClCompile>
     <ClCompile Include="../src/CommandLine.cpp">
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SyntaxJob_Block.cpp">
-      <Filter>Lexer</Filter>
+      <Filter>Syntax</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SemanticJob_Block.cpp">
       <Filter>Semantic</Filter>
@@ -108,7 +102,7 @@
       <Filter>Semantic</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SyntaxJob_Struct.cpp">
-      <Filter>Lexer</Filter>
+      <Filter>Syntax</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SemanticJob_Struct.cpp">
       <Filter>Semantic</Filter>
@@ -135,7 +129,7 @@
       <Filter>Backend</Filter>
     </ClCompile>
     <ClCompile Include="../src/AstOutput.cpp">
-      <Filter>Lexer</Filter>
+      <Filter>Syntax</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SemanticJob_Function.cpp">
       <Filter>Semantic</Filter>
@@ -417,7 +411,7 @@
       <Filter>Jobs</Filter>
     </ClCompile>
     <ClCompile Include="..\src\AstNode_Clone.cpp">
-      <Filter>Lexer</Filter>
+      <Filter>Syntax</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Module_CompilerMsg.cpp">
       <Filter>Wmf</Filter>
@@ -444,16 +438,13 @@
       <Filter>Semantic</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SyntaxJob_Var.cpp">
-      <Filter>Lexer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\JobGroup.cpp">
-      <Filter>Threading</Filter>
+      <Filter>Syntax</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeOptimizer_DupBlocks.cpp">
       <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SaveGenJob.cpp">
-      <Filter>Lexer</Filter>
+      <Filter>Syntax</Filter>
     </ClCompile>
     <ClCompile Include="..\src\CallConv.cpp">
       <Filter>Backend</Filter>
@@ -533,28 +524,31 @@
     <ClCompile Include="../src/ModuleSaveExportJob.cpp">
       <Filter>Jobs</Filter>
     </ClCompile>
+    <ClCompile Include="../src/Job.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\JobGroup.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/JobThread.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="../src/JobThread.h">
-      <Filter>Threading</Filter>
-    </ClInclude>
     <ClInclude Include="../src/ThreadManager.h">
       <Filter>Threading</Filter>
     </ClInclude>
     <ClInclude Include="../src/CommandLine.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="../src/Job.h">
-      <Filter>Threading</Filter>
-    </ClInclude>
     <ClInclude Include="../src/SyntaxJob.h">
-      <Filter>Lexer</Filter>
+      <Filter>Syntax</Filter>
     </ClInclude>
     <ClInclude Include="../src/Ast.h">
-      <Filter>Lexer</Filter>
+      <Filter>Syntax</Filter>
     </ClInclude>
     <ClInclude Include="../src/AstNode.h">
-      <Filter>Lexer</Filter>
+      <Filter>Syntax</Filter>
     </ClInclude>
     <ClInclude Include="../src/SemanticJob.h">
       <Filter>Semantic</Filter>
@@ -591,7 +585,7 @@
       <Filter>Backend</Filter>
     </ClInclude>
     <ClInclude Include="../src/AstFlags.h">
-      <Filter>Lexer</Filter>
+      <Filter>Syntax</Filter>
     </ClInclude>
     <ClInclude Include="../src/Generic.h">
       <Filter>Semantic</Filter>
@@ -714,7 +708,7 @@
       <Filter>Wmf</Filter>
     </ClInclude>
     <ClInclude Include="../src/Scoped.h">
-      <Filter>Lexer</Filter>
+      <Filter>Syntax</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Math.h">
       <Filter>Core</Filter>
@@ -773,14 +767,11 @@
     <ClInclude Include="..\src\LangHashTable.h">
       <Filter>Tokenizer</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\JobGroup.h">
-      <Filter>Threading</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\PrepCompilerMsgJob.h">
       <Filter>Jobs</Filter>
     </ClInclude>
     <ClInclude Include="..\src\AstOutput.h">
-      <Filter>Lexer</Filter>
+      <Filter>Syntax</Filter>
     </ClInclude>
     <ClInclude Include="..\src\MapRegTo.h">
       <Filter>Backend\ByteCode\Optimize</Filter>
@@ -789,7 +780,7 @@
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="..\src\SaveGenJob.h">
-      <Filter>Lexer</Filter>
+      <Filter>Syntax</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ByteCodeInstruction.h">
       <Filter>Backend\ByteCode</Filter>
@@ -849,15 +840,21 @@
       <Filter>Jobs</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ComputedValue.h">
-      <Filter>Lexer</Filter>
+      <Filter>Syntax</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/Job.h">
+      <Filter>Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\JobGroup.h">
+      <Filter>Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/JobThread.h">
+      <Filter>Jobs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
       <UniqueIdentifier>{ec1ce4ee-f636-49c8-b14c-ba31cc1e1e91}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Lexer">
-      <UniqueIdentifier>{2ec0b045-bdd6-4a7a-a120-2c91b7025073}</UniqueIdentifier>
     </Filter>
     <Filter Include="Semantic">
       <UniqueIdentifier>{5f62a50f-54d2-4ca7-be2f-7fba0994f861}</UniqueIdentifier>
@@ -915,6 +912,9 @@
     </Filter>
     <Filter Include="Runtime">
       <UniqueIdentifier>{512aad17-43cb-4e62-b39d-3200f0ee9ced}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Syntax">
+      <UniqueIdentifier>{2ec0b045-bdd6-4a7a-a120-2c91b7025073}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

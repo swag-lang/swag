@@ -7,7 +7,6 @@
 #include "LanguageSpec.h"
 #include "Scoped.h"
 #include "Timer.h"
-#include "Workspace.h"
 #include "ErrorIds.h"
 #include "LoadSourceFileJob.h"
 #include "JobThread.h"
