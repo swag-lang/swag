@@ -167,16 +167,16 @@
     <ClCompile Include="../src/TypeInfo.cpp">
       <Filter>Type</Filter>
     </ClCompile>
-    <ClCompile Include="../src/TypeInfoMatch_.cpp">
+    <ClCompile Include="..\src\TypeInfo_Match.cpp">
       <Filter>Type</Filter>
     </ClCompile>
-    <ClCompile Include="../src/TypeInfoSpecific_.cpp">
+    <ClCompile Include="..\src\TypeInfo_Specific.cpp">
       <Filter>Type</Filter>
     </ClCompile>
     <ClCompile Include="../src/TypeManager.cpp">
       <Filter>Type</Filter>
     </ClCompile>
-    <ClCompile Include="../src/TypeManagerCast_.cpp">
+    <ClCompile Include="..\src\TypeManager_Cast.cpp">
       <Filter>Type</Filter>
     </ClCompile>
     <ClCompile Include="../src/TypeTable.cpp">
