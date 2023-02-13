@@ -996,7 +996,7 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstTypeExpres
     {
         auto typeFromLiteral = node->typeFromLiteral;
         if (!typeFromLiteral)
-            typeFromLiteral = TypeManager::literalTypeToType(node->token);
+            typeFromLiteral = TypeManager::literalTypeToType(node->literalType);
         SWAG_ASSERT(typeFromLiteral);
         SWAG_ASSERT(!typeFromLiteral->name.empty());
         concat.addString(typeFromLiteral->name);
@@ -1996,16 +1996,18 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     }
 
     case AstNodeKind::Literal:
-        if (node->token.literalType == LiteralType::TT_RAW_STRING)
+    {
+        auto literalNode = CastAst<AstLiteral>(node, AstNodeKind::Literal);
+        if (literalNode->literalType == LiteralType::TT_RAW_STRING)
             CONCAT_FIXED_STR(concat, "@\"");
-        else if (node->token.literalType == LiteralType::TT_STRING || node->token.literalType == LiteralType::TT_ESCAPE_STRING)
+        else if (literalNode->literalType == LiteralType::TT_STRING || literalNode->literalType == LiteralType::TT_ESCAPE_STRING)
             CONCAT_FIXED_STR(concat, "\"");
 
         concat.addString(node->token.text);
 
-        if (node->token.literalType == LiteralType::TT_RAW_STRING)
+        if (literalNode->literalType == LiteralType::TT_RAW_STRING)
             CONCAT_FIXED_STR(concat, "\"@");
-        else if (node->token.literalType == LiteralType::TT_STRING || node->token.literalType == LiteralType::TT_ESCAPE_STRING)
+        else if (literalNode->literalType == LiteralType::TT_STRING || literalNode->literalType == LiteralType::TT_ESCAPE_STRING)
             CONCAT_FIXED_STR(concat, "\"");
 
         if (!node->childs.empty())
@@ -2014,6 +2016,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             SWAG_CHECK(outputNode(context, concat, node->childs[0]));
         }
         break;
+    }
 
     case AstNodeKind::ScopeBreakable:
         CONCAT_FIXED_STR(concat, "#scope ");

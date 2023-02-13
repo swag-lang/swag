@@ -288,7 +288,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
     else
     {
         if (!typeNode->typeFromLiteral)
-            typeNode->typeFromLiteral = TypeManager::literalTypeToType(typeNode->token);
+            typeNode->typeFromLiteral = TypeManager::literalTypeToType(typeNode->literalType);
         typeNode->typeInfo = typeNode->typeFromLiteral;
 
         // Typed variadic ?

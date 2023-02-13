@@ -4591,7 +4591,7 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext*             
                                                    AstNode*                           startNode,
                                                    uint32_t                           flags,
                                                    IdentifierScopeUpMode              scopeUpMode,
-                                                   Token*                             scopeUpValue)
+                                                   TokenParse*                        scopeUpValue)
 {
     // Add registered alternative scopes of the current node
     if (startNode->extension && startNode->extension->misc && !startNode->extension->misc->alternativeScopes.empty())
@@ -4711,7 +4711,7 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext*                   conte
                                         AstNode*                           startNode,
                                         uint32_t                           flags,
                                         IdentifierScopeUpMode              scopeUpMode,
-                                        Token*                             scopeUpValue)
+                                        TokenParse*                        scopeUpValue)
 {
     auto  job        = context->job;
     auto& toProcess  = job->scopesToProcess;

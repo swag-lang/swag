@@ -280,6 +280,10 @@ AstNode* AstNode::clone(CloneContext& context)
         return ((AstDefer*) this)->clone(context);
     case AstNodeKind::ExpressionList:
         return ((AstExpressionList*) this)->clone(context);
+    case AstNodeKind::With:
+        return ((AstWith*) this)->clone(context);
+    case AstNodeKind::Literal:
+        return ((AstLiteral*) this)->clone(context);
 
     default:
     {
@@ -808,6 +812,7 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
     newNode->identifier      = findChildRef(identifier, newNode);
     newNode->typeFromLiteral = typeFromLiteral;
     newNode->ptrCount        = ptrCount;
+    newNode->literalType     = literalType;
 
     for (int i = 0; i < ptrCount; i++)
         newNode->ptrFlags[i] = ptrFlags[i];
@@ -1316,5 +1321,14 @@ AstNode* AstWith::clone(CloneContext& context)
     auto newNode = Ast::newNode<AstWith>();
     newNode->copyFrom(context, this);
     newNode->id = id;
+    return newNode;
+}
+
+AstNode* AstLiteral::clone(CloneContext& context)
+{
+    auto newNode = Ast::newNode<AstLiteral>();
+    newNode->copyFrom(context, this);
+    newNode->literalType  = literalType;
+    newNode->literalValue = literalValue;
     return newNode;
 }

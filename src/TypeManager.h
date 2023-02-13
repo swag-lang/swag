@@ -113,7 +113,7 @@ struct TypeManager
     static TypeInfo* solidifyUntyped(TypeInfo* typeInfo);
     static TypeInfo* resolveUntypedType(TypeInfo* typeInfo, uint32_t value);
     static TypeInfo* literalTypeToType(LiteralType literalType);
-    static TypeInfo* literalTypeToType(const Token& token);
+    static TypeInfo* literalTypeToType(LiteralType literalType, Register literalValue);
     static void      promote3264(AstNode* left, AstNode* right);
     static void      promote816(AstNode* left, AstNode* right);
     static void      promoteOne(AstNode* left, AstNode* right, bool is3264);

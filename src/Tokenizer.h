@@ -59,14 +59,11 @@ struct SourceLocation
 
 struct Token
 {
-    TokenId     id          = TokenId::Invalid;
-    LiteralType literalType = (LiteralType) 0;
-    uint8_t     padding     = 0;
+    TokenId id = TokenId::Invalid;
 
     Utf8           text;
     SourceLocation startLocation;
     SourceLocation endLocation;
-    Register       literalValue;
 
     const char* ctext()
     {
@@ -76,8 +73,10 @@ struct Token
 
 struct TokenParse : public Token
 {
-    bool lastTokenIsEOL   = false;
-    bool lastTokenIsBlank = false;
+    LiteralType literalType = (LiteralType) 0;
+    Register    literalValue;
+    bool        lastTokenIsEOL   = false;
+    bool        lastTokenIsBlank = false;
 };
 
 struct Tokenizer

@@ -733,7 +733,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
 
     if (token.id == TokenId::NativeType)
     {
-        node->token.literalType = token.literalType;
+        node->literalType       = token.literalType;
         node->token.endLocation = token.endLocation;
         SWAG_CHECK(eatToken());
         return true;

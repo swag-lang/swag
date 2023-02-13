@@ -37,8 +37,8 @@ bool SemanticJob::getDigitHexa(SemanticContext* context, const char** _pz, int& 
 
 bool SemanticJob::processLiteralString(SemanticContext* context)
 {
-    auto node = context->node;
-    if (node->token.literalType != LiteralType::TT_ESCAPE_STRING)
+    auto node = CastAst<AstLiteral>(context->node, AstNodeKind::Literal);
+    if (node->literalType != LiteralType::TT_ESCAPE_STRING)
         return true;
 
     auto loc = node->token.startLocation;
@@ -142,7 +142,7 @@ bool SemanticJob::processLiteralString(SemanticContext* context)
     return true;
 }
 
-Utf8 SemanticJob::checkLiteralValue(ComputedValue& computedValue, Token& token, TypeInfo* typeSuffix, bool negApplied)
+Utf8 SemanticJob::checkLiteralValue(ComputedValue& computedValue, LiteralType& literalType, Register& literalValue, TypeInfo* typeSuffix, bool negApplied)
 {
     if (negApplied)
     {
@@ -156,20 +156,20 @@ Utf8 SemanticJob::checkLiteralValue(ComputedValue& computedValue, Token& token, 
             break;
         }
 
-        switch (token.literalType)
+        switch (literalType)
         {
         case LiteralType::TT_U32:
         case LiteralType::TT_UNTYPED_BINHEXA:
         case LiteralType::TT_UNTYPED_INT:
-            token.literalType = LiteralType::TT_S32;
+            literalType = LiteralType::TT_S32;
             break;
         case LiteralType::TT_U64:
-            token.literalType = LiteralType::TT_S64;
+            literalType = LiteralType::TT_S64;
             break;
         }
     }
 
-    switch (token.literalType)
+    switch (literalType)
     {
     case LiteralType::TT_BOOL:
         if (typeSuffix->isNativeInteger())
@@ -189,7 +189,7 @@ Utf8 SemanticJob::checkLiteralValue(ComputedValue& computedValue, Token& token, 
         VectorNative<uint32_t> uni;
         computedValue.text.toUni32(uni);
         if (uni.size() != 1)
-            return Fmt(Err(Err0262), token.ctext());
+            return Fmt(Err(Err0262), computedValue.text.c_str());
 
         switch (typeSuffix->nativeType)
         {
@@ -227,7 +227,7 @@ Utf8 SemanticJob::checkLiteralValue(ComputedValue& computedValue, Token& token, 
         switch (typeSuffix->nativeType)
         {
         case NativeTypeKind::F32:
-            computedValue.reg.f32 = (float) token.literalValue.f64;
+            computedValue.reg.f32 = (float) literalValue.f64;
             if (negApplied)
                 computedValue.reg.f32 = -computedValue.reg.f32;
             break;
@@ -382,7 +382,7 @@ bool SemanticJob::resolveLiteralSuffix(SemanticContext* context)
 
 bool SemanticJob::resolveLiteral(SemanticContext* context)
 {
-    auto   node       = context->node;
+    auto   node       = CastAst<AstLiteral>(context->node, AstNodeKind::Literal);
     auto   sourceFile = context->sourceFile;
     Token& token      = node->token;
 
@@ -390,54 +390,54 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
     {
     case TokenId::KwdTrue:
         token.id             = TokenId::LiteralNumber;
-        token.literalType    = LiteralType::TT_BOOL;
-        token.literalValue.b = true;
+        node->literalType    = LiteralType::TT_BOOL;
+        node->literalValue.b = true;
         break;
     case TokenId::KwdFalse:
         token.id             = TokenId::LiteralNumber;
-        token.literalType    = LiteralType::TT_BOOL;
-        token.literalValue.b = false;
+        node->literalType    = LiteralType::TT_BOOL;
+        node->literalValue.b = false;
         break;
     case TokenId::KwdNull:
         token.id                   = TokenId::LiteralNumber;
-        token.literalType          = LiteralType::TT_NULL;
-        token.literalValue.pointer = nullptr;
+        node->literalType          = LiteralType::TT_NULL;
+        node->literalValue.pointer = nullptr;
         break;
     case TokenId::CompilerFile:
         token.id          = TokenId::LiteralString;
-        token.literalType = LiteralType::TT_STRING;
+        node->literalType = LiteralType::TT_STRING;
         token.text        = sourceFile->path;
         break;
     case TokenId::CompilerModule:
         token.id          = TokenId::LiteralString;
-        token.literalType = LiteralType::TT_STRING;
+        node->literalType = LiteralType::TT_STRING;
         token.text        = sourceFile->module ? sourceFile->module->name : Utf8("?");
         break;
     case TokenId::CompilerLine:
         token.id               = TokenId::LiteralNumber;
-        token.literalType      = LiteralType::TT_UNTYPED_INT;
-        token.literalValue.u32 = token.startLocation.line + 1;
+        node->literalType      = LiteralType::TT_UNTYPED_INT;
+        node->literalValue.u32 = token.startLocation.line + 1;
         break;
     case TokenId::CompilerBuildVersion:
         token.id               = TokenId::LiteralNumber;
-        token.literalType      = LiteralType::TT_S32;
-        token.literalValue.s32 = SWAG_BUILD_VERSION;
+        node->literalType      = LiteralType::TT_S32;
+        node->literalValue.s32 = SWAG_BUILD_VERSION;
         break;
     case TokenId::CompilerBuildRevision:
         token.id               = TokenId::LiteralNumber;
-        token.literalType      = LiteralType::TT_S32;
-        token.literalValue.s32 = SWAG_BUILD_REVISION;
+        node->literalType      = LiteralType::TT_S32;
+        node->literalValue.s32 = SWAG_BUILD_REVISION;
         break;
     case TokenId::CompilerBuildNum:
         token.id               = TokenId::LiteralNumber;
-        token.literalType      = LiteralType::TT_S32;
-        token.literalValue.s32 = SWAG_BUILD_NUM;
+        node->literalType      = LiteralType::TT_S32;
+        node->literalValue.s32 = SWAG_BUILD_NUM;
         break;
     }
 
-    node->typeInfo = TypeManager::literalTypeToType(node->token);
+    node->typeInfo = TypeManager::literalTypeToType(node->literalType, node->literalValue);
     node->setFlagsValueIsComputed();
-    node->computedValue->reg  = node->token.literalValue;
+    node->computedValue->reg  = node->literalValue;
     node->computedValue->text = node->token.text;
     node->flags |= AST_R_VALUE;
 
@@ -452,8 +452,8 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
         SWAG_ASSERT(!suffix || node->semFlags & AST_SEM_LITERAL_SUFFIX);
 
         // By default, a float without a suffix is considered as f32 (not f64 like in C).
-        if (node->typeInfo->isNative(NativeTypeKind::F32) && token.literalType == LiteralType::TT_UNTYPED_FLOAT)
-            node->computedValue->reg.f32 = (float) token.literalValue.f64;
+        if (node->typeInfo->isNative(NativeTypeKind::F32) && node->literalType == LiteralType::TT_UNTYPED_FLOAT)
+            node->computedValue->reg.f32 = (float) node->literalValue.f64;
         return true;
     }
 
@@ -494,7 +494,7 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
         }
     }
 
-    auto errMsg = checkLiteralValue(*node->computedValue, token, suffix->typeInfo, negApplied);
+    auto errMsg = checkLiteralValue(*node->computedValue, node->literalType, node->literalValue, suffix->typeInfo, negApplied);
     if (!errMsg.empty())
         return context->report({node, errMsg});
 

@@ -439,7 +439,7 @@ struct AstIdentifier : public AstNode
     TypeInfo*             alternateEnum     = nullptr;
     AstNode*              fromAlternateVar  = nullptr;
     IdentifierScopeUpMode scopeUpMode       = IdentifierScopeUpMode::None;
-    Token                 scopeUpValue;
+    TokenParse            scopeUpValue;
 };
 
 static const uint32_t FUNC_FLAG_FULL_RESOLVE    = 0x00000001;
@@ -704,8 +704,9 @@ struct AstTypeExpression : public AstNode
 
     AstNode* clone(CloneContext& context);
 
-    AstNode*  identifier      = nullptr;
-    TypeInfo* typeFromLiteral = nullptr;
+    AstNode*    identifier      = nullptr;
+    TypeInfo*   typeFromLiteral = nullptr;
+    LiteralType literalType     = (LiteralType) 0;
 
     uint16_t typeFlags               = 0;
     uint8_t  ptrFlags[MAX_PTR_COUNT] = {0};
@@ -969,4 +970,11 @@ struct AstWith : public AstNode
 {
     AstNode*     clone(CloneContext& context);
     vector<Utf8> id;
+};
+
+struct AstLiteral : public AstNode
+{
+    AstNode*    clone(CloneContext& context);
+    LiteralType literalType = (LiteralType) 0;
+    Register    literalValue;
 };

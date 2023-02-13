@@ -229,7 +229,7 @@ struct SemanticJob : public Job
     static bool checkIsConcreteOrType(SemanticContext* context, AstNode* node);
     static bool checkPublicAlias(SemanticContext* context, AstNode* node);
     static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode);
-    static Utf8 checkLiteralValue(ComputedValue& computedValue, Token& token, TypeInfo* typeSuffix, bool negApplied);
+    static Utf8 checkLiteralValue(ComputedValue& computedValue, LiteralType& literalType, Register& literalValue, TypeInfo* typeSuffix, bool negApplied);
     static bool checkCanThrow(SemanticContext* context);
     static bool checkCanCatch(SemanticContext* context);
     static bool checkImplScopes(SemanticContext* context, AstImpl* node, Scope* scopeImpl, Scope* scope);
@@ -264,8 +264,8 @@ struct SemanticJob : public Job
     static bool           collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result, AstAttrUse* attrUse);
     static void           collectAlternativeScopes(AstNode* startNode, VectorNative<AlternativeScope>& scopes);
     static void           collectAlternativeScopeVars(AstNode* startNode, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars);
-    static void           collectAlternativeScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, uint32_t flags, IdentifierScopeUpMode scopeUpMode = IdentifierScopeUpMode::None, Token* scopeUpValue = nullptr);
-    static bool           collectScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, uint32_t flags, IdentifierScopeUpMode scopeUpMode = IdentifierScopeUpMode::None, Token* scopeUpValue = nullptr);
+    static void           collectAlternativeScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, uint32_t flags, IdentifierScopeUpMode scopeUpMode = IdentifierScopeUpMode::None, TokenParse* scopeUpValue = nullptr);
+    static bool           collectScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, uint32_t flags, IdentifierScopeUpMode scopeUpMode = IdentifierScopeUpMode::None, TokenParse* scopeUpValue = nullptr);
     static bool           setupIdentifierRef(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool           derefConstantValue(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, DataSegment* storageSegment, void* ptr);
     static bool           derefConstantValue(SemanticContext* context, AstNode* node, TypeInfoKind kind, NativeTypeKind nativeKind, void* ptr);

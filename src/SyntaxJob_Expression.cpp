@@ -9,9 +9,10 @@
 
 bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Literal, sourceFile, parent);
-    node->semanticFct = SemanticJob::resolveLiteral;
-    node->token       = token;
+    auto node          = Ast::newNode<AstLiteral>(this, AstNodeKind::Literal, sourceFile, parent);
+    node->semanticFct  = SemanticJob::resolveLiteral;
+    node->literalType  = token.literalType;
+    node->literalValue = token.literalValue;
     if (result)
         *result = node;
 
@@ -36,12 +37,13 @@ bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
 
     if (token.id == TokenId::SymDotDot || token.id == TokenId::SymDotDotLess)
     {
-        firstExpr = Ast::newNode<AstNode>(this, AstNodeKind::Literal, sourceFile, nullptr);
+        auto literal = Ast::newNode<AstLiteral>(this, AstNodeKind::Literal, sourceFile, nullptr);
+        firstExpr    = literal;
         firstExpr->allocateComputedValue();
         firstExpr->flags |= AST_GENERATED;
         firstExpr->computedValue->reg.u64 = 0;
-        firstExpr->token.literalType      = LiteralType::TT_U64;
         firstExpr->semanticFct            = SemanticJob::resolveLiteral;
+        literal->literalType              = LiteralType::TT_U64;
     }
     else
     {
@@ -488,10 +490,10 @@ bool SyntaxJob::doDeRef(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(doUnaryExpression(arrayNode, EXPR_FLAG_SIMPLE, &arrayNode->array));
 
-    auto literal = Ast::newNode<AstNode>(this, AstNodeKind::Literal, sourceFile, arrayNode);
+    auto literal = Ast::newNode<AstLiteral>(this, AstNodeKind::Literal, sourceFile, arrayNode);
     literal->setFlagsValueIsComputed();
     literal->computedValue->reg.u64 = 0;
-    literal->token.literalType      = LiteralType::TT_S32;
+    literal->literalType            = LiteralType::TT_S32;
     literal->semanticFct            = SemanticJob::resolveLiteral;
     literal->inheritTokenLocation(arrayNode->array->token);
     arrayNode->access = literal;

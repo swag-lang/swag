@@ -65,7 +65,7 @@ bool SyntaxJob::checkIsSingleIdentifier(AstNode* node, const char* msg)
 
 bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
 {
-    Token scopeUpValue;
+    TokenParse scopeUpValue;
 
     // #up to change the scope
     if (token.id == TokenId::CompilerUp)

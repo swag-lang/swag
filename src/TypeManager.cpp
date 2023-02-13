@@ -502,11 +502,11 @@ TypeInfo* TypeManager::literalTypeToType(LiteralType literalType)
     return result;
 }
 
-TypeInfo* TypeManager::literalTypeToType(const Token& token)
+TypeInfo* TypeManager::literalTypeToType(LiteralType literalType, Register literalValue)
 {
-    auto result = literalTypeToType(token.literalType);
+    auto result = literalTypeToType(literalType);
     SWAG_ASSERT(result);
-    result = resolveUntypedType(result, token.literalValue.u32);
+    result = resolveUntypedType(result, literalValue.u32);
     return result;
 }
 
