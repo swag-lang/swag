@@ -8,7 +8,7 @@
 #include "ErrorIds.h"
 #include "Report.h"
 #include "LanguageSpec.h"
-#include "Array.h"
+#include "Vector.h"
 
 bool SemanticJob::resolveIf(SemanticContext* context)
 {
@@ -338,9 +338,9 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     SWAG_VERIFY(!node->cases.empty(), context->report({node, node->token, Err(Err0610)}));
 
     // Collect constant expressions, to avoid double definitions
-    Array<AstNode*> valDef;
-    Array<uint64_t> val64;
-    Array<Utf8>     valText;
+    VectorNative<AstNode*> valDef;
+    VectorNative<uint64_t> val64;
+    Vector<Utf8>           valText;
     for (auto switchCase : node->cases)
     {
         for (auto expr : switchCase->expressions)

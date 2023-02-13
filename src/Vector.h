@@ -2,7 +2,7 @@
 #include "Utf8.h"
 
 template<typename T>
-struct Array : public vector<T>
+struct Vector : public vector<T>
 {
     bool contains(const T& value)
     {

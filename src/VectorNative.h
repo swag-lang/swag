@@ -233,6 +233,19 @@ struct VectorNative
         count += other.count;
     }
 
+    int find(const T& value)
+    {
+        int idx = 0;
+        for (auto& it : *this)
+        {
+            if (it == value)
+                return idx;
+            idx++;
+        }
+
+        return -1;
+    }
+
     bool contains(const T& val)
     {
         for (int i = 0; i < count; i++)
