@@ -44,13 +44,14 @@ bool SourceFile::checkFormat()
     return true;
 }
 
-void SourceFile::setExternalBuffer(char* buf, uint32_t size)
+void SourceFile::setExternalBuffer(const Utf8& content)
 {
-    buffer     = buf;
-    curBuffer  = buf;
-    endBuffer  = buf + size;
-    bufferSize = size;
-    isExternal = true;
+    externalContent = content;
+    buffer          = (char*) externalContent.c_str();
+    bufferSize      = externalContent.length();
+    curBuffer       = buffer;
+    endBuffer       = buffer + bufferSize;
+    isExternal      = true;
 }
 
 bool SourceFile::load()
@@ -107,29 +108,15 @@ bool SourceFile::load()
     return true;
 }
 
-uint32_t SourceFile::getChar(unsigned& offset)
-{
-    if (curBuffer >= endBuffer)
-    {
-        offset = 0;
-        return 0;
-    }
-
-    uint32_t wc;
-    Utf8::decodeUtf8(curBuffer, wc, offset);
-    return wc;
-}
-
 Utf8 SourceFile::getLine(long lineNo, bool* eof)
 {
     ScopedLock lk(mutex);
-    auto       checkFile = this;
-    if (fileForSourceLocation)
-        checkFile = fileForSourceLocation;
 
-    if (isExternal && !fileForSourceLocation)
+    // Put all lines in a cache, the first time
+    // This is slow, but this is ok, as getLine is not called in normal situations
+    if (allLines.empty())
     {
-        if (allLines.empty())
+        if (isExternal && !fileForSourceLocation)
         {
             const char* pz = (const char*) buffer;
             string      line;
@@ -143,14 +130,10 @@ Utf8 SourceFile::getLine(long lineNo, bool* eof)
                     pz++;
             }
         }
-    }
-    else
-    {
-        // Put all lines in a cache, the first time
-        // This is slow, but this is ok, as getLine is not called in normal situations
-        if (allLines.empty())
+        else
         {
-            ifstream fle(checkFile->path, ios::binary);
+            auto     fileToRead = fileForSourceLocation ? fileForSourceLocation : this;
+            ifstream fle(fileToRead->path, ios::binary);
             if (!fle.is_open())
                 return "?";
 
@@ -175,6 +158,19 @@ Utf8 SourceFile::getLine(long lineNo, bool* eof)
     if (eof)
         *eof = false;
     return allLines[lineNo];
+}
+
+uint32_t SourceFile::getChar(unsigned& offset)
+{
+    if (curBuffer >= endBuffer)
+    {
+        offset = 0;
+        return 0;
+    }
+
+    uint32_t wc;
+    Utf8::decodeUtf8(curBuffer, wc, offset);
+    return wc;
 }
 
 void SourceFile::computeFileScopeName()

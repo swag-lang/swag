@@ -253,21 +253,19 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
         }
     }
 
-    SourceFile* tmpFile      = g_Allocator.alloc<SourceFile>();
-    tmpFile->externalContent = content;
-    tmpFile->setExternalBuffer((char*) tmpFile->externalContent.c_str(), tmpFile->externalContent.length());
-    tmpFile->module = parent->sourceFile->module;
-    tmpFile->name   = tmpFileName;
-    tmpFile->path   = tmpFilePath;
-    tmpFile->path += tmpFileName;
+    sourceFile = g_Allocator.alloc<SourceFile>();
+    sourceFile->setExternalBuffer(content);
+    sourceFile->module = parent->sourceFile->module;
+    sourceFile->name   = tmpFileName;
+    sourceFile->path   = tmpFilePath;
+    sourceFile->path += tmpFileName;
     if (fromNode)
     {
-        tmpFile->sourceNode        = fromNode;
-        tmpFile->shouldHaveError   = fromNode->sourceFile->shouldHaveError;
-        tmpFile->shouldHaveWarning = fromNode->sourceFile->shouldHaveWarning;
+        sourceFile->sourceNode        = fromNode;
+        sourceFile->shouldHaveError   = fromNode->sourceFile->shouldHaveError;
+        sourceFile->shouldHaveWarning = fromNode->sourceFile->shouldHaveWarning;
     }
 
-    sourceFile         = tmpFile;
     currentScope       = parent->ownerScope;
     currentStructScope = parent->ownerStructScope;
     currentFct         = parent->ownerFct;
@@ -283,7 +281,7 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
     tokenizer.setFile(sourceFile);
     if (logGenerated)
     {
-        tmpFile->getLineOffset    = previousLogLine;
+        sourceFile->getLineOffset = previousLogLine;
         tokenizer.location.column = 0;
         tokenizer.location.line   = previousLogLine;
     }

@@ -17,7 +17,7 @@ struct SourceFile
     bool     load();
     uint32_t getChar(unsigned& offset);
     Utf8     getLine(long lineNo, bool* eof = nullptr);
-    void     setExternalBuffer(char* buf, uint32_t size);
+    void     setExternalBuffer(const Utf8& content);
     void     computeFileScopeName();
     void     addGlobalUsing(Scope* scope);
 
