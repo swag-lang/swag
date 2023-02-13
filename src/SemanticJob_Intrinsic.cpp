@@ -218,7 +218,7 @@ bool SemanticJob::resolveIntrinsicMakeInterface(SemanticContext* context)
 
     third->allocateComputedValue();
     third->computedValue->storageSegment = getConstantSegFromContext(third);
-    SWAG_CHECK(typeTable.makeExportedTypeInfo(context, third->typeInfo, third->computedValue->storageSegment, &third->computedValue->storageOffset, MAKE_CONCRETE_TYPE_SHOULD_WAIT));
+    SWAG_CHECK(typeTable.genExportedTypeInfo(context, third->typeInfo, third->computedValue->storageSegment, &third->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT));
     if (context->result != ContextResult::Done)
         return true;
 
@@ -591,7 +591,7 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
         SWAG_CHECK(checkIsConcrete(context, expr));
         node->allocateComputedValue();
         node->computedValue->storageSegment = getConstantSegFromContext(node);
-        SWAG_CHECK(typeTable.makeExportedTypeInfo(context, expr->typeInfo, node->computedValue->storageSegment, &node->computedValue->storageOffset, MAKE_CONCRETE_TYPE_SHOULD_WAIT, &node->typeInfo));
+        SWAG_CHECK(typeTable.genExportedTypeInfo(context, expr->typeInfo, node->computedValue->storageSegment, &node->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT, &node->typeInfo));
         if (context->result != ContextResult::Done)
             return true;
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicKindOf;
@@ -603,7 +603,7 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
     // For a function, this is the unscoped type
     if (expr->typeInfo->isFuncAttr())
     {
-        SWAG_CHECK(resolveTypeAsExpression(context, expr, &node->typeInfo, MAKE_CONCRETE_TYPE_FORCE_NO_SCOPE));
+        SWAG_CHECK(resolveTypeAsExpression(context, expr, &node->typeInfo, GEN_EXPORTED_TYPE_FORCE_NO_SCOPE));
         if (context->result != ContextResult::Done)
             return true;
         node->inheritComputedValue(expr);

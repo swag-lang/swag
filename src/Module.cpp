@@ -336,7 +336,7 @@ void Module::buildTypesSlice()
     if (modulesSliceOffset == UINT32_MAX)
         return;
 
-    auto&    map = typeTable.getMapPerSeg(&constantSegment).concreteTypes;
+    auto&    map = typeTable.getMapPerSeg(&constantSegment).exportedTypes;
     uint8_t* resultPtr;
     uint32_t numTypes = (uint32_t) map.size();
 

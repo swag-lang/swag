@@ -2032,7 +2032,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
                 // :AnyTypeSegment
                 toNode->allocateExtension(ExtensionKind::Any);
                 toNode->extension->misc->anyTypeSegment = SemanticJob::getConstantSegFromContext(toNode);
-                SWAG_CHECK(typeTable.makeExportedTypeInfo(context, fromType, toNode->extension->misc->anyTypeSegment, &toNode->extension->misc->anyTypeOffset));
+                SWAG_CHECK(typeTable.genExportedTypeInfo(context, fromType, toNode->extension->misc->anyTypeSegment, &toNode->extension->misc->anyTypeOffset));
             }
 
             return true;
@@ -2059,7 +2059,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             // :AnyTypeSegment
             fromNode->allocateExtension(ExtensionKind::Any);
             fromNode->extension->misc->anyTypeSegment = SemanticJob::getConstantSegFromContext(fromNode);
-            SWAG_CHECK(typeTable.makeExportedTypeInfo(context, fromNode->castedTypeInfo, fromNode->extension->misc->anyTypeSegment, &fromNode->extension->misc->anyTypeOffset));
+            SWAG_CHECK(typeTable.genExportedTypeInfo(context, fromNode->castedTypeInfo, fromNode->extension->misc->anyTypeSegment, &fromNode->extension->misc->anyTypeOffset));
         }
     }
     else if (fromType->isAny())
@@ -2100,7 +2100,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             // :AnyTypeSegment
             fromNode->allocateExtension(ExtensionKind::Any);
             fromNode->extension->misc->anyTypeSegment = SemanticJob::getConstantSegFromContext(fromNode);
-            SWAG_CHECK(typeTable.makeExportedTypeInfo(context, toType, fromNode->extension->misc->anyTypeSegment, &fromNode->extension->misc->anyTypeOffset));
+            SWAG_CHECK(typeTable.genExportedTypeInfo(context, toType, fromNode->extension->misc->anyTypeSegment, &fromNode->extension->misc->anyTypeOffset));
         }
     }
 
