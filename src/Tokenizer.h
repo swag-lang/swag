@@ -84,7 +84,7 @@ struct Tokenizer
 {
     void setFile(SourceFile* file);
     bool getToken(TokenParse& token);
-    bool error(TokenParse& token, const Utf8& msg);
+    bool error(TokenParse& token, const Utf8& msg, const Utf8& hint = "");
     void trimMultilineString(Utf8& text);
     void appendTokenName(TokenParse& token);
     void saveState(const TokenParse& token);

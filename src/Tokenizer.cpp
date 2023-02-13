@@ -41,6 +41,14 @@ bool Tokenizer::isIntrinsicNoReturn(TokenId id)
     return g_TokenFlags[(int) id] & TOKEN_INTRINSIC_NORETURN;
 }
 
+bool Tokenizer::error(TokenParse& token, const Utf8& msg, const Utf8& hint)
+{
+    token.endLocation = location;
+    Diagnostic diag{sourceFile, token, msg};
+    diag.hint = hint;
+    return Report::report(diag);
+}
+
 void Tokenizer::appendTokenName(TokenParse& token)
 {
     if (realAppendName)
@@ -104,12 +112,6 @@ uint32_t Tokenizer::getCharNoSeek(unsigned& offset)
     return sourceFile->getChar(offset);
 }
 
-bool Tokenizer::error(TokenParse& token, const Utf8& msg)
-{
-    token.endLocation = location;
-    return Report::report({sourceFile, token, msg});
-}
-
 bool Tokenizer::doMultiLineComment(TokenParse& token)
 {
     int countEmb = 1;
@@ -123,11 +125,7 @@ bool Tokenizer::doMultiLineComment(TokenParse& token)
         {
             location = token.startLocation;
             location.column += 2;
-            token.endLocation = location;
-
-            Diagnostic diag{sourceFile, token, Err(Err0080)};
-            diag.hint = Hnt(Hnt0041);
-            return Report::report(diag);
+            return error(token, Err(Tkn0025), Hnt(Hnt0041));
         }
 
         if (nc == '*')

@@ -96,6 +96,7 @@ void initErrors()
     SWAG_ERROR(Tkn0017, "unexpected end of file found in the string literal");
     SWAG_ERROR(Tkn0018, "unexpected end of line found in the string literal");
     SWAG_ERROR(Tkn0019, "unexpected literal number prefix '%s' (should be '0x' or '0b')");
+    SWAG_ERROR(Tkn0025, "unexpected end of file found in the comment");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -826,7 +827,7 @@ void initErrors()
     SWAG_ERROR(Err0432, "unexpected comparison operator '='");
     SWAG_ERROR(Err0610, "unexpected empty 'switch' body");
     SWAG_ERROR(Err0683, "unexpected empty interface '%s'");
-    SWAG_ERROR(Err0080, "unexpected end of file found in the comment");
+    SWAG_ERROR(Err0080, nullptr);
     SWAG_ERROR(Err0314, "unexpected file format, should be ascii, utf-8 or utf-8-bom");
     SWAG_ERROR(Err0069, "unexpected first parameter type for special function '%s' ('%s' expected, '%s' provided)");
     SWAG_ERROR(Err0317, "unexpected floating point number suffix (type is '%s')");
