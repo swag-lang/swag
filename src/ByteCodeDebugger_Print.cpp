@@ -22,9 +22,9 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     {
         if (force || loc.file != context->debugStepLastFile)
         {
-            g_Log.printColor("=> ", LogColor::DarkYellow);
-            g_Log.printColor("file: ", LogColor::DarkYellow);
-            g_Log.printColor(loc.file->name.c_str(), LogColor::Cyan);
+            g_Log.print("=> ", LogColor::DarkYellow);
+            g_Log.print("file: ", LogColor::DarkYellow);
+            g_Log.print(loc.file->name.c_str(), LogColor::Cyan);
             g_Log.eol();
             printSomething = true;
         }
@@ -54,30 +54,30 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
         {
             if (isInlined)
             {
-                g_Log.printColor("=> ", LogColor::DarkYellow);
-                g_Log.printColor("inlined: ", LogColor::DarkYellow);
-                g_Log.printColor(newFunc->getScopedName().c_str(), LogColor::Cyan);
-                g_Log.printColor(" ");
-                g_Log.printColor(newFunc->typeInfo->getDisplayNameC(), LogColor::DarkCyan);
+                g_Log.print("=> ", LogColor::DarkYellow);
+                g_Log.print("inlined: ", LogColor::DarkYellow);
+                g_Log.print(newFunc->getScopedName().c_str(), LogColor::Cyan);
+                g_Log.print(" ");
+                g_Log.print(newFunc->typeInfo->getDisplayNameC(), LogColor::DarkCyan);
                 g_Log.eol();
             }
 
-            g_Log.printColor("=> ", LogColor::DarkYellow);
-            g_Log.printColor("function: ", LogColor::DarkYellow);
-            g_Log.printColor(node->ownerFct->getScopedName().c_str(), LogColor::Cyan);
-            g_Log.printColor(" ");
-            g_Log.printColor(node->ownerFct->typeInfo->getDisplayNameC(), LogColor::DarkCyan);
+            g_Log.print("=> ", LogColor::DarkYellow);
+            g_Log.print("function: ", LogColor::DarkYellow);
+            g_Log.print(node->ownerFct->getScopedName().c_str(), LogColor::Cyan);
+            g_Log.print(" ");
+            g_Log.print(node->ownerFct->typeInfo->getDisplayNameC(), LogColor::DarkCyan);
             g_Log.eol();
             printSomething = true;
         }
     }
     else if (force || (context->debugLastBc != context->debugCxtBc))
     {
-        g_Log.printColor("=> ", LogColor::DarkYellow);
-        g_Log.printColor("generated: ", LogColor::DarkYellow);
-        g_Log.printColor(context->debugCxtBc->name.c_str(), LogColor::Cyan);
-        g_Log.printColor(" ");
-        g_Log.printColor(context->debugCxtBc->typeInfoFunc->getDisplayNameC(), LogColor::DarkCyan);
+        g_Log.print("=> ", LogColor::DarkYellow);
+        g_Log.print("generated: ", LogColor::DarkYellow);
+        g_Log.print(context->debugCxtBc->name.c_str(), LogColor::Cyan);
+        g_Log.print(" ");
+        g_Log.print(context->debugCxtBc->typeInfoFunc->getDisplayNameC(), LogColor::DarkCyan);
         g_Log.eol();
         printSomething = true;
     }
@@ -127,51 +127,51 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
         auto inlined = ipNode->ownerInline;
         while (inlined)
         {
-            g_Log.printColor("inlined: ", LogColor::Gray);
-            g_Log.printColor(inlined->func->getScopedName(), LogColor::DarkYellow);
-            g_Log.printColor(" ");
-            g_Log.printColor(inlined->func->typeInfo->getDisplayNameC(), LogColor::DarkCyan);
+            g_Log.print("inlined: ", LogColor::Gray);
+            g_Log.print(inlined->func->getScopedName(), LogColor::DarkYellow);
+            g_Log.print(" ");
+            g_Log.print(inlined->func->typeInfo->getDisplayNameC(), LogColor::DarkCyan);
             g_Log.eol();
             inlined = inlined->ownerInline;
         }
 
-        g_Log.printColor("function: ", LogColor::Gray);
-        g_Log.printColor(ipNode->ownerFct->getScopedName(), LogColor::DarkYellow);
-        g_Log.printColor(" ");
-        g_Log.printColor(ipNode->ownerFct->typeInfo->getDisplayNameC(), LogColor::DarkCyan);
+        g_Log.print("function: ", LogColor::Gray);
+        g_Log.print(ipNode->ownerFct->getScopedName(), LogColor::DarkYellow);
+        g_Log.print(" ");
+        g_Log.print(ipNode->ownerFct->typeInfo->getDisplayNameC(), LogColor::DarkCyan);
         g_Log.eol();
     }
 
     g_Log.eol();
-    g_Log.printColor("bytecode: ", LogColor::Gray);
-    g_Log.printColor(bc->name, LogColor::DarkYellow);
-    g_Log.printColor(" ");
-    g_Log.printColor(bc->typeInfoFunc->getDisplayNameC(), LogColor::DarkCyan);
+    g_Log.print("bytecode: ", LogColor::Gray);
+    g_Log.print(bc->name, LogColor::DarkYellow);
+    g_Log.print(" ");
+    g_Log.print(bc->typeInfoFunc->getDisplayNameC(), LogColor::DarkCyan);
     g_Log.eol();
 
     if (bc->sourceFile && bc->node)
     {
-        g_Log.printColor("bytecode location: ", LogColor::Gray);
-        g_Log.printColor(Fmt("%s:%u:%u", bc->sourceFile->path.c_str(), bc->node->token.startLocation.line + 1, bc->node->token.startLocation.column + 1), LogColor::DarkYellow);
+        g_Log.print("bytecode location: ", LogColor::Gray);
+        g_Log.print(Fmt("%s:%u:%u", bc->sourceFile->path.c_str(), bc->node->token.startLocation.line + 1, bc->node->token.startLocation.column + 1), LogColor::DarkYellow);
         g_Log.eol();
     }
     else if (bc->sourceFile)
     {
-        g_Log.printColor("bytecode source file: ", LogColor::Gray);
-        g_Log.printColor(bc->sourceFile->path.c_str(), LogColor::DarkYellow);
+        g_Log.print("bytecode source file: ", LogColor::Gray);
+        g_Log.print(bc->sourceFile->path.c_str(), LogColor::DarkYellow);
         g_Log.eol();
     }
 
     g_Log.eol();
     if (ipNode && ipNode->sourceFile)
     {
-        g_Log.printColor("instruction location: ", LogColor::Gray);
-        g_Log.printColor(Fmt("%s:%u:%u", ipNode->sourceFile->path.c_str(), ipNode->token.startLocation.line + 1, ipNode->token.startLocation.column + 1), LogColor::DarkYellow);
+        g_Log.print("instruction location: ", LogColor::Gray);
+        g_Log.print(Fmt("%s:%u:%u", ipNode->sourceFile->path.c_str(), ipNode->token.startLocation.line + 1, ipNode->token.startLocation.column + 1), LogColor::DarkYellow);
         g_Log.eol();
     }
 
-    g_Log.printColor("stack level: ", LogColor::Gray);
-    g_Log.printColor(Fmt("%u", context->debugStackFrameOffset), LogColor::DarkYellow);
+    g_Log.print("stack level: ", LogColor::Gray);
+    g_Log.print(Fmt("%u", context->debugStackFrameOffset), LogColor::DarkYellow);
     g_Log.eol();
 
     return BcDbgCommandResult::Continue;
@@ -323,7 +323,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
     expr.trim();
     if (expr.empty())
     {
-        g_Log.printColor("invalid 'x' expression\n", LogColor::Red);
+        g_Log.print("invalid 'x' expression\n", LogColor::Red);
         return BcDbgCommandResult::Continue;
     }
 
@@ -365,7 +365,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
     {
         auto addrLine = addrB;
 
-        g_Log.printColor(Fmt("0x%016llx ", addrLine), LogColor::DarkYellow);
+        g_Log.print(Fmt("0x%016llx ", addrLine), LogColor::DarkYellow);
         g_Log.setColor(LogColor::Gray);
 
         for (int i = 0; i < min(count, perLine); i++)
@@ -467,7 +467,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
         }
     }
     else
-        g_Log.printColor("no source code\n", LogColor::Red);
+        g_Log.print("no source code\n", LogColor::Red);
 
     return BcDbgCommandResult::Continue;
 }
@@ -491,7 +491,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
         }
         else
         {
-            g_Log.printColor(Fmt("cannot find function '%s'\n", name.c_str()), LogColor::Red);
+            g_Log.print(Fmt("cannot find function '%s'\n", name.c_str()), LogColor::Red);
             return BcDbgCommandResult::Continue;
         }
     }
@@ -518,10 +518,10 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
             }
         }
         else
-            g_Log.printColor("no source code\n", LogColor::Red);
+            g_Log.print("no source code\n", LogColor::Red);
     }
     else
-        g_Log.printColor("no source code\n", LogColor::Red);
+        g_Log.print("no source code\n", LogColor::Red);
 
     return BcDbgCommandResult::Continue;
 }

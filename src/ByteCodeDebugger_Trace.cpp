@@ -43,7 +43,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdContinue(ByteCodeRunContext* context, co
     if (cmds.size() > 1)
         return BcDbgCommandResult::BadArguments;
 
-    g_Log.printColor("continue...\n", LogColor::Gray);
+    g_Log.print("continue...\n", LogColor::Gray);
     context->debugStackFrameOffset = 0;
     context->debugStepMode         = ByteCodeRunContext::DebugStepMode::ToNextBreakpoint;
     context->debugOn               = false;
@@ -64,7 +64,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const 
     {
         if (to >= context->bc->numInstructions - 1)
         {
-            g_Log.printColor("cannot reach this 'jump' destination\n", LogColor::Red);
+            g_Log.print("cannot reach this 'jump' destination\n", LogColor::Red);
             return BcDbgCommandResult::Continue;
         }
 
@@ -78,7 +78,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const 
         {
             if (curIp >= context->bc->out + context->bc->numInstructions - 1)
             {
-                g_Log.printColor("cannot reach this 'jump' destination\n", LogColor::Red);
+                g_Log.print("cannot reach this 'jump' destination\n", LogColor::Red);
                 return BcDbgCommandResult::Continue;
             }
 
@@ -129,27 +129,27 @@ BcDbgCommandResult ByteCodeDebugger::cmdMode(ByteCodeRunContext* context, const 
     {
         context->debugBcMode = !context->debugBcMode;
         if (context->debugBcMode)
-            g_Log.printColor("=> bytecode mode\n", LogColor::Gray);
+            g_Log.print("=> bytecode mode\n", LogColor::Gray);
         else
-            g_Log.printColor("=> source code mode\n", LogColor::Gray);
+            g_Log.print("=> source code mode\n", LogColor::Gray);
         printDebugContext(context, true);
     }
     else if (cmds[1] == "inline")
     {
         context->bc->sourceFile->module->buildCfg.byteCodeDebugInline = !context->bc->sourceFile->module->buildCfg.byteCodeDebugInline;
         if (context->bc->sourceFile->module->buildCfg.byteCodeDebugInline)
-            g_Log.printColor("=> inline mode\n", LogColor::Gray);
+            g_Log.print("=> inline mode\n", LogColor::Gray);
         else
-            g_Log.printColor("=> no inline mode\n", LogColor::Gray);
+            g_Log.print("=> no inline mode\n", LogColor::Gray);
         printDebugContext(context, true);
     }
     else if (cmds[1] == "bkp")
     {
         g_CommandLine.dbgOff = !g_CommandLine.dbgOff;
         if (g_CommandLine.dbgOff)
-            g_Log.printColor("=> @breakpoint() are disabled\n", LogColor::Gray);
+            g_Log.print("=> @breakpoint() are disabled\n", LogColor::Gray);
         else
-            g_Log.printColor("=> @breakpoint() are enabled\n", LogColor::Gray);
+            g_Log.print("=> @breakpoint() are enabled\n", LogColor::Gray);
     }
     else
         return BcDbgCommandResult::BadArguments;

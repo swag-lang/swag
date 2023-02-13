@@ -47,7 +47,7 @@ struct Log
     void printHeaderDot(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor, const char* dot);
     void printHeaderCentered(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor);
     void print(const char* message);
-    void printColor(const char* message, LogColor color = LogColor::Gray);
+    void print(const char* message, LogColor color);
     void print(const Utf8& message);
     void eol();
     void setCountLength(bool b);

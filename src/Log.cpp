@@ -83,7 +83,7 @@ void Log::print(const Utf8& message)
     print(message.c_str());
 }
 
-void Log::printColor(const char* message, LogColor color)
+void Log::print(const char* message, LogColor color)
 {
     setColor(color);
     print(message);

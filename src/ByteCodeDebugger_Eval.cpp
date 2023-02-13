@@ -30,9 +30,9 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
         if (silent)
             return false;
         if (g_SilentErrorMsg.empty())
-            g_Log.printColor("expression syntax error\n", LogColor::Red);
+            g_Log.print("expression syntax error\n", LogColor::Red);
         else
-            g_Log.printColor(Fmt("%s\n", g_SilentErrorMsg.c_str()), LogColor::Red);
+            g_Log.print(Fmt("%s\n", g_SilentErrorMsg.c_str()), LogColor::Red);
         return false;
     }
 
@@ -54,9 +54,9 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
         if (silent)
             return false;
         if (g_SilentErrorMsg.empty())
-            g_Log.printColor("cannot solve expression\n", LogColor::Red);
+            g_Log.print("cannot solve expression\n", LogColor::Red);
         else
-            g_Log.printColor(Fmt("%s\n", g_SilentErrorMsg.c_str()), LogColor::Red);
+            g_Log.print(Fmt("%s\n", g_SilentErrorMsg.c_str()), LogColor::Red);
         return false;
     }
 
@@ -88,9 +88,9 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
         if (silent)
             return false;
         if (g_SilentErrorMsg.empty())
-            g_Log.printColor("cannot generate expression\n", LogColor::Red);
+            g_Log.print("cannot generate expression\n", LogColor::Red);
         else
-            g_Log.printColor(Fmt("%s\n", g_SilentErrorMsg.c_str()), LogColor::Red);
+            g_Log.print(Fmt("%s\n", g_SilentErrorMsg.c_str()), LogColor::Red);
         return false;
     }
 
@@ -121,9 +121,9 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
         if (silent)
             return false;
         if (g_SilentErrorMsg.empty())
-            g_Log.printColor("cannot run expression\n", LogColor::Red);
+            g_Log.print("cannot run expression\n", LogColor::Red);
         else
-            g_Log.printColor(Fmt("%s\n", g_SilentErrorMsg.c_str()), LogColor::Red);
+            g_Log.print(Fmt("%s\n", g_SilentErrorMsg.c_str()), LogColor::Red);
         return false;
     }
 
@@ -215,7 +215,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
     {
         if (!concrete->isNativeIntegerOrRune() && !concrete->isNativeFloat())
         {
-            g_Log.printColor(Fmt("cannot apply print format to type '%s'\n", concrete->getDisplayNameC()), LogColor::Red);
+            g_Log.print(Fmt("cannot apply print format to type '%s'\n", concrete->getDisplayNameC()), LogColor::Red);
             return BcDbgCommandResult::Continue;
         }
 
@@ -229,7 +229,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
         appendTypedValue(context, str, res, 0);
     }
 
-    g_Log.printColor(str);
+    g_Log.print(str);
     str.trim();
     if (str.back() != '\n')
         g_Log.eol();

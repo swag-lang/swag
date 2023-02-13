@@ -52,7 +52,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, c
 
     if (all.empty())
     {
-        g_Log.printColor(Fmt("...no match (%d parsed functions)\n", total), LogColor::Red);
+        g_Log.print(Fmt("...no match (%d parsed functions)\n", total), LogColor::Red);
         return BcDbgCommandResult::Continue;
     }
 
@@ -62,7 +62,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, c
     {
         if (OS::longOpStopKeyPressed())
         {
-            g_Log.printColor("...stopped\n", LogColor::Red);
+            g_Log.print("...stopped\n", LogColor::Red);
             break;
         }
 
@@ -94,7 +94,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoLocals(ByteCodeRunContext* context, 
 
     if (context->debugCxtBc->localVars.empty())
     {
-        g_Log.printColor("no locals\n", LogColor::Red);
+        g_Log.print("no locals\n", LogColor::Red);
         return BcDbgCommandResult::Continue;
     }
 
@@ -111,7 +111,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoLocals(ByteCodeRunContext* context, 
         res.type = over->typeInfo;
         res.addr = context->debugCxtBp + over->computedValue.storageOffset;
         appendTypedValue(context, str, res, 0);
-        g_Log.printColor(str);
+        g_Log.print(str);
         if (str.back() != '\n')
             g_Log.eol();
     }
@@ -159,7 +159,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, co
     auto funcDecl = CastAst<AstFuncDecl>(context->debugCxtBc->node, AstNodeKind::FuncDecl);
     if (!funcDecl->parameters || funcDecl->parameters->childs.empty())
     {
-        g_Log.printColor("no arguments\n", LogColor::Red);
+        g_Log.print("no arguments\n", LogColor::Red);
         return BcDbgCommandResult::Continue;
     }
 
@@ -173,7 +173,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, co
         res.type = over->typeInfo;
         res.addr = context->debugCxtBp + over->computedValue.storageOffset;
         appendTypedValue(context, str, res, 0);
-        g_Log.printColor(str);
+        g_Log.print(str);
         if (str.back() != '\n')
             g_Log.eol();
     }

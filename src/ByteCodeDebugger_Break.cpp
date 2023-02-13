@@ -7,7 +7,7 @@ void ByteCodeDebugger::printBreakpoints(ByteCodeRunContext* context)
 {
     if (context->debugBreakpoints.empty())
     {
-        g_Log.printColor("no breakpoint\n", LogColor::Red);
+        g_Log.print("no breakpoint\n", LogColor::Red);
         return;
     }
 
@@ -54,7 +54,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
             {
                 if (!bkp.autoDisabled)
                 {
-                    g_Log.printColor(Fmt("#### breakpoint hit #%d function with a match on '%s' ####\n", idxBkp, bkp.name.c_str()), LogColor::Magenta);
+                    g_Log.print(Fmt("#### breakpoint hit #%d function with a match on '%s' ####\n", idxBkp, bkp.name.c_str()), LogColor::Magenta);
                     context->debugStepMode          = ByteCodeRunContext::DebugStepMode::None;
                     context->debugOn                = true;
                     context->debugForcePrintContext = true;
@@ -80,7 +80,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
             {
                 if (!bkp.autoDisabled)
                 {
-                    g_Log.printColor(Fmt("#### breakpoint hit #%d at line '%d' ####\n", idxBkp, bkp.line), LogColor::Magenta);
+                    g_Log.print(Fmt("#### breakpoint hit #%d at line '%d' ####\n", idxBkp, bkp.line), LogColor::Magenta);
                     context->debugStepMode          = ByteCodeRunContext::DebugStepMode::None;
                     context->debugOn                = true;
                     context->debugForcePrintContext = true;
@@ -105,7 +105,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
             {
                 if (!bkp.autoDisabled)
                 {
-                    g_Log.printColor(Fmt("#### breakpoint hit #%d at instruction '%d' ####\n", idxBkp, bkp.line), LogColor::Magenta);
+                    g_Log.print(Fmt("#### breakpoint hit #%d at instruction '%d' ####\n", idxBkp, bkp.line), LogColor::Magenta);
                     context->debugStepMode          = ByteCodeRunContext::DebugStepMode::None;
                     context->debugOn                = true;
                     context->debugForcePrintContext = true;
@@ -132,7 +132,7 @@ bool ByteCodeDebugger::addBreakpoint(ByteCodeRunContext* context, const ByteCode
     {
         if (b.type == bkp.type && b.name == bkp.name && b.line == bkp.line && b.autoRemove == bkp.autoRemove)
         {
-            g_Log.printColor("breakpoint already exists\n", LogColor::Red);
+            g_Log.print("breakpoint already exists\n", LogColor::Red);
             return false;
         }
     }
@@ -150,11 +150,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakEnable(ByteCodeRunContext* context,
 
     int numB = atoi(cmds[2].c_str());
     if (!numB || numB - 1 >= context->debugBreakpoints.size())
-        g_Log.printColor("invalid breakpoint number\n", LogColor::Red);
+        g_Log.print("invalid breakpoint number\n", LogColor::Red);
     else
     {
         context->debugBreakpoints[numB - 1].disabled = false;
-        g_Log.printColor(Fmt("breakpoint #%d has been enabled\n", numB), LogColor::Gray);
+        g_Log.print(Fmt("breakpoint #%d has been enabled\n", numB), LogColor::Gray);
     }
 
     return BcDbgCommandResult::Continue;
@@ -169,11 +169,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakDisable(ByteCodeRunContext* context
 
     int numB = atoi(cmds[2].c_str());
     if (!numB || numB - 1 >= context->debugBreakpoints.size())
-        g_Log.printColor("invalid breakpoint number\n", LogColor::Red);
+        g_Log.print("invalid breakpoint number\n", LogColor::Red);
     else
     {
         context->debugBreakpoints[numB - 1].disabled = true;
-        g_Log.printColor(Fmt("breakpoint #%d has been disabled\n", numB), LogColor::Gray);
+        g_Log.print(Fmt("breakpoint #%d has been disabled\n", numB), LogColor::Gray);
     }
 
     return BcDbgCommandResult::Continue;
@@ -184,9 +184,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakClear(ByteCodeRunContext* context, 
     if (cmds.size() == 2)
     {
         if (context->debugBreakpoints.empty())
-            g_Log.printColor("no breakpoint to remove\n", LogColor::Red);
+            g_Log.print("no breakpoint to remove\n", LogColor::Red);
         else
-            g_Log.printColor(Fmt("%d breakpoint(s) have been removed\n", context->debugBreakpoints.size()), LogColor::Gray);
+            g_Log.print(Fmt("%d breakpoint(s) have been removed\n", context->debugBreakpoints.size()), LogColor::Gray);
         context->debugBreakpoints.clear();
         return BcDbgCommandResult::Continue;
     }
@@ -198,11 +198,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakClear(ByteCodeRunContext* context, 
 
     int numB = atoi(cmds[2].c_str());
     if (!numB || numB - 1 >= context->debugBreakpoints.size())
-        g_Log.printColor("invalid breakpoint number\n", LogColor::Red);
+        g_Log.print("invalid breakpoint number\n", LogColor::Red);
     else
     {
         context->debugBreakpoints.erase(context->debugBreakpoints.begin() + numB - 1);
-        g_Log.printColor(Fmt("breakpoint #%d has been removed\n", numB), LogColor::Gray);
+        g_Log.print(Fmt("breakpoint #%d has been removed\n", numB), LogColor::Gray);
     }
 
     return BcDbgCommandResult::Continue;
@@ -232,7 +232,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFunc(ByteCodeRunContext* context, c
 
     if (addBreakpoint(context, bkp))
     {
-        g_Log.printColor(Fmt("breakpoint #%d function with a match on '%s'\n", context->debugBreakpoints.size(), bkp.name.c_str()), LogColor::Gray);
+        g_Log.print(Fmt("breakpoint #%d function with a match on '%s'\n", context->debugBreakpoints.size(), bkp.name.c_str()), LogColor::Gray);
     }
 
     return BcDbgCommandResult::Continue;
@@ -259,7 +259,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakLine(ByteCodeRunContext* context, c
     bkp.autoRemove = oneShot;
     if (addBreakpoint(context, bkp))
     {
-        g_Log.printColor(Fmt("breakpoint #%d, file '%s', line '%d'\n", context->debugBreakpoints.size(), bkp.name.c_str(), bkp.line), LogColor::Gray);
+        g_Log.print(Fmt("breakpoint #%d, file '%s', line '%d'\n", context->debugBreakpoints.size(), bkp.name.c_str(), bkp.line), LogColor::Gray);
     }
 
     return BcDbgCommandResult::Continue;
@@ -284,7 +284,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFileLine(ByteCodeRunContext* contex
         curFile = g_Workspace->findFile(cmds[2] + ".swgs");
     if (!curFile)
     {
-        g_Log.printColor(Fmt("cannot find file '%s'\n", cmds[2].c_str()), LogColor::Red);
+        g_Log.print(Fmt("cannot find file '%s'\n", cmds[2].c_str()), LogColor::Red);
         return BcDbgCommandResult::Continue;
     }
 
@@ -295,7 +295,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFileLine(ByteCodeRunContext* contex
     bkp.autoRemove = oneShot;
     if (addBreakpoint(context, bkp))
     {
-        g_Log.printColor(Fmt("breakpoint #%d, file '%s', line '%d'\n", context->debugBreakpoints.size(), bkp.name.c_str(), bkp.line), LogColor::Gray);
+        g_Log.print(Fmt("breakpoint #%d, file '%s', line '%d'\n", context->debugBreakpoints.size(), bkp.name.c_str(), bkp.line), LogColor::Gray);
     }
 
     return BcDbgCommandResult::Continue;
