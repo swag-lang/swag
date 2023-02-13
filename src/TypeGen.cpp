@@ -622,7 +622,7 @@ bool TypeGen::genExportedStuct(JobContext* context, const auto& typeName, Export
     auto& mapPerSeg            = getMapPerSeg(storageSegment);
     auto  job                  = g_Allocator.alloc<TypeGenStructJob>();
     job->module                = module;
-    job->typeTable             = this;
+    job->typeGen               = this;
     job->sourceFile            = sourceFile;
     job->exportedTypeInfoValue = exportedTypeInfoValue;
     job->typeInfo              = typeInfo;

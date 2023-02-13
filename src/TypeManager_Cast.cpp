@@ -2027,12 +2027,12 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
                 toNode->castedTypeInfo = toType;
                 toNode->typeInfo       = fromType;
                 auto  module           = context->sourceFile->module;
-                auto& typeTable        = module->typeTable;
+                auto& typeGen        = module->typeGen;
 
                 // :AnyTypeSegment
                 toNode->allocateExtension(ExtensionKind::Any);
                 toNode->extension->misc->anyTypeSegment = SemanticJob::getConstantSegFromContext(toNode);
-                SWAG_CHECK(typeTable.genExportedTypeInfo(context, fromType, toNode->extension->misc->anyTypeSegment, &toNode->extension->misc->anyTypeOffset));
+                SWAG_CHECK(typeGen.genExportedTypeInfo(context, fromType, toNode->extension->misc->anyTypeSegment, &toNode->extension->misc->anyTypeOffset));
             }
 
             return true;
@@ -2054,12 +2054,12 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             fromNode->castedTypeInfo = fromType;
             fromNode->typeInfo       = toType;
             auto  module             = context->sourceFile->module;
-            auto& typeTable          = module->typeTable;
+            auto& typeGen          = module->typeGen;
 
             // :AnyTypeSegment
             fromNode->allocateExtension(ExtensionKind::Any);
             fromNode->extension->misc->anyTypeSegment = SemanticJob::getConstantSegFromContext(fromNode);
-            SWAG_CHECK(typeTable.genExportedTypeInfo(context, fromNode->castedTypeInfo, fromNode->extension->misc->anyTypeSegment, &fromNode->extension->misc->anyTypeOffset));
+            SWAG_CHECK(typeGen.genExportedTypeInfo(context, fromNode->castedTypeInfo, fromNode->extension->misc->anyTypeSegment, &fromNode->extension->misc->anyTypeOffset));
         }
     }
     else if (fromType->isAny())
@@ -2095,12 +2095,12 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             fromNode->castedTypeInfo = fromType;
             fromNode->typeInfo       = toType;
             auto  module             = context->sourceFile->module;
-            auto& typeTable          = module->typeTable;
+            auto& typeGen          = module->typeGen;
 
             // :AnyTypeSegment
             fromNode->allocateExtension(ExtensionKind::Any);
             fromNode->extension->misc->anyTypeSegment = SemanticJob::getConstantSegFromContext(fromNode);
-            SWAG_CHECK(typeTable.genExportedTypeInfo(context, toType, fromNode->extension->misc->anyTypeSegment, &fromNode->extension->misc->anyTypeOffset));
+            SWAG_CHECK(typeGen.genExportedTypeInfo(context, toType, fromNode->extension->misc->anyTypeSegment, &fromNode->extension->misc->anyTypeOffset));
         }
     }
 

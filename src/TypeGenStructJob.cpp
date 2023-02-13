@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "Module.h"
 #include "TypeGenStructJob.h"
-#include "Generic.h"
-#include "ByteCode.h"
 #include "Ast.h"
+#include "ByteCode.h"
+#include "Generic.h"
+#include "Module.h"
 #include "ModuleManager.h"
 
 bool TypeGenStructJob::computeStruct()
@@ -129,14 +129,14 @@ bool TypeGenStructJob::computeStruct()
         }
     }
 
-    auto&      mapPerSeg = typeTable->getMapPerSeg(storageSegment);
+    auto&      mapPerSeg = typeGen->getMapPerSeg(storageSegment);
     ScopedLock lk(mapPerSeg.mutex);
 
     // Simple structure name, without generics
-    SWAG_CHECK(typeTable->genExportedString(baseContext, &concreteType->structName, realType->structName, storageSegment, OFFSETOF(concreteType->structName)));
+    SWAG_CHECK(typeGen->genExportedString(baseContext, &concreteType->structName, realType->structName, storageSegment, OFFSETOF(concreteType->structName)));
 
     // Struct attributes
-    SWAG_CHECK(typeTable->genExportedAttributes(baseContext, realType->attributes, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, cflags));
+    SWAG_CHECK(typeGen->genExportedAttributes(baseContext, realType->attributes, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, cflags));
 
     if (!realType->replaceTypes.empty())
     {
@@ -160,7 +160,7 @@ bool TypeGenStructJob::computeStruct()
     concreteType->fromGeneric = nullptr;
     if (realType->fromGeneric)
     {
-        SWAG_CHECK(typeTable->genExportedSubTypeInfo(baseContext, &concreteType->fromGeneric, concreteType, storageSegment, storageOffset, realType->fromGeneric, cflags));
+        SWAG_CHECK(typeGen->genExportedSubTypeInfo(baseContext, &concreteType->fromGeneric, concreteType, storageSegment, storageOffset, realType->fromGeneric, cflags));
     }
 
     // Generic types
@@ -170,10 +170,10 @@ bool TypeGenStructJob::computeStruct()
     {
         uint32_t count = (uint32_t) concreteType->generics.count;
         uint32_t storageArray;
-        auto     addrArray = (ExportedTypeValue*) typeTable->genExportedSlice(baseContext, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->generics.buffer, storageArray);
+        auto     addrArray = (ExportedTypeValue*) typeGen->genExportedSlice(baseContext, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->generics.buffer, storageArray);
         for (int param = 0; param < concreteType->generics.count; param++)
         {
-            SWAG_CHECK(typeTable->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->genericParameters[param], cflags));
+            SWAG_CHECK(typeGen->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->genericParameters[param], cflags));
             storageArray += sizeof(ExportedTypeValue);
         }
     }
@@ -188,10 +188,10 @@ bool TypeGenStructJob::computeStruct()
         {
             uint32_t count = (uint32_t) concreteType->fields.count;
             uint32_t storageArray;
-            auto     addrArray = (ExportedTypeValue*) typeTable->genExportedSlice(baseContext, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->fields.buffer, storageArray);
+            auto     addrArray = (ExportedTypeValue*) typeGen->genExportedSlice(baseContext, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->fields.buffer, storageArray);
             for (int param = 0; param < concreteType->fields.count; param++)
             {
-                SWAG_CHECK(typeTable->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->fields[param], cflags));
+                SWAG_CHECK(typeGen->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->fields[param], cflags));
                 storageArray += sizeof(ExportedTypeValue);
             }
         }
@@ -209,10 +209,10 @@ bool TypeGenStructJob::computeStruct()
             {
                 uint32_t count = (uint32_t) concreteType->methods.count;
                 uint32_t storageArray;
-                auto     addrArray = (ExportedTypeValue*) typeTable->genExportedSlice(baseContext, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->methods.buffer, storageArray);
+                auto     addrArray = (ExportedTypeValue*) typeGen->genExportedSlice(baseContext, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->methods.buffer, storageArray);
                 for (int param = 0; param < concreteType->methods.count; param++)
                 {
-                    SWAG_CHECK(typeTable->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->methods[param], cflags));
+                    SWAG_CHECK(typeGen->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->methods[param], cflags));
 
                     // 'value' will contain a pointer to the lambda.
                     // Register it for later patches
@@ -236,10 +236,10 @@ bool TypeGenStructJob::computeStruct()
         {
             uint32_t count = (uint32_t) concreteType->interfaces.count;
             uint32_t storageArray;
-            auto     addrArray = (ExportedTypeValue*) typeTable->genExportedSlice(baseContext, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->interfaces.buffer, storageArray);
+            auto     addrArray = (ExportedTypeValue*) typeGen->genExportedSlice(baseContext, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->interfaces.buffer, storageArray);
             for (int param = 0; param < concreteType->interfaces.count; param++)
             {
-                SWAG_CHECK(typeTable->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->interfaces[param], cflags));
+                SWAG_CHECK(typeGen->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->interfaces[param], cflags));
 
                 // :ItfIsConstantSeg
                 // Compute the storage of the interface for @interfaceof
@@ -253,7 +253,7 @@ bool TypeGenStructJob::computeStruct()
         }
     }
 
-    typeTable->tableJobDone(this, storageSegment);
+    typeGen->tableJobDone(this, storageSegment);
 
     return true;
 }

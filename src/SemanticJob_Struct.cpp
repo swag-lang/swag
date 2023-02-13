@@ -97,17 +97,17 @@ bool SemanticJob::resolveImplForType(SemanticContext* context)
         return true;
 
     // Make a concrete type for the given struct
-    auto& typeTable = module->typeTable;
+    auto& typeGen = module->typeGen;
     back->allocateComputedValue();
     back->computedValue->storageSegment = getConstantSegFromContext(back);
-    SWAG_CHECK(typeTable.genExportedTypeInfo(context, typeStruct, back->computedValue->storageSegment, &back->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT));
+    SWAG_CHECK(typeGen.genExportedTypeInfo(context, typeStruct, back->computedValue->storageSegment, &back->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT));
     if (context->result != ContextResult::Done)
         return true;
 
     // Make a concrete type for the given interface
     first->allocateComputedValue();
     first->computedValue->storageSegment = getConstantSegFromContext(first);
-    SWAG_CHECK(typeTable.genExportedTypeInfo(context, first->typeInfo, first->computedValue->storageSegment, &first->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT));
+    SWAG_CHECK(typeGen.genExportedTypeInfo(context, first->typeInfo, first->computedValue->storageSegment, &first->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT));
     if (context->result != ContextResult::Done)
         return true;
 

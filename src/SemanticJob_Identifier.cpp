@@ -466,11 +466,11 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         if (i >= typeInfoFunc->parameters.size() - 1 && (typeInfoFunc->flags & TYPEINFO_VARIADIC))
         {
             auto  module       = sourceFile->module;
-            auto& typeTable    = module->typeTable;
+            auto& typeGen      = module->typeGen;
             auto  concreteType = TypeManager::concreteType(nodeCall->typeInfo, CONCRETE_FUNC);
             nodeCall->allocateComputedValue();
             nodeCall->computedValue->storageSegment2 = getConstantSegFromContext(nodeCall);
-            SWAG_CHECK(typeTable.genExportedTypeInfo(context, concreteType, nodeCall->computedValue->storageSegment2, &nodeCall->computedValue->storageOffset2));
+            SWAG_CHECK(typeGen.genExportedTypeInfo(context, concreteType, nodeCall->computedValue->storageSegment2, &nodeCall->computedValue->storageOffset2));
         }
 
         // If passing a closure

@@ -8,7 +8,6 @@
 #include "ErrorIds.h"
 #include "Report.h"
 #include "LanguageSpec.h"
-#include "Vector.h"
 
 bool SemanticJob::resolveIf(SemanticContext* context)
 {
@@ -289,11 +288,11 @@ bool SemanticJob::resolveSwitchAfterExpr(SemanticContext* context)
     {
         switchNode->beforeAutoCastType = node->typeInfo;
         node->byteCodeFct              = ByteCodeGenJob::emitImplicitKindOf;
-        auto& typeTable                = node->sourceFile->module->typeTable;
+        auto& typeGen                  = node->sourceFile->module->typeGen;
         SWAG_CHECK(checkIsConcrete(context, node));
         node->allocateComputedValue();
         node->computedValue->storageSegment = getConstantSegFromContext(context->node);
-        SWAG_CHECK(typeTable.genExportedTypeInfo(context, node->typeInfo, node->computedValue->storageSegment, &node->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT, &node->typeInfo));
+        SWAG_CHECK(typeGen.genExportedTypeInfo(context, node->typeInfo, node->computedValue->storageSegment, &node->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT, &node->typeInfo));
         if (context->result != ContextResult::Done)
             return true;
     }

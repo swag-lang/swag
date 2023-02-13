@@ -32,7 +32,7 @@ JobResult PrepCompilerMsgJob::execute()
             if (pass == 0)
                 makeFlags |= GEN_EXPORTED_TYPE_PARTIAL;
 
-            if (!module->typeTable.genExportedTypeInfo(&context, msg.typeInfo, storageSegment, &storageOffset, makeFlags))
+            if (!module->typeGen.genExportedTypeInfo(&context, msg.typeInfo, storageSegment, &storageOffset, makeFlags))
                 return JobResult::ReleaseJob;
             if (context.result != ContextResult::Done)
                 return JobResult::KeepJobAlive;

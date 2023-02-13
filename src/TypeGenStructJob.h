@@ -13,7 +13,7 @@ struct TypeGenStructJob : public Job
     Utf8                                 typeName;
     Vector<pair<AstFuncDecl*, uint32_t>> patchMethods;
 
-    TypeGen*          typeTable             = nullptr;
+    TypeGen*          typeGen               = nullptr;
     ExportedTypeInfo* exportedTypeInfoValue = nullptr;
     TypeInfo*         typeInfo              = nullptr;
     DataSegment*      storageSegment        = nullptr;

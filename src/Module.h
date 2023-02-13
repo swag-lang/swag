@@ -209,7 +209,7 @@ struct Module
     DataSegment compilerSegment;
     DataSegment tlsSegment;
 
-    TypeGen        typeTable;
+    TypeGen          typeGen;
     ByteCodeRun      runner;
     DependentJobs    dependentJobs;
     SwagProcessInfos processInfos = {{0}};

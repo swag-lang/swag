@@ -36,7 +36,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     }
 
     name = moduleName;
-    typeTable.setup(moduleName);
+    typeGen.setup(moduleName);
     nameNormalized = name;
     nameNormalized.replaceAll('.', '_');
     path = modulePath.c_str();
@@ -230,7 +230,7 @@ void Module::initFrom(Module* other)
 
     buildParameters.foreignLibs.insert(other->buildParameters.foreignLibs.begin(), other->buildParameters.foreignLibs.end());
 
-    typeTable.initFrom(this, &other->typeTable);
+    typeGen.initFrom(this, &other->typeGen);
 }
 
 void Module::buildModulesSlice()
@@ -336,7 +336,7 @@ void Module::buildTypesSlice()
     if (modulesSliceOffset == UINT32_MAX)
         return;
 
-    auto&    map = typeTable.getMapPerSeg(&constantSegment).exportedTypes;
+    auto&    map = typeGen.getMapPerSeg(&constantSegment).exportedTypes;
     uint8_t* resultPtr;
     uint32_t numTypes = (uint32_t) map.size();
 
