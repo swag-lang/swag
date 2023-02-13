@@ -194,7 +194,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
     }
 }
 
-static void report(const Diagnostic& diag, const Vector<const Diagnostic*>& inNotes, bool verbose)
+static void reportInternal(const Diagnostic& diag, const Vector<const Diagnostic*>& inNotes, bool verbose)
 {
     if (g_CommandLine.errorOneLine)
     {
@@ -455,7 +455,7 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
         if (sourceFile->shouldHaveError && !diag.criticalError)
         {
             if (g_CommandLine.verboseTestErrors)
-                report(diag, notes, true);
+                reportInternal(diag, notes, true);
             return false;
         }
 
@@ -470,7 +470,7 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
         if (sourceFile->shouldHaveWarning)
         {
             if (g_CommandLine.verboseTestErrors)
-                report(diag, notes, true);
+                reportInternal(diag, notes, true);
             return true;
         }
 
@@ -479,7 +479,7 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
     }
 
     // Print error/warning
-    report(diag, notes, false);
+    reportInternal(diag, notes, false);
 
     if (errorLevel == DiagnosticLevel::Error)
     {
