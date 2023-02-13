@@ -17,7 +17,7 @@
 #include "Report.h"
 #include "ByteCodeDebugger.h"
 
-vector<BcDbgCommand> ByteCodeDebugger::commands;
+Vector<BcDbgCommand> ByteCodeDebugger::commands;
 
 void ByteCodeDebugger::setup()
 {
@@ -156,7 +156,7 @@ void ByteCodeDebugger::computeDebugContext(ByteCodeRunContext* context)
 
 Utf8 ByteCodeDebugger::completion(ByteCodeRunContext* context, const Utf8& line, Utf8& toComplete)
 {
-    vector<Utf8> tokens;
+    Vector<Utf8> tokens;
     Utf8::tokenize(line, ' ', tokens);
     if (tokens.empty())
         return "";
@@ -197,7 +197,7 @@ Utf8 ByteCodeDebugger::completion(ByteCodeRunContext* context, const Utf8& line,
 
 Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, bool& shift)
 {
-    static vector<Utf8> debugCmdHistory;
+    static Vector<Utf8> debugCmdHistory;
     static uint32_t     debugCmdHistoryIndex = 0;
 
     Utf8 line;
@@ -512,7 +512,7 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
     return !zapCurrentIp;
 }
 
-bool ByteCodeDebugger::processCommandLine(ByteCodeRunContext* context, vector<Utf8>& cmds, Utf8& line, Utf8& cmdExpr)
+bool ByteCodeDebugger::processCommandLine(ByteCodeRunContext* context, Vector<Utf8>& cmds, Utf8& line, Utf8& cmdExpr)
 {
     line.clear();
     bool err = false;
@@ -656,7 +656,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
         // Split in command + parameters
         Utf8         cmd;
         Utf8         cmdExpr;
-        vector<Utf8> cmds;
+        Vector<Utf8> cmds;
         if (!line.empty())
         {
             Utf8::tokenize(line, ' ', cmds);

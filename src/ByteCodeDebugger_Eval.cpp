@@ -168,7 +168,7 @@ bool ByteCodeDebugger::evalExpression(ByteCodeRunContext* context, const Utf8& e
     return evalDynExpression(context, expr, res, CompilerAstKind::Expression, silent);
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdExecute(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdExecute(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() < 2)
         return BcDbgCommandResult::BadArguments;
@@ -178,7 +178,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdExecute(ByteCodeRunContext* context, con
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() < 2)
         return BcDbgCommandResult::BadArguments;

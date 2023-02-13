@@ -404,7 +404,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 auto attrWhat = &attrParam->value;
                 auto text     = attrWhat->text;
                 text.trim();
-                vector<Utf8> what;
+                Vector<Utf8> what;
                 Utf8::tokenize(text, '|', what);
 
                 for (auto& w : what)
@@ -426,7 +426,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             else if (child->token.text == g_LangSpec->name_Safety)
             {
                 VectorNative<const OneAttribute*> allAttrs;
-                vector<Utf8>                      what;
+                Vector<Utf8>                      what;
 
                 curAttr->attributes.getAttributes(allAttrs, g_LangSpec->name_Swag_Safety);
                 for (auto attr : allAttrs)
@@ -476,7 +476,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             else if (child->token.text == g_LangSpec->name_Optim)
             {
                 VectorNative<const OneAttribute*> allAttrs;
-                vector<Utf8>                      what;
+                Vector<Utf8>                      what;
 
                 curAttr->attributes.getAttributes(allAttrs, g_LangSpec->name_Swag_Optim);
                 for (auto attr : allAttrs)
@@ -524,7 +524,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             else if (child->token.text == g_LangSpec->name_Match)
             {
                 VectorNative<const OneAttribute*> allAttrs;
-                vector<Utf8>                      what;
+                Vector<Utf8>                      what;
 
                 curAttr->attributes.getAttributes(allAttrs, g_LangSpec->name_Swag_Match);
                 for (auto attr : allAttrs)

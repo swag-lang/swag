@@ -63,8 +63,8 @@ struct CommandLine
 
     // User arguments
     string                     userArguments;
-    vector<Utf8>               userArgumentsVec;
-    vector<pair<void*, void*>> userArgumentsStr;
+    Vector<Utf8>               userArgumentsVec;
+    Vector<pair<void*, void*>> userArgumentsStr;
     pair<void*, void*>         userArgumentsSlice;
 
     // Display
@@ -99,7 +99,7 @@ struct CommandLine
     BackendTarget target;
 
     set<string>  tags;
-    vector<Utf8> libPaths;
+    Vector<Utf8> libPaths;
 
     uint32_t stackSizeRT = 1024 * 1024;
     uint32_t stackSizeBC = 512 * 1024;

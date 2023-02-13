@@ -183,7 +183,7 @@ namespace OS
                 }
 
                 // Process result
-                vector<Utf8> lines;
+                Vector<Utf8> lines;
                 Utf8::tokenize(strout, '\n', lines);
                 strout.clear();
                 if (notLast)
@@ -227,7 +227,7 @@ namespace OS
                         auto oneLine1 = pz + 4;
 
                         // Extract file and location
-                        vector<Utf8> tokens;
+                        Vector<Utf8> tokens;
                         Utf8::tokenize(oneLine1, ':', tokens);
                         for (auto& t : tokens)
                             t.trim();

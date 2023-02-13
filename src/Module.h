@@ -234,14 +234,14 @@ struct Module
     VectorNative<AstNode*>                           globalVarsBss;
     VectorNative<AstNode*>                           globalVarsMutable;
     VectorNative<AstNode*>                           globalVarsConstant;
-    vector<CompilerMessage>                          compilerMessages[2];
+    Vector<CompilerMessage>                          compilerMessages[2];
     set<SourceFile*>                                 exportSourceFiles;
     map<Utf8, TypeInfoFuncAttr*>                     mapRuntimeFctsTypes;
     map<Utf8, ByteCode*>                             mapRuntimeFcts;
     map<Utf8, ForToSolve>                            implForToSolve;
     map<uint32_t, VectorNative<SourceLocationCache>> cacheSourceLoc;
     JobGroup                                         syntaxGroup;
-    vector<Utf8>                                     contentJobGeneratedFile;
+    Vector<Utf8>                                     contentJobGeneratedFile;
     VectorNative<uint32_t>                           countLinesGeneratedFile;
     VectorNative<DataSegment*>                       compilerSegmentPerThread;
 

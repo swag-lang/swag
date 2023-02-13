@@ -28,7 +28,7 @@ struct CommandLineArgument
         , param{param}
         , help{help}
     {
-        vector<Utf8> all;
+        Vector<Utf8> all;
         Utf8::tokenize(commands, ' ', all);
 
         for (auto& p : all)

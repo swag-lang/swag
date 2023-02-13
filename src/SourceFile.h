@@ -22,7 +22,7 @@ struct SourceFile
     void     addGlobalUsing(Scope* scope);
 
     SharedMutex            mutex;
-    vector<string>         allLines;
+    Vector<string>         allLines;
     VectorNative<Scope*>   globalUsings;
     VectorNative<AstNode*> globalUsingsEmbbed;
     Utf8                   name;

@@ -24,7 +24,7 @@ PushErrContext::~PushErrContext()
     cxt->errorContextStack.pop_back();
 }
 
-void ErrorContext::fillContext(JobContext* context, Diagnostic& diag, vector<const Diagnostic*>& notes)
+void ErrorContext::fillContext(JobContext* context, Diagnostic& diag, Vector<const Diagnostic*>& notes)
 {
     if (!context)
         return;

@@ -177,9 +177,9 @@ struct Diagnostic
         int             width = 0;
     };
 
-    vector<RangeHint> ranges;
-    vector<Utf8>      lines;
-    vector<int>       linesNo;
+    Vector<RangeHint> ranges;
+    Vector<Utf8>      lines;
+    Vector<int>       linesNo;
     uint32_t          minBlanks = UINT32_MAX;
     LogColor          verboseColor;
     LogColor          errorColor;
@@ -201,8 +201,8 @@ struct Diagnostic
     Utf8           hint;
 
     Utf8            textMsg;
-    vector<Utf8>    remarks;
-    vector<Utf8>    autoRemarks;
+    Vector<Utf8>    remarks;
+    Vector<Utf8>    autoRemarks;
     Utf8            noteHeader;
     DiagnosticLevel errorLevel;
 

@@ -714,7 +714,7 @@ Utf8 Utf8::format(const char* format, ...)
     return vec;
 }
 
-void Utf8::tokenize(const Utf8& str, char c, vector<Utf8>& tokens)
+void Utf8::tokenize(const Utf8& str, char c, Vector<Utf8>& tokens)
 {
     tokens.clear();
 
@@ -743,7 +743,7 @@ void Utf8::tokenize(const Utf8& str, char c, vector<Utf8>& tokens)
     }
 }
 
-void Utf8::tokenizeBlanks(const Utf8& str, vector<Utf8>& tokens)
+void Utf8::tokenizeBlanks(const Utf8& str, Vector<Utf8>& tokens)
 {
     tokens.clear();
 

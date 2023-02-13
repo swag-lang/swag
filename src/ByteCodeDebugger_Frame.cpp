@@ -2,7 +2,7 @@
 #include "ByteCodeStack.h"
 #include "ByteCodeDebugger.h"
 
-BcDbgCommandResult ByteCodeDebugger::cmdBackTrace(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdBackTrace(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() != 1)
         return BcDbgCommandResult::BadArguments;
@@ -10,7 +10,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBackTrace(ByteCodeRunContext* context, c
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdFrame(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdFrame(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() == 1)
         return BcDbgCommandResult::BadArguments;
@@ -42,7 +42,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrame(ByteCodeRunContext* context, const
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdFrameUp(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdFrameUp(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() > 2)
         return BcDbgCommandResult::BadArguments;
@@ -74,7 +74,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrameUp(ByteCodeRunContext* context, con
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdFrameDown(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdFrameDown(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() > 2)
         return BcDbgCommandResult::BadArguments;

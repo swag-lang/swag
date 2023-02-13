@@ -72,7 +72,7 @@ void ModuleCfgManager::registerCfgFile(SourceFile* file)
     parseCfgFile(cfgModule);
 }
 
-void ModuleCfgManager::newCfgFile(vector<SourceFile*>& allFiles, const Utf8& dirName, const Utf8& fileName)
+void ModuleCfgManager::newCfgFile(Vector<SourceFile*>& allFiles, const Utf8& dirName, const Utf8& fileName)
 {
     auto file         = g_Allocator.alloc<SourceFile>();
     file->name        = fileName;
@@ -115,7 +115,7 @@ fs::path ModuleCfgManager::getAliasPath(const fs::path& srcPath)
 
 void ModuleCfgManager::enumerateCfgFiles(const fs::path& path)
 {
-    vector<SourceFile*> allFiles;
+    Vector<SourceFile*> allFiles;
 
     OS::visitFolders(path.string().c_str(),
                      [&](const char* cFileName)
@@ -240,7 +240,7 @@ bool ModuleCfgManager::fetchModuleCfg(ModuleDependency* dep, Utf8& cfgFilePath, 
     if (dep->location.empty())
         return Report::report({dep->node, Fmt(Err(Err0513), dep->name.c_str())});
 
-    vector<Utf8> tokens;
+    Vector<Utf8> tokens;
     Utf8::tokenize(dep->location, '@', tokens);
     if (tokens.size() != 2)
     {

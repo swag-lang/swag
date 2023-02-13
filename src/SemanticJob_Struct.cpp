@@ -280,7 +280,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
 
     // Be sure every functions of the interface has been covered. If it's not the case,
     // we generate the missing parts.
-    vector<const Diagnostic*> notes;
+    Vector<const Diagnostic*> notes;
     InterfaceRef              itfRef;
     bool                      doneItfRef = false;
     Utf8                      content;

@@ -42,7 +42,7 @@ namespace Report
         return false;
     }
 
-    void cleanNotes(vector<Diagnostic*>& notes)
+    void cleanNotes(Vector<Diagnostic*>& notes)
     {
         for (auto note : notes)
         {
@@ -209,7 +209,7 @@ namespace Report
         }
     }
 
-    void report(const Diagnostic& diag, const vector<const Diagnostic*>& inNotes, bool verbose)
+    void report(const Diagnostic& diag, const Vector<const Diagnostic*>& inNotes, bool verbose)
     {
         if (g_CommandLine.errorOneLine)
         {
@@ -219,7 +219,7 @@ namespace Report
         }
 
         // Make a copy
-        vector<Diagnostic*> notes;
+        Vector<Diagnostic*> notes;
         auto                c = new Diagnostic{diag};
         notes.push_back(c);
         for (auto n : inNotes)
@@ -245,7 +245,7 @@ namespace Report
         g_Log.eol();
     }
 
-    bool dealWithWarning(AstAttrUse* attrUse, const Utf8& warnMsg, Diagnostic& diag, vector<const Diagnostic*>& inNotes, bool& retResult)
+    bool dealWithWarning(AstAttrUse* attrUse, const Utf8& warnMsg, Diagnostic& diag, Vector<const Diagnostic*>& inNotes, bool& retResult)
     {
         auto attrWarn = attrUse->attributes.getAttribute(g_LangSpec->name_Swag_Warn);
         if (!attrWarn)
@@ -272,7 +272,7 @@ namespace Report
         }
         else
         {
-            vector<Utf8> tokens;
+            Vector<Utf8> tokens;
             Utf8::tokenize(what->text, '|', tokens);
             for (auto& tk : tokens)
             {
@@ -299,7 +299,7 @@ namespace Report
         return false;
     }
 
-    bool dealWithWarning(Diagnostic& diag, vector<const Diagnostic*>& notes)
+    bool dealWithWarning(Diagnostic& diag, Vector<const Diagnostic*>& notes)
     {
         if (diag.errorLevel != DiagnosticLevel::Warning)
             return true;
@@ -361,7 +361,7 @@ namespace Report
             txt.trim();
             if (!txt.empty())
             {
-                vector<Utf8> tokens;
+                Vector<Utf8> tokens;
                 Utf8::tokenize(txt, '|', tokens);
                 for (auto& tk : tokens)
                 {
@@ -382,7 +382,7 @@ namespace Report
             txt.trim();
             if (!txt.empty())
             {
-                vector<Utf8> tokens;
+                Vector<Utf8> tokens;
                 Utf8::tokenize(txt, '|', tokens);
                 for (auto& tk : tokens)
                 {
@@ -402,7 +402,7 @@ namespace Report
             txt.trim();
             if (!txt.empty())
             {
-                vector<Utf8> tokens;
+                Vector<Utf8> tokens;
                 Utf8::tokenize(txt, '|', tokens);
                 for (auto& tk : tokens)
                 {
@@ -430,7 +430,7 @@ namespace Report
         return true;
     }
 
-    bool report(const Diagnostic& inDiag, const vector<const Diagnostic*>& inNotes, ByteCodeRunContext* runContext = nullptr)
+    bool report(const Diagnostic& inDiag, const Vector<const Diagnostic*>& inNotes, ByteCodeRunContext* runContext = nullptr)
     {
         if (g_SilentError > 0 && !inDiag.criticalError)
         {
@@ -553,7 +553,7 @@ namespace Report
 
     bool report(const Diagnostic& diag, const Diagnostic* note = nullptr, const Diagnostic* note1 = nullptr)
     {
-        vector<const Diagnostic*> notes;
+        Vector<const Diagnostic*> notes;
         if (note)
             notes.push_back(note);
         if (note1)

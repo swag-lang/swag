@@ -8,7 +8,7 @@ enum class JobResult;
 struct JobQueue
 {
     VectorNative<Job*>         jobs;
-    vector<VectorNative<Job*>> affinity;
+    Vector<VectorNative<Job*>> affinity;
     uint32_t                   affinityCount = 0;
 };
 

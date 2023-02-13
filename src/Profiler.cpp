@@ -57,7 +57,7 @@ void profiler()
     g_Log.setColor(LogColor::Gray);
     g_Log.print("\n");
 
-    vector<ByteCode*> bcs;
+    Vector<ByteCode*> bcs;
     for (auto m : g_Workspace->modules)
     {
         for (auto bc : m->byteCodeFunc)

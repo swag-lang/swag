@@ -393,7 +393,7 @@ bool BackendLLVM::generateOutput(const BuildParameters& buildParameters)
     if (!mustCompile)
         return true;
 
-    vector<string> files;
+    Vector<string> files;
     files.reserve(numPreCompileBuffers);
     for (auto i = 0; i < numPreCompileBuffers; i++)
         files.push_back(perThread[buildParameters.compileType][i]->filename);

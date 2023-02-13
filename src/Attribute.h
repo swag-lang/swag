@@ -75,7 +75,7 @@ struct OneAttribute
     const ComputedValue*      getValue(const Utf8& paramName) const;
 
     Utf8                       name;
-    vector<AttributeParameter> parameters;
+    Vector<AttributeParameter> parameters;
     AstNode*                   node     = nullptr;
     TypeInfoFuncAttr*          typeFunc = nullptr;
 };
@@ -112,6 +112,6 @@ struct AttributeList
         allAttributes = other.allAttributes;
     }
 
-    vector<OneAttribute> allAttributes;
+    Vector<OneAttribute> allAttributes;
     SWAG_RACE_CONDITION_INSTANCE(raceCond);
 };

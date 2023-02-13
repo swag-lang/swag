@@ -42,7 +42,7 @@ void Workspace::setupUserTags()
         Utf8 oneTagName = tag;
         oneTagName.trim();
 
-        vector<Utf8> tokens;
+        Vector<Utf8> tokens;
         Utf8::tokenize(oneTagName, '=', tokens);
 
         if (tokens.size() == 2)
@@ -52,7 +52,7 @@ void Workspace::setupUserTags()
 
             // Get the type
             LiteralType  literalType = LiteralType::TT_MAX;
-            vector<Utf8> tokens1;
+            Vector<Utf8> tokens1;
             Utf8::tokenize(tokens[0], ':', tokens1);
             if (tokens1.size() == 2)
             {

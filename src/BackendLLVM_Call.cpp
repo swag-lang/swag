@@ -273,7 +273,7 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
                                      TypeInfoFuncAttr*             typeFuncBC,
                                      VectorNative<llvm::Value*>&   params,
                                      const VectorNative<uint32_t>& pushParams,
-                                     const vector<llvm::Value*>&   values,
+                                     const Vector<llvm::Value*>&   values,
                                      bool                          closureToLambda)
 {
     const auto& cc              = g_CallConv[typeFuncBC->callConv];
@@ -462,7 +462,7 @@ llvm::Value* BackendLLVM::emitCall(const BuildParameters&        buildParameters
                                    llvm::AllocaInst*             allocR,
                                    llvm::AllocaInst*             allocRR,
                                    const VectorNative<uint32_t>& pushParams,
-                                   const vector<llvm::Value*>&   values,
+                                   const Vector<llvm::Value*>&   values,
                                    bool                          localCall)
 {
     int   ct              = buildParameters.compileType;
@@ -492,8 +492,8 @@ llvm::Value* BackendLLVM::emitCall(const BuildParameters&      buildParameters,
                                    const char*                 name,
                                    llvm::AllocaInst*           allocR,
                                    llvm::AllocaInst*           allocT,
-                                   const vector<uint32_t>&     regs,
-                                   const vector<llvm::Value*>& values)
+                                   const Vector<uint32_t>&     regs,
+                                   const Vector<llvm::Value*>& values)
 {
     auto                typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(name);
     llvm::FunctionType* FT;
@@ -503,7 +503,7 @@ llvm::Value* BackendLLVM::emitCall(const BuildParameters&      buildParameters,
     VectorNative<uint32_t> pushRAParams;
     for (int i = (int) regs.size() - 1; i >= 0; i--)
         pushRAParams.push_back(regs[i]);
-    vector<llvm::Value*> pushVParams;
+    Vector<llvm::Value*> pushVParams;
     for (int i = (int) values.size() - 1; i >= 0; i--)
         pushVParams.push_back(values[i]);
 
@@ -517,7 +517,7 @@ void BackendLLVM::emitByteCodeCallParameters(const BuildParameters&      buildPa
                                              VectorNative<llvm::Value*>& params,
                                              TypeInfoFuncAttr*           typeFuncBC,
                                              VectorNative<uint32_t>&     pushRAParams,
-                                             const vector<llvm::Value*>& values,
+                                             const Vector<llvm::Value*>& values,
                                              bool                        closureToLambda)
 {
     int   ct              = buildParameters.compileType;

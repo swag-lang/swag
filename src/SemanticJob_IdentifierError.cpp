@@ -36,7 +36,7 @@ static int getBadParamIdx(OneTryMatch& oneTry, AstNode* callParameters)
     return badParamIdx;
 }
 
-bool SemanticJob::preprocessMatchError(SemanticContext* context, OneTryMatch& oneTry, vector<const Diagnostic*>& result0, vector<const Diagnostic*>& result1)
+bool SemanticJob::preprocessMatchError(SemanticContext* context, OneTryMatch& oneTry, Vector<const Diagnostic*>& result0, Vector<const Diagnostic*>& result1)
 {
     SymbolOverload*    overload = oneTry.overload;
     auto&              match    = oneTry.symMatchContext;
@@ -61,7 +61,7 @@ bool SemanticJob::preprocessMatchError(SemanticContext* context, OneTryMatch& on
     return false;
 }
 
-void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, vector<const Diagnostic*>& result0, vector<const Diagnostic*>& result1)
+void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, Vector<const Diagnostic*>& result0, Vector<const Diagnostic*>& result1)
 {
     // Smart changes for smarter errors (very specific cases)
     if (preprocessMatchError(context, oneTry, result0, result1))
@@ -536,7 +536,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     }
 }
 
-void SemanticJob::symbolErrorNotes(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag, vector<const Diagnostic*>& notes)
+void SemanticJob::symbolErrorNotes(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag, Vector<const Diagnostic*>& notes)
 {
     if (!node)
         return;
@@ -679,7 +679,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
 
     // Take non generic errors in priority
     {
-        vector<OneTryMatch*> n;
+        Vector<OneTryMatch*> n;
         for (auto oneMatch : tryMatches)
         {
             auto& one = *oneMatch;
@@ -706,7 +706,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
     // MatchResult::MissingSomeParameters is a correct match, but not enough parameters
     // We take it in priority
     {
-        vector<OneTryMatch*> n;
+        Vector<OneTryMatch*> n;
         for (auto oneMatch : tryMatches)
         {
             auto& one = *oneMatch;
@@ -724,7 +724,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
     // If we do not have generic parameters, then eliminate generic fail
     if (!genericParameters)
     {
-        vector<OneTryMatch*> n;
+        Vector<OneTryMatch*> n;
         for (auto oneMatch : tryMatches)
         {
             auto& one = *oneMatch;
@@ -738,7 +738,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
     // If we have generic parameters, then eliminate non generic fail
     if (genericParameters)
     {
-        vector<OneTryMatch*> n;
+        Vector<OneTryMatch*> n;
         for (auto oneMatch : tryMatches)
         {
             auto& one = *oneMatch;
@@ -751,7 +751,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
 
     // Take validif if failed in priority
     {
-        vector<OneTryMatch*> n;
+        Vector<OneTryMatch*> n;
         for (auto oneMatch : tryMatches)
         {
             auto& one = *oneMatch;
@@ -764,7 +764,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
 
     // Take bad signature in priority
     {
-        vector<OneTryMatch*> n;
+        Vector<OneTryMatch*> n;
         for (auto oneMatch : tryMatches)
         {
             auto& one = *oneMatch;
@@ -782,7 +782,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
         if (tryMatches[0]->overload->node->kind == AstNodeKind::FuncDecl)
             SWAG_CHECK(checkFuncPrototype(context, CastAst<AstFuncDecl>(tryMatches[0]->overload->node, AstNodeKind::FuncDecl)));
 
-        vector<const Diagnostic*> errs0, errs1;
+        Vector<const Diagnostic*> errs0, errs1;
         getDiagnosticForMatch(context, *tryMatches[0], errs0, errs1);
         SWAG_ASSERT(!errs0.empty());
         symbolErrorRemarks(context, tryMatches, node, const_cast<Diagnostic*>(errs0[0]));
@@ -794,7 +794,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
     Diagnostic diag{node, Fmt(Err(Err0113), tryMatches.size(), tryMatches[0]->overload->symbol->name.c_str())};
     symbolErrorRemarks(context, tryMatches, node, &diag);
 
-    vector<const Diagnostic*> notes;
+    Vector<const Diagnostic*> notes;
 
     int  badParamIdx, bestBadParamIdx;
     int  badGenParamIdx, bestBadGenParamIdx;
@@ -946,7 +946,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
     int overIdx = 1;
     for (auto& one : tryMatches)
     {
-        vector<const Diagnostic*> errs0, errs1;
+        Vector<const Diagnostic*> errs0, errs1;
         getDiagnosticForMatch(context, *one, errs0, errs1);
 
         SWAG_ASSERT(!errs0.empty());
@@ -1005,7 +1005,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
     return context->report(diag, notes);
 }
 
-void SemanticJob::findClosestMatches(SemanticContext* context, const Utf8& searchName, const vector<Utf8>& searchList, vector<Utf8>& result)
+void SemanticJob::findClosestMatches(SemanticContext* context, const Utf8& searchName, const Vector<Utf8>& searchList, Vector<Utf8>& result)
 {
     uint32_t bestScore = UINT32_MAX;
     result.clear();
@@ -1054,13 +1054,13 @@ void SemanticJob::findClosestMatches(SemanticContext* context, const Utf8& searc
     }
 }
 
-void SemanticJob::findClosestMatches(SemanticContext* context, IdentifierSearchFor searchFor, AstNode* node, VectorNative<AlternativeScope>& scopeHierarchy, vector<Utf8>& best)
+void SemanticJob::findClosestMatches(SemanticContext* context, IdentifierSearchFor searchFor, AstNode* node, VectorNative<AlternativeScope>& scopeHierarchy, Vector<Utf8>& best)
 {
     // Do not take some time if file is supposed to fail, in test mode
     if (context->sourceFile->shouldHaveError && !g_CommandLine.verboseTestErrors)
         return;
 
-    vector<Utf8> searchList;
+    Vector<Utf8> searchList;
     for (auto& as : scopeHierarchy)
     {
         auto s = as.scope;
@@ -1123,7 +1123,7 @@ void SemanticJob::findClosestMatches(SemanticContext* context, IdentifierSearchF
     findClosestMatches(context, node->token.text, searchList, best);
 }
 
-Utf8 SemanticJob::findClosestMatchesMsg(SemanticContext* context, vector<Utf8>& best)
+Utf8 SemanticJob::findClosestMatchesMsg(SemanticContext* context, Vector<Utf8>& best)
 {
     Utf8 appendMsg;
     switch (best.size())
@@ -1156,7 +1156,7 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
         searchFor = IdentifierSearchFor::Function;
 
     // Find best matches
-    vector<Utf8> best;
+    Vector<Utf8> best;
     if (identifierRef->startScope)
     {
         scopeHierarchy.clear();
@@ -1173,7 +1173,7 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
     if (!bestMatch.empty())
         appendMsg = bestMatch;
 
-    vector<const Diagnostic*> notes;
+    Vector<const Diagnostic*> notes;
     Diagnostic*               diag = nullptr;
 
     // Message

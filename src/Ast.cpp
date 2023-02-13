@@ -625,12 +625,12 @@ namespace Ast
         return result;
     }
 
-    vector<Utf8> computeGenericParametersReplacement(map<Utf8, TypeInfo*>& replace)
+    Vector<Utf8> computeGenericParametersReplacement(map<Utf8, TypeInfo*>& replace)
     {
         if (!replace.size())
             return {};
 
-        vector<Utf8> result;
+        Vector<Utf8> result;
         Utf8         remark;
         for (auto p : replace)
         {

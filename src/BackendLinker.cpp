@@ -27,7 +27,7 @@ namespace BackendLinker
 
             if (strstr(ptr, "\n"))
             {
-                vector<Utf8> subNames;
+                Vector<Utf8> subNames;
                 Utf8::tokenize(errMsg, '\n', subNames);
 
                 g_Log.lock();
@@ -75,9 +75,9 @@ namespace BackendLinker
         bool     startLine = true;
     };
 
-    void getArgumentsCoff(const BuildParameters& buildParameters, Module* module, vector<Utf8>& arguments, bool forCmdLine)
+    void getArgumentsCoff(const BuildParameters& buildParameters, Module* module, Vector<Utf8>& arguments, bool forCmdLine)
     {
-        vector<Utf8> libPaths;
+        Vector<Utf8> libPaths;
 
         // System library paths
         for (auto p : g_CommandLine.libPaths)
@@ -168,7 +168,7 @@ namespace BackendLinker
         arguments.push_back("/OUT:" + resultFile);
     }
 
-    void getArguments(const BuildParameters& buildParameters, Module* module, vector<Utf8>& arguments, bool forCmdLine)
+    void getArguments(const BuildParameters& buildParameters, Module* module, Vector<Utf8>& arguments, bool forCmdLine)
     {
         auto objFileType = Backend::getObjType(g_CommandLine.target);
         switch (objFileType)
@@ -188,9 +188,9 @@ namespace BackendLinker
         }
     }
 
-    bool link(const BuildParameters& buildParameters, Module* module, vector<string>& objectFiles)
+    bool link(const BuildParameters& buildParameters, Module* module, Vector<string>& objectFiles)
     {
-        vector<Utf8> linkArguments;
+        Vector<Utf8> linkArguments;
         getArguments(buildParameters, module, linkArguments, false);
 
         // Add all object files

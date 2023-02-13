@@ -299,8 +299,8 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     }
     else
     {
-        vector<Utf8> searchList;
-        vector<Utf8> best;
+        Vector<Utf8> searchList;
+        Vector<Utf8> best;
 
         searchList.push_back(g_LangSpec->name_opBinary);
         searchList.push_back(g_LangSpec->name_opUnary);
@@ -382,7 +382,7 @@ bool SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfo
     if (results.size() > 1)
     {
         Diagnostic                diag{context->node, Fmt(Err(Err0182), name.c_str())};
-        vector<const Diagnostic*> notes;
+        Vector<const Diagnostic*> notes;
         for (auto& f : results)
         {
             auto note = new Diagnostic{f.usingField->declNode, Fmt(Nte(Nte0017), name.c_str(), f.parentStruct->getDisplayNameC()), DiagnosticLevel::Note};

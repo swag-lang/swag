@@ -42,8 +42,8 @@ struct CastCollectInterfaceField
 
 struct SemanticContext : public JobContext
 {
-    vector<CastStructStructField>     castStructStructFields;
-    vector<CastCollectInterfaceField> castCollectInterfaceField;
+    Vector<CastStructStructField>     castStructStructFields;
+    Vector<CastCollectInterfaceField> castCollectInterfaceField;
     SemanticJob*                      job               = nullptr;
     uint32_t                          castFlagsResult   = 0;
     TypeInfo*                         castErrorToType   = nullptr;
@@ -293,14 +293,14 @@ struct SemanticJob : public Job
     static bool           collectLiteralsToSegment(JobContext* context, DataSegment* storageSegment, uint32_t baseOffset, uint32_t& offset, AstNode* node);
     static bool           collectStructLiterals(JobContext* context, DataSegment* storageSegment, uint32_t offsetStruct, AstNode* node);
     static void           setupContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload, uint32_t flags);
-    static bool           preprocessMatchError(SemanticContext* context, OneTryMatch& oneTry, vector<const Diagnostic*>& result0, vector<const Diagnostic*>& result1);
-    static void           getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, vector<const Diagnostic*>& result0, vector<const Diagnostic*>& result1);
+    static bool           preprocessMatchError(SemanticContext* context, OneTryMatch& oneTry, Vector<const Diagnostic*>& result0, Vector<const Diagnostic*>& result1);
+    static void           getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, Vector<const Diagnostic*>& result0, Vector<const Diagnostic*>& result1);
     static void           symbolErrorRemarks(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag);
-    static Utf8           findClosestMatchesMsg(SemanticContext* context, vector<Utf8>& best);
-    static void           findClosestMatches(SemanticContext* context, const Utf8& searchName, const vector<Utf8>& searchList, vector<Utf8>& result);
-    static void           findClosestMatches(SemanticContext* context, IdentifierSearchFor searchFor, AstNode* node, VectorNative<AlternativeScope>& scopeHierarchy, vector<Utf8>& best);
+    static Utf8           findClosestMatchesMsg(SemanticContext* context, Vector<Utf8>& best);
+    static void           findClosestMatches(SemanticContext* context, const Utf8& searchName, const Vector<Utf8>& searchList, Vector<Utf8>& result);
+    static void           findClosestMatches(SemanticContext* context, IdentifierSearchFor searchFor, AstNode* node, VectorNative<AlternativeScope>& scopeHierarchy, Vector<Utf8>& best);
     static bool           isFunctionButNotACall(SemanticContext* context, AstNode* node, SymbolName* symbol);
-    static void           symbolErrorNotes(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag, vector<const Diagnostic*>& notes);
+    static void           symbolErrorNotes(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag, Vector<const Diagnostic*>& notes);
     static bool           cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node);
     static bool           matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, uint32_t flags = 0);
     static bool           evaluateConstExpression(SemanticContext* context, AstNode* node);

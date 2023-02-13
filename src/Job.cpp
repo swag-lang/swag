@@ -235,7 +235,7 @@ void Job::setPending(SymbolName* symbolToWait, JobWaitKind waitKind, AstNode* no
 
 bool JobContext::report(const Diagnostic& diag, const Diagnostic* note, const Diagnostic* note1)
 {
-    vector<const Diagnostic*> notes;
+    Vector<const Diagnostic*> notes;
     if (note)
         notes.push_back(note);
     if (note1)
@@ -243,7 +243,7 @@ bool JobContext::report(const Diagnostic& diag, const Diagnostic* note, const Di
     return report(diag, notes);
 }
 
-bool JobContext::report(const Diagnostic& diag, const vector<const Diagnostic*>& notes)
+bool JobContext::report(const Diagnostic& diag, const Vector<const Diagnostic*>& notes)
 {
     if (silentError)
         return false;

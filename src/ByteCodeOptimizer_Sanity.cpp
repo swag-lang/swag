@@ -259,7 +259,7 @@ struct Context
     ByteCode*                 bc      = nullptr;
     int                       state   = 0;
     set<ByteCodeInstruction*> statesHere;
-    vector<State>             states;
+    Vector<State>             states;
     bool                      cansetConstants = true;
 };
 

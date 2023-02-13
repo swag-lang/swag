@@ -3731,7 +3731,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
             diag.contextFile = runContext->bc->sourceFile;
 
         // Get error context
-        vector<const Diagnostic*> notes;
+        Vector<const Diagnostic*> notes;
         ErrorContext::fillContext(runContext->callerContext, diag, notes);
 
         if (runContext->ip != runContext->bc->out)
@@ -3755,7 +3755,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
     Diagnostic diag{runContext->ip->node, Err(Err0435)};
     diag.criticalError = true;
 
-    vector<const Diagnostic*> notes;
+    Vector<const Diagnostic*> notes;
     notes.push_back(new Diagnostic{Nte(Nte0022), DiagnosticLevel::Note});
     notes.push_back(new Diagnostic{Nte(Nte0009), DiagnosticLevel::Note});
     Report::report(diag, notes, runContext);

@@ -2111,7 +2111,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         auto                      symbol  = overloads[0]->overload->symbol;
         auto                      errNode = node ? node : context->node;
         Diagnostic                diag{errNode, errNode->token, Fmt(Err(Err0115), Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
-        vector<const Diagnostic*> notes;
+        Vector<const Diagnostic*> notes;
         for (auto match : genericMatches)
         {
             auto overload = match->symbolOverload;
@@ -2210,7 +2210,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         else
         {
             Diagnostic                diag{node, node->token, Fmt(Err(Err0116), symbol->name.c_str())};
-            vector<const Diagnostic*> notes;
+            Vector<const Diagnostic*> notes;
             for (auto match : matches)
             {
                 auto        overload = match->symbolOverload;
@@ -2965,7 +2965,7 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
 
     auto                        symbol   = overload->symbol;
     auto                        symScope = symbol->ownerTable->scope;
-    vector<AlternativeScopeVar> toCheck;
+    Vector<AlternativeScopeVar> toCheck;
 
     // Collect all matches
     bool hasWith = false;

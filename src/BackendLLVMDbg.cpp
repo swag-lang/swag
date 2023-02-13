@@ -528,7 +528,7 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
                 auto                   scope = getOrCreateScope(file, localVar->ownerScope);
                 llvm::DILocalVariable* var   = dbgBuilder->createParameterVariable(SP, localVar->token.ctext(), 1, file, loc.line + 1, type, !isOptimized);
                 auto                   v     = func->getArg(0);
-                vector<int64_t>        expr;
+                Vector<int64_t>        expr;
                 dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(expr), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
             }
         }

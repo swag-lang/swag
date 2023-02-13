@@ -87,8 +87,8 @@ struct Utf8
     static const char* decodeUtf8(const char* pz, uint32_t& c, unsigned& offset);
     static Utf8        format(const char* format, ...);
     static string      normalizePath(const fs::path& path);
-    static void        tokenize(const Utf8& str, char c, vector<Utf8>& tokens);
-    static void        tokenizeBlanks(const Utf8& str, vector<Utf8>& tokens);
+    static void        tokenize(const Utf8& str, char c, Vector<Utf8>& tokens);
+    static void        tokenizeBlanks(const Utf8& str, Vector<Utf8>& tokens);
     static Utf8        toStringF64(double v);
     static Utf8        toNiceSize(size_t size);
     static uint32_t    fuzzyCompare(const Utf8& str1, const Utf8& str2);

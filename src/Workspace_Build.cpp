@@ -426,7 +426,7 @@ bool errorPendingCycle(Job* pendingJob, VectorNative<Job*>& waitingJobs, set<Job
     return false;
 }
 
-void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
+void Workspace::errorPendingJobs(Vector<PendingJob>& pendingJobs)
 {
     doneErrSymbols.clear();
 
@@ -463,7 +463,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
         // This is a resolution cycle
         if (isCycle)
         {
-            vector<const Diagnostic*> notes;
+            Vector<const Diagnostic*> notes;
             auto                      prevJob = pendingJob;
 
             for (int idxJob = 0; idxJob < cycle.size(); idxJob++)
@@ -644,7 +644,7 @@ void Workspace::checkPendingJobs()
     computeWaitingJobs();
 
     // Collect unsolved jobs
-    vector<PendingJob> pendingJobs;
+    Vector<PendingJob> pendingJobs;
     for (auto pendingJob : g_ThreadMgr.waitingJobs)
     {
         auto sourceFile = pendingJob->sourceFile;

@@ -12,7 +12,7 @@
 #include "ErrorIds.h"
 #include "Report.h"
 
-SourceFile* EnumerateModuleJob::addFileToModule(Module* theModule, vector<SourceFile*>& allFiles, string dirName, string fileName, uint64_t writeTime, SourceFile* prePass, Module* imported)
+SourceFile* EnumerateModuleJob::addFileToModule(Module* theModule, Vector<SourceFile*>& allFiles, string dirName, string fileName, uint64_t writeTime, SourceFile* prePass, Module* imported)
 {
     auto file       = g_Allocator.alloc<SourceFile>();
     file->fromTests = theModule->kind == ModuleKind::Test;
@@ -64,7 +64,7 @@ SourceFile* EnumerateModuleJob::addFileToModule(Module* theModule, vector<Source
 
 bool EnumerateModuleJob::dealWithIncludes(Module* theModule)
 {
-    vector<SourceFile*> allFiles;
+    Vector<SourceFile*> allFiles;
 
     // Treat includes
     for (auto n : theModule->includes)
@@ -109,7 +109,7 @@ bool EnumerateModuleJob::dealWithIncludes(Module* theModule)
 
 void EnumerateModuleJob::enumerateFilesInModule(const fs::path& basePath, Module* theModule)
 {
-    vector<SourceFile*> allFiles;
+    Vector<SourceFile*> allFiles;
 
     auto path = basePath;
     path      = g_ModuleCfgMgr->getAliasPath(path).string();
@@ -144,7 +144,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& basePath, Module
     }
 
     // Scan source folder
-    vector<string> directories;
+    Vector<string> directories;
     directories.push_back(path.string());
 
     string   tmp, tmp1;
@@ -222,7 +222,7 @@ void EnumerateModuleJob::loadFilesInModules(const fs::path& basePath)
                          g_Workspace->mapFirstPassModulesNames[path] = module;
 
                          // Scan source folder
-                         vector<string> directories;
+                         Vector<string> directories;
                          directories.push_back(path);
 
                          string tmp, tmp1;
@@ -282,7 +282,7 @@ Module* EnumerateModuleJob::addModule(const fs::path& path)
 
 void EnumerateModuleJob::enumerateModules(const fs::path& path)
 {
-    vector<string> allModules;
+    Vector<string> allModules;
 
     // Scan source folder
     OS::visitFolders(path.string().c_str(),
@@ -356,7 +356,7 @@ JobResult EnumerateModuleJob::execute()
         if (!m->buildCfg.embbedImports)
             continue;
 
-        vector<SourceFile*>             allFiles;
+        Vector<SourceFile*>             allFiles;
         VectorNative<ModuleDependency*> toKeep;
         for (int i = (int) m->moduleDependencies.size() - 1; i >= 0; i--)
         {

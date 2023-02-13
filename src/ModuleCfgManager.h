@@ -1,4 +1,6 @@
 #pragma once
+#include "Vector.h"
+
 struct SourceFile;
 struct Module;
 struct ModuleDependency;
@@ -19,7 +21,7 @@ struct ModuleCfgManager
 {
     fs::path             getAliasPath(const fs::path& srcPath);
     void                 registerCfgFile(SourceFile* file);
-    void                 newCfgFile(vector<SourceFile*>& allFiles, const Utf8& dirName, const Utf8& fileName);
+    void                 newCfgFile(Vector<SourceFile*>& allFiles, const Utf8& dirName, const Utf8& fileName);
     void                 enumerateCfgFiles(const fs::path& path);
     bool                 fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName);
     bool                 fetchModuleCfgSwag(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName, bool fetch);

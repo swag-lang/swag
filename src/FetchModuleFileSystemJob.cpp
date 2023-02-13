@@ -46,7 +46,7 @@ JobResult FetchModuleFileSystemJob::execute()
     destPath += dep->name.c_str();
 
     // Collect list of already existing files in the dependency folder, in order to remove old ones if necessary
-    vector<string> dstFiles;
+    Vector<string> dstFiles;
     OS::visitFilesRec(destPath.c_str(),
                       [&](const char* fileName)
                       {

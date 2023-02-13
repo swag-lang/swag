@@ -140,16 +140,16 @@ struct BackendLLVM : public Backend
     void                storeRT2ToRegisters(llvm::LLVMContext& context, const BuildParameters& buildParameters, uint32_t reg0, uint32_t reg1, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR);
     void                getReturnResult(llvm::LLVMContext& context, const BuildParameters& buildParameters, Module* moduleToGen, TypeInfo* returnType, bool imm, Register& reg, llvm::AllocaInst* allocR, llvm::AllocaInst* allocResult);
     bool                emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
-    void                emitByteCodeCallParameters(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, llvm::AllocaInst* allocT, VectorNative<llvm::Value*>& params, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams, const vector<llvm::Value*>& values, bool closureToLambda = false);
+    void                emitByteCodeCallParameters(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, llvm::AllocaInst* allocT, VectorNative<llvm::Value*>& params, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams, const Vector<llvm::Value*>& values, bool closureToLambda = false);
 
     void emitShiftArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits);
     void emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits, bool left);
     void emitShiftEqArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits);
     void emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits, bool left);
 
-    bool         emitCallParameters(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, VectorNative<llvm::Value*>& params, const VectorNative<uint32_t>& pushParams, const vector<llvm::Value*>& values, bool closureToLambda = false);
+    bool         emitCallParameters(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, VectorNative<llvm::Value*>& params, const VectorNative<uint32_t>& pushParams, const Vector<llvm::Value*>& values, bool closureToLambda = false);
     bool         emitCallReturnValue(const BuildParameters& buildParameters, llvm::AllocaInst* allocRR, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, llvm::Value* callResult);
-    llvm::Value* emitCall(const BuildParameters& buildParameters, Module* moduleToGen, const Utf8& funcName, TypeInfoFuncAttr* typeFunc, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, const VectorNative<uint32_t>& pushParams, const vector<llvm::Value*>& values, bool localCall);
+    llvm::Value* emitCall(const BuildParameters& buildParameters, Module* moduleToGen, const Utf8& funcName, TypeInfoFuncAttr* typeFunc, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, const VectorNative<uint32_t>& pushParams, const Vector<llvm::Value*>& values, bool localCall);
 
     bool generateObjFile(const BuildParameters& buildParameters);
 
@@ -165,7 +165,7 @@ struct BackendLLVM : public Backend
 
     llvm::BasicBlock* getOrCreateLabel(LLVMPerThread& pp, llvm::Function* func, int64_t ip);
     bool              emitGetParam(llvm::LLVMContext& context, const BuildParameters& buildParameters, llvm::Function* func, TypeInfoFuncAttr* typeFunc, int idx, llvm::Value* r0, int sizeOf = 0, uint64_t toAdd = 0, int deRefSize = 0);
-    llvm::Value*      emitCall(const BuildParameters& buildParameters, Module* moduleToGen, const char* name, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const vector<uint32_t>& regs, const vector<llvm::Value*>& values);
+    llvm::Value*      emitCall(const BuildParameters& buildParameters, Module* moduleToGen, const char* name, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const Vector<uint32_t>& regs, const Vector<llvm::Value*>& values);
 
     LLVMPerThread* perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
 };

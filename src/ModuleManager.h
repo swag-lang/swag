@@ -32,7 +32,7 @@ struct ModuleManager
     };
 
     SharedMutex                    mutexPatch;
-    map<Utf8, vector<PatchOffset>> patchOffsets;
+    map<Utf8, Vector<PatchOffset>> patchOffsets;
     Utf8                           loadModuleError;
 };
 

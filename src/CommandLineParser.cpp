@@ -113,7 +113,7 @@ static void getArgValue(CommandLineArgument* oneArg, string& value, string& defa
     case CommandLineType::EnumInt:
     {
         value = oneArg->param;
-        vector<Utf8> tokens;
+        Vector<Utf8> tokens;
         Utf8::tokenize(oneArg->param, '|', tokens);
         defaultValue = tokens[*(int*) oneArg->buffer];
         break;
@@ -292,7 +292,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
         {
         case CommandLineType::EnumInt:
         {
-            vector<Utf8> tokens;
+            Vector<Utf8> tokens;
             Utf8::tokenize(arg->param, '|', tokens);
 
             int index = 0;
@@ -318,7 +318,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
 
         case CommandLineType::EnumString:
         {
-            vector<Utf8> tokens;
+            Vector<Utf8> tokens;
             Utf8::tokenize(arg->param, '|', tokens);
 
             int index = 0;
@@ -444,7 +444,7 @@ string CommandLineParser::buildString(bool full)
             {
                 result += oneArg->longName + ":";
 
-                vector<Utf8> tokens;
+                Vector<Utf8> tokens;
                 Utf8::tokenize(oneArg->param, '|', tokens);
                 int idx = *(int*) oneArg->buffer;
                 result += tokens[idx];

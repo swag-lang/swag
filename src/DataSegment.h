@@ -112,8 +112,8 @@ struct DataSegment
     VectorNative<InitPtrRef>             initPtr;
     map<uint32_t, Utf8>                  initFuncPtr;
     map<void*, SaveValue>                savedValues;
-    vector<PatchPtrRef>                  patchPtr;
-    vector<pair<AstFuncDecl*, uint32_t>> patchMethods;
+    Vector<PatchPtrRef>                  patchPtr;
+    Vector<pair<AstFuncDecl*, uint32_t>> patchMethods;
 
     const char* name   = nullptr;
     Module*     module = nullptr;

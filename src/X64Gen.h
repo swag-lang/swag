@@ -107,7 +107,7 @@ struct CoffRelocation
 
 struct CoffRelocationTable
 {
-    vector<CoffRelocation> table;
+    Vector<CoffRelocation> table;
 };
 
 struct LabelToSolve
@@ -120,7 +120,7 @@ struct LabelToSolve
 using DbgTypeIndex = uint32_t;
 struct DbgTypeRecordArgList
 {
-    vector<DbgTypeIndex> args;
+    Vector<DbgTypeIndex> args;
     uint32_t             count = 0;
 };
 
@@ -163,12 +163,12 @@ struct DbgTypeField
 
 struct DbgTypeRecordFieldList
 {
-    vector<DbgTypeField> fields;
+    Vector<DbgTypeField> fields;
 };
 
 struct DbgTypeRecordDerivedList
 {
-    vector<DbgTypeIndex> derived;
+    Vector<DbgTypeIndex> derived;
 };
 
 struct DbgTypeRecordStructure
@@ -228,13 +228,13 @@ struct DbgLine
 struct DbgLines
 {
     SourceFile*     sourceFile;
-    vector<DbgLine> dbgLines;
+    Vector<DbgLine> dbgLines;
 };
 
 struct CoffFunction
 {
     VectorNative<uint16_t> unwind;
-    vector<DbgLines>       dbgLines;
+    Vector<DbgLines>       dbgLines;
     AstNode*               node         = nullptr;
     uint32_t               symbolIndex  = 0;
     uint32_t               startAddress = 0;
@@ -265,7 +265,7 @@ struct X64Gen
     CoffRelocationTable        relocTableTLSSection;
     CoffRelocationTable        relocTablePDSection;
     CoffRelocationTable        relocTableDBGSSection;
-    vector<CoffSymbol>         allSymbols;
+    Vector<CoffSymbol>         allSymbols;
     map<Utf8, uint32_t>        mapSymbols;
     map<Utf8, uint32_t>        globalStrings;
     map<uint32_t, int32_t>     labels;
@@ -273,7 +273,7 @@ struct X64Gen
     DataSegment                stringSegment;
     VectorNative<LabelToSolve> labelsToSolve;
     Utf8                       directives;
-    vector<CoffFunction>       functions;
+    Vector<CoffFunction>       functions;
 
     uint32_t* patchSymbolTableOffset = nullptr;
     uint32_t* patchSymbolTableCount  = nullptr;

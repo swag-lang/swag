@@ -1,9 +1,23 @@
 #pragma once
-#include "Utf8.h"
 
 template<typename T>
 struct Vector : public vector<T>
 {
+    Vector()
+        : vector<T>()
+    {
+    }
+
+    Vector(const Vector& other)
+        : vector<T>(other)
+    {
+    }
+
+    Vector(const initializer_list<T>& other)
+        : vector<T>(other)
+    {
+    }
+
     bool contains(const T& value)
     {
         for (auto& it : *this)

@@ -1,6 +1,7 @@
 #pragma once
 #include "Allocator.h"
 #include "Assert.h"
+#include "Vector.h"
 
 template<typename T>
 struct VectorNative
@@ -267,7 +268,7 @@ struct VectorNative
         return count;
     }
 
-    void operator=(const vector<T>& other)
+    void operator=(const Vector<T>& other)
     {
         count = (int) other.size();
         if (allocated < count)

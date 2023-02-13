@@ -16,5 +16,5 @@ struct TypeTableJob : public Job
     DataSegment*                         storageSegment        = nullptr;
     uint32_t                             storageOffset         = 0;
     uint32_t                             cflags                = 0;
-    vector<pair<AstFuncDecl*, uint32_t>> patchMethods;
+    Vector<pair<AstFuncDecl*, uint32_t>> patchMethods;
 };

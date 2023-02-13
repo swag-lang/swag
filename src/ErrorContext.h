@@ -31,7 +31,7 @@ struct ErrorContext
     bool                 locIsToken = false;
     bool                 hide       = false;
 
-    static void fillContext(JobContext* context, Diagnostic& diag, vector<const Diagnostic*>& notes);
+    static void fillContext(JobContext* context, Diagnostic& diag, Vector<const Diagnostic*>& notes);
 };
 
 struct PushErrContext

@@ -361,7 +361,7 @@ bool SemanticJob::resolveIntrinsicRunes(SemanticContext* context)
     node->setFlagsValueIsComputed();
 
     // Convert
-    vector<uint32_t> runes;
+    Vector<uint32_t> runes;
     const char*      pz  = expr->computedValue->text.buffer;
     int              cpt = 0;
     while (cpt < expr->computedValue->text.count)

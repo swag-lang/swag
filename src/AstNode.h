@@ -431,7 +431,7 @@ struct AstIdentifier : public AstNode
 {
     AstNode* clone(CloneContext& context);
 
-    vector<Token> aliasNames;
+    Vector<Token> aliasNames;
     TokenParse    scopeUpValue;
 
     AstIdentifierRef*  identifierRef     = nullptr;
@@ -506,7 +506,7 @@ struct AstFuncCallParams : public AstNode
 {
     AstNode* clone(CloneContext& context);
 
-    vector<Token> aliasNames;
+    Vector<Token> aliasNames;
 };
 
 struct AstFuncCallParam : public AstNode
@@ -636,7 +636,7 @@ struct AstVisit : public AstNode
 {
     AstNode* clone(CloneContext& context);
 
-    vector<Token> aliasNames;
+    Vector<Token> aliasNames;
     Token         extraNameToken;
     Token         wantPointerToken;
 
@@ -972,7 +972,7 @@ struct AstWith : public AstNode
 {
     AstNode* clone(CloneContext& context);
 
-    vector<Utf8> id;
+    Vector<Utf8> id;
 };
 
 struct AstLiteral : public AstNode

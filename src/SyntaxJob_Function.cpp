@@ -195,7 +195,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, boo
 
     // :QuestionAsParam
     // Unused parameter
-    vector<Token> unnamedTokens;
+    Vector<Token> unnamedTokens;
     if (token.id == TokenId::SymQuestion && acceptMissingType)
     {
         token.id   = TokenId::Identifier;

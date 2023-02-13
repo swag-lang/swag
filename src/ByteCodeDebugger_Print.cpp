@@ -114,7 +114,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     context->debugStepLastFunc     = newFunc;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() != 1)
         return BcDbgCommandResult::BadArguments;
@@ -179,7 +179,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
 
 void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* bc, SourceFile* file, SourceLocation* curLocation, int startLine, int endLine)
 {
-    vector<Utf8> lines;
+    Vector<Utf8> lines;
     bool         eof = false;
     for (int l = startLine; l <= endLine && !eof; l++)
         lines.push_back(file->getLine(l, &eof));
@@ -282,12 +282,12 @@ void ByteCodeDebugger::printInstructions(ByteCodeRunContext* context, ByteCode* 
     }
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() < 2)
         return BcDbgCommandResult::BadArguments;
 
-    vector<Utf8> exprCmds;
+    Vector<Utf8> exprCmds;
     Utf8::tokenize(cmdExpr, ' ', exprCmds);
 
     // Print format
@@ -414,7 +414,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdInstruction(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdInstruction(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() > 2)
         return BcDbgCommandResult::BadArguments;
@@ -429,7 +429,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstruction(ByteCodeRunContext* context,
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() != 1)
         return BcDbgCommandResult::BadArguments;
@@ -438,7 +438,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext* cont
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() > 2)
         return BcDbgCommandResult::BadArguments;
@@ -472,7 +472,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, const vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() > 2)
         return BcDbgCommandResult::BadArguments;

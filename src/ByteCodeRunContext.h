@@ -178,7 +178,7 @@ struct ByteCodeRunContext
     bool                    debugEntry             = false;
     bool                    debugAccept            = true;
     bool                    debugForcePrintContext = false;
-    vector<DebugBreakpoint> debugBreakpoints;
+    Vector<DebugBreakpoint> debugBreakpoints;
     Utf8                    debugLastLine;
 };
 

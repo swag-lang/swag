@@ -45,7 +45,7 @@ struct Workspace
 
 {
     Diagnostic* errorPendingJob(Job* prevJob, Job* depJob);
-    void        errorPendingJobs(vector<PendingJob>& pendingJobs);
+    void        errorPendingJobs(Vector<PendingJob>& pendingJobs);
     void        computeWaitingJobs();
     void        checkPendingJobs();
     bool        buildRTModule(Module* module);
@@ -92,7 +92,7 @@ struct Workspace
     VectorNative<Module*> modules;
     Module*               runModule = nullptr;
 
-    vector<OneTag> tags;
+    Vector<OneTag> tags;
 
     map<Utf8, Module*> mapFirstPassModulesNames;
     map<Utf8, Module*> mapModulesNames;
