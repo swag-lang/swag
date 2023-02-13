@@ -713,12 +713,6 @@
     <ClInclude Include="../src/SourceFile.h">
       <Filter>Main\Wmf</Filter>
     </ClInclude>
-    <ClInclude Include="../src/Register.h">
-      <Filter>Main\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/RegisterList.h">
-      <Filter>Main\Core</Filter>
-    </ClInclude>
     <ClInclude Include="../src/Scoped.h">
       <Filter>Lexer</Filter>
     </ClInclude>
@@ -853,6 +847,9 @@
     </ClInclude>
     <ClInclude Include="..\src\ComputedValue.h">
       <Filter>Main\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/Register.h">
+      <Filter>Backend\ByteCode</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,6 @@
 #pragma once
 #include "Utf8.h"
-#include "RegisterList.h"
+#include "Register.h"
 #include "DependentJobs.h"
 #include "SymTable.h"
 #include "VectorNative.h"

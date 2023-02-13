@@ -223,7 +223,6 @@
     <ClInclude Include="..\src\MapRegTo.h" />
     <ClInclude Include="..\src\Naming.h" />
     <ClInclude Include="..\src\OutputFileWin32.h" />
-    <ClInclude Include="../src/RegisterList.h" />
     <ClInclude Include="../src/Runtime.h" />
     <ClInclude Include="../src/Scope.h" />
     <ClInclude Include="../src/Scoped.h" />

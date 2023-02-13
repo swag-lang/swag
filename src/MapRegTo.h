@@ -1,5 +1,5 @@
 #pragma once
-#include "RegisterList.h"
+#include "Register.h"
 
 template<typename T>
 struct MapRegTo

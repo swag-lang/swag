@@ -5,7 +5,7 @@
 #include "SyntaxJob.h"
 #include "Register.h"
 #include "AstFlags.h"
-#include "RegisterList.h"
+#include "Register.h"
 #include "SymTable.h"
 #include "Attribute.h"
 #include "Scope.h"
