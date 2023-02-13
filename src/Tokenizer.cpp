@@ -32,32 +32,35 @@ bool Tokenizer::error(TokenParse& token, const Utf8& msg, const Utf8& hint)
 void Tokenizer::appendTokenName(TokenParse& token)
 {
     if (realAppendName)
-        token.text.append(startTokenName, (int) (sourceFile->curBuffer - startTokenName));
+        token.text.append(startTokenName, (int) (curBuffer - startTokenName));
     else
-        token.text.setView(startTokenName, (int) (sourceFile->curBuffer - startTokenName));
+        token.text.setView(startTokenName, (int) (curBuffer - startTokenName));
 }
 
 void Tokenizer::setFile(SourceFile* file)
 {
+    SWAG_ASSERT(!curBuffer);
     location.column = 0;
     location.line   = 0;
     sourceFile      = file;
+    curBuffer       = sourceFile->buffer + sourceFile->offsetStartBuffer;
+    endBuffer       = sourceFile->buffer + sourceFile->bufferSize;
 }
 
 void Tokenizer::saveState(const TokenParse& token)
 {
     st_token               = token;
-    st_curBuffer           = sourceFile->curBuffer;
+    st_curBuffer           = curBuffer;
     st_location            = location;
     st_forceLastTokenIsEOL = forceLastTokenIsEOL;
 }
 
 void Tokenizer::restoreState(TokenParse& token)
 {
-    token                 = st_token;
-    sourceFile->curBuffer = st_curBuffer;
-    location              = st_location;
-    forceLastTokenIsEOL   = st_forceLastTokenIsEOL;
+    token               = st_token;
+    curBuffer           = st_curBuffer;
+    location            = st_location;
+    forceLastTokenIsEOL = st_forceLastTokenIsEOL;
 }
 
 void Tokenizer::processChar(uint32_t c)
@@ -73,23 +76,36 @@ void Tokenizer::processChar(uint32_t c)
     }
 }
 
+uint32_t Tokenizer::getChar(unsigned& offset)
+{
+    if (curBuffer >= endBuffer)
+    {
+        offset = 0;
+        return 0;
+    }
+
+    uint32_t wc;
+    Utf8::decodeUtf8(curBuffer, wc, offset);
+    return wc;
+}
+
 void Tokenizer::treatChar(uint32_t c, unsigned offset)
 {
     processChar(c);
-    sourceFile->curBuffer += offset;
+    curBuffer += offset;
 }
 
 uint32_t Tokenizer::getChar()
 {
     unsigned offset;
-    auto     c = sourceFile->getChar(offset);
+    auto     c = getChar(offset);
     treatChar(c, offset);
     return c;
 }
 
 uint32_t Tokenizer::getCharNoSeek(unsigned& offset)
 {
-    return sourceFile->getChar(offset);
+    return getChar(offset);
 }
 
 bool Tokenizer::doMultiLineComment(TokenParse& token)
@@ -177,7 +193,7 @@ bool Tokenizer::getToken(TokenParse& token)
     while (true)
     {
         token.text.clear();
-        startTokenName      = sourceFile->curBuffer;
+        startTokenName      = curBuffer;
         token.startLocation = location;
 
         auto c = getChar();
@@ -300,9 +316,9 @@ bool Tokenizer::getToken(TokenParse& token)
         ///////////////////////////////////////////
         if (c == '"')
         {
-            if (sourceFile->curBuffer[0] == '"' && sourceFile->curBuffer[1] == '"')
+            if (curBuffer[0] == '"' && curBuffer[1] == '"')
             {
-                sourceFile->curBuffer += 2;
+                curBuffer += 2;
                 SWAG_CHECK(doStringLiteral(token, false, true));
             }
             else

@@ -1,5 +1,5 @@
 ﻿#include "pch.h"
-#include "SourceFile.h"
+#include "Tokenizer.h"
 #include "ErrorIds.h"
 
 // This function is used to 'align' text. This is the same rule as in swift : all blanks before the end mark ("@) will be removed
@@ -61,7 +61,7 @@ bool Tokenizer::doStringLiteral(TokenParse& token, bool raw, bool multiline)
 
     while (true)
     {
-        startTokenName = sourceFile->curBuffer;
+        startTokenName = curBuffer;
         while (true)
         {
             auto c = getCharNoSeek(offset);
@@ -86,23 +86,23 @@ bool Tokenizer::doStringLiteral(TokenParse& token, bool raw, bool multiline)
             if (multiline && c == '\\')
             {
                 // Window \r\n
-                if (SWAG_IS_WIN_EOL(sourceFile->curBuffer[1]) && SWAG_IS_EOL(sourceFile->curBuffer[2]))
+                if (SWAG_IS_WIN_EOL(curBuffer[1]) && SWAG_IS_EOL(curBuffer[2]))
                 {
                     appendTokenName(token);
                     processChar('\n');
                     realAppendName = true;
-                    sourceFile->curBuffer += 3;
-                    startTokenName    = sourceFile->curBuffer;
+                    curBuffer += 3;
+                    startTokenName    = curBuffer;
                     token.endLocation = location;
                     continue;
                 }
-                else if (SWAG_IS_EOL(sourceFile->curBuffer[1]))
+                else if (SWAG_IS_EOL(curBuffer[1]))
                 {
                     appendTokenName(token);
                     processChar('\n');
                     realAppendName = true;
-                    sourceFile->curBuffer += 2;
-                    startTokenName    = sourceFile->curBuffer;
+                    curBuffer += 2;
+                    startTokenName    = curBuffer;
                     token.endLocation = location;
                     continue;
                 }
@@ -131,18 +131,18 @@ bool Tokenizer::doStringLiteral(TokenParse& token, bool raw, bool multiline)
                     break;
                 }
 
-                if (multiline && sourceFile->curBuffer[1] == '"' && sourceFile->curBuffer[2] == '"')
+                if (multiline && curBuffer[1] == '"' && curBuffer[2] == '"')
                 {
                     appendTokenName(token);
-                    sourceFile->curBuffer += 3;
+                    curBuffer += 3;
                     trimMultilineString(token.text);
                     break;
                 }
 
-                if (raw && sourceFile->curBuffer[1] == '@')
+                if (raw && curBuffer[1] == '@')
                 {
                     appendTokenName(token);
-                    sourceFile->curBuffer += 2;
+                    curBuffer += 2;
                     trimMultilineString(token.text);
                     break;
                 }

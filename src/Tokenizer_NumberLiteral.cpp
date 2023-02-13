@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "SourceFile.h"
+#include "Tokenizer.h"
 #include "ErrorIds.h"
 
 bool Tokenizer::doBinLiteral(TokenParse& token)
@@ -229,7 +229,7 @@ bool Tokenizer::doIntFloatLiteral(uint32_t c, TokenParse& token)
     c = getCharNoSeek(offset);
 
     // Do this because of the slicing operator number..number. We do not want the '..' to be eaten
-    bool hasDot = (c == '.') && sourceFile->curBuffer[1] != '.';
+    bool hasDot = (c == '.') && curBuffer[1] != '.';
 
     // If there's a dot, then this is a floating point number
     if (hasDot)
@@ -286,7 +286,7 @@ bool Tokenizer::doIntFloatLiteral(uint32_t c, TokenParse& token)
     // Really compute the floating point value, with as much precision as we can
     if (token.literalType == LiteralType::TT_UNTYPED_FLOAT)
     {
-        auto cpt               = (unsigned) (sourceFile->curBuffer - startTokenName);
+        auto cpt               = (unsigned) (curBuffer - startTokenName);
         auto ptr               = startTokenName + cpt;
         auto sc                = *ptr;
         *ptr                   = 0;

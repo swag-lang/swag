@@ -835,6 +835,7 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
         }
     }
 
+    fflush(f);
     fclose(f);
 
     // :MemFree

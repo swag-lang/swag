@@ -85,14 +85,11 @@ struct TokenParse : public Token
 
 struct Tokenizer
 {
-    void setFile(SourceFile* file);
-    bool getToken(TokenParse& token);
     bool error(TokenParse& token, const Utf8& msg, const Utf8& hint = "");
     void trimMultilineString(Utf8& text);
     void appendTokenName(TokenParse& token);
-    void saveState(const TokenParse& token);
-    void restoreState(TokenParse& token);
 
+    uint32_t getChar(unsigned& offset);
     uint32_t getChar();
     uint32_t getCharNoSeek(unsigned& offset);
     void     processChar(uint32_t c);
@@ -109,6 +106,12 @@ struct Tokenizer
     bool doSymbol(uint32_t c, TokenParse& token);
     bool doStringLiteral(TokenParse& token, bool raw, bool multiline);
 
+    void saveState(const TokenParse& token);
+    void restoreState(TokenParse& token);
+
+    void setFile(SourceFile* file);
+    bool getToken(TokenParse& token);
+
     // clang-format off
     static bool isSymbol(TokenId id)            { return g_TokenFlags[(int) id] & TOKEN_SYM; }
     static bool isLiteral(TokenId id)           { return g_TokenFlags[(int) id] & TOKEN_LITERAL; }
@@ -117,6 +120,8 @@ struct Tokenizer
     // clang-format on
 
     SourceLocation location;
+    char*          curBuffer           = nullptr;
+    char*          endBuffer           = nullptr;
     SourceFile*    sourceFile          = nullptr;
     char*          startTokenName      = nullptr;
     bool           forceLastTokenIsEOL = false;

@@ -342,8 +342,6 @@ JobResult SyntaxJob::execute()
         if (g_CommandLine.stats)
             g_Stats.numFiles++;
 
-        tokenizer.setFile(sourceFile);
-
         module = sourceFile->module;
 
         // Setup root ast for file
@@ -452,6 +450,7 @@ JobResult SyntaxJob::execute()
         return JobResult::KeepJobAlive;
     }
 
+    tokenizer.setFile(sourceFile);
     sourceFile->duringSyntax = true;
 
     Timer timer(&g_Stats.syntaxTime);

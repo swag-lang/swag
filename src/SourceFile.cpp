@@ -15,9 +15,10 @@ bool SourceFile::checkFormat()
     uint8_t c3 = buffer[2];
     uint8_t c4 = buffer[3];
 
+    offsetStartBuffer = 0;
     if (c1 == 0xEF && c2 == 0xBB && c3 == 0xBF)
     {
-        curBuffer += 3;
+        offsetStartBuffer = 3;
         return true;
     }
 
@@ -48,8 +49,6 @@ void SourceFile::setExternalBuffer(const Utf8& content)
     externalContent = content;
     buffer          = (char*) externalContent.c_str();
     bufferSize      = externalContent.length();
-    curBuffer       = buffer;
-    endBuffer       = buffer + bufferSize;
     isExternal      = true;
 }
 
@@ -99,8 +98,6 @@ bool SourceFile::load()
     buffer[bufferSize + 1] = 0;
     buffer[bufferSize + 2] = 0;
     buffer[bufferSize + 3] = 0;
-    curBuffer              = buffer;
-    endBuffer              = buffer + bufferSize;
 
     if (!checkFormat())
         return false;
@@ -158,19 +155,6 @@ Utf8 SourceFile::getLine(long lineNo, bool* eof)
     if (eof)
         *eof = false;
     return allLines[lineNo];
-}
-
-uint32_t SourceFile::getChar(unsigned& offset)
-{
-    if (curBuffer >= endBuffer)
-    {
-        offset = 0;
-        return 0;
-    }
-
-    uint32_t wc;
-    Utf8::decodeUtf8(curBuffer, wc, offset);
-    return wc;
 }
 
 void SourceFile::computeFileScopeName()

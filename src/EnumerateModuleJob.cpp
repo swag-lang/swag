@@ -21,12 +21,11 @@ SourceFile* EnumerateModuleJob::addFileToModule(Module* theModule, Vector<Source
 
     if (prePass)
     {
-        file->path            = dirName;
-        file->buffer          = prePass->buffer;
-        file->curBuffer       = prePass->curBuffer;
-        file->endBuffer       = prePass->endBuffer;
-        file->bufferSize      = prePass->bufferSize;
-        file->allocBufferSize = prePass->allocBufferSize;
+        file->path              = dirName;
+        file->buffer            = prePass->buffer;
+        file->bufferSize        = prePass->bufferSize;
+        file->offsetStartBuffer = prePass->offsetStartBuffer;
+        file->allocBufferSize   = prePass->allocBufferSize;
     }
     else
     {
