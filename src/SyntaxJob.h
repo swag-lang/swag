@@ -216,7 +216,7 @@ struct SyntaxJob : public Job
 
     SyntaxContext context;
     Tokenizer     tokenizer;
-    Token         token;
+    TokenParse    token;
 
     Scope*              currentScope           = nullptr;
     AstFuncDecl*        currentFct             = nullptr;

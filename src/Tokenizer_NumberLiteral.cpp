@@ -5,7 +5,7 @@
 #include "ErrorIds.h"
 #include "Diagnostic.h"
 
-bool Tokenizer::doBinLiteral(Token& token)
+bool Tokenizer::doBinLiteral(TokenParse& token)
 {
     int      rank      = 0;
     bool     acceptSep = true;
@@ -63,7 +63,7 @@ bool Tokenizer::doBinLiteral(Token& token)
     return true;
 }
 
-bool Tokenizer::doHexLiteral(Token& token)
+bool Tokenizer::doHexLiteral(TokenParse& token)
 {
     int      rank      = 0;
     bool     acceptSep = true;
@@ -126,7 +126,7 @@ bool Tokenizer::doHexLiteral(Token& token)
     return true;
 }
 
-bool Tokenizer::doFloatLiteral(uint32_t c, Token& token)
+bool Tokenizer::doFloatLiteral(uint32_t c, TokenParse& token)
 {
     int      rank      = 0;
     double   fractPart = 0.1;
@@ -171,7 +171,7 @@ bool Tokenizer::doFloatLiteral(uint32_t c, Token& token)
     return true;
 }
 
-bool Tokenizer::doIntLiteral(uint32_t c, Token& token)
+bool Tokenizer::doIntLiteral(uint32_t c, TokenParse& token)
 {
     int      rank      = 0;
     bool     acceptSep = true;
@@ -215,11 +215,11 @@ bool Tokenizer::doIntLiteral(uint32_t c, Token& token)
     return true;
 }
 
-bool Tokenizer::doIntFloatLiteral(uint32_t c, Token& token)
+bool Tokenizer::doIntFloatLiteral(uint32_t c, TokenParse& token)
 {
-    unsigned offset = 1;
-    Token    tokenFrac;
-    Token    tokenExponent;
+    unsigned   offset = 1;
+    TokenParse tokenFrac;
+    TokenParse tokenExponent;
 
     tokenFrac.literalValue.u64     = 0;
     tokenExponent.literalValue.u64 = 0;
@@ -311,7 +311,7 @@ bool Tokenizer::doIntFloatLiteral(uint32_t c, Token& token)
     return true;
 }
 
-bool Tokenizer::doNumberLiteral(uint32_t c, Token& token)
+bool Tokenizer::doNumberLiteral(uint32_t c, TokenParse& token)
 {
     if (c == '0')
     {

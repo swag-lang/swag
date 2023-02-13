@@ -86,7 +86,7 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
     case TokenId::Identifier:
         if (kind == InvalidTokenError::TopLevelInstruction)
         {
-            Token nextToken;
+            TokenParse nextToken;
             tokenizer.getToken(nextToken);
             if (nextToken.id == TokenId::SymEqual || nextToken.id == TokenId::SymColonEqual || nextToken.id == TokenId::SymColon)
                 msg += ") did you miss 'var' or 'const' to declare a global variable ?";
@@ -263,8 +263,8 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
     tmpFile->path += tmpFileName;
     if (fromNode)
     {
-        tmpFile->sourceNode = fromNode;
-        tmpFile->shouldHaveError = fromNode->sourceFile->shouldHaveError;
+        tmpFile->sourceNode        = fromNode;
+        tmpFile->shouldHaveError   = fromNode->sourceFile->shouldHaveError;
         tmpFile->shouldHaveWarning = fromNode->sourceFile->shouldHaveWarning;
     }
 

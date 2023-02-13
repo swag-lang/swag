@@ -54,7 +54,7 @@ void Tokenizer::trimMultilineString(Utf8& text)
     text = copyText;
 }
 
-bool Tokenizer::doStringLiteral(Token& token, bool raw, bool multiline)
+bool Tokenizer::doStringLiteral(TokenParse& token, bool raw, bool multiline)
 {
     unsigned offset;
     token.id          = TokenId::LiteralString;

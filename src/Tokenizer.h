@@ -59,16 +59,14 @@ struct SourceLocation
 
 struct Token
 {
-    TokenId     id               = TokenId::Invalid;
-    bool        lastTokenIsEOL   = false;
-    bool        lastTokenIsBlank = false;
-    LiteralType literalType      = (LiteralType) 0;
-    uint8_t     padding[3]       = {0};
-
     Utf8           text;
     SourceLocation startLocation;
     SourceLocation endLocation;
     Register       literalValue;
+
+    TokenId     id          = TokenId::Invalid;
+    LiteralType literalType = (LiteralType) 0;
+    uint8_t     padding     = 0;
 
     const char* ctext()
     {
@@ -76,31 +74,37 @@ struct Token
     }
 };
 
+struct TokenParse : public Token
+{
+    bool lastTokenIsEOL   = false;
+    bool lastTokenIsBlank = false;
+};
+
 struct Tokenizer
 {
     void setFile(SourceFile* file);
-    bool getToken(Token& token);
-    bool error(Token& token, const Utf8& msg);
+    bool getToken(TokenParse& token);
+    bool error(TokenParse& token, const Utf8& msg);
     void trimMultilineString(Utf8& text);
-    void appendTokenName(Token& token);
-    void saveState(const Token& token);
-    void restoreState(Token& token);
+    void appendTokenName(TokenParse& token);
+    void saveState(const TokenParse& token);
+    void restoreState(TokenParse& token);
 
     uint32_t getChar();
     uint32_t getCharNoSeek(unsigned& offset);
     void     processChar(uint32_t c);
     void     treatChar(uint32_t c, unsigned offset);
 
-    bool doMultiLineComment(Token& token);
-    void doIdentifier(Token& token, uint32_t c, unsigned offset);
-    bool doNumberLiteral(uint32_t c, Token& token);
-    bool doHexLiteral(Token& token);
-    bool doBinLiteral(Token& token);
-    bool doIntFloatLiteral(uint32_t c, Token& token);
-    bool doIntLiteral(uint32_t c, Token& token);
-    bool doFloatLiteral(uint32_t c, Token& token);
-    bool doSymbol(uint32_t c, Token& token);
-    bool doStringLiteral(Token& token, bool raw, bool multiline);
+    bool doMultiLineComment(TokenParse& token);
+    void doIdentifier(TokenParse& token, uint32_t c, unsigned offset);
+    bool doNumberLiteral(uint32_t c, TokenParse& token);
+    bool doHexLiteral(TokenParse& token);
+    bool doBinLiteral(TokenParse& token);
+    bool doIntFloatLiteral(uint32_t c, TokenParse& token);
+    bool doIntLiteral(uint32_t c, TokenParse& token);
+    bool doFloatLiteral(uint32_t c, TokenParse& token);
+    bool doSymbol(uint32_t c, TokenParse& token);
+    bool doStringLiteral(TokenParse& token, bool raw, bool multiline);
 
     static bool isSymbol(TokenId id);
     static bool isLiteral(TokenId id);
@@ -113,7 +117,7 @@ struct Tokenizer
     bool           forceLastTokenIsEOL = false;
     bool           realAppendName      = false;
 
-    Token          st_token;
+    TokenParse     st_token;
     char*          st_curBuffer = nullptr;
     SourceLocation st_location;
     bool           st_forceLastTokenIsEOL = false;

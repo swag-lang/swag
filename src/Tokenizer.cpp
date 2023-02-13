@@ -41,7 +41,7 @@ bool Tokenizer::isIntrinsicNoReturn(TokenId id)
     return g_TokenFlags[(int) id] & TOKEN_INTRINSIC_NORETURN;
 }
 
-void Tokenizer::appendTokenName(Token& token)
+void Tokenizer::appendTokenName(TokenParse& token)
 {
     if (realAppendName)
         token.text.append(startTokenName, (int) (sourceFile->curBuffer - startTokenName));
@@ -69,7 +69,7 @@ void Tokenizer::processChar(uint32_t c)
     }
 }
 
-void Tokenizer::saveState(const Token& token)
+void Tokenizer::saveState(const TokenParse& token)
 {
     st_token               = token;
     st_curBuffer           = sourceFile->curBuffer;
@@ -77,7 +77,7 @@ void Tokenizer::saveState(const Token& token)
     st_forceLastTokenIsEOL = forceLastTokenIsEOL;
 }
 
-void Tokenizer::restoreState(Token& token)
+void Tokenizer::restoreState(TokenParse& token)
 {
     token                 = st_token;
     sourceFile->curBuffer = st_curBuffer;
@@ -104,14 +104,14 @@ uint32_t Tokenizer::getCharNoSeek(unsigned& offset)
     return sourceFile->getChar(offset);
 }
 
-bool Tokenizer::error(Token& token, const Utf8& msg)
+bool Tokenizer::error(TokenParse& token, const Utf8& msg)
 {
     token.endLocation = location;
     Report::report({sourceFile, token, msg});
     return false;
 }
 
-bool Tokenizer::doMultiLineComment(Token& token)
+bool Tokenizer::doMultiLineComment(TokenParse& token)
 {
     int countEmb = 1;
     while (true)
@@ -158,7 +158,7 @@ bool Tokenizer::doMultiLineComment(Token& token)
     }
 }
 
-void Tokenizer::doIdentifier(Token& token, uint32_t c, unsigned offset)
+void Tokenizer::doIdentifier(TokenParse& token, uint32_t c, unsigned offset)
 {
     while (SWAG_IS_ALPHA(c) || SWAG_IS_DIGIT(c) || c == '_')
     {
@@ -185,7 +185,7 @@ void Tokenizer::doIdentifier(Token& token, uint32_t c, unsigned offset)
     }
 }
 
-bool Tokenizer::getToken(Token& token)
+bool Tokenizer::getToken(TokenParse& token)
 {
     Timer timer(&g_Stats.tokenizerTime);
     if (g_CommandLine.stats)

@@ -95,7 +95,7 @@ void Workspace::setupUserTags()
             {
                 SourceFile fakeFile;
                 Tokenizer  tokenizer;
-                Token      token;
+                TokenParse token;
                 fakeFile.setExternalBuffer(tokenVal.buffer, (uint32_t) tokenVal.count);
                 tokenizer.setFile(&fakeFile);
 
