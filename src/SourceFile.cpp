@@ -6,7 +6,6 @@
 #include "Diagnostic.h"
 #include "ErrorIds.h"
 #include "Report.h"
-#include "File.h"
 
 bool SourceFile::checkFormat()
 {
@@ -65,10 +64,11 @@ bool SourceFile::load()
 
     // Seems that we need 'N' flag to avoid handle to be shared with spawned processes
     FILE* handle = nullptr;
-    if (!openFile(&handle, path.c_str(), "rbN"))
+    if (fopen_s(&handle, path.c_str(), "rbN"))
     {
         numErrors++;
         module->numErrors++;
+        Report::errorOS(Fmt(Err(Err0502), path.c_str()));
         return false;
     }
 
@@ -82,7 +82,7 @@ bool SourceFile::load()
     buffer          = (char*) g_Allocator.alloc(allocBufferSize);
 
     auto result = fread(buffer, 1, bufferSize, handle);
-    closeFile(&handle);
+    fclose(handle);
 
     if (result != bufferSize)
     {

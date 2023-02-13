@@ -1,8 +1,10 @@
 #include "pch.h"
-#include "File.h"
 #include "FileJob.h"
 #include "Os.h"
 #include "Module.h"
+#include "Report.h"
+#include "Utf8.h"
+#include "ErrorIds.h"
 
 JobResult CopyFileJob::execute()
 {
@@ -17,11 +19,18 @@ JobResult CopyFileJob::execute()
 
     FILE* fsrc  = nullptr;
     FILE* fdest = nullptr;
-    if (!openFile(&fsrc, sourcePath.c_str(), "rbN") || !openFile(&fdest, destPath.c_str(), "wbN"))
+    if (fopen_s(&fsrc, sourcePath.c_str(), "rbN"))
     {
         module->numErrors++;
-        closeFile(&fsrc);
-        closeFile(&fdest);
+        Report::errorOS(Fmt(Err(Err0502), sourcePath.c_str()));
+        return JobResult::ReleaseJob;
+    }
+
+    if (fopen_s(&fdest, destPath.c_str(), "wbN"))
+    {
+        module->numErrors++;
+        fclose(fsrc);
+        Report::errorOS(Fmt(Err(Err0502), destPath.c_str()));
         return JobResult::ReleaseJob;
     }
 
@@ -35,18 +44,21 @@ JobResult CopyFileJob::execute()
             break;
     }
 
-    closeFile(&fsrc);
-    closeFile(&fdest);
-
+    fclose(fsrc);
+    fclose(fdest);
     return JobResult::ReleaseJob;
 }
 
 JobResult LoadFileJob::execute()
 {
     FILE* fsrc = nullptr;
-    if (!openFile(&fsrc, sourcePath.c_str(), "rbN"))
+    if (fopen_s(&fsrc, sourcePath.c_str(), "rbN"))
+    {
+        Report::errorOS(Fmt(Err(Err0502), sourcePath.c_str()));
         return JobResult::ReleaseJob;
+    }
+
     fread(destBuffer, 1, sizeBuffer, fsrc);
-    closeFile(&fsrc);
+    fclose(fsrc);
     return JobResult::ReleaseJob;
 }

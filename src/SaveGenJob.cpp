@@ -19,9 +19,8 @@ bool SaveGenJob::flush(Module* module)
 
         publicPath += tmpFileName;
 
-        FILE* h;
-        fopen_s(&h, publicPath.c_str(), "wN");
-        if (!h)
+        FILE* h = nullptr;
+        if (fopen_s(&h, publicPath.c_str(), "wN"))
         {
             module->numErrors++;
             Report::errorOS(Fmt(Err(Err0524), publicPath.c_str()));

@@ -7,9 +7,8 @@
 #include "FetchModuleFileSystemJob.h"
 #include "Diagnostic.h"
 #include "ErrorIds.h"
-#include "Report.h"
-#include "File.h"
 #include "LanguageSpec.h"
+#include "Report.h"
 
 ModuleCfgManager* g_ModuleCfgMgr = nullptr;
 
@@ -100,8 +99,7 @@ fs::path ModuleCfgManager::getAliasPath(const fs::path& srcPath)
     if (fs::exists(p))
     {
         FILE* f = nullptr;
-        fopen_s(&f, p.string().c_str(), "rt");
-        if (f)
+        if (!fopen_s(&f, p.string().c_str(), "rt"))
         {
             char in[MAX_PATH];
             fgets(in, MAX_PATH, f);
@@ -155,8 +153,10 @@ bool ModuleCfgManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFileP
     // Otherwise we copy the config file to the cache path, with a unique name.
     // Then later we will parse that file to get informations from the module
     FILE* fsrc = nullptr;
-    if (!openFile(&fsrc, remotePath.c_str(), "rbN"))
+    if (fopen_s(&fsrc, remotePath.c_str(), "rbN"))
+    {
         return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0509), remotePath.c_str())});
+    }
 
     // Remove source configuration file
     FILE* fdest    = nullptr;
@@ -168,9 +168,9 @@ bool ModuleCfgManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFileP
     static int cacheNum = 0;
     cfgFileName         = Fmt("module%u.swg", cacheNum++).c_str();
     destPath += cfgFileName;
-    if (!openFile(&fdest, destPath.c_str(), "wbN"))
+    if (fopen_s(&fdest, destPath.c_str(), "wbN"))
     {
-        closeFile(&fsrc);
+        fclose(fsrc);
         return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0510), SWAG_CFG_FILE, dep->name.c_str())});
     }
 
@@ -185,8 +185,8 @@ bool ModuleCfgManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFileP
             break;
     }
 
-    closeFile(&fsrc);
-    closeFile(&fdest);
+    fclose(fsrc);
+    fclose(fdest);
     return true;
 }
 
@@ -645,11 +645,13 @@ bool ModuleCfgManager::execute()
                 pathSrc += "/";
                 pathSrc += SWAG_ALIAS_FILENAME;
 
-                FILE* f;
-                fopen_s(&f, pathSrc.string().c_str(), "wt");
-                string pathDst = m.second->fetchDep->resolvedLocation.c_str();
-                fwrite(pathDst.c_str(), pathDst.length(), 1, f);
-                fclose(f);
+                FILE* f = nullptr;
+                if (!fopen_s(&f, pathSrc.string().c_str(), "wt"))
+                {
+                    string pathDst = m.second->fetchDep->resolvedLocation.c_str();
+                    fwrite(pathDst.c_str(), pathDst.length(), 1, f);
+                    fclose(f);
+                }
 
                 fetchJob = g_Allocator.alloc<FetchModuleFileSystemJob>();
 

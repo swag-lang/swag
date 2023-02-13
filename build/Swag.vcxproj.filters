@@ -305,9 +305,6 @@
     <ClCompile Include="../src/Module.cpp">
       <Filter>Wmf</Filter>
     </ClCompile>
-    <ClCompile Include="../src/File.cpp">
-      <Filter>Wmf</Filter>
-    </ClCompile>
     <ClCompile Include="../src/SourceFile.cpp">
       <Filter>Wmf</Filter>
     </ClCompile>
@@ -699,9 +696,6 @@
       <Filter>Wmf</Filter>
     </ClInclude>
     <ClInclude Include="../src/Module.h">
-      <Filter>Wmf</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/File.h">
       <Filter>Wmf</Filter>
     </ClInclude>
     <ClInclude Include="../src/SourceFile.h">
