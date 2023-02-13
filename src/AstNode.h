@@ -433,17 +433,15 @@ struct AstIdentifier : public AstNode
 
     vector<Token> aliasNames;
 
-    AstIdentifierRef*     identifierRef     = nullptr;
-    AstNode*              genericParameters = nullptr;
-    AstFuncCallParams*    callParameters    = nullptr;
-    TypeInfo*             alternateEnum     = nullptr;
-    AstNode*              fromAlternateVar  = nullptr;
-    IdentifierScopeUpMode scopeUpMode       = IdentifierScopeUpMode::None;
+    AstIdentifierRef*  identifierRef     = nullptr;
+    AstNode*           genericParameters = nullptr;
+    AstFuncCallParams* callParameters    = nullptr;
+    TypeInfo*          alternateEnum     = nullptr;
+    AstNode*           fromAlternateVar  = nullptr;
+
+    IdentifierScopeUpMode scopeUpMode = IdentifierScopeUpMode::None;
     TokenParse            scopeUpValue;
 };
-
-static const uint32_t FUNC_FLAG_FULL_RESOLVE    = 0x00000001;
-static const uint32_t FUNC_FLAG_PARTIAL_RESOLVE = 0x00000002;
 
 struct AstFuncDecl : public AstNode
 {
@@ -478,14 +476,14 @@ struct AstFuncDecl : public AstNode
     AstMakePointer* makePointerLambda     = nullptr;
     TypeInfoParam*  fromItfSymbol         = nullptr;
 
-    uint32_t aliasMask              = 0;
-    uint32_t stackSize              = 0;
-    uint32_t nodeCounts             = 0;
-    uint32_t funcFlags              = 0;
-    uint32_t registerGetContext     = UINT32_MAX;
-    bool     needRegisterGetContext = false;
-    bool     hasSpecMixin           = false;
-    bool     shortForm              = false;
+    uint32_t aliasMask          = 0;
+    uint32_t stackSize          = 0;
+    uint32_t nodeCounts         = 0;
+    uint32_t registerGetContext = UINT32_MAX;
+
+    bool needRegisterGetContext = false;
+    bool hasSpecMixin           = false;
+    bool shortForm              = false;
 };
 
 struct AstAttrDecl : public AstNode
@@ -935,19 +933,22 @@ struct AstOp : public AstNode
 struct AstRange : public AstNode
 {
     AstNode* clone(CloneContext& context);
+
     AstNode* expressionLow = nullptr;
     AstNode* expressionUp  = nullptr;
 };
 
 struct AstMakePointer : public AstNode
 {
-    AstNode*     clone(CloneContext& context);
+    AstNode* clone(CloneContext& context);
+
     AstFuncDecl* lambda = nullptr;
 };
 
 struct AstSubstBreakContinue : public AstNode
 {
-    AstNode*      clone(CloneContext& context);
+    AstNode* clone(CloneContext& context);
+
     AstNode*      defaultSubst      = nullptr;
     AstNode*      altSubst          = nullptr;
     AstBreakable* altSubstBreakable = nullptr;
@@ -962,19 +963,22 @@ enum class DeferKind
 
 struct AstDefer : public AstNode
 {
-    AstNode*  clone(CloneContext& context);
+    AstNode* clone(CloneContext& context);
+
     DeferKind deferKind = DeferKind::Normal;
 };
 
 struct AstWith : public AstNode
 {
-    AstNode*     clone(CloneContext& context);
+    AstNode* clone(CloneContext& context);
+
     vector<Utf8> id;
 };
 
 struct AstLiteral : public AstNode
 {
-    AstNode*    clone(CloneContext& context);
+    AstNode* clone(CloneContext& context);
+
     LiteralType literalType = (LiteralType) 0;
     Register    literalValue;
 };

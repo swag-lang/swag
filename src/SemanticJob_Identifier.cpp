@@ -3936,7 +3936,7 @@ bool SemanticJob::solveValidIf(SemanticContext* context, OneMatch* oneMatch, Ast
     ScopedLock lk1(funcDecl->mutex);
 
     // Be sure block has been solved
-    if (!(funcDecl->funcFlags & FUNC_FLAG_PARTIAL_RESOLVE))
+    if (!(funcDecl->specFlags & AST_SPEC_FUNCDECL_PARTIAL_RESOLVE))
     {
         funcDecl->dependentJobs.add(context->job);
         context->job->setPending(funcDecl->resolvedSymbolName, JobWaitKind::SemPartialResolve, funcDecl, nullptr);

@@ -180,7 +180,7 @@ void Job::waitOverloadCompleted(SymbolOverload* overload)
 void Job::waitFuncDeclFullResolve(AstFuncDecl* funcDecl)
 {
     ScopedLock lk(funcDecl->funcMutex);
-    if (!(funcDecl->funcFlags & FUNC_FLAG_FULL_RESOLVE))
+    if (!(funcDecl->specFlags & AST_SPEC_FUNCDECL_FULL_RESOLVE))
     {
         funcDecl->dependentJobs.add(this);
         setPending(funcDecl->resolvedSymbolName, JobWaitKind::SemFullResolve, funcDecl, nullptr);
