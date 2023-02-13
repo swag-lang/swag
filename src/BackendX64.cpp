@@ -2,7 +2,6 @@
 #include "BackendX64.h"
 #include "BackendLinker.h"
 #include "Module.h"
-#include "File.h"
 #include "Os.h"
 #include "Workspace.h"
 #include "BackendX64SaveObjJob.h"

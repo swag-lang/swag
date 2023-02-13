@@ -1,5 +1,5 @@
 #pragma once
-#include "File.h"
+#include "OutputFile.h"
 struct Job;
 
 struct OutputFileWin32 : public OutputFile

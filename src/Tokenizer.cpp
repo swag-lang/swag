@@ -21,26 +21,6 @@ const uint32_t g_TokenFlags[] =
 #include "TokenIds.h"
 };
 
-bool Tokenizer::isSymbol(TokenId id)
-{
-    return g_TokenFlags[(int) id] & TOKEN_SYM;
-}
-
-bool Tokenizer::isLiteral(TokenId id)
-{
-    return g_TokenFlags[(int) id] & TOKEN_LITERAL;
-}
-
-bool Tokenizer::isIntrinsicReturn(TokenId id)
-{
-    return g_TokenFlags[(int) id] & TOKEN_INTRINSIC_RETURN;
-}
-
-bool Tokenizer::isIntrinsicNoReturn(TokenId id)
-{
-    return g_TokenFlags[(int) id] & TOKEN_INTRINSIC_NORETURN;
-}
-
 bool Tokenizer::error(TokenParse& token, const Utf8& msg, const Utf8& hint)
 {
     token.endLocation = location;
@@ -64,19 +44,6 @@ void Tokenizer::setFile(SourceFile* file)
     sourceFile      = file;
 }
 
-void Tokenizer::processChar(uint32_t c)
-{
-    location.column++;
-
-    if (c == '\n')
-    {
-        if (g_CommandLine.stats)
-            g_Stats.numLines++;
-        location.column = 0;
-        location.line++;
-    }
-}
-
 void Tokenizer::saveState(const TokenParse& token)
 {
     st_token               = token;
@@ -91,6 +58,19 @@ void Tokenizer::restoreState(TokenParse& token)
     sourceFile->curBuffer = st_curBuffer;
     location              = st_location;
     forceLastTokenIsEOL   = st_forceLastTokenIsEOL;
+}
+
+void Tokenizer::processChar(uint32_t c)
+{
+    location.column++;
+
+    if (c == '\n')
+    {
+        if (g_CommandLine.stats)
+            g_Stats.numLines++;
+        location.column = 0;
+        location.line++;
+    }
 }
 
 void Tokenizer::treatChar(uint32_t c, unsigned offset)

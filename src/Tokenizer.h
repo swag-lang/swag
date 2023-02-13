@@ -11,6 +11,9 @@ enum class TokenId : uint16_t
 #include "TokenIds.h"
 };
 
+extern const char*    g_TokenNames[];
+extern const uint32_t g_TokenFlags[];
+
 static const uint32_t TOKEN_SYM                = 0x00000001;
 static const uint32_t TOKEN_INTRINSIC_NORETURN = 0x00000002;
 static const uint32_t TOKEN_INTRINSIC_RETURN   = 0x00000004;
@@ -106,10 +109,12 @@ struct Tokenizer
     bool doSymbol(uint32_t c, TokenParse& token);
     bool doStringLiteral(TokenParse& token, bool raw, bool multiline);
 
-    static bool isSymbol(TokenId id);
-    static bool isLiteral(TokenId id);
-    static bool isIntrinsicReturn(TokenId id);
-    static bool isIntrinsicNoReturn(TokenId id);
+    // clang-format off
+    static bool isSymbol(TokenId id)            { return g_TokenFlags[(int) id] & TOKEN_SYM; }
+    static bool isLiteral(TokenId id)           { return g_TokenFlags[(int) id] & TOKEN_LITERAL; }
+    static bool isIntrinsicReturn(TokenId id)   { return g_TokenFlags[(int) id] & TOKEN_INTRINSIC_RETURN; }
+    static bool isIntrinsicNoReturn(TokenId id) { return g_TokenFlags[(int) id] & TOKEN_INTRINSIC_NORETURN; }
+    // clang-format on
 
     SourceLocation location;
     SourceFile*    sourceFile          = nullptr;
@@ -122,6 +127,3 @@ struct Tokenizer
     SourceLocation st_location;
     bool           st_forceLastTokenIsEOL = false;
 };
-
-extern const char*    g_TokenNames[];
-extern const uint32_t g_TokenFlags[];

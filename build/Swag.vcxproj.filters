@@ -845,6 +845,9 @@
     <ClInclude Include="../src/JobThread.h">
       <Filter>Jobs</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\OutputFile.h">
+      <Filter>Wmf</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">

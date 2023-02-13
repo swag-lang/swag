@@ -1,8 +1,8 @@
 #pragma once
 #include "Log.h"
+#include "OutputFile.h"
 #include "VectorNative.h"
 
-struct OutputFile;
 struct BuildParameters;
 struct Module;
 struct BackendTarget;

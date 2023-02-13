@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Concat.h"
 #include "CommandLine.h"
-#include "File.h"
 #include "Os.h"
 
 void Concat::init(int size)

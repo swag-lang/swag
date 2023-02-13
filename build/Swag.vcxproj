@@ -221,6 +221,7 @@
     <ClInclude Include="..\src\LoadSourceFileJob.h" />
     <ClInclude Include="..\src\MapRegTo.h" />
     <ClInclude Include="..\src\Naming.h" />
+    <ClInclude Include="..\src\OutputFile.h" />
     <ClInclude Include="..\src\OutputFileWin32.h" />
     <ClInclude Include="../src/Runtime.h" />
     <ClInclude Include="../src/Scope.h" />
