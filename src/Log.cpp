@@ -95,37 +95,10 @@ void Log::setCountLength(bool b)
     length      = 0;
 }
 
-void Log::messageHeaderCentered(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor)
+static const int CENTER_COLUMN = 24;
+
+void Log::printHeaderDot(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor, const char* dot)
 {
-    if (g_CommandLine.silent)
-        return;
-
-    lock();
-    setColor(headerColor);
-    auto size = header.length();
-    while (size < CENTER_COLUMN)
-    {
-        print(" ");
-        size++;
-    }
-
-    print(header);
-    print(" ");
-    setColor(msgColor);
-    print(message);
-    if (!message.length() || message.back() != '\n')
-        eol();
-    setDefaultColor();
-    unlock();
-}
-
-void Log::messageHeaderDot(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor, const char* dot, bool mustLock)
-{
-    if (g_CommandLine.silent)
-        return;
-    if (mustLock)
-        lock();
-
     setColor(headerColor);
     print(header);
 
@@ -141,12 +114,49 @@ void Log::messageHeaderDot(const Utf8& header, const Utf8& message, LogColor hea
     print(message);
     if (message.back() != '\n')
         eol();
-    setDefaultColor();
-    if (mustLock)
-        unlock();
 }
 
-void Log::message(const Utf8& message)
+void Log::printHeaderCentered(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor)
+{
+    setColor(headerColor);
+    auto size = header.length();
+    while (size < CENTER_COLUMN)
+    {
+        print(" ");
+        size++;
+    }
+
+    print(header);
+    print(" ");
+    setColor(msgColor);
+    print(message);
+    if (!message.length() || message.back() != '\n')
+        eol();
+}
+
+void Log::messageHeaderCentered(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor)
+{
+    if (g_CommandLine.silent)
+        return;
+
+    lock();
+    printHeaderCentered(header, message, headerColor, msgColor);
+    setDefaultColor();
+    unlock();
+}
+
+void Log::messageHeaderDot(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor, const char* dot)
+{
+    if (g_CommandLine.silent)
+        return;
+
+    lock();
+    printHeaderDot(header, message, headerColor, msgColor, dot);
+    setDefaultColor();
+    unlock();
+}
+
+void Log::messageInfo(const Utf8& message)
 {
     if (g_CommandLine.silent)
         return;
@@ -160,7 +170,7 @@ void Log::message(const Utf8& message)
     unlock();
 }
 
-void Log::verbose(const Utf8& message)
+void Log::messageVerbose(const Utf8& message)
 {
     if (g_CommandLine.silent || !g_CommandLine.verbose)
         return;

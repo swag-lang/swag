@@ -1,10 +1,8 @@
 #include "pch.h"
 #include "Stats.h"
 #include "Workspace.h"
-#include "Version.h"
 #include "Os.h"
 #include "Module.h"
-#include "ByteCode.h"
 
 Stats g_Stats;
 

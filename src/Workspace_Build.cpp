@@ -241,7 +241,7 @@ void Workspace::setupTarget()
     // Target directory
     targetPath = getTargetPath(g_CommandLine.buildCfg, g_CommandLine.target);
     if (g_CommandLine.verbosePath)
-        g_Log.verbose(Fmt("target path is '%s'", Utf8::normalizePath(targetPath.string().c_str()).c_str()));
+        g_Log.messageVerbose(Fmt("target path is '%s'", Utf8::normalizePath(targetPath.string().c_str()).c_str()));
 
     error_code errorCode;
     if (!fs::exists(targetPath) && !fs::create_directories(targetPath, errorCode))
@@ -277,7 +277,7 @@ void Workspace::setupTarget()
     }
 
     if (g_CommandLine.verbosePath)
-        g_Log.verbose(Fmt("cache path is '%s'", Utf8::normalizePath(cachePath.string().c_str()).c_str()));
+        g_Log.messageVerbose(Fmt("cache path is '%s'", Utf8::normalizePath(cachePath.string().c_str()).c_str()));
 
     cachePath += "/";
 }
@@ -923,7 +923,7 @@ bool Workspace::build()
         if (!g_CommandLine.scriptCommand)
         {
             if (g_CommandLine.verbosePath)
-                g_Log.verbose(Fmt("workspace path is '%s'", Utf8::normalizePath(workspacePath.string().c_str()).c_str()));
+                g_Log.messageVerbose(Fmt("workspace path is '%s'", Utf8::normalizePath(workspacePath.string().c_str()).c_str()));
             if (g_CommandLine.listDepCmd || g_CommandLine.getDepCmd)
                 g_Log.messageHeaderCentered("Workspace", workspacePath.filename().string().c_str());
             else

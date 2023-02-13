@@ -240,21 +240,22 @@ static void exceptionMessage(Job* job, SWAG_LPEXCEPTION_POINTERS args)
     g_Log.print("fatal error: hardware exception during job execution !\n");
 
     g_Log.setColor(LogColor::White);
-    g_Log.messageHeaderDot("exception code", Fmt("0x%08X\n", args->ExceptionRecord->ExceptionCode), LogColor::White, LogColor::White, " ", false);
+    g_Log.messageHeaderDot("exception code", Fmt("0x%08X\n", args->ExceptionRecord->ExceptionCode), LogColor::White, LogColor::White, " ");
     if (job->baseContext && job->baseContext->sourceFile)
     {
-        g_Log.messageHeaderDot("current source file", job->baseContext->sourceFile->name, LogColor::White, LogColor::White, " ", false);
-        g_Log.messageHeaderDot("current module", job->baseContext->sourceFile->module->name, LogColor::White, LogColor::White, " ", false);
+        g_Log.printHeaderDot("current source file", job->baseContext->sourceFile->name, LogColor::White, LogColor::White, " ");
+        g_Log.printHeaderDot("current module", job->baseContext->sourceFile->module->name, LogColor::White, LogColor::White, " ");
     }
 
     if (job->nodes.size())
     {
         auto node = job->nodes.back();
-        g_Log.messageHeaderDot("current node", node->token.text, LogColor::White, LogColor::White, " ", false);
+        g_Log.printHeaderDot("current node", node->token.text, LogColor::White, LogColor::White, " ");
         if (node->sourceFile)
-            g_Log.messageHeaderDot("current location", Fmt("%s:%d:%d", node->sourceFile->path.c_str(), node->token.startLocation.line + 1, node->token.startLocation.column + 1), LogColor::White, LogColor::White, " ", false);
+            g_Log.printHeaderDot("current location", Fmt("%s:%d:%d", node->sourceFile->path.c_str(), node->token.startLocation.line + 1, node->token.startLocation.column + 1), LogColor::White, LogColor::White, " ");
     }
 
+    g_Log.setDefaultColor();
     g_Log.unlock();
 }
 

@@ -186,8 +186,8 @@ void CommandLineParser::logArguments(const string& cmd)
 
     line0 += "\n";
     line1 += "\n";
-    g_Log.message(line0);
-    g_Log.message(line1);
+    g_Log.messageInfo(line0);
+    g_Log.messageInfo(line1);
 
     for (auto arg : longNameArgs)
     {
@@ -224,7 +224,7 @@ void CommandLineParser::logArguments(const string& cmd)
             line0 += oneArg->help;
         }
 
-        g_Log.message(line0);
+        g_Log.messageInfo(line0);
     }
 }
 

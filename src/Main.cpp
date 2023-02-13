@@ -75,7 +75,7 @@ int main(int argc, const char* argv[])
 
     // Output command line in verbose mode
     if (g_CommandLine.verboseCmdLine)
-        g_Log.verbose(cmdParser.buildString(true));
+        g_Log.messageVerbose(cmdParser.buildString(true));
 
     // Deal with the main command
     if (command == "script")
@@ -116,7 +116,7 @@ int main(int argc, const char* argv[])
     }
     else if (command == "version")
     {
-        g_Log.message(Fmt("swag version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
+        g_Log.messageInfo(Fmt("swag version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
     }
     else if (command == "new")
     {

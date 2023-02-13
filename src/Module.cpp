@@ -1150,7 +1150,7 @@ void Module::logStage(const char* msg)
 {
     if (!g_CommandLine.verboseStages)
         return;
-    g_Log.verbose(Fmt("[%s] -- %s", name.c_str(), msg));
+    g_Log.messageVerbose(Fmt("[%s] -- %s", name.c_str(), msg));
 }
 
 bool Module::filterFunctionsToEmit()

@@ -217,7 +217,7 @@ namespace BackendLinker
                 linkStr += " ";
             }
 
-            g_Log.verbose(linkStr);
+            g_Log.messageVerbose(linkStr);
         }
 
         llvm::ArrayRef<const char*> array_ref_args(linkArgumentsPtr.buffer, linkArgumentsPtr.size());
