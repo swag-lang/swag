@@ -1,7 +1,7 @@
 #pragma once
 #include "SwagScope.h"
 #include "Utf8.h"
-#include "Register.h"
+#include "ComputedValue.h"
 #include "Mutex.h"
 struct Module;
 struct Scope;

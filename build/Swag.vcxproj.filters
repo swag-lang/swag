@@ -851,6 +851,9 @@
     <ClInclude Include="..\src\Naming.h">
       <Filter>Main\Report</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\ComputedValue.h">
+      <Filter>Main\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">

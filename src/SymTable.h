@@ -2,6 +2,7 @@
 #include "DependentJobs.h"
 #include "Register.h"
 #include "RegisterList.h"
+#include "ComputedValue.h"
 #include "Mutex.h"
 struct Scope;
 struct SourceFile;
