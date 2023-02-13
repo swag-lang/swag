@@ -1867,7 +1867,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
                 TypeInfoParam* fieldJ = symContext.solvedCallParameters[j];
 
                 auto           oldType = childJ->typeInfo;
-                PushErrContext ec{context, childJ, ErrorContextKind::MsgPrio, Fmt(Err(Err0723), fieldJ->namedParam.c_str(), fieldJ->typeInfo->getDisplayNameC(), childJ->typeInfo->getDisplayNameC())};
+                PushErrCxtStep ec{context, childJ, ErrCxtStepKind::MsgPrio, Fmt(Err(Err0723), fieldJ->namedParam.c_str(), fieldJ->typeInfo->getDisplayNameC(), childJ->typeInfo->getDisplayNameC())};
                 SWAG_CHECK(TypeManager::makeCompatibles(context, fieldJ->typeInfo, childJ->typeInfo, nullptr, childJ, castFlags | CASTFLAG_TRY_COERCE));
                 if (childJ->typeInfo != oldType)
                     hasChanged = true;
@@ -1903,7 +1903,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
 
         if (fromNode)
         {
-            PushErrContext ec(context, fromNode->childs.front(), ErrorContextKind::Hint2, "", Fmt(Hnt(Hnt0062), convertTo->getDisplayNameC()));
+            PushErrCxtStep ec(context, fromNode->childs.front(), ErrCxtStepKind::Hint2, "", Fmt(Hnt(Hnt0062), convertTo->getDisplayNameC()));
             SWAG_CHECK(TypeManager::makeCompatibles(context, convertTo, fromTypeList->subTypes[i]->typeInfo, nullptr, child, castFlags | CASTFLAG_TRY_COERCE));
         }
         else
@@ -3281,7 +3281,7 @@ bool TypeManager::convertLiteralTupleToStructType(SemanticContext* context, Type
 
 bool TypeManager::makeCompatibles(SemanticContext* context, AstNode* leftNode, AstNode* rightNode, uint32_t castFlags)
 {
-    PushErrContext ec(context, leftNode, ErrorContextKind::Hint2, "", Diagnostic::isType(leftNode->typeInfo));
+    PushErrCxtStep ec(context, leftNode, ErrCxtStepKind::Hint2, "", Diagnostic::isType(leftNode->typeInfo));
     SWAG_CHECK(makeCompatibles(context, leftNode->typeInfo, leftNode, rightNode, castFlags));
     return true;
 }

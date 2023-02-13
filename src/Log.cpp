@@ -63,7 +63,8 @@ void Log::setDefaultColor()
 
 void Log::setColor(LogColor color)
 {
-    print(colorToVTS(color));
+    if (g_CommandLine.logColors)
+        print(colorToVTS(color));
 }
 
 void Log::print(const char* message)

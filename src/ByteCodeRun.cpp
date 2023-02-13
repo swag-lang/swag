@@ -3717,10 +3717,10 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         //
         // If we have an expansion, and the first expansion requests test error, then raise
         // in its context to dismiss the error (like an error during a #validif for example)
-        if (runContext->callerContext && runContext->callerContext->errorContextStack.size() && runContext->callerContext->errorContextStack[0].node->sourceFile->shouldHaveError)
-            diag.contextFile = runContext->callerContext->errorContextStack[0].node->sourceFile;
-        else if (runContext->callerContext && runContext->callerContext->errorContextStack.size() && runContext->callerContext->errorContextStack[0].node->sourceFile->shouldHaveWarning)
-            diag.contextFile = runContext->callerContext->errorContextStack[0].node->sourceFile;
+        if (runContext->callerContext && runContext->callerContext->errCxtSteps.size() && runContext->callerContext->errCxtSteps[0].node->sourceFile->shouldHaveError)
+            diag.contextFile = runContext->callerContext->errCxtSteps[0].node->sourceFile;
+        else if (runContext->callerContext && runContext->callerContext->errCxtSteps.size() && runContext->callerContext->errCxtSteps[0].node->sourceFile->shouldHaveWarning)
+            diag.contextFile = runContext->callerContext->errCxtSteps[0].node->sourceFile;
         // Otherwise get the source file from the top of the bytecode stack of possible
         else if (g_ByteCodeStackTrace->steps.size() && g_ByteCodeStackTrace->steps[0].bc)
             diag.contextFile = g_ByteCodeStackTrace->steps[0].bc->sourceFile;
@@ -3732,7 +3732,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
 
         // Get error context
         Vector<const Diagnostic*> notes;
-        ErrorContext::fillContext(runContext->callerContext, diag, notes);
+        runContext->callerContext->extract(diag, notes);
 
         if (runContext->ip != runContext->bc->out)
             runContext->ip--;

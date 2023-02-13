@@ -254,7 +254,7 @@ void AstOutput::removeLastBlankLine(Concat& concat)
 
 bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* node)
 {
-    PushErrContext ec(&context, node, ErrorContextKind::Export);
+    PushErrCxtStep ec(&context, node, ErrCxtStepKind::Export);
     CONCAT_FIXED_STR(concat, "func");
 
     // Emit generic parameter, except if the function is an instance
@@ -360,7 +360,7 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
 
 bool AstOutput::outputEnum(OutputContext& context, Concat& concat, AstEnum* node)
 {
-    PushErrContext ec(&context, node, ErrorContextKind::Export);
+    PushErrCxtStep ec(&context, node, ErrCxtStepKind::Export);
 
     CONCAT_FIXED_STR(concat, "enum ");
     concat.addString(node->token.text);
@@ -795,7 +795,7 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
         }
     }
 
-    PushErrContext ec(&context, node, ErrorContextKind::Export);
+    PushErrCxtStep ec(&context, node, ErrCxtStepKind::Export);
 
     if (node->kind == AstNodeKind::InterfaceDecl)
         CONCAT_FIXED_STR(concat, "interface");

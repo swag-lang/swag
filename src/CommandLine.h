@@ -71,6 +71,7 @@ struct CommandLine
     StatsWhat statsWhat             = StatsWhat::None;
     bool      stats                 = false;
     bool      silent                = false;
+    bool      logColors             = true;
     bool      verbose               = false;
     bool      verboseCmdLine        = false;
     bool      verbosePath           = false;

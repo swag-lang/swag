@@ -400,7 +400,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         TypeInfo* toType = nullptr;
         if (i < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[i])
         {
-            PushErrContext ec(context, typeInfoFunc->declNode, ErrorContextKind::HereIs);
+            PushErrCxtStep ec(context, typeInfoFunc->declNode, ErrCxtStepKind::HereIs);
 
             toType = oneMatch.solvedParameters[i]->typeInfo;
             SWAG_CHECK(TypeManager::makeCompatibles(context, toType, nullptr, nodeCall, castFlags));
@@ -3956,13 +3956,13 @@ bool SemanticJob::solveValidIf(SemanticContext* context, OneMatch* oneMatch, Ast
         auto node                  = context->node;
         context->validIfParameters = oneMatch->oneOverload->callParameters;
 
-        ErrorContextKind type;
+        ErrCxtStepKind type;
         if (funcDecl->validif->kind == AstNodeKind::CompilerValidIfx)
-            type = ErrorContextKind::ValidIfx;
+            type = ErrCxtStepKind::ValidIfx;
         else
-            type = ErrorContextKind::ValidIf;
+            type = ErrCxtStepKind::ValidIf;
 
-        PushErrContext ec(context, node, type);
+        PushErrCxtStep ec(context, node, type);
         auto           result      = executeCompilerNode(context, expr, false);
         context->validIfParameters = nullptr;
         if (!result)
@@ -3993,22 +3993,22 @@ bool SemanticJob::solveValidIf(SemanticContext* context, OneMatch* oneMatch, Ast
         job->module       = context->sourceFile->module;
         job->dependentJob = context->job->dependentJob;
         job->nodes.push_back(funcDecl->content);
-        job->context.errorContextStack.insert(job->context.errorContextStack.begin(),
-                                              context->job->context.errorContextStack.begin(),
-                                              context->job->context.errorContextStack.end());
+        job->context.errCxtSteps.insert(job->context.errCxtSteps.begin(),
+                                              context->job->context.errCxtSteps.begin(),
+                                              context->job->context.errCxtSteps.end());
 
         // This comes from a generic instantiation. Add context
         if (oneMatch->oneOverload->overload->typeInfo->isFromGeneric())
         {
-            ErrorContext expNode;
+            ErrorCxtStep expNode;
 
             auto typeFunc        = CastTypeInfo<TypeInfoFuncAttr>(oneMatch->oneOverload->overload->typeInfo, TypeInfoKind::FuncAttr);
             expNode.node         = context->node;
             expNode.replaceTypes = typeFunc->replaceTypes;
             if (expNode.node->extension && expNode.node->extension->misc && expNode.node->extension->misc->exportNode)
                 expNode.node = expNode.node->extension->misc->exportNode;
-            expNode.type = ErrorContextKind::Generic;
-            job->context.errorContextStack.push_back(expNode);
+            expNode.type = ErrCxtStepKind::Generic;
+            job->context.errCxtSteps.push_back(expNode);
         }
 
         // To avoid a race condition with the job that is currently dealing with the funcDecl,

@@ -100,10 +100,10 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
 {
     auto node = CastAst<AstInline>(context->node, AstNodeKind::Inline);
 
-    ErrorContext expNode;
+    ErrorCxtStep expNode;
     expNode.node = node->parent;
-    expNode.type = ErrorContextKind::Inline;
-    context->errorContextStack.push_back(expNode);
+    expNode.type = ErrCxtStepKind::Inline;
+    context->errCxtSteps.push_back(expNode);
 
     if (node->doneFlags & AST_DONE_RESOLVE_INLINED)
         return true;
@@ -215,7 +215,7 @@ bool SemanticJob::resolveInlineAfter(SemanticContext* context)
         }
     }
 
-    context->errorContextStack.pop_back();
+    context->errCxtSteps.pop_back();
     return true;
 }
 
@@ -498,7 +498,7 @@ bool SemanticJob::resolveCase(SemanticContext* context)
                 }
                 else
                 {
-                    PushErrContext ec(context, node->ownerSwitch->expression, ErrorContextKind::Note, Fmt(Nte(Nte0052), typeInfo->getDisplayNameC(), "the switch expression"), Diagnostic::isType(typeInfo));
+                    PushErrCxtStep ec(context, node->ownerSwitch->expression, ErrCxtStepKind::Note, Fmt(Nte(Nte0052), typeInfo->getDisplayNameC(), "the switch expression"), Diagnostic::isType(typeInfo));
                     SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, oneExpression, CASTFLAG_COMPARE));
                 }
             }

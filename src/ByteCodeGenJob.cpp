@@ -437,7 +437,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags, Byt
                 extension->byteCodeJob->dependentJob = job;
             else
                 extension->byteCodeJob->dependentJob = job->dependentJob;
-            extension->byteCodeJob->context.errorContextStack = job->baseContext->errorContextStack;
+            extension->byteCodeJob->context.errCxtSteps = job->baseContext->errCxtSteps;
             extension->byteCodeJob->nodes.push_back(node);
             if (!extension->bc)
             {

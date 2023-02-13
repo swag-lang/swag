@@ -39,32 +39,20 @@ enum class ContextResult
     if (context->result != ContextResult::Done) \
         return true;
 
-struct JobContext
+struct JobContext : public ErrorContext
 {
-    bool report(const Diagnostic& diag, const Diagnostic* note = nullptr, const Diagnostic* note1 = nullptr);
-    bool report(const Diagnostic& diag, const Vector<const Diagnostic*>& notes);
-    bool checkSizeOverflow(const char* typeOverflow, uint64_t value, uint64_t maxValue);
-
     void reset()
     {
         baseJob           = nullptr;
-        node              = nullptr;
         sourceFile        = nullptr;
         validIfParameters = nullptr;
         result            = ContextResult::Done;
-        hasError          = false;
-        silentError       = 0;
-        errorContextStack.clear();
+        ErrorContext::reset();
     }
 
-    Vector<ErrorContext> errorContextStack;
-
     Job*        baseJob           = nullptr;
-    AstNode*    node              = nullptr;
     SourceFile* sourceFile        = nullptr;
     AstNode*    validIfParameters = nullptr;
-    bool        hasError          = false;
-    uint32_t    silentError       = false;
 
     ContextResult result = ContextResult::Done;
 };

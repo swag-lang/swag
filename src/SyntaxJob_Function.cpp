@@ -947,7 +947,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
         else
         {
             {
-                PushErrContext ec(&context, nullptr, ErrorContextKind::Help, Hlp(Hlp0045));
+                PushErrCxtStep ec(&context, nullptr, ErrCxtStepKind::Help, Hlp(Hlp0045));
                 SWAG_CHECK(eatToken(TokenId::SymVertical, "to start the capture block"));
             }
 

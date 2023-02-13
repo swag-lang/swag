@@ -325,16 +325,16 @@ Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNod
     // Store stack of instantiation contexts
     auto srcCxt  = context;
     auto destCxt = &newJob->context;
-    destCxt->errorContextStack.insert(destCxt->errorContextStack.end(), srcCxt->errorContextStack.begin(), srcCxt->errorContextStack.end());
+    destCxt->errCxtSteps.insert(destCxt->errCxtSteps.end(), srcCxt->errCxtSteps.begin(), srcCxt->errCxtSteps.end());
 
     // New context
-    ErrorContext expNode;
+    ErrorCxtStep expNode;
     expNode.node         = context->node;
     expNode.replaceTypes = replaceTypes;
     if (expNode.node->extension && expNode.node->extension->misc && expNode.node->extension->misc->exportNode)
         expNode.node = expNode.node->extension->misc->exportNode;
-    expNode.type = ErrorContextKind::Generic;
-    destCxt->errorContextStack.push_back(expNode);
+    expNode.type = ErrCxtStepKind::Generic;
+    destCxt->errCxtSteps.push_back(expNode);
 
     return newJob;
 }
@@ -578,7 +578,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
                 {
                     if (match.solvedParameters[idx]->typeInfo->kind != TypeInfoKind::Generic)
                     {
-                        PushErrContext ec(context, typeFunc->declNode, ErrorContextKind::HereIs);
+                        PushErrCxtStep ec(context, typeFunc->declNode, ErrCxtStepKind::HereIs);
                         auto           typeDest = CastTypeInfo<TypeInfoStruct>(match.solvedParameters[idx]->typeInfo, TypeInfoKind::Struct);
                         SWAG_CHECK(TypeManager::convertLiteralTupleToStructType(context, typeDest, p));
                         SWAG_ASSERT(context->result != ContextResult::Done);
@@ -586,7 +586,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
                     }
                     else
                     {
-                        PushErrContext ec(context, typeFunc->declNode, ErrorContextKind::HereIs);
+                        PushErrCxtStep ec(context, typeFunc->declNode, ErrCxtStepKind::HereIs);
                         auto           typeDest = TypeManager::convertTypeListToStruct(context, tpt, true);
                         SWAG_CHECK(TypeManager::convertLiteralTupleToStructType(context, typeDest, p));
                         SWAG_ASSERT(context->result != ContextResult::Done);

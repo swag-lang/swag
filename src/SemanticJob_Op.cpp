@@ -150,7 +150,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
         return context->report(diag, &note);
     }
 
-    PushErrContext ec(context, nullptr, ErrorContextKind::Help, getSpecialOpSignature(node));
+    PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Help, getSpecialOpSignature(node));
 
     auto      parameters = node->parameters;
     TypeInfo* typeStruct = nullptr;
@@ -613,9 +613,9 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
 
     if (leftType->isGeneric())
     {
-        PushErrContext ec(context,
+        PushErrCxtStep ec(context,
                           left->parent,
-                          ErrorContextKind::Note,
+                          ErrCxtStepKind::Note,
                           Fmt(Nte(Nte0051), name.c_str(), leftType->getDisplayNameC()),
                           "",
                           true);
@@ -647,9 +647,9 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
         }
 
         {
-            PushErrContext ec(context,
+            PushErrCxtStep ec(context,
                               left->parent,
-                              ErrorContextKind::Note,
+                              ErrCxtStepKind::Note,
                               Fmt(Nte(Nte0051), name.c_str(), leftType->getDisplayNameC()),
                               "",
                               true);

@@ -79,7 +79,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     }
 
     SWAG_VERIFY(rightTypeInfo->isNative(), context->report({right, Fmt(Err(Err0142), rightTypeInfo->getDisplayNameC())}));
-    PushErrContext ec(context, nullptr, ErrorContextKind::MsgPrio, Fmt(Err(Err0196), "add", leftTypeInfo->getDisplayNameC(), "and", rightTypeInfo->getDisplayNameC()));
+    PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::MsgPrio, Fmt(Err(Err0196), "add", leftTypeInfo->getDisplayNameC(), "and", rightTypeInfo->getDisplayNameC()));
     SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
 
     leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
@@ -220,7 +220,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
     }
 
     SWAG_VERIFY(rightTypeInfo->isNative(), context->report({right, Fmt(Err(Err0146), rightTypeInfo->getDisplayNameC())}));
-    PushErrContext ec(context, nullptr, ErrorContextKind::MsgPrio, Fmt(Err(Err0196), "substract", leftTypeInfo->getDisplayNameC(), "and", rightTypeInfo->getDisplayNameC()));
+    PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::MsgPrio, Fmt(Err(Err0196), "substract", leftTypeInfo->getDisplayNameC(), "and", rightTypeInfo->getDisplayNameC()));
     SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
     leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
 
@@ -310,7 +310,7 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
     }
 
     SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
-    PushErrContext ec(context, nullptr, ErrorContextKind::MsgPrio, Fmt(Err(Err0196), "multiply", leftTypeInfo->getDisplayNameC(), "and", rightTypeInfo->getDisplayNameC()));
+    PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::MsgPrio, Fmt(Err(Err0196), "multiply", leftTypeInfo->getDisplayNameC(), "and", rightTypeInfo->getDisplayNameC()));
     SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
     node->typeInfo = TypeManager::concreteType(left->typeInfo);
 
@@ -411,7 +411,7 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
     }
 
     SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
-    PushErrContext ec(context, nullptr, ErrorContextKind::MsgPrio, Fmt(Err(Err0196), "divide", leftTypeInfo->getDisplayNameC(), "and", rightTypeInfo->getDisplayNameC()));
+    PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::MsgPrio, Fmt(Err(Err0196), "divide", leftTypeInfo->getDisplayNameC(), "and", rightTypeInfo->getDisplayNameC()));
     SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
     node->typeInfo = TypeManager::concreteType(left->typeInfo);
 
@@ -506,7 +506,7 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
     }
 
     SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
-    PushErrContext ec(context, nullptr, ErrorContextKind::MsgPrio, Fmt(Err(Err0196), "make a modulo on", leftTypeInfo->getDisplayNameC(), "and", rightTypeInfo->getDisplayNameC()));
+    PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::MsgPrio, Fmt(Err(Err0196), "make a modulo on", leftTypeInfo->getDisplayNameC(), "and", rightTypeInfo->getDisplayNameC()));
     SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
     node->typeInfo = TypeManager::concreteType(left->typeInfo);
 

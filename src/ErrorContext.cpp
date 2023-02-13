@@ -1,56 +1,51 @@
 #include "pch.h"
 #include "ErrorContext.h"
 #include "Diagnostic.h"
-#include "Job.h"
 #include "Ast.h"
 #include "ErrorIds.h"
-#include "SourceFile.h"
-#include "TypeInfo.h"
+#include "Report.h"
 
-PushErrContext::PushErrContext(JobContext* context, AstNode* node, ErrorContextKind kind, const Utf8& msg, const Utf8& hint, bool locIsToken)
+PushErrCxtStep::PushErrCxtStep(JobContext* context, AstNode* node, ErrCxtStepKind kind, const Utf8& msg, const Utf8& hint, bool locIsToken)
     : cxt{context}
 {
-    ErrorContext expNode;
+    ErrorCxtStep expNode;
     expNode.node       = node;
     expNode.type       = kind;
     expNode.msg        = msg;
     expNode.hint       = hint;
     expNode.locIsToken = locIsToken;
-    context->errorContextStack.push_back(expNode);
+    context->errCxtSteps.push_back(expNode);
 }
 
-PushErrContext::~PushErrContext()
+PushErrCxtStep::~PushErrCxtStep()
 {
-    cxt->errorContextStack.pop_back();
+    cxt->errCxtSteps.pop_back();
 }
 
-void ErrorContext::fillContext(JobContext* context, Diagnostic& diag, Vector<const Diagnostic*>& notes)
+void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
 {
-    if (!context)
-        return;
-
-    diag.raisedOnNode = context->node;
+    diag.raisedOnNode = node;
 
     if (diag.errorLevel == DiagnosticLevel::Error)
-        context->hasError = true;
+        hasError = true;
 
-    if (context->errorContextStack.size())
+    if (errCxtSteps.size())
     {
         bool doneGeneric  = false;
         bool doneInline   = false;
         bool doneCompTime = false;
 
-        for (auto& exp : context->errorContextStack)
+        for (auto& exp : errCxtSteps)
         {
             switch (exp.type)
             {
-            case ErrorContextKind::MsgPrio:
+            case ErrCxtStepKind::MsgPrio:
                 if (diag.lowPrio)
                     diag.textMsg = exp.msg;
                 exp.hide = true;
                 break;
 
-            case ErrorContextKind::Hint2:
+            case ErrCxtStepKind::Hint2:
                 exp.hide = true;
                 if (exp.node)
                 {
@@ -62,7 +57,7 @@ void ErrorContext::fillContext(JobContext* context, Diagnostic& diag, Vector<con
 
                 break;
 
-            case ErrorContextKind::Generic:
+            case ErrCxtStepKind::Generic:
                 if (exp.node && exp.node->kind == AstNodeKind::VarDecl) // Can happen with automatic call of opIndexSuffix
                 {
                     exp.hide = true;
@@ -74,25 +69,25 @@ void ErrorContext::fillContext(JobContext* context, Diagnostic& diag, Vector<con
                 }
                 break;
 
-            case ErrorContextKind::Inline:
+            case ErrCxtStepKind::Inline:
                 exp.hide   = doneInline;
                 doneInline = true;
                 break;
-            case ErrorContextKind::CompileTime:
+            case ErrCxtStepKind::CompileTime:
                 exp.hide     = doneCompTime;
                 doneCompTime = true;
                 break;
 
-            case ErrorContextKind::Note:
-            case ErrorContextKind::Help:
+            case ErrCxtStepKind::Note:
+            case ErrCxtStepKind::Help:
                 exp.hide = exp.msg.empty();
                 break;
             }
         }
 
-        for (int i = (int) context->errorContextStack.size() - 1; i >= 0; i--)
+        for (int i = (int) errCxtSteps.size() - 1; i >= 0; i--)
         {
-            auto& exp = context->errorContextStack[i];
+            auto& exp = errCxtSteps[i];
             if (exp.hide)
                 continue;
 
@@ -105,40 +100,40 @@ void ErrorContext::fillContext(JobContext* context, Diagnostic& diag, Vector<con
             Diagnostic* note = nullptr;
             switch (exp.type)
             {
-            case ErrorContextKind::Note:
+            case ErrCxtStepKind::Note:
                 msg = exp.msg;
                 break;
-            case ErrorContextKind::Help:
+            case ErrCxtStepKind::Help:
                 msg   = exp.msg;
                 level = DiagnosticLevel::Help;
                 break;
-            case ErrorContextKind::Export:
+            case ErrCxtStepKind::Export:
                 msg = Fmt(Nte(Nte0060), name.c_str());
                 break;
-            case ErrorContextKind::Generic:
+            case ErrCxtStepKind::Generic:
                 msg            = Fmt(Nte(Nte0061), name.c_str());
                 exp.locIsToken = true;
                 break;
-            case ErrorContextKind::Inline:
+            case ErrCxtStepKind::Inline:
                 msg            = Fmt(Nte(Nte0059), name.c_str());
                 exp.locIsToken = true;
                 break;
-            case ErrorContextKind::CompileTime:
+            case ErrCxtStepKind::CompileTime:
                 msg            = Fmt(Nte(Nte0072), name.c_str());
                 exp.locIsToken = true;
                 break;
-            case ErrorContextKind::ValidIf:
+            case ErrCxtStepKind::ValidIf:
                 if (exp.node->kind == AstNodeKind::StructDecl)
                     msg = Fmt(Nte(Nte0078), name.c_str());
                 else
                     msg = Fmt(Nte(Nte0054), name.c_str());
                 exp.locIsToken = true;
                 break;
-            case ErrorContextKind::ValidIfx:
+            case ErrCxtStepKind::ValidIfx:
                 msg            = Fmt(Nte(Nte0033), name.c_str());
                 exp.locIsToken = true;
                 break;
-            case ErrorContextKind::HereIs:
+            case ErrCxtStepKind::HereIs:
                 note = Diagnostic::hereIs(exp.node->resolvedSymbolOverload);
                 if (!note)
                     continue;
@@ -170,4 +165,32 @@ void ErrorContext::fillContext(JobContext* context, Diagnostic& diag, Vector<con
         auto note           = new Diagnostic{fileSourceNode, Nte(Nte0004), DiagnosticLevel::Note};
         notes.push_back(note);
     }
+}
+
+bool ErrorContext::report(const Diagnostic& diag, const Vector<const Diagnostic*>& notes)
+{
+    if (silentError)
+        return false;
+
+    auto copyDiag  = diag;
+    auto copyNotes = notes;
+    extract(copyDiag, copyNotes);
+    return Report::report(copyDiag, copyNotes);
+}
+
+bool ErrorContext::report(const Diagnostic& diag, const Diagnostic* note, const Diagnostic* note1)
+{
+    Vector<const Diagnostic*> notes;
+    if (note)
+        notes.push_back(note);
+    if (note1)
+        notes.push_back(note1);
+    return report(diag, notes);
+}
+
+bool ErrorContext::checkSizeOverflow(const char* typeOverflow, uint64_t value, uint64_t maxValue)
+{
+    if (value <= maxValue)
+        return true;
+    return report({node, Fmt(Err(Err0505), typeOverflow, maxValue)});
 }

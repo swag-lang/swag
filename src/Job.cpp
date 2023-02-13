@@ -232,31 +232,3 @@ void Job::setPending(SymbolName* symbolToWait, JobWaitKind waitKind, AstNode* no
     waitingIdType       = typeInfo;
     baseContext->result = ContextResult::Pending;
 }
-
-bool JobContext::report(const Diagnostic& diag, const Diagnostic* note, const Diagnostic* note1)
-{
-    Vector<const Diagnostic*> notes;
-    if (note)
-        notes.push_back(note);
-    if (note1)
-        notes.push_back(note1);
-    return report(diag, notes);
-}
-
-bool JobContext::report(const Diagnostic& diag, const Vector<const Diagnostic*>& notes)
-{
-    if (silentError)
-        return false;
-
-    auto copyDiag  = diag;
-    auto copyNotes = notes;
-    ErrorContext::fillContext(this, copyDiag, copyNotes);
-    return Report::report(copyDiag, copyNotes);
-}
-
-bool JobContext::checkSizeOverflow(const char* typeOverflow, uint64_t value, uint64_t maxValue)
-{
-    if (value <= maxValue)
-        return true;
-    return report({node, Fmt(Err(Err0505), typeOverflow, maxValue)});
-}

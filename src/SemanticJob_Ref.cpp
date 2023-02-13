@@ -260,11 +260,11 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     uint64_t maxBound = 0;
 
     {
-        PushErrContext ec(context, nullptr, ErrorContextKind::MsgPrio, Fmt(Err(Err0367), node->lowerBound->typeInfo->getDisplayNameC()));
+        PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::MsgPrio, Fmt(Err(Err0367), node->lowerBound->typeInfo->getDisplayNameC()));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, node->lowerBound, CASTFLAG_TRY_COERCE));
     }
     {
-        PushErrContext ec(context, nullptr, ErrorContextKind::MsgPrio, Fmt(Err(Err0367), node->lowerBound->typeInfo->getDisplayNameC()));
+        PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::MsgPrio, Fmt(Err(Err0367), node->lowerBound->typeInfo->getDisplayNameC()));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, node->upperBound, CASTFLAG_TRY_COERCE));
     }
 

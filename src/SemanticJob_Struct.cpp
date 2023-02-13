@@ -812,7 +812,7 @@ bool SemanticJob::solveValidIf(SemanticContext* context, AstStruct* structDecl)
         auto node                  = context->node;
         context->validIfParameters = structDecl->genericParameters;
 
-        PushErrContext ec(context, node, ErrorContextKind::ValidIf);
+        PushErrCxtStep ec(context, node, ErrCxtStepKind::ValidIf);
         auto           result      = executeCompilerNode(context, expr, false);
         context->validIfParameters = nullptr;
         if (!result)

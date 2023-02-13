@@ -1370,17 +1370,17 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
 
         if (funcNode->attributeFlags & ATTRIBUTE_AST_FUNC)
         {
-            PushErrContext ec{context, funcNode, ErrorContextKind::Note, Nte(Nte0005), nullptr, true};
+            PushErrCxtStep ec{context, funcNode, ErrCxtStepKind::Note, Nte(Nte0005), nullptr, true};
             SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, castFlags));
         }
         else if (funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC)
         {
-            PushErrContext ec{context, funcNode, ErrorContextKind::Note, Fmt(Nte(Nte0067), returnType->getDisplayNameC()), nullptr, true};
+            PushErrCxtStep ec{context, funcNode, ErrCxtStepKind::Note, Fmt(Nte(Nte0067), returnType->getDisplayNameC()), nullptr, true};
             SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, castFlags));
         }
         else
         {
-            PushErrContext ec{context, funcNode->returnType, ErrorContextKind::Note, Fmt(Nte(Nte0067), returnType->getDisplayNameC())};
+            PushErrCxtStep ec{context, funcNode->returnType, ErrCxtStepKind::Note, Fmt(Nte(Nte0067), returnType->getDisplayNameC())};
             SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, castFlags));
         }
     }
@@ -1668,7 +1668,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     // Sub declarations in the inline block, like sub functions
     if (!funcDecl->subDecls.empty())
     {
-        PushErrContext ec(context, identifier, ErrorContextKind::Inline);
+        PushErrCxtStep ec(context, identifier, ErrCxtStepKind::Inline);
         SWAG_VERIFY(inlineNode->ownerFct, context->report({funcDecl, Fmt(Err(Err0781), identifier->token.ctext())}));
 
         // Authorize a sub function to access inline parameters, if possible
@@ -1698,7 +1698,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     {
         if (cloneContext.replaceNames.size() != cloneContext.usedReplaceNames.size())
         {
-            PushErrContext ec(context, identifier, ErrorContextKind::Inline);
+            PushErrCxtStep ec(context, identifier, ErrCxtStepKind::Inline);
             auto           id = CastAst<AstIdentifier>(identifier, AstNodeKind::Identifier);
             for (auto& r : cloneContext.replaceNames)
             {

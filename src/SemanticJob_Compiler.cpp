@@ -69,7 +69,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
 
     if (showContext)
     {
-        PushErrContext ec(context, node, ErrorContextKind::CompileTime);
+        PushErrCxtStep ec(context, node, ErrCxtStepKind::CompileTime);
         return executeCompilerNode(context, node);
     }
     else
