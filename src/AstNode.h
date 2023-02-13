@@ -421,7 +421,7 @@ struct AstIdentifierRef : public AstNode
     AstNode* previousResolvedNode = nullptr;
 };
 
-enum class IdentifierScopeUpMode
+enum class IdentifierScopeUpMode : uint8_t
 {
     None,
     Count,
@@ -432,6 +432,7 @@ struct AstIdentifier : public AstNode
     AstNode* clone(CloneContext& context);
 
     vector<Token> aliasNames;
+    TokenParse    scopeUpValue;
 
     AstIdentifierRef*  identifierRef     = nullptr;
     AstNode*           genericParameters = nullptr;
@@ -440,7 +441,6 @@ struct AstIdentifier : public AstNode
     AstNode*           fromAlternateVar  = nullptr;
 
     IdentifierScopeUpMode scopeUpMode = IdentifierScopeUpMode::None;
-    TokenParse            scopeUpValue;
 };
 
 struct AstFuncDecl : public AstNode
@@ -702,14 +702,15 @@ struct AstTypeExpression : public AstNode
 
     AstNode* clone(CloneContext& context);
 
-    AstNode*    identifier      = nullptr;
-    TypeInfo*   typeFromLiteral = nullptr;
-    LiteralType literalType     = (LiteralType) 0;
+    AstNode*  identifier      = nullptr;
+    TypeInfo* typeFromLiteral = nullptr;
 
-    uint16_t typeFlags               = 0;
     uint8_t  ptrFlags[MAX_PTR_COUNT] = {0};
+    uint16_t typeFlags               = 0;
     uint8_t  ptrCount                = 0;
     uint8_t  arrayDim                = 0;
+
+    LiteralType literalType = (LiteralType) 0;
 };
 
 struct AstTypeLambda : public AstNode
@@ -816,7 +817,8 @@ struct AstReturn : public AstNode
     VectorNative<SymbolOverload*> forceNoDrop;
 
     AstFuncDecl* resolvedFuncDecl = nullptr;
-    int          seekJump         = 0;
+
+    int seekJump = 0;
 };
 
 struct AstCompilerInline : public AstNode
@@ -871,6 +873,7 @@ struct AstCompilerIfBlock : public AstNode
         TypeInfoStruct* typeInfo;
         int             methodIdx;
     };
+
     VectorNative<MethodCount> methodsCount;
     VectorNative<AstNode*>    subDecls;
     VectorNative<AstNode*>    imports;
@@ -902,7 +905,8 @@ struct AstTryCatchAssume : public AstReturn
     AstNode* clone(CloneContext& context);
 
     RegisterList regInit;
-    int          seekInsideJump = 0;
+
+    int seekInsideJump = 0;
 };
 
 struct AstAlias : public AstNode
@@ -975,6 +979,7 @@ struct AstLiteral : public AstNode
 {
     AstNode* clone(CloneContext& context);
 
+    Register literalValue;
+
     LiteralType literalType = (LiteralType) 0;
-    Register    literalValue;
 };
