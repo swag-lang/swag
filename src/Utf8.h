@@ -53,7 +53,7 @@ struct Utf8
     void        trimLeft();
     void        trimRight();
     void        trim();
-    void        pop_back();
+    void        removeBack();
     int         find(const Utf8& str, int startpos = 0) const;
     void        remove(int index, int len);
     void        insert(int index, const char* str);

@@ -397,7 +397,7 @@ void Utf8::resize(int newSize)
     count           = newSize;
 }
 
-void Utf8::pop_back()
+void Utf8::removeBack()
 {
     SWAG_ASSERT(count);
     count--;

@@ -4,6 +4,7 @@
 #include "Context.h"
 #include "Module.h"
 #include "Workspace.h"
+#include "AstNode.h"
 
 ThreadManager g_ThreadMgr;
 

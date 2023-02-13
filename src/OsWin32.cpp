@@ -136,7 +136,7 @@ namespace OS
                 for (auto oneLine : lines)
                 {
                     if (oneLine.back() == '\r')
-                        oneLine.pop_back();
+                        oneLine.removeBack();
 
                     const char* pz = nullptr;
 
@@ -274,7 +274,7 @@ namespace OS
         Utf8 message(messageBuffer, (uint32_t) size);
         message.trim();
         if (message.length() && message.back() == '.')
-            message.pop_back();
+            message.removeBack();
 
         // Free the buffer.
         LocalFree(messageBuffer);
