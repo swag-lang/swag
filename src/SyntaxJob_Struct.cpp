@@ -193,7 +193,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
     }
     else if (token.id == TokenId::KwdUnion)
     {
-        structNode->structFlags |= STRUCTFLAG_UNION;
+        structNode->specFlags |= AST_SPEC_STRUCTDECL_UNION;
     }
 
     SWAG_CHECK(eatToken());

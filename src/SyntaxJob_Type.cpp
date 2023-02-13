@@ -388,9 +388,9 @@ bool SyntaxJob::doTupleOrAnonymousType(AstNode* parent, AstNode** result, bool i
     structNode->extension->semantic->semanticBeforeFct = SemanticJob::preResolveGeneratedStruct;
 
     if (anonymousStruct)
-        structNode->structFlags |= STRUCTFLAG_ANONYMOUS;
+        structNode->specFlags |= AST_SPEC_STRUCTDECL_ANONYMOUS;
     if (anonymousUnion)
-        structNode->structFlags |= STRUCTFLAG_UNION;
+        structNode->specFlags |= AST_SPEC_STRUCTDECL_UNION;
 
     auto contentNode    = Ast::newNode(sourceFile, AstNodeKind::TupleContent, structNode, this);
     structNode->content = contentNode;

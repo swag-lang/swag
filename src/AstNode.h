@@ -752,9 +752,6 @@ struct AstExpressionList : public AstNode
     TypeInfo* castToStruct = nullptr;
 };
 
-const uint32_t STRUCTFLAG_UNION     = 0x00000001;
-const uint32_t STRUCTFLAG_ANONYMOUS = 0x00000002;
-
 struct AstStruct : public AstNode
 {
     AstNode* clone(CloneContext& context);
@@ -768,8 +765,7 @@ struct AstStruct : public AstNode
     AstNode* originalParent    = nullptr;
     AstNode* validif           = nullptr;
 
-    uint32_t packing     = sizeof(uint64_t);
-    uint32_t structFlags = 0;
+    uint32_t packing = sizeof(uint64_t);
 };
 
 struct AstEnum : public AstNode

@@ -1061,7 +1061,7 @@ Utf8 TypeInfoStruct::getDisplayName()
         return "tuple";
     if (declNode && declNode->kind == AstNodeKind::InterfaceDecl)
         return Fmt("interface %s", name.c_str());
-    if (declNode && declNode->kind == AstNodeKind::StructDecl && ((AstStruct*) declNode)->structFlags & STRUCTFLAG_UNION)
+    if (declNode && declNode->kind == AstNodeKind::StructDecl && ((AstStruct*) declNode)->specFlags & AST_SPEC_STRUCTDECL_UNION)
         return Fmt("union %s", name.c_str());
 
     Utf8 str;

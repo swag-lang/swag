@@ -803,7 +803,7 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
     {
         SWAG_ASSERT(node->kind == AstNodeKind::StructDecl)
         auto structNode = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
-        if (structNode->structFlags & STRUCTFLAG_UNION)
+        if (structNode->specFlags & AST_SPEC_STRUCTDECL_UNION)
             CONCAT_FIXED_STR(concat, "union");
         else
             CONCAT_FIXED_STR(concat, "struct");
@@ -812,7 +812,7 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
     if (node->genericParameters)
         SWAG_CHECK(outputGenericParameters(context, concat, node->genericParameters));
 
-    if (!(node->structFlags & STRUCTFLAG_ANONYMOUS))
+    if (!(node->specFlags & AST_SPEC_STRUCTDECL_ANONYMOUS))
     {
         CONCAT_FIXED_STR(concat, " ");
         concat.addString(node->token.text);
@@ -873,7 +873,7 @@ bool AstOutput::outputTypeTuple(OutputContext& context, Concat& concat, TypeInfo
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     auto nodeStruct = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
 
-    if (nodeStruct->structFlags & STRUCTFLAG_ANONYMOUS)
+    if (nodeStruct->specFlags & AST_SPEC_STRUCTDECL_ANONYMOUS)
     {
         SWAG_CHECK(outputStruct(context, concat, nodeStruct));
         return true;

@@ -809,11 +809,11 @@ bool SemanticJob::solveValidIf(SemanticContext* context, AstStruct* structDecl)
 
     if (!(expr->flags & AST_VALUE_COMPUTED))
     {
-        auto node                   = context->node;
+        auto node                  = context->node;
         context->validIfParameters = structDecl->genericParameters;
 
         PushErrContext ec(context, node, ErrorContextKind::ValidIf);
-        auto           result       = executeCompilerNode(context, expr, false);
+        auto           result      = executeCompilerNode(context, expr, false);
         context->validIfParameters = nullptr;
         if (!result)
             return false;
@@ -850,7 +850,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     }
 
     // Structure packing
-    if (node->structFlags & STRUCTFLAG_UNION)
+    if (node->specFlags & AST_SPEC_STRUCTDECL_UNION)
         node->packing = 0;
     else
     {

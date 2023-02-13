@@ -871,8 +871,7 @@ AstNode* AstStruct::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstStruct>();
     newNode->copyFrom(context, this, false);
-    newNode->packing     = packing;
-    newNode->structFlags = structFlags;
+    newNode->packing = packing;
 
     auto cloneContext             = context;
     cloneContext.parent           = newNode;
