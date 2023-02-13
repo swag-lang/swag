@@ -51,65 +51,6 @@ namespace OS
         return nativeTarget;
     }
 
-    void consoleSetColor(LogColor color)
-    {
-        WORD attributes = 0;
-        switch (color)
-        {
-        case LogColor::Black:
-            attributes = 0;
-            break;
-        case LogColor::White:
-            attributes = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY;
-            break;
-        case LogColor::Gray:
-            attributes = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE;
-            break;
-        case LogColor::Red:
-            attributes = FOREGROUND_RED | FOREGROUND_INTENSITY;
-            break;
-        case LogColor::Green:
-            attributes = FOREGROUND_GREEN | FOREGROUND_INTENSITY;
-            break;
-        case LogColor::Blue:
-            attributes = FOREGROUND_BLUE | FOREGROUND_INTENSITY;
-            break;
-        case LogColor::Cyan:
-            attributes = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY;
-            break;
-        case LogColor::Magenta:
-            attributes = FOREGROUND_BLUE | FOREGROUND_RED | FOREGROUND_INTENSITY;
-            break;
-        case LogColor::Yellow:
-            attributes = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY;
-            break;
-        case LogColor::DarkRed:
-            attributes = FOREGROUND_RED;
-            break;
-        case LogColor::DarkGreen:
-            attributes = FOREGROUND_GREEN;
-            break;
-        case LogColor::DarkBlue:
-            attributes = FOREGROUND_BLUE;
-            break;
-        case LogColor::DarkCyan:
-            attributes = FOREGROUND_BLUE | FOREGROUND_GREEN;
-            break;
-        case LogColor::DarkMagenta:
-            attributes = FOREGROUND_BLUE | FOREGROUND_RED;
-            break;
-        case LogColor::DarkYellow:
-            attributes = FOREGROUND_RED | FOREGROUND_GREEN;
-            break;
-        case LogColor::Default:
-            attributes = defaultAttributes;
-            break;
-        }
-
-        WORD back = defaultAttributes & (BACKGROUND_BLUE | BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_INTENSITY);
-        SetConsoleTextAttribute(consoleHandle, attributes | back);
-    }
-
     bool doProcess(Module* module, const Utf8& cmdline, const string& currentDirectory, uint32_t& numErrors)
     {
         STARTUPINFOA        si;

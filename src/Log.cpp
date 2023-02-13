@@ -5,21 +5,101 @@
 
 Log g_Log;
 
+void Log::lock()
+{
+    mutexAccess.lock();
+}
+
+void Log::unlock()
+{
+    mutexAccess.unlock();
+}
+
+const char* Log::colorToVTS(LogColor color)
+{
+    switch (color)
+    {
+    case LogColor::Black:
+        return "\x1b[30m";
+
+    case LogColor::DarkRed:
+        return "\x1b[31m";
+    case LogColor::DarkGreen:
+        return "\x1b[32m";
+    case LogColor::DarkYellow:
+        return "\x1b[33m";
+    case LogColor::DarkBlue:
+        return "\x1b[34m";
+    case LogColor::DarkMagenta:
+        return "\x1b[35m";
+    case LogColor::DarkCyan:
+        return "\x1b[36m";
+    case LogColor::Gray:
+        return "\x1b[37m";
+
+    case LogColor::Red:
+        return "\x1b[91m";
+    case LogColor::Green:
+        return "\x1b[92m";
+    case LogColor::Yellow:
+        return "\x1b[93m";
+    case LogColor::Blue:
+        return "\x1b[94m";
+    case LogColor::Magenta:
+        return "\x1b[95m";
+    case LogColor::Cyan:
+        return "\x1b[96m";
+    case LogColor::White:
+        return "\x1b[97m";
+    }
+
+    return "";
+}
+
 void Log::setDefaultColor()
 {
-    OS::consoleSetColor(LogColor::Default);
+    setColor(LogColor::Gray);
 }
 
 void Log::setColor(LogColor color)
 {
-    curColor = color;
-    OS::consoleSetColor(color);
+    print(colorToVTS(color));
+}
+
+void Log::print(const char* message)
+{
+    if (countLength)
+        length += strlen(message);
+    cout << message;
+}
+
+void Log::eol()
+{
+    cout << "\n";
+}
+
+void Log::print(const Utf8& message)
+{
+    print(message.c_str());
+}
+
+void Log::printColor(const char* message, LogColor color)
+{
+    setColor(color);
+    print(message);
+}
+
+void Log::setCountLength(bool b)
+{
+    countLength = b;
+    length      = 0;
 }
 
 void Log::messageHeaderCentered(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor)
 {
     if (g_CommandLine.silent)
         return;
+
     lock();
     setColor(headerColor);
     auto size = header.length();
@@ -57,8 +137,8 @@ void Log::messageHeaderDot(const Utf8& header, const Utf8& message, LogColor hea
     }
 
     print(" ");
-    print(message);
     setColor(msgColor);
+    print(message);
     if (message.back() != '\n')
         eol();
     setDefaultColor();
@@ -70,6 +150,7 @@ void Log::message(const Utf8& message)
 {
     if (g_CommandLine.silent)
         return;
+
     lock();
     setColor(LogColor::Gray);
     print(message);
@@ -79,109 +160,16 @@ void Log::message(const Utf8& message)
     unlock();
 }
 
-void Log::verbose(const Utf8& message, bool forceEol)
+void Log::verbose(const Utf8& message)
 {
     if (g_CommandLine.silent || !g_CommandLine.verbose)
         return;
+
     lock();
     setColor(LogColor::DarkCyan);
     print(message);
-    if (forceEol && message.back() != '\n')
+    if (message.back() != '\n')
         eol();
     setDefaultColor();
     unlock();
-}
-
-void Log::lock()
-{
-    mutexAccess.lock();
-}
-
-void Log::unlock()
-{
-    mutexAccess.unlock();
-}
-
-void Log::print(const char* message)
-{
-    // Markdown
-    if (!countLength && g_CommandLine.errorMarkdown)
-    {
-        while (*message)
-        {
-            Utf8 tt;
-            while (*message && *message != '\'')
-                tt += *message++;
-            cout << tt.c_str();
-            tt.clear();
-            if (*message == 0)
-                break;
-
-            cout << "\'";
-
-            auto oldColor = curColor;
-
-            switch (curColor)
-            {
-            case LogColor::Red:
-                tt += "\x1b[91m";
-                break;
-            case LogColor::White:
-                tt += "\x1b[97m";
-                break;
-            }
-            tt += "\x1b[4m";
-
-            message++;
-            Utf8 totoSingle;
-            while (*message && *message != '\'')
-            {
-                totoSingle += *message;
-                tt += *message++;
-            }
-
-            if (*message)
-                message++;
-            tt += "\x1b[0m";
-
-            if (totoSingle.count <= 1)
-                cout << totoSingle.c_str();
-            else
-                cout << tt.c_str();
-            tt.clear();
-
-            setColor(oldColor);
-            cout << "\'";
-            if (*message == 0)
-                break;
-        }
-
-        return;
-    }
-
-    if (countLength)
-        length += strlen(message);
-    cout << message;
-}
-
-void Log::printColor(const char* message, LogColor color)
-{
-    setColor(color);
-    cout << message;
-}
-
-void Log::print(const Utf8& message)
-{
-    print(message.c_str());
-}
-
-void Log::eol()
-{
-    cout << "\n";
-}
-
-void Log::setCountLength(bool b)
-{
-    countLength = b;
-    length      = 0;
 }

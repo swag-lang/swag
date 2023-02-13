@@ -81,7 +81,6 @@ struct CommandLine
     bool      verboseStages         = false;
     bool      errorOneLine          = false;
     bool      errorCompact          = true;
-    bool      errorMarkdown         = false;
     bool      errorAbsolute         = false;
 
     // Output

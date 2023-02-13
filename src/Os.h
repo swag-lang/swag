@@ -29,7 +29,6 @@ namespace OS
     };
 
     void                 setup();
-    void                 consoleSetColor(LogColor color);
     const BackendTarget& getNativeTarget();
 
     bool   doProcess(Module* module, const Utf8& cmdline, const string& currentDirectory, uint32_t& numErrors);

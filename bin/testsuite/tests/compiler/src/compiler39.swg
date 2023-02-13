@@ -1,5 +1,4 @@
-﻿
-#global testpass syntax;
+﻿#global testpass syntax;
 #global testerror;
 namespace toto
 {

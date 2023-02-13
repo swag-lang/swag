@@ -1,6 +1,4 @@
-;
-;
-using Swag;
+using Swag
 
 //#[PrintBc]
 func main ()

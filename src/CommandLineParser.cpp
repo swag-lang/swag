@@ -21,7 +21,6 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu sc",          "--error-oneline",        "-el",      CommandLineType::Bool,          &cmdLine->errorOneLine, nullptr, "display errors in a single line");
     addArg("bu sc",          "--error-compact",        "-ec",      CommandLineType::Bool,          &cmdLine->errorCompact, nullptr, "merge errors and notes together if possible");
     addArg("bu sc",          "--error-abs",            "-ea",      CommandLineType::Bool,          &cmdLine->errorAbsolute, nullptr, "display absolute paths when an error is raised");
-    addArg("bu sc",          "--error-markdown",       "-em",      CommandLineType::Bool,          &cmdLine->errorMarkdown, nullptr, "hilight markdown format");
                                                                                                    
     addArg("bu ne cl li ge", "--workspace",            "-w",       CommandLineType::String,        &cmdLine->workspacePath, nullptr, "the path to the workspace to work with");
     addArg("bu ne",          "--module",               "-m",       CommandLineType::String,        &cmdLine->moduleName, nullptr, "module name");

@@ -42,13 +42,14 @@ struct Log
     static constexpr const char* VDarkCyan    = "\x1b[36m";
     static constexpr const char* VDarkWhite   = "\x1b[37m";
 
-    void setColor(LogColor color);
-    void setDefaultColor();
+    static const char* colorToVTS(LogColor color);
+    void               setColor(LogColor color);
+    void               setDefaultColor();
 
-    void message(const Utf8& message);
     void messageHeaderCentered(const Utf8& header, const Utf8& message, LogColor headerColor = LogColor::Green, LogColor msgColor = LogColor::White);
     void messageHeaderDot(const Utf8& header, const Utf8& message, LogColor headerColor = LogColor::Cyan, LogColor msgColor = LogColor::Cyan, const char* dot = ".", bool mustLock = true);
-    void verbose(const Utf8& message, bool forceEol = true);
+    void message(const Utf8& message);
+    void verbose(const Utf8& message);
 
     void lock();
     void unlock();
@@ -58,10 +59,9 @@ struct Log
     void eol();
     void setCountLength(bool b);
 
-    Mutex    mutexAccess;
-    bool     countLength = false;
-    size_t   length      = 0;
-    LogColor curColor;
+    Mutex  mutexAccess;
+    bool   countLength = false;
+    size_t length      = 0;
 };
 
 extern Log g_Log;
