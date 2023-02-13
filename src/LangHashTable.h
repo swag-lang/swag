@@ -1,5 +1,5 @@
 #pragma once
-#include "Hash.h"
+#include "Crc32.h"
 
 template<typename V, int N>
 struct LangHashTable

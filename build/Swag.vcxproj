@@ -217,7 +217,7 @@
     <ClInclude Include="..\src\ComputedValue.h" />
     <ClInclude Include="..\src\ErrorContext.h" />
     <ClInclude Include="..\src\ErrorList.h" />
-    <ClInclude Include="..\src\Hash.h" />
+    <ClInclude Include="..\src\Crc32.h" />
     <ClInclude Include="..\src\JobGroup.h" />
     <ClInclude Include="..\src\LoadSourceFileJob.h" />
     <ClInclude Include="..\src\MapRegTo.h" />

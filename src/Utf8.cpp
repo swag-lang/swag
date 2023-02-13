@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Utf8.h"
 #include "CommandLine.h"
-#include "Hash.h"
+#include "Crc32.h"
 
 Utf8::Utf8()
 {

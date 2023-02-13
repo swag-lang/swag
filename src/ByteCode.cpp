@@ -1,13 +1,9 @@
 #include "pch.h"
 #include "ByteCode.h"
 #include "Ast.h"
-#include "ByteCodeStack.h"
 #include "Module.h"
 #include "TypeManager.h"
-#include "ErrorIds.h"
-#include "Diagnostic.h"
-#include "Backend.h"
-#include "Hash.h"
+#include "Crc32.h"
 
 #undef BYTECODE_OP
 #define BYTECODE_OP(__op, __flags, __dis) {#__op, (int) strlen(#__op), __flags, __dis},

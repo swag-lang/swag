@@ -785,7 +785,7 @@
     <ClInclude Include="..\src\MapRegTo.h">
       <Filter>Backend\ByteCode\Optimize</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Hash.h">
+    <ClInclude Include="..\src\Crc32.h">
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="..\src\SaveGenJob.h">
