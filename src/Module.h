@@ -2,7 +2,7 @@
 #include "ByteCodeRunContext.h"
 #include "ByteCodeRun.h"
 #include "BackendParameters.h"
-#include "TypeTable.h"
+#include "TypeGen.h"
 #include "DataSegment.h"
 #include "DependentJobs.h"
 #include "SymTable.h"
@@ -209,7 +209,7 @@ struct Module
     DataSegment compilerSegment;
     DataSegment tlsSegment;
 
-    TypeTable        typeTable;
+    TypeGen        typeTable;
     ByteCodeRun      runner;
     DependentJobs    dependentJobs;
     SwagProcessInfos processInfos = {{0}};

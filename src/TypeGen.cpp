@@ -1,22 +1,22 @@
 #include "pch.h"
-#include "TypeTable.h"
+#include "TypeGen.h"
 #include "SemanticJob.h"
 #include "Workspace.h"
 #include "ThreadManager.h"
-#include "TypeTableJob.h"
+#include "TypeGenStructJob.h"
 #include "TypeManager.h"
 #include "Module.h"
 #include "ErrorIds.h"
 #include "Crc32.h"
 
-bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, uint32_t cflags, TypeInfo** ptrTypeInfo)
+bool TypeGen::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, uint32_t cflags, TypeInfo** ptrTypeInfo)
 {
     auto&      mapPerSeg = getMapPerSeg(storageSegment);
     ScopedLock lk(mapPerSeg.mutex);
     return makeConcreteTypeInfoNoLock(context, nullptr, typeInfo, storageSegment, storage, cflags, ptrTypeInfo);
 }
 
-bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo** result, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, uint32_t cflags, TypeInfo** ptrTypeInfo)
+bool TypeGen::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo** result, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, uint32_t cflags, TypeInfo** ptrTypeInfo)
 {
     switch (typeInfo->kind)
     {
@@ -339,7 +339,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
     return true;
 }
 
-bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, ConcreteTypeInfo** result, void* concreteTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfo* typeInfo, uint32_t cflags)
+bool TypeGen::makeConcreteSubTypeInfo(JobContext* context, ConcreteTypeInfo** result, void* concreteTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfo* typeInfo, uint32_t cflags)
 {
     if (!typeInfo)
     {
@@ -354,7 +354,7 @@ bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, ConcreteTypeInfo** 
     return true;
 }
 
-bool TypeTable::makeConcreteString(JobContext* context, SwagSlice* result, const Utf8& str, DataSegment* storageSegment, uint32_t offsetInBuffer)
+bool TypeGen::makeConcreteString(JobContext* context, SwagSlice* result, const Utf8& str, DataSegment* storageSegment, uint32_t offsetInBuffer)
 {
     if (str.empty())
     {
@@ -370,7 +370,7 @@ bool TypeTable::makeConcreteString(JobContext* context, SwagSlice* result, const
     return true;
 }
 
-void* TypeTable::makeConcreteSlice(JobContext* context, uint32_t sizeOf, void* concreteTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, void** result, uint32_t& storageArray)
+void* TypeGen::makeConcreteSlice(JobContext* context, uint32_t sizeOf, void* concreteTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, void** result, uint32_t& storageArray)
 {
     uint8_t* addrDst;
     storageArray = storageSegment->reserve(sizeOf, &addrDst);
@@ -383,7 +383,7 @@ void* TypeTable::makeConcreteSlice(JobContext* context, uint32_t sizeOf, void* c
     return addrDst;
 }
 
-void* TypeTable::makeConcreteSlice(JobContext* context, uint32_t sizeOf, DataSegment* storageSegment, uint32_t storageOffset, void** result, uint32_t& storageArray)
+void* TypeGen::makeConcreteSlice(JobContext* context, uint32_t sizeOf, DataSegment* storageSegment, uint32_t storageOffset, void** result, uint32_t& storageArray)
 {
     uint8_t* addrDst;
     storageArray = storageSegment->reserve(sizeOf, &addrDst);
@@ -396,7 +396,7 @@ void* TypeTable::makeConcreteSlice(JobContext* context, uint32_t sizeOf, DataSeg
     return addrDst;
 }
 
-bool TypeTable::makeConcreteAny(JobContext* context, ConcreteAny* ptrAny, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue& computedValue, TypeInfo* typeInfo, uint32_t cflags)
+bool TypeGen::makeConcreteAny(JobContext* context, ConcreteAny* ptrAny, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue& computedValue, TypeInfo* typeInfo, uint32_t cflags)
 {
     auto sourceFile = context->sourceFile;
     if (typeInfo->isNative())
@@ -412,7 +412,7 @@ bool TypeTable::makeConcreteAny(JobContext* context, ConcreteAny* ptrAny, DataSe
     return true;
 }
 
-bool TypeTable::makeConcreteTypeValue(JobContext* context, void* concreteTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfoParam* realType, uint32_t cflags)
+bool TypeGen::makeConcreteTypeValue(JobContext* context, void* concreteTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfoParam* realType, uint32_t cflags)
 {
     auto sourceFile   = context->sourceFile;
     auto concreteType = (ConcreteTypeValue*) concreteTypeInfoValue;
@@ -465,7 +465,7 @@ bool TypeTable::makeConcreteTypeValue(JobContext* context, void* concreteTypeInf
     return true;
 }
 
-bool TypeTable::makeConcreteAttributes(JobContext* context, AttributeList& attributes, void* concreteTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, SwagSlice* result, uint32_t cflags)
+bool TypeGen::makeConcreteAttributes(JobContext* context, AttributeList& attributes, void* concreteTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, SwagSlice* result, uint32_t cflags)
 {
     if (attributes.empty())
         return true;
@@ -552,7 +552,7 @@ bool TypeTable::makeConcreteAttributes(JobContext* context, AttributeList& attri
     return true;
 }
 
-void TypeTable::tableJobDone(TypeTableJob* job, DataSegment* segment)
+void TypeGen::tableJobDone(TypeGenStructJob* job, DataSegment* segment)
 {
     auto& mapPerSeg = getMapPerSeg(segment);
     auto  it        = mapPerSeg.concreteTypesJob.find(job->typeName);
@@ -562,7 +562,7 @@ void TypeTable::tableJobDone(TypeTableJob* job, DataSegment* segment)
         segment->addPatchMethod(it1.first, it1.second);
 }
 
-TypeInfo* TypeTable::getRealType(DataSegment* segment, ConcreteTypeInfo* concreteType)
+TypeInfo* TypeGen::getRealType(DataSegment* segment, ConcreteTypeInfo* concreteType)
 {
     auto&      mapPerSeg = getMapPerSeg(segment);
     SharedLock lk(mapPerSeg.mutex);
@@ -572,7 +572,7 @@ TypeInfo* TypeTable::getRealType(DataSegment* segment, ConcreteTypeInfo* concret
     return it->second;
 }
 
-void TypeTable::initFrom(Module* module, TypeTable* other)
+void TypeGen::initFrom(Module* module, TypeGen* other)
 {
     if (mapPerSegment.count == 0)
         setup(name);
@@ -592,7 +592,7 @@ void TypeTable::initFrom(Module* module, TypeTable* other)
     }
 }
 
-void TypeTable::setup(const Utf8& moduleName)
+void TypeGen::setup(const Utf8& moduleName)
 {
     name = moduleName;
     mapPerSegment.set_size_clear(2 + g_CommandLine.numCores);
@@ -600,7 +600,7 @@ void TypeTable::setup(const Utf8& moduleName)
         mapPerSegment[i] = new MapPerSeg;
 }
 
-TypeTable::MapPerSeg& TypeTable::getMapPerSeg(DataSegment* segment)
+TypeGen::MapPerSeg& TypeGen::getMapPerSeg(DataSegment* segment)
 {
     if (segment->kind != SegmentKind::Compiler)
         return *mapPerSegment[0];
@@ -609,7 +609,7 @@ TypeTable::MapPerSeg& TypeTable::getMapPerSeg(DataSegment* segment)
     return *mapPerSegment[2 + segment->compilerThreadIdx];
 }
 
-bool TypeTable::makeConcreteStruct(JobContext* context, const auto& typeName, ConcreteTypeInfo* concreteTypeInfoValue, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t storageOffset, uint32_t cflags)
+bool TypeGen::makeConcreteStruct(JobContext* context, const auto& typeName, ConcreteTypeInfo* concreteTypeInfoValue, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t storageOffset, uint32_t cflags)
 {
     // If we are already waiting for a job to finish, then we must... wait, and not generate new jobs
     if (context->baseJob->waitingKind == JobWaitKind::MakeConcrete && context->result != ContextResult::Done)
@@ -620,7 +620,7 @@ bool TypeTable::makeConcreteStruct(JobContext* context, const auto& typeName, Co
     auto module     = sourceFile->module;
 
     auto& mapPerSeg            = getMapPerSeg(storageSegment);
-    auto  job                  = g_Allocator.alloc<TypeTableJob>();
+    auto  job                  = g_Allocator.alloc<TypeGenStructJob>();
     job->module                = module;
     job->typeTable             = this;
     job->sourceFile            = sourceFile;

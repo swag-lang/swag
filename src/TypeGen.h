@@ -12,13 +12,13 @@ struct TypeInfoParam;
 struct ComputedValue;
 struct DataSegment;
 struct Module;
-struct TypeTableJob;
+struct TypeGenStructJob;
 
 static uint32_t MAKE_CONCRETE_TYPE_SHOULD_WAIT    = 0x00000001;
 static uint32_t MAKE_CONCRETE_TYPE_FORCE_NO_SCOPE = 0x00000002;
 static uint32_t MAKE_CONCRETE_TYPE_PARTIAL        = 0x00000004;
 
-struct TypeTable
+struct TypeGen
 {
     struct MapType
     {
@@ -32,7 +32,7 @@ struct TypeTable
     {
         SharedMutex                                  mutex;
         unordered_map<Utf8, MapType, HashUtf8>       concreteTypes;
-        unordered_map<Utf8, TypeTableJob*, HashUtf8> concreteTypesJob;
+        unordered_map<Utf8, TypeGenStructJob*, HashUtf8> concreteTypesJob;
         unordered_map<ConcreteTypeInfo*, TypeInfo*>  concreteTypesReverse;
     };
 
@@ -49,9 +49,9 @@ struct TypeTable
     bool  makeConcreteStruct(JobContext* context, const auto& typeName, ConcreteTypeInfo* concreteTypeInfoValue, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t storageOffset, uint32_t cflags);
 
     MapPerSeg& getMapPerSeg(DataSegment* segment);
-    void       tableJobDone(TypeTableJob* job, DataSegment* segment);
+    void       tableJobDone(TypeGenStructJob* job, DataSegment* segment);
     TypeInfo*  getRealType(DataSegment* segment, ConcreteTypeInfo* concreteType);
-    void       initFrom(Module* module, TypeTable* other);
+    void       initFrom(Module* module, TypeGen* other);
 
     Utf8                     name;
     Mutex                    mutexMapPerSeg;

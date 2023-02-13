@@ -179,10 +179,10 @@
     <ClCompile Include="..\src\TypeManager_Cast.cpp">
       <Filter>Type</Filter>
     </ClCompile>
-    <ClCompile Include="../src/TypeTable.cpp">
+    <ClCompile Include="..\src\TypeGen.cpp">
       <Filter>Type</Filter>
     </ClCompile>
-    <ClCompile Include="../src/TypeTableJob.cpp">
+    <ClCompile Include="..\src\TypeGenStructJob.cpp">
       <Filter>Type</Filter>
     </ClCompile>
     <ClCompile Include="../src/BackendX64.cpp">
@@ -611,7 +611,7 @@
     <ClInclude Include="../src/BackendLLVMDbg.h">
       <Filter>Backend\LLVM</Filter>
     </ClInclude>
-    <ClInclude Include="../src/TypeTableJob.h">
+    <ClInclude Include="..\src\TypeGenStructJob.h">
       <Filter>Type</Filter>
     </ClInclude>
     <ClInclude Include="../src/TypeInfo.h">
@@ -620,7 +620,7 @@
     <ClInclude Include="../src/TypeManager.h">
       <Filter>Type</Filter>
     </ClInclude>
-    <ClInclude Include="../src/TypeTable.h">
+    <ClInclude Include="..\src\TypeGen.h">
       <Filter>Type</Filter>
     </ClInclude>
     <ClInclude Include="../src/BackendX64.h">

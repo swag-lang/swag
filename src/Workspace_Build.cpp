@@ -12,7 +12,7 @@
 #include "ModuleCfgManager.h"
 #include "Report.h"
 #include "ModuleManager.h"
-#include "TypeTableJob.h"
+#include "TypeGenStructJob.h"
 #include "Naming.h"
 
 void Workspace::computeModuleName(const fs::path& path, Utf8& moduleName, Utf8& moduleFolder, ModuleKind& kind)
@@ -352,7 +352,7 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, Job* depJob)
     }
     else if (prevJob->waitingIdType)
     {
-        if (dynamic_cast<TypeTableJob*>(prevJob))
+        if (dynamic_cast<TypeGenStructJob*>(prevJob))
         {
             msg      = Fmt(Nte(Nte0058), prevJob->waitingIdType->getDisplayNameC());
             prevNode = prevJob->waitingIdType->declNode;

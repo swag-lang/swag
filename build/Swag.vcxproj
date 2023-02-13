@@ -246,8 +246,8 @@
     <ClInclude Include="../src/ThreadManager.h" />
     <ClInclude Include="../src/Tokenizer.h" />
     <ClInclude Include="../src/TypeManager.h" />
-    <ClInclude Include="../src/TypeTable.h" />
-    <ClInclude Include="../src/TypeTableJob.h" />
+    <ClInclude Include="..\src\TypeGen.h" />
+    <ClInclude Include="..\src\TypeGenStructJob.h" />
     <ClInclude Include="../src/Utf8.h" />
     <ClInclude Include="../src/VectorNative.h" />
     <ClInclude Include="../src/Version.h" />
@@ -438,8 +438,8 @@
     <ClCompile Include="..\src\TypeInfo_Specific.cpp" />
     <ClCompile Include="../src/TypeManager.cpp" />
     <ClCompile Include="..\src\TypeManager_Cast.cpp" />
-    <ClCompile Include="../src/TypeTable.cpp" />
-    <ClCompile Include="../src/TypeTableJob.cpp" />
+    <ClCompile Include="..\src\TypeGen.cpp" />
+    <ClCompile Include="..\src\TypeGenStructJob.cpp" />
     <ClCompile Include="../src/Utf8.cpp" />
     <ClCompile Include="../src/Workspace.cpp" />
     <ClCompile Include="..\src\ByteCodeOptimizer_Loop.cpp" />

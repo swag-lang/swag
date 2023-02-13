@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "Module.h"
-#include "TypeTableJob.h"
+#include "TypeGenStructJob.h"
 #include "Generic.h"
 #include "ByteCode.h"
 #include "Ast.h"
 #include "ModuleManager.h"
 
-bool TypeTableJob::computeStruct()
+bool TypeGenStructJob::computeStruct()
 {
     auto concreteType = (ConcreteTypeInfoStruct*) concreteTypeInfoValue;
     auto realType     = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
@@ -258,7 +258,7 @@ bool TypeTableJob::computeStruct()
     return true;
 }
 
-JobResult TypeTableJob::execute()
+JobResult TypeGenStructJob::execute()
 {
     JobContext context;
     context.sourceFile = sourceFile;
