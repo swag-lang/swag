@@ -49,7 +49,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, ExportedTypeInfo** 
         if (ptrTypeInfo)
             *ptrTypeInfo = it->second.newRealType;
         if (result)
-            *result = it->second.concreteType;
+            *result = it->second.exportedType;
         *storage = it->second.storageOffset;
 
         // The registered type is the full version, so exit, and wait for the job to complete if necessary
@@ -62,7 +62,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, ExportedTypeInfo** 
                 if (itJob != mapPerSeg.exportedTypesJob.end())
                 {
                     itJob->second->addDependentJob(context->baseJob);
-                    context->baseJob->setPending(nullptr, JobWaitKind::MakeConcrete, nullptr, typeInfo);
+                    context->baseJob->setPending(nullptr, JobWaitKind::GenExportedType, nullptr, typeInfo);
                 }
             }
         }
@@ -179,10 +179,10 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, ExportedTypeInfo** 
     MapType mapType;
     mapType.realType      = typeInfo;
     mapType.newRealType   = typePtr;
-    mapType.concreteType  = exportedTypeInfoValue;
+    mapType.exportedType  = exportedTypeInfoValue;
     mapType.storageOffset = storageOffset;
     if (result)
-        *result = mapType.concreteType;
+        *result = mapType.exportedType;
 
     mapPerSeg.exportedTypes[typeName]                     = mapType;
     mapPerSeg.exportedTypesReverse[exportedTypeInfoValue] = typeInfo;
@@ -580,15 +580,15 @@ void TypeGen::initFrom(Module* module, TypeGen* other)
     mapPerSegment[0]->exportedTypes = other->mapPerSegment[0]->exportedTypes;
     for (auto& it : mapPerSegment[0]->exportedTypes)
     {
-        it.second.concreteType                                         = (ExportedTypeInfo*) module->constantSegment.address(it.second.storageOffset);
-        mapPerSegment[0]->exportedTypesReverse[it.second.concreteType] = it.second.realType;
+        it.second.exportedType                                         = (ExportedTypeInfo*) module->constantSegment.address(it.second.storageOffset);
+        mapPerSegment[0]->exportedTypesReverse[it.second.exportedType] = it.second.realType;
     }
 
     mapPerSegment[1]->exportedTypes = other->mapPerSegment[1]->exportedTypes;
     for (auto& it : mapPerSegment[1]->exportedTypes)
     {
-        it.second.concreteType                                         = (ExportedTypeInfo*) module->compilerSegment.address(it.second.storageOffset);
-        mapPerSegment[1]->exportedTypesReverse[it.second.concreteType] = it.second.realType;
+        it.second.exportedType                                         = (ExportedTypeInfo*) module->compilerSegment.address(it.second.storageOffset);
+        mapPerSegment[1]->exportedTypesReverse[it.second.exportedType] = it.second.realType;
     }
 }
 
@@ -612,7 +612,7 @@ TypeGen::MapPerSeg& TypeGen::getMapPerSeg(DataSegment* segment)
 bool TypeGen::genExportedStuct(JobContext* context, const auto& typeName, ExportedTypeInfo* exportedTypeInfoValue, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t storageOffset, uint32_t cflags)
 {
     // If we are already waiting for a job to finish, then we must... wait, and not generate new jobs
-    if (context->baseJob->waitingKind == JobWaitKind::MakeConcrete && context->result != ContextResult::Done)
+    if (context->baseJob->waitingKind == JobWaitKind::GenExportedType && context->result != ContextResult::Done)
         return true;
 
     SWAG_ASSERT(context);
@@ -638,9 +638,9 @@ bool TypeGen::genExportedStuct(JobContext* context, const auto& typeName, Export
 
     if (cflags & GEN_EXPORTED_TYPE_SHOULD_WAIT)
     {
-        SWAG_ASSERT(context->result == ContextResult::Done || context->baseJob->waitingKind == JobWaitKind::MakeConcrete1);
+        SWAG_ASSERT(context->result == ContextResult::Done || context->baseJob->waitingKind == JobWaitKind::GenExportedType1);
         job->dependentJob = context->baseJob;
-        context->baseJob->setPending(nullptr, JobWaitKind::MakeConcrete1, nullptr, typeInfo);
+        context->baseJob->setPending(nullptr, JobWaitKind::GenExportedType1, nullptr, typeInfo);
         context->baseJob->jobsToAdd.push_back(job);
     }
     else

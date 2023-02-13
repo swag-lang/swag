@@ -24,7 +24,7 @@ struct TypeGen
     {
         TypeInfo*         realType;
         TypeInfo*         newRealType;
-        ExportedTypeInfo* concreteType;
+        ExportedTypeInfo* exportedType;
         uint32_t          storageOffset;
     };
 

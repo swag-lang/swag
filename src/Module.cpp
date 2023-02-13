@@ -356,7 +356,7 @@ void Module::buildTypesSlice()
 
     for (auto t : map)
     {
-        *(ExportedTypeInfo**) resultPtr = t.second.concreteType;
+        *(ExportedTypeInfo**) resultPtr = t.second.exportedType;
         constantSegment.addInitPtr(offset, t.second.storageOffset);
 
         resultPtr += sizeof(ExportedTypeInfo*);
