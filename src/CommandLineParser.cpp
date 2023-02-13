@@ -190,7 +190,6 @@ void CommandLineParser::logArguments(const string& cmd)
     g_Log.message(line0);
     g_Log.message(line1);
 
-    int cpt = 0;
     for (auto arg : longNameArgs)
     {
         auto oneArg = arg.second;
@@ -227,7 +226,6 @@ void CommandLineParser::logArguments(const string& cmd)
         }
 
         g_Log.message(line0);
-        cpt++;
     }
 }
 
