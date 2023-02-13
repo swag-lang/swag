@@ -59,14 +59,14 @@ struct SourceLocation
 
 struct Token
 {
+    TokenId     id          = TokenId::Invalid;
+    LiteralType literalType = (LiteralType) 0;
+    uint8_t     padding     = 0;
+
     Utf8           text;
     SourceLocation startLocation;
     SourceLocation endLocation;
     Register       literalValue;
-
-    TokenId     id          = TokenId::Invalid;
-    LiteralType literalType = (LiteralType) 0;
-    uint8_t     padding     = 0;
 
     const char* ctext()
     {
