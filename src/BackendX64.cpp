@@ -629,21 +629,19 @@ bool BackendX64::emitSymbolTable(const BuildParameters& buildParameters)
     pp.stringTableOffset = 4;
     for (auto& symbol : pp.allSymbols)
     {
-        concat.ensureSpace(18);
-
         // .Name
         if (symbol.name.length() <= 8)
         {
             // Be sure it's stuffed with 0 after the name, or we can have weird things
             // in the compiler
-            concat.addU64_safe(0);
+            concat.addU64(0);
             auto ptr = concat.getSeekPtr() - 8;
             memcpy(ptr, symbol.name.buffer, symbol.name.length());
         }
         else
         {
-            concat.addU32_safe(0);
-            concat.addU32_safe(pp.stringTableOffset);
+            concat.addU32(0);
+            concat.addU32(pp.stringTableOffset);
             pp.stringTable.push_back(&symbol.name);
             pp.stringTableOffset += symbol.name.length() + 1;
         }
@@ -652,28 +650,28 @@ bool BackendX64::emitSymbolTable(const BuildParameters& buildParameters)
         switch (symbol.kind)
         {
         case CoffSymbolKind::Function:
-            concat.addU16_safe(pp.sectionIndexText);           // .SectionNumber
-            concat.addU16_safe(IMAGE_SYM_DTYPE_FUNCTION << 8); // .Type
-            concat.addU8_safe(IMAGE_SYM_CLASS_EXTERNAL);       // .StorageClass
-            concat.addU8_safe(0);                              // .NumberOfAuxSymbols
+            concat.addU16(pp.sectionIndexText);           // .SectionNumber
+            concat.addU16(IMAGE_SYM_DTYPE_FUNCTION << 8); // .Type
+            concat.addU8(IMAGE_SYM_CLASS_EXTERNAL);       // .StorageClass
+            concat.addU8(0);                              // .NumberOfAuxSymbols
             break;
         case CoffSymbolKind::Extern:
-            concat.addU16_safe(0);                       // .SectionNumber
-            concat.addU16_safe(0);                       // .Type
-            concat.addU8_safe(IMAGE_SYM_CLASS_EXTERNAL); // .StorageClass
-            concat.addU8_safe(0);                        // .NumberOfAuxSymbols
+            concat.addU16(0);                       // .SectionNumber
+            concat.addU16(0);                       // .Type
+            concat.addU8(IMAGE_SYM_CLASS_EXTERNAL); // .StorageClass
+            concat.addU8(0);                        // .NumberOfAuxSymbols
             break;
         case CoffSymbolKind::Custom:
-            concat.addU16_safe(symbol.sectionIdx);       // .SectionNumber
-            concat.addU16_safe(0);                       // .Type
-            concat.addU8_safe(IMAGE_SYM_CLASS_EXTERNAL); // .StorageClass
-            concat.addU8_safe(0);                        // .NumberOfAuxSymbols
+            concat.addU16(symbol.sectionIdx);       // .SectionNumber
+            concat.addU16(0);                       // .Type
+            concat.addU8(IMAGE_SYM_CLASS_EXTERNAL); // .StorageClass
+            concat.addU8(0);                        // .NumberOfAuxSymbols
             break;
         case CoffSymbolKind::GlobalString:
-            concat.addU16_safe(pp.sectionIndexSS);     // .SectionNumber
-            concat.addU16_safe(0);                     // .Type
-            concat.addU8_safe(IMAGE_SYM_CLASS_STATIC); // .StorageClass
-            concat.addU8_safe(0);                      // .NumberOfAuxSymbols
+            concat.addU16(pp.sectionIndexSS);     // .SectionNumber
+            concat.addU16(0);                     // .Type
+            concat.addU8(IMAGE_SYM_CLASS_STATIC); // .StorageClass
+            concat.addU8(0);                      // .NumberOfAuxSymbols
             break;
         default:
             SWAG_ASSERT(false);
@@ -713,9 +711,9 @@ bool BackendX64::emitRelocationTable(Concat& concat, CoffRelocationTable& coffta
         *count = 0xFFFF;
         *sectionFlags |= IMAGE_SCN_LNK_NRELOC_OVFL;
         concat.ensureSpace(4 + 4 + 2);
-        concat.addU32_safe(tableSize + 1);
-        concat.addU32_safe(0);
-        concat.addU16_safe(0);
+        concat.addU32(tableSize + 1);
+        concat.addU32(0);
+        concat.addU16(0);
     }
     else
     {
@@ -725,9 +723,9 @@ bool BackendX64::emitRelocationTable(Concat& concat, CoffRelocationTable& coffta
     for (auto& reloc : cofftable.table)
     {
         concat.ensureSpace(4 + 4 + 2);
-        concat.addU32_safe(reloc.virtualAddress);
-        concat.addU32_safe(reloc.symbolIndex);
-        concat.addU16_safe(reloc.type);
+        concat.addU32(reloc.virtualAddress);
+        concat.addU32(reloc.symbolIndex);
+        concat.addU16(reloc.type);
     }
 
     return true;

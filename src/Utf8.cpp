@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Utf8.h"
 #include "CommandLine.h"
-#include "Mutex.h"
 #include "Hash.h"
 
 Utf8::Utf8()

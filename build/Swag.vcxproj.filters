@@ -2,13 +2,13 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="../src/JobThread.cpp">
-      <Filter>Main\Threading</Filter>
+      <Filter>Threading</Filter>
     </ClCompile>
     <ClCompile Include="../src/ThreadManager.cpp">
-      <Filter>Main\Threading</Filter>
+      <Filter>Threading</Filter>
     </ClCompile>
     <ClCompile Include="../src/Job.cpp">
-      <Filter>Main\Threading</Filter>
+      <Filter>Threading</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Main.cpp">
       <Filter>Main</Filter>
@@ -162,28 +162,28 @@
       <Filter>Backend\LLVM</Filter>
     </ClCompile>
     <ClCompile Include="../src/OsWin32.cpp">
-      <Filter>Main\Os</Filter>
+      <Filter>Os</Filter>
     </ClCompile>
     <ClCompile Include="../src/TypeInfo.cpp">
-      <Filter>Semantic\Type</Filter>
+      <Filter>Type</Filter>
     </ClCompile>
     <ClCompile Include="../src/TypeInfoMatch_.cpp">
-      <Filter>Semantic\Type</Filter>
+      <Filter>Type</Filter>
     </ClCompile>
     <ClCompile Include="../src/TypeInfoSpecific_.cpp">
-      <Filter>Semantic\Type</Filter>
+      <Filter>Type</Filter>
     </ClCompile>
     <ClCompile Include="../src/TypeManager.cpp">
-      <Filter>Semantic\Type</Filter>
+      <Filter>Type</Filter>
     </ClCompile>
     <ClCompile Include="../src/TypeManagerCast_.cpp">
-      <Filter>Semantic\Type</Filter>
+      <Filter>Type</Filter>
     </ClCompile>
     <ClCompile Include="../src/TypeTable.cpp">
-      <Filter>Semantic\Type</Filter>
+      <Filter>Type</Filter>
     </ClCompile>
     <ClCompile Include="../src/TypeTableJob.cpp">
-      <Filter>Semantic\Type</Filter>
+      <Filter>Type</Filter>
     </ClCompile>
     <ClCompile Include="../src/BackendX64.cpp">
       <Filter>Backend\X64</Filter>
@@ -246,16 +246,16 @@
       <Filter>Backend</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ModuleCfgManager.cpp">
-      <Filter>Main\CfgManager</Filter>
+      <Filter>CfgManager</Filter>
     </ClCompile>
     <ClCompile Include="..\src\FetchModuleFileSystemJob.cpp">
-      <Filter>Main\CfgManager</Filter>
+      <Filter>CfgManager</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeOptimizer_Loop.cpp">
       <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
     <ClCompile Include="..\src\RaceCondition.cpp">
-      <Filter>Main\Threading</Filter>
+      <Filter>Threading</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Tokenizer_Symbol.cpp">
       <Filter>Tokenizer</Filter>
@@ -273,70 +273,70 @@
       <Filter>Tokenizer</Filter>
     </ClCompile>
     <ClCompile Include="..\src\FileJob.cpp">
-      <Filter>Main\Jobs</Filter>
+      <Filter>Jobs</Filter>
     </ClCompile>
     <ClCompile Include="../src/DependentJobs.cpp">
-      <Filter>Main\Jobs</Filter>
+      <Filter>Jobs</Filter>
     </ClCompile>
     <ClCompile Include="../src/EnumerateModuleJob.cpp">
-      <Filter>Main\Jobs</Filter>
+      <Filter>Jobs</Filter>
     </ClCompile>
     <ClCompile Include="../src/ModuleBuildJob.cpp">
-      <Filter>Main\Jobs</Filter>
+      <Filter>Jobs</Filter>
     </ClCompile>
     <ClCompile Include="../src/Utf8.cpp">
-      <Filter>Main\Core</Filter>
+      <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="../src/Concat.cpp">
-      <Filter>Main\Core</Filter>
+      <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="../src/Context.cpp">
-      <Filter>Backend\Runtime</Filter>
+      <Filter>Runtime</Filter>
     </ClCompile>
     <ClCompile Include="../src/CompilerItf.cpp">
-      <Filter>Backend\Runtime</Filter>
+      <Filter>Runtime</Filter>
     </ClCompile>
     <ClCompile Include="../src/Workspace.cpp">
-      <Filter>Main\Wmf</Filter>
+      <Filter>Wmf</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Workspace_Clean.cpp">
-      <Filter>Main\Wmf</Filter>
+      <Filter>Wmf</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Workspace_New.cpp">
-      <Filter>Main\Wmf</Filter>
+      <Filter>Wmf</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Workspace_Script.cpp">
-      <Filter>Main\Wmf</Filter>
+      <Filter>Wmf</Filter>
     </ClCompile>
     <ClCompile Include="../src/Module.cpp">
-      <Filter>Main\Wmf</Filter>
+      <Filter>Wmf</Filter>
     </ClCompile>
     <ClCompile Include="../src/File.cpp">
-      <Filter>Main\Wmf</Filter>
+      <Filter>Wmf</Filter>
     </ClCompile>
     <ClCompile Include="../src/SourceFile.cpp">
-      <Filter>Main\Wmf</Filter>
+      <Filter>Wmf</Filter>
     </ClCompile>
     <ClCompile Include="../src/DataSegment.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
     <ClCompile Include="../src/Assert.cpp">
-      <Filter>Main\Report</Filter>
+      <Filter>Report</Filter>
     </ClCompile>
     <ClCompile Include="../src/Diagnostic.cpp">
-      <Filter>Main\Report</Filter>
+      <Filter>Report</Filter>
     </ClCompile>
     <ClCompile Include="../src/Log.cpp">
-      <Filter>Main\Report</Filter>
+      <Filter>Report</Filter>
     </ClCompile>
     <ClCompile Include="../src/Stats.cpp">
-      <Filter>Main\Report</Filter>
+      <Filter>Report</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Help.cpp">
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="../src/ModuleManager.cpp">
-      <Filter>Main\Wmf</Filter>
+      <Filter>Wmf</Filter>
     </ClCompile>
     <ClCompile Include="../src/ByteCodeStack.cpp">
       <Filter>Backend\ByteCode\Run</Filter>
@@ -398,26 +398,8 @@
     <ClCompile Include="..\src\ByteCode_Print_.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
-    <ClCompile Include="../src/ModuleExportJob.cpp">
-      <Filter>Backend\Jobs</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/ModuleGenOutputJob.cpp">
-      <Filter>Backend\Jobs</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/ModuleOutputJob.cpp">
-      <Filter>Backend\Jobs</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/ModulePrepOutputJob.cpp">
-      <Filter>Backend\Jobs</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/ModuleRunJob.cpp">
-      <Filter>Backend\Jobs</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/ModuleSaveExportJob.cpp">
-      <Filter>Backend\Jobs</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\OutputFileWin32.cpp">
-      <Filter>Main\Os</Filter>
+      <Filter>Os</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeRun_Math.cpp">
       <Filter>Backend\ByteCode\Run</Filter>
@@ -426,25 +408,25 @@
       <Filter>Backend\ByteCode\Run</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Workspace_Build.cpp">
-      <Filter>Main\Wmf</Filter>
+      <Filter>Wmf</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Module_Run.cpp">
-      <Filter>Main\Wmf</Filter>
+      <Filter>Wmf</Filter>
     </ClCompile>
     <ClCompile Include="..\src\LoadSourceFileJob.cpp">
-      <Filter>Main\Jobs</Filter>
+      <Filter>Jobs</Filter>
     </ClCompile>
     <ClCompile Include="..\src\AstNode_Clone.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Module_CompilerMsg.cpp">
-      <Filter>Main\Wmf</Filter>
+      <Filter>Wmf</Filter>
     </ClCompile>
     <ClCompile Include="..\src\PrepCompilerMsgJob.cpp">
-      <Filter>Main\Jobs</Filter>
+      <Filter>Jobs</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ErrorIds.cpp">
-      <Filter>Main\Report</Filter>
+      <Filter>Report</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeGenJob_Err.cpp">
       <Filter>Backend\ByteCode\Gen</Filter>
@@ -465,7 +447,7 @@
       <Filter>Lexer</Filter>
     </ClCompile>
     <ClCompile Include="..\src\JobGroup.cpp">
-      <Filter>Main\Threading</Filter>
+      <Filter>Threading</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeOptimizer_DupBlocks.cpp">
       <Filter>Backend\ByteCode\Optimize</Filter>
@@ -486,13 +468,13 @@
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Report.cpp">
-      <Filter>Main\Report</Filter>
+      <Filter>Report</Filter>
     </ClCompile>
     <ClCompile Include="../src/Allocator.cpp">
-      <Filter>Main\Core</Filter>
+      <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ErrorContext.cpp">
-      <Filter>Main\Report</Filter>
+      <Filter>Report</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeDebugger.cpp">
       <Filter>Backend\ByteCode\Debugger</Filter>
@@ -531,21 +513,39 @@
       <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Naming.cpp">
-      <Filter>Main\Report</Filter>
+      <Filter>Report</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/ModuleExportJob.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/ModuleGenOutputJob.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/ModuleOutputJob.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/ModulePrepOutputJob.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/ModuleRunJob.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/ModuleSaveExportJob.cpp">
+      <Filter>Jobs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">
-      <Filter>Main\Threading</Filter>
+      <Filter>Threading</Filter>
     </ClInclude>
     <ClInclude Include="../src/ThreadManager.h">
-      <Filter>Main\Threading</Filter>
+      <Filter>Threading</Filter>
     </ClInclude>
     <ClInclude Include="../src/CommandLine.h">
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="../src/Job.h">
-      <Filter>Main\Threading</Filter>
+      <Filter>Threading</Filter>
     </ClInclude>
     <ClInclude Include="../src/SyntaxJob.h">
       <Filter>Lexer</Filter>
@@ -612,16 +612,16 @@
       <Filter>Backend\LLVM</Filter>
     </ClInclude>
     <ClInclude Include="../src/TypeTableJob.h">
-      <Filter>Semantic\Type</Filter>
+      <Filter>Type</Filter>
     </ClInclude>
     <ClInclude Include="../src/TypeInfo.h">
-      <Filter>Semantic\Type</Filter>
+      <Filter>Type</Filter>
     </ClInclude>
     <ClInclude Include="../src/TypeManager.h">
-      <Filter>Semantic\Type</Filter>
+      <Filter>Type</Filter>
     </ClInclude>
     <ClInclude Include="../src/TypeTable.h">
-      <Filter>Semantic\Type</Filter>
+      <Filter>Type</Filter>
     </ClInclude>
     <ClInclude Include="../src/BackendX64.h">
       <Filter>Backend\X64</Filter>
@@ -651,13 +651,13 @@
       <Filter>Backend</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ModuleCfgManager.h">
-      <Filter>Main\CfgManager</Filter>
+      <Filter>CfgManager</Filter>
     </ClInclude>
     <ClInclude Include="..\src\FetchModuleFileSystemJob.h">
-      <Filter>Main\CfgManager</Filter>
+      <Filter>CfgManager</Filter>
     </ClInclude>
     <ClInclude Include="..\src\RaceCondition.h">
-      <Filter>Main\Threading</Filter>
+      <Filter>Threading</Filter>
     </ClInclude>
     <ClInclude Include="../src/Tokenizer.h">
       <Filter>Tokenizer</Filter>
@@ -669,55 +669,55 @@
       <Filter>Tokenizer</Filter>
     </ClInclude>
     <ClInclude Include="..\src\FileJob.h">
-      <Filter>Main\Jobs</Filter>
+      <Filter>Jobs</Filter>
     </ClInclude>
     <ClInclude Include="../src/DependentJobs.h">
-      <Filter>Main\Jobs</Filter>
+      <Filter>Jobs</Filter>
     </ClInclude>
     <ClInclude Include="../src/EnumerateModuleJob.h">
-      <Filter>Main\Jobs</Filter>
+      <Filter>Jobs</Filter>
     </ClInclude>
     <ClInclude Include="../src/ModuleBuildJob.h">
-      <Filter>Main\Jobs</Filter>
+      <Filter>Jobs</Filter>
     </ClInclude>
     <ClInclude Include="../src/Utf8.h">
-      <Filter>Main\Core</Filter>
+      <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="../src/VectorNative.h">
-      <Filter>Main\Core</Filter>
+      <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="../src/Timer.h">
-      <Filter>Main\Core</Filter>
+      <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="../src/Concat.h">
-      <Filter>Main\Core</Filter>
+      <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="../src/Runtime.h">
-      <Filter>Backend\Runtime</Filter>
+      <Filter>Runtime</Filter>
     </ClInclude>
     <ClInclude Include="../src/Context.h">
-      <Filter>Backend\Runtime</Filter>
+      <Filter>Runtime</Filter>
     </ClInclude>
     <ClInclude Include="../src/CompilerItf.h">
-      <Filter>Backend\Runtime</Filter>
+      <Filter>Runtime</Filter>
     </ClInclude>
     <ClInclude Include="../src/Workspace.h">
-      <Filter>Main\Wmf</Filter>
+      <Filter>Wmf</Filter>
     </ClInclude>
     <ClInclude Include="../src/Module.h">
-      <Filter>Main\Wmf</Filter>
+      <Filter>Wmf</Filter>
     </ClInclude>
     <ClInclude Include="../src/File.h">
-      <Filter>Main\Wmf</Filter>
+      <Filter>Wmf</Filter>
     </ClInclude>
     <ClInclude Include="../src/SourceFile.h">
-      <Filter>Main\Wmf</Filter>
+      <Filter>Wmf</Filter>
     </ClInclude>
     <ClInclude Include="../src/Scoped.h">
       <Filter>Lexer</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Math.h">
-      <Filter>Main\Core</Filter>
+      <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="..\src\LLVMInc.h">
       <Filter>Backend\LLVM</Filter>
@@ -729,25 +729,25 @@
       <Filter>Semantic</Filter>
     </ClInclude>
     <ClInclude Include="../src/Assert.h">
-      <Filter>Main\Report</Filter>
+      <Filter>Report</Filter>
     </ClInclude>
     <ClInclude Include="../src/Diagnostic.h">
-      <Filter>Main\Report</Filter>
+      <Filter>Report</Filter>
     </ClInclude>
     <ClInclude Include="../src/Log.h">
-      <Filter>Main\Report</Filter>
+      <Filter>Report</Filter>
     </ClInclude>
     <ClInclude Include="../src/Stats.h">
-      <Filter>Main\Report</Filter>
+      <Filter>Report</Filter>
     </ClInclude>
     <ClInclude Include="../src/Os.h">
-      <Filter>Main\Os</Filter>
+      <Filter>Os</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ErrorIds.h">
-      <Filter>Main\Report</Filter>
+      <Filter>Report</Filter>
     </ClInclude>
     <ClInclude Include="../src/ModuleManager.h">
-      <Filter>Main\Wmf</Filter>
+      <Filter>Wmf</Filter>
     </ClInclude>
     <ClInclude Include="../src/ByteCodeStack.h">
       <Filter>Backend\ByteCode\Run</Filter>
@@ -761,56 +761,32 @@
     <ClInclude Include="../src/ByteCodeGenJob.h">
       <Filter>Backend\ByteCode\Gen</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\BackendFunctionBodyJobBase.h">
-      <Filter>Backend\Jobs</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ModuleExportJob.h">
-      <Filter>Backend\Jobs</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ModuleGenOutputJob.h">
-      <Filter>Backend\Jobs</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ModuleOutputJob.h">
-      <Filter>Backend\Jobs</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ModulePrepOutputJob.h">
-      <Filter>Backend\Jobs</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ModuleRunJob.h">
-      <Filter>Backend\Jobs</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ModuleSaveExportJob.h">
-      <Filter>Backend\Jobs</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\OutputFileWin32.h">
-      <Filter>Main\Os</Filter>
+      <Filter>Os</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Mutex.h">
-      <Filter>Main\Threading</Filter>
+      <Filter>Threading</Filter>
     </ClInclude>
     <ClInclude Include="..\src\LoadSourceFileJob.h">
-      <Filter>Main\Jobs</Filter>
+      <Filter>Jobs</Filter>
     </ClInclude>
     <ClInclude Include="..\src\LangHashTable.h">
       <Filter>Tokenizer</Filter>
     </ClInclude>
     <ClInclude Include="..\src\JobGroup.h">
-      <Filter>Main\Threading</Filter>
+      <Filter>Threading</Filter>
     </ClInclude>
     <ClInclude Include="..\src\PrepCompilerMsgJob.h">
-      <Filter>Main\Jobs</Filter>
+      <Filter>Jobs</Filter>
     </ClInclude>
     <ClInclude Include="..\src\AstOutput.h">
       <Filter>Lexer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Array.h">
-      <Filter>Main\Core</Filter>
     </ClInclude>
     <ClInclude Include="..\src\MapRegTo.h">
       <Filter>Backend\ByteCode\Optimize</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Hash.h">
-      <Filter>Main\Core</Filter>
+      <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="..\src\SaveGenJob.h">
       <Filter>Lexer</Filter>
@@ -828,28 +804,52 @@
       <Filter>Backend\ByteCode</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Report.h">
-      <Filter>Main\Report</Filter>
+      <Filter>Report</Filter>
     </ClInclude>
     <ClInclude Include="../src/Allocator.h">
-      <Filter>Main\Core</Filter>
+      <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ErrorContext.h">
-      <Filter>Main\Report</Filter>
+      <Filter>Report</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ErrorList.h">
-      <Filter>Main\Report</Filter>
+      <Filter>Report</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ByteCodeDebugger.h">
       <Filter>Backend\ByteCode\Debugger</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Naming.h">
-      <Filter>Main\Report</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ComputedValue.h">
-      <Filter>Main\Core</Filter>
+      <Filter>Report</Filter>
     </ClInclude>
     <ClInclude Include="../src/Register.h">
       <Filter>Backend\ByteCode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Vector.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\BackendFunctionBodyJobBase.h">
+      <Filter>Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/ModuleExportJob.h">
+      <Filter>Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/ModuleGenOutputJob.h">
+      <Filter>Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/ModuleOutputJob.h">
+      <Filter>Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/ModulePrepOutputJob.h">
+      <Filter>Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/ModuleRunJob.h">
+      <Filter>Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/ModuleSaveExportJob.h">
+      <Filter>Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ComputedValue.h">
+      <Filter>Lexer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -871,35 +871,8 @@
     <Filter Include="Backend\X64">
       <UniqueIdentifier>{8a2a36d9-44c6-423d-8d02-ff5e04508f18}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Semantic\Type">
-      <UniqueIdentifier>{5d3754c6-5cd6-4c17-beb5-5141ff0d58e8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Main\Threading">
-      <UniqueIdentifier>{e8e10c82-0958-4dec-b1a7-7925f336a87c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Main\CfgManager">
-      <UniqueIdentifier>{0953cd61-89b7-4c72-bc1f-72bf1d4c1458}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Tokenizer">
       <UniqueIdentifier>{6e271899-858e-4671-8537-9246b9a196ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Main\Jobs">
-      <UniqueIdentifier>{1bc332e2-b846-4939-bd77-130255d62a18}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Main\Core">
-      <UniqueIdentifier>{b65399cb-c115-4690-a5a5-21fe88ba8747}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Backend\Runtime">
-      <UniqueIdentifier>{512aad17-43cb-4e62-b39d-3200f0ee9ced}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Main\Wmf">
-      <UniqueIdentifier>{68a1bb4f-01bc-4d77-9593-917fdde3fe6d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Main\Os">
-      <UniqueIdentifier>{31fa90c8-f664-40b5-8bc5-d3606d6e2ffa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Backend\Jobs">
-      <UniqueIdentifier>{13554295-d672-43d2-958d-d5133618d28a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Backend\ByteCode">
       <UniqueIdentifier>{5facb5bb-a2a0-45dd-aa6c-20852346b20a}</UniqueIdentifier>
@@ -913,11 +886,35 @@
     <Filter Include="Backend\ByteCode\Gen">
       <UniqueIdentifier>{6af8e653-2a30-49e1-a10c-e6fd51ae7787}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Main\Report">
-      <UniqueIdentifier>{70f7c54c-e50c-4523-895c-c808e6cb62b9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Backend\ByteCode\Debugger">
       <UniqueIdentifier>{5d64ad0d-846a-4092-a35f-d23655afc3d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Type">
+      <UniqueIdentifier>{5d3754c6-5cd6-4c17-beb5-5141ff0d58e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CfgManager">
+      <UniqueIdentifier>{0953cd61-89b7-4c72-bc1f-72bf1d4c1458}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{b65399cb-c115-4690-a5a5-21fe88ba8747}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Jobs">
+      <UniqueIdentifier>{1bc332e2-b846-4939-bd77-130255d62a18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Os">
+      <UniqueIdentifier>{31fa90c8-f664-40b5-8bc5-d3606d6e2ffa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Report">
+      <UniqueIdentifier>{70f7c54c-e50c-4523-895c-c808e6cb62b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Threading">
+      <UniqueIdentifier>{e8e10c82-0958-4dec-b1a7-7925f336a87c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Wmf">
+      <UniqueIdentifier>{68a1bb4f-01bc-4d77-9593-917fdde3fe6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Runtime">
+      <UniqueIdentifier>{512aad17-43cb-4e62-b39d-3200f0ee9ced}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

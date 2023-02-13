@@ -1,7 +1,6 @@
 #pragma once
-#pragma once
 #include "Assert.h"
-#include "Utf8.h"
+struct Utf8;
 
 struct ConcatBucket
 {
@@ -19,11 +18,7 @@ struct Concat
     bool hasEnoughSpace(uint32_t numBytes);
     void ensureSpace(int numBytes);
     void align(uint32_t align);
-
-    void addU8_safe(uint8_t v);
-    void addU16_safe(uint16_t v);
-    void addU32_safe(uint32_t v);
-    void addU64_safe(uint64_t v);
+    bool flushToFile(const string& path);
 
     void      addU8(uint8_t v);
     void      addU16(uint16_t v);
@@ -60,12 +55,10 @@ struct Concat
     {
         ensureSpace(sizeof(T));
         ::new (currentSP) T;
-        auto result = (T*)currentSP;
+        auto result = (T*) currentSP;
         currentSP += sizeof(T);
         return result;
     }
-
-    bool flushToFile(const string& path);
 
     uint8_t* getSeekPtr()
     {
@@ -109,12 +102,13 @@ struct Concat
         return count;
     }
 
-    ConcatBucket* firstBucket     = nullptr;
-    ConcatBucket* lastBucket      = nullptr;
-    uint8_t*      currentSP       = nullptr;
-    int           bucketSize      = 0;
-    int           eolCount        = 0;
-    uint32_t      totalCountBytes = 0;
+    ConcatBucket* firstBucket = nullptr;
+    ConcatBucket* lastBucket  = nullptr;
+    uint8_t*      currentSP   = nullptr;
+
+    int      bucketSize      = 0;
+    int      eolCount        = 0;
+    uint32_t totalCountBytes = 0;
 };
 
 #define CONCAT_FIXED_STR(__concat, __str)                                    \
