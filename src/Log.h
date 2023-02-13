@@ -36,11 +36,6 @@ struct Log
     void               setColor(LogColor color);
     void               setDefaultColor();
 
-    void messageHeaderCentered(const Utf8& header, const Utf8& message, LogColor headerColor = LogColor::Green, LogColor msgColor = LogColor::White);
-    void messageHeaderDot(const Utf8& header, const Utf8& message, LogColor headerColor = LogColor::Cyan, LogColor msgColor = LogColor::Cyan, const char* dot = ".");
-    void messageInfo(const Utf8& message);
-    void messageVerbose(const Utf8& message);
-
     void lock();
     void unlock();
 
@@ -51,6 +46,11 @@ struct Log
     void print(const Utf8& message);
     void eol();
     void setCountLength(bool b);
+
+    void messageHeaderCentered(const Utf8& header, const Utf8& message, LogColor headerColor = LogColor::Green, LogColor msgColor = LogColor::White);
+    void messageHeaderDot(const Utf8& header, const Utf8& message, LogColor headerColor = LogColor::Cyan, LogColor msgColor = LogColor::Cyan, const char* dot = ".");
+    void messageInfo(const Utf8& message);
+    void messageVerbose(const Utf8& message);
 
     Mutex  mutexAccess;
     bool   countLength = false;
