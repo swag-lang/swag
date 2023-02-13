@@ -73,8 +73,8 @@ struct Token
 
 struct TokenParse : public Token
 {
-    LiteralType literalType = (LiteralType) 0;
     Register    literalValue;
+    LiteralType literalType      = (LiteralType) 0;
     bool        lastTokenIsEOL   = false;
     bool        lastTokenIsBlank = false;
 };

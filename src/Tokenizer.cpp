@@ -107,8 +107,7 @@ uint32_t Tokenizer::getCharNoSeek(unsigned& offset)
 bool Tokenizer::error(TokenParse& token, const Utf8& msg)
 {
     token.endLocation = location;
-    Report::report({sourceFile, token, msg});
-    return false;
+    return Report::report({sourceFile, token, msg});
 }
 
 bool Tokenizer::doMultiLineComment(TokenParse& token)
@@ -209,7 +208,7 @@ bool Tokenizer::getToken(TokenParse& token)
         ///////////////////////////////////////////
         if (c == 0)
         {
-            token.id = TokenId::EndOfFile;
+            token.id          = TokenId::EndOfFile;
             token.endLocation = token.startLocation;
             return true;
         }
@@ -295,8 +294,7 @@ bool Tokenizer::getToken(TokenParse& token)
             if (!token.text.count)
             {
                 token.startLocation = location;
-                error(token, Fmt(Err(Err0141), nc));
-                return false;
+                return error(token, Fmt(Err(Err0141), nc));
             }
 
             return true;
@@ -350,8 +348,7 @@ bool Tokenizer::getToken(TokenParse& token)
         ///////////////////////////////////////////
         token.text = c;
         token.id   = TokenId::Invalid;
-        error(token, Fmt(Err(Err0081), token.ctext()));
-        return false;
+        return error(token, Fmt(Err(Err0081), token.ctext()));
     }
 
     return true;

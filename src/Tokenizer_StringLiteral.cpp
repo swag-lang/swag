@@ -1,6 +1,4 @@
 ﻿#include "pch.h"
-#include "LanguageSpec.h"
-#include "Diagnostic.h"
 #include "SourceFile.h"
 #include "ErrorIds.h"
 

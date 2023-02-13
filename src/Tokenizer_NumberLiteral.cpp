@@ -1,9 +1,6 @@
 #include "pch.h"
-#include "LanguageSpec.h"
-#include "TypeManager.h"
 #include "SourceFile.h"
 #include "ErrorIds.h"
-#include "Diagnostic.h"
 
 bool Tokenizer::doBinLiteral(TokenParse& token)
 {
