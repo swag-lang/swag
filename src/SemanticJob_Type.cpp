@@ -770,7 +770,7 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
     // (usage of opAffect)
     if (exprNode->extension && exprNode->extension->misc && exprNode->extension->misc->resolvedUserOpSymbolOverload)
     {
-        node->allocateExtension(ExtensionKind::Resolve);
+        node->allocateExtension(ExtensionKind::Misc);
         node->extension->misc->resolvedUserOpSymbolOverload = exprNode->extension->misc->resolvedUserOpSymbolOverload;
     }
 

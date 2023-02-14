@@ -176,7 +176,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
             fromNode->flags |= AST_OPAFFECT_CAST;
             fromNode->castedTypeInfo = fromType;
             fromNode->typeInfo       = toType;
-            fromNode->allocateExtension(ExtensionKind::Resolve);
+            fromNode->allocateExtension(ExtensionKind::Misc);
             fromNode->extension->misc->resolvedUserOpSymbolOverload = toAffect[0];
         }
 
@@ -252,7 +252,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
         {
             fromNode->castedTypeInfo = fromType;
             fromNode->typeInfo       = toType;
-            fromNode->allocateExtension(ExtensionKind::Resolve);
+            fromNode->allocateExtension(ExtensionKind::Misc);
             fromNode->extension->misc->resolvedUserOpSymbolOverload = toCast[0];
             fromNode->semFlags |= AST_SEM_USER_CAST;
         }
@@ -1875,13 +1875,13 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
                 // Collect array to slice : will need special treatment when collecting constants
                 if (childJ->typeInfo->isListArray() && fieldJ->typeInfo->isSlice())
                 {
-                    childJ->allocateExtension(ExtensionKind::Collect);
+                    childJ->allocateExtension(ExtensionKind::Misc);
                     childJ->extension->misc->collectTypeInfo = fieldJ->typeInfo;
                 }
 
                 // We use castOffset to store the offset to the field, in order to collect later at the right position
                 // Note that offset is +1 to differentiate it from a "default" 0.
-                childJ->allocateExtension(ExtensionKind::CastOffset);
+                childJ->allocateExtension(ExtensionKind::Misc);
                 auto newOffset = (uint32_t) fieldJ->offset + 1;
                 if (childJ->extension->misc->castOffset != newOffset)
                 {
@@ -2018,7 +2018,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
                 // See ByteCodeGenJob::emitCastToNativeAny
                 if (toNode->ownerFct && toType->numRegisters() > 1)
                 {
-                    toNode->allocateExtension(ExtensionKind::StackSize);
+                    toNode->allocateExtension(ExtensionKind::Misc);
                     toNode->extension->misc->stackOffset = toNode->ownerScope->startStackSize;
                     toNode->ownerScope->startStackSize += toType->numRegisters() * sizeof(Register);
                     SemanticJob::setOwnerMaxStackSize(toNode, toNode->ownerScope->startStackSize);
@@ -2027,10 +2027,10 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
                 toNode->castedTypeInfo = toType;
                 toNode->typeInfo       = fromType;
                 auto  module           = context->sourceFile->module;
-                auto& typeGen        = module->typeGen;
+                auto& typeGen          = module->typeGen;
 
                 // :AnyTypeSegment
-                toNode->allocateExtension(ExtensionKind::Any);
+                toNode->allocateExtension(ExtensionKind::Misc);
                 toNode->extension->misc->anyTypeSegment = SemanticJob::getConstantSegFromContext(toNode);
                 SWAG_CHECK(typeGen.genExportedTypeInfo(context, fromType, toNode->extension->misc->anyTypeSegment, &toNode->extension->misc->anyTypeOffset));
             }
@@ -2045,7 +2045,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             // See ByteCodeGenJob::emitCastToNativeAny
             if (fromNode->ownerFct && fromType->numRegisters() > 1)
             {
-                fromNode->allocateExtension(ExtensionKind::StackSize);
+                fromNode->allocateExtension(ExtensionKind::Misc);
                 fromNode->extension->misc->stackOffset = fromNode->ownerScope->startStackSize;
                 fromNode->ownerScope->startStackSize += fromType->numRegisters() * sizeof(Register);
                 SemanticJob::setOwnerMaxStackSize(fromNode, fromNode->ownerScope->startStackSize);
@@ -2054,10 +2054,10 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             fromNode->castedTypeInfo = fromType;
             fromNode->typeInfo       = toType;
             auto  module             = context->sourceFile->module;
-            auto& typeGen          = module->typeGen;
+            auto& typeGen            = module->typeGen;
 
             // :AnyTypeSegment
-            fromNode->allocateExtension(ExtensionKind::Any);
+            fromNode->allocateExtension(ExtensionKind::Misc);
             fromNode->extension->misc->anyTypeSegment = SemanticJob::getConstantSegFromContext(fromNode);
             SWAG_CHECK(typeGen.genExportedTypeInfo(context, fromNode->castedTypeInfo, fromNode->extension->misc->anyTypeSegment, &fromNode->extension->misc->anyTypeOffset));
         }
@@ -2086,7 +2086,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             // See ByteCodeGenJob::emitCastToNativeAny
             if (fromNode->ownerFct && fromType->numRegisters() > 1)
             {
-                fromNode->allocateExtension(ExtensionKind::StackSize);
+                fromNode->allocateExtension(ExtensionKind::Misc);
                 fromNode->extension->misc->stackOffset = fromNode->ownerScope->startStackSize;
                 fromNode->ownerScope->startStackSize += fromType->numRegisters() * sizeof(Register);
                 SemanticJob::setOwnerMaxStackSize(fromNode, fromNode->ownerScope->startStackSize);
@@ -2095,10 +2095,10 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             fromNode->castedTypeInfo = fromType;
             fromNode->typeInfo       = toType;
             auto  module             = context->sourceFile->module;
-            auto& typeGen          = module->typeGen;
+            auto& typeGen            = module->typeGen;
 
             // :AnyTypeSegment
-            fromNode->allocateExtension(ExtensionKind::Any);
+            fromNode->allocateExtension(ExtensionKind::Misc);
             fromNode->extension->misc->anyTypeSegment = SemanticJob::getConstantSegFromContext(fromNode);
             SWAG_CHECK(typeGen.genExportedTypeInfo(context, toType, fromNode->extension->misc->anyTypeSegment, &fromNode->extension->misc->anyTypeOffset));
         }
@@ -2129,7 +2129,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
                 {
                     if (it.offset)
                     {
-                        fromNode->allocateExtension(ExtensionKind::CastOffset);
+                        fromNode->allocateExtension(ExtensionKind::Misc);
                         fromNode->extension->misc->castOffset = it.offset;
                         fromNode->castedTypeInfo              = fromNode->typeInfo;
                         fromNode->typeInfo                    = toType;
@@ -2143,7 +2143,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
                     fromNode->semFlags |= AST_SEM_DEREF_USING;
                 fromNode->semFlags |= AST_SEM_USING;
 
-                fromNode->allocateExtension(ExtensionKind::CastOffset);
+                fromNode->allocateExtension(ExtensionKind::Misc);
                 fromNode->extension->misc->castOffset = it.offset;
                 fromNode->castedTypeInfo              = fromNode->typeInfo;
                 fromNode->typeInfo                    = toType;
@@ -2299,7 +2299,7 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
             // See ByteCodeGenJob::emitCastToNativeAny
             if (fromNode->ownerFct)
             {
-                fromNode->allocateExtension(ExtensionKind::CastOffset);
+                fromNode->allocateExtension(ExtensionKind::Misc);
                 fromNode->extension->misc->stackOffset = fromNode->ownerScope->startStackSize;
                 fromNode->ownerScope->startStackSize += 2 * sizeof(Register);
                 SemanticJob::setOwnerMaxStackSize(fromNode, fromNode->ownerScope->startStackSize);
@@ -2344,7 +2344,7 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
         {
             if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
             {
-                fromNode->allocateExtension(ExtensionKind::CastOffset);
+                fromNode->allocateExtension(ExtensionKind::Misc);
                 fromNode->extension->misc->castOffset = itfRef.fieldOffset;
                 fromNode->extension->misc->castItf    = itfRef.itf;
                 fromNode->castedTypeInfo              = fromType;
@@ -3116,7 +3116,7 @@ bool TypeManager::convertLiteralTupleToStructVar(SemanticContext* context, TypeI
 
         if (oneChild->extension && oneChild->extension->misc && oneChild->extension->misc->isNamed)
         {
-            oneParam->allocateExtension(ExtensionKind::IsNamed);
+            oneParam->allocateExtension(ExtensionKind::Misc);
             oneParam->extension->misc->isNamed = oneChild->extension->misc->isNamed;
         }
 
@@ -3201,7 +3201,7 @@ bool TypeManager::convertLiteralTupleToStructType(SemanticContext* context, Type
         rootScope = sourceFile->scopeFile;
     else
         rootScope = newParent->ownerScope;
-    structNode->allocateExtension(ExtensionKind::AltScopes);
+    structNode->allocateExtension(ExtensionKind::Misc);
     structNode->addAlternativeScope(fromNode->parent->ownerScope);
     structNode->extension->misc->alternativeNode = newParent;
 

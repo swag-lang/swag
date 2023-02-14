@@ -136,7 +136,7 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
             {
                 if (paramExpression->kind != AstNodeKind::IdentifierRef || paramExpression->childs.size() != 1)
                     return context->report({paramExpression, Fmt(Err(Syn0110), token.ctext())});
-                param->allocateExtension(ExtensionKind::IsNamed);
+                param->allocateExtension(ExtensionKind::Misc);
                 param->extension->misc->isNamed = paramExpression->childs.front();
                 SWAG_CHECK(eatToken());
                 SWAG_CHECK(doExpression(param, EXPR_FLAG_PARAMETER));

@@ -451,7 +451,7 @@ bool ByteCodeGenJob::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
         return true;
     binNode->doneFlags |= AST_DONE_CAST1;
 
-    left->allocateExtension(ExtensionKind::AdditionalRegs);
+    left->allocateExtension(ExtensionKind::Misc);
 
     // Can have already been allocated by another 'and' or 'or' above in case of multiple tests
     if (left->extension->misc->additionalRegisterRC.size() == 0)
@@ -471,7 +471,7 @@ bool ByteCodeGenJob::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
             while (child1->kind == AstNodeKind::BinaryOp && (child1->token.id == TokenId::KwdAnd || child1->token.id == TokenId::KwdOr))
             {
                 auto child0 = child1->childs[0];
-                child0->allocateExtension(ExtensionKind::AdditionalRegs);
+                child0->allocateExtension(ExtensionKind::Misc);
                 child0->extension->misc->additionalRegisterRC            = left->extension->misc->additionalRegisterRC;
                 child0->extension->misc->additionalRegisterRC.cannotFree = true;
                 if (child1->childs.size() != 2)
@@ -517,7 +517,7 @@ bool ByteCodeGenJob::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
     binNode->doneFlags |= AST_DONE_CAST1;
 
     // See the 'and' version for comments
-    left->allocateExtension(ExtensionKind::AdditionalRegs);
+    left->allocateExtension(ExtensionKind::Misc);
     if (left->extension->misc->additionalRegisterRC.size() == 0)
     {
         left->extension->misc->additionalRegisterRC = left->resultRegisterRC;
@@ -529,7 +529,7 @@ bool ByteCodeGenJob::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
             while (child1->kind == AstNodeKind::BinaryOp && (child1->token.id == TokenId::KwdAnd || child1->token.id == TokenId::KwdOr))
             {
                 auto child0 = child1->childs[0];
-                child0->allocateExtension(ExtensionKind::AdditionalRegs);
+                child0->allocateExtension(ExtensionKind::Misc);
                 child0->extension->misc->additionalRegisterRC            = left->extension->misc->additionalRegisterRC;
                 child0->extension->misc->additionalRegisterRC.cannotFree = true;
                 if (child1->childs.size() != 2)

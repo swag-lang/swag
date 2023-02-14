@@ -1092,7 +1092,7 @@ bool ByteCodeGenJob::emitLambdaCall(ByteCodeGenContext* context)
     auto     overload = node->resolvedSymbolOverload;
 
     SWAG_CHECK(emitIdentifier(context));
-    node->allocateExtension(ExtensionKind::AdditionalRegs);
+    node->allocateExtension(ExtensionKind::Misc);
     node->extension->misc->additionalRegisterRC = node->resultRegisterRC;
     auto allParams                              = node->childs.empty() ? nullptr : node->childs.back();
     SWAG_ASSERT(!allParams || allParams->kind == AstNodeKind::FuncCallParams);

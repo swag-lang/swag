@@ -252,7 +252,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
             {
                 while (parent->kind != AstNodeKind::File)
                     parent = parent->parent;
-                parent->allocateExtension(ExtensionKind::AltScopes);
+                parent->allocateExtension(ExtensionKind::Misc);
                 parent->addAlternativeScope(newScope, scopeFilePriv ? ALTSCOPE_SCOPEFILE : true);
             }
 

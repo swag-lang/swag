@@ -495,7 +495,7 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
     cloneContext.forceFlags             = AST_IN_MIXIN;
     cloneContext.ownerFct               = node->ownerFct;
     auto cloneContent                   = typeCode->content->clone(cloneContext);
-    cloneContent->allocateExtension(ExtensionKind::AltScopes);
+    cloneContent->allocateExtension(ExtensionKind::Misc);
     cloneContent->extension->misc->alternativeNode = typeCode->content->parent;
     cloneContent->addAlternativeScope(typeCode->content->parent->ownerScope);
     cloneContent->flags &= ~AST_NO_SEMANTIC;

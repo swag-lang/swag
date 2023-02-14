@@ -254,15 +254,6 @@ enum class ExtensionKind
     ByteCode,
     Semantic,
     Owner,
-    AltScopes,
-    AdditionalRegs,
-    Resolve,
-    StackSize,
-    ExportNode,
-    Collect,
-    CastOffset,
-    Any,
-    IsNamed,
     Misc,
 };
 

@@ -56,7 +56,7 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
 
     if (!exprNode->resultRegisterRC.cannotFree)
     {
-        exprNode->ownerScope->owner->allocateExtension(ExtensionKind::AdditionalRegs);
+        exprNode->ownerScope->owner->allocateExtension(ExtensionKind::Misc);
         for (int r = 0; r < exprNode->resultRegisterRC.size(); r++)
             exprNode->ownerScope->owner->extension->misc->registersToRelease.push_back(exprNode->resultRegisterRC[r]);
     }
@@ -729,7 +729,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
                 job->allParamsTmp = Ast::newFuncCallParams(exprNode->sourceFile, nullptr);
             job->allParamsTmp->childs.clear();
             job->allParamsTmp->childs.push_back(exprNode);
-            job->allParamsTmp->allocateExtension(ExtensionKind::Resolve);
+            job->allParamsTmp->allocateExtension(ExtensionKind::Misc);
             job->allParamsTmp->extension->misc->resolvedUserOpSymbolOverload = exprNode->extension->misc->resolvedUserOpSymbolOverload;
             job->allParamsTmp->inheritOwners(exprNode);
             job->allParamsTmp->inheritTokenLocation(exprNode);

@@ -159,7 +159,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                         if (!overload->registers.cannotFree && canFreeRegParams)
                         {
                             overload->registers.cannotFree = true;
-                            node->allocateExtension(ExtensionKind::AdditionalRegs);
+                            node->allocateExtension(ExtensionKind::Misc);
                             for (int r = 0; r < overload->registers.size(); r++)
                                 node->extension->misc->registersToRelease.push_back(overload->registers[r]);
                         }
@@ -197,7 +197,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                                 {
                                     SWAG_ASSERT(canFreeRegParams);
                                     overload->registers.cannotFree = true;
-                                    node->allocateExtension(ExtensionKind::AdditionalRegs);
+                                    node->allocateExtension(ExtensionKind::Misc);
                                     for (int r = 0; r < overload->registers.size(); r++)
                                         node->extension->misc->registersToRelease.push_back(overload->registers[r]);
                                 }
@@ -226,7 +226,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
 
                             SWAG_ASSERT(canFreeRegParams);
                             overload->registers.cannotFree = true;
-                            node->allocateExtension(ExtensionKind::AdditionalRegs);
+                            node->allocateExtension(ExtensionKind::Misc);
                             for (int r = 0; r < overload->registers.size(); r++)
                                 node->extension->misc->registersToRelease.push_back(overload->registers[r]);
                             break;
@@ -269,7 +269,7 @@ bool ByteCodeGenJob::emitInline(ByteCodeGenContext* context)
             else
             {
                 // Transfert registers to release to the parent scope owner
-                node->ownerScope->owner->allocateExtension(ExtensionKind::AdditionalRegs);
+                node->ownerScope->owner->allocateExtension(ExtensionKind::Misc);
                 for (auto r : node->extension->misc->registersToRelease)
                     node->ownerScope->owner->extension->misc->registersToRelease.push_back(r);
             }

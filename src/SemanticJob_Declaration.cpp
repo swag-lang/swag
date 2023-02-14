@@ -21,7 +21,7 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     if (typeInfoVar->isStruct())
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfoVar, TypeInfoKind::Struct);
-        regNode->allocateExtension(ExtensionKind::AltScopes);
+        regNode->allocateExtension(ExtensionKind::Misc);
         regNode->addAlternativeScope(typeStruct->scope, altFlags);
         regNode->addAlternativeScopeVar(typeStruct->scope, varNode, altFlags);
     }

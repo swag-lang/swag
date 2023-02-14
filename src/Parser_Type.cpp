@@ -141,7 +141,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
         if (firstAddedType->typeFlags & TYPEFLAG_IS_SELF)
             param->specFlags |= AST_SPEC_DECLPARAM_GENERATED_SELF;
 
-        param->allocateExtension(ExtensionKind::ExportNode);
+        param->allocateExtension(ExtensionKind::Misc);
         param->extension->misc->exportNode = firstAddedType;
 
         param->flags |= AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
@@ -299,7 +299,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
                 auto nameVar = namedParam ? namedParam->token.text : Fmt("__%d", g_UniqueID.fetch_add(1));
                 auto param   = Ast::newVarDecl(sourceFile, nameVar, params, this, AstNodeKind::FuncDeclParam);
 
-                param->allocateExtension(ExtensionKind::ExportNode);
+                param->allocateExtension(ExtensionKind::Misc);
                 param->extension->misc->exportNode = typeExpr;
                 param->flags |= AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
 
@@ -417,7 +417,7 @@ bool Parser::doTupleOrAnonymousType(AstNode* parent, AstNode** result, bool isCo
         rootScope = newParent->ownerScope;
     structNode->content->addAlternativeScope(currentScope);
     SWAG_ASSERT(parent);
-    structNode->allocateExtension(ExtensionKind::AltScopes);
+    structNode->allocateExtension(ExtensionKind::Misc);
     structNode->extension->misc->alternativeNode = parent;
 
     auto newScope     = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, rootScope, true);
@@ -779,7 +779,7 @@ bool Parser::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeVarD
         node->identifier                              = Ast::newIdentifierRef(sourceFile, alias->token.text, node, this);
         SWAG_CHECK(doLambdaClosureType(alias));
 
-        node->identifier->allocateExtension(ExtensionKind::ExportNode);
+        node->identifier->allocateExtension(ExtensionKind::Misc);
         node->identifier->extension->misc->exportNode = alias->childs.front();
         return true;
     }
