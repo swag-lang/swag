@@ -331,7 +331,7 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
     return true;
 }
 
-void Parser::setup(JobContext* errorCxt, Module* mdl, SourceFile* file)
+void Parser::setup(ErrorContext* errorCxt, Module* mdl, SourceFile* file)
 {
     context    = errorCxt;
     module     = mdl;

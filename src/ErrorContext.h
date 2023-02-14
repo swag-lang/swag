@@ -3,7 +3,7 @@
 struct AstNode;
 struct JobContext;
 struct TypeInfo;
-struct JobContext;
+struct ErrorContext;
 struct Diagnostic;
 struct SourceFile;
 
@@ -35,9 +35,9 @@ struct ErrorCxtStep
 
 struct PushErrCxtStep
 {
-    PushErrCxtStep(JobContext* context, AstNode* node, ErrCxtStepKind kind, const Utf8& msg = "", const Utf8& hint = "", bool locIsToken = false);
+    PushErrCxtStep(ErrorContext* context, AstNode* node, ErrCxtStepKind kind, const Utf8& msg = "", const Utf8& hint = "", bool locIsToken = false);
     ~PushErrCxtStep();
-    JobContext* cxt;
+    ErrorContext* cxt;
 };
 
 struct ErrorContext

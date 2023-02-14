@@ -68,7 +68,7 @@ static const uint32_t CONTEXT_FLAG_VARDECL_TYPE_EXPRESSION = 0x00000002;
 
 struct Parser
 {
-    void setup(JobContext* errorCxt, Module* mdl, SourceFile* file);
+    void setup(ErrorContext* errorCxt, Module* mdl, SourceFile* file);
     bool generateAst();
 
     bool saveEmbeddedAst(const Utf8& content, AstNode* parent, AstNode* fromNode, Utf8& tmpFileName, Utf8& tmpFilePath, uint32_t& previousLogLine);
@@ -208,9 +208,9 @@ struct Parser
     bool doDropCopyMove(AstNode* parent, AstNode** result = nullptr);
     bool doRange(AstNode* parent, AstNode* expression, AstNode** result = nullptr);
 
-    JobContext* context    = nullptr;
-    SourceFile* sourceFile = nullptr;
-    Module*     module     = nullptr;
+    ErrorContext* context    = nullptr;
+    SourceFile*   sourceFile = nullptr;
+    Module*       module     = nullptr;
 
     Tokenizer  tokenizer;
     TokenParse token;

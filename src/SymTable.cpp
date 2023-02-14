@@ -31,7 +31,7 @@ void SymTable::removeSymbolName(SymbolName* sym)
     occupied = false;
 }
 
-SymbolName* SymTable::registerSymbolName(JobContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName)
+SymbolName* SymTable::registerSymbolName(ErrorContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName)
 {
     ScopedLock lk(mutex);
     occupied    = true;
@@ -40,7 +40,7 @@ SymbolName* SymTable::registerSymbolName(JobContext* context, AstNode* node, Sym
     return result;
 }
 
-SymbolName* SymTable::registerSymbolNameNoLock(JobContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName)
+SymbolName* SymTable::registerSymbolNameNoLock(ErrorContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName)
 {
     if (!aliasName)
         aliasName = &node->token.text;
@@ -86,7 +86,7 @@ SymbolName* SymTable::registerSymbolNameNoLock(JobContext* context, AstNode* nod
     return symbol;
 }
 
-SymbolOverload* SymTable::addSymbolTypeInfo(JobContext*    context,
+SymbolOverload* SymTable::addSymbolTypeInfo(ErrorContext*  context,
                                             AstNode*       node,
                                             TypeInfo*      typeInfo,
                                             SymbolKind     kind,
@@ -104,7 +104,7 @@ SymbolOverload* SymTable::addSymbolTypeInfo(JobContext*    context,
     return res;
 }
 
-SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
+SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext*  context,
                                                   AstNode*       node,
                                                   TypeInfo*      typeInfo,
                                                   SymbolKind     kind,
@@ -300,7 +300,7 @@ void SymTable::disabledIfBlockOverloadNoLock(AstNode* node, SymbolName* symbol)
         symbol->dependentJobs.setRunning();
 }
 
-bool SymTable::acceptGhostSymbolNoLock(JobContext* context, AstNode* node, SymbolKind kind, SymbolName* symbol)
+bool SymTable::acceptGhostSymbolNoLock(ErrorContext* context, AstNode* node, SymbolKind kind, SymbolName* symbol)
 {
     // A symbol with a different kind already exists
     if (symbol->kind != kind)
@@ -323,7 +323,7 @@ bool SymTable::acceptGhostSymbolNoLock(JobContext* context, AstNode* node, Symbo
     return false;
 }
 
-bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, uint32_t overFlags)
+bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, uint32_t overFlags)
 {
     auto token = &node->token;
     if (node->kind == AstNodeKind::FuncDecl)
@@ -405,7 +405,7 @@ SymbolOverload* SymbolName::addOverloadNoLock(AstNode* node, TypeInfo* typeInfo,
     return overload;
 }
 
-bool SymTable::registerUsingAliasOverload(JobContext* context, AstNode* node, SymbolName* symbol, SymbolOverload* overload)
+bool SymTable::registerUsingAliasOverload(ErrorContext* context, AstNode* node, SymbolName* symbol, SymbolOverload* overload)
 {
     ScopedLock lkn(symbol->mutex);
 

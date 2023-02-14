@@ -4,9 +4,8 @@
 #include "Ast.h"
 #include "ErrorIds.h"
 #include "Report.h"
-#include "Job.h"
 
-PushErrCxtStep::PushErrCxtStep(JobContext* context, AstNode* node, ErrCxtStepKind kind, const Utf8& msg, const Utf8& hint, bool locIsToken)
+PushErrCxtStep::PushErrCxtStep(ErrorContext* context, AstNode* node, ErrCxtStepKind kind, const Utf8& msg, const Utf8& hint, bool locIsToken)
     : cxt{context}
 {
     ErrorCxtStep expNode;
