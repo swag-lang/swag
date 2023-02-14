@@ -287,9 +287,6 @@
     <ClCompile Include="../src/Log.cpp">
       <Filter>Report</Filter>
     </ClCompile>
-    <ClCompile Include="../src/Stats.cpp">
-      <Filter>Report</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Help.cpp">
       <Filter>Main</Filter>
     </ClCompile>
@@ -533,6 +530,9 @@
     <ClCompile Include="../src/JobThread.cpp">
       <Filter>Threading</Filter>
     </ClCompile>
+    <ClCompile Include="../src/Stats.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
@@ -725,9 +725,6 @@
     <ClInclude Include="../src/Log.h">
       <Filter>Report</Filter>
     </ClInclude>
-    <ClInclude Include="../src/Stats.h">
-      <Filter>Report</Filter>
-    </ClInclude>
     <ClInclude Include="../src/Os.h">
       <Filter>Os</Filter>
     </ClInclude>
@@ -847,6 +844,9 @@
     </ClInclude>
     <ClInclude Include="../src/JobThread.h">
       <Filter>Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/Stats.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
