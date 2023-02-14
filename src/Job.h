@@ -44,15 +44,13 @@ struct JobContext : public ErrorContext
     void reset()
     {
         baseJob           = nullptr;
-        sourceFile        = nullptr;
         validIfParameters = nullptr;
         result            = ContextResult::Done;
         ErrorContext::reset();
     }
 
-    Job*        baseJob           = nullptr;
-    SourceFile* sourceFile        = nullptr;
-    AstNode*    validIfParameters = nullptr;
+    Job*     baseJob           = nullptr;
+    AstNode* validIfParameters = nullptr;
 
     ContextResult result = ContextResult::Done;
 };

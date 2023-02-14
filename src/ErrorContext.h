@@ -5,6 +5,7 @@ struct JobContext;
 struct TypeInfo;
 struct JobContext;
 struct Diagnostic;
+struct SourceFile;
 
 enum class ErrCxtStepKind
 {
@@ -49,13 +50,18 @@ struct ErrorContext
     void reset()
     {
         errCxtSteps.clear();
+        sourceFile  = nullptr;
         node        = nullptr;
         hasError    = false;
         silentError = 0;
     }
 
     Vector<ErrorCxtStep> errCxtSteps;
-    AstNode*             node        = nullptr;
-    bool                 hasError    = false;
-    uint32_t             silentError = false;
+
+    SourceFile* sourceFile = nullptr;
+    AstNode*    node       = nullptr;
+
+    uint32_t silentError = false;
+
+    bool hasError = false;
 };
