@@ -154,27 +154,41 @@ bool Tokenizer::doMultiLineComment(TokenParse& token)
     }
 }
 
-void Tokenizer::doIdentifier(TokenParse& token)
+string Tokenizer::tokenToName(TokenId id)
 {
-    while (SWAG_IS_ALPHA(curBuffer[0]) || SWAG_IS_DIGIT(curBuffer[0]) || curBuffer[0] == '_')
-        readChar();
-    appendTokenName(token);
+    switch (id)
+    {
+    case TokenId::SymComma:
+        return ",";
+    case TokenId::SymColon:
+        return ":";
+    case TokenId::SymSemiColon:
+        return ";";
+    case TokenId::SymLeftCurly:
+        return "{";
+    case TokenId::SymRightCurly:
+        return "}";
+    case TokenId::SymLeftParen:
+        return "(";
+    case TokenId::SymRightParen:
+        return ")";
+    case TokenId::SymLeftSquare:
+        return "[";
+    case TokenId::SymRightSquare:
+        return "]";
+    case TokenId::SymDot:
+        return ".";
+    case TokenId::SymExclam:
+        return "!";
+    case TokenId::SymMinusGreat:
+        return "->";
+    case TokenId::SymEqual:
+        return "=";
+    case TokenId::SymVertical:
+        return "|";
+    }
 
-    auto it = g_LangSpec->keywords.find(token.text);
-    if (it)
-    {
-        token.id = *it;
-        if (token.id == TokenId::NativeType)
-        {
-            auto it1 = g_LangSpec->nativeTypes.find(token.text);
-            SWAG_ASSERT(it1);
-            token.literalType = *it1;
-        }
-    }
-    else
-    {
-        token.id = TokenId::Identifier;
-    }
+    return "???";
 }
 
 bool Tokenizer::nextToken(TokenParse& token)

@@ -141,14 +141,14 @@ bool SyntaxJob::eatCloseToken(TokenId id, const SourceLocation& start, const cha
             msg = "";
         if (token.id == TokenId::EndOfFile)
         {
-            Diagnostic diag{sourceFile, token, Fmt(Err(Syn0047), g_LangSpec->tokenToName(id).c_str(), msg)};
+            Diagnostic diag{sourceFile, token, Fmt(Err(Syn0047), Tokenizer::tokenToName(id).c_str(), msg)};
             Diagnostic note{sourceFile, start, start, Nte(Nte0020), DiagnosticLevel::Note};
             note.showMultipleCodeLines = token.startLocation.line != start.line;
             return context.report(diag, &note);
         }
         else
         {
-            Diagnostic diag{sourceFile, token, Fmt(Err(Syn0048), g_LangSpec->tokenToName(id).c_str(), token.ctext(), msg)};
+            Diagnostic diag{sourceFile, token, Fmt(Err(Syn0048), Tokenizer::tokenToName(id).c_str(), token.ctext(), msg)};
             Diagnostic note{sourceFile, start, start, Nte(Nte0020), DiagnosticLevel::Note};
             note.showMultipleCodeLines = token.startLocation.line != start.line;
             return context.report(diag, &note);
@@ -166,9 +166,9 @@ bool SyntaxJob::eatToken(TokenId id, const char* msg)
         if (!msg)
             msg = "";
         if (token.id == TokenId::EndOfFile)
-            SWAG_CHECK(error(token, Fmt(Err(Syn0047), g_LangSpec->tokenToName(id).c_str(), msg)));
+            SWAG_CHECK(error(token, Fmt(Err(Syn0047), Tokenizer::tokenToName(id).c_str(), msg)));
         else
-            SWAG_CHECK(error(token, Fmt(Err(Syn0048), g_LangSpec->tokenToName(id).c_str(), token.ctext(), msg)));
+            SWAG_CHECK(error(token, Fmt(Err(Syn0048), Tokenizer::tokenToName(id).c_str(), token.ctext(), msg)));
     }
 
     SWAG_CHECK(eatToken());

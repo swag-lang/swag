@@ -111,6 +111,8 @@ struct Tokenizer
     void setFile(SourceFile* file);
     bool nextToken(TokenParse& token);
 
+    static string tokenToName(TokenId id);
+
     // clang-format off
     static bool isSymbol(TokenId id)            { return g_TokenFlags[(int) id] & TOKEN_SYM; }
     static bool isLiteral(TokenId id)           { return g_TokenFlags[(int) id] & TOKEN_LITERAL; }

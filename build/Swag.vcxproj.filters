@@ -527,6 +527,9 @@
     <ClCompile Include="../src/JobThread.cpp">
       <Filter>Jobs</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Tokenizer_Identifier.cpp">
+      <Filter>Syntax\Tokenizer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
