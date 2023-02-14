@@ -11,7 +11,7 @@ enum class ScopeKind;
 
 namespace Ast
 {
-    void initNewNode(AstNode* node, Parser* job, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent, uint32_t allocChilds);
+    void initNewNode(AstNode* node, Parser* parser, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent, uint32_t allocChilds);
     void removeFromParent(AstNode* child);
     void insertChild(AstNode* parent, AstNode* child, uint32_t index);
     void addChildBack(AstNode* parent, AstNode* child);
@@ -19,7 +19,7 @@ namespace Ast
     int  findChildIndex(AstNode* parent, AstNode* child);
 
     void         visit(AstNode* root, const function<void(AstNode*)>& fctor);
-    bool         visit(JobContext* context, AstNode* root, const function<bool(JobContext*, AstNode*)>& fctor);
+    bool         visit(ErrorContext* context, AstNode* root, const function<bool(ErrorContext*, AstNode*)>& fctor);
     void         setForceConstType(AstNode* node);
     Utf8         enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg, bool scoped = true);
     Utf8         literalToString(TypeInfo* typeInfo, const ComputedValue& value);

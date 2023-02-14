@@ -9,6 +9,7 @@
 #include "ThreadManager.h"
 #include "Report.h"
 #include "ByteCodeDebugger.h"
+#include "Parser.h"
 
 bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, EvaluateResult& res, CompilerAstKind kind, bool silent)
 {

@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "Ast.h"
 #include "Generic.h"
-#include "Module.h"
-#include "Diagnostic.h"
 #include "ErrorIds.h"
 #include "SemanticJob.h"
 
@@ -393,7 +391,7 @@ AstNode* AstIdentifier::clone(CloneContext& context)
     return newNode;
 }
 
-bool AstFuncDecl::cloneSubDecls(JobContext* context, CloneContext& cloneContext, AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode)
+bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContext, AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode)
 {
     // We need to duplicate sub declarations, and register the symbol in the new corresponding scope
     for (auto f : subDecls)

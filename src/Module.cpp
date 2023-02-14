@@ -8,11 +8,10 @@
 #include "Context.h"
 #include "SemanticJob.h"
 #include "ModuleManager.h"
-#include "ErrorIds.h"
 #include "Report.h"
-#include "CommandLine.h"
 #include "LanguageSpec.h"
 #include "SaveGenJob.h"
+#include "Parser.h"
 
 void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
 {

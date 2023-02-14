@@ -204,7 +204,7 @@ bool ByteCodeGenJob::emitPassThrough(ByteCodeGenContext* context)
 bool ByteCodeGenJob::skipNodes(ByteCodeGenContext* context, AstNode* node)
 {
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
-    auto res = Ast::visit(context, node, [](JobContext* cxt, AstNode* n)
+    auto res = Ast::visit(context, node, [](ErrorContext* cxt, AstNode* n)
                           {
                               if (n->kind != AstNodeKind::Literal)
                                   return true;

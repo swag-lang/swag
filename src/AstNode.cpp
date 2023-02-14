@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "ByteCode.h"
 #include "LanguageSpec.h"
+#include "Parser.h"
 
 void AstNode::inheritOrFlag(uint64_t flag)
 {
@@ -110,26 +111,26 @@ void AstNode::inheritOwners(AstNode* op)
     ownerCompilerIfBlock = op->ownerCompilerIfBlock;
 }
 
-void AstNode::inheritOwnersAndFlags(Parser* job)
+void AstNode::inheritOwnersAndFlags(Parser* parser)
 {
-    ownerStructScope     = job->currentStructScope;
-    ownerScope           = job->currentScope;
-    ownerFct             = job->currentFct;
-    ownerBreakable       = job->currentBreakable;
-    ownerCompilerIfBlock = job->currentCompilerIfBlock;
-    ownerInline          = job->currentInline;
+    ownerStructScope     = parser->currentStructScope;
+    ownerScope           = parser->currentScope;
+    ownerFct             = parser->currentFct;
+    ownerBreakable       = parser->currentBreakable;
+    ownerCompilerIfBlock = parser->currentCompilerIfBlock;
+    ownerInline          = parser->currentInline;
 
-    if (job->currentTryCatchAssume)
+    if (parser->currentTryCatchAssume)
     {
         allocateExtension(ExtensionKind::Owner);
-        extension->owner->ownerTryCatchAssume = job->currentTryCatchAssume;
+        extension->owner->ownerTryCatchAssume = parser->currentTryCatchAssume;
     }
     else if (extension && extension->owner)
     {
         extension->owner->ownerTryCatchAssume = nullptr;
     }
 
-    flags |= job->currentFlags;
+    flags |= parser->currentFlags;
 }
 
 void AstNode::allocateComputedValue()

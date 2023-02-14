@@ -8,10 +8,9 @@
 #include "Module.h"
 #include "ByteCode.h"
 #include "ModuleManager.h"
-#include "ErrorIds.h"
 #include "LanguageSpec.h"
-#include "Mutex.h"
 #include "Naming.h"
+#include "Parser.h"
 
 bool SemanticJob::waitForStructUserOps(SemanticContext* context, AstNode* node)
 {

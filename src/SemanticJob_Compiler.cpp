@@ -9,6 +9,7 @@
 #include "Backend.h"
 #include "Report.h"
 #include "LanguageSpec.h"
+#include "Parser.h"
 
 Diagnostic* SemanticJob::computeNonConstExprNote(AstNode* node)
 {

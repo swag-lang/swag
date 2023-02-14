@@ -4,14 +4,13 @@
 #include "SemanticJob.h"
 #include "ByteCodeGenJob.h"
 #include "TypeManager.h"
-#include "Module.h"
-#include "Os.h"
+#include "Parser.h"
 
 atomic<int> g_UniqueID;
 
 namespace Ast
 {
-    void initNewNode(AstNode* node, Parser* job, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent, uint32_t allocChilds = 0)
+    void initNewNode(AstNode* node, Parser* parser, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent, uint32_t allocChilds = 0)
     {
         node->kind       = kind;
         node->parent     = parent;
@@ -24,23 +23,23 @@ namespace Ast
         if (allocChilds)
             node->childs.reserve(allocChilds);
 
-        if (job)
+        if (parser)
         {
-            node->token.id   = job->token.id;
-            node->token.text = job->token.text;
+            node->token.id   = parser->token.id;
+            node->token.text = parser->token.text;
 
-            if (job->currentTokenLocation)
+            if (parser->currentTokenLocation)
             {
-                node->token.startLocation = job->currentTokenLocation->startLocation;
-                node->token.endLocation   = job->currentTokenLocation->endLocation;
+                node->token.startLocation = parser->currentTokenLocation->startLocation;
+                node->token.endLocation   = parser->currentTokenLocation->endLocation;
             }
             else
             {
-                node->token.startLocation = job->token.startLocation;
-                node->token.endLocation   = job->token.endLocation;
+                node->token.startLocation = parser->token.startLocation;
+                node->token.endLocation   = parser->token.endLocation;
             }
 
-            node->inheritOwnersAndFlags(job);
+            node->inheritOwnersAndFlags(parser);
         }
         else
         {
@@ -378,7 +377,7 @@ namespace Ast
             visit(child, fctor);
     }
 
-    bool visit(JobContext* context, AstNode* root, const function<bool(JobContext*, AstNode*)>& fctor)
+    bool visit(ErrorContext* context, AstNode* root, const function<bool(ErrorContext*, AstNode*)>& fctor)
     {
         if (!fctor(context, root))
             return false;

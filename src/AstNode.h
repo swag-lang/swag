@@ -1,9 +1,6 @@
 #pragma once
-#include "DependentJobs.h"
 #include "Utf8.h"
 #include "Tokenizer.h"
-#include "Parser.h"
-#include "Register.h"
 #include "AstFlags.h"
 #include "Register.h"
 #include "SymTable.h"
@@ -12,6 +9,8 @@
 #include "VectorNative.h"
 #include "Mutex.h"
 
+struct Parser;
+struct AstTryCatchAssume;
 struct AstTypeExpression;
 struct DocContent;
 struct AstSwitchCase;
@@ -262,7 +261,7 @@ struct AstNode
     void inheritTokenLocation(Token& tkn);
     void inheritTokenLocation(AstNode* node);
     void inheritOwners(AstNode* op);
-    void inheritOwnersAndFlags(Parser* job);
+    void inheritOwnersAndFlags(Parser* parser);
 
     void allocateComputedValue();
     void setFlagsValueIsComputed();
@@ -446,7 +445,7 @@ struct AstIdentifier : public AstNode
 struct AstFuncDecl : public AstNode
 {
     AstNode*    clone(CloneContext& context);
-    bool        cloneSubDecls(JobContext* context, CloneContext& cloneContext, AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode);
+    bool        cloneSubDecls(ErrorContext* context, CloneContext& cloneContext, AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode);
     void        computeFullNameForeign(bool forExport);
     Utf8        getDisplayName();
     const char* getDisplayNameC();

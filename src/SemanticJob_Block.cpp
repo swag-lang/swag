@@ -8,6 +8,7 @@
 #include "ErrorIds.h"
 #include "Report.h"
 #include "LanguageSpec.h"
+#include "Parser.h"
 
 bool SemanticJob::resolveIf(SemanticContext* context)
 {
@@ -924,7 +925,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     Ast::removeFromParent(node->block);
     Ast::addChildBack(loopNode->block, node->block);
     SWAG_ASSERT(node->block);
-    Ast::visit(context, node->block, [&](JobContext* context, AstNode* x)
+    Ast::visit(context, node->block, [&](ErrorContext* context, AstNode* x)
                {
             if (!x->ownerBreakable)
                 x->ownerBreakable = loopNode;

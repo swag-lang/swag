@@ -2,6 +2,7 @@
 #include "Ast.h"
 #include "LoadSourceFileJob.h"
 #include "SyntaxJob.h"
+#include "Parser.h"
 
 JobResult SyntaxJob::execute()
 {
