@@ -450,14 +450,14 @@ namespace Ast
         }
     }
 
-    AstNode* newNode(SourceFile* sourceFile, AstNodeKind kind, AstNode* parent, Parser* syntaxJob)
+    AstNode* newNode(SourceFile* sourceFile, AstNodeKind kind, AstNode* parent, Parser* parser)
     {
-        return Ast::newNode<AstNode>(syntaxJob, kind, sourceFile, parent);
+        return Ast::newNode<AstNode>(parser, kind, sourceFile, parent);
     }
 
-    AstInline* newInline(SourceFile* sourceFile, AstNode* parent, Parser* syntaxJob)
+    AstInline* newInline(SourceFile* sourceFile, AstNode* parent, Parser* parser)
     {
-        auto node = Ast::newNode<AstInline>(syntaxJob, AstNodeKind::Inline, sourceFile, parent);
+        auto node = Ast::newNode<AstInline>(parser, AstNodeKind::Inline, sourceFile, parent);
         node->allocateExtension(ExtensionKind::Semantic);
         node->extension->semantic->semanticAfterFct  = SemanticJob::resolveInlineAfter;
         node->extension->semantic->semanticBeforeFct = SemanticJob::resolveInlineBefore;
@@ -467,77 +467,77 @@ namespace Ast
         return node;
     }
 
-    AstNode* newAffectOp(SourceFile* sourceFile, AstNode* parent, uint8_t opFlags, uint64_t attributeFlags, Parser* syntaxJob)
+    AstNode* newAffectOp(SourceFile* sourceFile, AstNode* parent, uint8_t opFlags, uint64_t attributeFlags, Parser* parser)
     {
-        auto node         = Ast::newNode<AstOp>(syntaxJob, AstNodeKind::AffectOp, sourceFile, parent, 2);
+        auto node         = Ast::newNode<AstOp>(parser, AstNodeKind::AffectOp, sourceFile, parent, 2);
         node->semanticFct = SemanticJob::resolveAffect;
         node->specFlags |= opFlags;
         node->attributeFlags |= attributeFlags;
         return node;
     }
 
-    AstStruct* newStructDecl(SourceFile* sourceFile, AstNode* parent, Parser* syntaxJob)
+    AstStruct* newStructDecl(SourceFile* sourceFile, AstNode* parent, Parser* parser)
     {
-        auto node         = Ast::newNode<AstStruct>(syntaxJob, AstNodeKind::StructDecl, sourceFile, parent);
+        auto node         = Ast::newNode<AstStruct>(parser, AstNodeKind::StructDecl, sourceFile, parent);
         node->semanticFct = SemanticJob::resolveStruct;
         return node;
     }
 
-    AstNode* newFuncDeclParams(SourceFile* sourceFile, AstNode* parent, Parser* syntaxJob)
+    AstNode* newFuncDeclParams(SourceFile* sourceFile, AstNode* parent, Parser* parser)
     {
-        auto node         = Ast::newNode<AstNode>(syntaxJob, AstNodeKind::FuncDeclParams, sourceFile, parent);
+        auto node         = Ast::newNode<AstNode>(parser, AstNodeKind::FuncDeclParams, sourceFile, parent);
         node->semanticFct = SemanticJob::resolveFuncDeclParams;
         node->flags |= AST_NO_BYTECODE_CHILDS; // We do not want default assignations to generate bytecode
         return node;
     }
 
-    AstFuncCallParams* newFuncCallGenParams(SourceFile* sourceFile, AstNode* parent, Parser* syntaxJob)
+    AstFuncCallParams* newFuncCallGenParams(SourceFile* sourceFile, AstNode* parent, Parser* parser)
     {
-        auto node         = Ast::newNode<AstFuncCallParams>(syntaxJob, AstNodeKind::FuncCallParams, sourceFile, parent);
+        auto node         = Ast::newNode<AstFuncCallParams>(parser, AstNodeKind::FuncCallParams, sourceFile, parent);
         node->semanticFct = SemanticJob::resolveFuncCallGenParams;
         return node;
     }
 
-    AstFuncCallParams* newFuncCallParams(SourceFile* sourceFile, AstNode* parent, Parser* syntaxJob)
+    AstFuncCallParams* newFuncCallParams(SourceFile* sourceFile, AstNode* parent, Parser* parser)
     {
-        auto node         = Ast::newNode<AstFuncCallParams>(syntaxJob, AstNodeKind::FuncCallParams, sourceFile, parent);
+        auto node         = Ast::newNode<AstFuncCallParams>(parser, AstNodeKind::FuncCallParams, sourceFile, parent);
         node->semanticFct = SemanticJob::resolveFuncCallParams;
         return node;
     }
 
-    AstFuncCallParam* newFuncCallParam(SourceFile* sourceFile, AstNode* parent, Parser* syntaxJob)
+    AstFuncCallParam* newFuncCallParam(SourceFile* sourceFile, AstNode* parent, Parser* parser)
     {
-        auto node         = Ast::newNode<AstFuncCallParam>(syntaxJob, AstNodeKind::FuncCallParam, sourceFile, parent);
+        auto node         = Ast::newNode<AstFuncCallParam>(parser, AstNodeKind::FuncCallParam, sourceFile, parent);
         node->semanticFct = SemanticJob::resolveFuncCallParam;
         return node;
     }
 
-    AstVarDecl* newVarDecl(SourceFile* sourceFile, const Utf8& name, AstNode* parent, Parser* syntaxJob, AstNodeKind kind)
+    AstVarDecl* newVarDecl(SourceFile* sourceFile, const Utf8& name, AstNode* parent, Parser* parser, AstNodeKind kind)
     {
-        auto node         = Ast::newNode<AstVarDecl>(syntaxJob, kind, sourceFile, parent, 2);
+        auto node         = Ast::newNode<AstVarDecl>(parser, kind, sourceFile, parent, 2);
         node->token.text  = name;
         node->semanticFct = SemanticJob::resolveVarDecl;
         return node;
     }
 
-    AstIntrinsicProp* newIntrinsicProp(SourceFile* sourceFile, TokenId id, AstNode* parent, Parser* syntaxJob)
+    AstIntrinsicProp* newIntrinsicProp(SourceFile* sourceFile, TokenId id, AstNode* parent, Parser* parser)
     {
-        auto node         = Ast::newNode<AstIntrinsicProp>(syntaxJob, AstNodeKind::IntrinsicProp, sourceFile, parent);
+        auto node         = Ast::newNode<AstIntrinsicProp>(parser, AstNodeKind::IntrinsicProp, sourceFile, parent);
         node->token.id    = id;
         node->semanticFct = SemanticJob::resolveIntrinsicProperty;
         return node;
     }
 
-    AstTypeExpression* newTypeExpression(SourceFile* sourceFile, AstNode* parent, Parser* syntaxJob)
+    AstTypeExpression* newTypeExpression(SourceFile* sourceFile, AstNode* parent, Parser* parser)
     {
-        auto node         = Ast::newNode<AstTypeExpression>(syntaxJob, AstNodeKind::TypeExpression, sourceFile, parent);
+        auto node         = Ast::newNode<AstTypeExpression>(parser, AstNodeKind::TypeExpression, sourceFile, parent);
         node->semanticFct = SemanticJob::resolveType;
         return node;
     }
 
-    AstIdentifier* newIdentifier(SourceFile* sourceFile, const Utf8& name, AstIdentifierRef* identifierRef, AstNode* parent, Parser* syntaxJob)
+    AstIdentifier* newIdentifier(SourceFile* sourceFile, const Utf8& name, AstIdentifierRef* identifierRef, AstNode* parent, Parser* parser)
     {
-        auto node           = Ast::newNode<AstIdentifier>(syntaxJob, AstNodeKind::Identifier, sourceFile, parent);
+        auto node           = Ast::newNode<AstIdentifier>(parser, AstNodeKind::Identifier, sourceFile, parent);
         node->token.text    = name;
         node->identifierRef = identifierRef;
         node->semanticFct   = SemanticJob::resolveIdentifier;
@@ -546,9 +546,9 @@ namespace Ast
         return node;
     }
 
-    AstIdentifierRef* newIdentifierRef(SourceFile* sourceFile, AstNode* parent, Parser* syntaxJob)
+    AstIdentifierRef* newIdentifierRef(SourceFile* sourceFile, AstNode* parent, Parser* parser)
     {
-        auto node = Ast::newNode<AstIdentifierRef>(syntaxJob, AstNodeKind::IdentifierRef, sourceFile, parent);
+        auto node = Ast::newNode<AstIdentifierRef>(parser, AstNodeKind::IdentifierRef, sourceFile, parent);
         node->allocateExtension(ExtensionKind::Semantic);
         node->extension->semantic->semanticBeforeFct = SemanticJob::preResolveIdentifierRef;
         node->semanticFct                            = SemanticJob::resolveIdentifierRef;
@@ -556,14 +556,14 @@ namespace Ast
         return node;
     }
 
-    AstIdentifierRef* newIdentifierRef(SourceFile* sourceFile, const Utf8& name, AstNode* parent, Parser* syntaxJob)
+    AstIdentifierRef* newIdentifierRef(SourceFile* sourceFile, const Utf8& name, AstNode* parent, Parser* parser)
     {
         SWAG_ASSERT(!name.empty());
 
-        auto node        = Ast::newIdentifierRef(sourceFile, parent, syntaxJob);
+        auto node        = Ast::newIdentifierRef(sourceFile, parent, parser);
         node->token.text = name;
-        if (syntaxJob && !syntaxJob->currentTokenLocation)
-            node->inheritTokenLocation(syntaxJob->token);
+        if (parser && !parser->currentTokenLocation)
+            node->inheritTokenLocation(parser->token);
 
         Utf8 str;
         int  cpt = 0;
@@ -577,7 +577,7 @@ namespace Ast
                 cpt++;
             }
 
-            auto id         = Ast::newNode<AstIdentifier>(syntaxJob, AstNodeKind::Identifier, sourceFile, node);
+            auto id         = Ast::newNode<AstIdentifier>(parser, AstNodeKind::Identifier, sourceFile, node);
             id->semanticFct = SemanticJob::resolveIdentifier;
             str.buffer      = pzStart;
             str.count       = (int) (pz - pzStart);
@@ -585,8 +585,8 @@ namespace Ast
             id->token.text  = str;
 
             id->token.id = TokenId::Identifier;
-            if (syntaxJob && !syntaxJob->currentTokenLocation)
-                id->inheritTokenLocation(syntaxJob->token);
+            if (parser && !parser->currentTokenLocation)
+                id->inheritTokenLocation(parser->token);
             id->identifierRef = node;
             id->inheritOwners(node);
 
