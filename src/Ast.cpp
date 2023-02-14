@@ -16,10 +16,6 @@ namespace Ast
         node->parent     = parent;
         node->sourceFile = sourceFile;
 
-        // Count nodes (not precise). Just to have an hint on the number of bytecode instructions
-        if (parent && parent->ownerFct)
-            parent->ownerFct->nodeCounts++;
-
         if (allocChilds)
             node->childs.reserve(allocChilds);
 
@@ -50,10 +46,12 @@ namespace Ast
 
         if (parent)
         {
+            // Count nodes (not precise). Just to have an hint on the number of bytecode instructions
+            if (parent->ownerFct)
+                parent->ownerFct->nodeCounts++;
+
             // Some flags are inherited from the parent, whatever...
-            node->flags |= parent->flags & AST_NO_BACKEND;
-            node->flags |= parent->flags & AST_RUN_BLOCK;
-            node->flags |= parent->flags & AST_IN_MIXIN;
+            node->flags |= parent->flags & (AST_NO_BACKEND | AST_RUN_BLOCK | AST_IN_MIXIN);
 
             ScopedLock lk(parent->mutex);
             node->childParentIdx = (uint32_t) parent->childs.size();
