@@ -541,6 +541,13 @@ AstNode* AstIdentifierRef::clone(CloneContext& context)
     return newNode;
 }
 
+void AstIdentifier::allocateIdentifierExtension()
+{
+    if (identifierExtension)
+        return;
+    identifierExtension = g_Allocator.alloc<AstIdentifierExtension>();
+}
+
 AstNode* AstIdentifier::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstIdentifier>();
@@ -560,9 +567,14 @@ AstNode* AstIdentifier::clone(CloneContext& context)
     newNode->identifierRef     = CastAst<AstIdentifierRef>(idRef, AstNodeKind::IdentifierRef);
     newNode->callParameters    = (AstFuncCallParams*) findChildRef(callParameters, newNode);
     newNode->genericParameters = findChildRef(genericParameters, newNode);
-    newNode->aliasNames        = aliasNames;
-    newNode->scopeUpMode       = scopeUpMode;
-    newNode->scopeUpValue      = scopeUpValue;
+
+    if (identifierExtension)
+    {
+        newNode->allocateIdentifierExtension();
+        newNode->identifierExtension->aliasNames   = identifierExtension->aliasNames;
+        newNode->identifierExtension->scopeUpMode  = identifierExtension->scopeUpMode;
+        newNode->identifierExtension->scopeUpValue = identifierExtension->scopeUpValue;
+    }
 
     // Check if we need to replace the token.text with a type substitution
     // That way the new resolveIdentifier will just try to keep the typeinfo
@@ -572,7 +584,10 @@ AstNode* AstIdentifier::clone(CloneContext& context)
         // :ForLocationInValidIf
         auto it1 = context.replaceTypesFrom.find(newNode->token.text);
         if (it1 != context.replaceTypesFrom.end())
-            newNode->fromAlternateVar = it1->second;
+        {
+            newNode->allocateIdentifierExtension();
+            newNode->identifierExtension->fromAlternateVar = it1->second;
+        }
 
         if (!it->second->isNative(NativeTypeKind::Undefined))
             newNode->token.text = it->second->name;

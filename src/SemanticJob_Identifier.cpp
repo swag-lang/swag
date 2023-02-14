@@ -945,13 +945,14 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                     auto idNode = Ast::newIdentifier(dependentVar->sourceFile, child->token.text, idRef, nullptr);
                     idNode->inheritOrFlag(idRef, AST_IN_MIXIN);
                     idNode->inheritTokenLocation(idRef);
-                    idNode->fromAlternateVar = child;
+                    idNode->allocateIdentifierExtension();
+                    idNode->identifierExtension->fromAlternateVar = child;
                     Ast::addChildFront(idRef, idNode);
                     context->job->nodes.push_back(idNode);
-                    if (i == 0)
+                    if (i == 0 && identifier->identifierExtension)
                     {
-                        idNode->scopeUpMode  = identifier->scopeUpMode;
-                        idNode->scopeUpValue = identifier->scopeUpValue;
+                        idNode->identifierExtension->scopeUpMode  = identifier->identifierExtension->scopeUpMode;
+                        idNode->identifierExtension->scopeUpValue = identifier->identifierExtension->scopeUpValue;
                     }
 
                     idNode->specFlags |= AST_SPEC_IDENTIFIER_FROM_USING;
@@ -971,10 +972,19 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 while (newParent->parent != idRef)
                     newParent = newParent->parent;
 
-                idNode->scopeUpMode  = identifier->scopeUpMode;
-                idNode->scopeUpValue = identifier->scopeUpValue;
                 idNode->specFlags |= AST_SPEC_IDENTIFIER_FROM_USING;
-                idNode->fromAlternateVar = dependentVar;
+
+                if (identifier->identifierExtension || dependentVar)
+                    idNode->allocateIdentifierExtension();
+
+                if (identifier->identifierExtension)
+                {
+                    idNode->identifierExtension->scopeUpMode  = identifier->identifierExtension->scopeUpMode;
+                    idNode->identifierExtension->scopeUpValue = identifier->identifierExtension->scopeUpValue;
+                }
+
+                if (idNode->identifierExtension)
+                    idNode->identifierExtension->fromAlternateVar = dependentVar;
 
                 Ast::insertChild(idRef, idNode, newParent->childParentIdx);
                 context->job->nodes.push_back(idNode);
@@ -2783,8 +2793,8 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
         if (!startScope || oneTry == 1)
         {
             uint32_t collectFlags = COLLECT_ALL;
-            auto     scopeUpMode  = node->scopeUpMode;
-            auto     scopeUpValue = node->scopeUpValue;
+            auto     scopeUpMode  = node->identifierExtension ? node->identifierExtension->scopeUpMode : IdentifierScopeUpMode::None;
+            auto     scopeUpValue = node->identifierExtension ? node->identifierExtension->scopeUpValue : TokenParse{};
 
             startScope = node->ownerScope;
 
@@ -2816,8 +2826,9 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
                         auto id = Ast::newIdentifier(context->sourceFile, withNode->id[wi], identifierRef, identifierRef);
                         id->flags |= AST_GENERATED;
                         id->specFlags |= AST_SPEC_IDENTIFIER_FROM_WITH;
-                        id->alternateEnum    = hasEnum;
-                        id->fromAlternateVar = withNode->childs.front();
+                        id->allocateIdentifierExtension();
+                        id->identifierExtension->alternateEnum    = hasEnum;
+                        id->identifierExtension->fromAlternateVar = withNode->childs.front();
                         id->inheritTokenLocation(identifierRef);
                         identifierRef->childs.pop_back();
                         Ast::addChildFront(identifierRef, id);

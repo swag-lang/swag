@@ -1338,7 +1338,8 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t ide
                     auto id = Ast::newIdentifier(sourceFile, withNode->id[wi], (AstIdentifierRef*) exprNode, exprNode, this);
                     id->flags |= AST_GENERATED;
                     id->specFlags |= AST_SPEC_IDENTIFIER_FROM_WITH;
-                    id->fromAlternateVar = withNode->childs.front();
+                    id->allocateIdentifierExtension();
+                    id->identifierExtension->fromAlternateVar = withNode->childs.front();
                     id->inheritTokenLocation(exprNode);
                     exprNode->childs.pop_back();
                     Ast::addChildFront(exprNode, id);

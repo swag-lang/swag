@@ -129,8 +129,9 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
 
     if (scopeUpValue.id != TokenId::Invalid)
     {
-        identifier->scopeUpMode  = IdentifierScopeUpMode::Count;
-        identifier->scopeUpValue = scopeUpValue;
+        identifier->allocateIdentifierExtension();
+        identifier->identifierExtension->scopeUpMode  = IdentifierScopeUpMode::Count;
+        identifier->identifierExtension->scopeUpValue = scopeUpValue;
     }
 
     if (contextualNoInline)

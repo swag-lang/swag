@@ -625,9 +625,10 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         SWAG_VERIFY(!(typeInfo->isTuple()), context->report({node->expression, Err(Err0624), Diagnostic::isType(typeInfo)}));
         SWAG_VERIFY(node->expression->kind == AstNodeKind::IdentifierRef, Report::internalError(node->expression, "resolveVisit expression, should be an identifier"));
 
-        auto identifierRef    = (AstIdentifierRef*) Ast::clone(node->expression, node);
-        auto callVisit        = Ast::newIdentifier(sourceFile, Fmt("opVisit%s", node->extraNameToken.ctext()), identifierRef, identifierRef);
-        callVisit->aliasNames = node->aliasNames;
+        auto identifierRef = (AstIdentifierRef*) Ast::clone(node->expression, node);
+        auto callVisit     = Ast::newIdentifier(sourceFile, Fmt("opVisit%s", node->extraNameToken.ctext()), identifierRef, identifierRef);
+        callVisit->allocateIdentifierExtension();
+        callVisit->identifierExtension->aliasNames = node->aliasNames;
         callVisit->inheritTokenLocation(node);
 
         // Generic parameters

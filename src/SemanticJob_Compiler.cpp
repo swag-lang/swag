@@ -820,9 +820,9 @@ bool SemanticJob::resolveIntrinsicLocation(SemanticContext* context)
         if (locNode->kind == AstNodeKind::FuncCallParam && locNode->childs.front()->kind == AstNodeKind::IdentifierRef)
         {
             auto id = CastAst<AstIdentifier>(locNode->childs.back()->childs.back(), AstNodeKind::Identifier);
-            if (id->fromAlternateVar)
+            if (id->identifierExtension && id->identifierExtension->fromAlternateVar)
             {
-                locNode = id->fromAlternateVar;
+                locNode = id->identifierExtension->fromAlternateVar;
                 done    = true;
                 continue;
             }
@@ -832,9 +832,9 @@ bool SemanticJob::resolveIntrinsicLocation(SemanticContext* context)
         if (locNode->kind == AstNodeKind::IdentifierRef)
         {
             auto id = CastAst<AstIdentifier>(locNode->childs.back(), AstNodeKind::Identifier);
-            if (id->fromAlternateVar)
+            if (id->identifierExtension && id->identifierExtension->fromAlternateVar)
             {
-                locNode = id->fromAlternateVar;
+                locNode = id->identifierExtension->fromAlternateVar;
                 done    = true;
                 continue;
             }

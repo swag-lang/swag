@@ -139,9 +139,9 @@ bool SemanticJob::checkIsConstAffect(SemanticContext* context, AstNode* left, As
 
             SWAG_ASSERT(left->resolvedSymbolOverload);
             if (left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM && left->typeInfo->isConst())
-                note = new Diagnostic{leftId->fromAlternateVar, Nte(Nte0023), DiagnosticLevel::Note};
+                note = new Diagnostic{leftId->identifierExtension->fromAlternateVar, Nte(Nte0023), DiagnosticLevel::Note};
             else if (!(left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM))
-                note = new Diagnostic{leftId->fromAlternateVar, Nte(Nte0023), Diagnostic::isType(left->typeInfo), DiagnosticLevel::Note};
+                note = new Diagnostic{leftId->identifierExtension->fromAlternateVar, Nte(Nte0023), Diagnostic::isType(left->typeInfo), DiagnosticLevel::Note};
         }
     }
 

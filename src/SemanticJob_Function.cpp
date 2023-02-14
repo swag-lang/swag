@@ -1615,8 +1615,11 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
         auto id = CastAst<AstIdentifier>(identifier, AstNodeKind::Identifier);
 
         int idx = 0;
-        for (auto& alias : id->aliasNames)
-            cloneContext.replaceNames[Fmt("@alias%d", idx++)] = alias.text;
+        if (id->identifierExtension)
+        {
+            for (auto& alias : id->identifierExtension->aliasNames)
+                cloneContext.replaceNames[Fmt("@alias%d", idx++)] = alias.text;
+        }
 
         idx = 0;
         for (auto& alias : id->callParameters->aliasNames)
@@ -1705,13 +1708,16 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
                 auto it = cloneContext.usedReplaceNames.find(r.second);
                 if (it == cloneContext.usedReplaceNames.end())
                 {
-                    for (auto& alias : id->aliasNames)
+                    if (id->identifierExtension)
                     {
-                        if (alias.text == r.second)
+                        for (auto& alias : id->identifierExtension->aliasNames)
                         {
-                            Diagnostic diag{id, alias, Fmt(Err(Err0780), alias.ctext())};
-                            diag.hint = Hnt(Hnt0026);
-                            return context->report(diag);
+                            if (alias.text == r.second)
+                            {
+                                Diagnostic diag{ id, alias, Fmt(Err(Err0780), alias.ctext()) };
+                                diag.hint = Hnt(Hnt0026);
+                                return context->report(diag);
+                            }
                         }
                     }
 

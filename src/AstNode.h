@@ -117,6 +117,21 @@ struct AlternativeScopeVar
     uint32_t flags;
 };
 
+enum class IdentifierScopeUpMode : uint8_t
+{
+    None,
+    Count,
+};
+
+struct AstIdentifierExtension
+{
+    Vector<Token>         aliasNames;
+    TokenParse            scopeUpValue;
+    TypeInfo*             alternateEnum    = nullptr;
+    AstNode*              fromAlternateVar = nullptr;
+    IdentifierScopeUpMode scopeUpMode      = IdentifierScopeUpMode::None;
+};
+
 enum class AstNodeKind : uint8_t
 {
     Invalid,
@@ -241,12 +256,6 @@ enum class AstNodeResolveState : uint8_t
     ProcessingChilds,
     PostChilds,
     Done,
-};
-
-enum class IdentifierScopeUpMode : uint8_t
-{
-    None,
-    Count,
 };
 
 enum class ExtensionKind
@@ -462,17 +471,12 @@ struct AstIdentifierRef : public AstNode
 struct AstIdentifier : public AstNode
 {
     AstNode* clone(CloneContext& context);
+    void     allocateIdentifierExtension();
 
-    Vector<Token> aliasNames;
-    TokenParse    scopeUpValue;
-
-    AstIdentifierRef*  identifierRef     = nullptr;
-    AstNode*           genericParameters = nullptr;
-    AstFuncCallParams* callParameters    = nullptr;
-    TypeInfo*          alternateEnum     = nullptr;
-    AstNode*           fromAlternateVar  = nullptr;
-
-    IdentifierScopeUpMode scopeUpMode = IdentifierScopeUpMode::None;
+    AstIdentifierRef*       identifierRef       = nullptr;
+    AstNode*                genericParameters   = nullptr;
+    AstFuncCallParams*      callParameters      = nullptr;
+    AstIdentifierExtension* identifierExtension = nullptr;
 };
 
 struct AstFuncDecl : public AstNode

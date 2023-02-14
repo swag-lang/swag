@@ -1761,13 +1761,14 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::Identifier:
     {
         auto ident = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
-        if (ident->scopeUpMode != IdentifierScopeUpMode::None)
+        if (ident->identifierExtension && ident->identifierExtension->scopeUpMode != IdentifierScopeUpMode::None)
         {
             CONCAT_FIXED_STR(concat, "#up");
-            if (ident->scopeUpMode == IdentifierScopeUpMode::Count && ident->scopeUpValue.literalValue.u8 > 1)
+            if (ident->identifierExtension->scopeUpMode == IdentifierScopeUpMode::Count &&
+                ident->identifierExtension->scopeUpValue.literalValue.u8 > 1)
             {
                 concat.addChar('(');
-                concat.addStringFormat("%d", ident->scopeUpValue.literalValue.u8);
+                concat.addStringFormat("%d", ident->identifierExtension->scopeUpValue.literalValue.u8);
                 concat.addChar(')');
             }
 

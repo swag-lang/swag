@@ -1228,10 +1228,11 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
                 {
                     diag = new Diagnostic{node, Fmt(Err(Err0821), varDecl->token.ctext(), displayName.c_str())};
                 }
-                else if (prevIdentifier && prevIdentifier->alternateEnum)
+                else if (prevIdentifier && prevIdentifier->identifierExtension && prevIdentifier->identifierExtension->alternateEnum)
                 {
-                    diag            = new Diagnostic{node, node->token, Fmt(Err(Err0492), node->token.ctext(), prevIdentifier->alternateEnum->getDisplayNameC(), Naming::kindName(identifierRef->startScope->kind).c_str(), displayName.c_str())};
-                    auto note       = new Diagnostic{prevIdentifier->alternateEnum->declNode, prevIdentifier->alternateEnum->declNode->token, Fmt(Nte(Nte0029), prevIdentifier->alternateEnum->getDisplayNameC()), DiagnosticLevel::Note};
+                    auto altEnum    = prevIdentifier->identifierExtension->alternateEnum;
+                    diag            = new Diagnostic{node, node->token, Fmt(Err(Err0492), node->token.ctext(), altEnum->getDisplayNameC(), Naming::kindName(identifierRef->startScope->kind).c_str(), displayName.c_str())};
+                    auto note       = new Diagnostic{ altEnum->declNode, altEnum->declNode->token, Fmt(Nte(Nte0029), altEnum->getDisplayNameC()), DiagnosticLevel::Note};
                     note->showRange = false;
                     notes.push_back(note);
                 }
