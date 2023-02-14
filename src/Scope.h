@@ -1,13 +1,10 @@
 #pragma once
 #include "Utf8.h"
-#include "Register.h"
 #include "DependentJobs.h"
 #include "SymTable.h"
 #include "VectorNative.h"
 #include "Mutex.h"
-struct Parser;
 struct Scope;
-struct SourceFile;
 struct AstNode;
 struct AstDefer;
 
@@ -65,13 +62,13 @@ struct Scope
     bool        isTopLevel();
     bool        isGlobalOrImpl();
 
+    SharedMutex             mutex;
     SymTable                symTable;
     Utf8                    name;
     Utf8                    fullname;
     VectorNative<Scope*>    childScopes;
-    VectorNative<AstDefer*> deferredNodes;
     DependentJobs           dependentJobs;
-    SharedMutex             mutex;
+    VectorNative<AstDefer*> deferredNodes;
     VectorNative<AstNode*>  doneDefer;
     VectorNative<AstNode*>  doneDrop;
 
