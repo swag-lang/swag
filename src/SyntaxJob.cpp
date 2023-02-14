@@ -1,15 +1,6 @@
 #include "pch.h"
 #include "Ast.h"
-#include "Module.h"
-#include "Parser.h"
-#include "Report.h"
-#include "Diagnostic.h"
-#include "LanguageSpec.h"
-#include "Scoped.h"
-#include "Timer.h"
-#include "ErrorIds.h"
 #include "LoadSourceFileJob.h"
-#include "JobThread.h"
 #include "SyntaxJob.h"
 
 JobResult SyntaxJob::execute()

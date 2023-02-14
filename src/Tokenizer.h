@@ -3,6 +3,7 @@
 #include "Utf8.h"
 struct SourceFile;
 struct TypeInfo;
+struct ErrorContext;
 enum class Intrisic;
 
 enum class TokenId : uint16_t
@@ -108,7 +109,7 @@ struct Tokenizer
     void saveState(const TokenParse& token);
     void restoreState(TokenParse& token);
 
-    void setFile(SourceFile* file);
+    void setup(ErrorContext* errorCxt, SourceFile* file);
     bool nextToken(TokenParse& token);
 
     static string tokenToName(TokenId id);
@@ -121,12 +122,14 @@ struct Tokenizer
     // clang-format on
 
     SourceLocation location;
-    char*          curBuffer           = nullptr;
-    char*          endBuffer           = nullptr;
-    SourceFile*    sourceFile          = nullptr;
-    char*          startTokenName      = nullptr;
-    bool           forceLastTokenIsEOL = false;
-    bool           realAppendName      = false;
+
+    ErrorContext* errorContext        = nullptr;
+    char*         curBuffer           = nullptr;
+    char*         endBuffer           = nullptr;
+    SourceFile*   sourceFile          = nullptr;
+    char*         startTokenName      = nullptr;
+    bool          forceLastTokenIsEOL = false;
+    bool          realAppendName      = false;
 
     TokenParse     st_token;
     char*          st_curBuffer = nullptr;

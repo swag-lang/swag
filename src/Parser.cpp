@@ -278,7 +278,7 @@ bool Parser::constructEmbedded(const Utf8& content, AstNode* parent, AstNode* fr
         currentStructScope = impl->structScope;
     }
 
-    tokenizer.setFile(sourceFile);
+    tokenizer.setup(context, sourceFile);
     if (logGenerated)
     {
         sourceFile->getLineOffset = previousLogLine;
@@ -336,9 +336,8 @@ bool Parser::execute()
     if (g_CommandLine.stats)
         g_Stats.numFiles++;
 
-    module = sourceFile->module;
-
     // Setup root ast for file
+    module              = sourceFile->module;
     sourceFile->astRoot = Ast::newNode<AstNode>(this, AstNodeKind::File, sourceFile, module->astRoot);
 
     // Creates a top namespace with the module namespace name
@@ -433,7 +432,7 @@ bool Parser::execute()
     if (sourceFile->numErrors)
         return false;
 
-    tokenizer.setFile(sourceFile);
+    tokenizer.setup(context, sourceFile);
     sourceFile->duringSyntax = true;
 
     Timer timer(&g_Stats.syntaxTime);

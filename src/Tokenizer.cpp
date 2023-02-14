@@ -6,6 +6,7 @@
 #include "Report.h"
 #include "Timer.h"
 #include "LanguageSpec.h"
+#include "ErrorContext.h"
 
 const char* g_TokenNames[] =
     {
@@ -24,9 +25,10 @@ const uint32_t g_TokenFlags[] =
 bool Tokenizer::error(TokenParse& token, const Utf8& msg, const Utf8& hint)
 {
     token.endLocation = location;
+
     Diagnostic diag{sourceFile, token, msg};
     diag.hint = hint;
-    return Report::report(diag);
+    return errorContext->report(diag);
 }
 
 void Tokenizer::appendTokenName(TokenParse& token)
@@ -37,9 +39,11 @@ void Tokenizer::appendTokenName(TokenParse& token)
         token.text.setView(startTokenName, (int) (curBuffer - startTokenName));
 }
 
-void Tokenizer::setFile(SourceFile* file)
+void Tokenizer::setup(ErrorContext* errorCxt, SourceFile* file)
 {
     SWAG_ASSERT(!curBuffer);
+
+    errorContext    = errorCxt;
     location.column = 0;
     location.line   = 0;
     sourceFile      = file;

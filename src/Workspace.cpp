@@ -93,11 +93,12 @@ void Workspace::setupUserTags()
             }
             else
             {
-                SourceFile fakeFile;
-                Tokenizer  tokenizer;
-                TokenParse token;
+                ErrorContext errorContext;
+                SourceFile   fakeFile;
+                Tokenizer    tokenizer;
+                TokenParse   token;
                 fakeFile.setExternalBuffer(tokenVal);
-                tokenizer.setFile(&fakeFile);
+                tokenizer.setup(&errorContext, &fakeFile);
 
                 bool neg = false;
                 tokenizer.nextToken(token);
