@@ -7,7 +7,7 @@
 #include "Report.h"
 #include "LanguageSpec.h"
 
-bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
+bool Parser::doAlias(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstAlias>(this, AstNodeKind::Alias, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveUsing;
@@ -33,18 +33,18 @@ bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
         node->allocateExtension(ExtensionKind::Semantic);
         node->extension->semantic->semanticBeforeFct = SemanticJob::resolveTypeAliasBefore;
         node->semanticFct                            = SemanticJob::resolveTypeAlias;
-        node->resolvedSymbolName                     = currentScope->symTable.registerSymbolName(&context, node, SymbolKind::TypeAlias);
+        node->resolvedSymbolName                     = currentScope->symTable.registerSymbolName(context, node, SymbolKind::TypeAlias);
     }
     else
     {
         node->semanticFct        = SemanticJob::resolveAlias;
-        node->resolvedSymbolName = currentScope->symTable.registerSymbolName(&context, node, SymbolKind::Alias);
+        node->resolvedSymbolName = currentScope->symTable.registerSymbolName(context, node, SymbolKind::Alias);
     }
 
     return true;
 }
 
-bool SyntaxJob::doLambdaClosureType(AstNode* parent, AstNode** result, bool inTypeVarDecl)
+bool Parser::doLambdaClosureType(AstNode* parent, AstNode** result, bool inTypeVarDecl)
 {
     auto node         = Ast::newNode<AstTypeLambda>(this, AstNodeKind::TypeLambda, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveTypeLambdaClosure;
@@ -66,7 +66,7 @@ bool SyntaxJob::doLambdaClosureType(AstNode* parent, AstNode** result, bool inTy
     return true;
 }
 
-bool SyntaxJob::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool inTypeVarDecl)
+bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool inTypeVarDecl)
 {
     AstTypeExpression* firstAddedType = nullptr;
     AstNode*           params         = nullptr;
@@ -203,7 +203,7 @@ bool SyntaxJob::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, b
                 {
                     Diagnostic diag(sourceFile, token, Err(Syn0197));
                     diag.hint = Hnt(Hnt0102);
-                    return context.report(diag);
+                    return context->report(diag);
                 }
                 else
                 {
@@ -348,7 +348,7 @@ bool SyntaxJob::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, b
                     Diagnostic diag{sourceFile, tokenAmb, Err(Syn0195)};
                     Diagnostic note{lastParameter, Fmt(Nte(Nte0076), lastParameter->type->token.ctext()), DiagnosticLevel::Note};
                     note.hint = Fmt(Hnt(Hnt0101), lastParameter->type->token.ctext());
-                    return context.report(diag, &note);
+                    return context->report(diag, &note);
                 }
 
                 lastWasAlone  = curIsAlone;
@@ -379,7 +379,7 @@ bool SyntaxJob::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, b
     return true;
 }
 
-bool SyntaxJob::doTupleOrAnonymousType(AstNode* parent, AstNode** result, bool isConst, bool anonymousStruct, bool anonymousUnion)
+bool Parser::doTupleOrAnonymousType(AstNode* parent, AstNode** result, bool isConst, bool anonymousStruct, bool anonymousUnion)
 {
     auto structNode = Ast::newStructDecl(sourceFile, parent, this);
     structNode->flags |= AST_PRIVATE;
@@ -462,7 +462,7 @@ bool SyntaxJob::doTupleOrAnonymousType(AstNode* parent, AstNode** result, bool i
     typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE;
     structNode->typeInfo   = typeInfo;
     structNode->ownerScope = rootScope;
-    rootScope->symTable.registerSymbolName(&context, structNode, SymbolKind::Struct);
+    rootScope->symTable.registerSymbolName(context, structNode, SymbolKind::Struct);
 
     Ast::visit(structNode->content, [&](AstNode* n)
                {
@@ -473,7 +473,7 @@ bool SyntaxJob::doTupleOrAnonymousType(AstNode* parent, AstNode** result, bool i
     return true;
 }
 
-bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeVarDecl)
+bool Parser::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeVarDecl)
 {
     // Code
     if (token.id == TokenId::KwdCode)
@@ -551,7 +551,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         {
             Diagnostic diag{sourceFile, token, Err(Err0619)};
             diag.addRange(tokenConst, Hnt(Hnt0061));
-            return context.report(diag);
+            return context->report(diag);
         }
 
         auto prevToken = token;
@@ -563,7 +563,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             Diagnostic diag(sourceFile, token, Err(Err0530));
             diag.hint = Hnt(Hnt0111);
             diag.addRange(prevToken, "");
-            return context.report(diag);
+            return context->report(diag);
         }
     }
 
@@ -614,9 +614,9 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             if (contextFlags & CONTEXT_FLAG_EXPRESSION)
             {
                 if (inTypeVarDecl)
-                    return context.report({sourceFile, rightSquareToken, Err(Syn0024)});
+                    return context->report({sourceFile, rightSquareToken, Err(Syn0024)});
                 Diagnostic diag{sourceFile, rightSquareToken, Err(Syn0024)};
-                return context.report(diag);
+                return context->report(diag);
             }
             else
             {
@@ -630,7 +630,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             {
                 Diagnostic diag{sourceFile, token, Fmt(Err(Syn0095), token.ctext())};
                 Diagnostic note{sourceFile, leftSquareToken, Hlp(Hlp0025), DiagnosticLevel::Help};
-                return context.report(diag, &note);
+                return context->report(diag, &note);
             }
             else
             {
@@ -645,7 +645,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
                 {
                     Diagnostic diag{sourceFile, token, Fmt(Err(Syn0088), token.ctext())};
                     Diagnostic note{Hlp(Hlp0024), DiagnosticLevel::Help};
-                    return context.report(diag, &note);
+                    return context->report(diag, &note);
                 }
             }
         }
@@ -657,10 +657,10 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             token.id != TokenId::SymCircumflex)
         {
             if (inTypeVarDecl)
-                return context.report({sourceFile, token, Fmt(Err(Syn0066), token.ctext())});
+                return context->report({sourceFile, token, Fmt(Err(Syn0066), token.ctext())});
 
             Diagnostic diag{sourceFile, token, Fmt(Err(Syn0066), token.ctext())};
-            return context.report(diag);
+            return context->report(diag);
         }
 
         if (token.id == TokenId::SymComma)
@@ -670,7 +670,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             if (callParam)
             {
                 Diagnostic diag{sourceFile, token, Fmt(Err(Syn0096), token.ctext())};
-                return context.report(diag);
+                return context->report(diag);
             }
             else
             {
@@ -776,7 +776,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         alias->allocateExtension(ExtensionKind::Semantic);
         alias->extension->semantic->semanticBeforeFct = SemanticJob::resolveTypeAliasBefore;
         alias->semanticFct                            = SemanticJob::resolveTypeAlias;
-        alias->resolvedSymbolName                     = currentScope->symTable.registerSymbolName(&context, alias, SymbolKind::TypeAlias);
+        alias->resolvedSymbolName                     = currentScope->symTable.registerSymbolName(context, alias, SymbolKind::TypeAlias);
         node->identifier                              = Ast::newIdentifierRef(sourceFile, alias->token.text, node, this);
         SWAG_CHECK(doLambdaClosureType(alias));
 
@@ -789,14 +789,14 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     if (parent && parent->kind == AstNodeKind::TupleContent)
     {
         Diagnostic diag{sourceFile, token, Fmt(Err(Syn0067), token.ctext())};
-        return context.report(diag);
+        return context->report(diag);
     }
 
     if (token.id == TokenId::SymLeftParen)
     {
         Diagnostic diag{sourceFile, token, Fmt(Err(Syn0066), token.ctext())};
         Diagnostic note{sourceFile, token, Hlp(Hlp0004), DiagnosticLevel::Help};
-        return context.report(diag, &note);
+        return context->report(diag, &note);
     }
 
     if (Tokenizer::isSymbol(token.id))
@@ -806,7 +806,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     return error(token, Fmt(Err(Syn0066), token.ctext()));
 }
 
-bool SyntaxJob::doCast(AstNode* parent, AstNode** result)
+bool Parser::doCast(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstCast>(this, AstNodeKind::Cast, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveExplicitCast;
@@ -842,7 +842,7 @@ bool SyntaxJob::doCast(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doAutoCast(AstNode* parent, AstNode** result)
+bool Parser::doAutoCast(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstCast>(this, AstNodeKind::AutoCast, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveExplicitAutoCast;

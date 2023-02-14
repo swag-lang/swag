@@ -9,6 +9,7 @@
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "Report.h"
+#include "SyntaxJob.h"
 
 ModuleCfgManager* g_ModuleCfgMgr = nullptr;
 

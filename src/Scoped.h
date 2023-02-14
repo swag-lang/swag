@@ -1,14 +1,14 @@
 #pragma once
-#include "SyntaxJob.h"
+#include "Parser.h"
 #include "Scope.h"
-struct SyntaxJob;
+struct Parser;
 struct AstFuncDecl;
 struct AstCompilerIfBlock;
 struct AstTryCatchAssume;
 
 struct Scoped
 {
-    Scoped(SyntaxJob* job, Scope* newScope)
+    Scoped(Parser* job, Scope* newScope)
     {
         savedJob          = job;
         savedScope        = job->currentScope;
@@ -20,13 +20,13 @@ struct Scoped
         savedJob->currentScope = savedScope;
     }
 
-    SyntaxJob* savedJob;
+    Parser* savedJob;
     Scope*     savedScope;
 };
 
 struct ScopedBreakable
 {
-    ScopedBreakable(SyntaxJob* job, AstBreakable* newNode)
+    ScopedBreakable(Parser* job, AstBreakable* newNode)
     {
         savedJob              = job;
         savedNode             = job->currentBreakable;
@@ -38,13 +38,13 @@ struct ScopedBreakable
         savedJob->currentBreakable = savedNode;
     }
 
-    SyntaxJob*    savedJob;
+    Parser*    savedJob;
     AstBreakable* savedNode;
 };
 
 struct ScopedTryCatchAssume
 {
-    ScopedTryCatchAssume(SyntaxJob* job, AstTryCatchAssume* newNode)
+    ScopedTryCatchAssume(Parser* job, AstTryCatchAssume* newNode)
     {
         savedJob                   = job;
         savedNode                  = job->currentTryCatchAssume;
@@ -56,13 +56,13 @@ struct ScopedTryCatchAssume
         savedJob->currentTryCatchAssume = savedNode;
     }
 
-    SyntaxJob*         savedJob;
+    Parser*         savedJob;
     AstTryCatchAssume* savedNode;
 };
 
 struct ScopedFct
 {
-    ScopedFct(SyntaxJob* job, AstFuncDecl* newFct)
+    ScopedFct(Parser* job, AstFuncDecl* newFct)
     {
         savedJob        = job;
         savedFct        = job->currentFct;
@@ -74,13 +74,13 @@ struct ScopedFct
         savedJob->currentFct = savedFct;
     }
 
-    SyntaxJob*   savedJob;
+    Parser*   savedJob;
     AstFuncDecl* savedFct;
 };
 
 struct ScopedCompilerIfBlock
 {
-    ScopedCompilerIfBlock(SyntaxJob* job, AstCompilerIfBlock* newIf)
+    ScopedCompilerIfBlock(Parser* job, AstCompilerIfBlock* newIf)
     {
         savedJob                    = job;
         savedIf                     = job->currentCompilerIfBlock;
@@ -92,13 +92,13 @@ struct ScopedCompilerIfBlock
         savedJob->currentCompilerIfBlock = savedIf;
     }
 
-    SyntaxJob*          savedJob;
+    Parser*          savedJob;
     AstCompilerIfBlock* savedIf;
 };
 
 struct ScopedFlags
 {
-    ScopedFlags(SyntaxJob* job, uint64_t newFlags)
+    ScopedFlags(Parser* job, uint64_t newFlags)
     {
         savedJob   = job;
         savedFlags = job->currentFlags;
@@ -110,13 +110,13 @@ struct ScopedFlags
         savedJob->currentFlags = savedFlags;
     }
 
-    SyntaxJob* savedJob;
+    Parser* savedJob;
     uint64_t   savedFlags;
 };
 
 struct ScopedContextual
 {
-    ScopedContextual(SyntaxJob* job, uint32_t* counter)
+    ScopedContextual(Parser* job, uint32_t* counter)
     {
         savedJob     = job;
         savedCounter = counter;
@@ -128,13 +128,13 @@ struct ScopedContextual
         (*savedCounter)--;
     }
 
-    SyntaxJob* savedJob;
+    Parser* savedJob;
     uint32_t*  savedCounter;
 };
 
 struct ScopedStruct
 {
-    ScopedStruct(SyntaxJob* job, Scope* structScope)
+    ScopedStruct(Parser* job, Scope* structScope)
     {
         savedJob                = job;
         savedStruct             = job->currentStructScope;
@@ -146,13 +146,13 @@ struct ScopedStruct
         savedJob->currentStructScope = savedStruct;
     }
 
-    SyntaxJob* savedJob;
+    Parser* savedJob;
     Scope*     savedStruct;
 };
 
 struct ScopedSelfStruct
 {
-    ScopedSelfStruct(SyntaxJob* job, Scope* structScope)
+    ScopedSelfStruct(Parser* job, Scope* structScope)
     {
         savedJob                    = job;
         savedStruct                 = job->currentSelfStructScope;
@@ -164,13 +164,13 @@ struct ScopedSelfStruct
         savedJob->currentSelfStructScope = savedStruct;
     }
 
-    SyntaxJob* savedJob;
+    Parser* savedJob;
     Scope*     savedStruct;
 };
 
 struct ScopedLocation
 {
-    ScopedLocation(SyntaxJob* job, Token* token)
+    ScopedLocation(Parser* job, Token* token)
     {
         savedJob                  = job;
         savedToken                = job->currentTokenLocation;
@@ -184,7 +184,7 @@ struct ScopedLocation
         savedJob->currentTokenLocation = savedToken;
     }
 
-    SyntaxJob* savedJob;
+    Parser* savedJob;
     Token      myToken;
     Token*     savedToken;
 };

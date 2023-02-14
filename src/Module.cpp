@@ -1033,11 +1033,14 @@ bool Module::compileString(const Utf8& text)
         return false;
     }
 
-    AstNode*  parent = Ast::newNode(files[0], AstNodeKind::StatementNoScope, sourceFile->astRoot);
-    SyntaxJob syntaxJob;
-    syntaxJob.module = this;
+    AstNode*   parent = Ast::newNode(files[0], AstNodeKind::StatementNoScope, sourceFile->astRoot);
+    JobContext jobContext;
+    Parser     parser;
+    parser.context    = &jobContext;
+    parser.sourceFile = sourceFile;
+    parser.module     = this;
 
-    if (!syntaxJob.constructEmbedded(text, parent, g_RunContext->ip->node, CompilerAstKind::TopLevelInstruction, true))
+    if (!parser.constructEmbedded(text, parent, g_RunContext->ip->node, CompilerAstKind::TopLevelInstruction, true))
         return false;
 
     auto job        = g_Allocator.alloc<SemanticJob>();

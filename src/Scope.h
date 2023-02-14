@@ -5,7 +5,7 @@
 #include "SymTable.h"
 #include "VectorNative.h"
 #include "Mutex.h"
-struct SyntaxJob;
+struct Parser;
 struct Scope;
 struct SourceFile;
 struct AstNode;

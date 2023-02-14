@@ -7,14 +7,14 @@
 #include "Module.h"
 #include "Naming.h"
 
-bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
+bool Parser::doImpl(AstNode* parent, AstNode** result)
 {
     auto implNode         = Ast::newNode<AstImpl>(this, AstNodeKind::Impl, sourceFile, parent);
     implNode->semanticFct = SemanticJob::resolveImpl;
     if (result)
         *result = implNode;
 
-    SWAG_VERIFY(module->acceptsCompileImpl, context.report({implNode, Err(Syn0104)}));
+    SWAG_VERIFY(module->acceptsCompileImpl, context->report({implNode, Err(Syn0104)}));
 
     auto scopeKind = ScopeKind::Struct;
     SWAG_CHECK(eatToken());
@@ -44,7 +44,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
             Diagnostic diag{implNode, token, Err(Syn0143)};
             diag.hint = Hnt(Hnt0061);
             diag.addRange(kindLoc, Hnt(Hnt0085));
-            return context.report(diag);
+            return context->report(diag);
         }
 
         SWAG_CHECK(eatToken());
@@ -58,7 +58,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         implInterface                                   = true;
 
         auto last = CastAst<AstIdentifier>(identifierStruct->childs.back(), AstNodeKind::Identifier);
-        SWAG_VERIFY(!last->genericParameters, context.report({last->genericParameters, Err(Syn0162)}));
+        SWAG_VERIFY(!last->genericParameters, context->report({last->genericParameters, Err(Syn0162)}));
     }
     else
     {
@@ -82,7 +82,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         else if (newScope->kind == ScopeKind::Struct)
             diag.hint = Fmt(Hnt(Hnt0020), implNode->token.ctext());
         Diagnostic note{newScope->owner, newScope->owner->token, Fmt(Nte(Nte0027), implNode->token.ctext()), DiagnosticLevel::Note};
-        return context.report(diag, &note);
+        return context->report(diag, &note);
     }
 
     implNode->structScope = newScope;
@@ -148,7 +148,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
             typeInfo->structName = typeInfo->name;
             typeInfo->scope      = subScope;
             typeInfo->declNode   = implNode;
-            newScope->symTable.addSymbolTypeInfoNoLock(&context, implNode, typeInfo, SymbolKind::Struct, nullptr, OVERLOAD_IMPL_IN_STRUCT, nullptr, 0, nullptr, &itfName);
+            newScope->symTable.addSymbolTypeInfoNoLock(context, implNode, typeInfo, SymbolKind::Struct, nullptr, OVERLOAD_IMPL_IN_STRUCT, nullptr, 0, nullptr, &itfName);
         }
         else
         {
@@ -174,7 +174,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
+bool Parser::doStruct(AstNode* parent, AstNode** result)
 {
     auto structNode         = Ast::newNode<AstStruct>(this, AstNodeKind::StructDecl, sourceFile, parent);
     structNode->semanticFct = SemanticJob::resolveStruct;
@@ -220,7 +220,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structType)
+bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
 {
     SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0063), token.ctext())));
     structNode->inheritTokenName(token);
@@ -243,13 +243,13 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
                 auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
                 Diagnostic diag{implNode->identifier, Fmt(Err(Syn0123), Naming::kindName(newScope->kind).c_str(), implNode->token.ctext(), Naming::kindName(ScopeKind::Struct).c_str())};
                 Diagnostic note{structNode, Fmt(Nte(Nte0027), implNode->token.ctext()), DiagnosticLevel::Note};
-                return context.report(diag, &note);
+                return context->report(diag, &note);
             }
             else
             {
                 Diagnostic diag{structNode->sourceFile, token, Fmt(Err(Err0394), structNode->token.ctext(), Naming::aKindName(newScope->kind).c_str())};
                 Diagnostic note{newScope->owner, Nte(Nte0036), DiagnosticLevel::Note};
-                return context.report(diag, &note);
+                return context->report(diag, &note);
             }
         }
 
@@ -284,7 +284,7 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
             break;
         }
 
-        structNode->resolvedSymbolName = currentScope->symTable.registerSymbolNameNoLock(&context, structNode, symbolKind);
+        structNode->resolvedSymbolName = currentScope->symTable.registerSymbolNameNoLock(context, structNode, symbolKind);
     }
 
     // Dispatch owners
@@ -298,7 +298,7 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
                        if (n->kind == AstNodeKind::FuncDeclParam)
                        {
                            auto param = CastAst<AstVarDecl>(n, AstNodeKind::FuncDeclParam);
-                           newScope->symTable.registerSymbolName(&context, n, param->type ? SymbolKind::Variable : SymbolKind::GenericType);
+                           newScope->symTable.registerSymbolName(context, n, param->type ? SymbolKind::Variable : SymbolKind::GenericType);
                        } });
     }
 
@@ -339,7 +339,7 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
     return true;
 }
 
-bool SyntaxJob::doTupleBody(AstNode* parent, bool acceptEmpty)
+bool Parser::doTupleBody(AstNode* parent, bool acceptEmpty)
 {
     auto startLoc = token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the tuple body"));
@@ -354,7 +354,7 @@ bool SyntaxJob::doTupleBody(AstNode* parent, bool acceptEmpty)
         }
 
         Diagnostic diag{sourceFile, token, Fmt(Err(Syn0046), token.ctext())};
-        return context.report(diag);
+        return context->report(diag);
     }
 
     bool        lastWasAlone  = false;
@@ -448,7 +448,7 @@ bool SyntaxJob::doTupleBody(AstNode* parent, bool acceptEmpty)
             Diagnostic diag{sourceFile, tokenAmb, Err(Syn0198)};
             Diagnostic note{lastParameter, Fmt(Nte(Nte0077), lastParameter->type->token.ctext()), DiagnosticLevel::Note};
             note.hint = Fmt(Hnt(Hnt0103), lastParameter->type->token.ctext());
-            return context.report(diag, &note);
+            return context->report(diag, &note);
         }
 
         lastWasAlone  = curIsAlone;
@@ -467,7 +467,7 @@ bool SyntaxJob::doTupleBody(AstNode* parent, bool acceptEmpty)
     return true;
 }
 
-bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode** result)
+bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode** result)
 {
     auto startLoc = token.startLocation;
     if (token.id == TokenId::SymLeftCurly)
@@ -548,7 +548,7 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
     case TokenId::KwdUsing:
     {
         ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
-        SWAG_VERIFY(structType != SyntaxStructType::Interface, context.report({parent, token, Err(Syn0029)}));
+        SWAG_VERIFY(structType != SyntaxStructType::Interface, context->report({parent, token, Err(Syn0029)}));
         SWAG_CHECK(eatToken());
         auto structNode = CastAst<AstStruct>(parent->ownerStructScope->owner, AstNodeKind::StructDecl);
         structNode->specFlags |= AST_SPEC_STRUCTDECL_HAS_USING;
@@ -572,7 +572,7 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
     {
         Diagnostic diag{parent, token, Err(Syn0030)};
         diag.hint = Hnt(Hnt0026);
-        return context.report(diag);
+        return context->report(diag);
     }
 
     case TokenId::KwdMethod:

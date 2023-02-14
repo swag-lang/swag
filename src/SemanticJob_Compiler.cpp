@@ -362,7 +362,7 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
         else
             kind = CompilerAstKind::EmbeddedInstruction;
 
-        SyntaxJob syntaxJob;
+        Parser syntaxJob;
         syntaxJob.module = context->sourceFile->module;
         SWAG_CHECK(syntaxJob.constructEmbedded(expression->computedValue->text, node, expression, kind, true));
 

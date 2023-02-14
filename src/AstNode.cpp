@@ -110,7 +110,7 @@ void AstNode::inheritOwners(AstNode* op)
     ownerCompilerIfBlock = op->ownerCompilerIfBlock;
 }
 
-void AstNode::inheritOwnersAndFlags(SyntaxJob* job)
+void AstNode::inheritOwnersAndFlags(Parser* job)
 {
     ownerStructScope     = job->currentStructScope;
     ownerScope           = job->currentScope;

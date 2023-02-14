@@ -4,7 +4,7 @@
 #include "Scoped.h"
 #include "ErrorIds.h"
 
-bool SyntaxJob::doIf(AstNode* parent, AstNode** result)
+bool Parser::doIf(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstIf>(this, AstNodeKind::If, sourceFile, parent, 2);
     node->semanticFct = SemanticJob::resolveIf;
@@ -30,7 +30,7 @@ bool SyntaxJob::doIf(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doWhile(AstNode* parent, AstNode** result)
+bool Parser::doWhile(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstWhile>(this, AstNodeKind::While, sourceFile, parent, 2);
     node->semanticFct = SemanticJob::resolveWhile;
@@ -49,7 +49,7 @@ bool SyntaxJob::doWhile(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
+bool Parser::doSwitch(AstNode* parent, AstNode** result)
 {
     auto switchNode         = Ast::newNode<AstSwitch>(this, AstNodeKind::Switch, sourceFile, parent, 4);
     switchNode->semanticFct = SemanticJob::resolveSwitch;
@@ -153,7 +153,7 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doFor(AstNode* parent, AstNode** result)
+bool Parser::doFor(AstNode* parent, AstNode** result)
 {
     auto   newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
     Scoped scoped(this, newScope);
@@ -195,7 +195,7 @@ bool SyntaxJob::doFor(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
+bool Parser::doVisit(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstVisit>(this, AstNodeKind::Visit, sourceFile, parent, 3);
     node->semanticFct = SemanticJob::resolveVisit;
@@ -261,7 +261,7 @@ bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
+bool Parser::doLoop(AstNode* parent, AstNode** result)
 {
     auto   newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
     Scoped scoped(this, newScope);
@@ -342,7 +342,7 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doGetErr(AstNode* parent, AstNode** result)
+bool Parser::doGetErr(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstNode>(this, AstNodeKind::GetErr, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveGetErr;
@@ -352,7 +352,7 @@ bool SyntaxJob::doGetErr(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doIndex(AstNode* parent, AstNode** result)
+bool Parser::doIndex(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Index, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveIndex;
@@ -362,7 +362,7 @@ bool SyntaxJob::doIndex(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doFallThrough(AstNode* parent, AstNode** result)
+bool Parser::doFallThrough(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstBreakContinue>(this, AstNodeKind::FallThrough, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveFallThrough;
@@ -372,7 +372,7 @@ bool SyntaxJob::doFallThrough(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doBreak(AstNode* parent, AstNode** result)
+bool Parser::doBreak(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstBreakContinue>(this, AstNodeKind::Break, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveBreak;
@@ -392,7 +392,7 @@ bool SyntaxJob::doBreak(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doContinue(AstNode* parent, AstNode** result)
+bool Parser::doContinue(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstBreakContinue>(this, AstNodeKind::Continue, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveContinue;

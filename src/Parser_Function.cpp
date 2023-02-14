@@ -9,7 +9,7 @@
 #include "Report.h"
 #include "LanguageSpec.h"
 
-bool SyntaxJob::doGenericFuncCallParameters(AstNode* parent, AstNode** result)
+bool Parser::doGenericFuncCallParameters(AstNode* parent, AstNode** result)
 {
     auto callParams = Ast::newFuncCallGenParams(sourceFile, parent, this);
     *result         = callParams;
@@ -95,7 +95,7 @@ bool SyntaxJob::doGenericFuncCallParameters(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, TokenId closeToken)
+bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, TokenId closeToken)
 {
     auto callParams = Ast::newFuncCallParams(sourceFile, parent, this);
     *result         = callParams;
@@ -136,7 +136,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result
             if (token.id == TokenId::SymColon)
             {
                 if (paramExpression->kind != AstNodeKind::IdentifierRef || paramExpression->childs.size() != 1)
-                    return context.report({paramExpression, Fmt(Err(Syn0110), token.ctext())});
+                    return context->report({paramExpression, Fmt(Err(Syn0110), token.ctext())});
                 param->allocateExtension(ExtensionKind::IsNamed);
                 param->extension->misc->isNamed = paramExpression->childs.front();
                 SWAG_CHECK(eatToken());
@@ -161,7 +161,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result
                 break;
 
             if (token.id == closeToken)
-                return context.report({callParams, tokenComma, Err(Err0066)});
+                return context->report({callParams, tokenComma, Err(Err0066)});
         }
     }
 
@@ -173,7 +173,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result
     return true;
 }
 
-bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* hasMissingType)
+bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* hasMissingType)
 {
     ScopedContextual sc(this, &contextualNoInline);
 
@@ -249,14 +249,14 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, boo
         if (token.id == TokenId::SymEqual)
         {
             Diagnostic diag(paramNode, token, Err(Syn0193));
-            return context.report(diag);
+            return context->report(diag);
         }
 
         if (token.id == TokenId::SymColon)
         {
             Diagnostic diag(paramNode, token, Err(Syn0197));
             diag.hint = Hnt(Hnt0102);
-            return context.report(diag);
+            return context->report(diag);
         }
     }
     else
@@ -296,7 +296,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, boo
                 diag.addRange(unnamedTokens.front(), Hnt(Hnt0097));
                 for (int i = 1; i < unnamedTokens.size(); i++)
                     diag.addRange(unnamedTokens[i], "");
-                return context.report(diag);
+                return context->report(diag);
             }
 
             hasType = true;
@@ -353,7 +353,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, boo
                 diag.addRange(unnamedTokens.front(), Hnt(Hnt0099));
                 for (int i = 1; i < unnamedTokens.size(); i++)
                     diag.addRange(unnamedTokens[i], "");
-                return context.report(diag);
+                return context->report(diag);
             }
 
             paramNode->assignToken = token;
@@ -413,7 +413,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, boo
     return true;
 }
 
-bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acceptMissingType, bool* hasMissingType, bool isMethod, bool isConstMethod, bool isItfMethod)
+bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acceptMissingType, bool* hasMissingType, bool isMethod, bool isConstMethod, bool isItfMethod)
 {
     SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(token, Err(Syn0091)));
 
@@ -475,7 +475,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acc
             auto tokenComma = token;
             SWAG_CHECK(eatToken(TokenId::SymComma));
             if (token.id == TokenId::SymRightParen)
-                return context.report({allParams, tokenComma, Err(Err0188)});
+                return context->report({allParams, tokenComma, Err(Err0188)});
 
             SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdUsing || token.id == TokenId::SymAttrStart, error(token, Fmt(Err(Syn0112), token.ctext())));
         }
@@ -485,7 +485,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acc
     return true;
 }
 
-bool SyntaxJob::doGenericDeclParameters(AstNode* parent, AstNode** result)
+bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
 {
     ScopedContextual sc(this, &contextualNoInline);
     auto             allParams = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, parent);
@@ -557,7 +557,7 @@ bool SyntaxJob::doGenericDeclParameters(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
+bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
 {
     auto funcNode         = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent, 4);
     funcNode->semanticFct = SemanticJob::resolveFuncDecl;
@@ -679,7 +679,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     auto newScope                = Ast::newScope(funcNode, funcNode->token.text, ScopeKind::Function, currentScope);
     funcNode->typeInfo           = typeInfo;
     funcNode->scope              = newScope;
-    funcNode->resolvedSymbolName = currentScope->symTable.registerSymbolName(&context, funcNode, SymbolKind::Function);
+    funcNode->resolvedSymbolName = currentScope->symTable.registerSymbolName(context, funcNode, SymbolKind::Function);
 
     // Count number of methods to resolve
     if (currentScope->kind == ScopeKind::Struct && !funcForCompiler)
@@ -893,7 +893,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     return true;
 }
 
-bool SyntaxJob::doReturn(AstNode* parent, AstNode** result)
+bool Parser::doReturn(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveReturn;
@@ -910,7 +910,7 @@ bool SyntaxJob::doReturn(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMissingType, bool* hasMissingType)
+bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMissingType, bool* hasMissingType)
 {
     auto funcNode         = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent, 4);
     funcNode->semanticFct = SemanticJob::resolveFuncDecl;
@@ -926,7 +926,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
     auto newScope      = Ast::newScope(funcNode, funcNode->token.text, ScopeKind::Function, currentScope);
     funcNode->typeInfo = typeInfo;
     funcNode->scope    = newScope;
-    currentScope->symTable.registerSymbolName(&context, funcNode, SymbolKind::Function);
+    currentScope->symTable.registerSymbolName(context, funcNode, SymbolKind::Function);
 
     // Closure capture arguments
     if (token.id == TokenId::KwdClosure)
@@ -947,7 +947,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
         else
         {
             {
-                PushErrCxtStep ec(&context, nullptr, ErrCxtStepKind::Help, Hlp(Hlp0045));
+                PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Help, Hlp(Hlp0045));
                 SWAG_CHECK(eatToken(TokenId::SymVertical, "to start the capture block"));
             }
 
@@ -1072,7 +1072,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
     return true;
 }
 
-bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
+bool Parser::doLambdaExpression(AstNode* parent, AstNode** result)
 {
     // We accept missing types if lambda is in a function call
     bool acceptMissingType = inFunCall;

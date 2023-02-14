@@ -17,15 +17,19 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     auto sourceFile = context->debugCxtBc->sourceFile;
 
     // Syntax
-    SyntaxJob syntaxJob;
-    AstNode   parent;
-    syntaxJob.module  = sourceFile->module;
+    JobContext jobContext;
+    Parser     parser;
+    AstNode    parent;
+    parser.module     = sourceFile->module;
+    parser.sourceFile = sourceFile;
+    parser.context    = &jobContext;
+
     parent.ownerScope = context->debugCxtIp->node ? context->debugCxtIp->node->ownerScope : nullptr;
     parent.ownerFct   = CastAst<AstFuncDecl>(context->debugCxtBc->node, AstNodeKind::FuncDecl);
     parent.sourceFile = sourceFile;
     parent.parent     = context->debugCxtIp->node;
 
-    if (!syntaxJob.constructEmbedded(expr, &parent, nullptr, kind, false))
+    if (!parser.constructEmbedded(expr, &parent, nullptr, kind, false))
     {
         if (silent)
             return false;

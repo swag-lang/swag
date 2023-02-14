@@ -59,30 +59,6 @@
     <ClCompile Include="..\src\SemanticJob_Attribute.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SyntaxJob_Identifier.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SyntaxJob_Function.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SyntaxJob_Expression.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SyntaxJob_Enum.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SyntaxJob_Declaration.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SyntaxJob_Compiler.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SyntaxJob_Attribute.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SyntaxJob_Type.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SemanticJob_Expression.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
@@ -92,17 +68,11 @@
     <ClCompile Include="../src/CommandLine.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SyntaxJob_Block.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SemanticJob_Block.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SemanticJob_AffectExpression.cpp">
       <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SyntaxJob_Struct.cpp">
-      <Filter>Syntax</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SemanticJob_Struct.cpp">
       <Filter>Semantic</Filter>
@@ -431,14 +401,8 @@
     <ClCompile Include="..\src\SemanticJob_IdentifierError.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SyntaxJob_Var.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\ByteCodeOptimizer_DupBlocks.cpp">
       <Filter>Backend\ByteCode\Optimize</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SaveGenJob.cpp">
-      <Filter>Syntax</Filter>
     </ClCompile>
     <ClCompile Include="..\src\CallConv.cpp">
       <Filter>Backend</Filter>
@@ -529,6 +493,45 @@
     </ClCompile>
     <ClCompile Include="..\src\Tokenizer_Identifier.cpp">
       <Filter>Syntax\Tokenizer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SaveGenJob.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Parser.cpp">
+      <Filter>Syntax</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Parser_Attribute.cpp">
+      <Filter>Syntax</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Parser_Block.cpp">
+      <Filter>Syntax</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Parser_Compiler.cpp">
+      <Filter>Syntax</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Parser_Declaration.cpp">
+      <Filter>Syntax</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Parser_Enum.cpp">
+      <Filter>Syntax</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Parser_Expression.cpp">
+      <Filter>Syntax</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Parser_Function.cpp">
+      <Filter>Syntax</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Parser_Identifier.cpp">
+      <Filter>Syntax</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Parser_Struct.cpp">
+      <Filter>Syntax</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Parser_Type.cpp">
+      <Filter>Syntax</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Parser_Var.cpp">
+      <Filter>Syntax</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -770,9 +773,6 @@
     <ClInclude Include="..\src\Crc32.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SaveGenJob.h">
-      <Filter>Syntax</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\ByteCodeInstruction.h">
       <Filter>Backend\ByteCode</Filter>
     </ClInclude>
@@ -841,6 +841,12 @@
     </ClInclude>
     <ClInclude Include="../src/JobThread.h">
       <Filter>Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SaveGenJob.h">
+      <Filter>Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Parser.h">
+      <Filter>Syntax</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

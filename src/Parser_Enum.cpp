@@ -7,7 +7,7 @@
 #include "Mutex.h"
 #include "Naming.h"
 
-bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
+bool Parser::doEnum(AstNode* parent, AstNode** result)
 {
     auto enumNode         = Ast::newNode<AstEnum>(this, AstNodeKind::EnumDecl, sourceFile, parent);
     enumNode->semanticFct = SemanticJob::resolveEnum;
@@ -34,13 +34,13 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
                 Diagnostic diag{implNode->identifier, Fmt(Err(Syn0123), Naming::kindName(newScope->kind).c_str(), implNode->token.ctext(), Naming::kindName(ScopeKind::Enum).c_str())};
                 diag.hint = Fmt(Hnt(Hnt0019), implNode->token.ctext());
                 Diagnostic note{enumNode, enumNode->token, Fmt(Nte(Nte0027), implNode->token.ctext()), DiagnosticLevel::Note};
-                return context.report(diag, &note);
+                return context->report(diag, &note);
             }
             else
             {
                 Diagnostic diag{enumNode->sourceFile, token, Fmt(Err(Err0394), enumNode->token.ctext(), Naming::aKindName(newScope->kind).c_str())};
                 Diagnostic note{newScope->owner, newScope->owner->token, Nte(Nte0036), DiagnosticLevel::Note};
-                return context.report(diag, &note);
+                return context->report(diag, &note);
             }
         }
 
@@ -61,7 +61,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         typeInfo->scope    = newScope;
         enumNode->typeInfo = typeInfo;
         typeInfo->computeName();
-        enumNode->resolvedSymbolName = currentScope->symTable.registerSymbolNameNoLock(&context, enumNode, SymbolKind::Enum);
+        enumNode->resolvedSymbolName = currentScope->symTable.registerSymbolNameNoLock(context, enumNode, SymbolKind::Enum);
     }
 
     // Raw type
@@ -86,7 +86,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doEnumContent(AstNode* parent, AstNode** result)
+bool Parser::doEnumContent(AstNode* parent, AstNode** result)
 {
     if (token.id == TokenId::SymLeftCurly)
     {
@@ -159,7 +159,7 @@ bool SyntaxJob::doEnumContent(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doEnumValue(AstNode* parent, AstNode** result)
+bool Parser::doEnumValue(AstNode* parent, AstNode** result)
 {
     SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0075), token.ctext())));
     auto enumValue = Ast::newNode<AstEnumValue>(this, AstNodeKind::EnumValue, sourceFile, parent);
@@ -167,7 +167,7 @@ bool SyntaxJob::doEnumValue(AstNode* parent, AstNode** result)
         *result = enumValue;
     enumValue->inheritTokenName(token);
     enumValue->semanticFct = SemanticJob::resolveEnumValue;
-    currentScope->symTable.registerSymbolName(&context, enumValue, SymbolKind::EnumValue);
+    currentScope->symTable.registerSymbolName(context, enumValue, SymbolKind::EnumValue);
 
     SWAG_CHECK(eatToken());
     if (token.id == TokenId::SymEqual)

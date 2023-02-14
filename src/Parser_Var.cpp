@@ -6,7 +6,7 @@
 #include "LanguageSpec.h"
 #include "Naming.h"
 
-bool SyntaxJob::checkIsValidVarName(AstNode* node)
+bool Parser::checkIsValidVarName(AstNode* node)
 {
     if (!checkIsValidUserName(node))
         return false;
@@ -81,7 +81,7 @@ bool SyntaxJob::checkIsValidVarName(AstNode* node)
     return error(node->token, Fmt(Err(Syn0111), node->token.ctext()));
 }
 
-bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const Token& assignToken, AstNodeKind kind, AstNode** result)
+bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const Token& assignToken, AstNodeKind kind, AstNode** result)
 {
     bool acceptDeref = true;
     if (currentScope->kind == ScopeKind::Struct || currentScope->kind == ScopeKind::File)
@@ -146,7 +146,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             SemanticJob::setVarDeclResolve(varNode);
 
             if (currentScope->isGlobalOrImpl())
-                SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, varNode, SymbolKind::Variable));
+                SWAG_CHECK(currentScope->symTable.registerSymbolName(context, varNode, SymbolKind::Variable));
         }
     }
 
@@ -184,7 +184,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         orgVarNode->extension->semantic->semanticAfterFct = SemanticJob::resolveTupleUnpackBeforeVar;
 
         if (currentScope->isGlobalOrImpl())
-            SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, orgVarNode, SymbolKind::Variable));
+            SWAG_CHECK(currentScope->symTable.registerSymbolName(context, orgVarNode, SymbolKind::Variable));
 
         // And reference that variable, in the form value = __tmp_0.item?
         orgVarNode->publicName = "(";
@@ -222,7 +222,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             varNode->assignToken   = assignToken;
             varNode->flags |= AST_R_VALUE | AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS;
             if (currentScope->isGlobalOrImpl())
-                SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, varNode, SymbolKind::Variable));
+                SWAG_CHECK(currentScope->symTable.registerSymbolName(context, varNode, SymbolKind::Variable));
             identifier          = Ast::newIdentifierRef(sourceFile, Fmt("%s.item%d", tmpVarName.c_str(), idx++), varNode, this);
             varNode->assignment = identifier;
             SemanticJob::setVarDeclResolve(varNode);
@@ -253,13 +253,13 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         varNode->flags |= AST_R_VALUE;
 
         if (currentScope->isGlobalOrImpl())
-            SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, varNode, SymbolKind::Variable));
+            SWAG_CHECK(currentScope->symTable.registerSymbolName(context, varNode, SymbolKind::Variable));
     }
 
     return true;
 }
 
-bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
+bool Parser::doVarDecl(AstNode* parent, AstNode** result)
 {
     // First variable
     AstNodeKind kind;
@@ -280,7 +280,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
+bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
 {
     AstNode* leftNode;
     while (true)

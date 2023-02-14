@@ -18,6 +18,7 @@
 #include "LoadSourceFileJob.h"
 #include "Mutex.h"
 #include "SaveGenJob.h"
+#include "SyntaxJob.h"
 
 void ModuleBuildJob::publishFilesToPublic(Module* moduleToPublish)
 {

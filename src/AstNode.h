@@ -2,7 +2,7 @@
 #include "DependentJobs.h"
 #include "Utf8.h"
 #include "Tokenizer.h"
-#include "SyntaxJob.h"
+#include "Parser.h"
 #include "Register.h"
 #include "AstFlags.h"
 #include "Register.h"
@@ -262,7 +262,7 @@ struct AstNode
     void inheritTokenLocation(Token& tkn);
     void inheritTokenLocation(AstNode* node);
     void inheritOwners(AstNode* op);
-    void inheritOwnersAndFlags(SyntaxJob* job);
+    void inheritOwnersAndFlags(Parser* job);
 
     void allocateComputedValue();
     void setFlagsValueIsComputed();

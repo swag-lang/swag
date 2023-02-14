@@ -6,7 +6,7 @@
 #include "ErrorIds.h"
 #include "Report.h"
 
-void SyntaxJob::relaxIdentifier(Token& token)
+void Parser::relaxIdentifier(Token& token)
 {
     switch (token.id)
     {
@@ -18,7 +18,7 @@ void SyntaxJob::relaxIdentifier(Token& token)
     }
 }
 
-bool SyntaxJob::testIsValidUserName(AstNode* node)
+bool Parser::testIsValidUserName(AstNode* node)
 {
     if (node->parent && (node->parent->flags & AST_GENERATED))
         return true;
@@ -35,7 +35,7 @@ bool SyntaxJob::testIsValidUserName(AstNode* node)
     return true;
 }
 
-bool SyntaxJob::checkIsValidUserName(AstNode* node, Token* loc)
+bool Parser::checkIsValidUserName(AstNode* node, Token* loc)
 {
     // An identifier that starts with '__' is reserved for internal usage !
     if (!testIsValidUserName(node))
@@ -44,7 +44,7 @@ bool SyntaxJob::checkIsValidUserName(AstNode* node, Token* loc)
     return true;
 }
 
-bool SyntaxJob::testIsSingleIdentifier(AstNode* node)
+bool Parser::testIsSingleIdentifier(AstNode* node)
 {
     if (node->kind != AstNodeKind::IdentifierRef ||
         node->childs.size() > 1 ||
@@ -56,14 +56,14 @@ bool SyntaxJob::testIsSingleIdentifier(AstNode* node)
     return true;
 }
 
-bool SyntaxJob::checkIsSingleIdentifier(AstNode* node, const char* msg)
+bool Parser::checkIsSingleIdentifier(AstNode* node, const char* msg)
 {
     if (!testIsSingleIdentifier(node))
         return error(node, Fmt(Err(Syn0062), msg));
     return true;
 }
 
-bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
+bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
 {
     TokenParse scopeUpValue;
 
@@ -143,7 +143,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
     // Replace "Self" with the corresponding struct name
     if (identifier->token.text == g_LangSpec->name_Self)
     {
-        SWAG_VERIFY(parent->ownerStructScope, context.report({identifier, Err(Syn0135)}));
+        SWAG_VERIFY(parent->ownerStructScope, context->report({identifier, Err(Syn0135)}));
         if (currentSelfStructScope)
             identifier->token.text = currentSelfStructScope->name;
         else
@@ -170,7 +170,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
             {
                 Diagnostic diag{identifier, token, Fmt(Err(Syn0128), identifier->token.ctext())};
                 Diagnostic note(Hlp(Hlp0035), DiagnosticLevel::Help);
-                return context.report(diag, &note);
+                return context->report(diag, &note);
             }
 
             SWAG_CHECK(eatToken(TokenId::SymLeftParen));
@@ -190,7 +190,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         if (!(identifierFlags & IDENTIFIER_NO_PARAMS))
         {
             if (identifierFlags & IDENTIFIER_TYPE_DECL)
-                return context.report({identifier, token, Err(Syn0120)});
+                return context->report({identifier, token, Err(Syn0120)});
             Ast::removeFromParent(identifier);
             SWAG_CHECK(doArrayPointerIndex((AstNode**) &identifier));
             Ast::addChildBack(parent, identifier);
@@ -211,7 +211,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
     return true;
 }
 
-bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t identifierFlags)
+bool Parser::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t identifierFlags)
 {
     auto identifierRef = Ast::newIdentifierRef(sourceFile, parent, this);
     if (result)
@@ -264,7 +264,7 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t iden
     return true;
 }
 
-bool SyntaxJob::doDiscard(AstNode* parent, AstNode** result)
+bool Parser::doDiscard(AstNode* parent, AstNode** result)
 {
     SWAG_CHECK(eatToken());
 
@@ -308,7 +308,7 @@ bool SyntaxJob::doDiscard(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDiscard)
+bool Parser::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDiscard)
 {
     AstNode* node = nullptr;
     if (token.id == TokenId::KwdTry)
@@ -370,7 +370,7 @@ bool SyntaxJob::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDi
     return true;
 }
 
-bool SyntaxJob::doThrow(AstNode* parent, AstNode** result)
+bool Parser::doThrow(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Throw, sourceFile, parent);
     SWAG_VERIFY(node->ownerFct, error(node, Err(Syn0028)));

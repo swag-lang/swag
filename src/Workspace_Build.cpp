@@ -14,6 +14,7 @@
 #include "ModuleManager.h"
 #include "TypeGenStructJob.h"
 #include "Naming.h"
+#include "SyntaxJob.h"
 
 void Workspace::computeModuleName(const fs::path& path, Utf8& moduleName, Utf8& moduleFolder, ModuleKind& kind)
 {

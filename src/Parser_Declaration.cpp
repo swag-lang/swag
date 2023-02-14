@@ -9,7 +9,7 @@
 #include "Report.h"
 #include "LanguageSpec.h"
 
-bool SyntaxJob::doWith(AstNode* parent, AstNode** result)
+bool Parser::doWith(AstNode* parent, AstNode** result)
 {
     SWAG_CHECK(eatToken());
     auto node = Ast::newNode<AstWith>(this, AstNodeKind::With, sourceFile, parent);
@@ -24,7 +24,7 @@ bool SyntaxJob::doWith(AstNode* parent, AstNode** result)
         {
             Diagnostic diag{id->sourceFile, id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Syn0157)};
             Diagnostic note{Hlp(Hlp0039), DiagnosticLevel::Help};
-            return context.report(diag, &note);
+            return context->report(diag, &note);
         }
 
         SWAG_ASSERT(id->extension->semantic->semanticAfterFct == SemanticJob::resolveVarDeclAfter);
@@ -39,7 +39,7 @@ bool SyntaxJob::doWith(AstNode* parent, AstNode** result)
         {
             Diagnostic diag{node->sourceFile, id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Syn0157)};
             Diagnostic note{Hlp(Hlp0039), DiagnosticLevel::Help};
-            return context.report(diag, &note);
+            return context->report(diag, &note);
         }
 
         if (id->kind != AstNodeKind::IdentifierRef &&
@@ -79,7 +79,7 @@ bool SyntaxJob::doWith(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCompilerScopeFile(AstNode* parent, AstNode** result)
+bool Parser::doCompilerScopeFile(AstNode* parent, AstNode** result)
 {
     Token privName = token;
     SWAG_CHECK(eatToken());
@@ -89,7 +89,7 @@ bool SyntaxJob::doCompilerScopeFile(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
+bool Parser::doUsing(AstNode* parent, AstNode** result)
 {
     SWAG_CHECK(eatToken());
 
@@ -144,7 +144,7 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
                 {
                     Diagnostic diag{node, Err(Syn0036)};
                     Diagnostic note{child, child->token, Nte(Nte0024), DiagnosticLevel::Note};
-                    return context.report(diag, &note);
+                    return context->report(diag, &note);
                 }
                 }
             }
@@ -163,20 +163,20 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
+bool Parser::doNamespace(AstNode* parent, AstNode** result)
 {
     SWAG_VERIFY(currentScope->isGlobal(), error(token, Err(Syn0040)));
     SWAG_CHECK(doNamespace(parent, result, false, false));
     return true;
 }
 
-bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing)
+bool Parser::doNamespace(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing)
 {
     SWAG_CHECK(eatToken());
     return doNamespaceOnName(parent, result, forGlobal, forUsing);
 }
 
-bool SyntaxJob::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing, Token* privName)
+bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing, Token* privName)
 {
     AstNode* namespaceNode;
     Scope*   oldScope = currentScope;
@@ -230,13 +230,13 @@ bool SyntaxJob::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlo
                 newScope                = Ast::newScope(namespaceNode, namespaceNode->token.text, ScopeKind::Namespace, currentScope);
                 typeInfo->scope         = newScope;
                 namespaceNode->typeInfo = typeInfo;
-                currentScope->symTable.addSymbolTypeInfoNoLock(&context, namespaceNode, typeInfo, SymbolKind::Namespace);
+                currentScope->symTable.addSymbolTypeInfoNoLock(context, namespaceNode, typeInfo, SymbolKind::Namespace);
             }
             else if (symbol->kind != SymbolKind::Namespace)
             {
                 Diagnostic diag{sourceFile, token.startLocation, token.endLocation, Fmt(Err(Err0305), symbol->name.c_str())};
                 Diagnostic note{symbol->nodes.front(), symbol->nodes.front()->token, Nte(Nte0036), DiagnosticLevel::Note};
-                return context.report(diag, &note);
+                return context->report(diag, &note);
             }
             else
                 newScope = CastTypeInfo<TypeInfoNamespace>(symbol->overloads[0]->typeInfo, TypeInfoKind::Namespace)->scope;
@@ -298,7 +298,7 @@ bool SyntaxJob::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlo
     return true;
 }
 
-bool SyntaxJob::doGlobalCurlyStatement(AstNode* parent, AstNode** result)
+bool Parser::doGlobalCurlyStatement(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
     if (result)
@@ -312,7 +312,7 @@ bool SyntaxJob::doGlobalCurlyStatement(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
+bool Parser::doCurlyStatement(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
     if (result)
@@ -339,7 +339,7 @@ bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeKind scopeKind)
+bool Parser::doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeKind scopeKind)
 {
     auto     newScope = Ast::newScope(parent, "", scopeKind, currentScope);
     AstNode* statement;
@@ -360,7 +360,7 @@ bool SyntaxJob::doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeK
     return true;
 }
 
-bool SyntaxJob::doEmbeddedStatement(AstNode* parent, AstNode** result)
+bool Parser::doEmbeddedStatement(AstNode* parent, AstNode** result)
 {
     if (token.id == TokenId::SymLeftCurly)
         return doScopedCurlyStatement(parent, result);
@@ -383,7 +383,7 @@ bool SyntaxJob::doEmbeddedStatement(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doStatementFor(AstNode* parent, AstNode** result, AstNodeKind kind)
+bool Parser::doStatementFor(AstNode* parent, AstNode** result, AstNodeKind kind)
 {
     switch (kind)
     {
@@ -402,7 +402,7 @@ bool SyntaxJob::doStatementFor(AstNode* parent, AstNode** result, AstNodeKind ki
     return true;
 }
 
-bool SyntaxJob::doStatement(AstNode* parent, AstNode** result)
+bool Parser::doStatement(AstNode* parent, AstNode** result)
 {
     if (token.id == TokenId::SymLeftCurly)
         return doCurlyStatement(parent, result);
@@ -419,7 +419,7 @@ bool SyntaxJob::doStatement(AstNode* parent, AstNode** result)
     return doEmbeddedInstruction(parent, result);
 }
 
-void SyntaxJob::registerSubDecl(AstNode* subDecl)
+void Parser::registerSubDecl(AstNode* subDecl)
 {
     SWAG_ASSERT(subDecl->ownerFct);
     subDecl->ownerFct->subDecls.push_back(subDecl);
@@ -498,7 +498,7 @@ void SyntaxJob::registerSubDecl(AstNode* subDecl)
     Ast::addChildBack(newParent, subDecl);
 }
 
-bool SyntaxJob::doCompilerScopeBreakable(AstNode* parent, AstNode** result)
+bool Parser::doCompilerScopeBreakable(AstNode* parent, AstNode** result)
 {
     auto labelNode = Ast::newNode<AstScopeBreakable>(this, AstNodeKind::ScopeBreakable, sourceFile, parent);
     if (result)
@@ -519,7 +519,7 @@ bool SyntaxJob::doCompilerScopeBreakable(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doLeftInstruction(AstNode* parent, AstNode** result, AstWith* withNode)
+bool Parser::doLeftInstruction(AstNode* parent, AstNode** result, AstWith* withNode)
 {
     switch (token.id)
     {
@@ -610,7 +610,7 @@ bool SyntaxJob::doLeftInstruction(AstNode* parent, AstNode** result, AstWith* wi
     return true;
 }
 
-bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
+bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 {
     relaxIdentifier(token);
     switch (token.id)
@@ -799,7 +799,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
+bool Parser::doTopLevelInstruction(AstNode* parent, AstNode** result)
 {
     // #global is invalid if afterGlobal is true
     if (token.id != TokenId::CompilerGlobal && token.id != TokenId::SymSemiColon)

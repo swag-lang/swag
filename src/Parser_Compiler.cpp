@@ -8,7 +8,7 @@
 #include "Report.h"
 #include "LanguageSpec.h"
 
-bool SyntaxJob::doIntrinsicTag(AstNode* parent, AstNode** result)
+bool Parser::doIntrinsicTag(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::IntrinsicProp, sourceFile, parent);
     if (result)
@@ -32,12 +32,12 @@ bool SyntaxJob::doIntrinsicTag(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCompilerIf(AstNode* parent, AstNode** result)
+bool Parser::doCompilerIf(AstNode* parent, AstNode** result)
 {
     return doCompilerIfFor(parent, result, AstNodeKind::Statement);
 }
 
-bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind)
+bool Parser::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind)
 {
     auto node = Ast::newNode<AstIf>(this, AstNodeKind::CompilerIf, sourceFile, parent);
     if (result)
@@ -87,7 +87,7 @@ bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind k
     return true;
 }
 
-bool SyntaxJob::doCompilerMixin(AstNode* parent, AstNode** result)
+bool Parser::doCompilerMixin(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstCompilerMixin>(this, AstNodeKind::CompilerMixin, sourceFile, parent);
     if (result)
@@ -129,7 +129,7 @@ bool SyntaxJob::doCompilerMixin(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCompilerMacro(AstNode* parent, AstNode** result)
+bool Parser::doCompilerMacro(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstCompilerMacro>(this, AstNodeKind::CompilerMacro, sourceFile, parent);
     if (result)
@@ -146,7 +146,7 @@ bool SyntaxJob::doCompilerMacro(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCompilerInline(AstNode* parent, AstNode** result)
+bool Parser::doCompilerInline(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstCompilerInline>(this, AstNodeKind::CompilerInline, sourceFile, parent);
     if (result)
@@ -163,7 +163,7 @@ bool SyntaxJob::doCompilerInline(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCompilerAssert(AstNode* parent, AstNode** result)
+bool Parser::doCompilerAssert(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerAssert, sourceFile, parent);
     if (result)
@@ -181,7 +181,7 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCompilerError(AstNode* parent, AstNode** result)
+bool Parser::doCompilerError(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerError, sourceFile, parent);
     if (result)
@@ -198,7 +198,7 @@ bool SyntaxJob::doCompilerError(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCompilerWarning(AstNode* parent, AstNode** result)
+bool Parser::doCompilerWarning(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerWarning, sourceFile, parent);
     if (result)
@@ -215,7 +215,7 @@ bool SyntaxJob::doCompilerWarning(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCompilerValidIf(AstNode* parent, AstNode** result)
+bool Parser::doCompilerValidIf(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstCompilerSpecFunc>(this, AstNodeKind::CompilerValidIf, sourceFile, parent);
     if (result)
@@ -261,7 +261,7 @@ bool SyntaxJob::doCompilerValidIf(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCompilerAst(AstNode* parent, AstNode** result)
+bool Parser::doCompilerAst(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstCompilerSpecFunc>(this, AstNodeKind::CompilerAst, sourceFile, parent);
     if (result)
@@ -293,7 +293,7 @@ bool SyntaxJob::doCompilerAst(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCompilerRunTopLevel(AstNode* parent, AstNode** result)
+bool Parser::doCompilerRunTopLevel(AstNode* parent, AstNode** result)
 {
     SWAG_CHECK(eatToken());
     if (token.id == TokenId::SymLeftCurly)
@@ -312,7 +312,7 @@ bool SyntaxJob::doCompilerRunTopLevel(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
+bool Parser::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstCompilerSpecFunc>(this, AstNodeKind::CompilerRun, sourceFile, parent);
     if (result)
@@ -347,7 +347,7 @@ bool SyntaxJob::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCompilerPrint(AstNode* parent, AstNode** result)
+bool Parser::doCompilerPrint(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerPrint, sourceFile, parent);
     if (result)
@@ -364,7 +364,7 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCompilerForeignLib(AstNode* parent, AstNode** result)
+bool Parser::doCompilerForeignLib(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerForeignLib, sourceFile, parent);
     if (result)
@@ -385,7 +385,7 @@ bool SyntaxJob::doCompilerForeignLib(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
+bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
 {
     SWAG_VERIFY(!afterGlobal, error(token, Err(Syn0006)));
     SWAG_CHECK(eatToken());
@@ -486,7 +486,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         }
         else
         {
-            context.report({sourceFile, token, Fmt(Err(Syn0167), token.ctext())});
+            context->report({sourceFile, token, Fmt(Err(Syn0167), token.ctext())});
             return false;
         }
 
@@ -518,7 +518,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
             module = newModule;
         }
 
-        SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, context.report({sourceFile, token, Err(Syn0003)}));
+        SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, context->report({sourceFile, token, Err(Syn0003)}));
         SWAG_ASSERT(g_CommandLine.test);
 
         sourceFile->shouldHaveError = true;
@@ -543,7 +543,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
             module = newModule;
         }
 
-        SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, context.report({sourceFile, token, Err(Syn0004)}));
+        SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, context->report({sourceFile, token, Err(Syn0004)}));
         SWAG_ASSERT(g_CommandLine.test);
 
         sourceFile->shouldHaveWarning = true;
@@ -588,7 +588,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
     /////////////////////////////////
     else if (token.id == TokenId::KwdUsing)
     {
-        SWAG_VERIFY(sourceFile->isCfgFile, context.report({sourceFile, token, Err(Syn0005)}));
+        SWAG_VERIFY(sourceFile->isCfgFile, context->report({sourceFile, token, Err(Syn0005)}));
 
         int prevCount = parent->childs.count;
         SWAG_CHECK(doUsing(parent));
@@ -602,13 +602,13 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
     /////////////////////////////////
     else
     {
-        return context.report({sourceFile, token, Fmt(Err(Syn0136), token.ctext())});
+        return context->report({sourceFile, token, Fmt(Err(Syn0136), token.ctext())});
     }
 
     return true;
 }
 
-bool SyntaxJob::doCompilerLocation(AstNode* parent, AstNode** result)
+bool Parser::doCompilerLocation(AstNode* parent, AstNode** result)
 {
     auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::CompilerSpecialFunction, sourceFile, parent);
     if (result)
@@ -618,7 +618,7 @@ bool SyntaxJob::doCompilerLocation(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCompilerSpecialFunction(AstNode* parent, AstNode** result)
+bool Parser::doCompilerSpecialFunction(AstNode* parent, AstNode** result)
 {
     auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::CompilerSpecialFunction, sourceFile, parent);
     if (result)
@@ -628,7 +628,7 @@ bool SyntaxJob::doCompilerSpecialFunction(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doIntrinsicLocation(AstNode* parent, AstNode** result)
+bool Parser::doIntrinsicLocation(AstNode* parent, AstNode** result)
 {
     auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::IntrinsicLocation, sourceFile, parent);
     if (result)
@@ -645,7 +645,7 @@ bool SyntaxJob::doIntrinsicLocation(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doIntrinsicDefined(AstNode* parent, AstNode** result)
+bool Parser::doIntrinsicDefined(AstNode* parent, AstNode** result)
 {
     auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::IntrinsicDefined, sourceFile, parent);
     if (result)
@@ -662,10 +662,10 @@ bool SyntaxJob::doIntrinsicDefined(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCompilerDependencies(AstNode* parent)
+bool Parser::doCompilerDependencies(AstNode* parent)
 {
-    SWAG_VERIFY(sourceFile->isCfgFile || sourceFile->isScriptFile, context.report({sourceFile, token, Err(Syn0183)}));
-    SWAG_VERIFY(parent->kind == AstNodeKind::File, context.report({sourceFile, token, Err(Syn0182)}));
+    SWAG_VERIFY(sourceFile->isCfgFile || sourceFile->isScriptFile, context->report({sourceFile, token, Err(Syn0183)}));
+    SWAG_VERIFY(parent->kind == AstNodeKind::File, context->report({sourceFile, token, Err(Syn0182)}));
 
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerDependencies, sourceFile, parent);
     SWAG_CHECK(eatToken());
@@ -680,7 +680,7 @@ bool SyntaxJob::doCompilerDependencies(AstNode* parent)
     return true;
 }
 
-bool SyntaxJob::doCompilerInclude(AstNode* parent, AstNode** result)
+bool Parser::doCompilerInclude(AstNode* parent, AstNode** result)
 {
     auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::CompilerLoad, sourceFile, parent);
     if (result)
@@ -697,10 +697,10 @@ bool SyntaxJob::doCompilerInclude(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCompilerLoad(AstNode* parent)
+bool Parser::doCompilerLoad(AstNode* parent)
 {
-    SWAG_VERIFY(sourceFile->isCfgFile || sourceFile->isScriptFile, context.report({sourceFile, token, Err(Syn0013)}));
-    SWAG_VERIFY(currentScope->isTopLevel(), context.report({sourceFile, token, Err(Syn0012)}));
+    SWAG_VERIFY(sourceFile->isCfgFile || sourceFile->isScriptFile, context->report({sourceFile, token, Err(Syn0013)}));
+    SWAG_VERIFY(currentScope->isTopLevel(), context->report({sourceFile, token, Err(Syn0012)}));
 
     // Be sure this is in a '#dependencies' block
     if (sourceFile->module->kind == ModuleKind::Config)
@@ -712,12 +712,12 @@ bool SyntaxJob::doCompilerLoad(AstNode* parent)
                 break;
             scan = scan->parent;
         }
-        SWAG_VERIFY(scan, context.report({sourceFile, token, Err(Syn0014)}));
+        SWAG_VERIFY(scan, context->report({sourceFile, token, Err(Syn0014)}));
     }
 
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerInclude, sourceFile, parent);
     SWAG_CHECK(eatToken());
-    SWAG_VERIFY(token.id == TokenId::LiteralString, context.report({sourceFile, token, Err(Syn0011)}));
+    SWAG_VERIFY(token.id == TokenId::LiteralString, context->report({sourceFile, token, Err(Syn0011)}));
     node->inheritTokenName(token);
     node->inheritTokenLocation(token);
     SWAG_CHECK(eatToken());
@@ -733,10 +733,10 @@ bool SyntaxJob::doCompilerLoad(AstNode* parent)
     return true;
 }
 
-bool SyntaxJob::doCompilerImport(AstNode* parent)
+bool Parser::doCompilerImport(AstNode* parent)
 {
-    SWAG_VERIFY(sourceFile->isGenerated || sourceFile->isCfgFile || sourceFile->isScriptFile, context.report({sourceFile, token, Err(Syn0009)}));
-    SWAG_VERIFY(currentScope->isTopLevel(), context.report({sourceFile, token, Err(Syn0008)}));
+    SWAG_VERIFY(sourceFile->isGenerated || sourceFile->isCfgFile || sourceFile->isScriptFile, context->report({sourceFile, token, Err(Syn0009)}));
+    SWAG_VERIFY(currentScope->isTopLevel(), context->report({sourceFile, token, Err(Syn0008)}));
 
     // Be sure this is in a '#dependencies' block
     if (sourceFile->module->kind == ModuleKind::Config)
@@ -748,12 +748,12 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
                 break;
             scan = scan->parent;
         }
-        SWAG_VERIFY(scan, context.report({sourceFile, token, Err(Syn0010)}));
+        SWAG_VERIFY(scan, context->report({sourceFile, token, Err(Syn0010)}));
     }
 
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerImport, sourceFile, parent);
     SWAG_CHECK(eatToken());
-    SWAG_VERIFY(token.id == TokenId::LiteralString, context.report({sourceFile, token, Err(Syn0007)}));
+    SWAG_VERIFY(token.id == TokenId::LiteralString, context->report({sourceFile, token, Err(Syn0007)}));
     node->inheritTokenName(token);
     node->inheritTokenLocation(token);
     SWAG_CHECK(eatToken());
@@ -801,19 +801,19 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
     return true;
 }
 
-bool SyntaxJob::doCompilerPlaceHolder(AstNode* parent)
+bool Parser::doCompilerPlaceHolder(AstNode* parent)
 {
-    SWAG_VERIFY(currentScope->isGlobalOrImpl(), context.report({sourceFile, token, Err(Syn0035)}));
+    SWAG_VERIFY(currentScope->isGlobalOrImpl(), context->report({sourceFile, token, Err(Syn0035)}));
 
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerPlaceHolder, sourceFile, parent);
     SWAG_CHECK(eatToken());
-    SWAG_VERIFY(token.id == TokenId::Identifier, context.report({sourceFile, token, Err(Syn0017)}));
+    SWAG_VERIFY(token.id == TokenId::Identifier, context->report({sourceFile, token, Err(Syn0017)}));
     node->inheritTokenName(token);
     node->inheritTokenLocation(token);
     SWAG_CHECK(eatToken());
     SWAG_CHECK(eatSemiCol("'#placeholder' expression"));
 
-    currentScope->symTable.registerSymbolName(&context, node, SymbolKind::PlaceHolder);
+    currentScope->symTable.registerSymbolName(context, node, SymbolKind::PlaceHolder);
 
     return true;
 }

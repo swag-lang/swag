@@ -7,7 +7,7 @@
 #include "TypeManager.h"
 #include "Diagnostic.h"
 
-bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
+bool Parser::doLiteral(AstNode* parent, AstNode** result)
 {
     auto node          = Ast::newNode<AstLiteral>(this, AstNodeKind::Literal, sourceFile, parent);
     node->semanticFct  = SemanticJob::resolveLiteral;
@@ -29,7 +29,7 @@ bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
+bool Parser::doArrayPointerIndex(AstNode** exprNode)
 {
     SWAG_CHECK(eatToken(TokenId::SymLeftSquare));
 
@@ -76,7 +76,7 @@ bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
                 Diagnostic diag{sourceFile, token, Err(Syn0185)};
                 diag.hint = Hnt(Hnt0098);
                 Diagnostic note{arrayNode, arrayNode->token, Hlp(Hlp0047), DiagnosticLevel::Help};
-                return context.report(diag, &note);
+                return context->report(diag, &note);
             }
 
             arrayNode->upperBound = Ast::newNode<AstNode>(this, AstNodeKind::AutoSlicingUp, sourceFile, arrayNode, 0);
@@ -125,7 +125,7 @@ bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
     return true;
 }
 
-bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
+bool Parser::doIntrinsicProp(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstIntrinsicProp>(this, AstNodeKind::IntrinsicProp, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveIntrinsicProperty;
@@ -183,7 +183,7 @@ bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
+bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
     relaxIdentifier(token);
     switch (token.id)
@@ -457,7 +457,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
     return true;
 }
 
-bool SyntaxJob::doKeepRef(AstNode* parent, AstNode** result)
+bool Parser::doKeepRef(AstNode* parent, AstNode** result)
 {
     auto refNode = Ast::newNode<AstNode>(this, AstNodeKind::KeepRef, sourceFile, parent);
     if (result)
@@ -468,7 +468,7 @@ bool SyntaxJob::doKeepRef(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doMoveRef(AstNode* parent, AstNode** result)
+bool Parser::doMoveRef(AstNode* parent, AstNode** result)
 {
     auto refNode = Ast::newNode<AstNode>(this, AstNodeKind::MoveRef, sourceFile, parent);
     if (result)
@@ -479,7 +479,7 @@ bool SyntaxJob::doMoveRef(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doDeRef(AstNode* parent, AstNode** result)
+bool Parser::doDeRef(AstNode* parent, AstNode** result)
 {
     auto identifierRef     = Ast::newIdentifierRef(sourceFile, parent, this);
     auto arrayNode         = Ast::newNode<AstArrayPointerIndex>(this, AstNodeKind::ArrayPointerIndex, sourceFile, identifierRef, 2);
@@ -503,7 +503,7 @@ bool SyntaxJob::doDeRef(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doPrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
+bool Parser::doPrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
     AstNode* exprNode;
 
@@ -567,7 +567,7 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode
     return true;
 }
 
-bool SyntaxJob::doUnaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
+bool Parser::doUnaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
     switch (token.id)
     {
@@ -646,7 +646,7 @@ static bool isAssociative(TokenId id)
     return false;
 }
 
-bool SyntaxJob::doOperatorPrecedence(AstNode** result)
+bool Parser::doOperatorPrecedence(AstNode** result)
 {
     auto factor = *result;
     if (factor->kind != AstNodeKind::FactorOp && factor->kind != AstNodeKind::BinaryOp)
@@ -714,7 +714,7 @@ bool SyntaxJob::doOperatorPrecedence(AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
+bool Parser::doModifiers(Token& forNode, uint32_t& mdfFlags)
 {
     auto opId = forNode.id;
 
@@ -841,7 +841,7 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
     return true;
 }
 
-bool SyntaxJob::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode** result)
+bool Parser::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode** result)
 {
     AstNode* leftNode;
     SWAG_ASSERT(parent);
@@ -918,7 +918,7 @@ bool SyntaxJob::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode
     return true;
 }
 
-bool SyntaxJob::doCompareExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
+bool Parser::doCompareExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
     AstNode* leftNode;
     SWAG_CHECK(doFactorExpression(&parent, exprFlags, &leftNode));
@@ -940,7 +940,7 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, uint32_t exprFlags, AstNode
     return true;
 }
 
-bool SyntaxJob::doBoolExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
+bool Parser::doBoolExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
     AstNode* leftNode;
     SWAG_CHECK(doCompareExpression(parent, exprFlags, &leftNode));
@@ -968,7 +968,7 @@ bool SyntaxJob::doBoolExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
     return true;
 }
 
-bool SyntaxJob::doMoveExpression(Token& forToken, AstNode* parent, AstNode** result)
+bool Parser::doMoveExpression(Token& forToken, AstNode* parent, AstNode** result)
 {
     uint32_t mdfFlags = 0;
     SWAG_CHECK(doModifiers(forToken, mdfFlags));
@@ -1013,7 +1013,7 @@ bool SyntaxJob::doMoveExpression(Token& forToken, AstNode* parent, AstNode** res
     return true;
 }
 
-bool SyntaxJob::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
+bool Parser::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
     AstNode* boolExpression = nullptr;
     switch (token.id)
@@ -1129,12 +1129,12 @@ bool SyntaxJob::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** resu
     return true;
 }
 
-bool SyntaxJob::doAssignmentExpression(AstNode* parent, AstNode** result)
+bool Parser::doAssignmentExpression(AstNode* parent, AstNode** result)
 {
     return doExpression(parent, EXPR_FLAG_NONE, result);
 }
 
-bool SyntaxJob::doExpressionListTuple(AstNode* parent, AstNode** result)
+bool Parser::doExpressionListTuple(AstNode* parent, AstNode** result)
 {
     auto initNode         = Ast::newNode<AstExpressionList>(this, AstNodeKind::ExpressionList, sourceFile, parent);
     initNode->semanticFct = SemanticJob::resolveExpressionListTuple;
@@ -1189,7 +1189,7 @@ bool SyntaxJob::doExpressionListTuple(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doExpressionListArray(AstNode* parent, AstNode** result)
+bool Parser::doExpressionListArray(AstNode* parent, AstNode** result)
 {
     auto initNode         = Ast::newNode<AstExpressionList>(this, AstNodeKind::ExpressionList, sourceFile, parent);
     initNode->semanticFct = SemanticJob::resolveExpressionListArray;
@@ -1219,7 +1219,7 @@ bool SyntaxJob::doExpressionListArray(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doInitializationExpression(Token& forToken, AstNode* parent, AstNode** result)
+bool Parser::doInitializationExpression(Token& forToken, AstNode* parent, AstNode** result)
 {
     PushSyntaxContextFlags cf(this, CONTEXT_FLAG_EXPRESSION);
 
@@ -1239,7 +1239,7 @@ bool SyntaxJob::doInitializationExpression(Token& forToken, AstNode* parent, Ast
     return doMoveExpression(forToken, parent, result);
 }
 
-void SyntaxJob::forceTakeAddress(AstNode* node)
+void Parser::forceTakeAddress(AstNode* node)
 {
     node->flags |= AST_TAKE_ADDRESS;
     if (node->resolvedSymbolOverload)
@@ -1255,7 +1255,7 @@ void SyntaxJob::forceTakeAddress(AstNode* node)
     }
 }
 
-bool SyntaxJob::doDefer(AstNode* parent, AstNode** result)
+bool Parser::doDefer(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstDefer>(this, AstNodeKind::Defer, sourceFile, parent);
     if (result)
@@ -1288,7 +1288,7 @@ bool SyntaxJob::doDefer(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t identifierFlags, AstWith* withNode)
+bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t identifierFlags, AstWith* withNode)
 {
     switch (token.id)
     {
@@ -1370,7 +1370,7 @@ bool SyntaxJob::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t 
     return true;
 }
 
-bool SyntaxJob::doLeftExpressionAffect(AstNode* parent, AstNode** result, AstWith* withNode)
+bool Parser::doLeftExpressionAffect(AstNode* parent, AstNode** result, AstWith* withNode)
 {
     switch (token.id)
     {
@@ -1413,7 +1413,7 @@ bool SyntaxJob::doLeftExpressionAffect(AstNode* parent, AstNode** result, AstWit
     }
 }
 
-bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result, AstWith* withNode)
+bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* withNode)
 {
     AstNode* leftNode;
     SWAG_CHECK(doLeftExpressionAffect(parent, &leftNode, withNode));
@@ -1612,7 +1612,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result, AstWith* w
     return true;
 }
 
-bool SyntaxJob::doInit(AstNode* parent, AstNode** result)
+bool Parser::doInit(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstInit>(this, AstNodeKind::Init, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveInit;
@@ -1638,7 +1638,7 @@ bool SyntaxJob::doInit(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doDropCopyMove(AstNode* parent, AstNode** result)
+bool Parser::doDropCopyMove(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstDropCopyMove>(this, AstNodeKind::Drop, sourceFile, parent);
     switch (token.id)
@@ -1672,7 +1672,7 @@ bool SyntaxJob::doDropCopyMove(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doRange(AstNode* parent, AstNode* expression, AstNode** result)
+bool Parser::doRange(AstNode* parent, AstNode* expression, AstNode** result)
 {
     auto rangeNode         = Ast::newNode<AstRange>(this, AstNodeKind::Range, sourceFile, parent, 2);
     rangeNode->semanticFct = SemanticJob::resolveRange;

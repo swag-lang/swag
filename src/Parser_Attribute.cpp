@@ -5,7 +5,7 @@
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 
-bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
+bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
 {
     auto attrNode = Ast::newNode<AstAttrDecl>(this, AstNodeKind::AttrDecl, sourceFile, parent);
     attrNode->allocateExtension(ExtensionKind::Semantic);
@@ -29,7 +29,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
     {
         ScopedLock lk(currentScope->symTable.mutex);
         newScope = Ast::newScope(attrNode, attrNode->token.text, ScopeKind::Attribute, currentScope);
-        currentScope->symTable.registerSymbolNameNoLock(&context, attrNode, SymbolKind::Attribute);
+        currentScope->symTable.registerSymbolNameNoLock(context, attrNode, SymbolKind::Attribute);
     }
 
     // Parameters
@@ -57,7 +57,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool forGlobal)
+bool Parser::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool forGlobal)
 {
     uint32_t attr      = 0;
     Scope*   newScope  = currentScope;
@@ -142,7 +142,7 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool 
     return true;
 }
 
-bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result, bool single)
+bool Parser::doAttrUse(AstNode* parent, AstNode** result, bool single)
 {
     auto attrBlockNode = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
     if (result)

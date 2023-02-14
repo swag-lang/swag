@@ -11,7 +11,7 @@ atomic<int> g_UniqueID;
 
 namespace Ast
 {
-    void initNewNode(AstNode* node, SyntaxJob* job, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent, uint32_t allocChilds = 0)
+    void initNewNode(AstNode* node, Parser* job, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent, uint32_t allocChilds = 0)
     {
         node->kind       = kind;
         node->parent     = parent;
@@ -450,12 +450,12 @@ namespace Ast
         }
     }
 
-    AstNode* newNode(SourceFile* sourceFile, AstNodeKind kind, AstNode* parent, SyntaxJob* syntaxJob)
+    AstNode* newNode(SourceFile* sourceFile, AstNodeKind kind, AstNode* parent, Parser* syntaxJob)
     {
         return Ast::newNode<AstNode>(syntaxJob, kind, sourceFile, parent);
     }
 
-    AstInline* newInline(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
+    AstInline* newInline(SourceFile* sourceFile, AstNode* parent, Parser* syntaxJob)
     {
         auto node = Ast::newNode<AstInline>(syntaxJob, AstNodeKind::Inline, sourceFile, parent);
         node->allocateExtension(ExtensionKind::Semantic);
@@ -467,7 +467,7 @@ namespace Ast
         return node;
     }
 
-    AstNode* newAffectOp(SourceFile* sourceFile, AstNode* parent, uint8_t opFlags, uint64_t attributeFlags, SyntaxJob* syntaxJob)
+    AstNode* newAffectOp(SourceFile* sourceFile, AstNode* parent, uint8_t opFlags, uint64_t attributeFlags, Parser* syntaxJob)
     {
         auto node         = Ast::newNode<AstOp>(syntaxJob, AstNodeKind::AffectOp, sourceFile, parent, 2);
         node->semanticFct = SemanticJob::resolveAffect;
@@ -476,14 +476,14 @@ namespace Ast
         return node;
     }
 
-    AstStruct* newStructDecl(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
+    AstStruct* newStructDecl(SourceFile* sourceFile, AstNode* parent, Parser* syntaxJob)
     {
         auto node         = Ast::newNode<AstStruct>(syntaxJob, AstNodeKind::StructDecl, sourceFile, parent);
         node->semanticFct = SemanticJob::resolveStruct;
         return node;
     }
 
-    AstNode* newFuncDeclParams(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
+    AstNode* newFuncDeclParams(SourceFile* sourceFile, AstNode* parent, Parser* syntaxJob)
     {
         auto node         = Ast::newNode<AstNode>(syntaxJob, AstNodeKind::FuncDeclParams, sourceFile, parent);
         node->semanticFct = SemanticJob::resolveFuncDeclParams;
@@ -491,28 +491,28 @@ namespace Ast
         return node;
     }
 
-    AstFuncCallParams* newFuncCallGenParams(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
+    AstFuncCallParams* newFuncCallGenParams(SourceFile* sourceFile, AstNode* parent, Parser* syntaxJob)
     {
         auto node         = Ast::newNode<AstFuncCallParams>(syntaxJob, AstNodeKind::FuncCallParams, sourceFile, parent);
         node->semanticFct = SemanticJob::resolveFuncCallGenParams;
         return node;
     }
 
-    AstFuncCallParams* newFuncCallParams(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
+    AstFuncCallParams* newFuncCallParams(SourceFile* sourceFile, AstNode* parent, Parser* syntaxJob)
     {
         auto node         = Ast::newNode<AstFuncCallParams>(syntaxJob, AstNodeKind::FuncCallParams, sourceFile, parent);
         node->semanticFct = SemanticJob::resolveFuncCallParams;
         return node;
     }
 
-    AstFuncCallParam* newFuncCallParam(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
+    AstFuncCallParam* newFuncCallParam(SourceFile* sourceFile, AstNode* parent, Parser* syntaxJob)
     {
         auto node         = Ast::newNode<AstFuncCallParam>(syntaxJob, AstNodeKind::FuncCallParam, sourceFile, parent);
         node->semanticFct = SemanticJob::resolveFuncCallParam;
         return node;
     }
 
-    AstVarDecl* newVarDecl(SourceFile* sourceFile, const Utf8& name, AstNode* parent, SyntaxJob* syntaxJob, AstNodeKind kind)
+    AstVarDecl* newVarDecl(SourceFile* sourceFile, const Utf8& name, AstNode* parent, Parser* syntaxJob, AstNodeKind kind)
     {
         auto node         = Ast::newNode<AstVarDecl>(syntaxJob, kind, sourceFile, parent, 2);
         node->token.text  = name;
@@ -520,7 +520,7 @@ namespace Ast
         return node;
     }
 
-    AstIntrinsicProp* newIntrinsicProp(SourceFile* sourceFile, TokenId id, AstNode* parent, SyntaxJob* syntaxJob)
+    AstIntrinsicProp* newIntrinsicProp(SourceFile* sourceFile, TokenId id, AstNode* parent, Parser* syntaxJob)
     {
         auto node         = Ast::newNode<AstIntrinsicProp>(syntaxJob, AstNodeKind::IntrinsicProp, sourceFile, parent);
         node->token.id    = id;
@@ -528,14 +528,14 @@ namespace Ast
         return node;
     }
 
-    AstTypeExpression* newTypeExpression(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
+    AstTypeExpression* newTypeExpression(SourceFile* sourceFile, AstNode* parent, Parser* syntaxJob)
     {
         auto node         = Ast::newNode<AstTypeExpression>(syntaxJob, AstNodeKind::TypeExpression, sourceFile, parent);
         node->semanticFct = SemanticJob::resolveType;
         return node;
     }
 
-    AstIdentifier* newIdentifier(SourceFile* sourceFile, const Utf8& name, AstIdentifierRef* identifierRef, AstNode* parent, SyntaxJob* syntaxJob)
+    AstIdentifier* newIdentifier(SourceFile* sourceFile, const Utf8& name, AstIdentifierRef* identifierRef, AstNode* parent, Parser* syntaxJob)
     {
         auto node           = Ast::newNode<AstIdentifier>(syntaxJob, AstNodeKind::Identifier, sourceFile, parent);
         node->token.text    = name;
@@ -546,7 +546,7 @@ namespace Ast
         return node;
     }
 
-    AstIdentifierRef* newIdentifierRef(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
+    AstIdentifierRef* newIdentifierRef(SourceFile* sourceFile, AstNode* parent, Parser* syntaxJob)
     {
         auto node = Ast::newNode<AstIdentifierRef>(syntaxJob, AstNodeKind::IdentifierRef, sourceFile, parent);
         node->allocateExtension(ExtensionKind::Semantic);
@@ -556,7 +556,7 @@ namespace Ast
         return node;
     }
 
-    AstIdentifierRef* newIdentifierRef(SourceFile* sourceFile, const Utf8& name, AstNode* parent, SyntaxJob* syntaxJob)
+    AstIdentifierRef* newIdentifierRef(SourceFile* sourceFile, const Utf8& name, AstNode* parent, Parser* syntaxJob)
     {
         SWAG_ASSERT(!name.empty());
 
