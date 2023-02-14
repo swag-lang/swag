@@ -71,11 +71,12 @@ void Stats::print()
         g_Log.print("\n");
         g_Log.messageHeaderDot("mem nodes", Fmt("%s", Utf8::toNiceSize(memNodes.load()).c_str()));
         g_Log.messageHeaderDot("mem nodes ext", Fmt("%s", Utf8::toNiceSize(memNodesExt.load()).c_str()));
+        g_Log.messageHeaderDot("mem concat", Fmt("%s", Utf8::toNiceSize(memConcat.load()).c_str()));
+        g_Log.messageHeaderDot("mem types", Fmt("%s", Utf8::toNiceSize(memTypes.load()).c_str()));
+        g_Log.messageHeaderDot("mem files", Fmt("%s", Utf8::toNiceSize(memFileBuffer.load()).c_str()));
         g_Log.messageHeaderDot("mem nodes literal", Fmt("%s", Utf8::toNiceSize(memNodesLiteral.load()).c_str()));
         g_Log.messageHeaderDot("mem scopes", Fmt("%s", Utf8::toNiceSize(memScopes.load()).c_str()));
         g_Log.messageHeaderDot("mem seg", Fmt("%s", Utf8::toNiceSize(memSeg.load()).c_str()));
-        g_Log.messageHeaderDot("mem concat", Fmt("%s", Utf8::toNiceSize(memConcat.load()).c_str()));
-        g_Log.messageHeaderDot("mem types", Fmt("%s", Utf8::toNiceSize(memTypes.load()).c_str()));
         g_Log.messageHeaderDot("mem params", Fmt("%s", Utf8::toNiceSize(memParams.load()).c_str()));
         g_Log.messageHeaderDot("mem bcinstr", Fmt("%s", Utf8::toNiceSize(memInstructions.load()).c_str()));
         g_Log.messageHeaderDot("mem bcstack", Fmt("%s", Utf8::toNiceSize(memBcStack.load()).c_str()));

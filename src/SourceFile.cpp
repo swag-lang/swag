@@ -80,6 +80,9 @@ bool SourceFile::load()
     allocBufferSize = (unsigned) Allocator::alignSize(bufferSize + 4);
     buffer          = (char*) g_Allocator.alloc(allocBufferSize);
 
+    if (g_CommandLine.stats)
+        g_Stats.memFileBuffer += allocBufferSize;
+
     auto result = fread(buffer, 1, bufferSize, handle);
     fclose(handle);
 
