@@ -86,7 +86,7 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
         if (kind == InvalidTokenError::TopLevelInstruction)
         {
             TokenParse nextToken;
-            tokenizer.getToken(nextToken);
+            tokenizer.nextToken(nextToken);
             if (nextToken.id == TokenId::SymEqual || nextToken.id == TokenId::SymColonEqual || nextToken.id == TokenId::SymColon)
                 msg += ") did you miss 'var' or 'const' to declare a global variable ?";
         }
@@ -129,7 +129,7 @@ bool SyntaxJob::error(const SourceLocation& startLocation, const SourceLocation&
 
 bool SyntaxJob::eatToken()
 {
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(tokenizer.nextToken(token));
     return true;
 }
 

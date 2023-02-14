@@ -64,7 +64,7 @@ bool Tokenizer::doStringLiteral(TokenParse& token, bool raw, bool multiline)
         startTokenName = curBuffer;
         while (true)
         {
-            auto c = getCharNoSeek(offset);
+            auto c = peekChar(offset);
 
             // Can't have a newline inside a normal string (but this is legit in raw string literals)
             if (!multiline && SWAG_IS_EOL(c))
@@ -112,10 +112,10 @@ bool Tokenizer::doStringLiteral(TokenParse& token, bool raw, bool multiline)
             if (!raw && c == '\\')
             {
                 token.literalType = LiteralType::TT_ESCAPE_STRING;
-                treatChar(c, offset);
-                c = getCharNoSeek(offset);
+                eatChar(c, offset);
+                c = peekChar(offset);
                 if (c)
-                    treatChar(c, offset);
+                    eatChar(c, offset);
                 token.endLocation = location;
                 continue;
             }
@@ -126,7 +126,7 @@ bool Tokenizer::doStringLiteral(TokenParse& token, bool raw, bool multiline)
                 if (!raw && !multiline)
                 {
                     appendTokenName(token);
-                    treatChar(c, offset);
+                    eatChar(c, offset);
                     token.endLocation = location;
                     break;
                 }
@@ -148,23 +148,23 @@ bool Tokenizer::doStringLiteral(TokenParse& token, bool raw, bool multiline)
                 }
             }
 
-            treatChar(c, offset);
+            eatChar(c, offset);
             token.endLocation = location;
         }
 
-        auto c = getCharNoSeek(offset);
+        auto c = peekChar(offset);
         while (SWAG_IS_BLANK(c) || SWAG_IS_EOL(c))
         {
             if (SWAG_IS_EOL(c))
                 forceLastTokenIsEOL = true;
-            treatChar(c, offset);
-            c = getCharNoSeek(offset);
+            eatChar(c, offset);
+            c = peekChar(offset);
         }
 
         if (!raw && c == '"')
         {
             realAppendName = true;
-            treatChar(c, offset);
+            eatChar(c, offset);
             continue;
         }
 

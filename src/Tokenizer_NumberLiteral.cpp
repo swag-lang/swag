@@ -9,10 +9,10 @@ bool Tokenizer::doBinLiteral(TokenParse& token)
     unsigned offset;
 
     token.literalValue.u64 = 0;
-    auto c                 = getCharNoSeek(offset);
+    auto c                 = peekChar(offset);
     while (c == '0' || c == '1' || SWAG_IS_NUMSEP(c))
     {
-        treatChar(c, offset);
+        eatChar(c, offset);
 
         // Digit separator
         if (SWAG_IS_NUMSEP(c))
@@ -20,7 +20,7 @@ bool Tokenizer::doBinLiteral(TokenParse& token)
             if (!acceptSep)
                 return error(token, Err(Tkn0020));
             acceptSep = false;
-            c         = getCharNoSeek(offset);
+            c         = peekChar(offset);
             continue;
         }
 
@@ -32,7 +32,7 @@ bool Tokenizer::doBinLiteral(TokenParse& token)
 
         token.literalValue.u64 += (c - '0');
 
-        c = getCharNoSeek(offset);
+        c = peekChar(offset);
     }
 
     // Be sure what follows is valid
@@ -67,10 +67,10 @@ bool Tokenizer::doHexLiteral(TokenParse& token)
     unsigned offset;
 
     token.literalValue.u64 = 0;
-    auto c                 = getCharNoSeek(offset);
+    auto c                 = peekChar(offset);
     while (SWAG_IS_ALPHAHEX(c) || SWAG_IS_DIGIT(c) || SWAG_IS_NUMSEP(c))
     {
-        treatChar(c, offset);
+        eatChar(c, offset);
 
         // Digit separator
         if (SWAG_IS_NUMSEP(c))
@@ -78,7 +78,7 @@ bool Tokenizer::doHexLiteral(TokenParse& token)
             if (!acceptSep)
                 return error(token, Err(Tkn0020));
             acceptSep = false;
-            c         = getCharNoSeek(offset);
+            c         = peekChar(offset);
             continue;
         }
 
@@ -95,7 +95,7 @@ bool Tokenizer::doHexLiteral(TokenParse& token)
         else
             token.literalValue.u64 += (10 + (c - 'A'));
 
-        c = getCharNoSeek(offset);
+        c = peekChar(offset);
     }
 
     // Be sure what follows is valid
@@ -134,7 +134,7 @@ bool Tokenizer::doFloatLiteral(uint32_t c, TokenParse& token)
     while (SWAG_IS_DIGIT(c) || SWAG_IS_NUMSEP(c))
     {
         if (offset)
-            treatChar(c, offset);
+            eatChar(c, offset);
 
         // Digit separator
         if (SWAG_IS_NUMSEP(c))
@@ -146,7 +146,7 @@ bool Tokenizer::doFloatLiteral(uint32_t c, TokenParse& token)
             }
 
             acceptSep = false;
-            c         = getCharNoSeek(offset);
+            c         = peekChar(offset);
             continue;
         }
 
@@ -158,7 +158,7 @@ bool Tokenizer::doFloatLiteral(uint32_t c, TokenParse& token)
         token.literalValue.f64 += val * fractPart;
         fractPart *= 0.1;
 
-        c = getCharNoSeek(offset);
+        c = peekChar(offset);
     }
 
     // Be sure we don't have a number with a separator at its end
@@ -178,7 +178,7 @@ bool Tokenizer::doIntLiteral(uint32_t c, TokenParse& token)
     while (SWAG_IS_DIGIT(c) || SWAG_IS_NUMSEP(c))
     {
         if (offset)
-            treatChar(c, offset);
+            eatChar(c, offset);
 
         // Digit separator
         if (SWAG_IS_NUMSEP(c))
@@ -190,7 +190,7 @@ bool Tokenizer::doIntLiteral(uint32_t c, TokenParse& token)
             }
 
             acceptSep = false;
-            c         = getCharNoSeek(offset);
+            c         = peekChar(offset);
             continue;
         }
 
@@ -202,7 +202,7 @@ bool Tokenizer::doIntLiteral(uint32_t c, TokenParse& token)
         SWAG_VERIFY(token.literalValue.u64 <= 18446744073709551615ULL - val, error(token, Err(Tkn0008)));
         token.literalValue.u64 += val;
 
-        c = getCharNoSeek(offset);
+        c = peekChar(offset);
     }
 
     // Be sure we don't have a number with a separator at its end
@@ -226,7 +226,7 @@ bool Tokenizer::doIntFloatLiteral(uint32_t c, TokenParse& token)
     // Integer part
     SWAG_CHECK(doIntLiteral(c, token));
 
-    c = getCharNoSeek(offset);
+    c = peekChar(offset);
 
     // Do this because of the slicing operator number..number. We do not want the '..' to be eaten
     bool hasDot = (c == '.') && curBuffer[1] != '.';
@@ -235,17 +235,17 @@ bool Tokenizer::doIntFloatLiteral(uint32_t c, TokenParse& token)
     if (hasDot)
     {
         token.literalType = LiteralType::TT_UNTYPED_FLOAT;
-        treatChar(c, offset);
+        eatChar(c, offset);
 
         // Fraction part
         tokenFrac.startLocation = location;
-        c                       = getCharNoSeek(offset);
+        c                       = peekChar(offset);
         SWAG_VERIFY(!SWAG_IS_NUMSEP(c), error(tokenFrac, Err(Tkn0023)));
         if (SWAG_IS_DIGIT(c))
         {
-            treatChar(c, offset);
+            eatChar(c, offset);
             SWAG_CHECK(doFloatLiteral(c, tokenFrac));
-            c = getCharNoSeek(offset);
+            c = peekChar(offset);
         }
     }
 
@@ -253,31 +253,31 @@ bool Tokenizer::doIntFloatLiteral(uint32_t c, TokenParse& token)
     if (c == 'e' || c == 'E')
     {
         token.literalType = LiteralType::TT_UNTYPED_FLOAT;
-        treatChar(c, offset);
+        eatChar(c, offset);
         tokenExponent.startLocation = location;
 
         bool minus = false;
-        c          = getCharNoSeek(offset);
+        c          = peekChar(offset);
 
         if (c == '-')
         {
             minus = true;
-            treatChar(c, offset);
-            c = getCharNoSeek(offset);
+            eatChar(c, offset);
+            c = peekChar(offset);
         }
         else if (c == '+')
         {
             minus = false;
-            treatChar(c, offset);
-            c = getCharNoSeek(offset);
+            eatChar(c, offset);
+            c = peekChar(offset);
         }
 
         tokenExponent.startLocation = location;
         SWAG_VERIFY(!SWAG_IS_NUMSEP(c), error(tokenExponent, Err(Tkn0024)));
         SWAG_VERIFY(SWAG_IS_DIGIT(c), error(tokenExponent, Err(Tkn0002)));
-        treatChar(c, offset);
+        eatChar(c, offset);
         SWAG_CHECK(doIntLiteral(c, tokenExponent));
-        c = getCharNoSeek(offset);
+        c = peekChar(offset);
 
         if (minus)
             tokenExponent.literalValue.s64 = -tokenExponent.literalValue.s64;
@@ -315,12 +315,12 @@ bool Tokenizer::doNumberLiteral(uint32_t c, TokenParse& token)
         unsigned offset;
         auto     startLoc = token.startLocation;
 
-        c = getCharNoSeek(offset);
+        c = peekChar(offset);
 
         // Hexadecimal
         if (c == 'x' || c == 'X')
         {
-            treatChar(c, offset);
+            eatChar(c, offset);
             SWAG_CHECK(doHexLiteral(token));
             token.endLocation = location;
             appendTokenName(token);
@@ -330,7 +330,7 @@ bool Tokenizer::doNumberLiteral(uint32_t c, TokenParse& token)
         // Binary
         if (c == 'b' || c == 'B')
         {
-            treatChar(c, offset);
+            eatChar(c, offset);
             SWAG_CHECK(doBinLiteral(token));
             token.endLocation = location;
             appendTokenName(token);
@@ -339,7 +339,7 @@ bool Tokenizer::doNumberLiteral(uint32_t c, TokenParse& token)
 
         if (SWAG_IS_ALPHA(c))
         {
-            treatChar(c, offset);
+            eatChar(c, offset);
             token.text          = c;
             token.startLocation = startLoc;
             return error(token, Fmt(Err(Tkn0019), token.ctext()));

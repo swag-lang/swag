@@ -89,11 +89,10 @@ struct Tokenizer
     void trimMultilineString(Utf8& text);
     void appendTokenName(TokenParse& token);
 
-    uint32_t getChar(unsigned& offset);
-    uint32_t getChar();
-    uint32_t getCharNoSeek(unsigned& offset);
+    uint32_t readChar();
+    uint32_t peekChar(unsigned& offset);
     void     processChar(uint32_t c);
-    void     treatChar(uint32_t c, unsigned offset);
+    void     eatChar(uint32_t c, unsigned offset);
 
     bool doMultiLineComment(TokenParse& token);
     void doIdentifier(TokenParse& token, uint32_t c, unsigned offset);
@@ -110,7 +109,7 @@ struct Tokenizer
     void restoreState(TokenParse& token);
 
     void setFile(SourceFile* file);
-    bool getToken(TokenParse& token);
+    bool nextToken(TokenParse& token);
 
     // clang-format off
     static bool isSymbol(TokenId id)            { return g_TokenFlags[(int) id] & TOKEN_SYM; }

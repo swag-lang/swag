@@ -63,20 +63,7 @@ void Tokenizer::restoreState(TokenParse& token)
     forceLastTokenIsEOL = st_forceLastTokenIsEOL;
 }
 
-void Tokenizer::processChar(uint32_t c)
-{
-    location.column++;
-
-    if (c == '\n')
-    {
-        if (g_CommandLine.stats)
-            g_Stats.numLines++;
-        location.column = 0;
-        location.line++;
-    }
-}
-
-uint32_t Tokenizer::getChar(unsigned& offset)
+uint32_t Tokenizer::peekChar(unsigned& offset)
 {
     if (curBuffer >= endBuffer)
     {
@@ -84,28 +71,44 @@ uint32_t Tokenizer::getChar(unsigned& offset)
         return 0;
     }
 
+    if ((*curBuffer & 0x80) == 0)
+    {
+        offset = 1;
+        return *curBuffer;
+    }
+
     uint32_t wc;
     Utf8::decodeUtf8(curBuffer, wc, offset);
     return wc;
 }
 
-void Tokenizer::treatChar(uint32_t c, unsigned offset)
-{
-    processChar(c);
-    curBuffer += offset;
-}
-
-uint32_t Tokenizer::getChar()
+uint32_t Tokenizer::readChar()
 {
     unsigned offset;
-    auto     c = getChar(offset);
-    treatChar(c, offset);
+    auto     c = peekChar(offset);
+    eatChar(c, offset);
     return c;
 }
 
-uint32_t Tokenizer::getCharNoSeek(unsigned& offset)
+void Tokenizer::processChar(uint32_t c)
 {
-    return getChar(offset);
+    if (c == '\n')
+    {
+        if (g_CommandLine.stats)
+            g_Stats.numLines++;
+        location.column = 0;
+        location.line++;
+    }
+    else
+    {
+        location.column++;
+    }
+}
+
+void Tokenizer::eatChar(uint32_t c, unsigned offset)
+{
+    processChar(c);
+    curBuffer += offset;
 }
 
 bool Tokenizer::doMultiLineComment(TokenParse& token)
@@ -113,9 +116,9 @@ bool Tokenizer::doMultiLineComment(TokenParse& token)
     int countEmb = 1;
     while (true)
     {
-        auto nc = getChar();
+        auto nc = readChar();
         while (nc && nc != '*' && nc != '/')
-            nc = getChar();
+            nc = readChar();
 
         if (!nc)
         {
@@ -127,10 +130,10 @@ bool Tokenizer::doMultiLineComment(TokenParse& token)
         if (nc == '*')
         {
             unsigned offset;
-            nc = getCharNoSeek(offset);
+            nc = peekChar(offset);
             if (nc == '/')
             {
-                treatChar(nc, offset);
+                eatChar(nc, offset);
                 countEmb--;
                 if (countEmb == 0)
                     return true;
@@ -141,7 +144,7 @@ bool Tokenizer::doMultiLineComment(TokenParse& token)
 
         if (nc == '/')
         {
-            nc = getChar();
+            nc = readChar();
             if (nc == '*')
             {
                 countEmb++;
@@ -155,8 +158,8 @@ void Tokenizer::doIdentifier(TokenParse& token, uint32_t c, unsigned offset)
 {
     while (SWAG_IS_ALPHA(c) || SWAG_IS_DIGIT(c) || c == '_')
     {
-        treatChar(c, offset);
-        c = getCharNoSeek(offset);
+        eatChar(c, offset);
+        c = peekChar(offset);
     }
 
     appendTokenName(token);
@@ -178,7 +181,7 @@ void Tokenizer::doIdentifier(TokenParse& token, uint32_t c, unsigned offset)
     }
 }
 
-bool Tokenizer::getToken(TokenParse& token)
+bool Tokenizer::nextToken(TokenParse& token)
 {
     Timer timer(&g_Stats.tokenizerTime);
     if (g_CommandLine.stats)
@@ -196,7 +199,7 @@ bool Tokenizer::getToken(TokenParse& token)
         startTokenName      = curBuffer;
         token.startLocation = location;
 
-        auto c = getChar();
+        auto c = readChar();
 
         // End of file
         ///////////////////////////////////////////
@@ -227,15 +230,15 @@ bool Tokenizer::getToken(TokenParse& token)
         ///////////////////////////////////////////
         if (c == '/')
         {
-            auto nc = getCharNoSeek(offset);
+            auto nc = peekChar(offset);
 
             // Line comment
             if (nc == '/')
             {
-                treatChar(c, offset);
-                nc = getChar();
+                eatChar(c, offset);
+                nc = readChar();
                 while (nc && nc != '\n')
-                    nc = getChar();
+                    nc = readChar();
                 token.lastTokenIsEOL = true;
                 continue;
             }
@@ -243,7 +246,7 @@ bool Tokenizer::getToken(TokenParse& token)
             // Multiline comment
             if (nc == '*')
             {
-                treatChar(c, offset);
+                eatChar(c, offset);
                 SWAG_CHECK(doMultiLineComment(token));
                 continue;
             }
@@ -253,12 +256,12 @@ bool Tokenizer::getToken(TokenParse& token)
         ///////////////////////////////////////////
         if (c == '#')
         {
-            auto nc = getCharNoSeek(offset);
+            auto nc = peekChar(offset);
 
             if (nc == '[')
             {
                 token.text = "#[";
-                treatChar(nc, offset);
+                eatChar(nc, offset);
                 token.endLocation = location;
                 token.id          = TokenId::SymAttrStart;
                 return true;
@@ -273,11 +276,11 @@ bool Tokenizer::getToken(TokenParse& token)
         ///////////////////////////////////////////
         if (c == '@')
         {
-            auto nc = getCharNoSeek(offset);
+            auto nc = peekChar(offset);
 
             if (nc == '"')
             {
-                treatChar(nc, offset);
+                eatChar(nc, offset);
                 SWAG_CHECK(doStringLiteral(token, true, true));
                 return true;
             }
@@ -298,7 +301,7 @@ bool Tokenizer::getToken(TokenParse& token)
         ///////////////////////////////////////////
         if (SWAG_IS_ALPHA(c) || c == '_')
         {
-            auto nc = getCharNoSeek(offset);
+            auto nc = peekChar(offset);
             doIdentifier(token, nc, offset);
             token.endLocation = location;
             return true;

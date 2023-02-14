@@ -100,7 +100,7 @@ void Workspace::setupUserTags()
                 tokenizer.setFile(&fakeFile);
 
                 bool neg = false;
-                tokenizer.getToken(token);
+                tokenizer.nextToken(token);
 
                 if (token.id == TokenId::KwdTrue)
                 {
@@ -119,11 +119,11 @@ void Workspace::setupUserTags()
                     if (token.id == TokenId::SymMinus)
                     {
                         neg = true;
-                        tokenizer.getToken(token);
+                        tokenizer.nextToken(token);
                     }
                     else if (token.id == TokenId::SymPlus)
                     {
-                        tokenizer.getToken(token);
+                        tokenizer.nextToken(token);
                     }
 
                     if (token.id != TokenId::LiteralNumber && token.id != TokenId::LiteralString)
