@@ -340,10 +340,12 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     // We have generated methods, so restart
     if (!content.empty())
     {
-        int       numChilds = (int) node->childs.size();
-        Parser syntaxJob;
-        syntaxJob.module = context->sourceFile->module;
-        SWAG_CHECK(syntaxJob.constructEmbedded(content, node, node, CompilerAstKind::MissingInterfaceMtd, true));
+        int numChilds = (int) node->childs.size();
+
+        Parser parser;
+        parser.setup(context, context->sourceFile->module, context->sourceFile);
+        SWAG_CHECK(parser.constructEmbeddedAst(content, node, node, CompilerAstKind::MissingInterfaceMtd, true));
+
         for (int i = numChilds; i < node->childs.size(); i++)
             context->job->nodes.push_back(node->childs[i]);
         context->result = ContextResult::NewChilds;

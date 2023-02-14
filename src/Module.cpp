@@ -1033,14 +1033,12 @@ bool Module::compileString(const Utf8& text)
         return false;
     }
 
-    AstNode*   parent = Ast::newNode(files[0], AstNodeKind::StatementNoScope, sourceFile->astRoot);
+    AstNode* parent = Ast::newNode(files[0], AstNodeKind::StatementNoScope, sourceFile->astRoot);
+
     JobContext jobContext;
     Parser     parser;
-    parser.context    = &jobContext;
-    parser.sourceFile = sourceFile;
-    parser.module     = this;
-
-    if (!parser.constructEmbedded(text, parent, g_RunContext->ip->node, CompilerAstKind::TopLevelInstruction, true))
+    parser.setup(&jobContext, this, sourceFile);
+    if (!parser.constructEmbeddedAst(text, parent, g_RunContext->ip->node, CompilerAstKind::TopLevelInstruction, true))
         return false;
 
     auto job        = g_Allocator.alloc<SemanticJob>();

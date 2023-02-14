@@ -362,9 +362,9 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
         else
             kind = CompilerAstKind::EmbeddedInstruction;
 
-        Parser syntaxJob;
-        syntaxJob.module = context->sourceFile->module;
-        SWAG_CHECK(syntaxJob.constructEmbedded(expression->computedValue->text, node, expression, kind, true));
+        Parser parser;
+        parser.setup(context, context->sourceFile->module, context->sourceFile);
+        SWAG_CHECK(parser.constructEmbeddedAst(expression->computedValue->text, node, expression, kind, true));
 
         job->nodes.pop_back();
         for (int i = (int) node->childs.size() - 1; i >= 0; i--)

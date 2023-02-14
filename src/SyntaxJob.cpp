@@ -20,10 +20,8 @@ JobResult SyntaxJob::execute()
     }
 
     Parser parser;
-    parser.sourceFile = sourceFile;
-    parser.context    = &context;
-
-    parser.execute();
+    parser.setup(&context, sourceFile->module, sourceFile);
+    parser.generateAst();
 
     return JobResult::ReleaseJob;
 }

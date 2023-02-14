@@ -205,7 +205,7 @@ bool Parser::eatSemiCol(const char* msg)
     return true;
 }
 
-bool Parser::saveEmbedded(const Utf8& content, AstNode* parent, AstNode* fromNode, Utf8& tmpFileName, Utf8& tmpFilePath, uint32_t& previousLogLine)
+bool Parser::saveEmbeddedAst(const Utf8& content, AstNode* parent, AstNode* fromNode, Utf8& tmpFileName, Utf8& tmpFilePath, uint32_t& previousLogLine)
 {
     auto modl       = fromNode->sourceFile->module;
     auto publicPath = modl->publicPath;
@@ -236,12 +236,13 @@ bool Parser::saveEmbedded(const Utf8& content, AstNode* parent, AstNode* fromNod
     return true;
 }
 
-bool Parser::constructEmbedded(const Utf8& content, AstNode* parent, AstNode* fromNode, CompilerAstKind kind, bool logGenerated)
+bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode* fromNode, CompilerAstKind kind, bool logGenerated)
 {
     Utf8     tmpFileName     = "<generated>";
     Utf8     tmpFilePath     = "<generated>";
     uint32_t previousLogLine = 0;
 
+    SWAG_ASSERT(context);
     SWAG_ASSERT(module);
 
     // Log the generated code in '<module>.swg'
@@ -249,7 +250,7 @@ bool Parser::constructEmbedded(const Utf8& content, AstNode* parent, AstNode* fr
     {
         if (fromNode->sourceFile->module->buildCfg.backendDebugInformations && !g_CommandLine.scriptCommand)
         {
-            SWAG_CHECK(saveEmbedded(content, parent, fromNode, tmpFileName, tmpFilePath, previousLogLine));
+            SWAG_CHECK(saveEmbeddedAst(content, parent, fromNode, tmpFileName, tmpFilePath, previousLogLine));
         }
     }
 
@@ -330,14 +331,23 @@ bool Parser::constructEmbedded(const Utf8& content, AstNode* parent, AstNode* fr
     return true;
 }
 
-bool Parser::execute()
+void Parser::setup(JobContext* errorCxt, Module* mdl, SourceFile* file)
 {
+    context    = errorCxt;
+    module     = mdl;
+    sourceFile = file;
+}
+
+bool Parser::generateAst()
+{
+    SWAG_ASSERT(context);
+    SWAG_ASSERT(module && sourceFile);
+
     // First do the setup that does not need the source file to be loaded
     if (g_CommandLine.stats)
         g_Stats.numFiles++;
 
     // Setup root ast for file
-    module              = sourceFile->module;
     sourceFile->astRoot = Ast::newNode<AstNode>(this, AstNodeKind::File, sourceFile, module->astRoot);
 
     // Creates a top namespace with the module namespace name

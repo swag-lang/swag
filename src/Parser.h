@@ -68,10 +68,11 @@ static const uint32_t CONTEXT_FLAG_VARDECL_TYPE_EXPRESSION = 0x00000002;
 
 struct Parser
 {
-    bool execute();
+    void setup(JobContext* errorCxt, Module* mdl, SourceFile* file);
+    bool generateAst();
 
-    bool saveEmbedded(const Utf8& content, AstNode* parent, AstNode* fromNode, Utf8& tmpFileName, Utf8& tmpFilePath, uint32_t& previousLogLine);
-    bool constructEmbedded(const Utf8& content, AstNode* parent, AstNode* fromNode, enum class CompilerAstKind kind, bool logGenerated);
+    bool saveEmbeddedAst(const Utf8& content, AstNode* parent, AstNode* fromNode, Utf8& tmpFileName, Utf8& tmpFilePath, uint32_t& previousLogLine);
+    bool constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode* fromNode, enum class CompilerAstKind kind, bool logGenerated);
 
     bool error(const Token& tk, const Utf8& msg, const char* help = nullptr, const char* hint = nullptr);
     bool error(AstNode* node, const Utf8& msg, const char* help = nullptr, const char* hint = nullptr);

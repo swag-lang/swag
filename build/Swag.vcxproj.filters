@@ -7,9 +7,6 @@
     <ClCompile Include="..\src\Main.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SyntaxJob.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
     <ClCompile Include="../src/Ast.cpp">
       <Filter>Syntax</Filter>
     </ClCompile>
@@ -533,6 +530,9 @@
     <ClCompile Include="..\src\Parser_Var.cpp">
       <Filter>Syntax</Filter>
     </ClCompile>
+    <ClCompile Include="../src/SyntaxJob.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
@@ -540,9 +540,6 @@
     </ClInclude>
     <ClInclude Include="../src/CommandLine.h">
       <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/SyntaxJob.h">
-      <Filter>Syntax</Filter>
     </ClInclude>
     <ClInclude Include="../src/Ast.h">
       <Filter>Syntax</Filter>
@@ -847,6 +844,9 @@
     </ClInclude>
     <ClInclude Include="..\src\Parser.h">
       <Filter>Syntax</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/SyntaxJob.h">
+      <Filter>Jobs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -886,8 +886,8 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     node->expression->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
 
     Parser parser;
-    parser.module = context->sourceFile->module;
-    SWAG_CHECK(parser.constructEmbedded(content, node, node, CompilerAstKind::EmbeddedInstruction, false));
+    parser.setup(context, context->sourceFile->module, context->sourceFile);
+    SWAG_CHECK(parser.constructEmbeddedAst(content, node, node, CompilerAstKind::EmbeddedInstruction, false));
 
     newExpression = node->childs.back();
     if (newVar)
