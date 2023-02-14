@@ -876,6 +876,7 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
     pp.dbgMapPtrPtrTypes.clear();
     pp.dbgMapTypesNames.clear();
 
+    OS::ensureFileIsWritten(filename.c_str());
     return true;
 }
 

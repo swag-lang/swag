@@ -309,6 +309,17 @@ namespace OS
         return result;
     }
 
+    // Hack. Don't know why i have some flush problems on written files.
+    void ensureFileIsWritten(const char* fileName)
+    {
+        auto writeTime = getFileWriteTime(fileName);
+        while (!writeTime)
+        {
+            this_thread::yield();
+            writeTime = OS::getFileWriteTime(fileName);
+        }
+    }
+
     void visitFiles(const char* folder, function<void(const char*)> user)
     {
         WIN32_FIND_DATAA findfile;

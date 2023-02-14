@@ -360,6 +360,7 @@ bool Concat::flushToFile(const string& path)
 
     fflush(f);
     fclose(f);
+    OS::ensureFileIsWritten(path.c_str());
 
     clear();
     return true;

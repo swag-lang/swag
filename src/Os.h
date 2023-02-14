@@ -53,6 +53,7 @@ namespace OS
     void visitFilesFolders(const char* folder, function<void(uint64_t, const char*, bool)> user);
     void visitFilesRec(const char* folder, function<void(const char*)> user);
 
+    void     ensureFileIsWritten(const char* fileName);
     uint64_t getFileWriteTime(const char* fileName);
     bool     touchFile(const fs::path& path);
     string   getTemporaryFolder();
