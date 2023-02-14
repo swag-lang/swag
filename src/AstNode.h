@@ -9,44 +9,112 @@
 #include "VectorNative.h"
 #include "Mutex.h"
 
-struct Parser;
-struct AstTryCatchAssume;
-struct AstTypeExpression;
-struct DocContent;
-struct AstSwitchCase;
-struct SemanticContext;
-struct ByteCodeGenContext;
-struct TypeInfo;
-struct SymbolOverload;
-struct SymbolName;
-struct ByteCodeGenJob;
-struct ByteCode;
-struct Job;
-struct AstFuncDecl;
 struct AstAttrUse;
-struct AstSwitch;
-struct TypeInfoParam;
 struct AstBreakable;
-struct AstInline;
-struct AstStruct;
-struct TypeInfoStruct;
-struct AstReturn;
 struct AstCompilerIfBlock;
 struct AstFuncCallParams;
+struct AstFuncDecl;
+struct AstInline;
 struct AstMakePointer;
+struct AstReturn;
+struct AstStruct;
+struct AstSwitch;
+struct AstSwitchCase;
+struct AstTryCatchAssume;
+struct AstTypeExpression;
+struct ByteCode;
+struct ByteCodeGenContext;
+struct ByteCodeGenJob;
+struct DocContent;
+struct Job;
+struct Parser;
+struct SemanticContext;
+struct SymbolName;
+struct SymbolOverload;
+struct TypeInfo;
 struct TypeInfoFuncAttr;
-enum class TypeInfoListKind;
+struct TypeInfoParam;
+struct TypeInfoStruct;
 
 typedef bool (*SemanticFct)(SemanticContext* context);
 typedef bool (*ByteCodeFct)(ByteCodeGenContext* context);
 typedef bool (*ByteCodeNotifyFct)(ByteCodeGenContext* context);
 
-enum class AstNodeResolveState : uint8_t
+const uint32_t CLONE_RAW             = 0x00000001;
+const uint32_t CLONE_FORCE_OWNER_FCT = 0x00000002;
+
+const uint32_t ALTSCOPE_USING     = 0x00000001;
+const uint32_t ALTSCOPE_SCOPEFILE = 0x00000002;
+const uint32_t ALTSCOPE_UFCS      = 0x00000004;
+
+const uint32_t BREAKABLE_CAN_HAVE_INDEX         = 0x00000001;
+const uint32_t BREAKABLE_CAN_HAVE_CONTINUE      = 0x00000002;
+const uint32_t BREAKABLE_NEED_INDEX             = 0x00000004;
+const uint32_t BREAKABLE_NEED_INDEX1            = 0x00000008;
+const uint32_t BREAKABLE_RETURN_IN_INFINIT_LOOP = 0x00000010;
+
+const uint16_t TYPEFLAG_ISREF          = 0x0001;
+const uint16_t TYPEFLAG_IS_SLICE       = 0x0002;
+const uint16_t TYPEFLAG_IS_CONST       = 0x0004;
+const uint16_t TYPEFLAG_IS_CODE        = 0x0008;
+const uint16_t TYPEFLAG_FORCE_CONST    = 0x0010;
+const uint16_t TYPEFLAG_IS_SELF        = 0x0020;
+const uint16_t TYPEFLAG_RETVAL         = 0x0040;
+const uint16_t TYPEFLAG_USING          = 0x0080;
+const uint16_t TYPEFLAG_IS_CONST_SLICE = 0x0100;
+const uint16_t TYPEFLAG_IS_REF         = 0x0200;
+const uint16_t TYPEFLAG_IS_MOVE_REF    = 0x0400;
+
+struct CloneUpdateRef
 {
-    Enter,
-    ProcessingChilds,
-    PostChilds,
-    Done,
+    AstNode*  node;
+    AstNode** ref;
+};
+
+struct CloneContext
+{
+    map<Utf8, TypeInfo*>         replaceTypes;
+    map<Utf8, AstNode*>          replaceTypesFrom;
+    map<TokenId, AstNode*>       replaceTokens;
+    map<Utf8, Utf8>              replaceNames;
+    set<Utf8>                    usedReplaceNames;
+    VectorNative<CloneUpdateRef> nodeRefsToUpdate;
+
+    AstInline*          ownerInline            = nullptr;
+    AstBreakable*       replaceTokensBreakable = nullptr;
+    AstBreakable*       ownerBreakable         = nullptr;
+    AstFuncDecl*        ownerFct               = nullptr;
+    AstTryCatchAssume*  ownerTryCatchAssume    = nullptr;
+    AstNode*            parent                 = nullptr;
+    Scope*              parentScope            = nullptr;
+    Scope*              ownerStructScope       = nullptr;
+    Scope*              alternativeScope       = nullptr;
+    Scope*              ownerDeferScope        = nullptr;
+    AstCompilerIfBlock* ownerCompilerIfBlock   = nullptr;
+    Token*              forceLocation          = nullptr;
+    uint64_t            forceFlags             = 0;
+    uint64_t            removeFlags            = 0;
+    uint64_t            forceSemFlags          = 0;
+    uint32_t            cloneFlags             = 0;
+
+    void propageResult(CloneContext& context)
+    {
+        usedReplaceNames.insert(context.usedReplaceNames.begin(), context.usedReplaceNames.end());
+    }
+};
+
+struct AlternativeScope
+{
+    Scope*   scope;
+    uint32_t flags;
+};
+
+struct AlternativeScopeVar
+{
+    AstNode* node;
+    AstNode* leafNode;
+    Scope*   scope;
+    uint32_t flags;
 };
 
 enum class AstNodeKind : uint8_t
@@ -167,63 +235,18 @@ enum class AstNodeKind : uint8_t
     AutoSlicingUp,
 };
 
-static const uint32_t CLONE_RAW             = 0x00000001;
-static const uint32_t CLONE_FORCE_OWNER_FCT = 0x00000002;
-
-struct CloneUpdateRef
+enum class AstNodeResolveState : uint8_t
 {
-    AstNode*  node;
-    AstNode** ref;
+    Enter,
+    ProcessingChilds,
+    PostChilds,
+    Done,
 };
 
-struct CloneContext
+enum class IdentifierScopeUpMode : uint8_t
 {
-    map<Utf8, TypeInfo*>         replaceTypes;
-    map<Utf8, AstNode*>          replaceTypesFrom;
-    map<TokenId, AstNode*>       replaceTokens;
-    map<Utf8, Utf8>              replaceNames;
-    set<Utf8>                    usedReplaceNames;
-    VectorNative<CloneUpdateRef> nodeRefsToUpdate;
-
-    AstInline*          ownerInline            = nullptr;
-    AstBreakable*       replaceTokensBreakable = nullptr;
-    AstBreakable*       ownerBreakable         = nullptr;
-    AstFuncDecl*        ownerFct               = nullptr;
-    AstTryCatchAssume*  ownerTryCatchAssume    = nullptr;
-    AstNode*            parent                 = nullptr;
-    Scope*              parentScope            = nullptr;
-    Scope*              ownerStructScope       = nullptr;
-    Scope*              alternativeScope       = nullptr;
-    Scope*              ownerDeferScope        = nullptr;
-    AstCompilerIfBlock* ownerCompilerIfBlock   = nullptr;
-    Token*              forceLocation          = nullptr;
-    uint64_t            forceFlags             = 0;
-    uint64_t            removeFlags            = 0;
-    uint64_t            forceSemFlags          = 0;
-    uint32_t            cloneFlags             = 0;
-
-    void propageResult(CloneContext& context)
-    {
-        usedReplaceNames.insert(context.usedReplaceNames.begin(), context.usedReplaceNames.end());
-    }
-};
-
-static const uint32_t ALTSCOPE_USING     = 0x00000001;
-static const uint32_t ALTSCOPE_SCOPEFILE = 0x00000002;
-static const uint32_t ALTSCOPE_UFCS      = 0x00000004;
-
-struct AlternativeScope
-{
-    Scope*   scope;
-    uint32_t flags;
-};
-
-struct AlternativeScopeVar
-{
-    AstNode* node;
-    AstNode* leafNode;
-    Scope*   scope;
-    uint32_t flags;
+    None,
+    Count,
 };
 
 enum class ExtensionKind
@@ -241,6 +264,23 @@ enum class ExtensionKind
     Any,
     IsNamed,
     Misc,
+};
+
+enum class CompilerAstKind
+{
+    EmbeddedInstruction,
+    TopLevelInstruction,
+    StructVarDecl,
+    EnumValue,
+    MissingInterfaceMtd,
+    Expression,
+};
+
+enum class DeferKind
+{
+    Normal,
+    Error,
+    NoError,
 };
 
 struct AstNode
@@ -420,12 +460,6 @@ struct AstIdentifierRef : public AstNode
     AstNode* previousResolvedNode = nullptr;
 };
 
-enum class IdentifierScopeUpMode : uint8_t
-{
-    None,
-    Count,
-};
-
 struct AstIdentifier : public AstNode
 {
     AstNode* clone(CloneContext& context);
@@ -557,12 +591,6 @@ struct AstBreakContinue : public AstNode
     int jumpInstruction = 0;
 };
 
-const uint32_t BREAKABLE_CAN_HAVE_INDEX         = 0x00000001;
-const uint32_t BREAKABLE_CAN_HAVE_CONTINUE      = 0x00000002;
-const uint32_t BREAKABLE_NEED_INDEX             = 0x00000004;
-const uint32_t BREAKABLE_NEED_INDEX1            = 0x00000008;
-const uint32_t BREAKABLE_RETURN_IN_INFINIT_LOOP = 0x00000010;
-
 struct AstBreakable : public AstNode
 {
     bool needIndex()
@@ -680,18 +708,6 @@ struct AstSwitchCaseBlock : public AstNode
     int seekStart        = 0;
     int seekJumpNextCase = 0;
 };
-
-const uint16_t TYPEFLAG_ISREF          = 0x0001;
-const uint16_t TYPEFLAG_IS_SLICE       = 0x0002;
-const uint16_t TYPEFLAG_IS_CONST       = 0x0004;
-const uint16_t TYPEFLAG_IS_CODE        = 0x0008;
-const uint16_t TYPEFLAG_FORCE_CONST    = 0x0010;
-const uint16_t TYPEFLAG_IS_SELF        = 0x0020;
-const uint16_t TYPEFLAG_RETVAL         = 0x0040;
-const uint16_t TYPEFLAG_USING          = 0x0080;
-const uint16_t TYPEFLAG_IS_CONST_SLICE = 0x0100;
-const uint16_t TYPEFLAG_IS_REF         = 0x0200;
-const uint16_t TYPEFLAG_IS_MOVE_REF    = 0x0400;
 
 struct AstTypeExpression : public AstNode
 {
@@ -879,16 +895,6 @@ struct AstCompilerIfBlock : public AstNode
     VectorNative<AstNode*>    includes;
 };
 
-enum class CompilerAstKind
-{
-    EmbeddedInstruction,
-    TopLevelInstruction,
-    StructVarDecl,
-    EnumValue,
-    MissingInterfaceMtd,
-    Expression,
-};
-
 struct AstCompilerSpecFunc : public AstNode
 {
     AstNode* clone(CloneContext& context);
@@ -951,13 +957,6 @@ struct AstSubstBreakContinue : public AstNode
     AstNode*      defaultSubst      = nullptr;
     AstNode*      altSubst          = nullptr;
     AstBreakable* altSubstBreakable = nullptr;
-};
-
-enum class DeferKind
-{
-    Normal,
-    Error,
-    NoError,
 };
 
 struct AstDefer : public AstNode
