@@ -99,9 +99,9 @@ struct Tokenizer
     bool doNumberLiteral(TokenParse& token, uint32_t c);
     bool doHexLiteral(TokenParse& token);
     bool doBinLiteral(TokenParse& token);
-    bool doIntFloatLiteral(uint32_t c, TokenParse& token);
-    bool doIntLiteral(uint32_t c, TokenParse& token);
-    bool doFloatLiteral(uint32_t c, TokenParse& token);
+    bool doIntFloatLiteral(TokenParse& token, uint32_t c);
+    bool doIntLiteral(TokenParse& token, uint32_t c);
+    bool doFloatLiteral(TokenParse& token, uint32_t c);
     bool doSymbol(TokenParse& token, uint32_t c);
     bool doStringLiteral(TokenParse& token, bool raw, bool multiline);
 
