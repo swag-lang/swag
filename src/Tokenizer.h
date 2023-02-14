@@ -95,14 +95,14 @@ struct Tokenizer
     void     eatChar(uint32_t c, unsigned offset);
 
     bool doMultiLineComment(TokenParse& token);
-    void doIdentifier(TokenParse& token, uint32_t c, unsigned offset);
-    bool doNumberLiteral(uint32_t c, TokenParse& token);
+    void doIdentifier(TokenParse& token);
+    bool doNumberLiteral(TokenParse& token, uint32_t c);
     bool doHexLiteral(TokenParse& token);
     bool doBinLiteral(TokenParse& token);
     bool doIntFloatLiteral(uint32_t c, TokenParse& token);
     bool doIntLiteral(uint32_t c, TokenParse& token);
     bool doFloatLiteral(uint32_t c, TokenParse& token);
-    bool doSymbol(uint32_t c, TokenParse& token);
+    bool doSymbol(TokenParse& token, uint32_t c);
     bool doStringLiteral(TokenParse& token, bool raw, bool multiline);
 
     void saveState(const TokenParse& token);

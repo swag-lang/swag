@@ -154,14 +154,10 @@ bool Tokenizer::doMultiLineComment(TokenParse& token)
     }
 }
 
-void Tokenizer::doIdentifier(TokenParse& token, uint32_t c, unsigned offset)
+void Tokenizer::doIdentifier(TokenParse& token)
 {
-    while (SWAG_IS_ALPHA(c) || SWAG_IS_DIGIT(c) || c == '_')
-    {
-        eatChar(c, offset);
-        c = peekChar(offset);
-    }
-
+    while (SWAG_IS_ALPHA(curBuffer[0]) || SWAG_IS_DIGIT(curBuffer[0]) || curBuffer[0] == '_')
+        readChar();
     appendTokenName(token);
 
     auto it = g_LangSpec->keywords.find(token.text);
@@ -192,7 +188,6 @@ bool Tokenizer::nextToken(TokenParse& token)
     token.lastTokenIsBlank = false;
     forceLastTokenIsEOL    = false;
 
-    unsigned offset;
     while (true)
     {
         token.text.clear();
@@ -214,6 +209,8 @@ bool Tokenizer::nextToken(TokenParse& token)
         ///////////////////////////////////////////
         if (SWAG_IS_EOL(c))
         {
+            while (SWAG_IS_EOL(curBuffer[0]))
+                c = readChar();
             token.lastTokenIsEOL = true;
             continue;
         }
@@ -222,6 +219,8 @@ bool Tokenizer::nextToken(TokenParse& token)
         ///////////////////////////////////////////
         if (SWAG_IS_BLANK(c))
         {
+            while (SWAG_IS_BLANK(curBuffer[0]))
+                c = readChar();
             token.lastTokenIsBlank = true;
             continue;
         }
@@ -230,23 +229,19 @@ bool Tokenizer::nextToken(TokenParse& token)
         ///////////////////////////////////////////
         if (c == '/')
         {
-            auto nc = peekChar(offset);
-
             // Line comment
-            if (nc == '/')
+            if (curBuffer[0] == '/')
             {
-                eatChar(c, offset);
-                nc = readChar();
-                while (nc && nc != '\n')
-                    nc = readChar();
-                token.lastTokenIsEOL = true;
+                readChar();
+                while (curBuffer[0] && !SWAG_IS_EOL(curBuffer[0]))
+                    readChar();
                 continue;
             }
 
             // Multiline comment
-            if (nc == '*')
+            if (curBuffer[0] == '*')
             {
-                eatChar(c, offset);
+                readChar();
                 SWAG_CHECK(doMultiLineComment(token));
                 continue;
             }
@@ -256,18 +251,17 @@ bool Tokenizer::nextToken(TokenParse& token)
         ///////////////////////////////////////////
         if (c == '#')
         {
-            auto nc = peekChar(offset);
-
-            if (nc == '[')
+            if (curBuffer[0] == '[')
             {
+                readChar();
                 token.text = "#[";
-                eatChar(nc, offset);
-                token.endLocation = location;
-                token.id          = TokenId::SymAttrStart;
-                return true;
+                token.id   = TokenId::SymAttrStart;
+            }
+            else
+            {
+                doIdentifier(token);
             }
 
-            doIdentifier(token, nc, offset);
             token.endLocation = location;
             return true;
         }
@@ -276,22 +270,20 @@ bool Tokenizer::nextToken(TokenParse& token)
         ///////////////////////////////////////////
         if (c == '@')
         {
-            auto nc = peekChar(offset);
-
-            if (nc == '"')
+            if (curBuffer[0] == '"')
             {
-                eatChar(nc, offset);
+                readChar();
                 SWAG_CHECK(doStringLiteral(token, true, true));
                 return true;
             }
 
-            doIdentifier(token, nc, offset);
+            doIdentifier(token);
             token.endLocation = location;
 
             if (!token.text.count)
             {
                 token.startLocation = location;
-                return error(token, Fmt(Err(Err0141), nc));
+                return error(token, Fmt(Err(Err0141), curBuffer[0]));
             }
 
             return true;
@@ -301,8 +293,7 @@ bool Tokenizer::nextToken(TokenParse& token)
         ///////////////////////////////////////////
         if (SWAG_IS_ALPHA(c) || c == '_')
         {
-            auto nc = peekChar(offset);
-            doIdentifier(token, nc, offset);
+            doIdentifier(token);
             token.endLocation = location;
             return true;
         }
@@ -311,7 +302,7 @@ bool Tokenizer::nextToken(TokenParse& token)
         ///////////////////////////////////////////
         if (SWAG_IS_DIGIT(c))
         {
-            SWAG_CHECK(doNumberLiteral(c, token));
+            SWAG_CHECK(doNumberLiteral(token, c));
             return true;
         }
 
@@ -321,7 +312,8 @@ bool Tokenizer::nextToken(TokenParse& token)
         {
             if (curBuffer[0] == '"' && curBuffer[1] == '"')
             {
-                curBuffer += 2;
+                readChar();
+                readChar();
                 SWAG_CHECK(doStringLiteral(token, false, true));
             }
             else
@@ -334,7 +326,7 @@ bool Tokenizer::nextToken(TokenParse& token)
 
         // Symbols
         ///////////////////////////////////////////
-        if (doSymbol(c, token))
+        if (doSymbol(token, c))
         {
             token.endLocation = location;
             appendTokenName(token);

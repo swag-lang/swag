@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Tokenizer.h"
 
-bool Tokenizer::doSymbol(uint32_t c, TokenParse& token)
+bool Tokenizer::doSymbol(TokenParse& token, uint32_t c)
 {
     unsigned offset;
 

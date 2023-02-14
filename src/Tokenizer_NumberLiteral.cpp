@@ -308,7 +308,7 @@ bool Tokenizer::doIntFloatLiteral(uint32_t c, TokenParse& token)
     return true;
 }
 
-bool Tokenizer::doNumberLiteral(uint32_t c, TokenParse& token)
+bool Tokenizer::doNumberLiteral(TokenParse& token, uint32_t c)
 {
     if (c == '0')
     {
