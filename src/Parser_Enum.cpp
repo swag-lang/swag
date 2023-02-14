@@ -3,8 +3,6 @@
 #include "Scoped.h"
 #include "SemanticJob.h"
 #include "ErrorIds.h"
-#include "Report.h"
-#include "Mutex.h"
 #include "Naming.h"
 
 bool Parser::doEnum(AstNode* parent, AstNode** result)

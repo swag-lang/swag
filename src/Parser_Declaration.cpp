@@ -6,7 +6,6 @@
 #include "Module.h"
 #include "ByteCodeGenJob.h"
 #include "ErrorIds.h"
-#include "Report.h"
 #include "LanguageSpec.h"
 
 bool Parser::doWith(AstNode* parent, AstNode** result)

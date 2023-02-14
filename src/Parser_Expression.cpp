@@ -4,8 +4,6 @@
 #include "LanguageSpec.h"
 #include "Scoped.h"
 #include "ErrorIds.h"
-#include "TypeManager.h"
-#include "Diagnostic.h"
 
 bool Parser::doLiteral(AstNode* parent, AstNode** result)
 {

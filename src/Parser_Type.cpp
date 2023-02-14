@@ -4,7 +4,6 @@
 #include "Scoped.h"
 #include "TypeManager.h"
 #include "ErrorIds.h"
-#include "Report.h"
 #include "LanguageSpec.h"
 
 bool Parser::doAlias(AstNode* parent, AstNode** result)

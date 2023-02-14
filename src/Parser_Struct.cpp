@@ -3,7 +3,6 @@
 #include "Scoped.h"
 #include "SemanticJob.h"
 #include "ErrorIds.h"
-#include "Report.h"
 #include "Module.h"
 #include "Naming.h"
 

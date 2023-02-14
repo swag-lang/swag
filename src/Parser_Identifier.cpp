@@ -4,7 +4,6 @@
 #include "LanguageSpec.h"
 #include "Scoped.h"
 #include "ErrorIds.h"
-#include "Report.h"
 
 void Parser::relaxIdentifier(Token& token)
 {
