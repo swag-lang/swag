@@ -285,7 +285,14 @@ enum class DeferKind
 
 struct AstNode
 {
+    template<typename T>
+    AstNode* clone(AstNode* node, CloneContext& context)
+    {
+        return ((T*) node)->clone(context);
+    }
+
     AstNode* clone(CloneContext& context);
+    void     release();
     void     cloneChilds(CloneContext& context, AstNode* from);
     void     copyFrom(CloneContext& context, AstNode* from, bool cloneHie = true);
 

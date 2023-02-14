@@ -373,7 +373,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         fcp->flags |= AST_GENERATED;
         identifier->doneFlags |= AST_DONE_CLOSURE_FIRST_PARAM;
 
-        auto node = Ast::newNode<AstNode>(nullptr, AstNodeKind::Literal, context->sourceFile, fcp);
+        auto node = Ast::newNode<AstLiteral>(nullptr, AstNodeKind::Literal, context->sourceFile, fcp);
         node->setFlagsValueIsComputed();
         node->flags |= AST_GENERATED;
         node->typeInfo = g_TypeMgr->typeInfoNull;

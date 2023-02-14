@@ -160,6 +160,197 @@ void AstNode::cloneChilds(CloneContext& context, AstNode* from)
     context.parent = oldParent;
 }
 
+void AstNode::release()
+{
+    // Nodes with problem (childs referenced somewhere else, so double free)
+    switch (kind)
+    {
+    case AstNodeKind::CompilerRunExpression:
+    case AstNodeKind::CompilerRun:
+    case AstNodeKind::CompilerValidIf:
+    case AstNodeKind::CompilerValidIfx:
+        return;
+    }
+
+    for (auto c : childs)
+        c->release();
+
+    switch (kind)
+    {
+    case AstNodeKind::VarDecl:
+    case AstNodeKind::ConstDecl:
+    case AstNodeKind::FuncDeclParam:
+        g_Allocator.free<AstVarDecl>(this);
+        break;
+    case AstNodeKind::IdentifierRef:
+        g_Allocator.free<AstIdentifierRef>(this);
+        break;
+    case AstNodeKind::Identifier:
+    case AstNodeKind::FuncCall:
+        g_Allocator.free<AstIdentifier>(this);
+        break;
+    case AstNodeKind::FuncDecl:
+        g_Allocator.free<AstFuncDecl>(this);
+        break;
+    case AstNodeKind::AttrDecl:
+        g_Allocator.free<AstAttrDecl>(this);
+        break;
+    case AstNodeKind::AttrUse:
+        g_Allocator.free<AstAttrUse>(this);
+        break;
+    case AstNodeKind::FuncCallParam:
+        g_Allocator.free<AstFuncCallParam>(this);
+        break;
+    case AstNodeKind::BinaryOp:
+        g_Allocator.free<AstBinaryOpNode>(this);
+        break;
+    case AstNodeKind::ConditionalExpression:
+        g_Allocator.free<AstConditionalOpNode>(this);
+        break;
+    case AstNodeKind::If:
+    case AstNodeKind::CompilerIf:
+        g_Allocator.free<AstIf>(this);
+        break;
+    case AstNodeKind::SubstBreakContinue:
+        g_Allocator.free<AstSubstBreakContinue>(this);
+        break;
+    case AstNodeKind::Break:
+    case AstNodeKind::Continue:
+    case AstNodeKind::FallThrough:
+        g_Allocator.free<AstBreakContinue>(this);
+        break;
+    case AstNodeKind::ScopeBreakable:
+        g_Allocator.free<AstScopeBreakable>(this);
+        break;
+    case AstNodeKind::While:
+        g_Allocator.free<AstWhile>(this);
+        break;
+    case AstNodeKind::For:
+        g_Allocator.free<AstFor>(this);
+        break;
+    case AstNodeKind::Loop:
+        g_Allocator.free<AstLoop>(this);
+        break;
+    case AstNodeKind::Visit:
+        g_Allocator.free<AstVisit>(this);
+        break;
+    case AstNodeKind::Switch:
+        g_Allocator.free<AstSwitch>(this);
+        break;
+    case AstNodeKind::SwitchCase:
+        g_Allocator.free<AstSwitchCase>(this);
+        break;
+    case AstNodeKind::SwitchCaseBlock:
+        g_Allocator.free<AstSwitchCaseBlock>(this);
+        break;
+    case AstNodeKind::TypeExpression:
+        g_Allocator.free<AstTypeExpression>(this);
+        break;
+    case AstNodeKind::TypeLambda:
+    case AstNodeKind::TypeClosure:
+        g_Allocator.free<AstTypeLambda>(this);
+        break;
+    case AstNodeKind::ArrayPointerSlicing:
+        g_Allocator.free<AstArrayPointerSlicing>(this);
+        break;
+    case AstNodeKind::ArrayPointerIndex:
+        g_Allocator.free<AstArrayPointerIndex>(this);
+        break;
+    case AstNodeKind::StructDecl:
+    case AstNodeKind::InterfaceDecl:
+        g_Allocator.free<AstStruct>(this);
+        break;
+    case AstNodeKind::Impl:
+        g_Allocator.free<AstImpl>(this);
+        break;
+    case AstNodeKind::EnumDecl:
+        g_Allocator.free<AstEnum>(this);
+        break;
+    case AstNodeKind::EnumValue:
+        g_Allocator.free<AstEnumValue>(this);
+        break;
+    case AstNodeKind::Init:
+        g_Allocator.free<AstInit>(this);
+        break;
+    case AstNodeKind::Drop:
+    case AstNodeKind::PostCopy:
+    case AstNodeKind::PostMove:
+        g_Allocator.free<AstDropCopyMove>(this);
+        break;
+    case AstNodeKind::Return:
+        g_Allocator.free<AstReturn>(this);
+        break;
+    case AstNodeKind::CompilerInline:
+        g_Allocator.free<AstCompilerInline>(this);
+        break;
+    case AstNodeKind::CompilerMacro:
+        g_Allocator.free<AstCompilerMacro>(this);
+        break;
+    case AstNodeKind::CompilerMixin:
+        g_Allocator.free<AstCompilerMixin>(this);
+        break;
+    case AstNodeKind::Inline:
+        g_Allocator.free<AstInline>(this);
+        break;
+    case AstNodeKind::CompilerIfBlock:
+        g_Allocator.free<AstCompilerIfBlock>(this);
+        break;
+    case AstNodeKind::CompilerRun:
+    case AstNodeKind::CompilerRunExpression:
+    case AstNodeKind::CompilerValidIf:
+    case AstNodeKind::CompilerValidIfx:
+    case AstNodeKind::CompilerAst:
+        g_Allocator.free<AstCompilerSpecFunc>(this);
+        break;
+    case AstNodeKind::Namespace:
+        g_Allocator.free<AstNameSpace>(this);
+        break;
+    case AstNodeKind::Try:
+    case AstNodeKind::Catch:
+    case AstNodeKind::TryCatch:
+    case AstNodeKind::Assume:
+    case AstNodeKind::Throw:
+        g_Allocator.free<AstTryCatchAssume>(this);
+        break;
+    case AstNodeKind::Alias:
+        g_Allocator.free<AstAlias>(this);
+        break;
+    case AstNodeKind::Cast:
+    case AstNodeKind::AutoCast:
+        g_Allocator.free<AstCast>(this);
+        break;
+    case AstNodeKind::FuncCallParams:
+        g_Allocator.free<AstFuncCallParams>(this);
+        break;
+    case AstNodeKind::Range:
+        g_Allocator.free<AstRange>(this);
+        break;
+    case AstNodeKind::MakePointer:
+    case AstNodeKind::MakePointerLambda:
+        g_Allocator.free<AstMakePointer>(this);
+        break;
+    case AstNodeKind::AffectOp:
+    case AstNodeKind::FactorOp:
+        g_Allocator.free<AstOp>(this);
+        break;
+    case AstNodeKind::Defer:
+        g_Allocator.free<AstDefer>(this);
+        break;
+    case AstNodeKind::ExpressionList:
+        g_Allocator.free<AstExpressionList>(this);
+        break;
+    case AstNodeKind::With:
+        g_Allocator.free<AstWith>(this);
+        break;
+    case AstNodeKind::Literal:
+        g_Allocator.free<AstLiteral>(this);
+        break;
+    default:
+        g_Allocator.free<AstNode>(this);
+        break;
+    }
+}
+
 AstNode* AstNode::clone(CloneContext& context)
 {
     switch (kind)
@@ -167,121 +358,122 @@ AstNode* AstNode::clone(CloneContext& context)
     case AstNodeKind::VarDecl:
     case AstNodeKind::ConstDecl:
     case AstNodeKind::FuncDeclParam:
-        return ((AstVarDecl*) this)->clone(context);
+        return clone<AstVarDecl>(this, context);
     case AstNodeKind::IdentifierRef:
-        return ((AstIdentifierRef*) this)->clone(context);
+        return clone<AstIdentifierRef>(this, context);
     case AstNodeKind::Identifier:
     case AstNodeKind::FuncCall:
-        return ((AstIdentifier*) this)->clone(context);
+        return clone<AstIdentifier>(this, context);
     case AstNodeKind::FuncDecl:
-        return ((AstFuncDecl*) this)->clone(context);
+        return clone<AstFuncDecl>(this, context);
     case AstNodeKind::AttrDecl:
-        return ((AstAttrDecl*) this)->clone(context);
+        return clone<AstAttrDecl>(this, context);
     case AstNodeKind::AttrUse:
-        return ((AstAttrUse*) this)->clone(context);
+        return clone<AstAttrUse>(this, context);
     case AstNodeKind::FuncCallParam:
-        return ((AstFuncCallParam*) this)->clone(context);
+        return clone<AstFuncCallParam>(this, context);
     case AstNodeKind::BinaryOp:
-        return ((AstBinaryOpNode*) this)->clone(context);
+        return clone<AstBinaryOpNode>(this, context);
     case AstNodeKind::ConditionalExpression:
-        return ((AstConditionalOpNode*) this)->clone(context);
+        return clone<AstConditionalOpNode>(this, context);
     case AstNodeKind::If:
     case AstNodeKind::CompilerIf:
-        return ((AstIf*) this)->clone(context);
+        return clone<AstIf>(this, context);
     case AstNodeKind::SubstBreakContinue:
-        return ((AstSubstBreakContinue*) this)->clone(context);
+        return clone<AstSubstBreakContinue>(this, context);
     case AstNodeKind::Break:
     case AstNodeKind::Continue:
     case AstNodeKind::FallThrough:
-        return ((AstBreakContinue*) this)->clone(context);
+        return clone<AstBreakContinue>(this, context);
     case AstNodeKind::ScopeBreakable:
-        return ((AstScopeBreakable*) this)->clone(context);
+        return clone<AstScopeBreakable>(this, context);
     case AstNodeKind::While:
-        return ((AstWhile*) this)->clone(context);
+        return clone<AstWhile>(this, context);
     case AstNodeKind::For:
-        return ((AstFor*) this)->clone(context);
+        return clone<AstFor>(this, context);
     case AstNodeKind::Loop:
-        return ((AstLoop*) this)->clone(context);
+        return clone<AstLoop>(this, context);
     case AstNodeKind::Visit:
-        return ((AstVisit*) this)->clone(context);
+        return clone<AstVisit>(this, context);
     case AstNodeKind::Switch:
-        return ((AstSwitch*) this)->clone(context);
+        return clone<AstSwitch>(this, context);
     case AstNodeKind::SwitchCase:
-        return ((AstSwitchCase*) this)->clone(context);
+        return clone<AstSwitchCase>(this, context);
     case AstNodeKind::SwitchCaseBlock:
-        return ((AstSwitchCaseBlock*) this)->clone(context);
+        return clone<AstSwitchCaseBlock>(this, context);
     case AstNodeKind::TypeExpression:
-        return ((AstTypeExpression*) this)->clone(context);
+        return clone<AstTypeExpression>(this, context);
     case AstNodeKind::TypeLambda:
     case AstNodeKind::TypeClosure:
-        return ((AstTypeLambda*) this)->clone(context);
+        return clone<AstTypeLambda>(this, context);
     case AstNodeKind::ArrayPointerSlicing:
-        return ((AstArrayPointerSlicing*) this)->clone(context);
+        return clone<AstArrayPointerSlicing>(this, context);
     case AstNodeKind::ArrayPointerIndex:
-        return ((AstArrayPointerIndex*) this)->clone(context);
+        return clone<AstArrayPointerIndex>(this, context);
     case AstNodeKind::StructDecl:
     case AstNodeKind::InterfaceDecl:
-        return ((AstStruct*) this)->clone(context);
+        return clone<AstStruct>(this, context);
     case AstNodeKind::Impl:
-        return ((AstImpl*) this)->clone(context);
+        return clone<AstImpl>(this, context);
     case AstNodeKind::EnumDecl:
-        return ((AstEnum*) this)->clone(context);
+        return clone<AstEnum>(this, context);
     case AstNodeKind::EnumValue:
-        return ((AstEnumValue*) this)->clone(context);
+        return clone<AstEnumValue>(this, context);
     case AstNodeKind::Init:
-        return ((AstInit*) this)->clone(context);
+        return clone<AstInit>(this, context);
     case AstNodeKind::Drop:
     case AstNodeKind::PostCopy:
     case AstNodeKind::PostMove:
-        return ((AstDropCopyMove*) this)->clone(context);
+        return clone<AstDropCopyMove>(this, context);
     case AstNodeKind::Return:
-        return ((AstReturn*) this)->clone(context);
+        return clone<AstReturn>(this, context);
     case AstNodeKind::CompilerInline:
-        return ((AstCompilerInline*) this)->clone(context);
+        return clone<AstCompilerInline>(this, context);
     case AstNodeKind::CompilerMacro:
-        return ((AstCompilerMacro*) this)->clone(context);
+        return clone<AstCompilerMacro>(this, context);
     case AstNodeKind::CompilerMixin:
-        return ((AstCompilerMixin*) this)->clone(context);
+        return clone<AstCompilerMixin>(this, context);
     case AstNodeKind::Inline:
-        return ((AstInline*) this)->clone(context);
+        return clone<AstInline>(this, context);
     case AstNodeKind::CompilerIfBlock:
-        return ((AstCompilerIfBlock*) this)->clone(context);
+        return clone<AstCompilerIfBlock>(this, context);
     case AstNodeKind::CompilerRun:
     case AstNodeKind::CompilerRunExpression:
     case AstNodeKind::CompilerValidIf:
     case AstNodeKind::CompilerValidIfx:
     case AstNodeKind::CompilerAst:
-        return ((AstCompilerSpecFunc*) this)->clone(context);
+        return clone<AstCompilerSpecFunc>(this, context);
     case AstNodeKind::Namespace:
-        return ((AstNameSpace*) this)->clone(context);
+        return clone<AstNameSpace>(this, context);
     case AstNodeKind::Try:
     case AstNodeKind::Catch:
     case AstNodeKind::TryCatch:
     case AstNodeKind::Assume:
     case AstNodeKind::Throw:
-        return ((AstTryCatchAssume*) this)->clone(context);
+        return clone<AstTryCatchAssume>(this, context);
     case AstNodeKind::Alias:
-        return ((AstAlias*) this)->clone(context);
+        return clone<AstAlias>(this, context);
     case AstNodeKind::Cast:
     case AstNodeKind::AutoCast:
-        return ((AstCast*) this)->clone(context);
+        return clone<AstCast>(this, context);
     case AstNodeKind::FuncCallParams:
-        return ((AstFuncCallParams*) this)->clone(context);
+        return clone<AstFuncCallParams>(this, context);
     case AstNodeKind::Range:
-        return ((AstRange*) this)->clone(context);
+        return clone<AstRange>(this, context);
     case AstNodeKind::MakePointer:
     case AstNodeKind::MakePointerLambda:
-        return ((AstMakePointer*) this)->clone(context);
+        return clone<AstMakePointer>(this, context);
     case AstNodeKind::AffectOp:
-        return ((AstOp*) this)->clone(context);
+    case AstNodeKind::FactorOp:
+        return clone<AstOp>(this, context);
     case AstNodeKind::Defer:
-        return ((AstDefer*) this)->clone(context);
+        return clone<AstDefer>(this, context);
     case AstNodeKind::ExpressionList:
-        return ((AstExpressionList*) this)->clone(context);
+        return clone<AstExpressionList>(this, context);
     case AstNodeKind::With:
-        return ((AstWith*) this)->clone(context);
+        return clone<AstWith>(this, context);
     case AstNodeKind::Literal:
-        return ((AstLiteral*) this)->clone(context);
+        return clone<AstLiteral>(this, context);
 
     default:
     {

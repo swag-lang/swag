@@ -5,19 +5,13 @@
 #include "ModuleOutputJob.h"
 #include "Backend.h"
 #include "FileJob.h"
-#include "SemanticJob.h"
 #include "Module.h"
 #include "ModuleRunJob.h"
 #include "ByteCodeOptimizer.h"
 #include "Context.h"
-#include "ModuleManager.h"
 #include "ThreadManager.h"
-#include "ErrorIds.h"
 #include "Report.h"
 #include "LanguageSpec.h"
-#include "LoadSourceFileJob.h"
-#include "Mutex.h"
-#include "SaveGenJob.h"
 #include "SyntaxJob.h"
 
 void ModuleBuildJob::publishFilesToPublic(Module* moduleToPublish)
@@ -798,6 +792,9 @@ JobResult ModuleBuildJob::execute()
 
     module->sendCompilerMessage(CompilerMsgKind::PassAllDone, this);
     module->setHasBeenBuilt(BUILDRES_FULL);
+
+    //for (auto f : module->files)
+    //    f->astRoot->release();
 
     return JobResult::ReleaseJob;
 }

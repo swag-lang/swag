@@ -3,11 +3,12 @@
 #include "BackendLinker.h"
 #include "Module.h"
 #include "Os.h"
-#include "Workspace.h"
 #include "BackendX64SaveObjJob.h"
 #include "BackendX64FunctionBodyJob.h"
 #include "Report.h"
 #include "ErrorIds.h"
+#include "Workspace.h"
+#include "ByteCode.h"
 
 BackendFunctionBodyJobBase* BackendX64::newFunctionJob()
 {
@@ -352,7 +353,6 @@ JobResult BackendX64::prepareOutput(int stage, const BuildParameters& buildParam
         *pp.patchTextSectionOffset = pp.textSectionOffset;
 
         emitAllFunctionBody(buildParameters, module, ownerJob);
-
         return JobResult::KeepJobAlive;
     }
 
