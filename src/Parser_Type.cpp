@@ -436,7 +436,7 @@ bool Parser::doTupleOrAnonymousType(AstNode* parent, AstNode** result, bool isCo
             SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
             while (token.id != TokenId::SymRightCurly && (token.id != TokenId::EndOfFile))
                 SWAG_CHECK(doStructBody(contentNode, SyntaxStructType::Struct));
-            SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, nullptr));
+            SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc));
         }
         else
         {

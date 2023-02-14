@@ -80,8 +80,8 @@ struct Parser
     bool invalidTokenError(InvalidTokenError kind);
 
     bool eatToken();
-    bool eatCloseToken(TokenId id, const SourceLocation& start, const char* msg);
-    bool eatToken(TokenId id, const char* msg = nullptr);
+    bool eatCloseToken(TokenId id, const SourceLocation& start, const char* msg = "");
+    bool eatToken(TokenId id, const char* msg = "");
     bool eatSemiCol(const char* msg = nullptr);
 
     bool        testIsSingleIdentifier(AstNode* node);

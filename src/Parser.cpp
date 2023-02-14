@@ -2,13 +2,10 @@
 #include "Ast.h"
 #include "Module.h"
 #include "Parser.h"
-#include "Report.h"
 #include "Diagnostic.h"
-#include "LanguageSpec.h"
 #include "Scoped.h"
 #include "Timer.h"
 #include "ErrorIds.h"
-#include "LoadSourceFileJob.h"
 #include "JobThread.h"
 
 bool Parser::invalidTokenError(InvalidTokenError kind)
@@ -135,10 +132,10 @@ bool Parser::eatToken()
 
 bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* msg)
 {
+    SWAG_ASSERT(msg);
+
     if (token.id != id)
     {
-        if (!msg)
-            msg = "";
         if (token.id == TokenId::EndOfFile)
         {
             Diagnostic diag{sourceFile, token, Fmt(Err(Syn0047), Tokenizer::tokenToName(id).c_str(), msg)};
@@ -161,10 +158,10 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
 
 bool Parser::eatToken(TokenId id, const char* msg)
 {
+    SWAG_ASSERT(msg);
+
     if (token.id != id)
     {
-        if (!msg)
-            msg = "";
         if (token.id == TokenId::EndOfFile)
             SWAG_CHECK(error(token, Fmt(Err(Syn0047), Tokenizer::tokenToName(id).c_str(), msg)));
         else
@@ -177,11 +174,10 @@ bool Parser::eatToken(TokenId id, const char* msg)
 
 bool Parser::eatSemiCol(const char* msg)
 {
+    SWAG_ASSERT(msg);
+
     if (token.id != TokenId::SymSemiColon && token.id != TokenId::EndOfFile && !token.lastTokenIsEOL)
     {
-        if (!msg)
-            msg = "";
-
         if (token.id == TokenId::SymAsterisk)
         {
             auto st = token;

@@ -349,7 +349,7 @@ bool Parser::doTupleBody(AstNode* parent, bool acceptEmpty)
     {
         if (acceptEmpty)
         {
-            SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, nullptr));
+            SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc));
             return true;
         }
 

@@ -97,7 +97,7 @@ bool Parser::doEnumContent(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken());
         while (token.id != TokenId::SymRightCurly && token.id != TokenId::EndOfFile)
             SWAG_CHECK(doEnumContent(stmt));
-        SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, nullptr));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc));
         return true;
     }
 

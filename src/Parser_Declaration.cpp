@@ -308,7 +308,7 @@ bool Parser::doGlobalCurlyStatement(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
         SWAG_CHECK(doTopLevelInstruction(node));
-    SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, nullptr));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc));
     return true;
 }
 
@@ -335,7 +335,7 @@ bool Parser::doCurlyStatement(AstNode* parent, AstNode** result)
     }
 
     node->token.endLocation = token.startLocation;
-    SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, nullptr));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc));
     return true;
 }
 
