@@ -818,7 +818,7 @@ bool Workspace::buildTarget()
             module->addedToBuild = true;
         for (auto module : toBuild)
         {
-            if (module == bootstrapModule)
+            if (module == bootstrapModule || module == runtimeModule)
                 continue;
             if (module->isErrorModule)
                 continue;
