@@ -5,18 +5,18 @@
 // MUST BE IN SYNC IN BOOTSTRAP.SWG
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-static const uint64_t SAFETY_BOUNDCHECK = 0x0001;
-static const uint64_t SAFETY_OVERFLOW   = 0x0002;
-static const uint64_t SAFETY_MATH       = 0x0004;
-static const uint64_t SAFETY_ANY        = 0x0008;
-static const uint64_t SAFETY_SWITCH     = 0x0010;
-static const uint64_t SAFETY_BOOL       = 0x0020;
-static const uint64_t SAFETY_NAN        = 0x0040;
-static const uint64_t SAFETY_SANITY     = 0x0080;
-static const uint64_t SAFETY_ALL        = 0xFFFF;
+const uint64_t SAFETY_BOUNDCHECK = 0x0001;
+const uint64_t SAFETY_OVERFLOW   = 0x0002;
+const uint64_t SAFETY_MATH       = 0x0004;
+const uint64_t SAFETY_ANY        = 0x0008;
+const uint64_t SAFETY_SWITCH     = 0x0010;
+const uint64_t SAFETY_BOOL       = 0x0020;
+const uint64_t SAFETY_NAN        = 0x0040;
+const uint64_t SAFETY_SANITY     = 0x0080;
+const uint64_t SAFETY_ALL        = 0xFFFF;
 
-static const int SWAG_EXCEPTION_TO_PREV_HANDLER     = 665;
-static const int SWAG_EXCEPTION_TO_COMPILER_HANDLER = 666; // must be the same value in __raiseException666 in runtime_windows.h
+const int SWAG_EXCEPTION_TO_PREV_HANDLER     = 665;
+const int SWAG_EXCEPTION_TO_COMPILER_HANDLER = 666; // must be the same value in __raiseException666 in runtime_windows.h
 
 enum WarnLevel : uint8_t
 {
@@ -106,8 +106,8 @@ enum class SwagExceptionKind
     Warning,
 };
 
-static const auto MAX_LEN_ERROR_MSG = 128;
-static const auto MAX_TRACE         = 32;
+const auto MAX_LEN_ERROR_MSG = 128;
+const auto MAX_TRACE         = 32;
 
 typedef struct SwagContext
 {

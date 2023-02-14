@@ -98,11 +98,11 @@ struct CompilerMessage
     AstNode*                node;
 };
 
-static const uint32_t BUILDRES_NONE     = 0x00000000;
-static const uint32_t BUILDRES_EXPORT   = 0x00000001;
-static const uint32_t BUILDRES_COMPILER = 0x00000002;
-static const uint32_t BUILDRES_PUBLISH  = 0x00000004;
-static const uint32_t BUILDRES_FULL     = BUILDRES_EXPORT | BUILDRES_COMPILER | BUILDRES_PUBLISH;
+const uint32_t BUILDRES_NONE     = 0x00000000;
+const uint32_t BUILDRES_EXPORT   = 0x00000001;
+const uint32_t BUILDRES_COMPILER = 0x00000002;
+const uint32_t BUILDRES_PUBLISH  = 0x00000004;
+const uint32_t BUILDRES_FULL     = BUILDRES_EXPORT | BUILDRES_COMPILER | BUILDRES_PUBLISH;
 
 struct Module
 {

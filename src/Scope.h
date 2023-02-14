@@ -32,10 +32,10 @@ enum class ScopeKind
     Macro,
 };
 
-static const uint32_t SCOPE_FLAG_HAS_EXPORTS = 0x00000001;
-static const uint32_t SCOPE_FILE             = 0x00000002;
-static const uint32_t SCOPE_AUTO_GENERATED   = 0x00000004;
-static const uint32_t SCOPE_IMPORTED         = 0x00000008;
+const uint32_t SCOPE_FLAG_HAS_EXPORTS = 0x00000001;
+const uint32_t SCOPE_FILE             = 0x00000002;
+const uint32_t SCOPE_AUTO_GENERATED   = 0x00000004;
+const uint32_t SCOPE_IMPORTED         = 0x00000008;
 
 struct ScopePublicSet
 {

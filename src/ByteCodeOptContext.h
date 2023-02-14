@@ -10,8 +10,8 @@ struct ByteCodeInstruction;
 struct Module;
 struct Job;
 
-static const uint32_t BCOTN_USER1 = 0x00000001;
-static const uint32_t BCOTN_USER2 = 0x00000002;
+const uint32_t BCOTN_USER1 = 0x00000001;
+const uint32_t BCOTN_USER2 = 0x00000002;
 
 struct ByteCodeOptTreeNode
 {
@@ -37,8 +37,8 @@ struct ByteCodeOptTreeParseContext
     function<void(ByteCodeOptContext*, ByteCodeOptTreeParseContext&)> cb;
 };
 
-static const uint32_t OCF_HAS_COPYRBRA = 0x00000001;
-static const uint32_t OCF_HAS_DUPCOPY  = 0x00000002;
+const uint32_t OCF_HAS_COPYRBRA = 0x00000001;
+const uint32_t OCF_HAS_DUPCOPY  = 0x00000002;
 
 struct ByteCodeOptContext : public JobContext
 {

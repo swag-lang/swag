@@ -203,9 +203,9 @@ struct PushICFlags
     uint16_t            savedFlags;
 };
 
-static const uint32_t ASKBC_WAIT_SEMANTIC_RESOLVED = 0x00000001;
-static const uint32_t ASKBC_WAIT_DONE              = 0x00000002;
-static const uint32_t ASKBC_WAIT_RESOLVED          = 0x00000004;
+const uint32_t ASKBC_WAIT_SEMANTIC_RESOLVED = 0x00000001;
+const uint32_t ASKBC_WAIT_DONE              = 0x00000002;
+const uint32_t ASKBC_WAIT_RESOLVED          = 0x00000004;
 
 struct ByteCodeGenJob : public Job
 {

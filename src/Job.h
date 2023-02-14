@@ -14,18 +14,17 @@ struct Diagnostic;
 struct TypeInfo;
 struct AstFuncDecl;
 struct JobGroup;
-enum class DiagnosticLevel;
 
-static const uint32_t JOB_IS_IN_QUEUE          = 0x00000001;
-static const uint32_t JOB_IS_IN_THREAD         = 0x00000002;
-static const uint32_t JOB_IS_PENDING           = 0x00000004;
-static const uint32_t JOB_IS_PENDING_RUN       = 0x00000008;
-static const uint32_t JOB_COMPILER_PASS        = 0x00000010;
-static const uint32_t JOB_IS_IO                = 0x00000020;
-static const uint32_t JOB_IS_OPT               = 0x00000040;
-static const uint32_t JOB_PENDING_PLACE_HOLDER = 0x00000080;
-static const uint32_t JOB_ACCEPT_PENDING_COUNT = 0x00000100;
-static const uint32_t JOB_IS_DEBUGGER          = 0x00000200;
+const uint32_t JOB_IS_IN_QUEUE          = 0x00000001;
+const uint32_t JOB_IS_IN_THREAD         = 0x00000002;
+const uint32_t JOB_IS_PENDING           = 0x00000004;
+const uint32_t JOB_IS_PENDING_RUN       = 0x00000008;
+const uint32_t JOB_COMPILER_PASS        = 0x00000010;
+const uint32_t JOB_IS_IO                = 0x00000020;
+const uint32_t JOB_IS_OPT               = 0x00000040;
+const uint32_t JOB_PENDING_PLACE_HOLDER = 0x00000080;
+const uint32_t JOB_ACCEPT_PENDING_COUNT = 0x00000100;
+const uint32_t JOB_IS_DEBUGGER          = 0x00000200;
 
 enum class ContextResult
 {
@@ -92,10 +91,7 @@ enum class JobWaitKind
 struct Job
 {
     virtual JobResult execute() = 0;
-
-    virtual void release()
-    {
-    }
+    virtual void      release(){};
 
     void addDependentJob(Job* job);
     void waitSymbolNoLock(SymbolName* symbol);
