@@ -494,9 +494,9 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
     }
 
     /////////////////////////////////
-    else if (token.text == g_LangSpec->name_testerror)
+    else if (token.text == g_LangSpec->name_testerror || token.text == g_LangSpec->name_testwarning)
     {
-        // Put the file in its own module, because of errors
+        // Put the file in its own module, because of errors/warnings
         if (!moduleSpecified)
         {
             moduleSpecified = true;
@@ -504,6 +504,9 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
             auto oldModule  = sourceFile->module;
             oldModule->removeFile(sourceFile);
             newModule->addFile(sourceFile);
+
+            // Kick the link to the module node
+            sourceFile->astRoot->parent = nullptr;
 
             for (auto dep : oldModule->moduleDependencies)
             {
@@ -517,39 +520,24 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
             module = newModule;
         }
 
-        SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, context->report({sourceFile, token, Err(Syn0003)}));
         SWAG_ASSERT(g_CommandLine.test);
 
-        sourceFile->shouldHaveError = true;
-        module->shouldHaveError     = true;
-
-        SWAG_CHECK(eatToken());
-        SWAG_CHECK(eatSemiCol("'#global testerror'"));
-    }
-
-    /////////////////////////////////
-    else if (token.text == g_LangSpec->name_testwarning)
-    {
-        // Put the file in its own module, because of errors
-        if (!moduleSpecified)
+        if (token.text == g_LangSpec->name_testerror)
         {
-            moduleSpecified = true;
-            auto newModule  = g_Workspace->createOrUseModule(sourceFile->name, sourceFile->module->path, sourceFile->module->kind, true);
-            auto oldModule  = sourceFile->module;
-            oldModule->removeFile(sourceFile);
-            newModule->addFile(sourceFile);
-            oldModule->addErrorModule(newModule);
-            module = newModule;
+            SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, context->report({sourceFile, token, Err(Syn0003)}));
+            sourceFile->shouldHaveError = true;
+            module->shouldHaveError     = true;
+            SWAG_CHECK(eatToken());
+            SWAG_CHECK(eatSemiCol("'#global testerror'"));
         }
-
-        SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, context->report({sourceFile, token, Err(Syn0004)}));
-        SWAG_ASSERT(g_CommandLine.test);
-
-        sourceFile->shouldHaveWarning = true;
-        module->shouldHaveWarning     = true;
-
-        SWAG_CHECK(eatToken());
-        SWAG_CHECK(eatSemiCol("'#global testwarning'"));
+        else
+        {
+            SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, context->report({sourceFile, token, Err(Syn0004)}));
+            sourceFile->shouldHaveWarning = true;
+            module->shouldHaveWarning     = true;
+            SWAG_CHECK(eatToken());
+            SWAG_CHECK(eatSemiCol("'#global testwarning'"));
+        }
     }
 
     /////////////////////////////////

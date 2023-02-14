@@ -793,8 +793,15 @@ JobResult ModuleBuildJob::execute()
     module->sendCompilerMessage(CompilerMsgKind::PassAllDone, this);
     module->setHasBeenBuilt(BUILDRES_FULL);
 
-    //for (auto f : module->files)
-    //    f->astRoot->release();
+    // 14/02/2023 doesn't seem to do good to reduce memory footprint (everything goes to wasted),
+    // but it can catch some bugs if a node with a given kind has been allocated with the wrong AST structure.
+#ifdef SWAG_DEV_MODE
+    if (module->kind != ModuleKind::Config)
+    {
+        for (auto f : module->files)
+            f->astRoot->release();
+    }
+#endif
 
     return JobResult::ReleaseJob;
 }

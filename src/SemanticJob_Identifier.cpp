@@ -1803,10 +1803,13 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
 
         // When in a @typeof or @kindof, if we specify a type without generic parameters, then
         // we want to match the generic version, and not an instantiated one
-        if (context->node->parent->parent->kind == AstNodeKind::IntrinsicProp && context->node->parent->parent->token.id == TokenId::IntrinsicTypeOf)
-            oneOverload.symMatchContext.flags |= SymbolMatchContext::MATCH_DO_NOT_ACCEPT_NO_GENERIC;
-        if (context->node->parent->parent->kind == AstNodeKind::IntrinsicProp && context->node->parent->parent->token.id == TokenId::IntrinsicKindOf)
-            oneOverload.symMatchContext.flags |= SymbolMatchContext::MATCH_DO_NOT_ACCEPT_NO_GENERIC;
+        if (context->node->parent && context->node->parent->parent)
+        {
+            if (context->node->parent->parent->kind == AstNodeKind::IntrinsicProp && context->node->parent->parent->token.id == TokenId::IntrinsicTypeOf)
+                oneOverload.symMatchContext.flags |= SymbolMatchContext::MATCH_DO_NOT_ACCEPT_NO_GENERIC;
+            if (context->node->parent->parent->kind == AstNodeKind::IntrinsicProp && context->node->parent->parent->token.id == TokenId::IntrinsicKindOf)
+                oneOverload.symMatchContext.flags |= SymbolMatchContext::MATCH_DO_NOT_ACCEPT_NO_GENERIC;
+        }
 
         // We collect type replacements depending on where the identifier is
         setupContextualGenericTypeReplacement(context, oneOverload, overload, flags);
@@ -3994,8 +3997,8 @@ bool SemanticJob::solveValidIf(SemanticContext* context, OneMatch* oneMatch, Ast
         job->dependentJob = context->job->dependentJob;
         job->nodes.push_back(funcDecl->content);
         job->context.errCxtSteps.insert(job->context.errCxtSteps.begin(),
-                                              context->job->context.errCxtSteps.begin(),
-                                              context->job->context.errCxtSteps.end());
+                                        context->job->context.errCxtSteps.begin(),
+                                        context->job->context.errCxtSteps.end());
 
         // This comes from a generic instantiation. Add context
         if (oneMatch->oneOverload->overload->typeInfo->isFromGeneric())

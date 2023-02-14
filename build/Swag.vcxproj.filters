@@ -371,7 +371,7 @@
     <ClCompile Include="..\src\LoadSourceFileJob.cpp">
       <Filter>Jobs</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\AstNode_Clone.cpp">
+    <ClCompile Include="..\src\AstNode_Specific.cpp">
       <Filter>Syntax</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Module_CompilerMsg.cpp">
