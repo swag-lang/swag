@@ -68,14 +68,16 @@ struct SymbolOverload
     ComputedValue computedValue;
     SharedMutex   mutexIncomplete;
     RegisterList  registers;
-    TypeInfo*     typeInfo        = nullptr;
-    AstNode*      node            = nullptr;
-    SymbolName*   symbol          = nullptr;
-    AstNode*      fromInlineParam = nullptr;
-    uint64_t      attributeFlags  = 0;
-    uint32_t      flags           = 0;
-    uint32_t      storageIndex    = 0;
-    uint8_t       hintRegister    = 0;
+
+    TypeInfo*   typeInfo        = nullptr;
+    AstNode*    node            = nullptr;
+    SymbolName* symbol          = nullptr;
+    AstNode*    fromInlineParam = nullptr;
+
+    uint64_t attributeFlags = 0;
+    uint32_t flags          = 0;
+    uint32_t storageIndex   = 0;
+    uint8_t  hintRegister   = 0;
 };
 
 struct SymbolName
@@ -95,12 +97,13 @@ struct SymbolName
 
     SymTable* ownerTable = nullptr;
 
-    uint32_t   cptOverloads     = 0;
-    uint32_t   cptOverloadsInit = 0;
-    uint32_t   cptIfBlock       = 0;
-    uint16_t   flags            = 0;
+    uint32_t cptOverloads     = 0;
+    uint32_t cptOverloadsInit = 0;
+
+    uint32_t   cptIfBlock = 0;
+    uint16_t   flags      = 0;
+    SymbolKind kind       = SymbolKind::Invalid;
     uint8_t    padding;
-    SymbolKind kind = SymbolKind::Invalid;
 };
 
 struct SymTableHash

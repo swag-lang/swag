@@ -292,6 +292,7 @@ struct AstNode
     }
 
     AstNode* clone(CloneContext& context);
+    void     releaseChilds();
     void     release();
     void     cloneChilds(CloneContext& context, AstNode* from);
     void     copyFrom(CloneContext& context, AstNode* from, bool cloneHie = true);

@@ -160,6 +160,13 @@ void AstNode::cloneChilds(CloneContext& context, AstNode* from)
     context.parent = oldParent;
 }
 
+void AstNode::releaseChilds()
+{
+    for (auto c : childs)
+        c->release();
+    childs.release();
+}
+
 void AstNode::release()
 {
     // Nodes with problem (childs referenced somewhere else, so double free)
