@@ -65,7 +65,7 @@ public func getMonitors()->Array'Monitor
         return TRUE
     }
 
-    EnumDisplayMonitors(null, null, cast(const *void) &proc, cast(LPARAM) cast(u64) &result)
+    EnumDisplayMonitors(null, null, cast(const *void) @mkcallback(&proc), cast(LPARAM) cast(u64) &result)
     return result
 }
 
