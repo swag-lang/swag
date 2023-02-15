@@ -26,9 +26,7 @@ struct Diagnostic
         , endLocation{end}
         , textMsg{msg}
         , errorLevel{level}
-        , hasFile{true}
         , hasLocation{true}
-        , hasRangeLocation{true}
         , showSourceCode{true}
     {
         setup();
@@ -37,11 +35,10 @@ struct Diagnostic
     Diagnostic(SourceFile* file, const SourceLocation& start, const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
         : sourceFile{file}
         , startLocation{start}
+        , endLocation{start}
         , textMsg{msg}
         , errorLevel{level}
-        , hasFile{true}
         , hasLocation{true}
-        , hasRangeLocation{false}
         , showSourceCode{true}
     {
         setup();
@@ -53,9 +50,7 @@ struct Diagnostic
         , endLocation{token.endLocation}
         , textMsg{msg}
         , errorLevel{level}
-        , hasFile{true}
         , hasLocation{true}
-        , hasRangeLocation{true}
         , showSourceCode{true}
     {
         setup();
@@ -68,9 +63,7 @@ struct Diagnostic
         , endLocation{token.endLocation}
         , textMsg{msg}
         , errorLevel{level}
-        , hasFile{true}
         , hasLocation{true}
-        , hasRangeLocation{true}
         , showSourceCode{true}
     {
         setup();
@@ -84,9 +77,7 @@ struct Diagnostic
         , textMsg{msg}
         , hint{hint}
         , errorLevel{level}
-        , hasFile{true}
         , hasLocation{true}
-        , hasRangeLocation{true}
         , showSourceCode{true}
     {
         setup();
@@ -97,9 +88,7 @@ struct Diagnostic
         , sourceNode{node}
         , textMsg{msg}
         , errorLevel{level}
-        , hasFile{true}
         , hasLocation{true}
-        , hasRangeLocation{true}
         , showSourceCode{true}
     {
         node->computeLocation(startLocation, endLocation);
@@ -112,9 +101,7 @@ struct Diagnostic
         , textMsg{msg}
         , hint{hint}
         , errorLevel{level}
-        , hasFile{true}
         , hasLocation{true}
-        , hasRangeLocation{true}
         , showSourceCode{true}
     {
         node->computeLocation(startLocation, endLocation);
@@ -125,18 +112,13 @@ struct Diagnostic
         : sourceFile{file}
         , textMsg{msg}
         , errorLevel{level}
-        , hasFile{true}
-        , hasLocation{false}
     {
         setup();
     }
 
     Diagnostic(const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
-        : sourceFile{nullptr}
-        , textMsg{msg}
+        : textMsg{msg}
         , errorLevel{level}
-        , hasFile{false}
-        , hasLocation{false}
     {
         setup();
     }
@@ -213,19 +195,18 @@ struct Diagnostic
 
     uint32_t stackLevel = 0;
 
-    bool lowPrio               = false;
-    bool showErrorLevel        = true;
-    bool display               = true;
-    bool currentStackLevel     = false;
-    bool hasFile               = false;
-    bool hasLocation           = false;
-    bool hasRangeLocation      = false;
-    bool hasRangeLocation2     = false;
     bool showSourceCode        = false;
     bool showRange             = true;
     bool showMultipleCodeLines = true;
     bool showFileName          = true;
-    bool forceSourceFile       = false;
-    bool emptyMarginBefore     = true;
-    bool criticalError         = false;
+
+    bool showErrorLevel    = true;
+    bool display           = true;
+    bool emptyMarginBefore = true;
+
+    bool hasLocation       = false;
+    bool lowPrio           = false;
+    bool currentStackLevel = false;
+    bool forceSourceFile   = false;
+    bool criticalError     = false;
 };

@@ -73,7 +73,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
         {
             if (note->errorLevel == DiagnosticLevel::Note || note->errorLevel == DiagnosticLevel::Help)
             {
-                if (note->hint.empty() && note->hasRangeLocation)
+                if (note->hint.empty() && note->hasLocation)
                 {
                     note->showErrorLevel = false;
                     if (!note->noteHeader.empty())

@@ -1229,7 +1229,7 @@ void initErrors()
     SWAG_ERROR(Nte0072, "occurred during compile time evaluation");
     SWAG_ERROR(Nte0073, "the ufcs argument comes from an implicit 'using self' parameter");
     SWAG_ERROR(Nte0074, "the ufcs argument comes from this");
-    SWAG_ERROR(Nte0075, "the original instantiation type '%s' comes from here");
+    SWAG_ERROR(Nte0075, "the instantiation type '%s' comes from here");
     SWAG_ERROR(Nte0076, "'%s' could be either a single type or a parameter name");
     SWAG_ERROR(Nte0077, "'%s' could be either a single type or a field name");
     SWAG_ERROR(Nte0078, "occurred during the '#validif' validation of the struct '%s'");
