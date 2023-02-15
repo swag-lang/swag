@@ -45,7 +45,10 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     switch (g_CommandLine.target.os)
     {
     case SwagTargetOs::Windows:
-        entryPoint = "mainCRTStartup";
+        if (buildParameters.buildCfg->subBackendKind == BuildCfgSubBackendKind::Console)
+            entryPoint = "mainCRTStartup";
+        else
+            entryPoint = "WinMainCRTStartup";
         break;
     default:
         Report::error(module, Fmt(Err(Err0056), Backend::getOsName(g_CommandLine.target)));

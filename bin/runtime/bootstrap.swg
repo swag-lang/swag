@@ -561,6 +561,12 @@ namespace Swag
         DynamicLib
     }
 
+    enum BuildCfgSubBackendKind
+    {
+        Default
+        Console
+    }
+
     struct BuildCfg
     {
         // Module infos
@@ -594,6 +600,7 @@ namespace Swag
 
         // Backend common
         backendKind               = BuildCfgBackendKind.Executable
+        subBackendKind            = BuildCfgSubBackendKind.Console
         backendDebugInformations  = false
         backendOptimizeSpeed      = false
         backendOptimizeSize       = false

@@ -147,7 +147,10 @@ namespace BackendLinker
 
         arguments.push_back("/INCREMENTAL:NO");
         arguments.push_back("/NOLOGO");
-        arguments.push_back("/SUBSYSTEM:CONSOLE");
+        if (buildParameters.buildCfg->subBackendKind == BuildCfgSubBackendKind::Console)
+            arguments.push_back("/SUBSYSTEM:CONSOLE");
+        else
+            arguments.push_back("/SUBSYSTEM:WINDOWS");
         arguments.push_back("/NODEFAULTLIB");
         arguments.push_back("/ERRORLIMIT:0");
 

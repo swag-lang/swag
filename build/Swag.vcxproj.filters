@@ -252,10 +252,10 @@
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="../src/Context.cpp">
-      <Filter>Runtime</Filter>
+      <Filter>Backend\Runtime</Filter>
     </ClCompile>
     <ClCompile Include="../src/CompilerItf.cpp">
-      <Filter>Runtime</Filter>
+      <Filter>Backend\Runtime</Filter>
     </ClCompile>
     <ClCompile Include="../src/Workspace.cpp">
       <Filter>Wmf</Filter>
@@ -684,13 +684,13 @@
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="../src/Runtime.h">
-      <Filter>Runtime</Filter>
+      <Filter>Backend\Runtime</Filter>
     </ClInclude>
     <ClInclude Include="../src/Context.h">
-      <Filter>Runtime</Filter>
+      <Filter>Backend\Runtime</Filter>
     </ClInclude>
     <ClInclude Include="../src/CompilerItf.h">
-      <Filter>Runtime</Filter>
+      <Filter>Backend\Runtime</Filter>
     </ClInclude>
     <ClInclude Include="../src/Workspace.h">
       <Filter>Wmf</Filter>
@@ -901,9 +901,6 @@
     <Filter Include="Wmf">
       <UniqueIdentifier>{68a1bb4f-01bc-4d77-9593-917fdde3fe6d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Runtime">
-      <UniqueIdentifier>{512aad17-43cb-4e62-b39d-3200f0ee9ced}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Syntax">
       <UniqueIdentifier>{2ec0b045-bdd6-4a7a-a120-2c91b7025073}</UniqueIdentifier>
     </Filter>
@@ -912,6 +909,9 @@
     </Filter>
     <Filter Include="Semantic\Type">
       <UniqueIdentifier>{5d3754c6-5cd6-4c17-beb5-5141ff0d58e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Backend\Runtime">
+      <UniqueIdentifier>{512aad17-43cb-4e62-b39d-3200f0ee9ced}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

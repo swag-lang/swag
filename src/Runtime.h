@@ -186,6 +186,12 @@ enum class BuildCfgBackendKind
     StaticLib,
 };
 
+enum class BuildCfgSubBackendKind
+{
+    Default,
+    Console,
+};
+
 struct BuildCfg
 {
     // Module informations
@@ -218,10 +224,11 @@ struct BuildCfg
     bool     byteCodeAutoInline    = true;
 
     // Backend common
-    BuildCfgBackendKind backendKind              = BuildCfgBackendKind::Executable;
-    bool                backendDebugInformations = false;
-    bool                backendOptimizeSpeed     = false;
-    bool                backendOptimizeSize      = false;
+    BuildCfgBackendKind    backendKind              = BuildCfgBackendKind::Executable;
+    BuildCfgSubBackendKind subBackendKind           = BuildCfgSubBackendKind::Console;
+    bool                   backendDebugInformations = false;
+    bool                   backendOptimizeSpeed     = false;
+    bool                   backendOptimizeSize      = false;
 
     // Specific backend parameters
     BuildCfgBackendLLVM backendLLVM;
