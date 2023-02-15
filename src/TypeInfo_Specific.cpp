@@ -701,7 +701,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t castFlags)
     }
 
     int firstParam = 0;
-    if (!(isClosure()) && (other->isClosure()))
+    if (!isClosure() && other->isClosure())
         firstParam = 1;
 
     for (int i = 0; i < parameters.size(); i++)
@@ -714,6 +714,12 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t castFlags)
 
         if ((type1->flags & TYPEINFO_POINTER_MOVE_REF) != (type2->flags & TYPEINFO_POINTER_MOVE_REF))
             return false;
+
+        if (type1->isAutoConstPointerRef() != type2->isAutoConstPointerRef() &&
+            type1->isPointerRef() &&
+            type2->isPointerRef())
+            return false;
+
         type1 = TypeManager::concretePtrRef(type1);
         type2 = TypeManager::concretePtrRef(type2);
         if (!type1->isSame(type2, castFlags))

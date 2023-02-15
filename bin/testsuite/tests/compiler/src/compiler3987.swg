@@ -1,6 +1,6 @@
 using Swag
 
-func panic(msg: string, loc: const ref Swag.SourceCodeLocation)
+func panic(msg: string, loc: Swag.SourceCodeLocation)
 {
 }
 
