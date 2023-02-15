@@ -607,6 +607,12 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
 
 bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t castFlags)
 {
+    BadSignatureInfos bi;
+    return isSame(other, castFlags, bi);
+}
+
+bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t castFlags, BadSignatureInfos& bi)
+{
     // Cannot convert a closure to a lambda
     if (isClosure() && !other->isClosure())
         return false;
@@ -620,8 +626,17 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t castFlags)
     }
     else
     {
-        if (parameters.size() != other->parameters.size())
+        if (other->parameters.size() > parameters.size())
+        {
+            bi.matchResult = MatchResult::TooManyParameters;
             return false;
+        }
+
+        if (other->parameters.size() < parameters.size())
+        {
+            bi.matchResult = MatchResult::NotEnoughParameters;
+            return false;
+        }
     }
 
     if (genericParameters.size() != other->genericParameters.size())
@@ -635,7 +650,10 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t castFlags)
     }
 
     if ((flags & TYPEINFO_CAN_THROW) != (other->flags & TYPEINFO_CAN_THROW))
+    {
+        bi.matchResult = MatchResult::MismatchThrow;
         return false;
+    }
 
     // Default values should be the same
     if (isLambdaClosure() && other->isLambdaClosure() && firstDefaultValueIdx != UINT32_MAX)
@@ -643,12 +661,25 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t castFlags)
 
     if (castFlags & CASTFLAG_EXACT)
     {
-        if (!returnType && other->returnType && !other->returnType->isVoid())
+        if ((!returnType || returnType->isVoid()) && other->returnType && !other->returnType->isVoid())
+        {
+            bi.matchResult = MatchResult::NoReturnType;
             return false;
-        if (returnType && !returnType->isVoid() && !other->returnType)
+        }
+        if (returnType && !returnType->isVoid() && (!other->returnType || other->returnType->isVoid()))
+        {
+            bi.matchResult = MatchResult::MissingReturnType;
             return false;
-        if (returnType && other->returnType && !returnType->isNative(NativeTypeKind::Undefined) && !returnType->isSame(other->returnType, castFlags))
+        }
+
+        if (returnType &&
+            other->returnType &&
+            !returnType->isNative(NativeTypeKind::Undefined) &&
+            !returnType->isSame(other->returnType, castFlags))
+        {
+            bi.matchResult = MatchResult::MismatchReturnType;
             return false;
+        }
 
         // If the two functions are generics, compare the types that have been used to instantiate the function.
         // If the types does not match, then the two functions are not the same.
@@ -683,7 +714,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t castFlags)
     }
 
     // Compare capture argument only if not converting a lambda to a closure
-    if ((isClosure()) && (other->isClosure()))
+    if (isClosure() && other->isClosure())
     {
         if (capture.size() != other->capture.size())
             return false;
@@ -713,17 +744,32 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t castFlags)
             continue;
 
         if ((type1->flags & TYPEINFO_POINTER_MOVE_REF) != (type2->flags & TYPEINFO_POINTER_MOVE_REF))
+        {
+            bi.matchResult      = MatchResult::BadSignature;
+            bi.badSignatureNum1 = i;
+            bi.badSignatureNum2 = i + firstParam;
             return false;
+        }
 
         if (type1->isAutoConstPointerRef() != type2->isAutoConstPointerRef() &&
             type1->isPointerRef() &&
             type2->isPointerRef())
+        {
+            bi.matchResult      = MatchResult::BadSignature;
+            bi.badSignatureNum1 = i;
+            bi.badSignatureNum2 = i + firstParam;
             return false;
+        }
 
         type1 = TypeManager::concretePtrRef(type1);
         type2 = TypeManager::concretePtrRef(type2);
         if (!type1->isSame(type2, castFlags))
+        {
+            bi.matchResult      = MatchResult::BadSignature;
+            bi.badSignatureNum1 = i;
+            bi.badSignatureNum2 = i + firstParam;
             return false;
+        }
     }
 
     return true;

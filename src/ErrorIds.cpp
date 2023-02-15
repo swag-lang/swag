@@ -1128,8 +1128,13 @@ void initErrors()
     SWAG_ERROR(Hnt0110, "this is not allowed because 'void' does not have a size");
     SWAG_ERROR(Hnt0111, "'moveref' and 'ref' are mutually exclusive");
     SWAG_ERROR(Hnt0112, "you can only take the address of a returned reference, and this is %s");
-    SWAG_ERROR(Hnt0113, nullptr);
-    SWAG_ERROR(Hnt0114, nullptr);
+    SWAG_ERROR(Hnt0113, "this parameter does not match");
+    SWAG_ERROR(Hnt0114, "missing return type");
+    SWAG_ERROR(Hnt0115, "one function is declared with 'throw' and the other one is not");
+    SWAG_ERROR(Hnt0116, nullptr);
+    SWAG_ERROR(Hnt0117, nullptr);
+    SWAG_ERROR(Hnt0118, nullptr);
+    SWAG_ERROR(Hnt0119, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -1230,9 +1235,9 @@ void initErrors()
     SWAG_ERROR(Nte0078, "occurred during the '#validif' validation of the struct '%s'");
     SWAG_ERROR(Nte0079, "the type '%s' does not conform to the constraint '%s'");
     SWAG_ERROR(Nte0080, "the type '%s' does not conform to the constraint");
-    SWAG_ERROR(Nte0081, nullptr);
-    SWAG_ERROR(Nte0082, nullptr);
-    SWAG_ERROR(Nte0083, nullptr);
+    SWAG_ERROR(Nte0081, "should be of type '%s'");
+    SWAG_ERROR(Nte0082, "the interface declaration returns nothing");
+    SWAG_ERROR(Nte0083, "the interface declaration returns type '%s'");
     SWAG_ERROR(Nte0084, nullptr);
 
     /////////////////////////////////////////////////////////////////////

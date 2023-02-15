@@ -210,6 +210,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         auto child = childs[i];
         if (child->kind != AstNodeKind::FuncDecl)
             continue;
+        auto childFct = CastAst<AstFuncDecl>(child, AstNodeKind::FuncDecl);
 
         // We need to search the function (as a variable) in the interface
         // If not found, then this is a normal function...
@@ -248,14 +249,62 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         }
 
         // Match function signature
-        auto typeLambda = CastTypeInfo<TypeInfoFuncAttr>(itfSymbol->typeInfo, TypeInfoKind::LambdaClosure);
-        auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
-        if (!typeLambda->isSame(typeFunc, CASTFLAG_EXACT | CASTFLAG_INTERFACE))
+        BadSignatureInfos bi;
+        auto              typeLambda = CastTypeInfo<TypeInfoFuncAttr>(itfSymbol->typeInfo, TypeInfoKind::LambdaClosure);
+        auto              typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
+        if (!typeLambda->isSame(typeFunc, CASTFLAG_EXACT | CASTFLAG_INTERFACE, bi))
         {
-            Diagnostic diag{child, child->token, Fmt(Err(Err0652), child->token.ctext(), typeBaseInterface->name.c_str())};
-            Diagnostic note{itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0002), DiagnosticLevel::Note};
-            note.showRange = false;
-            return context->report(diag, &note);
+            switch (bi.matchResult)
+            {
+            case MatchResult::BadSignature:
+            {
+                Diagnostic diag{childFct->parameters->childs[bi.badSignatureNum2], Fmt(Err(Err0652), child->token.ctext(), typeBaseInterface->name.c_str())};
+                diag.hint = Hnt(Hnt0113);
+                Diagnostic note{typeLambda->parameters[bi.badSignatureNum1]->declNode, Fmt(Nte(Nte0081), typeLambda->parameters[bi.badSignatureNum1]->typeInfo->getDisplayNameC()), DiagnosticLevel::Note};
+                return context->report(diag, &note);
+            }
+
+            case MatchResult::MissingReturnType:
+            {
+                Diagnostic diag{child, child->token, Fmt(Err(Err0652), child->token.ctext(), typeBaseInterface->name.c_str())};
+                diag.hint = Hnt(Hnt0114);
+                Diagnostic note{itfSymbol->declNode, itfSymbol->declNode->token, Fmt(Nte(Nte0083), typeLambda->returnType->getDisplayNameC()), DiagnosticLevel::Note};
+                return context->report(diag, &note);
+            }
+
+            case MatchResult::NoReturnType:
+            {
+                Diagnostic diag{childFct->returnType, Fmt(Err(Err0652), child->token.ctext(), typeBaseInterface->name.c_str())};
+                diag.hint = Hnt(Hnt0026);
+                Diagnostic note{itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0082), DiagnosticLevel::Note};
+                return context->report(diag, &note);
+            }
+
+            case MatchResult::MismatchReturnType:
+            {
+                Diagnostic diag{childFct->returnType, Fmt(Err(Err0652), child->token.ctext(), typeBaseInterface->name.c_str())};
+                diag.hint = Diagnostic::isType(childFct->returnType->typeInfo);
+                Diagnostic note{itfSymbol->declNode, itfSymbol->declNode->token, Fmt(Nte(Nte0083), typeLambda->returnType->getDisplayNameC()), DiagnosticLevel::Note};
+                return context->report(diag, &note);
+            }
+
+            case MatchResult::MismatchThrow:
+            {
+                Diagnostic diag{child, child->token, Fmt(Err(Err0652), child->token.ctext(), typeBaseInterface->name.c_str())};
+                diag.hint = Hnt(Hnt0115);
+                Diagnostic note{itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0002), DiagnosticLevel::Note};
+                note.showRange = false;
+                return context->report(diag, &note);
+            }
+
+            default:
+            {
+                Diagnostic diag{child, child->token, Fmt(Err(Err0652), child->token.ctext(), typeBaseInterface->name.c_str())};
+                Diagnostic note{itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0002), DiagnosticLevel::Note};
+                note.showRange = false;
+                return context->report(diag, &note);
+            }
+            }
         }
 
         // First parameter in the impl block must be a pointer to the struct

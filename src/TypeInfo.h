@@ -1,13 +1,11 @@
 #pragma once
 #include "Utf8.h"
-#include "Log.h"
 #include "Register.h"
 #include "Attribute.h"
 #include "VectorNative.h"
 #include "Runtime.h"
 #include "CommandLine.h"
 #include "Mutex.h"
-#include "RaceCondition.h"
 #include "CallConv.h"
 
 struct Scope;
@@ -23,6 +21,7 @@ struct AstFuncDecl;
 struct JobContext;
 struct SemanticContext;
 struct TypeInfoStruct;
+struct BadSignatureInfos;
 enum class Intrisic;
 
 const int COMPUTE_NAME               = 0;
@@ -100,24 +99,29 @@ enum class MatchResult
     DuplicatedNamedParameter,
     MismatchGenericValue,
     ValidIfFailed,
+    MismatchThrow,
+    NoReturnType,
+    MissingReturnType,
+    MismatchReturnType,
 };
 
 struct BadSignatureInfos
 {
     Utf8           badGenMatch;
-    AstNode*       badNode;
-    AstNode*       genMatchFromNode;
-    TypeInfo*      badSignatureRequestedType;
-    TypeInfo*      badSignatureGivenType;
-    TypeInfo*      castErrorToType;
-    TypeInfo*      castErrorFromType;
-    ComputedValue* badGenValue1;
-    ComputedValue* badGenValue2;
+    AstNode*       badNode                   = nullptr;
+    AstNode*       genMatchFromNode          = nullptr;
+    TypeInfo*      badSignatureRequestedType = nullptr;
+    TypeInfo*      badSignatureGivenType     = nullptr;
+    TypeInfo*      castErrorToType           = nullptr;
+    TypeInfo*      castErrorFromType         = nullptr;
+    ComputedValue* badGenValue1              = nullptr;
+    ComputedValue* badGenValue2              = nullptr;
+    MatchResult    matchResult               = MatchResult::Ok;
 
-    uint32_t castErrorFlags;
-    int      badSignatureParameterIdx;
-    int      badSignatureNum1;
-    int      badSignatureNum2;
+    uint32_t castErrorFlags           = 0;
+    int      badSignatureParameterIdx = 0;
+    int      badSignatureNum1         = 0;
+    int      badSignatureNum2         = 0;
 
     void clear()
     {
@@ -130,6 +134,7 @@ struct BadSignatureInfos
         castErrorFromType         = nullptr;
         badGenValue1              = nullptr;
         badGenValue2              = nullptr;
+        matchResult               = MatchResult::Ok;
         castErrorFlags            = 0;
         badSignatureParameterIdx  = -1;
         badSignatureNum1          = 0;
@@ -411,6 +416,7 @@ struct TypeInfoFuncAttr : public TypeInfo
     TypeInfo* clone() override;
     void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
     bool      isSame(TypeInfo* from, uint32_t castFlags) override;
+    bool      isSame(TypeInfoFuncAttr* other, uint32_t castFlags, BadSignatureInfos& bi);
     bool      isSame(TypeInfoFuncAttr* from, uint32_t castFlags);
     void      match(SymbolMatchContext& context);
     bool      returnByCopy();

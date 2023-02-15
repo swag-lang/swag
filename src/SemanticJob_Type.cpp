@@ -826,7 +826,7 @@ bool SemanticJob::resolveTypeAsExpression(SemanticContext* context, AstNode* nod
 {
     auto  sourceFile = context->sourceFile;
     auto  module     = sourceFile->module;
-    auto& typeGen  = module->typeGen;
+    auto& typeGen    = module->typeGen;
 
     node->allocateComputedValue();
     node->computedValue->reg.pointer    = (uint8_t*) typeInfo;

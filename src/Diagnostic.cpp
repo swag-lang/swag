@@ -4,6 +4,7 @@
 #include "TypeInfo.h"
 #include "ErrorIds.h"
 #include "Naming.h"
+#include "Log.h"
 
 void Diagnostic::setupColors(bool verboseMode)
 {
