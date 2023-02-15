@@ -97,7 +97,8 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
             {
                 Diagnostic diag{typeNode, Fmt(Err(Err0252), typeNode->typeInfo->getDisplayNameC(), tag->type->getDisplayNameC(), tag->name.c_str())};
                 Diagnostic note{typeNode, Fmt(Nte(Nte0038), tag->cmdLine.c_str()), DiagnosticLevel::Note};
-                note.sourceFile = nullptr;
+                note.hasFile        = false;
+                note.showSourceCode = false;
                 return context->report(diag, &note);
             }
 
@@ -211,7 +212,7 @@ bool SemanticJob::resolveIntrinsicMakeInterface(SemanticContext* context)
     auto  third      = params->childs[2];
     auto  sourceFile = context->sourceFile;
     auto  module     = sourceFile->module;
-    auto& typeGen    = module->typeGen;
+    auto& typeGen  = module->typeGen;
 
     SWAG_CHECK(checkIsConcrete(context, first));
 
@@ -582,7 +583,7 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
     auto  node       = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto  expr       = node->childs.front();
     auto  sourceFile = context->sourceFile;
-    auto& typeGen    = sourceFile->module->typeGen;
+    auto& typeGen  = sourceFile->module->typeGen;
 
     // Will be runtime for an 'any' type
     if (expr->typeInfo->isAny() || expr->typeInfo->isInterface())

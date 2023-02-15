@@ -26,10 +26,10 @@ void Diagnostic::setupColors(bool verboseMode)
 
 void Diagnostic::setup()
 {
-    if (!sourceFile || sourceFile->path.empty())
+    if (!hasFile || sourceFile->path.empty())
         showFileName = false;
-    if (!sourceFile || sourceFile->path.empty() || !hasLocation)
-        showRange = false;
+    if (!hasFile || sourceFile->path.empty() || !hasLocation)
+        showSourceCode = false;
 
     switch (errorLevel)
     {
@@ -98,8 +98,10 @@ void Diagnostic::printSourceLine()
     if (!g_CommandLine.errorOneLine)
         g_Log.setColor(sourceFileColor);
     g_Log.print(Utf8::normalizePath(path).c_str());
-    if (hasLocation)
+    if (hasRangeLocation)
         g_Log.print(Fmt(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, endLocation.line + 1, endLocation.column + 1));
+    else if (hasLocation)
+        g_Log.print(Fmt(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, startLocation.line + 1, startLocation.column + 1));
     else
         g_Log.print(": ");
 }
@@ -283,10 +285,12 @@ void Diagnostic::sortRanges()
 
 void Diagnostic::collectRanges()
 {
-    if (!showRange)
+    if (!showRange || !showSourceCode)
         return;
-    if (hasLocation)
+    if (hasRangeLocation)
         ranges.push_back({startLocation, endLocation, hint, errorLevel});
+    else if (hasLocation)
+        ranges.push_back({startLocation, startLocation, hint, errorLevel});
     if (ranges.empty())
         return;
 
@@ -310,8 +314,10 @@ void Diagnostic::collectRanges()
             swap(r.startLocation.column, r.endLocation.column);
 
         r.width = 1;
-        if (r.endLocation.line == r.startLocation.line)
-            r.width = max(1, r.endLocation.column - r.startLocation.column);
+        if (!hasRangeLocation)
+            r.width = 1;
+        else if (r.endLocation.line == r.startLocation.line)
+            r.width = r.endLocation.column - r.startLocation.column;
         else
             r.width = (int) backLine.length() - r.startLocation.column;
         r.width = max(1, r.width);
@@ -647,7 +653,7 @@ void Diagnostic::report(bool verboseMode)
     }
 
     // Source code
-    if (showRange)
+    if (showSourceCode)
     {
         printSourceCode();
         printRanges();

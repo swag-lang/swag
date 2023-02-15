@@ -57,7 +57,7 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
                 SWAG_ASSERT(false);
 #endif
                 Diagnostic diag{nodeFunc, Fmt(Err(Err0592), moduleName.c_str(), funcName.c_str(), g_ModuleMgr->loadModuleError.c_str())};
-                diag.showRange = false;
+                diag.showSourceCode = false;
                 context->report(diag);
                 return nullptr;
             }
