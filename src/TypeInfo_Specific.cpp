@@ -130,7 +130,7 @@ void TypeInfoPointer::computeWhateverName(Utf8& resName, uint32_t nameType)
         return;
     }
 
-    if (!(flags & TYPEINFO_POINTER_AUTO_REF) || nameType != COMPUTE_DISPLAY_NAME)
+    if (!(flags & TYPEINFO_POINTER_AUTO_REF) || (nameType != COMPUTE_DISPLAY_NAME && nameType != COMPUTE_SCOPED_NAME_EXPORT))
     {
         if (flags & TYPEINFO_CONST)
             resName += "const ";
