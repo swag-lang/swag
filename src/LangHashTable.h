@@ -12,7 +12,7 @@ struct LangHashTable
         V           value;
     };
 
-    bool     firstLetter[256] = {0};
+    bool     firstLetter[256] = {false};
     Entry    buffer[N]        = {0};
     uint32_t count            = 0;
     uint32_t allocated        = N;

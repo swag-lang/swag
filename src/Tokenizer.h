@@ -130,6 +130,7 @@ struct Tokenizer
     char*         startTokenName      = nullptr;
     bool          forceLastTokenIsEOL = false;
     bool          realAppendName      = false;
+    bool          idLetters[256]      = {false};
 
     TokenParse     st_token;
     char*          st_curBuffer = nullptr;

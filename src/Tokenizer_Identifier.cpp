@@ -3,7 +3,7 @@
 
 void Tokenizer::doIdentifier(TokenParse& token)
 {
-    while (SWAG_IS_ALPHA(curBuffer[0]) || SWAG_IS_DIGIT(curBuffer[0]) || curBuffer[0] == '_')
+    while (idLetters[curBuffer[0]])
         readChar();
     appendTokenName(token);
 
