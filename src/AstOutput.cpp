@@ -896,9 +896,9 @@ bool AstOutput::outputTypeTuple(OutputContext& context, Concat& concat, TypeInfo
         }
         else
         {
-            if (!field->namedParam.empty() && field->namedParam.find("item") != 0)
+            if (!field->name.empty() && field->name.find("item") != 0)
             {
-                concat.addString(field->namedParam);
+                concat.addString(field->name);
                 concat.addString(":");
             }
 

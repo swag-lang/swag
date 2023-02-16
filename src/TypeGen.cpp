@@ -419,7 +419,7 @@ bool TypeGen::genExportedTypeValue(JobContext* context, void* exportedTypeInfoVa
 
     concreteType->offsetOf = realType->offset;
 
-    SWAG_CHECK(genExportedString(context, &concreteType->name, realType->namedParam, storageSegment, OFFSETOF(concreteType->name)));
+    SWAG_CHECK(genExportedString(context, &concreteType->name, realType->name, storageSegment, OFFSETOF(concreteType->name)));
     concreteType->crc32 = Crc32::compute((const uint8_t*) concreteType->name.buffer, (uint32_t) concreteType->name.count);
     SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->pointedType, exportedTypeInfoValue, storageSegment, storageOffset, realType->typeInfo, cflags));
     SWAG_CHECK(genExportedAttributes(context, realType->attributes, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, cflags));

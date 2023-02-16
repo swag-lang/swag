@@ -309,8 +309,8 @@ Utf8 TypeInfoList::computeTupleName(JobContext* context)
     {
         auto typeParam = subTypes[idx];
         auto childType = typeParam->typeInfo;
-        if (!typeParam->namedParam.empty())
-            structName += typeParam->namedParam;
+        if (!typeParam->name.empty())
+            structName += typeParam->name;
         structName += childType->name;
     }
 
@@ -430,7 +430,7 @@ bool TypeInfoEnum::contains(const Utf8& valueName)
 {
     for (auto p : values)
     {
-        if (p->namedParam == valueName)
+        if (p->name == valueName)
             return true;
     }
 
@@ -544,7 +544,7 @@ static void computeNameGenericParameters(VectorNative<TypeInfoParam*>& genericPa
         else if (genParam->typeInfo)
             resName += genParam->typeInfo->computeWhateverName(nameType);
         else
-            resName += genParam->namedParam;
+            resName += genParam->name;
     }
 
     if (nameType != COMPUTE_DISPLAY_NAME || genericParameters.size() > 1)
@@ -1082,7 +1082,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t castFlags)
             // But this is ok to affect between tuple and struct even if they do not have the same fields names
             if (!(castFlags & CASTFLAG_FOR_AFFECT) || (castFlags & CASTFLAG_EXACT))
             {
-                if (fields[i]->namedParam != other->fields[i]->namedParam)
+                if (fields[i]->name != other->fields[i]->name)
                     return false;
             }
         }
@@ -1132,9 +1132,9 @@ void TypeInfoStruct::computeWhateverName(Utf8& resName, uint32_t nameType)
             auto p = fields[i];
             if (i)
                 resName += ", ";
-            if (!p->namedParam.empty() && !(p->flags & TYPEINFO_AUTO_NAME))
+            if (!p->name.empty() && !(p->flags & TYPEINFO_AUTO_NAME))
             {
-                resName += p->namedParam;
+                resName += p->name;
                 resName += ": ";
             }
 

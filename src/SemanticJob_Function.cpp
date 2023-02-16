@@ -67,7 +67,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
     {
         auto nodeParam        = CastAst<AstVarDecl>(param, AstNodeKind::FuncDeclParam);
         auto funcParam        = g_TypeMgr->makeParam();
-        funcParam->namedParam = param->token.text;
+        funcParam->name = param->token.text;
         funcParam->typeInfo   = param->typeInfo;
         funcParam->index      = index++;
         funcParam->declNode   = nodeParam;
@@ -1640,7 +1640,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
             // Transmit code type
             if (param->typeInfo->isCode())
             {
-                inlineNode->parametersScope->symTable.addSymbolTypeInfo(context, param, param->typeInfo, SymbolKind::Variable, nullptr, 0, nullptr, 0, nullptr, &param->resolvedParameter->namedParam);
+                inlineNode->parametersScope->symTable.addSymbolTypeInfo(context, param, param->typeInfo, SymbolKind::Variable, nullptr, 0, nullptr, 0, nullptr, &param->resolvedParameter->name);
             }
         }
     }

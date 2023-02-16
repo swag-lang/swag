@@ -105,7 +105,7 @@ llvm::DIType* BackendLLVMDbg::getEnumType(TypeInfo* typeInfo, llvm::DIFile* file
         bool                          isUnsigned = typeInfoEnum->rawType->flags & TYPEINFO_UNSIGNED;
         for (auto& value : typeInfoEnum->values)
         {
-            auto typeField = dbgBuilder->createEnumerator(value->namedParam.c_str(), value->value->reg.u64, isUnsigned);
+            auto typeField = dbgBuilder->createEnumerator(value->name.c_str(), value->value->reg.u64, isUnsigned);
             subscripts.push_back(typeField);
         }
 
@@ -165,7 +165,7 @@ llvm::DIType* BackendLLVMDbg::getStructType(TypeInfo* typeInfo, llvm::DIFile* fi
     {
         auto fieldLine = field->declNode->token.startLocation.line + 1;
         auto fieldType = getType(field->typeInfo, file);
-        auto typeField = dbgBuilder->createMemberType(result, field->namedParam.c_str(), file, fieldLine, field->typeInfo->sizeOf * 8, 0, field->offset * 8, noFlag, fieldType);
+        auto typeField = dbgBuilder->createMemberType(result, field->name.c_str(), file, fieldLine, field->typeInfo->sizeOf * 8, 0, field->offset * 8, noFlag, fieldType);
         subscripts.push_back(typeField);
     }
 

@@ -158,7 +158,7 @@ bool SemanticJob::resolveTypeLambdaClosure(SemanticContext* context)
             typeParam->declNode = param;
 
             if (param->extension && param->extension->misc && param->extension->misc->isNamed)
-                typeParam->namedParam = param->extension->misc->isNamed->token.text;
+                typeParam->name = param->extension->misc->isNamed->token.text;
 
             if (typeParam->typeInfo->isGeneric())
                 typeInfo->flags |= TYPEINFO_GENERIC;

@@ -355,7 +355,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             diag            = new Diagnostic{diagNode,
                                   Fmt(Err(Err0050),
                                       bi.badSignatureRequestedType->getDisplayNameC(),
-                                      typeStruct->fields[badParamIdx - 1]->namedParam.c_str(),
+                                      typeStruct->fields[badParamIdx - 1]->name.c_str(),
                                       bi.badSignatureGivenType->getDisplayNameC())};
         }
         else if (oneTry.ufcs && bi.badSignatureParameterIdx == 0 && oneTry.dependentVar)

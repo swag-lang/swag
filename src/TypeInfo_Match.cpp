@@ -95,7 +95,7 @@ static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParamet
                         auto newStructType = (TypeInfoStruct*) callStruct->clone();
                         for (int i = 0; i < callStruct->genericParameters.size(); i++)
                         {
-                            newStructType->genericParameters[i]->namedParam = wantedStruct->genericParameters[i]->typeInfo->name;
+                            newStructType->genericParameters[i]->name = wantedStruct->genericParameters[i]->typeInfo->name;
                         }
 
                         regTypeInfo = newStructType;
@@ -170,12 +170,12 @@ static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParamet
                     // order to get the corresponding field name. Then we will search for the name in the typelist (if
                     // specified).
                     auto p       = symbolStruct->genericParameters[idx];
-                    Utf8 nameVar = p->namedParam;
+                    Utf8 nameVar = p->name;
                     for (int idx1 = 0; idx1 < (int) symbolStruct->fields.size(); idx1++)
                     {
                         if (symbolStruct->fields[idx1]->typeInfo->name == symbolStruct->genericParameters[idx]->typeInfo->name)
                         {
-                            nameVar = symbolStruct->fields[idx1]->namedParam;
+                            nameVar = symbolStruct->fields[idx1]->name;
                             break;
                         }
                     }
@@ -185,7 +185,7 @@ static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParamet
                     auto typeField = p1->typeInfo;
                     for (int j = 0; j < typeList->subTypes.size(); j++)
                     {
-                        if (nameVar == typeList->subTypes[j]->namedParam)
+                        if (nameVar == typeList->subTypes[j]->name)
                         {
                             typeField = typeList->subTypes[j]->typeInfo;
                             break;
@@ -567,7 +567,7 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
         if (callParameter->extension &&
             callParameter->extension->misc &&
             callParameter->extension->misc->isNamed &&
-            parameters[j]->namedParam == callParameter->extension->misc->isNamed->token.text)
+            parameters[j]->name == callParameter->extension->misc->isNamed->token.text)
         {
             if (context.doneParameters[j])
             {
@@ -578,7 +578,7 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
                     if (checkParam->extension &&
                         checkParam->extension->misc &&
                         checkParam->extension->misc->isNamed &&
-                        checkParam->extension->misc->isNamed->token.text == parameters[j]->namedParam)
+                        checkParam->extension->misc->isNamed->token.text == parameters[j]->name)
                     {
                         context.badSignatureInfos.badSignatureNum1 = k;
                         break;
@@ -757,7 +757,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                     // must match, otherwise it's an irrelevant instance
                     else
                     {
-                        auto it = context.genericReplaceTypes.find(symbolParameter->namedParam);
+                        auto it = context.genericReplaceTypes.find(symbolParameter->name);
                         if (it != context.genericReplaceTypes.end())
                         {
                             if (genType != it->second)
@@ -912,13 +912,13 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                 // the generic parameters, then be sure this matches
                 if (isValue)
                 {
-                    auto it = context.genericReplaceValues.find(symbolParameter->namedParam);
+                    auto it = context.genericReplaceValues.find(symbolParameter->name);
                     if (it != context.genericReplaceValues.end())
                     {
                         if (!SemanticJob::valueEqualsTo(it->second.first, callParameter))
                         {
                             context.badSignatureInfos.badNode               = callParameter;
-                            context.badSignatureInfos.badGenMatch           = symbolParameter->namedParam;
+                            context.badSignatureInfos.badGenMatch           = symbolParameter->name;
                             context.badSignatureInfos.badGenValue1          = it->second.first;
                             context.badSignatureInfos.badGenValue2          = callParameter->computedValue;
                             context.badSignatureInfos.badSignatureGivenType = typeInfo;
@@ -1151,7 +1151,7 @@ TypeInfoParam* TypeInfoStruct::findChildByNameNoLock(const Utf8& childName)
 {
     for (auto child : fields)
     {
-        if (child->namedParam == childName)
+        if (child->name == childName)
             return child;
     }
 

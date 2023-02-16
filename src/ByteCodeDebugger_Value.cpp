@@ -285,7 +285,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
         {
             for (int i = 0; i < indent + 1; i++)
                 str += "   ";
-            str += Fmt("(%s%s%s) %s%s%s = ", COLOR_TYPE, p->typeInfo->getDisplayNameC(), COLOR_DEFAULT, COLOR_NAME, p->namedParam.c_str(), COLOR_DEFAULT);
+            str += Fmt("(%s%s%s) %s%s%s = ", COLOR_TYPE, p->typeInfo->getDisplayNameC(), COLOR_DEFAULT, COLOR_NAME, p->name.c_str(), COLOR_DEFAULT);
             EvaluateResult res1;
             res1.type = p->typeInfo;
             res1.addr = ((uint8_t*) addr) + p->offset;

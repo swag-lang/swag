@@ -58,7 +58,7 @@ bool Generic::updateGenericParameters(SemanticContext*              context,
         SWAG_ASSERT(param->typeInfo);
 
         // Value
-        auto it1 = match.genericReplaceValues.find(param->namedParam);
+        auto it1 = match.genericReplaceValues.find(param->name);
         if (it1 != match.genericReplaceValues.end())
         {
             param->flags |= TYPEINFO_DEFINED_VALUE;

@@ -1867,7 +1867,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
                 TypeInfoParam* fieldJ = symContext.solvedCallParameters[j];
 
                 auto           oldType = childJ->typeInfo;
-                PushErrCxtStep ec{context, childJ, ErrCxtStepKind::MsgPrio, Fmt(Err(Err0723), fieldJ->namedParam.c_str(), fieldJ->typeInfo->getDisplayNameC(), childJ->typeInfo->getDisplayNameC())};
+                PushErrCxtStep ec{context, childJ, ErrCxtStepKind::MsgPrio, Fmt(Err(Err0723), fieldJ->name.c_str(), fieldJ->typeInfo->getDisplayNameC(), childJ->typeInfo->getDisplayNameC())};
                 SWAG_CHECK(TypeManager::makeCompatibles(context, fieldJ->typeInfo, childJ->typeInfo, nullptr, childJ, castFlags | CASTFLAG_TRY_COERCE));
                 if (childJ->typeInfo != oldType)
                     hasChanged = true;
@@ -2273,7 +2273,7 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
             auto accessName = it.fieldAccessName;
             if (!accessName.empty())
                 accessName += ".";
-            accessName += field->namedParam;
+            accessName += field->name;
 
             stack.push_back({typeStruct, it.offset + field->offset, field, accessName});
         }
@@ -3230,10 +3230,10 @@ bool TypeManager::convertLiteralTupleToStructType(SemanticContext* context, Type
         {
             auto p1        = typeList->subTypes[i];
             auto typeField = p1->typeInfo;
-            Utf8 nameVar   = p->namedParam;
+            Utf8 nameVar   = p->name;
             for (int j = 0; j < typeList->subTypes.size(); j++)
             {
-                if (nameVar == typeList->subTypes[j]->namedParam)
+                if (nameVar == typeList->subTypes[j]->name)
                 {
                     p1        = typeList->subTypes[j];
                     typeField = p1->typeInfo;

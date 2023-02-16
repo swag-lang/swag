@@ -408,7 +408,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                     {
                         if (!valText.contains(one->value->text))
                         {
-                            Diagnostic diag{node, node->token, Fmt(Err(Err0620), typeEnum->name.c_str(), one->namedParam.c_str())};
+                            Diagnostic diag{node, node->token, Fmt(Err(Err0620), typeEnum->name.c_str(), one->name.c_str())};
                             Diagnostic note{one->declNode, one->declNode->token, Nte(Nte0034), DiagnosticLevel::Note};
                             return context->report(diag, &note);
                         }
@@ -423,7 +423,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                     {
                         if (!val64.contains(one->value->reg.u64))
                         {
-                            Diagnostic diag{node, node->token, Fmt(Err(Err0620), typeEnum->name.c_str(), one->namedParam.c_str())};
+                            Diagnostic diag{node, node->token, Fmt(Err(Err0620), typeEnum->name.c_str(), one->name.c_str())};
                             Diagnostic note{one->declNode, one->declNode->token, Nte(Nte0034), DiagnosticLevel::Note};
                             return context->report(diag, &note);
                         }

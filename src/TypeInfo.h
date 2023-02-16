@@ -334,7 +334,7 @@ struct TypeInfoParam
     TypeInfoParam* clone();
     void           allocateComputedValue();
 
-    Utf8          namedParam;
+    Utf8          name;
     AttributeList attributes;
 
     ComputedValue* value    = nullptr;

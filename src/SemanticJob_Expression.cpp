@@ -51,7 +51,7 @@ bool SemanticJob::computeExpressionListTupleType(SemanticContext* context, AstNo
         {
             typeInfo->name += child->extension->misc->isNamed->token.text;
             typeInfo->name += ": ";
-            typeParam->namedParam = child->extension->misc->isNamed->token.text;
+            typeParam->name = child->extension->misc->isNamed->token.text;
         }
 
         typeInfo->name += typeParam->typeInfo->name;

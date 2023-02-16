@@ -655,7 +655,7 @@ void BackendX64::dbgRecordFields(X64Gen& pp, DbgTypeRecord* tr, TypeInfoStruct* 
         DbgTypeField field;
         field.kind          = LF_MEMBER;
         field.type          = dbgGetOrCreateType(pp, p->typeInfo);
-        field.name          = p->namedParam;
+        field.name          = p->name;
         field.value.reg.u32 = baseOffset + p->offset;
         tr->LF_FieldList.fields.push_back(field);
 
@@ -888,7 +888,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
                 DbgTypeField field;
                 field.kind      = LF_ENUMERATE;
                 field.type      = dbgGetOrCreateType(pp, p->typeInfo);
-                field.name      = p->namedParam;
+                field.name      = p->name;
                 field.valueType = typeEnum->rawType;
                 field.value     = *p->value;
                 tr0->LF_FieldList.fields.push_back(field);

@@ -120,7 +120,7 @@ namespace Ast
                     if (scoped)
                         result += typeInfo->name;
                     result += ".";
-                    result += value->namedParam;
+                    result += value->name;
                 }
             }
         }
@@ -170,7 +170,7 @@ namespace Ast
                     if (ok)
                     {
                         found = true;
-                        result += value->namedParam;
+                        result += value->name;
                         break;
                     }
                 }
@@ -605,14 +605,14 @@ namespace Ast
         for (int i = 0; i < (int) params.size(); i++)
         {
             auto param = params[i];
-            if (param->namedParam == param->typeInfo->name)
+            if (param->name == param->typeInfo->name)
                 continue;
 
             if (result.empty())
                 result = "with ";
             else
                 result += ", ";
-            result += param->namedParam;
+            result += param->name;
             result += " = ";
             result += param->typeInfo->name;
         }

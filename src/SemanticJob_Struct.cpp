@@ -191,8 +191,8 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         {
             typeParamItf = g_TypeMgr->makeParam();
             typeBaseInterface->computeScopedName();
-            typeParamItf->namedParam = typeBaseInterface->scopedName;
-            SWAG_ASSERT(!typeParamItf->namedParam.empty());
+            typeParamItf->name = typeBaseInterface->scopedName;
+            SWAG_ASSERT(!typeParamItf->name.empty());
             typeParamItf->typeInfo = typeBaseInterface;
             typeParamItf->declNode = typeBaseInterface->declNode;
             typeParamItf->declNode = node;
@@ -350,12 +350,12 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         if (!itfRef.itf)
         {
             Diagnostic diag{node, node->token, Fmt(Err(Err0657), typeBaseInterface->name.c_str(), typeInfo->getDisplayNameC())};
-            auto       note = new Diagnostic({missingNode->declNode, missingNode->declNode->token, Fmt("missing '%s'", missingNode->namedParam.c_str()), DiagnosticLevel::Note});
+            auto       note = new Diagnostic({missingNode->declNode, missingNode->declNode->token, Fmt("missing '%s'", missingNode->name.c_str()), DiagnosticLevel::Note});
             return context->report(diag, note);
         }
 
         content += "func ";
-        content += missingNode->namedParam;
+        content += missingNode->name;
 
         content += "(using self";
         auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(missingNode->typeInfo, TypeInfoKind::LambdaClosure);
@@ -373,7 +373,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         content += ".";
         content += typeBaseInterface->name;
         content += ".";
-        content += missingNode->namedParam;
+        content += missingNode->name;
 
         content += "(";
         for (int i = 1; i < typeFunc->parameters.size(); i++)
@@ -489,7 +489,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         if (!(node->flags & AST_FROM_GENERIC))
         {
             typeParam             = g_TypeMgr->makeParam();
-            typeParam->namedParam = child->token.text;
+            typeParam->name = child->token.text;
             typeParam->offset     = storageOffset;
             typeParam->declNode   = child;
             SWAG_CHECK(collectAttributes(context, child, &typeParam->attributes));
@@ -762,7 +762,7 @@ bool SemanticJob::preResolveStructContent(SemanticContext* context)
             for (auto param : node->genericParameters->childs)
             {
                 auto funcParam        = g_TypeMgr->makeParam();
-                funcParam->namedParam = param->token.text;
+                funcParam->name = param->token.text;
                 funcParam->typeInfo   = param->typeInfo;
                 typeInfo->genericParameters.push_back(funcParam);
                 typeInfo->sizeOf += param->typeInfo->sizeOf;
@@ -975,7 +975,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         if (!(node->flags & AST_FROM_GENERIC) || !(child->semFlags & AST_SEM_STRUCT_REGISTERED))
         {
             typeParam             = g_TypeMgr->makeParam();
-            typeParam->namedParam = child->token.text;
+            typeParam->name = child->token.text;
             typeParam->typeInfo   = child->typeInfo;
             typeParam->offset     = storageOffset;
             if (varDecl->flags & AST_DECL_USING)
@@ -1126,7 +1126,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             {
                 for (auto p : typeInfo->fields)
                 {
-                    if (p->namedParam == forceOffset->text)
+                    if (p->name == forceOffset->text)
                     {
                         realStorageOffset = p->offset;
                         relocated         = true;

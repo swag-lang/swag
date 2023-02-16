@@ -693,7 +693,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
 
                 AttributeParameter attrParam;
                 attrParam.token      = one->token;
-                attrParam.token.text = param->resolvedParameter->namedParam;
+                attrParam.token.text = param->resolvedParameter->name;
                 attrParam.typeInfo   = param->resolvedParameter->typeInfo;
                 attrParam.value      = *param->computedValue;
                 oneAttribute.parameters.emplace_back(move(attrParam));
