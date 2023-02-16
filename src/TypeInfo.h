@@ -320,8 +320,8 @@ struct TypeInfo
     Utf8 scopedNameExport;
 
     AstNode*  declNode     = nullptr;
-    uint64_t  flags        = 0;
     TypeInfo* promotedFrom = nullptr;
+    uint64_t  flags        = 0;
 
     uint32_t       sizeOf     = 0;
     TypeInfoKind   kind       = TypeInfoKind::Invalid;
@@ -345,9 +345,9 @@ struct TypeInfoParam
     TypeInfo*      typeInfo = nullptr;
     AstNode*       declNode = nullptr;
 
-    uint64_t flags  = 0;
-    int      index  = 0;
-    int      offset = 0;
+    uint32_t flags : 8  = 0;
+    uint32_t index : 24 = 0;
+    uint32_t offset     = 0;
 };
 
 struct TypeInfoNative : public TypeInfo

@@ -245,8 +245,8 @@ void SemanticJob::resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatc
         auto it            = typeDefinedFct->replaceTypes.find(undefinedType->name);
         if (it != typeDefinedFct->replaceTypes.end())
         {
-            undefinedType->name = it->second->name;
-            undefinedType->typeInfo   = it->second;
+            undefinedType->name     = it->second->name;
+            undefinedType->typeInfo = it->second;
         }
     }
 
@@ -631,7 +631,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
             parameters    = funcDecl->childs.front();
         }
 
-        for (int i = 0; i < parameters->childs.size(); i++)
+        for (uint32_t i = 0; i < parameters->childs.size(); i++)
         {
             auto funcParam = CastAst<AstVarDecl>(parameters->childs[i], AstNodeKind::FuncDeclParam);
             if (!funcParam->assignment)
@@ -658,7 +658,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 continue;
 
             bool covered = false;
-            for (int j = 0; j < maxParams; j++)
+            for (uint32_t j = 0; j < maxParams; j++)
             {
                 auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[j], AstNodeKind::FuncCallParam);
                 if (nodeCall->resolvedParameter && nodeCall->resolvedParameter->index == i)
@@ -2133,9 +2133,9 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             VectorNative<TypeInfoParam*> params;
             for (auto og : match->genericReplaceTypes)
             {
-                auto p        = g_TypeMgr->makeParam();
-                p->name = og.first.c_str();
-                p->typeInfo   = og.second;
+                auto p      = g_TypeMgr->makeParam();
+                p->name     = og.first.c_str();
+                p->typeInfo = og.second;
                 params.push_back(p);
             }
 
@@ -2375,8 +2375,8 @@ bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericM
                 newStructType      = CastTypeInfo<TypeInfoStruct>(typeWasForced, TypeInfoKind::Struct);
                 for (int i = 0; i < genericParameters->childs.size(); i++)
                 {
-                    newStructType->genericParameters[i]->name = genericParameters->childs[i]->typeInfo->name;
-                    newStructType->genericParameters[i]->typeInfo   = genericParameters->childs[i]->typeInfo;
+                    newStructType->genericParameters[i]->name     = genericParameters->childs[i]->typeInfo->name;
+                    newStructType->genericParameters[i]->typeInfo = genericParameters->childs[i]->typeInfo;
                 }
 
                 typeWasForced->forceComputeName();
