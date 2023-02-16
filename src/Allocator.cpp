@@ -2,12 +2,8 @@
 #include "Allocator.h"
 #include "CommandLine.h"
 #include "Os.h"
-#include "Log.h"
-#include "Mutex.h"
-#include "Timer.h"
 #include "ErrorIds.h"
 #include "Report.h"
-#include "Diagnostic.h"
 
 const uint64_t ALLOCATOR_BLOCK_SIZE = 1024 * 1024;
 
