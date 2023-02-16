@@ -469,30 +469,6 @@ TypeInfo* TypeManager::literalTypeToType(LiteralType literalType, Register liter
     return result;
 }
 
-TypeInfo* TypeManager::makeConst(TypeInfo* typeInfo)
-{
-    ScopedLock lk(typeInfo->mutex);
-    if (typeInfo->isConst())
-        return typeInfo;
-
-    TypeInfo* typeConst;
-    if (typeInfo->isStruct())
-    {
-        auto typeAlias = makeType<TypeInfoAlias>();
-        typeAlias->copyFrom(typeInfo);
-        typeAlias->rawType = typeInfo;
-        typeAlias->flags |= TYPEINFO_CONST | TYPEINFO_FAKE_ALIAS;
-        typeConst = typeAlias;
-    }
-    else
-    {
-        typeConst = typeInfo->clone();
-        typeConst->setConst();
-    }
-
-    return typeConst;
-}
-
 uint64_t TypeManager::align(uint64_t value, uint32_t align)
 {
     SWAG_ASSERT(align);
@@ -539,15 +515,55 @@ void TypeManager::registerTypeType()
     g_LiteralTypeToType[(int) LiteralType::TT_TYPE] = typeInfoTypeType;
 }
 
+TypeInfo* TypeManager::makeConst(TypeInfo* typeInfo)
+{
+    ScopedLock lk(typeInfo->mutex);
+    if (typeInfo->isConst())
+        return typeInfo;
+
+    TypeInfo* typeConst;
+    if (typeInfo->isStruct())
+    {
+        auto typeAlias = makeType<TypeInfoAlias>();
+        typeAlias->copyFrom(typeInfo);
+        typeAlias->rawType = typeInfo;
+        typeAlias->flags |= TYPEINFO_CONST | TYPEINFO_FAKE_ALIAS;
+        typeConst = typeAlias;
+    }
+    else
+    {
+        typeConst = typeInfo->clone();
+        typeConst->setConst();
+    }
+
+    return typeConst;
+}
+
 TypeInfoPointer* TypeManager::makePointerTo(TypeInfo* toType, uint64_t ptrFlags)
 {
     ScopedLock lk(mutex);
+
+    auto it = mapPointers.find(toType);
+    if (it != mapPointers.end())
+    {
+        for (auto& it1 : it->second)
+        {
+            if (it1.flags == ptrFlags)
+                return it1.pointerTo;
+        }
+    }
 
     auto ptrType         = makeType<TypeInfoPointer>();
     ptrType->pointedType = toType;
     ptrType->sizeOf      = sizeof(Register);
     ptrType->flags       = ptrFlags;
     ptrType->computeName();
+
+    if (it == mapPointers.end())
+        mapPointers[toType] = {{ptrFlags, ptrType}};
+    else
+        mapPointers[toType].push_back({ptrFlags, ptrType});
+
     return ptrType;
 }
 

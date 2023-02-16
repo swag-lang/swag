@@ -136,6 +136,14 @@ struct TypeManager
 
     Mutex mutex;
 
+    struct PointerCache
+    {
+        uint64_t         flags;
+        TypeInfoPointer* pointerTo;
+    };
+
+    unordered_map<TypeInfo*, vector<PointerCache>> mapPointers;
+
     TypeInfoNative* typeInfoS8        = nullptr;
     TypeInfoNative* typeInfoS16       = nullptr;
     TypeInfoNative* typeInfoS32       = nullptr;
