@@ -244,7 +244,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     else if (name == g_LangSpec->name_opData)
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 1));
-        SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoConstPointers[(int) NativeTypeKind::Void]));
+        SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid, TYPEINFO_CONST)));
     }
     else if (name == g_LangSpec->name_opAssign)
     {

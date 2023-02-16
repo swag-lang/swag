@@ -306,7 +306,7 @@ void TypeInfo::copyFrom(TypeInfo* from)
     declNode     = from->declNode;
     kind         = from->kind;
     nativeType   = from->nativeType;
-    flags        = from->flags & ~TYPEINFO_SHARED;
+    flags        = from->flags;
     sizeOf       = from->sizeOf;
     promotedFrom = from->promotedFrom;
 }

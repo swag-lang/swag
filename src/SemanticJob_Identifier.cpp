@@ -3333,7 +3333,7 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
         {
             SWAG_VERIFY(!ufcsFirstParam, context->report({ufcsFirstParam, Err(Err0873)}));
             context->job->closureFirstParam.kind     = AstNodeKind::FuncCallParam;
-            context->job->closureFirstParam.typeInfo = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
+            context->job->closureFirstParam.typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
             symMatchContext.parameters.push_back(&context->job->closureFirstParam);
             symMatchContext.flags |= SymbolMatchContext::MATCH_CLOSURE_PARAM;
         }

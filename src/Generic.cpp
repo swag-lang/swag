@@ -278,7 +278,7 @@ TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeIn
                 newType->flags |= TYPEINFO_RETURN_BY_COPY | TYPEINFO_CLOSURE;
 
                 auto newParam      = g_TypeMgr->makeParam();
-                newParam->typeInfo = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
+                newParam->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
                 auto newTypeFct    = CastTypeInfo<TypeInfoFuncAttr>(newType, newType->kind);
                 newTypeFct->parameters.push_front(newParam);
             }

@@ -379,27 +379,24 @@ bool SemanticJob::resolveType(SemanticContext* context)
                 ptrFlags |= TYPEINFO_SELF;
             if (typeNode->typeFlags & TYPEFLAG_USING)
                 ptrFlags |= TYPEINFO_HAS_USING;
+            if (isConst)
+                ptrFlags |= TYPEINFO_CONST;
+            if (isArithmetic)
+                ptrFlags |= TYPEINFO_POINTER_ARITHMETIC;
             if (ptrFlags & TYPEINFO_GENERIC)
                 typeNode->flags |= AST_IS_GENERIC;
 
-            auto ptrPointer1 = g_TypeMgr->makePointerTo(firstType, isConst, isArithmetic, ptrFlags);
+            auto ptrPointer1 = g_TypeMgr->makePointerTo(firstType, ptrFlags);
 
             if (ptrPointer)
             {
-                // Be sure we have a unique instance of the type, not a shared predefined one
-                if (ptrPointer->flags & TYPEINFO_SHARED)
-                {
-                    auto newPtr = (TypeInfoPointer*) ptrPointer->clone();
-                    if (typeNode->typeInfo == ptrPointer)
-                        typeNode->typeInfo = newPtr;
-                    ptrPointer = newPtr;
-                }
-
-                ptrPointer->pointedType = ptrPointer1;
-                ptrPointer->forceComputeName();
+                auto newPtr = g_TypeMgr->makePointerTo(ptrPointer1, ptrPointer->flags);
+                if (typeNode->typeInfo == ptrPointer)
+                    typeNode->typeInfo = newPtr;
             }
 
             ptrPointer = ptrPointer1;
+
             if (i == 0)
                 typeNode->typeInfo = ptrPointer;
         }
@@ -508,18 +505,20 @@ bool SemanticJob::resolveType(SemanticContext* context)
     // In fact this is a reference
     if (typeNode->typeFlags & TYPEFLAG_IS_REF)
     {
-        auto typeRef = g_TypeMgr->makePointerTo(typeNode->typeInfo, typeNode->typeFlags & TYPEFLAG_IS_CONST, false, TYPEINFO_POINTER_REF);
-        typeRef->flags |= (typeRef->pointedType->flags & TYPEINFO_GENERIC);
+        auto ptrFlags = TYPEINFO_POINTER_REF;
+        if (typeNode->typeFlags & TYPEFLAG_IS_CONST)
+            ptrFlags |= TYPEINFO_CONST;
+        ptrFlags |= (typeNode->typeInfo->flags & TYPEINFO_GENERIC);
 
         if (typeNode->typeFlags & TYPEFLAG_IS_MOVE_REF)
         {
             auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
             SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, Err(Err0696)}));
-            typeRef->flags |= TYPEINFO_POINTER_MOVE_REF;
+            ptrFlags |= TYPEINFO_POINTER_MOVE_REF;
         }
 
+        auto typeRef       = g_TypeMgr->makePointerTo(typeNode->typeInfo, ptrFlags);
         typeNode->typeInfo = typeRef;
-        typeRef->forceComputeName();
     }
 
     typeNode->allocateComputedValue();

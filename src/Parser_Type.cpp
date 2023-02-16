@@ -109,7 +109,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
         params                   = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
         node->parameters         = params;
         firstAddedType           = Ast::newTypeExpression(sourceFile, params);
-        firstAddedType->typeInfo = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
+        firstAddedType->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
         firstAddedType->flags |= AST_NO_SEMANTIC | AST_GENERATED;
         break;
 

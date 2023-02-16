@@ -240,28 +240,32 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     auto typeInfo = TypeManager::concreteType(expression->typeInfo);
     if (typeInfo->isString())
     {
-        node->typeInfo    = g_TypeMgr->typeInfoConstArithPointers[(int) NativeTypeKind::U8];
+        node->typeInfo    = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoU8, TYPEINFO_CONST | TYPEINFO_POINTER_ARITHMETIC);
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
     }
     else if (typeInfo->isSlice())
     {
-        auto ptrSlice  = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
-        node->typeInfo = g_TypeMgr->makePointerTo(ptrSlice->pointedType, ptrSlice->isConst(), true, 0);
-        node->typeInfo = g_TypeMgr->asPointerArithmetic(node->typeInfo);
+        auto ptrSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+        auto ptrFlags = TYPEINFO_POINTER_ARITHMETIC;
+        if (ptrSlice->isConst())
+            ptrFlags |= TYPEINFO_CONST;
+        node->typeInfo = g_TypeMgr->makePointerTo(ptrSlice->pointedType, ptrFlags);
         node->typeInfo->forceComputeName();
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
     }
     else if (typeInfo->isArray())
     {
-        auto ptrArray  = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        node->typeInfo = g_TypeMgr->makePointerTo(ptrArray->pointedType, ptrArray->isConst(), true, 0);
-        node->typeInfo = g_TypeMgr->asPointerArithmetic(node->typeInfo);
+        auto ptrArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        auto ptrFlags = TYPEINFO_POINTER_ARITHMETIC;
+        if (ptrArray->isConst())
+            ptrFlags |= TYPEINFO_CONST;
+        node->typeInfo = g_TypeMgr->makePointerTo(ptrArray->pointedType, ptrFlags);
         node->typeInfo->forceComputeName();
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
     }
     else if (typeInfo->isAny() || typeInfo->isInterface())
     {
-        node->typeInfo    = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
+        node->typeInfo    = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
     }
     else if (typeInfo->isStruct())
@@ -271,7 +275,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opData, nullptr, nullptr, node, nullptr));
         if (context->result == ContextResult::Pending)
             return true;
-        node->typeInfo = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
+        node->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
         if (!node->byteCodeFct)
             node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
     }

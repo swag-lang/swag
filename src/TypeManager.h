@@ -120,7 +120,6 @@ struct TypeManager
     static bool      promoteOne(SemanticContext* context, AstNode* right);
     static TypeInfo* promoteUntyped(TypeInfo* typeInfo);
     static void      promoteUntypedInteger(AstNode* left, AstNode* right);
-    static TypeInfo* makeConst(TypeInfo* typeInfo);
     static uint64_t  align(uint64_t value, uint32_t align);
     static uint32_t  alignOf(TypeInfo* typeInfo);
     static bool      compareConcreteType(const ExportedTypeInfo* type1, const ExportedTypeInfo* type2);
@@ -130,10 +129,12 @@ struct TypeManager
     static TypeInfo* concreteType(TypeInfo* typeInfo, uint32_t flags = CONCRETE_ALL);
     static TypeInfo* concretePtrRef(TypeInfo* typeInfo);
     static TypeInfo* concretePtrRefCond(TypeInfo* typeInfo, AstNode* node);
-
-    void             registerTypeType();
-    TypeInfoPointer* makePointerTo(TypeInfo* toType, bool isConst, bool isAritmetic, uint64_t ptrFlags);
+    static TypeInfo* makeConst(TypeInfo* typeInfo);
+    TypeInfoPointer* makePointerTo(TypeInfo* toType, uint64_t ptrFlags = 0);
     TypeInfoParam*   makeParam();
+    void             registerTypeType();
+
+    Mutex mutex;
 
     TypeInfoNative* typeInfoS8        = nullptr;
     TypeInfoNative* typeInfoS16       = nullptr;
@@ -152,12 +153,8 @@ struct TypeManager
     TypeInfoNative* typeInfoVoid      = nullptr;
     TypeInfoNative* typeInfoUndefined = nullptr;
 
-    TypeInfoPointer* typeInfoNull                                            = nullptr;
-    TypeInfoPointer* typeInfoCString                                         = nullptr;
-    TypeInfoPointer* typeInfoConstPointers[(int) NativeTypeKind::Count]      = {0};
-    TypeInfoPointer* typeInfoConstArithPointers[(int) NativeTypeKind::Count] = {0};
-    TypeInfoPointer* typeInfoArithPointers[(int) NativeTypeKind::Count]      = {0};
-    TypeInfoPointer* typeInfoPointers[(int) NativeTypeKind::Count]           = {0};
+    TypeInfoPointer* typeInfoNull    = nullptr;
+    TypeInfoPointer* typeInfoCString = nullptr;
 
     TypeInfoPointer*  typeInfoTypeType       = nullptr;
     TypeInfoVariadic* typeInfoVariadic       = nullptr;

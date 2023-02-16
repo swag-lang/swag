@@ -1016,7 +1016,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
         Ast::removeFromParent(v);
         Ast::addChildFront(funcNode->parameters, v);
         v->type           = Ast::newTypeExpression(sourceFile, v, this);
-        v->type->typeInfo = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
+        v->type->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
         v->type->flags |= AST_NO_SEMANTIC;
     }
 
