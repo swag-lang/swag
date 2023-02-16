@@ -4,7 +4,11 @@
 void Tokenizer::doIdentifier(TokenParse& token)
 {
     while (idLetters[curBuffer[0]])
-        readChar();
+    {
+        curBuffer++;
+        location.column++;
+    }
+
     appendTokenName(token);
 
     auto it = g_LangSpec->keywords.find(token.text);

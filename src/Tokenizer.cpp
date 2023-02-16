@@ -128,24 +128,24 @@ bool Tokenizer::doMultiLineComment(TokenParse& token)
     int countEmb = 1;
     while (true)
     {
-        auto nc = readChar();
-        while (nc && nc != '*' && nc != '/')
-            nc = readChar();
+        auto c = readChar();
+        while (c && c != '*' && c != '/')
+            c = readChar();
 
-        if (!nc)
+        if (!c)
         {
             location = token.startLocation;
             location.column += 2;
             return error(token, Err(Tkn0025), Hnt(Hnt0041));
         }
 
-        if (nc == '*')
+        if (c == '*')
         {
             unsigned offset;
-            nc = peekChar(offset);
-            if (nc == '/')
+            c = peekChar(offset);
+            if (c == '/')
             {
-                eatChar(nc, offset);
+                eatChar(c, offset);
                 countEmb--;
                 if (countEmb == 0)
                     return true;
@@ -154,10 +154,10 @@ bool Tokenizer::doMultiLineComment(TokenParse& token)
             continue;
         }
 
-        if (nc == '/')
+        if (c == '/')
         {
-            nc = readChar();
-            if (nc == '*')
+            c = readChar();
+            if (c == '*')
             {
                 countEmb++;
                 continue;

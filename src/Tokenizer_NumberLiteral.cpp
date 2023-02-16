@@ -40,15 +40,15 @@ bool Tokenizer::doBinLiteral(TokenParse& token)
     {
         token.startLocation = location;
         token.text          = c;
-        SWAG_CHECK(error(token, Fmt(Err(Tkn0003), token.ctext())));
+        return error(token, Fmt(Err(Tkn0003), token.ctext()));
     }
 
     // Be sure we don't have 0x without nothing
     if (rank == 0)
-        SWAG_CHECK(error(token, Err(Tkn0001)));
+        return error(token, Err(Tkn0001));
     // Be sure we don't have a number with a separator at its end
     if (!acceptSep)
-        SWAG_CHECK(error(token, Err(Tkn0021)));
+        return error(token, Err(Tkn0021));
 
     // Type
     token.id = TokenId::LiteralNumber;
@@ -103,15 +103,15 @@ bool Tokenizer::doHexLiteral(TokenParse& token)
     {
         token.startLocation = location;
         token.text          = c;
-        SWAG_CHECK(error(token, Fmt(Err(Tkn0004), token.ctext())));
+        return error(token, Fmt(Err(Tkn0004), token.ctext()));
     }
 
     // Be sure we don't have 0x without nothing
     if (rank == 0)
-        SWAG_CHECK(error(token, Err(Tkn0007)));
+        return error(token, Err(Tkn0007));
     // Be sure we don't have a number with a separator at its end
     if (!acceptSep)
-        SWAG_CHECK(error(token, Err(Tkn0021)));
+        return error(token, Err(Tkn0021));
 
     // Type
     token.id = TokenId::LiteralNumber;
@@ -163,7 +163,7 @@ bool Tokenizer::doFloatLiteral(TokenParse& token, uint32_t c)
 
     // Be sure we don't have a number with a separator at its end
     if (!acceptSep)
-        SWAG_CHECK(error(token, Err(Tkn0021)));
+        return error(token, Err(Tkn0021));
 
     return true;
 }
@@ -207,7 +207,7 @@ bool Tokenizer::doIntLiteral(TokenParse& token, uint32_t c)
 
     // Be sure we don't have a number with a separator at its end
     if (!acceptSep)
-        SWAG_CHECK(error(token, Err(Tkn0021)));
+        return error(token, Err(Tkn0021));
 
     return true;
 }
