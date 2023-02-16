@@ -908,14 +908,8 @@ bool Parser::doTopLevelInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doCompilerForeignLib(parent, result));
         break;
     case TokenId::Identifier:
-    {
-        AstNode* identifierRef = nullptr;
-        SWAG_CHECK(doIdentifierRef(parent, &identifierRef));
-        identifierRef->flags |= AST_GLOBAL_CALL;
-        if (result)
-            *result = identifierRef;
+        SWAG_CHECK(doIdentifierRef(parent, result, IDENTIFIER_GLOBAL));
         break;
-    }
 
     default:
         return invalidTokenError(InvalidTokenError::TopLevelInstruction);

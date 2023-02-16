@@ -140,11 +140,7 @@ bool Parser::doEnumContent(AstNode* parent, AstNode** result)
 
         if (isFunc)
         {
-            AstNode* idRef = nullptr;
-            SWAG_CHECK(doIdentifierRef(parent, &idRef));
-            if (result)
-                *result = idRef;
-            idRef->flags |= AST_GLOBAL_CALL;
+            SWAG_CHECK(doIdentifierRef(parent, result, IDENTIFIER_GLOBAL));
         }
         else
         {

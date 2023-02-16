@@ -652,11 +652,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         {
             ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
             parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;
-            AstNode* idRef = nullptr;
-            SWAG_CHECK(doIdentifierRef(parent, &idRef));
-            if (result)
-                *result = idRef;
-            idRef->flags |= AST_GLOBAL_CALL;
+            SWAG_CHECK(doIdentifierRef(parent, result, IDENTIFIER_GLOBAL));
         }
         else
         {

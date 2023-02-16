@@ -1008,7 +1008,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     // Global identifier call. Must be a call to a mixin function, that's it...
     auto idRef = identifier->identifierRef();
-    if (idRef && idRef->flags & AST_GLOBAL_CALL)
+    if (idRef && idRef->specFlags & AST_SPEC_IDENTIFIERREF_GLOBAL)
     {
         if (identifier->callParameters)
             return context->report({identifier, identifier->token, Fmt(Err(Err0087), identifier->token.ctext(), Naming::aKindName(symbolKind).c_str())});
