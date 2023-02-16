@@ -8,7 +8,6 @@
 #include "Report.h"
 #include "ErrorIds.h"
 #include "Workspace.h"
-#include "ByteCode.h"
 
 BackendFunctionBodyJobBase* BackendX64::newFunctionJob()
 {

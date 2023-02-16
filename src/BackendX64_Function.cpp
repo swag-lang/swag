@@ -2,11 +2,9 @@
 #include "BackendX64.h"
 #include "BackendX64_Macros.h"
 #include "ByteCodeGenJob.h"
-#include "ErrorIds.h"
 #include "Report.h"
 #include "TypeManager.h"
 #include "LanguageSpec.h"
-#include "Diagnostic.h"
 #include "ByteCode.h"
 #include "Module.h"
 

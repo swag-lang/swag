@@ -1,10 +1,7 @@
 #include "pch.h"
 #include "BackendX64FunctionBodyJob.h"
 #include "BackendX64.h"
-#include "Workspace.h"
 #include "ByteCode.h"
-#include "Ast.h"
-#include "ThreadManager.h"
 #include "Module.h"
 #include "Timer.h"
 
