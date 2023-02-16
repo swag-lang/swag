@@ -415,6 +415,7 @@
     <ClCompile Include="../src/SwagScope.cpp" />
     <ClCompile Include="../src/SymTable.cpp" />
     <ClCompile Include="..\src\SemanticJob_Warn.cpp" />
+    <ClCompile Include="..\src\Tokenizer_Comment.cpp" />
     <ClCompile Include="..\src\Tokenizer_Identifier.cpp" />
     <ClCompile Include="..\src\Tokenizer_NumberLiteral.cpp" />
     <ClCompile Include="../src/Log.cpp" />

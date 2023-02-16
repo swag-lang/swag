@@ -533,6 +533,9 @@
     <ClCompile Include="../src/Stats.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Tokenizer_Comment.cpp">
+      <Filter>Syntax\Tokenizer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
