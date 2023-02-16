@@ -3592,15 +3592,6 @@ bool TypeManager::compareConcreteType(const ExportedTypeInfo* type1, const Expor
     return !memcmp(type1->fullName.buffer, type2->fullName.buffer, type1->fullName.count);
 }
 
-TypeInfo* TypeManager::asPointerArithmetic(TypeInfo* typeInfo)
-{
-    if (!typeInfo->isPointer())
-        return typeInfo;
-    typeInfo = typeInfo->clone();
-    typeInfo->flags |= TYPEINFO_POINTER_ARITHMETIC;
-    return typeInfo;
-}
-
 TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, uint32_t flags)
 {
     if (!typeInfo)

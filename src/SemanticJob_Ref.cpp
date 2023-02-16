@@ -154,8 +154,8 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     node->byteCodeFct        = ByteCodeGenJob::emitMakePointer;
 
     // A new pointer
-    bool             forceConst = false;
-    TypeInfoPointer* ptrType    = makeType<TypeInfoPointer>();
+    bool     forceConst = false;
+    uint64_t ptrFlags   = 0;
 
     // Transform a reference pointer to a pointer to the pointed value
     if (typeInfo->isPointerRef())
@@ -177,11 +177,8 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
             typeInfo       = typeArray->pointedType;
         }
 
-        ptrType = CastTypeInfo<TypeInfoPointer>(g_TypeMgr->asPointerArithmetic(ptrType), TypeInfoKind::Pointer);
+        ptrFlags |= TYPEINFO_POINTER_ARITHMETIC;
     }
-
-    ptrType->pointedType = typeInfo;
-    ptrType->sizeOf      = sizeof(void*);
 
     // :PointerArithmetic
     // Taking the address of an array element is ok for pointer arithmetic
@@ -189,17 +186,17 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     {
         auto last = child->childs.back();
         if (last->kind == AstNodeKind::ArrayPointerIndex)
-            ptrType = (TypeInfoPointer*) g_TypeMgr->asPointerArithmetic(ptrType);
+            ptrFlags |= TYPEINFO_POINTER_ARITHMETIC;
     }
-
-    ptrType->computeName();
 
     // Taking the address of a const is const
     if (child->flags & AST_IS_CONST || forceConst)
-        ptrType->setConst();
+    {
+        ptrFlags |= TYPEINFO_CONST;
+    }
 
     // Type is constant if we take address of a readonly variable
-    if (child->resolvedSymbolOverload && !child->typeInfo->isPointerRef())
+    else if (child->resolvedSymbolOverload && !child->typeInfo->isPointerRef())
     {
         auto typeResolved = TypeManager::concreteType(child->resolvedSymbolOverload->typeInfo, CONCRETE_ALIAS);
 
@@ -207,24 +204,26 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
             !typeResolved->isArray() &&
             !typeResolved->isSlice())
         {
-            ptrType->setConst();
+            ptrFlags |= TYPEINFO_CONST;
         }
-
-        if (typeResolved->isConst() && typeResolved->isSlice())
-            ptrType->setConst();
+        else if (typeResolved->isConst() && typeResolved->isSlice())
+        {
+            ptrFlags |= TYPEINFO_CONST;
+        }
         else if (node->flags & AST_IS_CONST)
-            ptrType->setConst();
+        {
+            ptrFlags |= TYPEINFO_CONST;
+        }
     }
-
-    node->typeInfo = ptrType;
 
     // Transform pointer to a reference
     if (node->specFlags & AST_SPEC_MAKEPOINTER_TOREF)
     {
-        ptrType->flags |= TYPEINFO_POINTER_REF;
-        ptrType->forceComputeName();
+        ptrFlags |= TYPEINFO_POINTER_REF;
     }
 
+    auto ptrType   = g_TypeMgr->makePointerTo(typeInfo, ptrFlags);
+    node->typeInfo = ptrType;
     return true;
 }
 
