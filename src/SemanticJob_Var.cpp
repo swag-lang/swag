@@ -191,7 +191,7 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
 
         if (autoName)
         {
-            typeParam->flags |= TYPEINFO_AUTO_NAME;
+            typeParam->flags |= TYPEINFOPARAM_AUTO_NAME;
         }
 
         paramNode->type = convertTypeToTypeExpression(context, paramNode, subAffect, childType, !(assignment->specFlags & AST_SPEC_EXPRLIST_FOR_CAPTURE));

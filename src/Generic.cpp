@@ -34,7 +34,7 @@ bool Generic::updateGenericParameters(SemanticContext*              context,
                     param->allocateComputedValue();
                     *param->value = *genParam->computedValue;
                     if ((genParam->flags & AST_VALUE_COMPUTED) && !(genParam->flags & AST_VALUE_IS_TYPEINFO))
-                        param->flags |= TYPEINFO_DEFINED_VALUE;
+                        param->flags |= TYPEINFOPARAM_DEFINED_VALUE;
                 }
             }
 
@@ -61,7 +61,7 @@ bool Generic::updateGenericParameters(SemanticContext*              context,
         auto it1 = match.genericReplaceValues.find(param->name);
         if (it1 != match.genericReplaceValues.end())
         {
-            param->flags |= TYPEINFO_DEFINED_VALUE;
+            param->flags |= TYPEINFOPARAM_DEFINED_VALUE;
             param->allocateComputedValue();
             *param->value = *it1->second.first;
         }

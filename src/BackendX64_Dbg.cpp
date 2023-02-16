@@ -659,7 +659,7 @@ void BackendX64::dbgRecordFields(X64Gen& pp, DbgTypeRecord* tr, TypeInfoStruct* 
         field.value.reg.u32 = baseOffset + p->offset;
         tr->LF_FieldList.fields.push_back(field);
 
-        if (p->flags & TYPEINFO_HAS_USING && p->typeInfo->isStruct())
+        if (p->flags & TYPEINFOPARAM_HAS_USING && p->typeInfo->isStruct())
         {
             auto typeStructField = CastTypeInfo<TypeInfoStruct>(p->typeInfo, TypeInfoKind::Struct);
             dbgRecordFields(pp, tr, typeStructField, baseOffset + p->offset);

@@ -534,7 +534,7 @@ static void computeNameGenericParameters(VectorNative<TypeInfoParam*>& genericPa
             resName += ", ";
 
         auto genParam = genericParameters[i];
-        if (genParam->flags & TYPEINFO_DEFINED_VALUE)
+        if (genParam->flags & TYPEINFOPARAM_DEFINED_VALUE)
         {
             SWAG_ASSERT(genParam->typeInfo);
             SWAG_ASSERT(genParam->value);
@@ -1031,7 +1031,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t castFlags)
                     continue;
             }
 
-            if (myGenParam->flags & TYPEINFO_DEFINED_VALUE || otherGenParam->flags & TYPEINFO_DEFINED_VALUE)
+            if (myGenParam->flags & TYPEINFOPARAM_DEFINED_VALUE || otherGenParam->flags & TYPEINFOPARAM_DEFINED_VALUE)
             {
                 SemanticContext cxt;
                 if (!TypeManager::makeCompatibles(&cxt, otherGenParam->typeInfo, myGenParam->typeInfo, nullptr, nullptr, CASTFLAG_JUST_CHECK | CASTFLAG_COMMUTATIVE))
@@ -1132,7 +1132,7 @@ void TypeInfoStruct::computeWhateverName(Utf8& resName, uint32_t nameType)
             auto p = fields[i];
             if (i)
                 resName += ", ";
-            if (!p->name.empty() && !(p->flags & TYPEINFO_AUTO_NAME))
+            if (!p->name.empty() && !(p->flags & TYPEINFOPARAM_AUTO_NAME))
             {
                 resName += p->name;
                 resName += ": ";

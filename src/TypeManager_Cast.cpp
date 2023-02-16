@@ -2167,7 +2167,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
         TypeInfoStruct* foundStruct = nullptr;
         for (auto field : it.typeStruct->fields)
         {
-            if (!(field->flags & TYPEINFO_HAS_USING))
+            if (!(field->flags & TYPEINFOPARAM_HAS_USING))
                 continue;
 
             TypeInfoStruct* typeStruct = nullptr;
@@ -2257,7 +2257,7 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
 
         for (auto field : it.typeStruct->fields)
         {
-            if (!(field->flags & TYPEINFO_HAS_USING))
+            if (!(field->flags & TYPEINFOPARAM_HAS_USING))
                 continue;
             if (!field->typeInfo->isStruct())
                 continue;

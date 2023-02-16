@@ -488,10 +488,10 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         TypeInfoParam* typeParam = nullptr;
         if (!(node->flags & AST_FROM_GENERIC))
         {
-            typeParam             = g_TypeMgr->makeParam();
-            typeParam->name = child->token.text;
-            typeParam->offset     = storageOffset;
-            typeParam->declNode   = child;
+            typeParam           = g_TypeMgr->makeParam();
+            typeParam->name     = child->token.text;
+            typeParam->offset   = storageOffset;
+            typeParam->declNode = child;
             SWAG_CHECK(collectAttributes(context, child, &typeParam->attributes));
             typeITable->fields.push_back(typeParam);
 
@@ -761,9 +761,9 @@ bool SemanticJob::preResolveStructContent(SemanticContext* context)
         {
             for (auto param : node->genericParameters->childs)
             {
-                auto funcParam        = g_TypeMgr->makeParam();
-                funcParam->name = param->token.text;
-                funcParam->typeInfo   = param->typeInfo;
+                auto funcParam      = g_TypeMgr->makeParam();
+                funcParam->name     = param->token.text;
+                funcParam->typeInfo = param->typeInfo;
                 typeInfo->genericParameters.push_back(funcParam);
                 typeInfo->sizeOf += param->typeInfo->sizeOf;
             }
@@ -974,12 +974,12 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         TypeInfoParam* typeParam = nullptr;
         if (!(node->flags & AST_FROM_GENERIC) || !(child->semFlags & AST_SEM_STRUCT_REGISTERED))
         {
-            typeParam             = g_TypeMgr->makeParam();
-            typeParam->name = child->token.text;
-            typeParam->typeInfo   = child->typeInfo;
-            typeParam->offset     = storageOffset;
+            typeParam           = g_TypeMgr->makeParam();
+            typeParam->name     = child->token.text;
+            typeParam->typeInfo = child->typeInfo;
+            typeParam->offset   = storageOffset;
             if (varDecl->flags & AST_DECL_USING)
-                typeParam->flags |= TYPEINFO_HAS_USING;
+                typeParam->flags |= TYPEINFOPARAM_HAS_USING;
             SWAG_CHECK(collectAttributes(context, child, &typeParam->attributes));
             if (child->kind == AstNodeKind::VarDecl)
                 typeInfo->fields.push_back(typeParam);
@@ -1214,7 +1214,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         }
         else
         {
-            typeParam->flags |= TYPEINFO_AUTO_NAME;
+            typeParam->flags |= TYPEINFOPARAM_AUTO_NAME;
         }
 
         storageIndexField++;

@@ -953,7 +953,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
         else if (myTypeInfo->isGeneric() ||
                  symbolParameter->typeInfo->isStruct() ||
                  callParameter->typeInfo->isAlias() ||
-                 !(symbolParameter->flags & TYPEINFO_DEFINED_VALUE) ||
+                 !(symbolParameter->flags & TYPEINFOPARAM_DEFINED_VALUE) ||
                  (SemanticJob::valueEqualsTo(symbolParameter->value, callParameter)))
         {
             auto it = context.genericReplaceTypes.find(symbolParameter->typeInfo->name);

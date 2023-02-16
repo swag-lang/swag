@@ -413,7 +413,7 @@ bool SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfo
         // Struct in using hierarchy
         for (auto field : leftStruct->fields)
         {
-            if (!(field->flags & TYPEINFO_HAS_USING))
+            if (!(field->flags & TYPEINFOPARAM_HAS_USING))
                 continue;
             auto typeS = field->typeInfo->getStructOrPointedStruct();
             if (!typeS)
