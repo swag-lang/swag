@@ -217,7 +217,7 @@ void SemanticJob::forceConstType(SemanticContext* context, AstTypeExpression* no
         if (node->typeFlags & TYPEFLAG_FORCE_CONST)
             node->typeFlags |= TYPEFLAG_IS_CONST;
         if (node->typeFlags & TYPEFLAG_IS_CONST)
-            node->typeInfo = TypeManager::makeConst(node->typeInfo);
+            node->typeInfo = g_TypeMgr->makeConst(node->typeInfo);
     }
 }
 

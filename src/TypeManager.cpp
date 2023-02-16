@@ -517,26 +517,31 @@ void TypeManager::registerTypeType()
 
 TypeInfo* TypeManager::makeConst(TypeInfo* typeInfo)
 {
-    ScopedLock lk(typeInfo->mutex);
     if (typeInfo->isConst())
         return typeInfo;
 
-    TypeInfo* typeConst;
+    ScopedLock lk(mutex);
+
+    auto it = mapConst.find(typeInfo);
+    if (it != mapConst.end())
+        return it->second;
+
     if (typeInfo->isStruct())
     {
         auto typeAlias = makeType<TypeInfoAlias>();
         typeAlias->copyFrom(typeInfo);
         typeAlias->rawType = typeInfo;
         typeAlias->flags |= TYPEINFO_CONST | TYPEINFO_FAKE_ALIAS;
-        typeConst = typeAlias;
+        mapConst[typeInfo] = typeAlias;
+        return typeAlias;
     }
     else
     {
-        typeConst = typeInfo->clone();
+        auto typeConst = typeInfo->clone();
         typeConst->setConst();
+        mapConst[typeInfo] = typeConst;
+        return typeConst;
     }
-
-    return typeConst;
 }
 
 TypeInfoPointer* TypeManager::makePointerTo(TypeInfo* toType, uint64_t ptrFlags)

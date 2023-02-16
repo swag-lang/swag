@@ -796,7 +796,7 @@ bool SemanticJob::resolveIntrinsicLocation(SemanticContext* context)
 {
     auto node      = context->node;
     auto locNode   = node->childs.front();
-    node->typeInfo = TypeManager::makeConst(g_Workspace->swagScope.regTypeInfoSourceLoc);
+    node->typeInfo = g_TypeMgr->makeConst(g_Workspace->swagScope.regTypeInfoSourceLoc);
 
     if (locNode->isValidIfParam(locNode->resolvedSymbolOverload))
     {
@@ -926,7 +926,7 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         return true;
 
     case TokenId::CompilerLocation:
-        node->typeInfo = TypeManager::makeConst(g_Workspace->swagScope.regTypeInfoSourceLoc);
+        node->typeInfo = g_TypeMgr->makeConst(g_Workspace->swagScope.regTypeInfoSourceLoc);
         node->setFlagsValueIsComputed();
         ByteCodeGenJob::computeSourceLocation(context, node, &node->computedValue->storageOffset, &node->computedValue->storageSegment);
         SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));

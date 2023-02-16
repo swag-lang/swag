@@ -1163,7 +1163,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         {
             if (node->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
             {
-                node->typeInfo = TypeManager::makeConst(node->typeInfo);
+                node->typeInfo = g_TypeMgr->makeConst(node->typeInfo);
             }
         }
     }
