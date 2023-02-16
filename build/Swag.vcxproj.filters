@@ -536,6 +536,9 @@
     <ClCompile Include="../src/SyntaxJob.cpp">
       <Filter>Syntax</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\SymTableHash.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
@@ -850,6 +853,9 @@
     </ClInclude>
     <ClInclude Include="../src/SyntaxJob.h">
       <Filter>Syntax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SymTableHash.h">
+      <Filter>Semantic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
