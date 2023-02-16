@@ -619,7 +619,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     case TokenId::IntrinsicGetContext:
     {
         node->resultRegisterRC = reserveRegisterRC(context);
-        SWAG_ASSERT(node->identifierRef == node->parent);
+        SWAG_ASSERT(node->identifierRef() == node->parent);
         node->identifierRef()->resultRegisterRC = node->resultRegisterRC;
         node->parent->resultRegisterRC          = node->resultRegisterRC;
         emitInstruction(context, ByteCodeOp::IntrinsicGetContext, node->resultRegisterRC);
@@ -635,7 +635,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     case TokenId::IntrinsicGetProcessInfos:
     {
         node->resultRegisterRC = reserveRegisterRC(context);
-        SWAG_ASSERT(node->identifierRef == node->parent);
+        SWAG_ASSERT(node->identifierRef() == node->parent);
         node->identifierRef()->resultRegisterRC = node->resultRegisterRC;
         node->parent->resultRegisterRC          = node->resultRegisterRC;
         emitInstruction(context, ByteCodeOp::IntrinsicGetProcessInfos, node->resultRegisterRC);

@@ -2685,6 +2685,8 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
             break;
         if (parent->kind == AstNodeKind::SwitchCaseBlock)
             break;
+        if (parent->kind == AstNodeKind::Module)
+            break;
 
         for (auto c : parent->childs)
         {
