@@ -287,7 +287,7 @@ bool SemanticJob::createTmpVarStruct(SemanticContext* context, AstIdentifier* id
     if (!(identifier->callParameters->flags & AST_CALL_FOR_STRUCT))
         return context->report({callP, Fmt(Err(Syn0128), identifier->typeInfo->name.c_str())});
 
-    auto varParent = identifier->identifierRef->parent;
+    auto varParent = identifier->identifierRef()->parent;
     while (varParent->kind == AstNodeKind::ExpressionList)
         varParent = varParent->parent;
 
@@ -314,7 +314,7 @@ bool SemanticJob::createTmpVarStruct(SemanticContext* context, AstIdentifier* id
     CloneContext cloneContext;
     cloneContext.parent     = typeNode;
     cloneContext.cloneFlags = CLONE_RAW;
-    typeNode->identifier    = identifier->identifierRef->clone(cloneContext);
+    typeNode->identifier    = identifier->identifierRef()->clone(cloneContext);
     auto back               = CastAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
     back->flags &= ~AST_NO_BYTECODE;
     back->flags |= AST_IN_TYPE_VAR_DECLARATION;
@@ -331,7 +331,7 @@ bool SemanticJob::createTmpVarStruct(SemanticContext* context, AstIdentifier* id
         typeNode->typeFlags |= TYPEFLAG_RETVAL;
 
     // And make a reference to that variable
-    auto identifierRef = identifier->identifierRef;
+    auto identifierRef = identifier->identifierRef();
     identifierRef->childs.clear();
     auto idNode = Ast::newIdentifier(sourceFile, varNode->token.text, identifierRef, identifierRef);
     idNode->flags |= AST_R_VALUE | AST_TRANSIENT;
@@ -737,7 +737,7 @@ static bool isStatementIdentifier(AstIdentifier* identifier)
     if (identifier->token.text.empty())
         return false;
 
-    auto checkParent = identifier->identifierRef->parent;
+    auto checkParent = identifier->identifierRef()->parent;
     if (checkParent->kind == AstNodeKind::Try ||
         checkParent->kind == AstNodeKind::Catch ||
         checkParent->kind == AstNodeKind::TryCatch ||
@@ -752,11 +752,11 @@ static bool isStatementIdentifier(AstIdentifier* identifier)
         checkParent->kind == AstNodeKind::SwitchCaseBlock)
     {
         // If this is the last identifier
-        if (identifier->childParentIdx == identifier->identifierRef->childs.size() - 1)
+        if (identifier->childParentIdx == identifier->identifierRef()->childs.size() - 1)
             return true;
 
         // If this is not the last identifier, and it's not a function call
-        auto back = identifier->identifierRef->childs.back();
+        auto back = identifier->identifierRef()->childs.back();
         if (back->kind == AstNodeKind::Identifier && !((AstIdentifier*) back)->callParameters)
             return true;
     }
@@ -1007,7 +1007,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     }
 
     // Global identifier call. Must be a call to a mixin function, that's it...
-    if (identifier->identifierRef && identifier->identifierRef->flags & AST_GLOBAL_CALL)
+    auto idRef = identifier->identifierRef();
+    if (idRef && idRef->flags & AST_GLOBAL_CALL)
     {
         if (identifier->callParameters)
             return context->report({identifier, identifier->token, Fmt(Err(Err0087), identifier->token.ctext(), Naming::aKindName(symbolKind).c_str())});
@@ -1149,9 +1150,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         // wait for the struct container to be solved. We do not want the semantic to continue with
         // an unsolved struct, because that means that storageOffset has not been computed yet
         // (and in some cases we can go to the bytecode generation with the struct not solved).
-        if (overload->flags & OVERLOAD_VAR_STRUCT && identifier->identifierRef->startScope)
+        if (overload->flags & OVERLOAD_VAR_STRUCT && identifier->identifierRef()->startScope)
         {
-            auto parentStructNode = identifier->identifierRef->startScope->owner;
+            auto parentStructNode = identifier->identifierRef()->startScope->owner;
             context->job->waitOverloadCompleted(parentStructNode->resolvedSymbolOverload);
             if (context->result == ContextResult::Pending)
                 return true;
@@ -1292,7 +1293,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         // Be sure that we didn't use a variable as a 'scope'
         if (identifier->childParentIdx)
         {
-            auto prev = identifier->identifierRef->childs[identifier->childParentIdx - 1];
+            auto prev = identifier->identifierRef()->childs[identifier->childParentIdx - 1];
             if (prev->resolvedSymbolName && prev->resolvedSymbolName->kind == SymbolKind::Variable && !(prev->flags & AST_FROM_UFCS))
             {
                 return context->report({prev, Fmt(Err(Err0097), Naming::kindName(prev->resolvedSymbolOverload->node).c_str(), prev->token.ctext(), identifier->token.ctext()), Hnt(Hnt0026)});
@@ -1586,8 +1587,8 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
     if (node->kind == AstNodeKind::Identifier)
     {
         auto identifier = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
-        if (identifier->identifierRef->startScope)
-            toCheck.push_back(identifier->identifierRef->startScope->owner);
+        if (identifier->identifierRef()->startScope)
+            toCheck.push_back(identifier->identifierRef()->startScope->owner);
     }
 
     // Except that with using, B could be in fact in another struct than A.
@@ -1633,7 +1634,7 @@ bool SemanticJob::isFunctionButNotACall(SemanticContext* context, AstNode* node,
     if (node && node->kind == AstNodeKind::Identifier)
     {
         id = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
-        if (id != id->identifierRef->childs.back())
+        if (id != id->identifierRef()->childs.back())
             return false;
     }
 
@@ -4043,7 +4044,7 @@ bool SemanticJob::solveValidIf(SemanticContext* context, OneMatch* oneMatch, Ast
 bool SemanticJob::filterSymbols(SemanticContext* context, AstIdentifier* node)
 {
     auto  job              = context->job;
-    auto  identifierRef    = node->identifierRef;
+    auto  identifierRef    = node->identifierRef();
     auto& dependentSymbols = job->cacheDependentSymbols;
 
     if (dependentSymbols.size() == 1)
@@ -4188,7 +4189,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
     auto& scopeHierarchy     = job->cacheScopeHierarchy;
     auto& scopeHierarchyVars = job->cacheScopeHierarchyVars;
     auto& dependentSymbols   = job->cacheDependentSymbols;
-    auto  identifierRef      = node->identifierRef;
+    auto  identifierRef      = node->identifierRef();
 
     node->byteCodeFct = ByteCodeGenJob::emitIdentifier;
 
@@ -4285,7 +4286,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
         }
 
         // In case identifier is part of a reference, need to initialize it
-        if (!needToWait && node != node->identifierRef->childs.back())
+        if (!needToWait && node != node->identifierRef()->childs.back())
             SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
 
         return true;

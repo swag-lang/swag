@@ -602,17 +602,17 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     }
     case TokenId::IntrinsicDbgAlloc:
     {
-        node->resultRegisterRC                = reserveRegisterRC(context);
-        node->identifierRef->resultRegisterRC = node->resultRegisterRC;
-        node->parent->resultRegisterRC        = node->resultRegisterRC;
+        node->resultRegisterRC                  = reserveRegisterRC(context);
+        node->identifierRef()->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC          = node->resultRegisterRC;
         emitInstruction(context, ByteCodeOp::IntrinsicDbgAlloc, node->resultRegisterRC);
         break;
     }
     case TokenId::IntrinsicSysAlloc:
     {
-        node->resultRegisterRC                = reserveRegisterRC(context);
-        node->identifierRef->resultRegisterRC = node->resultRegisterRC;
-        node->parent->resultRegisterRC        = node->resultRegisterRC;
+        node->resultRegisterRC                  = reserveRegisterRC(context);
+        node->identifierRef()->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC          = node->resultRegisterRC;
         emitInstruction(context, ByteCodeOp::IntrinsicSysAlloc, node->resultRegisterRC);
         break;
     }
@@ -620,8 +620,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     {
         node->resultRegisterRC = reserveRegisterRC(context);
         SWAG_ASSERT(node->identifierRef == node->parent);
-        node->identifierRef->resultRegisterRC = node->resultRegisterRC;
-        node->parent->resultRegisterRC        = node->resultRegisterRC;
+        node->identifierRef()->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC          = node->resultRegisterRC;
         emitInstruction(context, ByteCodeOp::IntrinsicGetContext, node->resultRegisterRC);
         break;
     }
@@ -636,8 +636,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     {
         node->resultRegisterRC = reserveRegisterRC(context);
         SWAG_ASSERT(node->identifierRef == node->parent);
-        node->identifierRef->resultRegisterRC = node->resultRegisterRC;
-        node->parent->resultRegisterRC        = node->resultRegisterRC;
+        node->identifierRef()->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC          = node->resultRegisterRC;
         emitInstruction(context, ByteCodeOp::IntrinsicGetProcessInfos, node->resultRegisterRC);
         break;
     }
@@ -672,9 +672,9 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     }
     case TokenId::IntrinsicIsByteCode:
     {
-        node->resultRegisterRC                = reserveRegisterRC(context);
-        node->identifierRef->resultRegisterRC = node->resultRegisterRC;
-        node->parent->resultRegisterRC        = node->resultRegisterRC;
+        node->resultRegisterRC                  = reserveRegisterRC(context);
+        node->identifierRef()->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC          = node->resultRegisterRC;
         emitInstruction(context, ByteCodeOp::IntrinsicIsByteCode, node->resultRegisterRC);
         break;
     }
@@ -872,12 +872,12 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     case TokenId::IntrinsicPow:
     case TokenId::IntrinsicATan2:
     {
-        node->resultRegisterRC                = reserveRegisterRC(context);
-        node->identifierRef->resultRegisterRC = node->resultRegisterRC;
-        node->parent->resultRegisterRC        = node->resultRegisterRC;
-        auto child0                           = callParams->childs[0];
-        auto child1                           = callParams->childs[1];
-        auto typeInfo                         = TypeManager::concreteType(child0->typeInfo);
+        node->resultRegisterRC                  = reserveRegisterRC(context);
+        node->identifierRef()->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC          = node->resultRegisterRC;
+        auto child0                             = callParams->childs[0];
+        auto child1                             = callParams->childs[1];
+        auto typeInfo                           = TypeManager::concreteType(child0->typeInfo);
         SWAG_ASSERT(typeInfo->isNative());
         ByteCodeOp op = ByteCodeOp::End;
         switch (typeInfo->nativeType)
@@ -903,11 +903,11 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     case TokenId::IntrinsicBitCountTz:
     case TokenId::IntrinsicBitCountLz:
     {
-        node->resultRegisterRC                = reserveRegisterRC(context);
-        node->identifierRef->resultRegisterRC = node->resultRegisterRC;
-        node->parent->resultRegisterRC        = node->resultRegisterRC;
-        auto child                            = callParams->childs[0];
-        auto typeInfo                         = TypeManager::concreteType(child->typeInfo);
+        node->resultRegisterRC                  = reserveRegisterRC(context);
+        node->identifierRef()->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC          = node->resultRegisterRC;
+        auto child                              = callParams->childs[0];
+        auto typeInfo                           = TypeManager::concreteType(child->typeInfo);
         SWAG_ASSERT(typeInfo->isNative());
         ByteCodeOp op = ByteCodeOp::End;
         switch (typeInfo->nativeType)
@@ -936,11 +936,11 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
 
     case TokenId::IntrinsicByteSwap:
     {
-        node->resultRegisterRC                = reserveRegisterRC(context);
-        node->identifierRef->resultRegisterRC = node->resultRegisterRC;
-        node->parent->resultRegisterRC        = node->resultRegisterRC;
-        auto child                            = callParams->childs[0];
-        auto typeInfo                         = TypeManager::concreteType(child->typeInfo);
+        node->resultRegisterRC                  = reserveRegisterRC(context);
+        node->identifierRef()->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC          = node->resultRegisterRC;
+        auto child                              = callParams->childs[0];
+        auto typeInfo                           = TypeManager::concreteType(child->typeInfo);
         SWAG_ASSERT(typeInfo->isNative());
         ByteCodeOp op = ByteCodeOp::End;
         switch (typeInfo->nativeType)
@@ -967,12 +967,12 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     case TokenId::IntrinsicMin:
     case TokenId::IntrinsicMax:
     {
-        node->resultRegisterRC                = reserveRegisterRC(context);
-        node->identifierRef->resultRegisterRC = node->resultRegisterRC;
-        node->parent->resultRegisterRC        = node->resultRegisterRC;
-        auto child0                           = callParams->childs[0];
-        auto child1                           = callParams->childs[1];
-        auto typeInfo                         = TypeManager::concreteType(child0->typeInfo);
+        node->resultRegisterRC                  = reserveRegisterRC(context);
+        node->identifierRef()->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC          = node->resultRegisterRC;
+        auto child0                             = callParams->childs[0];
+        auto child1                             = callParams->childs[1];
+        auto typeInfo                           = TypeManager::concreteType(child0->typeInfo);
         SWAG_ASSERT(typeInfo->isNative());
         ByteCodeOp op = ByteCodeOp::End;
         switch (typeInfo->nativeType)
@@ -1039,11 +1039,11 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     case TokenId::IntrinsicExp:
     case TokenId::IntrinsicExp2:
     {
-        node->resultRegisterRC                = reserveRegisterRC(context);
-        node->identifierRef->resultRegisterRC = node->resultRegisterRC;
-        node->parent->resultRegisterRC        = node->resultRegisterRC;
-        auto child                            = callParams->childs[0];
-        auto typeInfo                         = TypeManager::concreteType(child->typeInfo);
+        node->resultRegisterRC                  = reserveRegisterRC(context);
+        node->identifierRef()->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC          = node->resultRegisterRC;
+        auto child                              = callParams->childs[0];
+        auto typeInfo                           = TypeManager::concreteType(child->typeInfo);
         SWAG_ASSERT(typeInfo->isNative());
         ByteCodeOp op = ByteCodeOp::End;
         switch (typeInfo->nativeType)

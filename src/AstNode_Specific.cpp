@@ -541,6 +541,21 @@ AstNode* AstIdentifierRef::clone(CloneContext& context)
     return newNode;
 }
 
+AstIdentifierRef* AstIdentifier::identifierRef()
+{
+    if (parent->kind == AstNodeKind::IdentifierRef)
+        return CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
+
+    auto check = parent;
+    while (check->kind != AstNodeKind::IdentifierRef)
+    {
+        check = check->parent;
+        SWAG_ASSERT(check);
+    }
+
+    return CastAst<AstIdentifierRef>(check, AstNodeKind::IdentifierRef);
+}
+
 void AstIdentifier::allocateIdentifierExtension()
 {
     if (identifierExtension)
@@ -561,10 +576,6 @@ AstNode* AstIdentifier::clone(CloneContext& context)
         newNode->token.text = itn->second;
     }
 
-    auto idRef = context.parent;
-    while (idRef->kind != AstNodeKind::IdentifierRef)
-        idRef = idRef->parent;
-    newNode->identifierRef     = CastAst<AstIdentifierRef>(idRef, AstNodeKind::IdentifierRef);
     newNode->callParameters    = (AstFuncCallParams*) findChildRef(callParameters, newNode);
     newNode->genericParameters = findChildRef(genericParameters, newNode);
 

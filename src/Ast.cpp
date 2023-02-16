@@ -534,10 +534,9 @@ namespace Ast
 
     AstIdentifier* newIdentifier(SourceFile* sourceFile, const Utf8& name, AstIdentifierRef* identifierRef, AstNode* parent, Parser* parser)
     {
-        auto node           = Ast::newNode<AstIdentifier>(parser, AstNodeKind::Identifier, sourceFile, parent);
-        node->token.text    = name;
-        node->identifierRef = identifierRef;
-        node->semanticFct   = SemanticJob::resolveIdentifier;
+        auto node         = Ast::newNode<AstIdentifier>(parser, AstNodeKind::Identifier, sourceFile, parent);
+        node->token.text  = name;
+        node->semanticFct = SemanticJob::resolveIdentifier;
         if (identifierRef)
             node->inheritOwners(identifierRef);
         return node;
@@ -584,7 +583,6 @@ namespace Ast
             id->token.id = TokenId::Identifier;
             if (parser && !parser->currentTokenLocation)
                 id->inheritTokenLocation(parser->token);
-            id->identifierRef = node;
             id->inheritOwners(node);
 
             if (*pz && cpt != name.count)

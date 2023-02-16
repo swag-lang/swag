@@ -46,9 +46,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     {
         RegisterList r0 = reserveRegisterRC(context);
         emitRetValRef(context, resolved, r0, true, 0);
-        identifier->resultRegisterRC                = r0;
-        identifier->identifierRef->resultRegisterRC = identifier->resultRegisterRC;
-        identifier->parent->resultRegisterRC        = node->resultRegisterRC;
+        identifier->resultRegisterRC                  = r0;
+        identifier->identifierRef()->resultRegisterRC = identifier->resultRegisterRC;
+        identifier->parent->resultRegisterRC          = node->resultRegisterRC;
         return true;
     }
 
@@ -62,9 +62,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     // A captured variable
     if (resolved->flags & OVERLOAD_VAR_CAPTURE)
     {
-        node->resultRegisterRC                      = reserveRegisterRC(context);
-        identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
-        node->parent->resultRegisterRC              = node->resultRegisterRC;
+        node->resultRegisterRC                        = reserveRegisterRC(context);
+        identifier->identifierRef()->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC                = node->resultRegisterRC;
 
         // Get capture block pointer (first parameter)
         auto inst   = emitInstruction(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
@@ -116,8 +116,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC[1], node->resultRegisterRC[0])->c.u64 = resolved->computedValue.storageOffset + 8;
             emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC[0], node->resultRegisterRC[0])->c.u64 = resolved->computedValue.storageOffset;
 
-            identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
-            node->parent->resultRegisterRC              = node->resultRegisterRC;
+            identifier->identifierRef()->resultRegisterRC = node->resultRegisterRC;
+            node->parent->resultRegisterRC                = node->resultRegisterRC;
             return true;
         }
 
@@ -140,7 +140,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     // Variable from a struct
     else if (resolved->flags & OVERLOAD_VAR_STRUCT)
     {
-        node->resultRegisterRC = identifier->identifierRef->resultRegisterRC;
+        node->resultRegisterRC = identifier->identifierRef()->resultRegisterRC;
         SWAG_VERIFY(node->resultRegisterRC.size() > 0, Report::internalError(context->node, Fmt("emitIdentifier, cannot reference identifier '%s'", identifier->token.ctext()).c_str()));
         forStruct = true;
     }
@@ -157,7 +157,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             // In that case we want to take the resigter that defined the vtable, not the object.
             if (identifier->childParentIdx)
             {
-                auto prev = identifier->identifierRef->childs[identifier->childParentIdx - 1];
+                auto prev = identifier->identifierRef()->childs[identifier->childParentIdx - 1];
                 if (prev->childs.size())
                 {
                     auto back = prev->childs.back();
@@ -196,8 +196,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         if ((resolved->flags & OVERLOAD_VAR_TLS) && node->token.text.empty())
             freeRegisterRC(context, node->parent);
 
-        identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
-        node->parent->resultRegisterRC              = node->resultRegisterRC;
+        identifier->identifierRef()->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC                = node->resultRegisterRC;
         return true;
     }
 
@@ -226,8 +226,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->c.u64     = typeFunc->registerIdxToParamIdx(resolved->storageIndex);
             inst->d.pointer = (uint8_t*) resolved;
 
-            identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
-            node->parent->resultRegisterRC              = node->resultRegisterRC;
+            identifier->identifierRef()->resultRegisterRC = node->resultRegisterRC;
+            node->parent->resultRegisterRC                = node->resultRegisterRC;
             return true;
         }
 
@@ -330,8 +330,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             SWAG_CHECK(emitSafetyValue(context, node->resultRegisterRC, node->typeInfo));
         }
 
-        identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
-        node->parent->resultRegisterRC              = node->resultRegisterRC;
+        identifier->identifierRef()->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC                = node->resultRegisterRC;
         return true;
     }
 
@@ -401,8 +401,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             SWAG_CHECK(emitSafetyValue(context, node->resultRegisterRC, node->typeInfo));
         }
 
-        identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
-        node->parent->resultRegisterRC              = node->resultRegisterRC;
+        identifier->identifierRef()->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC                = node->resultRegisterRC;
         return true;
     }
 
@@ -500,8 +500,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             SWAG_CHECK(emitSafetyValue(context, node->resultRegisterRC, node->typeInfo));
         }
 
-        identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
-        node->parent->resultRegisterRC              = node->resultRegisterRC;
+        identifier->identifierRef()->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC                = node->resultRegisterRC;
         return true;
     }
 
@@ -537,8 +537,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             swap(node->resultRegisterRC.oneResult[0], node->resultRegisterRC.oneResult[1]);
         }
 
-        identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
-        node->parent->resultRegisterRC              = node->resultRegisterRC;
+        identifier->identifierRef()->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC                = node->resultRegisterRC;
         return true;
     }
 

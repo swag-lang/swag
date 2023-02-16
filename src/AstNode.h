@@ -470,10 +470,10 @@ struct AstIdentifierRef : public AstNode
 
 struct AstIdentifier : public AstNode
 {
-    AstNode* clone(CloneContext& context);
-    void     allocateIdentifierExtension();
+    AstNode*          clone(CloneContext& context);
+    void              allocateIdentifierExtension();
+    AstIdentifierRef* identifierRef();
 
-    AstIdentifierRef*       identifierRef       = nullptr;
     AstNode*                genericParameters   = nullptr;
     AstFuncCallParams*      callParameters      = nullptr;
     AstIdentifierExtension* identifierExtension = nullptr;

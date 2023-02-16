@@ -364,7 +364,7 @@ bool SemanticJob::resolveLiteralSuffix(SemanticContext* context)
         auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
 
         // We do not want error. If identifier is not known, then we consider it as a 'user' suffix
-        identifier->identifierRef->flags |= AST_SILENT_CHECK;
+        identifier->identifierRef()->flags |= AST_SILENT_CHECK;
 
         auto res = resolveIdentifier(context, identifier, RI_ZERO);
         if (context->result != ContextResult::Done)

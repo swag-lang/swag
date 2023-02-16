@@ -651,9 +651,9 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     if (context->node->kind == AstNodeKind::Identifier)
     {
         auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
-        if (identifier->identifierRef->resolvedSymbolOverload)
+        if (identifier->identifierRef()->resolvedSymbolOverload)
         {
-            auto concreteType = TypeManager::concreteType(identifier->identifierRef->resolvedSymbolOverload->typeInfo);
+            auto concreteType = TypeManager::concreteType(identifier->identifierRef()->resolvedSymbolOverload->typeInfo);
             if (concreteType->isStruct())
             {
                 auto contextualStruct = CastAst<AstStruct>(concreteType->declNode, AstNodeKind::StructDecl);
@@ -795,7 +795,7 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
                     param->assignment->clone(cloneContext);
                 }
 
-                identifier->identifierRef->flags &= ~AST_IS_GENERIC;
+                identifier->identifierRef()->flags &= ~AST_IS_GENERIC;
                 identifier->flags &= ~AST_IS_GENERIC;
 
                 // Force the reevaluation of the identifier and its childs
@@ -813,12 +813,13 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
     if (context->node->kind == AstNodeKind::Identifier)
     {
         auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
-        if (identifier->identifierRef->resolvedSymbolOverload)
+        auto idRef      = identifier->identifierRef();
+        if (idRef->resolvedSymbolOverload)
         {
-            auto concreteType = TypeManager::concreteType(identifier->identifierRef->resolvedSymbolOverload->typeInfo);
+            auto concreteType = TypeManager::concreteType(idRef->resolvedSymbolOverload->typeInfo);
             if (concreteType->isStruct())
             {
-                auto contextualNode = identifier->identifierRef->previousResolvedNode;
+                auto contextualNode = idRef->previousResolvedNode;
                 if (contextualNode)
                 {
                     Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0715), node->token.ctext())};

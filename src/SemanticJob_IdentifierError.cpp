@@ -566,12 +566,12 @@ void SemanticJob::symbolErrorNotes(SemanticContext* context, VectorNative<OneTry
         }
     }
 
-    if (badUfcs && !identifier->identifierRef->startScope)
+    if (badUfcs && !identifier->identifierRef()->startScope)
     {
         // There's something before (identifier is not the only one in the identifierRef).
         if (identifier->childParentIdx)
         {
-            auto prev = identifier->identifierRef->childs[identifier->childParentIdx - 1];
+            auto prev = identifier->identifierRef()->childs[identifier->childParentIdx - 1];
             if (prev->resolvedSymbolName)
             {
                 if (prev->extension && prev->extension->misc->resolvedUserOpSymbolOverload)
@@ -622,7 +622,7 @@ void SemanticJob::symbolErrorRemarks(SemanticContext* context, VectorNative<OneT
     // If we have an ufcs call, and the match does not come from its symtable, then that means that we have not found the
     // symbol in the original struct also.
     auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
-    if (identifier->identifierRef->startScope && !tryMatches.empty())
+    if (identifier->identifierRef()->startScope && !tryMatches.empty())
     {
         int notFound = 0;
         for (auto tryMatch : tryMatches)
@@ -630,24 +630,24 @@ void SemanticJob::symbolErrorRemarks(SemanticContext* context, VectorNative<OneT
             if (tryMatch->ufcs &&
                 tryMatch->overload->node->ownerStructScope &&
                 identifier->ownerStructScope &&
-                tryMatch->overload->node->ownerStructScope->owner != identifier->identifierRef->startScope->owner)
+                tryMatch->overload->node->ownerStructScope->owner != identifier->identifierRef()->startScope->owner)
                 notFound++;
         }
 
         if (notFound == tryMatches.size())
         {
-            if (identifier->identifierRef->typeInfo)
+            if (identifier->identifierRef()->typeInfo)
             {
                 auto over = tryMatches.front()->overload;
                 auto msg  = Fmt(Nte(Nte0043),
                                Naming::kindName(over).c_str(),
                                node->token.ctext(),
-                               identifier->identifierRef->typeInfo->getDisplayNameC(),
+                               identifier->identifierRef()->typeInfo->getDisplayNameC(),
                                over->node->ownerStructScope->owner->token.ctext());
                 diag->remarks.push_back(msg);
             }
 
-            for (auto s : identifier->identifierRef->startScope->childScopes)
+            for (auto s : identifier->identifierRef()->startScope->childScopes)
             {
                 if (s->kind == ScopeKind::Impl)
                 {
@@ -1224,7 +1224,8 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
             if (!displayName.empty())
             {
                 auto varDecl = node->findParent(AstNodeKind::VarDecl);
-                if (node->identifierRef && node->identifierRef->flags & AST_TUPLE_UNPACK && varDecl)
+                auto idRef   = node->identifierRef();
+                if (idRef && idRef->flags & AST_TUPLE_UNPACK && varDecl)
                 {
                     diag = new Diagnostic{node, Fmt(Err(Err0821), varDecl->token.ctext(), displayName.c_str())};
                 }
@@ -1232,7 +1233,7 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
                 {
                     auto altEnum    = prevIdentifier->identifierExtension->alternateEnum;
                     diag            = new Diagnostic{node, node->token, Fmt(Err(Err0492), node->token.ctext(), altEnum->getDisplayNameC(), Naming::kindName(identifierRef->startScope->kind).c_str(), displayName.c_str())};
-                    auto note       = new Diagnostic{ altEnum->declNode, altEnum->declNode->token, Fmt(Nte(Nte0029), altEnum->getDisplayNameC()), DiagnosticLevel::Note};
+                    auto note       = new Diagnostic{altEnum->declNode, altEnum->declNode->token, Fmt(Nte(Nte0029), altEnum->getDisplayNameC()), DiagnosticLevel::Note};
                     note->showRange = false;
                     notes.push_back(note);
                 }

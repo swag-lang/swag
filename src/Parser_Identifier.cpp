@@ -124,8 +124,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
 
     auto identifier = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, parent);
     identifier->inheritTokenLocation(token);
-    identifier->semanticFct   = SemanticJob::resolveIdentifier;
-    identifier->identifierRef = CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
+    identifier->semanticFct = SemanticJob::resolveIdentifier;
 
     if (scopeUpValue.id != TokenId::Invalid)
     {
@@ -200,9 +199,8 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
                 SWAG_CHECK(eatToken(TokenId::SymLeftParen));
                 identifier = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, parent);
                 identifier->inheritTokenLocation(token);
-                identifier->token.text    = ""; // :SilentCall
-                identifier->semanticFct   = SemanticJob::resolveIdentifier;
-                identifier->identifierRef = CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
+                identifier->token.text  = ""; // :SilentCall
+                identifier->semanticFct = SemanticJob::resolveIdentifier;
                 SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, TokenId::SymRightParen));
             }
         }
