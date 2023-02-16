@@ -799,7 +799,10 @@ JobResult ModuleBuildJob::execute()
     if (module->kind != ModuleKind::Config)
     {
         for (auto f : module->files)
-            f->astRoot->release();
+        {
+            if (f->astRoot)
+                f->astRoot->release();
+        }
     }
 #endif
 

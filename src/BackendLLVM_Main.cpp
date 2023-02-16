@@ -87,7 +87,10 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     switch (g_CommandLine.target.os)
     {
     case SwagTargetOs::Windows:
-        entryPoint = "mainCRTStartup";
+        if (buildParameters.buildCfg->subBackendKind == BuildCfgSubBackendKind::Console)
+            entryPoint = "mainCRTStartup";
+        else
+            entryPoint = "WinMainCRTStartup";
         break;
     default:
         entryPoint = "main";
