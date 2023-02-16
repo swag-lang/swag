@@ -117,7 +117,6 @@ struct StructToDrop
 
 struct SymTable
 {
-    void            removeSymbolName(SymbolName* sym);
     SymbolName*     registerSymbolName(ErrorContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName = nullptr);
     SymbolName*     registerSymbolNameNoLock(ErrorContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName = nullptr);
     SymbolOverload* addSymbolTypeInfo(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0, DataSegment* storageSegment = nullptr, Utf8* aliasName = nullptr);

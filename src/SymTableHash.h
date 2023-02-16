@@ -7,7 +7,6 @@ struct SymTableHash
     SymbolName* find(const Utf8& str, uint32_t crc = 0);
     void        addElem(SymbolName* data, uint32_t crc = 0);
     void        add(SymbolName* data);
-    void        remove(SymbolName* data);
 
     struct Entry
     {

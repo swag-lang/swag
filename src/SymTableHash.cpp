@@ -36,24 +36,6 @@ SymbolName* SymTableHash::find(const Utf8& str, uint32_t crc)
     return nullptr;
 }
 
-void SymTableHash::remove(SymbolName* data)
-{
-    auto crc = data->name.hash();
-
-    uint32_t idx = crc % allocated;
-    while (buffer[idx].hash)
-    {
-        if (buffer[idx].hash == crc && buffer[idx].symbolName == data)
-        {
-            buffer[idx].hash       = 0;
-            buffer[idx].symbolName = nullptr;
-            return;
-        }
-
-        idx = (idx + 1) % allocated;
-    }
-}
-
 void SymTableHash::addElem(SymbolName* data, uint32_t crc)
 {
     uint32_t a = (data->name[0] | 0x20) - 'a';
@@ -81,7 +63,7 @@ void SymTableHash::add(SymbolName* data)
     if (!allocated)
     {
         count     = 0;
-        allocated = 16;
+        allocated = 4;
         buffer    = (Entry*) g_Allocator.alloc(allocated * sizeof(Entry));
         memset(buffer, 0, allocated * sizeof(Entry));
         if (g_CommandLine.stats)
@@ -95,7 +77,7 @@ void SymTableHash::add(SymbolName* data)
         auto oldBuffer    = buffer;
         auto oldCount     = count;
 
-        allocated *= 3;
+        allocated *= 2;
         buffer = (Entry*) g_Allocator.alloc(allocated * sizeof(Entry));
         memset(buffer, 0, allocated * sizeof(Entry));
 

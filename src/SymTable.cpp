@@ -22,14 +22,6 @@ SymbolName* SymTable::findNoLock(const Utf8& name, uint32_t crc)
     return symbol;
 }
 
-void SymTable::removeSymbolName(SymbolName* sym)
-{
-    ScopedLock lk(mutex);
-    occupied = true;
-    mapNames.remove(sym);
-    occupied = false;
-}
-
 SymbolName* SymTable::registerSymbolName(ErrorContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName)
 {
     ScopedLock lk(mutex);
