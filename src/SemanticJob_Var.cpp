@@ -175,7 +175,7 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
         // If this is a single identifier, then we take the identifier name
         else if (subAffect->kind == AstNodeKind::IdentifierRef && subAffect->childs.back()->kind == AstNodeKind::Identifier)
         {
-            varName               = subAffect->childs.back()->token.text;
+            varName         = subAffect->childs.back()->token.text;
             typeParam->name = varName;
         }
 
@@ -192,7 +192,6 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
         if (autoName)
         {
             typeParam->flags |= TYPEINFO_AUTO_NAME;
-            paramNode->flags |= AST_AUTO_NAME;
         }
 
         paramNode->type = convertTypeToTypeExpression(context, paramNode, subAffect, childType, !(assignment->specFlags & AST_SPEC_EXPRLIST_FOR_CAPTURE));
