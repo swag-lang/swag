@@ -328,7 +328,6 @@ int TypeInfoParam::numRegisters()
 TypeInfoParam* TypeInfoParam::clone()
 {
     auto newType        = g_TypeMgr->makeParam();
-    newType->name       = name;
     newType->namedParam = namedParam;
     newType->attributes = attributes;
     newType->typeInfo   = typeInfo;

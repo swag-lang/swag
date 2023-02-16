@@ -242,11 +242,11 @@ void SemanticJob::resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatc
     for (int paramIdx = 0; paramIdx < typeUndefinedFct->genericParameters.size(); paramIdx++)
     {
         auto undefinedType = typeUndefinedFct->genericParameters[paramIdx];
-        auto it            = typeDefinedFct->replaceTypes.find(undefinedType->name);
+        auto it            = typeDefinedFct->replaceTypes.find(undefinedType->namedParam);
         if (it != typeDefinedFct->replaceTypes.end())
         {
-            undefinedType->name     = it->second->name;
-            undefinedType->typeInfo = it->second;
+            undefinedType->namedParam = it->second->name;
+            undefinedType->typeInfo   = it->second;
         }
     }
 
@@ -1787,7 +1787,6 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                         typeWasForced = rawTypeInfo;
                         for (int i = 0; i < returnStructType->genericParameters.size(); i++)
                         {
-                            rawTypeStruct->genericParameters[i]->name       = returnStructType->genericParameters[i]->name;
                             rawTypeStruct->genericParameters[i]->namedParam = returnStructType->genericParameters[i]->namedParam;
                         }
                     }
@@ -2376,7 +2375,6 @@ bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericM
                 newStructType      = CastTypeInfo<TypeInfoStruct>(typeWasForced, TypeInfoKind::Struct);
                 for (int i = 0; i < genericParameters->childs.size(); i++)
                 {
-                    newStructType->genericParameters[i]->name       = genericParameters->childs[i]->typeInfo->name;
                     newStructType->genericParameters[i]->namedParam = genericParameters->childs[i]->typeInfo->name;
                     newStructType->genericParameters[i]->typeInfo   = genericParameters->childs[i]->typeInfo;
                 }

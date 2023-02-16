@@ -490,7 +490,6 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         {
             typeParam             = g_TypeMgr->makeParam();
             typeParam->namedParam = child->token.text;
-            typeParam->name       = child->typeInfo->name;
             typeParam->offset     = storageOffset;
             typeParam->declNode   = child;
             SWAG_CHECK(collectAttributes(context, child, &typeParam->attributes));
@@ -564,14 +563,12 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     {
         auto typeParam      = g_TypeMgr->makeParam();
         typeParam->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
-        typeParam->name     = typeParam->typeInfo->name;
         typeParam->offset   = 0;
         typeInterface->fields.push_back(typeParam);
         typeInterface->sizeOf += sizeof(void*);
 
         typeParam           = g_TypeMgr->makeParam();
         typeParam->typeInfo = typeITable;
-        typeParam->name     = typeParam->typeInfo->name;
         typeParam->offset   = sizeof(void*);
         typeParam->index    = 1;
         typeInterface->fields.push_back(typeParam);
@@ -766,7 +763,6 @@ bool SemanticJob::preResolveStructContent(SemanticContext* context)
             {
                 auto funcParam        = g_TypeMgr->makeParam();
                 funcParam->namedParam = param->token.text;
-                funcParam->name       = param->typeInfo->name;
                 funcParam->typeInfo   = param->typeInfo;
                 typeInfo->genericParameters.push_back(funcParam);
                 typeInfo->sizeOf += param->typeInfo->sizeOf;
@@ -980,7 +976,6 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         {
             typeParam             = g_TypeMgr->makeParam();
             typeParam->namedParam = child->token.text;
-            typeParam->name       = child->typeInfo->name;
             typeParam->typeInfo   = child->typeInfo;
             typeParam->offset     = storageOffset;
             if (varDecl->flags & AST_DECL_USING)

@@ -95,7 +95,6 @@ static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParamet
                         auto newStructType = (TypeInfoStruct*) callStruct->clone();
                         for (int i = 0; i < callStruct->genericParameters.size(); i++)
                         {
-                            newStructType->genericParameters[i]->name       = wantedStruct->genericParameters[i]->typeInfo->name;
                             newStructType->genericParameters[i]->namedParam = wantedStruct->genericParameters[i]->typeInfo->name;
                         }
 
@@ -758,7 +757,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                     // must match, otherwise it's an irrelevant instance
                     else
                     {
-                        auto it = context.genericReplaceTypes.find(symbolParameter->name);
+                        auto it = context.genericReplaceTypes.find(symbolParameter->namedParam);
                         if (it != context.genericReplaceTypes.end())
                         {
                             if (genType != it->second)
@@ -995,8 +994,8 @@ static void fillUserGenericParams(SymbolMatchContext& context, VectorNative<Type
     {
         auto genType = genericParameters[i];
 
-        context.mapGenericTypesIndex[genType->name] = i;
-        context.genericParametersGenTypes[i]        = genType->typeInfo;
+        context.mapGenericTypesIndex[genType->typeInfo->name] = i;
+        context.genericParametersGenTypes[i]                  = genType->typeInfo;
     }
 
     for (int i = 0; i < numGenericParams; i++)
@@ -1004,14 +1003,14 @@ static void fillUserGenericParams(SymbolMatchContext& context, VectorNative<Type
         auto genType = context.genericParameters[i];
         if (!context.genericParametersCallTypes[i])
         {
-            context.genericReplaceTypes[genericParameters[i]->name]     = genType->typeInfo;
-            context.genericReplaceTypesFrom[genericParameters[i]->name] = genType;
-            context.genericParametersCallTypes[i]                       = genType->typeInfo;
+            context.genericReplaceTypes[genericParameters[i]->typeInfo->name]     = genType->typeInfo;
+            context.genericReplaceTypesFrom[genericParameters[i]->typeInfo->name] = genType;
+            context.genericParametersCallTypes[i]                                 = genType->typeInfo;
         }
         else
         {
-            context.genericReplaceTypes[genericParameters[i]->name]     = context.genericParametersCallTypes[i];
-            context.genericReplaceTypesFrom[genericParameters[i]->name] = context.genericParametersCallTypesFrom[i];
+            context.genericReplaceTypes[genericParameters[i]->typeInfo->name]     = context.genericParametersCallTypes[i];
+            context.genericReplaceTypesFrom[genericParameters[i]->typeInfo->name] = context.genericParametersCallTypesFrom[i];
         }
     }
 
@@ -1019,8 +1018,8 @@ static void fillUserGenericParams(SymbolMatchContext& context, VectorNative<Type
     {
         if (context.genericParametersCallTypes[numGenericParams])
         {
-            context.genericReplaceTypes[genericParameters[i]->name]     = context.genericParametersCallTypes[i];
-            context.genericReplaceTypesFrom[genericParameters[i]->name] = context.genericParametersCallTypesFrom[i];
+            context.genericReplaceTypes[genericParameters[i]->typeInfo->name]     = context.genericParametersCallTypes[i];
+            context.genericReplaceTypesFrom[genericParameters[i]->typeInfo->name] = context.genericParametersCallTypesFrom[i];
         }
     }
 }

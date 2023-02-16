@@ -544,7 +544,7 @@ static void computeNameGenericParameters(VectorNative<TypeInfoParam*>& genericPa
         else if (genParam->typeInfo)
             resName += genParam->typeInfo->computeWhateverName(nameType);
         else
-            resName += genParam->name;
+            resName += genParam->namedParam;
     }
 
     if (nameType != COMPUTE_DISPLAY_NAME || genericParameters.size() > 1)
