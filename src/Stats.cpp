@@ -12,7 +12,7 @@ void Stats::print()
         return;
 
     g_Log.setColor(LogColor::DarkCyan);
-    g_Log.print("\n");
+    g_Log.eol();
 
     if (g_CommandLine.statsWhat == StatsWhat::All || g_CommandLine.statsWhat == StatsWhat::Count)
     {
@@ -32,19 +32,19 @@ void Stats::print()
             g_Log.messageHeaderDot("errors", Fmt("%u", g_Workspace->numErrors.load()), LogColor::Red);
         if (g_Workspace->numWarnings)
             g_Log.messageHeaderDot("warnings", Fmt("%u", g_Workspace->numWarnings.load()), LogColor::Magenta);
-        g_Log.print("\n");
+        g_Log.eol();
 
         g_Log.messageHeaderDot("instructions", Fmt("%u", numInstructions.load()));
         float pc1 = (totalOptimsBC.load() * 100.0f) / (numInstructions.load());
         g_Log.messageHeaderDot("kicked", Fmt("%d %.1f%%", totalOptimsBC.load(), pc1));
         g_Log.messageHeaderDot("total", Fmt("%u", numInstructions.load() - totalOptimsBC.load()));
-        g_Log.print("\n");
+        g_Log.eol();
 
         g_Log.messageHeaderDot("concrete types", Fmt("%u", totalConcreteTypes.load()));
         g_Log.messageHeaderDot("concrete struct types", Fmt("%u", totalConcreteStructTypes.load()));
         g_Log.messageHeaderDot("init ptr", Fmt("%u", numInitPtr.load()));
         g_Log.messageHeaderDot("init func ptr", Fmt("%u", numInitFuncPtr.load()));
-        g_Log.print("\n");
+        g_Log.eol();
     }
 
     if (g_CommandLine.statsWhat == StatsWhat::All || g_CommandLine.statsWhat == StatsWhat::Time)
@@ -61,14 +61,14 @@ void Stats::print()
         g_Log.messageHeaderDot("gen out time", Fmt("%.3fs", OS::timerToSeconds(genOutputTimeJob.load())));
         g_Log.messageHeaderDot("optim bc time", Fmt("%.3fs", OS::timerToSeconds(optimBCTime.load())));
         g_Log.messageHeaderDot("total time", Fmt("%.3fs", OS::timerToSeconds(totalTime.load())));
-        g_Log.print("\n");
+        g_Log.eol();
     }
 
     if (g_CommandLine.statsWhat == StatsWhat::All || g_CommandLine.statsWhat == StatsWhat::Memory)
     {
         g_Log.messageHeaderDot("mem total", Fmt("%s", Utf8::toNiceSize(allocatorMemory.load()).c_str()));
         g_Log.messageHeaderDot("mem wasted", Fmt("%s", Utf8::toNiceSize(wastedMemory.load()).c_str()));
-        g_Log.print("\n");
+        g_Log.eol();
         g_Log.messageHeaderDot("mem nodes", Fmt("%s", Utf8::toNiceSize(memNodes.load()).c_str()));
         g_Log.messageHeaderDot("mem nodes ext", Fmt("%s", Utf8::toNiceSize(memNodesExt.load()).c_str()));
         g_Log.messageHeaderDot("mem concat", Fmt("%s", Utf8::toNiceSize(memConcat.load()).c_str()));
@@ -89,7 +89,7 @@ void Stats::print()
 
         if (g_CommandLine.backendGenType == BackendGenType::X64)
         {
-            g_Log.print("\n");
+            g_Log.eol();
             g_Log.messageHeaderDot("mem x64 dbg", Fmt("%s", Utf8::toNiceSize(sizeBackendDbg.load()).c_str()));
         }
     }
@@ -108,7 +108,7 @@ void Stats::print()
                 !m->tlsSegment.totalCount)
                 continue;
 
-            g_Log.print("\n");
+            g_Log.eol();
             g_Log.messageHeaderDot("module", Fmt("%s", m->name.c_str()));
             g_Log.messageHeaderDot("func total", Fmt("%u", m->byteCodeFunc.size()));
             g_Log.messageHeaderDot("func emit", Fmt("%u", m->byteCodeFuncToGen.size()));
