@@ -1,10 +1,8 @@
 #include "pch.h"
-#include "TypeInfo.h"
 #include "ByteCode.h"
 #include "Workspace.h"
 #include "Module.h"
 #include "Ast.h"
-#include "TypeManager.h"
 #include "ByteCodeDebugger.h"
 
 Utf8 ByteCodeDebugger::getByteCodeName(ByteCode* bc)

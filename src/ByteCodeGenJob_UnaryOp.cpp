@@ -1,9 +1,7 @@
 #include "pch.h"
-#include "AstNode.h"
 #include "ByteCodeGenJob.h"
 #include "TypeManager.h"
 #include "ByteCodeOp.h"
-#include "SourceFile.h"
 #include "Report.h"
 
 bool ByteCodeGenJob::emitUnaryOpMinus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0)

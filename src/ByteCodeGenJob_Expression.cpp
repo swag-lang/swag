@@ -2,13 +2,9 @@
 #include "ByteCode.h"
 #include "ByteCodeGenJob.h"
 #include "Module.h"
-#include "SourceFile.h"
-#include "ByteCodeOp.h"
 #include "TypeManager.h"
 #include "Ast.h"
 #include "SemanticJob.h"
-#include "Diagnostic.h"
-#include "ErrorIds.h"
 #include "Report.h"
 
 bool ByteCodeGenJob::emitNullConditionalOp(ByteCodeGenContext* context)

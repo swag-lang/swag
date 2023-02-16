@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "Log.h"
 #include "ByteCodeDebugger.h"
 
 void ByteCodeDebugger::printHelp(const BcDbgCommand& cmd)

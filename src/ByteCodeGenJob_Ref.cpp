@@ -1,11 +1,8 @@
 #include "pch.h"
 #include "ByteCode.h"
 #include "ByteCodeGenJob.h"
-#include "Module.h"
-#include "ByteCodeOp.h"
 #include "TypeManager.h"
 #include "Ast.h"
-#include "ErrorIds.h"
 #include "Report.h"
 
 bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)

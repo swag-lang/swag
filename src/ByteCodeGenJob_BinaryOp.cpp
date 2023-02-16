@@ -1,10 +1,7 @@
 #include "pch.h"
 #include "ByteCodeGenJob.h"
 #include "TypeManager.h"
-#include "ByteCodeOp.h"
 #include "ByteCode.h"
-#include "SemanticJob.h"
-#include "ThreadManager.h"
 #include "Ast.h"
 #include "Report.h"
 

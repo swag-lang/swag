@@ -4,7 +4,6 @@
 #include "Ast.h"
 #include "Module.h"
 #include "TypeManager.h"
-#include "ErrorIds.h"
 #include "Report.h"
 #include "SemanticJob.h"
 #include "LanguageSpec.h"

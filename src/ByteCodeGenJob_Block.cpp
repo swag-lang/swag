@@ -1,11 +1,9 @@
 #include "pch.h"
 #include "LanguageSpec.h"
-#include "ByteCodeOp.h"
 #include "ByteCodeGenJob.h"
 #include "ByteCode.h"
 #include "SemanticJob.h"
 #include "Ast.h"
-#include "Mutex.h"
 
 bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
 {

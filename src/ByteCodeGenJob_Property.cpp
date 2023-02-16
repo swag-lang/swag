@@ -1,12 +1,9 @@
 #include "pch.h"
 #include "ByteCodeGenJob.h"
-#include "ByteCodeOp.h"
 #include "ByteCode.h"
 #include "TypeManager.h"
 #include "Ast.h"
-#include "ErrorIds.h"
 #include "Report.h"
-#include "SemanticJob.h"
 
 bool ByteCodeGenJob::emitIntrinsicMakeAny(ByteCodeGenContext* context)
 {

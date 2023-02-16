@@ -7,10 +7,6 @@
 #include "TypeManager.h"
 #include "Context.h"
 #include "LanguageSpec.h"
-#include "Mutex.h"
-#include "ByteCodeOptimizerJob.h"
-#include "Diagnostic.h"
-#include "ErrorIds.h"
 #include "Report.h"
 
 void ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num)

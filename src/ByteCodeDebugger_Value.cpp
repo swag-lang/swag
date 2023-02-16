@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "Assert.h"
 #include "TypeManager.h"
 #include "Ast.h"
 #include "ByteCodeDebugger.h"
