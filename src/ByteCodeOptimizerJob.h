@@ -12,9 +12,6 @@ struct ByteCodeOptimizerJob : public Job
         g_Allocator.free<ByteCodeOptimizerJob>(this);
     }
 
-    bool optimize(ByteCode* bc, bool& restart);
-    bool optimize();
-
     ByteCodeOptContext optContext;
     int                startIndex;
     int                endIndex;

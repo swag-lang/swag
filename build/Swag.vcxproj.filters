@@ -518,9 +518,6 @@
     <ClCompile Include="..\src\Parser_Var.cpp">
       <Filter>Syntax</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SyntaxJob.cpp">
-      <Filter>Jobs</Filter>
-    </ClCompile>
     <ClCompile Include="../src/Job.cpp">
       <Filter>Threading</Filter>
     </ClCompile>
@@ -535,6 +532,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Tokenizer_Comment.cpp">
       <Filter>Syntax\Tokenizer</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/SyntaxJob.cpp">
+      <Filter>Syntax</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -836,9 +836,6 @@
     <ClInclude Include="..\src\Parser.h">
       <Filter>Syntax</Filter>
     </ClInclude>
-    <ClInclude Include="../src/SyntaxJob.h">
-      <Filter>Jobs</Filter>
-    </ClInclude>
     <ClInclude Include="../src/Job.h">
       <Filter>Threading</Filter>
     </ClInclude>
@@ -850,6 +847,9 @@
     </ClInclude>
     <ClInclude Include="../src/Stats.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/SyntaxJob.h">
+      <Filter>Syntax</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

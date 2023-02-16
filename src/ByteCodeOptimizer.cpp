@@ -394,7 +394,7 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
     {
         module->optimNeedRestart.store(0);
 
-        // Divide so that each job as the quite same amout of bytecode to optimize
+        // Divide so that each job has the quite same amout of bytecode to optimize
         uint32_t totalInstructions = 0;
         for (auto bc : module->byteCodeFunc)
             totalInstructions += bc->numInstructions;
@@ -430,6 +430,83 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
         module->optimPass = 1;
         done              = false;
         return true;
+    }
+
+    return true;
+}
+
+#define OPT_PASS(__func)                     \
+    optContext.passHasDoneSomething = false; \
+    if (!__func(&optContext))                \
+        return false;                        \
+    optContext.allPassesHaveDoneSomething |= optContext.passHasDoneSomething;
+
+bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, bool& restart)
+{
+    SWAG_RACE_CONDITION_WRITE(bc->raceCond);
+    optContext.bc = bc;
+
+    if (bc->node && !bc->sanDone && optContext.module->mustEmitSafety(bc->node, SAFETY_SANITY))
+    {
+        bc->sanDone = true;
+        setContextFlags(&optContext);
+        setJumps(&optContext);
+        genTree(&optContext, false);
+        SWAG_CHECK(optimizePassSanity(&optContext));
+    }
+
+    if (optContext.module->mustOptimizeBC(bc->node))
+    {
+        while (true)
+        {
+            if (!bc->isEmpty && bc->isDoingNothing())
+            {
+                bc->isEmpty = true;
+                restart     = true;
+            }
+
+            if (bc->isEmpty)
+                return true;
+
+            setContextFlags(&optContext);
+            setJumps(&optContext);
+            genTree(&optContext, false);
+
+            if (optContext.hasError)
+                return false;
+            optContext.allPassesHaveDoneSomething = false;
+
+            OPT_PASS(optimizePassJumps);
+            OPT_PASS(optimizePassDeadCode);
+            OPT_PASS(optimizePassImmediate);
+            OPT_PASS(optimizePassConst);
+            OPT_PASS(optimizePassDupCopyRBRA);
+            OPT_PASS(optimizePassDupCopy);
+            OPT_PASS(optimizePassRetCopyLocal);
+            OPT_PASS(optimizePassRetCopyInline);
+            OPT_PASS(optimizePassRetCopyGlobal);
+            OPT_PASS(optimizePassReduce);
+            OPT_PASS(optimizePassDeadStore);
+            OPT_PASS(optimizePassDeadStoreDup);
+            OPT_PASS(optimizePassLoop);
+            OPT_PASS(optimizePassSwap);
+
+            removeNops(&optContext);
+            if (!optContext.allPassesHaveDoneSomething)
+            {
+                setJumps(&optContext);
+                genTree(&optContext, true);
+
+                OPT_PASS(optimizePassSwitch);
+                OPT_PASS(optimizePassDupBlocks);
+                OPT_PASS(optimizePassReduceX2);
+                removeNops(&optContext);
+                if (!optContext.allPassesHaveDoneSomething)
+                    break;
+            }
+
+            restart = true;
+        }
     }
 
     return true;
