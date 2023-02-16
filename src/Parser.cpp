@@ -7,6 +7,7 @@
 #include "Timer.h"
 #include "ErrorIds.h"
 #include "JobThread.h"
+#include "TypeManager.h"
 
 bool Parser::invalidTokenError(InvalidTokenError kind)
 {
@@ -373,7 +374,7 @@ bool Parser::generateAst()
         auto       symbol = parentScope->symTable.findNoLock(npName);
         if (!symbol)
         {
-            auto typeInfo  = allocType<TypeInfoNamespace>();
+            auto typeInfo  = makeType<TypeInfoNamespace>();
             typeInfo->name = npName;
             auto newScope  = Ast::newScope(namespaceNode, npName, ScopeKind::Namespace, parentScope);
             if (sourceFile->imported)

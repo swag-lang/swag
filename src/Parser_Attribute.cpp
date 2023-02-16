@@ -4,6 +4,7 @@
 #include "Scoped.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
+#include "TypeManager.h"
 
 bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
 {
@@ -19,7 +20,7 @@ bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
 
     attrNode->inheritTokenName(token);
 
-    auto typeInfo      = allocType<TypeInfoFuncAttr>();
+    auto typeInfo      = makeType<TypeInfoFuncAttr>();
     typeInfo->declNode = attrNode;
     attrNode->typeInfo = typeInfo;
     typeInfo->flags |= TYPEINFO_FUNC_IS_ATTR;

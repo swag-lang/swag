@@ -228,7 +228,7 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
     }
     else
     {
-        auto typeInfo        = allocType<TypeInfoStruct>();
+        auto typeInfo        = makeType<TypeInfoStruct>();
         auto newScope        = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, rootScope, true);
         typeInfo->declNode   = structNode;
         typeInfo->name       = structNode->token.text;
@@ -614,7 +614,7 @@ bool SemanticJob::deduceLambdaTypeAffect(SemanticContext* context, AstVarDecl* n
             // Generate an undefined type to make the match
             if (!op->tryLambdaType)
             {
-                auto tryType  = allocType<TypeInfoFuncAttr>();
+                auto tryType  = makeType<TypeInfoFuncAttr>();
                 tryType->kind = TypeInfoKind::LambdaClosure;
                 if (node->ownerFct->captureParameters)
                     tryType->flags |= TYPEINFO_CLOSURE;
@@ -1090,14 +1090,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         symbolFlags |= OVERLOAD_GENERIC;
         if (thisIsAGenericType && node->assignment)
         {
-            auto typeGeneric     = allocType<TypeInfoGeneric>();
+            auto typeGeneric     = makeType<TypeInfoGeneric>();
             typeGeneric->name    = node->token.text;
             typeGeneric->rawType = node->typeInfo;
             node->typeInfo       = typeGeneric;
         }
         else if (!node->typeInfo)
         {
-            node->typeInfo       = allocType<TypeInfoGeneric>();
+            node->typeInfo       = makeType<TypeInfoGeneric>();
             node->typeInfo->name = node->token.text;
         }
     }

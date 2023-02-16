@@ -2,6 +2,7 @@
 #include "Ast.h"
 #include "Generic.h"
 #include "ErrorIds.h"
+#include "TypeManager.h"
 #include "SemanticJob.h"
 
 void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
@@ -1145,7 +1146,7 @@ AstNode* AstImpl::clone(CloneContext& context)
         newNode->scope           = cloneContext.parentScope;
 
         // :FakeImplForType
-        auto implTypeInfo        = allocType<TypeInfoStruct>();
+        auto implTypeInfo        = makeType<TypeInfoStruct>();
         implTypeInfo->name       = itfName;
         implTypeInfo->structName = implTypeInfo->name;
         implTypeInfo->scope      = newNode->scope;

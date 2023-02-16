@@ -3303,7 +3303,7 @@ bool SemanticJob::appendLastCodeStatement(SemanticContext* context, AstIdentifie
 
                         Ast::removeFromParent(brother);
                         Ast::addChildBack(codeNode, brother);
-                        auto typeCode     = allocType<TypeInfoCode>();
+                        auto typeCode     = makeType<TypeInfoCode>();
                         typeCode->content = brother;
                         brother->flags |= AST_NO_SEMANTIC;
                         fctCallParam->semFlags |= AST_SEM_AUTO_CODE_PARAM;

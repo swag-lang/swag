@@ -155,7 +155,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
 
     // A new pointer
     bool             forceConst = false;
-    TypeInfoPointer* ptrType    = allocType<TypeInfoPointer>();
+    TypeInfoPointer* ptrType    = makeType<TypeInfoPointer>();
 
     // Transform a reference pointer to a pointer to the pointed value
     if (typeInfo->isPointerRef())
@@ -296,7 +296,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
             return context->report(diag);
         }
 
-        auto ptrSlice         = allocType<TypeInfoSlice>();
+        auto ptrSlice         = makeType<TypeInfoSlice>();
         ptrSlice->pointedType = typeInfoArray->finalType;
         if (typeInfoArray->isConst())
             ptrSlice->flags |= TYPEINFO_CONST;
@@ -326,7 +326,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
         }
 
         auto typeInfoPointer  = CastTypeInfo<TypeInfoPointer>(node->array->typeInfo, TypeInfoKind::Pointer);
-        auto ptrSlice         = allocType<TypeInfoSlice>();
+        auto ptrSlice         = makeType<TypeInfoSlice>();
         ptrSlice->pointedType = typeInfoPointer->pointedType;
         if (typeInfoPointer->isConst())
             ptrSlice->flags |= TYPEINFO_CONST;
@@ -1238,7 +1238,7 @@ bool SemanticJob::derefLiteralStruct(SemanticContext* context, uint8_t* ptr, Sym
         node->computedValue->storageOffset  = storageSegment->offset((uint8_t*) ptrSlice->buffer);
         node->computedValue->storageSegment = storageSegment;
         node->computedValue->reg.u64        = ptrSlice->count;
-        auto typeArray                      = allocType<TypeInfoArray>();
+        auto typeArray                      = makeType<TypeInfoArray>();
         typeArray->count                    = (uint32_t) ((SwagSlice*) ptr)->count;
         typeArray->totalCount               = typeArray->count;
         typeArray->pointedType              = typeSlice->pointedType;

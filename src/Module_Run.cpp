@@ -144,7 +144,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         memcpy(addrDst, (const void*) addrSrc, sizeSlice);
 
         // Then transform the returned type to a static array
-        auto typeArray         = allocType<TypeInfoArray>();
+        auto typeArray         = makeType<TypeInfoArray>();
         node->typeInfo         = typeArray;
         typeArray->pointedType = sliceType;
         typeArray->finalType   = sliceType;

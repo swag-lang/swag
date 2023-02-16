@@ -5,6 +5,7 @@
 #include "ErrorIds.h"
 #include "Module.h"
 #include "Naming.h"
+#include "TypeManager.h"
 
 bool Parser::doImpl(AstNode* parent, AstNode** result)
 {
@@ -94,14 +95,14 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         {
             if (scopeKind == ScopeKind::Enum)
             {
-                auto typeEnum             = allocType<TypeInfoEnum>();
+                auto typeEnum             = makeType<TypeInfoEnum>();
                 typeEnum->scope           = newScope;
                 typeEnum->name            = structName;
                 newScope->owner->typeInfo = typeEnum;
             }
             else
             {
-                auto typeStruct           = allocType<TypeInfoStruct>();
+                auto typeStruct           = makeType<TypeInfoStruct>();
                 typeStruct->scope         = newScope;
                 typeStruct->name          = structName;
                 typeStruct->structName    = structName;
@@ -142,7 +143,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
             subScope = Ast::newScope(implNode, itfName, ScopeKind::Impl, newScope, false);
 
             // :FakeImplForType
-            auto typeInfo        = allocType<TypeInfoStruct>();
+            auto typeInfo        = makeType<TypeInfoStruct>();
             typeInfo->name       = implNode->identifier->childs.back()->token.text;
             typeInfo->structName = typeInfo->name;
             typeInfo->scope      = subScope;
@@ -259,7 +260,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
         TypeInfoStruct* typeInfo = nullptr;
         if (!newScope->owner->typeInfo)
         {
-            typeInfo                  = allocType<TypeInfoStruct>();
+            typeInfo                  = makeType<TypeInfoStruct>();
             newScope->owner->typeInfo = typeInfo;
         }
         else

@@ -3209,7 +3209,7 @@ bool TypeManager::convertLiteralTupleToStructType(SemanticContext* context, Type
     structNode->scope = newScope;
 
     // Create type
-    auto typeInfo        = allocType<TypeInfoStruct>();
+    auto typeInfo        = makeType<TypeInfoStruct>();
     structNode->typeInfo = typeInfo;
     typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE | TYPEINFO_GENERATED_TUPLE;
     typeInfo->declNode   = structNode;

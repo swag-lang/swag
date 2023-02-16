@@ -4,6 +4,7 @@
 #include "SemanticJob.h"
 #include "ErrorIds.h"
 #include "Naming.h"
+#include "TypeManager.h"
 
 bool Parser::doEnum(AstNode* parent, AstNode** result)
 {
@@ -49,7 +50,7 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
         TypeInfoEnum* typeInfo = (TypeInfoEnum*) newScope->owner->typeInfo;
         if (!typeInfo)
         {
-            typeInfo                  = allocType<TypeInfoEnum>();
+            typeInfo                  = makeType<TypeInfoEnum>();
             newScope->owner->typeInfo = typeInfo;
         }
 

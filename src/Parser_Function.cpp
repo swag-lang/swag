@@ -673,7 +673,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     }
 
     // Register function name
-    auto typeInfo                = allocType<TypeInfoFuncAttr>();
+    auto typeInfo                = makeType<TypeInfoFuncAttr>();
     typeInfo->declNode           = funcNode;
     auto newScope                = Ast::newScope(funcNode, funcNode->token.text, ScopeKind::Function, currentScope);
     funcNode->typeInfo           = typeInfo;
@@ -919,7 +919,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
     int id               = g_UniqueID.fetch_add(1);
     funcNode->token.text = "__lambda" + to_string(id);
 
-    auto typeInfo      = allocType<TypeInfoFuncAttr>();
+    auto typeInfo      = makeType<TypeInfoFuncAttr>();
     typeInfo->declNode = funcNode;
 
     auto newScope      = Ast::newScope(funcNode, funcNode->token.text, ScopeKind::Function, currentScope);

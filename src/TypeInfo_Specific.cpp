@@ -5,7 +5,7 @@
 
 TypeInfo* TypeInfoNative::clone()
 {
-    auto newType = allocType<TypeInfoNative>();
+    auto newType = makeType<TypeInfoNative>();
     newType->copyFrom(this);
     newType->valueInteger = valueInteger;
     return newType;
@@ -39,7 +39,7 @@ bool TypeInfoNative::isSame(TypeInfo* to, uint32_t castFlags)
 
 TypeInfo* TypeInfoNamespace::clone()
 {
-    auto newType   = allocType<TypeInfoNamespace>();
+    auto newType   = makeType<TypeInfoNamespace>();
     newType->scope = scope;
     newType->copyFrom(this);
     return newType;
@@ -47,7 +47,7 @@ TypeInfo* TypeInfoNamespace::clone()
 
 TypeInfo* TypeInfoCode::clone()
 {
-    auto newType = allocType<TypeInfoCode>();
+    auto newType = makeType<TypeInfoCode>();
     newType->copyFrom(this);
     return newType;
 }
@@ -65,7 +65,7 @@ bool TypeInfoCode::isSame(TypeInfo* to, uint32_t castFlags)
 
 TypeInfo* TypeInfoAlias::clone()
 {
-    auto newType     = allocType<TypeInfoAlias>();
+    auto newType     = makeType<TypeInfoAlias>();
     newType->rawType = rawType;
     newType->copyFrom(this);
     return newType;
@@ -110,7 +110,7 @@ bool TypeInfoAlias::isSame(TypeInfo* to, uint32_t castFlags)
 
 TypeInfo* TypeInfoPointer::clone()
 {
-    auto newType         = allocType<TypeInfoPointer>();
+    auto newType         = makeType<TypeInfoPointer>();
     newType->pointedType = pointedType;
     newType->copyFrom(this);
     return newType;
@@ -190,7 +190,7 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t castFlags)
 
 TypeInfo* TypeInfoArray::clone()
 {
-    auto newType         = allocType<TypeInfoArray>();
+    auto newType         = makeType<TypeInfoArray>();
     newType->pointedType = pointedType;
     newType->finalType   = finalType;
     newType->count       = count;
@@ -265,7 +265,7 @@ void TypeInfoSlice::computeWhateverName(Utf8& resName, uint32_t nameType)
 
 TypeInfo* TypeInfoSlice::clone()
 {
-    auto newType         = allocType<TypeInfoSlice>();
+    auto newType         = makeType<TypeInfoSlice>();
     newType->pointedType = pointedType;
     newType->copyFrom(this);
     return newType;
@@ -320,7 +320,7 @@ Utf8 TypeInfoList::computeTupleName(JobContext* context)
 
 TypeInfo* TypeInfoList::clone()
 {
-    auto newType = allocType<TypeInfoList>(kind);
+    auto newType = makeType<TypeInfoList>(kind);
 
     int size = (int) subTypes.size();
     newType->subTypes.reserve(size);
@@ -372,7 +372,7 @@ bool TypeInfoList::isSame(TypeInfo* to, uint32_t castFlags)
 
 TypeInfo* TypeInfoVariadic::clone()
 {
-    auto newType = allocType<TypeInfoVariadic>();
+    auto newType = makeType<TypeInfoVariadic>();
     newType->copyFrom(this);
     newType->rawType = rawType;
     return newType;
@@ -407,7 +407,7 @@ bool TypeInfoVariadic::isSame(TypeInfo* to, uint32_t castFlags)
 
 TypeInfo* TypeInfoGeneric::clone()
 {
-    auto newType = allocType<TypeInfoGeneric>();
+    auto newType = makeType<TypeInfoGeneric>();
     newType->copyFrom(this);
     newType->rawType = rawType;
     return newType;
@@ -439,7 +439,7 @@ bool TypeInfoEnum::contains(const Utf8& valueName)
 
 TypeInfo* TypeInfoEnum::clone()
 {
-    auto newType        = allocType<TypeInfoEnum>();
+    auto newType        = makeType<TypeInfoEnum>();
     newType->scope      = scope;
     newType->rawType    = rawType;
     newType->attributes = attributes;
@@ -492,7 +492,7 @@ TypeInfo* TypeInfoFuncAttr::clone()
 {
     ScopedLock lk(mutex);
 
-    auto newType                  = allocType<TypeInfoFuncAttr>();
+    auto newType                  = makeType<TypeInfoFuncAttr>();
     newType->firstDefaultValueIdx = firstDefaultValueIdx;
     newType->returnType           = returnType;
     newType->stackSize            = stackSize;
@@ -923,7 +923,7 @@ TypeInfo* TypeInfoStruct::clone()
 {
     ScopedLock lk(mutex);
 
-    auto newType               = allocType<TypeInfoStruct>();
+    auto newType               = makeType<TypeInfoStruct>();
     newType->scope             = scope;
     newType->opInit            = opInit;
     newType->opUserInitFct     = opUserInitFct;

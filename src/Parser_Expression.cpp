@@ -4,6 +4,7 @@
 #include "LanguageSpec.h"
 #include "Scoped.h"
 #include "ErrorIds.h"
+#include "TypeManager.h"
 
 bool Parser::doLiteral(AstNode* parent, AstNode** result)
 {
@@ -1068,7 +1069,7 @@ bool Parser::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
             SWAG_CHECK(doEmbeddedStatement(node));
         else
             SWAG_CHECK(doBoolExpression(node, exprFlags));
-        auto typeCode     = allocType<TypeInfoCode>();
+        auto typeCode     = makeType<TypeInfoCode>();
         typeCode->content = node->childs.front();
         typeCode->content->flags |= AST_NO_SEMANTIC;
         node->typeInfo = typeCode;

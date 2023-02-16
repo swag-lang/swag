@@ -131,7 +131,7 @@ bool SemanticJob::checkIsConcreteOrType(SemanticContext* context, AstNode* node)
 bool SemanticJob::resolveTypeLambdaClosure(SemanticContext* context)
 {
     auto node          = CastAst<AstTypeLambda>(context->node, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
-    auto typeInfo      = allocType<TypeInfoFuncAttr>(TypeInfoKind::LambdaClosure);
+    auto typeInfo      = makeType<TypeInfoFuncAttr>(TypeInfoKind::LambdaClosure);
     typeInfo->declNode = node;
 
     if (node->specFlags & AST_SPEC_TYPELAMBDA_CANTHROW)
@@ -309,7 +309,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
     {
         typeNode->resolvedSymbolName     = typeNode->identifier->resolvedSymbolName;
         typeNode->resolvedSymbolOverload = typeNode->identifier->resolvedSymbolOverload;
-        typeNode->typeInfo               = allocType<TypeInfoGeneric>();
+        typeNode->typeInfo               = makeType<TypeInfoGeneric>();
         typeNode->typeInfo->name         = typeNode->resolvedSymbolName->name;
         typeNode->typeInfo               = typeNode->typeInfo;
     }
@@ -417,7 +417,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
         // Array of slice
         if (typeNode->typeFlags & TYPEFLAG_IS_SLICE)
         {
-            auto ptrSlice         = allocType<TypeInfoSlice>();
+            auto ptrSlice         = makeType<TypeInfoSlice>();
             ptrSlice->pointedType = typeNode->typeInfo;
             if (typeNode->typeFlags & TYPEFLAG_IS_CONST)
                 ptrSlice->flags |= TYPEINFO_CONST;
@@ -431,7 +431,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
         // Array without a specified size
         if (typeNode->arrayDim == UINT8_MAX)
         {
-            auto ptrArray         = allocType<TypeInfoArray>();
+            auto ptrArray         = makeType<TypeInfoArray>();
             ptrArray->count       = UINT32_MAX;
             ptrArray->totalCount  = UINT32_MAX;
             ptrArray->pointedType = typeNode->typeInfo;
@@ -469,7 +469,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
                 SWAG_CHECK(context->checkSizeOverflow("array", count * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
                 SWAG_VERIFY(!child->isConstant0(), context->report({child, Err(Err0023)}));
 
-                auto ptrArray   = allocType<TypeInfoArray>();
+                auto ptrArray   = makeType<TypeInfoArray>();
                 ptrArray->count = count;
                 totalCount *= ptrArray->count;
                 SWAG_CHECK(context->checkSizeOverflow("array", totalCount * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
@@ -496,7 +496,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
     // In fact, this is a slice
     else if (typeNode->typeFlags & TYPEFLAG_IS_SLICE)
     {
-        auto ptrSlice         = allocType<TypeInfoSlice>();
+        auto ptrSlice         = makeType<TypeInfoSlice>();
         ptrSlice->pointedType = typeNode->typeInfo;
         if (typeNode->typeFlags & TYPEFLAG_IS_CONST)
             ptrSlice->flags |= TYPEINFO_CONST;
@@ -642,7 +642,7 @@ bool SemanticJob::resolveTypeAliasBefore(SemanticContext* context)
     // Collect all attributes for the variable
     SWAG_CHECK(collectAttributes(context, node, nullptr));
 
-    auto typeInfo      = allocType<TypeInfoAlias>();
+    auto typeInfo      = makeType<TypeInfoAlias>();
     typeInfo->declNode = node;
     typeInfo->name     = node->token.text;
     if (node->attributeFlags & ATTRIBUTE_STRICT)

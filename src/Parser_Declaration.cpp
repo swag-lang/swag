@@ -7,6 +7,7 @@
 #include "ByteCodeGenJob.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
+#include "TypeManager.h"
 
 bool Parser::doWith(AstNode* parent, AstNode** result)
 {
@@ -224,7 +225,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
             auto       symbol = currentScope->symTable.findNoLock(namespaceNode->token.text);
             if (!symbol)
             {
-                auto typeInfo           = allocType<TypeInfoNamespace>();
+                auto typeInfo           = makeType<TypeInfoNamespace>();
                 typeInfo->name          = namespaceNode->token.text;
                 newScope                = Ast::newScope(namespaceNode, namespaceNode->token.text, ScopeKind::Namespace, currentScope);
                 typeInfo->scope         = newScope;

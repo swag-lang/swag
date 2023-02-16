@@ -175,7 +175,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, ExportedTypeInfo** 
 
     // Register type and value
     // Do it now to break recursive references
-    auto    typePtr = allocType<TypeInfoPointer>();
+    auto    typePtr = makeType<TypeInfoPointer>();
     MapType mapType;
     mapType.realType      = typeInfo;
     mapType.newRealType   = typePtr;

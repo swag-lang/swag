@@ -471,7 +471,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     }
 
     // itable
-    auto typeITable        = allocType<TypeInfoStruct>();
+    auto typeITable        = makeType<TypeInfoStruct>();
     typeITable->name       = node->token.text;
     typeITable->structName = node->token.text;
     typeITable->scope      = Ast::newScope(node, node->token.text, ScopeKind::Struct, nullptr);

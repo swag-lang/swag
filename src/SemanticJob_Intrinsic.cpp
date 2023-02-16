@@ -155,7 +155,7 @@ bool SemanticJob::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* n
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, second->typeInfo, nullptr, second, CASTFLAG_TRY_COERCE));
 
     // Create slice type
-    auto ptrSlice         = allocType<TypeInfoSlice>();
+    auto ptrSlice         = makeType<TypeInfoSlice>();
     ptrSlice->pointedType = ptrPointer->pointedType;
     if (ptrPointer->isConst())
         ptrSlice->flags |= TYPEINFO_CONST;
@@ -552,7 +552,7 @@ bool SemanticJob::resolveIntrinsicSpread(SemanticContext* context)
         node->typeInfo = typeList->subTypes[0]->typeInfo;
 
         // Need to be sure that the expression list can be casted to the equivalent array
-        auto typeArr         = allocType<TypeInfoArray>();
+        auto typeArr         = makeType<TypeInfoArray>();
         typeArr->count       = (uint32_t) typeList->subTypes.size();
         typeArr->pointedType = typeList->subTypes[0]->typeInfo;
         typeArr->finalType   = typeArr->pointedType;
@@ -569,7 +569,7 @@ bool SemanticJob::resolveIntrinsicSpread(SemanticContext* context)
         return context->report({expr, Fmt(Err(Err0807), typeInfo->getDisplayNameC())});
     }
 
-    auto typeVar     = allocType<TypeInfoVariadic>(TypeInfoKind::TypedVariadic);
+    auto typeVar     = makeType<TypeInfoVariadic>(TypeInfoKind::TypedVariadic);
     typeVar->rawType = node->typeInfo;
     typeVar->computeName();
     node->typeInfo = typeVar;

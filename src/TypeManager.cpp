@@ -380,7 +380,7 @@ void TypeManager::setup()
 
 TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfoList* typeList, bool isCompilerConstant)
 {
-    auto      typeArray    = allocType<TypeInfoArray>();
+    auto      typeArray    = makeType<TypeInfoArray>();
     auto      orgTypeArray = typeArray;
     TypeInfo* finalType    = nullptr;
 
@@ -396,7 +396,7 @@ TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfo
         if (!typeArray->pointedType->isListArray())
             break;
         typeList               = CastTypeInfo<TypeInfoList>(typeArray->pointedType, TypeInfoKind::TypeListArray);
-        typeArray->pointedType = allocType<TypeInfoArray>();
+        typeArray->pointedType = makeType<TypeInfoArray>();
         typeArray              = (TypeInfoArray*) typeArray->pointedType;
     }
 
@@ -417,7 +417,7 @@ TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfo
 
 TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeInfoList* typeList, bool isCompilerConstant)
 {
-    auto typeStruct  = allocType<TypeInfoStruct>();
+    auto typeStruct  = makeType<TypeInfoStruct>();
     typeStruct->name = typeList->computeTupleName(context);
     typeStruct->flags |= TYPEINFO_STRUCT_IS_TUPLE;
 
@@ -519,7 +519,7 @@ TypeInfo* TypeManager::makeConst(TypeInfo* typeInfo)
     TypeInfo* typeConst;
     if (typeInfo->isStruct())
     {
-        auto typeAlias = allocType<TypeInfoAlias>();
+        auto typeAlias = makeType<TypeInfoAlias>();
         typeAlias->copyFrom(typeInfo);
         typeAlias->rawType = typeInfo;
         typeAlias->flags |= TYPEINFO_CONST | TYPEINFO_FAKE_ALIAS;
@@ -597,7 +597,7 @@ TypeInfoPointer* TypeManager::makePointerTo(TypeInfo* toType, bool isConst, bool
             return result;
     }
 
-    auto ptrType         = allocType<TypeInfoPointer>();
+    auto ptrType         = makeType<TypeInfoPointer>();
     ptrType->pointedType = toType;
     ptrType->sizeOf      = sizeof(Register);
     ptrType->flags       = ptrFlags;
@@ -629,7 +629,7 @@ void TypeManager::convertStructParamToRef(AstNode* node, TypeInfo* typeInfo)
             if (typeInfo->flags & TYPEINFO_FAKE_ALIAS)
                 typeInfo = ((TypeInfoAlias*) typeInfo)->rawType;
 
-            auto typeRef   = allocType<TypeInfoPointer>();
+            auto typeRef   = makeType<TypeInfoPointer>();
             typeRef->flags = typeInfo->flags | TYPEINFO_CONST | TYPEINFO_POINTER_REF | TYPEINFO_POINTER_AUTO_REF;
             typeRef->flags &= ~TYPEINFO_RETURN_BY_COPY;
             typeRef->pointedType = typeInfo;

@@ -777,7 +777,7 @@ bool SemanticJob::resolveCompilerInclude(SemanticContext* context)
         job->setPending(nullptr, JobWaitKind::LoadFile, node, nullptr);
 
         // Creates return type
-        auto ptrArray         = allocType<TypeInfoArray>();
+        auto ptrArray         = makeType<TypeInfoArray>();
         ptrArray->count       = stat_buf.st_size;
         ptrArray->pointedType = g_TypeMgr->typeInfoU8;
         ptrArray->finalType   = g_TypeMgr->typeInfoU8;

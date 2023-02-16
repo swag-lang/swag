@@ -453,7 +453,7 @@ bool Parser::doTupleOrAnonymousType(AstNode* parent, AstNode** result, bool isCo
     Ast::addChildBack(newParent, structNode);
     structNode->inheritOwners(newParent);
 
-    auto typeInfo        = allocType<TypeInfoStruct>();
+    auto typeInfo        = makeType<TypeInfoStruct>();
     typeInfo->declNode   = structNode;
     typeInfo->name       = structNode->token.text;
     typeInfo->structName = structNode->token.text;
