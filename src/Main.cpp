@@ -16,8 +16,6 @@ extern void help(CommandLineParser& cmdParser);
 
 int main(int argc, const char* argv[])
 {
-    g_Workspace = g_Allocator.alloc<Workspace>();
-
     OS::setup();
     initErrors();
 
@@ -63,7 +61,7 @@ int main(int argc, const char* argv[])
         OS::exit(0);
     }
 
-    // Verify that the swag folder has been registered
+    // Retreive the compiler executable path
     fs::path pathF        = fs::absolute(OS::getExePath().c_str()).string();
     g_CommandLine.exePath = pathF.string();
 
@@ -77,12 +75,10 @@ int main(int argc, const char* argv[])
     if (g_CommandLine.verboseCmdLine)
         g_Log.messageVerbose(cmdParser.buildString(true));
 
+    g_Workspace = g_Allocator.alloc<Workspace>();
+
     // Deal with the main command
-    if (command == "script")
-    {
-        g_Workspace->scriptCommand();
-    }
-    else if (command == "build")
+    if (command == "build")
     {
         g_Workspace->build();
     }
@@ -110,17 +106,21 @@ int main(int argc, const char* argv[])
         g_CommandLine.fetchDep   = true;
         g_Workspace->build();
     }
+    else if (command == "script")
+    {
+        g_Workspace->scriptCommand();
+    }
     else if (command == "clean")
     {
         g_Workspace->cleanCommand();
     }
-    else if (command == "version")
-    {
-        g_Log.messageInfo(Fmt("swag version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
-    }
     else if (command == "new")
     {
         g_Workspace->newCommand();
+    }
+    else if (command == "version")
+    {
+        g_Log.messageInfo(Fmt("swag version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
     }
 
     // Prints stats, then exit
