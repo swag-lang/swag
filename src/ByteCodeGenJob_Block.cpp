@@ -130,7 +130,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
         numCallParams = (int) allParams->childs.size() - 1; // Remove the inline block
     }
 
-    // Need to map all call parameters to function arguments
+    // Need to Map all call parameters to function arguments
     auto func = node->func;
     if (func->parameters)
     {

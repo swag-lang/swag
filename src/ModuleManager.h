@@ -1,6 +1,7 @@
 #pragma once
 #include "Utf8.h"
 #include "Mutex.h"
+#include "Map.h"
 
 struct AstFuncDecl;
 struct ByteCodeRunContext;
@@ -21,7 +22,7 @@ struct ModuleManager
 
     SharedMutex      mutex;
     SharedMutex      mutexLoaded;
-    map<Utf8, void*> loadedModules;
+    Map<Utf8, void*> loadedModules;
     set<Utf8>        failedLoadedModules;
 
     struct PatchOffset
@@ -32,7 +33,7 @@ struct ModuleManager
     };
 
     SharedMutex                    mutexPatch;
-    map<Utf8, Vector<PatchOffset>> patchOffsets;
+    Map<Utf8, Vector<PatchOffset>> patchOffsets;
     Utf8                           loadModuleError;
 };
 

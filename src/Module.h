@@ -236,10 +236,10 @@ struct Module
     VectorNative<AstNode*>                           globalVarsConstant;
     Vector<CompilerMessage>                          compilerMessages[2];
     set<SourceFile*>                                 exportSourceFiles;
-    map<Utf8, TypeInfoFuncAttr*>                     mapRuntimeFctsTypes;
-    map<Utf8, ByteCode*>                             mapRuntimeFcts;
-    map<Utf8, ForToSolve>                            implForToSolve;
-    map<uint32_t, VectorNative<SourceLocationCache>> cacheSourceLoc;
+    Map<Utf8, TypeInfoFuncAttr*>                     mapRuntimeFctsTypes;
+    Map<Utf8, ByteCode*>                             mapRuntimeFcts;
+    Map<Utf8, ForToSolve>                            implForToSolve;
+    Map<uint32_t, VectorNative<SourceLocationCache>> cacheSourceLoc;
     JobGroup                                         syntaxGroup;
     Vector<Utf8>                                     contentJobGeneratedFile;
     VectorNative<uint32_t>                           countLinesGeneratedFile;

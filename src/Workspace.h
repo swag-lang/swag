@@ -1,6 +1,7 @@
 #pragma once
 #include "SwagScope.h"
 #include "Utf8.h"
+#include "Map.h"
 #include "ComputedValue.h"
 #include "Mutex.h"
 struct Module;
@@ -94,8 +95,8 @@ struct Workspace
 
     Vector<OneTag> tags;
 
-    map<Utf8, Module*> mapFirstPassModulesNames;
-    map<Utf8, Module*> mapModulesNames;
+    Map<Utf8, Module*> mapFirstPassModulesNames;
+    Map<Utf8, Module*> mapModulesNames;
     set<void*>         doneErrSymbols;
     Module*            filteredModule = nullptr;
     Module*            bootstrapModule;

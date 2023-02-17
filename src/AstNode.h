@@ -6,6 +6,7 @@
 #include "SymTable.h"
 #include "Attribute.h"
 #include "Scope.h"
+#include "Map.h"
 #include "VectorNative.h"
 #include "Mutex.h"
 
@@ -73,10 +74,10 @@ struct CloneUpdateRef
 
 struct CloneContext
 {
-    map<Utf8, TypeInfo*>         replaceTypes;
-    map<Utf8, AstNode*>          replaceTypesFrom;
-    map<TokenId, AstNode*>       replaceTokens;
-    map<Utf8, Utf8>              replaceNames;
+    Map<Utf8, TypeInfo*>         replaceTypes;
+    Map<Utf8, AstNode*>          replaceTypesFrom;
+    Map<TokenId, AstNode*>       replaceTokens;
+    Map<Utf8, Utf8>              replaceNames;
     set<Utf8>                    usedReplaceNames;
     VectorNative<CloneUpdateRef> nodeRefsToUpdate;
 
@@ -857,7 +858,7 @@ struct AstCompilerMixin : public AstNode
 {
     AstNode* clone(CloneContext& context);
 
-    map<TokenId, AstNode*> replaceTokens;
+    Map<TokenId, AstNode*> replaceTokens;
 };
 
 struct AstInline : public AstNode

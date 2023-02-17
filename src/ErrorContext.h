@@ -1,5 +1,6 @@
 #pragma once
 #include "Utf8.h"
+#include "Map.h"
 struct AstNode;
 struct JobContext;
 struct TypeInfo;
@@ -28,7 +29,7 @@ struct ErrorCxtStep
     ErrCxtStepKind       type = ErrCxtStepKind::Note;
     Utf8                 msg  = "";
     Utf8                 hint = "";
-    map<Utf8, TypeInfo*> replaceTypes;
+    Map<Utf8, TypeInfo*> replaceTypes;
     bool                 locIsToken = false;
     bool                 hide       = false;
 };

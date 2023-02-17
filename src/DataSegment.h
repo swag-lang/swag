@@ -1,6 +1,7 @@
 #pragma once
 #include "VectorNative.h"
 #include "RaceCondition.h"
+#include "Map.h"
 struct SourceFile;
 struct Module;
 struct TypeInfo;
@@ -103,15 +104,15 @@ struct DataSegment
 
     VectorNative<Bucket> buckets;
 
-    map<Utf8, CacheValue>     storedStrings;
-    map<uint8_t, CacheValue>  storedValues8;
-    map<uint16_t, CacheValue> storedValues16;
-    map<uint32_t, CacheValue> storedValues32;
-    map<uint64_t, CacheValue> storedValues64;
+    Map<Utf8, CacheValue>     storedStrings;
+    Map<uint8_t, CacheValue>  storedValues8;
+    Map<uint16_t, CacheValue> storedValues16;
+    Map<uint32_t, CacheValue> storedValues32;
+    Map<uint64_t, CacheValue> storedValues64;
 
     VectorNative<InitPtrRef>             initPtr;
-    map<uint32_t, Utf8>                  initFuncPtr;
-    map<void*, SaveValue>                savedValues;
+    Map<uint32_t, Utf8>                  initFuncPtr;
+    Map<void*, SaveValue>                savedValues;
     Vector<PatchPtrRef>                  patchPtr;
     Vector<pair<AstFuncDecl*, uint32_t>> patchMethods;
 

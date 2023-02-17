@@ -857,6 +857,9 @@
     <ClInclude Include="..\src\SymTableHash.h">
       <Filter>Semantic</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Map.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">

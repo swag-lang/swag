@@ -177,7 +177,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     auto     typeInterface   = CastTypeInfo<TypeInfoStruct>(typeBaseInterface->itable, TypeInfoKind::Struct);
     uint32_t numFctInterface = (uint32_t) typeInterface->fields.size();
 
-    map<TypeInfoParam*, AstNode*> mapItToFunc;
+    Map<TypeInfoParam*, AstNode*> mapItToFunc;
     VectorNative<AstFuncDecl*>    mapItIdxToFunc;
     mapItIdxToFunc.set_size_clear(numFctInterface);
 

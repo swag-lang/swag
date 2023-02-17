@@ -126,7 +126,7 @@ bool Generic::updateGenericParameters(SemanticContext*              context,
     return true;
 }
 
-TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeInfo* typeInfo)
+TypeInfo* Generic::doTypeSubstitution(Map<Utf8, TypeInfo*>& replaceTypes, TypeInfo* typeInfo)
 {
     if (!typeInfo)
         return nullptr;
@@ -310,7 +310,7 @@ TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeIn
     return typeInfo;
 }
 
-Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNode* newNode, bool waitSymbol, map<Utf8, TypeInfo*>& replaceTypes)
+Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNode* newNode, bool waitSymbol, Map<Utf8, TypeInfo*>& replaceTypes)
 {
     // Need to wait for the struct/function to be semantic resolved
     symbol->cptOverloads++;

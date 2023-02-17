@@ -1,5 +1,6 @@
 #pragma once
 #include "Utf8.h"
+#include "Map.h"
 struct CommandLine;
 
 enum CommandLineType
@@ -74,6 +75,6 @@ struct CommandLineParser
     void   logArguments(const string& cmd);
     string buildString(bool full);
 
-    map<string, CommandLineArgument*> longNameArgs;
-    map<string, CommandLineArgument*> shortNameArgs;
+    Map<string, CommandLineArgument*> longNameArgs;
+    Map<string, CommandLineArgument*> shortNameArgs;
 };

@@ -9,9 +9,9 @@
 TypeManager* g_TypeMgr = nullptr;
 
 static TypeInfo*                            g_LiteralTypeToType[(int) LiteralType::TT_MAX];
-thread_local map<uint32_t, TypeInfoNative*> mapUntypedValuesI;
-thread_local map<uint32_t, TypeInfoNative*> mapUntypedValuesB;
-thread_local map<uint32_t, TypeInfoNative*> mapUntypedValuesF;
+thread_local Map<uint32_t, TypeInfoNative*> mapUntypedValuesI;
+thread_local Map<uint32_t, TypeInfoNative*> mapUntypedValuesB;
+thread_local Map<uint32_t, TypeInfoNative*> mapUntypedValuesF;
 
 void TypeManager::setup()
 {

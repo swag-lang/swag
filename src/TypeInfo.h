@@ -7,6 +7,7 @@
 #include "CommandLine.h"
 #include "Mutex.h"
 #include "CallConv.h"
+#include "Map.h"
 
 struct Scope;
 struct TypeInfo;
@@ -201,10 +202,10 @@ struct SymbolMatchContext
     VectorNative<TypeInfo*>                    genericParametersCallTypes;
     VectorNative<AstNode*>                     genericParametersCallTypesFrom;
     VectorNative<TypeInfo*>                    genericParametersGenTypes;
-    map<Utf8, TypeInfo*>                       genericReplaceTypes;
-    map<Utf8, AstNode*>                        genericReplaceTypesFrom;
-    map<Utf8, uint32_t>                        mapGenericTypesIndex;
-    map<Utf8, pair<ComputedValue*, TypeInfo*>> genericReplaceValues;
+    Map<Utf8, TypeInfo*>                       genericReplaceTypes;
+    Map<Utf8, AstNode*>                        genericReplaceTypesFrom;
+    Map<Utf8, uint32_t>                        mapGenericTypesIndex;
+    Map<Utf8, pair<ComputedValue*, TypeInfo*>> genericReplaceValues;
     BadSignatureInfos                          badSignatureInfos;
 
     SemanticContext* semContext = nullptr;
@@ -436,8 +437,8 @@ struct TypeInfoFuncAttr : public TypeInfo
     VectorNative<TypeInfoParam*> genericParameters;
     VectorNative<TypeInfoParam*> parameters;
     AttributeList                attributes;
-    map<Utf8, TypeInfo*>         replaceTypes;
-    map<Utf8, AstNode*>          replaceTypesFrom;
+    Map<Utf8, TypeInfo*>         replaceTypes;
+    Map<Utf8, AstNode*>          replaceTypesFrom;
 
     TypeInfo* returnType = nullptr;
 
@@ -583,8 +584,8 @@ struct TypeInfoStruct : public TypeInfo
     VectorNative<TypeInfoParam*> consts;
     VectorNative<TypeInfoParam*> methods;
     VectorNative<TypeInfoParam*> interfaces;
-    map<Utf8, TypeInfo*>         replaceTypes;
-    map<Utf8, AstNode*>          replaceTypesFrom;
+    Map<Utf8, TypeInfo*>         replaceTypes;
+    Map<Utf8, AstNode*>          replaceTypesFrom;
     AttributeList                attributes;
     Utf8                         structName;
     SharedMutex                  mutexGen;

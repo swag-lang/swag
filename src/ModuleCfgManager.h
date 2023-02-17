@@ -1,5 +1,6 @@
 #pragma once
 #include "Vector.h"
+#include "Map.h"
 
 struct SourceFile;
 struct Module;
@@ -33,7 +34,7 @@ struct ModuleCfgManager
     bool                 execute();
     Module*              getCfgModule(const Utf8& name);
 
-    map<Utf8, Module*> allModules;
+    Map<Utf8, Module*> allModules;
     set<Module*>       pendingCfgModules;
 };
 

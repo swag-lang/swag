@@ -80,11 +80,11 @@ struct LLVMPerThread
     llvm::FunctionCallee fn_realloc;
     llvm::FunctionCallee fn_free;
 
-    map<int64_t, llvm::BasicBlock*>             labels;
-    map<TypeInfoFuncAttr*, llvm::FunctionType*> mapFctTypeInternal;
-    map<TypeInfoFuncAttr*, llvm::FunctionType*> mapFctTypeInternalClosure;
-    map<TypeInfoFuncAttr*, llvm::FunctionType*> mapFctTypeForeign;
-    map<TypeInfoFuncAttr*, llvm::FunctionType*> mapFctTypeForeignClosure;
+    Map<int64_t, llvm::BasicBlock*>             labels;
+    Map<TypeInfoFuncAttr*, llvm::FunctionType*> mapFctTypeInternal;
+    Map<TypeInfoFuncAttr*, llvm::FunctionType*> mapFctTypeInternalClosure;
+    Map<TypeInfoFuncAttr*, llvm::FunctionType*> mapFctTypeForeign;
+    Map<TypeInfoFuncAttr*, llvm::FunctionType*> mapFctTypeForeignClosure;
 
     // Debug infos
     BackendLLVMDbg* dbg = nullptr;

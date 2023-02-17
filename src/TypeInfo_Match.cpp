@@ -37,7 +37,7 @@ static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParamet
             if (callTypeInfo->isNative(NativeTypeKind::Undefined))
                 same = true;
 
-            // Yes, and the map is not the same, then this is an error
+            // Yes, and the Map is not the same, then this is an error
             else
             {
                 same = TypeManager::makeCompatibles(context.semContext, it->second, callTypeInfo, nullptr, nullptr, CASTFLAG_JUST_CHECK | CASTFLAG_PARAMS | castFlags);

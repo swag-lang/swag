@@ -11,6 +11,7 @@
 #include "LanguageSpec.h"
 #include "Report.h"
 #include "SyntaxJob.h"
+#include "Map.h"
 
 ModuleCfgManager* g_ModuleCfgMgr = nullptr;
 

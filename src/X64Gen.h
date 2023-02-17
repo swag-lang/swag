@@ -266,9 +266,9 @@ struct X64Gen
     CoffRelocationTable        relocTablePDSection;
     CoffRelocationTable        relocTableDBGSSection;
     Vector<CoffSymbol>         allSymbols;
-    map<Utf8, uint32_t>        mapSymbols;
-    map<Utf8, uint32_t>        globalStrings;
-    map<uint32_t, int32_t>     labels;
+    Map<Utf8, uint32_t>        mapSymbols;
+    Map<Utf8, uint32_t>        globalStrings;
+    Map<uint32_t, int32_t>     labels;
     DataSegment                globalSegment;
     DataSegment                stringSegment;
     VectorNative<LabelToSolve> labelsToSolve;
@@ -376,11 +376,11 @@ struct X64Gen
     uint32_t                     dbgStartRecordOffset[MAX_RECORD];
     uint32_t                     dbgTypeRecordsCount = 0;
     Concat                       dbgTypeRecords;
-    map<TypeInfo*, DbgTypeIndex> dbgMapTypes;
-    map<Utf8, DbgTypeIndex>      dbgMapPtrTypes;
-    map<Utf8, DbgTypeIndex>      dbgMapRefTypes;
-    map<Utf8, DbgTypeIndex>      dbgMapPtrPtrTypes;
-    map<Utf8, DbgTypeIndex>      dbgMapTypesNames;
+    Map<TypeInfo*, DbgTypeIndex> dbgMapTypes;
+    Map<Utf8, DbgTypeIndex>      dbgMapPtrTypes;
+    Map<Utf8, DbgTypeIndex>      dbgMapRefTypes;
+    Map<Utf8, DbgTypeIndex>      dbgMapPtrPtrTypes;
+    Map<Utf8, DbgTypeIndex>      dbgMapTypesNames;
 
     uint8_t     getModRM(uint8_t mod, uint8_t r, uint8_t m);
     CoffSymbol* getSymbol(const Utf8& name);

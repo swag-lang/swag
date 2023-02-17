@@ -181,7 +181,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
             }
         }
 
-        // Reset CopyRARB map
+        // Reset CopyRARB Map
         if (ByteCode::isJump(ip))
         {
             mapCopyRA.clear();

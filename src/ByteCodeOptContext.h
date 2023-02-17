@@ -50,9 +50,9 @@ struct ByteCodeOptContext : public JobContext
     MapRegTo<uint64_t>                                        mapRegU64;
     MapRegTo<ByteCodeInstruction*>                            mapRegInstA;
     MapRegTo<ByteCodeInstruction*>                            mapRegInstB;
-    map<uint64_t, pair<uint64_t, ByteCodeInstruction*>>       mapCst;
-    map<uint64_t, uint32_t>                                   map6432;
-    map<uint32_t, ByteCodeOptTreeNode*>                       map32Node;
+    Map<uint64_t, pair<uint64_t, ByteCodeInstruction*>>       mapCst;
+    Map<uint64_t, uint32_t>                                   map6432;
+    Map<uint32_t, ByteCodeOptTreeNode*>                       map32Node;
     Vector<ByteCodeOptTreeNode>                               tree;
     unordered_map<ByteCodeInstruction*, uint32_t>             mapInstNode;
     unordered_map<ByteCodeInstruction*, ByteCodeInstruction*> mapInstInst;

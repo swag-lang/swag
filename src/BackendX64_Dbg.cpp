@@ -1065,7 +1065,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
     auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    map<Utf8, uint32_t> mapFileNames;
+    Map<Utf8, uint32_t> mapFileNames;
     Vector<uint32_t>    arrFileNames;
     Utf8                stringTable;
 
