@@ -7,10 +7,8 @@
 #include "Version.h"
 #include "Backend.h"
 #include "ByteCode.h"
-#include "Os.h"
 #include "ModuleSaveExportJob.h"
 #include "BackendFunctionBodyJobBase.h"
-#include "CallConv.h"
 
 JobResult Backend::prepareOutput(int stage, const BuildParameters& buildParameters, Job* ownerJob)
 {
@@ -36,25 +34,32 @@ void Backend::setup()
 
     LLVM::setup();
 
-    string rtPath;
+    Path rtPath;
 
     // Add the runtime CRT
     if (g_CommandLine.target.os == SwagTargetOs::Windows)
     {
         if (isArchArm(g_CommandLine.target.arch))
-            rtPath = g_CommandLine.exePath.parent_path().string() + "/runtime/windows-arm64";
+        {
+            rtPath = g_CommandLine.exePath.parent_path();
+            rtPath.append("runtime");
+            rtPath.append("windows-arm64");
+        }
         else
-            rtPath = g_CommandLine.exePath.parent_path().string() + "/runtime/windows-x86_64";
+        {
+            rtPath = g_CommandLine.exePath.parent_path();
+            rtPath.append("runtime");
+            rtPath.append("windows-x86_64");
+        }
     }
 
     SWAG_ASSERT(!rtPath.empty());
-    g_CommandLine.libPaths.push_back(Utf8::normalizePath(rtPath));
+    g_CommandLine.libPaths.push_back(rtPath);
 }
 
-string Backend::getCacheFolder(const BuildParameters& buildParameters)
+Path Backend::getCacheFolder(const BuildParameters& buildParameters)
 {
-    auto targetPath = g_Workspace->cachePath.string();
-    return targetPath;
+    return g_Workspace->cachePath;
 }
 
 void Backend::setMustCompile()
@@ -89,8 +94,8 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
 
         if (g_CommandLine.moduleName.empty())
         {
-            Utf8 modulePath = Utf8::normalizePath(module->path);
-            Utf8 srcPath    = Utf8::normalizePath(g_Workspace->dependenciesPath);
+            Utf8 modulePath = module->path.string();
+            Utf8 srcPath    = g_Workspace->dependenciesPath.string();
             if (modulePath.find(srcPath) != 0)
                 return false;
         }
@@ -108,9 +113,9 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
     if (module->buildCfg.backendKind != BuildCfgBackendKind::None && module->buildCfg.backendKind != BuildCfgBackendKind::Export)
     {
         auto outFileFame = getOutputFileName(module->buildParameters);
-        if (!fs::exists(outFileFame.c_str()))
+        if (!filesystem::exists(outFileFame))
             return false;
-        auto timeOut = OS::getFileWriteTime(outFileFame.c_str());
+        auto timeOut = OS::getFileWriteTime(outFileFame.string().c_str());
         if (!invert && (timeOut < moreRecentSourceFile))
             return false;
         if (invert && (timeOut > moreRecentSourceFile))
@@ -141,17 +146,16 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
     return true;
 }
 
-Utf8 Backend::getOutputFileName(const BuildParameters& buildParameters)
+Path Backend::getOutputFileName(const BuildParameters& buildParameters)
 {
     SWAG_ASSERT(!buildParameters.outputFileName.empty());
-    Utf8 destFile = g_Workspace->targetPath.string();
-    destFile += buildParameters.outputFileName;
-    destFile += getOutputFileExtension(g_CommandLine.target, buildParameters.buildCfg->backendKind);
-    destFile = Utf8::normalizePath(fs::path(destFile.c_str()));
+    auto destFile = g_Workspace->targetPath;
+    destFile.append(buildParameters.outputFileName.c_str());
+    destFile += getOutputFileExtension(g_CommandLine.target, buildParameters.buildCfg->backendKind).c_str();
     return destFile;
 }
 
-string Backend::getOutputFileExtension(const BackendTarget& target, BuildCfgBackendKind type)
+Utf8 Backend::getOutputFileExtension(const BackendTarget& target, BuildCfgBackendKind type)
 {
     switch (type)
     {
@@ -178,7 +182,7 @@ string Backend::getOutputFileExtension(const BackendTarget& target, BuildCfgBack
     }
 }
 
-string Backend::getObjectFileExtension(const BackendTarget& target)
+Utf8 Backend::getObjectFileExtension(const BackendTarget& target)
 {
     if (target.os == SwagTargetOs::Windows)
         return ".obj";
@@ -244,7 +248,7 @@ bool Backend::setupExportFile(bool force)
     exportFileName = exportName;
     exportFilePath = publicPath;
     if (!force)
-        timeExportFile = OS::getFileWriteTime(publicPath.c_str());
+        timeExportFile = OS::getFileWriteTime(publicPath.string().c_str());
 
     return true;
 }
@@ -304,7 +308,7 @@ bool Backend::saveExportFile()
         auto result = bufferSwg.flushToFile(exportFilePath);
         if (!result)
             return false;
-        timeExportFile = OS::getFileWriteTime(exportFilePath.c_str());
+        timeExportFile = OS::getFileWriteTime(exportFilePath.string().c_str());
         SWAG_ASSERT(timeExportFile);
     }
 

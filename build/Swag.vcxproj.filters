@@ -539,6 +539,9 @@
     <ClCompile Include="..\src\SymTableHash.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Path.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
@@ -861,6 +864,9 @@
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Set.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Path.h">
       <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>

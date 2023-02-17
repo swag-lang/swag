@@ -44,7 +44,7 @@ struct BackendLLVMDbg
     llvm::DILexicalBlockFile* lastInlineBlock      = nullptr;
     uint32_t                  lastDebugLine        = 0;
 
-    Map<string, llvm::DIFile*>              mapFiles;
+    MapPath<llvm::DIFile*>                  mapFiles;
     Map<TypeInfo*, llvm::DIType*>           mapTypes;
     Map<TypeInfo*, llvm::DIType*>           mapPtrTypes;
     Map<TypeInfo*, llvm::DIType*>           mapRefTypes;

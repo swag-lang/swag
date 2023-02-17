@@ -43,13 +43,13 @@ void Workspace::newModule(string moduleName)
     auto modulePath = g_CommandLine.test ? testsPath : modulesPath;
     modulePath.append(moduleName);
 
-    if (fs::exists(modulePath))
+    if (filesystem::exists(modulePath))
     {
         Report::errorOS(Fmt(Err(Fat0018), moduleName.c_str()));
         OS::exit(-1);
     }
 
-    if (!fs::create_directories(modulePath, errorCode))
+    if (!filesystem::create_directories(modulePath, errorCode))
     {
         Report::errorOS(Fmt(Err(Fat0004), modulePath.string().c_str()));
         OS::exit(-1);
@@ -88,7 +88,7 @@ void Workspace::newModule(string moduleName)
 
     // Create an hello world file
     modulePath.append(SWAG_SRC_FOLDER);
-    if (!fs::create_directories(modulePath, errorCode))
+    if (!filesystem::create_directories(modulePath, errorCode))
     {
         Report::errorOS(Fmt(Err(Fat0004), modulePath.string().c_str()));
         OS::exit(-1);
@@ -147,38 +147,38 @@ void Workspace::newCommand()
     string     moduleName;
     if (g_CommandLine.moduleName.empty())
     {
-        if (fs::exists(workspacePath))
+        if (filesystem::exists(workspacePath))
         {
             Report::error(Fmt(Err(Fat0025), workspacePath.string().c_str()));
             OS::exit(-1);
         }
 
         // Create workspace folders
-        if (!fs::create_directories(workspacePath, errorCode))
+        if (!filesystem::create_directories(workspacePath, errorCode))
         {
             Report::errorOS(Fmt(Err(Fat0004), workspacePath.string().c_str()));
             OS::exit(-1);
         }
 
-        if (!fs::create_directories(examplesPath.parent_path(), errorCode))
+        if (!filesystem::create_directories(examplesPath.parent_path(), errorCode))
         {
             Report::errorOS(Fmt(Err(Fat0004), examplesPath.string().c_str()));
             OS::exit(-1);
         }
 
-        if (!fs::create_directories(testsPath.parent_path(), errorCode))
+        if (!filesystem::create_directories(testsPath.parent_path(), errorCode))
         {
             Report::errorOS(Fmt(Err(Fat0004), testsPath.string().c_str()));
             OS::exit(-1);
         }
 
-        if (!fs::create_directories(modulesPath.parent_path(), errorCode))
+        if (!filesystem::create_directories(modulesPath.parent_path(), errorCode))
         {
             Report::errorOS(Fmt(Err(Fat0004), modulesPath.string().c_str()));
             OS::exit(-1);
         }
 
-        if (!fs::create_directories(dependenciesPath.parent_path(), errorCode))
+        if (!filesystem::create_directories(dependenciesPath.parent_path(), errorCode))
         {
             Report::errorOS(Fmt(Err(Fat0004), dependenciesPath.string().c_str()));
             OS::exit(-1);
@@ -191,7 +191,7 @@ void Workspace::newCommand()
     // Use an existing workspace to create a new module
     else
     {
-        if (!fs::exists(workspacePath))
+        if (!filesystem::exists(workspacePath))
         {
             Report::error(Fmt(Err(Fat0026), workspacePath.string().c_str()));
             OS::exit(-1);

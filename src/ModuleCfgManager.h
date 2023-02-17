@@ -21,10 +21,10 @@ enum class CompareVersionResult
 
 struct ModuleCfgManager
 {
-    fs::path             getAliasPath(const fs::path& srcPath);
+    Path             getAliasPath(const Path& srcPath);
     void                 registerCfgFile(SourceFile* file);
     void                 newCfgFile(Vector<SourceFile*>& allFiles, const Utf8& dirName, const Utf8& fileName);
-    void                 enumerateCfgFiles(const fs::path& path);
+    void                 enumerateCfgFiles(const Path& path);
     bool                 fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName);
     bool                 fetchModuleCfgSwag(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName, bool fetch);
     bool                 fetchModuleCfgDisk(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName, bool fetch);

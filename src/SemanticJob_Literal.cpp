@@ -406,7 +406,7 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
     case TokenId::CompilerFile:
         token.id          = TokenId::LiteralString;
         node->literalType = LiteralType::TT_STRING;
-        token.text        = sourceFile->path;
+        token.text        = sourceFile->path.string();
         break;
     case TokenId::CompilerModule:
         token.id          = TokenId::LiteralString;

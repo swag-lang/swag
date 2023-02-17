@@ -152,13 +152,13 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
     if (bc->sourceFile && bc->node)
     {
         g_Log.print("bytecode location: ", LogColor::Gray);
-        g_Log.print(Fmt("%s:%u:%u", bc->sourceFile->path.c_str(), bc->node->token.startLocation.line + 1, bc->node->token.startLocation.column + 1), LogColor::DarkYellow);
+        g_Log.print(Fmt("%s:%u:%u", bc->sourceFile->path.string().c_str(), bc->node->token.startLocation.line + 1, bc->node->token.startLocation.column + 1), LogColor::DarkYellow);
         g_Log.eol();
     }
     else if (bc->sourceFile)
     {
         g_Log.print("bytecode source file: ", LogColor::Gray);
-        g_Log.print(bc->sourceFile->path.c_str(), LogColor::DarkYellow);
+        g_Log.print(bc->sourceFile->path.string().c_str(), LogColor::DarkYellow);
         g_Log.eol();
     }
 
@@ -166,7 +166,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
     if (ipNode && ipNode->sourceFile)
     {
         g_Log.print("instruction location: ", LogColor::Gray);
-        g_Log.print(Fmt("%s:%u:%u", ipNode->sourceFile->path.c_str(), ipNode->token.startLocation.line + 1, ipNode->token.startLocation.column + 1), LogColor::DarkYellow);
+        g_Log.print(Fmt("%s:%u:%u", ipNode->sourceFile->path.string().c_str(), ipNode->token.startLocation.line + 1, ipNode->token.startLocation.column + 1), LogColor::DarkYellow);
         g_Log.eol();
     }
 

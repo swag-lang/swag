@@ -55,18 +55,18 @@ bool CommandLine::check()
     // Make some paths canonical
     if (!workspacePath.empty())
     {
-        workspacePath = fs::absolute(workspacePath).string();
+        workspacePath = filesystem::absolute(workspacePath);
         error_code errorCode;
-        auto       workspacePath1 = fs::canonical(workspacePath, errorCode).string();
+        auto       workspacePath1 = filesystem::canonical(workspacePath, errorCode);
         if (!errorCode)
             workspacePath = workspacePath1;
     }
 
     if (!cachePath.empty())
     {
-        cachePath = fs::absolute(cachePath).string();
+        cachePath = filesystem::absolute(cachePath);
         error_code errorCode;
-        auto       cachePath1 = fs::canonical(cachePath).string();
+        auto       cachePath1 = filesystem::canonical(cachePath);
         if (!errorCode)
             cachePath = cachePath1;
     }
@@ -74,7 +74,7 @@ bool CommandLine::check()
     // Add/check script file extension
     if (!g_CommandLine.scriptName.empty())
     {
-        fs::path p(g_CommandLine.scriptName);
+        Path p = g_CommandLine.scriptName;
         if (p.extension().string().empty())
         {
             g_CommandLine.scriptName += ".swgs";

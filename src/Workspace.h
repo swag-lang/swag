@@ -5,6 +5,7 @@
 #include "ComputedValue.h"
 #include "Mutex.h"
 #include "Set.h"
+#include "Path.h"
 struct Module;
 struct Scope;
 struct SourceFile;
@@ -53,7 +54,7 @@ struct Workspace
     bool        buildRTModule(Module* module);
     bool        buildTarget();
     bool        build();
-    Module*     createOrUseModule(const Utf8& moduleName, const Utf8& modulePath, ModuleKind kind, bool errorModule = false);
+    Module*     createOrUseModule(const Utf8& moduleName, const Path& modulePath, ModuleKind kind, bool errorModule = false);
 
     void        addBootstrap();
     void        addRuntime();
@@ -62,32 +63,32 @@ struct Workspace
     void        setupInternalTags();
     void        setupUserTags();
     void        setup();
-    void        computeModuleName(const fs::path& path, Utf8& moduleName, Utf8& moduleFolder, ModuleKind& kind);
+    void        computeModuleName(const Path& path, Utf8& moduleName, Path& moduleFolder, ModuleKind& kind);
     SourceFile* findFile(const char* fileName);
     ByteCode*   findBc(const char* name);
     Module*     getModuleByName(const Utf8& moduleName);
-    void        cleanFolderContent(const fs::path& path);
+    void        cleanFolderContent(const Path& path);
     OneTag*     hasTag(const Utf8& name);
     void        setupCachePath();
     void        setScriptWorkspace(const Utf8& name);
-    Utf8        getTargetFullName(const string& buildCfg, const BackendTarget& target);
-    fs::path    getTargetPath(const string& buildCfg, const BackendTarget& target);
+    Utf8        getTargetFullName(const Utf8& buildCfg, const BackendTarget& target);
+    Path        getTargetPath(const Utf8& buildCfg, const BackendTarget& target);
     void        setupTarget();
 
-    void cleanPublic(const fs::path& basePath);
+    void cleanPublic(const Path& basePath);
     void cleanScript(bool all);
     void cleanCommand();
     void newModule(string moduleName);
     void newCommand();
     void scriptCommand();
 
-    fs::path              workspacePath;
-    fs::path              targetPath;
-    fs::path              cachePath;
-    fs::path              testsPath;
-    fs::path              examplesPath;
-    fs::path              modulesPath;
-    fs::path              dependenciesPath;
+    Path                  workspacePath;
+    Path                  targetPath;
+    Path                  cachePath;
+    Path                  testsPath;
+    Path                  examplesPath;
+    Path                  modulesPath;
+    Path                  dependenciesPath;
     SharedMutex           mutexModules;
     atomic<int>           numErrors   = 0;
     atomic<int>           numWarnings = 0;
@@ -96,7 +97,7 @@ struct Workspace
 
     Vector<OneTag> tags;
 
-    MapUtf8<Module*> mapFirstPassModulesNames;
+    MapPath<Module*> mapFirstPassModulesNames;
     MapUtf8<Module*> mapModulesNames;
     Set<void*>       doneErrSymbols;
     Module*          filteredModule = nullptr;

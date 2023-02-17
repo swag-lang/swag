@@ -265,7 +265,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
         pp.dbg->finalize();
 
     // Target triple
-    string archName;
+    Utf8 archName;
     switch (g_CommandLine.target.arch)
     {
     case SwagTargetArch::X86_64:
@@ -276,7 +276,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
         break;
     }
 
-    string vendorName, osName, abiName;
+    Utf8 vendorName, osName, abiName;
     switch (g_CommandLine.target.os)
     {
     case SwagTargetOs::Windows:
@@ -295,13 +295,13 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
         break;
     }
 
-    string targetTriple = Fmt("%s-%s-%s-%s", archName.c_str(), vendorName.c_str(), osName.c_str(), abiName.c_str()).c_str();
-    bool   isDebug      = !buildParameters.buildCfg->backendOptimizeSpeed && !buildParameters.buildCfg->backendOptimizeSize;
+    Utf8 targetTriple = Fmt("%s-%s-%s-%s", archName.c_str(), vendorName.c_str(), osName.c_str(), abiName.c_str()).c_str();
+    bool isDebug      = !buildParameters.buildCfg->backendOptimizeSpeed && !buildParameters.buildCfg->backendOptimizeSize;
 
     // Setup target
-    modu.setTargetTriple(targetTriple);
+    modu.setTargetTriple(targetTriple.c_str());
     std::string error;
-    auto        target = llvm::TargetRegistry::lookupTarget(targetTriple, error);
+    auto        target = llvm::TargetRegistry::lookupTarget(targetTriple.c_str(), error);
     if (!target)
     {
         Report::error(Fmt(Err(Err0558), targetTriple.c_str()));
@@ -313,7 +313,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     auto                features = "";
     llvm::TargetOptions opt;
     auto                rm            = llvm::Optional<llvm::Reloc::Model>();
-    auto                targetMachine = target->createTargetMachine(targetTriple, cpu, features, opt, rm);
+    auto                targetMachine = target->createTargetMachine(targetTriple.c_str(), cpu, features, opt, rm);
     if (isDebug)
         targetMachine->setOptLevel(llvm::CodeGenOpt::None);
     else
@@ -322,11 +322,11 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     modu.setDataLayout(targetMachine->createDataLayout());
 
     // Output file
-    auto                      targetPath = Backend::getCacheFolder(buildParameters);
-    auto                      path       = targetPath + "/" + pp.filename;
-    auto                      filename   = path;
+    auto targetPath = Backend::getCacheFolder(buildParameters);
+    auto path       = targetPath;
+    path.append(pp.filename.c_str());
     std::error_code           errorCode;
-    llvm::raw_fd_ostream      dest(filename, errorCode, llvm::sys::fs::OF_None);
+    llvm::raw_fd_ostream      dest(path.string(), errorCode, llvm::sys::fs::OF_None);
     llvm::legacy::PassManager llvmPass;
 
     // Pipeline configurations
@@ -376,8 +376,10 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     // Output IR code
     if (buildParameters.buildCfg->backendLLVM.outputIR)
     {
-        auto                 filenameIR = path;
-        llvm::raw_fd_ostream destFileIR(filename + ".ir", errorCode, llvm::sys::fs::OF_None);
+        auto filenameIR = path;
+        auto irName     = path;
+        irName.append(".ir");
+        llvm::raw_fd_ostream destFileIR(irName.string(), errorCode, llvm::sys::fs::OF_None);
         modu.print(destFileIR, nullptr);
         destFileIR.flush();
         destFileIR.close();
@@ -393,7 +395,7 @@ bool BackendLLVM::generateOutput(const BuildParameters& buildParameters)
     if (!mustCompile)
         return true;
 
-    Vector<string> files;
+    Vector<Path> files;
     files.reserve(numPreCompileBuffers);
     for (auto i = 0; i < numPreCompileBuffers; i++)
         files.push_back(perThread[buildParameters.compileType][i]->filename);

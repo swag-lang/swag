@@ -240,7 +240,7 @@ namespace OS
         return ok;
     }
 
-    Utf8 getExePath()
+    Path getExePath()
     {
         char az[_MAX_PATH];
         GetModuleFileNameA(NULL, az, _MAX_PATH);
@@ -323,8 +323,8 @@ namespace OS
     void visitFiles(const char* folder, function<void(const char*)> user)
     {
         WIN32_FIND_DATAA findfile;
-        string           searchPath = folder;
-        searchPath += "/*";
+        Utf8             searchPath = folder;
+        searchPath += "\\*";
         HANDLE h = FindFirstFileA(searchPath.c_str(), &findfile);
         if (h != INVALID_HANDLE_VALUE)
         {
@@ -342,8 +342,8 @@ namespace OS
     void visitFolders(const char* folder, function<void(const char*)> user, const char* match)
     {
         WIN32_FIND_DATAA findfile;
-        string           searchPath = folder;
-        searchPath += "/";
+        Utf8             searchPath = folder;
+        searchPath += "\\";
         searchPath += match;
         HANDLE h = FindFirstFileA(searchPath.c_str(), &findfile);
         if (h != INVALID_HANDLE_VALUE)
@@ -364,8 +364,8 @@ namespace OS
     void visitFilesFolders(const char* folder, function<void(uint64_t, const char*, bool)> user)
     {
         WIN32_FIND_DATAA findfile;
-        string           searchPath = folder;
-        searchPath += "/*";
+        Utf8             searchPath = folder;
+        searchPath += "\\*";
         HANDLE h = FindFirstFileA(searchPath.c_str(), &findfile);
         if (h != INVALID_HANDLE_VALUE)
         {
@@ -392,28 +392,27 @@ namespace OS
     void visitFilesRec(const char* folder, function<void(const char*)> user)
     {
         WIN32_FIND_DATAA findfile;
-        string           searchPath = folder;
-        searchPath += "/*";
+        Path             searchPath = folder;
+        searchPath += "\\*";
 
-        auto   path = string(folder);
-        HANDLE h    = FindFirstFileA(searchPath.c_str(), &findfile);
+        Path   path = folder;
+        HANDLE h    = FindFirstFileA(searchPath.string().c_str(), &findfile);
         if (h != INVALID_HANDLE_VALUE)
         {
             do
             {
                 path = folder;
-                path += "/";
-                path += findfile.cFileName;
+                path.append(findfile.cFileName);
 
                 if (findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
                 {
                     if ((findfile.cFileName[0] == '.') && (!findfile.cFileName[1] || (findfile.cFileName[1] == '.' && !findfile.cFileName[2])))
                         continue;
-                    visitFilesRec(path.c_str(), user);
+                    visitFilesRec(path.string().c_str(), user);
                 }
                 else
                 {
-                    user(path.c_str());
+                    user(path.string().c_str());
                 }
 
             } while (FindNextFileA(h, &findfile));
@@ -573,7 +572,7 @@ namespace OS
         }
     }
 
-    bool touchFile(const fs::path& path)
+    bool touchFile(const Path& path)
     {
         HANDLE hFile = CreateFile(path.c_str(), FILE_WRITE_ATTRIBUTES, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
         if (hFile == INVALID_HANDLE_VALUE)
@@ -590,7 +589,7 @@ namespace OS
         return res;
     }
 
-    string getTemporaryFolder()
+    Path getTemporaryFolder()
     {
         char buffer[_MAX_PATH];
         if (GetTempPathA(_MAX_PATH, buffer))

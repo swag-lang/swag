@@ -181,12 +181,12 @@ void Workspace::setup()
     }
 
     bool invalid = false;
-    if (!fs::exists(workspacePath))
+    if (!filesystem::exists(workspacePath))
     {
         Report::error(Fmt(Err(Fat0026), workspacePath.string().c_str()));
         invalid = true;
     }
-    else if (!g_CommandLine.scriptCommand && !fs::exists(modulesPath) && !fs::exists(testsPath))
+    else if (!g_CommandLine.scriptCommand && !filesystem::exists(modulesPath) && !filesystem::exists(testsPath))
     {
         Report::error(Fmt(Err(Fat0016), workspacePath.string().c_str()));
         invalid = true;
@@ -203,25 +203,21 @@ void Workspace::setup()
 
 void Workspace::setupPaths()
 {
-    workspacePath = fs::absolute(g_CommandLine.workspacePath);
+    workspacePath = filesystem::absolute(g_CommandLine.workspacePath);
     if (workspacePath.empty())
-        workspacePath = fs::current_path();
+        workspacePath = filesystem::current_path();
 
     testsPath = workspacePath;
     testsPath.append(SWAG_TESTS_FOLDER);
-    testsPath += "/";
 
     examplesPath = workspacePath;
     examplesPath.append(SWAG_EXAMPLES_FOLDER);
-    examplesPath += "/";
 
     modulesPath = workspacePath;
     modulesPath.append(SWAG_MODULES_FOLDER);
-    modulesPath += "/";
 
     dependenciesPath = workspacePath;
     dependenciesPath.append(SWAG_DEPENDENCIES_FOLDER);
-    dependenciesPath += "/";
 }
 
 void Workspace::setupCachePath()
@@ -234,7 +230,7 @@ void Workspace::setupCachePath()
         if (cachePath.empty())
         {
             cachePath = workspacePath;
-            cachePath += SWAG_OUTPUT_FOLDER;
+            cachePath.append(SWAG_OUTPUT_FOLDER);
         }
     }
 }

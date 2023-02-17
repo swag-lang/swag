@@ -249,7 +249,7 @@ struct CoffFunction
 
 struct X64Gen
 {
-    string filename;
+    Utf8   filename;
     Concat concat;
     Concat postConcat;
 

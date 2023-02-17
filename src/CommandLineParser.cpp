@@ -4,6 +4,7 @@
 #include "Log.h"
 #include "ErrorIds.h"
 #include "Report.h"
+#include "Path.h"
 
 void CommandLineParser::setup(CommandLine* cmdLine)
 {
@@ -23,12 +24,12 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu sc",          "--error-compact",        "-ec",      CommandLineType::Bool,          &cmdLine->errorCompact, nullptr, "merge errors and notes together if possible");
     addArg("bu sc",          "--error-abs",            "-ea",      CommandLineType::Bool,          &cmdLine->errorAbsolute, nullptr, "display absolute paths when an error is raised");
                                                                                                    
-    addArg("bu ne cl li ge", "--workspace",            "-w",       CommandLineType::String,        &cmdLine->workspacePath, nullptr, "the path to the workspace to work with");
+    addArg("bu ne cl li ge", "--workspace",            "-w",       CommandLineType::StringPath,    &cmdLine->workspacePath, nullptr, "the path to the workspace to work with");
     addArg("bu ne",          "--module",               "-m",       CommandLineType::String,        &cmdLine->moduleName, nullptr, "module name");
     addArg("ne sc",          "--file",                 "-f",       CommandLineType::String,        &cmdLine->scriptName, nullptr, "script file name");
     addArg("ne",             "--test",                 nullptr,    CommandLineType::Bool,          &cmdLine->test, nullptr, "create a test module");
                                                                                                    
-    addArg("all",            "--cache",                "-t",       CommandLineType::String,        &cmdLine->cachePath, nullptr, "specify the cache folder (system specific if empty)");
+    addArg("all",            "--cache",                "-t",       CommandLineType::StringPath,    &cmdLine->cachePath, nullptr, "specify the cache folder (system specific if empty)");
     addArg("all",            "--num-cores",            nullptr,    CommandLineType::Int,           &cmdLine->numCores, nullptr, "max number of cpu to use (0 = automatic)");
                                                                                                    
     addArg("bu",             "--output",               "-o",       CommandLineType::Bool,          &cmdLine->output, nullptr, "output backend");
@@ -88,7 +89,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     // clang-format on
 }
 
-static void getArgValue(CommandLineArgument* oneArg, string& value, string& defaultValue)
+static void getArgValue(CommandLineArgument* oneArg, Utf8& value, Utf8& defaultValue)
 {
     switch (oneArg->type)
     {
@@ -105,7 +106,11 @@ static void getArgValue(CommandLineArgument* oneArg, string& value, string& defa
         break;
     case CommandLineType::String:
         value        = "<string>";
-        defaultValue = *(string*) oneArg->buffer;
+        defaultValue = *(Utf8*) oneArg->buffer;
+        break;
+    case CommandLineType::StringPath:
+        value        = "<path>";
+        defaultValue = ((Path*) oneArg->buffer)->string();
         break;
     case CommandLineType::StringSet:
         value = "<string>";
@@ -120,14 +125,14 @@ static void getArgValue(CommandLineArgument* oneArg, string& value, string& defa
     }
     case CommandLineType::EnumString:
         value        = oneArg->param;
-        defaultValue = *(string*) oneArg->buffer;
+        defaultValue = *(Utf8*) oneArg->buffer;
         break;
     }
 }
 
-void CommandLineParser::logArguments(const string& cmd)
+void CommandLineParser::logArguments(const Utf8& cmd)
 {
-    string line0, line1;
+    Utf8 line0, line1;
 
     size_t columns[10] = {4};
 
@@ -148,7 +153,7 @@ void CommandLineParser::logArguments(const string& cmd)
         columns[0] = max(columns[0], arg.first.length() + SPACE);
         columns[1] = max(columns[1], oneArg->shortName.length() + SPACE);
 
-        string value, defaultVal;
+        Utf8 value, defaultVal;
         getArgValue(oneArg, value, defaultVal);
         columns[2] = max(columns[2], value.length() + SPACE);
         columns[3] = max(columns[3], defaultVal.length() + SPACE);
@@ -204,7 +209,7 @@ void CommandLineParser::logArguments(const string& cmd)
             line0 += " ";
         line0 += oneArg->shortName;
 
-        string value, defaultVal;
+        Utf8 value, defaultVal;
         getArgValue(oneArg, value, defaultVal);
 
         total += columns[1];
@@ -244,19 +249,19 @@ void CommandLineParser::addArg(const char* commands, const char* longName, const
         shortNameArgs[shortName] = arg;
 }
 
-bool CommandLineParser::isArgValidFor(const string& swagCmd, CommandLineArgument* arg)
+bool CommandLineParser::isArgValidFor(const Utf8& swagCmd, CommandLineArgument* arg)
 {
     return arg->cmds.find(swagCmd) != arg->cmds.end();
 }
 
-bool CommandLineParser::process(const string& swagCmd, int argc, const char* argv[])
+bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[])
 {
     bool result = true;
     for (int i = 0; i < argc; i++)
     {
         // Split in half, with the ':' delimiter
-        string      command;
-        string      argument;
+        Utf8        command;
+        Utf8        argument;
         const char* pz = argv[i];
         while (*pz && *pz != ':')
             command += *pz++;
@@ -326,7 +331,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
             {
                 if (one == argument)
                 {
-                    *(string*) arg->buffer = one;
+                    *(Utf8*) arg->buffer = one;
                     break;
                 }
 
@@ -364,7 +369,20 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
                 continue;
             }
 
-            *((string*) arg->buffer) = argument;
+            *((Utf8*) arg->buffer) = argument;
+            break;
+        }
+
+        case CommandLineType::StringPath:
+        {
+            if (argument.empty())
+            {
+                Report::error(Fmt(Err(Err0725), it->first.c_str(), argument.c_str()));
+                result = false;
+                continue;
+            }
+
+            *((Path*) arg->buffer) = argument;
             break;
         }
 
@@ -377,7 +395,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
                 continue;
             }
 
-            ((Set<string>*) arg->buffer)->insert(argument);
+            ((SetUtf8*) arg->buffer)->insert(argument);
             break;
         }
 
@@ -416,13 +434,13 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
     return result;
 }
 
-string CommandLineParser::buildString(bool full)
+Utf8 CommandLineParser::buildString(bool full)
 {
     CommandLine       defaultValues;
     CommandLineParser defaultParser;
     defaultParser.setup(&defaultValues);
 
-    string result;
+    Utf8 result;
     for (auto arg : longNameArgs)
     {
         auto itDefault  = defaultParser.longNameArgs.find(arg.first);
@@ -432,10 +450,18 @@ string CommandLineParser::buildString(bool full)
         switch (oneArg->type)
         {
         case CommandLineType::String:
-            if (full || *(string*) oneArg->buffer != *(string*) defaultArg->buffer)
+            if (full || *(Utf8*) oneArg->buffer != *(Utf8*) defaultArg->buffer)
             {
                 result += oneArg->longName + ":";
-                result += *(string*) oneArg->buffer;
+                result += *(Utf8*) oneArg->buffer;
+                result += " ";
+            }
+            break;
+        case CommandLineType::StringPath:
+            if (full || *(Path*) oneArg->buffer != *(Path*) defaultArg->buffer)
+            {
+                result += oneArg->longName + ":";
+                result += ((Path*) oneArg->buffer)->string();
                 result += " ";
             }
             break;
@@ -456,7 +482,7 @@ string CommandLineParser::buildString(bool full)
             if (full)
             {
                 result += oneArg->longName + ":";
-                auto all = (Set<string>*) oneArg->buffer;
+                auto all = (SetUtf8*) oneArg->buffer;
                 for (auto& one : *all)
                 {
                     result += one;
@@ -466,10 +492,10 @@ string CommandLineParser::buildString(bool full)
             break;
         }
         case CommandLineType::EnumString:
-            if (full || *(string*) oneArg->buffer != *(string*) defaultArg->buffer)
+            if (full || *(Utf8*) oneArg->buffer != *(Utf8*) defaultArg->buffer)
             {
                 result += oneArg->longName + ":";
-                result += *(string*) oneArg->buffer;
+                result += *(Utf8*) oneArg->buffer;
                 result += " ";
             }
             break;

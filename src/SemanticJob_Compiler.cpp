@@ -735,29 +735,27 @@ bool SemanticJob::resolveCompilerInclude(SemanticContext* context)
         node->doneFlags |= AST_DONE_LOAD;
 
         auto filename = back->computedValue->text;
-        Utf8 fullFileName;
+        Path fullFileName;
 
         // Search first in the same folder as the source file
-        fullFileName = fs::path(node->sourceFile->path.c_str()).parent_path().string();
-        fullFileName += "/";
-        fullFileName += filename;
-        if (!fs::exists(fullFileName.c_str()))
+        fullFileName = node->sourceFile->path.parent_path();
+        fullFileName.append(filename.c_str());
+        if (!filesystem::exists(fullFileName))
         {
             // Search relative to the module path
             fullFileName = node->sourceFile->module->path;
-            fullFileName += "/";
-            fullFileName += filename;
-            if (!fs::exists(fullFileName.c_str()))
+            fullFileName.append(filename.c_str());
+            if (!filesystem::exists(fullFileName))
             {
                 // Search the file itself, without any special path
                 fullFileName = filename;
-                if (!fs::exists(fullFileName.c_str()))
+                if (!filesystem::exists(fullFileName))
                     return context->report({back, Fmt(Err(Err0244), filename.c_str())});
             }
         }
 
         struct stat stat_buf;
-        int         rc = stat(fullFileName, &stat_buf);
+        int         rc = stat(fullFileName.string().c_str(), &stat_buf);
         SWAG_VERIFY(rc == 0, context->report({back, Fmt(Err(Err0223), back->computedValue->text.c_str())}));
         SWAG_CHECK(context->checkSizeOverflow("'#load'", stat_buf.st_size, SWAG_LIMIT_COMPILER_LOAD));
 

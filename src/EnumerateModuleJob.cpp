@@ -7,12 +7,11 @@
 #include "LoadSourceFileJob.h"
 #include "ThreadManager.h"
 #include "SyntaxJob.h"
-#include "AstNode.h"
 #include "Diagnostic.h"
 #include "ErrorIds.h"
 #include "Report.h"
 
-SourceFile* EnumerateModuleJob::addFileToModule(Module* theModule, Vector<SourceFile*>& allFiles, string dirName, string fileName, uint64_t writeTime, SourceFile* prePass, Module* imported)
+SourceFile* EnumerateModuleJob::addFileToModule(Module* theModule, Vector<SourceFile*>& allFiles, const Path& dirName, const Utf8& fileName, uint64_t writeTime, SourceFile* prePass, Module* imported)
 {
     auto file       = Allocator::alloc<SourceFile>();
     file->fromTests = theModule->kind == ModuleKind::Test;
@@ -29,9 +28,9 @@ SourceFile* EnumerateModuleJob::addFileToModule(Module* theModule, Vector<Source
     }
     else
     {
-        fs::path pathFile = dirName.c_str();
-        pathFile.append(fileName);
-        file->path = Utf8::normalizePath(pathFile);
+        Path pathFile = dirName;
+        pathFile.append(fileName.c_str());
+        file->path = pathFile;
     }
 
     file->writeTime = writeTime;
@@ -68,20 +67,20 @@ bool EnumerateModuleJob::dealWithIncludes(Module* theModule)
     // Treat includes
     for (auto n : theModule->includes)
     {
-        fs::path orgFilePath = n->token.ctext();
+        Path orgFilePath = n->token.ctext();
 
         // Is this a simple file ?
         auto filePath = orgFilePath;
-        if (!fs::exists(filePath))
+        if (!filesystem::exists(filePath))
         {
             filePath = theModule->path;
             filePath.append(orgFilePath.string());
-            filePath = fs::absolute(filePath).string();
+            filePath = filesystem::absolute(filePath);
             error_code errorCode;
-            auto       filePath1 = fs::canonical(filePath, errorCode).string();
+            auto       filePath1 = filesystem::canonical(filePath, errorCode);
             if (!errorCode)
                 filePath = filePath1;
-            if (!fs::exists(filePath))
+            if (!filesystem::exists(filePath))
             {
                 Diagnostic diag{n->sourceFile, n->token, Fmt(Err(Err0304), n->token.ctext())};
                 Report::report(diag);
@@ -91,7 +90,7 @@ bool EnumerateModuleJob::dealWithIncludes(Module* theModule)
 
         auto fileName  = filePath.filename().string();
         auto writeTime = OS::getFileWriteTime(filePath.string().c_str());
-        addFileToModule(theModule, allFiles, fs::path(filePath.c_str()).parent_path().string(), fileName, writeTime);
+        addFileToModule(theModule, allFiles, filePath.parent_path(), fileName, writeTime);
     }
 
     // Sort files, and register them in a constant order
@@ -106,21 +105,19 @@ bool EnumerateModuleJob::dealWithIncludes(Module* theModule)
     return true;
 }
 
-void EnumerateModuleJob::enumerateFilesInModule(const fs::path& basePath, Module* theModule)
+void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* theModule)
 {
     Vector<SourceFile*> allFiles;
 
     auto path = basePath;
-    path      = g_ModuleCfgMgr->getAliasPath(path).string();
-    path += "/";
-    path += SWAG_SRC_FOLDER;
-    path += "/";
+    path      = g_ModuleCfgMgr->getAliasPath(path);
+    path.append(SWAG_SRC_FOLDER);
 
     if (!dealWithIncludes(theModule))
         return;
 
     // Is the list of files already computed ?
-    auto it = g_Workspace->mapFirstPassModulesNames.find(path.string());
+    auto it = g_Workspace->mapFirstPassModulesNames.find(path);
     if (it != g_Workspace->mapFirstPassModulesNames.end())
     {
         for (auto f : it->second->files)
@@ -143,22 +140,23 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& basePath, Module
     }
 
     // Scan source folder
-    Vector<string> directories;
-    directories.push_back(path.string());
+    Vector<Path> directories;
+    directories.push_back(path);
 
-    string   tmp, tmp1;
-    fs::path modulePath;
+    Path tmp, tmp1;
+    Path modulePath;
     while (directories.size())
     {
         tmp = move(directories.back());
         directories.pop_back();
 
-        OS::visitFilesFolders(tmp.c_str(),
+        OS::visitFilesFolders(tmp.string().c_str(),
                               [&](uint64_t writeTime, const char* cFileName, bool isFolder)
                               {
                                   if (isFolder)
                                   {
-                                      tmp1 = tmp + "/" + cFileName;
+                                      tmp1 = tmp;
+                                      tmp1.append(cFileName);
                                       directories.emplace_back(move(tmp1));
                                   }
                                   else
@@ -187,11 +185,10 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& basePath, Module
     if (cfgModule)
     {
         auto cfgFile = theModule->path;
-        cfgFile      = g_ModuleCfgMgr->getAliasPath(cfgFile).string();
-        cfgFile += "/";
-        cfgFile += SWAG_CFG_FILE;
-        auto writeTime  = OS::getFileWriteTime(cfgFile.c_str());
-        auto file       = addFileToModule(theModule, allFiles, fs::path(cfgFile).parent_path().string(), SWAG_CFG_FILE, writeTime);
+        cfgFile      = g_ModuleCfgMgr->getAliasPath(cfgFile);
+        cfgFile.append(SWAG_CFG_FILE);
+        auto writeTime  = OS::getFileWriteTime(cfgFile.string().c_str());
+        auto file       = addFileToModule(theModule, allFiles, cfgFile.parent_path(), SWAG_CFG_FILE, writeTime);
         file->isCfgFile = true;
     }
 
@@ -205,47 +202,47 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& basePath, Module
     }
 }
 
-void EnumerateModuleJob::loadFilesInModules(const fs::path& basePath)
+void EnumerateModuleJob::loadFilesInModules(const Path& basePath)
 {
     // Scan source folder
     OS::visitFolders(basePath.string().c_str(),
                      [&](const char* cFileName)
                      {
-                         string path = basePath.string() + cFileName;
-                         path        = g_ModuleCfgMgr->getAliasPath(path).string();
-                         path += "/";
-                         path += SWAG_SRC_FOLDER;
-                         path += "/";
+                         auto path = basePath;
+                         path.append(cFileName);
+                         path = g_ModuleCfgMgr->getAliasPath(path);
+                         path.append(SWAG_SRC_FOLDER);
 
                          auto module                                 = Allocator::alloc<Module>();
                          g_Workspace->mapFirstPassModulesNames[path] = module;
 
                          // Scan source folder
-                         Vector<string> directories;
+                         Vector<Path> directories;
                          directories.push_back(path);
 
-                         string tmp, tmp1;
+                         Path tmp, tmp1;
                          while (directories.size())
                          {
                              tmp = move(directories.back());
                              directories.pop_back();
 
-                             OS::visitFilesFolders(tmp.c_str(),
+                             OS::visitFilesFolders(tmp.string().c_str(),
                                                    [&](uint64_t writeTime, const char* cFileName, bool isFolder)
                                                    {
                                                        if (isFolder)
                                                        {
-                                                           tmp1 = tmp + "/" + cFileName;
+                                                           tmp1 = tmp;
+                                                           tmp1.append(cFileName);
                                                            directories.emplace_back(move(tmp1));
                                                        }
                                                        else
                                                        {
-                                                           auto file         = Allocator::alloc<SourceFile>();
-                                                           file->module      = module;
-                                                           file->name        = cFileName;
-                                                           fs::path pathFile = tmp.c_str();
+                                                           auto file     = Allocator::alloc<SourceFile>();
+                                                           file->module  = module;
+                                                           file->name    = cFileName;
+                                                           Path pathFile = tmp;
                                                            pathFile.append(cFileName);
-                                                           file->path      = Utf8::normalizePath(pathFile);
+                                                           file->path      = pathFile;
                                                            file->writeTime = writeTime;
                                                            module->files.push_back(file);
 
@@ -263,9 +260,10 @@ void EnumerateModuleJob::loadFilesInModules(const fs::path& basePath)
                      });
 }
 
-Module* EnumerateModuleJob::addModule(const fs::path& path)
+Module* EnumerateModuleJob::addModule(const Path& path)
 {
-    Utf8       moduleName, moduleFolder;
+    Utf8       moduleName;
+    Path       moduleFolder;
     ModuleKind kind;
 
     // Get infos about module, depending on where it is located
@@ -279,7 +277,7 @@ Module* EnumerateModuleJob::addModule(const fs::path& path)
     return theModule;
 }
 
-void EnumerateModuleJob::enumerateModules(const fs::path& path)
+void EnumerateModuleJob::enumerateModules(const Path& path)
 {
     Vector<string> allModules;
 
@@ -292,7 +290,11 @@ void EnumerateModuleJob::enumerateModules(const fs::path& path)
                          if (g_CommandLine.numCores == 1)
                              allModules.push_back(cFolderName);
                          else
-                             addModule(path.string() + cFolderName);
+                         {
+                             auto toAdd = path;
+                             toAdd.append(cFolderName);
+                             addModule(toAdd);
+                         }
                      });
 
     // Sort modules, and register them in a constant order
@@ -301,7 +303,9 @@ void EnumerateModuleJob::enumerateModules(const fs::path& path)
         sort(allModules.begin(), allModules.end());
         for (auto m : allModules)
         {
-            addModule(path.string() + m);
+            auto toAdd = path;
+            toAdd.append(m);
+            addModule(toAdd);
         }
     }
 }
@@ -334,9 +338,9 @@ JobResult EnumerateModuleJob::execute()
         enumerateModules(g_Workspace->dependenciesPath);
 
         // If we are in script mode, then we add one single module with the script file
-        auto parentFolder          = fs::path(g_CommandLine.scriptName.c_str()).parent_path().string();
+        auto parentFolder          = Path(g_CommandLine.scriptName.c_str()).parent_path();
         auto file                  = Allocator::alloc<SourceFile>();
-        file->name                 = fs::path(g_CommandLine.scriptName).filename().replace_extension().string();
+        file->name                 = Path(g_CommandLine.scriptName).filename().replace_extension().string();
         auto scriptModule          = g_Workspace->createOrUseModule(file->name, parentFolder, ModuleKind::Script);
         file->path                 = g_CommandLine.scriptName;
         file->module               = scriptModule;
@@ -373,7 +377,7 @@ JobResult EnumerateModuleJob::execute()
             {
                 if (f->isCfgFile)
                     continue;
-                auto newFile                = addFileToModule(m, allFiles, fs::path(f->path).parent_path().string(), f->name.c_str(), f->writeTime, nullptr, mod);
+                auto newFile                = addFileToModule(m, allFiles, f->path.parent_path(), f->name, f->writeTime, nullptr, mod);
                 newFile->isEmbbeded         = true;
                 newFile->globalUsingsEmbbed = mod->buildParameters.globalUsings;
             }

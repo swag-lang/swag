@@ -189,8 +189,9 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         auto dep      = moduleDependencies[i];
         auto nameDown = dep->name;
         Ast::normalizeIdentifierName(nameDown);
-        auto nameLib = nameDown + Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::DynamicLib);
-        auto ptrStr  = builder.CreateGlobalStringPtr(nameLib.c_str());
+        auto nameLib = nameDown;
+        nameLib += Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::DynamicLib);
+        auto ptrStr = builder.CreateGlobalStringPtr(nameLib.c_str());
         emitCall(buildParameters, module, g_LangSpec->name__loaddll, nullptr, allocT, {UINT32_MAX, UINT32_MAX}, {ptrStr, builder.getInt64(nameLib.length())});
     }
 

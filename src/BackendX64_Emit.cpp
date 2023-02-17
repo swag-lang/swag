@@ -294,7 +294,7 @@ void BackendX64::emitOverflowUnsigned(X64Gen& pp, AstNode* node, const char* msg
 
 void BackendX64::emitInternalPanic(X64Gen& pp, AstNode* node, const char* msg)
 {
-    auto np = Utf8::normalizePath(node->sourceFile->path);
+    auto np = node->sourceFile->path;
     pp.pushParams.clear();
     pp.pushParams.push_back({X64PushParamType::GlobalString, (uint64_t) np.c_str()});
     pp.pushParams.push_back({X64PushParamType::Imm, node->token.startLocation.line});

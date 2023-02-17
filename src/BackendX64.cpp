@@ -738,13 +738,14 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
     auto& pp              = *perThread[ct][precompileIndex];
 
     auto targetPath = Backend::getCacheFolder(buildParameters);
-    auto path       = targetPath + "/" + pp.filename;
-    auto filename   = path;
+    auto path       = targetPath;
+    path.append(pp.filename.c_str());
+    auto filename = path;
 
     Concat concat;
 
     FILE* f = nullptr;
-    if (fopen_s(&f, filename.c_str(), "wb"))
+    if (fopen_s(&f, filename.string().c_str(), "wb"))
     {
         Report::errorOS(Fmt(Err(Err0524), filename.c_str()));
         return false;
@@ -875,7 +876,7 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
     pp.dbgMapPtrPtrTypes.clear();
     pp.dbgMapTypesNames.clear();
 
-    OS::ensureFileIsWritten(filename.c_str());
+    OS::ensureFileIsWritten(filename.string().c_str());
     return true;
 }
 
@@ -885,7 +886,7 @@ bool BackendX64::generateOutput(const BuildParameters& buildParameters)
     if (!mustCompile)
         return true;
 
-    Vector<string> files;
+    Vector<Path> files;
     files.reserve(numPreCompileBuffers);
     for (auto i = 0; i < numPreCompileBuffers; i++)
         files.push_back(perThread[buildParameters.compileType][i]->filename);

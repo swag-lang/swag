@@ -3676,7 +3676,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         {
             auto loc               = ByteCode::getLocation(runContext->bc, runContext->ip);
             tmpLoc.fileName.buffer = (void*) loc.file->path.c_str();
-            tmpLoc.fileName.count  = loc.file->path.length();
+            tmpLoc.fileName.count  = loc.file->path.string().length();
             tmpLoc.lineStart = tmpLoc.lineEnd = loc.location->line;
             tmpLoc.colStart = tmpLoc.colEnd = loc.location->column;
             location                        = &tmpLoc;

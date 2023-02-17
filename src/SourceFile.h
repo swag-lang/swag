@@ -25,7 +25,7 @@ struct SourceFile
     VectorNative<Scope*>   globalUsings;
     VectorNative<AstNode*> globalUsingsEmbbed;
     Utf8                   name;
-    string                 path;
+    Path                   path;
     Utf8                   externalContent;
     Utf8                   scopeName;
 

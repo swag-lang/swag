@@ -53,8 +53,8 @@ struct Backend
     bool      setupExportFile(bool force = false);
 
     Concat bufferSwg;
-    string exportFileName;
-    string exportFilePath;
+    Path   exportFileName;
+    Path   exportFilePath;
 
     Module*               module               = nullptr;
     uint64_t              timeExportFile       = 0;
@@ -64,12 +64,12 @@ struct Backend
     AstOutput::OutputContext outputContext;
     bool                     mustCompile = true;
 
-    static void   setup();
-    static string getCacheFolder(const BuildParameters& buildParameters);
-    static Utf8   getOutputFileName(const BuildParameters& buildParameters);
+    static void setup();
+    static Path getCacheFolder(const BuildParameters& buildParameters);
+    static Path getOutputFileName(const BuildParameters& buildParameters);
 
-    static string         getObjectFileExtension(const BackendTarget& target);
-    static string         getOutputFileExtension(const BackendTarget& target, BuildCfgBackendKind type);
+    static Utf8           getObjectFileExtension(const BackendTarget& target);
+    static Utf8           getOutputFileExtension(const BackendTarget& target, BuildCfgBackendKind type);
     static BackendObjType getObjType(const BackendTarget& target);
     static const char*    getArchName(const BackendTarget& target);
     static const char*    getOsName(const BackendTarget& target);

@@ -16,7 +16,7 @@
 #include "Naming.h"
 #include "SyntaxJob.h"
 
-void Workspace::computeModuleName(const fs::path& path, Utf8& moduleName, Utf8& moduleFolder, ModuleKind& kind)
+void Workspace::computeModuleName(const Path& path, Utf8& moduleName, Path& moduleFolder, ModuleKind& kind)
 {
     auto parent    = path.parent_path().filename();
     auto cFileName = path.filename().string();
@@ -52,7 +52,7 @@ void Workspace::computeModuleName(const fs::path& path, Utf8& moduleName, Utf8& 
     else
         SWAG_ASSERT(false);
 
-    moduleFolder = path.string();
+    moduleFolder = path;
 }
 
 SourceFile* Workspace::findFile(const char* fileName)
@@ -98,7 +98,7 @@ Module* Workspace::getModuleByName(const Utf8& moduleName)
     return it->second;
 }
 
-Module* Workspace::createOrUseModule(const Utf8& moduleName, const Utf8& modulePath, ModuleKind kind, bool errorModule)
+Module* Workspace::createOrUseModule(const Utf8& moduleName, const Path& modulePath, ModuleKind kind, bool errorModule)
 {
     Module* module = Allocator::alloc<Module>();
 
@@ -153,10 +153,11 @@ void Workspace::addBootstrap()
     bootstrapModule->setup("bootstrap", "");
     modules.push_back(bootstrapModule);
 
-    auto     file         = Allocator::alloc<SourceFile>();
-    fs::path p            = g_CommandLine.exePath;
-    file->name            = "swag.bootstrap.swg";
-    file->path            = p.parent_path().string() + "/runtime/bootstrap.swg";
+    auto file  = Allocator::alloc<SourceFile>();
+    file->name = "swag.bootstrap.swg";
+    file->path = g_CommandLine.exePath.parent_path();
+    file->path.append("runtime");
+    file->path.append("bootstrap.swg");
     file->module          = bootstrapModule;
     file->isBootstrapFile = true;
     bootstrapModule->addFile(file);
@@ -164,10 +165,11 @@ void Workspace::addBootstrap()
 
 void Workspace::addRuntimeFile(const char* fileName)
 {
-    auto     file       = Allocator::alloc<SourceFile>();
-    fs::path p          = g_CommandLine.exePath;
-    file->name          = fileName;
-    file->path          = p.parent_path().string() + "/runtime/" + fileName;
+    auto file  = Allocator::alloc<SourceFile>();
+    file->name = fileName;
+    file->path = g_CommandLine.exePath.parent_path();
+    file->path.append("runtime");
+    file->path.append(fileName);
     file->module        = runtimeModule;
     file->isRuntimeFile = true;
     runtimeModule->addFile(file);
@@ -221,19 +223,16 @@ void Workspace::setupInternalTags()
     }
 }
 
-Utf8 Workspace::getTargetFullName(const string& buildCfg, const BackendTarget& target)
+Utf8 Workspace::getTargetFullName(const Utf8& buildCfg, const BackendTarget& target)
 {
     return buildCfg + "-" + Backend::getOsName(target) + "-" + Backend::getArchName(target);
 }
 
-fs::path Workspace::getTargetPath(const string& buildCfg, const BackendTarget& target)
+Path Workspace::getTargetPath(const Utf8& buildCfg, const BackendTarget& target)
 {
-    fs::path p;
-    p = workspacePath;
+    Path p = workspacePath;
     p.append(SWAG_OUTPUT_FOLDER);
-    p += "/";
-    auto targetFullName = getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target);
-    p.append(targetFullName.c_str());
+    p.append(getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target).c_str());
     return p;
 }
 
@@ -242,28 +241,25 @@ void Workspace::setupTarget()
     // Target directory
     targetPath = getTargetPath(g_CommandLine.buildCfg, g_CommandLine.target);
     if (g_CommandLine.verbosePath)
-        g_Log.messageVerbose(Fmt("target path is '%s'", Utf8::normalizePath(targetPath.string().c_str()).c_str()));
+        g_Log.messageVerbose(Fmt("target path is '%s'", targetPath.string().c_str()));
 
     error_code errorCode;
-    if (!fs::exists(targetPath) && !fs::create_directories(targetPath, errorCode))
+    if (!filesystem::exists(targetPath) && !filesystem::create_directories(targetPath, errorCode))
     {
         Report::errorOS(Fmt(Err(Fat0008), targetPath.string().c_str()));
         OS::exit(-1);
     }
 
-    targetPath += "/";
-
     // Cache directory
     setupCachePath();
-    if (!fs::exists(cachePath))
+    if (!filesystem::exists(cachePath))
     {
         Report::errorOS(Fmt(Err(Fat0002), cachePath.string().c_str()));
         OS::exit(-1);
     }
 
-    cachePath += "/";
     cachePath.append(SWAG_CACHE_FOLDER);
-    if (!fs::exists(cachePath) && !fs::create_directories(cachePath, errorCode))
+    if (!filesystem::exists(cachePath) && !filesystem::create_directories(cachePath, errorCode))
     {
         Report::errorOS(Fmt(Err(Fat0003), cachePath.string().c_str()));
         OS::exit(-1);
@@ -271,16 +267,14 @@ void Workspace::setupTarget()
 
     auto targetFullName = getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target);
     cachePath.append(workspacePath.filename().string() + "-" + targetFullName.c_str());
-    if (!fs::exists(cachePath) && !fs::create_directories(cachePath, errorCode))
+    if (!filesystem::exists(cachePath) && !filesystem::create_directories(cachePath, errorCode))
     {
         Report::errorOS(Fmt(Err(Fat0003), cachePath.string().c_str()));
         OS::exit(-1);
     }
 
     if (g_CommandLine.verbosePath)
-        g_Log.messageVerbose(Fmt("cache path is '%s'", Utf8::normalizePath(cachePath.string().c_str()).c_str()));
-
-    cachePath += "/";
+        g_Log.messageVerbose(Fmt("cache path is '%s'", cachePath.string().c_str()));
 }
 
 static Utf8 errorPendingJobsType(Job* pendingJob)
@@ -899,7 +893,7 @@ bool Workspace::build()
     pair<void*, void*> oneArg;
     g_CommandLine.exePathStr = g_CommandLine.exePath.string();
     oneArg.first             = (void*) g_CommandLine.exePathStr.c_str();
-    oneArg.second            = (void*) g_CommandLine.exePathStr.size();
+    oneArg.second            = (void*) (size_t) g_CommandLine.exePathStr.length();
     g_CommandLine.userArgumentsStr.push_back(oneArg);
 
     Utf8::tokenizeBlanks(g_CommandLine.userArguments, g_CommandLine.userArgumentsVec);
@@ -924,7 +918,7 @@ bool Workspace::build()
         if (!g_CommandLine.scriptCommand)
         {
             if (g_CommandLine.verbosePath)
-                g_Log.messageVerbose(Fmt("workspace path is '%s'", Utf8::normalizePath(workspacePath.string().c_str()).c_str()));
+                g_Log.messageVerbose(Fmt("workspace path is '%s'", workspacePath.string().c_str()));
             if (g_CommandLine.listDepCmd || g_CommandLine.getDepCmd)
                 g_Log.messageHeaderCentered("Workspace", workspacePath.filename().string().c_str());
             else

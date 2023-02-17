@@ -246,6 +246,7 @@
     <ClInclude Include="../src/Tokenizer.h" />
     <ClInclude Include="../src/TypeManager.h" />
     <ClInclude Include="..\src\Parser.h" />
+    <ClInclude Include="..\src\Path.h" />
     <ClInclude Include="..\src\Set.h" />
     <ClInclude Include="..\src\SymTableHash.h" />
     <ClInclude Include="..\src\TypeGen.h" />
@@ -388,6 +389,7 @@
     <ClCompile Include="..\src\Parser_Struct.cpp" />
     <ClCompile Include="..\src\Parser_Type.cpp" />
     <ClCompile Include="..\src\Parser_Var.cpp" />
+    <ClCompile Include="..\src\Path.cpp" />
     <ClCompile Include="..\src\PrepCompilerMsgJob.cpp" />
     <ClCompile Include="..\src\Profiler.cpp" />
     <ClCompile Include="..\src\Report.cpp" />

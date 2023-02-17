@@ -1,6 +1,7 @@
 #pragma once
 #include "Assert.h"
 struct Utf8;
+struct Path;
 
 struct ConcatBucket
 {
@@ -18,7 +19,7 @@ struct Concat
     bool hasEnoughSpace(uint32_t numBytes);
     void ensureSpace(int numBytes);
     void align(uint32_t align);
-    bool flushToFile(const string& path);
+    bool flushToFile(const Path& path);
 
     void      addU8(uint8_t v);
     void      addU16(uint16_t v);

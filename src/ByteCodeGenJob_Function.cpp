@@ -1167,13 +1167,13 @@ void ByteCodeGenJob::computeSourceLocation(JobContext* context, AstNode* node, u
     auto sourceFile = node->sourceFile;
     auto module     = sourceFile->module;
 
-    auto     str = Utf8(Utf8::normalizePath(sourceFile->path));
+    auto     str = sourceFile->path;
     uint8_t* addrName;
-    auto     offsetName = seg->addString(str, &addrName);
+    auto     offsetName = seg->addString(str.string(), &addrName);
 
     SourceLocationCache tmpLoc;
     tmpLoc.loc.fileName.buffer = addrName;
-    tmpLoc.loc.fileName.count  = str.length();
+    tmpLoc.loc.fileName.count  = str.string().length();
     tmpLoc.loc.lineStart       = node->token.startLocation.line;
     tmpLoc.loc.colStart        = node->token.startLocation.column;
     tmpLoc.loc.lineEnd         = node->token.endLocation.line;
@@ -1182,7 +1182,7 @@ void ByteCodeGenJob::computeSourceLocation(JobContext* context, AstNode* node, u
     ScopedLock lock(module->mutexSourceLoc);
 
     // Is the same location is in the cache ?
-    uint32_t crc = Crc32::compute(addrName, str.length());
+    uint32_t crc = Crc32::compute(addrName, (uint32_t) str.string().length());
     crc          = Crc32::compute((uint8_t*) &node->token.startLocation.line, sizeof(uint32_t), crc);
     crc          = Crc32::compute((uint8_t*) &node->token.startLocation.column, sizeof(uint32_t), crc);
     crc          = Crc32::compute((uint8_t*) &node->token.endLocation.line, sizeof(uint32_t), crc);

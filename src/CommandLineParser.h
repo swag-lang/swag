@@ -12,13 +12,14 @@ enum CommandLineType
     EnumString,
     String,
     StringSet,
+    StringPath,
 };
 
 struct CommandLineArgument
 {
     SetUtf8         cmds;
-    string          longName;
-    string          shortName;
+    Utf8            longName;
+    Utf8            shortName;
     void*           buffer;
     const char*     param;
     const char*     help;
@@ -69,13 +70,13 @@ struct CommandLineArgument
 
 struct CommandLineParser
 {
-    void   setup(CommandLine* cmdLine);
-    bool   isArgValidFor(const string& swagCmd, CommandLineArgument* arg);
-    bool   process(const string& swagCmd, int argc, const char* argv[]);
-    void   addArg(const char* commands, const char* longName, const char* shortName, CommandLineType type, void* address, const char* param, const char* help);
-    void   logArguments(const string& cmd);
-    string buildString(bool full);
+    void setup(CommandLine* cmdLine);
+    bool isArgValidFor(const Utf8& swagCmd, CommandLineArgument* arg);
+    bool process(const Utf8& swagCmd, int argc, const char* argv[]);
+    void addArg(const char* commands, const char* longName, const char* shortName, CommandLineType type, void* address, const char* param, const char* help);
+    void logArguments(const Utf8& cmd);
+    Utf8 buildString(bool full);
 
-    Map<string, CommandLineArgument*> longNameArgs;
-    Map<string, CommandLineArgument*> shortNameArgs;
+    MapUtf8<CommandLineArgument*> longNameArgs;
+    MapUtf8<CommandLineArgument*> shortNameArgs;
 };

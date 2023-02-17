@@ -1,6 +1,7 @@
 #pragma once
 #include "Utf8.h"
 #include "BackendParameters.h"
+#include "Path.h"
 
 enum class BuildPass
 {
@@ -33,16 +34,16 @@ struct CommandLine
     bool      scriptCommand = false;
 
     // Profile
-    bool   profile = false;
-    string profileFilter;
-    int    profileChildsLevel = 0;
+    bool profile = false;
+    Utf8 profileFilter;
+    int  profileChildsLevel = 0;
 
     // Input
-    string scriptName;
-    string workspacePath;
-    string cachePath;
-    string moduleName;
-    string testFilter;
+    Path workspacePath;
+    Path cachePath;
+    Utf8 scriptName;
+    Utf8 moduleName;
+    Utf8 testFilter;
 
     // Test
     bool test             = false;
@@ -62,7 +63,7 @@ struct CommandLine
 #endif
 
     // User arguments
-    string                     userArguments;
+    Utf8                       userArguments;
     Vector<Utf8>               userArgumentsVec;
     Vector<pair<void*, void*>> userArgumentsStr;
     pair<void*, void*>         userArgumentsSlice;
@@ -85,21 +86,21 @@ struct CommandLine
     bool      errorAbsolute         = false;
 
     // Output
-    string buildCfg            = "fast-debug";
-    string buildCfgDebug       = "default";
-    string buildCfgSafety      = "default";
-    string buildCfgInlineBC    = "default";
-    string buildCfgOptimBC     = "default";
-    string buildCfgRemoveDupBC = "default";
-    string buildCfgOptimSpeed  = "default";
-    string buildCfgOptimSize   = "default";
-    string buildCfgStackTrace  = "default";
-    string buildCfgDebugAlloc  = "default";
+    Utf8 buildCfg            = "fast-debug";
+    Utf8 buildCfgDebug       = "default";
+    Utf8 buildCfgSafety      = "default";
+    Utf8 buildCfgInlineBC    = "default";
+    Utf8 buildCfgOptimBC     = "default";
+    Utf8 buildCfgRemoveDupBC = "default";
+    Utf8 buildCfgOptimSpeed  = "default";
+    Utf8 buildCfgOptimSize   = "default";
+    Utf8 buildCfgStackTrace  = "default";
+    Utf8 buildCfgDebugAlloc  = "default";
 
     BackendTarget target;
 
-    Set<string>  tags;
-    Vector<Utf8> libPaths;
+    SetUtf8      tags;
+    Vector<Path> libPaths;
 
     uint32_t stackSizeRT = 1024 * 1024;
     uint32_t stackSizeBC = 512 * 1024;
@@ -122,8 +123,8 @@ struct CommandLine
     bool cleanDep = false;
     bool cleanLog = false;
 
-    fs::path exePath;
-    string   exePathStr;
+    Path exePath;
+    Utf8 exePathStr;
 
     bool check();
 };

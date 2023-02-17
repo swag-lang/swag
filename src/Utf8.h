@@ -1,6 +1,7 @@
 #pragma once
 #include "VectorNative.h"
 #include "Mutex.h"
+struct Path;
 
 #define SWAG_IS_DIGIT(__c) (__c >= '0' && __c <= '9')
 #define SWAG_IS_ALPHAHEX(__c) ((__c >= 'a' && __c <= 'f') || (__c >= 'A' && __c <= 'F'))
@@ -86,7 +87,6 @@ struct Utf8
 
     static const char* decodeUtf8(const char* pz, uint32_t& c, unsigned& offset);
     static Utf8        format(const char* format, ...);
-    static string      normalizePath(const fs::path& path);
     static void        tokenize(const Utf8& str, char c, Vector<Utf8>& tokens);
     static void        tokenizeBlanks(const Utf8& str, Vector<Utf8>& tokens);
     static Utf8        toStringF64(double v);

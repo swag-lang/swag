@@ -86,18 +86,18 @@ void Diagnostic::printSourceLine()
         checkFile = checkFile->fileForSourceLocation;
 
     // Make it relatif to current path (should be shorter) if possible
-    fs::path path = checkFile->path;
+    Path path = checkFile->path;
     if (!g_CommandLine.errorAbsolute)
     {
         error_code errorCode;
-        auto       path1 = fs::relative(path, fs::current_path(), errorCode);
+        auto       path1 = filesystem::relative(path, filesystem::current_path(), errorCode);
         if (!path1.empty())
             path = path1;
     }
 
     if (!g_CommandLine.errorOneLine)
         g_Log.setColor(sourceFileColor);
-    g_Log.print(Utf8::normalizePath(path).c_str());
+    g_Log.print(path.string().c_str());
     if (hasLocation)
         g_Log.print(Fmt(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, endLocation.line + 1, endLocation.column + 1));
     else

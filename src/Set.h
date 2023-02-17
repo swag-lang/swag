@@ -1,5 +1,6 @@
 #pragma once
 #include "Utf8.h"
+#include "Path.h"
 
 template<typename T>
 struct Set : public unordered_set<T, hash<T>, equal_to<T>, StdAllocator<T>>
@@ -24,6 +25,19 @@ struct SetUtf8 : public unordered_set<Utf8, HashUtf8, equal_to<Utf8>, StdAllocat
 
     SetUtf8(const SetUtf8& other)
         : unordered_set<Utf8, HashUtf8, equal_to<Utf8>, StdAllocator<Utf8>>(other)
+    {
+    }
+};
+
+struct SetPath : public unordered_set<Path, HashPath, equal_to<Path>, StdAllocator<Path>>
+{
+    SetPath()
+        : unordered_set<Path, HashPath, equal_to<Path>, StdAllocator<Path>>()
+    {
+    }
+
+    SetPath(const SetPath& other)
+        : unordered_set<Path, HashPath, equal_to<Path>, StdAllocator<Path>>(other)
     {
     }
 };

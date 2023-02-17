@@ -342,10 +342,10 @@ void Concat::addS32Str8(int value)
     }
 }
 
-bool Concat::flushToFile(const string& path)
+bool Concat::flushToFile(const Path& path)
 {
     FILE* f = nullptr;
-    if (fopen_s(&f, path.c_str(), "wb"))
+    if (fopen_s(&f, path.string().c_str(), "wb"))
     {
         Report::errorOS(Fmt(Err(Err0524), path.c_str()));
         return false;
@@ -360,7 +360,7 @@ bool Concat::flushToFile(const string& path)
 
     fflush(f);
     fclose(f);
-    OS::ensureFileIsWritten(path.c_str());
+    OS::ensureFileIsWritten(path.string().c_str());
 
     clear();
     return true;

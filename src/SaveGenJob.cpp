@@ -17,10 +17,10 @@ bool SaveGenJob::flush(Module* module)
         auto tmpFilePath = publicPath;
         auto tmpFileName = Fmt("%s%d.gwg", module->name.c_str(), idx);
 
-        publicPath += tmpFileName;
+        publicPath.append(tmpFileName.c_str());
 
         FILE* h = nullptr;
-        if (fopen_s(&h, publicPath.c_str(), "wN"))
+        if (fopen_s(&h, publicPath.string().c_str(), "wN"))
         {
             module->numErrors++;
             Report::errorOS(Fmt(Err(Err0524), publicPath.c_str()));

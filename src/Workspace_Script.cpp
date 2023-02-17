@@ -16,22 +16,21 @@ void Workspace::setScriptWorkspace(const Utf8& name)
     auto cacheWorkspace = g_Workspace->cachePath;
     cacheWorkspace.append(SWAG_CACHE_FOLDER);
     error_code errorCode;
-    if (!fs::exists(cacheWorkspace) && !fs::create_directories(cacheWorkspace, errorCode))
+    if (!filesystem::exists(cacheWorkspace) && !filesystem::create_directories(cacheWorkspace, errorCode))
     {
         Report::errorOS(Fmt(Err(Fat0003), cacheWorkspace.c_str()));
         OS::exit(-1);
     }
 
-    cacheWorkspace += "/";
     cacheWorkspace.append(name.c_str());
-    if (!fs::exists(cacheWorkspace) && !fs::create_directories(cacheWorkspace, errorCode))
+    if (!filesystem::exists(cacheWorkspace) && !filesystem::create_directories(cacheWorkspace, errorCode))
     {
         Report::errorOS(Fmt(Err(Fat0003), cacheWorkspace.c_str()));
         OS::exit(-1);
     }
 
     // This is it. Build and run !
-    g_CommandLine.workspacePath = cacheWorkspace.string();
+    g_CommandLine.workspacePath = cacheWorkspace;
     setupPaths();
 
     // Now that we have the workspace name, we can clean dependencies and temp
@@ -48,9 +47,10 @@ void Workspace::scriptCommand()
     }
 
     // Script filename
-    fs::path pathF            = fs::absolute(g_CommandLine.scriptName).string();
-    g_CommandLine.scriptName = Utf8::normalizePath(pathF.string());
-    if (!fs::exists(g_CommandLine.scriptName))
+    Path pathF               = g_CommandLine.scriptName;
+    pathF                    = filesystem::absolute(pathF);
+    g_CommandLine.scriptName = pathF.string();
+    if (!filesystem::exists(g_CommandLine.scriptName.c_str()))
     {
         Report::error(Fmt(Err(Fat0020), g_CommandLine.scriptName.c_str()));
         OS::exit(-1);
@@ -61,7 +61,7 @@ void Workspace::scriptCommand()
     g_CommandLine.scriptCommand = true;
 
     g_Workspace->setupCachePath();
-    if (!fs::exists(g_Workspace->cachePath))
+    if (!filesystem::exists(g_Workspace->cachePath))
     {
         Report::error(Fmt(Err(Fat0002), g_Workspace->cachePath.string().c_str()));
         OS::exit(-1);

@@ -43,7 +43,7 @@ namespace OS
     Key  promptChar(int& c, bool& ctrl, bool& shift);
     bool longOpStopKeyPressed();
 
-    Utf8 getExePath();
+    Path getExePath();
     Utf8 getLastErrorAsString();
     void errorBox(const char* expr, const char* title);
     void assertBox(const char* expr, const char* file, int line);
@@ -55,8 +55,8 @@ namespace OS
 
     void     ensureFileIsWritten(const char* fileName);
     uint64_t getFileWriteTime(const char* fileName);
-    bool     touchFile(const fs::path& path);
-    string   getTemporaryFolder();
+    bool     touchFile(const Path& path);
+    Path     getTemporaryFolder();
 
     uint64_t timerNow();
     double   timerToSeconds(uint64_t timer);

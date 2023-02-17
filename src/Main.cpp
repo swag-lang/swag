@@ -11,7 +11,7 @@
 
 bool g_Exiting = false;
 
-extern void help(CommandLineParser& cmdParser, const string& cmd);
+extern void help(CommandLineParser& cmdParser, const Utf8& cmd);
 extern void help(CommandLineParser& cmdParser);
 
 int main(int argc, const char* argv[])
@@ -31,8 +31,8 @@ int main(int argc, const char* argv[])
     }
 
     // Special mode if the first argument is a script file with ".swgs" extension
-    string   command = argv[1];
-    fs::path p       = argv[1];
+    Utf8 command = argv[1];
+    Path p       = argv[1];
     if (p.extension() == ".swgs")
     {
         command                  = "script";
@@ -62,8 +62,7 @@ int main(int argc, const char* argv[])
     }
 
     // Retreive the compiler executable path
-    fs::path pathF        = fs::absolute(OS::getExePath().c_str()).string();
-    g_CommandLine.exePath = pathF.string();
+    g_CommandLine.exePath = filesystem::absolute(OS::getExePath());
 
     // Process all arguments
     if (!cmdParser.process(command, argc - 2, argv + 2))

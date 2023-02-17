@@ -20,8 +20,8 @@ void BackendLLVMDbg::setup(BackendLLVM* m, llvm::Module* modu)
     llvmModule       = modu;
     llvmContext      = &modu->getContext();
     mainFile         = dbgBuilder->createFile("<stdin>", "c:/");
-    fs::path expPath = m->exportFilePath;
-    exportFile       = dbgBuilder->createFile(m->exportFileName.c_str(), expPath.parent_path().string().c_str());
+    Path expPath = m->exportFilePath;
+    exportFile       = dbgBuilder->createFile(m->exportFileName.string(), expPath.parent_path().string());
     Utf8 compiler    = Fmt("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
     compileUnit      = dbgBuilder->createCompileUnit(llvm::dwarf::DW_LANG_C99,
                                                 mainFile,
@@ -84,8 +84,8 @@ llvm::DIFile* BackendLLVMDbg::getOrCreateFile(SourceFile* file)
     if (it != mapFiles.end())
         return it->second;
 
-    fs::path      filePath = file->path;
-    llvm::DIFile* dbgfile  = dbgBuilder->createFile(filePath.filename().string().c_str(), filePath.parent_path().string().c_str());
+    Path      filePath = file->path;
+    llvm::DIFile* dbgfile  = dbgBuilder->createFile(filePath.filename().string(), filePath.parent_path().string());
     mapFiles[file->path]   = dbgfile;
     return dbgfile;
 }

@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "Workspace.h"
 #include "Backend.h"
-#include "Os.h"
 #include "Module.h"
 #include "ThreadManager.h"
+#include "Os.h"
 
 namespace BackendLinker
 {
@@ -77,25 +77,25 @@ namespace BackendLinker
 
     void getArgumentsCoff(const BuildParameters& buildParameters, Module* module, Vector<Utf8>& arguments, bool forCmdLine)
     {
-        Vector<Utf8> libPaths;
+        Vector<Path> libPaths;
 
         // System library paths
         for (auto p : g_CommandLine.libPaths)
             libPaths.push_back(p);
 
         // Modules
-        libPaths.push_back(g_Workspace->targetPath.string());
+        libPaths.push_back(g_Workspace->targetPath);
 
         // Runtime
-        libPaths.push_back(g_CommandLine.exePath.parent_path().string());
+        libPaths.push_back(g_CommandLine.exePath.parent_path());
 
         for (const auto& oneLibPath : libPaths)
         {
-            auto normalizedLibPath = Utf8::normalizePath(fs::path(oneLibPath.c_str()));
+            auto normalizedLibPath = oneLibPath;
             if (forCmdLine)
-                arguments.push_back("/LIBPATH:\"" + normalizedLibPath + "\"");
+                arguments.push_back("/LIBPATH:\"" + normalizedLibPath.string() + "\"");
             else
-                arguments.push_back("/LIBPATH:" + normalizedLibPath);
+                arguments.push_back("/LIBPATH:" + normalizedLibPath.string());
         }
 
         // Registered #global foreignlib
@@ -112,17 +112,15 @@ namespace BackendLinker
         // Registered #import dependencies
         for (const auto& dep : module->moduleDependencies)
         {
-            auto libName = dep->name;
+            Utf8 libName = dep->name;
             if (Utf8::getExtension(libName) != Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::StaticLib))
                 libName += Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::StaticLib);
-            auto fullName = g_Workspace->targetPath.string();
-            fullName      = Utf8::normalizePath(fs::path(fullName.c_str()));
-            fullName += "/";
-            fullName += libName;
+            auto fullName = g_Workspace->targetPath;
+            fullName.append(libName.c_str());
 
             // Be sure that the library exits. Some modules rely on external libraries, and do not have their
             // own one
-            if (fs::exists(fs::path(fullName.c_str())))
+            if (filesystem::exists(fullName))
                 arguments.push_back(libName);
         }
 
@@ -134,14 +132,12 @@ namespace BackendLinker
             auto libName = dep->name;
             if (Utf8::getExtension(libName) != Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::StaticLib))
                 libName += Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::StaticLib);
-            auto fullName = g_Workspace->targetPath.string();
-            fullName      = Utf8::normalizePath(fs::path(fullName.c_str()));
-            fullName += "/";
-            fullName += libName;
+            auto fullName = g_Workspace->targetPath;
+            fullName.append(libName.c_str());
 
             // Be sure that the library exits. Some modules rely on external libraries, and do not have their
             // own one
-            if (fs::exists(fs::path(fullName.c_str())))
+            if (filesystem::exists(fullName))
                 arguments.push_back(libName);
         }
 
@@ -168,7 +164,7 @@ namespace BackendLinker
             arguments.push_back("/DLL");
 
         auto resultFile = Backend::getOutputFileName(buildParameters);
-        arguments.push_back("/OUT:" + resultFile);
+        arguments.push_back("/OUT:" + resultFile.string());
     }
 
     void getArguments(const BuildParameters& buildParameters, Module* module, Vector<Utf8>& arguments, bool forCmdLine)
@@ -191,7 +187,7 @@ namespace BackendLinker
         }
     }
 
-    bool link(const BuildParameters& buildParameters, Module* module, Vector<string>& objectFiles)
+    bool link(const BuildParameters& buildParameters, Module* module, Vector<Path>& objectFiles)
     {
         Vector<Utf8> linkArguments;
         getArguments(buildParameters, module, linkArguments, false);
@@ -200,15 +196,15 @@ namespace BackendLinker
         auto targetPath = Backend::getCacheFolder(buildParameters);
         for (auto& file : objectFiles)
         {
-            auto path              = targetPath + "/" + file.c_str();
-            auto normalizedLibPath = Utf8::normalizePath(fs::path(path.c_str()));
-            linkArguments.push_back(normalizedLibPath);
+            auto path = targetPath;
+            path.append(file.c_str());
+            linkArguments.push_back(path.string());
         }
 
         VectorNative<const char*> linkArgumentsPtr;
         linkArgumentsPtr.push_back("lld");
         for (auto& one : linkArguments)
-            linkArgumentsPtr.push_back(one.c_str());
+            linkArgumentsPtr.push_back(one);
 
         // Log linker parameters
         if (g_CommandLine.verboseLink)

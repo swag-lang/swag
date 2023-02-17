@@ -17,7 +17,7 @@ struct LLVMPerThread
     llvm::LLVMContext*    context;
     llvm::IRBuilder<>*    builder;
     llvm::Module*         module;
-    string                filename;
+    Utf8                  filename;
     BackendPreCompilePass pass = {BackendPreCompilePass::Init};
 
     llvm::GlobalVariable* bssSeg               = nullptr;

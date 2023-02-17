@@ -63,11 +63,11 @@ bool SourceFile::load()
 
     // Seems that we need 'N' flag to avoid handle to be shared with spawned processes
     FILE* handle = nullptr;
-    if (fopen_s(&handle, path.c_str(), "rbN"))
+    if (fopen_s(&handle, path.string().c_str(), "rbN"))
     {
         numErrors++;
         module->numErrors++;
-        Report::errorOS(Fmt(Err(Err0502), path.c_str()));
+        Report::errorOS(Fmt(Err(Err0502), path.string().c_str()));
         return false;
     }
 

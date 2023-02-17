@@ -202,14 +202,14 @@ bool Parser::eatSemiCol(const char* msg)
     return true;
 }
 
-bool Parser::saveEmbeddedAst(const Utf8& content, AstNode* parent, AstNode* fromNode, Utf8& tmpFileName, Utf8& tmpFilePath, uint32_t& previousLogLine)
+bool Parser::saveEmbeddedAst(const Utf8& content, AstNode* parent, AstNode* fromNode, Utf8& tmpFileName, Path& tmpFilePath, uint32_t& previousLogLine)
 {
     auto modl       = fromNode->sourceFile->module;
     auto publicPath = modl->publicPath;
     tmpFilePath     = publicPath;
     tmpFileName     = Fmt("%s%d.gwg", modl->name.c_str(), g_ThreadIndex);
 
-    publicPath += tmpFileName;
+    publicPath.append(tmpFileName.c_str());
 
     uint32_t    countEol = 0;
     const char* pz       = content.c_str();
@@ -236,7 +236,7 @@ bool Parser::saveEmbeddedAst(const Utf8& content, AstNode* parent, AstNode* from
 bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode* fromNode, CompilerAstKind kind, bool logGenerated)
 {
     Utf8     tmpFileName     = "<generated>";
-    Utf8     tmpFilePath     = "<generated>";
+    Path     tmpFilePath     = "<generated>";
     uint32_t previousLogLine = 0;
 
     SWAG_ASSERT(context);
@@ -256,7 +256,7 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
     sourceFile->module = parent->sourceFile->module;
     sourceFile->name   = tmpFileName;
     sourceFile->path   = tmpFilePath;
-    sourceFile->path += tmpFileName;
+    sourceFile->path.append(tmpFileName.c_str());
     if (fromNode)
     {
         sourceFile->sourceNode        = fromNode;

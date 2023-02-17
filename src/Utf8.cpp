@@ -771,37 +771,6 @@ void Utf8::tokenizeBlanks(const Utf8& str, Vector<Utf8>& tokens)
     }
 }
 
-string Utf8::normalizePath(const fs::path& path)
-{
-    string str;
-    auto   source      = path.string();
-    auto   len         = source.length();
-    bool   lastIsSlash = false;
-    for (int i = 0; i < len; i++)
-    {
-        char c = source[i];
-        if (c == '\\' || c == '/')
-        {
-            if (lastIsSlash)
-                continue;
-            lastIsSlash = true;
-            str += '/';
-        }
-        else if (c <= 0x7F && c > 32)
-        {
-            lastIsSlash = false;
-            str += (char) tolower((int) c);
-        }
-        else
-        {
-            lastIsSlash = false;
-            str += c;
-        }
-    }
-
-    return str;
-}
-
 Utf8 Utf8::toStringF64(double v)
 {
     Utf8 s = Fmt("%.35lf", v);

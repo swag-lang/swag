@@ -9,28 +9,28 @@
 JobResult CopyFileJob::execute()
 {
     // Copy only if source is more recent than destination
-    if (fs::exists(destPath))
+    if (filesystem::exists(destPath))
     {
-        auto tsrc  = OS::getFileWriteTime(sourcePath.c_str());
-        auto tdest = OS::getFileWriteTime(destPath.c_str());
+        auto tsrc  = OS::getFileWriteTime(sourcePath.string().c_str());
+        auto tdest = OS::getFileWriteTime(destPath.string().c_str());
         if (tdest > tsrc)
             return JobResult::ReleaseJob;
     }
 
     FILE* fsrc  = nullptr;
     FILE* fdest = nullptr;
-    if (fopen_s(&fsrc, sourcePath.c_str(), "rbN"))
+    if (fopen_s(&fsrc, sourcePath.string().c_str(), "rbN"))
     {
         module->numErrors++;
         Report::errorOS(Fmt(Err(Err0502), sourcePath.c_str()));
         return JobResult::ReleaseJob;
     }
 
-    if (fopen_s(&fdest, destPath.c_str(), "wbN"))
+    if (fopen_s(&fdest, destPath.string().c_str(), "wbN"))
     {
         module->numErrors++;
         fclose(fsrc);
-        Report::errorOS(Fmt(Err(Err0502), destPath.c_str()));
+        Report::errorOS(Fmt(Err(Err0502), destPath.string().c_str()));
         return JobResult::ReleaseJob;
     }
 
@@ -54,9 +54,9 @@ JobResult CopyFileJob::execute()
 JobResult LoadFileJob::execute()
 {
     FILE* fsrc = nullptr;
-    if (fopen_s(&fsrc, sourcePath.c_str(), "rbN"))
+    if (fopen_s(&fsrc, sourcePath.string().c_str(), "rbN"))
     {
-        Report::errorOS(Fmt(Err(Err0502), sourcePath.c_str()));
+        Report::errorOS(Fmt(Err(Err0502), sourcePath.string().c_str()));
         return JobResult::ReleaseJob;
     }
 

@@ -30,7 +30,6 @@
 #include <filesystem>
 
 using namespace std;
-namespace fs = std::filesystem;
 
 ////////////////////////////
 
@@ -43,5 +42,5 @@ namespace fs = std::filesystem;
 
 #ifdef _MSC_VER
 #define SWAG_FORCE_INLINE __forceinline
-#define SWAG_UNREACHABLE  __assume(false)
+#define SWAG_UNREACHABLE __assume(false)
 #endif

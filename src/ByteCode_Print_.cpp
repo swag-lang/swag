@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Utf8.h"
 #include "ByteCode.h"
 #include "Ast.h"
 #include "Module.h"
@@ -365,9 +366,8 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
         g_Log.print(Fmt("%08d ", ip->serial));
         if (ip->sourceFile)
         {
-            Utf8 sf = Utf8::normalizePath(ip->sourceFile);
-            auto pz = strrchr(sf.buffer, '/');
-            g_Log.print(Fmt("%s:%d", pz ? pz + 1 : sf.c_str(), ip->sourceLine));
+            Path sf = ip->sourceFile;
+            g_Log.print(Fmt("%s:%d", sf.filename().c_str(), ip->sourceLine));
         }
     }
 #endif
@@ -381,7 +381,7 @@ void ByteCode::print(ByteCodeInstruction* curIp)
     g_Log.lock();
 
     g_Log.setColor(LogColor::Magenta);
-    g_Log.print(sourceFile->path);
+    g_Log.print(sourceFile->path.string().c_str());
     g_Log.print(", ");
     g_Log.print(name);
 

@@ -6,7 +6,6 @@
 #include "ThreadManager.h"
 #include "ErrorIds.h"
 #include "Report.h"
-#include "Diagnostic.h"
 #include "Os.h"
 
 JobResult FetchModuleFileSystemJob::execute()
@@ -24,50 +23,74 @@ JobResult FetchModuleFileSystemJob::execute()
         g_Log.messageHeaderCentered("Using", depName.c_str());
 
     // Collect list of source files
-    Set<string> srcFiles;
-    OS::visitFilesRec(dep->resolvedLocation,
+    // Collect the module config file, and everything in src/ and publish/
+    SetUtf8 srcFiles;
+    OS::visitFilesRec(dep->resolvedLocation.string().c_str(),
                       [&](const char* fileName)
                       {
-                          auto n = Utf8::normalizePath(fileName + dep->resolvedLocation.length());
+                          Path n    = fileName;
+                          Utf8 subN = fileName + dep->resolvedLocation.string().length() + 1;
 
-                          // Collect the module config file, and everything in src/ and publish/
-                          Utf8 cfgFile = "/";
-                          cfgFile += SWAG_CFG_FILE;
+                          if (collectSourceFiles)
+                          {
+                              Path cfgFile = dep->resolvedLocation;
+                              cfgFile.append(SWAG_CFG_FILE);
+                              if (cfgFile == fileName)
+                              {
+                                  srcFiles.insert(subN);
+                                  return;
+                              }
 
-                          if (collectSourceFiles && n == cfgFile)
-                              srcFiles.insert(n);
-                          else if (strstr(n.c_str(), SWAG_PUBLISH_FOLDER) == n.c_str() + 1)
-                              srcFiles.insert(n);
-                          else if (collectSourceFiles && strstr(n.c_str(), SWAG_SRC_FOLDER) == n.c_str() + 1)
-                              srcFiles.insert(n);
+                              Path srcFolder = dep->resolvedLocation;
+                              srcFolder.append(SWAG_SRC_FOLDER);
+                              if (n.string().find(srcFolder.string()) == 0)
+                              {
+                                  srcFiles.insert(subN);
+                                  return;
+                              }
+                          }
+
+                          Path publishFolder = dep->resolvedLocation;
+                          publishFolder.append(SWAG_PUBLISH_FOLDER);
+                          if (n.string().find(publishFolder.string()) == 0)
+                          {
+                              srcFiles.insert(subN);
+                              return;
+                          }
                       });
 
-    auto destPath = g_Workspace->dependenciesPath.string();
-    destPath += dep->name.c_str();
+    auto destPath = g_Workspace->dependenciesPath;
+    destPath.append(dep->name.c_str());
 
     // Collect list of already existing files in the dependency folder, in order to remove old ones if necessary
-    Vector<string> dstFiles;
-    OS::visitFilesRec(destPath.c_str(),
+    Vector<Utf8> dstFiles;
+    OS::visitFilesRec(destPath.string().c_str(),
                       [&](const char* fileName)
                       {
-                          auto n = Utf8::normalizePath(fileName + destPath.length());
+                          Path n    = fileName;
+                          Utf8 subN = fileName + destPath.string().length() + 1;
 
                           // Do not collect public folder
-                          if (strstr(n.c_str(), SWAG_PUBLIC_FOLDER) == n.c_str() + 1)
+                          Path publicFolder = dep->resolvedLocation;
+                          publicFolder.append(SWAG_PUBLIC_FOLDER);
+                          if (n.string().find(publicFolder.string()) == 0)
                               return;
 
-                          dstFiles.push_back(n);
+                          dstFiles.push_back(subN);
                       });
 
     // Remove all files in the dependency folder that are no more in the module source folder
-    for (auto f : dstFiles)
+    for (const auto& f : dstFiles)
     {
         if (srcFiles.find(f) == srcFiles.end())
         {
-            auto n = destPath + f;
-            if (strstr(f.c_str(), SWAG_ALIAS_FILENAME) == f.c_str() + 1)
+            if (f == SWAG_ALIAS_FILENAME)
                 continue;
-            if (!fs::remove(n))
+
+            auto n = destPath;
+            n.append(f.c_str());
+
+            if (!filesystem::remove(n))
             {
                 Report::errorOS(Fmt(Err(Err0603), n.c_str()));
                 return JobResult::ReleaseJob;
@@ -79,11 +102,13 @@ JobResult FetchModuleFileSystemJob::execute()
     error_code errorCode;
     for (auto& f : srcFiles)
     {
-        fs::path srcFileName  = string(dep->resolvedLocation) + f;
-        fs::path destFileName = destPath + f;
+        auto srcFileName = dep->resolvedLocation;
+        srcFileName.append(f.c_str());
+        auto destFileName = destPath;
+        destFileName.append(f.c_str());
 
         auto folder = destFileName.parent_path();
-        if (!fs::exists(folder) && !fs::create_directories(folder, errorCode))
+        if (!filesystem::exists(folder) && !filesystem::create_directories(folder, errorCode))
         {
             Report::errorOS(Fmt(Err(Err0604), folder.c_str()));
             return JobResult::ReleaseJob;
@@ -91,8 +116,8 @@ JobResult FetchModuleFileSystemJob::execute()
 
         auto job        = Allocator::alloc<CopyFileJob>();
         job->module     = module;
-        job->sourcePath = srcFileName.string();
-        job->destPath   = destFileName.string();
+        job->sourcePath = srcFileName;
+        job->destPath   = destFileName;
         g_ThreadMgr.addJob(job);
     }
 

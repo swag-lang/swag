@@ -5496,7 +5496,7 @@ void BackendLLVM::emitInternalPanic(const BuildParameters& buildParameters, Modu
     auto& builder         = *pp.builder;
 
     // Filename
-    llvm::Value* r1 = builder.CreateGlobalString(Utf8::normalizePath(node->sourceFile->path).c_str());
+    llvm::Value* r1 = builder.CreateGlobalString(node->sourceFile->path.string().c_str());
     r1              = TO_PTR_I8(builder.CreateInBoundsGEP(r1, {pp.cst0_i32}));
 
     // Line & column

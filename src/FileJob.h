@@ -16,8 +16,8 @@ struct CopyFileJob : public Job
 
     JobResult execute() override;
 
-    string sourcePath;
-    string destPath;
+    Path sourcePath;
+    Path destPath;
 };
 
 struct LoadFileJob : public Job
@@ -29,7 +29,7 @@ struct LoadFileJob : public Job
 
     JobResult execute() override;
 
-    string   sourcePath;
+    Path     sourcePath;
     void*    destBuffer = nullptr;
     uint32_t sizeBuffer = 0;
 };

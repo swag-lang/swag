@@ -1065,7 +1065,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
     auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    MapUtf8<uint32_t> mapFileNames;
+    MapPath<uint32_t> mapFileNames;
     Vector<uint32_t>  arrFileNames;
     Utf8              stringTable;
 
@@ -1343,23 +1343,15 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
             concat.addU32(endAddress - dbgLines[0].byteOffset); // Code size
 
             // Compute file name index in the checksum table
-            auto    checkSymIndex = 0;
-            string* name          = &sourceFile->path;
-            auto    it            = mapFileNames.find(*name);
+            auto  checkSymIndex = 0;
+            Path* name          = &sourceFile->path;
+            auto  it            = mapFileNames.find(*name);
             if (it == mapFileNames.end())
             {
                 checkSymIndex = (uint32_t) arrFileNames.size();
                 arrFileNames.push_back((uint32_t) stringTable.length());
-                mapFileNames[*name] = checkSymIndex;
-
-                // Normalize path name
-                for (auto& c : *name)
-                {
-                    if (c == '/')
-                        c = '\\';
-                }
-
-                stringTable += *name;
+                mapFileNames[sourceFile->path] = checkSymIndex;
+                stringTable += sourceFile->path.string();
                 stringTable.append((char) 0);
             }
             else

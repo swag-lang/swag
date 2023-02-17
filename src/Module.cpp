@@ -13,7 +13,7 @@
 #include "SaveGenJob.h"
 #include "Parser.h"
 
-void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
+void Module::setup(const Utf8& moduleName, const Path& modulePath)
 {
     ScopedLock lk(mutexFile);
 
@@ -38,7 +38,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     typeGen.setup(moduleName);
     nameNormalized = name;
     nameNormalized.replaceAll('.', '_');
-    path = modulePath.c_str();
+    path = modulePath;
 
     scopeRoot                      = Ast::newScope(nullptr, "", ScopeKind::Module, nullptr);
     astRoot                        = Ast::newNode<AstNode>(nullptr, AstNodeKind::Module, nullptr, nullptr);
@@ -133,16 +133,15 @@ void Module::computePublicPath()
     if (path.empty())
         return;
 
-    publicPath = path + "/";
-    publicPath += SWAG_PUBLIC_FOLDER;
-    publicPath = Utf8::normalizePath(fs::path(publicPath.c_str()));
+    publicPath = path;
+    publicPath.append(SWAG_PUBLIC_FOLDER);
 
     if (!isScriptFile && kind != ModuleKind::Script && !isErrorModule)
     {
-        if (!fs::exists(publicPath.c_str()))
+        if (!filesystem::exists(publicPath))
         {
             error_code errorCode;
-            if (!fs::create_directories(publicPath.c_str(), errorCode))
+            if (!filesystem::create_directories(publicPath, errorCode))
             {
                 Report::errorOS(Fmt(Err(Fat0006), publicPath.c_str()));
                 OS::exit(-1);
@@ -150,23 +149,20 @@ void Module::computePublicPath()
         }
     }
 
-    publicPath += "/";
     publicPath.append(g_Workspace->getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target).c_str());
 
     if (!isScriptFile && kind != ModuleKind::Script && !isErrorModule)
     {
-        if (!fs::exists(publicPath.c_str()))
+        if (!filesystem::exists(publicPath))
         {
             error_code errorCode;
-            if (!fs::create_directories(publicPath.c_str(), errorCode))
+            if (!filesystem::create_directories(publicPath, errorCode))
             {
                 Report::errorOS(Fmt(Err(Fat0006), publicPath.c_str()));
                 OS::exit(-1);
             }
         }
     }
-
-    publicPath += "/";
 }
 
 bool Module::isValidName(const Utf8& name, Utf8& errorStr)
@@ -415,9 +411,9 @@ SourceFile* Module::findFile(const Utf8& fileName)
 {
     for (auto p : files)
     {
-        if (Utf8::normalizePath(p->path) == Utf8::normalizePath(fileName.c_str()))
+        if (p->path == fileName.c_str())
             return p;
-        if (Utf8::normalizePath(p->name.c_str()) == Utf8::normalizePath(fileName.c_str()))
+        if (p->name == fileName.c_str())
             return p;
     }
 
@@ -533,7 +529,7 @@ void Module::addFileNoLock(SourceFile* file)
 
     // Keep track of the most recent file
     if (!file->writeTime)
-        file->writeTime = OS::getFileWriteTime(file->path.c_str());
+        file->writeTime = OS::getFileWriteTime(file->path.string().c_str());
     moreRecentSourceFile = max(moreRecentSourceFile, file->writeTime);
 
     // If the file is flagged as '#global export', register it

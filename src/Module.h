@@ -8,6 +8,7 @@
 #include "SymTable.h"
 #include "Tokenizer.h"
 #include "JobGroup.h"
+#include "Path.h"
 
 struct Utf8;
 struct SourceFile;
@@ -50,9 +51,9 @@ struct ModuleDependency
     Token               tokenLocation;
     Token               tokenVersion;
     Utf8                name;
-    Utf8                location;
     Utf8                locationParam;
-    Utf8                resolvedLocation;
+    Utf8                location;
+    Path                resolvedLocation;
     Utf8                version;
     AstNode*            node      = nullptr;
     Module*             module    = nullptr;
@@ -107,7 +108,7 @@ const uint32_t BUILDRES_FULL     = BUILDRES_EXPORT | BUILDRES_COMPILER | BUILDRE
 struct Module
 {
     static bool isValidName(const Utf8& name, Utf8& errorStr);
-    void        setup(const Utf8& moduleName, const Utf8& modulePath);
+    void        setup(const Utf8& moduleName, const Path& modulePath);
     void        release();
     void        allocateBackend();
     void        initFrom(Module* other);
@@ -193,11 +194,11 @@ struct Module
     Mutex       mutexBuildPass;
     Mutex       mutexFlushGenFiles;
 
-    string path;
-    Utf8   name;
-    Utf8   nameNormalized;
-    Utf8   remoteLocationDep;
-    Utf8   publicPath;
+    Path path;
+    Path remoteLocationDep;
+    Path publicPath;
+    Utf8 name;
+    Utf8 nameNormalized;
 
     BuildCfg        buildCfg;
     BuildCfg        localCfgDep;
