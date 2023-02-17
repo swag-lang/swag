@@ -69,8 +69,6 @@ void Log::setColor(LogColor color)
 
 void Log::print(const char* message)
 {
-    if (countLength)
-        length += strlen(message);
     cout << message;
 }
 
@@ -90,13 +88,7 @@ void Log::print(const char* message, LogColor color)
     print(message);
 }
 
-void Log::setCountLength(bool b)
-{
-    countLength = b;
-    length      = 0;
-}
-
-static const int CENTER_COLUMN = 24;
+const int CENTER_COLUMN = 24;
 
 void Log::printHeaderDot(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor, const char* dot)
 {

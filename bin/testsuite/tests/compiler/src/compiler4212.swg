@@ -15,6 +15,7 @@ func(T) toto(y, z: T)->T
     return x1
 }
 
+#[Swag.PrintBc]
 #test
 {
     @assert(toto'u8(6) == 2)

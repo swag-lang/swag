@@ -45,16 +45,13 @@ struct Log
     void print(const char* message, LogColor color);
     void print(const Utf8& message);
     void eol();
-    void setCountLength(bool b);
 
     void messageHeaderCentered(const Utf8& header, const Utf8& message, LogColor headerColor = LogColor::Green, LogColor msgColor = LogColor::White);
     void messageHeaderDot(const Utf8& header, const Utf8& message, LogColor headerColor = LogColor::Cyan, LogColor msgColor = LogColor::Cyan, const char* dot = ".");
     void messageInfo(const Utf8& message);
     void messageVerbose(const Utf8& message);
 
-    Mutex  mutexAccess;
-    bool   countLength = false;
-    size_t length      = 0;
+    Mutex mutexAccess;
 };
 
 extern Log g_Log;

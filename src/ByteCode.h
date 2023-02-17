@@ -174,8 +174,8 @@ struct ByteCode
     static Location getLocation(ByteCode* bc, ByteCodeInstruction* ip, bool getInline = false);
 
     void              printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine = nullptr, SourceFile** lastFile = nullptr);
-    void              printPrettyInstruction(ByteCodeInstruction* ip);
-    void              printInstructionReg(const char* name, const Register& reg, bool regW, bool regR, bool regImm);
+    Utf8              getPrettyInstruction(ByteCodeInstruction* ip);
+    Utf8              getInstructionReg(const char* name, const Register& reg, bool regW, bool regR, bool regImm);
     void              printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* curIp = nullptr);
     void              print(ByteCodeInstruction* curIp = nullptr);
     Utf8              getCallName();

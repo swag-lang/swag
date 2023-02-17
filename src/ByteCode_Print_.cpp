@@ -44,7 +44,7 @@ void ByteCode::printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine, Sour
     }
 }
 
-void ByteCode::printPrettyInstruction(ByteCodeInstruction* ip)
+Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
 {
     Utf8 str   = g_ByteCodeOpDesc[(int) ip->op].display;
     auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
@@ -200,30 +200,31 @@ void ByteCode::printPrettyInstruction(ByteCodeInstruction* ip)
     }
 
     str.trim();
-    g_Log.print(str);
+    return str;
 }
 
-void ByteCode::printInstructionReg(const char* header, const Register& reg, bool regW, bool regR, bool regImm)
+Utf8 ByteCode::getInstructionReg(const char* header, const Register& reg, bool regW, bool regR, bool regImm)
 {
+    Utf8 str;
     if (regW)
-        g_Log.print(Fmt("%s[%u] ", header, reg.u32));
+        str += Fmt("%s[%u] ", header, reg.u32);
     if (regR && !regImm)
-        g_Log.print(Fmt("%s(%u) ", header, reg.u32));
+        str += Fmt("%s(%u) ", header, reg.u32);
     if (regImm)
-        g_Log.print(Fmt("%s{0x%llX} ", header, reg.u64));
+        str += Fmt("%s{0x%llX} ", header, reg.u64);
+    return str;
 }
 
 void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* curIp)
 {
     static const int ALIGN_OPCODE = 25;
-    static const int ALIGN_FLAGS1 = 65;
-    static const int ALIGN_FLAGS2 = 70;
-    static const int ALIGN_PRETTY = 80;
-    static const int ALIGN_SOURCE = 145;
+    static const int ALIGN_FLAGS1 = ALIGN_OPCODE + 50;
+    static const int ALIGN_FLAGS2 = ALIGN_FLAGS1 + 5;
+    static const int ALIGN_PRETTY = ALIGN_FLAGS2 + 10;
+    static const int ALIGN_SOURCE = ALIGN_PRETTY + 65;
 
-    static const wchar_t* bcNum  = L"%08d";
-    int                   i      = (int) (ip - out);
-    bool                  forDbg = curIp != nullptr;
+    int  i      = (int) (ip - out);
+    bool forDbg = curIp != nullptr;
 
     // Instruction rank
     if (forDbg)
@@ -237,17 +238,14 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
             g_Log.print("-> ");
         else
             g_Log.print("   ");
-        wprintf(bcNum, i);
-        g_Log.print(" ");
+
+        g_Log.print(Fmt("%08d ", i));
     }
     else
     {
         g_Log.setColor(LogColor::Cyan);
-        wprintf(bcNum, i);
-        g_Log.print(" ");
+        g_Log.print(Fmt("%08d ", i));
     }
-
-    g_Log.setCountLength(true);
 
     // Instruction
     if (!forDbg)
@@ -258,52 +256,69 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     g_Log.print(g_ByteCodeOpDesc[(int) ip->op].name);
     g_Log.print("   ");
 
+    int column = ALIGN_OPCODE + 3;
+
     // Parameters
     if (!forDbg)
         g_Log.setColor(LogColor::Gray);
     auto opFlags = g_ByteCodeOpDesc[(int) ip->op].flags;
-    printInstructionReg("A", ip->a, opFlags & OPFLAG_WRITE_A, opFlags & OPFLAG_READ_A, opFlags & (OPFLAG_READ_VAL32_A | OPFLAG_READ_VAL64_A) || ip->flags & BCI_IMM_A);
-    printInstructionReg("B", ip->b, opFlags & OPFLAG_WRITE_B, opFlags & OPFLAG_READ_B, opFlags & (OPFLAG_READ_VAL32_B | OPFLAG_READ_VAL64_B) || ip->flags & BCI_IMM_B);
-    printInstructionReg("C", ip->c, opFlags & OPFLAG_WRITE_C, opFlags & OPFLAG_READ_C, opFlags & (OPFLAG_READ_VAL32_C | OPFLAG_READ_VAL64_C) || ip->flags & BCI_IMM_C);
-    printInstructionReg("D", ip->d, opFlags & OPFLAG_WRITE_D, opFlags & OPFLAG_READ_D, opFlags & (OPFLAG_READ_VAL32_D | OPFLAG_READ_VAL64_D) || ip->flags & BCI_IMM_D);
+    Utf8 instRef;
+    instRef += getInstructionReg("A", ip->a, opFlags & OPFLAG_WRITE_A, opFlags & OPFLAG_READ_A, opFlags & (OPFLAG_READ_VAL32_A | OPFLAG_READ_VAL64_A) || ip->flags & BCI_IMM_A);
+    instRef += getInstructionReg("B", ip->b, opFlags & OPFLAG_WRITE_B, opFlags & OPFLAG_READ_B, opFlags & (OPFLAG_READ_VAL32_B | OPFLAG_READ_VAL64_B) || ip->flags & BCI_IMM_B);
+    instRef += getInstructionReg("C", ip->c, opFlags & OPFLAG_WRITE_C, opFlags & OPFLAG_READ_C, opFlags & (OPFLAG_READ_VAL32_C | OPFLAG_READ_VAL64_C) || ip->flags & BCI_IMM_C);
+    instRef += getInstructionReg("D", ip->d, opFlags & OPFLAG_WRITE_D, opFlags & OPFLAG_READ_D, opFlags & (OPFLAG_READ_VAL32_D | OPFLAG_READ_VAL64_D) || ip->flags & BCI_IMM_D);
+    g_Log.print(instRef);
+    column += instRef.length();
 
     // Flags 1
-    while (g_Log.length < ALIGN_FLAGS1)
+    while (column < ALIGN_FLAGS1)
+    {
         g_Log.print(" ");
+        column++;
+    }
+
     g_Log.print(ip->flags & BCI_SAFETY ? "S" : ".");
     g_Log.print(ip->flags & BCI_TRYCATCH ? "E" : ".");
     g_Log.print(ip->node && ip->node->ownerInline ? "I" : ".");
+    column += 3;
 
     // Flags 2
-    while (g_Log.length < ALIGN_FLAGS2)
+    while (column < ALIGN_FLAGS2)
+    {
         g_Log.print(" ");
-    if (!forDbg)
-        g_Log.print(ip->flags & BCI_IMM_A ? "A" : ".");
+        column++;
+    }
+
+    g_Log.print(ip->flags & BCI_IMM_A ? "A" : ".");
     g_Log.print(ip->flags & BCI_IMM_B ? "B" : ".");
     g_Log.print(ip->flags & BCI_IMM_C ? "C" : ".");
     g_Log.print(ip->flags & BCI_IMM_D ? "D" : ".");
     g_Log.print(ip->flags & BCI_START_STMT ? "S" : ".");
     g_Log.print(ip->flags & BCI_UNPURE ? "U" : ".");
+    column += 6;
 
     // Tree Node
 #ifdef SWAG_DEV_MODE
     if (!forDbg)
     {
         g_Log.setColor(LogColor::Magenta);
-        g_Log.print("  ");
-        wprintf(bcNum, ip->treeNode);
-        g_Log.print("  ");
-        g_Log.print(Fmt("%08X", ip->crc));
-        g_Log.print("  ");
+        g_Log.print(Fmt("  %08d  %08X  ", ip->treeNode, ip->crc));
+        column += 22;
         g_Log.setColor(LogColor::Gray);
     }
 #endif
 
     if (!forDbg)
         g_Log.setColor(LogColor::White);
-    while (g_Log.length < ALIGN_PRETTY)
+    while (column < ALIGN_PRETTY)
+    {
         g_Log.print(" ");
-    printPrettyInstruction(ip);
+        column++;
+    }
+
+    auto tmp = getPrettyInstruction(ip);
+    g_Log.print(tmp);
+    column += tmp.length();
 
     if (!forDbg)
         g_Log.setColor(LogColor::Gray);
@@ -312,24 +327,32 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     // Jump offset
     if (ByteCode::isJump(ip))
     {
-        wprintf(bcNum, ip->b.s32 + i + 1);
-        g_Log.length += 8;
+        g_Log.print(Fmt("%08d ", ip->b.s32 + i + 1));
+        column += 9;
     }
 
     switch (ip->op)
     {
     case ByteCodeOp::InternalPanic:
         if (ip->d.pointer)
-            g_Log.print(Utf8::truncateDisplay((const char*) ip->d.pointer, 30));
+        {
+            tmp = Utf8::truncateDisplay((const char*) ip->d.pointer, 30);
+            g_Log.print(tmp);
+            column += tmp.length();
+        }
         break;
 
     case ByteCodeOp::MakeLambda:
     {
         auto funcNode = (AstFuncDecl*) ip->b.pointer;
         SWAG_ASSERT(funcNode);
-        g_Log.print(Utf8::truncateDisplay(funcNode->sourceFile->name, 30));
+        tmp = Utf8::truncateDisplay(funcNode->sourceFile->name, 30);
+        g_Log.print(tmp);
+        column += tmp.length();
         g_Log.print("/");
+        column++;
         g_Log.print(funcNode->token.text);
+        column += funcNode->token.text.length();
         break;
     }
 
@@ -337,7 +360,9 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     case ByteCodeOp::ForeignCallPop:
     {
         auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
-        g_Log.print(Utf8::truncateDisplay(funcNode->token.text, 30));
+        tmp      = Utf8::truncateDisplay(funcNode->token.text, 30);
+        g_Log.print(tmp);
+        column += tmp.length();
         break;
     }
 
@@ -348,10 +373,13 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
         auto bc = (ByteCode*) ip->a.pointer;
         SWAG_ASSERT(bc);
         g_Log.print(bc->name);
+        column += bc->name.length();
         if (bc->node && bc->node->typeInfo)
         {
             g_Log.print(" ");
+            column += 1;
             g_Log.print(bc->node->typeInfo->name);
+            column += bc->node->typeInfo->name.length();
         }
         break;
     }
@@ -361,18 +389,22 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     if (!forDbg)
     {
         g_Log.setColor(LogColor::Magenta);
-        while (g_Log.length < ALIGN_SOURCE)
+        g_Log.print(" ");
+        while (column < ALIGN_SOURCE)
+        {
             g_Log.print(" ");
+            column++;
+        }
+
         g_Log.print(Fmt("%08d ", ip->serial));
         if (ip->sourceFile)
         {
             Path sf = ip->sourceFile;
-            g_Log.print(Fmt("%s:%d", sf.filename().c_str(), ip->sourceLine));
+            g_Log.print(Fmt("%s:%d", sf.filename().string().c_str(), ip->sourceLine));
         }
     }
 #endif
 
-    g_Log.setCountLength(false);
     g_Log.eol();
 }
 
