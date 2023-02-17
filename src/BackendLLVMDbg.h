@@ -1,4 +1,5 @@
 #pragma once
+#include "Map.h"
 struct ByteCode;
 struct SourceFile;
 struct TypeInfoFuncAttr;
@@ -43,12 +44,12 @@ struct BackendLLVMDbg
     llvm::DILexicalBlockFile* lastInlineBlock      = nullptr;
     uint32_t                  lastDebugLine        = 0;
 
-    unordered_map<string, llvm::DIFile*>              mapFiles;
-    unordered_map<TypeInfo*, llvm::DIType*>           mapTypes;
-    unordered_map<TypeInfo*, llvm::DIType*>           mapPtrTypes;
-    unordered_map<TypeInfo*, llvm::DIType*>           mapRefTypes;
-    unordered_map<TypeInfo*, llvm::DISubroutineType*> mapFuncTypes;
-    unordered_map<Scope*, llvm::DIScope*>             mapScopes;
+    Map<string, llvm::DIFile*>              mapFiles;
+    Map<TypeInfo*, llvm::DIType*>           mapTypes;
+    Map<TypeInfo*, llvm::DIType*>           mapPtrTypes;
+    Map<TypeInfo*, llvm::DIType*>           mapRefTypes;
+    Map<TypeInfo*, llvm::DISubroutineType*> mapFuncTypes;
+    Map<Scope*, llvm::DIScope*>             mapScopes;
 
     llvm::DIType*          s8Ty;
     llvm::DIType*          s16Ty;

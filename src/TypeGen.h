@@ -2,6 +2,7 @@
 #include "Utf8.h"
 #include "DependentJobs.h"
 #include "TypeInfo.h"
+#include "Map.h"
 struct JobContext;
 struct AstNode;
 struct ExportedTypeInfo;
@@ -30,10 +31,10 @@ struct TypeGen
 
     struct MapPerSeg
     {
-        SharedMutex                                      mutex;
-        unordered_map<Utf8, MapType, HashUtf8>           exportedTypes;
-        unordered_map<Utf8, TypeGenStructJob*, HashUtf8> exportedTypesJob;
-        unordered_map<ExportedTypeInfo*, TypeInfo*>      exportedTypesReverse;
+        SharedMutex                       mutex;
+        Map<Utf8, MapType>                exportedTypes;
+        Map<Utf8, TypeGenStructJob*>      exportedTypesJob;
+        Map<ExportedTypeInfo*, TypeInfo*> exportedTypesReverse;
     };
 
     void  setup(const Utf8& moduleName);

@@ -1,5 +1,6 @@
 #pragma once
 #include "TypeInfo.h"
+#include "Map.h"
 struct AstNode;
 struct SourceFile;
 struct TypeInfo;
@@ -141,8 +142,8 @@ struct TypeManager
         TypeInfoPointer* pointerTo;
     };
 
-    unordered_map<TypeInfo*, vector<PointerCache>> mapPointers;
-    unordered_map<TypeInfo*, TypeInfo*>            mapConst;
+    Map<TypeInfo*, vector<PointerCache>> mapPointers;
+    Map<TypeInfo*, TypeInfo*>            mapConst;
 
     TypeInfoNative* typeInfoS8        = nullptr;
     TypeInfoNative* typeInfoS16       = nullptr;

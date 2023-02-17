@@ -3,6 +3,7 @@
 #include "ByteCodeOp.h"
 #include "Job.h"
 #include "MapRegTo.h"
+#include "Map.h"
 
 struct ByteCode;
 struct ByteCodeGenContext;
@@ -42,20 +43,20 @@ const uint32_t OCF_HAS_DUPCOPY  = 0x00000002;
 
 struct ByteCodeOptContext : public JobContext
 {
-    VectorNative<ByteCodeInstruction*>                        jumps;
-    VectorNative<ByteCodeInstruction*>                        nops;
-    VectorNative<ByteCodeInstruction*>                        vecInst;
-    VectorNative<uint32_t>                                    vecReg;
-    MapRegTo<uint32_t>                                        mapRegReg;
-    MapRegTo<uint64_t>                                        mapRegU64;
-    MapRegTo<ByteCodeInstruction*>                            mapRegInstA;
-    MapRegTo<ByteCodeInstruction*>                            mapRegInstB;
-    Map<uint64_t, pair<uint64_t, ByteCodeInstruction*>>       mapCst;
-    Map<uint64_t, uint32_t>                                   map6432;
-    Map<uint32_t, ByteCodeOptTreeNode*>                       map32Node;
-    Vector<ByteCodeOptTreeNode>                               tree;
-    unordered_map<ByteCodeInstruction*, uint32_t>             mapInstNode;
-    unordered_map<ByteCodeInstruction*, ByteCodeInstruction*> mapInstInst;
+    VectorNative<ByteCodeInstruction*>                  jumps;
+    VectorNative<ByteCodeInstruction*>                  nops;
+    VectorNative<ByteCodeInstruction*>                  vecInst;
+    VectorNative<uint32_t>                              vecReg;
+    MapRegTo<uint32_t>                                  mapRegReg;
+    MapRegTo<uint64_t>                                  mapRegU64;
+    MapRegTo<ByteCodeInstruction*>                      mapRegInstA;
+    MapRegTo<ByteCodeInstruction*>                      mapRegInstB;
+    Map<uint64_t, pair<uint64_t, ByteCodeInstruction*>> mapCst;
+    Map<uint64_t, uint32_t>                             map6432;
+    Map<uint32_t, ByteCodeOptTreeNode*>                 map32Node;
+    Vector<ByteCodeOptTreeNode>                         tree;
+    Map<ByteCodeInstruction*, uint32_t>                 mapInstNode;
+    Map<ByteCodeInstruction*, ByteCodeInstruction*>     mapInstInst;
 
     ByteCode* bc;
     Module*   module;
