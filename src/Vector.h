@@ -1,20 +1,20 @@
 #pragma once
 
 template<typename T>
-struct Vector : public vector<T>
+struct Vector : public vector<T, StdAllocator<T>>
 {
     Vector()
-        : vector<T>()
+        : vector<T, StdAllocator<T>>()
     {
     }
 
     Vector(const Vector& other)
-        : vector<T>(other)
+        : vector<T, StdAllocator<T>>(other)
     {
     }
 
     Vector(const initializer_list<T>& other)
-        : vector<T>(other)
+        : vector<T, StdAllocator<T>>(other)
     {
     }
 

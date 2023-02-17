@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Allocator.h"
 #include "ModuleCfgManager.h"
 #include "Workspace.h"
 #include "Module.h"

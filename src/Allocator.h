@@ -80,11 +80,11 @@ struct StdAllocator
 
     T* allocate(size_t n, const T* hint = 0)
     {
-        return (T*) Allocator::alloc(Allocator::alignSize(n));
+        return (T*) Allocator::alloc(Allocator::alignSize(n * sizeof(T)));
     }
 
     void deallocate(T* p, size_t n)
     {
-        Allocator::free(p, Allocator::alignSize(n));
+        Allocator::free(p, Allocator::alignSize(n * sizeof(T)));
     }
 };
