@@ -74,10 +74,10 @@ struct CloneUpdateRef
 
 struct CloneContext
 {
-    Map<Utf8, TypeInfo*>         replaceTypes;
-    Map<Utf8, AstNode*>          replaceTypesFrom;
+    MapUtf8<TypeInfo*>           replaceTypes;
+    MapUtf8<AstNode*>            replaceTypesFrom;
     Map<TokenId, AstNode*>       replaceTokens;
-    Map<Utf8, Utf8>              replaceNames;
+    MapUtf8<Utf8>                replaceNames;
     Set<Utf8>                    usedReplaceNames;
     VectorNative<CloneUpdateRef> nodeRefsToUpdate;
 

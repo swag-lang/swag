@@ -96,13 +96,13 @@ struct Workspace
 
     Vector<OneTag> tags;
 
-    Map<Utf8, Module*> mapFirstPassModulesNames;
-    Map<Utf8, Module*> mapModulesNames;
-    Set<void*>         doneErrSymbols;
-    Module*            filteredModule = nullptr;
-    Module*            bootstrapModule;
-    Module*            runtimeModule;
-    SwagScope          swagScope;
+    MapUtf8<Module*> mapFirstPassModulesNames;
+    MapUtf8<Module*> mapModulesNames;
+    Set<void*>       doneErrSymbols;
+    Module*          filteredModule = nullptr;
+    Module*          bootstrapModule;
+    Module*          runtimeModule;
+    SwagScope        swagScope;
 };
 
 extern Workspace* g_Workspace;

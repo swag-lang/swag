@@ -1,15 +1,30 @@
 #pragma once
+#include "Utf8.h"
 
 template<typename K, typename V>
-struct Map : public map<K, V, less<K>, StdAllocator<pair<const K, V>>>
+struct Map : public unordered_map<K, V, hash<K>, equal_to<K>, StdAllocator<pair<const K, V>>>
 {
     Map()
-        : map<K, V, less<K>, StdAllocator<pair<const K, V>>>()
+        : unordered_map<K, V, hash<K>, equal_to<K>, StdAllocator<pair<const K, V>>>()
     {
     }
 
     Map(const Map& other)
-        : map<K, V, less<K>, StdAllocator<pair<const K, V>>>(other)
+        : unordered_map<K, V, hash<K>, equal_to<K>, StdAllocator<pair<const K, V>>>(other)
+    {
+    }
+};
+
+template<typename V>
+struct MapUtf8 : public unordered_map<Utf8, V, HashUtf8, equal_to<Utf8>, StdAllocator<pair<const Utf8, V>>>
+{
+    MapUtf8()
+        : unordered_map<Utf8, V, HashUtf8, equal_to<Utf8>, StdAllocator<pair<const Utf8, V>>>()
+    {
+    }
+
+    MapUtf8(const MapUtf8& other)
+        : unordered_map<Utf8, V, HashUtf8, equal_to<Utf8>, StdAllocator<pair<const Utf8, V>>>(other)
     {
     }
 };

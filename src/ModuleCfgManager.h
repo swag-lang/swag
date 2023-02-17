@@ -35,8 +35,8 @@ struct ModuleCfgManager
     bool                 execute();
     Module*              getCfgModule(const Utf8& name);
 
-    Map<Utf8, Module*> allModules;
-    Set<Module*>       pendingCfgModules;
+    MapUtf8<Module*> allModules;
+    Set<Module*>     pendingCfgModules;
 };
 
 extern ModuleCfgManager* g_ModuleCfgMgr;

@@ -32,8 +32,8 @@ struct TypeGen
     struct MapPerSeg
     {
         SharedMutex                       mutex;
-        Map<Utf8, MapType>                exportedTypes;
-        Map<Utf8, TypeGenStructJob*>      exportedTypesJob;
+        MapUtf8<MapType>                  exportedTypes;
+        MapUtf8<TypeGenStructJob*>        exportedTypesJob;
         Map<ExportedTypeInfo*, TypeInfo*> exportedTypesReverse;
     };
 

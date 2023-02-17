@@ -128,12 +128,12 @@ struct OneMatch
 
 struct OneGenericMatch
 {
-    VectorNative<TypeInfo*>                    genericParametersCallTypes;
-    VectorNative<AstNode*>                     genericParametersCallTypesFrom;
-    VectorNative<TypeInfo*>                    genericParametersGenTypes;
-    Map<Utf8, TypeInfo*>                       genericReplaceTypes;
-    Map<Utf8, AstNode*>                        genericReplaceTypesFrom;
-    Map<Utf8, pair<ComputedValue*, TypeInfo*>> genericReplaceValues;
+    VectorNative<TypeInfo*>                  genericParametersCallTypes;
+    VectorNative<AstNode*>                   genericParametersCallTypesFrom;
+    VectorNative<TypeInfo*>                  genericParametersGenTypes;
+    MapUtf8<TypeInfo*>                       genericReplaceTypes;
+    MapUtf8<AstNode*>                        genericReplaceTypesFrom;
+    MapUtf8<pair<ComputedValue*, TypeInfo*>> genericReplaceValues;
 
     SymbolName*                  symbolName        = nullptr;
     SymbolOverload*              symbolOverload    = nullptr;

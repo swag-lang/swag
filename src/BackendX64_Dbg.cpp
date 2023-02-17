@@ -1065,9 +1065,9 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
     auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    Map<Utf8, uint32_t> mapFileNames;
-    Vector<uint32_t>    arrFileNames;
-    Utf8                stringTable;
+    MapUtf8<uint32_t> mapFileNames;
+    Vector<uint32_t>  arrFileNames;
+    Utf8              stringTable;
 
     for (auto& f : pp.functions)
     {
@@ -1231,7 +1231,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                     // The real name, in case of 2 registers, will be created below without the 'fIsParam' flag set.
                     // Because i don't know how two deal with those parameters (in fact we have 2 parameters/registers in the calling convention,
                     // but the signature has only one visible parameter).
-                    if(typeParam->numRegisters() == 2)
+                    if (typeParam->numRegisters() == 2)
                         dbgEmitTruncatedString(concat, "__" + child->token.text);
                     else
                         dbgEmitTruncatedString(concat, child->token.text);

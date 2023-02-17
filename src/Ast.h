@@ -27,7 +27,7 @@ namespace Ast
     AstNode*     cloneRaw(AstNode* source, AstNode* parent, uint64_t forceFlags = 0, uint64_t removeFlags = 0);
     AstNode*     clone(AstNode* source, AstNode* parent, uint64_t forceFlags = 0, uint64_t removeFlags = 0);
     Utf8         computeGenericParametersReplacement(VectorNative<TypeInfoParam*>& params);
-    Vector<Utf8> computeGenericParametersReplacement(Map<Utf8, TypeInfo*>& replace);
+    Vector<Utf8> computeGenericParametersReplacement(MapUtf8<TypeInfo*>& replace);
 
     Scope*             newScope(AstNode* owner, const Utf8& name, ScopeKind kind, Scope* parentScope, bool matchName = false);
     AstNode*           newNode(SourceFile* sourceFile, AstNodeKind kind, AstNode* parent, Parser* parser = nullptr);

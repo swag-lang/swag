@@ -25,13 +25,13 @@ enum class ErrCxtStepKind
 
 struct ErrorCxtStep
 {
-    AstNode*             node = nullptr;
-    ErrCxtStepKind       type = ErrCxtStepKind::Note;
-    Utf8                 msg  = "";
-    Utf8                 hint = "";
-    Map<Utf8, TypeInfo*> replaceTypes;
-    bool                 locIsToken = false;
-    bool                 hide       = false;
+    AstNode*           node = nullptr;
+    ErrCxtStepKind     type = ErrCxtStepKind::Note;
+    Utf8               msg  = "";
+    Utf8               hint = "";
+    MapUtf8<TypeInfo*> replaceTypes;
+    bool               locIsToken = false;
+    bool               hide       = false;
 };
 
 struct PushErrCxtStep

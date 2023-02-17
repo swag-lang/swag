@@ -21,10 +21,10 @@ struct ModuleManager
 
     static const Utf8& getForeignModuleName(AstFuncDecl* func);
 
-    SharedMutex      mutex;
-    SharedMutex      mutexLoaded;
-    Map<Utf8, void*> loadedModules;
-    Set<Utf8>        failedLoadedModules;
+    SharedMutex    mutex;
+    SharedMutex    mutexLoaded;
+    MapUtf8<void*> loadedModules;
+    Set<Utf8>      failedLoadedModules;
 
     struct PatchOffset
     {
@@ -33,9 +33,9 @@ struct ModuleManager
         AstFuncDecl* funcDecl;
     };
 
-    SharedMutex                    mutexPatch;
-    Map<Utf8, Vector<PatchOffset>> patchOffsets;
-    Utf8                           loadModuleError;
+    SharedMutex                  mutexPatch;
+    MapUtf8<Vector<PatchOffset>> patchOffsets;
+    Utf8                         loadModuleError;
 };
 
 extern ModuleManager* g_ModuleMgr;

@@ -104,7 +104,7 @@ struct DataSegment
 
     VectorNative<Bucket> buckets;
 
-    Map<Utf8, CacheValue>     storedStrings;
+    MapUtf8<CacheValue>       storedStrings;
     Map<uint8_t, CacheValue>  storedValues8;
     Map<uint16_t, CacheValue> storedValues16;
     Map<uint32_t, CacheValue> storedValues32;
