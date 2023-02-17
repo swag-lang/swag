@@ -75,3 +75,25 @@ struct Allocator
 
 extern atomic<int>            g_CompilerAllocTh;
 extern thread_local Allocator g_Allocator;
+
+template<typename T>
+struct StdAllocator
+{
+    typedef T value_type;
+    template<class U>
+    constexpr StdAllocator(const StdAllocator<U>&) noexcept
+    {
+    }
+
+    StdAllocator() = default;
+
+    T* allocate(size_t n, const T* hint = 0)
+    {
+        return (T*) g_Allocator.alloc(Allocator::alignSize(n));
+    }
+
+    void deallocate(T* p, size_t n)
+    {
+        g_Allocator.free(p, Allocator::alignSize(n));
+    }
+};
