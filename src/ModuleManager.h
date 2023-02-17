@@ -24,7 +24,7 @@ struct ModuleManager
     SharedMutex    mutex;
     SharedMutex    mutexLoaded;
     MapUtf8<void*> loadedModules;
-    Set<Utf8>      failedLoadedModules;
+    SetUtf8        failedLoadedModules;
 
     struct PatchOffset
     {

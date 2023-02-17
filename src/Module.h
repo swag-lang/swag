@@ -163,7 +163,7 @@ struct Module
     bool removeDependency(AstNode* importNode);
     bool hasDependencyTo(Module* module);
     void sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result);
-    bool waitForDependenciesDone(Job* job, const Set<Utf8>& modules);
+    bool waitForDependenciesDone(Job* job, const SetUtf8& modules);
     bool waitForDependenciesDone(Job* job);
     bool filterFunctionsToEmit();
 

@@ -16,7 +16,7 @@ enum CommandLineType
 
 struct CommandLineArgument
 {
-    Set<Utf8>       cmds;
+    SetUtf8         cmds;
     string          longName;
     string          shortName;
     void*           buffer;
