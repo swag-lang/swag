@@ -160,25 +160,25 @@ void Workspace::newCommand()
             OS::exit(-1);
         }
 
-        if (!filesystem::create_directories(examplesPath.parent_path(), errorCode))
+        if (!filesystem::create_directories(examplesPath, errorCode))
         {
             Report::errorOS(Fmt(Err(Fat0004), examplesPath.string().c_str()));
             OS::exit(-1);
         }
 
-        if (!filesystem::create_directories(testsPath.parent_path(), errorCode))
+        if (!filesystem::create_directories(testsPath, errorCode))
         {
             Report::errorOS(Fmt(Err(Fat0004), testsPath.string().c_str()));
             OS::exit(-1);
         }
 
-        if (!filesystem::create_directories(modulesPath.parent_path(), errorCode))
+        if (!filesystem::create_directories(modulesPath, errorCode))
         {
             Report::errorOS(Fmt(Err(Fat0004), modulesPath.string().c_str()));
             OS::exit(-1);
         }
 
-        if (!filesystem::create_directories(dependenciesPath.parent_path(), errorCode))
+        if (!filesystem::create_directories(dependenciesPath, errorCode))
         {
             Report::errorOS(Fmt(Err(Fat0004), dependenciesPath.string().c_str()));
             OS::exit(-1);
