@@ -78,7 +78,7 @@ struct CloneContext
     Map<Utf8, AstNode*>          replaceTypesFrom;
     Map<TokenId, AstNode*>       replaceTokens;
     Map<Utf8, Utf8>              replaceNames;
-    set<Utf8>                    usedReplaceNames;
+    Set<Utf8>                    usedReplaceNames;
     VectorNative<CloneUpdateRef> nodeRefsToUpdate;
 
     AstInline*          ownerInline            = nullptr;

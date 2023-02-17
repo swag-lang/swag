@@ -4,6 +4,7 @@
 #include "SymTable.h"
 #include "VectorNative.h"
 #include "Mutex.h"
+#include "Set.h"
 struct Scope;
 struct AstNode;
 struct AstDefer;
@@ -36,9 +37,9 @@ const uint32_t SCOPE_IMPORTED         = 0x00000008;
 
 struct ScopePublicSet
 {
-    set<AstNode*> publicFunc;
-    set<AstNode*> publicAttr;
-    set<AstNode*> publicNodes;
+    Set<AstNode*> publicFunc;
+    Set<AstNode*> publicAttr;
+    Set<AstNode*> publicNodes;
 };
 
 struct Scope

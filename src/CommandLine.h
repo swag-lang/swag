@@ -98,7 +98,7 @@ struct CommandLine
 
     BackendTarget target;
 
-    set<string>  tags;
+    Set<string>  tags;
     Vector<Utf8> libPaths;
 
     uint32_t stackSizeRT = 1024 * 1024;

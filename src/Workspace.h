@@ -4,6 +4,7 @@
 #include "Map.h"
 #include "ComputedValue.h"
 #include "Mutex.h"
+#include "Set.h"
 struct Module;
 struct Scope;
 struct SourceFile;
@@ -97,7 +98,7 @@ struct Workspace
 
     Map<Utf8, Module*> mapFirstPassModulesNames;
     Map<Utf8, Module*> mapModulesNames;
-    set<void*>         doneErrSymbols;
+    Set<void*>         doneErrSymbols;
     Module*            filteredModule = nullptr;
     Module*            bootstrapModule;
     Module*            runtimeModule;

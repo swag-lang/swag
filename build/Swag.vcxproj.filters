@@ -860,6 +860,9 @@
     <ClInclude Include="..\src\Map.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Set.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">

@@ -246,6 +246,7 @@
     <ClInclude Include="../src/Tokenizer.h" />
     <ClInclude Include="../src/TypeManager.h" />
     <ClInclude Include="..\src\Parser.h" />
+    <ClInclude Include="..\src\Set.h" />
     <ClInclude Include="..\src\SymTableHash.h" />
     <ClInclude Include="..\src\TypeGen.h" />
     <ClInclude Include="..\src\TypeGenStructJob.h" />

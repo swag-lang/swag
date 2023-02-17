@@ -2059,7 +2059,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         if (justCheck)
             return true;
 
-        set<SymbolName*> symbols;
+        Set<SymbolName*> symbols;
         for (auto& g : genericMatchesSI)
             symbols.insert(g->symbolName);
         for (auto& g : symbols)

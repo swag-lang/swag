@@ -195,7 +195,7 @@ struct ByteCode
     Utf8                   callName;
     VectorNative<AstNode*> localVars;
     VectorNative<AstNode*> dependentCalls;
-    set<Utf8>              hasForeignFunctionCallsModules;
+    Set<Utf8>              hasForeignFunctionCallsModules;
 
     ByteCodeInstruction* out          = nullptr;
     SourceFile*          sourceFile   = nullptr;
@@ -207,7 +207,7 @@ struct ByteCode
     uint64_t       profileCumTime   = 0;
     uint32_t       profileCallCount = 0;
     double         profilePerCall   = 0;
-    set<ByteCode*> profileChilds;
+    Set<ByteCode*> profileChilds;
 
     uint32_t numInstructions       = 0;
     uint32_t maxInstructions       = 0;

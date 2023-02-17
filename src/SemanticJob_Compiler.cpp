@@ -647,7 +647,7 @@ void SemanticJob::disableCompilerIfBlock(SemanticContext* context, AstCompilerIf
     }
 
     // Decrease methods count to resolve
-    set<TypeInfoStruct*> allStructs;
+    Set<TypeInfoStruct*> allStructs;
     for (auto& typeStructPair : block->methodsCount)
     {
         // Remove the corresponding method

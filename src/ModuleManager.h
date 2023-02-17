@@ -2,6 +2,7 @@
 #include "Utf8.h"
 #include "Mutex.h"
 #include "Map.h"
+#include "Set.h"
 
 struct AstFuncDecl;
 struct ByteCodeRunContext;
@@ -23,7 +24,7 @@ struct ModuleManager
     SharedMutex      mutex;
     SharedMutex      mutexLoaded;
     Map<Utf8, void*> loadedModules;
-    set<Utf8>        failedLoadedModules;
+    Set<Utf8>        failedLoadedModules;
 
     struct PatchOffset
     {

@@ -24,7 +24,7 @@ JobResult FetchModuleFileSystemJob::execute()
         g_Log.messageHeaderCentered("Using", depName.c_str());
 
     // Collect list of source files
-    set<string> srcFiles;
+    Set<string> srcFiles;
     OS::visitFilesRec(dep->resolvedLocation,
                       [&](const char* fileName)
                       {

@@ -440,7 +440,7 @@ bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode
     auto attr = &attributes;
     if (attr && !attr->empty())
     {
-        set<AstNode*> done;
+        Set<AstNode*> done;
         bool          first = true;
         for (int j = 0; j < attr->allAttributes.size(); j++)
         {

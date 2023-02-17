@@ -1,6 +1,7 @@
 #pragma once
 #include "Utf8.h"
 #include "Map.h"
+#include "Set.h"
 struct CommandLine;
 
 enum CommandLineType
@@ -15,7 +16,7 @@ enum CommandLineType
 
 struct CommandLineArgument
 {
-    set<Utf8>       cmds;
+    Set<Utf8>       cmds;
     string          longName;
     string          shortName;
     void*           buffer;

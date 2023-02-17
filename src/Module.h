@@ -163,7 +163,7 @@ struct Module
     bool removeDependency(AstNode* importNode);
     bool hasDependencyTo(Module* module);
     void sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result);
-    bool waitForDependenciesDone(Job* job, const set<Utf8>& modules);
+    bool waitForDependenciesDone(Job* job, const Set<Utf8>& modules);
     bool waitForDependenciesDone(Job* job);
     bool filterFunctionsToEmit();
 
@@ -235,7 +235,7 @@ struct Module
     VectorNative<AstNode*>                           globalVarsMutable;
     VectorNative<AstNode*>                           globalVarsConstant;
     Vector<CompilerMessage>                          compilerMessages[2];
-    set<SourceFile*>                                 exportSourceFiles;
+    Set<SourceFile*>                                 exportSourceFiles;
     Map<Utf8, TypeInfoFuncAttr*>                     mapRuntimeFctsTypes;
     Map<Utf8, ByteCode*>                             mapRuntimeFcts;
     Map<Utf8, ForToSolve>                            implForToSolve;

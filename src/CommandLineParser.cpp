@@ -377,7 +377,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
                 continue;
             }
 
-            ((set<string>*) arg->buffer)->insert(argument);
+            ((Set<string>*) arg->buffer)->insert(argument);
             break;
         }
 
@@ -456,7 +456,7 @@ string CommandLineParser::buildString(bool full)
             if (full)
             {
                 result += oneArg->longName + ":";
-                auto all = (set<string>*) oneArg->buffer;
+                auto all = (Set<string>*) oneArg->buffer;
                 for (auto& one : *all)
                 {
                     result += one;

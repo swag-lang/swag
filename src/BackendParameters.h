@@ -1,6 +1,7 @@
 #pragma once
 #include "Utf8.h"
 #include "Runtime.h"
+#include "Set.h"
 struct BuildCfg;
 
 const uint32_t SWAG_LIMIT_ARRAY_SIZE          = 0x7FFFFFFF;
@@ -65,7 +66,7 @@ inline bool isArchArm(SwagTargetArch arch)
 
 struct BuildParameters
 {
-    set<Utf8>              foreignLibs;
+    Set<Utf8>              foreignLibs;
     VectorNative<AstNode*> globalUsings;
     Utf8                   outputFileName;
     BuildCfg*              buildCfg        = nullptr;

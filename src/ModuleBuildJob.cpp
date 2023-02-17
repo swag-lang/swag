@@ -26,7 +26,7 @@ void ModuleBuildJob::publishFilesToPublic(Module* moduleToPublish)
     // We need the public folder to be in sync with the current state of the code.
     // That means that every files in the public folder that is no more '#global export' must
     // be removed (and every old file that does not exist anymore)
-    set<Utf8> publicFiles;
+    Set<Utf8> publicFiles;
     for (auto one : moduleToPublish->exportSourceFiles)
     {
         auto name = one->name;

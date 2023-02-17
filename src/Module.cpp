@@ -812,7 +812,7 @@ bool Module::hasDependencyTo(Module* module)
     return false;
 }
 
-bool Module::waitForDependenciesDone(Job* job, const set<Utf8>& modules)
+bool Module::waitForDependenciesDone(Job* job, const Set<Utf8>& modules)
 {
     for (auto& dep : moduleDependencies)
     {

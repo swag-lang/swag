@@ -258,7 +258,7 @@ struct Context
     ByteCodeOptContext*       context = nullptr;
     ByteCode*                 bc      = nullptr;
     int                       state   = 0;
-    set<ByteCodeInstruction*> statesHere;
+    Set<ByteCodeInstruction*> statesHere;
     Vector<State>             states;
     bool                      cansetConstants = true;
 };

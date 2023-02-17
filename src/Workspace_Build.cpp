@@ -403,7 +403,7 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, Job* depJob)
     return note;
 }
 
-bool errorPendingCycle(Job* pendingJob, VectorNative<Job*>& waitingJobs, set<Job*>& done, VectorNative<Job*>& cycle)
+bool errorPendingCycle(Job* pendingJob, VectorNative<Job*>& waitingJobs, Set<Job*>& done, VectorNative<Job*>& cycle)
 {
     if (waitingJobs.empty())
         return false;
@@ -446,7 +446,7 @@ void Workspace::errorPendingJobs(Vector<PendingJob>& pendingJobs)
             continue;
 
         // Is there a dependency cycle ?
-        set<Job*>          done;
+        Set<Job*>          done;
         VectorNative<Job*> cycle;
 
         bool isCycle = errorPendingCycle(pendingJob, pendingJob->waitingJobs, done, cycle);
