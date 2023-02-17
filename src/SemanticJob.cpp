@@ -290,9 +290,7 @@ JobResult SemanticJob::execute()
 
     while (!nodes.empty())
     {
-        auto node = nodes.back();
-        SWAG_CHECK_BLOCK(node);
-
+        auto node     = nodes.back();
         context.node  = node;
         bool canDoSem = !(node->flags & AST_NO_SEMANTIC);
 

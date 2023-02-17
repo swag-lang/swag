@@ -59,9 +59,13 @@ struct Allocator
     void  free(void*, size_t size);
     void* alloc(size_t size);
 
-    static size_t alignSize(size_t size);
+    // clang-format off
+    static size_t alignSize(size_t size) { return ((size + 7) & ~7); }
+    // clang-format on
+
 #ifdef SWAG_CHECK_MEMORY
-    static void checkBlock(void* ptr);
+    static uint8_t* markDebugBlock(uint8_t* blockAddr, uint64_t userSize, uint64_t marker);
+    static uint8_t* checkUserBlock(uint8_t* userAddr, uint64_t userSize, uint64_t marker);
 #endif
 
     AllocatorImpl* impl = nullptr;
@@ -71,9 +75,3 @@ struct Allocator
 
 extern atomic<int>            g_CompilerAllocTh;
 extern thread_local Allocator g_Allocator;
-
-#ifdef SWAG_CHECK_MEMORY
-#define SWAG_CHECK_BLOCK(__addr) Allocator::checkBlock(__addr);
-#else
-#define SWAG_CHECK_BLOCK(__addr)
-#endif

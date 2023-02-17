@@ -590,9 +590,7 @@ JobResult ByteCodeGenJob::execute()
                 return JobResult::ReleaseJob;
             }
 
-            auto node = nodes.back();
-            SWAG_CHECK_BLOCK(node);
-
+            auto node      = nodes.back();
             context.node   = node;
             context.result = ContextResult::Done;
 

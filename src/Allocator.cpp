@@ -311,11 +311,6 @@ Allocator::Allocator()
     }
 }
 
-size_t Allocator::alignSize(size_t size)
-{
-    return ((size + 7) & ~7);
-}
-
 void* Allocator::alloc(size_t size)
 {
     if (shared)
@@ -323,19 +318,10 @@ void* Allocator::alloc(size_t size)
     SWAG_ASSERT(impl);
 
 #ifdef SWAG_CHECK_MEMORY
-    auto userSize = size;
-    size += 3 * sizeof(uint64_t);
-#endif
-
-    uint8_t* result = (uint8_t*) impl->alloc(size);
-
-#ifdef SWAG_CHECK_MEMORY
-    *(uint64_t*) result = MAGIC_ALLOC;
-    result += sizeof(uint64_t);
-    *(uint64_t*) result = size;
-    result += sizeof(uint64_t);
-    auto end         = result + userSize;
-    *(uint64_t*) end = MAGIC_ALLOC;
+    auto result = impl->alloc(size + (3 * sizeof(uint64_t)));
+    result      = markDebugBlock((uint8_t*) result, size, MAGIC_ALLOC);
+#else
+    auto result = impl->alloc(size);
 #endif
 
     if (shared)
@@ -352,37 +338,37 @@ void Allocator::free(void* ptr, size_t size)
         g_AllocatorMutex.lock();
     SWAG_ASSERT(impl);
 
-    uint8_t* addr = (uint8_t*) ptr;
-
 #ifdef SWAG_CHECK_MEMORY
-    auto end = addr + size;
-    size += 3 * sizeof(uint64_t);
-    SWAG_ASSERT(*(uint64_t*) end == MAGIC_ALLOC);
-    *(uint64_t*) end = MAGIC_FREE;
-    addr -= sizeof(uint64_t);
-    SWAG_ASSERT(*(uint64_t*) addr == size);
-    addr -= sizeof(uint64_t);
-    SWAG_ASSERT(*(uint64_t*) addr == MAGIC_ALLOC);
-    *(uint64_t*) addr = MAGIC_FREE;
+    ptr = checkUserBlock((uint8_t*) ptr, size, MAGIC_ALLOC);
+    markDebugBlock((uint8_t*) ptr, size, MAGIC_FREE);
 #endif
 
-    impl->free(addr, size);
+    impl->free(ptr, size);
 
     if (shared)
         g_AllocatorMutex.unlock();
 }
 
 #ifdef SWAG_CHECK_MEMORY
-void Allocator::checkBlock(void* ptr)
+uint8_t* Allocator::markDebugBlock(uint8_t* blockAddr, uint64_t userSize, uint64_t marker)
 {
-    uint8_t* addr  = (uint8_t*) ptr;
-    auto     start = addr;
-    addr -= sizeof(uint64_t);
-    auto size = *(uint64_t*) addr;
-    size -= 3 * sizeof(uint64_t);
-    addr -= sizeof(uint64_t);
-    SWAG_ASSERT(*(uint64_t*) addr == MAGIC_ALLOC);
-    start += size;
-    SWAG_ASSERT(*(uint64_t*) start == MAGIC_ALLOC);
+    *(uint64_t*) blockAddr = marker;
+    blockAddr += sizeof(uint64_t);
+    *(uint64_t*) blockAddr = userSize;
+    blockAddr += sizeof(uint64_t);
+    *(uint64_t*) (blockAddr + userSize) = marker;
+    return blockAddr;
+}
+
+uint8_t* Allocator::checkUserBlock(uint8_t* userAddr, uint64_t userSize, uint64_t marker)
+{
+    userAddr -= 2 * sizeof(uint64_t);
+    auto blockAddr = userAddr;
+    SWAG_ASSERT(*(uint64_t*) userAddr == marker);
+    userAddr += sizeof(uint64_t);
+    SWAG_ASSERT(*(uint64_t*) userAddr == userSize);
+    userAddr += sizeof(uint64_t);
+    SWAG_ASSERT(*(uint64_t*) (userAddr + userSize) == marker);
+    return blockAddr;
 }
 #endif
