@@ -24,8 +24,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, c
     if (cmds.size() > 3)
         return BcDbgCommandResult::BadArguments;
 
-    auto           filter = cmds.size() == 3 ? cmds[2] : Utf8("");
-    Vector<string> all;
+    auto         filter = cmds.size() == 3 ? cmds[2] : Utf8("");
+    Vector<Utf8> all;
     g_Log.setColor(LogColor::Gray);
 
     uint32_t total = 0;
@@ -36,8 +36,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, c
             total++;
             if (filter.empty() || getByteCodeName(bc).find(filter) != -1 || getByteCodeFileName(bc).find(filter) != -1)
             {
-                string str = Fmt("%s%s%s ", COLOR_NAME, getByteCodeName(bc).c_str(), COLOR_DEFAULT).c_str();
-                auto   loc = ByteCode::getLocation(bc, bc->out);
+                Utf8 str = Fmt("%s%s%s ", COLOR_NAME, getByteCodeName(bc).c_str(), COLOR_DEFAULT).c_str();
+                auto loc = ByteCode::getLocation(bc, bc->out);
                 str += Fmt(" (%s%s%s) ", COLOR_TYPE, bc->getCallType()->getDisplayNameC(), COLOR_DEFAULT);
                 if (loc.file)
                     str += Fmt("%s", loc.file->name.c_str());
@@ -54,7 +54,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, c
         return BcDbgCommandResult::Continue;
     }
 
-    sort(all.begin(), all.end(), [](const string& a, const string& b)
+    sort(all.begin(), all.end(), [](const Utf8& a, const Utf8& b)
          { return a < b; });
     for (auto& o : all)
     {

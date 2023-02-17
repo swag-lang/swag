@@ -492,7 +492,7 @@ namespace OS
         return IsDebuggerPresent() ? true : false;
     }
 
-    string captureStack()
+    Utf8 captureStack()
     {
         const int SYM_LEN_NAME = 128;
         char      sym[sizeof(SYMBOL_INFO) + SYM_LEN_NAME * sizeof(CHAR)];
@@ -505,9 +505,9 @@ namespace OS
         IMAGEHLP_LINE64 line;
         line.SizeOfStruct = sizeof(IMAGEHLP_LINE64);
 
-        string str;
-        void*  where[100];
-        auto   nb = RtlCaptureStackBackTrace(2, sizeof(where) / sizeof(void*), where, nullptr);
+        Utf8  str;
+        void* where[100];
+        auto  nb = RtlCaptureStackBackTrace(2, sizeof(where) / sizeof(void*), where, nullptr);
         if (SymInitialize(GetCurrentProcess(), nullptr, TRUE))
         {
             for (int i = 0; i < nb; i++)

@@ -112,7 +112,7 @@ struct Tokenizer
     void setup(ErrorContext* errorCxt, SourceFile* file);
     bool nextToken(TokenParse& token);
 
-    static string tokenToName(TokenId id);
+    static Utf8 tokenToName(TokenId id);
 
     // clang-format off
     static bool isSymbol(TokenId id)            { return g_TokenFlags[(int) id] & TOKEN_SYM; }

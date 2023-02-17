@@ -123,7 +123,7 @@ void Tokenizer::eatChar(uint32_t c, unsigned offset)
     curBuffer += offset;
 }
 
-string Tokenizer::tokenToName(TokenId id)
+Utf8 Tokenizer::tokenToName(TokenId id)
 {
     switch (id)
     {

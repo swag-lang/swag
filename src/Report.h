@@ -20,8 +20,8 @@ namespace Report
     bool internalError(Module* module, const char* msg);
 }; // namespace Report
 
-extern thread_local int    g_SilentError;
-extern thread_local string g_SilentErrorMsg;
+extern thread_local int  g_SilentError;
+extern thread_local Utf8 g_SilentErrorMsg;
 
 struct PushSilentError
 {

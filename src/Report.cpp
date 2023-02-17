@@ -9,8 +9,8 @@
 #include "SaveGenJob.h"
 #include "Report.h"
 
-thread_local int    g_SilentError = 0;
-thread_local string g_SilentErrorMsg;
+thread_local int  g_SilentError = 0;
+thread_local Utf8 g_SilentErrorMsg;
 
 static bool fuzzySameLine(uint32_t line1, uint32_t line2)
 {

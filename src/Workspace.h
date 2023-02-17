@@ -78,7 +78,7 @@ struct Workspace
     void cleanPublic(const Path& basePath);
     void cleanScript(bool all);
     void cleanCommand();
-    void newModule(string moduleName);
+    void newModule(const Utf8& moduleName);
     void newCommand();
     void scriptCommand();
 

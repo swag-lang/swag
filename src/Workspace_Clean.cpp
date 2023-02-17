@@ -73,7 +73,7 @@ void Workspace::cleanScript(bool all)
     if (!filesystem::exists(cacheFolder))
         return;
 
-    string pathToClean;
+    Utf8 pathToClean;
     if (all)
         pathToClean = SWAG_SCRIPT_WORKSPACE;
     else

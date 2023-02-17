@@ -35,13 +35,13 @@ void newScriptFile()
     g_Log.messageInfo(Fmt("=> type 'swag script -f:%s' to run that script", g_CommandLine.scriptName.c_str()));
 }
 
-void Workspace::newModule(string moduleName)
+void Workspace::newModule(const Utf8& moduleName)
 {
     error_code errorCode;
 
     // Create one module folder
     auto modulePath = g_CommandLine.test ? testsPath : modulesPath;
-    modulePath.append(moduleName);
+    modulePath.append(moduleName.c_str());
 
     if (filesystem::exists(modulePath))
     {
@@ -144,7 +144,7 @@ void Workspace::newCommand()
 
     // Create workspace
     error_code errorCode;
-    string     moduleName;
+    Utf8       moduleName;
     if (g_CommandLine.moduleName.empty())
     {
         if (filesystem::exists(workspacePath))

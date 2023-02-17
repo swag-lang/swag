@@ -30,14 +30,14 @@ namespace OS
     void                 setup();
     const BackendTarget& getNativeTarget();
 
-    bool   doProcess(Module* module, const Utf8& cmdline, const string& currentDirectory, uint32_t& numErrors);
-    void   setThreadName(thread* thread, const char* threadName);
-    void   exit(int code);
-    void*  loadLibrary(const char* name);
-    void*  getProcAddress(void* handle, const char* name);
-    bool   isDebuggerAttached();
-    void   raiseException(int code, const char* msg = nullptr);
-    string captureStack();
+    bool  doProcess(Module* module, const Utf8& cmdline, const string& currentDirectory, uint32_t& numErrors);
+    void  setThreadName(thread* thread, const char* threadName);
+    void  exit(int code);
+    void* loadLibrary(const char* name);
+    void* getProcAddress(void* handle, const char* name);
+    bool  isDebuggerAttached();
+    void  raiseException(int code, const char* msg = nullptr);
+    Utf8  captureStack();
 
     Utf8 getClipboardString();
     Key  promptChar(int& c, bool& ctrl, bool& shift);

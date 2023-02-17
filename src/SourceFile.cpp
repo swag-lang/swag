@@ -119,7 +119,7 @@ Utf8 SourceFile::getLine(long lineNo, bool* eof)
         if (isExternal && !fileForSourceLocation)
         {
             const char* pz = (const char*) buffer;
-            string      line;
+            Utf8        line;
             while (*pz)
             {
                 while (*pz && *pz != '\n')
