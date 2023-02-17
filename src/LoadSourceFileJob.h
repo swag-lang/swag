@@ -12,7 +12,7 @@ struct LoadSourceFileJob : public Job
 
     void release() override
     {
-        g_Allocator.free<LoadSourceFileJob>(this);
+        Allocator::free<LoadSourceFileJob>(this);
     }
 
     JobResult execute() override;

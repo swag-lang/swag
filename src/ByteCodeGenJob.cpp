@@ -299,9 +299,9 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
         }
 
         bc->maxInstructions = max(bc->maxInstructions, 8);
-        auto newInstuctions = (ByteCodeInstruction*) g_Allocator.alloc(bc->maxInstructions * sizeof(ByteCodeInstruction));
+        auto newInstuctions = (ByteCodeInstruction*) Allocator::alloc(bc->maxInstructions * sizeof(ByteCodeInstruction));
         memcpy(newInstuctions, bc->out, bc->numInstructions * sizeof(ByteCodeInstruction));
-        g_Allocator.free(bc->out, oldSize);
+        Allocator::free(bc->out, oldSize);
         if (g_CommandLine.stats)
         {
             g_Stats.memInstructions -= oldSize;
@@ -426,7 +426,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags, Byt
         auto extension = node->extension->bytecode;
         if (!extension->byteCodeJob)
         {
-            extension->byteCodeJob             = g_Allocator.alloc<ByteCodeGenJob>();
+            extension->byteCodeJob             = Allocator::alloc<ByteCodeGenJob>();
             extension->byteCodeJob->sourceFile = sourceFile;
             extension->byteCodeJob->module     = sourceFile->module;
             if (flags & ASKBC_WAIT_DONE)
@@ -437,7 +437,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags, Byt
             extension->byteCodeJob->nodes.push_back(node);
             if (!extension->bc)
             {
-                extension->bc             = g_Allocator.alloc<ByteCode>();
+                extension->bc             = Allocator::alloc<ByteCode>();
                 extension->bc->node       = node;
                 extension->bc->sourceFile = node->sourceFile;
             }

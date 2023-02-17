@@ -51,7 +51,7 @@ bool Module::prepareCompilerMessages(JobContext* context, uint32_t pass)
     int startIndex = 0;
     while (startIndex < compilerMessages[pass].size())
     {
-        auto newJob          = g_Allocator.alloc<PrepCompilerMsgJob>();
+        auto newJob          = Allocator::alloc<PrepCompilerMsgJob>();
         newJob->module       = this;
         newJob->pass         = pass;
         newJob->startIndex   = startIndex;

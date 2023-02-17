@@ -9,7 +9,7 @@ struct ByteCodeOptimizerJob : public Job
 
     void release() override
     {
-        g_Allocator.free<ByteCodeOptimizerJob>(this);
+        Allocator::free<ByteCodeOptimizerJob>(this);
     }
 
     ByteCodeOptContext optContext;

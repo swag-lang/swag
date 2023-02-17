@@ -240,7 +240,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
             if (!child->extension || !child->extension->bytecode || !child->extension->bytecode->bc)
             {
                 child->allocateExtensionNoLock(ExtensionKind::ByteCode);
-                child->extension->bytecode->bc             = g_Allocator.alloc<ByteCode>();
+                child->extension->bytecode->bc             = Allocator::alloc<ByteCode>();
                 child->extension->bytecode->bc->node       = child;
                 child->extension->bytecode->bc->sourceFile = child->sourceFile;
             }
@@ -1294,7 +1294,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         SWAG_ASSERT(!node->extension || !node->extension->bytecode || !node->extension->bytecode->byteCodeJob);
         node->allocateExtension(ExtensionKind::ByteCode);
         auto extension                       = node->extension->bytecode;
-        extension->byteCodeJob               = g_Allocator.alloc<ByteCodeGenJob>();
+        extension->byteCodeJob               = Allocator::alloc<ByteCodeGenJob>();
         extension->byteCodeJob->sourceFile   = sourceFile;
         extension->byteCodeJob->module       = sourceFile->module;
         extension->byteCodeJob->dependentJob = context->job->dependentJob;

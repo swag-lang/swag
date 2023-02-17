@@ -510,7 +510,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
 
             for (auto dep : oldModule->moduleDependencies)
             {
-                ModuleDependency* newDep = g_Allocator.alloc<ModuleDependency>();
+                ModuleDependency* newDep = Allocator::alloc<ModuleDependency>();
                 *newDep                  = *dep;
                 newDep->importDone       = false;
                 newModule->moduleDependencies.push_back(newDep);

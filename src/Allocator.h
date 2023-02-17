@@ -10,38 +10,19 @@ struct AllocatorBlock
     size_t   allocated = 0;
 };
 
-struct AllocatorImpl
+struct Allocator
 {
-    AllocatorImpl();
-
-    void  free(void*, size_t size);
     void  allocateNewBlock(size_t size);
     void* bigAlloc(size_t size);
-    void* alloc(size_t size);
+    void* allocBlock(size_t size);
+    void  freeBlock(void*, size_t size);
 
     void* useRealBucket(uint32_t bucket, size_t size);
     void* useBucket(uint32_t bucket, size_t size);
     void* tryFreeBlock(uint32_t maxCount, size_t size);
 
-    typedef struct FreeBlock
-    {
-        FreeBlock* next;
-        size_t     size;
-    } FreeBlock;
-
-    FreeBlock*      firstFreeBlock = nullptr;
-    AllocatorBlock* lastBlock      = nullptr;
-    uint8_t*        currentData    = nullptr;
-    void*           freeBuckets[MAX_FREE_BUCKETS];
-    uint64_t        freeBucketsMask = 0;
-};
-
-struct Allocator
-{
-    Allocator();
-
     template<typename T>
-    T* alloc()
+    static T* alloc()
     {
         auto size       = alignSize(sizeof(T));
         auto returnData = alloc(size);
@@ -50,14 +31,15 @@ struct Allocator
     }
 
     template<typename T>
-    void free(void* ptr)
+    static void free(void* ptr)
     {
         ((T*) ptr)->~T();
         free(ptr, alignSize(sizeof(T)));
     }
 
-    void  free(void*, size_t size);
-    void* alloc(size_t size);
+    static void  allocAllocator();
+    static void  free(void*, size_t size);
+    static void* alloc(size_t size);
 
     // clang-format off
     static size_t alignSize(size_t size) { return ((size + 7) & ~7); }
@@ -68,13 +50,22 @@ struct Allocator
     static uint8_t* checkUserBlock(uint8_t* userAddr, uint64_t userSize, uint64_t marker);
 #endif
 
-    AllocatorImpl* impl = nullptr;
-    AllocatorImpl  _impl;
-    bool           shared = false;
+    typedef struct FreeBlock
+    {
+        FreeBlock* next;
+        size_t     size;
+    } FreeBlock;
+
+    FreeBlock*      firstFreeBlock                = nullptr;
+    AllocatorBlock* lastBlock                     = nullptr;
+    uint8_t*        currentData                   = nullptr;
+    void*           freeBuckets[MAX_FREE_BUCKETS] = {0};
+    uint64_t        freeBucketsMask               = 0;
+    bool            shared                        = false;
 };
 
 extern atomic<int>            g_CompilerAllocTh;
-extern thread_local Allocator g_Allocator;
+extern thread_local Allocator *g_Allocator;
 
 template<typename T>
 struct StdAllocator
@@ -89,11 +80,11 @@ struct StdAllocator
 
     T* allocate(size_t n, const T* hint = 0)
     {
-        return (T*) g_Allocator.alloc(Allocator::alignSize(n));
+        return (T*) Allocator::alloc(Allocator::alignSize(n));
     }
 
     void deallocate(T* p, size_t n)
     {
-        g_Allocator.free(p, Allocator::alignSize(n));
+        Allocator::free(p, Allocator::alignSize(n));
     }
 };

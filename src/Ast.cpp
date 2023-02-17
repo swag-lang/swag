@@ -357,7 +357,7 @@ namespace Ast
         if (parentScope)
             return parentScope->getOrAddChild(owner, name, kind, matchName);
 
-        auto newScope         = g_Allocator.alloc<Scope>();
+        auto newScope         = Allocator::alloc<Scope>();
         newScope->kind        = kind;
         newScope->parentScope = parentScope;
         newScope->owner       = owner;

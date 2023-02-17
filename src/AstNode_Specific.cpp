@@ -112,7 +112,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
 
     if (from->computedValue)
     {
-        computedValue  = g_Allocator.alloc<ComputedValue>();
+        computedValue  = Allocator::alloc<ComputedValue>();
         *computedValue = *from->computedValue;
 
         // Update typeinfo pointer if it has changed
@@ -188,173 +188,173 @@ void AstNode::release()
     case AstNodeKind::VarDecl:
     case AstNodeKind::ConstDecl:
     case AstNodeKind::FuncDeclParam:
-        g_Allocator.free<AstVarDecl>(this);
+        Allocator::free<AstVarDecl>(this);
         break;
     case AstNodeKind::IdentifierRef:
-        g_Allocator.free<AstIdentifierRef>(this);
+        Allocator::free<AstIdentifierRef>(this);
         break;
     case AstNodeKind::Identifier:
     case AstNodeKind::FuncCall:
-        g_Allocator.free<AstIdentifier>(this);
+        Allocator::free<AstIdentifier>(this);
         break;
     case AstNodeKind::FuncDecl:
-        g_Allocator.free<AstFuncDecl>(this);
+        Allocator::free<AstFuncDecl>(this);
         break;
     case AstNodeKind::AttrDecl:
-        g_Allocator.free<AstAttrDecl>(this);
+        Allocator::free<AstAttrDecl>(this);
         break;
     case AstNodeKind::AttrUse:
-        g_Allocator.free<AstAttrUse>(this);
+        Allocator::free<AstAttrUse>(this);
         break;
     case AstNodeKind::FuncCallParam:
-        g_Allocator.free<AstFuncCallParam>(this);
+        Allocator::free<AstFuncCallParam>(this);
         break;
     case AstNodeKind::BinaryOp:
-        g_Allocator.free<AstBinaryOpNode>(this);
+        Allocator::free<AstBinaryOpNode>(this);
         break;
     case AstNodeKind::ConditionalExpression:
-        g_Allocator.free<AstConditionalOpNode>(this);
+        Allocator::free<AstConditionalOpNode>(this);
         break;
     case AstNodeKind::If:
     case AstNodeKind::CompilerIf:
-        g_Allocator.free<AstIf>(this);
+        Allocator::free<AstIf>(this);
         break;
     case AstNodeKind::SubstBreakContinue:
-        g_Allocator.free<AstSubstBreakContinue>(this);
+        Allocator::free<AstSubstBreakContinue>(this);
         break;
     case AstNodeKind::Break:
     case AstNodeKind::Continue:
     case AstNodeKind::FallThrough:
-        g_Allocator.free<AstBreakContinue>(this);
+        Allocator::free<AstBreakContinue>(this);
         break;
     case AstNodeKind::ScopeBreakable:
-        g_Allocator.free<AstScopeBreakable>(this);
+        Allocator::free<AstScopeBreakable>(this);
         break;
     case AstNodeKind::While:
-        g_Allocator.free<AstWhile>(this);
+        Allocator::free<AstWhile>(this);
         break;
     case AstNodeKind::For:
-        g_Allocator.free<AstFor>(this);
+        Allocator::free<AstFor>(this);
         break;
     case AstNodeKind::Loop:
-        g_Allocator.free<AstLoop>(this);
+        Allocator::free<AstLoop>(this);
         break;
     case AstNodeKind::Visit:
-        g_Allocator.free<AstVisit>(this);
+        Allocator::free<AstVisit>(this);
         break;
     case AstNodeKind::Switch:
-        g_Allocator.free<AstSwitch>(this);
+        Allocator::free<AstSwitch>(this);
         break;
     case AstNodeKind::SwitchCase:
-        g_Allocator.free<AstSwitchCase>(this);
+        Allocator::free<AstSwitchCase>(this);
         break;
     case AstNodeKind::SwitchCaseBlock:
-        g_Allocator.free<AstSwitchCaseBlock>(this);
+        Allocator::free<AstSwitchCaseBlock>(this);
         break;
     case AstNodeKind::TypeExpression:
-        g_Allocator.free<AstTypeExpression>(this);
+        Allocator::free<AstTypeExpression>(this);
         break;
     case AstNodeKind::TypeLambda:
     case AstNodeKind::TypeClosure:
-        g_Allocator.free<AstTypeLambda>(this);
+        Allocator::free<AstTypeLambda>(this);
         break;
     case AstNodeKind::ArrayPointerSlicing:
-        g_Allocator.free<AstArrayPointerSlicing>(this);
+        Allocator::free<AstArrayPointerSlicing>(this);
         break;
     case AstNodeKind::ArrayPointerIndex:
-        g_Allocator.free<AstArrayPointerIndex>(this);
+        Allocator::free<AstArrayPointerIndex>(this);
         break;
     case AstNodeKind::StructDecl:
     case AstNodeKind::InterfaceDecl:
-        g_Allocator.free<AstStruct>(this);
+        Allocator::free<AstStruct>(this);
         break;
     case AstNodeKind::Impl:
-        g_Allocator.free<AstImpl>(this);
+        Allocator::free<AstImpl>(this);
         break;
     case AstNodeKind::EnumDecl:
-        g_Allocator.free<AstEnum>(this);
+        Allocator::free<AstEnum>(this);
         break;
     case AstNodeKind::EnumValue:
-        g_Allocator.free<AstEnumValue>(this);
+        Allocator::free<AstEnumValue>(this);
         break;
     case AstNodeKind::Init:
-        g_Allocator.free<AstInit>(this);
+        Allocator::free<AstInit>(this);
         break;
     case AstNodeKind::Drop:
     case AstNodeKind::PostCopy:
     case AstNodeKind::PostMove:
-        g_Allocator.free<AstDropCopyMove>(this);
+        Allocator::free<AstDropCopyMove>(this);
         break;
     case AstNodeKind::Return:
-        g_Allocator.free<AstReturn>(this);
+        Allocator::free<AstReturn>(this);
         break;
     case AstNodeKind::CompilerInline:
-        g_Allocator.free<AstCompilerInline>(this);
+        Allocator::free<AstCompilerInline>(this);
         break;
     case AstNodeKind::CompilerMacro:
-        g_Allocator.free<AstCompilerMacro>(this);
+        Allocator::free<AstCompilerMacro>(this);
         break;
     case AstNodeKind::CompilerMixin:
-        g_Allocator.free<AstCompilerMixin>(this);
+        Allocator::free<AstCompilerMixin>(this);
         break;
     case AstNodeKind::Inline:
-        g_Allocator.free<AstInline>(this);
+        Allocator::free<AstInline>(this);
         break;
     case AstNodeKind::CompilerIfBlock:
-        g_Allocator.free<AstCompilerIfBlock>(this);
+        Allocator::free<AstCompilerIfBlock>(this);
         break;
     case AstNodeKind::CompilerRun:
     case AstNodeKind::CompilerRunExpression:
     case AstNodeKind::CompilerValidIf:
     case AstNodeKind::CompilerValidIfx:
     case AstNodeKind::CompilerAst:
-        g_Allocator.free<AstCompilerSpecFunc>(this);
+        Allocator::free<AstCompilerSpecFunc>(this);
         break;
     case AstNodeKind::Namespace:
-        g_Allocator.free<AstNameSpace>(this);
+        Allocator::free<AstNameSpace>(this);
         break;
     case AstNodeKind::Try:
     case AstNodeKind::Catch:
     case AstNodeKind::TryCatch:
     case AstNodeKind::Assume:
     case AstNodeKind::Throw:
-        g_Allocator.free<AstTryCatchAssume>(this);
+        Allocator::free<AstTryCatchAssume>(this);
         break;
     case AstNodeKind::Alias:
-        g_Allocator.free<AstAlias>(this);
+        Allocator::free<AstAlias>(this);
         break;
     case AstNodeKind::Cast:
     case AstNodeKind::AutoCast:
-        g_Allocator.free<AstCast>(this);
+        Allocator::free<AstCast>(this);
         break;
     case AstNodeKind::FuncCallParams:
-        g_Allocator.free<AstFuncCallParams>(this);
+        Allocator::free<AstFuncCallParams>(this);
         break;
     case AstNodeKind::Range:
-        g_Allocator.free<AstRange>(this);
+        Allocator::free<AstRange>(this);
         break;
     case AstNodeKind::MakePointer:
     case AstNodeKind::MakePointerLambda:
-        g_Allocator.free<AstMakePointer>(this);
+        Allocator::free<AstMakePointer>(this);
         break;
     case AstNodeKind::AffectOp:
     case AstNodeKind::FactorOp:
-        g_Allocator.free<AstOp>(this);
+        Allocator::free<AstOp>(this);
         break;
     case AstNodeKind::Defer:
-        g_Allocator.free<AstDefer>(this);
+        Allocator::free<AstDefer>(this);
         break;
     case AstNodeKind::ExpressionList:
-        g_Allocator.free<AstExpressionList>(this);
+        Allocator::free<AstExpressionList>(this);
         break;
     case AstNodeKind::With:
-        g_Allocator.free<AstWith>(this);
+        Allocator::free<AstWith>(this);
         break;
     case AstNodeKind::Literal:
-        g_Allocator.free<AstLiteral>(this);
+        Allocator::free<AstLiteral>(this);
         break;
     default:
-        g_Allocator.free<AstNode>(this);
+        Allocator::free<AstNode>(this);
         break;
     }
 }
@@ -561,7 +561,7 @@ void AstIdentifier::allocateIdentifierExtension()
 {
     if (identifierExtension)
         return;
-    identifierExtension = g_Allocator.alloc<AstIdentifierExtension>();
+    identifierExtension = Allocator::alloc<AstIdentifierExtension>();
 }
 
 AstNode* AstIdentifier::clone(CloneContext& context)

@@ -404,7 +404,7 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
         int startIndex = 0;
         while (startIndex < module->byteCodeFunc.size())
         {
-            auto newJob          = g_Allocator.alloc<ByteCodeOptimizerJob>();
+            auto newJob          = Allocator::alloc<ByteCodeOptimizerJob>();
             newJob->module       = module;
             newJob->dependentJob = job;
             newJob->startIndex   = startIndex;

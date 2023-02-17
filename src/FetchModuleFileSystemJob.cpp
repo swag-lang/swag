@@ -89,7 +89,7 @@ JobResult FetchModuleFileSystemJob::execute()
             return JobResult::ReleaseJob;
         }
 
-        auto job        = g_Allocator.alloc<CopyFileJob>();
+        auto job        = Allocator::alloc<CopyFileJob>();
         job->module     = module;
         job->sourcePath = srcFileName.string();
         job->destPath   = destFileName.string();

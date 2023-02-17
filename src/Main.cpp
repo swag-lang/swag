@@ -75,7 +75,7 @@ int main(int argc, const char* argv[])
     if (g_CommandLine.verboseCmdLine)
         g_Log.messageVerbose(cmdParser.buildString(true));
 
-    g_Workspace = g_Allocator.alloc<Workspace>();
+    g_Workspace = Allocator::alloc<Workspace>();
 
     // Deal with the main command
     if (command == "build")

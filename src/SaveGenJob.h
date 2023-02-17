@@ -12,7 +12,7 @@ struct SaveGenJob : public Job
 
     void release() override
     {
-        g_Allocator.free<SaveGenJob>(this);
+        Allocator::free<SaveGenJob>(this);
     }
 
     static bool flush(Module* module);

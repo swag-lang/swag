@@ -566,7 +566,7 @@ bool SemanticJob::resolveIntrinsicSpread(SemanticContext* context)
 
         SWAG_CHECK(TypeManager::makeCompatibles(context, typeArr, typeList, nullptr, expr));
 
-        g_Allocator.free(typeArr, sizeof(TypeInfoArray));
+        Allocator::free(typeArr, sizeof(TypeInfoArray));
     }
     else
     {

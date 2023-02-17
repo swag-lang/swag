@@ -14,7 +14,7 @@
 
 SourceFile* EnumerateModuleJob::addFileToModule(Module* theModule, Vector<SourceFile*>& allFiles, string dirName, string fileName, uint64_t writeTime, SourceFile* prePass, Module* imported)
 {
-    auto file       = g_Allocator.alloc<SourceFile>();
+    auto file       = Allocator::alloc<SourceFile>();
     file->fromTests = theModule->kind == ModuleKind::Test;
     file->name      = fileName;
     file->imported  = imported;
@@ -50,7 +50,7 @@ SourceFile* EnumerateModuleJob::addFileToModule(Module* theModule, Vector<Source
         // If we do not have to rebuild a module, we will do some syntax jobs anyway, but this is fine as
         // they are done during "idle" time.
         theModule->addFile(file);
-        auto syntaxJob        = g_Allocator.alloc<SyntaxJob>();
+        auto syntaxJob        = Allocator::alloc<SyntaxJob>();
         syntaxJob->sourceFile = file;
         syntaxJob->module     = theModule;
         syntaxJob->flags |= JOB_IS_OPT;
@@ -217,7 +217,7 @@ void EnumerateModuleJob::loadFilesInModules(const fs::path& basePath)
                          path += SWAG_SRC_FOLDER;
                          path += "/";
 
-                         auto module                                 = g_Allocator.alloc<Module>();
+                         auto module                                 = Allocator::alloc<Module>();
                          g_Workspace->mapFirstPassModulesNames[path] = module;
 
                          // Scan source folder
@@ -240,7 +240,7 @@ void EnumerateModuleJob::loadFilesInModules(const fs::path& basePath)
                                                        }
                                                        else
                                                        {
-                                                           auto file         = g_Allocator.alloc<SourceFile>();
+                                                           auto file         = Allocator::alloc<SourceFile>();
                                                            file->module      = module;
                                                            file->name        = cFileName;
                                                            fs::path pathFile = tmp.c_str();
@@ -252,7 +252,7 @@ void EnumerateModuleJob::loadFilesInModules(const fs::path& basePath)
                                                            auto pz = strrchr(cFileName, '.');
                                                            if (pz && !_strcmpi(pz, ".swg"))
                                                            {
-                                                               auto readFileJob        = g_Allocator.alloc<LoadSourceFileJob>();
+                                                               auto readFileJob        = Allocator::alloc<LoadSourceFileJob>();
                                                                readFileJob->flags      = JOB_IS_OPT;
                                                                readFileJob->sourceFile = file;
                                                                g_ThreadMgr.addJob(readFileJob);
@@ -335,7 +335,7 @@ JobResult EnumerateModuleJob::execute()
 
         // If we are in script mode, then we add one single module with the script file
         auto parentFolder          = fs::path(g_CommandLine.scriptName.c_str()).parent_path().string();
-        auto file                  = g_Allocator.alloc<SourceFile>();
+        auto file                  = Allocator::alloc<SourceFile>();
         file->name                 = fs::path(g_CommandLine.scriptName).filename().replace_extension().string();
         auto scriptModule          = g_Workspace->createOrUseModule(file->name, parentFolder, ModuleKind::Script);
         file->path                 = g_CommandLine.scriptName;

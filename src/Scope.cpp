@@ -93,7 +93,7 @@ void Scope::collectScopeFromToExcluded(Scope* src, Scope* to, VectorNative<Scope
 void Scope::allocPublicSet()
 {
     if (!publicSet)
-        publicSet = g_Allocator.alloc<ScopePublicSet>();
+        publicSet = Allocator::alloc<ScopePublicSet>();
 
     auto pscope = this;
     while (pscope && !(pscope->flags & SCOPE_FLAG_HAS_EXPORTS))
@@ -183,7 +183,7 @@ Scope* Scope::getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind
         }
     }
 
-    auto newScope         = g_Allocator.alloc<Scope>();
+    auto newScope         = Allocator::alloc<Scope>();
     newScope->kind        = scopeKind;
     newScope->parentScope = this;
     SWAG_ASSERT(nodeOwner);

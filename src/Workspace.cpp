@@ -167,7 +167,7 @@ void Workspace::setupUserTags()
 
 void Workspace::setup()
 {
-    g_TypeMgr = g_Allocator.alloc<TypeManager>();
+    g_TypeMgr = Allocator::alloc<TypeManager>();
     g_TypeMgr->setup();
 
     setupPaths();

@@ -196,7 +196,7 @@ bool SemanticJob::error(SemanticContext* context, const Utf8& msg)
 
 SemanticJob* SemanticJob::newJob(Job* dependentJob, SourceFile* sourceFile, AstNode* rootNode, bool run)
 {
-    auto job          = g_Allocator.alloc<SemanticJob>();
+    auto job          = Allocator::alloc<SemanticJob>();
     job->sourceFile   = sourceFile;
     job->module       = sourceFile->module;
     job->dependentJob = dependentJob;
@@ -325,7 +325,7 @@ JobResult SemanticJob::execute()
                     // in registerFuncSymbol by another thread
                     if (!(node->flags & AST_NO_SEMANTIC) && !(node->doneFlags & AST_DONE_FILE_JOB_PASS))
                     {
-                        auto job          = g_Allocator.alloc<SemanticJob>();
+                        auto job          = Allocator::alloc<SemanticJob>();
                         job->sourceFile   = sourceFile;
                         job->module       = module;
                         job->dependentJob = dependentJob;
@@ -344,7 +344,7 @@ JobResult SemanticJob::execute()
                         break;
                     if (canDoSem)
                     {
-                        auto job          = g_Allocator.alloc<SemanticJob>();
+                        auto job          = Allocator::alloc<SemanticJob>();
                         job->sourceFile   = sourceFile;
                         job->module       = module;
                         job->dependentJob = dependentJob;
@@ -369,7 +369,7 @@ JobResult SemanticJob::execute()
                 case AstNodeKind::Impl:
                     if (canDoSem)
                     {
-                        auto job          = g_Allocator.alloc<SemanticJob>();
+                        auto job          = Allocator::alloc<SemanticJob>();
                         job->sourceFile   = sourceFile;
                         job->module       = module;
                         job->dependentJob = dependentJob;

@@ -272,7 +272,7 @@ static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParamet
                 SWAG_ASSERT(symbolArray->sizeNode);
                 SWAG_ASSERT(symbolArray->sizeNode->resolvedSymbolName);
 
-                ComputedValue* cv = g_Allocator.alloc<ComputedValue>();
+                ComputedValue* cv = Allocator::alloc<ComputedValue>();
                 cv->reg.s64       = count;
 
                 // Constant already defined ?
@@ -291,7 +291,7 @@ static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParamet
                     }
                     else
                     {
-                        g_Allocator.free<ComputedValue>(cv);
+                        Allocator::free<ComputedValue>(cv);
                         context.genericReplaceTypes[it1->second.second->name] = it1->second.second;
                     }
                 }

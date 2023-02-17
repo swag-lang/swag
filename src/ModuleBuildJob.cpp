@@ -58,7 +58,7 @@ void ModuleBuildJob::publishFilesToPublic(Module* moduleToPublish)
     // Add all #public files
     for (auto one : moduleToPublish->exportSourceFiles)
     {
-        auto job          = g_Allocator.alloc<CopyFileJob>();
+        auto job          = Allocator::alloc<CopyFileJob>();
         job->module       = module;
         job->sourcePath   = one->path;
         job->destPath     = publicPath + "/" + one->name;
@@ -79,7 +79,7 @@ void ModuleBuildJob::publishFilesToTarget(Module* moduleToPublish)
     OS::visitFiles(publishPath.c_str(),
                    [&](const char* cFileName)
                    {
-                       auto job          = g_Allocator.alloc<CopyFileJob>();
+                       auto job          = Allocator::alloc<CopyFileJob>();
                        job->module       = module;
                        job->sourcePath   = publishPath + "/" + cFileName;
                        job->destPath     = g_Workspace->targetPath.string() + "/" + cFileName;
@@ -98,7 +98,7 @@ void ModuleBuildJob::publishFilesToTarget(Module* moduleToPublish)
         OS::visitFiles(osArchPath.c_str(),
                        [&](const char* cFileName)
                        {
-                           auto job          = g_Allocator.alloc<CopyFileJob>();
+                           auto job          = Allocator::alloc<CopyFileJob>();
                            job->module       = module;
                            job->sourcePath   = osArchPath + "/" + cFileName;
                            job->destPath     = g_Workspace->targetPath.string() + "/" + cFileName;
@@ -160,7 +160,7 @@ bool ModuleBuildJob::loadDependency(Module* depModule)
                            auto pz = strrchr(filename, '.');
                            if (pz && !_strcmpi(pz, ".swg"))
                            {
-                               auto file  = g_Allocator.alloc<SourceFile>();
+                               auto file  = Allocator::alloc<SourceFile>();
                                file->name = filename;
                                file->path = publicPath + "/";
                                file->path += filename;
@@ -176,7 +176,7 @@ bool ModuleBuildJob::loadDependency(Module* depModule)
     {
         module->addFile(one);
 
-        auto syntaxJob          = g_Allocator.alloc<SyntaxJob>();
+        auto syntaxJob          = Allocator::alloc<SyntaxJob>();
         syntaxJob->sourceFile   = one;
         syntaxJob->module       = module;
         syntaxJob->dependentJob = this;
@@ -337,7 +337,7 @@ JobResult ModuleBuildJob::execute()
             {
                 for (auto file : module->files)
                 {
-                    auto syntaxJob          = g_Allocator.alloc<SyntaxJob>();
+                    auto syntaxJob          = Allocator::alloc<SyntaxJob>();
                     syntaxJob->sourceFile   = file;
                     syntaxJob->module       = module;
                     syntaxJob->dependentJob = this;
@@ -367,7 +367,7 @@ JobResult ModuleBuildJob::execute()
         {
             for (auto errorMd : module->errorModules)
             {
-                auto job       = g_Allocator.alloc<ModuleBuildJob>();
+                auto job       = Allocator::alloc<ModuleBuildJob>();
                 job->module    = errorMd;
                 job->fromError = true;
                 errorMd->inheritCfgFrom(module);
@@ -419,7 +419,7 @@ JobResult ModuleBuildJob::execute()
         pass = ModuleBuildPass::BeforeCompilerMessagesPass0;
         flags |= JOB_PENDING_PLACE_HOLDER; // We can now be relaunched if necessary
 
-        auto semanticJob          = g_Allocator.alloc<ModuleSemanticJob>();
+        auto semanticJob          = Allocator::alloc<ModuleSemanticJob>();
         semanticJob->module       = module;
         semanticJob->dependentJob = this;
         jobsToAdd.push_back(semanticJob);
@@ -458,7 +458,7 @@ JobResult ModuleBuildJob::execute()
         pass = ModuleBuildPass::BeforeCompilerMessagesPass1;
 
         // This is a dummy job, in case the user code does not trigger new jobs during the message pass
-        auto semanticJob          = g_Allocator.alloc<ModuleSemanticJob>();
+        auto semanticJob          = Allocator::alloc<ModuleSemanticJob>();
         semanticJob->module       = nullptr;
         semanticJob->dependentJob = this;
         jobsToAdd.push_back(semanticJob);
@@ -504,7 +504,7 @@ JobResult ModuleBuildJob::execute()
         module->sendCompilerMessage(CompilerMsgKind::PassAfterSemantic, this);
 
         // This is a dummy job, in case the user code does not trigger new jobs during the message pass
-        auto semanticJob          = g_Allocator.alloc<ModuleSemanticJob>();
+        auto semanticJob          = Allocator::alloc<ModuleSemanticJob>();
         semanticJob->module       = nullptr;
         semanticJob->dependentJob = this;
         jobsToAdd.push_back(semanticJob);
@@ -747,7 +747,7 @@ JobResult ModuleBuildJob::execute()
             if (module->mustOutputSomething())
             {
                 module->sendCompilerMessage(CompilerMsgKind::PassBeforeOutput, this);
-                auto outputJob          = g_Allocator.alloc<ModuleOutputJob>();
+                auto outputJob          = Allocator::alloc<ModuleOutputJob>();
                 outputJob->module       = module;
                 outputJob->dependentJob = this;
                 jobsToAdd.push_back(outputJob);
@@ -771,7 +771,7 @@ JobResult ModuleBuildJob::execute()
         // Run test executable
         if (module->mustGenerateTestExe() && g_CommandLine.runBackendTests)
         {
-            auto job                            = g_Allocator.alloc<ModuleRunJob>();
+            auto job                            = Allocator::alloc<ModuleRunJob>();
             job->module                         = module;
             job->buildParameters                = module->buildParameters;
             job->buildParameters.outputFileName = module->name;
@@ -782,7 +782,7 @@ JobResult ModuleBuildJob::execute()
         // Run command
         if (g_CommandLine.run && module->kind != ModuleKind::Test)
         {
-            auto job                         = g_Allocator.alloc<ModuleRunJob>();
+            auto job                         = Allocator::alloc<ModuleRunJob>();
             job->module                      = module;
             job->buildParameters             = module->buildParameters;
             job->buildParameters.compileType = BackendCompileType::Normal;

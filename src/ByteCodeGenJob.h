@@ -214,7 +214,7 @@ struct ByteCodeGenJob : public Job
 
     void release() override
     {
-        g_Allocator.free<ByteCodeGenJob>(this);
+        Allocator::free<ByteCodeGenJob>(this);
     }
 
     static void askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCode* caller = nullptr);

@@ -11,7 +11,7 @@ struct CopyFileJob : public Job
 
     void release() override
     {
-        g_Allocator.free<CopyFileJob>(this);
+        Allocator::free<CopyFileJob>(this);
     }
 
     JobResult execute() override;

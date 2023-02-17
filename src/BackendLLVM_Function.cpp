@@ -5201,7 +5201,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
 BackendFunctionBodyJobBase* BackendLLVM::newFunctionJob()
 {
-    return g_Allocator.alloc<BackendLLVMFunctionBodyJob>();
+    return Allocator::alloc<BackendLLVMFunctionBodyJob>();
 }
 
 llvm::Value* BackendLLVM::getImmediateConstantA(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits)

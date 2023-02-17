@@ -46,7 +46,7 @@ struct VectorNative
     {
         if (!buffer)
             return;
-        g_Allocator.free(buffer, Allocator::alignSize(allocated * sizeof(T)));
+        Allocator::free(buffer, Allocator::alignSize(allocated * sizeof(T)));
         buffer    = nullptr;
         count     = 0;
         allocated = 0;
@@ -61,12 +61,12 @@ struct VectorNative
         allocated *= 2;
         allocated = max(allocated, 4);
         allocated = max(allocated, newcapacity);
-        T* newPtr = (T*) g_Allocator.alloc(Allocator::alignSize(allocated * sizeof(T)));
+        T* newPtr = (T*) Allocator::alloc(Allocator::alignSize(allocated * sizeof(T)));
         SWAG_ASSERT(newPtr);
         if (copy && count)
             memcpy(newPtr, buffer, count * sizeof(T));
         if (buffer)
-            g_Allocator.free(buffer, Allocator::alignSize(oldAllocated * sizeof(T)));
+            Allocator::free(buffer, Allocator::alignSize(oldAllocated * sizeof(T)));
         buffer = newPtr;
     }
 

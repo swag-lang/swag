@@ -11,7 +11,7 @@
 
 BackendFunctionBodyJobBase* BackendX64::newFunctionJob()
 {
-    return g_Allocator.alloc<BackendX64FunctionBodyJob>();
+    return Allocator::alloc<BackendX64FunctionBodyJob>();
 }
 
 bool BackendX64::emitHeader(const BuildParameters& buildParameters)
@@ -488,7 +488,7 @@ JobResult BackendX64::prepareOutput(int stage, const BuildParameters& buildParam
     if (pp.pass == BackendPreCompilePass::GenerateObj)
     {
         pp.pass           = BackendPreCompilePass::Release;
-        auto job          = g_Allocator.alloc<BackendX64SaveObjJob>();
+        auto job          = Allocator::alloc<BackendX64SaveObjJob>();
         job->module       = module;
         job->dependentJob = ownerJob;
         job->prepJob      = (ModulePrepOutputStage1Job*) ownerJob;

@@ -137,7 +137,7 @@ void AstNode::allocateComputedValue()
 {
     if (!computedValue)
     {
-        computedValue = g_Allocator.alloc<ComputedValue>();
+        computedValue = Allocator::alloc<ComputedValue>();
         if (g_CommandLine.stats)
             g_Stats.memNodesLiteral += sizeof(ComputedValue);
     }
@@ -277,7 +277,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
 {
     if (!extension)
     {
-        extension = g_Allocator.alloc<Extension>();
+        extension = Allocator::alloc<Extension>();
         if (g_CommandLine.stats)
             g_Stats.memNodesExt += Allocator::alignSize(sizeof(Extension));
     }
@@ -287,7 +287,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
     case ExtensionKind::ByteCode:
         if (extension->bytecode)
             return;
-        extension->bytecode = g_Allocator.alloc<ExtensionByteCode>();
+        extension->bytecode = Allocator::alloc<ExtensionByteCode>();
         if (g_CommandLine.stats)
             g_Stats.memNodesExt += Allocator::alignSize(sizeof(ExtensionByteCode));
         break;
@@ -295,7 +295,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
     case ExtensionKind::Semantic:
         if (extension->semantic)
             return;
-        extension->semantic = g_Allocator.alloc<ExtensionSemantic>();
+        extension->semantic = Allocator::alloc<ExtensionSemantic>();
         if (g_CommandLine.stats)
             g_Stats.memNodesExt += Allocator::alignSize(sizeof(ExtensionSemantic));
         break;
@@ -303,7 +303,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
     case ExtensionKind::Owner:
         if (extension->owner)
             return;
-        extension->owner = g_Allocator.alloc<ExtensionOwner>();
+        extension->owner = Allocator::alloc<ExtensionOwner>();
         if (g_CommandLine.stats)
             g_Stats.memNodesExt += Allocator::alignSize(sizeof(ExtensionOwner));
         break;
@@ -311,7 +311,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
     default:
         if (extension->misc)
             return;
-        extension->misc = g_Allocator.alloc<ExtensionMisc>();
+        extension->misc = Allocator::alloc<ExtensionMisc>();
         if (g_CommandLine.stats)
             g_Stats.memNodesExt += Allocator::alignSize(sizeof(ExtensionMisc));
         break;

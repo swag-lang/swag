@@ -78,7 +78,7 @@ bool SourceFile::load()
 
     // Read content
     allocBufferSize = (unsigned) Allocator::alignSize(bufferSize + 4);
-    buffer          = (char*) g_Allocator.alloc(allocBufferSize);
+    buffer          = (char*) Allocator::alloc(allocBufferSize);
 
     if (g_CommandLine.stats)
         g_Stats.memFileBuffer += allocBufferSize;
@@ -90,7 +90,7 @@ bool SourceFile::load()
     {
         numErrors++;
         module->numErrors++;
-        g_Allocator.free(buffer, allocBufferSize);
+        Allocator::free(buffer, allocBufferSize);
         buffer = nullptr;
 
         Report::errorOS(Fmt(Err(Err0153), path.c_str()));

@@ -41,7 +41,7 @@ SymbolName* SymTable::registerSymbolNameNoLock(ErrorContext* context, AstNode* n
     auto symbol         = findNoLock(*aliasName);
     if (!symbol)
     {
-        symbol = g_Allocator.alloc<SymbolName>();
+        symbol = Allocator::alloc<SymbolName>();
         if (g_CommandLine.stats)
             g_Stats.memSymName += Allocator::alignSize(sizeof(SymbolName));
         symbol->name       = *aliasName;
@@ -379,7 +379,7 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, Typ
 
 SymbolOverload* SymbolName::addOverloadNoLock(AstNode* node, TypeInfo* typeInfo, ComputedValue* computedValue)
 {
-    auto overload      = g_Allocator.alloc<SymbolOverload>();
+    auto overload      = Allocator::alloc<SymbolOverload>();
     overload->typeInfo = typeInfo;
     overload->node     = node;
     if (g_CommandLine.stats)

@@ -14,7 +14,7 @@ Utf8::~Utf8()
 
 void Utf8::freeBuffer()
 {
-    g_Allocator.free(buffer, allocated);
+    Allocator::free(buffer, allocated);
     if (g_CommandLine.stats)
         g_Stats.memUtf8 -= allocated;
 }
@@ -98,13 +98,13 @@ void Utf8::reserve(int newSize)
     allocated *= 2;
     allocated      = max(allocated, newSize);
     allocated      = (int) Allocator::alignSize(allocated);
-    auto newBuffer = (char*) g_Allocator.alloc(allocated);
+    auto newBuffer = (char*) Allocator::alloc(allocated);
     if (count)
         memcpy(newBuffer, buffer, count + 1);
     if (g_CommandLine.stats)
         g_Stats.memUtf8 += allocated;
 
-    g_Allocator.free(buffer, lastAllocated);
+    Allocator::free(buffer, lastAllocated);
     if (g_CommandLine.stats)
         g_Stats.memUtf8 -= lastAllocated;
 
@@ -144,7 +144,7 @@ const char* Utf8::c_str() const
     // Big huge leak... not so huge in fact
     // Should limit the call to c_str() as much as possible in a normal run (no errors)
     auto size = (int) Allocator::alignSize(count + 1);
-    auto buf  = (char*) g_Allocator.alloc(size);
+    auto buf  = (char*) Allocator::alloc(size);
     memcpy(buf, buffer, count);
     buf[count] = 0;
     if (g_CommandLine.stats)
@@ -474,7 +474,7 @@ void Utf8::makeLocal()
         return;
 
     allocated = (int) Allocator::alignSize(count + 1);
-    auto buf  = (char*) g_Allocator.alloc(allocated);
+    auto buf  = (char*) Allocator::alloc(allocated);
     memcpy(buf, buffer, count);
     buffer        = buf;
     buffer[count] = 0;

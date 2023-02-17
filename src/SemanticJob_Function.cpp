@@ -871,7 +871,7 @@ void SemanticJob::launchResolveSubDecl(JobContext* context, AstNode* node)
     node->flags &= ~AST_NO_SEMANTIC;
     if (node->doneFlags & AST_DONE_FILE_JOB_PASS)
     {
-        auto job          = g_Allocator.alloc<SemanticJob>();
+        auto job          = Allocator::alloc<SemanticJob>();
         job->sourceFile   = context->sourceFile;
         job->module       = context->sourceFile->module;
         job->dependentJob = context->baseJob->dependentJob;

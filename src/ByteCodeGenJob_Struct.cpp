@@ -315,7 +315,7 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
         }
 
         auto      sourceFile = context->sourceFile;
-        ByteCode* opInit     = g_Allocator.alloc<ByteCode>();
+        ByteCode* opInit     = Allocator::alloc<ByteCode>();
         opInit->sourceFile   = sourceFile;
         opInit->typeInfoFunc = typeInfoFunc;
         opInit->name         = structNode->ownerScope->getFullName();

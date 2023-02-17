@@ -48,7 +48,7 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodebc)
         }
         else
         {
-            stack = (uint8_t*) g_Allocator.alloc(g_CommandLine.stackSizeBC);
+            stack = (uint8_t*) Allocator::alloc(g_CommandLine.stackSizeBC);
             if (g_CommandLine.stats)
                 g_Stats.memBcStack += g_CommandLine.stackSizeBC;
         }

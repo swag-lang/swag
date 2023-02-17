@@ -13,7 +13,7 @@ JobResult SyntaxJob::execute()
     // Then load the file
     if (!sourceFile->buffer)
     {
-        auto loadJob        = g_Allocator.alloc<LoadSourceFileJob>();
+        auto loadJob        = Allocator::alloc<LoadSourceFileJob>();
         loadJob->sourceFile = sourceFile;
         loadJob->addDependentJob(this);
         jobsToAdd.push_back(loadJob);

@@ -211,7 +211,7 @@ struct SemanticJob : public Job
 
     void release() override
     {
-        g_Allocator.free<SemanticJob>(this);
+        Allocator::free<SemanticJob>(this);
     }
 
     static bool valueEqualsTo(const ComputedValue* value, AstNode* node);
@@ -532,7 +532,7 @@ struct SemanticJob : public Job
     OneTryMatch* getTryMatch()
     {
         if (cacheFreeTryMatch.empty())
-            return g_Allocator.alloc<OneTryMatch>();
+            return Allocator::alloc<OneTryMatch>();
         auto res = cacheFreeTryMatch.back();
         cacheFreeTryMatch.pop_back();
         res->reset();
@@ -549,7 +549,7 @@ struct SemanticJob : public Job
     OneMatch* getOneMatch()
     {
         if (cacheFreeMatches.empty())
-            return g_Allocator.alloc<OneMatch>();
+            return Allocator::alloc<OneMatch>();
         auto res = cacheFreeMatches.back();
         cacheFreeMatches.pop_back();
         res->reset();
@@ -567,7 +567,7 @@ struct SemanticJob : public Job
     OneGenericMatch* getOneGenericMatch()
     {
         if (cacheFreeGenericMatches.empty())
-            return g_Allocator.alloc<OneGenericMatch>();
+            return Allocator::alloc<OneGenericMatch>();
         auto res = cacheFreeGenericMatches.back();
         cacheFreeGenericMatches.pop_back();
         res->reset();

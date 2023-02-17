@@ -185,7 +185,7 @@ extern TypeManager* g_TypeMgr;
 template<typename T>
 T* makeType(TypeInfoKind k = TypeInfoKind::Invalid)
 {
-    auto newType = g_Allocator.alloc<T>();
+    auto newType = Allocator::alloc<T>();
     if (k != TypeInfoKind::Invalid)
         newType->kind = k;
     if (g_CommandLine.stats)

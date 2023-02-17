@@ -100,7 +100,7 @@ Module* Workspace::getModuleByName(const Utf8& moduleName)
 
 Module* Workspace::createOrUseModule(const Utf8& moduleName, const Utf8& modulePath, ModuleKind kind, bool errorModule)
 {
-    Module* module = g_Allocator.alloc<Module>();
+    Module* module = Allocator::alloc<Module>();
 
     {
         ScopedLock lk(mutexModules);
@@ -148,12 +148,12 @@ void Workspace::addBootstrap()
 {
     // Bootstrap will be compiled in the workspace scope, in order to be defined once
     // for all modules
-    bootstrapModule       = g_Allocator.alloc<Module>();
+    bootstrapModule       = Allocator::alloc<Module>();
     bootstrapModule->kind = ModuleKind::BootStrap;
     bootstrapModule->setup("bootstrap", "");
     modules.push_back(bootstrapModule);
 
-    auto     file         = g_Allocator.alloc<SourceFile>();
+    auto     file         = Allocator::alloc<SourceFile>();
     fs::path p            = g_CommandLine.exePath;
     file->name            = "swag.bootstrap.swg";
     file->path            = p.parent_path().string() + "/runtime/bootstrap.swg";
@@ -164,7 +164,7 @@ void Workspace::addBootstrap()
 
 void Workspace::addRuntimeFile(const char* fileName)
 {
-    auto     file       = g_Allocator.alloc<SourceFile>();
+    auto     file       = Allocator::alloc<SourceFile>();
     fs::path p          = g_CommandLine.exePath;
     file->name          = fileName;
     file->path          = p.parent_path().string() + "/runtime/" + fileName;
@@ -177,7 +177,7 @@ void Workspace::addRuntime()
 {
     // Runtime will be compiled in the workspace scope, in order to be defined once
     // for all modules
-    runtimeModule       = g_Allocator.alloc<Module>();
+    runtimeModule       = Allocator::alloc<Module>();
     runtimeModule->kind = ModuleKind::Runtime;
     runtimeModule->setup("runtime", "");
     modules.push_back(runtimeModule);
@@ -678,7 +678,7 @@ bool Workspace::buildRTModule(Module* module)
 {
     for (auto f : module->files)
     {
-        auto job        = g_Allocator.alloc<SyntaxJob>();
+        auto job        = Allocator::alloc<SyntaxJob>();
         job->sourceFile = f;
         g_ThreadMgr.addJob(job);
     }
@@ -691,7 +691,7 @@ bool Workspace::buildRTModule(Module* module)
         return false;
     }
 
-    auto job    = g_Allocator.alloc<ModuleSemanticJob>();
+    auto job    = Allocator::alloc<ModuleSemanticJob>();
     job->module = module;
     g_ThreadMgr.addJob(job);
     g_ThreadMgr.waitEndJobs();
@@ -721,7 +721,7 @@ bool Workspace::buildTarget()
 
     if (g_CommandLine.numCores != 1 && !g_CommandLine.scriptCommand)
     {
-        auto enumJob0          = g_Allocator.alloc<EnumerateModuleJob>();
+        auto enumJob0          = Allocator::alloc<EnumerateModuleJob>();
         enumJob0->readFileMode = true;
         g_ThreadMgr.addJob(enumJob0);
     }
@@ -757,7 +757,7 @@ bool Workspace::buildTarget()
 
     // Config pass (compute/fetch dependencies...
     //////////////////////////////////////////////////
-    g_ModuleCfgMgr = g_Allocator.alloc<ModuleCfgManager>();
+    g_ModuleCfgMgr = Allocator::alloc<ModuleCfgManager>();
     SWAG_CHECK(g_ModuleCfgMgr->execute());
 
     // Exit now (do not really build) in case of "get", "list" commands
@@ -767,7 +767,7 @@ bool Workspace::buildTarget()
     // Ask for a syntax pass on all files of all modules
     //////////////////////////////////////////////////
 
-    auto enumJob1          = g_Allocator.alloc<EnumerateModuleJob>();
+    auto enumJob1          = Allocator::alloc<EnumerateModuleJob>();
     enumJob1->readFileMode = false;
     g_ThreadMgr.addJob(enumJob1);
     g_ThreadMgr.waitEndJobs();
@@ -823,7 +823,7 @@ bool Workspace::buildTarget()
                 continue;
             if (module->isErrorModule)
                 continue;
-            auto job    = g_Allocator.alloc<ModuleBuildJob>();
+            auto job    = Allocator::alloc<ModuleBuildJob>();
             job->module = module;
             g_ThreadMgr.addJob(job);
         }
@@ -863,8 +863,8 @@ bool Workspace::buildTarget()
 
 bool Workspace::build()
 {
-    g_ModuleMgr = g_Allocator.alloc<ModuleManager>();
-    g_LangSpec  = g_Allocator.alloc<LanguageSpec>();
+    g_ModuleMgr = Allocator::alloc<ModuleManager>();
+    g_LangSpec  = Allocator::alloc<LanguageSpec>();
     g_LangSpec->setup();
     Backend::setup();
 

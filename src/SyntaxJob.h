@@ -11,7 +11,7 @@ struct SyntaxJob : public Job
 {
     void release() override
     {
-        g_Allocator.free<SyntaxJob>(this);
+        Allocator::free<SyntaxJob>(this);
     }
 
     JobResult execute() override;

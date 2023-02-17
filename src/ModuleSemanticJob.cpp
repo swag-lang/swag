@@ -13,7 +13,7 @@ JobResult ModuleSemanticJob::execute()
         if (file->buildPass < BuildPass::Semantic)
             continue;
 
-        auto job          = g_Allocator.alloc<SemanticJob>();
+        auto job          = Allocator::alloc<SemanticJob>();
         job->sourceFile   = file;
         job->module       = module;
         job->dependentJob = dependentJob;

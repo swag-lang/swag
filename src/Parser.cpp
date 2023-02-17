@@ -251,7 +251,7 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
         }
     }
 
-    sourceFile = g_Allocator.alloc<SourceFile>();
+    sourceFile = Allocator::alloc<SourceFile>();
     sourceFile->setExternalBuffer(content);
     sourceFile->module = parent->sourceFile->module;
     sourceFile->name   = tmpFileName;

@@ -709,7 +709,7 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         }
     }
 
-    ModuleDependency* dep = g_Allocator.alloc<ModuleDependency>();
+    ModuleDependency* dep = Allocator::alloc<ModuleDependency>();
     dep->node             = importNode;
     dep->name             = importNode->token.text;
     dep->location         = tokenLocation.text;
@@ -1040,7 +1040,7 @@ bool Module::compileString(const Utf8& text)
     if (!parser.constructEmbeddedAst(text, parent, g_RunContext->ip->node, CompilerAstKind::TopLevelInstruction, true))
         return false;
 
-    auto job        = g_Allocator.alloc<SemanticJob>();
+    auto job        = Allocator::alloc<SemanticJob>();
     job->sourceFile = files[0];
     job->module     = this;
 
@@ -1169,7 +1169,7 @@ bool Module::filterFunctionsToEmit()
 
 void Module::flushGenFiles()
 {
-    auto newJob    = g_Allocator.alloc<SaveGenJob>();
+    auto newJob    = Allocator::alloc<SaveGenJob>();
     newJob->module = this;
     g_ThreadMgr.addJob(newJob);
 }

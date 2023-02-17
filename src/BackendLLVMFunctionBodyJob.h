@@ -8,6 +8,6 @@ struct BackendLLVMFunctionBodyJob : public BackendFunctionBodyJobBase
 
     void release() override
     {
-        g_Allocator.free<BackendLLVMFunctionBodyJob>(this);
+        Allocator::free<BackendLLVMFunctionBodyJob>(this);
     }
 };

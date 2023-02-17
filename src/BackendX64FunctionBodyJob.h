@@ -8,7 +8,7 @@ struct BackendX64FunctionBodyJob : public BackendFunctionBodyJobBase
 
     void release() override
     {
-        g_Allocator.free<BackendX64FunctionBodyJob>(this);
+        Allocator::free<BackendX64FunctionBodyJob>(this);
     }
 };
 

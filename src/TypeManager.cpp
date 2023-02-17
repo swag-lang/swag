@@ -574,7 +574,7 @@ TypeInfoPointer* TypeManager::makePointerTo(TypeInfo* toType, uint64_t ptrFlags)
 
 TypeInfoParam* TypeManager::makeParam()
 {
-    auto typeParam = g_Allocator.alloc<TypeInfoParam>();
+    auto typeParam = Allocator::alloc<TypeInfoParam>();
     if (g_CommandLine.stats)
         g_Stats.memParams += Allocator::alignSize(sizeof(TypeInfoParam));
     return typeParam;

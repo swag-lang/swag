@@ -149,7 +149,7 @@ uint32_t DataSegment::reserveNoLock(uint32_t size, uint8_t** resultPtr)
         bucket.size = max(size, granularity);
         granularity *= 2;
         bucket.size   = (uint32_t) Allocator::alignSize(bucket.size);
-        bucket.buffer = (uint8_t*) g_Allocator.alloc(bucket.size);
+        bucket.buffer = (uint8_t*) Allocator::alloc(bucket.size);
         if (g_CommandLine.stats)
             g_Stats.memSeg += bucket.size;
         memset(bucket.buffer, 0, bucket.size);
@@ -525,7 +525,7 @@ void DataSegment::saveValue(void* address, uint32_t size, bool zero)
         savedValues[address] = {(void*) (size_t) * (uint64_t*) address, size};
         break;
     default:
-        auto buf = g_Allocator.alloc(Allocator::alignSize(size));
+        auto buf = Allocator::alloc(Allocator::alignSize(size));
         memcpy(buf, address, size);
         savedValues[address] = {buf, size};
         break;
@@ -559,7 +559,7 @@ void DataSegment::restoreAllValues()
             break;
         default:
             memcpy(one.first, one.second.ptr, one.second.size);
-            g_Allocator.free(one.second.ptr, Allocator::alignSize(one.second.size));
+            Allocator::free(one.second.ptr, Allocator::alignSize(one.second.size));
             break;
         }
     }
@@ -571,7 +571,7 @@ void DataSegment::release()
 {
     deleted = true;
     for (auto& b : buckets)
-        g_Allocator.free(b.buffer, Allocator::alignSize(b.size));
+        Allocator::free(b.buffer, Allocator::alignSize(b.size));
     buckets.clear();
 }
 
@@ -585,14 +585,14 @@ void DataSegment::makeLinear()
 
     h.count  = (uint32_t) Allocator::alignSize(totalCount);
     h.size   = h.count;
-    h.buffer = (uint8_t*) g_Allocator.alloc(h.count);
+    h.buffer = (uint8_t*) Allocator::alloc(h.count);
 
     auto ptr = h.buffer;
     for (auto& b : buckets)
     {
         memcpy(ptr, b.buffer, b.count);
         ptr += b.count;
-        g_Allocator.free(b.buffer, b.count);
+        Allocator::free(b.buffer, b.count);
     }
 
     buckets.clear();

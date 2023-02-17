@@ -9,7 +9,7 @@ void SymTableHash::clone(SymTableHash* from)
     fastReject = from->fastReject;
     allocated  = from->allocated;
     count      = from->count;
-    buffer     = (Entry*) g_Allocator.alloc(from->allocated * sizeof(Entry));
+    buffer     = (Entry*) Allocator::alloc(from->allocated * sizeof(Entry));
     memcpy(buffer, from->buffer, from->allocated * sizeof(Entry));
 }
 
@@ -64,7 +64,7 @@ void SymTableHash::add(SymbolName* data)
     {
         count     = 0;
         allocated = 4;
-        buffer    = (Entry*) g_Allocator.alloc(allocated * sizeof(Entry));
+        buffer    = (Entry*) Allocator::alloc(allocated * sizeof(Entry));
         memset(buffer, 0, allocated * sizeof(Entry));
         if (g_CommandLine.stats)
             g_Stats.memSymTable += allocated * sizeof(Entry);
@@ -78,7 +78,7 @@ void SymTableHash::add(SymbolName* data)
         auto oldCount     = count;
 
         allocated *= 2;
-        buffer = (Entry*) g_Allocator.alloc(allocated * sizeof(Entry));
+        buffer = (Entry*) Allocator::alloc(allocated * sizeof(Entry));
         memset(buffer, 0, allocated * sizeof(Entry));
 
         count = 0;
@@ -93,7 +93,7 @@ void SymTableHash::add(SymbolName* data)
             }
         }
 
-        g_Allocator.free(oldBuffer, oldAllocated * sizeof(Entry));
+        Allocator::free(oldBuffer, oldAllocated * sizeof(Entry));
 
         if (g_CommandLine.stats)
         {

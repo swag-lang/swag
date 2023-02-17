@@ -23,10 +23,10 @@ Module* ModuleCfgManager::getCfgModule(const Utf8& name)
 
 void ModuleCfgManager::parseCfgFile(Module* cfgModule)
 {
-    auto buildJob    = g_Allocator.alloc<ModuleBuildJob>();
+    auto buildJob    = Allocator::alloc<ModuleBuildJob>();
     buildJob->module = cfgModule;
 
-    auto syntaxJob        = g_Allocator.alloc<SyntaxJob>();
+    auto syntaxJob        = Allocator::alloc<SyntaxJob>();
     syntaxJob->sourceFile = cfgModule->files.front();
     syntaxJob->addDependentJob(buildJob);
 
@@ -47,7 +47,7 @@ void ModuleCfgManager::registerCfgFile(SourceFile* file)
     else
         g_Workspace->computeModuleName(parentFolder, moduleName, moduleFolder, kind);
 
-    auto cfgModule          = g_Allocator.alloc<Module>();
+    auto cfgModule          = Allocator::alloc<Module>();
     cfgModule->kind         = ModuleKind::Config;
     cfgModule->isScriptFile = file->isScriptFile;
     cfgModule->setup(moduleName, moduleFolder);
@@ -74,7 +74,7 @@ void ModuleCfgManager::registerCfgFile(SourceFile* file)
 
 void ModuleCfgManager::newCfgFile(Vector<SourceFile*>& allFiles, const Utf8& dirName, const Utf8& fileName)
 {
-    auto file         = g_Allocator.alloc<SourceFile>();
+    auto file         = Allocator::alloc<SourceFile>();
     file->name        = fileName;
     file->isCfgFile   = true;
     fs::path pathFile = dirName.c_str();
@@ -292,7 +292,7 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
     // Module not here : add it.
     if (!dep->module)
     {
-        dep->module       = g_Allocator.alloc<Module>();
+        dep->module       = Allocator::alloc<Module>();
         dep->module->kind = ModuleKind::Config;
         dep->module->setup(dep->name, "");
         allModules[dep->name] = dep->module;
@@ -432,7 +432,7 @@ bool ModuleCfgManager::execute()
     // When this is a simple script, then register the script file as the configuration file
     else
     {
-        auto file          = g_Allocator.alloc<SourceFile>();
+        auto file          = Allocator::alloc<SourceFile>();
         file->name         = fs::path(g_CommandLine.scriptName.c_str()).filename().string().c_str();
         file->isCfgFile    = true;
         file->isScriptFile = true;
@@ -528,7 +528,7 @@ bool ModuleCfgManager::execute()
 
             cfgModule->files.clear(); // memleak
 
-            auto file = g_Allocator.alloc<SourceFile>();
+            auto file = Allocator::alloc<SourceFile>();
             cfgModule->files.push_back(file);
 
             file->name        = cfgFileName;
@@ -625,7 +625,7 @@ bool ModuleCfgManager::execute()
             {
                 // Copy from the disk, elsewhere
             case DependencyFetchKind::Disk:
-                fetchJob = g_Allocator.alloc<FetchModuleFileSystemJob>();
+                fetchJob = Allocator::alloc<FetchModuleFileSystemJob>();
                 break;
 
                 // This is a dependency to the swag compiler std workspace
@@ -657,7 +657,7 @@ bool ModuleCfgManager::execute()
                     fclose(f);
                 }
 
-                fetchJob = g_Allocator.alloc<FetchModuleFileSystemJob>();
+                fetchJob = Allocator::alloc<FetchModuleFileSystemJob>();
 
                 ((FetchModuleFileSystemJob*) fetchJob)->collectSourceFiles = false;
                 break;

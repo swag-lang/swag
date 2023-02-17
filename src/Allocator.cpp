@@ -12,15 +12,15 @@ const uint64_t MAGIC_ALLOC = 0xC0DEC0DEC0DEC0DE;
 const uint64_t MAGIC_FREE  = 0xCAFECAFECAFECAFE;
 #endif
 
-thread_local Allocator g_Allocator;
-atomic<int>            g_CompilerAllocTh = 0;
-Mutex                  g_AllocatorMutex;
-Allocator*             g_SharedAllocator = nullptr;
+atomic<int>             g_CompilerAllocTh = 0;
+Mutex                   g_AllocatorMutex;
+thread_local Allocator* g_Allocator       = nullptr;
+Allocator*              g_SharedAllocator = nullptr;
 
 void* operator new(size_t t)
 {
     t      = Allocator::alignSize((int) t + sizeof(uint64_t));
-    auto p = (uint64_t*) g_Allocator.alloc(t);
+    auto p = (uint64_t*) Allocator::alloc(t);
     *p     = (uint64_t) t;
     if (g_CommandLine.stats)
         g_Stats.memNew += t;
@@ -35,15 +35,10 @@ void operator delete(void* addr) noexcept
     p--;
     if (g_CommandLine.stats)
         g_Stats.memNew -= *p;
-    return g_Allocator.free(p, *p);
+    return Allocator::free(p, *p);
 }
 
-AllocatorImpl::AllocatorImpl()
-{
-    memset(freeBuckets, 0, sizeof(freeBuckets));
-}
-
-void* AllocatorImpl::tryFreeBlock(uint32_t maxCount, size_t size)
+void* Allocator::tryFreeBlock(uint32_t maxCount, size_t size)
 {
     FreeBlock* prevBlock = nullptr;
     auto       tryBlock  = firstFreeBlock;
@@ -102,7 +97,7 @@ void* AllocatorImpl::tryFreeBlock(uint32_t maxCount, size_t size)
     return nullptr;
 }
 
-void* AllocatorImpl::useRealBucket(uint32_t bucket, size_t size)
+void* Allocator::useRealBucket(uint32_t bucket, size_t size)
 {
     SWAG_ASSERT(bucket < MAX_FREE_BUCKETS);
     SWAG_ASSERT(freeBuckets[bucket]);
@@ -119,7 +114,7 @@ void* AllocatorImpl::useRealBucket(uint32_t bucket, size_t size)
     return result;
 }
 
-void* AllocatorImpl::useBucket(uint32_t bucket, size_t size)
+void* Allocator::useBucket(uint32_t bucket, size_t size)
 {
     SWAG_ASSERT(bucket < MAX_FREE_BUCKETS);
     SWAG_ASSERT(freeBuckets[bucket]);
@@ -139,7 +134,7 @@ void* AllocatorImpl::useBucket(uint32_t bucket, size_t size)
     return useRealBucket(bucket, size);
 }
 
-void AllocatorImpl::allocateNewBlock(size_t size)
+void Allocator::allocateNewBlock(size_t size)
 {
     // We get the remaining space in the last block, to be able to use it as
     // a free block
@@ -191,7 +186,7 @@ void AllocatorImpl::allocateNewBlock(size_t size)
     }
 }
 
-void* AllocatorImpl::bigAlloc(size_t size)
+void* Allocator::bigAlloc(size_t size)
 {
     if (firstFreeBlock)
     {
@@ -222,7 +217,7 @@ void* AllocatorImpl::bigAlloc(size_t size)
     return currentData - size;
 }
 
-void* AllocatorImpl::alloc(size_t size)
+void* Allocator::allocBlock(size_t size)
 {
     SWAG_ASSERT((size & 7) == 0);
 
@@ -246,7 +241,7 @@ void* AllocatorImpl::alloc(size_t size)
     return bigAlloc(size);
 }
 
-void AllocatorImpl::free(void* ptr, size_t size)
+void Allocator::freeBlock(void* ptr, size_t size)
 {
     if (!ptr)
         return;
@@ -279,22 +274,17 @@ void AllocatorImpl::free(void* ptr, size_t size)
 /////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
 
-Allocator::Allocator()
+void Allocator::allocAllocator()
 {
-    impl = &_impl;
+    if (g_Allocator)
+        return;
 
     // Allocator created by the tls of a user bytecode thread. In that case, we use
     // the same shared AllocatorImpl
     if (g_CompilerAllocTh >= g_Stats.numWorkers && g_Stats.numWorkers)
     {
-        shared = true;
         ScopedLock lk(g_AllocatorMutex);
-        if (g_SharedAllocator)
-        {
-            impl = g_SharedAllocator->impl;
-            SWAG_ASSERT(impl);
-        }
-        else
+        if (!g_SharedAllocator)
         {
             g_SharedAllocator = (Allocator*) malloc(sizeof(Allocator));
             if (!g_SharedAllocator)
@@ -304,27 +294,33 @@ Allocator::Allocator()
                 return;
             }
 
-            g_SharedAllocator->impl = &g_SharedAllocator->_impl;
-            memset(g_SharedAllocator->impl, 0, sizeof(AllocatorImpl));
-            impl = &g_SharedAllocator->_impl;
+            memset(g_SharedAllocator, 0, sizeof(Allocator));
+            g_SharedAllocator->shared = true;
         }
+
+        g_Allocator = g_SharedAllocator;
+    }
+    else
+    {
+        g_Allocator = (Allocator*) malloc(sizeof(Allocator));
+        memset(g_Allocator, 0, sizeof(Allocator));
     }
 }
 
 void* Allocator::alloc(size_t size)
 {
-    if (shared)
+    allocAllocator();
+    if (g_Allocator->shared)
         g_AllocatorMutex.lock();
-    SWAG_ASSERT(impl);
 
 #ifdef SWAG_CHECK_MEMORY
-    auto result = impl->alloc(size + (3 * sizeof(uint64_t)));
+    auto result = g_Allocator->allocBlock(size + (3 * sizeof(uint64_t)));
     result      = markDebugBlock((uint8_t*) result, size, MAGIC_ALLOC);
 #else
-    auto result = impl->alloc(size);
+    auto result = g_Allocator->allocBlock(size);
 #endif
 
-    if (shared)
+    if (g_Allocator->shared)
         g_AllocatorMutex.unlock();
     return result;
 }
@@ -334,18 +330,18 @@ void Allocator::free(void* ptr, size_t size)
     if (!ptr || !size)
         return;
 
-    if (shared)
+    SWAG_ASSERT(g_Allocator);
+    if (g_Allocator->shared)
         g_AllocatorMutex.lock();
-    SWAG_ASSERT(impl);
 
 #ifdef SWAG_CHECK_MEMORY
     ptr = checkUserBlock((uint8_t*) ptr, size, MAGIC_ALLOC);
     markDebugBlock((uint8_t*) ptr, size, MAGIC_FREE);
 #endif
 
-    impl->free(ptr, size);
+    g_Allocator->freeBlock(ptr, size);
 
-    if (shared)
+    if (g_Allocator->shared)
         g_AllocatorMutex.unlock();
 }
 

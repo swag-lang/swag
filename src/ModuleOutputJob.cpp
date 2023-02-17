@@ -21,7 +21,7 @@ JobResult ModuleOutputJob::execute()
         // Generate .swg file with public definitions
         if (module->buildCfg.backendKind != BuildCfgBackendKind::Executable || module->isErrorModule)
         {
-            auto exportJob          = g_Allocator.alloc<ModuleExportJob>();
+            auto exportJob          = Allocator::alloc<ModuleExportJob>();
             exportJob->backend      = module->backend;
             exportJob->dependentJob = this;
             jobsToAdd.push_back(exportJob);
@@ -74,7 +74,7 @@ JobResult ModuleOutputJob::execute()
             // Precompile a specific version, to test it
             if (module->mustGenerateTestExe())
             {
-                auto preCompileJob                             = g_Allocator.alloc<ModulePrepOutputStage1Job>();
+                auto preCompileJob                             = Allocator::alloc<ModulePrepOutputStage1Job>();
                 preCompileJob->module                          = module;
                 preCompileJob->dependentJob                    = this;
                 preCompileJob->buildParameters                 = module->buildParameters;
@@ -86,7 +86,7 @@ JobResult ModuleOutputJob::execute()
             // Precompile the normal version
             if (module->canGenerateLegit())
             {
-                auto preCompileJob                             = g_Allocator.alloc<ModulePrepOutputStage1Job>();
+                auto preCompileJob                             = Allocator::alloc<ModulePrepOutputStage1Job>();
                 preCompileJob->module                          = module;
                 preCompileJob->dependentJob                    = this;
                 preCompileJob->buildParameters                 = module->buildParameters;
@@ -117,7 +117,7 @@ JobResult ModuleOutputJob::execute()
             // Precompile a specific version, to test it
             if (module->mustGenerateTestExe())
             {
-                auto preCompileJob                             = g_Allocator.alloc<ModulePrepOutputStage2Job>();
+                auto preCompileJob                             = Allocator::alloc<ModulePrepOutputStage2Job>();
                 preCompileJob->module                          = module;
                 preCompileJob->dependentJob                    = this;
                 preCompileJob->buildParameters                 = module->buildParameters;
@@ -129,7 +129,7 @@ JobResult ModuleOutputJob::execute()
             // Precompile the normal version
             if (module->canGenerateLegit())
             {
-                auto preCompileJob                             = g_Allocator.alloc<ModulePrepOutputStage2Job>();
+                auto preCompileJob                             = Allocator::alloc<ModulePrepOutputStage2Job>();
                 preCompileJob->module                          = module;
                 preCompileJob->dependentJob                    = this;
                 preCompileJob->buildParameters                 = module->buildParameters;
@@ -174,7 +174,7 @@ JobResult ModuleOutputJob::execute()
         // Compile a specific version, to test it
         if (module->mustGenerateTestExe())
         {
-            auto compileJob                            = g_Allocator.alloc<ModuleGenOutputJob>();
+            auto compileJob                            = Allocator::alloc<ModuleGenOutputJob>();
             compileJob->module                         = module;
             compileJob->dependentJob                   = this;
             compileJob->buildParameters                = module->buildParameters;
@@ -187,7 +187,7 @@ JobResult ModuleOutputJob::execute()
         // there's no official version for the test folder, only a test executable)
         if (module->canGenerateLegit())
         {
-            auto compileJob             = g_Allocator.alloc<ModuleGenOutputJob>();
+            auto compileJob             = Allocator::alloc<ModuleGenOutputJob>();
             compileJob->module          = module;
             compileJob->dependentJob    = this;
             compileJob->buildParameters = module->buildParameters;

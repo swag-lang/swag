@@ -95,7 +95,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
 
         // Make a copy of the returned struct, as we will lose the memory
         auto selfSize = Allocator::alignSize(realType->sizeOf);
-        auto self     = g_Allocator.alloc(selfSize);
+        auto self     = Allocator::alloc(selfSize);
         memcpy(self, (void*) runContext->registersRR[0].pointer, realType->sizeOf);
 
         // Get number of elements by calling 'opCount'
@@ -162,7 +162,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
             SWAG_CHECK(executeNode(sourceFile, params->specReturnOpDrop->node, callerContext, &opParams));
         }
 
-        g_Allocator.free(self, selfSize);
+        Allocator::free(self, selfSize);
         return true;
     }
 
@@ -329,7 +329,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
 
     // Free auto allocated memory
     for (auto ptr : bc->autoFree)
-        g_Allocator.free(ptr.first, ptr.second);
+        Allocator::free(ptr.first, ptr.second);
 
     // Get result
     SWAG_CHECK(computeExecuteResult(g_RunContext, sourceFile, node, callerContext, params));

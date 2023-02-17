@@ -14,7 +14,7 @@ ByteCodeOpDesc g_ByteCodeOpDesc[] = {
 void ByteCode::releaseOut()
 {
     auto s = Allocator::alignSize(maxInstructions * sizeof(ByteCodeInstruction));
-    g_Allocator.free(out, s);
+    Allocator::free(out, s);
     out = nullptr;
 }
 

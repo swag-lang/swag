@@ -40,7 +40,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
 
     // Semantic
     auto child              = parent.childs.front();
-    auto semanticJob        = g_Allocator.alloc<SemanticJob>();
+    auto semanticJob        = Allocator::alloc<SemanticJob>();
     semanticJob->sourceFile = sourceFile;
     semanticJob->module     = sourceFile->module;
     semanticJob->nodes.push_back(child);
@@ -71,12 +71,12 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     }
 
     // Gen bytecode for expression
-    auto genJob        = g_Allocator.alloc<ByteCodeGenJob>();
+    auto genJob        = Allocator::alloc<ByteCodeGenJob>();
     genJob->sourceFile = sourceFile;
     genJob->module     = sourceFile->module;
     genJob->nodes.push_back(child);
     child->allocateExtension(ExtensionKind::ByteCode);
-    child->extension->bytecode->bc             = g_Allocator.alloc<ByteCode>();
+    child->extension->bytecode->bc             = Allocator::alloc<ByteCode>();
     child->extension->bytecode->bc->node       = child;
     child->extension->bytecode->bc->sourceFile = sourceFile;
 

@@ -16,8 +16,8 @@ void Concat::init(int size)
     }
 
     bucketSize            = size;
-    firstBucket           = g_Allocator.alloc<ConcatBucket>();
-    firstBucket->datas    = bucketSize ? (uint8_t*) g_Allocator.alloc(bucketSize) : nullptr;
+    firstBucket           = Allocator::alloc<ConcatBucket>();
+    firstBucket->datas    = bucketSize ? (uint8_t*) Allocator::alloc(bucketSize) : nullptr;
     firstBucket->capacity = size;
 
     if (g_CommandLine.stats)
@@ -43,9 +43,9 @@ void Concat::release()
     auto p = firstBucket;
     while (p)
     {
-        g_Allocator.free(p->datas, p->capacity);
+        Allocator::free(p->datas, p->capacity);
         auto n = p->nextBucket;
-        g_Allocator.free(p, sizeof(ConcatBucket));
+        Allocator::free(p, sizeof(ConcatBucket));
         p = n;
     }
 
@@ -88,14 +88,14 @@ void Concat::ensureSpace(int numBytes)
     }
 
     // Need to allocate a new bucket
-    auto newBucket = g_Allocator.alloc<ConcatBucket>();
+    auto newBucket = Allocator::alloc<ConcatBucket>();
     SWAG_ASSERT(firstBucket && lastBucket);
     lastBucket->nextBucket = newBucket;
     lastBucket             = newBucket;
 
     lastBucket->capacity = max(numBytes, bucketSize);
     lastBucket->capacity = (int) Allocator::alignSize(lastBucket->capacity);
-    lastBucket->datas    = (uint8_t*) g_Allocator.alloc(lastBucket->capacity);
+    lastBucket->datas    = (uint8_t*) Allocator::alloc(lastBucket->capacity);
 
     if (g_CommandLine.stats)
     {

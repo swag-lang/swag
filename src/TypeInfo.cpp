@@ -356,5 +356,5 @@ void TypeInfoParam::allocateComputedValue()
 {
     if (value)
         return;
-    value = g_Allocator.alloc<ComputedValue>();
+    value = Allocator::alloc<ComputedValue>();
 }
