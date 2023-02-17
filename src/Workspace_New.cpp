@@ -32,7 +32,7 @@ void newScriptFile()
     file << content;
 
     g_Log.messageInfo(Fmt("=> script file '%s' has been created", g_CommandLine.scriptName.c_str()));
-    g_Log.messageInfo(Fmt("=> type 'swag script -f:%s' to run that script", g_CommandLine.scriptName.c_str()));
+    g_Log.messageInfo(Fmt("=> type 'swag script -f:%s' or 'swag %s' to run that script", g_CommandLine.scriptName.c_str(), g_CommandLine.scriptName.c_str()));
 }
 
 void Workspace::newModule(const Utf8& moduleName)
