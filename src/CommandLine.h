@@ -25,7 +25,7 @@ enum class StatsWhat
 struct CommandLine
 {
     // Compiler
-    int       numCores      = 0;
+    uint32_t  numCores      = 0;
     BuildPass buildPass     = BuildPass::Full;
     bool      rebuild       = false;
     bool      rebuildAll    = false;
@@ -34,9 +34,11 @@ struct CommandLine
     bool      scriptCommand = false;
 
     // Profile
+#ifdef SWAG_STATS
     bool profile = false;
     Utf8 profileFilter;
     int  profileChildsLevel = 0;
+#endif
 
     // Input
     Path workspacePath;
@@ -69,21 +71,24 @@ struct CommandLine
     pair<void*, void*>         userArgumentsSlice;
 
     // Display
-    StatsWhat statsWhat             = StatsWhat::None;
-    bool      stats                 = false;
-    bool      silent                = false;
-    bool      logColors             = true;
-    bool      verbose               = false;
-    bool      verboseCmdLine        = false;
-    bool      verbosePath           = false;
-    bool      verboseLink           = false;
-    bool      verboseTestErrors     = false;
-    bool      verboseConcreteTypes  = false;
-    bool      verboseBackendCommand = false;
-    bool      verboseStages         = false;
-    bool      errorOneLine          = false;
-    bool      errorCompact          = true;
-    bool      errorAbsolute         = false;
+#ifdef SWAG_STATS
+    StatsWhat statsWhat = StatsWhat::None;
+    bool      stats     = false;
+#endif
+
+    bool silent                = false;
+    bool logColors             = true;
+    bool verbose               = false;
+    bool verboseCmdLine        = false;
+    bool verbosePath           = false;
+    bool verboseLink           = false;
+    bool verboseTestErrors     = false;
+    bool verboseConcreteTypes  = false;
+    bool verboseBackendCommand = false;
+    bool verboseStages         = false;
+    bool errorOneLine          = false;
+    bool errorCompact          = true;
+    bool errorAbsolute         = false;
 
     // Output
     Utf8 buildCfg            = "fast-debug";
@@ -123,6 +128,7 @@ struct CommandLine
     bool cleanDep = false;
     bool cleanLog = false;
 
+    // Filled
     Path exePath;
     Utf8 exePathStr;
 

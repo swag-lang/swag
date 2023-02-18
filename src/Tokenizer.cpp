@@ -106,8 +106,9 @@ void Tokenizer::processChar(uint32_t c)
 {
     if (c == '\n')
     {
-        if (g_CommandLine.stats)
-            g_Stats.numLines++;
+#ifdef SWAG_STATS
+        g_Stats.numLines++;
+#endif
         location.column = 0;
         location.line++;
     }
@@ -162,9 +163,10 @@ Utf8 Tokenizer::tokenToName(TokenId id)
 
 bool Tokenizer::nextToken(TokenParse& token)
 {
+#ifdef SWAG_STATS
     Timer timer(&g_Stats.tokenizerTime);
-    if (g_CommandLine.stats)
-        g_Stats.numTokens++;
+    g_Stats.numTokens++;
+#endif
 
     token.literalType      = LiteralType::TT_MAX;
     token.lastTokenIsEOL   = forceLastTokenIsEOL;

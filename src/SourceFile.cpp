@@ -59,7 +59,9 @@ bool SourceFile::load()
     if (buffer)
         return true;
 
+#ifdef SWAG_STATS
     Timer read(&g_Stats.readFilesTime);
+#endif
 
     // Seems that we need 'N' flag to avoid handle to be shared with spawned processes
     FILE* handle = nullptr;
@@ -80,8 +82,9 @@ bool SourceFile::load()
     allocBufferSize = (unsigned) Allocator::alignSize(bufferSize + 4);
     buffer          = (char*) Allocator::alloc(allocBufferSize);
 
-    if (g_CommandLine.stats)
-        g_Stats.memFileBuffer += allocBufferSize;
+#ifdef SWAG_STATS
+    g_Stats.memFileBuffer += allocBufferSize;
+#endif
 
     auto result = fread(buffer, 1, bufferSize, handle);
     fclose(handle);

@@ -85,13 +85,15 @@ struct ByteCode
             return;
         }
 
-        if (context->profile)
+#ifdef SWAG_STATS
+        if (g_CommandLine.profile)
         {
             profileCallCount++;
             profileStart = OS::timerNow();
             if (context->oldBc)
                 context->oldBc->profileChilds.insert(this);
         }
+#endif
 
         SWAG_ASSERT(context->curRC == context->registersRC.size());
         context->registersRC.push_back(context->registers.count);
@@ -118,10 +120,12 @@ struct ByteCode
             context->registersRC.count = 0;
         }
 
-        if (context->profile)
+#ifdef SWAG_STATS
+        if (g_CommandLine.profile)
         {
             profileCumTime += OS::timerNow() - profileStart;
         }
+#endif
     }
 
     void releaseOut();

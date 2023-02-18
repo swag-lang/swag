@@ -4,6 +4,7 @@
 #include "Context.h"
 #include "SemanticJob.h"
 #include "PrepCompilerMsgJob.h"
+#include "ThreadManager.h"
 
 bool Module::postCompilerMessage(JobContext* context, CompilerMessage& msg)
 {
@@ -45,7 +46,7 @@ bool Module::prepareCompilerMessages(JobContext* context, uint32_t pass)
         return true;
 
     // Batch prepare
-    auto count     = (int) compilerMessages[pass].size() / g_Stats.numWorkers;
+    auto count     = (int) compilerMessages[pass].size() / g_ThreadMgr.numWorkers;
     count          = max(count, 1);
     count          = min(count, (int) compilerMessages[pass].size());
     int startIndex = 0;

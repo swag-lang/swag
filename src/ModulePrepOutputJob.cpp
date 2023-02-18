@@ -11,7 +11,9 @@
 
 JobResult ModulePrepOutputStage1Job::execute()
 {
+#ifdef SWAG_STATS
     Timer timer{&g_Stats.prepOutputStage1TimeJob};
+#endif
 
     // Be sure we have a #main in case of an executable
     if (module->backend->mustCompile &&
@@ -30,7 +32,9 @@ JobResult ModulePrepOutputStage1Job::execute()
 
 JobResult ModulePrepOutputStage2Job::execute()
 {
+#ifdef SWAG_STATS
     Timer timer{&g_Stats.prepOutputStage2TimeJob};
+#endif
 
     // Be sure we have a #main in case of an executable
     if (module->backend->mustCompile &&

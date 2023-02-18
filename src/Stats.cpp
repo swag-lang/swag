@@ -3,7 +3,9 @@
 #include "Workspace.h"
 #include "Os.h"
 #include "Module.h"
+#include "ThreadManager.h"
 
+#ifdef SWAG_STATS
 Stats g_Stats;
 
 void Stats::print()
@@ -16,11 +18,11 @@ void Stats::print()
 
     if (g_CommandLine.statsWhat == StatsWhat::All || g_CommandLine.statsWhat == StatsWhat::Count)
     {
-        g_Log.messageHeaderDot("workers", Fmt("%u", numWorkers));
+        g_Log.messageHeaderDot("workers", Fmt("%u", g_ThreadMgr.numWorkers));
         g_Log.messageHeaderDot("modules", Fmt("%u", numModules.load()));
         g_Log.messageHeaderDot("files", Fmt("%u", numFiles.load()));
         g_Log.messageHeaderDot("source lines", Fmt("%u", numLines.load()));
-        g_Log.messageHeaderDot("lines/s", Fmt("%u", (int) (numLines.load() / OS::timerToSeconds(totalTime.load()))));
+        g_Log.messageHeaderDot("lines/s", Fmt("%u", (int) (numLines.load() / OS::timerToSeconds(g_Workspace->totalTime.load()))));
         g_Log.messageHeaderDot("tokens", Fmt("%u", numTokens.load()));
         g_Log.messageHeaderDot("ast nodes", Fmt("%u", numNodes.load()));
         if (g_CommandLine.output)
@@ -60,7 +62,7 @@ void Stats::print()
         g_Log.messageHeaderDot("prep out 2 time", Fmt("%.3fs (saveobj: %.3fs)", OS::timerToSeconds(prepOutputStage2TimeJob.load()), OS::timerToSeconds(prepOutputTimeJob_SaveObj.load())));
         g_Log.messageHeaderDot("gen out time", Fmt("%.3fs", OS::timerToSeconds(genOutputTimeJob.load())));
         g_Log.messageHeaderDot("optim bc time", Fmt("%.3fs", OS::timerToSeconds(optimBCTime.load())));
-        g_Log.messageHeaderDot("total time", Fmt("%.3fs", OS::timerToSeconds(totalTime.load())));
+        g_Log.messageHeaderDot("total time", Fmt("%.3fs", OS::timerToSeconds(g_Workspace->totalTime.load())));
         g_Log.eol();
     }
 
@@ -121,3 +123,5 @@ void Stats::print()
 
     g_Log.setDefaultColor();
 }
+
+#endif // SWAG_STATS

@@ -20,11 +20,10 @@ void Concat::init(int size)
     firstBucket->datas    = bucketSize ? (uint8_t*) Allocator::alloc(bucketSize) : nullptr;
     firstBucket->capacity = size;
 
-    if (g_CommandLine.stats)
-    {
-        g_Stats.memConcat += sizeof(ConcatBucket);
-        g_Stats.memConcat += bucketSize;
-    }
+#ifdef SWAG_STATS
+    g_Stats.memConcat += sizeof(ConcatBucket);
+    g_Stats.memConcat += bucketSize;
+#endif
 
     lastBucket = firstBucket;
     currentSP  = lastBucket->datas;
@@ -97,11 +96,10 @@ void Concat::ensureSpace(int numBytes)
     lastBucket->capacity = (int) Allocator::alignSize(lastBucket->capacity);
     lastBucket->datas    = (uint8_t*) Allocator::alloc(lastBucket->capacity);
 
-    if (g_CommandLine.stats)
-    {
-        g_Stats.memConcat += sizeof(ConcatBucket);
-        g_Stats.memConcat += lastBucket->capacity;
-    }
+#ifdef SWAG_STATS
+    g_Stats.memConcat += sizeof(ConcatBucket);
+    g_Stats.memConcat += lastBucket->capacity;
+#endif
 
     currentSP = lastBucket->datas;
 }

@@ -138,8 +138,9 @@ void AstNode::allocateComputedValue()
     if (!computedValue)
     {
         computedValue = Allocator::alloc<ComputedValue>();
-        if (g_CommandLine.stats)
-            g_Stats.memNodesLiteral += sizeof(ComputedValue);
+#ifdef SWAG_STATS
+        g_Stats.memNodesLiteral += sizeof(ComputedValue);
+#endif
     }
 }
 
@@ -278,8 +279,9 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
     if (!extension)
     {
         extension = Allocator::alloc<Extension>();
-        if (g_CommandLine.stats)
-            g_Stats.memNodesExt += Allocator::alignSize(sizeof(Extension));
+#ifdef SWAG_STATS
+        g_Stats.memNodesExt += Allocator::alignSize(sizeof(Extension));
+#endif
     }
 
     switch (extensionKind)
@@ -288,32 +290,36 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
         if (extension->bytecode)
             return;
         extension->bytecode = Allocator::alloc<ExtensionByteCode>();
-        if (g_CommandLine.stats)
-            g_Stats.memNodesExt += Allocator::alignSize(sizeof(ExtensionByteCode));
+#ifdef SWAG_STATS
+        g_Stats.memNodesExt += Allocator::alignSize(sizeof(ExtensionByteCode));
+#endif
         break;
 
     case ExtensionKind::Semantic:
         if (extension->semantic)
             return;
         extension->semantic = Allocator::alloc<ExtensionSemantic>();
-        if (g_CommandLine.stats)
-            g_Stats.memNodesExt += Allocator::alignSize(sizeof(ExtensionSemantic));
+#ifdef SWAG_STATS
+        g_Stats.memNodesExt += Allocator::alignSize(sizeof(ExtensionSemantic));
+#endif
         break;
 
     case ExtensionKind::Owner:
         if (extension->owner)
             return;
         extension->owner = Allocator::alloc<ExtensionOwner>();
-        if (g_CommandLine.stats)
-            g_Stats.memNodesExt += Allocator::alignSize(sizeof(ExtensionOwner));
+#ifdef SWAG_STATS
+        g_Stats.memNodesExt += Allocator::alignSize(sizeof(ExtensionOwner));
+#endif
         break;
 
     default:
         if (extension->misc)
             return;
         extension->misc = Allocator::alloc<ExtensionMisc>();
-        if (g_CommandLine.stats)
-            g_Stats.memNodesExt += Allocator::alignSize(sizeof(ExtensionMisc));
+#ifdef SWAG_STATS
+        g_Stats.memNodesExt += Allocator::alignSize(sizeof(ExtensionMisc));
+#endif
         break;
     }
 }

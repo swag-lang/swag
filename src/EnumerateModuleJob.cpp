@@ -37,7 +37,7 @@ SourceFile* EnumerateModuleJob::addFileToModule(Module* theModule, Vector<Source
 
     // If we have only one core, then we will sort files in alphabetical order to always
     // treat them in a reliable order. That way, --randomize and --seed can work.
-    if (g_CommandLine.numCores == 1 || g_CommandLine.scriptCommand)
+    if (g_ThreadMgr.numWorkers == 1 || g_CommandLine.scriptCommand)
         allFiles.push_back(file);
     else
     {
@@ -287,7 +287,7 @@ void EnumerateModuleJob::enumerateModules(const Path& path)
                      {
                          // If we have only one core, then we will sort modules in alphabetical order to always
                          // treat them in a reliable order. That way, --randomize and --seed can work.
-                         if (g_CommandLine.numCores == 1)
+                         if (g_ThreadMgr.numWorkers == 1)
                              allModules.push_back(cFolderName);
                          else
                          {

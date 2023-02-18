@@ -187,14 +187,15 @@ T* makeType(TypeInfoKind k = TypeInfoKind::Invalid)
     auto newType = Allocator::alloc<T>();
     if (k != TypeInfoKind::Invalid)
         newType->kind = k;
-    if (g_CommandLine.stats)
-    {
-        g_Stats.memTypes += sizeof(T);
+
+#ifdef SWAG_STATS
+    g_Stats.memTypes += sizeof(T);
 #ifdef SWAG_DEV_MODE
-        SWAG_ASSERT(newType->kind != TypeInfoKind::Invalid);
-        SWAG_ASSERT((int) newType->kind < sizeof(g_Stats.countTypesByKind) / sizeof(g_Stats.countTypesByKind[0]));
-        g_Stats.countTypesByKind[(int) newType->kind] += 1;
+    SWAG_ASSERT(newType->kind != TypeInfoKind::Invalid);
+    SWAG_ASSERT((int) newType->kind < sizeof(g_Stats.countTypesByKind) / sizeof(g_Stats.countTypesByKind[0]));
+    g_Stats.countTypesByKind[(int) newType->kind] += 1;
 #endif
-    }
+#endif
+
     return newType;
 }

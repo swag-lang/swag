@@ -5,6 +5,7 @@
 #include "Os.h"
 #include "Module.h"
 #include "ByteCode.h"
+#ifdef SWAG_STATS
 
 static Utf8 getProfileBc(ByteCode* bc, int level)
 {
@@ -97,3 +98,5 @@ void profiler()
         printChilds(bc, 0);
     }
 }
+
+#endif // SWAG_STATS

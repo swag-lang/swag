@@ -247,7 +247,9 @@ void SemanticJob::enterState(AstNode* node)
 
 JobResult SemanticJob::execute()
 {
+#ifdef SWAG_STATS
     Timer timer(&g_Stats.semanticTime);
+#endif
 
     ScopedLock lkExecute(executeMutex);
     if (sourceFile->module->numErrors)

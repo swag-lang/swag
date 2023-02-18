@@ -138,8 +138,9 @@ Module* Workspace::createOrUseModule(const Utf8& moduleName, const Path& moduleP
             runModule = filteredModule;
     }
 
-    if (g_CommandLine.stats)
-        g_Stats.numModules++;
+#ifdef SWAG_STATS
+    g_Stats.numModules++;
+#endif
 
     return module;
 }
@@ -713,7 +714,7 @@ bool Workspace::buildTarget()
     // to void wasting some cores
     //////////////////////////////////////////////////
 
-    if (g_CommandLine.numCores != 1 && !g_CommandLine.scriptCommand)
+    if (g_ThreadMgr.numWorkers != 1 && !g_CommandLine.scriptCommand)
     {
         auto enumJob0          = Allocator::alloc<EnumerateModuleJob>();
         enumJob0->readFileMode = true;
@@ -726,7 +727,10 @@ bool Workspace::buildTarget()
         if (g_CommandLine.verboseStages)
             bootstrapModule->logStage("buildRTModule\n");
 
+#ifdef SWAG_STATS
         Timer timer(&g_Stats.bootstrapTime);
+#endif
+
         SWAG_CHECK(buildRTModule(bootstrapModule));
     }
 
@@ -736,7 +740,10 @@ bool Workspace::buildTarget()
         if (g_CommandLine.verboseStages)
             runtimeModule->logStage("buildRTModule\n");
 
+#ifdef SWAG_STATS
         Timer timer(&g_Stats.runtimeTime);
+#endif
+
         runtimeModule->initFrom(bootstrapModule);
         SWAG_CHECK(buildRTModule(runtimeModule));
     }
@@ -864,9 +871,11 @@ bool Workspace::build()
 
     // [devmode] stuff
 #if defined SWAG_DEBUG
-    g_Log.messageHeaderCentered("Compiler", "[debug|devmode]", LogColor::DarkBlue, LogColor::DarkBlue);
+    g_Log.messageHeaderCentered("Compiler", "[debug|devmode|stats]", LogColor::DarkBlue, LogColor::DarkBlue);
 #elif defined SWAG_DEV_MODE
-    g_Log.messageHeaderCentered("Compiler", "[devmode]", LogColor::DarkBlue, LogColor::DarkBlue);
+    g_Log.messageHeaderCentered("Compiler", "[devmode|stats]", LogColor::DarkBlue, LogColor::DarkBlue);
+#elif defined SWAG_STATS
+    g_Log.messageHeaderCentered("Compiler", "[stats]", LogColor::DarkBlue, LogColor::DarkBlue);
 #endif
 
     // [devmode] randomize/seed
@@ -911,7 +920,7 @@ bool Workspace::build()
     auto result = true;
 
     {
-        Timer timer(&g_Stats.totalTime, true);
+        Timer timer(&g_Workspace->totalTime, true);
 
         setup();
 
@@ -938,19 +947,19 @@ bool Workspace::build()
     // Results
     if (!g_CommandLine.scriptCommand)
     {
-        if (g_Stats.skippedModules.load() > 0)
-            g_Log.messageHeaderCentered("Skipped modules", Fmt("%d", g_Stats.skippedModules.load()));
+        if (g_Workspace->skippedModules.load() > 0)
+            g_Log.messageHeaderCentered("Skipped modules", Fmt("%d", g_Workspace->skippedModules.load()));
 
         if (g_Workspace->numErrors.load() == 1)
             g_Log.messageHeaderCentered("Done", Fmt("%d error", g_Workspace->numErrors.load()), LogColor::Green, LogColor::Red);
         else if (g_Workspace->numErrors.load())
             g_Log.messageHeaderCentered("Done", Fmt("%d errors", g_Workspace->numErrors.load()), LogColor::Green, LogColor::Red);
         else if (g_Workspace->numWarnings.load() == 1)
-            g_Log.messageHeaderCentered("Done", Fmt("%.3fs (%d warning)", OS::timerToSeconds(g_Stats.totalTime.load()), g_Workspace->numWarnings.load()), LogColor::Green, LogColor::Magenta);
+            g_Log.messageHeaderCentered("Done", Fmt("%.3fs (%d warning)", OS::timerToSeconds(g_Workspace->totalTime.load()), g_Workspace->numWarnings.load()), LogColor::Green, LogColor::Magenta);
         else if (g_Workspace->numWarnings.load())
-            g_Log.messageHeaderCentered("Done", Fmt("%.3fs (%d warnings)", OS::timerToSeconds(g_Stats.totalTime.load()), g_Workspace->numWarnings.load()), LogColor::Green, LogColor::Magenta);
+            g_Log.messageHeaderCentered("Done", Fmt("%.3fs (%d warnings)", OS::timerToSeconds(g_Workspace->totalTime.load()), g_Workspace->numWarnings.load()), LogColor::Green, LogColor::Magenta);
         else
-            g_Log.messageHeaderCentered("Done", Fmt("%.3fs", OS::timerToSeconds(g_Stats.totalTime.load())));
+            g_Log.messageHeaderCentered("Done", Fmt("%.3fs", OS::timerToSeconds(g_Workspace->totalTime.load())));
     }
 
     return result;

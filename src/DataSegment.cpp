@@ -2,12 +2,8 @@
 #include "DataSegment.h"
 #include "Module.h"
 #include "TypeManager.h"
-#include "ErrorIds.h"
 #include "Report.h"
-#include "AstNode.h"
 #include "ByteCode.h"
-#include "Diagnostic.h"
-#include "ModuleManager.h"
 
 void DataSegment::setup(SegmentKind _kind, Module* _module)
 {
@@ -150,8 +146,9 @@ uint32_t DataSegment::reserveNoLock(uint32_t size, uint8_t** resultPtr)
         granularity *= 2;
         bucket.size   = (uint32_t) Allocator::alignSize(bucket.size);
         bucket.buffer = (uint8_t*) Allocator::alloc(bucket.size);
-        if (g_CommandLine.stats)
-            g_Stats.memSeg += bucket.size;
+#ifdef SWAG_STATS
+        g_Stats.memSeg += bucket.size;
+#endif
         memset(bucket.buffer, 0, bucket.size);
         bucket.count = size;
         buckets.push_back(bucket);
@@ -413,6 +410,10 @@ void DataSegment::addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKi
     if (kind == SegmentKind::Compiler)
         return;
 
+#ifdef SWAG_STATS
+    g_Stats.numInitPtr++;
+#endif
+
     InitPtrRef ref;
     ref.patchOffset = patchOffset;
     ref.fromOffset  = srcOffset;
@@ -433,8 +434,6 @@ void DataSegment::addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKi
 #endif
 
     initPtr.push_back(ref);
-    if (g_CommandLine.stats)
-        g_Stats.numInitPtr++;
 }
 
 void DataSegment::addInitPtrFunc(uint32_t offset, const Utf8& funcName)
@@ -445,8 +444,9 @@ void DataSegment::addInitPtrFunc(uint32_t offset, const Utf8& funcName)
     ScopedLock lk(mutexPtr);
 
     initFuncPtr[offset] = funcName;
-    if (g_CommandLine.stats)
-        g_Stats.numInitFuncPtr++;
+#ifdef SWAG_STATS
+    g_Stats.numInitFuncPtr++;
+#endif
 }
 
 bool DataSegment::readU64(Seek& seek, uint64_t& result)

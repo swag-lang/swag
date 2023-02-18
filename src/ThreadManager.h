@@ -45,6 +45,7 @@ struct ThreadManager
     atomic<int>              jobsOptInThreads = 0;
     atomic<int>              addJobCount      = 0;
     int                      currentJobsIO    = 0;
+    uint32_t                 numWorkers       = 0;
     bool                     debuggerMode     = false;
 };
 

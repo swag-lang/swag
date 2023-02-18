@@ -42,8 +42,9 @@ SymbolName* SymTable::registerSymbolNameNoLock(ErrorContext* context, AstNode* n
     if (!symbol)
     {
         symbol = Allocator::alloc<SymbolName>();
-        if (g_CommandLine.stats)
-            g_Stats.memSymName += Allocator::alignSize(sizeof(SymbolName));
+#ifdef SWAG_STATS
+        g_Stats.memSymName += Allocator::alignSize(sizeof(SymbolName));
+#endif
         symbol->name       = *aliasName;
         symbol->kind       = kind;
         symbol->ownerTable = this;
@@ -382,8 +383,9 @@ SymbolOverload* SymbolName::addOverloadNoLock(AstNode* node, TypeInfo* typeInfo,
     auto overload      = Allocator::alloc<SymbolOverload>();
     overload->typeInfo = typeInfo;
     overload->node     = node;
-    if (g_CommandLine.stats)
-        g_Stats.memSymOver += sizeof(SymbolOverload);
+#ifdef SWAG_STATS
+    g_Stats.memSymOver += sizeof(SymbolOverload);
+#endif
 
     if (computedValue)
     {

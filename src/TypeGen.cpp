@@ -74,8 +74,9 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, ExportedTypeInfo** 
     {
         if (context && g_CommandLine.verboseConcreteTypes)
             g_Log.messageVerbose(Fmt("%s %s\n", context->sourceFile->module->name.c_str(), typeName.c_str()));
-        if (g_CommandLine.stats)
-            g_Stats.totalConcreteTypes++;
+#ifdef SWAG_STATS
+        g_Stats.totalConcreteTypes++;
+#endif
     }
 
     auto& swagScope = g_Workspace->swagScope;
@@ -595,7 +596,7 @@ void TypeGen::initFrom(Module* module, TypeGen* other)
 void TypeGen::setup(const Utf8& moduleName)
 {
     name = moduleName;
-    mapPerSegment.set_size_clear(2 + g_CommandLine.numCores);
+    mapPerSegment.set_size_clear(2 + g_ThreadMgr.numWorkers);
     for (int i = 0; i < mapPerSegment.count; i++)
         mapPerSegment[i] = new MapPerSeg;
 }
@@ -633,8 +634,11 @@ bool TypeGen::genExportedStuct(JobContext* context, const auto& typeName, Export
     job->typeName              = typeName;
     job->nodes.push_back(context->node);
     mapPerSeg.exportedTypesJob[typeName] = job;
-    if (g_CommandLine.stats && storageSegment->kind != SegmentKind::Compiler)
+
+#ifdef SWAG_STATS
+    if (storageSegment->kind != SegmentKind::Compiler)
         g_Stats.totalConcreteStructTypes++;
+#endif
 
     if (cflags & GEN_EXPORTED_TYPE_SHOULD_WAIT)
     {

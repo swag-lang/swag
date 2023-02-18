@@ -302,11 +302,11 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
         auto newInstuctions = (ByteCodeInstruction*) Allocator::alloc(bc->maxInstructions * sizeof(ByteCodeInstruction));
         memcpy(newInstuctions, bc->out, bc->numInstructions * sizeof(ByteCodeInstruction));
         Allocator::free(bc->out, oldSize);
-        if (g_CommandLine.stats)
-        {
-            g_Stats.memInstructions -= oldSize;
-            g_Stats.memInstructions += bc->maxInstructions * sizeof(ByteCodeInstruction);
-        }
+
+#ifdef SWAG_STATS
+        g_Stats.memInstructions -= oldSize;
+        g_Stats.memInstructions += bc->maxInstructions * sizeof(ByteCodeInstruction);
+#endif
 
         bc->out = newInstuctions;
     }
@@ -696,8 +696,9 @@ JobResult ByteCodeGenJob::execute()
 
             if (originalNode->kind == AstNodeKind::FuncDecl || context.bc->isCompilerGenerated)
             {
-                if (g_CommandLine.stats)
-                    g_Stats.numInstructions += context.bc->numInstructions;
+#ifdef SWAG_STATS
+                g_Stats.numInstructions += context.bc->numInstructions;
+#endif
 
                 // Print resulting bytecode
                 if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC && !(originalNode->attributeFlags & ATTRIBUTE_GENERATED_FUNC))

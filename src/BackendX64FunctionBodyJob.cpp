@@ -7,8 +7,10 @@
 
 JobResult BackendX64FunctionBodyJob::execute()
 {
+#ifdef SWAG_STATS
     Timer timer0{&g_Stats.prepOutputStage1TimeJob};
     Timer timer1{&g_Stats.prepOutputTimeJob_GenFunc};
+#endif
 
     BackendX64* bachendX64 = (BackendX64*) backend;
 

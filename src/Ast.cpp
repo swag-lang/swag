@@ -356,8 +356,9 @@ Scope* Ast::newScope(AstNode* owner, const Utf8& name, ScopeKind kind, Scope* pa
     newScope->parentScope = parentScope;
     newScope->owner       = owner;
     newScope->name        = name;
-    if (g_CommandLine.stats)
-        g_Stats.memScopes += sizeof(Scope);
+#ifdef SWAG_STATS
+    g_Stats.memScopes += sizeof(Scope);
+#endif
 
     return newScope;
 }

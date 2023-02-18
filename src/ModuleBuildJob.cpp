@@ -336,7 +336,7 @@ JobResult ModuleBuildJob::execute()
             module->syntaxGroup.complete(this);
 
             // When synchrone, do it now, as syntaxGroup is not relevant
-            if (g_CommandLine.numCores == 1 || g_CommandLine.scriptCommand)
+            if (g_ThreadMgr.numWorkers == 1 || g_CommandLine.scriptCommand)
             {
                 for (auto file : module->files)
                 {
@@ -649,8 +649,9 @@ JobResult ModuleBuildJob::execute()
 
             for (auto func : module->byteCodeRunFunc)
             {
-                if (g_CommandLine.stats)
-                    g_Stats.runFunctions++;
+#ifdef SWAG_STATS
+                g_Stats.runFunctions++;
+#endif
                 if (g_CommandLine.verboseStages)
                     module->logStage(Fmt("#run %s\n", func->node->sourceFile->name.c_str()));
                 module->executeNode(func->node->sourceFile, func->node, baseContext);
@@ -675,8 +676,9 @@ JobResult ModuleBuildJob::execute()
 
                 for (auto func : module->byteCodeTestFunc)
                 {
-                    if (g_CommandLine.stats)
-                        g_Stats.testFunctions++;
+#ifdef SWAG_STATS
+                    g_Stats.testFunctions++;
+#endif
                     if (g_CommandLine.verboseStages)
                         module->logStage(Fmt("#test %s\n", func->node->sourceFile->name.c_str()));
                     module->executeNode(func->node->sourceFile, func->node, baseContext);

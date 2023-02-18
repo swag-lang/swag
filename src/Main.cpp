@@ -123,8 +123,10 @@ int main(int argc, const char* argv[])
     }
 
     // Prints stats, then exit
+#ifdef SWAG_STATS
     g_Stats.print();
     profiler();
+#endif
 
     // To avoid freeing some stuff, and have a fast exit
     g_Exiting = true;

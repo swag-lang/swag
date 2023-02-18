@@ -13,8 +13,9 @@ JobResult ModuleRunJob::execute()
     if (!filesystem::exists(path))
         return JobResult::ReleaseJob;
 
-    // Timing...
+#ifdef SWAG_STATS
     Timer timer(&g_Stats.runTestTime);
+#endif
 
     if (buildParameters.compileType == BackendCompileType::Test)
         g_Log.messageHeaderCentered("Testing backend", module->name.c_str());

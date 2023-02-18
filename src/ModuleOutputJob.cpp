@@ -4,6 +4,7 @@
 #include "ModulePrepOutputJob.h"
 #include "ModuleGenOutputJob.h"
 #include "Module.h"
+#include "ThreadManager.h"
 
 JobResult ModuleOutputJob::execute()
 {
@@ -48,8 +49,8 @@ JobResult ModuleOutputJob::execute()
             return JobResult::ReleaseJob;
 
         // Compute the number of sub modules (i.e the number of output temporary files)
-        int minPerFile = 1024;
-        int maxPerFile = 1024;
+        uint32_t minPerFile = 1024;
+        uint32_t maxPerFile = 1024;
 
         if (g_CommandLine.backendGenType == BackendGenType::LLVM)
         {
@@ -62,10 +63,10 @@ JobResult ModuleOutputJob::execute()
             maxPerFile = module->buildParameters.buildCfg->backendX64.maxFunctionPerFile;
         }
 
-        auto numDiv                           = (int) module->byteCodeFunc.size() / g_Stats.numWorkers;
+        auto numDiv                           = (uint32_t) module->byteCodeFunc.size() / g_ThreadMgr.numWorkers;
         numDiv                                = max(numDiv, minPerFile);
         numDiv                                = min(numDiv, maxPerFile);
-        module->backend->numPreCompileBuffers = (int) module->byteCodeFunc.size() / numDiv;
+        module->backend->numPreCompileBuffers = (uint32_t) module->byteCodeFunc.size() / numDiv;
         module->backend->numPreCompileBuffers = max(module->backend->numPreCompileBuffers, 1);
         module->backend->numPreCompileBuffers = min(module->backend->numPreCompileBuffers, MAX_PRECOMPILE_BUFFERS);
 

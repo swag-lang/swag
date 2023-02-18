@@ -86,7 +86,7 @@ void ModuleCfgManager::newCfgFile(Vector<SourceFile*>& allFiles, const Utf8& dir
 
     // If we have only one core, then we will sort files in alphabetical order to always
     // treat them in a reliable order. That way, --randomize and --seed can work.
-    if (g_CommandLine.numCores == 1)
+    if (g_ThreadMgr.numWorkers == 1)
         allFiles.push_back(file);
     else
         registerCfgFile(file);
@@ -408,7 +408,9 @@ CompareVersionResult ModuleCfgManager::compareVersions(uint32_t depVer, uint32_t
 
 bool ModuleCfgManager::execute()
 {
+#ifdef SWAG_STATS
     Timer timer(&g_Stats.cfgTime);
+#endif
 
     // Enumerate existing configuration files, and do
     // syntax/semantic for all of them.

@@ -104,6 +104,9 @@ struct Workspace
     Module*          bootstrapModule;
     Module*          runtimeModule;
     SwagScope        swagScope;
+
+    atomic<int>      skippedModules = 0;
+    atomic<uint64_t> totalTime      = 0;
 };
 
 extern Workspace* g_Workspace;

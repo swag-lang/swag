@@ -1,7 +1,7 @@
 #pragma once
+#ifdef SWAG_STATS
 struct Stats
 {
-    int         numWorkers               = 0;
     atomic<int> numFiles                 = 0;
     atomic<int> numLines                 = 0;
     atomic<int> numModules               = 0;
@@ -12,14 +12,12 @@ struct Stats
     atomic<int> totalOptimsBC            = 0;
     atomic<int> totalConcreteTypes       = 0;
     atomic<int> totalConcreteStructTypes = 0;
-    atomic<int> skippedModules           = 0;
     atomic<int> numInitPtr               = 0;
     atomic<int> numInitFuncPtr           = 0;
     atomic<int> numNodes                 = 0;
     atomic<int> numTokens                = 0;
 
     atomic<uint64_t> readFilesTime             = 0;
-    atomic<uint64_t> totalTime                 = 0;
     atomic<uint64_t> cfgTime                   = 0;
     atomic<uint64_t> tokenizerTime             = 0;
     atomic<uint64_t> syntaxTime                = 0;
@@ -66,3 +64,4 @@ struct Stats
 };
 
 extern Stats g_Stats;
+#endif // SWAG_STATS

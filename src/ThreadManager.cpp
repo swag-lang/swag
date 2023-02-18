@@ -12,24 +12,21 @@ void ThreadManager::init()
 {
     initDefaultContext();
 
-    int numCores = std::thread::hardware_concurrency();
-    if (g_CommandLine.numCores == 0)
-        g_CommandLine.numCores = numCores;
-    int numWorkers     = g_CommandLine.numCores;
-    numWorkers         = max(1, numWorkers);
-    numWorkers         = min(numWorkers, numCores);
-    g_Stats.numWorkers = numWorkers;
+    uint32_t numCores = (uint32_t) std::thread::hardware_concurrency();
+    numWorkers        = g_CommandLine.numCores == 0 ? (uint32_t) std::thread::hardware_concurrency() : g_CommandLine.numCores;
+    numWorkers        = max(1, numWorkers);
+    numWorkers        = min(numWorkers, numCores);
 
-    queueJobs.affinity.resize(g_CommandLine.numCores);
-    queueJobsIO.affinity.resize(g_CommandLine.numCores);
-    queueJobsOpt.affinity.resize(g_CommandLine.numCores);
+    queueJobs.affinity.resize(g_ThreadMgr.numWorkers);
+    queueJobsIO.affinity.resize(g_ThreadMgr.numWorkers);
+    queueJobsOpt.affinity.resize(g_ThreadMgr.numWorkers);
 
     // When numWorkers is 1, then we do not want any worker thread. The main thread
     // will execute jobs by its own (otherwise the main thread will be suspended, and workers
     // do their job)
     if (numWorkers > 1)
     {
-        for (int i = 0; i < numWorkers; i++)
+        for (uint32_t i = 0; i < numWorkers; i++)
             workerThreads.push_back(new JobThread(i));
     }
 }
@@ -116,7 +113,7 @@ void ThreadManager::addJobNoLock(Job* job)
     }
 
     // Wakeup one thread
-    if (g_CommandLine.numCores != 1)
+    if (g_ThreadMgr.numWorkers != 1)
     {
         if (!availableThreads.empty())
         {
@@ -314,7 +311,7 @@ void ThreadManager::clearOptionalJobs()
         }
         queueJobsOpt.jobs.clear();
 
-        for (int i = 0; i < g_CommandLine.numCores; i++)
+        for (uint32_t i = 0; i < numWorkers; i++)
         {
             for (auto p : queueJobsOpt.affinity[i])
                 p->release();
@@ -335,7 +332,7 @@ void ThreadManager::waitEndJobsSync()
 void ThreadManager::waitEndJobs()
 {
     // If one core only, do the jobs right now, in order
-    if (g_CommandLine.numCores == 1)
+    if (g_ThreadMgr.numWorkers == 1)
     {
         waitEndJobsSync();
         return;

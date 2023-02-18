@@ -12,6 +12,7 @@
 #include "LanguageSpec.h"
 #include "SaveGenJob.h"
 #include "Parser.h"
+#include "ThreadManager.h"
 
 void Module::setup(const Utf8& moduleName, const Path& modulePath)
 {
@@ -23,11 +24,11 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
     compilerSegment.setup(SegmentKind::Compiler, this);
     tlsSegment.setup(SegmentKind::Tls, this);
 
-    contentJobGeneratedFile.resize(g_CommandLine.numCores);
-    countLinesGeneratedFile.set_size_clear(g_CommandLine.numCores);
+    contentJobGeneratedFile.resize(g_ThreadMgr.numWorkers);
+    countLinesGeneratedFile.set_size_clear(g_ThreadMgr.numWorkers);
 
-    compilerSegmentPerThread.set_size_clear(g_CommandLine.numCores);
-    for (int i = 0; i < g_CommandLine.numCores; i++)
+    compilerSegmentPerThread.set_size_clear(g_ThreadMgr.numWorkers);
+    for (uint32_t i = 0; i < g_ThreadMgr.numWorkers; i++)
     {
         compilerSegmentPerThread[i] = new DataSegment;
         compilerSegmentPerThread[i]->setup(SegmentKind::Compiler, this);
@@ -895,7 +896,7 @@ void Module::printStartBuilding(const BuildParameters& bp)
 {
     if (!backend->mustCompile)
     {
-        g_Stats.skippedModules += 1;
+        g_Workspace->skippedModules += 1;
     }
     else
     {

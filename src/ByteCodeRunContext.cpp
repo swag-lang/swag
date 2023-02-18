@@ -49,8 +49,9 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodebc)
         else
         {
             stack = (uint8_t*) Allocator::alloc(g_CommandLine.stackSizeBC);
-            if (g_CommandLine.stats)
-                g_Stats.memBcStack += g_CommandLine.stackSizeBC;
+#ifdef SWAG_STATS
+            g_Stats.memBcStack += g_CommandLine.stackSizeBC;
+#endif
         }
     }
 
@@ -71,7 +72,6 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodebc)
     g_ByteCodeStackTrace->steps.reserve(4096);
 
     maxRecurse = g_CommandLine.maxRecurse;
-    profile    = g_CommandLine.profile;
 
     curRC   = -1;
     firstRC = -1;

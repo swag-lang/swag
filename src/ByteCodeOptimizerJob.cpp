@@ -6,7 +6,9 @@
 
 JobResult ByteCodeOptimizerJob::execute()
 {
+#ifdef SWAG_STATS
     Timer tm(&g_Stats.optimBCTime);
+#endif
 
     optContext.module = module;
 

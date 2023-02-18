@@ -17,8 +17,12 @@ struct Timer
 
     void start(bool force)
     {
-        if (g_CommandLine.stats || force)
+#ifdef SWAG_STATS
+        timeBefore = OS::timerNow();
+#else
+        if (force)
             timeBefore = OS::timerNow();
+#endif
     }
 
     void stop()

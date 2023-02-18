@@ -341,8 +341,9 @@ bool Parser::generateAst()
     SWAG_ASSERT(module && sourceFile);
 
     // First do the setup that does not need the source file to be loaded
-    if (g_CommandLine.stats)
-        g_Stats.numFiles++;
+#ifdef SWAG_STATS
+    g_Stats.numFiles++;
+#endif
 
     // Setup root ast for file
     sourceFile->astRoot = Ast::newNode<AstNode>(this, AstNodeKind::File, sourceFile, module->astRoot);
@@ -442,8 +443,11 @@ bool Parser::generateAst()
     tokenizer.setup(context, sourceFile);
     sourceFile->duringSyntax = true;
 
+#ifdef SWAG_STATS
     Timer timer(&g_Stats.syntaxTime);
-    bool  ok = eatToken();
+#endif
+
+    bool ok = eatToken();
     while (true)
     {
         // If there's an error, then we must stop at syntax pass

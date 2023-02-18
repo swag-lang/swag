@@ -4,6 +4,7 @@
 #include "Os.h"
 #include "ErrorIds.h"
 #include "Report.h"
+#include "ThreadManager.h"
 
 const uint64_t ALLOCATOR_BLOCK_SIZE = 1024 * 1024;
 
@@ -12,7 +13,7 @@ const uint64_t MAGIC_ALLOC = 0xC0DEC0DEC0DEC0DE;
 const uint64_t MAGIC_FREE  = 0xCAFECAFECAFECAFE;
 #endif
 
-atomic<int>             g_CompilerAllocTh = 0;
+atomic<uint32_t>        g_CompilerAllocTh = 0;
 Mutex                   g_AllocatorMutex;
 thread_local Allocator* g_Allocator       = nullptr;
 Allocator*              g_SharedAllocator = nullptr;
@@ -22,8 +23,9 @@ void* operator new(size_t t)
     t      = Allocator::alignSize((int) t + sizeof(uint64_t));
     auto p = (uint64_t*) Allocator::alloc(t);
     *p     = (uint64_t) t;
-    if (g_CommandLine.stats)
-        g_Stats.memNew += t;
+#ifdef SWAG_STATS
+    g_Stats.memNew += t;
+#endif
     return p + 1;
 }
 
@@ -33,8 +35,9 @@ void operator delete(void* addr) noexcept
         return;
     auto p = (uint64_t*) addr;
     p--;
-    if (g_CommandLine.stats)
-        g_Stats.memNew -= *p;
+#ifdef SWAG_STATS
+    g_Stats.memNew -= *p;
+#endif
     return Allocator::free(p, *p);
 }
 
@@ -84,9 +87,11 @@ void* Allocator::tryFreeBlock(uint32_t maxCount, size_t size)
             }
         }
 
+#ifdef SWAG_STATS
+        g_Stats.wastedMemory -= size;
+#endif
+
         // The block has exactly the requested size. Just take it.
-        if (g_CommandLine.stats)
-            g_Stats.wastedMemory -= size;
         if (prevBlock)
             prevBlock->next = splitBlock;
         else
@@ -102,8 +107,10 @@ void* Allocator::useRealBucket(uint32_t bucket, size_t size)
     SWAG_ASSERT(bucket < MAX_FREE_BUCKETS);
     SWAG_ASSERT(freeBuckets[bucket]);
 
-    if (g_CommandLine.stats)
-        g_Stats.wastedMemory -= bucket * 8;
+#ifdef SWAG_STATS
+    g_Stats.wastedMemory -= bucket * 8;
+#endif
+
     auto result         = freeBuckets[bucket];
     freeBuckets[bucket] = *(void**) result;
     if (!freeBuckets[bucket])
@@ -128,8 +135,9 @@ void* Allocator::useBucket(uint32_t bucket, size_t size)
     *(void**) ptr             = freeBuckets[wastedBucket];
     freeBuckets[wastedBucket] = ptr;
     freeBucketsMask |= 1ULL << wastedBucket;
-    if (g_CommandLine.stats)
-        g_Stats.wastedMemory += wasted;
+#ifdef SWAG_STATS
+    g_Stats.wastedMemory += wasted;
+#endif
 
     return useRealBucket(bucket, size);
 }
@@ -179,11 +187,10 @@ void Allocator::allocateNewBlock(size_t size)
 
     currentData = lastBlock->data;
 
-    if (g_CommandLine.stats)
-    {
-        g_Stats.allocatorMemory += sizeof(AllocatorBlock) + lastBlock->allocated;
-        g_Stats.wastedMemory += lastBlock->allocated;
-    }
+#ifdef SWAG_STATS
+    g_Stats.allocatorMemory += sizeof(AllocatorBlock) + lastBlock->allocated;
+    g_Stats.wastedMemory += lastBlock->allocated;
+#endif
 }
 
 void* Allocator::bigAlloc(size_t size)
@@ -212,8 +219,9 @@ void* Allocator::bigAlloc(size_t size)
 
     currentData += size;
     lastBlock->maxUsed += size;
-    if (g_CommandLine.stats)
-        g_Stats.wastedMemory -= size;
+#ifdef SWAG_STATS
+    g_Stats.wastedMemory -= size;
+#endif
     return currentData - size;
 }
 
@@ -247,8 +255,9 @@ void Allocator::freeBlock(void* ptr, size_t size)
         return;
     SWAG_ASSERT(!(size & 7));
 
-    if (g_CommandLine.stats)
-        g_Stats.wastedMemory += size;
+#ifdef SWAG_STATS
+    g_Stats.wastedMemory += size;
+#endif
 
 #ifdef SWAG_DEV_MODE
     memset(ptr, 0xFE, size);
@@ -281,7 +290,7 @@ void Allocator::allocAllocator()
 
     // Allocator created by the tls of a user bytecode thread. In that case, we use
     // the same shared AllocatorImpl
-    if (g_CompilerAllocTh >= g_Stats.numWorkers && g_Stats.numWorkers)
+    if (g_CompilerAllocTh >= g_ThreadMgr.numWorkers && g_ThreadMgr.numWorkers)
     {
         ScopedLock lk(g_AllocatorMutex);
         if (!g_SharedAllocator)

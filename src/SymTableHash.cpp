@@ -70,8 +70,9 @@ void SymTableHash::add(SymbolName* data)
         allocated = 4;
         buffer    = (Entry*) Allocator::alloc(allocated * sizeof(Entry));
         memset(buffer, 0, allocated * sizeof(Entry));
-        if (g_CommandLine.stats)
-            g_Stats.memSymTable += allocated * sizeof(Entry);
+#ifdef SWAG_STATS
+        g_Stats.memSymTable += allocated * sizeof(Entry);
+#endif
     }
 
     // Need to grow the hash table, and add back the old values
@@ -99,11 +100,10 @@ void SymTableHash::add(SymbolName* data)
 
         Allocator::free(oldBuffer, oldAllocated * sizeof(Entry));
 
-        if (g_CommandLine.stats)
-        {
-            g_Stats.memSymTable -= oldAllocated * sizeof(Entry);
-            g_Stats.memSymTable += allocated * sizeof(Entry);
-        }
+#ifdef SWAG_STATS
+        g_Stats.memSymTable -= oldAllocated * sizeof(Entry);
+        g_Stats.memSymTable += allocated * sizeof(Entry);
+#endif
     }
 
     // Find a free slot

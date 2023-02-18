@@ -1527,7 +1527,10 @@ bool BackendX64::emitDebug(const BuildParameters& buildParameters)
     int   precompileIndex = buildParameters.precompileIndex;
     auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
-    auto  beforeCount     = concat.totalCount();
+
+#ifdef SWAG_STATS
+    auto beforeCount = concat.totalCount();
+#endif
 
     // .debug$S
     concat.align(16);
@@ -1560,7 +1563,8 @@ bool BackendX64::emitDebug(const BuildParameters& buildParameters)
         emitRelocationTable(pp.concat, pp.relocTableDBGSSection, pp.patchDBGSSectionFlags, pp.patchDBGSSectionRelocTableCount);
     }
 
-    if (g_CommandLine.stats)
-        g_Stats.sizeBackendDbg += concat.totalCount() - beforeCount;
+#ifdef SWAG_STATS
+    g_Stats.sizeBackendDbg += concat.totalCount() - beforeCount;
+#endif
     return true;
 }

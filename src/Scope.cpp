@@ -189,8 +189,9 @@ Scope* Scope::getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind
     SWAG_ASSERT(nodeOwner);
     newScope->owner = nodeOwner;
     newScope->name  = scopeName;
-    if (g_CommandLine.stats)
-        g_Stats.memScopes += sizeof(Scope);
+#ifdef SWAG_STATS
+    g_Stats.memScopes += sizeof(Scope);
+#endif
 
     addChildNoLock(newScope);
     return newScope;

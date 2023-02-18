@@ -15,8 +15,9 @@ Utf8::~Utf8()
 void Utf8::freeBuffer()
 {
     Allocator::free(buffer, allocated);
-    if (g_CommandLine.stats)
-        g_Stats.memUtf8 -= allocated;
+#ifdef SWAG_STATS
+    g_Stats.memUtf8 -= allocated;
+#endif
 }
 
 void Utf8::reset()
@@ -101,12 +102,13 @@ void Utf8::reserve(int newSize)
     auto newBuffer = (char*) Allocator::alloc(allocated);
     if (count)
         memcpy(newBuffer, buffer, count + 1);
-    if (g_CommandLine.stats)
-        g_Stats.memUtf8 += allocated;
 
     Allocator::free(buffer, lastAllocated);
-    if (g_CommandLine.stats)
-        g_Stats.memUtf8 -= lastAllocated;
+
+#ifdef SWAG_STATS
+    g_Stats.memUtf8 += allocated;
+    g_Stats.memUtf8 -= lastAllocated;
+#endif
 
     buffer = newBuffer;
 }
@@ -147,8 +149,10 @@ const char* Utf8::c_str() const
     auto buf  = (char*) Allocator::alloc(size);
     memcpy(buf, buffer, count);
     buf[count] = 0;
-    if (g_CommandLine.stats)
-        g_Stats.memUtf8CStr += size;
+
+#ifdef SWAG_STATS
+    g_Stats.memUtf8CStr += size;
+#endif
     return buf;
 }
 
@@ -478,8 +482,10 @@ void Utf8::makeLocal()
     memcpy(buf, buffer, count);
     buffer        = buf;
     buffer[count] = 0;
-    if (g_CommandLine.stats)
-        g_Stats.memUtf8 += allocated;
+
+#ifdef SWAG_STATS
+    g_Stats.memUtf8 += allocated;
+#endif
 }
 
 void Utf8::append(const char* txt, int len)

@@ -8,8 +8,10 @@
 
 JobResult BackendLLVMFunctionBodyJob::execute()
 {
+#ifdef SWAG_STATS
     Timer timer0{&g_Stats.prepOutputStage1TimeJob};
     Timer timer1{&g_Stats.prepOutputTimeJob_GenFunc};
+#endif
 
     BackendLLVM* bachendLLVM = (BackendLLVM*) backend;
 

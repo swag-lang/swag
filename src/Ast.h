@@ -55,11 +55,10 @@ namespace Ast
     T* newNode()
     {
         auto node = Allocator::alloc<T>();
-        if (g_CommandLine.stats)
-        {
-            g_Stats.numNodes++;
-            g_Stats.memNodes += Allocator::alignSize(sizeof(T));
-        }
+#ifdef SWAG_STATS
+        g_Stats.numNodes++;
+        g_Stats.memNodes += Allocator::alignSize(sizeof(T));
+#endif
 
         return node;
     }
@@ -69,11 +68,10 @@ namespace Ast
     {
         auto node = Allocator::alloc<T>();
         initNewNode(node, job, kind, sourceFile, parent, allocChilds);
-        if (g_CommandLine.stats)
-        {
-            g_Stats.numNodes++;
-            g_Stats.memNodes += Allocator::alignSize(sizeof(T));
-        }
+#ifdef SWAG_STATS
+        g_Stats.numNodes++;
+        g_Stats.memNodes += Allocator::alignSize(sizeof(T));
+#endif
         return node;
     }
 

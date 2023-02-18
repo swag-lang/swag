@@ -229,8 +229,9 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
     {
         if (ip->op == ByteCodeOp::Nop)
         {
-            if (g_CommandLine.stats)
-                g_Stats.totalOptimsBC++;
+#ifdef SWAG_STATS
+            g_Stats.totalOptimsBC++;
+#endif
             ip++;
             continue;
         }
@@ -398,7 +399,7 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
         uint32_t totalInstructions = 0;
         for (auto bc : module->byteCodeFunc)
             totalInstructions += bc->numInstructions;
-        totalInstructions /= (g_Stats.numWorkers * 4);
+        totalInstructions /= (g_ThreadMgr.numWorkers * 4);
         totalInstructions = max(totalInstructions, 1);
 
         int startIndex = 0;
