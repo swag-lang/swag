@@ -11,7 +11,7 @@ ByteCodeOpDesc g_ByteCodeOpDesc[] = {
 #include "ByteCodeOpList.h"
 };
 
-void ByteCode::releaseOut()
+void ByteCode::release()
 {
     auto s = Allocator::alignSize(maxInstructions * sizeof(ByteCodeInstruction));
     Allocator::free(out, s);

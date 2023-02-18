@@ -100,8 +100,7 @@ bool Module::flushCompilerMessages(JobContext* context, uint32_t pass, Job* job)
         }
     }
 
-    compilerMessages[pass].clear();
-    compilerMessages[pass].shrink_to_fit();
+    compilerMessages[pass].release();
     return true;
 }
 

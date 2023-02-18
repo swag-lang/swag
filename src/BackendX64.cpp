@@ -837,46 +837,32 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
 
     fflush(f);
     fclose(f);
+    OS::ensureFileIsWritten(filename.string().c_str());
 
-    // :MemFree
     pp.concat.release();
     pp.postConcat.release();
     pp.globalSegment.release();
     pp.stringSegment.release();
     pp.dbgTypeRecords.release();
-
-    pp.relocTableTextSection.table.clear();
-    pp.relocTableTextSection.table.shrink_to_fit();
-    pp.relocTableCSSection.table.clear();
-    pp.relocTableCSSection.table.shrink_to_fit();
-    pp.relocTableMSSection.table.clear();
-    pp.relocTableMSSection.table.shrink_to_fit();
-    pp.relocTableTSSection.table.clear();
-    pp.relocTableTSSection.table.shrink_to_fit();
-    pp.relocTableTLSSection.table.clear();
-    pp.relocTableTLSSection.table.shrink_to_fit();
-    pp.relocTablePDSection.table.clear();
-    pp.relocTablePDSection.table.shrink_to_fit();
-    pp.relocTableDBGSSection.table.clear();
-    pp.relocTableDBGSSection.table.shrink_to_fit();
-    pp.allSymbols.clear();
-    pp.allSymbols.shrink_to_fit();
-    pp.functions.clear();
-    pp.functions.shrink_to_fit();
-
+    pp.relocTableTextSection.table.release();
+    pp.relocTableCSSection.table.release();
+    pp.relocTableMSSection.table.release();
+    pp.relocTableTSSection.table.release();
+    pp.relocTableTLSSection.table.release();
+    pp.relocTablePDSection.table.release();
+    pp.relocTableDBGSSection.table.release();
+    pp.allSymbols.release();
+    pp.functions.release();
     pp.stringTable.release();
+    pp.directives.release();
+    pp.mapSymbols.release();
+    pp.globalStrings.release();
+    pp.dbgMapTypes.release();
+    pp.dbgMapPtrTypes.release();
+    pp.dbgMapRefTypes.release();
+    pp.dbgMapPtrPtrTypes.release();
+    pp.dbgMapTypesNames.release();
 
-    pp.directives.reset();
-
-    pp.mapSymbols.clear();
-    pp.globalStrings.clear();
-    pp.dbgMapTypes.clear();
-    pp.dbgMapPtrTypes.clear();
-    pp.dbgMapRefTypes.clear();
-    pp.dbgMapPtrPtrTypes.clear();
-    pp.dbgMapTypesNames.clear();
-
-    OS::ensureFileIsWritten(filename.string().c_str());
     return true;
 }
 

@@ -127,6 +127,24 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
     computePublicPath();
 }
 
+void Module::release()
+{
+    constantSegment.release();
+    compilerSegment.release();
+    mutableSegment.release();
+    bssSegment.release();
+    tlsSegment.release();
+
+    for (auto& b : byteCodeFunc)
+        b->release();
+
+    for (auto f : files)
+    {
+        if (f->astRoot)
+            f->astRoot->release();
+    }
+}
+
 void Module::computePublicPath()
 {
     if (kind == ModuleKind::BootStrap || kind == ModuleKind::Runtime)
@@ -483,18 +501,6 @@ void Module::inheritCfgFrom(Module* from)
     buildCfg.warnAsDisabled      = from->buildCfg.warnAsDisabled;
     buildCfg.warnDefaultDisabled = from->buildCfg.warnDefaultDisabled;
     buildCfg.warnDefaultErrors   = from->buildCfg.warnDefaultErrors;
-}
-
-void Module::release()
-{
-    constantSegment.release();
-    compilerSegment.release();
-    mutableSegment.release();
-    bssSegment.release();
-    tlsSegment.release();
-
-    for (auto& b : byteCodeFunc)
-        b->releaseOut();
 }
 
 void Module::addExportSourceFile(SourceFile* file)

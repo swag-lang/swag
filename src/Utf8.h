@@ -29,7 +29,7 @@ struct Utf8
 
     uint32_t    hash() const;
     void        freeBuffer();
-    void        reset();
+    void        release();
     void        reserve(int newSize);
     void        resize(int newSize);
     bool        empty() const;

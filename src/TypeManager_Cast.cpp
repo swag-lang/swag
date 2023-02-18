@@ -1949,7 +1949,7 @@ bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeI
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
         {
             if (fromNode->flags & AST_VALUE_COMPUTED)
-                fromNode->computedValue->text.reset();
+                fromNode->computedValue->text.release();
             fromNode->typeInfo       = toType;
             fromNode->castedTypeInfo = g_TypeMgr->typeInfoNull;
         }

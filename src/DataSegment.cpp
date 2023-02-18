@@ -441,12 +441,12 @@ void DataSegment::addInitPtrFunc(uint32_t offset, const Utf8& funcName)
     if (kind == SegmentKind::Compiler)
         return;
 
-    ScopedLock lk(mutexPtr);
-
-    initFuncPtr[offset] = funcName;
 #ifdef SWAG_STATS
     g_Stats.numInitFuncPtr++;
 #endif
+
+    ScopedLock lk(mutexPtr);
+    initFuncPtr[offset] = funcName;
 }
 
 bool DataSegment::readU64(Seek& seek, uint64_t& result)

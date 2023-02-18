@@ -41,4 +41,10 @@ struct Vector : public vector<T, StdAllocator<T>>
 
         return -1;
     }
+
+    void release() noexcept
+    {
+        this->~Vector<T>();
+        ::new (this) Vector<T>;
+    }
 };

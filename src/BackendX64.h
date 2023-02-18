@@ -27,6 +27,8 @@ struct BackendX64 : public Backend
         memset(perThread, 0, sizeof(perThread));
     }
 
+    void release();
+
     bool                        createRuntime(const BuildParameters& buildParameters);
     JobResult                   prepareOutput(int stage, const BuildParameters& buildParameters, Job* ownerJob) override;
     bool                        generateOutput(const BuildParameters& backendParameters) override;

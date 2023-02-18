@@ -20,7 +20,7 @@ void Utf8::freeBuffer()
 #endif
 }
 
-void Utf8::reset()
+void Utf8::release()
 {
     freeBuffer();
     buffer    = nullptr;
@@ -86,7 +86,7 @@ Utf8::Utf8(Utf8&& from)
     allocated   = from.allocated;
     buffer      = from.buffer;
     from.buffer = nullptr;
-    from.reset();
+    from.release();
 }
 
 void Utf8::reserve(int newSize)
@@ -184,13 +184,13 @@ void Utf8::operator=(const char* txt)
 
 void Utf8::operator=(Utf8&& from)
 {
-    reset();
+    release();
     count          = from.count;
     allocated      = from.allocated;
     buffer         = from.buffer;
     from.buffer    = nullptr;
     from.allocated = 0;
-    from.reset();
+    from.release();
 }
 
 void Utf8::operator=(const Utf8& other)
@@ -466,7 +466,7 @@ void Utf8::toUni16(VectorNative<uint16_t>& uni, int maxChars)
 
 void Utf8::setView(const char* txt, int len)
 {
-    reset();
+    release();
     buffer    = const_cast<char*>(txt);
     count     = len;
     allocated = 0;

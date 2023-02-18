@@ -128,7 +128,7 @@ struct ByteCode
 #endif
     }
 
-    void releaseOut();
+    void release();
 
     // clang-format off
     static uint32_t isCopyRBtoRA(ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[(int)inst->op].flags & OPFLAG_IS_COPY_RBRA; }
