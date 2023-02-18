@@ -391,7 +391,7 @@ bool Parser::doTupleOrAnonymousType(AstNode* parent, AstNode** result, bool isCo
     if (anonymousUnion)
         structNode->specFlags |= AST_SPEC_STRUCTDECL_UNION;
 
-    auto contentNode    = Ast::newNode(sourceFile, AstNodeKind::TupleContent, structNode, this);
+    auto contentNode    = Ast::newNode<AstNode>(this, AstNodeKind::TupleContent, sourceFile, structNode);
     structNode->content = contentNode;
     contentNode->allocateExtension(ExtensionKind::Semantic);
     contentNode->extension->semantic->semanticBeforeFct = SemanticJob::preResolveStructContent;

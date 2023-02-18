@@ -5,11 +5,6 @@
 #include "ByteCodeGenJob.h"
 #include "Parser.h"
 
-AstNode* Ast::newNode(SourceFile* sourceFile, AstNodeKind kind, AstNode* parent, Parser* parser)
-{
-    return Ast::newNode<AstNode>(parser, kind, sourceFile, parent);
-}
-
 AstInline* Ast::newInline(SourceFile* sourceFile, AstNode* parent, Parser* parser)
 {
     auto node = Ast::newNode<AstInline>(parser, AstNodeKind::Inline, sourceFile, parent);

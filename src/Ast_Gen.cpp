@@ -160,7 +160,7 @@ bool Ast::convertLiteralTupleToStructType(SemanticContext* context, TypeInfoStru
     structNode->allocateExtension(ExtensionKind::Semantic);
     structNode->extension->semantic->semanticBeforeFct = SemanticJob::preResolveGeneratedStruct;
 
-    auto contentNode    = Ast::newNode(sourceFile, AstNodeKind::TupleContent, structNode, nullptr);
+    auto contentNode    = Ast::newNode<AstNode>(nullptr, AstNodeKind::TupleContent, sourceFile, structNode);
     structNode->content = contentNode;
     contentNode->allocateExtension(ExtensionKind::Semantic);
     contentNode->extension->semantic->semanticBeforeFct = SemanticJob::preResolveStructContent;
@@ -317,7 +317,7 @@ bool Ast::convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* ass
     if (assignment->specFlags & AST_SPEC_EXPRLIST_FOR_CAPTURE)
         structNode->packing = 1;
 
-    auto contentNode = Ast::newNode(sourceFile, AstNodeKind::TupleContent, structNode);
+    auto contentNode = Ast::newNode<AstNode>(nullptr, AstNodeKind::TupleContent, sourceFile, structNode);
     contentNode->allocateExtension(ExtensionKind::Semantic);
     contentNode->extension->semantic->semanticBeforeFct = SemanticJob::preResolveStructContent;
     contentNode->addAlternativeScope(assignment->ownerScope);

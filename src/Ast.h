@@ -30,7 +30,6 @@ namespace Ast
     Vector<Utf8> computeGenericParametersReplacement(MapUtf8<TypeInfo*>& replace);
 
     Scope*             newScope(AstNode* owner, const Utf8& name, ScopeKind kind, Scope* parentScope, bool matchName = false);
-    AstNode*           newNode(SourceFile* sourceFile, AstNodeKind kind, AstNode* parent, Parser* parser = nullptr);
     AstStruct*         newStructDecl(SourceFile* sourceFile, AstNode* parent, Parser* parser = nullptr);
     AstNode*           newFuncDeclParams(SourceFile* sourceFile, AstNode* parent, Parser* parser = nullptr);
     AstFuncCallParams* newFuncCallGenParams(SourceFile* sourceFile, AstNode* parent, Parser* parser = nullptr);
