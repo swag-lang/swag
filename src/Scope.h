@@ -9,7 +9,7 @@ struct Scope;
 struct AstNode;
 struct AstDefer;
 
-enum class ScopeKind
+enum class ScopeKind : uint8_t
 {
     Invalid,
     Module,
@@ -30,10 +30,10 @@ enum class ScopeKind
     Macro,
 };
 
-const uint32_t SCOPE_FLAG_HAS_EXPORTS = 0x00000001;
-const uint32_t SCOPE_FILE             = 0x00000002;
-const uint32_t SCOPE_AUTO_GENERATED   = 0x00000004;
-const uint32_t SCOPE_IMPORTED         = 0x00000008;
+const uint8_t SCOPE_FLAG_HAS_EXPORTS = 0x00000001;
+const uint8_t SCOPE_FILE             = 0x00000002;
+const uint8_t SCOPE_AUTO_GENERATED   = 0x00000004;
+const uint8_t SCOPE_IMPORTED         = 0x00000008;
 
 struct ScopePublicSet
 {
@@ -77,10 +77,12 @@ struct Scope
     AstNode*        owner       = nullptr;
     Scope*          parentScope = nullptr;
 
-    ScopeKind kind           = ScopeKind::Invalid;
-    uint32_t  indexInParent  = UINT32_MAX;
-    uint32_t  flags          = 0;
-    uint32_t  startStackSize = 0;
-    uint32_t  backendStart   = 0;
-    uint32_t  backendEnd     = 0;
+    uint32_t indexInParent  = UINT32_MAX;
+    uint32_t startStackSize = 0;
+    uint32_t backendStart   = 0;
+    uint32_t backendEnd     = 0;
+
+    ScopeKind kind  = ScopeKind::Invalid;
+    uint8_t   flags = 0;
+    uint8_t   padding[6];
 };

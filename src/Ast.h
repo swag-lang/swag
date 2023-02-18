@@ -7,7 +7,7 @@ struct Utf8;
 struct Scope;
 struct Concat;
 struct TypeInfoEnum;
-enum class ScopeKind;
+enum class ScopeKind : uint8_t;
 
 namespace Ast
 {
