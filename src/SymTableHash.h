@@ -18,4 +18,5 @@ struct SymTableHash
     uint32_t allocated  = 0;
     uint32_t count      = 0;
     uint32_t fastReject = 0;
+    uint32_t maxLength  = 0;
 };

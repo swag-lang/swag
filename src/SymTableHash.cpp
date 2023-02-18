@@ -9,6 +9,7 @@ void SymTableHash::clone(SymTableHash* from)
     fastReject = from->fastReject;
     allocated  = from->allocated;
     count      = from->count;
+    maxLength  = from->maxLength;
     buffer     = (Entry*) Allocator::alloc(from->allocated * sizeof(Entry));
     memcpy(buffer, from->buffer, from->allocated * sizeof(Entry));
 }
@@ -20,6 +21,8 @@ SymbolName* SymTableHash::find(const Utf8& str, uint32_t crc)
 
     uint32_t a = (str[0] | 0x20) - 'a';
     if (a < 32 && !(fastReject & (1 << a)))
+        return nullptr;
+    if ((uint32_t) str.length() > maxLength)
         return nullptr;
 
     if (!crc)
@@ -54,6 +57,7 @@ void SymTableHash::addElem(SymbolName* data, uint32_t crc)
 
     buffer[idx].hash       = crc;
     buffer[idx].symbolName = data;
+    maxLength              = max(maxLength, (uint32_t) data->name.length());
     count += 1;
 }
 
