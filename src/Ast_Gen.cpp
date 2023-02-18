@@ -1,4 +1,3 @@
-
 #include "pch.h"
 #include "Ast.h"
 #include "SemanticJob.h"
@@ -405,8 +404,7 @@ bool Ast::convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* ass
         Ast::visit(structNode->content, [&](AstNode* n)
                    {
                         n->ownerStructScope = newScope;
-                        n->ownerScope = newScope; 
-            });
+                        n->ownerScope = newScope; });
 
         rootScope->symTable.registerSymbolNameNoLock(context, structNode, SymbolKind::Struct);
         Ast::addChildBack(sourceFile->astRoot, structNode);
