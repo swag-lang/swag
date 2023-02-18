@@ -9,6 +9,37 @@
 #include "JobThread.h"
 #include "TypeManager.h"
 
+bool Parser::error(AstNode* node, const Utf8& msg, const char* help, const char* hint)
+{
+    Diagnostic  diag{node, msg.c_str()};
+    Diagnostic* note = nullptr;
+    if (help)
+        note = new Diagnostic{help, DiagnosticLevel::Help};
+    if (hint)
+        diag.hint = hint;
+    return context->report(diag, note);
+}
+
+bool Parser::error(const Token& tk, const Utf8& msg, const char* help, const char* hint)
+{
+    Diagnostic  diag{sourceFile, tk, msg.c_str()};
+    Diagnostic* note = nullptr;
+    if (help)
+        note = new Diagnostic{help, DiagnosticLevel::Help};
+    if (hint)
+        diag.hint = hint;
+    return context->report(diag, note);
+}
+
+bool Parser::error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg, const char* help)
+{
+    Diagnostic  diag{sourceFile, startLocation, endLocation, msg.c_str()};
+    Diagnostic* note = nullptr;
+    if (help)
+        note = new Diagnostic{help, DiagnosticLevel::Help};
+    return context->report(diag, note);
+}
+
 bool Parser::invalidTokenError(InvalidTokenError kind)
 {
     switch (token.id)
@@ -92,37 +123,6 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
     }
 
     return error(token, msg, nullptr, hint);
-}
-
-bool Parser::error(AstNode* node, const Utf8& msg, const char* help, const char* hint)
-{
-    Diagnostic  diag{node, msg.c_str()};
-    Diagnostic* note = nullptr;
-    if (help)
-        note = new Diagnostic{help, DiagnosticLevel::Help};
-    if (hint)
-        diag.hint = hint;
-    return context->report(diag, note);
-}
-
-bool Parser::error(const Token& tk, const Utf8& msg, const char* help, const char* hint)
-{
-    Diagnostic  diag{sourceFile, tk, msg.c_str()};
-    Diagnostic* note = nullptr;
-    if (help)
-        note = new Diagnostic{help, DiagnosticLevel::Help};
-    if (hint)
-        diag.hint = hint;
-    return context->report(diag, note);
-}
-
-bool Parser::error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg, const char* help)
-{
-    Diagnostic  diag{sourceFile, startLocation, endLocation, msg.c_str()};
-    Diagnostic* note = nullptr;
-    if (help)
-        note = new Diagnostic{help, DiagnosticLevel::Help};
-    return context->report(diag, note);
 }
 
 bool Parser::eatToken()
