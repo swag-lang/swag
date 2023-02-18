@@ -35,7 +35,7 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
     if (typeVar->isListTuple() && !varDecl->type)
     {
         varDecl->semFlags |= AST_SEM_TUPLE_CONVERT;
-        SWAG_CHECK(convertLiteralTupleToStructDecl(context, varDecl, varDecl->assignment, &varDecl->type));
+        SWAG_CHECK(Ast::convertLiteralTupleToStructDecl(context, varDecl, varDecl->assignment, &varDecl->type));
         context->result = ContextResult::NewChilds;
         context->job->nodes.push_back(varDecl->type);
         return true;
@@ -85,181 +85,6 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
         return context->report(diag);
     }
 
-    return true;
-}
-
-AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstNode* parent, AstNode* assignment, TypeInfo* childType, bool raiseErrors)
-{
-    auto sourceFile = context->sourceFile;
-
-    // Tuple item is a lambda
-    if (childType->isLambdaClosure())
-    {
-        auto typeLambda             = CastTypeInfo<TypeInfoFuncAttr>(childType, TypeInfoKind::LambdaClosure);
-        auto typeExprLambda         = Ast::newNode<AstTypeLambda>(nullptr, AstNodeKind::TypeLambda, sourceFile, parent);
-        typeExprLambda->semanticFct = SemanticJob::resolveTypeLambdaClosure;
-        if (childType->flags & TYPEINFO_CAN_THROW)
-            typeExprLambda->specFlags |= AST_SPEC_TYPELAMBDA_CANTHROW;
-
-        // Parameters
-        auto params                = Ast::newNode<AstNode>(nullptr, AstNodeKind::FuncDeclParams, sourceFile, typeExprLambda);
-        typeExprLambda->parameters = params;
-        for (auto p : typeLambda->parameters)
-        {
-            auto typeParam = convertTypeToTypeExpression(context, params, assignment, p->typeInfo, raiseErrors);
-            if (!typeParam)
-                return nullptr;
-        }
-
-        // Return type
-        if (typeLambda->returnType && !typeLambda->returnType->isVoid())
-        {
-            typeExprLambda->returnType = convertTypeToTypeExpression(context, typeExprLambda, assignment, typeLambda->returnType, raiseErrors);
-            if (!typeExprLambda->returnType)
-                return nullptr;
-        }
-
-        return typeExprLambda;
-    }
-
-    auto typeExpression = Ast::newTypeExpression(sourceFile, parent);
-    typeExpression->flags |= AST_NO_BYTECODE_CHILDS;
-    if (childType->isConst())
-        typeExpression->typeFlags |= TYPEFLAG_IS_CONST;
-
-    if (childType->isListTuple())
-    {
-        AstStruct* inStructNode;
-        if (!convertLiteralTupleToStructDecl(context, assignment, &inStructNode))
-            return nullptr;
-        typeExpression->identifier = Ast::newIdentifierRef(sourceFile, inStructNode->token.text, typeExpression);
-        return typeExpression;
-    }
-
-    typeExpression->typeInfo = childType;
-    typeExpression->flags |= AST_NO_SEMANTIC;
-    return typeExpression;
-}
-
-bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* assignment, AstStruct** result)
-{
-    auto       sourceFile = context->sourceFile;
-    AstStruct* structNode = Ast::newStructDecl(sourceFile, nullptr);
-    *result               = structNode;
-    structNode->flags |= AST_GENERATED;
-
-    // A capture block is packed
-    if (assignment->specFlags & AST_SPEC_EXPRLIST_FOR_CAPTURE)
-        structNode->packing = 1;
-
-    auto contentNode = Ast::newNode(sourceFile, AstNodeKind::TupleContent, structNode);
-    contentNode->allocateExtension(ExtensionKind::Semantic);
-    contentNode->extension->semantic->semanticBeforeFct = SemanticJob::preResolveStructContent;
-    contentNode->addAlternativeScope(assignment->ownerScope);
-    structNode->content = contentNode;
-
-    auto typeList = CastTypeInfo<TypeInfoList>(assignment->typeInfo, TypeInfoKind::TypeListTuple);
-    Utf8 varName;
-    int  numChilds = (int) typeList->subTypes.size();
-    for (int idx = 0; idx < numChilds; idx++)
-    {
-        auto typeParam = typeList->subTypes[idx];
-        auto childType = TypeManager::concreteType(typeParam->typeInfo, CONCRETE_FUNC);
-        auto subAffect = assignment->childs[idx];
-
-        bool autoName = false;
-        // User specified name
-        if (!typeParam->name.empty())
-            varName = typeParam->name;
-
-        // If this is a single identifier, then we take the identifier name
-        else if (subAffect->kind == AstNodeKind::IdentifierRef && subAffect->childs.back()->kind == AstNodeKind::Identifier)
-        {
-            varName         = subAffect->childs.back()->token.text;
-            typeParam->name = varName;
-        }
-
-        // Otherwise generate an 'item<num>' name
-        else
-        {
-            autoName = true;
-            varName  = Fmt("item%u", idx);
-        }
-
-        auto paramNode = Ast::newVarDecl(sourceFile, varName, contentNode);
-        paramNode->inheritTokenLocation(subAffect);
-
-        if (autoName)
-        {
-            typeParam->flags |= TYPEINFOPARAM_AUTO_NAME;
-        }
-
-        paramNode->type = convertTypeToTypeExpression(context, paramNode, subAffect, childType, !(assignment->specFlags & AST_SPEC_EXPRLIST_FOR_CAPTURE));
-
-        // Special case for tuple capture. If type is null (type not compatible with tuple), put undefined,
-        // as we will catch the error later
-        if (!paramNode->type && assignment->specFlags & AST_SPEC_EXPRLIST_FOR_CAPTURE)
-        {
-            static AstNode fakeNode;
-            fakeNode.typeInfo = g_TypeMgr->typeInfoBool;
-            paramNode->type   = &fakeNode;
-        }
-
-        // This can avoid some initialization before assignment, because everything will be covered
-        // as this is a tuple
-        paramNode->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
-
-        if (!paramNode->type)
-            return false;
-    }
-
-    // Compute structure name
-    structNode->token.text = typeList->computeTupleName(context);
-
-    // Add struct type and scope
-    structNode->inheritOwners(sourceFile->astRoot);
-    Scope*     rootScope = structNode->ownerScope;
-    ScopedLock lk(rootScope->symTable.mutex);
-    auto       symbol = rootScope->symTable.findNoLock(structNode->token.text);
-    if (symbol)
-    {
-        // Must release struct node, it's useless
-    }
-    else
-    {
-        auto typeInfo        = makeType<TypeInfoStruct>();
-        auto newScope        = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, rootScope, true);
-        typeInfo->declNode   = structNode;
-        typeInfo->name       = structNode->token.text;
-        typeInfo->structName = structNode->token.text;
-        typeInfo->scope      = newScope;
-        typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE;
-        structNode->typeInfo = typeInfo;
-        structNode->scope    = newScope;
-        Ast::visit(structNode->content, [&](AstNode* n)
-                   {
-                       n->ownerStructScope = newScope;
-                       n->ownerScope       = newScope; });
-
-        rootScope->symTable.registerSymbolNameNoLock(context, structNode, SymbolKind::Struct);
-        Ast::addChildBack(sourceFile->astRoot, structNode);
-        SemanticJob::newJob(context->job->dependentJob, sourceFile, structNode, true);
-    }
-
-    return true;
-}
-
-bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* parent, AstNode* assignment, AstNode** result)
-{
-    auto       sourceFile = context->sourceFile;
-    AstStruct* structNode;
-    SWAG_CHECK(convertLiteralTupleToStructDecl(context, assignment, &structNode));
-
-    // Reference to that generated structure
-    auto typeExpression = Ast::newTypeExpression(sourceFile, parent);
-    typeExpression->flags |= AST_NO_BYTECODE_CHILDS | AST_GENERATED;
-    typeExpression->identifier = Ast::newIdentifierRef(sourceFile, structNode->token.text, typeExpression);
-    *result                    = typeExpression;
     return true;
 }
 
@@ -475,7 +300,7 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
     // the assignment, then do the semmantic on that type
     if (!varDecl->type)
     {
-        SWAG_CHECK(convertLiteralTupleToStructDecl(context, varDecl, assign, &varDecl->type));
+        SWAG_CHECK(Ast::convertLiteralTupleToStructDecl(context, varDecl, assign, &varDecl->type));
         varDecl->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
         context->result = ContextResult::Done;
         job->nodes.pop_back();

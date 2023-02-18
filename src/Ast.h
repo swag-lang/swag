@@ -45,6 +45,12 @@ namespace Ast
     AstInline*         newInline(SourceFile* sourceFile, AstNode* parent, Parser* parser = nullptr);
     AstNode*           newAffectOp(SourceFile* sourceFile, AstNode* parent, uint8_t opFlags, uint64_t attributeFlags, Parser* parser = nullptr);
 
+    bool     convertLiteralTupleToStructVar(SemanticContext* context, TypeInfo* toType, AstNode* fromNode, bool fromType = false);
+    bool     convertLiteralTupleToStructType(SemanticContext* context, TypeInfoStruct* toType, AstNode* fromNode);
+    AstNode* convertTypeToTypeExpression(SemanticContext* context, AstNode* parent, AstNode* assignment, TypeInfo* childType, bool raiseErrors = true);
+    bool     convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* assignment, AstStruct** result);
+    bool     convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* parent, AstNode* assignment, AstNode** result);
+
     template<typename T>
     T* newNode()
     {

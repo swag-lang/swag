@@ -36,7 +36,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         {
             nodeParam->semFlags |= AST_SEM_TUPLE_CONVERT;
             SWAG_ASSERT(nodeParam->typeInfo->isListTuple());
-            SWAG_CHECK(convertLiteralTupleToStructDecl(context, nodeParam, nodeParam->assignment, &nodeParam->type));
+            SWAG_CHECK(Ast::convertLiteralTupleToStructDecl(context, nodeParam, nodeParam->assignment, &nodeParam->type));
             context->result = ContextResult::NewChilds;
             context->job->nodes.push_back(nodeParam->type);
             return true;
@@ -1285,7 +1285,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
             auto concreteReturn      = TypeManager::concreteType(typeInfoFunc->returnType);
             if (concreteReturn->isListTuple())
             {
-                SWAG_CHECK(convertLiteralTupleToStructDecl(context, funcNode->content, node->childs.front(), &funcNode->returnType));
+                SWAG_CHECK(Ast::convertLiteralTupleToStructDecl(context, funcNode->content, node->childs.front(), &funcNode->returnType));
                 funcNode->specFlags |= AST_SPEC_FUNCDECL_FORCE_LATE_REGISTER;
                 Ast::setForceConstType(funcNode->returnType);
                 context->job->nodes.push_back(funcNode->returnType);
