@@ -67,8 +67,13 @@ namespace Ast
     template<typename T>
     T* newNode(Parser* job, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent, uint32_t allocChilds = 0)
     {
-        auto node = newNode<T>();
+        auto node = Allocator::alloc<T>();
         initNewNode(node, job, kind, sourceFile, parent, allocChilds);
+        if (g_CommandLine.stats)
+        {
+            g_Stats.numNodes++;
+            g_Stats.memNodes += Allocator::alignSize(sizeof(T));
+        }
         return node;
     }
 
