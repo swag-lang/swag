@@ -50,6 +50,7 @@ namespace Ast
     AstNode* convertTypeToTypeExpression(SemanticContext* context, AstNode* parent, AstNode* assignment, TypeInfo* childType, bool raiseErrors = true);
     bool     convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* assignment, AstStruct** result);
     bool     convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* parent, AstNode* assignment, AstNode** result);
+    bool     convertStructParamsToTmpVar(SemanticContext* context, AstIdentifier* identifier);
 
     template<typename T>
     T* newNode()

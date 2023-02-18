@@ -9,6 +9,8 @@
 #include "ErrorIds.h"
 #include "TypeManager.h"
 
+atomic<int> g_UniqueID;
+
 bool Ast::convertLiteralTupleToStructVar(SemanticContext* context, TypeInfo* toType, AstNode* fromNode, bool fromType)
 {
     if (fromNode->doneFlags & AST_DONE_STRUCT_CONVERT)
@@ -402,8 +404,9 @@ bool Ast::convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* ass
         structNode->scope    = newScope;
         Ast::visit(structNode->content, [&](AstNode* n)
                    {
-                n->ownerStructScope = newScope;
-        n->ownerScope = newScope; });
+                        n->ownerStructScope = newScope;
+                        n->ownerScope = newScope; 
+            });
 
         rootScope->symTable.registerSymbolNameNoLock(context, structNode, SymbolKind::Struct);
         Ast::addChildBack(sourceFile->astRoot, structNode);
@@ -424,5 +427,80 @@ bool Ast::convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* par
     typeExpression->flags |= AST_NO_BYTECODE_CHILDS | AST_GENERATED;
     typeExpression->identifier = Ast::newIdentifierRef(sourceFile, structNode->token.text, typeExpression);
     *result                    = typeExpression;
+    return true;
+}
+
+bool Ast::convertStructParamsToTmpVar(SemanticContext* context, AstIdentifier* identifier)
+{
+    auto sourceFile = identifier->sourceFile;
+    auto callP      = identifier->callParameters;
+    identifier->flags |= AST_R_VALUE | AST_GENERATED | AST_NO_BYTECODE;
+
+    // Be sure it's the NAME{} syntax
+    if (!(identifier->callParameters->flags & AST_CALL_FOR_STRUCT))
+        return context->report({callP, Fmt(Err(Syn0128), identifier->typeInfo->name.c_str())});
+
+    auto varParent = identifier->identifierRef()->parent;
+    while (varParent->kind == AstNodeKind::ExpressionList)
+        varParent = varParent->parent;
+
+    // Declare a variable
+    auto varNode = Ast::newVarDecl(sourceFile, Fmt("__1tmp_%d", g_UniqueID.fetch_add(1)), varParent);
+
+    // Inherit alternative scopes.
+    if (identifier->parent->extension && identifier->parent->extension->misc)
+        varNode->addAlternativeScopes(identifier->parent->extension->misc->alternativeScopes);
+
+    // If we are in a const declaration, that temporary variable should be a const too...
+    if (identifier->parent->parent->kind == AstNodeKind::ConstDecl)
+        varNode->kind = AstNodeKind::ConstDecl;
+
+    // At global scope, this should be a constant declaration, not a variable, as we cannot assign a global variable to
+    // another global variable at compile time
+    else if (identifier->ownerScope->isGlobalOrImpl())
+        varNode->kind = AstNodeKind::ConstDecl;
+
+    auto typeNode = Ast::newTypeExpression(sourceFile, varNode);
+    typeNode->flags |= AST_HAS_STRUCT_PARAMETERS;
+    varNode->flags |= AST_GENERATED;
+    varNode->type = typeNode;
+    CloneContext cloneContext;
+    cloneContext.parent     = typeNode;
+    cloneContext.cloneFlags = CLONE_RAW;
+    typeNode->identifier    = identifier->identifierRef()->clone(cloneContext);
+    auto back               = CastAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
+    back->flags &= ~AST_NO_BYTECODE;
+    back->flags |= AST_IN_TYPE_VAR_DECLARATION;
+
+    // Call parameters have already been evaluated, so do not reevaluate them again
+    back->callParameters->flags |= AST_NO_SEMANTIC;
+
+    // :DupGen
+    // Type has already been evaluated
+    typeNode->identifier->flags |= AST_NO_SEMANTIC;
+
+    // If this is in a return expression, then force the identifier type to be retval
+    if (context->node->parent && context->node->parent->inSimpleReturn())
+        typeNode->typeFlags |= TYPEFLAG_RETVAL;
+
+    // And make a reference to that variable
+    auto identifierRef = identifier->identifierRef();
+    identifierRef->childs.clear();
+    auto idNode = Ast::newIdentifier(sourceFile, varNode->token.text, identifierRef, identifierRef);
+    idNode->flags |= AST_R_VALUE | AST_TRANSIENT;
+
+    // Reset parsing
+    identifierRef->startScope = nullptr;
+
+    // The variable will be inserted after its reference (below), so we need to inverse the order of evaluation.
+    // Seems a little bit like a hack. Not sure this will always work.
+    varParent->flags |= AST_REVERSE_SEMANTIC;
+
+    // Add the 2 nodes to the semantic
+    context->job->nodes.pop_back();
+    context->job->nodes.push_back(idNode);
+    context->job->nodes.push_back(varNode);
+    context->result = ContextResult::NewChilds;
+
     return true;
 }

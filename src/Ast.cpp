@@ -4,8 +4,6 @@
 #include "TypeManager.h"
 #include "Parser.h"
 
-atomic<int> g_UniqueID;
-
 void Ast::initNewNode(AstNode* node, Parser* parser, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent, uint32_t allocChilds = 0)
 {
     node->kind       = kind;

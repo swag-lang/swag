@@ -1331,7 +1331,7 @@ AstNode* AstInline::clone(CloneContext& context)
     // Is this correct ? Seems a little wierd, but that way we do not have to copy the parametersScope
     // content, which is not really possible for now (12/07/2021) (i.e. no way to copy already registered symbols in the scope).
     // Because it can happen that an inline block already solved is copied.
-    // For example because of createTmpVarStruct, with inline calls as parameters: titi(A{round(6)}) => round already inlined.
+    // For example because of convertStructParamsToTmpVar, with inline calls as parameters: titi(A{round(6)}) => round already inlined.
     // I guess one day this will hit me in the face...
     newNode->parametersScope = parametersScope;
 
