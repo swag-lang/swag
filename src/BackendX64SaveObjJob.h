@@ -14,4 +14,3 @@ struct BackendX64SaveObjJob : public Job
 
     ModulePrepOutputStage1Job* prepJob;
 };
-

@@ -114,18 +114,18 @@ void LanguageSpec::setupNames()
     name_Backend              = "Backend";
     name_Swag_CompilerMsgMask = "Swag.CompilerMsgMask";
 
-    name_export       = "export";
-    name_generated    = "generated";
-    name_skip         = "skip";
-    name_testpass     = "testpass";
-    name_lexer        = "lexer";
-    name_syntax       = "syntax";
-    name_semantic     = "semantic";
-    name_backend      = "backend";
-    name_testerror    = "testerror";
-    name_testwarning  = "testwarning";
-    name_location     = "location";
-    name_version      = "version";
+    name_export      = "export";
+    name_generated   = "generated";
+    name_skip        = "skip";
+    name_testpass    = "testpass";
+    name_lexer       = "lexer";
+    name_syntax      = "syntax";
+    name_semantic    = "semantic";
+    name_backend     = "backend";
+    name_testerror   = "testerror";
+    name_testwarning = "testwarning";
+    name_location    = "location";
+    name_version     = "version";
 
     name_safe    = "safe";
     name_small   = "small";

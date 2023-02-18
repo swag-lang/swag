@@ -67,7 +67,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
     {
         auto nodeParam        = CastAst<AstVarDecl>(param, AstNodeKind::FuncDeclParam);
         auto funcParam        = g_TypeMgr->makeParam();
-        funcParam->name = param->token.text;
+        funcParam->name       = param->token.text;
         funcParam->typeInfo   = param->typeInfo;
         funcParam->index      = index++;
         funcParam->declNode   = nodeParam;
@@ -1713,7 +1713,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
                         {
                             if (alias.text == r.second)
                             {
-                                Diagnostic diag{ id, alias, Fmt(Err(Err0780), alias.ctext()) };
+                                Diagnostic diag{id, alias, Fmt(Err(Err0780), alias.ctext())};
                                 diag.hint = Hnt(Hnt0026);
                                 return context->report(diag);
                             }

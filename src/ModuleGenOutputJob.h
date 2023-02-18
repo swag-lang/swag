@@ -16,4 +16,3 @@ struct ModuleGenOutputJob : public Job
     condition_variable* condVar   = nullptr;
     mutex*              mutexDone = nullptr;
 };
-

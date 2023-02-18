@@ -9,4 +9,3 @@ struct ModuleRunJob : public Job
 
     BuildParameters buildParameters;
 };
-

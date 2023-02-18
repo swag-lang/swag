@@ -21,7 +21,7 @@ struct Scoped
     }
 
     Parser* savedJob;
-    Scope*     savedScope;
+    Scope*  savedScope;
 };
 
 struct ScopedBreakable
@@ -38,7 +38,7 @@ struct ScopedBreakable
         savedJob->currentBreakable = savedNode;
     }
 
-    Parser*    savedJob;
+    Parser*       savedJob;
     AstBreakable* savedNode;
 };
 
@@ -56,7 +56,7 @@ struct ScopedTryCatchAssume
         savedJob->currentTryCatchAssume = savedNode;
     }
 
-    Parser*         savedJob;
+    Parser*            savedJob;
     AstTryCatchAssume* savedNode;
 };
 
@@ -74,7 +74,7 @@ struct ScopedFct
         savedJob->currentFct = savedFct;
     }
 
-    Parser*   savedJob;
+    Parser*      savedJob;
     AstFuncDecl* savedFct;
 };
 
@@ -92,7 +92,7 @@ struct ScopedCompilerIfBlock
         savedJob->currentCompilerIfBlock = savedIf;
     }
 
-    Parser*          savedJob;
+    Parser*             savedJob;
     AstCompilerIfBlock* savedIf;
 };
 
@@ -110,8 +110,8 @@ struct ScopedFlags
         savedJob->currentFlags = savedFlags;
     }
 
-    Parser* savedJob;
-    uint64_t   savedFlags;
+    Parser*  savedJob;
+    uint64_t savedFlags;
 };
 
 struct ScopedContextual
@@ -128,8 +128,8 @@ struct ScopedContextual
         (*savedCounter)--;
     }
 
-    Parser* savedJob;
-    uint32_t*  savedCounter;
+    Parser*   savedJob;
+    uint32_t* savedCounter;
 };
 
 struct ScopedStruct
@@ -147,7 +147,7 @@ struct ScopedStruct
     }
 
     Parser* savedJob;
-    Scope*     savedStruct;
+    Scope*  savedStruct;
 };
 
 struct ScopedSelfStruct
@@ -165,7 +165,7 @@ struct ScopedSelfStruct
     }
 
     Parser* savedJob;
-    Scope*     savedStruct;
+    Scope*  savedStruct;
 };
 
 struct ScopedLocation
@@ -185,6 +185,6 @@ struct ScopedLocation
     }
 
     Parser* savedJob;
-    Token      myToken;
-    Token*     savedToken;
+    Token   myToken;
+    Token*  savedToken;
 };

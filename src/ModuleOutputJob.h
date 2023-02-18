@@ -19,4 +19,3 @@ struct ModuleOutputJob : public Job
     JobResult           execute() override;
     ModuleOutputJobPass pass = ModuleOutputJobPass::Init;
 };
-

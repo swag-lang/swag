@@ -7,4 +7,3 @@ struct ModuleExportJob : public Job
     JobResult execute() override;
     Backend*  backend = nullptr;
 };
-

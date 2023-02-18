@@ -14,16 +14,16 @@ static llvm::DILocation* debugLocGet(unsigned Line, unsigned Col, const llvm::MD
 
 void BackendLLVMDbg::setup(BackendLLVM* m, llvm::Module* modu)
 {
-    llvm             = m;
-    isOptimized      = m->module->buildParameters.buildCfg->backendOptimizeSpeed || m->module->buildParameters.buildCfg->backendOptimizeSize;
-    dbgBuilder       = new llvm::DIBuilder(*modu, true);
-    llvmModule       = modu;
-    llvmContext      = &modu->getContext();
-    mainFile         = dbgBuilder->createFile("<stdin>", "c:/");
-    Path expPath = m->exportFilePath;
-    exportFile       = dbgBuilder->createFile(m->exportFileName.string(), expPath.parent_path().string());
-    Utf8 compiler    = Fmt("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
-    compileUnit      = dbgBuilder->createCompileUnit(llvm::dwarf::DW_LANG_C99,
+    llvm          = m;
+    isOptimized   = m->module->buildParameters.buildCfg->backendOptimizeSpeed || m->module->buildParameters.buildCfg->backendOptimizeSize;
+    dbgBuilder    = new llvm::DIBuilder(*modu, true);
+    llvmModule    = modu;
+    llvmContext   = &modu->getContext();
+    mainFile      = dbgBuilder->createFile("<stdin>", "c:/");
+    Path expPath  = m->exportFilePath;
+    exportFile    = dbgBuilder->createFile(m->exportFileName.string(), expPath.parent_path().string());
+    Utf8 compiler = Fmt("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
+    compileUnit   = dbgBuilder->createCompileUnit(llvm::dwarf::DW_LANG_C99,
                                                 mainFile,
                                                 compiler.c_str(),
                                                 isOptimized,
@@ -84,7 +84,7 @@ llvm::DIFile* BackendLLVMDbg::getOrCreateFile(SourceFile* file)
     if (it != mapFiles.end())
         return it->second;
 
-    Path      filePath = file->path;
+    Path          filePath = file->path;
     llvm::DIFile* dbgfile  = dbgBuilder->createFile(filePath.filename().string(), filePath.parent_path().string());
     mapFiles[file->path]   = dbgfile;
     return dbgfile;
@@ -502,7 +502,7 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
 
                 dbgBuilder->insertDeclare(value, var, dbgBuilder->createExpression(), location, pp.builder->GetInsertBlock());
 
-                if (typeParam->isSelf()  && child->token.text == "self")
+                if (typeParam->isSelf() && child->token.text == "self")
                 {
                     var = dbgBuilder->createParameterVariable(scope, "this", idxParam + 1, file, loc.line + 1, type, !isOptimized, llvm::DINode::FlagObjectPointer);
                     dbgBuilder->insertDeclare(value, var, dbgBuilder->createExpression(), location, pp.builder->GetInsertBlock());

@@ -6,4 +6,3 @@ struct ModuleSemanticJob : public Job
 {
     JobResult execute() override;
 };
-

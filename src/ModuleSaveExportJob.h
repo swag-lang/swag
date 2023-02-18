@@ -11,4 +11,3 @@ struct ModuleSaveExportJob : public Job
 
     JobResult execute() override;
 };
-

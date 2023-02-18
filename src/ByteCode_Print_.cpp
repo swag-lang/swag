@@ -360,7 +360,7 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     case ByteCodeOp::ForeignCallPop:
     {
         auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
-        tmp      = Utf8::truncateDisplay(funcNode->token.text, 30);
+        tmp           = Utf8::truncateDisplay(funcNode->token.text, 30);
         g_Log.print(tmp);
         column += tmp.length();
         break;

@@ -11,4 +11,3 @@ struct BackendX64FunctionBodyJob : public BackendFunctionBodyJobBase
         Allocator::free<BackendX64FunctionBodyJob>(this);
     }
 };
-
