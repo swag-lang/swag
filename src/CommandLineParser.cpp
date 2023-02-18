@@ -9,9 +9,6 @@
 void CommandLineParser::setup(CommandLine* cmdLine)
 {
     // clang-format off
-#ifdef SWAG_STATS
-    addArg("all",            "--stats",                nullptr,    CommandLineType::EnumInt,       &cmdLine->statsWhat, "none|all|count|mem|time|module", "[stats] display statistics at the end");
-#endif
     addArg("all",            "--silent",               "-s",       CommandLineType::Bool,          &cmdLine->silent, nullptr, "do not log messages");
     addArg("all",            "--colors",               nullptr,    CommandLineType::Bool,          &cmdLine->logColors, nullptr, "log messages with colors");
                                                                                                    

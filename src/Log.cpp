@@ -104,9 +104,13 @@ void Log::printHeaderDot(const Utf8& header, const Utf8& message, LogColor heade
 
     print(" ");
     setColor(msgColor);
-    print(message);
-    if (message.back() != '\n')
-        eol();
+
+    if (!message.empty())
+    {
+        print(message);
+        if (message.back() != '\n')
+            eol();
+    }
 }
 
 void Log::printHeaderCentered(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor)

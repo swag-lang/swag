@@ -273,7 +273,6 @@ struct Module
     uint32_t    modulesSliceOffset          = UINT32_MAX;
     uint32_t    typesSliceOffset            = UINT32_MAX;
     uint32_t    globalVarsToDropSliceOffset = UINT32_MAX;
-    uint32_t    numKickedFunc               = 0;
     int         optimPass                   = 0;
     atomic<int> optimNeedRestart            = 0;
     atomic<int> numCompilerFunctions        = 0;

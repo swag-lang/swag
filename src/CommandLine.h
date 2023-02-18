@@ -12,16 +12,6 @@ enum class BuildPass
     Full,
 };
 
-enum class StatsWhat
-{
-    None,
-    All,
-    Count,
-    Memory,
-    Time,
-    Module,
-};
-
 struct CommandLine
 {
     // Compiler
@@ -71,11 +61,6 @@ struct CommandLine
     pair<void*, void*>         userArgumentsSlice;
 
     // Display
-#ifdef SWAG_STATS
-    StatsWhat statsWhat = StatsWhat::None;
-    bool      stats     = false;
-#endif
-
     bool silent                = false;
     bool logColors             = true;
     bool verbose               = false;

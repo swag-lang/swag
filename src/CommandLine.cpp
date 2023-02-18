@@ -32,12 +32,6 @@ bool CommandLine::check()
     if (verboseCmdLine || verbosePath || verboseLink || verboseTestErrors || verboseConcreteTypes || verboseStages)
         verbose = true;
 
-#ifdef SWAG_STATS
-    // Stats
-    if (statsWhat != StatsWhat::None)
-        stats = true;
-#endif
-
     // Check special backend X64
     if (backendGenType == BackendGenType::X64)
     {
