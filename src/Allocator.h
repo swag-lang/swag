@@ -1,8 +1,6 @@
 #pragma once
-const uint32_t ALLOCATOR_MAX_SIZE_BUCKETS = 512;
+const uint32_t ALLOCATOR_MAX_SIZE_BUCKETS = 4096;
 const uint32_t ALLOCATOR_MAX_FREE_BUCKETS = ALLOCATOR_MAX_SIZE_BUCKETS / 8;
-const uint64_t ALLOCATOR_PAGE_SIZE        = 1024 * 1024;
-const uint64_t ALLOCATOR_BIG_ALLOC        = ALLOCATOR_PAGE_SIZE / 2;
 
 struct AllocatorPage
 {
@@ -25,7 +23,7 @@ struct Allocator
     void  freeBlock(void*, size_t size);
 
     void* useRealBucket(uint32_t bucket, size_t size);
-    void* useBucket(uint32_t bucket, size_t size);
+    void  setFirstFreeBlock(AllocatorFreeBlock* block);
     void* tryFreeBlock(size_t size);
 
     template<typename T>
@@ -61,7 +59,6 @@ struct Allocator
     AllocatorPage*      lastBlock                               = nullptr;
     uint8_t*            currentData                             = nullptr;
     void*               freeBuckets[ALLOCATOR_MAX_FREE_BUCKETS] = {0};
-    uint64_t            freeBucketsMask                         = 0;
     bool                shared                                  = false;
 };
 

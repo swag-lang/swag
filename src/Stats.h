@@ -34,7 +34,7 @@ struct Stats
     atomic<uint64_t> runtimeTime               = 0;
     atomic<uint64_t> outputDbgTime             = 0;
 
-    atomic<size_t> allocatorMemory = 0;
+    atomic<size_t> allocatedMemory = 0;
     atomic<size_t> wastedMemory    = 0;
     atomic<size_t> memNodes        = 0;
     atomic<size_t> memNodesExt     = 0;

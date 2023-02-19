@@ -67,7 +67,7 @@ void Stats::print()
     g_Log.eol();
 
     /////////////////////////
-    g_Log.messageHeaderDot("mem total", Fmt("%s", Utf8::toNiceSize(allocatorMemory.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
+    g_Log.messageHeaderDot("mem total", Fmt("%s", Utf8::toNiceSize(allocatedMemory.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
     g_Log.messageHeaderDot("mem wasted", Fmt("%s", Utf8::toNiceSize(wastedMemory.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
     g_Log.eol();
     g_Log.messageHeaderDot("mem nodes", Fmt("%s", Utf8::toNiceSize(memNodes.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
