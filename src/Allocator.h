@@ -1,7 +1,8 @@
 #pragma once
-const uint32_t MAX_SIZE_BUCKETS     = 512;
-const uint32_t MAX_FREE_BUCKETS     = MAX_SIZE_BUCKETS / 8;
-const uint64_t ALLOCATOR_BLOCK_SIZE = 1024 * 1024;
+const uint32_t ALLOCATOR_MAX_SIZE_BUCKETS = 512;
+const uint32_t ALLOCATOR_MAX_FREE_BUCKETS = ALLOCATOR_MAX_SIZE_BUCKETS / 8;
+const uint64_t ALLOCATOR_PAGE_SIZE        = 1024 * 1024;
+const uint64_t ALLOCATOR_BIG_ALLOC        = ALLOCATOR_PAGE_SIZE / 2;
 
 struct AllocatorPage
 {
@@ -25,7 +26,7 @@ struct Allocator
 
     void* useRealBucket(uint32_t bucket, size_t size);
     void* useBucket(uint32_t bucket, size_t size);
-    void* tryFreeBlock(uint32_t maxCount, size_t size);
+    void* tryFreeBlock(size_t size);
 
     template<typename T>
     static T* alloc()
@@ -56,12 +57,15 @@ struct Allocator
     static uint8_t* checkUserBlock(uint8_t* userAddr, uint64_t userSize, uint64_t marker);
 #endif
 
-    AllocatorFreeBlock* firstFreeBlock                = nullptr;
-    AllocatorPage*      lastBlock                     = nullptr;
-    uint8_t*            currentData                   = nullptr;
-    void*               freeBuckets[MAX_FREE_BUCKETS] = {0};
-    uint64_t            freeBucketsMask               = 0;
-    bool                shared                        = false;
+    AllocatorFreeBlock* firstFreeBlock                          = nullptr;
+    AllocatorPage*      lastBlock                               = nullptr;
+    uint8_t*            currentData                             = nullptr;
+    void*               freeBuckets[ALLOCATOR_MAX_FREE_BUCKETS] = {0};
+    uint32_t            sizeBuckets[ALLOCATOR_MAX_FREE_BUCKETS] = {0};
+    uint64_t            freeBucketsMask                         = 0;
+    uint64_t            wastedInBuckets                         = 0;
+    uint64_t            wastedInFreeBlocks                      = 0;
+    bool                shared                                  = false;
 };
 
 extern atomic<uint32_t>        g_CompilerAllocTh;
