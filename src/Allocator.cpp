@@ -194,11 +194,8 @@ void* Allocator::tryFreeBlock(size_t size)
             {
                 auto next           = freeBuckets[bucket];
                 freeBuckets[bucket] = split;
-                sizeBuckets[bucket]++;
                 freeBucketsMask |= 1ULL << bucket;
                 *(void**) freeBuckets[bucket] = next;
-                wastedInFreeBlocks -= remainSize;
-                wastedInBuckets += remainSize;
             }
 
             // The remaining block is too big to fit.
@@ -214,7 +211,6 @@ void* Allocator::tryFreeBlock(size_t size)
 #ifdef SWAG_STATS
         g_Stats.wastedMemory -= size;
 #endif
-        wastedInFreeBlocks -= size;
 
         // The block has exactly the requested size. Just take it.
         if (prevBlock)
@@ -234,7 +230,6 @@ void* Allocator::useRealBucket(uint32_t bucket, size_t size)
 
     auto result         = freeBuckets[bucket];
     freeBuckets[bucket] = *(void**) result;
-    sizeBuckets[bucket]--;
 
     if (!freeBuckets[bucket])
     {
@@ -245,7 +240,6 @@ void* Allocator::useRealBucket(uint32_t bucket, size_t size)
 #ifdef SWAG_STATS
     g_Stats.wastedMemory -= size;
 #endif
-    wastedInBuckets -= size;
 
     return result;
 }
@@ -263,7 +257,6 @@ void* Allocator::useBucket(uint32_t bucket, size_t size)
     auto ptr                  = (int8_t*) freeBuckets[bucket] + size;
     *(void**) ptr             = freeBuckets[wastedBucket];
     freeBuckets[wastedBucket] = ptr;
-    sizeBuckets[wastedBucket]++;
     freeBucketsMask |= 1ULL << wastedBucket;
 
     return useRealBucket(bucket, size);
@@ -284,10 +277,8 @@ void Allocator::newPage(size_t size)
                 auto bucket         = remain / 8;
                 auto next           = freeBuckets[bucket];
                 freeBuckets[bucket] = lastBlock->data + lastBlock->maxUsed;
-                sizeBuckets[bucket]++;
                 *(void**) freeBuckets[bucket] = next;
                 freeBucketsMask |= 1ULL << bucket;
-                wastedInBuckets += remain;
             }
             else
             {
@@ -295,7 +286,6 @@ void Allocator::newPage(size_t size)
                 freeBlock->size = remain;
                 freeBlock->next = firstFreeBlock;
                 firstFreeBlock  = freeBlock;
-                wastedInFreeBlocks += remain;
             }
         }
     }
@@ -398,9 +388,7 @@ void Allocator::freeBlock(void* ptr, size_t size)
         auto bucket         = size / 8;
         *(void**) ptr       = freeBuckets[bucket];
         freeBuckets[bucket] = ptr;
-        sizeBuckets[bucket]++;
         freeBucketsMask |= 1ULL << bucket;
-        wastedInBuckets += size;
     }
     else
     {
@@ -408,6 +396,5 @@ void Allocator::freeBlock(void* ptr, size_t size)
         freeBlock->size = size;
         freeBlock->next = firstFreeBlock;
         firstFreeBlock  = freeBlock;
-        wastedInFreeBlocks += size;
     }
 }

@@ -61,10 +61,7 @@ struct Allocator
     AllocatorPage*      lastBlock                               = nullptr;
     uint8_t*            currentData                             = nullptr;
     void*               freeBuckets[ALLOCATOR_MAX_FREE_BUCKETS] = {0};
-    uint32_t            sizeBuckets[ALLOCATOR_MAX_FREE_BUCKETS] = {0};
     uint64_t            freeBucketsMask                         = 0;
-    uint64_t            wastedInBuckets                         = 0;
-    uint64_t            wastedInFreeBlocks                      = 0;
     bool                shared                                  = false;
 };
 
