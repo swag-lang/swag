@@ -339,7 +339,6 @@ void* Allocator::bigAlloc(size_t size)
             {
                 Report::error(Err(Fat0019));
                 OS::exit(-1);
-                return nullptr;
             }
 
 #ifdef SWAG_STATS
