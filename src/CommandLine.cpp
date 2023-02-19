@@ -25,6 +25,12 @@ bool CommandLine::check()
         return false;
     }
 
+    // In swag stats build configuration, force statistics to be displayed, as this is the goal of that target...
+    // In debug and devmode, this remains optionnal.
+#if !defined(SWAG_DEV_MODE) && defined(SWAG_STATS)
+    stats = true;
+#endif
+
     if (rebuildAll)
         rebuild = true;
 

@@ -10,6 +10,9 @@ Stats g_Stats;
 
 void Stats::print()
 {
+    if (!g_CommandLine.stats)
+        return;
+
     g_Log.setColor(LogColor::DarkCyan);
     g_Log.eol();
 

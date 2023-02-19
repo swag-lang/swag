@@ -23,8 +23,9 @@ struct CommandLine
     bool      scriptMode    = false;
     bool      scriptCommand = false;
 
-    // Profile
+    // Stats
 #ifdef SWAG_STATS
+    bool stats   = false;
     bool profile = false;
     Utf8 profileFilter;
     int  profileChildsLevel = 0;

@@ -871,9 +871,9 @@ bool Workspace::build()
 
     // [devmode] stuff
 #if defined SWAG_DEBUG
-    g_Log.messageHeaderCentered("Compiler", "[debug|devmode|stats]", LogColor::DarkBlue, LogColor::DarkBlue);
+    g_Log.messageHeaderCentered("Compiler", "[debug]", LogColor::DarkBlue, LogColor::DarkBlue);
 #elif defined SWAG_DEV_MODE
-    g_Log.messageHeaderCentered("Compiler", "[devmode|stats]", LogColor::DarkBlue, LogColor::DarkBlue);
+    g_Log.messageHeaderCentered("Compiler", "[devmode]", LogColor::DarkBlue, LogColor::DarkBlue);
 #elif defined SWAG_STATS
     g_Log.messageHeaderCentered("Compiler", "[stats]", LogColor::DarkBlue, LogColor::DarkBlue);
 #endif
