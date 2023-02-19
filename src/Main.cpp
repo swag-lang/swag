@@ -8,6 +8,7 @@
 #include "Diagnostic.h"
 #include "Profiler.h"
 #include "CommandLine.h"
+#include "Stats.h"
 
 bool g_Exiting = false;
 

@@ -2,6 +2,7 @@
 #include "Utf8.h"
 #include "CommandLine.h"
 #include "Crc32.h"
+#include "Stats.h"
 
 Utf8::Utf8()
 {

@@ -3,6 +3,7 @@
 #include "ByteCodeOptimizerJob.h"
 #include "Module.h"
 #include "ThreadManager.h"
+#include "Stats.h"
 
 uint32_t ByteCodeOptimizer::newTreeNode(ByteCodeOptContext* context, ByteCodeInstruction* ip, bool& here)
 {

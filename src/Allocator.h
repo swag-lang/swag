@@ -1,18 +1,24 @@
 #pragma once
-#include "Assert.h"
-#include "Stats.h"
-#define MAX_FREE_BUCKETS 512 / 8
+const uint32_t MAX_SIZE_BUCKETS     = 512;
+const uint32_t MAX_FREE_BUCKETS     = MAX_SIZE_BUCKETS / 8;
+const uint64_t ALLOCATOR_BLOCK_SIZE = 1024 * 1024;
 
-struct AllocatorBlock
+struct AllocatorPage
 {
     uint8_t* data      = nullptr;
     size_t   maxUsed   = 0;
     size_t   allocated = 0;
 };
 
+typedef struct AllocatorFreeBlock
+{
+    AllocatorFreeBlock* next;
+    size_t              size;
+} AllocatorFreeBlock;
+
 struct Allocator
 {
-    void  allocateNewBlock(size_t size);
+    void  newPage(size_t size);
     void* bigAlloc(size_t size);
     void* allocBlock(size_t size);
     void  freeBlock(void*, size_t size);
@@ -50,18 +56,12 @@ struct Allocator
     static uint8_t* checkUserBlock(uint8_t* userAddr, uint64_t userSize, uint64_t marker);
 #endif
 
-    typedef struct FreeBlock
-    {
-        FreeBlock* next;
-        size_t     size;
-    } FreeBlock;
-
-    FreeBlock*      firstFreeBlock                = nullptr;
-    AllocatorBlock* lastBlock                     = nullptr;
-    uint8_t*        currentData                   = nullptr;
-    void*           freeBuckets[MAX_FREE_BUCKETS] = {0};
-    uint64_t        freeBucketsMask               = 0;
-    bool            shared                        = false;
+    AllocatorFreeBlock* firstFreeBlock                = nullptr;
+    AllocatorPage*      lastBlock                     = nullptr;
+    uint8_t*            currentData                   = nullptr;
+    void*               freeBuckets[MAX_FREE_BUCKETS] = {0};
+    uint64_t            freeBucketsMask               = 0;
+    bool                shared                        = false;
 };
 
 extern atomic<uint32_t>        g_CompilerAllocTh;

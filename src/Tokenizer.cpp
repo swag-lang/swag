@@ -7,6 +7,7 @@
 #include "Timer.h"
 #include "LanguageSpec.h"
 #include "ErrorContext.h"
+#include "Stats.h"
 
 const char* g_TokenNames[] =
     {

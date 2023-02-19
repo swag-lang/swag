@@ -4,9 +4,8 @@
 #include "Os.h"
 #include "ErrorIds.h"
 #include "Report.h"
+#include "Stats.h"
 #include "ThreadManager.h"
-
-const uint64_t ALLOCATOR_BLOCK_SIZE = 1024 * 1024;
 
 #ifdef SWAG_CHECK_MEMORY
 const uint64_t MAGIC_ALLOC = 0xC0DEC0DEC0DEC0DE;
@@ -43,9 +42,9 @@ void operator delete(void* addr) noexcept
 
 void* Allocator::tryFreeBlock(uint32_t maxCount, size_t size)
 {
-    FreeBlock* prevBlock = nullptr;
-    auto       tryBlock  = firstFreeBlock;
-    uint32_t   cpt       = 0;
+    AllocatorFreeBlock* prevBlock = nullptr;
+    auto                tryBlock  = firstFreeBlock;
+    uint32_t            cpt       = 0;
 
     while (tryBlock && cpt++ < maxCount)
     {
@@ -81,7 +80,7 @@ void* Allocator::tryFreeBlock(uint32_t maxCount, size_t size)
             // Put it in the free block list
             else
             {
-                splitBlock       = (FreeBlock*) split;
+                splitBlock       = (AllocatorFreeBlock*) split;
                 splitBlock->size = remainSize;
                 splitBlock->next = tryBlock->next;
             }
@@ -107,14 +106,14 @@ void* Allocator::useRealBucket(uint32_t bucket, size_t size)
     SWAG_ASSERT(bucket < MAX_FREE_BUCKETS);
     SWAG_ASSERT(freeBuckets[bucket]);
 
-#ifdef SWAG_STATS
-    g_Stats.wastedMemory -= bucket * 8;
-#endif
-
     auto result         = freeBuckets[bucket];
     freeBuckets[bucket] = *(void**) result;
     if (!freeBuckets[bucket])
         freeBucketsMask &= ~(1ULL << bucket);
+
+#ifdef SWAG_STATS
+    g_Stats.wastedMemory -= size;
+#endif
 #ifdef SWAG_DEV_MODE
     memset(result, 0xAA, size);
 #endif
@@ -125,16 +124,17 @@ void* Allocator::useBucket(uint32_t bucket, size_t size)
 {
     SWAG_ASSERT(bucket < MAX_FREE_BUCKETS);
     SWAG_ASSERT(freeBuckets[bucket]);
+    SWAG_ASSERT(bucket * 8 != size);
 
     // If the bucket size is greater than the real size, then put the remaining
     // memory size in the corresponding bucket
-    auto wasted = (bucket * 8) - size;
-    SWAG_ASSERT(wasted);
+    auto wasted               = (bucket * 8) - size;
     auto wastedBucket         = wasted / 8;
     auto ptr                  = (int8_t*) freeBuckets[bucket] + size;
     *(void**) ptr             = freeBuckets[wastedBucket];
     freeBuckets[wastedBucket] = ptr;
     freeBucketsMask |= 1ULL << wastedBucket;
+
 #ifdef SWAG_STATS
     g_Stats.wastedMemory += wasted;
 #endif
@@ -142,7 +142,7 @@ void* Allocator::useBucket(uint32_t bucket, size_t size)
     return useRealBucket(bucket, size);
 }
 
-void Allocator::allocateNewBlock(size_t size)
+void Allocator::newPage(size_t size)
 {
     // We get the remaining space in the last block, to be able to use it as
     // a free block
@@ -152,10 +152,9 @@ void Allocator::allocateNewBlock(size_t size)
         if (remain)
         {
             SWAG_ASSERT(!(remain & 7));
-
-            auto bucket = remain / 8;
-            if (bucket < MAX_FREE_BUCKETS)
+            if (remain < MAX_SIZE_BUCKETS)
             {
+                auto bucket                   = remain / 8;
                 auto next                     = freeBuckets[bucket];
                 freeBuckets[bucket]           = lastBlock->data + lastBlock->maxUsed;
                 *(void**) freeBuckets[bucket] = next;
@@ -164,7 +163,7 @@ void Allocator::allocateNewBlock(size_t size)
             else
             {
                 auto next            = firstFreeBlock;
-                firstFreeBlock       = (FreeBlock*) (lastBlock->data + lastBlock->maxUsed);
+                firstFreeBlock       = (AllocatorFreeBlock*) (lastBlock->data + lastBlock->maxUsed);
                 firstFreeBlock->size = remain;
                 firstFreeBlock->next = next;
             }
@@ -173,7 +172,7 @@ void Allocator::allocateNewBlock(size_t size)
 
     // Allocate a new block of datas
     auto allocated = max(size, ALLOCATOR_BLOCK_SIZE);
-    lastBlock      = (AllocatorBlock*) malloc(sizeof(AllocatorBlock) + allocated);
+    lastBlock      = (AllocatorPage*) malloc(sizeof(AllocatorPage) + allocated);
     if (!lastBlock)
     {
         Report::error(Err(Fat0019));
@@ -188,14 +187,14 @@ void Allocator::allocateNewBlock(size_t size)
     currentData = lastBlock->data;
 
 #ifdef SWAG_STATS
-    g_Stats.allocatorMemory += sizeof(AllocatorBlock) + lastBlock->allocated;
+    g_Stats.allocatorMemory += sizeof(AllocatorPage) + lastBlock->allocated;
     g_Stats.wastedMemory += lastBlock->allocated;
 #endif
 }
 
 void* Allocator::bigAlloc(size_t size)
 {
-    if (firstFreeBlock)
+    if (firstFreeBlock) // && size >= MAX_SIZE_BUCKETS)
     {
         auto result = tryFreeBlock(1024, size);
         if (result)
@@ -207,21 +206,20 @@ void* Allocator::bigAlloc(size_t size)
         }
     }
 
-    // Do we need to allocate a new data block ?
+    // Do we need to allocate a new page ?
     if (!lastBlock || lastBlock->maxUsed + size > lastBlock->allocated)
-    {
-        allocateNewBlock(size);
-    }
+        newPage(size);
 
+        // Allocate at the end of the last page
 #ifdef SWAG_DEV_MODE
     memset(currentData, 0xAA, size);
+#endif
+#ifdef SWAG_STATS
+    g_Stats.wastedMemory -= size;
 #endif
 
     currentData += size;
     lastBlock->maxUsed += size;
-#ifdef SWAG_STATS
-    g_Stats.wastedMemory -= size;
-#endif
     return currentData - size;
 }
 
@@ -229,10 +227,10 @@ void* Allocator::allocBlock(size_t size)
 {
     SWAG_ASSERT((size & 7) == 0);
 
-    auto bucket = size / 8;
-    if (bucket < MAX_FREE_BUCKETS)
+    if (size < MAX_SIZE_BUCKETS)
     {
         // Try in the list of free blocks, per bucket
+        auto bucket = size / 8;
         if (freeBuckets[bucket])
             return useRealBucket((uint32_t) bucket, size);
 
@@ -253,7 +251,6 @@ void Allocator::freeBlock(void* ptr, size_t size)
 {
     if (!ptr)
         return;
-    SWAG_ASSERT(!(size & 7));
 
 #ifdef SWAG_STATS
     g_Stats.wastedMemory += size;
@@ -263,19 +260,19 @@ void Allocator::freeBlock(void* ptr, size_t size)
     memset(ptr, 0xFE, size);
 #endif
 
-    auto bucket = size / 8;
-    if (bucket < MAX_FREE_BUCKETS)
+    if (size < MAX_SIZE_BUCKETS)
     {
+        auto bucket         = size / 8;
         *(void**) ptr       = freeBuckets[bucket];
         freeBuckets[bucket] = ptr;
         freeBucketsMask |= 1ULL << bucket;
     }
     else
     {
-        auto fptr      = (FreeBlock*) ptr;
-        fptr->size     = size;
-        fptr->next     = firstFreeBlock;
-        firstFreeBlock = fptr;
+        auto freeBlock  = (AllocatorFreeBlock*) ptr;
+        freeBlock->size = size;
+        freeBlock->next = firstFreeBlock;
+        firstFreeBlock  = freeBlock;
     }
 }
 
@@ -319,6 +316,10 @@ void Allocator::allocAllocator()
 void* Allocator::alloc(size_t size)
 {
     allocAllocator();
+
+    SWAG_ASSERT(!(size & 7));
+    SWAG_ASSERT(g_Allocator);
+
     if (g_Allocator->shared)
         g_AllocatorMutex.lock();
 
@@ -339,7 +340,9 @@ void Allocator::free(void* ptr, size_t size)
     if (!ptr || !size)
         return;
 
+    SWAG_ASSERT(!(size & 7));
     SWAG_ASSERT(g_Allocator);
+
     if (g_Allocator->shared)
         g_AllocatorMutex.lock();
 

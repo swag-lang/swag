@@ -2,6 +2,7 @@
 #include "ByteCodeOptimizer.h"
 #include "ByteCodeOptimizerJob.h"
 #include "Module.h"
+#include "Stats.h"
 #include "Timer.h"
 
 JobResult ByteCodeOptimizerJob::execute()

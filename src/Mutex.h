@@ -42,6 +42,16 @@ struct SharedMutex
     {
         mt.unlock_shared();
     }
+
+    bool try_lock()
+    {
+        return mt.try_lock();
+    }
+
+    bool try_lock_shared()
+    {
+        return mt.try_lock_shared();
+    }
 };
 
 template<typename T>
