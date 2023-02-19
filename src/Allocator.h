@@ -1,5 +1,5 @@
 #pragma once
-const uint32_t ALLOCATOR_MAX_SIZE_BUCKETS = 4096;
+const uint32_t ALLOCATOR_MAX_SIZE_BUCKETS = 8 * 1024;
 const uint32_t ALLOCATOR_MAX_FREE_BUCKETS = ALLOCATOR_MAX_SIZE_BUCKETS / 8;
 
 struct AllocatorPage
