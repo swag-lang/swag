@@ -448,6 +448,9 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
     SWAG_RACE_CONDITION_WRITE(bc->raceCond);
     optContext.bc = bc;
 
+    //if (bc->name != "Core.Hash.Md5.transform")
+    //    return true;
+
     if (bc->node && !bc->sanDone && optContext.module->mustEmitSafety(bc->node, SAFETY_SANITY))
     {
         bc->sanDone = true;
