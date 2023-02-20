@@ -399,7 +399,11 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
         // Divide so that each job has the quite same amout of bytecode to optimize
         uint32_t totalInstructions = 0;
         for (auto bc : module->byteCodeFunc)
-            totalInstructions += bc->numInstructions;
+        {
+            if (bc->canEmit())
+                totalInstructions += bc->numInstructions;
+        }
+
         totalInstructions /= (g_ThreadMgr.numWorkers * 4);
         totalInstructions = max(totalInstructions, 1);
 
@@ -416,9 +420,10 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
             auto curInst = module->byteCodeFunc[newJob->startIndex]->numInstructions;
             while (curInst < totalInstructions && newJob->endIndex + 1 < (int) module->byteCodeFunc.size())
             {
-                auto bc     = module->byteCodeFunc[newJob->endIndex];
+                auto bc = module->byteCodeFunc[newJob->endIndex];
+                if (bc->canEmit())
+                    curInst += bc->numInstructions;
                 bc->isEmpty = bc->isDoingNothing();
-                curInst += bc->numInstructions;
                 newJob->endIndex++;
                 startIndex = newJob->endIndex;
             }
@@ -448,9 +453,6 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
     SWAG_RACE_CONDITION_WRITE(bc->raceCond);
     optContext.bc = bc;
 
-    //if (bc->name != "Core.Hash.Md5.transform")
-    //    return true;
-
     if (bc->node && !bc->sanDone && optContext.module->mustEmitSafety(bc->node, SAFETY_SANITY))
     {
         bc->sanDone = true;
@@ -459,6 +461,9 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
         genTree(&optContext, false);
         SWAG_CHECK(optimizePassSanity(&optContext));
     }
+
+    if (!bc->canEmit())
+        return true;
 
     if (optContext.module->mustOptimizeBC(bc->node))
     {
