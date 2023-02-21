@@ -1047,7 +1047,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         return;
     }
 
-    // Very special case because of automatic cast an generics.
+    // Very special case because of automatic cast and generics.
     // We match in priority without an implicit automatic cast. If this does not match, then we
     // try with an implicit cast.
     context.autoOpCast = false;

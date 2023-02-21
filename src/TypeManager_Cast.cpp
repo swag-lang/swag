@@ -118,83 +118,80 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
         isMoveRef    = true;
     }
 
-    if (structType->isStruct() && (castFlags & (CASTFLAG_EXPLICIT | CASTFLAG_AUTO_OPCAST)))
+    if (!structType->isStruct() || !(castFlags & (CASTFLAG_EXPLICIT | CASTFLAG_AUTO_OPCAST)))
+        return false;
+    auto typeStruct = CastTypeInfo<TypeInfoStruct>(structType, TypeInfoKind::Struct);
+    if (!typeStruct->declNode)
+        return false;
+
+    auto     structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
+    Utf8     nameAffect;
+    uint32_t nameAffectCrc;
+    if ((fromNode && fromNode->semFlags & AST_SEM_LITERAL_SUFFIX) || castFlags & CASTFLAG_LITERAL_SUFFIX)
     {
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(structType, TypeInfoKind::Struct);
-        if (!typeStruct->declNode)
-            return false;
-
-        auto     structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
-        Utf8     nameAffect;
-        uint32_t nameAffectCrc;
-        if ((fromNode && fromNode->semFlags & AST_SEM_LITERAL_SUFFIX) || castFlags & CASTFLAG_LITERAL_SUFFIX)
-        {
-            nameAffect    = g_LangSpec->name_opAffectSuffix;
-            nameAffectCrc = g_LangSpec->name_opAffectSuffixCrc;
-        }
-        else
-        {
-            nameAffect    = g_LangSpec->name_opAffect;
-            nameAffectCrc = g_LangSpec->name_opAffectCrc;
-        }
-
-        auto symbol = structNode->scope->symTable.find(nameAffect, nameAffectCrc);
-
-        // Instantiated opAffect, in a generic struct, will be in the scope of the original struct, not the intantiated one
-        if (!symbol && typeStruct->fromGeneric)
-        {
-            structNode = CastAst<AstStruct>(typeStruct->fromGeneric->declNode, AstNodeKind::StructDecl);
-            symbol     = structNode->scope->symTable.find(nameAffect, nameAffectCrc);
-        }
-
-        if (!symbol)
-            return false;
-
-        // Wait for all opAffect to be solved
-        {
-            ScopedLock ls(symbol->mutex);
-            if (symbol->cptOverloads)
-            {
-                SWAG_ASSERT(context && context->job);
-                SWAG_ASSERT(context->result == ContextResult::Done);
-                context->job->waitSymbolNoLock(symbol);
-                return true;
-            }
-        }
-
-        // Resolve opAffect that match
-        VectorNative<SymbolOverload*> toAffect;
-        for (auto over : symbol->overloads)
-        {
-            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
-            if (!(typeFunc->declNode->attributeFlags & ATTRIBUTE_IMPLICIT) && !(castFlags & CASTFLAG_EXPLICIT))
-                continue;
-            if (typeFunc->parameters.size() <= 1)
-                continue;
-            if (makeCompatibles(context, typeFunc->parameters[1]->typeInfo, fromType, nullptr, nullptr, CASTFLAG_NO_LAST_MINUTE | CASTFLAG_TRY_COERCE | CASTFLAG_JUST_CHECK))
-                toAffect.push_back(over);
-        }
-
-        if (toAffect.empty())
-            return false;
-
-        // :opAffectParam
-        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
-        {
-            fromNode->flags |= AST_OPAFFECT_CAST;
-            fromNode->castedTypeInfo = fromType;
-            fromNode->typeInfo       = toType;
-            fromNode->allocateExtension(ExtensionKind::Misc);
-            fromNode->extension->misc->resolvedUserOpSymbolOverload = toAffect[0];
-        }
-
-        context->castFlagsResult |= CASTFLAG_RESULT_AUTO_OPAFFECT;
-        if (isMoveRef)
-            context->castFlagsResult |= CASTFLAG_RESULT_AUTO_MOVE_OPAFFECT;
-        return true;
+        nameAffect    = g_LangSpec->name_opAffectSuffix;
+        nameAffectCrc = g_LangSpec->name_opAffectSuffixCrc;
+    }
+    else
+    {
+        nameAffect    = g_LangSpec->name_opAffect;
+        nameAffectCrc = g_LangSpec->name_opAffectCrc;
     }
 
-    return false;
+    VectorNative<SymbolOverload*> toAffect;
+    auto                          symbol = structNode->scope->symTable.find(nameAffect, nameAffectCrc);
+
+    // Instantiated opAffect, in a generic struct, will be in the scope of the original struct, not the intantiated one
+    if (!symbol && typeStruct->fromGeneric)
+    {
+        structNode = CastAst<AstStruct>(typeStruct->fromGeneric->declNode, AstNodeKind::StructDecl);
+        symbol     = structNode->scope->symTable.find(nameAffect, nameAffectCrc);
+    }
+
+    if (!symbol)
+        return false;
+
+    // Wait for all opAffect to be solved
+    {
+        ScopedLock ls(symbol->mutex);
+        if (symbol->cptOverloads)
+        {
+            SWAG_ASSERT(context && context->job);
+            SWAG_ASSERT(context->result == ContextResult::Done);
+            context->job->waitSymbolNoLock(symbol);
+            return true;
+        }
+    }
+
+    // Resolve opAffect that match
+    for (auto over : symbol->overloads)
+    {
+        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
+        if (!(typeFunc->declNode->attributeFlags & ATTRIBUTE_IMPLICIT) && !(castFlags & CASTFLAG_EXPLICIT))
+            continue;
+        if (typeFunc->parameters.size() <= 1)
+            continue;
+        if (makeCompatibles(context, typeFunc->parameters[1]->typeInfo, fromType, nullptr, nullptr, CASTFLAG_NO_LAST_MINUTE | CASTFLAG_TRY_COERCE | CASTFLAG_JUST_CHECK))
+            toAffect.push_back(over);
+    }
+
+    if (toAffect.empty())
+        return false;
+
+    // :opAffectParam
+    if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+    {
+        fromNode->flags |= AST_OPAFFECT_CAST;
+        fromNode->castedTypeInfo = fromType;
+        fromNode->typeInfo       = toType;
+        fromNode->allocateExtension(ExtensionKind::Misc);
+        fromNode->extension->misc->resolvedUserOpSymbolOverload = toAffect[0];
+    }
+
+    context->castFlagsResult |= CASTFLAG_RESULT_AUTO_OPAFFECT;
+    if (isMoveRef)
+        context->castFlagsResult |= CASTFLAG_RESULT_AUTO_MOVE_OPAFFECT;
+    return true;
 }
 
 bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
@@ -209,67 +206,93 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
         structType   = typePtr->pointedType;
     }
 
-    if (structType->isStruct() && (castFlags & (CASTFLAG_EXPLICIT | CASTFLAG_AUTO_OPCAST)))
+    if (!structType->isStruct() || !(castFlags & (CASTFLAG_EXPLICIT | CASTFLAG_AUTO_OPCAST)))
+        return false;
+    auto typeStruct = CastTypeInfo<TypeInfoStruct>(structType, TypeInfoKind::Struct);
+    if (!typeStruct->declNode)
+        return false;
+
+    // In the cache of possible matches
     {
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(structType, TypeInfoKind::Struct);
-        if (!typeStruct->declNode)
-            return false;
-
-        auto structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
-        auto symbol     = structNode->scope->symTable.find(g_LangSpec->name_opCast, g_LangSpec->name_opCastCrc);
-
-        // Instantiated opCast, in a generic struct, will be in the scope of the original struct, not the intantiated one
-        if (!symbol && typeStruct->fromGeneric)
+        SharedLock lkOp(typeStruct->mutexCache);
+        auto       it = typeStruct->mapOpCast.find(toType);
+        if (it != typeStruct->mapOpCast.end())
         {
-            structNode = CastAst<AstStruct>(typeStruct->fromGeneric->declNode, AstNodeKind::StructDecl);
-            symbol     = structNode->scope->symTable.find(g_LangSpec->name_opCast, g_LangSpec->name_opCastCrc);
-        }
+            if (!it->second)
+                return false;
 
-        if (!symbol)
-            return false;
-
-        // Wait for all opCast to be solved
-        {
-            ScopedLock ls(symbol->mutex);
-            if (symbol->cptOverloads)
+            if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
             {
-                SWAG_ASSERT(context && context->job);
-                SWAG_ASSERT(context->result == ContextResult::Done);
-                context->job->waitSymbolNoLock(symbol);
-                return true;
+                fromNode->castedTypeInfo = fromType;
+                fromNode->typeInfo       = toType;
+                fromNode->allocateExtension(ExtensionKind::Misc);
+                fromNode->extension->misc->resolvedUserOpSymbolOverload = it->second;
+                fromNode->semFlags |= AST_SEM_USER_CAST;
             }
+
+            context->castFlagsResult |= CASTFLAG_RESULT_AUTO_OPCAST;
+            return true;
         }
-
-        // Resolve opCast that match
-        VectorNative<SymbolOverload*> toCast;
-        for (auto over : symbol->overloads)
-        {
-            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
-            if (typeFunc->isGeneric() || typeFunc->returnType->isGeneric())
-                continue;
-            if (!(typeFunc->declNode->attributeFlags & ATTRIBUTE_IMPLICIT) && !(castFlags & CASTFLAG_EXPLICIT))
-                continue;
-            if (typeFunc->returnType->isSame(toType, CASTFLAG_EXACT))
-                toCast.push_back(over);
-        }
-
-        if (toCast.empty())
-            return false;
-
-        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
-        {
-            fromNode->castedTypeInfo = fromType;
-            fromNode->typeInfo       = toType;
-            fromNode->allocateExtension(ExtensionKind::Misc);
-            fromNode->extension->misc->resolvedUserOpSymbolOverload = toCast[0];
-            fromNode->semFlags |= AST_SEM_USER_CAST;
-        }
-
-        context->castFlagsResult |= CASTFLAG_RESULT_AUTO_OPCAST;
-        return true;
     }
 
-    return false;
+    VectorNative<SymbolOverload*> toCast;
+    auto                          structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
+    auto                          symbol     = structNode->scope->symTable.find(g_LangSpec->name_opCast, g_LangSpec->name_opCastCrc);
+
+    // Instantiated opCast, in a generic struct, will be in the scope of the original struct, not the intantiated one
+    if (!symbol && typeStruct->fromGeneric)
+    {
+        structNode = CastAst<AstStruct>(typeStruct->fromGeneric->declNode, AstNodeKind::StructDecl);
+        symbol     = structNode->scope->symTable.find(g_LangSpec->name_opCast, g_LangSpec->name_opCastCrc);
+    }
+
+    if (!symbol)
+        return false;
+
+    // Wait for all opCast to be solved
+    {
+        ScopedLock ls(symbol->mutex);
+        if (symbol->cptOverloads)
+        {
+            SWAG_ASSERT(context && context->job);
+            SWAG_ASSERT(context->result == ContextResult::Done);
+            context->job->waitSymbolNoLock(symbol);
+            return true;
+        }
+    }
+
+    // Resolve opCast that match
+    for (auto over : symbol->overloads)
+    {
+        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
+        if (typeFunc->isGeneric() || typeFunc->returnType->isGeneric())
+            continue;
+        if (!(typeFunc->declNode->attributeFlags & ATTRIBUTE_IMPLICIT) && !(castFlags & CASTFLAG_EXPLICIT))
+            continue;
+        if (typeFunc->returnType->isSame(toType, CASTFLAG_EXACT))
+            toCast.push_back(over);
+    }
+
+    // Add in the cache of possible matches
+    {
+        ScopedLock lkOp(typeStruct->mutexCache);
+        typeStruct->mapOpCast[toType] = toCast.empty() ? nullptr : toCast[0];
+    }
+
+    if (toCast.empty())
+        return false;
+
+    if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+    {
+        fromNode->castedTypeInfo = fromType;
+        fromNode->typeInfo       = toType;
+        fromNode->allocateExtension(ExtensionKind::Misc);
+        fromNode->extension->misc->resolvedUserOpSymbolOverload = toCast[0];
+        fromNode->semFlags |= AST_SEM_USER_CAST;
+    }
+
+    context->castFlagsResult |= CASTFLAG_RESULT_AUTO_OPCAST;
+    return true;
 }
 
 void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, TypeInfo* toType, TypeInfo* fromType, uint32_t castFlags, bool forNote)

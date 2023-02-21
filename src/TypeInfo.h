@@ -23,6 +23,7 @@ struct JobContext;
 struct SemanticContext;
 struct TypeInfoStruct;
 struct BadSignatureInfos;
+struct SymbolOverload;
 enum class Intrisic;
 
 const int COMPUTE_NAME               = 0;
@@ -578,17 +579,19 @@ struct TypeInfoStruct : public TypeInfo
     bool           canRawCopy();
     bool           isPlainOldData();
 
-    VectorNative<TypeInfoParam*> genericParameters;
-    VectorNative<TypeInfo*>      deducedGenericParameters;
-    VectorNative<TypeInfoParam*> fields;
-    VectorNative<TypeInfoParam*> consts;
-    VectorNative<TypeInfoParam*> methods;
-    VectorNative<TypeInfoParam*> interfaces;
-    MapUtf8<TypeInfo*>           replaceTypes;
-    MapUtf8<AstNode*>            replaceTypesFrom;
-    AttributeList                attributes;
-    Utf8                         structName;
-    SharedMutex                  mutexGen;
+    VectorNative<TypeInfoParam*>    genericParameters;
+    VectorNative<TypeInfo*>         deducedGenericParameters;
+    VectorNative<TypeInfoParam*>    fields;
+    VectorNative<TypeInfoParam*>    consts;
+    VectorNative<TypeInfoParam*>    methods;
+    VectorNative<TypeInfoParam*>    interfaces;
+    MapUtf8<TypeInfo*>              replaceTypes;
+    MapUtf8<AstNode*>               replaceTypesFrom;
+    Map<TypeInfo*, SymbolOverload*> mapOpCast;
+    AttributeList                   attributes;
+    Utf8                            structName;
+    SharedMutex                     mutexCache;
+    SharedMutex                     mutexGen;
 
     TypeInfoStruct* itable            = nullptr;
     TypeInfoStruct* fromGeneric       = nullptr;
