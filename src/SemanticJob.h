@@ -105,14 +105,6 @@ struct OneMatch
     }
 };
 
-struct CacheResolveIdentifier
-{
-    OneMatch          oneMatch;
-    OneTryMatch       oneTryMatch;
-    AstIdentifierRef* identifierRef = nullptr;
-    AstIdentifier*    identifier    = nullptr;
-};
-
 struct SemanticContext : public JobContext
 {
     Vector<CastStructStructField>     castStructStructFields;
@@ -123,7 +115,6 @@ struct SemanticContext : public JobContext
     TypeInfo*                         castErrorFromType = nullptr;
     uint32_t                          castErrorFlags    = 0;
     bool                              forDebugger       = false;
-    CacheResolveIdentifier            lastIdentifier;
 };
 
 struct OneOverload
@@ -298,7 +289,6 @@ struct SemanticJob : public Job
     static void         sortParameters(AstNode* allParams);
     static void         dealWithIntrinsic(SemanticContext* context, AstIdentifier* identifier);
     static bool         setSymbolMatchCallParams(SemanticContext* context, AstIdentifier* identifier, OneMatch& oneMatch);
-    static bool         setSymbolMatchWithNode(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch);
     static bool         setSymbolMatch(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch);
     static void         resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatch* oneMatch, int i);
     static bool         setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcAttr, AstNode* parameters, bool forGenerics);

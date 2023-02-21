@@ -689,25 +689,6 @@ static bool isStatementIdentifier(AstIdentifier* identifier)
     return false;
 }
 
-bool SemanticJob::setSymbolMatchWithNode(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch)
-{
-    // :SilentCall
-    if (identifier->token.text.empty())
-        identifier->typeInfo = identifierRef->typeInfo;
-    else if (oneMatch.typeWasForced)
-        identifier->typeInfo = oneMatch.typeWasForced;
-    else
-        identifier->typeInfo = oneMatch.symbolOverload->typeInfo;
-
-    context->lastIdentifier.oneMatch      = oneMatch;
-    context->lastIdentifier.identifierRef = identifierRef;
-    context->lastIdentifier.identifier    = identifier;
-    if (oneMatch.oneOverload)
-        context->lastIdentifier.oneTryMatch = *oneMatch.oneOverload;
-
-    return setSymbolMatch(context, identifierRef, identifier, oneMatch);
-}
-
 bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch)
 {
     auto symbol       = oneMatch.symbolOverload->symbol;
@@ -4407,7 +4388,15 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
         }
     }
 
-    SWAG_CHECK(setSymbolMatchWithNode(context, identifierRef, identifier, *match));
+    // :SilentCall
+    if (identifier->token.text.empty())
+        identifier->typeInfo = identifierRef->typeInfo;
+    else if (match->typeWasForced)
+        identifier->typeInfo = match->typeWasForced;
+    else
+        identifier->typeInfo = match->symbolOverload->typeInfo;
+
+    SWAG_CHECK(setSymbolMatch(context, identifierRef, identifier, *match));
     return true;
 }
 
