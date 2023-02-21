@@ -1056,7 +1056,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         auto funcNode = CastAst<AstFuncDecl>(declNode, AstNodeKind::FuncDecl);
         if (funcNode->parameters && (funcNode->parameters->flags & AST_IS_GENERIC))
         {
-            auto cpyContext = context;
+            SymbolMatchContext cpyContext = context;
             matchParametersAndNamed(cpyContext, parameters, CASTFLAG_DEFAULT);
             if (cpyContext.result != MatchResult::Ok)
             {
@@ -1070,7 +1070,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
             }
             else
             {
-                context = cpyContext;
+                context = std::move(cpyContext);
             }
         }
         else
