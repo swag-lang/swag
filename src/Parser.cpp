@@ -7,6 +7,7 @@
 #include "ErrorIds.h"
 #include "JobThread.h"
 #include "TypeManager.h"
+#include "Timer.h"
 
 bool Parser::error(AstNode* node, const Utf8& msg, const char* help, const char* hint)
 {
