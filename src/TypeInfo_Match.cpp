@@ -1058,7 +1058,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         {
             SymbolMatchContext cpyContext = context;
             matchParametersAndNamed(cpyContext, parameters, CASTFLAG_DEFAULT);
-            if (cpyContext.result != MatchResult::Ok)
+            if (cpyContext.result == MatchResult::BadSignature)
             {
                 matchParametersAndNamed(context, parameters, CASTFLAG_AUTO_OPCAST);
                 if (context.semContext->result != ContextResult::Done)
