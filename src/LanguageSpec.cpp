@@ -89,6 +89,14 @@ void LanguageSpec::setupNames()
     name_opInit         = "opInit";
     name_opVisit        = "opVisit";
 
+    name_opInitCrc         = name_opInit.hash();
+    name_opDropCrc         = name_opDrop.hash();
+    name_opPostCopyCrc     = name_opPostCopy.hash();
+    name_opPostMoveCrc     = name_opPostMove.hash();
+    name_opCastCrc         = name_opCast.hash();
+    name_opAffectCrc       = name_opAffect.hash();
+    name_opAffectSuffixCrc = name_opAffectSuffix.hash();
+
     name_TypeInfo          = "TypeInfo";
     name_TypeInfoNative    = "TypeInfoNative";
     name_TypeInfoPointer   = "TypeInfoPointer";

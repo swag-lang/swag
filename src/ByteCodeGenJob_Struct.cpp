@@ -119,7 +119,7 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
             // Need to be sure that function has been solved
             {
                 ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
-                symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opInit);
+                symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opInit, g_LangSpec->name_opInitCrc);
                 if (symbol && symbol->cptOverloads)
                 {
                     symbol->addDependentJob(context->job);
@@ -133,7 +133,7 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
             if (!symbol && typeInfoStruct->opUserInitFct)
             {
                 ScopedLock lockTable(typeInfoStruct->opUserInitFct->ownerScope->symTable.mutex);
-                symbol = typeInfoStruct->opUserInitFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opInit);
+                symbol = typeInfoStruct->opUserInitFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opInit, g_LangSpec->name_opInitCrc);
                 if (symbol && symbol->cptOverloads)
                 {
                     symbol->addDependentJob(context->job);
@@ -156,7 +156,7 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
             // Need to be sure that function has been solved
             {
                 ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
-                symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opDrop);
+                symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opDrop, g_LangSpec->name_opDropCrc);
                 if (symbol && symbol->cptOverloads)
                 {
                     symbol->addDependentJob(context->job);
@@ -170,7 +170,7 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
             if (!symbol && typeInfoStruct->opUserDropFct)
             {
                 ScopedLock lockTable(typeInfoStruct->opUserDropFct->ownerScope->symTable.mutex);
-                symbol = typeInfoStruct->opUserDropFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opDrop);
+                symbol = typeInfoStruct->opUserDropFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opDrop, g_LangSpec->name_opDropCrc);
                 if (symbol && symbol->cptOverloads)
                 {
                     symbol->addDependentJob(context->job);
@@ -197,7 +197,7 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
             // Need to be sure that function has been solved
             {
                 ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
-                symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opPostCopy);
+                symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opPostCopy, g_LangSpec->name_opPostCopyCrc);
                 if (symbol && symbol->cptOverloads)
                 {
                     symbol->addDependentJob(context->job);
@@ -211,7 +211,7 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
             if (!symbol && typeInfoStruct->opUserPostCopyFct)
             {
                 ScopedLock lockTable(typeInfoStruct->opUserPostCopyFct->ownerScope->symTable.mutex);
-                symbol = typeInfoStruct->opUserPostCopyFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opPostCopy);
+                symbol = typeInfoStruct->opUserPostCopyFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opPostCopy, g_LangSpec->name_opPostCopyCrc);
                 if (symbol && symbol->cptOverloads)
                 {
                     symbol->addDependentJob(context->job);
@@ -236,7 +236,7 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
             // Need to be sure that function has been solved
             {
                 ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
-                symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opPostMove);
+                symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opPostMove, g_LangSpec->name_opPostMoveCrc);
                 if (symbol && symbol->cptOverloads)
                 {
                     symbol->addDependentJob(context->job);
@@ -250,7 +250,7 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
             if (!symbol && typeInfoStruct->opUserPostMoveFct)
             {
                 ScopedLock lockTable(typeInfoStruct->opUserPostMoveFct->ownerScope->symTable.mutex);
-                symbol = typeInfoStruct->opUserPostMoveFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opPostMove);
+                symbol = typeInfoStruct->opUserPostMoveFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opPostMove, g_LangSpec->name_opPostMoveCrc);
                 if (symbol && symbol->cptOverloads)
                 {
                     symbol->addDependentJob(context->job);
@@ -518,7 +518,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     // Need to be sure that function has been solved
     {
         ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
-        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opInit);
+        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opInit, g_LangSpec->name_opInitCrc);
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
@@ -532,7 +532,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     if (!symbol && typeInfoStruct->opUserInitFct)
     {
         ScopedLock lockTable(typeInfoStruct->opUserInitFct->ownerScope->symTable.mutex);
-        symbol = typeInfoStruct->opUserInitFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opInit);
+        symbol = typeInfoStruct->opUserInitFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opInit, g_LangSpec->name_opInitCrc);
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
@@ -753,7 +753,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     // Need to be sure that function has been solved
     {
         ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
-        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opDrop);
+        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opDrop, g_LangSpec->name_opDropCrc);
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
@@ -767,7 +767,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     if (!symbol && typeInfoStruct->opUserDropFct)
     {
         ScopedLock lockTable(typeInfoStruct->opUserDropFct->ownerScope->symTable.mutex);
-        symbol = typeInfoStruct->opUserDropFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opDrop);
+        symbol = typeInfoStruct->opUserDropFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opDrop, g_LangSpec->name_opDropCrc);
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
@@ -862,7 +862,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     // Need to be sure that function has been solved
     {
         ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
-        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opPostCopy);
+        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opPostCopy, g_LangSpec->name_opPostCopyCrc);
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
@@ -876,7 +876,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     if (!symbol && typeInfoStruct->opUserPostCopyFct)
     {
         ScopedLock lockTable(typeInfoStruct->opUserPostCopyFct->ownerScope->symTable.mutex);
-        symbol = typeInfoStruct->opUserPostCopyFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opPostCopy);
+        symbol = typeInfoStruct->opUserPostCopyFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opPostCopy, g_LangSpec->name_opPostCopyCrc);
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
@@ -969,7 +969,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     // Need to be sure that function has been solved
     {
         ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
-        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opPostMove);
+        symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opPostMove, g_LangSpec->name_opPostMoveCrc);
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
@@ -983,7 +983,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     if (!symbol && typeInfoStruct->opUserPostMoveFct)
     {
         ScopedLock lockTable(typeInfoStruct->opUserPostMoveFct->ownerScope->symTable.mutex);
-        symbol = typeInfoStruct->opUserPostMoveFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opPostMove);
+        symbol = typeInfoStruct->opUserPostMoveFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opPostMove, g_LangSpec->name_opPostMoveCrc);
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);

@@ -109,6 +109,14 @@ struct LanguageSpec
     Utf8 name_opInit;
     Utf8 name_opVisit;
 
+    uint32_t name_opInitCrc;
+    uint32_t name_opDropCrc;
+    uint32_t name_opPostCopyCrc;
+    uint32_t name_opPostMoveCrc;
+    uint32_t name_opCastCrc;
+    uint32_t name_opAffectCrc;
+    uint32_t name_opAffectSuffixCrc;
+
     Utf8 name_TypeInfo;
     Utf8 name_TypeInfoNative;
     Utf8 name_TypeInfoPointer;
