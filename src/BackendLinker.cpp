@@ -159,7 +159,13 @@ namespace BackendLinker
             arguments.push_back(Fmt("/STACK:%d,%d", g_CommandLine.stackSizeRT, g_CommandLine.stackSizeRT));
 
         if (buildParameters.buildCfg->backendDebugInformations)
-            arguments.push_back("/DEBUG");
+        {
+            if (g_ThreadMgr.numWorkers == 1)
+                arguments.push_back("/DEBUG");
+            else
+                arguments.push_back("/DEBUG:GHASH");
+        }
+
         if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
             arguments.push_back("/DLL");
 
