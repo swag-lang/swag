@@ -72,7 +72,7 @@ struct Parser
     void setup(ErrorContext* errorCxt, Module* mdl, SourceFile* file);
     bool generateAst();
 
-    bool saveEmbeddedAst(const Utf8& content, AstNode* parent, AstNode* fromNode, Utf8& tmpFileName, Path& tmpFilePath, uint32_t& previousLogLine);
+    bool saveEmbeddedAst(const Utf8& content, AstNode* fromNode, Path& tmpFilePath, Utf8& tmpFileName, uint32_t& previousLogLine);
     bool constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode* fromNode, enum class CompilerAstKind kind, bool logGenerated);
 
     bool error(const Token& tk, const Utf8& msg, const char* help = nullptr, const char* hint = nullptr);

@@ -4,7 +4,6 @@
 #include "Parser.h"
 #include "Diagnostic.h"
 #include "Scoped.h"
-#include "Timer.h"
 #include "ErrorIds.h"
 #include "JobThread.h"
 #include "TypeManager.h"
@@ -202,33 +201,31 @@ bool Parser::eatSemiCol(const char* msg)
     return true;
 }
 
-bool Parser::saveEmbeddedAst(const Utf8& content, AstNode* parent, AstNode* fromNode, Utf8& tmpFileName, Path& tmpFilePath, uint32_t& previousLogLine)
+bool Parser::saveEmbeddedAst(const Utf8& content, AstNode* fromNode, Path& tmpFilePath, Utf8& tmpFileName, uint32_t& previousLogLine)
 {
-    auto modl       = fromNode->sourceFile->module;
-    auto publicPath = modl->publicPath;
-    tmpFilePath     = publicPath;
-    tmpFileName     = Fmt("%s%d.gwg", modl->name.c_str(), g_ThreadIndex);
+    auto modl = fromNode->sourceFile->module;
 
-    publicPath.append(tmpFileName.c_str());
+    tmpFilePath = modl->publicPath;
+    tmpFileName = Fmt("%s%d.gwg", modl->name.c_str(), g_ThreadIndex);
 
-    uint32_t    countEol = 0;
-    const char* pz       = content.c_str();
-    for (int i = 0; i < content.length(); i++)
+    uint32_t countEol = 0;
+    auto     size     = content.length();
+    for (int i = 0; i < size; i++)
     {
-        if (*pz == '\n')
+        if (content[i] == '\n')
             countEol++;
-        pz++;
     }
 
-    Utf8 sourceCode = Fmt("// %s:%d:%d:%d:%d\n", fromNode->sourceFile->path.c_str(), fromNode->token.startLocation.line + 1, fromNode->token.startLocation.column + 1, fromNode->token.endLocation.line + 1, fromNode->token.endLocation.column + 1);
+    Utf8 sourceCode = Fmt("// %s:%d:%d:%d:%d\n", fromNode->sourceFile->path.string().c_str(), fromNode->token.startLocation.line + 1, fromNode->token.startLocation.column + 1, fromNode->token.endLocation.line + 1, fromNode->token.endLocation.column + 1);
+    modl->contentJobGeneratedFile[g_ThreadIndex] += sourceCode;
     modl->countLinesGeneratedFile[g_ThreadIndex] += 1;
     previousLogLine = modl->countLinesGeneratedFile[g_ThreadIndex];
-    modl->countLinesGeneratedFile[g_ThreadIndex] += countEol;
-    modl->countLinesGeneratedFile[g_ThreadIndex] += 2;
 
-    modl->contentJobGeneratedFile[g_ThreadIndex] += sourceCode;
     modl->contentJobGeneratedFile[g_ThreadIndex] += content;
+    modl->countLinesGeneratedFile[g_ThreadIndex] += countEol;
+
     modl->contentJobGeneratedFile[g_ThreadIndex] += "\n\n";
+    modl->countLinesGeneratedFile[g_ThreadIndex] += 2;
 
     return true;
 }
@@ -242,13 +239,15 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
     SWAG_ASSERT(context);
     SWAG_ASSERT(module);
 
-    // Log the generated code in '<module>.swg'
-    if (logGenerated && fromNode && !fromNode->sourceFile->shouldHaveError && !fromNode->sourceFile->shouldHaveWarning && g_CommandLine.output)
+    // Log the generated code in '<module>.gwg'
+    if (logGenerated &&
+        fromNode &&
+        !g_CommandLine.scriptCommand &&
+        !fromNode->sourceFile->shouldHaveError &&
+        !fromNode->sourceFile->shouldHaveWarning && g_CommandLine.output &&
+        fromNode->sourceFile->module->buildCfg.backendDebugInformations)
     {
-        if (fromNode->sourceFile->module->buildCfg.backendDebugInformations && !g_CommandLine.scriptCommand)
-        {
-            SWAG_CHECK(saveEmbeddedAst(content, parent, fromNode, tmpFileName, tmpFilePath, previousLogLine));
-        }
+        SWAG_CHECK(saveEmbeddedAst(content, fromNode, tmpFilePath, tmpFileName, previousLogLine));
     }
 
     sourceFile = Allocator::alloc<SourceFile>();
@@ -279,7 +278,7 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
     tokenizer.setup(context, sourceFile);
     if (logGenerated)
     {
-        sourceFile->getLineOffset = previousLogLine;
+        sourceFile->offsetGetLine = previousLogLine;
         tokenizer.location.column = 0;
         tokenizer.location.line   = previousLogLine;
     }

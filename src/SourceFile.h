@@ -43,7 +43,7 @@ struct SourceFile
     uint32_t  offsetStartBuffer = 0;
     long      bufferSize        = 0;
     long      allocBufferSize   = 0;
-    int       getLineOffset     = 0;
+    int       offsetGetLine     = 0;
     int       numErrors         = 0;
     int       numWarnings       = 0;
     uint32_t  indexInModule     = UINT32_MAX;

@@ -367,8 +367,8 @@ void Diagnostic::collectSourceCode()
 {
     auto location0 = startLocation;
     auto location1 = endLocation;
-    location0.line -= sourceFile->getLineOffset;
-    location1.line -= sourceFile->getLineOffset;
+    location0.line -= sourceFile->offsetGetLine;
+    location1.line -= sourceFile->offsetGetLine;
 
     // Get all lines of code
     if (showMultipleCodeLines)
