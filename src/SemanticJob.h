@@ -40,26 +40,6 @@ struct CastCollectInterfaceField
     Utf8            fieldAccessName;
 };
 
-struct SemanticContext : public JobContext
-{
-    Vector<CastStructStructField>     castStructStructFields;
-    Vector<CastCollectInterfaceField> castCollectInterfaceField;
-    SemanticJob*                      job               = nullptr;
-    uint32_t                          castFlagsResult   = 0;
-    TypeInfo*                         castErrorToType   = nullptr;
-    TypeInfo*                         castErrorFromType = nullptr;
-    uint32_t                          castErrorFlags    = 0;
-    bool                              forDebugger       = false;
-};
-
-struct OneOverload
-{
-    SymbolOverload* overload;
-    Scope*          scope;
-    uint32_t        cptOverloads;
-    uint32_t        cptOverloadsInit;
-};
-
 struct OneTryMatch
 {
     SymbolMatchContext symMatchContext;
@@ -89,8 +69,6 @@ struct OneTryMatch
 
 struct OneMatch
 {
-    VectorNative<TypeInfoParam*> solvedParameters;
-
     struct ParamParameter
     {
         AstFuncCallParam* param;
@@ -98,6 +76,7 @@ struct OneMatch
         TypeInfoParam*    resolvedParameter;
     };
 
+    VectorNative<TypeInfoParam*> solvedParameters;
     VectorNative<ParamParameter> paramParameters;
 
     SymbolOverload* symbolOverload = nullptr;
@@ -124,6 +103,35 @@ struct OneMatch
         remove         = false;
         autoOpCast     = false;
     }
+};
+
+struct CacheResolveIdentifier
+{
+    OneMatch          oneMatch;
+    OneTryMatch       oneTryMatch;
+    AstIdentifierRef* identifierRef = nullptr;
+    AstIdentifier*    identifier    = nullptr;
+};
+
+struct SemanticContext : public JobContext
+{
+    Vector<CastStructStructField>     castStructStructFields;
+    Vector<CastCollectInterfaceField> castCollectInterfaceField;
+    SemanticJob*                      job               = nullptr;
+    uint32_t                          castFlagsResult   = 0;
+    TypeInfo*                         castErrorToType   = nullptr;
+    TypeInfo*                         castErrorFromType = nullptr;
+    uint32_t                          castErrorFlags    = 0;
+    bool                              forDebugger       = false;
+    CacheResolveIdentifier            lastIdentifier;
+};
+
+struct OneOverload
+{
+    SymbolOverload* overload;
+    Scope*          scope;
+    uint32_t        cptOverloads;
+    uint32_t        cptOverloadsInit;
 };
 
 struct OneGenericMatch
@@ -290,7 +298,8 @@ struct SemanticJob : public Job
     static void         sortParameters(AstNode* allParams);
     static void         dealWithIntrinsic(SemanticContext* context, AstIdentifier* identifier);
     static bool         setSymbolMatchCallParams(SemanticContext* context, AstIdentifier* identifier, OneMatch& oneMatch);
-    static bool         setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, OneMatch& oneMatch);
+    static bool         setSymbolMatchWithNode(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch);
+    static bool         setSymbolMatch(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch);
     static void         resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatch* oneMatch, int i);
     static bool         setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcAttr, AstNode* parameters, bool forGenerics);
     static Diagnostic*  computeNonConstExprNote(AstNode* node);
@@ -332,8 +341,8 @@ struct SemanticJob : public Job
     static bool           appendLastCodeStatement(SemanticContext* context, AstIdentifier* node, SymbolOverload* overload);
     static bool           fillMatchContextCallParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload, AstNode* ufcsFirstParam);
     static bool           fillMatchContextGenericParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload);
-    static bool           needToWaitForSymbol(SemanticContext* context, AstIdentifier* node, SymbolName* symbol, bool& needToWait);
-    static bool           resolveIdentifier(SemanticContext* context, AstIdentifier* node, uint32_t riFlags);
+    static bool           needToWaitForSymbol(SemanticContext* context, AstIdentifier* identifier, SymbolName* symbol, bool& needToWait);
+    static bool           resolveIdentifier(SemanticContext* context, AstIdentifier* identifier, uint32_t riFlags);
     static TypeInfoEnum*  findEnumTypeInContext(SemanticContext* context, TypeInfo* typeInfo);
     static bool           findEnumTypeInContext(SemanticContext* context, AstNode* node, TypeInfoEnum** result, bool genError, TypeInfoEnum** has);
     static void           addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolName* symName, Scope* scope, uint32_t asflags);

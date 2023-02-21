@@ -689,7 +689,26 @@ static bool isStatementIdentifier(AstIdentifier* identifier)
     return false;
 }
 
-bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, OneMatch& oneMatch)
+bool SemanticJob::setSymbolMatchWithNode(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch)
+{
+    // :SilentCall
+    if (identifier->token.text.empty())
+        identifier->typeInfo = identifierRef->typeInfo;
+    else if (oneMatch.typeWasForced)
+        identifier->typeInfo = oneMatch.typeWasForced;
+    else
+        identifier->typeInfo = oneMatch.symbolOverload->typeInfo;
+
+    context->lastIdentifier.oneMatch      = oneMatch;
+    context->lastIdentifier.identifierRef = identifierRef;
+    context->lastIdentifier.identifier    = identifier;
+    if (oneMatch.oneOverload)
+        context->lastIdentifier.oneTryMatch = *oneMatch.oneOverload;
+
+    return setSymbolMatch(context, identifierRef, identifier, oneMatch);
+}
+
+bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch)
 {
     auto symbol       = oneMatch.symbolOverload->symbol;
     auto overload     = oneMatch.symbolOverload;
@@ -709,14 +728,14 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     if (symbol &&
         symbol->kind == SymbolKind::Variable &&
         !overload->typeInfo->isLambdaClosure() &&
-        !parent->startScope &&
+        !identifierRef->startScope &&
         !identifier->token.text.empty() && // :SilentCall
-        parent->previousResolvedNode &&
-        !parent->previousResolvedNode->typeInfo->isPointerTo(TypeInfoKind::Struct) &&
-        !parent->previousResolvedNode->typeInfo->isStruct())
+        identifierRef->previousResolvedNode &&
+        !identifierRef->previousResolvedNode->typeInfo->isPointerTo(TypeInfoKind::Struct) &&
+        !identifierRef->previousResolvedNode->typeInfo->isStruct())
     {
-        Diagnostic diag{parent->previousResolvedNode, Fmt(Err(Err0085), parent->previousResolvedNode->token.ctext(), parent->previousResolvedNode->typeInfo->getDisplayNameC())};
-        diag.hint = Diagnostic::isType(parent->previousResolvedNode->typeInfo);
+        Diagnostic diag{identifierRef->previousResolvedNode, Fmt(Err(Err0085), identifierRef->previousResolvedNode->token.ctext(), identifierRef->previousResolvedNode->typeInfo->getDisplayNameC())};
+        diag.hint = Diagnostic::isType(identifierRef->previousResolvedNode->typeInfo);
         return context->report(diag);
     }
 
@@ -725,22 +744,22 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     // x.toto() with toto taking no argument for example, but toto is 'in' x scope.
     if (symbol &&
         symbol->kind == SymbolKind::Function &&
-        parent->startScope &&
-        parent->previousResolvedNode &&
-        parent->previousResolvedNode->resolvedSymbolName &&
-        parent->previousResolvedNode->resolvedSymbolName->kind == SymbolKind::Variable &&
-        !(parent->previousResolvedNode->flags & AST_FROM_UFCS))
+        identifierRef->startScope &&
+        identifierRef->previousResolvedNode &&
+        identifierRef->previousResolvedNode->resolvedSymbolName &&
+        identifierRef->previousResolvedNode->resolvedSymbolName->kind == SymbolKind::Variable &&
+        !(identifierRef->previousResolvedNode->flags & AST_FROM_UFCS))
     {
-        if (parent->previousResolvedNode->kind == AstNodeKind::Identifier && parent->previousResolvedNode->specFlags & AST_SPEC_IDENTIFIER_FROM_WITH)
+        if (identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier && identifierRef->previousResolvedNode->specFlags & AST_SPEC_IDENTIFIER_FROM_WITH)
         {
-            Diagnostic diag{parent->previousResolvedNode, Fmt(Err(Err0310), parent->previousResolvedNode->token.ctext(), symbol->name.c_str(), parent->startScope->name.c_str())};
+            Diagnostic diag{identifierRef->previousResolvedNode, Fmt(Err(Err0310), identifierRef->previousResolvedNode->token.ctext(), symbol->name.c_str(), identifierRef->startScope->name.c_str())};
             diag.hint = Hnt(Hnt0073);
             return context->report(diag);
         }
 
-        Diagnostic diag{parent->previousResolvedNode, Fmt(Err(Err0086), parent->previousResolvedNode->token.ctext(), symbol->name.c_str())};
+        Diagnostic diag{identifierRef->previousResolvedNode, Fmt(Err(Err0086), identifierRef->previousResolvedNode->token.ctext(), symbol->name.c_str())};
         diag.addRange(identifier->token, Hnt(Hnt0073));
-        diag.hint = Fmt(Hnt(Hnt0080), parent->startScope->name.c_str());
+        diag.hint = Fmt(Hnt(Hnt0080), identifierRef->startScope->name.c_str());
         return context->report(diag);
     }
 
@@ -749,8 +768,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         symbol->kind == SymbolKind::Variable &&
         identifier->typeInfo->isArray() &&
         identifier->parent->kind != AstNodeKind::ArrayPointerIndex &&
-        identifier->parent == parent &&
-        parent->childs.back() != identifier)
+        identifier->parent == identifierRef &&
+        identifierRef->childs.back() != identifier)
     {
         return context->report({identifier, Fmt(Err(Err0187), symbol->name.c_str()), Diagnostic::isType(identifier->typeInfo)});
     }
@@ -763,13 +782,13 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     }
 
     // Direct reference to a constexpr typeinfo
-    if (parent->previousResolvedNode &&
-        (parent->previousResolvedNode->flags & AST_VALUE_IS_TYPEINFO) &&
+    if (identifierRef->previousResolvedNode &&
+        (identifierRef->previousResolvedNode->flags & AST_VALUE_IS_TYPEINFO) &&
         symbol->kind == SymbolKind::Variable)
     {
-        if (derefLiteralStruct(context, parent, overload))
+        if (derefLiteralStruct(context, identifierRef, overload))
         {
-            parent->previousResolvedNode = context->node;
+            identifierRef->previousResolvedNode = context->node;
             return true;
         }
 
@@ -777,16 +796,16 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     }
 
     // Direct reference to a constexpr structure
-    if (parent->previousResolvedNode &&
-        (parent->previousResolvedNode->flags & AST_VALUE_COMPUTED) &&
-        parent->previousResolvedNode->typeInfo->isStruct() &&
+    if (identifierRef->previousResolvedNode &&
+        (identifierRef->previousResolvedNode->flags & AST_VALUE_COMPUTED) &&
+        identifierRef->previousResolvedNode->typeInfo->isStruct() &&
         symbol->kind == SymbolKind::Variable)
     {
-        if (derefLiteralStruct(context, parent, overload))
+        if (derefLiteralStruct(context, identifierRef, overload))
         {
-            parent->previousResolvedNode       = context->node;
-            identifier->resolvedSymbolName     = overload->symbol;
-            identifier->resolvedSymbolOverload = overload;
+            identifierRef->previousResolvedNode = context->node;
+            identifier->resolvedSymbolName      = overload->symbol;
+            identifier->resolvedSymbolOverload  = overload;
             return true;
         }
 
@@ -794,12 +813,12 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     }
 
     // Direct reference of a struct field inside a const array
-    if (parent->previousResolvedNode &&
-        parent->previousResolvedNode->kind == AstNodeKind::ArrayPointerIndex &&
-        parent->previousResolvedNode->typeInfo->isStruct() &&
+    if (identifierRef->previousResolvedNode &&
+        identifierRef->previousResolvedNode->kind == AstNodeKind::ArrayPointerIndex &&
+        identifierRef->previousResolvedNode->typeInfo->isStruct() &&
         symbol->kind == SymbolKind::Variable)
     {
-        auto arrayNode = CastAst<AstArrayPointerIndex>(parent->previousResolvedNode, AstNodeKind::ArrayPointerIndex);
+        auto arrayNode = CastAst<AstArrayPointerIndex>(identifierRef->previousResolvedNode, AstNodeKind::ArrayPointerIndex);
         auto arrayOver = arrayNode->array->resolvedSymbolOverload;
         if (arrayOver && (arrayOver->flags & OVERLOAD_COMPUTED_VALUE))
         {
@@ -812,9 +831,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 ptr += arrayNode->access->computedValue->reg.u64 * typePtr->finalType->sizeOf;
                 if (derefLiteralStruct(context, ptr, overload, &sourceFile->module->constantSegment))
                 {
-                    parent->previousResolvedNode       = context->node;
-                    identifier->resolvedSymbolName     = overload->symbol;
-                    identifier->resolvedSymbolOverload = overload;
+                    identifierRef->previousResolvedNode = context->node;
+                    identifier->resolvedSymbolName      = overload->symbol;
+                    identifier->resolvedSymbolOverload  = overload;
                     return true;
                 }
 
@@ -828,12 +847,12 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     {
         if (symbol->kind != SymbolKind::GenericType)
         {
-            if (parent->previousResolvedNode)
+            if (identifierRef->previousResolvedNode)
             {
-                if (parent->previousResolvedNode->flags & AST_R_VALUE)
+                if (identifierRef->previousResolvedNode->flags & AST_R_VALUE)
                     identifier->flags |= AST_L_VALUE | AST_R_VALUE;
                 else
-                    identifier->flags |= (parent->previousResolvedNode->flags & AST_L_VALUE);
+                    identifier->flags |= (identifierRef->previousResolvedNode->flags & AST_L_VALUE);
             }
         }
     }
@@ -845,8 +864,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     // Do not register a sub impl scope, for ufcs to use the real variable
     if (!(overload->flags & OVERLOAD_IMPL_IN_STRUCT))
     {
-        parent->resolvedSymbolName     = symbol;
-        parent->resolvedSymbolOverload = overload;
+        identifierRef->resolvedSymbolName     = symbol;
+        identifierRef->resolvedSymbolOverload = overload;
     }
 
     identifier->resolvedSymbolName     = symbol;
@@ -859,9 +878,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     // Except if symbol is a constant !
     if (!(overload->flags & OVERLOAD_COMPUTED_VALUE))
     {
-        if (dependentVar && parent->kind == AstNodeKind::IdentifierRef && symbol->kind != SymbolKind::Function)
+        if (dependentVar && identifierRef->kind == AstNodeKind::IdentifierRef && symbol->kind != SymbolKind::Function)
         {
-            auto idRef = CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
+            auto idRef = CastAst<AstIdentifierRef>(identifierRef, AstNodeKind::IdentifierRef);
             if (dependentVar->kind == AstNodeKind::IdentifierRef)
             {
                 for (int i = (int) dependentVar->childs.size() - 1; i >= 0; i--)
@@ -958,12 +977,12 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         break;
 
     case SymbolKind::Namespace:
-        parent->startScope = CastTypeInfo<TypeInfoNamespace>(identifier->typeInfo, identifier->typeInfo->kind)->scope;
+        identifierRef->startScope = CastTypeInfo<TypeInfoNamespace>(identifier->typeInfo, identifier->typeInfo->kind)->scope;
         identifier->flags |= AST_CONST_EXPR;
         break;
 
     case SymbolKind::Enum:
-        parent->startScope = CastTypeInfo<TypeInfoEnum>(identifier->typeInfo, identifier->typeInfo->kind)->scope;
+        identifierRef->startScope = CastTypeInfo<TypeInfoEnum>(identifier->typeInfo, identifier->typeInfo->kind)->scope;
         identifier->flags |= AST_CONST_EXPR;
         break;
 
@@ -979,7 +998,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     {
         if (!(overload->flags & OVERLOAD_IMPL_IN_STRUCT))
             SWAG_CHECK(setupIdentifierRef(context, identifier, identifier->typeInfo));
-        parent->startScope = CastTypeInfo<TypeInfoStruct>(typeAlias, typeAlias->kind)->scope;
+        identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(typeAlias, typeAlias->kind)->scope;
 
         if (!identifier->callParameters)
             identifier->flags |= AST_CONST_EXPR;
@@ -4055,7 +4074,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     return resolveIdentifier(context, node, RI_ZERO);
 }
 
-bool SemanticJob::needToWaitForSymbol(SemanticContext* context, AstIdentifier* node, SymbolName* symbol, bool& needToWait)
+bool SemanticJob::needToWaitForSymbol(SemanticContext* context, AstIdentifier* identifier, SymbolName* symbol, bool& needToWait)
 {
     if (!symbol->cptOverloads && !(symbol->flags & SYMBOL_ATTRIBUTE_GEN))
         return false;
@@ -4072,13 +4091,13 @@ bool SemanticJob::needToWaitForSymbol(SemanticContext* context, AstIdentifier* n
 
         // If a structure is referencing itself, we will match the incomplete symbol for now
         // We can also do an incomplete match with the identifier of an Impl block
-        if ((node->flags & AST_STRUCT_MEMBER) || (node->flags & AST_CAN_MATCH_INCOMPLETE))
+        if ((identifier->flags & AST_STRUCT_MEMBER) || (identifier->flags & AST_CAN_MATCH_INCOMPLETE))
             canIncomplete = true;
 
         // If identifier is in a pointer type expression, can incomplete resolve
-        if (node->parent->parent && node->parent->parent->kind == AstNodeKind::TypeExpression)
+        if (identifier->parent->parent && identifier->parent->parent->kind == AstNodeKind::TypeExpression)
         {
-            auto typeExprNode = CastAst<AstTypeExpression>(node->parent->parent, AstNodeKind::TypeExpression);
+            auto typeExprNode = CastAst<AstTypeExpression>(identifier->parent->parent, AstNodeKind::TypeExpression);
             if (typeExprNode->ptrCount)
                 canIncomplete = true;
         }
@@ -4087,18 +4106,18 @@ bool SemanticJob::needToWaitForSymbol(SemanticContext* context, AstIdentifier* n
         {
             if (symbol->overloads.size() == 1 && (symbol->overloads[0]->flags & OVERLOAD_INCOMPLETE))
             {
-                if (!node->callParameters && !node->genericParameters)
+                if (!identifier->callParameters && !identifier->genericParameters)
                 {
-                    needToWait                   = false;
-                    node->resolvedSymbolName     = symbol;
-                    node->resolvedSymbolOverload = symbol->overloads[0];
-                    node->typeInfo               = node->resolvedSymbolOverload->typeInfo;
+                    needToWait                         = false;
+                    identifier->resolvedSymbolName     = symbol;
+                    identifier->resolvedSymbolOverload = symbol->overloads[0];
+                    identifier->typeInfo               = identifier->resolvedSymbolOverload->typeInfo;
 
                     // If this is a generic type, and it's from an instante, we must wait, because we will
                     // have to instantiate that symbol too
-                    if (node->ownerStructScope && (node->ownerStructScope->owner->flags & AST_FROM_GENERIC) && node->typeInfo->isGeneric())
+                    if (identifier->ownerStructScope && (identifier->ownerStructScope->owner->flags & AST_FROM_GENERIC) && identifier->typeInfo->isGeneric())
                         needToWait = true;
-                    if (node->ownerFct && (node->ownerFct->flags & AST_FROM_GENERIC) && node->typeInfo->isGeneric())
+                    if (identifier->ownerFct && (identifier->ownerFct->flags & AST_FROM_GENERIC) && identifier->typeInfo->isGeneric())
                         needToWait = true;
                 }
             }
@@ -4108,20 +4127,20 @@ bool SemanticJob::needToWaitForSymbol(SemanticContext* context, AstIdentifier* n
     return true;
 }
 
-bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* node, uint32_t riFlags)
+bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* identifier, uint32_t riFlags)
 {
     auto  job                = context->job;
     auto& scopeHierarchy     = job->cacheScopeHierarchy;
     auto& scopeHierarchyVars = job->cacheScopeHierarchyVars;
     auto& dependentSymbols   = job->cacheDependentSymbols;
-    auto  identifierRef      = node->identifierRef();
+    auto  identifierRef      = identifier->identifierRef();
 
-    node->byteCodeFct = ByteCodeGenJob::emitIdentifier;
+    identifier->byteCodeFct = ByteCodeGenJob::emitIdentifier;
 
     // Current file scope
-    if (context->sourceFile && context->sourceFile->scopeFile && node->token.text == context->sourceFile->scopeFile->name)
+    if (context->sourceFile && context->sourceFile->scopeFile && identifier->token.text == context->sourceFile->scopeFile->name)
     {
-        SWAG_VERIFY(node == identifierRef->childs.front(), context->report({node, Err(Err0132)}));
+        SWAG_VERIFY(identifier == identifierRef->childs.front(), context->report({identifier, Err(Err0132)}));
         identifierRef->startScope = context->sourceFile->scopeFile;
         return true;
     }
@@ -4130,27 +4149,27 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
     if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->typeInfo->isKindGeneric())
     {
         // Just take the generic type for now
-        node->typeInfo          = g_TypeMgr->typeInfoUndefined;
+        identifier->typeInfo    = g_TypeMgr->typeInfoUndefined;
         identifierRef->typeInfo = identifierRef->previousResolvedNode->typeInfo;
         return true;
     }
 
     // Already solved
-    if ((node->flags & AST_FROM_GENERIC) && node->typeInfo && !node->typeInfo->isNative(NativeTypeKind::Undefined))
+    if ((identifier->flags & AST_FROM_GENERIC) && identifier->typeInfo && !identifier->typeInfo->isNative(NativeTypeKind::Undefined))
     {
-        if (node->resolvedSymbolOverload)
+        if (identifier->resolvedSymbolOverload)
         {
             OneMatch oneMatch;
-            oneMatch.symbolOverload = node->resolvedSymbolOverload;
-            oneMatch.scope          = node->resolvedSymbolOverload->node->ownerScope;
-            SWAG_CHECK(setSymbolMatch(context, identifierRef, node, oneMatch));
+            oneMatch.symbolOverload = identifier->resolvedSymbolOverload;
+            oneMatch.scope          = identifier->resolvedSymbolOverload->node->ownerScope;
+            SWAG_CHECK(setSymbolMatch(context, identifierRef, identifier, oneMatch));
         }
 
         return true;
     }
 
     // Compute dependencies if not already done
-    if (node->semanticState == AstNodeResolveState::ProcessingChilds || (riFlags & RI_FOR_GHOSTING) || (riFlags & RI_FOR_ZERO_GHOSTING))
+    if (identifier->semanticState == AstNodeResolveState::ProcessingChilds || (riFlags & RI_FOR_GHOSTING) || (riFlags & RI_FOR_ZERO_GHOSTING))
     {
         scopeHierarchy.clear();
         scopeHierarchyVars.clear();
@@ -4160,7 +4179,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
     if (dependentSymbols.empty())
     {
         // :SilentCall
-        if (node->token.text.empty())
+        if (identifier->token.text.empty())
         {
             OneSymbolMatch sm = {0};
             sm.symbol         = identifierRef->resolvedSymbolName;
@@ -4168,13 +4187,13 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
         }
         else
         {
-            SWAG_CHECK(findIdentifierInScopes(context, identifierRef, node));
+            SWAG_CHECK(findIdentifierInScopes(context, identifierRef, identifier));
             if (context->result != ContextResult::Done)
                 return true;
         }
 
         // Because of #self
-        if (node->semFlags & AST_SEM_FORCE_SCOPE)
+        if (identifier->semFlags & AST_SEM_FORCE_SCOPE)
             return true;
 
         if (dependentSymbols.empty())
@@ -4193,7 +4212,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
         // First test, with just a SharedLock for contention
         {
             SharedLock lkn(symbol->mutex);
-            if (!needToWaitForSymbol(context, node, symbol, needToWait))
+            if (!needToWaitForSymbol(context, identifier, symbol, needToWait))
                 continue;
         }
 
@@ -4202,7 +4221,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
         {
             ScopedLock lkn(symbol->mutex);
             needToWait = false;
-            if (!needToWaitForSymbol(context, node, symbol, needToWait))
+            if (!needToWaitForSymbol(context, identifier, symbol, needToWait))
                 continue;
             if (needToWait)
             {
@@ -4211,16 +4230,16 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
         }
 
         // In case identifier is part of a reference, need to initialize it
-        if (!needToWait && node != node->identifierRef()->childs.back())
-            SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
+        if (!needToWait && identifier != identifier->identifierRef()->childs.back())
+            SWAG_CHECK(setupIdentifierRef(context, identifier, identifier->typeInfo));
 
         return true;
     }
 
     // Filter symbols
-    SWAG_CHECK(filterSymbols(context, node));
+    SWAG_CHECK(filterSymbols(context, identifier));
     if (dependentSymbols.empty())
-        return context->report({node, Fmt(Err(Err0133), node->token.ctext())});
+        return context->report({identifier, Fmt(Err(Err0133), identifier->token.ctext())});
 
     auto orgResolvedSymbolOverload = identifierRef->resolvedSymbolOverload;
     auto orgResolvedSymbolName     = identifierRef->resolvedSymbolName;
@@ -4228,7 +4247,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
 
     // In case of a reevaluation, ufcsFirstParam will be null, but we still want to cast for ufcs
     bool hasForcedUfcs = false;
-    if (node->callParameters && !node->callParameters->childs.empty() && node->callParameters->childs.front()->flags & AST_TO_UFCS)
+    if (identifier->callParameters && !identifier->callParameters->childs.empty() && identifier->callParameters->childs.front()->flags & AST_TO_UFCS)
         hasForcedUfcs = true;
 
     while (true)
@@ -4259,7 +4278,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
         {
             if (identifierRef->flags & AST_SILENT_CHECK)
                 return true;
-            return context->report({node, Fmt(Err(Err0133), node->token.ctext())});
+            return context->report({identifier, Fmt(Err(Err0133), identifier->token.ctext())});
         }
 
         auto& listTryMatch = job->cacheListTryMatch;
@@ -4275,7 +4294,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
             // Is there a using variable associated with the symbol to solve ?
             AstNode* dependentVar     = nullptr;
             AstNode* dependentVarLeaf = nullptr;
-            SWAG_CHECK(getUsingVar(context, identifierRef, node, symbolOverload, &dependentVar, &dependentVarLeaf));
+            SWAG_CHECK(getUsingVar(context, identifierRef, identifier, symbolOverload, &dependentVar, &dependentVarLeaf));
             if (context->result == ContextResult::Pending)
                 return true;
 
@@ -4284,24 +4303,24 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
 
             // The ufcs parameter has already been set in we are evaluating an identifier for the second time
             // (when we inline a function call)
-            if (!node->callParameters || node->callParameters->childs.empty() || !(node->callParameters->childs.front()->flags & AST_TO_UFCS))
+            if (!identifier->callParameters || identifier->callParameters->childs.empty() || !(identifier->callParameters->childs.front()->flags & AST_TO_UFCS))
             {
-                SWAG_CHECK(getUfcs(context, identifierRef, node, symbolOverload, &ufcsFirstParam));
+                SWAG_CHECK(getUfcs(context, identifierRef, identifier, symbolOverload, &ufcsFirstParam));
                 if (context->result == ContextResult::Pending)
                     return true;
-                if ((node->semFlags & AST_SEM_FORCE_UFCS) && !ufcsFirstParam)
+                if ((identifier->semFlags & AST_SEM_FORCE_UFCS) && !ufcsFirstParam)
                     continue;
             }
 
             // If the last parameter of a function is of type 'code', and the last call parameter is not,
             // then we take the next statement, after the function, and put it as the last parameter
-            SWAG_CHECK(appendLastCodeStatement(context, node, symbolOverload));
+            SWAG_CHECK(appendLastCodeStatement(context, identifier, symbolOverload));
 
             auto  tryMatch        = job->getTryMatch();
             auto& symMatchContext = tryMatch->symMatchContext;
 
-            tryMatch->genericParameters = node->genericParameters;
-            tryMatch->callParameters    = node->callParameters;
+            tryMatch->genericParameters = identifier->genericParameters;
+            tryMatch->callParameters    = identifier->callParameters;
             tryMatch->dependentVar      = dependentVar;
             tryMatch->dependentVarLeaf  = dependentVarLeaf;
             tryMatch->overload          = symbolOverload;
@@ -4311,13 +4330,13 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
             tryMatch->cptOverloads     = oneOver.cptOverloads;
             tryMatch->cptOverloadsInit = oneOver.cptOverloadsInit;
 
-            SWAG_CHECK(fillMatchContextCallParameters(context, symMatchContext, node, symbolOverload, ufcsFirstParam));
+            SWAG_CHECK(fillMatchContextCallParameters(context, symMatchContext, identifier, symbolOverload, ufcsFirstParam));
             if (context->result == ContextResult::Pending)
                 return true;
-            SWAG_CHECK(fillMatchContextGenericParameters(context, symMatchContext, node, symbolOverload));
+            SWAG_CHECK(fillMatchContextGenericParameters(context, symMatchContext, identifier, symbolOverload));
 
-            bool notACall = isFunctionButNotACall(context, node, symbolOverload->symbol);
-            if (node->forceTakeAddress() && notACall)
+            bool notACall = isFunctionButNotACall(context, identifier, symbolOverload->symbol);
+            if (identifier->forceTakeAddress() && notACall)
                 symMatchContext.flags |= SymbolMatchContext::MATCH_FOR_LAMBDA;
 
             listTryMatch.push_back(tryMatch);
@@ -4334,7 +4353,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
             mipFlags |= MIP_FOR_GHOSTING;
         if (riFlags & RI_FOR_ZERO_GHOSTING)
             mipFlags |= MIP_FOR_ZERO_GHOSTING;
-        SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, node, mipFlags));
+        SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, identifier, mipFlags));
         if (context->result == ContextResult::Pending)
             return true;
 
@@ -4355,11 +4374,11 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
     if (job->cacheMatches.empty())
     {
         // We want to force the ufcs
-        if (node->semFlags & AST_SEM_FORCE_UFCS)
+        if (identifier->semFlags & AST_SEM_FORCE_UFCS)
         {
             if (identifierRef->flags & AST_SILENT_CHECK)
                 return true;
-            unknownIdentifier(context, identifierRef, CastAst<AstIdentifier>(node, AstNodeKind::Identifier));
+            unknownIdentifier(context, identifierRef, CastAst<AstIdentifier>(identifier, AstNodeKind::Identifier));
             return false;
         }
 
@@ -4375,7 +4394,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
     if (match->ufcs && !hasForcedUfcs)
     {
         // Do not change AST if this is code inside a generic function
-        if (!node->ownerFct || !(node->ownerFct->flags & AST_IS_GENERIC))
+        if (!identifier->ownerFct || !(identifier->ownerFct->flags & AST_IS_GENERIC))
         {
             if (match->dependentVar && !identifierRef->previousResolvedNode)
             {
@@ -4388,21 +4407,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
         }
     }
 
-    // :SilentCall
-    if (node->token.text.empty())
-    {
-        node->typeInfo = identifierRef->typeInfo;
-    }
-    else if (match->typeWasForced)
-    {
-        node->typeInfo = match->typeWasForced;
-    }
-    else
-    {
-        node->typeInfo = match->symbolOverload->typeInfo;
-    }
-
-    SWAG_CHECK(setSymbolMatch(context, identifierRef, node, *match));
+    SWAG_CHECK(setSymbolMatchWithNode(context, identifierRef, identifier, *match));
     return true;
 }
 
