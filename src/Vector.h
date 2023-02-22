@@ -52,21 +52,22 @@ struct Vector : public vector<T, StdAllocator<T>>
 template<typename K, typename V>
 struct VectorMap : public Vector<pair<K, V>>
 {
-    pair<K, V>* find(const K& key)
+    using IT = Vector<pair<K, V>>::iterator;
+    IT find(const K& key)
     {
-        for (auto& it : *this)
+        for (auto it = this->begin(); it != this->end(); it++)
         {
-            if (it.first == key)
-                return &it;
+            if (it->first == key)
+                return it;
         }
 
-        return nullptr;
+        return this->end();
     }
 
     V& operator[](const K& key)
     {
         auto it = find(key);
-        if (it)
+        if (it != this->end())
             return it->second;
         pair<K, V> tmp;
         tmp.first = key;

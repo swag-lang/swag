@@ -214,7 +214,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
     {
         SharedLock lkOp(typeStruct->mutexCache);
         auto       it = typeStruct->mapOpCast.find(toType);
-        if (it)
+        if (it != typeStruct->mapOpCast.end())
         {
             if (!it->second)
                 return false;
