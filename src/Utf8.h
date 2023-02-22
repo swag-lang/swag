@@ -24,6 +24,7 @@ struct Utf8
     Utf8(const char* from, uint32_t len);
     Utf8(const string& from);
     Utf8(const Utf8& from);
+    Utf8(const Utf8& from, int capcity);
     Utf8(Utf8&& from);
     ~Utf8();
 

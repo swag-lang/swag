@@ -511,7 +511,7 @@ Utf8 AstNode::getScopedName()
     auto& fullName = ownerScope->getFullName();
     if (fullName.empty())
         return token.text;
-    auto result = fullName;
+    Utf8 result{fullName, fullName.length() + token.text.length() + 1};
     result += ".";
     result += token.text;
     return result;

@@ -81,6 +81,26 @@ Utf8::Utf8(const Utf8& from)
     count = len;
 }
 
+Utf8::Utf8(const Utf8& from, int capcity)
+{
+    int len = from.count;
+    if (!len)
+        return;
+
+    // View
+    if (!from.allocated && from.buffer)
+    {
+        count     = from.count;
+        allocated = from.allocated;
+        buffer    = from.buffer;
+        return;
+    }
+
+    reserve(max(len + 1, capcity));
+    memcpy(buffer, from.buffer, len + 1);
+    count = len;
+}
+
 Utf8::Utf8(Utf8&& from)
 {
     count       = from.count;
