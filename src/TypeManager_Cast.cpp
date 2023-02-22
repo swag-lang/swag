@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "TypeManager.h"
-#include "SourceFile.h"
 #include "Module.h"
 #include "Ast.h"
 #include "SemanticJob.h"
@@ -8,7 +7,6 @@
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "Naming.h"
-#include "Ast.h"
 
 bool TypeManager::errorOutOfRange(SemanticContext* context, AstNode* fromNode, TypeInfo* fromType, TypeInfo* toType, bool isNeg)
 {
