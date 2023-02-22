@@ -27,16 +27,15 @@ struct ErrorCxtStep
 {
     AstNode*           node = nullptr;
     ErrCxtStepKind     type = ErrCxtStepKind::Note;
-    Utf8               msg  = "";
-    Utf8               hint = "";
     MapUtf8<TypeInfo*> replaceTypes;
     bool               locIsToken = false;
     bool               hide       = false;
+    function<Utf8()>   err;
 };
 
 struct PushErrCxtStep
 {
-    PushErrCxtStep(ErrorContext* context, AstNode* node, ErrCxtStepKind kind, const Utf8& msg = "", const Utf8& hint = "", bool locIsToken = false);
+    PushErrCxtStep(ErrorContext* context, AstNode* node, ErrCxtStepKind kind, function<Utf8()> err, bool locIsToken = false);
     ~PushErrCxtStep();
     ErrorContext* cxt;
 };

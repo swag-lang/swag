@@ -1896,7 +1896,8 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
                 TypeInfoParam* fieldJ = symContext.solvedCallParameters[j];
 
                 auto           oldType = childJ->typeInfo;
-                PushErrCxtStep ec{context, childJ, ErrCxtStepKind::MsgPrio, Fmt(Err(Err0723), fieldJ->name.c_str(), fieldJ->typeInfo->getDisplayNameC(), childJ->typeInfo->getDisplayNameC())};
+                PushErrCxtStep ec{context, childJ, ErrCxtStepKind::MsgPrio, [fieldJ, childJ]()
+                                  { return Fmt(Err(Err0723), fieldJ->name.c_str(), fieldJ->typeInfo->getDisplayNameC(), childJ->typeInfo->getDisplayNameC()); }};
                 SWAG_CHECK(TypeManager::makeCompatibles(context, fieldJ->typeInfo, childJ->typeInfo, nullptr, childJ, castFlags | CASTFLAG_TRY_COERCE));
                 if (childJ->typeInfo != oldType)
                     hasChanged = true;
@@ -1932,7 +1933,8 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
 
         if (fromNode)
         {
-            PushErrCxtStep ec(context, fromNode->childs.front(), ErrCxtStepKind::Hint2, "", Fmt(Hnt(Hnt0062), convertTo->getDisplayNameC()));
+            PushErrCxtStep ec(context, fromNode->childs.front(), ErrCxtStepKind::Hint2, [convertTo]()
+                              { return Fmt(Hnt(Hnt0062), convertTo->getDisplayNameC()); });
             SWAG_CHECK(TypeManager::makeCompatibles(context, convertTo, fromTypeList->subTypes[i]->typeInfo, nullptr, child, castFlags | CASTFLAG_TRY_COERCE));
         }
         else
@@ -3064,7 +3066,8 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right, bool is3264)
 
 bool TypeManager::makeCompatibles(SemanticContext* context, AstNode* leftNode, AstNode* rightNode, uint32_t castFlags)
 {
-    PushErrCxtStep ec(context, leftNode, ErrCxtStepKind::Hint2, "", Diagnostic::isType(leftNode->typeInfo));
+    PushErrCxtStep ec(context, leftNode, ErrCxtStepKind::Hint2, [leftNode]()
+                      { return Diagnostic::isType(leftNode->typeInfo); });
     SWAG_CHECK(makeCompatibles(context, leftNode->typeInfo, leftNode, rightNode, castFlags));
     return true;
 }

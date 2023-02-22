@@ -306,7 +306,8 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             context->job->waitAllStructInterfaces(rightTypeInfo);
             if (context->result == ContextResult::Pending)
                 return true;
-            PushErrCxtStep ec(context, left, ErrCxtStepKind::Hint2, "", Diagnostic::isType(leftTypeInfo));
+            PushErrCxtStep ec(context, left, ErrCxtStepKind::Hint2, [leftTypeInfo]()
+                              { return Diagnostic::isType(leftTypeInfo); });
             SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_UNCONST));
         }
     }
@@ -400,8 +401,10 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             break;
         }
 
-        PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::MsgPrio, Fmt(Err(Err0196), "affect", rightTypeInfo->getDisplayNameC(), "to", leftTypeInfo->getDisplayNameC()));
-        PushErrCxtStep ec(context, left, ErrCxtStepKind::Hint2, "", Diagnostic::isType(left));
+        PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::MsgPrio, [rightTypeInfo, leftTypeInfo]()
+                           { return Fmt(Err(Err0196), "affect", rightTypeInfo->getDisplayNameC(), "to", leftTypeInfo->getDisplayNameC()); });
+        PushErrCxtStep ec(context, left, ErrCxtStepKind::Hint2, [left]()
+                          { return Diagnostic::isType(left); });
         uint32_t       castFlags = CASTFLAG_AUTO_BOOL | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT | CASTFLAG_ACCEPT_PENDING;
         if (leftTypeInfo->flags & TYPEINFO_RETURN_BY_COPY)
             castFlags |= CASTFLAG_UNCONST;
@@ -427,8 +430,10 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         }
 
         auto           mmsg = tokenId == TokenId::SymLowerLowerEqual ? "make a left shift with" : "make a right shift with";
-        PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::MsgPrio, Fmt(Err(Err0196), mmsg, leftTypeInfo->getDisplayNameC(), "and", rightTypeInfo->getDisplayNameC()));
-        PushErrCxtStep ec(context, left, ErrCxtStepKind::Hint2, "", Diagnostic::isType(left));
+        PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::MsgPrio, [mmsg, leftTypeInfo, rightTypeInfo]()
+                           { return Fmt(Err(Err0196), mmsg, leftTypeInfo->getDisplayNameC(), "and", rightTypeInfo->getDisplayNameC()); });
+        PushErrCxtStep ec(context, left, ErrCxtStepKind::Hint2, [left]()
+                          { return Diagnostic::isType(left); });
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU32, left, right, CASTFLAG_TRY_COERCE));
 
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
@@ -487,8 +492,10 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
         SWAG_CHECK(forEnumFlags || checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
 
-        PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::MsgPrio, Fmt(Err(Err0196), "make a bit operation with", leftTypeInfo->getDisplayNameC(), "and", rightTypeInfo->getDisplayNameC()));
-        PushErrCxtStep ec(context, left, ErrCxtStepKind::Hint2, "", Diagnostic::isType(left));
+        PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::MsgPrio, [leftTypeInfo, rightTypeInfo]()
+                           { return Fmt(Err(Err0196), "make a bit operation with", leftTypeInfo->getDisplayNameC(), "and", rightTypeInfo->getDisplayNameC()); });
+        PushErrCxtStep ec(context, left, ErrCxtStepKind::Hint2, [left]()
+                          { return Diagnostic::isType(left); });
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
 
         if (leftTypeInfo->nativeType == NativeTypeKind::String ||
@@ -545,8 +552,10 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
 
         auto           mmsg = tokenId == TokenId::SymPlusEqual ? "add" : "substract";
-        PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::MsgPrio, Fmt(Err(Err0196), mmsg, leftTypeInfo->getDisplayNameC(), "and", rightTypeInfo->getDisplayNameC()));
-        PushErrCxtStep ec(context, left, ErrCxtStepKind::Hint2, "", Diagnostic::isType(left));
+        PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::MsgPrio, [mmsg, leftTypeInfo, rightTypeInfo]()
+                           { return Fmt(Err(Err0196), mmsg, leftTypeInfo->getDisplayNameC(), "and", rightTypeInfo->getDisplayNameC()); });
+        PushErrCxtStep ec(context, left, ErrCxtStepKind::Hint2, [left]()
+                          { return Diagnostic::isType(left); });
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
 
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
@@ -573,8 +582,10 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
 
-        PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::MsgPrio, Fmt(Err(Err0196), "divide", leftTypeInfo->getDisplayNameC(), "and", rightTypeInfo->getDisplayNameC()));
-        PushErrCxtStep ec(context, left, ErrCxtStepKind::Hint2, "", Diagnostic::isType(left));
+        PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::MsgPrio, [leftTypeInfo, rightTypeInfo]()
+                           { return Fmt(Err(Err0196), "divide", leftTypeInfo->getDisplayNameC(), "and", rightTypeInfo->getDisplayNameC()); });
+        PushErrCxtStep ec(context, left, ErrCxtStepKind::Hint2, [left]()
+                          { return Diagnostic::isType(left); });
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
 
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
@@ -604,8 +615,10 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
 
         auto           mmsg = tokenId == TokenId::SymPercentEqual ? "make a modulo with" : "multiply";
-        PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::MsgPrio, Fmt(Err(Err0196), mmsg, leftTypeInfo->getDisplayNameC(), "and", rightTypeInfo->getDisplayNameC()));
-        PushErrCxtStep ec(context, left, ErrCxtStepKind::Hint2, "", Diagnostic::isType(left));
+        PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::MsgPrio, [mmsg, leftTypeInfo, rightTypeInfo]()
+                           { return Fmt(Err(Err0196), mmsg, leftTypeInfo->getDisplayNameC(), "and", rightTypeInfo->getDisplayNameC()); });
+        PushErrCxtStep ec(context, left, ErrCxtStepKind::Hint2, [left]()
+                          { return Diagnostic::isType(left); });
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
 
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||

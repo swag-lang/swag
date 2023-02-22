@@ -214,7 +214,8 @@ bool SemanticJob::resolveConditionalOp(SemanticContext* context)
 
     // Make the cast
     {
-        PushErrCxtStep ec(context, rightT, ErrCxtStepKind::Note, Nte(Nte0055), Fmt(Hnt(Hnt0011), rightT->typeInfo->getDisplayNameC()));
+        PushErrCxtStep ec(context, rightT, ErrCxtStepKind::Note, []()
+                          { return Nte(Nte0055); });
         SWAG_CHECK(TypeManager::makeCompatibles(context, rightT, leftT, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));
     }
 
@@ -324,8 +325,10 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
             return context->report(diag);
         }
 
-        PushErrCxtStep ec(context, expression, ErrCxtStepKind::Hint2, "", Diagnostic::isType(expression->typeInfo));
-        PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::Help, Hlp(Hlp0032));
+        PushErrCxtStep ec(context, expression, ErrCxtStepKind::Hint2, [expression]()
+                          { return Diagnostic::isType(expression->typeInfo); });
+        PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::Help, []()
+                           { return Hlp(Hlp0032); });
         SWAG_CHECK(TypeManager::makeCompatibles(context, expression, ifZero, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));
 
         node->typeInfo    = expression->typeInfo;

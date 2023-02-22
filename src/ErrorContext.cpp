@@ -5,14 +5,13 @@
 #include "ErrorIds.h"
 #include "Report.h"
 
-PushErrCxtStep::PushErrCxtStep(ErrorContext* context, AstNode* node, ErrCxtStepKind kind, const Utf8& msg, const Utf8& hint, bool locIsToken)
+PushErrCxtStep::PushErrCxtStep(ErrorContext* context, AstNode* node, ErrCxtStepKind kind, function<Utf8()> err, bool locIsToken)
     : cxt{context}
 {
     ErrorCxtStep expNode;
     expNode.node       = node;
     expNode.type       = kind;
-    expNode.msg        = msg;
-    expNode.hint       = hint;
+    expNode.err        = err;
     expNode.locIsToken = locIsToken;
     context->errCxtSteps.push_back(expNode);
 }
@@ -37,11 +36,15 @@ void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
 
         for (auto& exp : errCxtSteps)
         {
+            Utf8 msg;
+            if (exp.err)
+                msg = exp.err();
+
             switch (exp.type)
             {
             case ErrCxtStepKind::MsgPrio:
                 if (diag.lowPrio)
-                    diag.textMsg = exp.msg;
+                    diag.textMsg = msg;
                 exp.hide = true;
                 break;
 
@@ -52,7 +55,7 @@ void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
                     SourceLocation start, end;
                     exp.node->computeLocation(start, end);
                     if (start.line == end.line && start.line == diag.startLocation.line)
-                        diag.addRange(start, end, exp.hint);
+                        diag.addRange(start, end, msg);
                 }
 
                 break;
@@ -80,7 +83,7 @@ void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
 
             case ErrCxtStepKind::Note:
             case ErrCxtStepKind::Help:
-                exp.hide = exp.msg.empty();
+                exp.hide = msg.empty();
                 break;
             }
         }
@@ -93,7 +96,11 @@ void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
 
             DiagnosticLevel level = DiagnosticLevel::Note;
 
-            Utf8 name, msg;
+            Utf8 msg;
+            if (exp.err)
+                msg = exp.err();
+
+            Utf8 name;
             if (exp.node)
                 name = exp.node->resolvedSymbolName ? exp.node->resolvedSymbolName->name : exp.node->token.text;
 
@@ -101,10 +108,8 @@ void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
             switch (exp.type)
             {
             case ErrCxtStepKind::Note:
-                msg = exp.msg;
                 break;
             case ErrCxtStepKind::Help:
-                msg   = exp.msg;
                 level = DiagnosticLevel::Help;
                 break;
             case ErrCxtStepKind::Export:
@@ -150,7 +155,6 @@ void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
                     note = new Diagnostic{msg, level};
             }
 
-            note->hint = exp.hint;
             notes.push_back(note);
         }
     }

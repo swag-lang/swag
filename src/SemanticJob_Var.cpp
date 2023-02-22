@@ -73,7 +73,8 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
         Diagnostic diag{varDecl, varDecl->token, Fmt(Err(Err0293), numUnpack, typeStruct->fields.size())};
         diag.hint = Fmt(Hnt(Hnt0067), numUnpack);
         diag.addRange(varDecl->assignment, Fmt(Hnt(Hnt0068), typeStruct->fields.size()));
-        PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Help, Hlp(Hlp0033));
+        PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Help, []()
+                          { return Hlp(Hlp0033); });
         return context->report(diag);
     }
 
@@ -803,7 +804,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
             if (node->type->flags & AST_FROM_GENERIC_REPLACE || (node->type->childs.count && node->type->childs.back()->flags & AST_FROM_GENERIC_REPLACE))
             {
-                PushErrCxtStep ec{context, node->type, ErrCxtStepKind::Hint2, "", Diagnostic::isType(node->type->typeInfo)};
+                PushErrCxtStep ec{context, node->type, ErrCxtStepKind::Hint2, [node]()
+                                  { return Diagnostic::isType(node->type->typeInfo); }};
                 SWAG_CHECK(TypeManager::makeCompatibles(context, node->type->typeInfo, nullptr, node->assignment, castFlags));
             }
             else

@@ -946,7 +946,8 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
         else
         {
             {
-                PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Help, Hlp(Hlp0045));
+                PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Help, []()
+                                  { return Hlp(Hlp0045); });
                 SWAG_CHECK(eatToken(TokenId::SymVertical, "to start the capture block"));
             }
 

@@ -1369,17 +1369,22 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
 
         if (funcNode->attributeFlags & ATTRIBUTE_AST_FUNC)
         {
-            PushErrCxtStep ec{context, funcNode, ErrCxtStepKind::Note, Nte(Nte0005), nullptr, true};
+            PushErrCxtStep ec{context, funcNode, ErrCxtStepKind::Note, []()
+                              { return Nte(Nte0005); },
+                              true};
             SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, castFlags));
         }
         else if (funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC)
         {
-            PushErrCxtStep ec{context, funcNode, ErrCxtStepKind::Note, Fmt(Nte(Nte0067), returnType->getDisplayNameC()), nullptr, true};
+            PushErrCxtStep ec{context, funcNode, ErrCxtStepKind::Note, [returnType]()
+                              { return Fmt(Nte(Nte0067), returnType->getDisplayNameC()); },
+                              true};
             SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, castFlags));
         }
         else
         {
-            PushErrCxtStep ec{context, funcNode->returnType, ErrCxtStepKind::Note, Fmt(Nte(Nte0067), returnType->getDisplayNameC())};
+            PushErrCxtStep ec{context, funcNode->returnType, ErrCxtStepKind::Note, [returnType]()
+                              { return Fmt(Nte(Nte0067), returnType->getDisplayNameC()); }};
             SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, castFlags));
         }
     }
@@ -1670,7 +1675,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     // Sub declarations in the inline block, like sub functions
     if (!funcDecl->subDecls.empty())
     {
-        PushErrCxtStep ec(context, identifier, ErrCxtStepKind::Inline);
+        PushErrCxtStep ec(context, identifier, ErrCxtStepKind::Inline, nullptr);
         SWAG_VERIFY(inlineNode->ownerFct, context->report({funcDecl, Fmt(Err(Err0781), identifier->token.ctext())}));
 
         // Authorize a sub function to access inline parameters, if possible
@@ -1700,7 +1705,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     {
         if (cloneContext.replaceNames.size() != cloneContext.usedReplaceNames.size())
         {
-            PushErrCxtStep ec(context, identifier, ErrCxtStepKind::Inline);
+            PushErrCxtStep ec(context, identifier, ErrCxtStepKind::Inline, nullptr);
             auto           id = CastAst<AstIdentifier>(identifier, AstNodeKind::Identifier);
             for (auto& r : cloneContext.replaceNames)
             {

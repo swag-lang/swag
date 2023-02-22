@@ -325,7 +325,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         TypeInfo* toType = nullptr;
         if (i < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[i])
         {
-            PushErrCxtStep ec(context, typeInfoFunc->declNode, ErrCxtStepKind::HereIs);
+            PushErrCxtStep ec(context, typeInfoFunc->declNode, ErrCxtStepKind::HereIs, nullptr);
 
             toType = oneMatch.solvedParameters[i]->typeInfo;
             SWAG_CHECK(TypeManager::makeCompatibles(context, toType, nullptr, nodeCall, castFlags));
@@ -3902,7 +3902,7 @@ bool SemanticJob::solveValidIf(SemanticContext* context, OneMatch* oneMatch, Ast
         else
             type = ErrCxtStepKind::ValidIf;
 
-        PushErrCxtStep ec(context, node, type);
+        PushErrCxtStep ec(context, node, type, nullptr);
         auto           result      = executeCompilerNode(context, expr, false);
         context->validIfParameters = nullptr;
         if (!result)

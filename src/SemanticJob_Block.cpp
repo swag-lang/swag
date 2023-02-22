@@ -499,7 +499,8 @@ bool SemanticJob::resolveCase(SemanticContext* context)
                 }
                 else
                 {
-                    PushErrCxtStep ec(context, node->ownerSwitch->expression, ErrCxtStepKind::Note, Fmt(Nte(Nte0052), typeInfo->getDisplayNameC(), "the switch expression"), Diagnostic::isType(typeInfo));
+                    PushErrCxtStep ec(context, node->ownerSwitch->expression, ErrCxtStepKind::Note, [typeInfo]()
+                                      { return Fmt(Nte(Nte0052), typeInfo->getDisplayNameC(), "the switch expression"), Diagnostic::isType(typeInfo); });
                     SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, oneExpression, CASTFLAG_COMPARE));
                 }
             }

@@ -150,7 +150,8 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
         return context->report(diag, &note);
     }
 
-    PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Help, getSpecialOpSignature(node));
+    PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Help, [node]()
+                      { return getSpecialOpSignature(node); });
 
     auto      parameters = node->parameters;
     TypeInfo* typeStruct = nullptr;
@@ -613,13 +614,11 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
 
     if (leftType->isGeneric())
     {
-        PushErrCxtStep ec(context,
-                          left->parent,
-                          ErrCxtStepKind::Note,
-                          Fmt(Nte(Nte0051), name.c_str(), leftType->getDisplayNameC()),
-                          "",
-                          true);
-        Diagnostic     diag(left, Fmt(Err(Err0715), name.c_str()));
+        PushErrCxtStep ec(
+            context, left->parent, ErrCxtStepKind::Note, [&]()
+            { return Fmt(Nte(Nte0051), name.c_str(), leftType->getDisplayNameC()); },
+            true);
+        Diagnostic diag(left, Fmt(Err(Err0715), name.c_str()));
         diag.hint = Hnt(Hnt0056);
         return context->report(diag);
     }
@@ -647,12 +646,10 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
         }
 
         {
-            PushErrCxtStep ec(context,
-                              left->parent,
-                              ErrCxtStepKind::Note,
-                              Fmt(Nte(Nte0051), name.c_str(), leftType->getDisplayNameC()),
-                              "",
-                              true);
+            PushErrCxtStep ec(
+                context, left->parent, ErrCxtStepKind::Note, [name, leftType]()
+                { return Fmt(Nte(Nte0051), name.c_str(), leftType->getDisplayNameC()); },
+                true);
             SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, nullptr, justCheck ? MIP_JUST_CHECK : 0));
         }
 
