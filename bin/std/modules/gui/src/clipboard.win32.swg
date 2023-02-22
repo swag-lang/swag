@@ -87,6 +87,7 @@ func addImage(image: Image)
     if !OpenClipboard(GetDesktopWindow())
         return
     defer discard CloseClipboard()
+    discard EmptyClipboard()
 
     // BITMAP
     #scope
@@ -100,8 +101,8 @@ func addImage(image: Image)
         header.biWidth       = image.width
         header.biHeight      = image.height
         header.biPlanes      = 1
-        header.biBitCount    = image.bpp
         header.biCompression = Bmp.BI_RGB
+        header.biBitCount = image.bpp
 
         datas := buf + @sizeof(Bmp.Header)
         Memory.copy(datas, image.pixels.buffer, image.size)
