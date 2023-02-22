@@ -48,3 +48,29 @@ struct Vector : public vector<T, StdAllocator<T>>
         ::new (this) Vector<T>;
     }
 };
+
+template<typename K, typename V>
+struct VectorMap : public Vector<pair<K, V>>
+{
+    pair<K, V>* find(const K& key)
+    {
+        for (auto& it : *this)
+        {
+            if (it.first == key)
+                return &it;
+        }
+
+        return nullptr;
+    }
+
+    V& operator[](const K& key)
+    {
+        auto it = find(key);
+        if (it)
+            return it->second;
+        pair<K, V> tmp;
+        tmp.first = key;
+        this->push_back(std::move(tmp));
+        return this->back().second;
+    }
+};

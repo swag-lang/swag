@@ -123,27 +123,27 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
         return false;
 
     auto     structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
-    Utf8     nameAffect;
+    Utf8*    nameAffect;
     uint32_t nameAffectCrc;
     if ((fromNode && fromNode->semFlags & AST_SEM_LITERAL_SUFFIX) || castFlags & CASTFLAG_LITERAL_SUFFIX)
     {
-        nameAffect    = g_LangSpec->name_opAffectSuffix;
+        nameAffect    = &g_LangSpec->name_opAffectSuffix;
         nameAffectCrc = g_LangSpec->name_opAffectSuffixCrc;
     }
     else
     {
-        nameAffect    = g_LangSpec->name_opAffect;
+        nameAffect    = &g_LangSpec->name_opAffect;
         nameAffectCrc = g_LangSpec->name_opAffectCrc;
     }
 
     VectorNative<SymbolOverload*> toAffect;
-    auto                          symbol = structNode->scope->symTable.find(nameAffect, nameAffectCrc);
+    auto                          symbol = structNode->scope->symTable.find(*nameAffect, nameAffectCrc);
 
     // Instantiated opAffect, in a generic struct, will be in the scope of the original struct, not the intantiated one
     if (!symbol && typeStruct->fromGeneric)
     {
         structNode = CastAst<AstStruct>(typeStruct->fromGeneric->declNode, AstNodeKind::StructDecl);
-        symbol     = structNode->scope->symTable.find(nameAffect, nameAffectCrc);
+        symbol     = structNode->scope->symTable.find(*nameAffect, nameAffectCrc);
     }
 
     if (!symbol)
@@ -214,7 +214,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
     {
         SharedLock lkOp(typeStruct->mutexCache);
         auto       it = typeStruct->mapOpCast.find(toType);
-        if (it != typeStruct->mapOpCast.end())
+        if (it)
         {
             if (!it->second)
                 return false;
