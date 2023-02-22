@@ -195,19 +195,19 @@ struct SymbolMatchContext
         hasNamedParameters = false;
     }
 
-    VectorNative<AstNode*>                   genericParameters;
-    VectorNative<AstNode*>                   parameters;
-    VectorNative<TypeInfoParam*>             solvedParameters;
-    VectorNative<TypeInfoParam*>             solvedCallParameters;
-    VectorNative<bool>                       doneParameters;
-    VectorNative<TypeInfo*>                  genericParametersCallTypes;
-    VectorNative<AstNode*>                   genericParametersCallTypesFrom;
-    VectorNative<TypeInfo*>                  genericParametersGenTypes;
-    MapUtf8<TypeInfo*>                       genericReplaceTypes;
-    MapUtf8<AstNode*>                        genericReplaceTypesFrom;
-    MapUtf8<uint32_t>                        mapGenericTypesIndex;
-    MapUtf8<pair<ComputedValue*, TypeInfo*>> genericReplaceValues;
-    BadSignatureInfos                        badSignatureInfos;
+    VectorNative<AstNode*>                           genericParameters;
+    VectorNative<AstNode*>                           parameters;
+    VectorNative<TypeInfoParam*>                     solvedParameters;
+    VectorNative<TypeInfoParam*>                     solvedCallParameters;
+    VectorNative<bool>                               doneParameters;
+    VectorNative<TypeInfo*>                          genericParametersCallTypes;
+    VectorNative<AstNode*>                           genericParametersCallTypesFrom;
+    VectorNative<TypeInfo*>                          genericParametersGenTypes;
+    VectorMap<Utf8, TypeInfo*>                       genericReplaceTypes;
+    VectorMap<Utf8, AstNode*>                        genericReplaceTypesFrom;
+    VectorMap<Utf8, uint32_t>                        mapGenericTypesIndex;
+    VectorMap<Utf8, pair<ComputedValue*, TypeInfo*>> genericReplaceValues;
+    BadSignatureInfos                                badSignatureInfos;
 
     SemanticContext* semContext = nullptr;
 
@@ -438,8 +438,8 @@ struct TypeInfoFuncAttr : public TypeInfo
     VectorNative<TypeInfoParam*> genericParameters;
     VectorNative<TypeInfoParam*> parameters;
     AttributeList                attributes;
-    MapUtf8<TypeInfo*>           replaceTypes;
-    MapUtf8<AstNode*>            replaceTypesFrom;
+    VectorMap<Utf8, TypeInfo*>   replaceTypes;
+    VectorMap<Utf8, AstNode*>    replaceTypesFrom;
 
     TypeInfo* returnType = nullptr;
 
@@ -585,8 +585,8 @@ struct TypeInfoStruct : public TypeInfo
     VectorNative<TypeInfoParam*>          consts;
     VectorNative<TypeInfoParam*>          methods;
     VectorNative<TypeInfoParam*>          interfaces;
-    MapUtf8<TypeInfo*>                    replaceTypes;
-    MapUtf8<AstNode*>                     replaceTypesFrom;
+    VectorMap<Utf8, TypeInfo*>            replaceTypes;
+    VectorMap<Utf8, AstNode*>             replaceTypesFrom;
     VectorMap<TypeInfo*, SymbolOverload*> mapOpCast;
     AttributeList                         attributes;
     Utf8                                  structName;

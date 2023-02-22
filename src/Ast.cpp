@@ -466,7 +466,7 @@ Utf8 Ast::computeGenericParametersReplacement(VectorNative<TypeInfoParam*>& para
     return result;
 }
 
-Vector<Utf8> Ast::computeGenericParametersReplacement(MapUtf8<TypeInfo*>& replace)
+Vector<Utf8> Ast::computeGenericParametersReplacement(VectorMap<Utf8, TypeInfo*>& replace)
 {
     if (!replace.size())
         return {};

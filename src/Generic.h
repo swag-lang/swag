@@ -9,8 +9,8 @@ struct CloneContext;
 struct Generic
 {
     static bool      updateGenericParameters(SemanticContext* context, bool doType, bool doNode, VectorNative<TypeInfoParam*>& typeGenericParameters, VectorNative<AstNode*>& nodeGenericParameters, AstNode* callGenericParameters, OneGenericMatch& match);
-    static Job*      end(SemanticContext* context, Job* dependentJob, SymbolName* symbol, AstNode* newNode, bool waitSymbol, MapUtf8<TypeInfo*>& replaceTypes);
-    static TypeInfo* doTypeSubstitution(MapUtf8<TypeInfo*>& replaceTypes, TypeInfo* typeInfo);
+    static Job*      end(SemanticContext* context, Job* dependentJob, SymbolName* symbol, AstNode* newNode, bool waitSymbol, VectorMap<Utf8, TypeInfo*>& replaceTypes);
+    static TypeInfo* doTypeSubstitution(VectorMap<Utf8, TypeInfo*>& replaceTypes, TypeInfo* typeInfo);
 
     static void waitForGenericParameters(SemanticContext* context, OneGenericMatch& match);
     static void instantiateSpecialFunc(SemanticContext* context, Job* structJob, CloneContext& cloneContext, AstFuncDecl** funcNode);
