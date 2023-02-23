@@ -7,7 +7,7 @@ impl Image
         f := self
         dstImage.visitPixels(f)
         {
-            srcImage := cast(const *Image) userData
+            srcImage := cast(*Image) userData
             b8 := srcImage.bpp8
             w8 := srcImage.width * b8
             pixSrc := srcImage.pixels.buffer + (x * 2 * b8) + (y * 2 * w8)

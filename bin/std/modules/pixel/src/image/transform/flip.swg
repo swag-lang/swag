@@ -7,7 +7,7 @@ impl Image
         f := dstImage
         visitPixels(f, stride: width)
         {
-            dstImage := cast(const *Image) userData
+            dstImage := cast(*Image) userData
             w8 := image.width * image.bpp8
             Memory.copy(dstImage.pixels.buffer + (image.height - y - 1) * w8, pix, cast(u64) w8)
         }

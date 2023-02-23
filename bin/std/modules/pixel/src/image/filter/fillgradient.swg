@@ -54,7 +54,7 @@ impl Image
         {
             visitPixels(&f)
             {
-                params := cast(const *@mktype(f)) userData
+                params := cast(*@mktype(f)) userData
                 factor0 := x / cast(f32) image.width
                 factor1 := y / cast(f32) image.height
                 colH1 := Color.getBlend(params.topLeft, params.topRight, factor0)

@@ -41,7 +41,7 @@ impl Image
         f := {&convArr[0, 0], st}
         visitPixels(&f)
         {
-            params := cast(const *@mktype(f)) userData
+            params := cast(*@mktype(f)) userData
 
             min := Math.min(pix[0], pix[1], pix[2])
             max := Math.max(pix[0], pix[1], pix[2])

@@ -33,7 +33,7 @@ impl MainWnd
         params := {capture, boundRects: boundRects.buffer, forms: &forms}
         undo.newImg.visitPixels(&params)
         {
-            p := cast(const *@mktype(params)) userData
+            p := cast(*@mktype(params)) userData
             visit f, idx: dref p.forms
             {
                 pt := Math.Point{cast(f32) x, cast(f32) p.capture.backImg.height - y}
@@ -71,7 +71,7 @@ impl MainWnd
         params := {capture, boundRects: boundRects.buffer, forms: &forms}
         undo.newImg.visitPixels(&params)
         {
-            p := cast(const *@mktype(params)) userData
+            p := cast(*@mktype(params)) userData
             visit f, idx: dref p.forms
             {
                 pt := Math.Point{cast(f32) x, cast(f32) p.capture.backImg.height - y}
@@ -167,7 +167,7 @@ impl MainWnd
         params := {capture, infos: infos.buffer, forms: &forms, masks}
         undo.newImg.visitPixels(&params)
         {
-            p := cast(const *@mktype(params)) userData
+            p := cast(*@mktype(params)) userData
             visit f, idx: dref p.forms
             {
                 pt := Math.Point{cast(f32) x, cast(f32) p.capture.backImg.height - y}
