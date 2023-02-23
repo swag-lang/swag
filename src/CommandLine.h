@@ -75,6 +75,7 @@ struct CommandLine
     bool errorOneLine          = false;
     bool errorCompact          = true;
     bool errorAbsolute         = false;
+    bool errorSyntaxColors     = true;
 
     // Output
     Utf8 buildCfg            = "fast-debug";

@@ -132,6 +132,7 @@ struct Diagnostic
     void collectSourceCode();
     void sortRanges();
     void collectRanges();
+    Utf8 syntax(const Utf8& line);
     void printSourceCode();
     void printSourceLine();
     void printErrorLevel();
@@ -168,7 +169,6 @@ struct Diagnostic
     LogColor          codeColor;
     LogColor          hintColor;
     LogColor          marginCodeColor;
-    LogColor          hilightCodeColor;
     LogColor          rangeNoteColor;
     LogColor          warningColor;
     LogColor          noteColor;

@@ -5,15 +5,15 @@
 #include "ErrorIds.h"
 #include "Naming.h"
 #include "Log.h"
+#include "LanguageSpec.h"
 
 void Diagnostic::setupColors(bool verboseMode)
 {
     verboseColor         = LogColor::DarkCyan;
     errorColor           = verboseMode ? verboseColor : LogColor::Red;
     codeColor            = verboseMode ? verboseColor : LogColor::Gray;
-    marginCodeColor      = verboseMode ? verboseColor : LogColor::DarkCyan;
+    marginCodeColor      = verboseMode ? verboseColor : LogColor::Gray;
     hintColor            = verboseMode ? verboseColor : LogColor::White;
-    hilightCodeColor     = verboseMode ? verboseColor : LogColor::White;
     rangeNoteColor       = verboseMode ? verboseColor : LogColor::White;
     warningColor         = verboseMode ? verboseColor : LogColor::Magenta;
     noteColor            = verboseMode ? verboseColor : LogColor::Cyan;
@@ -21,7 +21,7 @@ void Diagnostic::setupColors(bool verboseMode)
     remarkColor          = verboseMode ? verboseColor : LogColor::White;
     autoRemarkColor      = verboseMode ? verboseColor : LogColor::Gray;
     nativeCallStackColor = verboseMode ? verboseColor : LogColor::Gray;
-    sourceFileColor      = verboseMode ? verboseColor : LogColor::DarkCyan;
+    sourceFileColor      = verboseMode ? verboseColor : LogColor::Gray;
 }
 
 void Diagnostic::setup()
@@ -408,6 +408,159 @@ void Diagnostic::collectSourceCode()
     }
 }
 
+Utf8 Diagnostic::syntax(const Utf8& line)
+{
+    if (!g_CommandLine.logColors)
+        return line;
+    if (!g_CommandLine.errorSyntaxColors)
+        return line;
+
+    const char* pz = line.c_str();
+    uint32_t    c, offset;
+    Utf8        result;
+
+    pz = Utf8::decodeUtf8(pz, c, offset);
+    while (c)
+    {
+        Utf8 identifier;
+        if (SWAG_IS_ALPHA(c) || c == '_' || c == '#' || c == '@')
+        {
+            identifier += c;
+            pz = Utf8::decodeUtf8(pz, c, offset);
+            while (SWAG_IS_ALPHA(c) || c == '_' || SWAG_IS_DIGIT(c))
+            {
+                identifier += c;
+                pz = Utf8::decodeUtf8(pz, c, offset);
+            }
+
+            auto it = g_LangSpec->keywords.find(identifier);
+            if (it)
+            {
+                switch (*it)
+                {
+                case TokenId::KwdUsing:
+                case TokenId::KwdWith:
+                case TokenId::KwdCast:
+                case TokenId::KwdAutoCast:
+                case TokenId::KwdDeRef:
+                case TokenId::KwdRef:
+                case TokenId::KwdMoveRef:
+                case TokenId::KwdRetVal:
+                case TokenId::KwdTry:
+                case TokenId::KwdCatch:
+                case TokenId::KwdTryCatch:
+                case TokenId::KwdAssume:
+                case TokenId::KwdThrow:
+                case TokenId::KwdDiscard:
+
+                case TokenId::KwdVar:
+                case TokenId::KwdConst:
+
+                case TokenId::KwdEnum:
+                case TokenId::KwdStruct:
+                case TokenId::KwdUnion:
+                case TokenId::KwdImpl:
+                case TokenId::KwdInterface:
+                case TokenId::KwdFunc:
+                case TokenId::KwdClosure:
+                case TokenId::KwdMethod:
+                case TokenId::KwdConstMethod:
+                case TokenId::KwdNamespace:
+                case TokenId::KwdAlias:
+                case TokenId::KwdAttr:
+
+                case TokenId::KwdPublic:
+                case TokenId::KwdPrivate:
+                    result += "\x1b[38;2;86;156;214m";
+                    result += identifier;
+                    result += Log::colorToVTS(codeColor);
+                    break;
+
+                case TokenId::NativeType:
+                case TokenId::CompilerType:
+                    result += "\x1b[38;2;246;204;134m";
+                    result += identifier;
+                    result += Log::colorToVTS(codeColor);
+                    break;
+
+                case TokenId::KwdIf:
+                case TokenId::KwdElse:
+                case TokenId::KwdElif:
+                case TokenId::KwdFor:
+                case TokenId::KwdWhile:
+                case TokenId::KwdSwitch:
+                case TokenId::KwdDefer:
+                case TokenId::KwdLoop:
+                case TokenId::KwdVisit:
+                case TokenId::KwdBreak:
+                case TokenId::KwdFallThrough:
+                case TokenId::KwdReturn:
+                case TokenId::KwdCase:
+                case TokenId::KwdContinue:
+                case TokenId::KwdDefault:
+                case TokenId::KwdAnd:
+                case TokenId::KwdOr:
+                case TokenId::KwdOrElse:
+                    result += "\x1b[38;2;216;160;223m";
+                    result += identifier;
+                    result += Log::colorToVTS(codeColor);
+                    break;
+
+                case TokenId::CompilerFuncCompiler:
+                case TokenId::CompilerFuncDrop:
+                case TokenId::CompilerFuncInit:
+                case TokenId::CompilerFuncMain:
+                case TokenId::CompilerFuncPreMain:
+                case TokenId::CompilerFuncTest:
+                    result += "\x1b[38;2;255;116;17m";
+                    result += identifier;
+                    result += Log::colorToVTS(codeColor);
+                    break;
+
+                default:
+                    if (identifier[0] == '@')
+                    {
+                        result += "\x1b[38;2;220;220;170m";
+                        result += identifier;
+                        result += Log::colorToVTS(codeColor);
+                    }
+                    else
+                    {
+                        result += identifier;
+                    }
+
+                    break;
+                }
+            }
+            else
+            {
+                if (identifier[0] >= 'a' and identifier[0] <= 'z' && (c == '(' || c == '\''))
+                {
+                    result += "\x1b[38;2;255;116;17m";
+                    result += identifier;
+                    result += Log::colorToVTS(codeColor);
+                }
+                else if (identifier[0] >= 'A' and identifier[0] <= 'Z')
+                {
+                    result += "\x1b[38;2;78;201;176m";
+                    result += identifier;
+                    result += Log::colorToVTS(codeColor);
+                }
+                else
+                {
+                    result += identifier;
+                }
+            }
+            continue;
+        }
+
+        result += c;
+        pz = Utf8::decodeUtf8(pz, c, offset);
+    }
+
+    return result;
+}
+
 void Diagnostic::printSourceCode()
 {
     if (!lines.size())
@@ -417,74 +570,17 @@ void Diagnostic::printSourceCode()
         printMargin(true);
 
     // Print all lines except the one that really contains the relevant stuff (and ranges)
-    for (int i = 0; i < lines.size() - 1; i++)
+    for (int i = 0; i < lines.size(); i++)
     {
         const char* pz = lines[i].c_str();
         if (*pz == 0 || *pz == '\n' || *pz == '\r')
             continue;
         printMargin(false, true, linesNo[i]);
         g_Log.setColor(codeColor);
-        g_Log.print(lines[i].c_str() + minBlanks);
+        auto colored = syntax(lines[i].c_str() + minBlanks);
+        g_Log.print(colored);
         g_Log.eol();
     }
-
-    printMargin(false, true, linesNo.back());
-
-    // If we do not want ranges, print also the last line, we are done
-    if (!showRange)
-    {
-        g_Log.setColor(codeColor);
-        g_Log.print(lines.back().c_str() + minBlanks);
-        g_Log.eol();
-        return;
-    }
-
-    // Now we need to print the relevant lines, and change the color of the code for each given range
-    Utf8 errorMsg;
-    auto backLine   = lines.back();
-    auto startIndex = minBlanks;
-    for (auto& r : ranges)
-    {
-        // Print before hilighted code
-        errorMsg.clear();
-        while (startIndex < (int) r.startLocation.column && startIndex < (uint32_t) backLine.length())
-        {
-            errorMsg += backLine[startIndex];
-            startIndex++;
-        }
-
-        // Print normally to the first range
-        g_Log.setColor(codeColor);
-        g_Log.print(errorMsg);
-        if (startIndex >= (uint32_t) backLine.count)
-            break;
-
-        // Collect the code corresponding to the current range
-        errorMsg.clear();
-        for (uint32_t i = 0; i < (uint32_t) r.width && startIndex < (uint32_t) backLine.length(); i++)
-        {
-            errorMsg += backLine[startIndex];
-            startIndex++;
-        }
-
-        // Print hilighted code
-        /*if (r.errorLevel == DiagnosticLevel::Error)
-            g_Log.setColor(errorColor);
-        else if (r.errorLevel == DiagnosticLevel::Warning)
-            g_Log.setColor(warningColor);
-        else*/
-        g_Log.setColor(hilightCodeColor);
-        g_Log.print(errorMsg);
-    }
-
-    // Print the remaining part
-    if (startIndex < (uint32_t) backLine.count)
-    {
-        g_Log.setColor(codeColor);
-        g_Log.print(backLine.c_str() + startIndex);
-    }
-
-    g_Log.eol();
 }
 
 void Diagnostic::setColorRanges(DiagnosticLevel level)
