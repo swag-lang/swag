@@ -2,7 +2,7 @@ using Core
 
 impl Image
 {
-    mtd doMirror(dstImage: *Image)
+    mtdc doMirror(dstImage: *Image)
     {
         f := dstImage
 
@@ -36,7 +36,7 @@ impl Image
     }
 
     // Flip image horizontally
-    public mtd toMirror()->Image
+    public mtdc toMirror()->Image
     {
         Debug.assert(pixels.buffer != null)
         var result: retval = create(width, height, pf)

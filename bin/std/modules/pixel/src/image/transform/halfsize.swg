@@ -2,12 +2,13 @@ using Core
 
 impl Image
 {
-    mtd doHalfSize(dstImage: *Image)
+    mtdc doHalfSize(dstImage: *Image)
     {
-        f := self
-        dstImage.visitPixels(f)
+        f := {img: self}
+        dstImage.visitPixels(&f)
         {
-            srcImage := cast(*Image) userData
+            data     := cast(*@mktype(f)) userData
+            srcImage := cast(const *Image) data.img
             b8 := srcImage.bpp8
             w8 := srcImage.width * b8
             pixSrc := srcImage.pixels.buffer + (x * 2 * b8) + (y * 2 * w8)
@@ -31,7 +32,7 @@ impl Image
     }
 
     // Divide image size by 2 with a bilinear 2x2 filter
-    public mtd toHalfSize()->Image
+    public mtdc toHalfSize()->Image
     {
         Debug.assert(width > 1 and height > 1)
         var result: retval = create(width / 2, height / 2, pf)

@@ -2,7 +2,7 @@ using Core
 
 impl Image
 {
-    mtd toRGB8(dstImage: *Image)
+    mtdc doRGB8(dstImage: *Image)
     {
         f := dstImage
 
@@ -32,7 +32,7 @@ impl Image
         }
     }
 
-    mtd toRGBA8(dstImage: *Image)
+    mtdc doRGBA8(dstImage: *Image)
     {
         f := dstImage
 
@@ -74,7 +74,7 @@ impl Image
         }
     }
 
-    mtd toBGR8(dstImage: *Image)
+    mtdc doBGR8(dstImage: *Image)
     {
         f := dstImage
 
@@ -104,7 +104,7 @@ impl Image
         }
     }
 
-    mtd toBGRA8(dstImage: *Image)
+    mtdc doBGRA8(dstImage: *Image)
     {
         f := dstImage
 
@@ -146,15 +146,15 @@ impl Image
         }
     }
 
-    mtd doChangePf(dstImage: *Image)
+    mtdc doChangePf(dstImage: *Image)
     {
         #[Swag.Complete]
         switch dstImage.pf
         {
-        case RGB8:  toRGB8(dstImage)
-        case RGBA8: toRGBA8(dstImage)
-        case BGR8:  toBGR8(dstImage)
-        case BGRA8: toBGRA8(dstImage)
+        case RGB8:  doRGB8(dstImage)
+        case RGBA8: doRGBA8(dstImage)
+        case BGR8:  doBGR8(dstImage)
+        case BGRA8: doBGRA8(dstImage)
         }
     }
 
@@ -170,7 +170,7 @@ impl Image
     }
 
     // Change image pixel format
-    public mtd toSetPixelFormat(newPf: PixelFormat)->Image
+    public mtdc toSetPixelFormat(newPf: PixelFormat)->Image
     {
         Debug.assert(pixels.buffer != null)
 

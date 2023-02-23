@@ -8,7 +8,7 @@ impl Image
         AlphaBlend
     }
 
-    mtd doMix(dstImage: *Image, srcImage: Image, x, y: s32, mode = MixMode.Copy)
+    mtdc doMix(dstImage: *Image, srcImage: Image, x, y: s32, mode = MixMode.Copy)
     {
         Debug.assert(srcImage.pf.hasAlpha() or mode != .AlphaBlend)
 
@@ -78,7 +78,7 @@ impl Image
     }
 
     // Mix with another image
-    public mtd toMix(srcImage: Image, x, y: s32, mode = MixMode.Copy)->Image
+    public mtdc toMix(srcImage: Image, x, y: s32, mode = MixMode.Copy)->Image
     {
         Debug.assert(pixels.buffer != null)
         Debug.assert(pf == srcImage.pf, "mismatched pixel format")

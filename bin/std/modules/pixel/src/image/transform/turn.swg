@@ -10,18 +10,19 @@ impl Image
     }
 
     #[Swag.Safety("", false)]
-    mtd doTurn(dstImage: *Image, angle: TurnAngle)
+    mtdc doTurn(dstImage: *Image, angle: TurnAngle)
     {
         #[Swag.Mixin]
         func(BPP: u8) doIt()
         {
-            f := self
+            f := {img: self}
             switch angle
             {
             case T90:
-                dstImage.visitPixels(f)
+                dstImage.visitPixels(&f)
                 {
-                    srcImage := cast(*Image) userData
+                    data     := cast(*@mktype(f)) userData
+                    srcImage := cast(const *Image) data.img
                     nx := srcImage.width - y - 1
                     ny := x
                     pixSrc := srcImage.pixels.buffer + (nx * srcImage.bpp8) + (ny * srcImage.width8)
@@ -30,9 +31,10 @@ impl Image
                 break
 
             case T180:
-                dstImage.visitPixels(f)
+                dstImage.visitPixels(&f)
                 {
-                    srcImage := cast(*Image) userData
+                    data     := cast(*@mktype(f)) userData
+                    srcImage := cast(const *Image) data.img
                     nx := srcImage.width - x - 1
                     ny := srcImage.height - y - 1
                     pixSrc := srcImage.pixels.buffer + (nx * srcImage.bpp8) + (ny * srcImage.width8)
@@ -41,9 +43,10 @@ impl Image
                 break
 
             case T270:
-                dstImage.visitPixels(f)
+                dstImage.visitPixels(&f)
                 {
-                    srcImage := cast(*Image) userData
+                    data     := cast(*@mktype(f)) userData
+                    srcImage := cast(const *Image) data.img
                     nx := y
                     ny := srcImage.height - x - 1
                     pixSrc := srcImage.pixels.buffer + (nx * srcImage.bpp8) + (ny * srcImage.width8)
@@ -74,7 +77,7 @@ impl Image
     }
 
     // Turn image by a given predefined angle
-    public mtd toTurn(angle: TurnAngle)->Image
+    public mtdc toTurn(angle: TurnAngle)->Image
     {
         Debug.assert(pixels.buffer != null)
 
