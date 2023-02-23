@@ -867,7 +867,7 @@ void initErrors()
     SWAG_ERROR(Err0679, "unexpected type for the first parameter of interface member ('self' expected, '%s' provided)");
     SWAG_ERROR(Err0106, "unexpected type of 'self' parameter ('%s' expected, '%s' provided)");
     SWAG_ERROR(Err0070, "unexpected type of generic %s for %s ('%s' expected, '%s' provided)");
-    SWAG_ERROR(Err0095, "unexpected type of ufcs first parameter ('%s' expected, '%s' provided)");
+    SWAG_ERROR(Err0095, "unexpected type of ufcs first argument ('%s' expected, '%s' provided)");
     SWAG_ERROR(Err0815, "unexpected usage of %s ('%s') as a generic argument");
     SWAG_ERROR(Err0259, "unrecognized character escape sequence '%c'");
     SWAG_ERROR(Err0803, "unsupported '@nameof' expression");
@@ -1043,7 +1043,7 @@ void initErrors()
     SWAG_ERROR(Hnt0039, "this function call returns an immutable '%s'");
     SWAG_ERROR(Hnt0057, "this function cannot be instantiated");
     SWAG_ERROR(Hnt0078, "this function does not accept aliased names");
-    SWAG_ERROR(Hnt0093, "this function does not accept type '%s' as a first argument");
+    SWAG_ERROR(Hnt0093, "this function does not accept the type '%s' as a first argument");
     SWAG_ERROR(Hnt0073, "this function does not accept ufcs");
     SWAG_ERROR(Hnt0064, "this function has the 'Swag.Compiler' attribute");
     SWAG_ERROR(Hnt0065, "this function has the 'Swag.Test' attribute");
@@ -1238,7 +1238,7 @@ void initErrors()
     SWAG_ERROR(Nte0081, "should be of type '%s'");
     SWAG_ERROR(Nte0082, "the interface declaration returns nothing");
     SWAG_ERROR(Nte0083, "the interface declaration returns type '%s'");
-    SWAG_ERROR(Nte0084, nullptr);
+    SWAG_ERROR(Nte0084, "the ufcs argument comes from an implicit 'using const self' parameter");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

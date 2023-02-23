@@ -13,10 +13,10 @@ void Diagnostic::setupColors(bool verboseMode)
     codeColor            = verboseMode ? verboseColor : LogColor::Gray;
     marginCodeColor      = verboseMode ? verboseColor : LogColor::DarkCyan;
     hintColor            = verboseMode ? verboseColor : LogColor::White;
-    hilightCodeColor     = verboseMode ? verboseColor : LogColor::DarkYellow;
+    hilightCodeColor     = verboseMode ? verboseColor : LogColor::White;
     rangeNoteColor       = verboseMode ? verboseColor : LogColor::White;
     warningColor         = verboseMode ? verboseColor : LogColor::Magenta;
-    noteColor            = verboseMode ? verboseColor : LogColor::White;
+    noteColor            = verboseMode ? verboseColor : LogColor::Cyan;
     stackColor           = verboseMode ? verboseColor : LogColor::DarkYellow;
     remarkColor          = verboseMode ? verboseColor : LogColor::White;
     autoRemarkColor      = verboseMode ? verboseColor : LogColor::Gray;

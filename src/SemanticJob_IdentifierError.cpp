@@ -368,8 +368,16 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             hintMsg = Fmt(Hnt(Hnt0093), bi.badSignatureGivenType->getDisplayNameC());
             if (oneTry.dependentVar->isGeneratedSelf())
             {
-                auto note = new Diagnostic{oneTry.dependentVar->ownerFct, oneTry.dependentVar->ownerFct->token, Nte(Nte0073), DiagnosticLevel::Note};
-                result1.push_back(note);
+                if (bi.badSignatureGivenType->isConst())
+                {
+                    auto note = new Diagnostic{oneTry.dependentVar->ownerFct, oneTry.dependentVar->ownerFct->token, Nte(Nte0084), DiagnosticLevel::Note};
+                    result1.push_back(note);
+                }
+                else
+                {
+                    auto note = new Diagnostic{oneTry.dependentVar->ownerFct, oneTry.dependentVar->ownerFct->token, Nte(Nte0073), DiagnosticLevel::Note};
+                    result1.push_back(note);
+                }
             }
             else
             {
@@ -421,9 +429,17 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         {
             if (oneTry.dependentVar)
             {
-                auto note  = new Diagnostic{oneTry.dependentVar, castMsg, DiagnosticLevel::Note};
-                note->hint = castHint;
-                result1.push_back(note);
+                if (oneTry.dependentVar->isGeneratedSelf())
+                {
+                    auto note = new Diagnostic{castMsg, DiagnosticLevel::Note};
+                    result1.push_back(note);
+                }
+                else
+                {
+                    auto note  = new Diagnostic{oneTry.dependentVar, castMsg, DiagnosticLevel::Note};
+                    note->hint = castHint;
+                    result1.push_back(note);
+                }
             }
             else
             {
