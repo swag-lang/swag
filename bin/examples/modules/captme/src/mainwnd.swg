@@ -191,8 +191,16 @@ impl IWnd for MainWnd
         hasSingleSel := capture and capture.selection.count == 1
 
         hasPixSel := false
+
+        var lastSelType: typeinfo
         if capture
         {
+            if capture.selection.count
+            {
+                f := capture.forms[capture.selection.back()]
+                lastSelType = @kindof(f)
+            }
+
             visit s: capture.selection
             {
                 f := capture.forms[s]
@@ -520,6 +528,12 @@ impl IWnd for MainWnd
             evt.setFlags |= .Disabled | .Name
             evt.disabled = !capture
             evt.name = "Invert Selection"
+            evt.accepted = true
+
+        case CmdEditText:
+            evt.setFlags |= .Disabled | .Name
+            evt.disabled = !hasSel or !lastSelType or lastSelType != FormText
+            evt.name = "Edit"
             evt.accepted = true
 
         case CmdIdCopy:
@@ -961,6 +975,11 @@ impl IWnd for MainWnd
                     newSel.add(i)
             }
             capture.selection = newSel
+            capture.selectionHasChanged()
+
+        case CmdEditText:
+            lastSel := cast(*FormText) @dataof(capture.forms[capture.selection.back()])
+            discard propWnd.editText(lastSel.text)
             capture.selectionHasChanged()
 
         case CmdIdCopy:

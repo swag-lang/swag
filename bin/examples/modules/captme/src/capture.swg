@@ -782,10 +782,22 @@ impl Capture
     // CONTENT
     //////////////////////////////
 
-    func popupMenu(view: *EditView, pos: Math.Point)
+    mtd popupMenu(view: *EditView, pos: Math.Point)
     {
         with menu := MenuCtrl.createPopup(view)
         {
+            if selection.count
+            {
+                f := forms[selection.back()]
+                t := @kindof(f)
+                switch t
+                {
+                case FormText:
+                    .addItem(CmdEditText)
+                    .addSeparator()
+                }
+            }
+
             .addItem(CmdIdCopy)
             .addItem(CmdIdPaste)
             .addSeparator()

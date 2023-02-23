@@ -764,6 +764,25 @@ impl PropWnd
         }
     }
 
+    mtd editText(curText: String)->String
+    {
+        with dlg := EditDlg.createMultiLine(surface)
+        {
+            .setMessage("Press Shift+Enter to add a new line")
+            .setText(curText)
+            .richEdit.selectAll()
+            .surface.setTitle("Enter Text")
+            .surface.center(surface)
+        }
+        if dlg.doModal() != Dialog.BtnOk
+            return curText
+        capture := self.main.getCapture()
+        undo := capture.newUndo(.SetText)
+        undo.text = dlg.getText()
+        capture.pushUndo(undo)
+        return undo.text
+    }
+
     mtd propText()
     {
         curSelType := getSelectedFormType()
@@ -816,21 +835,8 @@ impl PropWnd
         {
             .dockStyle = .Right
             .sigPressed += closure|self, edt|(btn) {
-                with dlg := EditDlg.createMultiLine(edt.surface)
-                {
-                    .setMessage("Press Shift+Enter to add a new line")
-                    .setText(edt.text)
-                    .richEdit.selectAll()
-                    .surface.setTitle("Enter Text")
-                    .surface.center(edt.surface)
-                }
-                if dlg.doModal() != Dialog.BtnOk
-                    return
-                capture := self.main.getCapture()
-                undo := capture.newUndo(.SetText)
-                undo.text = dlg.getText()
-                edt.setText(undo.text)
-                capture.pushUndo(undo)
+                txt := self.editText(edt.text)
+                edt.setText(txt)
             }
         }
 
