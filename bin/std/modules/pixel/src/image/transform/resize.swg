@@ -359,7 +359,7 @@ namespace ResizeTools
         {
             dstImage.visitPixels(&f)
             {
-                params := cast(*@mktype(f)) userData
+                params := cast(const *@mktype(f)) userData
                 fx := cast(u32) (x * params.xscale)
                 fy := cast(u32) (y * params.yscale)
                 pixSrc := params.srcImage.pixels.buffer + (fx * image.bpp8) + (fy * params.srcImage.width * image.bpp8)

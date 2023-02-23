@@ -10,7 +10,7 @@ impl Image
     }
 
     #[Swag.Safety("", false)]
-    mtd doTurn(dstImage: *Image, angle: TurnAngle)
+    mtdc doTurn(dstImage: *Image, angle: TurnAngle)
     {
         #[Swag.Mixin]
         func(BPP: u8) doIt()
@@ -21,7 +21,7 @@ impl Image
             case T90:
                 dstImage.visitPixels(f)
                 {
-                    srcImage := cast(*Image) userData
+                    srcImage := cast(const *Image) userData
                     nx := srcImage.width - y - 1
                     ny := x
                     pixSrc := srcImage.pixels.buffer + (nx * srcImage.bpp8) + (ny * srcImage.width8)
@@ -32,7 +32,7 @@ impl Image
             case T180:
                 dstImage.visitPixels(f)
                 {
-                    srcImage := cast(*Image) userData
+                    srcImage := cast(const *Image) userData
                     nx := srcImage.width - x - 1
                     ny := srcImage.height - y - 1
                     pixSrc := srcImage.pixels.buffer + (nx * srcImage.bpp8) + (ny * srcImage.width8)
@@ -43,7 +43,7 @@ impl Image
             case T270:
                 dstImage.visitPixels(f)
                 {
-                    srcImage := cast(*Image) userData
+                    srcImage := cast(const *Image) userData
                     nx := y
                     ny := srcImage.height - x - 1
                     pixSrc := srcImage.pixels.buffer + (nx * srcImage.bpp8) + (ny * srcImage.width8)
@@ -74,7 +74,7 @@ impl Image
     }
 
     // Turn image by a given predefined angle
-    public mtd toTurn(angle: TurnAngle)->Image
+    public mtdc toTurn(angle: TurnAngle)->Image
     {
         Debug.assert(pixels.buffer != null)
 

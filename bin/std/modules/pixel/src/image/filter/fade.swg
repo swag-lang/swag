@@ -36,7 +36,7 @@ impl Image
 
         visitPixels(&f)
         {
-            arr := cast(*@mktype(f)) userData
+            arr := cast(const *@mktype(f)) userData
             pix[0] = arr.r[pix[0]]
             pix[1] = arr.g[pix[1]]
             pix[2] = arr.b[pix[2]]

@@ -557,7 +557,7 @@ impl Decoder
         {
             result.visitPixels(&dstPixels)
             {
-                src := dref cast(^^u8) userData
+                src := dref cast(const ^^u8) userData
                 src += x + y * image.width
                 pix[0] = src[0]
                 pix[1] = src[0]
@@ -576,7 +576,7 @@ impl Decoder
             pm := {dstPixels, key}
             result.visitPixels(&pm)
             {
-                params := cast(*@mktype(pm)) userData
+                params := cast(const *@mktype(pm)) userData
                 src := params.dstPixels
                 src += x + y * image.width
                 pix[0] = src[0]
@@ -591,7 +591,7 @@ impl Decoder
         {
             result.visitPixels(&dstPixels)
             {
-                src := dref cast(^^u8) userData
+                src := dref cast(const ^^u8) userData
                 src += (x * 2) + (y * image.width * 2)
                 pix[0] = src[0]
                 pix[1] = src[0]
@@ -610,7 +610,7 @@ impl Decoder
             pm := {dstPixels, key0, key1, key2}
             result.visitPixels(&pm)
             {
-                params := cast(*@mktype(pm)) userData
+                params := cast(const *@mktype(pm)) userData
                 src := params.dstPixels
                 src += (x * 3) + (y * image.width * 3)
                 pix[0] = src[0]

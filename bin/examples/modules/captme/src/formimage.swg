@@ -258,7 +258,7 @@ impl IForm for FormImage
 
         image.visitPixels(mask)
         {
-            maskImg := cast(*Image) userData
+            maskImg := cast(const *Image) userData
             pix1 := maskImg.pixels.buffer + x * 4
             pix1 += maskImg.width * y * 4
             if !pix1[0]
