@@ -13,6 +13,9 @@ var g_EffectIdx: u32 = 49
 var g_MyImage:   Pixel.Image
 var g_TextureID: GLuint
 
+const MAX_IMAGES  = 29
+const MAX_EFFECTS = 50
+
 const W = 1024
 const H = 1024
 
@@ -99,7 +102,7 @@ func loadImg()
     data := imagePath(imgName)
     g_MyImage = assume Image.load(data)
     ti.stop()
-    Console.printf("%: img: % (% x % %) load: %ms ", g_EffectIdx, imgName, g_MyImage.width, g_MyImage.height, g_MyImage.pf, ti.elapsedMilliseconds())
+    //Console.printf("%: img: % (% x % %) load: %ms ", g_EffectIdx, imgName, g_MyImage.width, g_MyImage.height, g_MyImage.pf, ti.elapsedMilliseconds())
     g_MyImage.resize(512, 512)
 
     // Apply a filter
@@ -167,7 +170,7 @@ func loadImg()
     }
 
     te.stop()
-    Console.printf("filter: % %ms\n", g_EffectIdx, te.elapsedMilliseconds())
+    //Console.printf("filter: % %ms\n", g_EffectIdx, te.elapsedMilliseconds())
 
     var fmt: GLenum = 0
     internal := GL_RGB
@@ -252,13 +255,32 @@ func createWindow()->HWND
     return hWnd
 }
 
-func messageLoop()
+func bigLoop()
 {
-    var msg:  MSG
-    var keyb: Input.Keyboard
+    if Env.hasArg("swag.test")
+    {
+        loop i: MAX_IMAGES
+        {
+            g_ImageIdx = i
+            loadImg()
+            display()
+        }
 
+        loop j: MAX_EFFECTS
+        {
+            g_ImageIdx = 0
+            g_EffectIdx = j
+            loadImg()
+            display()
+        }
+
+        return
+    }
+
+    var keyb: Input.Keyboard
     loop
     {
+        var msg:  MSG
         @getcontext().tempAllocator.freeAll()
         while PeekMessageA(&msg, null, 0, 0, PM_REMOVE) != 0
         {
@@ -301,7 +323,7 @@ func messageLoop()
         ShowWindow(hWnd, SW_SHOW)
         UpdateWindow(hWnd)
 
-        messageLoop()
+        bigLoop()
 
         wglMakeCurrent(null, null)
         wglDeleteContext(hRC)
