@@ -721,6 +721,8 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     newNode->methodParam = methodParam;
     newNode->tokenName   = tokenName;
 
+    newNode->specFlags &= ~(AST_SPEC_FUNCDECL_FULL_RESOLVE | AST_SPEC_FUNCDECL_PARTIAL_RESOLVE);
+
     cloneContext.ownerFct = newNode;
     cloneContext.parent   = newNode;
     auto functionScope    = Ast::newScope(newNode, newNode->token.text, ScopeKind::Function, context.parentScope ? context.parentScope : ownerScope);
