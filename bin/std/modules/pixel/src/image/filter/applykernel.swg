@@ -45,7 +45,7 @@ impl Image
         f := {kernel, dstImage}
         visitPixels(&f)
         {
-            params := cast(*@mktype(f)) userData
+            params := cast(*@decltype(f)) userData
             kernelSize := params.kernel[0] / 2
             b8 := image.bpp8
             w8 := image.width8

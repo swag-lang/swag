@@ -404,7 +404,7 @@ struct SemanticJob : public Job
     static bool resolveIntrinsicSpread(SemanticContext* context);
     static bool resolveIntrinsicKindOf(SemanticContext* context);
     static bool resolveIntrinsicTypeOf(SemanticContext* context);
-    static bool resolveIntrinsicMakeType(SemanticContext* context);
+    static bool resolveIntrinsicDeclType(SemanticContext* context);
     static bool resolveIntrinsicProperty(SemanticContext* context);
     static bool resolveLiteral(SemanticContext* context);
     static bool resolveLiteralSuffix(SemanticContext* context);

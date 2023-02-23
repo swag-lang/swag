@@ -86,10 +86,10 @@ We will see that later in more details.
 
 #test
 {
-    // You can use '@mktype' to create a type based on an expression.
+    // You can use '@decltype' to create a type based on an expression.
     {
         var a = 0               // 'a' is inferred to have the 's32' type
-        var b: @mktype(a) = 1   // 'b' will have the same type as 'a'
+        var b: @decltype(a) = 1   // 'b' will have the same type as 'a'
 
         // We can verify with '@typeof' that 'a' and 'b' have the same type.
         @assert(@typeof(a) == @typeof(b))

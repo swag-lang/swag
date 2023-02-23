@@ -38,14 +38,14 @@
         @assert(ptr.sizeof == @sizeof(f64))
     }
 
-    // @mktype can be used to transform a typeinfo to a real compiler type
+    // @decltype can be used to transform a typeinfo to a real compiler type
     // This is the opposite of @typeof or @kindof
     {
-        var x: @mktype(@typeof(s32))
+        var x: @decltype(@typeof(s32))
         #assert @typeof(x) == s32
     }
 
-    // @mktype can evaluate a constexpr expression that returns a 'typeinfo' to determine the real type
+    // @decltype can evaluate a constexpr expression that returns a 'typeinfo' to determine the real type
     {
         #[Swag.ConstExpr]
         func getType(str: bool)->typeinfo
@@ -54,11 +54,11 @@
             else   return s32
         }
 
-        var x: @mktype(getType(false))
+        var x: @decltype(getType(false))
         #assert @typeof(x) == s32
         x = 0
 
-        var x1: @mktype(getType(true))
+        var x1: @decltype(getType(true))
         #assert @typeof(x1) == string
         x1 = "0"
     }

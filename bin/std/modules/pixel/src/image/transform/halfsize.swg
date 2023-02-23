@@ -7,7 +7,7 @@ impl Image
         f := {img: self}
         dstImage.visitPixels(&f)
         {
-            data     := cast(*@mktype(f)) userData
+            data     := cast(*@decltype(f)) userData
             srcImage := cast(const *Image) data.img
             b8 := srcImage.bpp8
             w8 := srcImage.width * b8

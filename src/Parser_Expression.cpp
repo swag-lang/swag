@@ -169,7 +169,7 @@ bool Parser::doIntrinsicProp(AstNode* parent, AstNode** result)
     else if (node->token.id == TokenId::IntrinsicTypeOf ||
              node->token.id == TokenId::IntrinsicKindOf ||
              node->token.id == TokenId::IntrinsicSizeOf ||
-             node->token.id == TokenId::IntrinsicMakeType)
+             node->token.id == TokenId::IntrinsicDeclType)
     {
         SWAG_CHECK(doExpression(node, EXPR_FLAG_TYPEOF));
     }

@@ -21,7 +21,7 @@ impl Image
             case T90:
                 dstImage.visitPixels(&f)
                 {
-                    data     := cast(*@mktype(f)) userData
+                    data     := cast(*@decltype(f)) userData
                     srcImage := cast(const *Image) data.img
                     nx := srcImage.width - y - 1
                     ny := x
@@ -33,7 +33,7 @@ impl Image
             case T180:
                 dstImage.visitPixels(&f)
                 {
-                    data     := cast(*@mktype(f)) userData
+                    data     := cast(*@decltype(f)) userData
                     srcImage := cast(const *Image) data.img
                     nx := srcImage.width - x - 1
                     ny := srcImage.height - y - 1
@@ -45,7 +45,7 @@ impl Image
             case T270:
                 dstImage.visitPixels(&f)
                 {
-                    data     := cast(*@mktype(f)) userData
+                    data     := cast(*@decltype(f)) userData
                     srcImage := cast(const *Image) data.img
                     nx := y
                     ny := srcImage.height - x - 1

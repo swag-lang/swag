@@ -724,7 +724,7 @@ bool Parser::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeVarD
     }
 
     // This is a @typeof
-    if (token.id == TokenId::IntrinsicMakeType)
+    if (token.id == TokenId::IntrinsicDeclType)
     {
         SWAG_CHECK(doIdentifierRef(node, &node->identifier));
         return true;

@@ -45,7 +45,7 @@ impl Image
         f := {rmode, value, color}
         visitPixels(&f)
         {
-            params := cast(*@mktype(f)) userData
+            params := cast(*@decltype(f)) userData
             mode := params.rmode
 
             var color: u8 = undefined

@@ -233,7 +233,7 @@ bool Parser::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t identif
     case TokenId::IntrinsicOffsetOf:
     case TokenId::IntrinsicTypeOf:
     case TokenId::IntrinsicKindOf:
-    case TokenId::IntrinsicMakeType:
+    case TokenId::IntrinsicDeclType:
     case TokenId::IntrinsicCountOf:
     case TokenId::IntrinsicDataOf:
     case TokenId::IntrinsicStringOf:

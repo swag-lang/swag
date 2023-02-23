@@ -376,7 +376,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("@offsetof", TokenId::IntrinsicOffsetOf);
     keywords.add("@typeof", TokenId::IntrinsicTypeOf);
     keywords.add("@kindof", TokenId::IntrinsicKindOf);
-    keywords.add("@mktype", TokenId::IntrinsicMakeType);
+    keywords.add("@decltype", TokenId::IntrinsicDeclType);
     keywords.add("@countof", TokenId::IntrinsicCountOf);
     keywords.add("@stringof", TokenId::IntrinsicStringOf);
     keywords.add("@nameof", TokenId::IntrinsicNameOf);

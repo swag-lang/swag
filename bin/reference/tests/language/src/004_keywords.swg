@@ -224,7 +224,7 @@ Other intrinsics.
 @mkinterface
 @mkslice
 @mkstring
-@mktype
+@decltype
 @modules
 @nameof
 @offsetof

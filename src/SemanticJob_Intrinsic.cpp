@@ -631,7 +631,7 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveIntrinsicMakeType(SemanticContext* context)
+bool SemanticJob::resolveIntrinsicDeclType(SemanticContext* context)
 {
     auto node     = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto expr     = node->childs.front();
@@ -758,8 +758,8 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         break;
     }
 
-    case TokenId::IntrinsicMakeType:
-        SWAG_CHECK(resolveIntrinsicMakeType(context));
+    case TokenId::IntrinsicDeclType:
+        SWAG_CHECK(resolveIntrinsicDeclType(context));
         return true;
 
     case TokenId::IntrinsicTypeOf:
