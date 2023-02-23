@@ -24,13 +24,13 @@ public impl Image
         if nw == width and nh == height
             return
         allocWorkingBuffer(nw, nh, pf)
-        ResizeTools.doResize(self, workingBuffer, mode)
+        ResizeTools.doResize(workingBuffer, self, mode)
         applyWorkingBuffer()
     }
 
     // Resize image
     // Put 'newWidth' or 'newHeight' to 0 to keep aspect ratio
-    mtd toResize(newWidth, newHeight: s32, mode = ResizeMode.Raw)->Image
+    mtdc toResize(newWidth, newHeight: s32, mode = ResizeMode.Raw)->Image
     {
         Debug.assert(newWidth > 0 or newHeight > 0)
         nw := newWidth orelse cast(s32) (newHeight * (width / cast(f32) height))
@@ -43,7 +43,7 @@ public impl Image
 
         using ResizeTools
         var result: retval = create(nw, nh, pf)
-        ResizeTools.doResize(self, &result, mode)
+        ResizeTools.doResize(&result, self, mode)
         return result
     }
 }
@@ -216,7 +216,7 @@ namespace ResizeTools
     }
 
     #[Swag.Safety("", false)]
-    func scaleRow(imgDst, imgSrc: *Image, row: s64, contrib: *LineContrib)
+    func scaleRow(imgDst: *Image, imgSrc: const *Image, row: s64, contrib: *LineContrib)
     {
         bpp8   := imgDst.bpp8
         dstRow := imgDst.pixels.buffer + row * bpp8 * imgDst.width
@@ -264,7 +264,7 @@ namespace ResizeTools
     }
 
     #[Swag.Safety("", false)]
-    func scaleCol(imgDst, imgSrc: *Image, col: s64, contrib: *LineContrib)
+    func scaleCol(imgDst: *Image, imgSrc: const *Image, col: s64, contrib: *LineContrib)
     {
         bpp8   := imgDst.bpp8
         dstCol := imgDst.pixels.buffer + col * bpp8
@@ -313,7 +313,7 @@ namespace ResizeTools
         }
     }
 
-    func scaleCol(imgDst, imgSrc: *Image, rmode: Image.ResizeMode)
+    func scaleCol(imgDst: *Image, imgSrc: const *Image, rmode: Image.ResizeMode)
     {
         sh := cast(s64) imgSrc.height
         dh := cast(s64) imgDst.height
@@ -327,7 +327,7 @@ namespace ResizeTools
         }
     }
 
-    func scaleRow(imgDst, imgSrc: *Image, rmode: Image.ResizeMode)
+    func scaleRow(imgDst: *Image, imgSrc: const *Image, rmode: Image.ResizeMode)
     {
         sw := cast(s64) imgSrc.width
         dw := cast(s64) imgDst.width
@@ -341,14 +341,14 @@ namespace ResizeTools
         }
     }
 
-    func doResizeFilter(srcImage, dstImage: *Image, mode: Image.ResizeMode)
+    func doResizeFilter(dstImage: *Image, srcImage: const *Image, mode: Image.ResizeMode)
     {
         tmp := Image.create(dstImage.width, srcImage.height, srcImage.pf)
         scaleRow(&tmp, srcImage, mode)
         scaleCol(dstImage, &tmp, mode)
     }
 
-    func doResizeRaw(srcImage, dstImage: *Image)
+    func doResizeRaw(dstImage: *Image, srcImage: const *Image)
     {
         xscale := srcImage.width / cast(f32) dstImage.width
         yscale := srcImage.height / cast(f32) dstImage.height
@@ -375,12 +375,12 @@ namespace ResizeTools
         }
     }
 
-    func doResize(srcImage, dstImage: *Image, mode: Image.ResizeMode)
+    func doResize(dstImage: *Image, srcImage: const *Image, mode: Image.ResizeMode)
     {
         switch mode
         {
-        case Raw:   doResizeRaw(srcImage, dstImage)
-        default:    doResizeFilter(srcImage, dstImage, mode)
+        case Raw:   doResizeRaw(dstImage, srcImage)
+        default:    doResizeFilter(dstImage, srcImage, mode)
         }
     }
 }
