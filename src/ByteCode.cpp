@@ -6,7 +6,7 @@
 #include "Crc32.h"
 
 #undef BYTECODE_OP
-#define BYTECODE_OP(__op, __flags, __dis) {#__op, (int) strlen(#__op), __flags, __dis},
+#define BYTECODE_OP(__op, __flags, __dis) {__flags, (uint32_t) strlen(#__op), #__op, __dis},
 ByteCodeOpDesc g_ByteCodeOpDesc[] = {
 #include "ByteCodeOpList.h"
 };

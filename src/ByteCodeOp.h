@@ -37,9 +37,9 @@ enum class ByteCodeOp : uint16_t
 
 struct ByteCodeOpDesc
 {
-    const char* name;
-    int         nameLen;
     uint32_t    flags;
+    uint32_t    nameLen;
+    const char* name;
     const char* display;
 };
 
