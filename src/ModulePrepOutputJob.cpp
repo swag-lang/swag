@@ -4,7 +4,7 @@
 #include "Workspace.h"
 #include "Timer.h"
 #include "Module.h"
-#include "Stats.h"
+#include "Statistics.h"
 #include "ErrorIds.h"
 #include "Report.h"
 #include "Diagnostic.h"

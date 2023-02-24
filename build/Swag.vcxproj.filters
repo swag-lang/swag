@@ -527,7 +527,7 @@
     <ClCompile Include="../src/JobThread.cpp">
       <Filter>Threading</Filter>
     </ClCompile>
-    <ClCompile Include="../src/Stats.cpp">
+    <ClCompile Include="..\src\Statistics.cpp">
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Tokenizer_Comment.cpp">
@@ -547,6 +547,57 @@
     </ClCompile>
     <ClCompile Include="..\src\Ast_Gen.cpp">
       <Filter>Syntax</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mimalloc\init.c">
+      <Filter>Extern\mimalloc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mimalloc\options.c">
+      <Filter>Extern\mimalloc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mimalloc\os.c">
+      <Filter>Extern\mimalloc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mimalloc\page.c">
+      <Filter>Extern\mimalloc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mimalloc\random.c">
+      <Filter>Extern\mimalloc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mimalloc\segment.c">
+      <Filter>Extern\mimalloc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mimalloc\segment-cache.c">
+      <Filter>Extern\mimalloc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mimalloc\alloc.c">
+      <Filter>Extern\mimalloc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mimalloc\alloc-aligned.c">
+      <Filter>Extern\mimalloc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mimalloc\alloc-override-osx.c">
+      <Filter>Extern\mimalloc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mimalloc\alloc-posix.c">
+      <Filter>Extern\mimalloc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mimalloc\arena.c">
+      <Filter>Extern\mimalloc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mimalloc\bitmap.c">
+      <Filter>Extern\mimalloc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mimalloc\heap.c">
+      <Filter>Extern\mimalloc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mimalloc\alloc-override.c">
+      <Filter>Extern\mimalloc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mimalloc\page-queue.c">
+      <Filter>Extern\mimalloc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mimalloc\stats.c">
+      <Filter>Extern\mimalloc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -857,7 +908,7 @@
     <ClInclude Include="../src/JobThread.h">
       <Filter>Threading</Filter>
     </ClInclude>
-    <ClInclude Include="../src/Stats.h">
+    <ClInclude Include="..\src\Statistics.h">
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="../src/SyntaxJob.h">
@@ -874,6 +925,30 @@
     </ClInclude>
     <ClInclude Include="..\src\Path.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mimalloc\mimalloc.h">
+      <Filter>Extern\mimalloc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mimalloc\mimalloc-atomic.h">
+      <Filter>Extern\mimalloc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mimalloc\mimalloc-internal.h">
+      <Filter>Extern\mimalloc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mimalloc\mimalloc-new-delete.h">
+      <Filter>Extern\mimalloc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mimalloc\mimalloc-override.h">
+      <Filter>Extern\mimalloc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mimalloc\mimalloc-track.h">
+      <Filter>Extern\mimalloc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mimalloc\mimalloc-types.h">
+      <Filter>Extern\mimalloc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mimalloc\bitmap.h">
+      <Filter>Extern\mimalloc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -939,6 +1014,12 @@
     </Filter>
     <Filter Include="Backend\Runtime">
       <UniqueIdentifier>{512aad17-43cb-4e62-b39d-3200f0ee9ced}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Extern">
+      <UniqueIdentifier>{c9693071-61f7-47a0-91a4-00e7adb04d7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Extern\mimalloc">
+      <UniqueIdentifier>{49f77145-13a7-4961-8ecf-c11c327ef4a4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

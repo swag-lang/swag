@@ -3,7 +3,7 @@
 #include "Backend.h"
 #include "Module.h"
 #include "Timer.h"
-#include "Stats.h"
+#include "Statistics.h"
 
 JobResult ModuleGenOutputJob::execute()
 {

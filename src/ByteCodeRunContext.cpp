@@ -6,7 +6,7 @@
 #include "Diagnostic.h"
 #include "ByteCodeStack.h"
 #include "Module.h"
-#include "Stats.h"
+#include "Statistics.h"
 
 extern bool g_Exiting;
 

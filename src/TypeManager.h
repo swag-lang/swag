@@ -1,7 +1,7 @@
 #pragma once
 #include "TypeInfo.h"
 #include "Map.h"
-#include "Stats.h"
+#include "Statistics.h"
 struct AstNode;
 struct SourceFile;
 struct TypeInfo;

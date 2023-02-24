@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Stats.h"
+#include "Statistics.h"
 #include "Workspace.h"
 #include "Version.h"
 #include "Os.h"

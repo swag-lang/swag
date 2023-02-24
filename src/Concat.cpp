@@ -4,7 +4,7 @@
 #include "Os.h"
 #include "Report.h"
 #include "ErrorIds.h"
-#include "Stats.h"
+#include "Statistics.h"
 
 void Concat::init(int size)
 {

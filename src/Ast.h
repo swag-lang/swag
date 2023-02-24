@@ -3,7 +3,7 @@
 #include "Allocator.h"
 #include "SourceFile.h"
 #include "CommandLine.h"
-#include "Stats.h"
+#include "Statistics.h"
 struct Utf8;
 struct Scope;
 struct Concat;

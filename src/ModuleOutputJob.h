@@ -1,7 +1,7 @@
 #pragma once
 #include "Job.h"
 #include "Timer.h"
-#include "Stats.h"
+#include "Statistics.h"
 struct Module;
 
 enum class ModuleOutputJobPass

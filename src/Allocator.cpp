@@ -4,7 +4,7 @@
 #include "Os.h"
 #include "ErrorIds.h"
 #include "Report.h"
-#include "Stats.h"
+#include "Statistics.h"
 #include "ThreadManager.h"
 
 const uint64_t ALLOCATOR_PAGE_SIZE = 1024 * 1024;
