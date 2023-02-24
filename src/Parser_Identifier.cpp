@@ -168,8 +168,8 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
             if (identifierFlags & IDENTIFIER_TYPE_DECL)
             {
                 Diagnostic diag{identifier, token, Fmt(Err(Syn0128), identifier->token.ctext())};
-                Diagnostic note(Hlp(Hlp0035), DiagnosticLevel::Help);
-                return context->report(diag, &note);
+                auto       note = Diagnostic::help(Hlp(Hlp0035));
+                return context->report(diag, note);
             }
 
             SWAG_CHECK(eatToken(TokenId::SymLeftParen));

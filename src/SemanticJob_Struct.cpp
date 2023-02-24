@@ -507,8 +507,8 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
 
                 if (varDecl->specFlags & AST_SPEC_VARDECL_GEN_ITF)
                 {
-                    Diagnostic note{Hlp(Hlp0031), DiagnosticLevel::Help};
-                    return context->report(diag, &note);
+                    auto note = Diagnostic::help(Hlp(Hlp0031));
+                    return context->report(diag, note);
                 }
 
                 return context->report(diag);
@@ -1191,8 +1191,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             // User cannot name its variables itemX
             if (!(node->flags & AST_GENERATED) && hasItemName)
             {
-                Diagnostic note{Hlp(Hlp0009), DiagnosticLevel::Help};
-                return context->report({child, child->token, Fmt(Err(Err0674), child->token.ctext())}, &note);
+                auto note = Diagnostic::help(Hlp(Hlp0009));
+                return context->report({child, child->token, Fmt(Err(Err0674), child->token.ctext())}, note);
             }
 
             if (!hasItemName)

@@ -74,8 +74,8 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
             {
                 Diagnostic diag{sourceFile, token, Err(Syn0185)};
                 diag.hint = Hnt(Hnt0098);
-                Diagnostic note{arrayNode, arrayNode->token, Hlp(Hlp0047), DiagnosticLevel::Help};
-                return context->report(diag, &note);
+                auto note = Diagnostic::help(arrayNode, arrayNode->token, Hlp(Hlp0047));
+                return context->report(diag, note);
             }
 
             arrayNode->upperBound = Ast::newNode<AstNode>(this, AstNodeKind::AutoSlicingUp, sourceFile, arrayNode, 0);

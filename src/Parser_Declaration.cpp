@@ -23,8 +23,8 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
         if (id->kind != AstNodeKind::VarDecl)
         {
             Diagnostic diag{id->sourceFile, id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Syn0157)};
-            Diagnostic note{Hlp(Hlp0039), DiagnosticLevel::Help};
-            return context->report(diag, &note);
+            auto       note = Diagnostic::help(Hlp(Hlp0039));
+            return context->report(diag, note);
         }
 
         SWAG_ASSERT(id->extension->semantic->semanticAfterFct == SemanticJob::resolveVarDeclAfter);
@@ -38,8 +38,8 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
         if (id->kind == AstNodeKind::StatementNoScope)
         {
             Diagnostic diag{node->sourceFile, id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Syn0157)};
-            Diagnostic note{Hlp(Hlp0039), DiagnosticLevel::Help};
-            return context->report(diag, &note);
+            auto       note = Diagnostic::help(Hlp(Hlp0039));
+            return context->report(diag, note);
         }
 
         if (id->kind != AstNodeKind::IdentifierRef &&

@@ -628,8 +628,8 @@ bool Parser::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeVarD
             if (node->typeFlags & TYPEFLAG_IS_SLICE)
             {
                 Diagnostic diag{sourceFile, token, Fmt(Err(Syn0095), token.ctext())};
-                Diagnostic note{sourceFile, leftSquareToken, Hlp(Hlp0025), DiagnosticLevel::Help};
-                return context->report(diag, &note);
+                auto       note = Diagnostic::help(sourceFile, leftSquareToken, Hlp(Hlp0025));
+                return context->report(diag, note);
             }
             else
             {
@@ -643,8 +643,8 @@ bool Parser::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeVarD
                 else
                 {
                     Diagnostic diag{sourceFile, token, Fmt(Err(Syn0088), token.ctext())};
-                    Diagnostic note{Hlp(Hlp0024), DiagnosticLevel::Help};
-                    return context->report(diag, &note);
+                    auto       note = Diagnostic::help(Hlp(Hlp0024));
+                    return context->report(diag, note);
                 }
             }
         }
@@ -794,8 +794,8 @@ bool Parser::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeVarD
     if (token.id == TokenId::SymLeftParen)
     {
         Diagnostic diag{sourceFile, token, Fmt(Err(Syn0066), token.ctext())};
-        Diagnostic note{sourceFile, token, Hlp(Hlp0004), DiagnosticLevel::Help};
-        return context->report(diag, &note);
+        auto       note = Diagnostic::help(sourceFile, token, Hlp(Hlp0004));
+        return context->report(diag, note);
     }
 
     if (Tokenizer::isSymbol(token.id))

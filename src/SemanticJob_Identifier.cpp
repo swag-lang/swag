@@ -988,8 +988,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         if (identifier->callParameters && !(identifier->flags & AST_GENERATED) && !(identifier->callParameters->flags & AST_CALL_FOR_STRUCT))
         {
             Diagnostic diag{identifier, identifier->token, Fmt(Err(Syn0128), identifier->typeInfo->name.c_str())};
-            Diagnostic note(Hlp(Hlp0035), DiagnosticLevel::Help);
-            return context->report(diag, &note);
+            auto       note = Diagnostic::help(Hlp(Hlp0035));
+            return context->report(diag, note);
         }
 
         // A struct with parameters is in fact the creation of a temporary variable
@@ -2990,16 +2990,16 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
                 Diagnostic diag{dependentVar, Fmt(Err(Err0117), dependentVar->typeInfo->getDisplayNameC())};
                 diag.hint = Hnt(Hnt0081);
                 Diagnostic note{dep.node->ownerFct, dep.node->ownerFct->token, Nte(Nte0056), DiagnosticLevel::Note};
-                Diagnostic note1{Hlp(Hlp0043), DiagnosticLevel::Help};
-                return context->report(diag, &note, &note1);
+                auto       note1 = Diagnostic::help(Hlp(Hlp0043));
+                return context->report(diag, &note, note1);
             }
             else
             {
                 Diagnostic diag{dep.node, Fmt(Err(Err0117), dependentVar->typeInfo->getDisplayNameC())};
                 diag.hint = Hnt(Hnt0081);
                 Diagnostic note{dependentVar, Nte(Nte0021), DiagnosticLevel::Note};
-                Diagnostic note1{Hlp(Hlp0043), DiagnosticLevel::Help};
-                return context->report(diag, &note, &note1);
+                auto       note1 = Diagnostic::help(Hlp(Hlp0043));
+                return context->report(diag, &note, note1);
             }
         }
 

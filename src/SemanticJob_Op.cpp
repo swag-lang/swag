@@ -124,30 +124,30 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     // Special function outside an impl block
     if (!parent)
     {
-        Diagnostic note{Hlp(Hlp0015), DiagnosticLevel::Help};
         Diagnostic diag{node, node->tokenName, Fmt(Err(Err0067), node->token.ctext())};
-        return context->report(diag, &note);
+        auto       note = Diagnostic::help(Hlp(Hlp0015));
+        return context->report(diag, note);
     }
 
     if (node->ownerScope->kind == ScopeKind::Impl)
     {
-        Diagnostic note{Hlp(Hlp0015), DiagnosticLevel::Help};
         Diagnostic diag{node, node->tokenName, Fmt(Err(Err0494), node->token.ctext())};
-        return context->report(diag, &note);
+        auto       note = Diagnostic::help(Hlp(Hlp0015));
+        return context->report(diag, note);
     }
 
     if ((node->ownerScope->owner->attributeFlags & ATTRIBUTE_PUBLIC) && !(node->attributeFlags & ATTRIBUTE_PUBLIC))
     {
-        Diagnostic note{Hlp(Hlp0026), DiagnosticLevel::Help};
         Diagnostic diag{node, node->tokenName, Fmt(Err(Err0503), node->token.ctext())};
-        return context->report(diag, &note);
+        auto       note = Diagnostic::help(Hlp(Hlp0026));
+        return context->report(diag, note);
     }
 
     if (!(node->ownerScope->owner->attributeFlags & ATTRIBUTE_PUBLIC) && (node->attributeFlags & ATTRIBUTE_PUBLIC))
     {
-        Diagnostic note{Hlp(Hlp0027), DiagnosticLevel::Help};
         Diagnostic diag{node, node->tokenName, Fmt(Err(Err0506), node->token.ctext())};
-        return context->report(diag, &note);
+        auto       note = Diagnostic::help(Hlp(Hlp0027));
+        return context->report(diag, note);
     }
 
     PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Help, [node]()
@@ -327,8 +327,8 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
 
         Diagnostic diag{node, node->tokenName, Fmt(Err(Err0078), name.c_str())};
         diag.hint = appendMsg;
-        Diagnostic note{Hlp(Hlp0014), DiagnosticLevel::Help};
-        return context->report(diag, &note);
+        auto note = Diagnostic::help(Hlp(Hlp0014));
+        return context->report(diag, note);
     }
 
     return true;

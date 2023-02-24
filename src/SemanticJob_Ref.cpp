@@ -64,8 +64,8 @@ bool SemanticJob::checkCanTakeAddress(SemanticContext* context, AstNode* node)
             return context->report(diag);
         }
 
-        Diagnostic note{Hlp(Hlp0022), DiagnosticLevel::Help};
-        return context->report({node, Fmt(Err(Err0469), node->typeInfo->getDisplayNameC()), Diagnostic::isType(node->typeInfo)}, &note);
+        auto note = Diagnostic::help(Hlp(Hlp0022));
+        return context->report({node, Fmt(Err(Err0469), node->typeInfo->getDisplayNameC()), Diagnostic::isType(node->typeInfo)}, note);
     }
 
     return true;
@@ -455,10 +455,10 @@ bool SemanticJob::resolveKeepRef(SemanticContext* context)
         }
         else if (front->kind == AstNodeKind::IdentifierRef)
         {
-            Diagnostic note{front, Fmt(Hlp(Hlp0049), front->token.ctext()), DiagnosticLevel::Help};
             diag.hint = Hnt(Hnt0109);
             diag.addRange(front, Fmt(Hnt(Hnt0108), typeInfo->getDisplayNameC()));
-            return context->report(diag, &note);
+            auto note = Diagnostic::help(front, Fmt(Hlp(Hlp0049), front->token.ctext()));
+            return context->report(diag, note);
         }
         else
         {

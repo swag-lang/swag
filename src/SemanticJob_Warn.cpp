@@ -163,11 +163,10 @@ bool SemanticJob::warnUnusedVariables(SemanticContext* context, Scope* scope)
 
             if (front->isGeneratedSelf())
             {
-                front = front->ownerFct;
-                Diagnostic diag{front, front->token, Fmt(Err(Wrn0005), Naming::kindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
-                Diagnostic note{Hlp(Hlp0042), DiagnosticLevel::Help};
+                Diagnostic diag{front->ownerFct, front->ownerFct->token, Fmt(Err(Wrn0005), Naming::kindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
                 diag.hint = Hnt(Hnt0049);
-                isOk      = isOk && context->report(diag, &note);
+                auto note = Diagnostic::help(Hlp(Hlp0042));
+                isOk      = isOk && context->report(diag, note);
             }
             else
             {

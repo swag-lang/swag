@@ -2,6 +2,7 @@
 #pragma once
 #include "Tokenizer.h"
 #include "AstNode.h"
+#include "ErrorIds.h"
 struct SourceFile;
 struct TypeInfo;
 enum class LogColor;
@@ -122,6 +123,13 @@ struct Diagnostic
     {
         setup();
     }
+
+    // clang-format off
+    static Diagnostic* help(const Utf8& msg) { return new Diagnostic{msg, DiagnosticLevel::Help}; }
+    static Diagnostic* help(AstNode* node, const Token& token, const Utf8& msg) { return new Diagnostic{node, token, msg, DiagnosticLevel::Help}; }
+    static Diagnostic* help(SourceFile* file, const Token& token, const Utf8& msg) { return new Diagnostic{file, token, msg, DiagnosticLevel::Help}; }
+    static Diagnostic* help(AstNode* node, const Utf8& msg) { return new Diagnostic{node, msg, DiagnosticLevel::Help}; }
+    // clang-format on
 
     void setup();
     void addRange(const SourceLocation& start, const SourceLocation& end, const Utf8& h);

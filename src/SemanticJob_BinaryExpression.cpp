@@ -33,10 +33,10 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         if (!leftTypeInfo->isPointerArithmetic() && !context->forDebugger)
         {
             Diagnostic diag{node, node->token, Err(Err0192), Diagnostic::isType(leftTypeInfo)};
-            Diagnostic note{Hlp(Hlp0046), DiagnosticLevel::Help};
             diag.hint = Hnt(Hnt0061);
             diag.addRange(left, Diagnostic::isType(leftTypeInfo));
-            return context->report(diag, &note);
+            auto note = Diagnostic::help(Hlp(Hlp0046));
+            return context->report(diag, note);
         }
 
         if (leftTypeInfo->isPointerTo(NativeTypeKind::Void))
@@ -58,10 +58,10 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         if (!rightTypeInfo->isPointerArithmetic() && !context->forDebugger)
         {
             Diagnostic diag{node, node->token, Err(Err0192), Diagnostic::isType(rightTypeInfo)};
-            Diagnostic note{Hlp(Hlp0046), DiagnosticLevel::Help};
             diag.hint = Hnt(Hnt0061);
             diag.addRange(right, Diagnostic::isType(rightTypeInfo));
-            return context->report(diag, &note);
+            auto note = Diagnostic::help(Hlp(Hlp0046));
+            return context->report(diag, note);
         }
 
         if (rightTypeInfo->isPointerTo(NativeTypeKind::Void))
@@ -100,9 +100,9 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         if (left->flags & AST_VALUE_COMPUTED && right->flags & AST_VALUE_COMPUTED)
         {
             Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-            Diagnostic note{Hlp(Hlp0040), DiagnosticLevel::Help};
             diag.addRange(left, Diagnostic::isType(leftTypeInfo));
-            return context->report(diag, &note);
+            auto note = Diagnostic::help(Hlp(Hlp0040));
+            return context->report(diag, note);
         }
         else
         {
@@ -211,10 +211,10 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
         if (!leftTypeInfo->isPointerArithmetic() && !context->forDebugger)
         {
             Diagnostic diag{node, node->token, Err(Err0192), Diagnostic::isType(leftTypeInfo)};
-            Diagnostic note{Hlp(Hlp0046), DiagnosticLevel::Help};
             diag.hint = Hnt(Hnt0061);
             diag.addRange(left, Diagnostic::isType(leftTypeInfo));
-            return context->report(diag, &note);
+            auto note = Diagnostic::help(Hlp(Hlp0046));
+            return context->report(diag, note);
         }
 
         SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, Fmt(Err(Err0579), rightTypeInfo->getDisplayNameC())}));

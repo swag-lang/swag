@@ -26,8 +26,8 @@ bool SemanticJob::resolveMove(SemanticContext* context)
             Diagnostic diag{right, Fmt(Err(Err0559), right->typeInfo->getDisplayNameC())};
             if (right->resolvedSymbolOverload && right->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
             {
-                Diagnostic note{Hlp(Hlp0016), DiagnosticLevel::Help};
-                return context->report(diag, &note);
+                auto note = Diagnostic::help(Hlp(Hlp0016));
+                return context->report(diag, note);
             }
 
             return context->report(diag);
@@ -52,8 +52,8 @@ bool SemanticJob::resolveAfterAffectLeft(SemanticContext* context)
             {
                 Diagnostic diag{op->childs.back(), Err(Err0185)};
                 diag.addRange(node, Diagnostic::isType(node->typeInfo));
-                Diagnostic help{Hlp(Hlp0003), DiagnosticLevel::Help};
-                return context->report(diag, &help);
+                auto note = Diagnostic::help(Hlp(Hlp0003));
+                return context->report(diag, note);
             }
 
             ScopedLock lk(op->dependentLambda->mutex);
@@ -150,11 +150,11 @@ bool SemanticJob::checkIsConstAffect(SemanticContext* context, AstNode* left, As
         if (left == left->parent->childs.back())
         {
             Diagnostic diag{node, node->token, Fmt(Err(Err0740), left->resolvedSymbolName->name.c_str()), Hnt(Hnt0061)};
-            Diagnostic note1{Hlp(Hlp0016), DiagnosticLevel::Help};
             if (hint.empty())
                 hint = Diagnostic::isType(left->typeInfo);
             diag.addRange(left, hint);
-            return context->report(diag, note, &note1);
+            auto note1 = Diagnostic::help(Hlp(Hlp0016));
+            return context->report(diag, note, note1);
         }
         else if (left->typeInfo->isConstPointerRef())
         {
@@ -529,10 +529,10 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             if (!leftTypeInfo->isPointerArithmetic())
             {
                 Diagnostic diag{node, node->token, Err(Err0192)};
-                Diagnostic note{Hlp(Hlp0046), DiagnosticLevel::Help};
                 diag.hint = Hnt(Hnt0061);
                 diag.addRange(left, Diagnostic::isType(leftTypeInfo));
-                return context->report(diag, &note);
+                auto note = Diagnostic::help(Hlp(Hlp0046));
+                return context->report(diag, note);
             }
 
             if (leftTypeInfo->isPointerTo(NativeTypeKind::Void))

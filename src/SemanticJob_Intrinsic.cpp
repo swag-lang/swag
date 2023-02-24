@@ -47,8 +47,8 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
 
         if (!done)
         {
-            Diagnostic note{Hlp(Hlp0011), DiagnosticLevel::Help};
-            return context->report({front, front->token, Fmt(Err(Err0593), w.c_str())}, &note);
+            auto note = Diagnostic::help(Hlp(Hlp0011));
+            return context->report({front, front->token, Fmt(Err(Err0593), w.c_str())}, note);
         }
 
         return true;

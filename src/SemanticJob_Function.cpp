@@ -993,8 +993,8 @@ bool SemanticJob::resolveFuncCallGenParams(SemanticContext* context)
             symbol->kind == SymbolKind::Namespace ||
             symbol->kind == SymbolKind::Attribute)
         {
-            Diagnostic note{Hlp(Hlp0021), DiagnosticLevel::Help};
-            return context->report({c, Fmt(Err(Err0815), Naming::aKindName(symbol->kind).c_str(), symbol->name.c_str())}, &note);
+            auto note = Diagnostic::help(Hlp(Hlp0021));
+            return context->report({c, Fmt(Err(Err0815), Naming::aKindName(symbol->kind).c_str(), symbol->name.c_str())}, note);
         }
     }
 

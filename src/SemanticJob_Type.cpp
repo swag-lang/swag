@@ -85,13 +85,13 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
                 auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
                 if (typeFct->parameters.size() == 0 || !(typeFct->parameters[0]->typeInfo->isSelf()))
                 {
-                    note  = new Diagnostic{node->ownerFct, node->ownerFct->token, Hlp(Hlp0002), DiagnosticLevel::Help};
-                    note1 = new Diagnostic{Hlp(Hlp0029), DiagnosticLevel::Help};
+                    note  = Diagnostic::help(node->ownerFct, node->ownerFct->token, Hlp(Hlp0002));
+                    note1 = Diagnostic::help(Hlp(Hlp0029));
                 }
                 else if (typeFct->parameters.size() && typeFct->parameters[0]->typeInfo->isSelf() && !(typeFct->parameters[0]->typeInfo->flags & TYPEINFO_HAS_USING))
-                    note = new Diagnostic{nodeFct->parameters->childs.front(), Hlp(Hlp0028), DiagnosticLevel::Help};
+                    note = Diagnostic::help(nodeFct->parameters->childs.front(), Hlp(Hlp0028));
                 else
-                    note = new Diagnostic{Hlp(Hlp0002), DiagnosticLevel::Help};
+                    note = Diagnostic::help(Hlp(Hlp0002));
             }
         }
 
@@ -339,9 +339,9 @@ bool SemanticJob::resolveType(SemanticContext* context)
                     {
                         if (symOver->typeInfo->isPointer())
                         {
-                            Diagnostic note1{Fmt(Hlp(Hlp0005), symName->name.c_str(), symName->name.c_str()), DiagnosticLevel::Help};
-                            diag.hint = Hnt(Hnt0024);
-                            return context->report(diag, &note1, note);
+                            diag.hint  = Hnt(Hnt0024);
+                            auto note1 = Diagnostic::help(Fmt(Hlp(Hlp0005), symName->name.c_str(), symName->name.c_str()));
+                            return context->report(diag, note1, note);
                         }
                         else
                         {

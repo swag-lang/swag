@@ -416,8 +416,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                         flags |= ATTRIBUTE_EXPORT_TYPE_NOZERO;
                     else
                     {
-                        Diagnostic note{Hlp(Hlp0013), DiagnosticLevel::Help};
-                        return context->report({child, attrParam->token, Fmt(Err(Err0599), w.c_str())}, &note);
+                        auto note = Diagnostic::help(Hlp(Hlp0013));
+                        return context->report({child, attrParam->token, Fmt(Err(Err0599), w.c_str())}, note);
                     }
                 }
             }
@@ -465,8 +465,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
 
                         if (!done)
                         {
-                            Diagnostic note{Hlp(Hlp0011), DiagnosticLevel::Help};
-                            return context->report({child, attrParam->token, Fmt(Err(Err0593), w.c_str())}, &note);
+                            auto note = Diagnostic::help(Hlp(Hlp0011));
+                            return context->report({child, attrParam->token, Fmt(Err(Err0593), w.c_str())}, note);
                         }
                     }
                 }
@@ -513,8 +513,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                         }
                         else
                         {
-                            Diagnostic note{Hlp(Hlp0012), DiagnosticLevel::Help};
-                            return context->report({child, attrParam->token, Fmt(Err(Err0594), w.c_str())}, &note);
+                            auto note = Diagnostic::help(Hlp(Hlp0012));
+                            return context->report({child, attrParam->token, Fmt(Err(Err0594), w.c_str())}, note);
                         }
                     }
                 }
@@ -565,8 +565,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                         }
                         else
                         {
-                            Diagnostic note{Hlp(Hlp0048), DiagnosticLevel::Help};
-                            return context->report({child, attrParam->token, Fmt(Err(Err0693), w.c_str())}, &note);
+                            auto note = Diagnostic::help(Hlp(Hlp0048));
+                            return context->report({child, attrParam->token, Fmt(Err(Err0693), w.c_str())}, note);
                         }
                     }
                 }
