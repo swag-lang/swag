@@ -47,6 +47,17 @@ ByteCode::Location ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, 
     return loc;
 }
 
+Utf8 ByteCode::getCallNameFromDecl()
+{
+    if (node)
+    {
+        auto funcNode = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+        return funcNode->getCallName();
+    }
+
+    return getCallName();
+}
+
 Utf8 ByteCode::getCallName()
 {
     if (alias)

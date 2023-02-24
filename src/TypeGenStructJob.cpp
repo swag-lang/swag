@@ -47,16 +47,7 @@ bool TypeGenStructJob::computeStruct()
             concreteType->opInit        = ByteCodeRun::makeLambda(baseContext, realType->opUserInitFct, realType->opInit);
             realType->opInit->isUsed    = true;
             realType->opInit->forceEmit = true;
-
-            if (realType->opInit->node)
-            {
-                auto funcNode = CastAst<AstFuncDecl>(realType->opInit->node, AstNodeKind::FuncDecl);
-                callName      = funcNode->getCallName();
-            }
-            else
-                callName = realType->opInit->getCallName();
-
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opInit), callName);
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opInit->getCallNameFromDecl());
         }
 
         if (realType->opUserDropFct && realType->opUserDropFct->isForeign())
@@ -70,16 +61,7 @@ bool TypeGenStructJob::computeStruct()
             concreteType->opDrop        = ByteCodeRun::makeLambda(baseContext, realType->opUserDropFct, realType->opDrop);
             realType->opDrop->isUsed    = true;
             realType->opDrop->forceEmit = true;
-
-            if (realType->opDrop->node)
-            {
-                auto funcNode = CastAst<AstFuncDecl>(realType->opDrop->node, AstNodeKind::FuncDecl);
-                callName      = funcNode->getCallName();
-            }
-            else
-                callName = realType->opDrop->getCallName();
-
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), callName);
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), realType->opDrop->getCallNameFromDecl());
         }
 
         if (realType->opUserPostCopyFct && realType->opUserPostCopyFct->isForeign())
@@ -93,16 +75,7 @@ bool TypeGenStructJob::computeStruct()
             concreteType->opPostCopy        = ByteCodeRun::makeLambda(baseContext, realType->opUserPostCopyFct, realType->opPostCopy);
             realType->opPostCopy->isUsed    = true;
             realType->opPostCopy->forceEmit = true;
-
-            if (realType->opPostCopy->node)
-            {
-                auto funcNode = CastAst<AstFuncDecl>(realType->opPostCopy->node, AstNodeKind::FuncDecl);
-                callName      = funcNode->getCallName();
-            }
-            else
-                callName = realType->opPostCopy->getCallName();
-
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), callName);
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), realType->opPostCopy->getCallNameFromDecl());
         }
 
         if (realType->opUserPostMoveFct && realType->opUserPostMoveFct->isForeign())
@@ -116,16 +89,7 @@ bool TypeGenStructJob::computeStruct()
             concreteType->opPostMove        = ByteCodeRun::makeLambda(baseContext, realType->opUserPostMoveFct, realType->opPostMove);
             realType->opPostMove->isUsed    = true;
             realType->opPostMove->forceEmit = true;
-
-            if (realType->opPostMove->node)
-            {
-                auto funcNode = CastAst<AstFuncDecl>(realType->opPostMove->node, AstNodeKind::FuncDecl);
-                callName      = funcNode->getCallName();
-            }
-            else
-                callName = realType->opPostMove->getCallName();
-
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), callName);
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opPostMove->getCallNameFromDecl());
         }
     }
 

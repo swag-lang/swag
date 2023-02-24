@@ -36,15 +36,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     bc->markLabels();
 
     // Get function name
-    Utf8         funcName;
-    AstFuncDecl* node = bc->node ? CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl) : nullptr;
-    if (node)
-        funcName = node->getCallName();
-    else
-        funcName = bc->getCallName();
+    Utf8         funcName   = bc->getCallNameFromDecl();
+    AstFuncDecl* bcFuncNode = bc->node ? CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl) : nullptr;
 
     // Export symbol
-    if (node && node->attributeFlags & ATTRIBUTE_PUBLIC)
+    if (bcFuncNode && bcFuncNode->attributeFlags & ATTRIBUTE_PUBLIC)
     {
         if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
             pp.directives += Fmt("/EXPORT:%s ", funcName.c_str());
@@ -3263,17 +3259,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::LocalCallPopRC:
         {
             ByteCode* callBc = (ByteCode*) ip->a.pointer;
-
-            Utf8 callName;
-            if (callBc->node)
-            {
-                auto funcNode = CastAst<AstFuncDecl>(callBc->node, AstNodeKind::FuncDecl);
-                callName      = funcNode->getCallName();
-            }
-            else
-                callName = callBc->getCallName();
-
-            emitCall(pp, (TypeInfoFuncAttr*) ip->b.pointer, callName, pushRAParams, offsetRT, true);
+            emitCall(pp, (TypeInfoFuncAttr*) ip->b.pointer, callBc->getCallNameFromDecl(), pushRAParams, offsetRT, true);
             pushRAParams.clear();
             pushRVParams.clear();
 

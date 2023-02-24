@@ -29,17 +29,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     bool  ok              = true;
 
     // Get function name
-    Utf8         funcName;
-    AstFuncDecl* node = bc->node ? CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl) : nullptr;
-    if (node)
-        funcName = node->getCallName();
-    else
-        funcName = bc->getCallName();
+    Utf8         funcName   = bc->getCallNameFromDecl();
+    AstFuncDecl* bcFuncNode = bc->node ? CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl) : nullptr;
 
     // Function prototype
     auto            funcType = getOrCreateFuncType(buildParameters, moduleToGen, typeFunc);
     llvm::Function* func     = (llvm::Function*) modu.getOrInsertFunction(funcName.c_str(), funcType).getCallee();
-    setFuncAttributes(buildParameters, moduleToGen, node, bc, func);
+    setFuncAttributes(buildParameters, moduleToGen, bcFuncNode, bc, func);
 
     // No pointer aliasing, on all pointers. Is this correct ??
     // Note that without the NoAlias flag, some optims will not trigger (like vectorisation)
@@ -52,7 +48,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     }*/
 
     // Export symbol
-    if (node && node->attributeFlags & ATTRIBUTE_PUBLIC)
+    if (bcFuncNode && bcFuncNode->attributeFlags & ATTRIBUTE_PUBLIC)
     {
         if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
             func->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
@@ -4557,16 +4553,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto              callBc       = (ByteCode*) ip->a.pointer;
             TypeInfoFuncAttr* typeFuncCall = (TypeInfoFuncAttr*) ip->b.pointer;
-
-            Utf8 callName;
-            if (callBc->node)
-            {
-                auto funcNode = CastAst<AstFuncDecl>(callBc->node, AstNodeKind::FuncDecl);
-                callName      = funcNode->getCallName();
-            }
-            else
-                callName = callBc->getCallName();
-            resultFuncCall = emitCall(buildParameters, moduleToGen, callName, typeFuncCall, allocR, allocRR, pushRAParams, {}, true);
+            resultFuncCall                 = emitCall(buildParameters, moduleToGen, callBc->getCallNameFromDecl(), typeFuncCall, allocR, allocRR, pushRAParams, {}, true);
             if (ip->op == ByteCodeOp::LocalCallPopRC)
             {
                 storeTypedValueToRegister(context, buildParameters, resultFuncCall, ip->d.u32, allocR);
@@ -4583,7 +4570,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto              funcNode     = (AstFuncDecl*) ip->a.pointer;
             TypeInfoFuncAttr* typeFuncCall = (TypeInfoFuncAttr*) ip->b.pointer;
-
             funcNode->computeFullNameForeign(false);
             resultFuncCall = emitCall(buildParameters, moduleToGen, funcNode->fullnameForeign, typeFuncCall, allocR, allocRR, pushRAParams, {}, false);
             pushRAParams.clear();

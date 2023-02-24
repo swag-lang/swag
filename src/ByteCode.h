@@ -182,6 +182,7 @@ struct ByteCode
     Utf8              getInstructionReg(const char* name, const Register& reg, bool regW, bool regR, bool regImm);
     void              printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* curIp = nullptr);
     void              print(ByteCodeInstruction* curIp = nullptr);
+    Utf8              getCallNameFromDecl();
     Utf8              getCallName();
     TypeInfoFuncAttr* getCallType();
     bool              canEmit();
