@@ -777,7 +777,8 @@ Diagnostic* Diagnostic::hereIs(AstNode* node, bool forceShowRange)
 {
     if (node->resolvedSymbolOverload)
         return hereIs(node->resolvedSymbolOverload, forceShowRange);
-    auto note       = new Diagnostic{node, node->token, Fmt(Nte(Nte0040), node->token.ctext()), DiagnosticLevel::Note};
+
+    auto note       = Diagnostic::note(node, node->token, Fmt(Nte(Nte0040), node->token.ctext()));
     note->showRange = forceShowRange;
     return note;
 }
@@ -798,7 +799,7 @@ Diagnostic* Diagnostic::hereIs(SymbolOverload* overload, bool forceShowRange)
     if (site->typeInfo->isTuple())
         showRange = true;
 
-    Diagnostic* note = new Diagnostic{site, site->token, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
+    auto note = Diagnostic::note(site, site->token, Fmt(Nte(Nte0008), refNiceName.c_str()));
     if (!forceShowRange)
         note->showRange = showRange;
     return note;

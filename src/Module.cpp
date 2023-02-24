@@ -697,15 +697,15 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
             if (dep->location != tokenLocation.text && !tokenLocation.text.empty() && !dep->location.empty())
             {
                 Diagnostic diag{importNode, tokenLocation, Fmt(Err(Err0284), dep->location.c_str())};
-                Diagnostic note{dep->node, Nte(Nte0037), DiagnosticLevel::Note};
-                return Report::report(diag, &note);
+                auto       note = Diagnostic::note(dep->node, Nte(Nte0037));
+                return Report::report(diag, note);
             }
 
             if (dep->version != tokenVersion.text && !tokenVersion.text.empty() && !dep->version.empty())
             {
                 Diagnostic diag{importNode, tokenVersion, Fmt(Err(Err0286), dep->version.c_str())};
-                Diagnostic note{dep->node, Nte(Nte0037), DiagnosticLevel::Note};
-                return Report::report(diag, &note);
+                auto       note = Diagnostic::note(dep->node, Nte(Nte0037));
+                return Report::report(diag, note);
             }
 
             return true;
@@ -728,8 +728,8 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
     if (splits.size() != 3 || splits[0].empty() || splits[1].empty() || splits[2].empty())
     {
         Diagnostic diag{importNode, tokenVersion, Err(Err0288)};
-        Diagnostic note{dep->node, Err(Err0289), DiagnosticLevel::Note};
-        return Report::report(diag, &note);
+        auto       note = Diagnostic::note(dep->node, Nte(Nte0085));
+        return Report::report(diag, note);
     }
 
     int* setVer = nullptr;
@@ -760,8 +760,8 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
             if (!isdigit(splits[i][j]))
             {
                 Diagnostic diag{importNode, tokenVersion, Err(Err0288)};
-                Diagnostic note{dep->node, Err(Err0289), DiagnosticLevel::Note};
-                return Report::report(diag, &note);
+                auto       note = Diagnostic::note(dep->node, Err(Err0289));
+                return Report::report(diag, note);
             }
         }
 
@@ -769,8 +769,8 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         if (*setVer < 0)
         {
             Diagnostic diag{importNode, tokenVersion, Err(Err0288)};
-            Diagnostic note{dep->node, Err(Err0289), DiagnosticLevel::Note};
-            return Report::report(diag, &note);
+            auto       note = Diagnostic::note(dep->node, Err(Err0289));
+            return Report::report(diag, note);
         }
 
         switch (i)

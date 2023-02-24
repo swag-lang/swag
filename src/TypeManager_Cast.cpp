@@ -2226,9 +2226,9 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
                         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
                         {
                             Diagnostic diag{fromNode, Fmt(Err(Err0200), fromType->getDisplayNameC(), toType->getDisplayNameC(), fromStruct->getDisplayNameC(), toStruct->getDisplayNameC())};
-                            Diagnostic note1{foundField->declNode, Nte(Nte0015), DiagnosticLevel::Note};
-                            Diagnostic note2{field->declNode, Nte(Nte0016), DiagnosticLevel::Note};
-                            return context->report(diag, &note1, &note2);
+                            auto       note1 = Diagnostic::note(foundField->declNode, Nte(Nte0015));
+                            auto       note2 = Diagnostic::note(field->declNode, Nte(Nte0016));
+                            return context->report(diag, note1, note2);
                         }
                     }
                 }
@@ -2264,9 +2264,9 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
                 if (foundField)
                 {
                     Diagnostic diag{context->node, Fmt(Err(Err0034), fromTypeStruct->structName.c_str(), toTypeItf->name.c_str())};
-                    Diagnostic note1{it.field->declNode, Nte(Nte0006), DiagnosticLevel::Note};
-                    Diagnostic note2{foundField->declNode, Nte(Nte0062), DiagnosticLevel::Note};
-                    return context->report(diag, &note1, &note2);
+                    auto       note1 = Diagnostic::note(it.field->declNode, Nte(Nte0006));
+                    auto       note2 = Diagnostic::note(foundField->declNode, Nte(Nte0062));
+                    return context->report(diag, note1, note2);
                 }
 
                 ref.itf         = foundItf;

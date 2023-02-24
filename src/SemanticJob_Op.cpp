@@ -386,7 +386,7 @@ bool SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfo
         Vector<const Diagnostic*> notes;
         for (auto& f : results)
         {
-            auto note = new Diagnostic{f.usingField->declNode, Fmt(Nte(Nte0017), name.c_str(), f.parentStruct->getDisplayNameC()), DiagnosticLevel::Note};
+            auto note = Diagnostic::note(f.usingField->declNode, Fmt(Nte(Nte0017), name.c_str(), f.parentStruct->getDisplayNameC()));
             notes.push_back(note);
         }
 
@@ -490,8 +490,8 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
                 return true;
 
             Diagnostic diag{context->node, context->node->token, Fmt(Err(Err0889), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
-            auto       note0 = new Diagnostic{right->childs.front(), Fmt(Nte(Nte0057), suffix.c_str()), DiagnosticLevel::Note};
-            auto       note1 = new Diagnostic{leftTypeInfo->declNode, Fmt(Nte(Nte0027), leftTypeInfo->getDisplayNameC()), DiagnosticLevel::Note};
+            auto       note0 = Diagnostic::note(right->childs.front(), Fmt(Nte(Nte0057), suffix.c_str()));
+            auto       note1 = Diagnostic::note(leftTypeInfo->declNode, Fmt(Nte(Nte0027), leftTypeInfo->getDisplayNameC()));
             diag.hint        = Fmt(Hnt(Hnt0047), g_LangSpec->name_opAffectSuffix.c_str());
             diag.addRange(left->token, Diagnostic::isType(leftTypeInfo));
             return context->report(diag, note0, note1);
@@ -518,7 +518,7 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
             Diagnostic diag{right, Fmt(Err(Err0908), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC())};
             diag.hint = Diagnostic::isType(rightTypeInfo);
             diag.addRange(left, Diagnostic::isType(leftTypeInfo));
-            auto note  = new Diagnostic{context->node, context->node->token, Fmt(Hnt(Hnt0047), g_LangSpec->name_opAffect.c_str()), DiagnosticLevel::Note};
+            auto note  = Diagnostic::note(context->node, context->node->token, Fmt(Hnt(Hnt0047), g_LangSpec->name_opAffect.c_str()));
             auto note1 = Diagnostic::hereIs(leftTypeInfo->declNode->resolvedSymbolOverload);
             return context->report(diag, note, note1);
         }
@@ -558,7 +558,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
 
         Diagnostic* note = nullptr;
         if (leftType->declNode)
-            note = new Diagnostic{leftType->declNode, leftType->declNode->token, Fmt(Nte(Nte0027), leftType->getDisplayNameC()), DiagnosticLevel::Note};
+            note = Diagnostic::note(leftType->declNode, leftType->declNode->token, Fmt(Nte(Nte0027), leftType->getDisplayNameC()));
 
         if (!opConst)
         {

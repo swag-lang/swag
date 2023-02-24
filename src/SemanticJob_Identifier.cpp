@@ -1159,8 +1159,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
                     {
                         Diagnostic diag(identifier, identifier->token, Fmt(Err(Err0092), overload->node->token.ctext()));
                         diag.hint = Hnt(Hnt0023);
-                        Diagnostic note(overload->node, overload->node->token, Nte(Nte0039), DiagnosticLevel::Note);
-                        return context->report(diag, &note);
+                        auto note = Diagnostic::note(overload->node, overload->node->token, Nte(Nte0039));
+                        return context->report(diag, note);
                     }
                     else
                     {
@@ -1172,8 +1172,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             {
                 Diagnostic diag{identifier, identifier->token, Err(Err0094)};
                 diag.hint = Diagnostic::isType(typeInfo);
-                Diagnostic note{overload->node, overload->node->token, Nte(Nte0039), DiagnosticLevel::Note};
-                return context->report(diag, &note);
+                auto note = Diagnostic::note(overload->node, overload->node->token, Nte(Nte0039));
+                return context->report(diag, note);
             }
 
             // From now this is considered as a function, not a lambda
@@ -2033,7 +2033,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             auto       symbol = overloads[0]->overload->symbol;
             auto       match  = matches[0];
             Diagnostic diag{node, Fmt(Err(Err0305), symbol->name.c_str())};
-            auto       note = new Diagnostic{match->symbolOverload->node, match->symbolOverload->node->token, Nte(Nte0036), DiagnosticLevel::Note};
+            auto       note = Diagnostic::note(match->symbolOverload->node, match->symbolOverload->node->token, Nte(Nte0036));
             return context->report(diag, note);
         }
 
@@ -2064,7 +2064,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 params.push_back(p);
             }
 
-            auto note                   = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
+            auto note                   = Diagnostic::note(overload->node, overload->node->token, couldBe);
             note->showRange             = false;
             note->showMultipleCodeLines = false;
             notes.push_back(note);
@@ -2137,7 +2137,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             {
                 if (match->symbolOverload->node != node && !match->symbolOverload->node->isParentOf(node))
                 {
-                    note = new Diagnostic{match->symbolOverload->node, match->symbolOverload->node->token, Nte(Nte0036), DiagnosticLevel::Note};
+                    note = Diagnostic::note(match->symbolOverload->node, match->symbolOverload->node->token, Nte(Nte0036));
                     break;
                 }
             }
@@ -2162,13 +2162,13 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                         AstFuncDecl* funcNode = CastAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
                         auto         orgNode  = funcNode->originalGeneric ? funcNode->originalGeneric : overload->typeInfo->declNode;
                         auto         couldBe  = Fmt(Nte(Nte0045), orgNode->typeInfo->getDisplayNameC());
-                        note                  = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
+                        note                  = Diagnostic::note(overload->node, overload->node->token, couldBe);
                         note->remarks.push_back(Fmt(Nte(Nte0047), overload->typeInfo->getDisplayNameC()));
                     }
                     else
                     {
                         auto couldBe = Fmt(Nte(Nte0048), overload->typeInfo->getDisplayNameC());
-                        note         = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
+                        note         = Diagnostic::note(overload->node, overload->node->token, couldBe);
                     }
 
                     if (!overload->typeInfo->isLambdaClosure())
@@ -2177,14 +2177,14 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 else if (overload->typeInfo->isStruct())
                 {
                     auto couldBe    = Fmt(Nte(Nte0049), overload->typeInfo->getDisplayNameC());
-                    note            = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
+                    note            = Diagnostic::note(overload->node, overload->node->token, couldBe);
                     note->showRange = false;
                 }
                 else
                 {
                     auto concreteType = TypeManager::concreteType(overload->typeInfo, CONCRETE_ALIAS);
                     auto couldBe      = Fmt(Nte(Nte0050), Naming::aKindName(match->symbolOverload).c_str(), concreteType->getDisplayNameC());
-                    note              = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
+                    note              = Diagnostic::note(overload->node, overload->node->token, couldBe);
                 }
 
                 note->noteHeader = "could be";
@@ -2988,18 +2988,18 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
             if (dep.node->isGeneratedSelf())
             {
                 Diagnostic diag{dependentVar, Fmt(Err(Err0117), dependentVar->typeInfo->getDisplayNameC())};
-                diag.hint = Hnt(Hnt0081);
-                Diagnostic note{dep.node->ownerFct, dep.node->ownerFct->token, Nte(Nte0056), DiagnosticLevel::Note};
-                auto       note1 = Diagnostic::help(Hlp(Hlp0043));
-                return context->report(diag, &note, note1);
+                diag.hint  = Hnt(Hnt0081);
+                auto note  = Diagnostic::note(dep.node->ownerFct, dep.node->ownerFct->token, Nte(Nte0056));
+                auto note1 = Diagnostic::help(Hlp(Hlp0043));
+                return context->report(diag, note, note1);
             }
             else
             {
                 Diagnostic diag{dep.node, Fmt(Err(Err0117), dependentVar->typeInfo->getDisplayNameC())};
-                diag.hint = Hnt(Hnt0081);
-                Diagnostic note{dependentVar, Nte(Nte0021), DiagnosticLevel::Note};
-                auto       note1 = Diagnostic::help(Hlp(Hlp0043));
-                return context->report(diag, &note, note1);
+                diag.hint  = Hnt(Hnt0081);
+                auto note  = Diagnostic::note(dependentVar, Nte(Nte0021));
+                auto note1 = Diagnostic::help(Hlp(Hlp0043));
+                return context->report(diag, note, note1);
             }
         }
 
@@ -3280,14 +3280,14 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
             if (symbolKind == SymbolKind::Variable)
             {
                 Diagnostic diag{node, Fmt(Err(Err0125), node->token.ctext(), symbol->overloads[0]->typeInfo->getDisplayNameC())};
-                Diagnostic note{firstNode->sourceFile, firstNode->token.startLocation, firstNode->token.endLocation, Fmt(Nte(Nte0040), node->token.ctext()), DiagnosticLevel::Note};
-                return context->report(diag, &note);
+                auto       note = Diagnostic::note(firstNode->sourceFile, firstNode->token.startLocation, firstNode->token.endLocation, Fmt(Nte(Nte0040), node->token.ctext()));
+                return context->report(diag, note);
             }
             else
             {
                 Diagnostic diag{node, Fmt(Err(Err0127), node->token.ctext(), Naming::aKindName(symbol->kind).c_str())};
-                Diagnostic note{firstNode->sourceFile, firstNode->token.startLocation, firstNode->token.endLocation, Fmt(Nte(Nte0040), node->token.ctext()), DiagnosticLevel::Note};
-                return context->report(diag, &note);
+                auto       note = Diagnostic::note(firstNode->sourceFile, firstNode->token.startLocation, firstNode->token.endLocation, Fmt(Nte(Nte0040), node->token.ctext()));
+                return context->report(diag, note);
             }
         }
     }
@@ -3353,8 +3353,8 @@ bool SemanticJob::fillMatchContextGenericParameters(SemanticContext* context, Sy
         {
             auto       firstNode = symbol->nodes.front();
             Diagnostic diag{genericParameters, Fmt(Err(Err0130), node->token.ctext(), Naming::aKindName(symbol->kind).c_str())};
-            Diagnostic note{firstNode->sourceFile, firstNode->token.startLocation, firstNode->token.endLocation, Fmt(Nte(Nte0040), node->token.ctext()), DiagnosticLevel::Note};
-            return context->report(diag, &note);
+            auto       note = Diagnostic::note(firstNode->sourceFile, firstNode->token.startLocation, firstNode->token.endLocation, Fmt(Nte(Nte0040), node->token.ctext()));
+            return context->report(diag, note);
         }
 
         auto childCount = genericParameters->childs.size();

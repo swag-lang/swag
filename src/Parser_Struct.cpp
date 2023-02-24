@@ -81,8 +81,8 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
             diag.hint = Fmt(Hnt(Hnt0019), implNode->token.ctext());
         else if (newScope->kind == ScopeKind::Struct)
             diag.hint = Fmt(Hnt(Hnt0020), implNode->token.ctext());
-        Diagnostic note{newScope->owner, newScope->owner->token, Fmt(Nte(Nte0027), implNode->token.ctext()), DiagnosticLevel::Note};
-        return context->report(diag, &note);
+        auto note = Diagnostic::note(newScope->owner, newScope->owner->token, Fmt(Nte(Nte0027), implNode->token.ctext()));
+        return context->report(diag, note);
     }
 
     implNode->structScope = newScope;
@@ -242,14 +242,14 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
             {
                 auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
                 Diagnostic diag{implNode->identifier, Fmt(Err(Syn0123), Naming::kindName(newScope->kind).c_str(), implNode->token.ctext(), Naming::kindName(ScopeKind::Struct).c_str())};
-                Diagnostic note{structNode, Fmt(Nte(Nte0027), implNode->token.ctext()), DiagnosticLevel::Note};
-                return context->report(diag, &note);
+                auto       note = Diagnostic::note(structNode, Fmt(Nte(Nte0027), implNode->token.ctext()));
+                return context->report(diag, note);
             }
             else
             {
                 Diagnostic diag{structNode->sourceFile, token, Fmt(Err(Err0394), structNode->token.ctext(), Naming::aKindName(newScope->kind).c_str())};
-                Diagnostic note{newScope->owner, Nte(Nte0036), DiagnosticLevel::Note};
-                return context->report(diag, &note);
+                auto       note = Diagnostic::note(newScope->owner, Nte(Nte0036));
+                return context->report(diag, note);
             }
         }
 
@@ -446,9 +446,9 @@ bool Parser::doTupleBody(AstNode* parent, bool acceptEmpty)
             tokenAmb.endLocation   = token.startLocation;
 
             Diagnostic diag{sourceFile, tokenAmb, Err(Syn0198)};
-            Diagnostic note{lastParameter, Fmt(Nte(Nte0077), lastParameter->type->token.ctext()), DiagnosticLevel::Note};
-            note.hint = Fmt(Hnt(Hnt0103), lastParameter->type->token.ctext());
-            return context->report(diag, &note);
+            auto       note = Diagnostic::note(lastParameter, Fmt(Nte(Nte0077), lastParameter->type->token.ctext()));
+            note->hint      = Fmt(Hnt(Hnt0103), lastParameter->type->token.ctext());
+            return context->report(diag, note);
         }
 
         lastWasAlone  = curIsAlone;

@@ -247,8 +247,8 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         if (sourceFile->module->mainIsDefined)
         {
             Diagnostic diag{node, Err(Err0739)};
-            Diagnostic note{module->mainIsDefined, Nte(Nte0036), DiagnosticLevel::Note};
-            return context->report(diag, &note);
+            auto       note = Diagnostic::note(module->mainIsDefined, Nte(Nte0036));
+            return context->report(diag, note);
         }
 
         sourceFile->module->mainIsDefined = node;
@@ -726,8 +726,8 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
                     if (c->resolvedSymbolOverload->node->token.text == sc->resolvedSymbolOverload->node->token.text)
                     {
                         Diagnostic diag{c, Fmt(Err(Err0893), c->resolvedSymbolOverload->node->token.ctext())};
-                        Diagnostic note{sc->resolvedSymbolOverload->node, Nte(Nte0037), DiagnosticLevel::Note};
-                        return context->report(diag, &note);
+                        auto       note = Diagnostic::note(sc->resolvedSymbolOverload->node, Nte(Nte0037));
+                        return context->report(diag, note);
                     }
                 }
             }
@@ -1230,8 +1230,8 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
             if (!funcReturnType->isVoid())
             {
                 Diagnostic diag{node, Fmt(Err(Err0779), funcReturnType->getDisplayNameC())};
-                Diagnostic note{funcNode->returnTypeDeducedNode->childs.front(), Nte(Nte0063), DiagnosticLevel::Note};
-                return context->report(diag, &note);
+                auto       note = Diagnostic::note(funcNode->returnTypeDeducedNode->childs.front(), Nte(Nte0063));
+                return context->report(diag, note);
             }
 
             return true;
@@ -1244,16 +1244,16 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
         if (funcReturnType->isVoid() && !childType->isVoid())
         {
             Diagnostic diag{child, Fmt(Err(Err0773), childType->getDisplayNameC())};
-            Diagnostic note{funcNode->returnTypeDeducedNode, Nte(Nte0063), DiagnosticLevel::Note};
-            return context->report(diag, &note);
+            auto       note = Diagnostic::note(funcNode->returnTypeDeducedNode, Nte(Nte0063));
+            return context->report(diag, note);
         }
 
         uint32_t castFlags = CASTFLAG_JUST_CHECK | CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT;
         if (!TypeManager::makeCompatibles(context, funcNode->returnType->typeInfo, nullptr, child, castFlags))
         {
             Diagnostic diag{child, Fmt(Err(Err0770), funcNode->returnType->typeInfo->getDisplayNameC(), child->typeInfo->getDisplayNameC())};
-            Diagnostic note{funcNode->returnTypeDeducedNode->childs.front(), Nte(Nte0063), DiagnosticLevel::Note};
-            return context->report(diag, &note);
+            auto       note = Diagnostic::note(funcNode->returnTypeDeducedNode->childs.front(), Nte(Nte0063));
+            return context->report(diag, note);
         }
     }
 
@@ -1306,8 +1306,8 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     if (node->childs.empty())
     {
         Diagnostic diag{node, Fmt(Err(Err0772), funcNode->returnType->typeInfo->getDisplayNameC())};
-        Diagnostic note{funcNode->returnType->childs.front(), Fmt(Nte(Nte0067), typeInfoFunc->returnType->getDisplayNameC()), DiagnosticLevel::Note};
-        return context->report(diag, &note);
+        auto       note = Diagnostic::note(funcNode->returnType->childs.front(), Fmt(Nte(Nte0067), typeInfoFunc->returnType->getDisplayNameC()));
+        return context->report(diag, note);
     }
 
     auto returnType = funcNode->returnType->typeInfo;
@@ -1345,8 +1345,8 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
 
         if (node->ownerInline && !(node->semFlags & AST_SEM_EMBEDDED_RETURN))
         {
-            Diagnostic note{funcNode, Fmt(Nte(Nte0011), node->ownerInline->func->getDisplayNameC(), funcNode->getDisplayNameC()), DiagnosticLevel::Note};
-            return context->report(diag, &note);
+            auto note = Diagnostic::note(funcNode, Fmt(Nte(Nte0011), node->ownerInline->func->getDisplayNameC(), funcNode->getDisplayNameC()));
+            return context->report(diag, note);
         }
 
         return context->report(diag);

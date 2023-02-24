@@ -139,9 +139,9 @@ bool SemanticJob::checkIsConstAffect(SemanticContext* context, AstNode* left, As
 
             SWAG_ASSERT(left->resolvedSymbolOverload);
             if (left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM && left->typeInfo->isConst())
-                note = new Diagnostic{leftId->identifierExtension->fromAlternateVar, Nte(Nte0023), DiagnosticLevel::Note};
+                note = Diagnostic::note(leftId->identifierExtension->fromAlternateVar, Nte(Nte0023));
             else if (!(left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM))
-                note = new Diagnostic{leftId->identifierExtension->fromAlternateVar, Nte(Nte0023), Diagnostic::isType(left->typeInfo), DiagnosticLevel::Note};
+                note = Diagnostic::note(leftId->identifierExtension->fromAlternateVar, Nte(Nte0023), Diagnostic::isType(left->typeInfo));
         }
     }
 
@@ -367,8 +367,8 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                         diag.hint = Diagnostic::isType(rightTypeInfo);
                         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
 
-                        Diagnostic note{node, node->token, Fmt(Nte(Nte0051), "opIndexAffect", rightTypeInfo->getDisplayNameC()), DiagnosticLevel::Note};
-                        return context->report(diag, &note);
+                        auto note = Diagnostic::note(node, node->token, Fmt(Nte(Nte0051), "opIndexAffect", rightTypeInfo->getDisplayNameC()));
+                        return context->report(diag, note);
                     }
 
                     SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAffect, nullptr, nullptr, left, arrayNode->structFlatParams));

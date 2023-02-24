@@ -166,7 +166,7 @@ void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
     if (sourceNode && sourceNode->sourceFile && sourceNode->sourceFile->sourceNode && !sourceNode->sourceFile->fileForSourceLocation)
     {
         auto fileSourceNode = sourceNode->sourceFile->sourceNode;
-        auto note           = new Diagnostic{fileSourceNode, Nte(Nte0004), DiagnosticLevel::Note};
+        auto note           = Diagnostic::note(fileSourceNode, Nte(Nte0004));
         notes.push_back(note);
     }
 }

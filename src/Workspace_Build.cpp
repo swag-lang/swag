@@ -384,7 +384,7 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, Job* depJob)
     }
 
     prevNode              = prevNodeLocal;
-    auto note             = new Diagnostic{prevNode, prevNode->token, msg, DiagnosticLevel::Note};
+    auto note             = Diagnostic::note(prevNode, prevNode->token, msg);
     note->forceSourceFile = true;
     note->hint            = hint;
 
@@ -474,7 +474,7 @@ void Workspace::errorPendingJobs(Vector<PendingJob>& pendingJobs)
                                    Naming::kindName(back).c_str(),
                                    back->token.ctext());
 
-                    auto note             = new Diagnostic{back, back->token, msg, DiagnosticLevel::Note};
+                    auto note             = Diagnostic::note(back, back->token, msg);
                     note->forceSourceFile = true;
                     note->hint            = Diagnostic::isType(back->typeInfo);
                     notes.push_back(note);

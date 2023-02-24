@@ -336,8 +336,8 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, Typ
     {
         Diagnostic diag{node, *token, Fmt(Err(Err0394), symbol->name.c_str(), Naming::aKindName(symbol->kind).c_str())};
         auto       front = symbol->nodes.front();
-        Diagnostic diagNote{front, front->token, Nte(Nte0036), DiagnosticLevel::Note};
-        context->report(diag, &diagNote);
+        auto       note  = Diagnostic::note(front, front->token, Nte(Nte0036));
+        context->report(diag, note);
         return false;
     }
 
@@ -352,8 +352,8 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, Typ
     {
         auto       firstOverload = symbol->overloads[0];
         Diagnostic diag{node, *token, Fmt(Err(Err0305), symbol->name.c_str())};
-        Diagnostic note{firstOverload->node, firstOverload->node->token, Nte(Nte0036), DiagnosticLevel::Note};
-        context->report(diag, &note);
+        auto       note = Diagnostic::note(firstOverload->node, firstOverload->node->token, Nte(Nte0036));
+        context->report(diag, note);
         return false;
     }
 
@@ -369,8 +369,8 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, Typ
         {
             auto       firstOverload = overload;
             Diagnostic diag{node, *token, Fmt(Err(Err0305), symbol->name.c_str())};
-            Diagnostic note{firstOverload->node, firstOverload->node->token, Nte(Nte0036), DiagnosticLevel::Note};
-            context->report(diag, &note);
+            auto       note = Diagnostic::note(firstOverload->node, firstOverload->node->token, Nte(Nte0036));
+            context->report(diag, note);
             return false;
         }
     }
@@ -407,16 +407,13 @@ bool SymTable::registerUsingAliasOverload(ErrorContext* context, AstNode* node, 
         if (symbol->kind != SymbolKind::Alias)
         {
             auto       firstOverload = symbol->overloads[0];
-            Utf8       msg           = Fmt(Err(Err0394), symbol->name.c_str(), Naming::aKindName(symbol->kind).c_str());
-            Diagnostic diag{node, msg};
-            Utf8       note = Nte(Nte0036);
-            Diagnostic diagNote{firstOverload->node, note, DiagnosticLevel::Note};
-            context->report(diag, &diagNote);
+            Diagnostic diag{node, Fmt(Err(Err0394), symbol->name.c_str(), Naming::aKindName(symbol->kind).c_str())};
+            auto       note = Diagnostic::note(firstOverload->node, Nte(Nte0036));
+            context->report(diag, note);
         }
         else
         {
-            Utf8       msg = Fmt(Err(Err0890), symbol->name.c_str());
-            Diagnostic diag{node, msg};
+            Diagnostic diag{node, Fmt(Err(Err0890), symbol->name.c_str())};
             context->report(diag);
         }
 

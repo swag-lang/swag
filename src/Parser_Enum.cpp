@@ -32,14 +32,14 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
                 auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
                 Diagnostic diag{implNode->identifier, Fmt(Err(Syn0123), Naming::kindName(newScope->kind).c_str(), implNode->token.ctext(), Naming::kindName(ScopeKind::Enum).c_str())};
                 diag.hint = Fmt(Hnt(Hnt0019), implNode->token.ctext());
-                Diagnostic note{enumNode, enumNode->token, Fmt(Nte(Nte0027), implNode->token.ctext()), DiagnosticLevel::Note};
-                return context->report(diag, &note);
+                auto note = Diagnostic::note(enumNode, enumNode->token, Fmt(Nte(Nte0027), implNode->token.ctext()));
+                return context->report(diag, note);
             }
             else
             {
                 Diagnostic diag{enumNode->sourceFile, token, Fmt(Err(Err0394), enumNode->token.ctext(), Naming::aKindName(newScope->kind).c_str())};
-                Diagnostic note{newScope->owner, newScope->owner->token, Nte(Nte0036), DiagnosticLevel::Note};
-                return context->report(diag, &note);
+                auto       note = Diagnostic::note(newScope->owner, newScope->owner->token, Nte(Nte0036));
+                return context->report(diag, note);
             }
         }
 

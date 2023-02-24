@@ -353,8 +353,8 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                     int idx = valText.find(expr->computedValue->text);
                     if (idx != -1)
                     {
-                        Diagnostic note{valDef[idx], Nte(Nte0014), DiagnosticLevel::Note};
-                        return context->report({expr, Fmt(Err(Err0611), expr->computedValue->text.c_str())}, &note);
+                        auto note = Diagnostic::note(valDef[idx], Nte(Nte0014));
+                        return context->report({expr, Fmt(Err(Err0611), expr->computedValue->text.c_str())}, note);
                     }
 
                     valText.push_back(expr->computedValue->text);
@@ -369,14 +369,14 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                     int idx = val64.find(value);
                     if (idx != -1)
                     {
-                        Diagnostic note{valDef[idx], Nte(Nte0014), DiagnosticLevel::Note};
+                        auto note = Diagnostic::note(valDef[idx], Nte(Nte0014));
                         if (expr->flags & AST_VALUE_IS_TYPEINFO)
-                            return context->report({expr, Fmt(Err(Err0611), expr->token.ctext())}, &note);
+                            return context->report({expr, Fmt(Err(Err0611), expr->token.ctext())}, note);
                         if (expr->typeInfo->isEnum())
-                            return context->report({expr, Fmt(Err(Err0612), expr->token.ctext())}, &note);
+                            return context->report({expr, Fmt(Err(Err0612), expr->token.ctext())}, note);
                         if (typeExpr->isNativeInteger())
-                            return context->report({expr, Fmt(Err(Err0613), expr->computedValue->reg.u64)}, &note);
-                        return context->report({expr, Fmt(Err(Err0614), expr->computedValue->reg.f64)}, &note);
+                            return context->report({expr, Fmt(Err(Err0613), expr->computedValue->reg.u64)}, note);
+                        return context->report({expr, Fmt(Err(Err0614), expr->computedValue->reg.f64)}, note);
                     }
 
                     val64.push_back(expr->computedValue->reg.u64);
@@ -409,8 +409,8 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                         if (!valText.contains(one->value->text))
                         {
                             Diagnostic diag{node, node->token, Fmt(Err(Err0620), typeEnum->name.c_str(), one->name.c_str())};
-                            Diagnostic note{one->declNode, one->declNode->token, Nte(Nte0034), DiagnosticLevel::Note};
-                            return context->report(diag, &note);
+                            auto       note = Diagnostic::note(one->declNode, one->declNode->token, Nte(Nte0034));
+                            return context->report(diag, note);
                         }
                     }
                 }
@@ -424,8 +424,8 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                         if (!val64.contains(one->value->reg.u64))
                         {
                             Diagnostic diag{node, node->token, Fmt(Err(Err0620), typeEnum->name.c_str(), one->name.c_str())};
-                            Diagnostic note{one->declNode, one->declNode->token, Nte(Nte0034), DiagnosticLevel::Note};
-                            return context->report(diag, &note);
+                            auto       note = Diagnostic::note(one->declNode, one->declNode->token, Nte(Nte0034));
+                            return context->report(diag, note);
                         }
                     }
                 }

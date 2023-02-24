@@ -25,7 +25,7 @@ bool ByteCodeGenJob::sameStackFrame(ByteCodeGenContext* context, SymbolOverload*
 
     Diagnostic* note = nullptr;
     if (overload->fromInlineParam)
-        note = new Diagnostic{overload->fromInlineParam, Fmt(Nte(Nte0069), overload->symbol->name.c_str()), DiagnosticLevel::Note};
+        note = Diagnostic::note(overload->fromInlineParam, Fmt(Nte(Nte0069), overload->symbol->name.c_str()));
 
     return context->report(diag, Diagnostic::hereIs(overload, true), note);
 }

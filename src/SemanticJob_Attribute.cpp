@@ -171,9 +171,9 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     {
         auto       nakedName = Naming::kindName(checkNode);
         Diagnostic diag{oneAttribute, Fmt(Err(Err0583), oneAttribute->token.ctext(), specificMsg)};
-        diag.hint = Hnt(Hnt0096);
-        Diagnostic note1{checkNode, Fmt(Nte(Nte0019), nakedName.c_str()), DiagnosticLevel::Note};
-        return context->report(diag, &note1, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload));
+        diag.hint  = Hnt(Hnt0096);
+        auto note1 = Diagnostic::note(checkNode, Fmt(Nte(Nte0019), nakedName.c_str()));
+        return context->report(diag, note1, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload));
     }
     else
     {
@@ -188,9 +188,9 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
         {
             auto       nakedName1 = Naming::kindName(checkNode);
             Diagnostic diag{oneAttribute, Fmt(Err(Err0588), oneAttribute->token.ctext(), nakedName.c_str())};
-            diag.hint = Hnt(Hnt0096);
-            Diagnostic note1{checkNode, checkNode->token, Fmt(Nte(Nte0026), nakedName1.c_str()), DiagnosticLevel::Note};
-            return context->report(diag, &note1, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload));
+            diag.hint  = Hnt(Hnt0096);
+            auto note1 = Diagnostic::note(checkNode, checkNode->token, Fmt(Nte(Nte0026), nakedName1.c_str()));
+            return context->report(diag, note1, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload));
         }
     }
 }
@@ -293,8 +293,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 if (isHereTmp.contains(typeInfo))
                 {
                     Diagnostic diag{forNode, Fmt(Err(Err0591), child->token.ctext())};
-                    Diagnostic note{child, Nte(Nte0032), DiagnosticLevel::Note};
-                    return context->report(diag, &note);
+                    auto       note = Diagnostic::note(child, Nte(Nte0032));
+                    return context->report(diag, note);
                 }
 
                 if (isHereGlobal.contains(typeInfo))

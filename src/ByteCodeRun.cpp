@@ -3756,8 +3756,8 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
     diag.criticalError = true;
 
     Vector<const Diagnostic*> notes;
-    notes.push_back(new Diagnostic{Nte(Nte0022), DiagnosticLevel::Note});
-    notes.push_back(new Diagnostic{Nte(Nte0009), DiagnosticLevel::Note});
+    notes.push_back(Diagnostic::note(Nte(Nte0022)));
+    notes.push_back(Diagnostic::note(Nte(Nte0009)));
     Report::report(diag, notes, runContext);
 
     runContext->ip++;

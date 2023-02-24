@@ -780,7 +780,7 @@ void initErrors()
     SWAG_ERROR(Err0477, "the upper bound '%I64u' of the slicing arguments is out of range (maximum value is '%I64u')");
     SWAG_ERROR(Err0086, "the variable '%s' has only been used as a scope to find function '%s'");
     SWAG_ERROR(Err0645, "the variable is initialized twice, first with type arguments, and then with an assignment");
-    SWAG_ERROR(Err0289, "the version should be of the form 'version.revision.buildnum', with each number >= 0 or the '?' character");
+    SWAG_ERROR(Err0289, nullptr);
     SWAG_ERROR(Err0880, "the while expression is always true");
     SWAG_ERROR(Err0062, "too few arguments for special function '%s' (at least '%d' expected, only '%d' provided)");
     SWAG_ERROR(Err0626, "too many 'visit' alias names (maximum is '2', but '%u' are provided)");
@@ -1239,6 +1239,7 @@ void initErrors()
     SWAG_ERROR(Nte0082, "the interface declaration returns nothing");
     SWAG_ERROR(Nte0083, "the interface declaration returns type '%s'");
     SWAG_ERROR(Nte0084, "the ufcs argument comes from an implicit 'using const self' parameter");
+    SWAG_ERROR(Nte0085, "the version should be of the form 'version.revision.buildnum', with each number >= 0 or the '?' character");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

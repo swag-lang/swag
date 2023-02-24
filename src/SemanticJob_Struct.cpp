@@ -260,49 +260,49 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
             {
                 Diagnostic diag{childFct->parameters->childs[bi.badSignatureNum2], Fmt(Err(Err0652), child->token.ctext(), typeBaseInterface->name.c_str())};
                 diag.hint = Hnt(Hnt0113);
-                Diagnostic note{typeLambda->parameters[bi.badSignatureNum1]->declNode, Fmt(Nte(Nte0081), typeLambda->parameters[bi.badSignatureNum1]->typeInfo->getDisplayNameC()), DiagnosticLevel::Note};
-                return context->report(diag, &note);
+                auto note = Diagnostic::note(typeLambda->parameters[bi.badSignatureNum1]->declNode, Fmt(Nte(Nte0081), typeLambda->parameters[bi.badSignatureNum1]->typeInfo->getDisplayNameC()));
+                return context->report(diag, note);
             }
 
             case MatchResult::MissingReturnType:
             {
                 Diagnostic diag{child, child->token, Fmt(Err(Err0652), child->token.ctext(), typeBaseInterface->name.c_str())};
                 diag.hint = Hnt(Hnt0114);
-                Diagnostic note{itfSymbol->declNode, itfSymbol->declNode->token, Fmt(Nte(Nte0083), typeLambda->returnType->getDisplayNameC()), DiagnosticLevel::Note};
-                return context->report(diag, &note);
+                auto note = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Fmt(Nte(Nte0083), typeLambda->returnType->getDisplayNameC()));
+                return context->report(diag, note);
             }
 
             case MatchResult::NoReturnType:
             {
                 Diagnostic diag{childFct->returnType, Fmt(Err(Err0652), child->token.ctext(), typeBaseInterface->name.c_str())};
                 diag.hint = Hnt(Hnt0026);
-                Diagnostic note{itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0082), DiagnosticLevel::Note};
-                return context->report(diag, &note);
+                auto note = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0082));
+                return context->report(diag, note);
             }
 
             case MatchResult::MismatchReturnType:
             {
                 Diagnostic diag{childFct->returnType, Fmt(Err(Err0652), child->token.ctext(), typeBaseInterface->name.c_str())};
                 diag.hint = Diagnostic::isType(childFct->returnType->typeInfo);
-                Diagnostic note{itfSymbol->declNode, itfSymbol->declNode->token, Fmt(Nte(Nte0083), typeLambda->returnType->getDisplayNameC()), DiagnosticLevel::Note};
-                return context->report(diag, &note);
+                auto note = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Fmt(Nte(Nte0083), typeLambda->returnType->getDisplayNameC()));
+                return context->report(diag, note);
             }
 
             case MatchResult::MismatchThrow:
             {
                 Diagnostic diag{child, child->token, Fmt(Err(Err0652), child->token.ctext(), typeBaseInterface->name.c_str())};
                 diag.hint = Hnt(Hnt0115);
-                Diagnostic note{itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0002), DiagnosticLevel::Note};
-                note.showRange = false;
-                return context->report(diag, &note);
+                auto note = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0002));
+                note->showRange = false;
+                return context->report(diag, note);
             }
 
             default:
             {
                 Diagnostic diag{child, child->token, Fmt(Err(Err0652), child->token.ctext(), typeBaseInterface->name.c_str())};
-                Diagnostic note{itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0002), DiagnosticLevel::Note};
-                note.showRange = false;
-                return context->report(diag, &note);
+                auto note = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0002));
+                note->showRange = false;
+                return context->report(diag, note);
             }
             }
         }
@@ -350,7 +350,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         if (!itfRef.itf)
         {
             Diagnostic diag{node, node->token, Fmt(Err(Err0657), typeBaseInterface->name.c_str(), typeInfo->getDisplayNameC())};
-            auto       note = new Diagnostic({missingNode->declNode, missingNode->declNode->token, Fmt("missing '%s'", missingNode->name.c_str()), DiagnosticLevel::Note});
+            auto       note = Diagnostic::note(missingNode->declNode, missingNode->declNode->token, Fmt("missing '%s'", missingNode->name.c_str()));
             return context->report(diag, note);
         }
 
@@ -945,8 +945,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         if (child->typeInfo == typeInfo)
         {
             Diagnostic diag{node, Fmt(Err(Err0201), typeInfo->getDisplayNameC())};
-            Diagnostic note{child, Nte(Nte0064), DiagnosticLevel::Note};
-            return context->report(diag, &note);
+            auto       note = Diagnostic::note(child, Nte(Nte0064));
+            return context->report(diag, note);
         }
 
         job->waitTypeCompleted(child->typeInfo);

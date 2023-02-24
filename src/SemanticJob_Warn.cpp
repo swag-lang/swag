@@ -52,17 +52,17 @@ bool SemanticJob::warnDeprecated(SemanticContext* context, AstNode* identifier)
     }
 
     Diagnostic diag{identifier, identifier->token, Fmt(Err(Wrn0003), Naming::kindName(symbol->kind).c_str(), identifier->resolvedSymbolOverload->symbol->name.c_str()), DiagnosticLevel::Warning};
-    Diagnostic note1{node, node->token, Nte(Nte0031), DiagnosticLevel::Note};
-    note1.showRange = false;
+    auto       note1 = Diagnostic::note(node, node->token, Nte(Nte0031));
+    note1->showRange = false;
 
     if (v && v->text.empty())
     {
-        return context->report(diag, &note1);
+        return context->report(diag, note1);
     }
     else
     {
-        Diagnostic note2({v->text, DiagnosticLevel::Note});
-        return context->report(diag, &note1, &note2);
+        auto note2 = Diagnostic::note(v->text);
+        return context->report(diag, note1, note2);
     }
 }
 

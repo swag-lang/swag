@@ -138,7 +138,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         SWAG_ASSERT(destFuncDecl);
         diag = new Diagnostic{node, node->token, Fmt(Err(Err0004), destFuncDecl->token.ctext(), destFuncDecl->validif->token.ctext())};
         result0.push_back(diag);
-        auto note       = new Diagnostic{destFuncDecl->validif, destFuncDecl->validif->token, Fmt(Nte(Nte0007), destFuncDecl->validif->token.ctext()), DiagnosticLevel::Note};
+        auto note       = Diagnostic::note(destFuncDecl->validif, destFuncDecl->validif->token, Fmt(Nte(Nte0007), destFuncDecl->validif->token.ctext()));
         note->showRange = false;
         result1.push_back(note);
         return;
@@ -214,7 +214,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
         if (destFuncDecl && callParameters)
         {
-            auto note  = new Diagnostic{destFuncDecl->parameters->childs[match.cptResolved], Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
+            auto note  = Diagnostic::note(destFuncDecl->parameters->childs[match.cptResolved], Fmt(Nte(Nte0008), refNiceName.c_str()));
             note->hint = Hnt(Hnt0071);
             result1.push_back(note);
         }
@@ -370,18 +370,18 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             {
                 if (bi.badSignatureGivenType->isConst())
                 {
-                    auto note = new Diagnostic{oneTry.dependentVar->ownerFct, oneTry.dependentVar->ownerFct->token, Nte(Nte0084), DiagnosticLevel::Note};
+                    auto note = Diagnostic::note(oneTry.dependentVar->ownerFct, oneTry.dependentVar->ownerFct->token, Nte(Nte0084));
                     result1.push_back(note);
                 }
                 else
                 {
-                    auto note = new Diagnostic{oneTry.dependentVar->ownerFct, oneTry.dependentVar->ownerFct->token, Nte(Nte0073), DiagnosticLevel::Note};
+                    auto note = Diagnostic::note(oneTry.dependentVar->ownerFct, oneTry.dependentVar->ownerFct->token, Nte(Nte0073));
                     result1.push_back(note);
                 }
             }
             else
             {
-                auto note = new Diagnostic{oneTry.dependentVar, Nte(Nte0074), DiagnosticLevel::Note};
+                auto note = Diagnostic::note(oneTry.dependentVar, Nte(Nte0074));
                 result1.push_back(note);
             }
         }
@@ -418,7 +418,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
         if (bi.genMatchFromNode)
         {
-            auto note = new Diagnostic{bi.genMatchFromNode, Fmt(Nte(Nte0075), bi.genMatchFromNode->typeInfo->getDisplayNameC()), DiagnosticLevel::Note};
+            auto note = Diagnostic::note(bi.genMatchFromNode, Fmt(Nte(Nte0075), bi.genMatchFromNode->typeInfo->getDisplayNameC()));
             result1.push_back(note);
         }
 
@@ -431,19 +431,19 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             {
                 if (oneTry.dependentVar->isGeneratedSelf())
                 {
-                    auto note = new Diagnostic{castMsg, DiagnosticLevel::Note};
+                    auto note = Diagnostic::note(castMsg);
                     result1.push_back(note);
                 }
                 else
                 {
-                    auto note  = new Diagnostic{oneTry.dependentVar, castMsg, DiagnosticLevel::Note};
+                    auto note  = Diagnostic::note(oneTry.dependentVar, castMsg);
                     note->hint = castHint;
                     result1.push_back(note);
                 }
             }
             else
             {
-                auto note  = new Diagnostic{diag->sourceNode, diag->sourceNode->token, castMsg, DiagnosticLevel::Note};
+                auto note  = Diagnostic::note(diag->sourceNode, diag->sourceNode->token, castMsg);
                 note->hint = castHint;
                 result1.push_back(note);
             }
@@ -455,7 +455,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         Diagnostic* note = nullptr;
         if (paramNode && paramNode->isGeneratedSelf())
         {
-            note                        = new Diagnostic{destFuncDecl, destFuncDecl->token, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
+            note                        = Diagnostic::note(destFuncDecl, destFuncDecl->token, Fmt(Nte(Nte0008), refNiceName.c_str()));
             note->showRange             = false;
             note->showMultipleCodeLines = false;
             result1.push_back(note);
@@ -463,7 +463,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         else if (destFuncDecl && bi.badSignatureParameterIdx < destFuncDecl->parameters->childs.size())
         {
             auto reqParam = destFuncDecl->parameters->childs[bi.badSignatureParameterIdx];
-            note          = new Diagnostic{reqParam, reqParam->token, Fmt(Nte(Nte0066), reqParam->token.ctext(), refNiceName.c_str()), DiagnosticLevel::Note};
+            note          = Diagnostic::note(reqParam, reqParam->token, Fmt(Nte(Nte0066), reqParam->token.ctext(), refNiceName.c_str()));
             result1.push_back(note);
         }
         else
@@ -537,7 +537,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         if (destFuncDecl && bi.badSignatureParameterIdx < destFuncDecl->genericParameters->childs.size())
         {
             auto reqParam = destFuncDecl->genericParameters->childs[bi.badSignatureParameterIdx];
-            auto note     = new Diagnostic{reqParam, Fmt(Nte(Nte0068), reqParam->token.ctext(), refNiceName.c_str()), DiagnosticLevel::Note};
+            auto note     = Diagnostic::note(reqParam, Fmt(Nte(Nte0068), reqParam->token.ctext(), refNiceName.c_str()));
             result1.push_back(note);
         }
         else
@@ -566,7 +566,7 @@ void SemanticJob::symbolErrorNotes(SemanticContext* context, VectorNative<OneTry
         // Do not generate a note if this is a generated 'using' in case of methods
         if (!tryMatches[0]->dependentVar->isGeneratedSelf())
         {
-            auto note = new Diagnostic{tryMatches[0]->dependentVar, Fmt(Nte(Nte0013), tryMatches[0]->overload->symbol->name.c_str()), DiagnosticLevel::Note};
+            auto note = Diagnostic::note(tryMatches[0]->dependentVar, Fmt(Nte(Nte0013), tryMatches[0]->overload->symbol->name.c_str()));
             notes.push_back(note);
         }
     }
@@ -593,7 +593,7 @@ void SemanticJob::symbolErrorNotes(SemanticContext* context, VectorNative<OneTry
                 if (prev->extension && prev->extension->misc->resolvedUserOpSymbolOverload)
                 {
                     auto typeInfo = TypeManager::concreteType(prev->extension->misc->resolvedUserOpSymbolOverload->typeInfo);
-                    auto note     = new Diagnostic{prev, Fmt(Nte(Nte0018), prev->extension->misc->resolvedUserOpSymbolOverload->symbol->name.c_str(), typeInfo->getDisplayNameC()), DiagnosticLevel::Note};
+                    auto note     = Diagnostic::note(prev, Fmt(Nte(Nte0018), prev->extension->misc->resolvedUserOpSymbolOverload->symbol->name.c_str(), typeInfo->getDisplayNameC()));
                     note->hint    = Diagnostic::isType(typeInfo);
                     notes.push_back(note);
                     return;
@@ -607,18 +607,18 @@ void SemanticJob::symbolErrorNotes(SemanticContext* context, VectorNative<OneTry
 
                 if (prev->typeInfo)
                 {
-                    auto note = new Diagnostic{prev, Fmt(Nte(Nte0001), prev->token.ctext(), Naming::aKindName(prev->resolvedSymbolName->kind).c_str(), prev->typeInfo->getDisplayNameC()), DiagnosticLevel::Note};
+                    auto note = Diagnostic::note(prev, Fmt(Nte(Nte0001), prev->token.ctext(), Naming::aKindName(prev->resolvedSymbolName->kind).c_str(), prev->typeInfo->getDisplayNameC()));
                     notes.push_back(note);
                 }
                 else
                 {
-                    auto note = new Diagnostic{prev, Fmt(Nte(Nte0010), prev->token.ctext(), Naming::aKindName(prev->resolvedSymbolName->kind).c_str()), DiagnosticLevel::Note};
+                    auto note = Diagnostic::note(prev, Fmt(Nte(Nte0010), prev->token.ctext(), Naming::aKindName(prev->resolvedSymbolName->kind).c_str()));
                     notes.push_back(note);
                 }
 
                 if (prev->resolvedSymbolOverload)
                 {
-                    auto note = new Diagnostic{prev->resolvedSymbolOverload->node, Nte(Nte0000), DiagnosticLevel::Note};
+                    auto note = Diagnostic::note(prev->resolvedSymbolOverload->node, Nte(Nte0000));
                     notes.push_back(note);
                 }
             }
@@ -884,23 +884,23 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
             switch (badResult)
             {
             case MatchResult::ValidIfFailed:
-                diagRemarks = new Diagnostic(Fmt("#validif have all failed"), DiagnosticLevel::Note);
+                diagRemarks = Diagnostic::note(Fmt("#validif have all failed"));
                 notes.push_back(diagRemarks);
                 break;
             case MatchResult::TooManyParameters:
-                diagRemarks = new Diagnostic(Fmt("too many parameters"), DiagnosticLevel::Note);
+                diagRemarks = Diagnostic::note(Fmt("too many parameters"));
                 notes.push_back(diagRemarks);
                 break;
             case MatchResult::TooManyGenericParameters:
-                diagRemarks = new Diagnostic(Fmt("too many generic parameters"), DiagnosticLevel::Note);
+                diagRemarks = Diagnostic::note(Fmt("too many generic parameters"));
                 notes.push_back(diagRemarks);
                 break;
             case MatchResult::NotEnoughParameters:
-                diagRemarks = new Diagnostic(Fmt("not enough parameters"), DiagnosticLevel::Note);
+                diagRemarks = Diagnostic::note(Fmt("not enough parameters"));
                 notes.push_back(diagRemarks);
                 break;
             case MatchResult::NotEnoughGenericParameters:
-                diagRemarks = new Diagnostic(Fmt("not enough generic parameters"), DiagnosticLevel::Note);
+                diagRemarks = Diagnostic::note(Fmt("not enough generic parameters"));
                 notes.push_back(diagRemarks);
                 break;
             }
@@ -1222,7 +1222,7 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
         if (typeRef && typeRef->isTuple())
         {
             diag      = new Diagnostic{node, Fmt(Err(Err0093), node->token.ctext())};
-            auto note = new Diagnostic{identifierRef->startScope->owner, Nte(Nte0030), DiagnosticLevel::Note};
+            auto note = Diagnostic::note(identifierRef->startScope->owner, Nte(Nte0030));
             notes.push_back(note);
         }
         else
@@ -1249,7 +1249,7 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
                 {
                     auto altEnum    = prevIdentifier->identifierExtension->alternateEnum;
                     diag            = new Diagnostic{node, node->token, Fmt(Err(Err0492), node->token.ctext(), altEnum->getDisplayNameC(), Naming::kindName(identifierRef->startScope->kind).c_str(), displayName.c_str())};
-                    auto note       = new Diagnostic{altEnum->declNode, altEnum->declNode->token, Fmt(Nte(Nte0029), altEnum->getDisplayNameC()), DiagnosticLevel::Note};
+                    auto note       = Diagnostic::note(altEnum->declNode, altEnum->declNode->token, Fmt(Nte(Nte0029), altEnum->getDisplayNameC()));
                     note->showRange = false;
                     notes.push_back(note);
                 }
@@ -1271,7 +1271,7 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
                 case AstNodeKind::StructDecl:
                 case AstNodeKind::InterfaceDecl:
                 case AstNodeKind::EnumDecl:
-                    auto note       = new Diagnostic{identifierRef->startScope->owner, identifierRef->startScope->owner->token, Fmt(Nte(Nte0029), displayName.c_str()), DiagnosticLevel::Note};
+                    auto note       = Diagnostic::note(identifierRef->startScope->owner, identifierRef->startScope->owner->token, Fmt(Nte(Nte0029), displayName.c_str()));
                     note->showRange = false;
                     notes.push_back(note);
                     break;

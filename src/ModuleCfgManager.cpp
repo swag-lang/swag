@@ -354,8 +354,8 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
         case CompareVersionResult::VERSION_LOWER:
         {
             Diagnostic diag{dep->node, Fmt(Err(Err0516), dep->name.c_str(), dep->verNum, cfgModule->fetchDep->verNum)};
-            Diagnostic note{cfgModule->fetchDep->node, Nte(Nte0035), DiagnosticLevel::Note};
-            Report::report(diag, &note);
+            auto       note = Diagnostic::note(cfgModule->fetchDep->node, Nte(Nte0035));
+            Report::report(diag, note);
             return false;
         }
 

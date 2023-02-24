@@ -661,8 +661,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             {
                 Diagnostic diag{node, Fmt(Err(Err0848), node->token.ctext(), typeEnum->getDisplayNameC())};
                 diag.hint = Hnt(Hnt0055);
-                Diagnostic note{concreteNodeType->declNode, concreteNodeType->declNode->token, Fmt(Nte(Nte0027), concreteNodeType->getDisplayNameC()), DiagnosticLevel::Note};
-                return context->report(diag, &note);
+                auto note = Diagnostic::note(concreteNodeType->declNode, concreteNodeType->declNode->token, Fmt(Nte(Nte0027), concreteNodeType->getDisplayNameC()));
+                return context->report(diag, note);
             }
         }
     }
@@ -694,13 +694,13 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             Diagnostic diag(node->typeConstraint, Fmt(Err(Err0118), node->typeInfo->getDisplayNameC()));
             if (node->genTypeComesFrom && node->typeConstraint->kind == AstNodeKind::IdentifierRef)
             {
-                Diagnostic note(node->genTypeComesFrom, Fmt(Nte(Nte0079), node->typeInfo->getDisplayNameC(), node->typeConstraint->token.ctext()), DiagnosticLevel::Note);
-                return context->report(diag, &note);
+                auto note = Diagnostic::note(node->genTypeComesFrom, Fmt(Nte(Nte0079), node->typeInfo->getDisplayNameC(), node->typeConstraint->token.ctext()));
+                return context->report(diag, note);
             }
             else if (node->genTypeComesFrom)
             {
-                Diagnostic note(node->genTypeComesFrom, Fmt(Nte(Nte0080), node->typeInfo->getDisplayNameC()), DiagnosticLevel::Note);
-                return context->report(diag, &note);
+                auto note = Diagnostic::note(node->genTypeComesFrom, Fmt(Nte(Nte0080), node->typeInfo->getDisplayNameC()));
+                return context->report(diag, note);
             }
             else
             {

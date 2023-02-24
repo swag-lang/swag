@@ -143,8 +143,8 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
                 default:
                 {
                     Diagnostic diag{node, Err(Syn0036)};
-                    Diagnostic note{child, child->token, Nte(Nte0024), DiagnosticLevel::Note};
-                    return context->report(diag, &note);
+                    auto       note = Diagnostic::note(child, child->token, Nte(Nte0024));
+                    return context->report(diag, note);
                 }
                 }
             }
@@ -235,8 +235,8 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
             else if (symbol->kind != SymbolKind::Namespace)
             {
                 Diagnostic diag{sourceFile, token.startLocation, token.endLocation, Fmt(Err(Err0305), symbol->name.c_str())};
-                Diagnostic note{symbol->nodes.front(), symbol->nodes.front()->token, Nte(Nte0036), DiagnosticLevel::Note};
-                return context->report(diag, &note);
+                auto       note = Diagnostic::note(symbol->nodes.front(), symbol->nodes.front()->token, Nte(Nte0036));
+                return context->report(diag, note);
             }
             else
                 newScope = CastTypeInfo<TypeInfoNamespace>(symbol->overloads[0]->typeInfo, TypeInfoKind::Namespace)->scope;

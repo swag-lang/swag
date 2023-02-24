@@ -345,9 +345,9 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
                     tokenAmb.endLocation   = token.startLocation;
 
                     Diagnostic diag{sourceFile, tokenAmb, Err(Syn0195)};
-                    Diagnostic note{lastParameter, Fmt(Nte(Nte0076), lastParameter->type->token.ctext()), DiagnosticLevel::Note};
-                    note.hint = Fmt(Hnt(Hnt0101), lastParameter->type->token.ctext());
-                    return context->report(diag, &note);
+                    auto       note = Diagnostic::note(lastParameter, Fmt(Nte(Nte0076), lastParameter->type->token.ctext()));
+                    note->hint      = Fmt(Hnt(Hnt0101), lastParameter->type->token.ctext());
+                    return context->report(diag, note);
                 }
 
                 lastWasAlone  = curIsAlone;

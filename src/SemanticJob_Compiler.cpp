@@ -31,21 +31,21 @@ Diagnostic* SemanticJob::computeNonConstExprNote(AstNode* node)
                 {
                     if (!(c->resolvedSymbolOverload->node->attributeFlags & ATTRIBUTE_CONSTEXPR))
                     {
-                        auto result  = new Diagnostic(c, c->token, Fmt(Nte(Nte0042), c->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
+                        auto result  = Diagnostic::note(c, c->token, Fmt(Nte(Nte0042), c->resolvedSymbolName->name.c_str()));
                         result->hint = Hnt(Hnt0046);
                         return result;
                     }
 
-                    return new Diagnostic(c, c->token, Nte(Nte0071), DiagnosticLevel::Note);
+                    return Diagnostic::note(c, c->token, Nte(Nte0071));
                 }
             }
 
             if (c->resolvedSymbolName->kind == SymbolKind::Variable)
             {
-                return new Diagnostic(c, c->token, Fmt(Nte(Nte0041), c->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
+                return Diagnostic::note(c, c->token, Fmt(Nte(Nte0041), c->resolvedSymbolName->name.c_str()));
             }
 
-            return new Diagnostic(c, Nte(Nte0070), DiagnosticLevel::Note);
+            return Diagnostic::note(c, Nte(Nte0070));
         }
     }
 

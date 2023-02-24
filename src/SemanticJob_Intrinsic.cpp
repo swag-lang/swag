@@ -96,10 +96,10 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
             if (!TypeManager::makeCompatibles(context, typeNode->typeInfo, tag->type, nullptr, typeNode, CASTFLAG_JUST_CHECK))
             {
                 Diagnostic diag{typeNode, Fmt(Err(Err0252), typeNode->typeInfo->getDisplayNameC(), tag->type->getDisplayNameC(), tag->name.c_str())};
-                Diagnostic note{typeNode, Fmt(Nte(Nte0038), tag->cmdLine.c_str()), DiagnosticLevel::Note};
-                note.sourceFile     = nullptr;
-                note.showSourceCode = false;
-                return context->report(diag, &note);
+                auto       note      = Diagnostic::note(typeNode, Fmt(Nte(Nte0038), tag->cmdLine.c_str()));
+                note->sourceFile     = nullptr;
+                note->showSourceCode = false;
+                return context->report(diag);
             }
 
             node->typeInfo       = tag->type;
