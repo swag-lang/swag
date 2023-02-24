@@ -34,25 +34,25 @@ struct Stats
     atomic<uint64_t> runtimeTime               = 0;
     atomic<uint64_t> outputDbgTime             = 0;
 
-    atomic<size_t> allocatedMemory = 0;
-    atomic<size_t> wastedMemory    = 0;
-    atomic<size_t> memNodes        = 0;
-    atomic<size_t> memNodesExt     = 0;
-    atomic<size_t> memNodesLiteral = 0;
-    atomic<size_t> memScopes       = 0;
-    atomic<size_t> memSeg          = 0;
-    atomic<size_t> memConcat       = 0;
-    atomic<size_t> memTypes        = 0;
-    atomic<size_t> memParams       = 0;
-    atomic<size_t> memInstructions = 0;
-    atomic<size_t> memBcStack      = 0;
-    atomic<size_t> memSymName      = 0;
-    atomic<size_t> memSymOver      = 0;
-    atomic<size_t> memSymTable     = 0;
-    atomic<size_t> memUtf8         = 0;
-    atomic<size_t> memUtf8CStr     = 0;
-    atomic<size_t> memNew          = 0;
-    atomic<size_t> memFileBuffer   = 0;
+    atomic<size_t> allocatedMemory    = 0;
+    atomic<size_t> maxAllocatedMemory = 0;
+    atomic<size_t> memNodes           = 0;
+    atomic<size_t> memNodesExt        = 0;
+    atomic<size_t> memNodesLiteral    = 0;
+    atomic<size_t> memScopes          = 0;
+    atomic<size_t> memSeg             = 0;
+    atomic<size_t> memConcat          = 0;
+    atomic<size_t> memTypes           = 0;
+    atomic<size_t> memParams          = 0;
+    atomic<size_t> memInstructions    = 0;
+    atomic<size_t> memBcStack         = 0;
+    atomic<size_t> memSymName         = 0;
+    atomic<size_t> memSymOver         = 0;
+    atomic<size_t> memSymTable        = 0;
+    atomic<size_t> memUtf8            = 0;
+    atomic<size_t> memUtf8CStr        = 0;
+    atomic<size_t> memNew             = 0;
+    atomic<size_t> memFileBuffer      = 0;
 
     atomic<size_t> sizeBackendDbg = 0;
 

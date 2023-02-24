@@ -27,7 +27,6 @@ void JobThread::loop()
 {
     // TLS context
     OS::tlsSetValue(g_TlsContextId, &g_DefaultContext);
-    g_CompilerAllocTh += 1;
     g_ThreadIndex = threadRank;
 
     while (!requestEnd)

@@ -1,31 +1,6 @@
 #pragma once
-const uint32_t ALLOCATOR_MAX_SIZE_BUCKETS = 8 * 1024;
-const uint32_t ALLOCATOR_MAX_FREE_BUCKETS = ALLOCATOR_MAX_SIZE_BUCKETS / 8;
-
-struct AllocatorPage
-{
-    uint8_t* data      = nullptr;
-    size_t   maxUsed   = 0;
-    size_t   allocated = 0;
-};
-
-typedef struct AllocatorFreeBlock
-{
-    AllocatorFreeBlock* next;
-    size_t              size;
-} AllocatorFreeBlock;
-
 struct Allocator
 {
-    void  newPage(size_t size);
-    void* bigAlloc(size_t size);
-    void* allocBlock(size_t size);
-    void  freeBlock(void*, size_t size);
-
-    void* useRealBucket(uint32_t bucket, size_t size);
-    void  setFirstFreeBlock(AllocatorFreeBlock* block);
-    void* tryFreeBlock(size_t size);
-
     template<typename T>
     static T* alloc()
     {
@@ -42,9 +17,8 @@ struct Allocator
         free(ptr, alignSize(sizeof(T)));
     }
 
-    static void  allocAllocator();
-    static void  free(void*, size_t size);
     static void* alloc(size_t size);
+    static void  free(void*, size_t size);
 
     // clang-format off
     static size_t alignSize(size_t size) { return ((size + 7) & ~7); }
@@ -54,16 +28,7 @@ struct Allocator
     static uint8_t* markDebugBlock(uint8_t* blockAddr, uint64_t userSize, uint64_t marker);
     static uint8_t* checkUserBlock(uint8_t* userAddr, uint64_t userSize, uint64_t marker);
 #endif
-
-    AllocatorFreeBlock* firstFreeBlock                          = nullptr;
-    AllocatorPage*      lastBlock                               = nullptr;
-    uint8_t*            currentData                             = nullptr;
-    void*               freeBuckets[ALLOCATOR_MAX_FREE_BUCKETS] = {0};
-    bool                shared                                  = false;
 };
-
-extern atomic<uint32_t>        g_CompilerAllocTh;
-extern thread_local Allocator* g_Allocator;
 
 template<typename T>
 struct StdAllocator

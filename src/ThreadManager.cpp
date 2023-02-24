@@ -29,10 +29,6 @@ void ThreadManager::init()
         for (uint32_t i = 0; i < numWorkers; i++)
             workerThreads.push_back(new JobThread(i));
     }
-    else
-    {
-        g_CompilerAllocTh = 1;
-    }
 }
 
 void ThreadManager::addJob(Job* job)
