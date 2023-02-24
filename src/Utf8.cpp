@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "Utf8.h"
-#include "CommandLine.h"
 #include "Crc32.h"
 #include "Stats.h"
 
