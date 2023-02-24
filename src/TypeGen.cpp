@@ -601,6 +601,16 @@ void TypeGen::setup(const Utf8& moduleName)
         mapPerSegment[i] = new MapPerSeg;
 }
 
+void TypeGen::release()
+{
+    for (auto mps : mapPerSegment)
+    {
+        mps->exportedTypes.release();
+        mps->exportedTypesJob.release();
+        mps->exportedTypesReverse.release();
+    }
+}
+
 TypeGen::MapPerSeg& TypeGen::getMapPerSeg(DataSegment* segment)
 {
     if (segment->kind != SegmentKind::Compiler)

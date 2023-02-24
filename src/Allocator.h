@@ -1,4 +1,5 @@
 #pragma once
+#include "Statistics.h"
 struct Allocator
 {
     template<typename T>
@@ -43,11 +44,19 @@ struct StdAllocator
 
     T* allocate(size_t n, const T* hint = 0)
     {
-        return (T*) Allocator::alloc(Allocator::alignSize(n * sizeof(T)));
+        auto size = Allocator::alignSize(n * sizeof(T));
+#ifdef SWAG_STATS
+        g_Stats.memStd += size;
+#endif
+        return (T*) Allocator::alloc(size);
     }
 
     void deallocate(T* p, size_t n)
     {
-        Allocator::free(p, Allocator::alignSize(n * sizeof(T)));
+        auto size = n * sizeof(T);
+#ifdef SWAG_STATS
+        g_Stats.memStd -= size;
+#endif
+        Allocator::free(p, Allocator::alignSize(size));
     }
 };

@@ -52,6 +52,7 @@ struct Stats
     atomic<size_t> memUtf8            = 0;
     atomic<size_t> memUtf8CStr        = 0;
     atomic<size_t> memNew             = 0;
+    atomic<size_t> memStd             = 0;
     atomic<size_t> memFileBuffer      = 0;
 
     atomic<size_t> sizeBackendDbg = 0;

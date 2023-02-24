@@ -843,7 +843,6 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
     pp.postConcat.release();
     pp.globalSegment.release();
     pp.stringSegment.release();
-    pp.dbgTypeRecords.release();
     pp.relocTableTextSection.table.release();
     pp.relocTableCSSection.table.release();
     pp.relocTableMSSection.table.release();
@@ -857,6 +856,7 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
     pp.directives.release();
     pp.mapSymbols.release();
     pp.globalStrings.release();
+    pp.dbgTypeRecords.release();
     pp.dbgMapTypes.release();
     pp.dbgMapPtrTypes.release();
     pp.dbgMapRefTypes.release();

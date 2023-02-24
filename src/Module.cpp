@@ -129,11 +129,17 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
 
 void Module::release()
 {
+    cacheSourceLoc.release();
+    contentJobGeneratedFile.release();
+    typeGen.release();
+
     constantSegment.release();
     compilerSegment.release();
     mutableSegment.release();
     bssSegment.release();
     tlsSegment.release();
+    for (auto c : compilerSegmentPerThread)
+        c->release();
 
     for (auto& b : byteCodeFunc)
         b->release();
