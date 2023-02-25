@@ -482,6 +482,7 @@ struct AstIdentifier : public AstNode
 
 struct AstFuncDecl : public AstNode
 {
+    ~AstFuncDecl();
     AstNode*    clone(CloneContext& context);
     bool        cloneSubDecls(ErrorContext* context, CloneContext& cloneContext, AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode);
     void        computeFullNameForeign(bool forExport);
@@ -644,6 +645,7 @@ struct AstWhile : public AstBreakable
 
 struct AstFor : public AstBreakable
 {
+    ~AstFor();
     AstNode* clone(CloneContext& context);
 
     AstNode* preExpression  = nullptr;
@@ -656,6 +658,7 @@ struct AstFor : public AstBreakable
 
 struct AstLoop : public AstBreakable
 {
+    ~AstLoop();
     AstNode* clone(CloneContext& context);
 
     AstNode* specificName = nullptr;
@@ -705,6 +708,7 @@ struct AstSwitchCase : public AstNode
 
 struct AstSwitchCaseBlock : public AstNode
 {
+    ~AstSwitchCaseBlock();
     AstNode* clone(CloneContext& context);
 
     AstSwitchCase* ownerCase = nullptr;
@@ -774,6 +778,7 @@ struct AstExpressionList : public AstNode
 
 struct AstStruct : public AstNode
 {
+    ~AstStruct();
     AstNode* clone(CloneContext& context);
 
     DependentJobs dependentJobs;
@@ -790,6 +795,7 @@ struct AstStruct : public AstNode
 
 struct AstEnum : public AstNode
 {
+    ~AstEnum();
     AstNode* clone(CloneContext& context);
 
     Scope* scope = nullptr;
@@ -804,6 +810,7 @@ struct AstEnumValue : public AstNode
 
 struct AstImpl : public AstNode
 {
+    ~AstImpl();
     AstNode* clone(CloneContext& context);
 
     Scope*   structScope   = nullptr;
@@ -842,6 +849,7 @@ struct AstReturn : public AstNode
 
 struct AstCompilerInline : public AstNode
 {
+    ~AstCompilerInline();
     AstNode* clone(CloneContext& context);
 
     Scope* scope = nullptr;
@@ -849,6 +857,7 @@ struct AstCompilerInline : public AstNode
 
 struct AstCompilerMacro : public AstNode
 {
+    ~AstCompilerMacro();
     AstNode* clone(CloneContext& context);
 
     Scope* scope = nullptr;
@@ -863,6 +872,7 @@ struct AstCompilerMixin : public AstNode
 
 struct AstInline : public AstNode
 {
+    ~AstInline();
     AstNode* clone(CloneContext& context);
 
     VectorNative<AstReturn*> returnList;

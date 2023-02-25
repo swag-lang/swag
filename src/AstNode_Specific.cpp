@@ -170,6 +170,23 @@ void AstNode::releaseChilds()
 
 void AstNode::release()
 {
+    if (flags & AST_NEED_SCOPE)
+        ownerScope->release();
+
+    if (extension)
+    {
+        if (extension->bytecode)
+            Allocator::free<AstNode::ExtensionByteCode>(extension->bytecode);
+        if (extension->semantic)
+            Allocator::free<AstNode::ExtensionSemantic>(extension->semantic);
+        if (extension->owner)
+            Allocator::free<AstNode::ExtensionOwner>(extension->owner);
+        if (extension->misc)
+            Allocator::free<AstNode::ExtensionMisc>(extension->misc);
+
+        Allocator::free<AstNode::Extension>(extension);
+    }
+
     // Nodes with problem (childs referenced somewhere else, so double free)
     switch (kind)
     {
@@ -180,9 +197,23 @@ void AstNode::release()
         return;
     }
 
+    // Prerelease, if we need to childs to be alive
+    switch (kind)
+    {
+    case AstNodeKind::FuncDecl:
+    {
+        auto funcDecl = CastAst<AstFuncDecl>(this, AstNodeKind::FuncDecl);
+        if (funcDecl->content)
+            funcDecl->content->ownerScope->release();
+        break;
+    }
+    }
+
+    // Release childs first
     for (auto c : childs)
         c->release();
 
+    // Then destruct node
     switch (kind)
     {
     case AstNodeKind::VarDecl:
@@ -709,6 +740,12 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
     return true;
 }
 
+AstFuncDecl::~AstFuncDecl()
+{
+    if (scope)
+        scope->release();
+}
+
 AstNode* AstFuncDecl::clone(CloneContext& context)
 {
     auto newNode      = Ast::newNode<AstFuncDecl>();
@@ -936,6 +973,11 @@ AstNode* AstWhile::clone(CloneContext& context)
     return newNode;
 }
 
+AstFor::~AstFor()
+{
+    ownerScope->release();
+}
+
 AstNode* AstFor::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstFor>();
@@ -954,6 +996,11 @@ AstNode* AstFor::clone(CloneContext& context)
     newNode->block          = findChildRef(block, newNode);
 
     return newNode;
+}
+
+AstLoop::~AstLoop()
+{
+    ownerScope->release();
 }
 
 AstNode* AstLoop::clone(CloneContext& context)
@@ -1015,6 +1062,11 @@ AstNode* AstSwitchCase::clone(CloneContext& context)
     for (auto expr : expressions)
         newNode->expressions.push_back(findChildRef(expr, newNode));
     return newNode;
+}
+
+AstSwitchCaseBlock::~AstSwitchCaseBlock()
+{
+    ownerScope->release();
 }
 
 AstNode* AstSwitchCaseBlock::clone(CloneContext& context)
@@ -1093,6 +1145,12 @@ AstNode* AstArrayPointerIndex::clone(CloneContext& context)
     return newNode;
 }
 
+AstStruct::~AstStruct()
+{
+    if (scope)
+        scope->release();
+}
+
 AstNode* AstStruct::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstStruct>();
@@ -1123,6 +1181,12 @@ AstNode* AstStruct::clone(CloneContext& context)
 
     context.propageResult(cloneContext);
     return newNode;
+}
+
+AstImpl::~AstImpl()
+{
+    if (scope)
+        scope->release();
 }
 
 AstNode* AstImpl::clone(CloneContext& context)
@@ -1216,6 +1280,12 @@ AstNode* AstImpl::clone(CloneContext& context)
     return newNode;
 }
 
+AstEnum::~AstEnum()
+{
+    if (scope)
+        scope->release();
+}
+
 AstNode* AstEnum::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstEnum>();
@@ -1279,6 +1349,12 @@ AstNode* AstReturn::clone(CloneContext& context)
     return newNode;
 }
 
+AstCompilerInline::~AstCompilerInline()
+{
+    if (scope)
+        scope->release();
+}
+
 AstNode* AstCompilerInline::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstCompilerInline>();
@@ -1292,6 +1368,12 @@ AstNode* AstCompilerInline::clone(CloneContext& context)
     context.propageResult(cloneContext);
 
     return newNode;
+}
+
+AstCompilerMacro::~AstCompilerMacro()
+{
+    if (scope)
+        scope->release();
 }
 
 AstNode* AstCompilerMacro::clone(CloneContext& context)
@@ -1315,6 +1397,12 @@ AstNode* AstCompilerMixin::clone(CloneContext& context)
     newNode->copyFrom(context, this);
     newNode->replaceTokens = replaceTokens;
     return newNode;
+}
+
+AstInline::~AstInline()
+{
+    if (scope && scope->kind == ScopeKind::Inline)
+        scope->release();
 }
 
 AstNode* AstInline::clone(CloneContext& context)

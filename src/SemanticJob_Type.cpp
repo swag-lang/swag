@@ -629,7 +629,9 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
     }
 
     SWAG_ASSERT(overload);
-    SWAG_CHECK(node->ownerScope->symTable.registerUsingAliasOverload(context, node, node->resolvedSymbolName, overload));
+    auto copy = Allocator::alloc<SymbolOverload>();
+    copy->from(overload);
+    SWAG_CHECK(node->ownerScope->symTable.registerUsingAliasOverload(context, node, node->resolvedSymbolName, copy));
     SWAG_CHECK(checkPublicAlias(context, node));
     return true;
 }

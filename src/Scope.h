@@ -45,6 +45,7 @@ struct ScopePublicSet
 struct Scope
 {
     Scope();
+    void release();
     void addPublicFunc(AstNode* node);
     void addPublicAttribute(AstNode* node);
     void addPublicNode(AstNode* node);

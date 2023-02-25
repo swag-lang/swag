@@ -8,6 +8,16 @@
 #include "Naming.h"
 #include "TypeManager.h"
 
+void SymTable::release()
+{
+    for (auto s : allSymbols)
+    {
+        for (auto over : s->overloads)
+            Allocator::free<SymbolOverload>(over);
+        Allocator::free<SymbolName>(s);
+    }
+}
+
 SymbolName* SymTable::find(const Utf8& name, uint32_t crc)
 {
     SharedLock lk(mutex);
@@ -42,6 +52,7 @@ SymbolName* SymTable::registerSymbolNameNoLock(ErrorContext* context, AstNode* n
     if (!symbol)
     {
         symbol = Allocator::alloc<SymbolName>();
+        allSymbols.push_back(symbol);
 #ifdef SWAG_STATS
         g_Stats.memSymName += Allocator::alignSize(sizeof(SymbolName));
 #endif
@@ -290,6 +301,24 @@ void SymTable::disabledIfBlockOverloadNoLock(AstNode* node, SymbolName* symbol)
     symbol->unregisterNode(node);
     if (symbol->cptOverloads == 0)
         symbol->dependentJobs.setRunning();
+
+    // Some nodes will share their created scope
+    // We need to reset it in order to avoid a double free
+    switch (node->kind)
+    {
+    case AstNodeKind::EnumDecl:
+    {
+        auto enumNode   = CastAst<AstEnum>(node, AstNodeKind::EnumDecl);
+        enumNode->scope = nullptr;
+        break;
+    }
+    case AstNodeKind::StructDecl:
+    {
+        auto structNode   = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
+        structNode->scope = nullptr;
+        break;
+    }
+    }
 }
 
 bool SymTable::acceptGhostSymbolNoLock(ErrorContext* context, AstNode* node, SymbolKind kind, SymbolName* symbol)

@@ -79,6 +79,20 @@ struct SymbolOverload
     uint32_t flags          = 0;
     uint32_t storageIndex   = 0;
     uint8_t  hintRegister   = 0;
+
+    void from(SymbolOverload* other)
+    {
+        computedValue   = other->computedValue;
+        registers       = other->registers;
+        typeInfo        = other->typeInfo;
+        node            = other->node;
+        symbol          = other->symbol;
+        fromInlineParam = other->fromInlineParam;
+        attributeFlags  = other->attributeFlags;
+        flags           = other->flags;
+        storageIndex    = other->storageIndex;
+        hintRegister    = other->hintRegister;
+    }
 };
 
 struct SymbolName
@@ -117,6 +131,8 @@ struct StructToDrop
 
 struct SymTable
 {
+    void release();
+
     SymbolName*     registerSymbolName(ErrorContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName = nullptr);
     SymbolName*     registerSymbolNameNoLock(ErrorContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName = nullptr);
     SymbolOverload* addSymbolTypeInfo(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0, DataSegment* storageSegment = nullptr, Utf8* aliasName = nullptr);
@@ -134,6 +150,7 @@ struct SymTable
     SharedMutex                mutex;
     SymTableHash               mapNames;
     VectorNative<StructToDrop> structVarsToDrop;
+    VectorNative<SymbolName*>  allSymbols;
 
     Scope* scope    = nullptr;
     bool   occupied = false;

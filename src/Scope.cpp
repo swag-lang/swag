@@ -10,6 +10,12 @@ Scope::Scope()
     symTable.scope = this;
 }
 
+void Scope::release()
+{
+    symTable.release();
+    Allocator::free<Scope>(this);
+}
+
 bool Scope::isGlobal()
 {
     return kind == ScopeKind::Module || kind == ScopeKind::File || kind == ScopeKind::Namespace;

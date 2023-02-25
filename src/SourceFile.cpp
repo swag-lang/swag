@@ -7,6 +7,14 @@
 #include "ErrorIds.h"
 #include "Report.h"
 
+void SourceFile::release()
+{
+    if (astRoot)
+        astRoot->release();
+    if (scopeFile)
+        scopeFile->release();
+}
+
 bool SourceFile::checkFormat()
 {
     // Read header

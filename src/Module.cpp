@@ -130,7 +130,6 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
 void Module::release()
 {
     cacheSourceLoc.release();
-    contentJobGeneratedFile.release();
     typeGen.release();
 
     constantSegment.release();
@@ -144,10 +143,11 @@ void Module::release()
     for (auto& b : byteCodeFunc)
         b->release();
 
-    for (auto f : files)
+    // Too tricky for now to release ASTs, because of possible shared values (like scopes) in case of errors
+    if (!isErrorModule)
     {
-        if (f->astRoot)
-            f->astRoot->release();
+        for (auto f : files)
+            f->release();
     }
 }
 
