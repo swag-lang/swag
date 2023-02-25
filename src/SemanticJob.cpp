@@ -3,9 +3,21 @@
 #include "ThreadManager.h"
 #include "Ast.h"
 #include "Module.h"
-#include "ErrorIds.h"
 #include "Timer.h"
 #include "TypeManager.h"
+
+void SemanticJob::release()
+{
+    for (auto p : cacheFreeTryMatch)
+        Allocator::free<OneTryMatch>(p);
+    for (auto p : cacheFreeGenericMatches)
+        Allocator::free<OneGenericMatch>(p);
+    for (auto p : cacheFreeMatches)
+        Allocator::free<OneMatch>(p);
+    tmpConcat.release();
+
+    Allocator::free<SemanticJob>(this);
+}
 
 bool SemanticJob::setUnRef(AstNode* node)
 {
