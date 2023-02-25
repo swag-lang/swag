@@ -9,9 +9,9 @@
 TypeManager* g_TypeMgr = nullptr;
 
 static TypeInfo*                            g_LiteralTypeToType[(int) LiteralType::TT_MAX];
-thread_local Map<uint32_t, TypeInfoNative*> mapUntypedValuesI;
-thread_local Map<uint32_t, TypeInfoNative*> mapUntypedValuesB;
-thread_local Map<uint32_t, TypeInfoNative*> mapUntypedValuesF;
+thread_local Map<uint32_t, TypeInfoNative*> g_MapUntypedValuesI;
+thread_local Map<uint32_t, TypeInfoNative*> g_MapUntypedValuesB;
+thread_local Map<uint32_t, TypeInfoNative*> g_MapUntypedValuesF;
 
 void TypeManager::setup()
 {
@@ -406,48 +406,48 @@ TypeInfo* TypeManager::resolveUntypedType(TypeInfo* typeInfo, uint32_t value)
 {
     if (typeInfo->isUntypedInteger())
     {
-        auto it = mapUntypedValuesI.find(value);
-        if (it != mapUntypedValuesI.end())
+        auto it = g_MapUntypedValuesI.find(value);
+        if (it != g_MapUntypedValuesI.end())
         {
             SWAG_ASSERT(it->second->isUntypedInteger());
             SWAG_ASSERT(it->second->valueInteger == *(int32_t*) &value);
             return it->second;
         }
 
-        TypeInfoNative* newType  = (TypeInfoNative*) typeInfo->clone();
-        newType->valueInteger    = *(int32_t*) &value;
-        typeInfo                 = newType;
-        mapUntypedValuesI[value] = newType;
+        TypeInfoNative* newType    = (TypeInfoNative*) typeInfo->clone();
+        newType->valueInteger      = *(int32_t*) &value;
+        typeInfo                   = newType;
+        g_MapUntypedValuesI[value] = newType;
     }
     else if (typeInfo->isUntypedBinHex())
     {
-        auto it = mapUntypedValuesB.find(value);
-        if (it != mapUntypedValuesB.end())
+        auto it = g_MapUntypedValuesB.find(value);
+        if (it != g_MapUntypedValuesB.end())
         {
             SWAG_ASSERT(it->second->isUntypedBinHex());
             SWAG_ASSERT(it->second->valueInteger == *(int32_t*) &value);
             return it->second;
         }
 
-        TypeInfoNative* newType  = (TypeInfoNative*) typeInfo->clone();
-        newType->valueInteger    = *(int32_t*) &value;
-        typeInfo                 = newType;
-        mapUntypedValuesB[value] = newType;
+        TypeInfoNative* newType    = (TypeInfoNative*) typeInfo->clone();
+        newType->valueInteger      = *(int32_t*) &value;
+        typeInfo                   = newType;
+        g_MapUntypedValuesB[value] = newType;
     }
     else if (typeInfo->isUntypedFloat())
     {
-        auto it = mapUntypedValuesF.find(value);
-        if (it != mapUntypedValuesF.end())
+        auto it = g_MapUntypedValuesF.find(value);
+        if (it != g_MapUntypedValuesF.end())
         {
             SWAG_ASSERT(it->second->isUntypedFloat());
             SWAG_ASSERT(it->second->valueFloat == *(float*) &value);
             return it->second;
         }
 
-        TypeInfoNative* newType  = (TypeInfoNative*) typeInfo->clone();
-        newType->valueFloat      = *(float*) &value;
-        typeInfo                 = newType;
-        mapUntypedValuesF[value] = newType;
+        TypeInfoNative* newType    = (TypeInfoNative*) typeInfo->clone();
+        newType->valueFloat        = *(float*) &value;
+        typeInfo                   = newType;
+        g_MapUntypedValuesF[value] = newType;
     }
 
     return typeInfo;

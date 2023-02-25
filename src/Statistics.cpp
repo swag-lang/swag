@@ -67,9 +67,14 @@ void Stats::print()
     g_Log.eol();
 
     /////////////////////////
-    g_Log.messageHeaderDot("mem allocated", Fmt("%s", Utf8::toNiceSize(allocatedMemory.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
     g_Log.messageHeaderDot("mem max", Fmt("%s", Utf8::toNiceSize(maxAllocatedMemory.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
+    g_Log.messageHeaderDot("mem allocated", Fmt("%s", Utf8::toNiceSize(allocatedMemory.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
     g_Log.eol();
+    g_Log.messageHeaderDot("mem utf8", Fmt("%s", Utf8::toNiceSize(memUtf8.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
+    g_Log.messageHeaderDot("mem new", Fmt("%s", Utf8::toNiceSize(memNew.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
+    g_Log.messageHeaderDot("mem std", Fmt("%s", Utf8::toNiceSize(memStd.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
+    g_Log.eol();
+
     g_Log.messageHeaderDot("mem nodes", Fmt("%s", Utf8::toNiceSize(memNodes.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
     g_Log.messageHeaderDot("mem nodes ext", Fmt("%s", Utf8::toNiceSize(memNodesExt.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
     g_Log.messageHeaderDot("mem concat", Fmt("%s", Utf8::toNiceSize(memConcat.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
@@ -84,16 +89,9 @@ void Stats::print()
     g_Log.messageHeaderDot("mem symtable", Fmt("%s", Utf8::toNiceSize(memSymTable.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
     g_Log.messageHeaderDot("mem symname", Fmt("%s", Utf8::toNiceSize(memSymName.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
     g_Log.messageHeaderDot("mem symover", Fmt("%s", Utf8::toNiceSize(memSymOver.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
-    g_Log.messageHeaderDot("mem utf8", Fmt("%s", Utf8::toNiceSize(memUtf8.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
     g_Log.messageHeaderDot("mem cstr", Fmt("%s", Utf8::toNiceSize(memUtf8CStr.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
-    g_Log.messageHeaderDot("mem new", Fmt("%s", Utf8::toNiceSize(memNew.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
-    g_Log.messageHeaderDot("mem std", Fmt("%s", Utf8::toNiceSize(memStd.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
-
     if (g_CommandLine.backendGenType == BackendGenType::X64)
-    {
-        g_Log.eol();
         g_Log.messageHeaderDot("mem x64 dbg", Fmt("%s", Utf8::toNiceSize(sizeBackendDbg.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
-    }
 
     /////////////////////////
     g_Log.eol();

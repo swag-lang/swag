@@ -595,6 +595,12 @@ void AstIdentifier::allocateIdentifierExtension()
     identifierExtension = Allocator::alloc<AstIdentifierExtension>();
 }
 
+AstIdentifier::~AstIdentifier()
+{
+    if (identifierExtension)
+        Allocator::free<AstIdentifierExtension>(identifierExtension);
+}
+
 AstNode* AstIdentifier::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstIdentifier>();

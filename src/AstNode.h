@@ -471,6 +471,7 @@ struct AstIdentifierRef : public AstNode
 
 struct AstIdentifier : public AstNode
 {
+    ~AstIdentifier();
     AstNode*          clone(CloneContext& context);
     void              allocateIdentifierExtension();
     AstIdentifierRef* identifierRef();
