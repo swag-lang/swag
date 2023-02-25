@@ -1047,9 +1047,14 @@ bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context, Scope* 
             // one try block in case a throw is raised
             if (forError)
             {
-                context->node->allocateExtension(ExtensionKind::Owner);
-                auto newTry                      = context->node->extension->owner->ownerTryCatchAssume->clone(cloneContext);
-                cloneContext.ownerTryCatchAssume = CastAst<AstTryCatchAssume>(newTry, newTry->kind);
+                SWAG_ASSERT(context->node->extension && context->node->extension->owner && context->node->extension->owner->ownerTryCatchAssume);
+                auto oldTry                      = context->node->extension->owner->ownerTryCatchAssume;
+                auto newTry                      = Ast::newNode<AstTryCatchAssume>();
+                newTry->kind                     = oldTry->kind;
+                newTry->parent                   = oldTry->parent;
+                newTry->ownerFct                 = oldTry->ownerFct;
+                newTry->ownerScope               = oldTry->ownerScope;
+                cloneContext.ownerTryCatchAssume = newTry;
             }
 
             auto child           = node->childs.front()->clone(cloneContext);
