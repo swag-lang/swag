@@ -4,6 +4,7 @@
 #include "ErrorIds.h"
 #include "TypeManager.h"
 #include "SemanticJob.h"
+#include "ByteCode.h"
 
 void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
 {
@@ -176,11 +177,23 @@ void AstNode::release()
     if (extension)
     {
         if (extension->bytecode)
+        {
+            if (extension->bytecode->bc)
+                extension->bytecode->bc->release();
+
             Allocator::free<AstNode::ExtensionByteCode>(extension->bytecode);
+        }
+
         if (extension->semantic)
             Allocator::free<AstNode::ExtensionSemantic>(extension->semantic);
+
         if (extension->owner)
+        {
+            for (auto c : extension->owner->nodesToFree)
+                c->release();
             Allocator::free<AstNode::ExtensionOwner>(extension->owner);
+        }
+
         if (extension->misc)
             Allocator::free<AstNode::ExtensionMisc>(extension->misc);
 

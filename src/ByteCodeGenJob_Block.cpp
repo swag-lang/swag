@@ -1043,11 +1043,13 @@ bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context, Scope* 
             cloneContext.cloneFlags      = CLONE_RAW;
             cloneContext.ownerDeferScope = scope;
 
+            node->allocateExtension(ExtensionKind::Owner);
+
             // If we emit a defer block during a try block, we need to be sure that the defer has its
             // one try block in case a throw is raised
             if (forError)
             {
-                SWAG_ASSERT(context->node->extension && context->node->extension->owner && context->node->extension->owner->ownerTryCatchAssume);
+                SWAG_ASSERT(context->node->extension->owner->ownerTryCatchAssume);
                 auto oldTry                      = context->node->extension->owner->ownerTryCatchAssume;
                 auto newTry                      = Ast::newNode<AstTryCatchAssume>();
                 newTry->kind                     = oldTry->kind;
@@ -1055,12 +1057,14 @@ bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context, Scope* 
                 newTry->ownerFct                 = oldTry->ownerFct;
                 newTry->ownerScope               = oldTry->ownerScope;
                 cloneContext.ownerTryCatchAssume = newTry;
+                node->extension->owner->nodesToFree.push_back(newTry);
             }
 
             auto child           = node->childs.front()->clone(cloneContext);
             child->parent        = node;
             child->bytecodeState = AstNodeResolveState::Enter;
             child->flags &= ~AST_NO_BYTECODE;
+            node->extension->owner->nodesToFree.push_back(child);
             job->nodes.push_back(child);
         }
     }

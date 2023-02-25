@@ -369,8 +369,9 @@ struct AstNode
 
     struct ExtensionOwner
     {
-        AstAttrUse*        ownerAttrUse        = nullptr;
-        AstTryCatchAssume* ownerTryCatchAssume = nullptr;
+        AstAttrUse*            ownerAttrUse        = nullptr;
+        AstTryCatchAssume*     ownerTryCatchAssume = nullptr;
+        VectorNative<AstNode*> nodesToFree;
     };
 
     struct ExtensionMisc
