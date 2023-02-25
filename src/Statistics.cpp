@@ -27,6 +27,7 @@ void Stats::print()
     g_Log.messageHeaderDot("lines/s", Fmt("%u", (int) (numLines.load() / OS::timerToSeconds(g_Workspace->totalTime.load()))), COLOR_HEADER, COLOR_VALUE);
     g_Log.messageHeaderDot("tokens", Fmt("%u", numTokens.load()), COLOR_HEADER, COLOR_VALUE);
     g_Log.messageHeaderDot("ast nodes", Fmt("%u", numNodes.load()), COLOR_HEADER, COLOR_VALUE);
+    g_Log.messageHeaderDot("ast released nodes", Fmt("%u", releaseNodes.load()), COLOR_HEADER, COLOR_VALUE);
     if (g_CommandLine.output)
         g_Log.messageHeaderDot("output modules", Fmt("%u", numGenModules.load()), COLOR_HEADER, COLOR_VALUE);
     if (g_CommandLine.test)

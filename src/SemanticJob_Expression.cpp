@@ -234,11 +234,13 @@ bool SemanticJob::resolveConditionalOp(SemanticContext* context)
         {
             node->inheritComputedValue(ifTrue);
             node->childs.push_back(ifTrue);
+            ifFalse->release();
         }
         else
         {
             node->inheritComputedValue(ifFalse);
             node->childs.push_back(ifFalse);
+            ifTrue->release();
         }
 
         node->byteCodeFct = ByteCodeGenJob::emitPassThrough;

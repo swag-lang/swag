@@ -171,6 +171,10 @@ void AstNode::releaseChilds()
 
 void AstNode::release()
 {
+#ifdef SWAG_STATS
+    g_Stats.releaseNodes++;
+#endif
+
     if (flags & AST_NEED_SCOPE)
         ownerScope->release();
 
@@ -198,16 +202,6 @@ void AstNode::release()
             Allocator::free<AstNode::ExtensionMisc>(extension->misc);
 
         Allocator::free<AstNode::Extension>(extension);
-    }
-
-    // Nodes with problem (childs referenced somewhere else, so double free)
-    switch (kind)
-    {
-    case AstNodeKind::CompilerRunExpression:
-    case AstNodeKind::CompilerRun:
-    case AstNodeKind::CompilerValidIf:
-    case AstNodeKind::CompilerValidIfx:
-        return;
     }
 
     // Prerelease, if we need to childs to be alive
