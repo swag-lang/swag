@@ -8,6 +8,10 @@
 
 void SemanticJob::release()
 {
+    clearTryMatch();
+    clearGenericMatch();
+    clearMatch();
+
     for (auto p : cacheFreeTryMatch)
         Allocator::free<OneTryMatch>(p);
     for (auto p : cacheFreeGenericMatches)
