@@ -1428,6 +1428,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
         SWAG_CHECK(doInitializationExpression(saveToken, parent, &assign));
         Ast::removeFromParent(assign);
         SWAG_CHECK(doVarDeclExpression(parent, leftNode, nullptr, assign, saveToken, AstNodeKind::VarDecl, result));
+        leftNode->release();
     }
 
     // Affect operator

@@ -316,6 +316,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
             return error(leftNode->token, Err(Syn0131));
 
         SWAG_CHECK(doVarDeclExpression(parent, leftNode, type, assign, assignToken, kind, result));
+        leftNode->release();
 
         // If we have a type, and that type has parameters (struct construction), then we need to evaluate and push the parameters
         if (type && type->kind == AstNodeKind::TypeExpression)

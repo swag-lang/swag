@@ -19,6 +19,8 @@ void SemanticJob::release()
     for (auto p : cacheFreeMatches)
         Allocator::free<OneMatch>(p);
     tmpConcat.release();
+    if (tmpIdRef)
+        tmpIdRef->release();
 
     Allocator::free<SemanticJob>(this);
 }
