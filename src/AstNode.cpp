@@ -219,19 +219,17 @@ void AstNode::swap2Childs()
 
 bool AstNode::hasSpecialFuncCall()
 {
-    return extension &&
-           extension->misc &&
-           extension->misc->resolvedUserOpSymbolOverload &&
-           extension->misc->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function;
+    return extMisc() &&
+           extMisc()->resolvedUserOpSymbolOverload &&
+           extMisc()->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function;
 }
 
 bool AstNode::hasSpecialFuncCall(const Utf8& name)
 {
-    return extension &&
-           extension->misc &&
-           extension->misc->resolvedUserOpSymbolOverload &&
-           extension->misc->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function &&
-           extension->misc->resolvedUserOpSymbolOverload->symbol->name == name;
+    return extMisc() &&
+           extMisc()->resolvedUserOpSymbolOverload &&
+           extMisc()->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function &&
+           extMisc()->resolvedUserOpSymbolOverload->symbol->name == name;
 }
 
 AstNode* AstNode::inSimpleReturn()
@@ -315,7 +313,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
         break;
 
     default:
-        if (extension->misc)
+        if (extMisc())
             return;
         extension->misc = Allocator::alloc<ExtensionMisc>();
 #ifdef SWAG_STATS
@@ -456,8 +454,8 @@ void AstNode::addAlternativeScope(Scope* scope, uint32_t altFlags)
     sv.flags = altFlags;
 
     allocateExtension(ExtensionKind::Misc);
-    ScopedLock(extension->misc->mutexAltScopes);
-    extension->misc->alternativeScopes.push_back(sv);
+    ScopedLock(extMisc()->mutexAltScopes);
+    extMisc()->alternativeScopes.push_back(sv);
 }
 
 void AstNode::addAlternativeScopeVar(Scope* scope, AstNode* varNode, uint32_t altFlags)
@@ -469,15 +467,15 @@ void AstNode::addAlternativeScopeVar(Scope* scope, AstNode* varNode, uint32_t al
     sv.flags    = altFlags;
 
     allocateExtension(ExtensionKind::Misc);
-    ScopedLock(extension->misc->mutexAltScopes);
-    extension->misc->alternativeScopesVars.push_back(sv);
+    ScopedLock(extMisc()->mutexAltScopes);
+    extMisc()->alternativeScopesVars.push_back(sv);
 }
 
 void AstNode::addAlternativeScopes(const VectorNative<AlternativeScope>& scopes)
 {
     allocateExtension(ExtensionKind::Misc);
-    ScopedLock(extension->misc->mutexAltScopes);
-    extension->misc->alternativeScopes.append(scopes);
+    ScopedLock(extMisc()->mutexAltScopes);
+    extMisc()->alternativeScopes.append(scopes);
 }
 
 void AstNode::computeLocation(SourceLocation& start, SourceLocation& end)

@@ -37,9 +37,9 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
         // In other words, CopyRBAddrToRA2 is satanic, but don't know how to do that in another way for now.
         if (exprNode->ownerFct)
         {
-            emitInstruction(context, ByteCodeOp::SetAtStackPointer64, exprNode->extension->misc->stackOffset, exprNode->resultRegisterRC[0]);
-            emitInstruction(context, ByteCodeOp::SetAtStackPointer64, exprNode->extension->misc->stackOffset + 8, exprNode->resultRegisterRC[1]);
-            emitInstruction(context, ByteCodeOp::MakeStackPointer, r0[0], exprNode->extension->misc->stackOffset);
+            emitInstruction(context, ByteCodeOp::SetAtStackPointer64, exprNode->extMisc()->stackOffset, exprNode->resultRegisterRC[0]);
+            emitInstruction(context, ByteCodeOp::SetAtStackPointer64, exprNode->extMisc()->stackOffset + 8, exprNode->resultRegisterRC[1]);
+            emitInstruction(context, ByteCodeOp::MakeStackPointer, r0[0], exprNode->extMisc()->stackOffset);
         }
         else
         {
@@ -58,14 +58,14 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
     {
         exprNode->ownerScope->owner->allocateExtension(ExtensionKind::Misc);
         for (int r = 0; r < exprNode->resultRegisterRC.size(); r++)
-            exprNode->ownerScope->owner->extension->misc->registersToRelease.push_back(exprNode->resultRegisterRC[r]);
+            exprNode->ownerScope->owner->extMisc()->registersToRelease.push_back(exprNode->resultRegisterRC[r]);
     }
 
     // This is the type part.
     // :AnyTypeSegment
-    SWAG_ASSERT(exprNode->extension);
-    SWAG_ASSERT(exprNode->extension->misc->anyTypeSegment);
-    emitMakeSegPointer(context, exprNode->extension->misc->anyTypeSegment, exprNode->extension->misc->anyTypeOffset, r0[1]);
+    SWAG_ASSERT(exprNode->extMisc());
+    SWAG_ASSERT(exprNode->extMisc()->anyTypeSegment);
+    emitMakeSegPointer(context, exprNode->extMisc()->anyTypeSegment, exprNode->extMisc()->anyTypeOffset, r0[1]);
 
     exprNode->resultRegisterRC      = r0;
     context->node->resultRegisterRC = r0;
@@ -100,21 +100,21 @@ bool ByteCodeGenJob::emitCastToInterface(ByteCodeGenContext* context, AstNode* e
     }
 
     SWAG_ASSERT(fromTypeStruct->cptRemainingInterfaces == 0);
-    SWAG_ASSERT(exprNode->extension);
-    SWAG_ASSERT(exprNode->extension->misc->castItf);
+    SWAG_ASSERT(exprNode->extMisc());
+    SWAG_ASSERT(exprNode->extMisc()->castItf);
 
     transformResultToLinear2(context, exprNode);
 
     // Need to make the pointer on the data
-    if (exprNode->extension && exprNode->extension->misc && exprNode->extension->misc->castOffset)
+    if (exprNode->extMisc() && exprNode->extMisc()->castOffset)
     {
         auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, exprNode->resultRegisterRC, 0, exprNode->resultRegisterRC);
-        inst->b.u64 = exprNode->extension->misc->castOffset;
+        inst->b.u64 = exprNode->extMisc()->castOffset;
         inst->flags |= BCI_IMM_B;
     }
 
     // :ItfIsConstantSeg
-    emitMakeSegPointer(context, &node->sourceFile->module->constantSegment, exprNode->extension->misc->castItf->offset, exprNode->resultRegisterRC[1]);
+    emitMakeSegPointer(context, &node->sourceFile->module->constantSegment, exprNode->extMisc()->castItf->offset, exprNode->resultRegisterRC[1]);
     node->resultRegisterRC = exprNode->resultRegisterRC;
 
     return true;
@@ -720,7 +720,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
     // opCast
     if (exprNode->semFlags & AST_SEM_USER_CAST)
     {
-        SWAG_ASSERT(exprNode->extension && exprNode->extension->misc->resolvedUserOpSymbolOverload);
+        SWAG_ASSERT(exprNode->extMisc() && exprNode->extMisc()->resolvedUserOpSymbolOverload);
 
         if (!(exprNode->doneFlags & AST_DONE_FLAT_PARAMS))
         {
@@ -730,7 +730,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
             job->allParamsTmp->childs.clear();
             job->allParamsTmp->childs.push_back(exprNode);
             job->allParamsTmp->allocateExtension(ExtensionKind::Misc);
-            job->allParamsTmp->extension->misc->resolvedUserOpSymbolOverload = exprNode->extension->misc->resolvedUserOpSymbolOverload;
+            job->allParamsTmp->extMisc()->resolvedUserOpSymbolOverload = exprNode->extMisc()->resolvedUserOpSymbolOverload;
             job->allParamsTmp->inheritOwners(exprNode);
             job->allParamsTmp->inheritTokenLocation(exprNode);
             job->allParamsTmp->doneFlags = 0;
@@ -768,7 +768,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
 
         // Check that the type is correct
         auto anyNode = exprNode;
-        if (!anyNode->extension || !anyNode->extension->misc->anyTypeSegment)
+        if (!anyNode->extMisc() || !anyNode->extMisc()->anyTypeSegment)
         {
             SWAG_ASSERT(anyNode->childs.size());
             anyNode = anyNode->childs.front();
@@ -809,10 +809,10 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         node->resultRegisterRC   = exprNode->resultRegisterRC;
         exprNode->castedTypeInfo = nullptr;
 
-        if (exprNode->extension && exprNode->extension->misc && exprNode->extension->misc->castOffset)
+        if (exprNode->extMisc() && exprNode->extMisc()->castOffset)
         {
             auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
-            inst->b.u64 = exprNode->extension->misc->castOffset;
+            inst->b.u64 = exprNode->extMisc()->castOffset;
             inst->flags |= BCI_IMM_B;
         }
 
@@ -861,10 +861,10 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
             node->resultRegisterRC   = exprNode->resultRegisterRC;
             exprNode->castedTypeInfo = nullptr;
 
-            if (exprNode->extension && exprNode->extension->misc && exprNode->extension->misc->castOffset)
+            if (exprNode->extMisc() && exprNode->extMisc()->castOffset)
             {
                 auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
-                inst->b.u64 = exprNode->extension->misc->castOffset;
+                inst->b.u64 = exprNode->extMisc()->castOffset;
                 inst->flags |= BCI_IMM_B;
             }
 

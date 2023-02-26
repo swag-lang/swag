@@ -183,7 +183,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
         fromNode->castedTypeInfo = fromType;
         fromNode->typeInfo       = toType;
         fromNode->allocateExtension(ExtensionKind::Misc);
-        fromNode->extension->misc->resolvedUserOpSymbolOverload = toAffect[0];
+        fromNode->extMisc()->resolvedUserOpSymbolOverload = toAffect[0];
     }
 
     context->castFlagsResult |= CASTFLAG_RESULT_AUTO_OPAFFECT;
@@ -224,7 +224,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
                 fromNode->castedTypeInfo = fromType;
                 fromNode->typeInfo       = toType;
                 fromNode->allocateExtension(ExtensionKind::Misc);
-                fromNode->extension->misc->resolvedUserOpSymbolOverload = it->second;
+                fromNode->extMisc()->resolvedUserOpSymbolOverload = it->second;
                 fromNode->semFlags |= AST_SEM_USER_CAST;
             }
 
@@ -285,7 +285,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
         fromNode->castedTypeInfo = fromType;
         fromNode->typeInfo       = toType;
         fromNode->allocateExtension(ExtensionKind::Misc);
-        fromNode->extension->misc->resolvedUserOpSymbolOverload = toCast[0];
+        fromNode->extMisc()->resolvedUserOpSymbolOverload = toCast[0];
         fromNode->semFlags |= AST_SEM_USER_CAST;
     }
 
@@ -1864,26 +1864,26 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
                 auto       failedParam = child->childs[badParamIdx];
                 Diagnostic diag{failedParam, Fmt(Err(Err0006), Naming::niceArgumentRank(badParamIdx + 1).c_str()), Hnt(Hnt0031)};
                 auto       otherParam = child->childs[badParamIdx - 1];
-                if (otherParam->extension && otherParam->extension->misc && otherParam->extension->misc->isNamed)
-                    otherParam = otherParam->extension->misc->isNamed;
+                if (otherParam->extension && otherParam->extMisc() && otherParam->extMisc()->isNamed)
+                    otherParam = otherParam->extMisc()->isNamed;
                 diag.addRange(otherParam, Hnt(Hnt0030));
                 return context->report(diag);
             }
             case MatchResult::DuplicatedNamedParameter:
             {
                 auto       failedParam = child->childs[symContext.badSignatureInfos.badSignatureParameterIdx];
-                Diagnostic diag{failedParam->extension->misc->isNamed, Fmt(Err(Err0011), failedParam->extension->misc->isNamed->token.ctext())};
+                Diagnostic diag{failedParam->extMisc()->isNamed, Fmt(Err(Err0011), failedParam->extMisc()->isNamed->token.ctext())};
                 diag.hint       = Hnt(Hnt0009);
                 auto otherParam = child->childs[symContext.badSignatureInfos.badSignatureNum1];
-                if (otherParam->extension && otherParam->extension->misc && otherParam->extension->misc->isNamed)
-                    otherParam = otherParam->extension->misc->isNamed;
+                if (otherParam->extension && otherParam->extMisc() && otherParam->extMisc()->isNamed)
+                    otherParam = otherParam->extMisc()->isNamed;
                 diag.addRange(otherParam, Hnt(Hnt0059));
                 return context->report(diag);
             }
             case MatchResult::InvalidNamedParameter:
             {
                 auto       failedParam = child->childs[symContext.badSignatureInfos.badSignatureParameterIdx];
-                Diagnostic diag{failedParam->extension->misc->isNamed, Fmt(Err(Err0008), failedParam->extension->misc->isNamed->token.ctext())};
+                Diagnostic diag{failedParam->extMisc()->isNamed, Fmt(Err(Err0008), failedParam->extMisc()->isNamed->token.ctext())};
                 if (toTypeStruct->declNode && !(toTypeStruct->declNode->flags & AST_GENERATED) && toTypeStruct->declNode->resolvedSymbolOverload)
                     return context->report(diag, Diagnostic::hereIs(toTypeStruct->declNode->resolvedSymbolOverload));
                 return context->report(diag);
@@ -1906,16 +1906,16 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
                 if (childJ->typeInfo->isListArray() && fieldJ->typeInfo->isSlice())
                 {
                     childJ->allocateExtension(ExtensionKind::Misc);
-                    childJ->extension->misc->collectTypeInfo = fieldJ->typeInfo;
+                    childJ->extMisc()->collectTypeInfo = fieldJ->typeInfo;
                 }
 
                 // We use castOffset to store the offset to the field, in order to collect later at the right position
                 // Note that offset is +1 to differentiate it from a "default" 0.
                 childJ->allocateExtension(ExtensionKind::Misc);
                 auto newOffset = (uint32_t) fieldJ->offset + 1;
-                if (childJ->extension->misc->castOffset != newOffset)
+                if (childJ->extMisc()->castOffset != newOffset)
                 {
-                    childJ->extension->misc->castOffset = newOffset;
+                    childJ->extMisc()->castOffset = newOffset;
                     hasChanged                          = true;
                 }
             }
@@ -2050,7 +2050,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
                 if (toNode->ownerFct && toType->numRegisters() > 1)
                 {
                     toNode->allocateExtension(ExtensionKind::Misc);
-                    toNode->extension->misc->stackOffset = toNode->ownerScope->startStackSize;
+                    toNode->extMisc()->stackOffset = toNode->ownerScope->startStackSize;
                     toNode->ownerScope->startStackSize += toType->numRegisters() * sizeof(Register);
                     SemanticJob::setOwnerMaxStackSize(toNode, toNode->ownerScope->startStackSize);
                 }
@@ -2062,8 +2062,8 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 
                 // :AnyTypeSegment
                 toNode->allocateExtension(ExtensionKind::Misc);
-                toNode->extension->misc->anyTypeSegment = SemanticJob::getConstantSegFromContext(toNode);
-                SWAG_CHECK(typeGen.genExportedTypeInfo(context, fromType, toNode->extension->misc->anyTypeSegment, &toNode->extension->misc->anyTypeOffset));
+                toNode->extMisc()->anyTypeSegment = SemanticJob::getConstantSegFromContext(toNode);
+                SWAG_CHECK(typeGen.genExportedTypeInfo(context, fromType, toNode->extMisc()->anyTypeSegment, &toNode->extMisc()->anyTypeOffset));
             }
 
             return true;
@@ -2077,7 +2077,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             if (fromNode->ownerFct && fromType->numRegisters() > 1)
             {
                 fromNode->allocateExtension(ExtensionKind::Misc);
-                fromNode->extension->misc->stackOffset = fromNode->ownerScope->startStackSize;
+                fromNode->extMisc()->stackOffset = fromNode->ownerScope->startStackSize;
                 fromNode->ownerScope->startStackSize += fromType->numRegisters() * sizeof(Register);
                 SemanticJob::setOwnerMaxStackSize(fromNode, fromNode->ownerScope->startStackSize);
             }
@@ -2089,8 +2089,8 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 
             // :AnyTypeSegment
             fromNode->allocateExtension(ExtensionKind::Misc);
-            fromNode->extension->misc->anyTypeSegment = SemanticJob::getConstantSegFromContext(fromNode);
-            SWAG_CHECK(typeGen.genExportedTypeInfo(context, fromNode->castedTypeInfo, fromNode->extension->misc->anyTypeSegment, &fromNode->extension->misc->anyTypeOffset));
+            fromNode->extMisc()->anyTypeSegment = SemanticJob::getConstantSegFromContext(fromNode);
+            SWAG_CHECK(typeGen.genExportedTypeInfo(context, fromNode->castedTypeInfo, fromNode->extMisc()->anyTypeSegment, &fromNode->extMisc()->anyTypeOffset));
         }
     }
     else if (fromType->isAny())
@@ -2118,7 +2118,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             if (fromNode->ownerFct && fromType->numRegisters() > 1)
             {
                 fromNode->allocateExtension(ExtensionKind::Misc);
-                fromNode->extension->misc->stackOffset = fromNode->ownerScope->startStackSize;
+                fromNode->extMisc()->stackOffset = fromNode->ownerScope->startStackSize;
                 fromNode->ownerScope->startStackSize += fromType->numRegisters() * sizeof(Register);
                 SemanticJob::setOwnerMaxStackSize(fromNode, fromNode->ownerScope->startStackSize);
             }
@@ -2130,8 +2130,8 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 
             // :AnyTypeSegment
             fromNode->allocateExtension(ExtensionKind::Misc);
-            fromNode->extension->misc->anyTypeSegment = SemanticJob::getConstantSegFromContext(fromNode);
-            SWAG_CHECK(typeGen.genExportedTypeInfo(context, toType, fromNode->extension->misc->anyTypeSegment, &fromNode->extension->misc->anyTypeOffset));
+            fromNode->extMisc()->anyTypeSegment = SemanticJob::getConstantSegFromContext(fromNode);
+            SWAG_CHECK(typeGen.genExportedTypeInfo(context, toType, fromNode->extMisc()->anyTypeSegment, &fromNode->extMisc()->anyTypeOffset));
         }
     }
 
@@ -2161,7 +2161,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
                     if (it.offset)
                     {
                         fromNode->allocateExtension(ExtensionKind::Misc);
-                        fromNode->extension->misc->castOffset = it.offset;
+                        fromNode->extMisc()->castOffset = it.offset;
                         fromNode->castedTypeInfo              = fromNode->typeInfo;
                         fromNode->typeInfo                    = toType;
                     }
@@ -2175,7 +2175,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
                 fromNode->semFlags |= AST_SEM_USING;
 
                 fromNode->allocateExtension(ExtensionKind::Misc);
-                fromNode->extension->misc->castOffset = it.offset;
+                fromNode->extMisc()->castOffset = it.offset;
                 fromNode->castedTypeInfo              = fromNode->typeInfo;
                 fromNode->typeInfo                    = toType;
                 continue;
@@ -2331,7 +2331,7 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
             if (fromNode->ownerFct)
             {
                 fromNode->allocateExtension(ExtensionKind::Misc);
-                fromNode->extension->misc->stackOffset = fromNode->ownerScope->startStackSize;
+                fromNode->extMisc()->stackOffset = fromNode->ownerScope->startStackSize;
                 fromNode->ownerScope->startStackSize += 2 * sizeof(Register);
                 SemanticJob::setOwnerMaxStackSize(fromNode, fromNode->ownerScope->startStackSize);
             }
@@ -2376,8 +2376,8 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
             if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
             {
                 fromNode->allocateExtension(ExtensionKind::Misc);
-                fromNode->extension->misc->castOffset = itfRef.fieldOffset;
-                fromNode->extension->misc->castItf    = itfRef.itf;
+                fromNode->extMisc()->castOffset = itfRef.fieldOffset;
+                fromNode->extMisc()->castItf    = itfRef.itf;
                 fromNode->castedTypeInfo              = fromType;
                 fromNode->typeInfo                    = toTypeItf;
             }

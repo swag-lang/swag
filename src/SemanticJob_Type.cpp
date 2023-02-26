@@ -157,8 +157,8 @@ bool SemanticJob::resolveTypeLambdaClosure(SemanticContext* context)
             typeParam->typeInfo = param->typeInfo;
             typeParam->declNode = param;
 
-            if (param->extension && param->extension->misc && param->extension->misc->isNamed)
-                typeParam->name = param->extension->misc->isNamed->token.text;
+            if (param->extMisc() && param->extMisc()->isNamed)
+                typeParam->name = param->extMisc()->isNamed->token.text;
 
             if (typeParam->typeInfo->isGeneric())
                 typeInfo->flags |= TYPEINFO_GENERIC;
@@ -769,10 +769,10 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
 
     // In case case has triggered a special function call, need to get it
     // (usage of opAffect)
-    if (exprNode->extension && exprNode->extension->misc && exprNode->extension->misc->resolvedUserOpSymbolOverload)
+    if (exprNode->extMisc() && exprNode->extMisc()->resolvedUserOpSymbolOverload)
     {
         node->allocateExtension(ExtensionKind::Misc);
-        node->extension->misc->resolvedUserOpSymbolOverload = exprNode->extension->misc->resolvedUserOpSymbolOverload;
+        node->extMisc()->resolvedUserOpSymbolOverload = exprNode->extMisc()->resolvedUserOpSymbolOverload;
     }
 
     // Revert the implicit cast informations

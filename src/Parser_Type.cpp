@@ -142,7 +142,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
             param->specFlags |= AST_SPEC_DECLPARAM_GENERATED_SELF;
 
         param->allocateExtension(ExtensionKind::Misc);
-        param->extension->misc->exportNode = firstAddedType;
+        param->extMisc()->exportNode = firstAddedType;
 
         param->flags |= AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
 
@@ -290,7 +290,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
             if (namedParam)
             {
                 typeExpr->allocateExtension(ExtensionKind::Misc);
-                typeExpr->extension->misc->isNamed = namedParam;
+                typeExpr->extMisc()->isNamed = namedParam;
             }
 
             SWAG_VERIFY(token.id != TokenId::SymEqual || inTypeVarDecl, error(token, Err(Syn0194)));
@@ -302,7 +302,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
                 auto param   = Ast::newVarDecl(sourceFile, nameVar, params, this, AstNodeKind::FuncDeclParam);
 
                 param->allocateExtension(ExtensionKind::Misc);
-                param->extension->misc->exportNode = typeExpr;
+                param->extMisc()->exportNode = typeExpr;
                 param->flags |= AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
 
                 Ast::removeFromParent(typeExpr);
@@ -316,7 +316,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
                 if (namedParam)
                 {
                     param->allocateExtension(ExtensionKind::Misc);
-                    param->extension->misc->isNamed = namedParam;
+                    param->extMisc()->isNamed = namedParam;
                 }
 
                 if (token.id == TokenId::SymEqual)
@@ -420,7 +420,7 @@ bool Parser::doTupleOrAnonymousType(AstNode* parent, AstNode** result, bool isCo
     structNode->content->addAlternativeScope(currentScope);
     SWAG_ASSERT(parent);
     structNode->allocateExtension(ExtensionKind::Misc);
-    structNode->extension->misc->alternativeNode = parent;
+    structNode->extMisc()->alternativeNode = parent;
 
     auto newScope     = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, rootScope, true);
     structNode->scope = newScope;
@@ -782,7 +782,7 @@ bool Parser::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeVarD
         SWAG_CHECK(doLambdaClosureType(alias));
 
         node->identifier->allocateExtension(ExtensionKind::Misc);
-        node->identifier->extension->misc->exportNode = alias->childs.front();
+        node->identifier->extMisc()->exportNode = alias->childs.front();
         return true;
     }
 

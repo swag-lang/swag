@@ -64,11 +64,10 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
 
         // Generate initialization
         // Do not generate if we have a user define affectation, and the operator is marked as 'complete'
-        if (!node->extension ||
-            !node->extension->misc ||
-            !node->extension->misc->resolvedUserOpSymbolOverload ||
-            node->extension->misc->resolvedUserOpSymbolOverload->symbol->kind != SymbolKind::Function ||
-            !(node->extension->misc->resolvedUserOpSymbolOverload->node->attributeFlags & ATTRIBUTE_COMPLETE))
+        if (!node->extMisc() ||
+            !node->extMisc()->resolvedUserOpSymbolOverload ||
+            node->extMisc()->resolvedUserOpSymbolOverload->symbol->kind != SymbolKind::Function ||
+            !(node->extMisc()->resolvedUserOpSymbolOverload->node->attributeFlags & ATTRIBUTE_COMPLETE))
         {
             if (!(node->doneFlags & AST_DONE_VARDECL_STRUCT_PARAMETERS))
             {
@@ -122,8 +121,8 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
             if (!(node->doneFlags & AST_DONE_PRE_CAST))
             {
                 node->allocateExtension(ExtensionKind::Misc);
-                node->extension->misc->additionalRegisterRC = reserveRegisterRC(context);
-                emitRetValRef(context, resolved, node->extension->misc->additionalRegisterRC, retVal, resolved->computedValue.storageOffset);
+                node->extMisc()->additionalRegisterRC = reserveRegisterRC(context);
+                emitRetValRef(context, resolved, node->extMisc()->additionalRegisterRC, retVal, resolved->computedValue.storageOffset);
                 node->resultRegisterRC = node->assignment->resultRegisterRC;
                 node->doneFlags |= AST_DONE_PRE_CAST;
             }
@@ -135,7 +134,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
             if (!mustDropLeft)
                 node->assignment->flags |= AST_NO_LEFT_DROP;
             node->allocateExtension(ExtensionKind::Misc);
-            emitAffectEqual(context, node->extension->misc->additionalRegisterRC, node->resultRegisterRC, node->typeInfo, node->assignment);
+            emitAffectEqual(context, node->extMisc()->additionalRegisterRC, node->resultRegisterRC, node->typeInfo, node->assignment);
             if (context->result != ContextResult::Done)
                 return true;
             freeRegisterRC(context, node);

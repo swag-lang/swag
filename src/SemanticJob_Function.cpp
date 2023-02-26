@@ -1061,10 +1061,10 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     node->resolvedSymbolName     = child->resolvedSymbolName;
     node->resolvedSymbolOverload = child->resolvedSymbolOverload;
 
-    if (child->extension && child->extension->misc && child->extension->misc->resolvedUserOpSymbolOverload)
+    if (child->extMisc() && child->extMisc()->resolvedUserOpSymbolOverload)
     {
         node->allocateExtension(ExtensionKind::Misc);
-        node->extension->misc->resolvedUserOpSymbolOverload = child->extension->misc->resolvedUserOpSymbolOverload;
+        node->extMisc()->resolvedUserOpSymbolOverload = child->extMisc()->resolvedUserOpSymbolOverload;
     }
 
     // If the call has been generated because of a 'return tuple', then we force a move
@@ -1444,7 +1444,7 @@ uint32_t SemanticJob::getMaxStackSize(AstNode* node)
         SWAG_ASSERT(p);
         ScopedLock mk(p->mutex);
         p->allocateExtensionNoLock(ExtensionKind::Misc);
-        decSP = max(decSP, p->extension->misc->stackSize);
+        decSP = max(decSP, p->extMisc()->stackSize);
         return decSP;
     }
 
@@ -1466,7 +1466,7 @@ void SemanticJob::setOwnerMaxStackSize(AstNode* node, uint32_t size)
         SWAG_ASSERT(p);
         ScopedLock mk(p->mutex);
         p->allocateExtensionNoLock(ExtensionKind::Misc);
-        p->extension->misc->stackSize = max(p->extension->misc->stackSize, size);
+        p->extMisc()->stackSize = max(p->extMisc()->stackSize, size);
     }
     else if (node->ownerFct)
     {
@@ -1500,15 +1500,15 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
         inlineNode->extension->owner->ownerTryCatchAssume = identifier->extension->owner->ownerTryCatchAssume;
     }
 
-    if (funcDecl->extension && funcDecl->extension->misc)
+    if (funcDecl->extMisc())
     {
-        SharedLock lk1(funcDecl->extension->misc->mutexAltScopes);
-        if (funcDecl->extension->misc->alternativeScopes.size() || funcDecl->extension->misc->alternativeScopesVars.size())
+        SharedLock lk1(funcDecl->extMisc()->mutexAltScopes);
+        if (funcDecl->extMisc()->alternativeScopes.size() || funcDecl->extMisc()->alternativeScopesVars.size())
         {
             inlineNode->allocateExtension(ExtensionKind::Misc);
-            ScopedLock lk(inlineNode->extension->misc->mutexAltScopes);
-            inlineNode->extension->misc->alternativeScopes     = funcDecl->extension->misc->alternativeScopes;
-            inlineNode->extension->misc->alternativeScopesVars = funcDecl->extension->misc->alternativeScopesVars;
+            ScopedLock lk(inlineNode->extMisc()->mutexAltScopes);
+            inlineNode->extMisc()->alternativeScopes     = funcDecl->extMisc()->alternativeScopes;
+            inlineNode->extMisc()->alternativeScopesVars = funcDecl->extMisc()->alternativeScopesVars;
         }
     }
 
@@ -1558,8 +1558,8 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     AstNode* parentNode = funcDecl;
     while (parentNode)
     {
-        if (parentNode->extension && parentNode->extension->misc && !parentNode->extension->misc->alternativeScopes.empty())
-            inlineNode->addAlternativeScopes(parentNode->extension->misc->alternativeScopes);
+        if (parentNode->extMisc() && !parentNode->extMisc()->alternativeScopes.empty())
+            inlineNode->addAlternativeScopes(parentNode->extMisc()->alternativeScopes);
         parentNode = parentNode->parent;
     }
 

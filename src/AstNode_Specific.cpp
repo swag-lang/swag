@@ -81,19 +81,19 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     byteCodeFct = from->byteCodeFct;
     if (from->extension)
     {
-        if (from->extension->misc)
+        if (from->extMisc())
         {
             allocateExtension(ExtensionKind::Misc);
-            extension->misc->resolvedUserOpSymbolOverload = from->extension->misc->resolvedUserOpSymbolOverload;
-            extension->misc->collectTypeInfo              = from->extension->misc->collectTypeInfo;
-            extension->misc->exportNode                   = from->extension->misc->exportNode;
-            extension->misc->castOffset                   = from->extension->misc->castOffset;
-            extension->misc->castItf                      = from->extension->misc->castItf;
-            extension->misc->stackOffset                  = from->extension->misc->stackOffset;
-            extension->misc->anyTypeSegment               = from->extension->misc->anyTypeSegment;
-            extension->misc->anyTypeOffset                = from->extension->misc->anyTypeOffset;
-            extension->misc->alternativeScopes            = from->extension->misc->alternativeScopes;
-            extension->misc->isNamed                      = from->extension->misc->isNamed;
+            extMisc()->resolvedUserOpSymbolOverload = from->extMisc()->resolvedUserOpSymbolOverload;
+            extMisc()->collectTypeInfo              = from->extMisc()->collectTypeInfo;
+            extMisc()->exportNode                   = from->extMisc()->exportNode;
+            extMisc()->castOffset                   = from->extMisc()->castOffset;
+            extMisc()->castItf                      = from->extMisc()->castItf;
+            extMisc()->stackOffset                  = from->extMisc()->stackOffset;
+            extMisc()->anyTypeSegment               = from->extMisc()->anyTypeSegment;
+            extMisc()->anyTypeOffset                = from->extMisc()->anyTypeOffset;
+            extMisc()->alternativeScopes            = from->extMisc()->alternativeScopes;
+            extMisc()->isNamed                      = from->extMisc()->isNamed;
         }
 
         if (from->extension->semantic)
@@ -199,9 +199,9 @@ void AstNode::release()
             Allocator::free<AstNode::ExtensionOwner>(extension->owner);
         }
 
-        if (extension->misc)
+        if (extMisc())
         {
-            Allocator::free<AstNode::ExtensionMisc>(extension->misc);
+            Allocator::free<AstNode::ExtensionMisc>(extMisc());
         }
 
         Allocator::free<AstNode::Extension>(extension);

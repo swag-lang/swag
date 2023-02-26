@@ -170,8 +170,8 @@ void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, AstNode* node)
     if (!node)
         return;
     freeRegisterRC(context, node->resultRegisterRC);
-    if (node->extension && node->extension->misc)
-        freeRegisterRC(context, node->extension->misc->additionalRegisterRC);
+    if (node->extMisc())
+        freeRegisterRC(context, node->extMisc()->additionalRegisterRC);
 }
 
 void ByteCodeGenJob::ensureCanBeChangedRC(ByteCodeGenContext* context, RegisterList& r0)
@@ -202,8 +202,8 @@ bool ByteCodeGenJob::emitPassThrough(ByteCodeGenContext* context)
         node->resultRegisterRC = child->resultRegisterRC;
     }
 
-    if (child->extension && child->extension->misc)
-        freeRegisterRC(context, child->extension->misc->additionalRegisterRC);
+    if (child->extMisc())
+        freeRegisterRC(context, child->extMisc()->additionalRegisterRC);
 
     return true;
 }

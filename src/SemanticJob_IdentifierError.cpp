@@ -156,8 +156,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
     case MatchResult::InvalidNamedParameter:
     {
-        SWAG_ASSERT(failedParam && failedParam->extension && failedParam->extension->misc && failedParam->extension->misc->isNamed);
-        diag = new Diagnostic{failedParam->extension->misc->isNamed, Fmt(Err(Err0008), failedParam->extension->misc->isNamed->token.ctext())};
+        SWAG_ASSERT(failedParam && failedParam->extMisc() && failedParam->extMisc()->isNamed);
+        diag = new Diagnostic{failedParam->extMisc()->isNamed, Fmt(Err(Err0008), failedParam->extMisc()->isNamed->token.ctext())};
         result0.push_back(diag);
         if (!(overload->node->flags & AST_GENERATED))
         {
@@ -170,8 +170,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
     case MatchResult::DuplicatedNamedParameter:
     {
-        SWAG_ASSERT(failedParam && failedParam->extension && failedParam->extension->misc && failedParam->extension->misc->isNamed);
-        diag       = new Diagnostic{failedParam->extension->misc->isNamed, Fmt(Err(Err0011), failedParam->extension->misc->isNamed->token.ctext())};
+        SWAG_ASSERT(failedParam && failedParam->extMisc() && failedParam->extMisc()->isNamed);
+        diag       = new Diagnostic{failedParam->extMisc()->isNamed, Fmt(Err(Err0011), failedParam->extMisc()->isNamed->token.ctext())};
         diag->hint = Hnt(Hnt0009);
         int other  = oneTry.symMatchContext.badSignatureInfos.badSignatureNum1;
         SWAG_ASSERT(other < callParameters->childs.size());
@@ -590,10 +590,10 @@ void SemanticJob::symbolErrorNotes(SemanticContext* context, VectorNative<OneTry
             auto prev = identifier->identifierRef()->childs[identifier->childParentIdx - 1];
             if (prev->resolvedSymbolName)
             {
-                if (prev->extension && prev->extension->misc->resolvedUserOpSymbolOverload)
+                if (prev->extMisc() && prev->extMisc()->resolvedUserOpSymbolOverload)
                 {
-                    auto typeInfo = TypeManager::concreteType(prev->extension->misc->resolvedUserOpSymbolOverload->typeInfo);
-                    auto note     = Diagnostic::note(prev, Fmt(Nte(Nte0018), prev->extension->misc->resolvedUserOpSymbolOverload->symbol->name.c_str(), typeInfo->getDisplayNameC()));
+                    auto typeInfo = TypeManager::concreteType(prev->extMisc()->resolvedUserOpSymbolOverload->typeInfo);
+                    auto note     = Diagnostic::note(prev, Fmt(Nte(Nte0018), prev->extMisc()->resolvedUserOpSymbolOverload->symbol->name.c_str(), typeInfo->getDisplayNameC()));
                     note->hint    = Diagnostic::isType(typeInfo);
                     notes.push_back(note);
                     return;

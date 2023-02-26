@@ -143,7 +143,7 @@ bool SemanticJob::checkIsConstExpr(JobContext* context, bool test, AstNode* expr
     if (expression->hasSpecialFuncCall())
     {
         Diagnostic diag{expression, expression->token, Fmt(Err(Err0281), expression->typeInfo->getDisplayNameC())};
-        diag.hint = Fmt(Hnt(Hnt0047), expression->extension->misc->resolvedUserOpSymbolOverload->symbol->name.c_str());
+        diag.hint = Fmt(Hnt(Hnt0047), expression->extMisc()->resolvedUserOpSymbolOverload->symbol->name.c_str());
         return context->report(diag, computeNonConstExprNote(expression));
     }
 

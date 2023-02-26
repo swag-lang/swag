@@ -451,12 +451,12 @@ bool ByteCodeGenJob::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
     left->allocateExtension(ExtensionKind::Misc);
 
     // Can have already been allocated by another 'and' or 'or' above in case of multiple tests
-    if (left->extension->misc->additionalRegisterRC.size() == 0)
+    if (left->extMisc()->additionalRegisterRC.size() == 0)
     {
         // The result register will be stored in additionalRegisterRC of the left expresion and retreived
         // when evaluating the binary expression
         // :BinOpAndOr
-        left->extension->misc->additionalRegisterRC = left->resultRegisterRC;
+        left->extMisc()->additionalRegisterRC = left->resultRegisterRC;
         left->resultRegisterRC.cannotFree           = true;
 
         // We try to share the result register with other 'and'/'or' to give optimization opportunities when we
@@ -469,8 +469,8 @@ bool ByteCodeGenJob::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
             {
                 auto child0 = child1->childs[0];
                 child0->allocateExtension(ExtensionKind::Misc);
-                child0->extension->misc->additionalRegisterRC            = left->extension->misc->additionalRegisterRC;
-                child0->extension->misc->additionalRegisterRC.cannotFree = true;
+                child0->extMisc()->additionalRegisterRC            = left->extMisc()->additionalRegisterRC;
+                child0->extMisc()->additionalRegisterRC.cannotFree = true;
                 if (child1->childs.size() != 2)
                     break;
                 child1 = child1->childs[1];
@@ -478,11 +478,11 @@ bool ByteCodeGenJob::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
         }
     }
 
-    emitInstruction(context, ByteCodeOp::CopyRBtoRA64, left->extension->misc->additionalRegisterRC, left->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA64, left->extMisc()->additionalRegisterRC, left->resultRegisterRC);
 
     // Short cut. Will just after the right expression in the the left expression is false. A and B => do not evaluate B
     binNode->seekJumpExpression = context->bc->numInstructions;
-    emitInstruction(context, ByteCodeOp::JumpIfFalse, left->extension->misc->additionalRegisterRC);
+    emitInstruction(context, ByteCodeOp::JumpIfFalse, left->extMisc()->additionalRegisterRC);
     return true;
 }
 
@@ -515,9 +515,9 @@ bool ByteCodeGenJob::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
 
     // See the 'and' version for comments
     left->allocateExtension(ExtensionKind::Misc);
-    if (left->extension->misc->additionalRegisterRC.size() == 0)
+    if (left->extMisc()->additionalRegisterRC.size() == 0)
     {
-        left->extension->misc->additionalRegisterRC = left->resultRegisterRC;
+        left->extMisc()->additionalRegisterRC = left->resultRegisterRC;
         left->resultRegisterRC.cannotFree           = true;
 
         if (binNode->childs.size() == 2)
@@ -527,8 +527,8 @@ bool ByteCodeGenJob::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
             {
                 auto child0 = child1->childs[0];
                 child0->allocateExtension(ExtensionKind::Misc);
-                child0->extension->misc->additionalRegisterRC            = left->extension->misc->additionalRegisterRC;
-                child0->extension->misc->additionalRegisterRC.cannotFree = true;
+                child0->extMisc()->additionalRegisterRC            = left->extMisc()->additionalRegisterRC;
+                child0->extMisc()->additionalRegisterRC.cannotFree = true;
                 if (child1->childs.size() != 2)
                     break;
                 child1 = child1->childs[1];
@@ -536,7 +536,7 @@ bool ByteCodeGenJob::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
         }
     }
 
-    emitInstruction(context, ByteCodeOp::CopyRBtoRA64, left->extension->misc->additionalRegisterRC, left->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA64, left->extMisc()->additionalRegisterRC, left->resultRegisterRC);
 
     // Short cut. Will just after the right expression in the the left expression is true. A or B => do not evaluate B
     binNode->seekJumpExpression = context->bc->numInstructions;
@@ -597,9 +597,9 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
             {
                 // :BinOpAndOr
                 auto front             = node->childs[0];
-                r2                     = front->extension->misc->additionalRegisterRC;
-                node->resultRegisterRC = front->extension->misc->additionalRegisterRC;
-                front->extension->misc->additionalRegisterRC.clear();
+                r2                     = front->extMisc()->additionalRegisterRC;
+                node->resultRegisterRC = front->extMisc()->additionalRegisterRC;
+                front->extMisc()->additionalRegisterRC.clear();
             }
             else
             {
@@ -672,7 +672,7 @@ bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context, AstNode* allParams,
 {
     AstNode* node = forNode ? forNode : context->node;
     SWAG_ASSERT(node->extension);
-    auto symbolOverload = node->extension->misc->resolvedUserOpSymbolOverload;
+    auto symbolOverload = node->extMisc()->resolvedUserOpSymbolOverload;
     SWAG_ASSERT(symbolOverload);
     auto funcDecl = CastAst<AstFuncDecl>(symbolOverload->node, AstNodeKind::FuncDecl);
 

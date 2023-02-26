@@ -925,9 +925,8 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstTypeExpres
         // Identifier can have an export node, so in that case we need to export by node, not by type, in
         // order to export the real node (for example for an array of lambdas/closures)
         if (!node->identifier ||
-            !node->identifier->extension ||
-            !node->identifier->extension->misc ||
-            !node->identifier->extension->misc->exportNode)
+            !node->identifier->extMisc() ||
+            !node->identifier->extMisc()->exportNode)
         {
             SWAG_CHECK(outputType(context, concat, node, node->typeInfo));
 
@@ -1062,8 +1061,8 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 {
     if (!node)
         return true;
-    if (node->extension && node->extension->misc && node->extension->misc->exportNode)
-        node = node->extension->misc->exportNode;
+    if (node->extMisc() && node->extMisc()->exportNode)
+        node = node->extMisc()->exportNode;
     if (node->flags & AST_GENERATED && !(node->flags & AST_GENERATED_USER))
         return true;
 
@@ -1073,9 +1072,9 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         concat.addString("#type ");
     }
 
-    if (node->extension && node->extension->misc && node->extension->misc->isNamed)
+    if (node->extMisc() && node->extMisc()->isNamed)
     {
-        concat.addString(node->extension->misc->isNamed->token.text);
+        concat.addString(node->extMisc()->isNamed->token.text);
         concat.addChar(':');
     }
 
@@ -1164,8 +1163,8 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         bool first = true;
         for (auto c : node->childs)
         {
-            if (c->extension && c->extension->misc && c->extension->misc->exportNode)
-                c = c->extension->misc->exportNode;
+            if (c->extMisc() && c->extMisc()->exportNode)
+                c = c->extMisc()->exportNode;
             if ((c->flags & AST_GENERATED) && !(c->flags & AST_GENERATED_USER))
                 continue;
             if (!first)

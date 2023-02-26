@@ -48,11 +48,11 @@ bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegmen
         storageSegment->addInitPtr(storageOffset, storageOffsetValue, constSegment->kind);
 
         // :AnyTypeSegment
-        SWAG_ASSERT(assignment->extension);
-        SWAG_ASSERT(assignment->extension->misc->anyTypeSegment);
-        constSegment                        = assignment->extension->misc->anyTypeSegment;
-        *(void**) (ptrDest + sizeof(void*)) = constSegment->address(assignment->extension->misc->anyTypeOffset);
-        storageSegment->addInitPtr(storageOffset + 8, assignment->extension->misc->anyTypeOffset, constSegment->kind);
+        SWAG_ASSERT(assignment->extMisc());
+        SWAG_ASSERT(assignment->extMisc()->anyTypeSegment);
+        constSegment                        = assignment->extMisc()->anyTypeSegment;
+        *(void**) (ptrDest + sizeof(void*)) = constSegment->address(assignment->extMisc()->anyTypeOffset);
+        storageSegment->addInitPtr(storageOffset + 8, assignment->extMisc()->anyTypeOffset, constSegment->kind);
         return true;
     }
 
@@ -231,8 +231,8 @@ bool SemanticJob::collectLiteralsToSegment(JobContext* context, DataSegment* sto
         auto typeInfo = child->typeInfo;
 
         // Special type when collecting (like an array collected to a slice)
-        if (child->extension && child->extension->misc && child->extension->misc->collectTypeInfo)
-            typeInfo = child->extension->misc->collectTypeInfo;
+        if (child->extMisc() && child->extMisc()->collectTypeInfo)
+            typeInfo = child->extMisc()->collectTypeInfo;
 
         // In case of a struct to field match
         auto assignment = child;
@@ -272,8 +272,8 @@ bool SemanticJob::collectLiteralsToSegment(JobContext* context, DataSegment* sto
 
         // Offset has been forced
         // Note that offset is +1 to be sure it has been initialized
-        if (child->extension && child->extension->misc && child->extension->misc->castOffset)
-            offset = baseOffset + child->extension->misc->castOffset - 1;
+        if (child->extMisc() && child->extMisc()->castOffset)
+            offset = baseOffset + child->extMisc()->castOffset - 1;
 
         SWAG_CHECK(storeToSegment(context, storageSegment, offset, child->computedValue, typeInfo, assignment));
 

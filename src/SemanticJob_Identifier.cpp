@@ -449,7 +449,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
 
                 auto idRef = Ast::newIdentifierRef(sourceFile, varNode->token.text, nodeCall);
                 idRef->allocateExtension(ExtensionKind::Misc);
-                idRef->extension->misc->exportNode = makePtrL;
+                idRef->extMisc()->exportNode = makePtrL;
 
                 // Add the 2 nodes to the semantic
                 context->job->nodes.push_back(idRef);
@@ -471,14 +471,14 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
     {
         auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
 
-        if (nodeCall->extension && nodeCall->extension->misc && nodeCall->extension->misc->resolvedUserOpSymbolOverload)
+        if (nodeCall->extMisc() && nodeCall->extMisc()->resolvedUserOpSymbolOverload)
         {
-            auto overload = nodeCall->extension->misc->resolvedUserOpSymbolOverload;
+            auto overload = nodeCall->extMisc()->resolvedUserOpSymbolOverload;
             if (overload->symbol->name == g_LangSpec->name_opAffect || overload->symbol->name == g_LangSpec->name_opAffectSuffix)
             {
-                SWAG_ASSERT(nodeCall->extension->misc->resolvedUserOpSymbolOverload);
+                SWAG_ASSERT(nodeCall->extMisc()->resolvedUserOpSymbolOverload);
                 SWAG_ASSERT(nodeCall->castedTypeInfo);
-                nodeCall->extension->misc->resolvedUserOpSymbolOverload = nullptr;
+                nodeCall->extMisc()->resolvedUserOpSymbolOverload = nullptr;
                 nodeCall->castedTypeInfo                                = nullptr;
 
                 auto varNode = Ast::newVarDecl(sourceFile, Fmt("__2tmp_%d", g_UniqueID.fetch_add(1)), identifier);
@@ -527,7 +527,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
 
                 // We want to export the original parameter, not the temporary variable reference
                 newParam->allocateExtension(ExtensionKind::Misc);
-                newParam->extension->misc->exportNode = nodeCall;
+                newParam->extMisc()->exportNode = nodeCall;
                 newParam->allocateExtension(ExtensionKind::Owner);
                 newParam->extension->owner->nodesToFree.push_back(nodeCall);
 
@@ -639,7 +639,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 // Make it a named param, in case some other default "normal" parameters are before (because in that case
                 // we let the emitCall to deal with those default parameters)
                 newParam->allocateExtension(ExtensionKind::Misc);
-                newParam->extension->misc->isNamed = funcParam;
+                newParam->extMisc()->isNamed = funcParam;
 
                 newParam->indexParam = i;
                 newParam->flags |= AST_GENERATED;
@@ -3951,8 +3951,8 @@ bool SemanticJob::solveValidIf(SemanticContext* context, OneMatch* oneMatch, Ast
             auto typeFunc        = CastTypeInfo<TypeInfoFuncAttr>(oneMatch->oneOverload->overload->typeInfo, TypeInfoKind::FuncAttr);
             expNode.node         = context->node;
             expNode.replaceTypes = typeFunc->replaceTypes;
-            if (expNode.node->extension && expNode.node->extension->misc && expNode.node->extension->misc->exportNode)
-                expNode.node = expNode.node->extension->misc->exportNode;
+            if (expNode.node->extension && expNode.node->extMisc() && expNode.node->extMisc()->exportNode)
+                expNode.node = expNode.node->extMisc()->exportNode;
             expNode.type = ErrCxtStepKind::Generic;
             job->context.errCxtSteps.push_back(expNode);
         }
@@ -4413,10 +4413,10 @@ void SemanticJob::collectAlternativeScopes(AstNode* startNode, VectorNative<Alte
     VectorNative<AlternativeScope> toAdd;
     VectorNative<Scope*>           done;
 
-    if (startNode->extension && startNode->extension->misc)
+    if (startNode->extMisc())
     {
-        SharedLock lk(startNode->extension->misc->mutexAltScopes);
-        toAdd.append(startNode->extension->misc->alternativeScopes);
+        SharedLock lk(startNode->extMisc()->mutexAltScopes);
+        toAdd.append(startNode->extMisc()->alternativeScopes);
     }
 
     while (!toAdd.empty())
@@ -4432,13 +4432,13 @@ void SemanticJob::collectAlternativeScopes(AstNode* startNode, VectorNative<Alte
             if (it0.scope && it0.scope->kind == ScopeKind::Struct)
             {
                 SharedLock lk(it0.scope->owner->mutex);
-                if (it0.scope->owner->extension && it0.scope->owner->extension->misc)
+                if (it0.scope->owner->extMisc())
                 {
                     // We register the sub scope with the original "node" (top level), because the original node will in the end
                     // become the dependentVar node, and will be converted by cast to the correct type.
                     {
-                        SharedLock lk1(it0.scope->owner->extension->misc->mutexAltScopes);
-                        for (auto& it1 : it0.scope->owner->extension->misc->alternativeScopes)
+                        SharedLock lk1(it0.scope->owner->extMisc()->mutexAltScopes);
+                        for (auto& it1 : it0.scope->owner->extMisc()->alternativeScopes)
                             toAdd.push_back({it1.scope, it1.flags});
                     }
                 }
@@ -4454,10 +4454,10 @@ void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<A
     VectorNative<AlternativeScopeVar> toAdd;
     VectorNative<Scope*>              done;
 
-    if (startNode->extension && startNode->extension->misc)
+    if (startNode->extMisc())
     {
-        SharedLock lk(startNode->extension->misc->mutexAltScopes);
-        toAdd.append(startNode->extension->misc->alternativeScopesVars);
+        SharedLock lk(startNode->extMisc()->mutexAltScopes);
+        toAdd.append(startNode->extMisc()->alternativeScopesVars);
     }
 
     while (!toAdd.empty())
@@ -4474,13 +4474,13 @@ void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<A
             if (it0.scope && it0.scope->kind == ScopeKind::Struct)
             {
                 SharedLock lk(it0.scope->owner->mutex);
-                if (it0.scope->owner->extension && it0.scope->owner->extension->misc)
+                if (it0.scope->owner->extension && it0.scope->owner->extMisc())
                 {
                     // We register the sub scope with the original "node" (top level), because the original node will in the end
                     // become the dependentVar node, and will be converted by cast to the correct type.
                     {
-                        SharedLock lk1(it0.scope->owner->extension->misc->mutexAltScopes);
-                        for (auto& it1 : it0.scope->owner->extension->misc->alternativeScopesVars)
+                        SharedLock lk1(it0.scope->owner->extMisc()->mutexAltScopes);
+                        for (auto& it1 : it0.scope->owner->extMisc()->alternativeScopesVars)
                             toAdd.push_back({it0.node, it1.node, it1.scope, it1.flags});
                     }
 
@@ -4534,11 +4534,11 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext*             
                                                    TokenParse*                        scopeUpValue)
 {
     // Add registered alternative scopes of the current node
-    if (startNode->extension && startNode->extension->misc && !startNode->extension->misc->alternativeScopes.empty())
+    if (startNode->extMisc() && !startNode->extMisc()->alternativeScopes.empty())
     {
         auto  job       = context->job;
         auto& toProcess = job->scopesToProcess;
-        for (auto& as : startNode->extension->misc->alternativeScopes)
+        for (auto& as : startNode->extMisc()->alternativeScopes)
         {
             if (!hasAlternativeScope(scopes, as.scope))
             {
@@ -4614,16 +4614,15 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext*             
     if (!startNode)
         return;
 
-    if (startNode->extension && startNode->extension->misc && startNode->extension->misc->alternativeNode)
-        collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode->extension->misc->alternativeNode, flags, scopeUpMode, scopeUpValue);
+    if (startNode->extMisc() && startNode->extMisc()->alternativeNode)
+        collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode->extMisc()->alternativeNode, flags, scopeUpMode, scopeUpValue);
     else if (startNode->parent)
         collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode->parent, flags, scopeUpMode, scopeUpValue);
 
     // Mixin block, collect alternative scopes from the original source tree (with the user code, before
     // making the inline)
-    if (startNode->extension &&
-        startNode->extension->misc &&
-        startNode->extension->misc->alternativeNode &&
+    if (startNode->extMisc() &&
+        startNode->extMisc()->alternativeNode &&
         startNode->parent->kind == AstNodeKind::CompilerMixin)
     {
         // We authorize mixin code to access the parameters of the Swag.mixin function, except if there's a #macro block

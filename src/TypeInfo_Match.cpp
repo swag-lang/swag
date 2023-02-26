@@ -385,7 +385,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
     {
         auto callParameter = context.parameters[i];
 
-        if (callParameter->extension && callParameter->extension->misc && callParameter->extension->misc->isNamed)
+        if (callParameter->extMisc() && callParameter->extMisc()->isNamed)
         {
             context.hasNamedParameters = true;
             break;
@@ -564,10 +564,9 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
     for (int j = 0; j < parameters.size(); j++)
     {
         auto wantedParameter = parameters[j];
-        if (callParameter->extension &&
-            callParameter->extension->misc &&
-            callParameter->extension->misc->isNamed &&
-            parameters[j]->name == callParameter->extension->misc->isNamed->token.text)
+        if (callParameter->extMisc() &&
+            callParameter->extMisc()->isNamed &&
+            parameters[j]->name == callParameter->extMisc()->isNamed->token.text)
         {
             if (context.doneParameters[j])
             {
@@ -575,10 +574,9 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
                 for (int k = 0; k < context.parameters.size(); k++)
                 {
                     auto checkParam = context.parameters[k];
-                    if (checkParam->extension &&
-                        checkParam->extension->misc &&
-                        checkParam->extension->misc->isNamed &&
-                        checkParam->extension->misc->isNamed->token.text == parameters[j]->name)
+                    if (checkParam->extMisc() &&
+                        checkParam->extMisc()->isNamed &&
+                        checkParam->extMisc()->isNamed->token.text == parameters[j]->name)
                     {
                         context.badSignatureInfos.badSignatureNum1 = k;
                         break;
@@ -688,7 +686,7 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
             break;
         }
 
-        if (!param->extension || !param->extension->misc || !param->extension->misc->isNamed)
+        if (!param->extMisc() || !param->extMisc()->isNamed)
         {
             context.badSignatureInfos.badSignatureParameterIdx = i;
             context.result                                     = MatchResult::MissingNamedParameter;

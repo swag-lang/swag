@@ -501,7 +501,7 @@ bool ByteCodeGenJob::emitMakeArrayPointerSlicingUpperBound(ByteCodeGenContext* c
     auto slicing   = CastAst<AstArrayPointerSlicing>(context->node->parent, AstNodeKind::ArrayPointerSlicing);
     auto arrayNode = slicing->array;
 
-    if (upperNode->extension && upperNode->extension->misc && upperNode->extension->misc->resolvedUserOpSymbolOverload)
+    if (upperNode->extMisc() && upperNode->extMisc()->resolvedUserOpSymbolOverload)
     {
         if (!job->allParamsTmp)
             job->allParamsTmp = Ast::newFuncCallParams(upperNode->sourceFile, nullptr);

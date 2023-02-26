@@ -159,7 +159,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                             overload->registers.cannotFree = true;
                             node->allocateExtension(ExtensionKind::Misc);
                             for (int r = 0; r < overload->registers.size(); r++)
-                                node->extension->misc->registersToRelease.push_back(overload->registers[r]);
+                                node->extMisc()->registersToRelease.push_back(overload->registers[r]);
                         }
                         break;
                     }
@@ -197,7 +197,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                                     overload->registers.cannotFree = true;
                                     node->allocateExtension(ExtensionKind::Misc);
                                     for (int r = 0; r < overload->registers.size(); r++)
-                                        node->extension->misc->registersToRelease.push_back(overload->registers[r]);
+                                        node->extMisc()->registersToRelease.push_back(overload->registers[r]);
                                 }
                                 covered = true;
                                 break;
@@ -226,7 +226,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                             overload->registers.cannotFree = true;
                             node->allocateExtension(ExtensionKind::Misc);
                             for (int r = 0; r < overload->registers.size(); r++)
-                                node->extension->misc->registersToRelease.push_back(overload->registers[r]);
+                                node->extMisc()->registersToRelease.push_back(overload->registers[r]);
                             break;
                         }
                     }
@@ -248,11 +248,11 @@ bool ByteCodeGenJob::emitInline(ByteCodeGenContext* context)
 
     // Release persistent list of registers (except if mixin, because in that
     // case, the inline node does not own the scope)
-    if (node->extension && !node->extension->misc->registersToRelease.empty())
+    if (node->extMisc() && !node->extMisc()->registersToRelease.empty())
     {
         if (!(node->attributeFlags & ATTRIBUTE_MIXIN))
         {
-            for (auto r : node->extension->misc->registersToRelease)
+            for (auto r : node->extMisc()->registersToRelease)
                 freeRegisterRC(context, r);
         }
         else
@@ -261,19 +261,19 @@ bool ByteCodeGenJob::emitInline(ByteCodeGenContext* context)
             // In that case we need to release our registers, because it's a compile time execution done.
             if ((node->parent->flags & AST_CONST_EXPR) != (node->ownerScope->owner->flags & AST_CONST_EXPR))
             {
-                for (auto r : node->extension->misc->registersToRelease)
+                for (auto r : node->extMisc()->registersToRelease)
                     freeRegisterRC(context, r);
             }
             else
             {
                 // Transfert registers to release to the parent scope owner
                 node->ownerScope->owner->allocateExtension(ExtensionKind::Misc);
-                for (auto r : node->extension->misc->registersToRelease)
-                    node->ownerScope->owner->extension->misc->registersToRelease.push_back(r);
+                for (auto r : node->extMisc()->registersToRelease)
+                    node->ownerScope->owner->extMisc()->registersToRelease.push_back(r);
             }
         }
 
-        node->extension->misc->registersToRelease.clear();
+        node->extMisc()->registersToRelease.clear();
     }
 
     // Be sure this is done only once
@@ -1135,11 +1135,11 @@ bool ByteCodeGenJob::computeLeaveScope(ByteCodeGenContext* context, Scope* scope
     }
 
     // Free some registers
-    if (context->node->extension && context->node->extension->misc)
+    if (context->node->extMisc())
     {
-        for (auto r : context->node->extension->misc->registersToRelease)
+        for (auto r : context->node->extMisc()->registersToRelease)
             freeRegisterRC(context, r);
-        context->node->extension->misc->registersToRelease.clear();
+        context->node->extMisc()->registersToRelease.clear();
     }
 
     return true;

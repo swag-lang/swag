@@ -340,8 +340,6 @@ struct AstNode
     AstNode* findParent(AstNodeKind parentKind1, AstNodeKind parentKind2);
     Utf8     getScopedName();
     void     setOwnerAttrUse(AstAttrUse* attrUse);
-    void     allocateExtension(ExtensionKind extensionKind);
-    void     allocateExtensionNoLock(ExtensionKind extensionKind);
     void     swap2Childs();
     bool     hasSpecialFuncCall();
     bool     hasSpecialFuncCall(const Utf8& name);
@@ -403,6 +401,16 @@ struct AstNode
         ExtensionOwner*    owner    = nullptr;
         ExtensionMisc*     misc     = nullptr;
     };
+
+    void allocateExtension(ExtensionKind extensionKind);
+    void allocateExtensionNoLock(ExtensionKind extensionKind);
+
+    // clang-format off
+    ExtensionByteCode* extByteCode()    { return extension && extension->bytecode ? extension->bytecode : nullptr; }
+    ExtensionSemantic* extSemantic()    { return extension && extension->semantic ? extension->semantic : nullptr; }
+    ExtensionOwner*    extOwner()       { return extension && extension->owner ? extension->owner : nullptr; }
+    ExtensionMisc*     extMisc()        { return extension && extension->misc ? extension->misc : nullptr; }
+    // clang-format on
 
     AstNodeKind         kind           = (AstNodeKind) 0;
     AstNodeResolveState semanticState  = (AstNodeResolveState) 0;

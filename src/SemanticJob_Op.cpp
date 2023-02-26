@@ -740,7 +740,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
 
                         auto idRef = Ast::newIdentifierRef(sourceFile, varNode->token.text, nodeCall);
                         idRef->allocateExtension(ExtensionKind::Misc);
-                        idRef->extension->misc->exportNode = makePtrL;
+                        idRef->extMisc()->exportNode = makePtrL;
 
                         // Put child front, because emitFuncCallParam wants the parameter to be the first
                         Ast::removeFromParent(idRef);
@@ -763,7 +763,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
         auto overload  = oneMatch->symbolOverload;
         node->typeInfo = overload->typeInfo;
         node->allocateExtension(ExtensionKind::Misc);
-        node->extension->misc->resolvedUserOpSymbolOverload = overload;
+        node->extMisc()->resolvedUserOpSymbolOverload = overload;
         SWAG_ASSERT(symbol && symbol->kind == SymbolKind::Function);
         SWAG_ASSERT(overload);
 

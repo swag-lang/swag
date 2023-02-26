@@ -88,10 +88,10 @@ bool Ast::convertLiteralTupleToStructVar(SemanticContext* context, TypeInfo* toT
         if (oneChild->kind == AstNodeKind::Identifier)
             oneChild->specFlags |= AST_SPEC_IDENTIFIER_NO_INLINE;
 
-        if (oneChild->extension && oneChild->extension->misc && oneChild->extension->misc->isNamed)
+        if (oneChild->extMisc() && oneChild->extMisc()->isNamed)
         {
             oneParam->allocateExtension(ExtensionKind::Misc);
-            oneParam->extension->misc->isNamed = oneChild->extension->misc->isNamed;
+            oneParam->extMisc()->isNamed = oneChild->extMisc()->isNamed;
         }
 
         // If this is for a return, remember it, in order to make a move or a copy
@@ -158,12 +158,12 @@ bool Ast::convertLiteralTupleToStructType(SemanticContext* context, TypeInfoStru
     Ast::addChildBack(newParent, structNode);
     structNode->originalParent = newParent;
     structNode->allocateExtension(ExtensionKind::Semantic);
-    structNode->extension->semantic->semanticBeforeFct = SemanticJob::preResolveGeneratedStruct;
+    structNode->extSemantic()->semanticBeforeFct = SemanticJob::preResolveGeneratedStruct;
 
     auto contentNode    = Ast::newNode<AstNode>(nullptr, AstNodeKind::TupleContent, sourceFile, structNode);
     structNode->content = contentNode;
     contentNode->allocateExtension(ExtensionKind::Semantic);
-    contentNode->extension->semantic->semanticBeforeFct = SemanticJob::preResolveStructContent;
+    contentNode->extSemantic()->semanticBeforeFct = SemanticJob::preResolveStructContent;
 
     Utf8 name = sourceFile->scopeFile->name + "_tuple_";
     name += Fmt("%d", g_UniqueID.fetch_add(1));
@@ -177,7 +177,7 @@ bool Ast::convertLiteralTupleToStructType(SemanticContext* context, TypeInfoStru
         rootScope = newParent->ownerScope;
     structNode->allocateExtension(ExtensionKind::Misc);
     structNode->addAlternativeScope(fromNode->parent->ownerScope);
-    structNode->extension->misc->alternativeNode = newParent;
+    structNode->extMisc()->alternativeNode = newParent;
 
     auto newScope     = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, rootScope, true);
     structNode->scope = newScope;
@@ -319,7 +319,7 @@ bool Ast::convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* ass
 
     auto contentNode = Ast::newNode<AstNode>(nullptr, AstNodeKind::TupleContent, sourceFile, structNode);
     contentNode->allocateExtension(ExtensionKind::Semantic);
-    contentNode->extension->semantic->semanticBeforeFct = SemanticJob::preResolveStructContent;
+    contentNode->extSemantic()->semanticBeforeFct = SemanticJob::preResolveStructContent;
     contentNode->addAlternativeScope(assignment->ownerScope);
     structNode->content = contentNode;
 
@@ -389,7 +389,7 @@ bool Ast::convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* ass
     if (symbol)
     {
         sourceFile->astRoot->allocateExtension(ExtensionKind::Owner);
-        sourceFile->astRoot->extension->owner->nodesToFree.push_back(structNode);
+        sourceFile->astRoot->extOwner()->nodesToFree.push_back(structNode);
     }
     else
     {
@@ -447,8 +447,8 @@ bool Ast::convertStructParamsToTmpVar(SemanticContext* context, AstIdentifier* i
     auto varNode = Ast::newVarDecl(sourceFile, Fmt("__1tmp_%d", g_UniqueID.fetch_add(1)), varParent);
 
     // Inherit alternative scopes.
-    if (identifier->parent->extension && identifier->parent->extension->misc)
-        varNode->addAlternativeScopes(identifier->parent->extension->misc->alternativeScopes);
+    if (identifier->parent->extMisc())
+        varNode->addAlternativeScopes(identifier->parent->extMisc()->alternativeScopes);
 
     // If we are in a const declaration, that temporary variable should be a const too...
     if (identifier->parent->parent->kind == AstNodeKind::ConstDecl)
@@ -487,7 +487,7 @@ bool Ast::convertStructParamsToTmpVar(SemanticContext* context, AstIdentifier* i
 
     identifierRef->allocateExtension(ExtensionKind::Owner);
     for (auto c : identifierRef->childs)
-        identifierRef->extension->owner->nodesToFree.push_back(c);
+        identifierRef->extOwner()->nodesToFree.push_back(c);
     identifierRef->childs.clear();
     auto idNode = Ast::newIdentifier(sourceFile, varNode->token.text, identifierRef, identifierRef);
     idNode->flags |= AST_R_VALUE | AST_TRANSIENT;

@@ -126,7 +126,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node)
                 if (node->hasSpecialFuncCall())
                 {
                     Diagnostic diag{node, Fmt(Err(Err0281), realType->getDisplayNameC())};
-                    diag.hint = Fmt(Hnt(Hnt0047), node->extension->misc->resolvedUserOpSymbolOverload->symbol->name.c_str());
+                    diag.hint = Fmt(Hnt(Hnt0047), node->extMisc()->resolvedUserOpSymbolOverload->symbol->name.c_str());
                     return context->report(diag);
                 }
 
@@ -150,7 +150,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node)
                     return context->report(diag);
                 }
 
-                SWAG_ASSERT(!context->node->extension || !context->node->extension->misc || !context->node->extension->misc->resolvedUserOpSymbolOverload);
+                SWAG_ASSERT(!context->node->extMisc() || !context->node->extMisc()->resolvedUserOpSymbolOverload);
 
                 // opCount
                 VectorNative<AstNode*> params;
@@ -159,10 +159,9 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node)
                 if (context->result != ContextResult::Done)
                     return true;
 
-                SWAG_ASSERT(context->node->extension);
-                SWAG_ASSERT(context->node->extension->misc);
+                SWAG_ASSERT(context->node->extMisc());
 
-                auto extension                          = context->node->extension->misc;
+                auto extension                          = context->node->extMisc();
                 execParams.specReturnOpCount            = extension->resolvedUserOpSymbolOverload;
                 extension->resolvedUserOpSymbolOverload = nullptr;
                 SWAG_ASSERT(execParams.specReturnOpCount);
@@ -498,7 +497,7 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
     cloneContext.ownerFct               = node->ownerFct;
     auto cloneContent                   = typeCode->content->clone(cloneContext);
     cloneContent->allocateExtension(ExtensionKind::Misc);
-    cloneContent->extension->misc->alternativeNode = typeCode->content->parent;
+    cloneContent->extMisc()->alternativeNode = typeCode->content->parent;
     cloneContent->addAlternativeScope(typeCode->content->parent->ownerScope);
     cloneContent->flags &= ~AST_NO_SEMANTIC;
     node->typeInfo = cloneContent->typeInfo;
