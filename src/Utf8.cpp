@@ -102,11 +102,12 @@ Utf8::Utf8(const Utf8& from, int capcity)
 
 Utf8::Utf8(Utf8&& from)
 {
-    count       = from.count;
-    allocated   = from.allocated;
-    buffer      = from.buffer;
-    from.buffer = nullptr;
-    from.release();
+    count          = from.count;
+    allocated      = from.allocated;
+    buffer         = from.buffer;
+    from.count     = 0;
+    from.allocated = 0;
+    from.buffer    = nullptr;
 }
 
 void Utf8::reserve(int newSize)
@@ -208,9 +209,9 @@ void Utf8::operator=(Utf8&& from)
     count          = from.count;
     allocated      = from.allocated;
     buffer         = from.buffer;
-    from.buffer    = nullptr;
+    from.count     = 0;
     from.allocated = 0;
-    from.release();
+    from.buffer    = nullptr;
 }
 
 void Utf8::operator=(const Utf8& other)
