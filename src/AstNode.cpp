@@ -124,11 +124,11 @@ void AstNode::inheritOwnersAndFlags(Parser* parser)
     if (parser->currentTryCatchAssume)
     {
         allocateExtension(ExtensionKind::Owner);
-        extension->owner->ownerTryCatchAssume = parser->currentTryCatchAssume;
+        extOwner()->ownerTryCatchAssume = parser->currentTryCatchAssume;
     }
-    else if (extension && extension->owner)
+    else if (extOwner())
     {
-        extension->owner->ownerTryCatchAssume = nullptr;
+        extOwner()->ownerTryCatchAssume = nullptr;
     }
 
     flags |= parser->currentFlags;
@@ -248,7 +248,7 @@ AstNode* AstNode::inSimpleReturn()
 
 bool AstNode::isSpecialFunctionGenerated()
 {
-    if (!extension || !extension->bytecode || !extension->bytecode->bc || !extension->bytecode->bc->isCompilerGenerated)
+    if (!extByteCode() || !extByteCode()->bc || !extByteCode()->bc->isCompilerGenerated)
         return false;
     return true;
 }
@@ -382,19 +382,16 @@ void AstNode::setPassThrough()
 {
     semanticFct = nullptr;
     byteCodeFct = ByteCodeGenJob::emitPassThrough;
-    if (extension)
+    if (extSemantic())
     {
-        if (extension->semantic)
-        {
-            extSemantic()->semanticAfterFct  = nullptr;
-            extSemantic()->semanticBeforeFct = nullptr;
-        }
+        extSemantic()->semanticAfterFct  = nullptr;
+        extSemantic()->semanticBeforeFct = nullptr;
+    }
 
-        if (extension->bytecode)
-        {
-            extension->bytecode->byteCodeAfterFct  = nullptr;
-            extension->bytecode->byteCodeBeforeFct = nullptr;
-        }
+    if (extByteCode())
+    {
+        extByteCode()->byteCodeAfterFct  = nullptr;
+        extByteCode()->byteCodeBeforeFct = nullptr;
     }
 }
 
@@ -612,8 +609,8 @@ Utf8 AstFuncDecl::getCallName()
         }
     }
 
-    SWAG_ASSERT(extension && extension->bytecode && extension->bytecode->bc);
-    return extension->bytecode->bc->getCallName();
+    SWAG_ASSERT(extByteCode() && extByteCode()->bc);
+    return extByteCode()->bc->getCallName();
 }
 
 Utf8 AstFuncDecl::getNameForUserCompiler()
@@ -765,7 +762,7 @@ void AstNode::setOwnerAttrUse(AstAttrUse* attrUse)
 
     default:
         allocateExtension(ExtensionKind::Owner);
-        extension->owner->ownerAttrUse = attrUse;
+        extOwner()->ownerAttrUse = attrUse;
         break;
     }
 }

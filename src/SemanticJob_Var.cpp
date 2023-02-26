@@ -1216,8 +1216,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
 
         node->allocateExtension(ExtensionKind::ByteCode);
-        node->extension->bytecode->byteCodeBeforeFct = ByteCodeGenJob::emitLocalVarDeclBefore;
-        node->byteCodeFct                            = ByteCodeGenJob::emitLocalVarDecl;
+        node->extByteCode()->byteCodeBeforeFct = ByteCodeGenJob::emitLocalVarDeclBefore;
+        node->byteCodeFct                      = ByteCodeGenJob::emitLocalVarDecl;
         node->flags |= AST_R_VALUE;
     }
     else if (symbolFlags & OVERLOAD_VAR_FUNC_PARAM)

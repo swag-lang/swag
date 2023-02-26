@@ -256,7 +256,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node)
 
     // Before executing the node, we need to be sure that our dependencies have generated their dll
     // In case there's a foreign call somewhere...
-    if (node->extension->bytecode->bc->hasForeignFunctionCalls)
+    if (node->extByteCode()->bc->hasForeignFunctionCalls)
     {
         if (!module->waitForDependenciesDone(context->job))
         {
@@ -265,9 +265,9 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node)
             return true;
         }
     }
-    else if (!node->extension->bytecode->bc->hasForeignFunctionCallsModules.empty())
+    else if (!node->extByteCode()->bc->hasForeignFunctionCallsModules.empty())
     {
-        if (!module->waitForDependenciesDone(context->job, node->extension->bytecode->bc->hasForeignFunctionCallsModules))
+        if (!module->waitForDependenciesDone(context->job, node->extByteCode()->bc->hasForeignFunctionCallsModules))
         {
             context->job->waitingKind = JobWaitKind::WaitDepDoneExec;
             context->result           = ContextResult::Pending;
@@ -349,7 +349,7 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
     SWAG_CHECK(checkIsConstExpr(context, expression->flags & AST_VALUE_COMPUTED, expression));
 
     node->allocateExtension(ExtensionKind::Owner);
-    node->extension->owner->nodesToFree.append(node->childs);
+    node->extOwner()->nodesToFree.append(node->childs);
     node->childs.clear();
 
     if (!expression->computedValue->text.empty())
@@ -442,7 +442,7 @@ bool SemanticJob::resolveCompilerMacro(SemanticContext* context)
     scope->startStackSize = node->ownerScope->startStackSize;
 
     node->allocateExtension(ExtensionKind::ByteCode);
-    node->extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitLeaveScope;
+    node->extByteCode()->byteCodeAfterFct = ByteCodeGenJob::emitLeaveScope;
 
     // Be sure #macro is used inside a macro
     if (!node->ownerInline || (node->ownerInline->attributeFlags & ATTRIBUTE_MIXIN) || !(node->ownerInline->attributeFlags & ATTRIBUTE_MACRO))
@@ -458,7 +458,7 @@ bool SemanticJob::resolveCompilerInline(SemanticContext* context)
     scope->startStackSize = node->ownerScope->startStackSize;
 
     node->allocateExtension(ExtensionKind::ByteCode);
-    node->extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitLeaveScope;
+    node->extByteCode()->byteCodeAfterFct = ByteCodeGenJob::emitLeaveScope;
 
     return true;
 }
@@ -479,8 +479,8 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
     SWAG_VERIFY(expr->typeInfo->isCode(), context->report({expr, Fmt(Err(Err0240), expr->typeInfo->getDisplayNameC())}));
 
     node->allocateExtension(ExtensionKind::ByteCode);
-    node->extension->bytecode->byteCodeBeforeFct = ByteCodeGenJob::emitDebugNop;
-    node->byteCodeFct                            = ByteCodeGenJob::emitDebugNop;
+    node->extByteCode()->byteCodeBeforeFct = ByteCodeGenJob::emitDebugNop;
+    node->byteCodeFct                      = ByteCodeGenJob::emitDebugNop;
     expr->flags |= AST_NO_BYTECODE;
 
     auto typeCode = CastTypeInfo<TypeInfoCode>(expr->typeInfo, TypeInfoKind::Code);

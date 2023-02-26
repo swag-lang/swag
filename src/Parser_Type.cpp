@@ -215,7 +215,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
                     curIsAlone  = false;
                     thisIsAType = false;
                     params->allocateExtension(ExtensionKind::Owner);
-                    params->extension->owner->nodesToFree.push_back(namedParam);
+                    params->extOwner()->nodesToFree.push_back(namedParam);
                 }
             }
             else

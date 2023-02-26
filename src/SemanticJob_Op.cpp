@@ -716,7 +716,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
                             varNode->assignment = Ast::clone(makePtrL, varNode);
                             Ast::removeFromParent(makePtrL);
                             varNode->allocateExtension(ExtensionKind::Owner);
-                            varNode->extension->owner->nodesToFree.push_back(makePtrL);
+                            varNode->extOwner()->nodesToFree.push_back(makePtrL);
                         }
                         else if (makePtrL->typeInfo->isPointerNull())
                         {
@@ -724,7 +724,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
                             makePtrL->flags |= AST_NO_BYTECODE;
                             Ast::removeFromParent(makePtrL);
                             varNode->allocateExtension(ExtensionKind::Owner);
-                            varNode->extension->owner->nodesToFree.push_back(makePtrL);
+                            varNode->extOwner()->nodesToFree.push_back(makePtrL);
                         }
                         else
                         {

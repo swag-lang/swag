@@ -3670,13 +3670,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicCompilerError:
         {
-            auto bcF = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extension->bytecode->bc;
+            auto bcF = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extByteCode()->bc;
             emitCall(buildParameters, moduleToGen, bcF->getCallName().c_str(), allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
             break;
         }
         case ByteCodeOp::IntrinsicCompilerWarning:
         {
-            auto bcF = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extension->bytecode->bc;
+            auto bcF = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extByteCode()->bc;
             emitCall(buildParameters, moduleToGen, bcF->getCallName().c_str(), allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
             break;
         }

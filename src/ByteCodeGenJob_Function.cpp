@@ -1353,7 +1353,7 @@ void ByteCodeGenJob::emitPushRAParams(ByteCodeGenContext* context, VectorNative<
 bool ByteCodeGenJob::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode, AstNode* callNode, AstNode* funcNode, AstNode* parent, TypeInfo* typeInfoFunc)
 {
     bool raiseErrors = typeInfoFunc->flags & TYPEINFO_CAN_THROW;
-    if (raiseErrors && (!callNode->extension || !callNode->extension->owner || !callNode->extension->owner->ownerTryCatchAssume))
+    if (raiseErrors && (!callNode->extOwner() || !callNode->extOwner()->ownerTryCatchAssume))
     {
         if (!srcNode)
             srcNode = typeInfoFunc->declNode;
@@ -1946,11 +1946,11 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     else if (funcNode)
     {
         auto inst = emitInstruction(context, ByteCodeOp::LocalCall);
-        SWAG_ASSERT(funcNode->extension && funcNode->extension->bytecode && funcNode->extension->bytecode->bc);
-        inst->a.pointer                           = (uint8_t*) funcNode->extension->bytecode->bc;
-        inst->b.pointer                           = (uint8_t*) typeInfoFunc;
-        inst->numVariadicParams                   = (uint8_t) numVariadic;
-        funcNode->extension->bytecode->bc->isUsed = true;
+        SWAG_ASSERT(funcNode->extension && funcNode->extension->bytecode && funcNode->extByteCode()->bc);
+        inst->a.pointer                     = (uint8_t*) funcNode->extByteCode()->bc;
+        inst->b.pointer                     = (uint8_t*) typeInfoFunc;
+        inst->numVariadicParams             = (uint8_t) numVariadic;
+        funcNode->extByteCode()->bc->isUsed = true;
     }
     else
     {

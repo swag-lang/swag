@@ -749,7 +749,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         {
             exprNode->resultRegisterRC = back->resultRegisterRC;
             exprNode->allocateExtension(ExtensionKind::Owner);
-            exprNode->extension->owner->nodesToFree.push_back(back);
+            exprNode->extOwner()->nodesToFree.push_back(back);
         }
 
         if (context->node->resultRegisterRC.size())

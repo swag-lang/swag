@@ -1173,7 +1173,7 @@ bool Parser::doExpressionListTuple(AstNode* parent, AstNode** result)
                 paramExpression->extMisc()->isNamed  = namedExpression;
                 paramExpression->token.startLocation = namedExpression->token.startLocation;
                 paramExpression->allocateExtension(ExtensionKind::Owner);
-                paramExpression->extension->owner->nodesToFree.push_back(namedToFree);
+                paramExpression->extOwner()->nodesToFree.push_back(namedToFree);
             }
             else
             {

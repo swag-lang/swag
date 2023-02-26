@@ -318,7 +318,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     if (node->content)
     {
         node->content->allocateExtension(ExtensionKind::ByteCode);
-        node->content->extension->bytecode->byteCodeBeforeFct = ByteCodeGenJob::emitBeforeFuncDeclContent;
+        node->content->extByteCode()->byteCodeBeforeFct = ByteCodeGenJob::emitBeforeFuncDeclContent;
     }
 
     // Do we have a return value
@@ -1494,10 +1494,10 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     inlineNode->scope          = identifier->ownerScope;
     inlineNode->typeInfo       = TypeManager::concreteType(funcDecl->typeInfo);
 
-    if (identifier->extension && identifier->extension->owner && identifier->extension->owner->ownerTryCatchAssume)
+    if (identifier->extOwner() && identifier->extOwner()->ownerTryCatchAssume)
     {
         inlineNode->allocateExtension(ExtensionKind::Owner);
-        inlineNode->extension->owner->ownerTryCatchAssume = identifier->extension->owner->ownerTryCatchAssume;
+        inlineNode->extOwner()->ownerTryCatchAssume = identifier->extOwner()->ownerTryCatchAssume;
     }
 
     if (funcDecl->extMisc())
@@ -1513,14 +1513,13 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     }
 
     // Try/Assume
-    if (inlineNode->extension &&
-        inlineNode->extension->owner &&
-        inlineNode->extension->owner->ownerTryCatchAssume &&
+    if (inlineNode->extOwner() &&
+        inlineNode->extOwner()->ownerTryCatchAssume &&
         (inlineNode->func->typeInfo->flags & TYPEINFO_CAN_THROW))
     {
         inlineNode->allocateExtension(ExtensionKind::ByteCode);
-        auto extension = inlineNode->extension->bytecode;
-        switch (inlineNode->extension->owner->ownerTryCatchAssume->kind)
+        auto extension = inlineNode->extByteCode();
+        switch (inlineNode->extOwner()->ownerTryCatchAssume->kind)
         {
         case AstNodeKind::Try:
             extension->byteCodeAfterFct = ByteCodeGenJob::emitTry;
@@ -1534,9 +1533,9 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
         }
 
         // Reset emit from the modifier if it exists, as the inline block will deal with that
-        if (identifier->extension && identifier->extension->bytecode)
+        if (identifier->extByteCode())
         {
-            extension = identifier->extension->bytecode;
+            extension = identifier->extByteCode();
             if (extension->byteCodeAfterFct == ByteCodeGenJob::emitTry)
                 extension->byteCodeAfterFct = nullptr;
             else if (extension->byteCodeAfterFct == ByteCodeGenJob::emitTryCatch)
@@ -1655,11 +1654,11 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     // Clone !
     auto newContent = funcDecl->content->clone(cloneContext);
 
-    if (newContent->extension && newContent->extension->bytecode)
+    if (newContent->extByteCode())
     {
-        newContent->extension->bytecode->byteCodeBeforeFct = nullptr;
+        newContent->extByteCode()->byteCodeBeforeFct = nullptr;
         if (funcDecl->attributeFlags & ATTRIBUTE_MIXIN)
-            newContent->extension->bytecode->byteCodeAfterFct = nullptr; // Do not release the scope, as there's no specific scope
+            newContent->extByteCode()->byteCodeAfterFct = nullptr; // Do not release the scope, as there's no specific scope
     }
 
     if (newContent->kind == AstNodeKind::Try || newContent->kind == AstNodeKind::TryCatch || newContent->kind == AstNodeKind::Assume)
@@ -1667,8 +1666,8 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
         if (funcDecl->attributeFlags & ATTRIBUTE_MIXIN && newContent->childs.front()->extension)
         {
             auto front = newContent->childs.front();
-            if (front->extension && front->extension->bytecode)
-                front->extension->bytecode->byteCodeAfterFct = nullptr; // Do not release the scope, as there's no specific scope
+            if (front->extByteCode())
+                front->extByteCode()->byteCodeAfterFct = nullptr; // Do not release the scope, as there's no specific scope
         }
     }
 

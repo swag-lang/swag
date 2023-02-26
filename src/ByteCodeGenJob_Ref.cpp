@@ -469,11 +469,11 @@ bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
     auto inst       = emitInstruction(context, ByteCodeOp::MakeLambda, node->resultRegisterRC);
     inst->b.pointer = (uint8_t*) funcNode;
     inst->c.pointer = nullptr;
-    if (funcNode->extension && funcNode->extension->bytecode && funcNode->extension->bytecode->bc)
+    if (funcNode->extByteCode() && funcNode->extByteCode()->bc)
     {
-        inst->c.pointer                              = (uint8_t*) funcNode->extension->bytecode->bc;
-        funcNode->extension->bytecode->bc->isUsed    = true;
-        funcNode->extension->bytecode->bc->forceEmit = true;
+        inst->c.pointer                        = (uint8_t*) funcNode->extByteCode()->bc;
+        funcNode->extByteCode()->bc->isUsed    = true;
+        funcNode->extByteCode()->bc->forceEmit = true;
     }
 
     // :CaptureBlock

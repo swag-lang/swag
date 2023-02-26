@@ -139,7 +139,7 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
                 param->allocateExtension(ExtensionKind::Misc);
                 param->extMisc()->isNamed = paramExpression->childs.front();
                 param->allocateExtension(ExtensionKind::Owner);
-                param->extension->owner->nodesToFree.push_back(paramExpression);
+                param->extOwner()->nodesToFree.push_back(paramExpression);
                 SWAG_CHECK(eatToken());
                 SWAG_CHECK(doExpression(param, EXPR_FLAG_PARAMETER));
             }
@@ -888,7 +888,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         resStmt->allocateExtension(ExtensionKind::Semantic);
         resStmt->extSemantic()->semanticAfterFct = SemanticJob::resolveScopedStmtAfter;
         resStmt->allocateExtension(ExtensionKind::ByteCode);
-        resStmt->extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitLeaveScope;
+        resStmt->extByteCode()->byteCodeAfterFct = ByteCodeGenJob::emitLeaveScope;
     }
 
     return true;
@@ -1067,8 +1067,8 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
         }
 
         funcNode->content->allocateExtension(ExtensionKind::ByteCode);
-        funcNode->content->extension->bytecode->byteCodeAfterFct = &ByteCodeGenJob::emitLeaveScope;
-        newScope->owner                                          = funcNode->content;
+        funcNode->content->extByteCode()->byteCodeAfterFct = &ByteCodeGenJob::emitLeaveScope;
+        newScope->owner                                    = funcNode->content;
     }
 
     return true;

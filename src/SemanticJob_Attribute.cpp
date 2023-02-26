@@ -231,7 +231,7 @@ void SemanticJob::inheritAttributesFromOwnerFunc(AstNode* child)
 
 bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result)
 {
-    auto attrUse = forNode->extension && forNode->extension->owner ? forNode->extension->owner->ownerAttrUse : nullptr;
+    auto attrUse = forNode->extOwner() ? forNode->extOwner()->ownerAttrUse : nullptr;
     SWAG_CHECK(collectAttributes(context, forNode, result, attrUse));
     return true;
 }
@@ -599,10 +599,10 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
         if (result)
             result->add(curAttr->attributes);
 
-        if (!(curAttr->specFlags & AST_SPEC_ATTRUSE_GLOBAL) && (!curAttr->extension || !curAttr->extension->owner || !curAttr->extension->owner->ownerAttrUse))
+        if (!(curAttr->specFlags & AST_SPEC_ATTRUSE_GLOBAL) && (!curAttr->extOwner() || !curAttr->extOwner()->ownerAttrUse))
             curAttr = forNode->sourceFile->astAttrUse;
         else
-            curAttr = curAttr->extension && curAttr->extension->owner ? curAttr->extension->owner->ownerAttrUse : nullptr;
+            curAttr = curAttr->extOwner() ? curAttr->extOwner()->ownerAttrUse : nullptr;
     }
 
     return true;

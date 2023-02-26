@@ -335,8 +335,8 @@ static bool dealWithWarning(Diagnostic& diag, Vector<const Diagnostic*>& notes)
         bool retResult = true;
         if (dealWithWarning(attrUse, warnMsg, diag, notes, retResult))
             return retResult;
-        if (attrUse->extension && attrUse->extension->owner)
-            attrUse = attrUse->extension->owner->ownerAttrUse;
+        if (attrUse->extOwner())
+            attrUse = attrUse->extOwner()->ownerAttrUse;
     }
 
     // Check build configuration

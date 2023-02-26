@@ -50,10 +50,10 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         }
     }
 
-    if (context.ownerTryCatchAssume || (from->extension && from->extension->owner && from->extension->owner->ownerTryCatchAssume))
+    if (context.ownerTryCatchAssume || (from->extOwner() && from->extOwner()->ownerTryCatchAssume))
     {
         allocateExtension(ExtensionKind::Owner);
-        extension->owner->ownerTryCatchAssume = context.ownerTryCatchAssume ? context.ownerTryCatchAssume : from->extension->owner->ownerTryCatchAssume;
+        extOwner()->ownerTryCatchAssume = context.ownerTryCatchAssume ? context.ownerTryCatchAssume : from->extOwner()->ownerTryCatchAssume;
     }
 
     // Replace a type by another one during generic instantiation

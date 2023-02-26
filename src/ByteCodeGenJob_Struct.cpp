@@ -69,8 +69,8 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
     else
     {
         auto inst = emitInstruction(context, ByteCodeOp::LocalCall);
-        SWAG_ASSERT(bc || (funcDecl && funcDecl->extension && funcDecl->extension->bytecode && funcDecl->extension->bytecode->bc));
-        auto bcReal     = bc ? bc : funcDecl->extension->bytecode->bc;
+        SWAG_ASSERT(bc || (funcDecl && funcDecl->extByteCode() && funcDecl->extByteCode()->bc));
+        auto bcReal     = bc ? bc : funcDecl->extByteCode()->bc;
         bcReal->isUsed  = true;
         inst->a.pointer = (uint8_t*) bcReal;
         SWAG_ASSERT(inst->a.pointer);
@@ -341,8 +341,8 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
                 if (typeInfoStruct->opUserInitFct)
                     typeInfoStruct->opUserInitFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
                 funcNode->allocateExtension(ExtensionKind::ByteCode);
-                funcNode->extension->bytecode->bc = opInit;
-                opInit->node                      = funcNode;
+                funcNode->extByteCode()->bc = opInit;
+                opInit->node                = funcNode;
             }
             break;
 
@@ -358,8 +358,8 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
                 if (typeInfoStruct->opUserDropFct)
                     typeInfoStruct->opUserDropFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
                 funcNode->allocateExtension(ExtensionKind::ByteCode);
-                funcNode->extension->bytecode->bc = opInit;
-                opInit->node                      = funcNode;
+                funcNode->extByteCode()->bc = opInit;
+                opInit->node                = funcNode;
             }
             break;
 
@@ -375,8 +375,8 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
                 if (typeInfoStruct->opUserPostCopyFct)
                     typeInfoStruct->opUserPostCopyFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
                 funcNode->allocateExtension(ExtensionKind::ByteCode);
-                funcNode->extension->bytecode->bc = opInit;
-                opInit->node                      = funcNode;
+                funcNode->extByteCode()->bc = opInit;
+                opInit->node                = funcNode;
             }
             break;
 
@@ -392,8 +392,8 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
                 if (typeInfoStruct->opUserPostMoveFct)
                     typeInfoStruct->opUserPostMoveFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
                 funcNode->allocateExtension(ExtensionKind::ByteCode);
-                funcNode->extension->bytecode->bc = opInit;
-                opInit->node                      = funcNode;
+                funcNode->extByteCode()->bc = opInit;
+                opInit->node                = funcNode;
             }
             break;
         }

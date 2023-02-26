@@ -490,7 +490,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
         auto newItf       = itf->declNode->clone(cloneContext);
         typeItf->declNode = newItf;
         newItf->flags |= AST_FROM_GENERIC;
-        structNode->extension->owner->nodesToFree.push_back(newItf);
+        structNode->extOwner()->nodesToFree.push_back(newItf);
 
         auto implJob = SemanticJob::newJob(context->job->dependentJob, context->sourceFile, newItf, false);
         structJob->addDependentJob(implJob);

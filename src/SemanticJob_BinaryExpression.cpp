@@ -1359,11 +1359,11 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
     {
     case TokenId::KwdAnd:
         left->allocateExtension(ExtensionKind::ByteCode);
-        left->extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitLogicalAndAfterLeft;
+        left->extByteCode()->byteCodeAfterFct = ByteCodeGenJob::emitLogicalAndAfterLeft;
         break;
     case TokenId::KwdOr:
         left->allocateExtension(ExtensionKind::ByteCode);
-        left->extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitLogicalOrAfterLeft;
+        left->extByteCode()->byteCodeAfterFct = ByteCodeGenJob::emitLogicalOrAfterLeft;
         break;
     }
 

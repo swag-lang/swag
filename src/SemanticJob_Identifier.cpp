@@ -425,7 +425,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                     varNode->assignment = Ast::clone(makePtrL, varNode);
                     Ast::removeFromParent(makePtrL);
                     varNode->allocateExtension(ExtensionKind::Owner);
-                    varNode->extension->owner->nodesToFree.push_back(makePtrL);
+                    varNode->extOwner()->nodesToFree.push_back(makePtrL);
                 }
                 else if (makePtrL->typeInfo->isPointerNull())
                 {
@@ -433,7 +433,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                     makePtrL->flags |= AST_NO_BYTECODE;
                     Ast::removeFromParent(makePtrL);
                     varNode->allocateExtension(ExtensionKind::Owner);
-                    varNode->extension->owner->nodesToFree.push_back(makePtrL);
+                    varNode->extOwner()->nodesToFree.push_back(makePtrL);
                 }
                 else
                 {
@@ -529,7 +529,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 newParam->allocateExtension(ExtensionKind::Misc);
                 newParam->extMisc()->exportNode = nodeCall;
                 newParam->allocateExtension(ExtensionKind::Owner);
-                newParam->extension->owner->nodesToFree.push_back(nodeCall);
+                newParam->extOwner()->nodesToFree.push_back(nodeCall);
 
                 // Add the 2 nodes to the semantic
                 context->job->nodes.push_back(newParam);
@@ -1439,23 +1439,22 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             identifier->byteCodeFct = ByteCodeGenJob::emitCall;
 
         // Try/Assume
-        if (identifier->extension &&
-            identifier->extension->owner &&
-            identifier->extension->owner->ownerTryCatchAssume &&
+        if (identifier->extOwner() &&
+            identifier->extOwner()->ownerTryCatchAssume &&
             (identifier->typeInfo->flags & TYPEINFO_CAN_THROW))
         {
             identifier->allocateExtension(ExtensionKind::ByteCode);
-            auto extension = identifier->extension;
-            switch (identifier->extension->owner->ownerTryCatchAssume->kind)
+            auto extension = identifier->extByteCode();
+            switch (identifier->extOwner()->ownerTryCatchAssume->kind)
             {
             case AstNodeKind::Try:
-                extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitTry;
+                extension->byteCodeAfterFct = ByteCodeGenJob::emitTry;
                 break;
             case AstNodeKind::TryCatch:
-                extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitTryCatch;
+                extension->byteCodeAfterFct = ByteCodeGenJob::emitTryCatch;
                 break;
             case AstNodeKind::Assume:
-                extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitAssume;
+                extension->byteCodeAfterFct = ByteCodeGenJob::emitAssume;
                 break;
             }
         }
@@ -4830,8 +4829,8 @@ bool SemanticJob::resolveTryCatch(SemanticContext* context)
     node->ownerFct->needRegisterGetContext = true;
 
     node->allocateExtension(ExtensionKind::ByteCode);
-    node->extension->bytecode->byteCodeBeforeFct = ByteCodeGenJob::emitInitStackTrace;
-    node->byteCodeFct                            = ByteCodeGenJob::emitPassThrough;
+    node->extByteCode()->byteCodeBeforeFct = ByteCodeGenJob::emitInitStackTrace;
+    node->byteCodeFct                      = ByteCodeGenJob::emitPassThrough;
 
     node->typeInfo = lastChild->typeInfo;
     node->flags |= identifierRef->flags;
@@ -4851,8 +4850,8 @@ bool SemanticJob::resolveCatch(SemanticContext* context)
     node->ownerFct->needRegisterGetContext = true;
 
     node->allocateExtension(ExtensionKind::ByteCode);
-    node->extension->bytecode->byteCodeBeforeFct = ByteCodeGenJob::emitInitStackTrace;
-    node->byteCodeFct                            = ByteCodeGenJob::emitPassThrough;
+    node->extByteCode()->byteCodeBeforeFct = ByteCodeGenJob::emitInitStackTrace;
+    node->byteCodeFct                      = ByteCodeGenJob::emitPassThrough;
 
     node->typeInfo = lastChild->typeInfo;
     node->flags |= identifierRef->flags;
@@ -4871,8 +4870,8 @@ bool SemanticJob::resolveAssume(SemanticContext* context)
     SWAG_CHECK(checkCanCatch(context));
 
     node->allocateExtension(ExtensionKind::ByteCode);
-    node->extension->bytecode->byteCodeBeforeFct = ByteCodeGenJob::emitInitStackTrace;
-    node->typeInfo                               = lastChild->typeInfo;
+    node->extByteCode()->byteCodeBeforeFct = ByteCodeGenJob::emitInitStackTrace;
+    node->typeInfo                         = lastChild->typeInfo;
     node->flags |= identifierRef->flags;
     node->inheritComputedValue(identifierRef);
     node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
