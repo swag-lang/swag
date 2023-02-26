@@ -586,14 +586,9 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
         symMatchContext.parameters.push_back(param);
 
     // Generic string parameter
-    AstNode* genericParameters = nullptr;
-    AstNode  parameters;
-    AstNode  literal;
-#ifdef SWAG_TRACK_NODES
-    g_AllNodes[parameters.trackNodeIndex] = nullptr;
-    g_AllNodes[literal.trackNodeIndex]    = nullptr;
-#endif
-
+    AstNode*      genericParameters = nullptr;
+    AstNode       parameters;
+    AstNode       literal;
     ComputedValue cValue;
     parameters.flags      = 0;
     parameters.sourceFile = left->sourceFile;

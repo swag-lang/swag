@@ -175,10 +175,6 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node)
 
                 // opSlice
                 AstNode tmpNode;
-#ifdef SWAG_TRACK_NODES
-                g_AllNodes[tmpNode.trackNodeIndex] = nullptr;
-#endif
-
                 memset(&tmpNode, 0, sizeof(AstNode));
                 tmpNode.typeInfo = g_TypeMgr->typeInfoU64;
                 params.push_back(&tmpNode);
