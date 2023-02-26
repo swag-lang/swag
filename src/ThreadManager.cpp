@@ -361,6 +361,8 @@ Job* ThreadManager::getJob()
     SharedLock lk(g_Workspace->mutexModules);
     for (auto p : g_Workspace->modules)
     {
+        if (!p->addedToBuild)
+            continue;
         auto job = p->syntaxGroup.pickJob();
         if (job)
         {

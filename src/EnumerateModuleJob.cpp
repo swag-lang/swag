@@ -8,7 +8,6 @@
 #include "ThreadManager.h"
 #include "SyntaxJob.h"
 #include "Diagnostic.h"
-#include "ErrorIds.h"
 #include "Report.h"
 
 SourceFile* EnumerateModuleJob::addFileToModule(Module* theModule, Vector<SourceFile*>& allFiles, const Path& dirName, const Utf8& fileName, uint64_t writeTime, SourceFile* prePass, Module* imported)
