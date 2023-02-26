@@ -106,8 +106,8 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         if (from->extension->bytecode)
         {
             allocateExtension(ExtensionKind::ByteCode);
-            extension->bytecode->byteCodeBeforeFct = from->extension->bytecode->byteCodeBeforeFct;
-            extension->bytecode->byteCodeAfterFct  = from->extension->bytecode->byteCodeAfterFct;
+            extByteCode()->byteCodeBeforeFct = from->extension->bytecode->byteCodeBeforeFct;
+            extByteCode()->byteCodeAfterFct  = from->extension->bytecode->byteCodeAfterFct;
         }
     }
 
