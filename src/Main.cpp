@@ -9,6 +9,8 @@
 #include "Profiler.h"
 #include "CommandLine.h"
 #include "Statistics.h"
+#include "SourceFile.h"
+#include "Module.h"
 
 bool g_Exiting = false;
 
@@ -123,18 +125,19 @@ int main(int argc, const char* argv[])
         g_Log.messageInfo(Fmt("swag version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
     }
 
+#ifdef SWAG_TRACK_NODES
+    for (int i = g_AllNodes.size() - 1; i >= 0; i--)
+    {
+        if (g_AllNodes[i] && g_AllNodes[i]->sourceFile && !g_AllNodes[i]->sourceFile->module->isErrorModule)
+            int a = 0;
+    }
+#endif
+
     // Prints stats, then exit
 #ifdef SWAG_STATS
     g_Stats.print();
     profiler();
 #endif
-
-    //extern VectorNative<AstNode*> ggg;
-    //for (int i = ggg.size() - 1; i >= 0; i--)
-    //{
-    //    if (ggg[i])
-    //        int a = 0;
-    //}
 
     // To avoid freeing some stuff, and have a fast exit
     g_Exiting = true;

@@ -45,6 +45,10 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
     parent                    = node->parent;
 
     AstNode parameters;
+#ifdef SWAG_TRACK_NODES
+    g_AllNodes[parameters.trackNodeIndex] = nullptr;
+#endif
+
     if (parent->kind == AstNodeKind::ArrayPointerIndex || parent->kind == AstNodeKind::ArrayPointerSlicing)
     {
         allParams     = parent;

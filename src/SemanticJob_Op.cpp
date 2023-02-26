@@ -586,9 +586,14 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
         symMatchContext.parameters.push_back(param);
 
     // Generic string parameter
-    AstNode*      genericParameters = nullptr;
-    AstNode       parameters;
-    AstNode       literal;
+    AstNode* genericParameters = nullptr;
+    AstNode  parameters;
+    AstNode  literal;
+#ifdef SWAG_TRACK_NODES
+    g_AllNodes[parameters.trackNodeIndex] = nullptr;
+    g_AllNodes[literal.trackNodeIndex]    = nullptr;
+#endif
+
     ComputedValue cValue;
     parameters.flags      = 0;
     parameters.sourceFile = left->sourceFile;
@@ -715,12 +720,16 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
                         {
                             varNode->assignment = Ast::clone(makePtrL, varNode);
                             Ast::removeFromParent(makePtrL);
+                            varNode->allocateExtension(ExtensionKind::Owner);
+                            varNode->extension->owner->nodesToFree.push_back(makePtrL);
                         }
                         else if (makePtrL->typeInfo->isPointerNull())
                         {
                             nodeCall->flags &= ~AST_VALUE_COMPUTED;
                             makePtrL->flags |= AST_NO_BYTECODE;
                             Ast::removeFromParent(makePtrL);
+                            varNode->allocateExtension(ExtensionKind::Owner);
+                            varNode->extension->owner->nodesToFree.push_back(makePtrL);
                         }
                         else
                         {

@@ -424,12 +424,16 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 {
                     varNode->assignment = Ast::clone(makePtrL, varNode);
                     Ast::removeFromParent(makePtrL);
+                    varNode->allocateExtension(ExtensionKind::Owner);
+                    varNode->extension->owner->nodesToFree.push_back(makePtrL);
                 }
                 else if (makePtrL->typeInfo->isPointerNull())
                 {
                     nodeCall->flags &= ~AST_VALUE_COMPUTED;
                     makePtrL->flags |= AST_NO_BYTECODE;
                     Ast::removeFromParent(makePtrL);
+                    varNode->allocateExtension(ExtensionKind::Owner);
+                    varNode->extension->owner->nodesToFree.push_back(makePtrL);
                 }
                 else
                 {

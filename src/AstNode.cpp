@@ -5,6 +5,26 @@
 #include "ByteCode.h"
 #include "LanguageSpec.h"
 #include "Parser.h"
+#include "ThreadManager.h"
+
+#ifdef SWAG_TRACK_NODES
+VectorNative<AstNode*> g_AllNodes;
+
+AstNode::AstNode()
+{
+    SWAG_ASSERT(g_ThreadMgr.numWorkers == 1);
+    if (g_AllNodes.size() == 817841)
+        int a = 0;
+    trackNodeIndex = g_AllNodes.size();
+    g_AllNodes.push_back(this);
+}
+
+AstNode::~AstNode()
+{
+    if (trackNodeIndex < g_AllNodes.size())
+        g_AllNodes[trackNodeIndex] = nullptr;
+}
+#endif // SWAG_TRACK_NODES
 
 void AstNode::inheritOrFlag(uint64_t flag)
 {

@@ -243,6 +243,7 @@ bool SemanticJob::resolveConditionalOp(SemanticContext* context)
             ifTrue->release();
         }
 
+        expression->release();
         node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
         return true;
     }

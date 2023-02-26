@@ -388,7 +388,8 @@ bool Ast::convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* ass
     auto       symbol = rootScope->symTable.findNoLock(structNode->token.text);
     if (symbol)
     {
-        // Must release struct node, it's useless
+        sourceFile->astRoot->allocateExtension(ExtensionKind::Owner);
+        sourceFile->astRoot->extension->owner->nodesToFree.push_back(structNode);
     }
     else
     {

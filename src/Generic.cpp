@@ -478,6 +478,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     }
 
     // Instantiate generic interfaces
+    structNode->allocateExtension(ExtensionKind::Owner);
     cloneContext.ownerStructScope   = structNode->scope;
     newType->cptRemainingInterfaces = (uint32_t) genericStructType->interfaces.size();
     for (auto itf : genericStructType->interfaces)
@@ -489,6 +490,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
         auto newItf       = itf->declNode->clone(cloneContext);
         typeItf->declNode = newItf;
         newItf->flags |= AST_FROM_GENERIC;
+        structNode->extension->owner->nodesToFree.push_back(newItf);
 
         auto implJob = SemanticJob::newJob(context->job->dependentJob, context->sourceFile, newItf, false);
         structJob->addDependentJob(implJob);

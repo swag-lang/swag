@@ -292,6 +292,11 @@ struct AstNode
         return ((T*) node)->clone(context);
     }
 
+#ifdef SWAG_TRACK_NODES
+    AstNode();
+    ~AstNode();
+#endif
+
     AstNode* clone(CloneContext& context);
     void     releaseChilds();
     void     release();
@@ -444,6 +449,10 @@ struct AstNode
 
     uint32_t doneFlags = 0;
     uint32_t semFlags  = 0;
+
+#ifdef SWAG_TRACK_NODES
+    int trackNodeIndex = 0;
+#endif
 };
 
 struct AstVarDecl : public AstNode
@@ -997,3 +1006,7 @@ struct AstLiteral : public AstNode
 
     LiteralType literalType = (LiteralType) 0;
 };
+
+#ifdef SWAG_TRACK_NODES
+extern VectorNative<AstNode*> g_AllNodes;
+#endif

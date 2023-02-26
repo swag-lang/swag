@@ -175,6 +175,10 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node)
 
                 // opSlice
                 AstNode tmpNode;
+#ifdef SWAG_TRACK_NODES
+                g_AllNodes[tmpNode.trackNodeIndex] = nullptr;
+#endif
+
                 memset(&tmpNode, 0, sizeof(AstNode));
                 tmpNode.typeInfo = g_TypeMgr->typeInfoU64;
                 params.push_back(&tmpNode);
@@ -349,6 +353,8 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
 
     SWAG_CHECK(checkIsConstExpr(context, expression->flags & AST_VALUE_COMPUTED, expression));
 
+    node->allocateExtension(ExtensionKind::Owner);
+    node->extension->owner->nodesToFree.append(node->childs);
     node->childs.clear();
 
     if (!expression->computedValue->text.empty())

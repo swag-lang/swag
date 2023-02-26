@@ -209,11 +209,13 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
                     SWAG_VERIFY(inTypeVarDecl, error(tokenName, Err(Syn0191)));
                     SWAG_VERIFY(!isConst, error(constToken, Err(Syn0192)));
 
-                    namedParam        = Ast::newNode<AstNode>(this, AstNodeKind::Identifier, sourceFile, nullptr);
+                    namedParam        = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, nullptr);
                     namedParam->token = tokenName;
                     SWAG_CHECK(eatToken());
                     curIsAlone  = false;
                     thisIsAType = false;
+                    params->allocateExtension(ExtensionKind::Owner);
+                    params->extension->owner->nodesToFree.push_back(namedParam);
                 }
             }
             else

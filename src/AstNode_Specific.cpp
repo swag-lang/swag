@@ -169,14 +169,8 @@ void AstNode::releaseChilds()
     childs.release();
 }
 
-// extern VectorNative<AstNode*> ggg;
-
 void AstNode::release()
 {
-    // auto it = ggg.find(this);
-    // if (it != -1)
-    //   ggg[it] = nullptr;
-
 #ifdef SWAG_STATS
     g_Stats.releaseNodes++;
 #endif

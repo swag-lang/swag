@@ -1522,6 +1522,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
                 }
             }
 
+            cloneFront->release();
             leftNode->release();
         }
 

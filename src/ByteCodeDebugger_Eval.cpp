@@ -19,6 +19,9 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
 
     // Syntax
     AstNode parent;
+#ifdef SWAG_TRACK_NODES
+    g_AllNodes[parent.trackNodeIndex] = nullptr;
+#endif
     parent.ownerScope = context->debugCxtIp->node ? context->debugCxtIp->node->ownerScope : nullptr;
     parent.ownerFct   = CastAst<AstFuncDecl>(context->debugCxtBc->node, AstNodeKind::FuncDecl);
     parent.sourceFile = sourceFile;

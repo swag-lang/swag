@@ -60,7 +60,6 @@ namespace Ast
         g_Stats.numNodes++;
         g_Stats.memNodes += Allocator::alignSize(sizeof(T));
 #endif
-
         return node;
     }
 

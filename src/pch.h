@@ -36,6 +36,7 @@ using namespace std;
 #ifdef SWAG_DEV_MODE
 #define SWAG_CHECK_MEMORY
 #define SWAG_HAS_ASSERT
+//#define SWAG_TRACK_NODES
 #endif
 
 ////////////////////////////
