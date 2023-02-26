@@ -1916,7 +1916,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
                 if (childJ->extMisc()->castOffset != newOffset)
                 {
                     childJ->extMisc()->castOffset = newOffset;
-                    hasChanged                          = true;
+                    hasChanged                    = true;
                 }
             }
 
@@ -2162,8 +2162,8 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
                     {
                         fromNode->allocateExtension(ExtensionKind::Misc);
                         fromNode->extMisc()->castOffset = it.offset;
-                        fromNode->castedTypeInfo              = fromNode->typeInfo;
-                        fromNode->typeInfo                    = toType;
+                        fromNode->castedTypeInfo        = fromNode->typeInfo;
+                        fromNode->typeInfo              = toType;
                     }
 
                     continue;
@@ -2176,8 +2176,8 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
 
                 fromNode->allocateExtension(ExtensionKind::Misc);
                 fromNode->extMisc()->castOffset = it.offset;
-                fromNode->castedTypeInfo              = fromNode->typeInfo;
-                fromNode->typeInfo                    = toType;
+                fromNode->castedTypeInfo        = fromNode->typeInfo;
+                fromNode->typeInfo              = toType;
                 continue;
             }
         }
@@ -2378,8 +2378,8 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
                 fromNode->allocateExtension(ExtensionKind::Misc);
                 fromNode->extMisc()->castOffset = itfRef.fieldOffset;
                 fromNode->extMisc()->castItf    = itfRef.itf;
-                fromNode->castedTypeInfo              = fromType;
-                fromNode->typeInfo                    = toTypeItf;
+                fromNode->castedTypeInfo        = fromType;
+                fromNode->typeInfo              = toTypeItf;
             }
 
             return true;

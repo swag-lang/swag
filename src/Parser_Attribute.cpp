@@ -10,8 +10,8 @@ bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
 {
     auto attrNode = Ast::newNode<AstAttrDecl>(this, AstNodeKind::AttrDecl, sourceFile, parent);
     attrNode->allocateExtension(ExtensionKind::Semantic);
-    attrNode->extension->semantic->semanticBeforeFct = SemanticJob::preResolveAttrDecl;
-    attrNode->semanticFct                            = SemanticJob::resolveAttrDecl;
+    attrNode->extSemantic()->semanticBeforeFct = SemanticJob::preResolveAttrDecl;
+    attrNode->semanticFct                      = SemanticJob::resolveAttrDecl;
     if (result)
         *result = attrNode;
 
@@ -177,8 +177,8 @@ bool Parser::doAttrUse(AstNode* parent, AstNode** result, bool single)
     SWAG_VERIFY(!attrBlockNode->childs.empty(), error(attrBlockNode, Err(Syn0159)));
     auto back = attrBlockNode->childs.back();
     back->allocateExtension(ExtensionKind::Semantic);
-    SWAG_ASSERT(!back->extension->semantic->semanticAfterFct);
-    back->extension->semantic->semanticAfterFct = SemanticJob::resolveAttrUse;
+    SWAG_ASSERT(!back->extSemantic()->semanticAfterFct);
+    back->extSemantic()->semanticAfterFct = SemanticJob::resolveAttrUse;
 
     return true;
 }

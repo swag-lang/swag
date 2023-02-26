@@ -11,7 +11,7 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
     auto enumNode         = Ast::newNode<AstEnum>(this, AstNodeKind::EnumDecl, sourceFile, parent);
     enumNode->semanticFct = SemanticJob::resolveEnum;
     enumNode->allocateExtension(ExtensionKind::Semantic);
-    enumNode->extension->semantic->semanticAfterFct = SemanticJob::sendCompilerMsgTypeDecl;
+    enumNode->extSemantic()->semanticAfterFct = SemanticJob::sendCompilerMsgTypeDecl;
     if (result)
         *result = enumNode;
 

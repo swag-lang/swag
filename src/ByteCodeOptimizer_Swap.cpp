@@ -80,7 +80,7 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
 
         for (auto it : context->mapInstInst)
         {
-            auto ip = it.first;
+            auto ip  = it.first;
             auto ipn = it.second;
 
             if (ipn == ip + 1)
@@ -148,7 +148,7 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
                 ip++;
             }
 
-            restart = true;
+            restart                       = true;
             context->passHasDoneSomething = true;
             break;
         }

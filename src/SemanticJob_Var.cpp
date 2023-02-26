@@ -92,19 +92,19 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
 void SemanticJob::setVarDeclResolve(AstVarDecl* varNode)
 {
     varNode->allocateExtension(ExtensionKind::Semantic);
-    varNode->extension->semantic->semanticBeforeFct = SemanticJob::resolveVarDeclBefore;
-    varNode->extension->semantic->semanticAfterFct  = SemanticJob::resolveVarDeclAfter;
+    varNode->extSemantic()->semanticBeforeFct = SemanticJob::resolveVarDeclBefore;
+    varNode->extSemantic()->semanticAfterFct  = SemanticJob::resolveVarDeclAfter;
 
     if (varNode->assignment)
     {
         varNode->assignment->allocateExtension(ExtensionKind::Semantic);
-        varNode->assignment->extension->semantic->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
+        varNode->assignment->extSemantic()->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
     }
 
     if (varNode->assignment && varNode->type)
     {
         varNode->type->allocateExtension(ExtensionKind::Semantic);
-        varNode->type->extension->semantic->semanticAfterFct = SemanticJob::resolveVarDeclAfterType;
+        varNode->type->extSemantic()->semanticAfterFct = SemanticJob::resolveVarDeclAfterType;
     }
 }
 

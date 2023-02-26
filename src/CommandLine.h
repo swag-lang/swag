@@ -78,15 +78,15 @@ struct CommandLine
     bool errorSyntaxColors     = true;
 
     // Output
-    Utf8 buildCfg            = "fast-debug";
-    Utf8 buildCfgDebug       = "default";
-    Utf8 buildCfgSafety      = "default";
-    Utf8 buildCfgInlineBC    = "default";
-    Utf8 buildCfgOptimBC     = "default";
-    Utf8 buildCfgOptimSpeed  = "default";
-    Utf8 buildCfgOptimSize   = "default";
-    Utf8 buildCfgStackTrace  = "default";
-    Utf8 buildCfgDebugAlloc  = "default";
+    Utf8 buildCfg           = "fast-debug";
+    Utf8 buildCfgDebug      = "default";
+    Utf8 buildCfgSafety     = "default";
+    Utf8 buildCfgInlineBC   = "default";
+    Utf8 buildCfgOptimBC    = "default";
+    Utf8 buildCfgOptimSpeed = "default";
+    Utf8 buildCfgOptimSize  = "default";
+    Utf8 buildCfgStackTrace = "default";
+    Utf8 buildCfgDebugAlloc = "default";
 
     BackendTarget target;
 

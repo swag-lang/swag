@@ -479,7 +479,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 SWAG_ASSERT(nodeCall->extMisc()->resolvedUserOpSymbolOverload);
                 SWAG_ASSERT(nodeCall->castedTypeInfo);
                 nodeCall->extMisc()->resolvedUserOpSymbolOverload = nullptr;
-                nodeCall->castedTypeInfo                                = nullptr;
+                nodeCall->castedTypeInfo                          = nullptr;
 
                 auto varNode = Ast::newVarDecl(sourceFile, Fmt("__2tmp_%d", g_UniqueID.fetch_add(1)), identifier);
                 varNode->inheritTokenLocation(nodeCall);

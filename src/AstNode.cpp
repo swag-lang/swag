@@ -286,7 +286,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
     switch (extensionKind)
     {
     case ExtensionKind::ByteCode:
-        if (extension->bytecode)
+        if (extByteCode())
             return;
         extension->bytecode = Allocator::alloc<ExtensionByteCode>();
 #ifdef SWAG_STATS
@@ -295,7 +295,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
         break;
 
     case ExtensionKind::Semantic:
-        if (extension->semantic)
+        if (extSemantic())
             return;
         extension->semantic = Allocator::alloc<ExtensionSemantic>();
 #ifdef SWAG_STATS
@@ -304,7 +304,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
         break;
 
     case ExtensionKind::Owner:
-        if (extension->owner)
+        if (extOwner())
             return;
         extension->owner = Allocator::alloc<ExtensionOwner>();
 #ifdef SWAG_STATS
@@ -386,8 +386,8 @@ void AstNode::setPassThrough()
     {
         if (extension->semantic)
         {
-            extension->semantic->semanticAfterFct  = nullptr;
-            extension->semantic->semanticBeforeFct = nullptr;
+            extSemantic()->semanticAfterFct  = nullptr;
+            extSemantic()->semanticBeforeFct = nullptr;
         }
 
         if (extension->bytecode)

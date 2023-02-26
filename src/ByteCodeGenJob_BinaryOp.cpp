@@ -457,7 +457,7 @@ bool ByteCodeGenJob::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
         // when evaluating the binary expression
         // :BinOpAndOr
         left->extMisc()->additionalRegisterRC = left->resultRegisterRC;
-        left->resultRegisterRC.cannotFree           = true;
+        left->resultRegisterRC.cannotFree     = true;
 
         // We try to share the result register with other 'and'/'or' to give optimization opportunities when we
         // have more than one test in a row.
@@ -518,7 +518,7 @@ bool ByteCodeGenJob::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
     if (left->extMisc()->additionalRegisterRC.size() == 0)
     {
         left->extMisc()->additionalRegisterRC = left->resultRegisterRC;
-        left->resultRegisterRC.cannotFree           = true;
+        left->resultRegisterRC.cannotFree     = true;
 
         if (binNode->childs.size() == 2)
         {

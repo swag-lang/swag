@@ -1094,7 +1094,7 @@ bool ByteCodeGenJob::emitLambdaCall(ByteCodeGenContext* context)
     SWAG_CHECK(emitIdentifier(context));
     node->allocateExtension(ExtensionKind::Misc);
     node->extMisc()->additionalRegisterRC = node->resultRegisterRC;
-    auto allParams                              = node->childs.empty() ? nullptr : node->childs.back();
+    auto allParams                        = node->childs.empty() ? nullptr : node->childs.back();
     SWAG_ASSERT(!allParams || allParams->kind == AstNodeKind::FuncCallParams);
 
     // A closure is the pointer to the variable, not the function address

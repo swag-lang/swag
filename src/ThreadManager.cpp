@@ -371,7 +371,7 @@ Job* ThreadManager::getJob()
             return job;
         }
     }
-    
+
     return nullptr;
 }
 

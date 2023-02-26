@@ -9,8 +9,8 @@ AstInline* Ast::newInline(SourceFile* sourceFile, AstNode* parent, Parser* parse
 {
     auto node = Ast::newNode<AstInline>(parser, AstNodeKind::Inline, sourceFile, parent);
     node->allocateExtension(ExtensionKind::Semantic);
-    node->extension->semantic->semanticAfterFct  = SemanticJob::resolveInlineAfter;
-    node->extension->semantic->semanticBeforeFct = SemanticJob::resolveInlineBefore;
+    node->extSemantic()->semanticAfterFct  = SemanticJob::resolveInlineAfter;
+    node->extSemantic()->semanticBeforeFct = SemanticJob::resolveInlineBefore;
     node->allocateExtension(ExtensionKind::ByteCode);
     node->extension->bytecode->byteCodeBeforeFct = ByteCodeGenJob::emitInlineBefore;
     node->byteCodeFct                            = ByteCodeGenJob::emitInline;
@@ -99,9 +99,9 @@ AstIdentifierRef* Ast::newIdentifierRef(SourceFile* sourceFile, AstNode* parent,
 {
     auto node = Ast::newNode<AstIdentifierRef>(parser, AstNodeKind::IdentifierRef, sourceFile, parent);
     node->allocateExtension(ExtensionKind::Semantic);
-    node->extension->semantic->semanticBeforeFct = SemanticJob::preResolveIdentifierRef;
-    node->semanticFct                            = SemanticJob::resolveIdentifierRef;
-    node->byteCodeFct                            = ByteCodeGenJob::emitIdentifierRef;
+    node->extSemantic()->semanticBeforeFct = SemanticJob::preResolveIdentifierRef;
+    node->semanticFct                      = SemanticJob::resolveIdentifierRef;
+    node->byteCodeFct                      = ByteCodeGenJob::emitIdentifierRef;
     return node;
 }
 

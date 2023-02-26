@@ -208,7 +208,7 @@ struct SemanticJob : public Job
 {
     JobResult execute() override;
 
-    void release() override;
+    void                release() override;
     static SemanticJob* newJob(Job* dependentJob, SourceFile* sourceFile, AstNode* rootNode, bool run);
 
     static bool valueEqualsTo(const ComputedValue* value, AstNode* node);

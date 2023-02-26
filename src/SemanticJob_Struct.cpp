@@ -291,8 +291,8 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
             case MatchResult::MismatchThrow:
             {
                 Diagnostic diag{child, child->token, Fmt(Err(Err0652), child->token.ctext(), typeBaseInterface->name.c_str())};
-                diag.hint = Hnt(Hnt0115);
-                auto note = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0002));
+                diag.hint       = Hnt(Hnt0115);
+                auto note       = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0002));
                 note->showRange = false;
                 return context->report(diag, note);
             }
@@ -300,7 +300,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
             default:
             {
                 Diagnostic diag{child, child->token, Fmt(Err(Err0652), child->token.ctext(), typeBaseInterface->name.c_str())};
-                auto note = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0002));
+                auto       note = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0002));
                 note->showRange = false;
                 return context->report(diag, note);
             }

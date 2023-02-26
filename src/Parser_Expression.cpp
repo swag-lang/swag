@@ -80,8 +80,8 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
 
             arrayNode->upperBound = Ast::newNode<AstNode>(this, AstNodeKind::AutoSlicingUp, sourceFile, arrayNode, 0);
             arrayNode->array->allocateExtension(ExtensionKind::Semantic);
-            SWAG_ASSERT(!arrayNode->array->extension->semantic->semanticAfterFct);
-            arrayNode->array->extension->semantic->semanticAfterFct = SemanticJob::resolveArrayPointerSlicingUpperBound;
+            SWAG_ASSERT(!arrayNode->array->extSemantic()->semanticAfterFct);
+            arrayNode->array->extSemantic()->semanticAfterFct = SemanticJob::resolveArrayPointerSlicingUpperBound;
             arrayNode->upperBound->flags |= AST_GENERATED;
         }
 
@@ -1032,7 +1032,7 @@ bool Parser::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
 
             node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
             node->allocateExtension(ExtensionKind::Semantic);
-            node->extension->semantic->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
+            node->extSemantic()->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
 
             AstNode* funcNode;
             SWAG_CHECK(doFuncDecl(node, &funcNode, TokenId::CompilerGeneratedRunExp));
@@ -1170,8 +1170,8 @@ bool Parser::doExpressionListTuple(AstNode* parent, AstNode** result)
                     SWAG_CHECK(doExpression(initNode, EXPR_FLAG_NONE, &paramExpression));
 
                 paramExpression->allocateExtension(ExtensionKind::Misc);
-                paramExpression->extMisc()->isNamed = namedExpression;
-                paramExpression->token.startLocation      = namedExpression->token.startLocation;
+                paramExpression->extMisc()->isNamed  = namedExpression;
+                paramExpression->token.startLocation = namedExpression->token.startLocation;
                 paramExpression->allocateExtension(ExtensionKind::Owner);
                 paramExpression->extension->owner->nodesToFree.push_back(namedToFree);
             }
@@ -1552,7 +1552,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
             varNode->token.startLocation = leftNode->childs.front()->token.startLocation;
             varNode->token.endLocation   = leftNode->childs.back()->token.endLocation;
             varNode->allocateExtension(ExtensionKind::Semantic);
-            varNode->extension->semantic->semanticAfterFct = SemanticJob::resolveTupleUnpackBefore;
+            varNode->extSemantic()->semanticAfterFct = SemanticJob::resolveTupleUnpackBefore;
 
             // And reference that variable, in the form value = __tmp_0.item?
             int idx = 0;
@@ -1596,7 +1596,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
 
             auto front = affectNode->childs.front();
             front->allocateExtension(ExtensionKind::Semantic);
-            front->extension->semantic->semanticAfterFct = SemanticJob::resolveAfterAffectLeft;
+            front->extSemantic()->semanticAfterFct = SemanticJob::resolveAfterAffectLeft;
 
             if (affectNode->token.id == TokenId::SymEqual)
                 SWAG_CHECK(doMoveExpression(affectNode->token, affectNode));

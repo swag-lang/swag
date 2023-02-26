@@ -30,9 +30,9 @@ bool Parser::doAlias(AstNode* parent, AstNode** result)
     if (expr->kind == AstNodeKind::TypeExpression || expr->kind == AstNodeKind::TypeLambda || expr->kind == AstNodeKind::TypeClosure)
     {
         node->allocateExtension(ExtensionKind::Semantic);
-        node->extension->semantic->semanticBeforeFct = SemanticJob::resolveTypeAliasBefore;
-        node->semanticFct                            = SemanticJob::resolveTypeAlias;
-        node->resolvedSymbolName                     = currentScope->symTable.registerSymbolName(context, node, SymbolKind::TypeAlias);
+        node->extSemantic()->semanticBeforeFct = SemanticJob::resolveTypeAliasBefore;
+        node->semanticFct                      = SemanticJob::resolveTypeAlias;
+        node->resolvedSymbolName               = currentScope->symTable.registerSymbolName(context, node, SymbolKind::TypeAlias);
     }
     else
     {
@@ -328,7 +328,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
 
                     // Used to automatically solve enums
                     typeExpr->allocateExtension(ExtensionKind::Semantic);
-                    typeExpr->extension->semantic->semanticAfterFct = SemanticJob::resolveVarDeclAfterType;
+                    typeExpr->extSemantic()->semanticAfterFct = SemanticJob::resolveVarDeclAfterType;
 
                     // If we did not have specified a name, then this was not a type, but a name
                     // ex: func(x = 1)
@@ -386,7 +386,7 @@ bool Parser::doTupleOrAnonymousType(AstNode* parent, AstNode** result, bool isCo
     structNode->flags |= AST_PRIVATE;
     structNode->originalParent = parent;
     structNode->allocateExtension(ExtensionKind::Semantic);
-    structNode->extension->semantic->semanticBeforeFct = SemanticJob::preResolveGeneratedStruct;
+    structNode->extSemantic()->semanticBeforeFct = SemanticJob::preResolveGeneratedStruct;
 
     if (anonymousStruct)
         structNode->specFlags |= AST_SPEC_STRUCTDECL_ANONYMOUS;
@@ -396,7 +396,7 @@ bool Parser::doTupleOrAnonymousType(AstNode* parent, AstNode** result, bool isCo
     auto contentNode    = Ast::newNode<AstNode>(this, AstNodeKind::TupleContent, sourceFile, structNode);
     structNode->content = contentNode;
     contentNode->allocateExtension(ExtensionKind::Semantic);
-    contentNode->extension->semantic->semanticBeforeFct = SemanticJob::preResolveStructContent;
+    contentNode->extSemantic()->semanticBeforeFct = SemanticJob::preResolveStructContent;
 
     // Name
     Utf8 name = sourceFile->scopeFile->name + "_tuple_";
@@ -775,10 +775,10 @@ bool Parser::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeVarD
         name += Fmt("%d", g_UniqueID.fetch_add(1));
         alias->token.text = move(name);
         alias->allocateExtension(ExtensionKind::Semantic);
-        alias->extension->semantic->semanticBeforeFct = SemanticJob::resolveTypeAliasBefore;
-        alias->semanticFct                            = SemanticJob::resolveTypeAlias;
-        alias->resolvedSymbolName                     = currentScope->symTable.registerSymbolName(context, alias, SymbolKind::TypeAlias);
-        node->identifier                              = Ast::newIdentifierRef(sourceFile, alias->token.text, node, this);
+        alias->extSemantic()->semanticBeforeFct = SemanticJob::resolveTypeAliasBefore;
+        alias->semanticFct                      = SemanticJob::resolveTypeAlias;
+        alias->resolvedSymbolName               = currentScope->symTable.registerSymbolName(context, alias, SymbolKind::TypeAlias);
+        node->identifier                        = Ast::newIdentifierRef(sourceFile, alias->token.text, node, this);
         SWAG_CHECK(doLambdaClosureType(alias));
 
         node->identifier->allocateExtension(ExtensionKind::Misc);

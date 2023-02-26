@@ -367,7 +367,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             if (paramNode->assignment && paramNode->type)
             {
                 paramNode->type->allocateExtension(ExtensionKind::Semantic);
-                paramNode->type->extension->semantic->semanticAfterFct = SemanticJob::resolveVarDeclAfterType;
+                paramNode->type->extSemantic()->semanticAfterFct = SemanticJob::resolveVarDeclAfterType;
             }
         }
 
@@ -563,7 +563,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     auto funcNode         = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent, 4);
     funcNode->semanticFct = SemanticJob::resolveFuncDecl;
     funcNode->allocateExtension(ExtensionKind::Semantic);
-    funcNode->extension->semantic->semanticAfterFct = SemanticJob::sendCompilerMsgFuncDecl;
+    funcNode->extSemantic()->semanticAfterFct = SemanticJob::sendCompilerMsgFuncDecl;
     if (result)
         *result = funcNode;
 
@@ -886,7 +886,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
 
         newScope->owner = resStmt;
         resStmt->allocateExtension(ExtensionKind::Semantic);
-        resStmt->extension->semantic->semanticAfterFct = SemanticJob::resolveScopedStmtAfter;
+        resStmt->extSemantic()->semanticAfterFct = SemanticJob::resolveScopedStmtAfter;
         resStmt->allocateExtension(ExtensionKind::ByteCode);
         resStmt->extension->bytecode->byteCodeAfterFct = ByteCodeGenJob::emitLeaveScope;
     }

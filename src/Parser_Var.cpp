@@ -181,7 +181,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
         orgVarNode->token.startLocation = leftNode->childs.front()->token.startLocation;
         orgVarNode->token.endLocation   = leftNode->childs.back()->token.endLocation;
         orgVarNode->allocateExtension(ExtensionKind::Semantic);
-        orgVarNode->extension->semantic->semanticAfterFct = SemanticJob::resolveTupleUnpackBeforeVar;
+        orgVarNode->extSemantic()->semanticAfterFct = SemanticJob::resolveTupleUnpackBeforeVar;
 
         if (currentScope->isGlobalOrImpl())
             SWAG_CHECK(currentScope->symTable.registerSymbolName(context, orgVarNode, SymbolKind::Variable));

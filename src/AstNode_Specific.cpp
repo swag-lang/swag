@@ -79,36 +79,33 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
 
     semanticFct = from->semanticFct;
     byteCodeFct = from->byteCodeFct;
-    if (from->extension)
+    if (from->extMisc())
     {
-        if (from->extMisc())
-        {
-            allocateExtension(ExtensionKind::Misc);
-            extMisc()->resolvedUserOpSymbolOverload = from->extMisc()->resolvedUserOpSymbolOverload;
-            extMisc()->collectTypeInfo              = from->extMisc()->collectTypeInfo;
-            extMisc()->exportNode                   = from->extMisc()->exportNode;
-            extMisc()->castOffset                   = from->extMisc()->castOffset;
-            extMisc()->castItf                      = from->extMisc()->castItf;
-            extMisc()->stackOffset                  = from->extMisc()->stackOffset;
-            extMisc()->anyTypeSegment               = from->extMisc()->anyTypeSegment;
-            extMisc()->anyTypeOffset                = from->extMisc()->anyTypeOffset;
-            extMisc()->alternativeScopes            = from->extMisc()->alternativeScopes;
-            extMisc()->isNamed                      = from->extMisc()->isNamed;
-        }
+        allocateExtension(ExtensionKind::Misc);
+        extMisc()->resolvedUserOpSymbolOverload = from->extMisc()->resolvedUserOpSymbolOverload;
+        extMisc()->collectTypeInfo              = from->extMisc()->collectTypeInfo;
+        extMisc()->exportNode                   = from->extMisc()->exportNode;
+        extMisc()->castOffset                   = from->extMisc()->castOffset;
+        extMisc()->castItf                      = from->extMisc()->castItf;
+        extMisc()->stackOffset                  = from->extMisc()->stackOffset;
+        extMisc()->anyTypeSegment               = from->extMisc()->anyTypeSegment;
+        extMisc()->anyTypeOffset                = from->extMisc()->anyTypeOffset;
+        extMisc()->alternativeScopes            = from->extMisc()->alternativeScopes;
+        extMisc()->isNamed                      = from->extMisc()->isNamed;
+    }
 
-        if (from->extension->semantic)
-        {
-            allocateExtension(ExtensionKind::Semantic);
-            extension->semantic->semanticBeforeFct = from->extension->semantic->semanticBeforeFct;
-            extension->semantic->semanticAfterFct  = from->extension->semantic->semanticAfterFct;
-        }
+    if (from->extSemantic())
+    {
+        allocateExtension(ExtensionKind::Semantic);
+        extSemantic()->semanticBeforeFct = from->extSemantic()->semanticBeforeFct;
+        extSemantic()->semanticAfterFct  = from->extSemantic()->semanticAfterFct;
+    }
 
-        if (from->extension->bytecode)
-        {
-            allocateExtension(ExtensionKind::ByteCode);
-            extByteCode()->byteCodeBeforeFct = from->extension->bytecode->byteCodeBeforeFct;
-            extByteCode()->byteCodeAfterFct  = from->extension->bytecode->byteCodeAfterFct;
-        }
+    if (from->extByteCode())
+    {
+        allocateExtension(ExtensionKind::ByteCode);
+        extByteCode()->byteCodeBeforeFct = from->extByteCode()->byteCodeBeforeFct;
+        extByteCode()->byteCodeAfterFct  = from->extByteCode()->byteCodeAfterFct;
     }
 
     if (from->computedValue)
@@ -178,34 +175,32 @@ void AstNode::release()
     if (flags & AST_NEED_SCOPE)
         ownerScope->release();
 
-    if (extension)
+    if (extByteCode())
     {
-        if (extension->bytecode)
-        {
-            if (extension->bytecode->bc)
-                extension->bytecode->bc->release();
-            Allocator::free<AstNode::ExtensionByteCode>(extension->bytecode);
-        }
-
-        if (extension->semantic)
-        {
-            Allocator::free<AstNode::ExtensionSemantic>(extension->semantic);
-        }
-
-        if (extension->owner)
-        {
-            for (auto c : extension->owner->nodesToFree)
-                c->release();
-            Allocator::free<AstNode::ExtensionOwner>(extension->owner);
-        }
-
-        if (extMisc())
-        {
-            Allocator::free<AstNode::ExtensionMisc>(extMisc());
-        }
-
-        Allocator::free<AstNode::Extension>(extension);
+        if (extByteCode()->bc)
+            extByteCode()->bc->release();
+        Allocator::free<AstNode::ExtensionByteCode>(extByteCode());
     }
+
+    if (extSemantic())
+    {
+        Allocator::free<AstNode::ExtensionSemantic>(extSemantic());
+    }
+
+    if (extOwner())
+    {
+        for (auto c : extOwner()->nodesToFree)
+            c->release();
+        Allocator::free<AstNode::ExtensionOwner>(extOwner());
+    }
+
+    if (extMisc())
+    {
+        Allocator::free<AstNode::ExtensionMisc>(extMisc());
+    }
+
+    if (extension)
+        Allocator::free<AstNode::Extension>(extension);
 
     // Prerelease, if we need to childs to be alive
     switch (kind)
@@ -930,7 +925,7 @@ AstNode* AstBreakContinue::clone(CloneContext& context)
         {
             auto newNode = Ast::newNode<AstSubstBreakContinue>(nullptr, AstNodeKind::SubstBreakContinue, sourceFile, context.parent);
             newNode->allocateExtension(ExtensionKind::Semantic);
-            newNode->extension->semantic->semanticBeforeFct = SemanticJob::preResolveSubstBreakContinue;
+            newNode->extSemantic()->semanticBeforeFct = SemanticJob::preResolveSubstBreakContinue;
 
             CloneContext cloneContext = context;
             cloneContext.replaceTokens.clear();
