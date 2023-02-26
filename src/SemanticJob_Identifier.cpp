@@ -524,6 +524,8 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 // We want to export the original parameter, not the temporary variable reference
                 newParam->allocateExtension(ExtensionKind::Misc);
                 newParam->extension->misc->exportNode = nodeCall;
+                newParam->allocateExtension(ExtensionKind::Owner);
+                newParam->extension->owner->nodesToFree.push_back(nodeCall);
 
                 // Add the 2 nodes to the semantic
                 context->job->nodes.push_back(newParam);

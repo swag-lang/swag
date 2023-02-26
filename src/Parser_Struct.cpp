@@ -631,6 +631,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             typeNode->specFlags |= AST_SPEC_TYPELAMBDA_CANTHROW;
         }
 
+        funcNode->release();
         break;
     }
 

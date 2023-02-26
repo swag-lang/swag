@@ -483,6 +483,10 @@ bool Ast::convertStructParamsToTmpVar(SemanticContext* context, AstIdentifier* i
 
     // And make a reference to that variable
     auto identifierRef = identifier->identifierRef();
+
+    identifierRef->allocateExtension(ExtensionKind::Owner);
+    for (auto c : identifierRef->childs)
+        identifierRef->extension->owner->nodesToFree.push_back(c);
     identifierRef->childs.clear();
     auto idNode = Ast::newIdentifier(sourceFile, varNode->token.text, identifierRef, identifierRef);
     idNode->flags |= AST_R_VALUE | AST_TRANSIENT;

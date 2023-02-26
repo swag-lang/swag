@@ -169,8 +169,14 @@ void AstNode::releaseChilds()
     childs.release();
 }
 
+// extern VectorNative<AstNode*> ggg;
+
 void AstNode::release()
 {
+    // auto it = ggg.find(this);
+    // if (it != -1)
+    //   ggg[it] = nullptr;
+
 #ifdef SWAG_STATS
     g_Stats.releaseNodes++;
 #endif
@@ -184,12 +190,13 @@ void AstNode::release()
         {
             if (extension->bytecode->bc)
                 extension->bytecode->bc->release();
-
             Allocator::free<AstNode::ExtensionByteCode>(extension->bytecode);
         }
 
         if (extension->semantic)
+        {
             Allocator::free<AstNode::ExtensionSemantic>(extension->semantic);
+        }
 
         if (extension->owner)
         {
@@ -199,7 +206,9 @@ void AstNode::release()
         }
 
         if (extension->misc)
+        {
             Allocator::free<AstNode::ExtensionMisc>(extension->misc);
+        }
 
         Allocator::free<AstNode::Extension>(extension);
     }

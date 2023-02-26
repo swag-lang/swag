@@ -109,6 +109,8 @@ bool Parser::doCompilerMixin(AstNode* parent, AstNode** result)
             return error(token, Fmt(Err(Syn0016), token.ctext()));
         SWAG_VERIFY(token.id != TokenId::SymRightCurly, error(token, Err(Syn0015)));
 
+        node->allocateExtension(ExtensionKind::Owner);
+
         AstNode* stmt;
         while (token.id != TokenId::SymRightCurly)
         {
@@ -117,6 +119,7 @@ bool Parser::doCompilerMixin(AstNode* parent, AstNode** result)
             SWAG_CHECK(eatToken(TokenId::SymEqual));
             SWAG_CHECK(doEmbeddedInstruction(nullptr, &stmt));
             node->replaceTokens[tokenId] = stmt;
+            node->extension->owner->nodesToFree.push_back(stmt);
             if (token.id != TokenId::SymRightCurly)
                 SWAG_CHECK(eatSemiCol("'#mixin' replacement statement"));
         }

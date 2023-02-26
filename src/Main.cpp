@@ -129,6 +129,13 @@ int main(int argc, const char* argv[])
     profiler();
 #endif
 
+    //extern VectorNative<AstNode*> ggg;
+    //for (int i = ggg.size() - 1; i >= 0; i--)
+    //{
+    //    if (ggg[i])
+    //        int a = 0;
+    //}
+
     // To avoid freeing some stuff, and have a fast exit
     g_Exiting = true;
     OS::exit(g_Workspace->numErrors > 0 ? -1 : 0);

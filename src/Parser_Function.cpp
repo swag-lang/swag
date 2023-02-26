@@ -138,6 +138,8 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
                     return context->report({paramExpression, Fmt(Err(Syn0110), token.ctext())});
                 param->allocateExtension(ExtensionKind::Misc);
                 param->extension->misc->isNamed = paramExpression->childs.front();
+                param->allocateExtension(ExtensionKind::Owner);
+                param->extension->owner->nodesToFree.push_back(paramExpression);
                 SWAG_CHECK(eatToken());
                 SWAG_CHECK(doExpression(param, EXPR_FLAG_PARAMETER));
             }

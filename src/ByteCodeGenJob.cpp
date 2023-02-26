@@ -9,6 +9,17 @@
 #include "LanguageSpec.h"
 #include "Report.h"
 
+void ByteCodeGenJob::release()
+{
+    if (allParamsTmp)
+    {
+        allParamsTmp->childs.clear();
+        allParamsTmp->release();
+    }
+
+    Allocator::free<ByteCodeGenJob>(this);
+}
+
 void ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num)
 {
     rc.clear();

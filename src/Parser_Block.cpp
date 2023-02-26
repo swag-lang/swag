@@ -231,6 +231,7 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
         SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a 'visit' variable name"));
         SWAG_CHECK(checkIsValidVarName(node->expression->childs.back()));
         node->aliasNames.push_back(node->expression->childs.back()->token);
+        node->expression->release();
         while (token.id != TokenId::SymColon)
         {
             auto prevToken = token;
@@ -240,6 +241,7 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
             SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a 'visit' variable name"));
             SWAG_CHECK(checkIsValidVarName(node->expression->childs.back()));
             node->aliasNames.push_back(node->expression->childs.back()->token);
+            node->expression->release();
         }
 
         SWAG_CHECK(eatToken(TokenId::SymColon));
@@ -297,6 +299,7 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
                 SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a 'loop' variable name"));
                 SWAG_CHECK(checkIsValidVarName(node->expression->childs.back()));
                 name = node->expression->childs.back()->token.text;
+                node->expression->release();
                 SWAG_CHECK(eatToken());
                 SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(token, Err(Syn0085)));
                 SWAG_CHECK(doExpression(node, EXPR_FLAG_SIMPLE, &node->expression));

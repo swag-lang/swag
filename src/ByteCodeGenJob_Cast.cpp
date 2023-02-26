@@ -746,7 +746,11 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         // If it has been inlined, then the inline block contains the register we need
         auto back = job->allParamsTmp->childs.back();
         if (back->kind == AstNodeKind::Inline)
+        {
             exprNode->resultRegisterRC = back->resultRegisterRC;
+            exprNode->allocateExtension(ExtensionKind::Owner);
+            exprNode->extension->owner->nodesToFree.push_back(back);
+        }
 
         if (context->node->resultRegisterRC.size())
             exprNode->resultRegisterRC = context->node->resultRegisterRC;

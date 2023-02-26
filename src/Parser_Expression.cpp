@@ -1161,7 +1161,8 @@ bool Parser::doExpressionListTuple(AstNode* parent, AstNode** result)
                 SWAG_VERIFY(paramExpression->kind == AstNodeKind::IdentifierRef, error(paramExpression, Err(Syn0077)));
                 SWAG_CHECK(checkIsSingleIdentifier(paramExpression, "as a tuple field name"));
                 SWAG_CHECK(checkIsValidVarName(paramExpression->childs.back()));
-                auto namedExpression = paramExpression->childs.back();
+                auto namedToFree     = paramExpression;
+                auto namedExpression = namedToFree->childs.back();
                 SWAG_CHECK(eatToken());
                 if (token.id == TokenId::SymLeftCurly)
                     SWAG_CHECK(doExpressionListTuple(initNode, &paramExpression));
@@ -1171,6 +1172,8 @@ bool Parser::doExpressionListTuple(AstNode* parent, AstNode** result)
                 paramExpression->allocateExtension(ExtensionKind::Misc);
                 paramExpression->extension->misc->isNamed = namedExpression;
                 paramExpression->token.startLocation      = namedExpression->token.startLocation;
+                paramExpression->allocateExtension(ExtensionKind::Owner);
+                paramExpression->extension->owner->nodesToFree.push_back(namedToFree);
             }
             else
             {
@@ -1518,6 +1521,8 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
                     Ast::clone(cloneFront, affectNode);
                 }
             }
+
+            leftNode->release();
         }
 
         // Tuple unpacking
@@ -1575,6 +1580,8 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
                 // Force a move between the generated temporary variable and the real var
                 idRef->flags |= AST_FORCE_MOVE;
             }
+
+            leftNode->release();
         }
 
         // One normal simple affectation

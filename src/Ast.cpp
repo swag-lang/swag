@@ -4,8 +4,14 @@
 #include "TypeManager.h"
 #include "Parser.h"
 
+//VectorNative<AstNode*> ggg;
+
 void Ast::initNewNode(AstNode* node, Parser* parser, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent, uint32_t allocChilds = 0)
 {
+    //if (ggg.size() == 137729)
+    //    int a = 0;
+    //ggg.push_back(node);
+
     node->kind       = kind;
     node->parent     = parent;
     node->sourceFile = sourceFile;

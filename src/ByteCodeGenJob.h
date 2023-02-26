@@ -211,11 +211,7 @@ struct ByteCodeGenJob : public Job
 {
     JobResult waitForDependenciesGenerated();
     JobResult execute() override;
-
-    void release() override
-    {
-        Allocator::free<ByteCodeGenJob>(this);
-    }
+    void      release() override;
 
     static void askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCode* caller = nullptr);
     static bool makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDecl, AstNode* forNode);
