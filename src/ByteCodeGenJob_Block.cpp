@@ -248,7 +248,7 @@ bool ByteCodeGenJob::emitInline(ByteCodeGenContext* context)
 
     // Release persistent list of registers (except if mixin, because in that
     // case, the inline node does not own the scope)
-    if (node->extMisc() && !node->extMisc()->registersToRelease.empty())
+    if (node->hasExtMisc() && !node->extMisc()->registersToRelease.empty())
     {
         if (!(node->attributeFlags & ATTRIBUTE_MIXIN))
         {
@@ -1135,7 +1135,7 @@ bool ByteCodeGenJob::computeLeaveScope(ByteCodeGenContext* context, Scope* scope
     }
 
     // Free some registers
-    if (context->node->extMisc())
+    if (context->node->hasExtMisc())
     {
         for (auto r : context->node->extMisc()->registersToRelease)
             freeRegisterRC(context, r);

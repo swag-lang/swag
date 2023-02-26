@@ -335,7 +335,7 @@ static bool dealWithWarning(Diagnostic& diag, Vector<const Diagnostic*>& notes)
         bool retResult = true;
         if (dealWithWarning(attrUse, warnMsg, diag, notes, retResult))
             return retResult;
-        if (attrUse->extOwner())
+        if (attrUse->hasExtOwner())
             attrUse = attrUse->extOwner()->ownerAttrUse;
     }
 

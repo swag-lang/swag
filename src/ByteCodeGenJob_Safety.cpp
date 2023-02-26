@@ -615,7 +615,7 @@ void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exp
     auto r1 = reserveRegisterRC(context);
 
     // :AnyTypeSegment
-    SWAG_ASSERT(exprNode->extMisc());
+    SWAG_ASSERT(exprNode->hasExtMisc());
     SWAG_ASSERT(exprNode->extMisc()->anyTypeSegment);
     emitMakeSegPointer(context, exprNode->extMisc()->anyTypeSegment, exprNode->extMisc()->anyTypeOffset, r0);
 

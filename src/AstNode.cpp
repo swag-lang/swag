@@ -126,7 +126,7 @@ void AstNode::inheritOwnersAndFlags(Parser* parser)
         allocateExtension(ExtensionKind::Owner);
         extOwner()->ownerTryCatchAssume = parser->currentTryCatchAssume;
     }
-    else if (extOwner())
+    else if (hasExtOwner())
     {
         extOwner()->ownerTryCatchAssume = nullptr;
     }
@@ -219,14 +219,14 @@ void AstNode::swap2Childs()
 
 bool AstNode::hasSpecialFuncCall()
 {
-    return extMisc() &&
+    return hasExtMisc() &&
            extMisc()->resolvedUserOpSymbolOverload &&
            extMisc()->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function;
 }
 
 bool AstNode::hasSpecialFuncCall(const Utf8& name)
 {
-    return extMisc() &&
+    return hasExtMisc() &&
            extMisc()->resolvedUserOpSymbolOverload &&
            extMisc()->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function &&
            extMisc()->resolvedUserOpSymbolOverload->symbol->name == name;
@@ -248,7 +248,7 @@ AstNode* AstNode::inSimpleReturn()
 
 bool AstNode::isSpecialFunctionGenerated()
 {
-    if (!extByteCode() || !extByteCode()->bc || !extByteCode()->bc->isCompilerGenerated)
+    if (!hasExtByteCode() || !extByteCode()->bc || !extByteCode()->bc->isCompilerGenerated)
         return false;
     return true;
 }
@@ -286,7 +286,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
     switch (extensionKind)
     {
     case ExtensionKind::ByteCode:
-        if (extByteCode())
+        if (hasExtByteCode())
             return;
         extension->bytecode = Allocator::alloc<ExtensionByteCode>();
 #ifdef SWAG_STATS
@@ -295,7 +295,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
         break;
 
     case ExtensionKind::Semantic:
-        if (extSemantic())
+        if (hasExtSemantic())
             return;
         extension->semantic = Allocator::alloc<ExtensionSemantic>();
 #ifdef SWAG_STATS
@@ -304,7 +304,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
         break;
 
     case ExtensionKind::Owner:
-        if (extOwner())
+        if (hasExtOwner())
             return;
         extension->owner = Allocator::alloc<ExtensionOwner>();
 #ifdef SWAG_STATS
@@ -313,7 +313,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
         break;
 
     default:
-        if (extMisc())
+        if (hasExtMisc())
             return;
         extension->misc = Allocator::alloc<ExtensionMisc>();
 #ifdef SWAG_STATS
@@ -382,13 +382,13 @@ void AstNode::setPassThrough()
 {
     semanticFct = nullptr;
     byteCodeFct = ByteCodeGenJob::emitPassThrough;
-    if (extSemantic())
+    if (hasExtSemantic())
     {
         extSemantic()->semanticAfterFct  = nullptr;
         extSemantic()->semanticBeforeFct = nullptr;
     }
 
-    if (extByteCode())
+    if (hasExtByteCode())
     {
         extByteCode()->byteCodeAfterFct  = nullptr;
         extByteCode()->byteCodeBeforeFct = nullptr;
@@ -609,7 +609,7 @@ Utf8 AstFuncDecl::getCallName()
         }
     }
 
-    SWAG_ASSERT(extByteCode() && extByteCode()->bc);
+    SWAG_ASSERT(hasExtByteCode() && extByteCode()->bc);
     return extByteCode()->bc->getCallName();
 }
 

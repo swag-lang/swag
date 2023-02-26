@@ -88,7 +88,7 @@ bool Ast::convertLiteralTupleToStructVar(SemanticContext* context, TypeInfo* toT
         if (oneChild->kind == AstNodeKind::Identifier)
             oneChild->specFlags |= AST_SPEC_IDENTIFIER_NO_INLINE;
 
-        if (oneChild->extMisc() && oneChild->extMisc()->isNamed)
+        if (oneChild->hasExtMisc() && oneChild->extMisc()->isNamed)
         {
             oneParam->allocateExtension(ExtensionKind::Misc);
             oneParam->extMisc()->isNamed = oneChild->extMisc()->isNamed;
@@ -447,7 +447,7 @@ bool Ast::convertStructParamsToTmpVar(SemanticContext* context, AstIdentifier* i
     auto varNode = Ast::newVarDecl(sourceFile, Fmt("__1tmp_%d", g_UniqueID.fetch_add(1)), varParent);
 
     // Inherit alternative scopes.
-    if (identifier->parent->extMisc())
+    if (identifier->parent->hasExtMisc())
         varNode->addAlternativeScopes(identifier->parent->extMisc()->alternativeScopes);
 
     // If we are in a const declaration, that temporary variable should be a const too...

@@ -69,7 +69,7 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
     else
     {
         auto inst = emitInstruction(context, ByteCodeOp::LocalCall);
-        SWAG_ASSERT(bc || (funcDecl && funcDecl->extByteCode() && funcDecl->extByteCode()->bc));
+        SWAG_ASSERT(bc || (funcDecl && funcDecl->hasExtByteCode() && funcDecl->extByteCode()->bc));
         auto bcReal     = bc ? bc : funcDecl->extByteCode()->bc;
         bcReal->isUsed  = true;
         inst->a.pointer = (uint8_t*) bcReal;

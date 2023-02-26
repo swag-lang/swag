@@ -50,7 +50,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         }
     }
 
-    if (context.ownerTryCatchAssume || (from->extOwner() && from->extOwner()->ownerTryCatchAssume))
+    if (context.ownerTryCatchAssume || (from->hasExtOwner() && from->extOwner()->ownerTryCatchAssume))
     {
         allocateExtension(ExtensionKind::Owner);
         extOwner()->ownerTryCatchAssume = context.ownerTryCatchAssume ? context.ownerTryCatchAssume : from->extOwner()->ownerTryCatchAssume;
@@ -79,7 +79,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
 
     semanticFct = from->semanticFct;
     byteCodeFct = from->byteCodeFct;
-    if (from->extMisc())
+    if (from->hasExtMisc())
     {
         allocateExtension(ExtensionKind::Misc);
         extMisc()->resolvedUserOpSymbolOverload = from->extMisc()->resolvedUserOpSymbolOverload;
@@ -94,14 +94,14 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         extMisc()->isNamed                      = from->extMisc()->isNamed;
     }
 
-    if (from->extSemantic())
+    if (from->hasExtSemantic())
     {
         allocateExtension(ExtensionKind::Semantic);
         extSemantic()->semanticBeforeFct = from->extSemantic()->semanticBeforeFct;
         extSemantic()->semanticAfterFct  = from->extSemantic()->semanticAfterFct;
     }
 
-    if (from->extByteCode())
+    if (from->hasExtByteCode())
     {
         allocateExtension(ExtensionKind::ByteCode);
         extByteCode()->byteCodeBeforeFct = from->extByteCode()->byteCodeBeforeFct;
@@ -175,26 +175,26 @@ void AstNode::release()
     if (flags & AST_NEED_SCOPE)
         ownerScope->release();
 
-    if (extByteCode())
+    if (hasExtByteCode())
     {
         if (extByteCode()->bc)
             extByteCode()->bc->release();
         Allocator::free<AstNode::ExtensionByteCode>(extByteCode());
     }
 
-    if (extSemantic())
+    if (hasExtSemantic())
     {
         Allocator::free<AstNode::ExtensionSemantic>(extSemantic());
     }
 
-    if (extOwner())
+    if (hasExtOwner())
     {
         for (auto c : extOwner()->nodesToFree)
             c->release();
         Allocator::free<AstNode::ExtensionOwner>(extOwner());
     }
 
-    if (extMisc())
+    if (hasExtMisc())
     {
         Allocator::free<AstNode::ExtensionMisc>(extMisc());
     }

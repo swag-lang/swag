@@ -469,7 +469,7 @@ bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
     auto inst       = emitInstruction(context, ByteCodeOp::MakeLambda, node->resultRegisterRC);
     inst->b.pointer = (uint8_t*) funcNode;
     inst->c.pointer = nullptr;
-    if (funcNode->extByteCode() && funcNode->extByteCode()->bc)
+    if (funcNode->hasExtByteCode() && funcNode->extByteCode()->bc)
     {
         inst->c.pointer                        = (uint8_t*) funcNode->extByteCode()->bc;
         funcNode->extByteCode()->bc->isUsed    = true;
@@ -501,7 +501,7 @@ bool ByteCodeGenJob::emitMakeArrayPointerSlicingUpperBound(ByteCodeGenContext* c
     auto slicing   = CastAst<AstArrayPointerSlicing>(context->node->parent, AstNodeKind::ArrayPointerSlicing);
     auto arrayNode = slicing->array;
 
-    if (upperNode->extMisc() && upperNode->extMisc()->resolvedUserOpSymbolOverload)
+    if (upperNode->hasExtMisc() && upperNode->extMisc()->resolvedUserOpSymbolOverload)
     {
         if (!job->allParamsTmp)
             job->allParamsTmp = Ast::newFuncCallParams(upperNode->sourceFile, nullptr);

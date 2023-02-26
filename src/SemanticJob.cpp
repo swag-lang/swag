@@ -405,7 +405,7 @@ JobResult SemanticJob::execute()
             node->semanticState = AstNodeResolveState::ProcessingChilds;
             context.result      = ContextResult::Done;
 
-            if (node->extSemantic() &&
+            if (node->hasExtSemantic() &&
                 node->extSemantic()->semanticBeforeFct &&
                 !node->extSemantic()->semanticBeforeFct(&context))
             {
@@ -477,7 +477,7 @@ JobResult SemanticJob::execute()
             node->semanticState = AstNodeResolveState::PostChilds;
 
         case AstNodeResolveState::PostChilds:
-            if (node->extSemantic() && node->extSemantic()->semanticAfterFct)
+            if (node->hasExtSemantic() && node->extSemantic()->semanticAfterFct)
             {
                 context.result = ContextResult::Done;
                 if (!node->extSemantic()->semanticAfterFct(&context))

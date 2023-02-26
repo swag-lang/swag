@@ -156,7 +156,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
     case MatchResult::InvalidNamedParameter:
     {
-        SWAG_ASSERT(failedParam && failedParam->extMisc() && failedParam->extMisc()->isNamed);
+        SWAG_ASSERT(failedParam && failedParam->hasExtMisc() && failedParam->extMisc()->isNamed);
         diag = new Diagnostic{failedParam->extMisc()->isNamed, Fmt(Err(Err0008), failedParam->extMisc()->isNamed->token.ctext())};
         result0.push_back(diag);
         if (!(overload->node->flags & AST_GENERATED))
@@ -170,7 +170,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
     case MatchResult::DuplicatedNamedParameter:
     {
-        SWAG_ASSERT(failedParam && failedParam->extMisc() && failedParam->extMisc()->isNamed);
+        SWAG_ASSERT(failedParam && failedParam->hasExtMisc() && failedParam->extMisc()->isNamed);
         diag       = new Diagnostic{failedParam->extMisc()->isNamed, Fmt(Err(Err0011), failedParam->extMisc()->isNamed->token.ctext())};
         diag->hint = Hnt(Hnt0009);
         int other  = oneTry.symMatchContext.badSignatureInfos.badSignatureNum1;
@@ -590,7 +590,7 @@ void SemanticJob::symbolErrorNotes(SemanticContext* context, VectorNative<OneTry
             auto prev = identifier->identifierRef()->childs[identifier->childParentIdx - 1];
             if (prev->resolvedSymbolName)
             {
-                if (prev->extMisc() && prev->extMisc()->resolvedUserOpSymbolOverload)
+                if (prev->hasExtMisc() && prev->extMisc()->resolvedUserOpSymbolOverload)
                 {
                     auto typeInfo = TypeManager::concreteType(prev->extMisc()->resolvedUserOpSymbolOverload->typeInfo);
                     auto note     = Diagnostic::note(prev, Fmt(Nte(Nte0018), prev->extMisc()->resolvedUserOpSymbolOverload->symbol->name.c_str(), typeInfo->getDisplayNameC()));

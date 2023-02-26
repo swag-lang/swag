@@ -170,7 +170,7 @@ void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, AstNode* node)
     if (!node)
         return;
     freeRegisterRC(context, node->resultRegisterRC);
-    if (node->extMisc())
+    if (node->hasExtMisc())
         freeRegisterRC(context, node->extMisc()->additionalRegisterRC);
 }
 
@@ -202,7 +202,7 @@ bool ByteCodeGenJob::emitPassThrough(ByteCodeGenContext* context)
         node->resultRegisterRC = child->resultRegisterRC;
     }
 
-    if (child->extMisc())
+    if (child->hasExtMisc())
         freeRegisterRC(context, child->extMisc()->additionalRegisterRC);
 
     return true;
@@ -406,7 +406,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags, Byt
     if (job)
     {
         // If true, then this is a simple recursive call
-        if (node->extByteCode() && node->extByteCode()->byteCodeJob == job)
+        if (node->hasExtByteCode() && node->extByteCode()->byteCodeJob == job)
             return;
 
         // Need to wait for function full semantic resolve
@@ -489,7 +489,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags, Byt
         SWAG_ASSERT(job);
         if (!(node->semFlags & AST_SEM_BYTECODE_RESOLVED))
         {
-            SWAG_ASSERT(node->extByteCode() && node->extByteCode()->byteCodeJob);
+            SWAG_ASSERT(node->hasExtByteCode() && node->extByteCode()->byteCodeJob);
             node->extByteCode()->byteCodeJob->dependentJobs.add(job);
             job->setPending(nullptr, JobWaitKind::AskBcWaitResolve, node, nullptr);
             return;
@@ -501,14 +501,14 @@ void ByteCodeGenJob::releaseByteCodeJob(AstNode* node)
 {
     ScopedLock lk(node->mutex);
     node->semFlags |= AST_SEM_BYTECODE_RESOLVED | AST_SEM_BYTECODE_GENERATED;
-    SWAG_ASSERT(node->extByteCode());
+    SWAG_ASSERT(node->hasExtByteCode());
     node->extByteCode()->byteCodeJob = nullptr;
 }
 
 void ByteCodeGenJob::getDependantCalls(AstNode* depNode, VectorNative<AstNode*>& dep)
 {
     // Normal function
-    SWAG_ASSERT(depNode->extByteCode());
+    SWAG_ASSERT(depNode->hasExtByteCode());
     if (depNode->extByteCode()->bc)
     {
         dep.append(depNode->extByteCode()->bc->dependentCalls);
@@ -608,7 +608,7 @@ JobResult ByteCodeGenJob::execute()
             switch (node->bytecodeState)
             {
             case AstNodeResolveState::Enter:
-                if (node->extByteCode() &&
+                if (node->hasExtByteCode() &&
                     node->extByteCode()->byteCodeBeforeFct &&
                     !node->extByteCode()->byteCodeBeforeFct(&context))
                 {
@@ -680,7 +680,7 @@ JobResult ByteCodeGenJob::execute()
             case AstNodeResolveState::PostChilds:
                 if (!(node->flags & AST_NO_BYTECODE))
                 {
-                    if (node->extByteCode() && node->extByteCode()->byteCodeAfterFct)
+                    if (node->hasExtByteCode() && node->extByteCode()->byteCodeAfterFct)
                     {
                         if (!node->extByteCode()->byteCodeAfterFct(&context))
                         {
@@ -819,7 +819,7 @@ JobResult ByteCodeGenJob::waitForDependenciesGenerated()
         for (int i = 0; i < dependentNodesTmp.size(); i++)
         {
             auto node = dependentNodesTmp[i];
-            SWAG_ASSERT(node->extByteCode() && node->extByteCode()->bc);
+            SWAG_ASSERT(node->hasExtByteCode() && node->extByteCode()->bc);
 
             // Wait for the node if not generated
             {
@@ -837,7 +837,7 @@ JobResult ByteCodeGenJob::waitForDependenciesGenerated()
             // Propagate hasForeignFunctionCalls
             if (context.bc)
             {
-                SWAG_ASSERT(node->extByteCode() && node->extByteCode()->bc);
+                SWAG_ASSERT(node->hasExtByteCode() && node->extByteCode()->bc);
                 if (node->extByteCode()->bc->hasForeignFunctionCalls)
                     context.bc->hasForeignFunctionCalls = true;
                 for (auto const& fmn : node->extByteCode()->bc->hasForeignFunctionCallsModules)
@@ -863,8 +863,8 @@ JobResult ByteCodeGenJob::waitForDependenciesGenerated()
                 SharedLock lk(node->mutex);
                 if (node->semFlags & AST_SEM_BYTECODE_RESOLVED)
                 {
-                    SWAG_ASSERT(!node->extByteCode() || !node->extByteCode()->byteCodeJob);
-                    SWAG_ASSERT(originalNode->extByteCode());
+                    SWAG_ASSERT(!node->hasExtByteCode() || !node->extByteCode()->byteCodeJob);
+                    SWAG_ASSERT(originalNode->hasExtByteCode());
                     originalNode->extByteCode()->dependentNodes.append(node->extByteCode()->dependentNodes);
 #ifdef SWAG_DEV_MODE
                     for (auto n : node->extByteCode()->dependentNodes)

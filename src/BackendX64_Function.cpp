@@ -3212,7 +3212,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::MakeLambda:
         {
             auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->b.pointer, AstNodeKind::FuncDecl);
-            SWAG_ASSERT(!ip->c.pointer || (funcNode && funcNode->extByteCode() && funcNode->extByteCode()->bc == (ByteCode*) ip->c.pointer));
+            SWAG_ASSERT(!ip->c.pointer || (funcNode && funcNode->hasExtByteCode() && funcNode->extByteCode()->bc == (ByteCode*) ip->c.pointer));
             Utf8 callName = funcNode->getCallName();
             pp.emit_Load64_Immediate(0, RAX, true);
 

@@ -63,7 +63,7 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
 
     // This is the type part.
     // :AnyTypeSegment
-    SWAG_ASSERT(exprNode->extMisc());
+    SWAG_ASSERT(exprNode->hasExtMisc());
     SWAG_ASSERT(exprNode->extMisc()->anyTypeSegment);
     emitMakeSegPointer(context, exprNode->extMisc()->anyTypeSegment, exprNode->extMisc()->anyTypeOffset, r0[1]);
 
@@ -100,13 +100,13 @@ bool ByteCodeGenJob::emitCastToInterface(ByteCodeGenContext* context, AstNode* e
     }
 
     SWAG_ASSERT(fromTypeStruct->cptRemainingInterfaces == 0);
-    SWAG_ASSERT(exprNode->extMisc());
+    SWAG_ASSERT(exprNode->hasExtMisc());
     SWAG_ASSERT(exprNode->extMisc()->castItf);
 
     transformResultToLinear2(context, exprNode);
 
     // Need to make the pointer on the data
-    if (exprNode->extMisc() && exprNode->extMisc()->castOffset)
+    if (exprNode->hasExtMisc() && exprNode->extMisc()->castOffset)
     {
         auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, exprNode->resultRegisterRC, 0, exprNode->resultRegisterRC);
         inst->b.u64 = exprNode->extMisc()->castOffset;
@@ -720,7 +720,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
     // opCast
     if (exprNode->semFlags & AST_SEM_USER_CAST)
     {
-        SWAG_ASSERT(exprNode->extMisc() && exprNode->extMisc()->resolvedUserOpSymbolOverload);
+        SWAG_ASSERT(exprNode->hasExtMisc() && exprNode->extMisc()->resolvedUserOpSymbolOverload);
 
         if (!(exprNode->doneFlags & AST_DONE_FLAT_PARAMS))
         {
@@ -768,7 +768,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
 
         // Check that the type is correct
         auto anyNode = exprNode;
-        if (!anyNode->extMisc() || !anyNode->extMisc()->anyTypeSegment)
+        if (!anyNode->hasExtMisc() || !anyNode->extMisc()->anyTypeSegment)
         {
             SWAG_ASSERT(anyNode->childs.size());
             anyNode = anyNode->childs.front();
@@ -809,7 +809,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         node->resultRegisterRC   = exprNode->resultRegisterRC;
         exprNode->castedTypeInfo = nullptr;
 
-        if (exprNode->extMisc() && exprNode->extMisc()->castOffset)
+        if (exprNode->hasExtMisc() && exprNode->extMisc()->castOffset)
         {
             auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
             inst->b.u64 = exprNode->extMisc()->castOffset;
@@ -861,7 +861,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
             node->resultRegisterRC   = exprNode->resultRegisterRC;
             exprNode->castedTypeInfo = nullptr;
 
-            if (exprNode->extMisc() && exprNode->extMisc()->castOffset)
+            if (exprNode->hasExtMisc() && exprNode->extMisc()->castOffset)
             {
                 auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
                 inst->b.u64 = exprNode->extMisc()->castOffset;

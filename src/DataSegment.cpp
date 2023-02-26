@@ -389,7 +389,7 @@ void DataSegment::doPatchMethods(JobContext* context)
             lambdaPtr = ByteCodeRun::makeLambda(context, funcNode, nullptr);
             addInitPtrFunc(it.second, funcNode->fullnameForeign);
         }
-        else if (funcNode->extByteCode() && funcNode->extByteCode()->bc)
+        else if (funcNode->hasExtByteCode() && funcNode->extByteCode()->bc)
         {
             bc            = funcNode->extByteCode()->bc;
             bc->forceEmit = true;

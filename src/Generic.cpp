@@ -331,7 +331,7 @@ Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNod
     ErrorCxtStep expNode;
     expNode.node         = context->node;
     expNode.replaceTypes = replaceTypes;
-    if (expNode.node->extMisc() && expNode.node->extMisc()->exportNode)
+    if (expNode.node->hasExtMisc() && expNode.node->extMisc()->exportNode)
         expNode.node = expNode.node->extMisc()->exportNode;
     expNode.type = ErrCxtStepKind::Generic;
     destCxt->errCxtSteps.push_back(expNode);
@@ -667,7 +667,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     // If we are in a function, inherit also the scopes from the function.
     // Be carreful that if the call is inside a #macro, we do not want to inherit the function (3550)
     if (node->ownerFct &&
-        node->ownerFct->extMisc() &&
+        node->ownerFct->hasExtMisc() &&
         node->ownerFct->extMisc()->alternativeScopes.size() &&
         !node->findParent(AstNodeKind::CompilerMacro))
     {
@@ -675,7 +675,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     }
 
     // Inherit alternative scopes from the generic function
-    if (funcNode->extMisc() &&
+    if (funcNode->hasExtMisc() &&
         funcNode->extMisc()->alternativeScopes.size())
     {
         newFunc->addAlternativeScopes(funcNode->extMisc()->alternativeScopes);

@@ -48,7 +48,7 @@ bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegmen
         storageSegment->addInitPtr(storageOffset, storageOffsetValue, constSegment->kind);
 
         // :AnyTypeSegment
-        SWAG_ASSERT(assignment->extMisc());
+        SWAG_ASSERT(assignment->hasExtMisc());
         SWAG_ASSERT(assignment->extMisc()->anyTypeSegment);
         constSegment                        = assignment->extMisc()->anyTypeSegment;
         *(void**) (ptrDest + sizeof(void*)) = constSegment->address(assignment->extMisc()->anyTypeOffset);
@@ -231,7 +231,7 @@ bool SemanticJob::collectLiteralsToSegment(JobContext* context, DataSegment* sto
         auto typeInfo = child->typeInfo;
 
         // Special type when collecting (like an array collected to a slice)
-        if (child->extMisc() && child->extMisc()->collectTypeInfo)
+        if (child->hasExtMisc() && child->extMisc()->collectTypeInfo)
             typeInfo = child->extMisc()->collectTypeInfo;
 
         // In case of a struct to field match
@@ -272,7 +272,7 @@ bool SemanticJob::collectLiteralsToSegment(JobContext* context, DataSegment* sto
 
         // Offset has been forced
         // Note that offset is +1 to be sure it has been initialized
-        if (child->extMisc() && child->extMisc()->castOffset)
+        if (child->hasExtMisc() && child->extMisc()->castOffset)
             offset = baseOffset + child->extMisc()->castOffset - 1;
 
         SWAG_CHECK(storeToSegment(context, storageSegment, offset, child->computedValue, typeInfo, assignment));

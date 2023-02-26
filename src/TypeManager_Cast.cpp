@@ -1864,7 +1864,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
                 auto       failedParam = child->childs[badParamIdx];
                 Diagnostic diag{failedParam, Fmt(Err(Err0006), Naming::niceArgumentRank(badParamIdx + 1).c_str()), Hnt(Hnt0031)};
                 auto       otherParam = child->childs[badParamIdx - 1];
-                if (otherParam->extension && otherParam->extMisc() && otherParam->extMisc()->isNamed)
+                if (otherParam->hasExtMisc() && otherParam->extMisc()->isNamed)
                     otherParam = otherParam->extMisc()->isNamed;
                 diag.addRange(otherParam, Hnt(Hnt0030));
                 return context->report(diag);
@@ -1875,7 +1875,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
                 Diagnostic diag{failedParam->extMisc()->isNamed, Fmt(Err(Err0011), failedParam->extMisc()->isNamed->token.ctext())};
                 diag.hint       = Hnt(Hnt0009);
                 auto otherParam = child->childs[symContext.badSignatureInfos.badSignatureNum1];
-                if (otherParam->extension && otherParam->extMisc() && otherParam->extMisc()->isNamed)
+                if (otherParam->hasExtMisc() && otherParam->extMisc()->isNamed)
                     otherParam = otherParam->extMisc()->isNamed;
                 diag.addRange(otherParam, Hnt(Hnt0059));
                 return context->report(diag);

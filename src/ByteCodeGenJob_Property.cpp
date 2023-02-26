@@ -167,7 +167,7 @@ bool ByteCodeGenJob::emitIntrinsicCountOf(ByteCodeGenContext* context, AstNode* 
 {
     auto typeInfo = TypeManager::concretePtrRefType(expr->typeInfo);
 
-    if (node->extMisc() && node->extMisc()->resolvedUserOpSymbolOverload)
+    if (node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload)
     {
         SWAG_CHECK(emitUserOp(context));
         if (context->result != ContextResult::Done)
@@ -204,7 +204,7 @@ bool ByteCodeGenJob::emitIntrinsicDataOf(ByteCodeGenContext* context)
     auto front    = node->childs.front();
     auto typeInfo = TypeManager::concreteType(front->typeInfo);
 
-    if (node->extMisc() && node->extMisc()->resolvedUserOpSymbolOverload)
+    if (node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload)
     {
         SWAG_CHECK(emitUserOp(context));
         if (context->result != ContextResult::Done)

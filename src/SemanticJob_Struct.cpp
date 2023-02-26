@@ -237,7 +237,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         if (!child->isForeign())
         {
             ScopedLock lk(child->mutex);
-            if (!child->extByteCode() || !child->extByteCode()->bc)
+            if (!child->hasExtByteCode() || !child->extByteCode()->bc)
             {
                 child->allocateExtensionNoLock(ExtensionKind::ByteCode);
                 child->extByteCode()->bc             = Allocator::alloc<ByteCode>();
@@ -1291,7 +1291,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         node->flags &= ~AST_NO_BYTECODE;
         node->flags |= AST_NO_BYTECODE_CHILDS;
 
-        SWAG_ASSERT(!node->extByteCode() || !node->extByteCode()->byteCodeJob);
+        SWAG_ASSERT(!node->hasExtByteCode() || !node->extByteCode()->byteCodeJob);
         node->allocateExtension(ExtensionKind::ByteCode);
         auto extension                       = node->extByteCode();
         extension->byteCodeJob               = Allocator::alloc<ByteCodeGenJob>();

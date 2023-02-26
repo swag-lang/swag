@@ -161,7 +161,7 @@ void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
 
     // Generated code
     auto sourceNode = diag.sourceNode;
-    if (sourceNode && sourceNode->extMisc() && sourceNode->extMisc()->exportNode)
+    if (sourceNode && sourceNode->hasExtMisc() && sourceNode->extMisc()->exportNode)
         sourceNode = diag.sourceNode->extMisc()->exportNode;
     if (sourceNode && sourceNode->sourceFile && sourceNode->sourceFile->sourceNode && !sourceNode->sourceFile->fileForSourceLocation)
     {

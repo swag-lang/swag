@@ -385,7 +385,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
     {
         auto callParameter = context.parameters[i];
 
-        if (callParameter->extMisc() && callParameter->extMisc()->isNamed)
+        if (callParameter->hasExtMisc() && callParameter->extMisc()->isNamed)
         {
             context.hasNamedParameters = true;
             break;
@@ -564,7 +564,7 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
     for (int j = 0; j < parameters.size(); j++)
     {
         auto wantedParameter = parameters[j];
-        if (callParameter->extMisc() &&
+        if (callParameter->hasExtMisc() &&
             callParameter->extMisc()->isNamed &&
             parameters[j]->name == callParameter->extMisc()->isNamed->token.text)
         {
@@ -574,7 +574,7 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
                 for (int k = 0; k < context.parameters.size(); k++)
                 {
                     auto checkParam = context.parameters[k];
-                    if (checkParam->extMisc() &&
+                    if (checkParam->hasExtMisc() &&
                         checkParam->extMisc()->isNamed &&
                         checkParam->extMisc()->isNamed->token.text == parameters[j]->name)
                     {
@@ -686,7 +686,7 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
             break;
         }
 
-        if (!param->extMisc() || !param->extMisc()->isNamed)
+        if (!param->hasExtMisc() || !param->extMisc()->isNamed)
         {
             context.badSignatureInfos.badSignatureParameterIdx = i;
             context.result                                     = MatchResult::MissingNamedParameter;

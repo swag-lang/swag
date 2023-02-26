@@ -231,7 +231,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     bool                foreignCall = false;
 
     // Direct call to a foreign function ?
-    if (!node->extByteCode() || !node->extByteCode()->bc)
+    if (!node->hasExtByteCode() || !node->extByteCode()->bc)
     {
         SWAG_ASSERT(node->isForeign());
         bc                  = &bcTmp;

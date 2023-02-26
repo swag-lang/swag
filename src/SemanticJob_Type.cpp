@@ -157,7 +157,7 @@ bool SemanticJob::resolveTypeLambdaClosure(SemanticContext* context)
             typeParam->typeInfo = param->typeInfo;
             typeParam->declNode = param;
 
-            if (param->extMisc() && param->extMisc()->isNamed)
+            if (param->hasExtMisc() && param->extMisc()->isNamed)
                 typeParam->name = param->extMisc()->isNamed->token.text;
 
             if (typeParam->typeInfo->isGeneric())
@@ -769,7 +769,7 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
 
     // In case case has triggered a special function call, need to get it
     // (usage of opAffect)
-    if (exprNode->extMisc() && exprNode->extMisc()->resolvedUserOpSymbolOverload)
+    if (exprNode->hasExtMisc() && exprNode->extMisc()->resolvedUserOpSymbolOverload)
     {
         node->allocateExtension(ExtensionKind::Misc);
         node->extMisc()->resolvedUserOpSymbolOverload = exprNode->extMisc()->resolvedUserOpSymbolOverload;

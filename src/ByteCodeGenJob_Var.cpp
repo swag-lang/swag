@@ -64,7 +64,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
 
         // Generate initialization
         // Do not generate if we have a user define affectation, and the operator is marked as 'complete'
-        if (!node->extMisc() ||
+        if (!node->hasExtMisc() ||
             !node->extMisc()->resolvedUserOpSymbolOverload ||
             node->extMisc()->resolvedUserOpSymbolOverload->symbol->kind != SymbolKind::Function ||
             !(node->extMisc()->resolvedUserOpSymbolOverload->node->attributeFlags & ATTRIBUTE_COMPLETE))

@@ -833,7 +833,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 if (symbolFlags & (OVERLOAD_VAR_STRUCT | OVERLOAD_VAR_GLOBAL | OVERLOAD_CONSTANT))
                 {
                     symbolFlags |= OVERLOAD_INCOMPLETE | OVERLOAD_STRUCT_AFFECT;
-                    SWAG_ASSERT(node->extMisc() && node->extMisc()->resolvedUserOpSymbolOverload);
+                    SWAG_ASSERT(node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload);
                     if (!(node->extMisc()->resolvedUserOpSymbolOverload->node->attributeFlags & ATTRIBUTE_CONSTEXPR))
                     {
                         Diagnostic diag{node->assignment, Err(Err0906)};
@@ -1022,7 +1022,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             SWAG_VERIFY(!node->typeInfo->isGeneric(), context->report({node, Fmt(Err(Err0311), node->typeInfo->getDisplayNameC())}));
 
             storageSegment = getSegmentForVar(context, node);
-            if (node->extMisc() && node->extMisc()->resolvedUserOpSymbolOverload)
+            if (node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload)
             {
                 storageOffset = 0;
                 symbolFlags |= OVERLOAD_INCOMPLETE;
@@ -1114,7 +1114,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             break;
         }
 
-        if (node->extMisc() && node->extMisc()->resolvedUserOpSymbolOverload)
+        if (node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload)
         {
             storageOffset = 0;
             symbolFlags |= OVERLOAD_INCOMPLETE;

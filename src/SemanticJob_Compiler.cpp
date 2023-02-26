@@ -150,7 +150,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node)
                     return context->report(diag);
                 }
 
-                SWAG_ASSERT(!context->node->extMisc() || !context->node->extMisc()->resolvedUserOpSymbolOverload);
+                SWAG_ASSERT(!context->node->hasExtMisc() || !context->node->extMisc()->resolvedUserOpSymbolOverload);
 
                 // opCount
                 VectorNative<AstNode*> params;
@@ -159,7 +159,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node)
                 if (context->result != ContextResult::Done)
                     return true;
 
-                SWAG_ASSERT(context->node->extMisc());
+                SWAG_ASSERT(context->node->hasExtMisc());
 
                 auto extension                          = context->node->extMisc();
                 execParams.specReturnOpCount            = extension->resolvedUserOpSymbolOverload;

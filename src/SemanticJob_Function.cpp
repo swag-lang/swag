@@ -1061,7 +1061,7 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     node->resolvedSymbolName     = child->resolvedSymbolName;
     node->resolvedSymbolOverload = child->resolvedSymbolOverload;
 
-    if (child->extMisc() && child->extMisc()->resolvedUserOpSymbolOverload)
+    if (child->hasExtMisc() && child->extMisc()->resolvedUserOpSymbolOverload)
     {
         node->allocateExtension(ExtensionKind::Misc);
         node->extMisc()->resolvedUserOpSymbolOverload = child->extMisc()->resolvedUserOpSymbolOverload;
@@ -1494,13 +1494,13 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     inlineNode->scope          = identifier->ownerScope;
     inlineNode->typeInfo       = TypeManager::concreteType(funcDecl->typeInfo);
 
-    if (identifier->extOwner() && identifier->extOwner()->ownerTryCatchAssume)
+    if (identifier->hasExtOwner() && identifier->extOwner()->ownerTryCatchAssume)
     {
         inlineNode->allocateExtension(ExtensionKind::Owner);
         inlineNode->extOwner()->ownerTryCatchAssume = identifier->extOwner()->ownerTryCatchAssume;
     }
 
-    if (funcDecl->extMisc())
+    if (funcDecl->hasExtMisc())
     {
         SharedLock lk1(funcDecl->extMisc()->mutexAltScopes);
         if (funcDecl->extMisc()->alternativeScopes.size() || funcDecl->extMisc()->alternativeScopesVars.size())
@@ -1513,7 +1513,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     }
 
     // Try/Assume
-    if (inlineNode->extOwner() &&
+    if (inlineNode->hasExtOwner() &&
         inlineNode->extOwner()->ownerTryCatchAssume &&
         (inlineNode->func->typeInfo->flags & TYPEINFO_CAN_THROW))
     {
@@ -1533,7 +1533,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
         }
 
         // Reset emit from the modifier if it exists, as the inline block will deal with that
-        if (identifier->extByteCode())
+        if (identifier->hasExtByteCode())
         {
             extension = identifier->extByteCode();
             if (extension->byteCodeAfterFct == ByteCodeGenJob::emitTry)
@@ -1557,7 +1557,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     AstNode* parentNode = funcDecl;
     while (parentNode)
     {
-        if (parentNode->extMisc() && !parentNode->extMisc()->alternativeScopes.empty())
+        if (parentNode->hasExtMisc() && !parentNode->extMisc()->alternativeScopes.empty())
             inlineNode->addAlternativeScopes(parentNode->extMisc()->alternativeScopes);
         parentNode = parentNode->parent;
     }
@@ -1654,7 +1654,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     // Clone !
     auto newContent = funcDecl->content->clone(cloneContext);
 
-    if (newContent->extByteCode())
+    if (newContent->hasExtByteCode())
     {
         newContent->extByteCode()->byteCodeBeforeFct = nullptr;
         if (funcDecl->attributeFlags & ATTRIBUTE_MIXIN)
@@ -1666,7 +1666,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
         if (funcDecl->attributeFlags & ATTRIBUTE_MIXIN && newContent->childs.front()->extension)
         {
             auto front = newContent->childs.front();
-            if (front->extByteCode())
+            if (front->hasExtByteCode())
                 front->extByteCode()->byteCodeAfterFct = nullptr; // Do not release the scope, as there's no specific scope
         }
     }

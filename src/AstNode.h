@@ -406,10 +406,14 @@ struct AstNode
     void allocateExtensionNoLock(ExtensionKind extensionKind);
 
     // clang-format off
-    ExtensionByteCode* extByteCode()    { return extension && extension->bytecode ? extension->bytecode : nullptr; }
-    ExtensionSemantic* extSemantic()    { return extension && extension->semantic ? extension->semantic : nullptr; }
-    ExtensionOwner*    extOwner()       { return extension && extension->owner ? extension->owner : nullptr; }
-    ExtensionMisc*     extMisc()        { return extension && extension->misc ? extension->misc : nullptr; }
+    bool               hasExtByteCode() { return extension && extension->bytecode; }
+    bool               hasExtSemantic() { return extension && extension->semantic; }
+    bool               hasExtOwner()    { return extension && extension->owner; }
+    bool               hasExtMisc()     { return extension && extension->misc; }
+    ExtensionByteCode* extByteCode()    { return extension->bytecode; }
+    ExtensionSemantic* extSemantic()    { return extension->semantic; }
+    ExtensionOwner*    extOwner()       { return extension->owner; }
+    ExtensionMisc*     extMisc()        { return extension->misc; }
     // clang-format on
 
     AstNodeKind         kind           = (AstNodeKind) 0;

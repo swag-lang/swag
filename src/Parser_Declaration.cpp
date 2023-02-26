@@ -458,7 +458,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
                 // Only the last attribute of the block needs to have a semanticAfterFct, so
                 // we rest it, and we will set it later for the last child
                 // :AttrUseLastChild
-                if (child->extSemantic())
+                if (child->hasExtSemantic())
                     child->extSemantic()->semanticAfterFct = nullptr;
 
                 // Need to add attributes in the correct order (top level first)

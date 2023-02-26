@@ -1353,7 +1353,7 @@ void ByteCodeGenJob::emitPushRAParams(ByteCodeGenContext* context, VectorNative<
 bool ByteCodeGenJob::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode, AstNode* callNode, AstNode* funcNode, AstNode* parent, TypeInfo* typeInfoFunc)
 {
     bool raiseErrors = typeInfoFunc->flags & TYPEINFO_CAN_THROW;
-    if (raiseErrors && (!callNode->extOwner() || !callNode->extOwner()->ownerTryCatchAssume))
+    if (raiseErrors && (!callNode->hasExtOwner() || !callNode->extOwner()->ownerTryCatchAssume))
     {
         if (!srcNode)
             srcNode = typeInfoFunc->declNode;
@@ -1628,7 +1628,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 auto param = CastAst<AstFuncCallParam>(allParams->childs[j], AstNodeKind::FuncCallParam);
                 if (param->indexParam == i)
                 {
-                    if (param->extMisc() && !param->extMisc()->additionalRegisterRC.cannotFree)
+                    if (param->hasExtMisc() && !param->extMisc()->additionalRegisterRC.cannotFree)
                     {
                         for (int r = 0; freeRegistersParams && r < param->extMisc()->additionalRegisterRC.size(); r++)
                             toFree.push_back(param->extMisc()->additionalRegisterRC[r]);
@@ -1774,7 +1774,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                     if (typeRawVariadic->isNative() && typeRawVariadic->sizeOf < sizeof(Register))
                     {
                         done = true;
-                        if (param->extMisc() && !param->extMisc()->additionalRegisterRC.cannotFree)
+                        if (param->hasExtMisc() && !param->extMisc()->additionalRegisterRC.cannotFree)
                         {
                             for (int r = 0; freeRegistersParams && r < param->extMisc()->additionalRegisterRC.size(); r++)
                                 toFree.push_back(param->extMisc()->additionalRegisterRC[r]);
@@ -1795,7 +1795,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
                 if (!done)
                 {
-                    if (param->extension && param->extMisc() && !param->extMisc()->additionalRegisterRC.cannotFree)
+                    if (param->hasExtMisc() && !param->extMisc()->additionalRegisterRC.cannotFree)
                     {
                         for (int r = 0; freeRegistersParams && r < param->extMisc()->additionalRegisterRC.size(); r++)
                             toFree.push_back(param->extMisc()->additionalRegisterRC[r]);

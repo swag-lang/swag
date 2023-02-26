@@ -47,7 +47,7 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
 
     if (!g_RunContext->stack)
     {
-        SWAG_ASSERT(node->extByteCode() && node->extByteCode()->bc);
+        SWAG_ASSERT(node->hasExtByteCode() && node->extByteCode()->bc);
         g_RunContext->setup(node->sourceFile, node, node->extByteCode()->bc);
         stackAllocated = true;
     }

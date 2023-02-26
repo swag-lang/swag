@@ -925,7 +925,7 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstTypeExpres
         // Identifier can have an export node, so in that case we need to export by node, not by type, in
         // order to export the real node (for example for an array of lambdas/closures)
         if (!node->identifier ||
-            !node->identifier->extMisc() ||
+            !node->identifier->hasExtMisc() ||
             !node->identifier->extMisc()->exportNode)
         {
             SWAG_CHECK(outputType(context, concat, node, node->typeInfo));
@@ -1061,7 +1061,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 {
     if (!node)
         return true;
-    if (node->extMisc() && node->extMisc()->exportNode)
+    if (node->hasExtMisc() && node->extMisc()->exportNode)
         node = node->extMisc()->exportNode;
     if (node->flags & AST_GENERATED && !(node->flags & AST_GENERATED_USER))
         return true;
@@ -1072,7 +1072,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         concat.addString("#type ");
     }
 
-    if (node->extMisc() && node->extMisc()->isNamed)
+    if (node->hasExtMisc() && node->extMisc()->isNamed)
     {
         concat.addString(node->extMisc()->isNamed->token.text);
         concat.addChar(':');
@@ -1163,7 +1163,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         bool first = true;
         for (auto c : node->childs)
         {
-            if (c->extMisc() && c->extMisc()->exportNode)
+            if (c->hasExtMisc() && c->extMisc()->exportNode)
                 c = c->extMisc()->exportNode;
             if ((c->flags & AST_GENERATED) && !(c->flags & AST_GENERATED_USER))
                 continue;
