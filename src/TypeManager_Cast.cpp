@@ -122,28 +122,25 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
     if (!typeStruct->declNode)
         return false;
 
-    auto     structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
-    Utf8*    nameAffect;
-    uint32_t nameAffectCrc;
+    auto        structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
+    SymbolName* symbol;
+    bool        isSuffix = false;
     if ((fromNode && fromNode->semFlags & AST_SEM_LITERAL_SUFFIX) || castFlags & CASTFLAG_LITERAL_SUFFIX)
     {
-        nameAffect    = &g_LangSpec->name_opAffectSuffix;
-        nameAffectCrc = g_LangSpec->name_opAffectSuffixCrc;
+        isSuffix = true;
+        symbol   = structNode->scope->symbolOpAffectSuffix;
     }
     else
-    {
-        nameAffect    = &g_LangSpec->name_opAffect;
-        nameAffectCrc = g_LangSpec->name_opAffectCrc;
-    }
-
-    VectorNative<SymbolOverload*> toAffect;
-    auto                          symbol = structNode->scope->symTable.find(*nameAffect, nameAffectCrc);
+        symbol = structNode->scope->symbolOpAffect;
 
     // Instantiated opAffect, in a generic struct, will be in the scope of the original struct, not the intantiated one
     if (!symbol && typeStruct->fromGeneric)
     {
         structNode = CastAst<AstStruct>(typeStruct->fromGeneric->declNode, AstNodeKind::StructDecl);
-        symbol     = structNode->scope->symTable.find(*nameAffect, nameAffectCrc);
+        if (isSuffix)
+            symbol = structNode->scope->symbolOpAffectSuffix;
+        else
+            symbol = structNode->scope->symbolOpAffect;
     }
 
     if (!symbol)
@@ -162,6 +159,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
     }
 
     // Resolve opAffect that match
+    VectorNative<SymbolOverload*> toAffect;
     for (auto over : symbol->overloads)
     {
         auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
@@ -233,15 +231,14 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
         }
     }
 
-    VectorNative<SymbolOverload*> toCast;
-    auto                          structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
-    auto                          symbol     = structNode->scope->symTable.find(g_LangSpec->name_opCast, g_LangSpec->name_opCastCrc);
+    auto        structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
+    SymbolName* symbol     = structNode->scope->symbolOpCast;
 
     // Instantiated opCast, in a generic struct, will be in the scope of the original struct, not the intantiated one
     if (!symbol && typeStruct->fromGeneric)
     {
         structNode = CastAst<AstStruct>(typeStruct->fromGeneric->declNode, AstNodeKind::StructDecl);
-        symbol     = structNode->scope->symTable.find(g_LangSpec->name_opCast, g_LangSpec->name_opCastCrc);
+        symbol     = structNode->scope->symbolOpCast;
     }
 
     if (!symbol)
@@ -260,6 +257,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
     }
 
     // Resolve opCast that match
+    VectorNative<SymbolOverload*> toCast;
     for (auto over : symbol->overloads)
     {
         auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);

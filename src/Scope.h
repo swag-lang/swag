@@ -74,9 +74,12 @@ struct Scope
     VectorNative<AstNode*>  doneDefer;
     VectorNative<AstNode*>  doneDrop;
 
-    ScopePublicSet* publicSet   = nullptr;
-    AstNode*        owner       = nullptr;
-    Scope*          parentScope = nullptr;
+    ScopePublicSet* publicSet            = nullptr;
+    AstNode*        owner                = nullptr;
+    Scope*          parentScope          = nullptr;
+    SymbolName*     symbolOpAffect       = nullptr;
+    SymbolName*     symbolOpAffectSuffix = nullptr;
+    SymbolName*     symbolOpCast         = nullptr;
 
     uint32_t indexInParent  = UINT32_MAX;
     uint32_t startStackSize = 0;

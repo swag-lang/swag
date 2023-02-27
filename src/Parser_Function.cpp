@@ -682,6 +682,17 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     funcNode->scope              = newScope;
     funcNode->resolvedSymbolName = currentScope->symTable.registerSymbolName(context, funcNode, SymbolKind::Function);
 
+    // Store specific symbols for fast retreive
+    if (funcNode->token.text == g_LangSpec->name_opAffect)
+        currentScope->symbolOpAffect = funcNode->resolvedSymbolName;
+    else if (funcNode->token.text == g_LangSpec->name_opAffectSuffix)
+        currentScope->symbolOpAffectSuffix = funcNode->resolvedSymbolName;
+    else if (funcNode->token.text == g_LangSpec->name_opCast)
+        currentScope->symbolOpCast = funcNode->resolvedSymbolName;
+
+    if (funcNode->token.text == "toto")
+        int a = 0;
+
     // Count number of methods to resolve
     if (currentScope->kind == ScopeKind::Struct && !funcForCompiler)
     {

@@ -16,6 +16,8 @@ void SymTable::release()
             Allocator::free<SymbolOverload>(over);
         Allocator::free<SymbolName>(s);
     }
+
+    allSymbols.clear();
 }
 
 SymbolName* SymTable::find(const Utf8& name, uint32_t crc)
