@@ -493,6 +493,14 @@ void Utf8::setView(const char* txt, int len)
     allocated = 0;
 }
 
+void Utf8::setView(const Utf8& other)
+{
+    release();
+    buffer    = const_cast<char*>(other.buffer);
+    count     = other.count;
+    allocated = 0;
+}
+
 void Utf8::makeLocal()
 {
     if (allocated || !buffer || !count)

@@ -142,6 +142,15 @@ struct LanguageSpec
     Utf8 name_TargetOs;
     Utf8 name_Backend;
 
+    Utf8 name_data;
+    Utf8 name_count;
+    Utf8 name_sizeof;
+    Utf8 name_string;
+    Utf8 name_itable;
+    Utf8 name_interface;
+    Utf8 name_ptrvalue;
+    Utf8 name_typeinfo;
+
     Utf8 name_export;
     Utf8 name_generated;
     Utf8 name_skip;

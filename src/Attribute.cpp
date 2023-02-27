@@ -110,7 +110,7 @@ bool AttributeList::hasAttribute(const Utf8& fullName)
 void AttributeList::emplace(OneAttribute& other)
 {
     SWAG_RACE_CONDITION_WRITE(raceCond);
-    allAttributes.emplace_back(move(other));
+    allAttributes.emplace_back(std::move(other));
 }
 
 void AttributeList::add(AttributeList& other)

@@ -71,7 +71,7 @@ struct VectorMap : public Vector<pair<K, V>>
             return it->second;
         pair<K, V> tmp;
         tmp.first = key;
-        this->push_back(std::move(tmp));
+        this->emplace_back(std::move(tmp));
         return this->back().second;
     }
 };

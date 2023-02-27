@@ -2079,7 +2079,7 @@ bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
             state.stackValue[i + over->computedValue.storageOffset].overload = over;
     }
 
-    cxt.states.emplace_back(state);
+    cxt.states.emplace_back(std::move(state));
 
     for (int i = 0; i < cxt.states.size(); i++)
     {

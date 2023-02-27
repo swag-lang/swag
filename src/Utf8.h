@@ -28,6 +28,9 @@ struct Utf8
     Utf8(Utf8&& from);
     ~Utf8();
 
+    void setView(const char* txt, int len);
+    void setView(const Utf8& other);
+
     uint32_t    hash() const;
     void        freeBuffer();
     void        release();
@@ -39,7 +42,6 @@ struct Utf8
     const char* c_str() const;
     void        clear();
     int         capacity() const;
-    void        setView(const char* txt, int len);
     void        makeLocal();
     void        append(const char* txt, int len);
     void        append(const char* txt);

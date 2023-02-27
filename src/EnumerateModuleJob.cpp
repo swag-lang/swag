@@ -156,7 +156,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
                                   {
                                       tmp1 = tmp;
                                       tmp1.append(cFileName);
-                                      directories.emplace_back(move(tmp1));
+                                      directories.emplace_back(std::move(tmp1));
                                   }
                                   else
                                   {
@@ -232,7 +232,7 @@ void EnumerateModuleJob::loadFilesInModules(const Path& basePath)
                                                        {
                                                            tmp1 = tmp;
                                                            tmp1.append(cFileName);
-                                                           directories.emplace_back(move(tmp1));
+                                                           directories.emplace_back(std::move(tmp1));
                                                        }
                                                        else
                                                        {

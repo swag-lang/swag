@@ -696,7 +696,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
                 attrParam.token.text = param->resolvedParameter->name;
                 attrParam.typeInfo   = param->resolvedParameter->typeInfo;
                 attrParam.value      = *param->computedValue;
-                oneAttribute.parameters.emplace_back(move(attrParam));
+                oneAttribute.parameters.emplace_back(std::move(attrParam));
             }
         }
 
@@ -712,7 +712,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
             attrParam.token    = param->token;
             attrParam.typeInfo = param->typeInfo;
             attrParam.value    = *param->assignment->computedValue;
-            oneAttribute.parameters.emplace_back(move(attrParam));
+            oneAttribute.parameters.emplace_back(std::move(attrParam));
         }
 
         oneAttribute.typeFunc = typeFunc;

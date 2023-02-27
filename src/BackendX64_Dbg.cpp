@@ -620,15 +620,15 @@ DbgTypeIndex BackendX64::dbgEmitTypeSlice(X64Gen& pp, TypeInfo* typeInfo, TypeIn
     field.kind          = LF_MEMBER;
     field.type          = dbgGetOrCreatePointerToType(pp, pointedType, false);
     field.value.reg.u32 = 0;
-    field.name          = "data";
+    field.name.setView(g_LangSpec->name_data);
     tr0->LF_FieldList.fields.reserve(2);
-    tr0->LF_FieldList.fields.push_back(field);
+    tr0->LF_FieldList.fields.emplace_back(std::move(field));
 
     field.kind          = LF_MEMBER;
     field.type          = (DbgTypeIndex) (SimpleTypeKind::UInt64);
     field.value.reg.u32 = sizeof(void*);
-    field.name          = "count";
-    tr0->LF_FieldList.fields.push_back(field);
+    field.name.setView(g_LangSpec->name_count);
+    tr0->LF_FieldList.fields.emplace_back(std::move(field));
 
     auto tr1                      = dbgAddTypeRecord(pp);
     tr1->kind                     = LF_STRUCTURE;
@@ -653,11 +653,11 @@ void BackendX64::dbgRecordFields(X64Gen& pp, DbgTypeRecord* tr, TypeInfoStruct* 
     for (auto& p : typeStruct->fields)
     {
         DbgTypeField field;
-        field.kind          = LF_MEMBER;
-        field.type          = dbgGetOrCreateType(pp, p->typeInfo);
-        field.name          = p->name;
+        field.kind = LF_MEMBER;
+        field.type = dbgGetOrCreateType(pp, p->typeInfo);
+        field.name.setView(p->name);
         field.value.reg.u32 = baseOffset + p->offset;
-        tr->LF_FieldList.fields.push_back(field);
+        tr->LF_FieldList.fields.emplace_back(std::move(field));
 
         if (p->flags & TYPEINFOPARAM_HAS_USING && p->typeInfo->isStruct())
         {
@@ -737,22 +737,22 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
         field.kind          = LF_MEMBER;
         field.type          = (DbgTypeIndex) (SimpleTypeKind::UnsignedCharacter | (NearPointer64 << 8));
         field.value.reg.u32 = 0;
-        field.name          = "data";
+        field.name.setView(g_LangSpec->name_data);
         tr0->LF_FieldList.fields.reserve(2);
-        tr0->LF_FieldList.fields.push_back(field);
+        tr0->LF_FieldList.fields.emplace_back(std::move(field));
 
         field.kind          = LF_MEMBER;
         field.type          = (DbgTypeIndex) (SimpleTypeKind::UInt64);
         field.value.reg.u32 = sizeof(void*);
-        field.name          = "sizeof";
-        tr0->LF_FieldList.fields.push_back(field);
+        field.name.setView(g_LangSpec->name_sizeof);
+        tr0->LF_FieldList.fields.emplace_back(std::move(field));
 
         auto tr1                      = dbgAddTypeRecord(pp);
         tr1->kind                     = LF_STRUCTURE;
         tr1->LF_Structure.memberCount = 2;
         tr1->LF_Structure.sizeOf      = 2 * sizeof(void*);
         tr1->LF_Structure.fieldList   = tr0->index;
-        tr1->name                     = "string";
+        tr1->name.setView(g_LangSpec->name_string);
 
         pp.dbgMapTypes[typeInfo] = tr1->index;
         return tr1->index;
@@ -768,22 +768,22 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
         field.kind          = LF_MEMBER;
         field.type          = (DbgTypeIndex) (SimpleTypeKind::UnsignedCharacter | (NearPointer64 << 8));
         field.value.reg.u32 = 0;
-        field.name          = "data";
+        field.name.setView(g_LangSpec->name_data);
         tr0->LF_FieldList.fields.reserve(2);
-        tr0->LF_FieldList.fields.push_back(field);
+        tr0->LF_FieldList.fields.emplace_back(std::move(field));
 
         field.kind          = LF_MEMBER;
         field.type          = dbgGetOrCreatePointerPointerToType(pp, g_Workspace->swagScope.regTypeInfoStruct);
         field.value.reg.u32 = sizeof(void*);
-        field.name          = "itable";
-        tr0->LF_FieldList.fields.push_back(field);
+        field.name.setView(g_LangSpec->name_itable);
+        tr0->LF_FieldList.fields.emplace_back(std::move(field));
 
         auto tr1                      = dbgAddTypeRecord(pp);
         tr1->kind                     = LF_STRUCTURE;
         tr1->LF_Structure.memberCount = 2;
         tr1->LF_Structure.sizeOf      = 2 * sizeof(void*);
         tr1->LF_Structure.fieldList   = tr0->index;
-        tr1->name                     = "interface";
+        tr1->name.setView(g_LangSpec->name_interface);
 
         pp.dbgMapTypes[typeInfo] = tr1->index;
         return tr1->index;
@@ -799,22 +799,22 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
         field.kind          = LF_MEMBER;
         field.type          = (DbgTypeIndex) (SimpleTypeKind::UnsignedCharacter | (NearPointer64 << 8));
         field.value.reg.u32 = 0;
-        field.name          = "ptrvalue";
+        field.name.setView(g_LangSpec->name_ptrvalue);
         tr0->LF_FieldList.fields.reserve(2);
-        tr0->LF_FieldList.fields.push_back(field);
+        tr0->LF_FieldList.fields.emplace_back(std::move(field));
 
         field.kind          = LF_MEMBER;
         field.type          = dbgGetOrCreatePointerToType(pp, g_Workspace->swagScope.regTypeInfo, false);
         field.value.reg.u32 = sizeof(void*);
-        field.name          = "typeinfo";
-        tr0->LF_FieldList.fields.push_back(field);
+        field.name.setView(g_LangSpec->name_typeinfo);
+        tr0->LF_FieldList.fields.emplace_back(std::move(field));
 
         auto tr1                      = dbgAddTypeRecord(pp);
         tr1->kind                     = LF_STRUCTURE;
         tr1->LF_Structure.memberCount = 2;
         tr1->LF_Structure.sizeOf      = 2 * sizeof(void*);
         tr1->LF_Structure.fieldList   = tr0->index;
-        tr1->name                     = "any";
+        tr1->name.setView(g_LangSpec->name_any);
 
         pp.dbgMapTypes[typeInfo] = tr1->index;
         return tr1->index;
@@ -853,9 +853,8 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
             DbgTypeField field;
             field.kind = LF_ONEMETHOD;
             field.type = dbgGetOrCreateType(pp, p->typeInfo);
-            auto nn    = dbgGetScopedName(p->typeInfo->declNode);
-            field.name = nn;
-            tr0->LF_FieldList.fields.push_back(field);
+            field.name = dbgGetScopedName(p->typeInfo->declNode);
+            tr0->LF_FieldList.fields.emplace_back(std::move(field));
         }
 
         // Struct itself, pointing to the field list
@@ -891,7 +890,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
                 field.name      = p->name;
                 field.valueType = typeEnum->rawType;
                 field.value     = *p->value;
-                tr0->LF_FieldList.fields.push_back(field);
+                tr0->LF_FieldList.fields.emplace_back(std::move(field));
             }
 
             // Enum itself, pointing to the field list

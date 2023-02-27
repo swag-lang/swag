@@ -122,6 +122,15 @@ void LanguageSpec::setupNames()
     name_Backend              = "Backend";
     name_Swag_CompilerMsgMask = "Swag.CompilerMsgMask";
 
+    name_data      = "data";
+    name_count     = "count";
+    name_sizeof    = "sizeof";
+    name_string    = "string";
+    name_itable    = "itable";
+    name_interface = "interface";
+    name_ptrvalue  = "ptrvalue";
+    name_typeinfo  = "typeinfo";
+
     name_export      = "export";
     name_generated   = "generated";
     name_skip        = "skip";

@@ -45,7 +45,7 @@ CoffSymbol* X64Gen::getOrAddSymbol(const Utf8& name, CoffSymbolKind kind, uint32
     sym.sectionIdx = sectionIdx;
     SWAG_ASSERT(allSymbols.size() < UINT32_MAX);
     sym.index = (uint32_t) allSymbols.size();
-    allSymbols.emplace_back(sym);
+    allSymbols.emplace_back(std::move(sym));
     mapSymbols[name] = (uint32_t) allSymbols.size() - 1;
     return &allSymbols.back();
 }
