@@ -285,7 +285,7 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
 
     if !g_InitDone
     {
-        g_InitDone = true
+        g_InitDone   = true
         g_BlackBrush = cast(HBRUSH) GetStockObject(BLACK_BRUSH)
         g_RedBrush   = cast(HBRUSH) catch CreateSolidBrush(RGB(255, 0, 0))
         g_PenRect    = CreatePen(PS_DOT, 1, RGB(255,255,0))
@@ -359,6 +359,7 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
 
         main.getApp().runFrame()
         hWnd := createNative(g_ScreenWidth, g_ScreenHeight)
+        SetCapture(hWnd)
 
         var msg: MSG
         while GetMessageW(&msg, null, 0, 0) != 0
