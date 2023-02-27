@@ -566,17 +566,19 @@ DbgTypeIndex BackendX64::dbgGetOrCreatePointerToType(X64Gen& pp, TypeInfo* typeI
     typeInfo->computeScopedNameExport();
 
     // In the cache of pointers
+    using P = MapUtf8<DbgTypeIndex>;
+    pair<P::iterator, bool> iter;
     if (asRef)
     {
-        auto it = pp.dbgMapRefTypes.find(typeInfo->scopedNameExport);
-        if (it != pp.dbgMapRefTypes.end())
-            return it->second;
+        iter = pp.dbgMapRefTypes.insert(P::value_type(typeInfo->scopedNameExport, 0));
+        if (!iter.second)
+            return iter.first->second;
     }
     else
     {
-        auto it = pp.dbgMapPtrTypes.find(typeInfo->scopedNameExport);
-        if (it != pp.dbgMapPtrTypes.end())
-            return it->second;
+        iter = pp.dbgMapPtrTypes.insert(P::value_type(typeInfo->scopedNameExport, 0));
+        if (!iter.second)
+            return iter.first->second;
     }
 
     // Pointer to something complex
@@ -585,11 +587,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreatePointerToType(X64Gen& pp, TypeInfo* typeI
     tr->LF_Pointer.pointeeType = dbgGetOrCreateType(pp, typeInfo, !asRef);
     tr->LF_Pointer.asRef       = asRef;
 
-    if (asRef)
-        pp.dbgMapRefTypes[typeInfo->scopedNameExport] = tr->index;
-    else
-        pp.dbgMapPtrTypes[typeInfo->scopedNameExport] = tr->index;
-
+    iter.first->second = tr->index;
     return tr->index;
 }
 
@@ -598,21 +596,22 @@ DbgTypeIndex BackendX64::dbgGetOrCreatePointerPointerToType(X64Gen& pp, TypeInfo
     typeInfo->computeScopedNameExport();
 
     // In the cache of pointers
-    auto it = pp.dbgMapPtrPtrTypes.find(typeInfo->scopedNameExport);
-    if (it != pp.dbgMapPtrPtrTypes.end())
-        return it->second;
+    using P                      = MapUtf8<DbgTypeIndex>;
+    pair<P::iterator, bool> iter = pp.dbgMapPtrPtrTypes.insert(P::value_type(typeInfo->scopedNameExport, 0));
+    if (!iter.second)
+        return iter.first->second;
 
     auto typeIdx = dbgGetOrCreatePointerToType(pp, typeInfo, false);
 
     // Pointer to something complex
-    auto tr                                          = dbgAddTypeRecord(pp);
-    tr->kind                                         = LF_POINTER;
-    tr->LF_Pointer.pointeeType                       = typeIdx;
-    pp.dbgMapPtrPtrTypes[typeInfo->scopedNameExport] = tr->index;
+    auto tr                    = dbgAddTypeRecord(pp);
+    tr->kind                   = LF_POINTER;
+    tr->LF_Pointer.pointeeType = typeIdx;
+    iter.first->second         = tr->index;
     return tr->index;
 }
 
-DbgTypeIndex BackendX64::dbgEmitTypeSlice(X64Gen& pp, TypeInfo* typeInfo, TypeInfo* pointedType)
+DbgTypeIndex BackendX64::dbgEmitTypeSlice(X64Gen& pp, TypeInfo* typeInfo, TypeInfo* pointedType, DbgTypeIndex* value)
 {
     auto         tr0 = dbgAddTypeRecord(pp);
     DbgTypeField field;
@@ -643,7 +642,7 @@ DbgTypeIndex BackendX64::dbgEmitTypeSlice(X64Gen& pp, TypeInfo* typeInfo, TypeIn
     else
         tr1->name = typeInfo->name;
 
-    pp.dbgMapTypes[typeInfo] = tr1->index;
+    *value = tr1->index;
     return tr1->index;
 }
 
@@ -686,23 +685,24 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
 
     // In the cache
     /////////////////////////////////
-    auto it = pp.dbgMapTypes.find(typeInfo);
-    if (it != pp.dbgMapTypes.end())
-        return it->second;
+    using P                      = Map<TypeInfo*, DbgTypeIndex>;
+    pair<P::iterator, bool> iter = pp.dbgMapTypes.insert(P::value_type(typeInfo, 0));
+    if (!iter.second)
+        return iter.first->second;
 
     // Slice
     /////////////////////////////////
     if (typeInfo->isSlice())
     {
         auto typeInfoPtr = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
-        return dbgEmitTypeSlice(pp, typeInfo, typeInfoPtr->pointedType);
+        return dbgEmitTypeSlice(pp, typeInfo, typeInfoPtr->pointedType, &iter.first->second);
     }
 
     // TypedVariadic
     /////////////////////////////////
     if (typeInfo->isVariadic())
     {
-        return dbgEmitTypeSlice(pp, typeInfo, g_TypeMgr->typeInfoAny);
+        return dbgEmitTypeSlice(pp, typeInfo, g_TypeMgr->typeInfoAny, &iter.first->second);
     }
 
     // TypedVariadic
@@ -710,7 +710,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
     if (typeInfo->isTypedVariadic())
     {
         auto typeInfoPtr = CastTypeInfo<TypeInfoVariadic>(typeInfo, TypeInfoKind::TypedVariadic);
-        return dbgEmitTypeSlice(pp, typeInfo, typeInfoPtr->rawType);
+        return dbgEmitTypeSlice(pp, typeInfo, typeInfoPtr->rawType, &iter.first->second);
     }
 
     // Static array
@@ -723,7 +723,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
         tr->LF_Array.elementType = dbgGetOrCreateType(pp, typeArr->pointedType, true);
         tr->LF_Array.indexType   = SimpleTypeKind::UInt64;
         tr->LF_Array.sizeOf      = typeArr->sizeOf;
-        pp.dbgMapTypes[typeInfo] = tr->index;
+        iter.first->second       = tr->index;
         return tr->index;
     }
 
@@ -754,7 +754,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
         tr1->LF_Structure.fieldList   = tr0->index;
         tr1->name.setView(g_LangSpec->name_string);
 
-        pp.dbgMapTypes[typeInfo] = tr1->index;
+        iter.first->second = tr1->index;
         return tr1->index;
     }
 
@@ -785,7 +785,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
         tr1->LF_Structure.fieldList   = tr0->index;
         tr1->name.setView(g_LangSpec->name_interface);
 
-        pp.dbgMapTypes[typeInfo] = tr1->index;
+        iter.first->second = tr1->index;
         return tr1->index;
     }
 
@@ -816,7 +816,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
         tr1->LF_Structure.fieldList   = tr0->index;
         tr1->name.setView(g_LangSpec->name_any);
 
-        pp.dbgMapTypes[typeInfo] = tr1->index;
+        iter.first->second = tr1->index;
         return tr1->index;
     }
 
@@ -840,7 +840,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
         tr2->LF_Structure.forward = true;
         tr2->name                 = sname;
 
-        pp.dbgMapTypes[typeInfo] = tr2->index;
+        iter.first->second = tr2->index;
 
         // List of fields, after the forward ref
         auto tr0  = dbgAddTypeRecord(pp);
@@ -865,7 +865,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
         tr1->LF_Structure.fieldList   = tr0->index;
         tr1->name                     = sname;
 
-        pp.dbgMapTypes[typeInfo] = tr1->index;
+        iter.first->second = tr1->index;
         return tr1->index;
     }
 
@@ -901,7 +901,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
             tr1->LF_Enum.underlyingType = dbgGetOrCreateType(pp, typeEnum->rawType);
             tr1->name                   = sname;
 
-            pp.dbgMapTypes[typeInfo] = tr1->index;
+            iter.first->second = tr1->index;
             return tr1->index;
         }
 
@@ -931,8 +931,9 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
         auto numArgs  = (uint16_t) typeFunc->parameters.size();
 
         DbgTypeIndex argsTypeIndex;
-        auto         itn = pp.dbgMapTypesNames.find(args);
-        if (itn == pp.dbgMapTypesNames.end())
+        using P1                       = MapUtf8<DbgTypeIndex>;
+        pair<P1::iterator, bool> iter1 = pp.dbgMapTypesNames.insert(P1::value_type(args, 0));
+        if (iter1.second)
         {
             auto tr1              = dbgAddTypeRecord(pp);
             tr1->kind             = LF_ARGLIST;
@@ -943,11 +944,11 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
                 tr1->LF_ArgList.args.push_back(dbgGetOrCreateType(pp, p->typeInfo));
             }
 
-            pp.dbgMapTypesNames[args] = tr1->index;
-            argsTypeIndex             = tr1->index;
+            iter1.first->second = tr1->index;
+            argsTypeIndex       = tr1->index;
         }
         else
-            argsTypeIndex = itn->second;
+            argsTypeIndex = iter1.first->second;
 
         if (isMethod)
         {
@@ -1342,20 +1343,21 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
             concat.addU32(endAddress - dbgLines[0].byteOffset); // Code size
 
             // Compute file name index in the checksum table
-            auto  checkSymIndex = 0;
-            Path* name          = &sourceFile->path;
-            auto  it            = mapFileNames.find(*name);
-            if (it == mapFileNames.end())
+            auto checkSymIndex = 0;
+
+            using P                      = MapPath<uint32_t>;
+            pair<P::iterator, bool> iter = mapFileNames.insert(P::value_type(sourceFile->path, 0));
+            if (iter.second)
             {
                 checkSymIndex = (uint32_t) arrFileNames.size();
                 arrFileNames.push_back((uint32_t) stringTable.length());
-                mapFileNames[sourceFile->path] = checkSymIndex;
+                iter.first->second = checkSymIndex;
                 stringTable += sourceFile->path.string();
                 stringTable.append((char) 0);
             }
             else
             {
-                checkSymIndex = it->second;
+                checkSymIndex = iter.first->second;
             }
 
             auto numDbgLines = (uint32_t) dbgLines.size();

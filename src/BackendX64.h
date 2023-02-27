@@ -67,7 +67,7 @@ struct BackendX64 : public Backend
     bool emitRelocationTable(Concat& concat, CoffRelocationTable& cofftable, uint32_t* sectionFlags, uint16_t* count);
     bool emitHeader(const BuildParameters& buildParameters);
 
-    DbgTypeIndex   dbgEmitTypeSlice(X64Gen& pp, TypeInfo* typeInfo, TypeInfo* pointedType);
+    DbgTypeIndex   dbgEmitTypeSlice(X64Gen& pp, TypeInfo* typeInfo, TypeInfo* pointedType, DbgTypeIndex* value);
     void           dbgEmitEmbeddedValue(Concat& concat, TypeInfo* valueType, ComputedValue& val);
     void           dbgStartRecord(X64Gen& pp, Concat& concat, uint16_t what);
     void           dbgEndRecord(X64Gen& pp, Concat& concat, bool align = true);
