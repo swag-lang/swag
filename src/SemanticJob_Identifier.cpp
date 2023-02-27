@@ -1493,7 +1493,8 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
     oneTryMatch.symMatchContext.genericReplaceTypes.clear();
     oneTryMatch.symMatchContext.mapGenericTypesIndex.clear();
 
-    VectorNative<AstNode*> toCheck;
+    auto &toCheck = context->job->tmpNodes;
+    toCheck.clear();
 
     // If we are inside a struct, then we can inherit the generic concrete types of that struct
     if (node->ownerStructScope)
