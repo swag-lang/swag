@@ -332,12 +332,13 @@ uint32_t DataSegment::addStringNoLock(const Utf8& str, uint8_t** resultPtr)
     SWAG_RACE_CONDITION_WRITE(raceC);
 
     // Same string already there ?
-    auto it = storedStrings.find(str);
-    if (it != storedStrings.end())
+    using P                      = MapUtf8<CacheValue>;
+    pair<P::iterator, bool> iter = storedStrings.insert(P::value_type(str, {}));
+    if (!iter.second)
     {
         if (resultPtr)
-            *resultPtr = it->second.addr;
-        return it->second.offset;
+            *resultPtr = iter.first->second.addr;
+        return iter.first->second.offset;
     }
 
     uint8_t* addr;
@@ -345,9 +346,9 @@ uint32_t DataSegment::addStringNoLock(const Utf8& str, uint8_t** resultPtr)
     if (resultPtr)
         *resultPtr = addr;
     memcpy(addr, str.buffer, str.count);
-    addr[str.count]    = 0;
-    storedStrings[str] = {offset, addr};
+    addr[str.count] = 0;
 
+    iter.first->second = {offset, addr};
     return offset;
 }
 
