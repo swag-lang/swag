@@ -154,7 +154,7 @@ impl IWnd for RecentView
             i.rect = rect
 
             paintRecent(self, painter, i.preview, rect, idx == hotItem, idx == selected)
-            defer x = rect.right() + RecentPadding
+            x = rect.right() + RecentPadding
         }
 
         recentWnd.setScrollSize(x, 0)
@@ -174,7 +174,8 @@ impl IWnd for RecentWnd
     mtd onTimerEvent(evt: *TimerEvent)
     {
         capture := main.getCapture()
-        if !capture return
+        if !capture
+            return
 
         capture.computePreview()
         item := recentView.items[recentView.selected]

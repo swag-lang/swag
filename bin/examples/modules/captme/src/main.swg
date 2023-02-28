@@ -26,13 +26,16 @@ var g_App: Application
     surface.show()
 
     using Win32
-    var tnid: NOTIFYICONDATAA
-    tnid.cbSize = @sizeof(NOTIFYICONDATAA)
-    tnid.hWnd = surface.hWnd
-    tnid.uID = 1
-    tnid.uFlags = NIF_ICON | NIF_MESSAGE
-    tnid.uCallbackMessage = WM_USER
-    tnid.hIcon = catch img.toHICON()
+    with var tnid: NOTIFYICONDATAA
+    {
+        .cbSize = @sizeof(NOTIFYICONDATAA)
+        .hWnd = surface.hWnd
+        .uID = 1
+        .uFlags = NIF_ICON | NIF_MESSAGE
+        .uCallbackMessage = WM_USER
+        .hIcon = catch img.toHICON()
+    }
+
     catch Shell_NotifyIconA(NIM_ADD, &tnid)
 
     g_App.run()

@@ -1156,13 +1156,13 @@ impl Capture
 
     mtd hitTest(localPos: Math.Point)->u64
     {
-        for i := cast(s32) forms.count - 1; i >= 0; i -= 1
+        loop i: forms.count-1..0
         {
             f := forms[i]
             b := cast(*BaseForm) @dataof(f)
             if !b.paintPos.contains(localPos)
                 continue
-            if !f.hitTest(localPos, self.editView.zoom)
+            if !f.hitTest(localPos, editView.zoom)
                 continue
             return i
         }

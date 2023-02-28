@@ -423,6 +423,18 @@ Utf8 Diagnostic::syntax(const Utf8& line)
     while (c)
     {
         Utf8 identifier;
+
+        if (c == '/' && pz[0] == '/')
+        {
+            result += "\x1b[38;2;106;153;85m";
+            result += c;
+            while (*pz && !SWAG_IS_EOL(*pz))
+                result += *pz++;
+            c = *pz;
+            result += Log::colorToVTS(codeColor);
+            continue;
+        }
+
         if (SWAG_IS_ALPHA(c) || c == '_' || c == '#' || c == '@')
         {
             identifier += c;
