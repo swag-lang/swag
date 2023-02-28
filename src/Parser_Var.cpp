@@ -223,7 +223,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
             varNode->flags |= AST_R_VALUE | AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS;
             if (currentScope->isGlobalOrImpl())
                 SWAG_CHECK(currentScope->symTable.registerSymbolName(context, varNode, SymbolKind::Variable));
-            identifier          = Ast::newIdentifierRef(sourceFile, Fmt("%s.item%d", tmpVarName.c_str(), idx++), varNode, this);
+            identifier          = Ast::newMultiIdentifierRef(sourceFile, Fmt("%s.item%d", tmpVarName.c_str(), idx++), varNode, this);
             varNode->assignment = identifier;
             SemanticJob::setVarDeclResolve(varNode);
             varNode->assignment->flags |= AST_TUPLE_UNPACK;

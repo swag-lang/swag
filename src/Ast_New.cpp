@@ -114,37 +114,55 @@ AstIdentifierRef* Ast::newIdentifierRef(SourceFile* sourceFile, const Utf8& name
     if (parser && !parser->currentTokenLocation)
         node->inheritTokenLocation(parser->token);
 
-    Utf8 str;
-    int  cpt = 0;
-    auto pz  = name.buffer;
-    while (*pz && cpt != name.count)
+    auto id         = Ast::newNode<AstIdentifier>(parser, AstNodeKind::Identifier, sourceFile, node);
+    id->semanticFct = SemanticJob::resolveIdentifier;
+    id->token.text  = name;
+    id->token.id    = TokenId::Identifier;
+    if (parser && !parser->currentTokenLocation)
+        id->inheritTokenLocation(parser->token);
+    id->inheritOwners(node);
+
+    return node;
+}
+
+AstIdentifierRef* Ast::newMultiIdentifierRef(SourceFile* sourceFile, const Utf8& name, AstNode* parent, Parser* parser)
+{
+    SWAG_ASSERT(!name.empty());
+
+    auto node        = Ast::newIdentifierRef(sourceFile, parent, parser);
+    node->token.text = name;
+    if (parser && !parser->currentTokenLocation)
+        node->inheritTokenLocation(parser->token);
+
+    auto pz    = name.buffer;
+    auto pzEnd = name.buffer + name.count;
+    while (pz != pzEnd)
     {
         auto pzStart = pz;
-        while (*pz && *pz != '.' && cpt != name.count)
-        {
+        while (*pz != '.' && pz != pzEnd)
             pz++;
-            cpt++;
-        }
 
-        auto id         = Ast::newNode<AstIdentifier>(parser, AstNodeKind::Identifier, sourceFile, node);
-        id->semanticFct = SemanticJob::resolveIdentifier;
-        str.buffer      = pzStart;
-        str.count       = (int) (pz - pzStart);
-        str.allocated   = name.allocated;
-        id->token.text  = str;
+        auto id              = Ast::newNode<AstIdentifier>(parser, AstNodeKind::Identifier, sourceFile, node);
+        id->semanticFct      = SemanticJob::resolveIdentifier;
+        id->token.text.count = (int) (pz - pzStart);
+        if (name.allocated)
+        {
+            id->token.text = Utf8{pzStart, (uint32_t) id->token.text.count};
+        }
+        else
+        {
+            id->token.text.buffer    = pzStart;
+            id->token.text.allocated = name.allocated;
+        }
 
         id->token.id = TokenId::Identifier;
         if (parser && !parser->currentTokenLocation)
             id->inheritTokenLocation(parser->token);
         id->inheritOwners(node);
 
-        if (*pz && cpt != name.count)
-        {
-            cpt++;
+        if (pz != pzEnd)
             pz++;
-        }
     }
 
-    str.buffer = nullptr; // to avoid free on destruction
     return node;
 }

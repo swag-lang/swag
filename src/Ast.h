@@ -40,8 +40,9 @@ namespace Ast
     AstIntrinsicProp*  newIntrinsicProp(SourceFile* sourceFile, TokenId id, AstNode* parent, Parser* parser = nullptr);
     AstTypeExpression* newTypeExpression(SourceFile* sourceFile, AstNode* parent, Parser* parser = nullptr);
     AstIdentifier*     newIdentifier(SourceFile* sourceFile, const Utf8& name, AstIdentifierRef* identifierRef, AstNode* parent, Parser* parser = nullptr);
-    AstIdentifierRef*  newIdentifierRef(SourceFile* sourceFile, const Utf8& name, AstNode* parent, Parser* parser = nullptr);
     AstIdentifierRef*  newIdentifierRef(SourceFile* sourceFile, AstNode* parent, Parser* parser = nullptr);
+    AstIdentifierRef*  newIdentifierRef(SourceFile* sourceFile, const Utf8& name, AstNode* parent, Parser* parser = nullptr);
+    AstIdentifierRef*  newMultiIdentifierRef(SourceFile* sourceFile, const Utf8& name, AstNode* parent, Parser* parser = nullptr);
     AstInline*         newInline(SourceFile* sourceFile, AstNode* parent, Parser* parser = nullptr);
     AstNode*           newAffectOp(SourceFile* sourceFile, AstNode* parent, uint8_t opFlags, uint64_t attributeFlags, Parser* parser = nullptr);
 
