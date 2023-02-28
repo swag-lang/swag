@@ -104,7 +104,7 @@ bool SourceFile::load()
         Allocator::free(buffer, allocBufferSize);
         buffer = nullptr;
 
-        Report::errorOS(Fmt(Err(Err0153), path.c_str()));
+        Report::errorOS(Fmt(Err(Err0153), path.string().c_str()));
         return false;
     }
 

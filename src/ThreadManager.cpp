@@ -249,7 +249,7 @@ static void exceptionMessage(Job* job, SWAG_LPEXCEPTION_POINTERS args)
         auto node = job->nodes.back();
         g_Log.printHeaderDot("current node", node->token.text, LogColor::White, LogColor::White, " ");
         if (node->sourceFile)
-            g_Log.printHeaderDot("current location", Fmt("%s:%d:%d", node->sourceFile->path.c_str(), node->token.startLocation.line + 1, node->token.startLocation.column + 1), LogColor::White, LogColor::White, " ");
+            g_Log.printHeaderDot("current location", Fmt("%s:%d:%d", node->sourceFile->path.string().c_str(), node->token.startLocation.line + 1, node->token.startLocation.column + 1), LogColor::White, LogColor::White, " ");
     }
 
     g_Log.setDefaultColor();

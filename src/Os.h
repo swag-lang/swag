@@ -55,7 +55,6 @@ namespace OS
 
     void     ensureFileIsWritten(const char* fileName);
     uint64_t getFileWriteTime(const char* fileName);
-    bool     touchFile(const Path& path);
     Path     getTemporaryFolder();
 
     uint64_t timerNow();
