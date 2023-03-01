@@ -26,4 +26,13 @@ using Core
     }
 
     @assert(cpt == 5)
+
+    cpt = 0
+    visit(Back) v: list
+    {
+        cpt += 1
+        continue
+    }
+
+    @assert(cpt == 4)
 }

@@ -52,6 +52,36 @@ impl List
         }
     }
 
+    // Visit every elements of the list from tail to head
+    // @alias0 is the value
+    // @alias1 is the node
+    // @alias2 is the index
+    #[Swag.Macro]
+    mtd(ptr: bool) opVisitBack(stmt: code)
+    {
+        n := tail
+        #scope Up
+        while n
+        {
+            #scope Down
+            #macro
+            {
+                #if #up ptr
+                    var @alias0 = cast(*T) & #up n.value
+                #elif Reflection.isStruct(T)
+                    var @alias0 = cast(ref T) & #up n.value
+                #else
+                    var @alias0 = #up n.value
+                var @alias1 = #up n
+                var @alias2 = @index
+
+                #mixin #up stmt { break = break Up; continue = break Down; }
+            }
+
+            n = n.prev
+        }
+    }
+
     // Clear all elements
     mtd clear()
     {
