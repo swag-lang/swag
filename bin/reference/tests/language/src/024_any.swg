@@ -1,6 +1,10 @@
+/**
+'any' is a specific type that can store every other types.
+'any' is **not** a variant. It's a dynamic typed reference to an existing value.
+*/
+
 #test
 {
-    // 'any' is a specific type that can store every other types
     {
         var a: any
 
@@ -17,7 +21,7 @@
         @assert(a == true)
     }
 
-    // 'any' is in fact a pointer to the value, and a 'typeinfo'
+    // 'any' is in fact a pointer to the value, and a 'typeinfo'.
     // '@dataof' can be used to retrieve the pointer to the value.
     {
         var a: any = 6
@@ -25,7 +29,7 @@
         @assert(dref ptr == 6)
     }
 
-    // '@typeof' will give you the type 'any', but '@kindof' will give you the real underlying type
+    // '@typeof' will give you the type 'any', but '@kindof' will give you the real underlying type.
     // In that case, '@kindof' is evaluted at runtime.
     {
         var a: any = "string"
@@ -50,7 +54,7 @@
         @assert(array[3] == "4")
     }
 
-    // An any can be set to null, and tested against null
+    // An 'any' can be set to null, and tested against null.
     {
         var x: any
         @assert(x == null)

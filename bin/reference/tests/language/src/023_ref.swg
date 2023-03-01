@@ -8,7 +8,7 @@ Swag has also references, which are pointers that behave like values.
 
     // Use 'ref' to declare a reference.
     // Here we declare a reference to the variable 'x'.
-    // Note that unlike c++, you have to take the address of 'x' to convert it to a reference.
+    // Note that unlike C++, you have to take the address of 'x' to convert it to a reference.
     var myRef: const ref s32 = &x
 
     // This is a pointer that behaves like a value, so no explicit dereferencing is necessary.
@@ -31,12 +31,12 @@ and not the reference itself.
     myRef = 66
     @assert(myRef == 66)
 
-    // Remember that 'myRef' is an alias for 'x'.
+    // Remember that 'myRef' is an alias for 'x', so 'x' has also been changed.
     @assert(x == 66)
 }
 
 /**
-If you want to change the reference and not the pointed value, you can use 'ref'.
+If you want to change the reference and not the pointed value, you can use 'ref' in the affectation.
 */
 
 #test
@@ -75,11 +75,10 @@ func toto(x: const ref s32)
 }
 
 /**
-This is usefull for structs for examples, as you can directly pass a literal to
-a function.
+This is usefull for structs for examples, as you can directly pass a literal to a function.
 */
 
-struct MyStruct {x: s32; y: s32; }
+struct MyStruct {x: s32; y: s32; }  // Our first little struct !
 
 #test
 {
@@ -90,12 +89,14 @@ struct MyStruct {x: s32; y: s32; }
 
 func titi0(param: const ref {s32, s32})
 {
+    // We'll see later about typles and naming of fields.
     @assert(param.item0 == 1)
     @assert(param.item1 == 2)
 }
 
-// Note that declaring a tuple type or a struct type is equivalent to
-// a constant reference.
+/**
+Note that declaring a tuple type or a struct type is equivalent to a constant reference.
+*/
 func titi1(param: {x: s32, y: s32})
 {
     @assert(param.x == 3)

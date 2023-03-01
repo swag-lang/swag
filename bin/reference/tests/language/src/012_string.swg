@@ -45,7 +45,7 @@ But note that the 'Std.Core' module will have all you need to manipulate UTF8 st
 }
 
 /**
-Multiple strings are compiled as one.
+Multiple adjacent strings are compiled as one.
 */
 #test
 {

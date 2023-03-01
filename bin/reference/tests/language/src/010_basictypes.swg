@@ -88,8 +88,8 @@ We will see that later in more details.
 {
     // You can use '@decltype' to create a type based on an expression.
     {
-        var a = 0               // 'a' is inferred to have the 's32' type
-        var b: @decltype(a) = 1   // 'b' will have the same type as 'a'
+        var a = 0                   // 'a' is inferred to have the 's32' type
+        var b: @decltype(a) = 1     // 'b' will have the same type as 'a'
 
         // We can verify with '@typeof' that 'a' and 'b' have the same type.
         @assert(@typeof(a) == @typeof(b))
@@ -106,5 +106,9 @@ We will see that later in more details.
         x := @typeof(s32)
         @assert(x == s32)
         @assert(x.name == "s32")
+
+        // @typeof is not really necessary
+        y := bool
+        @assert(y == bool)
     }
 }
