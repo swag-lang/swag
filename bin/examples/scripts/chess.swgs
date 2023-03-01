@@ -217,7 +217,7 @@ func computeMoves()
             and g_Board[ki+3].content == contentToTreat
             and g_Board[ki+3].piece == .Rook
     {
-        board := doMove( g_Board, ki, ki+2)
+        board := doMove(g_Board, ki, ki+2)
         if !isCheck(board, g_Game.whiteTurn)
             g_Game.possibleMoves.add ({ki, ki+2})
     }
@@ -227,7 +227,7 @@ func computeMoves()
         and g_Board[ki-4].content == contentToTreat
         and g_Board[ki-4].piece == .Rook
     {
-        board := doMove( g_Board, ki, ki-2)
+        board := doMove(g_Board, ki, ki-2)
         if !isCheck(board, g_Game.whiteTurn)
             g_Game.possibleMoves.add ({ki, ki-2})
     }
@@ -439,7 +439,7 @@ func paintBoard(evt: *Event)
 
         visit move: g_Game.possibleMoves
         {
-            if (move.from == g_Game.selectedCell)
+            if move.from == g_Game.selectedCell
             {
                 cellInfo = g_BoardInfo[move.to]
                 painter.drawRect(cellInfo.rect, ColorTargets, penSize: 3)
@@ -520,8 +520,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         initGame()
         initCells()
 
-        x := BoardWithBorderSize + 12
-        btn := PushButton.create(wnd, "Restart !", {x, 12})
+        btn := PushButton.create(wnd, "Restart !", {BoardWithBorderSize + 12, 12})
         btn.sigPressed += closure|wnd|(btn) {
             initGame()
             initCells()
@@ -581,27 +580,23 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     surface := try app.createSurface(100, 100, 1024, 1024, flags: (.OverlappedWindow & ~.Sizeable), hook: &onEvent)
     surface.setTitle("Chess")
 
-    assume
+    var dataPath: String = Path.getDirectoryName(#location.fileName)
+    dataPath = Path.combine(dataPath, "datas")
+    dataPath = Path.combine(dataPath, "pieces.png")
+    img := assume Image.load(dataPath)
+
+    rdr := surface.app.getRenderer()
+    y := 0
+    loop i: 2
     {
-        rdr := surface.app.getRenderer()
-
-        var dataPath: String = Path.getDirectoryName(#location.fileName)
-        dataPath = Path.combine(dataPath, "datas")
-        dataPath = Path.combine(dataPath, "pieces.png")
-        img := Image.load(dataPath)
-
-        y := 0
-        loop i: 2
-        {
-            using Res
-            piecesTexture[i, cast(s8)(PiecesEnum.King) - 1] = rdr.addImage(img.toCrop(0,y,128,128))
-            piecesTexture[i, cast(s8)(PiecesEnum.Queen) - 1] = rdr.addImage(img.toCrop(128,y,128,128))
-            piecesTexture[i, cast(s8)(PiecesEnum.Bishop) - 1] = rdr.addImage(img.toCrop(256,y,128,128))
-            piecesTexture[i, cast(s8)(PiecesEnum.Knight) - 1] = rdr.addImage(img.toCrop(384,y,128,128))
-            piecesTexture[i, cast(s8)(PiecesEnum.Rook) - 1] = rdr.addImage(img.toCrop(512,y,128,128))
-            piecesTexture[i, cast(s8)(PiecesEnum.Pawn) - 1] = rdr.addImage(img.toCrop(640,y,128,128))
-            y = 128
-        }
+        using Res
+        piecesTexture[i, cast(s8)(PiecesEnum.King) - 1] = rdr.addImage(img.toCrop(0,y,128,128))
+        piecesTexture[i, cast(s8)(PiecesEnum.Queen) - 1] = rdr.addImage(img.toCrop(128,y,128,128))
+        piecesTexture[i, cast(s8)(PiecesEnum.Bishop) - 1] = rdr.addImage(img.toCrop(256,y,128,128))
+        piecesTexture[i, cast(s8)(PiecesEnum.Knight) - 1] = rdr.addImage(img.toCrop(384,y,128,128))
+        piecesTexture[i, cast(s8)(PiecesEnum.Rook) - 1] = rdr.addImage(img.toCrop(512,y,128,128))
+        piecesTexture[i, cast(s8)(PiecesEnum.Pawn) - 1] = rdr.addImage(img.toCrop(640,y,128,128))
+        y = 128
     }
 
     surface.show()
