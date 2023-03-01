@@ -222,6 +222,7 @@ TypeInfo* Generic::doTypeSubstitution(VectorMap<Utf8, TypeInfo*>& replaceTypes, 
             typeArray->finalType   = newFinalType;
             if (typeArray->count)
                 typeArray->removeGenericFlag();
+            typeArray->sizeOf = typeArray->count * newPointedType->sizeOf;
             typeArray->forceComputeName();
             return typeArray;
         }
