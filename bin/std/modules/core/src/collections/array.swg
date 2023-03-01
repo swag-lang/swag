@@ -123,11 +123,12 @@ impl Array
         count += countof
     }
 
-    // Vist every elements of the array
+    // Visit every elements of the array
     #[Macro]
     func(ptr: bool) opVisit(using const self, stmt: code)
     {
-        if !count return
+        if !count
+            return
 
         // Little trick to avoid labels. That way a 'continue' in the user code will work
         // correctly, that's why we increment 'scan' before the use code, and take -1 to start.
@@ -150,7 +151,7 @@ impl Array
         }
     }
 
-    // Vist every elements of the array from end to start
+    // Visit every elements of the array from end to start
     #[Macro]
     func(ptr: bool) opVisitBack(using const self, stmt: code)
     {
