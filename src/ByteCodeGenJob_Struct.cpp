@@ -645,11 +645,37 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         {
             if (typeVar->isArray())
             {
-                auto exprList = CastAst<AstExpressionList>(varDecl->assignment, AstNodeKind::ExpressionList);
-                SWAG_ASSERT(exprList->computedValue->storageSegment);
-                SWAG_ASSERT(exprList->computedValue->storageOffset != UINT32_MAX);
-                emitMakeSegPointer(&cxt, exprList->computedValue->storageSegment, exprList->computedValue->storageOffset, 1);
-                emitMemCpy(&cxt, 0, 1, typeVar->sizeOf);
+                if (varDecl->assignment->kind == AstNodeKind::ExpressionList)
+                {
+                    auto exprList = CastAst<AstExpressionList>(varDecl->assignment, AstNodeKind::ExpressionList);
+                    SWAG_ASSERT(exprList->computedValue->storageSegment);
+                    SWAG_ASSERT(exprList->computedValue->storageOffset != UINT32_MAX);
+                    emitMakeSegPointer(&cxt, exprList->computedValue->storageSegment, exprList->computedValue->storageOffset, 1);
+                    emitMemCpy(&cxt, 0, 1, typeVar->sizeOf);
+                }
+                else
+                {
+                    RegisterList r0 = 0;
+                    if (varDecl->assignment->typeInfo->isString())
+                    {
+                        auto storageSegment = SemanticJob::getConstantSegFromContext(varDecl);
+                        auto storageOffset  = storageSegment->addString(varDecl->assignment->computedValue->text);
+                        SWAG_ASSERT(storageOffset != UINT32_MAX);
+                        emitMakeSegPointer(&cxt, storageSegment, storageOffset, 1);
+                        emitInstruction(&cxt, ByteCodeOp::SetImmediate64, 2)->b.u64 = varDecl->assignment->computedValue->text.length();
+                        RegisterList r1;
+                        r1 += 1;
+                        r1 += 2;
+                        emitCopyArray(&cxt, typeVar, r0, r1, varDecl->assignment);
+                    }
+                    else
+                    {
+                        RegisterList r1   = 1;
+                        auto         inst = emitInstruction(&cxt, ByteCodeOp::SetImmediate64, 1);
+                        inst->b.u64       = varDecl->assignment->computedValue->reg.u64;
+                        emitCopyArray(&cxt, typeVar, r0, r1, varDecl->assignment);
+                    }
+                }
             }
             else if (typeVar->isString())
             {

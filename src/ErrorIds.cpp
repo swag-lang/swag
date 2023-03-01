@@ -560,7 +560,7 @@ void initErrors()
     SWAG_ERROR(Err0036, "error: backend: cannot locate windows sdk folder");
     SWAG_ERROR(Err0102, "evaluation of a function parameter of type '%s' is not supported at compile time");
     SWAG_ERROR(Err0435, "exception during compile time execution !");
-    SWAG_ERROR(Err0500, nullptr);
+    SWAG_ERROR(Err0500, "cannot initialize a constant array with a single value (type is '%s')");
     SWAG_ERROR(Err0501, nullptr);
     SWAG_ERROR(Err0141, "expected '\"' or an intrinsic name, found character '%c'");
     SWAG_ERROR(Err0654, "expected 'self' as a first parameter for the interface function '%s'");
@@ -1005,7 +1005,7 @@ void initErrors()
     SWAG_ERROR(Hlp0047, "if you want to slice to the end, use '..' instead");
     SWAG_ERROR(Hlp0048, "'Swag.Match' valid values are 'validif|self'");
     SWAG_ERROR(Hlp0049, "you could try to take the address of '%s' with '&'");
-    SWAG_ERROR(Hlp0050, nullptr);
+    SWAG_ERROR(Hlp0050, "only variables can be initialized that way");
     SWAG_ERROR(Hlp0051, nullptr);
     SWAG_ERROR(Hlp0052, nullptr);
     SWAG_ERROR(Hlp0053, nullptr);

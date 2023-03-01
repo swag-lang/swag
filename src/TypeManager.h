@@ -42,6 +42,7 @@ const uint32_t CASTFLAG_NO_TUPLE_TO_STRUCT = 0x04000000;
 const uint32_t CASTFLAG_ACCEPT_MOVE_REF    = 0x08000000;
 const uint32_t CASTFLAG_EXACT              = 0x10000000;
 const uint32_t CASTFLAG_CAST               = 0x20000000;
+const uint32_t CASTFLAG_FOR_VAR_INIT       = 0x40000000;
 
 // Stored in SymbolMatchContext.flags
 const uint32_t CASTFLAG_RESULT_STRUCT_CONVERT     = 0x01000000;

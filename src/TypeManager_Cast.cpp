@@ -2722,6 +2722,20 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
         return true;
     }
 
+    if (castFlags & CASTFLAG_FOR_VAR_INIT)
+    {
+        if (toTypeArray->finalType->isSame(fromType, CASTFLAG_CAST))
+        {
+            if (toTypeArray->finalType->isString() ||
+                toTypeArray->finalType->isNativeFloat() ||
+                toTypeArray->finalType->isNativeIntegerOrRune() ||
+                toTypeArray->finalType->isBool())
+            {
+                return true;
+            }
+        }
+    }
+
     if (castFlags & CASTFLAG_EXPLICIT)
     {
         if (fromType->isPointer())

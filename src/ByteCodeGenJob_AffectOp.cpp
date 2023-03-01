@@ -10,8 +10,52 @@ bool ByteCodeGenJob::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeIn
     auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
     if (!typeArray->finalType->isStruct())
     {
-        emitMemCpy(context, dstReg, srcReg, typeArray->sizeOf);
-        return true;
+        if (from->typeInfo->isArray() || from->typeInfo->isListArray())
+        {
+            emitMemCpy(context, dstReg, srcReg, typeArray->sizeOf);
+            return true;
+        }
+        else
+        {
+            RegisterList r0 = reserveRegisterRC(context);
+
+            auto inst     = emitInstruction(context, ByteCodeOp::SetImmediate64, r0);
+            inst->b.u64   = typeArray->totalCount;
+            auto seekJump = context->bc->numInstructions;
+
+            switch (from->typeInfo->sizeOf)
+            {
+            case 1:
+                emitInstruction(context, ByteCodeOp::SetAtPointer8, dstReg, srcReg);
+                break;
+            case 2:
+                emitInstruction(context, ByteCodeOp::SetAtPointer16, dstReg, srcReg);
+                break;
+            case 4:
+                emitInstruction(context, ByteCodeOp::SetAtPointer32, dstReg, srcReg);
+                break;
+            case 8:
+                emitInstruction(context, ByteCodeOp::SetAtPointer64, dstReg, srcReg);
+                break;
+            case 16:
+                emitInstruction(context, ByteCodeOp::SetAtPointer64, dstReg, srcReg[0]);
+                emitInstruction(context, ByteCodeOp::SetAtPointer64, dstReg, srcReg[1], sizeof(void*));
+                break;
+            default:
+                Report::internalError(from, "unsupported array initialization value type");
+                return false;
+            }
+
+            inst        = emitInstruction(context, ByteCodeOp::IncPointer64, dstReg, 0, dstReg);
+            inst->b.u64 = from->typeInfo->sizeOf;
+            inst->flags |= BCI_IMM_B;
+
+            emitInstruction(context, ByteCodeOp::DecrementRA64, r0);
+            emitInstruction(context, ByteCodeOp::JumpIfNotZero64, r0)->b.s32 = seekJump - context->bc->numInstructions - 1;
+
+            freeRegisterRC(context, r0);
+            return true;
+        }
     }
 
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct);

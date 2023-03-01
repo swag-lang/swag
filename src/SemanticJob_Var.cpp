@@ -801,7 +801,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                     return true;
             }
 
-            auto castFlags = CASTFLAG_TRY_COERCE | CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_PTR_REF | CASTFLAG_FOR_AFFECT;
+            auto castFlags = CASTFLAG_TRY_COERCE | CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_PTR_REF | CASTFLAG_FOR_AFFECT | CASTFLAG_FOR_VAR_INIT;
 
             if (node->type->flags & AST_FROM_GENERIC_REPLACE || (node->type->childs.count && node->type->childs.back()->flags & AST_FROM_GENERIC_REPLACE))
             {
@@ -1027,7 +1027,31 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 storageOffset = 0;
                 symbolFlags |= OVERLOAD_INCOMPLETE;
             }
-            else if (typeInfo->isArray() || typeInfo->isStruct())
+            else if (typeInfo->isArray())
+            {
+                if (node->assignment && !node->assignment->typeInfo->isArray() && !node->assignment->typeInfo->isListArray())
+                {
+                    Diagnostic diag{node->assignment, Fmt(Err(Err0500), node->assignment->typeInfo->getDisplayNameC())};
+                    auto       note = Diagnostic::help(Hlp(Hlp0050));
+                    return context->report(diag, note);
+                }
+                else if (node->assignment && node->assignment->flags & AST_VALUE_COMPUTED)
+                {
+                    storageOffset  = node->assignment->computedValue->storageOffset;
+                    storageSegment = node->assignment->computedValue->storageSegment;
+                }
+                else if (node->flags & AST_VALUE_COMPUTED)
+                {
+                    storageOffset  = node->computedValue->storageOffset;
+                    storageSegment = node->computedValue->storageSegment;
+                }
+                else
+                {
+                    node->allocateComputedValue();
+                    SWAG_CHECK(collectAssignment(context, storageSegment, storageOffset, node));
+                }
+            }
+            else if (typeInfo->isStruct())
             {
                 if (node->assignment && node->assignment->flags & AST_VALUE_COMPUTED)
                 {
