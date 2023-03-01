@@ -252,8 +252,17 @@ bool SemanticJob::resolveType(SemanticContext* context)
     // Already solved
     if ((typeNode->flags & AST_FROM_GENERIC) && typeNode->typeInfo && !typeNode->typeInfo->isNative(NativeTypeKind::Undefined))
     {
-        forceConstType(context, typeNode);
-        return true;
+        // Count is generic, need to reevaluate
+        if (typeNode->typeInfo->flags & TYPEINFO_GENERIC_COUNT)
+        {
+            SWAG_ASSERT(typeNode->typeInfo->isArray());
+            typeNode->typeInfo = nullptr;
+        }
+        else
+        {
+            forceConstType(context, typeNode);
+            return true;
+        }
     }
 
     if ((typeNode->semFlags & AST_SEM_TYPE_SOLVED) && typeNode->typeInfo && !typeNode->typeInfo->isNative(NativeTypeKind::Undefined))
