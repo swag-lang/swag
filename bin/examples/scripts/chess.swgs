@@ -17,7 +17,6 @@ const ColorBorder    = Argb.SaddleBrown
 const ColorSelection = Argb.LawnGreen
 const ColorTargets   = Argb.MediumTurquoise
 
-#[Swag.EnumIndex]
 enum PiecesEnum: u8
 {
     None
@@ -41,7 +40,7 @@ enum ContentEnum : u8
 namespace Res
 {
     var piecesTexture: [2, 6] Texture
-    var font: *Font
+    var font:      *Font
     var smallfont: *Font
 }
 
@@ -105,25 +104,25 @@ func initCells()
         {
             xinfo := x - 2
             g_BoardInfo[i].odd  = (xinfo + y)%2 == 1
-            g_BoardInfo[i].rect = { BorderSize + xinfo * CellSize, BorderSize + (7 - y) * CellSize, CellSize, CellSize }
+            g_BoardInfo[i].rect = {BorderSize + xinfo * CellSize, BorderSize + (7 - y) * CellSize, CellSize, CellSize}
             g_Board[i].content  = (y < 2) ? .White : ((y > 5) ? .Black : .Empty)
         }
     }
 
-    const firstLine = [PiecesEnum.Rook, .Knight, .Bishop, .Queen, .King, .Bishop, .Knight, .Rook]
+    const FirstLine = [PiecesEnum.Rook, .Knight, .Bishop, .Queen, .King, .Bishop, .Knight, .Rook]
 
     loop x: 8
     {
-        g_Board[x+2].piece          = firstLine[x]
+        g_Board[x+2].piece          = FirstLine[x]
         g_Board[x+2 + 12].piece     = .Pawn
         g_Board[x+2 + 6 * 12].piece = .Pawn
-        g_Board[x+2 + 7 * 12].piece = firstLine[x]
+        g_Board[x+2 + 7 * 12].piece = FirstLine[x]
     }
 
     computeMoves()
 }
 
-func getCellWithOffset(board:^Cell, source, offset: s8)->s8
+func getCellWithOffset(board: ^Cell, source, offset: s8)->s8
 {
     result := source + offset
     if result < 0 or result >= 96 or board[result].content == .Invalid
@@ -131,7 +130,7 @@ func getCellWithOffset(board:^Cell, source, offset: s8)->s8
     return result
 }
 
-func getKingCell(board:^Cell, color: ContentEnum)->s8
+func getKingCell(board: ^Cell, color: ContentEnum)->s8
 {
     loop i: 96's8
         if board[i].content == color and board[i].piece == .King
@@ -145,25 +144,25 @@ func isCheck(board: ^Cell, white: bool)->bool
     if kingCell == -1
         return false
 
-    var moves : Array's8
+    var moves: Array's8
     getKnightMoves(board, kingCell, &moves)
-    loop moves
-        if board[moves[@index]].piece == .Knight
+    visit v: moves
+        if board[v].piece == .Knight
             return true
     moves.clear()
     getPawnAttacks(board, kingCell, &moves)
-    loop moves
-        if board[moves[@index]].piece == .Pawn
+    visit v: moves
+        if board[v].piece == .Pawn
             return true
     moves.clear()
     getBishopMoves(board, kingCell, &moves)
-    loop moves
-        if board[moves[@index]].piece == .Bishop or board[moves[@index]].piece == .Queen
+    visit v: moves
+        if board[v].piece == .Bishop or board[v].piece == .Queen
             return true
     moves.clear()
     getRookMoves(board, kingCell, &moves)
-    loop moves
-        if board[moves[@index]].piece == .Rook or board[moves[@index]].piece == .Queen
+    visit v: moves
+        if board[v].piece == .Rook or board[v].piece == .Queen
             return true
     return false
 }
@@ -237,28 +236,28 @@ func computeMoves()
         g_Game.gameStatus = Format.toString("% player wins", !g_Game.whiteTurn ? "White": "Black")
 }
 
-func getPawnMoves(board:^Cell, from: s8, moves: *Array's8)
+func getPawnMoves(board: ^Cell, from: s8, moves: *Array's8)
 {
     isWhite := board[from].content == .White
-    var offset: s8 = isWhite ? 12 : -12
-    target := getCellWithOffset(board, from, offset)
-    if (target != -1 and board[target].content == .Empty)
+    offset  := isWhite ? 12's8 : -12's8
+    target  := getCellWithOffset(board, from, offset)
+    if target != -1 and board[target].content == .Empty
         moves.add(target)
 
     // double move when pawn is in its original row
     if from/12 == (isWhite ? 1 : 6)
     {
         target = getCellWithOffset(board, from, 2*offset)
-        if (target != -1 and board[target].content == .Empty)
+        if target != -1 and board[target].content == .Empty
             moves.add(target)
     }
 }
 
-func getPawnAttacks(board:^Cell, from: s8, moves: *Array's8)
+func getPawnAttacks(board: ^Cell, from: s8, moves: *Array's8)
 {
     isWhite := board[from].content == .White
     targetContent := isWhite  ? ContentEnum.Black : .White
-    var offset: s8 = isWhite ? 12 : -12
+    offset := isWhite ? 12's8 : -12's8
     target := getCellWithOffset(board, from, offset-1)
     if target != -1 and (board[target].content == targetContent or g_Game.priseEnPassant == target)
         moves.add(target)
@@ -267,7 +266,7 @@ func getPawnAttacks(board:^Cell, from: s8, moves: *Array's8)
         moves.add(target)
 }
 
-func getPieceMove(board:^Cell, from, offset:s8, moves: *Array's8)->bool
+func getPieceMove(board: ^Cell, from, offset: s8, moves: *Array's8)->bool
 {
     target := getCellWithOffset(board, from, offset)
     if target == -1
@@ -346,13 +345,13 @@ func doMove(from, to: s8)
         g_Board[otherTo].content = .Empty
     }
 
-    if (g_Board[to].piece == .Pawn and Math.abs(cast(s8) (from - to)) == 24)
-        g_Game.priseEnPassant = cast(s8)((from + to) / 2)
+    if g_Board[to].piece == .Pawn and Math.abs(cast(s8) (from - to)) == 24
+        g_Game.priseEnPassant = (from + to) / 2
     else
         g_Game.priseEnPassant = -1
 
     // promotion
-    if (g_Board[to].piece == .Pawn and (to > 84 or (to < 12)))
+    if g_Board[to].piece == .Pawn and (to > 84 or to < 12)
         g_Board[to].piece = .Queen
 }
 
@@ -536,7 +535,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             pos := wnd.surfaceToLocal(mouseEvt.surfacePos)
             cell := pickCell(pos)
 
-            if (g_Game.selectedCell != -1 and moveIsPossible(g_Game.selectedCell, cell))
+            if g_Game.selectedCell != -1 and moveIsPossible(g_Game.selectedCell, cell)
             {
                 doMove(g_Game.selectedCell, cell)
                 g_Game.selectedCell = -1
@@ -545,15 +544,15 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             }
             else
             {
-                if (cell != -1)
+                if cell != -1
                 {
-                    if (g_Board[cell].content == .Empty)
+                    if g_Board[cell].content == .Empty
                         cell = -1
                     else
                     {
                         isWhite := g_Board[cell].content == .White
-                        if (isWhite != g_Game.whiteTurn)
-                        cell = -1
+                        if isWhite != g_Game.whiteTurn
+                            cell = -1
                     }
                 }
                 g_Game.selectedCell = cell == g_Game.selectedCell ? -1 : cell
@@ -592,15 +591,15 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         img := Image.load(dataPath)
 
         y := 0
-        loop i:2
+        loop i: 2
         {
-
-            Res.piecesTexture[i, cast(s8)(PiecesEnum.King) - 1] = rdr.addImage(img.toCrop(0,y,128,128))
-            Res.piecesTexture[i, cast(s8)(PiecesEnum.Queen) - 1] = rdr.addImage(img.toCrop(128,y,128,128))
-            Res.piecesTexture[i, cast(s8)(PiecesEnum.Bishop) - 1] = rdr.addImage(img.toCrop(256,y,128,128))
-            Res.piecesTexture[i, cast(s8)(PiecesEnum.Knight) - 1] = rdr.addImage(img.toCrop(384,y,128,128))
-            Res.piecesTexture[i, cast(s8)(PiecesEnum.Rook) - 1] = rdr.addImage(img.toCrop(512,y,128,128))
-            Res.piecesTexture[i, cast(s8)(PiecesEnum.Pawn) - 1] = rdr.addImage(img.toCrop(640,y,128,128))
+            using Res
+            piecesTexture[i, cast(s8)(PiecesEnum.King) - 1] = rdr.addImage(img.toCrop(0,y,128,128))
+            piecesTexture[i, cast(s8)(PiecesEnum.Queen) - 1] = rdr.addImage(img.toCrop(128,y,128,128))
+            piecesTexture[i, cast(s8)(PiecesEnum.Bishop) - 1] = rdr.addImage(img.toCrop(256,y,128,128))
+            piecesTexture[i, cast(s8)(PiecesEnum.Knight) - 1] = rdr.addImage(img.toCrop(384,y,128,128))
+            piecesTexture[i, cast(s8)(PiecesEnum.Rook) - 1] = rdr.addImage(img.toCrop(512,y,128,128))
+            piecesTexture[i, cast(s8)(PiecesEnum.Pawn) - 1] = rdr.addImage(img.toCrop(640,y,128,128))
             y = 128
         }
     }
