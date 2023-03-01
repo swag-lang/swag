@@ -481,6 +481,10 @@ Utf8 Diagnostic::syntax(const Utf8& line)
                 case TokenId::KwdAlias:
                 case TokenId::KwdAttr:
 
+                case TokenId::KwdTrue:
+                case TokenId::KwdFalse:
+                case TokenId::KwdNull:
+
                 case TokenId::KwdPublic:
                 case TokenId::KwdPrivate:
                     result += "\x1b[38;2;86;156;214m";
