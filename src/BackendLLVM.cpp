@@ -325,8 +325,8 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     auto targetPath = Backend::getCacheFolder(buildParameters);
     auto path       = targetPath;
     path.append(pp.filename.c_str());
-    std::error_code           errorCode;
-    llvm::raw_fd_ostream      dest(path.string(), errorCode, llvm::sys::fs::OF_None);
+    error_code                err;
+    llvm::raw_fd_ostream      dest(path.string(), err, llvm::sys::fs::OF_None);
     llvm::legacy::PassManager llvmPass;
 
     // Pipeline configurations
@@ -379,7 +379,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
         auto filenameIR = path;
         auto irName     = path;
         irName.append(".ir");
-        llvm::raw_fd_ostream destFileIR(irName.string(), errorCode, llvm::sys::fs::OF_None);
+        llvm::raw_fd_ostream destFileIR(irName.string(), err, llvm::sys::fs::OF_None);
         modu.print(destFileIR, nullptr);
         destFileIR.flush();
         destFileIR.close();

@@ -99,7 +99,8 @@ Path ModuleCfgManager::getAliasPath(const Path& srcPath)
 {
     auto p = srcPath;
     p.append(SWAG_ALIAS_FILENAME);
-    if (filesystem::exists(p))
+    error_code err;
+    if (filesystem::exists(p, err))
     {
         FILE* f = nullptr;
         if (!fopen_s(&f, p.string().c_str(), "rt"))
@@ -150,7 +151,8 @@ bool ModuleCfgManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFileP
     remotePath.append(SWAG_CFG_FILE);
 
     // No cfg file, we are done, we need one !
-    if (!filesystem::exists(remotePath))
+    error_code err;
+    if (!filesystem::exists(remotePath, err))
         return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0508), SWAG_CFG_FILE, remotePath.c_str())});
 
     // Otherwise we copy the config file to the cache path, with a unique name.
@@ -202,11 +204,11 @@ bool ModuleCfgManager::fetchModuleCfgSwag(ModuleDependency* dep, Utf8& cfgFilePa
     remotePath.append(dep->name.c_str());
 
     remotePath = filesystem::absolute(remotePath);
-    error_code errorCode;
-    auto       remotePath1 = filesystem::canonical(remotePath, errorCode);
-    if (!errorCode)
+    error_code err;
+    auto       remotePath1 = filesystem::canonical(remotePath, err);
+    if (!err)
         remotePath = remotePath1;
-    if (!filesystem::exists(remotePath))
+    if (!filesystem::exists(remotePath, err))
         return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0511), remotePath.c_str())});
     if (!fetch)
         return true;
@@ -221,11 +223,11 @@ bool ModuleCfgManager::fetchModuleCfgDisk(ModuleDependency* dep, Utf8& cfgFilePa
     remotePath.append(dep->name.c_str());
 
     remotePath = filesystem::absolute(remotePath);
-    error_code errorCode;
-    auto       remotePath1 = filesystem::canonical(remotePath, errorCode);
-    if (!errorCode)
+    error_code err;
+    auto       remotePath1 = filesystem::canonical(remotePath, err);
+    if (!err)
         remotePath = remotePath1;
-    if (!filesystem::exists(remotePath))
+    if (!filesystem::exists(remotePath, err))
         return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0511), remotePath.c_str())});
     if (!fetch)
         return true;
@@ -632,10 +634,10 @@ bool ModuleCfgManager::execute()
                 // That file will contain the path to the corresponding module location
             case DependencyFetchKind::Swag:
             {
-                error_code errorCode;
+                error_code err;
                 auto       pathSrc = g_Workspace->dependenciesPath;
                 pathSrc.append(m.second->name.c_str());
-                if (!filesystem::exists(pathSrc) && !filesystem::create_directories(pathSrc, errorCode))
+                if (!filesystem::exists(pathSrc, err) && !filesystem::create_directories(pathSrc, err))
                 {
                     Report::errorOS(Fmt(Err(Err0604), pathSrc.c_str()));
                     ok = false;

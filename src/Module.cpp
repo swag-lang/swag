@@ -163,10 +163,10 @@ void Module::computePublicPath()
 
     if (!isScriptFile && kind != ModuleKind::Script && !isErrorModule)
     {
-        if (!filesystem::exists(publicPath))
+        error_code err;
+        if (!filesystem::exists(publicPath, err))
         {
-            error_code errorCode;
-            if (!filesystem::create_directories(publicPath, errorCode))
+            if (!filesystem::create_directories(publicPath, err))
             {
                 Report::errorOS(Fmt(Err(Fat0006), publicPath.c_str()));
                 OS::exit(-1);
@@ -178,10 +178,10 @@ void Module::computePublicPath()
 
     if (!isScriptFile && kind != ModuleKind::Script && !isErrorModule)
     {
-        if (!filesystem::exists(publicPath))
+        error_code err;
+        if (!filesystem::exists(publicPath, err))
         {
-            error_code errorCode;
-            if (!filesystem::create_directories(publicPath, errorCode))
+            if (!filesystem::create_directories(publicPath, err))
             {
                 Report::errorOS(Fmt(Err(Fat0006), publicPath.c_str()));
                 OS::exit(-1);

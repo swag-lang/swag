@@ -58,18 +58,18 @@ bool CommandLine::check()
     if (!workspacePath.empty())
     {
         workspacePath = filesystem::absolute(workspacePath);
-        error_code errorCode;
-        auto       workspacePath1 = filesystem::canonical(workspacePath, errorCode);
-        if (!errorCode)
+        error_code err;
+        auto       workspacePath1 = filesystem::canonical(workspacePath, err);
+        if (!err)
             workspacePath = workspacePath1;
     }
 
     if (!cachePath.empty())
     {
         cachePath = filesystem::absolute(cachePath);
-        error_code errorCode;
+        error_code err;
         auto       cachePath1 = filesystem::canonical(cachePath);
-        if (!errorCode)
+        if (!err)
             cachePath = cachePath1;
     }
 

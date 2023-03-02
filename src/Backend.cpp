@@ -113,7 +113,8 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
     if (module->buildCfg.backendKind != BuildCfgBackendKind::None && module->buildCfg.backendKind != BuildCfgBackendKind::Export)
     {
         auto outFileFame = getOutputFileName(module->buildParameters);
-        if (!filesystem::exists(outFileFame))
+        error_code err;
+        if (!filesystem::exists(outFileFame, err))
             return false;
         auto timeOut = OS::getFileWriteTime(outFileFame.string().c_str());
         if (!invert && (timeOut < moreRecentSourceFile))

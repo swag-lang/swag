@@ -37,19 +37,19 @@ void newScriptFile()
 
 void Workspace::newModule(const Utf8& moduleName)
 {
-    error_code errorCode;
+    error_code err;
 
     // Create one module folder
     auto modulePath = g_CommandLine.test ? testsPath : modulesPath;
     modulePath.append(moduleName.c_str());
 
-    if (filesystem::exists(modulePath))
+    if (filesystem::exists(modulePath, err))
     {
         Report::errorOS(Fmt(Err(Fat0018), moduleName.c_str()));
         OS::exit(-1);
     }
 
-    if (!filesystem::create_directories(modulePath, errorCode))
+    if (!filesystem::create_directories(modulePath, err))
     {
         Report::errorOS(Fmt(Err(Fat0004), modulePath.string().c_str()));
         OS::exit(-1);
@@ -88,7 +88,7 @@ void Workspace::newModule(const Utf8& moduleName)
 
     // Create an hello world file
     modulePath.append(SWAG_SRC_FOLDER);
-    if (!filesystem::create_directories(modulePath, errorCode))
+    if (!filesystem::create_directories(modulePath, err))
     {
         Report::errorOS(Fmt(Err(Fat0004), modulePath.string().c_str()));
         OS::exit(-1);
@@ -143,42 +143,42 @@ void Workspace::newCommand()
     }
 
     // Create workspace
-    error_code errorCode;
+    error_code err;
     Utf8       moduleName;
     if (g_CommandLine.moduleName.empty())
     {
-        if (filesystem::exists(workspacePath))
+        if (filesystem::exists(workspacePath, err))
         {
             Report::error(Fmt(Err(Fat0025), workspacePath.string().c_str()));
             OS::exit(-1);
         }
 
         // Create workspace folders
-        if (!filesystem::create_directories(workspacePath, errorCode))
+        if (!filesystem::create_directories(workspacePath, err))
         {
             Report::errorOS(Fmt(Err(Fat0004), workspacePath.string().c_str()));
             OS::exit(-1);
         }
 
-        if (!filesystem::create_directories(examplesPath, errorCode))
+        if (!filesystem::create_directories(examplesPath, err))
         {
             Report::errorOS(Fmt(Err(Fat0004), examplesPath.string().c_str()));
             OS::exit(-1);
         }
 
-        if (!filesystem::create_directories(testsPath, errorCode))
+        if (!filesystem::create_directories(testsPath, err))
         {
             Report::errorOS(Fmt(Err(Fat0004), testsPath.string().c_str()));
             OS::exit(-1);
         }
 
-        if (!filesystem::create_directories(modulesPath, errorCode))
+        if (!filesystem::create_directories(modulesPath, err))
         {
             Report::errorOS(Fmt(Err(Fat0004), modulesPath.string().c_str()));
             OS::exit(-1);
         }
 
-        if (!filesystem::create_directories(dependenciesPath, errorCode))
+        if (!filesystem::create_directories(dependenciesPath, err))
         {
             Report::errorOS(Fmt(Err(Fat0004), dependenciesPath.string().c_str()));
             OS::exit(-1);
@@ -191,7 +191,7 @@ void Workspace::newCommand()
     // Use an existing workspace to create a new module
     else
     {
-        if (!filesystem::exists(workspacePath))
+        if (!filesystem::exists(workspacePath, err))
         {
             Report::error(Fmt(Err(Fat0026), workspacePath.string().c_str()));
             OS::exit(-1);

@@ -180,13 +180,14 @@ void Workspace::setup()
         OS::exit(-1);
     }
 
-    bool invalid = false;
-    if (!filesystem::exists(workspacePath))
+    bool       invalid = false;
+    error_code err;
+    if (!filesystem::exists(workspacePath, err))
     {
         Report::error(Fmt(Err(Fat0026), workspacePath.string().c_str()));
         invalid = true;
     }
-    else if (!g_CommandLine.scriptCommand && !filesystem::exists(modulesPath) && !filesystem::exists(testsPath))
+    else if (!g_CommandLine.scriptCommand && !filesystem::exists(modulesPath, err) && !filesystem::exists(testsPath, err))
     {
         Report::error(Fmt(Err(Fat0016), workspacePath.string().c_str()));
         invalid = true;

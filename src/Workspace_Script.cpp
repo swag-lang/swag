@@ -15,15 +15,15 @@ void Workspace::setScriptWorkspace(const Utf8& name)
     // Will be shared between all scripts, in the cache folder
     auto cacheWorkspace = g_Workspace->cachePath;
     cacheWorkspace.append(SWAG_CACHE_FOLDER);
-    error_code errorCode;
-    if (!filesystem::exists(cacheWorkspace) && !filesystem::create_directories(cacheWorkspace, errorCode))
+    error_code err;
+    if (!filesystem::exists(cacheWorkspace, err) && !filesystem::create_directories(cacheWorkspace, err))
     {
         Report::errorOS(Fmt(Err(Fat0003), cacheWorkspace.c_str()));
         OS::exit(-1);
     }
 
     cacheWorkspace.append(name.c_str());
-    if (!filesystem::exists(cacheWorkspace) && !filesystem::create_directories(cacheWorkspace, errorCode))
+    if (!filesystem::exists(cacheWorkspace, err) && !filesystem::create_directories(cacheWorkspace, err))
     {
         Report::errorOS(Fmt(Err(Fat0003), cacheWorkspace.c_str()));
         OS::exit(-1);
@@ -50,7 +50,8 @@ void Workspace::scriptCommand()
     Path pathF               = g_CommandLine.scriptName;
     pathF                    = filesystem::absolute(pathF);
     g_CommandLine.scriptName = pathF.string();
-    if (!filesystem::exists(g_CommandLine.scriptName.c_str()))
+    error_code err;
+    if (!filesystem::exists(g_CommandLine.scriptName.c_str()), err)
     {
         Report::error(Fmt(Err(Fat0020), g_CommandLine.scriptName.c_str()));
         OS::exit(-1);
@@ -61,7 +62,7 @@ void Workspace::scriptCommand()
     g_CommandLine.scriptCommand = true;
 
     g_Workspace->setupCachePath();
-    if (!filesystem::exists(g_Workspace->cachePath))
+    if (!filesystem::exists(g_Workspace->cachePath, err))
     {
         Report::error(Fmt(Err(Fat0002), g_Workspace->cachePath.string().c_str()));
         OS::exit(-1);

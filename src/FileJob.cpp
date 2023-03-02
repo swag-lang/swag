@@ -9,7 +9,8 @@
 JobResult CopyFileJob::execute()
 {
     // Copy only if source is more recent than destination
-    if (filesystem::exists(destPath))
+    error_code err;
+    if (filesystem::exists(destPath, err))
     {
         auto tsrc  = OS::getFileWriteTime(sourcePath.string().c_str());
         auto tdest = OS::getFileWriteTime(destPath.string().c_str());

@@ -244,8 +244,8 @@ void Workspace::setupTarget()
     if (g_CommandLine.verbosePath)
         g_Log.messageVerbose(Fmt("target path is '%s'", targetPath.string().c_str()));
 
-    error_code errorCode;
-    if (!filesystem::exists(targetPath) && !filesystem::create_directories(targetPath, errorCode))
+    error_code err;
+    if (!filesystem::exists(targetPath, err) && !filesystem::create_directories(targetPath, err))
     {
         Report::errorOS(Fmt(Err(Fat0008), targetPath.string().c_str()));
         OS::exit(-1);
@@ -253,14 +253,14 @@ void Workspace::setupTarget()
 
     // Cache directory
     setupCachePath();
-    if (!filesystem::exists(cachePath))
+    if (!filesystem::exists(cachePath, err))
     {
         Report::errorOS(Fmt(Err(Fat0002), cachePath.string().c_str()));
         OS::exit(-1);
     }
 
     cachePath.append(SWAG_CACHE_FOLDER);
-    if (!filesystem::exists(cachePath) && !filesystem::create_directories(cachePath, errorCode))
+    if (!filesystem::exists(cachePath, err) && !filesystem::create_directories(cachePath, err))
     {
         Report::errorOS(Fmt(Err(Fat0003), cachePath.string().c_str()));
         OS::exit(-1);
@@ -268,7 +268,7 @@ void Workspace::setupTarget()
 
     auto targetFullName = getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target);
     cachePath.append(workspacePath.filename().string() + "-" + targetFullName.c_str());
-    if (!filesystem::exists(cachePath) && !filesystem::create_directories(cachePath, errorCode))
+    if (!filesystem::exists(cachePath, err) && !filesystem::create_directories(cachePath, err))
     {
         Report::errorOS(Fmt(Err(Fat0003), cachePath.string().c_str()));
         OS::exit(-1);

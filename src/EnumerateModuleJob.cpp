@@ -69,17 +69,18 @@ bool EnumerateModuleJob::dealWithIncludes(Module* theModule)
         Path orgFilePath = n->token.ctext();
 
         // Is this a simple file ?
-        auto filePath = orgFilePath;
-        if (!filesystem::exists(filePath))
+        auto       filePath = orgFilePath;
+        error_code err;
+        if (!filesystem::exists(filePath, err))
         {
             filePath = theModule->path;
             filePath.append(orgFilePath.string());
             filePath = filesystem::absolute(filePath);
-            error_code errorCode;
-            auto       filePath1 = filesystem::canonical(filePath, errorCode);
-            if (!errorCode)
+            error_code err;
+            auto       filePath1 = filesystem::canonical(filePath, err);
+            if (!err)
                 filePath = filePath1;
-            if (!filesystem::exists(filePath))
+            if (!filesystem::exists(filePath, err))
             {
                 Diagnostic diag{n->sourceFile, n->token, Fmt(Err(Err0304), n->token.ctext())};
                 Report::report(diag);

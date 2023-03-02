@@ -99,7 +99,6 @@ JobResult FetchModuleFileSystemJob::execute()
     }
 
     // Copy all collected files
-    error_code errorCode;
     for (auto& f : srcFiles)
     {
         auto srcFileName = dep->resolvedLocation;
@@ -107,8 +106,9 @@ JobResult FetchModuleFileSystemJob::execute()
         auto destFileName = destPath;
         destFileName.append(f.c_str());
 
-        auto folder = destFileName.parent_path();
-        if (!filesystem::exists(folder) && !filesystem::create_directories(folder, errorCode))
+        auto       folder = destFileName.parent_path();
+        error_code err;
+        if (!filesystem::exists(folder, err) && !filesystem::create_directories(folder, err))
         {
             Report::errorOS(Fmt(Err(Err0604), folder.c_str()));
             return JobResult::ReleaseJob;

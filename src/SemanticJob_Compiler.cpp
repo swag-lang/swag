@@ -741,16 +741,17 @@ bool SemanticJob::resolveCompilerInclude(SemanticContext* context)
         // Search first in the same folder as the source file
         fullFileName = node->sourceFile->path.parent_path();
         fullFileName.append(filename.c_str());
-        if (!filesystem::exists(fullFileName))
+        error_code err;
+        if (!filesystem::exists(fullFileName, err))
         {
             // Search relative to the module path
             fullFileName = node->sourceFile->module->path;
             fullFileName.append(filename.c_str());
-            if (!filesystem::exists(fullFileName))
+            if (!filesystem::exists(fullFileName, err))
             {
                 // Search the file itself, without any special path
                 fullFileName = filename;
-                if (!filesystem::exists(fullFileName))
+                if (!filesystem::exists(fullFileName, err))
                     return context->report({back, Fmt(Err(Err0244), filename.c_str())});
             }
         }

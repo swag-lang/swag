@@ -89,8 +89,8 @@ void Diagnostic::printSourceLine()
     Path path = checkFile->path;
     if (!g_CommandLine.errorAbsolute)
     {
-        error_code errorCode;
-        auto       path1 = filesystem::relative(path, filesystem::current_path(), errorCode);
+        error_code err;
+        auto       path1 = filesystem::relative(path, filesystem::current_path(), err);
         if (!path1.empty())
             path = path1;
     }
