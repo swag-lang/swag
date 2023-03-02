@@ -129,7 +129,8 @@ void ModuleCfgManager::enumerateCfgFiles(const Path& path)
                          cfgName.append(SWAG_CFG_FILE);
 
                          // Each module must have a SWAG_CFG_FILE at its root, otherwise this is not a valid module
-                         if (filesystem::exists(cfgName))
+                         error_code err;
+                         if (filesystem::exists(cfgName, err))
                              newCfgFile(allFiles, cfgPath.string(), SWAG_CFG_FILE);
                      });
 

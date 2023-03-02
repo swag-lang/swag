@@ -5,7 +5,6 @@
 #include "Workspace.h"
 #include "Module.h"
 #include "ByteCodeGenJob.h"
-#include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "TypeManager.h"
 
@@ -322,13 +321,16 @@ bool Parser::doCurlyStatement(AstNode* parent, AstNode** result)
     auto startLoc = token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
-    while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
+    if (isGlobal)
     {
-        if (isGlobal)
+        while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
         {
             SWAG_CHECK(doTopLevelInstruction(node));
         }
-        else
+    }
+    else
+    {
+        while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
         {
             SWAG_CHECK(doEmbeddedInstruction(node));
         }
@@ -344,19 +346,18 @@ bool Parser::doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeKind
     auto     newScope = Ast::newScope(parent, "", scopeKind, currentScope);
     AstNode* statement;
 
-    {
-        Scoped scoped(this, newScope);
-        SWAG_CHECK(doCurlyStatement(parent, &statement));
-        newScope->owner = statement;
-        statement->flags |= AST_NEED_SCOPE;
-        statement->byteCodeFct = ByteCodeGenJob::emitDebugNop;
-        statement->allocateExtension(ExtensionKind::Semantic);
-        statement->extSemantic()->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
-        statement->extSemantic()->semanticAfterFct  = SemanticJob::resolveScopedStmtAfter;
-    }
-
+    Scoped scoped(this, newScope);
+    SWAG_CHECK(doCurlyStatement(parent, &statement));
     if (result)
         *result = statement;
+
+    newScope->owner = statement;
+    statement->flags |= AST_NEED_SCOPE;
+    statement->byteCodeFct = ByteCodeGenJob::emitDebugNop;
+    statement->allocateExtension(ExtensionKind::Semantic);
+    statement->extSemantic()->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
+    statement->extSemantic()->semanticAfterFct  = SemanticJob::resolveScopedStmtAfter;
+
     return true;
 }
 
