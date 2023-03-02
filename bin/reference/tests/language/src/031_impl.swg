@@ -1,5 +1,7 @@
-// 'impl' can be used to declare some stuff in the scope of an enum
-// The keyword 'self' represents the enum value
+/**
+'impl' can be used to declare some stuff in the scope of an enum.
+The keyword 'self' represents the enum value.
+*/
 
 enum RGB { R; G; B; }
 

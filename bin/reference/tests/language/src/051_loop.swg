@@ -1,6 +1,9 @@
+/**
+loop are used to iterate a given amount of time.
+*/
+
 #test
 {
-    // loop are used to iterate a given amount of time
     // The loop expression value is evaluated *once*.
     // The loop expression must be a positive value.
     {
@@ -10,7 +13,7 @@
         @assert(cpt == 10)
     }
 
-    // The intrinsic '@index' returns the current index of the loop (starting at 0)
+    // The intrinsic '@index' returns the current index of the loop (starting at 0).
     {
         cpt := 0'u64
         loop 5
@@ -21,7 +24,7 @@
         @assert(cpt == 0+1+2+3+4)
     }
 
-    // You can name that index if you want
+    // You can name that index if you want.
     {
         cpt  := 0
         cpt1 := 0
@@ -36,7 +39,7 @@
         @assert(cpt1 == cpt)
     }
 
-    // loop can be used on every types that accept the '@countof' intrinsic
+    // loop can be used on every types that accept the '@countof' intrinsic.
     {
         arr := [10, 20, 30, 40]
         #assert @countof(arr) == 4
@@ -46,19 +49,28 @@
             cpt += arr[@index]
         @assert(cpt == 10+20+30+40)
     }
+}
 
-    // Warning !
-    // On a string, it will loop for each byte, *not* runes (if a rune is encoded in more than one byte)
-    // If you want to iterate on all runes, you will have to use the Std.Core module.
-    {
-        cpt := 0
-        loop "⻘"
-            cpt += 1
+/**
+Warning !
+On a string, it will loop for each byte, *not* runes (if a rune is encoded in more than one byte).
+If you want to iterate on all runes, you will have to use the Std.Core module.
+*/
+#test
+{
+    cpt := 0
+    loop "⻘"
+        cpt += 1
 
-        // cpt is equal to 3 because '⻘' is endoded with 3 bytes
-        @assert(cpt == 3)
-    }
+    // cpt is equal to 3 because '⻘' is endoded with 3 bytes
+    @assert(cpt == 3)
+}
 
+/**
+'break' and 'continue' can be used inside a loop.
+*/
+#test
+{
     // You can exit a loop with 'break'
     {
         cpt := 0
@@ -84,8 +96,13 @@
 
         @assert(cpt == 9)
     }
+}
 
-    // Loop can also be used to iterate on a range of signed values
+/**
+Loop can also be used to iterate on a range of signed values.
+*/
+#test
+{
     // Syntax is <lower bound>..<upper bound>
     {
         count := 0
@@ -115,7 +132,7 @@
 
     // You can exclude the last value with the ..< syntax
     {
-        // Will loop from 1 to 2 and *not* 1 to 3
+        // Will loop from 1 to 2 and **not** 1 to 3
         cpt := 0
         loop i: 1..<3
         {
@@ -124,9 +141,14 @@
 
         @assert(cpt == 1+2)
     }
+}
 
-    // A loop without an expression but with a block is infinite.
-    // This is equivalent to while true {}
+/**
+A loop without an expression but with a block is infinite.
+This is equivalent to while true {}.
+*/
+#test
+{
     // @index is still valid in that case (but cannot be renamed)
     loop
     {
