@@ -4,8 +4,7 @@ loop are used to iterate a given amount of time.
 
 #test
 {
-    // The loop expression value is evaluated *once*.
-    // The loop expression must be a positive value.
+    // The loop expression value is evaluated **once**, and must be a positive value.
     {
         cpt := 0
         loop 10 // Loops 10 times
@@ -38,22 +37,25 @@ loop are used to iterate a given amount of time.
         @assert(cpt  == 0+1+2+3+4)
         @assert(cpt1 == cpt)
     }
+}
 
-    // loop can be used on every types that accept the '@countof' intrinsic.
-    {
-        arr := [10, 20, 30, 40]
-        #assert @countof(arr) == 4
+/**
+'loop' can be used on every types that accept the '@countof' intrinsic. So you can loop on a slice, an array, a string... and we'll see later, even on a struct.
+*/
+#test
+{
+    arr := [10, 20, 30, 40]
+    #assert @countof(arr) == 4
 
-        cpt := 0
-        loop arr    // The array contains 4 elements, so the loop count is 4
-            cpt += arr[@index]
-        @assert(cpt == 10+20+30+40)
-    }
+    cpt := 0
+    loop arr    // The array contains 4 elements, so the loop count is 4
+        cpt += arr[@index]
+    @assert(cpt == 10+20+30+40)
 }
 
 /**
 Warning !
-On a string, it will loop for each byte, *not* runes (if a rune is encoded in more than one byte).
+On a string, it will loop for each byte, **not** runes (if a rune is encoded in more than one byte).
 If you want to iterate on all runes, you will have to use the Std.Core module.
 */
 #test
@@ -149,10 +151,9 @@ This is equivalent to while true {}.
 */
 #test
 {
-    // @index is still valid in that case (but cannot be renamed)
     loop
     {
-        if @index == 4
+        if @index == 4 // @index is still valid in that case (but cannot be renamed)
             break
     }
 }
