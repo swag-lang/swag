@@ -598,23 +598,13 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool Parser::doCompilerLocation(AstNode* parent, AstNode** result)
+bool Parser::doCompilerSpecialValue(AstNode* parent, AstNode** result)
 {
-    auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::CompilerSpecialFunction, sourceFile, parent);
+    auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::CompilerSpecialValue, sourceFile, parent);
     if (result)
         *result = exprNode;
     SWAG_CHECK(eatToken());
-    exprNode->semanticFct = SemanticJob::resolveCompilerSpecialFunction;
-    return true;
-}
-
-bool Parser::doCompilerSpecialFunction(AstNode* parent, AstNode** result)
-{
-    auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::CompilerSpecialFunction, sourceFile, parent);
-    if (result)
-        *result = exprNode;
-    SWAG_CHECK(eatToken());
-    exprNode->semanticFct = SemanticJob::resolveCompilerSpecialFunction;
+    exprNode->semanticFct = SemanticJob::resolveCompilerSpecialValue;
     return true;
 }
 

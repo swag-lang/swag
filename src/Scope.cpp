@@ -13,7 +13,7 @@ Scope::Scope()
 void Scope::release()
 {
     symTable.release();
-    //Allocator::free<Scope>(this);
+    // Allocator::free<Scope>(this);
 }
 
 bool Scope::isGlobal()

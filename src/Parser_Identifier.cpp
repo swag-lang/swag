@@ -221,7 +221,7 @@ bool Parser::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t identif
     switch (token.id)
     {
     case TokenId::CompilerLocation:
-        SWAG_CHECK(doCompilerLocation(identifierRef));
+        SWAG_CHECK(doCompilerSpecialValue(identifierRef));
         break;
     case TokenId::IntrinsicLocation:
         SWAG_CHECK(doIntrinsicLocation(identifierRef));

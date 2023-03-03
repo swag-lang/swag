@@ -1626,7 +1626,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         break;
     }
 
-    case AstNodeKind::CompilerSpecialFunction:
+    case AstNodeKind::CompilerSpecialValue:
     {
         switch (node->token.id)
         {

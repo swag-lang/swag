@@ -1227,7 +1227,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
     auto defaultParam = CastAst<AstVarDecl>(param, AstNodeKind::FuncDeclParam);
     SWAG_ASSERT(defaultParam->assignment);
 
-    if (defaultParam->assignment->kind == AstNodeKind::CompilerSpecialFunction)
+    if (defaultParam->assignment->kind == AstNodeKind::CompilerSpecialValue)
     {
         switch (defaultParam->assignment->token.id)
         {

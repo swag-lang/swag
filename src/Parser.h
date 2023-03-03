@@ -114,8 +114,7 @@ struct Parser
     bool doCompilerRunEmbedded(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerForeignLib(AstNode* parent, AstNode** result);
     bool doCompilerGlobal(AstNode* parent, AstNode** result = nullptr);
-    bool doCompilerLocation(AstNode* parent, AstNode** result = nullptr);
-    bool doCompilerSpecialFunction(AstNode* parent, AstNode** result = nullptr);
+    bool doCompilerSpecialValue(AstNode* parent, AstNode** result = nullptr);
     bool doIntrinsicDefined(AstNode* parent, AstNode** result = nullptr);
     bool doIntrinsicLocation(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerDependencies(AstNode* parent);

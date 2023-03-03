@@ -135,7 +135,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
                 firstParamWithDef              = nodeParam;
             }
 
-            if (nodeParam->assignment->kind == AstNodeKind::CompilerSpecialFunction)
+            if (nodeParam->assignment->kind == AstNodeKind::CompilerSpecialValue)
             {
                 switch (nodeParam->assignment->token.id)
                 {

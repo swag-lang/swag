@@ -47,7 +47,7 @@ bool Parser::doGenericFuncCallParameters(AstNode* parent, AstNode** result)
             break;
 
         case TokenId::CompilerLocation:
-            SWAG_CHECK(doCompilerLocation(param));
+            SWAG_CHECK(doCompilerSpecialValue(param));
             break;
 
         case TokenId::SymLeftSquare:

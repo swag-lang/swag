@@ -878,7 +878,7 @@ Utf8 SemanticJob::getCompilerFunctionString(AstNode* node, TokenId id)
     return "";
 }
 
-bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
+bool SemanticJob::resolveCompilerSpecialValue(SemanticContext* context)
 {
     auto node = context->node;
     switch (node->token.id)

@@ -428,7 +428,7 @@ struct SemanticJob : public Job
     static bool resolveCompilerRun(SemanticContext* context);
     static bool resolveCompilerValidIfExpression(SemanticContext* context);
     static bool resolveCompilerAstExpression(SemanticContext* context);
-    static bool resolveCompilerSpecialFunction(SemanticContext* context);
+    static bool resolveCompilerSpecialValue(SemanticContext* context);
     static bool resolveIntrinsicDefined(SemanticContext* context);
     static bool resolveIntrinsicLocation(SemanticContext* context);
     static bool resolveCompilerInclude(SemanticContext* context);
