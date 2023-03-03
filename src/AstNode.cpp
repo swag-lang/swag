@@ -603,7 +603,7 @@ bool AstFuncDecl::mustInline()
         return false;
 
     // All short functions
-    if (shortForm)
+    if (specFlags & AST_SPEC_FUNCDECL_SHORT_FORM)
         return true;
 
     return false;

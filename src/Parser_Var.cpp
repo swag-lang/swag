@@ -46,7 +46,7 @@ bool Parser::checkIsValidVarName(AstNode* node)
             if (num >= 10)
                 return error(node->token, Fmt(Err(Syn0043), num));
             if (node->ownerFct)
-                node->ownerFct->hasSpecMixin = true;
+                node->ownerFct->specFlags |= AST_SPEC_FUNCDECL_SPEC_MIXIN;
 
             return true;
         }

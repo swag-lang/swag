@@ -127,7 +127,7 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
 
     // If we inline a throwable function, be sure the top level function is informed
     if (func->typeInfo->flags & TYPEINFO_CAN_THROW)
-        node->ownerFct->needRegisterGetContext = true;
+        node->ownerFct->specFlags |= AST_SPEC_FUNCDECL_REG_GET_CONTEXT;
 
     // Register all function parameters as inline symbols
     if (func->parameters)

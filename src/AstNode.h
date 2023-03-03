@@ -420,9 +420,9 @@ struct AstNode
     AstNodeKind         kind          = (AstNodeKind) 0;
     AstNodeResolveState semanticState = (AstNodeResolveState) 0;
     AstNodeResolveState bytecodeState = (AstNodeResolveState) 0;
-    uint8_t             specFlags     = 0;
+    uint8_t             padding0      = 0;
     TokenId             tokenId       = TokenId::Invalid;
-    uint16_t            padding0      = 0;
+    uint16_t            specFlags     = 0;
 
     SharedMutex            mutex;
     Token                  token;
@@ -538,10 +538,6 @@ struct AstFuncDecl : public AstNode
     uint32_t stackSize          = 0;
     uint32_t nodeCounts         = 0;
     uint32_t registerGetContext = UINT32_MAX;
-
-    bool needRegisterGetContext = false;
-    bool hasSpecMixin           = false;
-    bool shortForm              = false;
 };
 
 struct AstAttrDecl : public AstNode

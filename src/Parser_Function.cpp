@@ -838,7 +838,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
                 SWAG_CHECK(doExpression(returnNode, EXPR_FLAG_NONE));
             }
 
-            funcNode->shortForm                  = true;
+            funcNode->specFlags |= AST_SPEC_FUNCDECL_SHORT_FORM;
             funcNode->content->token.endLocation = token.startLocation;
             resStmt                              = funcNode->content;
         }
@@ -870,7 +870,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
 
             funcNode->content->token.endLocation = token.startLocation;
             resStmt                              = funcNode->content;
-            funcNode->shortForm                  = true;
+            funcNode->specFlags |= AST_SPEC_FUNCDECL_SHORT_FORM;
         }
 
         // Normal curly statement

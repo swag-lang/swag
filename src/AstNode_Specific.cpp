@@ -770,7 +770,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     newNode->methodParam = methodParam;
     newNode->tokenName   = tokenName;
 
-    newNode->specFlags &= ~(AST_SPEC_FUNCDECL_FULL_RESOLVE | AST_SPEC_FUNCDECL_PARTIAL_RESOLVE);
+    newNode->specFlags &= ~(AST_SPEC_FUNCDECL_FULL_RESOLVE | AST_SPEC_FUNCDECL_PARTIAL_RESOLVE | AST_SPEC_FUNCDECL_SHORT_FORM);
 
     cloneContext.ownerFct = newNode;
     cloneContext.parent   = newNode;
@@ -804,9 +804,6 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
             }
         }
     }
-
-    newNode->needRegisterGetContext = needRegisterGetContext;
-    newNode->hasSpecMixin           = hasSpecMixin;
 
     newNode->returnType = returnType ? returnType->clone(cloneContext) : nullptr;
     if (newNode->returnType)

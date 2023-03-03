@@ -4828,7 +4828,7 @@ bool SemanticJob::resolveTryCatch(SemanticContext* context)
 
     SWAG_CHECK(checkCanCatch(context));
     SWAG_ASSERT(node->ownerFct);
-    node->ownerFct->needRegisterGetContext = true;
+    node->ownerFct->specFlags |= AST_SPEC_FUNCDECL_REG_GET_CONTEXT;
 
     node->allocateExtension(ExtensionKind::ByteCode);
     node->extByteCode()->byteCodeBeforeFct = ByteCodeGenJob::emitInitStackTrace;
@@ -4849,7 +4849,7 @@ bool SemanticJob::resolveCatch(SemanticContext* context)
 
     SWAG_CHECK(checkCanCatch(context));
     SWAG_ASSERT(node->ownerFct);
-    node->ownerFct->needRegisterGetContext = true;
+    node->ownerFct->specFlags |= AST_SPEC_FUNCDECL_REG_GET_CONTEXT;
 
     node->allocateExtension(ExtensionKind::ByteCode);
     node->extByteCode()->byteCodeBeforeFct = ByteCodeGenJob::emitInitStackTrace;

@@ -352,8 +352,8 @@ bool Parser::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDisca
         }
         else if (node->semanticFct == SemanticJob::resolveTryCatch)
         {
-            node->ownerFct->needRegisterGetContext = true;
-            node->semanticFct                      = nullptr;
+            node->ownerFct->specFlags |= AST_SPEC_FUNCDECL_REG_GET_CONTEXT;
+            node->semanticFct = nullptr;
         }
         else
             node->semanticFct = nullptr;
