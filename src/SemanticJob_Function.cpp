@@ -490,7 +490,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         typeNode->typeInfo = g_TypeMgr->typeInfoVoid;
 
         // :DeduceLambdaType
-        if (funcNode->makePointerLambda && funcNode->makePointerLambda->parent->kind == AstNodeKind::AffectOp && !(funcNode->flags & AST_SHORT_LAMBDA))
+        if (funcNode->makePointerLambda && funcNode->makePointerLambda->parent->kind == AstNodeKind::AffectOp && !(funcNode->specFlags & AST_SPEC_FUNCDECL_SHORT_LAMBDA))
         {
             auto op = CastAst<AstOp>(funcNode->makePointerLambda->parent, AstNodeKind::AffectOp);
             if (op->deducedLambdaType)
@@ -606,7 +606,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         if ((funcNode->semFlags & AST_SEM_PENDING_LAMBDA_TYPING) && (typeNode->typeInfo == g_TypeMgr->typeInfoVoid))
         {
             typeNode->typeInfo = g_TypeMgr->typeInfoUndefined;
-            funcNode->flags &= ~AST_SHORT_LAMBDA;
+            funcNode->specFlags &= ~AST_SPEC_FUNCDECL_SHORT_LAMBDA;
         }
     }
 
@@ -614,7 +614,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // In that case, symbol registration will not be done at the end of that function but once the return expression
     // has been evaluated, and the type deduced
     bool shortLambda = false;
-    if ((funcNode->flags & AST_SHORT_LAMBDA) && !(funcNode->returnType->specFlags & AST_SPEC_FUNCTYPE_RETURN_DEFINED))
+    if ((funcNode->specFlags & AST_SPEC_FUNCDECL_SHORT_LAMBDA) && !(funcNode->returnType->specFlags & AST_SPEC_FUNCTYPE_RETURN_DEFINED))
         shortLambda = true;
 
     // :RunGeneratedExp
@@ -1276,7 +1276,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     {
         // This is a short lambda without a specified return type. We now have it
         bool tryDeduce = false;
-        if ((funcNode->flags & AST_SHORT_LAMBDA) && !(funcNode->returnType->specFlags & AST_SPEC_FUNCTYPE_RETURN_DEFINED))
+        if ((funcNode->specFlags & AST_SPEC_FUNCDECL_SHORT_LAMBDA) && !(funcNode->returnType->specFlags & AST_SPEC_FUNCTYPE_RETURN_DEFINED))
             tryDeduce = true;
         if (funcNode->attributeFlags & ATTRIBUTE_RUN_GENERATED_EXP)
             tryDeduce = true;

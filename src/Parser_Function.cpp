@@ -824,7 +824,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
                 ScopedTryCatchAssume sc(this, (AstTryCatchAssume*) node);
                 auto                 returnNode = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, node); // stmt);
                 returnNode->semanticFct         = SemanticJob::resolveReturn;
-                funcNode->flags |= AST_SHORT_LAMBDA;
+                funcNode->specFlags |= AST_SPEC_FUNCDECL_SHORT_LAMBDA;
                 SWAG_CHECK(doExpression(returnNode, EXPR_FLAG_NONE));
             }
             else
@@ -834,7 +834,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
                 auto returnNode         = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, stmt);
                 returnNode->semanticFct = SemanticJob::resolveReturn;
                 funcNode->content       = returnNode;
-                funcNode->flags |= AST_SHORT_LAMBDA;
+                funcNode->specFlags |= AST_SPEC_FUNCDECL_SHORT_LAMBDA;
                 SWAG_CHECK(doExpression(returnNode, EXPR_FLAG_NONE));
             }
 
@@ -1063,7 +1063,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
             auto returnNode         = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, funcNode);
             returnNode->semanticFct = SemanticJob::resolveReturn;
             funcNode->content       = returnNode;
-            funcNode->flags |= AST_SHORT_LAMBDA;
+            funcNode->specFlags |= AST_SPEC_FUNCDECL_SHORT_LAMBDA;
             SWAG_CHECK(doExpression(returnNode, EXPR_FLAG_NONE));
         }
 

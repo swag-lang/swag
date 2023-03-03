@@ -252,65 +252,65 @@ void AstOutput::removeLastBlankLine(Concat& concat)
     }
 }
 
-bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* node)
+bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* funcDecl)
 {
-    PushErrCxtStep ec(&context, node, ErrCxtStepKind::Export, nullptr);
+    PushErrCxtStep ec(&context, funcDecl, ErrCxtStepKind::Export, nullptr);
     CONCAT_FIXED_STR(concat, "func");
 
     // Emit generic parameter, except if the function is an instance
-    if (node->genericParameters)
+    if (funcDecl->genericParameters)
     {
-        if (!(node->flags & AST_FROM_GENERIC) || (node->flags & AST_IS_GENERIC))
-            SWAG_CHECK(outputGenericParameters(context, concat, node->genericParameters));
+        if (!(funcDecl->flags & AST_FROM_GENERIC) || (funcDecl->flags & AST_IS_GENERIC))
+            SWAG_CHECK(outputGenericParameters(context, concat, funcDecl->genericParameters));
     }
 
     // Name
     CONCAT_FIXED_STR(concat, " ");
-    concat.addString(node->token.text);
+    concat.addString(funcDecl->token.text);
 
     // Parameters
-    if (node->parameters)
-        SWAG_CHECK(outputNode(context, concat, node->parameters));
+    if (funcDecl->parameters)
+        SWAG_CHECK(outputNode(context, concat, funcDecl->parameters));
     else
         CONCAT_FIXED_STR(concat, "()");
 
     // Return type
-    auto returnNode = node->returnType;
+    auto returnNode = funcDecl->returnType;
     if (returnNode && !returnNode->childs.empty())
         returnNode = returnNode->childs.front();
 
-    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr);
     if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr->typeInfoVoid)
     {
         CONCAT_FIXED_STR(concat, "->");
         SWAG_CHECK(outputType(context, concat, returnNode, typeFunc->returnType));
     }
-    else if (node->returnType && node->returnType->specFlags & AST_SPEC_FUNCTYPE_RETURN_DEFINED)
+    else if (funcDecl->returnType && funcDecl->returnType->specFlags & AST_SPEC_FUNCTYPE_RETURN_DEFINED)
     {
         CONCAT_FIXED_STR(concat, "->");
         SWAG_CHECK(outputNode(context, concat, returnNode));
     }
 
     // Throw
-    if (node->specFlags & AST_SPEC_FUNCDECL_THROW)
+    if (funcDecl->specFlags & AST_SPEC_FUNCDECL_THROW)
         CONCAT_FIXED_STR(concat, " throw");
 
     // Content, short lambda
-    if (node->flags & AST_SHORT_LAMBDA)
+    if (funcDecl->specFlags & AST_SPEC_FUNCDECL_SHORT_LAMBDA)
     {
         CONCAT_FIXED_STR(concat, " => ");
-        SWAG_ASSERT(node->content->kind == AstNodeKind::Return);
-        SWAG_CHECK(outputNode(context, concat, node->content->childs.front()));
+        SWAG_ASSERT(funcDecl->content->kind == AstNodeKind::Return);
+        SWAG_CHECK(outputNode(context, concat, funcDecl->content->childs.front()));
         concat.addEol();
         return true;
     }
 
     // #validifx block
-    if (node->validif)
+    if (funcDecl->validif)
     {
         context.indent++;
         concat.addEolIndent(context.indent);
-        SWAG_CHECK(outputNode(context, concat, node->validif));
+        SWAG_CHECK(outputNode(context, concat, funcDecl->validif));
         context.indent--;
     }
     else
@@ -323,17 +323,17 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
     context.indent++;
     concat.addEol();
 
-    if (node->content->kind != AstNodeKind::Statement)
+    if (funcDecl->content->kind != AstNodeKind::Statement)
     {
         concat.addIndent(context.indent);
         context.indent--;
-        SWAG_CHECK(outputNode(context, concat, node->content));
+        SWAG_CHECK(outputNode(context, concat, funcDecl->content));
         context.indent++;
         concat.addEol();
     }
     else
     {
-        for (auto c : node->subDecls)
+        for (auto c : funcDecl->subDecls)
         {
             concat.addIndent(context.indent);
             if (c->parent && c->parent->kind == AstNodeKind::AttrUse)
@@ -342,7 +342,7 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
             concat.addEol();
         }
 
-        for (auto c : node->content->childs)
+        for (auto c : funcDecl->content->childs)
         {
             concat.addIndent(context.indent);
             SWAG_CHECK(outputNode(context, concat, c));
@@ -699,7 +699,7 @@ bool AstOutput::outputLambdaExpression(OutputContext& context, Concat& concat, A
 
     concat.addChar(')');
 
-    if (funcDecl->flags & AST_SHORT_LAMBDA)
+    if (funcDecl->specFlags & AST_SPEC_FUNCDECL_SHORT_LAMBDA)
     {
         CONCAT_FIXED_STR(concat, " => ");
         SWAG_ASSERT(funcDecl->content->kind == AstNodeKind::Return);
@@ -2058,7 +2058,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     }
 
     default:
-        return Report::internalError(node, "Ast::outputNode, unknown node");
+        return Report::internalError(node, "Ast::outputNode, unknown funcDecl");
     }
 
     return true;
