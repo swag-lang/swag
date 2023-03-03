@@ -881,7 +881,7 @@ Utf8 SemanticJob::getCompilerFunctionString(AstNode* node, TokenId id)
 bool SemanticJob::resolveCompilerSpecialValue(SemanticContext* context)
 {
     auto node = context->node;
-    switch (node->token.id)
+    switch (node->tokenId)
     {
     case TokenId::CompilerBackend:
         node->setFlagsValueIsComputed();
@@ -921,7 +921,7 @@ bool SemanticJob::resolveCompilerSpecialValue(SemanticContext* context)
 
     case TokenId::CompilerBuildCfg:
         node->setFlagsValueIsComputed();
-        node->computedValue->text = SemanticJob::getCompilerFunctionString(node, node->token.id);
+        node->computedValue->text = SemanticJob::getCompilerFunctionString(node, node->tokenId);
         node->typeInfo            = g_TypeMgr->typeInfoString;
         return true;
 

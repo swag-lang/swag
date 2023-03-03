@@ -422,6 +422,10 @@ struct AstNode
     uint8_t             specFlags      = 0;
     uint32_t            childParentIdx = 0;
 
+    TokenId  tokenId  = TokenId::Invalid;
+    uint16_t padding0 = 0;
+    uint32_t padding1 = 0;
+
     SharedMutex            mutex;
     Token                  token;
     VectorNative<AstNode*> childs;
@@ -456,6 +460,10 @@ struct AstNode
 
     uint32_t doneFlags = 0;
     uint32_t semFlags  = 0;
+
+#ifdef SWAG_DEV_MODE
+    uint32_t rankId;
+#endif
 };
 
 struct AstVarDecl : public AstNode
@@ -464,7 +472,7 @@ struct AstVarDecl : public AstNode
 
     AttributeList attributes;
     Utf8          publicName;
-    Token         assignToken;
+    TokenParse    assignToken;
 
     AstNode*    type             = nullptr;
     AstNode*    assignment       = nullptr;

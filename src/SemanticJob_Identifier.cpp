@@ -197,7 +197,7 @@ void SemanticJob::dealWithIntrinsic(SemanticContext* context, AstIdentifier* ide
 {
     auto module = context->sourceFile->module;
 
-    switch (identifier->token.id)
+    switch (identifier->tokenId)
     {
     case TokenId::IntrinsicAssert:
     {
@@ -567,7 +567,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
             auto funcParam = CastAst<AstVarDecl>(parameters->childs[i], AstNodeKind::FuncDeclParam);
             if (!funcParam->assignment)
                 continue;
-            switch (funcParam->assignment->token.id)
+            switch (funcParam->assignment->tokenId)
             {
             case TokenId::CompilerCallerLocation:
             case TokenId::CompilerCallerFunction:
@@ -1426,7 +1426,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         identifier->kind = AstNodeKind::FuncCall;
 
         // @print behaves like a normal function, so we want an emitCall in that case
-        if (identifier->token.text[0] == '@' && identifier->token.id != TokenId::IntrinsicPrint)
+        if (identifier->token.text[0] == '@' && identifier->tokenId != TokenId::IntrinsicPrint)
         {
             dealWithIntrinsic(context, identifier);
             identifier->byteCodeFct = ByteCodeGenJob::emitIntrinsic;
@@ -1595,12 +1595,12 @@ bool SemanticJob::isFunctionButNotACall(SemanticContext* context, AstNode* node,
             if (grandParent->kind == AstNodeKind::Alias ||
                 (grandParent->kind == AstNodeKind::IntrinsicDefined) ||
                 (grandParent->kind == AstNodeKind::IntrinsicLocation) ||
-                (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicStringOf) ||
-                (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicNameOf) ||
-                (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicRunes) ||
-                (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicTypeOf) ||
-                (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicDeclType) ||
-                (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicKindOf))
+                (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicStringOf) ||
+                (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicNameOf) ||
+                (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicRunes) ||
+                (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicTypeOf) ||
+                (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicDeclType) ||
+                (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicKindOf))
             {
                 return true;
             }
@@ -1746,9 +1746,9 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         // we want to match the generic version, and not an instantiated one
         if (context->node->parent && context->node->parent->parent)
         {
-            if (context->node->parent->parent->kind == AstNodeKind::IntrinsicProp && context->node->parent->parent->token.id == TokenId::IntrinsicTypeOf)
+            if (context->node->parent->parent->kind == AstNodeKind::IntrinsicProp && context->node->parent->parent->tokenId == TokenId::IntrinsicTypeOf)
                 oneOverload.symMatchContext.flags |= SymbolMatchContext::MATCH_DO_NOT_ACCEPT_NO_GENERIC;
-            if (context->node->parent->parent->kind == AstNodeKind::IntrinsicProp && context->node->parent->parent->token.id == TokenId::IntrinsicKindOf)
+            if (context->node->parent->parent->kind == AstNodeKind::IntrinsicProp && context->node->parent->parent->tokenId == TokenId::IntrinsicKindOf)
                 oneOverload.symMatchContext.flags |= SymbolMatchContext::MATCH_DO_NOT_ACCEPT_NO_GENERIC;
         }
 
@@ -1856,7 +1856,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                     {
                         auto grandParent = node->parent->parent;
                         if (grandParent->kind == AstNodeKind::IntrinsicDefined ||
-                            grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicNameOf)
+                            grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicNameOf)
                             asMatch = true;
                     }
                 }
@@ -3386,7 +3386,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
     {
         auto grandParent = node->parent->parent;
         if (grandParent->kind == AstNodeKind::IntrinsicDefined ||
-            grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicNameOf)
+            grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicNameOf)
         {
             matches.count = 1;
             return true;

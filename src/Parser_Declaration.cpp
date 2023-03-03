@@ -80,7 +80,7 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
 
 bool Parser::doCompilerScopeFile(AstNode* parent, AstNode** result)
 {
-    Token privName = token;
+    auto privName = token;
     SWAG_CHECK(eatToken());
     privName.id   = TokenId::Identifier;
     privName.text = Fmt("__privns_%d", g_UniqueID.fetch_add(1));

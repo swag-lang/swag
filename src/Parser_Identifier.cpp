@@ -5,7 +5,7 @@
 #include "Scoped.h"
 #include "ErrorIds.h"
 
-void Parser::relaxIdentifier(Token& token)
+void Parser::relaxIdentifier(TokenParse& token)
 {
     switch (token.id)
     {

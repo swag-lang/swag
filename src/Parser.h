@@ -91,7 +91,7 @@ struct Parser
     bool        checkIsValidUserName(AstNode* node, Token* loc = nullptr);
     bool        checkIsValidVarName(AstNode* node);
     void        registerSubDecl(AstNode* subDecl);
-    static void relaxIdentifier(Token& token);
+    static void relaxIdentifier(TokenParse& token);
     static void forceTakeAddress(AstNode* node);
 
     bool doTupleOrAnonymousType(AstNode* parent, AstNode** result, bool isConst, bool anonymousStruct, bool anonymousUnion);
@@ -130,7 +130,7 @@ struct Parser
     bool doLambdaClosureType(AstNode* parent, AstNode** result = nullptr, bool inTypeVarDecl = false);
     bool doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool inTypeVarDecl);
     bool doDefer(AstNode* parent, AstNode** result = nullptr);
-    bool doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const Token& assignToken, AstNodeKind kind, AstNode** result);
+    bool doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result);
     bool doAffectExpression(AstNode* parent, AstNode** result = nullptr, AstWith* withNode = nullptr);
     bool doIdentifier(AstNode* parent, uint32_t identifierFlags = 0);
     bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr, uint32_t identifierFlags = 0);
@@ -152,7 +152,7 @@ struct Parser
     bool doAssignmentExpression(AstNode* parent, AstNode** result = nullptr);
     bool doExpressionListTuple(AstNode* parent, AstNode** result = nullptr);
     bool doExpressionListArray(AstNode* parent, AstNode** result = nullptr);
-    bool doInitializationExpression(Token& forToken, AstNode* parent, AstNode** result = nullptr);
+    bool doInitializationExpression(TokenParse& forToken, AstNode* parent, AstNode** result = nullptr);
     bool doLiteral(AstNode* parent, AstNode** result = nullptr);
     bool doIntrinsicProp(AstNode* parent, AstNode** result = nullptr);
     bool doGetErr(AstNode* parent, AstNode** result = nullptr);
@@ -161,7 +161,7 @@ struct Parser
     bool doMoveRef(AstNode* parent, AstNode** result = nullptr);
     bool doDeRef(AstNode* parent, AstNode** result = nullptr);
     bool doOperatorPrecedence(AstNode** result);
-    bool doModifiers(Token& forNode, uint32_t& mdfFlags);
+    bool doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags);
     bool doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result = nullptr);
     bool doPrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result = nullptr);
     bool doUnaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result = nullptr);
@@ -169,7 +169,7 @@ struct Parser
     bool doCompareExpression(AstNode* parent, uint32_t exprFlags, AstNode** result = nullptr);
     bool doBoolExpression(AstNode* parent, uint32_t exprFlags, AstNode** result = nullptr);
     bool doExpression(AstNode* parent, uint32_t exprFlags, AstNode** result = nullptr);
-    bool doMoveExpression(Token& forToken, AstNode* parent, AstNode** result = nullptr);
+    bool doMoveExpression(Token& forToken, TokenId tokenId, AstNode* parent, AstNode** result = nullptr);
     bool doGenericDeclParameters(AstNode* parent, AstNode** result = nullptr);
     bool doLambdaFuncDecl(AstNode* parent, AstNode** result = nullptr, bool acceptMissingType = false, bool* hasMissingType = nullptr);
     bool doFuncDecl(AstNode* parent, AstNode** result = nullptr, TokenId typeFuncId = TokenId::Invalid);

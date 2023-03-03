@@ -316,7 +316,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
 
     if ((leftTypeInfo->isLambdaClosure() || leftTypeInfo->isPointerNull()) &&
         (rightTypeInfo->isLambdaClosure() || rightTypeInfo->isPointerNull()) &&
-        (node->token.id == TokenId::SymEqualEqual || node->token.id == TokenId::SymExclamEqual))
+        (node->tokenId == TokenId::SymEqualEqual || node->tokenId == TokenId::SymExclamEqual))
     {
         // This is fine to compare two lambdas
     }
@@ -380,11 +380,11 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     // Some types can only be compared for equality
     if (leftTypeInfo->isSlice() || leftTypeInfo->isInterface())
     {
-        if (node->token.id != TokenId::SymEqualEqual && node->token.id != TokenId::SymExclamEqual)
+        if (node->tokenId != TokenId::SymEqualEqual && node->tokenId != TokenId::SymExclamEqual)
             return context->report({left, Fmt(Err(Err0005), node->token.ctext(), leftTypeInfo->getDisplayNameC())});
     }
 
-    if (node->token.id == TokenId::SymLowerEqualGreater)
+    if (node->tokenId == TokenId::SymLowerEqualGreater)
         node->typeInfo = g_TypeMgr->typeInfoS32;
     else
         node->typeInfo = g_TypeMgr->typeInfoBool;
@@ -417,7 +417,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     node->inheritAndFlag2(AST_CONST_EXPR, AST_R_VALUE);
     node->inheritOrFlag(AST_SIDE_EFFECTS);
 
-    switch (node->token.id)
+    switch (node->tokenId)
     {
     case TokenId::SymEqualEqual:
         SWAG_CHECK(resolveCompOpEqual(context, left, right));

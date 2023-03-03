@@ -465,7 +465,7 @@ bool ByteCodeGenJob::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
         if (binNode->childs.size() == 2)
         {
             auto child1 = binNode->childs[1];
-            while (child1->kind == AstNodeKind::BinaryOp && (child1->token.id == TokenId::KwdAnd || child1->token.id == TokenId::KwdOr))
+            while (child1->kind == AstNodeKind::BinaryOp && (child1->tokenId == TokenId::KwdAnd || child1->tokenId == TokenId::KwdOr))
             {
                 auto child0 = child1->childs[0];
                 child0->allocateExtension(ExtensionKind::Misc);
@@ -523,7 +523,7 @@ bool ByteCodeGenJob::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
         if (binNode->childs.size() == 2)
         {
             auto child1 = binNode->childs[1];
-            while (child1->kind == AstNodeKind::BinaryOp && (child1->token.id == TokenId::KwdAnd || child1->token.id == TokenId::KwdOr))
+            while (child1->kind == AstNodeKind::BinaryOp && (child1->tokenId == TokenId::KwdAnd || child1->tokenId == TokenId::KwdOr))
             {
                 auto child0 = child1->childs[0];
                 child0->allocateExtension(ExtensionKind::Misc);
@@ -593,7 +593,7 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
 
             // Register for the binary operation has already been allocated in 'additionalRegisterRC' by the left expression in case of a logical test
             // So we take it as the result register.
-            if (node->token.id == TokenId::KwdAnd || node->token.id == TokenId::KwdOr)
+            if (node->tokenId == TokenId::KwdAnd || node->tokenId == TokenId::KwdOr)
             {
                 // :BinOpAndOr
                 auto front             = node->childs[0];
@@ -609,7 +609,7 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
 
             auto typeInfoExpr = node->castedTypeInfo ? node->castedTypeInfo : node->typeInfo;
 
-            switch (node->token.id)
+            switch (node->tokenId)
             {
             case TokenId::SymPlus:
                 SWAG_CHECK(emitBinaryOpPlus(context, typeInfoExpr, r0, r1, r2));

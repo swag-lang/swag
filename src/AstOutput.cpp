@@ -1628,7 +1628,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::CompilerSpecialValue:
     {
-        switch (node->token.id)
+        switch (node->tokenId)
         {
         case TokenId::CompilerSelf:
             CONCAT_FIXED_STR(concat, "#self");

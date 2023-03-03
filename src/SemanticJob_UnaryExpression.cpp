@@ -204,7 +204,7 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
 
     if (typeInfo->isStruct())
     {
-        switch (op->token.id)
+        switch (op->tokenId)
         {
         case TokenId::SymExclam:
             SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opUnary, "!", nullptr, child, nullptr));
@@ -230,7 +230,7 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
         return true;
     }
 
-    switch (op->token.id)
+    switch (op->tokenId)
     {
     case TokenId::SymExclam:
         SWAG_CHECK(resolveUnaryOpExclam(context, child));

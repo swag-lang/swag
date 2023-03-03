@@ -350,7 +350,7 @@ bool SemanticJob::resolveLiteralSuffix(SemanticContext* context)
     auto node = context->node;
 
     // Can be a predefined native type
-    if (node->token.id == TokenId::NativeType)
+    if (node->tokenId == TokenId::NativeType)
     {
         auto it = g_LangSpec->nativeTypes.find(node->token.text);
         SWAG_ASSERT(it);
@@ -359,7 +359,7 @@ bool SemanticJob::resolveLiteralSuffix(SemanticContext* context)
     }
 
     // Search if identifier is a type
-    if (node->token.id == TokenId::Identifier)
+    if (node->tokenId == TokenId::Identifier)
     {
         auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
 
@@ -382,54 +382,53 @@ bool SemanticJob::resolveLiteralSuffix(SemanticContext* context)
 
 bool SemanticJob::resolveLiteral(SemanticContext* context)
 {
-    auto   node       = CastAst<AstLiteral>(context->node, AstNodeKind::Literal);
-    auto   sourceFile = context->sourceFile;
-    Token& token      = node->token;
+    auto node       = CastAst<AstLiteral>(context->node, AstNodeKind::Literal);
+    auto sourceFile = context->sourceFile;
 
-    switch (token.id)
+    switch (node->tokenId)
     {
     case TokenId::KwdTrue:
-        token.id             = TokenId::LiteralNumber;
+        node->tokenId        = TokenId::LiteralNumber;
         node->literalType    = LiteralType::TT_BOOL;
         node->literalValue.b = true;
         break;
     case TokenId::KwdFalse:
-        token.id             = TokenId::LiteralNumber;
+        node->tokenId        = TokenId::LiteralNumber;
         node->literalType    = LiteralType::TT_BOOL;
         node->literalValue.b = false;
         break;
     case TokenId::KwdNull:
-        token.id                   = TokenId::LiteralNumber;
+        node->tokenId              = TokenId::LiteralNumber;
         node->literalType          = LiteralType::TT_NULL;
         node->literalValue.pointer = nullptr;
         break;
     case TokenId::CompilerFile:
-        token.id          = TokenId::LiteralString;
+        node->tokenId     = TokenId::LiteralString;
         node->literalType = LiteralType::TT_STRING;
-        token.text        = sourceFile->path.string();
+        node->token.text  = sourceFile->path.string();
         break;
     case TokenId::CompilerModule:
-        token.id          = TokenId::LiteralString;
+        node->tokenId     = TokenId::LiteralString;
         node->literalType = LiteralType::TT_STRING;
-        token.text        = sourceFile->module ? sourceFile->module->name : Utf8("?");
+        node->token.text  = sourceFile->module ? sourceFile->module->name : Utf8("?");
         break;
     case TokenId::CompilerLine:
-        token.id               = TokenId::LiteralNumber;
+        node->tokenId          = TokenId::LiteralNumber;
         node->literalType      = LiteralType::TT_UNTYPED_INT;
-        node->literalValue.u32 = token.startLocation.line + 1;
+        node->literalValue.u32 = node->token.startLocation.line + 1;
         break;
     case TokenId::CompilerBuildVersion:
-        token.id               = TokenId::LiteralNumber;
+        node->tokenId          = TokenId::LiteralNumber;
         node->literalType      = LiteralType::TT_S32;
         node->literalValue.s32 = SWAG_BUILD_VERSION;
         break;
     case TokenId::CompilerBuildRevision:
-        token.id               = TokenId::LiteralNumber;
+        node->tokenId          = TokenId::LiteralNumber;
         node->literalType      = LiteralType::TT_S32;
         node->literalValue.s32 = SWAG_BUILD_REVISION;
         break;
     case TokenId::CompilerBuildNum:
-        token.id               = TokenId::LiteralNumber;
+        node->tokenId          = TokenId::LiteralNumber;
         node->literalType      = LiteralType::TT_S32;
         node->literalValue.s32 = SWAG_BUILD_NUM;
         break;
@@ -480,7 +479,7 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
     // Check if this is in fact a negative literal. This is important to know now, in order
     // to be able to correctly check bounds.
     bool negApplied = false;
-    if (node->parent->kind == AstNodeKind::SingleOp && node->parent->token.id == TokenId::SymMinus)
+    if (node->parent->kind == AstNodeKind::SingleOp && node->parent->tokenId == TokenId::SymMinus)
     {
         switch (suffix->typeInfo->nativeType)
         {

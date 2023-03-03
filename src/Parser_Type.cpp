@@ -817,7 +817,7 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
 
     // Cast modifiers
     uint32_t mdfFlags = 0;
-    SWAG_CHECK(doModifiers(node->token, mdfFlags));
+    SWAG_CHECK(doModifiers(node->token, node->tokenId, mdfFlags));
     if (mdfFlags & MODIFIER_SAFE)
     {
         node->specFlags |= AST_SPEC_CAST_SAFE;

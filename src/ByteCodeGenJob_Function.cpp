@@ -336,7 +336,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     if (mustEmitSafety(context, SAFETY_MATH))
     {
         PushICFlags ic(context, BCI_SAFETY);
-        switch (node->token.id)
+        switch (node->tokenId)
         {
         case TokenId::IntrinsicAbs:
         {
@@ -396,7 +396,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         case TokenId::IntrinsicACos:
         {
             auto t0  = TypeManager::concreteType(callParams->childs[0]->typeInfo);
-            auto msg = node->token.id == TokenId::IntrinsicASin ? safetyMsg(SafetyMsg::IntrinsicASin, t0) : safetyMsg(SafetyMsg::IntrinsicACos, t0);
+            auto msg = node->tokenId == TokenId::IntrinsicASin ? safetyMsg(SafetyMsg::IntrinsicASin, t0) : safetyMsg(SafetyMsg::IntrinsicACos, t0);
             auto re  = reserveRegisterRC(context);
             if (t0->nativeType == NativeTypeKind::F32)
             {
@@ -426,7 +426,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         }
     }
 
-    switch (node->token.id)
+    switch (node->tokenId)
     {
     case TokenId::IntrinsicCompilerError:
     {
@@ -893,7 +893,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         }
 
         auto inst   = emitInstruction(context, op, node->resultRegisterRC, child0->resultRegisterRC, child1->resultRegisterRC);
-        inst->d.u32 = (uint32_t) node->token.id;
+        inst->d.u32 = (uint32_t) node->tokenId;
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
         break;
@@ -929,7 +929,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         }
 
         auto inst   = emitInstruction(context, op, node->resultRegisterRC, child->resultRegisterRC);
-        inst->d.u32 = (uint32_t) node->token.id;
+        inst->d.u32 = (uint32_t) node->tokenId;
         freeRegisterRC(context, child);
         break;
     }
@@ -959,7 +959,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         }
 
         auto inst   = emitInstruction(context, op, node->resultRegisterRC, child->resultRegisterRC);
-        inst->d.u32 = (uint32_t) node->token.id;
+        inst->d.u32 = (uint32_t) node->tokenId;
         freeRegisterRC(context, child);
         break;
     }
@@ -1012,7 +1012,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         }
 
         auto inst   = emitInstruction(context, op, node->resultRegisterRC, child0->resultRegisterRC, child1->resultRegisterRC);
-        inst->d.u32 = (uint32_t) node->token.id;
+        inst->d.u32 = (uint32_t) node->tokenId;
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
         break;
@@ -1071,7 +1071,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         }
 
         auto inst   = emitInstruction(context, op, node->resultRegisterRC, child->resultRegisterRC);
-        inst->d.u32 = (uint32_t) node->token.id;
+        inst->d.u32 = (uint32_t) node->tokenId;
         freeRegisterRC(context, child);
         break;
     }
@@ -1229,7 +1229,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
 
     if (defaultParam->assignment->kind == AstNodeKind::CompilerSpecialValue)
     {
-        switch (defaultParam->assignment->token.id)
+        switch (defaultParam->assignment->tokenId)
         {
         case TokenId::CompilerCallerLocation:
         {
@@ -1277,7 +1277,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
         case TokenId::CompilerBuildCfg:
         {
             reserveLinearRegisterRC2(context, regList);
-            auto str            = SemanticJob::getCompilerFunctionString(node, defaultParam->assignment->token.id);
+            auto str            = SemanticJob::getCompilerFunctionString(node, defaultParam->assignment->tokenId);
             auto storageSegment = SemanticJob::getConstantSegFromContext(context->node);
             auto storageOffset  = storageSegment->addString(str);
             SWAG_ASSERT(storageOffset != UINT32_MAX);

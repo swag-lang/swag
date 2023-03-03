@@ -456,7 +456,7 @@ bool SemanticJob::deduceLambdaTypeAffect(SemanticContext* context, AstVarDecl* n
             }
 
             // op match
-            if (op->token.id == TokenId::SymEqual)
+            if (op->tokenId == TokenId::SymEqual)
             {
                 back->typeInfo = g_TypeMgr->typeInfoUndefined;
                 SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffect, nullptr, nullptr, front, back, ROP_SIMPLE_CAST));

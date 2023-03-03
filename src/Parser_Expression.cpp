@@ -137,7 +137,7 @@ bool Parser::doIntrinsicProp(AstNode* parent, AstNode** result)
     SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, Err(Syn0044)));
 
     // Three parameters
-    if (node->token.id == TokenId::IntrinsicMakeInterface)
+    if (node->tokenId == TokenId::IntrinsicMakeInterface)
     {
         AstNode* params = Ast::newFuncCallParams(sourceFile, node, this);
         SWAG_CHECK(doExpression(params, EXPR_FLAG_NONE));
@@ -148,9 +148,9 @@ bool Parser::doIntrinsicProp(AstNode* parent, AstNode** result)
     }
 
     // Two parameters
-    else if (node->token.id == TokenId::IntrinsicMakeSlice ||
-             node->token.id == TokenId::IntrinsicMakeString ||
-             node->token.id == TokenId::IntrinsicMakeAny)
+    else if (node->tokenId == TokenId::IntrinsicMakeSlice ||
+             node->tokenId == TokenId::IntrinsicMakeString ||
+             node->tokenId == TokenId::IntrinsicMakeAny)
     {
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
         SWAG_CHECK(eatToken(TokenId::SymComma));
@@ -158,7 +158,7 @@ bool Parser::doIntrinsicProp(AstNode* parent, AstNode** result)
     }
 
     // Two parameters
-    else if (node->token.id == TokenId::IntrinsicCVaArg)
+    else if (node->tokenId == TokenId::IntrinsicCVaArg)
     {
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
         SWAG_CHECK(eatToken(TokenId::SymComma));
@@ -166,10 +166,10 @@ bool Parser::doIntrinsicProp(AstNode* parent, AstNode** result)
     }
 
     // One single parameter
-    else if (node->token.id == TokenId::IntrinsicTypeOf ||
-             node->token.id == TokenId::IntrinsicKindOf ||
-             node->token.id == TokenId::IntrinsicSizeOf ||
-             node->token.id == TokenId::IntrinsicDeclType)
+    else if (node->tokenId == TokenId::IntrinsicTypeOf ||
+             node->tokenId == TokenId::IntrinsicKindOf ||
+             node->tokenId == TokenId::IntrinsicSizeOf ||
+             node->tokenId == TokenId::IntrinsicDeclType)
     {
         SWAG_CHECK(doExpression(node, EXPR_FLAG_TYPEOF));
     }
@@ -484,7 +484,6 @@ bool Parser::doDeRef(AstNode* parent, AstNode** result)
     auto arrayNode         = Ast::newNode<AstArrayPointerIndex>(this, AstNodeKind::ArrayPointerIndex, sourceFile, identifierRef, 2);
     arrayNode->semanticFct = SemanticJob::resolveArrayPointerIndex;
     arrayNode->specFlags   = AST_SPEC_ARRAYPTRIDX_ISDEREF;
-    Token savedToken       = token;
     SWAG_CHECK(eatToken());
 
     SWAG_CHECK(doUnaryExpression(arrayNode, EXPR_FLAG_SIMPLE, &arrayNode->array));
@@ -658,8 +657,8 @@ bool Parser::doOperatorPrecedence(AstNode** result)
 
     if ((right->kind == AstNodeKind::FactorOp || right->kind == AstNodeKind::BinaryOp) && !(right->flags & AST_IN_ATOMIC_EXPR))
     {
-        auto myPrecedence    = getPrecedence(factor->token.id);
-        auto rightPrecedence = getPrecedence(right->token.id);
+        auto myPrecedence    = getPrecedence(factor->tokenId);
+        auto rightPrecedence = getPrecedence(right->tokenId);
 
         bool shuffle = false;
         if (myPrecedence < rightPrecedence && myPrecedence != -1 && rightPrecedence != -1)
@@ -669,7 +668,7 @@ bool Parser::doOperatorPrecedence(AstNode** result)
         //
         // 2 - 1 - 1 needs to be treated as (2 - 1) - 1 and not 2 - (2 - 1)
         //
-        else if (!isAssociative(factor->token.id) && (myPrecedence == rightPrecedence))
+        else if (!isAssociative(factor->tokenId) && (myPrecedence == rightPrecedence))
             shuffle = true;
 
         if (shuffle)
@@ -713,9 +712,9 @@ bool Parser::doOperatorPrecedence(AstNode** result)
     return true;
 }
 
-bool Parser::doModifiers(Token& forNode, uint32_t& mdfFlags)
+bool Parser::doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags)
 {
-    auto opId = forNode.id;
+    auto opId = tokenId;
 
     mdfFlags = 0;
     while (token.id == TokenId::SymComma && !token.lastTokenIsBlank && !token.lastTokenIsEOL)
@@ -871,7 +870,7 @@ bool Parser::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode** 
 
         // Modifiers
         uint32_t mdfFlags = 0;
-        SWAG_CHECK(doModifiers(binaryNode->token, mdfFlags));
+        SWAG_CHECK(doModifiers(binaryNode->token, binaryNode->tokenId, mdfFlags));
         if (mdfFlags & MODIFIER_SAFE)
         {
             binaryNode->specFlags |= AST_SPEC_OP_SAFE;
@@ -967,10 +966,10 @@ bool Parser::doBoolExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
     return true;
 }
 
-bool Parser::doMoveExpression(Token& forToken, AstNode* parent, AstNode** result)
+bool Parser::doMoveExpression(Token& forToken, TokenId tokenId, AstNode* parent, AstNode** result)
 {
     uint32_t mdfFlags = 0;
-    SWAG_CHECK(doModifiers(forToken, mdfFlags));
+    SWAG_CHECK(doModifiers(forToken, tokenId, mdfFlags));
 
     // nodrop left
     if (mdfFlags & MODIFIER_NO_LEFT_DROP)
@@ -1221,7 +1220,7 @@ bool Parser::doExpressionListArray(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool Parser::doInitializationExpression(Token& forToken, AstNode* parent, AstNode** result)
+bool Parser::doInitializationExpression(TokenParse& forToken, AstNode* parent, AstNode** result)
 {
     PushSyntaxContextFlags cf(this, CONTEXT_FLAG_EXPRESSION);
 
@@ -1238,7 +1237,7 @@ bool Parser::doInitializationExpression(Token& forToken, AstNode* parent, AstNod
         return true;
     }
 
-    return doMoveExpression(forToken, parent, result);
+    return doMoveExpression(forToken, forToken.id, parent, result);
 }
 
 void Parser::forceTakeAddress(AstNode* node)
@@ -1455,7 +1454,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
         // Modifiers
         uint32_t mdfFlags = 0;
         if (savedtoken.id != TokenId::SymEqual)
-            SWAG_CHECK(doModifiers(savedtoken, mdfFlags));
+            SWAG_CHECK(doModifiers(savedtoken, savedtoken.id, mdfFlags));
         if (mdfFlags & MODIFIER_SAFE)
         {
             opFlags |= AST_SPEC_OP_SAFE;
@@ -1491,9 +1490,10 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
 
             while (!leftNode->childs.empty())
             {
-                auto child        = leftNode->childs.front();
-                auto affectNode   = Ast::newAffectOp(sourceFile, parentNode, opFlags, opAttrFlags);
-                affectNode->token = savedtoken;
+                auto child          = leftNode->childs.front();
+                auto affectNode     = Ast::newAffectOp(sourceFile, parentNode, opFlags, opAttrFlags);
+                affectNode->token   = savedtoken;
+                affectNode->tokenId = savedtoken.id;
                 Ast::removeFromParent(child);
                 Ast::addChildBack(affectNode, child);
                 forceTakeAddress(child);
@@ -1502,14 +1502,14 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
                 if (!firstDone)
                 {
                     firstDone = true;
-                    if (affectNode->token.id == TokenId::SymEqual)
-                        SWAG_CHECK(doMoveExpression(affectNode->token, affectNode, &affectExpression));
+                    if (affectNode->tokenId == TokenId::SymEqual)
+                        SWAG_CHECK(doMoveExpression(affectNode->token, affectNode->tokenId, affectNode, &affectExpression));
                     else
                         SWAG_CHECK(doExpression(affectNode, EXPR_FLAG_NONE, &affectExpression));
                 }
 
                 // This is not an initialization, so we need to duplicate the right expression
-                else if (affectNode->token.id != TokenId::SymEqual || affectExpression->kind == AstNodeKind::Literal)
+                else if (affectNode->tokenId != TokenId::SymEqual || affectExpression->kind == AstNodeKind::Literal)
                 {
                     auto newAffect = Ast::clone(affectExpression, affectNode);
                     newAffect->inheritTokenLocation(affectExpression);
@@ -1571,7 +1571,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
                 }
 
                 auto affectNode        = Ast::newAffectOp(sourceFile, parentNode, opFlags, opAttrFlags);
-                affectNode->token.id   = savedtoken.id;
+                affectNode->tokenId    = savedtoken.id;
                 affectNode->token.text = savedtoken.text;
                 Ast::removeFromParent(child);
                 Ast::addChildBack(affectNode, child);
@@ -1588,8 +1588,9 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
         // One normal simple affectation
         else
         {
-            auto affectNode   = Ast::newAffectOp(sourceFile, parent, opFlags, opAttrFlags, this);
-            affectNode->token = move(savedtoken);
+            auto affectNode     = Ast::newAffectOp(sourceFile, parent, opFlags, opAttrFlags, this);
+            affectNode->token   = move(savedtoken);
+            affectNode->tokenId = savedtoken.id;
 
             Ast::addChildBack(affectNode, leftNode);
             forceTakeAddress(leftNode);
@@ -1598,8 +1599,8 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
             front->allocateExtension(ExtensionKind::Semantic);
             front->extSemantic()->semanticAfterFct = SemanticJob::resolveAfterAffectLeft;
 
-            if (affectNode->token.id == TokenId::SymEqual)
-                SWAG_CHECK(doMoveExpression(affectNode->token, affectNode));
+            if (affectNode->tokenId == TokenId::SymEqual)
+                SWAG_CHECK(doMoveExpression(affectNode->token, affectNode->tokenId, affectNode));
             else
                 SWAG_CHECK(doExpression(affectNode, EXPR_FLAG_NONE));
 

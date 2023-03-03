@@ -81,7 +81,7 @@ bool Parser::checkIsValidVarName(AstNode* node)
     return error(node->token, Fmt(Err(Syn0111), node->token.ctext()));
 }
 
-bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const Token& assignToken, AstNodeKind kind, AstNode** result)
+bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result)
 {
     bool acceptDeref = true;
     if (currentScope->kind == ScopeKind::Struct || currentScope->kind == ScopeKind::File)
@@ -114,6 +114,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
             AstVarDecl*    varNode = Ast::newVarDecl(sourceFile, identifier->token.text, parentNode, this);
             varNode->kind          = kind;
             varNode->token         = identifier->token;
+            varNode->tokenId       = identifier->tokenId;
             varNode->assignToken   = assignToken;
             varNode->flags |= AST_R_VALUE;
 

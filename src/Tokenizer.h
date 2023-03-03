@@ -64,8 +64,6 @@ struct SourceLocation
 
 struct Token
 {
-    TokenId id = TokenId::Invalid;
-
     Utf8           text;
     SourceLocation startLocation;
     SourceLocation endLocation;
@@ -79,6 +77,7 @@ struct Token
 struct TokenParse : public Token
 {
     Register    literalValue;
+    TokenId     id               = TokenId::Invalid;
     LiteralType literalType      = (LiteralType) 0;
     bool        lastTokenIsEOL   = false;
     bool        lastTokenIsBlank = false;

@@ -698,7 +698,7 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
         SWAG_CHECK(emitUserOp(context));
         if (context->result != ContextResult::Done)
             return true;
-        SWAG_CHECK(emitCompareOpPostSpecialFunc(context, node->token.id));
+        SWAG_CHECK(emitCompareOpPostSpecialFunc(context, node->tokenId));
     }
     else
     {
@@ -708,7 +708,7 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
         RegisterList r2        = reserveRegisterRC(context);
         node->resultRegisterRC = r2;
 
-        switch (node->token.id)
+        switch (node->tokenId)
         {
         case TokenId::SymEqualEqual:
             SWAG_CHECK(emitCompareOpEqual(context, r0, r1, r2));

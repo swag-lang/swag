@@ -15,7 +15,7 @@ void Ast::initNewNode(AstNode* node, Parser* parser, AstNodeKind kind, SourceFil
 
     if (parser)
     {
-        node->token.id   = parser->token.id;
+        node->tokenId    = parser->token.id;
         node->token.text = parser->token.text;
 
         if (parser->currentTokenLocation)

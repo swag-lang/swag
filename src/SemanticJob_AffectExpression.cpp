@@ -204,7 +204,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     auto node    = CastAst<AstOp>(context->node, AstNodeKind::AffectOp);
     auto left    = node->childs[0];
     auto right   = node->childs[1];
-    auto tokenId = node->token.id;
+    auto tokenId = node->tokenId;
 
     SWAG_CHECK(checkIsConcrete(context, left));
     SWAG_CHECK(checkIsConcreteOrType(context, right));
@@ -225,14 +225,14 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
     // Special case for enum : nothing is possible, except for flags
     bool forEnumFlags = false;
-    if (node->token.id != TokenId::SymEqual)
+    if (node->tokenId != TokenId::SymEqual)
     {
         if (leftTypeInfo->isEnum() || rightTypeInfo->isEnum())
         {
             SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
-            if (node->token.id != TokenId::SymVerticalEqual &&
-                node->token.id != TokenId::SymAmpersandEqual &&
-                node->token.id != TokenId::SymCircumflexEqual)
+            if (node->tokenId != TokenId::SymVerticalEqual &&
+                node->tokenId != TokenId::SymAmpersandEqual &&
+                node->tokenId != TokenId::SymCircumflexEqual)
                 return notAllowed(context, node, leftTypeInfo, nullptr, left);
             if (!(leftTypeInfo->flags & TYPEINFO_ENUM_FLAGS) || !(rightTypeInfo->flags & TYPEINFO_ENUM_FLAGS))
                 return notAllowed(context, node, leftTypeInfo, "because the enum is not marked with 'Swag.EnumFlags'", left);
@@ -257,7 +257,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     }
 
     // No direct operations on any, except affect any to any
-    if (leftTypeInfo->isAny() && node->token.id != TokenId::SymEqual)
+    if (leftTypeInfo->isAny() && node->tokenId != TokenId::SymEqual)
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0570), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
         diag.hint = Hnt(Hnt0061);

@@ -60,6 +60,9 @@ namespace Ast
 #ifdef SWAG_STATS
         g_Stats.numNodes++;
         g_Stats.memNodes += Allocator::alignSize(sizeof(T));
+#ifdef SWAG_DEV_MODE
+        node->rankId = g_Stats.numNodes;
+#endif
 #endif
         return node;
     }
@@ -72,6 +75,9 @@ namespace Ast
 #ifdef SWAG_STATS
         g_Stats.numNodes++;
         g_Stats.memNodes += Allocator::alignSize(sizeof(T));
+#ifdef SWAG_DEV_MODE
+        node->rankId = g_Stats.numNodes;
+#endif
 #endif
         return node;
     }

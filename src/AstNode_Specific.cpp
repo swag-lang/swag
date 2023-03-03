@@ -70,7 +70,8 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     resolvedSymbolName     = from->resolvedSymbolName;
     resolvedSymbolOverload = from->resolvedSymbolOverload;
 
-    token = from->token;
+    token   = from->token;
+    tokenId = from->tokenId;
     if (context.forceLocation)
     {
         token.startLocation = context.forceLocation->startLocation;
@@ -920,7 +921,7 @@ AstNode* AstBreakContinue::clone(CloneContext& context)
     // not a 'new' breakable in the user code
     if (context.ownerBreakable == context.replaceTokensBreakable)
     {
-        auto it = context.replaceTokens.find(token.id);
+        auto it = context.replaceTokens.find(tokenId);
         if (it != context.replaceTokens.end())
         {
             auto newNode = Ast::newNode<AstSubstBreakContinue>(nullptr, AstNodeKind::SubstBreakContinue, sourceFile, context.parent);

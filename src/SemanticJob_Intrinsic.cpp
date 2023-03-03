@@ -12,7 +12,7 @@
 bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
 {
     auto node = context->node;
-    switch (node->token.id)
+    switch (node->tokenId)
     {
     case TokenId::IntrinsicSafety:
     {
@@ -695,7 +695,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
 {
     auto node = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
 
-    switch (node->token.id)
+    switch (node->tokenId)
     {
     case TokenId::IntrinsicSpread:
         SWAG_CHECK(resolveIntrinsicSpread(context));
@@ -848,14 +848,14 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         typeInfo->computeScopedName();
         SWAG_VERIFY(typeInfo->scopedName == "*Swag.CVaList", context->report({node, Fmt(Err(Err0048), typeInfo->getDisplayNameC())}));
 
-        if (node->token.id == TokenId::IntrinsicCVaStart)
+        if (node->tokenId == TokenId::IntrinsicCVaStart)
         {
             SWAG_VERIFY(node->ownerFct && node->ownerFct->parameters && node->ownerFct->parameters->childs.size(), context->report({node, node->token, Err(Err0442)}));
             auto typeParam = node->ownerFct->parameters->childs.back()->typeInfo;
             SWAG_VERIFY(typeParam->isCVariadic(), context->report({node, node->token, Err(Err0442)}));
             node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCVaStart;
         }
-        else if (node->token.id == TokenId::IntrinsicCVaEnd)
+        else if (node->tokenId == TokenId::IntrinsicCVaEnd)
         {
             node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCVaEnd;
         }

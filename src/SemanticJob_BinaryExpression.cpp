@@ -890,9 +890,9 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     // Determin if we must promote to 32/64 bits.
     // Bit manipulations to not promote.
     bool mustPromote = true;
-    if (node->token.id == TokenId::SymVertical ||
-        node->token.id == TokenId::SymAmpersand ||
-        node->token.id == TokenId::SymCircumflex)
+    if (node->tokenId == TokenId::SymVertical ||
+        node->tokenId == TokenId::SymAmpersand ||
+        node->tokenId == TokenId::SymCircumflex)
     {
         mustPromote = false;
     }
@@ -905,9 +905,9 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
 
-        if (node->token.id != TokenId::SymVertical &&
-            node->token.id != TokenId::SymAmpersand &&
-            node->token.id != TokenId::SymCircumflex)
+        if (node->tokenId != TokenId::SymVertical &&
+            node->tokenId != TokenId::SymAmpersand &&
+            node->tokenId != TokenId::SymCircumflex)
             return notAllowed(context, node, leftTypeInfo);
 
         if (leftTypeInfo->isEnum() && !(leftTypeInfo->flags & TYPEINFO_ENUM_FLAGS) && rightTypeInfo == leftTypeInfo)
@@ -990,7 +990,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     // Must invert if commutative operation
     if (!leftTypeInfo->isStruct() && rightTypeInfo->isStruct())
     {
-        switch (node->token.id)
+        switch (node->tokenId)
         {
         case TokenId::SymPlus:
         case TokenId::SymAsterisk:
@@ -1001,7 +1001,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         }
     }
 
-    switch (node->token.id)
+    switch (node->tokenId)
     {
     case TokenId::SymPlus:
         SWAG_CHECK(resolveBinaryOpPlus(context, left, right));
@@ -1032,9 +1032,9 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
             node->typeInfo = left->typeInfo;
         }
 
-        if (node->token.id == TokenId::SymVertical)
+        if (node->tokenId == TokenId::SymVertical)
             SWAG_CHECK(resolveBitmaskOr(context, left, right));
-        else if (node->token.id == TokenId::SymAmpersand)
+        else if (node->tokenId == TokenId::SymAmpersand)
             SWAG_CHECK(resolveBitmaskAnd(context, left, right));
         else
             SWAG_CHECK(resolveXor(context, left, right));
@@ -1293,7 +1293,7 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
     node->inheritAndFlag2(AST_CONST_EXPR, AST_R_VALUE);
     node->inheritOrFlag(AST_SIDE_EFFECTS);
 
-    switch (node->token.id)
+    switch (node->tokenId)
     {
     case TokenId::SymLowerLower:
         SWAG_CHECK(resolveShiftLeft(context, left, right));
@@ -1355,7 +1355,7 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
 
     // In case of && or ||, this is special cause we do not want to evaluate the right part if the left part
     // fails. So we need to do some work once the left part has been emitted
-    switch (node->token.id)
+    switch (node->tokenId)
     {
     case TokenId::KwdAnd:
         left->allocateExtension(ExtensionKind::ByteCode);
@@ -1373,7 +1373,7 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
         node->setFlagsValueIsComputed();
-        switch (node->token.id)
+        switch (node->tokenId)
         {
         case TokenId::KwdAnd:
             node->computedValue->reg.b = left->computedValue->reg.b && right->computedValue->reg.b;
@@ -1386,7 +1386,7 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
         }
     }
 
-    else if (node->token.id == TokenId::KwdAnd)
+    else if (node->tokenId == TokenId::KwdAnd)
     {
         if (module->mustOptimizeBC(node))
         {
@@ -1419,7 +1419,7 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
         }
     }
 
-    else if (node->token.id == TokenId::KwdOr)
+    else if (node->tokenId == TokenId::KwdOr)
     {
         if (module->mustOptimizeBC(node))
         {
