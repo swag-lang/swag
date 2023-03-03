@@ -700,7 +700,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
                     {
                         // Create a function call param node, and move the node inside it
                         auto oldParent = makePtrL->parent;
-                        auto oldIdx    = makePtrL->childParentIdx;
+                        auto oldIdx    = makePtrL->childParentIdx();
                         Ast::removeFromParent(makePtrL);
 
                         auto nodeCall = Ast::newFuncCallParam(makePtrL->sourceFile, oldParent);

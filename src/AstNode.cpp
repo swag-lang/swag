@@ -210,11 +210,9 @@ bool AstNode::forceTakeAddress()
 void AstNode::swap2Childs()
 {
     SWAG_ASSERT(childs.size() == 2);
-    auto tmp                  = childs[0];
-    childs[0]                 = childs[1];
-    childs[1]                 = tmp;
-    childs[0]->childParentIdx = 0;
-    childs[1]->childParentIdx = 1;
+    auto tmp  = childs[0];
+    childs[0] = childs[1];
+    childs[1] = tmp;
 }
 
 bool AstNode::hasSpecialFuncCall()
@@ -442,6 +440,19 @@ bool AstNode::isSameStackFrame(SymbolOverload* overload)
         return false;
 
     return true;
+}
+
+uint32_t AstNode::childParentIdx()
+{
+    SWAG_ASSERT(parent);
+    for (uint32_t it = 0; it < parent->childs.size(); it++)
+    {
+        if (parent->childs[it] == this)
+            return it;
+    }
+
+    SWAG_ASSERT(false);
+    return 0;
 }
 
 void AstNode::addAlternativeScope(Scope* scope, uint32_t altFlags)

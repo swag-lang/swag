@@ -48,7 +48,6 @@ void Ast::initNewNode(AstNode* node, Parser* parser, AstNodeKind kind, SourceFil
         node->flags |= parent->flags & (AST_NO_BACKEND | AST_RUN_BLOCK | AST_IN_MIXIN);
 
         ScopedLock lk(parent->mutex);
-        node->childParentIdx = (uint32_t) parent->childs.size();
         parent->childs.push_back(node);
     }
 }
@@ -275,11 +274,8 @@ void Ast::removeFromParent(AstNode* child)
         return;
 
     ScopedLock lk(parent->mutex);
-    auto       idx = child->childParentIdx;
-    SWAG_ASSERT(parent->childs[idx] == child);
+    auto       idx = child->childParentIdx();
     parent->childs.erase(idx);
-    for (int i = idx; i < parent->childs.size(); i++)
-        parent->childs[i]->childParentIdx = i;
     child->parent = nullptr;
 }
 
@@ -291,10 +287,7 @@ void Ast::insertChild(AstNode* parent, AstNode* child, uint32_t index)
     if (parent)
     {
         ScopedLock lk(parent->mutex);
-        child->childParentIdx = index;
         parent->childs.insertAtIndex(child, index);
-        for (auto i = index; i < parent->childs.size(); i++)
-            parent->childs[i]->childParentIdx = i;
     }
     else
     {
@@ -312,10 +305,7 @@ void Ast::addChildFront(AstNode* parent, AstNode* child)
     if (parent)
     {
         ScopedLock lk(parent->mutex);
-        child->childParentIdx = 0;
         parent->childs.push_front(child);
-        for (auto i = 1; i < parent->childs.size(); i++)
-            parent->childs[i]->childParentIdx = i;
         if (!child->ownerScope)
             child->inheritOwners(parent);
     }
@@ -331,7 +321,6 @@ void Ast::addChildBack(AstNode* parent, AstNode* child)
     if (parent)
     {
         ScopedLock lk(parent->mutex);
-        child->childParentIdx = (uint32_t) parent->childs.size();
         parent->childs.push_back(child);
         if (!child->ownerScope)
             child->inheritOwners(parent);

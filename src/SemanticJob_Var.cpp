@@ -489,7 +489,7 @@ bool SemanticJob::deduceLambdaTypeAffect(SemanticContext* context, AstVarDecl* n
         typeLambda = CastTypeInfo<TypeInfoFuncAttr>(frontType, TypeInfoKind::LambdaClosure);
     }
 
-    auto paramIdx = node->childParentIdx;
+    auto paramIdx = node->childParentIdx();
 
     // Do not deduce from the context closure generated parameter
     SWAG_ASSERT(typeLambda);

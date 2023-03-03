@@ -683,7 +683,7 @@ static bool isStatementIdentifier(AstIdentifier* identifier)
         checkParent->kind == AstNodeKind::SwitchCaseBlock)
     {
         // If this is the last identifier
-        if (identifier->childParentIdx == identifier->identifierRef()->childs.size() - 1)
+        if (identifier == identifier->identifierRef()->childs.back())
             return true;
 
         // If this is not the last identifier, and it's not a function call
@@ -917,7 +917,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
                 if (idNode->identifierExtension)
                     idNode->identifierExtension->fromAlternateVar = dependentVar;
 
-                Ast::insertChild(idRef, idNode, newParent->childParentIdx);
+                Ast::insertChild(idRef, idNode, newParent->childParentIdx());
                 context->job->nodes.push_back(idNode);
             }
 
@@ -1129,7 +1129,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             // In that case, we should not generate bytecode for everything before the constant,
             // as we have the scope, and this is enough.
             SWAG_ASSERT(checkParent->kind == AstNodeKind::IdentifierRef);
-            for (int i = 0; i < (int) child->childParentIdx; i++)
+            auto childIdx = child->childParentIdx();
+            for (uint32_t i = 0; i < childIdx; i++)
             {
                 auto brother = checkParent->childs[i];
                 if (!(brother->flags & AST_VALUE_COMPUTED) &&
@@ -1222,9 +1223,10 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         auto funcDecl = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
 
         // Be sure that we didn't use a variable as a 'scope'
-        if (identifier->childParentIdx)
+        auto childIdx = identifier->childParentIdx();
+        if (childIdx)
         {
-            auto prev = identifier->identifierRef()->childs[identifier->childParentIdx - 1];
+            auto prev = identifier->identifierRef()->childs[childIdx - 1];
             if (prev->resolvedSymbolName && prev->resolvedSymbolName->kind == SymbolKind::Variable && !(prev->flags & AST_FROM_UFCS))
             {
                 return context->report({prev, Fmt(Err(Err0097), Naming::kindName(prev->resolvedSymbolOverload->node).c_str(), prev->token.ctext(), identifier->token.ctext()), Hnt(Hnt0026)});
@@ -2337,8 +2339,6 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
 
     // Insert variable in first position. Need to update child
     // rank of all brothers.
-    for (auto c : node->callParameters->childs)
-        c->childParentIdx++;
     node->callParameters->childs.push_front(fctCallParam);
 
     fctCallParam->parent   = node->callParameters;
@@ -3208,9 +3208,10 @@ bool SemanticJob::appendLastCodeStatement(SemanticContext* context, AstIdentifie
                     parent->parent->kind == AstNodeKind::TryCatch)
                     parent = parent->parent;
 
-                if (parent->childParentIdx != parent->parent->childs.size() - 1)
+                auto parentIdx = parent->childParentIdx();
+                if (parentIdx != parent->parent->childs.size() - 1)
                 {
-                    auto brother = parent->parent->childs[parent->childParentIdx + 1];
+                    auto brother = parent->parent->childs[parentIdx + 1];
                     if (brother->kind == AstNodeKind::Statement)
                     {
                         auto brotherParent = brother->parent;
@@ -3551,7 +3552,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
                 if (!(matches[j]->symbolOverload->flags & OVERLOAD_IMPL_IN_STRUCT))
                 {
                     // If interface name is alone, then we take in priority the interface definition, not the impl block
-                    if (node->childParentIdx == 0)
+                    if (node == node->parent->childs.front())
                         curMatch->remove = true;
                     // If interface name is not alone (like X.ITruc), then we take in priority the sub scope
                     else

@@ -349,6 +349,7 @@ struct AstNode
     void     addAlternativeScope(Scope* scope, uint32_t altFlags = 0);
     void     addAlternativeScopeVar(Scope* scope, AstNode* varNode, uint32_t altFlags = 0);
     void     addAlternativeScopes(const VectorNative<AlternativeScope>& scopes);
+    uint32_t childParentIdx();
 
     struct ExtensionByteCode
     {
@@ -416,15 +417,12 @@ struct AstNode
     ExtensionMisc*     extMisc()        { return extension->misc; }
     // clang-format on
 
-    AstNodeKind         kind           = (AstNodeKind) 0;
-    AstNodeResolveState semanticState  = (AstNodeResolveState) 0;
-    AstNodeResolveState bytecodeState  = (AstNodeResolveState) 0;
-    uint8_t             specFlags      = 0;
-    uint32_t            childParentIdx = 0;
-
-    TokenId  tokenId  = TokenId::Invalid;
-    uint16_t padding0 = 0;
-    uint32_t padding1 = 0;
+    AstNodeKind         kind          = (AstNodeKind) 0;
+    AstNodeResolveState semanticState = (AstNodeResolveState) 0;
+    AstNodeResolveState bytecodeState = (AstNodeResolveState) 0;
+    uint8_t             specFlags     = 0;
+    TokenId             tokenId       = TokenId::Invalid;
+    uint16_t            padding0      = 0;
 
     SharedMutex            mutex;
     Token                  token;

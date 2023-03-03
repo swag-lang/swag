@@ -155,9 +155,10 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             // :UfcsItfInlined
             // Very specific case where an inlined call returns an interface, and we directly call a lamba of that interface.
             // In that case we want to take the resigter that defined the vtable, not the object.
-            if (identifier->childParentIdx)
+            if (identifier != identifier->parent->childs.front())
             {
-                auto prev = identifier->identifierRef()->childs[identifier->childParentIdx - 1];
+                auto idIdx = identifier->childParentIdx();
+                auto prev  = identifier->identifierRef()->childs[idIdx - 1];
                 if (prev->childs.size())
                 {
                     auto back = prev->childs.back();

@@ -689,7 +689,7 @@ bool Parser::doOperatorPrecedence(AstNode** result)
 
             auto leftRight = right->childs[0];
             Ast::removeFromParent(right);
-            if (factor->childParentIdx == 0)
+            if (factor->parent && factor == factor->parent->childs.front())
                 Ast::addChildFront(factor->parent, right);
             else
                 Ast::addChildBack(factor->parent, right);

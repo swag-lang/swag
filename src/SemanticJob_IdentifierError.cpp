@@ -585,9 +585,10 @@ void SemanticJob::symbolErrorNotes(SemanticContext* context, VectorNative<OneTry
     if (badUfcs && !identifier->identifierRef()->startScope)
     {
         // There's something before (identifier is not the only one in the identifierRef).
-        if (identifier->childParentIdx)
+        if (identifier != identifier->parent->childs.front())
         {
-            auto prev = identifier->identifierRef()->childs[identifier->childParentIdx - 1];
+            auto idIdx = identifier->childParentIdx();
+            auto prev  = identifier->identifierRef()->childs[idIdx - 1];
             if (prev->resolvedSymbolName)
             {
                 if (prev->hasExtMisc() && prev->extMisc()->resolvedUserOpSymbolOverload)
