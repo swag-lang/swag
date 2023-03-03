@@ -75,9 +75,8 @@ bool EnumerateModuleJob::dealWithIncludes(Module* theModule)
         {
             filePath = theModule->path;
             filePath.append(orgFilePath.string());
-            filePath = filesystem::absolute(filePath);
-            error_code err;
-            auto       filePath1 = filesystem::canonical(filePath, err);
+            filePath       = filesystem::absolute(filePath);
+            auto filePath1 = filesystem::canonical(filePath, err);
             if (!err)
                 filePath = filePath1;
             if (!filesystem::exists(filePath, err))
