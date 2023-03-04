@@ -17,7 +17,6 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
 
     // Copy some specific flags
     semFlags |= from->semFlags & SEMFLAG_INLINED;
-    semFlags |= from->semFlags & SEMFLAG_CHECK_ATTR;
     semFlags |= from->semFlags & SEMFLAG_STRUCT_CONVERT;
     semFlags |= from->semFlags & SEMFLAG_REGISTERED_IN_STRUCT;
 

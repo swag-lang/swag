@@ -527,6 +527,7 @@ struct AstFuncDecl : public AstNode
     static const uint16_t SPECFLAG_SHORT_FORM          = 0x0100;
     static const uint16_t SPECFLAG_SHORT_LAMBDA        = 0x0200;
     static const uint16_t SPECFLAG_RETURN_DEFINED      = 0x0400;
+    static const uint16_t SPECFLAG_CHECK_ATTR          = 0x0800;
 
     ~AstFuncDecl();
     AstNode*    clone(CloneContext& context);

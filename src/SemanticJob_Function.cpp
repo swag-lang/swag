@@ -521,10 +521,10 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     if (funcNode->ownerFct)
         funcNode->attributeFlags |= funcNode->ownerFct->attributeFlags & ATTRIBUTE_COMPILER;
 
-    if (!(funcNode->flags & AST_FROM_GENERIC) && !(funcNode->semFlags & SEMFLAG_CHECK_ATTR))
+    if (!(funcNode->flags & AST_FROM_GENERIC) && !(funcNode->specFlags & AstFuncDecl::SPECFLAG_CHECK_ATTR))
     {
         // Can be called multiple times in case of a mixin/macro inside another inlined function
-        funcNode->semFlags |= SEMFLAG_CHECK_ATTR;
+        funcNode->specFlags |= AstFuncDecl::SPECFLAG_CHECK_ATTR;
 
         if (funcNode->attributeFlags & ATTRIBUTE_MACRO)
         {
