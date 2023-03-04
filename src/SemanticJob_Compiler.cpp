@@ -332,8 +332,9 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
     auto node = CastAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerAst);
     if (node->flags & AST_IS_GENERIC)
         return true;
+
     // Do it once (in case of inline)
-    if (node->semFlags & SEMFLAG_AST_BLOCK)
+    if (node->specFlags & AstCompilerSpecFunc::SPECFLAG_AST_BLOCK)
         return true;
 
     auto job        = context->job;
@@ -344,7 +345,7 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
     SWAG_CHECK(executeCompilerNode(context, expression, false));
     if (context->result != ContextResult::Done)
         return true;
-    node->semFlags |= SEMFLAG_AST_BLOCK;
+    node->specFlags |= AstCompilerSpecFunc::SPECFLAG_AST_BLOCK;
 
     SWAG_CHECK(checkIsConstExpr(context, expression->flags & AST_VALUE_COMPUTED, expression));
 

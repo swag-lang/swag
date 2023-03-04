@@ -973,6 +973,8 @@ struct AstCompilerIfBlock : public AstNode
 
 struct AstCompilerSpecFunc : public AstNode
 {
+    static const uint16_t SPECFLAG_AST_BLOCK = 0x0001;
+
     AstNode* clone(CloneContext& context);
 };
 
