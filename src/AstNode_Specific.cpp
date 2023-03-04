@@ -24,9 +24,6 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     doneFlags |= from->doneFlags & DONEFLAG_SPEC_SCOPE;
     doneFlags |= from->doneFlags & DONEFLAG_REGISTERED_IN_STRUCT;
 
-    semFlags |= from->semFlags & SEMFLAG_SPEC_STACKSIZE;
-    semFlags |= context.forceSemFlags;
-
     specFlags = from->specFlags;
 
     ownerStructScope     = context.ownerStructScope ? context.ownerStructScope : from->ownerStructScope;
@@ -763,7 +760,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
 {
     auto newNode      = Ast::newNode<AstFuncDecl>();
     auto cloneContext = context;
-    cloneContext.forceSemFlags &= ~SEMFLAG_SPEC_STACKSIZE;
+    cloneContext.forceFlags &= ~AST_SPEC_STACKSIZE;
 
     newNode->copyFrom(context, this, false);
     newNode->aliasMask   = aliasMask;
@@ -1470,7 +1467,7 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
     auto newNode = Ast::newNode<AstCompilerSpecFunc>();
 
     auto cloneContext = context;
-    cloneContext.forceSemFlags &= ~SEMFLAG_SPEC_STACKSIZE;
+    cloneContext.forceFlags &= ~AST_SPEC_STACKSIZE;
 
     newNode->copyFrom(cloneContext, this, false);
 

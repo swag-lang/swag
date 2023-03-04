@@ -1436,7 +1436,7 @@ uint32_t SemanticJob::getMaxStackSize(AstNode* node)
 {
     auto decSP = node->ownerScope->startStackSize;
 
-    if (node->semFlags & SEMFLAG_SPEC_STACKSIZE)
+    if (node->flags & AST_SPEC_STACKSIZE)
     {
         auto p = node;
         while (p->parent && p->parent->kind != AstNodeKind::File)
@@ -1458,7 +1458,7 @@ void SemanticJob::setOwnerMaxStackSize(AstNode* node, uint32_t size)
     size = max(size, 1);
     size = (uint32_t) TypeManager::align(size, sizeof(void*));
 
-    if (node->semFlags & SEMFLAG_SPEC_STACKSIZE)
+    if (node->flags & AST_SPEC_STACKSIZE)
     {
         auto p = node;
         while (p->parent && p->parent->kind != AstNodeKind::File)
@@ -1606,10 +1606,10 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     // do not want to change the stackSize of the original function because of local variables.
     if (!cloneContext.ownerFct)
     {
-        identifier->semFlags |= SEMFLAG_SPEC_STACKSIZE;
+        identifier->flags |= AST_SPEC_STACKSIZE;
         if (identifier->kind == AstNodeKind::Identifier)
-            identifier->parent->semFlags |= SEMFLAG_SPEC_STACKSIZE;
-        cloneContext.forceSemFlags = SEMFLAG_SPEC_STACKSIZE;
+            identifier->parent->flags |= AST_SPEC_STACKSIZE;
+        cloneContext.forceFlags |= AST_SPEC_STACKSIZE;
     }
 
     // Register all aliases

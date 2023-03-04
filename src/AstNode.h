@@ -95,7 +95,6 @@ struct CloneContext
     Token*              forceLocation          = nullptr;
     uint64_t            forceFlags             = 0;
     uint64_t            removeFlags            = 0;
-    uint64_t            forceSemFlags          = 0;
     uint32_t            cloneFlags             = 0;
 
     void propageResult(CloneContext& context)
