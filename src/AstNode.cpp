@@ -169,6 +169,11 @@ bool AstNode::isGeneratedSelf()
     return kind == AstNodeKind::FuncDeclParam && specFlags & AstVarDecl::SPECFLAG_GENERATED_SELF;
 }
 
+bool AstNode::isEmptyFct()
+{
+    return kind == AstNodeKind::FuncDecl && specFlags & AstFuncDecl::SPECFLAG_EMPTY_FCT;
+}
+
 bool AstNode::isFunctionCall()
 {
     if (kind == AstNodeKind::FuncCall)
@@ -717,7 +722,7 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
         uint32_t countNoEmpty = 0;
         for (auto r : resolvedSymbolName->overloads)
         {
-            if (!(r->node->flags & AST_EMPTY_FCT))
+            if (!r->node->isEmptyFct())
             {
                 countNoEmpty++;
                 if (countNoEmpty > 1)

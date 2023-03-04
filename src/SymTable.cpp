@@ -393,8 +393,8 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, Typ
     if (overload)
     {
         // This is fine to define an empty function multiple times, if the signatures are the same
-        if (!(node->flags & AST_EMPTY_FCT) &&
-            !(overload->node->flags & AST_EMPTY_FCT) &&
+        if (!node->isEmptyFct() &&
+            !overload->node->isEmptyFct() &&
             !(node->flags & AST_HAS_SELECT_IF) &&
             !(overload->node->flags & AST_HAS_SELECT_IF))
         {

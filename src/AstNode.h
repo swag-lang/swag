@@ -327,6 +327,7 @@ struct AstNode
     bool isPublic();
     bool isFunctionCall();
     bool isGeneratedSelf();
+    bool isEmptyFct();
 
     // clang-format off
     bool isForeign() { return attributeFlags & ATTRIBUTE_FOREIGN; }
@@ -529,6 +530,7 @@ struct AstFuncDecl : public AstNode
     static const uint16_t SPECFLAG_RETURN_DEFINED       = 0x0400;
     static const uint16_t SPECFLAG_CHECK_ATTR           = 0x0800;
     static const uint16_t SPECFLAG_IS_LAMBDA_EXPRESSION = 0x1000;
+    static const uint16_t SPECFLAG_EMPTY_FCT            = 0x2000;
 
     ~AstFuncDecl();
     AstNode*    clone(CloneContext& context);

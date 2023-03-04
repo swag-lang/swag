@@ -56,12 +56,11 @@ const uint64_t AST_NO_RIGHT_DROP              = 0x00200000'00000000;
 const uint64_t AST_SILENT_CHECK               = 0x00400000'00000000;
 const uint64_t AST_UFCS_FCT                   = 0x00800000'00000000;
 const uint64_t AST_SPEC_STACKSIZE             = 0x01000000'00000000;
-const uint64_t AST_EMPTY_FCT                  = 0x02000000'00000000;
+const uint64_t AST_INLINED                    = 0x02000000'00000000;
 const uint64_t AST_SPEC_SEMANTIC1             = 0x04000000'00000000;
 const uint64_t AST_SPEC_SEMANTIC2             = 0x08000000'00000000;
 const uint64_t AST_STRUCT_CONVERT             = 0x10000000'00000000;
 const uint64_t AST_REGISTERED_IN_STRUCT       = 0x20000000'00000000;
-const uint64_t AST_INLINED                    = 0x40000000'00000000;
 
 const uint64_t SEMFLAG_VARDECL_STRUCT_PARAMETERS = 0x00000000'00000001;
 const uint64_t SEMFLAG_VARDECL_REF_CALL          = 0x00000000'00000002;

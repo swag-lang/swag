@@ -753,7 +753,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     }
 
     // Register runtime libc function type, by name
-    if (funcNode->sourceFile && funcNode->sourceFile->isRuntimeFile && (funcNode->flags & AST_EMPTY_FCT))
+    if (funcNode->sourceFile && funcNode->sourceFile->isRuntimeFile && funcNode->isEmptyFct())
     {
         ScopedLock lk(funcNode->sourceFile->module->mutexFile);
         funcNode->sourceFile->module->mapRuntimeFctsTypes[funcNode->token.text] = typeInfo;
@@ -762,7 +762,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // We should never reference an empty function
     // So consider this is a placeholder. This will generate an error in case the empty function is not replaced by a
     // real function at some point.
-    if (funcNode->flags & AST_EMPTY_FCT && !(funcNode->isForeign()) && funcNode->token.text[0] != '@')
+    if (funcNode->isEmptyFct() && !funcNode->isForeign() && funcNode->token.text[0] != '@')
     {
         ScopedLock lk(funcNode->resolvedSymbolName->mutex);
 
@@ -771,7 +771,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         int cptEmpty = 0;
         for (auto n : funcNode->resolvedSymbolName->nodes)
         {
-            if (!(n->flags & AST_EMPTY_FCT))
+            if (!n->isEmptyFct())
                 break;
             cptEmpty++;
         }

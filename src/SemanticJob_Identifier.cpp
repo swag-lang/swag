@@ -1268,7 +1268,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             return context->report({identifier, Err(Err0104)});
 
         // Be sure this is not a 'forward' decl
-        if (funcDecl->flags & AST_EMPTY_FCT && !(funcDecl->isForeign()) && identifier->token.text[0] != '@')
+        if (funcDecl->isEmptyFct() && !funcDecl->isForeign() && identifier->token.text[0] != '@')
         {
             Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0105), identifier->token.ctext())};
             return context->report(diag, Diagnostic::hereIs(overload));
@@ -3489,11 +3489,11 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         }
 
         // Priority to a non empty function
-        if (over->node->flags & AST_EMPTY_FCT)
+        if (over->node->isEmptyFct())
         {
             for (int j = 0; j < countMatches; j++)
             {
-                if (!(matches[j]->symbolOverload->node->flags & AST_EMPTY_FCT) &&
+                if (!matches[j]->symbolOverload->node->isEmptyFct() &&
                     matches[j]->symbolOverload->symbol == curMatch->symbolOverload->symbol)
                 {
                     curMatch->remove = true;

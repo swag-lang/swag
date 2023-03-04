@@ -102,7 +102,7 @@ bool SemanticJob::warnUnusedVariables(SemanticContext* context, Scope* scope)
     auto node = context->node;
     if (!node->sourceFile || !node->sourceFile->module)
         return true;
-    if (node->flags & AST_EMPTY_FCT)
+    if (node->isEmptyFct())
         return true;
     if (node->flags & AST_IS_GENERIC)
         return true;
