@@ -206,7 +206,7 @@ bool SemanticJob::warnUnreachableCode(SemanticContext* context)
                 return true;
         }
 
-        auto idx = Ast::findChildIndex(node->parent, node);
+        auto idx = node->childParentIdx();
         return context->report({node->parent->childs[idx + 1], Err(Wrn0001), DiagnosticLevel::Warning});
     }
 

@@ -254,17 +254,6 @@ Utf8 Ast::literalToString(TypeInfo* typeInfo, const ComputedValue& value)
     return result;
 }
 
-int Ast::findChildIndex(AstNode* parent, AstNode* child)
-{
-    for (int i = 0; i < parent->childs.size(); i++)
-    {
-        if (parent->childs[i] == child)
-            return i;
-    }
-
-    return -1;
-}
-
 void Ast::removeFromParent(AstNode* child)
 {
     if (!child)

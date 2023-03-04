@@ -17,7 +17,6 @@ namespace Ast
     void insertChild(AstNode* parent, AstNode* child, uint32_t index);
     void addChildBack(AstNode* parent, AstNode* child);
     void addChildFront(AstNode* parent, AstNode* child);
-    int  findChildIndex(AstNode* parent, AstNode* child);
 
     void         visit(AstNode* root, const function<void(AstNode*)>& fctor);
     bool         visit(ErrorContext* context, AstNode* root, const function<bool(ErrorContext*, AstNode*)>& fctor);

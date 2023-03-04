@@ -82,7 +82,7 @@ void ByteCodeRun::callInternalCompilerError(ByteCodeRunContext* context, ByteCod
     context->push(msg);
     context->push<uint64_t>(loc.location->column);
     context->push<uint64_t>(loc.location->line);
-    context->push(loc.file->path.string().c_str());
+    context->push(_strdup(loc.file->path.string().c_str()));
     localCall(context, bc, 4);
 }
 
@@ -94,7 +94,7 @@ void ByteCodeRun::callInternalPanic(ByteCodeRunContext* context, ByteCodeInstruc
     context->push(msg);
     context->push<uint64_t>(loc.location->column);
     context->push<uint64_t>(loc.location->line);
-    context->push(loc.file->path.string().c_str());
+    context->push(_strdup(loc.file->path.string().c_str()));
     localCall(context, bc, 4);
 }
 
@@ -1957,7 +1957,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         context->push(ip->d.pointer);
         context->push<uint64_t>(loc.location->column);
         context->push<uint64_t>(loc.location->line);
-        context->push(loc.file->path.string().c_str());
+        context->push(_strdup(loc.file->path.string().c_str()));
         localCall(context, bc, 4);
         break;
     }
@@ -3675,7 +3675,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         if (!location)
         {
             auto loc               = ByteCode::getLocation(runContext->bc, runContext->ip);
-            tmpLoc.fileName.buffer = (void*) loc.file->path.string().c_str();
+            tmpLoc.fileName.buffer = (void*) _strdup(loc.file->path.string().c_str());
             tmpLoc.fileName.count  = loc.file->path.string().length();
             tmpLoc.lineStart = tmpLoc.lineEnd = loc.location->line;
             tmpLoc.colStart = tmpLoc.colEnd = loc.location->column;

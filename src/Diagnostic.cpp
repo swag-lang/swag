@@ -577,7 +577,7 @@ Utf8 Diagnostic::syntax(const Utf8& line)
     return result;
 }
 
-void Diagnostic::printSourceCode()
+void Diagnostic::printSourceCode(bool verboseMode)
 {
     if (!lines.size())
         return;
@@ -593,7 +593,11 @@ void Diagnostic::printSourceCode()
             continue;
         printMargin(false, true, linesNo[i]);
         g_Log.setColor(codeColor);
-        auto colored = syntax(lines[i].c_str() + minBlanks);
+        Utf8 colored;
+        if (verboseMode)
+            colored = lines[i].c_str() + minBlanks;
+        else
+            colored = syntax(lines[i].c_str() + minBlanks);
         g_Log.print(colored);
         g_Log.eol();
     }
@@ -761,7 +765,7 @@ void Diagnostic::report(bool verboseMode)
     // Source code
     if (showSourceCode)
     {
-        printSourceCode();
+        printSourceCode(verboseMode);
         printRanges();
     }
 

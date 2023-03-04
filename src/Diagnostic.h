@@ -147,7 +147,7 @@ struct Diagnostic
     void sortRanges();
     void collectRanges();
     Utf8 syntax(const Utf8& line);
-    void printSourceCode();
+    void printSourceCode(bool verboseMode);
     void printSourceLine();
     void printErrorLevel();
     void printMargin(bool eol = false, bool maxDigits = false, int lineNo = 0);

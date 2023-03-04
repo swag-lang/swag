@@ -462,7 +462,7 @@ uint32_t AstNode::childParentIdx()
     }
 
     SWAG_ASSERT(false);
-    return 0;
+    return UINT32_MAX;
 }
 
 void AstNode::addAlternativeScope(Scope* scope, uint32_t altFlags)
