@@ -174,28 +174,28 @@ void AstNode::release()
     {
         if (extByteCode()->bc)
             extByteCode()->bc->release();
-        Allocator::free<AstNode::ExtensionByteCode>(extByteCode());
+        Allocator::free<AstNode::NodeExtensionByteCode>(extByteCode());
     }
 
     if (hasExtSemantic())
     {
-        Allocator::free<AstNode::ExtensionSemantic>(extSemantic());
+        Allocator::free<AstNode::NodeExtensionSemantic>(extSemantic());
     }
 
     if (hasExtOwner())
     {
         for (auto c : extOwner()->nodesToFree)
             c->release();
-        Allocator::free<AstNode::ExtensionOwner>(extOwner());
+        Allocator::free<AstNode::NodeExtensionOwner>(extOwner());
     }
 
     if (hasExtMisc())
     {
-        Allocator::free<AstNode::ExtensionMisc>(extMisc());
+        Allocator::free<AstNode::NodeExtensionMisc>(extMisc());
     }
 
     if (extension)
-        Allocator::free<AstNode::Extension>(extension);
+        Allocator::free<AstNode::NodeExtension>(extension);
 
     // Prerelease, if we need to childs to be alive
     switch (kind)
@@ -573,6 +573,12 @@ AstNode* AstIdentifierRef::clone(CloneContext& context)
     return newNode;
 }
 
+AstIdentifier::~AstIdentifier()
+{
+    if (identifierExtension)
+        Allocator::free<IdentifierExtension>(identifierExtension);
+}
+
 AstIdentifierRef* AstIdentifier::identifierRef()
 {
     if (parent->kind == AstNodeKind::IdentifierRef)
@@ -592,13 +598,7 @@ void AstIdentifier::allocateIdentifierExtension()
 {
     if (identifierExtension)
         return;
-    identifierExtension = Allocator::alloc<AstIdentifierExtension>();
-}
-
-AstIdentifier::~AstIdentifier()
-{
-    if (identifierExtension)
-        Allocator::free<AstIdentifierExtension>(identifierExtension);
+    identifierExtension = Allocator::alloc<IdentifierExtension>();
 }
 
 AstNode* AstIdentifier::clone(CloneContext& context)

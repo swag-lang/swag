@@ -105,15 +105,6 @@ enum class IdentifierScopeUpMode : uint8_t
     Count,
 };
 
-struct AstIdentifierExtension
-{
-    Vector<Token>         aliasNames;
-    TokenParse            scopeUpValue;
-    TypeInfo*             alternateEnum    = nullptr;
-    AstNode*              fromAlternateVar = nullptr;
-    IdentifierScopeUpMode scopeUpMode      = IdentifierScopeUpMode::None;
-};
-
 enum class AstNodeKind : uint8_t
 {
     Invalid,
@@ -330,7 +321,7 @@ struct AstNode
     void     addAlternativeScopes(const VectorNative<AlternativeScope>& scopes);
     uint32_t childParentIdx();
 
-    struct ExtensionByteCode
+    struct NodeExtensionByteCode
     {
         ByteCodeNotifyFct      byteCodeBeforeFct = nullptr;
         ByteCodeNotifyFct      byteCodeAfterFct  = nullptr;
@@ -339,13 +330,13 @@ struct AstNode
         VectorNative<AstNode*> dependentNodes;
     };
 
-    struct ExtensionSemantic
+    struct NodeExtensionSemantic
     {
         SemanticFct semanticBeforeFct = nullptr;
         SemanticFct semanticAfterFct  = nullptr;
     };
 
-    struct ExtensionOwner
+    struct NodeExtensionOwner
     {
         AstAttrUse*            ownerAttrUse         = nullptr;
         AstTryCatchAssume*     ownerTryCatchAssume  = nullptr;
@@ -353,7 +344,7 @@ struct AstNode
         VectorNative<AstNode*> nodesToFree;
     };
 
-    struct ExtensionMisc
+    struct NodeExtensionMisc
     {
         SharedMutex                       mutexAltScopes;
         VectorNative<AlternativeScope>    alternativeScopes;
@@ -375,12 +366,12 @@ struct AstNode
         uint32_t stackSize     = 0;
     };
 
-    struct Extension
+    struct NodeExtension
     {
-        ExtensionByteCode* bytecode = nullptr;
-        ExtensionSemantic* semantic = nullptr;
-        ExtensionOwner*    owner    = nullptr;
-        ExtensionMisc*     misc     = nullptr;
+        NodeExtensionByteCode* bytecode = nullptr;
+        NodeExtensionSemantic* semantic = nullptr;
+        NodeExtensionOwner*    owner    = nullptr;
+        NodeExtensionMisc*     misc     = nullptr;
     };
 
     void allocateExtension(ExtensionKind extensionKind);
@@ -391,10 +382,10 @@ struct AstNode
     bool               hasExtSemantic() { return extension && extension->semantic; }
     bool               hasExtOwner()    { return extension && extension->owner; }
     bool               hasExtMisc()     { return extension && extension->misc; }
-    ExtensionByteCode* extByteCode()    { return extension->bytecode; }
-    ExtensionSemantic* extSemantic()    { return extension->semantic; }
-    ExtensionOwner*    extOwner()       { return extension->owner; }
-    ExtensionMisc*     extMisc()        { return extension->misc; }
+    NodeExtensionByteCode* extByteCode()    { return extension->bytecode; }
+    NodeExtensionSemantic* extSemantic()    { return extension->semantic; }
+    NodeExtensionOwner*    extOwner()       { return extension->owner; }
+    NodeExtensionMisc*     extMisc()        { return extension->misc; }
     // clang-format on
 
     AstNodeKind         kind          = (AstNodeKind) 0;
@@ -421,9 +412,9 @@ struct AstNode
     SymbolName*     resolvedSymbolName     = nullptr;
     SymbolOverload* resolvedSymbolOverload = nullptr;
 
-    AstNode*    parent     = nullptr;
-    SourceFile* sourceFile = nullptr;
-    Extension*  extension  = nullptr;
+    AstNode*       parent     = nullptr;
+    SourceFile*    sourceFile = nullptr;
+    NodeExtension* extension  = nullptr;
 
     SemanticFct semanticFct = nullptr;
     ByteCodeFct byteCodeFct = nullptr;
@@ -485,14 +476,23 @@ struct AstIdentifier : public AstNode
     static const uint16_t SPECFLAG_FROM_USING          = 0x0004;
     static const uint16_t SPECFLAG_CLOSURE_FIRST_PARAM = 0x0008;
 
+    struct IdentifierExtension
+    {
+        Vector<Token>         aliasNames;
+        TokenParse            scopeUpValue;
+        TypeInfo*             alternateEnum    = nullptr;
+        AstNode*              fromAlternateVar = nullptr;
+        IdentifierScopeUpMode scopeUpMode      = IdentifierScopeUpMode::None;
+    };
+
     ~AstIdentifier();
     AstNode*          clone(CloneContext& context);
     void              allocateIdentifierExtension();
     AstIdentifierRef* identifierRef();
 
-    AstNode*                genericParameters   = nullptr;
-    AstFuncCallParams*      callParameters      = nullptr;
-    AstIdentifierExtension* identifierExtension = nullptr;
+    AstNode*             genericParameters   = nullptr;
+    AstFuncCallParams*   callParameters      = nullptr;
+    IdentifierExtension* identifierExtension = nullptr;
 };
 
 struct AstFuncDecl : public AstNode

@@ -308,9 +308,9 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
 {
     if (!extension)
     {
-        extension = Allocator::alloc<Extension>();
+        extension = Allocator::alloc<NodeExtension>();
 #ifdef SWAG_STATS
-        g_Stats.memNodesExt += Allocator::alignSize(sizeof(Extension));
+        g_Stats.memNodesExt += Allocator::alignSize(sizeof(NodeExtension));
 #endif
     }
 
@@ -319,36 +319,36 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
     case ExtensionKind::ByteCode:
         if (hasExtByteCode())
             return;
-        extension->bytecode = Allocator::alloc<ExtensionByteCode>();
+        extension->bytecode = Allocator::alloc<NodeExtensionByteCode>();
 #ifdef SWAG_STATS
-        g_Stats.memNodesExt += Allocator::alignSize(sizeof(ExtensionByteCode));
+        g_Stats.memNodesExt += Allocator::alignSize(sizeof(NodeExtensionByteCode));
 #endif
         break;
 
     case ExtensionKind::Semantic:
         if (hasExtSemantic())
             return;
-        extension->semantic = Allocator::alloc<ExtensionSemantic>();
+        extension->semantic = Allocator::alloc<NodeExtensionSemantic>();
 #ifdef SWAG_STATS
-        g_Stats.memNodesExt += Allocator::alignSize(sizeof(ExtensionSemantic));
+        g_Stats.memNodesExt += Allocator::alignSize(sizeof(NodeExtensionSemantic));
 #endif
         break;
 
     case ExtensionKind::Owner:
         if (hasExtOwner())
             return;
-        extension->owner = Allocator::alloc<ExtensionOwner>();
+        extension->owner = Allocator::alloc<NodeExtensionOwner>();
 #ifdef SWAG_STATS
-        g_Stats.memNodesExt += Allocator::alignSize(sizeof(ExtensionOwner));
+        g_Stats.memNodesExt += Allocator::alignSize(sizeof(NodeExtensionOwner));
 #endif
         break;
 
     default:
         if (hasExtMisc())
             return;
-        extension->misc = Allocator::alloc<ExtensionMisc>();
+        extension->misc = Allocator::alloc<NodeExtensionMisc>();
 #ifdef SWAG_STATS
-        g_Stats.memNodesExt += Allocator::alignSize(sizeof(ExtensionMisc));
+        g_Stats.memNodesExt += Allocator::alignSize(sizeof(NodeExtensionMisc));
 #endif
         break;
     }
