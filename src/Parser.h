@@ -96,7 +96,7 @@ struct Parser
 
     bool doTupleOrAnonymousType(AstNode* parent, AstNode** result, bool isConst, bool anonymousStruct, bool anonymousUnion);
     bool doCompilerScopeBreakable(AstNode* parent, AstNode** result = nullptr);
-    bool doGenericFuncCallParameters(AstNode* parent, AstNode** result = nullptr);
+    bool doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** result);
     bool doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, TokenId closeToken);
     bool doIntrinsicTag(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind);

@@ -490,7 +490,7 @@ struct AstIdentifier : public AstNode
     void              allocateIdentifierExtension();
     AstIdentifierRef* identifierRef();
 
-    AstNode*             genericParameters   = nullptr;
+    AstFuncCallParams*   genericParameters   = nullptr;
     AstFuncCallParams*   callParameters      = nullptr;
     IdentifierExtension* identifierExtension = nullptr;
 };

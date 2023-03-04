@@ -5,10 +5,9 @@
 #include "TypeManager.h"
 #include "ByteCodeGenJob.h"
 #include "Module.h"
-#include "ErrorIds.h"
 #include "LanguageSpec.h"
 
-bool Parser::doGenericFuncCallParameters(AstNode* parent, AstNode** result)
+bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** result)
 {
     auto callParams = Ast::newFuncCallGenParams(sourceFile, parent, this);
     *result         = callParams;

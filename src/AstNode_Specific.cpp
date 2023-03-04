@@ -614,8 +614,8 @@ AstNode* AstIdentifier::clone(CloneContext& context)
         newNode->token.text = itn->second;
     }
 
+    newNode->genericParameters = (AstFuncCallParams*) findChildRef(genericParameters, newNode);
     newNode->callParameters    = (AstFuncCallParams*) findChildRef(callParameters, newNode);
-    newNode->genericParameters = findChildRef(genericParameters, newNode);
 
     if (identifierExtension)
     {
