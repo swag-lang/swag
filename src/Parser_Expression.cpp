@@ -363,7 +363,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
         SWAG_CHECK(doTypeExpression(parent, &resNode));
         if (result)
             *result = resNode;
-        resNode->flags |= AST_FORCE_TYPE;
+        resNode->specFlags |= AstType::SPECFLAG_FORCE_TYPE;
         break;
     }
 

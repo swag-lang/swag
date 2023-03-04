@@ -772,7 +772,12 @@ struct AstSwitchCaseBlock : public AstNode
     int seekJumpNextCase = 0;
 };
 
-struct AstTypeExpression : public AstNode
+struct AstType : public AstNode
+{
+    static const uint16_t SPECFLAG_FORCE_TYPE = 0x1000;
+};
+
+struct AstTypeExpression : public AstType
 {
     static const uint16_t SPECFLAG_DONE_GEN = 0x0001;
 
@@ -793,7 +798,7 @@ struct AstTypeExpression : public AstNode
     LiteralType literalType = (LiteralType) 0;
 };
 
-struct AstTypeLambda : public AstNode
+struct AstTypeLambda : public AstType
 {
     static const uint16_t SPECFLAG_CAN_THROW = 0x0001;
 

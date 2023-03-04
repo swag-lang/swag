@@ -1067,11 +1067,6 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         return true;
 
     // Preprend some stuff
-    if (node->flags & AST_FORCE_TYPE)
-    {
-        concat.addString("#type ");
-    }
-
     if (node->hasExtMisc() && node->extMisc()->isNamed)
     {
         concat.addString(node->extMisc()->isNamed->token.text);
@@ -1991,6 +1986,8 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::TypeExpression:
     {
         AstTypeExpression* typeNode = static_cast<AstTypeExpression*>(node);
+        if (typeNode->specFlags & AstType::SPECFLAG_FORCE_TYPE)
+            concat.addString("#type ");
         SWAG_CHECK(outputType(context, concat, typeNode));
         break;
     }
@@ -2038,6 +2035,8 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::TypeClosure:
     {
         AstTypeLambda* typeNode = static_cast<AstTypeLambda*>(node);
+        if (typeNode->specFlags & AstType::SPECFLAG_FORCE_TYPE)
+            concat.addString("#type ");
         if (node->kind == AstNodeKind::TypeLambda)
             CONCAT_FIXED_STR(concat, "func");
         else

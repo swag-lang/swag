@@ -72,7 +72,7 @@ bool Parser::doGenericFuncCallParameters(AstNode* parent, AstNode** result)
             SWAG_CHECK(eatToken(TokenId::CompilerType));
             AstNode* resNode;
             SWAG_CHECK(doTypeExpression(param, &resNode));
-            resNode->flags |= AST_FORCE_TYPE;
+            resNode->specFlags |= AstType::SPECFLAG_FORCE_TYPE;
             break;
         }
 
