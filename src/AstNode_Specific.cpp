@@ -21,7 +21,6 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     doneFlags |= from->doneFlags & DONEFLAG_STRUCT_CONVERT;
     doneFlags |= from->doneFlags & DONEFLAG_CLOSURE_FIRST_PARAM;
     doneFlags |= from->doneFlags & DONEFLAG_AST_BLOCK;
-    doneFlags |= from->doneFlags & DONEFLAG_SPEC_SCOPE;
     doneFlags |= from->doneFlags & DONEFLAG_REGISTERED_IN_STRUCT;
 
     specFlags = from->specFlags;

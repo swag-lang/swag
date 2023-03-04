@@ -2733,7 +2733,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
             // :AutoScope
             // Auto scoping depending on the context
             // We scan the parent hierarchy for an already defined type that can be used for scoping
-            if (identifierRef->specFlags & AstIdentifierRef::SPECFLAG_AUTO_SCOPE && !(identifierRef->doneFlags & DONEFLAG_SPEC_SCOPE))
+            if ((identifierRef->specFlags & AstIdentifierRef::SPECFLAG_AUTO_SCOPE) && !(identifierRef->specFlags & AstIdentifierRef::SPECFLAG_WITH_SCOPE))
             {
                 TypeInfoEnum* typeEnum = nullptr;
                 TypeInfoEnum* hasEnum  = nullptr;
@@ -2764,7 +2764,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
                         id->inheritTokenLocation(identifierRef);
                         identifierRef->childs.pop_back();
                         Ast::addChildFront(identifierRef, id);
-                        identifierRef->doneFlags |= DONEFLAG_SPEC_SCOPE;
+                        identifierRef->specFlags |= AstIdentifierRef::SPECFLAG_WITH_SCOPE;
                         context->job->nodes.push_back(id);
                     }
 

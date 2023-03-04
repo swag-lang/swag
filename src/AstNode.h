@@ -489,7 +489,8 @@ struct AstVarDecl : public AstNode
 struct AstIdentifierRef : public AstNode
 {
     static const uint16_t SPECFLAG_AUTO_SCOPE = 0x0001;
-    static const uint16_t SPECFLAG_GLOBAL     = 0x0002;
+    static const uint16_t SPECFLAG_WITH_SCOPE = 0x0002;
+    static const uint16_t SPECFLAG_GLOBAL     = 0x0004;
 
     AstNode* clone(CloneContext& context);
     void     computeName();
