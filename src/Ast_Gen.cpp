@@ -12,9 +12,9 @@ atomic<int> g_UniqueID;
 
 bool Ast::convertLiteralTupleToStructVar(SemanticContext* context, TypeInfo* toType, AstNode* fromNode, bool fromType)
 {
-    if (fromNode->semFlags & SEMFLAG_STRUCT_CONVERT)
+    if (fromNode->flags & AST_STRUCT_CONVERT)
         return true;
-    fromNode->semFlags |= SEMFLAG_STRUCT_CONVERT;
+    fromNode->flags |= AST_STRUCT_CONVERT;
 
     auto sourceFile = context->sourceFile;
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(toType, TypeInfoKind::Struct);

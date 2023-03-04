@@ -15,11 +15,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     flags |= context.forceFlags;
     flags &= ~context.removeFlags;
 
-    // Copy some specific flags
     semFlags |= from->semFlags & SEMFLAG_INLINED;
-    semFlags |= from->semFlags & SEMFLAG_STRUCT_CONVERT;
-    semFlags |= from->semFlags & SEMFLAG_REGISTERED_IN_STRUCT;
-
     specFlags = from->specFlags;
 
     ownerStructScope     = context.ownerStructScope ? context.ownerStructScope : from->ownerStructScope;

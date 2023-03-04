@@ -972,7 +972,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             return context->report({child, Fmt(Err(Err0669), child->typeInfo->getDisplayNameC())});
 
         TypeInfoParam* typeParam = nullptr;
-        if (!(node->flags & AST_FROM_GENERIC) || !(child->semFlags & SEMFLAG_REGISTERED_IN_STRUCT))
+        if (!(node->flags & AST_FROM_GENERIC) || !(child->flags & AST_REGISTERED_IN_STRUCT))
         {
             typeParam           = g_TypeMgr->makeParam();
             typeParam->name     = child->token.text;
@@ -987,7 +987,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                 typeInfo->consts.push_back(typeParam);
         }
 
-        child->semFlags |= SEMFLAG_REGISTERED_IN_STRUCT;
+        child->flags |= AST_REGISTERED_IN_STRUCT;
         if (child->kind == AstNodeKind::VarDecl)
             typeParam = typeInfo->fields[storageIndexField];
         else
