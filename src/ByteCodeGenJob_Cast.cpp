@@ -15,7 +15,7 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
         transformResultToLinear2(context, exprNode);
         node->resultRegisterRC = exprNode->resultRegisterRC;
         emitInstruction(context, ByteCodeOp::ClearRA, exprNode->resultRegisterRC[1]);
-        exprNode->semFlags |= AST_SEM_TYPE_IS_NULL;
+        exprNode->semFlags |= SEMFLAG_TYPE_IS_NULL;
         return true;
     }
 
@@ -77,7 +77,7 @@ bool ByteCodeGenJob::emitCastToInterface(ByteCodeGenContext* context, AstNode* e
     auto node = context->node;
     if (fromTypeInfo->isPointerNull())
     {
-        node->semFlags |= AST_SEM_FROM_NULL;
+        node->semFlags |= SEMFLAG_FROM_NULL;
         node->resultRegisterRC = exprNode->resultRegisterRC;
         return true;
     }
@@ -609,7 +609,7 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
         node->resultRegisterRC = exprNode->resultRegisterRC;
         emitInstruction(context, ByteCodeOp::ClearRA, exprNode->resultRegisterRC[0]);
         emitInstruction(context, ByteCodeOp::ClearRA, exprNode->resultRegisterRC[1]);
-        exprNode->semFlags |= AST_SEM_TYPE_IS_NULL;
+        exprNode->semFlags |= SEMFLAG_TYPE_IS_NULL;
         return true;
     }
 
@@ -718,13 +718,13 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
     fromTypeInfo = TypeManager::concreteType(fromTypeInfo, CONCRETE_ENUM | CONCRETE_FUNC | CONCRETE_FORCEALIAS);
 
     // opCast
-    if (exprNode->semFlags & AST_SEM_USER_CAST)
+    if (exprNode->semFlags & SEMFLAG_USER_CAST)
     {
         SWAG_ASSERT(exprNode->hasExtMisc() && exprNode->extMisc()->resolvedUserOpSymbolOverload);
 
-        if (!(exprNode->doneFlags & AST_DONE_FLAT_PARAMS))
+        if (!(exprNode->doneFlags & DONEFLAG_FLAT_PARAMS))
         {
-            exprNode->doneFlags |= AST_DONE_FLAT_PARAMS;
+            exprNode->doneFlags |= DONEFLAG_FLAT_PARAMS;
             if (!job->allParamsTmp)
                 job->allParamsTmp = Ast::newFuncCallParams(exprNode->sourceFile, nullptr);
             job->allParamsTmp->childs.clear();
@@ -801,7 +801,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
 
     // Cast to a pointer with an offset
     // When casting from one struct to another, with a 'using' on a field
-    if (exprNode->semFlags & AST_SEM_USING)
+    if (exprNode->semFlags & SEMFLAG_USING)
     {
         ensureCanBeChangedRC(context, exprNode->resultRegisterRC);
 
@@ -817,7 +817,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         }
 
         // The field is a pointer : need to dereference it
-        if (exprNode->semFlags & AST_SEM_DEREF_USING)
+        if (exprNode->semFlags & SEMFLAG_DEREF_USING)
             emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
 
         return true;

@@ -205,9 +205,9 @@ bool AstNode::isConstantFalse()
 
 bool AstNode::forceTakeAddress()
 {
-    if ((flags & AST_TAKE_ADDRESS) && !(semFlags & AST_SEM_FORCE_NO_TAKE_ADDRESS))
+    if ((flags & AST_TAKE_ADDRESS) && !(semFlags & SEMFLAG_FORCE_NO_TAKE_ADDRESS))
         return true;
-    if (semFlags & AST_SEM_FORCE_TAKE_ADDRESS)
+    if (semFlags & SEMFLAG_FORCE_TAKE_ADDRESS)
         return true;
     return false;
 }

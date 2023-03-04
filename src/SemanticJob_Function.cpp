@@ -34,14 +34,14 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
 
         if (!nodeParam->type)
         {
-            nodeParam->semFlags |= AST_SEM_TUPLE_CONVERT;
+            nodeParam->semFlags |= SEMFLAG_TUPLE_CONVERT;
             SWAG_ASSERT(nodeParam->typeInfo->isListTuple());
             SWAG_CHECK(Ast::convertLiteralTupleToStructDecl(context, nodeParam, nodeParam->assignment, &nodeParam->type));
             context->result = ContextResult::NewChilds;
             context->job->nodes.push_back(nodeParam->type);
             return true;
         }
-        else if (nodeParam->semFlags & AST_SEM_TUPLE_CONVERT)
+        else if (nodeParam->semFlags & SEMFLAG_TUPLE_CONVERT)
         {
             SWAG_ASSERT(nodeParam->resolvedSymbolOverload);
             nodeParam->typeInfo                         = nodeParam->type->typeInfo;
@@ -326,9 +326,9 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     {
         if (!(node->content->flags & AST_NO_SEMANTIC))
         {
-            if (!(node->semFlags & AST_SEM_SCOPE_HAS_RETURN))
+            if (!(node->semFlags & SEMFLAG_SCOPE_HAS_RETURN))
             {
-                if (node->semFlags & AST_SEM_FCT_HAS_RETURN)
+                if (node->semFlags & SEMFLAG_FCT_HAS_RETURN)
                     return context->report({node, node->token, Fmt(Err(Err0748), node->getDisplayNameC())});
                 if (!node->returnType->childs.empty())
                     return context->report({node->returnType->childs.front(), Fmt(Err(Err0749), node->getDisplayNameC(), node->returnType->typeInfo->getDisplayNameC())});
@@ -521,10 +521,10 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     if (funcNode->ownerFct)
         funcNode->attributeFlags |= funcNode->ownerFct->attributeFlags & ATTRIBUTE_COMPILER;
 
-    if (!(funcNode->flags & AST_FROM_GENERIC) && !(funcNode->doneFlags & AST_DONE_CHECK_ATTR))
+    if (!(funcNode->flags & AST_FROM_GENERIC) && !(funcNode->doneFlags & DONEFLAG_CHECK_ATTR))
     {
         // Can be called multiple times in case of a mixin/macro inside another inlined function
-        funcNode->doneFlags |= AST_DONE_CHECK_ATTR;
+        funcNode->doneFlags |= DONEFLAG_CHECK_ATTR;
 
         if (funcNode->attributeFlags & ATTRIBUTE_MACRO)
         {
@@ -603,7 +603,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // It will be done in the same way as parameters
     if (!(funcNode->flags & AST_IS_GENERIC))
     {
-        if ((funcNode->semFlags & AST_SEM_PENDING_LAMBDA_TYPING) && (typeNode->typeInfo == g_TypeMgr->typeInfoVoid))
+        if ((funcNode->semFlags & SEMFLAG_PENDING_LAMBDA_TYPING) && (typeNode->typeInfo == g_TypeMgr->typeInfoVoid))
         {
             typeNode->typeInfo = g_TypeMgr->typeInfoUndefined;
             funcNode->specFlags &= ~AstFuncDecl::SPECFLAG_SHORT_LAMBDA;
@@ -694,7 +694,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
     // If this is a lambda waiting for a match to know the types of its parameters, need to wait
     // Function SemanticJob::setSymbolMatch will wake us up as soon as a valid match is found
-    if (funcNode->semFlags & AST_SEM_PENDING_LAMBDA_TYPING)
+    if (funcNode->semFlags & SEMFLAG_PENDING_LAMBDA_TYPING)
     {
         if (!(funcNode->flags & AST_IS_GENERIC))
         {
@@ -866,12 +866,12 @@ void SemanticJob::launchResolveSubDecl(JobContext* context, AstNode* node)
     if (node->flags & AST_SPEC_SEMANTICX)
         return;
 
-    // If AST_DONE_FILE_JOB_PASS is set, then the file job has already seen the sub declaration, ignored it
+    // If DONEFLAG_FILE_JOB_PASS is set, then the file job has already seen the sub declaration, ignored it
     // because of AST_NO_SEMANTIC, but the attribute context is ok. So we need to trigger the job by hand.
-    // If AST_DONE_FILE_JOB_PASS is not set, then we just have to remove the AST_NO_SEMANTIC flag, and the
+    // If DONEFLAG_FILE_JOB_PASS is not set, then we just have to remove the AST_NO_SEMANTIC flag, and the
     // file job will trigger the resolve itself
     node->flags &= ~AST_NO_SEMANTIC;
-    if (node->doneFlags & AST_DONE_FILE_JOB_PASS)
+    if (node->doneFlags & DONEFLAG_FILE_JOB_PASS)
     {
         auto job          = Allocator::alloc<SemanticJob>();
         job->sourceFile   = context->sourceFile;
@@ -898,9 +898,9 @@ void SemanticJob::resolveSubDecls(JobContext* context, AstFuncDecl* funcNode)
             ScopedLock lk(f->mutex);
 
             // Disabled by #if block
-            if (f->semFlags & AST_SEM_DISABLED)
+            if (f->semFlags & SEMFLAG_DISABLED)
                 continue;
-            f->semFlags |= AST_SEM_DISABLED; // To avoid multiple resolutions
+            f->semFlags |= SEMFLAG_DISABLED; // To avoid multiple resolutions
 
             if (f->ownerCompilerIfBlock && f->ownerCompilerIfBlock->ownerFct == funcNode)
             {
@@ -1044,8 +1044,8 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
 
     node->inheritComputedValue(child);
     node->inheritOrFlag(child, AST_CONST_EXPR | AST_IS_GENERIC | AST_VALUE_IS_TYPEINFO | AST_OPAFFECT_CAST | AST_TRANSIENT);
-    if (node->childs.front()->semFlags & AST_SEM_LITERAL_SUFFIX)
-        node->semFlags |= AST_SEM_LITERAL_SUFFIX;
+    if (node->childs.front()->semFlags & SEMFLAG_LITERAL_SUFFIX)
+        node->semFlags |= SEMFLAG_LITERAL_SUFFIX;
 
     // Inherit the original type in case of computed values, in order to make the cast if necessary
     if (node->flags & (AST_VALUE_COMPUTED | node->flags & AST_OPAFFECT_CAST))
@@ -1108,7 +1108,7 @@ bool SemanticJob::resolveRetVal(SemanticContext* context)
 void SemanticJob::propagateReturn(AstNode* node)
 {
     auto stopFct = node->ownerFct ? node->ownerFct->parent : nullptr;
-    if (node->semFlags & AST_SEM_EMBEDDED_RETURN)
+    if (node->semFlags & SEMFLAG_EMBEDDED_RETURN)
         stopFct = node->ownerInline->parent;
     SWAG_ASSERT(stopFct);
 
@@ -1148,26 +1148,26 @@ void SemanticJob::propagateReturn(AstNode* node)
     // Propage the return in the corresponding scope
     while (scanNode && scanNode != stopFct)
     {
-        if (scanNode->semFlags & AST_SEM_SCOPE_HAS_RETURN && !(scanNode->semFlags & AST_SEM_SCOPE_FORCE_HAS_RETURN))
+        if (scanNode->semFlags & SEMFLAG_SCOPE_HAS_RETURN && !(scanNode->semFlags & SEMFLAG_SCOPE_FORCE_HAS_RETURN))
             break;
-        scanNode->semFlags |= AST_SEM_SCOPE_HAS_RETURN;
+        scanNode->semFlags |= SEMFLAG_SCOPE_HAS_RETURN;
         if (scanNode->parent && scanNode->parent->kind == AstNodeKind::If)
         {
             auto ifNode = CastAst<AstIf>(scanNode->parent, AstNodeKind::If);
             if (ifNode->elseBlock != scanNode)
                 break;
-            if (!(ifNode->ifBlock->semFlags & AST_SEM_SCOPE_HAS_RETURN))
+            if (!(ifNode->ifBlock->semFlags & SEMFLAG_SCOPE_HAS_RETURN))
                 break;
         }
         else if (scanNode->kind == AstNodeKind::SwitchCase)
         {
             auto sc = CastAst<AstSwitchCase>(scanNode, AstNodeKind::SwitchCase);
             if (sc->specFlags & AstSwitchCase::SPECFLAG_IS_DEFAULT)
-                sc->ownerSwitch->semFlags |= AST_SEM_SCOPE_FORCE_HAS_RETURN;
+                sc->ownerSwitch->semFlags |= SEMFLAG_SCOPE_FORCE_HAS_RETURN;
         }
         else if (scanNode->kind == AstNodeKind::Switch)
         {
-            if (!(scanNode->semFlags & AST_SEM_SCOPE_FORCE_HAS_RETURN))
+            if (!(scanNode->semFlags & SEMFLAG_SCOPE_FORCE_HAS_RETURN))
                 break;
         }
         else if (scanNode->kind == AstNodeKind::While ||
@@ -1183,9 +1183,9 @@ void SemanticJob::propagateReturn(AstNode* node)
     // To tell that the function as at least one return (this will change the error message)
     while (scanNode && scanNode != stopFct)
     {
-        if (scanNode->semFlags & AST_SEM_FCT_HAS_RETURN)
+        if (scanNode->semFlags & SEMFLAG_FCT_HAS_RETURN)
             break;
-        scanNode->semFlags |= AST_SEM_FCT_HAS_RETURN;
+        scanNode->semFlags |= SEMFLAG_FCT_HAS_RETURN;
         scanNode = scanNode->parent;
     }
 }
@@ -1200,7 +1200,7 @@ AstFuncDecl* SemanticJob::getFunctionForReturn(AstNode* node)
     {
         if (!(node->ownerInline->func->attributeFlags & ATTRIBUTE_NO_RETURN) && !(node->flags & AST_IN_MIXIN))
         {
-            node->semFlags |= AST_SEM_EMBEDDED_RETURN;
+            node->semFlags |= SEMFLAG_EMBEDDED_RETURN;
             funcNode = node->ownerInline->func;
         }
     }
@@ -1343,7 +1343,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
         Diagnostic diag{child, Fmt(Err(Err0774), concreteType->getDisplayNameC(), funcNode->getDisplayNameC())};
         diag.hint = Hnt(Hnt0026);
 
-        if (node->ownerInline && !(node->semFlags & AST_SEM_EMBEDDED_RETURN))
+        if (node->ownerInline && !(node->semFlags & SEMFLAG_EMBEDDED_RETURN))
         {
             auto note = Diagnostic::note(funcNode, Fmt(Nte(Nte0011), node->ownerInline->func->getDisplayNameC(), funcNode->getDisplayNameC()));
             return context->report(diag, note);
@@ -1436,7 +1436,7 @@ uint32_t SemanticJob::getMaxStackSize(AstNode* node)
 {
     auto decSP = node->ownerScope->startStackSize;
 
-    if (node->semFlags & AST_SEM_SPEC_STACKSIZE)
+    if (node->semFlags & SEMFLAG_SPEC_STACKSIZE)
     {
         auto p = node;
         while (p->parent && p->parent->kind != AstNodeKind::File)
@@ -1458,7 +1458,7 @@ void SemanticJob::setOwnerMaxStackSize(AstNode* node, uint32_t size)
     size = max(size, 1);
     size = (uint32_t) TypeManager::align(size, sizeof(void*));
 
-    if (node->semFlags & AST_SEM_SPEC_STACKSIZE)
+    if (node->semFlags & SEMFLAG_SPEC_STACKSIZE)
     {
         auto p = node;
         while (p->parent && p->parent->kind != AstNodeKind::File)
@@ -1606,10 +1606,10 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     // do not want to change the stackSize of the original function because of local variables.
     if (!cloneContext.ownerFct)
     {
-        identifier->semFlags |= AST_SEM_SPEC_STACKSIZE;
+        identifier->semFlags |= SEMFLAG_SPEC_STACKSIZE;
         if (identifier->kind == AstNodeKind::Identifier)
-            identifier->parent->semFlags |= AST_SEM_SPEC_STACKSIZE;
-        cloneContext.forceSemFlags = AST_SEM_SPEC_STACKSIZE;
+            identifier->parent->semFlags |= SEMFLAG_SPEC_STACKSIZE;
+        cloneContext.forceSemFlags = SEMFLAG_SPEC_STACKSIZE;
     }
 
     // Register all aliases

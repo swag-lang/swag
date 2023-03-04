@@ -178,7 +178,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                     auto callParam = CastAst<AstFuncCallParam>(allParams->childs[j], AstNodeKind::FuncCallParam);
                     if (callParam->indexParam == i)
                     {
-                        if (callParam->semFlags & AST_SEM_AUTO_CODE_PARAM)
+                        if (callParam->semFlags & SEMFLAG_AUTO_CODE_PARAM)
                         {
                             covered = true;
                             break;
@@ -1079,7 +1079,7 @@ bool ByteCodeGenJob::emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNat
 
     // Leave all scopes
     Scope* topScope = nullptr;
-    if (node->ownerInline && ((node->semFlags & AST_SEM_EMBEDDED_RETURN) || node->kind != AstNodeKind::Return))
+    if (node->ownerInline && ((node->semFlags & SEMFLAG_EMBEDDED_RETURN) || node->kind != AstNodeKind::Return))
     {
         // If the inline comes from a mixin, then the node->ownerInline->scope is the one the mixin is included
         // inside. We do not want to release that scope, as we do not own it ! But we want to release all the

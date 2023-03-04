@@ -111,7 +111,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
     TypeInfo* fromTypeInfo = from ? from->typeInfo : typeInfo;
 
     typeInfo = TypeManager::concreteType(typeInfo);
-    if (node->childs.front()->semFlags & AST_SEM_FROM_REF)
+    if (node->childs.front()->semFlags & SEMFLAG_FROM_REF)
         typeInfo = TypeManager::concretePtrRef(typeInfo);
 
     if (typeInfo->isStruct())
@@ -302,7 +302,7 @@ bool ByteCodeGenJob::emitAffectPlusEqual(ByteCodeGenContext* context, uint32_t r
 
     auto front        = node->childs.front();
     auto leftTypeInfo = TypeManager::concreteType(front->typeInfo);
-    if (front->semFlags & AST_SEM_FROM_REF)
+    if (front->semFlags & SEMFLAG_FROM_REF)
         leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
 
     if (leftTypeInfo->isNative())
@@ -363,7 +363,7 @@ bool ByteCodeGenJob::emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t 
 
     auto front        = node->childs.front();
     auto leftTypeInfo = TypeManager::concreteType(front->typeInfo);
-    if (front->semFlags & AST_SEM_FROM_REF)
+    if (front->semFlags & SEMFLAG_FROM_REF)
         leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
 
     if (leftTypeInfo->isNative())
@@ -424,7 +424,7 @@ bool ByteCodeGenJob::emitAffectMulEqual(ByteCodeGenContext* context, uint32_t r0
 
     auto front        = node->childs.front();
     auto leftTypeInfo = TypeManager::concreteType(front->typeInfo);
-    if (front->semFlags & AST_SEM_FROM_REF)
+    if (front->semFlags & SEMFLAG_FROM_REF)
         leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
 
     if (!leftTypeInfo->isNative())
@@ -474,7 +474,7 @@ bool ByteCodeGenJob::emitAffectAndEqual(ByteCodeGenContext* context, uint32_t r0
 
     auto front        = node->childs.front();
     auto leftTypeInfo = TypeManager::concreteType(front->typeInfo);
-    if (front->semFlags & AST_SEM_FROM_REF)
+    if (front->semFlags & SEMFLAG_FROM_REF)
         leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
 
     if (!leftTypeInfo->isNative())
@@ -511,7 +511,7 @@ bool ByteCodeGenJob::emitAffectOrEqual(ByteCodeGenContext* context, uint32_t r0,
 
     auto front        = node->childs.front();
     auto leftTypeInfo = TypeManager::concreteType(front->typeInfo);
-    if (front->semFlags & AST_SEM_FROM_REF)
+    if (front->semFlags & SEMFLAG_FROM_REF)
         leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
 
     if (!leftTypeInfo->isNative())
@@ -548,7 +548,7 @@ bool ByteCodeGenJob::emitAffectXorEqual(ByteCodeGenContext* context, uint32_t r0
 
     auto front        = node->childs.front();
     auto leftTypeInfo = TypeManager::concreteType(front->typeInfo);
-    if (front->semFlags & AST_SEM_FROM_REF)
+    if (front->semFlags & SEMFLAG_FROM_REF)
         leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
 
     if (!leftTypeInfo->isNative())
@@ -585,7 +585,7 @@ bool ByteCodeGenJob::emitAffectShiftLeftEqual(ByteCodeGenContext* context, uint3
 
     auto front        = node->childs.front();
     auto leftTypeInfo = TypeManager::concreteType(front->typeInfo);
-    if (front->semFlags & AST_SEM_FROM_REF)
+    if (front->semFlags & SEMFLAG_FROM_REF)
         leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
 
     if (!leftTypeInfo->isNative())
@@ -636,7 +636,7 @@ bool ByteCodeGenJob::emitAffectShiftRightEqual(ByteCodeGenContext* context, uint
 
     auto front        = node->childs.front();
     auto leftTypeInfo = TypeManager::concreteType(front->typeInfo);
-    if (front->semFlags & AST_SEM_FROM_REF)
+    if (front->semFlags & SEMFLAG_FROM_REF)
         leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
 
     if (!leftTypeInfo->isNative())
@@ -688,7 +688,7 @@ bool ByteCodeGenJob::emitAffectPercentEqual(ByteCodeGenContext* context, uint32_
 
     auto front        = node->childs.front();
     auto leftTypeInfo = TypeManager::concreteType(front->typeInfo);
-    if (front->semFlags & AST_SEM_FROM_REF)
+    if (front->semFlags & SEMFLAG_FROM_REF)
         leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
 
     if (!leftTypeInfo->isNative())
@@ -740,7 +740,7 @@ bool ByteCodeGenJob::emitAffectDivEqual(ByteCodeGenContext* context, uint32_t r0
 
     auto front        = node->childs.front();
     auto leftTypeInfo = TypeManager::concreteType(front->typeInfo);
-    if (front->semFlags & AST_SEM_FROM_REF)
+    if (front->semFlags & SEMFLAG_FROM_REF)
         leftTypeInfo = TypeManager::concretePtrRef(leftTypeInfo);
 
     if (!leftTypeInfo->isNative())
@@ -801,12 +801,12 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
     AstNode* leftNode  = context->node->childs[0];
     AstNode* rightNode = context->node->childs[1];
 
-    if (!(node->doneFlags & AST_DONE_CAST1))
+    if (!(node->doneFlags & DONEFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo), node->childs[1]->castedTypeInfo));
         if (context->result != ContextResult::Done)
             return true;
-        node->doneFlags |= AST_DONE_CAST1;
+        node->doneFlags |= DONEFLAG_CAST1;
     }
 
     if (leftNode->typeInfo->isAny())
@@ -817,7 +817,7 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
     // User special function
     if (node->hasSpecialFuncCall())
     {
-        if (node->doneFlags & AST_DONE_FLAT_PARAMS)
+        if (node->doneFlags & DONEFLAG_FLAT_PARAMS)
         {
             auto arrayNode = CastAst<AstArrayPointerIndex>(leftNode->childs.back(), AstNodeKind::ArrayPointerIndex);
             if (!job->allParamsTmp)

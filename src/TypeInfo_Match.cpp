@@ -70,7 +70,7 @@ static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParamet
 
             // Do not register type replacement if the concrete type is a pending lambda typing (we do not know
             // yet the type of parameters)
-            if (callTypeInfo->declNode && (callTypeInfo->declNode->semFlags & AST_SEM_PENDING_LAMBDA_TYPING))
+            if (callTypeInfo->declNode && (callTypeInfo->declNode->semFlags & SEMFLAG_PENDING_LAMBDA_TYPING))
                 canReg = false;
 
             if (canReg)
@@ -407,7 +407,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             return;
         }
 
-        if (callParameter->semFlags & AST_SEM_AUTO_CODE_PARAM)
+        if (callParameter->semFlags & SEMFLAG_AUTO_CODE_PARAM)
         {
             context.cptResolved                             = (int) context.parameters.size();
             auto param                                      = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
@@ -454,7 +454,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             castFlags |= CASTFLAG_UNCONST;
         if (context.flags & SymbolMatchContext::MATCH_UFCS && i == 0)
             castFlags |= CASTFLAG_UFCS;
-        if (callParameter->semFlags & AST_SEM_LITERAL_SUFFIX)
+        if (callParameter->semFlags & SEMFLAG_LITERAL_SUFFIX)
             castFlags |= CASTFLAG_LITERAL_SUFFIX;
         if (callParameter->flags & AST_TRANSIENT && wantedTypeInfo->isPointerMoveRef())
             castFlags |= CASTFLAG_ACCEPT_MOVE_REF;
@@ -676,7 +676,7 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
 
         // If this is a code paramater added by the semantic, force to match the last parameter
         // of the function
-        if (param->semFlags & AST_SEM_AUTO_CODE_PARAM)
+        if (param->semFlags & SEMFLAG_AUTO_CODE_PARAM)
         {
             context.cptResolved                             = (int) context.parameters.size();
             param->resolvedParameter                        = parameters.back();

@@ -59,7 +59,7 @@
 
 SWAG_FORCE_INLINE void ByteCodeRun::localCall(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet, uint32_t returnRegOnRet, uint32_t incSPPostCall)
 {
-    SWAG_ASSERT(!bc->node || bc->node->semFlags & AST_SEM_BYTECODE_GENERATED);
+    SWAG_ASSERT(!bc->node || bc->node->semFlags & SEMFLAG_BYTECODE_GENERATED);
 
     g_ByteCodeStackTrace->push(context);
     context->push(context->bp);

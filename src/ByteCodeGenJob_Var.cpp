@@ -69,7 +69,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
             node->extMisc()->resolvedUserOpSymbolOverload->symbol->kind != SymbolKind::Function ||
             !(node->extMisc()->resolvedUserOpSymbolOverload->node->attributeFlags & ATTRIBUTE_COMPLETE))
         {
-            if (!(node->doneFlags & AST_DONE_VARDECL_STRUCT_PARAMETERS))
+            if (!(node->doneFlags & DONEFLAG_VARDECL_STRUCT_PARAMETERS))
             {
                 mustDropLeft = true;
                 if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
@@ -83,19 +83,19 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
                 }
 
                 emitStructParameters(context, UINT32_MAX, retVal);
-                node->doneFlags |= AST_DONE_VARDECL_STRUCT_PARAMETERS;
+                node->doneFlags |= DONEFLAG_VARDECL_STRUCT_PARAMETERS;
             }
         }
 
         // User special function
         if (node->hasSpecialFuncCall())
         {
-            if (!(node->doneFlags & AST_DONE_VARDECL_REF_CALL))
+            if (!(node->doneFlags & DONEFLAG_VARDECL_REF_CALL))
             {
                 RegisterList r0 = reserveRegisterRC(context);
                 emitRetValRef(context, resolved, r0, retVal, resolved->computedValue.storageOffset);
                 node->type->resultRegisterRC = r0;
-                node->doneFlags |= AST_DONE_VARDECL_REF_CALL;
+                node->doneFlags |= DONEFLAG_VARDECL_REF_CALL;
             }
 
             SWAG_CHECK(emitUserOp(context, nullptr, node));
@@ -118,13 +118,13 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
         }
         else
         {
-            if (!(node->doneFlags & AST_DONE_PRE_CAST))
+            if (!(node->doneFlags & DONEFLAG_PRE_CAST))
             {
                 node->allocateExtension(ExtensionKind::Misc);
                 node->extMisc()->additionalRegisterRC = reserveRegisterRC(context);
                 emitRetValRef(context, resolved, node->extMisc()->additionalRegisterRC, retVal, resolved->computedValue.storageOffset);
                 node->resultRegisterRC = node->assignment->resultRegisterRC;
-                node->doneFlags |= AST_DONE_PRE_CAST;
+                node->doneFlags |= DONEFLAG_PRE_CAST;
             }
 
             SWAG_CHECK(emitCast(context, node->assignment, node->assignment->typeInfo, node->assignment->castedTypeInfo));

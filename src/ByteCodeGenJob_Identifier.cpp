@@ -81,7 +81,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             return true;
         }
 
-        if (node->semFlags & AST_SEM_FROM_REF)
+        if (node->semFlags & SEMFLAG_FROM_REF)
         {
             if (resolved->computedValue.storageOffset)
                 emitInstruction(context, ByteCodeOp::Add64byVB64, node->resultRegisterRC[0])->b.u64 = resolved->computedValue.storageOffset;
@@ -180,7 +180,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
 
         auto typeField = node->typeInfo;
-        if (node->semFlags & AST_SEM_FROM_REF)
+        if (node->semFlags & SEMFLAG_FROM_REF)
         {
             emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
             auto ptrPointer = CastTypeInfo<TypeInfoPointer>(typeField, TypeInfoKind::Pointer);
@@ -240,7 +240,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->parent->resultRegisterRC);
             freeRegisterRC(context, node->parent);
         }
-        else if (node->semFlags & AST_SEM_FROM_REF)
+        else if (node->semFlags & SEMFLAG_FROM_REF)
         {
             auto inst   = emitInstruction(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
             inst->b.u64 = resolved->computedValue.storageOffset;
@@ -349,7 +349,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->parent->resultRegisterRC);
             freeRegisterRC(context, node->parent);
         }
-        else if (node->semFlags & AST_SEM_FROM_REF)
+        else if (node->semFlags & SEMFLAG_FROM_REF)
         {
             return Report::internalError(context->node, "unsupported identifier reference type");
         }
@@ -421,7 +421,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->parent->resultRegisterRC);
             freeRegisterRC(context, node->parent);
         }
-        else if (node->semFlags & AST_SEM_FROM_REF)
+        else if (node->semFlags & SEMFLAG_FROM_REF)
         {
             auto inst   = emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC);
             inst->b.u64 = resolved->computedValue.storageOffset;

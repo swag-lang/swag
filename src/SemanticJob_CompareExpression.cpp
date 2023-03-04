@@ -410,7 +410,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     else if (!leftTypeInfo->isStruct())
     {
         swap(left, right);
-        node->semFlags |= AST_SEM_INVERSE_PARAMS;
+        node->semFlags |= SEMFLAG_INVERSE_PARAMS;
     }
 
     node->byteCodeFct = ByteCodeGenJob::emitCompareOp;

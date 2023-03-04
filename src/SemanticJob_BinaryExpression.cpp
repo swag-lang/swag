@@ -996,7 +996,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         case TokenId::SymAsterisk:
             swap(left, right);
             swap(leftTypeInfo, rightTypeInfo);
-            node->semFlags |= AST_SEM_INVERSE_PARAMS;
+            node->semFlags |= SEMFLAG_INVERSE_PARAMS;
             break;
         }
     }

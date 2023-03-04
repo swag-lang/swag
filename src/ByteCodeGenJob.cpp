@@ -215,7 +215,7 @@ bool ByteCodeGenJob::skipNodes(ByteCodeGenContext* context, AstNode* node)
                           {
                               if (n->kind != AstNodeKind::Literal)
                                   return true;
-                              if (n->semFlags & AST_SEM_LITERAL_SUFFIX)
+                              if (n->semFlags & SEMFLAG_LITERAL_SUFFIX)
                                   return cxt->report({ n->childs.front(), Fmt(Err(Err0532), n->childs.front()->token.ctext() ) });
                               return true; });
 
@@ -397,8 +397,8 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags, Byt
             }
 
             ScopedLock lk(node->mutex);
-            node->semFlags |= AST_SEM_BYTECODE_GENERATED;
-            node->semFlags |= AST_SEM_BYTECODE_RESOLVED;
+            node->semFlags |= SEMFLAG_BYTECODE_GENERATED;
+            node->semFlags |= SEMFLAG_BYTECODE_RESOLVED;
             return;
         }
     }
@@ -425,7 +425,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags, Byt
     ScopedLock lk(node->mutex);
 
     // Need to generate bytecode, if not already done or running
-    if (!(node->semFlags & AST_SEM_BYTECODE_GENERATED))
+    if (!(node->semFlags & SEMFLAG_BYTECODE_GENERATED))
     {
         if (flags & ASKBC_WAIT_DONE)
         {
@@ -487,7 +487,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags, Byt
     if (flags & ASKBC_WAIT_RESOLVED)
     {
         SWAG_ASSERT(job);
-        if (!(node->semFlags & AST_SEM_BYTECODE_RESOLVED))
+        if (!(node->semFlags & SEMFLAG_BYTECODE_RESOLVED))
         {
             SWAG_ASSERT(node->hasExtByteCode() && node->extByteCode()->byteCodeJob);
             node->extByteCode()->byteCodeJob->dependentJobs.add(job);
@@ -500,7 +500,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags, Byt
 void ByteCodeGenJob::releaseByteCodeJob(AstNode* node)
 {
     ScopedLock lk(node->mutex);
-    node->semFlags |= AST_SEM_BYTECODE_RESOLVED | AST_SEM_BYTECODE_GENERATED;
+    node->semFlags |= SEMFLAG_BYTECODE_RESOLVED | SEMFLAG_BYTECODE_GENERATED;
     SWAG_ASSERT(node->hasExtByteCode());
     node->extByteCode()->byteCodeJob = nullptr;
 }
@@ -738,7 +738,7 @@ JobResult ByteCodeGenJob::execute()
             getDependantCalls(originalNode, originalNode->extByteCode()->dependentNodes);
             dependentNodesTmp = originalNode->extByteCode()->dependentNodes;
 
-            originalNode->semFlags |= AST_SEM_BYTECODE_GENERATED;
+            originalNode->semFlags |= SEMFLAG_BYTECODE_GENERATED;
             dependentJobs.setRunning();
         }
 
@@ -824,7 +824,7 @@ JobResult ByteCodeGenJob::waitForDependenciesGenerated()
             // Wait for the node if not generated
             {
                 ScopedLock lk(node->mutex);
-                if (!(node->semFlags & AST_SEM_BYTECODE_GENERATED))
+                if (!(node->semFlags & SEMFLAG_BYTECODE_GENERATED))
                 {
                     waitingKind   = JobWaitKind::SemByteCodeGenerated;
                     waitingIdNode = node;
@@ -861,14 +861,14 @@ JobResult ByteCodeGenJob::waitForDependenciesGenerated()
             // If my dependent node has already been computed, then just get the result
             {
                 SharedLock lk(node->mutex);
-                if (node->semFlags & AST_SEM_BYTECODE_RESOLVED)
+                if (node->semFlags & SEMFLAG_BYTECODE_RESOLVED)
                 {
                     SWAG_ASSERT(!node->hasExtByteCode() || !node->extByteCode()->byteCodeJob);
                     SWAG_ASSERT(originalNode->hasExtByteCode());
                     originalNode->extByteCode()->dependentNodes.append(node->extByteCode()->dependentNodes);
 #ifdef SWAG_DEV_MODE
                     for (auto n : node->extByteCode()->dependentNodes)
-                        SWAG_ASSERT(n->semFlags & AST_SEM_BYTECODE_GENERATED);
+                        SWAG_ASSERT(n->semFlags & SEMFLAG_BYTECODE_GENERATED);
 #endif
                     break;
                 }

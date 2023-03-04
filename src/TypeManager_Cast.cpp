@@ -125,7 +125,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
     auto        structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
     SymbolName* symbol;
     bool        isSuffix = false;
-    if ((fromNode && fromNode->semFlags & AST_SEM_LITERAL_SUFFIX) || castFlags & CASTFLAG_LITERAL_SUFFIX)
+    if ((fromNode && fromNode->semFlags & SEMFLAG_LITERAL_SUFFIX) || castFlags & CASTFLAG_LITERAL_SUFFIX)
     {
         isSuffix = true;
         symbol   = structNode->scope->symbolOpAffectSuffix;
@@ -223,7 +223,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
                 fromNode->typeInfo       = toType;
                 fromNode->allocateExtension(ExtensionKind::Misc);
                 fromNode->extMisc()->resolvedUserOpSymbolOverload = it->second;
-                fromNode->semFlags |= AST_SEM_USER_CAST;
+                fromNode->semFlags |= SEMFLAG_USER_CAST;
             }
 
             context->castFlagsResult |= CASTFLAG_RESULT_AUTO_OPCAST;
@@ -284,7 +284,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
         fromNode->typeInfo       = toType;
         fromNode->allocateExtension(ExtensionKind::Misc);
         fromNode->extMisc()->resolvedUserOpSymbolOverload = toCast[0];
-        fromNode->semFlags |= AST_SEM_USER_CAST;
+        fromNode->semFlags |= SEMFLAG_USER_CAST;
     }
 
     context->castFlagsResult |= CASTFLAG_RESULT_AUTO_OPCAST;
@@ -2169,8 +2169,8 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
 
                 // We will have to dereference the pointer to get the real thing
                 if (it.field && it.field->typeInfo->isPointer())
-                    fromNode->semFlags |= AST_SEM_DEREF_USING;
-                fromNode->semFlags |= AST_SEM_USING;
+                    fromNode->semFlags |= SEMFLAG_DEREF_USING;
+                fromNode->semFlags |= SEMFLAG_USING;
 
                 fromNode->allocateExtension(ExtensionKind::Misc);
                 fromNode->extMisc()->castOffset = it.offset;
@@ -3154,9 +3154,9 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
                 SWAG_ASSERT(typeList->subTypes.size() == fromNode->childs.size());
 #endif
                 auto exprList = CastAst<AstExpressionList>(fromNode, AstNodeKind::ExpressionList);
-                if (exprList && !(exprList->doneFlags & AST_DONE_EXPRLIST_CST))
+                if (exprList && !(exprList->doneFlags & DONEFLAG_EXPRLIST_CST))
                 {
-                    exprList->doneFlags |= AST_DONE_EXPRLIST_CST;
+                    exprList->doneFlags |= DONEFLAG_EXPRLIST_CST;
 
                     // Test sizeof because {} is legit to initialize a struct (for default values in function arguments)
                     if (fromNode->typeInfo->sizeOf)
@@ -3276,9 +3276,9 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         }
     }
 
-    if (toNode && toNode->semFlags & AST_SEM_FROM_REF && toType->isPointerRef())
+    if (toNode && toNode->semFlags & SEMFLAG_FROM_REF && toType->isPointerRef())
         toType = concretePtrRef(toType);
-    if (fromNode && fromNode->semFlags & AST_SEM_FROM_REF && fromType->isPointerRef())
+    if (fromNode && fromNode->semFlags & SEMFLAG_FROM_REF && fromType->isPointerRef())
         fromType = concretePtrRef(fromType);
 
     // If not already ok, call 'same'
@@ -3463,7 +3463,7 @@ TypeInfo* TypeManager::concretePtrRef(TypeInfo* typeInfo)
 
 TypeInfo* TypeManager::concretePtrRefCond(TypeInfo* typeInfo, AstNode* node)
 {
-    if (node->semFlags & AST_SEM_FROM_REF)
+    if (node->semFlags & SEMFLAG_FROM_REF)
         return concretePtrRef(typeInfo);
     return typeInfo;
 }

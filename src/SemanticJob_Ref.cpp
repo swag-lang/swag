@@ -162,8 +162,8 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     {
         forceConst = typeInfo->isConst();
         typeInfo   = TypeManager::concretePtrRef(typeInfo);
-        child->semFlags |= AST_SEM_FORCE_NO_TAKE_ADDRESS;
-        child->childs.back()->semFlags |= AST_SEM_FORCE_NO_TAKE_ADDRESS;
+        child->semFlags |= SEMFLAG_FORCE_NO_TAKE_ADDRESS;
+        child->childs.back()->semFlags |= SEMFLAG_FORCE_NO_TAKE_ADDRESS;
         node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
     }
 
@@ -272,7 +272,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     // Exclude upper bound if constant
     if (node->upperBound->flags & AST_VALUE_COMPUTED &&
         node->specFlags & AstArrayPointerSlicing::SPECFLAG_EXCLUDE_UP &&
-        !(node->upperBound->doneFlags & AST_DONE_ASSIGN_COMPUTED))
+        !(node->upperBound->doneFlags & DONEFLAG_ASSIGN_COMPUTED))
     {
         if (!node->upperBound->computedValue->reg.u64)
         {
@@ -281,7 +281,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
             return context->report(diag);
         }
 
-        node->upperBound->doneFlags |= AST_DONE_ASSIGN_COMPUTED;
+        node->upperBound->doneFlags |= DONEFLAG_ASSIGN_COMPUTED;
         node->upperBound->computedValue->reg.u64 -= 1;
     }
 
@@ -503,7 +503,7 @@ bool SemanticJob::resolveArrayPointerIndex(SemanticContext* context)
         {
             // The last ArrayPointerIndex in a list [0, 0, 0] must dereference
             if (node->childs[0]->kind != AstNodeKind::ArrayPointerIndex)
-                node->semFlags |= AST_SEM_FORCE_TAKE_ADDRESS;
+                node->semFlags |= SEMFLAG_FORCE_TAKE_ADDRESS;
 
             // In order to resolve what's next, we need to fill the startScope of the identifier ref
             auto typeReturn = node->array->typeInfo;

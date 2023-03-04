@@ -373,7 +373,7 @@ bool SemanticJob::resolveLiteralSuffix(SemanticContext* context)
             return true;
 
         SWAG_ASSERT(node->parent->parent && node->parent->parent->kind == AstNodeKind::Literal);
-        node->parent->parent->semFlags |= AST_SEM_LITERAL_SUFFIX;
+        node->parent->parent->semFlags |= SEMFLAG_LITERAL_SUFFIX;
         return true;
     }
 
@@ -448,7 +448,7 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
     {
         // If there's a suffix without a type, then this should be a 'user' suffix
         // Literal must have been flagged
-        SWAG_ASSERT(!suffix || node->semFlags & AST_SEM_LITERAL_SUFFIX);
+        SWAG_ASSERT(!suffix || node->semFlags & SEMFLAG_LITERAL_SUFFIX);
 
         // By default, a float without a suffix is considered as f32 (not f64 like in C).
         if (node->typeInfo->isNative(NativeTypeKind::F32) && node->literalType == LiteralType::TT_UNTYPED_FLOAT)
@@ -487,7 +487,7 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
         case NativeTypeKind::S64:
-            node->doneFlags |= AST_DONE_NEG_EATEN;
+            node->doneFlags |= DONEFLAG_NEG_EATEN;
             negApplied = true;
             break;
         }

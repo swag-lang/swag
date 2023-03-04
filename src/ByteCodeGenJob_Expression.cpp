@@ -14,12 +14,12 @@ bool ByteCodeGenJob::emitNullConditionalOp(ByteCodeGenContext* context)
     auto child1   = node->childs[1];
     auto typeInfo = TypeManager::concreteType(child0->typeInfo);
 
-    if (!(child0->doneFlags & AST_DONE_CAST1))
+    if (!(child0->doneFlags & DONEFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, child0, typeInfo, child0->castedTypeInfo));
         if (context->result != ContextResult::Done)
             return true;
-        child0->doneFlags |= AST_DONE_CAST1;
+        child0->doneFlags |= DONEFLAG_CAST1;
     }
 
     // User special function
@@ -78,7 +78,7 @@ bool ByteCodeGenJob::emitConditionalOpAfterExpr(ByteCodeGenContext* context)
     SWAG_CHECK(emitCast(context, expr, TypeManager::concreteType(expr->typeInfo), expr->castedTypeInfo));
     if (context->result != ContextResult::Done)
         return true;
-    binNode->doneFlags |= AST_DONE_CAST1;
+    binNode->doneFlags |= DONEFLAG_CAST1;
 
     // Jump to ifFalse child
     binNode->seekJumpIfFalse = context->bc->numInstructions;
@@ -206,7 +206,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
             }
 
             context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
-            parentReturn->doneFlags |= AST_DONE_RETVAL;
+            parentReturn->doneFlags |= DONEFLAG_RETVAL;
         }
         else
         {
@@ -251,9 +251,9 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         // Be sure it has been collected to the constant segment. Usually, this is done after casting, because
         // we could need to change the values before the collect. If it's not done yet, that means that the cast
         // did not take place (when passing to a varargs for example).
-        if (!(node->doneFlags & AST_DONE_EXPRLIST_CST))
+        if (!(node->doneFlags & DONEFLAG_EXPRLIST_CST))
         {
-            node->doneFlags |= AST_DONE_EXPRLIST_CST;
+            node->doneFlags |= DONEFLAG_EXPRLIST_CST;
             node->allocateComputedValue();
             node->computedValue->storageSegment = SemanticJob::getConstantSegFromContext(node);
             SWAG_CHECK(SemanticJob::reserveAndStoreToSegment(context, node->computedValue->storageSegment, node->computedValue->storageOffset, nullptr, typeList, node));
@@ -270,7 +270,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
 {
     auto node = context->node;
-    if (node->semFlags & AST_SEM_LITERAL_SUFFIX)
+    if (node->semFlags & SEMFLAG_LITERAL_SUFFIX)
         return context->report({node->childs.front(), Fmt(Err(Err0532), node->childs.front()->token.ctext())});
     SWAG_CHECK(emitLiteral(context, node, nullptr, node->resultRegisterRC));
     return true;

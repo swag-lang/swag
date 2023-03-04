@@ -106,9 +106,9 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
     expNode.type = ErrCxtStepKind::Inline;
     context->errCxtSteps.push_back(expNode);
 
-    if (node->doneFlags & AST_DONE_RESOLVE_INLINED)
+    if (node->doneFlags & DONEFLAG_RESOLVE_INLINED)
         return true;
-    node->doneFlags |= AST_DONE_RESOLVE_INLINED;
+    node->doneFlags |= DONEFLAG_RESOLVE_INLINED;
 
     auto func = node->func;
 
@@ -207,9 +207,9 @@ bool SemanticJob::resolveInlineAfter(SemanticContext* context)
     {
         if (fct->returnType && fct->returnType->typeInfo != g_TypeMgr->typeInfoVoid)
         {
-            if (!(node->semFlags & AST_SEM_SCOPE_HAS_RETURN))
+            if (!(node->semFlags & SEMFLAG_SCOPE_HAS_RETURN))
             {
-                if (node->semFlags & AST_SEM_FCT_HAS_RETURN)
+                if (node->semFlags & SEMFLAG_FCT_HAS_RETURN)
                     return context->report({fct, Fmt(Err(Err0748), fct->getDisplayNameC())});
                 return context->report({fct, Fmt(Err(Err0606), fct->getDisplayNameC())});
             }

@@ -125,7 +125,7 @@ void Job::waitStructGeneratedAlloc(TypeInfo* typeInfo)
     auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
     ScopedLock lk(structNode->mutex);
-    if (!(structNode->semFlags & AST_SEM_STRUCT_OP_ALLOCATED))
+    if (!(structNode->semFlags & SEMFLAG_STRUCT_OP_ALLOCATED))
     {
         structNode->dependentJobs.add(this);
         setPending(structNode->resolvedSymbolName, JobWaitKind::SemByteCodeGenerated, structNode, nullptr);
@@ -152,7 +152,7 @@ void Job::waitStructGenerated(TypeInfo* typeInfo)
     auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
     ScopedLock lk(structNode->mutex);
-    if (!(structNode->semFlags & AST_SEM_BYTECODE_GENERATED))
+    if (!(structNode->semFlags & SEMFLAG_BYTECODE_GENERATED))
     {
         structNode->dependentJobs.add(this);
         setPending(structNode->resolvedSymbolName, JobWaitKind::SemByteCodeGenerated, structNode, nullptr);

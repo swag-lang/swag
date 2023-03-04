@@ -18,7 +18,7 @@ bool SemanticJob::preResolveIdentifierRef(SemanticContext* context)
 
     // When duplicating an identifier ref, and solve it again, we need to be sure that all that
     // stuff is reset
-    if (!(node->semFlags & AST_SEM_TYPE_SOLVED))
+    if (!(node->semFlags & SEMFLAG_TYPE_SOLVED))
     {
         node->typeInfo             = nullptr;
         node->previousResolvedNode = nullptr;
@@ -34,7 +34,7 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
     auto childBack = node->childs.back();
 
     // Keep resolution
-    if (!node->typeInfo || !(node->semFlags & AST_SEM_TYPE_SOLVED))
+    if (!node->typeInfo || !(node->semFlags & SEMFLAG_TYPE_SOLVED))
     {
         node->resolvedSymbolName     = childBack->resolvedSymbolName;
         node->resolvedSymbolOverload = childBack->resolvedSymbolOverload;
@@ -62,7 +62,7 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
         node->inheritComputedValue(childBack);
     node->inheritOrFlag(childBack, AST_L_VALUE | AST_R_VALUE | AST_TRANSIENT | AST_VALUE_IS_TYPEINFO | AST_SIDE_EFFECTS);
 
-    if (childBack->semFlags & AST_SEM_IS_CONST_ASSIGN)
+    if (childBack->semFlags & SEMFLAG_IS_CONST_ASSIGN)
     {
         if (!childBack->typeInfo || !childBack->typeInfo->isPointerRef())
         {
@@ -95,7 +95,7 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
         node->flags |= AST_IS_CONST;
     auto overload = node->resolvedSymbolOverload;
     if (overload && overload->flags & OVERLOAD_CONST_ASSIGN)
-        node->semFlags |= AST_SEM_IS_CONST_ASSIGN;
+        node->semFlags |= SEMFLAG_IS_CONST_ASSIGN;
 
     if (node->parent->kind != AstNodeKind::IdentifierRef)
         return true;
@@ -104,14 +104,14 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
 
     // If we cannot assign previous, and this was AST_IS_CONST_ASSIGN_INHERIT, then we cannot assign
     // this one either
-    if (identifierRef->previousResolvedNode && (identifierRef->previousResolvedNode->semFlags & AST_SEM_IS_CONST_ASSIGN_INHERIT))
+    if (identifierRef->previousResolvedNode && (identifierRef->previousResolvedNode->semFlags & SEMFLAG_IS_CONST_ASSIGN_INHERIT))
     {
-        node->semFlags |= AST_SEM_IS_CONST_ASSIGN;
-        node->semFlags |= AST_SEM_IS_CONST_ASSIGN_INHERIT;
+        node->semFlags |= SEMFLAG_IS_CONST_ASSIGN;
+        node->semFlags |= SEMFLAG_IS_CONST_ASSIGN_INHERIT;
     }
 
     typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
-    if (!(identifierRef->semFlags & AST_SEM_TYPE_SOLVED))
+    if (!(identifierRef->semFlags & SEMFLAG_TYPE_SOLVED))
         identifierRef->typeInfo = typeInfo;
     identifierRef->previousResolvedNode = node;
     identifierRef->startScope           = nullptr;
@@ -273,7 +273,7 @@ void SemanticJob::resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatc
 
     // Wake up semantic lambda job
     SWAG_ASSERT(funcDecl->pendingLambdaJob);
-    funcDecl->semFlags &= ~AST_SEM_PENDING_LAMBDA_TYPING;
+    funcDecl->semFlags &= ~SEMFLAG_PENDING_LAMBDA_TYPING;
     g_ThreadMgr.addJob(funcDecl->pendingLambdaJob);
 }
 
@@ -287,7 +287,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
 
     // :ClosureForceFirstParam
     // Add a first dummy parameter in case of closure
-    if (typeInfoFunc->isClosure() && !(identifier->doneFlags & AST_DONE_CLOSURE_FIRST_PARAM))
+    if (typeInfoFunc->isClosure() && !(identifier->doneFlags & DONEFLAG_CLOSURE_FIRST_PARAM))
     {
         auto fcp = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
         Ast::removeFromParent(fcp);
@@ -296,7 +296,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         fcp->computedValue->reg.pointer = nullptr;
         fcp->typeInfo                   = g_TypeMgr->typeInfoNull;
         fcp->flags |= AST_GENERATED;
-        identifier->doneFlags |= AST_DONE_CLOSURE_FIRST_PARAM;
+        identifier->doneFlags |= DONEFLAG_CLOSURE_FIRST_PARAM;
 
         auto node = Ast::newNode<AstLiteral>(nullptr, AstNodeKind::Literal, context->sourceFile, fcp);
         node->setFlagsValueIsComputed();
@@ -315,7 +315,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
             i = nodeCall->indexParam;
 
         // This is a lambda that was waiting for a match to have its types, and to continue solving its content
-        if (nodeCall->typeInfo->isLambdaClosure() && (nodeCall->typeInfo->declNode->semFlags & AST_SEM_PENDING_LAMBDA_TYPING))
+        if (nodeCall->typeInfo->isLambdaClosure() && (nodeCall->typeInfo->declNode->semFlags & SEMFLAG_PENDING_LAMBDA_TYPING))
             resolvePendingLambdaTyping(nodeCall, &oneMatch, i);
 
         uint32_t castFlags = CASTFLAG_AUTO_OPCAST | CASTFLAG_ACCEPT_PENDING | CASTFLAG_PARAMS | CASTFLAG_PTR_REF | CASTFLAG_FOR_AFFECT | CASTFLAG_ACCEPT_MOVE_REF;
@@ -348,7 +348,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 // Force to keep the address
                 if (front->kind == AstNodeKind::IdentifierRef)
                 {
-                    front->childs.back()->semFlags |= AST_SEM_FORCE_TAKE_ADDRESS;
+                    front->childs.back()->semFlags |= SEMFLAG_FORCE_TAKE_ADDRESS;
                 }
 
                 // We have a compile time value (like a literal), and we want a const ref, i.e. a pointer
@@ -437,7 +437,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 }
                 else
                 {
-                    makePtrL->semFlags |= AST_SEM_ONCE;
+                    makePtrL->semFlags |= SEMFLAG_ONCE;
                     Ast::removeFromParent(makePtrL);
                     Ast::addChildBack(varNode, makePtrL);
                     varNode->assignment = makePtrL;
@@ -458,7 +458,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 // If call is inlined, then the identifier will be reevaluated, and the new variable, which is a child,
                 // will be reevaluated too, so twice because of the push above. So we set a special flag to not reevaluate
                 // it twice.
-                varNode->semFlags |= AST_SEM_ONCE;
+                varNode->semFlags |= SEMFLAG_ONCE;
 
                 context->result = ContextResult::NewChilds;
             }
@@ -538,7 +538,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 // If call is inlined, then the identifier will be reevaluated, so the new variable, which is a child of
                 // that identifier, will be reevaluated too (so twice because of the push above).
                 // So we set a special flag to not reevaluate it twice.
-                varNode->semFlags |= AST_SEM_ONCE;
+                varNode->semFlags |= SEMFLAG_ONCE;
 
                 context->result = ContextResult::NewChilds;
             }
@@ -652,7 +652,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 // If call is inlined, then the identifier will be reevaluated, and the new variable, which is a child,
                 // will be reevaluated too, so twice because of the push above. So we set a special flag to not reevaluate
                 // it twice.
-                varNode->semFlags |= AST_SEM_ONCE;
+                varNode->semFlags |= SEMFLAG_ONCE;
 
                 context->result = ContextResult::NewChilds;
             }
@@ -1050,7 +1050,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             varNode->assignment = nullptr;
             typeNode->flags |= AST_HAS_STRUCT_PARAMETERS;
             typeNode->specFlags |= AstTypeExpression::SPECFLAG_DONE_GEN;
-            identifier->semFlags |= AST_SEM_ONCE;
+            identifier->semFlags |= SEMFLAG_ONCE;
             Ast::removeFromParent(identifier->parent);
             Ast::addChildBack(typeNode, identifier->parent);
             typeNode->identifier = identifier->parent;
@@ -1350,7 +1350,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
                     !returnType->isBool() &&
                     !returnType->isPointerToTypeInfo() &&
                     !(returnType->flags & TYPEINFO_RETURN_BY_COPY) && // Treated later (as errors)
-                    !(identifier->semFlags & AST_SEM_EXEC_RET_STACK))
+                    !(identifier->semFlags & SEMFLAG_EXEC_RET_STACK))
                 {
                     identifier->flags &= ~AST_CONST_EXPR;
                 }
@@ -1404,9 +1404,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
                     // First pass, we inline the function.
                     // The identifier for the function call will be reresolved later when the content
                     // of the inline os done.
-                    if (!(identifier->doneFlags & AST_DONE_INLINED))
+                    if (!(identifier->doneFlags & DONEFLAG_INLINED))
                     {
-                        identifier->doneFlags |= AST_DONE_INLINED;
+                        identifier->doneFlags |= DONEFLAG_INLINED;
 
                         // In case of an inline call inside an inline function, the identifier kind has been changed to
                         // AstNodeKind::FuncCall in the original function. So we restore it to be a simple identifier.
@@ -1464,8 +1464,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         // Setup parent if necessary
         if (returnType->isStruct())
         {
-            identifier->semFlags |= AST_SEM_IS_CONST_ASSIGN_INHERIT;
-            identifier->semFlags |= AST_SEM_IS_CONST_ASSIGN;
+            identifier->semFlags |= SEMFLAG_IS_CONST_ASSIGN_INHERIT;
+            identifier->semFlags |= SEMFLAG_IS_CONST_ASSIGN;
         }
 
         SWAG_CHECK(setupIdentifierRef(context, identifier, returnType));
@@ -2694,7 +2694,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
             // Force scope
             if (!node->callParameters && node != identifierRef->childs.back())
             {
-                node->semFlags |= AST_SEM_FORCE_SCOPE;
+                node->semFlags |= SEMFLAG_FORCE_SCOPE;
                 node->typeInfo                      = g_TypeMgr->typeInfoVoid;
                 identifierRef->previousResolvedNode = node;
                 if (node->ownerInline)
@@ -2733,7 +2733,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
             // :AutoScope
             // Auto scoping depending on the context
             // We scan the parent hierarchy for an already defined type that can be used for scoping
-            if (identifierRef->specFlags & AstIdentifierRef::SPECFLAG_AUTO_SCOPE && !(identifierRef->doneFlags & AST_DONE_SPEC_SCOPE))
+            if (identifierRef->specFlags & AstIdentifierRef::SPECFLAG_AUTO_SCOPE && !(identifierRef->doneFlags & DONEFLAG_SPEC_SCOPE))
             {
                 TypeInfoEnum* typeEnum = nullptr;
                 TypeInfoEnum* hasEnum  = nullptr;
@@ -2764,7 +2764,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
                         id->inheritTokenLocation(identifierRef);
                         identifierRef->childs.pop_back();
                         Ast::addChildFront(identifierRef, id);
-                        identifierRef->doneFlags |= AST_DONE_SPEC_SCOPE;
+                        identifierRef->doneFlags |= DONEFLAG_SPEC_SCOPE;
                         context->job->nodes.push_back(id);
                     }
 
@@ -2794,7 +2794,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
             {
                 // Only deal with previous scope if the previous node wants to
                 bool addAlternative = true;
-                if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->semFlags & AST_SEM_FORCE_SCOPE)
+                if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->semFlags & SEMFLAG_FORCE_SCOPE)
                     addAlternative = false;
 
                 if (addAlternative)
@@ -2881,7 +2881,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
             return false;
         }
 
-        node->semFlags |= AST_SEM_FORCE_UFCS;
+        node->semFlags |= SEMFLAG_FORCE_UFCS;
     }
 
     return true;
@@ -3161,7 +3161,7 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
             identifierRef->resolvedSymbolName->kind == SymbolKind::Function &&
             identifierRef->previousResolvedNode &&
             identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier &&
-            identifierRef->previousResolvedNode->doneFlags & AST_DONE_INLINED)
+            identifierRef->previousResolvedNode->doneFlags & DONEFLAG_INLINED)
         {
             fine = true;
         }
@@ -3191,9 +3191,9 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
 
 bool SemanticJob::appendLastCodeStatement(SemanticContext* context, AstIdentifier* node, SymbolOverload* overload)
 {
-    if (!(node->doneFlags & AST_DONE_LAST_PARAM_CODE) && (overload->symbol->kind == SymbolKind::Function))
+    if (!(node->doneFlags & DONEFLAG_LAST_PARAM_CODE) && (overload->symbol->kind == SymbolKind::Function))
     {
-        node->doneFlags |= AST_DONE_LAST_PARAM_CODE;
+        node->doneFlags |= DONEFLAG_LAST_PARAM_CODE;
 
         // If last parameter is of type code, and the call last parameter is not, then take the next statement
         auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
@@ -3236,7 +3236,7 @@ bool SemanticJob::appendLastCodeStatement(SemanticContext* context, AstIdentifie
                         auto typeCode     = makeType<TypeInfoCode>();
                         typeCode->content = brother;
                         brother->flags |= AST_NO_SEMANTIC;
-                        fctCallParam->semFlags |= AST_SEM_AUTO_CODE_PARAM;
+                        fctCallParam->semFlags |= SEMFLAG_AUTO_CODE_PARAM;
                         fctCallParam->typeInfo = typeCode;
                         codeNode->typeInfo     = typeCode;
                     }
@@ -3259,7 +3259,7 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
     auto typeRef = TypeManager::concreteType(overload->typeInfo, CONCRETE_ALIAS);
     if (typeRef->isClosure() && node->callParameters)
     {
-        if (!(node->doneFlags & AST_DONE_CLOSURE_FIRST_PARAM))
+        if (!(node->doneFlags & DONEFLAG_CLOSURE_FIRST_PARAM))
         {
             SWAG_VERIFY(!ufcsFirstParam, context->report({ufcsFirstParam, Err(Err0873)}));
             context->job->closureFirstParam.kind     = AstNodeKind::FuncCallParam;
@@ -4181,7 +4181,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
         }
 
         // Because of #self
-        if (identifier->semFlags & AST_SEM_FORCE_SCOPE)
+        if (identifier->semFlags & SEMFLAG_FORCE_SCOPE)
             return true;
 
         if (dependentSymbols.empty())
@@ -4296,7 +4296,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
                 SWAG_CHECK(getUfcs(context, identifierRef, identifier, symbolOverload, &ufcsFirstParam));
                 if (context->result == ContextResult::Pending)
                     return true;
-                if ((identifier->semFlags & AST_SEM_FORCE_UFCS) && !ufcsFirstParam)
+                if ((identifier->semFlags & SEMFLAG_FORCE_UFCS) && !ufcsFirstParam)
                     continue;
             }
 
@@ -4362,7 +4362,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
     if (job->cacheMatches.empty())
     {
         // We want to force the ufcs
-        if (identifier->semFlags & AST_SEM_FORCE_UFCS)
+        if (identifier->semFlags & SEMFLAG_FORCE_UFCS)
         {
             if (identifierRef->flags & AST_SILENT_CHECK)
                 return true;
@@ -4766,10 +4766,10 @@ bool SemanticJob::checkCanThrow(SemanticContext* context)
     if (node->ownerInline)
     {
         if (!(node->ownerInline->func->attributeFlags & ATTRIBUTE_NO_RETURN) && !(node->flags & AST_IN_MIXIN))
-            node->semFlags |= AST_SEM_EMBEDDED_RETURN;
+            node->semFlags |= SEMFLAG_EMBEDDED_RETURN;
     }
 
-    auto parentFct = (node->semFlags & AST_SEM_EMBEDDED_RETURN) ? node->ownerInline->func : node->ownerFct;
+    auto parentFct = (node->semFlags & SEMFLAG_EMBEDDED_RETURN) ? node->ownerInline->func : node->ownerFct;
 
     if (parentFct->isSpecialFunctionName())
         return context->report({node, node->token, Fmt(Err(Err0137), node->token.ctext(), parentFct->token.ctext())});

@@ -71,13 +71,13 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     TypeInfo*  returnType = nullptr;
 
     // Get the function return type. In case of an emmbedded return, this is the type of the original function to inline
-    if (node->ownerInline && (node->semFlags & AST_SEM_EMBEDDED_RETURN))
+    if (node->ownerInline && (node->semFlags & SEMFLAG_EMBEDDED_RETURN))
         returnType = TypeManager::concreteType(node->ownerInline->func->returnType->typeInfo, CONCRETE_ALIAS);
     else
         returnType = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_ALIAS);
 
     // Copy result to RR0... registers
-    if (!(node->doneFlags & AST_DONE_EMIT_DEFERRED) && !node->childs.empty() && !returnType->isVoid())
+    if (!(node->doneFlags & DONEFLAG_EMIT_DEFERRED) && !node->childs.empty() && !returnType->isVoid())
     {
         auto returnExpression = node->childs.front();
         auto backExpression   = node->childs.back();
@@ -86,12 +86,12 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         auto exprType = TypeManager::concretePtrRef(returnExpression->typeInfo);
 
         // Implicit cast
-        if (!(returnExpression->doneFlags & AST_DONE_CAST1))
+        if (!(returnExpression->doneFlags & DONEFLAG_CAST1))
         {
             SWAG_CHECK(emitCast(context, returnExpression, TypeManager::concreteType(returnExpression->typeInfo), returnExpression->castedTypeInfo));
             if (context->result != ContextResult::Done)
                 return true;
-            returnExpression->doneFlags |= AST_DONE_CAST1;
+            returnExpression->doneFlags |= DONEFLAG_CAST1;
         }
 
         context->job->waitStructGenerated(exprType);
@@ -101,7 +101,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         //
         // RETVAL
         //
-        if ((node->doneFlags & AST_DONE_RETVAL) ||
+        if ((node->doneFlags & DONEFLAG_RETVAL) ||
             (backExpression->resolvedSymbolOverload && backExpression->resolvedSymbolOverload->flags & OVERLOAD_RETVAL))
         {
             auto child = node->childs.front();
@@ -111,7 +111,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         //
         // INLINE
         //
-        else if (node->ownerInline && (node->semFlags & AST_SEM_EMBEDDED_RETURN))
+        else if (node->ownerInline && (node->semFlags & SEMFLAG_EMBEDDED_RETURN))
         {
             if (returnType->isStruct())
             {
@@ -254,7 +254,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         }
     }
 
-    node->doneFlags |= AST_DONE_EMIT_DEFERRED;
+    node->doneFlags |= DONEFLAG_EMIT_DEFERRED;
 
     // Leave all scopes
     SWAG_CHECK(emitLeaveScopeReturn(context, &node->forceNoDrop, false));
@@ -262,7 +262,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         return true;
 
     // A return inside an inline function is just a jump to the end of the block
-    if (node->ownerInline && (node->semFlags & AST_SEM_EMBEDDED_RETURN))
+    if (node->ownerInline && (node->semFlags & SEMFLAG_EMBEDDED_RETURN))
     {
         node->seekJump = context->bc->numInstructions;
         emitInstruction(context, ByteCodeOp::Jump);
@@ -1419,7 +1419,7 @@ bool ByteCodeGenJob::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNod
             }
 
             context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
-            parentReturn->doneFlags |= AST_DONE_RETVAL;
+            parentReturn->doneFlags |= DONEFLAG_RETVAL;
             return true;
         }
     }
@@ -1448,7 +1448,7 @@ bool ByteCodeGenJob::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNod
         emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->resultRegisterRC);
         context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
 
-        testReturn->parent->doneFlags |= AST_DONE_FIELD_STRUCT;
+        testReturn->parent->doneFlags |= DONEFLAG_FIELD_STRUCT;
         return true;
     }
 
@@ -1551,7 +1551,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                  AstFuncCallParam* p2 = CastAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
                  return p1->indexParam < p2->indexParam; });
     }
-    else if (allParams && (allParams->semFlags & AST_SEM_INVERSE_PARAMS))
+    else if (allParams && (allParams->semFlags & SEMFLAG_INVERSE_PARAMS))
     {
         SWAG_ASSERT(allParams->childs.size() == 2);
         allParams->swap2Childs();
@@ -1982,7 +1982,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 {
                     emitInstruction(context, ByteCodeOp::CopyRTtoRC, node->resultRegisterRC[0]);
 
-                    if (node->semFlags & AST_SEM_FROM_REF && !node->forceTakeAddress())
+                    if (node->semFlags & SEMFLAG_FROM_REF && !node->forceTakeAddress())
                     {
                         auto ptrPointer = CastTypeInfo<TypeInfoPointer>(typeInfoFunc->returnType, TypeInfoKind::Pointer);
                         SWAG_ASSERT(ptrPointer->flags & TYPEINFO_POINTER_REF);
@@ -1992,7 +1992,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 else
                 {
                     SWAG_ASSERT(numRegs == 2);
-                    SWAG_ASSERT(!(node->semFlags & AST_SEM_FROM_REF));
+                    SWAG_ASSERT(!(node->semFlags & SEMFLAG_FROM_REF));
                     emitInstruction(context, ByteCodeOp::CopyRTtoRC2, node->resultRegisterRC[0], node->resultRegisterRC[1]);
                 }
             }

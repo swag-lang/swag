@@ -402,7 +402,7 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
     typeInfoStruct->flags |= TYPEINFO_SPECOP_GENERATED;
 
     ScopedLock lk1(structNode->mutex);
-    structNode->semFlags |= AST_SEM_STRUCT_OP_ALLOCATED;
+    structNode->semFlags |= SEMFLAG_STRUCT_OP_ALLOCATED;
     structNode->dependentJobs.setRunning();
 }
 
@@ -584,7 +584,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     ByteCodeGenContext cxt{*context};
     cxt.bc = opInit;
     if (cxt.bc->node)
-        cxt.bc->node->semFlags |= AST_SEM_BYTECODE_RESOLVED | AST_SEM_BYTECODE_GENERATED;
+        cxt.bc->node->semFlags |= SEMFLAG_BYTECODE_RESOLVED | SEMFLAG_BYTECODE_GENERATED;
 
     // All fields are explicitly not initialized, so we are done, function is empty
     if (typeInfoStruct->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED)
@@ -851,7 +851,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     ByteCodeGenContext cxt{*context};
     cxt.bc = opDrop;
     if (cxt.bc->node)
-        cxt.bc->node->semFlags |= AST_SEM_BYTECODE_RESOLVED | AST_SEM_BYTECODE_GENERATED;
+        cxt.bc->node->semFlags |= SEMFLAG_BYTECODE_RESOLVED | SEMFLAG_BYTECODE_GENERATED;
 
     // Call user function if defined
     emitOpCallUser(&cxt, typeInfoStruct->opUserDropFct);
@@ -960,7 +960,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     ByteCodeGenContext cxt{*context};
     cxt.bc = opPostCopy;
     if (cxt.bc->node)
-        cxt.bc->node->semFlags |= AST_SEM_BYTECODE_RESOLVED | AST_SEM_BYTECODE_GENERATED;
+        cxt.bc->node->semFlags |= SEMFLAG_BYTECODE_RESOLVED | SEMFLAG_BYTECODE_GENERATED;
 
     // Call for each field
     emitOpCallUserFields(&cxt, typeInfoStruct, EmitOpUserKind::PostCopy);
@@ -1067,7 +1067,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     ByteCodeGenContext cxt{*context};
     cxt.bc = opPostMove;
     if (cxt.bc->node)
-        cxt.bc->node->semFlags |= AST_SEM_BYTECODE_RESOLVED | AST_SEM_BYTECODE_GENERATED;
+        cxt.bc->node->semFlags |= SEMFLAG_BYTECODE_RESOLVED | SEMFLAG_BYTECODE_GENERATED;
 
     // Call for each field
     emitOpCallUserFields(&cxt, typeInfoStruct, EmitOpUserKind::PostMove);
@@ -1112,7 +1112,7 @@ bool ByteCodeGenJob::emitStruct(ByteCodeGenContext* context)
 
     auto       structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
     ScopedLock lk(structNode->mutex);
-    structNode->semFlags |= AST_SEM_BYTECODE_GENERATED;
+    structNode->semFlags |= SEMFLAG_BYTECODE_GENERATED;
     node->dependentJobs.setRunning();
     return true;
 }
@@ -1287,7 +1287,7 @@ void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t 
             for (auto child : identifier->callParameters->childs)
             {
                 // Already set by something else, as a direct reference, so no need to copy
-                if (child->doneFlags & AST_DONE_FIELD_STRUCT)
+                if (child->doneFlags & DONEFLAG_FIELD_STRUCT)
                 {
                     freeRegisterRC(context, child);
                     continue;
@@ -1354,12 +1354,12 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
         numToInit = 1;
     else if (node->count->flags & AST_VALUE_COMPUTED)
         numToInit = node->count->computedValue->reg.u64;
-    else if (!(node->count->doneFlags & AST_DONE_CAST1))
+    else if (!(node->count->doneFlags & DONEFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->count, node->count->typeInfo, node->count->castedTypeInfo));
         if (context->result != ContextResult::Done)
             return true;
-        node->count->doneFlags |= AST_DONE_CAST1;
+        node->count->doneFlags |= DONEFLAG_CAST1;
     }
 
     SWAG_CHECK(emitInit(context, typeExpression, node->expression->resultRegisterRC, numToInit, node->count, node->parameters));
@@ -1579,12 +1579,12 @@ bool ByteCodeGenJob::emitDropCopyMove(ByteCodeGenContext* context)
         numToDo = 1;
     else if (node->count->flags & AST_VALUE_COMPUTED)
         numToDo = node->count->computedValue->reg.u64;
-    else if (!(node->count->doneFlags & AST_DONE_CAST1))
+    else if (!(node->count->doneFlags & DONEFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->count, node->count->typeInfo, node->count->castedTypeInfo));
         if (context->result != ContextResult::Done)
             return true;
-        node->count->doneFlags |= AST_DONE_CAST1;
+        node->count->doneFlags |= DONEFLAG_CAST1;
     }
 
     auto typeStruct    = CastTypeInfo<TypeInfoStruct>(typeExpression->pointedType, TypeInfoKind::Struct);

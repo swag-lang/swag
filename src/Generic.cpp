@@ -751,7 +751,7 @@ bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl*
                     context->result     = ContextResult::NewChilds;
                     node->semanticState = AstNodeResolveState::Enter;
                     Ast::visit(node, [](AstNode* n)
-                               { n->semFlags &= ~AST_SEM_ONCE; });
+                               { n->semFlags &= ~SEMFLAG_ONCE; });
                     return true;
                 }
             }
@@ -803,7 +803,7 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
                 context->result     = ContextResult::NewChilds1;
                 node->semanticState = AstNodeResolveState::Enter;
                 Ast::visit(node, [](AstNode* n)
-                           { n->semFlags &= ~AST_SEM_ONCE; });
+                           { n->semFlags &= ~SEMFLAG_ONCE; });
                 return true;
             }
         }

@@ -972,7 +972,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             return context->report({child, Fmt(Err(Err0669), child->typeInfo->getDisplayNameC())});
 
         TypeInfoParam* typeParam = nullptr;
-        if (!(node->flags & AST_FROM_GENERIC) || !(child->semFlags & AST_SEM_STRUCT_REGISTERED))
+        if (!(node->flags & AST_FROM_GENERIC) || !(child->semFlags & SEMFLAG_STRUCT_REGISTERED))
         {
             typeParam           = g_TypeMgr->makeParam();
             typeParam->name     = child->token.text;
@@ -987,7 +987,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                 typeInfo->consts.push_back(typeParam);
         }
 
-        child->semFlags |= AST_SEM_STRUCT_REGISTERED;
+        child->semFlags |= SEMFLAG_STRUCT_REGISTERED;
         if (child->kind == AstNodeKind::VarDecl)
             typeParam = typeInfo->fields[storageIndexField];
         else
@@ -1053,7 +1053,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             // Collect has already been simulated with an opAffect
             else if (varDecl->assignment)
             {
-                SWAG_ASSERT(varDecl->semFlags & AST_SEM_EXEC_RET_STACK);
+                SWAG_ASSERT(varDecl->semFlags & SEMFLAG_EXEC_RET_STACK);
                 structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
             }
         }

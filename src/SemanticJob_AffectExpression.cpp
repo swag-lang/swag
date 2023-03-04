@@ -216,7 +216,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     // :ConcreteRef
     TypeInfo* leftTypeInfo  = TypeManager::concreteType(left->typeInfo, CONCRETE_ALIAS);
     TypeInfo* rightTypeInfo = getConcreteTypeUnRef(right, CONCRETE_ALIAS);
-    if (right->semFlags & AST_SEM_FROM_REF)
+    if (right->semFlags & SEMFLAG_FROM_REF)
         leftTypeInfo = getConcreteTypeUnRef(left, CONCRETE_ALIAS);
     else if (leftTypeInfo->isPointerRef() && !rightTypeInfo->isPointerRef())
         leftTypeInfo = getConcreteTypeUnRef(left, CONCRETE_ALIAS);
@@ -277,14 +277,14 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         // Add self and value in list of parameters
         if (arrayNode)
         {
-            if (!(node->doneFlags & AST_DONE_FLAT_PARAMS))
+            if (!(node->doneFlags & DONEFLAG_FLAT_PARAMS))
             {
                 auto leftNode = arrayNode;
                 while (leftNode->array->kind == AstNodeKind::ArrayPointerIndex)
                     leftNode = CastAst<AstArrayPointerIndex>(leftNode->array, AstNodeKind::ArrayPointerIndex);
                 arrayNode->structFlatParams.push_back(right);
                 arrayNode->structFlatParams.push_front(leftNode->array);
-                node->doneFlags |= AST_DONE_FLAT_PARAMS;
+                node->doneFlags |= DONEFLAG_FLAT_PARAMS;
             }
         }
     }

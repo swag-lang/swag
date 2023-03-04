@@ -34,13 +34,13 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
     auto typeVar = TypeManager::concreteType(varDecl->typeInfo);
     if (typeVar->isListTuple() && !varDecl->type)
     {
-        varDecl->semFlags |= AST_SEM_TUPLE_CONVERT;
+        varDecl->semFlags |= SEMFLAG_TUPLE_CONVERT;
         SWAG_CHECK(Ast::convertLiteralTupleToStructDecl(context, varDecl, varDecl->assignment, &varDecl->type));
         context->result = ContextResult::NewChilds;
         context->job->nodes.push_back(varDecl->type);
         return true;
     }
-    else if (varDecl->semFlags & AST_SEM_TUPLE_CONVERT)
+    else if (varDecl->semFlags & SEMFLAG_TUPLE_CONVERT)
     {
         SWAG_ASSERT(varDecl->resolvedSymbolOverload);
         varDecl->typeInfo                         = varDecl->type->typeInfo;
@@ -181,7 +181,7 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
         node->flags &= ~AST_VALUE_COMPUTED;
         node->assignment->flags &= ~AST_NO_BYTECODE;
         node->flags |= AST_CONST_EXPR;
-        node->semFlags |= AST_SEM_EXEC_RET_STACK;
+        node->semFlags |= SEMFLAG_EXEC_RET_STACK;
 
         node->byteCodeFct                     = ByteCodeGenJob::emitLocalVarDecl;
         overload->computedValue.storageOffset = 0;
@@ -333,7 +333,7 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
         auto param = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
         Ast::removeFromParent(child);
         Ast::addChildBack(param, child);
-        child->semFlags |= AST_SEM_TYPE_SOLVED;
+        child->semFlags |= SEMFLAG_TYPE_SOLVED;
         param->inheritTokenLocation(child);
     }
 
@@ -722,7 +722,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         {
             thisIsAGenericType = true;
         }
-        else if (!(node->flags & AST_FROM_GENERIC) || !(node->doneFlags & AST_DONE_ASSIGN_COMPUTED))
+        else if (!(node->flags & AST_FROM_GENERIC) || !(node->doneFlags & DONEFLAG_ASSIGN_COMPUTED))
         {
             SWAG_CHECK(checkIsConcreteOrType(context, node->assignment));
             if (context->result == ContextResult::Pending)
@@ -737,7 +737,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                     node->assignment->flags |= AST_NO_BYTECODE;
             }
 
-            node->doneFlags |= AST_DONE_ASSIGN_COMPUTED;
+            node->doneFlags |= DONEFLAG_ASSIGN_COMPUTED;
         }
     }
 
@@ -950,7 +950,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             // AST_PENDING_LAMBDA_TYPING will stop semantic, forcing to not evaluate the content of the function,
             // until types are known
             if (node->ownerFct && node->ownerScope->kind != ScopeKind::Struct)
-                node->ownerFct->semFlags |= AST_SEM_PENDING_LAMBDA_TYPING;
+                node->ownerFct->semFlags |= SEMFLAG_PENDING_LAMBDA_TYPING;
         }
     }
 

@@ -363,7 +363,7 @@ bool SemanticJob::resolveUserOpCommutative(SemanticContext* context, const Utf8&
     if (okLeft || (!okRight && leftTypeInfo->isStruct()))
         return resolveUserOp(context, name, opConst, opType, left, right);
 
-    node->semFlags |= AST_SEM_INVERSE_PARAMS;
+    node->semFlags |= SEMFLAG_INVERSE_PARAMS;
     return resolveUserOp(context, name, opConst, opType, right, left);
 }
 
@@ -472,7 +472,7 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
     }
 
     // opAffectSuffix
-    if (right->semFlags & AST_SEM_LITERAL_SUFFIX)
+    if (right->semFlags & SEMFLAG_LITERAL_SUFFIX)
     {
         Utf8 suffix;
 
@@ -502,7 +502,7 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
             varDecl->token = savedToken;
         if (context->result != ContextResult::Done)
             return true;
-        right->semFlags &= ~AST_SEM_LITERAL_SUFFIX;
+        right->semFlags &= ~SEMFLAG_LITERAL_SUFFIX;
     }
 
     // opAffect
@@ -728,7 +728,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
                         }
                         else
                         {
-                            makePtrL->semFlags |= AST_SEM_ONCE;
+                            makePtrL->semFlags |= SEMFLAG_ONCE;
                             Ast::removeFromParent(makePtrL);
                             Ast::addChildBack(varNode, makePtrL);
                             varNode->assignment = makePtrL;

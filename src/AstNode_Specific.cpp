@@ -16,15 +16,15 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     flags &= ~context.removeFlags;
 
     // Copy some specific flags
-    doneFlags |= from->doneFlags & AST_DONE_INLINED;
-    doneFlags |= from->doneFlags & AST_DONE_CHECK_ATTR;
-    doneFlags |= from->doneFlags & AST_DONE_STRUCT_CONVERT;
-    doneFlags |= from->doneFlags & AST_DONE_CLOSURE_FIRST_PARAM;
-    doneFlags |= from->doneFlags & AST_DONE_AST_BLOCK;
-    doneFlags |= from->doneFlags & AST_DONE_SPEC_SCOPE;
+    doneFlags |= from->doneFlags & DONEFLAG_INLINED;
+    doneFlags |= from->doneFlags & DONEFLAG_CHECK_ATTR;
+    doneFlags |= from->doneFlags & DONEFLAG_STRUCT_CONVERT;
+    doneFlags |= from->doneFlags & DONEFLAG_CLOSURE_FIRST_PARAM;
+    doneFlags |= from->doneFlags & DONEFLAG_AST_BLOCK;
+    doneFlags |= from->doneFlags & DONEFLAG_SPEC_SCOPE;
 
-    semFlags |= from->semFlags & AST_SEM_STRUCT_REGISTERED;
-    semFlags |= from->semFlags & AST_SEM_SPEC_STACKSIZE;
+    semFlags |= from->semFlags & SEMFLAG_STRUCT_REGISTERED;
+    semFlags |= from->semFlags & SEMFLAG_SPEC_STACKSIZE;
     semFlags |= context.forceSemFlags;
 
     ownerStructScope     = context.ownerStructScope ? context.ownerStructScope : from->ownerStructScope;
@@ -136,7 +136,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         cloneChilds(context, from);
 
         // Force semantic on specific nodes on generic instantiation
-        if ((from->flags & AST_IS_GENERIC) && (from->semFlags & AST_SEM_ON_CLONE))
+        if ((from->flags & AST_IS_GENERIC) && (from->semFlags & SEMFLAG_ON_CLONE))
         {
             for (auto one : childs)
                 one->flags &= ~AST_NO_SEMANTIC;
@@ -721,7 +721,7 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
         subDecl->typeInfo->removeGenericFlag();
         subDecl->typeInfo->declNode = subDecl;
 
-        subDecl->doneFlags |= AST_DONE_FILE_JOB_PASS;
+        subDecl->doneFlags |= DONEFLAG_FILE_JOB_PASS;
         newFctNode->subDecls.push_back(subDecl);
 
         // Be sure symbol is not already there. This can happen when using mixins
@@ -762,7 +762,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
 {
     auto newNode      = Ast::newNode<AstFuncDecl>();
     auto cloneContext = context;
-    cloneContext.forceSemFlags &= ~AST_SEM_SPEC_STACKSIZE;
+    cloneContext.forceSemFlags &= ~SEMFLAG_SPEC_STACKSIZE;
 
     newNode->copyFrom(context, this, false);
     newNode->aliasMask   = aliasMask;
@@ -1353,7 +1353,7 @@ AstNode* AstReturn::clone(CloneContext& context)
 
     // If return in an inline block has already been solved, we need this flag !
     if (context.cloneFlags & CLONE_RAW)
-        newNode->semFlags |= semFlags & AST_SEM_EMBEDDED_RETURN;
+        newNode->semFlags |= semFlags & SEMFLAG_EMBEDDED_RETURN;
 
     return newNode;
 }
@@ -1469,7 +1469,7 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
     auto newNode = Ast::newNode<AstCompilerSpecFunc>();
 
     auto cloneContext = context;
-    cloneContext.forceSemFlags &= ~AST_SEM_SPEC_STACKSIZE;
+    cloneContext.forceSemFlags &= ~SEMFLAG_SPEC_STACKSIZE;
 
     newNode->copyFrom(cloneContext, this, false);
 
