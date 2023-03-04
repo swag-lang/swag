@@ -152,9 +152,9 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         auto finalType = typeArray->finalType;
-        if ((finalType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES) || (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
+        if ((finalType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES) || (node->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
         {
-            if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) || (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
+            if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) || (node->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
             {
                 if (typeArray->totalCount == 1)
                 {

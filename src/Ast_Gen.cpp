@@ -45,7 +45,7 @@ bool Ast::convertLiteralTupleToStructVar(SemanticContext* context, TypeInfo* toT
 
     auto typeNode = Ast::newTypeExpression(sourceFile, varNode);
     typeNode->inheritTokenLocation(fromNode);
-    typeNode->flags |= AST_HAS_STRUCT_PARAMETERS;
+    typeNode->specFlags |= AstType::SPECFLAG_HAS_STRUCT_PARAMETERS;
     varNode->type = typeNode;
 
     SWAG_ASSERT(typeStruct->declNode);
@@ -460,7 +460,7 @@ bool Ast::convertStructParamsToTmpVar(SemanticContext* context, AstIdentifier* i
         varNode->kind = AstNodeKind::ConstDecl;
 
     auto typeNode = Ast::newTypeExpression(sourceFile, varNode);
-    typeNode->flags |= AST_HAS_STRUCT_PARAMETERS;
+    typeNode->specFlags |= AstType::SPECFLAG_HAS_STRUCT_PARAMETERS;
     varNode->flags |= AST_GENERATED;
     varNode->type = typeNode;
     CloneContext cloneContext;

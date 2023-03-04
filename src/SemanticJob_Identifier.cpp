@@ -1048,7 +1048,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             auto typeNode       = Ast::newTypeExpression(sourceFile, varNode);
             varNode->type       = typeNode;
             varNode->assignment = nullptr;
-            typeNode->flags |= AST_HAS_STRUCT_PARAMETERS;
+            typeNode->specFlags |= AstType::SPECFLAG_HAS_STRUCT_PARAMETERS;
             typeNode->specFlags |= AstTypeExpression::SPECFLAG_DONE_GEN;
             identifier->semFlags |= SEMFLAG_ONCE;
             Ast::removeFromParent(identifier->parent);

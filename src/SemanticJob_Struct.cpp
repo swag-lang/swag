@@ -1011,7 +1011,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         // If variable is initialized, struct is too.
         if (!(varDecl->flags & AST_EXPLICITLY_NOT_INITIALIZED))
         {
-            if (varDecl->assignment || varDecl->type->flags & AST_HAS_STRUCT_PARAMETERS)
+            if (varDecl->assignment || varDecl->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS)
                 structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
             else if (!varTypeInfo->isStruct() && !varTypeInfo->isArrayOfStruct())
                 structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
@@ -1037,7 +1037,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             if (!(varTypeInfo->flags & TYPEINFO_STRUCT_EMPTY))
                 structFlags &= ~TYPEINFO_STRUCT_EMPTY;
 
-            if (varDecl->type && varDecl->type->flags & AST_HAS_STRUCT_PARAMETERS)
+            if (varDecl->type && varDecl->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS)
             {
                 structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
                 if (!(varDecl->type->flags & AST_VALUE_COMPUTED))

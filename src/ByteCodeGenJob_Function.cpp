@@ -1435,7 +1435,7 @@ bool ByteCodeGenJob::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNod
         testReturn->parent->parent->parent->kind == AstNodeKind::Identifier &&
         testReturn->parent->parent->parent->typeInfo->isStruct() &&
         testReturn->parent->parent->parent->parent->parent->kind == AstNodeKind::TypeExpression &&
-        testReturn->parent->parent->parent->parent->parent->flags & AST_HAS_STRUCT_PARAMETERS &&
+        testReturn->parent->parent->parent->parent->parent->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS &&
         testReturn->parent->parent->parent->parent->parent->parent->kind == AstNodeKind::VarDecl)
     {
         auto varNode  = CastAst<AstVarDecl>(testReturn->parent->parent->parent->parent->parent->parent, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);

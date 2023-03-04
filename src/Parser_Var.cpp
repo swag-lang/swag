@@ -332,7 +332,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
                     if (identifier->callParameters)
                     {
                         typeExpression->flags &= ~AST_NO_BYTECODE_CHILDS;
-                        typeExpression->flags |= AST_HAS_STRUCT_PARAMETERS;
+                        typeExpression->specFlags |= AstType::SPECFLAG_HAS_STRUCT_PARAMETERS;
                     }
                 }
             }

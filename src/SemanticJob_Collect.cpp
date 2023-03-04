@@ -198,7 +198,7 @@ bool SemanticJob::collectStructLiterals(JobContext* context, DataSegment* storag
             SWAG_CHECK(collectStructLiterals(context, storageSegment, offsetStruct + field->offset, typeSub->declNode));
         }
 
-        if (varDecl->type && varDecl->type->flags & AST_HAS_STRUCT_PARAMETERS)
+        if (varDecl->type && varDecl->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS)
         {
             auto varType = varDecl->type;
             SWAG_ASSERT(varType->computedValue->storageSegment);
@@ -354,7 +354,7 @@ bool SemanticJob::collectAssignment(SemanticContext* context, DataSegment* stora
             // Do not initialize variable with type arguments, then again with an initialization
             auto assign   = node->assignment;
             auto overload = assign->resolvedSymbolOverload;
-            if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
+            if (node->type && (node->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
             {
                 Diagnostic diag{assign, Err(Err0645), Hnt(Hnt0045)};
                 diag.addRange(node->type, Hnt(Hnt0007));
@@ -373,7 +373,7 @@ bool SemanticJob::collectAssignment(SemanticContext* context, DataSegment* stora
         }
         else
         {
-            if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
+            if (node->type && (node->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
             {
                 auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
                 auto identifier     = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);

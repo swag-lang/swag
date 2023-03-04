@@ -344,7 +344,7 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
     typeExpression->flags &= ~AST_NO_BYTECODE;
     typeExpression->flags &= ~AST_NO_BYTECODE_CHILDS;
     typeExpression->flags &= ~AST_VALUE_COMPUTED;
-    typeExpression->flags |= AST_HAS_STRUCT_PARAMETERS;
+    typeExpression->specFlags |= AstType::SPECFLAG_HAS_STRUCT_PARAMETERS;
 
     Ast::removeFromParent(varDecl->assignment);
     varDecl->assignment->release();
@@ -406,7 +406,7 @@ DataSegment* SemanticJob::getSegmentForVar(SemanticContext* context, AstVarDecl*
     if (varNode->assignment && typeInfo->isNative() && typeInfo->sizeOf <= 8 && varNode->assignment->isConstant0())
         return &module->bssSegment;
     if (!varNode->assignment &&
-        (!varNode->type || !(varNode->type->flags & AST_HAS_STRUCT_PARAMETERS)) &&
+        (!varNode->type || !(varNode->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS)) &&
         !(varNode->flags & AST_HAS_FULL_STRUCT_PARAMETERS) &&
         (varNode->typeInfo->isStruct() || varNode->typeInfo->isInterface()) &&
         !(varNode->typeInfo->flags & (TYPEINFO_STRUCT_HAS_INIT_VALUES)))
@@ -962,7 +962,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
     // Determine if the call parameters cover everything (to avoid calling default initialization)
     // i.e. set AST_HAS_FULL_STRUCT_PARAMETERS
-    if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
+    if (node->type && (node->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
     {
         auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
         auto identifier     = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);

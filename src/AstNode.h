@@ -774,7 +774,8 @@ struct AstSwitchCaseBlock : public AstNode
 
 struct AstType : public AstNode
 {
-    static const uint16_t SPECFLAG_FORCE_TYPE = 0x1000;
+    static const uint16_t SPECFLAG_FORCE_TYPE            = 0x1000;
+    static const uint16_t SPECFLAG_HAS_STRUCT_PARAMETERS = 0x2000;
 };
 
 struct AstTypeExpression : public AstType

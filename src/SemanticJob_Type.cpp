@@ -532,7 +532,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
 
     typeNode->allocateComputedValue();
     typeNode->computedValue->reg.pointer = (uint8_t*) typeNode->typeInfo;
-    if (!(typeNode->flags & AST_HAS_STRUCT_PARAMETERS))
+    if (!(typeNode->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
         typeNode->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_NO_BYTECODE | AST_VALUE_IS_TYPEINFO;
 
     // Is this a const pointer to a typeinfo ?

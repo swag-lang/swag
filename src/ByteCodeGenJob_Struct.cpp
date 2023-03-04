@@ -630,7 +630,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         }
 
         // A structure initialized with a literal
-        if (varDecl->type && varDecl->type->flags & AST_HAS_STRUCT_PARAMETERS)
+        if (varDecl->type && varDecl->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS)
         {
             auto varType = varDecl->type;
             SWAG_ASSERT(varType->computedValue->storageSegment);
@@ -1275,7 +1275,7 @@ void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t 
     auto             node     = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
     auto             resolved = node->resolvedSymbolOverload;
 
-    if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
+    if (node->type && (node->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
     {
         RegisterList r0 = reserveRegisterRC(context);
 
@@ -1329,7 +1329,7 @@ void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t 
 void ByteCodeGenJob::freeStructParametersRegisters(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl);
-    if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
+    if (node->type && (node->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
     {
         auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
         auto identifier     = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
