@@ -1404,9 +1404,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
                     // First pass, we inline the function.
                     // The identifier for the function call will be reresolved later when the content
                     // of the inline os done.
-                    if (!(identifier->semFlags & SEMFLAG_INLINED))
+                    if (!(identifier->flags & AST_INLINED))
                     {
-                        identifier->semFlags |= SEMFLAG_INLINED;
+                        identifier->flags |= AST_INLINED;
 
                         // In case of an inline call inside an inline function, the identifier kind has been changed to
                         // AstNodeKind::FuncCall in the original function. So we restore it to be a simple identifier.
@@ -3161,7 +3161,7 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
             identifierRef->resolvedSymbolName->kind == SymbolKind::Function &&
             identifierRef->previousResolvedNode &&
             identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier &&
-            identifierRef->previousResolvedNode->semFlags & SEMFLAG_INLINED)
+            identifierRef->previousResolvedNode->flags & AST_INLINED)
         {
             fine = true;
         }

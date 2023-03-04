@@ -691,9 +691,9 @@ bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context, AstNode* allParams,
             if (context->result != ContextResult::Done)
                 return true;
 
-            if (!(node->semFlags & SEMFLAG_INLINED))
+            if (!(node->flags & AST_INLINED))
             {
-                node->semFlags |= SEMFLAG_INLINED;
+                node->flags |= AST_INLINED;
                 SWAG_CHECK(makeInline(context, funcDecl, node));
                 return true;
             }

@@ -734,6 +734,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
             job->allParamsTmp->inheritOwners(exprNode);
             job->allParamsTmp->inheritTokenLocation(exprNode);
             job->allParamsTmp->semFlags = 0;
+            job->allParamsTmp->flags &= ~AST_INLINED;
         }
 
         if (!isExplicit)
