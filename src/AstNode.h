@@ -516,18 +516,19 @@ struct AstIdentifier : public AstNode
 
 struct AstFuncDecl : public AstNode
 {
-    static const uint16_t SPECFLAG_THROW               = 0x0001;
-    static const uint16_t SPECFLAG_PATCH               = 0x0002;
-    static const uint16_t SPECFLAG_FORCE_LATE_REGISTER = 0x0004;
-    static const uint16_t SPECFLAG_LATE_REGISTER_DONE  = 0x0008;
-    static const uint16_t SPECFLAG_FULL_RESOLVE        = 0x0010;
-    static const uint16_t SPECFLAG_PARTIAL_RESOLVE     = 0x0020;
-    static const uint16_t SPECFLAG_REG_GET_CONTEXT     = 0x0040;
-    static const uint16_t SPECFLAG_SPEC_MIXIN          = 0x0080;
-    static const uint16_t SPECFLAG_SHORT_FORM          = 0x0100;
-    static const uint16_t SPECFLAG_SHORT_LAMBDA        = 0x0200;
-    static const uint16_t SPECFLAG_RETURN_DEFINED      = 0x0400;
-    static const uint16_t SPECFLAG_CHECK_ATTR          = 0x0800;
+    static const uint16_t SPECFLAG_THROW                = 0x0001;
+    static const uint16_t SPECFLAG_PATCH                = 0x0002;
+    static const uint16_t SPECFLAG_FORCE_LATE_REGISTER  = 0x0004;
+    static const uint16_t SPECFLAG_LATE_REGISTER_DONE   = 0x0008;
+    static const uint16_t SPECFLAG_FULL_RESOLVE         = 0x0010;
+    static const uint16_t SPECFLAG_PARTIAL_RESOLVE      = 0x0020;
+    static const uint16_t SPECFLAG_REG_GET_CONTEXT      = 0x0040;
+    static const uint16_t SPECFLAG_SPEC_MIXIN           = 0x0080;
+    static const uint16_t SPECFLAG_SHORT_FORM           = 0x0100;
+    static const uint16_t SPECFLAG_SHORT_LAMBDA         = 0x0200;
+    static const uint16_t SPECFLAG_RETURN_DEFINED       = 0x0400;
+    static const uint16_t SPECFLAG_CHECK_ATTR           = 0x0800;
+    static const uint16_t SPECFLAG_IS_LAMBDA_EXPRESSION = 0x1000;
 
     ~AstFuncDecl();
     AstNode*    clone(CloneContext& context);

@@ -1096,15 +1096,15 @@ bool Parser::doLambdaExpression(AstNode* parent, AstNode** result)
     {
         ScopedBreakable sb(this, nullptr);
         SWAG_CHECK(doLambdaFuncDecl(currentFct, &lambda, acceptMissingType, &hasMissingType));
-        lambda->flags |= AST_IS_LAMBDA_EXPRESSION;
-
-        SourceLocation start, end;
-        lambda->computeLocation(start, end);
-        lambda->token.startLocation = start;
-        lambda->token.endLocation   = end;
     }
 
+    SourceLocation start, end;
+    lambda->computeLocation(start, end);
+    lambda->token.startLocation = start;
+    lambda->token.endLocation   = end;
+
     auto lambdaDecl = CastAst<AstFuncDecl>(lambda, AstNodeKind::FuncDecl);
+    lambdaDecl->specFlags |= AstFuncDecl::SPECFLAG_IS_LAMBDA_EXPRESSION;
     if (!lambda->ownerFct && lambdaDecl->captureParameters)
         return error(lambdaDecl, Err(Syn0153), Hlp(Hlp0017));
 

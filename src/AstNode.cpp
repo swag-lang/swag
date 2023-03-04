@@ -673,7 +673,7 @@ Utf8 AstFuncDecl::getDisplayName()
     if (attributeFlags & ATTRIBUTE_PREMAIN_FUNC)
         return "'#premain' block";
 
-    if (flags & AST_IS_LAMBDA_EXPRESSION)
+    if (specFlags & AstFuncDecl::SPECFLAG_IS_LAMBDA_EXPRESSION)
         return "lambda";
 
     if (attributeFlags & ATTRIBUTE_SHARP_FUNC)

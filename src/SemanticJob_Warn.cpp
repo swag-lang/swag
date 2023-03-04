@@ -158,7 +158,7 @@ bool SemanticJob::warnUnusedVariables(SemanticContext* context, Scope* scope)
             if (funcDecl->fromItfSymbol)
                 continue;
             // If this is a lambda expression
-            if (funcDecl->flags & AST_IS_LAMBDA_EXPRESSION)
+            if (funcDecl->specFlags & AstFuncDecl::SPECFLAG_IS_LAMBDA_EXPRESSION)
                 continue;
 
             if (front->isGeneratedSelf())

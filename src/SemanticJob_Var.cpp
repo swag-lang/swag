@@ -932,7 +932,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (!node->typeInfo || node->typeInfo == g_TypeMgr->typeInfoUndefined)
     {
         bool lambdaExpr = false;
-        if (node->ownerFct && node->kind == AstNodeKind::FuncDeclParam && (node->ownerFct->flags & AST_IS_LAMBDA_EXPRESSION))
+        if (node->ownerFct && node->kind == AstNodeKind::FuncDeclParam && (node->ownerFct->specFlags & AstFuncDecl::SPECFLAG_IS_LAMBDA_EXPRESSION))
             lambdaExpr = true;
         if (lambdaExpr)
         {
