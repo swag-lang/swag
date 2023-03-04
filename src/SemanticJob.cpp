@@ -360,7 +360,7 @@ JobResult SemanticJob::execute()
                 }
 
                 case AstNodeKind::AttrUse:
-                    if (!node->ownerScope->isGlobalOrImpl() || ((AstAttrUse*) node)->specFlags & AST_SPEC_ATTRUSE_GLOBAL)
+                    if (!node->ownerScope->isGlobalOrImpl() || ((AstAttrUse*) node)->specFlags & AstAttrUse::SPECFLAG_GLOBAL)
                         break;
                     if (canDoSem)
                     {

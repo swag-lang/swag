@@ -134,7 +134,7 @@ bool SemanticJob::resolveTypeLambdaClosure(SemanticContext* context)
     auto typeInfo      = makeType<TypeInfoFuncAttr>(TypeInfoKind::LambdaClosure);
     typeInfo->declNode = node;
 
-    if (node->specFlags & AST_SPEC_TYPELAMBDA_CANTHROW)
+    if (node->specFlags & AstTypeLambda::SPECFLAG_CAN_THROW)
         typeInfo->flags |= TYPEINFO_CAN_THROW;
 
     if (node->returnType)

@@ -505,7 +505,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
                 Diagnostic diag{varDecl->type, Fmt(Err(Err0677), child->token.ctext())};
                 diag.hint = Hnt(Hnt0087);
 
-                if (varDecl->specFlags & AST_SPEC_VARDECL_GEN_ITF)
+                if (varDecl->specFlags & AstVarDecl::SPECFLAG_GEN_ITF)
                 {
                     auto note = Diagnostic::help(Hlp(Hlp0031));
                     return context->report(diag, note);
@@ -896,7 +896,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     }
 
     // Structure packing
-    if (node->specFlags & AST_SPEC_STRUCTDECL_UNION)
+    if (node->specFlags & AstStruct::SPECFLAG_UNION)
         node->packing = 0;
     else
     {

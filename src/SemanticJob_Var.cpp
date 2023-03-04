@@ -294,7 +294,7 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
         return true;
 
     auto exprList = CastAst<AstExpressionList>(assign, AstNodeKind::ExpressionList);
-    if (!(exprList->specFlags & AST_SPEC_EXPRLIST_FOR_TUPLE))
+    if (!(exprList->specFlags & AstExpressionList::SPECFLAG_FOR_TUPLE))
         return true;
 
     // If there's an assignment, but no type, then we need to deduce/generate the type with
@@ -571,7 +571,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         symbolFlags |= OVERLOAD_VAR_LOCAL;
     else
         isLocalConstant = true;
-    if (node->specFlags & AST_SPEC_VARDECL_CONSTASSIGN)
+    if (node->specFlags & AstVarDecl::SPECFLAG_CONST_ASSIGN)
         symbolFlags |= OVERLOAD_CONST_ASSIGN;
     if (node->attributeFlags & ATTRIBUTE_TLS)
         symbolFlags |= OVERLOAD_VAR_TLS;
@@ -680,7 +680,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     // Evaluate type constraint
     if ((node->flags & AST_FROM_GENERIC) && node->typeConstraint)
     {
-        SWAG_ASSERT(node->specFlags & AST_SPEC_DECLPARAM_GENERIC_TYPE);
+        SWAG_ASSERT(node->specFlags & AstVarDecl::SPECFLAG_GENERIC_TYPE);
 
         auto typeRet = TypeManager::concreteType(node->typeConstraint->typeInfo, CONCRETE_ALL);
         SWAG_VERIFY(typeRet->isBool(), context->report({node->typeConstraint, Fmt(Err(Err0678), typeRet->getDisplayNameC())}));
@@ -718,7 +718,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         !isGeneric)
     {
         // A generic identifier without a type but with a default value is a generic type
-        if ((node->flags & AST_IS_GENERIC) && !node->type && !(node->flags & AST_R_VALUE) && !(node->specFlags & AST_SPEC_DECLPARAM_GENERIC_CONSTANT))
+        if ((node->flags & AST_IS_GENERIC) && !node->type && !(node->flags & AST_R_VALUE) && !(node->specFlags & AstVarDecl::SPECFLAG_GENERIC_CONSTANT))
         {
             thisIsAGenericType = true;
         }
@@ -1227,7 +1227,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             {
                 SWAG_ASSERT(assignment->childs.back()->childs.back()->computedValue);
                 storageOffset = assignment->childs.back()->childs.back()->computedValue->storageOffset;
-                node->specFlags |= AST_SPEC_VARDECL_INLINE_STORAGE;
+                node->specFlags |= AstVarDecl::SPECFLAG_INLINE_STORAGE;
             }
             else
             {

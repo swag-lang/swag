@@ -81,7 +81,7 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
 
         // One case
         auto caseNode         = Ast::newNode<AstSwitchCase>(this, AstNodeKind::SwitchCase, sourceFile, isDefault ? nullptr : switchNode);
-        caseNode->specFlags   = isDefault ? AST_SPEC_SWITCHCASE_ISDEFAULT : 0;
+        caseNode->specFlags   = isDefault ? AstSwitchCase::SPECFLAG_IS_DEFAULT : 0;
         caseNode->ownerSwitch = switchNode;
         caseNode->semanticFct = SemanticJob::resolveCase;
         auto previousToken    = token;
@@ -218,7 +218,7 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymAmpersand)
     {
         node->wantPointerToken = token;
-        node->specFlags        = AST_SPEC_VISIT_WANTPOINTER;
+        node->specFlags        = AstVisit::SPECFLAG_WANT_POINTER;
         SWAG_CHECK(eatToken());
     }
 
@@ -330,7 +330,7 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
         {
             auto var   = Ast::newVarDecl(sourceFile, name, node, this, AstNodeKind::VarDecl);
             var->token = tokenName;
-            var->specFlags |= AST_SPEC_VARDECL_CONSTASSIGN;
+            var->specFlags |= AstVarDecl::SPECFLAG_CONST_ASSIGN;
             node->specificName = var;
 
             auto identifer         = Ast::newNode<AstNode>(this, AstNodeKind::Index, sourceFile, var);

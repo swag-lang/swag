@@ -11,7 +11,7 @@ bool ByteCodeGenJob::emitInRange(ByteCodeGenContext* context, AstNode* left, Ast
     auto low        = rangeNode->expressionLow;
     auto up         = rangeNode->expressionUp;
     bool excludeLow = false;
-    bool excludeUp  = rangeNode->specFlags & AST_SPEC_RANGE_EXCLUDE_UP;
+    bool excludeUp  = rangeNode->specFlags & AstRange::SPECFLAG_EXCLUDE_UP;
 
     auto typeInfo = TypeManager::concretePtrRefType(low->typeInfo);
     if (!typeInfo->isNativeIntegerOrRune() && !typeInfo->isNativeFloat())

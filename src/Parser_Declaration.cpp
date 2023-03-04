@@ -137,7 +137,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
                 case AstNodeKind::CompilerDependencies:
                     break;
                 case AstNodeKind::AttrUse:
-                    if (((AstAttrUse*) child)->specFlags & AST_SPEC_ATTRUSE_GLOBAL)
+                    if (((AstAttrUse*) child)->specFlags & AstAttrUse::SPECFLAG_GLOBAL)
                         break;
                 default:
                 {
@@ -266,9 +266,6 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
 
     currentScope   = oldScope;
     auto openCurly = token;
-
-    if (namespaceNode && forUsing)
-        namespaceNode->specFlags |= AST_SPEC_NAMESPACE_USING;
 
     if (forGlobal)
     {

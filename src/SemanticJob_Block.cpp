@@ -127,7 +127,7 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
 
     // If we inline a throwable function, be sure the top level function is informed
     if (func->typeInfo->flags & TYPEINFO_CAN_THROW)
-        node->ownerFct->specFlags |= AST_SPEC_FUNCDECL_REG_GET_CONTEXT;
+        node->ownerFct->specFlags |= AstFuncDecl::SPECFLAG_REG_GET_CONTEXT;
 
     // Register all function parameters as inline symbols
     if (func->parameters)
@@ -435,7 +435,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
         // Add a safety test in a switch default to catch runtime invalid values
         auto caseNode = Ast::newNode<AstSwitchCase>(nullptr, AstNodeKind::SwitchCase, context->sourceFile, node);
         caseNode->flags |= AST_GENERATED;
-        caseNode->specFlags   = AST_SPEC_SWITCHCASE_ISDEFAULT;
+        caseNode->specFlags   = AstSwitchCase::SPECFLAG_IS_DEFAULT;
         caseNode->ownerSwitch = node;
         node->cases.push_back(caseNode);
         caseNode->byteCodeFct = ByteCodeGenJob::emitSafetySwitchDefault;
@@ -638,7 +638,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         auto child      = Ast::newFuncCallParam(sourceFile, callVisit->genericParameters);
         child->typeInfo = g_TypeMgr->typeInfoBool;
         child->setFlagsValueIsComputed();
-        child->computedValue->reg.b = node->specFlags & AST_SPEC_VISIT_WANTPOINTER;
+        child->computedValue->reg.b = node->specFlags & AstVisit::SPECFLAG_WANT_POINTER;
         child->flags |= AST_NO_SEMANTIC;
 
         // Call with arguments
@@ -701,7 +701,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         content += "{ ";
         content += Fmt("var __addr%u = cast(%s ^%s) __tmp%u; ", id, typeArray->isConst() ? "const" : "", typeArray->finalType->name.c_str(), id);
         content += Fmt("loop %u { ", typeArray->totalCount);
-        if (node->specFlags & AST_SPEC_VISIT_WANTPOINTER)
+        if (node->specFlags & AstVisit::SPECFLAG_WANT_POINTER)
         {
             content += "var ";
             content += alias0Name;
@@ -739,7 +739,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         firstAliasVar = 1;
         content += "{ ";
         content += Fmt("loop %u { ", typeArray->totalCount);
-        if (node->specFlags & AST_SPEC_VISIT_WANTPOINTER)
+        if (node->specFlags & AstVisit::SPECFLAG_WANT_POINTER)
         {
             content += "var ";
             content += alias0Name;
@@ -777,7 +777,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         content += "{ ";
         content += Fmt("var __addr%u = @dataof(__tmp%u); ", id, id);
         content += Fmt("loop __tmp%u { ", id);
-        if (node->specFlags & AST_SPEC_VISIT_WANTPOINTER)
+        if (node->specFlags & AstVisit::SPECFLAG_WANT_POINTER)
         {
             content += "var ";
             content += alias0Name;
@@ -812,7 +812,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         content += "{ ";
         content += Fmt("var __addr%u = @dataof(__tmp%u); ", id, id);
         content += Fmt("loop __tmp%u { ", id);
-        if (node->specFlags & AST_SPEC_VISIT_WANTPOINTER)
+        if (node->specFlags & AstVisit::SPECFLAG_WANT_POINTER)
         {
             content += "var ";
             content += alias0Name;
@@ -832,7 +832,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     // Variadic
     else if (typeInfo->isVariadic() || typeInfo->isTypedVariadic())
     {
-        SWAG_VERIFY(!(node->specFlags & AST_SPEC_VISIT_WANTPOINTER), context->report({node, Err(Err0627)}));
+        SWAG_VERIFY(!(node->specFlags & AstVisit::SPECFLAG_WANT_POINTER), context->report({node, Err(Err0627)}));
         content += Fmt("{ loop %s { ", (const char*) concat.firstBucket->datas);
         firstAliasVar = 0;
         content += "var ";
@@ -847,7 +847,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     else if (typeInfo->isEnum())
     {
         auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-        SWAG_VERIFY(!(node->specFlags & AST_SPEC_VISIT_WANTPOINTER), context->report({node, Err(Err0636)}));
+        SWAG_VERIFY(!(node->specFlags & AstVisit::SPECFLAG_WANT_POINTER), context->report({node, Err(Err0636)}));
         content += Fmt("{ var __addr%u = @typeof(%s); ", id, (const char*) concat.firstBucket->datas);
         content += Fmt("loop %d { ", typeEnum->values.size());
         firstAliasVar = 1;

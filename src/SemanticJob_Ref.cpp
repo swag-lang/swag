@@ -217,7 +217,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     }
 
     // Transform pointer to a reference
-    if (node->specFlags & AST_SPEC_MAKEPOINTER_TOREF)
+    if (node->specFlags & AstMakePointer::SPECFLAG_TOREF)
     {
         ptrFlags |= TYPEINFO_POINTER_REF;
     }
@@ -271,7 +271,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
 
     // Exclude upper bound if constant
     if (node->upperBound->flags & AST_VALUE_COMPUTED &&
-        node->specFlags & AST_SPEC_RANGE_EXCLUDE_UP &&
+        node->specFlags & AstArrayPointerSlicing::SPECFLAG_EXCLUDE_UP &&
         !(node->upperBound->doneFlags & AST_DONE_ASSIGN_COMPUTED))
     {
         if (!node->upperBound->computedValue->reg.u64)
@@ -491,7 +491,7 @@ bool SemanticJob::resolveArrayPointerIndex(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
-    if (!(node->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF))
+    if (!(node->specFlags & AstArrayPointerIndex::SPECFLAG_ISDEREF))
         node->inheritAndFlag1(AST_CONST_EXPR);
 
     // If this is not the last child of the IdentifierRef, then this is a reference, and
@@ -568,7 +568,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     {
     case TypeInfoKind::Pointer:
     {
-        if (!arrayType->isPointerArithmetic() && !(arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF))
+        if (!arrayType->isPointerArithmetic() && !(arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_ISDEREF))
         {
             Diagnostic diag{arrayNode->array, Fmt(Err(Err0194), arrayNode->resolvedSymbolName->name.c_str()), Diagnostic::isType(arrayType)};
             return context->report(diag);
@@ -604,7 +604,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
         else
         {
             Diagnostic diag{arrayNode->array, Fmt(Err(Err0481), arrayType->getDisplayNameC()), Diagnostic::isType(arrayType)};
-            if (arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF)
+            if (arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_ISDEREF)
                 diag.addRange(arrayNode->token.startLocation, arrayNode->token.endLocation, Hnt(Hnt0060));
             return context->report(diag);
         }
@@ -655,7 +655,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
         if (arrayType->isTuple())
         {
-            if (arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF)
+            if (arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_ISDEREF)
             {
                 Diagnostic diag{arrayNode->access, Err(Err0482), Diagnostic::isType(arrayType)};
                 diag.addRange(arrayNode->token.startLocation, arrayNode->token.endLocation, Hnt(Hnt0060));
@@ -776,7 +776,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
     if (arrayType->isTuple())
     {
-        if (arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF)
+        if (arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_ISDEREF)
         {
             Diagnostic diag{arrayNode->access, Err(Err0482), Diagnostic::isType(arrayType)};
             diag.addRange(arrayNode->token.startLocation, arrayNode->token.endLocation, Hnt(Hnt0060));
@@ -827,7 +827,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     {
     case TypeInfoKind::Pointer:
     {
-        if (!arrayType->isPointerArithmetic() && !(arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF))
+        if (!arrayType->isPointerArithmetic() && !(arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_ISDEREF))
         {
             Diagnostic diag{arrayNode->array, Fmt(Err(Err0194), arrayNode->resolvedSymbolName->name.c_str()), Diagnostic::isType(arrayType)};
             return context->report(diag);
@@ -981,7 +981,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     {
         Diagnostic diag{arrayNode->array, Fmt(Err(Err0488), arrayNode->array->typeInfo->getDisplayNameC())};
         diag.hint = Hnt(Hnt0021);
-        if (arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF)
+        if (arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_ISDEREF)
             diag.addRange(arrayNode->token.startLocation, arrayNode->token.endLocation, Hnt(Hnt0060));
         return context->report(diag);
     }

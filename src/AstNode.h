@@ -327,10 +327,10 @@ struct AstNode
     bool isSpecialFunctionGenerated();
     bool isPublic();
     bool isFunctionCall();
+    bool isGeneratedSelf();
 
     // clang-format off
-    bool isForeign()       { return attributeFlags & ATTRIBUTE_FOREIGN; }
-    bool isGeneratedSelf() { return kind == AstNodeKind::FuncDeclParam && specFlags & AST_SPEC_DECLPARAM_GENERATED_SELF; }
+    bool isForeign() { return attributeFlags & ATTRIBUTE_FOREIGN; }
     // clang-format on
 
     void     setPassThrough();
@@ -466,6 +466,14 @@ struct AstNode
 
 struct AstVarDecl : public AstNode
 {
+    static const uint16_t SPECFLAG_CONST_ASSIGN     = 0x0001;
+    static const uint16_t SPECFLAG_GEN_ITF          = 0x0002;
+    static const uint16_t SPECFLAG_INLINE_STORAGE   = 0x0004;
+    static const uint16_t SPECFLAG_UNNAMED          = 0x0008;
+    static const uint16_t SPECFLAG_GENERATED_SELF   = 0x0010;
+    static const uint16_t SPECFLAG_GENERIC_TYPE     = 0x0020;
+    static const uint16_t SPECFLAG_GENERIC_CONSTANT = 0x0040;
+
     AstNode* clone(CloneContext& context);
 
     AttributeList attributes;
@@ -481,6 +489,9 @@ struct AstVarDecl : public AstNode
 
 struct AstIdentifierRef : public AstNode
 {
+    static const uint16_t SPECFLAG_AUTO_SCOPE = 0x0001;
+    static const uint16_t SPECFLAG_GLOBAL     = 0x0002;
+
     AstNode* clone(CloneContext& context);
     void     computeName();
 
@@ -490,6 +501,10 @@ struct AstIdentifierRef : public AstNode
 
 struct AstIdentifier : public AstNode
 {
+    static const uint16_t SPECFLAG_NO_INLINE  = 0x0001;
+    static const uint16_t SPECFLAG_FROM_WITH  = 0x0002;
+    static const uint16_t SPECFLAG_FROM_USING = 0x0004;
+
     ~AstIdentifier();
     AstNode*          clone(CloneContext& context);
     void              allocateIdentifierExtension();
@@ -502,6 +517,18 @@ struct AstIdentifier : public AstNode
 
 struct AstFuncDecl : public AstNode
 {
+    static const uint16_t SPECFLAG_THROW               = 0x0001;
+    static const uint16_t SPECFLAG_PATCH               = 0x0002;
+    static const uint16_t SPECFLAG_FORCE_LATE_REGISTER = 0x0004;
+    static const uint16_t SPECFLAG_LATE_REGISTER_DONE  = 0x0008;
+    static const uint16_t SPECFLAG_FULL_RESOLVE        = 0x0010;
+    static const uint16_t SPECFLAG_PARTIAL_RESOLVE     = 0x0020;
+    static const uint16_t SPECFLAG_REG_GET_CONTEXT     = 0x0040;
+    static const uint16_t SPECFLAG_SPEC_MIXIN          = 0x0080;
+    static const uint16_t SPECFLAG_SHORT_FORM          = 0x0100;
+    static const uint16_t SPECFLAG_SHORT_LAMBDA        = 0x0200;
+    static const uint16_t SPECFLAG_RETURN_DEFINED      = 0x0400;
+
     ~AstFuncDecl();
     AstNode*    clone(CloneContext& context);
     bool        cloneSubDecls(ErrorContext* context, CloneContext& cloneContext, AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode);
@@ -549,6 +576,8 @@ struct AstAttrDecl : public AstNode
 
 struct AstAttrUse : public AstNode
 {
+    static const uint16_t SPECFLAG_GLOBAL = 0x0001;
+
     AstNode* clone(CloneContext& context);
 
     AttributeList attributes;
@@ -684,6 +713,8 @@ struct AstLoop : public AstBreakable
 
 struct AstVisit : public AstNode
 {
+    static const uint16_t SPECFLAG_WANT_POINTER = 0x0001;
+
     AstNode* clone(CloneContext& context);
 
     Vector<Token> aliasNames;
@@ -712,6 +743,8 @@ struct AstSwitch : public AstBreakable
 
 struct AstSwitchCase : public AstNode
 {
+    static const uint16_t SPECFLAG_IS_DEFAULT = 0x0001;
+
     AstNode* clone(CloneContext& context);
 
     VectorNative<AstNode*> expressions;
@@ -735,6 +768,8 @@ struct AstSwitchCaseBlock : public AstNode
 
 struct AstTypeExpression : public AstNode
 {
+    static const uint16_t SPECFLAG_DONE_GEN = 0x0001;
+
     static const int     MAX_PTR_COUNT = 4;
     static const uint8_t PTR_CONST     = 0x01;
     static const uint8_t PTR_ARITMETIC = 0x02;
@@ -754,6 +789,8 @@ struct AstTypeExpression : public AstNode
 
 struct AstTypeLambda : public AstNode
 {
+    static const uint16_t SPECFLAG_CAN_THROW = 0x0001;
+
     AstNode* clone(CloneContext& context);
 
     AstNode* parameters = nullptr;
@@ -762,6 +799,8 @@ struct AstTypeLambda : public AstNode
 
 struct AstArrayPointerIndex : public AstNode
 {
+    static const uint16_t SPECFLAG_ISDEREF = 0x0001;
+
     AstNode* clone(CloneContext& context);
 
     VectorNative<AstNode*> structFlatParams;
@@ -772,6 +811,8 @@ struct AstArrayPointerIndex : public AstNode
 
 struct AstArrayPointerSlicing : public AstNode
 {
+    static const uint16_t SPECFLAG_EXCLUDE_UP = 0x0001;
+
     AstNode* clone(CloneContext& context);
 
     VectorNative<AstNode*> structFlatParams;
@@ -787,6 +828,9 @@ struct AstIntrinsicProp : public AstNode
 
 struct AstExpressionList : public AstNode
 {
+    static const uint16_t SPECFLAG_FOR_TUPLE   = 0x0001;
+    static const uint16_t SPECFLAG_FOR_CAPTURE = 0x0002;
+
     AstNode* clone(CloneContext& context);
 
     TypeInfo* castToStruct = nullptr;
@@ -794,6 +838,10 @@ struct AstExpressionList : public AstNode
 
 struct AstStruct : public AstNode
 {
+    static const uint16_t SPECFLAG_HAS_USING = 0x0001;
+    static const uint16_t SPECFLAG_UNION     = 0x0002;
+    static const uint16_t SPECFLAG_ANONYMOUS = 0x0004;
+
     ~AstStruct();
     AstNode* clone(CloneContext& context);
 
@@ -937,6 +985,9 @@ struct AstNameSpace : public AstNode
 
 struct AstTryCatchAssume : public AstReturn
 {
+    static const uint16_t SPECFLAG_BLOCK     = 0x0001;
+    static const uint16_t SPECFLAG_GENERATED = 0x0002;
+
     AstNode* clone(CloneContext& context);
 
     RegisterList regInit;
@@ -951,6 +1002,9 @@ struct AstAlias : public AstNode
 
 struct AstCast : public AstNode
 {
+    static const uint16_t SPECFLAG_SAFE = 0x0001;
+    static const uint16_t SPECFLAG_BIT  = 0x0002;
+
     AstNode* clone(CloneContext& context);
 
     TypeInfo* toCastTypeInfo = nullptr;
@@ -958,6 +1012,9 @@ struct AstCast : public AstNode
 
 struct AstOp : public AstNode
 {
+    static const uint16_t SPECFLAG_SAFE  = 0x0001;
+    static const uint16_t SPECFLAG_SMALL = 0x0002;
+
     AstNode* clone(CloneContext& context);
 
     AstNode*          dependentLambda   = nullptr;
@@ -967,6 +1024,8 @@ struct AstOp : public AstNode
 
 struct AstRange : public AstNode
 {
+    static const uint16_t SPECFLAG_EXCLUDE_UP = 0x0001;
+
     AstNode* clone(CloneContext& context);
 
     AstNode* expressionLow = nullptr;
@@ -975,6 +1034,8 @@ struct AstRange : public AstNode
 
 struct AstMakePointer : public AstNode
 {
+    static const uint16_t SPECFLAG_TOREF = 0x0001;
+
     AstNode* clone(CloneContext& context);
 
     AstFuncDecl* lambda = nullptr;

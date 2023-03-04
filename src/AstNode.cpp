@@ -164,6 +164,11 @@ void AstNode::inheritComputedValue(AstNode* from)
     }
 }
 
+bool AstNode::isGeneratedSelf()
+{
+    return kind == AstNodeKind::FuncDeclParam && specFlags & AstVarDecl::SPECFLAG_GENERATED_SELF;
+}
+
 bool AstNode::isFunctionCall()
 {
     if (kind == AstNodeKind::FuncCall)
@@ -603,7 +608,7 @@ bool AstFuncDecl::mustInline()
         return false;
 
     // All short functions
-    if (specFlags & AST_SPEC_FUNCDECL_SHORT_FORM)
+    if (specFlags & AstFuncDecl::SPECFLAG_SHORT_FORM)
         return true;
 
     return false;

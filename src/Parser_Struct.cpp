@@ -193,7 +193,7 @@ bool Parser::doStruct(AstNode* parent, AstNode** result)
     }
     else if (token.id == TokenId::KwdUnion)
     {
-        structNode->specFlags |= AST_SPEC_STRUCTDECL_UNION;
+        structNode->specFlags |= AstStruct::SPECFLAG_UNION;
     }
 
     SWAG_CHECK(eatToken());
@@ -551,7 +551,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         SWAG_VERIFY(structType != SyntaxStructType::Interface, context->report({parent, token, Err(Syn0029)}));
         SWAG_CHECK(eatToken());
         auto structNode = CastAst<AstStruct>(parent->ownerStructScope->owner, AstNodeKind::StructDecl);
-        structNode->specFlags |= AST_SPEC_STRUCTDECL_HAS_USING;
+        structNode->specFlags |= AstStruct::SPECFLAG_HAS_USING;
         AstNode* varDecl;
         SWAG_CHECK(doVarDecl(parent, &varDecl, AstNodeKind::VarDecl));
         varDecl->flags |= AST_DECL_USING;
@@ -605,7 +605,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
         auto        varNode = Ast::newVarDecl(sourceFile, funcNode->token.text, parent, this);
         varNode->inheritTokenLocation(funcNode->token);
-        varNode->specFlags |= AST_SPEC_VARDECL_GEN_ITF;
+        varNode->specFlags |= AstVarDecl::SPECFLAG_GEN_ITF;
         SemanticJob::setVarDeclResolve(varNode);
         varNode->flags |= AST_R_VALUE;
 
@@ -628,7 +628,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         if (token.id == TokenId::KwdThrow)
         {
             SWAG_CHECK(eatToken(TokenId::KwdThrow));
-            typeNode->specFlags |= AST_SPEC_TYPELAMBDA_CANTHROW;
+            typeNode->specFlags |= AstTypeLambda::SPECFLAG_CAN_THROW;
         }
 
         funcNode->release();

@@ -770,7 +770,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     newNode->methodParam = methodParam;
     newNode->tokenName   = tokenName;
 
-    newNode->specFlags &= ~(AST_SPEC_FUNCDECL_FULL_RESOLVE | AST_SPEC_FUNCDECL_PARTIAL_RESOLVE | AST_SPEC_FUNCDECL_SHORT_FORM);
+    newNode->specFlags &= ~(AstFuncDecl::SPECFLAG_FULL_RESOLVE | AstFuncDecl::SPECFLAG_PARTIAL_RESOLVE | AstFuncDecl::SPECFLAG_SHORT_FORM);
 
     cloneContext.ownerFct = newNode;
     cloneContext.parent   = newNode;

@@ -1083,7 +1083,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
         return context->report(diag);
     }
 
-    bool isSmall = node->specFlags & AST_SPEC_OP_SMALL;
+    bool isSmall = node->specFlags & AstOp::SPECFLAG_SMALL;
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
         node->setFlagsValueIsComputed();
@@ -1179,7 +1179,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
         return context->report(diag);
     }
 
-    bool isSmall = node->specFlags & AST_SPEC_OP_SMALL;
+    bool isSmall = node->specFlags & AstOp::SPECFLAG_SMALL;
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
         node->setFlagsValueIsComputed();

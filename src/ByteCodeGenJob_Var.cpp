@@ -112,7 +112,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
         // :DirectInlineLocalVar
         // The local variable is using the storage from the inline call.
         // No need to make a copy
-        if (node->specFlags & AST_SPEC_VARDECL_INLINE_STORAGE)
+        if (node->specFlags & AstVarDecl::SPECFLAG_INLINE_STORAGE)
         {
             freeRegisterRC(context, node->assignment);
         }

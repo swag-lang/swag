@@ -39,7 +39,7 @@ bool SemanticJob::computeExpressionListTupleType(SemanticContext* context, AstNo
         auto typeParam = g_TypeMgr->makeParam();
 
         // When generating parameters for a closure call, keep the reference if we want one !
-        if (child->kind != AstNodeKind::MakePointer || !(child->specFlags & AST_SPEC_MAKEPOINTER_TOREF))
+        if (child->kind != AstNodeKind::MakePointer || !(child->specFlags & AstMakePointer::SPECFLAG_TOREF))
             typeParam->typeInfo = TypeManager::concretePtrRef(child->typeInfo);
         else
             typeParam->typeInfo = child->typeInfo;

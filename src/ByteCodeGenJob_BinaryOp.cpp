@@ -320,7 +320,7 @@ bool ByteCodeGenJob::emitShiftLeft(ByteCodeGenContext* context, TypeInfo* typeIn
 
     auto     opNode     = CastAst<AstOp>(context->node, AstNodeKind::FactorOp);
     uint16_t shiftFlags = 0;
-    if (opNode->specFlags & AST_SPEC_OP_SMALL)
+    if (opNode->specFlags & AstOp::SPECFLAG_SMALL)
         shiftFlags |= BCI_SHIFT_SMALL;
 
     switch (typeInfo->nativeType)
@@ -369,7 +369,7 @@ bool ByteCodeGenJob::emitShiftRight(ByteCodeGenContext* context, TypeInfo* typeI
 
     auto     opNode     = CastAst<AstOp>(context->node, AstNodeKind::FactorOp);
     uint16_t shiftFlags = 0;
-    if (opNode->specFlags & AST_SPEC_OP_SMALL)
+    if (opNode->specFlags & AstOp::SPECFLAG_SMALL)
         shiftFlags |= BCI_SHIFT_SMALL;
 
     switch (typeInfo->nativeType)

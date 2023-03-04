@@ -479,7 +479,7 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
             loopNode->seekJumpExpression = context->bc->numInstructions;
             auto inst                    = emitInstruction(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex);
             inst->c.u64                  = rangeNode->expressionUp->computedValue->reg.u64;
-            if (!(rangeNode->specFlags & AST_SPEC_RANGE_EXCLUDE_UP))
+            if (!(rangeNode->specFlags & AstRange::SPECFLAG_EXCLUDE_UP))
                 inst->c.u64++;
             inst->flags |= BCI_IMM_C;
             return true;
@@ -493,7 +493,7 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
             loopNode->seekJumpExpression = context->bc->numInstructions;
             auto inst                    = emitInstruction(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex);
             inst->c.u64                  = rangeNode->expressionUp->computedValue->reg.u64;
-            if (!(rangeNode->specFlags & AST_SPEC_RANGE_EXCLUDE_UP))
+            if (!(rangeNode->specFlags & AstRange::SPECFLAG_EXCLUDE_UP))
                 inst->c.u64--;
             inst->flags |= BCI_IMM_C;
             return true;
@@ -509,7 +509,7 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
     emitInstruction(context, ByteCodeOp::JumpIfLowerEqS64, rangeNode->expressionLow->resultRegisterRC, 1, rangeNode->expressionUp->resultRegisterRC);
     emitInstruction(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex1)->b.s64 = -1;
 
-    if (rangeNode->specFlags & AST_SPEC_RANGE_EXCLUDE_UP)
+    if (rangeNode->specFlags & AstRange::SPECFLAG_EXCLUDE_UP)
         emitInstruction(context, ByteCodeOp::BinOpMinusS64, rangeNode->expressionUp->resultRegisterRC, loopNode->registerIndex1, rangeNode->expressionUp->resultRegisterRC);
 
     emitInstruction(context, ByteCodeOp::CopyRBtoRA64, loopNode->registerIndex, rangeNode->expressionLow->resultRegisterRC);
@@ -838,7 +838,7 @@ bool ByteCodeGenJob::emitSwitchCaseAfterBlock(ByteCodeGenContext* context)
     auto blockNode = CastAst<AstSwitchCaseBlock>(node, AstNodeKind::SwitchCaseBlock);
 
     // For the default case, do nothing, fallback to the end of the switch
-    if (blockNode->ownerCase->specFlags & AST_SPEC_SWITCHCASE_ISDEFAULT)
+    if (blockNode->ownerCase->specFlags & AstSwitchCase::SPECFLAG_IS_DEFAULT)
         return true;
 
     // Jump to exit the switch

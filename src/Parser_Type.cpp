@@ -139,7 +139,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
 
         auto param = Ast::newVarDecl(sourceFile, nameVar, params, this, AstNodeKind::FuncDeclParam);
         if (firstAddedType->typeFlags & TYPEFLAG_IS_SELF)
-            param->specFlags |= AST_SPEC_DECLPARAM_GENERATED_SELF;
+            param->specFlags |= AstVarDecl::SPECFLAG_GENERATED_SELF;
 
         param->allocateExtension(ExtensionKind::Misc);
         param->extMisc()->exportNode = firstAddedType;
@@ -374,7 +374,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
     if (token.id == TokenId::KwdThrow)
     {
         SWAG_CHECK(eatToken(TokenId::KwdThrow));
-        node->specFlags |= AST_SPEC_TYPELAMBDA_CANTHROW;
+        node->specFlags |= AstTypeLambda::SPECFLAG_CAN_THROW;
     }
 
     return true;
@@ -389,9 +389,9 @@ bool Parser::doTupleOrAnonymousType(AstNode* parent, AstNode** result, bool isCo
     structNode->extSemantic()->semanticBeforeFct = SemanticJob::preResolveGeneratedStruct;
 
     if (anonymousStruct)
-        structNode->specFlags |= AST_SPEC_STRUCTDECL_ANONYMOUS;
+        structNode->specFlags |= AstStruct::SPECFLAG_ANONYMOUS;
     if (anonymousUnion)
-        structNode->specFlags |= AST_SPEC_STRUCTDECL_UNION;
+        structNode->specFlags |= AstStruct::SPECFLAG_UNION;
 
     auto contentNode    = Ast::newNode<AstNode>(this, AstNodeKind::TupleContent, sourceFile, structNode);
     structNode->content = contentNode;
@@ -820,13 +820,13 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
     SWAG_CHECK(doModifiers(node->token, node->tokenId, mdfFlags));
     if (mdfFlags & MODIFIER_SAFE)
     {
-        node->specFlags |= AST_SPEC_CAST_SAFE;
+        node->specFlags |= AstCast::SPECFLAG_SAFE;
         node->attributeFlags |= ATTRIBUTE_SAFETY_OVERFLOW_OFF;
     }
 
     if (mdfFlags & MODIFIER_BIT)
     {
-        node->specFlags |= AST_SPEC_CAST_BIT;
+        node->specFlags |= AstCast::SPECFLAG_BIT;
         node->semanticFct = SemanticJob::resolveExplicitBitCast;
     }
 

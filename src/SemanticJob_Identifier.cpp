@@ -737,7 +737,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         identifierRef->previousResolvedNode->resolvedSymbolName->kind == SymbolKind::Variable &&
         !(identifierRef->previousResolvedNode->flags & AST_FROM_UFCS))
     {
-        if (identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier && identifierRef->previousResolvedNode->specFlags & AST_SPEC_IDENTIFIER_FROM_WITH)
+        if (identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier && identifierRef->previousResolvedNode->specFlags & AstIdentifier::SPECFLAG_FROM_WITH)
         {
             Diagnostic diag{identifierRef->previousResolvedNode, Fmt(Err(Err0310), identifierRef->previousResolvedNode->token.ctext(), symbol->name.c_str(), identifierRef->startScope->name.c_str())};
             diag.hint = Hnt(Hnt0073);
@@ -886,7 +886,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
                         idNode->identifierExtension->scopeUpValue = identifier->identifierExtension->scopeUpValue;
                     }
 
-                    idNode->specFlags |= AST_SPEC_IDENTIFIER_FROM_USING;
+                    idNode->specFlags |= AstIdentifier::SPECFLAG_FROM_USING;
                 }
             }
             else
@@ -903,7 +903,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
                 while (newParent->parent != idRef)
                     newParent = newParent->parent;
 
-                idNode->specFlags |= AST_SPEC_IDENTIFIER_FROM_USING;
+                idNode->specFlags |= AstIdentifier::SPECFLAG_FROM_USING;
 
                 if (identifier->identifierExtension || dependentVar)
                     idNode->allocateIdentifierExtension();
@@ -939,7 +939,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
 
     // Global identifier call. Must be a call to a mixin function, that's it...
     auto idRef = identifier->identifierRef();
-    if (idRef && idRef->specFlags & AST_SPEC_IDENTIFIERREF_GLOBAL)
+    if (idRef && idRef->specFlags & AstIdentifierRef::SPECFLAG_GLOBAL)
     {
         if (identifier->callParameters)
             return context->report({identifier, identifier->token, Fmt(Err(Err0087), identifier->token.ctext(), Naming::aKindName(symbolKind).c_str())});
@@ -1049,7 +1049,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             varNode->type       = typeNode;
             varNode->assignment = nullptr;
             typeNode->flags |= AST_HAS_STRUCT_PARAMETERS;
-            typeNode->specFlags |= AST_SPEC_TYPEEXPRESSION_DONEGEN;
+            typeNode->specFlags |= AstTypeExpression::SPECFLAG_DONE_GEN;
             identifier->semFlags |= AST_SEM_ONCE;
             Ast::removeFromParent(identifier->parent);
             Ast::addChildBack(typeNode, identifier->parent);
@@ -1065,7 +1065,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         if (canConvertStructParams)
         {
             if (identifier->parent->parent->kind != AstNodeKind::TypeExpression ||
-                !(identifier->parent->parent->specFlags & AST_SPEC_TYPEEXPRESSION_DONEGEN))
+                !(identifier->parent->parent->specFlags & AstTypeExpression::SPECFLAG_DONE_GEN))
             {
                 SWAG_CHECK(Ast::convertStructParamsToTmpVar(context, identifier));
                 return true;
@@ -1390,7 +1390,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             if (funcDecl->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
                 forceInline = true;
 
-            if (!(identifier->specFlags & AST_SPEC_IDENTIFIER_NO_INLINE) || forceInline)
+            if (!(identifier->specFlags & AstIdentifier::SPECFLAG_NO_INLINE) || forceInline)
             {
                 // Expand inline function. Do not expand an inline call inside a function marked as inline.
                 // The expansion will be done at the lowest level possible
@@ -2549,7 +2549,7 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
                             break;
                         if (child->typeInfo && child->typeInfo->isEnum())
                             enumIdx++;
-                        else if (child->kind == AstNodeKind::IdentifierRef && child->specFlags & AST_SPEC_IDENTIFIERREF_AUTO_SCOPE)
+                        else if (child->kind == AstNodeKind::IdentifierRef && child->specFlags & AstIdentifierRef::SPECFLAG_AUTO_SCOPE)
                             enumIdx++;
                     }
 
@@ -2733,7 +2733,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
             // :AutoScope
             // Auto scoping depending on the context
             // We scan the parent hierarchy for an already defined type that can be used for scoping
-            if (identifierRef->specFlags & AST_SPEC_IDENTIFIERREF_AUTO_SCOPE && !(identifierRef->doneFlags & AST_DONE_SPEC_SCOPE))
+            if (identifierRef->specFlags & AstIdentifierRef::SPECFLAG_AUTO_SCOPE && !(identifierRef->doneFlags & AST_DONE_SPEC_SCOPE))
             {
                 TypeInfoEnum* typeEnum = nullptr;
                 TypeInfoEnum* hasEnum  = nullptr;
@@ -2757,7 +2757,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
                     {
                         auto id = Ast::newIdentifier(context->sourceFile, withNode->id[wi], identifierRef, identifierRef);
                         id->flags |= AST_GENERATED;
-                        id->specFlags |= AST_SPEC_IDENTIFIER_FROM_WITH;
+                        id->specFlags |= AstIdentifier::SPECFLAG_FROM_WITH;
                         id->allocateIdentifierExtension();
                         id->identifierExtension->alternateEnum    = hasEnum;
                         id->identifierExtension->fromAlternateVar = withNode->childs.front();
@@ -3883,7 +3883,7 @@ bool SemanticJob::solveValidIf(SemanticContext* context, OneMatch* oneMatch, Ast
     ScopedLock lk1(funcDecl->mutex);
 
     // Be sure block has been solved
-    if (!(funcDecl->specFlags & AST_SPEC_FUNCDECL_PARTIAL_RESOLVE))
+    if (!(funcDecl->specFlags & AstFuncDecl::SPECFLAG_PARTIAL_RESOLVE))
     {
         funcDecl->dependentJobs.add(context->job);
         context->job->setPending(funcDecl->resolvedSymbolName, JobWaitKind::SemPartialResolve, funcDecl, nullptr);
@@ -4828,7 +4828,7 @@ bool SemanticJob::resolveTryCatch(SemanticContext* context)
 
     SWAG_CHECK(checkCanCatch(context));
     SWAG_ASSERT(node->ownerFct);
-    node->ownerFct->specFlags |= AST_SPEC_FUNCDECL_REG_GET_CONTEXT;
+    node->ownerFct->specFlags |= AstFuncDecl::SPECFLAG_REG_GET_CONTEXT;
 
     node->allocateExtension(ExtensionKind::ByteCode);
     node->extByteCode()->byteCodeBeforeFct = ByteCodeGenJob::emitInitStackTrace;
@@ -4849,7 +4849,7 @@ bool SemanticJob::resolveCatch(SemanticContext* context)
 
     SWAG_CHECK(checkCanCatch(context));
     SWAG_ASSERT(node->ownerFct);
-    node->ownerFct->specFlags |= AST_SPEC_FUNCDECL_REG_GET_CONTEXT;
+    node->ownerFct->specFlags |= AstFuncDecl::SPECFLAG_REG_GET_CONTEXT;
 
     node->allocateExtension(ExtensionKind::ByteCode);
     node->extByteCode()->byteCodeBeforeFct = ByteCodeGenJob::emitInitStackTrace;

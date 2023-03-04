@@ -2107,7 +2107,7 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::IntrinsicGetContext, funcNode->registerGetContext);
         emitInstruction(context, ByteCodeOp::InternalClearErr, funcNode->registerGetContext);
     }
-    else if (funcNode->specFlags & AST_SPEC_FUNCDECL_REG_GET_CONTEXT)
+    else if (funcNode->specFlags & AstFuncDecl::SPECFLAG_REG_GET_CONTEXT)
     {
         SWAG_ASSERT(funcNode->registerGetContext == UINT32_MAX);
         funcNode->registerGetContext = reserveRegisterRC(context);

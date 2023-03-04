@@ -134,7 +134,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
     }
 
     if (contextualNoInline)
-        identifier->specFlags |= AST_SPEC_IDENTIFIER_NO_INLINE;
+        identifier->specFlags |= AstIdentifier::SPECFLAG_NO_INLINE;
     SWAG_CHECK(eatToken());
 
     SWAG_CHECK(checkIsValidUserName(identifier));
@@ -216,7 +216,7 @@ bool Parser::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t identif
         *result = identifierRef;
 
     if (identifierFlags & IDENTIFIER_GLOBAL)
-        identifierRef->specFlags |= AST_SPEC_IDENTIFIERREF_GLOBAL;
+        identifierRef->specFlags |= AstIdentifierRef::SPECFLAG_GLOBAL;
 
     switch (token.id)
     {
@@ -342,7 +342,7 @@ bool Parser::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDisca
 
     if (token.id == TokenId::SymLeftCurly)
     {
-        node->specFlags |= AST_SPEC_TCA_BLOCK;
+        node->specFlags |= AstTryCatchAssume::SPECFLAG_BLOCK;
         SWAG_VERIFY(!afterDiscard, error(token, Err(Err0189)));
         SWAG_CHECK(doCurlyStatement(node));
 
@@ -352,7 +352,7 @@ bool Parser::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDisca
         }
         else if (node->semanticFct == SemanticJob::resolveTryCatch)
         {
-            node->ownerFct->specFlags |= AST_SPEC_FUNCDECL_REG_GET_CONTEXT;
+            node->ownerFct->specFlags |= AstFuncDecl::SPECFLAG_REG_GET_CONTEXT;
             node->semanticFct = nullptr;
         }
         else

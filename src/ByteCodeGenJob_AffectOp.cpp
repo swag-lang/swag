@@ -595,7 +595,7 @@ bool ByteCodeGenJob::emitAffectShiftLeftEqual(ByteCodeGenContext* context, uint3
 
     auto     opNode     = CastAst<AstOp>(context->node, AstNodeKind::AffectOp);
     uint16_t shiftFlags = 0;
-    if (opNode->specFlags & AST_SPEC_OP_SMALL)
+    if (opNode->specFlags & AstOp::SPECFLAG_SMALL)
         shiftFlags |= BCI_SHIFT_SMALL;
 
     switch (leftTypeInfo->nativeType)
@@ -646,7 +646,7 @@ bool ByteCodeGenJob::emitAffectShiftRightEqual(ByteCodeGenContext* context, uint
 
     auto     opNode     = CastAst<AstOp>(context->node, AstNodeKind::AffectOp);
     uint16_t shiftFlags = 0;
-    if (opNode->specFlags & AST_SPEC_OP_SMALL)
+    if (opNode->specFlags & AstOp::SPECFLAG_SMALL)
         shiftFlags |= BCI_SHIFT_SMALL;
 
     switch (leftTypeInfo->nativeType)

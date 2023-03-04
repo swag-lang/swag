@@ -86,7 +86,7 @@ bool Ast::convertLiteralTupleToStructVar(SemanticContext* context, TypeInfo* toT
         oneChild->clone(cloneContext);
         oneChild->flags |= AST_NO_BYTECODE | AST_NO_SEMANTIC;
         if (oneChild->kind == AstNodeKind::Identifier)
-            oneChild->specFlags |= AST_SPEC_IDENTIFIER_NO_INLINE;
+            oneChild->specFlags |= AstIdentifier::SPECFLAG_NO_INLINE;
 
         if (oneChild->hasExtMisc() && oneChild->extMisc()->isNamed)
         {
@@ -264,7 +264,7 @@ AstNode* Ast::convertTypeToTypeExpression(SemanticContext* context, AstNode* par
         auto typeExprLambda         = Ast::newNode<AstTypeLambda>(nullptr, AstNodeKind::TypeLambda, sourceFile, parent);
         typeExprLambda->semanticFct = SemanticJob::resolveTypeLambdaClosure;
         if (childType->flags & TYPEINFO_CAN_THROW)
-            typeExprLambda->specFlags |= AST_SPEC_TYPELAMBDA_CANTHROW;
+            typeExprLambda->specFlags |= AstTypeLambda::SPECFLAG_CAN_THROW;
 
         // Parameters
         auto params                = Ast::newNode<AstNode>(nullptr, AstNodeKind::FuncDeclParams, sourceFile, typeExprLambda);
@@ -314,7 +314,7 @@ bool Ast::convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* ass
     structNode->flags |= AST_GENERATED;
 
     // A capture block is packed
-    if (assignment->specFlags & AST_SPEC_EXPRLIST_FOR_CAPTURE)
+    if (assignment->specFlags & AstExpressionList::SPECFLAG_FOR_CAPTURE)
         structNode->packing = 1;
 
     auto contentNode = Ast::newNode<AstNode>(nullptr, AstNodeKind::TupleContent, sourceFile, structNode);
@@ -359,11 +359,11 @@ bool Ast::convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* ass
             typeParam->flags |= TYPEINFOPARAM_AUTO_NAME;
         }
 
-        paramNode->type = convertTypeToTypeExpression(context, paramNode, subAffect, childType, !(assignment->specFlags & AST_SPEC_EXPRLIST_FOR_CAPTURE));
+        paramNode->type = convertTypeToTypeExpression(context, paramNode, subAffect, childType, !(assignment->specFlags & AstExpressionList::SPECFLAG_FOR_CAPTURE));
 
         // Special case for tuple capture. If type is null (type not compatible with tuple), put undefined,
         // as we will catch the error later
-        if (!paramNode->type && assignment->specFlags & AST_SPEC_EXPRLIST_FOR_CAPTURE)
+        if (!paramNode->type && assignment->specFlags & AstExpressionList::SPECFLAG_FOR_CAPTURE)
         {
             static AstNode fakeNode;
             fakeNode.typeInfo = g_TypeMgr->typeInfoBool;

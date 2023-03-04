@@ -201,7 +201,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
     {
         token.id   = TokenId::Identifier;
         token.text = Fmt("__%d", g_UniqueID.fetch_add(1));
-        paramNode->specFlags |= AST_SPEC_VARDECL_UNNAMED;
+        paramNode->specFlags |= AstVarDecl::SPECFLAG_UNNAMED;
         unnamedTokens.push_back(token);
     }
 
@@ -275,7 +275,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             {
                 token.id   = TokenId::Identifier;
                 token.text = Fmt("__%d", g_UniqueID.fetch_add(1));
-                otherVarNode->specFlags |= AST_SPEC_VARDECL_UNNAMED;
+                otherVarNode->specFlags |= AstVarDecl::SPECFLAG_UNNAMED;
                 unnamedTokens.push_back(token);
             }
 
@@ -438,7 +438,7 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
             auto paramNode = Ast::newVarDecl(sourceFile, "", allParams, this, AstNodeKind::FuncDeclParam);
             if (!isItfMethod)
                 paramNode->flags |= AST_DECL_USING;
-            paramNode->specFlags |= AST_SPEC_DECLPARAM_GENERATED_SELF;
+            paramNode->specFlags |= AstVarDecl::SPECFLAG_GENERATED_SELF;
             paramNode->token.text = g_LangSpec->name_self;
             auto typeNode         = Ast::newTypeExpression(sourceFile, paramNode);
             typeNode->ptrCount    = 1;
@@ -542,9 +542,9 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
         }
 
         if (isType)
-            oneParam->specFlags |= AST_SPEC_DECLPARAM_GENERIC_TYPE;
+            oneParam->specFlags |= AstVarDecl::SPECFLAG_GENERIC_TYPE;
         else if (isConstant)
-            oneParam->specFlags |= AST_SPEC_DECLPARAM_GENERIC_CONSTANT;
+            oneParam->specFlags |= AstVarDecl::SPECFLAG_GENERIC_CONSTANT;
 
         if (isConstant && !oneParam->type && !oneParam->assignment)
             return error(oneParam, Fmt(Err(Err0533), oneParam->token.ctext()));
@@ -747,7 +747,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     {
         if (token.id == TokenId::SymMinusGreat)
         {
-            typeNode->specFlags |= AST_SPEC_FUNCTYPE_RETURN_DEFINED;
+            typeNode->specFlags |= AstFuncDecl::SPECFLAG_RETURN_DEFINED;
             Scoped    scoped(this, newScope);
             ScopedFct scopedFct(this, funcNode);
             SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
@@ -759,13 +759,13 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         if (token.id == TokenId::KwdThrow)
         {
             SWAG_CHECK(eatToken(TokenId::KwdThrow));
-            funcNode->specFlags |= AST_SPEC_FUNCDECL_THROW;
+            funcNode->specFlags |= AstFuncDecl::SPECFLAG_THROW;
             funcNode->typeInfo->flags |= TYPEINFO_CAN_THROW;
         }
     }
     else if (typeFuncId == TokenId::CompilerAst)
     {
-        typeNode->specFlags |= AST_SPEC_FUNCTYPE_RETURN_DEFINED;
+        typeNode->specFlags |= AstFuncDecl::SPECFLAG_RETURN_DEFINED;
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
         auto      typeExpression        = Ast::newTypeExpression(sourceFile, typeNode, this);
@@ -773,7 +773,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     }
     else if (typeFuncId == TokenId::CompilerValidIf || typeFuncId == TokenId::CompilerValidIfx)
     {
-        typeNode->specFlags |= AST_SPEC_FUNCTYPE_RETURN_DEFINED;
+        typeNode->specFlags |= AstFuncDecl::SPECFLAG_RETURN_DEFINED;
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
         auto      typeExpression        = Ast::newTypeExpression(sourceFile, typeNode, this);
@@ -814,17 +814,17 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         {
             SWAG_CHECK(eatToken());
 
-            if (funcNode->specFlags & AST_SPEC_FUNCDECL_THROW)
+            if (funcNode->specFlags & AstFuncDecl::SPECFLAG_THROW)
             {
                 auto node = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Try, sourceFile, funcNode);
-                node->specFlags |= AST_SPEC_TCA_GENERATED | AST_SPEC_TCA_BLOCK;
+                node->specFlags |= AstTryCatchAssume::SPECFLAG_GENERATED | AstTryCatchAssume::SPECFLAG_BLOCK;
                 node->semanticFct = SemanticJob::resolveTryBlock;
                 funcNode->content = node;
 
                 ScopedTryCatchAssume sc(this, (AstTryCatchAssume*) node);
                 auto                 returnNode = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, node); // stmt);
                 returnNode->semanticFct         = SemanticJob::resolveReturn;
-                funcNode->specFlags |= AST_SPEC_FUNCDECL_SHORT_LAMBDA;
+                funcNode->specFlags |= AstFuncDecl::SPECFLAG_SHORT_LAMBDA;
                 SWAG_CHECK(doExpression(returnNode, EXPR_FLAG_NONE));
             }
             else
@@ -834,11 +834,11 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
                 auto returnNode         = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, stmt);
                 returnNode->semanticFct = SemanticJob::resolveReturn;
                 funcNode->content       = returnNode;
-                funcNode->specFlags |= AST_SPEC_FUNCDECL_SHORT_LAMBDA;
+                funcNode->specFlags |= AstFuncDecl::SPECFLAG_SHORT_LAMBDA;
                 SWAG_CHECK(doExpression(returnNode, EXPR_FLAG_NONE));
             }
 
-            funcNode->specFlags |= AST_SPEC_FUNCDECL_SHORT_FORM;
+            funcNode->specFlags |= AstFuncDecl::SPECFLAG_SHORT_FORM;
             funcNode->content->token.endLocation = token.startLocation;
             resStmt                              = funcNode->content;
         }
@@ -848,10 +848,10 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         {
             SWAG_CHECK(eatToken());
 
-            if (funcNode->specFlags & AST_SPEC_FUNCDECL_THROW)
+            if (funcNode->specFlags & AstFuncDecl::SPECFLAG_THROW)
             {
                 auto node = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Try, sourceFile, funcNode);
-                node->specFlags |= AST_SPEC_TCA_GENERATED | AST_SPEC_TCA_BLOCK;
+                node->specFlags |= AstTryCatchAssume::SPECFLAG_GENERATED | AstTryCatchAssume::SPECFLAG_BLOCK;
                 node->semanticFct = SemanticJob::resolveTryBlock;
                 funcNode->content = node;
 
@@ -870,16 +870,16 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
 
             funcNode->content->token.endLocation = token.startLocation;
             resStmt                              = funcNode->content;
-            funcNode->specFlags |= AST_SPEC_FUNCDECL_SHORT_FORM;
+            funcNode->specFlags |= AstFuncDecl::SPECFLAG_SHORT_FORM;
         }
 
         // Normal curly statement
         else
         {
-            if (funcNode->specFlags & AST_SPEC_FUNCDECL_THROW)
+            if (funcNode->specFlags & AstFuncDecl::SPECFLAG_THROW)
             {
                 auto node = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Try, sourceFile, funcNode);
-                node->specFlags |= AST_SPEC_TCA_GENERATED | AST_SPEC_TCA_BLOCK;
+                node->specFlags |= AstTryCatchAssume::SPECFLAG_GENERATED | AstTryCatchAssume::SPECFLAG_BLOCK;
                 funcNode->content = node; // :AutomaticTryContent
                 node->semanticFct = SemanticJob::resolveTryBlock;
                 ScopedTryCatchAssume sc(this, (AstTryCatchAssume*) node);
@@ -976,7 +976,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
                 {
                     parentId              = Ast::newNode<AstMakePointer>(this, AstNodeKind::MakePointer, sourceFile, parentId);
                     parentId->semanticFct = SemanticJob::resolveMakePointer;
-                    parentId->specFlags |= AST_SPEC_MAKEPOINTER_TOREF;
+                    parentId->specFlags |= AstMakePointer::SPECFLAG_TOREF;
                     eatToken();
                     byRef = true;
                 }
@@ -1047,7 +1047,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
         AstNode* typeExpression;
         SWAG_CHECK(doTypeExpression(typeNode, &typeExpression));
         Ast::setForceConstType(typeExpression);
-        typeNode->specFlags |= AST_SPEC_FUNCTYPE_RETURN_DEFINED;
+        typeNode->specFlags |= AstFuncDecl::SPECFLAG_RETURN_DEFINED;
     }
 
     // Body
@@ -1063,7 +1063,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
             auto returnNode         = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, funcNode);
             returnNode->semanticFct = SemanticJob::resolveReturn;
             funcNode->content       = returnNode;
-            funcNode->specFlags |= AST_SPEC_FUNCDECL_SHORT_LAMBDA;
+            funcNode->specFlags |= AstFuncDecl::SPECFLAG_SHORT_LAMBDA;
             SWAG_CHECK(doExpression(returnNode, EXPR_FLAG_NONE));
         }
 
@@ -1145,7 +1145,7 @@ bool Parser::doLambdaExpression(AstNode* parent, AstNode** result)
         block->flags |= AST_GENERATED;
         auto exprList         = Ast::newNode<AstExpressionList>(this, AstNodeKind::ExpressionList, sourceFile, block);
         exprList->semanticFct = SemanticJob::resolveExpressionListTuple;
-        exprList->specFlags |= AST_SPEC_EXPRLIST_FOR_TUPLE | AST_SPEC_EXPRLIST_FOR_CAPTURE;
+        exprList->specFlags |= AstExpressionList::SPECFLAG_FOR_TUPLE | AstExpressionList::SPECFLAG_FOR_CAPTURE;
         exprList->inheritTokenLocation(lambdaDecl->captureParameters);
         block->assignment = exprList;
         SemanticJob::setVarDeclResolve(block);

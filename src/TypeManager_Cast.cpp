@@ -2185,7 +2185,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
             return true;
 
         auto structNode = CastAst<AstStruct>(it.typeStruct->declNode, AstNodeKind::StructDecl);
-        if (!(structNode->specFlags & AST_SPEC_STRUCTDECL_HAS_USING))
+        if (!(structNode->specFlags & AstStruct::SPECFLAG_HAS_USING))
             continue;
 
         context->job->waitOverloadCompleted(it.typeStruct->declNode->resolvedSymbolOverload);
@@ -2277,7 +2277,7 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
 
         skipFirst       = false;
         auto structNode = CastAst<AstStruct>(it.typeStruct->declNode, AstNodeKind::StructDecl);
-        if (!(structNode->specFlags & AST_SPEC_STRUCTDECL_HAS_USING))
+        if (!(structNode->specFlags & AstStruct::SPECFLAG_HAS_USING))
             continue;
 
         context->job->waitOverloadCompleted(it.typeStruct->declNode->resolvedSymbolOverload);

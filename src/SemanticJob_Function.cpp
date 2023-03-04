@@ -29,7 +29,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
             continue;
 
         auto nodeExpr = CastAst<AstExpressionList>(nodeParam->assignment, AstNodeKind::ExpressionList);
-        if (!(nodeExpr->specFlags & AST_SPEC_EXPRLIST_FOR_TUPLE))
+        if (!(nodeExpr->specFlags & AstExpressionList::SPECFLAG_FOR_TUPLE))
             continue;
 
         if (!nodeParam->type)
@@ -342,12 +342,12 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     if (node->content && (node->content->flags & AST_NO_SEMANTIC))
     {
         ScopedLock lk(node->funcMutex);
-        node->specFlags |= AST_SPEC_FUNCDECL_PARTIAL_RESOLVE;
+        node->specFlags |= AstFuncDecl::SPECFLAG_PARTIAL_RESOLVE;
         node->dependentJobs.setRunning();
         return true;
     }
 
-    // Flag the function with AST_SPEC_FUNCDECL_IS_IMPL_MTD if this is an interface implementation method
+    // Flag the function with AstFuncDecl::SPECFLAG_IS_IMPL_MTD if this is an interface implementation method
     if (node->ownerScope && node->ownerScope->kind == ScopeKind::Impl)
     {
         auto implNode = CastAst<AstImpl>(node->ownerScope->owner, AstNodeKind::Impl);
@@ -411,7 +411,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 bool SemanticJob::setFullResolve(SemanticContext* context, AstFuncDecl* funcNode)
 {
     ScopedLock lk(funcNode->funcMutex);
-    funcNode->specFlags |= AST_SPEC_FUNCDECL_FULL_RESOLVE | AST_SPEC_FUNCDECL_PARTIAL_RESOLVE;
+    funcNode->specFlags |= AstFuncDecl::SPECFLAG_FULL_RESOLVE | AstFuncDecl::SPECFLAG_PARTIAL_RESOLVE;
     funcNode->dependentJobs.setRunning();
     return true;
 }
@@ -490,7 +490,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         typeNode->typeInfo = g_TypeMgr->typeInfoVoid;
 
         // :DeduceLambdaType
-        if (funcNode->makePointerLambda && funcNode->makePointerLambda->parent->kind == AstNodeKind::AffectOp && !(funcNode->specFlags & AST_SPEC_FUNCDECL_SHORT_LAMBDA))
+        if (funcNode->makePointerLambda && funcNode->makePointerLambda->parent->kind == AstNodeKind::AffectOp && !(funcNode->specFlags & AstFuncDecl::SPECFLAG_SHORT_LAMBDA))
         {
             auto op = CastAst<AstOp>(funcNode->makePointerLambda->parent, AstNodeKind::AffectOp);
             if (op->deducedLambdaType)
@@ -606,7 +606,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         if ((funcNode->semFlags & AST_SEM_PENDING_LAMBDA_TYPING) && (typeNode->typeInfo == g_TypeMgr->typeInfoVoid))
         {
             typeNode->typeInfo = g_TypeMgr->typeInfoUndefined;
-            funcNode->specFlags &= ~AST_SPEC_FUNCDECL_SHORT_LAMBDA;
+            funcNode->specFlags &= ~AstFuncDecl::SPECFLAG_SHORT_LAMBDA;
         }
     }
 
@@ -614,7 +614,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // In that case, symbol registration will not be done at the end of that function but once the return expression
     // has been evaluated, and the type deduced
     bool shortLambda = false;
-    if ((funcNode->specFlags & AST_SPEC_FUNCDECL_SHORT_LAMBDA) && !(funcNode->returnType->specFlags & AST_SPEC_FUNCTYPE_RETURN_DEFINED))
+    if ((funcNode->specFlags & AstFuncDecl::SPECFLAG_SHORT_LAMBDA) && !(funcNode->returnType->specFlags & AstFuncDecl::SPECFLAG_RETURN_DEFINED))
         shortLambda = true;
 
     // :RunGeneratedExp
@@ -1162,7 +1162,7 @@ void SemanticJob::propagateReturn(AstNode* node)
         else if (scanNode->kind == AstNodeKind::SwitchCase)
         {
             auto sc = CastAst<AstSwitchCase>(scanNode, AstNodeKind::SwitchCase);
-            if (sc->specFlags & AST_SPEC_SWITCHCASE_ISDEFAULT)
+            if (sc->specFlags & AstSwitchCase::SPECFLAG_IS_DEFAULT)
                 sc->ownerSwitch->semFlags |= AST_SEM_SCOPE_FORCE_HAS_RETURN;
         }
         else if (scanNode->kind == AstNodeKind::Switch)
@@ -1271,12 +1271,12 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
 
     // Deduce return type
     auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
-    bool lateRegister = funcNode->specFlags & AST_SPEC_FUNCDECL_FORCE_LATE_REGISTER;
-    if (funcReturnType->isVoid() && !(funcNode->specFlags & AST_SPEC_FUNCDECL_LATE_REGISTER_DONE))
+    bool lateRegister = funcNode->specFlags & AstFuncDecl::SPECFLAG_FORCE_LATE_REGISTER;
+    if (funcReturnType->isVoid() && !(funcNode->specFlags & AstFuncDecl::SPECFLAG_LATE_REGISTER_DONE))
     {
         // This is a short lambda without a specified return type. We now have it
         bool tryDeduce = false;
-        if ((funcNode->specFlags & AST_SPEC_FUNCDECL_SHORT_LAMBDA) && !(funcNode->returnType->specFlags & AST_SPEC_FUNCTYPE_RETURN_DEFINED))
+        if ((funcNode->specFlags & AstFuncDecl::SPECFLAG_SHORT_LAMBDA) && !(funcNode->returnType->specFlags & AstFuncDecl::SPECFLAG_RETURN_DEFINED))
             tryDeduce = true;
         if (funcNode->attributeFlags & ATTRIBUTE_RUN_GENERATED_EXP)
             tryDeduce = true;
@@ -1288,7 +1288,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
             if (concreteReturn->isListTuple())
             {
                 SWAG_CHECK(Ast::convertLiteralTupleToStructDecl(context, funcNode->content, node->childs.front(), &funcNode->returnType));
-                funcNode->specFlags |= AST_SPEC_FUNCDECL_FORCE_LATE_REGISTER;
+                funcNode->specFlags |= AstFuncDecl::SPECFLAG_FORCE_LATE_REGISTER;
                 Ast::setForceConstType(funcNode->returnType);
                 context->job->nodes.push_back(funcNode->returnType);
                 context->result = ContextResult::NewChilds;
@@ -1298,7 +1298,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
             typeInfoFunc->forceComputeName();
             funcNode->returnType->typeInfo  = typeInfoFunc->returnType;
             funcNode->returnTypeDeducedNode = node;
-            funcNode->specFlags |= AST_SPEC_FUNCDECL_LATE_REGISTER_DONE;
+            funcNode->specFlags |= AstFuncDecl::SPECFLAG_LATE_REGISTER_DONE;
             lateRegister = true;
         }
     }
@@ -1423,7 +1423,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     // Register symbol now that we have inferred the return type
     if (lateRegister)
     {
-        funcNode->specFlags &= ~AST_SPEC_FUNCDECL_FORCE_LATE_REGISTER;
+        funcNode->specFlags &= ~AstFuncDecl::SPECFLAG_FORCE_LATE_REGISTER;
         typeInfoFunc->returnType = funcNode->returnType->typeInfo;
         typeInfoFunc->forceComputeName();
         SWAG_CHECK(registerFuncSymbol(context, funcNode));
@@ -1631,7 +1631,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
             cloneContext.replaceNames[Fmt("@alias%d", idx++)] = alias.text;
 
         // Replace user @mixin
-        if (funcDecl->specFlags & AST_SPEC_FUNCDECL_SPEC_MIXIN)
+        if (funcDecl->specFlags & AstFuncDecl::SPECFLAG_SPEC_MIXIN)
         {
             for (int i = 0; i < 10; i++)
                 cloneContext.replaceNames[Fmt("@mixin%d", i)] = Fmt("__mixin%d", g_UniqueID.fetch_add(1));

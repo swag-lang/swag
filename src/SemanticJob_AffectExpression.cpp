@@ -120,7 +120,7 @@ bool SemanticJob::checkIsConstAffect(SemanticContext* context, AstNode* left, As
             }
         }
 
-        if (left->kind == AstNodeKind::Identifier && left->specFlags & (AST_SPEC_IDENTIFIER_FROM_USING | AST_SPEC_IDENTIFIER_FROM_WITH))
+        if (left->kind == AstNodeKind::Identifier && left->specFlags & (AstIdentifier::SPECFLAG_FROM_USING | AstIdentifier::SPECFLAG_FROM_WITH))
         {
             auto leftId = CastAst<AstIdentifier>(left, AstNodeKind::Identifier);
             hint        = "this is equivalent to '";
@@ -132,7 +132,7 @@ bool SemanticJob::checkIsConstAffect(SemanticContext* context, AstNode* left, As
                 hint += c->token.text;
             }
 
-            if (left->specFlags & AST_SPEC_IDENTIFIER_FROM_USING)
+            if (left->specFlags & AstIdentifier::SPECFLAG_FROM_USING)
                 hint += "' because of a 'using'";
             else
                 hint += "' because of a 'with'";
