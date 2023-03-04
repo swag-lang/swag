@@ -152,7 +152,7 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
                 break;
 
             auto tokenComma = token;
-            if (callParams->flags & AST_CALL_FOR_STRUCT)
+            if (callParams->specFlags & AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT)
                 SWAG_CHECK(eatToken(TokenId::SymComma, "in struct initialization parameters"));
             else
                 SWAG_CHECK(eatToken(TokenId::SymComma, "in function call parameters"));
@@ -166,7 +166,7 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
         }
     }
 
-    if (callParams->flags & AST_CALL_FOR_STRUCT)
+    if (callParams->specFlags & AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT)
         SWAG_CHECK(eatToken(closeToken, "to close struct initialization parameters"));
     else
         SWAG_CHECK(eatToken(closeToken, "to close function call parameters"));

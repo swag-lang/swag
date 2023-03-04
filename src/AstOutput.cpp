@@ -1792,12 +1792,12 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
         if (identifier->callParameters)
         {
-            if (identifier->callParameters->flags & AST_CALL_FOR_STRUCT)
+            if (identifier->callParameters->specFlags & AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT)
                 concat.addChar('{');
             else
                 concat.addChar('(');
             SWAG_CHECK(outputNode(context, concat, identifier->callParameters));
-            if (identifier->callParameters->flags & AST_CALL_FOR_STRUCT)
+            if (identifier->callParameters->specFlags & AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT)
                 concat.addChar('}');
             else if (identifier->callParameters->childs.empty())
                 concat.addChar(')');

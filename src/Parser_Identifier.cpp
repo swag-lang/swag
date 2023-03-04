@@ -179,7 +179,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         {
             SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
             SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, TokenId::SymRightCurly));
-            identifier->callParameters->flags |= AST_CALL_FOR_STRUCT;
+            identifier->callParameters->specFlags |= AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT;
         }
     }
 

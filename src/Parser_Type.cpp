@@ -518,7 +518,7 @@ bool Parser::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeVarD
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doFuncCallParameters(id, &id->callParameters, TokenId::SymRightCurly));
             id->flags |= AST_IN_TYPE_VAR_DECLARATION;
-            id->callParameters->flags |= AST_CALL_FOR_STRUCT;
+            id->callParameters->specFlags |= AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT;
         }
 
         return true;

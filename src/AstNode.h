@@ -591,6 +591,8 @@ struct AstAttrUse : public AstNode
 
 struct AstFuncCallParams : public AstNode
 {
+    static const uint16_t SPECFLAG_CALL_FOR_STRUCT = 0x0001;
+
     AstNode* clone(CloneContext& context);
 
     Vector<Token> aliasNames;

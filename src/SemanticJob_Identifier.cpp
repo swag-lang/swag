@@ -991,7 +991,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             identifier->flags |= AST_CONST_EXPR;
 
         // Be sure it's the NAME{} syntax
-        if (identifier->callParameters && !(identifier->flags & AST_GENERATED) && !(identifier->callParameters->flags & AST_CALL_FOR_STRUCT))
+        if (identifier->callParameters && !(identifier->flags & AST_GENERATED) && !(identifier->callParameters->specFlags & AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT))
         {
             Diagnostic diag{identifier, identifier->token, Fmt(Err(Syn0128), identifier->typeInfo->name.c_str())};
             auto       note = Diagnostic::help(Hlp(Hlp0035));
@@ -1236,7 +1236,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         identifier->flags |= AST_SIDE_EFFECTS;
 
         // Be sure it's () and not {}
-        if (identifier->callParameters && (identifier->callParameters->flags & AST_CALL_FOR_STRUCT))
+        if (identifier->callParameters && (identifier->callParameters->specFlags & AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT))
             return context->report({identifier->callParameters, Fmt(Err(Err0098), identifier->token.ctext())});
 
         // Capture syntax

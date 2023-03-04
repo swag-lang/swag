@@ -71,7 +71,7 @@ bool Ast::convertLiteralTupleToStructVar(SemanticContext* context, TypeInfo* toT
     auto identifier = CastAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
     identifier->inheritTokenLocation(fromNode);
     identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier);
-    identifier->callParameters->flags |= AST_CALL_FOR_STRUCT;
+    identifier->callParameters->specFlags |= AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT;
 
     int countParams = (int) fromNode->childs.size();
     if (parentForRef == fromNode)
@@ -436,7 +436,7 @@ bool Ast::convertStructParamsToTmpVar(SemanticContext* context, AstIdentifier* i
     identifier->flags |= AST_R_VALUE | AST_GENERATED | AST_NO_BYTECODE;
 
     // Be sure it's the NAME{} syntax
-    if (!(identifier->callParameters->flags & AST_CALL_FOR_STRUCT))
+    if (!(identifier->callParameters->specFlags & AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT))
         return context->report({callP, Fmt(Err(Syn0128), identifier->typeInfo->name.c_str())});
 
     auto varParent = identifier->identifierRef()->parent;

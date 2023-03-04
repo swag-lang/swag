@@ -339,7 +339,7 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
 
     identifier->callParameters->inheritTokenLocation(varDecl->assignment);
     identifier->callParameters->inheritOrFlag(varDecl->assignment, AST_CONST_EXPR | AST_SIDE_EFFECTS);
-    identifier->callParameters->flags |= AST_CALL_FOR_STRUCT;
+    identifier->callParameters->specFlags |= AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT;
     identifier->flags |= AST_IN_TYPE_VAR_DECLARATION;
     typeExpression->flags &= ~AST_NO_BYTECODE;
     typeExpression->flags &= ~AST_NO_BYTECODE_CHILDS;

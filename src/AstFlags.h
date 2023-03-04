@@ -42,7 +42,7 @@ const uint64_t AST_IN_ATOMIC_EXPR             = 0x00000080'00000000;
 const uint64_t AST_HAS_SELECT_IF              = 0x00000100'00000000;
 const uint64_t AST_REGISTERED_IN_STRUCT       = 0x00000200'00000000;
 const uint64_t AST_SIDE_EFFECTS               = 0x00000400'00000000;
-const uint64_t AST_CALL_FOR_STRUCT            = 0x00000800'00000000;
+const uint64_t AST_STRUCT_CONVERT             = 0x00000800'00000000;
 const uint64_t AST_FROM_UFCS                  = 0x00001000'00000000;
 const uint64_t AST_TO_UFCS                    = 0x00002000'00000000;
 const uint64_t AST_TUPLE_UNPACK               = 0x00004000'00000000;
@@ -59,7 +59,6 @@ const uint64_t AST_SPEC_STACKSIZE             = 0x01000000'00000000;
 const uint64_t AST_INLINED                    = 0x02000000'00000000;
 const uint64_t AST_SPEC_SEMANTIC1             = 0x04000000'00000000;
 const uint64_t AST_SPEC_SEMANTIC2             = 0x08000000'00000000;
-const uint64_t AST_STRUCT_CONVERT             = 0x10000000'00000000;
 
 const uint64_t SEMFLAG_VARDECL_STRUCT_PARAMETERS = 0x00000000'00000001;
 const uint64_t SEMFLAG_VARDECL_REF_CALL          = 0x00000000'00000002;
