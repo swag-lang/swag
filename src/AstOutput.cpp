@@ -981,7 +981,7 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstTypeExpres
 
     for (int i = 0; i < node->ptrCount; i++)
     {
-        if (node->ptrFlags[i] & AstTypeExpression::PTR_ARITMETIC)
+        if (node->ptrFlags[i] & AstTypeExpression::PTR_ARITHMETIC)
             concat.addChar('^');
         else
             concat.addChar('*');

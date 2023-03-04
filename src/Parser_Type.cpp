@@ -710,7 +710,7 @@ bool Parser::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeVarD
                 return error(token, Fmt(Err(Syn0133), AstTypeExpression::MAX_PTR_COUNT));
             node->ptrFlags[node->ptrCount] = isPtrConst ? AstTypeExpression::PTR_CONST : 0;
             if (token.id == TokenId::SymCircumflex)
-                node->ptrFlags[node->ptrCount] |= AstTypeExpression::PTR_ARITMETIC;
+                node->ptrFlags[node->ptrCount] |= AstTypeExpression::PTR_ARITHMETIC;
             SWAG_CHECK(eatToken());
             isPtrConst = false;
 

@@ -48,24 +48,6 @@ const uint32_t ALTSCOPE_USING     = 0x00000001;
 const uint32_t ALTSCOPE_SCOPEFILE = 0x00000002;
 const uint32_t ALTSCOPE_UFCS      = 0x00000004;
 
-const uint32_t BREAKABLE_CAN_HAVE_INDEX         = 0x00000001;
-const uint32_t BREAKABLE_CAN_HAVE_CONTINUE      = 0x00000002;
-const uint32_t BREAKABLE_NEED_INDEX             = 0x00000004;
-const uint32_t BREAKABLE_NEED_INDEX1            = 0x00000008;
-const uint32_t BREAKABLE_RETURN_IN_INFINIT_LOOP = 0x00000010;
-
-const uint16_t TYPEFLAG_ISREF          = 0x0001;
-const uint16_t TYPEFLAG_IS_SLICE       = 0x0002;
-const uint16_t TYPEFLAG_IS_CONST       = 0x0004;
-const uint16_t TYPEFLAG_IS_CODE        = 0x0008;
-const uint16_t TYPEFLAG_FORCE_CONST    = 0x0010;
-const uint16_t TYPEFLAG_IS_SELF        = 0x0020;
-const uint16_t TYPEFLAG_RETVAL         = 0x0040;
-const uint16_t TYPEFLAG_USING          = 0x0080;
-const uint16_t TYPEFLAG_IS_CONST_SLICE = 0x0100;
-const uint16_t TYPEFLAG_IS_REF         = 0x0200;
-const uint16_t TYPEFLAG_IS_MOVE_REF    = 0x0400;
-
 struct CloneUpdateRef
 {
     AstNode*  node;
@@ -328,10 +310,7 @@ struct AstNode
     bool isFunctionCall();
     bool isGeneratedSelf();
     bool isEmptyFct();
-
-    // clang-format off
-    bool isForeign() { return attributeFlags & ATTRIBUTE_FOREIGN; }
-    // clang-format on
+    bool isForeign();
 
     void     setPassThrough();
     AstNode* findChildRef(AstNode* ref, AstNode* fromChild);
@@ -647,6 +626,12 @@ struct AstBreakContinue : public AstNode
     int jumpInstruction = 0;
 };
 
+const uint32_t BREAKABLE_CAN_HAVE_INDEX         = 0x00000001;
+const uint32_t BREAKABLE_CAN_HAVE_CONTINUE      = 0x00000002;
+const uint32_t BREAKABLE_NEED_INDEX             = 0x00000004;
+const uint32_t BREAKABLE_NEED_INDEX1            = 0x00000008;
+const uint32_t BREAKABLE_RETURN_IN_INFINIT_LOOP = 0x00000010;
+
 struct AstBreakable : public AstNode
 {
     bool needIndex()
@@ -665,13 +650,14 @@ struct AstBreakable : public AstNode
     VectorNative<AstBreakContinue*> continueList;
     VectorNative<AstBreakContinue*> fallThroughList;
 
-    uint32_t breakableFlags           = BREAKABLE_CAN_HAVE_INDEX | BREAKABLE_CAN_HAVE_CONTINUE;
-    uint32_t registerIndex            = 0;
-    uint32_t registerIndex1           = 0;
-    int      seekJumpBeforeContinue   = 0;
-    int      seekJumpBeforeExpression = 0;
-    int      seekJumpExpression       = 0;
-    int      seekJumpAfterBlock       = 0;
+    uint32_t registerIndex  = 0;
+    uint32_t registerIndex1 = 0;
+    uint32_t breakableFlags = BREAKABLE_CAN_HAVE_INDEX | BREAKABLE_CAN_HAVE_CONTINUE;
+
+    int seekJumpBeforeContinue   = 0;
+    int seekJumpBeforeExpression = 0;
+    int seekJumpExpression       = 0;
+    int seekJumpAfterBlock       = 0;
 };
 
 struct AstScopeBreakable : public AstBreakable
@@ -778,25 +764,36 @@ struct AstType : public AstNode
     static const uint16_t SPECFLAG_HAS_STRUCT_PARAMETERS = 0x2000;
 };
 
+const uint16_t TYPEFLAG_ISREF          = 0x0001;
+const uint16_t TYPEFLAG_IS_SLICE       = 0x0002;
+const uint16_t TYPEFLAG_IS_CONST       = 0x0004;
+const uint16_t TYPEFLAG_IS_CODE        = 0x0008;
+const uint16_t TYPEFLAG_FORCE_CONST    = 0x0010;
+const uint16_t TYPEFLAG_IS_SELF        = 0x0020;
+const uint16_t TYPEFLAG_RETVAL         = 0x0040;
+const uint16_t TYPEFLAG_USING          = 0x0080;
+const uint16_t TYPEFLAG_IS_CONST_SLICE = 0x0100;
+const uint16_t TYPEFLAG_IS_REF         = 0x0200;
+const uint16_t TYPEFLAG_IS_MOVE_REF    = 0x0400;
+
 struct AstTypeExpression : public AstType
 {
     static const uint16_t SPECFLAG_DONE_GEN = 0x0001;
 
-    static const int     MAX_PTR_COUNT = 4;
-    static const uint8_t PTR_CONST     = 0x01;
-    static const uint8_t PTR_ARITMETIC = 0x02;
+    static const int     MAX_PTR_COUNT  = 3;
+    static const uint8_t PTR_CONST      = 0x01;
+    static const uint8_t PTR_ARITHMETIC = 0x02;
 
     AstNode* clone(CloneContext& context);
 
     AstNode*  identifier      = nullptr;
     TypeInfo* typeFromLiteral = nullptr;
 
-    uint8_t  ptrFlags[MAX_PTR_COUNT] = {0};
-    uint16_t typeFlags               = 0;
-    uint8_t  ptrCount                = 0;
-    uint8_t  arrayDim                = 0;
-
-    LiteralType literalType = (LiteralType) 0;
+    uint8_t     ptrFlags[MAX_PTR_COUNT] = {0};
+    LiteralType literalType             = (LiteralType) 0;
+    uint16_t    typeFlags               = 0;
+    uint8_t     ptrCount                = 0;
+    uint8_t     arrayDim                = 0;
 };
 
 struct AstTypeLambda : public AstType

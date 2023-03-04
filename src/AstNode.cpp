@@ -192,6 +192,11 @@ bool AstNode::isEmptyFct()
     return kind == AstNodeKind::FuncDecl && specFlags & AstFuncDecl::SPECFLAG_EMPTY_FCT;
 }
 
+bool AstNode::isForeign()
+{
+    return attributeFlags & ATTRIBUTE_FOREIGN;
+}
+
 bool AstNode::isFunctionCall()
 {
     if (kind == AstNodeKind::FuncCall)

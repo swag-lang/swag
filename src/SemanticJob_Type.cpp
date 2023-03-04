@@ -380,7 +380,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
                 isConst = true;
             else if (typeNode->typeFlags & TYPEFLAG_IS_CONST && i == 0)
                 isConst = true;
-            if (typeNode->ptrFlags[i] & AstTypeExpression::PTR_ARITMETIC)
+            if (typeNode->ptrFlags[i] & AstTypeExpression::PTR_ARITHMETIC)
                 isArithmetic = true;
 
             auto ptrFlags = (firstType->flags & TYPEINFO_GENERIC);
