@@ -3,10 +3,11 @@
 #include "ByteCode.h"
 #include "TypeManager.h"
 #include "Module.h"
+#include "Ast.h"
 
 bool ByteCodeGenJob::emitLocalVarDeclBefore(ByteCodeGenContext* context)
 {
-    auto node = static_cast<AstVarDecl*>(context->node);
+    auto node = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
     // No need to generate a local variable if it is never used
     if (context->sourceFile->module->mustOptimizeBC(node))
@@ -37,7 +38,7 @@ bool ByteCodeGenJob::emitLocalVarDeclBefore(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
 {
-    auto node = static_cast<AstVarDecl*>(context->node);
+    auto node = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
     // Debug
     context->bc->localVars.push_back(context->node);
