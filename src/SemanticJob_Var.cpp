@@ -374,42 +374,42 @@ bool SemanticJob::convertTypeListToArray(SemanticContext* context, AstVarDecl* n
     return true;
 }
 
-DataSegment* SemanticJob::getSegmentForVar(SemanticContext* context, AstVarDecl* node)
+DataSegment* SemanticJob::getSegmentForVar(SemanticContext* context, AstVarDecl* varNode)
 {
-    auto module   = node->sourceFile->module;
-    auto typeInfo = TypeManager::concreteType(node->typeInfo);
+    auto module   = varNode->sourceFile->module;
+    auto typeInfo = TypeManager::concreteType(varNode->typeInfo);
 
-    if (node->attributeFlags & ATTRIBUTE_TLS)
+    if (varNode->attributeFlags & ATTRIBUTE_TLS)
         return &module->tlsSegment;
 
-    if (isCompilerContext(node))
+    if (isCompilerContext(varNode))
         return &module->compilerSegment;
 
-    if (node->kind == AstNodeKind::ConstDecl)
+    if (varNode->kind == AstNodeKind::ConstDecl)
         return &module->constantSegment;
-    if (node->resolvedSymbolOverload && (node->resolvedSymbolOverload->flags & OVERLOAD_VAR_STRUCT))
+    if (varNode->resolvedSymbolOverload && (varNode->resolvedSymbolOverload->flags & OVERLOAD_VAR_STRUCT))
         return &module->constantSegment;
 
-    if (node->attributeFlags & AST_EXPLICITLY_NOT_INITIALIZED)
+    if (varNode->attributeFlags & AST_EXPLICITLY_NOT_INITIALIZED)
         return &module->mutableSegment;
 
     // An array of struct with default values should go to the mutable segment
-    if (node->typeInfo->isArrayOfStruct())
+    if (varNode->typeInfo->isArrayOfStruct())
     {
-        auto typeArr = CastTypeInfo<TypeInfoArray>(node->typeInfo, TypeInfoKind::Array);
+        auto typeArr = CastTypeInfo<TypeInfoArray>(varNode->typeInfo, TypeInfoKind::Array);
         if (typeArr->finalType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
             return &module->mutableSegment;
     }
 
-    if (!node->assignment && (typeInfo->isNative() || typeInfo->isArray()))
+    if (!varNode->assignment && (typeInfo->isNative() || typeInfo->isArray()))
         return &module->bssSegment;
-    if (node->assignment && typeInfo->isNative() && typeInfo->sizeOf <= 8 && node->assignment->isConstant0())
+    if (varNode->assignment && typeInfo->isNative() && typeInfo->sizeOf <= 8 && varNode->assignment->isConstant0())
         return &module->bssSegment;
-    if (!node->assignment &&
-        !(node->flags & AST_HAS_STRUCT_PARAMETERS) &&
-        !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS) &&
-        (node->typeInfo->isStruct() || node->typeInfo->isInterface()) &&
-        !(node->typeInfo->flags & (TYPEINFO_STRUCT_HAS_INIT_VALUES)))
+    if (!varNode->assignment &&
+        (!varNode->type || !(varNode->type->flags & AST_HAS_STRUCT_PARAMETERS)) &&
+        !(varNode->flags & AST_HAS_FULL_STRUCT_PARAMETERS) &&
+        (varNode->typeInfo->isStruct() || varNode->typeInfo->isInterface()) &&
+        !(varNode->typeInfo->flags & (TYPEINFO_STRUCT_HAS_INIT_VALUES)))
         return &module->bssSegment;
 
     return &module->mutableSegment;
