@@ -17,12 +17,11 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
 
     specFlags = from->specFlags;
 
-    ownerStructScope     = context.ownerStructScope ? context.ownerStructScope : from->ownerStructScope;
-    ownerScope           = context.parentScope ? context.parentScope : from->ownerScope;
-    ownerBreakable       = context.ownerBreakable ? context.ownerBreakable : from->ownerBreakable;
-    ownerInline          = context.ownerInline ? context.ownerInline : from->ownerInline;
-    ownerFct             = (context.ownerFct || (context.cloneFlags & CLONE_FORCE_OWNER_FCT)) ? context.ownerFct : from->ownerFct;
-    ownerCompilerIfBlock = context.ownerCompilerIfBlock ? context.ownerCompilerIfBlock : from->ownerCompilerIfBlock;
+    ownerStructScope = context.ownerStructScope ? context.ownerStructScope : from->ownerStructScope;
+    ownerScope       = context.parentScope ? context.parentScope : from->ownerScope;
+    ownerBreakable   = context.ownerBreakable ? context.ownerBreakable : from->ownerBreakable;
+    ownerInline      = context.ownerInline ? context.ownerInline : from->ownerInline;
+    ownerFct         = (context.ownerFct || (context.cloneFlags & CLONE_FORCE_OWNER_FCT)) ? context.ownerFct : from->ownerFct;
 
     // We do not want a defer statement to have some defers in the same scope, otherwise it's infinite
     if (context.ownerDeferScope)
@@ -38,6 +37,12 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         {
             *p.ref = this;
         }
+    }
+
+    if (context.ownerCompilerIfBlock || (from->hasExtOwner() && from->extOwner()->ownerCompilerIfBlock))
+    {
+        allocateExtension(ExtensionKind::Owner);
+        extOwner()->ownerCompilerIfBlock = context.ownerCompilerIfBlock ? context.ownerCompilerIfBlock : from->extOwner()->ownerCompilerIfBlock;
     }
 
     if (context.ownerTryCatchAssume || (from->hasExtOwner() && from->extOwner()->ownerTryCatchAssume))
@@ -1448,8 +1453,8 @@ AstNode* AstCompilerIfBlock::clone(CloneContext& context)
     newNode->cloneChilds(cloneContext, this);
     context.propageResult(cloneContext);
 
-    if (newNode->ownerCompilerIfBlock)
-        newNode->ownerCompilerIfBlock->blocks.push_back(newNode);
+    if (newNode->hasExtOwner() && newNode->extOwner()->ownerCompilerIfBlock)
+        newNode->extOwner()->ownerCompilerIfBlock->blocks.push_back(newNode);
     return newNode;
 }
 

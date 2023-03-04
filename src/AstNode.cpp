@@ -104,22 +104,40 @@ void AstNode::inheritOwners(AstNode* op)
 {
     if (!op)
         return;
-    ownerStructScope     = op->ownerStructScope;
-    ownerScope           = op->ownerScope;
-    ownerFct             = op->ownerFct;
-    ownerBreakable       = op->ownerBreakable;
-    ownerInline          = op->ownerInline;
-    ownerCompilerIfBlock = op->ownerCompilerIfBlock;
+    ownerStructScope = op->ownerStructScope;
+    ownerScope       = op->ownerScope;
+    ownerFct         = op->ownerFct;
+    ownerBreakable   = op->ownerBreakable;
+    ownerInline      = op->ownerInline;
+
+    if (op->hasExtOwner() && op->extOwner()->ownerCompilerIfBlock)
+    {
+        allocateExtension(ExtensionKind::Owner);
+        extOwner()->ownerCompilerIfBlock = op->extOwner()->ownerCompilerIfBlock;
+    }
+    else if (hasExtOwner())
+    {
+        extOwner()->ownerCompilerIfBlock = nullptr;
+    }
 }
 
 void AstNode::inheritOwnersAndFlags(Parser* parser)
 {
-    ownerStructScope     = parser->currentStructScope;
-    ownerScope           = parser->currentScope;
-    ownerFct             = parser->currentFct;
-    ownerBreakable       = parser->currentBreakable;
-    ownerCompilerIfBlock = parser->currentCompilerIfBlock;
-    ownerInline          = parser->currentInline;
+    ownerStructScope = parser->currentStructScope;
+    ownerScope       = parser->currentScope;
+    ownerFct         = parser->currentFct;
+    ownerBreakable   = parser->currentBreakable;
+    ownerInline      = parser->currentInline;
+
+    if (parser->currentCompilerIfBlock)
+    {
+        allocateExtension(ExtensionKind::Owner);
+        extOwner()->ownerCompilerIfBlock = parser->currentCompilerIfBlock;
+    }
+    else if (hasExtOwner())
+    {
+        extOwner()->ownerCompilerIfBlock = nullptr;
+    }
 
     if (parser->currentTryCatchAssume)
     {

@@ -368,8 +368,9 @@ struct AstNode
 
     struct ExtensionOwner
     {
-        AstAttrUse*            ownerAttrUse        = nullptr;
-        AstTryCatchAssume*     ownerTryCatchAssume = nullptr;
+        AstAttrUse*            ownerAttrUse         = nullptr;
+        AstTryCatchAssume*     ownerTryCatchAssume  = nullptr;
+        AstCompilerIfBlock*    ownerCompilerIfBlock = nullptr;
         VectorNative<AstNode*> nodesToFree;
     };
 
@@ -429,12 +430,11 @@ struct AstNode
     VectorNative<AstNode*> childs;
     ComputedValue*         computedValue = nullptr;
 
-    Scope*              ownerScope           = nullptr;
-    Scope*              ownerStructScope     = nullptr;
-    AstBreakable*       ownerBreakable       = nullptr;
-    AstInline*          ownerInline          = nullptr;
-    AstFuncDecl*        ownerFct             = nullptr;
-    AstCompilerIfBlock* ownerCompilerIfBlock = nullptr;
+    Scope*        ownerScope       = nullptr;
+    Scope*        ownerStructScope = nullptr;
+    AstBreakable* ownerBreakable   = nullptr;
+    AstInline*    ownerInline      = nullptr;
+    AstFuncDecl*  ownerFct         = nullptr;
 
     TypeInfo* typeInfo       = nullptr;
     TypeInfo* castedTypeInfo = nullptr;

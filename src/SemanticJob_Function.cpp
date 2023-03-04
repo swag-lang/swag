@@ -902,10 +902,10 @@ void SemanticJob::resolveSubDecls(JobContext* context, AstFuncDecl* funcNode)
                 continue;
             f->semFlags |= SEMFLAG_DISABLED; // To avoid multiple resolutions
 
-            if (f->ownerCompilerIfBlock && f->ownerCompilerIfBlock->ownerFct == funcNode)
+            if (f->hasExtOwner() && f->extOwner()->ownerCompilerIfBlock && f->extOwner()->ownerCompilerIfBlock->ownerFct == funcNode)
             {
-                ScopedLock lk1(f->ownerCompilerIfBlock->mutex);
-                f->ownerCompilerIfBlock->subDecls.push_back(f);
+                ScopedLock lk1(f->extOwner()->ownerCompilerIfBlock->mutex);
+                f->extOwner()->ownerCompilerIfBlock->subDecls.push_back(f);
             }
             else
                 launchResolveSubDecl(context, f);

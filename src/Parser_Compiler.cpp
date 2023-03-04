@@ -58,8 +58,8 @@ bool Parser::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind
     {
         auto block    = Ast::newNode<AstCompilerIfBlock>(this, AstNodeKind::CompilerIfBlock, sourceFile, node);
         node->ifBlock = block;
-        if (node->ownerCompilerIfBlock)
-            node->ownerCompilerIfBlock->blocks.push_back(block);
+        if (node->hasExtOwner() && node->extOwner()->ownerCompilerIfBlock)
+            node->extOwner()->ownerCompilerIfBlock->blocks.push_back(block);
 
         ScopedCompilerIfBlock scopedIf(this, block);
         SWAG_CHECK(doStatementFor(block, nullptr, kind));
@@ -70,8 +70,8 @@ bool Parser::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind
     {
         auto block      = Ast::newNode<AstCompilerIfBlock>(this, AstNodeKind::CompilerIfBlock, sourceFile, node);
         node->elseBlock = block;
-        if (node->ownerCompilerIfBlock)
-            node->ownerCompilerIfBlock->blocks.push_back(block);
+        if (node->hasExtOwner() && node->extOwner()->ownerCompilerIfBlock)
+            node->extOwner()->ownerCompilerIfBlock->blocks.push_back(block);
 
         ScopedCompilerIfBlock scopedIf(this, block);
         if (token.id == TokenId::CompilerElseIf)
@@ -432,8 +432,8 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
 
         auto block    = Ast::newNode<AstCompilerIfBlock>(this, AstNodeKind::CompilerIfBlock, sourceFile, node);
         node->ifBlock = block;
-        if (node->ownerCompilerIfBlock)
-            node->ownerCompilerIfBlock->blocks.push_back(block);
+        if (node->hasExtOwner() && node->extOwner()->ownerCompilerIfBlock)
+            node->extOwner()->ownerCompilerIfBlock->blocks.push_back(block);
         block->flags |= AST_GLOBAL_NODE;
 
         ScopedCompilerIfBlock scopedIf(this, block);
@@ -705,8 +705,8 @@ bool Parser::doCompilerLoad(AstNode* parent)
     SWAG_CHECK(eatSemiCol("'#include' expression"));
     if (sourceFile->module->kind == ModuleKind::Config)
     {
-        if (node->ownerCompilerIfBlock)
-            node->ownerCompilerIfBlock->includes.push_back(node);
+        if (node->hasExtOwner() && node->extOwner()->ownerCompilerIfBlock)
+            node->extOwner()->ownerCompilerIfBlock->includes.push_back(node);
         SWAG_CHECK(sourceFile->module->addInclude(node));
     }
 
@@ -773,8 +773,8 @@ bool Parser::doCompilerImport(AstNode* parent)
     SWAG_CHECK(eatSemiCol("'#import' expression"));
     if (sourceFile->isGenerated || sourceFile->module->kind == ModuleKind::Config)
     {
-        if (node->ownerCompilerIfBlock)
-            node->ownerCompilerIfBlock->imports.push_back(node);
+        if (node->hasExtOwner() && node->extOwner()->ownerCompilerIfBlock)
+            node->extOwner()->ownerCompilerIfBlock->imports.push_back(node);
         SWAG_CHECK(sourceFile->module->addDependency(node, tokenLocation, tokenVersion));
     }
 
