@@ -499,9 +499,10 @@ struct AstIdentifierRef : public AstNode
 
 struct AstIdentifier : public AstNode
 {
-    static const uint16_t SPECFLAG_NO_INLINE  = 0x0001;
-    static const uint16_t SPECFLAG_FROM_WITH  = 0x0002;
-    static const uint16_t SPECFLAG_FROM_USING = 0x0004;
+    static const uint16_t SPECFLAG_NO_INLINE           = 0x0001;
+    static const uint16_t SPECFLAG_FROM_WITH           = 0x0002;
+    static const uint16_t SPECFLAG_FROM_USING          = 0x0004;
+    static const uint16_t SPECFLAG_CLOSURE_FIRST_PARAM = 0x0008;
 
     ~AstIdentifier();
     AstNode*          clone(CloneContext& context);

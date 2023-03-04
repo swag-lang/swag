@@ -287,7 +287,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
 
     // :ClosureForceFirstParam
     // Add a first dummy parameter in case of closure
-    if (typeInfoFunc->isClosure() && !(identifier->semFlags & SEMFLAG_CLOSURE_FIRST_PARAM))
+    if (typeInfoFunc->isClosure() && !(identifier->specFlags & AstIdentifier::SPECFLAG_CLOSURE_FIRST_PARAM))
     {
         auto fcp = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
         Ast::removeFromParent(fcp);
@@ -296,7 +296,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         fcp->computedValue->reg.pointer = nullptr;
         fcp->typeInfo                   = g_TypeMgr->typeInfoNull;
         fcp->flags |= AST_GENERATED;
-        identifier->semFlags |= SEMFLAG_CLOSURE_FIRST_PARAM;
+        identifier->specFlags |= AstIdentifier::SPECFLAG_CLOSURE_FIRST_PARAM;
 
         auto node = Ast::newNode<AstLiteral>(nullptr, AstNodeKind::Literal, context->sourceFile, fcp);
         node->setFlagsValueIsComputed();
@@ -3248,18 +3248,18 @@ bool SemanticJob::appendLastCodeStatement(SemanticContext* context, AstIdentifie
     return true;
 }
 
-bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload, AstNode* ufcsFirstParam)
+bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* identifier, SymbolOverload* overload, AstNode* ufcsFirstParam)
 {
     auto symbol         = overload->symbol;
     auto symbolKind     = symbol->kind;
-    auto callParameters = node->callParameters;
+    auto callParameters = identifier->callParameters;
 
     // :ClosureForceFirstParam
     // A closure has always a first parameter of type *void
     auto typeRef = TypeManager::concreteType(overload->typeInfo, CONCRETE_ALIAS);
-    if (typeRef->isClosure() && node->callParameters)
+    if (typeRef->isClosure() && identifier->callParameters)
     {
-        if (!(node->semFlags & SEMFLAG_CLOSURE_FIRST_PARAM))
+        if (!(identifier->specFlags & AstIdentifier::SPECFLAG_CLOSURE_FIRST_PARAM))
         {
             SWAG_VERIFY(!ufcsFirstParam, context->report({ufcsFirstParam, Err(Err0873)}));
             context->job->closureFirstParam.kind     = AstNodeKind::FuncCallParam;
@@ -3279,21 +3279,21 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
             symbolKind != SymbolKind::Struct &&
             symbolKind != SymbolKind::Interface &&
             symbolKind != SymbolKind::TypeAlias &&
-            !node->token.text.empty() && // :SilentCall
+            !identifier->token.text.empty() && // :SilentCall
             !symbol->overloads[0]->typeInfo->isKindGeneric() &&
             !TypeManager::concretePtrRefType(symbol->overloads[0]->typeInfo, CONCRETE_ALIAS)->isLambdaClosure())
         {
             auto firstNode = symbol->nodes.front();
             if (symbolKind == SymbolKind::Variable)
             {
-                Diagnostic diag{node, Fmt(Err(Err0125), node->token.ctext(), symbol->overloads[0]->typeInfo->getDisplayNameC())};
-                auto       note = Diagnostic::note(firstNode->sourceFile, firstNode->token.startLocation, firstNode->token.endLocation, Fmt(Nte(Nte0040), node->token.ctext()));
+                Diagnostic diag{identifier, Fmt(Err(Err0125), identifier->token.ctext(), symbol->overloads[0]->typeInfo->getDisplayNameC())};
+                auto       note = Diagnostic::note(firstNode->sourceFile, firstNode->token.startLocation, firstNode->token.endLocation, Fmt(Nte(Nte0040), identifier->token.ctext()));
                 return context->report(diag, note);
             }
             else
             {
-                Diagnostic diag{node, Fmt(Err(Err0127), node->token.ctext(), Naming::aKindName(symbol->kind).c_str())};
-                auto       note = Diagnostic::note(firstNode->sourceFile, firstNode->token.startLocation, firstNode->token.endLocation, Fmt(Nte(Nte0040), node->token.ctext()));
+                Diagnostic diag{identifier, Fmt(Err(Err0127), identifier->token.ctext(), Naming::aKindName(symbol->kind).c_str())};
+                auto       note = Diagnostic::note(firstNode->sourceFile, firstNode->token.startLocation, firstNode->token.endLocation, Fmt(Nte(Nte0040), identifier->token.ctext()));
                 return context->report(diag, note);
             }
         }
