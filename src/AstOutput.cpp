@@ -714,53 +714,53 @@ bool AstOutput::outputLambdaExpression(OutputContext& context, Concat& concat, A
     return true;
 }
 
-bool AstOutput::outputVar(OutputContext& context, Concat& concat, AstVarDecl* node)
+bool AstOutput::outputVar(OutputContext& context, Concat& concat, AstVarDecl* varNode)
 {
-    if (node->flags & AST_DECL_USING)
+    if (varNode->flags & AST_DECL_USING)
         CONCAT_FIXED_STR(concat, "using ");
 
     bool kindSpecified = false;
-    if (node->kind == AstNodeKind::ConstDecl)
+    if (varNode->kind == AstNodeKind::ConstDecl)
     {
         kindSpecified = true;
         CONCAT_FIXED_STR(concat, "const ");
     }
-    else if (node->type && node->ownerFct && node->kind != AstNodeKind::FuncDeclParam && !(node->flags & AST_STRUCT_MEMBER))
+    else if (varNode->type && varNode->ownerFct && varNode->kind != AstNodeKind::FuncDeclParam && !(varNode->flags & AST_STRUCT_MEMBER))
     {
         kindSpecified = true;
         CONCAT_FIXED_STR(concat, "var ");
     }
 
-    bool isSelf = node->token.text == g_LangSpec->name_self;
-    if (isSelf && node->type && ((AstTypeExpression*) node->type)->typeFlags & TYPEFLAG_IS_CONST)
+    bool isSelf = varNode->token.text == g_LangSpec->name_self;
+    if (isSelf && varNode->type && ((AstTypeExpression*) varNode->type)->typeFlags & TYPEFLAG_IS_CONST)
         CONCAT_FIXED_STR(concat, "const ");
 
-    if (!(node->flags & AST_AUTO_NAME))
+    if (!(varNode->specFlags & AstVarDecl::SPECFLAG_AUTO_NAME))
     {
-        if (!node->publicName.empty())
-            concat.addString(node->publicName);
+        if (!varNode->publicName.empty())
+            concat.addString(varNode->publicName);
         else
-            concat.addString(node->token.text);
+            concat.addString(varNode->token.text);
     }
 
-    if (node->type)
+    if (varNode->type)
     {
-        if (!(node->type->flags & AST_GENERATED) || (node->type->flags & AST_GENERATED_USER))
+        if (!(varNode->type->flags & AST_GENERATED) || (varNode->type->flags & AST_GENERATED_USER))
         {
             if (!isSelf)
             {
-                if (!(node->flags & AST_AUTO_NAME))
+                if (!(varNode->specFlags & AstVarDecl::SPECFLAG_AUTO_NAME))
                     CONCAT_FIXED_STR(concat, ": ");
-                SWAG_CHECK(outputNode(context, concat, node->type));
+                SWAG_CHECK(outputNode(context, concat, varNode->type));
             }
         }
         else
         {
             CONCAT_FIXED_STR(concat, " = ");
-            auto typeExpr = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
-            SWAG_ASSERT(!node->assignment);
+            auto typeExpr = CastAst<AstTypeExpression>(varNode->type, AstNodeKind::TypeExpression);
+            SWAG_ASSERT(!varNode->assignment);
             SWAG_ASSERT(typeExpr->identifier);
-            SWAG_ASSERT(node->type->typeInfo && (node->type->typeInfo->isTuple()));
+            SWAG_ASSERT(varNode->type->typeInfo && (varNode->type->typeInfo->isTuple()));
             auto id = CastAst<AstIdentifier>(typeExpr->identifier->childs.back(), AstNodeKind::Identifier);
             concat.addChar('{');
             SWAG_CHECK(outputNode(context, concat, id->callParameters));
@@ -768,13 +768,13 @@ bool AstOutput::outputVar(OutputContext& context, Concat& concat, AstVarDecl* no
         }
     }
 
-    if (node->assignment)
+    if (varNode->assignment)
     {
-        if (node->type || kindSpecified || node->kind == AstNodeKind::FuncDeclParam || (node->flags & AST_STRUCT_MEMBER))
+        if (varNode->type || kindSpecified || varNode->kind == AstNodeKind::FuncDeclParam || (varNode->flags & AST_STRUCT_MEMBER))
             CONCAT_FIXED_STR(concat, " = ");
         else
             CONCAT_FIXED_STR(concat, " := ");
-        SWAG_CHECK(outputNode(context, concat, node->assignment));
+        SWAG_CHECK(outputNode(context, concat, varNode->assignment));
     }
 
     return true;

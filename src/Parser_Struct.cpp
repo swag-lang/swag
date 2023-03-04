@@ -415,7 +415,7 @@ bool Parser::doTupleBody(AstNode* parent, bool acceptEmpty)
         if (namedParam.text.empty())
         {
             varNode->token.text = Fmt("item%u", idx);
-            varNode->flags |= AST_AUTO_NAME;
+            varNode->specFlags |= AstVarDecl::SPECFLAG_AUTO_NAME;
         }
         else
         {

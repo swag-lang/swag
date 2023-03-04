@@ -1173,7 +1173,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             storageOffset += childType->sizeOf;
 
         // Create a generic alias
-        if (!(child->flags & AST_AUTO_NAME))
+        if (!(child->specFlags & AstVarDecl::SPECFLAG_AUTO_NAME))
         {
             // Special field name starts with 'item' followed by a number
             bool hasItemName = false;
