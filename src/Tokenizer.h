@@ -74,13 +74,15 @@ struct Token
     }
 };
 
+const uint8_t TOKENPARSE_LAST_EOL   = 0x01;
+const uint8_t TOKENPARSE_LAST_BLANK = 0x02;
+
 struct TokenParse : public Token
 {
     Register    literalValue;
-    TokenId     id               = TokenId::Invalid;
-    LiteralType literalType      = (LiteralType) 0;
-    bool        lastTokenIsEOL   = false;
-    bool        lastTokenIsBlank = false;
+    TokenId     id          = TokenId::Invalid;
+    LiteralType literalType = (LiteralType) 0;
+    uint8_t     flags       = 0;
 };
 
 struct Tokenizer

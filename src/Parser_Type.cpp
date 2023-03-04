@@ -511,7 +511,7 @@ bool Parser::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeVarD
         // So we create an identifier, that will be matched with the type alias automatically
         // created in the function.
         SWAG_CHECK(eatToken());
-        if (!token.lastTokenIsEOL && token.id == TokenId::SymLeftCurly)
+        if (!(token.flags & TOKENPARSE_LAST_EOL) && token.id == TokenId::SymLeftCurly)
         {
             node->identifier = Ast::newIdentifierRef(sourceFile, g_LangSpec->name_retval, node, this);
             auto id          = CastAst<AstIdentifier>(node->identifier->childs.back(), AstNodeKind::Identifier);
@@ -610,7 +610,7 @@ bool Parser::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeVarD
 
         auto rightSquareToken = token;
         SWAG_CHECK(eatToken(TokenId::SymRightSquare));
-        if (token.lastTokenIsEOL)
+        if (token.flags & TOKENPARSE_LAST_EOL)
         {
             if (contextFlags & CONTEXT_FLAG_EXPRESSION)
             {

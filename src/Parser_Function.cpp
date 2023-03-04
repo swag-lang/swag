@@ -911,7 +911,7 @@ bool Parser::doReturn(AstNode* parent, AstNode** result)
 
     // Return value
     SWAG_CHECK(eatToken());
-    if (token.lastTokenIsEOL)
+    if (token.flags & TOKENPARSE_LAST_EOL)
         return true;
     if (token.id != TokenId::SymSemiColon)
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));

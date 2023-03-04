@@ -382,7 +382,7 @@ bool Parser::doBreak(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
     SWAG_CHECK(eatToken());
-    if (token.lastTokenIsEOL)
+    if (token.flags & TOKENPARSE_LAST_EOL)
         return true;
 
     if (token.id != TokenId::SymSemiColon)

@@ -169,10 +169,9 @@ bool Tokenizer::nextToken(TokenParse& token)
     g_Stats.numTokens++;
 #endif
 
-    token.literalType      = LiteralType::TT_MAX;
-    token.lastTokenIsEOL   = forceLastTokenIsEOL;
-    token.lastTokenIsBlank = false;
-    forceLastTokenIsEOL    = false;
+    token.literalType   = LiteralType::TT_MAX;
+    token.flags         = forceLastTokenIsEOL ? TOKENPARSE_LAST_EOL : 0;
+    forceLastTokenIsEOL = false;
 
     while (true)
     {
@@ -197,7 +196,7 @@ bool Tokenizer::nextToken(TokenParse& token)
         {
             while (SWAG_IS_EOL(curBuffer[0]))
                 c = readChar();
-            token.lastTokenIsEOL = true;
+            token.flags |= TOKENPARSE_LAST_EOL;
             continue;
         }
 
@@ -207,7 +206,7 @@ bool Tokenizer::nextToken(TokenParse& token)
         {
             while (SWAG_IS_BLANK(curBuffer[0]))
                 c = readChar();
-            token.lastTokenIsBlank = true;
+            token.flags |= TOKENPARSE_LAST_BLANK;
             continue;
         }
 

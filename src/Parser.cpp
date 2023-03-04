@@ -177,7 +177,7 @@ bool Parser::eatSemiCol(const char* msg)
 {
     SWAG_ASSERT(msg);
 
-    if (token.id != TokenId::SymSemiColon && token.id != TokenId::EndOfFile && !token.lastTokenIsEOL)
+    if (token.id != TokenId::SymSemiColon && token.id != TokenId::EndOfFile && !(token.flags & TOKENPARSE_LAST_EOL))
     {
         if (token.id == TokenId::SymAsterisk)
         {

@@ -149,7 +149,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
             identifier->token.text = parent->ownerStructScope->name;
     }
 
-    if (!token.lastTokenIsEOL && !(identifierFlags & IDENTIFIER_NO_GEN_PARAMS))
+    if (!(token.flags & TOKENPARSE_LAST_EOL) && !(identifierFlags & IDENTIFIER_NO_GEN_PARAMS))
     {
         // Generic arguments
         if (token.id == TokenId::SymQuote)
@@ -161,7 +161,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
     }
 
     // Function call parameters
-    if (!token.lastTokenIsEOL && !(identifierFlags & IDENTIFIER_NO_FCT_PARAMS))
+    if (!(token.flags & TOKENPARSE_LAST_EOL) && !(identifierFlags & IDENTIFIER_NO_FCT_PARAMS))
     {
         if (token.id == TokenId::SymLeftParen)
         {
@@ -175,7 +175,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
             SWAG_CHECK(eatToken(TokenId::SymLeftParen));
             SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, TokenId::SymRightParen));
         }
-        else if (!token.lastTokenIsBlank && token.id == TokenId::SymLeftCurly)
+        else if (!(token.flags & TOKENPARSE_LAST_BLANK) && token.id == TokenId::SymLeftCurly)
         {
             SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
             SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, TokenId::SymRightCurly));
@@ -194,7 +194,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
             SWAG_CHECK(doArrayPointerIndex((AstNode**) &identifier));
             Ast::addChildBack(parent, identifier);
 
-            if (!token.lastTokenIsEOL && !(identifierFlags & IDENTIFIER_NO_FCT_PARAMS) && token.id == TokenId::SymLeftParen)
+            if (!(token.flags & TOKENPARSE_LAST_EOL) && !(identifierFlags & IDENTIFIER_NO_FCT_PARAMS) && token.id == TokenId::SymLeftParen)
             {
                 SWAG_CHECK(eatToken(TokenId::SymLeftParen));
                 identifier = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, parent);
@@ -256,7 +256,7 @@ bool Parser::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t identif
         break;
     }
 
-    while (token.id == TokenId::SymDot && !token.lastTokenIsEOL)
+    while (token.id == TokenId::SymDot && !(token.flags & TOKENPARSE_LAST_EOL))
     {
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doIdentifier(identifierRef, identifierFlags));

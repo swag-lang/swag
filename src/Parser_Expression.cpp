@@ -717,7 +717,7 @@ bool Parser::doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags)
     auto opId = tokenId;
 
     mdfFlags = 0;
-    while (token.id == TokenId::SymComma && !token.lastTokenIsBlank && !token.lastTokenIsEOL)
+    while (token.id == TokenId::SymComma && !(token.flags & TOKENPARSE_LAST_BLANK) && !(token.flags & TOKENPARSE_LAST_EOL))
     {
         SWAG_CHECK(eatToken());
         if (token.text == g_LangSpec->name_safe)
