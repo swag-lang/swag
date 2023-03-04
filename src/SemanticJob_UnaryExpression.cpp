@@ -27,7 +27,7 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, Ast
         return context->report({child, Fmt(Err(Err0828), typeInfo->getDisplayNameC())});
     }
 
-    if (child->flags & AST_VALUE_COMPUTED && !(child->doneFlags & DONEFLAG_NEG_EATEN))
+    if (child->flags & AST_VALUE_COMPUTED && !(child->semFlags & SEMFLAG_NEG_EATEN))
     {
         context->node->semFlags |= child->semFlags & SEMFLAG_LITERAL_SUFFIX;
         switch (typeInfo->nativeType)

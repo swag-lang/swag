@@ -487,7 +487,7 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
         case NativeTypeKind::S64:
-            node->doneFlags |= DONEFLAG_NEG_EATEN;
+            node->semFlags |= SEMFLAG_NEG_EATEN;
             negApplied = true;
             break;
         }

@@ -106,9 +106,9 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
     expNode.type = ErrCxtStepKind::Inline;
     context->errCxtSteps.push_back(expNode);
 
-    if (node->doneFlags & DONEFLAG_RESOLVE_INLINED)
+    if (node->semFlags & SEMFLAG_RESOLVE_INLINED)
         return true;
-    node->doneFlags |= DONEFLAG_RESOLVE_INLINED;
+    node->semFlags |= SEMFLAG_RESOLVE_INLINED;
 
     auto func = node->func;
 

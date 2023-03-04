@@ -801,12 +801,12 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
     AstNode* leftNode  = context->node->childs[0];
     AstNode* rightNode = context->node->childs[1];
 
-    if (!(node->doneFlags & DONEFLAG_CAST1))
+    if (!(node->semFlags & SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo), node->childs[1]->castedTypeInfo));
         if (context->result != ContextResult::Done)
             return true;
-        node->doneFlags |= DONEFLAG_CAST1;
+        node->semFlags |= SEMFLAG_CAST1;
     }
 
     if (leftNode->typeInfo->isAny())
@@ -817,7 +817,7 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
     // User special function
     if (node->hasSpecialFuncCall())
     {
-        if (node->doneFlags & DONEFLAG_FLAT_PARAMS)
+        if (node->semFlags & SEMFLAG_FLAT_PARAMS)
         {
             auto arrayNode = CastAst<AstArrayPointerIndex>(leftNode->childs.back(), AstNodeKind::ArrayPointerIndex);
             if (!job->allParamsTmp)

@@ -446,7 +446,7 @@ bool ByteCodeGenJob::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
     SWAG_CHECK(emitCast(context, left, TypeManager::concreteType(left->typeInfo), left->castedTypeInfo));
     if (context->result != ContextResult::Done)
         return true;
-    binNode->doneFlags |= DONEFLAG_CAST1;
+    binNode->semFlags |= SEMFLAG_CAST1;
 
     left->allocateExtension(ExtensionKind::Misc);
 
@@ -511,7 +511,7 @@ bool ByteCodeGenJob::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
     SWAG_CHECK(emitCast(context, left, TypeManager::concreteType(left->typeInfo), left->castedTypeInfo));
     if (context->result != ContextResult::Done)
         return true;
-    binNode->doneFlags |= DONEFLAG_CAST1;
+    binNode->semFlags |= SEMFLAG_CAST1;
 
     // See the 'and' version for comments
     left->allocateExtension(ExtensionKind::Misc);
@@ -558,23 +558,23 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
 {
     AstNode* node = context->node;
 
-    if (!(node->doneFlags & DONEFLAG_CAST1))
+    if (!(node->semFlags & SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->childs[0], TypeManager::concreteType(node->childs[0]->typeInfo), node->childs[0]->castedTypeInfo));
         if (context->result != ContextResult::Done)
             return true;
-        node->doneFlags |= DONEFLAG_CAST1;
+        node->semFlags |= SEMFLAG_CAST1;
     }
 
-    if (!(node->doneFlags & DONEFLAG_CAST2))
+    if (!(node->semFlags & SEMFLAG_CAST2))
     {
         SWAG_CHECK(emitCast(context, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo), node->childs[1]->castedTypeInfo));
         if (context->result != ContextResult::Done)
             return true;
-        node->doneFlags |= DONEFLAG_CAST2;
+        node->semFlags |= SEMFLAG_CAST2;
     }
 
-    if (!(node->doneFlags & DONEFLAG_EMIT_OP))
+    if (!(node->semFlags & SEMFLAG_EMIT_OP))
     {
         auto r0 = node->childs[0]->resultRegisterRC;
         auto r1 = node->childs[1]->resultRegisterRC;
@@ -585,7 +585,7 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
             SWAG_CHECK(emitUserOp(context));
             if (context->result != ContextResult::Done)
                 return true;
-            node->doneFlags |= DONEFLAG_EMIT_OP;
+            node->semFlags |= SEMFLAG_EMIT_OP;
         }
         else
         {
@@ -653,16 +653,16 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
 
             freeRegisterRC(context, r0);
             freeRegisterRC(context, r1);
-            node->doneFlags |= DONEFLAG_EMIT_OP;
+            node->semFlags |= SEMFLAG_EMIT_OP;
         }
     }
 
-    if (!(node->doneFlags & DONEFLAG_CAST3))
+    if (!(node->semFlags & SEMFLAG_CAST3))
     {
         SWAG_CHECK(emitCast(context, node, TypeManager::concreteType(node->typeInfo), node->castedTypeInfo));
         if (context->result != ContextResult::Done)
             return true;
-        node->doneFlags |= DONEFLAG_CAST3;
+        node->semFlags |= SEMFLAG_CAST3;
     }
 
     return true;
@@ -691,16 +691,16 @@ bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context, AstNode* allParams,
             if (context->result != ContextResult::Done)
                 return true;
 
-            if (!(node->doneFlags & DONEFLAG_INLINED))
+            if (!(node->semFlags & SEMFLAG_INLINED))
             {
-                node->doneFlags |= DONEFLAG_INLINED;
+                node->semFlags |= SEMFLAG_INLINED;
                 SWAG_CHECK(makeInline(context, funcDecl, node));
                 return true;
             }
 
-            if (!(node->doneFlags & DONEFLAG_RESOLVE_INLINED))
+            if (!(node->semFlags & SEMFLAG_RESOLVE_INLINED))
             {
-                node->doneFlags |= DONEFLAG_RESOLVE_INLINED;
+                node->semFlags |= SEMFLAG_RESOLVE_INLINED;
                 auto back = node->childs.back();
                 SWAG_ASSERT(back->kind == AstNodeKind::Inline);
                 context->job->nodes.push_back(back);

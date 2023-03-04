@@ -16,12 +16,12 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     flags &= ~context.removeFlags;
 
     // Copy some specific flags
-    doneFlags |= from->doneFlags & DONEFLAG_INLINED;
-    doneFlags |= from->doneFlags & DONEFLAG_CHECK_ATTR;
-    doneFlags |= from->doneFlags & DONEFLAG_STRUCT_CONVERT;
-    doneFlags |= from->doneFlags & DONEFLAG_CLOSURE_FIRST_PARAM;
-    doneFlags |= from->doneFlags & DONEFLAG_AST_BLOCK;
-    doneFlags |= from->doneFlags & DONEFLAG_REGISTERED_IN_STRUCT;
+    semFlags |= from->semFlags & SEMFLAG_INLINED;
+    semFlags |= from->semFlags & SEMFLAG_CHECK_ATTR;
+    semFlags |= from->semFlags & SEMFLAG_STRUCT_CONVERT;
+    semFlags |= from->semFlags & SEMFLAG_CLOSURE_FIRST_PARAM;
+    semFlags |= from->semFlags & SEMFLAG_AST_BLOCK;
+    semFlags |= from->semFlags & SEMFLAG_REGISTERED_IN_STRUCT;
 
     specFlags = from->specFlags;
 
@@ -718,7 +718,7 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
         subDecl->typeInfo->removeGenericFlag();
         subDecl->typeInfo->declNode = subDecl;
 
-        subDecl->doneFlags |= DONEFLAG_FILE_JOB_PASS;
+        subDecl->semFlags |= SEMFLAG_FILE_JOB_PASS;
         newFctNode->subDecls.push_back(subDecl);
 
         // Be sure symbol is not already there. This can happen when using mixins

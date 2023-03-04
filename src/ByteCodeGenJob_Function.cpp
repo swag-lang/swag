@@ -77,7 +77,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         returnType = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_ALIAS);
 
     // Copy result to RR0... registers
-    if (!(node->doneFlags & DONEFLAG_EMIT_DEFERRED) && !node->childs.empty() && !returnType->isVoid())
+    if (!(node->semFlags & SEMFLAG_EMIT_DEFERRED) && !node->childs.empty() && !returnType->isVoid())
     {
         auto returnExpression = node->childs.front();
         auto backExpression   = node->childs.back();
@@ -86,12 +86,12 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         auto exprType = TypeManager::concretePtrRef(returnExpression->typeInfo);
 
         // Implicit cast
-        if (!(returnExpression->doneFlags & DONEFLAG_CAST1))
+        if (!(returnExpression->semFlags & SEMFLAG_CAST1))
         {
             SWAG_CHECK(emitCast(context, returnExpression, TypeManager::concreteType(returnExpression->typeInfo), returnExpression->castedTypeInfo));
             if (context->result != ContextResult::Done)
                 return true;
-            returnExpression->doneFlags |= DONEFLAG_CAST1;
+            returnExpression->semFlags |= SEMFLAG_CAST1;
         }
 
         context->job->waitStructGenerated(exprType);
@@ -101,7 +101,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         //
         // RETVAL
         //
-        if ((node->doneFlags & DONEFLAG_RETVAL) ||
+        if ((node->semFlags & SEMFLAG_RETVAL) ||
             (backExpression->resolvedSymbolOverload && backExpression->resolvedSymbolOverload->flags & OVERLOAD_RETVAL))
         {
             auto child = node->childs.front();
@@ -254,7 +254,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         }
     }
 
-    node->doneFlags |= DONEFLAG_EMIT_DEFERRED;
+    node->semFlags |= SEMFLAG_EMIT_DEFERRED;
 
     // Leave all scopes
     SWAG_CHECK(emitLeaveScopeReturn(context, &node->forceNoDrop, false));
@@ -1419,7 +1419,7 @@ bool ByteCodeGenJob::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNod
             }
 
             context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
-            parentReturn->doneFlags |= DONEFLAG_RETVAL;
+            parentReturn->semFlags |= SEMFLAG_RETVAL;
             return true;
         }
     }
@@ -1448,7 +1448,7 @@ bool ByteCodeGenJob::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNod
         emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->resultRegisterRC);
         context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
 
-        testReturn->parent->doneFlags |= DONEFLAG_FIELD_STRUCT;
+        testReturn->parent->semFlags |= SEMFLAG_FIELD_STRUCT;
         return true;
     }
 

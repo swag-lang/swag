@@ -1287,7 +1287,7 @@ void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t 
             for (auto child : identifier->callParameters->childs)
             {
                 // Already set by something else, as a direct reference, so no need to copy
-                if (child->doneFlags & DONEFLAG_FIELD_STRUCT)
+                if (child->semFlags & SEMFLAG_FIELD_STRUCT)
                 {
                     freeRegisterRC(context, child);
                     continue;
@@ -1354,12 +1354,12 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
         numToInit = 1;
     else if (node->count->flags & AST_VALUE_COMPUTED)
         numToInit = node->count->computedValue->reg.u64;
-    else if (!(node->count->doneFlags & DONEFLAG_CAST1))
+    else if (!(node->count->semFlags & SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->count, node->count->typeInfo, node->count->castedTypeInfo));
         if (context->result != ContextResult::Done)
             return true;
-        node->count->doneFlags |= DONEFLAG_CAST1;
+        node->count->semFlags |= SEMFLAG_CAST1;
     }
 
     SWAG_CHECK(emitInit(context, typeExpression, node->expression->resultRegisterRC, numToInit, node->count, node->parameters));
@@ -1579,12 +1579,12 @@ bool ByteCodeGenJob::emitDropCopyMove(ByteCodeGenContext* context)
         numToDo = 1;
     else if (node->count->flags & AST_VALUE_COMPUTED)
         numToDo = node->count->computedValue->reg.u64;
-    else if (!(node->count->doneFlags & DONEFLAG_CAST1))
+    else if (!(node->count->semFlags & SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->count, node->count->typeInfo, node->count->castedTypeInfo));
         if (context->result != ContextResult::Done)
             return true;
-        node->count->doneFlags |= DONEFLAG_CAST1;
+        node->count->semFlags |= SEMFLAG_CAST1;
     }
 
     auto typeStruct    = CastTypeInfo<TypeInfoStruct>(typeExpression->pointedType, TypeInfoKind::Struct);

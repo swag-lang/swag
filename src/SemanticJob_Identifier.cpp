@@ -287,7 +287,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
 
     // :ClosureForceFirstParam
     // Add a first dummy parameter in case of closure
-    if (typeInfoFunc->isClosure() && !(identifier->doneFlags & DONEFLAG_CLOSURE_FIRST_PARAM))
+    if (typeInfoFunc->isClosure() && !(identifier->semFlags & SEMFLAG_CLOSURE_FIRST_PARAM))
     {
         auto fcp = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
         Ast::removeFromParent(fcp);
@@ -296,7 +296,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         fcp->computedValue->reg.pointer = nullptr;
         fcp->typeInfo                   = g_TypeMgr->typeInfoNull;
         fcp->flags |= AST_GENERATED;
-        identifier->doneFlags |= DONEFLAG_CLOSURE_FIRST_PARAM;
+        identifier->semFlags |= SEMFLAG_CLOSURE_FIRST_PARAM;
 
         auto node = Ast::newNode<AstLiteral>(nullptr, AstNodeKind::Literal, context->sourceFile, fcp);
         node->setFlagsValueIsComputed();
@@ -1404,9 +1404,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
                     // First pass, we inline the function.
                     // The identifier for the function call will be reresolved later when the content
                     // of the inline os done.
-                    if (!(identifier->doneFlags & DONEFLAG_INLINED))
+                    if (!(identifier->semFlags & SEMFLAG_INLINED))
                     {
-                        identifier->doneFlags |= DONEFLAG_INLINED;
+                        identifier->semFlags |= SEMFLAG_INLINED;
 
                         // In case of an inline call inside an inline function, the identifier kind has been changed to
                         // AstNodeKind::FuncCall in the original function. So we restore it to be a simple identifier.
@@ -3161,7 +3161,7 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
             identifierRef->resolvedSymbolName->kind == SymbolKind::Function &&
             identifierRef->previousResolvedNode &&
             identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier &&
-            identifierRef->previousResolvedNode->doneFlags & DONEFLAG_INLINED)
+            identifierRef->previousResolvedNode->semFlags & SEMFLAG_INLINED)
         {
             fine = true;
         }
@@ -3191,9 +3191,9 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
 
 bool SemanticJob::appendLastCodeStatement(SemanticContext* context, AstIdentifier* node, SymbolOverload* overload)
 {
-    if (!(node->doneFlags & DONEFLAG_LAST_PARAM_CODE) && (overload->symbol->kind == SymbolKind::Function))
+    if (!(node->semFlags & SEMFLAG_LAST_PARAM_CODE) && (overload->symbol->kind == SymbolKind::Function))
     {
-        node->doneFlags |= DONEFLAG_LAST_PARAM_CODE;
+        node->semFlags |= SEMFLAG_LAST_PARAM_CODE;
 
         // If last parameter is of type code, and the call last parameter is not, then take the next statement
         auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
@@ -3259,7 +3259,7 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
     auto typeRef = TypeManager::concreteType(overload->typeInfo, CONCRETE_ALIAS);
     if (typeRef->isClosure() && node->callParameters)
     {
-        if (!(node->doneFlags & DONEFLAG_CLOSURE_FIRST_PARAM))
+        if (!(node->semFlags & SEMFLAG_CLOSURE_FIRST_PARAM))
         {
             SWAG_VERIFY(!ufcsFirstParam, context->report({ufcsFirstParam, Err(Err0873)}));
             context->job->closureFirstParam.kind     = AstNodeKind::FuncCallParam;

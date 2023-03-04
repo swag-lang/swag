@@ -30,10 +30,10 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
     auto node = CastAst<AstTryCatchAssume>(fromNode, AstNodeKind::Try, AstNodeKind::TryCatch, AstNodeKind::Throw);
 
     // Push current error context in case the leave scope triggers some errors too
-    if (!(context->node->doneFlags & DONEFLAG_STACK_TRACE))
+    if (!(context->node->semFlags & SEMFLAG_STACK_TRACE))
     {
         emitInstruction(context, ByteCodeOp::InternalPushErr);
-        context->node->doneFlags |= DONEFLAG_STACK_TRACE;
+        context->node->semFlags |= SEMFLAG_STACK_TRACE;
         context->tryCatchScope++;
     }
 
@@ -43,7 +43,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
         return true;
 
     // Restore the error context, and keep error trace of current call
-    if (!(context->node->doneFlags & DONEFLAG_STACK_TRACE1))
+    if (!(context->node->semFlags & SEMFLAG_STACK_TRACE1))
     {
         SWAG_ASSERT(context->tryCatchScope);
         context->tryCatchScope--;
@@ -60,7 +60,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
             freeRegisterRC(context, r0);
         }
 
-        context->node->doneFlags |= DONEFLAG_STACK_TRACE1;
+        context->node->semFlags |= SEMFLAG_STACK_TRACE1;
     }
 
     TypeInfo* returnType = nullptr;
@@ -76,11 +76,11 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
         {
             if (node->ownerInline)
                 node->regInit = node->ownerInline->resultRegisterRC;
-            else if (!(context->node->doneFlags & DONEFLAG_TRY_2))
+            else if (!(context->node->semFlags & SEMFLAG_TRY_2))
             {
                 reserveRegisterRC(context, node->regInit, 1);
                 emitInstruction(context, ByteCodeOp::CopyRRtoRC, node->regInit);
-                context->node->doneFlags |= DONEFLAG_TRY_2;
+                context->node->semFlags |= SEMFLAG_TRY_2;
             }
 
             TypeInfoPointer pt;
@@ -111,14 +111,14 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
             }
             else
             {
-                if (!(context->node->doneFlags & DONEFLAG_TRY_2))
+                if (!(context->node->semFlags & SEMFLAG_TRY_2))
                 {
                     reserveRegisterRC(context, node->regInit, 1);
                     if (node->ownerInline)
                         emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->regInit, node->ownerInline->resultRegisterRC);
                     else
                         emitInstruction(context, ByteCodeOp::CopyRRtoRC, node->regInit);
-                    context->node->doneFlags |= DONEFLAG_TRY_2;
+                    context->node->semFlags |= SEMFLAG_TRY_2;
                 }
 
                 TypeInfoPointer pt;
@@ -187,18 +187,18 @@ bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
     auto node = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Throw);
     auto expr = node->childs.back();
 
-    if (!(node->doneFlags & DONEFLAG_CAST1))
+    if (!(node->semFlags & SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, expr, TypeManager::concreteType(expr->typeInfo), expr->castedTypeInfo));
         if (context->result != ContextResult::Done)
             return true;
-        node->doneFlags |= DONEFLAG_CAST1;
+        node->semFlags |= SEMFLAG_CAST1;
     }
 
-    if (!(node->doneFlags & DONEFLAG_TRY_1))
+    if (!(node->semFlags & SEMFLAG_TRY_1))
     {
         emitInstruction(context, ByteCodeOp::InternalSetErr, expr->resultRegisterRC[0], expr->resultRegisterRC[1]);
-        node->doneFlags |= DONEFLAG_TRY_1;
+        node->semFlags |= SEMFLAG_TRY_1;
     }
 
     // In a top level function, this should panic
@@ -244,7 +244,7 @@ bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
     if (parentFct->attributeFlags & ATTRIBUTE_SHARP_FUNC)
         return emitAssume(context);
 
-    if (!(node->doneFlags & DONEFLAG_TRY_1))
+    if (!(node->semFlags & SEMFLAG_TRY_1))
     {
         SWAG_ASSERT(node->ownerFct->registerGetContext != UINT32_MAX);
         auto r0 = reserveRegisterRC(context);
@@ -252,7 +252,7 @@ bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
         tryNode->seekInsideJump = context->bc->numInstructions;
         emitInstruction(context, ByteCodeOp::JumpIfZero32, r0);
         freeRegisterRC(context, r0);
-        node->doneFlags |= DONEFLAG_TRY_1;
+        node->semFlags |= SEMFLAG_TRY_1;
     }
 
     SWAG_CHECK(emitTryThrowExit(context, tryNode));
@@ -269,7 +269,7 @@ bool ByteCodeGenJob::emitTryCatch(ByteCodeGenContext* context)
     auto node    = context->node;
     auto tryNode = CastAst<AstTryCatchAssume>(node->extOwner()->ownerTryCatchAssume, AstNodeKind::TryCatch);
 
-    if (!(node->doneFlags & DONEFLAG_TRY_1))
+    if (!(node->semFlags & SEMFLAG_TRY_1))
     {
         SWAG_ASSERT(node->ownerFct->registerGetContext != UINT32_MAX);
         auto r0 = reserveRegisterRC(context);
@@ -277,7 +277,7 @@ bool ByteCodeGenJob::emitTryCatch(ByteCodeGenContext* context)
         tryNode->seekInsideJump = context->bc->numInstructions;
         emitInstruction(context, ByteCodeOp::JumpIfZero32, r0);
         freeRegisterRC(context, r0);
-        node->doneFlags |= DONEFLAG_TRY_1;
+        node->semFlags |= SEMFLAG_TRY_1;
     }
 
     SWAG_CHECK(emitTryThrowExit(context, tryNode));

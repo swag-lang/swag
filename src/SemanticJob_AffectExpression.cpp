@@ -277,14 +277,14 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         // Add self and value in list of parameters
         if (arrayNode)
         {
-            if (!(node->doneFlags & DONEFLAG_FLAT_PARAMS))
+            if (!(node->semFlags & SEMFLAG_FLAT_PARAMS))
             {
                 auto leftNode = arrayNode;
                 while (leftNode->array->kind == AstNodeKind::ArrayPointerIndex)
                     leftNode = CastAst<AstArrayPointerIndex>(leftNode->array, AstNodeKind::ArrayPointerIndex);
                 arrayNode->structFlatParams.push_back(right);
                 arrayNode->structFlatParams.push_front(leftNode->array);
-                node->doneFlags |= DONEFLAG_FLAT_PARAMS;
+                node->semFlags |= SEMFLAG_FLAT_PARAMS;
             }
         }
     }

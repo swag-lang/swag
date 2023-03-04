@@ -12,9 +12,9 @@ atomic<int> g_UniqueID;
 
 bool Ast::convertLiteralTupleToStructVar(SemanticContext* context, TypeInfo* toType, AstNode* fromNode, bool fromType)
 {
-    if (fromNode->doneFlags & DONEFLAG_STRUCT_CONVERT)
+    if (fromNode->semFlags & SEMFLAG_STRUCT_CONVERT)
         return true;
-    fromNode->doneFlags |= DONEFLAG_STRUCT_CONVERT;
+    fromNode->semFlags |= SEMFLAG_STRUCT_CONVERT;
 
     auto sourceFile = context->sourceFile;
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(toType, TypeInfoKind::Struct);
@@ -153,7 +153,7 @@ bool Ast::convertLiteralTupleToStructType(SemanticContext* context, TypeInfoStru
 
     auto structNode = Ast::newStructDecl(sourceFile, fromNode, nullptr);
     structNode->flags |= AST_PRIVATE | AST_GENERATED;
-    structNode->doneFlags |= DONEFLAG_FILE_JOB_PASS;
+    structNode->semFlags |= SEMFLAG_FILE_JOB_PASS;
     Ast::removeFromParent(structNode);
     Ast::addChildBack(newParent, structNode);
     structNode->originalParent = newParent;

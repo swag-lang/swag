@@ -333,7 +333,7 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
     if (node->flags & AST_IS_GENERIC)
         return true;
     // Do it once (in case of inline)
-    if (node->doneFlags & DONEFLAG_AST_BLOCK)
+    if (node->semFlags & SEMFLAG_AST_BLOCK)
         return true;
 
     auto job        = context->job;
@@ -344,7 +344,7 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
     SWAG_CHECK(executeCompilerNode(context, expression, false));
     if (context->result != ContextResult::Done)
         return true;
-    node->doneFlags |= DONEFLAG_AST_BLOCK;
+    node->semFlags |= SEMFLAG_AST_BLOCK;
 
     SWAG_CHECK(checkIsConstExpr(context, expression->flags & AST_VALUE_COMPUTED, expression));
 
@@ -467,13 +467,13 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
 {
     auto node = CastAst<AstCompilerMixin>(context->node, AstNodeKind::CompilerMixin);
 
-    if (node->doneFlags & DONEFLAG_COMPILER_INSERT)
+    if (node->semFlags & SEMFLAG_COMPILER_INSERT)
     {
         node->typeInfo = node->childs.back()->typeInfo;
         return true;
     }
 
-    node->doneFlags |= DONEFLAG_COMPILER_INSERT;
+    node->semFlags |= SEMFLAG_COMPILER_INSERT;
 
     auto expr = node->childs[0];
     SWAG_VERIFY(expr->typeInfo->isCode(), context->report({expr, Fmt(Err(Err0240), expr->typeInfo->getDisplayNameC())}));
@@ -731,9 +731,9 @@ bool SemanticJob::resolveCompilerInclude(SemanticContext* context)
     SWAG_VERIFY(back->typeInfo == g_TypeMgr->typeInfoString, context->report({back, Fmt(Err(Err0243), back->typeInfo->getDisplayNameC())}));
     node->setFlagsValueIsComputed();
 
-    if (!(node->doneFlags & DONEFLAG_LOAD))
+    if (!(node->semFlags & SEMFLAG_LOAD))
     {
-        node->doneFlags |= DONEFLAG_LOAD;
+        node->semFlags |= SEMFLAG_LOAD;
 
         auto filename = back->computedValue->text;
         Path fullFileName;

@@ -449,14 +449,12 @@ struct AstNode
     ByteCodeFct byteCodeFct = nullptr;
 
     uint64_t flags          = 0;
+    uint64_t semFlags       = 0;
     uint64_t attributeFlags = 0;
 
     RegisterList resultRegisterRC;
     uint16_t     safetyOn  = 0;
     uint16_t     safetyOff = 0;
-
-    uint32_t doneFlags = 0;
-    uint32_t semFlags  = 0;
 
 #ifdef SWAG_DEV_MODE
     uint32_t rankId;

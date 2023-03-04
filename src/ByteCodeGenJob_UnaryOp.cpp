@@ -69,7 +69,7 @@ bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
     auto     front         = node->childs[0];
     node->resultRegisterRC = front->resultRegisterRC;
 
-    if (!(node->doneFlags & DONEFLAG_EMIT_OP))
+    if (!(node->semFlags & SEMFLAG_EMIT_OP))
     {
         // User special function
         if (node->hasSpecialFuncCall())
@@ -77,7 +77,7 @@ bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
             SWAG_CHECK(emitUserOp(context));
             if (context->result != ContextResult::Done)
                 return true;
-            node->doneFlags |= DONEFLAG_EMIT_OP;
+            node->semFlags |= SEMFLAG_EMIT_OP;
         }
         else
         {
@@ -110,16 +110,16 @@ bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
                 return Report::internalError(context->node, "emitUnaryOp, invalid token op");
             }
 
-            node->doneFlags |= DONEFLAG_EMIT_OP;
+            node->semFlags |= SEMFLAG_EMIT_OP;
         }
     }
 
-    if (!(node->doneFlags & DONEFLAG_CAST1))
+    if (!(node->semFlags & SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node, node->typeInfo, node->castedTypeInfo));
         if (context->result != ContextResult::Done)
             return true;
-        node->doneFlags |= DONEFLAG_CAST1;
+        node->semFlags |= SEMFLAG_CAST1;
     }
 
     return true;

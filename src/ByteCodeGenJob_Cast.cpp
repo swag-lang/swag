@@ -722,9 +722,9 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
     {
         SWAG_ASSERT(exprNode->hasExtMisc() && exprNode->extMisc()->resolvedUserOpSymbolOverload);
 
-        if (!(exprNode->doneFlags & DONEFLAG_FLAT_PARAMS))
+        if (!(exprNode->semFlags & SEMFLAG_FLAT_PARAMS))
         {
-            exprNode->doneFlags |= DONEFLAG_FLAT_PARAMS;
+            exprNode->semFlags |= SEMFLAG_FLAT_PARAMS;
             if (!job->allParamsTmp)
                 job->allParamsTmp = Ast::newFuncCallParams(exprNode->sourceFile, nullptr);
             job->allParamsTmp->childs.clear();
@@ -733,7 +733,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
             job->allParamsTmp->extMisc()->resolvedUserOpSymbolOverload = exprNode->extMisc()->resolvedUserOpSymbolOverload;
             job->allParamsTmp->inheritOwners(exprNode);
             job->allParamsTmp->inheritTokenLocation(exprNode);
-            job->allParamsTmp->doneFlags = 0;
+            job->allParamsTmp->semFlags = 0;
         }
 
         if (!isExplicit)

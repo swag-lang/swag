@@ -521,10 +521,10 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     if (funcNode->ownerFct)
         funcNode->attributeFlags |= funcNode->ownerFct->attributeFlags & ATTRIBUTE_COMPILER;
 
-    if (!(funcNode->flags & AST_FROM_GENERIC) && !(funcNode->doneFlags & DONEFLAG_CHECK_ATTR))
+    if (!(funcNode->flags & AST_FROM_GENERIC) && !(funcNode->semFlags & SEMFLAG_CHECK_ATTR))
     {
         // Can be called multiple times in case of a mixin/macro inside another inlined function
-        funcNode->doneFlags |= DONEFLAG_CHECK_ATTR;
+        funcNode->semFlags |= SEMFLAG_CHECK_ATTR;
 
         if (funcNode->attributeFlags & ATTRIBUTE_MACRO)
         {
@@ -866,12 +866,12 @@ void SemanticJob::launchResolveSubDecl(JobContext* context, AstNode* node)
     if (node->flags & AST_SPEC_SEMANTICX)
         return;
 
-    // If DONEFLAG_FILE_JOB_PASS is set, then the file job has already seen the sub declaration, ignored it
+    // If SEMFLAG_FILE_JOB_PASS is set, then the file job has already seen the sub declaration, ignored it
     // because of AST_NO_SEMANTIC, but the attribute context is ok. So we need to trigger the job by hand.
-    // If DONEFLAG_FILE_JOB_PASS is not set, then we just have to remove the AST_NO_SEMANTIC flag, and the
+    // If SEMFLAG_FILE_JOB_PASS is not set, then we just have to remove the AST_NO_SEMANTIC flag, and the
     // file job will trigger the resolve itself
     node->flags &= ~AST_NO_SEMANTIC;
-    if (node->doneFlags & DONEFLAG_FILE_JOB_PASS)
+    if (node->semFlags & SEMFLAG_FILE_JOB_PASS)
     {
         auto job          = Allocator::alloc<SemanticJob>();
         job->sourceFile   = context->sourceFile;

@@ -722,7 +722,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         {
             thisIsAGenericType = true;
         }
-        else if (!(node->flags & AST_FROM_GENERIC) || !(node->doneFlags & DONEFLAG_ASSIGN_COMPUTED))
+        else if (!(node->flags & AST_FROM_GENERIC) || !(node->semFlags & SEMFLAG_ASSIGN_COMPUTED))
         {
             SWAG_CHECK(checkIsConcreteOrType(context, node->assignment));
             if (context->result == ContextResult::Pending)
@@ -737,7 +737,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                     node->assignment->flags |= AST_NO_BYTECODE;
             }
 
-            node->doneFlags |= DONEFLAG_ASSIGN_COMPUTED;
+            node->semFlags |= SEMFLAG_ASSIGN_COMPUTED;
         }
     }
 

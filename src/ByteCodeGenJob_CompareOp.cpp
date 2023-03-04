@@ -676,20 +676,20 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
 {
     AstNode* node = context->node;
 
-    if (!(node->doneFlags & DONEFLAG_CAST1))
+    if (!(node->semFlags & SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->childs[0], TypeManager::concreteType(node->childs[0]->typeInfo), node->childs[0]->castedTypeInfo));
         if (context->result != ContextResult::Done)
             return true;
-        node->doneFlags |= DONEFLAG_CAST1;
+        node->semFlags |= SEMFLAG_CAST1;
     }
 
-    if (!(node->doneFlags & DONEFLAG_CAST2))
+    if (!(node->semFlags & SEMFLAG_CAST2))
     {
         SWAG_CHECK(emitCast(context, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo), node->childs[1]->castedTypeInfo));
         if (context->result != ContextResult::Done)
             return true;
-        node->doneFlags |= DONEFLAG_CAST2;
+        node->semFlags |= SEMFLAG_CAST2;
     }
 
     // User special function

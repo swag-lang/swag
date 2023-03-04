@@ -9,12 +9,12 @@ bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
 
-    if (!(node->access->doneFlags & DONEFLAG_CAST1))
+    if (!(node->access->semFlags & SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
         if (context->result != ContextResult::Done)
             return true;
-        node->access->doneFlags |= DONEFLAG_CAST1;
+        node->access->semFlags |= SEMFLAG_CAST1;
     }
 
     // In case of a deref, no need to increment pointer because we are sure that index is 0
@@ -42,12 +42,12 @@ bool ByteCodeGenJob::emitStringRef(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
 
-    if (!(node->access->doneFlags & DONEFLAG_CAST1))
+    if (!(node->access->semFlags & SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
         if (context->result != ContextResult::Done)
             return true;
-        node->access->doneFlags |= DONEFLAG_CAST1;
+        node->access->semFlags |= SEMFLAG_CAST1;
     }
 
     emitSafetyBoundCheckString(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
@@ -66,12 +66,12 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
     auto typeArray     = TypeManager::concreteType(node->array->typeInfo, CONCRETE_ALIAS);
     auto typeInfoArray = CastTypeInfo<TypeInfoArray>(typeArray, TypeInfoKind::Array);
 
-    if (!(node->access->doneFlags & DONEFLAG_CAST1))
+    if (!(node->access->semFlags & SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
         if (context->result != ContextResult::Done)
             return true;
-        node->access->doneFlags |= DONEFLAG_CAST1;
+        node->access->semFlags |= SEMFLAG_CAST1;
     }
 
     if (!(node->access->flags & AST_VALUE_COMPUTED))
@@ -97,12 +97,12 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
 
-    if (!(node->access->doneFlags & DONEFLAG_CAST1))
+    if (!(node->access->semFlags & SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
         if (context->result != ContextResult::Done)
             return true;
-        node->access->doneFlags |= DONEFLAG_CAST1;
+        node->access->semFlags |= SEMFLAG_CAST1;
     }
 
     // Slice is already dereferenced ? (from function parameter)
@@ -256,12 +256,12 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     auto typeInfo = TypeManager::concretePtrRefType(node->array->typeInfo);
     auto castInfo = node->array->castedTypeInfo ? node->array->castedTypeInfo : nullptr;
 
-    if (!(node->access->doneFlags & DONEFLAG_CAST3))
+    if (!(node->access->semFlags & SEMFLAG_CAST3))
     {
         SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
         if (context->result != ContextResult::Done)
             return true;
-        node->access->doneFlags |= DONEFLAG_CAST3;
+        node->access->semFlags |= SEMFLAG_CAST3;
     }
 
     // Dereference of a string constant
@@ -312,7 +312,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     // Dereference a struct
     else if (typeInfo->isStruct() ||
              (typeInfo->isPointerTo(TypeInfoKind::Struct) && castInfo && castInfo->isStruct()) ||
-             node->doneFlags & DONEFLAG_FORCE_CAST_PTR_STRUCT)
+             node->semFlags & SEMFLAG_FORCE_CAST_PTR_STRUCT)
     {
         // User special function
         if (node->hasSpecialFuncCall())
@@ -323,7 +323,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             SWAG_CHECK(emitUserOp(context, job->allParamsTmp));
             if (context->result != ContextResult::Done)
             {
-                node->doneFlags |= DONEFLAG_FORCE_CAST_PTR_STRUCT;
+                node->semFlags |= SEMFLAG_FORCE_CAST_PTR_STRUCT;
                 return true;
             }
         }
@@ -534,20 +534,20 @@ bool ByteCodeGenJob::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
     auto node    = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
     auto typeVar = TypeManager::concreteType(node->array->typeInfo);
 
-    if (!(node->lowerBound->doneFlags & DONEFLAG_CAST1))
+    if (!(node->lowerBound->semFlags & SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->lowerBound, node->lowerBound->typeInfo, node->lowerBound->castedTypeInfo));
         if (context->result != ContextResult::Done)
             return true;
-        node->lowerBound->doneFlags |= DONEFLAG_CAST1;
+        node->lowerBound->semFlags |= SEMFLAG_CAST1;
     }
 
-    if (!(node->upperBound->doneFlags & DONEFLAG_CAST1))
+    if (!(node->upperBound->semFlags & SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->upperBound, node->upperBound->typeInfo, node->upperBound->castedTypeInfo));
         if (context->result != ContextResult::Done)
             return true;
-        node->upperBound->doneFlags |= DONEFLAG_CAST1;
+        node->upperBound->semFlags |= SEMFLAG_CAST1;
     }
 
     // Exclude upper bound limit

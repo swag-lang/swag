@@ -343,7 +343,7 @@ JobResult SemanticJob::execute()
 
                     // Do NOT use canDoSem here, because we need to test the flag with the node locked, as it can be changed
                     // in registerFuncSymbol by another thread
-                    if (!(node->flags & AST_NO_SEMANTIC) && !(node->doneFlags & DONEFLAG_FILE_JOB_PASS))
+                    if (!(node->flags & AST_NO_SEMANTIC) && !(node->semFlags & SEMFLAG_FILE_JOB_PASS))
                     {
                         auto job          = Allocator::alloc<SemanticJob>();
                         job->sourceFile   = sourceFile;
@@ -354,7 +354,7 @@ JobResult SemanticJob::execute()
                         g_ThreadMgr.addJob(job);
                     }
 
-                    node->doneFlags |= DONEFLAG_FILE_JOB_PASS;
+                    node->semFlags |= SEMFLAG_FILE_JOB_PASS;
                     nodes.pop_back();
                     continue;
                 }
@@ -440,7 +440,7 @@ JobResult SemanticJob::execute()
                     auto child = node->childs[i];
 
                     // If the child has the AST_NO_SEMANTIC flag, do not push it.
-                    // Special case for sub declarations, because we need to deal with DONEFLAG_FILE_JOB_PASS
+                    // Special case for sub declarations, because we need to deal with SEMFLAG_FILE_JOB_PASS
                     if ((child->flags & AST_NO_SEMANTIC) && !(child->flags & AST_SUB_DECL))
                         continue;
                     if ((child->semFlags & SEMFLAG_ONCE) && child->semanticState != AstNodeResolveState::Enter)

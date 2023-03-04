@@ -272,7 +272,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     // Exclude upper bound if constant
     if (node->upperBound->flags & AST_VALUE_COMPUTED &&
         node->specFlags & AstArrayPointerSlicing::SPECFLAG_EXCLUDE_UP &&
-        !(node->upperBound->doneFlags & DONEFLAG_ASSIGN_COMPUTED))
+        !(node->upperBound->semFlags & SEMFLAG_ASSIGN_COMPUTED))
     {
         if (!node->upperBound->computedValue->reg.u64)
         {
@@ -281,7 +281,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
             return context->report(diag);
         }
 
-        node->upperBound->doneFlags |= DONEFLAG_ASSIGN_COMPUTED;
+        node->upperBound->semFlags |= SEMFLAG_ASSIGN_COMPUTED;
         node->upperBound->computedValue->reg.u64 -= 1;
     }
 
