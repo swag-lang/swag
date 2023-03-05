@@ -223,7 +223,6 @@ struct Parser
     Scope*              currentSelfStructScope = nullptr;
     AstCompilerIfBlock* currentCompilerIfBlock = nullptr;
     AstTryCatchAssume*  currentTryCatchAssume  = nullptr;
-    Token*              currentTokenLocation   = nullptr;
     AstInline*          currentInline          = nullptr;
 
     uint64_t currentFlags = 0;

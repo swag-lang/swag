@@ -19,7 +19,7 @@ AstInline* Ast::newInline(SourceFile* sourceFile, AstNode* parent, Parser* parse
 
 AstNode* Ast::newAffectOp(SourceFile* sourceFile, AstNode* parent, uint8_t opFlags, uint64_t attributeFlags, Parser* parser)
 {
-    auto node         = Ast::newNode<AstOp>(parser, AstNodeKind::AffectOp, sourceFile, parent, 2);
+    auto node         = Ast::newNode<AstOp>(parser, AstNodeKind::AffectOp, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveAffect;
     node->specFlags |= opFlags;
     node->attributeFlags |= attributeFlags;
@@ -64,7 +64,7 @@ AstFuncCallParam* Ast::newFuncCallParam(SourceFile* sourceFile, AstNode* parent,
 
 AstVarDecl* Ast::newVarDecl(SourceFile* sourceFile, const Utf8& name, AstNode* parent, Parser* parser, AstNodeKind kind)
 {
-    auto node         = Ast::newNode<AstVarDecl>(parser, kind, sourceFile, parent, 2);
+    auto node         = Ast::newNode<AstVarDecl>(parser, kind, sourceFile, parent);
     node->token.text  = name;
     node->semanticFct = SemanticJob::resolveVarDecl;
     return node;
@@ -111,15 +111,11 @@ AstIdentifierRef* Ast::newIdentifierRef(SourceFile* sourceFile, const Utf8& name
 
     auto node        = Ast::newIdentifierRef(sourceFile, parent, parser);
     node->token.text = name;
-    if (parser && !parser->currentTokenLocation)
-        node->inheritTokenLocation(parser->token);
 
     auto id         = Ast::newNode<AstIdentifier>(parser, AstNodeKind::Identifier, sourceFile, node);
     id->semanticFct = SemanticJob::resolveIdentifier;
     id->token.text  = name;
     id->tokenId     = TokenId::Identifier;
-    if (parser && !parser->currentTokenLocation)
-        id->inheritTokenLocation(parser->token);
     id->inheritOwners(node);
 
     return node;
@@ -131,8 +127,6 @@ AstIdentifierRef* Ast::newMultiIdentifierRef(SourceFile* sourceFile, const Utf8&
 
     auto node        = Ast::newIdentifierRef(sourceFile, parent, parser);
     node->token.text = name;
-    if (parser && !parser->currentTokenLocation)
-        node->inheritTokenLocation(parser->token);
 
     auto pz    = name.buffer;
     auto pzEnd = name.buffer + name.count;
@@ -156,9 +150,6 @@ AstIdentifierRef* Ast::newMultiIdentifierRef(SourceFile* sourceFile, const Utf8&
         }
 
         id->tokenId = TokenId::Identifier;
-        if (parser && !parser->currentTokenLocation)
-            id->inheritTokenLocation(parser->token);
-        id->inheritOwners(node);
 
         if (pz != pzEnd)
             pz++;

@@ -167,24 +167,3 @@ struct ScopedSelfStruct
     Parser* savedJob;
     Scope*  savedStruct;
 };
-
-struct ScopedLocation
-{
-    ScopedLocation(Parser* job, Token* token)
-    {
-        savedJob                  = job;
-        savedToken                = job->currentTokenLocation;
-        myToken.startLocation     = token->startLocation;
-        myToken.endLocation       = token->endLocation;
-        job->currentTokenLocation = &myToken;
-    }
-
-    ~ScopedLocation()
-    {
-        savedJob->currentTokenLocation = savedToken;
-    }
-
-    Parser* savedJob;
-    Token   myToken;
-    Token*  savedToken;
-};

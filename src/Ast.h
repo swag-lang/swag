@@ -12,7 +12,7 @@ enum class ScopeKind : uint8_t;
 
 namespace Ast
 {
-    void initNewNode(AstNode* node, Parser* parser, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent, uint32_t allocChilds);
+    void initNewNode(AstNode* node, Parser* parser, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent);
     void removeFromParent(AstNode* child);
     void insertChild(AstNode* parent, AstNode* child, uint32_t index);
     void addChildBack(AstNode* parent, AstNode* child);
@@ -75,11 +75,11 @@ namespace Ast
     }
 
     template<typename T>
-    T* newNode(Parser* job, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent, uint32_t allocChilds = 0)
+    T* newNode(Parser* job, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent)
     {
         auto node = Allocator::allocRaw<T>();
         constructNode<T>(node);
-        initNewNode(node, job, kind, sourceFile, parent, allocChilds);
+        initNewNode(node, job, kind, sourceFile, parent);
 #ifdef SWAG_STATS
         g_Stats.numNodes++;
         g_Stats.memNodes += Allocator::alignSize(sizeof(T));

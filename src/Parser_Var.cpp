@@ -109,12 +109,11 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
             identifier->computeName();
             SWAG_CHECK(checkIsValidVarName(identifier));
 
-            ScopedLocation scopedLoc(this, &identifier->token);
-            AstVarDecl*    varNode = Ast::newVarDecl(sourceFile, identifier->token.text, parentNode, this);
-            varNode->kind          = kind;
-            varNode->token         = identifier->token;
-            varNode->tokenId       = identifier->tokenId;
-            varNode->assignToken   = assignToken;
+            AstVarDecl* varNode  = Ast::newVarDecl(sourceFile, identifier->token.text, parentNode, this);
+            varNode->kind        = kind;
+            varNode->token       = identifier->token;
+            varNode->tokenId     = identifier->tokenId;
+            varNode->assignToken = assignToken;
             varNode->flags |= AST_R_VALUE;
 
             if (!firstDone)
@@ -159,11 +158,10 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
         *result         = parentNode;
 
         // Generate an expression of the form "var __tmp_0 = assignment"
-        ScopedLocation scopedLoc(this, &leftNode->childs.front()->token);
-        auto           tmpVarName = Fmt("__5tmp_%d", g_UniqueID.fetch_add(1));
-        AstVarDecl*    orgVarNode = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
-        orgVarNode->kind          = kind;
-        orgVarNode->assignToken   = assignToken;
+        auto        tmpVarName  = Fmt("__5tmp_%d", g_UniqueID.fetch_add(1));
+        AstVarDecl* orgVarNode  = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
+        orgVarNode->kind        = kind;
+        orgVarNode->assignToken = assignToken;
 
         // This will avoid to initialize the tuple before the affectation
         orgVarNode->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
@@ -214,11 +212,10 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
                 orgVarNode->publicName += ", ";
             orgVarNode->publicName += identifier->token.text;
 
-            ScopedLocation scopedLoc1(this, &identifier->token);
-            auto           varNode = Ast::newVarDecl(sourceFile, identifier->token.text, parentNode, this);
-            varNode->kind          = kind;
-            varNode->token         = identifier->token;
-            varNode->assignToken   = assignToken;
+            auto varNode         = Ast::newVarDecl(sourceFile, identifier->token.text, parentNode, this);
+            varNode->kind        = kind;
+            varNode->token       = identifier->token;
+            varNode->assignToken = assignToken;
             varNode->flags |= AST_R_VALUE | AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS;
             if (currentScope->isGlobalOrImpl())
                 SWAG_CHECK(currentScope->symTable.registerSymbolName(context, varNode, SymbolKind::Variable));

@@ -6,7 +6,7 @@
 
 bool Parser::doIf(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode<AstIf>(this, AstNodeKind::If, sourceFile, parent, 2);
+    auto node         = Ast::newNode<AstIf>(this, AstNodeKind::If, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveIf;
     *result           = node;
 
@@ -31,7 +31,7 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
 
 bool Parser::doWhile(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode<AstWhile>(this, AstNodeKind::While, sourceFile, parent, 2);
+    auto node         = Ast::newNode<AstWhile>(this, AstNodeKind::While, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveWhile;
     *result           = node;
 
@@ -49,7 +49,7 @@ bool Parser::doWhile(AstNode* parent, AstNode** result)
 
 bool Parser::doSwitch(AstNode* parent, AstNode** result)
 {
-    auto switchNode         = Ast::newNode<AstSwitch>(this, AstNodeKind::Switch, sourceFile, parent, 4);
+    auto switchNode         = Ast::newNode<AstSwitch>(this, AstNodeKind::Switch, sourceFile, parent);
     switchNode->semanticFct = SemanticJob::resolveSwitch;
     *result                 = switchNode;
 
@@ -155,7 +155,7 @@ bool Parser::doFor(AstNode* parent, AstNode** result)
     auto   newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
     Scoped scoped(this, newScope);
 
-    auto node = Ast::newNode<AstFor>(this, AstNodeKind::For, sourceFile, parent, 4);
+    auto node = Ast::newNode<AstFor>(this, AstNodeKind::For, sourceFile, parent);
     node->allocateExtension(ExtensionKind::Semantic);
     node->extSemantic()->semanticBeforeFct = SemanticJob::resolveForBefore;
     node->semanticFct                      = SemanticJob::resolveFor;
@@ -193,7 +193,7 @@ bool Parser::doFor(AstNode* parent, AstNode** result)
 
 bool Parser::doVisit(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode<AstVisit>(this, AstNodeKind::Visit, sourceFile, parent, 3);
+    auto node         = Ast::newNode<AstVisit>(this, AstNodeKind::Visit, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveVisit;
     *result           = node;
 
@@ -263,7 +263,7 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
     auto   newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
     Scoped scoped(this, newScope);
 
-    auto node = Ast::newNode<AstLoop>(this, AstNodeKind::Loop, sourceFile, parent, 2);
+    auto node = Ast::newNode<AstLoop>(this, AstNodeKind::Loop, sourceFile, parent);
     node->allocateExtension(ExtensionKind::Semantic);
     node->extSemantic()->semanticBeforeFct = SemanticJob::resolveLoopBefore;
     node->semanticFct                      = SemanticJob::resolveLoop;

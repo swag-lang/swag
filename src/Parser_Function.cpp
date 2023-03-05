@@ -557,7 +557,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
 
 bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
 {
-    auto funcNode         = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent, 4);
+    auto funcNode         = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent);
     *result               = funcNode;
     funcNode->semanticFct = SemanticJob::resolveFuncDecl;
     funcNode->allocateExtension(ExtensionKind::Semantic);
@@ -818,7 +818,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
                 funcNode->content = node;
 
                 ScopedTryCatchAssume sc(this, (AstTryCatchAssume*) node);
-                auto                 returnNode = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, node); // stmt);
+                auto                 returnNode = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, node);
                 returnNode->semanticFct         = SemanticJob::resolveReturn;
                 funcNode->specFlags |= AstFuncDecl::SPECFLAG_SHORT_LAMBDA;
                 SWAG_CHECK(doExpression(returnNode, EXPR_FLAG_NONE, &dummyResult));
@@ -916,7 +916,7 @@ bool Parser::doReturn(AstNode* parent, AstNode** result)
 
 bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMissingType, bool* hasMissingType)
 {
-    auto funcNode         = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent, 4);
+    auto funcNode         = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent);
     *result               = funcNode;
     funcNode->semanticFct = SemanticJob::resolveFuncDecl;
     funcNode->flags |= AST_GENERATED;

@@ -4,29 +4,18 @@
 #include "TypeManager.h"
 #include "Parser.h"
 
-void Ast::initNewNode(AstNode* node, Parser* parser, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent, uint32_t allocChilds = 0)
+void Ast::initNewNode(AstNode* node, Parser* parser, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent)
 {
     node->kind       = kind;
     node->parent     = parent;
     node->sourceFile = sourceFile;
-    node->childs.reserve(allocChilds);
 
     if (parser)
     {
-        node->tokenId    = parser->token.id;
-        node->token.text = parser->token.text;
-
-        if (parser->currentTokenLocation)
-        {
-            node->token.startLocation = parser->currentTokenLocation->startLocation;
-            node->token.endLocation   = parser->currentTokenLocation->endLocation;
-        }
-        else
-        {
-            node->token.startLocation = parser->token.startLocation;
-            node->token.endLocation   = parser->token.endLocation;
-        }
-
+        node->tokenId             = parser->token.id;
+        node->token.text          = parser->token.text;
+        node->token.startLocation = parser->token.startLocation;
+        node->token.endLocation   = parser->token.endLocation;
         node->inheritOwnersAndFlags(parser);
     }
     else if (parent)
