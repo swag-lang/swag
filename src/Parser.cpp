@@ -348,26 +348,19 @@ bool Parser::generateAst()
     // Setup root ast for file
     sourceFile->astRoot = Ast::newNode<AstNode>(this, AstNodeKind::File, sourceFile, module->astRoot);
 
-    // Creates a top namespace with the module namespace name
     currentScope     = module->scopeRoot;
     auto parentScope = module->scopeRoot;
 
-    Utf8 npName;
-    if (sourceFile->imported)
+    // Creates a top namespace with the module namespace name
+    if (module->kind != ModuleKind::BootStrap && module->kind != ModuleKind::Runtime)
     {
-        npName.append((const char*) sourceFile->imported->buildCfg.moduleNamespace.buffer, (int) sourceFile->imported->buildCfg.moduleNamespace.count);
-        if (npName.empty())
-            npName = sourceFile->imported->name;
-    }
-    else if (module->kind != ModuleKind::BootStrap && module->kind != ModuleKind::Runtime)
-    {
-        npName.append((const char*) module->buildCfg.moduleNamespace.buffer, (int) module->buildCfg.moduleNamespace.count);
-        if (npName.empty())
-            npName = module->name;
-    }
+        Utf8 npName;
+        auto moduleForNp = sourceFile->imported ? sourceFile->imported : sourceFile->module;
 
-    if (!npName.empty())
-    {
+        npName.append((const char*) moduleForNp->buildCfg.moduleNamespace.buffer, (int) moduleForNp->buildCfg.moduleNamespace.count);
+        if (npName.empty())
+            npName = moduleForNp->name;
+
         auto namespaceNode        = Ast::newNode<AstNameSpace>(this, AstNodeKind::Namespace, sourceFile, sourceFile->astRoot);
         namespaceNode->token.text = npName;
 
@@ -435,10 +428,6 @@ bool Parser::generateAst()
             node->sourceFile = sourceFile;
         }
     }
-
-    // Error reading file ?
-    if (sourceFile->numErrors)
-        return false;
 
 #ifdef SWAG_STATS
     Timer timer(&g_Stats.syntaxTime);
