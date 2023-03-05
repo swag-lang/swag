@@ -360,6 +360,7 @@ bool Parser::generateAst()
         npName.append((const char*) moduleForNp->buildCfg.moduleNamespace.buffer, (int) moduleForNp->buildCfg.moduleNamespace.count);
         if (npName.empty())
             npName = moduleForNp->name;
+        Ast::normalizeIdentifierName(npName);
 
         auto namespaceNode        = Ast::newNode<AstNameSpace>(this, AstNodeKind::Namespace, sourceFile, sourceFile->astRoot);
         namespaceNode->token.text = npName;
@@ -368,24 +369,21 @@ bool Parser::generateAst()
         auto       symbol = parentScope->symTable.findNoLock(npName);
         if (!symbol)
         {
-            auto typeInfo  = makeType<TypeInfoNamespace>();
-            typeInfo->name = npName;
-            auto newScope  = Ast::newScope(namespaceNode, npName, ScopeKind::Namespace, parentScope);
-            if (sourceFile->imported)
-                newScope->flags |= SCOPE_IMPORTED;
-            newScope->flags |= SCOPE_AUTO_GENERATED;
-            typeInfo->scope         = newScope;
+            auto typeInfo           = makeType<TypeInfoNamespace>();
+            typeInfo->name          = npName;
+            typeInfo->scope         = Ast::newScope(namespaceNode, npName, ScopeKind::Namespace, parentScope);
             namespaceNode->typeInfo = typeInfo;
             parentScope->symTable.addSymbolTypeInfoNoLock(context, namespaceNode, typeInfo, SymbolKind::Namespace);
-            parentScope = newScope;
+            parentScope = typeInfo->scope;
         }
         else
         {
             parentScope = CastTypeInfo<TypeInfoNamespace>(symbol->overloads[0]->typeInfo, TypeInfoKind::Namespace)->scope;
-            if (sourceFile->imported)
-                parentScope->flags |= SCOPE_IMPORTED;
-            parentScope->flags |= SCOPE_AUTO_GENERATED;
         }
+
+        if (sourceFile->imported)
+            parentScope->flags |= SCOPE_IMPORTED;
+        parentScope->flags |= SCOPE_AUTO_GENERATED;
     }
 
     // One scope per file. We do NOT register the scope in the list of childs
