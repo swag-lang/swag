@@ -447,26 +447,9 @@ bool Parser::generateAst()
     Timer timer(&g_Stats.syntaxTime);
 #endif
 
-    bool ok = eatToken();
-    while (true)
-    {
-        // If there's an error, then we must stop at syntax pass
-        if (!ok)
-        {
-            sourceFile->buildPass = min(sourceFile->buildPass, BuildPass::Syntax);
-            module->setBuildPass(sourceFile->buildPass);
-            return false;
-        }
-
-        if (token.id == TokenId::EndOfFile)
-            break;
-
-        // Ask for lexer only
-        if (sourceFile->buildPass < BuildPass::Syntax)
-            ok = eatToken();
-        else
-            ok = doTopLevelInstruction(sourceFile->astRoot);
-    }
+    SWAG_CHECK(eatToken());
+    while (token.id != TokenId::EndOfFile)
+        SWAG_CHECK(doTopLevelInstruction(sourceFile->astRoot));
 
     sourceFile->duringSyntax = false;
     return true;

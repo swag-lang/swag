@@ -802,6 +802,9 @@ bool Parser::doTopLevelInstruction(AstNode* parent, AstNode** result)
     // #global is invalid if afterGlobal is true
     if (token.id != TokenId::CompilerGlobal && token.id != TokenId::SymSemiColon)
         afterGlobal = true;
+    // Do not generate AST if buildPass does not allow it
+    if (sourceFile->buildPass < BuildPass::Syntax)
+        return eatToken();
 
     switch (token.id)
     {
