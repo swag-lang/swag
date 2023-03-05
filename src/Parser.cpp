@@ -305,19 +305,19 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
         {
         case CompilerAstKind::TopLevelInstruction:
         case CompilerAstKind::MissingInterfaceMtd:
-            SWAG_CHECK(doTopLevelInstruction(parent));
+            SWAG_CHECK(doTopLevelInstruction(parent, &dummyResult));
             break;
         case CompilerAstKind::StructVarDecl:
-            SWAG_CHECK(doVarDecl(parent, nullptr, AstNodeKind::VarDecl));
+            SWAG_CHECK(doVarDecl(parent, &dummyResult, AstNodeKind::VarDecl));
             break;
         case CompilerAstKind::EnumValue:
-            SWAG_CHECK(doEnumValue(parent));
+            SWAG_CHECK(doEnumValue(parent, &dummyResult));
             break;
         case CompilerAstKind::EmbeddedInstruction:
-            SWAG_CHECK(doEmbeddedInstruction(parent));
+            SWAG_CHECK(doEmbeddedInstruction(parent, &dummyResult));
             break;
         case CompilerAstKind::Expression:
-            SWAG_CHECK(doExpression(parent, EXPR_FLAG_NONE));
+            SWAG_CHECK(doExpression(parent, EXPR_FLAG_NONE, &dummyResult));
             break;
         default:
             SWAG_ASSERT(false);
@@ -435,7 +435,7 @@ bool Parser::generateAst()
     tokenizer.setup(context, sourceFile);
     SWAG_CHECK(eatToken());
     while (token.id != TokenId::EndOfFile)
-        SWAG_CHECK(doTopLevelInstruction(sourceFile->astRoot));
+        SWAG_CHECK(doTopLevelInstruction(sourceFile->astRoot, &dummyResult));
 
     return true;
 }

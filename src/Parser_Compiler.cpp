@@ -16,14 +16,14 @@ bool Parser::doIntrinsicTag(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(eatToken());
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
-    SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
+    SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
 
     if (node->tokenId == TokenId::IntrinsicGetTag)
     {
         SWAG_CHECK(eatToken(TokenId::SymComma));
-        SWAG_CHECK(doTypeExpression(node));
+        SWAG_CHECK(doTypeExpression(node, &dummyResult));
         SWAG_CHECK(eatToken(TokenId::SymComma));
-        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
+        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
     }
 
     SWAG_CHECK(eatToken(TokenId::SymRightParen));
@@ -75,7 +75,7 @@ bool Parser::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind
 
         ScopedCompilerIfBlock scopedIf(this, block);
         if (token.id == TokenId::CompilerElseIf)
-            SWAG_CHECK(doCompilerIf(block));
+            SWAG_CHECK(doCompilerIf(block, &dummyResult));
         else
         {
             SWAG_CHECK(eatToken());
@@ -97,7 +97,7 @@ bool Parser::doCompilerMixin(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     // Code identifier
-    SWAG_CHECK(doIdentifierRef(node));
+    SWAG_CHECK(doIdentifierRef(node, &dummyResult));
 
     // Replacement parameters
     if (token.id == TokenId::SymLeftCurly)
@@ -144,7 +144,7 @@ bool Parser::doCompilerMacro(AstNode* parent, AstNode** result)
     node->scope   = newScope;
 
     Scoped scoped(this, newScope);
-    SWAG_CHECK(doCurlyStatement(node));
+    SWAG_CHECK(doCurlyStatement(node, &dummyResult));
     return true;
 }
 
@@ -161,7 +161,7 @@ bool Parser::doCompilerInline(AstNode* parent, AstNode** result)
     node->scope   = newScope;
 
     Scoped scoped(this, newScope);
-    SWAG_CHECK(doCurlyStatement(node));
+    SWAG_CHECK(doCurlyStatement(node, &dummyResult));
     return true;
 }
 
@@ -178,7 +178,7 @@ bool Parser::doCompilerAssert(AstNode* parent, AstNode** result)
 
     ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND);
     SWAG_CHECK(eatToken());
-    SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
+    SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
     SWAG_CHECK(eatSemiCol("'#assert' expression"));
     return true;
 }
@@ -195,7 +195,7 @@ bool Parser::doCompilerError(AstNode* parent, AstNode** result)
     node->token                            = token;
     SWAG_CHECK(eatToken());
 
-    SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
+    SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
     SWAG_CHECK(eatSemiCol("'#error' expression"));
     return true;
 }
@@ -212,7 +212,7 @@ bool Parser::doCompilerWarning(AstNode* parent, AstNode** result)
     node->token                            = token;
     SWAG_CHECK(eatToken());
 
-    SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
+    SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
     SWAG_CHECK(eatSemiCol("'#warning' expression"));
     return true;
 }
@@ -256,7 +256,7 @@ bool Parser::doCompilerValidIf(AstNode* parent, AstNode** result)
     }
     else
     {
-        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
+        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
         SWAG_CHECK(eatSemiCol("'#validifx' expression"));
     }
 
@@ -288,7 +288,7 @@ bool Parser::doCompilerAst(AstNode* parent, AstNode** result)
     }
     else
     {
-        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
+        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
         SWAG_CHECK(eatSemiCol("'#ast' expression"));
     }
 
@@ -309,7 +309,7 @@ bool Parser::doCompilerRunTopLevel(AstNode* parent, AstNode** result)
         *result = node;
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
     node->semanticFct = SemanticJob::resolveCompilerRun;
-    SWAG_CHECK(doEmbeddedInstruction(node));
+    SWAG_CHECK(doEmbeddedInstruction(node, &dummyResult));
     SWAG_CHECK(eatSemiCol("'#run' statement"));
     return true;
 }
@@ -342,7 +342,7 @@ bool Parser::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
     }
     else
     {
-        SWAG_CHECK(doEmbeddedInstruction(node));
+        SWAG_CHECK(doEmbeddedInstruction(node, &dummyResult));
         SWAG_CHECK(eatSemiCol("'#run' expression"));
     }
 
@@ -361,7 +361,7 @@ bool Parser::doCompilerPrint(AstNode* parent, AstNode** result)
     node->token                            = token;
     SWAG_CHECK(eatToken());
 
-    SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
+    SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
     SWAG_CHECK(eatSemiCol("'#print' expression"));
     return true;
 }
@@ -440,7 +440,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatSemiCol("'#global if'"));
         while (token.id != TokenId::EndOfFile)
         {
-            SWAG_CHECK(doTopLevelInstruction(block));
+            SWAG_CHECK(doTopLevelInstruction(block, &dummyResult));
         }
     }
 
@@ -581,7 +581,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
         SWAG_VERIFY(sourceFile->isCfgFile, context->report({sourceFile, token, Err(Syn0005)}));
 
         int prevCount = parent->childs.count;
-        SWAG_CHECK(doUsing(parent));
+        SWAG_CHECK(doUsing(parent, &dummyResult));
         while (prevCount != parent->childs.count)
         {
             sourceFile->module->buildParameters.globalUsings.push_back(parent->childs[prevCount]);
@@ -649,7 +649,7 @@ bool Parser::doCompilerDependencies(AstNode* parent)
 
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerDependencies, sourceFile, parent);
     SWAG_CHECK(eatToken());
-    SWAG_CHECK(doCurlyStatement(node));
+    SWAG_CHECK(doCurlyStatement(node, &dummyResult));
 
     if (sourceFile->module->kind != ModuleKind::Config)
     {

@@ -166,7 +166,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         ScopedFlags  scopedFlags(this, AST_INSIDE_IMPL);
         while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
         {
-            SWAG_CHECK(doTopLevelInstruction(implNode));
+            SWAG_CHECK(doTopLevelInstruction(implNode, &dummyResult));
         }
     }
 
@@ -331,7 +331,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
             auto startLoc = token.startLocation;
             SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the struct body"));
             while (token.id != TokenId::SymRightCurly && (token.id != TokenId::EndOfFile))
-                SWAG_CHECK(doStructBody(contentNode, structType));
+                SWAG_CHECK(doStructBody(contentNode, structType, &dummyResult));
             SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the struct body"));
         }
     }
@@ -477,7 +477,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             *result = stmt;
         SWAG_CHECK(eatToken());
         while (token.id != TokenId::SymRightCurly && (token.id != TokenId::EndOfFile))
-            SWAG_CHECK(doStructBody(stmt, structType));
+            SWAG_CHECK(doStructBody(stmt, structType, &dummyResult));
         SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the struct body"));
         parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;
         return true;
@@ -515,7 +515,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         break;
 
     case TokenId::SymLeftCurly:
-        SWAG_CHECK(doStructBody(parent, structType));
+        SWAG_CHECK(doStructBody(parent, structType, &dummyResult));
         break;
 
     case TokenId::SymAttrStart:

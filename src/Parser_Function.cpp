@@ -42,11 +42,11 @@ bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** re
         case TokenId::CompilerBuildNum:
         case TokenId::LiteralNumber:
         case TokenId::LiteralString:
-            SWAG_CHECK(doLiteral(param));
+            SWAG_CHECK(doLiteral(param, &dummyResult));
             break;
 
         case TokenId::CompilerLocation:
-            SWAG_CHECK(doCompilerSpecialValue(param));
+            SWAG_CHECK(doCompilerSpecialValue(param, &dummyResult));
             break;
 
         case TokenId::SymLeftSquare:
@@ -56,12 +56,12 @@ bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** re
             // without the need of #type, as what follows a literal should be another parameter (,) or the closing parenthesis.
             // And this is a good idea to write Arr'([2] s32) instead of Arr'[2] s32 anyway. So this should remove some ambiguities.
             tokenizer.saveState(token);
-            SWAG_CHECK(doExpressionListArray(param));
+            SWAG_CHECK(doExpressionListArray(param, &dummyResult));
             if (multi && token.id != TokenId::SymComma && token.id != TokenId::SymRightParen)
             {
                 tokenizer.restoreState(token);
                 Ast::removeFromParent(param->childs.back());
-                SWAG_CHECK(doTypeExpression(param));
+                SWAG_CHECK(doTypeExpression(param, &dummyResult));
             }
             break;
         }
@@ -76,7 +76,7 @@ bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** re
         }
 
         default:
-            SWAG_CHECK(doTypeExpression(param));
+            SWAG_CHECK(doTypeExpression(param, &dummyResult));
             break;
         }
 
@@ -140,7 +140,7 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
                 param->allocateExtension(ExtensionKind::Owner);
                 param->extOwner()->nodesToFree.push_back(paramExpression);
                 SWAG_CHECK(eatToken());
-                SWAG_CHECK(doExpression(param, EXPR_FLAG_PARAMETER));
+                SWAG_CHECK(doExpression(param, EXPR_FLAG_PARAMETER, &dummyResult));
             }
             else
             {
@@ -824,7 +824,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
                 auto                 returnNode = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, node); // stmt);
                 returnNode->semanticFct         = SemanticJob::resolveReturn;
                 funcNode->specFlags |= AstFuncDecl::SPECFLAG_SHORT_LAMBDA;
-                SWAG_CHECK(doExpression(returnNode, EXPR_FLAG_NONE));
+                SWAG_CHECK(doExpression(returnNode, EXPR_FLAG_NONE, &dummyResult));
             }
             else
             {
@@ -834,7 +834,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
                 returnNode->semanticFct = SemanticJob::resolveReturn;
                 funcNode->content       = returnNode;
                 funcNode->specFlags |= AstFuncDecl::SPECFLAG_SHORT_LAMBDA;
-                SWAG_CHECK(doExpression(returnNode, EXPR_FLAG_NONE));
+                SWAG_CHECK(doExpression(returnNode, EXPR_FLAG_NONE, &dummyResult));
             }
 
             funcNode->specFlags |= AstFuncDecl::SPECFLAG_SHORT_FORM;
@@ -857,14 +857,14 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
                 auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, node);
 
                 ScopedTryCatchAssume sc(this, (AstTryCatchAssume*) node);
-                SWAG_CHECK(doEmbeddedInstruction(stmt));
+                SWAG_CHECK(doEmbeddedInstruction(stmt, &dummyResult));
             }
             else
             {
                 auto stmt         = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, funcNode);
                 funcNode->content = stmt;
 
-                SWAG_CHECK(doEmbeddedInstruction(stmt));
+                SWAG_CHECK(doEmbeddedInstruction(stmt, &dummyResult));
             }
 
             funcNode->content->token.endLocation = token.startLocation;
@@ -913,7 +913,7 @@ bool Parser::doReturn(AstNode* parent, AstNode** result)
     if (token.flags & TOKENPARSE_LAST_EOL)
         return true;
     if (token.id != TokenId::SymSemiColon)
-        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
+        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
 
     return true;
 }
@@ -1063,7 +1063,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
             returnNode->semanticFct = SemanticJob::resolveReturn;
             funcNode->content       = returnNode;
             funcNode->specFlags |= AstFuncDecl::SPECFLAG_SHORT_LAMBDA;
-            SWAG_CHECK(doExpression(returnNode, EXPR_FLAG_NONE));
+            SWAG_CHECK(doExpression(returnNode, EXPR_FLAG_NONE, &dummyResult));
         }
 
         // Normal curly statement

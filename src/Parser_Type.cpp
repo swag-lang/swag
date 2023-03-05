@@ -436,7 +436,7 @@ bool Parser::doTupleOrAnonymousType(AstNode* parent, AstNode** result, bool isCo
             auto startLoc = token.startLocation;
             SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
             while (token.id != TokenId::SymRightCurly && (token.id != TokenId::EndOfFile))
-                SWAG_CHECK(doStructBody(contentNode, SyntaxStructType::Struct));
+                SWAG_CHECK(doStructBody(contentNode, SyntaxStructType::Struct, &dummyResult));
             SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc));
         }
         else
@@ -602,7 +602,7 @@ bool Parser::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeVarD
             if (node->arrayDim == 254)
                 return error(token, Err(Syn0132));
             node->arrayDim++;
-            SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
+            SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
             if (token.id != TokenId::SymComma)
                 break;
             SWAG_CHECK(eatToken());
@@ -779,7 +779,7 @@ bool Parser::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeVarD
         alias->semanticFct                      = SemanticJob::resolveTypeAlias;
         alias->resolvedSymbolName               = currentScope->symTable.registerSymbolName(context, alias, SymbolKind::TypeAlias);
         node->identifier                        = Ast::newIdentifierRef(sourceFile, alias->token.text, node, this);
-        SWAG_CHECK(doLambdaClosureType(alias));
+        SWAG_CHECK(doLambdaClosureType(alias, &dummyResult));
 
         node->identifier->allocateExtension(ExtensionKind::Misc);
         node->identifier->extMisc()->exportNode = alias->childs.front();
@@ -836,10 +836,10 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
     }
 
     SWAG_CHECK(eatToken(TokenId::SymLeftParen, "after 'cast'"));
-    SWAG_CHECK(doTypeExpression(node));
+    SWAG_CHECK(doTypeExpression(node, &dummyResult));
     SWAG_CHECK(eatToken(TokenId::SymRightParen, "after the type expression"));
 
-    SWAG_CHECK(doUnaryExpression(node, EXPR_FLAG_NONE));
+    SWAG_CHECK(doUnaryExpression(node, EXPR_FLAG_NONE, &dummyResult));
     return true;
 }
 
@@ -851,6 +851,6 @@ bool Parser::doAutoCast(AstNode* parent, AstNode** result)
         *result = node;
 
     SWAG_CHECK(eatToken());
-    SWAG_CHECK(doUnaryExpression(node, EXPR_FLAG_NONE));
+    SWAG_CHECK(doUnaryExpression(node, EXPR_FLAG_NONE, &dummyResult));
     return true;
 }

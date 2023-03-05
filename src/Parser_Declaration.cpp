@@ -74,7 +74,7 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
         }
     }
 
-    SWAG_CHECK(doEmbeddedStatement(node));
+    SWAG_CHECK(doEmbeddedStatement(node, &dummyResult));
     return true;
 }
 
@@ -269,7 +269,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
         Scoped scoped(this, newScope);
         while (token.id != TokenId::EndOfFile)
         {
-            SWAG_CHECK(doTopLevelInstruction(namespaceNode));
+            SWAG_CHECK(doTopLevelInstruction(namespaceNode, &dummyResult));
         }
     }
     else
@@ -281,7 +281,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
         Scoped scoped(this, newScope);
         while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
         {
-            SWAG_CHECK(doTopLevelInstruction(namespaceNode));
+            SWAG_CHECK(doTopLevelInstruction(namespaceNode, &dummyResult));
         }
 
         SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the namespace body"));
@@ -299,7 +299,7 @@ bool Parser::doGlobalCurlyStatement(AstNode* parent, AstNode** result)
     auto startLoc = token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
-        SWAG_CHECK(doTopLevelInstruction(node));
+        SWAG_CHECK(doTopLevelInstruction(node, &dummyResult));
     SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc));
     return true;
 }
@@ -318,14 +318,14 @@ bool Parser::doCurlyStatement(AstNode* parent, AstNode** result)
     {
         while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
         {
-            SWAG_CHECK(doTopLevelInstruction(node));
+            SWAG_CHECK(doTopLevelInstruction(node, &dummyResult));
         }
     }
     else
     {
         while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
         {
-            SWAG_CHECK(doEmbeddedInstruction(node));
+            SWAG_CHECK(doEmbeddedInstruction(node, &dummyResult));
         }
     }
 
@@ -373,7 +373,7 @@ bool Parser::doEmbeddedStatement(AstNode* parent, AstNode** result)
     statement->extSemantic()->semanticAfterFct  = SemanticJob::resolveScopedStmtAfter;
     statement->flags |= AST_NEED_SCOPE;
     newScope->owner = statement;
-    SWAG_CHECK(doEmbeddedInstruction(statement));
+    SWAG_CHECK(doEmbeddedInstruction(statement, &dummyResult));
     return true;
 }
 
@@ -384,9 +384,9 @@ bool Parser::doStatementFor(AstNode* parent, AstNode** result, AstNodeKind kind)
     case AstNodeKind::Statement:
         return doStatement(parent, result);
     case AstNodeKind::EnumDecl:
-        return doEnumContent(parent);
+        return doEnumContent(parent, &dummyResult);
     case AstNodeKind::StructDecl:
-        return doStructBody(parent, SyntaxStructType::Struct);
+        return doStructBody(parent, SyntaxStructType::Struct, &dummyResult);
 
     default:
         SWAG_ASSERT(false);
@@ -407,7 +407,7 @@ bool Parser::doStatement(AstNode* parent, AstNode** result)
         auto node = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
         if (result)
             *result = node;
-        return doTopLevelInstruction(node);
+        return doTopLevelInstruction(node, &dummyResult);
     }
 
     return doEmbeddedInstruction(parent, result);

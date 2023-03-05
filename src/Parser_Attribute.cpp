@@ -130,7 +130,7 @@ bool Parser::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool for
         topStmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, attrUse);
         topStmt->flags |= AST_GLOBAL_NODE;
         while (token.id != TokenId::EndOfFile)
-            SWAG_CHECK(doTopLevelInstruction(topStmt));
+            SWAG_CHECK(doTopLevelInstruction(topStmt, &dummyResult));
     }
 
     attrUse->content = topStmt;
