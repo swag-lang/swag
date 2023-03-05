@@ -12,8 +12,7 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
     enumNode->semanticFct = SemanticJob::resolveEnum;
     enumNode->allocateExtension(ExtensionKind::Semantic);
     enumNode->extSemantic()->semanticAfterFct = SemanticJob::sendCompilerMsgTypeDecl;
-    if (result)
-        *result = enumNode;
+    *result                                   = enumNode;
 
     SWAG_CHECK(eatToken());
     SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0074), token.ctext())));
@@ -91,8 +90,7 @@ bool Parser::doEnumContent(AstNode* parent, AstNode** result)
     {
         auto startLoc = token.startLocation;
         auto stmt     = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
-        if (result)
-            *result = stmt;
+        *result       = stmt;
         SWAG_CHECK(eatToken());
         while (token.id != TokenId::SymRightCurly && token.id != TokenId::EndOfFile)
             SWAG_CHECK(doEnumContent(stmt, &dummyResult));
@@ -158,8 +156,7 @@ bool Parser::doEnumValue(AstNode* parent, AstNode** result)
 {
     SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0075), token.ctext())));
     auto enumValue = Ast::newNode<AstEnumValue>(this, AstNodeKind::EnumValue, sourceFile, parent);
-    if (result)
-        *result = enumValue;
+    *result        = enumValue;
     enumValue->inheritTokenName(token);
     enumValue->semanticFct = SemanticJob::resolveEnumValue;
     currentScope->symTable.registerSymbolName(context, enumValue, SymbolKind::EnumValue);

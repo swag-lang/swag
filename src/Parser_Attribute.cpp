@@ -9,11 +9,10 @@
 bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
 {
     auto attrNode = Ast::newNode<AstAttrDecl>(this, AstNodeKind::AttrDecl, sourceFile, parent);
+    *result       = attrNode;
     attrNode->allocateExtension(ExtensionKind::Semantic);
     attrNode->extSemantic()->semanticBeforeFct = SemanticJob::preResolveAttrDecl;
     attrNode->semanticFct                      = SemanticJob::resolveAttrDecl;
-    if (result)
-        *result = attrNode;
 
     SWAG_CHECK(eatToken());
     SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0072), token.ctext())));
@@ -87,9 +86,8 @@ bool Parser::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool for
 
     SWAG_ASSERT(newScope);
     Scoped scoped(this, newScope);
-    auto   attrUse = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
-    if (result)
-        *result = attrUse;
+    auto   attrUse          = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
+    *result                 = attrUse;
     attrUse->attributeFlags = attr;
 
     AstNode* topStmt = nullptr;
@@ -146,8 +144,7 @@ bool Parser::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool for
 bool Parser::doAttrUse(AstNode* parent, AstNode** result, bool single)
 {
     auto attrBlockNode = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
-    if (result)
-        *result = attrBlockNode;
+    *result            = attrBlockNode;
 
     while (token.id == TokenId::SymAttrStart)
     {

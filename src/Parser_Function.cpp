@@ -27,7 +27,7 @@ bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** re
         {
         case TokenId::Identifier:
         {
-            SWAG_CHECK(doIdentifierRef(param, nullptr, IDENTIFIER_NO_FCT_PARAMS));
+            SWAG_CHECK(doIdentifierRef(param, &dummyResult, IDENTIFIER_NO_FCT_PARAMS));
             break;
         }
 
@@ -428,8 +428,7 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
     if (token.id != TokenId::SymRightParen || isMethod || isConstMethod)
     {
         auto allParams = Ast::newFuncDeclParams(sourceFile, parent, this);
-        if (result)
-            *result = allParams;
+        *result        = allParams;
 
         // Add 'using self' as the first parameter in case of a method
         if (isMethod || isConstMethod)
@@ -489,8 +488,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
 {
     ScopedContextual sc(this, &contextualNoInline);
     auto             allParams = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, parent);
-    if (result)
-        *result = allParams;
+    *result                    = allParams;
 
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
     SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, Err(Syn0092)));
@@ -560,11 +558,10 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
 bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
 {
     auto funcNode         = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent, 4);
+    *result               = funcNode;
     funcNode->semanticFct = SemanticJob::resolveFuncDecl;
     funcNode->allocateExtension(ExtensionKind::Semantic);
     funcNode->extSemantic()->semanticAfterFct = SemanticJob::sendCompilerMsgFuncDecl;
-    if (result)
-        *result = funcNode;
 
     bool isMethod      = token.id == TokenId::KwdMethod;
     bool isConstMethod = token.id == TokenId::KwdConstMethod;
@@ -904,9 +901,8 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
 bool Parser::doReturn(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, parent);
+    *result           = node;
     node->semanticFct = SemanticJob::resolveReturn;
-    if (result)
-        *result = node;
 
     // Return value
     SWAG_CHECK(eatToken());
@@ -921,10 +917,10 @@ bool Parser::doReturn(AstNode* parent, AstNode** result)
 bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMissingType, bool* hasMissingType)
 {
     auto funcNode         = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent, 4);
+    *result               = funcNode;
     funcNode->semanticFct = SemanticJob::resolveFuncDecl;
     funcNode->flags |= AST_GENERATED;
-    if (result)
-        *result = funcNode;
+
     int id               = g_UniqueID.fetch_add(1);
     funcNode->token.text = "__lambda" + to_string(id);
 
@@ -1180,7 +1176,6 @@ bool Parser::doLambdaExpression(AstNode* parent, AstNode** result)
         lambdaFunc->flags |= AST_NO_SEMANTIC | AST_SPEC_SEMANTIC2;
     }
 
-    if (result)
-        *result = exprNode;
+    *result = exprNode;
     return true;
 }

@@ -10,9 +10,8 @@
 bool Parser::doImpl(AstNode* parent, AstNode** result)
 {
     auto implNode         = Ast::newNode<AstImpl>(this, AstNodeKind::Impl, sourceFile, parent);
+    *result               = implNode;
     implNode->semanticFct = SemanticJob::resolveImpl;
-    if (result)
-        *result = implNode;
 
     SWAG_VERIFY(module->acceptsCompileImpl, context->report({implNode, Err(Syn0104)}));
 
@@ -177,11 +176,10 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
 bool Parser::doStruct(AstNode* parent, AstNode** result)
 {
     auto structNode         = Ast::newNode<AstStruct>(this, AstNodeKind::StructDecl, sourceFile, parent);
+    *result                 = structNode;
     structNode->semanticFct = SemanticJob::resolveStruct;
     structNode->allocateExtension(ExtensionKind::Semantic);
     structNode->extSemantic()->semanticAfterFct = SemanticJob::sendCompilerMsgTypeDecl;
-    if (result)
-        *result = structNode;
 
     // Special case
     SyntaxStructType structType = SyntaxStructType::Struct;
@@ -473,8 +471,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
     if (token.id == TokenId::SymLeftCurly)
     {
         auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
-        if (result)
-            *result = stmt;
+        *result   = stmt;
         SWAG_CHECK(eatToken());
         while (token.id != TokenId::SymRightCurly && (token.id != TokenId::EndOfFile))
             SWAG_CHECK(doStructBody(stmt, structType, &dummyResult));
@@ -555,8 +552,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         AstNode* varDecl;
         SWAG_CHECK(doVarDecl(parent, &varDecl, AstNodeKind::VarDecl));
         varDecl->flags |= AST_DECL_USING;
-        if (result)
-            *result = varDecl;
+        *result = varDecl;
         break;
     }
 

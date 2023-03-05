@@ -94,8 +94,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
         if (acceptDeref || parent->kind == AstNodeKind::AttrUse)
         {
             parentNode = Ast::newNode<AstNode>(this, AstNodeKind::StatementNoScope, sourceFile, parent);
-            if (result)
-                *result = parentNode;
+            *result    = parentNode;
         }
 
         // Declare first variable, and affect it
@@ -157,8 +156,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
         SWAG_VERIFY(acceptDeref, error(leftNode, Fmt(Err(Syn0177), Naming::aKindName(currentScope->kind).c_str())));
 
         auto parentNode = Ast::newNode<AstNode>(this, AstNodeKind::StatementNoScope, sourceFile, parent);
-        if (result)
-            *result = parentNode;
+        *result         = parentNode;
 
         // Generate an expression of the form "var __tmp_0 = assignment"
         ScopedLocation scopedLoc(this, &leftNode->childs.front()->token);
@@ -240,12 +238,11 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
         auto identifier = leftNode->childs.back();
         SWAG_CHECK(checkIsValidVarName(identifier));
         AstVarDecl* varNode = Ast::newVarDecl(sourceFile, identifier->token.text, parent, this);
+        *result             = varNode;
         varNode->kind       = kind;
         varNode->inheritTokenLocation(leftNode);
         varNode->assignToken = assignToken;
 
-        if (result)
-            *result = varNode;
         Ast::addChildBack(varNode, type);
         varNode->type = type;
         Ast::addChildBack(varNode, assign);

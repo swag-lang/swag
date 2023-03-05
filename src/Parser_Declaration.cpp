@@ -12,10 +12,9 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
 {
     SWAG_CHECK(eatToken());
     auto node = Ast::newNode<AstWith>(this, AstNodeKind::With, sourceFile, parent);
-    if (result)
-        *result = node;
-    AstNode* id = nullptr;
+    *result   = node;
 
+    AstNode* id = nullptr;
     if (token.id == TokenId::KwdVar)
     {
         SWAG_CHECK(doVarDecl(node, &id));
@@ -102,9 +101,8 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
         SWAG_CHECK(doVarDecl(parent, &varNode));
 
         auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Using, sourceFile, parent);
+        *result           = node;
         node->semanticFct = SemanticJob::resolveUsing;
-        if (result)
-            *result = node;
         Ast::newIdentifierRef(sourceFile, varNode->token.text, node, this);
         return true;
     }
@@ -140,11 +138,10 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
     while (true)
     {
         auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Using, sourceFile, parent);
+        *result           = node;
         node->semanticFct = SemanticJob::resolveUsing;
-        if (result)
-            *result = node;
 
-        SWAG_CHECK(doIdentifierRef(node, nullptr, IDENTIFIER_NO_PARAMS));
+        SWAG_CHECK(doIdentifierRef(node, &dummyResult, IDENTIFIER_NO_PARAMS));
 
         if (token.id != TokenId::SymComma)
         {
@@ -190,7 +187,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
         if (privName)
             namespaceNode->token.text = privName->text;
 
-        if (first && result)
+        if (first)
             *result = namespaceNode;
         if (forGlobal)
             namespaceNode->flags |= AST_GLOBAL_NODE;
@@ -293,8 +290,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
 bool Parser::doGlobalCurlyStatement(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
-    if (result)
-        *result = node;
+    *result   = node;
 
     auto startLoc = token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
@@ -307,8 +303,7 @@ bool Parser::doGlobalCurlyStatement(AstNode* parent, AstNode** result)
 bool Parser::doCurlyStatement(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
-    if (result)
-        *result = node;
+    *result   = node;
 
     bool isGlobal = currentScope->isGlobalOrImpl();
     auto startLoc = token.startLocation;
@@ -336,13 +331,12 @@ bool Parser::doCurlyStatement(AstNode* parent, AstNode** result)
 
 bool Parser::doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeKind scopeKind)
 {
-    auto     newScope = Ast::newScope(parent, "", scopeKind, currentScope);
-    AstNode* statement;
-
+    auto   newScope = Ast::newScope(parent, "", scopeKind, currentScope);
     Scoped scoped(this, newScope);
+
+    AstNode* statement;
     SWAG_CHECK(doCurlyStatement(parent, &statement));
-    if (result)
-        *result = statement;
+    *result = statement;
 
     newScope->owner = statement;
     statement->flags |= AST_NEED_SCOPE;
@@ -366,8 +360,7 @@ bool Parser::doEmbeddedStatement(AstNode* parent, AstNode** result)
     auto     newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
     Scoped   scoped(this, newScope);
     AstNode* statement = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
-    if (result)
-        *result = statement;
+    *result            = statement;
     statement->allocateExtension(ExtensionKind::Semantic);
     statement->extSemantic()->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
     statement->extSemantic()->semanticAfterFct  = SemanticJob::resolveScopedStmtAfter;
@@ -405,8 +398,7 @@ bool Parser::doStatement(AstNode* parent, AstNode** result)
     if (isGlobal)
     {
         auto node = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
-        if (result)
-            *result = node;
+        *result   = node;
         return doTopLevelInstruction(node, &dummyResult);
     }
 
@@ -494,9 +486,8 @@ void Parser::registerSubDecl(AstNode* subDecl)
 
 bool Parser::doCompilerScopeBreakable(AstNode* parent, AstNode** result)
 {
-    auto labelNode = Ast::newNode<AstScopeBreakable>(this, AstNodeKind::ScopeBreakable, sourceFile, parent);
-    if (result)
-        *result = labelNode;
+    auto labelNode         = Ast::newNode<AstScopeBreakable>(this, AstNodeKind::ScopeBreakable, sourceFile, parent);
+    *result                = labelNode;
     labelNode->semanticFct = SemanticJob::resolveScopeBreakable;
 
     SWAG_CHECK(eatToken());
@@ -724,8 +715,7 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     {
         AstAttrUse* attrUse;
         SWAG_CHECK(doAttrUse(parent, (AstNode**) &attrUse));
-        if (result)
-            *result = attrUse;
+        *result = attrUse;
         // We do not want a #[] to create a new scope when inside a function
         if (token.id == TokenId::SymLeftCurly)
             SWAG_CHECK(doCurlyStatement(attrUse, &attrUse->content));
@@ -746,8 +736,7 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     {
         AstNode* subFunc;
         SWAG_CHECK(doFuncDecl(parent, &subFunc));
-        if (result)
-            *result = subFunc;
+        *result = subFunc;
         registerSubDecl(subFunc);
         break;
     }
@@ -758,8 +747,7 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     {
         AstNode* subDecl;
         SWAG_CHECK(doStruct(parent, &subDecl));
-        if (result)
-            *result = subDecl;
+        *result = subDecl;
         registerSubDecl(subDecl);
         break;
     }
@@ -848,8 +836,7 @@ bool Parser::doTopLevelInstruction(AstNode* parent, AstNode** result)
     {
         AstAttrUse* attrUse;
         SWAG_CHECK(doAttrUse(parent, (AstNode**) &attrUse));
-        if (result)
-            *result = attrUse;
+        *result = attrUse;
         SWAG_CHECK(doTopLevelInstruction(attrUse, &attrUse->content));
         if (attrUse->content)
             attrUse->content->setOwnerAttrUse(attrUse);

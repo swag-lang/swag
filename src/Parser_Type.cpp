@@ -10,8 +10,8 @@ bool Parser::doAlias(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstAlias>(this, AstNodeKind::Alias, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveUsing;
-    if (result)
-        *result = node;
+
+    *result = node;
     SWAG_CHECK(eatToken());
 
     SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0071), token.ctext())));
@@ -46,9 +46,8 @@ bool Parser::doAlias(AstNode* parent, AstNode** result)
 bool Parser::doLambdaClosureType(AstNode* parent, AstNode** result, bool inTypeVarDecl)
 {
     auto node         = Ast::newNode<AstTypeLambda>(this, AstNodeKind::TypeLambda, sourceFile, parent);
+    *result           = node;
     node->semanticFct = SemanticJob::resolveTypeLambdaClosure;
-    if (result)
-        *result = node;
 
     if (inTypeVarDecl)
     {
@@ -447,8 +446,7 @@ bool Parser::doTupleOrAnonymousType(AstNode* parent, AstNode** result, bool isCo
 
     // Reference to that struct
     auto identifier = Ast::newIdentifierRef(sourceFile, structNode->token.text, parent, this);
-    if (result)
-        *result = identifier;
+    *result         = identifier;
 
     identifier->childs.back()->flags |= AST_GENERATED;
     Ast::removeFromParent(structNode);
@@ -480,8 +478,7 @@ bool Parser::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeVarD
     if (token.id == TokenId::KwdCode)
     {
         auto node = Ast::newTypeExpression(sourceFile, parent, this);
-        if (result)
-            *result = node;
+        *result   = node;
         node->flags |= AST_NO_BYTECODE_CHILDS;
         node->typeInfo = g_TypeMgr->typeInfoCode;
         node->typeFlags |= TYPEFLAG_IS_CODE;
@@ -498,9 +495,8 @@ bool Parser::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeVarD
     // retval
     if (token.id == TokenId::KwdRetVal)
     {
-        auto node = Ast::newTypeExpression(sourceFile, parent, this);
-        if (result)
-            *result = node;
+        auto node         = Ast::newTypeExpression(sourceFile, parent, this);
+        *result           = node;
         node->semanticFct = SemanticJob::resolveRetVal;
         node->flags |= AST_NO_BYTECODE_CHILDS;
         node->typeFlags |= TYPEFLAG_RETVAL;
@@ -538,8 +534,7 @@ bool Parser::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeVarD
 
     // Else this is a type expression
     auto node = Ast::newTypeExpression(sourceFile, parent, this);
-    if (result)
-        *result = node;
+    *result   = node;
     node->flags |= AST_NO_BYTECODE_CHILDS;
     node->typeFlags |= isConst ? TYPEFLAG_IS_CONST : 0;
     node->arrayDim = 0;
@@ -810,9 +805,8 @@ bool Parser::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeVarD
 bool Parser::doCast(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstCast>(this, AstNodeKind::Cast, sourceFile, parent);
+    *result           = node;
     node->semanticFct = SemanticJob::resolveExplicitCast;
-    if (result)
-        *result = node;
     SWAG_CHECK(eatToken());
 
     // Cast modifiers
@@ -846,9 +840,8 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
 bool Parser::doAutoCast(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstCast>(this, AstNodeKind::AutoCast, sourceFile, parent);
+    *result           = node;
     node->semanticFct = SemanticJob::resolveExplicitAutoCast;
-    if (result)
-        *result = node;
 
     SWAG_CHECK(eatToken());
     SWAG_CHECK(doUnaryExpression(node, EXPR_FLAG_NONE, &dummyResult));

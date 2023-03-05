@@ -212,8 +212,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
 bool Parser::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t identifierFlags)
 {
     auto identifierRef = Ast::newIdentifierRef(sourceFile, parent, this);
-    if (result)
-        *result = identifierRef;
+    *result            = identifierRef;
 
     if (identifierFlags & IDENTIFIER_GLOBAL)
         identifierRef->specFlags |= AstIdentifierRef::SPECFLAG_GLOBAL;
@@ -287,8 +286,7 @@ bool Parser::doDiscard(AstNode* parent, AstNode** result)
         return error(token, Fmt(Err(Syn0173), token.ctext()));
     }
 
-    if (result)
-        *result = idRef;
+    *result = idRef;
 
     // For export
     idRef->flags |= AST_DISCARD;
@@ -333,8 +331,7 @@ bool Parser::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDisca
         node->semanticFct = SemanticJob::resolveAssume;
     }
 
-    if (result)
-        *result = node;
+    *result = node;
     SWAG_VERIFY(node->ownerFct, error(node, Fmt(Err(Syn0021), node->token.ctext())));
     SWAG_CHECK(eatToken());
 
@@ -374,10 +371,9 @@ bool Parser::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDisca
 bool Parser::doThrow(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Throw, sourceFile, parent);
+    *result   = node;
     SWAG_VERIFY(node->ownerFct, error(node, Err(Syn0028)));
     node->semanticFct = SemanticJob::resolveThrow;
-    if (result)
-        *result = node;
     SWAG_CHECK(eatToken());
 
     SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, Fmt(Err(Syn0147), node->token.ctext())));

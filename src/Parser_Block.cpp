@@ -8,8 +8,7 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstIf>(this, AstNodeKind::If, sourceFile, parent, 2);
     node->semanticFct = SemanticJob::resolveIf;
-    if (result)
-        *result = node;
+    *result           = node;
 
     SWAG_CHECK(eatToken());
     SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(node->token, Err(Syn0084)));
@@ -34,8 +33,7 @@ bool Parser::doWhile(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstWhile>(this, AstNodeKind::While, sourceFile, parent, 2);
     node->semanticFct = SemanticJob::resolveWhile;
-    if (result)
-        *result = node;
+    *result           = node;
 
     SWAG_CHECK(eatToken());
 
@@ -53,8 +51,7 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
 {
     auto switchNode         = Ast::newNode<AstSwitch>(this, AstNodeKind::Switch, sourceFile, parent, 4);
     switchNode->semanticFct = SemanticJob::resolveSwitch;
-    if (result)
-        *result = switchNode;
+    *result                 = switchNode;
 
     // switch can have no expression
     SWAG_CHECK(eatToken());
@@ -162,8 +159,7 @@ bool Parser::doFor(AstNode* parent, AstNode** result)
     node->allocateExtension(ExtensionKind::Semantic);
     node->extSemantic()->semanticBeforeFct = SemanticJob::resolveForBefore;
     node->semanticFct                      = SemanticJob::resolveFor;
-    if (result)
-        *result = node;
+    *result                                = node;
 
     SWAG_CHECK(eatToken());
 
@@ -199,8 +195,7 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstVisit>(this, AstNodeKind::Visit, sourceFile, parent, 3);
     node->semanticFct = SemanticJob::resolveVisit;
-    if (result)
-        *result = node;
+    *result           = node;
 
     // Eat visit keyword
     SWAG_CHECK(eatToken());
@@ -272,9 +267,8 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
     node->allocateExtension(ExtensionKind::Semantic);
     node->extSemantic()->semanticBeforeFct = SemanticJob::resolveLoopBefore;
     node->semanticFct                      = SemanticJob::resolveLoop;
-    if (result)
-        *result = node;
-    newScope->owner = node;
+    *result                                = node;
+    newScope->owner                        = node;
 
     SWAG_CHECK(eatToken());
 
@@ -349,8 +343,7 @@ bool Parser::doGetErr(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstNode>(this, AstNodeKind::GetErr, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveGetErr;
-    if (result)
-        *result = node;
+    *result           = node;
     SWAG_CHECK(eatToken());
     return true;
 }
@@ -359,8 +352,7 @@ bool Parser::doIndex(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Index, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveIndex;
-    if (result)
-        *result = node;
+    *result           = node;
     SWAG_CHECK(eatToken());
     return true;
 }
@@ -369,8 +361,7 @@ bool Parser::doFallThrough(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstBreakContinue>(this, AstNodeKind::FallThrough, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveFallThrough;
-    if (result)
-        *result = node;
+    *result           = node;
     SWAG_CHECK(eatToken());
     return true;
 }
@@ -379,8 +370,7 @@ bool Parser::doBreak(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstBreakContinue>(this, AstNodeKind::Break, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveBreak;
-    if (result)
-        *result = node;
+    *result           = node;
     SWAG_CHECK(eatToken());
     if (token.flags & TOKENPARSE_LAST_EOL)
         return true;
