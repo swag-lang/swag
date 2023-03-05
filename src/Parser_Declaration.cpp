@@ -91,15 +91,13 @@ bool Parser::doCompilerScopeFile(AstNode* parent, AstNode** result)
 bool Parser::doUsing(AstNode* parent, AstNode** result)
 {
     SWAG_CHECK(eatToken());
-
-    if (token.id == TokenId::KwdNamespace)
+    switch (token.id)
     {
+    case TokenId::KwdNamespace:
         SWAG_CHECK(doNamespace(parent, result, false, true));
         return true;
-    }
 
-    if (token.id == TokenId::KwdVar)
-    {
+    case TokenId::KwdVar:
         AstNode* varNode;
         SWAG_CHECK(doVarDecl(parent, &varNode));
 
@@ -111,6 +109,34 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
         return true;
     }
 
+    // We must ensure that no job can be run before the using
+    if (!parent->ownerFct)
+    {
+        for (auto child : parent->childs)
+        {
+            switch (child->kind)
+            {
+            case AstNodeKind::CompilerImport:
+            case AstNodeKind::CompilerAssert:
+            case AstNodeKind::CompilerForeignLib:
+            case AstNodeKind::Using:
+            case AstNodeKind::IdentifierRef:
+            case AstNodeKind::Namespace:
+            case AstNodeKind::CompilerDependencies:
+                break;
+            case AstNodeKind::AttrUse:
+                if (child->specFlags & AstAttrUse::SPECFLAG_GLOBAL)
+                    break;
+            default:
+            {
+                Diagnostic diag{sourceFile, token, Err(Syn0036)};
+                auto       note = Diagnostic::note(child, child->token, Nte(Nte0024));
+                return context->report(diag, note);
+            }
+            }
+        }
+    }
+
     while (true)
     {
         auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Using, sourceFile, parent);
@@ -119,34 +145,6 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
             *result = node;
 
         SWAG_CHECK(doIdentifierRef(node, nullptr, IDENTIFIER_NO_PARAMS));
-
-        // We must ensure that no job can be run before the using
-        if (!node->ownerFct)
-        {
-            for (auto child : parent->childs)
-            {
-                switch (child->kind)
-                {
-                case AstNodeKind::CompilerImport:
-                case AstNodeKind::CompilerAssert:
-                case AstNodeKind::CompilerForeignLib:
-                case AstNodeKind::Using:
-                case AstNodeKind::IdentifierRef:
-                case AstNodeKind::Namespace:
-                case AstNodeKind::CompilerDependencies:
-                    break;
-                case AstNodeKind::AttrUse:
-                    if (child->specFlags & AstAttrUse::SPECFLAG_GLOBAL)
-                        break;
-                default:
-                {
-                    Diagnostic diag{node, Err(Syn0036)};
-                    auto       note = Diagnostic::note(child, child->token, Nte(Nte0024));
-                    return context->report(diag, note);
-                }
-                }
-            }
-        }
 
         if (token.id != TokenId::SymComma)
         {
