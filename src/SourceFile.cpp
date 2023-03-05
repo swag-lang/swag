@@ -171,23 +171,6 @@ Utf8 SourceFile::getLine(long lineNo, bool* eof)
     return allLines[lineNo];
 }
 
-void SourceFile::computeFileScopeName()
-{
-    ScopedLock lk(mutex);
-    if (!scopeName.empty())
-        return;
-    scopeName = "__" + name;
-
-    char* pz = strrchr(scopeName.buffer, '.');
-    if (pz)
-    {
-        *pz             = 0;
-        scopeName.count = (int) (pz - scopeName.c_str());
-    }
-
-    Ast::normalizeIdentifierName(scopeName);
-}
-
 void SourceFile::addGlobalUsing(Scope* scope)
 {
     for (auto p : globalUsings)

@@ -354,9 +354,9 @@ bool Parser::generateAst()
     // Creates a top namespace with the module namespace name
     if (module->kind != ModuleKind::BootStrap && module->kind != ModuleKind::Runtime)
     {
-        Utf8 npName;
         auto moduleForNp = sourceFile->imported ? sourceFile->imported : sourceFile->module;
 
+        Utf8 npName;
         npName.append((const char*) moduleForNp->buildCfg.moduleNamespace.buffer, (int) moduleForNp->buildCfg.moduleNamespace.count);
         if (npName.empty())
             npName = moduleForNp->name;
@@ -391,8 +391,9 @@ bool Parser::generateAst()
     // One scope per file. We do NOT register the scope in the list of childs
     // of the module scope, to avoid contention in // (and this is useless). That way,
     // no need to lock the module scope each time a file is encountered.
-    sourceFile->computeFileScopeName();
-    sourceFile->scopeFile              = Ast::newScope(sourceFile->astRoot, sourceFile->scopeName, ScopeKind::File, nullptr);
+    Utf8 scopeName = "__" + Path(sourceFile->name).replace_extension().string();
+    Ast::normalizeIdentifierName(scopeName);
+    sourceFile->scopeFile              = Ast::newScope(sourceFile->astRoot, scopeName, ScopeKind::File, nullptr);
     sourceFile->scopeFile->parentScope = parentScope;
     sourceFile->scopeFile->flags |= SCOPE_FILE;
 

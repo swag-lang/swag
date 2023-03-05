@@ -18,7 +18,6 @@ struct SourceFile
     bool load();
     Utf8 getLine(long lineNo, bool* eof = nullptr);
     void setExternalBuffer(const Utf8& content);
-    void computeFileScopeName();
     void addGlobalUsing(Scope* scope);
 
     SharedMutex            mutex;
@@ -28,7 +27,6 @@ struct SourceFile
     Utf8                   name;
     Path                   path;
     Utf8                   externalContent;
-    Utf8                   scopeName;
 
     Module*     module                = nullptr;
     AstNode*    astRoot               = nullptr;
