@@ -98,22 +98,21 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
         return true;
     }
 
+    if (token.id == TokenId::KwdVar)
+    {
+        AstNode* varNode;
+        SWAG_CHECK(doVarDecl(parent, &varNode));
+
+        auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Using, sourceFile, parent);
+        node->semanticFct = SemanticJob::resolveUsing;
+        if (result)
+            *result = node;
+        Ast::newIdentifierRef(sourceFile, varNode->token.text, node, this);
+        return true;
+    }
+
     while (true)
     {
-        // using var
-        if (token.id == TokenId::KwdVar)
-        {
-            AstNode* varNode;
-            SWAG_CHECK(doVarDecl(parent, &varNode));
-
-            auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Using, sourceFile, parent);
-            node->semanticFct = SemanticJob::resolveUsing;
-            if (result)
-                *result = node;
-            Ast::newIdentifierRef(sourceFile, varNode->token.text, node, this);
-            return true;
-        }
-
         auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Using, sourceFile, parent);
         node->semanticFct = SemanticJob::resolveUsing;
         if (result)
@@ -137,7 +136,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
                 case AstNodeKind::CompilerDependencies:
                     break;
                 case AstNodeKind::AttrUse:
-                    if (((AstAttrUse*) child)->specFlags & AstAttrUse::SPECFLAG_GLOBAL)
+                    if (child->specFlags & AstAttrUse::SPECFLAG_GLOBAL)
                         break;
                 default:
                 {
@@ -149,14 +148,13 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
             }
         }
 
-        if (token.id == TokenId::SymComma)
+        if (token.id != TokenId::SymComma)
         {
-            SWAG_CHECK(eatToken());
-            continue;
+            SWAG_CHECK(eatSemiCol("'using' declaration"));
+            break;
         }
 
-        SWAG_CHECK(eatSemiCol("'using' declaration"));
-        break;
+        SWAG_CHECK(eatToken());
     }
 
     return true;
