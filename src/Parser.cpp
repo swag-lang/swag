@@ -440,17 +440,14 @@ bool Parser::generateAst()
     if (sourceFile->numErrors)
         return false;
 
-    tokenizer.setup(context, sourceFile);
-    sourceFile->duringSyntax = true;
-
 #ifdef SWAG_STATS
     Timer timer(&g_Stats.syntaxTime);
 #endif
 
+    tokenizer.setup(context, sourceFile);
     SWAG_CHECK(eatToken());
     while (token.id != TokenId::EndOfFile)
         SWAG_CHECK(doTopLevelInstruction(sourceFile->astRoot));
 
-    sourceFile->duringSyntax = false;
     return true;
 }

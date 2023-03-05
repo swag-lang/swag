@@ -142,10 +142,7 @@ void Diagnostic::printErrorLevel()
     {
     case DiagnosticLevel::Error:
         g_Log.setColor(errorColor);
-        if (sourceFile && sourceFile->duringSyntax)
-            g_Log.print("syntax error: ");
-        else
-            g_Log.print("error: ");
+        g_Log.print("error: ");
         break;
     case DiagnosticLevel::Warning:
         g_Log.setColor(warningColor);
