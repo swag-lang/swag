@@ -586,15 +586,15 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
         symMatchContext.parameters.push_back(param);
 
     // Generic string parameter
-    AstNode*      genericParameters = nullptr;
-    AstNode       parameters;
-    AstNode       literal;
+    AstNode* genericParameters = nullptr;
+    AstNode  parameters;
+    AstNode  literal;
+    Ast::constructNode(&parameters);
+    Ast::constructNode(&literal);
     ComputedValue cValue;
-    parameters.flags      = 0;
     parameters.sourceFile = left->sourceFile;
     parameters.inheritTokenLocation(left);
     parameters.inheritOwners(left);
-    literal.flags      = 0;
     literal.sourceFile = left->sourceFile;
     literal.inheritTokenLocation(left);
     literal.inheritOwners(left);

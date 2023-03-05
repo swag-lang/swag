@@ -388,44 +388,44 @@ struct AstNode
     NodeExtensionMisc*     extMisc()        { return extension->misc; }
     // clang-format on
 
-    AstNodeKind         kind          = (AstNodeKind) 0;
-    AstNodeResolveState semanticState = (AstNodeResolveState) 0;
-    AstNodeResolveState bytecodeState = (AstNodeResolveState) 0;
-    uint8_t             padding0      = 0;
-    TokenId             tokenId       = TokenId::Invalid;
-    uint16_t            specFlags     = 0;
+    AstNodeKind         kind;
+    AstNodeResolveState semanticState;
+    AstNodeResolveState bytecodeState;
+    uint8_t             padding0;
+    TokenId             tokenId;
+    uint16_t            specFlags;
 
     SharedMutex            mutex;
     Token                  token;
     VectorNative<AstNode*> childs;
-    ComputedValue*         computedValue = nullptr;
+    ComputedValue*         computedValue;
 
-    Scope*        ownerScope       = nullptr;
-    Scope*        ownerStructScope = nullptr;
-    AstBreakable* ownerBreakable   = nullptr;
-    AstInline*    ownerInline      = nullptr;
-    AstFuncDecl*  ownerFct         = nullptr;
+    Scope*        ownerScope;
+    Scope*        ownerStructScope;
+    AstBreakable* ownerBreakable;
+    AstInline*    ownerInline;
+    AstFuncDecl*  ownerFct;
 
-    TypeInfo* typeInfo       = nullptr;
-    TypeInfo* castedTypeInfo = nullptr;
+    TypeInfo* typeInfo;
+    TypeInfo* castedTypeInfo;
 
-    SymbolName*     resolvedSymbolName     = nullptr;
-    SymbolOverload* resolvedSymbolOverload = nullptr;
+    SymbolName*     resolvedSymbolName;
+    SymbolOverload* resolvedSymbolOverload;
 
-    AstNode*       parent     = nullptr;
-    SourceFile*    sourceFile = nullptr;
-    NodeExtension* extension  = nullptr;
+    AstNode*       parent;
+    SourceFile*    sourceFile;
+    NodeExtension* extension;
 
-    SemanticFct semanticFct = nullptr;
-    ByteCodeFct byteCodeFct = nullptr;
+    SemanticFct semanticFct;
+    ByteCodeFct byteCodeFct;
 
-    uint64_t flags          = 0;
-    uint64_t semFlags       = 0;
-    uint64_t attributeFlags = 0;
+    uint64_t flags;
+    uint64_t semFlags;
+    uint64_t attributeFlags;
 
     RegisterList resultRegisterRC;
-    uint16_t     safetyOn  = 0;
-    uint16_t     safetyOff = 0;
+    uint16_t     safetyOn;
+    uint16_t     safetyOff;
 
 #ifdef SWAG_DEV_MODE
     uint32_t rankId;
@@ -449,11 +449,11 @@ struct AstVarDecl : public AstNode
     Utf8          publicName;
     TokenParse    assignToken;
 
-    AstNode*    type             = nullptr;
-    AstNode*    assignment       = nullptr;
-    AstNode*    typeConstraint   = nullptr;
-    AstAttrUse* attrUse          = nullptr;
-    AstNode*    genTypeComesFrom = nullptr;
+    AstNode*    type;
+    AstNode*    assignment;
+    AstNode*    typeConstraint;
+    AstAttrUse* attrUse;
+    AstNode*    genTypeComesFrom;
 };
 
 struct AstIdentifierRef : public AstNode
@@ -465,8 +465,8 @@ struct AstIdentifierRef : public AstNode
     AstNode* clone(CloneContext& context);
     void     computeName();
 
-    Scope*   startScope           = nullptr;
-    AstNode* previousResolvedNode = nullptr;
+    Scope*   startScope;
+    AstNode* previousResolvedNode;
 };
 
 struct AstIdentifier : public AstNode
@@ -490,9 +490,9 @@ struct AstIdentifier : public AstNode
     void              allocateIdentifierExtension();
     AstIdentifierRef* identifierRef();
 
-    AstFuncCallParams*   genericParameters   = nullptr;
-    AstFuncCallParams*   callParameters      = nullptr;
-    IdentifierExtension* identifierExtension = nullptr;
+    AstFuncCallParams*   genericParameters;
+    AstFuncCallParams*   callParameters;
+    IdentifierExtension* identifierExtension;
 };
 
 struct AstFuncDecl : public AstNode
@@ -530,23 +530,23 @@ struct AstFuncDecl : public AstNode
     Mutex                  funcMutex;
     Token                  tokenName;
 
-    AstNode*        captureParameters     = nullptr;
-    AstNode*        parameters            = nullptr;
-    AstNode*        genericParameters     = nullptr;
-    AstNode*        returnType            = nullptr;
-    AstNode*        content               = nullptr;
-    AstNode*        validif               = nullptr;
-    AstNode*        returnTypeDeducedNode = nullptr;
-    AstNode*        originalGeneric       = nullptr;
-    Scope*          scope                 = nullptr;
-    TypeInfoParam*  methodParam           = nullptr;
-    Job*            pendingLambdaJob      = nullptr;
-    AstMakePointer* makePointerLambda     = nullptr;
-    TypeInfoParam*  fromItfSymbol         = nullptr;
+    AstNode*        captureParameters;
+    AstNode*        parameters;
+    AstNode*        genericParameters;
+    AstNode*        returnType;
+    AstNode*        content;
+    AstNode*        validif;
+    AstNode*        returnTypeDeducedNode;
+    AstNode*        originalGeneric;
+    Scope*          scope;
+    TypeInfoParam*  methodParam;
+    Job*            pendingLambdaJob;
+    AstMakePointer* makePointerLambda;
+    TypeInfoParam*  fromItfSymbol;
 
-    uint32_t aliasMask          = 0;
-    uint32_t stackSize          = 0;
-    uint32_t nodeCounts         = 0;
+    uint32_t aliasMask;
+    uint32_t stackSize;
+    uint32_t nodeCounts;
     uint32_t registerGetContext = UINT32_MAX;
 };
 
@@ -554,7 +554,7 @@ struct AstAttrDecl : public AstNode
 {
     AstNode* clone(CloneContext& context);
 
-    AstNode* parameters = nullptr;
+    AstNode* parameters;
 };
 
 struct AstAttrUse : public AstNode
@@ -565,7 +565,7 @@ struct AstAttrUse : public AstNode
 
     AttributeList attributes;
 
-    AstNode* content = nullptr;
+    AstNode* content;
 };
 
 struct AstFuncCallParams : public AstNode
@@ -581,9 +581,9 @@ struct AstFuncCallParam : public AstNode
 {
     AstNode* clone(CloneContext& context);
 
-    AstReturn*     autoTupleReturn   = nullptr;
-    TypeInfoParam* resolvedParameter = nullptr;
-    AstNode*       specUfcsNode      = nullptr;
+    AstReturn*     autoTupleReturn;
+    TypeInfoParam* resolvedParameter;
+    AstNode*       specUfcsNode;
 
     int indexParam = 0;
 };
@@ -592,27 +592,27 @@ struct AstBinaryOpNode : public AstNode
 {
     AstNode* clone(CloneContext& context);
 
-    int seekJumpExpression = 0;
+    int seekJumpExpression;
 };
 
 struct AstConditionalOpNode : public AstNode
 {
     AstNode* clone(CloneContext& context);
 
-    int seekJumpIfFalse      = 0;
-    int seekJumpAfterIfFalse = 0;
+    int seekJumpIfFalse;
+    int seekJumpAfterIfFalse;
 };
 
 struct AstIf : public AstNode
 {
     AstNode* clone(CloneContext& context);
 
-    AstNode*            boolExpression = nullptr;
-    AstCompilerIfBlock* ifBlock        = nullptr;
-    AstCompilerIfBlock* elseBlock      = nullptr;
+    AstNode*            boolExpression;
+    AstCompilerIfBlock* ifBlock;
+    AstCompilerIfBlock* elseBlock;
 
-    int seekJumpExpression = 0;
-    int seekJumpAfterIf    = 0;
+    int seekJumpExpression;
+    int seekJumpAfterIf;
 };
 
 struct AstBreakContinue : public AstNode
@@ -621,9 +621,9 @@ struct AstBreakContinue : public AstNode
 
     Token label;
 
-    AstSwitchCase* switchCase = nullptr;
+    AstSwitchCase* switchCase;
 
-    int jumpInstruction = 0;
+    int jumpInstruction;
 };
 
 const uint32_t BREAKABLE_CAN_HAVE_INDEX         = 0x00000001;
@@ -650,14 +650,14 @@ struct AstBreakable : public AstNode
     VectorNative<AstBreakContinue*> continueList;
     VectorNative<AstBreakContinue*> fallThroughList;
 
-    uint32_t registerIndex  = 0;
-    uint32_t registerIndex1 = 0;
+    uint32_t registerIndex;
+    uint32_t registerIndex1;
     uint32_t breakableFlags = BREAKABLE_CAN_HAVE_INDEX | BREAKABLE_CAN_HAVE_CONTINUE;
 
-    int seekJumpBeforeContinue   = 0;
-    int seekJumpBeforeExpression = 0;
-    int seekJumpExpression       = 0;
-    int seekJumpAfterBlock       = 0;
+    int seekJumpBeforeContinue;
+    int seekJumpBeforeExpression;
+    int seekJumpExpression;
+    int seekJumpAfterBlock;
 };
 
 struct AstScopeBreakable : public AstBreakable
@@ -669,15 +669,15 @@ struct AstScopeBreakable : public AstBreakable
 
     AstNode* clone(CloneContext& context);
 
-    AstNode* block = nullptr;
+    AstNode* block;
 };
 
 struct AstWhile : public AstBreakable
 {
     AstNode* clone(CloneContext& context);
 
-    AstNode* boolExpression = nullptr;
-    AstNode* block          = nullptr;
+    AstNode* boolExpression;
+    AstNode* block;
 };
 
 struct AstFor : public AstBreakable
@@ -685,10 +685,10 @@ struct AstFor : public AstBreakable
     ~AstFor();
     AstNode* clone(CloneContext& context);
 
-    AstNode* preExpression  = nullptr;
-    AstNode* boolExpression = nullptr;
-    AstNode* postExpression = nullptr;
-    AstNode* block          = nullptr;
+    AstNode* preExpression;
+    AstNode* boolExpression;
+    AstNode* postExpression;
+    AstNode* block;
 
     int seekJumpToExpression = 0;
 };
@@ -698,9 +698,9 @@ struct AstLoop : public AstBreakable
     ~AstLoop();
     AstNode* clone(CloneContext& context);
 
-    AstNode* specificName = nullptr;
-    AstNode* expression   = nullptr;
-    AstNode* block        = nullptr;
+    AstNode* specificName;
+    AstNode* expression;
+    AstNode* block;
 };
 
 struct AstVisit : public AstNode
@@ -713,8 +713,8 @@ struct AstVisit : public AstNode
     Token         extraNameToken;
     Token         wantPointerToken;
 
-    AstNode* expression = nullptr;
-    AstNode* block      = nullptr;
+    AstNode* expression;
+    AstNode* block;
 };
 
 struct AstSwitch : public AstBreakable
@@ -729,8 +729,8 @@ struct AstSwitch : public AstBreakable
 
     VectorNative<AstSwitchCase*> cases;
 
-    AstNode*  expression         = nullptr;
-    TypeInfo* beforeAutoCastType = nullptr;
+    AstNode*  expression;
+    TypeInfo* beforeAutoCastType;
 };
 
 struct AstSwitchCase : public AstNode
@@ -741,8 +741,8 @@ struct AstSwitchCase : public AstNode
 
     VectorNative<AstNode*> expressions;
 
-    AstNode*   block       = nullptr;
-    AstSwitch* ownerSwitch = nullptr;
+    AstNode*   block;
+    AstSwitch* ownerSwitch;
 
     int caseIndex = 0;
 };
@@ -752,10 +752,10 @@ struct AstSwitchCaseBlock : public AstNode
     ~AstSwitchCaseBlock();
     AstNode* clone(CloneContext& context);
 
-    AstSwitchCase* ownerCase = nullptr;
+    AstSwitchCase* ownerCase;
 
-    int seekStart        = 0;
-    int seekJumpNextCase = 0;
+    int seekStart;
+    int seekJumpNextCase;
 };
 
 struct AstType : public AstNode
@@ -786,14 +786,14 @@ struct AstTypeExpression : public AstType
 
     AstNode* clone(CloneContext& context);
 
-    AstNode*  identifier      = nullptr;
-    TypeInfo* typeFromLiteral = nullptr;
+    AstNode*  identifier;
+    TypeInfo* typeFromLiteral;
 
-    uint8_t     ptrFlags[MAX_PTR_COUNT] = {0};
-    LiteralType literalType             = (LiteralType) 0;
-    uint16_t    typeFlags               = 0;
-    uint8_t     ptrCount                = 0;
-    uint8_t     arrayDim                = 0;
+    uint8_t     ptrFlags[MAX_PTR_COUNT];
+    LiteralType literalType;
+    uint16_t    typeFlags;
+    uint8_t     ptrCount;
+    uint8_t     arrayDim;
 };
 
 struct AstTypeLambda : public AstType
@@ -802,8 +802,8 @@ struct AstTypeLambda : public AstType
 
     AstNode* clone(CloneContext& context);
 
-    AstNode* parameters = nullptr;
-    AstNode* returnType = nullptr;
+    AstNode* parameters;
+    AstNode* returnType;
 };
 
 struct AstArrayPointerIndex : public AstNode
@@ -814,8 +814,8 @@ struct AstArrayPointerIndex : public AstNode
 
     VectorNative<AstNode*> structFlatParams;
 
-    AstNode* array  = nullptr;
-    AstNode* access = nullptr;
+    AstNode* array;
+    AstNode* access;
 };
 
 struct AstArrayPointerSlicing : public AstNode
@@ -826,9 +826,9 @@ struct AstArrayPointerSlicing : public AstNode
 
     VectorNative<AstNode*> structFlatParams;
 
-    AstNode* array      = nullptr;
-    AstNode* lowerBound = nullptr;
-    AstNode* upperBound = nullptr;
+    AstNode* array;
+    AstNode* lowerBound;
+    AstNode* upperBound;
 };
 
 struct AstIntrinsicProp : public AstNode
@@ -842,7 +842,7 @@ struct AstExpressionList : public AstNode
 
     AstNode* clone(CloneContext& context);
 
-    TypeInfo* castToStruct = nullptr;
+    TypeInfo* castToStruct;
 };
 
 struct AstStruct : public AstNode
@@ -856,12 +856,12 @@ struct AstStruct : public AstNode
 
     DependentJobs dependentJobs;
 
-    AstNode* genericParameters = nullptr;
-    AstNode* content           = nullptr;
-    Scope*   scope             = nullptr;
-    AstNode* ownerGeneric      = nullptr;
-    AstNode* originalParent    = nullptr;
-    AstNode* validif           = nullptr;
+    AstNode* genericParameters;
+    AstNode* content;
+    Scope*   scope;
+    AstNode* ownerGeneric;
+    AstNode* originalParent;
+    AstNode* validif;
 
     uint32_t packing = sizeof(uint64_t);
 };
@@ -871,7 +871,7 @@ struct AstEnum : public AstNode
     ~AstEnum();
     AstNode* clone(CloneContext& context);
 
-    Scope* scope = nullptr;
+    Scope* scope;
 };
 
 struct AstEnumValue : public AstNode
@@ -886,27 +886,27 @@ struct AstImpl : public AstNode
     ~AstImpl();
     AstNode* clone(CloneContext& context);
 
-    Scope*   structScope   = nullptr;
-    Scope*   scope         = nullptr;
-    AstNode* identifier    = nullptr;
-    AstNode* identifierFor = nullptr;
+    Scope*   structScope;
+    Scope*   scope;
+    AstNode* identifier;
+    AstNode* identifierFor;
 };
 
 struct AstInit : public AstNode
 {
     AstNode* clone(CloneContext& context);
 
-    AstNode*           expression = nullptr;
-    AstNode*           count      = nullptr;
-    AstFuncCallParams* parameters = nullptr;
+    AstNode*           expression;
+    AstNode*           count;
+    AstFuncCallParams* parameters;
 };
 
 struct AstDropCopyMove : public AstNode
 {
     AstNode* clone(CloneContext& context);
 
-    AstNode* expression = nullptr;
-    AstNode* count      = nullptr;
+    AstNode* expression;
+    AstNode* count;
 };
 
 struct AstReturn : public AstNode
@@ -915,9 +915,9 @@ struct AstReturn : public AstNode
 
     VectorNative<SymbolOverload*> forceNoDrop;
 
-    AstFuncDecl* resolvedFuncDecl = nullptr;
+    AstFuncDecl* resolvedFuncDecl;
 
-    int seekJump = 0;
+    int seekJump;
 };
 
 struct AstCompilerInline : public AstNode
@@ -925,7 +925,7 @@ struct AstCompilerInline : public AstNode
     ~AstCompilerInline();
     AstNode* clone(CloneContext& context);
 
-    Scope* scope = nullptr;
+    Scope* scope;
 };
 
 struct AstCompilerMacro : public AstNode
@@ -933,7 +933,7 @@ struct AstCompilerMacro : public AstNode
     ~AstCompilerMacro();
     AstNode* clone(CloneContext& context);
 
-    Scope* scope = nullptr;
+    Scope* scope;
 };
 
 struct AstCompilerMixin : public AstNode
@@ -950,9 +950,9 @@ struct AstInline : public AstNode
 
     VectorNative<AstReturn*> returnList;
 
-    AstFuncDecl* func            = nullptr;
-    Scope*       scope           = nullptr;
-    Scope*       parametersScope = nullptr;
+    AstFuncDecl* func;
+    Scope*       scope;
+    Scope*       parametersScope;
 };
 
 struct AstCompilerIfBlock : public AstNode
@@ -1003,7 +1003,7 @@ struct AstTryCatchAssume : public AstReturn
 
     RegisterList regInit;
 
-    int seekInsideJump = 0;
+    int seekInsideJump;
 };
 
 struct AstAlias : public AstNode
@@ -1018,7 +1018,7 @@ struct AstCast : public AstNode
 
     AstNode* clone(CloneContext& context);
 
-    TypeInfo* toCastTypeInfo = nullptr;
+    TypeInfo* toCastTypeInfo;
 };
 
 struct AstOp : public AstNode
@@ -1028,9 +1028,9 @@ struct AstOp : public AstNode
 
     AstNode* clone(CloneContext& context);
 
-    AstNode*          dependentLambda   = nullptr;
-    TypeInfoFuncAttr* deducedLambdaType = nullptr;
-    TypeInfoFuncAttr* tryLambdaType     = nullptr;
+    AstNode*          dependentLambda;
+    TypeInfoFuncAttr* deducedLambdaType;
+    TypeInfoFuncAttr* tryLambdaType;
 };
 
 struct AstRange : public AstNode
@@ -1039,8 +1039,8 @@ struct AstRange : public AstNode
 
     AstNode* clone(CloneContext& context);
 
-    AstNode* expressionLow = nullptr;
-    AstNode* expressionUp  = nullptr;
+    AstNode* expressionLow;
+    AstNode* expressionUp;
 };
 
 struct AstMakePointer : public AstNode
@@ -1049,23 +1049,23 @@ struct AstMakePointer : public AstNode
 
     AstNode* clone(CloneContext& context);
 
-    AstFuncDecl* lambda = nullptr;
+    AstFuncDecl* lambda;
 };
 
 struct AstSubstBreakContinue : public AstNode
 {
     AstNode* clone(CloneContext& context);
 
-    AstNode*      defaultSubst      = nullptr;
-    AstNode*      altSubst          = nullptr;
-    AstBreakable* altSubstBreakable = nullptr;
+    AstNode*      defaultSubst;
+    AstNode*      altSubst;
+    AstBreakable* altSubstBreakable;
 };
 
 struct AstDefer : public AstNode
 {
     AstNode* clone(CloneContext& context);
 
-    DeferKind deferKind = DeferKind::Normal;
+    DeferKind deferKind;
 };
 
 struct AstWith : public AstNode
@@ -1081,5 +1081,5 @@ struct AstLiteral : public AstNode
 
     Register literalValue;
 
-    LiteralType literalType = (LiteralType) 0;
+    LiteralType literalType;
 };

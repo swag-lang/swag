@@ -3,12 +3,17 @@
 struct Allocator
 {
     template<typename T>
+    static T* allocRaw()
+    {
+        return (T*) alloc(alignSize(sizeof(T)));
+    }
+
+    template<typename T>
     static T* alloc()
     {
-        auto size       = alignSize(sizeof(T));
-        auto returnData = alloc(size);
+        auto returnData = allocRaw<T>();
         ::new (returnData) T;
-        return (T*) returnData;
+        return returnData;
     }
 
     template<typename T>

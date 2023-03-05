@@ -10,6 +10,7 @@
 #include "Report.h"
 #include "ByteCodeDebugger.h"
 #include "Parser.h"
+#include "Ast.h"
 
 bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, EvaluateResult& res, CompilerAstKind kind, bool silent)
 {
@@ -19,6 +20,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
 
     // Syntax
     AstNode parent;
+    Ast::constructNode(&parent);
     parent.ownerScope = context->debugCxtIp->node ? context->debugCxtIp->node->ownerScope : nullptr;
     parent.ownerFct   = CastAst<AstFuncDecl>(context->debugCxtBc->node, AstNodeKind::FuncDecl);
     parent.sourceFile = sourceFile;

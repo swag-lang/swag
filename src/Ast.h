@@ -53,9 +53,17 @@ namespace Ast
     bool     convertStructParamsToTmpVar(SemanticContext* context, AstIdentifier* identifier);
 
     template<typename T>
+    void constructNode(T* node)
+    {
+        memset(node, 0, sizeof(T));
+        ::new (node) T;
+    }
+
+    template<typename T>
     T* newNode()
     {
-        auto node = Allocator::alloc<T>();
+        auto node = Allocator::allocRaw<T>();
+        constructNode<T>(node);
 #ifdef SWAG_STATS
         g_Stats.numNodes++;
         g_Stats.memNodes += Allocator::alignSize(sizeof(T));
@@ -69,7 +77,8 @@ namespace Ast
     template<typename T>
     T* newNode(Parser* job, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent, uint32_t allocChilds = 0)
     {
-        auto node = Allocator::alloc<T>();
+        auto node = Allocator::allocRaw<T>();
+        constructNode<T>(node);
         initNewNode(node, job, kind, sourceFile, parent, allocChilds);
 #ifdef SWAG_STATS
         g_Stats.numNodes++;

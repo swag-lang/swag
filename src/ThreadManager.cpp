@@ -12,10 +12,8 @@ void ThreadManager::init()
 {
     initDefaultContext();
 
-    uint32_t numCores = (uint32_t) std::thread::hardware_concurrency();
-    numWorkers        = g_CommandLine.numCores == 0 ? (uint32_t) std::thread::hardware_concurrency() : g_CommandLine.numCores;
-    numWorkers        = max(1, numWorkers);
-    numWorkers        = min(numWorkers, numCores);
+    numWorkers = g_CommandLine.numCores == 0 ? (uint32_t) std::thread::hardware_concurrency() : g_CommandLine.numCores;
+    numWorkers = max(1, numWorkers);
 
     queueJobs.affinity.resize(g_ThreadMgr.numWorkers);
     queueJobsIO.affinity.resize(g_ThreadMgr.numWorkers);

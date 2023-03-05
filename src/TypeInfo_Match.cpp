@@ -658,6 +658,7 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
     callParameter->parent->flags |= AST_MUST_SORT_CHILDS;
 
     AstFuncCallParam fakeParam;
+    Ast::constructNode(&fakeParam);
     fakeParam.kind = AstNodeKind::FuncCallParam;
 
     auto startResolved = context.cptResolved;

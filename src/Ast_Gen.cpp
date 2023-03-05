@@ -366,6 +366,7 @@ bool Ast::convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* ass
         if (!paramNode->type && assignment->specFlags & AstExpressionList::SPECFLAG_FOR_CAPTURE)
         {
             static AstNode fakeNode;
+            Ast::constructNode(&fakeNode);
             fakeNode.typeInfo = g_TypeMgr->typeInfoBool;
             paramNode->type   = &fakeNode;
         }

@@ -9,9 +9,7 @@ void Ast::initNewNode(AstNode* node, Parser* parser, AstNodeKind kind, SourceFil
     node->kind       = kind;
     node->parent     = parent;
     node->sourceFile = sourceFile;
-
-    if (allocChilds)
-        node->childs.reserve(allocChilds);
+    node->childs.reserve(allocChilds);
 
     if (parser)
     {
@@ -31,10 +29,9 @@ void Ast::initNewNode(AstNode* node, Parser* parser, AstNodeKind kind, SourceFil
 
         node->inheritOwnersAndFlags(parser);
     }
-    else
+    else if (parent)
     {
-        if (parent)
-            node->inheritTokenLocation(parent);
+        node->inheritTokenLocation(parent);
         node->inheritOwners(parent);
     }
 

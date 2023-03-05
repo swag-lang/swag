@@ -45,6 +45,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
     parent                    = node->parent;
 
     AstNode parameters;
+    Ast::constructNode(&parameters);
     if (parent->kind == AstNodeKind::ArrayPointerIndex || parent->kind == AstNodeKind::ArrayPointerSlicing)
     {
         allParams     = parent;

@@ -174,7 +174,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node)
 
                 // opSlice
                 AstNode tmpNode;
-                memset(&tmpNode, 0, sizeof(AstNode));
+                Ast::constructNode(&tmpNode);
                 tmpNode.typeInfo = g_TypeMgr->typeInfoU64;
                 params.push_back(&tmpNode);
                 params.push_back(&tmpNode);
