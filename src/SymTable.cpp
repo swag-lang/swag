@@ -220,49 +220,45 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
 
 void SymTable::addVarToDrop(SymbolOverload* overload, TypeInfo* typeInfo, uint32_t storageOffset)
 {
-    StructToDrop st;
-    st.typeStruct = nullptr;
-
-    // A struct
-    SWAG_ASSERT(typeInfo);
-    if (typeInfo->isStruct())
-        st.typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-
-    // An array of structs
-    else if (typeInfo->isArray())
-    {
-        auto typeArr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        if (typeArr->finalType->isStruct())
-            st.typeStruct = CastTypeInfo<TypeInfoStruct>(typeArr->finalType, TypeInfoKind::Struct);
-    }
-
-    if (!st.typeStruct)
-        return;
-
-    st.overload      = overload;
-    st.typeInfo      = typeInfo;
-    st.storageOffset = storageOffset;
-    addVarToDrop(st);
-}
-
-void SymTable::addVarToDrop(StructToDrop& st)
-{
     if (scope->kind == ScopeKind::Struct)
         return;
-    if (st.overload && st.overload->flags & OVERLOAD_RETVAL)
+    if (overload && overload->flags & OVERLOAD_RETVAL)
         return;
-    SWAG_ASSERT(st.storageOffset != UINT32_MAX);
+
+    StructToDrop st;
+    SWAG_ASSERT(typeInfo);
+
+    // A struct
+    if (typeInfo->isStruct())
+    {
+        st.typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    }
+
+    // An array of structs
+    else if (typeInfo->isArrayOfStruct())
+    {
+        auto typeArr  = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        st.typeStruct = CastTypeInfo<TypeInfoStruct>(typeArr->finalType, TypeInfoKind::Struct);
+    }
+    else
+    {
+        return;
+    }
 
     // Be sure this is done only once
     for (auto& td : structVarsToDrop)
     {
-        if (td.storageOffset == st.storageOffset)
+        if (td.storageOffset == storageOffset)
         {
             SWAG_ASSERT(td.typeStruct == st.typeStruct);
             return;
         }
     }
 
+    SWAG_ASSERT(storageOffset != UINT32_MAX);
+    st.overload      = overload;
+    st.typeInfo      = typeInfo;
+    st.storageOffset = storageOffset;
     structVarsToDrop.push_back(st);
 }
 
