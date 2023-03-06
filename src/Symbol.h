@@ -27,13 +27,12 @@ const uint32_t OVERLOAD_IMPL_IN_STRUCT     = 0x00001000;
 const uint32_t OVERLOAD_RETVAL             = 0x00002000;
 const uint32_t OVERLOAD_EMITTED            = 0x00004000;
 const uint32_t OVERLOAD_TUPLE_UNPACK       = 0x00008000;
-const uint32_t OVERLOAD_STORE_SYMBOLS      = 0x00010000;
+const uint32_t OVERLOAD_VAR_CAPTURE        = 0x00010000;
 const uint32_t OVERLOAD_VAR_COMPILER       = 0x00020000;
 const uint32_t OVERLOAD_CONSTANT           = 0x00040000;
 const uint32_t OVERLOAD_CAN_CHANGE         = 0x00080000;
 const uint32_t OVERLOAD_USED               = 0x00100000;
 const uint32_t OVERLOAD_STRUCT_AFFECT      = 0x00200000;
-const uint32_t OVERLOAD_VAR_CAPTURE        = 0x00400000;
 
 enum class SymbolKind : uint8_t
 {

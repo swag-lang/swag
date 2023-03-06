@@ -126,9 +126,6 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
     if (symbol->kind == SymbolKind::PlaceHolder && toAdd.kind != SymbolKind::PlaceHolder)
         symbol->kind = toAdd.kind;
 
-    if (toAdd.flags & OVERLOAD_STORE_SYMBOLS)
-        toAdd.node->resolvedSymbolName = symbol;
-
     SymbolOverload* result           = nullptr;
     SymbolOverload* resultIncomplete = nullptr;
 
@@ -176,9 +173,6 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
     {
         result->flags |= toAdd.flags;
     }
-
-    if (toAdd.flags & OVERLOAD_STORE_SYMBOLS)
-        toAdd.node->resolvedSymbolOverload = result;
 
     if (!toAdd.computedValue ||
         !toAdd.typeInfo->isPointerToTypeInfo() ||
