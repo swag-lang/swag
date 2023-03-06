@@ -177,20 +177,17 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
         result->flags |= toAdd.flags;
     }
 
-    if (toAdd.computedValue &&
-        toAdd.typeInfo->isPointerToTypeInfo() &&
-        result->computedValue.storageOffset != UINT32_MAX &&
-        result->computedValue.storageSegment)
-    {
-    }
-    else
+    if (toAdd.flags & OVERLOAD_STORE_SYMBOLS)
+        toAdd.node->resolvedSymbolOverload = result;
+
+    if (!toAdd.computedValue ||
+        !toAdd.typeInfo->isPointerToTypeInfo() ||
+        result->computedValue.storageOffset == UINT32_MAX ||
+        !result->computedValue.storageSegment)
     {
         result->computedValue.storageOffset  = toAdd.storageOffset;
         result->computedValue.storageSegment = toAdd.storageSegment;
     }
-
-    if (toAdd.flags & OVERLOAD_STORE_SYMBOLS)
-        toAdd.node->resolvedSymbolOverload = result;
 
     // One less overload. When this reached zero, this means we know every types for the same symbol,
     // and so we can wakeup all jobs waiting for that symbol to be solved
