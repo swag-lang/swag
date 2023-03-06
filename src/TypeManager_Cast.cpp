@@ -146,6 +146,8 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
     if (!symbol)
         return false;
 
+    VectorNative<SymbolOverload*> toAffect;
+
     // Wait for all opAffect to be solved
     {
         ScopedLock ls(symbol->mutex);
@@ -159,16 +161,18 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
     }
 
     // Resolve opAffect that match
-    VectorNative<SymbolOverload*> toAffect;
-    for (auto over : symbol->overloads)
     {
-        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
-        if (!(typeFunc->declNode->attributeFlags & ATTRIBUTE_IMPLICIT) && !(castFlags & CASTFLAG_EXPLICIT))
-            continue;
-        if (typeFunc->parameters.size() <= 1)
-            continue;
-        if (makeCompatibles(context, typeFunc->parameters[1]->typeInfo, fromType, nullptr, nullptr, CASTFLAG_NO_LAST_MINUTE | CASTFLAG_TRY_COERCE | CASTFLAG_JUST_CHECK))
-            toAffect.push_back(over);
+        SharedLock ls(symbol->mutex);
+        for (auto over : symbol->overloads)
+        {
+            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
+            if (!(typeFunc->declNode->attributeFlags & ATTRIBUTE_IMPLICIT) && !(castFlags & CASTFLAG_EXPLICIT))
+                continue;
+            if (typeFunc->parameters.size() <= 1)
+                continue;
+            if (makeCompatibles(context, typeFunc->parameters[1]->typeInfo, fromType, nullptr, nullptr, CASTFLAG_NO_LAST_MINUTE | CASTFLAG_TRY_COERCE | CASTFLAG_JUST_CHECK))
+                toAffect.push_back(over);
+        }
     }
 
     if (toAffect.empty())
@@ -244,6 +248,8 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
     if (!symbol)
         return false;
 
+    VectorNative<SymbolOverload*> toCast;
+
     // Wait for all opCast to be solved
     {
         ScopedLock ls(symbol->mutex);
@@ -257,16 +263,18 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
     }
 
     // Resolve opCast that match
-    VectorNative<SymbolOverload*> toCast;
-    for (auto over : symbol->overloads)
     {
-        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
-        if (typeFunc->isGeneric() || typeFunc->returnType->isGeneric())
-            continue;
-        if (!(typeFunc->declNode->attributeFlags & ATTRIBUTE_IMPLICIT) && !(castFlags & CASTFLAG_EXPLICIT))
-            continue;
-        if (typeFunc->returnType->isSame(toType, CASTFLAG_EXACT))
-            toCast.push_back(over);
+        SharedLock ls(symbol->mutex);
+        for (auto over : symbol->overloads)
+        {
+            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
+            if (typeFunc->isGeneric() || typeFunc->returnType->isGeneric())
+                continue;
+            if (!(typeFunc->declNode->attributeFlags & ATTRIBUTE_IMPLICIT) && !(castFlags & CASTFLAG_EXPLICIT))
+                continue;
+            if (typeFunc->returnType->isSame(toType, CASTFLAG_EXACT))
+                toCast.push_back(over);
+        }
     }
 
     // Add in the cache of possible matches
