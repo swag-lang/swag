@@ -16,9 +16,6 @@
     <ClCompile Include="../src/ModuleSemanticJob.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SymTable.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
     <ClCompile Include="../src/pch.cpp" />
     <ClCompile Include="../src/ByteCode.cpp">
       <Filter>Backend\ByteCode</Filter>
@@ -536,9 +533,6 @@
     <ClCompile Include="../src/SyntaxJob.cpp">
       <Filter>Syntax</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SymTableHash.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Path.cpp">
       <Filter>Core</Filter>
     </ClCompile>
@@ -599,6 +593,15 @@
     <ClCompile Include="..\src\mimalloc\stats.c">
       <Filter>Extern\mimalloc</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Symbol.cpp">
+      <Filter>Semantic\Symbol</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/SymTable.cpp">
+      <Filter>Semantic\Symbol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SymTableHash.cpp">
+      <Filter>Semantic\Symbol</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
@@ -617,9 +620,6 @@
       <Filter>Semantic</Filter>
     </ClInclude>
     <ClInclude Include="../src/ModuleSemanticJob.h">
-      <Filter>Semantic</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/SymTable.h">
       <Filter>Semantic</Filter>
     </ClInclude>
     <ClInclude Include="../src/pch.h" />
@@ -914,9 +914,6 @@
     <ClInclude Include="../src/SyntaxJob.h">
       <Filter>Syntax</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SymTableHash.h">
-      <Filter>Semantic</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Map.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -949,6 +946,15 @@
     </ClInclude>
     <ClInclude Include="..\src\mimalloc\bitmap.h">
       <Filter>Extern\mimalloc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Symbol.h">
+      <Filter>Semantic\Symbol</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/SymTable.h">
+      <Filter>Semantic\Symbol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SymTableHash.h">
+      <Filter>Semantic\Symbol</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1020,6 +1026,9 @@
     </Filter>
     <Filter Include="Extern\mimalloc">
       <UniqueIdentifier>{49f77145-13a7-4961-8ecf-c11c327ef4a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Semantic\Symbol">
+      <UniqueIdentifier>{a6739d74-e799-42d8-8050-176675ae95f0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
