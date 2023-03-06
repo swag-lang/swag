@@ -1183,7 +1183,6 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         typeParam->offset                                          = realStorageOffset;
         child->resolvedSymbolOverload->computedValue.storageOffset = realStorageOffset;
         child->resolvedSymbolOverload->storageIndex                = storageIndexField;
-        child->resolvedSymbolOverload->attributeFlags              = child->attributeFlags;
 
         auto childType   = TypeManager::concreteType(child->typeInfo, CONCRETE_FUNC);
         typeInfo->sizeOf = max(typeInfo->sizeOf, (int) realStorageOffset + childType->sizeOf);

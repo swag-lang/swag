@@ -1212,9 +1212,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             }
         }
 
-        if (identifier->forceTakeAddress())
-            identifier->resolvedSymbolOverload->flags |= OVERLOAD_CAN_CHANGE;
-
         break;
     }
 

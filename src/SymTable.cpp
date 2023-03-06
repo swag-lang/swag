@@ -126,8 +126,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
     if (symbol->kind == SymbolKind::PlaceHolder && toAdd.kind != SymbolKind::PlaceHolder)
         symbol->kind = toAdd.kind;
 
-    SymbolOverload* result           = nullptr;
-    SymbolOverload* resultIncomplete = nullptr;
+    SymbolOverload* overload = nullptr;
 
     // Remove incomplete flag
     if (symbol->kind == SymbolKind::TypeAlias ||
@@ -140,16 +139,14 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
         {
             if (resolved->typeInfo == toAdd.typeInfo && (resolved->flags & OVERLOAD_INCOMPLETE))
             {
-                resultIncomplete = resolved;
-                result           = resolved;
-                resultIncomplete->mutexIncomplete.lock();
-                resultIncomplete->flags &= ~OVERLOAD_INCOMPLETE;
+                overload = resolved;
+                overload->flags &= ~OVERLOAD_INCOMPLETE;
                 break;
             }
         }
     }
 
-    if (!result)
+    if (!overload)
     {
         // No ghosting check for an inline parameter
         if (!(toAdd.flags & OVERLOAD_VAR_INLINE | toAdd.flags & OVERLOAD_RETVAL))
@@ -158,29 +155,29 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
                 return nullptr;
         }
 
-        result = symbol->addOverloadNoLock(toAdd.node, toAdd.typeInfo, toAdd.computedValue);
-        result->flags |= toAdd.flags;
+        overload = symbol->addOverloadNoLock(toAdd.node, toAdd.typeInfo, toAdd.computedValue);
+        overload->flags |= toAdd.flags;
 
         // Register for dropping in end of scope, if necessary
         if ((symbol->kind == SymbolKind::Variable) &&
             !(toAdd.flags & (OVERLOAD_VAR_FUNC_PARAM | OVERLOAD_VAR_GLOBAL | OVERLOAD_TUPLE_UNPACK)) &&
             !toAdd.computedValue)
         {
-            addVarToDrop(result, result->typeInfo, toAdd.storageOffset);
+            addVarToDrop(overload, overload->typeInfo, toAdd.storageOffset);
         }
     }
     else
     {
-        result->flags |= toAdd.flags;
+        overload->flags |= toAdd.flags;
     }
 
     if (!toAdd.computedValue ||
         !toAdd.typeInfo->isPointerToTypeInfo() ||
-        result->computedValue.storageOffset == UINT32_MAX ||
-        !result->computedValue.storageSegment)
+        overload->computedValue.storageOffset == UINT32_MAX ||
+        !overload->computedValue.storageSegment)
     {
-        result->computedValue.storageOffset  = toAdd.storageOffset;
-        result->computedValue.storageSegment = toAdd.storageSegment;
+        overload->computedValue.storageOffset  = toAdd.storageOffset;
+        overload->computedValue.storageSegment = toAdd.storageSegment;
     }
 
     // One less overload. When this reached zero, this means we know every types for the same symbol,
@@ -199,10 +196,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
         symbol->dependentJobs.setRunning();
     }
 
-    if (resultIncomplete)
-        resultIncomplete->mutexIncomplete.unlock();
-
-    return result;
+    return overload;
 }
 
 void SymTable::addVarToDrop(SymbolOverload* overload, TypeInfo* typeInfo, uint32_t storageOffset)

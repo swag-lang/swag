@@ -1217,8 +1217,6 @@ bool Parser::doInitializationExpression(TokenParse& forToken, AstNode* parent, A
 void Parser::forceTakeAddress(AstNode* node)
 {
     node->flags |= AST_TAKE_ADDRESS;
-    if (node->resolvedSymbolOverload)
-        node->resolvedSymbolOverload->flags |= OVERLOAD_CAN_CHANGE;
     switch (node->kind)
     {
     case AstNodeKind::IdentifierRef:
