@@ -2,6 +2,14 @@
 #include "Diagnostic.h"
 #include "TypeManager.h"
 
+void SymbolName::decreaseOverloadNoLock()
+{
+    SWAG_ASSERT(cptOverloads);
+    cptOverloads--;
+    if (cptOverloads == 0)
+        dependentJobs.setRunning();
+}
+
 SymbolOverload* SymbolName::addOverloadNoLock(AstNode* node, TypeInfo* typeInfo, ComputedValue* computedValue)
 {
     auto overload      = Allocator::alloc<SymbolOverload>();

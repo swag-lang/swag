@@ -50,7 +50,6 @@ struct SymTable
     void addVarToDrop(StructToDrop& st);
     bool registerUsingAliasOverload(ErrorContext* context, AstNode* node, SymbolName* symbol, SymbolOverload* overload);
 
-    static void decreaseOverloadNoLock(SymbolName* symbol);
     static void disabledIfBlockOverloadNoLock(AstNode* node, SymbolName* symbol);
 
     SharedMutex                mutex;

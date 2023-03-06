@@ -199,7 +199,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
     // One less overload. When this reached zero, this means we know every types for the same symbol,
     // and so we can wakeup all jobs waiting for that symbol to be solved
     if (!(toAdd.flags & OVERLOAD_INCOMPLETE))
-        decreaseOverloadNoLock(symbol);
+        symbol->decreaseOverloadNoLock();
 
     if (symbol->overloads.size() == symbol->cptOverloadsInit)
     {
@@ -264,14 +264,6 @@ void SymTable::addVarToDrop(StructToDrop& st)
     }
 
     structVarsToDrop.push_back(st);
-}
-
-void SymTable::decreaseOverloadNoLock(SymbolName* symbol)
-{
-    SWAG_ASSERT(symbol->cptOverloads);
-    symbol->cptOverloads--;
-    if (symbol->cptOverloads == 0)
-        symbol->dependentJobs.setRunning();
 }
 
 void SymTable::disabledIfBlockOverloadNoLock(AstNode* node, SymbolName* symbol)
@@ -412,6 +404,6 @@ bool SymTable::registerUsingAliasOverload(ErrorContext* context, AstNode* node, 
     }
 
     symbol->overloads.push_back(overload);
-    decreaseOverloadNoLock(symbol);
+    symbol->decreaseOverloadNoLock();
     return true;
 }
