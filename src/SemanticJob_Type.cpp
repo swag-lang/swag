@@ -663,7 +663,13 @@ bool SemanticJob::resolveTypeAliasBefore(SemanticContext* context)
     if (node->typeInfo->isGeneric())
         symbolFlags |= OVERLOAD_GENERIC;
 
-    node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::TypeAlias, nullptr, symbolFlags);
+    AddSymbolTypeInfo toAdd;
+    toAdd.node     = node;
+    toAdd.typeInfo = node->typeInfo;
+    toAdd.kind     = SymbolKind::TypeAlias;
+    toAdd.flags    = symbolFlags;
+
+    node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
     SWAG_CHECK(node->resolvedSymbolOverload);
     SWAG_CHECK(checkPublicAlias(context, node));
     return true;
@@ -682,7 +688,13 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
     uint32_t symbolFlags = node->resolvedSymbolOverload->flags & ~OVERLOAD_INCOMPLETE;
     if (typeInfo->isGeneric())
         symbolFlags |= OVERLOAD_GENERIC;
-    SWAG_CHECK(node->ownerScope->symTable.addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::TypeAlias, nullptr, symbolFlags));
+
+    AddSymbolTypeInfo toAdd;
+    toAdd.node     = node;
+    toAdd.typeInfo = node->typeInfo;
+    toAdd.kind     = SymbolKind::TypeAlias;
+    toAdd.flags    = symbolFlags;
+    SWAG_CHECK(node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd));
     return true;
 }
 

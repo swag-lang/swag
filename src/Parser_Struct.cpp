@@ -147,7 +147,13 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
             typeInfo->structName = typeInfo->name;
             typeInfo->scope      = subScope;
             typeInfo->declNode   = implNode;
-            newScope->symTable.addSymbolTypeInfoNoLock(context, implNode, typeInfo, SymbolKind::Struct, nullptr, OVERLOAD_IMPL_IN_STRUCT, nullptr, 0, nullptr, &itfName);
+            AddSymbolTypeInfo toAdd;
+            toAdd.node      = implNode;
+            toAdd.typeInfo  = typeInfo;
+            toAdd.kind      = SymbolKind::Struct;
+            toAdd.flags     = OVERLOAD_IMPL_IN_STRUCT;
+            toAdd.aliasName = &itfName;
+            newScope->symTable.addSymbolTypeInfoNoLock(context, toAdd);
         }
         else
         {

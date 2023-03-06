@@ -222,7 +222,11 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
                 newScope                = Ast::newScope(namespaceNode, namespaceNode->token.text, ScopeKind::Namespace, currentScope);
                 typeInfo->scope         = newScope;
                 namespaceNode->typeInfo = typeInfo;
-                currentScope->symTable.addSymbolTypeInfoNoLock(context, namespaceNode, typeInfo, SymbolKind::Namespace);
+                AddSymbolTypeInfo toAdd;
+                toAdd.node     = namespaceNode;
+                toAdd.typeInfo = typeInfo;
+                toAdd.kind     = SymbolKind::Namespace;
+                currentScope->symTable.addSymbolTypeInfoNoLock(context, toAdd);
             }
             else if (symbol->kind != SymbolKind::Namespace)
             {

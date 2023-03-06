@@ -622,7 +622,13 @@ bool SemanticJob::resolveAttrDecl(SemanticContext* context)
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
 
     SWAG_CHECK(setupFuncDeclParams(context, typeInfo, node, node->parameters, false));
-    node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::Attribute);
+
+    AddSymbolTypeInfo toAdd;
+    toAdd.node     = node;
+    toAdd.typeInfo = node->typeInfo;
+    toAdd.kind     = SymbolKind::Attribute;
+
+    node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
     SWAG_CHECK(node->resolvedSymbolOverload);
 
     if (node->attributeFlags & ATTRIBUTE_PUBLIC)

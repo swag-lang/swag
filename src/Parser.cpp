@@ -373,7 +373,11 @@ bool Parser::generateAst()
             typeInfo->name          = npName;
             typeInfo->scope         = Ast::newScope(namespaceNode, npName, ScopeKind::Namespace, parentScope);
             namespaceNode->typeInfo = typeInfo;
-            parentScope->symTable.addSymbolTypeInfoNoLock(context, namespaceNode, typeInfo, SymbolKind::Namespace);
+            AddSymbolTypeInfo toAdd;
+            toAdd.node     = namespaceNode;
+            toAdd.typeInfo = typeInfo;
+            toAdd.kind     = SymbolKind::Namespace;
+            parentScope->symTable.addSymbolTypeInfoNoLock(context, toAdd);
             parentScope = typeInfo->scope;
         }
         else

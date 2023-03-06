@@ -89,71 +89,53 @@ SymbolName* SymTable::registerSymbolNameNoLock(ErrorContext* context, AstNode* n
     return symbol;
 }
 
-SymbolOverload* SymTable::addSymbolTypeInfo(ErrorContext*  context,
-                                            AstNode*       node,
-                                            TypeInfo*      typeInfo,
-                                            SymbolKind     kind,
-                                            ComputedValue* computedValue,
-                                            uint32_t       flags,
-                                            SymbolName**   resultName,
-                                            uint32_t       storageOffset,
-                                            DataSegment*   storageSegment,
-                                            Utf8*          aliasName)
+SymbolOverload* SymTable::addSymbolTypeInfo(ErrorContext* context, AddSymbolTypeInfo& toAdd)
 {
     ScopedLock lk(mutex);
     occupied = true;
-    auto res = addSymbolTypeInfoNoLock(context, node, typeInfo, kind, computedValue, flags, resultName, storageOffset, storageSegment, aliasName);
+    auto res = addSymbolTypeInfoNoLock(context, toAdd);
     occupied = false;
     return res;
 }
 
-SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext*  context,
-                                                  AstNode*       node,
-                                                  TypeInfo*      typeInfo,
-                                                  SymbolKind     kind,
-                                                  ComputedValue* computedValue,
-                                                  uint32_t       flags,
-                                                  SymbolName**   resultName,
-                                                  uint32_t       storageOffset,
-                                                  DataSegment*   storageSegment,
-                                                  Utf8*          aliasName)
+SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymbolTypeInfo& toAdd)
 {
-    if (!aliasName)
-        aliasName = &node->token.text;
+    if (!toAdd.aliasName)
+        toAdd.aliasName = &toAdd.node->token.text;
 
     // Be sure we have a symbol
-    auto symbol = findNoLock(*aliasName);
+    auto symbol = findNoLock(*toAdd.aliasName);
     if (!symbol)
-        symbol = registerSymbolNameNoLock(context, node, kind, aliasName);
+        symbol = registerSymbolNameNoLock(context, toAdd.node, toAdd.kind, toAdd.aliasName);
 
     ScopedLock lock(symbol->mutex);
 
     // In case an #if block has passed before us
     if (symbol->cptOverloadsInit == 0)
-        symbol = registerSymbolNameNoLock(context, node, kind, aliasName);
+        symbol = registerSymbolNameNoLock(context, toAdd.node, toAdd.kind, toAdd.aliasName);
 
     // If symbol was registered as a place holder, and is no more, then replace its kind
-    if (symbol->kind == SymbolKind::PlaceHolder && kind != SymbolKind::PlaceHolder)
+    if (symbol->kind == SymbolKind::PlaceHolder && toAdd.kind != SymbolKind::PlaceHolder)
     {
-        symbol->kind = kind;
+        symbol->kind = toAdd.kind;
     }
 
     // Only add an inline parameter/retval once in a given scope
-    else if ((flags & (OVERLOAD_VAR_INLINE | OVERLOAD_RETVAL)) && symbol->overloads.size())
+    else if ((toAdd.flags & (OVERLOAD_VAR_INLINE | OVERLOAD_RETVAL)) && symbol->overloads.size())
     {
-        node->resolvedSymbolOverload = symbol->overloads[0];
-        if (resultName)
-            *resultName = symbol;
+        toAdd.node->resolvedSymbolOverload = symbol->overloads[0];
+        if (toAdd.resultName)
+            *toAdd.resultName = symbol;
         return symbol->overloads[0];
     }
 
-    if (resultName)
-        *resultName = symbol;
+    if (toAdd.resultName)
+        *toAdd.resultName = symbol;
 
     SymbolOverload* result           = nullptr;
     SymbolOverload* resultIncomplete = nullptr;
-    if (flags & OVERLOAD_STORE_SYMBOLS)
-        node->resolvedSymbolName = symbol;
+    if (toAdd.flags & OVERLOAD_STORE_SYMBOLS)
+        toAdd.node->resolvedSymbolName = symbol;
 
     // Remove incomplete flag
     if (symbol->kind == SymbolKind::TypeAlias ||
@@ -164,7 +146,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext*  context,
     {
         for (auto resolved : symbol->overloads)
         {
-            if (resolved->typeInfo == typeInfo && (resolved->flags & OVERLOAD_INCOMPLETE))
+            if (resolved->typeInfo == toAdd.typeInfo && (resolved->flags & OVERLOAD_INCOMPLETE))
             {
                 resultIncomplete = resolved;
                 result           = resolved;
@@ -178,45 +160,45 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext*  context,
     if (!result)
     {
         // No ghosting check for an inline parameter
-        if (!(flags & OVERLOAD_VAR_INLINE) && !(flags & OVERLOAD_RETVAL))
+        if (!(toAdd.flags & OVERLOAD_VAR_INLINE) && !(toAdd.flags & OVERLOAD_RETVAL))
         {
-            if (!checkHiddenSymbolNoLock(context, node, typeInfo, kind, symbol, flags))
+            if (!checkHiddenSymbolNoLock(context, toAdd.node, toAdd.typeInfo, toAdd.kind, symbol, toAdd.flags))
                 return nullptr;
         }
 
-        result = symbol->addOverloadNoLock(node, typeInfo, computedValue);
-        result->flags |= flags;
+        result = symbol->addOverloadNoLock(toAdd.node, toAdd.typeInfo, toAdd.computedValue);
+        result->flags |= toAdd.flags;
 
         // Register for dropping in end of scope, if necessary
         if ((symbol->kind == SymbolKind::Variable) &&
-            !(flags & OVERLOAD_VAR_FUNC_PARAM) &&
-            !(flags & OVERLOAD_VAR_GLOBAL) &&
-            !(flags & OVERLOAD_TUPLE_UNPACK) &&
-            !computedValue)
+            !(toAdd.flags & OVERLOAD_VAR_FUNC_PARAM) &&
+            !(toAdd.flags & OVERLOAD_VAR_GLOBAL) &&
+            !(toAdd.flags & OVERLOAD_TUPLE_UNPACK) &&
+            !toAdd.computedValue)
         {
-            addVarToDrop(result, result->typeInfo, storageOffset);
+            addVarToDrop(result, result->typeInfo, toAdd.storageOffset);
         }
     }
 
-    result->flags |= flags;
-    if (computedValue &&
-        typeInfo->isPointerToTypeInfo() &&
+    result->flags |= toAdd.flags;
+    if (toAdd.computedValue &&
+        toAdd.typeInfo->isPointerToTypeInfo() &&
         result->computedValue.storageOffset != UINT32_MAX &&
         result->computedValue.storageSegment)
     {
     }
     else
     {
-        result->computedValue.storageOffset  = storageOffset;
-        result->computedValue.storageSegment = storageSegment;
+        result->computedValue.storageOffset  = toAdd.storageOffset;
+        result->computedValue.storageSegment = toAdd.storageSegment;
     }
 
-    if (flags & OVERLOAD_STORE_SYMBOLS)
-        node->resolvedSymbolOverload = result;
+    if (toAdd.flags & OVERLOAD_STORE_SYMBOLS)
+        toAdd.node->resolvedSymbolOverload = result;
 
     // One less overload. When this reached zero, this means we know every types for the same symbol,
     // and so we can wakeup all jobs waiting for that symbol to be solved
-    if (!(flags & OVERLOAD_INCOMPLETE))
+    if (!(toAdd.flags & OVERLOAD_INCOMPLETE))
         decreaseOverloadNoLock(symbol);
 
     if (symbol->overloads.size() == symbol->cptOverloadsInit)

@@ -210,15 +210,15 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
         }
 
         // Will remove the incomplete flag, and finish the resolve
-        node->ownerScope->symTable.addSymbolTypeInfo(context,
-                                                     node,
-                                                     node->typeInfo,
-                                                     overload->symbol->kind,
-                                                     nullptr,
-                                                     overload->flags & ~OVERLOAD_INCOMPLETE,
-                                                     nullptr,
-                                                     node->computedValue->storageOffset,
-                                                     node->computedValue->storageSegment);
+        AddSymbolTypeInfo toAdd;
+        toAdd.node           = node;
+        toAdd.typeInfo       = node->typeInfo;
+        toAdd.kind           = overload->symbol->kind;
+        toAdd.flags          = overload->flags & ~OVERLOAD_INCOMPLETE;
+        toAdd.storageOffset  = node->computedValue->storageOffset;
+        toAdd.storageSegment = node->computedValue->storageSegment;
+
+        node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
     }
 
     // Compiler #message
@@ -1257,15 +1257,16 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     // Register symbol with its type
-    auto overload = node->ownerScope->symTable.addSymbolTypeInfo(context,
-                                                                 node,
-                                                                 node->typeInfo,
-                                                                 thisIsAGenericType ? SymbolKind::GenericType : SymbolKind::Variable,
-                                                                 isCompilerConstant ? node->computedValue : nullptr,
-                                                                 symbolFlags,
-                                                                 nullptr,
-                                                                 storageOffset,
-                                                                 storageSegment);
+    AddSymbolTypeInfo toAdd;
+    toAdd.node           = node;
+    toAdd.typeInfo       = node->typeInfo;
+    toAdd.kind           = thisIsAGenericType ? SymbolKind::GenericType : SymbolKind::Variable;
+    toAdd.computedValue  = isCompilerConstant ? node->computedValue : nullptr;
+    toAdd.flags          = symbolFlags;
+    toAdd.storageOffset  = storageOffset;
+    toAdd.storageSegment = storageSegment;
+
+    auto overload = node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
     SWAG_CHECK(overload);
     node->resolvedSymbolOverload = overload;
     return true;

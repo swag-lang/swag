@@ -743,7 +743,15 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             Utf8 name = c->token.text;
             if (c->kind == AstNodeKind::MakePointer)
                 name = c->childs.front()->token.text;
-            auto overload = funcNode->scope->symTable.addSymbolTypeInfo(context, c, c->typeInfo, SymbolKind::Variable, nullptr, OVERLOAD_VAR_CAPTURE, nullptr, 0, nullptr, &name);
+
+            AddSymbolTypeInfo toAdd;
+            toAdd.node      = c;
+            toAdd.typeInfo  = c->typeInfo;
+            toAdd.kind      = SymbolKind::Variable;
+            toAdd.flags     = OVERLOAD_VAR_CAPTURE;
+            toAdd.aliasName = &name;
+
+            auto overload = funcNode->scope->symTable.addSymbolTypeInfo(context, toAdd);
             if (!overload)
                 return false;
             c->resolvedSymbolOverload             = overload;
@@ -811,8 +819,14 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
     if (funcNode->flags & AST_IS_GENERIC)
         symbolFlags |= OVERLOAD_GENERIC;
 
-    auto typeFunc                    = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
-    funcNode->resolvedSymbolOverload = funcNode->ownerScope->symTable.addSymbolTypeInfo(context, funcNode, funcNode->typeInfo, SymbolKind::Function, nullptr, symbolFlags, &funcNode->resolvedSymbolName);
+    AddSymbolTypeInfo toAdd;
+    toAdd.node       = funcNode;
+    toAdd.typeInfo   = funcNode->typeInfo;
+    toAdd.kind       = SymbolKind::Function;
+    toAdd.flags      = symbolFlags;
+    toAdd.resultName = &funcNode->resolvedSymbolName;
+
+    funcNode->resolvedSymbolOverload = funcNode->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
     SWAG_CHECK(funcNode->resolvedSymbolOverload);
 
     // If the function returns a struct, register a type alias "retval". This way we can resolve an identifier
@@ -820,8 +834,14 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
     auto returnType = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_ALIAS);
     if (returnType->isStruct())
     {
-        Utf8 retVal = g_LangSpec->name_retval;
-        funcNode->scope->symTable.addSymbolTypeInfo(context, funcNode->returnType, returnType, SymbolKind::TypeAlias, nullptr, symbolFlags | OVERLOAD_RETVAL, nullptr, 0, nullptr, &retVal);
+        Utf8              retVal = g_LangSpec->name_retval;
+        AddSymbolTypeInfo toAdd1;
+        toAdd1.node      = funcNode->returnType;
+        toAdd1.typeInfo  = returnType;
+        toAdd1.kind      = SymbolKind::TypeAlias;
+        toAdd1.flags     = symbolFlags | OVERLOAD_RETVAL;
+        toAdd1.aliasName = &retVal;
+        funcNode->scope->symTable.addSymbolTypeInfo(context, toAdd1);
     }
 
     // Register method
@@ -832,6 +852,7 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
         {
             ScopedLock lk(typeStruct->mutex);
             SWAG_ASSERT(funcNode->methodParam);
+            auto typeFunc                     = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
             funcNode->methodParam->attributes = typeFunc->attributes;
         }
 
@@ -1646,7 +1667,13 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
             // Transmit code type
             if (param->typeInfo->isCode())
             {
-                inlineNode->parametersScope->symTable.addSymbolTypeInfo(context, param, param->typeInfo, SymbolKind::Variable, nullptr, 0, nullptr, 0, nullptr, &param->resolvedParameter->name);
+                AddSymbolTypeInfo toAdd;
+                toAdd.node      = param;
+                toAdd.typeInfo  = param->typeInfo;
+                toAdd.kind      = SymbolKind::Variable;
+                toAdd.aliasName = &param->resolvedParameter->name;
+
+                inlineNode->parametersScope->symTable.addSymbolTypeInfo(context, toAdd);
             }
         }
     }

@@ -12,6 +12,19 @@ struct ErrorContext;
 struct ComputedValue;
 struct TypeInfoStruct;
 
+struct AddSymbolTypeInfo
+{
+    AstNode*       node           = nullptr;
+    TypeInfo*      typeInfo       = nullptr;
+    ComputedValue* computedValue  = nullptr;
+    SymbolName**   resultName     = nullptr;
+    DataSegment*   storageSegment = nullptr;
+    Utf8*          aliasName      = nullptr;
+    uint32_t       flags          = 0;
+    uint32_t       storageOffset  = 0;
+    SymbolKind     kind           = SymbolKind::Invalid;
+};
+
 struct StructToDrop
 {
     SymbolOverload* overload;
@@ -24,19 +37,21 @@ struct SymTable
 {
     void release();
 
-    SymbolName*     registerSymbolName(ErrorContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName = nullptr);
-    SymbolName*     registerSymbolNameNoLock(ErrorContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName = nullptr);
-    SymbolOverload* addSymbolTypeInfo(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0, DataSegment* storageSegment = nullptr, Utf8* aliasName = nullptr);
-    SymbolOverload* addSymbolTypeInfoNoLock(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0, DataSegment* storageSegment = nullptr, Utf8* aliasName = nullptr);
-    bool            acceptGhostSymbolNoLock(ErrorContext* context, AstNode* node, SymbolKind kind, SymbolName* symbol);
-    bool            checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, uint32_t overFlags);
     SymbolName*     find(const Utf8& name, uint32_t crc = 0);
     SymbolName*     findNoLock(const Utf8& name, uint32_t crc = 0);
-    void            addVarToDrop(SymbolOverload* overload, TypeInfo* typeInfo, uint32_t storageOffset);
-    void            addVarToDrop(StructToDrop& st);
-    bool            registerUsingAliasOverload(ErrorContext* context, AstNode* node, SymbolName* symbol, SymbolOverload* overload);
-    static void     decreaseOverloadNoLock(SymbolName* symbol);
-    static void     disabledIfBlockOverloadNoLock(AstNode* node, SymbolName* symbol);
+    SymbolName*     registerSymbolName(ErrorContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName = nullptr);
+    SymbolName*     registerSymbolNameNoLock(ErrorContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName = nullptr);
+    SymbolOverload* addSymbolTypeInfo(ErrorContext* context, AddSymbolTypeInfo& toAdd);
+    SymbolOverload* addSymbolTypeInfoNoLock(ErrorContext* context, AddSymbolTypeInfo& toAdd);
+
+    bool acceptGhostSymbolNoLock(ErrorContext* context, AstNode* node, SymbolKind kind, SymbolName* symbol);
+    bool checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, uint32_t overFlags);
+    void addVarToDrop(SymbolOverload* overload, TypeInfo* typeInfo, uint32_t storageOffset);
+    void addVarToDrop(StructToDrop& st);
+    bool registerUsingAliasOverload(ErrorContext* context, AstNode* node, SymbolName* symbol, SymbolOverload* overload);
+
+    static void decreaseOverloadNoLock(SymbolName* symbol);
+    static void disabledIfBlockOverloadNoLock(AstNode* node, SymbolName* symbol);
 
     SharedMutex                mutex;
     SymTableHash               mapNames;

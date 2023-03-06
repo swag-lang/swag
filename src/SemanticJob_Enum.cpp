@@ -41,7 +41,12 @@ bool SemanticJob::resolveEnum(SemanticContext* context)
     typeInfo->declNode = node;
     node->scope->owner = node;
 
-    node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, node, typeInfo, SymbolKind::Enum);
+    AddSymbolTypeInfo toAdd;
+    toAdd.node     = node;
+    toAdd.typeInfo = typeInfo;
+    toAdd.kind     = SymbolKind::Enum;
+
+    node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
     SWAG_CHECK(node->resolvedSymbolOverload);
 
     // Check public
@@ -316,16 +321,16 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
         }
     }
 
-    valNode->typeInfo               = typeEnum;
-    valNode->resolvedSymbolOverload = typeEnum->scope->symTable.addSymbolTypeInfo(context,
-                                                                                  valNode,
-                                                                                  valNode->typeInfo,
-                                                                                  SymbolKind::EnumValue,
-                                                                                  enumNode->computedValue,
-                                                                                  0,
-                                                                                  nullptr,
-                                                                                  storageOffset,
-                                                                                  storageSegment);
+    valNode->typeInfo = typeEnum;
+
+    AddSymbolTypeInfo toAdd;
+    toAdd.node                      = valNode;
+    toAdd.typeInfo                  = valNode->typeInfo;
+    toAdd.kind                      = SymbolKind::EnumValue;
+    toAdd.computedValue             = enumNode->computedValue;
+    toAdd.storageOffset             = storageOffset;
+    toAdd.storageSegment            = storageSegment;
+    valNode->resolvedSymbolOverload = typeEnum->scope->symTable.addSymbolTypeInfo(context, toAdd);
     SWAG_CHECK(valNode->resolvedSymbolOverload);
 
     // Store each value in the enum type
