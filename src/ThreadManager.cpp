@@ -346,76 +346,34 @@ void ThreadManager::waitEndJobs()
     }
 }
 
-Job* ThreadManager::getJob()
+void ThreadManager::eatJob(Job* job)
 {
-    {
-        ScopedLock lk(mutexAdd);
-        auto       job = getJobNoLock();
-        if (job)
-            return job;
-    }
+    SWAG_ASSERT(!(job->flags & JOB_IS_IN_THREAD));
+    job->flags |= JOB_IS_IN_THREAD;
 
-    // Otherwise, steal a syntax job from a module if we can
-    SharedLock lk(g_Workspace->mutexModules);
-    for (auto p : g_Workspace->modules)
-    {
-        if (!p->addedToBuild)
-            continue;
-        auto job = p->syntaxGroup.pickJob();
-        if (job)
-        {
-            SWAG_ASSERT(job->flags & JOB_IS_OPT);
-            eatJob(job);
-            return job;
-        }
-    }
+    job->waitingKind = JobWaitKind::None;
+    job->jobThread   = nullptr;
 
-    return nullptr;
+    if (job->flags & JOB_IS_OPT)
+        jobsOptInThreads++;
+    else
+        jobsInThreads++;
 }
 
-Job* ThreadManager::getJobNoLock()
+Job* ThreadManager::getJob(JobQueue& queue)
 {
-    Job* job;
-
-    // If no IO is running, then we can take one in priority
-    if (!currentJobsIO)
     {
-        job = getJobNoLock(queueJobsIO);
-        if (job)
-        {
-            currentJobsIO++;
-            return job;
-        }
+        SharedLock lk0(mutexAdd);
+        if (queue.jobs.empty() && !queue.affinityCount)
+            return nullptr;
     }
 
-    // Else we take a normal job if we can
-    job = getJobNoLock(queueJobs);
-    if (job)
-        return job;
-
-    // Else we take an optional job if we can
-    job = getJobNoLock(queueJobsOpt);
-    if (job)
-        return job;
-
-    // Otherwise, then IO, as there's nothing left
-    job = getJobNoLock(queueJobsIO);
-    if (job)
-    {
-        currentJobsIO++;
-        return job;
-    }
-
-    return nullptr;
-}
-
-Job* ThreadManager::getJobNoLock(JobQueue& queue)
-{
-    bool jEmpty = queue.jobs.empty();
+    ScopedLock lk0(mutexAdd);
+    bool       jEmpty = queue.jobs.empty();
     if (jEmpty && !queue.affinityCount)
         return nullptr;
 
-    ScopedLock lk(mutexDone);
+    ScopedLock lk1(mutexDone);
     Job*       job;
 
     if (!queue.affinity[g_ThreadIndex].empty())
@@ -465,18 +423,55 @@ Job* ThreadManager::getJobNoLock(JobQueue& queue)
     return job;
 }
 
-void ThreadManager::eatJob(Job* job)
+Job* ThreadManager::getJob()
 {
-    SWAG_ASSERT(!(job->flags & JOB_IS_IN_THREAD));
-    job->flags |= JOB_IS_IN_THREAD;
+    Job* job;
 
-    job->waitingKind = JobWaitKind::None;
-    job->jobThread   = nullptr;
+    // If no IO is running, then we can take one in priority
+    if (!currentJobsIO.load())
+    {
+        job = getJob(queueJobsIO);
+        if (job)
+        {
+            currentJobsIO++;
+            return job;
+        }
+    }
 
-    if (job->flags & JOB_IS_OPT)
-        jobsOptInThreads++;
-    else
-        jobsInThreads++;
+    // Else we take a normal job if we can
+    job = getJob(queueJobs);
+    if (job)
+        return job;
+
+    // Else we take an optional job if we can
+    job = getJob(queueJobsOpt);
+    if (job)
+        return job;
+
+    // Otherwise, then IO, as there's nothing left
+    job = getJob(queueJobsIO);
+    if (job)
+    {
+        currentJobsIO++;
+        return job;
+    }
+
+    // Otherwise, steal a syntax job from a module if we can
+    SharedLock lk(g_Workspace->mutexModules);
+    for (auto p : g_Workspace->modules)
+    {
+        if (!p->addedToBuild)
+            continue;
+        job = p->syntaxGroup.pickJob();
+        if (job)
+        {
+            SWAG_ASSERT(job->flags & JOB_IS_OPT);
+            eatJob(job);
+            return job;
+        }
+    }
+
+    return nullptr;
 }
 
 Job* ThreadManager::getJob(JobThread* thread)
@@ -489,22 +484,11 @@ Job* ThreadManager::getJob(JobThread* thread)
     }
 
     unique_lock lk(thread->mutexNotify);
-
-    {
-        ScopedLock lk1(mutexAdd);
-
-        // Try another time in case another thread has pushed a job
-        job = getJobNoLock();
-        if (job)
-        {
-            job->jobThread = thread;
-            return job;
-        }
-
-        availableThreads.push_back(thread);
-    }
-
+    mutexAdd.lock();
+    availableThreads.push_back(thread);
+    mutexAdd.unlock();
     thread->condVar.wait(lk);
+
     return nullptr;
 }
 

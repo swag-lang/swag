@@ -18,8 +18,7 @@ struct ThreadManager
     void addJob(Job* job);
     void addJobNoLock(Job* job);
     Job* getJob();
-    Job* getJobNoLock();
-    Job* getJobNoLock(JobQueue& queue);
+    Job* getJob(JobQueue& queue);
     void eatJob(Job* job);
     Job* getJob(JobThread* thread);
     bool doneWithJobs();
@@ -37,14 +36,14 @@ struct ThreadManager
     VectorNative<JobThread*> availableThreads;
     VectorNative<JobThread*> workerThreads;
     VectorNative<Job*>       waitingJobs;
-    Mutex                    mutexAdd;
+    SharedMutex              mutexAdd;
     condition_variable       condVar;
     mutex                    mutexDone;
     condition_variable       condVarDone;
     atomic<int>              jobsInThreads    = 0;
     atomic<int>              jobsOptInThreads = 0;
     atomic<int>              addJobCount      = 0;
-    int                      currentJobsIO    = 0;
+    atomic<int>              currentJobsIO    = 0;
     uint32_t                 numWorkers       = 0;
     bool                     debuggerMode     = false;
 };
