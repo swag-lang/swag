@@ -820,6 +820,7 @@ bool SemanticJob::preResolveStructContent(SemanticContext* context)
 
     node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
     node->resolvedSymbolName     = toAdd.symbolName;
+    SWAG_CHECK(node->resolvedSymbolOverload);
 
     return true;
 }
