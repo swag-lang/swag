@@ -179,8 +179,11 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
             addVarToDrop(result, result->typeInfo, toAdd.storageOffset);
         }
     }
+    else
+    {
+        result->flags |= toAdd.flags;
+    }
 
-    result->flags |= toAdd.flags;
     if (toAdd.computedValue &&
         toAdd.typeInfo->isPointerToTypeInfo() &&
         result->computedValue.storageOffset != UINT32_MAX &&
@@ -199,17 +202,17 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
     // One less overload. When this reached zero, this means we know every types for the same symbol,
     // and so we can wakeup all jobs waiting for that symbol to be solved
     if (!(toAdd.flags & OVERLOAD_INCOMPLETE))
-        symbol->decreaseOverloadNoLock();
-
-    if (symbol->overloads.size() == symbol->cptOverloadsInit)
     {
-        // In case of an incomplete function, we can wakeup jobs too when every overloads have been covered,
-        // because an incomplete function doesn't yet know its return type, but we don't need it in order
-        // to make a match
-        if (symbol->kind == SymbolKind::Function)
-            symbol->dependentJobs.setRunning();
-        else if (symbol->kind == SymbolKind::Struct)
-            symbol->dependentJobs.setRunning();
+        symbol->decreaseOverloadNoLock();
+    }
+
+    // In case of an incomplete function, we can wakeup jobs too when every overloads have been covered,
+    // because an incomplete function doesn't yet know its return type, but we don't need it in order
+    // to make a match
+    if ((symbol->overloads.size() == symbol->cptOverloadsInit) &&
+        (symbol->kind == SymbolKind::Function || symbol->kind == SymbolKind::Struct))
+    {
+        symbol->dependentJobs.setRunning();
     }
 
     if (resultIncomplete)
