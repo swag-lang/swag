@@ -100,42 +100,37 @@ SymbolOverload* SymTable::addSymbolTypeInfo(ErrorContext* context, AddSymbolType
 
 SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymbolTypeInfo& toAdd)
 {
-    if (!toAdd.aliasName)
-        toAdd.aliasName = &toAdd.node->token.text;
+    auto symName = toAdd.aliasName ? toAdd.aliasName : &toAdd.node->token.text;
 
     // Be sure we have a symbol
-    auto symbol = findNoLock(*toAdd.aliasName);
+    auto symbol = findNoLock(*symName);
     if (!symbol)
-        symbol = registerSymbolNameNoLock(context, toAdd.node, toAdd.kind, toAdd.aliasName);
+        symbol = registerSymbolNameNoLock(context, toAdd.node, toAdd.kind, symName);
 
     ScopedLock lock(symbol->mutex);
 
     // In case an #if block has passed before us
     if (symbol->cptOverloadsInit == 0)
-        symbol = registerSymbolNameNoLock(context, toAdd.node, toAdd.kind, toAdd.aliasName);
+        symbol = registerSymbolNameNoLock(context, toAdd.node, toAdd.kind, symName);
 
-    // If symbol was registered as a place holder, and is no more, then replace its kind
-    if (symbol->kind == SymbolKind::PlaceHolder && toAdd.kind != SymbolKind::PlaceHolder)
-    {
-        symbol->kind = toAdd.kind;
-    }
+    toAdd.symbolName = symbol;
 
     // Only add an inline parameter/retval once in a given scope
-    else if ((toAdd.flags & (OVERLOAD_VAR_INLINE | OVERLOAD_RETVAL)) && symbol->overloads.size())
+    if ((toAdd.flags & (OVERLOAD_VAR_INLINE | OVERLOAD_RETVAL)) && symbol->overloads.size())
     {
         toAdd.node->resolvedSymbolOverload = symbol->overloads[0];
-        if (toAdd.resultName)
-            *toAdd.resultName = symbol;
         return symbol->overloads[0];
     }
 
-    if (toAdd.resultName)
-        *toAdd.resultName = symbol;
+    // If symbol was registered as a place holder, and is no more, then replace its kind
+    if (symbol->kind == SymbolKind::PlaceHolder && toAdd.kind != SymbolKind::PlaceHolder)
+        symbol->kind = toAdd.kind;
+
+    if (toAdd.flags & OVERLOAD_STORE_SYMBOLS)
+        toAdd.node->resolvedSymbolName = symbol;
 
     SymbolOverload* result           = nullptr;
     SymbolOverload* resultIncomplete = nullptr;
-    if (toAdd.flags & OVERLOAD_STORE_SYMBOLS)
-        toAdd.node->resolvedSymbolName = symbol;
 
     // Remove incomplete flag
     if (symbol->kind == SymbolKind::TypeAlias ||
@@ -160,7 +155,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
     if (!result)
     {
         // No ghosting check for an inline parameter
-        if (!(toAdd.flags & OVERLOAD_VAR_INLINE) && !(toAdd.flags & OVERLOAD_RETVAL))
+        if (!(toAdd.flags & OVERLOAD_VAR_INLINE | toAdd.flags & OVERLOAD_RETVAL))
         {
             if (!checkHiddenSymbolNoLock(context, toAdd.node, toAdd.typeInfo, toAdd.kind, symbol, toAdd.flags))
                 return nullptr;
@@ -171,9 +166,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
 
         // Register for dropping in end of scope, if necessary
         if ((symbol->kind == SymbolKind::Variable) &&
-            !(toAdd.flags & OVERLOAD_VAR_FUNC_PARAM) &&
-            !(toAdd.flags & OVERLOAD_VAR_GLOBAL) &&
-            !(toAdd.flags & OVERLOAD_TUPLE_UNPACK) &&
+            !(toAdd.flags & (OVERLOAD_VAR_FUNC_PARAM | OVERLOAD_VAR_GLOBAL | OVERLOAD_TUPLE_UNPACK)) &&
             !toAdd.computedValue)
         {
             addVarToDrop(result, result->typeInfo, toAdd.storageOffset);

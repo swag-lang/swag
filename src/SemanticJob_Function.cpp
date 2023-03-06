@@ -820,13 +820,13 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
         symbolFlags |= OVERLOAD_GENERIC;
 
     AddSymbolTypeInfo toAdd;
-    toAdd.node       = funcNode;
-    toAdd.typeInfo   = funcNode->typeInfo;
-    toAdd.kind       = SymbolKind::Function;
-    toAdd.flags      = symbolFlags;
-    toAdd.resultName = &funcNode->resolvedSymbolName;
+    toAdd.node     = funcNode;
+    toAdd.typeInfo = funcNode->typeInfo;
+    toAdd.kind     = SymbolKind::Function;
+    toAdd.flags    = symbolFlags;
 
     funcNode->resolvedSymbolOverload = funcNode->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
+    funcNode->resolvedSymbolName     = toAdd.symbolName;
     SWAG_CHECK(funcNode->resolvedSymbolOverload);
 
     // If the function returns a struct, register a type alias "retval". This way we can resolve an identifier

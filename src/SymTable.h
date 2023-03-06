@@ -17,7 +17,7 @@ struct AddSymbolTypeInfo
     AstNode*       node           = nullptr;
     TypeInfo*      typeInfo       = nullptr;
     ComputedValue* computedValue  = nullptr;
-    SymbolName**   resultName     = nullptr;
+    SymbolName*    symbolName     = nullptr;
     DataSegment*   storageSegment = nullptr;
     Utf8*          aliasName      = nullptr;
     uint32_t       flags          = 0;
