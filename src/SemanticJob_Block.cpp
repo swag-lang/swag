@@ -135,7 +135,6 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
         AstIdentifier* identifier = nullptr;
         if (node->parent->kind == AstNodeKind::Identifier)
             identifier = CastAst<AstIdentifier>(node->parent, AstNodeKind::Identifier, AstNodeKind::FuncCall);
-        auto& symTable = node->parametersScope->symTable;
         for (int i = 0; i < func->parameters->childs.size(); i++)
         {
             auto funcParam = func->parameters->childs[i];
@@ -158,16 +157,15 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
                     if (!(callParam->flags & AST_VALUE_COMPUTED))
                         continue;
                     AddSymbolTypeInfo toAdd;
-                    toAdd.node           = callParam;
-                    toAdd.typeInfo       = funcParam->typeInfo;
-                    toAdd.kind           = SymbolKind::Variable;
-                    toAdd.computedValue  = callParam->computedValue;
-                    toAdd.flags          = OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN | OVERLOAD_COMPUTED_VALUE;
-                    toAdd.storageOffset  = callParam->computedValue->storageOffset;
-                    toAdd.storageSegment = callParam->computedValue->storageSegment;
-                    toAdd.aliasName      = &funcParam->token.text;
-                    auto overload        = symTable.addSymbolTypeInfo(context, toAdd);
-
+                    toAdd.node                = callParam;
+                    toAdd.typeInfo            = funcParam->typeInfo;
+                    toAdd.kind                = SymbolKind::Variable;
+                    toAdd.computedValue       = callParam->computedValue;
+                    toAdd.flags               = OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN | OVERLOAD_COMPUTED_VALUE;
+                    toAdd.storageOffset       = callParam->computedValue->storageOffset;
+                    toAdd.storageSegment      = callParam->computedValue->storageSegment;
+                    toAdd.aliasName           = &funcParam->token.text;
+                    auto overload             = node->parametersScope->symTable.addSymbolTypeInfo(context, toAdd);
                     overload->fromInlineParam = orgCallParam;
                     isConstant                = true;
                     break;
@@ -178,12 +176,11 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
             {
                 SWAG_ASSERT(node->parametersScope);
                 AddSymbolTypeInfo toAdd;
-                toAdd.node     = funcParam;
-                toAdd.typeInfo = funcParam->typeInfo;
-                toAdd.kind     = SymbolKind::Variable;
-                toAdd.flags    = OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN;
-                auto overload  = node->parametersScope->symTable.addSymbolTypeInfo(context, toAdd);
-
+                toAdd.node                = funcParam;
+                toAdd.typeInfo            = funcParam->typeInfo;
+                toAdd.kind                = SymbolKind::Variable;
+                toAdd.flags               = OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN;
+                auto overload             = node->parametersScope->symTable.addSymbolTypeInfo(context, toAdd);
                 overload->fromInlineParam = orgCallParam;
             }
         }
