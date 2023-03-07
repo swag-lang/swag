@@ -877,7 +877,7 @@ AstNode* AstImpl::clone(CloneContext& context)
         toAdd.kind      = SymbolKind::Struct;
         toAdd.flags     = OVERLOAD_IMPL_IN_STRUCT;
         toAdd.aliasName = &itfName;
-        baseScope->symTable.addSymbolTypeInfoNoLock(nullptr, toAdd);
+        baseScope->symTable.addSymbolTypeInfo(nullptr, toAdd);
     }
 
     for (auto c : childs)
