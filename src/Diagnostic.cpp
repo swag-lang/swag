@@ -172,6 +172,8 @@ void Diagnostic::printErrorLevel()
         g_Log.eol();
         g_Log.setColor(noteColor);
         g_Log.print("[runtime callstack]");
+        g_Log.eol();
+        g_Log.setColor(stackColor);
         break;
     case DiagnosticLevel::CallStack:
     {

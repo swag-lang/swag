@@ -516,8 +516,7 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
                     auto nativeStack = OS::captureStack();
                     if (!nativeStack.empty())
                     {
-                        Diagnostic note{"", DiagnosticLevel::RuntimeCallStack};
-                        note.remarks.push_back(nativeStack);
+                        Diagnostic note{nativeStack, DiagnosticLevel::RuntimeCallStack};
                         note.report();
                     }
                 }

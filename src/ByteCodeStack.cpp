@@ -104,7 +104,7 @@ void ByteCodeStack::getSteps(VectorNative<ByteCodeStackStep>& copySteps, ByteCod
         // If we are running bytecode, and a panic, error or warning was raised, we filter the stack so that only
         // relevent informations are displayed.
         // No need to display runtime functions.
-        if (runContext->fromException666)
+        if (runContext->fromException666 && it.bc && it.ip)
         {
             auto loc = ByteCode::getLocation(it.bc, it.ip);
             if (loc.file && loc.file->isRuntimeFile)

@@ -495,8 +495,8 @@ namespace OS
     Utf8 captureStack()
     {
         const int SYM_LEN_NAME = 128;
-        char      sym[sizeof(SYMBOL_INFO) + SYM_LEN_NAME * sizeof(CHAR)];
-        DWORD     displacement;
+        TCHAR     sym[sizeof(SYMBOL_INFO) + SYM_LEN_NAME * sizeof(TCHAR)];
+        DWORD64   displacement = 0;
 
         auto psym          = (SYMBOL_INFO*) sym;
         psym->SizeOfStruct = sizeof(SYMBOL_INFO);
@@ -512,8 +512,11 @@ namespace OS
         {
             for (int i = 0; i < nb; i++)
             {
+                displacement   = 0;
                 auto hasSymbol = SymFromAddr(GetCurrentProcess(), (ULONG64) where[i], (DWORD64*) &displacement, psym);
-                auto hasLine   = SymGetLineFromAddr64(GetCurrentProcess(), (ULONG64) where[i], &displacement, &line);
+                displacement   = 0;
+                auto hasLine   = SymGetLineFromAddr64(GetCurrentProcess(), (ULONG64) where[i], (DWORD*) &displacement, &line);
+
                 if (hasSymbol)
                 {
                     str += psym->Name;
