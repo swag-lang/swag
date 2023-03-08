@@ -86,6 +86,7 @@ enum class JobWaitKind
     WaitSpecialMethods,
     DepDone,
     WaitDepDoneExec,
+    WaitStructSymbol,
 };
 
 struct Job

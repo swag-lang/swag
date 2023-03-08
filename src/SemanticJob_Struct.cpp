@@ -1305,8 +1305,13 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     toAdd.typeInfo = node->typeInfo;
     toAdd.kind     = SymbolKind::Struct;
 
-    node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
-    SWAG_CHECK(node->resolvedSymbolOverload);
+    {
+        // :BecauseOfThat
+        ScopedLock lk(node->mutex);
+        node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
+        SWAG_CHECK(node->resolvedSymbolOverload);
+        node->dependentJobs.setRunning();
+    }
 
     // We are parsing the swag module
     if (sourceFile->isBootstrapFile)

@@ -203,7 +203,16 @@ void Job::waitTypeCompleted(TypeInfo* typeInfo)
     if (!typeInfo->declNode)
         return;
 
-    SWAG_ASSERT(typeInfo->declNode->resolvedSymbolOverload);
+    // :BecauseOfThat
+    auto       structNode = CastAst<AstStruct>(typeInfo->declNode, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
+    ScopedLock lk(structNode->mutex);
+    if (!structNode->resolvedSymbolOverload)
+    {
+        structNode->dependentJobs.add(this);
+        setPending(structNode->resolvedSymbolName, JobWaitKind::WaitStructSymbol, structNode, nullptr);
+        return;
+    }
+
     waitOverloadCompleted(typeInfo->declNode->resolvedSymbolOverload);
     if (baseContext->result == ContextResult::Pending)
         return;

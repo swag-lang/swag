@@ -173,7 +173,7 @@ var TabCrB:  [256] s32 = undefined
 
 public struct EncodeOptions
 {
-    quality: u8 = 10    // Encoding quality between 1 and 100
+    quality: u8 = 95    // Encoding quality between 1 and 100
 }
 
 #[Swag.Opaque]
