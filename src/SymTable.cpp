@@ -93,6 +93,13 @@ SymbolOverload* SymTable::addSymbolTypeInfo(ErrorContext* context, AddSymbolType
 {
     ScopedLock lk(mutex);
     occupied = true;
+
+    // Be sure we have a symbol
+    auto symName     = toAdd.aliasName ? toAdd.aliasName : &toAdd.node->token.text;
+    toAdd.symbolName = findNoLock(*symName);
+    if (!toAdd.symbolName)
+        toAdd.symbolName = registerSymbolNameNoLock(context, toAdd.node, toAdd.kind, symName);
+
     auto res = addSymbolTypeInfoNoLock(context, toAdd);
     occupied = false;
     return res;
@@ -100,20 +107,18 @@ SymbolOverload* SymTable::addSymbolTypeInfo(ErrorContext* context, AddSymbolType
 
 SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymbolTypeInfo& toAdd)
 {
-    auto symName = toAdd.aliasName ? toAdd.aliasName : &toAdd.node->token.text;
-
-    // Be sure we have a symbol
-    auto symbol = findNoLock(*symName);
-    if (!symbol)
-        symbol = registerSymbolNameNoLock(context, toAdd.node, toAdd.kind, symName);
+    auto symbol = toAdd.symbolName;
+    SWAG_ASSERT(symbol);
 
     ScopedLock lock(symbol->mutex);
 
     // In case an #if block has passed before us
     if (symbol->cptOverloadsInit == 0)
-        symbol = registerSymbolNameNoLock(context, toAdd.node, toAdd.kind, symName);
-
-    toAdd.symbolName = symbol;
+    {
+        auto symName     = toAdd.aliasName ? toAdd.aliasName : &toAdd.node->token.text;
+        symbol           = registerSymbolNameNoLock(context, toAdd.node, toAdd.kind, symName);
+        toAdd.symbolName = symbol;
+    }
 
     // Only add an inline parameter/retval once in a given scope
     if ((toAdd.flags & (OVERLOAD_VAR_INLINE | OVERLOAD_RETVAL)) && symbol->overloads.size())

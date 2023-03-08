@@ -223,9 +223,10 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
                 typeInfo->scope         = newScope;
                 namespaceNode->typeInfo = typeInfo;
                 AddSymbolTypeInfo toAdd;
-                toAdd.node     = namespaceNode;
-                toAdd.typeInfo = typeInfo;
-                toAdd.kind     = SymbolKind::Namespace;
+                toAdd.node       = namespaceNode;
+                toAdd.typeInfo   = typeInfo;
+                toAdd.kind       = SymbolKind::Namespace;
+                toAdd.symbolName = currentScope->symTable.registerSymbolNameNoLock(context, toAdd.node, toAdd.kind, &namespaceNode->token.text);
                 currentScope->symTable.addSymbolTypeInfoNoLock(context, toAdd);
             }
             else if (symbol->kind != SymbolKind::Namespace)
