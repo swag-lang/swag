@@ -267,6 +267,9 @@ impl HashSet
     // Remove the given key if it exists
     mtd remove(key: K)
     {
+        if !table
+            return
+
         hashVal := hashKey(key)
         index := hashVal % capacity
 

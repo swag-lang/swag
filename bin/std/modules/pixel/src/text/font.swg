@@ -33,6 +33,7 @@ public struct Font
     underlinePos:   f32
     underlineSize:  f32
 
+    fullname:   String
     typeFace:   *TypeFace
     size:       u32
     atlases:    Array'GlyphAtlas
@@ -47,6 +48,7 @@ private var g_HashFont: HashTable'(String, *Font)
 {
     visit k, v: g_HashFont
         Memory.delete(v)
+    g_HashFont.free()
 }
 
 public impl Font
@@ -65,6 +67,16 @@ public impl Font
         return cast(s32) (((ab + 0x8000 - (ab < 0 ? 1 : 0)) >>,safe 16))
     }
 
+    // Release the given font
+    func release(font: *Font)
+    {
+        if !font
+            return
+        Sync.scopedLock(&lock)
+        g_HashFont.remove(font.fullname)
+        Memory.delete(font)
+    }
+
     // Creates a new Font of the given typeface and size
     func create(typeFace: *TypeFace, size: u32)->*Font
     {
@@ -76,9 +88,11 @@ public impl Font
         Sync.scopedLock(&lock)
 
         here := g_HashFont.find(str)
-        if here return here.value
+        if here
+            return here.value
 
         font := Memory.new'Font()
+        font.fullname = str
         font.typeFace = typeFace
         font.size = size
 

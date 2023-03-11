@@ -78,13 +78,31 @@ public impl TypeFace
         return defname
     }
 
-    // Create a new typeface
+    // Release the given typeface
+    func release(typeface: *TypeFace)
+    {
+        if !typeface
+            return
+        Sync.scopedLock(&lock)
+        g_HashTypeFace.remove(typeface.fullname)
+        Memory.delete(typeface)
+    }
+
+    // Get or create a new typeface from a memory buffer
     func create(fullname: string, bytes: const [..] u8)->*TypeFace throw
     {
+        Sync.scopedLock(&lock)
+
+        here := g_HashTypeFace.find(fullname)
+        if here
+            return here.value
+
         tf := Memory.new'TypeFace()
         tf.fullname = fullname
         tf.buffer = bytes
         FT_New_Memory_Face(g_FT, tf.buffer.buffer, cast(FT_Long) tf.buffer.count, 0, &tf.face)
+
+        g_HashTypeFace.add(fullname, tf)
         return tf
     }
 
@@ -93,8 +111,7 @@ public impl TypeFace
     {
         Sync.scopedLock(&lock)
 
-        str := String.from(fullname)
-        here := g_HashTypeFace.find(str)
+        here := g_HashTypeFace.find(fullname)
         if here
             return here.value
 
@@ -104,9 +121,7 @@ public impl TypeFace
         // If file does not exist, try the system folder
         if !File.exists(fullname)
         {
-            p := Env.getSpecialDirectory(.Font)
-            p += "/"
-            p += fullname
+            p := Path.combine(Env.getSpecialDirectory(.Font), fullname)
             tf.buffer = File.readAllBytes(p)
         }
         else
@@ -116,7 +131,7 @@ public impl TypeFace
 
         FT_New_Memory_Face(g_FT, tf.buffer.buffer, cast(FT_Long) tf.buffer.count, 0, &tf.face)
 
-        g_HashTypeFace.add(str, tf)
+        g_HashTypeFace.add(fullname, tf)
         return tf
     }
 
