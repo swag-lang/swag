@@ -1,0 +1,73 @@
+using Pixel
+
+#[Swag.Opaque]
+public struct PaintImage
+{
+    app:        Application
+    surface:    *Surface
+    image:      Image
+    w, h:       s32
+    paint:      closure(app: *Application, painter: *Painter)
+}
+
+impl PaintImage
+{
+    private func onEvent(wnd: *Wnd, evt: *Event)->bool
+    {
+        if evt.kind != .Paint
+            return false
+
+        pt := cast(*PaintImage) wnd.surface.userData
+        if !pt.paint
+            return false
+
+        var painter: Painter
+        painter.begin()
+        painter.setParams(.Antialiased)
+        painter.clear(Argb.Zero)
+        pt.paint(wnd.getApp(), &painter)
+        painter.end()
+
+        r := &wnd.getApp().renderer
+        rt := r.getRenderTarget(pt.w, pt.h)
+        r.bindRenderTarget(rt)
+        r.draw(&painter)
+        pt.image = r.unbindRenderTargetToImage(0, 0, pt.w, pt.h)
+        r.end()
+        r.releaseRenderTarget(rt)
+
+        return false
+    }
+
+    public mtd opDrop()
+    {
+        if surface
+            surface.destroy()
+    }
+
+    // First init the PaintImage instance
+    public mtd init(w, h: s32)
+    {
+        surface = assume app.createSurface(0, 0, 1, 1, hook: &onEvent)
+        surface.userData = self
+        self.w = #self.w
+        self.h = #self.h
+    }
+
+    // Draw to an image by calling the closure
+    public mtd draw(call: closure(*Application, *Painter))->Image
+    {
+        paint = call
+        surface.invalidate()
+        app.runFrame()
+        return image
+    }
+
+    // One shot paint to image
+    public func draw(w, h: s32, call: closure(*Application, *Painter))->Image
+    {
+        var pt: PaintImage
+        pt.init(w, h)
+        return pt.draw(call)
+    }
+}
