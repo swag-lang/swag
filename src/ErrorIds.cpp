@@ -42,6 +42,7 @@ void initErrors()
     SWAG_ERROR(Fat0026, "[fatal error] the workspace folder '%s' does not exist");
     SWAG_ERROR(Fat0023, "[fatal error] unexpected compile tag value '%s' (command is '--tag:%s')");
     SWAG_ERROR(Fat0024, "[fatal error] unknown compile tag type '%s' (command is '--tag:%s')");
+    SWAG_ERROR(Fat0027, "[fatal error] the script file '%s' does not exist");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

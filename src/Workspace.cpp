@@ -180,22 +180,24 @@ void Workspace::setup()
         OS::exit(-1);
     }
 
-    bool       invalid = false;
     error_code err;
     if (!filesystem::exists(workspacePath, err))
     {
         Report::error(Fmt(Err(Fat0026), workspacePath.string().c_str()));
-        invalid = true;
-    }
-    else if (!g_CommandLine.scriptCommand && !filesystem::exists(modulesPath, err) && !filesystem::exists(testsPath, err))
-    {
-        Report::error(Fmt(Err(Fat0016), workspacePath.string().c_str()));
-        invalid = true;
+        g_Log.messageInfo(Nte(Nte0012));
+        OS::exit(-1);
     }
 
-    if (invalid)
+    if (!g_CommandLine.scriptCommand && !filesystem::exists(modulesPath, err) && !filesystem::exists(testsPath, err))
     {
+        Report::error(Fmt(Err(Fat0016), workspacePath.string().c_str()));
         g_Log.messageInfo(Nte(Nte0012));
+        OS::exit(-1);
+    }
+
+    if (g_CommandLine.scriptCommand && !filesystem::exists(g_CommandLine.scriptName.c_str(), err))
+    {
+        Report::error(Fmt(Err(Fat0027), g_CommandLine.scriptName.c_str()));
         OS::exit(-1);
     }
 
