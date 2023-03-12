@@ -14,21 +14,21 @@ struct EnumerationOptions
 }
 
 // Get all the files of the given directory
-func enumerateFiles(dirname: string, matchPattern = "*", recurse = false)->Array'(File.FileInfo) throw
+func enumerateFiles(dirName: string, matchPattern = "*", recurse = false)->Array'(File.FileInfo) throw
 {
     var options: EnumerationOptions
     options.matchPattern = matchPattern
     options.wantDirectories = false
     options.recurse = recurse
-    return try enumerate(dirname, options)
+    return try enumerate(dirName, options)
 }
 
 // Get all the directories in the given directory
-func enumerateDirectories(dirname: string, matchPattern = "*", recurse = false)->Array'(File.FileInfo) throw
+func enumerateDirectories(dirName: string, matchPattern = "*", recurse = false)->Array'(File.FileInfo) throw
 {
     var options: EnumerationOptions
     options.matchPattern = matchPattern
     options.wantFiles = false
     options.recurse = recurse
-    return try enumerate(dirname, options)
+    return try enumerate(dirName, options)
 }

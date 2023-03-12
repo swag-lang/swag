@@ -35,8 +35,9 @@ impl TextReader
                 buffer.count = stream.read(buffer.buffer, buffer.capacity)
 
                 // BOM
-                if buffer[0] == 0xEF and buffer[1] == 0xBB and buffer[2] == 0xBF
+                if buffer.count >= 3 and buffer[0] == 0xEF and buffer[1] == 0xBB and buffer[2] == 0xBF
                     byteSeek = 3
+
                 return
             }
         }
@@ -58,6 +59,7 @@ public impl TextReader
         byteSeek = 0
         checkPreamble = true
         bufferSize = Math.min(stream.getSize(), 64*1024'u64)
+        bufferSize = Math.max(bufferSize, 16)
         encodingType = encoding;
     }
 

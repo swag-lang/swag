@@ -65,15 +65,15 @@ func splitLines(src: string) -> Array'string
 // Split string into sub strings, given a rune separator
 // Note that this returns an array of native strings, not copies.
 // All strings will be invalid if 'src' is destroyed
-func split(src: string, separator: rune, maxSplit: u32 = 0) -> Array'string
+func split(src: string, separator: rune, maxSplit: u32 = 0, removeEmpty = true) -> Array'string
 {
-    return split(src, [separator], maxSplit)
+    return split(src, [separator], maxSplit, removeEmpty)
 }
 
 // Split string into sub strings, given an array of rune separators
 // Note that this returns an array of native strings, not copies.
 // All strings will be invalid if 'src' String is destroyed
-func split(src: string, separators: const [..] rune, maxSplit: u32 = 0)->Array'string
+func split(src: string, separators: const [..] rune, maxSplit: u32 = 0, removeEmpty = true)->Array'string
 {
     dataof := @dataof(src)
     countof := @countof(src)
@@ -98,9 +98,12 @@ func split(src: string, separators: const [..] rune, maxSplit: u32 = 0)->Array's
             startbyteIdx += eat
             ptr += eat
             count -= eat
+            if !removeEmpty
+                break
         }
 
-        if eat == 0 break // done
+        if eat == 0
+            break // done
 
         // Add all real characters until we found a separator
         endbyteIdx := startbyteIdx
@@ -118,7 +121,8 @@ func split(src: string, separators: const [..] rune, maxSplit: u32 = 0)->Array's
         oneString := @mkstring(dataof + startbyteIdx, endbyteIdx - startbyteIdx)
         result.add(oneString)
 
-        if eat == 0 break // done
+        if eat == 0
+            break // done
         startbyteIdx = endbyteIdx
 
         // Have we reached the maximum number of split ?

@@ -32,6 +32,8 @@ public struct Font
     height:         f32
     underlinePos:   f32
     underlineSize:  f32
+    forceBold:      bool
+    forceItalic:    bool
 
     fullname:   String
     typeFace:   *TypeFace
@@ -78,12 +80,12 @@ public impl Font
     }
 
     // Creates a new Font of the given typeface and size
-    func create(typeFace: *TypeFace, size: u32)->*Font
+    func create(typeFace: *TypeFace, size: u32, forceBold, forceItalic = false)->*Font
     {
         Debug.assert(typeFace != null)
         Debug.assert(size > 0)
 
-        str := Format.toString("%_%", typeFace.fullname, size)
+        str := Format.toString("%_%_%_%", typeFace.fullname, size, forceBold, forceItalic)
 
         Sync.scopedLock(&lock)
 
@@ -95,6 +97,8 @@ public impl Font
         font.fullname = str
         font.typeFace = typeFace
         font.size = size
+        font.forceBold = forceBold
+        font.forceItalic = forceItalic
 
         assume FT_Set_Pixel_Sizes(typeFace.face, 0, size)
         metrics := &typeFace.face.size.metrics
@@ -109,16 +113,16 @@ public impl Font
     }
 
     // Creates a new Font with the given filename and size
-    func create(fullname: string, size: u32)->*Font throw
+    func create(fullname: string, size: u32, forceBold, forceItalic = false)->*Font throw
     {
         Debug.assert(@countof(fullname) != 0)
         Debug.assert(size > 0)
 
         typeFace := try TypeFace.load(fullname)
-        return create(typeFace, size)
+        return create(typeFace, size, forceBold, forceItalic)
     }
 
-    // Returns the glyph decriptor of a given rune
+    // Returns the glyph descriptor of a given rune
     mtd getGlyphDesc(c: rune)->const *GlyphDesc
     {
         // Already there ?
@@ -135,7 +139,7 @@ public impl Font
         }
 
         // Render the glyph
-        bmp := assume typeFace.renderGlyph(c, size)
+        bmp := assume typeFace.renderGlyph(c, size, forceBold, forceItalic)
 
         // Creates a new atlas if this is the first time, or if the last atlas is full
         atlas := atlases.count ? &atlases.buffer[atlases.count - 1] : null

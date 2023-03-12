@@ -135,22 +135,22 @@ public impl TypeFace
         return tf
     }
 
-    private mtd transform(embolden: u32 = 0) throw
+    private mtd transform(embolden: u32 = 0, forceBold, forceItalic = false) throw
     {
-        emb := forceBold ? 4 : 0
+        emb := self.forceBold or #self.forceBold ? 1 : 0
         emb += embolden
         if emb
             FT_Outline_Embolden(&face.glyph.outline, cast(FT_Pos) emb * 64)
-        if forceItalic
+        if self.forceItalic or #self.forceItalic
             FT_GlyphSlot_Oblique(face.glyph)
     }
 
     // Render one glyph
-    mtd renderGlyph(c: rune, size: u32)->const *FT_Bitmap throw
+    mtd renderGlyph(c: rune, size: u32, forceBold, forceItalic = false)->const *FT_Bitmap throw
     {
         FT_Set_Pixel_Sizes(face, 0, size)
         FT_Load_Char(face, cast(FT_ULong) c, FT_LOAD_DEFAULT)
-        transform()
+        transform(0, #self.forceBold, #self.forceItalic)
         FT_Render_Glyph(face.glyph, .FT_RENDER_MODE_NORMAL)
         return &face.glyph.bitmap
     }

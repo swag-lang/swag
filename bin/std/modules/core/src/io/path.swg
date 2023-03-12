@@ -13,34 +13,12 @@ func isDirectorySeparator(c: u8)->bool
     return c == DirectorySeparatorChar or c == AltDirectorySeparatorChar
 }
 
-// Returns the file name part of the path, null if not found
-#[ConstExpr]
-func getFileName(fullname: string)->string
-{
-    if fullname == null return null
-    Debug.assert(isValidPathName(fullname))
-
-    countof := @countof(fullname)
-    cpt := countof
-    while cpt
-    {
-        cpt -= 1
-        c := fullname[cpt]
-        if isDirectorySeparator(c) or c == VolumeSeparatorChar
-        {
-            if cpt == countof - 1 return null
-            return acast @mkslice(@dataof(fullname) + cpt + 1, cast(u64) (countof - cpt) - 1)
-        }
-    }
-
-    return fullname
-}
-
 // Returns the root part of the path, null if not found
 #[ConstExpr]
 func getRootName(fullname: string)->string
 {
-    if fullname == null return null
+    if fullname == null
+        return null
     Debug.assert(isValidPathName(fullname))
     rootLength := getRootLength(fullname)
     return acast @mkslice(@dataof(fullname), cast(u64) rootLength)
@@ -51,7 +29,8 @@ func getRootName(fullname: string)->string
 #[ConstExpr]
 func isRooted(fullname: string)->bool
 {
-    if fullname == null return false
+    if fullname == null
+        return false
     Debug.assert(isValidPathName(fullname))
     countof := @countof(fullname)
     if countof >= 1 and isDirectorySeparator(fullname[0])
@@ -86,6 +65,30 @@ func getDirectoryName(fullname: string)->string
     }
 
     return null
+}
+
+// Returns the file name part of the path, null if not found
+#[ConstExpr]
+func getFileName(fullname: string)->string
+{
+    if fullname == null
+        return null
+    Debug.assert(isValidPathName(fullname))
+
+    countof := @countof(fullname)
+    cpt := countof
+    while cpt
+    {
+        cpt -= 1
+        c := fullname[cpt]
+        if isDirectorySeparator(c) or c == VolumeSeparatorChar
+        {
+            if cpt == countof - 1 return null
+            return acast @mkslice(@dataof(fullname) + cpt + 1, cast(u64) (countof - cpt) - 1)
+        }
+    }
+
+    return fullname
 }
 
 // Returns the path file name, null if not found
