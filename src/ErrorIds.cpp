@@ -628,7 +628,7 @@ void initErrors()
     SWAG_ERROR(Err0657, "some functions of the interface '%s' are not implemented for '%s'");
     SWAG_ERROR(Err0536, "stack overflow (maximum stack size is '--stack-size:%s')");
     SWAG_ERROR(Err0112, "the %s '%s' cannot be found in '%s'");
-    SWAG_ERROR(Err0096, "the %s '%s' is used alone as an expression");
+    SWAG_ERROR(Err0096, "the expression is used alone");
     SWAG_ERROR(Err0756, "the %s cannot have the 'Swag.Implicit' attribute because it is generic");
     SWAG_ERROR(Err0755, "the %s cannot have the 'Swag.NoReturn' attribute without 'Swag.Macro' or 'Swag.Mixin'");
     SWAG_ERROR(Err0757, "the %s is marked with 'Swag.Macro' and 'Swag.Inline' attributes at the same time");

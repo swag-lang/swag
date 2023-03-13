@@ -1207,7 +1207,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         {
             if (isStatementIdentifier(identifier))
             {
-                Diagnostic diag{identifier, Fmt(Err(Err0096), Naming::kindName(identifier->resolvedSymbolName->kind).c_str(), identifier->token.ctext()), Hnt(Hnt0026)};
+                Diagnostic diag{idRef, Err(Err0096)};
+                diag.hint = Hnt(Hnt0026);
                 return context->report(diag);
             }
         }
