@@ -11,6 +11,7 @@ public struct TypeFace
     fullname:       string
     buffer:         Array'u8
     face:           FT_Face
+    forceBoldDiv:   u32 = 11
     forceItalic:    bool
     forceBold:      bool
 }
@@ -135,9 +136,9 @@ public impl TypeFace
         return tf
     }
 
-    private mtd transform(embolden: u32 = 0, forceBold, forceItalic = false) throw
+    private mtd transform(size, embolden: u32 = 0, forceBold, forceItalic = false) throw
     {
-        emb := self.forceBold or #self.forceBold ? 1 : 0
+        emb := self.forceBold or #self.forceBold ? Math.max(1, size / forceBoldDiv) : 0
         emb += embolden
         if emb
             FT_Outline_Embolden(&face.glyph.outline, cast(FT_Pos) emb * 64)
@@ -150,7 +151,7 @@ public impl TypeFace
     {
         FT_Set_Pixel_Sizes(face, 0, size)
         FT_Load_Char(face, cast(FT_ULong) c, FT_LOAD_DEFAULT)
-        transform(0, #self.forceBold, #self.forceItalic)
+        transform(size, 0, #self.forceBold, #self.forceItalic)
         FT_Render_Glyph(face.glyph, .FT_RENDER_MODE_NORMAL)
         return &face.glyph.bitmap
     }
@@ -169,7 +170,7 @@ public impl TypeFace
 
         FT_Set_Pixel_Sizes(face, 0, size)
         FT_Load_Char(face, cast(FT_ULong) c, FT_LOAD_NO_BITMAP)
-        transform(embolden)
+        transform(size, embolden)
 
         prevIdx := pathList.paths.count
         FT_Outline_Decompose(&face.glyph.outline, &itf, pathList)
@@ -202,7 +203,7 @@ public impl TypeFace
         Utf8.visitRunes(|c| text)
         {
             FT_Load_Char(face, cast(FT_ULong) c, FT_LOAD_NO_BITMAP)
-            transform(embolden)
+            transform(size, embolden)
 
             FT_Outline_Translate(face.glyph.outline, x, 0)
 

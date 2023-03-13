@@ -191,7 +191,17 @@ impl IForm for FormText
             }
         }
 
-        face := typeFace orelse g_App.theme.res.defaultTypeFaceR
+        face := typeFace
+        if !face
+        {
+            switch fontStyle
+            {
+            case Regular:       face = g_App.theme.res.defaultTypeFaceR
+            case Bold:          face = g_App.theme.res.defaultTypeFaceB
+            case Italic:        face = g_App.theme.res.defaultTypeFaceI
+            case BoldItalic:    face = g_App.theme.res.defaultTypeFaceBI
+            }
+        }
 
         if face  != cacheFace or
            bSize != cachebSize or
