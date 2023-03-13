@@ -176,7 +176,8 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
     if (g_CommandLine.profile)
     {
         auto now = OS::timerNow();
-        context->bc->profileCumTimeWithFFI += now - context->bc->profileStart;
+        context->bc->profileCumTime += now - context->bc->profileStart;
+        context->bc->profileFFI += now - context->bc->profileStart;
         context->bc->profileStart = now;
     }
 #endif

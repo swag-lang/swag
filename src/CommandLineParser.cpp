@@ -81,9 +81,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("cl",             "--script",               nullptr,    CommandLineType::Bool,          &cmdLine->scriptMode, nullptr, "clean also script cache");
 
 #ifdef SWAG_STATS
-#ifdef SWAG_DEV_MODE 
     addArg("all",            "--stats",                nullptr,    CommandLineType::Bool,          &cmdLine->stats, nullptr, "[stats] display statistics at the end");
-#endif
     addArg("bu sc ru te",    "--profile",              nullptr,    CommandLineType::Bool,          &cmdLine->profile, nullptr, "[stats] profile bytecode execution");
     addArg("bu sc ru te",    "--profile-filter",       nullptr,    CommandLineType::String,        &cmdLine->profileFilter, nullptr, "[stats] filter profile output names");
     addArg("bu sc ru te",    "--profile-childs",       nullptr,    CommandLineType::Int,           &cmdLine->profileChildsLevel, nullptr, "[stats] diplay to the a given amount of sub-functions level");

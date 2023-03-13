@@ -23,7 +23,7 @@ static Utf8 getProfileBc(ByteCode* bc, int level)
 
     while (line.count < COL2)
         line += " ";
-    line += Fmt("%0.6f", OS::timerToSeconds(bc->profileCumTimeWithFFI));
+    line += Fmt("%0.6f", OS::timerToSeconds(bc->profileFFI));
 
     while (line.count < COL3)
         line += " ";
