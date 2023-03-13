@@ -11,3 +11,4 @@
 ..\bin\swag ..\bin\examples\scripts\blob.swgs       --args:"swag.test"
 ..\bin\swag ..\bin\examples\scripts\swag.swgs       --args:"swag.test"
 ..\bin\swag ..\bin\examples\scripts\pendulum.swgs   --args:"swag.test"
+..\bin\swag ..\bin\examples\scripts\cards.swgs      --args:"swag.test"

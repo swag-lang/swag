@@ -582,6 +582,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
     var dataPath: String = Path.getDirectoryName(#location.fileName)
     dataPath = Path.combine(dataPath, "datas")
+    dataPath = Path.combine(dataPath, "chess")
     dataPath = Path.combine(dataPath, "pieces.png")
     img := assume Image.load(dataPath)
 
