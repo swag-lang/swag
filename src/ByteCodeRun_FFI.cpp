@@ -161,5 +161,23 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
         }
     }
 
+#ifdef SWAG_STATS
+    if (g_CommandLine.profile)
+    {
+        auto now = OS::timerNow();
+        context->bc->profileCumTime += now - context->bc->profileStart;
+        context->bc->profileStart = now;
+    }
+#endif
+
     OS::ffi(context, foreignPtr, typeInfoFunc, context->ffiPushRAParam, retCopyAddr);
+
+#ifdef SWAG_STATS
+    if (g_CommandLine.profile)
+    {
+        auto now = OS::timerNow();
+        context->bc->profileCumTimeWithFFI += now - context->bc->profileStart;
+        context->bc->profileStart = now;
+    }
+#endif
 }

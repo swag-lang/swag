@@ -7,19 +7,29 @@
 #include "ByteCode.h"
 #ifdef SWAG_STATS
 
+const int COL1 = 12;
+const int COL2 = 24;
+const int COL3 = 36;
+const int COL4 = 50;
+
 static Utf8 getProfileBc(ByteCode* bc, int level)
 {
     Utf8 line;
     line += Fmt("%d", bc->profileCallCount);
-    while (line.count < 12)
-        line += " ";
 
+    while (line.count < COL1)
+        line += " ";
     line += Fmt("%0.6f", OS::timerToSeconds(bc->profileCumTime));
-    while (line.count < 24)
-        line += " ";
 
+    while (line.count < COL2)
+        line += " ";
+    line += Fmt("%0.6f", OS::timerToSeconds(bc->profileCumTimeWithFFI));
+
+    while (line.count < COL3)
+        line += " ";
     line += Fmt("%0.6f", bc->profilePerCall);
-    while (line.count < 36)
+
+    while (line.count < COL4)
         line += " ";
 
     while (level--)
@@ -75,13 +85,16 @@ void profiler()
 
     Utf8 line;
     line += "#calls";
-    while (line.count < 12)
+    while (line.count < COL1)
         line += " ";
     line += "cumtime";
-    while (line.count < 24)
+    while (line.count < COL2)
+        line += " ";
+    line += "FFI";
+    while (line.count < COL3)
         line += " ";
     line += "percall";
-    while (line.count < 36)
+    while (line.count < COL4)
         line += " ";
     line += "name";
 

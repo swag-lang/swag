@@ -4,6 +4,7 @@ using Pixel
 public struct PaintImage
 {
     app:        Application
+    painter:    Painter
     surface:    *Surface
     image:      Image
     w, h:       s32
@@ -21,17 +22,17 @@ impl PaintImage
         if !pt.paint
             return false
 
-        var painter: Painter
+        painter := &pt.painter
         painter.begin()
         painter.setParams(.Antialiased)
         painter.clear(Argb.Zero)
-        pt.paint(wnd.getApp(), &painter)
+        pt.paint(wnd.getApp(), painter)
         painter.end()
 
         r := &wnd.getApp().renderer
         rt := r.getRenderTarget(pt.w, pt.h)
         r.bindRenderTarget(rt)
-        r.draw(&painter)
+        r.draw(painter)
         pt.image = r.unbindRenderTargetToImage(0, 0, pt.w, pt.h)
         r.end()
         r.releaseRenderTarget(rt)

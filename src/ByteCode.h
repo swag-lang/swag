@@ -208,10 +208,11 @@ struct ByteCode
     AstNode*             node         = nullptr;
     ByteCode*            alias        = nullptr;
 
-    uint64_t       profileStart     = 0;
-    uint64_t       profileCumTime   = 0;
-    uint32_t       profileCallCount = 0;
-    double         profilePerCall   = 0;
+    uint64_t       profileStart          = 0;
+    uint64_t       profileCumTime        = 0;
+    uint64_t       profileCumTimeWithFFI = 0;
+    uint32_t       profileCallCount      = 0;
+    double         profilePerCall        = 0;
     Set<ByteCode*> profileChilds;
 
     uint32_t numInstructions       = 0;
