@@ -10,31 +10,23 @@ using Core, Gui, Pixel
 const CARD_WIDTH      = 428
 const CARD_HEIGHT     = 594
 const CARD_ROUND      = cast(u32) (CARD_WIDTH / 54)
-
 const BORDER_SIZE     = cast(f32) (CARD_WIDTH / 18)
-
 const BADGE_OFFSET    = BORDER_SIZE * 0.5
 const BADGE_SIZE      = cast(f32) (CARD_WIDTH / 5)
 const BADGE_BORDER    = BORDER_SIZE/4
-
 const PEPPER_SIZE     = BADGE_SIZE / 2
-
 const TEXT_MARGIN     = BORDER_SIZE * 0.5
 const TEXT_PADDING    = BORDER_SIZE * 0.5
 const TEXT_FONT_SIZE  = cast(u32) (CARD_WIDTH / 18)
 const TEXT_FONT2_SIZE = cast(u32) (TEXT_FONT_SIZE * 0.9)
 const TEXT_HEIGHT     = cast(u32) (CARD_HEIGHT / 2.5)
-
 const TITLE_FONT_SIZE = cast(u32) (CARD_WIDTH / 13)
 const TITLE_HEIGHT    = cast(u32) (CARD_HEIGHT / 6)
 const TITLE_OFFSET_Y  = cast(f32) (TITLE_HEIGHT / 5)
-
 const SUBTITLE_HEIGHT    = cast(u32) (TITLE_HEIGHT / 5)
 const SUBTITLE_FONT_SIZE = SUBTITLE_HEIGHT - 4
-
 const FONT_SIZE_ID    = cast(u32) (CARD_WIDTH / 16)
 const MARGIN_BOTTOM   = cast(f32) (CARD_WIDTH / 17)
-
 const LOGO_WIDTH      = cast(f32) (CARD_WIDTH / 4)
 const LOGO_HEIGHT     = MARGIN_BOTTOM
 
@@ -54,9 +46,9 @@ var g_TTBold:       *TypeFace
 var g_TTItalic:     *TypeFace
 
 var g_TitleFont:    *Font
+var g_SubTitleFont: *Font
 var g_TextFont:     FontFamily
 var g_TextFont2:    FontFamily
-var g_SubTitleFont: *Font
 
 struct ImageInfo
 {
@@ -72,9 +64,7 @@ struct ImageInfo
 func loadRes(app: *Application)
 {
     var dataPath: String = Path.getDirectoryName(#location.fileName)
-    dataPath = Path.combine(dataPath, "datas")
-    dataPath = Path.combine(dataPath, "cards")
-    dataPath = Path.combine(dataPath, "res")
+    dataPath = Path.combine(dataPath, "datas", "cards", "res")
 
     img := assume Image.load(Path.combine(dataPath, "m.png"))
     img.resize(acast BADGE_SIZE, acast BADGE_SIZE, .Bicubic)
@@ -358,8 +348,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
 #run
 {
     var dataPath: String = Path.getDirectoryName(#location.fileName)
-    dataPath = Path.combine(dataPath, "datas")
-    dataPath = Path.combine(dataPath, "cards")
+    dataPath = Path.combine(dataPath, "datas", "cards")
 
     pathImg := Path.combine(dataPath, "img")
     lines := assume File.readAllLines(Path.combine(dataPath, "cards.txt"))
@@ -390,9 +379,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
     func flushPage()
     {
         fileN := Format.toString("%.jpg", pageNum)
-        outP  := Path.combine(dataPath, "out")
-        outN  := Path.combine(outP, cast(string) fileN)
-        assume page.save(outN)
+        assume page.save(Path.combine(dataPath, "out", cast(string) fileN))
     }
 
     var pt: PaintImage
