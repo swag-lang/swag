@@ -146,7 +146,7 @@ impl Array
                 #else
                     var @alias0 = #up scan[0]
                 var @alias1 = @index
-                #mixin stmt
+                #mixin #up stmt
             }
         }
     }
@@ -173,7 +173,7 @@ impl Array
                 #else
                     var @alias0 = #up scan[0]
                 var @alias1 = @index
-                #mixin stmt
+                #mixin #up stmt
             }
         }
     }

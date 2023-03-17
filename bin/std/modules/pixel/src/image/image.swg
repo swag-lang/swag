@@ -54,7 +54,7 @@ impl Image
 			{
                 @alias0 := #up scan
 				@alias1 := @index
-				#mixin stmt
+				#mixin #up stmt
 			}
 
             scan += bpp8

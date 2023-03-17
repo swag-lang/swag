@@ -15,7 +15,7 @@ impl S
             #macro
             {
                 value := 1
-                #mixin stmt
+                #mixin #up stmt
             }
         }
     }

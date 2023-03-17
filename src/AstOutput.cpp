@@ -1425,30 +1425,12 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         break;
 
     case AstNodeKind::CompilerMacro:
-    {
-        auto nodeCompiler = CastAst<AstCompilerMacro>(node, AstNodeKind::CompilerMacro);
         CONCAT_FIXED_STR(concat, "#macro");
-        if (nodeCompiler->params)
-        {
-            concat.addChar('(');
-            bool first = true;
-            for (auto c : nodeCompiler->params->childs)
-            {
-                if (!first)
-                    CONCAT_FIXED_STR(concat, ", ");
-                first = false;
-                SWAG_CHECK(outputNode(context, concat, c));
-            }
-            concat.addChar(')');
-        }
-
-        auto content = node->childs.back();
-        incIndentStatement(content, context.indent);
+        incIndentStatement(node->childs.front(), context.indent);
         concat.addEolIndent(context.indent);
-        SWAG_CHECK(outputNode(context, concat, content));
-        decIndentStatement(content, context.indent);
+        SWAG_CHECK(outputNode(context, concat, node->childs.front()));
+        decIndentStatement(node->childs.front(), context.indent);
         break;
-    }
 
     case AstNodeKind::CompilerMixin:
     {

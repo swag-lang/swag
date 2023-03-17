@@ -20,25 +20,26 @@ impl MyStruct
         // Loop on the 3 fields
         loop idx: 3
         {
-            // The '#macro' keyword forces its body to be in the scope of the caller.
-            // So we pass 'idx' to that macro block in order for the code inside to be able to see that variable.
-            #macro(idx)
+            // The '#macro' force its body to be in the scope of the caller
+            #macro
             {
                 // @alias0 will be the value
                 var @alias0: s32 = undefined
 
-                switch idx
+                // As this code is in the caller scope, with need to add a #up before 'idx' to reference the
+                // variable of this function (and not a potential variable in the caller scope)
+                switch #up idx
                 {
-                case 0: @alias0 = self.x   // Same for function parameter 'self'
-                case 1: @alias0 = self.y
-                case 2: @alias0 = self.z
+                case 0: @alias0 = #up self.x   // Same for function parameter 'self'
+                case 1: @alias0 = #up self.y
+                case 2: @alias0 = #up self.z
                 }
 
                 // @alias1 will be the index
                 @alias1 := @index
 
                 // include user code
-                #mixin stmt
+                #mixin #up stmt
             }
         }
     }
@@ -76,18 +77,18 @@ impl MyStruct
         // Visit fields in reverse order (z, y then x)
         loop idx: 3
         {
-            #macro(idx)
+            #macro
             {
                 var @alias0: s32 = undefined
-                switch idx
+                switch #up idx
                 {
-                case 0: @alias0 = self.z
-                case 1: @alias0 = self.y
-                case 2: @alias0 = self.x
+                case 0: @alias0 = #up self.z
+                case 1: @alias0 = #up self.y
+                case 2: @alias0 = #up self.x
                 }
 
                 @alias1 := @index
-                #mixin stmt
+                #mixin #up stmt
             }
         }
     }

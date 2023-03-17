@@ -34,18 +34,18 @@ impl List
         while n
         {
             #scope Down
-            #macro(n)
+            #macro
             {
-                #if ptr
-                    var @alias0 = cast(*T) &n.value
+                #if #up ptr
+                    var @alias0 = cast(*T) & #up n.value
                 #elif Reflection.isStruct(T)
-                    var @alias0 = cast(ref T) &n.value
+                    var @alias0 = cast(ref T) & #up n.value
                 #else
-                    var @alias0 = n.value
-                var @alias1 = n
+                    var @alias0 = #up n.value
+                var @alias1 = #up n
                 var @alias2 = @index
 
-                #mixin stmt { break = break Up; continue = break Down; }
+                #mixin #up stmt { break = break Up; continue = break Down; }
             }
 
             n = n.next
@@ -64,18 +64,18 @@ impl List
         while n
         {
             #scope Down
-            #macro(n)
+            #macro
             {
-                #if ptr
-                    var @alias0 = cast(*T) &n.value
+                #if #up ptr
+                    var @alias0 = cast(*T) & #up n.value
                 #elif Reflection.isStruct(T)
-                    var @alias0 = cast(ref T) &n.value
+                    var @alias0 = cast(ref T) & #up n.value
                 #else
-                    var @alias0 = n.value
-                var @alias1 = n
+                    var @alias0 = #up n.value
+                var @alias1 = #up n
                 var @alias2 = @index
 
-                #mixin stmt { break = break Up; continue = break Down; }
+                #mixin #up stmt { break = break Up; continue = break Down; }
             }
 
             n = n.prev

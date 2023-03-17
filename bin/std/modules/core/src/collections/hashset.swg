@@ -85,7 +85,7 @@ impl HashSet
                     var @alias0 = #up table[@index].key
                 }
 
-                #mixin stmt { break = break Up; continue = break Down; }
+                #mixin #up stmt { break = break Up; continue = break Down; }
             }
 
             remain -= 1

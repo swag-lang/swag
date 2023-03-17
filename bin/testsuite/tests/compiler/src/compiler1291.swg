@@ -5,10 +5,10 @@ func Visit(user: code)
 	loop 10
 	{
         c = 100
-		#macro(c)
+		#macro
         {
-            value := c
-            #mixin user
+            value := #up c
+            #mixin #up user
         }
 	}
 }

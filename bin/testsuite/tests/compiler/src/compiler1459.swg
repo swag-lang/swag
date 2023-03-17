@@ -14,7 +14,7 @@ impl S
             {
                 #macro
                 {
-                    #mixin stmt { break = break up; }
+                    #mixin #up stmt { break = break up; }
                 }
             }
         }
