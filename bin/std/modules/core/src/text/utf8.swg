@@ -718,7 +718,7 @@ func visitRunes(buffer: const [..] u8, stmt: code)
                 @alias0 := #up c
                 @alias1 := #up charIdx
                 @alias2 := #up byteIdx
-                #mixin #up stmt { continue=break Inside; }
+                #mixin stmt { continue=break Inside; }
             }
         }
 

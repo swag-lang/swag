@@ -1,13 +1,13 @@
 #[Swag.Macro]
 public func macro2365(stmt: code)
 {
-    #scope up
+    #scope Up
     loop 10
     {
-        #scope down
+        #scope Down
         #macro
         {
-            #mixin #up stmt { break = break up; continue = break down; }
+            #mixin stmt { break = break Up; continue = break Down; }
         }
 
         #up g += 1

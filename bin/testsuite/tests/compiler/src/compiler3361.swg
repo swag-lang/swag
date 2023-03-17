@@ -12,7 +12,7 @@ func toto(x: s32, stmt: code)
         #macro
         {
             var @alias0 = @index
-            #mixin #up stmt
+            #mixin stmt
         }
     }
 }

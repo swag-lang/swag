@@ -3,9 +3,10 @@ func toto()
 {
     cpt := 0
 
-    #macro
+    #macro(cpt)
     {
-        loop 10 #up cpt += 1
+        loop 10
+            cpt += 1
     }
 
     @assert(cpt == 10)

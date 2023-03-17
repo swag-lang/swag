@@ -93,7 +93,7 @@ impl HashTable
                     //var @alias1 = Reflection.isStruct(V) ? cast(const ref V) &#up table[@index].value : #up table[@index].value
                 }
 
-                #mixin #up stmt { break = break Up; continue = break Down; }
+                #mixin stmt { break = break Up; continue = break Down; }
             }
 
             remain -= 1

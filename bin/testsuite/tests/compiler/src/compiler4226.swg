@@ -1,11 +1,11 @@
 //#global testerror
 
-#[Swag.Macro]
+#[Swag.Mixin]
 func toto()
 {
     #ast
     {
-        return "#up a = 55"
+        return "a = 55"
     }
 }
 

@@ -30,11 +30,10 @@ func changeContext(user: code)
     var newCxt: Context = dref savedCxt
     @setcontext(newCxt)
 
-    #macro
+    #macro(newCxt)
     {
-        var cxt = &#up newCxt
-
-        #mixin #up user
+        var cxt = &newCxt
+        #mixin user
     }
 
     @setcontext(savedCxt)

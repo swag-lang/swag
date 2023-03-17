@@ -125,7 +125,7 @@ impl StaticArray
                 #else
                     var @alias0 = #up scan[0]
                 var @alias1 = @index
-                #mixin #up stmt
+                #mixin stmt
             }
         }
     }
@@ -153,7 +153,7 @@ impl StaticArray
                 #else
                     var @alias0 = #up scan[0]
                 var @alias1 = @index
-                #mixin #up stmt
+                #mixin stmt
             }
         }
     }

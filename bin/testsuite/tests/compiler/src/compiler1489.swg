@@ -11,7 +11,7 @@ impl S
     func(ptr: bool) opVisit(using self, stmt: code)
     {
         var @alias0 = 0
-        #if #up ptr
+        #if ptr
             G += 1
         #else
             G += 2

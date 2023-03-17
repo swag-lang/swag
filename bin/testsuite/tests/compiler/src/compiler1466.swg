@@ -19,7 +19,7 @@ impl S
             {
                 let alias0 = x
                 let alias1 = @index
-                //#mixin #up stmt
+                //#mixin stmt
             }*/
         }
     }

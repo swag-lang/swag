@@ -150,7 +150,7 @@ bool Parser::doCompilerMacro(AstNode* parent, AstNode** result)
         node->params->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
         while (token.id != TokenId::SymRightParen)
         {
-            SWAG_CHECK(doIdentifier(node->params, IDENTIFIER_NO_PARAMS));
+            SWAG_CHECK(doIdentifierRef(node->params, &dummyResult, IDENTIFIER_NO_PARAMS));
             if (token.id != TokenId::SymComma)
                 break;
         }

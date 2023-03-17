@@ -11,10 +11,10 @@ impl S
     {
         for v := down; v <= up; v += 1
         {
-            #macro
+            #macro(v)
             {
-                var @alias0 = #up v
-                #mixin #up stmt
+                var @alias0 = v
+                #mixin stmt
             }
         }
     }

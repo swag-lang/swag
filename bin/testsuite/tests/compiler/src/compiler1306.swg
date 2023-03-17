@@ -4,10 +4,10 @@ func toto(t: s32, x: code)
     xx := t
     @assert(t == 100)
     @assert(xx == 100)
-    #macro
+    #macro(xx)
     {
-        value := #up xx
-        #mixin #up x
+        value := xx
+        #mixin x
     }
 }
 
