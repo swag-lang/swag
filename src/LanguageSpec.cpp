@@ -271,7 +271,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("#import", TokenId::CompilerImport);
     keywords.add("#mixin", TokenId::CompilerMixin);
     keywords.add("#macro", TokenId::CompilerMacro);
-    keywords.add("#inline", TokenId::CompilerInline);
     keywords.add("#placeholder", TokenId::CompilerPlaceHolder);
     keywords.add("#if", TokenId::CompilerIf);
     keywords.add("#else", TokenId::CompilerElse);

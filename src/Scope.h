@@ -28,6 +28,7 @@ enum class ScopeKind : uint8_t
     TypeList,
     Inline,
     Macro,
+    MacroParams,
 };
 
 const uint8_t SCOPE_FLAG_HAS_EXPORTS = 0x00000001;

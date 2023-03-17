@@ -139,24 +139,31 @@ bool Parser::doCompilerMacro(AstNode* parent, AstNode** result)
     auto newScope = Ast::newScope(node, "", ScopeKind::Macro, node->ownerScope);
     node->scope   = newScope;
 
-    Scoped scoped(this, newScope);
-    SWAG_CHECK(doCurlyStatement(node, &dummyResult));
-    return true;
-}
+    if (token.id == TokenId::SymLeftParen)
+    {
+        SWAG_CHECK(eatToken());
 
-bool Parser::doCompilerInline(AstNode* parent, AstNode** result)
-{
-    auto node = Ast::newNode<AstCompilerInline>(this, AstNodeKind::CompilerInline, sourceFile, parent);
-    *result   = node;
-    node->allocateExtension(ExtensionKind::Semantic);
-    node->extSemantic()->semanticBeforeFct = SemanticJob::resolveCompilerInline;
+        auto   scopeParams = Ast::newScope(node, "", ScopeKind::MacroParams, newScope);
+        Scoped scoped(this, scopeParams);
 
-    SWAG_CHECK(eatToken());
-    auto newScope = Ast::newScope(node, "", ScopeKind::Inline, node->ownerScope);
-    node->scope   = newScope;
+        node->params = Ast::newNode<AstNode>(this, AstNodeKind::CompilerMacroParams, sourceFile, node);
+        node->params->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+        while (token.id != TokenId::SymRightParen)
+        {
+            SWAG_CHECK(doIdentifier(node->params, IDENTIFIER_NO_PARAMS));
+            if (token.id != TokenId::SymComma)
+                break;
+        }
 
-    Scoped scoped(this, newScope);
-    SWAG_CHECK(doCurlyStatement(node, &dummyResult));
+        SWAG_CHECK(eatToken(TokenId::SymRightParen));
+        SWAG_CHECK(doCurlyStatement(node, &dummyResult));
+    }
+    else
+    {
+        Scoped scoped(this, newScope);
+        SWAG_CHECK(doCurlyStatement(node, &dummyResult));
+    }
+
     return true;
 }
 

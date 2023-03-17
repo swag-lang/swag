@@ -1432,14 +1432,6 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         decIndentStatement(node->childs.front(), context.indent);
         break;
 
-    case AstNodeKind::CompilerInline:
-        CONCAT_FIXED_STR(concat, "#inline");
-        incIndentStatement(node->childs.front(), context.indent);
-        concat.addEolIndent(context.indent);
-        SWAG_CHECK(outputNode(context, concat, node->childs.front()));
-        decIndentStatement(node->childs.front(), context.indent);
-        break;
-
     case AstNodeKind::CompilerMixin:
     {
         auto compilerMixin = CastAst<AstCompilerMixin>(node, AstNodeKind::CompilerMixin);

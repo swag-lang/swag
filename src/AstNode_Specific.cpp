@@ -1008,27 +1008,6 @@ AstNode* AstReturn::clone(CloneContext& context)
     return newNode;
 }
 
-AstCompilerInline::~AstCompilerInline()
-{
-    if (scope)
-        scope->release();
-}
-
-AstNode* AstCompilerInline::clone(CloneContext& context)
-{
-    auto newNode = Ast::newNode<AstCompilerInline>();
-    newNode->copyFrom(context, this, false);
-
-    auto cloneContext        = context;
-    cloneContext.parent      = newNode;
-    cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::Inline, context.parentScope ? context.parentScope : ownerScope);
-    newNode->scope           = cloneContext.parentScope;
-    childs.back()->clone(cloneContext);
-    context.propageResult(cloneContext);
-
-    return newNode;
-}
-
 AstCompilerMacro::~AstCompilerMacro()
 {
     if (scope)
@@ -1044,9 +1023,15 @@ AstNode* AstCompilerMacro::clone(CloneContext& context)
     cloneContext.parent      = newNode;
     cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::Macro, context.parentScope ? context.parentScope : ownerScope);
     newNode->scope           = cloneContext.parentScope;
+
+    if (params)
+    {
+        cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::MacroParams, cloneContext.parentScope);
+        newNode->params          = params->clone(cloneContext);
+    }
+
     childs.back()->clone(cloneContext);
     context.propageResult(cloneContext);
-
     return newNode;
 }
 

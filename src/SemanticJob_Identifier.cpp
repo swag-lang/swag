@@ -4568,7 +4568,6 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext*             
         if (scopeUpMode == IdentifierScopeUpMode::None)
         {
             while (startNode->parent->kind != AstNodeKind::Inline && // Need to test on parent to be able to add alternative scopes of the inline block
-                   startNode->kind != AstNodeKind::CompilerInline &&
                    startNode->kind != AstNodeKind::FuncDecl)
             {
                 startNode = startNode->parent;
@@ -4580,18 +4579,6 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext*             
         // Macro in a sub function, stop there
         if (startNode->kind == AstNodeKind::FuncDecl)
             return;
-    }
-
-    // If we are in an inline block, jump right to the function parent
-    else if (startNode->kind == AstNodeKind::CompilerInline)
-    {
-        if (scopeUpMode == IdentifierScopeUpMode::None)
-        {
-            while (startNode && startNode->kind != AstNodeKind::FuncDecl)
-                startNode = startNode->parent;
-        }
-
-        scopeUpMode = IdentifierScopeUpMode::None;
     }
 
     // If we are in an inline block, jump right to the function parent
@@ -4628,7 +4615,6 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext*             
         // We authorize mixin code to access the parameters of the Swag.mixin function, except if there's a #macro block
         // in the way.
         while (startNode->kind != AstNodeKind::Inline &&
-               startNode->kind != AstNodeKind::CompilerInline &&
                startNode->kind != AstNodeKind::CompilerMacro &&
                startNode->kind != AstNodeKind::FuncDecl)
         {
@@ -4735,6 +4721,12 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext*                   conte
                 scope = scope->parentScope;
             if (!scope)
                 continue;
+        }
+
+        // If this is a macro params scope, then resolve with the scope above the 'macro' scope
+        else if (scope->kind == ScopeKind::MacroParams)
+        {
+            scope = scope->parentScope;
         }
 
         // Add parent scope

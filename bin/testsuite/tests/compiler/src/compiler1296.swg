@@ -3,7 +3,7 @@
 #[Swag.Mixin]
 func toto(x: code)
 {
-    #inline
+    #macro
     {
         #mixin x
     }

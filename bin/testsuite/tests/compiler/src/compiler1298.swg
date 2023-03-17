@@ -1,8 +1,14 @@
+#[Swag.Macro]
 func toto()
 {
     x := 0
-    #inline
+    #macro
     {
         x := 0
     }
+}
+
+#test
+{
+    toto()
 }
