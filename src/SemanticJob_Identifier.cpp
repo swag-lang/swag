@@ -4731,10 +4731,11 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext*                   conte
         // For a macro scope, jump right to the inline
         else if (scope->kind == ScopeKind::Macro)
         {
-            while (scope && scope->kind != ScopeKind::Inline)
+            while (scope && scope->parentScope->kind != ScopeKind::Inline)
                 scope = scope->parentScope;
             if (!scope)
                 continue;
+            scope = scope->parentScope;
         }
 
         // Add parent scope
