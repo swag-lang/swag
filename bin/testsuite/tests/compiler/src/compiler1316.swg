@@ -1,19 +1,14 @@
 #global testerror
 
-#[Swag.Macro]
-func toto()
+//#[Swag.PrintBc]
+#test
 {
     cpt := 0
 
-    #macro
+    #inline
     {
         cpt = 10
     }
 
     @assert(cpt == 6)
-}
-
-#test
-{
-    toto()
 }

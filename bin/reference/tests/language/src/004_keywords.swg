@@ -110,6 +110,7 @@ Compiler keywords.
 #global
 #if
 #import
+#inline
 #include
 #load
 #macro

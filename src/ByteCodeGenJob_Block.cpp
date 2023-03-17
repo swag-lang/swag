@@ -1158,6 +1158,12 @@ bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context)
         SWAG_CHECK(computeLeaveScope(context, macroNode->scope));
         break;
     }
+    case AstNodeKind::CompilerInline:
+    {
+        auto inlineNode = CastAst<AstCompilerInline>(node, AstNodeKind::CompilerInline);
+        SWAG_CHECK(computeLeaveScope(context, inlineNode->scope));
+        break;
+    }
     default:
         SWAG_CHECK(computeLeaveScope(context, node->ownerScope));
         break;

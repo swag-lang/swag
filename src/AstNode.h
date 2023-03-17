@@ -187,7 +187,7 @@ enum class AstNodeKind : uint8_t
     CompilerAssert,
     CompilerMixin,
     CompilerMacro,
-    CompilerMacroParams,
+    CompilerInline,
     CompilerPrint,
     CompilerError,
     CompilerWarning,
@@ -920,13 +920,20 @@ struct AstReturn : public AstNode
     int seekJump;
 };
 
+struct AstCompilerInline : public AstNode
+{
+    ~AstCompilerInline();
+    AstNode* clone(CloneContext& context);
+
+    Scope* scope;
+};
+
 struct AstCompilerMacro : public AstNode
 {
     ~AstCompilerMacro();
     AstNode* clone(CloneContext& context);
 
-    AstNode* params;
-    Scope*   scope;
+    Scope* scope;
 };
 
 struct AstCompilerMixin : public AstNode

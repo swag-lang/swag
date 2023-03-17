@@ -3,7 +3,7 @@ func toto(x: code)
 {
     loop 10
     {
-        #macro
+        #inline
         {
             value := 100
             #mixin #up x

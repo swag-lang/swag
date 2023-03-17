@@ -1,17 +1,11 @@
-#[Swag.Macro]
-func toto()
+#test
 {
     myVar := 0
-    #macro
+    #inline
     {
         alias myVar = #up myVar
         myVar += 1
     }
 
     @assert(myVar == 1)
-}
-
-#test
-{
-    toto()
 }

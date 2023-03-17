@@ -313,6 +313,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("#import", State.CompilerStatement)
         mapWords.add("#mixin", State.CompilerStatement)
         mapWords.add("#macro", State.CompilerStatement)
+        mapWords.add("#inline", State.CompilerStatement)
         mapWords.add("#placeholder", State.CompilerStatement)
         mapWords.add("#if", State.CompilerStatement)
         mapWords.add("#else", State.CompilerStatement)

@@ -319,6 +319,9 @@ void AstNode::release()
     case AstNodeKind::Return:
         Allocator::free<AstReturn>(this);
         break;
+    case AstNodeKind::CompilerInline:
+        Allocator::free<AstCompilerInline>(this);
+        break;
     case AstNodeKind::CompilerMacro:
         Allocator::free<AstCompilerMacro>(this);
         break;
@@ -463,6 +466,8 @@ AstNode* AstNode::clone(CloneContext& context)
         return clone<AstDropCopyMove>(this, context);
     case AstNodeKind::Return:
         return clone<AstReturn>(this, context);
+    case AstNodeKind::CompilerInline:
+        return clone<AstCompilerInline>(this, context);
     case AstNodeKind::CompilerMacro:
         return clone<AstCompilerMacro>(this, context);
     case AstNodeKind::CompilerMixin:

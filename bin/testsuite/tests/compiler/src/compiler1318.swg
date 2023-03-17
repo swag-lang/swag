@@ -1,17 +1,12 @@
-#[Swag.Macro]
-func toto()
+//#[Swag.PrintBc]
+#test
 {
     cpt := 0
 
-    #macro
+    #inline
     {
         loop 10 #up cpt += 1
     }
 
     @assert(cpt == 10)
-}
-
-#test
-{
-    toto()
 }
