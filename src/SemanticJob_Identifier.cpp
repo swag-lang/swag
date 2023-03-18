@@ -4556,7 +4556,7 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext*             
 
     // An inline block contains a specific scope that contains the parameters.
     // That scope does not have a parent, so the hierarchy scan will stop at it.
-    if (startNode->kind == AstNodeKind::Inline)
+    if (startNode->kind == AstNodeKind::Inline && !(flags & COLLECT_NO_INLINE_PARAMS))
     {
         auto inlineNode = CastAst<AstInline>(startNode, AstNodeKind::Inline);
         SWAG_ASSERT(inlineNode->parametersScope);
@@ -4573,6 +4573,8 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext*             
             {
                 startNode = startNode->parent;
             }
+
+            flags |= COLLECT_NO_INLINE_PARAMS;
         }
 
         scopeUpMode = IdentifierScopeUpMode::None;
@@ -4731,7 +4733,7 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext*                   conte
         // For a macro scope, jump right to the inline
         else if (scope->kind == ScopeKind::Macro)
         {
-            while (scope && scope->parentScope->kind != ScopeKind::Inline)
+            while (scope && scope->kind != ScopeKind::Inline)
                 scope = scope->parentScope;
             if (!scope)
                 continue;

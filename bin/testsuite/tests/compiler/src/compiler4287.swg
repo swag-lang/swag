@@ -10,7 +10,7 @@ func parse(stmt: code)
             return
         #macro
         {
-            #mixin stmt
+            #mixin #up stmt
         }
     }
 }

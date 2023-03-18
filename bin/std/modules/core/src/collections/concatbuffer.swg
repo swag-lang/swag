@@ -54,7 +54,7 @@ impl ConcatBuffer
             #macro
             {
                 var @alias0 = #up b
-                #mixin stmt
+                #mixin #up stmt
             }
 
             b = b.next
