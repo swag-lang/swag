@@ -201,6 +201,9 @@ struct ByteCode
     VectorNative<AstNode*> localVars;
     VectorNative<AstNode*> dependentCalls;
     SetUtf8                hasForeignFunctionCallsModules;
+#ifdef SWAG_STATS
+    Map<void*, uint64_t> ffiProfile;
+#endif
 
     ByteCodeInstruction* out          = nullptr;
     SourceFile*          sourceFile   = nullptr;

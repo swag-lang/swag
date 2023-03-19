@@ -93,10 +93,10 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
     }
 
     auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::FuncAttr);
-    ffiCall(context, (void*) ip->d.pointer, typeInfoFunc, ip->numVariadicParams);
+    ffiCall(context, ip, (void*) ip->d.pointer, typeInfoFunc, ip->numVariadicParams);
 }
 
-void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc, int numCVariadicParams)
+void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc, int numCVariadicParams)
 {
     uint32_t cptParam = 0;
 
@@ -178,6 +178,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
         auto now = OS::timerNow();
         context->bc->profileCumTime += now - context->bc->profileStart;
         context->bc->profileFFI += now - context->bc->profileStart;
+        context->bc->ffiProfile[ip->a.pointer] += now - context->bc->profileStart;
         context->bc->profileStart = now;
     }
 #endif

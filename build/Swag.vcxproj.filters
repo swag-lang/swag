@@ -404,9 +404,6 @@
     <ClCompile Include="..\src\BackendX64_Emit.cpp">
       <Filter>Backend\X64</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Profiler.cpp">
-      <Filter>Backend\ByteCode</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Report.cpp">
       <Filter>Report</Filter>
     </ClCompile>
@@ -601,6 +598,9 @@
     </ClCompile>
     <ClCompile Include="..\src\SymTableHash.cpp">
       <Filter>Semantic\Symbol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Profiler.cpp">
+      <Filter>Backend\ByteCode\Profiler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -842,9 +842,6 @@
     <ClInclude Include="..\src\X64Gen.h">
       <Filter>Backend\X64</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Profiler.h">
-      <Filter>Backend\ByteCode</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Report.h">
       <Filter>Report</Filter>
     </ClInclude>
@@ -956,6 +953,9 @@
     <ClInclude Include="..\src\SymTableHash.h">
       <Filter>Semantic\Symbol</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Profiler.h">
+      <Filter>Backend\ByteCode\Profiler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
@@ -1029,6 +1029,9 @@
     </Filter>
     <Filter Include="Semantic\Symbol">
       <UniqueIdentifier>{a6739d74-e799-42d8-8050-176675ae95f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Backend\ByteCode\Profiler">
+      <UniqueIdentifier>{bafae39e-037a-4deb-9b09-3c970c4ff63d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

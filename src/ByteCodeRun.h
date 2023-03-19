@@ -14,7 +14,7 @@ struct ByteCodeRun
     static void* ffiGetFuncAddress(JobContext* context, ByteCodeInstruction* ip);
     static void* ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc);
     void         ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip);
-    void         ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc, int numCVariadicParams = 0);
+    void         ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc, int numCVariadicParams = 0);
 
     bool executeInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip);
     void runLoopNoDbg(ByteCodeRunContext* context);
