@@ -13,6 +13,7 @@
 #include "Diagnostic.h"
 #include "OS.h"
 #include "RaceCondition.h"
+#include "Profiler.h"
 
 enum class ByteCodeOp : uint16_t;
 struct AstNode;
@@ -202,7 +203,7 @@ struct ByteCode
     VectorNative<AstNode*> dependentCalls;
     SetUtf8                hasForeignFunctionCallsModules;
 #ifdef SWAG_STATS
-    Map<void*, uint64_t> ffiProfile;
+    Map<AstFuncDecl*, FFIStat> ffiProfile;
 #endif
 
     ByteCodeInstruction* out          = nullptr;

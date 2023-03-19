@@ -175,10 +175,12 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip, 
 #ifdef SWAG_STATS
     if (g_CommandLine.profile)
     {
-        auto now = OS::timerNow();
+        auto now      = OS::timerNow();
+        auto funcDecl = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
         context->bc->profileCumTime += now - context->bc->profileStart;
         context->bc->profileFFI += now - context->bc->profileStart;
-        context->bc->ffiProfile[ip->a.pointer] += now - context->bc->profileStart;
+        context->bc->ffiProfile[funcDecl].count += 1;
+        context->bc->ffiProfile[funcDecl].cum += now - context->bc->profileStart;
         context->bc->profileStart = now;
     }
 #endif

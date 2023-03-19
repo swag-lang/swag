@@ -12,14 +12,7 @@
 const int COL1 = 12;
 const int COL2 = 24;
 const int COL3 = 36;
-const int COL4 = 50;
-
-struct FFIStat
-{
-    AstFuncDecl* func;
-    uint32_t     count;
-    uint64_t     cum;
-};
+const int COL4 = 48;
 
 static Utf8 getProfileBc(ByteCode* bc, int level)
 {
@@ -45,12 +38,6 @@ static Utf8 getProfileBc(ByteCode* bc, int level)
         line += "    ";
 
     line += bc->name;
-    if (bc->getCallType())
-    {
-        line += " -- ";
-        line += bc->getCallType()->name.c_str();
-    }
-
     return line;
 }
 
@@ -110,9 +97,9 @@ void profiler()
 
             for (auto it : bc->ffiProfile)
             {
-                ffi[(AstFuncDecl*) it.first].func = CastAst<AstFuncDecl>((AstNode*) it.first, AstNodeKind::FuncDecl);
-                ffi[(AstFuncDecl*) it.first].count += 1;
-                ffi[(AstFuncDecl*) it.first].cum += it.second;
+                ffi[it.first].func = it.first;
+                ffi[it.first].count += it.second.count;
+                ffi[it.first].cum += it.second.cum;
             }
         }
     }
