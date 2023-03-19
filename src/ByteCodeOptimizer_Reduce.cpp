@@ -1,9 +1,5 @@
 #include "pch.h"
 #include "ByteCodeOptimizer.h"
-#include "SourceFile.h"
-#include "Module.h"
-#include "Log.h"
-#include "AstNode.h"
 #include "Math.h"
 
 void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruction* ip)
