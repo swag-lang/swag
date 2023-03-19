@@ -425,7 +425,7 @@ void initErrors()
     SWAG_ERROR(Err0488, "an expression of type '%s' cannot be dereferenced like a pointer");
     SWAG_ERROR(Err0807, "an expression of type '%s' cannot be spreaded");
     SWAG_ERROR(Err0629, "an expression of type '%s' cannot be visited with 'visit'");
-    SWAG_ERROR(Err0136, "an identifier with a backtick should only be used inside a 'Swag.Macro' function or an '#inline' block");
+    SWAG_ERROR(Err0136, "an identifier with '#up' should only be used inside a 'Swag.Macro' function");
     SWAG_ERROR(Err0010, "an interface can only be compared to 'null' or to another interface");
     SWAG_ERROR(Err0676, "an interface can only contain members of type 'lambda' ('%s' provided)");
     SWAG_ERROR(Err0682, "an interface member cannot be relocated with 'Swag.Offset'");

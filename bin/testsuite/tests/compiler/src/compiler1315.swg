@@ -1,14 +1,15 @@
+#global testerror
 //#[Swag.PrintBc]
 #test
 {
     cpt := 6
 
-    #inline
+    #macro
     {
         cpt := 0
     }
 
-    #inline
+    #macro
     {
         cpt := 0
     }

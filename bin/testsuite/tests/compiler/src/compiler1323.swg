@@ -1,7 +1,7 @@
 #[Swag.Macro]
 func toto()
 {
-    #inline
+    #macro
     {
         cpt := 0
     }

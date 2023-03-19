@@ -1,9 +1,10 @@
+#global testerror
 //#[Swag.PrintBc]
 #test
 {
     cpt := 0
 
-    #inline
+    #macro
     {
         #up cpt = 10
     }

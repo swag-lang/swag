@@ -193,7 +193,7 @@
       "patterns": [
         {
           "name": "meta.preprocessor",
-          "match": "(#)(global|load|assert|error|warning|print|import|include|mixin|macro|inline|placeholder|foreignlib|if|else|elif|validif|validifx|scope|scopefile)\\b"
+          "match": "(#)(global|load|assert|error|warning|print|import|include|mixin|macro|placeholder|foreignlib|if|else|elif|validif|validifx|scope|scopefile)\\b"
         }
       ]
     },

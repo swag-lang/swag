@@ -101,7 +101,6 @@ struct Parser
     bool doIntrinsicTag(AstNode* parent, AstNode** result);
     bool doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind);
     bool doCompilerIf(AstNode* parent, AstNode** result);
-    bool doCompilerInline(AstNode* parent, AstNode** result);
     bool doCompilerMacro(AstNode* parent, AstNode** result);
     bool doCompilerMixin(AstNode* parent, AstNode** result);
     bool doCompilerAssert(AstNode* parent, AstNode** result);

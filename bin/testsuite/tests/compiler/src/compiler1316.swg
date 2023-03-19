@@ -5,7 +5,7 @@
 {
     cpt := 0
 
-    #inline
+    #macro
     {
         cpt = 10
     }

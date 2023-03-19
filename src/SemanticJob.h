@@ -419,7 +419,6 @@ struct SemanticJob : public Job
     static bool resolveFactorExpression(SemanticContext* context);
     static bool resolveShiftExpression(SemanticContext* context);
     static bool resolveCompilerMacro(SemanticContext* context);
-    static bool resolveCompilerInline(SemanticContext* context);
     static bool resolveCompilerMixin(SemanticContext* context);
     static bool resolveCompilerAssert(SemanticContext* context);
     static bool resolveCompilerPrint(SemanticContext* context);

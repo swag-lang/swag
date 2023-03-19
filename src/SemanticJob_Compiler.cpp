@@ -452,18 +452,6 @@ bool SemanticJob::resolveCompilerMacro(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveCompilerInline(SemanticContext* context)
-{
-    auto node             = CastAst<AstCompilerInline>(context->node, AstNodeKind::CompilerInline);
-    auto scope            = node->childs.back()->ownerScope;
-    scope->startStackSize = node->ownerScope->startStackSize;
-
-    node->allocateExtension(ExtensionKind::ByteCode);
-    node->extByteCode()->byteCodeAfterFct = ByteCodeGenJob::emitLeaveScope;
-
-    return true;
-}
-
 bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
 {
     auto node = CastAst<AstCompilerMixin>(context->node, AstNodeKind::CompilerMixin);

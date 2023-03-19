@@ -144,22 +144,6 @@ bool Parser::doCompilerMacro(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool Parser::doCompilerInline(AstNode* parent, AstNode** result)
-{
-    auto node = Ast::newNode<AstCompilerInline>(this, AstNodeKind::CompilerInline, sourceFile, parent);
-    *result   = node;
-    node->allocateExtension(ExtensionKind::Semantic);
-    node->extSemantic()->semanticBeforeFct = SemanticJob::resolveCompilerInline;
-
-    SWAG_CHECK(eatToken());
-    auto newScope = Ast::newScope(node, "", ScopeKind::Inline, node->ownerScope);
-    node->scope   = newScope;
-
-    Scoped scoped(this, newScope);
-    SWAG_CHECK(doCurlyStatement(node, &dummyResult));
-    return true;
-}
-
 bool Parser::doCompilerAssert(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerAssert, sourceFile, parent);
