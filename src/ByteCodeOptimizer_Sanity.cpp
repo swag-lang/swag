@@ -1445,19 +1445,27 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             break;
         case ByteCodeOp::NegS32:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.s32 = -ra->reg.s32;
+            SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));
+            ra->kind    = rb->kind;
+            ra->reg.s32 = -rb->reg.s32;
             break;
         case ByteCodeOp::NegS64:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.s64 = -ra->reg.s64;
+            SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));
+            ra->kind    = rb->kind;
+            ra->reg.s64 = -rb->reg.s64;
             break;
         case ByteCodeOp::NegF32:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.f32 = -ra->reg.f32;
+            SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));
+            ra->kind    = rb->kind;
+            ra->reg.f32 = -rb->reg.f32;
             break;
         case ByteCodeOp::NegF64:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.f64 = -ra->reg.f64;
+            SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));
+            ra->kind    = rb->kind;
+            ra->reg.f64 = -rb->reg.f64;
             break;
 
         case ByteCodeOp::CastBool8:

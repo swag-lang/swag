@@ -126,8 +126,22 @@ bool ByteCodeGenJob::emitCompareOpPostSpecialFunc(ByteCodeGenContext* context, T
         switch (op)
         {
         case TokenId::SymLowerEqualGreater:
-            emitInstruction(context, ByteCodeOp::NegS32, r2);
+        {
+            auto rt = reserveRegisterRC(context);
+            emitInstruction(context, ByteCodeOp::NegS32, rt, r2);
+            freeRegisterRC(context, r2);
+            node->resultRegisterRC = rt;
             break;
+        }
+        case TokenId::SymExclamEqual:
+        {
+            auto rt = reserveRegisterRC(context);
+            emitInstruction(context, ByteCodeOp::NegBool, rt, r2);
+            freeRegisterRC(context, r2);
+            node->resultRegisterRC = rt;
+            break;
+        }
+
         case TokenId::SymGreater:
             emitInstruction(context, ByteCodeOp::LowerZeroToTrue, r2);
             break;
@@ -140,20 +154,20 @@ bool ByteCodeGenJob::emitCompareOpPostSpecialFunc(ByteCodeGenContext* context, T
         case TokenId::SymLowerEqual:
             emitInstruction(context, ByteCodeOp::GreaterEqZeroToTrue, r2);
             break;
-        case TokenId::SymExclamEqual:
-        {
-            auto rt = reserveRegisterRC(context);
-            emitInstruction(context, ByteCodeOp::NegBool, rt, r2);
-            freeRegisterRC(context, r2);
-            node->resultRegisterRC = rt;
-            break;
-        }
         }
     }
     else
     {
         switch (op)
         {
+        case TokenId::SymExclamEqual:
+        {
+            auto rt = reserveRegisterRC(context);
+            emitInstruction(context, ByteCodeOp::NegBool, rt, r2);
+            freeRegisterRC(context, r2);
+            node->resultRegisterRC = rt;
+            break;
+        }
         case TokenId::SymLower:
             emitInstruction(context, ByteCodeOp::LowerZeroToTrue, r2);
             break;
@@ -166,14 +180,6 @@ bool ByteCodeGenJob::emitCompareOpPostSpecialFunc(ByteCodeGenContext* context, T
         case TokenId::SymGreaterEqual:
             emitInstruction(context, ByteCodeOp::GreaterEqZeroToTrue, r2);
             break;
-        case TokenId::SymExclamEqual:
-        {
-            auto rt = reserveRegisterRC(context);
-            emitInstruction(context, ByteCodeOp::NegBool, rt, r2);
-            freeRegisterRC(context, r2);
-            node->resultRegisterRC = rt;
-            break;
-        }
         }
     }
 

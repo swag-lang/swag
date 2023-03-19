@@ -4,7 +4,7 @@
 #include "ByteCodeOp.h"
 #include "Report.h"
 
-bool ByteCodeGenJob::emitUnaryOpMinus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0)
+bool ByteCodeGenJob::emitUnaryOpMinus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t rt, uint32_t r0)
 {
     auto typeInfo = TypeManager::concreteType(typeInfoExpr);
     if (!typeInfo->isNative())
@@ -18,16 +18,16 @@ bool ByteCodeGenJob::emitUnaryOpMinus(ByteCodeGenContext* context, TypeInfo* typ
     case NativeTypeKind::S8:
     case NativeTypeKind::S16:
     case NativeTypeKind::S32:
-        emitInstruction(context, ByteCodeOp::NegS32, r0);
+        emitInstruction(context, ByteCodeOp::NegS32, rt, r0);
         return true;
     case NativeTypeKind::S64:
-        emitInstruction(context, ByteCodeOp::NegS64, r0);
+        emitInstruction(context, ByteCodeOp::NegS64, rt, r0);
         return true;
     case NativeTypeKind::F32:
-        emitInstruction(context, ByteCodeOp::NegF32, r0);
+        emitInstruction(context, ByteCodeOp::NegF32, rt, r0);
         return true;
     case NativeTypeKind::F64:
-        emitInstruction(context, ByteCodeOp::NegF64, r0);
+        emitInstruction(context, ByteCodeOp::NegF64, rt, r0);
         return true;
     default:
         return Report::internalError(context->node, "emitUnaryOpMinus, type not supported");
@@ -97,9 +97,13 @@ bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
             }
 
             case TokenId::SymMinus:
-                ensureCanBeChangedRC(context, node->resultRegisterRC);
-                SWAG_CHECK(emitUnaryOpMinus(context, typeInfoExpr, node->resultRegisterRC));
+            {
+                auto rt = reserveRegisterRC(context);
+                SWAG_CHECK(emitUnaryOpMinus(context, typeInfoExpr, rt, node->resultRegisterRC));
+                freeRegisterRC(context, node->resultRegisterRC);
+                node->resultRegisterRC = rt;
                 break;
+            }
 
             case TokenId::SymTilde:
             {

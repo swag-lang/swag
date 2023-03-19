@@ -3877,28 +3877,32 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::NegF32:
         {
             auto r0 = TO_PTR_F32(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateFNeg(builder.CreateLoad(r0));
+            auto r1 = TO_PTR_F32(GEP_I32(allocR, ip->b.u32));
+            auto v0 = builder.CreateFNeg(builder.CreateLoad(r1));
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::NegF64:
         {
             auto r0 = TO_PTR_F64(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateFNeg(builder.CreateLoad(r0));
+            auto r1 = TO_PTR_F64(GEP_I32(allocR, ip->b.u32));
+            auto v0 = builder.CreateFNeg(builder.CreateLoad(r1));
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::NegS32:
         {
             auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateNeg(builder.CreateLoad(r0));
+            auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
+            auto v0 = builder.CreateNeg(builder.CreateLoad(r1));
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::NegS64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto v0 = builder.CreateNeg(builder.CreateLoad(r0));
+            auto r1 = GEP_I32(allocR, ip->b.u32);
+            auto v0 = builder.CreateNeg(builder.CreateLoad(r1));
             builder.CreateStore(v0, r0);
             break;
         }

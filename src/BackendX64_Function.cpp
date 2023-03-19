@@ -1964,17 +1964,17 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::NegS32:
-            pp.emit_Load32_Indirect(regOffset(ip->a.u32), RAX, RDI);
+            pp.emit_Load32_Indirect(regOffset(ip->b.u32), RAX, RDI);
             concat.addString2("\xf7\xd8"); // neg eax
             pp.emit_Store32_Indirect(regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::NegS64:
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
+            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RAX, RDI);
             concat.addString3("\x48\xf7\xd8"); // neg rax
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::NegF32:
-            pp.emit_LoadF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+            pp.emit_LoadF32_Indirect(regOffset(ip->b.u32), XMM0, RDI);
             pp.emit_Load64_Immediate(0x80000000, RAX);
             pp.emit_Store64_Indirect(offsetFLT, RAX, RDI);
             pp.emit_LoadF32_Indirect(offsetFLT, XMM1, RDI);
@@ -1982,7 +1982,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
             break;
         case ByteCodeOp::NegF64:
-            pp.emit_LoadF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+            pp.emit_LoadF64_Indirect(regOffset(ip->b.u32), XMM0, RDI);
             pp.emit_Load64_Immediate(0x80000000'00000000, RAX);
             pp.emit_Store64_Indirect(offsetFLT, RAX, RDI);
             pp.emit_LoadF64_Indirect(offsetFLT, XMM1, RDI);

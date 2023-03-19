@@ -285,7 +285,7 @@ struct ByteCodeGenJob : public Job
     static bool emitThrow(ByteCodeGenContext* context);
     static bool emitIdentifier(ByteCodeGenContext* context);
     static bool emitLocalFuncDecl(ByteCodeGenContext* context);
-    static bool emitUnaryOpMinus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0);
+    static bool emitUnaryOpMinus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t rt, uint32_t r0);
     static bool emitUnaryOpInvert(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t rt, uint32_t r0);
     static bool emitUnaryOp(ByteCodeGenContext* context);
     static bool emitBitmaskOr(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2);
