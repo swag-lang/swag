@@ -3906,28 +3906,32 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::InvertU8:
         {
             auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateNot(builder.CreateLoad(r0));
+            auto r1 = TO_PTR_I8(GEP_I32(allocR, ip->b.u32));
+            auto v0 = builder.CreateNot(builder.CreateLoad(r1));
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::InvertU16:
         {
             auto r0 = TO_PTR_I16(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateNot(builder.CreateLoad(r0));
+            auto r1 = TO_PTR_I16(GEP_I32(allocR, ip->b.u32));
+            auto v0 = builder.CreateNot(builder.CreateLoad(r1));
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::InvertU32:
         {
             auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateNot(builder.CreateLoad(r0));
+            auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
+            auto v0 = builder.CreateNot(builder.CreateLoad(r1));
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::InvertU64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto v0 = builder.CreateNot(builder.CreateLoad(r0));
+            auto r1 = GEP_I32(allocR, ip->b.u32);
+            auto v0 = builder.CreateNot(builder.CreateLoad(r1));
             builder.CreateStore(v0, r0);
             break;
         }

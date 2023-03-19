@@ -1898,19 +1898,27 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
 
         case ByteCodeOp::InvertU8:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.u8 = ~ra->reg.u8;
+            SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));
+            ra->kind   = rb->kind;
+            ra->reg.u8 = ~rb->reg.u8;
             break;
         case ByteCodeOp::InvertU16:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.u16 = ~ra->reg.u16;
+            SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));
+            ra->kind    = rb->kind;
+            ra->reg.u16 = ~rb->reg.u16;
             break;
         case ByteCodeOp::InvertU32:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.u32 = ~ra->reg.u32;
+            SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));
+            ra->kind    = rb->kind;
+            ra->reg.u32 = ~rb->reg.u32;
             break;
         case ByteCodeOp::InvertU64:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.u64 = ~ra->reg.u64;
+            SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));
+            ra->kind    = rb->kind;
+            ra->reg.u64 = ~rb->reg.u64;
             break;
 
         case ByteCodeOp::MemCpy8:

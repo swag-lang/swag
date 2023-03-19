@@ -34,7 +34,7 @@ bool ByteCodeGenJob::emitUnaryOpMinus(ByteCodeGenContext* context, TypeInfo* typ
     }
 }
 
-bool ByteCodeGenJob::emitUnaryOpInvert(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0)
+bool ByteCodeGenJob::emitUnaryOpInvert(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t rt, uint32_t r0)
 {
     auto typeInfo = TypeManager::concreteType(typeInfoExpr);
     if (!typeInfo->isNative())
@@ -44,19 +44,19 @@ bool ByteCodeGenJob::emitUnaryOpInvert(ByteCodeGenContext* context, TypeInfo* ty
     {
     case NativeTypeKind::S8:
     case NativeTypeKind::U8:
-        emitInstruction(context, ByteCodeOp::InvertU8, r0);
+        emitInstruction(context, ByteCodeOp::InvertU8, rt, r0);
         return true;
     case NativeTypeKind::S16:
     case NativeTypeKind::U16:
-        emitInstruction(context, ByteCodeOp::InvertU16, r0);
+        emitInstruction(context, ByteCodeOp::InvertU16, rt, r0);
         return true;
     case NativeTypeKind::S32:
     case NativeTypeKind::U32:
-        emitInstruction(context, ByteCodeOp::InvertU32, r0);
+        emitInstruction(context, ByteCodeOp::InvertU32, rt, r0);
         return true;
     case NativeTypeKind::S64:
     case NativeTypeKind::U64:
-        emitInstruction(context, ByteCodeOp::InvertU64, r0);
+        emitInstruction(context, ByteCodeOp::InvertU64, rt, r0);
         return true;
     default:
         return Report::internalError(context->node, "emitUnaryOpInvert, type not supported");
@@ -102,9 +102,13 @@ bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
                 break;
 
             case TokenId::SymTilde:
-                ensureCanBeChangedRC(context, node->resultRegisterRC);
-                SWAG_CHECK(emitUnaryOpInvert(context, typeInfoExpr, node->resultRegisterRC));
+            {
+                auto rt = reserveRegisterRC(context);
+                SWAG_CHECK(emitUnaryOpInvert(context, typeInfoExpr, rt, node->resultRegisterRC));
+                freeRegisterRC(context, node->resultRegisterRC);
+                node->resultRegisterRC = rt;
                 break;
+            }
 
             default:
                 return Report::internalError(context->node, "emitUnaryOp, invalid token op");

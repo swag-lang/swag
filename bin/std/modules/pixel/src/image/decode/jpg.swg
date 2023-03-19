@@ -535,6 +535,8 @@ impl Decoder
         }
     }
 
+    #[Swag.Safety("", false)]
+//    #[Swag.PrintBc]
     func idct(data: ^s16, buf: ^u8)
     {
         pdstPtr := buf

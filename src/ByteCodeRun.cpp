@@ -2501,62 +2501,40 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     }
 
     case ByteCodeOp::NegBool:
-    {
         registersRC[ip->a.u32].b = registersRC[ip->b.u32].b ^ 1;
         break;
-    }
     case ByteCodeOp::NegS32:
-    {
         registersRC[ip->a.u32].s32 = -registersRC[ip->a.u32].s32;
         break;
-    }
     case ByteCodeOp::NegS64:
-    {
         registersRC[ip->a.u32].s64 = -registersRC[ip->a.u32].s64;
         break;
-    }
     case ByteCodeOp::NegF32:
-    {
         registersRC[ip->a.u32].f32 = -registersRC[ip->a.u32].f32;
         break;
-    }
     case ByteCodeOp::NegF64:
-    {
         registersRC[ip->a.u32].f64 = -registersRC[ip->a.u32].f64;
         break;
-    }
 
     case ByteCodeOp::InvertU8:
-    {
-        registersRC[ip->a.u32].u8 = ~registersRC[ip->a.u32].u8;
+        registersRC[ip->a.u32].u8 = ~registersRC[ip->b.u32].u8;
         break;
-    }
     case ByteCodeOp::InvertU16:
-    {
-        registersRC[ip->a.u32].u16 = ~registersRC[ip->a.u32].u16;
+        registersRC[ip->a.u32].u16 = ~registersRC[ip->b.u32].u16;
         break;
-    }
     case ByteCodeOp::InvertU32:
-    {
-        registersRC[ip->a.u32].u32 = ~registersRC[ip->a.u32].u32;
+        registersRC[ip->a.u32].u32 = ~registersRC[ip->b.u32].u32;
         break;
-    }
     case ByteCodeOp::InvertU64:
-    {
-        registersRC[ip->a.u32].u64 = ~registersRC[ip->a.u32].u64;
+        registersRC[ip->a.u32].u64 = ~registersRC[ip->b.u32].u64;
         break;
-    }
 
     case ByteCodeOp::ClearMaskU32:
-    {
         registersRC[ip->a.u32].u32 &= ip->b.u32;
         break;
-    }
     case ByteCodeOp::ClearMaskU64:
-    {
         registersRC[ip->a.u32].u64 &= ip->b.u64;
         break;
-    }
 
     case ByteCodeOp::CastBool8:
     {

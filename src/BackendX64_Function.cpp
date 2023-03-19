@@ -1991,22 +1991,22 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::InvertU8:
-            pp.emit_Load8_Indirect(regOffset(ip->a.u32), RAX, RDI);
+            pp.emit_Load8_Indirect(regOffset(ip->b.u32), RAX, RDI);
             concat.addString2("\xf6\xd0"); // not al
             pp.emit_Store8_Indirect(regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::InvertU16:
-            pp.emit_Load16_Indirect(regOffset(ip->a.u32), RAX, RDI);
+            pp.emit_Load16_Indirect(regOffset(ip->b.u32), RAX, RDI);
             concat.addString3("\x66\xf7\xd0"); // not ax
             pp.emit_Store16_Indirect(regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::InvertU32:
-            pp.emit_Load32_Indirect(regOffset(ip->a.u32), RAX, RDI);
+            pp.emit_Load32_Indirect(regOffset(ip->b.u32), RAX, RDI);
             concat.addString2("\xf7\xd0"); // not eax
             pp.emit_Store32_Indirect(regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::InvertU64:
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
+            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RAX, RDI);
             concat.addString3("\x48\xf7\xd0"); // not rax
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             break;
