@@ -2321,37 +2321,32 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::GetIncFromStack64:
             pp.emit_Load64_Indirect(offsetStack + ip->b.u32, RAX, RDI);
-            pp.emit_Load64_Immediate(ip->c.u64, RCX);
-            pp.emit_Op64(RCX, RAX, X64Op::ADD);
+            pp.emit_Add64_Immediate(ip->c.u64, RAX);
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::GetIncFromStack64DeRef8:
             pp.emit_Load64_Indirect(offsetStack + ip->b.u32, RAX, RDI);
-            pp.emit_Load64_Immediate(ip->c.u64, RCX);
-            pp.emit_Op64(RCX, RAX, X64Op::ADD);
+            pp.emit_Add64_Immediate(ip->c.u64, RAX);
             pp.emit_Load8_Indirect(0, RAX, RAX);
             pp.emit_Extend_U8U64(RAX);
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::GetIncFromStack64DeRef16:
             pp.emit_Load64_Indirect(offsetStack + ip->b.u32, RAX, RDI);
-            pp.emit_Load64_Immediate(ip->c.u64, RCX);
-            pp.emit_Op64(RCX, RAX, X64Op::ADD);
+            pp.emit_Add64_Immediate(ip->c.u64, RAX);
             pp.emit_Load16_Indirect(0, RAX, RAX);
             pp.emit_Extend_U16U64(RAX);
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::GetIncFromStack64DeRef32:
             pp.emit_Load64_Indirect(offsetStack + ip->b.u32, RAX, RDI);
-            pp.emit_Load64_Immediate(ip->c.u64, RCX);
-            pp.emit_Op64(RCX, RAX, X64Op::ADD);
+            pp.emit_Add64_Immediate(ip->c.u64, RAX);
             pp.emit_Load32_Indirect(0, RAX, RAX);
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::GetIncFromStack64DeRef64:
             pp.emit_Load64_Indirect(offsetStack + ip->b.u32, RAX, RDI);
-            pp.emit_Load64_Immediate(ip->c.u64, RCX);
-            pp.emit_Op64(RCX, RAX, X64Op::ADD);
+            pp.emit_Add64_Immediate(ip->c.u64, RAX);
             pp.emit_Load64_Indirect(0, RAX, RAX);
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             break;
