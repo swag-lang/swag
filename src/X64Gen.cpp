@@ -172,9 +172,27 @@ void X64Gen::emit_LoadU8U32_Indirect(uint32_t stackOffset, uint8_t reg, uint8_t 
     emit_ModRM(stackOffset, reg, memReg);
 }
 
+void X64Gen::emit_LoadU8U64_Indirect(uint32_t stackOffset, uint8_t reg, uint8_t memReg)
+{
+    SWAG_ASSERT(reg < R8 && memReg < R8);
+    concat.addU8(0x48);
+    concat.addU8(0x0F);
+    concat.addU8(0xB6);
+    emit_ModRM(stackOffset, reg, memReg);
+}
+
 void X64Gen::emit_LoadU16U32_Indirect(uint32_t stackOffset, uint8_t reg, uint8_t memReg)
 {
     SWAG_ASSERT(reg < R8 && memReg < R8);
+    concat.addU8(0x0F);
+    concat.addU8(0xB7);
+    emit_ModRM(stackOffset, reg, memReg);
+}
+
+void X64Gen::emit_LoadU16U64_Indirect(uint32_t stackOffset, uint8_t reg, uint8_t memReg)
+{
+    SWAG_ASSERT(reg < R8 && memReg < R8);
+    concat.addU8(0x48);
     concat.addU8(0x0F);
     concat.addU8(0xB7);
     emit_ModRM(stackOffset, reg, memReg);
