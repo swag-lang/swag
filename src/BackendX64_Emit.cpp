@@ -6,8 +6,9 @@
 
 void BackendX64::emitShiftArithmetic(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits)
 {
-    if (ip->flags & BCI_IMM_B && ip->b.u32 >= numBits && !(ip->flags & BCI_SHIFT_SMALL))
+    if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B) && ip->b.u32 >= numBits && !(ip->flags & BCI_SHIFT_SMALL))
     {
+        pp.emit_LoadN_Indirect(regOffset(ip->a.u32), RAX, RDI, numBits);
         switch (numBits)
         {
         case 8:
@@ -25,6 +26,46 @@ void BackendX64::emitShiftArithmetic(X64Gen& pp, ByteCodeInstruction* ip, uint8_
         }
 
         pp.concat.addU8(numBits - 1);
+    }
+    else if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B) && ip->b.u32 == 1)
+    {
+        pp.emit_LoadN_Indirect(regOffset(ip->a.u32), RAX, RDI, numBits);
+        switch (numBits)
+        {
+        case 8:
+            pp.concat.addString2("\xD0\xF8"); // sar al, 1
+            break;
+        case 16:
+            pp.concat.addString3("\x66\xD1\xF8"); // sar ax, 1
+            break;
+        case 32:
+            pp.concat.addString2("\xD1\xF8"); // sar eax, 1
+            break;
+        case 64:
+            pp.concat.addString3("\x48\xD1\xF8"); // sar rax, 1
+            break;
+        }
+    }
+    else if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B))
+    {
+        pp.emit_LoadN_Indirect(regOffset(ip->a.u32), RAX, RDI, numBits);
+        switch (numBits)
+        {
+        case 8:
+            pp.concat.addString2("\xC0\xF8"); // sar al
+            break;
+        case 16:
+            pp.concat.addString3("\x66\xC1\xF8"); // sar ax
+            break;
+        case 32:
+            pp.concat.addString2("\xC1\xF8"); // sar eax
+            break;
+        case 64:
+            pp.concat.addString3("\x48\xC1\xF8"); // sar rax
+            break;
+        }
+
+        pp.concat.addU8(ip->b.u8 & (numBits - 1));
     }
     else
     {
