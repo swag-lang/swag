@@ -536,7 +536,6 @@ impl Decoder
     }
 
     #[Swag.Safety("", false)]
-//    #[Swag.PrintBc]
     func idct(data: ^s16, buf: ^u8)
     {
         pdstPtr := buf
@@ -621,15 +620,16 @@ impl Decoder
                 dcval := descale(cast(s32) dataPtr[0], Pass1Bits + 3)
                 dcval +=,safe 128
                 dcval = Math.clamp(dcval, 0's16, 255's16)
+                dcval8 := cast(u8) dcval
 
-                pdstPtr[8 * 0] = cast(u8) dcval
-                pdstPtr[8 * 1] = cast(u8) dcval
-                pdstPtr[8 * 2] = cast(u8) dcval
-                pdstPtr[8 * 3] = cast(u8) dcval
-                pdstPtr[8 * 4] = cast(u8) dcval
-                pdstPtr[8 * 5] = cast(u8) dcval
-                pdstPtr[8 * 6] = cast(u8) dcval
-                pdstPtr[8 * 7] = cast(u8) dcval
+                pdstPtr[8 * 0] = dcval8
+                pdstPtr[8 * 1] = dcval8
+                pdstPtr[8 * 2] = dcval8
+                pdstPtr[8 * 3] = dcval8
+                pdstPtr[8 * 4] = dcval8
+                pdstPtr[8 * 5] = dcval8
+                pdstPtr[8 * 6] = dcval8
+                pdstPtr[8 * 7] = dcval8
 
                 dataPtr += 1
                 pdstPtr += 1
