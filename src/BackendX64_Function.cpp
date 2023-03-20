@@ -452,32 +452,32 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::BinOpShiftLeftS8:
         case ByteCodeOp::BinOpShiftLeftU8:
-            emitShiftLogical(pp, ip, 8, 0xE0);
+            emitShiftLogical(pp, ip, 8, X64Op::SHL);
             break;
         case ByteCodeOp::BinOpShiftLeftS16:
         case ByteCodeOp::BinOpShiftLeftU16:
-            emitShiftLogical(pp, ip, 16, 0xE0);
+            emitShiftLogical(pp, ip, 16, X64Op::SHL);
             break;
         case ByteCodeOp::BinOpShiftLeftS32:
         case ByteCodeOp::BinOpShiftLeftU32:
-            emitShiftLogical(pp, ip, 32, 0xE0);
+            emitShiftLogical(pp, ip, 32, X64Op::SHL);
             break;
         case ByteCodeOp::BinOpShiftLeftS64:
         case ByteCodeOp::BinOpShiftLeftU64:
-            emitShiftLogical(pp, ip, 64, 0xE0);
+            emitShiftLogical(pp, ip, 64, X64Op::SHL);
             break;
 
         case ByteCodeOp::BinOpShiftRightU8:
-            emitShiftLogical(pp, ip, 8, 0xE8);
+            emitShiftLogical(pp, ip, 8, X64Op::SHR);
             break;
         case ByteCodeOp::BinOpShiftRightU16:
-            emitShiftLogical(pp, ip, 16, 0xE8);
+            emitShiftLogical(pp, ip, 16, X64Op::SHR);
             break;
         case ByteCodeOp::BinOpShiftRightU32:
-            emitShiftLogical(pp, ip, 32, 0xE8);
+            emitShiftLogical(pp, ip, 32, X64Op::SHR);
             break;
         case ByteCodeOp::BinOpShiftRightU64:
-            emitShiftLogical(pp, ip, 64, 0xE8);
+            emitShiftLogical(pp, ip, 64, X64Op::SHR);
             break;
 
         case ByteCodeOp::BinOpShiftRightS8:
@@ -650,34 +650,34 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::AffectOpShiftLeftEqS8:
         case ByteCodeOp::AffectOpShiftLeftEqU8:
-            emitShiftEqLogical(pp, ip, 8, 0x20);
+            emitShiftEqLogical(pp, ip, 8, X64Op::SHLEQ);
             break;
         case ByteCodeOp::AffectOpShiftLeftEqS16:
         case ByteCodeOp::AffectOpShiftLeftEqU16:
-            emitShiftEqLogical(pp, ip, 16, 0x20);
+            emitShiftEqLogical(pp, ip, 16, X64Op::SHLEQ);
             break;
         case ByteCodeOp::AffectOpShiftLeftEqS32:
         case ByteCodeOp::AffectOpShiftLeftEqU32:
-            emitShiftEqLogical(pp, ip, 32, 0x20);
+            emitShiftEqLogical(pp, ip, 32, X64Op::SHLEQ);
             break;
         case ByteCodeOp::AffectOpShiftLeftEqS64:
         case ByteCodeOp::AffectOpShiftLeftEqU64:
-            emitShiftEqLogical(pp, ip, 64, 0x20);
+            emitShiftEqLogical(pp, ip, 64, X64Op::SHLEQ);
             break;
 
             /////////////////////////////////////
 
         case ByteCodeOp::AffectOpShiftRightEqU8:
-            emitShiftEqLogical(pp, ip, 8, 0x28);
+            emitShiftEqLogical(pp, ip, 8, X64Op::SHREQ);
             break;
         case ByteCodeOp::AffectOpShiftRightEqU16:
-            emitShiftEqLogical(pp, ip, 16, 0x28);
+            emitShiftEqLogical(pp, ip, 16, X64Op::SHREQ);
             break;
         case ByteCodeOp::AffectOpShiftRightEqU32:
-            emitShiftEqLogical(pp, ip, 32, 0x28);
+            emitShiftEqLogical(pp, ip, 32, X64Op::SHREQ);
             break;
         case ByteCodeOp::AffectOpShiftRightEqU64:
-            emitShiftEqLogical(pp, ip, 64, 0x28);
+            emitShiftEqLogical(pp, ip, 64, X64Op::SHREQ);
             break;
 
         case ByteCodeOp::AffectOpShiftRightEqS8:

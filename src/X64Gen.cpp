@@ -999,7 +999,6 @@ void X64Gen::emit_Add64_Immediate(uint64_t value, uint8_t reg)
     if (!value)
         return;
     SWAG_ASSERT(reg == RAX || reg == RCX);
-    SWAG_ASSERT(value <= 0x7FFFFFFF);
     concat.addU8(0x48);
     if (value <= 0x7F)
     {

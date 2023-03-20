@@ -40,9 +40,9 @@ struct BackendX64 : public Backend
     void     emitOverflowSigned(X64Gen& pp, AstNode* node, const char* msg);
     void     emitOverflowUnsigned(X64Gen& pp, AstNode* node, const char* msg);
     void     emitShiftArithmetic(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits);
-    void     emitShiftLogical(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits, uint8_t op);
+    void     emitShiftLogical(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits, X64Op op);
     void     emitShiftEqArithmetic(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits);
-    void     emitShiftEqLogical(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits, uint8_t op);
+    void     emitShiftEqLogical(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits, X64Op op);
     void     emitInternalPanic(X64Gen& pp, AstNode* node, const char* msg);
     bool     emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
     void     emitBinOpFloat32(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);

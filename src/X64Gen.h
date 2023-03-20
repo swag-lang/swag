@@ -41,19 +41,23 @@ struct X64PushParam
 
 enum class X64Op : uint8_t
 {
-    ADD  = 0x01,
-    OR   = 0x09,
-    AND  = 0x21,
-    SUB  = 0x29,
-    XOR  = 0x31,
-    IDIV = 0xF7,
-    MUL  = 0xC0,
-    IMUL = 0xC1,
-    FADD = 0x58,
-    FSUB = 0x5C,
-    FMUL = 0x59,
-    FDIV = 0x5E,
-    XCHG = 0x87
+    ADD   = 0x01,
+    OR    = 0x09,
+    AND   = 0x21,
+    SUB   = 0x29,
+    XOR   = 0x31,
+    IDIV  = 0xF7,
+    MUL   = 0xC0,
+    IMUL  = 0xC1,
+    FADD  = 0x58,
+    FSUB  = 0x5C,
+    FMUL  = 0x59,
+    FDIV  = 0x5E,
+    XCHG  = 0x87,
+    SHL   = 0xE0,
+    SHR   = 0xE8,
+    SHLEQ = 0x20,
+    SHREQ = 0x28,
 };
 
 enum class CoffSymbolKind
