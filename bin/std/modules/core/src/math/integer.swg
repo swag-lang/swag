@@ -68,7 +68,7 @@ func makeRepeat32(v: u8)->u32
 }
 
 // Make a 64 bits by repeating a given byte
-// 0x20 => 0x20202020
+// 0x20 => 0x20202020_20202020
 #[ConstExpr, Inline]
 func makeRepeat64(v: u8)->u64
 {
