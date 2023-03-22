@@ -1811,12 +1811,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::CompareOp3WayU32:
         case ByteCodeOp::CompareOp3WayS32:
             emitBinOpInt32(pp, ip, X64Op::SUB);
-            pp.emit_Clear32(RAX);
-            pp.emit_Test32(RCX, RCX);
-            pp.emit_SetG();
-            pp.concat.addString3("\xC1\xE9\x1F"); // shr ecx, 31
-            pp.concat.addString2("\x29\xC8");     // sub eax, ecx
-            pp.emit_Store32_Indirect(regOffset(ip->c.u32), RAX, RDI);
+            pp.emit_Clear32(RCX);
+            pp.emit_Test32(RAX, RAX);
+            pp.concat.addString3("\x0F\x9F\xC1"); // setg cl
+            pp.concat.addString3("\xC1\xE8\x1F"); // shr eax, 31
+            pp.concat.addString2("\x29\xC1");     // sub ecx, eax
+            pp.emit_Store32_Indirect(regOffset(ip->c.u32), RCX, RDI);
             break;
         case ByteCodeOp::CompareOp3WayU64:
         case ByteCodeOp::CompareOp3WayS64:
