@@ -31,18 +31,18 @@ void BackendX64::emitGetParam(X64Gen& pp, TypeInfoFuncAttr* typeFunc, int reg, i
         SWAG_ASSERT(!toAdd);
         pp.emit_Clear64(RAX);
         pp.emit_Load8_Indirect(stackOffset, RAX, RDI);
-        pp.emit_Store64_Indirect(regOffset(reg), RAX, RDI);
+        pp.emit_Store64_Reg(regOffset(reg), RAX);
         return;
     case 2:
         SWAG_ASSERT(!toAdd);
         pp.emit_Clear64(RAX);
         pp.emit_Load16_Indirect(stackOffset, RAX, RDI);
-        pp.emit_Store64_Indirect(regOffset(reg), RAX, RDI);
+        pp.emit_Store64_Reg(regOffset(reg), RAX);
         return;
     case 4:
         SWAG_ASSERT(!toAdd);
         pp.emit_Load32_Indirect(stackOffset, RAX, RDI);
-        pp.emit_Store64_Indirect(regOffset(reg), RAX, RDI);
+        pp.emit_Store64_Reg(regOffset(reg), RAX);
         return;
     }
 
@@ -104,7 +104,7 @@ void BackendX64::emitGetParam(X64Gen& pp, TypeInfoFuncAttr* typeFunc, int reg, i
         }
     }
 
-    pp.emit_Store64_Indirect(regOffset(reg), RAX, RDI);
+    pp.emit_Store64_Reg(regOffset(reg), RAX);
 }
 
 void BackendX64::emitCall(X64Gen& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<X64PushParam>& pushParams, uint32_t offsetRT, bool localCall)
@@ -221,11 +221,11 @@ void BackendX64::emitByteCodeCall(X64Gen& pp, TypeInfoFuncAttr* typeFuncBC, uint
         stackOffset += sizeof(Register);
         if (idxReg <= 2)
         {
-            pp.emit_Load64_Indirect(regOffset(pushRAParams[idxParam]), idxToReg[idxReg], RDI);
+            pp.emit_Load64_Reg(regOffset(pushRAParams[idxParam]), idxToReg[idxReg]);
         }
         else
         {
-            pp.emit_Load64_Indirect(regOffset(pushRAParams[idxParam]), RAX, RDI);
+            pp.emit_Load64_Reg(regOffset(pushRAParams[idxParam]), RAX);
             pp.emit_Store64_Indirect(stackOffset, RAX, RSP);
         }
     }
@@ -240,7 +240,7 @@ void BackendX64::emitByteCodeCallParameters(X64Gen& pp, TypeInfoFuncAttr* typeFu
     if (typeFuncBC->isClosure())
     {
         auto reg = pushRAParams.back();
-        pp.emit_Load64_Indirect(regOffset(reg), RAX, RDI);
+        pp.emit_Load64_Reg(regOffset(reg), RAX);
         pp.emit_Test64(RAX, RAX);
 
         // If not zero, jump to closure call

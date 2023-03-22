@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "pch.h"
 #include "Register.h"
 #include "Math.h"
 #include "ByteCode.h"
@@ -111,6 +112,66 @@ void X64Gen::emit_Load64_Indirect(uint32_t stackOffset, uint8_t reg, uint8_t mem
     concat.addU8(0x48 | ((reg & 0b1000) >> 1));
     concat.addU8(0x8B);
     emit_ModRM(stackOffset, (reg & 0b111), memReg);
+}
+
+void X64Gen::emit_Load8_Reg(uint32_t stackOffset, uint8_t reg)
+{
+    emit_Load8_Indirect(stackOffset, reg, RDI);
+}
+
+void X64Gen::emit_Load16_Reg(uint32_t stackOffset, uint8_t reg)
+{
+    emit_Load16_Indirect(stackOffset, reg, RDI);
+}
+
+void X64Gen::emit_Load32_Reg(uint32_t stackOffset, uint8_t reg)
+{
+    emit_Load32_Indirect(stackOffset, reg, RDI);
+}
+
+void X64Gen::emit_Load64_Reg(uint32_t stackOffset, uint8_t reg)
+{
+    emit_Load64_Indirect(stackOffset, reg, RDI);
+}
+
+void X64Gen::emit_LoadF32_Reg(uint32_t stackOffset, uint8_t reg)
+{
+    emit_LoadF32_Indirect(stackOffset, reg, RDI);
+}
+
+void X64Gen::emit_LoadF64_Reg(uint32_t stackOffset, uint8_t reg)
+{
+    emit_LoadF64_Indirect(stackOffset, reg, RDI);
+}
+
+void X64Gen::emit_Store8_Reg(uint32_t stackOffset, uint8_t reg)
+{
+    emit_Store8_Indirect(stackOffset, reg, RDI);
+}
+
+void X64Gen::emit_Store16_Reg(uint32_t stackOffset, uint8_t reg)
+{
+    emit_Store16_Indirect(stackOffset, reg, RDI);
+}
+
+void X64Gen::emit_Store32_Reg(uint32_t stackOffset, uint8_t reg)
+{
+    emit_Store32_Indirect(stackOffset, reg, RDI);
+}
+
+void X64Gen::emit_Store64_Reg(uint32_t stackOffset, uint8_t reg)
+{
+    emit_Store64_Indirect(stackOffset, reg, RDI);
+}
+
+void X64Gen::emit_StoreF32_Reg(uint32_t stackOffset, uint8_t reg)
+{
+    emit_StoreF32_Indirect(stackOffset, reg, RDI);
+}
+
+void X64Gen::emit_StoreF64_Reg(uint32_t stackOffset, uint8_t reg)
+{
+    emit_StoreF64_Indirect(stackOffset, reg, RDI);
 }
 
 void X64Gen::emit_LoadS8S16_Indirect(uint32_t stackOffset, uint8_t reg, uint8_t memReg)
@@ -1567,7 +1628,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
             if (cc.structByRegister && type->isStruct() && type->sizeOf <= sizeof(void*))
             {
                 SWAG_ASSERT(paramsRegisters[i].type == X64PushParamType::Reg);
-                emit_Load64_Indirect(regOffset(reg), RAX, RDI);
+                emit_Load64_Reg(regOffset(reg), RAX);
                 emit_Load64_Indirect(0, cc.byRegisterInteger[i], RAX);
             }
             else if (cc.useRegisterFloat && type->isNative(NativeTypeKind::F32))
@@ -1581,7 +1642,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
                 else
                 {
                     SWAG_ASSERT(paramsRegisters[i].type == X64PushParamType::Reg);
-                    emit_LoadF32_Indirect(regOffset(reg), cc.byRegisterFloat[i], RDI);
+                    emit_LoadF32_Reg(regOffset(reg), cc.byRegisterFloat[i]);
                 }
             }
             else if (cc.useRegisterFloat && type->isNative(NativeTypeKind::F64))
@@ -1594,7 +1655,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
                 else
                 {
                     SWAG_ASSERT(paramsRegisters[i].type == X64PushParamType::Reg);
-                    emit_LoadF64_Indirect(regOffset(reg), cc.byRegisterFloat[i], RDI);
+                    emit_LoadF64_Reg(regOffset(reg), cc.byRegisterFloat[i]);
                 }
             }
             else
@@ -1620,11 +1681,11 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
                     emit_LoadAddress_Indirect((uint32_t) paramsRegisters[i].reg, cc.byRegisterInteger[i], RDI);
                     break;
                 case X64PushParamType::RegAdd:
-                    emit_Load64_Indirect(regOffset(reg), cc.byRegisterInteger[i], RDI);
+                    emit_Load64_Reg(regOffset(reg), cc.byRegisterInteger[i]);
                     emit_Add64_Immediate(paramsRegisters[i].val, cc.byRegisterInteger[i]);
                     break;
                 case X64PushParamType::RegMul:
-                    emit_Load64_Indirect(regOffset(reg), RAX, RDI);
+                    emit_Load64_Reg(regOffset(reg), RAX);
                     emit_Mul64_RAX(paramsRegisters[i].val);
                     emit_Copy64(RAX, cc.byRegisterInteger[i]);
                     break;
@@ -1633,7 +1694,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
                     break;
                 default:
                     SWAG_ASSERT(paramsRegisters[i].type == X64PushParamType::Reg);
-                    emit_Load64_Indirect(regOffset(reg), cc.byRegisterInteger[i], RDI);
+                    emit_Load64_Reg(regOffset(reg), cc.byRegisterInteger[i]);
                     break;
                 }
             }
@@ -1654,7 +1715,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
         // This is a C variadic parameter
         if (i >= maxParamsPerRegister)
         {
-            emit_Load64_Indirect(regOffset(reg), RAX, RDI);
+            emit_Load64_Reg(regOffset(reg), RAX);
             emit_Store64_Indirect(offsetStack, RAX, RSP);
         }
 
@@ -1679,7 +1740,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
             // Struct by copy. Will be a pointer to the stack
             if (type->isStruct())
             {
-                emit_Load64_Indirect(regOffset(reg), RAX, RDI);
+                emit_Load64_Reg(regOffset(reg), RAX);
 
                 // Store the content of the struct in the stack
                 if (cc.structByRegister && sizeOf <= sizeof(void*))
@@ -1716,19 +1777,19 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
                 switch (sizeOf)
                 {
                 case 1:
-                    emit_Load8_Indirect(regOffset(reg), RAX, RDI);
+                    emit_Load8_Reg(regOffset(reg), RAX);
                     emit_Store8_Indirect(offsetStack, RAX, RSP);
                     break;
                 case 2:
-                    emit_Load16_Indirect(regOffset(reg), RAX, RDI);
+                    emit_Load16_Reg(regOffset(reg), RAX);
                     emit_Store16_Indirect(offsetStack, RAX, RSP);
                     break;
                 case 4:
-                    emit_Load32_Indirect(regOffset(reg), RAX, RDI);
+                    emit_Load32_Reg(regOffset(reg), RAX);
                     emit_Store32_Indirect(offsetStack, RAX, RSP);
                     break;
                 case 8:
-                    emit_Load64_Indirect(regOffset(reg), RAX, RDI);
+                    emit_Load64_Reg(regOffset(reg), RAX);
                     emit_Store64_Indirect(offsetStack, RAX, RSP);
                     break;
                 default:
@@ -1850,7 +1911,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
         SWAG_ASSERT(pushParams3[0].type == X64PushParamType::Reg);
         auto reg = (uint32_t) pushParams3[0].reg;
 
-        emit_Load64_Indirect(regOffset(reg), RAX, RDI);
+        emit_Load64_Reg(regOffset(reg), RAX);
         emit_Test64(RAX, RAX);
 
         // If not zero, jump to closure call
