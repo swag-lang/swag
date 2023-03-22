@@ -540,9 +540,14 @@ impl Decoder
     {
         pdstPtr := buf
         dataPtr := data
-        for rowctr := 8 - 1; rowctr >= 0; rowctr -= 1
+
+        loop rowctr: 7..0
         {
-            if (dataPtr[1] | dataPtr[2] | dataPtr[3] | dataPtr[4] | dataPtr[5] | dataPtr[6] | dataPtr[7]) == 0
+            // Original code:
+            // if (dataPtr[1] | dataPtr[2] | dataPtr[3] | dataPtr[4] | dataPtr[5] | dataPtr[6] | dataPtr[7]) == 0
+            dataPtr64 := cast(^u64) dataPtr
+            tst := (dataPtr64[0] & 0xFFFFFFFF_FFFF0000) | (dataPtr64[1])
+            if tst == 0
             {
                 dcval := cast(s16) (dataPtr[0] << Pass1Bits)
                 dataPtr[0] = dcval
@@ -564,8 +569,11 @@ impl Decoder
             tmp2 := z1 + (z3 * -Fix_1_847759065)
             tmp3 := z1 + (z2 * Fix_0_765366865)
 
-            tmp0 := (cast(s32) dataPtr[0] + cast(s32) dataPtr[4]) << ConstBits
-            tmp1 := (cast(s32) dataPtr[0] - cast(s32) dataPtr[4]) << ConstBits
+            s0 := cast(s32) dataPtr[0]
+            s4 := cast(s32) dataPtr[4]
+
+            tmp0 := (s0 + s4) << ConstBits
+            tmp1 := (s0 - s4) << ConstBits
 
             tmp10 := tmp0 + tmp3
             tmp13 := tmp0 - tmp3
@@ -613,7 +621,8 @@ impl Decoder
         }
 
         dataPtr = data
-        for rowctr := 8 - 1; rowctr >= 0; rowctr -= 1
+
+        loop rowctr: 7..0
         {
             if (dataPtr[8 * 1] | dataPtr[8 * 2] | dataPtr[8 * 3] | dataPtr[8 * 4] | dataPtr[8 * 5] | dataPtr[8 * 6] | dataPtr[8 * 7]) == 0
             {
@@ -643,8 +652,11 @@ impl Decoder
             tmp2 := z1 + (z3 * -Fix_1_847759065)
             tmp3 := z1 + (z2 * Fix_0_765366865)
 
-            tmp0 := (cast(s32) dataPtr[8 * 0] + cast(s32) dataPtr[8 * 4]) << ConstBits
-            tmp1 := (cast(s32) dataPtr[8 * 0] - cast(s32) dataPtr[8 * 4]) << ConstBits
+            s0 := cast(s32) dataPtr[8 * 0]
+            s4 := cast(s32) dataPtr[8 * 4]
+
+            tmp0 := (s0 + s4) << ConstBits
+            tmp1 := (s0 - s4) << ConstBits
 
             tmp10 := tmp0 + tmp3
             tmp13 := tmp0 - tmp3
