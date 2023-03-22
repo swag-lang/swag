@@ -633,22 +633,22 @@ void BackendX64::emitBinOpInt64(X64Gen& pp, ByteCodeInstruction* ip, X64Op op)
 {
     if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
     {
+        pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
         if (op == X64Op::MUL)
         {
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
-            pp.concat.addU8(0x48);
-            pp.concat.addString1("\xF7"); // mul
+            pp.concat.addString2("\x48\xF7"); // mul
             pp.emit_ModRM(regOffset(ip->b.u32), 4, RDI);
+        }
+        else if (op == X64Op::IMUL)
+        {
+            pp.concat.addString3("\x48\x0F\xAF"); // imul
+            pp.emit_ModRM(regOffset(ip->b.u32), RAX, RDI);
         }
         else
         {
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
             pp.concat.addU8(0x48);
-            if (op == X64Op::IMUL)
-                pp.concat.addString2("\x0F\xAF"); // imul
-            else
-                pp.concat.addU8((uint8_t) op | 2);
-            pp.emit_ModRM(regOffset(ip->b.u32), RCX, RDI);
+            pp.concat.addU8((uint8_t) op | 2);
+            pp.emit_ModRM(regOffset(ip->b.u32), RAX, RDI);
         }
     }
     // Mul by power of 2 => shift by log2
@@ -660,47 +660,38 @@ void BackendX64::emitBinOpInt64(X64Gen& pp, ByteCodeInstruction* ip, X64Op op)
     }
     else if ((op == X64Op::AND || op == X64Op::OR || op == X64Op::XOR || op == X64Op::ADD || op == X64Op::SUB) && !(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B) && (ip->b.u64 <= 0x7FFFFFFF))
     {
-        pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
+        pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
         if (ip->b.u32 <= 0x7F)
         {
             pp.concat.addU8(0x48);
-            pp.concat.addU8(0x83); // op rcx, ??
-            pp.concat.addU8(0xC0 + (uint8_t) op);
+            pp.concat.addU8(0x83); // op rax, ??
+            pp.concat.addU8(0xBF + (uint8_t) op);
             pp.concat.addU8(ip->b.u8);
         }
         else
         {
             pp.concat.addU8(0x48);
-            pp.concat.addU8(0x81); // op rcx, ????????
-            pp.concat.addU8(0xC0 + (uint8_t) op);
+            pp.concat.addU8(0x81); // op rax, ????????
+            pp.concat.addU8(0xBF + (uint8_t) op);
             pp.concat.addU32(ip->b.u32);
         }
     }
     else
     {
         if (ip->flags & BCI_IMM_A)
-            pp.emit_Load64_Immediate(ip->a.u64, RCX);
+            pp.emit_Load64_Immediate(ip->a.u64, RAX);
         else
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
+            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
         if (ip->flags & BCI_IMM_B)
-            pp.emit_Load64_Immediate(ip->b.u64, RAX);
+            pp.emit_Load64_Immediate(ip->b.u64, RCX);
         else
-            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RAX, RDI);
+            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
         if (op == X64Op::MUL)
-        {
-            // mul rcx
-            pp.concat.addString3("\x48\xF7\xE1");
-        }
+            pp.concat.addString3("\x48\xF7\xE1"); // mul rcx
         else if (op == X64Op::IMUL)
-        {
-            // imul rcx, rax
-            pp.concat.addU8(0x48);
-            pp.concat.addU8(0x0F);
-            pp.concat.addU8(0xAF);
-            pp.concat.addU8(0xC8);
-        }
+            pp.concat.addString4("\x48\x0F\xAF\xC1"); // imul rax, rcx
         else
-            pp.emit_Op64(RAX, RCX, op);
+            pp.emit_Op64(RCX, RAX, op);
     }
 }
 
@@ -725,10 +716,7 @@ void BackendX64::emitBinOpInt32AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op 
 void BackendX64::emitBinOpInt64AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op)
 {
     emitBinOpInt64(pp, ip, op);
-    if (op == X64Op::MUL)
-        pp.emit_Store64_Indirect(regOffset(ip->c.u32), RAX, RDI);
-    else
-        pp.emit_Store64_Indirect(regOffset(ip->c.u32), RCX, RDI);
+    pp.emit_Store64_Indirect(regOffset(ip->c.u32), RAX, RDI);
 }
 
 void BackendX64::emitBinOpIntDivAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool isSigned, uint32_t bits, bool modulo)
