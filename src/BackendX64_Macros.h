@@ -360,9 +360,11 @@
 #define MK_BINOPEQ32_CAB(__op)                          \
     pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX); \
     MK_BINOPEQ32_CAB_(__op)
+
 #define MK_BINOPEQ32_SCAB(__op)                                      \
     pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI); \
     MK_BINOPEQ32_CAB_(__op)
+
 #define MK_BINOPEQ32_SSCAB(__op)                                     \
     pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI); \
     pp.emit_Load32_Indirect(offsetStack + ip->b.u32, RAX, RDI);      \

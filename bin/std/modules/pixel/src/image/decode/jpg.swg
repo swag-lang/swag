@@ -425,6 +425,7 @@ impl Decoder
         return symbol
     }
 
+    #[Swag.Safety("", false)]
     mtd decodeNextRow() throw
     {
         rowBlock := 0
@@ -803,6 +804,7 @@ impl Decoder
         return Okay
     }
 
+    #[Swag.Safety("", false)]
     mtd convertGrayscale()
     {
         row := maxMcuSizeY - mcuLinesLeft
@@ -824,6 +826,7 @@ impl Decoder
         }
     }
 
+    #[Swag.Safety("", false)]
     mtd convertH1V1()
     {
         row := maxMcuSizeY - mcuLinesLeft
@@ -847,6 +850,7 @@ impl Decoder
         }
     }
 
+    #[Swag.Safety("", false)]
     mtd convertH1V2()
     {
         row := maxMcuSizeY - mcuLinesLeft
@@ -887,6 +891,7 @@ impl Decoder
         }
     }
 
+    #[Swag.Safety("", false)]
     mtd convertH2V1()
     {
         row := maxMcuSizeY - mcuLinesLeft
@@ -929,6 +934,7 @@ impl Decoder
         }
     }
 
+    #[Swag.Safety("", false)]
     mtd convertH2V2()
     {
         row := maxMcuSizeY - mcuLinesLeft

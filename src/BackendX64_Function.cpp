@@ -1461,7 +1461,24 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::AffectOpPlusEqS8_SSafe:
         case ByteCodeOp::AffectOpPlusEqU8_SSafe:
-            MK_BINOPEQ8_SCAB(X64Op::ADD);
+            if (ip->flags & BCI_IMM_B && ip->b.u32 == 1)
+            {
+                // inc [rdi+?]
+                if (offsetStack + ip->a.u32 <= 0x7F)
+                {
+                    concat.addString2("\xFE\x47");
+                    concat.addU8((uint8_t) (offsetStack + ip->a.u32));
+                }
+                else
+                {
+                    concat.addString2("\xFE\x87");
+                    concat.addU32(offsetStack + ip->a.u32);
+                }
+            }
+            else
+            {
+                MK_BINOPEQ8_SCAB(X64Op::ADD);
+            }
             break;
         case ByteCodeOp::AffectOpPlusEqS8_SSSafe:
         case ByteCodeOp::AffectOpPlusEqU8_SSSafe:
@@ -1475,7 +1492,25 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::AffectOpPlusEqS16_SSafe:
         case ByteCodeOp::AffectOpPlusEqU16_SSafe:
-            MK_BINOPEQ16_SCAB(X64Op::ADD);
+            if (ip->flags & BCI_IMM_B && ip->b.u32 == 1)
+            {
+                // inc [rdi+?]
+                concat.addU8(0x66);
+                if (offsetStack + ip->a.u32 <= 0x7F)
+                {
+                    concat.addString2("\xFF\x47");
+                    concat.addU8((uint8_t) (offsetStack + ip->a.u32));
+                }
+                else
+                {
+                    concat.addString2("\xFF\x87");
+                    concat.addU32(offsetStack + ip->a.u32);
+                }
+            }
+            else
+            {
+                MK_BINOPEQ16_SCAB(X64Op::ADD);
+            }
             break;
         case ByteCodeOp::AffectOpPlusEqS16_SSSafe:
         case ByteCodeOp::AffectOpPlusEqU16_SSSafe:
@@ -1489,7 +1524,25 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::AffectOpPlusEqS32_SSafe:
         case ByteCodeOp::AffectOpPlusEqU32_SSafe:
-            MK_BINOPEQ32_SCAB(X64Op::ADD);
+            if (ip->flags & BCI_IMM_B && ip->b.u32 == 1)
+            {
+                // inc [rdi+?]
+                if (offsetStack + ip->a.u32 <= 0x7F)
+                {
+                    concat.addString2("\xFF\x47");
+                    concat.addU8((uint8_t) (offsetStack + ip->a.u32));
+                }
+                else
+                {
+                    concat.addString2("\xFF\x87");
+                    concat.addU32(offsetStack + ip->a.u32);
+                }
+            }
+            else
+            {
+                MK_BINOPEQ32_SCAB(X64Op::ADD);
+            }
+
             break;
         case ByteCodeOp::AffectOpPlusEqS32_SSSafe:
         case ByteCodeOp::AffectOpPlusEqU32_SSSafe:
@@ -1503,7 +1556,25 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::AffectOpPlusEqS64_SSafe:
         case ByteCodeOp::AffectOpPlusEqU64_SSafe:
-            MK_BINOPEQ64_SCAB(X64Op::ADD);
+            if (ip->flags & BCI_IMM_B && ip->b.u32 == 1)
+            {
+                // inc [rdi+?]
+                concat.addU8(0x48);
+                if (offsetStack + ip->a.u32 <= 0x7F)
+                {
+                    concat.addString2("\xFF\x47");
+                    concat.addU8((uint8_t) (offsetStack + ip->a.u32));
+                }
+                else
+                {
+                    concat.addString2("\xFF\x87");
+                    concat.addU32(offsetStack + ip->a.u32);
+                }
+            }
+            else
+            {
+                MK_BINOPEQ64_SCAB(X64Op::ADD);
+            }
             break;
         case ByteCodeOp::AffectOpPlusEqS64_SSSafe:
         case ByteCodeOp::AffectOpPlusEqU64_SSSafe:
@@ -1563,7 +1634,24 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::AffectOpMinusEqS8_SSafe:
         case ByteCodeOp::AffectOpMinusEqU8_SSafe:
-            MK_BINOPEQ8_SCAB(X64Op::SUB);
+            if (ip->flags & BCI_IMM_B && ip->b.u32 == 1)
+            {
+                // inc [rdi+?]
+                if (offsetStack + ip->a.u32 <= 0x7F)
+                {
+                    concat.addString2("\xFE\x4F");
+                    concat.addU8((uint8_t) (offsetStack + ip->a.u32));
+                }
+                else
+                {
+                    concat.addString2("\xFE\x8F");
+                    concat.addU32(offsetStack + ip->a.u32);
+                }
+            }
+            else
+            {
+                MK_BINOPEQ8_SCAB(X64Op::SUB);
+            }
             break;
         case ByteCodeOp::AffectOpMinusEqS8_SSSafe:
         case ByteCodeOp::AffectOpMinusEqU8_SSSafe:
@@ -1577,7 +1665,25 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::AffectOpMinusEqS16_SSafe:
         case ByteCodeOp::AffectOpMinusEqU16_SSafe:
-            MK_BINOPEQ16_SCAB(X64Op::SUB);
+            if (ip->flags & BCI_IMM_B && ip->b.u32 == 1)
+            {
+                // inc [rdi+?]
+                concat.addU8(0x66);
+                if (offsetStack + ip->a.u32 <= 0x7F)
+                {
+                    concat.addString2("\xFF\x4F");
+                    concat.addU8((uint8_t) (offsetStack + ip->a.u32));
+                }
+                else
+                {
+                    concat.addString2("\xFF\x8F");
+                    concat.addU32(offsetStack + ip->a.u32);
+                }
+            }
+            else
+            {
+                MK_BINOPEQ16_SCAB(X64Op::SUB);
+            }
             break;
         case ByteCodeOp::AffectOpMinusEqS16_SSSafe:
         case ByteCodeOp::AffectOpMinusEqU16_SSSafe:
@@ -1591,7 +1697,24 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::AffectOpMinusEqS32_SSafe:
         case ByteCodeOp::AffectOpMinusEqU32_SSafe:
-            MK_BINOPEQ32_SCAB(X64Op::SUB);
+            if (ip->flags & BCI_IMM_B && ip->b.u32 == 1)
+            {
+                // inc [rdi+?]
+                if (offsetStack + ip->a.u32 <= 0x7F)
+                {
+                    concat.addString2("\xFF\x4F");
+                    concat.addU8((uint8_t) (offsetStack + ip->a.u32));
+                }
+                else
+                {
+                    concat.addString2("\xFF\x8F");
+                    concat.addU32(offsetStack + ip->a.u32);
+                }
+            }
+            else
+            {
+                MK_BINOPEQ32_SCAB(X64Op::SUB);
+            }
             break;
         case ByteCodeOp::AffectOpMinusEqS32_SSSafe:
         case ByteCodeOp::AffectOpMinusEqU32_SSSafe:
@@ -1605,7 +1728,25 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::AffectOpMinusEqS64_SSafe:
         case ByteCodeOp::AffectOpMinusEqU64_SSafe:
-            MK_BINOPEQ64_SCAB(X64Op::SUB);
+            if (ip->flags & BCI_IMM_B && ip->b.u32 == 1)
+            {
+                // inc [rdi+?]
+                concat.addU8(0x48);
+                if (offsetStack + ip->a.u32 <= 0x7F)
+                {
+                    concat.addString2("\xFF\x4F");
+                    concat.addU8((uint8_t) (offsetStack + ip->a.u32));
+                }
+                else
+                {
+                    concat.addString2("\xFF\x8F");
+                    concat.addU32(offsetStack + ip->a.u32);
+                }
+            }
+            else
+            {
+                MK_BINOPEQ64_SCAB(X64Op::SUB);
+            }
             break;
         case ByteCodeOp::AffectOpMinusEqS64_SSSafe:
         case ByteCodeOp::AffectOpMinusEqU64_SSSafe:
