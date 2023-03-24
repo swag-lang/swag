@@ -287,17 +287,17 @@
 //////////////////////////////////
 
 #define MK_BINOPEQ8_CAB(__op)                           \
-    pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX); \
+    pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX); \
     if (ip->flags & BCI_IMM_B && ip->b.u64 <= 0x7F)     \
     {                                                   \
         pp.concat.addU8(0x80);                          \
-        pp.concat.addU8((uint8_t) __op);                \
+        pp.concat.addU8((uint8_t) __op - 1);            \
         pp.concat.addU8(ip->b.u8);                      \
     }                                                   \
     else                                                \
     {                                                   \
-        MK_IMMB_8(RAX);                                 \
-        pp.emit_Op8_Indirect(0, RAX, RCX, __op);        \
+        MK_IMMB_8(RCX);                                 \
+        pp.emit_Op8_Indirect(0, RCX, RAX, __op);        \
     }
 
 #define MK_BINOPEQ8_SCAB(__op)                                         \
@@ -329,7 +329,7 @@
 //////////////////////////////////
 
 #define MK_BINOPEQ16_CAB(__op)                          \
-    pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX); \
+    pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX); \
     if (ip->flags & BCI_IMM_B && ip->b.u64 <= 0x7FFF)   \
     {                                                   \
         pp.concat.addU8(0x66);                          \
@@ -337,7 +337,7 @@
             pp.concat.addU8(0x83);                      \
         else                                            \
             pp.concat.addU8(0x81);                      \
-        pp.concat.addU8((uint8_t) __op);                \
+        pp.concat.addU8((uint8_t) __op - 1);            \
         if (ip->b.u64 <= 0x7F)                          \
             pp.concat.addU8(ip->b.u8);                  \
         else                                            \
@@ -345,8 +345,8 @@
     }                                                   \
     else                                                \
     {                                                   \
-        MK_IMMB_16(RAX);                                \
-        pp.emit_Op16_Indirect(0, RAX, RCX, __op);       \
+        MK_IMMB_16(RCX);                                \
+        pp.emit_Op16_Indirect(0, RCX, RAX, __op);       \
     }
 
 #define MK_BINOPEQ16_SCAB(__op)                                         \
@@ -385,14 +385,14 @@
 //////////////////////////////////
 
 #define MK_BINOPEQ32_CAB(__op)                            \
-    pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);   \
+    pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);   \
     if (ip->flags & BCI_IMM_B && ip->b.u64 <= 0x7FFFFFFF) \
     {                                                     \
         if (ip->b.u64 <= 0x7F)                            \
             pp.concat.addU8(0x83);                        \
         else                                              \
             pp.concat.addU8(0x81);                        \
-        pp.concat.addU8((uint8_t) __op);                  \
+        pp.concat.addU8((uint8_t) __op - 1);              \
         if (ip->b.u64 <= 0x7F)                            \
             pp.concat.addU8(ip->b.u8);                    \
         else                                              \
@@ -400,8 +400,8 @@
     }                                                     \
     else                                                  \
     {                                                     \
-        MK_IMMB_32(RAX);                                  \
-        pp.emit_Op32_Indirect(0, RAX, RCX, __op);         \
+        MK_IMMB_32(RCX);                                  \
+        pp.emit_Op32_Indirect(0, RCX, RAX, __op);         \
     }
 
 #define MK_BINOPEQ32_SCAB(__op)                                         \
@@ -439,7 +439,7 @@
 //////////////////////////////////
 
 #define MK_BINOPEQ64_CAB(__op)                            \
-    pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);   \
+    pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);   \
     if (ip->flags & BCI_IMM_B && ip->b.u64 <= 0x7FFFFFFF) \
     {                                                     \
         pp.concat.addU8(0x48);                            \
@@ -447,7 +447,7 @@
             pp.concat.addU8(0x83);                        \
         else                                              \
             pp.concat.addU8(0x81);                        \
-        pp.concat.addU8((uint8_t) __op);                  \
+        pp.concat.addU8((uint8_t) __op - 1);              \
         if (ip->b.u64 <= 0x7F)                            \
             pp.concat.addU8(ip->b.u8);                    \
         else                                              \
@@ -455,8 +455,8 @@
     }                                                     \
     else                                                  \
     {                                                     \
-        MK_IMMB_64(RAX);                                  \
-        pp.emit_Op64_IndirectDst(0, RAX, RCX, __op);      \
+        MK_IMMB_64(RCX);                                  \
+        pp.emit_Op64_IndirectDst(0, RCX, RAX, __op);      \
     }
 
 #define MK_BINOPEQ64_SCAB(__op)                                            \

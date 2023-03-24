@@ -134,7 +134,6 @@ const Zag: [64] u32 = [
     func descale(x: s32, n: u32)->s16 => cast(s16) ((x + (1's32 << (n - 1))) >> n)
     func rol(i, j: u32)->u32          => cast(u32) ((i << j) | (i >> (32 - j)))
     func clamp(i: s32)->u8            => cast(u8) ((i &0xFFFFFF00) ? (((~i) >> 31) & 0xFF) : i)
-    func clampd(i: s32)->u8           => cast(u8) ((i &0xFF00) ? (((~i) >> 15) & 0xFF) : i)
 }
 }
 
@@ -694,28 +693,28 @@ impl Decoder
             tmp3 += z1 + z4
 
             i := descale(tmp10 + tmp3, ConstBits + Pass1Bits + 3) + 128
-            pdstPtr[8 * 0] = clampd(i)
+            pdstPtr[8 * 0] = clamp(i)
 
             i = descale(tmp10 - tmp3, ConstBits + Pass1Bits + 3) + 128
-            pdstPtr[8 * 7] = clampd(i)
+            pdstPtr[8 * 7] = clamp(i)
 
             i = descale(tmp11 + tmp2, ConstBits + Pass1Bits + 3) + 128
-            pdstPtr[8 * 1] = clampd(i)
+            pdstPtr[8 * 1] = clamp(i)
 
             i = descale(tmp11 - tmp2, ConstBits + Pass1Bits + 3) + 128
-            pdstPtr[8 * 6] = clampd(i)
+            pdstPtr[8 * 6] = clamp(i)
 
             i = descale(tmp12 + tmp1, ConstBits + Pass1Bits + 3) + 128
-            pdstPtr[8 * 2] = clampd(i)
+            pdstPtr[8 * 2] = clamp(i)
 
             i = descale(tmp12 - tmp1, ConstBits + Pass1Bits + 3) + 128
-            pdstPtr[8 * 5] = clampd(i)
+            pdstPtr[8 * 5] = clamp(i)
 
             i = descale(tmp13 + tmp0, ConstBits + Pass1Bits + 3) + 128
-            pdstPtr[8 * 3] = clampd(i)
+            pdstPtr[8 * 3] = clamp(i)
 
             i = descale(tmp13 - tmp0, ConstBits + Pass1Bits + 3) + 128
-            pdstPtr[8 * 4] = clampd(i)
+            pdstPtr[8 * 4] = clamp(i)
 
             dataPtr, pdstPtr += 1
         }
