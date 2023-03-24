@@ -300,6 +300,7 @@ impl Decoder
         return cast(^s16) (cb.pdata.buffer + blkX * cb.blockSize + blkY * (cb.blockSize * cb.blockNumX))
     }
 
+#[Swag.PrintBc]
     mtd loadNextRow() throw
     {
         var blockMcuX: [MaxComponents] s32
