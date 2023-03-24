@@ -300,18 +300,26 @@
         pp.emit_Op8_Indirect(0, RAX, RCX, __op);        \
     }
 
-#define MK_BINOPEQ8_SCAB(__op)                                           \
-    if (ip->flags & BCI_IMM_B && ip->b.u64 <= 0x7F)                      \
-    {                                                                    \
-        pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI); \
-        pp.concat.addU8(0x80);                                           \
-        pp.concat.addU8((uint8_t) __op);                                 \
-        pp.concat.addU8(ip->b.u8);                                       \
-    }                                                                    \
-    else                                                                 \
-    {                                                                    \
-        MK_IMMB_8(RAX);                                                  \
-        pp.emit_Op8_Indirect(offsetStack + ip->a.u32, RAX, RDI, __op);   \
+#define MK_BINOPEQ8_SCAB(__op)                                         \
+    if (ip->flags & BCI_IMM_B && ip->b.u64 <= 0x7F)                    \
+    {                                                                  \
+        pp.concat.addU8(0x80);                                         \
+        if (offsetStack + ip->a.u32 <= 0x7F)                           \
+        {                                                              \
+            pp.concat.addU8(0x46 + (uint8_t) __op);                    \
+            pp.concat.addU8((uint8_t) (offsetStack + ip->a.u32));      \
+        }                                                              \
+        else                                                           \
+        {                                                              \
+            pp.concat.addU8(0x86 + (uint8_t) __op);                    \
+            pp.concat.addU32(offsetStack + ip->a.u32);                 \
+        }                                                              \
+        pp.concat.addU8(ip->b.u8);                                     \
+    }                                                                  \
+    else                                                               \
+    {                                                                  \
+        MK_IMMB_8(RAX);                                                \
+        pp.emit_Op8_Indirect(offsetStack + ip->a.u32, RAX, RDI, __op); \
     }
 
 #define MK_BINOPEQ8_SSCAB(__op)                                \
