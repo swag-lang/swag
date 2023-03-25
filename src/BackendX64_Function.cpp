@@ -2162,13 +2162,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             int32_t* tableCompiler = (int32_t*) moduleToGen->compilerSegment.address(ip->d.u32);
 
             if (ip->op == ByteCodeOp::JumpDyn8)
-                pp.emit_LoadS8S64_Indirect(regOffset(ip->a.u32), RCX, RDI);
+                pp.emit_LoadS8S64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             else if (ip->op == ByteCodeOp::JumpDyn16)
-                pp.emit_LoadS16S64_Indirect(regOffset(ip->a.u32), RCX, RDI);
+                pp.emit_LoadS16S64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             else if (ip->op == ByteCodeOp::JumpDyn32)
-                pp.emit_LoadS32S64_Indirect(regOffset(ip->a.u32), RCX, RDI);
+                pp.emit_LoadS32S64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             else
-                pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
+                pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
 
             // Note:
             //
@@ -2178,21 +2178,21 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //
             // We could in the end remove two instructions and be as the llvm generation
 
-            pp.emit_Sub64_Immediate(ip->b.u64 - 1, RCX, RAX);
-            pp.emit_Cmp64_Immediate(ip->c.u64, RCX, RAX);
+            pp.emit_Sub64_Immediate(ip->b.u64 - 1, RAX);
+            pp.emit_Cmp64_Immediate(ip->c.u64, RAX);
             pp.emit_Jump(JAE, i, tableCompiler[0]);
 
             uint8_t* addrConstant        = nullptr;
             auto     offsetTableConstant = moduleToGen->constantSegment.reserve(((uint32_t) ip->c.u64) * sizeof(uint32_t), &addrConstant);
 
-            pp.emit_Symbol_RelocationAddr(RAX, pp.symCSIndex, offsetTableConstant); // rax = jump table
-            concat.addString4("\x48\x63\x04\x88");                                  // movsx rax, dword ptr [rax + rcx*4]
+            pp.emit_Symbol_RelocationAddr(RCX, pp.symCSIndex, offsetTableConstant); // rax = jump table
+            concat.addString4("\x48\x63\x0C\x81");                                  // movsx rcx, dword ptr [rcx + rax*4]
 
             // + 5 for the two following instructions
             // + 7 for this instruction
-            pp.emit_Symbol_RelocationAddr(RCX, symbolFuncIndex, concat.totalCount() - startAddress + 5 + 7);
-            concat.addString3("\x48\x01\xC1"); // add rcx, rax
-            concat.addString2("\xFF\xE1");     // jmp rcx
+            pp.emit_Symbol_RelocationAddr(RAX, symbolFuncIndex, concat.totalCount() - startAddress + 5 + 7);
+            concat.addString3("\x48\x01\xC8"); // add rax, rcx
+            concat.addString2("\xFF\xE0");     // jmp rax
 
             auto currentOffset = (int32_t) pp.concat.totalCount();
 

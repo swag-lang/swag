@@ -798,9 +798,9 @@ void X64Gen::emit_Cmp64(uint8_t reg1, uint8_t reg2)
     concat.addU8(getModRM(0b11, reg2 & 0b111, reg1 & 0b111));
 }
 
-void X64Gen::emit_Cmp64_Immediate(uint64_t value, uint8_t reg, uint8_t altReg)
+void X64Gen::emit_Cmp64_Immediate(uint64_t value, uint8_t reg)
 {
-    SWAG_ASSERT(reg == RAX || reg == RCX);
+    SWAG_ASSERT(reg == RAX);
 
     if (value <= 0x7f)
     {
@@ -812,20 +812,13 @@ void X64Gen::emit_Cmp64_Immediate(uint64_t value, uint8_t reg, uint8_t altReg)
     else if (value <= 0x7fffffff)
     {
         concat.addU8(0x48);
-        if (reg == RAX)
-            concat.addU8(0x3d);
-        else
-        {
-            concat.addU8(0x81);
-            concat.addU8(0xF9);
-        }
-
+        concat.addU8(0x3d);
         concat.addU32((uint32_t) value);
     }
     else
     {
-        emit_Load64_Immediate(value, altReg);
-        emit_Cmp64(reg, altReg);
+        emit_Load64_Immediate(value, RCX);
+        emit_Cmp64(reg, RCX);
     }
 }
 
@@ -1102,24 +1095,19 @@ void X64Gen::emit_Add64_Immediate(uint64_t value, uint8_t reg)
     }
 }
 
-void X64Gen::emit_Sub64_Immediate(uint64_t value, uint8_t reg, uint8_t altReg)
+void X64Gen::emit_Sub64_Immediate(uint64_t value, uint8_t reg)
 {
     if (!value)
         return;
 
-    SWAG_ASSERT(reg == RAX || reg == RCX);
-    SWAG_ASSERT(altReg == RAX || altReg == RCX);
+    SWAG_ASSERT(reg == RAX);
 
     if (value > 0x7FFFFFFF)
     {
-        emit_Load64_Immediate(value, altReg);
-
+        emit_Load64_Immediate(value, RCX);
         concat.addU8(0x48);
         concat.addU8(0x29);
-        if (reg == RCX)
-            concat.addU8(0xC1); // sub rcx, rax
-        else
-            concat.addU8(0xC8); // sub rax, rcx
+        concat.addU8(0xC8); // sub rax, rcx
     }
     else if (value <= 0x7F)
     {
@@ -1132,13 +1120,6 @@ void X64Gen::emit_Sub64_Immediate(uint64_t value, uint8_t reg, uint8_t altReg)
     {
         concat.addU8(0x48);
         concat.addU8(0x2D);
-        concat.addU32((uint32_t) value);
-    }
-    else if (reg == RCX)
-    {
-        concat.addU8(0x48);
-        concat.addU8(0x81);
-        concat.addU8(0xE9);
         concat.addU32((uint32_t) value);
     }
 }

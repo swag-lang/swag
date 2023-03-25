@@ -418,7 +418,7 @@ struct X64Gen
     void emit_Cmp32_Indirect(uint32_t offsetStack, uint8_t reg, uint8_t memReg);
     void emit_Cmp32_IndirectDst(uint32_t offsetStack, uint32_t value);
     void emit_Cmp64(uint8_t reg1, uint8_t reg2);
-    void emit_Cmp64_Immediate(uint64_t value, uint8_t reg, uint8_t altReg);
+    void emit_Cmp64_Immediate(uint64_t value, uint8_t reg);
     void emit_Cmp64_Indirect(uint32_t offsetStack, uint8_t reg, uint8_t memReg);
     void emit_Cmp64_IndirectDst(uint32_t offsetStack, uint32_t value);
     void emit_Cmp8(uint8_t reg1, uint8_t reg2);
@@ -512,7 +512,7 @@ struct X64Gen
     void emit_StoreF64_Indirect(uint32_t stackOffset, uint8_t reg, uint8_t memReg = RDI);
     void emit_StoreN_Indirect(uint32_t stackOffset, uint8_t reg, uint8_t memReg, uint8_t numBits);
     void emit_Sub32_RSP(uint32_t value);
-    void emit_Sub64_Immediate(uint64_t value, uint8_t reg, uint8_t altReg);
+    void emit_Sub64_Immediate(uint64_t value, uint8_t reg);
     void emit_Symbol_RelocationAddr(uint8_t reg, uint32_t symbolIndex, uint32_t offset);
     void emit_Symbol_RelocationValue(uint8_t reg, uint32_t symbolIndex, uint32_t offset);
     void emit_Test16(uint8_t reg1, uint8_t reg2);
