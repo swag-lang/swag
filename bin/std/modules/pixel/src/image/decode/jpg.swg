@@ -300,6 +300,7 @@ impl Decoder
     }
 
     #[Swag.Safety("", false)]
+    //#[Swag.PrintBc]
     mtd loadNextRow() throw
     {
         var blockMcuX: [MaxComponents] s32

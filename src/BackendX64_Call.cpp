@@ -29,14 +29,12 @@ void BackendX64::emitGetParam(X64Gen& pp, TypeInfoFuncAttr* typeFunc, int reg, i
     {
     case 1:
         SWAG_ASSERT(!toAdd);
-        pp.emit_Clear64(RAX);
-        pp.emit_Load8_Indirect(stackOffset, RAX, RDI);
+        pp.emit_LoadU8U64_Indirect(stackOffset, RAX, RDI);
         pp.emit_Store64_Indirect(regOffset(reg), RAX);
         return;
     case 2:
         SWAG_ASSERT(!toAdd);
-        pp.emit_Clear64(RAX);
-        pp.emit_Load16_Indirect(stackOffset, RAX, RDI);
+        pp.emit_LoadU16U64_Indirect(stackOffset, RAX, RDI);
         pp.emit_Store64_Indirect(regOffset(reg), RAX);
         return;
     case 4:
@@ -46,7 +44,8 @@ void BackendX64::emitGetParam(X64Gen& pp, TypeInfoFuncAttr* typeFunc, int reg, i
         return;
     }
 
-    paramIdx       = typeFunc->registerIdxToParamIdx(paramIdx);
+    paramIdx = typeFunc->registerIdxToParamIdx(paramIdx);
+
     auto typeParam = TypeManager::concreteType(typeFunc->parameters[paramIdx]->typeInfo);
     if (typeParam->isAutoConstPointerRef())
         typeParam = TypeManager::concretePtrRefType(typeParam);
