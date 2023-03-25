@@ -1014,22 +1014,13 @@ void X64Gen::emit_Op32_Indirect(uint32_t offsetStack, uint8_t reg, uint8_t memRe
     emit_ModRM(offsetStack, reg & 0b111, memReg & 0b111);
 }
 
-void X64Gen::emit_Op64_IndirectDst(uint32_t offsetStack, uint8_t reg, uint8_t memReg, X64Op instruction, bool lock)
+void X64Gen::emit_Op64_Indirect(uint32_t offsetStack, uint8_t reg, uint8_t memReg, X64Op instruction, bool lock)
 {
     SWAG_ASSERT(memReg < R8 && reg < R8);
     if (lock)
         concat.addU8(0xF0);
     concat.addU8(0x48);
     concat.addU8((uint8_t) instruction);
-    emit_ModRM(offsetStack, reg & 0b111, memReg & 0b111);
-}
-
-void X64Gen::emit_Op64_IndirectSrc(uint32_t offsetStack, uint8_t reg, uint8_t memReg, X64Op instruction, bool lock)
-{
-    if (lock)
-        concat.addU8(0xF0);
-    concat.addU8(0x48);
-    concat.addU8((uint8_t) instruction | 2);
     emit_ModRM(offsetStack, reg & 0b111, memReg & 0b111);
 }
 

@@ -479,8 +479,7 @@ struct X64Gen
     void emit_Op32(uint8_t reg1, uint8_t reg2, X64Op instruction);
     void emit_Op32_Indirect(uint32_t offsetStack, uint8_t reg, uint8_t memReg, X64Op instruction, bool lock = false);
     void emit_Op64(uint8_t reg1, uint8_t reg2, X64Op instruction);
-    void emit_Op64_IndirectDst(uint32_t offsetStack, uint8_t reg, uint8_t memReg, X64Op instruction, bool lock = false);
-    void emit_Op64_IndirectSrc(uint32_t offsetStack, uint8_t reg, uint8_t memReg, X64Op instruction, bool lock = false);
+    void emit_Op64_Indirect(uint32_t offsetStack, uint8_t reg, uint8_t memReg, X64Op instruction, bool lock = false);
     void emit_Op8(uint8_t reg1, uint8_t reg2, X64Op instruction);
     void emit_Op8_Indirect(uint32_t offsetStack, uint8_t reg, uint8_t memReg, X64Op instruction, bool lock = false);
     void emit_OpF32_Indirect(uint8_t reg, uint8_t memReg, X64Op instruction);

@@ -2817,70 +2817,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             return Report::report({ip->node, Err(Err0060)});
 
         case ByteCodeOp::IncPointer64:
-            if (ip->flags & BCI_IMM_B && ip->b.u64 <= 0x7FFFFFFF)
-            {
-                pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
-                pp.emit_Add64_Immediate(ip->b.u64, RAX);
-                pp.emit_Store64_Indirect(regOffset(ip->c.u32), RAX);
-            }
-            else
-            {
-                if (ip->flags & BCI_IMM_B)
-                    pp.emit_Load64_Immediate(ip->b.u64, RAX);
-                else
-                    pp.emit_Load64_Indirect(regOffset(ip->b.u32), RAX);
-                if (ip->a.u32 == ip->c.u32)
-                    pp.emit_Op64_IndirectDst(regOffset(ip->a.u32), RAX, RDI, X64Op::ADD);
-                else
-                {
-                    pp.emit_Op64_IndirectSrc(regOffset(ip->a.u32), RAX, RDI, X64Op::ADD);
-                    pp.emit_Store64_Indirect(regOffset(ip->c.u32), RAX);
-                }
-            }
-            break;
-        case ByteCodeOp::IncMulPointer64:
-            if (ip->flags & BCI_IMM_B && (ip->b.u64 * ip->d.u64) <= 0x7FFFFFFF)
-            {
-                pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
-                pp.emit_Add64_Immediate(ip->b.u64 * ip->d.u64, RAX);
-                pp.emit_Store64_Indirect(regOffset(ip->c.u32), RAX);
-            }
-            else
-            {
-                if (ip->flags & BCI_IMM_B)
-                    pp.emit_Load64_Immediate(ip->b.u64, RAX);
-                else
-                    pp.emit_Load64_Indirect(regOffset(ip->b.u32), RAX);
-                pp.emit_Load64_Immediate(ip->d.u64, RCX);
-                pp.concat.addString3("\x48\xF7\xE1"); // mul rcx
-                if (ip->a.u32 == ip->c.u32)
-                    pp.emit_Op64_IndirectDst(regOffset(ip->a.u32), RAX, RDI, X64Op::ADD);
-                else
-                {
-                    pp.emit_Op64_IndirectSrc(regOffset(ip->a.u32), RAX, RDI, X64Op::ADD);
-                    pp.emit_Store64_Indirect(regOffset(ip->c.u32), RAX);
-                }
-            }
+            emitAddSubMul64(pp, ip, 1, X64Op::ADD);
             break;
         case ByteCodeOp::DecPointer64:
-            if (ip->flags & BCI_IMM_B)
-            {
-                pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
-                pp.emit_Sub64_Immediate(ip->b.u64, RAX, RCX);
-                pp.emit_Store64_Indirect(regOffset(ip->c.u32), RAX);
-            }
-            else
-            {
-                pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX);
-                if (ip->a.u32 == ip->c.u32)
-                    pp.emit_Op64_IndirectDst(regOffset(ip->a.u32), RCX, RDI, X64Op::SUB);
-                else
-                {
-                    pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
-                    pp.emit_Op64(RCX, RAX, X64Op::SUB);
-                    pp.emit_Store64_Indirect(regOffset(ip->c.u32), RAX);
-                }
-            }
+            emitAddSubMul64(pp, ip, 1, X64Op::SUB);
+            break;
+        case ByteCodeOp::IncMulPointer64:
+            emitAddSubMul64(pp, ip, ip->d.u64, X64Op::ADD);
             break;
 
         case ByteCodeOp::Mul64byVB64:
@@ -3080,7 +3023,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             pp.emit_Store64_Indirect(regOffset(ip->b.u32), RDX);
             pp.emit_Load64_Immediate(8, RCX);
-            pp.emit_Op64_IndirectDst(0, RCX, RAX, X64Op::ADD);
+            pp.emit_Op64_Indirect(0, RCX, RAX, X64Op::ADD);
             break;
 
         case ByteCodeOp::IntrinsicArguments:

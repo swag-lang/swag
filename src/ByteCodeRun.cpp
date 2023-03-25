@@ -644,21 +644,15 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     }
 
     case ByteCodeOp::IncPointer64:
-    {
         registersRC[ip->c.u32].pointer = registersRC[ip->a.u32].pointer + IMMB_S64(ip);
         break;
-    }
-    case ByteCodeOp::IncMulPointer64:
-    {
-        auto offset                    = IMMB_S64(ip);
-        registersRC[ip->c.u32].pointer = registersRC[ip->a.u32].pointer + (offset * ip->d.u64);
-        break;
-    }
     case ByteCodeOp::DecPointer64:
-    {
         registersRC[ip->c.u32].pointer = registersRC[ip->a.u32].pointer - IMMB_S64(ip);
         break;
-    }
+    case ByteCodeOp::IncMulPointer64:
+        registersRC[ip->c.u32].pointer = registersRC[ip->a.u32].pointer + (IMMB_S64(ip) * ip->d.u64);
+        break;
+
     case ByteCodeOp::DeRef8:
     {
         registersRC[ip->a.u32].u64 = *(uint8_t*) (registersRC[ip->b.u32].pointer + ip->c.s64);

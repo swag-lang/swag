@@ -456,7 +456,7 @@
     else                                                  \
     {                                                     \
         MK_IMMB_64(RCX);                                  \
-        pp.emit_Op64_IndirectDst(0, RCX, RAX, __op);      \
+        pp.emit_Op64_Indirect(0, RCX, RAX, __op);      \
     }
 
 #define MK_BINOPEQ64_SCAB(__op)                                            \
@@ -485,12 +485,12 @@
     else                                                                   \
     {                                                                      \
         MK_IMMB_64(RAX);                                                   \
-        pp.emit_Op64_IndirectDst(offsetStack + ip->a.u32, RAX, RDI, __op); \
+        pp.emit_Op64_Indirect(offsetStack + ip->a.u32, RAX, RDI, __op); \
     }
 
 #define MK_BINOPEQ64_SSCAB(__op)                                \
     pp.emit_Load64_Indirect(offsetStack + ip->b.u32, RAX, RDI); \
-    pp.emit_Op64_IndirectDst(offsetStack + ip->a.u32, RAX, RDI, __op);
+    pp.emit_Op64_Indirect(offsetStack + ip->a.u32, RAX, RDI, __op);
 
 //////////////////////////////////
 
@@ -538,7 +538,7 @@
 #define MK_BINOPEQ64_LOCK_CAB(__op)                     \
     pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX); \
     MK_IMMB_64(RAX);                                    \
-    pp.emit_Op64_IndirectDst(0, RAX, RCX, __op, true);
+    pp.emit_Op64_Indirect(0, RAX, RCX, __op, true);
 
 #define MK_JMPCMP_8(__op)                                         \
     if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_C))     \

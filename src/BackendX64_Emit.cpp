@@ -4,6 +4,44 @@
 #include "LanguageSpec.h"
 #include "Math.h"
 
+void BackendX64::emitAddSubMul64(X64Gen& pp, ByteCodeInstruction* ip, uint64_t mul, X64Op op)
+{
+    if (ip->flags & BCI_IMM_B && (ip->b.u64 * mul) <= 0x7FFFFFFF)
+    {
+        pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
+        if (op == X64Op::ADD)
+            pp.emit_Add64_Immediate(ip->b.u64 * mul, RAX);
+        else
+            pp.emit_Sub64_Immediate(ip->b.u64 * mul, RAX, RCX);
+        pp.emit_Store64_Indirect(regOffset(ip->c.u32), RAX);
+    }
+    else
+    {
+        if (ip->flags & BCI_IMM_B)
+        {
+            pp.emit_Load64_Immediate(ip->b.u64 * mul, RAX);
+        }
+        else
+        {
+            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RAX);
+            if (mul != 1)
+            {
+                pp.emit_Load64_Immediate(mul, RCX);
+                pp.concat.addString3("\x48\xF7\xE1"); // mul rcx
+            }
+        }
+
+        if (ip->a.u32 == ip->c.u32)
+            pp.emit_Op64_Indirect(regOffset(ip->a.u32), RAX, RDI, op);
+        else
+        {
+            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
+            pp.emit_Op64(RAX, RCX, op);
+            pp.emit_Store64_Indirect(regOffset(ip->c.u32), RCX);
+        }
+    }
+}
+
 void BackendX64::emitShiftArithmetic(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits)
 {
     if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B) && ip->b.u32 >= numBits && !(ip->flags & BCI_SHIFT_SMALL))
