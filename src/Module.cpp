@@ -356,9 +356,9 @@ void Module::buildTypesSlice()
     if (modulesSliceOffset == UINT32_MAX)
         return;
 
-    auto&    Map = typeGen.getMapPerSeg(&constantSegment).exportedTypes;
+    auto&    mapTypes = typeGen.getMapPerSeg(&constantSegment).exportedTypes;
     uint8_t* resultPtr;
-    uint32_t numTypes = (uint32_t) Map.size();
+    uint32_t numTypes = (uint32_t) mapTypes.size();
 
     typesSliceOffset = constantSegment.reserve(sizeof(uint64_t) + (numTypes * sizeof(ExportedTypeInfo*)), &resultPtr);
     auto offset      = typesSliceOffset;
@@ -374,7 +374,7 @@ void Module::buildTypesSlice()
     moduleSlice->types.count  = numTypes;
     constantSegment.addInitPtr(modulesSliceOffset + offsetof(SwagModule, types), typesSliceOffset + sizeof(uint64_t));
 
-    for (auto t : Map)
+    for (auto t : mapTypes)
     {
         *(ExportedTypeInfo**) resultPtr = t.second.exportedType;
         constantSegment.addInitPtr(offset, t.second.storageOffset);

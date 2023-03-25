@@ -175,7 +175,7 @@ public struct Decoder
     eobRun:             s32
     restartsLeft:       s32
     nextRestartNum:     s32
-    compsInScan:        s32
+    compsInScan:        u32
 
     destBytesPerPixel:        s32
     realDestBytesPerScanLine: s32
@@ -191,12 +191,12 @@ public struct Decoder
     compIdent:      [MaxComponents] s32
     blockMaxZagSet: [MaxBlocksPerRow] s32
     blockSeg:       [MaxBlocksPerRow] ^s16
-    compList:       [MaxCompsInScan] s32
+    compList:       [MaxCompsInScan] u32
     compDcTab:      [MaxComponents] s32
     compAcTab:      [MaxComponents] s32
     compBlocksH:    [MaxComponents] s32
     compBlocksV:    [MaxComponents] s32
-    mcuOrg:         [MaxBocksPerMcu] s32
+    mcuOrg:         [MaxBocksPerMcu] u32
     h:              [MaxHuffTables] HuffTables
     dcHuffSeg:      [MaxBocksPerMcu] *HuffTables
     acHuffSeg:      [MaxBocksPerMcu] *HuffTables
@@ -300,7 +300,6 @@ impl Decoder
     }
 
     #[Swag.Safety("", false)]
-    //#[Swag.PrintBc]
     mtd loadNextRow() throw
     {
         var blockMcuX: [MaxComponents] s32
@@ -361,9 +360,9 @@ impl Decoder
             blockMcuY[compList[0]] += 1
         else
         {
-            loop component_num: compsInScan
+            loop componentNum: compsInScan
             {
-                componentId := compList[component_num]
+                componentId := compList[componentNum]
                 blockMcuY[componentId] += compSampV[componentId]
             }
         }
@@ -1333,7 +1332,7 @@ impl Decoder
     }
 
     #[Safety("over", false)]
-    mtd decodeBlockDcFirst(cmpId: s32, blkX, blkY: s32) throw
+    mtd decodeBlockDcFirst(cmpId: u32, blkX, blkY: s32) throw
     {
         p := coeffBufGetp(dcCoeffs[cmpId], blkX, blkY)
         s := huffDecode(&h[compDcTab[cmpId]])
@@ -1349,7 +1348,7 @@ impl Decoder
     }
 
     #[Safety("over", false)]
-    mtd decodeBlockDcRefine(cmpId: s32, blkX, blkY: s32) throw
+    mtd decodeBlockDcRefine(cmpId: u32, blkX, blkY: s32) throw
     {
         if getBits2(1)
         {
@@ -1359,7 +1358,7 @@ impl Decoder
     }
 
     #[Safety("over", false)]
-    mtd decodeBlockAcFirst(cmpId: s32, blkX, blkY: s32) throw
+    mtd decodeBlockAcFirst(cmpId: u32, blkX, blkY: s32) throw
     {
         if eobRun
         {
@@ -1406,7 +1405,7 @@ impl Decoder
     }
 
     #[Safety("over", false)]
-    mtd decodeBlockAcRefine(cmpId: s32, blkX, blkY: s32) throw
+    mtd decodeBlockAcRefine(cmpId: u32, blkX, blkY: s32) throw
     {
         p1 := 1 << successiveLow
         m1 := (-1) << successiveLow
@@ -1505,7 +1504,7 @@ impl Decoder
         }
     }
 
-    mtd decodeScan(fn: func(*Decoder, s32, s32, s32) throw) throw
+    mtd decodeScan(fn: func(*Decoder, u32, s32, s32) throw) throw
     {
         var blockMcutX: [MaxComponents] s32
         var blockMcutY: [MaxComponents] s32
@@ -1594,7 +1593,7 @@ impl Decoder
             if refinementScan and (successiveLow != successiveHigh - 1)
                 throw "bad sos successive"
 
-            var decodeBlockFunc: func(*Decoder, s32, s32, s32) throw
+            var decodeBlockFunc: func(*Decoder, u32, s32, s32) throw
             if dcOnlyScan
             {
                 if refinementScan

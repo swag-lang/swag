@@ -512,7 +512,7 @@ private var g_HashCrcToType: HashTable'(u32, typeinfo)
 private var g_HashNameToType: HashTable'(string, typeinfo)
 private var g_HashLock: Sync.RWLock
 
-// #premain can be called more than once if we are compiling/run more than one
+// #premain can be called more than once if we compile/run more than one
 // module using Core at the same time. So lock !
 #premain
 {
