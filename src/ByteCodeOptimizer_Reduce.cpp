@@ -1971,8 +1971,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             ip->a.u32 == ip[1].b.u32 &&
             !(ip[1].flags & BCI_START_STMT))
         {
-            SET_OP(ip + 1, ByteCodeOp::ClearMaskU64);
-            ip[1].b.u64 = 0xFF;
+            setNop(context, ip + 1);
             break;
         }
 
@@ -2047,8 +2046,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             ip->a.u32 == ip[1].b.u32 &&
             !(ip[1].flags & BCI_START_STMT))
         {
-            SET_OP(ip + 1, ByteCodeOp::ClearMaskU64);
-            ip[1].b.u64 = 0xFFFF;
+            setNop(context, ip + 1);
             break;
         }
 
@@ -2120,8 +2118,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             ip->a.u32 == ip[1].b.u32 &&
             !(ip[1].flags & BCI_START_STMT))
         {
-            SET_OP(ip + 1, ByteCodeOp::ClearMaskU64);
-            ip[1].b.u64 = 0xFFFFFFFF;
+            setNop(context, ip + 1);
             break;
         }
 

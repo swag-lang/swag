@@ -160,7 +160,7 @@ public struct Decoder
     maxBlocksPerMcu:    s32
     maxMcuSizeX:        s32
     maxMcuSizeY:        s32
-    blocksPerMcu:       s32
+    blocksPerMcu:       u32
     maxMcusPerRow:      s32
     maxMcusPerCol:      s32
     maxBlocksPerRow:    s32
@@ -187,7 +187,7 @@ public struct Decoder
     inBuf:          [InBufSize + 128] u8
     compSampH:      [MaxComponents] s32
     compSampV:      [MaxComponents] s32
-    compQuant:      [MaxComponents] s32
+    compQuant:      [MaxComponents] u32
     compIdent:      [MaxComponents] s32
     blockMaxZagSet: [MaxBlocksPerRow] s32
     blockSeg:       [MaxBlocksPerRow] ^s16
@@ -304,7 +304,7 @@ impl Decoder
     {
         var blockMcuX: [MaxComponents] s32
 
-        rowBlock := 0
+        rowBlock := 0'u32
         loop mcusPerRow
         {
             blockMcuOfsX := 0
@@ -314,7 +314,7 @@ impl Decoder
                 componentId := mcuOrg[mcuBlock]
 
                 p   := blockSeg[rowBlock]
-                q   := quant[compQuant[componentId]]
+                q   := quant[compQuant[componentId]].buffer
                 pAC := coeffBufGetp(acCoeffs[componentId], blockMcuX[componentId] + blockMcuOfsX, blockMcuY[componentId] + blockMcuOfsY)
                 pDC := coeffBufGetp(dcCoeffs[componentId], blockMcuX[componentId] + blockMcuOfsX, blockMcuY[componentId] + blockMcuOfsY)
 
@@ -324,15 +324,15 @@ impl Decoder
                 i := 63
                 while i > 0
                 {
-                    if p[Zag[i]]
+                    if p[Zag[cast(u32) i]]
                         break
                     i -= 1
                 }
 
                 while i >= 0
                 {
-                    if p[Zag[i]]
-                        p[Zag[i]] *= q[i]
+                    if p[Zag[cast(u32) i]]
+                        p[Zag[cast(u32) i]] *= q[cast(u32) i]
                     i -= 1
                 }
 
@@ -404,6 +404,7 @@ impl Decoder
         getBits2(16)
     }
 
+    #[Swag.Safety("", false)]
     mtd huffDecode(ph: *HuffTables)->s32
     {
         symbol := ph.lookUp[(bitBuf >>,safe 8) & 0xFF]
