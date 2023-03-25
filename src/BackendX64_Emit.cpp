@@ -6,20 +6,34 @@
 
 void BackendX64::emitAddSubMul64(X64Gen& pp, ByteCodeInstruction* ip, uint64_t mul, X64Op op)
 {
-    if (ip->flags & BCI_IMM_B && (ip->b.u64 * mul) <= 0x7FFFFFFF)
+    auto val = ip->b.u64 * mul;
+    if (ip->flags & BCI_IMM_B && val <= 0x7FFFFFFF && ip->a.u32 == ip->c.u32)
     {
-        pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
-        if (op == X64Op::ADD)
-            pp.emit_Add64_Immediate(ip->b.u64 * mul, RAX);
+        pp.concat.addU8(0x48);
+        if (val <= 0x7F)
+            pp.concat.addU8(0x83);
         else
-            pp.emit_Sub64_Immediate(ip->b.u64 * mul, RAX, RCX);
-        pp.emit_Store64_Indirect(regOffset(ip->c.u32), RAX);
+            pp.concat.addU8(0x81);
+        if (regOffset(ip->a.u32) <= 0x7F)
+        {
+            pp.concat.addU8(0x46 + (uint8_t) op);
+            pp.concat.addU8((uint8_t) regOffset(ip->a.u32));
+        }
+        else
+        {
+            pp.concat.addU8(0x86 + (uint8_t) op);
+            pp.concat.addU32(regOffset(ip->a.u32));
+        }
+        if (val <= 0x7F)
+            pp.concat.addU8((uint8_t) val);
+        else
+            pp.concat.addU32((uint32_t) val);
     }
     else
     {
         if (ip->flags & BCI_IMM_B)
         {
-            pp.emit_Load64_Immediate(ip->b.u64 * mul, RAX);
+            pp.emit_Load64_Immediate(val, RAX);
         }
         else
         {
