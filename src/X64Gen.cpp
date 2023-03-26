@@ -575,14 +575,24 @@ void X64Gen::emit_LoadN_Immediate(Register& val, CPURegister reg, uint8_t numBit
 
 void X64Gen::emit_Push(CPURegister reg)
 {
-    SWAG_ASSERT(reg < R8);
-    concat.addU8(0x50 | (reg & 0b111));
+    if (reg < R8)
+        concat.addU8(0x50 | (reg & 0b111));
+    else
+    {
+        concat.addU8(getREX(false, false, false, true));
+        concat.addU8(0x50 | (reg & 0b111));
+    }
 }
 
 void X64Gen::emit_Pop(CPURegister reg)
 {
-    SWAG_ASSERT(reg < R8);
-    concat.addU8(0x58 | (reg & 0b111));
+    if (reg < R8)
+        concat.addU8(0x58 | (reg & 0b111));
+    else
+    {
+        concat.addU8(getREX(false, false, false, true));
+        concat.addU8(0x58 | (reg & 0b111));
+    }
 }
 
 void X64Gen::emit_Ret()

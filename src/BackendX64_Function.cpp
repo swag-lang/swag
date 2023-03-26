@@ -101,6 +101,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     unwindRegs.push_back(RDI);
     unwindOffsetRegs.push_back(concat.totalCount() - beforeProlog);
 
+    //pp.emit_Push(R12);
+    //unwindRegs.push_back(R12);
+    //unwindOffsetRegs.push_back(concat.totalCount() - beforeProlog);
+
+    // Stack align
+    if ((unwindRegs.size() & 1) == 0)
+        sizeStack += sizeof(void*);
+
     // Check stack
     if (sizeStack + sizeParamsStack >= SWAG_LIMIT_PAGE_STACK)
     {
