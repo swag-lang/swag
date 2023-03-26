@@ -973,36 +973,6 @@ void X64Gen::emit_LoadAddress_Indirect(uint32_t stackOffset, CPURegister reg, CP
     emit_ModRM(stackOffset, reg, memReg);
 }
 
-void X64Gen::emit_Inc32_Indirect(uint32_t stackOffset, CPURegister reg)
-{
-    SWAG_ASSERT(reg < R8);
-    concat.addU8(0xFF);
-    emit_ModRM(stackOffset, 0, reg);
-}
-
-void X64Gen::emit_Dec32_Indirect(uint32_t stackOffset, CPURegister reg)
-{
-    SWAG_ASSERT(reg < R8);
-    concat.addU8(0xFF);
-    emit_ModRM(stackOffset, 1, reg);
-}
-
-void X64Gen::emit_Inc64_Indirect(uint32_t stackOffset, CPURegister reg)
-{
-    SWAG_ASSERT(reg < R8);
-    concat.addU8(getREX());
-    concat.addU8(0xFF);
-    emit_ModRM(stackOffset, 0, reg);
-}
-
-void X64Gen::emit_Dec64_Indirect(uint32_t stackOffset, CPURegister reg)
-{
-    SWAG_ASSERT(reg < R8);
-    concat.addU8(getREX());
-    concat.addU8(0xFF);
-    emit_ModRM(stackOffset, 1, reg);
-}
-
 void X64Gen::emit_Op8_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, X64Op instruction, bool lock)
 {
     SWAG_ASSERT(reg < R8 && memReg < R8);
@@ -2043,4 +2013,64 @@ void X64Gen::emit_Not64(CPURegister reg)
     concat.addU8(getREX());
     concat.addU8(0xF7);
     concat.addU8(0xD0 | (reg & 0b111));
+}
+
+void X64Gen::emit_Inc8_Indirect(uint32_t stackOffset, CPURegister memReg)
+{
+    SWAG_ASSERT(memReg < R8);
+    concat.addU8(0xFE);
+    emit_ModRM(stackOffset, 0, memReg);
+}
+
+void X64Gen::emit_Dec8_Indirect(uint32_t stackOffset, CPURegister memReg)
+{
+    SWAG_ASSERT(memReg < R8);
+    concat.addU8(0xFE);
+    emit_ModRM(stackOffset, 1, memReg);
+}
+
+void X64Gen::emit_Inc16_Indirect(uint32_t stackOffset, CPURegister memReg)
+{
+    SWAG_ASSERT(memReg < R8);
+    concat.addU8(0x66);
+    concat.addU8(0xFF);
+    emit_ModRM(stackOffset, 0, memReg);
+}
+
+void X64Gen::emit_Dec16_Indirect(uint32_t stackOffset, CPURegister memReg)
+{
+    SWAG_ASSERT(memReg < R8);
+    concat.addU8(0x66);
+    concat.addU8(0xFF);
+    emit_ModRM(stackOffset, 1, memReg);
+}
+
+void X64Gen::emit_Inc32_Indirect(uint32_t stackOffset, CPURegister memReg)
+{
+    SWAG_ASSERT(memReg < R8);
+    concat.addU8(0xFF);
+    emit_ModRM(stackOffset, 0, memReg);
+}
+
+void X64Gen::emit_Dec32_Indirect(uint32_t stackOffset, CPURegister memReg)
+{
+    SWAG_ASSERT(memReg < R8);
+    concat.addU8(0xFF);
+    emit_ModRM(stackOffset, 1, memReg);
+}
+
+void X64Gen::emit_Inc64_Indirect(uint32_t stackOffset, CPURegister memReg)
+{
+    SWAG_ASSERT(memReg < R8);
+    concat.addU8(getREX());
+    concat.addU8(0xFF);
+    emit_ModRM(stackOffset, 0, memReg);
+}
+
+void X64Gen::emit_Dec64_Indirect(uint32_t stackOffset, CPURegister memReg)
+{
+    SWAG_ASSERT(memReg < R8);
+    concat.addU8(getREX());
+    concat.addU8(0xFF);
+    emit_ModRM(stackOffset, 1, memReg);
 }

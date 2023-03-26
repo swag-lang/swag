@@ -437,8 +437,6 @@ struct X64Gen
     void emit_CopyF32(CPURegister regSrc, CPURegister regDst);
     void emit_CopyF64(CPURegister regSrc, CPURegister regDst);
     void emit_CopyX(uint32_t count, uint32_t offset, CPURegister regDst, CPURegister regSrc);
-    void emit_Dec32_Indirect(uint32_t stackOffset, CPURegister reg);
-    void emit_Dec64_Indirect(uint32_t stackOffset, CPURegister reg);
     void emit_Extend_S8S16(CPURegister reg);
     void emit_Extend_S8S32(CPURegister reg);
     void emit_Extend_U8U32(CPURegister reg);
@@ -446,8 +444,6 @@ struct X64Gen
     void emit_Extend_U16U64(CPURegister regSrc, CPURegister regDst);
     void emit_Extend_U8U64(CPURegister regSrc, CPURegister regDst);
     void emit_GlobalString(const Utf8& str, CPURegister reg);
-    void emit_Inc32_Indirect(uint32_t stackOffset, CPURegister reg);
-    void emit_Inc64_Indirect(uint32_t stackOffset, CPURegister reg);
     void emit_Jump(JumpType jumpType, int32_t instructionCount, int32_t jumpOffset);
     void emit_Load16_Immediate(uint16_t val, CPURegister reg);
     void emit_Load16_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg = RDI);
@@ -529,4 +525,12 @@ struct X64Gen
     void emit_Not16(CPURegister reg);
     void emit_Not32(CPURegister reg);
     void emit_Not64(CPURegister reg);
+    void emit_Inc8_Indirect(uint32_t stackOffset, CPURegister memReg);
+    void emit_Inc16_Indirect(uint32_t stackOffset, CPURegister memReg);
+    void emit_Inc32_Indirect(uint32_t stackOffset, CPURegister memReg);
+    void emit_Inc64_Indirect(uint32_t stackOffset, CPURegister memReg);
+    void emit_Dec8_Indirect(uint32_t stackOffset, CPURegister memReg);
+    void emit_Dec16_Indirect(uint32_t stackOffset, CPURegister memReg);
+    void emit_Dec32_Indirect(uint32_t stackOffset, CPURegister memReg);
+    void emit_Dec64_Indirect(uint32_t stackOffset, CPURegister memReg);
 };
