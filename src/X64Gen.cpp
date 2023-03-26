@@ -2014,3 +2014,33 @@ void X64Gen::emit_Cqo()
 {
     concat.addString2("\x48\x99"); // cqo
 }
+
+void X64Gen::emit_Not8(CPURegister reg)
+{
+    SWAG_ASSERT(reg < R8);
+    concat.addU8(0xF6);
+    concat.addU8(0xD0 | (reg & 0b111));
+}
+
+void X64Gen::emit_Not16(CPURegister reg)
+{
+    SWAG_ASSERT(reg < R8);
+    concat.addU8(0x66);
+    concat.addU8(0xF7);
+    concat.addU8(0xD0 | (reg & 0b111));
+}
+
+void X64Gen::emit_Not32(CPURegister reg)
+{
+    SWAG_ASSERT(reg < R8);
+    concat.addU8(0xF7);
+    concat.addU8(0xD0 | (reg & 0b111));
+}
+
+void X64Gen::emit_Not64(CPURegister reg)
+{
+    SWAG_ASSERT(reg < R8);
+    concat.addU8(getREX());
+    concat.addU8(0xF7);
+    concat.addU8(0xD0 | (reg & 0b111));
+}

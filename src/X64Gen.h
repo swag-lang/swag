@@ -525,4 +525,8 @@ struct X64Gen
     void emit_Cwd();
     void emit_Cdq();
     void emit_Cqo();
+    void emit_Not8(CPURegister reg);
+    void emit_Not16(CPURegister reg);
+    void emit_Not32(CPURegister reg);
+    void emit_Not64(CPURegister reg);
 };
