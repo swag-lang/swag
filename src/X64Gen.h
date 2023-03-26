@@ -240,6 +240,7 @@ struct CoffFunction
     VectorNative<uint16_t> unwind;
     Vector<DbgLines>       dbgLines;
     AstNode*               node         = nullptr;
+    TypeInfoFuncAttr*      typeFunc     = nullptr;
     uint32_t               symbolIndex  = 0;
     uint32_t               startAddress = 0;
     uint32_t               endAddress   = 0;

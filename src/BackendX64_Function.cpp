@@ -50,6 +50,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     // Symbol
     auto symbolFuncIndex  = pp.getOrAddSymbol(funcName, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     auto coffFct          = registerFunction(pp, bc->node, symbolFuncIndex);
+    coffFct->typeFunc     = typeFunc;
     coffFct->startAddress = startAddress;
     if (debug)
         dbgSetLocation(coffFct, bc, nullptr, 0);
@@ -147,7 +148,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     {
         while (iReg < cc.byRegisterCount)
         {
-            uint32_t stackOffset = 16 + sizeStack + regOffset(iReg);
+            uint32_t stackOffset = coffFct->offsetRetVal + regOffset(iReg);
             pp.emit_Store64_Indirect(stackOffset, cc.byRegisterInteger[iReg], RDI);
             iReg++;
         }
@@ -2992,7 +2993,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             int paramIdx    = typeFunc->numParamsRegisters();
             if (typeFunc->returnByCopy())
                 paramIdx += 1;
-            stackOffset = 16 + sizeStack + regOffset(paramIdx);
+            stackOffset = coffFct->offsetRetVal + regOffset(paramIdx);
             pp.emit_LoadAddress_Indirect(stackOffset, RAX, RDI);
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
             pp.emit_Store64_Indirect(0, RAX, RCX);
@@ -3107,7 +3108,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::CopyRCtoRR2:
         {
-            int stackOffset = getParamStackOffset(typeFunc, typeFunc->numParamsRegisters(), offsetS4, sizeStack);
+            int stackOffset = getParamStackOffset(coffFct, typeFunc->numParamsRegisters());
             pp.emit_Load64_Indirect(stackOffset, RAX, RDI);
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
             pp.emit_Store64_Indirect(0, RCX, RAX);
@@ -3124,7 +3125,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::CopyRRtoRC:
         {
-            int stackOffset = getParamStackOffset(typeFunc, typeFunc->numParamsRegisters(), offsetS4, sizeStack);
+            int stackOffset = getParamStackOffset(coffFct, typeFunc->numParamsRegisters());
             pp.emit_Load64_Indirect(stackOffset, RAX, RDI);
             if (ip->b.u64)
             {
@@ -3245,45 +3246,45 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::GetParam8:
-            emitGetParam(pp, typeFunc, ip->a.u32, ip->c.u32, 1, offsetS4, sizeStack);
+            emitGetParam(pp, coffFct, ip->a.u32, ip->c.u32, 1);
             break;
         case ByteCodeOp::GetParam16:
-            emitGetParam(pp, typeFunc, ip->a.u32, ip->c.u32, 2, offsetS4, sizeStack);
+            emitGetParam(pp, coffFct, ip->a.u32, ip->c.u32, 2);
             break;
         case ByteCodeOp::GetParam32:
-            emitGetParam(pp, typeFunc, ip->a.u32, ip->c.u32, 4, offsetS4, sizeStack);
+            emitGetParam(pp, coffFct, ip->a.u32, ip->c.u32, 4);
             break;
         case ByteCodeOp::GetParam64:
-            emitGetParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack);
+            emitGetParam(pp, coffFct, ip->a.u32, ip->c.u32, 8);
             break;
         case ByteCodeOp::GetIncParam64:
-            emitGetParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, ip->d.u64);
+            emitGetParam(pp, coffFct, ip->a.u32, ip->c.u32, 8, ip->d.u64);
             break;
 
         case ByteCodeOp::GetParam64DeRef8:
-            emitGetParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, 0, 1);
+            emitGetParam(pp, coffFct, ip->a.u32, ip->c.u32, 8, 0, 1);
             break;
         case ByteCodeOp::GetParam64DeRef16:
-            emitGetParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, 0, 2);
+            emitGetParam(pp, coffFct, ip->a.u32, ip->c.u32, 8, 0, 2);
             break;
         case ByteCodeOp::GetParam64DeRef32:
-            emitGetParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, 0, 4);
+            emitGetParam(pp, coffFct, ip->a.u32, ip->c.u32, 8, 0, 4);
             break;
         case ByteCodeOp::GetParam64DeRef64:
-            emitGetParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, 0, 8);
+            emitGetParam(pp, coffFct, ip->a.u32, ip->c.u32, 8, 0, 8);
             break;
 
         case ByteCodeOp::GetIncParam64DeRef8:
-            emitGetParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, ip->d.u64, 1);
+            emitGetParam(pp, coffFct, ip->a.u32, ip->c.u32, 8, ip->d.u64, 1);
             break;
         case ByteCodeOp::GetIncParam64DeRef16:
-            emitGetParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, ip->d.u64, 2);
+            emitGetParam(pp, coffFct, ip->a.u32, ip->c.u32, 8, ip->d.u64, 2);
             break;
         case ByteCodeOp::GetIncParam64DeRef32:
-            emitGetParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, ip->d.u64, 4);
+            emitGetParam(pp, coffFct, ip->a.u32, ip->c.u32, 8, ip->d.u64, 4);
             break;
         case ByteCodeOp::GetIncParam64DeRef64:
-            emitGetParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, ip->d.u64, 8);
+            emitGetParam(pp, coffFct, ip->a.u32, ip->c.u32, 8, ip->d.u64, 8);
             break;
 
         case ByteCodeOp::MakeLambda:

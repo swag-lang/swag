@@ -4,26 +4,27 @@
 #include "Module.h"
 #include "Workspace.h"
 
-uint32_t BackendX64::getParamStackOffset(TypeInfoFuncAttr* typeFunc, int paramIdx, int offsetS4, int sizeStack)
+uint32_t BackendX64::getParamStackOffset(CoffFunction* coffFct, int paramIdx)
 {
-    const auto& cc = g_CallConv[typeFunc->callConv];
+    const auto& cc = g_CallConv[coffFct->typeFunc->callConv];
 
     // If this was passed as a register, then get the value from storeS4 (where input registers have been saveed)
     // instead of value from the stack
     if (paramIdx < (int) cc.byRegisterCount)
-        return offsetS4 + regOffset(paramIdx);
+        return coffFct->offsetParam + regOffset(paramIdx);
 
     // Value from the caller stack
     // We need to add 8 because the call has pushed one register on the stack
     // We need to add 8 again, because of the first 'push edi' at the start of the function
     // Se we add 16 in total to get the offset of the parameter in the stack
-    return 16 + sizeStack + regOffset(paramIdx);
+    return coffFct->offsetRetVal + regOffset(paramIdx);
 }
 
-void BackendX64::emitGetParam(X64Gen& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int storeS4, int sizeStack, uint64_t toAdd, int deRefSize)
+void BackendX64::emitGetParam(X64Gen& pp, CoffFunction* coffFct, int reg, int paramIdx, int sizeOf, uint64_t toAdd, int deRefSize)
 {
+    auto        typeFunc   = coffFct->typeFunc;
     const auto& cc         = g_CallConv[typeFunc->callConv];
-    int         paramStack = getParamStackOffset(typeFunc, paramIdx, storeS4, sizeStack);
+    int         paramStack = getParamStackOffset(coffFct, paramIdx);
     auto        typeParam  = TypeManager::concreteType(typeFunc->parameters[typeFunc->registerIdxToParamIdx(paramIdx)]->typeInfo);
     if (typeParam->isAutoConstPointerRef())
         typeParam = TypeManager::concretePtrRefType(typeParam);
