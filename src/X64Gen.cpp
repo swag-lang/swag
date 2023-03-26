@@ -430,7 +430,7 @@ void X64Gen::emit_Clear8(uint8_t reg)
 {
     SWAG_ASSERT(reg < R8);
     concat.addU8(0x30);
-    concat.addU8(getModRM(3, reg, reg));
+    concat.addU8(getModRM(REGREG, reg, reg));
 }
 
 void X64Gen::emit_Clear16(uint8_t reg)
@@ -438,21 +438,21 @@ void X64Gen::emit_Clear16(uint8_t reg)
     SWAG_ASSERT(reg < R8);
     concat.addU8(0x66);
     concat.addU8(0x31);
-    concat.addU8(getModRM(3, reg, reg));
+    concat.addU8(getModRM(REGREG, reg, reg));
 }
 
 void X64Gen::emit_Clear32(uint8_t reg)
 {
     SWAG_ASSERT(reg < R8);
     concat.addU8(0x31);
-    concat.addU8(getModRM(3, reg, reg));
+    concat.addU8(getModRM(REGREG, reg, reg));
 }
 
 void X64Gen::emit_Clear64(uint8_t reg)
 {
     concat.addU8(0x48 | ((reg & 0b1000) >> 1) | ((reg & 0b1000) >> 3));
     concat.addU8(0x31);
-    concat.addU8(getModRM(3, (reg & 0b111), (reg & 0b111)));
+    concat.addU8(getModRM(REGREG, reg, reg));
 }
 
 void X64Gen::emit_ClearN(uint8_t reg, uint8_t numBits)
@@ -589,7 +589,7 @@ void X64Gen::emit_Copy64(uint8_t regSrc, uint8_t regDst)
 {
     concat.addU8(0x48 | ((regDst & 0b1000) >> 3) | ((regSrc & 0b1000) >> 1));
     concat.addU8(0x89);
-    concat.addU8(getModRM(0b11, regSrc & 0b111, regDst & 0b111));
+    concat.addU8(getModRM(REGREG, regSrc, regDst));
 }
 
 void X64Gen::emit_Copy8(uint8_t regSrc, uint8_t regDst)
@@ -598,7 +598,7 @@ void X64Gen::emit_Copy8(uint8_t regSrc, uint8_t regDst)
     if (regDst >= R8)
         concat.addU8(0x41);
     concat.addU8(0x88);
-    concat.addU8(getModRM(0b11, regSrc & 0b111, regDst & 0b111));
+    concat.addU8(getModRM(REGREG, regSrc, regDst));
 }
 
 void X64Gen::emit_Copy16(uint8_t regSrc, uint8_t regDst)
@@ -608,7 +608,7 @@ void X64Gen::emit_Copy16(uint8_t regSrc, uint8_t regDst)
     if (regDst >= R8)
         concat.addU8(0x41);
     concat.addU8(0x89);
-    concat.addU8(getModRM(0b11, regSrc & 0b111, regDst & 0b111));
+    concat.addU8(getModRM(REGREG, regSrc, regDst));
 }
 
 void X64Gen::emit_Copy32(uint8_t regSrc, uint8_t regDst)
@@ -617,7 +617,7 @@ void X64Gen::emit_Copy32(uint8_t regSrc, uint8_t regDst)
     if (regDst >= R8)
         concat.addU8(0x41);
     concat.addU8(0x89);
-    concat.addU8(getModRM(0b11, regSrc & 0b111, regDst & 0b111));
+    concat.addU8(getModRM(REGREG, regSrc, regDst));
 }
 
 void X64Gen::emit_CopyF32(uint8_t regSrc, uint8_t regDst)
@@ -758,14 +758,14 @@ void X64Gen::emit_Test64(uint8_t reg1, uint8_t reg2)
 {
     concat.addU8(0x48 | ((reg1 & 0b1000) >> 3) | ((reg2 & 0b1000) >> 1));
     concat.addU8(0x85);
-    concat.addU8(getModRM(0b11, reg2 & 0b111, reg1 & 0b111));
+    concat.addU8(getModRM(REGREG, reg2, reg1));
 }
 
 void X64Gen::emit_Test32(uint8_t reg1, uint8_t reg2)
 {
     SWAG_ASSERT(reg1 < R8 && reg2 < R8);
     concat.addU8(0x85);
-    concat.addU8(getModRM(0b11, reg2 & 0b111, reg1 & 0b111));
+    concat.addU8(getModRM(REGREG, reg2, reg1));
 }
 
 void X64Gen::emit_Test16(uint8_t reg1, uint8_t reg2)
@@ -773,21 +773,21 @@ void X64Gen::emit_Test16(uint8_t reg1, uint8_t reg2)
     SWAG_ASSERT(reg1 < R8 && reg2 < R8);
     concat.addU8(0x66);
     concat.addU8(0x85);
-    concat.addU8(getModRM(0b11, reg2 & 0b111, reg1 & 0b111));
+    concat.addU8(getModRM(REGREG, reg2, reg1));
 }
 
 void X64Gen::emit_Test8(uint8_t reg1, uint8_t reg2)
 {
     SWAG_ASSERT(reg1 < R8 && reg2 < R8);
     concat.addU8(0x84);
-    concat.addU8(getModRM(0b11, reg2 & 0b111, reg1 & 0b111));
+    concat.addU8(getModRM(REGREG, reg2, reg1));
 }
 
 void X64Gen::emit_Cmp8(uint8_t reg1, uint8_t reg2)
 {
     SWAG_ASSERT(reg1 < R8 && reg2 < R8);
     concat.addU8(0x38);
-    concat.addU8(getModRM(0b11, reg2 & 0b111, reg1 & 0b111));
+    concat.addU8(getModRM(REGREG, reg2, reg1));
 }
 
 void X64Gen::emit_Cmp16(uint8_t reg1, uint8_t reg2)
@@ -795,21 +795,21 @@ void X64Gen::emit_Cmp16(uint8_t reg1, uint8_t reg2)
     SWAG_ASSERT(reg1 < R8 && reg2 < R8);
     concat.addU8(0x66);
     concat.addU8(0x39);
-    concat.addU8(getModRM(0b11, reg2 & 0b111, reg1 & 0b111));
+    concat.addU8(getModRM(REGREG, reg2, reg1));
 }
 
 void X64Gen::emit_Cmp32(uint8_t reg1, uint8_t reg2)
 {
     SWAG_ASSERT(reg1 < R8 && reg2 < R8);
     concat.addU8(0x39);
-    concat.addU8(getModRM(0b11, reg2 & 0b111, reg1 & 0b111));
+    concat.addU8(getModRM(REGREG, reg2, reg1));
 }
 
 void X64Gen::emit_Cmp64(uint8_t reg1, uint8_t reg2)
 {
     concat.addU8(0x48 | ((reg1 & 0b1000) >> 3) | ((reg2 & 0b1000) >> 1));
     concat.addU8(0x39);
-    concat.addU8(getModRM(0b11, reg2 & 0b111, reg1 & 0b111));
+    concat.addU8(getModRM(REGREG, reg2, reg1));
 }
 
 void X64Gen::emit_Cmp64_Immediate(uint64_t value, uint8_t reg)
@@ -841,7 +841,7 @@ void X64Gen::emit_CmpF32(uint8_t reg1, uint8_t reg2)
     SWAG_ASSERT(reg1 < R8 && reg2 < R8);
     concat.addU8(0x0F);
     concat.addU8(0x2F);
-    concat.addU8(getModRM(0b11, reg1 & 0b111, reg2 & 0b111));
+    concat.addU8(getModRM(REGREG, reg1, reg2));
 }
 
 void X64Gen::emit_CmpF64(uint8_t reg1, uint8_t reg2)
@@ -850,7 +850,7 @@ void X64Gen::emit_CmpF64(uint8_t reg1, uint8_t reg2)
     concat.addU8(0x66);
     concat.addU8(0x0F);
     concat.addU8(0x2F);
-    concat.addU8(getModRM(0b11, reg1 & 0b111, reg2 & 0b111));
+    concat.addU8(getModRM(REGREG, reg1, reg2));
 }
 
 void X64Gen::emit_Cmp8_Indirect(uint32_t offsetStack, uint8_t reg, uint8_t memReg)
@@ -1059,7 +1059,7 @@ void X64Gen::emit_Op8(uint8_t reg1, uint8_t reg2, X64Op instruction)
 {
     SWAG_ASSERT(reg1 < R8 && reg2 < R8);
     concat.addU8((uint8_t) instruction & ~1);
-    concat.addU8(getModRM(0b11, reg1, reg2));
+    concat.addU8(getModRM(REGREG, reg1, reg2));
 }
 
 void X64Gen::emit_Op16(uint8_t reg1, uint8_t reg2, X64Op instruction)
@@ -1067,21 +1067,21 @@ void X64Gen::emit_Op16(uint8_t reg1, uint8_t reg2, X64Op instruction)
     SWAG_ASSERT(reg1 < R8 && reg2 < R8);
     concat.addU8(0x66);
     concat.addU8((uint8_t) instruction);
-    concat.addU8(getModRM(0b11, reg1, reg2));
+    concat.addU8(getModRM(REGREG, reg1, reg2));
 }
 
 void X64Gen::emit_Op32(uint8_t reg1, uint8_t reg2, X64Op instruction)
 {
     SWAG_ASSERT(reg1 < R8 && reg2 < R8);
     concat.addU8((uint8_t) instruction);
-    concat.addU8(getModRM(0b11, reg1, reg2));
+    concat.addU8(getModRM(REGREG, reg1, reg2));
 }
 
 void X64Gen::emit_Op64(uint8_t reg1, uint8_t reg2, X64Op instruction)
 {
     concat.addU8(0x48 | ((reg2 & 0b1000) >> 3) | ((reg1 & 0b1000) >> 1));
     concat.addU8((uint8_t) instruction);
-    concat.addU8(getModRM(0b11, reg1 & 0b111, reg2 & 0b111));
+    concat.addU8(getModRM(REGREG, reg1, reg2));
 }
 
 void X64Gen::emit_Add64_Immediate(uint64_t value, uint8_t reg)
