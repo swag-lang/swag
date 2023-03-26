@@ -512,7 +512,7 @@ struct X64Gen
     void emit_StoreF64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg = RDI);
     void emit_StoreN_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg, uint8_t numBits);
     void emit_Sub32_RSP(uint32_t value);
-    void emit_Sub64_Immediate(uint64_t value, CPURegister reg);
+    void emit_Sub64_RAX(uint64_t value);
     void emit_Symbol_RelocationAddr(CPURegister reg, uint32_t symbolIndex, uint32_t offset);
     void emit_Symbol_RelocationValue(CPURegister reg, uint32_t symbolIndex, uint32_t offset);
     void emit_Test16(uint8_t reg1, uint8_t reg2);

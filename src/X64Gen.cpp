@@ -1076,35 +1076,51 @@ void X64Gen::emit_Add64_Immediate(uint64_t value, CPURegister reg)
 {
     if (!value)
         return;
+
     SWAG_ASSERT(reg == RAX || reg == RCX);
 
     concat.addU8(getREX());
-    if (value <= 0x7F)
+    if (reg == RAX)
     {
-        concat.addU8(0x83);
-        concat.addU8(0xC0 | reg);
-        concat.addU8((uint8_t) value);
-    }
-    else if (reg == RAX)
-    {
-        concat.addU8(0x05);
-        concat.addU32((uint32_t) value);
+        if (value == 1)
+        {
+            concat.addU8(0xFF);
+            concat.addU8(0xC0); // inc rax
+        }
+        else
+        {
+            concat.addU8(0x05);
+            concat.addU32((uint32_t) value);
+        }
     }
     else if (reg == RCX)
     {
-        concat.addU8(0x81);
-        concat.addU8(0xC1);
-        concat.addU32((uint32_t) value);
+        if (value == 1)
+        {
+            concat.addU8(0xFF);
+            concat.addU8(0xC1); // inc rcx
+        }
+        else
+        {
+            concat.addU8(0x81);
+            concat.addU8(0xC1);
+            concat.addU32((uint32_t) value);
+        }
     }
 }
 
-void X64Gen::emit_Sub64_Immediate(uint64_t value, CPURegister reg)
+void X64Gen::emit_Sub64_RAX(uint64_t value)
 {
     if (!value)
         return;
-    SWAG_ASSERT(reg == RAX);
 
-    if (value > 0x7FFFFFFF)
+    if (value == 1)
+    {
+        concat.addU8(getREX());
+        concat.addU8(0xFF);
+        concat.addU8(0xC8); // dec rax
+    }
+    else if (value > 0x7FFFFFFF)
     {
         emit_Load64_Immediate(value, RCX);
         concat.addU8(getREX());
@@ -1115,7 +1131,7 @@ void X64Gen::emit_Sub64_Immediate(uint64_t value, CPURegister reg)
     {
         concat.addU8(getREX());
         concat.addU8(0x83);
-        concat.addU8(0xE8 | reg);
+        concat.addU8(0xE8);
         concat.addU8((uint8_t) value);
     }
     else
@@ -1128,6 +1144,9 @@ void X64Gen::emit_Sub64_Immediate(uint64_t value, CPURegister reg)
 
 void X64Gen::emit_Mul64_RAX(uint64_t value)
 {
+    if (value == 1)
+        return;
+
     if (value == 2)
     {
         concat.addString3("\x48\xD1\xE0"); // shl rax, 1
