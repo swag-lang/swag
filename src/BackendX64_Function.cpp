@@ -93,10 +93,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     auto     beforeProlog = concat.totalCount();
     uint32_t sizeProlog   = 0;
 
+    // We need to start at sizeof(void*) because the call has pushed one register on the stack
+    uint32_t offsetCallerStackParams = sizeof(void*);
+
     // RDI will be a pointer to the stack, and the list of registers is stored at the start
     // of the stack
     VectorNative<uint16_t> unwind;
+
     pp.emit_Push(RDI);
+    offsetCallerStackParams += sizeof(void*);
+
     sizeProlog       = concat.totalCount() - beforeProlog;
     uint16_t unwind0 = computeUnwindPushRDI(sizeProlog);
 
@@ -108,10 +114,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
     pp.emit_Sub32_RSP(sizeStack + sizeParamsStack);
 
-    coffFct->offsetStack  = offsetStack;
-    coffFct->offsetRetVal = 16 + sizeStack;
-    coffFct->offsetParam  = offsetS4;
-    coffFct->frameSize    = sizeStack + sizeParamsStack;
+    coffFct->offsetStack             = offsetStack;
+    coffFct->offsetCallerStackParams = offsetCallerStackParams + sizeStack;
+    coffFct->offsetLocalStackParams  = offsetS4;
+    coffFct->frameSize               = sizeStack + sizeParamsStack;
 
     sizeProlog = concat.totalCount() - beforeProlog;
     computeUnwindStack(sizeStack + sizeParamsStack, sizeProlog, unwind);
@@ -148,7 +154,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     {
         while (iReg < cc.byRegisterCount)
         {
-            uint32_t stackOffset = coffFct->offsetRetVal + regOffset(iReg);
+            uint32_t stackOffset = coffFct->offsetCallerStackParams + regOffset(iReg);
             pp.emit_Store64_Indirect(stackOffset, cc.byRegisterInteger[iReg], RDI);
             iReg++;
         }
@@ -2993,7 +2999,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             int paramIdx    = typeFunc->numParamsRegisters();
             if (typeFunc->returnByCopy())
                 paramIdx += 1;
-            stackOffset = coffFct->offsetRetVal + regOffset(paramIdx);
+            stackOffset = coffFct->offsetCallerStackParams + regOffset(paramIdx);
             pp.emit_LoadAddress_Indirect(stackOffset, RAX, RDI);
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
             pp.emit_Store64_Indirect(0, RAX, RCX);

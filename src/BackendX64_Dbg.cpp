@@ -1245,10 +1245,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                         regParam += 2;
                     else if (typeFunc->isVariadic())
                         regParam = 0;
-                    if (regParam < 4)
-                        offsetStackParam = (regParam * sizeof(Register)) + f.offsetParam;
-                    else
-                        offsetStackParam = (regParam * sizeof(Register)) + f.offsetRetVal;
+                    offsetStackParam = getParamStackOffset(&f, regParam);
                     regCounter += typeParam->numRegisters();
 
                     //////////
@@ -1487,16 +1484,9 @@ bool BackendX64::dbgEmitScope(X64Gen& pp, Concat& concat, CoffFunction& f, Scope
         concat.addU16(R_RDI);                  // Register
         concat.addU16(0);                      // Flags
         if (overload->flags & OVERLOAD_RETVAL) // Offset to register
-        {
-            auto cptReg = typeFunc->numParamsRegisters();
-            if (cptReg < 4)
-                concat.addU32(regOffset(cptReg) + f.offsetParam);
-            else
-                concat.addU32(regOffset(cptReg) + f.offsetRetVal);
-        }
+            concat.addU32(getParamStackOffset(&f, typeFunc->numParamsRegisters()));
         else
             concat.addU32(overload->computedValue.storageOffset + f.offsetStack);
-
         dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex, localVar->ownerScope->backendStart);
         auto endOffsetVar = localVar->ownerScope->backendEnd == 0 ? f.endAddress : localVar->ownerScope->backendEnd;
         concat.addU16((uint16_t) (endOffsetVar - localVar->ownerScope->backendStart)); // Range
