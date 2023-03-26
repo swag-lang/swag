@@ -2365,13 +2365,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::GetFromStack8:
-            pp.emit_Clear64(RAX);
-            pp.emit_Load8_Indirect(offsetStack + ip->b.u32, RAX, RDI);
+            pp.emit_LoadU8U64_Indirect(offsetStack + ip->b.u32, RAX, RDI);
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             break;
         case ByteCodeOp::GetFromStack16:
-            pp.emit_Clear64(RAX);
-            pp.emit_Load16_Indirect(offsetStack + ip->b.u32, RAX, RDI);
+            pp.emit_LoadU16U64_Indirect(offsetStack + ip->b.u32, RAX, RDI);
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             break;
         case ByteCodeOp::GetFromStack32:
