@@ -354,7 +354,7 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     {
         if (!dep->module->isSwag)
         {
-            pp.emit_Add64_Immediate(sizeof(SwagModule), RCX);
+            pp.emit_Add64_RCX(sizeof(SwagModule));
             continue;
         }
 
@@ -368,7 +368,7 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
 
         pp.emit_Store64_Indirect(0, cc.returnByRegisterInteger, RCX);
 
-        pp.emit_Add64_Immediate(sizeof(SwagModule), RCX);
+        pp.emit_Add64_RCX(sizeof(SwagModule));
     }
 
     // Call to #init functions

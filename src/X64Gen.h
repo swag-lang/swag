@@ -403,6 +403,8 @@ struct X64Gen
 
     void emit_Add32_RSP(uint32_t value);
     void emit_Add64_Immediate(uint64_t value, CPURegister reg);
+    void emit_Add64_RAX(uint64_t value);
+    void emit_Add64_RCX(uint64_t value);
     void emit_Call_Indirect(CPURegister reg);
     void emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, void* retCopy = nullptr);
     void emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<X64PushParam>& pushRAParams, uint32_t offsetRT, void* retCopy = nullptr);

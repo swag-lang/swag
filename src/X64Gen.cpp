@@ -1074,38 +1074,66 @@ void X64Gen::emit_Op64(uint8_t reg1, uint8_t reg2, X64Op instruction)
 
 void X64Gen::emit_Add64_Immediate(uint64_t value, CPURegister reg)
 {
+    switch (reg)
+    {
+    case RAX:
+        emit_Add64_RAX(value);
+        break;
+    case RCX:
+        emit_Add64_RCX(value);
+        break;
+    default:
+        SWAG_ASSERT(false);
+        break;
+    }
+}
+
+void X64Gen::emit_Add64_RAX(uint64_t value)
+{
     if (!value)
         return;
 
-    SWAG_ASSERT(reg == RAX || reg == RCX);
+    concat.addU8(getREX());
+    if (value == 1)
+    {
+        concat.addU8(0xFF);
+        concat.addU8(0xC0); // inc rax
+    }
+    else if (value <= 0x7F)
+    {
+        concat.addU8(0x83);
+        concat.addU8(0xC0);
+        concat.addU8((uint8_t) value);
+    }
+    else
+    {
+        concat.addU8(0x05);
+        concat.addU32((uint32_t) value);
+    }
+}
+
+void X64Gen::emit_Add64_RCX(uint64_t value)
+{
+    if (!value)
+        return;
 
     concat.addU8(getREX());
-    if (reg == RAX)
+    if (value == 1)
     {
-        if (value == 1)
-        {
-            concat.addU8(0xFF);
-            concat.addU8(0xC0); // inc rax
-        }
-        else
-        {
-            concat.addU8(0x05);
-            concat.addU32((uint32_t) value);
-        }
+        concat.addU8(0xFF);
+        concat.addU8(0xC1); // inc rcx
     }
-    else if (reg == RCX)
+    else if (value <= 0x7F)
     {
-        if (value == 1)
-        {
-            concat.addU8(0xFF);
-            concat.addU8(0xC1); // inc rcx
-        }
-        else
-        {
-            concat.addU8(0x81);
-            concat.addU8(0xC1);
-            concat.addU32((uint32_t) value);
-        }
+        concat.addU8(0x83);
+        concat.addU8(0xC1);
+        concat.addU8((uint8_t) value);
+    }
+    else
+    {
+        concat.addU8(0x81);
+        concat.addU8(0xC1);
+        concat.addU32((uint32_t) value);
     }
 }
 

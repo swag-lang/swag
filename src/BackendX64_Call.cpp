@@ -115,7 +115,7 @@ void BackendX64::emitGetParam(X64Gen& pp, CoffFunction* coffFct, int reg, uint32
             pp.emit_Load64_Indirect((uint32_t)toAdd, RAX, RAX);
             break;
         default:
-            pp.emit_Add64_Immediate(toAdd, RAX);
+            pp.emit_Add64_RAX(toAdd);
             break;
         }
 
