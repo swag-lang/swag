@@ -585,37 +585,34 @@ void X64Gen::emit_Ret()
     concat.addU8(0xC3);
 }
 
-void X64Gen::emit_Copy64(uint8_t regSrc, uint8_t regDst)
+void X64Gen::emit_Copy8(CPURegister regSrc, CPURegister regDst)
 {
-    concat.addU8(0x48 | ((regDst & 0b1000) >> 3) | ((regSrc & 0b1000) >> 1));
-    concat.addU8(0x89);
-    concat.addU8(getModRM(REGREG, regSrc, regDst));
-}
-
-void X64Gen::emit_Copy8(uint8_t regSrc, uint8_t regDst)
-{
-    SWAG_ASSERT(regDst <= R9 && regSrc < R8);
-    if (regDst >= R8)
-        concat.addU8(0x41);
+    if (regSrc >= R8 || regDst >= R8)
+        concat.addU8(getREX(false, regSrc >= R8, false, regDst >= R8));
     concat.addU8(0x88);
     concat.addU8(getModRM(REGREG, regSrc, regDst));
 }
 
-void X64Gen::emit_Copy16(uint8_t regSrc, uint8_t regDst)
+void X64Gen::emit_Copy16(CPURegister regSrc, CPURegister regDst)
 {
-    SWAG_ASSERT(regDst <= R9 && regSrc < R8);
     concat.addU8(0x66);
-    if (regDst >= R8)
-        concat.addU8(0x41);
+    if (regSrc >= R8 || regDst >= R8)
+        concat.addU8(getREX(false, regSrc >= R8, false, regDst >= R8));
     concat.addU8(0x89);
     concat.addU8(getModRM(REGREG, regSrc, regDst));
 }
 
-void X64Gen::emit_Copy32(uint8_t regSrc, uint8_t regDst)
+void X64Gen::emit_Copy32(CPURegister regSrc, CPURegister regDst)
 {
-    SWAG_ASSERT(regDst <= R9 && regSrc < R8);
-    if (regDst >= R8)
-        concat.addU8(0x41);
+    if (regSrc >= R8 || regDst >= R8)
+        concat.addU8(getREX(false, regSrc >= R8, false, regDst >= R8));
+    concat.addU8(0x89);
+    concat.addU8(getModRM(REGREG, regSrc, regDst));
+}
+
+void X64Gen::emit_Copy64(CPURegister regSrc, CPURegister regDst)
+{
+    concat.addU8(getREX(true, regSrc >= R8, false, regDst >= R8));
     concat.addU8(0x89);
     concat.addU8(getModRM(REGREG, regSrc, regDst));
 }
@@ -948,7 +945,7 @@ void X64Gen::emit_CmpF64_Indirect(uint32_t offsetStack, uint8_t reg, uint8_t mem
     emit_ModRM(offsetStack, reg & 0b111, memReg & 0b111);
 }
 
-void X64Gen::emit_LoadAddress_Indirect(uint32_t stackOffset, uint8_t reg, uint8_t memReg)
+void X64Gen::emit_LoadAddress_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
     if (stackOffset == 0)
     {

@@ -429,10 +429,10 @@ struct X64Gen
     void emit_CmpF32_Indirect(uint32_t offsetStack, uint8_t reg, uint8_t memReg);
     void emit_CmpF64(uint8_t reg1, uint8_t reg2);
     void emit_CmpF64_Indirect(uint32_t offsetStack, uint8_t reg, uint8_t memReg);
-    void emit_Copy16(uint8_t regSrc, uint8_t regDst);
-    void emit_Copy32(uint8_t regSrc, uint8_t regDst);
-    void emit_Copy64(uint8_t regSrc, uint8_t regDst);
-    void emit_Copy8(uint8_t regSrc, uint8_t regDst);
+    void emit_Copy8(CPURegister regSrc, CPURegister regDst);
+    void emit_Copy16(CPURegister regSrc, CPURegister regDst);
+    void emit_Copy32(CPURegister regSrc, CPURegister regDst);
+    void emit_Copy64(CPURegister regSrc, CPURegister regDst);
     void emit_CopyF32(uint8_t regSrc, uint8_t regDst);
     void emit_CopyF64(uint8_t regSrc, uint8_t regDst);
     void emit_CopyX(uint32_t count, uint32_t offset, uint8_t regDst, uint8_t regSrc);
@@ -456,7 +456,7 @@ struct X64Gen
     void emit_Load64_Indirect(uint32_t stackOffset, uint8_t reg, uint8_t memReg = RDI);
     void emit_Load8_Immediate(uint8_t val, uint8_t reg);
     void emit_Load8_Indirect(uint32_t stackOffset, uint8_t reg, uint8_t memReg = RDI);
-    void emit_LoadAddress_Indirect(uint32_t stackOffset, uint8_t reg, uint8_t memReg);
+    void emit_LoadAddress_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg);
     void emit_LoadF32_Indirect(uint32_t stackOffset, uint8_t reg, uint8_t memReg = RDI);
     void emit_LoadF64_Indirect(uint32_t stackOffset, uint8_t reg, uint8_t memReg = RDI);
     void emit_LoadN_Immediate(Register& val, uint8_t reg, uint8_t numBits);
