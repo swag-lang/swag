@@ -2314,26 +2314,26 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::DeRef8:
-            SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF); // If this triggers, see DeRef64 below
+            SWAG_ASSERT(ip->c.u64 <= 0x7FFFFFFF); // If this triggers, see DeRef64 below
             pp.emit_Load64_Indirect(regOffset(ip->b.u32), RAX);
             pp.emit_LoadU8U64_Indirect(ip->c.u32, RAX, RAX);
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             break;
         case ByteCodeOp::DeRef16:
-            SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF); // If this triggers, see DeRef64 below
+            SWAG_ASSERT(ip->c.u64 <= 0x7FFFFFFF); // If this triggers, see DeRef64 below
             pp.emit_Load64_Indirect(regOffset(ip->b.u32), RAX);
             pp.emit_LoadU16U64_Indirect(ip->c.u32, RAX, RAX);
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             break;
         case ByteCodeOp::DeRef32:
-            SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF); // If this triggers, see DeRef64 below
+            SWAG_ASSERT(ip->c.u64 <= 0x7FFFFFFF); // If this triggers, see DeRef64 below
             pp.emit_Load64_Indirect(regOffset(ip->b.u32), RAX);
             pp.emit_Load32_Indirect(ip->c.u32, RAX, RAX);
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             break;
         case ByteCodeOp::DeRef64:
             pp.emit_Load64_Indirect(regOffset(ip->b.u32), RAX);
-            if (ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF)
+            if (ip->c.u64 <= 0x7FFFFFFF)
                 pp.emit_Load64_Indirect(ip->c.u32, RAX, RAX);
             else
             {
