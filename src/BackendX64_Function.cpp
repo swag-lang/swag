@@ -132,10 +132,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_StoreF64_Indirect(offsetS4 + (iReg * sizeof(Register)), cc.byRegisterFloat[iReg], RDI);
         else
             pp.emit_Store64_Indirect(offsetS4 + (iReg * sizeof(Register)), cc.byRegisterInteger[iReg], RDI);
-
-        if (iReg == 0)
-            pp.emit_Load64_Indirect(offsetS4, R11, RDI);
-
         iReg++;
     }
 

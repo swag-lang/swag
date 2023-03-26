@@ -32,26 +32,17 @@ void BackendX64::emitGetParam(X64Gen& pp, TypeInfoFuncAttr* typeFunc, int reg, i
     {
     case 1:
         SWAG_ASSERT(!toAdd);
-        if (!paramIdx)
-            pp.emit_Extend_U8U64(R11, RAX);
-        else
-            pp.emit_LoadU8U64_Indirect(paramStack, RAX, RDI);
+        pp.emit_LoadU8U64_Indirect(paramStack, RAX, RDI);
         pp.emit_Store64_Indirect(regOffset(reg), RAX);
         return;
     case 2:
         SWAG_ASSERT(!toAdd);
-        if (!paramIdx)
-            pp.emit_Extend_U16U64(R11, RAX);
-        else
-            pp.emit_LoadU16U64_Indirect(paramStack, RAX, RDI);
+        pp.emit_LoadU16U64_Indirect(paramStack, RAX, RDI);
         pp.emit_Store64_Indirect(regOffset(reg), RAX);
         return;
     case 4:
         SWAG_ASSERT(!toAdd);
-        /*if (!paramIdx)
-            pp.emit_Copy32(R11, RAX);
-        else*/
-            pp.emit_Load32_Indirect(paramStack, RAX, RDI);
+        pp.emit_Load32_Indirect(paramStack, RAX, RDI);
         pp.emit_Store64_Indirect(regOffset(reg), RAX);
         return;
     }
