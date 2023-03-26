@@ -394,6 +394,7 @@ struct X64Gen
 
     void clearInstructionCache();
 
+    uint8_t     getREX(bool w = true, bool r = false, bool x = false, bool b = false);
     uint8_t     getModRM(uint8_t mod, uint8_t r, uint8_t m);
     CoffSymbol* getSymbol(const Utf8& name);
     CoffSymbol* getOrAddSymbol(const Utf8& name, CoffSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
@@ -439,10 +440,10 @@ struct X64Gen
     void emit_Dec64_Indirect(uint32_t stackOffset, uint8_t reg);
     void emit_Extend_S8S16(uint8_t reg);
     void emit_Extend_S8S32(uint8_t reg);
-    void emit_Extend_U16U32(uint8_t reg);
-    void emit_Extend_U16U64(uint8_t reg);
     void emit_Extend_U8U32(uint8_t reg);
-    void emit_Extend_U8U64(uint8_t reg);
+    void emit_Extend_U16U32(uint8_t reg);
+    void emit_Extend_U16U64(uint8_t regSrc, uint8_t regDst);
+    void emit_Extend_U8U64(uint8_t regSrc, uint8_t regDst);
     void emit_GlobalString(const Utf8& str, uint8_t reg);
     void emit_Inc32_Indirect(uint32_t stackOffset, uint8_t reg);
     void emit_Inc64_Indirect(uint32_t stackOffset, uint8_t reg);

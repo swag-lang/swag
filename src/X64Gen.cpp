@@ -15,9 +15,23 @@ void X64Gen::clearInstructionCache()
     storageReg      = 0;
 }
 
+uint8_t X64Gen::getREX(bool w, bool r, bool x, bool b)
+{
+    uint8_t REX = 0x40;
+    if (w) // 64 bits
+        REX |= 8;
+    if (r) // extended MODRM.reg
+        REX |= 4;
+    if (x) // extended SIB.index
+        REX |= 2;
+    if (b) // extended MODRM.rm
+        REX |= 1;
+    return REX;
+}
+
 uint8_t X64Gen::getModRM(uint8_t mod, uint8_t r, uint8_t m)
 {
-    return mod << 6 | r << 3 | m;
+    return (mod << 6) | ((r & 0b111) << 3) | (m & 0b111);
 }
 
 CoffSymbol* X64Gen::getSymbol(const Utf8& name)
@@ -1247,22 +1261,22 @@ void X64Gen::emit_Extend_U16U32(uint8_t reg)
     concat.addU8(getModRM(REGREG, reg, reg));
 }
 
-void X64Gen::emit_Extend_U8U64(uint8_t reg)
+void X64Gen::emit_Extend_U8U64(uint8_t regSrc, uint8_t regDst)
 {
-    // movzx rax, al
-    concat.addU8(0x48);
+    // movzx regDst.64, regSrc.8
+    concat.addU8(getREX(true, regDst >= R8, false, regSrc >= R8));
     concat.addU8(0x0F);
     concat.addU8(0xB6);
-    concat.addU8(getModRM(REGREG, reg, reg));
+    concat.addU8(getModRM(REGREG, regDst, regSrc));
 }
 
-void X64Gen::emit_Extend_U16U64(uint8_t reg)
+void X64Gen::emit_Extend_U16U64(uint8_t regSrc, uint8_t regDst)
 {
-    // movzx rax, al
-    concat.addU8(0x48);
+    // movzx regDst.64, regSrc.16
+    concat.addU8(getREX(true, regDst >= R8, false, regSrc >= R8));
     concat.addU8(0x0F);
     concat.addU8(0xB7);
-    concat.addU8(getModRM(REGREG, reg, reg));
+    concat.addU8(getModRM(REGREG, regDst, regSrc));
 }
 
 /////////////////////////////////////////////////////////////////////

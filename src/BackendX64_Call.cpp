@@ -22,38 +22,44 @@ uint32_t BackendX64::getParamStackOffset(TypeInfoFuncAttr* typeFunc, int paramId
 
 void BackendX64::emitGetParam(X64Gen& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int storeS4, int sizeStack, uint64_t toAdd, int deRefSize)
 {
-    const auto& cc          = g_CallConv[typeFunc->callConv];
-    int         stackOffset = getParamStackOffset(typeFunc, paramIdx, storeS4, sizeStack);
+    const auto& cc         = g_CallConv[typeFunc->callConv];
+    int         paramStack = getParamStackOffset(typeFunc, paramIdx, storeS4, sizeStack);
+    auto        typeParam  = TypeManager::concreteType(typeFunc->parameters[typeFunc->registerIdxToParamIdx(paramIdx)]->typeInfo);
+    if (typeParam->isAutoConstPointerRef())
+        typeParam = TypeManager::concretePtrRefType(typeParam);
 
     switch (sizeOf)
     {
     case 1:
         SWAG_ASSERT(!toAdd);
-        pp.emit_LoadU8U64_Indirect(stackOffset, RAX, RDI);
+        if (!paramIdx)
+            pp.emit_Extend_U8U64(R11, RAX);
+        else
+            pp.emit_LoadU8U64_Indirect(paramStack, RAX, RDI);
         pp.emit_Store64_Indirect(regOffset(reg), RAX);
         return;
     case 2:
         SWAG_ASSERT(!toAdd);
-        pp.emit_LoadU16U64_Indirect(stackOffset, RAX, RDI);
+        if (!paramIdx)
+            pp.emit_Extend_U16U64(R11, RAX);
+        else
+            pp.emit_LoadU16U64_Indirect(paramStack, RAX, RDI);
         pp.emit_Store64_Indirect(regOffset(reg), RAX);
         return;
     case 4:
         SWAG_ASSERT(!toAdd);
-        pp.emit_Load32_Indirect(stackOffset, RAX, RDI);
+        /*if (!paramIdx)
+            pp.emit_Copy32(R11, RAX);
+        else*/
+            pp.emit_Load32_Indirect(paramStack, RAX, RDI);
         pp.emit_Store64_Indirect(regOffset(reg), RAX);
         return;
     }
 
-    paramIdx = typeFunc->registerIdxToParamIdx(paramIdx);
-
-    auto typeParam = TypeManager::concreteType(typeFunc->parameters[paramIdx]->typeInfo);
-    if (typeParam->isAutoConstPointerRef())
-        typeParam = TypeManager::concretePtrRefType(typeParam);
-
     if (cc.structByRegister && typeParam->isStruct() && typeParam->sizeOf <= sizeof(void*))
-        pp.emit_LoadAddress_Indirect(stackOffset, RAX, RDI);
+        pp.emit_LoadAddress_Indirect(paramStack, RAX, RDI);
     else
-        pp.emit_Load64_Indirect(stackOffset, RAX, RDI);
+        pp.emit_Load64_Indirect(paramStack, RAX, RDI);
 
     if (toAdd)
     {
