@@ -239,17 +239,17 @@ struct CoffFunction
 {
     VectorNative<uint16_t> unwind;
     Vector<DbgLines>       dbgLines;
-    AstNode*               node         = nullptr;
-    TypeInfoFuncAttr*      typeFunc     = nullptr;
-    uint32_t               symbolIndex  = 0;
-    uint32_t               startAddress = 0;
-    uint32_t               endAddress   = 0;
-    uint32_t               xdataOffset  = 0;
-    uint32_t               sizeProlog   = 0;
-    uint32_t               offsetStack  = 0;
+    AstNode*               node                    = nullptr;
+    TypeInfoFuncAttr*      typeFunc                = nullptr;
+    uint32_t               symbolIndex             = 0;
+    uint32_t               startAddress            = 0;
+    uint32_t               endAddress              = 0;
+    uint32_t               xdataOffset             = 0;
+    uint32_t               sizeProlog              = 0;
+    uint32_t               offsetStack             = 0;
     uint32_t               offsetCallerStackParams = 0;
     uint32_t               offsetLocalStackParams  = 0;
-    uint32_t               frameSize    = 0;
+    uint32_t               frameSize               = 0;
 };
 
 struct X64Gen
@@ -522,4 +522,7 @@ struct X64Gen
     void emit_Test32(uint8_t reg1, uint8_t reg2);
     void emit_Test64(uint8_t reg1, uint8_t reg2);
     void emit_Test8(uint8_t reg1, uint8_t reg2);
+    void emit_Cwd();
+    void emit_Cdq();
+    void emit_Cqo();
 };

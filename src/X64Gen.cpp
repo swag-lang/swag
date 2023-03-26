@@ -1999,3 +1999,18 @@ void X64Gen::emit_GlobalString(const Utf8& str, CPURegister reg)
     reloc.type           = IMAGE_REL_AMD64_ADDR64;
     relocTableTextSection.table.push_back(reloc);
 }
+
+void X64Gen::emit_Cwd()
+{
+    concat.addString2("\x66\x99"); // cwd
+}
+
+void X64Gen::emit_Cdq()
+{
+    concat.addU8(0x99); // cdq
+}
+
+void X64Gen::emit_Cqo()
+{
+    concat.addString2("\x48\x99"); // cqo
+}

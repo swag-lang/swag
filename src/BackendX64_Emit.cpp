@@ -784,7 +784,7 @@ void BackendX64::emitBinOpIntDivAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool 
         else
             pp.emit_Load32_Indirect(regOffset(ip->a.u32), RAX);
         if (isSigned)
-            pp.concat.addString1("\x99"); // cdq
+            pp.emit_Cdq();
         else
             pp.emit_Clear32(RDX);
         break;
@@ -794,7 +794,7 @@ void BackendX64::emitBinOpIntDivAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool 
         else
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
         if (isSigned)
-            pp.concat.addString2("\x48\x99"); // cqo
+            pp.emit_Cqo();
         else
             pp.emit_Clear64(RDX);
         break;
