@@ -2779,8 +2779,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Store32_Immediate(regOffset(ip->a.u32), ip->b.u32, RDI);
             break;
         case ByteCodeOp::SetImmediate64:
-            if (ip->b.u64 <= 0x7FFFFFFF)
-                pp.emit_Store64_Immediate(regOffset(ip->a.u32), ip->b.u64, RDI);
+            if (ip->b.u64 <= 0x7FFFFFFF || ip->b.u64 >> 32 == 0xFFFFFFFF)
+                pp.emit_Store64_Immediate(regOffset(ip->a.u32), ip->b.u32, RDI);
             else
             {
                 pp.emit_Load64_Immediate(ip->b.u64, RAX);
