@@ -90,22 +90,18 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
     MK_ALIGN16(sizeParamsStack);
 
-    auto     beforeProlog = concat.totalCount();
-    uint32_t sizeProlog   = 0;
+    auto beforeProlog = concat.totalCount();
 
-    // We need to start at sizeof(void*) because the call has pushed one register on the stack
-    uint32_t offsetCallerStackParams = sizeof(void*);
+    VectorNative<CPURegister> unwindRegs;
 
     // RDI will be a pointer to the stack, and the list of registers is stored at the start
     // of the stack
-    VectorNative<uint16_t> unwind;
-
     pp.emit_Push(RDI);
-    offsetCallerStackParams += sizeof(void*);
+    unwindRegs.push_back(RDI);
 
-    sizeProlog       = concat.totalCount() - beforeProlog;
-    uint16_t unwind0 = computeUnwindPushRDI(sizeProlog);
+    uint32_t sizeProlog = concat.totalCount() - beforeProlog;
 
+    // Check stack
     if (sizeStack + sizeParamsStack >= SWAG_LIMIT_PAGE_STACK)
     {
         pp.emit_Load64_Immediate(sizeStack + sizeParamsStack, RAX);
@@ -114,16 +110,21 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
     pp.emit_Sub32_RSP(sizeStack + sizeParamsStack);
 
+    // We need to start at sizeof(void*) because the call has pushed one register on the stack
+    coffFct->offsetCallerStackParams = (uint32_t) (sizeof(void*) + (unwindRegs.size() * sizeof(void*)) + sizeStack);
     coffFct->offsetStack             = offsetStack;
-    coffFct->offsetCallerStackParams = offsetCallerStackParams + sizeStack;
     coffFct->offsetLocalStackParams  = offsetS4;
     coffFct->frameSize               = sizeStack + sizeParamsStack;
 
-    sizeProlog = concat.totalCount() - beforeProlog;
-    computeUnwindStack(sizeStack + sizeParamsStack, sizeProlog, unwind);
+    // Unwind information (with the pushed registers)
+    VectorNative<uint16_t> unwind;
+    computeUnwindStack(sizeStack + sizeParamsStack, concat.totalCount() - beforeProlog, unwind);
 
-    // At the end because array must be sorted in 'offset in prolog' descending order
-    unwind.push_back(unwind0);
+    // Now we put the registers.
+    // At the end because array must be sorted in 'offset in prolog' descending order.
+    // So RDI, which is the first 'push', must be the last
+    for (int32_t i = (int32_t) unwindRegs.size() - 1; i >= 0; i--)
+        unwind.push_back(computeUnwindPush(sizeProlog, unwindRegs[i]));
 
     // Registers are stored after the sizeParamsStack area, which is used to store parameters for function calls
     pp.concat.addString4("\x48\x8D\xBC\x24");
@@ -4314,10 +4315,10 @@ uint32_t BackendX64::getOrCreateLabel(X64Gen& pp, uint32_t ip)
     return it->second;
 }
 
-uint16_t BackendX64::computeUnwindPushRDI(uint32_t offsetSubRSP)
+uint16_t BackendX64::computeUnwindPush(uint32_t offsetSubRSP, CPURegister reg)
 {
     uint16_t unwind0 = 0;
-    unwind0          = (RDI << 12);
+    unwind0          = (reg << 12);
     unwind0 |= (UWOP_PUSH_NONVOL << 8);
     unwind0 |= (uint8_t) offsetSubRSP;
     return unwind0;
