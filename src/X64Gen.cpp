@@ -106,81 +106,7 @@ CoffSymbol* X64Gen::getOrAddSymbol(const Utf8& name, CoffSymbolKind kind, uint32
     return &allSymbols.back();
 }
 
-void X64Gen::emit_Load8_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
-{
-    if (stackOffset == storageRegStack &&
-        reg == storageReg &&
-        memReg == storageMemReg &&
-        storageRegCount == concat.totalCount())
-    {
-        if (storageRegBits <= 8)
-            return;
-    }
-
-    SWAG_ASSERT(memReg < R8);
-    if (reg >= R8)
-        concat.addU8(0x44);
-    concat.addU8(0x8A);
-    emit_ModRM(stackOffset, reg, memReg);
-}
-
-void X64Gen::emit_Load16_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
-{
-    if (stackOffset == storageRegStack &&
-        reg == storageReg &&
-        memReg == storageMemReg &&
-        storageRegCount == concat.totalCount())
-    {
-        if (storageRegBits <= 16)
-            return;
-    }
-
-    SWAG_ASSERT(memReg < R8);
-    concat.addU8(0x66);
-    if (reg >= R8)
-        concat.addU8(0x44);
-    concat.addU8(0x8B);
-    emit_ModRM(stackOffset, reg, memReg);
-}
-
-void X64Gen::emit_Load32_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
-{
-    if (stackOffset == storageRegStack &&
-        reg == storageReg &&
-        memReg == storageMemReg &&
-        storageRegCount == concat.totalCount())
-    {
-        if (storageRegBits <= 32)
-            return;
-
-        if (reg == RAX)
-        {
-            concat.addString2("\x89\xC0"); // mov eax, eax
-            return;
-        }
-    }
-
-    SWAG_ASSERT(memReg < R8);
-    if (reg >= R8)
-        concat.addU8(0x44);
-    concat.addU8(0x8B);
-    emit_ModRM(stackOffset, reg, memReg);
-}
-
-void X64Gen::emit_Load64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
-{
-    if (stackOffset == storageRegStack &&
-        reg == storageReg &&
-        memReg == storageMemReg &&
-        storageRegCount == concat.totalCount())
-    {
-        return;
-    }
-
-    concat.addU8(getREX(true, reg >= R8, false, memReg >= R8));
-    concat.addU8(0x8B);
-    emit_ModRM(stackOffset, reg, memReg);
-}
+/////////////////////////////////////////////////////////////////////
 
 void X64Gen::emit_LoadS8S16_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
@@ -264,6 +190,84 @@ void X64Gen::emit_LoadU16U64_Indirect(uint32_t stackOffset, CPURegister reg, CPU
     concat.addU8(getREX());
     concat.addU8(0x0F);
     concat.addU8(0xB7);
+    emit_ModRM(stackOffset, reg, memReg);
+}
+
+/////////////////////////////////////////////////////////////////////
+
+void X64Gen::emit_Load8_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
+{
+    if (stackOffset == storageRegStack &&
+        reg == storageReg &&
+        memReg == storageMemReg &&
+        storageRegCount == concat.totalCount())
+    {
+        if (storageRegBits <= 8)
+            return;
+    }
+
+    SWAG_ASSERT(memReg < R8);
+    if (reg >= R8)
+        concat.addU8(0x44);
+    concat.addU8(0x8A);
+    emit_ModRM(stackOffset, reg, memReg);
+}
+
+void X64Gen::emit_Load16_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
+{
+    if (stackOffset == storageRegStack &&
+        reg == storageReg &&
+        memReg == storageMemReg &&
+        storageRegCount == concat.totalCount())
+    {
+        if (storageRegBits <= 16)
+            return;
+    }
+
+    SWAG_ASSERT(memReg < R8);
+    concat.addU8(0x66);
+    if (reg >= R8)
+        concat.addU8(0x44);
+    concat.addU8(0x8B);
+    emit_ModRM(stackOffset, reg, memReg);
+}
+
+void X64Gen::emit_Load32_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
+{
+    if (stackOffset == storageRegStack &&
+        reg == storageReg &&
+        memReg == storageMemReg &&
+        storageRegCount == concat.totalCount())
+    {
+        if (storageRegBits <= 32)
+            return;
+
+        if (reg == RAX)
+        {
+            concat.addString2("\x89\xC0"); // mov eax, eax
+            return;
+        }
+    }
+
+    SWAG_ASSERT(memReg < R8);
+    if (reg >= R8)
+        concat.addU8(0x44);
+    concat.addU8(0x8B);
+    emit_ModRM(stackOffset, reg, memReg);
+}
+
+void X64Gen::emit_Load64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
+{
+    if (stackOffset == storageRegStack &&
+        reg == storageReg &&
+        memReg == storageMemReg &&
+        storageRegCount == concat.totalCount())
+    {
+        return;
+    }
+
+    concat.addU8(getREX(true, reg >= R8, false, memReg >= R8));
+    concat.addU8(0x8B);
     emit_ModRM(stackOffset, reg, memReg);
 }
 
@@ -431,53 +435,6 @@ void X64Gen::emit_Store64_Immediate(uint32_t offset, uint64_t val, CPURegister r
     concat.addU32((uint32_t) val);
 }
 
-void X64Gen::emit_Clear8(CPURegister reg)
-{
-    SWAG_ASSERT(reg < R8);
-    concat.addU8(0x30);
-    concat.addU8(getModRM(REGREG, reg, reg));
-}
-
-void X64Gen::emit_Clear16(CPURegister reg)
-{
-    SWAG_ASSERT(reg < R8);
-    concat.addU8(0x66);
-    concat.addU8(0x31);
-    concat.addU8(getModRM(REGREG, reg, reg));
-}
-
-void X64Gen::emit_Clear32(CPURegister reg)
-{
-    SWAG_ASSERT(reg < R8);
-    concat.addU8(0x31);
-    concat.addU8(getModRM(REGREG, reg, reg));
-}
-
-void X64Gen::emit_Clear64(CPURegister reg)
-{
-    concat.addU8(getREX(true, reg >= R8, false, reg >= R8));
-    concat.addU8(0x31);
-    concat.addU8(getModRM(REGREG, reg, reg));
-}
-
-void X64Gen::emit_ClearN(CPURegister reg, uint8_t numBits)
-{
-    switch (numBits)
-    {
-    case 8:
-    case 16:
-    case 32:
-        emit_Clear32(reg);
-        break;
-    case 64:
-        emit_Clear64(reg);
-        break;
-    default:
-        SWAG_ASSERT(false);
-        break;
-    }
-}
-
 void X64Gen::emit_Load8_Immediate(uint8_t val, CPURegister reg)
 {
     if (val == 0)
@@ -573,6 +530,70 @@ void X64Gen::emit_LoadN_Immediate(Register& val, CPURegister reg, uint8_t numBit
     }
 }
 
+void X64Gen::emit_LoadAddress_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
+{
+    if (stackOffset == 0)
+    {
+        emit_Copy64(memReg, reg);
+        return;
+    }
+
+    concat.addU8(getREX(true, reg >= R8, false, memReg >= R8));
+    concat.addU8(0x8D);
+    emit_ModRM(stackOffset, reg, memReg);
+}
+
+/////////////////////////////////////////////////////////////////////
+
+void X64Gen::emit_ClearN(CPURegister reg, uint8_t numBits)
+{
+    switch (numBits)
+    {
+    case 8:
+    case 16:
+    case 32:
+        emit_Clear32(reg);
+        break;
+    case 64:
+        emit_Clear64(reg);
+        break;
+    default:
+        SWAG_ASSERT(false);
+        break;
+    }
+}
+
+void X64Gen::emit_Clear8(CPURegister reg)
+{
+    SWAG_ASSERT(reg < R8);
+    concat.addU8(0x30);
+    concat.addU8(getModRM(REGREG, reg, reg));
+}
+
+void X64Gen::emit_Clear16(CPURegister reg)
+{
+    SWAG_ASSERT(reg < R8);
+    concat.addU8(0x66);
+    concat.addU8(0x31);
+    concat.addU8(getModRM(REGREG, reg, reg));
+}
+
+void X64Gen::emit_Clear32(CPURegister reg)
+{
+    SWAG_ASSERT(reg < R8);
+    concat.addU8(0x31);
+    concat.addU8(getModRM(REGREG, reg, reg));
+}
+
+void X64Gen::emit_Clear64(CPURegister reg)
+{
+    concat.addU8(getREX(true, reg >= R8, false, reg >= R8));
+    concat.addU8(0x31);
+    concat.addU8(getModRM(REGREG, reg, reg));
+}
+
+/////////////////////////////////////////////////////////////////////
+
 void X64Gen::emit_Push(CPURegister reg)
 {
     if (reg < R8)
@@ -599,6 +620,8 @@ void X64Gen::emit_Ret()
 {
     concat.addU8(0xC3);
 }
+
+/////////////////////////////////////////////////////////////////////
 
 void X64Gen::emit_Copy8(CPURegister regSrc, CPURegister regDst)
 {
@@ -652,6 +675,8 @@ void X64Gen::emit_CopyF64(CPURegister regSrc, CPURegister regDst)
     concat.addU8(0x6E);
     concat.addU8(0xC0 | (regDst << 3));
 }
+
+/////////////////////////////////////////////////////////////////////
 
 void X64Gen::emit_SetNE()
 {
@@ -765,6 +790,8 @@ void X64Gen::emit_SetLE()
     concat.addU8(0x9E);
     concat.addU8(0xC0);
 }
+
+/////////////////////////////////////////////////////////////////////
 
 void X64Gen::emit_Test64(uint8_t reg1, uint8_t reg2)
 {
@@ -960,18 +987,7 @@ void X64Gen::emit_CmpF64_Indirect(uint32_t offsetStack, CPURegister reg, CPURegi
     emit_ModRM(offsetStack, reg, memReg);
 }
 
-void X64Gen::emit_LoadAddress_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
-{
-    if (stackOffset == 0)
-    {
-        emit_Copy64(memReg, reg);
-        return;
-    }
-
-    concat.addU8(getREX(true, reg >= R8, false, memReg >= R8));
-    concat.addU8(0x8D);
-    emit_ModRM(stackOffset, reg, memReg);
-}
+/////////////////////////////////////////////////////////////////////
 
 void X64Gen::emit_Op8_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, X64Op instruction, bool lock)
 {
@@ -1066,6 +1082,8 @@ void X64Gen::emit_Op64(uint8_t reg1, uint8_t reg2, X64Op instruction)
     concat.addU8(getModRM(REGREG, reg1, reg2));
 }
 
+/////////////////////////////////////////////////////////////////////
+
 void X64Gen::emit_Add64_Immediate(uint64_t value, CPURegister reg)
 {
     if (!value)
@@ -1117,6 +1135,34 @@ void X64Gen::emit_Sub64_Immediate(uint64_t value, CPURegister reg)
         concat.addU8(getREX());
         concat.addU8(0x2D);
         concat.addU32((uint32_t) value);
+    }
+}
+
+void X64Gen::emit_Mul64_RAX(uint64_t value)
+{
+    if (value == 2)
+    {
+        concat.addString3("\x48\xD1\xE0"); // shl rax, 1
+    }
+    else if (isPowerOfTwo(value))
+    {
+        concat.addString3("\x48\xC1\xE0"); // shl rax, ??
+        concat.addU8((uint8_t) log2(value));
+    }
+    else if (value <= 0x7F)
+    {
+        concat.addString3("\x48\x6B\xC0"); // imul rax, ??
+        concat.addU8((uint8_t) value);
+    }
+    else if (value <= 0x7FFFFFFF)
+    {
+        concat.addString3("\x48\x69\xC0"); // imul rax, ????????
+        concat.addU32((uint32_t) value);
+    }
+    else
+    {
+        emit_Load64_Immediate(value, RCX);
+        concat.addString4("\x48\x0F\xAF\xC1"); // imul rax, rcx
     }
 }
 
@@ -1259,35 +1305,6 @@ void X64Gen::emit_Extend_U16U64(CPURegister regSrc, CPURegister regDst)
     concat.addU8(0x0F);
     concat.addU8(0xB7);
     concat.addU8(getModRM(REGREG, regDst, regSrc));
-}
-
-/////////////////////////////////////////////////////////////////////
-void X64Gen::emit_Mul64_RAX(uint64_t value)
-{
-    if (value == 2)
-    {
-        concat.addString3("\x48\xD1\xE0"); // shl rax, 1
-    }
-    else if (isPowerOfTwo(value))
-    {
-        concat.addString3("\x48\xC1\xE0"); // shl rax, ??
-        concat.addU8((uint8_t) log2(value));
-    }
-    else if (value <= 0x7F)
-    {
-        concat.addString3("\x48\x6B\xC0"); // imul rax, ??
-        concat.addU8((uint8_t) value);
-    }
-    else if (value <= 0x7FFFFFFF)
-    {
-        concat.addString3("\x48\x69\xC0"); // imul rax, ????????
-        concat.addU32((uint32_t) value);
-    }
-    else
-    {
-        emit_Load64_Immediate(value, RCX);
-        concat.addString4("\x48\x0F\xAF\xC1"); // imul rax, rcx
-    }
 }
 
 /////////////////////////////////////////////////////////////////////
