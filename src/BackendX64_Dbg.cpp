@@ -1490,9 +1490,9 @@ bool BackendX64::dbgEmitScope(X64Gen& pp, Concat& concat, CoffFunction& f, Scope
         {
             auto cptReg = typeFunc->numParamsRegisters();
             if (cptReg < 4)
-                concat.addU32((cptReg * sizeof(Register)) + f.offsetParam);
+                concat.addU32(regOffset(cptReg) + f.offsetParam);
             else
-                concat.addU32((cptReg * sizeof(Register)) + f.offsetRetVal);
+                concat.addU32(regOffset(cptReg) + f.offsetRetVal);
         }
         else
             concat.addU32(overload->computedValue.storageOffset + f.offsetStack);
