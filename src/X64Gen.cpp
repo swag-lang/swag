@@ -235,14 +235,9 @@ void X64Gen::emit_Load32_Indirect(uint32_t stackOffset, CPURegister reg, CPURegi
         memReg == storageMemReg &&
         storageRegCount == concat.totalCount())
     {
-        if (storageRegBits <= 32)
-            return;
-
-        if (reg == RAX)
-        {
-            concat.addString2("\x89\xC0"); // mov eax, eax
-            return;
-        }
+        if (storageRegBits > 32)
+            emit_Copy32(RAX, RAX);
+        return;
     }
 
     concat.addU8(getREX(false, reg >= R8, false, memReg >= R8));
