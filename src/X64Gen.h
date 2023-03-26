@@ -472,6 +472,7 @@ struct X64Gen
     void emit_LoadU8U32_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg);
     void emit_LoadU8U64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg);
     void emit_LongJumpOp(JumpType jumpType);
+    void emit_REX();
     void emit_ModRM(uint32_t stackOffset, uint8_t reg, uint8_t memReg, uint8_t op = 1);
     void emit_Mul64_RAX(uint64_t value);
     void emit_NearJumpOp(JumpType jumpType);

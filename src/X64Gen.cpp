@@ -35,6 +35,38 @@ uint8_t X64Gen::getModRM(uint8_t mod, uint8_t r, uint8_t m)
     return (mod << 6) | ((r & 0b111) << 3) | (m & 0b111);
 }
 
+void X64Gen::emit_REX()
+{
+    concat.addU8(getREX());
+}
+
+void X64Gen::emit_ModRM(uint32_t stackOffset, uint8_t reg, uint8_t memReg, uint8_t op)
+{
+    if (stackOffset == 0)
+    {
+        // mov al, byte ptr [rdi]
+        concat.addU8(getModRM(0, reg, memReg) | (op - 1));
+        if (memReg == RSP)
+            concat.addU8(0x24);
+    }
+    else if (stackOffset <= 0x7F)
+    {
+        // mov al, byte ptr [rdi + ??]
+        concat.addU8(getModRM(DISP8, reg, memReg) | (op - 1));
+        if (memReg == RSP)
+            concat.addU8(0x24);
+        concat.addU8((uint8_t) stackOffset);
+    }
+    else
+    {
+        // mov al, byte ptr [rdi + ????????]
+        concat.addU8(getModRM(DISP32, reg, memReg) | (op - 1));
+        if (memReg == RSP)
+            concat.addU8(0x24);
+        concat.addU32(stackOffset);
+    }
+}
+
 CoffSymbol* X64Gen::getSymbol(const Utf8& name)
 {
     auto it = mapSymbols.find(name);
@@ -72,33 +104,6 @@ CoffSymbol* X64Gen::getOrAddSymbol(const Utf8& name, CoffSymbolKind kind, uint32
     allSymbols.emplace_back(std::move(sym));
     mapSymbols[name] = (uint32_t) allSymbols.size() - 1;
     return &allSymbols.back();
-}
-
-void X64Gen::emit_ModRM(uint32_t stackOffset, uint8_t reg, uint8_t memReg, uint8_t op)
-{
-    if (stackOffset == 0)
-    {
-        // mov al, byte ptr [rdi]
-        concat.addU8(getModRM(0, reg, memReg) | (op - 1));
-        if (memReg == RSP)
-            concat.addU8(0x24);
-    }
-    else if (stackOffset <= 0x7F)
-    {
-        // mov al, byte ptr [rdi + ??]
-        concat.addU8(getModRM(DISP8, reg, memReg) | (op - 1));
-        if (memReg == RSP)
-            concat.addU8(0x24);
-        concat.addU8((uint8_t) stackOffset);
-    }
-    else
-    {
-        // mov al, byte ptr [rdi + ????????]
-        concat.addU8(getModRM(DISP32, reg, memReg) | (op - 1));
-        if (memReg == RSP)
-            concat.addU8(0x24);
-        concat.addU32(stackOffset);
-    }
 }
 
 void X64Gen::emit_Load8_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
@@ -197,7 +202,7 @@ void X64Gen::emit_LoadS8S32_Indirect(uint32_t stackOffset, CPURegister reg, CPUR
 void X64Gen::emit_LoadS8S64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
     SWAG_ASSERT(reg < R8 && memReg < R8);
-    concat.addU8(0x48);
+    concat.addU8(getREX());
     concat.addU8(0x0F);
     concat.addU8(0xBE);
     emit_ModRM(stackOffset, reg, memReg);
@@ -214,7 +219,7 @@ void X64Gen::emit_LoadS16S32_Indirect(uint32_t stackOffset, CPURegister reg, CPU
 void X64Gen::emit_LoadS16S64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
     SWAG_ASSERT(reg < R8 && memReg < R8);
-    concat.addU8(0x48);
+    concat.addU8(getREX());
     concat.addU8(0x0F);
     concat.addU8(0xBF);
     emit_ModRM(stackOffset, reg, memReg);
@@ -223,7 +228,7 @@ void X64Gen::emit_LoadS16S64_Indirect(uint32_t stackOffset, CPURegister reg, CPU
 void X64Gen::emit_LoadS32S64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
     SWAG_ASSERT(reg < R8 && memReg < R8);
-    concat.addU8(0x48);
+    concat.addU8(getREX());
     concat.addU8(0x63);
     emit_ModRM(stackOffset, reg, memReg);
 }
@@ -239,7 +244,7 @@ void X64Gen::emit_LoadU8U32_Indirect(uint32_t stackOffset, CPURegister reg, CPUR
 void X64Gen::emit_LoadU8U64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
     SWAG_ASSERT(reg < R8 && memReg < R8);
-    concat.addU8(0x48);
+    concat.addU8(getREX());
     concat.addU8(0x0F);
     concat.addU8(0xB6);
     emit_ModRM(stackOffset, reg, memReg);
@@ -256,7 +261,7 @@ void X64Gen::emit_LoadU16U32_Indirect(uint32_t stackOffset, CPURegister reg, CPU
 void X64Gen::emit_LoadU16U64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
     SWAG_ASSERT(reg < R8 && memReg < R8);
-    concat.addU8(0x48);
+    concat.addU8(getREX());
     concat.addU8(0x0F);
     concat.addU8(0xB7);
     emit_ModRM(stackOffset, reg, memReg);
@@ -420,7 +425,7 @@ void X64Gen::emit_Store32_Immediate(uint32_t offset, uint32_t val, CPURegister r
 void X64Gen::emit_Store64_Immediate(uint32_t offset, uint64_t val, CPURegister reg)
 {
     SWAG_ASSERT(val <= 0x7FFFFFFF);
-    concat.addU8(0x48);
+    concat.addU8(getREX());
     concat.addU8(0xC7);
     emit_ModRM(offset, 0, reg);
     concat.addU32((uint32_t) val);
@@ -632,7 +637,7 @@ void X64Gen::emit_CopyF64(CPURegister regSrc, CPURegister regDst)
     SWAG_ASSERT(regSrc == RAX);
     SWAG_ASSERT(regDst == XMM0 || regDst == XMM1 || regDst == XMM2 || regDst == XMM3);
     concat.addU8(0x66);
-    concat.addU8(0x48);
+    concat.addU8(getREX());
     concat.addU8(0x0F);
     concat.addU8(0x6E);
     concat.addU8(0xC0 | (regDst << 3));
@@ -815,14 +820,14 @@ void X64Gen::emit_Cmp64_Immediate(uint64_t value, CPURegister reg)
 
     if (value <= 0x7f)
     {
-        concat.addU8(0x48);
+        concat.addU8(getREX());
         concat.addU8(0x83);
         concat.addU8(0xF8 | reg);
         concat.addU8((uint8_t) value);
     }
     else if (value <= 0x7fffffff)
     {
-        concat.addU8(0x48);
+        concat.addU8(getREX());
         concat.addU8(0x3d);
         concat.addU32((uint32_t) value);
     }
@@ -875,7 +880,7 @@ void X64Gen::emit_Cmp32_Indirect(uint32_t offsetStack, CPURegister reg, CPURegis
 void X64Gen::emit_Cmp64_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg)
 {
     SWAG_ASSERT(reg < R8 && memReg < R8);
-    concat.addU8(0x48);
+    concat.addU8(getREX());
     concat.addU8(0x3B);
     emit_ModRM(offsetStack, reg, memReg);
 }
@@ -923,7 +928,7 @@ void X64Gen::emit_Cmp32_IndirectDst(uint32_t offsetStack, uint32_t value)
 void X64Gen::emit_Cmp64_IndirectDst(uint32_t offsetStack, uint32_t value)
 {
     SWAG_ASSERT(value <= 0x7FFFFFFF);
-    concat.addU8(0x48);
+    concat.addU8(getREX());
     emit_Cmp32_IndirectDst(offsetStack, value);
 }
 
@@ -975,7 +980,7 @@ void X64Gen::emit_Dec32_Indirect(uint32_t stackOffset, CPURegister reg)
 void X64Gen::emit_Inc64_Indirect(uint32_t stackOffset, CPURegister reg)
 {
     SWAG_ASSERT(reg < R8);
-    concat.addU8(0x48);
+    concat.addU8(getREX());
     concat.addU8(0xFF);
     emit_ModRM(stackOffset, 0, reg);
 }
@@ -983,7 +988,7 @@ void X64Gen::emit_Inc64_Indirect(uint32_t stackOffset, CPURegister reg)
 void X64Gen::emit_Dec64_Indirect(uint32_t stackOffset, CPURegister reg)
 {
     SWAG_ASSERT(reg < R8);
-    concat.addU8(0x48);
+    concat.addU8(getREX());
     concat.addU8(0xFF);
     emit_ModRM(stackOffset, 1, reg);
 }
@@ -1023,7 +1028,7 @@ void X64Gen::emit_Op64_Indirect(uint32_t offsetStack, CPURegister reg, CPURegist
     SWAG_ASSERT(memReg < R8 && reg < R8);
     if (lock)
         concat.addU8(0xF0);
-    concat.addU8(0x48);
+    concat.addU8(getREX());
     concat.addU8((uint8_t) instruction);
     emit_ModRM(offsetStack, reg, memReg);
 }
@@ -1086,7 +1091,7 @@ void X64Gen::emit_Add64_Immediate(uint64_t value, CPURegister reg)
     if (!value)
         return;
     SWAG_ASSERT(reg == RAX || reg == RCX);
-    concat.addU8(0x48);
+    concat.addU8(getREX());
     if (value <= 0x7F)
     {
         concat.addU8(0x83);
@@ -1116,20 +1121,20 @@ void X64Gen::emit_Sub64_Immediate(uint64_t value, CPURegister reg)
     if (value > 0x7FFFFFFF)
     {
         emit_Load64_Immediate(value, RCX);
-        concat.addU8(0x48);
+        concat.addU8(getREX());
         concat.addU8(0x29);
         concat.addU8(0xC8); // sub rax, rcx
     }
     else if (value <= 0x7F)
     {
-        concat.addU8(0x48);
+        concat.addU8(getREX());
         concat.addU8(0x83);
         concat.addU8(0xE8 | reg);
         concat.addU8((uint8_t) value);
     }
     else if (reg == RAX)
     {
-        concat.addU8(0x48);
+        concat.addU8(getREX());
         concat.addU8(0x2D);
         concat.addU32((uint32_t) value);
     }
@@ -1143,7 +1148,7 @@ void X64Gen::emit_Symbol_RelocationAddr(CPURegister reg, uint32_t symbolIndex, u
     if (reg == R8 || reg == R9)
         concat.addU8(0x4C);
     else
-        concat.addU8(0x48);
+        concat.addU8(getREX());
     concat.addU8(0x8D);
     concat.addU8(0x05 | ((reg & 0b111) << 3));
 
@@ -1162,7 +1167,7 @@ void X64Gen::emit_Symbol_RelocationValue(CPURegister reg, uint32_t symbolIndex, 
     if (reg == R8 || reg == R9)
         concat.addU8(0x4C);
     else
-        concat.addU8(0x48);
+        concat.addU8(getREX());
     concat.addU8(0x8B);
     concat.addU8(0x05 | ((reg & 0b111) << 3));
 

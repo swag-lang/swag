@@ -9,7 +9,7 @@ void BackendX64::emitAddSubMul64(X64Gen& pp, ByteCodeInstruction* ip, uint64_t m
     auto val = ip->b.u64 * mul;
     if (ip->flags & BCI_IMM_B && val <= 0x7FFFFFFF && ip->a.u32 == ip->c.u32)
     {
-        pp.concat.addU8(0x48);
+        pp.emit_REX();
         if (val <= 0x7F)
             pp.concat.addU8(0x83);
         else
@@ -701,7 +701,7 @@ void BackendX64::emitBinOpInt64(X64Gen& pp, ByteCodeInstruction* ip, X64Op op)
         }
         else
         {
-            pp.concat.addU8(0x48);
+            pp.emit_REX();
             pp.concat.addU8((uint8_t) op | 2);
             pp.emit_ModRM(regOffset(ip->b.u32), RAX, RDI);
         }
@@ -718,14 +718,14 @@ void BackendX64::emitBinOpInt64(X64Gen& pp, ByteCodeInstruction* ip, X64Op op)
         pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
         if (ip->b.u32 <= 0x7F)
         {
-            pp.concat.addU8(0x48);
+            pp.emit_REX();
             pp.concat.addU8(0x83); // op rax, ??
             pp.concat.addU8(0xBF + (uint8_t) op);
             pp.concat.addU8(ip->b.u8);
         }
         else
         {
-            pp.concat.addU8(0x48);
+            pp.emit_REX();
             pp.concat.addU8(0x81); // op rax, ????????
             pp.concat.addU8(0xBF + (uint8_t) op);
             pp.concat.addU32(ip->b.u32);
@@ -844,7 +844,7 @@ void BackendX64::emitBinOpIntDivAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool 
     {
         // div [rdi+?]
         if (bits == 64)
-            pp.concat.addU8(0x48);
+            pp.emit_REX();
         pp.concat.addU8(0xF7);
 
         uint32_t offsetStack = ip->b.u32 * sizeof(Register);

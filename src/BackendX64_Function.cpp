@@ -1559,7 +1559,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             if (ip->flags & BCI_IMM_B && ip->b.u32 == 1)
             {
                 // inc [rdi+?]
-                concat.addU8(0x48);
+                pp.emit_REX();
                 if (offsetStack + ip->a.u32 <= 0x7F)
                 {
                     concat.addString2("\xFF\x47");
@@ -1731,7 +1731,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             if (ip->flags & BCI_IMM_B && ip->b.u32 == 1)
             {
                 // inc [rdi+?]
-                concat.addU8(0x48);
+                pp.emit_REX();
                 if (offsetStack + ip->a.u32 <= 0x7F)
                 {
                     concat.addString2("\xFF\x4F");
