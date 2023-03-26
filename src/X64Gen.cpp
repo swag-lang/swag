@@ -2074,3 +2074,18 @@ void X64Gen::emit_Dec64_Indirect(uint32_t stackOffset, CPURegister memReg)
     concat.addU8(0xFF);
     emit_ModRM(stackOffset, 1, memReg);
 }
+
+void X64Gen::emit_Neg32(CPURegister reg)
+{
+    SWAG_ASSERT(reg < R8);
+    concat.addU8(0xF7);
+    concat.addU8(0xD8 | (reg & 0b111));
+}
+
+void X64Gen::emit_Neg64(CPURegister reg)
+{
+    SWAG_ASSERT(reg < R8);
+    concat.addU8(getREX());
+    concat.addU8(0xF7);
+    concat.addU8(0xD8 | (reg & 0b111));
+}

@@ -2021,12 +2021,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::NegS32:
             pp.emit_Load32_Indirect(regOffset(ip->b.u32), RAX);
-            concat.addString2("\xf7\xd8"); // neg eax
+            pp.emit_Neg32(RAX);
             pp.emit_Store32_Indirect(regOffset(ip->a.u32), RAX);
             break;
         case ByteCodeOp::NegS64:
             pp.emit_Load64_Indirect(regOffset(ip->b.u32), RAX);
-            concat.addString3("\x48\xf7\xd8"); // neg rax
+            pp.emit_Neg64(RAX);
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             break;
         case ByteCodeOp::NegF32:

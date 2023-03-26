@@ -533,4 +533,6 @@ struct X64Gen
     void emit_Dec16_Indirect(uint32_t stackOffset, CPURegister memReg);
     void emit_Dec32_Indirect(uint32_t stackOffset, CPURegister memReg);
     void emit_Dec64_Indirect(uint32_t stackOffset, CPURegister memReg);
+    void emit_Neg32(CPURegister reg);
+    void emit_Neg64(CPURegister reg);
 };
