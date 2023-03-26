@@ -2098,7 +2098,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             uint8_t* addrConstant        = nullptr;
             auto     offsetTableConstant = moduleToGen->constantSegment.reserve(((uint32_t) ip->c.u64) * sizeof(uint32_t), &addrConstant);
 
-            pp.emit_Symbol_RelocationAddr(RCX, pp.symCSIndex, offsetTableConstant); // rax = jump table
+            pp.emit_Symbol_RelocationAddr(RCX, pp.symCSIndex, offsetTableConstant); // rcx = jump table
             concat.addString4("\x48\x63\x0C\x81");                                  // movsx rcx, dword ptr [rcx + rax*4]
 
             // + 5 for the two following instructions
@@ -2429,41 +2429,23 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::ClearMaskU32:
             if (ip->b.u32 == 0xFF)
-            {
-                concat.addString2("\x0F\xB6"); // movzx eax, byte ptr [rdi + ??]
-                pp.emit_ModRM(regOffset(ip->a.u32), RAX, RDI);
-            }
+                pp.emit_LoadU8U32_Indirect(regOffset(ip->a.u32), RAX, RDI);
             else if (ip->b.u32 == 0xFFFF)
-            {
-                concat.addString2("\x0F\xB7"); // movzx eax, word ptr [rdi + ??]
-                pp.emit_ModRM(regOffset(ip->a.u32), RAX, RDI);
-            }
+                pp.emit_LoadU16U32_Indirect(regOffset(ip->a.u32), RAX, RDI);
             else
-            {
                 SWAG_ASSERT(false);
-            }
             pp.emit_Store32_Indirect(regOffset(ip->a.u32), RAX);
             break;
 
         case ByteCodeOp::ClearMaskU64:
             if (ip->b.u32 == 0xFF)
-            {
-                concat.addString3("\x48\x0F\xB6"); // movzx rax, byte ptr [rdi + ??]
-                pp.emit_ModRM(regOffset(ip->a.u32), RAX, RDI);
-            }
+                pp.emit_LoadU8U64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             else if (ip->b.u32 == 0xFFFF)
-            {
-                concat.addString3("\x48\x0F\xB7"); // movzx rax, word ptr [rdi + ??]
-                pp.emit_ModRM(regOffset(ip->a.u32), RAX, RDI);
-            }
+                pp.emit_LoadU16U64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             else if (ip->b.u32 == 0xFFFFFFFF)
-            {
                 pp.emit_Load32_Indirect(regOffset(ip->a.u32), RAX);
-            }
             else
-            {
                 SWAG_ASSERT(false);
-            }
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             break;
 
