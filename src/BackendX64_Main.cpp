@@ -62,7 +62,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     pp.emit_Sub32_RSP(40);
     auto                   sizeProlog = concat.totalCount() - beforeProlog;
     VectorNative<uint16_t> unwind;
-    computeUnwindStack(40, sizeProlog, unwind);
+    computeUnwind({}, {}, 40, sizeProlog, unwind);
 
     // Set default system allocator function
     SWAG_ASSERT(g_SystemAllocatorTable);
@@ -240,7 +240,7 @@ bool BackendX64::emitGetTypeTable(const BuildParameters& buildParameters)
     pp.emit_Sub32_RSP(40);
     auto                   sizeProlog = concat.totalCount() - beforeProlog;
     VectorNative<uint16_t> unwind;
-    computeUnwindStack(40, sizeProlog, unwind);
+    computeUnwind({}, {}, 40, sizeProlog, unwind);
 
     pp.emit_Add32_RSP(40);
     pp.emit_Symbol_RelocationAddr(cc.returnByRegisterInteger, pp.symCSIndex, module->typesSliceOffset);
@@ -275,7 +275,7 @@ bool BackendX64::emitGlobalPreMain(const BuildParameters& buildParameters)
     pp.emit_Sub32_RSP(48);
     auto                   sizeProlog = concat.totalCount() - beforeProlog;
     VectorNative<uint16_t> unwind;
-    computeUnwindStack(48, sizeProlog, unwind);
+    computeUnwind({}, {}, 48, sizeProlog, unwind);
 
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.byRegisterCount >= 1);
@@ -330,7 +330,7 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     pp.emit_Sub32_RSP(48);
     auto                   sizeProlog = concat.totalCount() - beforeProlog;
     VectorNative<uint16_t> unwind;
-    computeUnwindStack(48, sizeProlog, unwind);
+    computeUnwind({}, {}, 48, sizeProlog, unwind);
 
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.byRegisterCount >= 1);
@@ -410,7 +410,7 @@ bool BackendX64::emitGlobalDrop(const BuildParameters& buildParameters)
     pp.emit_Sub32_RSP(40);
     auto                   sizeProlog = concat.totalCount() - beforeProlog;
     VectorNative<uint16_t> unwind;
-    computeUnwindStack(40, sizeProlog, unwind);
+    computeUnwind({}, {}, 40, sizeProlog, unwind);
 
     // Call to #drop functions
     for (auto bc : module->byteCodeDropFunc)

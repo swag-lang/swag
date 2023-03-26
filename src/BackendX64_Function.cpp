@@ -93,13 +93,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     auto beforeProlog = concat.totalCount();
 
     VectorNative<CPURegister> unwindRegs;
+    VectorNative<uint32_t>    unwindOffsetRegs;
 
     // RDI will be a pointer to the stack, and the list of registers is stored at the start
     // of the stack
     pp.emit_Push(RDI);
     unwindRegs.push_back(RDI);
-
-    uint32_t sizeProlog = concat.totalCount() - beforeProlog;
+    unwindOffsetRegs.push_back(concat.totalCount() - beforeProlog);
 
     // Check stack
     if (sizeStack + sizeParamsStack >= SWAG_LIMIT_PAGE_STACK)
@@ -118,13 +118,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
     // Unwind information (with the pushed registers)
     VectorNative<uint16_t> unwind;
-    computeUnwindStack(sizeStack + sizeParamsStack, concat.totalCount() - beforeProlog, unwind);
-
-    // Now we put the registers.
-    // At the end because array must be sorted in 'offset in prolog' descending order.
-    // So RDI, which is the first 'push', must be the last
-    for (int32_t i = (int32_t) unwindRegs.size() - 1; i >= 0; i--)
-        unwind.push_back(computeUnwindPush(sizeProlog, unwindRegs[i]));
+    auto                   sizeProlog = concat.totalCount() - beforeProlog;
+    computeUnwind(unwindRegs, unwindOffsetRegs, sizeStack + sizeParamsStack, sizeProlog, unwind);
 
     // Registers are stored after the sizeParamsStack area, which is used to store parameters for function calls
     pp.concat.addString4("\x48\x8D\xBC\x24");
@@ -3451,7 +3446,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
 
             pp.emit_Add32_RSP(sizeStack + sizeParamsStack);
-            pp.emit_Pop(RDI);
+            for (int32_t rRet = (int32_t) unwindRegs.size() - 1; rRet >= 0; rRet--)
+                pp.emit_Pop(unwindRegs[rRet]);
             pp.emit_Ret();
             break;
 
@@ -4315,7 +4311,7 @@ uint32_t BackendX64::getOrCreateLabel(X64Gen& pp, uint32_t ip)
     return it->second;
 }
 
-uint16_t BackendX64::computeUnwindPush(uint32_t offsetSubRSP, CPURegister reg)
+uint16_t BackendX64::computeUnwindPush(CPURegister reg, uint32_t offsetSubRSP)
 {
     uint16_t unwind0 = 0;
     unwind0          = (reg << 12);
@@ -4324,7 +4320,11 @@ uint16_t BackendX64::computeUnwindPush(uint32_t offsetSubRSP, CPURegister reg)
     return unwind0;
 }
 
-void BackendX64::computeUnwindStack(uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind)
+void BackendX64::computeUnwind(const VectorNative<CPURegister>& unwindRegs,
+                               const VectorNative<uint32_t>&    unwindOffsetRegs,
+                               uint32_t                         sizeStack,
+                               uint32_t                         offsetSubRSP,
+                               VectorNative<uint16_t>&          unwind)
 {
     // UNWIND_CODE
     // UBYTE:8: offset of the instruction after the "sub rsp"
@@ -4354,4 +4354,10 @@ void BackendX64::computeUnwindStack(uint32_t sizeStack, uint32_t offsetSubRSP, V
         unwind0 = (uint16_t) (sizeStack / 8);
         unwind.push_back(unwind0);
     }
+
+    // Now we put the registers.
+    // At the end because array must be sorted in 'offset in prolog' descending order.
+    // So RDI, which is the first 'push', must be the last
+    for (int32_t i = (int32_t) unwindRegs.size() - 1; i >= 0; i--)
+        unwind.push_back(computeUnwindPush(unwindRegs[i], unwindOffsetRegs[i]));
 }
