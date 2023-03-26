@@ -101,9 +101,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     unwindRegs.push_back(RDI);
     unwindOffsetRegs.push_back(concat.totalCount() - beforeProlog);
 
-    //pp.emit_Push(R12);
-    //unwindRegs.push_back(R12);
-    //unwindOffsetRegs.push_back(concat.totalCount() - beforeProlog);
+    // pp.emit_Push(R12);
+    // unwindRegs.push_back(R12);
+    // unwindOffsetRegs.push_back(concat.totalCount() - beforeProlog);
 
     // Stack align
     if ((unwindRegs.size() & 1) == 0)
@@ -138,18 +138,20 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     uint32_t iReg         = 0;
     while (iReg < min(cc.byRegisterCount, numTotalRegs))
     {
-        auto typeParam = typeFunc->registerIdxToType(iReg);
+        auto     typeParam   = typeFunc->registerIdxToType(iReg);
+        uint32_t stackOffset = getParamStackOffset(coffFct, iReg);
         if (cc.useRegisterFloat && typeParam->isNativeFloat())
-            pp.emit_StoreF64_Indirect(offsetS4 + (iReg * sizeof(Register)), cc.byRegisterFloat[iReg], RDI);
+            pp.emit_StoreF64_Indirect(stackOffset, cc.byRegisterFloat[iReg], RDI);
         else
-            pp.emit_Store64_Indirect(offsetS4 + (iReg * sizeof(Register)), cc.byRegisterInteger[iReg], RDI);
+            pp.emit_Store64_Indirect(stackOffset, cc.byRegisterInteger[iReg], RDI);
         iReg++;
     }
 
-    // Save ppinter to return value if this is a return by copy
+    // Save pointer to return value if this is a return by copy
     if (typeFunc->returnByCopy() && iReg < cc.byRegisterCount)
     {
-        pp.emit_Store64_Indirect(offsetS4 + (iReg * sizeof(Register)), cc.byRegisterInteger[iReg], RDI);
+        uint32_t stackOffset = getParamStackOffset(coffFct, iReg);
+        pp.emit_Store64_Indirect(stackOffset, cc.byRegisterInteger[iReg], RDI);
         iReg++;
     }
 
