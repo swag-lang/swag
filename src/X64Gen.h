@@ -250,6 +250,7 @@ struct CoffFunction
     uint32_t               offsetCallerStackParams = 0;
     uint32_t               offsetLocalStackParams  = 0;
     uint32_t               frameSize               = 0;
+    uint32_t               numScratchRegs          = 0;
 };
 
 struct X64Gen

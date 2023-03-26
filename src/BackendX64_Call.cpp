@@ -18,7 +18,7 @@ uint32_t BackendX64::getParamStackOffset(CoffFunction* coffFct, int paramIdx)
         return regOffset(paramIdx) + coffFct->offsetCallerStackParams;
 }
 
-void BackendX64::emitGetParam(X64Gen& pp, CoffFunction* coffFct, int reg, int paramIdx, int sizeOf, uint64_t toAdd, int deRefSize)
+void BackendX64::emitGetParam(X64Gen& pp, CoffFunction* coffFct, int reg, uint32_t paramIdx, int sizeOf, uint64_t toAdd, int deRefSize)
 {
     auto        typeFunc   = coffFct->typeFunc;
     const auto& cc         = g_CallConv[typeFunc->callConv];
@@ -31,75 +31,96 @@ void BackendX64::emitGetParam(X64Gen& pp, CoffFunction* coffFct, int reg, int pa
     {
     case 1:
         SWAG_ASSERT(!toAdd);
-        pp.emit_LoadU8U64_Indirect(paramStack, RAX, RDI);
+        if (paramIdx < coffFct->numScratchRegs)
+            pp.emit_Extend_U8U64((CPURegister) (cc.firstScratchRegister + paramIdx), RAX);
+        else
+            pp.emit_LoadU8U64_Indirect(paramStack, RAX, RDI);
         pp.emit_Store64_Indirect(regOffset(reg), RAX);
         return;
     case 2:
         SWAG_ASSERT(!toAdd);
-        pp.emit_LoadU16U64_Indirect(paramStack, RAX, RDI);
+        if (paramIdx < coffFct->numScratchRegs)
+            pp.emit_Extend_U16U64((CPURegister) (cc.firstScratchRegister + paramIdx), RAX);
+        else
+            pp.emit_LoadU16U64_Indirect(paramStack, RAX, RDI);
         pp.emit_Store64_Indirect(regOffset(reg), RAX);
         return;
     case 4:
         SWAG_ASSERT(!toAdd);
-        pp.emit_Load32_Indirect(paramStack, RAX, RDI);
+        if (paramIdx < coffFct->numScratchRegs)
+            pp.emit_Copy32((CPURegister) (cc.firstScratchRegister + paramIdx), RAX);
+        else
+            pp.emit_Load32_Indirect(paramStack, RAX, RDI);
         pp.emit_Store64_Indirect(regOffset(reg), RAX);
         return;
     }
 
-    if (cc.structByRegister && typeParam->isStruct() && typeParam->sizeOf <= sizeof(void*))
-        pp.emit_LoadAddress_Indirect(paramStack, RAX, RDI);
-    else
-        pp.emit_Load64_Indirect(paramStack, RAX, RDI);
+    SWAG_ASSERT(toAdd <= 0x7FFFFFFFF);
 
-    if (toAdd)
+    bool structByValue = cc.structByRegister && typeParam->isStruct() && typeParam->sizeOf <= sizeof(void*);
+
+    // Use scratch registers
+    if (paramIdx < coffFct->numScratchRegs && !structByValue)
     {
-        if (deRefSize && toAdd <= 0x7FFFFFFFF)
+        auto scratch = (CPURegister) (cc.firstScratchRegister + paramIdx);
+        if (toAdd == 0 && deRefSize == 0)
+        {
+            pp.emit_Store64_Indirect(regOffset(reg), scratch);
+        }
+        else
         {
             switch (deRefSize)
             {
             case 1:
-                pp.emit_LoadU8U64_Indirect((uint32_t) toAdd, RAX, RAX);
+                pp.emit_LoadU8U64_Indirect((uint32_t) toAdd, RAX, scratch);
                 break;
             case 2:
-                pp.emit_LoadU16U64_Indirect((uint32_t) toAdd, RAX, RAX);
+                pp.emit_LoadU16U64_Indirect((uint32_t) toAdd, RAX, scratch);
                 break;
             case 4:
-                pp.emit_Load32_Indirect((uint32_t) toAdd, RAX, RAX);
+                pp.emit_Load32_Indirect((uint32_t) toAdd, RAX, scratch);
                 break;
             case 8:
-                pp.emit_Load64_Indirect((uint32_t) toAdd, RAX, RAX);
+                pp.emit_Load64_Indirect((uint32_t) toAdd, RAX, scratch);
+                break;
+            default:
+                pp.emit_LoadAddress_Indirect((uint32_t) toAdd, RAX, scratch);
                 break;
             }
 
-            deRefSize = false;
-        }
-        else
-        {
-            pp.emit_Load64_Immediate(toAdd, RCX);
-            pp.emit_Op64(RCX, RAX, X64Op::ADD);
+            pp.emit_Store64_Indirect(regOffset(reg), RAX);
         }
     }
 
-    if (deRefSize)
+    // Normal access, use stack
+    else
     {
+        if (structByValue)
+            pp.emit_LoadAddress_Indirect(paramStack, RAX, RDI);
+        else
+            pp.emit_Load64_Indirect(paramStack, RAX, RDI);
+
         switch (deRefSize)
         {
         case 1:
-            pp.emit_LoadU8U64_Indirect(0, RAX, RAX);
+            pp.emit_LoadU8U64_Indirect((uint32_t)toAdd, RAX, RAX);
             break;
         case 2:
-            pp.emit_LoadU16U64_Indirect(0, RAX, RAX);
+            pp.emit_LoadU16U64_Indirect((uint32_t)toAdd, RAX, RAX);
             break;
         case 4:
-            pp.emit_Load32_Indirect(0, RAX, RAX);
+            pp.emit_Load32_Indirect((uint32_t)toAdd, RAX, RAX);
             break;
         case 8:
-            pp.emit_Load64_Indirect(0, RAX, RAX);
+            pp.emit_Load64_Indirect((uint32_t)toAdd, RAX, RAX);
+            break;
+        default:
+            pp.emit_Add64_Immediate(toAdd, RAX);
             break;
         }
-    }
 
-    pp.emit_Store64_Indirect(regOffset(reg), RAX);
+        pp.emit_Store64_Indirect(regOffset(reg), RAX);
+    }
 }
 
 void BackendX64::emitCall(X64Gen& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<X64PushParam>& pushParams, uint32_t offsetRT, bool localCall)

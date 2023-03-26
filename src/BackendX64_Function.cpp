@@ -90,7 +90,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
     MK_ALIGN16(sizeParamsStack);
 
-    auto beforeProlog = concat.totalCount();
+    auto     beforeProlog = concat.totalCount();
+    uint32_t numTotalRegs = typeFunc->numParamsRegisters();
 
     VectorNative<CPURegister> unwindRegs;
     VectorNative<uint32_t>    unwindOffsetRegs;
@@ -101,9 +102,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     unwindRegs.push_back(RDI);
     unwindOffsetRegs.push_back(concat.totalCount() - beforeProlog);
 
-    // pp.emit_Push(R12);
-    // unwindRegs.push_back(R12);
-    // unwindOffsetRegs.push_back(concat.totalCount() - beforeProlog);
+    // Push on scratch register per parameter
+    while (coffFct->numScratchRegs < min(cc.numScratchRegisters, min(cc.byRegisterCount, numTotalRegs)))
+    {
+        pp.emit_Push((CPURegister) (cc.firstScratchRegister + coffFct->numScratchRegs));
+        unwindRegs.push_back((CPURegister) (cc.firstScratchRegister + coffFct->numScratchRegs));
+        unwindOffsetRegs.push_back(concat.totalCount() - beforeProlog);
+        coffFct->numScratchRegs++;
+    }
 
     // Stack align
     if ((unwindRegs.size() & 1) == 0)
@@ -134,8 +140,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     pp.concat.addU32(sizeParamsStack); // lea rdi, [rsp + sizeParamsStack]
 
     // Save register parameters
-    uint32_t numTotalRegs = typeFunc->numParamsRegisters();
-    uint32_t iReg         = 0;
+    uint32_t iReg = 0;
     while (iReg < min(cc.byRegisterCount, numTotalRegs))
     {
         auto     typeParam   = typeFunc->registerIdxToType(iReg);
@@ -144,6 +149,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_StoreF64_Indirect(stackOffset, cc.byRegisterFloat[iReg], RDI);
         else
             pp.emit_Store64_Indirect(stackOffset, cc.byRegisterInteger[iReg], RDI);
+
+        if (iReg < coffFct->numScratchRegs)
+            pp.emit_Load64_Indirect(stackOffset, (CPURegister) (cc.firstScratchRegister + iReg), RDI);
+
         iReg++;
     }
 

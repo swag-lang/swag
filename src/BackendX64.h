@@ -105,7 +105,7 @@ struct BackendX64 : public Backend
     void emitSymbolRelocation(X64Gen& pp, const Utf8& name);
 
     uint32_t getParamStackOffset(CoffFunction* coffFct, int paramIdx);
-    void     emitGetParam(X64Gen& pp, CoffFunction* coffFct, int reg, int paramIdx, int sizeOf, uint64_t toAdd = 0, int derefSize = 0);
+    void     emitGetParam(X64Gen& pp, CoffFunction* coffFct, int reg, uint32_t paramIdx, int sizeOf, uint64_t toAdd = 0, int derefSize = 0);
     void     emitCall(X64Gen& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<X64PushParam>& pushParams, uint32_t offsetRT, bool localCall);
     void     emitCall(X64Gen& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, bool localCall);
     void     emitInternalCall(X64Gen& pp, Module* moduleToGen, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT = UINT32_MAX);
