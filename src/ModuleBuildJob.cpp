@@ -327,11 +327,11 @@ JobResult ModuleBuildJob::execute()
                 module->buildCfg.backendKind != BuildCfgBackendKind::Export)
             {
                 if (module->kind == ModuleKind::Test)
-                    g_Log.messageHeaderCentered("Building test", module->name.c_str());
+                    g_Log.messageHeaderCentered("Compiling test", module->name.c_str());
                 else if (module->kind == ModuleKind::Example)
-                    g_Log.messageHeaderCentered("Building example", module->name.c_str());
+                    g_Log.messageHeaderCentered("Compiling example", module->name.c_str());
                 else
-                    g_Log.messageHeaderCentered("Building", module->name.c_str());
+                    g_Log.messageHeaderCentered("Compiling", module->name.c_str());
             }
 
             pass = ModuleBuildPass::Publish;
