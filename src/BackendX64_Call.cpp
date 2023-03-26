@@ -211,7 +211,7 @@ void BackendX64::emitByteCodeCall(X64Gen& pp, TypeInfoFuncAttr* typeFuncBC, uint
     uint32_t stackOffset = typeFuncBC->numReturnRegisters() * sizeof(Register);
     for (int idxParam = (int) pushRAParams.size() - 1; idxParam >= 0; idxParam--, idxReg++)
     {
-        static const uint8_t idxToReg[4] = {RDX, R8, R9};
+        static const CPURegister idxToReg[4] = {RDX, R8, R9};
 
         // Pass by value
         stackOffset += sizeof(Register);
