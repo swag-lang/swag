@@ -97,14 +97,8 @@ bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
             }
 
             case TokenId::SymMinus:
-            {
-                auto rt = reserveRegisterRC(context);
-                SWAG_CHECK(emitUnaryOpMinus(context, typeInfoExpr, rt, node->resultRegisterRC));
-                freeRegisterRC(context, node->resultRegisterRC);
-                node->resultRegisterRC = rt;
+                SWAG_CHECK(emitUnaryOpMinus(context, typeInfoExpr, node->resultRegisterRC, node->resultRegisterRC));
                 break;
-            }
-
             case TokenId::SymTilde:
                 SWAG_CHECK(emitUnaryOpInvert(context, typeInfoExpr, node->resultRegisterRC, node->resultRegisterRC));
                 break;

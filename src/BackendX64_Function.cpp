@@ -2029,14 +2029,24 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             break;
         case ByteCodeOp::NegS32:
-            pp.emit_Load32_Indirect(regOffset(ip->b.u32), RAX);
-            pp.emit_Neg32(RAX);
-            pp.emit_Store32_Indirect(regOffset(ip->a.u32), RAX);
+            if (ip->a.u32 == ip->b.u32)
+                pp.emit_Neg32_Indirect(regOffset(ip->a.u32), RDI);
+            else
+            {
+                pp.emit_Load32_Indirect(regOffset(ip->b.u32), RAX);
+                pp.emit_Neg32(RAX);
+                pp.emit_Store32_Indirect(regOffset(ip->a.u32), RAX);
+            }
             break;
         case ByteCodeOp::NegS64:
-            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RAX);
-            pp.emit_Neg64(RAX);
-            pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
+            if (ip->a.u32 == ip->b.u32)
+                pp.emit_Neg64_Indirect(regOffset(ip->a.u32), RDI);
+            else
+            {
+                pp.emit_Load64_Indirect(regOffset(ip->b.u32), RAX);
+                pp.emit_Neg64(RAX);
+                pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
+            }
             break;
         case ByteCodeOp::NegF32:
             pp.emit_LoadF32_Indirect(regOffset(ip->b.u32), XMM0);
