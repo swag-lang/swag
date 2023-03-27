@@ -433,7 +433,7 @@ void X64Gen::emit_Store32_Immediate(uint32_t stackOffset, uint32_t val, CPURegis
 
 void X64Gen::emit_Store64_Immediate(uint32_t stackOffset, uint64_t val, CPURegister memReg)
 {
-    SWAG_ASSERT(val <= 0x7FFFFFFF);
+    SWAG_ASSERT(val <= 0xFFFFFFFF);
     concat.addU8(getREX());
     concat.addU8(0xC7);
     emit_ModRM(stackOffset, 0, memReg);
@@ -2071,6 +2071,76 @@ void X64Gen::emit_Not64(CPURegister reg)
     concat.addU8(getREX());
     concat.addU8(0xF7);
     concat.addU8(0xD0 | (reg & 0b111));
+}
+
+void X64Gen::emit_Not8_Indirect(uint32_t stackOffset, CPURegister memReg)
+{
+    SWAG_ASSERT(memReg == RDI);
+
+    concat.addU8(0xF6);
+    if (stackOffset <= 0x7F)
+    {
+        concat.addU8(0x57);
+        concat.addU8((uint8_t) stackOffset);
+    }
+    else
+    {
+        concat.addU8(0x97);
+        concat.addU32(stackOffset);
+    }
+}
+
+void X64Gen::emit_Not16_Indirect(uint32_t stackOffset, CPURegister memReg)
+{
+    SWAG_ASSERT(memReg == RDI);
+
+    concat.addU8(0x66);
+    concat.addU8(0xF7);
+    if (stackOffset <= 0x7F)
+    {
+        concat.addU8(0x57);
+        concat.addU8((uint8_t) stackOffset);
+    }
+    else
+    {
+        concat.addU8(0x97);
+        concat.addU32(stackOffset);
+    }
+}
+
+void X64Gen::emit_Not32_Indirect(uint32_t stackOffset, CPURegister memReg)
+{
+    SWAG_ASSERT(memReg == RDI);
+
+    concat.addU8(0xF7);
+    if (stackOffset <= 0x7F)
+    {
+        concat.addU8(0x57);
+        concat.addU8((uint8_t) stackOffset);
+    }
+    else
+    {
+        concat.addU8(0x97);
+        concat.addU32(stackOffset);
+    }
+}
+
+void X64Gen::emit_Not64_Indirect(uint32_t stackOffset, CPURegister memReg)
+{
+    SWAG_ASSERT(memReg == RDI);
+
+    concat.addU8(getREX());
+    concat.addU8(0xF7);
+    if (stackOffset <= 0x7F)
+    {
+        concat.addU8(0x57);
+        concat.addU8((uint8_t) stackOffset);
+    }
+    else
+    {
+        concat.addU8(0x97);
+        concat.addU32(stackOffset);
+    }
 }
 
 void X64Gen::emit_Inc8_Indirect(uint32_t stackOffset, CPURegister memReg)

@@ -106,13 +106,8 @@ bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
             }
 
             case TokenId::SymTilde:
-            {
-                auto rt = reserveRegisterRC(context);
-                SWAG_CHECK(emitUnaryOpInvert(context, typeInfoExpr, rt, node->resultRegisterRC));
-                freeRegisterRC(context, node->resultRegisterRC);
-                node->resultRegisterRC = rt;
+                SWAG_CHECK(emitUnaryOpInvert(context, typeInfoExpr, node->resultRegisterRC, node->resultRegisterRC));
                 break;
-            }
 
             default:
                 return Report::internalError(context->node, "emitUnaryOp, invalid token op");

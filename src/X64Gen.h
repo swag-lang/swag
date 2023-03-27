@@ -528,6 +528,10 @@ struct X64Gen
     void emit_Not16(CPURegister reg);
     void emit_Not32(CPURegister reg);
     void emit_Not64(CPURegister reg);
+    void emit_Not8_Indirect(uint32_t stackOffset, CPURegister memReg);
+    void emit_Not16_Indirect(uint32_t stackOffset, CPURegister memReg);
+    void emit_Not32_Indirect(uint32_t stackOffset, CPURegister memReg);
+    void emit_Not64_Indirect(uint32_t stackOffset, CPURegister memReg);
     void emit_Inc8_Indirect(uint32_t stackOffset, CPURegister memReg);
     void emit_Inc16_Indirect(uint32_t stackOffset, CPURegister memReg);
     void emit_Inc32_Indirect(uint32_t stackOffset, CPURegister memReg);

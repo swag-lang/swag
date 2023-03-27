@@ -2056,24 +2056,44 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::InvertU8:
-            pp.emit_Load8_Indirect(regOffset(ip->b.u32), RAX);
-            pp.emit_Not8(RAX);
-            pp.emit_Store8_Indirect(regOffset(ip->a.u32), RAX);
+            if (ip->a.u32 == ip->b.u32)
+                pp.emit_Not8_Indirect(regOffset(ip->a.u32), RDI);
+            else
+            {
+                pp.emit_Load8_Indirect(regOffset(ip->b.u32), RAX);
+                pp.emit_Not8(RAX);
+                pp.emit_Store8_Indirect(regOffset(ip->a.u32), RAX);
+            }
             break;
         case ByteCodeOp::InvertU16:
-            pp.emit_Load16_Indirect(regOffset(ip->b.u32), RAX);
-            pp.emit_Not16(RAX);
-            pp.emit_Store16_Indirect(regOffset(ip->a.u32), RAX);
+            if (ip->a.u32 == ip->b.u32)
+                pp.emit_Not16_Indirect(regOffset(ip->a.u32), RDI);
+            else
+            {
+                pp.emit_Load16_Indirect(regOffset(ip->b.u32), RAX);
+                pp.emit_Not16(RAX);
+                pp.emit_Store16_Indirect(regOffset(ip->a.u32), RAX);
+            }
             break;
         case ByteCodeOp::InvertU32:
-            pp.emit_Load32_Indirect(regOffset(ip->b.u32), RAX);
-            pp.emit_Not32(RAX);
-            pp.emit_Store32_Indirect(regOffset(ip->a.u32), RAX);
+            if (ip->a.u32 == ip->b.u32)
+                pp.emit_Not32_Indirect(regOffset(ip->a.u32), RDI);
+            else
+            {
+                pp.emit_Load32_Indirect(regOffset(ip->b.u32), RAX);
+                pp.emit_Not32(RAX);
+                pp.emit_Store32_Indirect(regOffset(ip->a.u32), RAX);
+            }
             break;
         case ByteCodeOp::InvertU64:
-            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RAX);
-            pp.emit_Not64(RAX);
-            pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
+            if (ip->a.u32 == ip->b.u32)
+                pp.emit_Not64_Indirect(regOffset(ip->a.u32), RDI);
+            else
+            {
+                pp.emit_Load64_Indirect(regOffset(ip->b.u32), RAX);
+                pp.emit_Not64(RAX);
+                pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
+            }
             break;
 
         case ByteCodeOp::JumpDyn8:
