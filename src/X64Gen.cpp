@@ -2368,6 +2368,8 @@ void X64Gen::emit_BSwap64(CPURegister reg)
 
 void X64Gen::emit_ShiftN_Immediate(CPURegister reg, uint8_t value, uint8_t numBits, X64Op op)
 {
+    SWAG_ASSERT(reg == RAX);
+
     if (value == 1)
     {
         switch (numBits)

@@ -1729,7 +1729,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::LowerZeroToTrue:
             pp.emit_Load32_Indirect(regOffset(ip->a.u32), RAX);
-            concat.addString3("\xc1\xe8\x1f"); // shr eax, 31
+            pp.emit_ShiftN_Immediate(RAX, 31, 32, X64Op::SHR);
             pp.emit_Store8_Indirect(regOffset(ip->a.u32), RAX);
             break;
         case ByteCodeOp::LowerEqZeroToTrue:
@@ -1747,7 +1747,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::GreaterEqZeroToTrue:
             pp.emit_Load32_Indirect(regOffset(ip->a.u32), RAX);
             pp.emit_Not32(RAX);
-            concat.addString3("\xc1\xe8\x1f"); // shr eax, 31
+            pp.emit_ShiftN_Immediate(RAX, 31, 32, X64Op::SHR);
             pp.emit_Store8_Indirect(regOffset(ip->a.u32), RAX);
             break;
 
@@ -1881,8 +1881,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Clear32(RCX);
             pp.emit_Test32(RAX, RAX);
             pp.concat.addString3("\x0F\x9F\xC1"); // setg cl
-            pp.concat.addString3("\xC1\xE8\x1F"); // shr eax, 31
-            pp.concat.addString2("\x29\xC1");     // sub ecx, eax
+            pp.emit_ShiftN_Immediate(RAX, 31, 32, X64Op::SHR);
+            pp.concat.addString2("\x29\xC1"); // sub ecx, eax
             pp.emit_Store32_Indirect(regOffset(ip->c.u32), RCX);
             break;
         case ByteCodeOp::CompareOp3WayU64:
@@ -1890,9 +1890,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitBinOpInt64(pp, ip, X64Op::SUB);
             pp.emit_Clear64(RCX);
             pp.emit_Test64(RAX, RAX);
-            pp.concat.addString3("\x0F\x9F\xC1");     // setg cl
-            pp.concat.addString4("\x48\xC1\xE8\x3F"); // shr rax, 63
-            pp.concat.addString2("\x29\xC1");         // sub ecx, eax
+            pp.concat.addString3("\x0F\x9F\xC1"); // setg cl
+            pp.emit_ShiftN_Immediate(RAX, 63, 64, X64Op::SHR);
+            pp.concat.addString2("\x29\xC1"); // sub ecx, eax
             pp.emit_Store32_Indirect(regOffset(ip->c.u32), RCX);
             break;
         case ByteCodeOp::CompareOp3WayF32:
