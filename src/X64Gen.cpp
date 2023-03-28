@@ -2226,7 +2226,7 @@ void X64Gen::emit_Neg32_Indirect(uint32_t stackOffset, CPURegister memReg)
     if (stackOffset <= 0x7F)
     {
         concat.addU8(0x5F);
-        concat.addU8((uint8_t)stackOffset);
+        concat.addU8((uint8_t) stackOffset);
     }
     else
     {
@@ -2244,11 +2244,124 @@ void X64Gen::emit_Neg64_Indirect(uint32_t stackOffset, CPURegister memReg)
     if (stackOffset <= 0x7F)
     {
         concat.addU8(0x5F);
-        concat.addU8((uint8_t)stackOffset);
+        concat.addU8((uint8_t) stackOffset);
     }
     else
     {
         concat.addU8(0x9F);
         concat.addU32(stackOffset);
     }
+}
+
+void X64Gen::emit_CMovL16(CPURegister reg1, CPURegister reg2)
+{
+    SWAG_ASSERT(reg1 == RAX);
+    SWAG_ASSERT(reg2 == RCX);
+
+    concat.addU8(0x66);
+    concat.addU8(0x0F);
+    concat.addU8(0x4C);
+    concat.addU8(0xC1);
+}
+
+void X64Gen::emit_CMovL32(CPURegister reg1, CPURegister reg2)
+{
+    SWAG_ASSERT(reg1 == RAX);
+    SWAG_ASSERT(reg2 == RCX);
+
+    concat.addU8(0x0F);
+    concat.addU8(0x4C);
+    concat.addU8(0xC1);
+}
+
+void X64Gen::emit_CMovL64(CPURegister reg1, CPURegister reg2)
+{
+    SWAG_ASSERT(reg1 == RAX);
+    SWAG_ASSERT(reg2 == RCX);
+
+    concat.addU8(getREX());
+    concat.addU8(0x0F);
+    concat.addU8(0x4C);
+    concat.addU8(0xC1);
+}
+
+void X64Gen::emit_CMovB16(CPURegister reg1, CPURegister reg2)
+{
+    SWAG_ASSERT(reg1 == RAX);
+    SWAG_ASSERT(reg2 == RCX);
+
+    concat.addU8(0x66);
+    concat.addU8(0x0F);
+    concat.addU8(0x42);
+    concat.addU8(0xC1);
+}
+
+void X64Gen::emit_CMovB32(CPURegister reg1, CPURegister reg2)
+{
+    SWAG_ASSERT(reg1 == RAX);
+    SWAG_ASSERT(reg2 == RCX);
+
+    concat.addU8(0x0F);
+    concat.addU8(0x42);
+    concat.addU8(0xC1);
+}
+
+void X64Gen::emit_CMovB64(CPURegister reg1, CPURegister reg2)
+{
+    SWAG_ASSERT(reg1 == RAX);
+    SWAG_ASSERT(reg2 == RCX);
+
+    concat.addU8(getREX());
+    concat.addU8(0x0F);
+    concat.addU8(0x42);
+    concat.addU8(0xC1);
+}
+
+void X64Gen::emit_CMovE16(CPURegister reg1, CPURegister reg2)
+{
+    SWAG_ASSERT(reg1 == RAX);
+    SWAG_ASSERT(reg2 == RCX);
+
+    concat.addU8(0x66);
+    concat.addU8(0x0F);
+    concat.addU8(0x44);
+    concat.addU8(0xC1);
+}
+
+void X64Gen::emit_CMovE32(CPURegister reg1, CPURegister reg2)
+{
+    SWAG_ASSERT(reg1 == RAX);
+    SWAG_ASSERT(reg2 == RCX);
+
+    concat.addU8(0x0F);
+    concat.addU8(0x44);
+    concat.addU8(0xC1);
+}
+
+void X64Gen::emit_CMovE64(CPURegister reg1, CPURegister reg2)
+{
+    SWAG_ASSERT(reg1 == RAX);
+    SWAG_ASSERT(reg2 == RCX);
+
+    concat.addU8(getREX());
+    concat.addU8(0x0F);
+    concat.addU8(0x44);
+    concat.addU8(0xC1);
+}
+
+void X64Gen::emit_BSwap32(CPURegister reg)
+{
+    SWAG_ASSERT(reg == RAX);
+
+    concat.addU8(0x0F);
+    concat.addU8(0xC8);
+}
+
+void X64Gen::emit_BSwap64(CPURegister reg)
+{
+    SWAG_ASSERT(reg == RAX);
+
+    concat.addU8(getREX());
+    concat.addU8(0x0F);
+    concat.addU8(0xC8);
 }

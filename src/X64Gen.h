@@ -544,4 +544,15 @@ struct X64Gen
     void emit_Neg64(CPURegister reg);
     void emit_Neg32_Indirect(uint32_t stackOffset, CPURegister memReg);
     void emit_Neg64_Indirect(uint32_t stackOffset, CPURegister memReg);
+    void emit_CMovL16(CPURegister reg1, CPURegister reg2);
+    void emit_CMovL32(CPURegister reg1, CPURegister reg2);
+    void emit_CMovL64(CPURegister reg1, CPURegister reg2);
+    void emit_CMovB16(CPURegister reg1, CPURegister reg2);
+    void emit_CMovB32(CPURegister reg1, CPURegister reg2);
+    void emit_CMovB64(CPURegister reg1, CPURegister reg2);
+    void emit_CMovE16(CPURegister reg1, CPURegister reg2);
+    void emit_CMovE32(CPURegister reg1, CPURegister reg2);
+    void emit_CMovE64(CPURegister reg1, CPURegister reg2);
+    void emit_BSwap32(CPURegister reg);
+    void emit_BSwap64(CPURegister reg);
 };
