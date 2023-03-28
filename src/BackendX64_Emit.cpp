@@ -241,48 +241,10 @@ void BackendX64::emitShiftLogical(X64Gen& pp, ByteCodeInstruction* ip, uint8_t n
     {
         pp.emit_ClearN(RAX, numBits);
     }
-    else if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B) && ip->b.u32 == 1)
-    {
-        pp.emit_LoadN_Indirect(regOffset(ip->a.u32), RAX, RDI, numBits);
-        switch (numBits)
-        {
-        case 8:
-            pp.concat.addString1("\xD0");
-            break;
-        case 16:
-            pp.concat.addString2("\x66\xD1");
-            break;
-        case 32:
-            pp.concat.addString1("\xD1");
-            break;
-        case 64:
-            pp.concat.addString2("\x48\xD1");
-            break;
-        }
-
-        pp.concat.addU8((uint8_t) op);
-    }
     else if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B))
     {
         pp.emit_LoadN_Indirect(regOffset(ip->a.u32), RAX, RDI, numBits);
-        switch (numBits)
-        {
-        case 8:
-            pp.concat.addString1("\xC0");
-            break;
-        case 16:
-            pp.concat.addString2("\x66\xC1");
-            break;
-        case 32:
-            pp.concat.addString1("\xC1");
-            break;
-        case 64:
-            pp.concat.addString2("\x48\xC1");
-            break;
-        }
-
-        pp.concat.addU8((uint8_t) op);
-        pp.concat.addU8(ip->b.u32 & (numBits - 1));
+        pp.emit_ShiftN_Immediate(RAX, ip->b.u8, numBits, op);
     }
     else
     {

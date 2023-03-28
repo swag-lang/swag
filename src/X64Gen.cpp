@@ -2365,3 +2365,48 @@ void X64Gen::emit_BSwap64(CPURegister reg)
     concat.addU8(0x0F);
     concat.addU8(0xC8);
 }
+
+void X64Gen::emit_ShiftN_Immediate(CPURegister reg, uint8_t value, uint8_t numBits, X64Op op)
+{
+    if (value == 1)
+    {
+        switch (numBits)
+        {
+        case 8:
+            concat.addString1("\xD0");
+            break;
+        case 16:
+            concat.addString2("\x66\xD1");
+            break;
+        case 32:
+            concat.addString1("\xD1");
+            break;
+        case 64:
+            concat.addString2("\x48\xD1");
+            break;
+        }
+
+        concat.addU8((uint8_t) op);
+    }
+    else
+    {
+        switch (numBits)
+        {
+        case 8:
+            concat.addString1("\xC0");
+            break;
+        case 16:
+            concat.addString2("\x66\xC1");
+            break;
+        case 32:
+            concat.addString1("\xC1");
+            break;
+        case 64:
+            concat.addString2("\x48\xC1");
+            break;
+        }
+
+        concat.addU8((uint8_t) op);
+        concat.addU8(value & (numBits - 1));
+    }
+}
