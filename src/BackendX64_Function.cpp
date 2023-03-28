@@ -1882,7 +1882,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Test32(RAX, RAX);
             pp.concat.addString3("\x0F\x9F\xC1"); // setg cl
             pp.emit_ShiftN_Immediate(RAX, 31, 32, X64Op::SHR);
-            pp.concat.addString2("\x29\xC1"); // sub ecx, eax
+            pp.emit_Op32(RAX, RCX, X64Op::SUB);
             pp.emit_Store32_Indirect(regOffset(ip->c.u32), RCX);
             break;
         case ByteCodeOp::CompareOp3WayU64:
@@ -1892,7 +1892,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Test64(RAX, RAX);
             pp.concat.addString3("\x0F\x9F\xC1"); // setg cl
             pp.emit_ShiftN_Immediate(RAX, 63, 64, X64Op::SHR);
-            pp.concat.addString2("\x29\xC1"); // sub ecx, eax
+            pp.emit_Op32(RAX, RCX, X64Op::SUB);
             pp.emit_Store32_Indirect(regOffset(ip->c.u32), RCX);
             break;
         case ByteCodeOp::CompareOp3WayF32:
@@ -1904,7 +1904,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_SetA();
             pp.concat.addString3("\x0F\x2F\xC8"); // comiss xmm1, xmm0
             pp.emit_SetA(RCX);
-            pp.concat.addString2("\x29\xC8"); // sub eax, ecx
+            pp.emit_Op32(RCX, RAX, X64Op::SUB);
             pp.emit_Store32_Indirect(regOffset(ip->c.u32), RAX);
             break;
         case ByteCodeOp::CompareOp3WayF64:
@@ -1916,7 +1916,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_SetA();
             pp.concat.addString4("\x66\x0F\x2F\xC8"); // comisd xmm1, xmm0
             pp.emit_SetA(RCX);
-            pp.concat.addString2("\x29\xC8"); // sub eax, ecx
+            pp.emit_Op32(RCX, RAX, X64Op::SUB);
             pp.emit_Store32_Indirect(regOffset(ip->c.u32), RAX);
             break;
 
@@ -3669,7 +3669,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 pp.emit_Copy32(RAX, RCX);
                 concat.addString3("\xC1\xF9\x1F"); // sar ecx, 31
                 concat.addString2("\x31\xC8");     // xor eax, ecx
-                concat.addString2("\x29\xC8");     // sub eax, ecx
+                pp.emit_Op32(RCX, RAX, X64Op::SUB);
                 pp.emit_Store32_Indirect(regOffset(ip->a.u32), RAX);
                 break;
             case TokenId::IntrinsicBitCountNz:
