@@ -155,7 +155,7 @@ impl HashSet
             h := oldTable[i].hash
             if h >= HASH_FIRST
             {
-                emplaceInternal(self, &oldTable[i].key)
+                emplaceInternal(h, &oldTable[i].key)
             }
             elif h == HASH_DELETED
             {
@@ -233,12 +233,11 @@ impl HashSet
 
     // Add a new key.
     #[Discardable]
-    mtd emplaceInternal(key: ref K)->*HashSetEntry
+    mtd emplaceInternal(hashVal: u32, key: ref K)->*HashSetEntry
         #validif Reflection.canCopy(@typeof(K))
     {
         grow()
 
-        hashVal := hashKey(key)
         index := hashVal % capacity
 
         while table[index].hash >= HASH_FIRST

@@ -169,7 +169,7 @@ impl HashTable
             h := oldTable[i].hash
             if h >= HASH_FIRST
             {
-                emplaceInternal(self, &oldTable[i].key, &oldTable[i].value)
+                emplaceInternal(h, &oldTable[i].key, &oldTable[i].value)
             }
             elif h == HASH_DELETED
             {
@@ -261,13 +261,12 @@ impl HashTable
 
     // Use with care !
     #[Discardable]
-    mtd emplaceInternal(key: ref K, value: ref V)->*HashTableEntry
+    mtd emplaceInternal(hashVal: u32, key: ref K, value: ref V)->*HashTableEntry
         #validif Reflection.canCopy(@typeof(K)) and
                   Reflection.canCopy(@typeof(V))
     {
         grow()
 
-        hashVal := hashKey(key)
         index := hashVal % capacity
 
         while table[index].hash >= HASH_FIRST
