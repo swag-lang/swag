@@ -3713,8 +3713,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 MK_IMMB_64(RAX);
                 pp.emit_Copy64(RAX, RCX);
                 concat.addString4("\x48\xC1\xF9\x3F"); // sar rcx, 63
-                concat.addString3("\x48\x31\xC8");     // xor rax, rcx
-                concat.addString3("\x48\x29\xC8");     // sub rax, rcx
+                pp.emit_Op64(RCX, RAX, X64Op::XOR);
+                pp.emit_Op64(RCX, RAX, X64Op::SUB);
                 pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
                 break;
             case TokenId::IntrinsicBitCountNz:
