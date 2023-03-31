@@ -89,8 +89,6 @@ impl HashTable
                         var @alias1 = cast(const ref V) &#up table[@index].value
                     #else
                         var @alias1 = #up table[@index].value
-                    //var @alias0 = Reflection.isStruct(K) ? cast(const ref K) &#up table[@index].key : #up table[@index].key
-                    //var @alias1 = Reflection.isStruct(V) ? cast(const ref V) &#up table[@index].value : #up table[@index].value
                 }
 
                 #mixin #up stmt { break = break Up; continue = break Down; }
@@ -262,8 +260,7 @@ impl HashTable
     // Use with care !
     #[Discardable]
     mtd emplaceInternal(hashVal: u32, key: ref K, value: ref V)->*HashTableEntry
-        #validif Reflection.canCopy(@typeof(K)) and
-                  Reflection.canCopy(@typeof(V))
+        #validif Reflection.canCopy(@typeof(K)) and Reflection.canCopy(@typeof(V))
     {
         grow()
 
