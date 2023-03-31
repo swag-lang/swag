@@ -262,7 +262,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
             }
             else
             {
-                SWAG_CHECK(doTypeExpression(params, (AstNode**) &typeExpr));
+                SWAG_CHECK(doTypeExpression(params, EXPR_FLAG_NONE, (AstNode**) &typeExpr));
                 typeExpr->typeFlags |= isConst ? TYPEFLAG_IS_CONST : 0;
 
                 // type...
@@ -367,7 +367,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
     if (token.id == TokenId::SymMinusGreat)
     {
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doTypeExpression(node, &node->returnType));
+        SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_NONE, &node->returnType));
     }
 
     if (token.id == TokenId::KwdThrow)
@@ -472,7 +472,7 @@ bool Parser::doTupleOrAnonymousType(AstNode* parent, AstNode** result, bool isCo
     return true;
 }
 
-bool Parser::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeVarDecl)
+bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
     // Code
     if (token.id == TokenId::KwdCode)
@@ -485,6 +485,8 @@ bool Parser::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeVarD
         SWAG_CHECK(eatToken());
         return true;
     }
+
+    bool inTypeVarDecl = exprFlags & EXPR_FLAG_IN_VAR_DECL;
 
     // This is a lambda
     if (token.id == TokenId::KwdFunc || token.id == TokenId::KwdClosure || token.id == TokenId::KwdMethod || token.id == TokenId::KwdConstMethod)
@@ -607,7 +609,7 @@ bool Parser::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeVarD
         SWAG_CHECK(eatToken(TokenId::SymRightSquare));
         if (token.flags & TOKENPARSE_LAST_EOL)
         {
-            if (contextFlags & CONTEXT_FLAG_EXPRESSION)
+            if (exprFlags & EXPR_FLAG_TYPE_EXPR)
             {
                 if (inTypeVarDecl)
                     return context->report({sourceFile, rightSquareToken, Err(Syn0024)});
@@ -830,7 +832,7 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
     }
 
     SWAG_CHECK(eatToken(TokenId::SymLeftParen, "after 'cast'"));
-    SWAG_CHECK(doTypeExpression(node, &dummyResult));
+    SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_NONE, &dummyResult));
     SWAG_CHECK(eatToken(TokenId::SymRightParen, "after the type expression"));
 
     SWAG_CHECK(doUnaryExpression(node, EXPR_FLAG_NONE, &dummyResult));

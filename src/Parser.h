@@ -64,6 +64,8 @@ const uint32_t EXPR_FLAG_TYPEOF      = 0x00000004;
 const uint32_t EXPR_FLAG_STOP_AFFECT = 0x00000008;
 const uint32_t EXPR_FLAG_PARAMETER   = 0x00000010;
 const uint32_t EXPR_FLAG_IN_CALL     = 0x00000020;
+const uint32_t EXPR_FLAG_IN_VAR_DECL = 0x00000040;
+const uint32_t EXPR_FLAG_TYPE_EXPR   = 0x00000080;
 
 const uint32_t CONTEXT_FLAG_EXPRESSION = 0x00000001;
 
@@ -125,7 +127,7 @@ struct Parser
     bool doVarDecl(AstNode* parent, AstNode** result);
     bool doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind);
     bool doAlias(AstNode* parent, AstNode** result);
-    bool doTypeExpression(AstNode* parent, AstNode** result, bool inTypeVarDecl = false);
+    bool doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
     bool doLambdaClosureType(AstNode* parent, AstNode** result, bool inTypeVarDecl = false);
     bool doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool inTypeVarDecl);
     bool doDefer(AstNode* parent, AstNode** result);
@@ -225,27 +227,8 @@ struct Parser
     AstInline*          currentInline          = nullptr;
 
     uint64_t currentFlags = 0;
-    uint64_t contextFlags = 0;
 
     uint32_t contextualNoInline = 0;
 
     bool afterGlobal = false;
-};
-
-struct PushSyntaxContextFlags
-{
-    PushSyntaxContextFlags(Parser* job, uint64_t flags)
-        : job{job}
-    {
-        oldFlags = job->contextFlags;
-        job->contextFlags |= flags;
-    }
-
-    ~PushSyntaxContextFlags()
-    {
-        job->contextFlags = oldFlags;
-    }
-
-    Parser*  job;
-    uint64_t oldFlags;
 };

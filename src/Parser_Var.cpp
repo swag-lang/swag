@@ -291,7 +291,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
         if (token.id == TokenId::SymColon)
         {
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doTypeExpression(parent, &type, true));
+            SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_IN_VAR_DECL, &type));
             Ast::removeFromParent(type);
         }
 

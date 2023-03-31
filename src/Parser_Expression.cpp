@@ -160,7 +160,7 @@ bool Parser::doIntrinsicProp(AstNode* parent, AstNode** result)
     {
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
         SWAG_CHECK(eatToken(TokenId::SymComma));
-        SWAG_CHECK(doTypeExpression(node, &dummyResult));
+        SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_NONE, &dummyResult));
     }
 
     // One single parameter
@@ -352,11 +352,10 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
     case TokenId::CompilerType:
     {
         eatToken();
-        PushSyntaxContextFlags cf(this, CONTEXT_FLAG_EXPRESSION);
         if (exprFlags & EXPR_FLAG_SIMPLE)
             return invalidTokenError(InvalidTokenError::PrimaryExpression);
         AstNode* resNode;
-        SWAG_CHECK(doTypeExpression(parent, &resNode));
+        SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, &resNode));
         *result = resNode;
         resNode->specFlags |= AstType::SPECFLAG_FORCE_TYPE;
         break;
@@ -370,28 +369,18 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
     case TokenId::NativeType:
     case TokenId::SymAsterisk:
     case TokenId::SymCircumflex:
-    {
-        PushSyntaxContextFlags cf(this, CONTEXT_FLAG_EXPRESSION);
         if (exprFlags & EXPR_FLAG_SIMPLE)
             return invalidTokenError(InvalidTokenError::PrimaryExpression);
-        SWAG_CHECK(doTypeExpression(parent, result));
+        SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, result));
         break;
-    }
 
     case TokenId::SymLeftCurly:
         if (exprFlags & EXPR_FLAG_SIMPLE)
             return invalidTokenError(InvalidTokenError::PrimaryExpression);
-
         if (exprFlags & EXPR_FLAG_ALIAS)
-        {
-            PushSyntaxContextFlags cf(this, CONTEXT_FLAG_EXPRESSION);
-            SWAG_CHECK(doTypeExpression(parent, result));
-        }
+            SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, result));
         else
-        {
             SWAG_CHECK(doExpressionListTuple(parent, result));
-        }
-
         break;
 
     case TokenId::SymLeftSquare:
@@ -401,8 +390,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
         // In an alias, this is a type (no alias to array literals)
         if (exprFlags & EXPR_FLAG_ALIAS)
         {
-            PushSyntaxContextFlags cf(this, CONTEXT_FLAG_EXPRESSION);
-            SWAG_CHECK(doTypeExpression(parent, result));
+            SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, result));
         }
 
         // We can differentiate between a literal array and a type array by looking at what's next
@@ -414,7 +402,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
             {
                 tokenizer.restoreState(token);
                 Ast::removeFromParent(parent->childs.back());
-                SWAG_CHECK(doTypeExpression(parent, result));
+                SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_NONE, result));
             }
         }
         else
@@ -430,14 +418,9 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
             return invalidTokenError(InvalidTokenError::PrimaryExpression);
 
         if (exprFlags & (EXPR_FLAG_ALIAS | EXPR_FLAG_TYPEOF))
-        {
-            PushSyntaxContextFlags cf(this, CONTEXT_FLAG_EXPRESSION);
-            SWAG_CHECK(doTypeExpression(parent, result));
-        }
+            SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, result));
         else
-        {
             SWAG_CHECK(doLambdaExpression(parent, exprFlags, result));
-        }
         break;
 
     case TokenId::KwdCast:
@@ -1197,8 +1180,6 @@ bool Parser::doExpressionListArray(AstNode* parent, AstNode** result)
 
 bool Parser::doInitializationExpression(TokenParse& forToken, AstNode* parent, AstNode** result)
 {
-    PushSyntaxContextFlags cf(this, CONTEXT_FLAG_EXPRESSION);
-
     // var x: type = undefined => not initialized
     if (token.id == TokenId::KwdUndefined)
     {

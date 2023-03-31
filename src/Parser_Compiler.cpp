@@ -20,7 +20,7 @@ bool Parser::doIntrinsicTag(AstNode* parent, AstNode** result)
     if (node->tokenId == TokenId::IntrinsicGetTag)
     {
         SWAG_CHECK(eatToken(TokenId::SymComma));
-        SWAG_CHECK(doTypeExpression(node, &dummyResult));
+        SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_NONE, &dummyResult));
         SWAG_CHECK(eatToken(TokenId::SymComma));
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
     }

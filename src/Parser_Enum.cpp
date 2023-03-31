@@ -69,7 +69,7 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymColon)
     {
         SWAG_CHECK(eatToken(TokenId::SymColon));
-        SWAG_CHECK(doTypeExpression(typeNode, &dummyResult));
+        SWAG_CHECK(doTypeExpression(typeNode, EXPR_FLAG_NONE, &dummyResult));
     }
 
     SWAG_VERIFY(token.id == TokenId::SymLeftCurly, error(token, Fmt(Err(Syn0031), token.ctext())));

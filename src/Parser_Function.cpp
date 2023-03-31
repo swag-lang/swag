@@ -61,7 +61,7 @@ bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** re
             {
                 tokenizer.restoreState(token);
                 Ast::removeFromParent(param->childs.back());
-                SWAG_CHECK(doTypeExpression(param, &dummyResult));
+                SWAG_CHECK(doTypeExpression(param, EXPR_FLAG_NONE, &dummyResult));
             }
             break;
         }
@@ -70,13 +70,13 @@ bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** re
         {
             SWAG_CHECK(eatToken(TokenId::CompilerType));
             AstNode* resNode;
-            SWAG_CHECK(doTypeExpression(param, &resNode));
+            SWAG_CHECK(doTypeExpression(param, EXPR_FLAG_NONE, &resNode));
             resNode->specFlags |= AstType::SPECFLAG_FORCE_TYPE;
             break;
         }
 
         default:
-            SWAG_CHECK(doTypeExpression(param, &dummyResult));
+            SWAG_CHECK(doTypeExpression(param, EXPR_FLAG_NONE, &dummyResult));
             break;
         }
 
@@ -320,7 +320,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             else
             {
                 AstNode* typeExpression;
-                SWAG_CHECK(doTypeExpression(paramNode, &typeExpression));
+                SWAG_CHECK(doTypeExpression(paramNode, EXPR_FLAG_NONE, &typeExpression));
 
                 // type...
                 if (token.id == TokenId::SymDotDotDot)
@@ -522,7 +522,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
                 oneParam->typeConstraint->flags |= AST_NO_SEMANTIC;
             }
             else
-                SWAG_CHECK(doTypeExpression(oneParam, &oneParam->type));
+                SWAG_CHECK(doTypeExpression(oneParam, EXPR_FLAG_NONE, &oneParam->type));
         }
 
         if (token.id == TokenId::SymEqual)
@@ -531,7 +531,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
             if (isConstant)
                 SWAG_CHECK(doAssignmentExpression(oneParam, &oneParam->assignment));
             else if (isType || !oneParam->type)
-                SWAG_CHECK(doTypeExpression(oneParam, &oneParam->assignment));
+                SWAG_CHECK(doTypeExpression(oneParam, EXPR_FLAG_NONE, &oneParam->assignment));
             else
                 SWAG_CHECK(doAssignmentExpression(oneParam, &oneParam->assignment));
         }
@@ -747,7 +747,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
             SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
             SWAG_VERIFY(token.id != TokenId::KwdRetVal, error(token, Err(Syn0144)));
             AstNode* typeExpression;
-            SWAG_CHECK(doTypeExpression(typeNode, &typeExpression));
+            SWAG_CHECK(doTypeExpression(typeNode, EXPR_FLAG_NONE, &typeExpression));
         }
 
         if (token.id == TokenId::KwdThrow)
@@ -1038,7 +1038,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
         ScopedFct scopedFct(this, funcNode);
         SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
         AstNode* typeExpression;
-        SWAG_CHECK(doTypeExpression(typeNode, &typeExpression));
+        SWAG_CHECK(doTypeExpression(typeNode, EXPR_FLAG_NONE, &typeExpression));
         Ast::setForceConstType(typeExpression);
         typeNode->specFlags |= AstFuncDecl::SPECFLAG_RETURN_DEFINED;
     }

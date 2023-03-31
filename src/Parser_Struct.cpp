@@ -408,7 +408,7 @@ bool Parser::doTupleBody(AstNode* parent, bool acceptEmpty)
 
         auto varNode = Ast::newVarDecl(sourceFile, "", parent, nullptr);
         varNode->flags |= AST_GENERATED;
-        SWAG_CHECK(doTypeExpression(varNode, &varNode->type));
+        SWAG_CHECK(doTypeExpression(varNode, EXPR_FLAG_NONE, &varNode->type));
 
         AstTypeExpression* typeExpr = CastAst<AstTypeExpression>(varNode->type, AstNodeKind::TypeExpression);
         if (typeExpr->identifier && !testIsSingleIdentifier(typeExpr->identifier))
@@ -625,7 +625,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         if (token.id == TokenId::SymMinusGreat)
         {
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doTypeExpression(typeNode, &typeNode->returnType));
+            SWAG_CHECK(doTypeExpression(typeNode, EXPR_FLAG_NONE, &typeNode->returnType));
         }
 
         if (token.id == TokenId::KwdThrow)
