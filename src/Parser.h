@@ -63,6 +63,7 @@ const uint32_t EXPR_FLAG_ALIAS       = 0x00000002;
 const uint32_t EXPR_FLAG_TYPEOF      = 0x00000004;
 const uint32_t EXPR_FLAG_STOP_AFFECT = 0x00000008;
 const uint32_t EXPR_FLAG_PARAMETER   = 0x00000010;
+const uint32_t EXPR_FLAG_IN_CALL     = 0x00000020;
 
 const uint32_t CONTEXT_FLAG_EXPRESSION              = 0x00000001;
 const uint32_t CONTEXT_FLAG_VARDECL_TYPE_EXPRESSION = 0x00000002;
@@ -161,6 +162,7 @@ struct Parser
     bool doDeRef(AstNode* parent, AstNode** result);
     bool doOperatorPrecedence(AstNode** result);
     bool doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags);
+    bool doLambdaExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
     bool doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
     bool doPrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
     bool doUnaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
@@ -184,7 +186,6 @@ struct Parser
     bool doCurlyStatement(AstNode* parent, AstNode** result);
     bool doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeKind scopeKind = ScopeKind::Statement);
     bool doReturn(AstNode* parent, AstNode** result);
-    bool doLambdaExpression(AstNode* parent, AstNode** result);
     bool doWith(AstNode* parent, AstNode** result);
     bool doCompilerScopeFile(AstNode* parent, AstNode** result);
     bool doUsing(AstNode* parent, AstNode** result);
@@ -230,7 +231,6 @@ struct Parser
     uint32_t contextualNoInline = 0;
 
     bool moduleSpecified = false;
-    bool inFunCall       = false;
     bool afterGlobal     = false;
 };
 

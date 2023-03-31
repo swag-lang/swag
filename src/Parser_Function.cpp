@@ -125,10 +125,8 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
             param->token       = token;
             AstNode* paramExpression;
 
-            inFunCall = true;
-            SWAG_CHECK(doExpression(param, EXPR_FLAG_PARAMETER, &paramExpression));
+            SWAG_CHECK(doExpression(param, EXPR_FLAG_PARAMETER | EXPR_FLAG_IN_CALL, &paramExpression));
             Ast::removeFromParent(paramExpression);
-            inFunCall = false;
 
             // Name
             if (token.id == TokenId::SymColon)
@@ -1077,10 +1075,11 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
     return true;
 }
 
-bool Parser::doLambdaExpression(AstNode* parent, AstNode** result)
+bool Parser::doLambdaExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
     // We accept missing types if lambda is in a function call
-    bool acceptMissingType = inFunCall;
+    bool acceptMissingType = exprFlags & EXPR_FLAG_IN_CALL;
+
     // We accept missing types if lambda is in an affectation
     if (parent->kind == AstNodeKind::AffectOp)
         acceptMissingType = true;

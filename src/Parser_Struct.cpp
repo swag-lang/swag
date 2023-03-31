@@ -2,7 +2,6 @@
 #include "Ast.h"
 #include "Scoped.h"
 #include "SemanticJob.h"
-#include "ErrorIds.h"
 #include "Module.h"
 #include "Naming.h"
 #include "TypeManager.h"

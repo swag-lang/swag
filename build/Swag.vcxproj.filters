@@ -476,42 +476,6 @@
     <ClCompile Include="..\src\SaveGenJob.cpp">
       <Filter>Jobs</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Parser.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Parser_Attribute.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Parser_Block.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Parser_Compiler.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Parser_Declaration.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Parser_Enum.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Parser_Expression.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Parser_Function.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Parser_Identifier.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Parser_Struct.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Parser_Type.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Parser_Var.cpp">
-      <Filter>Syntax</Filter>
-    </ClCompile>
     <ClCompile Include="../src/Job.cpp">
       <Filter>Threading</Filter>
     </ClCompile>
@@ -601,6 +565,42 @@
     </ClCompile>
     <ClCompile Include="..\src\Profiler.cpp">
       <Filter>Backend\ByteCode\Profiler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Parser_Var.cpp">
+      <Filter>Syntax\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Parser.cpp">
+      <Filter>Syntax\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Parser_Attribute.cpp">
+      <Filter>Syntax\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Parser_Block.cpp">
+      <Filter>Syntax\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Parser_Compiler.cpp">
+      <Filter>Syntax\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Parser_Declaration.cpp">
+      <Filter>Syntax\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Parser_Enum.cpp">
+      <Filter>Syntax\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Parser_Expression.cpp">
+      <Filter>Syntax\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Parser_Function.cpp">
+      <Filter>Syntax\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Parser_Identifier.cpp">
+      <Filter>Syntax\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Parser_Struct.cpp">
+      <Filter>Syntax\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Parser_Type.cpp">
+      <Filter>Syntax\Parser</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -893,9 +893,6 @@
     <ClInclude Include="..\src\SaveGenJob.h">
       <Filter>Jobs</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Parser.h">
-      <Filter>Syntax</Filter>
-    </ClInclude>
     <ClInclude Include="../src/Job.h">
       <Filter>Threading</Filter>
     </ClInclude>
@@ -955,6 +952,9 @@
     </ClInclude>
     <ClInclude Include="..\src\Profiler.h">
       <Filter>Backend\ByteCode\Profiler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Parser.h">
+      <Filter>Syntax\Parser</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1032,6 +1032,9 @@
     </Filter>
     <Filter Include="Backend\ByteCode\Profiler">
       <UniqueIdentifier>{bafae39e-037a-4deb-9b09-3c970c4ff63d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Syntax\Parser">
+      <UniqueIdentifier>{5bad38d1-b614-4137-9547-ef563589813e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

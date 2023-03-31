@@ -436,7 +436,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
         }
         else
         {
-            SWAG_CHECK(doLambdaExpression(parent, result));
+            SWAG_CHECK(doLambdaExpression(parent, exprFlags, result));
         }
         break;
 
