@@ -290,7 +290,6 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
         AstNode* type = nullptr;
         if (token.id == TokenId::SymColon)
         {
-            PushSyntaxContextFlags cf(this, CONTEXT_FLAG_VARDECL_TYPE_EXPRESSION);
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doTypeExpression(parent, &type, true));
             Ast::removeFromParent(type);
