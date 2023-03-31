@@ -133,8 +133,9 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         identifier->identifierExtension->scopeUpValue = scopeUpValue;
     }
 
-    if (contextualNoInline)
+    if(identifier->flags & AST_IN_FUNC_DECL_PARAMS)
         identifier->specFlags |= AstIdentifier::SPECFLAG_NO_INLINE;
+
     SWAG_CHECK(eatToken());
 
     SWAG_CHECK(checkIsValidUserName(identifier));

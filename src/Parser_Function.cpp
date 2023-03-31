@@ -173,8 +173,6 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
 
 bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* hasMissingType)
 {
-    ScopedContextual sc(this, &contextualNoInline);
-
     // Attribute
     AstAttrUse* attrUse = nullptr;
     if (token.id == TokenId::SymAttrStart)
@@ -484,9 +482,8 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
 
 bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
 {
-    ScopedContextual sc(this, &contextualNoInline);
-    auto             allParams = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, parent);
-    *result                    = allParams;
+    auto allParams = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, parent);
+    *result        = allParams;
 
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
     SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, Err(Syn0092)));

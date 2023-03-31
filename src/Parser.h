@@ -228,7 +228,5 @@ struct Parser
 
     uint64_t currentFlags = 0;
 
-    uint32_t contextualNoInline = 0;
-
     bool afterGlobal = false;
 };
