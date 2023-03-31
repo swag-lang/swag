@@ -230,8 +230,7 @@ struct Parser
 
     uint32_t contextualNoInline = 0;
 
-    bool moduleSpecified = false;
-    bool afterGlobal     = false;
+    bool afterGlobal = false;
 };
 
 struct PushSyntaxContextFlags

@@ -469,11 +469,10 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
     else if (token.text == g_LangSpec->name_testerror || token.text == g_LangSpec->name_testwarning)
     {
         // Put the file in its own module, because of errors/warnings
-        if (!moduleSpecified)
+        if (!sourceFile->module->isErrorModule)
         {
-            moduleSpecified = true;
-            auto newModule  = g_Workspace->createOrUseModule(sourceFile->name, sourceFile->module->path, sourceFile->module->kind, true);
-            auto oldModule  = sourceFile->module;
+            auto newModule = g_Workspace->createOrUseModule(sourceFile->name, sourceFile->module->path, sourceFile->module->kind, true);
+            auto oldModule = sourceFile->module;
             oldModule->removeFile(sourceFile);
             newModule->addFile(sourceFile);
 
