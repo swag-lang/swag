@@ -83,33 +83,50 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
         if (!mapCopyRA.count && !mapCopyRB.count)
             continue;
 
-        // If we use a register that comes from a CopyRBRA, then use the initial
-        // register instead (that way, the Copy can become deadstore and removed later)
-        // Do it for specific intructions, when sizes are a match
+        // If we use a register that comes from a CopyRBRA, then use the initial register instead.
+        // That way, the Copy can become deadstore and removed later.
+        // Specific instructions only, as ByteCodeOp::CopyRBtoRA32 will clear the high 32 bit, if the following instruction
+        // deal with 64 bits, this could be a pb not to do that clean by just using the original 32 bits register.
         if (op == ByteCodeOp::CopyRBtoRA32)
         {
-            if ((flags & OPFLAG_READ_B) && !(ip->flags & BCI_IMM_B) && !(flags & OPFLAG_WRITE_B))
+            switch (ip->op)
             {
-                switch (ip->op)
+            case ByteCodeOp::JumpIfZero32:
+            case ByteCodeOp::JumpIfNotZero32:
+                if (ByteCode::hasReadRegInA(ip) && !ByteCode::hasWriteRegInA(ip))
                 {
-                case ByteCodeOp::SetAtPointer32:
-                case ByteCodeOp::SetAtStackPointer32:
-                case ByteCodeOp::AffectOpPlusEqS32:
+                    auto it = mapCopyRA.find(ip->a.u32);
+                    if (it)
+                    {
+                        auto it1 = mapCopyRB.find((*it)->b.u32);
+                        if (it1 && *it == *it1)
+                        {
+                            ip->a.u32 = (*it)->b.u32;
+                            context->passHasDoneSomething = true;
+                        }
+                    }
+                }
+                break;
+
+            case ByteCodeOp::SetAtPointer32:
+            case ByteCodeOp::SetAtStackPointer32:
+            case ByteCodeOp::AffectOpPlusEqS32:
+                if (ByteCode::hasReadRegInB(ip) && !ByteCode::hasWriteRegInB(ip))
+                {
                     auto it = mapCopyRA.find(ip->b.u32);
                     if (it)
                     {
                         auto it1 = mapCopyRB.find((*it)->b.u32);
                         if (it1 && *it == *it1)
                         {
-                            ip->b.u32                     = (*it)->b.u32;
+                            ip->b.u32 = (*it)->b.u32;
                             context->passHasDoneSomething = true;
-                            break;
                         }
                     }
                 }
+                break;
             }
         }
-
         else if (op == ByteCodeOp::CopyRBtoRA64)
         {
             // If we use a register that comes from a CopyRBRA, then use the initial
@@ -123,7 +140,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
                 (ip->op != ByteCodeOp::PushRAParam4 || !(ip->flags & BCI_VARIADIC)) &&
                 ip->op != ByteCodeOp::CopySP)
             {
-                if ((flags & OPFLAG_READ_A) && !(ip->flags & BCI_IMM_A) && !(flags & OPFLAG_WRITE_A))
+                if (ByteCode::hasReadRegInA(ip) && !ByteCode::hasWriteRegInA(ip))
                 {
                     auto it = mapCopyRA.find(ip->a.u32);
                     if (it)
@@ -137,7 +154,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
                     }
                 }
 
-                if ((flags & OPFLAG_READ_B) && !(ip->flags & BCI_IMM_B) && !(flags & OPFLAG_WRITE_B))
+                if (ByteCode::hasReadRegInB(ip) && !ByteCode::hasWriteRegInB(ip))
                 {
                     auto it = mapCopyRA.find(ip->b.u32);
                     if (it)
@@ -151,7 +168,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
                     }
                 }
 
-                if ((flags & OPFLAG_READ_C) && !(ip->flags & BCI_IMM_C) && !(flags & OPFLAG_WRITE_C))
+                if (ByteCode::hasReadRegInC(ip) && !ByteCode::hasWriteRegInC(ip))
                 {
                     auto it = mapCopyRA.find(ip->c.u32);
                     if (it)
@@ -165,7 +182,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
                     }
                 }
 
-                if ((flags & OPFLAG_READ_D) && !(ip->flags & BCI_IMM_D) && !(flags & OPFLAG_WRITE_D))
+                if (ByteCode::hasReadRegInD(ip) && !ByteCode::hasWriteRegInD(ip))
                 {
                     auto it = mapCopyRA.find(ip->d.u32);
                     if (it)
