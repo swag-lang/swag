@@ -457,7 +457,14 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
         loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
         emitInstruction(context, ByteCodeOp::IncrementRA64, loopNode->registerIndex);
         loopNode->seekJumpExpression = context->bc->numInstructions;
-        emitInstruction(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex, 0, node->resultRegisterRC);
+
+        auto inst = emitInstruction(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex, 0, node->resultRegisterRC);
+        if (loopNode->expression->flags & AST_VALUE_COMPUTED)
+        {
+            inst->c.u64 = loopNode->expression->computedValue->reg.u64;
+            inst->flags |= BCI_IMM_C;
+        }
+
         return true;
     }
 
@@ -473,13 +480,17 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
 
         if (increment)
         {
-            emitInstruction(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex)->b.u64 = rangeNode->expressionLow->computedValue->reg.u64 - 1;
-            loopNode->seekJumpBeforeExpression                                                   = context->bc->numInstructions;
-            loopNode->seekJumpBeforeContinue                                                     = loopNode->seekJumpBeforeExpression;
+            auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex);
+            inst->b.u64 = rangeNode->expressionLow->computedValue->reg.u64 - 1;
+
+            loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
+            loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
+
             emitInstruction(context, ByteCodeOp::IncrementRA64, loopNode->registerIndex);
             loopNode->seekJumpExpression = context->bc->numInstructions;
-            auto inst                    = emitInstruction(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex);
-            inst->c.u64                  = rangeNode->expressionUp->computedValue->reg.u64;
+
+            inst        = emitInstruction(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex);
+            inst->c.u64 = rangeNode->expressionUp->computedValue->reg.u64;
             if (!(rangeNode->specFlags & AstRange::SPECFLAG_EXCLUDE_UP))
                 inst->c.u64++;
             inst->flags |= BCI_IMM_C;
@@ -487,13 +498,17 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
         }
         else
         {
-            emitInstruction(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex)->b.u64 = rangeNode->expressionLow->computedValue->reg.u64 + 1;
-            loopNode->seekJumpBeforeExpression                                                   = context->bc->numInstructions;
-            loopNode->seekJumpBeforeContinue                                                     = loopNode->seekJumpBeforeExpression;
+            auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex);
+            inst->b.u64 = rangeNode->expressionLow->computedValue->reg.u64 + 1;
+
+            loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
+            loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
+
             emitInstruction(context, ByteCodeOp::DecrementRA64, loopNode->registerIndex);
             loopNode->seekJumpExpression = context->bc->numInstructions;
-            auto inst                    = emitInstruction(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex);
-            inst->c.u64                  = rangeNode->expressionUp->computedValue->reg.u64;
+
+            inst        = emitInstruction(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex);
+            inst->c.u64 = rangeNode->expressionUp->computedValue->reg.u64;
             if (!(rangeNode->specFlags & AstRange::SPECFLAG_EXCLUDE_UP))
                 inst->c.u64--;
             inst->flags |= BCI_IMM_C;
@@ -920,7 +935,6 @@ bool ByteCodeGenJob::emitIndex(ByteCodeGenContext* context)
     while (ownerBreakable && !(ownerBreakable->breakableFlags & BREAKABLE_CAN_HAVE_INDEX))
         ownerBreakable = ownerBreakable->ownerBreakable;
     SWAG_ASSERT(ownerBreakable);
-
     emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC, ownerBreakable->registerIndex);
     return true;
 }
