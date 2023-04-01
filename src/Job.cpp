@@ -223,10 +223,10 @@ void Job::waitTypeCompleted(TypeInfo* typeInfo)
     orgTypeInfo = TypeManager::concreteType(orgTypeInfo);
     if (orgTypeInfo->isArray())
         orgTypeInfo->sizeOf = ((TypeInfoArray*) orgTypeInfo)->finalType->sizeOf * ((TypeInfoArray*) orgTypeInfo)->totalCount;
-    if (orgTypeInfo->flags & TYPEINFO_FAKE_ALIAS)
-        orgTypeInfo->sizeOf = ((TypeInfoAlias*) orgTypeInfo)->rawType->sizeOf;
-    if (typeInfo->flags & TYPEINFO_FAKE_ALIAS)
-        typeInfo->sizeOf = ((TypeInfoAlias*) typeInfo)->rawType->sizeOf;
+    if (orgTypeInfo->isFakeAlias())
+        orgTypeInfo->sizeOf = orgTypeInfo->getFakeAlias()->sizeOf;
+    if (typeInfo->isFakeAlias())
+        typeInfo->sizeOf = typeInfo->getFakeAlias()->sizeOf;
 }
 
 void Job::setPending(SymbolName* symbolToWait, JobWaitKind waitKind, AstNode* node, TypeInfo* typeInfo)

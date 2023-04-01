@@ -149,6 +149,13 @@ bool TypeInfo::isPointerConstVoid()
     return isPointerVoid() && isConst();
 }
 
+TypeInfo* TypeInfo::getFakeAlias()
+{
+    if (!(flags & TYPEINFO_FAKE_ALIAS))
+        return this;
+    return ((TypeInfoAlias*) this)->rawType;
+}
+
 TypeInfoStruct* TypeInfo::getStructOrPointedStruct()
 {
     if (kind == TypeInfoKind::Struct)

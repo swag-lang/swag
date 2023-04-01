@@ -239,6 +239,7 @@ struct TypeInfo
     bool            isArrayOfEnum();
     bool            isMethod();
     TypeInfoStruct* getStructOrPointedStruct();
+    TypeInfo*       getFakeAlias();
 
     // clang-format off
     bool isSlice()                          { return kind == TypeInfoKind::Slice; }
@@ -287,6 +288,7 @@ struct TypeInfo
     bool isUntypedInteger()                 { return (flags & TYPEINFO_UNTYPED_INTEGER); }
     bool isUntypedFloat()                   { return (flags & TYPEINFO_UNTYPED_FLOAT); }
     bool isUntypedBinHex()                  { return (flags & TYPEINFO_UNTYPED_BINHEXA); }
+    bool isFakeAlias()                      { return (flags & TYPEINFO_FAKE_ALIAS); }
     // clang-format on
 
     virtual bool        isSame(TypeInfo* from, uint32_t castFlags);
@@ -650,11 +652,7 @@ template<typename T>
 inline T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind)
 {
     SWAG_ASSERT(ptr);
-    T* casted;
-    if (ptr->flags & TYPEINFO_FAKE_ALIAS)
-        casted = static_cast<T*>(((TypeInfoAlias*) ptr)->rawType);
-    else
-        casted = static_cast<T*>(ptr);
+    T* casted = static_cast<T*>(ptr->getFakeAlias());
     SWAG_ASSERT(casted->kind == kind);
     return casted;
 }
@@ -663,11 +661,7 @@ template<typename T>
 inline T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind1, TypeInfoKind kind2)
 {
     SWAG_ASSERT(ptr);
-    T* casted;
-    if (ptr->flags & TYPEINFO_FAKE_ALIAS)
-        casted = static_cast<T*>(((TypeInfoAlias*) ptr)->rawType);
-    else
-        casted = static_cast<T*>(ptr);
+    T* casted = static_cast<T*>(ptr->getFakeAlias());
     SWAG_ASSERT(casted->kind == kind1 || casted->kind == kind2);
     return casted;
 }

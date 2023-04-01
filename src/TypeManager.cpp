@@ -515,6 +515,27 @@ void TypeManager::registerTypeType()
     g_LiteralTypeToType[(int) LiteralType::TT_TYPE] = typeInfoTypeType;
 }
 
+TypeInfo* TypeManager::makeUnConst(TypeInfo* typeInfo)
+{
+    if (!typeInfo->isConst())
+        return typeInfo;
+    if (typeInfo->isFakeAlias())
+        return typeInfo->getFakeAlias();
+
+    ScopedLock lk(mutex);
+
+    auto it = mapUnConst.find(typeInfo);
+    if (it != mapUnConst.end())
+        return it->second;
+
+    auto typeUnConst = typeInfo->clone();
+    typeUnConst->flags &= ~TYPEINFO_CONST;
+    typeUnConst->forceComputeName();
+    mapUnConst[typeInfo] = typeUnConst;
+
+    return typeUnConst;
+}
+
 TypeInfo* TypeManager::makeConst(TypeInfo* typeInfo)
 {
     if (typeInfo->isConst())
@@ -586,22 +607,15 @@ void TypeManager::convertStructParamToRef(AstNode* node, TypeInfo* typeInfo)
     SWAG_ASSERT(node->kind == AstNodeKind::FuncDeclParam);
 
     // A struct/interface is forced to be a const reference
-    if (!node->typeInfo->isGeneric())
+    if (!node->typeInfo->isGeneric() && typeInfo->isStruct())
     {
-        if (typeInfo->isStruct())
-        {
-            // If this has been transformed to an alias cause of const, take the original
-            // type to make the reference
-            if (typeInfo->flags & TYPEINFO_FAKE_ALIAS)
-                typeInfo = ((TypeInfoAlias*) typeInfo)->rawType;
-
-            auto typeRef   = makeType<TypeInfoPointer>();
-            typeRef->flags = typeInfo->flags | TYPEINFO_CONST | TYPEINFO_POINTER_REF | TYPEINFO_POINTER_AUTO_REF;
-            typeRef->flags &= ~TYPEINFO_RETURN_BY_COPY;
-            typeRef->pointedType = typeInfo;
-            typeRef->sizeOf      = sizeof(void*);
-            typeRef->computeName();
-            node->typeInfo = typeRef;
-        }
+        auto typeRef   = makeType<TypeInfoPointer>();
+        typeInfo       = typeInfo->getFakeAlias();
+        typeRef->flags = typeInfo->flags | TYPEINFO_CONST | TYPEINFO_POINTER_REF | TYPEINFO_POINTER_AUTO_REF;
+        typeRef->flags &= ~TYPEINFO_RETURN_BY_COPY;
+        typeRef->pointedType = typeInfo;
+        typeRef->sizeOf      = sizeof(void*);
+        typeRef->computeName();
+        node->typeInfo = typeRef;
     }
 }

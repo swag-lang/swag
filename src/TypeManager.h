@@ -129,6 +129,7 @@ struct TypeManager
     static TypeInfo* concreteType(TypeInfo* typeInfo, uint32_t flags = CONCRETE_ALL);
     static TypeInfo* concretePtrRef(TypeInfo* typeInfo);
     static TypeInfo* concretePtrRefCond(TypeInfo* typeInfo, AstNode* node);
+    TypeInfo*        makeUnConst(TypeInfo* typeInfo);
     TypeInfo*        makeConst(TypeInfo* typeInfo);
     TypeInfoPointer* makePointerTo(TypeInfo* toType, uint64_t ptrFlags = 0);
     TypeInfoParam*   makeParam();
@@ -144,6 +145,7 @@ struct TypeManager
 
     Map<TypeInfo*, vector<PointerCache>> mapPointers;
     Map<TypeInfo*, TypeInfo*>            mapConst;
+    Map<TypeInfo*, TypeInfo*>            mapUnConst;
 
     TypeInfoNative* typeInfoS8        = nullptr;
     TypeInfoNative* typeInfoS16       = nullptr;

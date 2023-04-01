@@ -72,7 +72,7 @@ bool SemanticJob::checkIsConstAffect(SemanticContext* context, AstNode* left, As
     // Check that left type is mutable
     if ((left->flags & AST_IS_CONST) ||
         !(left->flags & AST_L_VALUE) ||
-        ((left->typeInfo->flags & TYPEINFO_FAKE_ALIAS) && left->typeInfo->isConst()) ||
+        (left->typeInfo->isFakeAlias() && left->typeInfo->isConst()) ||
         (left->typeInfo->isConstPointerRef() && right->kind != AstNodeKind::KeepRef))
     {
         isConst = true;

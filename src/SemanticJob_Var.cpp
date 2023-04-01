@@ -868,11 +868,11 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         node->typeInfo = TypeManager::concreteType(node->assignment->typeInfo, CONCRETE_FUNC);
         SWAG_ASSERT(node->typeInfo);
 
-        // When affect is from a const struct, remove the const
-        if (node->typeInfo->isStruct() && node->typeInfo->isConst())
+        // When affect is from a const struct/array, remove the const
+        if (node->assignment->kind != AstNodeKind::Cast)
         {
-            if (node->typeInfo->flags & TYPEINFO_FAKE_ALIAS && node->assignment->kind != AstNodeKind::Cast)
-                node->typeInfo = ((TypeInfoAlias*) node->typeInfo)->rawType;
+            if (node->typeInfo->isArray() || node->typeInfo->isStruct())
+                node->typeInfo = g_TypeMgr->makeUnConst(node->typeInfo);
         }
 
         if (node->typeInfo == g_TypeMgr->typeInfoVoid)
