@@ -174,6 +174,7 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
             else
             {
                 auto allocR = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt32(1));
+                allocR->setAlignment(llvm::Align(sizeof(void*)));
                 builder.CreateStore(ra, allocR);
                 ra = builder.CreateInBoundsGEP(TO_PTR_I8(allocR), builder.getInt64(toAdd));
                 builder.CreateStore(ra, r0);
@@ -234,6 +235,7 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
         {
             // Make a copy of the value on the stack, and return the address
             auto allocR = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt32(1));
+            allocR->setAlignment(llvm::Align(sizeof(void*)));
             builder.CreateStore(builder.CreateIntCast(arg, builder.getInt64Ty(), false), allocR);
             builder.CreateStore(allocR, TO_PTR_PTR_I64(r0));
         }

@@ -105,6 +105,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
 
     // Reserve room to pass parameters to embedded intrinsics
     auto allocT = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(2));
+    allocT->setAlignment(llvm::Align(sizeof(void*)));
 
     // Set default system allocator function
     SWAG_ASSERT(g_SystemAllocatorTable);
@@ -373,6 +374,7 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
     // Init thread local storage id
     {
         auto allocT = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(1));
+        allocT->setAlignment(llvm::Align(sizeof(void*)));
         emitCall(buildParameters, module, g_LangSpec->name__tlsAlloc, nullptr, allocT, {UINT32_MAX}, {pp.symTls_threadLocalId});
     }
 
