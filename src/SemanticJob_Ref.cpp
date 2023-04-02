@@ -201,6 +201,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
         auto typeResolved = TypeManager::concreteType(child->resolvedSymbolOverload->typeInfo, CONCRETE_ALIAS);
 
         if ((child->resolvedSymbolOverload->flags & OVERLOAD_CONST_ASSIGN) &&
+            !typeResolved->isPointerArithmetic() &&
             !typeResolved->isArray() &&
             !typeResolved->isSlice())
         {
