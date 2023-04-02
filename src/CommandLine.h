@@ -87,6 +87,7 @@ struct CommandLine
     Utf8 buildCfgOptimSize  = "default";
     Utf8 buildCfgStackTrace = "default";
     Utf8 buildCfgDebugAlloc = "default";
+    Utf8 buildCfgLlvmIR     = "default";
 
     BackendTarget target;
 

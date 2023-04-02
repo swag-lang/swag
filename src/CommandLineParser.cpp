@@ -65,6 +65,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu cl sc",       "--cfg-optim-size",       nullptr,    CommandLineType::EnumString,    &cmdLine->buildCfgOptimSize, "true|false|default", "optimize output for size");
     addArg("bu cl sc",       "--cfg-stack-trace",      nullptr,    CommandLineType::EnumString,    &cmdLine->buildCfgStackTrace, "true|false|default", "generate call trace for errors");
     addArg("bu cl sc",       "--cfg-debug-alloc",      nullptr,    CommandLineType::EnumString,    &cmdLine->buildCfgDebugAlloc, "true|false|default", "use the debug allocator");
+    addArg("bu cl sc",       "--cfg-llvm-ir",          nullptr,    CommandLineType::EnumString,    &cmdLine->buildCfgLlvmIR, "true|false|default", "generate .ir files (llvm backend)");
 
     addArg("bu cl sc",       "--arch",                 nullptr,    CommandLineType::EnumInt,       &cmdLine->target.arch, "x86_64", "set the target architecture");
     addArg("bu cl sc",       "--os",                   nullptr,    CommandLineType::EnumInt,       &cmdLine->target.os, "windows", "set the target operating system");

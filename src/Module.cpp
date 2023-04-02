@@ -123,6 +123,8 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
         buildCfg.stackTrace = g_CommandLine.buildCfgStackTrace == "true" ? true : false;
     if (g_CommandLine.buildCfgDebugAlloc != "default")
         buildCfg.debugAllocator = g_CommandLine.buildCfgDebugAlloc == "true" ? true : false;
+    if (g_CommandLine.buildCfgLlvmIR != "default")
+        buildCfg.backendLLVM.outputIR = g_CommandLine.buildCfgLlvmIR == "true" ? true : false;
 
     computePublicPath();
 }

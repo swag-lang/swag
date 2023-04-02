@@ -376,13 +376,13 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     // Output IR code
     if (buildParameters.buildCfg->backendLLVM.outputIR)
     {
-        auto filenameIR = path;
-        auto irName     = path;
+        Utf8 irName = path.string();
         irName.append(".ir");
-        llvm::raw_fd_ostream destFileIR(irName.string(), err, llvm::sys::fs::OF_None);
+        llvm::raw_fd_ostream destFileIR(irName.c_str(), err, llvm::sys::fs::OF_None);
         modu.print(destFileIR, nullptr);
         destFileIR.flush();
         destFileIR.close();
+        g_Log.messageVerbose(Fmt("generating llvm %s", irName.c_str()));
     }
 
     delete targetMachine;
