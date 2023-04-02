@@ -55,12 +55,12 @@
     auto         r0 = GEP_I32(allocR, ip->a.u32);            \
     auto         r1 = builder.CreateLoad(TO_PTR_PTR_I8(r0)); \
     llvm::Value* r2 = MK_IMMB_8();
-#define MK_BINOPEQ8_SCAB()                                                        \
-    auto         r0 = TO_PTR_I8(builder.CreateInBoundsGEP(allocStack, CST_RA32)); \
+#define MK_BINOPEQ8_SCAB()                                             \
+    auto         r0 = builder.CreateInBoundsGEP(allocStack, CST_RA32); \
     llvm::Value* r1 = MK_IMMB_8();
-#define MK_BINOPEQ8_SSCAB()                                                       \
-    auto         r0 = TO_PTR_I8(builder.CreateInBoundsGEP(allocStack, CST_RA32)); \
-    llvm::Value* r1 = TO_PTR_I8(builder.CreateInBoundsGEP(allocStack, CST_RB32));
+#define MK_BINOPEQ8_SSCAB()                                            \
+    auto         r0 = builder.CreateInBoundsGEP(allocStack, CST_RA32); \
+    llvm::Value* r1 = builder.CreateInBoundsGEP(allocStack, CST_RB32);
 
 #define MK_BINOPEQ16_CAB()                                    \
     auto         r0 = GEP_I32(allocR, ip->a.u32);             \

@@ -601,14 +601,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::MakeStackPointer:
         {
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r1 = TO_PTR_I8(builder.CreateInBoundsGEP(allocStack, CST_RB32));
+            auto r1 = builder.CreateInBoundsGEP(allocStack, CST_RB32);
             builder.CreateStore(r1, r0);
             break;
         }
         case ByteCodeOp::MakeStackPointer2:
         {
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r1 = TO_PTR_I8(builder.CreateInBoundsGEP(allocStack, CST_RB32));
+            auto r1 = builder.CreateInBoundsGEP(allocStack, CST_RB32);
             builder.CreateStore(r1, r0);
 
             r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->c.u32));
@@ -619,7 +619,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::MakeStackPointerRT:
         {
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocRR, 0));
-            auto r1 = TO_PTR_I8(builder.CreateInBoundsGEP(allocStack, CST_RA32));
+            auto r1 = builder.CreateInBoundsGEP(allocStack, CST_RA32);
             builder.CreateStore(r1, r0);
             break;
         }
@@ -627,7 +627,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::GetFromStack8:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = TO_PTR_I8(builder.CreateInBoundsGEP(allocStack, CST_RB32));
+            auto r1 = builder.CreateInBoundsGEP(allocStack, CST_RB32);
             auto v0 = builder.CreateIntCast(builder.CreateLoad(r1), builder.getInt64Ty(), false);
             builder.CreateStore(v0, r0);
             break;
@@ -710,8 +710,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::CopyStack8:
         {
-            auto r0 = TO_PTR_I8(builder.CreateInBoundsGEP(allocStack, CST_RA32));
-            auto r1 = TO_PTR_I8(builder.CreateInBoundsGEP(allocStack, CST_RB32));
+            auto r0 = builder.CreateInBoundsGEP(allocStack, CST_RA32);
+            auto r1 = builder.CreateInBoundsGEP(allocStack, CST_RB32);
             builder.CreateStore(builder.CreateLoad(r1), r0);
             break;
         }
@@ -1081,7 +1081,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::SetAtStackPointer8:
         {
-            auto         r0 = TO_PTR_I8(builder.CreateInBoundsGEP(allocStack, CST_RA32));
+            auto         r0 = builder.CreateInBoundsGEP(allocStack, CST_RA32);
             llvm::Value* r1;
             if (ip->flags & BCI_IMM_B)
                 r1 = builder.getInt8(ip->b.u8);
@@ -1127,7 +1127,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::SetAtStackPointer8x2:
         {
             {
-                auto         r0 = TO_PTR_I8(builder.CreateInBoundsGEP(allocStack, CST_RA32));
+                auto         r0 = builder.CreateInBoundsGEP(allocStack, CST_RA32);
                 llvm::Value* r1;
                 if (ip->flags & BCI_IMM_B)
                     r1 = builder.getInt8(ip->b.u8);
@@ -1136,7 +1136,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 builder.CreateStore(r1, r0);
             }
             {
-                auto         r0 = TO_PTR_I8(builder.CreateInBoundsGEP(allocStack, CST_RC32));
+                auto         r0 = builder.CreateInBoundsGEP(allocStack, CST_RC32);
                 llvm::Value* r1;
                 if (ip->flags & BCI_IMM_D)
                     r1 = builder.getInt8(ip->d.u8);

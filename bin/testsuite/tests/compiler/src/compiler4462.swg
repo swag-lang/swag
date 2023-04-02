@@ -65,6 +65,7 @@ const solar_bodies: [] Planet = [
     },
 ]
 
+#[Swag.PrintBc]
 func energy(bodies: const [..] Planet)->f64
 {
     var e: f64 = 0.0
