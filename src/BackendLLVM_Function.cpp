@@ -677,34 +677,72 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::GetIncFromStack64DeRef16:
         {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = TO_PTR_PTR_I16(builder.CreateInBoundsGEP(allocStack, CST_RB32));
-            auto v0 = builder.CreateLoad(r1);
-            auto v1 = builder.CreateInBoundsGEP(v0, builder.getInt64(ip->c.u64 / 2));
-            auto v2 = builder.CreateLoad(v1);
-            auto v3 = builder.CreateIntCast(v2, builder.getInt64Ty(), false);
-            builder.CreateStore(v3, r0);
+            if (ip->c.s64 & 1) // Not aligned
+            {
+                auto r0 = GEP_I32(allocR, ip->a.u32);
+                auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RB32));
+                auto v0 = builder.CreateLoad(r1);
+                auto v1 = builder.CreateAdd(v0, builder.getInt64(ip->c.s64));
+                auto v2 = builder.CreateLoad(TO_PTR_I16(builder.CreateIntToPtr(v1, builder.getInt8PtrTy())));
+                auto v3 = builder.CreateIntCast(v2, builder.getInt64Ty(), false);
+                builder.CreateStore(v3, r0);
+            }
+            else
+            {
+                auto r0 = GEP_I32(allocR, ip->a.u32);
+                auto r1 = TO_PTR_PTR_I16(builder.CreateInBoundsGEP(allocStack, CST_RB32));
+                auto v0 = builder.CreateLoad(r1);
+                auto v1 = builder.CreateInBoundsGEP(v0, builder.getInt64(ip->c.u64 / 2));
+                auto v2 = builder.CreateLoad(v1);
+                auto v3 = builder.CreateIntCast(v2, builder.getInt64Ty(), false);
+                builder.CreateStore(v3, r0);
+            }
             break;
         }
         case ByteCodeOp::GetIncFromStack64DeRef32:
         {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = TO_PTR_PTR_I32(builder.CreateInBoundsGEP(allocStack, CST_RB32));
-            auto v0 = builder.CreateLoad(r1);
-            auto v1 = builder.CreateInBoundsGEP(v0, builder.getInt64(ip->c.u64 / 4));
-            auto v2 = builder.CreateLoad(v1);
-            auto v3 = builder.CreateIntCast(v2, builder.getInt64Ty(), false);
-            builder.CreateStore(v3, r0);
+            if (ip->c.s64 & 3) // Not aligned
+            {
+                auto r0 = GEP_I32(allocR, ip->a.u32);
+                auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RB32));
+                auto v0 = builder.CreateLoad(r1);
+                auto v1 = builder.CreateAdd(v0, builder.getInt64(ip->c.s64));
+                auto v2 = builder.CreateLoad(TO_PTR_I32(builder.CreateIntToPtr(v1, builder.getInt8PtrTy())));
+                auto v3 = builder.CreateIntCast(v2, builder.getInt64Ty(), false);
+                builder.CreateStore(v3, r0);
+            }
+            else
+            {
+                auto r0 = GEP_I32(allocR, ip->a.u32);
+                auto r1 = TO_PTR_PTR_I32(builder.CreateInBoundsGEP(allocStack, CST_RB32));
+                auto v0 = builder.CreateLoad(r1);
+                auto v1 = builder.CreateInBoundsGEP(v0, builder.getInt64(ip->c.u64 / 4));
+                auto v2 = builder.CreateLoad(v1);
+                auto v3 = builder.CreateIntCast(v2, builder.getInt64Ty(), false);
+                builder.CreateStore(v3, r0);
+            }
             break;
         }
         case ByteCodeOp::GetIncFromStack64DeRef64:
         {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = TO_PTR_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RB32));
-            auto v0 = builder.CreateLoad(r1);
-            auto v1 = builder.CreateInBoundsGEP(v0, builder.getInt64(ip->c.u64 / 8));
-            auto v2 = builder.CreateLoad(v1);
-            builder.CreateStore(v2, r0);
+            if (ip->c.s64 & 7) // Not aligned
+            {
+                auto r0 = GEP_I32(allocR, ip->a.u32);
+                auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RB32));
+                auto v0 = builder.CreateLoad(r1);
+                auto v1 = builder.CreateAdd(v0, builder.getInt64(ip->c.s64));
+                auto v2 = builder.CreateLoad(TO_PTR_I64(builder.CreateIntToPtr(v1, builder.getInt8PtrTy())));
+                builder.CreateStore(v2, r0);
+            }
+            else
+            {
+                auto r0 = GEP_I32(allocR, ip->a.u32);
+                auto r1 = TO_PTR_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RB32));
+                auto v0 = builder.CreateLoad(r1);
+                auto v1 = builder.CreateInBoundsGEP(v0, builder.getInt64(ip->c.u64 / 8));
+                auto v2 = builder.CreateLoad(v1);
+                builder.CreateStore(v2, r0);
+            }
             break;
         }
 
