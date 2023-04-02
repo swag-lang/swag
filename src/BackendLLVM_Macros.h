@@ -26,29 +26,29 @@
     llvm::Value* r1 = MK_IMMA_8();                           \
     llvm::Value* r2 = MK_IMMB_8();
 
-#define MK_BINOP16_CAB()                                     \
-    auto         r0 = TO_PTR_I8(GEP_I32(allocR, ip->c.u32)); \
-    llvm::Value* r1 = MK_IMMA_16();                          \
+#define MK_BINOP16_CAB()                                      \
+    auto         r0 = TO_PTR_I16(GEP_I32(allocR, ip->c.u32)); \
+    llvm::Value* r1 = MK_IMMA_16();                           \
     llvm::Value* r2 = MK_IMMB_16();
 
-#define MK_BINOP32_CAB()                                     \
-    auto         r0 = TO_PTR_I8(GEP_I32(allocR, ip->c.u32)); \
-    llvm::Value* r1 = MK_IMMA_32();                          \
+#define MK_BINOP32_CAB()                                      \
+    auto         r0 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32)); \
+    llvm::Value* r1 = MK_IMMA_32();                           \
     llvm::Value* r2 = MK_IMMB_32();
 
-#define MK_BINOP64_CAB()                                     \
-    auto         r0 = TO_PTR_I8(GEP_I32(allocR, ip->c.u32)); \
-    llvm::Value* r1 = MK_IMMA_64();                          \
+#define MK_BINOP64_CAB()                          \
+    auto         r0 = GEP_I32(allocR, ip->c.u32); \
+    llvm::Value* r1 = MK_IMMA_64();               \
     llvm::Value* r2 = MK_IMMB_64();
 
-#define MK_BINOPF32_CAB()                                    \
-    auto         r0 = TO_PTR_I8(GEP_I32(allocR, ip->c.u32)); \
-    llvm::Value* r1 = MK_IMMA_F32();                         \
+#define MK_BINOPF32_CAB()                                     \
+    auto         r0 = TO_PTR_F32(GEP_I32(allocR, ip->c.u32)); \
+    llvm::Value* r1 = MK_IMMA_F32();                          \
     llvm::Value* r2 = MK_IMMB_F32();
 
-#define MK_BINOPF64_CAB()                                    \
-    auto         r0 = TO_PTR_I8(GEP_I32(allocR, ip->c.u32)); \
-    llvm::Value* r1 = MK_IMMA_F64();                         \
+#define MK_BINOPF64_CAB()                                     \
+    auto         r0 = TO_PTR_F64(GEP_I32(allocR, ip->c.u32)); \
+    llvm::Value* r1 = MK_IMMA_F64();                          \
     llvm::Value* r2 = MK_IMMB_F64();
 
 #define MK_BINOPEQ8_CAB()                                    \

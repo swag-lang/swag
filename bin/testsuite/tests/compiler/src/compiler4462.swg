@@ -156,7 +156,7 @@ func offset_momentum(bodies: [..] Planet) {
 
 //#[Swag.PrintBc]
 //#[Swag.Optim("", false)]
-#main
+#test
 {
     //Time.Stopwatch.scopeMeasure()
 

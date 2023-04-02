@@ -1245,14 +1245,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOPF32_CAB();
             auto v0 = builder.CreateFAdd(r1, r2);
-            builder.CreateStore(v0, TO_PTR_F32(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::BinOpPlusF64:
         {
             MK_BINOPF64_CAB();
             auto v0 = builder.CreateFAdd(r1, r2);
-            builder.CreateStore(v0, TO_PTR_F64(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
 
@@ -1288,14 +1288,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOPF32_CAB();
             auto v0 = builder.CreateFSub(r1, r2);
-            builder.CreateStore(v0, TO_PTR_F32(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::BinOpMinusF64:
         {
             MK_BINOPF64_CAB();
             auto v0 = builder.CreateFSub(r1, r2);
-            builder.CreateStore(v0, TO_PTR_F64(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
 
@@ -1331,14 +1331,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOPF32_CAB();
             auto v0 = builder.CreateFMul(r1, r2);
-            builder.CreateStore(v0, TO_PTR_F32(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::BinOpMulF64:
         {
             MK_BINOPF64_CAB();
             auto v0 = builder.CreateFMul(r1, r2);
-            builder.CreateStore(v0, TO_PTR_F64(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
 
@@ -1346,28 +1346,28 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP8_CAB();
             auto v0 = builder.CreateXor(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I8(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::BinOpXorU16:
         {
             MK_BINOP16_CAB();
             auto v0 = builder.CreateXor(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I16(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::BinOpXorU32:
         {
             MK_BINOP32_CAB();
             auto v0 = builder.CreateXor(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I32(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::BinOpXorU64:
         {
             MK_BINOP64_CAB();
             auto v0 = builder.CreateXor(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I64(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
 
@@ -1418,28 +1418,28 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP32_CAB();
             auto v0 = builder.CreateSRem(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I32(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::BinOpModuloS64:
         {
             MK_BINOP64_CAB();
             auto v0 = builder.CreateSRem(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I64(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::BinOpModuloU32:
         {
             MK_BINOP32_CAB();
             auto v0 = builder.CreateURem(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I32(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::BinOpModuloU64:
         {
             MK_BINOP64_CAB();
             auto v0 = builder.CreateURem(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I64(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
 
@@ -1447,42 +1447,42 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP32_CAB();
             auto v0 = builder.CreateSDiv(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I32(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::BinOpDivS64:
         {
             MK_BINOP64_CAB();
             auto v0 = builder.CreateSDiv(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I64(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::BinOpDivU32:
         {
             MK_BINOP32_CAB();
             auto v0 = builder.CreateUDiv(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I32(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::BinOpDivU64:
         {
             MK_BINOP64_CAB();
             auto v0 = builder.CreateUDiv(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I64(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::BinOpDivF32:
         {
             MK_BINOPF32_CAB();
             auto v0 = builder.CreateFDiv(r1, r2);
-            builder.CreateStore(v0, TO_PTR_F32(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::BinOpDivF64:
         {
             MK_BINOPF64_CAB();
             auto v0 = builder.CreateFDiv(r1, r2);
-            builder.CreateStore(v0, TO_PTR_F64(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
 
@@ -1490,28 +1490,28 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP8_CAB();
             auto v0 = builder.CreateAnd(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I8(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::BinOpBitmaskAnd16:
         {
             MK_BINOP16_CAB();
             auto v0 = builder.CreateAnd(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I16(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::BinOpBitmaskAnd32:
         {
             MK_BINOP32_CAB();
             auto v0 = builder.CreateAnd(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I32(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::BinOpBitmaskAnd64:
         {
             MK_BINOP64_CAB();
             auto v0 = builder.CreateAnd(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I64(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
 
@@ -1519,28 +1519,28 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP8_CAB();
             auto v0 = builder.CreateOr(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I8(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::BinOpBitmaskOr16:
         {
             MK_BINOP16_CAB();
             auto v0 = builder.CreateOr(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I16(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::BinOpBitmaskOr32:
         {
             MK_BINOP32_CAB();
             auto v0 = builder.CreateOr(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I32(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::BinOpBitmaskOr64:
         {
             MK_BINOP64_CAB();
             auto v0 = builder.CreateOr(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I64(r0));
+            builder.CreateStore(v0, r0);
             break;
         }
 
@@ -2619,7 +2619,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpSGT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::CompareOpGreaterS64:
@@ -2627,7 +2627,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpSGT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::CompareOpGreaterU32:
@@ -2635,7 +2635,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpUGT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::CompareOpGreaterU64:
@@ -2643,7 +2643,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpUGT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::CompareOpGreaterF32:
@@ -2651,7 +2651,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOPF32_CAB();
             auto v0 = builder.CreateFCmpUGT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::CompareOpGreaterF64:
@@ -2659,7 +2659,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOPF64_CAB();
             auto v0 = builder.CreateFCmpUGT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
 
@@ -2668,7 +2668,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpSGE(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::CompareOpGreaterEqS64:
@@ -2676,7 +2676,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpSGE(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::CompareOpGreaterEqU32:
@@ -2684,7 +2684,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpUGE(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::CompareOpGreaterEqU64:
@@ -2692,7 +2692,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpUGE(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::CompareOpGreaterEqF32:
@@ -2700,7 +2700,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOPF32_CAB();
             auto v0 = builder.CreateFCmpUGE(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::CompareOpGreaterEqF64:
@@ -2708,7 +2708,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOPF64_CAB();
             auto v0 = builder.CreateFCmpUGE(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
 
@@ -2717,7 +2717,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpSLT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::CompareOpLowerS64:
@@ -2725,7 +2725,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpSLT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::CompareOpLowerU32:
@@ -2733,7 +2733,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpULT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::CompareOpLowerU64:
@@ -2741,7 +2741,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpULT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::CompareOpLowerF32:
@@ -2749,7 +2749,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOPF32_CAB();
             auto v0 = builder.CreateFCmpULT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::CompareOpLowerF64:
@@ -2757,7 +2757,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOPF64_CAB();
             auto v0 = builder.CreateFCmpULT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
 
@@ -2766,7 +2766,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpSLE(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::CompareOpLowerEqS64:
@@ -2774,7 +2774,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpSLE(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::CompareOpLowerEqU32:
@@ -2782,7 +2782,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpULE(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::CompareOpLowerEqU64:
@@ -2790,7 +2790,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpULE(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::CompareOpLowerEqF32:
@@ -2798,7 +2798,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOPF32_CAB();
             auto v0 = builder.CreateFCmpULE(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::CompareOpLowerEqF64:
@@ -2806,7 +2806,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOPF64_CAB();
             auto v0 = builder.CreateFCmpULE(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
 
@@ -2868,7 +2868,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOP16_CAB();
             auto v0 = builder.CreateICmpEQ(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::CompareOpEqual32:
@@ -2876,7 +2876,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpEQ(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::CompareOpEqual64:
@@ -2884,7 +2884,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpEQ(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::CompareOpEqualF32:
@@ -2892,7 +2892,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOPF32_CAB();
             auto v0 = builder.CreateFCmpOEQ(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::CompareOpEqualF64:
@@ -2900,7 +2900,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOPF64_CAB();
             auto v0 = builder.CreateFCmpOEQ(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
 
@@ -2917,7 +2917,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOP16_CAB();
             auto v0 = builder.CreateICmpNE(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::CompareOpNotEqual32:
@@ -2925,7 +2925,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpNE(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::CompareOpNotEqual64:
@@ -2933,7 +2933,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpNE(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::CompareOpNotEqualF32:
@@ -2941,7 +2941,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOPF32_CAB();
             auto v0 = builder.CreateFCmpUNE(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::CompareOpNotEqualF64:
@@ -2949,7 +2949,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOPF64_CAB();
             auto v0 = builder.CreateFCmpUNE(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
 
