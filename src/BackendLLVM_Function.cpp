@@ -700,10 +700,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::GetIncFromStack64DeRef64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RB32));
+            auto r1 = TO_PTR_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RB32));
             auto v0 = builder.CreateLoad(r1);
-            auto v1 = builder.CreateAdd(v0, builder.getInt64(ip->c.s64));
-            auto v2 = builder.CreateLoad(TO_PTR_I64(builder.CreateIntToPtr(v1, builder.getInt8PtrTy())));
+            auto v1 = builder.CreateInBoundsGEP(v0, builder.getInt64(ip->c.u64 / 8));
+            auto v2 = builder.CreateLoad(v1);
             builder.CreateStore(v2, r0);
             break;
         }
