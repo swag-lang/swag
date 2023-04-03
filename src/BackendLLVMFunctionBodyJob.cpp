@@ -2,7 +2,6 @@
 #include "BackendLLVMFunctionBodyJob.h"
 #include "BackendLLVM.h"
 #include "ByteCode.h"
-#include "Ast.h"
 #include "Module.h"
 #include "Timer.h"
 

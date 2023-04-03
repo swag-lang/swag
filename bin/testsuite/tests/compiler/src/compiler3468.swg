@@ -5,7 +5,6 @@ func toto(x: s32...)
     @assert(cast(s32) x[1] == 5)
 }
 
-//#[Swag.PrintBc]
 #test
 {
     var x: closure(s32...) = &toto

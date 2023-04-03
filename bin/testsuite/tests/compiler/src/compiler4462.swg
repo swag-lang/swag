@@ -165,11 +165,11 @@ func offset_momentum(bodies: [..] Planet) {
     bodies := solar_bodies
     offset_momentum(bodies)
     ret := energy(bodies)
-    @print(ret, "\n")
+    //@print(ret, "\n")
 
     //n := 5_000_000'u64
     n := 5'u64
     advance(bodies, 0.01, n)
     ret = energy(bodies)
-    @print(ret, "\n")
+    //@print(ret, "\n")
 }

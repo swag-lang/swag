@@ -247,16 +247,16 @@ namespace BackendLinker
         switch (objFileType)
         {
         case BackendObjType::Coff:
-            result = lld::coff::link(array_ref_args, false, diag_stdout, diag_stderr);
+            result = lld::coff::link(array_ref_args, diag_stdout, diag_stderr, false, false);
             break;
         case BackendObjType::Elf:
-            result = lld::elf::link(array_ref_args, false, diag_stdout, diag_stderr);
+            result = lld::elf::link(array_ref_args, diag_stdout, diag_stderr, false, false);
             break;
         case BackendObjType::MachO:
-            result = lld::mach_o::link(array_ref_args, false, diag_stdout, diag_stderr);
+            result = lld::macho::link(array_ref_args, diag_stdout, diag_stderr, false, false);
             break;
         case BackendObjType::Wasm:
-            result = lld::wasm::link(array_ref_args, false, diag_stdout, diag_stderr);
+            result = lld::wasm::link(array_ref_args, diag_stdout, diag_stderr, false, false);
             break;
         }
 

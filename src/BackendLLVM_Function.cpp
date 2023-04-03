@@ -65,25 +65,25 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     llvm::AllocaInst* allocR = nullptr;
     if (bc->maxReservedRegisterRC)
     {
-        allocR = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt32(bc->maxReservedRegisterRC));
+        allocR = builder.CreateAlloca(I64_TY(), builder.getInt32(bc->maxReservedRegisterRC));
         allocR->setAlignment(llvm::Align(sizeof(void*)));
     }
 
     llvm::AllocaInst* allocRR = nullptr;
     if (bc->maxCallResults)
     {
-        allocRR = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt32(bc->maxCallResults));
+        allocRR = builder.CreateAlloca(I64_TY(), builder.getInt32(bc->maxCallResults));
         allocRR->setAlignment(llvm::Align(sizeof(void*)));
     }
 
-    llvm::AllocaInst* allocResult = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt32(1));
+    llvm::AllocaInst* allocResult = builder.CreateAlloca(I64_TY(), builder.getInt32(1));
     allocResult->setAlignment(llvm::Align(sizeof(void*)));
 
     // To store variadics
     llvm::AllocaInst* allocVA = nullptr;
     if (bc->maxSPVaargs)
     {
-        allocVA = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(bc->maxSPVaargs));
+        allocVA = builder.CreateAlloca(I64_TY(), builder.getInt64(bc->maxSPVaargs));
         allocVA->setAlignment(llvm::Align(sizeof(void*)));
     }
 
@@ -91,13 +91,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     llvm::AllocaInst* allocStack = nullptr;
     if (typeFunc->stackSize)
     {
-        allocStack = builder.CreateAlloca(builder.getInt8Ty(), builder.getInt32(typeFunc->stackSize));
+        allocStack = builder.CreateAlloca(I8_TY(), builder.getInt32(typeFunc->stackSize));
         allocStack->setAlignment(llvm::Align(2 * sizeof(void*)));
     }
 
     // Reserve room to pass parameters to embedded intrinsics
     const int ALLOCT_NUM = 5;
-    auto      allocT     = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(ALLOCT_NUM));
+    auto      allocT     = builder.CreateAlloca(I64_TY(), builder.getInt64(ALLOCT_NUM));
     allocT->setAlignment(llvm::Align(sizeof(void*)));
 
     // Debug infos
@@ -149,39 +149,39 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
         case ByteCodeOp::DebugNop:
         {
-            auto r0 = TO_PTR_I32(GEP_I32(allocT, 0));
-            builder.CreateStore(builder.getInt32(0), r0);
+            auto r0 = GEP_I32(allocT, 0);
+            builder.CreateStore(builder.getInt32(0), TO_PTR_I32(r0));
             break;
         }
 
         case ByteCodeOp::IntrinsicAtomicAddS8:
         {
             MK_BINOPEQ8_CAB();
-            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Add, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent);
-            auto r3 = TO_PTR_I8(GEP_I32(allocR, ip->c.u32));
-            builder.CreateStore(v0, r3);
+            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Add, r1, r2, {}, llvm::AtomicOrdering::SequentiallyConsistent);
+            auto r3 = GEP_I32(allocR, ip->c.u32);
+            builder.CreateStore(v0, TO_PTR_I8(r3));
             break;
         }
         case ByteCodeOp::IntrinsicAtomicAddS16:
         {
             MK_BINOPEQ16_CAB();
-            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Add, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent);
-            auto r3 = TO_PTR_I16(GEP_I32(allocR, ip->c.u32));
-            builder.CreateStore(v0, r3);
+            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Add, r1, r2, {}, llvm::AtomicOrdering::SequentiallyConsistent);
+            auto r3 = GEP_I32(allocR, ip->c.u32);
+            builder.CreateStore(v0, TO_PTR_I16(r3));
             break;
         }
         case ByteCodeOp::IntrinsicAtomicAddS32:
         {
             MK_BINOPEQ32_CAB();
-            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Add, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent);
-            auto r3 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
-            builder.CreateStore(v0, r3);
+            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Add, r1, r2, {}, llvm::AtomicOrdering::SequentiallyConsistent);
+            auto r3 = GEP_I32(allocR, ip->c.u32);
+            builder.CreateStore(v0, TO_PTR_I32(r3));
             break;
         }
         case ByteCodeOp::IntrinsicAtomicAddS64:
         {
             MK_BINOPEQ64_CAB();
-            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Add, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent);
+            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Add, r1, r2, {}, llvm::AtomicOrdering::SequentiallyConsistent);
             auto r3 = GEP_I32(allocR, ip->c.u32);
             builder.CreateStore(v0, r3);
             break;
@@ -190,31 +190,31 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicAtomicAndS8:
         {
             MK_BINOPEQ8_CAB();
-            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::And, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent);
-            auto r3 = TO_PTR_I8(GEP_I32(allocR, ip->c.u32));
-            builder.CreateStore(v0, r3);
+            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::And, r1, r2, {}, llvm::AtomicOrdering::SequentiallyConsistent);
+            auto r3 = GEP_I32(allocR, ip->c.u32);
+            builder.CreateStore(v0, TO_PTR_I8(r3));
             break;
         }
         case ByteCodeOp::IntrinsicAtomicAndS16:
         {
             MK_BINOPEQ16_CAB();
-            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::And, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent);
-            auto r3 = TO_PTR_I16(GEP_I32(allocR, ip->c.u32));
-            builder.CreateStore(v0, r3);
+            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::And, r1, r2, {}, llvm::AtomicOrdering::SequentiallyConsistent);
+            auto r3 = GEP_I32(allocR, ip->c.u32);
+            builder.CreateStore(v0, TO_PTR_I16(r3));
             break;
         }
         case ByteCodeOp::IntrinsicAtomicAndS32:
         {
             MK_BINOPEQ32_CAB();
-            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::And, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent);
-            auto r3 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
-            builder.CreateStore(v0, r3);
+            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::And, r1, r2, {}, llvm::AtomicOrdering::SequentiallyConsistent);
+            auto r3 = GEP_I32(allocR, ip->c.u32);
+            builder.CreateStore(v0, TO_PTR_I32(r3));
             break;
         }
         case ByteCodeOp::IntrinsicAtomicAndS64:
         {
             MK_BINOPEQ64_CAB();
-            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::And, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent);
+            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::And, r1, r2, {}, llvm::AtomicOrdering::SequentiallyConsistent);
             auto r3 = GEP_I32(allocR, ip->c.u32);
             builder.CreateStore(v0, r3);
             break;
@@ -223,31 +223,31 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicAtomicOrS8:
         {
             MK_BINOPEQ8_CAB();
-            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Or, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent);
-            auto r3 = TO_PTR_I8(GEP_I32(allocR, ip->c.u32));
-            builder.CreateStore(v0, r3);
+            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Or, r1, r2, {}, llvm::AtomicOrdering::SequentiallyConsistent);
+            auto r3 = GEP_I32(allocR, ip->c.u32);
+            builder.CreateStore(v0, TO_PTR_I8(r3));
             break;
         }
         case ByteCodeOp::IntrinsicAtomicOrS16:
         {
             MK_BINOPEQ16_CAB();
-            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Or, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent);
-            auto r3 = TO_PTR_I16(GEP_I32(allocR, ip->c.u32));
-            builder.CreateStore(v0, r3);
+            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Or, r1, r2, {}, llvm::AtomicOrdering::SequentiallyConsistent);
+            auto r3 = GEP_I32(allocR, ip->c.u32);
+            builder.CreateStore(v0, TO_PTR_I16(r3));
             break;
         }
         case ByteCodeOp::IntrinsicAtomicOrS32:
         {
             MK_BINOPEQ32_CAB();
-            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Or, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent);
-            auto r3 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
-            builder.CreateStore(v0, r3);
+            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Or, r1, r2, {}, llvm::AtomicOrdering::SequentiallyConsistent);
+            auto r3 = GEP_I32(allocR, ip->c.u32);
+            builder.CreateStore(v0, TO_PTR_I32(r3));
             break;
         }
         case ByteCodeOp::IntrinsicAtomicOrS64:
         {
             MK_BINOPEQ64_CAB();
-            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Or, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent);
+            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Or, r1, r2, {}, llvm::AtomicOrdering::SequentiallyConsistent);
             auto r3 = GEP_I32(allocR, ip->c.u32);
             builder.CreateStore(v0, r3);
             break;
@@ -256,31 +256,31 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicAtomicXorS8:
         {
             MK_BINOPEQ8_CAB();
-            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Xor, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent);
-            auto r3 = TO_PTR_I8(GEP_I32(allocR, ip->c.u32));
-            builder.CreateStore(v0, r3);
+            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Xor, r1, r2, {}, llvm::AtomicOrdering::SequentiallyConsistent);
+            auto r3 = GEP_I32(allocR, ip->c.u32);
+            builder.CreateStore(v0, TO_PTR_I8(r3));
             break;
         }
         case ByteCodeOp::IntrinsicAtomicXorS16:
         {
             MK_BINOPEQ16_CAB();
-            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Xor, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent);
-            auto r3 = TO_PTR_I16(GEP_I32(allocR, ip->c.u32));
-            builder.CreateStore(v0, r3);
+            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Xor, r1, r2, {}, llvm::AtomicOrdering::SequentiallyConsistent);
+            auto r3 = GEP_I32(allocR, ip->c.u32);
+            builder.CreateStore(v0, TO_PTR_I16(r3));
             break;
         }
         case ByteCodeOp::IntrinsicAtomicXorS32:
         {
             MK_BINOPEQ32_CAB();
-            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Xor, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent);
-            auto r3 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
-            builder.CreateStore(v0, r3);
+            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Xor, r1, r2, {}, llvm::AtomicOrdering::SequentiallyConsistent);
+            auto r3 = GEP_I32(allocR, ip->c.u32);
+            builder.CreateStore(v0, TO_PTR_I32(r3));
             break;
         }
         case ByteCodeOp::IntrinsicAtomicXorS64:
         {
             MK_BINOPEQ64_CAB();
-            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Xor, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent);
+            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Xor, r1, r2, {}, llvm::AtomicOrdering::SequentiallyConsistent);
             auto r3 = GEP_I32(allocR, ip->c.u32);
             builder.CreateStore(v0, r3);
             break;
@@ -289,31 +289,31 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicAtomicXchgS8:
         {
             MK_BINOPEQ8_CAB();
-            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Xchg, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent);
-            auto r3 = TO_PTR_I8(GEP_I32(allocR, ip->c.u32));
-            builder.CreateStore(v0, r3);
+            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Xchg, r1, r2, {}, llvm::AtomicOrdering::SequentiallyConsistent);
+            auto r3 = GEP_I32(allocR, ip->c.u32);
+            builder.CreateStore(v0, TO_PTR_I8(r3));
             break;
         }
         case ByteCodeOp::IntrinsicAtomicXchgS16:
         {
             MK_BINOPEQ16_CAB();
-            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Xchg, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent);
-            auto r3 = TO_PTR_I16(GEP_I32(allocR, ip->c.u32));
-            builder.CreateStore(v0, r3);
+            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Xchg, r1, r2, {}, llvm::AtomicOrdering::SequentiallyConsistent);
+            auto r3 = GEP_I32(allocR, ip->c.u32);
+            builder.CreateStore(v0, TO_PTR_I16(r3));
             break;
         }
         case ByteCodeOp::IntrinsicAtomicXchgS32:
         {
             MK_BINOPEQ32_CAB();
-            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Xchg, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent);
-            auto r3 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
-            builder.CreateStore(v0, r3);
+            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Xchg, r1, r2, {}, llvm::AtomicOrdering::SequentiallyConsistent);
+            auto r3 = GEP_I32(allocR, ip->c.u32);
+            builder.CreateStore(v0, TO_PTR_I32(r3));
             break;
         }
         case ByteCodeOp::IntrinsicAtomicXchgS64:
         {
             MK_BINOPEQ64_CAB();
-            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Xchg, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent);
+            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Xchg, r1, r2, {}, llvm::AtomicOrdering::SequentiallyConsistent);
             auto r3 = GEP_I32(allocR, ip->c.u32);
             builder.CreateStore(v0, r3);
             break;
@@ -321,57 +321,57 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicAtomicCmpXchgS8:
         {
-            auto r0   = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto ptr0 = builder.CreateLoad(r0);
+            auto r0   = GEP_I32(allocR, ip->a.u32);
+            auto ptr0 = builder.CreateLoad(PTR_I8_TY(), r0);
 
             llvm::Value* r1 = MK_IMMB_8();
             llvm::Value* r2 = MK_IMMC_8();
-            auto         v0 = builder.CreateAtomicCmpXchg(ptr0, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent, llvm::AtomicOrdering::SequentiallyConsistent);
+            auto         v0 = builder.CreateAtomicCmpXchg(ptr0, r1, r2, {}, llvm::AtomicOrdering::SequentiallyConsistent, llvm::AtomicOrdering::SequentiallyConsistent);
             v0->setVolatile(true);
             auto v1 = builder.CreateExtractValue(v0, 0);
 
-            auto r4 = TO_PTR_I8(GEP_I32(allocR, ip->d.u32));
-            builder.CreateStore(v1, r4);
+            auto r4 = GEP_I32(allocR, ip->d.u32);
+            builder.CreateStore(v1, TO_PTR_I8(r4));
             break;
         }
         case ByteCodeOp::IntrinsicAtomicCmpXchgS16:
         {
-            auto r0   = TO_PTR_PTR_I16(GEP_I32(allocR, ip->a.u32));
-            auto ptr0 = builder.CreateLoad(r0);
+            auto r0   = GEP_I32(allocR, ip->a.u32);
+            auto ptr0 = builder.CreateLoad(PTR_I16_TY(), r0);
 
             llvm::Value* r1 = MK_IMMB_16();
             llvm::Value* r2 = MK_IMMC_16();
-            auto         v0 = builder.CreateAtomicCmpXchg(ptr0, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent, llvm::AtomicOrdering::SequentiallyConsistent);
+            auto         v0 = builder.CreateAtomicCmpXchg(ptr0, r1, r2, {}, llvm::AtomicOrdering::SequentiallyConsistent, llvm::AtomicOrdering::SequentiallyConsistent);
             v0->setVolatile(true);
             auto v1 = builder.CreateExtractValue(v0, 0);
 
-            auto r4 = TO_PTR_I16(GEP_I32(allocR, ip->d.u32));
-            builder.CreateStore(v1, r4);
+            auto r4 = GEP_I32(allocR, ip->d.u32);
+            builder.CreateStore(v1, TO_PTR_I16(r4));
             break;
         }
         case ByteCodeOp::IntrinsicAtomicCmpXchgS32:
         {
-            auto r0   = TO_PTR_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto ptr0 = builder.CreateLoad(r0);
+            auto r0   = GEP_I32(allocR, ip->a.u32);
+            auto ptr0 = builder.CreateLoad(PTR_I32_TY(), r0);
 
             llvm::Value* r1 = MK_IMMB_32();
             llvm::Value* r2 = MK_IMMC_32();
-            auto         v0 = builder.CreateAtomicCmpXchg(ptr0, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent, llvm::AtomicOrdering::SequentiallyConsistent);
+            auto         v0 = builder.CreateAtomicCmpXchg(ptr0, r1, r2, {}, llvm::AtomicOrdering::SequentiallyConsistent, llvm::AtomicOrdering::SequentiallyConsistent);
             v0->setVolatile(true);
             auto v1 = builder.CreateExtractValue(v0, 0);
 
-            auto r4 = TO_PTR_I32(GEP_I32(allocR, ip->d.u32));
-            builder.CreateStore(v1, r4);
+            auto r4 = GEP_I32(allocR, ip->d.u32);
+            builder.CreateStore(v1, TO_PTR_I32(r4));
             break;
         }
         case ByteCodeOp::IntrinsicAtomicCmpXchgS64:
         {
-            auto r0   = TO_PTR_PTR_I64(GEP_I32(allocR, ip->a.u32));
-            auto ptr0 = builder.CreateLoad(r0);
+            auto r0   = GEP_I32(allocR, ip->a.u32);
+            auto ptr0 = builder.CreateLoad(PTR_I64_TY(), r0);
 
             llvm::Value* r1 = MK_IMMB_64();
             llvm::Value* r2 = MK_IMMC_64();
-            auto         v0 = builder.CreateAtomicCmpXchg(ptr0, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent, llvm::AtomicOrdering::SequentiallyConsistent);
+            auto         v0 = builder.CreateAtomicCmpXchg(ptr0, r1, r2, {}, llvm::AtomicOrdering::SequentiallyConsistent, llvm::AtomicOrdering::SequentiallyConsistent);
             v0->setVolatile(true);
             auto v1 = builder.CreateExtractValue(v0, 0);
 
@@ -383,89 +383,91 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IncPointer64:
         case ByteCodeOp::DecPointer64:
         {
-            auto         r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->c.u32));
-            auto         r1 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+            auto         r1 = builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, ip->a.u32));
             llvm::Value* r2;
             if (ip->flags & BCI_IMM_B)
                 r2 = builder.getInt64(ip->b.u64);
             else
-                r2 = builder.CreateLoad(GEP_I32(allocR, ip->b.u32));
+                r2 = builder.CreateLoad(I64_TY(), GEP_I32(allocR, ip->b.u32));
             if (ip->op == ByteCodeOp::DecPointer64)
                 r2 = builder.CreateNeg(r2);
-            auto r3 = builder.CreateInBoundsGEP(r1, r2);
-            builder.CreateStore(r3, r0);
+            auto r3 = builder.CreateInBoundsGEP(I8_TY(), r1, r2);
+
+            auto r0 = GEP_I32(allocR, ip->c.u32);
+            builder.CreateStore(r3, TO_PTR_PTR_I8(r0));
             break;
         }
 
         case ByteCodeOp::IncMulPointer64:
         {
-            auto         r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->c.u32));
-            auto         r1 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+            auto         r1 = builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, ip->a.u32));
             llvm::Value* r2;
             if (ip->flags & BCI_IMM_B)
                 r2 = builder.getInt64(ip->b.u64 * ip->d.u64);
             else
             {
-                r2 = builder.CreateLoad(GEP_I32(allocR, ip->b.u32));
+                r2 = builder.CreateLoad(I64_TY(), GEP_I32(allocR, ip->b.u32));
                 r2 = builder.CreateMul(r2, builder.getInt64(ip->d.u64));
             }
 
-            auto r3 = builder.CreateInBoundsGEP(r1, r2);
+            auto r3 = builder.CreateInBoundsGEP(I8_TY(), r1, r2);
+
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->c.u32));
             builder.CreateStore(r3, r0);
             break;
         }
 
         case ByteCodeOp::DeRef8:
         {
-            auto r0  = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
-            auto ptr = builder.CreateInBoundsGEP(builder.CreateLoad(r0), builder.getInt64(ip->c.s64));
-            auto v1  = builder.CreateLoad(TO_PTR_I8(ptr));
-            auto v2  = builder.CreateIntCast(v1, builder.getInt64Ty(), false);
+            auto r0  = GEP_I32(allocR, ip->b.u32);
+            auto ptr = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), r0), builder.getInt64(ip->c.s64));
+            auto v1  = builder.CreateLoad(I8_TY(), ptr);
+            auto v2  = builder.CreateIntCast(v1, I64_TY(), false);
             auto r1  = GEP_I32(allocR, ip->a.u32);
             builder.CreateStore(v2, r1);
             break;
         }
         case ByteCodeOp::DeRef16:
         {
-            auto r0  = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
-            auto ptr = builder.CreateInBoundsGEP(builder.CreateLoad(r0), builder.getInt64(ip->c.s64));
-            auto v1  = builder.CreateLoad(TO_PTR_I16(ptr));
-            auto v2  = builder.CreateIntCast(v1, builder.getInt64Ty(), false);
+            auto r0  = GEP_I32(allocR, ip->b.u32);
+            auto ptr = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), r0), builder.getInt64(ip->c.s64));
+            auto v1  = builder.CreateLoad(I16_TY(), ptr);
+            auto v2  = builder.CreateIntCast(v1, I64_TY(), false);
             auto r1  = GEP_I32(allocR, ip->a.u32);
             builder.CreateStore(v2, r1);
             break;
         }
         case ByteCodeOp::DeRef32:
         {
-            auto r0  = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
-            auto ptr = builder.CreateInBoundsGEP(builder.CreateLoad(r0), builder.getInt64(ip->c.s64));
-            auto v1  = builder.CreateLoad(TO_PTR_I32(ptr));
-            auto v2  = builder.CreateIntCast(v1, builder.getInt64Ty(), false);
+            auto r0  = GEP_I32(allocR, ip->b.u32);
+            auto ptr = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), r0), builder.getInt64(ip->c.s64));
+            auto v1  = builder.CreateLoad(I32_TY(), ptr);
+            auto v2  = builder.CreateIntCast(v1, I64_TY(), false);
             auto r1  = GEP_I32(allocR, ip->a.u32);
             builder.CreateStore(v2, r1);
             break;
         }
         case ByteCodeOp::DeRef64:
         {
-            auto r0  = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
-            auto ptr = builder.CreateInBoundsGEP(builder.CreateLoad(r0), builder.getInt64(ip->c.s64));
-            auto v1  = builder.CreateLoad(TO_PTR_I64(ptr));
+            auto r0  = GEP_I32(allocR, ip->b.u32);
+            auto ptr = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), r0), builder.getInt64(ip->c.s64));
+            auto v1  = builder.CreateLoad(I64_TY(), ptr);
             auto r1  = GEP_I32(allocR, ip->a.u32);
             builder.CreateStore(v1, r1);
             break;
         }
         case ByteCodeOp::DeRefStringSlice:
         {
-            auto r0  = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r1  = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
-            auto ptr = builder.CreateLoad(r0);
+            auto r0  = GEP_I32(allocR, ip->a.u32);
+            auto r1  = GEP_I32(allocR, ip->b.u32);
+            auto ptr = builder.CreateLoad(PTR_I8_TY(), r0);
             SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF);
-            auto ptr0 = builder.CreateInBoundsGEP(ptr, builder.getInt32(ip->c.u32 + 0));
-            auto ptr8 = builder.CreateInBoundsGEP(ptr, builder.getInt32(ip->c.u32 + 8));
-            auto v0   = builder.CreateLoad(TO_PTR_PTR_I8(ptr0));
-            auto v8   = builder.CreateLoad(TO_PTR_PTR_I8(ptr8));
-            builder.CreateStore(v8, r1);
-            builder.CreateStore(v0, r0);
+            auto ptr0 = builder.CreateInBoundsGEP(I8_TY(), ptr, builder.getInt32(ip->c.u32 + 0));
+            auto ptr8 = builder.CreateInBoundsGEP(I8_TY(), ptr, builder.getInt32(ip->c.u32 + 8));
+            auto v0   = builder.CreateLoad(PTR_I8_TY(), ptr0);
+            auto v8   = builder.CreateLoad(PTR_I8_TY(), ptr8);
+            builder.CreateStore(v8, TO_PTR_PTR_I8(r1));
+            builder.CreateStore(v0, TO_PTR_PTR_I8(r0));
             break;
         }
 
@@ -473,87 +475,88 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
             auto r1 = builder.getInt64(ip->b.u64);
-            builder.CreateStore(builder.CreateMul(builder.CreateLoad(r0), r1), r0);
+            builder.CreateStore(builder.CreateMul(builder.CreateLoad(I64_TY(), r0), r1), r0);
             break;
         }
         case ByteCodeOp::Div64byVB64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
             auto r1 = builder.getInt64(ip->b.u64);
-            builder.CreateStore(builder.CreateUDiv(builder.CreateLoad(r0), r1), r0);
+            builder.CreateStore(builder.CreateUDiv(builder.CreateLoad(I64_TY(), r0), r1), r0);
             break;
         }
 
         case ByteCodeOp::GetFromMutableSeg64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(TO_PTR_I8(pp.mutableSeg), CST_RB32));
-            builder.CreateStore(builder.CreateLoad(r1), r0);
+            auto r1 = builder.CreateInBoundsGEP(I8_TY(), pp.mutableSeg, CST_RB32);
+            builder.CreateStore(builder.CreateLoad(I64_TY(), r1), r0);
             break;
         }
         case ByteCodeOp::GetFromBssSeg64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(TO_PTR_I8(pp.bssSeg), CST_RB32));
-            builder.CreateStore(builder.CreateLoad(r1), r0);
+            auto r1 = builder.CreateInBoundsGEP(I8_TY(), pp.bssSeg, CST_RB32);
+            builder.CreateStore(builder.CreateLoad(I64_TY(), r1), r0);
             break;
         }
 
         case ByteCodeOp::SetZeroStack8:
         {
-            auto r0 = builder.CreateInBoundsGEP(allocStack, CST_RA32);
+            auto r0 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RA32);
             builder.CreateStore(pp.cst0_i8, r0);
             break;
         }
         case ByteCodeOp::SetZeroStack16:
         {
-            auto r0 = TO_PTR_I16(builder.CreateInBoundsGEP(allocStack, CST_RA32));
-            builder.CreateStore(pp.cst0_i16, r0);
+            auto r0 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RA32);
+            builder.CreateStore(pp.cst0_i16, TO_PTR_I16(r0));
             break;
         }
         case ByteCodeOp::SetZeroStack32:
         {
-            auto r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocStack, CST_RA32));
-            builder.CreateStore(pp.cst0_i32, r0);
+            auto r0 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RA32);
+            builder.CreateStore(pp.cst0_i32, TO_PTR_I32(r0));
             break;
         }
         case ByteCodeOp::SetZeroStack64:
         {
-            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RA32));
-            builder.CreateStore(pp.cst0_i64, r0);
+            auto r0 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RA32);
+            builder.CreateStore(pp.cst0_i64, TO_PTR_I64(r0));
             break;
         }
         case ByteCodeOp::SetZeroStackX:
         {
-            builder.CreateMemSet(builder.CreateInBoundsGEP(allocStack, CST_RA32), pp.cst0_i8, ip->b.u32, llvm::Align{});
+            auto r0 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RA32);
+            builder.CreateMemSet(r0, pp.cst0_i8, ip->b.u32, {});
             break;
         }
 
         case ByteCodeOp::SetZeroAtPointer8:
         {
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateInBoundsGEP(builder.CreateLoad(r0), CST_RB32);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), r0), CST_RB32);
             builder.CreateStore(pp.cst0_i8, v0);
             break;
         }
         case ByteCodeOp::SetZeroAtPointer16:
         {
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateInBoundsGEP(builder.CreateLoad(r0), CST_RB32);
+            auto v0 = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), r0), CST_RB32);
             builder.CreateStore(pp.cst0_i16, TO_PTR_I16(v0));
             break;
         }
         case ByteCodeOp::SetZeroAtPointer32:
         {
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateInBoundsGEP(builder.CreateLoad(r0), CST_RB32);
+            auto v0 = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), r0), CST_RB32);
             builder.CreateStore(pp.cst0_i32, TO_PTR_I32(v0));
             break;
         }
         case ByteCodeOp::SetZeroAtPointer64:
         {
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateInBoundsGEP(builder.CreateLoad(r0), CST_RB32);
+            auto v0 = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), r0), CST_RB32);
             builder.CreateStore(pp.cst0_i64, TO_PTR_I64(v0));
             break;
         }
@@ -561,38 +564,38 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF);
-            auto v0 = builder.CreateInBoundsGEP(builder.CreateLoad(r0), CST_RC32);
+            auto v0 = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), r0), CST_RC32);
             builder.CreateMemSet(v0, pp.cst0_i8, ip->b.u64, llvm::Align{});
             break;
         }
         case ByteCodeOp::SetZeroAtPointerXRB:
         {
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r2 = builder.CreateLoad(GEP_I32(allocR, ip->b.u32));
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto r2 = builder.CreateLoad(I64_TY(), GEP_I32(allocR, ip->b.u32));
             auto v2 = builder.CreateMul(r2, builder.getInt64(ip->c.u64));
-            builder.CreateMemSet(builder.CreateLoad(r0), pp.cst0_i8, v2, llvm::Align{});
+            builder.CreateMemSet(builder.CreateLoad(PTR_I8_TY(), r0), pp.cst0_i8, v2, {});
             break;
         }
 
         case ByteCodeOp::MakeMutableSegPointer:
         {
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r1 = builder.CreateInBoundsGEP(TO_PTR_I8(pp.mutableSeg), CST_RB32);
-            builder.CreateStore(r1, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto r1 = builder.CreateInBoundsGEP(I8_TY(), pp.mutableSeg, CST_RB32);
+            builder.CreateStore(r1, TO_PTR_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::MakeBssSegPointer:
         {
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r1 = builder.CreateInBoundsGEP(TO_PTR_I8(pp.bssSeg), CST_RB32);
-            builder.CreateStore(r1, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto r1 = builder.CreateInBoundsGEP(I8_TY(), pp.bssSeg, CST_RB32);
+            builder.CreateStore(r1, TO_PTR_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::MakeConstantSegPointer:
         {
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r1 = builder.CreateInBoundsGEP(TO_PTR_I8(pp.constantSeg), CST_RB32);
-            builder.CreateStore(r1, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto r1 = builder.CreateInBoundsGEP(I8_TY(), pp.constantSeg, CST_RB32);
+            builder.CreateStore(r1, TO_PTR_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::MakeCompilerSegPointer:
@@ -600,190 +603,152 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::MakeStackPointer:
         {
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r1 = builder.CreateInBoundsGEP(allocStack, CST_RB32);
-            builder.CreateStore(r1, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto r1 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RB32);
+            builder.CreateStore(r1, TO_PTR_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::MakeStackPointer2:
         {
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r1 = builder.CreateInBoundsGEP(allocStack, CST_RB32);
-            builder.CreateStore(r1, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto r1 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RB32);
+            builder.CreateStore(r1, TO_PTR_PTR_I8(r0));
 
-            r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->c.u32));
-            r1 = TO_PTR_I8(builder.CreateInBoundsGEP(allocStack, CST_RD32));
-            builder.CreateStore(r1, r0);
+            r0 = GEP_I32(allocR, ip->c.u32);
+            r1 = TO_PTR_I8(builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RD32));
+            builder.CreateStore(r1, TO_PTR_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::MakeStackPointerRT:
         {
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocRR, 0));
-            auto r1 = builder.CreateInBoundsGEP(allocStack, CST_RA32);
-            builder.CreateStore(r1, r0);
+            auto r0 = GEP_I32(allocRR, 0);
+            auto r1 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RA32);
+            builder.CreateStore(r1, TO_PTR_PTR_I8(r0));
             break;
         }
 
         case ByteCodeOp::GetFromStack8:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateInBoundsGEP(allocStack, CST_RB32);
-            auto v0 = builder.CreateIntCast(builder.CreateLoad(r1), builder.getInt64Ty(), false);
+            auto r1 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RB32);
+            auto v0 = builder.CreateIntCast(builder.CreateLoad(I8_TY(), r1), I64_TY(), false);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::GetFromStack16:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = TO_PTR_I16(builder.CreateInBoundsGEP(allocStack, CST_RB32));
-            auto v0 = builder.CreateIntCast(builder.CreateLoad(r1), builder.getInt64Ty(), false);
+            auto r1 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RB32);
+            auto v0 = builder.CreateIntCast(builder.CreateLoad(I16_TY(), r1), I64_TY(), false);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::GetFromStack32:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = TO_PTR_I32(builder.CreateInBoundsGEP(allocStack, CST_RB32));
-            auto v0 = builder.CreateIntCast(builder.CreateLoad(r1), builder.getInt64Ty(), false);
+            auto r1 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RB32);
+            auto v0 = builder.CreateIntCast(builder.CreateLoad(I32_TY(), r1), I64_TY(), false);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::GetFromStack64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RB32));
-            builder.CreateStore(builder.CreateLoad(r1), r0);
+            auto r1 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RB32);
+            builder.CreateStore(builder.CreateLoad(I64_TY(), r1), r0);
             break;
         }
         case ByteCodeOp::GetIncFromStack64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RB32));
-            auto v0 = builder.CreateLoad(r1);
+            auto r1 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RB32);
+            auto v0 = builder.CreateLoad(I64_TY(), r1);
             auto v1 = builder.CreateAdd(v0, builder.getInt64(ip->c.s64));
             builder.CreateStore(v1, r0);
             break;
         }
         case ByteCodeOp::GetIncFromStack64DeRef8:
         {
+            auto r1 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RB32);
+            auto v0 = builder.CreateLoad(PTR_I8_TY(), r1);
+            auto v1 = builder.CreateInBoundsGEP(I8_TY(), v0, builder.getInt64(ip->c.u64));
+            auto v2 = builder.CreateLoad(I8_TY(), v1);
+            auto v3 = builder.CreateIntCast(v2, I64_TY(), false);
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(allocStack, CST_RB32));
-            auto v0 = builder.CreateLoad(r1);
-            auto v1 = builder.CreateInBoundsGEP(v0, builder.getInt64(ip->c.u64));
-            auto v2 = builder.CreateLoad(v1);
-            auto v3 = builder.CreateIntCast(v2, builder.getInt64Ty(), false);
             builder.CreateStore(v3, r0);
             break;
         }
         case ByteCodeOp::GetIncFromStack64DeRef16:
         {
-            if (ip->c.s64 & 1) // Not aligned
-            {
-                auto r0 = GEP_I32(allocR, ip->a.u32);
-                auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RB32));
-                auto v0 = builder.CreateLoad(r1);
-                auto v1 = builder.CreateAdd(v0, builder.getInt64(ip->c.s64));
-                auto v2 = builder.CreateLoad(TO_PTR_I16(builder.CreateIntToPtr(v1, builder.getInt8PtrTy())));
-                auto v3 = builder.CreateIntCast(v2, builder.getInt64Ty(), false);
-                builder.CreateStore(v3, r0);
-            }
-            else
-            {
-                auto r0 = GEP_I32(allocR, ip->a.u32);
-                auto r1 = TO_PTR_PTR_I16(builder.CreateInBoundsGEP(allocStack, CST_RB32));
-                auto v0 = builder.CreateLoad(r1);
-                auto v1 = builder.CreateInBoundsGEP(v0, builder.getInt64(ip->c.u64 / 2));
-                auto v2 = builder.CreateLoad(v1);
-                auto v3 = builder.CreateIntCast(v2, builder.getInt64Ty(), false);
-                builder.CreateStore(v3, r0);
-            }
+            auto r1 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RB32);
+            auto v0 = builder.CreateLoad(PTR_I8_TY(), r1);
+            auto v1 = builder.CreateInBoundsGEP(I8_TY(), v0, builder.getInt64(ip->c.u64));
+            auto v2 = builder.CreateLoad(I16_TY(), v1);
+            auto v3 = builder.CreateIntCast(v2, I64_TY(), false);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            builder.CreateStore(v3, r0);
             break;
         }
         case ByteCodeOp::GetIncFromStack64DeRef32:
         {
-            if (ip->c.s64 & 3) // Not aligned
-            {
-                auto r0 = GEP_I32(allocR, ip->a.u32);
-                auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RB32));
-                auto v0 = builder.CreateLoad(r1);
-                auto v1 = builder.CreateAdd(v0, builder.getInt64(ip->c.s64));
-                auto v2 = builder.CreateLoad(TO_PTR_I32(builder.CreateIntToPtr(v1, builder.getInt8PtrTy())));
-                auto v3 = builder.CreateIntCast(v2, builder.getInt64Ty(), false);
-                builder.CreateStore(v3, r0);
-            }
-            else
-            {
-                auto r0 = GEP_I32(allocR, ip->a.u32);
-                auto r1 = TO_PTR_PTR_I32(builder.CreateInBoundsGEP(allocStack, CST_RB32));
-                auto v0 = builder.CreateLoad(r1);
-                auto v1 = builder.CreateInBoundsGEP(v0, builder.getInt64(ip->c.u64 / 4));
-                auto v2 = builder.CreateLoad(v1);
-                auto v3 = builder.CreateIntCast(v2, builder.getInt64Ty(), false);
-                builder.CreateStore(v3, r0);
-            }
+            auto r1 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RB32);
+            auto v0 = builder.CreateLoad(PTR_I8_TY(), r1);
+            auto v1 = builder.CreateInBoundsGEP(I8_TY(), v0, builder.getInt64(ip->c.u64));
+            auto v2 = builder.CreateLoad(I32_TY(), v1);
+            auto v3 = builder.CreateIntCast(v2, I64_TY(), false);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            builder.CreateStore(v3, r0);
             break;
         }
         case ByteCodeOp::GetIncFromStack64DeRef64:
         {
-            if (ip->c.s64 & 7) // Not aligned
-            {
-                auto r0 = GEP_I32(allocR, ip->a.u32);
-                auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RB32));
-                auto v0 = builder.CreateLoad(r1);
-                auto v1 = builder.CreateAdd(v0, builder.getInt64(ip->c.s64));
-                auto v2 = builder.CreateLoad(TO_PTR_I64(builder.CreateIntToPtr(v1, builder.getInt8PtrTy())));
-                builder.CreateStore(v2, r0);
-            }
-            else
-            {
-                auto r0 = GEP_I32(allocR, ip->a.u32);
-                auto r1 = TO_PTR_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RB32));
-                auto v0 = builder.CreateLoad(r1);
-                auto v1 = builder.CreateInBoundsGEP(v0, builder.getInt64(ip->c.u64 / 8));
-                auto v2 = builder.CreateLoad(v1);
-                builder.CreateStore(v2, r0);
-            }
+            auto r1 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RB32);
+            auto v0 = builder.CreateLoad(PTR_I8_TY(), r1);
+            auto v1 = builder.CreateInBoundsGEP(I8_TY(), v0, builder.getInt64(ip->c.u64));
+            auto v2 = builder.CreateLoad(I64_TY(), v1);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            builder.CreateStore(v2, r0);
             break;
         }
 
         case ByteCodeOp::CopyStack8:
         {
-            auto r0 = builder.CreateInBoundsGEP(allocStack, CST_RA32);
-            auto r1 = builder.CreateInBoundsGEP(allocStack, CST_RB32);
-            builder.CreateStore(builder.CreateLoad(r1), r0);
+            auto r0 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RA32);
+            auto r1 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RB32);
+            builder.CreateStore(builder.CreateLoad(I8_TY(), r1), r0);
             break;
         }
         case ByteCodeOp::CopyStack16:
         {
-            auto r0 = TO_PTR_I16(builder.CreateInBoundsGEP(allocStack, CST_RA32));
-            auto r1 = TO_PTR_I16(builder.CreateInBoundsGEP(allocStack, CST_RB32));
-            builder.CreateStore(builder.CreateLoad(r1), r0);
+            auto r0 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RA32);
+            auto r1 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RB32);
+            builder.CreateStore(builder.CreateLoad(I16_TY(), r1), TO_PTR_I16(r0));
             break;
         }
         case ByteCodeOp::CopyStack32:
         {
-            auto r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocStack, CST_RA32));
-            auto r1 = TO_PTR_I32(builder.CreateInBoundsGEP(allocStack, CST_RB32));
-            builder.CreateStore(builder.CreateLoad(r1), r0);
+            auto r0 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RA32);
+            auto r1 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RB32);
+            builder.CreateStore(builder.CreateLoad(I32_TY(), r1), TO_PTR_I32(r0));
             break;
         }
         case ByteCodeOp::CopyStack64:
         {
-            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RA32));
-            auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RB32));
-            builder.CreateStore(builder.CreateLoad(r1), r0);
+            auto r0 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RA32);
+            auto r1 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RB32);
+            builder.CreateStore(builder.CreateLoad(I64_TY(), r1), TO_PTR_I64(r0));
             break;
         }
 
         case ByteCodeOp::GetFromStack64x2:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RB32));
-            builder.CreateStore(builder.CreateLoad(r1), r0);
+            auto r1 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RB32);
+            builder.CreateStore(builder.CreateLoad(I64_TY(), r1), r0);
 
             auto r2 = GEP_I32(allocR, ip->c.u32);
-            auto r3 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RD32));
-            builder.CreateStore(builder.CreateLoad(r3), r2);
+            auto r3 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RD32);
+            builder.CreateStore(builder.CreateLoad(I64_TY(), r3), r2);
             break;
         }
 
@@ -802,7 +767,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicRtFlags:
         {
             auto result = emitCall(buildParameters, moduleToGen, g_LangSpec->name_atrtflags, allocR, allocT, {}, {});
-            builder.CreateStore(result, TO_PTR_I64(GEP_I32(allocR, ip->a.u32)));
+            builder.CreateStore(result, GEP_I32(allocR, ip->a.u32));
             break;
         }
         case ByteCodeOp::IntrinsicStringCmp:
@@ -820,54 +785,54 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::MemCpy8:
         {
-            auto r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32)));
-            builder.CreateStore(builder.CreateLoad(r1), r0);
+            auto r0 = builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, ip->a.u32));
+            auto r1 = builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, ip->b.u32));
+            builder.CreateStore(builder.CreateLoad(I8_TY(), r1), r0);
             break;
         }
         case ByteCodeOp::MemCpy16:
         {
-            auto r0 = builder.CreateLoad(TO_PTR_PTR_I16(GEP_I32(allocR, ip->a.u32)));
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I16(GEP_I32(allocR, ip->b.u32)));
-            builder.CreateStore(builder.CreateLoad(r1), r0);
+            auto r0 = builder.CreateLoad(PTR_I16_TY(), GEP_I32(allocR, ip->a.u32));
+            auto r1 = builder.CreateLoad(PTR_I16_TY(), GEP_I32(allocR, ip->b.u32));
+            builder.CreateStore(builder.CreateLoad(I16_TY(), r1), r0);
             break;
         }
         case ByteCodeOp::MemCpy32:
         {
-            auto r0 = builder.CreateLoad(TO_PTR_PTR_I32(GEP_I32(allocR, ip->a.u32)));
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I32(GEP_I32(allocR, ip->b.u32)));
-            builder.CreateStore(builder.CreateLoad(r1), r0);
+            auto r0 = builder.CreateLoad(PTR_I32_TY(), GEP_I32(allocR, ip->a.u32));
+            auto r1 = builder.CreateLoad(PTR_I32_TY(), GEP_I32(allocR, ip->b.u32));
+            builder.CreateStore(builder.CreateLoad(I32_TY(), r1), r0);
             break;
         }
         case ByteCodeOp::MemCpy64:
         {
-            auto r0 = builder.CreateLoad(TO_PTR_PTR_I64(GEP_I32(allocR, ip->a.u32)));
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I64(GEP_I32(allocR, ip->b.u32)));
-            builder.CreateStore(builder.CreateLoad(r1), r0);
+            auto r0 = builder.CreateLoad(PTR_I64_TY(), GEP_I32(allocR, ip->a.u32));
+            auto r1 = builder.CreateLoad(PTR_I64_TY(), GEP_I32(allocR, ip->b.u32));
+            builder.CreateStore(builder.CreateLoad(I64_TY(), r1), r0);
             break;
         }
 
         case ByteCodeOp::IntrinsicMemCpy:
         {
-            auto r0   = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
-            auto r1   = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32)));
+            auto r0   = builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, ip->a.u32));
+            auto r1   = builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, ip->b.u32));
             auto size = MK_IMMC_64();
-            builder.CreateMemCpy(r0, llvm::Align{}, r1, llvm::Align{}, size);
+            builder.CreateMemCpy(r0, {}, r1, {}, size);
             break;
         }
 
         case ByteCodeOp::IntrinsicMemMove:
         {
-            auto r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32)));
+            auto r0 = builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, ip->a.u32));
+            auto r1 = builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, ip->b.u32));
             auto r2 = MK_IMMC_64();
-            builder.CreateMemMove(r0, llvm::Align{}, r1, llvm::Align{}, r2);
+            builder.CreateMemMove(r0, {}, r1, {}, r2);
             break;
         }
 
         case ByteCodeOp::IntrinsicMemSet:
         {
-            auto r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+            auto r0 = builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, ip->a.u32));
             auto r1 = MK_IMMB_8();
             auto r2 = MK_IMMC_64();
             builder.CreateMemSet(r0, r1, r2, llvm::Align{});
@@ -877,8 +842,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicMemCmp:
         {
             auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32)));
-            auto r2 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->c.u32)));
+            auto r1 = builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, ip->b.u32));
+            auto r2 = builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, ip->c.u32));
             auto r3 = MK_IMMD_64();
             builder.CreateStore(builder.CreateCall(pp.fn_memcmp, {r1, r2, r3}), r0);
             break;
@@ -887,37 +852,37 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicStrLen:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32)));
+            auto r1 = builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, ip->b.u32));
             builder.CreateStore(builder.CreateCall(pp.fn_strlen, {r1}), r0);
             break;
         }
         case ByteCodeOp::IntrinsicStrCmp:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32)));
-            auto r2 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->c.u32)));
+            auto r1 = builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, ip->b.u32));
+            auto r2 = builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, ip->c.u32));
             builder.CreateStore(builder.CreateCall(pp.fn_strcmp, {r1, r2}), r0);
             break;
         }
 
         case ByteCodeOp::IntrinsicAlloc:
         {
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r1 = builder.CreateLoad(GEP_I32(allocR, ip->b.u32));
-            builder.CreateStore(builder.CreateCall(pp.fn_malloc, {r1}), r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto r1 = builder.CreateLoad(I64_TY(), GEP_I32(allocR, ip->b.u32));
+            builder.CreateStore(builder.CreateCall(pp.fn_malloc, {r1}), TO_PTR_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::IntrinsicRealloc:
         {
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32)));
-            auto r2 = builder.CreateLoad(GEP_I32(allocR, ip->c.u32));
-            builder.CreateStore(builder.CreateCall(pp.fn_realloc, {r1, r2}), r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto r1 = builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, ip->b.u32));
+            auto r2 = builder.CreateLoad(I64_TY(), GEP_I32(allocR, ip->c.u32));
+            builder.CreateStore(builder.CreateCall(pp.fn_realloc, {r1, r2}), TO_PTR_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::IntrinsicFree:
         {
-            auto r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+            auto r0 = builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, ip->a.u32));
             builder.CreateCall(pp.fn_free, {r0});
             break;
         }
@@ -945,24 +910,24 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CopyRBtoRA8:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = TO_PTR_I8(GEP_I32(allocR, ip->b.u32));
-            auto v1 = builder.CreateIntCast(builder.CreateLoad(r1), builder.getInt64Ty(), false);
+            auto r1 = GEP_I32(allocR, ip->b.u32);
+            auto v1 = builder.CreateIntCast(builder.CreateLoad(I8_TY(), r1), I64_TY(), false);
             builder.CreateStore(v1, r0);
             break;
         }
         case ByteCodeOp::CopyRBtoRA16:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = TO_PTR_I16(GEP_I32(allocR, ip->b.u32));
-            auto v1 = builder.CreateIntCast(builder.CreateLoad(r1), builder.getInt64Ty(), false);
+            auto r1 = GEP_I32(allocR, ip->b.u32);
+            auto v1 = builder.CreateIntCast(builder.CreateLoad(I16_TY(), r1), I64_TY(), false);
             builder.CreateStore(v1, r0);
             break;
         }
         case ByteCodeOp::CopyRBtoRA32:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
-            auto v1 = builder.CreateIntCast(builder.CreateLoad(r1), builder.getInt64Ty(), false);
+            auto r1 = GEP_I32(allocR, ip->b.u32);
+            auto v1 = builder.CreateIntCast(builder.CreateLoad(I32_TY(), r1), I64_TY(), false);
             builder.CreateStore(v1, r0);
             break;
         }
@@ -970,16 +935,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
             auto r1 = GEP_I32(allocR, ip->b.u32);
-            builder.CreateStore(builder.CreateLoad(r1), r0);
+            builder.CreateStore(builder.CreateLoad(I64_TY(), r1), r0);
             break;
         }
 
         case ByteCodeOp::CopyRBAddrToRA:
         case ByteCodeOp::CopyRBAddrToRA2:
         {
-            auto r0 = TO_PTR_PTR_I64(GEP_I32(allocR, ip->a.u32));
+            auto r0 = GEP_I32(allocR, ip->a.u32);
             auto r1 = GEP_I32(allocR, ip->b.u32);
-            builder.CreateStore(r1, r0);
+            builder.CreateStore(r1, TO_PTR_PTR_I64(r0));
             break;
         }
 
@@ -1022,22 +987,22 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::DecrementRA32:
         {
-            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateSub(builder.CreateLoad(r0), pp.cst1_i32);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateSub(builder.CreateLoad(I32_TY(), r0), pp.cst1_i32);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::IncrementRA64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto v0 = builder.CreateAdd(builder.CreateLoad(r0), pp.cst1_i64);
+            auto v0 = builder.CreateAdd(builder.CreateLoad(I64_TY(), r0), pp.cst1_i64);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::DecrementRA64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto v0 = builder.CreateSub(builder.CreateLoad(r0), pp.cst1_i64);
+            auto v0 = builder.CreateSub(builder.CreateLoad(I64_TY(), r0), pp.cst1_i64);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1046,8 +1011,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
             auto r1 = GEP_I32(allocR, ip->b.u32);
-            auto v1 = builder.CreateAdd(builder.CreateLoad(r1), CST_RC64);
-            auto v2 = builder.CreateMul(builder.CreateLoad(r0), v1);
+            auto v1 = builder.CreateAdd(builder.CreateLoad(I64_TY(), r1), CST_RC64);
+            auto v2 = builder.CreateMul(builder.CreateLoad(I64_TY(), r0), v1);
             auto r2 = GEP_I32(allocR, ip->a.u32);
             builder.CreateStore(v2, r2);
             break;
@@ -1055,131 +1020,127 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::Add32byVB32:
         {
-            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateAdd(builder.CreateLoad(r0), CST_RB32);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateAdd(builder.CreateLoad(I32_TY(), r0), CST_RB32);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::Add64byVB64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto v0 = builder.CreateAdd(builder.CreateLoad(r0), CST_RB64);
+            auto v0 = builder.CreateAdd(builder.CreateLoad(I64_TY(), r0), CST_RB64);
             builder.CreateStore(v0, r0);
             break;
         }
 
         case ByteCodeOp::SetAtPointer8:
         {
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            r0      = TO_PTR_I8(builder.CreateInBoundsGEP(builder.CreateLoad(r0), CST_RC32));
+            auto         r0 = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, ip->a.u32)), CST_RC32);
             llvm::Value* r1;
             if (ip->flags & BCI_IMM_B)
                 r1 = builder.getInt8(ip->b.u8);
             else
-                r1 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->b.u32)));
-            builder.CreateStore(r1, r0);
+                r1 = builder.CreateLoad(I8_TY(), GEP_I32(allocR, ip->b.u32));
+            builder.CreateStore(r1, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::SetAtPointer16:
         {
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            r0      = TO_PTR_I16(builder.CreateInBoundsGEP(builder.CreateLoad(r0), CST_RC32));
+            auto         r0 = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, ip->a.u32)), CST_RC32);
             llvm::Value* r1;
             if (ip->flags & BCI_IMM_B)
                 r1 = builder.getInt16(ip->b.u16);
             else
-                r1 = builder.CreateLoad(TO_PTR_I16(GEP_I32(allocR, ip->b.u32)));
-            builder.CreateStore(r1, r0);
+                r1 = builder.CreateLoad(I16_TY(), GEP_I32(allocR, ip->b.u32));
+            builder.CreateStore(r1, TO_PTR_I16(r0));
             break;
         }
         case ByteCodeOp::SetAtPointer32:
         {
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            r0      = TO_PTR_I32(builder.CreateInBoundsGEP(builder.CreateLoad(r0), CST_RC32));
+            auto         r0 = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, ip->a.u32)), CST_RC32);
             llvm::Value* r1;
             if (ip->flags & BCI_IMM_B)
                 r1 = builder.getInt32(ip->b.u32);
             else
-                r1 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
-            builder.CreateStore(r1, r0);
+                r1 = builder.CreateLoad(I32_TY(), GEP_I32(allocR, ip->b.u32));
+            builder.CreateStore(r1, TO_PTR_I32(r0));
             break;
         }
         case ByteCodeOp::SetAtPointer64:
         {
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            r0      = TO_PTR_I64(builder.CreateInBoundsGEP(builder.CreateLoad(r0), CST_RC32));
+            auto         r0 = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, ip->a.u32)), CST_RC32);
             llvm::Value* r1;
             if (ip->flags & BCI_IMM_B)
                 r1 = builder.getInt64(ip->b.u64);
             else
-                r1 = builder.CreateLoad(GEP_I32(allocR, ip->b.u32));
-            builder.CreateStore(r1, r0);
+                r1 = builder.CreateLoad(I64_TY(), GEP_I32(allocR, ip->b.u32));
+            builder.CreateStore(r1, TO_PTR_I64(r0));
             break;
         }
 
         case ByteCodeOp::SetAtStackPointer8:
         {
-            auto         r0 = builder.CreateInBoundsGEP(allocStack, CST_RA32);
+            auto         r0 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RA32);
             llvm::Value* r1;
             if (ip->flags & BCI_IMM_B)
                 r1 = builder.getInt8(ip->b.u8);
             else
-                r1 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->b.u32)));
+                r1 = builder.CreateLoad(I8_TY(), GEP_I32(allocR, ip->b.u32));
             builder.CreateStore(r1, r0);
             break;
         }
         case ByteCodeOp::SetAtStackPointer16:
         {
-            auto         r0 = TO_PTR_I16(builder.CreateInBoundsGEP(allocStack, CST_RA32));
+            auto         r0 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RA32);
             llvm::Value* r1;
             if (ip->flags & BCI_IMM_B)
                 r1 = builder.getInt16(ip->b.u16);
             else
-                r1 = builder.CreateLoad(TO_PTR_I16(GEP_I32(allocR, ip->b.u32)));
-            builder.CreateStore(r1, r0);
+                r1 = builder.CreateLoad(I16_TY(), GEP_I32(allocR, ip->b.u32));
+            builder.CreateStore(r1, TO_PTR_I16(r0));
             break;
         }
         case ByteCodeOp::SetAtStackPointer32:
         {
-            auto         r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocStack, CST_RA32));
+            auto         r0 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RA32);
             llvm::Value* r1;
             if (ip->flags & BCI_IMM_B)
                 r1 = builder.getInt32(ip->b.u32);
             else
-                r1 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
-            builder.CreateStore(r1, r0);
+                r1 = builder.CreateLoad(I32_TY(), GEP_I32(allocR, ip->b.u32));
+            builder.CreateStore(r1, TO_PTR_I32(r0));
             break;
         }
         case ByteCodeOp::SetAtStackPointer64:
         {
-            auto         r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RA32));
+            auto         r0 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RA32);
             llvm::Value* r1;
             if (ip->flags & BCI_IMM_B)
                 r1 = builder.getInt64(ip->b.u64);
             else
-                r1 = builder.CreateLoad(GEP_I32(allocR, ip->b.u32));
-            builder.CreateStore(r1, r0);
+                r1 = builder.CreateLoad(I64_TY(), GEP_I32(allocR, ip->b.u32));
+            builder.CreateStore(r1, TO_PTR_I64(r0));
             break;
         }
 
         case ByteCodeOp::SetAtStackPointer8x2:
         {
             {
-                auto         r0 = builder.CreateInBoundsGEP(allocStack, CST_RA32);
+                auto         r0 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RA32);
                 llvm::Value* r1;
                 if (ip->flags & BCI_IMM_B)
                     r1 = builder.getInt8(ip->b.u8);
                 else
-                    r1 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->b.u32)));
+                    r1 = builder.CreateLoad(I8_TY(), GEP_I32(allocR, ip->b.u32));
                 builder.CreateStore(r1, r0);
             }
             {
-                auto         r0 = builder.CreateInBoundsGEP(allocStack, CST_RC32);
+                auto         r0 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RC32);
                 llvm::Value* r1;
                 if (ip->flags & BCI_IMM_D)
                     r1 = builder.getInt8(ip->d.u8);
                 else
-                    r1 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->d.u32)));
+                    r1 = builder.CreateLoad(I8_TY(), GEP_I32(allocR, ip->d.u32));
                 builder.CreateStore(r1, r0);
             }
             break;
@@ -1187,21 +1148,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::SetAtStackPointer16x2:
         {
             {
-                auto         r0 = TO_PTR_I16(builder.CreateInBoundsGEP(allocStack, CST_RA32));
+                auto         r0 = TO_PTR_I16(builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RA32));
                 llvm::Value* r1;
                 if (ip->flags & BCI_IMM_B)
                     r1 = builder.getInt16(ip->b.u16);
                 else
-                    r1 = builder.CreateLoad(TO_PTR_I16(GEP_I32(allocR, ip->b.u32)));
+                    r1 = builder.CreateLoad(I16_TY(), GEP_I32(allocR, ip->b.u32));
                 builder.CreateStore(r1, r0);
             }
             {
-                auto         r0 = TO_PTR_I16(builder.CreateInBoundsGEP(allocStack, CST_RC32));
+                auto         r0 = TO_PTR_I16(builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RC32));
                 llvm::Value* r1;
                 if (ip->flags & BCI_IMM_D)
                     r1 = builder.getInt16(ip->d.u16);
                 else
-                    r1 = builder.CreateLoad(TO_PTR_I16(GEP_I32(allocR, ip->d.u32)));
+                    r1 = builder.CreateLoad(I16_TY(), GEP_I32(allocR, ip->d.u32));
                 builder.CreateStore(r1, r0);
             }
             break;
@@ -1209,21 +1170,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::SetAtStackPointer32x2:
         {
             {
-                auto         r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocStack, CST_RA32));
+                auto         r0 = TO_PTR_I32(builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RA32));
                 llvm::Value* r1;
                 if (ip->flags & BCI_IMM_B)
                     r1 = builder.getInt32(ip->b.u32);
                 else
-                    r1 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
+                    r1 = builder.CreateLoad(I32_TY(), GEP_I32(allocR, ip->b.u32));
                 builder.CreateStore(r1, r0);
             }
             {
-                auto         r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocStack, CST_RC32));
+                auto         r0 = TO_PTR_I32(builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RC32));
                 llvm::Value* r1;
                 if (ip->flags & BCI_IMM_D)
                     r1 = builder.getInt32(ip->d.u32);
                 else
-                    r1 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->d.u32)));
+                    r1 = builder.CreateLoad(I32_TY(), GEP_I32(allocR, ip->d.u32));
                 builder.CreateStore(r1, r0);
             }
             break;
@@ -1231,21 +1192,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::SetAtStackPointer64x2:
         {
             {
-                auto         r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RA32));
+                auto         r0 = TO_PTR_I64(builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RA32));
                 llvm::Value* r1;
                 if (ip->flags & BCI_IMM_B)
                     r1 = builder.getInt64(ip->b.u64);
                 else
-                    r1 = builder.CreateLoad(GEP_I32(allocR, ip->b.u32));
+                    r1 = builder.CreateLoad(I64_TY(), GEP_I32(allocR, ip->b.u32));
                 builder.CreateStore(r1, r0);
             }
             {
-                auto         r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RC32));
+                auto         r0 = TO_PTR_I64(builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RC32));
                 llvm::Value* r1;
                 if (ip->flags & BCI_IMM_D)
                     r1 = builder.getInt64(ip->d.u64);
                 else
-                    r1 = builder.CreateLoad(GEP_I32(allocR, ip->d.u32));
+                    r1 = builder.CreateLoad(I64_TY(), GEP_I32(allocR, ip->d.u32));
                 builder.CreateStore(r1, r0);
             }
             break;
@@ -1595,7 +1556,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMinusEqU8_SSafe:
         {
             MK_BINOPEQ8_SCAB();
-            auto v0 = builder.CreateSub(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateSub(builder.CreateLoad(I8_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1603,7 +1564,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMinusEqU8_SSSafe:
         {
             MK_BINOPEQ8_SSCAB();
-            auto v0 = builder.CreateSub(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateSub(builder.CreateLoad(I8_TY(), r0), builder.CreateLoad(I8_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1619,7 +1580,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMinusEqU16_SSafe:
         {
             MK_BINOPEQ16_SCAB();
-            auto v0 = builder.CreateSub(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateSub(builder.CreateLoad(I16_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1627,7 +1588,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMinusEqU16_SSSafe:
         {
             MK_BINOPEQ16_SSCAB();
-            auto v0 = builder.CreateSub(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateSub(builder.CreateLoad(I16_TY(), r0), builder.CreateLoad(I16_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1643,7 +1604,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMinusEqU32_SSafe:
         {
             MK_BINOPEQ32_SCAB();
-            auto v0 = builder.CreateSub(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateSub(builder.CreateLoad(I32_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1651,7 +1612,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMinusEqU32_SSSafe:
         {
             MK_BINOPEQ32_SSCAB();
-            auto v0 = builder.CreateSub(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateSub(builder.CreateLoad(I32_TY(), r0), builder.CreateLoad(I32_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1667,7 +1628,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMinusEqU64_SSafe:
         {
             MK_BINOPEQ64_SCAB();
-            auto v0 = builder.CreateSub(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateSub(builder.CreateLoad(I64_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1675,7 +1636,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMinusEqU64_SSSafe:
         {
             MK_BINOPEQ64_SSCAB();
-            auto v0 = builder.CreateSub(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateSub(builder.CreateLoad(I64_TY(), r0), builder.CreateLoad(I64_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1715,21 +1676,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMinusEqF32:
         {
             MK_BINOPEQF32_CAB();
-            auto v0 = builder.CreateFSub(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateFSub(builder.CreateLoad(F32_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpMinusEqF32_S:
         {
             MK_BINOPEQF32_SCAB();
-            auto v0 = builder.CreateFSub(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateFSub(builder.CreateLoad(F32_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::AffectOpMinusEqF32_SS:
         {
             MK_BINOPEQF32_SSCAB();
-            auto v0 = builder.CreateFSub(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateFSub(builder.CreateLoad(F32_TY(), r0), builder.CreateLoad(F32_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1737,21 +1698,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMinusEqF64:
         {
             MK_BINOPEQF64_CAB();
-            auto v0 = builder.CreateFSub(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateFSub(builder.CreateLoad(F64_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpMinusEqF64_S:
         {
             MK_BINOPEQF64_SCAB();
-            auto v0 = builder.CreateFSub(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateFSub(builder.CreateLoad(F64_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::AffectOpMinusEqF64_SS:
         {
             MK_BINOPEQF64_SSCAB();
-            auto v0 = builder.CreateFSub(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateFSub(builder.CreateLoad(F64_TY(), r0), builder.CreateLoad(F64_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1769,7 +1730,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpPlusEqU8_SSafe:
         {
             MK_BINOPEQ8_SCAB();
-            auto v0 = builder.CreateAdd(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateAdd(builder.CreateLoad(I8_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1777,7 +1738,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpPlusEqU8_SSSafe:
         {
             MK_BINOPEQ8_SSCAB();
-            auto v0 = builder.CreateAdd(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateAdd(builder.CreateLoad(I8_TY(), r0), builder.CreateLoad(I8_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1793,7 +1754,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpPlusEqU16_SSafe:
         {
             MK_BINOPEQ16_SCAB();
-            auto v0 = builder.CreateAdd(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateAdd(builder.CreateLoad(I16_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1801,7 +1762,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpPlusEqU16_SSSafe:
         {
             MK_BINOPEQ16_SSCAB();
-            auto v0 = builder.CreateAdd(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateAdd(builder.CreateLoad(I16_TY(), r0), builder.CreateLoad(I16_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1817,7 +1778,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpPlusEqU32_SSafe:
         {
             MK_BINOPEQ32_SCAB();
-            auto v0 = builder.CreateAdd(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateAdd(builder.CreateLoad(I32_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1825,7 +1786,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpPlusEqU32_SSSafe:
         {
             MK_BINOPEQ32_SSCAB();
-            auto v0 = builder.CreateAdd(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateAdd(builder.CreateLoad(I32_TY(), r0), builder.CreateLoad(I32_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1841,7 +1802,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpPlusEqU64_SSafe:
         {
             MK_BINOPEQ64_SCAB();
-            auto v0 = builder.CreateAdd(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateAdd(builder.CreateLoad(I64_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1849,7 +1810,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpPlusEqU64_SSSafe:
         {
             MK_BINOPEQ64_SSCAB();
-            auto v0 = builder.CreateAdd(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateAdd(builder.CreateLoad(I64_TY(), r0), builder.CreateLoad(I64_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1889,21 +1850,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpPlusEqF32:
         {
             MK_BINOPEQF32_CAB();
-            auto v0 = builder.CreateFAdd(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateFAdd(builder.CreateLoad(F32_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpPlusEqF32_S:
         {
             MK_BINOPEQF32_SCAB();
-            auto v0 = builder.CreateFAdd(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateFAdd(builder.CreateLoad(F32_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::AffectOpPlusEqF32_SS:
         {
             MK_BINOPEQF32_SSCAB();
-            auto v0 = builder.CreateFAdd(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateFAdd(builder.CreateLoad(F32_TY(), r0), builder.CreateLoad(F32_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1911,21 +1872,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpPlusEqF64:
         {
             MK_BINOPEQF64_CAB();
-            auto v0 = builder.CreateFAdd(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateFAdd(builder.CreateLoad(F64_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpPlusEqF64_S:
         {
             MK_BINOPEQF64_SCAB();
-            auto v0 = builder.CreateFAdd(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateFAdd(builder.CreateLoad(F64_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::AffectOpPlusEqF64_SS:
         {
             MK_BINOPEQF64_SSCAB();
-            auto v0 = builder.CreateFAdd(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateFAdd(builder.CreateLoad(F64_TY(), r0), builder.CreateLoad(F64_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1943,7 +1904,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMulEqU8_SSafe:
         {
             MK_BINOPEQ8_SCAB();
-            auto v0 = builder.CreateMul(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateMul(builder.CreateLoad(I8_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1951,7 +1912,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMulEqU8_SSSafe:
         {
             MK_BINOPEQ8_SSCAB();
-            auto v0 = builder.CreateMul(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateMul(builder.CreateLoad(I8_TY(), r0), builder.CreateLoad(I8_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1967,7 +1928,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMulEqU16_SSafe:
         {
             MK_BINOPEQ16_SCAB();
-            auto v0 = builder.CreateMul(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateMul(builder.CreateLoad(I16_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1975,7 +1936,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMulEqU16_SSSafe:
         {
             MK_BINOPEQ16_SSCAB();
-            auto v0 = builder.CreateMul(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateMul(builder.CreateLoad(I16_TY(), r0), builder.CreateLoad(I16_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1991,7 +1952,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMulEqU32_SSafe:
         {
             MK_BINOPEQ32_SCAB();
-            auto v0 = builder.CreateMul(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateMul(builder.CreateLoad(I32_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -1999,7 +1960,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMulEqU32_SSSafe:
         {
             MK_BINOPEQ32_SSCAB();
-            auto v0 = builder.CreateMul(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateMul(builder.CreateLoad(I32_TY(), r0), builder.CreateLoad(I32_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2015,7 +1976,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMulEqU64_SSafe:
         {
             MK_BINOPEQ64_SCAB();
-            auto v0 = builder.CreateMul(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateMul(builder.CreateLoad(I64_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2023,7 +1984,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMulEqU64_SSSafe:
         {
             MK_BINOPEQ64_SSCAB();
-            auto v0 = builder.CreateMul(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateMul(builder.CreateLoad(I64_TY(), r0), builder.CreateLoad(I64_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2063,21 +2024,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMulEqF32:
         {
             MK_BINOPEQF32_CAB();
-            auto v0 = builder.CreateFMul(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateFMul(builder.CreateLoad(F32_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpMulEqF32_S:
         {
             MK_BINOPEQF32_SCAB();
-            auto v0 = builder.CreateFMul(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateFMul(builder.CreateLoad(F32_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::AffectOpMulEqF32_SS:
         {
             MK_BINOPEQF32_SSCAB();
-            auto v0 = builder.CreateFMul(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateFMul(builder.CreateLoad(F32_TY(), r0), builder.CreateLoad(F32_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2085,21 +2046,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMulEqF64:
         {
             MK_BINOPEQF64_CAB();
-            auto v0 = builder.CreateFMul(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateFMul(builder.CreateLoad(F64_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpMulEqF64_S:
         {
             MK_BINOPEQF64_SCAB();
-            auto v0 = builder.CreateFMul(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateFMul(builder.CreateLoad(F64_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::AffectOpMulEqF64_SS:
         {
             MK_BINOPEQF64_SSCAB();
-            auto v0 = builder.CreateFMul(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateFMul(builder.CreateLoad(F64_TY(), r0), builder.CreateLoad(F64_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2109,21 +2070,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpDivEqS8:
         {
             MK_BINOPEQ8_CAB();
-            auto v0 = builder.CreateSDiv(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateSDiv(builder.CreateLoad(I8_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpDivEqS8_S:
         {
             MK_BINOPEQ8_SCAB();
-            auto v0 = builder.CreateSDiv(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateSDiv(builder.CreateLoad(I8_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::AffectOpDivEqS8_SS:
         {
             MK_BINOPEQ8_SSCAB();
-            auto v0 = builder.CreateSDiv(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateSDiv(builder.CreateLoad(I8_TY(), r0), builder.CreateLoad(I8_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2131,21 +2092,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpDivEqS16:
         {
             MK_BINOPEQ16_CAB();
-            auto v0 = builder.CreateSDiv(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateSDiv(builder.CreateLoad(I16_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpDivEqS16_S:
         {
             MK_BINOPEQ16_SCAB();
-            auto v0 = builder.CreateSDiv(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateSDiv(builder.CreateLoad(I16_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::AffectOpDivEqS16_SS:
         {
             MK_BINOPEQ16_SSCAB();
-            auto v0 = builder.CreateSDiv(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateSDiv(builder.CreateLoad(I16_TY(), r0), builder.CreateLoad(I16_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2153,21 +2114,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpDivEqS32:
         {
             MK_BINOPEQ32_CAB();
-            auto v0 = builder.CreateSDiv(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateSDiv(builder.CreateLoad(I32_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpDivEqS32_S:
         {
             MK_BINOPEQ32_SCAB();
-            auto v0 = builder.CreateSDiv(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateSDiv(builder.CreateLoad(I32_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::AffectOpDivEqS32_SS:
         {
             MK_BINOPEQ32_SSCAB();
-            auto v0 = builder.CreateSDiv(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateSDiv(builder.CreateLoad(I32_TY(), r0), builder.CreateLoad(I32_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2175,21 +2136,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpDivEqS64:
         {
             MK_BINOPEQ64_CAB();
-            auto v0 = builder.CreateSDiv(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateSDiv(builder.CreateLoad(I64_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpDivEqS64_S:
         {
             MK_BINOPEQ64_SCAB();
-            auto v0 = builder.CreateSDiv(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateSDiv(builder.CreateLoad(I64_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::AffectOpDivEqS64_SS:
         {
             MK_BINOPEQ64_SSCAB();
-            auto v0 = builder.CreateSDiv(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateSDiv(builder.CreateLoad(I64_TY(), r0), builder.CreateLoad(I64_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2197,21 +2158,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpDivEqU8:
         {
             MK_BINOPEQ8_CAB();
-            auto v0 = builder.CreateUDiv(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateUDiv(builder.CreateLoad(I8_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpDivEqU8_S:
         {
             MK_BINOPEQ8_SCAB();
-            auto v0 = builder.CreateUDiv(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateUDiv(builder.CreateLoad(I8_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::AffectOpDivEqU8_SS:
         {
             MK_BINOPEQ8_SSCAB();
-            auto v0 = builder.CreateUDiv(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateUDiv(builder.CreateLoad(I8_TY(), r0), builder.CreateLoad(I8_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2219,21 +2180,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpDivEqU16:
         {
             MK_BINOPEQ16_CAB();
-            auto v0 = builder.CreateUDiv(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateUDiv(builder.CreateLoad(I16_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpDivEqU16_S:
         {
             MK_BINOPEQ16_SCAB();
-            auto v0 = builder.CreateUDiv(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateUDiv(builder.CreateLoad(I16_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::AffectOpDivEqU16_SS:
         {
             MK_BINOPEQ16_SSCAB();
-            auto v0 = builder.CreateUDiv(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateUDiv(builder.CreateLoad(I16_TY(), r0), builder.CreateLoad(I16_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2241,21 +2202,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpDivEqU32:
         {
             MK_BINOPEQ32_CAB();
-            auto v0 = builder.CreateUDiv(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateUDiv(builder.CreateLoad(I32_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpDivEqU32_S:
         {
             MK_BINOPEQ32_SCAB();
-            auto v0 = builder.CreateUDiv(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateUDiv(builder.CreateLoad(I32_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::AffectOpDivEqU32_SS:
         {
             MK_BINOPEQ32_SSCAB();
-            auto v0 = builder.CreateUDiv(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateUDiv(builder.CreateLoad(I32_TY(), r0), builder.CreateLoad(I32_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2263,21 +2224,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpDivEqU64:
         {
             MK_BINOPEQ64_CAB();
-            auto v0 = builder.CreateUDiv(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateUDiv(builder.CreateLoad(I64_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpDivEqU64_S:
         {
             MK_BINOPEQ64_SCAB();
-            auto v0 = builder.CreateUDiv(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateUDiv(builder.CreateLoad(I64_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::AffectOpDivEqU64_SS:
         {
             MK_BINOPEQ64_SSCAB();
-            auto v0 = builder.CreateUDiv(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateUDiv(builder.CreateLoad(I64_TY(), r0), builder.CreateLoad(I64_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2285,21 +2246,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpDivEqF32:
         {
             MK_BINOPEQF32_CAB();
-            auto v0 = builder.CreateFDiv(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateFDiv(builder.CreateLoad(F32_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpDivEqF32_S:
         {
             MK_BINOPEQF32_SCAB();
-            auto v0 = builder.CreateFDiv(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateFDiv(builder.CreateLoad(F32_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::AffectOpDivEqF32_SS:
         {
             MK_BINOPEQF32_SSCAB();
-            auto v0 = builder.CreateFDiv(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateFDiv(builder.CreateLoad(F32_TY(), r0), builder.CreateLoad(F32_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2307,21 +2268,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpDivEqF64:
         {
             MK_BINOPEQF64_CAB();
-            auto v0 = builder.CreateFDiv(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateFDiv(builder.CreateLoad(F64_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpDivEqF64_S:
         {
             MK_BINOPEQF64_SCAB();
-            auto v0 = builder.CreateFDiv(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateFDiv(builder.CreateLoad(F64_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::AffectOpDivEqF64_SS:
         {
             MK_BINOPEQF64_SSCAB();
-            auto v0 = builder.CreateFDiv(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateFDiv(builder.CreateLoad(F64_TY(), r0), builder.CreateLoad(F64_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2331,21 +2292,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpModuloEqS8:
         {
             MK_BINOPEQ8_CAB();
-            auto v0 = builder.CreateSRem(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateSRem(builder.CreateLoad(I8_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpModuloEqS8_S:
         {
             MK_BINOPEQ8_SCAB();
-            auto v0 = builder.CreateSRem(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateSRem(builder.CreateLoad(I8_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::AffectOpModuloEqS8_SS:
         {
             MK_BINOPEQ8_SSCAB();
-            auto v0 = builder.CreateSRem(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateSRem(builder.CreateLoad(I8_TY(), r0), builder.CreateLoad(I8_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2353,21 +2314,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpModuloEqS16:
         {
             MK_BINOPEQ16_CAB();
-            auto v0 = builder.CreateSRem(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateSRem(builder.CreateLoad(I16_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpModuloEqS16_S:
         {
             MK_BINOPEQ16_SCAB();
-            auto v0 = builder.CreateSRem(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateSRem(builder.CreateLoad(I16_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::AffectOpModuloEqS16_SS:
         {
             MK_BINOPEQ16_SSCAB();
-            auto v0 = builder.CreateSRem(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateSRem(builder.CreateLoad(I16_TY(), r0), builder.CreateLoad(I16_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2375,21 +2336,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpModuloEqS32:
         {
             MK_BINOPEQ32_CAB();
-            auto v0 = builder.CreateSRem(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateSRem(builder.CreateLoad(I32_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpModuloEqS32_S:
         {
             MK_BINOPEQ32_SCAB();
-            auto v0 = builder.CreateSRem(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateSRem(builder.CreateLoad(I32_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::AffectOpModuloEqS32_SS:
         {
             MK_BINOPEQ32_SSCAB();
-            auto v0 = builder.CreateSRem(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateSRem(builder.CreateLoad(I32_TY(), r0), builder.CreateLoad(I32_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2397,21 +2358,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpModuloEqS64:
         {
             MK_BINOPEQ64_CAB();
-            auto v0 = builder.CreateSRem(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateSRem(builder.CreateLoad(I64_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpModuloEqS64_S:
         {
             MK_BINOPEQ64_SCAB();
-            auto v0 = builder.CreateSRem(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateSRem(builder.CreateLoad(I64_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::AffectOpModuloEqS64_SS:
         {
             MK_BINOPEQ64_SSCAB();
-            auto v0 = builder.CreateSRem(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateSRem(builder.CreateLoad(I64_TY(), r0), builder.CreateLoad(I64_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2419,21 +2380,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpModuloEqU8:
         {
             MK_BINOPEQ8_CAB();
-            auto v0 = builder.CreateURem(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateURem(builder.CreateLoad(I8_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpModuloEqU8_S:
         {
             MK_BINOPEQ8_SCAB();
-            auto v0 = builder.CreateURem(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateURem(builder.CreateLoad(I8_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::AffectOpModuloEqU8_SS:
         {
             MK_BINOPEQ8_SSCAB();
-            auto v0 = builder.CreateURem(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateURem(builder.CreateLoad(I8_TY(), r0), builder.CreateLoad(I8_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2441,21 +2402,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpModuloEqU16:
         {
             MK_BINOPEQ16_CAB();
-            auto v0 = builder.CreateURem(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateURem(builder.CreateLoad(I16_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpModuloEqU16_S:
         {
             MK_BINOPEQ16_SCAB();
-            auto v0 = builder.CreateURem(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateURem(builder.CreateLoad(I16_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::AffectOpModuloEqU16_SS:
         {
             MK_BINOPEQ16_SSCAB();
-            auto v0 = builder.CreateURem(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateURem(builder.CreateLoad(I16_TY(), r0), builder.CreateLoad(I16_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2463,21 +2424,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpModuloEqU32:
         {
             MK_BINOPEQ32_CAB();
-            auto v0 = builder.CreateURem(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateURem(builder.CreateLoad(I32_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpModuloEqU32_S:
         {
             MK_BINOPEQ32_SCAB();
-            auto v0 = builder.CreateURem(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateURem(builder.CreateLoad(I32_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::AffectOpModuloEqU32_SS:
         {
             MK_BINOPEQ32_SSCAB();
-            auto v0 = builder.CreateURem(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateURem(builder.CreateLoad(I32_TY(), r0), builder.CreateLoad(I32_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2485,21 +2446,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpModuloEqU64:
         {
             MK_BINOPEQ64_CAB();
-            auto v0 = builder.CreateURem(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateURem(builder.CreateLoad(I64_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpModuloEqU64_S:
         {
             MK_BINOPEQ64_SCAB();
-            auto v0 = builder.CreateURem(builder.CreateLoad(r0), r1);
+            auto v0 = builder.CreateURem(builder.CreateLoad(I64_TY(), r0), r1);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::AffectOpModuloEqU64_SS:
         {
             MK_BINOPEQ64_SSCAB();
-            auto v0 = builder.CreateURem(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            auto v0 = builder.CreateURem(builder.CreateLoad(I64_TY(), r0), builder.CreateLoad(I64_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2509,7 +2470,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpAndEqU8:
         {
             MK_BINOPEQ8_CAB();
-            auto v0 = builder.CreateAnd(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateAnd(builder.CreateLoad(I8_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
@@ -2517,7 +2478,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpAndEqU16:
         {
             MK_BINOPEQ16_CAB();
-            auto v0 = builder.CreateAnd(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateAnd(builder.CreateLoad(I16_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
@@ -2525,7 +2486,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpAndEqU32:
         {
             MK_BINOPEQ32_CAB();
-            auto v0 = builder.CreateAnd(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateAnd(builder.CreateLoad(I32_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
@@ -2533,7 +2494,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpAndEqU64:
         {
             MK_BINOPEQ64_CAB();
-            auto v0 = builder.CreateAnd(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateAnd(builder.CreateLoad(I64_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
@@ -2543,28 +2504,28 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpOrEqU8:
         {
             MK_BINOPEQ8_CAB();
-            auto v0 = builder.CreateOr(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateOr(builder.CreateLoad(I8_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpOrEqU16:
         {
             MK_BINOPEQ16_CAB();
-            auto v0 = builder.CreateOr(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateOr(builder.CreateLoad(I16_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpOrEqU32:
         {
             MK_BINOPEQ32_CAB();
-            auto v0 = builder.CreateOr(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateOr(builder.CreateLoad(I32_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpOrEqU64:
         {
             MK_BINOPEQ64_CAB();
-            auto v0 = builder.CreateOr(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateOr(builder.CreateLoad(I64_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
@@ -2621,7 +2582,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpXorEqU8:
         {
             MK_BINOPEQ8_CAB();
-            auto v0 = builder.CreateXor(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateXor(builder.CreateLoad(I8_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
@@ -2629,7 +2590,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpXorEqU16:
         {
             MK_BINOPEQ16_CAB();
-            auto v0 = builder.CreateXor(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateXor(builder.CreateLoad(I16_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
@@ -2637,7 +2598,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpXorEqU32:
         {
             MK_BINOPEQ32_CAB();
-            auto v0 = builder.CreateXor(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateXor(builder.CreateLoad(I32_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
@@ -2645,7 +2606,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpXorEqU64:
         {
             MK_BINOPEQ64_CAB();
-            auto v0 = builder.CreateXor(builder.CreateLoad(r1), r2);
+            auto v0 = builder.CreateXor(builder.CreateLoad(I64_TY(), r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
@@ -2656,7 +2617,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpSGT(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2664,7 +2625,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpSGT(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2672,7 +2633,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpUGT(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2680,7 +2641,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpUGT(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2688,7 +2649,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOPF32_CAB();
             auto v0 = builder.CreateFCmpUGT(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2696,7 +2657,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOPF64_CAB();
             auto v0 = builder.CreateFCmpUGT(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2705,7 +2666,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpSGE(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2713,7 +2674,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpSGE(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2721,7 +2682,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpUGE(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2729,7 +2690,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpUGE(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2737,7 +2698,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOPF32_CAB();
             auto v0 = builder.CreateFCmpUGE(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2745,7 +2706,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOPF64_CAB();
             auto v0 = builder.CreateFCmpUGE(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2754,7 +2715,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpSLT(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2762,7 +2723,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpSLT(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2770,7 +2731,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpULT(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2778,7 +2739,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpULT(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2786,7 +2747,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOPF32_CAB();
             auto v0 = builder.CreateFCmpULT(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2794,7 +2755,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOPF64_CAB();
             auto v0 = builder.CreateFCmpULT(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2803,7 +2764,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpSLE(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2811,7 +2772,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpSLE(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2819,7 +2780,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpULE(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2827,7 +2788,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpULE(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2835,7 +2796,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOPF32_CAB();
             auto v0 = builder.CreateFCmpULE(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2843,7 +2804,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOPF64_CAB();
             auto v0 = builder.CreateFCmpULE(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2853,8 +2814,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP32_CAB();
             auto v0 = builder.CreateSub(r1, r2);
-            auto v1 = builder.CreateIntCast(builder.CreateICmpSGT(v0, pp.cst0_i32), builder.getInt32Ty(), false);
-            auto v2 = builder.CreateIntCast(builder.CreateICmpSLT(v0, pp.cst0_i32), builder.getInt32Ty(), false);
+            auto v1 = builder.CreateIntCast(builder.CreateICmpSGT(v0, pp.cst0_i32), I32_TY(), false);
+            auto v2 = builder.CreateIntCast(builder.CreateICmpSLT(v0, pp.cst0_i32), I32_TY(), false);
             auto v3 = builder.CreateSub(v1, v2);
             builder.CreateStore(v3, TO_PTR_I32(r0));
             break;
@@ -2865,8 +2826,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP64_CAB();
             auto v0 = builder.CreateSub(r1, r2);
-            auto v1 = builder.CreateIntCast(builder.CreateICmpSGT(v0, pp.cst0_i64), builder.getInt32Ty(), false);
-            auto v2 = builder.CreateIntCast(builder.CreateICmpSLT(v0, pp.cst0_i64), builder.getInt32Ty(), false);
+            auto v1 = builder.CreateIntCast(builder.CreateICmpSGT(v0, pp.cst0_i64), I32_TY(), false);
+            auto v2 = builder.CreateIntCast(builder.CreateICmpSLT(v0, pp.cst0_i64), I32_TY(), false);
             auto v3 = builder.CreateSub(v1, v2);
             builder.CreateStore(v3, TO_PTR_I32(r0));
             break;
@@ -2876,8 +2837,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOPF32_CAB();
             auto v0 = builder.CreateFSub(r1, r2);
-            auto v1 = builder.CreateIntCast(builder.CreateFCmpUGT(v0, pp.cst0_f32), builder.getInt32Ty(), false);
-            auto v2 = builder.CreateIntCast(builder.CreateFCmpULT(v0, pp.cst0_f32), builder.getInt32Ty(), false);
+            auto v1 = builder.CreateIntCast(builder.CreateFCmpUGT(v0, pp.cst0_f32), I32_TY(), false);
+            auto v2 = builder.CreateIntCast(builder.CreateFCmpULT(v0, pp.cst0_f32), I32_TY(), false);
             auto v3 = builder.CreateSub(v1, v2);
             builder.CreateStore(v3, TO_PTR_I32(r0));
             break;
@@ -2886,8 +2847,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOPF64_CAB();
             auto v0 = builder.CreateFSub(r1, r2);
-            auto v1 = builder.CreateIntCast(builder.CreateFCmpUGT(v0, pp.cst0_f64), builder.getInt32Ty(), false);
-            auto v2 = builder.CreateIntCast(builder.CreateFCmpULT(v0, pp.cst0_f64), builder.getInt32Ty(), false);
+            auto v1 = builder.CreateIntCast(builder.CreateFCmpUGT(v0, pp.cst0_f64), I32_TY(), false);
+            auto v2 = builder.CreateIntCast(builder.CreateFCmpULT(v0, pp.cst0_f64), I32_TY(), false);
             auto v3 = builder.CreateSub(v1, v2);
             builder.CreateStore(v3, TO_PTR_I32(r0));
             break;
@@ -2897,7 +2858,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP8_CAB();
             auto v0 = builder.CreateICmpEQ(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2905,7 +2866,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP16_CAB();
             auto v0 = builder.CreateICmpEQ(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2913,7 +2874,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpEQ(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2921,7 +2882,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpEQ(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2929,7 +2890,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOPF32_CAB();
             auto v0 = builder.CreateFCmpOEQ(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2937,7 +2898,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOPF64_CAB();
             auto v0 = builder.CreateFCmpOEQ(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2946,7 +2907,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP8_CAB();
             auto v0 = builder.CreateICmpNE(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2954,7 +2915,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP16_CAB();
             auto v0 = builder.CreateICmpNE(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2962,7 +2923,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpNE(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2970,7 +2931,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpNE(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2978,7 +2939,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOPF32_CAB();
             auto v0 = builder.CreateFCmpUNE(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2986,57 +2947,57 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOPF64_CAB();
             auto v0 = builder.CreateFCmpUNE(r1, r2);
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
 
         case ByteCodeOp::TestNotZero8:
         {
-            auto         r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            auto         r0 = GEP_I32(allocR, ip->a.u32);
             llvm::Value* r1;
             if (ip->flags & BCI_IMM_B)
                 r1 = builder.getInt8(ip->b.u8);
             else
-                r1 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->b.u32)));
+                r1 = builder.CreateLoad(I8_TY(), GEP_I32(allocR, ip->b.u32));
             auto b0 = builder.CreateIsNotNull(r1);
-            builder.CreateStore(builder.CreateIntCast(b0, builder.getInt8Ty(), false), r0);
+            builder.CreateStore(builder.CreateIntCast(b0, I8_TY(), false), TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::TestNotZero16:
         {
-            auto         r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
             llvm::Value* r1;
             if (ip->flags & BCI_IMM_B)
                 r1 = builder.getInt16(ip->b.u16);
             else
-                r1 = builder.CreateLoad(TO_PTR_I16(GEP_I32(allocR, ip->b.u32)));
+                r1 = builder.CreateLoad(I16_TY(), GEP_I32(allocR, ip->b.u32));
             auto b0 = builder.CreateIsNotNull(r1);
-            builder.CreateStore(builder.CreateIntCast(b0, builder.getInt8Ty(), false), r0);
+            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            builder.CreateStore(builder.CreateIntCast(b0, I8_TY(), false), r0);
             break;
         }
         case ByteCodeOp::TestNotZero32:
         {
-            auto         r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
             llvm::Value* r1;
             if (ip->flags & BCI_IMM_B)
                 r1 = builder.getInt32(ip->b.u32);
             else
-                r1 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
+                r1 = builder.CreateLoad(I32_TY(), GEP_I32(allocR, ip->b.u32));
             auto b0 = builder.CreateIsNotNull(r1);
-            builder.CreateStore(builder.CreateIntCast(b0, builder.getInt8Ty(), false), r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            builder.CreateStore(builder.CreateIntCast(b0, I8_TY(), false), TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::TestNotZero64:
         {
-            auto         r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
             llvm::Value* r1;
             if (ip->flags & BCI_IMM_B)
                 r1 = builder.getInt64(ip->b.u64);
             else
-                r1 = builder.CreateLoad(TO_PTR_I64(GEP_I32(allocR, ip->b.u32)));
+                r1 = builder.CreateLoad(I64_TY(), GEP_I32(allocR, ip->b.u32));
             auto b0 = builder.CreateIsNotNull(r1);
-            builder.CreateStore(builder.CreateIntCast(b0, builder.getInt8Ty(), false), r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            builder.CreateStore(builder.CreateIntCast(b0, I8_TY(), false), TO_PTR_I8(r0));
             break;
         }
 
@@ -3124,8 +3085,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-            auto r0         = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto b0         = builder.CreateIsNull(builder.CreateLoad(r0));
+            auto r0         = GEP_I32(allocR, ip->a.u32);
+            auto b0         = builder.CreateIsNull(builder.CreateLoad(I8_TY(), r0));
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
@@ -3134,8 +3095,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-            auto r0         = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto b0         = builder.CreateIsNotNull(builder.CreateLoad(r0));
+            auto r0         = GEP_I32(allocR, ip->a.u32);
+            auto b0         = builder.CreateIsNotNull(builder.CreateLoad(I8_TY(), r0));
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
@@ -3144,8 +3105,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-            auto r0         = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto b0         = builder.CreateIsNull(builder.CreateLoad(r0));
+            auto r0         = GEP_I32(allocR, ip->a.u32);
+            auto b0         = builder.CreateIsNull(builder.CreateLoad(I8_TY(), r0));
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
@@ -3154,8 +3115,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-            auto r0         = TO_PTR_I16(GEP_I32(allocR, ip->a.u32));
-            auto b0         = builder.CreateIsNull(builder.CreateLoad(r0));
+            auto r0         = GEP_I32(allocR, ip->a.u32);
+            auto b0         = builder.CreateIsNull(builder.CreateLoad(I16_TY(), r0));
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
@@ -3164,8 +3125,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-            auto r0         = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto b0         = builder.CreateIsNull(builder.CreateLoad(r0));
+            auto r0         = GEP_I32(allocR, ip->a.u32);
+            auto b0         = builder.CreateIsNull(builder.CreateLoad(I32_TY(), r0));
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
@@ -3175,7 +3136,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
             auto r0         = GEP_I32(allocR, ip->a.u32);
-            auto b0         = builder.CreateIsNull(builder.CreateLoad(r0));
+            auto b0         = builder.CreateIsNull(builder.CreateLoad(I64_TY(), r0));
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
@@ -3184,8 +3145,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-            auto r0         = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto b0         = builder.CreateIsNotNull(builder.CreateLoad(r0));
+            auto r0         = GEP_I32(allocR, ip->a.u32);
+            auto b0         = builder.CreateIsNotNull(builder.CreateLoad(I8_TY(), r0));
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
@@ -3194,8 +3155,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-            auto r0         = TO_PTR_I16(GEP_I32(allocR, ip->a.u32));
-            auto b0         = builder.CreateIsNotNull(builder.CreateLoad(r0));
+            auto r0         = GEP_I32(allocR, ip->a.u32);
+            auto b0         = builder.CreateIsNotNull(builder.CreateLoad(I16_TY(), r0));
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
@@ -3204,8 +3165,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-            auto r0         = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto b0         = builder.CreateIsNotNull(builder.CreateLoad(r0));
+            auto r0         = GEP_I32(allocR, ip->a.u32);
+            auto b0         = builder.CreateIsNotNull(builder.CreateLoad(I32_TY(), r0));
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
@@ -3215,7 +3176,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
             auto r0         = GEP_I32(allocR, ip->a.u32);
-            auto b0         = builder.CreateIsNotNull(builder.CreateLoad(r0));
+            auto b0         = builder.CreateIsNotNull(builder.CreateLoad(I64_TY(), r0));
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
@@ -3356,7 +3317,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             {
                 auto r0 = GEP_I32(allocR, ip->a.u32);
-                auto v0 = builder.CreateAdd(builder.CreateLoad(r0), pp.cst1_i64);
+                auto v0 = builder.CreateAdd(builder.CreateLoad(I64_TY(), r0), pp.cst1_i64);
                 builder.CreateStore(v0, r0);
             }
             {
@@ -3675,26 +3636,26 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                     case NativeTypeKind::U8:
                     case NativeTypeKind::S8:
                     case NativeTypeKind::Bool:
-                        builder.CreateRet(builder.CreateLoad(TO_PTR_I8(allocResult)));
+                        builder.CreateRet(builder.CreateLoad(I8_TY(), allocResult));
                         break;
                     case NativeTypeKind::U16:
                     case NativeTypeKind::S16:
-                        builder.CreateRet(builder.CreateLoad(TO_PTR_I16(allocResult)));
+                        builder.CreateRet(builder.CreateLoad(I16_TY(), allocResult));
                         break;
                     case NativeTypeKind::U32:
                     case NativeTypeKind::S32:
                     case NativeTypeKind::Rune:
-                        builder.CreateRet(builder.CreateLoad(TO_PTR_I32(allocResult)));
+                        builder.CreateRet(builder.CreateLoad(I32_TY(), allocResult));
                         break;
                     case NativeTypeKind::U64:
                     case NativeTypeKind::S64:
-                        builder.CreateRet(builder.CreateLoad(TO_PTR_I64(allocResult)));
+                        builder.CreateRet(builder.CreateLoad(I64_TY(), allocResult));
                         break;
                     case NativeTypeKind::F32:
-                        builder.CreateRet(builder.CreateLoad(TO_PTR_F32(allocResult)));
+                        builder.CreateRet(builder.CreateLoad(F32_TY(), allocResult));
                         break;
                     case NativeTypeKind::F64:
-                        builder.CreateRet(builder.CreateLoad(TO_PTR_F64(allocResult)));
+                        builder.CreateRet(builder.CreateLoad(F64_TY(), allocResult));
                         break;
                     default:
                         SWAG_ASSERT(false);
@@ -3704,8 +3665,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 else if (returnType->isPointer() || returnType->isLambdaClosure())
                 {
                     auto llvmType = swagTypeToLLVMType(buildParameters, moduleToGen, returnType);
-                    auto ptr      = builder.CreatePointerCast(allocResult, llvmType->getPointerTo());
-                    builder.CreateRet(builder.CreateLoad(ptr));
+                    builder.CreateRet(builder.CreateLoad(llvmType, allocResult));
                 }
                 else
                 {
@@ -3749,8 +3709,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::InternalGetTlsPtr:
         {
             auto v0     = builder.getInt64(module->tlsSegment.totalCount);
-            auto r1     = builder.CreateInBoundsGEP(TO_PTR_I8(pp.tlsSeg), pp.cst0_i64);
-            auto vid    = builder.CreateLoad(pp.symTls_threadLocalId);
+            auto r1     = builder.CreateInBoundsGEP(I8_TY(), pp.tlsSeg, pp.cst0_i64);
+            auto vid    = builder.CreateLoad(I64_TY(), pp.symTls_threadLocalId);
             auto result = emitCall(buildParameters, moduleToGen, g_LangSpec->name__tlsGetPtr, allocR, allocT, {UINT32_MAX, UINT32_MAX, UINT32_MAX}, {vid, v0, r1});
             builder.CreateStore(result, TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
             break;
@@ -3758,20 +3718,22 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicGetContext:
         {
-            auto v0     = builder.CreateLoad(TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst2_i32})));
+            auto r0     = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cst0_i32, pp.cst2_i32});
+            auto v0     = builder.CreateLoad(I64_TY(), r0);
             auto result = emitCall(buildParameters, moduleToGen, g_LangSpec->name__tlsGetValue, allocR, allocT, {UINT32_MAX}, {v0});
-            builder.CreateStore(builder.CreatePtrToInt(result, builder.getInt64Ty()), GEP_I32(allocR, ip->a.u32));
+            builder.CreateStore(builder.CreatePtrToInt(result, I64_TY()), GEP_I32(allocR, ip->a.u32));
             break;
         }
         case ByteCodeOp::IntrinsicSetContext:
         {
-            auto v0 = builder.CreateLoad(TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst2_i32})));
+            auto r0 = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cst0_i32, pp.cst2_i32});
+            auto v0 = builder.CreateLoad(I64_TY(), r0);
             emitCall(buildParameters, moduleToGen, g_LangSpec->name__tlsSetValue, allocR, allocT, {UINT32_MAX, ip->a.u32}, {v0, 0});
             break;
         }
         case ByteCodeOp::IntrinsicGetProcessInfos:
         {
-            auto v0 = TO_PTR_I8(builder.CreateInBoundsGEP(pp.processInfos, pp.cst0_i64));
+            auto v0 = TO_PTR_I8(builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, pp.cst0_i64));
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             builder.CreateStore(v0, r0);
             break;
@@ -3779,32 +3741,32 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicCVaStart:
         {
-            auto r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+            auto r0 = builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, ip->a.u32));
             builder.CreateIntrinsic(llvm::Intrinsic::vastart, {}, {r0});
             break;
         }
         case ByteCodeOp::IntrinsicCVaEnd:
         {
-            auto r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+            auto r0 = builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, ip->a.u32));
             builder.CreateIntrinsic(llvm::Intrinsic::vaend, {}, {r0});
             break;
         }
         case ByteCodeOp::IntrinsicCVaArg:
         {
-            auto         r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
-            llvm::Value* v0 = builder.CreateVAArg(r0, builder.getInt64Ty());
+            auto         r0 = builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, ip->a.u32));
+            llvm::Value* v0 = builder.CreateVAArg(r0, I64_TY());
             switch (ip->c.u32)
             {
             case 1:
-                v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+                v0 = builder.CreateIntCast(v0, I8_TY(), false);
                 builder.CreateStore(v0, TO_PTR_I8(GEP_I32(allocR, ip->b.u32)));
                 break;
             case 2:
-                v0 = builder.CreateIntCast(v0, builder.getInt16Ty(), false);
+                v0 = builder.CreateIntCast(v0, I16_TY(), false);
                 builder.CreateStore(v0, TO_PTR_I16(GEP_I32(allocR, ip->b.u32)));
                 break;
             case 4:
-                v0 = builder.CreateIntCast(v0, builder.getInt32Ty(), false);
+                v0 = builder.CreateIntCast(v0, I32_TY(), false);
                 builder.CreateStore(v0, TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
                 break;
             case 8:
@@ -3840,16 +3802,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::InternalHasErr:
         {
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateInBoundsGEP(builder.CreateLoad(r0), builder.getInt32(offsetof(SwagContext, errorMsgLen)));
-            auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            builder.CreateStore(builder.CreateLoad(TO_PTR_I32(v0)), r1);
+            auto r0 = GEP_I32(allocR, ip->b.u32);
+            auto v0 = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), r0), builder.getInt32(offsetof(SwagContext, errorMsgLen)));
+            auto r1 = GEP_I32(allocR, ip->a.u32);
+            builder.CreateStore(builder.CreateLoad(I32_TY(), v0), TO_PTR_I32(r1));
             break;
         }
         case ByteCodeOp::InternalClearErr:
         {
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateInBoundsGEP(builder.CreateLoad(r0), builder.getInt32(offsetof(SwagContext, errorMsgLen)));
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), r0), builder.getInt32(offsetof(SwagContext, errorMsgLen)));
             builder.CreateStore(pp.cst0_i32, TO_PTR_I32(v0));
             break;
         }
@@ -3890,7 +3852,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             else
             {
                 auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-                auto r1 = builder.CreateInBoundsGEP(TO_PTR_I8(pp.constantSeg), builder.getInt32(moduleToGen->modulesSliceOffset));
+                auto r1 = builder.CreateInBoundsGEP(I8_TY(), pp.constantSeg, builder.getInt32(moduleToGen->modulesSliceOffset));
                 builder.CreateStore(r1, r0);
                 auto r2 = GEP_I32(allocR, ip->b.u32);
                 builder.CreateStore(builder.getInt64(moduleToGen->moduleDependencies.count + 1), r2);
@@ -3909,7 +3871,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             else
             {
                 auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-                auto r1 = builder.CreateInBoundsGEP(TO_PTR_I8(pp.mutableSeg), builder.getInt32(moduleToGen->globalVarsToDropSliceOffset));
+                auto r1 = builder.CreateInBoundsGEP(I8_TY(), pp.mutableSeg, builder.getInt32(moduleToGen->globalVarsToDropSliceOffset));
                 builder.CreateStore(r1, r0);
                 auto r2 = GEP_I32(allocR, ip->b.u32);
                 builder.CreateStore(builder.getInt64(moduleToGen->globalVarsToDrop.count), r2);
@@ -3919,89 +3881,89 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::NegBool:
         {
-            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r1 = TO_PTR_I8(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateXor(builder.CreateLoad(r1), pp.cst1_i8);
-            builder.CreateStore(v0, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto r1 = GEP_I32(allocR, ip->b.u32);
+            auto v0 = builder.CreateXor(builder.CreateLoad(I8_TY(), r1), pp.cst1_i8);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::NegF32:
         {
-            auto r0 = TO_PTR_F32(GEP_I32(allocR, ip->a.u32));
-            auto r1 = TO_PTR_F32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateFNeg(builder.CreateLoad(r1));
-            builder.CreateStore(v0, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto r1 = GEP_I32(allocR, ip->b.u32);
+            auto v0 = builder.CreateFNeg(builder.CreateLoad(F32_TY(), r1));
+            builder.CreateStore(v0, TO_PTR_F32(r0));
             break;
         }
         case ByteCodeOp::NegF64:
         {
-            auto r0 = TO_PTR_F64(GEP_I32(allocR, ip->a.u32));
-            auto r1 = TO_PTR_F64(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateFNeg(builder.CreateLoad(r1));
-            builder.CreateStore(v0, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto r1 = GEP_I32(allocR, ip->b.u32);
+            auto v0 = builder.CreateFNeg(builder.CreateLoad(F64_TY(), r1));
+            builder.CreateStore(v0, TO_PTR_F64(r0));
             break;
         }
         case ByteCodeOp::NegS32:
         {
-            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateNeg(builder.CreateLoad(r1));
-            builder.CreateStore(v0, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto r1 = GEP_I32(allocR, ip->b.u32);
+            auto v0 = builder.CreateNeg(builder.CreateLoad(I32_TY(), r1));
+            builder.CreateStore(v0, TO_PTR_I32(r0));
             break;
         }
         case ByteCodeOp::NegS64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
             auto r1 = GEP_I32(allocR, ip->b.u32);
-            auto v0 = builder.CreateNeg(builder.CreateLoad(r1));
+            auto v0 = builder.CreateNeg(builder.CreateLoad(I64_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
 
         case ByteCodeOp::InvertU8:
         {
-            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r1 = TO_PTR_I8(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateNot(builder.CreateLoad(r1));
-            builder.CreateStore(v0, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto r1 = GEP_I32(allocR, ip->b.u32);
+            auto v0 = builder.CreateNot(builder.CreateLoad(I8_TY(), r1));
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::InvertU16:
         {
-            auto r0 = TO_PTR_I16(GEP_I32(allocR, ip->a.u32));
-            auto r1 = TO_PTR_I16(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateNot(builder.CreateLoad(r1));
-            builder.CreateStore(v0, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto r1 = GEP_I32(allocR, ip->b.u32);
+            auto v0 = builder.CreateNot(builder.CreateLoad(I16_TY(), r1));
+            builder.CreateStore(v0, TO_PTR_I16(r0));
             break;
         }
         case ByteCodeOp::InvertU32:
         {
-            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateNot(builder.CreateLoad(r1));
-            builder.CreateStore(v0, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto r1 = GEP_I32(allocR, ip->b.u32);
+            auto v0 = builder.CreateNot(builder.CreateLoad(I32_TY(), r1));
+            builder.CreateStore(v0, TO_PTR_I32(r0));
             break;
         }
         case ByteCodeOp::InvertU64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
             auto r1 = GEP_I32(allocR, ip->b.u32);
-            auto v0 = builder.CreateNot(builder.CreateLoad(r1));
+            auto v0 = builder.CreateNot(builder.CreateLoad(I64_TY(), r1));
             builder.CreateStore(v0, r0);
             break;
         }
 
         case ByteCodeOp::ClearMaskU32:
         {
-            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateAnd(builder.CreateLoad(r0), CST_RB32);
-            builder.CreateStore(v0, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateAnd(builder.CreateLoad(I32_TY(), r0), CST_RB32);
+            builder.CreateStore(v0, TO_PTR_I32(r0));
             break;
         }
         case ByteCodeOp::ClearMaskU64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto v0 = builder.CreateAnd(builder.CreateLoad(r0), CST_RB64);
+            auto v0 = builder.CreateAnd(builder.CreateLoad(I64_TY(), r0), CST_RB64);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -4010,8 +3972,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
             auto r1 = GEP_I32(allocR, ip->b.u32);
-            auto v0 = builder.CreateIsNotNull(builder.CreateLoad(TO_PTR_I8(r1)));
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            auto v0 = builder.CreateIsNotNull(builder.CreateLoad(I8_TY(), r1));
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -4019,8 +3981,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
             auto r1 = GEP_I32(allocR, ip->b.u32);
-            auto v0 = builder.CreateIsNotNull(builder.CreateLoad(TO_PTR_I16(r1)));
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            auto v0 = builder.CreateIsNotNull(builder.CreateLoad(I16_TY(), r1));
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -4028,8 +3990,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
             auto r1 = GEP_I32(allocR, ip->b.u32);
-            auto v0 = builder.CreateIsNotNull(builder.CreateLoad(TO_PTR_I32(r1)));
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            auto v0 = builder.CreateIsNotNull(builder.CreateLoad(I32_TY(), r1));
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -4037,221 +3999,196 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
             auto r1 = GEP_I32(allocR, ip->b.u32);
-            auto v0 = builder.CreateIsNotNull(builder.CreateLoad(TO_PTR_I64(r1)));
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            auto v0 = builder.CreateIsNotNull(builder.CreateLoad(I64_TY(), r1));
+            v0      = builder.CreateIntCast(v0, I8_TY(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
 
         case ByteCodeOp::CastS8S16:
         {
-            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateIntCast(builder.CreateLoad(r0), builder.getInt16Ty(), true);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateIntCast(builder.CreateLoad(I8_TY(), r0), I16_TY(), true);
             r0      = TO_PTR_I16(r0);
-            builder.CreateStore(v0, r0);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::CastS8S32:
         {
-            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateIntCast(builder.CreateLoad(r0), builder.getInt32Ty(), true);
-            r0      = TO_PTR_I32(r0);
-            builder.CreateStore(v0, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateIntCast(builder.CreateLoad(I8_TY(), r0), I32_TY(), true);
+            builder.CreateStore(v0, TO_PTR_I32(r0));
             break;
         }
         case ByteCodeOp::CastS16S32:
         {
-            auto r0 = TO_PTR_I16(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateIntCast(builder.CreateLoad(r0), builder.getInt32Ty(), true);
-            r0      = TO_PTR_I32(r0);
-            builder.CreateStore(v0, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateIntCast(builder.CreateLoad(I16_TY(), r0), I32_TY(), true);
+            builder.CreateStore(v0, TO_PTR_I32(r0));
             break;
         }
         case ByteCodeOp::CastF32S32:
         {
-            auto r0 = TO_PTR_F32(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::FPToSI, builder.CreateLoad(r0), builder.getInt32Ty());
-            r0      = TO_PTR_I32(r0);
-            builder.CreateStore(v0, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::FPToSI, builder.CreateLoad(F32_TY(), r0), I32_TY());
+            builder.CreateStore(v0, TO_PTR_I32(r0));
             break;
         }
 
         case ByteCodeOp::CastS8S64:
         {
-            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateIntCast(builder.CreateLoad(r0), builder.getInt64Ty(), true);
-            r0      = TO_PTR_I64(r0);
-            builder.CreateStore(v0, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateIntCast(builder.CreateLoad(I8_TY(), r0), I64_TY(), true);
+            builder.CreateStore(v0, TO_PTR_I64(r0));
             break;
         }
         case ByteCodeOp::CastS16S64:
         {
-            auto r0 = TO_PTR_I16(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateIntCast(builder.CreateLoad(r0), builder.getInt64Ty(), true);
-            r0      = TO_PTR_I64(r0);
-            builder.CreateStore(v0, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateIntCast(builder.CreateLoad(I16_TY(), r0), I64_TY(), true);
+            builder.CreateStore(v0, TO_PTR_I64(r0));
             break;
         }
         case ByteCodeOp::CastS32S64:
         {
-            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateIntCast(builder.CreateLoad(r0), builder.getInt64Ty(), true);
-            r0      = TO_PTR_I64(r0);
-            builder.CreateStore(v0, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateIntCast(builder.CreateLoad(I32_TY(), r0), I64_TY(), true);
+            builder.CreateStore(v0, TO_PTR_I64(r0));
             break;
         }
         case ByteCodeOp::CastF64S64:
         {
-            auto r0 = TO_PTR_F64(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::FPToSI, builder.CreateLoad(r0), builder.getInt64Ty());
-            r0      = TO_PTR_I64(r0);
-            builder.CreateStore(v0, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::FPToSI, builder.CreateLoad(F64_TY(), r0), I64_TY());
+            builder.CreateStore(v0, TO_PTR_I64(r0));
             break;
         }
 
         case ByteCodeOp::CastS8F32:
         {
-            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(r0), builder.getFloatTy());
-            r0      = TO_PTR_F32(r0);
-            builder.CreateStore(v0, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(I8_TY(), r0), F32_TY());
+            builder.CreateStore(v0, TO_PTR_F32(r0));
             break;
         }
         case ByteCodeOp::CastS16F32:
         {
-            auto r0 = TO_PTR_I16(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(r0), builder.getFloatTy());
-            r0      = TO_PTR_F32(r0);
-            builder.CreateStore(v0, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(I16_TY(), r0), F32_TY());
+            builder.CreateStore(v0, TO_PTR_F32(r0));
             break;
         }
         case ByteCodeOp::CastS32F32:
         {
-            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(r0), builder.getFloatTy());
-            r0      = TO_PTR_F32(r0);
-            builder.CreateStore(v0, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(I32_TY(), r0), F32_TY());
+            builder.CreateStore(v0, TO_PTR_F32(r0));
             break;
         }
         case ByteCodeOp::CastS64F32:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(r0), builder.getFloatTy());
-            r0      = TO_PTR_F32(r0);
-            builder.CreateStore(v0, r0);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(I64_TY(), r0), F32_TY());
+            builder.CreateStore(v0, TO_PTR_F32(r0));
             break;
         }
         case ByteCodeOp::CastU8F32:
         {
-            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(r0), builder.getFloatTy());
-            r0      = TO_PTR_F32(r0);
-            builder.CreateStore(v0, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(I8_TY(), r0), F32_TY());
+            builder.CreateStore(v0, TO_PTR_F32(r0));
             break;
         }
         case ByteCodeOp::CastU16F32:
         {
-            auto r0 = TO_PTR_I16(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(r0), builder.getFloatTy());
-            r0      = TO_PTR_F32(r0);
-            builder.CreateStore(v0, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(I16_TY(), r0), F32_TY());
+            builder.CreateStore(v0, TO_PTR_F32(r0));
             break;
         }
         case ByteCodeOp::CastU32F32:
         {
-            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(r0), builder.getFloatTy());
-            r0      = TO_PTR_F32(r0);
-            builder.CreateStore(v0, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(I32_TY(), r0), F32_TY());
+            builder.CreateStore(v0, TO_PTR_F32(r0));
             break;
         }
         case ByteCodeOp::CastU64F32:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(r0), builder.getFloatTy());
-            r0      = TO_PTR_F32(r0);
-            builder.CreateStore(v0, r0);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(I64_TY(), r0), F32_TY());
+            builder.CreateStore(v0, TO_PTR_F32(r0));
             break;
         }
         case ByteCodeOp::CastF64F32:
         {
-            auto r0 = TO_PTR_F64(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::FPTrunc, builder.CreateLoad(r0), builder.getFloatTy());
-            r0      = TO_PTR_F32(r0);
-            builder.CreateStore(v0, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::FPTrunc, builder.CreateLoad(F64_TY(), r0), F32_TY());
+            builder.CreateStore(v0, TO_PTR_F32(r0));
             break;
         }
 
         case ByteCodeOp::CastS8F64:
         {
-            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(r0), builder.getDoubleTy());
-            r0      = TO_PTR_F64(r0);
-            builder.CreateStore(v0, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(I8_TY(), r0), F64_TY());
+            builder.CreateStore(v0, TO_PTR_F64(r0));
             break;
         }
         case ByteCodeOp::CastS16F64:
         {
-            auto r0 = TO_PTR_I16(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(r0), builder.getDoubleTy());
-            r0      = TO_PTR_F64(r0);
-            builder.CreateStore(v0, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(I16_TY(), r0), F64_TY());
+            builder.CreateStore(v0, TO_PTR_F64(r0));
             break;
         }
         case ByteCodeOp::CastS32F64:
         {
-            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(r0), builder.getDoubleTy());
-            r0      = TO_PTR_F64(r0);
-            builder.CreateStore(v0, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(I32_TY(), r0), F64_TY());
+            builder.CreateStore(v0, TO_PTR_F64(r0));
             break;
         }
         case ByteCodeOp::CastS64F64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(r0), builder.getDoubleTy());
-            r0      = TO_PTR_F64(r0);
-            builder.CreateStore(v0, r0);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(I64_TY(), r0), F64_TY());
+            builder.CreateStore(v0, TO_PTR_F64(r0));
             break;
         }
         case ByteCodeOp::CastU8F64:
         {
-            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(r0), builder.getDoubleTy());
-            r0      = TO_PTR_F64(r0);
-            builder.CreateStore(v0, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(I8_TY(), r0), F64_TY());
+            builder.CreateStore(v0, TO_PTR_F64(r0));
             break;
         }
         case ByteCodeOp::CastU16F64:
         {
-            auto r0 = TO_PTR_I16(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(r0), builder.getDoubleTy());
-            r0      = TO_PTR_F64(r0);
-            builder.CreateStore(v0, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(I16_TY(), r0), F64_TY());
+            builder.CreateStore(v0, TO_PTR_F64(r0));
             break;
         }
         case ByteCodeOp::CastU32F64:
         {
-            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(r0), builder.getDoubleTy());
-            r0      = TO_PTR_F64(r0);
-            builder.CreateStore(v0, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(I32_TY(), r0), F64_TY());
+            builder.CreateStore(v0, TO_PTR_F64(r0));
             break;
         }
         case ByteCodeOp::CastU64F64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(r0), builder.getDoubleTy());
-            r0      = TO_PTR_F64(r0);
-            builder.CreateStore(v0, r0);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(I64_TY(), r0), F64_TY());
+            builder.CreateStore(v0, TO_PTR_F64(r0));
             break;
         }
         case ByteCodeOp::CastF32F64:
         {
-            auto r0 = TO_PTR_F32(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::FPExt, builder.CreateLoad(r0), builder.getDoubleTy());
-            r0      = TO_PTR_F64(r0);
-            builder.CreateStore(v0, r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::FPExt, builder.CreateLoad(F32_TY(), r0), F64_TY());
+            builder.CreateStore(v0, TO_PTR_F64(r0));
             break;
         }
 
@@ -4262,27 +4199,27 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::CopyRCtoRR2:
         {
-            auto r1        = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
-            auto r2        = builder.CreateLoad(GEP_I32(allocR, ip->b.u32));
-            auto resultPtr = builder.CreatePointerCast(func->getArg((int) func->arg_size() - 1), builder.getInt64Ty()->getPointerTo());
+            auto r1        = builder.CreateLoad(I64_TY(), GEP_I32(allocR, ip->a.u32));
+            auto r2        = builder.CreateLoad(I64_TY(), GEP_I32(allocR, ip->b.u32));
+            auto resultPtr = builder.CreatePointerCast(func->getArg((int) func->arg_size() - 1), PTR_I64_TY());
             builder.CreateStore(r1, resultPtr);
-            builder.CreateStore(r2, builder.CreateInBoundsGEP(resultPtr, builder.getInt64(1)));
+            builder.CreateStore(r2, builder.CreateInBoundsGEP(I64_TY(), resultPtr, builder.getInt64(1)));
             break;
         }
         case ByteCodeOp::CopyRCtoRT:
         {
             auto r0 = GEP_I32(allocRR, 0);
-            auto r1 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
+            auto r1 = builder.CreateLoad(I64_TY(), GEP_I32(allocR, ip->a.u32));
             builder.CreateStore(r1, r0);
             break;
         }
         case ByteCodeOp::CopyRRtoRC:
         {
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            auto r0 = GEP_I32(allocR, ip->a.u32);
             auto r1 = TO_PTR_I8(func->getArg((int) func->arg_size() - 1));
             if (ip->b.u64)
-                r1 = builder.CreateInBoundsGEP(r1, builder.getInt64(ip->b.u64));
-            builder.CreateStore(r1, r0);
+                r1 = builder.CreateInBoundsGEP(I8_TY(), r1, builder.getInt64(ip->b.u64));
+            builder.CreateStore(r1, TO_PTR_PTR_I8(r0));
             break;
         }
 
@@ -4293,7 +4230,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             else
             {
                 auto r0 = GEP_I32(allocR, ip->a.u32);
-                auto r1 = builder.CreateLoad(GEP_I32(allocRR, 0));
+                auto r1 = builder.CreateLoad(I64_TY(), GEP_I32(allocRR, 0));
                 builder.CreateStore(r1, r0);
             }
             break;
@@ -4388,40 +4325,40 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::ZeroToTrue:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto v0 = builder.CreateLoad(TO_PTR_I32(r0));
-            auto a0 = builder.CreateIntCast(builder.CreateICmpEQ(v0, pp.cst0_i32), builder.getInt8Ty(), false);
+            auto v0 = builder.CreateLoad(I32_TY(), r0);
+            auto a0 = builder.CreateIntCast(builder.CreateICmpEQ(v0, pp.cst0_i32), I8_TY(), false);
             builder.CreateStore(a0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::LowerZeroToTrue:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto v0 = builder.CreateLoad(TO_PTR_I32(r0));
-            auto a0 = builder.CreateIntCast(builder.CreateICmpSLT(v0, pp.cst0_i32), builder.getInt8Ty(), false);
+            auto v0 = builder.CreateLoad(I32_TY(), r0);
+            auto a0 = builder.CreateIntCast(builder.CreateICmpSLT(v0, pp.cst0_i32), I8_TY(), false);
             builder.CreateStore(a0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::LowerEqZeroToTrue:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto v0 = builder.CreateLoad(TO_PTR_I32(r0));
-            auto a0 = builder.CreateIntCast(builder.CreateICmpSLE(v0, pp.cst0_i32), builder.getInt8Ty(), false);
+            auto v0 = builder.CreateLoad(I32_TY(), r0);
+            auto a0 = builder.CreateIntCast(builder.CreateICmpSLE(v0, pp.cst0_i32), I8_TY(), false);
             builder.CreateStore(a0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::GreaterZeroToTrue:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto v0 = builder.CreateLoad(TO_PTR_I32(r0));
-            auto a0 = builder.CreateIntCast(builder.CreateICmpSGT(v0, pp.cst0_i32), builder.getInt8Ty(), false);
+            auto v0 = builder.CreateLoad(I32_TY(), r0);
+            auto a0 = builder.CreateIntCast(builder.CreateICmpSGT(v0, pp.cst0_i32), I8_TY(), false);
             builder.CreateStore(a0, TO_PTR_I8(r0));
             break;
         }
         case ByteCodeOp::GreaterEqZeroToTrue:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto v0 = builder.CreateLoad(TO_PTR_I32(r0));
-            auto a0 = builder.CreateIntCast(builder.CreateICmpSGE(v0, pp.cst0_i32), builder.getInt8Ty(), false);
+            auto v0 = builder.CreateLoad(I32_TY(), r0);
+            auto a0 = builder.CreateIntCast(builder.CreateICmpSGE(v0, pp.cst0_i32), I8_TY(), false);
             builder.CreateStore(a0, TO_PTR_I8(r0));
             break;
         }
@@ -4472,23 +4409,23 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 {
                 case 1:
                 {
-                    auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-                    auto r1 = builder.CreateInBoundsGEP(TO_PTR_I8(allocVA), pp.cst0_i32);
-                    builder.CreateStore(r1, r0);
+                    auto r0 = GEP_I32(allocR, ip->a.u32);
+                    auto r1 = builder.CreateInBoundsGEP(I8_TY(), allocVA, pp.cst0_i32);
+                    builder.CreateStore(r1, TO_PTR_PTR_I8(r0));
                     break;
                 }
                 case 2:
                 {
-                    auto r0 = TO_PTR_PTR_I16(GEP_I32(allocR, ip->a.u32));
-                    auto r1 = builder.CreateInBoundsGEP(TO_PTR_I16(allocVA), pp.cst0_i32);
-                    builder.CreateStore(r1, r0);
+                    auto r0 = GEP_I32(allocR, ip->a.u32);
+                    auto r1 = builder.CreateInBoundsGEP(I16_TY(), allocVA, pp.cst0_i32);
+                    builder.CreateStore(r1, TO_PTR_PTR_I16(r0));
                     break;
                 }
                 case 4:
                 {
-                    auto r0 = TO_PTR_PTR_I32(GEP_I32(allocR, ip->a.u32));
-                    auto r1 = builder.CreateInBoundsGEP(TO_PTR_I32(allocVA), pp.cst0_i32);
-                    builder.CreateStore(r1, r0);
+                    auto r0 = GEP_I32(allocR, ip->a.u32);
+                    auto r1 = builder.CreateInBoundsGEP(I32_TY(), allocVA, pp.cst0_i32);
+                    builder.CreateStore(r1, TO_PTR_PTR_I32(r0));
                     break;
                 }
                 }
@@ -4502,23 +4439,23 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                     {
                     case 1:
                     {
-                        auto r0 = GEP_I32(TO_PTR_I8(allocVA), idx);
-                        auto r1 = TO_PTR_I8(GEP_I32(allocR, reg));
-                        builder.CreateStore(builder.CreateLoad(r1), r0);
+                        auto r0 = GEP(I8_TY(), allocVA, idx);
+                        auto r1 = GEP_I32(allocR, reg);
+                        builder.CreateStore(builder.CreateLoad(I8_TY(), r1), r0);
                         break;
                     }
                     case 2:
                     {
-                        auto r0 = GEP_I32(TO_PTR_I16(allocVA), idx);
-                        auto r1 = TO_PTR_I16(GEP_I32(allocR, reg));
-                        builder.CreateStore(builder.CreateLoad(r1), r0);
+                        auto r0 = GEP(I16_TY(), allocVA, idx);
+                        auto r1 = GEP_I32(allocR, reg);
+                        builder.CreateStore(builder.CreateLoad(I16_TY(), r1), r0);
                         break;
                     }
                     case 4:
                     {
-                        auto r0 = GEP_I32(TO_PTR_I32(allocVA), idx);
-                        auto r1 = TO_PTR_I32(GEP_I32(allocR, reg));
-                        builder.CreateStore(builder.CreateLoad(r1), r0);
+                        auto r0 = GEP(I32_TY(), allocVA, idx);
+                        auto r1 = GEP_I32(allocR, reg);
+                        builder.CreateStore(builder.CreateLoad(I32_TY(), r1), r0);
                         break;
                     }
                     }
@@ -4549,14 +4486,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                     SWAG_ASSERT((uint32_t) idx < bc->maxSPVaargs);
                     auto r0 = GEP_I32(allocVA, idx);
                     auto r1 = GEP_I32(allocR, pushRAParams[idxParam]);
-                    builder.CreateStore(builder.CreateLoad(r1), r0);
+                    builder.CreateStore(builder.CreateLoad(I64_TY(), r1), r0);
                     idx++;
                     idxParam--;
                 }
 
-                auto r0 = TO_PTR_PTR_I64(GEP_I32(allocR, ip->a.u32));
-                auto r1 = builder.CreateInBoundsGEP(allocVA, pp.cst0_i32);
-                builder.CreateStore(r1, r0);
+                auto r0 = GEP_I32(allocR, ip->a.u32);
+                auto r1 = builder.CreateInBoundsGEP(I64_TY(), allocVA, pp.cst0_i32);
+                builder.CreateStore(r1, TO_PTR_PTR_I64(r0));
             }
             break;
         }
@@ -4570,10 +4507,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto T = getOrCreateFuncType(buildParameters, moduleToGen, typeFuncNode);
             auto F = (llvm::Function*) modu.getOrInsertFunction(callName.c_str(), T).getCallee();
 
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            builder.CreateStore(TO_PTR_I8(F), r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            builder.CreateStore(TO_PTR_I8(F), TO_PTR_PTR_I8(r0));
 
-            auto v0 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
+            auto v0 = builder.CreateLoad(I64_TY(), GEP_I32(allocR, ip->a.u32));
             builder.CreateStore(v0, GEP_I32(allocR, ip->a.u32));
             break;
         }
@@ -4582,7 +4519,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             llvm::BasicBlock* blockLambdaBC = llvm::BasicBlock::Create(context, "", func);
             llvm::BasicBlock* blockNext     = llvm::BasicBlock::Create(context, "", func);
-            auto              v0            = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
+            auto              v0            = builder.CreateLoad(I64_TY(), GEP_I32(allocR, ip->a.u32));
 
             {
                 auto v1 = builder.CreateAnd(v0, builder.getInt64(SWAG_LAMBDA_BC_MARKER));
@@ -4592,13 +4529,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
             builder.SetInsertPoint(blockLambdaBC);
             {
-                auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst5_i32})));
+                auto r0 = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cst0_i32, pp.cst5_i32});
+                auto r1 = builder.CreateLoad(PTR_I8_TY(), r0);
                 auto PT = llvm::PointerType::getUnqual(pp.makeCallbackTy);
                 auto r2 = builder.CreatePointerCast(r1, PT);
-                auto v2 = builder.CreateIntToPtr(v0, builder.getInt8PtrTy());
+                auto v2 = builder.CreateIntToPtr(v0, PTR_I8_TY());
                 auto v1 = builder.CreateCall(pp.makeCallbackTy, r2, {v2});
-                auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-                builder.CreateStore(v1, r0);
+                auto r3 = GEP_I32(allocR, ip->a.u32);
+                builder.CreateStore(v1, TO_PTR_PTR_I8(r3));
                 builder.CreateBr(blockNext);
             }
 
@@ -4646,7 +4584,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             llvm::BasicBlock* blockNext         = llvm::BasicBlock::Create(context, "", func);
 
             {
-                auto v0 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
+                auto v0 = builder.CreateLoad(I64_TY(), GEP_I32(allocR, ip->a.u32));
                 auto v1 = builder.CreateAnd(v0, builder.getInt64(SWAG_LAMBDA_BC_MARKER));
                 auto v2 = builder.CreateIsNotNull(v1);
                 builder.CreateCondBr(v2, blockLambdaBC, blockLambdaNative);
@@ -4657,7 +4595,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.SetInsertPoint(blockLambdaNative);
             {
                 llvm::FunctionType*        FT = nullptr;
-                auto                       v1 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
+                auto                       v1 = builder.CreateLoad(I64_TY(), GEP_I32(allocR, ip->a.u32));
                 VectorNative<llvm::Value*> fctParams;
                 emitCallParameters(buildParameters, allocR, allocRR, moduleToGen, typeFuncCall, fctParams, pushRAParams, {});
 
@@ -4667,7 +4605,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                     llvm::BasicBlock* blockClosure = llvm::BasicBlock::Create(context, "", func);
 
                     // Test closure context pointer. If null, this is a lambda.
-                    auto v0 = builder.CreateLoad(GEP_I32(allocR, pushRAParams.back()));
+                    auto v0 = builder.CreateLoad(I64_TY(), GEP_I32(allocR, pushRAParams.back()));
                     auto v2 = builder.CreateIsNotNull(v0);
                     builder.CreateCondBr(v2, blockClosure, blockLambda);
 
@@ -4707,12 +4645,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //////////////////////////////
             builder.SetInsertPoint(blockLambdaBC);
             {
-                auto                       r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+                auto                       r0 = builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, ip->a.u32));
                 VectorNative<llvm::Value*> fctParams;
                 fctParams.push_front(r0);
                 emitByteCodeCallParameters(buildParameters, allocR, allocRR, allocT, fctParams, typeFuncCall, pushRAParams, {});
 
-                auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst4_i32})));
+                auto ra = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cst0_i32, pp.cst4_i32});
+                auto r1 = builder.CreateLoad(PTR_I8_TY(), ra);
                 auto PT = llvm::PointerType::getUnqual(pp.bytecodeRunTy);
                 auto r2 = builder.CreatePointerCast(r1, PT);
 
@@ -4722,7 +4661,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                     llvm::BasicBlock* blockClosure = llvm::BasicBlock::Create(context, "", func);
 
                     // Test closure context pointer. If null, this is a lambda.
-                    auto v0 = builder.CreateLoad(GEP_I32(allocR, pushRAParams.back()));
+                    auto v0 = builder.CreateLoad(I64_TY(), GEP_I32(allocR, pushRAParams.back()));
                     auto v2 = builder.CreateIsNotNull(v0);
                     builder.CreateCondBr(v2, blockClosure, blockLambda);
 
@@ -4766,16 +4705,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicAbs:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, {builder.getInt8Ty(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, {I8_TY(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
                 break;
             case TokenId::IntrinsicBitCountNz:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctpop, {builder.getInt8Ty()}, {r1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctpop, {I8_TY()}, {r1}), r0);
                 break;
             case TokenId::IntrinsicBitCountTz:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cttz, {builder.getInt8Ty(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cttz, {I8_TY(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
                 break;
             case TokenId::IntrinsicBitCountLz:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctlz, {builder.getInt8Ty(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctlz, {I8_TY(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
                 break;
             default:
                 ok = false;
@@ -4791,19 +4730,19 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicAbs:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, {builder.getInt16Ty(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, {I16_TY(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
                 break;
             case TokenId::IntrinsicBitCountNz:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctpop, {builder.getInt16Ty()}, {r1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctpop, {I16_TY()}, {r1}), r0);
                 break;
             case TokenId::IntrinsicBitCountTz:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cttz, {builder.getInt16Ty(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cttz, {I16_TY(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
                 break;
             case TokenId::IntrinsicBitCountLz:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctlz, {builder.getInt16Ty(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctlz, {I16_TY(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
                 break;
             case TokenId::IntrinsicByteSwap:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::bswap, {builder.getInt16Ty()}, {r1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::bswap, {I16_TY()}, {r1}), r0);
                 break;
             default:
                 ok = false;
@@ -4819,19 +4758,19 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicAbs:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, {builder.getInt32Ty(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, {I32_TY(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
                 break;
             case TokenId::IntrinsicBitCountNz:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctpop, {builder.getInt32Ty()}, {r1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctpop, {I32_TY()}, {r1}), r0);
                 break;
             case TokenId::IntrinsicBitCountTz:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cttz, {builder.getInt32Ty(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cttz, {I32_TY(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
                 break;
             case TokenId::IntrinsicBitCountLz:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctlz, {builder.getInt32Ty(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctlz, {I32_TY(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
                 break;
             case TokenId::IntrinsicByteSwap:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::bswap, {builder.getInt32Ty()}, {r1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::bswap, {I32_TY()}, {r1}), r0);
                 break;
             default:
                 ok = false;
@@ -4847,19 +4786,19 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicAbs:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, {builder.getInt64Ty(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, {I64_TY(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
                 break;
             case TokenId::IntrinsicBitCountNz:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctpop, {builder.getInt64Ty()}, {r1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctpop, {I64_TY()}, {r1}), r0);
                 break;
             case TokenId::IntrinsicBitCountTz:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cttz, {builder.getInt64Ty(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cttz, {I64_TY(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
                 break;
             case TokenId::IntrinsicBitCountLz:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctlz, {builder.getInt64Ty(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctlz, {I64_TY(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
                 break;
             case TokenId::IntrinsicByteSwap:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::bswap, {builder.getInt64Ty()}, {r1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::bswap, {I64_TY()}, {r1}), r0);
                 break;
             default:
                 ok = false;
@@ -4877,10 +4816,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicMin:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smin, {builder.getInt8Ty(), builder.getInt8Ty()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smin, {I8_TY(), I8_TY()}, {r1, r2}), r0);
                 break;
             case TokenId::IntrinsicMax:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smax, {builder.getInt8Ty(), builder.getInt8Ty()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smax, {I8_TY(), I8_TY()}, {r1, r2}), r0);
                 break;
             default:
                 ok = false;
@@ -4897,10 +4836,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicMin:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smin, {builder.getInt16Ty(), builder.getInt16Ty()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smin, {I16_TY(), I16_TY()}, {r1, r2}), r0);
                 break;
             case TokenId::IntrinsicMax:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smax, {builder.getInt16Ty(), builder.getInt16Ty()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smax, {I16_TY(), I16_TY()}, {r1, r2}), r0);
                 break;
             default:
                 ok = false;
@@ -4917,10 +4856,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicMin:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smin, {builder.getInt32Ty(), builder.getInt32Ty()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smin, {I32_TY(), I32_TY()}, {r1, r2}), r0);
                 break;
             case TokenId::IntrinsicMax:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smax, {builder.getInt32Ty(), builder.getInt32Ty()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smax, {I32_TY(), I32_TY()}, {r1, r2}), r0);
                 break;
             default:
                 ok = false;
@@ -4937,10 +4876,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicMin:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smin, {builder.getInt64Ty(), builder.getInt64Ty()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smin, {I64_TY(), I64_TY()}, {r1, r2}), r0);
                 break;
             case TokenId::IntrinsicMax:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smax, {builder.getInt64Ty(), builder.getInt64Ty()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smax, {I64_TY(), I64_TY()}, {r1, r2}), r0);
                 break;
             default:
                 ok = false;
@@ -4958,10 +4897,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicMin:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umin, {builder.getInt8Ty(), builder.getInt8Ty()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umin, {I8_TY(), I8_TY()}, {r1, r2}), r0);
                 break;
             case TokenId::IntrinsicMax:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umax, {builder.getInt8Ty(), builder.getInt8Ty()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umax, {I8_TY(), I8_TY()}, {r1, r2}), r0);
                 break;
             default:
                 ok = false;
@@ -4978,10 +4917,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicMin:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umin, {builder.getInt16Ty(), builder.getInt16Ty()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umin, {I16_TY(), I16_TY()}, {r1, r2}), r0);
                 break;
             case TokenId::IntrinsicMax:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umax, {builder.getInt16Ty(), builder.getInt16Ty()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umax, {I16_TY(), I16_TY()}, {r1, r2}), r0);
                 break;
             default:
                 ok = false;
@@ -4998,10 +4937,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicMin:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umin, {builder.getInt32Ty(), builder.getInt32Ty()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umin, {I32_TY(), I32_TY()}, {r1, r2}), r0);
                 break;
             case TokenId::IntrinsicMax:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umax, {builder.getInt32Ty(), builder.getInt32Ty()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umax, {I32_TY(), I32_TY()}, {r1, r2}), r0);
                 break;
             default:
                 ok = false;
@@ -5018,10 +4957,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicMin:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umin, {builder.getInt64Ty(), builder.getInt64Ty()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umin, {I64_TY(), I64_TY()}, {r1, r2}), r0);
                 break;
             case TokenId::IntrinsicMax:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umax, {builder.getInt64Ty(), builder.getInt64Ty()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umax, {I64_TY(), I64_TY()}, {r1, r2}), r0);
                 break;
             default:
                 ok = false;
@@ -5042,10 +4981,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 builder.CreateStore(builder.CreateCall(pp.fn_powf32, {r1, r2}), r0);
                 break;
             case TokenId::IntrinsicMin:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::minnum, {builder.getFloatTy(), builder.getFloatTy()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::minnum, {F32_TY(), F32_TY()}, {r1, r2}), r0);
                 break;
             case TokenId::IntrinsicMax:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::maxnum, {builder.getFloatTy(), builder.getFloatTy()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::maxnum, {F32_TY(), F32_TY()}, {r1, r2}), r0);
                 break;
             case TokenId::IntrinsicATan2:
                 builder.CreateStore(builder.CreateCall(pp.fn_atan2f32, {r1, r2}), r0);
@@ -5068,10 +5007,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 builder.CreateStore(builder.CreateCall(pp.fn_powf64, {r1, r2}), r0);
                 break;
             case TokenId::IntrinsicMin:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::minnum, {builder.getDoubleTy(), builder.getDoubleTy()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::minnum, {F64_TY(), F64_TY()}, {r1, r2}), r0);
                 break;
             case TokenId::IntrinsicMax:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::maxnum, {builder.getDoubleTy(), builder.getDoubleTy()}, {r1, r2}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::maxnum, {F64_TY(), F64_TY()}, {r1, r2}), r0);
                 break;
             case TokenId::IntrinsicATan2:
                 builder.CreateStore(builder.CreateCall(pp.fn_atan2f64, {r1, r2}), r0);
@@ -5112,43 +5051,43 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 builder.CreateStore(builder.CreateCall(pp.fn_atanf32, r1), r0);
                 break;
             case TokenId::IntrinsicSqrt:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sqrt, builder.getFloatTy(), r1), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sqrt, F32_TY(), r1), r0);
                 break;
             case TokenId::IntrinsicSin:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sin, builder.getFloatTy(), r1), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sin, F32_TY(), r1), r0);
                 break;
             case TokenId::IntrinsicCos:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cos, builder.getFloatTy(), r1), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cos, F32_TY(), r1), r0);
                 break;
             case TokenId::IntrinsicLog:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log, builder.getFloatTy(), r1), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log, F32_TY(), r1), r0);
                 break;
             case TokenId::IntrinsicLog2:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log2, builder.getFloatTy(), r1), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log2, F32_TY(), r1), r0);
                 break;
             case TokenId::IntrinsicLog10:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log10, builder.getFloatTy(), r1), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log10, F32_TY(), r1), r0);
                 break;
             case TokenId::IntrinsicFloor:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::floor, builder.getFloatTy(), r1), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::floor, F32_TY(), r1), r0);
                 break;
             case TokenId::IntrinsicCeil:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ceil, builder.getFloatTy(), r1), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ceil, F32_TY(), r1), r0);
                 break;
             case TokenId::IntrinsicTrunc:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::trunc, builder.getFloatTy(), r1), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::trunc, F32_TY(), r1), r0);
                 break;
             case TokenId::IntrinsicRound:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::round, builder.getFloatTy(), r1), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::round, F32_TY(), r1), r0);
                 break;
             case TokenId::IntrinsicAbs:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fabs, builder.getFloatTy(), r1), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fabs, F32_TY(), r1), r0);
                 break;
             case TokenId::IntrinsicExp:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::exp, builder.getFloatTy(), r1), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::exp, F32_TY(), r1), r0);
                 break;
             case TokenId::IntrinsicExp2:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::exp2, builder.getFloatTy(), r1), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::exp2, F32_TY(), r1), r0);
                 break;
             default:
                 ok = false;
@@ -5186,43 +5125,43 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 builder.CreateStore(builder.CreateCall(pp.fn_atanf64, r1), r0);
                 break;
             case TokenId::IntrinsicSqrt:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sqrt, builder.getDoubleTy(), r1), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sqrt, F64_TY(), r1), r0);
                 break;
             case TokenId::IntrinsicSin:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sin, builder.getDoubleTy(), r1), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sin, F64_TY(), r1), r0);
                 break;
             case TokenId::IntrinsicCos:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cos, builder.getDoubleTy(), r1), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cos, F64_TY(), r1), r0);
                 break;
             case TokenId::IntrinsicLog:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log, builder.getDoubleTy(), r1), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log, F64_TY(), r1), r0);
                 break;
             case TokenId::IntrinsicLog2:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log2, builder.getDoubleTy(), r1), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log2, F64_TY(), r1), r0);
                 break;
             case TokenId::IntrinsicLog10:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log10, builder.getDoubleTy(), r1), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log10, F64_TY(), r1), r0);
                 break;
             case TokenId::IntrinsicFloor:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::floor, builder.getDoubleTy(), r1), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::floor, F64_TY(), r1), r0);
                 break;
             case TokenId::IntrinsicCeil:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ceil, builder.getDoubleTy(), r1), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ceil, F64_TY(), r1), r0);
                 break;
             case TokenId::IntrinsicTrunc:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::trunc, builder.getDoubleTy(), r1), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::trunc, F64_TY(), r1), r0);
                 break;
             case TokenId::IntrinsicRound:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::round, builder.getDoubleTy(), r1), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::round, F64_TY(), r1), r0);
                 break;
             case TokenId::IntrinsicAbs:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fabs, builder.getDoubleTy(), r1), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fabs, F64_TY(), r1), r0);
                 break;
             case TokenId::IntrinsicExp:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::exp, builder.getDoubleTy(), r1), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::exp, F64_TY(), r1), r0);
                 break;
             case TokenId::IntrinsicExp2:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::exp2, builder.getDoubleTy(), r1), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::exp2, F64_TY(), r1), r0);
                 break;
             default:
                 ok = false;
@@ -5266,8 +5205,8 @@ llvm::Value* BackendLLVM::getImmediateConstantA(llvm::LLVMContext& context, llvm
         }
     }
 
-    auto r0 = TO_PTR_I_N(GEP_I32(allocR, ip->a.u32), numBits);
-    return builder.CreateLoad(r0);
+    auto r0 = GEP_I32(allocR, ip->a.u32);
+    return builder.CreateLoad(IX_TY(numBits), TO_PTR_I_N(r0, numBits));
 }
 
 llvm::Type* BackendLLVM::getIntType(llvm::LLVMContext& context, uint8_t numBits)
@@ -5275,13 +5214,13 @@ llvm::Type* BackendLLVM::getIntType(llvm::LLVMContext& context, uint8_t numBits)
     switch (numBits)
     {
     case 8:
-        return llvm::Type::getInt8Ty(context);
+        return I8_TY();
     case 16:
-        return llvm::Type::getInt16Ty(context);
+        return I16_TY();
     case 32:
-        return llvm::Type::getInt32Ty(context);
+        return I32_TY();
     case 64:
-        return llvm::Type::getInt64Ty(context);
+        return I64_TY();
     default:
         SWAG_ASSERT(false);
         break;
@@ -5315,7 +5254,7 @@ llvm::Type* BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParamete
         auto typeInfoPointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
         auto pointedType     = TypeManager::concreteType(typeInfoPointer->pointedType);
         if (pointedType->isVoid())
-            return llvm::Type::getInt8PtrTy(context);
+            return PTR_I8_TY();
         else
             return swagTypeToLLVMType(buildParameters, moduleToGen, pointedType)->getPointerTo();
     }
@@ -5328,7 +5267,7 @@ llvm::Type* BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParamete
         typeInfo->isAny() ||
         typeInfo->isString())
     {
-        return llvm::Type::getInt8PtrTy(context);
+        return PTR_I8_TY();
     }
 
     if (typeInfo->isNative())
@@ -5336,26 +5275,26 @@ llvm::Type* BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParamete
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::Bool:
-            return llvm::Type::getInt8Ty(context);
+            return I8_TY();
         case NativeTypeKind::S8:
         case NativeTypeKind::U8:
-            return llvm::Type::getInt8Ty(context);
+            return I8_TY();
         case NativeTypeKind::S16:
         case NativeTypeKind::U16:
-            return llvm::Type::getInt16Ty(context);
+            return I16_TY();
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            return llvm::Type::getInt32Ty(context);
+            return I32_TY();
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
-            return llvm::Type::getInt64Ty(context);
+            return I64_TY();
         case NativeTypeKind::F32:
-            return llvm::Type::getFloatTy(context);
+            return F32_TY();
         case NativeTypeKind::F64:
-            return llvm::Type::getDoubleTy(context);
+            return F64_TY();
         case NativeTypeKind::Void:
-            return llvm::Type::getVoidTy(context);
+            return VOID_TY();
         }
     }
 
@@ -5388,7 +5327,7 @@ void BackendLLVM::emitShiftArithmetic(llvm::LLVMContext& context, llvm::IRBuilde
     if (ip->flags & BCI_IMM_B)
         r2 = builder.getInt32(ip->b.u32 & (numBits - 1));
     else
-        r2 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
+        r2 = builder.CreateLoad(I32_TY(), GEP_I32(allocR, ip->b.u32));
 
     auto c2    = builder.CreateIntCast(r2, iType, false);
     auto shift = llvm::ConstantInt::get(iType, numBits - 1);
@@ -5431,7 +5370,7 @@ void BackendLLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>
         if (ip->flags & BCI_IMM_B)
             r2 = builder.getInt32(ip->b.u32 & (numBits - 1));
         else
-            r2 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
+            r2 = builder.CreateLoad(I32_TY(), GEP_I32(allocR, ip->b.u32));
         auto c2 = builder.CreateIntCast(r2, iType, false);
 
         // Smart shift, dyn mode
@@ -5458,13 +5397,13 @@ void BackendLLVM::emitShiftEqArithmetic(llvm::LLVMContext& context, llvm::IRBuil
 {
     auto iType = getIntType(context, numBits);
     auto r0    = GEP_I32(allocR, ip->a.u32);
-    auto r1    = builder.CreateLoad(TO_PTR_PTR_I_N(r0, numBits));
+    auto r1    = builder.CreateLoad(PTR_IX_TY(numBits), r0);
 
     llvm::Value* r2;
     if (ip->flags & BCI_IMM_B)
         r2 = builder.getInt32(ip->b.u32 & (numBits - 1));
     else
-        r2 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
+        r2 = builder.CreateLoad(I32_TY(), GEP_I32(allocR, ip->b.u32));
 
     auto c2    = builder.CreateIntCast(r2, iType, false);
     auto shift = llvm::ConstantInt::get(iType, numBits - 1);
@@ -5486,25 +5425,25 @@ void BackendLLVM::emitShiftEqArithmetic(llvm::LLVMContext& context, llvm::IRBuil
     else if (!(ip->flags & BCI_IMM_B))
         c2 = builder.CreateAnd(c2, llvm::ConstantInt::get(iType, numBits - 1));
 
-    auto v0 = builder.CreateAShr(builder.CreateLoad(r1), c2);
-    builder.CreateStore(v0, r1);
+    auto v0 = builder.CreateAShr(builder.CreateLoad(IX_TY(numBits), r1), c2);
+    builder.CreateStore(v0, TO_PTR_I_N(r1, numBits));
 }
 
 void BackendLLVM::emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits, bool left)
 {
     auto iType = getIntType(context, numBits);
     auto r0    = GEP_I32(allocR, ip->a.u32);
-    auto r1    = builder.CreateLoad(TO_PTR_PTR_I_N(r0, numBits));
+    auto r1    = builder.CreateLoad(PTR_IX_TY(numBits), r0);
 
     llvm::Value* r2;
     if (ip->flags & BCI_IMM_B)
         r2 = builder.getInt32(ip->b.u32 & (numBits - 1));
     else
-        r2 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
+        r2 = builder.CreateLoad(I32_TY(), GEP_I32(allocR, ip->b.u32));
 
     auto         c2   = builder.CreateIntCast(r2, iType, false);
     auto         zero = llvm::ConstantInt::get(iType, 0);
-    auto         v1   = builder.CreateLoad(r1);
+    auto         v1   = builder.CreateLoad(IX_TY(numBits), r1);
     llvm::Value* v0;
 
     // Smart shift, imm mode overflow
@@ -5542,7 +5481,7 @@ void BackendLLVM::emitInternalPanic(const BuildParameters& buildParameters, Modu
 
     // Filename
     llvm::Value* r1 = builder.CreateGlobalString(node->sourceFile->path.string().c_str());
-    r1              = TO_PTR_I8(builder.CreateInBoundsGEP(r1, {pp.cst0_i32}));
+    r1              = builder.CreateInBoundsGEP(I8_TY(), r1, {pp.cst0_i32});
 
     // Line & column
     auto r2 = builder.getInt32(node->token.startLocation.line);
@@ -5553,24 +5492,20 @@ void BackendLLVM::emitInternalPanic(const BuildParameters& buildParameters, Modu
     if (message)
     {
         r4 = builder.CreateGlobalString(message);
-        r4 = TO_PTR_I8(builder.CreateInBoundsGEP(r4, {pp.cst0_i32}));
+        r4 = builder.CreateInBoundsGEP(I8_TY(), r4, {pp.cst0_i32});
     }
     else
-        r4 = builder.CreateIntToPtr(pp.cst0_i64, builder.getInt8PtrTy());
+        r4 = builder.CreateIntToPtr(pp.cst0_i64, PTR_I8_TY());
 
     emitCall(buildParameters, moduleToGen, g_LangSpec->name__panic, allocR, allocT, {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {r1, r2, r3, r4});
 }
 
 void BackendLLVM::setFuncAttributes(const BuildParameters& buildParameters, Module* moduleToGen, AstFuncDecl* funcNode, ByteCode* bc, llvm::Function* func)
 {
-    llvm::AttrBuilder attr;
-
     if (!moduleToGen->mustOptimizeBK(bc->node))
-        attr.addAttribute(llvm::Attribute::OptimizeNone);
+        func->addFnAttr(llvm::Attribute::AttrKind::OptimizeNone);
     if (funcNode && funcNode->attributeFlags & ATTRIBUTE_NO_INLINE)
-        attr.addAttribute(llvm::Attribute::NoInline);
-
-    func->addAttributes(llvm::AttributeList::FunctionIndex, attr);
+        func->addFnAttr(llvm::Attribute::AttrKind::NoInline);
 }
 
 void BackendLLVM::storeTypedValueToRegister(llvm::LLVMContext& context, const BuildParameters& buildParameters, llvm::Value* value, uint32_t reg, llvm::AllocaInst* allocR)
@@ -5584,7 +5519,7 @@ void BackendLLVM::storeTypedValueToRegister(llvm::LLVMContext& context, const Bu
     auto r0 = GEP_I32(allocR, reg);
     auto r1 = value;
     if (value->getType()->isPointerTy())
-        builder.CreateStore(builder.CreatePtrToInt(r1, builder.getInt64Ty()), r0);
+        builder.CreateStore(builder.CreatePtrToInt(r1, I64_TY()), r0);
     else if (value->getType()->isIntegerTy(8))
         builder.CreateStore(r1, TO_PTR_I8(r0));
     else if (value->getType()->isIntegerTy(16))
@@ -5607,10 +5542,10 @@ void BackendLLVM::storeRT2ToRegisters(llvm::LLVMContext& context, const BuildPar
     auto& builder         = *pp.builder;
 
     auto r0 = GEP_I32(allocR, reg0);
-    auto r1 = builder.CreateLoad(GEP_I32(allocRR, 0));
+    auto r1 = builder.CreateLoad(I64_TY(), GEP_I32(allocRR, 0));
     builder.CreateStore(r1, r0);
     r0 = GEP_I32(allocR, reg1);
-    r1 = builder.CreateLoad(GEP_I32(allocRR, 1));
+    r1 = builder.CreateLoad(I64_TY(), GEP_I32(allocRR, 1));
     builder.CreateStore(r1, r0);
 }
 
@@ -5639,7 +5574,7 @@ void BackendLLVM::getReturnResult(llvm::LLVMContext&     context,
             if (imm)
                 returnResult = builder.getInt8(reg.u8);
             else
-                returnResult = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, reg.u32)));
+                returnResult = builder.CreateLoad(I8_TY(), GEP_I32(allocR, reg.u32));
             builder.CreateStore(returnResult, TO_PTR_I8(allocResult));
             break;
         case NativeTypeKind::U16:
@@ -5647,7 +5582,7 @@ void BackendLLVM::getReturnResult(llvm::LLVMContext&     context,
             if (imm)
                 returnResult = builder.getInt16(reg.u16);
             else
-                returnResult = builder.CreateLoad(TO_PTR_I16(GEP_I32(allocR, reg.u32)));
+                returnResult = builder.CreateLoad(I16_TY(), GEP_I32(allocR, reg.u32));
             builder.CreateStore(returnResult, TO_PTR_I16(allocResult));
             break;
         case NativeTypeKind::U32:
@@ -5656,7 +5591,7 @@ void BackendLLVM::getReturnResult(llvm::LLVMContext&     context,
             if (imm)
                 returnResult = builder.getInt32(reg.u32);
             else
-                returnResult = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, reg.u32)));
+                returnResult = builder.CreateLoad(I32_TY(), GEP_I32(allocR, reg.u32));
             builder.CreateStore(returnResult, TO_PTR_I32(allocResult));
             break;
         case NativeTypeKind::U64:
@@ -5664,21 +5599,21 @@ void BackendLLVM::getReturnResult(llvm::LLVMContext&     context,
             if (imm)
                 returnResult = builder.getInt64(reg.u64);
             else
-                returnResult = builder.CreateLoad(GEP_I32(allocR, reg.u32));
+                returnResult = builder.CreateLoad(I64_TY(), GEP_I32(allocR, reg.u32));
             builder.CreateStore(returnResult, TO_PTR_I64(allocResult));
             break;
         case NativeTypeKind::F32:
             if (imm)
-                returnResult = llvm::ConstantFP::get(builder.getFloatTy(), reg.f32);
+                returnResult = llvm::ConstantFP::get(F32_TY(), reg.f32);
             else
-                returnResult = builder.CreateLoad(TO_PTR_F32(GEP_I32(allocR, reg.u32)));
+                returnResult = builder.CreateLoad(F32_TY(), GEP_I32(allocR, reg.u32));
             builder.CreateStore(returnResult, TO_PTR_F32(allocResult));
             break;
         case NativeTypeKind::F64:
             if (imm)
-                returnResult = llvm::ConstantFP::get(builder.getDoubleTy(), reg.f64);
+                returnResult = llvm::ConstantFP::get(F64_TY(), reg.f64);
             else
-                returnResult = builder.CreateLoad(TO_PTR_F64(GEP_I32(allocR, reg.u32)));
+                returnResult = builder.CreateLoad(F64_TY(), GEP_I32(allocR, reg.u32));
             builder.CreateStore(returnResult, TO_PTR_F64(allocResult));
             break;
         default:
@@ -5692,7 +5627,7 @@ void BackendLLVM::getReturnResult(llvm::LLVMContext&     context,
         if (imm)
             returnResult = builder.CreateIntToPtr(builder.getInt64(reg.u64), llvmType);
         else
-            returnResult = builder.CreateIntToPtr(builder.CreateLoad(GEP_I32(allocR, reg.u32)), llvmType);
+            returnResult = builder.CreateIntToPtr(builder.CreateLoad(I64_TY(), GEP_I32(allocR, reg.u32)), llvmType);
         builder.CreateStore(returnResult, builder.CreatePointerCast(allocResult, llvmType->getPointerTo()));
     }
     else

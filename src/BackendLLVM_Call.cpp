@@ -1,11 +1,8 @@
 #include "pch.h"
 #include "BackendLLVM.h"
-#include "BackendLLVMDbg.h"
 #include "BackendLLVM_Macros.h"
 #include "Module.h"
-#include "ByteCode.h"
 #include "TypeManager.h"
-#include "LanguageSpec.h"
 #include "Workspace.h"
 #include "Report.h"
 
@@ -15,7 +12,7 @@ llvm::FunctionType* BackendLLVM::getOrCreateFuncType(const BuildParameters& buil
     int         ct              = buildParameters.compileType;
     int         precompileIndex = buildParameters.precompileIndex;
     auto&       pp              = *perThread[ct][precompileIndex];
-    auto&       builder         = *pp.builder;
+    auto&       context         = *pp.context;
 
     // Already done ?
     if (closureToLambda)
@@ -37,7 +34,7 @@ llvm::FunctionType* BackendLLVM::getOrCreateFuncType(const BuildParameters& buil
 
     llvm::Type* llvmRealReturnType = swagTypeToLLVMType(buildParameters, moduleToGen, typeFunc->returnType);
     if (returnByCopy)
-        returnType = builder.getVoidTy();
+        returnType = VOID_TY();
     else
         returnType = llvmRealReturnType;
 
@@ -48,8 +45,8 @@ llvm::FunctionType* BackendLLVM::getOrCreateFuncType(const BuildParameters& buil
         // Variadic parameters are always first
         if (typeFunc->isVariadic())
         {
-            params.push_back(builder.getInt8Ty()->getPointerTo());
-            params.push_back(builder.getInt64Ty());
+            params.push_back(PTR_I8_TY());
+            params.push_back(I64_TY());
             SWAG_ASSERT(numParams);
             numParams--;
         }
@@ -71,19 +68,19 @@ llvm::FunctionType* BackendLLVM::getOrCreateFuncType(const BuildParameters& buil
 
             if (cc.structByRegister && param->isStruct() && param->sizeOf <= sizeof(void*))
             {
-                params.push_back(builder.getIntNTy(param->sizeOf * 8));
+                params.push_back(IX_TY(param->sizeOf * 8));
             }
             else if (param->isString() || param->isSlice())
             {
                 auto cType = swagTypeToLLVMType(buildParameters, moduleToGen, param);
                 params.push_back(cType);
-                params.push_back(builder.getInt64Ty());
+                params.push_back(I64_TY());
             }
             else if (param->isAny() || param->isInterface())
             {
                 auto cType = swagTypeToLLVMType(buildParameters, moduleToGen, param);
                 params.push_back(cType);
-                params.push_back(builder.getInt8Ty()->getPointerTo());
+                params.push_back(PTR_I8_TY());
             }
             else
             {
@@ -139,7 +136,7 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
 
         if (cc.structByRegister && param->isStruct() && param->sizeOf <= sizeof(void*))
         {
-            ra = builder.CreateIntCast(arg, builder.getInt64Ty(), false);
+            ra = builder.CreateIntCast(arg, I64_TY(), false);
 
             // If this is a value, then we just have to shift it on the right with the given amount of bits
             if (deRefSize)
@@ -173,10 +170,10 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
             // We need the pointer
             else
             {
-                auto allocR = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt32(1));
+                auto allocR = builder.CreateAlloca(I64_TY(), builder.getInt32(1));
                 allocR->setAlignment(llvm::Align(sizeof(void*)));
                 builder.CreateStore(ra, allocR);
-                ra = builder.CreateInBoundsGEP(TO_PTR_I8(allocR), builder.getInt64(toAdd));
+                ra = builder.CreateInBoundsGEP(I8_TY(), allocR, builder.getInt64(toAdd));
                 builder.CreateStore(ra, r0);
             }
 
@@ -185,12 +182,12 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
 
         if (param->numRegisters() == 1)
         {
-            ra = builder.CreateInBoundsGEP(TO_PTR_I8(arg), builder.getInt64(toAdd));
+            ra = builder.CreateInBoundsGEP(I8_TY(), arg, builder.getInt64(toAdd));
         }
         else
         {
-            ra = builder.CreateIntToPtr(arg, builder.getInt8PtrTy());
-            ra = builder.CreateInBoundsGEP(ra, builder.getInt64(toAdd));
+            ra = builder.CreateIntToPtr(arg, PTR_I8_TY());
+            ra = builder.CreateInBoundsGEP(I8_TY(), ra, builder.getInt64(toAdd));
         }
 
         if (deRefSize)
@@ -199,19 +196,19 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
             switch (deRefSize)
             {
             case 1:
-                v1 = builder.CreateLoad(TO_PTR_I8(ra));
-                ra = builder.CreateIntCast(v1, builder.getInt64Ty(), false);
+                v1 = builder.CreateLoad(I8_TY(), ra);
+                ra = builder.CreateIntCast(v1, I64_TY(), false);
                 break;
             case 2:
-                v1 = builder.CreateLoad(TO_PTR_I16(ra));
-                ra = builder.CreateIntCast(v1, builder.getInt64Ty(), false);
+                v1 = builder.CreateLoad(I16_TY(), ra);
+                ra = builder.CreateIntCast(v1, I64_TY(), false);
                 break;
             case 4:
-                v1 = builder.CreateLoad(TO_PTR_I32(ra));
-                ra = builder.CreateIntCast(v1, builder.getInt64Ty(), false);
+                v1 = builder.CreateLoad(I32_TY(), ra);
+                ra = builder.CreateIntCast(v1, I64_TY(), false);
                 break;
             case 8:
-                ra = builder.CreateLoad(TO_PTR_I64(ra));
+                ra = builder.CreateLoad(I64_TY(), ra);
                 break;
             }
 
@@ -226,17 +223,17 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
     {
         // By convention, all remaining bits should be zero
         if (param->isNativeIntegerSigned() && param->sizeOf < sizeof(void*))
-            builder.CreateStore(builder.CreateIntCast(arg, builder.getInt64Ty(), true), r0);
+            builder.CreateStore(builder.CreateIntCast(arg, I64_TY(), true), r0);
         else if (param->isNativeIntegerUnsigned() && param->sizeOf < sizeof(void*))
-            builder.CreateStore(builder.CreateIntCast(arg, builder.getInt64Ty(), false), r0);
+            builder.CreateStore(builder.CreateIntCast(arg, I64_TY(), false), r0);
 
         // Struct by copy
         else if (cc.structByRegister && param->isStruct() && param->sizeOf <= sizeof(void*))
         {
             // Make a copy of the value on the stack, and return the address
-            auto allocR = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt32(1));
+            auto allocR = builder.CreateAlloca(I64_TY(), builder.getInt32(1));
             allocR->setAlignment(llvm::Align(sizeof(void*)));
-            builder.CreateStore(builder.CreateIntCast(arg, builder.getInt64Ty(), false), allocR);
+            builder.CreateStore(builder.CreateIntCast(arg, I64_TY(), false), allocR);
             builder.CreateStore(allocR, TO_PTR_PTR_I64(r0));
         }
 
@@ -246,7 +243,7 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
             if (sizeOf == sizeof(void*))
                 builder.CreateStore(arg, r0);
             else
-                builder.CreateStore(builder.CreateIntCast(arg, builder.getInt64Ty(), false), r0);
+                builder.CreateStore(builder.CreateIntCast(arg, I64_TY(), false), r0);
         }
 
         // Real type
@@ -292,12 +289,9 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
     if (typeFuncBC->isVariadic())
     {
         auto index = pushParams[idxParam--];
-        auto r0    = TO_PTR_PTR_I8(GEP_I32(allocR, index));
-        params.push_back(builder.CreateLoad(r0));
-
-        index   = pushParams[idxParam--];
-        auto r1 = GEP_I32(allocR, index);
-        params.push_back(builder.CreateLoad(r1));
+        params.push_back(builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, index)));
+        index = pushParams[idxParam--];
+        params.push_back(builder.CreateLoad(I64_TY(), GEP_I32(allocR, index)));
         SWAG_ASSERT(numCallParams);
         numCallParams--;
     }
@@ -335,50 +329,36 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
         {
             auto typePtr  = CastTypeInfo<TypeInfoPointer>(typeParam, TypeInfoKind::Pointer);
             auto llvmType = swagTypeToLLVMType(buildParameters, moduleToGen, typePtr);
-            llvmType      = llvmType->getPointerTo();
-            auto r0       = GEP_I32(allocR, index);
-            auto r        = builder.CreatePointerCast(r0, llvmType);
-            params.push_back(builder.CreateLoad(r));
+            params.push_back(builder.CreateLoad(llvmType, GEP_I32(allocR, index)));
         }
         else if (cc.structByRegister && typeParam->isStruct() && typeParam->sizeOf <= sizeof(void*))
         {
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
-            auto v0 = builder.CreateLoad(r0);
-            params.push_back(builder.CreateLoad(TO_PTR_IX(v0, typeParam->sizeOf * 8)));
+            auto v0 = builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, index));
+            params.push_back(builder.CreateLoad(IX_TY(typeParam->sizeOf * 8), v0));
         }
         else if (typeParam->isStruct() ||
                  typeParam->isLambdaClosure() ||
                  typeParam->isArray())
         {
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
-            params.push_back(builder.CreateLoad(r0));
+            params.push_back(builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, index)));
         }
         else if (typeParam->isString() ||
                  typeParam->isSlice())
         {
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
-            params.push_back(builder.CreateLoad(r0));
-
-            index   = pushParams[idxParam--];
-            auto r1 = GEP_I32(allocR, index);
-            params.push_back(builder.CreateLoad(r1));
+            params.push_back(builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, index)));
+            index = pushParams[idxParam--];
+            params.push_back(builder.CreateLoad(I64_TY(), GEP_I32(allocR, index)));
         }
         else if (typeParam->isAny() ||
                  typeParam->isInterface())
         {
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
-            params.push_back(builder.CreateLoad(r0));
-
-            index   = pushParams[idxParam--];
-            auto r1 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
-            params.push_back(builder.CreateLoad(r1));
+            params.push_back(builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, index)));
+            index = pushParams[idxParam--];
+            params.push_back(builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, index)));
         }
         else if (typeParam->isNative())
         {
-            auto r0 = GEP_I32(allocR, index);
-            auto r  = TO_PTR_NATIVE(r0, typeParam->nativeType);
-            SWAG_ASSERT(r);
-            params.push_back(builder.CreateLoad(r));
+            params.push_back(builder.CreateLoad(toNativeTy(context, typeParam->nativeType), GEP_I32(allocR, index)));
         }
         else
         {
@@ -397,7 +377,7 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
     }
     else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
     {
-        params.push_back(builder.CreateLoad(TO_PTR_PTR_I8(allocRR)));
+        params.push_back(builder.CreateLoad(PTR_I8_TY(), allocRR));
     }
 
     // Add all C variadic parameters
@@ -406,8 +386,7 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
         for (int i = typeFuncBC->numParamsRegisters(); i < pushParams.size(); i++)
         {
             auto index = pushParams[idxParam--];
-            auto r0    = GEP_I32(allocR, index);
-            params.push_back(builder.CreateLoad(r0));
+            params.push_back(builder.CreateLoad(I64_TY(), GEP_I32(allocR, index)));
         }
     }
 
@@ -526,6 +505,7 @@ void BackendLLVM::emitByteCodeCallParameters(const BuildParameters&      buildPa
     int   precompileIndex = buildParameters.precompileIndex;
     auto& pp              = *perThread[ct][precompileIndex];
     auto& builder         = *pp.builder;
+    auto& context         = *pp.context;
     int   popRAidx        = (int) pushRAParams.size() - 1;
     int   numCallParams   = (int) typeFuncBC->parameters.size();
 
@@ -535,8 +515,7 @@ void BackendLLVM::emitByteCodeCallParameters(const BuildParameters&      buildPa
     {
         for (int j = 0; j < typeFuncBC->numReturnRegisters(); j++)
         {
-            auto r0 = GEP_I32(allocRR, j);
-            params.push_back(r0);
+            params.push_back(GEP_I32(allocRR, j));
         }
     }
 
@@ -547,16 +526,9 @@ void BackendLLVM::emitByteCodeCallParameters(const BuildParameters&      buildPa
         {
             auto index = pushRAParams[popRAidx--];
             if (index == UINT32_MAX)
-            {
-                auto v0 = values[popRAidx + 1];
-                SWAG_ASSERT(v0);
-                params.push_back(v0);
-            }
+                params.push_back(values[popRAidx + 1]);
             else
-            {
-                auto r0 = GEP_I32(allocR, index);
-                params.push_back(r0);
-            }
+                params.push_back(GEP_I32(allocR, index));
         }
     }
 
@@ -565,12 +537,10 @@ void BackendLLVM::emitByteCodeCallParameters(const BuildParameters&      buildPa
     {
         auto index = pushRAParams[popRAidx--];
         SWAG_ASSERT(index != UINT32_MAX);
-        auto r0 = GEP_I32(allocR, index);
-        params.push_back(builder.CreateLoad(r0));
+        params.push_back(builder.CreateLoad(I64_TY(), GEP_I32(allocR, index)));
         index = pushRAParams[popRAidx--];
         SWAG_ASSERT(index != UINT32_MAX);
-        r0 = GEP_I32(allocR, index);
-        params.push_back(builder.CreateLoad(r0));
+        params.push_back(builder.CreateLoad(I64_TY(), GEP_I32(allocR, index)));
         numCallParams--;
     }
     else if (typeFuncBC->isCVariadic())
@@ -608,8 +578,7 @@ void BackendLLVM::emitByteCodeCallParameters(const BuildParameters&      buildPa
                 }
                 else
                 {
-                    auto r0 = builder.CreatePointerCast(GEP_I32(allocR, index), ty->getPointerTo());
-                    params.push_back(builder.CreateLoad(r0));
+                    params.push_back(builder.CreateLoad(ty, GEP_I32(allocR, index)));
                 }
 
                 continue;
@@ -623,9 +592,9 @@ void BackendLLVM::emitByteCodeCallParameters(const BuildParameters&      buildPa
                 if (allocT)
                 {
                     if (v0->getType()->isPointerTy())
-                        v0 = builder.CreatePtrToInt(v0, builder.getInt64Ty());
+                        v0 = builder.CreatePtrToInt(v0, I64_TY());
                     else if (v0->getType()->isIntegerTy())
-                        v0 = builder.CreateIntCast(v0, builder.getInt64Ty(), false);
+                        v0 = builder.CreateIntCast(v0, I64_TY(), false);
                     params.push_back(v0);
                 }
                 else
@@ -637,7 +606,7 @@ void BackendLLVM::emitByteCodeCallParameters(const BuildParameters&      buildPa
             // By register value.
             else
             {
-                auto v0 = builder.CreateLoad(GEP_I32(allocR, index));
+                auto v0 = builder.CreateLoad(I64_TY(), GEP_I32(allocR, index));
                 params.push_back(v0);
             }
         }
@@ -650,7 +619,7 @@ void BackendLLVM::emitByteCodeCallParameters(const BuildParameters&      buildPa
         for (int idxCall = 0; idxCall < numVariadics; idxCall++)
         {
             auto index = pushRAParams[popRAidx--];
-            auto v0    = builder.CreateLoad(GEP_I32(allocR, index));
+            auto v0    = builder.CreateLoad(I64_TY(), GEP_I32(allocR, index));
             params.push_back(v0);
         }
     }

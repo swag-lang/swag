@@ -1,12 +1,9 @@
 #include "pch.h"
 #include "BackendLLVM.h"
-#include "BackendLLVMDbg.h"
+#include "BackendLLVM_Macros.h"
 #include "Module.h"
-#include "AstNode.h"
 #include "ByteCode.h"
 #include "Context.h"
-#include "Workspace.h"
-#include "ErrorIds.h"
 #include "LanguageSpec.h"
 
 bool BackendLLVM::emitOS(const BuildParameters& buildParameters)
@@ -23,10 +20,10 @@ bool BackendLLVM::emitOS(const BuildParameters& buildParameters)
         // int _DllMainCRTStartup(void*, int, void*)
         {
             VectorNative<llvm::Type*> params;
-            params.push_back(builder.getInt8PtrTy());
-            params.push_back(builder.getInt32Ty());
-            params.push_back(builder.getInt8PtrTy());
-            llvm::FunctionType* FT = llvm::FunctionType::get(builder.getInt32Ty(), {params.begin(), params.end()}, false);
+            params.push_back(PTR_I8_TY());
+            params.push_back(I32_TY());
+            params.push_back(PTR_I8_TY());
+            llvm::FunctionType* FT = llvm::FunctionType::get(I32_TY(), {params.begin(), params.end()}, false);
             llvm::Function*     F  = llvm::Function::Create(FT, llvm::Function::ExternalLinkage, "_DllMainCRTStartup", modu);
             llvm::BasicBlock*   BB = llvm::BasicBlock::Create(context, "entry", F);
             builder.SetInsertPoint(BB);
@@ -66,7 +63,7 @@ bool BackendLLVM::emitOS(const BuildParameters& buildParameters)
         }
 
         // int _fltused = 0;
-        new llvm::GlobalVariable(modu, builder.getInt32Ty(), false, llvm::GlobalValue::ExternalLinkage, builder.getInt32(0), "_fltused");
+        new llvm::GlobalVariable(modu, I32_TY(), false, llvm::GlobalValue::ExternalLinkage, builder.getInt32(0), "_fltused");
     }
 
     return true;
@@ -98,13 +95,13 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     }
 
     // void mainCRTStartup()
-    llvm::FunctionType* FT = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {}, false);
+    llvm::FunctionType* FT = llvm::FunctionType::get(VOID_TY(), {}, false);
     llvm::Function*     F  = llvm::Function::Create(FT, llvm::Function::ExternalLinkage, entryPoint, modu);
     llvm::BasicBlock*   BB = llvm::BasicBlock::Create(context, "entry", F);
     builder.SetInsertPoint(BB);
 
     // Reserve room to pass parameters to embedded intrinsics
-    auto allocT = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(2));
+    auto allocT = builder.CreateAlloca(I64_TY(), builder.getInt64(2));
     allocT->setAlignment(llvm::Align(sizeof(void*)));
 
     // Set default system allocator function
@@ -116,59 +113,60 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
 
     // mainContext.allocator.itable = &defaultAllocTable
     {
-        auto toTable   = builder.CreateInBoundsGEP(pp.mainContext, {pp.cst0_i32, pp.cst0_i32, pp.cst1_i32});
-        auto fromTable = builder.CreatePointerCast(pp.defaultAllocTable, llvm::Type::getInt8PtrTy(context));
+        auto toTable   = builder.CreateInBoundsGEP(pp.contextTy, pp.mainContext, {pp.cst0_i32, pp.cst0_i32, pp.cst1_i32});
+        auto fromTable = builder.CreatePointerCast(pp.defaultAllocTable, PTR_I8_TY());
         builder.CreateStore(fromTable, toTable);
     }
 
     // mainContext.flags = 0
     {
-        auto     toFlags      = builder.CreateInBoundsGEP(pp.mainContext, {pp.cst0_i32, pp.cst1_i32});
+        auto     toFlags      = builder.CreateInBoundsGEP(pp.contextTy, pp.mainContext, {pp.cst0_i32, pp.cst1_i32});
         uint64_t contextFlags = getDefaultContextFlags(module);
         builder.CreateStore(builder.getInt64(contextFlags), toFlags);
     }
 
     // __process_infos.modules
     {
-        auto v0 = builder.CreateInBoundsGEP(TO_PTR_I8(pp.constantSeg), builder.getInt32(module->modulesSliceOffset));
-        auto r0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(pp.processInfos, builder.getInt32(0)));
+        auto v0 = builder.CreateInBoundsGEP(I8_TY(), pp.constantSeg, builder.getInt32(module->modulesSliceOffset));
+        auto r0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, builder.getInt32(0)));
         builder.CreateStore(v0, r0);
 
-        auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(TO_PTR_I8(pp.processInfos), builder.getInt32(8)));
+        auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(I8_TY(), pp.processInfos, builder.getInt32(8)));
         builder.CreateStore(builder.getInt64(module->moduleDependencies.count + 1), r1);
     }
 
     // __process_infos.args
     {
-        auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(TO_PTR_I8(pp.processInfos), builder.getInt32(16)));
+        auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(I8_TY(), pp.processInfos, builder.getInt32(16)));
         builder.CreateStore(pp.cst0_i64, r0);
-        auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(TO_PTR_I8(pp.processInfos), builder.getInt32(24)));
+        auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(I8_TY(), pp.processInfos, builder.getInt32(24)));
         builder.CreateStore(pp.cst0_i64, r1);
     }
 
     // __process_infos.contextTlsId = swag_runtime_tlsAlloc()
     {
         auto result  = emitCall(buildParameters, module, g_LangSpec->name__tlsAlloc, nullptr, allocT, {}, {});
-        auto toTlsId = TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst2_i32}));
-        builder.CreateStore(result, toTlsId);
+        auto toTlsId = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cst0_i32, pp.cst2_i32});
+        builder.CreateStore(result, TO_PTR_I64(toTlsId));
     }
 
     // Set main context
     {
-        auto toContext = builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst3_i32});
+        auto toContext = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cst0_i32, pp.cst3_i32});
         builder.CreateStore(pp.mainContext, toContext);
     }
 
     // Set current backend as LLVM
     {
-        auto toBackendKind = TO_PTR_I32(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst6_i32}));
+        auto toBackendKind = TO_PTR_I32(builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cst0_i32, pp.cst6_i32}));
         builder.CreateStore(builder.getInt32((uint32_t) SwagBackendGenType::LLVM), toBackendKind);
     }
 
     // Set default context in TLS
     {
-        auto toTlsId   = builder.CreateLoad(TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst2_i32})));
-        auto toContext = builder.CreatePointerCast(pp.mainContext, llvm::Type::getInt8PtrTy(context));
+        auto v0        = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cst0_i32, pp.cst2_i32});
+        auto toTlsId   = builder.CreateLoad(I64_TY(), v0);
+        auto toContext = builder.CreatePointerCast(pp.mainContext, PTR_I8_TY());
         emitCall(buildParameters, module, g_LangSpec->name__tlsSetValue, nullptr, allocT, {UINT32_MAX, UINT32_MAX}, {toTlsId, toContext});
     }
 
@@ -197,7 +195,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     }
 
     // Call to global init of all dependencies
-    auto funcType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {pp.processInfosTy->getPointerTo()}, false);
+    auto funcType = llvm::FunctionType::get(VOID_TY(), {pp.processInfosTy->getPointerTo()}, false);
     for (int i = 0; i < moduleDependencies.size(); i++)
     {
         auto dep = moduleDependencies[i];
@@ -233,7 +231,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         builder.CreateCall(funcInit, pp.processInfos);
     }
 
-    auto funcTypeVoid = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
+    auto funcTypeVoid = llvm::FunctionType::get(VOID_TY(), false);
 
     // Call to test functions
     if (buildParameters.compileType == BackendCompileType::Test && !module->byteCodeTestFunc.empty())
@@ -289,7 +287,7 @@ bool BackendLLVM::emitGetTypeTable(const BuildParameters& buildParameters)
     auto& builder = *pp.builder;
     auto& modu    = *pp.module;
 
-    auto            fctType  = llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), {}, false);
+    auto            fctType  = llvm::FunctionType::get(PTR_I8_TY(), {}, false);
     auto            funcName = module->getGlobalPrivFct(g_LangSpec->name_getTypeTable);
     llvm::Function* fct      = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, funcName.c_str(), modu);
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
@@ -298,7 +296,7 @@ bool BackendLLVM::emitGetTypeTable(const BuildParameters& buildParameters)
     llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
     builder.SetInsertPoint(BB);
 
-    auto r1 = builder.CreateInBoundsGEP(TO_PTR_I8(pp.constantSeg), builder.getInt32(module->typesSliceOffset));
+    auto r1 = builder.CreateInBoundsGEP(I8_TY(), pp.constantSeg, builder.getInt32(module->typesSliceOffset));
     builder.CreateRet(TO_PTR_I8(r1));
 
     return true;
@@ -314,7 +312,7 @@ bool BackendLLVM::emitGlobalPreMain(const BuildParameters& buildParameters)
     auto& builder = *pp.builder;
     auto& modu    = *pp.module;
 
-    auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {pp.processInfosTy->getPointerTo()}, false);
+    auto            fctType = llvm::FunctionType::get(VOID_TY(), {pp.processInfosTy->getPointerTo()}, false);
     auto            nameFct = module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
     llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, nameFct.c_str(), modu);
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
@@ -331,7 +329,7 @@ bool BackendLLVM::emitGlobalPreMain(const BuildParameters& buildParameters)
     }
 
     // Call to #premain functions
-    auto fctType1 = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {}, false);
+    auto fctType1 = llvm::FunctionType::get(VOID_TY(), {}, false);
     for (auto bc : module->byteCodePreMainFunc)
     {
         auto node = bc->node;
@@ -355,7 +353,7 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
     auto& builder = *pp.builder;
     auto& modu    = *pp.module;
 
-    auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {pp.processInfosTy->getPointerTo()}, false);
+    auto            fctType = llvm::FunctionType::get(VOID_TY(), {pp.processInfosTy->getPointerTo()}, false);
     auto            nameFct = module->getGlobalPrivFct(g_LangSpec->name_globalInit);
     llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, nameFct.c_str(), modu);
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
@@ -373,7 +371,7 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
 
     // Init thread local storage id
     {
-        auto allocT = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(1));
+        auto allocT = builder.CreateAlloca(I64_TY(), builder.getInt64(1));
         allocT->setAlignment(llvm::Align(sizeof(void*)));
         emitCall(buildParameters, module, g_LangSpec->name__tlsAlloc, nullptr, allocT, {UINT32_MAX}, {pp.symTls_threadLocalId});
     }
@@ -384,33 +382,33 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
     builder.CreateCall(modu.getFunction("__initTlsSeg"));
 
     // Init type table slice for each dependency (by calling ???_getTypeTable)
-    auto r1 = builder.CreateInBoundsGEP(TO_PTR_I8(pp.constantSeg), builder.getInt32(module->modulesSliceOffset + sizeof(SwagModule) + offsetof(SwagModule, types)));
+    auto r1 = builder.CreateInBoundsGEP(I8_TY(), pp.constantSeg, builder.getInt32(module->modulesSliceOffset + sizeof(SwagModule) + offsetof(SwagModule, types)));
     for (auto& dep : module->moduleDependencies)
     {
         if (!dep->module->isSwag)
         {
-            r1 = builder.CreateInBoundsGEP(r1, builder.getInt64(sizeof(SwagModule)));
+            r1 = builder.CreateInBoundsGEP(I8_TY(), r1, builder.getInt64(sizeof(SwagModule)));
             continue;
         }
 
         auto callTable = dep->module->getGlobalPrivFct(g_LangSpec->name_getTypeTable);
-        auto callType  = llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), {}, false);
+        auto callType  = llvm::FunctionType::get(PTR_I8_TY(), {}, false);
         auto func      = modu.getOrInsertFunction(callTable.c_str(), callType);
         auto r0        = builder.CreateCall(func);
 
         // Count types is stored as a uint64_t at the start of the address
-        auto numTypes = builder.CreateLoad(TO_PTR_I64(r0));
-        auto ptrTypes = builder.CreateInBoundsGEP(r0, builder.getInt64(sizeof(uint64_t)));
+        auto numTypes = builder.CreateLoad(I64_TY(), r0);
+        auto ptrTypes = builder.CreateInBoundsGEP(I8_TY(), r0, builder.getInt64(sizeof(uint64_t)));
 
         builder.CreateStore(ptrTypes, TO_PTR_PTR_I8(r1));
-        auto r2 = builder.CreateInBoundsGEP(r1, builder.getInt64(sizeof(void*)));
+        auto r2 = builder.CreateInBoundsGEP(I8_TY(), r1, builder.getInt64(sizeof(void*)));
         builder.CreateStore(numTypes, TO_PTR_I64(r2));
 
-        r1 = builder.CreateInBoundsGEP(r1, builder.getInt64(sizeof(SwagModule)));
+        r1 = builder.CreateInBoundsGEP(I8_TY(), r1, builder.getInt64(sizeof(SwagModule)));
     }
 
     // Call to #init functions
-    auto initFctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
+    auto initFctType = llvm::FunctionType::get(VOID_TY(), false);
     for (auto bc : module->byteCodeInitFunc)
     {
         auto node = bc->node;
@@ -434,7 +432,7 @@ bool BackendLLVM::emitGlobalDrop(const BuildParameters& buildParameters)
     auto& builder = *pp.builder;
     auto& modu    = *pp.module;
 
-    auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
+    auto            fctType = llvm::FunctionType::get(VOID_TY(), false);
     auto            nameFct = module->getGlobalPrivFct(g_LangSpec->name_globalDrop);
     llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, nameFct.c_str(), modu);
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)

@@ -274,3 +274,4 @@ dependencies/
 **/tests/**/public
 **/foreign/**/objs
 /bin/examples/scripts/datas/cards/out
+llvm/

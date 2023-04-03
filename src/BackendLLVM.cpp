@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "BackendLLVM.h"
 #include "BackendLLVMDbg.h"
+#include "BackendLLVM_Macros.h"
 #include "Workspace.h"
 #include "BackendLinker.h"
 #include "Module.h"
 #include "ErrorIds.h"
 #include "Report.h"
-#include "Diagnostic.h"
 #include "LanguageSpec.h"
 
 bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
@@ -23,32 +23,32 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
     // swag_interface_t
     {
         llvm::Type* members[] = {
-            llvm::Type::getInt8PtrTy(context),
-            llvm::Type::getInt8PtrTy(context)};
+            PTR_I8_TY(),
+            PTR_I8_TY()};
         pp.interfaceTy = llvm::StructType::create(context, members, "swag_interface_t");
     }
 
     // swag_context_t
     {
         llvm::Type* members[] = {
-            pp.interfaceTy,                                                                       // allocator
-            llvm::Type::getInt64Ty(context),                                                      // flags
-            pp.interfaceTy,                                                                       // ScratchAllocator allocator
-            llvm::Type::getInt8PtrTy(context),                                                    // ScratchAllocator block
-            llvm::Type::getInt64Ty(context),                                                      // ScratchAllocator capacity
-            llvm::Type::getInt64Ty(context),                                                      // ScratchAllocator used
-            llvm::Type::getInt64Ty(context),                                                      // ScratchAllocator maxUsed
-            llvm::Type::getInt8PtrTy(context),                                                    // ScratchAllocator firstLeak
-            llvm::Type::getInt64Ty(context),                                                      // ScratchAllocator totalLeak
-            llvm::Type::getInt64Ty(context),                                                      // ScratchAllocator maxLeak
-            llvm::ArrayType::get(llvm::Type::getInt8Ty(context), MAX_LEN_ERROR_MSG),              // errorMsg
-            llvm::Type::getInt32Ty(context),                                                      // errorMsgStart
-            llvm::Type::getInt32Ty(context),                                                      // errorMsgLen
-            llvm::Type::getInt32Ty(context),                                                      // traceIndex
-            llvm::ArrayType::get(llvm::Type::getInt8Ty(context), MAX_TRACE * sizeof(void*)),      // trace
-            llvm::ArrayType::get(llvm::Type::getInt8Ty(context), sizeof(SwagSourceCodeLocation)), // exceptionLoc
-            llvm::ArrayType::get(llvm::Type::getInt8Ty(context), 4 * sizeof(void*)),              // exceptionParams
-            llvm::Type::getInt8PtrTy(context),                                                    // panic
+            pp.interfaceTy,                                                // allocator
+            I64_TY(),                                                      // flags
+            pp.interfaceTy,                                                // ScratchAllocator allocator
+            PTR_I8_TY(),                                                   // ScratchAllocator block
+            I64_TY(),                                                      // ScratchAllocator capacity
+            I64_TY(),                                                      // ScratchAllocator used
+            I64_TY(),                                                      // ScratchAllocator maxUsed
+            PTR_I8_TY(),                                                   // ScratchAllocator firstLeak
+            I64_TY(),                                                      // ScratchAllocator totalLeak
+            I64_TY(),                                                      // ScratchAllocator maxLeak
+            llvm::ArrayType::get(I8_TY(), MAX_LEN_ERROR_MSG),              // errorMsg
+            I32_TY(),                                                      // errorMsgStart
+            I32_TY(),                                                      // errorMsgLen
+            I32_TY(),                                                      // traceIndex
+            llvm::ArrayType::get(I8_TY(), MAX_TRACE * sizeof(void*)),      // trace
+            llvm::ArrayType::get(I8_TY(), sizeof(SwagSourceCodeLocation)), // exceptionLoc
+            llvm::ArrayType::get(I8_TY(), 4 * sizeof(void*)),              // exceptionParams
+            PTR_I8_TY(),                                                   // panic
         };
 
         static_assert(sizeof(SwagContext) == 568);
@@ -59,8 +59,8 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
     // swag_slice_t
     {
         llvm::Type* members[] = {
-            llvm::Type::getInt8PtrTy(context),
-            llvm::Type::getInt64Ty(context),
+            PTR_I8_TY(),
+            I64_TY(),
         };
         pp.sliceTy = llvm::StructType::create(context, members, "swag_slice_t");
         SWAG_ASSERT(pp.sliceTy->isSized());
@@ -69,26 +69,26 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
     // swag_alloctor_t
     {
         llvm::Type* params[] = {
-            llvm::Type::getInt64PtrTy(context),
-            llvm::Type::getInt64PtrTy(context),
+            PTR_I64_TY(),
+            PTR_I64_TY(),
         };
-        pp.allocatorTy = llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false);
+        pp.allocatorTy = llvm::FunctionType::get(VOID_TY(), params, false);
     }
 
     // byteCodeRun
     {
         llvm::Type* params[] = {
-            llvm::Type::getInt8PtrTy(context),
+            PTR_I8_TY(),
         };
-        pp.bytecodeRunTy = llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, true);
+        pp.bytecodeRunTy = llvm::FunctionType::get(VOID_TY(), params, true);
     }
 
     // makeCallback
     {
         llvm::Type* params[] = {
-            llvm::Type::getInt8PtrTy(context),
+            PTR_I8_TY(),
         };
-        pp.makeCallbackTy = llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), params, false);
+        pp.makeCallbackTy = llvm::FunctionType::get(PTR_I8_TY(), params, false);
     }
 
     // SwagProcessInfo
@@ -96,11 +96,11 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
         llvm::Type* members[] = {
             pp.sliceTy,
             pp.sliceTy,
-            llvm::Type::getInt64Ty(context),
+            I64_TY(),
             pp.contextTy->getPointerTo(),
             pp.bytecodeRunTy->getPointerTo(),
             pp.makeCallbackTy->getPointerTo(),
-            llvm::Type::getInt32Ty(context),
+            I32_TY(),
         };
         pp.processInfosTy = llvm::StructType::create(context, members, "SwagProcessInfo");
         SWAG_ASSERT(pp.processInfosTy->isSized());
@@ -112,62 +112,62 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
         pp.mainContext          = new llvm::GlobalVariable(modu, pp.contextTy, false, llvm::GlobalValue::ExternalLinkage, llvm::ConstantAggregateZero::get(pp.contextTy), "swag_mainContext");
         pp.defaultAllocTable    = new llvm::GlobalVariable(modu, pp.allocatorTy->getPointerTo(), false, llvm::GlobalValue::ExternalLinkage, llvm::ConstantPointerNull::get(pp.allocatorTy->getPointerTo()), "swag_defaultAllocTable");
         pp.processInfos         = new llvm::GlobalVariable(modu, pp.processInfosTy, false, llvm::GlobalValue::ExternalLinkage, llvm::ConstantAggregateZero::get(pp.processInfosTy), "swag_processInfos");
-        pp.symTls_threadLocalId = new llvm::GlobalVariable(modu, llvm::Type::getInt64Ty(context), false, llvm::GlobalValue::ExternalLinkage, llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), 0), "swag_tls_threadLocalId");
+        pp.symTls_threadLocalId = new llvm::GlobalVariable(modu, I64_TY(), false, llvm::GlobalValue::ExternalLinkage, llvm::ConstantInt::get(I64_TY(), 0), "swag_tls_threadLocalId");
     }
     else
     {
         pp.mainContext          = new llvm::GlobalVariable(modu, pp.contextTy, false, llvm::GlobalValue::InternalLinkage, nullptr, "swag_mainContext");
         pp.defaultAllocTable    = new llvm::GlobalVariable(modu, pp.allocatorTy->getPointerTo(), false, llvm::GlobalValue::InternalLinkage, nullptr, "swag_defaultAllocTable");
         pp.processInfos         = new llvm::GlobalVariable(modu, pp.processInfosTy, false, llvm::GlobalValue::InternalLinkage, nullptr, "swag_processInfos");
-        pp.symTls_threadLocalId = new llvm::GlobalVariable(modu, llvm::Type::getInt64Ty(context), false, llvm::GlobalValue::InternalLinkage, nullptr, "swag_tls_threadLocalId");
+        pp.symTls_threadLocalId = new llvm::GlobalVariable(modu, I64_TY(), false, llvm::GlobalValue::InternalLinkage, nullptr, "swag_tls_threadLocalId");
     }
 
     // LIBC functions without llvm intrinsics
     {
-        pp.fn_acosf32  = modu.getOrInsertFunction(g_LangSpec->name_acosf.c_str(), ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
-        pp.fn_acosf64  = modu.getOrInsertFunction(g_LangSpec->name_acos.c_str(), ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
-        pp.fn_asinf32  = modu.getOrInsertFunction(g_LangSpec->name_asinf.c_str(), ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
-        pp.fn_asinf64  = modu.getOrInsertFunction(g_LangSpec->name_asin.c_str(), ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
-        pp.fn_tanf32   = modu.getOrInsertFunction(g_LangSpec->name_tanf.c_str(), ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
-        pp.fn_tanf64   = modu.getOrInsertFunction(g_LangSpec->name_tan.c_str(), ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
-        pp.fn_atanf32  = modu.getOrInsertFunction(g_LangSpec->name_atanf.c_str(), ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
-        pp.fn_atanf64  = modu.getOrInsertFunction(g_LangSpec->name_atan.c_str(), ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
-        pp.fn_sinhf32  = modu.getOrInsertFunction(g_LangSpec->name_sinhf.c_str(), ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
-        pp.fn_sinhf64  = modu.getOrInsertFunction(g_LangSpec->name_sinh.c_str(), ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
-        pp.fn_coshf32  = modu.getOrInsertFunction(g_LangSpec->name_coshf.c_str(), ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
-        pp.fn_coshf64  = modu.getOrInsertFunction(g_LangSpec->name_cosh.c_str(), ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
-        pp.fn_tanhf32  = modu.getOrInsertFunction(g_LangSpec->name_tanhf.c_str(), ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
-        pp.fn_tanhf64  = modu.getOrInsertFunction(g_LangSpec->name_tanh.c_str(), ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
-        pp.fn_powf32   = modu.getOrInsertFunction(g_LangSpec->name_powf.c_str(), ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), {llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context)}, false));
-        pp.fn_powf64   = modu.getOrInsertFunction(g_LangSpec->name_pow.c_str(), ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), {llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context)}, false));
-        pp.fn_atan2f32 = modu.getOrInsertFunction(g_LangSpec->name_atan2f.c_str(), ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), {llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context)}, false));
-        pp.fn_atan2f64 = modu.getOrInsertFunction(g_LangSpec->name_atan2.c_str(), ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), {llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context)}, false));
-        pp.fn_memcmp   = modu.getOrInsertFunction(g_LangSpec->name_memcmp.c_str(), ::llvm::FunctionType::get(llvm::Type::getInt32Ty(context), {llvm::Type::getInt8PtrTy(context), llvm::Type::getInt8PtrTy(context), llvm::Type::getInt64Ty(context)}, false));
-        pp.fn_strlen   = modu.getOrInsertFunction(g_LangSpec->name_strlen.c_str(), ::llvm::FunctionType::get(llvm::Type::getInt64Ty(context), {llvm::Type::getInt8PtrTy(context)}, false));
-        pp.fn_strcmp   = modu.getOrInsertFunction(g_LangSpec->name_strcmp.c_str(), ::llvm::FunctionType::get(llvm::Type::getInt64Ty(context), {llvm::Type::getInt8PtrTy(context), llvm::Type::getInt8PtrTy(context)}, false));
-        pp.fn_malloc   = modu.getOrInsertFunction(g_LangSpec->name_malloc.c_str(), ::llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), {llvm::Type::getInt64Ty(context)}, false));
-        pp.fn_realloc  = modu.getOrInsertFunction(g_LangSpec->name_realloc.c_str(), ::llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), {llvm::Type::getInt8PtrTy(context), llvm::Type::getInt64Ty(context)}, false));
-        pp.fn_free     = modu.getOrInsertFunction(g_LangSpec->name_free.c_str(), ::llvm::FunctionType::get(llvm::Type::getVoidTy(context), {llvm::Type::getInt8PtrTy(context)}, false));
+        pp.fn_acosf32  = modu.getOrInsertFunction(g_LangSpec->name_acosf.c_str(), ::llvm::FunctionType::get(F32_TY(), F32_TY(), false));
+        pp.fn_acosf64  = modu.getOrInsertFunction(g_LangSpec->name_acos.c_str(), ::llvm::FunctionType::get(F64_TY(), F64_TY(), false));
+        pp.fn_asinf32  = modu.getOrInsertFunction(g_LangSpec->name_asinf.c_str(), ::llvm::FunctionType::get(F32_TY(), F32_TY(), false));
+        pp.fn_asinf64  = modu.getOrInsertFunction(g_LangSpec->name_asin.c_str(), ::llvm::FunctionType::get(F64_TY(), F64_TY(), false));
+        pp.fn_tanf32   = modu.getOrInsertFunction(g_LangSpec->name_tanf.c_str(), ::llvm::FunctionType::get(F32_TY(), F32_TY(), false));
+        pp.fn_tanf64   = modu.getOrInsertFunction(g_LangSpec->name_tan.c_str(), ::llvm::FunctionType::get(F64_TY(), F64_TY(), false));
+        pp.fn_atanf32  = modu.getOrInsertFunction(g_LangSpec->name_atanf.c_str(), ::llvm::FunctionType::get(F32_TY(), F32_TY(), false));
+        pp.fn_atanf64  = modu.getOrInsertFunction(g_LangSpec->name_atan.c_str(), ::llvm::FunctionType::get(F64_TY(), F64_TY(), false));
+        pp.fn_sinhf32  = modu.getOrInsertFunction(g_LangSpec->name_sinhf.c_str(), ::llvm::FunctionType::get(F32_TY(), F32_TY(), false));
+        pp.fn_sinhf64  = modu.getOrInsertFunction(g_LangSpec->name_sinh.c_str(), ::llvm::FunctionType::get(F64_TY(), F64_TY(), false));
+        pp.fn_coshf32  = modu.getOrInsertFunction(g_LangSpec->name_coshf.c_str(), ::llvm::FunctionType::get(F32_TY(), F32_TY(), false));
+        pp.fn_coshf64  = modu.getOrInsertFunction(g_LangSpec->name_cosh.c_str(), ::llvm::FunctionType::get(F64_TY(), F64_TY(), false));
+        pp.fn_tanhf32  = modu.getOrInsertFunction(g_LangSpec->name_tanhf.c_str(), ::llvm::FunctionType::get(F32_TY(), F32_TY(), false));
+        pp.fn_tanhf64  = modu.getOrInsertFunction(g_LangSpec->name_tanh.c_str(), ::llvm::FunctionType::get(F64_TY(), F64_TY(), false));
+        pp.fn_powf32   = modu.getOrInsertFunction(g_LangSpec->name_powf.c_str(), ::llvm::FunctionType::get(F32_TY(), {F32_TY(), F32_TY()}, false));
+        pp.fn_powf64   = modu.getOrInsertFunction(g_LangSpec->name_pow.c_str(), ::llvm::FunctionType::get(F64_TY(), {F64_TY(), F64_TY()}, false));
+        pp.fn_atan2f32 = modu.getOrInsertFunction(g_LangSpec->name_atan2f.c_str(), ::llvm::FunctionType::get(F32_TY(), {F32_TY(), F32_TY()}, false));
+        pp.fn_atan2f64 = modu.getOrInsertFunction(g_LangSpec->name_atan2.c_str(), ::llvm::FunctionType::get(F64_TY(), {F64_TY(), F64_TY()}, false));
+        pp.fn_memcmp   = modu.getOrInsertFunction(g_LangSpec->name_memcmp.c_str(), ::llvm::FunctionType::get(I32_TY(), {PTR_I8_TY(), PTR_I8_TY(), I64_TY()}, false));
+        pp.fn_strlen   = modu.getOrInsertFunction(g_LangSpec->name_strlen.c_str(), ::llvm::FunctionType::get(I64_TY(), {PTR_I8_TY()}, false));
+        pp.fn_strcmp   = modu.getOrInsertFunction(g_LangSpec->name_strcmp.c_str(), ::llvm::FunctionType::get(I64_TY(), {PTR_I8_TY(), PTR_I8_TY()}, false));
+        pp.fn_malloc   = modu.getOrInsertFunction(g_LangSpec->name_malloc.c_str(), ::llvm::FunctionType::get(PTR_I8_TY(), {I64_TY()}, false));
+        pp.fn_realloc  = modu.getOrInsertFunction(g_LangSpec->name_realloc.c_str(), ::llvm::FunctionType::get(PTR_I8_TY(), {PTR_I8_TY(), I64_TY()}, false));
+        pp.fn_free     = modu.getOrInsertFunction(g_LangSpec->name_free.c_str(), ::llvm::FunctionType::get(VOID_TY(), {PTR_I8_TY()}, false));
     }
 
     // Cache things
     pp.cst0_i1  = llvm::ConstantInt::get(llvm::Type::getInt1Ty(context), 0);
     pp.cst1_i1  = llvm::ConstantInt::get(llvm::Type::getInt1Ty(context), 1);
-    pp.cst0_i8  = llvm::ConstantInt::get(llvm::Type::getInt8Ty(context), 0);
-    pp.cst1_i8  = llvm::ConstantInt::get(llvm::Type::getInt8Ty(context), 1);
-    pp.cst0_i16 = llvm::ConstantInt::get(llvm::Type::getInt16Ty(context), 0);
-    pp.cst0_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 0);
-    pp.cst1_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 1);
-    pp.cst2_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 2);
-    pp.cst3_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 3);
-    pp.cst4_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 4);
-    pp.cst5_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 5);
-    pp.cst6_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 6);
-    pp.cst0_i64 = llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), 0);
-    pp.cst1_i64 = llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), 1);
-    pp.cst0_f32 = llvm::ConstantFP::get(llvm::Type::getFloatTy(context), 0);
-    pp.cst0_f64 = llvm::ConstantFP::get(llvm::Type::getDoubleTy(context), 0);
-    pp.cst_null = llvm::ConstantPointerNull::get(llvm::Type::getInt64PtrTy(context));
+    pp.cst0_i8  = llvm::ConstantInt::get(I8_TY(), 0);
+    pp.cst1_i8  = llvm::ConstantInt::get(I8_TY(), 1);
+    pp.cst0_i16 = llvm::ConstantInt::get(I16_TY(), 0);
+    pp.cst0_i32 = llvm::ConstantInt::get(I32_TY(), 0);
+    pp.cst1_i32 = llvm::ConstantInt::get(I32_TY(), 1);
+    pp.cst2_i32 = llvm::ConstantInt::get(I32_TY(), 2);
+    pp.cst3_i32 = llvm::ConstantInt::get(I32_TY(), 3);
+    pp.cst4_i32 = llvm::ConstantInt::get(I32_TY(), 4);
+    pp.cst5_i32 = llvm::ConstantInt::get(I32_TY(), 5);
+    pp.cst6_i32 = llvm::ConstantInt::get(I32_TY(), 6);
+    pp.cst0_i64 = llvm::ConstantInt::get(I64_TY(), 0);
+    pp.cst1_i64 = llvm::ConstantInt::get(I64_TY(), 1);
+    pp.cst0_f32 = llvm::ConstantFP::get(F32_TY(), 0);
+    pp.cst0_f64 = llvm::ConstantFP::get(F64_TY(), 0);
+    pp.cst_null = llvm::ConstantPointerNull::get(PTR_I64_TY());
 
     return true;
 }
@@ -337,7 +337,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     pipelineOptions.LoopInterleaving  = !isDebug;
     pipelineOptions.MergeFunctions    = !isDebug;
 
-    llvm::PassBuilder             passBuilder(false, targetMachine, pipelineOptions);
+    llvm::PassBuilder             passBuilder(targetMachine, pipelineOptions);
     llvm::LoopAnalysisManager     loopMgr;
     llvm::FunctionAnalysisManager functionMgr;
     llvm::CGSCCAnalysisManager    cgsccMgr;
@@ -349,16 +349,16 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     passBuilder.registerLoopAnalyses(loopMgr);
     passBuilder.crossRegisterProxies(loopMgr, functionMgr, cgsccMgr, moduleMgr);
 
-    llvm::PassBuilder::OptimizationLevel optLevel;
+    llvm::OptimizationLevel optLevel;
     if (isDebug)
-        optLevel = llvm::PassBuilder::OptimizationLevel::O0;
+        optLevel = llvm::OptimizationLevel::O0;
     else if (buildParameters.buildCfg->backendOptimizeSize)
-        optLevel = llvm::PassBuilder::OptimizationLevel::Oz;
+        optLevel = llvm::OptimizationLevel::Oz;
     else
-        optLevel = llvm::PassBuilder::OptimizationLevel::O3;
+        optLevel = llvm::OptimizationLevel::O3;
 
     llvm::ModulePassManager modulePassMgr;
-    if (optLevel == llvm::PassBuilder::OptimizationLevel::O0)
+    if (optLevel == llvm::OptimizationLevel::O0)
         modulePassMgr = passBuilder.buildO0DefaultPipeline(optLevel);
     else
         modulePassMgr = passBuilder.buildPerModuleDefaultPipeline(optLevel);

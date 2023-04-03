@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "BackendLLVM.h"
 #include "BackendLLVMDbg.h"
+#include "BackendLLVM_Macros.h"
 #include "ByteCode.h"
 #include "Module.h"
 #include "Version.h"
@@ -389,6 +390,8 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
         return;
 
     auto& builder = *pp.builder;
+    auto& context = *pp.context;
+
     builder.SetCurrentDebugLocation(llvm::DebugLoc());
     lastDebugLine        = 0;
     lastInlineSourceFile = nullptr;
@@ -424,13 +427,13 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
             llvm::DIType* type      = getType(typeParam, file);
 
             llvm::DILocalVariable* var0   = dbgBuilder->createAutoVariable(scope, child->token.ctext(), file, loc.line + 1, type, !isOptimized);
-            auto                   allocA = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(2));
+            auto                   allocA = builder.CreateAlloca(I64_TY(), builder.getInt64(2));
 
-            auto v0   = builder.CreateInBoundsGEP(allocA, builder.getInt64(0));
+            auto v0   = builder.CreateInBoundsGEP(I64_TY(), allocA, builder.getInt64(0));
             auto arg0 = func->getArg(0);
             builder.CreateStore(arg0, builder.CreatePointerCast(v0, arg0->getType()->getPointerTo()));
 
-            auto v1 = builder.CreateInBoundsGEP(allocA, builder.getInt64(1));
+            auto v1 = builder.CreateInBoundsGEP(I64_TY(), allocA, builder.getInt64(1));
             builder.CreateStore(func->getArg(1), v1);
 
             dbgBuilder->insertDeclare(allocA, var0, dbgBuilder->createExpression(), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
@@ -458,13 +461,13 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
                 auto type = getType(typeParam, file);
 
                 llvm::DILocalVariable* var0   = dbgBuilder->createAutoVariable(scope, child->token.ctext(), file, loc.line + 1, type, !isOptimized);
-                auto                   allocA = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(2));
+                auto                   allocA = builder.CreateAlloca(I64_TY(), builder.getInt64(2));
 
-                auto v0   = builder.CreateInBoundsGEP(allocA, builder.getInt64(0));
+                auto v0   = builder.CreateInBoundsGEP(I64_TY(), allocA, builder.getInt64(0));
                 auto arg0 = func->getArg(idxParam);
                 builder.CreateStore(arg0, builder.CreatePointerCast(v0, arg0->getType()->getPointerTo()));
 
-                auto v1 = builder.CreateInBoundsGEP(allocA, builder.getInt64(1));
+                auto v1 = builder.CreateInBoundsGEP(I64_TY(), allocA, builder.getInt64(1));
                 builder.CreateStore(func->getArg(idxParam + 1), v1);
 
                 dbgBuilder->insertDeclare(allocA, var0, dbgBuilder->createExpression(), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
@@ -528,8 +531,7 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
                 auto                   scope = getOrCreateScope(file, localVar->ownerScope);
                 llvm::DILocalVariable* var   = dbgBuilder->createParameterVariable(SP, localVar->token.ctext(), 1, file, loc.line + 1, type, !isOptimized);
                 auto                   v     = func->getArg(0);
-                Vector<int64_t>        expr;
-                dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(expr), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
+                dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
             }
         }
         else
@@ -537,7 +539,7 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
             llvm::DIType*          type  = getType(typeInfo, file);
             auto                   scope = getOrCreateScope(file, localVar->ownerScope);
             llvm::DILocalVariable* var   = dbgBuilder->createAutoVariable(scope, localVar->token.ctext(), file, localVar->token.startLocation.line, type, !isOptimized);
-            auto                   v     = builder.CreateInBoundsGEP(stack, pp.builder->getInt32(overload->computedValue.storageOffset));
+            auto                   v     = builder.CreateInBoundsGEP(I8_TY(), stack, pp.builder->getInt32(overload->computedValue.storageOffset));
             dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
         }
     }
@@ -652,6 +654,7 @@ void BackendLLVMDbg::createGlobalVariablesForSegment(const BuildParameters& buil
     int   precompileIndex = buildParameters.precompileIndex;
     auto& pp              = *llvm->perThread[ct][precompileIndex];
     auto& builder         = *pp.builder;
+    auto& context         = *pp.context;
     auto& modu            = *pp.module;
     auto  module          = llvm->module;
 
@@ -684,13 +687,13 @@ void BackendLLVMDbg::createGlobalVariablesForSegment(const BuildParameters& buil
         // Segment is stored as an array of 64 bits elements. Get address of the first element
         auto constExpr = llvm::ConstantExpr::getGetElementPtr(type, var, {offset.begin(), offset.end()});
         // Convert to a pointer to bytes
-        constExpr = llvm::ConstantExpr::getPointerCast(constExpr, builder.getInt8Ty()->getPointerTo());
+        constExpr = llvm::ConstantExpr::getPointerCast(constExpr, PTR_I8_TY());
         // Convert to int, in order to make an Add
-        constExpr = llvm::ConstantExpr::getPtrToInt(constExpr, builder.getInt64Ty());
+        constExpr = llvm::ConstantExpr::getPtrToInt(constExpr, I64_TY());
         // Add the byte offset
         constExpr = llvm::ConstantExpr::getAdd(constExpr, llvm::ConstantInt::get(llvm::Type::getInt64Ty(*pp.context), resolved->computedValue.storageOffset));
         // Convert back to a pointer to bytes
-        constExpr = llvm::ConstantExpr::getIntToPtr(constExpr, builder.getInt8Ty()->getPointerTo());
+        constExpr = llvm::ConstantExpr::getIntToPtr(constExpr, PTR_I8_TY());
 
         // Cast to the correct type
         auto varType = llvm->swagTypeToLLVMType(buildParameters, module, typeInfo);
