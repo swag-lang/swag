@@ -196,6 +196,8 @@ JobResult BackendLLVM::prepareOutput(int stage, const BuildParameters& buildPara
         pp.filename += Backend::getObjectFileExtension(g_CommandLine.target);
 
         pp.context = new llvm::LLVMContext();
+        pp.context->setDiscardValueNames(true);
+
         pp.module  = new llvm::Module(pp.filename.c_str(), *pp.context);
         pp.builder = new llvm::IRBuilder<>(*pp.context);
 
