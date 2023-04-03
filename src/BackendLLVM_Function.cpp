@@ -990,18 +990,20 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::SetAtPointer8:
         {
-            auto         r0 = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32)), CST_RC32);
+            auto         ra = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
+            auto         r0 = builder.CreateInBoundsGEP(I8_TY(), ra, CST_RC32);
             llvm::Value* r1;
             if (ip->flags & BCI_IMM_B)
                 r1 = builder.getInt8(ip->b.u8);
             else
                 r1 = builder.CreateLoad(I8_TY(), GEP64(allocR, ip->b.u32));
-            builder.CreateStore(r1, TO_PTR_I8(r0));
+            builder.CreateStore(r1, r0);
             break;
         }
         case ByteCodeOp::SetAtPointer16:
         {
-            auto         r0 = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32)), CST_RC32);
+            auto         ra = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
+            auto         r0 = builder.CreateInBoundsGEP(I8_TY(), ra, CST_RC32);
             llvm::Value* r1;
             if (ip->flags & BCI_IMM_B)
                 r1 = builder.getInt16(ip->b.u16);
@@ -1012,7 +1014,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::SetAtPointer32:
         {
-            auto         r0 = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32)), CST_RC32);
+            auto         ra = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
+            auto         r0 = builder.CreateInBoundsGEP(I8_TY(), ra, CST_RC32);
             llvm::Value* r1;
             if (ip->flags & BCI_IMM_B)
                 r1 = builder.getInt32(ip->b.u32);
@@ -1023,7 +1026,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::SetAtPointer64:
         {
-            auto         r0 = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32)), CST_RC32);
+            auto         ra = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
+            auto         r0 = builder.CreateInBoundsGEP(I8_TY(), ra, CST_RC32);
             llvm::Value* r1;
             if (ip->flags & BCI_IMM_B)
                 r1 = builder.getInt64(ip->b.u64);
