@@ -574,7 +574,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RB32);
             builder.CreateStore(r1, GEP64_PTR_PTR_I8(allocR, ip->a.u32));
 
-            r1 = TO_PTR_I8(builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RD32));
+            r1 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RD32);
             builder.CreateStore(r1, GEP64_PTR_PTR_I8(allocR, ip->c.u32));
             break;
         }
