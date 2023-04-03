@@ -289,9 +289,9 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
     if (typeFuncBC->isVariadic())
     {
         auto index = pushParams[idxParam--];
-        params.push_back(builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, index)));
+        params.push_back(builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, index)));
         index = pushParams[idxParam--];
-        params.push_back(builder.CreateLoad(I64_TY(), GEP_I32(allocR, index)));
+        params.push_back(builder.CreateLoad(I64_TY(), GEP64(allocR, index)));
         SWAG_ASSERT(numCallParams);
         numCallParams--;
     }
@@ -329,36 +329,36 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
         {
             auto typePtr  = CastTypeInfo<TypeInfoPointer>(typeParam, TypeInfoKind::Pointer);
             auto llvmType = swagTypeToLLVMType(buildParameters, moduleToGen, typePtr);
-            params.push_back(builder.CreateLoad(llvmType, GEP_I32(allocR, index)));
+            params.push_back(builder.CreateLoad(llvmType, GEP64(allocR, index)));
         }
         else if (cc.structByRegister && typeParam->isStruct() && typeParam->sizeOf <= sizeof(void*))
         {
-            auto v0 = builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, index));
+            auto v0 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, index));
             params.push_back(builder.CreateLoad(IX_TY(typeParam->sizeOf * 8), v0));
         }
         else if (typeParam->isStruct() ||
                  typeParam->isLambdaClosure() ||
                  typeParam->isArray())
         {
-            params.push_back(builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, index)));
+            params.push_back(builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, index)));
         }
         else if (typeParam->isString() ||
                  typeParam->isSlice())
         {
-            params.push_back(builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, index)));
+            params.push_back(builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, index)));
             index = pushParams[idxParam--];
-            params.push_back(builder.CreateLoad(I64_TY(), GEP_I32(allocR, index)));
+            params.push_back(builder.CreateLoad(I64_TY(), GEP64(allocR, index)));
         }
         else if (typeParam->isAny() ||
                  typeParam->isInterface())
         {
-            params.push_back(builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, index)));
+            params.push_back(builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, index)));
             index = pushParams[idxParam--];
-            params.push_back(builder.CreateLoad(PTR_I8_TY(), GEP_I32(allocR, index)));
+            params.push_back(builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, index)));
         }
         else if (typeParam->isNative())
         {
-            params.push_back(builder.CreateLoad(toNativeTy(context, typeParam->nativeType), GEP_I32(allocR, index)));
+            params.push_back(builder.CreateLoad(toNativeTy(context, typeParam->nativeType), GEP64(allocR, index)));
         }
         else
         {
@@ -386,7 +386,7 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
         for (int i = typeFuncBC->numParamsRegisters(); i < pushParams.size(); i++)
         {
             auto index = pushParams[idxParam--];
-            params.push_back(builder.CreateLoad(I64_TY(), GEP_I32(allocR, index)));
+            params.push_back(builder.CreateLoad(I64_TY(), GEP64(allocR, index)));
         }
     }
 
@@ -515,7 +515,7 @@ void BackendLLVM::emitByteCodeCallParameters(const BuildParameters&      buildPa
     {
         for (int j = 0; j < typeFuncBC->numReturnRegisters(); j++)
         {
-            params.push_back(GEP_I32(allocRR, j));
+            params.push_back(GEP64(allocRR, j));
         }
     }
 
@@ -528,7 +528,7 @@ void BackendLLVM::emitByteCodeCallParameters(const BuildParameters&      buildPa
             if (index == UINT32_MAX)
                 params.push_back(values[popRAidx + 1]);
             else
-                params.push_back(GEP_I32(allocR, index));
+                params.push_back(GEP64(allocR, index));
         }
     }
 
@@ -537,10 +537,10 @@ void BackendLLVM::emitByteCodeCallParameters(const BuildParameters&      buildPa
     {
         auto index = pushRAParams[popRAidx--];
         SWAG_ASSERT(index != UINT32_MAX);
-        params.push_back(builder.CreateLoad(I64_TY(), GEP_I32(allocR, index)));
+        params.push_back(builder.CreateLoad(I64_TY(), GEP64(allocR, index)));
         index = pushRAParams[popRAidx--];
         SWAG_ASSERT(index != UINT32_MAX);
-        params.push_back(builder.CreateLoad(I64_TY(), GEP_I32(allocR, index)));
+        params.push_back(builder.CreateLoad(I64_TY(), GEP64(allocR, index)));
         numCallParams--;
     }
     else if (typeFuncBC->isCVariadic())
@@ -578,7 +578,7 @@ void BackendLLVM::emitByteCodeCallParameters(const BuildParameters&      buildPa
                 }
                 else
                 {
-                    params.push_back(builder.CreateLoad(ty, GEP_I32(allocR, index)));
+                    params.push_back(builder.CreateLoad(ty, GEP64(allocR, index)));
                 }
 
                 continue;
@@ -606,7 +606,7 @@ void BackendLLVM::emitByteCodeCallParameters(const BuildParameters&      buildPa
             // By register value.
             else
             {
-                auto v0 = builder.CreateLoad(I64_TY(), GEP_I32(allocR, index));
+                auto v0 = builder.CreateLoad(I64_TY(), GEP64(allocR, index));
                 params.push_back(v0);
             }
         }
@@ -619,7 +619,7 @@ void BackendLLVM::emitByteCodeCallParameters(const BuildParameters&      buildPa
         for (int idxCall = 0; idxCall < numVariadics; idxCall++)
         {
             auto index = pushRAParams[popRAidx--];
-            auto v0    = builder.CreateLoad(I64_TY(), GEP_I32(allocR, index));
+            auto v0    = builder.CreateLoad(I64_TY(), GEP64(allocR, index));
             params.push_back(v0);
         }
     }

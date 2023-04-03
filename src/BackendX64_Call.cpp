@@ -103,16 +103,16 @@ void BackendX64::emitGetParam(X64Gen& pp, CoffFunction* coffFct, int reg, uint32
         switch (deRefSize)
         {
         case 1:
-            pp.emit_LoadU8U64_Indirect((uint32_t)toAdd, RAX, RAX);
+            pp.emit_LoadU8U64_Indirect((uint32_t) toAdd, RAX, RAX);
             break;
         case 2:
-            pp.emit_LoadU16U64_Indirect((uint32_t)toAdd, RAX, RAX);
+            pp.emit_LoadU16U64_Indirect((uint32_t) toAdd, RAX, RAX);
             break;
         case 4:
-            pp.emit_Load32_Indirect((uint32_t)toAdd, RAX, RAX);
+            pp.emit_Load32_Indirect((uint32_t) toAdd, RAX, RAX);
             break;
         case 8:
-            pp.emit_Load64_Indirect((uint32_t)toAdd, RAX, RAX);
+            pp.emit_Load64_Indirect((uint32_t) toAdd, RAX, RAX);
             break;
         default:
             pp.emit_Add64_RAX(toAdd);

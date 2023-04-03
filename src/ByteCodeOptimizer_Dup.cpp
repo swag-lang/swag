@@ -101,7 +101,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
                         auto it1 = mapCopyRB.find((*it)->b.u32);
                         if (it1 && *it == *it1)
                         {
-                            ip->a.u32 = (*it)->b.u32;
+                            ip->a.u32                     = (*it)->b.u32;
                             context->passHasDoneSomething = true;
                         }
                     }
@@ -119,7 +119,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
                         auto it1 = mapCopyRB.find((*it)->b.u32);
                         if (it1 && *it == *it1)
                         {
-                            ip->b.u32 = (*it)->b.u32;
+                            ip->b.u32                     = (*it)->b.u32;
                             context->passHasDoneSomething = true;
                         }
                     }
