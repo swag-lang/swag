@@ -30,8 +30,12 @@
 #define CST_RB64 builder.getInt64(ip->b.u64)
 #define CST_RC64 builder.getInt64(ip->c.u64)
 
-#define GEP64(__data, __i32) (__i32 ? builder.CreateInBoundsGEP(I64_TY(), __data, builder.getInt32(__i32)) : __data)
-#define GEP(__type, __data, __i32) (__i32 ? builder.CreateInBoundsGEP(__type, __data, builder.getInt32(__i32)) : __data)
+#define GEP64(__data, __offset) (__offset ? builder.CreateInBoundsGEP(I64_TY(), __data, builder.getInt32(__offset)) : __data)
+#define GEP(__type, __data, __offset) (__offset ? builder.CreateInBoundsGEP(__type, __data, builder.getInt32(__offset)) : __data)
+
+#define GEP64_PTR8(__data, __offset) builder.CreateInBoundsGEP(I8_TY(), __data, builder.getInt32(__offset * 8))
+#define GEP64_PTR16(__data, __offset) builder.CreateInBoundsGEP(I16_TY(), __data, builder.getInt32(__offset * 4))
+#define GEP64_PTR32(__data, __offset) builder.CreateInBoundsGEP(I16_TY(), __data, builder.getInt32(__offset * 2))
 
 #define TO_PTR_PTR_I8(__r) builder.CreatePointerCast(__r, PTR_I8_TY()->getPointerTo())
 #define TO_PTR_PTR_I16(__r) builder.CreatePointerCast(__r, PTR_I16_TY()->getPointerTo())
