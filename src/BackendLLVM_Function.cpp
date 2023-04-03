@@ -499,46 +499,46 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::SetZeroAtPointer8:
         {
-            auto r0 = GEP64(allocR, ip->a.u32);
-            auto v0 = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), r0), CST_RB32);
+            auto r0 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
+            auto v0 = builder.CreateInBoundsGEP(I8_TY(), r0, builder.getInt32(ip->b.u32));
             builder.CreateStore(pp.cst0_i8, v0);
             break;
         }
         case ByteCodeOp::SetZeroAtPointer16:
         {
-            auto r0 = TO_PTR_PTR_I8(GEP64(allocR, ip->a.u32));
-            auto v0 = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), r0), CST_RB32);
+            auto r0 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
+            auto v0 = builder.CreateInBoundsGEP(I8_TY(), r0, builder.getInt32(ip->b.u32));
             builder.CreateStore(pp.cst0_i16, TO_PTR_I16(v0));
             break;
         }
         case ByteCodeOp::SetZeroAtPointer32:
         {
-            auto r0 = TO_PTR_PTR_I8(GEP64(allocR, ip->a.u32));
-            auto v0 = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), r0), CST_RB32);
+            auto r0 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
+            auto v0 = builder.CreateInBoundsGEP(I8_TY(), r0, builder.getInt32(ip->b.u32));
             builder.CreateStore(pp.cst0_i32, TO_PTR_I32(v0));
             break;
         }
         case ByteCodeOp::SetZeroAtPointer64:
         {
-            auto r0 = TO_PTR_PTR_I8(GEP64(allocR, ip->a.u32));
-            auto v0 = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), r0), CST_RB32);
+            auto r0 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
+            auto v0 = builder.CreateInBoundsGEP(I8_TY(), r0, builder.getInt32(ip->b.u32));
             builder.CreateStore(pp.cst0_i64, TO_PTR_I64(v0));
             break;
         }
         case ByteCodeOp::SetZeroAtPointerX:
         {
-            auto r0 = TO_PTR_PTR_I8(GEP64(allocR, ip->a.u32));
             SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF);
-            auto v0 = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), r0), CST_RC32);
+            auto r0 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
+            auto v0 = builder.CreateInBoundsGEP(I8_TY(), r0, CST_RC32);
             builder.CreateMemSet(v0, pp.cst0_i8, ip->b.u64, llvm::Align{});
             break;
         }
         case ByteCodeOp::SetZeroAtPointerXRB:
         {
-            auto r0 = GEP64(allocR, ip->a.u32);
+            auto r0 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
             auto r2 = builder.CreateLoad(I64_TY(), GEP64(allocR, ip->b.u32));
             auto v2 = builder.CreateMul(r2, builder.getInt64(ip->c.u64));
-            builder.CreateMemSet(builder.CreateLoad(PTR_I8_TY(), r0), pp.cst0_i8, v2, {});
+            builder.CreateMemSet(r0, pp.cst0_i8, v2, {});
             break;
         }
 
