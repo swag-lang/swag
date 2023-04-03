@@ -897,9 +897,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CopyRBAddrToRA:
         case ByteCodeOp::CopyRBAddrToRA2:
         {
-            auto r0 = GEP64(allocR, ip->a.u32);
+            auto r0 = GEP64_PTR_PTR_I64(allocR, ip->a.u32);
             auto r1 = GEP64(allocR, ip->b.u32);
-            builder.CreateStore(r1, TO_PTR_PTR_I64(r0));
+            builder.CreateStore(r1, r0);
             break;
         }
 
