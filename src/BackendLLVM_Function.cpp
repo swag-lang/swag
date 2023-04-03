@@ -1175,28 +1175,28 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::BinOpPlusS32_Safe:
         {
             MK_BINOP32_CAB();
-            OP_OVERFLOW(sadd_with_overflow, CreateAdd, TO_PTR_I32, getInt32Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS32));
+            OP_OVERFLOW(sadd_with_overflow, CreateAdd, getInt32Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS32));
             break;
         }
         case ByteCodeOp::BinOpPlusU32:
         case ByteCodeOp::BinOpPlusU32_Safe:
         {
             MK_BINOP32_CAB();
-            OP_OVERFLOW(uadd_with_overflow, CreateAdd, TO_PTR_I32, getInt32Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU32));
+            OP_OVERFLOW(uadd_with_overflow, CreateAdd, getInt32Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU32));
             break;
         }
         case ByteCodeOp::BinOpPlusS64:
         case ByteCodeOp::BinOpPlusS64_Safe:
         {
             MK_BINOP64_CAB();
-            OP_OVERFLOW(sadd_with_overflow, CreateAdd, TO_PTR_I64, getInt64Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS64));
+            OP_OVERFLOW(sadd_with_overflow, CreateAdd, getInt64Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS64));
             break;
         }
         case ByteCodeOp::BinOpPlusU64:
         case ByteCodeOp::BinOpPlusU64_Safe:
         {
             MK_BINOP64_CAB();
-            OP_OVERFLOW(uadd_with_overflow, CreateAdd, TO_PTR_I64, getInt64Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU64));
+            OP_OVERFLOW(uadd_with_overflow, CreateAdd, getInt64Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU64));
             break;
         }
         case ByteCodeOp::BinOpPlusF32:
@@ -1218,28 +1218,28 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::BinOpMinusS32_Safe:
         {
             MK_BINOP32_CAB();
-            OP_OVERFLOW(ssub_with_overflow, CreateSub, TO_PTR_I32, getInt32Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS32));
+            OP_OVERFLOW(ssub_with_overflow, CreateSub, getInt32Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS32));
             break;
         }
         case ByteCodeOp::BinOpMinusU32:
         case ByteCodeOp::BinOpMinusU32_Safe:
         {
             MK_BINOP32_CAB();
-            OP_OVERFLOW(usub_with_overflow, CreateSub, TO_PTR_I32, getInt32Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU32));
+            OP_OVERFLOW(usub_with_overflow, CreateSub, getInt32Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU32));
             break;
         }
         case ByteCodeOp::BinOpMinusS64:
         case ByteCodeOp::BinOpMinusS64_Safe:
         {
             MK_BINOP64_CAB();
-            OP_OVERFLOW(ssub_with_overflow, CreateSub, TO_PTR_I64, getInt64Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS64));
+            OP_OVERFLOW(ssub_with_overflow, CreateSub, getInt64Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS64));
             break;
         }
         case ByteCodeOp::BinOpMinusU64:
         case ByteCodeOp::BinOpMinusU64_Safe:
         {
             MK_BINOP64_CAB();
-            OP_OVERFLOW(usub_with_overflow, CreateSub, TO_PTR_I64, getInt64Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU64));
+            OP_OVERFLOW(usub_with_overflow, CreateSub, getInt64Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU64));
             break;
         }
         case ByteCodeOp::BinOpMinusF32:
@@ -1261,28 +1261,28 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::BinOpMulS32_Safe:
         {
             MK_BINOP32_CAB();
-            OP_OVERFLOW(smul_with_overflow, CreateMul, TO_PTR_I32, getInt32Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS32));
+            OP_OVERFLOW(smul_with_overflow, CreateMul, getInt32Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS32));
             break;
         }
         case ByteCodeOp::BinOpMulU32:
         case ByteCodeOp::BinOpMulU32_Safe:
         {
             MK_BINOP32_CAB();
-            OP_OVERFLOW(umul_with_overflow, CreateMul, TO_PTR_I32, getInt32Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU32));
+            OP_OVERFLOW(umul_with_overflow, CreateMul, getInt32Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU32));
             break;
         }
         case ByteCodeOp::BinOpMulS64:
         case ByteCodeOp::BinOpMulS64_Safe:
         {
             MK_BINOP64_CAB();
-            OP_OVERFLOW(smul_with_overflow, CreateMul, TO_PTR_I64, getInt64Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS64));
+            OP_OVERFLOW(smul_with_overflow, CreateMul, getInt64Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS64));
             break;
         }
         case ByteCodeOp::BinOpMulU64:
         case ByteCodeOp::BinOpMulU64_Safe:
         {
             MK_BINOP64_CAB();
-            OP_OVERFLOW(umul_with_overflow, CreateMul, TO_PTR_I64, getInt64Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU64));
+            OP_OVERFLOW(umul_with_overflow, CreateMul, getInt64Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU64));
             break;
         }
         case ByteCodeOp::BinOpMulF32:

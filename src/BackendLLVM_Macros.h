@@ -212,7 +212,7 @@
         builder.CreateStore(v0, r1);                                                                                                                \
     }
 
-#define OP_OVERFLOW(__intr, __inst, __cast, __type, __msg)                                                      \
+#define OP_OVERFLOW(__intr, __inst, __type, __msg)                                                              \
     if (module->mustEmitSafetyOF(ip->node))                                                                     \
     {                                                                                                           \
         auto vs = builder.CreateIntrinsic(llvm::Intrinsic::__intr, {builder.__type, builder.__type}, {r1, r2}); \
@@ -228,12 +228,12 @@
         emitInternalPanic(buildParameters, moduleToGen, allocR, allocT, ip->node, __msg);                       \
         builder.CreateBr(blockOk);                                                                              \
         builder.SetInsertPoint(blockOk);                                                                        \
-        builder.CreateStore(v0, __cast(r0));                                                                    \
+        builder.CreateStore(v0, r0);                                                                            \
     }                                                                                                           \
     else                                                                                                        \
     {                                                                                                           \
         auto v0 = builder.__inst(r1, r2);                                                                       \
-        builder.CreateStore(v0, __cast(r0));                                                                    \
+        builder.CreateStore(v0, r0);                                                                            \
     }
 
 inline llvm::Type* toNativeTy(llvm::LLVMContext& context, NativeTypeKind k)
